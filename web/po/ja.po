@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-08-23 09:54+0200\n"
+"POT-Creation-Date: 2023-09-08 14:45+0200\n"
 "PO-Revision-Date: 2023-08-24 01:15+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web-4-3/ja/"
@@ -141,7 +141,9 @@ msgstr "{name}を{action}してよろしいですか"
 msgid ""
 "Are you sure you want to {action} the selected {name}s? ({count} {name}s "
 "selected)"
-msgstr "選択した{name}に対して{action}してよろしいですか？ ({count}個の{name}が選択されています)"
+msgstr ""
+"選択した{name}に対して{action}してよろしいですか？ ({count}個の{name}が選択さ"
+"れています)"
 
 #: ../html/src/components/dialog/DangerDialog.tsx:61
 #: ../html/src/components/dialog/DangerDialog.tsx:62
@@ -568,7 +570,8 @@ msgstr "状態のランキングを編集するには、それらをドラッグ
 
 #: ../html/src/components/states-picker.tsx:405
 msgid "Edit the ranking of the configuration channels by dragging them."
-msgstr "設定チャンネルのランキングを編集するには、それらをドラッグしてください。"
+msgstr ""
+"設定チャンネルのランキングを編集するには、それらをドラッグしてください。"
 
 #: ../html/src/components/states-picker.tsx:410
 msgid "There are no states assigned."
@@ -1119,7 +1122,7 @@ msgstr "SUSE カスタマーセンターから製品カタログを更新"
 #: ../html/src/manager/images/image-profiles.tsx:141
 #: ../html/src/manager/images/image-stores.tsx:141
 #: ../html/src/manager/images/image-view.tsx:375
-#: ../html/src/manager/notifications/notification-messages.tsx:451
+#: ../html/src/manager/notifications/notification-messages.tsx:455
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:242
 msgid "Refresh"
 msgstr "更新"
@@ -1173,7 +1176,9 @@ msgstr "選択されたチャンネルは同期のスケジュールに成功し
 msgid ""
 "The following channel installations for '{product}' failed. Please check log "
 "files."
-msgstr "'{product}'の次のチャンネルのインストールに失敗しました。ログファイルを確認してください。"
+msgstr ""
+"'{product}'の次のチャンネルのインストールに失敗しました。ログファイルを確認し"
+"てください。"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:340
 msgid ""
@@ -1442,7 +1447,7 @@ msgstr "現時点では、サーバ内で動作しているタスクはありま
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:262
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:110
-#: ../html/src/manager/notifications/notification-messages.tsx:575
+#: ../html/src/manager/notifications/notification-messages.tsx:579
 msgid "Session expired, please reload the page to see up-to-date data."
 msgstr ""
 "セッションの期限が切れました。最新のデータを表示するには、ページを再読み込み"
@@ -1450,7 +1455,7 @@ msgstr ""
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:264
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:112
-#: ../html/src/manager/notifications/notification-messages.tsx:577
+#: ../html/src/manager/notifications/notification-messages.tsx:581
 #: ../html/src/utils/network.ts:103
 msgid "Server error, please check log files."
 msgstr "サーバエラーです。ログファイルをご確認ください。"
@@ -1614,7 +1619,9 @@ msgstr "マッチングデータは現在計算中です。 {timeFromNow}に開�
 msgid ""
 "Latest successful match data was computed {timeFromNow}, you can trigger a "
 "new run by clicking the button below."
-msgstr "直近のマッチングデータは{timeFromNow}に計算されていますが、下記のボタンを押すことで新たに実行することもできます。"
+msgstr ""
+"直近のマッチングデータは{timeFromNow}に計算されていますが、下記のボタンを押す"
+"ことで新たに実行することもできます。"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:126
 msgid ""
@@ -2485,7 +2492,9 @@ msgstr "環境{name}を削除しました"
 msgid ""
 "This environment cannot be deleted since it is being used in an "
 "<link>autoinstallation distribution</link>."
-msgstr "この環境は <link>自動インストールディストリビューション</link>で使用されているため、削除できません。"
+msgstr ""
+"この環境は <link>自動インストールディストリビューション</link>で使用されてい"
+"るため、削除できません。"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:23
 msgid "New"
@@ -2680,7 +2689,7 @@ msgstr "子チャンネル無し"
 #: ../html/src/manager/images/image-view-patches.tsx:79
 #: ../html/src/manager/images/image-view.tsx:642
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:105
-#: ../html/src/manager/notifications/notification-messages.tsx:513
+#: ../html/src/manager/notifications/notification-messages.tsx:517
 #: ../html/src/manager/state/highstate-summary.tsx:73
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:296
 msgid "Type"
@@ -2757,8 +2766,8 @@ msgid ""
 "Formula saved. Edit configuration options in the enabled formulas and apply "
 "the <link>Highstate</link> for the changes to take effect."
 msgstr ""
-"formulaを保存しました。有効化されたformula内で設定オプションを編集し、<link>highstate</link>を適用して変更を有効にして"
-"ください。"
+"formulaを保存しました。有効化されたformula内で設定オプションを編集し、"
+"<link>highstate</link>を適用して変更を有効にしてください。"
 
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:24
 #: ../html/src/manager/groups/formula/group-formula.renderer.tsx:21
@@ -2772,7 +2781,9 @@ msgstr "ターゲットタイプが正しくありません。"
 msgid ""
 "Formula saved. Apply the <link>Highstate</link> for the changes to take "
 "effect."
-msgstr "formulaを保存しました。<link>highstate</link>を適用して変更を有効にしてください。"
+msgstr ""
+"formulaを保存しました。<link>highstate</link>を適用して変更を有効にしてくださ"
+"い。"
 
 #: ../html/src/manager/header/search/search.tsx:10
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:183
@@ -3035,7 +3046,9 @@ msgstr "選択したプロファイルを削除してよろしいですか？"
 msgid ""
 "Are you sure you want to delete selected profiles? ({count} profiles "
 "selected)"
-msgstr "選択したプロファイルを削除してよろしいですか？ ({count}個のプロファイルが選択されています)"
+msgstr ""
+"選択したプロファイルを削除してよろしいですか？ ({count}個のプロファイルが選択"
+"されています)"
 
 #: ../html/src/manager/images/image-store-edit.tsx:165
 msgid "Use credentials"
@@ -3105,7 +3118,9 @@ msgstr "選択したストアを削除してよろしいですか？"
 #: ../html/src/manager/images/image-stores.tsx:237
 msgid ""
 "Are you sure you want to delete selected stores? ({count} stores selected)"
-msgstr "選択したストアを削除してよろしいですか？ ({count}個のストアが選択されています)"
+msgstr ""
+"選択したストアを削除してよろしいですか？ ({count}個のストアが選択されていま"
+"す)"
 
 #: ../html/src/manager/images/image-view-buildlog.tsx:5
 #: ../html/src/manager/images/image-view.tsx:792
@@ -3459,7 +3474,9 @@ msgstr "選択したイメージを削除してよろしいですか？"
 #: ../html/src/manager/images/image-view.tsx:741
 msgid ""
 "Are you sure you want to delete selected images? ({count} images selected)"
-msgstr "選択したイメージを削除してよろしいですか? ({count}個のイメージが選択されています)"
+msgstr ""
+"選択したイメージを削除してよろしいですか? ({count}個のイメージが選択されてい"
+"ます)"
 
 #: ../html/src/manager/images/image-view.tsx:789
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:55
@@ -3514,8 +3531,9 @@ msgid ""
 "configuration setting. To hide this warning please set 'forward_registration "
 "= 1' in rhn.conf."
 msgstr ""
-"SUSE Manager PAYGインスタンスは、資格情報が提供されたときに登録データをSCCに転送する必要があります。データは設定とは関係なく送信されま"
-"す。この警告を非表示にするには、rhn.conf で'forward_registration = 1'を設定してください。"
+"SUSE Manager PAYGインスタンスは、資格情報が提供されたときに登録データをSCCに"
+"転送する必要があります。データは設定とは関係なく送信されます。この警告を非表"
+"示にするには、rhn.conf で'forward_registration = 1'を設定してください。"
 
 #: ../html/src/manager/login/messages.tsx:63
 msgid "Signing in ..."
@@ -4086,7 +4104,7 @@ msgid "Applying the packages states has been "
 msgstr "パッケージ状態の適用を "
 
 #: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:22
-#: ../html/src/manager/notifications/notification-messages.tsx:519
+#: ../html/src/manager/notifications/notification-messages.tsx:523
 msgid "Summary"
 msgstr "概要"
 
@@ -4185,93 +4203,98 @@ msgstr "サポート期間の終了"
 msgid "Subscription Warning"
 msgstr "サブスクライブに関する警告"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:148
+#: ../html/src/manager/notifications/notification-messages.tsx:61
+#, fuzzy
+msgid "Update Notification"
+msgstr "通知の削除"
+
+#: ../html/src/manager/notifications/notification-messages.tsx:152
 msgid "Filter by type"
 msgstr "タイプでフィルタ"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:256
-#: ../html/src/manager/notifications/notification-messages.tsx:257
+#: ../html/src/manager/notifications/notification-messages.tsx:260
+#: ../html/src/manager/notifications/notification-messages.tsx:261
 msgid "Info"
 msgstr "情報"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:264
-#: ../html/src/manager/notifications/notification-messages.tsx:265
+#: ../html/src/manager/notifications/notification-messages.tsx:268
+#: ../html/src/manager/notifications/notification-messages.tsx:269
 msgid "Warning"
 msgstr "警告"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:272
-#: ../html/src/manager/notifications/notification-messages.tsx:273
+#: ../html/src/manager/notifications/notification-messages.tsx:276
+#: ../html/src/manager/notifications/notification-messages.tsx:277
 msgid "Error"
 msgstr "エラー"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:335
+#: ../html/src/manager/notifications/notification-messages.tsx:339
 msgid "show details"
 msgstr "詳細の表示"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:384
+#: ../html/src/manager/notifications/notification-messages.tsx:388
 msgid "Retry onboarding"
 msgstr "オンボーディングの再試行"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:394
+#: ../html/src/manager/notifications/notification-messages.tsx:398
 msgid "Retry repo sync"
 msgstr "リポジトリー同期の再試行"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:418
+#: ../html/src/manager/notifications/notification-messages.tsx:422
 msgid "Unread Messages"
 msgstr "未読メッセージ"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:423
+#: ../html/src/manager/notifications/notification-messages.tsx:427
 msgid "All Messages"
 msgstr "全てのメッセージ"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:455
-#: ../html/src/manager/notifications/notification-messages.tsx:456
+#: ../html/src/manager/notifications/notification-messages.tsx:459
+#: ../html/src/manager/notifications/notification-messages.tsx:460
 msgid "Delete selected messages"
 msgstr "選択したメッセージの削除"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:463
-#: ../html/src/manager/notifications/notification-messages.tsx:464
+#: ../html/src/manager/notifications/notification-messages.tsx:467
+#: ../html/src/manager/notifications/notification-messages.tsx:468
 msgid "Mark selected as read"
 msgstr "選択したものを読み込み済みとしてマーク"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:481
-#: ../html/src/manager/notifications/notification-messages.tsx:563
+#: ../html/src/manager/notifications/notification-messages.tsx:485
+#: ../html/src/manager/notifications/notification-messages.tsx:567
 msgid "Notification Messages"
 msgstr "通知メッセージ"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:486
+#: ../html/src/manager/notifications/notification-messages.tsx:490
 msgid "The server has collected the following notification messages."
 msgstr "このサーバは下記のような通知メッセージを収集しました。"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:501
+#: ../html/src/manager/notifications/notification-messages.tsx:505
 msgid "Filter by summary"
 msgstr "概要でフィルタ"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:507
+#: ../html/src/manager/notifications/notification-messages.tsx:511
 msgid "Severity"
 msgstr "重大度"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:525
+#: ../html/src/manager/notifications/notification-messages.tsx:529
 msgid "Created"
 msgstr "作成日"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:530
+#: ../html/src/manager/notifications/notification-messages.tsx:534
 msgid "Action"
 msgstr "動作"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:536
+#: ../html/src/manager/notifications/notification-messages.tsx:540
 msgid "Read|Delete"
 msgstr "読み込み|削除"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:545
+#: ../html/src/manager/notifications/notification-messages.tsx:549
 msgid "Flag as Unread"
 msgstr "未読として設定"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:545
+#: ../html/src/manager/notifications/notification-messages.tsx:549
 msgid "Flag as Read"
 msgstr "読み込み済みとして設定"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:551
+#: ../html/src/manager/notifications/notification-messages.tsx:555
 msgid "Delete Notification"
 msgstr "通知の削除"
 
@@ -4665,7 +4688,9 @@ msgstr ""
 msgid ""
 "The below times are displayed in the server time zone {timeZone}. The "
 "scheduled time will be the server time."
-msgstr "サーバのタイムゾーン{timeZone}には、以下の時間が表示されます。スケジュールされた時間はサーバ時間になります。"
+msgstr ""
+"サーバのタイムゾーン{timeZone}には、以下の時間が表示されます。スケジュールさ"
+"れた時間はサーバ時間になります。"
 
 #: ../html/src/manager/recurring/search/recurring-actions-search-action-type-filter.tsx:16
 msgid "Select an Action Type"
@@ -4784,15 +4809,23 @@ msgstr "サーバはエラーを返しました: {message}"
 msgid "Matching ssh-push minions..."
 msgstr "一致する ssh-push minion..."
 
-#: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:91
+#: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:62
+msgid ""
+"The formula catalog page enables viewing of currently installed <link>Salt "
+"Formulas</link>. Apply these formulas to individual systems or server "
+"groups. Formulas allow automatic installation and configuration of software "
+"and may be installed via RPM packages."
+msgstr ""
+
+#: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:95
 msgid "Formula Catalog"
 msgstr "Formula カタログ"
 
-#: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:101
+#: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:105
 msgid "Filter by formula name"
 msgstr "Formula 名でフィルタ"
 
-#: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:106
+#: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:110
 #: ../html/src/manager/state/highstate-summary.tsx:24
 msgid "Formula"
 msgstr "Formula"
@@ -4971,8 +5004,10 @@ msgid ""
 "an error notification. In case you're working with a transactional system, "
 "please perform a system reboot to complete the registration process."
 msgstr ""
-"ブートストラッププロセスが開始されました。システムはすぐに次の場所に表示されます: <link>システム</link>。問題が発生した場合、エラー通知が届"
-"きます。トランザクションシステムで作業している場合は、システムの再起動を実行して、登録プロセスを完了してください。"
+"ブートストラッププロセスが開始されました。システムはすぐに次の場所に表示され"
+"ます: <link>システム</link>。問題が発生した場合、エラー通知が届きます。トラン"
+"ザクションシステムで作業している場合は、システムの再起動を実行して、登録プロ"
+"セスを完了してください。"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:355
 msgid "Show additional details about this error"
@@ -5020,8 +5055,8 @@ msgid ""
 "{productName} will prepare the system remotely and will perform the "
 "registration."
 msgstr ""
-"SSHの資格情報のみを提供することで、管理対象のシステムを追加することができます。 "
-"{productName}はシステムを遠隔から準備し、登録処理を実施します。"
+"SSHの資格情報のみを提供することで、管理対象のシステムを追加することができま"
+"す。 {productName}はシステムを遠隔から準備し、登録処理を実施します。"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:461
 msgid "e.g., host.domain.com"
@@ -5034,9 +5069,10 @@ msgid ""
 "for the key 'ssh_push_sudo_user' is 'root'. This user is set after "
 "{productName}'s SSH key is deployed during the bootstrap procedure."
 msgstr ""
-"ユーザはブートストラップ処理の際にのみ有効化されます。それ以降の接続に対しては、 rhn.conf 内で指定したユーザで行ないます。また、 'ssh_pu"
-"sh_sudo_user'の鍵に対する既定のユーザは'root'です。このユーザは{productName}のSSHキーを配置したあと、ブートストラップ処"
-"理の際に設定されます。"
+"ユーザはブートストラップ処理の際にのみ有効化されます。それ以降の接続に対して"
+"は、 rhn.conf 内で指定したユーザで行ないます。また、 'ssh_push_sudo_user'の鍵"
+"に対する既定のユーザは'root'です。このユーザは{productName}のSSHキーを配置し"
+"たあと、ブートストラップ処理の際に設定されます。"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:507
 msgid "Authentication Method"
