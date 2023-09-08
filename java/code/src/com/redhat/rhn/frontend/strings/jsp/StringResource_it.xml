@@ -16294,7 +16294,7 @@ cancellati.{0}
         </context-group>
       </trans-unit>
       <trans-unit id="targetsystems.jsp.summary" xml:space="preserve">
-          <source>The systems listed below do not have files managed via @@PRODUCT_NAME@@ configuration management.  For systems to be capable of being managed by @@PRODUCT_NAME@@ configuration management, they need to have particular mgr-cfg-* packages installed. You can enable configuration management on selected systems by using the 'Enable @@PRODUCT_NAME@@ Configuration Management' button below.</source>
+          <source>The systems listed below do not have files managed via @@PRODUCT_NAME@@ configuration management.  For systems to be capable of being managed by @@PRODUCT_NAME@@ configuration management, they need to have particular *-salt-minion packages installed. You can enable configuration management on selected systems by using the 'Enable @@PRODUCT_NAME@@ Configuration Management' button below.</source>
         <target state="needs-adaptation">I sistemi sotto riportati non possiedono alcun file gestito tramite il @@PRODUCT_NAME@@ configuration management.  Per rendere possibile una gestione dei sistemi da parte del @@PRODUCT_NAME@@ configuration management, gli stessi sistemi avranno bisogno di un entitlement di provisioning insieme all'installazione dei pacchetti rhncfg-*. È possibile abilitare la suddetta gestione della configurazione su sistemi selezionati, utilizzando il pulsante 'Abilita @@PRODUCT_NAME@@ Configuration Management'.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/TargetSystems.do</context>
@@ -16355,27 +16355,6 @@ cancellati.{0}
           <context context-type="sourcefile">/rhn/configuration/system/TargetSystems.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="targetsystems.jsp.installcfg" xml:space="preserve">
-          <source>Schedule mgr-cfg package install</source>
-        <target state="needs-adaptation">Programma l'installazione del pacchetto rhncfg</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/configuration/system/TargetSystems.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="targetsystems.jsp.installcfgactions" xml:space="preserve">
-          <source>Schedule mgr-cfg-actions package install</source>
-        <target>Programma l'installazione del pacchetto mgr-cfg-actions</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/configuration/system/TargetSystems.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="targetsystems.jsp.installcfgclient" xml:space="preserve">
-          <source>Schedule mgr-cfg-client package install</source>
-        <target state="needs-adaptation">Programma l'installazione del pacchetto rhncfg-client</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/configuration/system/TargetSystems.do</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="targetsystems.jsp.pending" xml:space="preserve">
           <source>Package installations currently pending.</source>
         <target>Installazioni del pacchetto attualmente sospese.</target>
@@ -16398,7 +16377,7 @@ cancellati.{0}
         </context-group>
       </trans-unit>
       <trans-unit id="targetsystems.jsp.widgetsummary" xml:space="preserve">
-          <source>You may schedule &lt;code&gt;mgr-cfg*&lt;/code&gt; package installs for the time below. &lt;strong&gt;Note: All other actions will take place immediately.&lt;/strong&gt;</source>
+          <source>You may schedule &lt;code&gt;salt-minion&lt;/code&gt; package installs for the time below. &lt;strong&gt;Note: All other actions will take place immediately.&lt;/strong&gt;</source>
         <target state="needs-adaptation">È possibile programmare le installazioni del pacchetto &lt;code&gt;rhncfg*&lt;/code&gt; per l'ora sotto riportata. &lt;strong&gt;Nota Bene: Tutte le altre azioni verranno eseguite immediatamente.&lt;/strong&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/TargetSystems.do</context>
@@ -16420,15 +16399,8 @@ cancellati.{0}
         </context-group>
       </trans-unit>
       <trans-unit id="summary.jsp.stepone" xml:space="preserve">
-          <source>Run &lt;code&gt;mgr_check&lt;/code&gt; to complete pending mgr-cfg-* package installs.</source>
+          <source>Run &lt;code&gt;mgr_check&lt;/code&gt; to complete pending salt-minion package installs.</source>
         <target state="needs-adaptation">Eseguite &lt;code&gt;rhn_check&lt;/code&gt; per completare le installazioni sospese del pacchetto rhncfg-*.</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/configuration/system/Summary.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="summary.jsp.steptwo" xml:space="preserve">
-          <source>Run the following command: &lt;code&gt;mgr-actions-control --enable-all&lt;/code&gt;</source>
-        <target state="needs-adaptation">Eseguite il seguente comando: &lt;code&gt;rhn-actions-control --enable-all&lt;/code&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/Summary.do</context>
         </context-group>
@@ -16468,14 +16440,8 @@ cancellati.{0}
           <context context-type="sourcefile">/rhn/configuration/system/Summary.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="summary.jsp.appstream" xml:space="preserve">
-          <source>Could not subscribe to the AppStream channel.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/configuration/system/Summary.do</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="summary.jsp.packages" xml:space="preserve">
-          <source>Could not schedule mgr-cfg* package installations.</source>
+          <source>Could not schedule salt-minion package installations.</source>
         <target state="needs-adaptation">Impossibile programmare le installazioni del pacchetto rhncfg*.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/Summary.do</context>
@@ -20159,7 +20125,7 @@ Siete sicuri di voler fare questo?</target>
         </context-group>
       </trans-unit>
       <trans-unit id="ssmenable.jsp.summary" xml:space="preserve">
-          <source>The systems listed below do not have files managed via @@PRODUCT_NAME@@ configuration management. For systems to be capable of being managed by @@PRODUCT_NAME@@ configuration management, they will need to have particular mgr-cfg-* packages installed. You can enable configuration management on the systems listed below. &lt;strong&gt;Note:&lt;/strong&gt; nothing will happen to already enabled systems.</source>
+          <source>The systems listed below do not have files managed via @@PRODUCT_NAME@@ configuration management. For systems to be capable of being managed by @@PRODUCT_NAME@@ configuration management, they will need to have particular salt-minion packages installed. You can enable configuration management on the systems listed below. &lt;strong&gt;Note:&lt;/strong&gt; nothing will happen to already enabled systems.</source>
         <target state="needs-adaptation">I sistemi di seguito riportati non presentano alcun file gestito tramite il @@PRODUCT_NAME@@ configuration management. Per rendere possibile una gestione dei sistemi da parte di @@PRODUCT_NAME@@ configuration management, gli stessi avranno bisogno di un entitlement di provisioning in aggiunta ai pacchetti rhncfg-*. È possibile abilitare sui sistemi sotto riportati il configuration management. &lt;strong&gt;Nota Bene:&lt;/strong&gt; non si verificherà alcuna azione sui sistemi già abilitati.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/config/Enable.do</context>
@@ -21389,8 +21355,8 @@ Siete sicuri di voler fare questo?</target>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.operations.provisioning.remotecommand.no_script_run" xml:space="preserve">
-          <source>You must enable Remote Command execution on the target system by installing the &lt;code&gt;mgr-cfg-actions&lt;/code&gt; RPM.</source>
-        <target>Abilitare l'esecuzione dei Comandi remoti sul sistema target installando l'RPM &lt;code&gt;mgr-cfg-actions&lt;/code&gt;.</target>
+          <source>You must enable Remote Command execution on the target system by installing the &lt;code&gt;salt-minion&lt;/code&gt; RPM.</source>
+        <target state="needs-adaptation">Abilitare l'esecuzione dei Comandi remoti sul sistema target installando l'RPM &lt;code&gt;mgr-cfg-actions&lt;/code&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/kickstart/KickstartableSystems.do</context>
         </context-group>

@@ -16404,8 +16404,8 @@ kickstart 前脚本的更多细节，请参见《&lt;strong&gt;@@ENTERPRISE_LINU
         </context-group>
       </trans-unit>
       <trans-unit id="targetsystems.jsp.summary" xml:space="preserve">
-          <source>The systems listed below do not have files managed via @@PRODUCT_NAME@@ configuration management.  For systems to be capable of being managed by @@PRODUCT_NAME@@ configuration management, they need to have particular mgr-cfg-* packages installed. You can enable configuration management on selected systems by using the 'Enable @@PRODUCT_NAME@@ Configuration Management' button below.</source>
-        <target state="translated">下面列出的系统不包含通过 @@PRODUCT_NAME@@ 配置管理管理的文件。要使系统可由 @@PRODUCT_NAME@@ 配置管理进行管理，需要为其安装特定的 mgr-cfg-* 软件包。您可以用下面的 "启用 @@PRODUCT_NAME@@ 配置管理" 按钮在选定的系统上启用配置管理。</target>
+          <source>The systems listed below do not have files managed via @@PRODUCT_NAME@@ configuration management.  For systems to be capable of being managed by @@PRODUCT_NAME@@ configuration management, they need to have particular *-salt-minion packages installed. You can enable configuration management on selected systems by using the 'Enable @@PRODUCT_NAME@@ Configuration Management' button below.</source>
+        <target state="needs-adaptation">下面列出的系统不包含通过 @@PRODUCT_NAME@@ 配置管理管理的文件。要使系统可由 @@PRODUCT_NAME@@ 配置管理进行管理，需要为其安装特定的 mgr-cfg-* 软件包。您可以用下面的 "启用 @@PRODUCT_NAME@@ 配置管理" 按钮在选定的系统上启用配置管理。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/TargetSystems.do</context>
         </context-group>
@@ -16466,27 +16466,6 @@ kickstart 前脚本的更多细节，请参见《&lt;strong&gt;@@ENTERPRISE_LINU
           <context context-type="sourcefile">/rhn/configuration/system/TargetSystems.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="targetsystems.jsp.installcfg" xml:space="preserve">
-          <source>Schedule mgr-cfg package install</source>
-        <target state="translated">安排 mgr-cfg 软件包安装</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/configuration/system/TargetSystems.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="targetsystems.jsp.installcfgactions" xml:space="preserve">
-          <source>Schedule mgr-cfg-actions package install</source>
-        <target state="translated">安排 mgr-cfg-actions 软件包安装</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/configuration/system/TargetSystems.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="targetsystems.jsp.installcfgclient" xml:space="preserve">
-          <source>Schedule mgr-cfg-client package install</source>
-        <target state="translated">安排 mgr-cfg-client 软件包安装</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/configuration/system/TargetSystems.do</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="targetsystems.jsp.pending" xml:space="preserve">
           <source>Package installations currently pending.</source>
         <target state="translated">软件包安装目前待执行。</target>
@@ -16509,8 +16488,8 @@ kickstart 前脚本的更多细节，请参见《&lt;strong&gt;@@ENTERPRISE_LINU
         </context-group>
       </trans-unit>
       <trans-unit id="targetsystems.jsp.widgetsummary" xml:space="preserve">
-          <source>You may schedule &lt;code&gt;mgr-cfg*&lt;/code&gt; package installs for the time below. &lt;strong&gt;Note: All other actions will take place immediately.&lt;/strong&gt;</source>
-        <target state="translated">可将 &lt;code&gt;mgr-cfg*&lt;/code&gt; 软件包安装安排在以下时间。&lt;strong&gt;注意：所有其他操作将立即发生。&lt;/strong&gt;</target>
+          <source>You may schedule &lt;code&gt;salt-minion&lt;/code&gt; package installs for the time below. &lt;strong&gt;Note: All other actions will take place immediately.&lt;/strong&gt;</source>
+        <target state="needs-adaptation">可将 &lt;code&gt;mgr-cfg*&lt;/code&gt; 软件包安装安排在以下时间。&lt;strong&gt;注意：所有其他操作将立即发生。&lt;/strong&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/TargetSystems.do</context>
         </context-group>
@@ -16531,15 +16510,8 @@ kickstart 前脚本的更多细节，请参见《&lt;strong&gt;@@ENTERPRISE_LINU
         </context-group>
       </trans-unit>
       <trans-unit id="summary.jsp.stepone" xml:space="preserve">
-          <source>Run &lt;code&gt;mgr_check&lt;/code&gt; to complete pending mgr-cfg-* package installs.</source>
-        <target state="translated">运行 &lt;code&gt;mgr_check&lt;/code&gt; 完成等待中的 mgr-cfg-* 软件包安装。</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/configuration/system/Summary.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="summary.jsp.steptwo" xml:space="preserve">
-          <source>Run the following command: &lt;code&gt;mgr-actions-control --enable-all&lt;/code&gt;</source>
-        <target state="translated">运行以下命令：&lt;code&gt;mgr-actions-control --enable-all&lt;/code&gt;</target>
+          <source>Run &lt;code&gt;mgr_check&lt;/code&gt; to complete pending salt-minion package installs.</source>
+        <target state="needs-adaptation">运行 &lt;code&gt;mgr_check&lt;/code&gt; 完成等待中的 mgr-cfg-* 软件包安装。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/Summary.do</context>
         </context-group>
@@ -16579,16 +16551,9 @@ kickstart 前脚本的更多细节，请参见《&lt;strong&gt;@@ENTERPRISE_LINU
           <context context-type="sourcefile">/rhn/configuration/system/Summary.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="summary.jsp.appstream" xml:space="preserve">
-          <source>Could not subscribe to the AppStream channel.</source>
-        <target>无法订阅 AppStream 通道。</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/configuration/system/Summary.do</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="summary.jsp.packages" xml:space="preserve">
-          <source>Could not schedule mgr-cfg* package installations.</source>
-        <target state="translated">无法安排 mgr-cfg* 软件包安装。</target>
+          <source>Could not schedule salt-minion package installations.</source>
+        <target state="needs-adaptation">无法安排 mgr-cfg* 软件包安装。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/Summary.do</context>
         </context-group>
@@ -20282,8 +20247,8 @@ any of these revisions.  Are you sure you want to do this?</source>
         </context-group>
       </trans-unit>
       <trans-unit id="ssmenable.jsp.summary" xml:space="preserve">
-          <source>The systems listed below do not have files managed via @@PRODUCT_NAME@@ configuration management. For systems to be capable of being managed by @@PRODUCT_NAME@@ configuration management, they will need to have particular mgr-cfg-* packages installed. You can enable configuration management on the systems listed below. &lt;strong&gt;Note:&lt;/strong&gt; nothing will happen to already enabled systems.</source>
-        <target state="translated">下列系统不包含通过 @@PRODUCT_NAME@@ 配置管理管理的文件。要使系统可由 @@PRODUCT_NAME@@ 配置管理进行管理，需要为其安装特定的 mgr-cfg-* 软件包。您可以在下面列出的系统上启用配置管理。&lt;strong&gt;注意：&lt;/strong&gt;已启用的系统不会有任何变化。</target>
+          <source>The systems listed below do not have files managed via @@PRODUCT_NAME@@ configuration management. For systems to be capable of being managed by @@PRODUCT_NAME@@ configuration management, they will need to have particular salt-minion packages installed. You can enable configuration management on the systems listed below. &lt;strong&gt;Note:&lt;/strong&gt; nothing will happen to already enabled systems.</source>
+        <target state="needs-adaptation">下列系统不包含通过 @@PRODUCT_NAME@@ 配置管理管理的文件。要使系统可由 @@PRODUCT_NAME@@ 配置管理进行管理，需要为其安装特定的 mgr-cfg-* 软件包。您可以在下面列出的系统上启用配置管理。&lt;strong&gt;注意：&lt;/strong&gt;已启用的系统不会有任何变化。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/config/Enable.do</context>
         </context-group>
@@ -21524,8 +21489,8 @@ any of these revisions.  Are you sure you want to do this?</source>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.operations.provisioning.remotecommand.no_script_run" xml:space="preserve">
-          <source>You must enable Remote Command execution on the target system by installing the &lt;code&gt;mgr-cfg-actions&lt;/code&gt; RPM.</source>
-        <target state="translated">您必须安装 &lt;code&gt;mgr-cfg-actions&lt;/code&gt; RPM 以支持在目标系统中执行远程命令的功能。</target>
+          <source>You must enable Remote Command execution on the target system by installing the &lt;code&gt;salt-minion&lt;/code&gt; RPM.</source>
+        <target state="needs-adaptation">您必须安装 &lt;code&gt;mgr-cfg-actions&lt;/code&gt; RPM 以支持在目标系统中执行远程命令的功能。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/kickstart/KickstartableSystems.do</context>
         </context-group>
