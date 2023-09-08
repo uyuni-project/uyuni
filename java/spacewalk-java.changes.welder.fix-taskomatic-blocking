@@ -1,1 +1,0 @@
-- Fix action executor to prevent blocking Taskomatic for actions that are already finished (bsc#1214121)

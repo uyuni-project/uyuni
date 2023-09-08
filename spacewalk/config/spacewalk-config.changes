@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Aug 29 15:49:24 CEST 2023 - marina.latini@suse.com
+
+- version 4.3.11-1
+  * Allow calling instance-flavor-check via sudo
+
+-------------------------------------------------------------------
 Mon Apr 24 09:15:48 CEST 2023 - jgonzalez@suse.com
 
 - version 4.3.10-1

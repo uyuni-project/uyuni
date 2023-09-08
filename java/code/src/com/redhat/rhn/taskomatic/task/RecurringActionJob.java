@@ -33,6 +33,7 @@ import com.suse.manager.maintenance.MaintenanceManager;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -86,7 +87,9 @@ public class RecurringActionJob extends RhnJavaJob {
             }
             else if (actionType instanceof RecurringState) {
                 Set<RecurringStateConfig> configs = ((RecurringState) action.getRecurringActionType()).getStateConfig();
-                List<String> mods = configs.stream().map(RecurringStateConfig::getStateName)
+                List<String> mods = configs.stream()
+                        .sorted(Comparator.comparingLong(RecurringStateConfig::getPosition))
+                        .map(RecurringStateConfig::getStateName)
                         .collect(Collectors.toList());
                 Action a = ActionManager.scheduleApplyStates(action.getCreator(),
                         minionIds, mods,

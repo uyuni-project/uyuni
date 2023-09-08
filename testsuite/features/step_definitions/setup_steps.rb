@@ -100,7 +100,7 @@ end
 
 When(/^I wait at most (\d+) seconds until the tree item "([^"]+)" contains "([^"]+)" text$/) do |timeout, item, text|
   within(:xpath, "//span[contains(text(), '#{item}')]/ancestor::div[contains(@class, 'product-details-wrapper')]") do
-    raise "could not find text #{text} for tree item #{item}" unless has_text?(text, wait: timeout.to_i)
+    raise "could not find text #{text} for tree item #{item}" unless check_text_and_catch_request_timeout_popup?(text, timeout: timeout.to_i)
   end
 end
 

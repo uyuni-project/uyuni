@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Aug 29 16:39:31 CEST 2023 - marina.latini@suse.com
+
+- version 4.3.3-1
+  * Write configured crypto-policy in supportconfig
+
+-------------------------------------------------------------------
 Tue Jan 18 14:02:17 CET 2022 - jgonzalez@suse.com
 
 - version 4.3.2-1

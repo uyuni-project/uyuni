@@ -4,6 +4,7 @@
 #  1) bootstrap a new Liberty Linux 9 minion
 #  2) subscribe it to a base channel for testing
 
+@susemanager
 @liberty9_minion
 Feature: Bootstrap a Liberty Linux 9 Salt minion
 

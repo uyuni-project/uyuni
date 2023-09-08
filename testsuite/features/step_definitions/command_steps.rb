@@ -514,7 +514,7 @@ When(/^I execute spacewalk-debug on the server$/) do
 end
 
 When(/^I extract the log files from all our active nodes$/) do
-  $nodes.each do |node|
+  $node_by_host.each do |_host, node|
     next if node.nil?
 
     extract_logs_from_node(node)
@@ -989,9 +989,9 @@ When(/^I wait until the package "(.*?)" has been cached on this "(.*?)"$/) do |p
 end
 
 When(/^I create the bootstrap repository for "([^"]*)" on the server$/) do |host|
-  base_channel = BASE_CHANNEL_BY_CLIENT[host]
-  channel = CHANNEL_TO_SYNC_BY_BASE_CHANNEL[base_channel]
-  parent_channel = PARENT_CHANNEL_TO_SYNC_BY_BASE_CHANNEL[base_channel]
+  base_channel = BASE_CHANNEL_BY_CLIENT[product][host]
+  channel = CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL[product][base_channel]
+  parent_channel = PARENT_CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL[product][base_channel]
   get_target('server').wait_while_process_running('mgr-create-bootstrap-repo')
   cmd = if parent_channel.nil?
           "mgr-create-bootstrap-repo --create #{channel} --with-custom-channels --flush"
@@ -1065,7 +1065,7 @@ When(/^I configure the proxy$/) do
   filename = File.basename(path)
   cmd = "configure-proxy.sh --non-interactive --rhn-user=admin --rhn-password=admin --answer-file=#{filename}"
   proxy_timeout = 600
-  get_target('proxy').run(cmd, timeout: proxy_timeout)
+  get_target('proxy').run(cmd, timeout: proxy_timeout, verbose: true)
 end
 
 When(/^I allow all SSL protocols on the proxy's apache$/) do
@@ -1073,7 +1073,7 @@ When(/^I allow all SSL protocols on the proxy's apache$/) do
   key = 'SSLProtocol'
   val = 'all -SSLv2 -SSLv3'
   get_target('proxy').run("grep '#{key}' #{file} && sed -i -e 's/#{key}.*$/#{key} #{val}/' #{file}")
-  get_target('proxy').run("systemctl reload apache2.service")
+  get_target('proxy').run('systemctl reload apache2.service', verbose: true)
 end
 
 When(/^I restart squid service on the proxy$/) do
@@ -1805,52 +1805,57 @@ When(/^I reboot the "([^"]*)" if it is a SLE Micro$/) do |host|
 end
 
 When(/^I change the server's short hostname from hosts and hostname files$/) do
-  old_hostname = get_target('server').hostname
+  server_node = get_target('server')
+  old_hostname = server_node.hostname
   new_hostname = old_hostname + '2'
   log "New short hostname: #{new_hostname}"
-
-  get_target('server').run("sed -i 's/#{old_hostname}/#{new_hostname}/g' /etc/hostname &&
-  echo '#{get_target('server').public_ip} #{get_target('server').full_hostname} #{old_hostname}' >> /etc/hosts &&
-  echo '#{get_target('server').public_ip} #{new_hostname}#{get_target('server').full_hostname.delete_prefix(get_target('server').hostname)} #{new_hostname}' >> /etc/hosts")
+  server_node.run("sed -i 's/#{old_hostname}/#{new_hostname}/g' /etc/hostname &&
+                   hostname #{new_hostname} &&
+                   echo '#{server_node.public_ip} #{server_node.full_hostname} #{old_hostname}' >> /etc/hosts &&
+                   echo '#{server_node.public_ip} #{new_hostname}#{server_node.full_hostname.delete_prefix(server_node.hostname)} #{new_hostname}' >> /etc/hosts")
+  get_target('server', refresh: true) # This will refresh the attributes of this node
 end
 
 # changing hostname
 When(/^I run spacewalk-hostname-rename command on the server$/) do
-  temp_server = twopence_init('server')
-  command = "spacecmd --nossl -q api api.getVersion -u admin -p admin; " \
-            "spacewalk-hostname-rename #{get_target('server').public_ip} " \
-            "--ssl-country=DE --ssl-state=Bayern --ssl-city=Nuremberg " \
-            "--ssl-org=SUSE --ssl-orgunit=SUSE --ssl-email=galaxy-noise@suse.de " \
-            "--ssl-ca-password=spacewalk"
-  out_spacewalk, result_code = temp_server.run(command, check_errors: false)
+  server_node = get_target('server')
+  command = 'spacecmd --nossl -q api api.getVersion -u admin -p admin; ' \
+    "spacewalk-hostname-rename #{server_node.public_ip} " \
+    '--ssl-country=DE --ssl-state=Bayern --ssl-city=Nuremberg ' \
+    '--ssl-org=SUSE --ssl-orgunit=SUSE --ssl-email=galaxy-noise@suse.de ' \
+    '--ssl-ca-password=spacewalk'
+  out_spacewalk, result_code = server_node.run(command, check_errors: false)
   log "#{out_spacewalk}"
 
+  server_node = get_target('server', refresh: true) # This will refresh the attributes of this node
+
   default_timeout = 300
-  repeat_until_timeout(timeout: default_timeout, message: "Spacewalk didn't come up") do
-    out, code = temp_server.run('spacewalk-service status', check_errors: false, timeout: 10)
-    if !out.to_s.include? "dead" and out.to_s.include? "running"
-      log "Server: spacewalk service is up"
+  repeat_until_timeout(timeout: default_timeout, message: 'Spacewalk didn\'t come up') do
+    out, _code = server_node.run('spacewalk-service status', check_errors: false, timeout: 10)
+    if !out.to_s.include? 'dead' and out.to_s.include? 'running'
+      log 'Server: spacewalk service is up'
       break
     end
     sleep 1
   end
-  raise "Error while running spacewalk-hostname-rename command - see logs above" unless result_code.zero?
-  raise "Error in the output logs - see logs above" if out_spacewalk.include? "No such file or directory"
+  raise 'Error while running spacewalk-hostname-rename command - see logs above' unless result_code.zero?
+  raise 'Error in the output logs - see logs above' if out_spacewalk.include? 'No such file or directory'
 end
 
 When(/^I change back the server's hostname$/) do
-  temp_server = twopence_init('server')
-  temp_server.run("echo '#{get_target('server').full_hostname}' > /etc/hostname ")
-end
-
-When(/^I clean up the server's hosts file$/) do
-  command = "sed -i '$d' /etc/hosts && sed -i '$d' /etc/hosts"
-  get_target('server').run(command)
+  server_node = get_target('server')
+  old_hostname = server_node.hostname
+  new_hostname = old_hostname.delete_suffix('2')
+  server_node.run("sed -i 's/#{old_hostname}/#{new_hostname}/g' /etc/hostname &&
+                   hostname #{new_hostname} &&
+                   sed -i \'$d\' /etc/hosts &&
+                   sed -i \'$d\' /etc/hosts")
+  get_target('server', refresh: true) # This will refresh the attributes of this node
 end
 
 When(/^I enable firewall ports for monitoring on this "([^"]*)"$/) do |host|
   add_ports = ''
-  for port in [9100, 9117, 9187] do
+  [9100, 9117, 9187].each do |port|
     add_ports += "firewall-cmd --add-port=#{port}/tcp --permanent && "
   end
   cmd = "#{add_ports.rstrip!} firewall-cmd --reload"
@@ -1859,4 +1864,59 @@ When(/^I enable firewall ports for monitoring on this "([^"]*)"$/) do |host|
   output, _code = node.run('firewall-cmd --list-ports')
   raise StandardError, "Couldn't successfully enable all ports needed for monitoring. Opened ports: #{output}" unless
     output.include? '9100/tcp 9117/tcp 9187/tcp'
+end
+
+When(/^I restart the "([^"]*)" service on "([^"]*)"$/) do |service, minion|
+  node = get_target(minion)
+  node.run("systemctl restart #{service}", check_errors: true, verbose: true)
+end
+
+When(/^I reload the "([^"]*)" service on "([^"]*)"$/) do |service, minion|
+  node = get_target(minion)
+  node.run("systemctl reload #{service}", check_errors: true, verbose: true)
+end
+
+When(/^I delete the system "([^"]*)" via spacecmd$/) do |minion|
+  node = get_system_name(minion)
+  command = "spacecmd -u admin -p admin -y system_delete #{node}"
+  get_target('server').run(command, check_errors: true, verbose: true)
+end
+
+When(/^I execute "([^"]*)" on the "([^"]*)"$/) do |command, host|
+  node = get_target(host)
+  node.run(command, check_errors: true, verbose: true)
+end
+
+When(/^I check the cloud-init status on "([^"]*)"$/) do |host|
+  node = get_target(host)
+  node.test_and_store_results_together('hostname', 'root', 500)
+  node.run('cloud-init status --wait', check_errors: true, verbose: false)
+
+  repeat_until_timeout(report_result: true) do
+    command_output, code = node.run('cloud-init status --wait', check_errors: true, verbose: false)
+    break if command_output.include?('done')
+    sleep 2
+    raise StandardError 'Error during cloud-init.' if code == 1
+  end
+end
+
+When(/^I do a late hostname initialization of host "([^"]*)"$/) do |host|
+  # special handling for e.g. nested VMs that will only be crated later in the test suite
+  # this step is normally done in twopence_init.rb
+  node = get_target(host)
+
+  hostname, local, remote, code = node.test_and_store_results_together('hostname', 'root', 500)
+  raise "Cannot connect to get hostname for '#{$named_nodes[node.hash]}'. Response code: #{code}, local: #{local}, remote: #{remote}" if code.nonzero? || remote.nonzero? || local.nonzero?
+  raise "No hostname for '#{$named_nodes[node.hash]}'. Response code: #{code}" if hostname.empty?
+  node.init_hostname(hostname)
+
+  fqdn, local, remote, code = node.test_and_store_results_together('hostname -f', 'root', 500)
+  raise "Cannot connect to get FQDN for '#{$named_nodes[node.hash]}'. Response code: #{code}, local: #{local}, remote: #{remote}" if code.nonzero? || remote.nonzero? || local.nonzero?
+  raise "No FQDN for '#{$named_nodes[node.hash]}'. Response code: #{code}" if fqdn.empty?
+  node.init_full_hostname(fqdn)
+
+  STDOUT.puts "Host '#{$named_nodes[node.hash]}' is alive with determined hostname #{hostname.strip} and FQDN #{fqdn.strip}"
+  os_version, os_family = get_os_version(node)
+  node.init_os_family(os_family)
+  node.init_os_version(os_version)
 end

@@ -16,7 +16,6 @@
 package com.redhat.rhn.frontend.action.renderers;
 
 import com.redhat.rhn.GlobalInstanceHolder;
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.manager.system.SystemManager;
@@ -36,7 +35,6 @@ public class TasksRenderer extends BaseFragmentRenderer {
      */
     protected void render(User user, PageControl pc, HttpServletRequest request) {
         request.setAttribute(TASKS, Boolean.TRUE);
-        request.setAttribute("documentation", ConfigDefaults.get().isDocAvailable());
         request.setAttribute("amountOfMinions",
                 GlobalInstanceHolder.SALT_API.getKeys().getUnacceptedMinions().size());
         request.setAttribute("requiringReboot", SystemManager.requiringRebootList(user).size());

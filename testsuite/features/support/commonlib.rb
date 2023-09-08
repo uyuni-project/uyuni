@@ -124,6 +124,22 @@ rescue Timeout::Error
   raise "Timeout after #{timeout} seconds (Timeout.timeout)#{format_detail(message, last_result, report_result)}"
 end
 
+def check_text_and_catch_request_timeout_popup?(text1, text2: nil, timeout: Capybara.default_max_wait_time)
+  start_time = Time.now
+  repeat_until_timeout(message: "'#{text1}' still not visible", timeout: DEFAULT_TIMEOUT) do
+    while Time.now - start_time <= timeout
+      return true if has_text?(text1, wait: 0.5)
+      return true if !text2.nil? && has_text?(text2, wait: 0.5)
+      next unless has_text?('Request has timed out', wait: 0)
+      log 'Request timeout found, performing reload'
+      click_button('reload the page')
+      start_time = Time.now
+      raise "Request timeout message still present after #{Capybara.default_max_wait_time} seconds." unless has_no_text?('Request has timed out')
+    end
+    return false
+  end
+end
+
 def format_detail(message, last_result, report_result)
   formatted_message = "#{': ' unless message.nil?}#{message}"
   formatted_result = "#{', last result was: ' unless last_result.nil?}#{last_result}" if report_result
@@ -372,8 +388,9 @@ def get_system_name(host)
     begin
       node = get_target(host)
       system_name = node.full_hostname
-    rescue RuntimeError
+    rescue NotImplementedError => e
       # If the node for that host is not defined, just return the host parameter as system_name
+      warn e.message
       system_name = host
     end
   end

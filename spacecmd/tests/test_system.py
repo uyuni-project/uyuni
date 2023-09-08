@@ -279,7 +279,7 @@ class TestSystem:
         shell.help_system_listeventhistory = MagicMock()
         shell.client.system.getEventHistory = MagicMock(return_value=[{
             "id": 3, "history_type": "Apply states", "status": "Completed",
-            "summary": "Apply states [certs, channels] scheduled by (none)", "completed": "20211015T16:56:27",
+            "summary": "Apply states [certs, channels] scheduled by (system)", "completed": "20211015T16:56:27",
         }, {
             "id": 1, "history_type": "History Event", "status": "(n/a)",
             "summary": "added system entitlement", "completed": "20211015T16:56:14",
@@ -302,7 +302,7 @@ class TestSystem:
             'Id:           3',
             'History type: Apply states',
             'Status:       Completed',
-            'Summary:      Apply states [certs, channels] scheduled by (none)',
+            'Summary:      Apply states [certs, channels] scheduled by (system)',
             'Completed:    20211015T16:56:27',
             '',
             'Id:           1',
@@ -422,7 +422,7 @@ class TestSystem:
         shell.get_system_id = MagicMock(side_effect=[1000010000])
         shell.client.system.getEventDetails = MagicMock(return_value={
             "id": 1, "history_type": "Apply states", "status": "Completed",
-            "summary": "Apply states [certs] scheduled by (none)",
+            "summary": "Apply states [certs] scheduled by (system)",
             "created": "20211005T09:47:53", "picked_up": "20211005T09:48:03",
             "completed": "20211005T09:48:18", "earliest_action": "20211005T09:47:53",
             "result_msg": "Successfully applied state(s): [certs]",
@@ -460,7 +460,7 @@ class TestSystem:
             '',
             'History type:    Apply states',
             'Status:          Completed',
-            'Summary:         Apply states [certs] scheduled by (none)',
+            'Summary:         Apply states [certs] scheduled by (system)',
             '',
             'Created:         20211005T09:47:53',
             'Picked up:       20211005T09:48:03',

@@ -1,4 +1,18 @@
 -------------------------------------------------------------------
+Tue Aug 29 15:57:21 CEST 2023 - marina.latini@suse.com
+
+- version 4.3.35-1
+  * Integrate instance-flavor-check to detect if the instance is
+    Pay-as-you-go
+  * Do not disable salt-minion on salt-ssh managed clients
+  * Keep original traditional stack tools for RHEL7 RHUI connection
+  * Include automatic migration from Salt 3000 to Salt Bundle in
+    highstate
+  * Use recurse stratedy to merge formula pillar with existing
+    pillars
+  * Mask Uyuni roster module password on logs
+
+-------------------------------------------------------------------
 Tue Jun 27 16:16:56 CEST 2023 - marina.latini@suse.com
 
 - version 4.3.34-1
