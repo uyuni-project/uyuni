@@ -509,8 +509,7 @@ end
 
 When(/^I extract the log files from all our active nodes$/) do
   $node_by_host.each do |_host, node|
-    # the salt_migration_minion is not available anymore
-    next if node.nil? || node == get_target('salt_migration_minion')
+    next if node.nil?
 
     STDOUT.puts "Node: #{node.full_hostname}"
     extract_logs_from_node(node)
