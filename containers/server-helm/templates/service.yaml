@@ -44,6 +44,15 @@ spec:
     port: 9800
     protocol: TCP
     targetPort: 9800
+  - name: taskomatic-JMX-metrics
+    port: 5556
+    protocol: TCP
+    targetPort: 5556
+  - name: tomcat-JMX-metrics
+    port: 5557
+    protocol: TCP
+    targetPort: 5557
+
 {{- end }}
 {{- if .Values.exposeJavaDebug | default false }}
   - name: tomcat-debug
