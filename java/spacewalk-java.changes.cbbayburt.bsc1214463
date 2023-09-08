@@ -1,0 +1,2 @@
+- Change list endpoints in saltkey namespace to accept GET
+  requests instead of POST (bsc#1214463)
