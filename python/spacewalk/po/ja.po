@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-08-11 15:28+0200\n"
+"POT-Creation-Date: 2023-09-08 14:40+0200\n"
 "PO-Revision-Date: 2022-08-29 04:13+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/backend/ja/"
@@ -1303,28 +1303,6 @@ msgstr "%s 同期。 %s からのレポート"
 msgid "+++ email requested, but there is nothing to send +++"
 msgstr "+++ 電子メールの要求がありましたが、送信すべき内容がありません +++"
 
-#: ../satellite_tools/rhn_satellite_activate.py:198
-#, python-format
-msgid ""
-"\"%s\" (specified in commandline)\n"
-"could not be opened and read:\n"
-"%s"
-msgstr ""
-"\"%s\" (コマンドライン内で指定されています)\n"
-"を開いて読み込むことができません:\n"
-"%s"
-
-#: ../satellite_tools/rhn_satellite_activate.py:205
-#, python-format
-msgid ""
-"\"%s\" could not be opened\n"
-"and/or written to:\n"
-"%s"
-msgstr ""
-"\"%s\" を開いたり書き込んだりする\n"
-"ことができません:\n"
-"%s"
-
 #: ../satellite_tools/satsync.py:258
 #, python-format
 msgid "No handler for step %s"
@@ -2106,6 +2084,26 @@ msgstr ""
 #, python-format
 msgid "ERROR: unknown dump version, try one of %s"
 msgstr "エラー: 未知のダンプバージョンです。 %s のいずれかをお試しください"
+
+#, python-format
+#~ msgid ""
+#~ "\"%s\" (specified in commandline)\n"
+#~ "could not be opened and read:\n"
+#~ "%s"
+#~ msgstr ""
+#~ "\"%s\" (コマンドライン内で指定されています)\n"
+#~ "を開いて読み込むことができません:\n"
+#~ "%s"
+
+#, python-format
+#~ msgid ""
+#~ "\"%s\" could not be opened\n"
+#~ "and/or written to:\n"
+#~ "%s"
+#~ msgstr ""
+#~ "\"%s\" を開いたり書き込んだりする\n"
+#~ "ことができません:\n"
+#~ "%s"
 
 #~ msgid "Crash information is invalid or incomplete"
 #~ msgstr "クラッシュ情報が正しくないか、不完全です"

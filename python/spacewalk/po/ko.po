@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-08-11 15:28+0200\n"
+"POT-Creation-Date: 2023-09-08 14:40+0200\n"
 "PO-Revision-Date: 2021-03-31 12:58+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/backend/ko/"
@@ -1264,28 +1264,6 @@ msgstr "%s의 %s 동기화 보고서"
 msgid "+++ email requested, but there is nothing to send +++"
 msgstr "+++ 이메일이 요청되었지만, 전송할 항목이 없음 +++"
 
-#: ../satellite_tools/rhn_satellite_activate.py:198
-#, python-format
-msgid ""
-"\"%s\" (specified in commandline)\n"
-"could not be opened and read:\n"
-"%s"
-msgstr ""
-"\"%s\"(명령줄에 지정됨)\n"
-"열거나 읽을 수 없음:\n"
-"%s"
-
-#: ../satellite_tools/rhn_satellite_activate.py:205
-#, python-format
-msgid ""
-"\"%s\" could not be opened\n"
-"and/or written to:\n"
-"%s"
-msgstr ""
-"\"%s\"을(를) 열거나\n"
-"쓸 수 없는 대상:\n"
-"%s"
-
 #: ../satellite_tools/satsync.py:258
 #, python-format
 msgid "No handler for step %s"
@@ -2046,3 +2024,23 @@ msgstr "  28 - 오류: --master는 --mount-point와 함께 사용하는 경우�
 #, python-format
 msgid "ERROR: unknown dump version, try one of %s"
 msgstr "오류: 알 수 없는 덤프 버전, %s 중 하나 시도"
+
+#, python-format
+#~ msgid ""
+#~ "\"%s\" (specified in commandline)\n"
+#~ "could not be opened and read:\n"
+#~ "%s"
+#~ msgstr ""
+#~ "\"%s\"(명령줄에 지정됨)\n"
+#~ "열거나 읽을 수 없음:\n"
+#~ "%s"
+
+#, python-format
+#~ msgid ""
+#~ "\"%s\" could not be opened\n"
+#~ "and/or written to:\n"
+#~ "%s"
+#~ msgstr ""
+#~ "\"%s\"을(를) 열거나\n"
+#~ "쓸 수 없는 대상:\n"
+#~ "%s"
