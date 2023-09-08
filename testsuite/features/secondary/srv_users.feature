@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2022 SUSE LLC
+# Copyright (c) 2015-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 #  1) check users page
@@ -210,7 +210,7 @@ Feature: Manage users
     And I choose ";"
     And I click on "Save Preferences"
     Then I should see a "Preferences modified" text
-    And radio button "radio-semicolon" is checked
+    And radio button "radio-semicolon" should be checked
 
   Scenario: Cleanup: configure the CSV separator char to comma
     Given I am authorized as "testing" with password "testing"
@@ -218,4 +218,4 @@ Feature: Manage users
     And I choose ","
     And I click on "Save Preferences"
     Then I should see a "Preferences modified" text
-    And radio button "radio-comma" is checked
+    And radio button "radio-comma" should be checked

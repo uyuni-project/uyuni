@@ -17,7 +17,7 @@ jobs:
         run: sudo apt install podman=3.4.4+ds1-1ubuntu1 --allow-downgrades
       - name: welcome_message
         run: echo "Running acceptance tests. More info at https://github.com/uyuni-project/uyuni/wiki/Running-Acceptance-Tests-at-PR"
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Cache-jar-files
         uses: actions/cache@v3
         with:

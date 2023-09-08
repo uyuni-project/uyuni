@@ -50,9 +50,9 @@ Feature: Update activation keys
   Scenario: Update SLE key with synced base product
     When I follow the left menu "Systems > Activation Keys"
     And I follow "SUSE Test Key x86_64" in the content area
-    And I wait until I do not see "Loading..." text
+    And I wait for child channels to appear
     And I select "SLE-Product-SLES15-SP4-Pool for x86_64" from "selectedBaseChannel"
-    And I wait until I do not see "Loading..." text
+    And I wait for child channels to appear
     And I include the recommended child channels
     And I wait until "SLE-Module-Basesystem15-SP4-Pool for x86_64" has been checked
     And I wait until "SLE-Module-Basesystem15-SP4-Updates for x86_64" has been checked
@@ -92,9 +92,9 @@ Feature: Update activation keys
   Scenario: Update SSH key with synced base product
     When I follow the left menu "Systems > Activation Keys"
     And I follow "SUSE SSH Test Key x86_64" in the content area
-    And I wait until I do not see "Loading..." text
+    And I wait for child channels to appear
     And I select "SLE-Product-SLES15-SP4-Pool for x86_64" from "selectedBaseChannel"
-    And I wait until I do not see "Loading..." text
+    And I wait for child channels to appear
     And I include the recommended child channels
     And I check "SLE-Module-DevTools15-SP4-Pool for x86_64"
     And I check "Fake-RPM-SUSE-Channel"
@@ -125,9 +125,9 @@ Feature: Update activation keys
   Scenario: Update SSH tunnel key with synced base product
     When I follow the left menu "Systems > Activation Keys"
     And I follow "SUSE SSH Tunnel Test Key x86_64" in the content area
-    And I wait until I do not see "Loading..." text
+    And I wait for child channels to appear
     And I select "SLE-Product-SLES15-SP4-Pool for x86_64" from "selectedBaseChannel"
-    And I wait until I do not see "Loading..." text
+    And I wait for child channels to appear
     And I include the recommended child channels
     And I check "SLE-Module-DevTools15-SP4-Pool for x86_64"
     And I check "Fake-RPM-SUSE-Channel"
@@ -158,9 +158,9 @@ Feature: Update activation keys
   Scenario: Update the Proxy key with synced base product
     When I follow the left menu "Systems > Activation Keys"
     And I follow "Proxy Key x86_64" in the content area
-    And I wait until I do not see "Loading..." text
-    And I select "SLE-Product-SUSE-Manager-Proxy-4.3-Pool" from "selectedBaseChannel"
-    And I wait until I do not see "Loading..." text
+    And I wait for child channels to appear
+    And I select "SLE-Product-SUSE-Manager-Proxy-4.3-Pool for x86_64" from "selectedBaseChannel"
+    And I wait for child channels to appear
     And I include the recommended child channels
     And I wait until "SLE-Module-Basesystem15-SP4-Pool for x86_64 Proxy 4.3" has been checked
     And I wait until "SLE-Module-Basesystem15-SP4-Updates for x86_64 Proxy 4.3" has been checked
@@ -176,9 +176,9 @@ Feature: Update activation keys
   Scenario: Update the Proxy key with synced base product
     When I follow the left menu "Systems > Activation Keys"
     And I follow "Proxy Key x86_64" in the content area
-    And I wait until I do not see "Loading..." text
+    And I wait for child channels to appear
     And I select "openSUSE Leap 15.4 (x86_64)" from "selectedBaseChannel"
-    And I wait until I do not see "Loading..." text
+    And I wait for child channels to appear
     And I check "openSUSE 15.4 non oss (x86_64)"
     And I check "openSUSE Leap 15.4 non oss Updates (x86_64)"
     And I check "openSUSE Leap 15.4 Updates (x86_64)"
@@ -188,3 +188,27 @@ Feature: Update activation keys
     And I check "Uyuni Proxy Devel for openSUSE Leap 15.4 (x86_64)"
     When I click on "Update Activation Key"
     Then I should see a "Activation key Proxy Key x86_64 has been modified" text
+
+@skip_if_github_validation
+@scc_credentials
+@susemanager
+  Scenario: Update build host key with synced base product
+    When I follow the left menu "Systems > Activation Keys"
+    And I follow "Build host Key x86_64" in the content area
+    And I wait for child channels to appear
+    And I select "SLE-Product-SLES15-SP4-Pool for x86_64" from "selectedBaseChannel"
+    And I wait for child channels to appear
+    And I include the recommended child channels
+    And I wait until "SLE-Module-Basesystem15-SP4-Pool for x86_64" has been checked
+    And I wait until "SLE-Module-Basesystem15-SP4-Updates for x86_64" has been checked
+    And I wait until "SLE-Module-Server-Applications15-SP4-Pool for x86_64" has been checked
+    And I wait until "SLE-Module-Server-Applications15-SP4-Updates for x86_64" has been checked
+    And I check "SLE-Module-DevTools15-SP4-Pool for x86_64"
+    And I wait until "SLE-Module-DevTools15-SP4-Updates for x86_64" has been checked
+    And I wait until "SLE-Module-Desktop-Applications15-SP4-Pool for x86_64" has been checked
+    And I wait until "SLE-Module-Desktop-Applications15-SP4-Updates for x86_64" has been checked
+    And I check "SLE-Module-Containers15-SP4-Pool for x86_64"
+    And I wait until "SLE-Module-Containers15-SP4-Updates for x86_64" has been checked
+    And I check "Fake-RPM-SUSE-Channel"
+    When I click on "Update Activation Key"
+    Then I should see a "Activation key Build host Key x86_64 has been modified" text

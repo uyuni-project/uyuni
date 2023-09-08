@@ -77,10 +77,6 @@ import java.util.stream.Stream;
  */
 public class RegistrationUtils {
 
-    private static final List<String> BLACKLIST = List.of("rhncfg", "rhncfg-actions", "rhncfg-client",
-            "rhn-virtualization-host", "osad", "mgr-cfg", "mgr-cfg-actions", "mgr-cfg-client",
-            "mgr-virtualization-host", "mgr-osad");
-
     private static final String OS = "os";
     private static final String OS_ARCH = "osarch";
 
@@ -195,7 +191,6 @@ public class RegistrationUtils {
         serverStateRevision.setCreator(ak.getCreator());
         serverStateRevision.setPackageStates(
                 ak.getPackages().stream()
-                        .filter(p -> !BLACKLIST.contains(p.getPackageName().getName()))
                         .map(tp -> {
                             PackageState state = new PackageState();
                             state.setArch(tp.getPackageArch());

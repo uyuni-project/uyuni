@@ -215,9 +215,17 @@ When(/^I choose radio button "([^"]*)" for child channel "([^"]*)"$/) do |radio,
   choose(label[:for])
 end
 
+When(/^I wait for child channels to appear$/) do
+  steps %(
+    And I wait until I do not see "Loading..." text
+    And I wait until I do not see "Loading child channels.." text
+    And I wait until I do not see "Loading dependencies.." text
+  )
+end
+
 When(/^I (include|exclude) the recommended child channels$/) do |action|
   toggle = "//span[@class='pointer']"
-  step %(I wait until I see "include recommended" text)
+  step %(I wait at most 10 seconds until I see "include recommended" text)
   raise 'The toggle is not present' unless page.has_xpath?(toggle, wait: 5)
   if action == 'include'
     toggle_off = "//i[contains(@class, 'fa-toggle-off')]"
@@ -922,7 +930,7 @@ end
 #
 # Test if a radio button is checked
 #
-Then(/^radio button "([^"]*)" is checked$/) do |arg1|
+Then(/^radio button "([^"]*)" should be checked$/) do |arg1|
   raise "#{arg1} is unchecked" unless has_checked_field?(arg1)
 end
 
