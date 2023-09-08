@@ -10390,21 +10390,7 @@ In alternativa, potrai scaricare le &lt;strong&gt;ISO incrementali del contenuto
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="system.entitle.added.container_build_host.nodoc" xml:space="preserve">
-        <source>&lt;strong&gt;Container Build Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
-        <target>Il tipo &lt;strong&gt;Container Build Host&lt;/strong&gt; è stato applicato.&lt;br/&gt;&lt;strong&gt;Nota:&lt;/strong&gt; Questa azione &lt;em&gt;non&lt;/em&gt; avrà come risultato l'applicazione dello stato. Per applicare lo stato, usa la &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;pagina degli stati&lt;/a&gt; o esegui &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; dalla riga di comando.</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="system.entitle.added.osimage_build_host" xml:space="preserve">
-        <source>&lt;strong&gt;OS Image Build Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
-        <target>Il tipo &lt;strong&gt;OS Image Build Host&lt;/strong&gt; è stato applicato.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; Questa azione &lt;em&gt;non&lt;/em&gt; provocherà l'applicazione dello stato. Per applicare lo stato, usa la  &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;pagina degli stati&lt;/a&gt; o esegui &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; dalla riga di comando.</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="system.entitle.added.osimage_build_host.nodoc" xml:space="preserve">
         <source>&lt;strong&gt;OS Image Build Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
         <target>Il tipo &lt;strong&gt;OS Image Build Host&lt;/strong&gt; è stato applicato.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; Questa azione &lt;em&gt;non&lt;/em&gt; provocherà l'applicazione dello stato. Per applicare lo stato, usa la  &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;pagina degli stati&lt;/a&gt; o esegui &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; dalla riga di comando.</target>
         <context-group name="ctx">
@@ -10418,22 +10404,8 @@ In alternativa, potrai scaricare le &lt;strong&gt;ISO incrementali del contenuto
         </context-group>
         <target>Poichè è stato aggiunto un entitlement di Virtualizzazione al sistema, abbiamo eseguito alcune fasi aggiuntive in modo da assicurare una gestione migliore dei guest virtuali. Per maggiori informazioni consultate &lt;a href="{0}"&gt;qui&lt;/a&gt;</target>
       </trans-unit>
-      <trans-unit id="system.entitle.added.virtualization_host.nodoc" xml:space="preserve">
-        <source>Since you added a Virtualization system type to the system we also performed some extra steps to ensure your system will be able to manage virtual guests better.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
-        </context-group>
-        <target>Poichè è stato aggiunto un entitlement di Virtualizzazione al sistema abbiamo eseguito alcune fasi aggiuntive in modo da assicurare una gestione migliore dei guest virtuali.</target>
-      </trans-unit>
       <trans-unit id="system.entitle.added.monitoring_entitled" xml:space="preserve">
-        <source>&lt;strong&gt;Monitoring&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; Since you added the Monitoring system type we automatically assigned the Prometheus Exporters formula to the system. Please apply the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; in order to install and enable the Prometheus metrics exporters.</source>
-        <target state="needs-adaptation">Poichè hai aggiunto il tipo di sistema Monitoraggio, abbiamo assegnato automaticamente la formula Prometheus Exporters al sistema. Applica lo &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Stato Alto&lt;/a&gt; per installare e abilitare gli esportatori di metriche Prometheus.</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="system.entitle.added.monitoring_entitled.nodoc" xml:space="preserve">
-        <source>&lt;strong&gt;Monitoring&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; Since you added the Monitoring system type we automatically assigned the Prometheus Exporters formula to the system. Please apply the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; in order to install and enable the Prometheus metrics exporters.</source>
+        <source>&lt;strong&gt;Monitoring&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; Since you added the Monitoring system type we automatically assigned the Prometheus Exporters formula to the system. Please apply the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; in order to install and enable the Prometheus metrics exporters.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; Please make sure to open the &lt;a href="/docs/{1}/installation-and-upgrade/ports.html#_external_client_ports" target="_blank"&gt;required network ports&lt;/a&gt; for all installed exporters.</source>
         <target state="needs-adaptation">Poichè hai aggiunto il tipo di sistema Monitoraggio, abbiamo assegnato automaticamente la formula Prometheus Exporters al sistema. Applica lo &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Stato Alto&lt;/a&gt; per installare e abilitare gli esportatori di metriche Prometheus.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
@@ -10954,13 +10926,6 @@ In alternativa, potrai scaricare le &lt;strong&gt;ISO incrementali del contenuto
         </context-group>
       <target state="needs-adaptation"/>
   </trans-unit>
-      <trans-unit id="system.entitle.added.ansible_control_node.nodoc" xml:space="preserve">
-        <source>&lt;strong&gt;Ansible Control Node&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
-        </context-group>
-      <target state="needs-adaptation"/>
-  </trans-unit>
       <trans-unit id="ansible.invalid_path" xml:space="preserve">
         <source>Invalid path (must be a valid absolute path)</source>
         <context-group name="ctx">
@@ -11412,6 +11377,14 @@ For a detailed analysis, please refer to the log files.
         <source>Registration of '{0}' on SUSE Manager Server rejected. \nTo manage BYOS (Bring-your-own-Subscription) clients you have to configure SCC Credentials at Admin =&gt; Setup Wizard =&gt; Organization Credentials. \n\nIf the instance being onboarded is PAYG, ensure the `python-instance-billing-flavor-check` package is installed and try again.</source>
       <target state="new"/>
   </trans-unit>
-    </body>
+    <trans-unit id="notification.updateavailable.summary" xml:space="preserve">
+        <source>Updates are available.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="notification.updateavailable.detail" xml:space="preserve">
+        <source>A new update for @@PRODUCT_NAME@@ is now available. For further details, please refer to the &lt;a href="{0}"&gt;release notes&lt;a&gt;.</source>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>

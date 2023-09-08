@@ -29680,7 +29680,7 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-        <target state="final">従量課金制のクラウドインスタンスの構成からの認証データの収集</target>
+        <target state="final">PAYGのクラウドインスタンスの構成から認証データを収集します</target>
       </trans-unit>
       <trans-unit approved="yes" id="bunch.jsp.description.mgr-update-reporting-bunch" xml:space="preserve">
         <source>Update Reporting Database</source>
@@ -29858,11 +29858,11 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-        <target state="final">SUSE Manager 従量課金制の管理対象クライアントのデータを収集</target>
+        <target state="final">SUSE Manager PAYGの管理対象クライアントのデータを収集</target>
       </trans-unit>
       <trans-unit approved="yes" id="task.status.payg-dimension-computation" xml:space="preserve">
         <source>PAYG Computation</source>
-        <target state="final">従量課金制の計算</target>
+        <target state="final">PAYGの計算</target>
       </trans-unit>
       <trans-unit approved="yes" id="task.status.recurring-action-executor" xml:space="preserve">
         <source>Execute Recurring Actions</source>
@@ -29870,7 +29870,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit approved="yes" id="PAYG Connections" xml:space="preserve">
         <source>PAYG Connections</source>
-        <target state="final">従量課金制の接続</target>
+        <target state="final">PAYGの接続</target>
       </trans-unit>
     </body>
   </file>

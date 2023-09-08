@@ -10513,21 +10513,7 @@ Prípadne si budete chcieť stiahnuť &lt;strong&gt; Inkrementálne obsahové IS
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="system.entitle.added.container_build_host.nodoc" xml:space="preserve">
-        <source>&lt;strong&gt;Container Build Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
-        <target>Bol použitý typ &lt;strong&gt;Hostiteľ zostavený kontajnermi&lt;/strong&gt;.&lt;br/&gt;&lt;strong&gt;Poznámka:&lt;/strong&gt; Táto akcia &lt;em&gt;nebude&lt;/em&gt; mať vplyv na aplikáciu stavu. Ak chcete použiť stav, použite &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;stránku stavov&lt;/a&gt;, alebo spustite &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; z príkazového riadku.</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="system.entitle.added.osimage_build_host" xml:space="preserve">
-        <source>&lt;strong&gt;OS Image Build Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
-        <target>Bol použitý typ &lt;strong&gt;Hostiteľ zostavenia ISO obrazu&lt;/strong&gt;.&lt;br/&gt;&lt;strong&gt;Poznámka:&lt;/strong&gt; Táto akcia &lt;em&gt;nebude&lt;/em&gt; mať vplyv na aplikáciu stavu. Ak chcete použiť stav, použite &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;sstránku stavov&lt;/a&gt;, alebo spustite &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; z príkazového riadku.</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="system.entitle.added.osimage_build_host.nodoc" xml:space="preserve">
         <source>&lt;strong&gt;OS Image Build Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
         <target>Bol použitý typ &lt;strong&gt;Hostiteľ zostavenia ISO obrazu&lt;/strong&gt;.&lt;br/&gt;&lt;strong&gt;Poznámka:&lt;/strong&gt; Táto akcia &lt;em&gt;nebude&lt;/em&gt; mať vplyv na aplikáciu stavu. Ak chcete použiť stav, použite &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;sstránku stavov&lt;/a&gt;, alebo spustite &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; z príkazového riadku.</target>
         <context-group name="ctx">
@@ -10541,23 +10527,9 @@ Prípadne si budete chcieť stiahnuť &lt;strong&gt; Inkrementálne obsahové IS
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="system.entitle.added.virtualization_host.nodoc" xml:space="preserve">
-        <source>Since you added a Virtualization system type to the system we also performed some extra steps to ensure your system will be able to manage virtual guests better.</source>
-        <target>Keďže ste do systému pridali typ virtualizačného systému, vykonali sme tiež niekoľko ďalších krokov, aby sme zabezpečili, že váš systém bude schopný lepšie spravovať virtuálnych hostí.</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="system.entitle.added.monitoring_entitled" xml:space="preserve">
-        <source>&lt;strong&gt;Monitoring&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; Since you added the Monitoring system type we automatically assigned the Prometheus Exporters formula to the system. Please apply the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; in order to install and enable the Prometheus metrics exporters.</source>
-        <target state="translated">Bol použitý typ &lt;strong&gt;Monitorovania&lt;/strong&gt;.&lt;br/&gt;&lt;strong&gt;Poznámka:&lt;/strong&gt; Keďže ste pridali typ systému monitorovania, automaticky sme systému priradili vzorec exportérov Prometheus. Prosím, použite &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt;, aby ste mohli nainštalovať a povoliť exportéry metrík Prometheus.</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="system.entitle.added.monitoring_entitled.nodoc" xml:space="preserve">
-        <source>&lt;strong&gt;Monitoring&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; Since you added the Monitoring system type we automatically assigned the Prometheus Exporters formula to the system. Please apply the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; in order to install and enable the Prometheus metrics exporters.</source>
-        <target state="translated">Bol použitý typ &lt;strong&gt;Monitorovania&lt;/strong&gt;.&lt;br/&gt;&lt;strong&gt;Poznámka:&lt;/strong&gt; Keďže ste pridali typ systému monitorovania, automaticky sme systému priradili vzorec exportérov Prometheus. Prosím, použite &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt;, aby ste mohli nainštalovať a povoliť exportéry metrík Prometheus.</target>
+        <source>&lt;strong&gt;Monitoring&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; Since you added the Monitoring system type we automatically assigned the Prometheus Exporters formula to the system. Please apply the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; in order to install and enable the Prometheus metrics exporters.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; Please make sure to open the &lt;a href="/docs/{1}/installation-and-upgrade/ports.html#_external_client_ports" target="_blank"&gt;required network ports&lt;/a&gt; for all installed exporters.</source>
+        <target state="needs-adaptation">Bol použitý typ &lt;strong&gt;Monitorovania&lt;/strong&gt;.&lt;br/&gt;&lt;strong&gt;Poznámka:&lt;/strong&gt; Keďže ste pridali typ systému monitorovania, automaticky sme systému priradili vzorec exportérov Prometheus. Prosím, použite &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt;, aby ste mohli nainštalovať a povoliť exportéry metrík Prometheus.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
@@ -10965,13 +10937,6 @@ Prípadne si budete chcieť stiahnuť &lt;strong&gt; Inkrementálne obsahové IS
         </context-group>
         <target state="translated">Bol použitý typ &lt;strong&gt;Riadiaci uzol Ansible&lt;/strong&gt;.&lt;br/&gt;&lt;strong&gt;Poznámka:&lt;/strong&gt; Táto akcia &lt;em&gt;nebude&lt;/em&gt; mať vplyv na aplikáciu stavu. Ak chcete použiť stav, použite &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;stránku stavov&lt;/a&gt;, alebo spustite &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; z príkazového riadku.</target>
       </trans-unit>
-      <trans-unit id="system.entitle.added.ansible_control_node.nodoc" xml:space="preserve">
-        <source>&lt;strong&gt;Ansible Control Node&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
-        </context-group>
-        <target state="translated">Bol použitý typ &lt;strong&gt;Riadiaci uzol Ansible&lt;/strong&gt;.&lt;br/&gt;&lt;strong&gt;Poznámka:&lt;/strong&gt; Táto akcia &lt;em&gt;nebude&lt;/em&gt; mať vplyv na aplikáciu stavu. Ak chcete použiť stav, použite &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;stránku stavov&lt;/a&gt;, alebo spustite &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; z príkazového riadku.</target>
-      </trans-unit>
       <trans-unit id="ansible.invalid_path" xml:space="preserve">
         <source>Invalid path (must be a valid absolute path)</source>
         <context-group name="ctx">
@@ -11145,11 +11110,11 @@ Prípadne si budete chcieť stiahnuť &lt;strong&gt; Inkrementálne obsahové IS
       </trans-unit>
       <trans-unit id="task.status.update-payg-auth" xml:space="preserve">
         <source>PAYG authentication update</source>
-        <target state="needs-adaptation">Aktualizácia overenia priebežnej platby</target>
+        <target state="translated">Aktualizácia overenia PAYG</target>
       </trans-unit>
       <trans-unit id="task.status.update-payg-hosts" xml:space="preserve">
         <source>PAYG update RMT hosts</source>
-        <target state="needs-adaptation">RMT hostitelia aktualizácií priebežných platieb</target>
+        <target state="translated">RMT hostitelia aktualizácií PAYG</target>
       </trans-unit>
       <trans-unit id="setup.product.error.dataneedsrefresh" xml:space="preserve">
         <source>Product data needs refresh.</source>
@@ -11392,40 +11357,52 @@ Prípadne si budete chcieť stiahnuť &lt;strong&gt; Inkrementálne obsahové IS
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
-        <target state="needs-adaptation">Klonovanie kanálov v rámci rôznych kanálov produktov v priebežne platených inštanciách je zakázané</target>
+        <target state="translated">Klonovanie kanálov v rámci rôznych kanálov produktov v inštanciách PAYG je zakázané</target>
       </trans-unit>
       <trans-unit id="spmigration.message.payg.error" xml:space="preserve">
         <source>PAYG ALERT: Cross product migration attempt detected. Please note, migration from openSUSE to SLES or similar is not permitted under your current PAYG plan. Operation has been aborted.</source>
-        <target state="needs-adaptation">VÝSTRAHA PRE PRIEBEŽNÚ PLATBU: Zistený pokus o migráciu medzi produktmi. Vezmite, prosím, na vedomie, že migrácia z openSUSE na SLES alebo podobný systém nie je v rámci vášho súčasného plánu priebežnej platby povolená. Operácia bola prerušená.</target>
+        <target state="translated">VÝSTRAHA PAYG: Zistený pokus o migráciu medzi produktmi. Vezmite, prosím, na vedomie, že migrácia z openSUSE na SLES alebo podobný systém nie je v rámci vášho súčasného plánu PAYG povolená. Operácia bola prerušená.</target>
       </trans-unit>
       <trans-unit id="notification.channelsyncforbidden" xml:space="preserve">
         <source>Syncing channels forbidden</source>
-        <target state="new"/>
+        <target state="translated">Synchronizácia kanálov je zakázaná</target>
       </trans-unit>
       <trans-unit id="notification.channelsyncfailed.notcompliant" xml:space="preserve">
         <source>Synchronization of repositories is forbidden as @@PRODUCT_NAME@@ PAYG is unable to send accounting data to the cloud provider.
 For a detailed analysis, please refer to the log files.</source>
-        <target state="new"/>
+        <target state="translated">Synchronizácia repozitárov je zakázaná, pretože PAYG @@PRODUCT_NAME@@ nedokáže posielať účtovné údaje poskytovateľovi cloudu.
+Ak chcete získať podrobnú analýzu, pozrite si súbory záznamov.</target>
       </trans-unit>
       <trans-unit id="task.action.rejection.notcompliant" xml:space="preserve">
         <source>
 The action you attempted could not be executed because the @@PRODUCT_NAME@@ PAYG system is unable to send accounting data to the cloud provider.
 For a detailed analysis, please refer to the log files.
 	</source>
-        <target state="new"/>
+        <target state="translated">
+Akciu, o ktorú ste sa pokúsili, nebolo možné vykonať, pretože systém PAYG @@PRODUCT_NAME@@ nedokáže posielať účtovné údaje poskytovateľovi cloudu.
+Ak chcete získať podrobnú analýzu, pozrite si súbory záznamov.
+	</target>
       </trans-unit>
       <trans-unit id="bootstrap.minion.error.conflicting.minionid" xml:space="preserve">
         <source>Systems with conflicting minion ID and machine ID were found ({0}, {1}). Onboarding aborted. Please remove conflicting systems first ({2}, {3})</source>
-        <target state="new"/>
+        <target state="translated">Boli nájdené systémy s konfliktným ID minion a ID stroja ({0}, {1}). Začlenenie sa bolo prerušené. Prosím, najskôr odstráňte konfliktné systémy ({2}, {3})</target>
       </trans-unit>
       <trans-unit id="bootstrap.minion.error.payg.dcregistered" xml:space="preserve">
         <source>Registration of '{0}' on SUSE Manager Server rejected. \nTo manage Datacenter clients you have to configure SCC Credentials at Admin =&gt; Setup Wizard =&gt; Organization Credentials.</source>
-        <target state="new"/>
+        <target state="translated">Registrácia '{0}' na serveri SUSE Manager zamietnutá. \nAk chcete spravovať klientov dátového centra, musíte nakonfigurovať prihlasovacie údaje SCC v Admin =&gt; Sprievodca nastavením =&gt; prihlasovacie údaje organizácie.</target>
       </trans-unit>
       <trans-unit id="bootstrap.minion.error.payg.byosregistered" xml:space="preserve">
         <source>Registration of '{0}' on SUSE Manager Server rejected. \nTo manage BYOS (Bring-your-own-Subscription) clients you have to configure SCC Credentials at Admin =&gt; Setup Wizard =&gt; Organization Credentials. \n\nIf the instance being onboarded is PAYG, ensure the `python-instance-billing-flavor-check` package is installed and try again.</source>
-        <target state="new"/>
+        <target state="translated">Registrácia '{0}' na serveri SUSE Manager zamietnutá. \nAk chcete spravovať klientov BYOS (Bring-your-own-Subscription), musíte nakonfigurovať prihlasovacie údaje SCC v Admin =&gt; Sprievodca nastavením =&gt; prihlasovacie údaje organizácie. \n\nAk je začleňovaná inštancia PAYG, uistite sa, že je nainštalovaný balík `python-instance-billing-flavor-check`, a skúste to znova.</target>
       </trans-unit>
-    </body>
+    <trans-unit id="notification.updateavailable.summary" xml:space="preserve">
+        <source>Updates are available.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="notification.updateavailable.detail" xml:space="preserve">
+        <source>A new update for @@PRODUCT_NAME@@ is now available. For further details, please refer to the &lt;a href="{0}"&gt;release notes&lt;a&gt;.</source>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>

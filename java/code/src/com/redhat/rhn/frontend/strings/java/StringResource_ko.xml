@@ -10392,21 +10392,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="system.entitle.added.container_build_host.nodoc" xml:space="preserve">
-        <source>&lt;strong&gt;Container Build Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
-        <target>&lt;strong&gt;컨테이너 빌드 호스트&lt;/strong&gt; 유형이 적용되었습니다.&lt;br/&gt;&lt;strong&gt;참고:&lt;/strong&gt; 이 작업으로 인해 상태가 적용되지 &lt;em&gt;않습니다&lt;/em&gt;. 상태를 적용하려면 &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;상태 페이지&lt;/a&gt;를 사용하거나 명령줄에서 &lt;code class="text-info"&gt;state.highstate&lt;/code&gt;를 실행하십시오.</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="system.entitle.added.osimage_build_host" xml:space="preserve">
-        <source>&lt;strong&gt;OS Image Build Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
-        <target>&lt;strong&gt;OS 이미지 빌드 호스트&lt;/strong&gt; 유형이 적용되었습니다. &lt;br/&gt;&lt;strong&gt;참고:&lt;/strong&gt; 이 작업으로 인해 상태가 적용되지 &lt;em&gt;않습니다&lt;/em&gt;. 상태를 적용하려면 &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;상태 페이지&lt;/a&gt;를 사용하거나 명령줄에서 &lt;code class="text-info"&gt;state.highstate&lt;/code&gt;를 실행하십시오.</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="system.entitle.added.osimage_build_host.nodoc" xml:space="preserve">
         <source>&lt;strong&gt;OS Image Build Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
         <target>&lt;strong&gt;OS 이미지 빌드 호스트&lt;/strong&gt; 유형이 적용되었습니다. &lt;br/&gt;&lt;strong&gt;참고:&lt;/strong&gt; 이 작업으로 인해 상태가 적용되지 &lt;em&gt;않습니다&lt;/em&gt;. 상태를 적용하려면 &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;상태 페이지&lt;/a&gt;를 사용하거나 명령줄에서 &lt;code class="text-info"&gt;state.highstate&lt;/code&gt;를 실행하십시오.</target>
         <context-group name="ctx">
@@ -10420,23 +10406,9 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         </context-group>
         <target>시스템에 가상화 시스템 유형을 추가한 후에 시스템이 가상 게스트를 보다 효과적으로 관리할 수 있는지를 확인하기 위해 몇 가지 추가적인 단계를 실행했습니다. 보다 자세한 정보는 &lt;a href="{0}"&gt;여기&lt;/a&gt;를 참조하시기 바랍니다.</target>
       </trans-unit>
-      <trans-unit approved="yes" id="system.entitle.added.virtualization_host.nodoc" xml:space="preserve">
-        <source>Since you added a Virtualization system type to the system we also performed some extra steps to ensure your system will be able to manage virtual guests better.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
-        </context-group>
-        <target>시스템에 가상화 시스템 유형을 추가한 후에, 시스템이 가상 게스트를 보다 효과적으로 관리할 수 있는지 확인하기 위해 몇 가지 추가적인 단계를 실행하였습니다.</target>
-      </trans-unit>
       <trans-unit approved="yes" id="system.entitle.added.monitoring_entitled" xml:space="preserve">
-        <source>&lt;strong&gt;Monitoring&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; Since you added the Monitoring system type we automatically assigned the Prometheus Exporters formula to the system. Please apply the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; in order to install and enable the Prometheus metrics exporters.</source>
-        <target state="final">&lt;strong&gt;모니터링&lt;/strong&gt; 유형이 적용되었습니다.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; 모니터링 시스템 유형을 추가했기 때문에 Prometheus Exporters 공식을 시스템에 자동으로 할당했습니다. Prometheus Metric Exporter를 설치하고 활성화하려면 &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt;를 적용하십시오.</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit approved="yes" id="system.entitle.added.monitoring_entitled.nodoc" xml:space="preserve">
-        <source>&lt;strong&gt;Monitoring&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; Since you added the Monitoring system type we automatically assigned the Prometheus Exporters formula to the system. Please apply the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; in order to install and enable the Prometheus metrics exporters.</source>
-        <target state="final">&lt;strong&gt;모니터링&lt;/strong&gt; 유형이 적용되었습니다.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; 모니터링 시스템 유형을 추가했기 때문에 Prometheus Exporters 공식을 시스템에 자동으로 할당했습니다. Prometheus Metric Exporter를 설치하고 활성화하려면 &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt;를 적용하십시오.</target>
+        <source>&lt;strong&gt;Monitoring&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; Since you added the Monitoring system type we automatically assigned the Prometheus Exporters formula to the system. Please apply the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; in order to install and enable the Prometheus metrics exporters.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; Please make sure to open the &lt;a href="/docs/{1}/installation-and-upgrade/ports.html#_external_client_ports" target="_blank"&gt;required network ports&lt;/a&gt; for all installed exporters.</source>
+        <target state="needs-adaptation">&lt;strong&gt;모니터링&lt;/strong&gt; 유형이 적용되었습니다.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; 모니터링 시스템 유형을 추가했기 때문에 Prometheus Exporters 공식을 시스템에 자동으로 할당했습니다. Prometheus Metric Exporter를 설치하고 활성화하려면 &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt;를 적용하십시오.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
@@ -10963,13 +10935,6 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         </context-group>
         <target state="final">&lt;strong&gt;Ansible 제어 노드&lt;/strong&gt; 유형이 적용되었습니다. &lt;br/&gt;&lt;strong&gt;참조:&lt;/strong&gt; 이 작업을 수행하면 상태가 적용되지 &lt;em&gt;않습니다&lt;em&gt;. 상태를 적용하려면, &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;상태 페이지&lt;/a&gt;를 이용하거나 명령줄에서 &lt;code class="text-info"&gt;state.highstate&lt;/code&gt;를 실행하십시오.</target>
       </trans-unit>
-      <trans-unit approved="yes" id="system.entitle.added.ansible_control_node.nodoc" xml:space="preserve">
-        <source>&lt;strong&gt;Ansible Control Node&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
-        </context-group>
-        <target state="final">&lt;strong&gt;Ansible 제어 노드&lt;/strong&gt;&lt; 유형이 적용되었습니다. &lt;br/&gt;&lt;strong&gt;참조:&lt;/strong&gt; 이 작업을 수행하면 &lt;em&gt; 상태가 적용되&lt;em&gt;않습니다. 상태를 적용하려면, &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;상태 페이지&lt;/a&gt;를 이용하거나 명령줄에서 &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; 를 실행하십시오.</target>
-      </trans-unit>
       <trans-unit approved="yes" id="ansible.invalid_path" xml:space="preserve">
         <source>Invalid path (must be a valid absolute path)</source>
         <context-group name="ctx">
@@ -11428,6 +11393,14 @@ For a detailed analysis, please refer to the log files.
         <source>Registration of '{0}' on SUSE Manager Server rejected. \nTo manage BYOS (Bring-your-own-Subscription) clients you have to configure SCC Credentials at Admin =&gt; Setup Wizard =&gt; Organization Credentials. \n\nIf the instance being onboarded is PAYG, ensure the `python-instance-billing-flavor-check` package is installed and try again.</source>
         <target state="final">SUSE Manager 서버에서 '{0}' 등록이 거부되었습니다. \nBYOS(Bring-your-own-Subscription) 클라이언트를 관리하려면 관리자 =&gt; 설치 마법사 =&gt; 조직 자격 증명에서 SCC 자격 증명을 구성해야 합니다. \n\n온보딩 중인 인스턴스가 PAYG인 경우 'python-instance-billing-flavor-check' 패키지가 설치되어 있는지 확인하고 다시 시도하십시오.</target>
       </trans-unit>
-    </body>
+    <trans-unit id="notification.updateavailable.summary" xml:space="preserve">
+        <source>Updates are available.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="notification.updateavailable.detail" xml:space="preserve">
+        <source>A new update for @@PRODUCT_NAME@@ is now available. For further details, please refer to the &lt;a href="{0}"&gt;release notes&lt;a&gt;.</source>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>

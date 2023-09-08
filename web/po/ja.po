@@ -17,8 +17,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-08-23 09:54+0200\n"
-"PO-Revision-Date: 2023-06-27 04:15+0000\n"
+"POT-Creation-Date: 2023-09-08 14:45+0200\n"
+"PO-Revision-Date: 2023-08-24 01:15+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web-4-3/ja/"
 ">\n"
@@ -47,14 +47,12 @@ msgstr ""
 "formula を保存しました。この formula に対する highstate の適用は不要です。"
 
 #: ../html/src/components/FormulaForm.tsx:168
-#, fuzzy
 msgid "Please input required fields: {fields}"
-msgstr "必須の項目に入力を行なってください: {0}"
+msgstr "必須の項目に入力を行なってください: {fields}"
 
 #: ../html/src/components/FormulaForm.tsx:171
-#, fuzzy
 msgid "Invalid format of fields: {fields}"
-msgstr "項目の書式が正しくありません: {0}"
+msgstr "項目の書式が正しくありません: {fields}"
 
 #: ../html/src/components/FormulaForm.tsx:213
 msgid ""
@@ -136,18 +134,16 @@ msgstr "来年"
 
 #. TODO: Here and below, this translation logic needs to be changed to whole sentences from parents
 #: ../html/src/components/dialog/ActionConfirm.tsx:72
-#, fuzzy
 msgid "Are you sure you want to {action} {name}"
-msgstr "{1} を {0} してよろしいですか "
+msgstr "{name}を{action}してよろしいですか"
 
 #: ../html/src/components/dialog/ActionConfirm.tsx:84
-#, fuzzy
 msgid ""
 "Are you sure you want to {action} the selected {name}s? ({count} {name}s "
 "selected)"
 msgstr ""
-"選択した {1} に対して {0} してよろしいですか？ ({2} 個の {1} が選択されていま"
-"す)"
+"選択した{name}に対して{action}してよろしいですか？ ({count}個の{name}が選択さ"
+"れています)"
 
 #: ../html/src/components/dialog/DangerDialog.tsx:61
 #: ../html/src/components/dialog/DangerDialog.tsx:62
@@ -285,15 +281,13 @@ msgstr "フレーバー無し"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:82
 #: ../html/src/manager/state/highstate.tsx:64
-#, fuzzy
 msgid ""
 "Action has been successfully added to the action chain <link>'{name}'</link>."
-msgstr "動作を動作チェーン「{0}」に追加しました 。"
+msgstr "動作を動作チェーン <link>'{name}'</link>に追加しました 。"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:89
-#, fuzzy
 msgid "The action has been <link>scheduled</link>."
-msgstr "イメージの取り込みをスケジュールしました。"
+msgstr "動作を<link>スケジュールしました</link>。"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:98
 msgid "Unable to clear selection"
@@ -364,12 +358,11 @@ msgstr "最後"
 
 #: ../html/src/components/pagination.tsx:93
 msgid "Page <dropdown></dropdown> of {total}"
-msgstr ""
+msgstr "<dropdown></dropdown> / {total}ページ"
 
 #: ../html/src/components/pagination.tsx:115
-#, fuzzy
 msgid "Page {current} of {total}"
-msgstr "{0} / {1} ページ"
+msgstr "{current} / {total}ページ"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:49
 msgid "Sunday"
@@ -468,9 +461,8 @@ msgid "There are no entries to show."
 msgstr "表示すべき項目がありません。"
 
 #: ../html/src/components/salt-state-popup.tsx:50
-#, fuzzy
 msgid "Configuration Channel: {name}"
-msgstr "設定チャンネル: {0}"
+msgstr "設定チャンネル: {name}"
 
 #: ../html/src/components/salt-state-popup.tsx:60
 #: ../html/src/manager/images/image-profiles.tsx:204
@@ -549,9 +541,8 @@ msgid "Reorder"
 msgstr "並べ替え"
 
 #: ../html/src/components/states-picker.tsx:385
-#, fuzzy
 msgid "Search in states"
-msgstr "システムの検索"
+msgstr "状態の検索"
 
 #: ../html/src/components/states-picker.tsx:385
 msgid "Search in configuration channels"
@@ -566,24 +557,21 @@ msgid "Search"
 msgstr "検索"
 
 #: ../html/src/components/states-picker.tsx:401
-#, fuzzy
 msgid "Edit State Ranks"
-msgstr "{0} ランクの編集"
+msgstr "状態ランクの編集"
 
 #: ../html/src/components/states-picker.tsx:401
-#, fuzzy
 msgid "Edit Channel Ranks"
-msgstr "{0} ランクの編集"
+msgstr "チャンネルランクの編集"
 
 #: ../html/src/components/states-picker.tsx:404
-#, fuzzy
 msgid "Edit the ranking of the states by dragging them."
-msgstr "{0} のランキングを編集するには、それらをドラッグしてください。"
+msgstr "状態のランキングを編集するには、それらをドラッグしてください。"
 
 #: ../html/src/components/states-picker.tsx:405
-#, fuzzy
 msgid "Edit the ranking of the configuration channels by dragging them."
-msgstr "{0} のランキングを編集するには、それらをドラッグしてください。"
+msgstr ""
+"設定チャンネルのランキングを編集するには、それらをドラッグしてください。"
 
 #: ../html/src/components/states-picker.tsx:410
 msgid "There are no states assigned."
@@ -637,14 +625,12 @@ msgid "System Locked"
 msgstr "システムはロック済み"
 
 #: ../html/src/components/table/SearchPanel.tsx:46
-#, fuzzy
 msgid "Items {from} - {to} of {total}"
-msgstr "項目 {0} - {1} ／ {2}"
+msgstr "項目{from} - {to} / {total}"
 
 #: ../html/src/components/table/SearchPanel.tsx:51
-#, fuzzy
 msgid "({selectedCount} selected)"
-msgstr "削除を選択しました"
+msgstr "({selectedCount}を選択しました)"
 
 #: ../html/src/components/table/SearchPanel.tsx:53
 #: ../html/src/manager/admin/setup/products/products.tsx:384
@@ -726,7 +712,7 @@ msgstr "未定義"
 #: ../html/src/core/intl/index.test.tsx:16
 #: ../html/src/core/intl/index.test.tsx:17
 msgid "foo {insert} bar"
-msgstr ""
+msgstr "foo {insert} bar"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:23
 msgid "Restart is needed for the configuration changes to take effect."
@@ -943,14 +929,12 @@ msgid ""
 msgstr " 変更した設定を反映させるには、 Tomcat と Taskomatic が必要です。"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:41
-#, fuzzy
 msgid "Add new PAYG ssh connection data"
-msgstr "新しい従量課金制のssh接続データを追加"
+msgstr "新しいPAYGのssh接続データを追加"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:48
-#, fuzzy
 msgid "Add PAYG ssh data"
-msgstr "従量課金制のsshデータを追加"
+msgstr "PAYGのsshデータを追加"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:49
 #: ../html/src/manager/content-management/create-project/top-panel-buttons.tsx:16
@@ -972,9 +956,8 @@ msgid "Create"
 msgstr "作成"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:70
-#, fuzzy
 msgid "PAYG connection Description"
-msgstr "従量課金制の接続の説明"
+msgstr "PAYGの接続の説明"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:77
 msgid "Instance SSH connection data"
@@ -1030,7 +1013,7 @@ msgstr "／"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:186
 msgid "Add PAYG Connection"
-msgstr ""
+msgstr "PAYGの接続を追加"
 
 #: ../html/src/manager/admin/payg-shared/api/payg-actions-api.ts:66
 #: ../html/src/manager/content-management/shared/api/use-lifecycle-actions-api.ts:75
@@ -1049,9 +1032,8 @@ msgstr ""
 
 #: ../html/src/manager/admin/payg-shared/info/payg-info-edit.tsx:25
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:33
-#, fuzzy
 msgid "PAYG properties updated successfully"
-msgstr "プロジェクトのプロパティを更新しました"
+msgstr "PAYGのプロパティを更新しました"
 
 #: ../html/src/manager/admin/payg-shared/info/payg-info-edit.tsx:38
 msgid "Edit Information"
@@ -1121,19 +1103,16 @@ msgid "The instance you are looking for does not exist or has been deleted"
 msgstr "お探しのインスタンスは存在していないか、削除されています"
 
 #: ../html/src/manager/admin/payg/payg.tsx:68
-#, fuzzy
 msgid "Instance Hostname: {host}"
-msgstr "インスタンスホスト名: {0}"
+msgstr "インスタンスホスト名: {host}"
 
 #: ../html/src/manager/admin/payg/payg.tsx:83
-#, fuzzy
 msgid "Delete PAYG Connection"
-msgstr "プロジェクトの削除"
+msgstr "PAYGの接続の削除"
 
 #: ../html/src/manager/admin/payg/payg.tsx:86
-#, fuzzy
 msgid "Are you sure you want to delete connection"
-msgstr "プロジェクトを削除してよろしいですか"
+msgstr "接続を削除してよろしいですか"
 
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:148
 msgid "Refresh the product catalog from SUSE Customer Center"
@@ -1143,7 +1122,7 @@ msgstr "SUSE カスタマーセンターから製品カタログを更新"
 #: ../html/src/manager/images/image-profiles.tsx:141
 #: ../html/src/manager/images/image-stores.tsx:141
 #: ../html/src/manager/images/image-view.tsx:375
-#: ../html/src/manager/notifications/notification-messages.tsx:451
+#: ../html/src/manager/notifications/notification-messages.tsx:455
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:242
 msgid "Refresh"
 msgstr "更新"
@@ -1194,13 +1173,12 @@ msgid "Selected channels were scheduled successfully for syncing."
 msgstr "選択されたチャンネルは同期のスケジュールに成功しました。"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:289
-#, fuzzy
 msgid ""
 "The following channel installations for '{product}' failed. Please check log "
 "files."
 msgstr ""
-"「{0}」の次のチャンネルのインストールに失敗しました。ログファイルを確認してく"
-"ださい。"
+"'{product}'の次のチャンネルのインストールに失敗しました。ログファイルを確認し"
+"てください。"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:340
 msgid ""
@@ -1469,7 +1447,7 @@ msgstr "現時点では、サーバ内で動作しているタスクはありま
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:262
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:110
-#: ../html/src/manager/notifications/notification-messages.tsx:575
+#: ../html/src/manager/notifications/notification-messages.tsx:579
 msgid "Session expired, please reload the page to see up-to-date data."
 msgstr ""
 "セッションの期限が切れました。最新のデータを表示するには、ページを再読み込み"
@@ -1477,7 +1455,7 @@ msgstr ""
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:264
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:112
-#: ../html/src/manager/notifications/notification-messages.tsx:577
+#: ../html/src/manager/notifications/notification-messages.tsx:581
 #: ../html/src/utils/network.ts:103
 msgid "Server error, please check log files."
 msgstr "サーバエラーです。ログファイルをご確認ください。"
@@ -1633,19 +1611,17 @@ msgid "You can also trigger a first run now by clicking the button below."
 msgstr "下記のボタンを押すことで、初回の起動を行なうことができます。"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:107
-#, fuzzy
 msgid ""
 "Matching data is currently being recomputed, it was started {timeFromNow}."
-msgstr "マッチングデータは現在計算中です。 {0} に開始しています。"
+msgstr "マッチングデータは現在計算中です。 {timeFromNow}に開始しています。"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:117
-#, fuzzy
 msgid ""
 "Latest successful match data was computed {timeFromNow}, you can trigger a "
 "new run by clicking the button below."
 msgstr ""
-"直近のマッチングデータは {0} に計算されていますが、下記のボタンを押すことで新"
-"たに実行することもできます。"
+"直近のマッチングデータは{timeFromNow}に計算されていますが、下記のボタンを押す"
+"ことで新たに実行することもできます。"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:126
 msgid ""
@@ -2227,9 +2203,8 @@ msgid "The project you are looking for does not exist or has been deleted"
 msgstr "お探しのプロジェクトは存在していないか、削除されています"
 
 #: ../html/src/manager/content-management/project/project.tsx:104
-#, fuzzy
 msgid "Content Lifecycle Project - {name}"
-msgstr "コンテンツライフサイクルプロジェクト - {0}"
+msgstr "コンテンツライフサイクルプロジェクト - {name}"
 
 #: ../html/src/manager/content-management/project/project.tsx:116
 msgid "Delete Project"
@@ -2430,9 +2405,8 @@ msgid "disable all modules"
 msgstr "すべてのモジュールの無効化"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:63
-#, fuzzy
 msgid "Build ({count})"
-msgstr "ビルド ({0})"
+msgstr "ビルド({count})"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:70
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:135
@@ -2449,9 +2423,8 @@ msgid "Build Project"
 msgstr "プロジェクトのビルド"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:88
-#, fuzzy
 msgid "Building project"
-msgstr "プロジェクトをビルドしています..."
+msgstr "プロジェクトをビルドしています"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:96
 msgid ""
@@ -2466,14 +2439,12 @@ msgid "Version Message"
 msgstr "バージョンメッセージ"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:112
-#, fuzzy
 msgid "Version {version} history"
-msgstr "バージョン {0} の履歴"
+msgstr "バージョン{version}の履歴"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:148
-#, fuzzy
 msgid "Version {version} successfully built into {environmentName}"
-msgstr "バージョン {0} を {1} にビルドしました"
+msgstr "バージョン{version}を{environmentName}にビルドしました"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:38
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:38
@@ -2514,18 +2485,16 @@ msgid "Environment updated successfully"
 msgstr "環境を更新しました"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:117
-#, fuzzy
 msgid "Environment {name} deleted successfully"
-msgstr "環境 {0} を削除しました"
+msgstr "環境{name}を削除しました"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:139
-#, fuzzy
 msgid ""
 "This environment cannot be deleted since it is being used in an "
 "<link>autoinstallation distribution</link>."
 msgstr ""
-"この環境は {0}自動インストールディストリビューション{1} で使用されているた"
-"め、削除できません。"
+"この環境は <link>自動インストールディストリビューション</link>で使用されてい"
+"るため、削除できません。"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:23
 msgid "New"
@@ -2572,9 +2541,8 @@ msgid "Create New Filter"
 msgstr "新しいフィルタの作成"
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:32
-#, fuzzy
 msgid "Edit Filter {name}"
-msgstr "フィルタ {0} の編集"
+msgstr "フィルタ{name}の編集"
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:91
 msgid "Filters"
@@ -2623,18 +2591,16 @@ msgid "Target environment"
 msgstr "ターゲット環境"
 
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:99
-#, fuzzy
 msgid "Promote version {version} into {environmentName}"
-msgstr "{1} 内にバージョン {0} を公開"
+msgstr "{environmentName}内にバージョン{version}を公開"
 
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:117
 msgid "Promote environment"
 msgstr "環境の公開"
 
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:130
-#, fuzzy
 msgid "Version {version} successfully promoted into {environmentName}"
-msgstr "{1} 内にバージョン {0} を公開しました"
+msgstr "{environmentName}内にバージョン{version}を公開しました"
 
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-create.tsx:16
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.tsx:55
@@ -2723,7 +2689,7 @@ msgstr "子チャンネル無し"
 #: ../html/src/manager/images/image-view-patches.tsx:79
 #: ../html/src/manager/images/image-view.tsx:642
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:105
-#: ../html/src/manager/notifications/notification-messages.tsx:513
+#: ../html/src/manager/notifications/notification-messages.tsx:517
 #: ../html/src/manager/state/highstate-summary.tsx:73
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:296
 msgid "Type"
@@ -2751,9 +2717,8 @@ msgid "Page Not Found"
 msgstr "ページが見つかりません"
 
 #: ../html/src/manager/errors/not-found.tsx:8
-#, fuzzy
 msgid "The page you requested, {currentUrl}, was not found."
-msgstr "リクエストされたページ {0} が見つかりませんでした。"
+msgstr "リクエストされたページ{currentUrl}が見つかりませんでした。"
 
 #: ../html/src/manager/errors/not-found.tsx:12
 msgid ""
@@ -2797,13 +2762,12 @@ msgstr ""
 
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:15
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:15
-#, fuzzy
 msgid ""
 "Formula saved. Edit configuration options in the enabled formulas and apply "
 "the <link>Highstate</link> for the changes to take effect."
 msgstr ""
-"formula を保存しました。有効化された formula 内で設定オプションを編集し、下記"
-"を適用してください "
+"formulaを保存しました。有効化されたformula内で設定オプションを編集し、"
+"<link>highstate</link>を適用して変更を有効にしてください。"
 
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:24
 #: ../html/src/manager/groups/formula/group-formula.renderer.tsx:21
@@ -2814,12 +2778,12 @@ msgstr "ターゲットタイプが正しくありません。"
 
 #: ../html/src/manager/groups/formula/group-formula.renderer.tsx:14
 #: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:14
-#, fuzzy
 msgid ""
 "Formula saved. Apply the <link>Highstate</link> for the changes to take "
 "effect."
 msgstr ""
-"formula を保存しました。この formula に対する highstate の適用は不要です。"
+"formulaを保存しました。<link>highstate</link>を適用して変更を有効にしてくださ"
+"い。"
 
 #: ../html/src/manager/header/search/search.tsx:10
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:183
@@ -3079,13 +3043,12 @@ msgid "Are you sure you want to delete the selected profile?"
 msgstr "選択したプロファイルを削除してよろしいですか？"
 
 #: ../html/src/manager/images/image-profiles.tsx:244
-#, fuzzy
 msgid ""
 "Are you sure you want to delete selected profiles? ({count} profiles "
 "selected)"
 msgstr ""
-"選択したプロファイルを削除してよろしいですか？ ({0} 個のプロファイルが選択さ"
-"れています)"
+"選択したプロファイルを削除してよろしいですか？ ({count}個のプロファイルが選択"
+"されています)"
 
 #: ../html/src/manager/images/image-store-edit.tsx:165
 msgid "Use credentials"
@@ -3153,11 +3116,11 @@ msgid "Are you sure you want to delete the selected store?"
 msgstr "選択したストアを削除してよろしいですか？"
 
 #: ../html/src/manager/images/image-stores.tsx:237
-#, fuzzy
 msgid ""
 "Are you sure you want to delete selected stores? ({count} stores selected)"
 msgstr ""
-"選択したストアを削除してよろしいですか？ ({0} 個のストアが選択されています)"
+"選択したストアを削除してよろしいですか？ ({count}個のストアが選択されていま"
+"す)"
 
 #: ../html/src/manager/images/image-view-buildlog.tsx:5
 #: ../html/src/manager/images/image-view.tsx:792
@@ -3278,9 +3241,8 @@ msgstr "ストアの編集"
 
 #: ../html/src/manager/images/image-view-overview.tsx:465
 #: ../html/src/manager/images/image-view.tsx:750
-#, fuzzy
 msgid "Instance Details for '{name}'"
-msgstr "'{0}' に対するインスタンスの詳細"
+msgstr "'{name}'に対するインスタンスの詳細"
 
 #: ../html/src/manager/images/image-view-overview.tsx:520
 #: ../html/src/manager/images/image-view-overview.tsx:521
@@ -3510,12 +3472,11 @@ msgid "Are you sure you want to delete the selected image?"
 msgstr "選択したイメージを削除してよろしいですか？"
 
 #: ../html/src/manager/images/image-view.tsx:741
-#, fuzzy
 msgid ""
 "Are you sure you want to delete selected images? ({count} images selected)"
 msgstr ""
-"選択したイメージを削除してよろしいですか？ ({0} 個のイメージが選択されていま"
-"す)"
+"選択したイメージを削除してよろしいですか? ({count}個のイメージが選択されてい"
+"ます)"
 
 #: ../html/src/manager/images/image-view.tsx:789
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:55
@@ -3570,6 +3531,9 @@ msgid ""
 "configuration setting. To hide this warning please set 'forward_registration "
 "= 1' in rhn.conf."
 msgstr ""
+"SUSE Manager PAYGインスタンスは、資格情報が提供されたときに登録データをSCCに"
+"転送する必要があります。データは設定とは関係なく送信されます。この警告を非表"
+"示にするには、rhn.conf で'forward_registration = 1'を設定してください。"
 
 #: ../html/src/manager/login/messages.tsx:63
 msgid "Signing in ..."
@@ -3586,7 +3550,7 @@ msgstr ""
 
 #: ../html/src/manager/login/susemanager/login.tsx:44
 msgid "<link>Learn more</link> about {product}."
-msgstr ""
+msgstr "{product}については、<link>こちら</link>をご覧ください。"
 
 #: ../html/src/manager/login/susemanager/login.tsx:81
 #: ../html/src/manager/login/susemanager/login.tsx:107
@@ -3734,9 +3698,8 @@ msgid "Schedule Details"
 msgstr "スケジュールの詳細"
 
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:154
-#, fuzzy
 msgid "Maintenance schedule has been assigned to {count} system(s)"
-msgstr "メンテナンススケジュールを {0} 個のシステムに割り当てました"
+msgstr "メンテナンススケジュールを {count}個のシステムに割り当てました"
 
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:174
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:131
@@ -3755,9 +3718,8 @@ msgid "Current Schedule"
 msgstr "現在のスケジュール"
 
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:115
-#, fuzzy
 msgid "Url '{url}' is invalid"
-msgstr "URL '{0}' が正しくありません"
+msgstr "Url '{url}'が正しくありません"
 
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:135
 msgid "Calendar data"
@@ -3923,9 +3885,8 @@ msgid "Maintenance Schedules"
 msgstr "メンテナンススケジュール"
 
 #: ../html/src/manager/maintenance/ssm/system-assignment.tsx:21
-#, fuzzy
 msgid "Assign a maintenance schedule to {count} system(s)"
-msgstr "メンテナンススケジュールを {0} 個のシステムに割り当てました"
+msgstr "メンテナンススケジュールを{count}個のシステムに割り当てます"
 
 #: ../html/src/manager/maintenance/ssm/system-assignment.tsx:22
 msgid ""
@@ -4032,9 +3993,8 @@ msgid "Schedule playbook execution"
 msgstr "playbook の実行のスケジュール"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:107
-#, fuzzy
 msgid "Playbook '{name}'"
-msgstr "playbook '{0}'"
+msgstr "playbook '{name}'"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:111
 msgid "Schedule Playbook Execution"
@@ -4144,7 +4104,7 @@ msgid "Applying the packages states has been "
 msgstr "パッケージ状態の適用を "
 
 #: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:22
-#: ../html/src/manager/notifications/notification-messages.tsx:519
+#: ../html/src/manager/notifications/notification-messages.tsx:523
 msgid "Summary"
 msgstr "概要"
 
@@ -4232,9 +4192,8 @@ msgid "State apply failed"
 msgstr "状態の適用に失敗しました"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:49
-#, fuzzy
 msgid "PAYG refresh authentication data failed"
-msgstr "従量課金制の認証データの更新が失敗しました"
+msgstr "PAYGの認証データの更新が失敗しました"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:53
 msgid "End of Life Period"
@@ -4244,93 +4203,98 @@ msgstr "サポート期間の終了"
 msgid "Subscription Warning"
 msgstr "サブスクライブに関する警告"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:148
+#: ../html/src/manager/notifications/notification-messages.tsx:61
+#, fuzzy
+msgid "Update Notification"
+msgstr "通知の削除"
+
+#: ../html/src/manager/notifications/notification-messages.tsx:152
 msgid "Filter by type"
 msgstr "タイプでフィルタ"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:256
-#: ../html/src/manager/notifications/notification-messages.tsx:257
+#: ../html/src/manager/notifications/notification-messages.tsx:260
+#: ../html/src/manager/notifications/notification-messages.tsx:261
 msgid "Info"
 msgstr "情報"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:264
-#: ../html/src/manager/notifications/notification-messages.tsx:265
+#: ../html/src/manager/notifications/notification-messages.tsx:268
+#: ../html/src/manager/notifications/notification-messages.tsx:269
 msgid "Warning"
 msgstr "警告"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:272
-#: ../html/src/manager/notifications/notification-messages.tsx:273
+#: ../html/src/manager/notifications/notification-messages.tsx:276
+#: ../html/src/manager/notifications/notification-messages.tsx:277
 msgid "Error"
 msgstr "エラー"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:335
+#: ../html/src/manager/notifications/notification-messages.tsx:339
 msgid "show details"
 msgstr "詳細の表示"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:384
+#: ../html/src/manager/notifications/notification-messages.tsx:388
 msgid "Retry onboarding"
 msgstr "オンボーディングの再試行"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:394
+#: ../html/src/manager/notifications/notification-messages.tsx:398
 msgid "Retry repo sync"
 msgstr "リポジトリー同期の再試行"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:418
+#: ../html/src/manager/notifications/notification-messages.tsx:422
 msgid "Unread Messages"
 msgstr "未読メッセージ"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:423
+#: ../html/src/manager/notifications/notification-messages.tsx:427
 msgid "All Messages"
 msgstr "全てのメッセージ"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:455
-#: ../html/src/manager/notifications/notification-messages.tsx:456
+#: ../html/src/manager/notifications/notification-messages.tsx:459
+#: ../html/src/manager/notifications/notification-messages.tsx:460
 msgid "Delete selected messages"
 msgstr "選択したメッセージの削除"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:463
-#: ../html/src/manager/notifications/notification-messages.tsx:464
+#: ../html/src/manager/notifications/notification-messages.tsx:467
+#: ../html/src/manager/notifications/notification-messages.tsx:468
 msgid "Mark selected as read"
 msgstr "選択したものを読み込み済みとしてマーク"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:481
-#: ../html/src/manager/notifications/notification-messages.tsx:563
+#: ../html/src/manager/notifications/notification-messages.tsx:485
+#: ../html/src/manager/notifications/notification-messages.tsx:567
 msgid "Notification Messages"
 msgstr "通知メッセージ"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:486
+#: ../html/src/manager/notifications/notification-messages.tsx:490
 msgid "The server has collected the following notification messages."
 msgstr "このサーバは下記のような通知メッセージを収集しました。"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:501
+#: ../html/src/manager/notifications/notification-messages.tsx:505
 msgid "Filter by summary"
 msgstr "概要でフィルタ"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:507
+#: ../html/src/manager/notifications/notification-messages.tsx:511
 msgid "Severity"
 msgstr "重大度"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:525
+#: ../html/src/manager/notifications/notification-messages.tsx:529
 msgid "Created"
 msgstr "作成日"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:530
+#: ../html/src/manager/notifications/notification-messages.tsx:534
 msgid "Action"
 msgstr "動作"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:536
+#: ../html/src/manager/notifications/notification-messages.tsx:540
 msgid "Read|Delete"
 msgstr "読み込み|削除"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:545
+#: ../html/src/manager/notifications/notification-messages.tsx:549
 msgid "Flag as Unread"
 msgstr "未読として設定"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:545
+#: ../html/src/manager/notifications/notification-messages.tsx:549
 msgid "Flag as Read"
 msgstr "読み込み済みとして設定"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:551
+#: ../html/src/manager/notifications/notification-messages.tsx:555
 msgid "Delete Notification"
 msgstr "通知の削除"
 
@@ -4636,9 +4600,8 @@ msgid "Are you sure you want to delete this schedule?"
 msgstr "このスケジュールを削除してよろしいですか？"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:239
-#, fuzzy
 msgid "State configuration for {name}"
-msgstr "{0} の状態設定"
+msgstr "{name}の状態設定"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:246
 msgid "Order"
@@ -4722,13 +4685,12 @@ msgstr ""
 "い"
 
 #: ../html/src/manager/recurring/recurring-actions.tsx:148
-#, fuzzy
 msgid ""
 "The below times are displayed in the server time zone {timeZone}. The "
 "scheduled time will be the server time."
 msgstr ""
-"サーバのタイムゾーン {0} には、以下の時間が表示されます。スケジュールされた時"
-"間はサーバ時間になります。"
+"サーバのタイムゾーン{timeZone}には、以下の時間が表示されます。スケジュールさ"
+"れた時間はサーバ時間になります。"
 
 #: ../html/src/manager/recurring/search/recurring-actions-search-action-type-filter.tsx:16
 msgid "Select an Action Type"
@@ -4839,24 +4801,31 @@ msgid "No minions matched the target expression."
 msgstr "ターゲット式に一致する minion はありません。"
 
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:490
-#, fuzzy
 msgid "Server returned an error: {message}"
-msgstr "サーバはエラーを返しました: {0}"
+msgstr "サーバはエラーを返しました: {message}"
 
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:558
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:567
 msgid "Matching ssh-push minions..."
 msgstr "一致する ssh-push minion..."
 
-#: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:91
+#: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:62
+msgid ""
+"The formula catalog page enables viewing of currently installed <link>Salt "
+"Formulas</link>. Apply these formulas to individual systems or server "
+"groups. Formulas allow automatic installation and configuration of software "
+"and may be installed via RPM packages."
+msgstr ""
+
+#: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:95
 msgid "Formula Catalog"
 msgstr "Formula カタログ"
 
-#: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:101
+#: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:105
 msgid "Filter by formula name"
 msgstr "Formula 名でフィルタ"
 
-#: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:106
+#: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:110
 #: ../html/src/manager/state/highstate-summary.tsx:24
 msgid "Formula"
 msgstr "Formula"
@@ -4924,9 +4893,8 @@ msgid "Manager"
 msgstr "Manager"
 
 #: ../html/src/manager/state/display-highstate.tsx:9
-#, fuzzy
 msgid "State Summary for {name}"
-msgstr "{0} の状態概要"
+msgstr "{name}の状態概要"
 
 #: ../html/src/manager/state/display-highstate.tsx:79
 msgid "There are no applicable systems."
@@ -4969,9 +4937,8 @@ msgid "System Group"
 msgstr "システムグループ"
 
 #: ../html/src/manager/state/highstate.tsx:71
-#, fuzzy
 msgid "Applying the highstate has been <link>scheduled</link>."
-msgstr "highstateの適用が次のようになりました: {0}。"
+msgstr "highstateの適用が <link>スケジュールされました</link>。"
 
 #: ../html/src/manager/state/highstate.tsx:129
 msgid "Apply Highstate"
@@ -5037,6 +5004,10 @@ msgid ""
 "an error notification. In case you're working with a transactional system, "
 "please perform a system reboot to complete the registration process."
 msgstr ""
+"ブートストラッププロセスが開始されました。システムはすぐに次の場所に表示され"
+"ます: <link>システム</link>。問題が発生した場合、エラー通知が届きます。トラン"
+"ザクションシステムで作業している場合は、システムの再起動を実行して、登録プロ"
+"セスを完了してください。"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:355
 msgid "Show additional details about this error"
@@ -5079,21 +5050,19 @@ msgid "Bootstrap Minions"
 msgstr "minion のブートストラップ"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:447
-#, fuzzy
 msgid ""
 "You can add systems to be managed by providing SSH credentials only. "
 "{productName} will prepare the system remotely and will perform the "
 "registration."
 msgstr ""
-"SSH の資格情報のみを提供することで、管理対象のシステムを追加することができま"
-"す。 {0} はシステムを遠隔から準備し、登録処理を実施します。"
+"SSHの資格情報のみを提供することで、管理対象のシステムを追加することができま"
+"す。 {productName}はシステムを遠隔から準備し、登録処理を実施します。"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:461
 msgid "e.g., host.domain.com"
 msgstr "例: host.domain.com"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:498
-#, fuzzy
 msgid ""
 "The user will have an effect only during the bootstrap process. Further "
 "connections will be made by the user specified in rhn.conf. The default user "
@@ -5101,9 +5070,9 @@ msgid ""
 "{productName}'s SSH key is deployed during the bootstrap procedure."
 msgstr ""
 "ユーザはブートストラップ処理の際にのみ有効化されます。それ以降の接続に対して"
-"は、 rhn.conf 内で指定したユーザで行ないます。また、 'ssh_push_sudo_user' の"
-"鍵に対する既定のユーザは 'root' です。このユーザは {0} の SSH 鍵を配置したあ"
-"と、ブートストラップ処理の際に設定されます。"
+"は、 rhn.conf 内で指定したユーザで行ないます。また、 'ssh_push_sudo_user'の鍵"
+"に対する既定のユーザは'root'です。このユーザは{productName}のSSHキーを配置し"
+"たあと、ブートストラップ処理の際に設定されます。"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:507
 msgid "Authentication Method"
@@ -5586,9 +5555,8 @@ msgid "Nutanix AHV"
 msgstr "Nutanix AHV"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:155
-#, fuzzy
 msgid "Add a {type} Virtual Host Manager"
-msgstr "仮想ホストマネージャの編集"
+msgstr "{type}仮想ホストマネージャの追加"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:157
 msgid "Virtual Host Managers"
@@ -5611,9 +5579,8 @@ msgstr ""
 "がロードされていることを確認してください。"
 
 #: ../html/src/manager/virtualization/ListTab.tsx:162
-#, fuzzy
 msgid "{name} selected"
-msgstr "{0} 個を選択しました"
+msgstr "{name}を選択しました"
 
 #: ../html/src/manager/virtualization/ListTab.tsx:242
 msgid "Action Status"
