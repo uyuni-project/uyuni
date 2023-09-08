@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-08-11 15:28+0200\n"
+"POT-Creation-Date: 2023-09-08 14:40+0200\n"
 "PO-Revision-Date: 2022-04-01 18:12+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/backend/ca/"
@@ -1294,28 +1294,6 @@ msgstr "Informe de sincronització de %s de %s"
 msgid "+++ email requested, but there is nothing to send +++"
 msgstr "+++ correu electrònic sol·licitat, però no hi ha res per enviar +++"
 
-#: ../satellite_tools/rhn_satellite_activate.py:198
-#, python-format
-msgid ""
-"\"%s\" (specified in commandline)\n"
-"could not be opened and read:\n"
-"%s"
-msgstr ""
-"%s (especificat a la línia d'ordres)\n"
-"no s'ha pogut obrir ni llegir:\n"
-"%s"
-
-#: ../satellite_tools/rhn_satellite_activate.py:205
-#, python-format
-msgid ""
-"\"%s\" could not be opened\n"
-"and/or written to:\n"
-"%s"
-msgstr ""
-"%s no s'ha pogut obrir\n"
-"ni escriure-hi:\n"
-"%s"
-
 #: ../satellite_tools/satsync.py:258
 #, python-format
 msgid "No handler for step %s"
@@ -2102,6 +2080,26 @@ msgstr "  28 - error: --master només és vàlid amb --mount-point"
 #, python-format
 msgid "ERROR: unknown dump version, try one of %s"
 msgstr "ERROR: versió d'abocament desconeguda, proveu-ne una de %s"
+
+#, python-format
+#~ msgid ""
+#~ "\"%s\" (specified in commandline)\n"
+#~ "could not be opened and read:\n"
+#~ "%s"
+#~ msgstr ""
+#~ "%s (especificat a la línia d'ordres)\n"
+#~ "no s'ha pogut obrir ni llegir:\n"
+#~ "%s"
+
+#, python-format
+#~ msgid ""
+#~ "\"%s\" could not be opened\n"
+#~ "and/or written to:\n"
+#~ "%s"
+#~ msgstr ""
+#~ "%s no s'ha pogut obrir\n"
+#~ "ni escriure-hi:\n"
+#~ "%s"
 
 #, fuzzy
 #~ msgid "Invalid crash name"

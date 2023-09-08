@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-08-25 15:08+0200\n"
+"POT-Creation-Date: 2023-09-08 14:40+0200\n"
 "PO-Revision-Date: 2023-08-24 01:15+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
@@ -4840,15 +4840,23 @@ msgstr "サーバはエラーを返しました: {message}"
 msgid "Matching ssh-push minions..."
 msgstr "一致する ssh-push minion..."
 
-#: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:91
+#: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:62
+msgid ""
+"The formula catalog page enables viewing of currently installed <link>Salt "
+"Formulas</link>. Apply these formulas to individual systems or server "
+"groups. Formulas allow automatic installation and configuration of software "
+"and may be installed via RPM packages."
+msgstr ""
+
+#: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:95
 msgid "Formula Catalog"
 msgstr "Formula カタログ"
 
-#: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:101
+#: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:105
 msgid "Filter by formula name"
 msgstr "Formula 名でフィルタ"
 
-#: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:106
+#: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:110
 #: ../html/src/manager/state/highstate-summary.tsx:24
 msgid "Formula"
 msgstr "Formula"

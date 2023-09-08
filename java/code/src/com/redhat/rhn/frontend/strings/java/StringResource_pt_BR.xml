@@ -9887,11 +9887,11 @@ para erros mais detalhados. Se você não resolver os erros, o auto-instalável
         <target state="needs-adaptation">Login encontrado foi enviado para {0}.</target>
       </trans-unit>
       <trans-unit id="config.multiple.channels" xml:space="preserve">
-        <source>A selected system has multiple child channels available that contain the mgr-cfg package. You must manually subscribe to the child channel you want and then try this action again.</source>
+        <source>A selected system has multiple child channels available that contain the venv-salt-minion package. You must manually subscribe to the child channel you want and then try this action again.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/TargetSystemsSubmit.do</context>
         </context-group>
-        <target state="translated">Um sistema selecionado tem diversos canais filhos disponíveis que contêm o pacote mgr-cfg. Você deve se inscrever manualmente para o canal filho que você quer e então tentar novamente esta ação.</target>
+        <target state="needs-adaptation">Um sistema selecionado tem diversos canais filhos disponíveis que contêm o pacote mgr-cfg. Você deve se inscrever manualmente para o canal filho que você quer e então tentar novamente esta ação.</target>
       </trans-unit>
       <trans-unit id="External Links" xml:space="preserve">
         <source>External Links</source>

@@ -16196,7 +16196,7 @@ Anschließend wird das nicht-chroot Post-Skript ausgeführt, und zuletzt das Pos
         </context-group>
       </trans-unit>
       <trans-unit id="targetsystems.jsp.summary" xml:space="preserve">
-          <source>The systems listed below do not have files managed via @@PRODUCT_NAME@@ configuration management.  For systems to be capable of being managed by @@PRODUCT_NAME@@ configuration management, they need to have particular mgr-cfg-* packages installed. You can enable configuration management on selected systems by using the 'Enable @@PRODUCT_NAME@@ Configuration Management' button below.</source>
+          <source>The systems listed below do not have files managed via @@PRODUCT_NAME@@ configuration management.  For systems to be capable of being managed by @@PRODUCT_NAME@@ configuration management, they need to have particular *-salt-minion packages installed. You can enable configuration management on selected systems by using the 'Enable @@PRODUCT_NAME@@ Configuration Management' button below.</source>
         <target state="needs-adaptation">Die unten aufgelisteten Systeme besitzen keine Dateien, die via @@PRODUCT_NAME@@ Konfigurationsmanagement verwaltet werden.  Damit Systeme via @@PRODUCT_NAME@@ Konfigurationsmanagement verwaltet werden können, benötigen sie eine Provisioning-Berechtigung, zusätzlich zur Installation bestimmter rhncfg-*-Pakete. Sie können das Konfigurationsmanagement auf ausgewählten Systemen unter Verwendung der Schaltfläche '@@PRODUCT_NAME@@  Konfigurationsmanagement aktivieren' unten aktivieren.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/TargetSystems.do</context>
@@ -16257,27 +16257,6 @@ Anschließend wird das nicht-chroot Post-Skript ausgeführt, und zuletzt das Pos
           <context context-type="sourcefile">/rhn/configuration/system/TargetSystems.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="targetsystems.jsp.installcfg" xml:space="preserve">
-          <source>Schedule mgr-cfg package install</source>
-        <target state="needs-adaptation">rhncfg Paket-Installation planen</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/configuration/system/TargetSystems.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="targetsystems.jsp.installcfgactions" xml:space="preserve">
-          <source>Schedule mgr-cfg-actions package install</source>
-        <target>mgr-cfg-actions Paket-Installation planen</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/configuration/system/TargetSystems.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="targetsystems.jsp.installcfgclient" xml:space="preserve">
-          <source>Schedule mgr-cfg-client package install</source>
-        <target state="needs-adaptation">rhncfg-client Paket-Installation planen</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/configuration/system/TargetSystems.do</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="targetsystems.jsp.pending" xml:space="preserve">
           <source>Package installations currently pending.</source>
         <target>Derzeit ausstehende Paketinstallationen.</target>
@@ -16300,7 +16279,7 @@ Anschließend wird das nicht-chroot Post-Skript ausgeführt, und zuletzt das Pos
         </context-group>
       </trans-unit>
       <trans-unit id="targetsystems.jsp.widgetsummary" xml:space="preserve">
-          <source>You may schedule &lt;code&gt;mgr-cfg*&lt;/code&gt; package installs for the time below. &lt;strong&gt;Note: All other actions will take place immediately.&lt;/strong&gt;</source>
+          <source>You may schedule &lt;code&gt;salt-minion&lt;/code&gt; package installs for the time below. &lt;strong&gt;Note: All other actions will take place immediately.&lt;/strong&gt;</source>
         <target state="needs-adaptation">Sie können die &lt;code&gt;rhncfg*&lt;/code&gt;-Paketinstallation für den unten aufgeführten Zeitpunkt planen. &lt;strong&gt;Anmerkung: Alle anderen Aktionen finden umgehend statt.&lt;/strong&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/TargetSystems.do</context>
@@ -16322,15 +16301,8 @@ Anschließend wird das nicht-chroot Post-Skript ausgeführt, und zuletzt das Pos
         </context-group>
       </trans-unit>
       <trans-unit id="summary.jsp.stepone" xml:space="preserve">
-          <source>Run &lt;code&gt;mgr_check&lt;/code&gt; to complete pending mgr-cfg-* package installs.</source>
+          <source>Run &lt;code&gt;mgr_check&lt;/code&gt; to complete pending salt-minion package installs.</source>
         <target state="needs-adaptation">Führen Sie &lt;code&gt;rhn_check&lt;/code&gt; aus, um die ausstehenden rhncfg-*-Paketinstallationen abzuschließen.</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/configuration/system/Summary.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="summary.jsp.steptwo" xml:space="preserve">
-          <source>Run the following command: &lt;code&gt;mgr-actions-control --enable-all&lt;/code&gt;</source>
-        <target state="needs-adaptation">Führen Sie folgenden Befehl aus: &lt;code&gt;rhn-actions-control --enable-all&lt;/code&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/Summary.do</context>
         </context-group>
@@ -16370,14 +16342,8 @@ Anschließend wird das nicht-chroot Post-Skript ausgeführt, und zuletzt das Pos
           <context context-type="sourcefile">/rhn/configuration/system/Summary.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="summary.jsp.appstream" xml:space="preserve">
-          <source>Could not subscribe to the AppStream channel.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/configuration/system/Summary.do</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="summary.jsp.packages" xml:space="preserve">
-          <source>Could not schedule mgr-cfg* package installations.</source>
+          <source>Could not schedule salt-minion package installations.</source>
         <target state="needs-adaptation">rhncfg*-Paketinstallationen konnten nicht geplant werden.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/Summary.do</context>
@@ -20062,7 +20028,7 @@ dieser Revisionen.  Möchten Sie dies wirklich tun?</target>
         </context-group>
       </trans-unit>
       <trans-unit id="ssmenable.jsp.summary" xml:space="preserve">
-          <source>The systems listed below do not have files managed via @@PRODUCT_NAME@@ configuration management. For systems to be capable of being managed by @@PRODUCT_NAME@@ configuration management, they will need to have particular mgr-cfg-* packages installed. You can enable configuration management on the systems listed below. &lt;strong&gt;Note:&lt;/strong&gt; nothing will happen to already enabled systems.</source>
+          <source>The systems listed below do not have files managed via @@PRODUCT_NAME@@ configuration management. For systems to be capable of being managed by @@PRODUCT_NAME@@ configuration management, they will need to have particular salt-minion packages installed. You can enable configuration management on the systems listed below. &lt;strong&gt;Note:&lt;/strong&gt; nothing will happen to already enabled systems.</source>
         <target state="needs-adaptation">Die unten aufgelisteten Systeme besitzen keine Dateien, die via @@PRODUCT_NAME@@ Konfigurationsmanagement verwaltet werden.  Damit Systeme via @@PRODUCT_NAME@@ Konfigurationsmanagement verwaltet werden können, benötigen sie eine Provisioning-Berechtigung, zusätzlich zur Installation bestimmter rhncfg-*-Pakete. Sie können das RHN Konfigurationsmanagement auf den unten aufgelisteten Systemen aktivieren. &lt;strong&gt;Anmerkung:&lt;/strong&gt; Auf bereits aktivierte Systeme hat dies keinerlei Auswirkungen.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/config/Enable.do</context>
@@ -21292,8 +21258,8 @@ dieser Revisionen.  Möchten Sie dies wirklich tun?</target>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.operations.provisioning.remotecommand.no_script_run" xml:space="preserve">
-          <source>You must enable Remote Command execution on the target system by installing the &lt;code&gt;mgr-cfg-actions&lt;/code&gt; RPM.</source>
-        <target>Sie müssen die Ausführung von Remote-Befehlen am Zielsystem durch Installation des &lt;code&gt;mgr-cfg-actions&lt;/code&gt; RPM aktivieren.</target>
+          <source>You must enable Remote Command execution on the target system by installing the &lt;code&gt;salt-minion&lt;/code&gt; RPM.</source>
+        <target state="needs-adaptation">Sie müssen die Ausführung von Remote-Befehlen am Zielsystem durch Installation des &lt;code&gt;mgr-cfg-actions&lt;/code&gt; RPM aktivieren.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/kickstart/KickstartableSystems.do</context>
         </context-group>

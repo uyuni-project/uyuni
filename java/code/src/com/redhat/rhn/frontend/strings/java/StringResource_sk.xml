@@ -9964,8 +9964,8 @@ inštalovateľný strom nebude možné použiť na automatickú inštaláciu.</t
         <target state="translated">Nájdené prihlasovacie meno(á) odoslané na {0}. Ak ju nedostanete, uistite sa, že máte zaregistrovaný účet s prihlasovacím menom a uvedeným emailom.</target>
       </trans-unit>
       <trans-unit id="config.multiple.channels" xml:space="preserve">
-        <source>A selected system has multiple child channels available that contain the mgr-cfg package. You must manually subscribe to the child channel you want and then try this action again.</source>
-        <target state="translated">Vybraný systém má k dispozícii viacero kanálov potomkov, ktoré obsahujú balík mgr-cfg. Musíte sa ručne prihlásiť k požadovanému kanálu potomka a potom skúsiť túto akciu znova.</target>
+        <source>A selected system has multiple child channels available that contain the venv-salt-minion package. You must manually subscribe to the child channel you want and then try this action again.</source>
+        <target state="needs-adaptation">Vybraný systém má k dispozícii viacero kanálov potomkov, ktoré obsahujú balík mgr-cfg. Musíte sa ručne prihlásiť k požadovanému kanálu potomka a potom skúsiť túto akciu znova.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/TargetSystemsSubmit.do</context>
         </context-group>
