@@ -80,6 +80,7 @@ Feature: Maintenance windows
     And I click on "Confirm"
     Then I should see a "Maintenance schedule has been assigned" text
 
+@susemanager
   Scenario: Schedule channel change action
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Software" in the content area

@@ -30,6 +30,7 @@ Feature: Content lifecycle
     And I should see a "Filters" text
     And I should see a "Environment Lifecycle" text
 
+@susemanager
   Scenario: Add a source to the project
     When I follow the left menu "Content Lifecycle > Projects"
     And I follow "clp_name"
@@ -40,11 +41,29 @@ Feature: Content lifecycle
     And I wait until I see "SLE-Product-SLES15-SP4-Pool for x86_64" text
     Then I should see a "Version 1: (draft - not built) - Check the changes below" text
 
+@uyuni
+  Scenario: Add a source to the project
+    When I follow the left menu "Content Lifecycle > Projects"
+    And I follow "clp_name"
+    And I click on "Attach/Detach Sources"
+    And I select "openSUSE Leap 15.4 (x86_64)" from "selectedBaseChannel"
+    And I click on "Save"
+    And I wait until I see "openSUSE Leap 15.4 (x86_64)" text
+    Then I should see a "Version 1: (draft - not built) - Check the changes below" text
+
+@susemanager
   Scenario: Verify added sources
     When I follow the left menu "Content Lifecycle > Projects"
     And I follow "clp_name"
     Then I should see a "SLE-Product-SLES15-SP4-Updates for x86_64" text
     And I should see a "Build (2)" text
+
+@uyuni
+  Scenario: Verify added sources
+    When I follow the left menu "Content Lifecycle > Projects"
+    And I follow "clp_name"
+    Then I should see a "openSUSE Leap 15.4 (x86_64)" text
+    And I should see a "Build (1)" text
 
   Scenario: Add environments to the project
     When I follow the left menu "Content Lifecycle > Projects"
@@ -73,11 +92,24 @@ Feature: Content lifecycle
     Then I wait until I see "qa_name" text
     And I should see a "qa_desc" text
 
+@susemanager
   Scenario: Build the sources in the project
     When I follow the left menu "Content Lifecycle > Projects"
     And I follow "clp_name"
     Then I should see a "not built" text in the environment "qa_name"
     When I click on "Build (2)"
+    Then I should see a "Version 1 history" text
+    When I enter "test version message 1" as "message"
+    And I click the environment build button
+    And I wait until I see "Version 1: test version message 1" text in the environment "dev_name"
+    And I wait at most 600 seconds until I see "Built" text in the environment "dev_name"
+
+@uyuni
+  Scenario: Build the sources in the project
+    When I follow the left menu "Content Lifecycle > Projects"
+    And I follow "clp_name"
+    Then I should see a "not built" text in the environment "qa_name"
+    When I click on "Build (1)"
     Then I should see a "Version 1 history" text
     When I enter "test version message 1" as "message"
     And I click the environment build button
@@ -136,6 +168,7 @@ Feature: Content lifecycle
     And I click on "Delete" in "Delete Project" modal
     Then I should not see a "clp_name" text
 
+@susemanager
   Scenario: Cleanup: remove the created channels
     When I delete these channels with spacewalk-remove-channel:
       |clp_label-prod_label-fake_base_channel|
@@ -148,5 +181,17 @@ Feature: Content lifecycle
       |clp_label-prod_label-sle-product-sles15-sp4-pool-x86_64|
       |clp_label-qa_label-sle-product-sles15-sp4-pool-x86_64|
       |clp_label-dev_label-sle-product-sles15-sp4-pool-x86_64|
+    And I list channels with spacewalk-remove-channel
+    Then I shouldn't get "clp_label"
+
+@uyuni
+  Scenario: Cleanup: remove the created channels
+    When I delete these channels with spacewalk-remove-channel:
+      |clp_label-prod_label-fake_base_channel|
+      |clp_label-prod_label-opensuse_leap15_4-x86_64|
+      |clp_label-qa_label-fake_base_channel|
+      |clp_label-qa_label-opensuse_leap15_4-x86_64|
+      |clp_label-dev_label-fake_base_channel|
+      |clp_label-dev_label-opensuse_leap15_4-x86_64|
     And I list channels with spacewalk-remove-channel
     Then I shouldn't get "clp_label"
