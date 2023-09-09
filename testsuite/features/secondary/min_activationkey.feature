@@ -122,7 +122,7 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
 @uyuni
   Scenario: Verify that minion bootstrapped with base channel
     Given I am on the Systems page
-    Then I should see a "openSUSE Leap 15.4 x86_64" text
+    Then I should see a "openSUSE Leap 15.4 (x86_64)" text
 
   # bsc#1080807 - Assigning configuration channel in activation key doesn't work
   Scenario: Verify that minion bootstrapped with configuration channel
