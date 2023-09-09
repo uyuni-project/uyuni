@@ -20,6 +20,7 @@ import static com.redhat.rhn.manager.audit.CVEAuditManager.SUCCESSOR_PRODUCT_RAN
 
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 
@@ -326,14 +327,14 @@ public class CVEAuditManagerOVAL {
         CVEAuditManager.populateCVEChannels();
     }
 
-    // TODO: Sync OVAL of registered clients only
-    static List<OVALProduct> productsToSync = new ArrayList<>();
-    static {
-        /*productsToSync.add(new OVALProduct(OsFamily.openSUSE_LEAP, "15.4"));*/
-        productsToSync.add(new OVALProduct(OsFamily.LEAP, "15.3"));
-        productsToSync.add(new OVALProduct(OsFamily.REDHAT_ENTERPRISE_LINUX, "9"));
-    }
+    /**
+     * Launches the OVAL synchronization process
+     * */
     public static void syncOVAL() {
+        List<OVALProduct> productsToSync = getProductsToSync();
+
+        LOG.warn("Detected {} products eligible for OVAL synchronization", productsToSync.size());
+
         OVALDownloader ovalDownloader = new OVALDownloader(OVALConfigLoader.load());
         for (OVALProduct product : productsToSync) {
             LOG.warn("Downloading OVAL for {} {}", product.getOsFamily(), product.getOsVersion());
@@ -372,6 +373,17 @@ public class CVEAuditManagerOVAL {
 
             LOG.warn("Saving OVAL finished");
         }
+    }
+
+    /**
+     * Identifies the OS products to synchronize OVAL data for.
+     * */
+    private static List<OVALProduct> getProductsToSync() {
+        List<Server> allServers = ServerFactory.list(false, false);
+
+        return allServers.stream().map(Server::toOVALProduct)
+                .filter(Optional::isPresent)
+                .map(Optional::get).collect(Collectors.toList());
     }
 
     public static class OVALProduct {
