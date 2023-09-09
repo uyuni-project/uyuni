@@ -37,6 +37,8 @@ public class ServerConstants {
     public static final String ALMA = "AlmaLinux";
     public static final String AMAZON = "Amazon Linux";
     public static final String ROCKY = "Rocky";
+    public static final String SLED = "SLED";
+    public static final String RHEL = "Red Hat Enterprise Linux";
 
     private ServerConstants() {
 
