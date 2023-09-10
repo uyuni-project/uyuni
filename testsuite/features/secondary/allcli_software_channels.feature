@@ -93,7 +93,7 @@ Feature: Channel subscription via SSM
 @uyuni
   Scenario: Check old channels are still enabled on SLES minion before channel change completes
     When I refresh the metadata for "sle_minion"
-    Then "10" channels should be enabled on "sle_minion"
+    Then "8" channels should be enabled on "sle_minion"
     And channel "openSUSE Leap 15.4 (x86_64)" should be enabled on "sle_minion"
 
   Scenario: Wait 3 minutes for the scheduled action to be executed
@@ -126,7 +126,7 @@ Feature: Channel subscription via SSM
 @uyuni
   Scenario: Check the new channels are enabled on the SLES minion
     When I refresh the metadata for "sle_minion"
-    Then "4" channels should be enabled on "sle_minion"
+    Then "2" channels should be enabled on "sle_minion"
     And channel "Fake Base Channel" should be enabled on "sle_minion"
     And channel "Fake Child Channel" should be enabled on "sle_minion"
 
