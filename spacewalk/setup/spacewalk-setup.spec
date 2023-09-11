@@ -167,6 +167,7 @@ install -m 0644 share/tomcat_java_opts_suse.conf %{buildroot}/%{_sysconfdir}/tom
 %endif
 install -m 0644 share/server.xml.xsl %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/server_update.xml.xsl %{buildroot}/%{_datadir}/spacewalk/setup/
+install -m 0644 share/add_appbase.xml.xsl %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/old-jvm-list %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/vhost-nossl.conf %{buildroot}/%{_datadir}/spacewalk/setup/
 install -d -m 755 %{buildroot}/%{_datadir}/spacewalk/setup/defaults.d/
@@ -196,6 +197,10 @@ if [ ! -f /etc/rhn/rhn.conf -o $(filesize /etc/rhn/rhn.conf) -eq 0 ]; then
     CURRENT_DATE=$(date +"%%Y-%%m-%%dT%%H:%%M:%%S.%%3N")
     cp /etc/tomcat/server.xml /etc/tomcat/server.xml.$CURRENT_DATE
     xsltproc %{_datadir}/spacewalk/setup/server.xml.xsl /etc/tomcat/server.xml.$CURRENT_DATE > /etc/tomcat/server.xml
+
+    CURRENT_DATE=$(date +"%%Y-%%m-%%dT%%H:%%M:%%S.%%3N")
+    cp /etc/tomcat/server.xml /etc/tomcat/server.xml.$CURRENT_DATE
+    xsltproc %{_datadir}/spacewalk/setup/add_appbase.xml.xsl /etc/tomcat/server.xml.$CURRENT_DATE > /etc/tomcat/server.xml
 fi
 
 if [ -e /etc/zypp/credentials.d/SCCcredentials ]; then
