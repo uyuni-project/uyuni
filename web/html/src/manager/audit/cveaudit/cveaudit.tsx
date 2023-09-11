@@ -18,27 +18,32 @@ import Network from "utils/network";
 
 const AFFECTED_PATCH_INAPPLICABLE = "AFFECTED_PATCH_INAPPLICABLE";
 const AFFECTED_PATCH_INAPPLICABLE_SUCCESSOR_PRODUCT = "AFFECTED_PATCH_INAPPLICABLE_SUCCESSOR_PRODUCT";
-const AFFECTED_PATCH_APPLICABLE = "AFFECTED_PATCH_APPLICABLE";
+const AFFECTED_FULL_PATCH_APPLICABLE = "AFFECTED_FULL_PATCH_APPLICABLE";
 const NOT_AFFECTED = "NOT_AFFECTED";
 const PATCHED = "PATCHED";
+const AFFECTED_PATCH_UNAVAILABLE = "AFFECTED_PATCH_UNAVAILABLE";
+const AFFECTED_PARTIAL_PATCH_APPLICABLE = "AFFECTED_PARTIAL_PATCH_APPLICABLE";
+
 const ALL = [
+  AFFECTED_PATCH_UNAVAILABLE,
+  AFFECTED_PARTIAL_PATCH_APPLICABLE,
   AFFECTED_PATCH_INAPPLICABLE,
-  AFFECTED_PATCH_APPLICABLE,
   AFFECTED_PATCH_INAPPLICABLE_SUCCESSOR_PRODUCT,
+  AFFECTED_FULL_PATCH_APPLICABLE,
   NOT_AFFECTED,
   PATCHED,
 ];
 const PATCH_STATUS_LABEL = {
   AFFECTED_PATCH_INAPPLICABLE: {
-    className: "fa-exclamation-circle text-danger",
+    className: "fa-exclamation-triangle text-warning",
     label: t("Affected, patches available in channels which are not assigned"),
   },
   AFFECTED_PATCH_INAPPLICABLE_SUCCESSOR_PRODUCT: {
-    className: "fa-exclamation-circle text-danger",
+    className: "fa-exclamation-triangle text-warning",
     label: t("Affected, patches available in a Product Migration target"),
   },
-  AFFECTED_PATCH_APPLICABLE: {
-    className: "fa-exclamation-triangle text-warning",
+  AFFECTED_FULL_PATCH_APPLICABLE: {
+    className: "fa-shield text-warning",
     label: t("Affected, at least one patch available in an assigned channel"),
   },
   NOT_AFFECTED: {
@@ -49,6 +54,14 @@ const PATCH_STATUS_LABEL = {
     className: "fa-check-circle text-success",
     label: t("Patched"),
   },
+  AFFECTED_PATCH_UNAVAILABLE: {
+    className: "fa-exclamation-circle text-danger",
+    label: t("Affected, patch is unavailable")
+  },
+  AFFECTED_PARTIAL_PATCH_APPLICABLE: {
+    className: "fa-shield text-danger",
+    label: t("Affected, partial patch available in assigned channel")
+  }
 };
 const TARGET_IMAGE = "IMAGE";
 const TARGET_SERVER = "SERVER";
@@ -334,9 +347,10 @@ class CVEAudit extends React.Component<Props, State> {
               header={t("Actions")}
               cell={(row, criteria) => {
                 if (this.state.resultType === TARGET_SERVER) {
-                  if (row.patchStatus === NOT_AFFECTED || row.patchStatus === PATCHED) {
+                  if (row.patchStatus === NOT_AFFECTED || row.patchStatus === PATCHED ||
+                      row.patchStatus === AFFECTED_PATCH_UNAVAILABLE) {
                     return t("No action required");
-                  } else if (row.patchStatus === AFFECTED_PATCH_APPLICABLE) {
+                  } else if (row.patchStatus === AFFECTED_FULL_PATCH_APPLICABLE) {
                     return (
                       <div>
                         <div>
@@ -377,13 +391,31 @@ class CVEAudit extends React.Component<Props, State> {
                         <div>{"Patch: " + row.erratas[0].advisory}</div>
                       </div>
                     );
+                  } else if (row.patchStatus === AFFECTED_PARTIAL_PATCH_APPLICABLE) {
+                    return (
+                        <div>
+                          <div>
+                            <a href={"/rhn/systems/details/ErrataList.do?sid=" + row.id}>
+                              {t("Install a new partial patch on this system.")}
+                            </a>
+                          </div>
+                          {row.erratas.map((errata) => {
+                            return (
+                                <div>
+                                  <a href={"/rhn/errata/details/SystemsAffected.do?eid=" + errata.id}>{errata.advisory}</a>
+                                </div>
+                            );
+                          })}
+                        </div>
+                    );
                   } else {
                     return t("If you see this report a bug.");
                   }
                 } else if (this.state.resultType === TARGET_IMAGE) {
-                  if (row.patchStatus === NOT_AFFECTED || row.patchStatus === PATCHED) {
+                  if (row.patchStatus === NOT_AFFECTED || row.patchStatus === PATCHED ||
+                      row.patchStatus === AFFECTED_PATCH_UNAVAILABLE) {
                     return t("No action required");
-                  } else if (row.patchStatus === AFFECTED_PATCH_APPLICABLE) {
+                  } else if (row.patchStatus === AFFECTED_FULL_PATCH_APPLICABLE) {
                     return (
                       <LinkButton
                         icon="fa-cogs"
