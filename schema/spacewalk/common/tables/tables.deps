@@ -15,277 +15,280 @@
 
 path = . class
 
-log                            :: web_contact_all
-PXTSessions                    :: web_contact
-rhnAction                      :: rhnActionType web_customer web_contact
-rhnActionApplyStates           :: rhnAction
-rhnActionApplyStatesResult     :: rhnActionApplyStates rhnServer
-rhnActionImageBuild            :: rhnAction suseImageProfile
-rhnActionImageBuildResult      :: rhnActionImageBuild rhnServer
-rhnActionInspect               :: rhnAction suseImageStore
-rhnActionImageInspectResult    :: rhnActionInspect rhnServer
-rhnActionScript                :: rhnAction
-rhnActionConfigChannel         :: rhnServerAction rhnConfigChannel
-rhnActionConfigDate            :: rhnAction
-rhnActionConfigDateFile        :: rhnAction
-rhnActionConfigFileName        :: rhnServerAction rhnConfigFileName rhnConfigFileFailure \
-                                  rhnConfigRevision
-rhnActionConfigRevision        :: rhnAction rhnServer rhnConfigRevision rhnConfigFileFailure
-rhnActionConfigRevisionResult  :: rhnActionConfigRevision
-rhnActionDaemonConfig          :: rhnAction
-rhnActionDup                   :: rhnAction rhnServer
-rhnActionDupChannel            :: rhnAction rhnChannel
-rhnActionDupProduct            :: rhnAction suseProducts
-rhnActionErrataUpdate          :: rhnAction rhnErrata
-rhnActionImageDeploy           :: rhnAction
-rhnActionKickstart             :: rhnAction rhnKickstartableTree
-rhnActionKickstartFileList     :: rhnActionKickstart rhnFileList
-rhnActionKickstartGuest        :: rhnActionKickstart rhnKickstartSession rhnKickstartableTree
-rhnActionPackage               :: rhnPackage rhnPackageName rhnPackageArch rhnAction
-rhnActionPackageAnswerfile     :: rhnActionPackage
-rhnActionPackageDelta          :: rhnPackageDelta
-rhnActionPackageRemovalFailure :: rhnServer rhnAction rhnPackageName \
-                                  rhnPackageEVR rhnPackageCapability
-rhnActivationKey               :: rhnRegToken rhnKickstartSession
-rhnArchTypeActions             :: rhnArchType rhnActionType
-rhnChannel                     :: web_customer rhnChannelArch rhnChannelProduct \
-                                  rhnProductName rhnChecksum
-rhnChannelArch                 :: rhnArchType
-rhnChannelComps                :: rhnChannel rhnCompsType
-rhnChannelCloned               :: rhnChannelComps
-rhnChannelErrata               :: rhnChannel rhnErrata
-rhnChannelFamily               :: web_customer
-rhnChannelFamilyMembers        :: rhnChannel rhnChannelFamily
-rhnPrivateChannelFamily        :: web_customer rhnChannelFamily
-rhnPublicChannelFamily         :: rhnChannelFamily
-rhnChannelPackage              :: rhnChannel rhnPackage
-rhnChannelPackageArchCompat    :: rhnPackageArch rhnChannelArch
-rhnChannelPermission           :: rhnChannelPermissionRole rhnChannel web_contact
-rhnChannelTrust                :: rhnChannel
-rhnChannelContentSource        :: rhnChannel rhnContentSourceType rhnContentSource
-rhnChecksum                    :: rhnChecksumType
-rhnClientCapability            :: rhnClientCapabilityName
-rhnConfigContent               :: rhnChecksum
-rhnConfigFile                  :: rhnConfigChannel rhnConfigFileState rhnConfigFileName
-rhnConfigFile_foreignkeys      :: rhnConfigRevision
-rhnConfigChannel               :: web_customer rhnConfigChannelType
-rhnConfigRevision              :: rhnConfigFile rhnConfigInfo rhnConfigContent rhnConfigFileType
-rhnContentSourceSsl            :: rhnContentSource rhnCryptoKey
-rhnCpu                         :: rhnServer rhnCpuArch
-rhnCryptoKey                   :: rhnCryptoKeyType
-rhnCryptoKeyKickstart          :: rhnCryptoKey rhnKSData
-rhnDevice                      :: rhnServer
-rhnDistChannelMap              :: rhnChannel rhnChannelArch
-rhnErrata                      :: rhnChecksum web_customer rhnErrataSeverity
-rhnErrataBuglist               :: rhnErrata
-rhnErrataCVE                   :: rhnErrata rhnCVE
-rhnErrataFile                  :: rhnChecksum rhnErrata rhnErrataFileType
-rhnErrataFileChannel           :: rhnChannel rhnErrataFile rhnChannelErrata
-rhnErrataFilePackage           :: rhnPackage rhnErrataFile rhnErrataPackage
-rhnErrataFilePackageSource     :: rhnErrataFile rhnPackageSource rhnErrataPackage
-rhnErrataKeyword               :: rhnErrata
-rhnErrataPackage               :: rhnPackage rhnErrata
-rhnFile                        :: web_customer rhnChecksum
-rhnFileLocation                :: rhnFile
-rhnImageNeededCache            :: web_customer suseImageInfo rhnErrata rhnChannel
-rhnKSData                      :: web_customer
-rhnKickstartableTree           :: rhnChannel rhnKSTreeType web_customer \
-                                  rhnKSInstallType
-rhnKickstartCommand            :: rhnKSData rhnKickstartCommandName
-rhnKickstartDefaults           :: rhnKSData rhnKickstartableTree rhnServerProfile \
-                                  rhnKickstartVirtualizationType
-rhnKickstartDefaultRegToken    :: rhnKSData rhnRegToken
-rhnKickstartPreserveFileList   :: rhnKSData rhnFileList
-rhnKickstartScript             :: rhnKSData
-rhnKickstartSession            :: rhnKSData web_customer rhnServer rhnAction \
-                                  rhnKickstartSessionState rhnServerProfile \
-                                  rhnKickstartVirtualizationType
-rhnKickstartSessionHistory     :: rhnKickstartSession rhnKickstartSessionState
-rhnKSTreeFile                  :: rhnKickstartableTree rhnChannelErrata rhnErrata \
-                                  rhnChecksum
-rhnKickstartTimezone           :: rhnKSInstallType
-rhnServerNetAddress4           :: rhnServerNetInterface
-rhnServerNetAddress6           :: rhnServerNetInterface
-rhnOrgChannelSettings          :: web_customer rhnChannel rhnOrgChannelSettingsType
-rhnOrgErrataCacheQueue         :: web_customer
-rhnOrgExtGroupMapping          :: rhnUserExtGroup rhnServerGroup
-rhnPackage                     :: rhnPackageName rhnPackageEVR rhnPackageArch \
-                                  rhnPackageGroup rhnSourceRPM web_customer \
-                                  rhnChecksum
-rhnPackageArch                 :: rhnArchType
-rhnPackageDeltaElement         :: rhnPackageDelta rhnTransactionPackage
-rhnPackageEVR                  :: evr_t
-rhnPackageChangeLogRec         :: rhnPackage rhnPackageChangeLogData
-rhnPackageConflicts            :: rhnPackage rhnPackageCapability
-rhnPackageFile                 :: rhnChecksum rhnPackage rhnPackageCapability
-rhnPackageKeyAssociation       :: rhnPackageKey rhnPackage
-rhnPackageKey                  :: rhnPackageKeyType rhnPackageProvider
-rhnPackageObsoletes            :: rhnPackage rhnPackageCapability
-rhnPackageNEVRA                :: rhnPackageName rhnPackageEVR rhnPackageArch
-rhnPackageProvides             :: rhnPackage rhnPackageCapability
-rhnPackageRequires             :: rhnPackage rhnPackageCapability
-rhnPackageSuggests             :: rhnPackage rhnPackageCapability
-rhnPackageSupplements          :: rhnPackage rhnPackageCapability
-rhnPackageEnhances             :: rhnPackage rhnPackageCapability
-rhnPackageRecommends           :: rhnPackage rhnPackageCapability
-rhnPackageBreaks               :: rhnPackage rhnPackageCapability
-rhnPackagePredepends           :: rhnPackage rhnPackageCapability
-rhnPackageSource               :: web_customer rhnSourceRPM rhnFile rhnPackageGroup \
-                                  rhnChecksum
-rhnPackageSyncBlacklist        :: rhnPackageName web_customer
-rhnPackageExtraTagKey          :: rhnPackage
-rhnPackageExtraTag             :: rhnPackage rhnPackageExtraTagKey
-rhnProxyInfo                   :: rhnServer
-rhnPushClient                  :: rhnServer rhnPushClientState
-rhnRam                         :: rhnServer
-rhnRegToken                    :: rhnServerGroupType suseServerContactMethod
-rhnRegTokenChannels            :: rhnRegToken rhnChannel
-rhnRegTokenConfigChannels      :: rhnRegToken rhnConfigChannel
-rhnRegTokenEntitlement         :: rhnRegToken rhnServerGroupType
-rhnRegTokenGroups              :: rhnRegToken rhnServerGroup
-rhnRegTokenPackages            :: rhnRegToken rhnPackageName
+log                                :: web_contact_all
+PXTSessions                        :: web_contact
+rhnAction                          :: rhnActionType web_customer web_contact
+rhnActionApplyStates               :: rhnAction
+rhnActionApplyStatesResult         :: rhnActionApplyStates rhnServer
+rhnActionImageBuild                :: rhnAction suseImageProfile
+rhnActionImageBuildResult          :: rhnActionImageBuild rhnServer
+rhnActionInspect                   :: rhnAction suseImageStore
+rhnActionImageInspectResult        :: rhnActionInspect rhnServer
+rhnActionScript                    :: rhnAction
+rhnActionConfigChannel             :: rhnServerAction rhnConfigChannel
+rhnActionConfigDate                :: rhnAction
+rhnActionConfigDateFile            :: rhnAction
+rhnActionConfigFileName            :: rhnServerAction rhnConfigFileName rhnConfigFileFailure \
+                                      rhnConfigRevision
+rhnActionConfigRevision            :: rhnAction rhnServer rhnConfigRevision rhnConfigFileFailure
+rhnActionConfigRevisionResult      :: rhnActionConfigRevision
+rhnActionDaemonConfig              :: rhnAction
+rhnActionDup                       :: rhnAction rhnServer
+rhnActionDupChannel                :: rhnAction rhnChannel
+rhnActionDupProduct                :: rhnAction suseProducts
+rhnActionErrataUpdate              :: rhnAction rhnErrata
+rhnActionImageDeploy               :: rhnAction
+rhnActionKickstart                 :: rhnAction rhnKickstartableTree
+rhnActionKickstartFileList         :: rhnActionKickstart rhnFileList
+rhnActionKickstartGuest            :: rhnActionKickstart rhnKickstartSession rhnKickstartableTree
+rhnActionPackage                   :: rhnPackage rhnPackageName rhnPackageArch rhnAction
+rhnActionPackageAnswerfile         :: rhnActionPackage
+rhnActionPackageDelta              :: rhnPackageDelta
+rhnActionPackageRemovalFailure     :: rhnServer rhnAction rhnPackageName \
+                                      rhnPackageEVR rhnPackageCapability
+rhnActivationKey                   :: rhnRegToken rhnKickstartSession
+rhnArchTypeActions                 :: rhnArchType rhnActionType
+rhnChannel                         :: web_customer rhnChannelArch rhnChannelProduct \
+                                      rhnProductName rhnChecksum
+rhnChannelArch                     :: rhnArchType
+rhnChannelComps                    :: rhnChannel rhnCompsType
+rhnChannelCloned                   :: rhnChannelComps
+rhnChannelErrata                   :: rhnChannel rhnErrata
+rhnChannelFamily                   :: web_customer
+rhnChannelFamilyMembers            :: rhnChannel rhnChannelFamily
+rhnPrivateChannelFamily            :: web_customer rhnChannelFamily
+rhnPublicChannelFamily             :: rhnChannelFamily
+rhnChannelPackage                  :: rhnChannel rhnPackage
+rhnChannelPackageArchCompat        :: rhnPackageArch rhnChannelArch
+rhnChannelPermission               :: rhnChannelPermissionRole rhnChannel web_contact
+rhnChannelTrust                    :: rhnChannel
+rhnChannelContentSource            :: rhnChannel rhnContentSourceType rhnContentSource
+rhnChecksum                        :: rhnChecksumType
+rhnClientCapability                :: rhnClientCapabilityName
+rhnConfigContent                   :: rhnChecksum
+rhnConfigFile                      :: rhnConfigChannel rhnConfigFileState rhnConfigFileName
+rhnConfigFile_foreignkeys          :: rhnConfigRevision
+rhnConfigChannel                   :: web_customer rhnConfigChannelType
+rhnConfigRevision                  :: rhnConfigFile rhnConfigInfo rhnConfigContent rhnConfigFileType
+rhnContentSourceSsl                :: rhnContentSource rhnCryptoKey
+rhnCpu                             :: rhnServer rhnCpuArch
+rhnCryptoKey                       :: rhnCryptoKeyType
+rhnCryptoKeyKickstart              :: rhnCryptoKey rhnKSData
+rhnDevice                          :: rhnServer
+rhnDistChannelMap                  :: rhnChannel rhnChannelArch
+rhnErrata                          :: rhnChecksum web_customer rhnErrataSeverity
+rhnErrataBuglist                   :: rhnErrata
+rhnErrataCVE                       :: rhnErrata rhnCVE
+rhnErrataFile                      :: rhnChecksum rhnErrata rhnErrataFileType
+rhnErrataFileChannel               :: rhnChannel rhnErrataFile rhnChannelErrata
+rhnErrataFilePackage               :: rhnPackage rhnErrataFile rhnErrataPackage
+rhnErrataFilePackageSource         :: rhnErrataFile rhnPackageSource rhnErrataPackage
+rhnErrataKeyword                   :: rhnErrata
+rhnErrataPackage                   :: rhnPackage rhnErrata
+rhnFile                            :: web_customer rhnChecksum
+rhnFileLocation                    :: rhnFile
+rhnImageNeededCache                :: web_customer suseImageInfo rhnErrata rhnChannel
+rhnKSData                          :: web_customer
+rhnKickstartableTree               :: rhnChannel rhnKSTreeType web_customer \
+                                      rhnKSInstallType
+rhnKickstartCommand                :: rhnKSData rhnKickstartCommandName
+rhnKickstartDefaults               :: rhnKSData rhnKickstartableTree rhnServerProfile \
+                                      rhnKickstartVirtualizationType
+rhnKickstartDefaultRegToken        :: rhnKSData rhnRegToken
+rhnKickstartPreserveFileList       :: rhnKSData rhnFileList
+rhnKickstartScript                 :: rhnKSData
+rhnKickstartSession                :: rhnKSData web_customer rhnServer rhnAction \
+                                      rhnKickstartSessionState rhnServerProfile \
+                                      rhnKickstartVirtualizationType
+rhnKickstartSessionHistory         :: rhnKickstartSession rhnKickstartSessionState
+rhnKSTreeFile                      :: rhnKickstartableTree rhnChannelErrata rhnErrata \
+                                      rhnChecksum
+rhnKickstartTimezone               :: rhnKSInstallType
+rhnServerNetAddress4               :: rhnServerNetInterface
+rhnServerNetAddress6               :: rhnServerNetInterface
+rhnOrgChannelSettings              :: web_customer rhnChannel rhnOrgChannelSettingsType
+rhnOrgErrataCacheQueue             :: web_customer
+rhnOrgExtGroupMapping              :: rhnUserExtGroup rhnServerGroup
+rhnPackage                         :: rhnPackageName rhnPackageEVR rhnPackageArch \
+                                      rhnPackageGroup rhnSourceRPM web_customer \
+                                      rhnChecksum
+rhnPackageArch                     :: rhnArchType
+rhnPackageDeltaElement             :: rhnPackageDelta rhnTransactionPackage
+rhnPackageEVR                      :: evr_t
+rhnPackageChangeLogRec             :: rhnPackage rhnPackageChangeLogData
+rhnPackageConflicts                :: rhnPackage rhnPackageCapability
+rhnPackageFile                     :: rhnChecksum rhnPackage rhnPackageCapability
+rhnPackageKeyAssociation           :: rhnPackageKey rhnPackage
+rhnPackageKey                      :: rhnPackageKeyType rhnPackageProvider
+rhnPackageObsoletes                :: rhnPackage rhnPackageCapability
+rhnPackageNEVRA                    :: rhnPackageName rhnPackageEVR rhnPackageArch
+rhnPackageProvides                 :: rhnPackage rhnPackageCapability
+rhnPackageRequires                 :: rhnPackage rhnPackageCapability
+rhnPackageSuggests                 :: rhnPackage rhnPackageCapability
+rhnPackageSupplements              :: rhnPackage rhnPackageCapability
+rhnPackageEnhances                 :: rhnPackage rhnPackageCapability
+rhnPackageRecommends               :: rhnPackage rhnPackageCapability
+rhnPackageBreaks                   :: rhnPackage rhnPackageCapability
+rhnPackagePredepends               :: rhnPackage rhnPackageCapability
+rhnPackageSource                   :: web_customer rhnSourceRPM rhnFile rhnPackageGroup \
+                                      rhnChecksum
+rhnPackageSyncBlacklist            :: rhnPackageName web_customer
+rhnPackageExtraTagKey              :: rhnPackage
+rhnPackageExtraTag                 :: rhnPackage rhnPackageExtraTagKey
+rhnProxyInfo                       :: rhnServer
+rhnPushClient                      :: rhnServer rhnPushClientState
+rhnRam                             :: rhnServer
+rhnRegToken                        :: rhnServerGroupType suseServerContactMethod
+rhnRegTokenChannels                :: rhnRegToken rhnChannel
+rhnRegTokenConfigChannels          :: rhnRegToken rhnConfigChannel
+rhnRegTokenEntitlement             :: rhnRegToken rhnServerGroupType
+rhnRegTokenGroups                  :: rhnRegToken rhnServerGroup
+rhnRegTokenPackages                :: rhnRegToken rhnPackageName
 
-rhnServer                      :: rhnServerArch web_contact web_customer \
-                                  rhnProvisionState suseServerContactMethod \
-                                  suseMaintenanceSchedule
-rhnServerAction                :: rhnServer rhnAction rhnActionStatus
-rhnServerActionPackageResult   :: rhnActionPackage
-rhnServerActionScriptResult    :: rhnActionScript rhnServer
-rhnServerArch                  :: rhnArchType
-rhnServerChannel               :: rhnServer rhnChannel
-rhnServerChannelArchCompat     :: rhnServerArch rhnChannelArch
-rhnServerConfigChannel         :: rhnServer rhnConfigChannel
-rhnServerCustomDataValue       :: rhnCustomDataKey
-rhnServerDMI                   :: rhnServer
-rhnServerFQDN                  :: rhnServer
-rhnServerGroup                 :: rhnServerGroupType web_customer
-rhnServerGroupMembers          :: rhnServer rhnServerGroup
-rhnServerGroupTypeFeature      :: rhnFeature rhnServerGroupType
-rhnServerHistory               :: rhnServer
-rhnServerInfo                  :: rhnServer
-rhnServerUuid                  :: rhnServer
-rhnServerInstallInfo           :: rhnServer
-rhnServerLocation              :: rhnServer
-rhnServerNeededCache           :: web_customer rhnServer rhnErrata rhnChannel
-rhnServerNotes                 :: rhnServer web_contact
-rhnServerPackage               :: rhnServer rhnPackageArch rhnPackageName rhnPackageEVR
-rhnServerPackageArchCompat     :: rhnPackageArch rhnServerArch
-rhnServerPath                  :: rhnServer
-rhnServerPreserveFileList      :: rhnServer rhnFileList
-rhnServerProfile               :: web_customer rhnChannel rhnServerProfileType
-rhnServerProfilePackage        :: rhnServerProfile rhnPackageName rhnPackageEVR
-rhnServerTokenRegs             :: rhnRegToken rhnServer
-rhnServerServerGroupArchCompat :: rhnServerGroupType rhnServerArch
-rhnSet                         :: web_contact
-rhnSGTypeBaseAddonCompat       :: rhnServerGroupType
-rhnSnapshot                    :: web_customer rhnSnapshotInvalidReason
-rhnSnapshotChannel             :: rhnSnapshot rhnChannel
-rhnSnapshotConfigChannel       :: rhnSnapshot rhnConfigChannel
-rhnSnapshotConfigRevision      :: rhnSnapshot rhnConfigRevision
-rhnSnapshotPackage             :: rhnSnapshot
-rhnSnapshotServerGroup         :: rhnServerGroup rhnSnapshot
-rhnSnapshotTag                 :: rhnSnapshot rhnTag
-rhnSsmOperationServer          :: rhnSsmOperation
-rhnTag                         :: rhnTagName web_customer
-rhnTaskoRun                    :: rhnTaskoTemplate rhnTaskoSchedule
-rhnTaskoSchedule               :: rhnTaskoBunch
-rhnTaskoTemplate               :: rhnTaskoBunch rhnTaskoTask
-rhnTransactionPackage          :: rhnTransactionOperation rhnPackageArch \
-                                  rhnPackageEVR rhnPackageName
-rhnUserExtGroup                :: web_customer
-rhnUserExtGroupMapping         :: rhnUserExtGroup rhnUserGroupType
-rhnUserGroupMembers            :: web_contact rhnUserGroup
-rhnUserGroup                   :: web_customer rhnUserGroupType
-rhnUserInfo                    :: web_contact rhnTimezone
-rhnUserInfoPane                :: rhnInfoPane web_contact
-rhnUserServerGroupPerms        :: web_contact rhnServerGroup
-rhnUserServerPerms             :: web_contact rhnServer
-rhnUserServerPrefs             :: web_contact rhnServer
-rhnVersionInfo                 :: rhnPackageName rhnPackageEVR
-rhnVirtualInstance             :: rhnServer
-rhnVirtualInstanceInfo         :: rhnVirtualInstance rhnVirtualInstanceType \
-                                  rhnVirtualInstanceState
-rhnVirtualInstanceInstallLog   :: rhnKickstartSession
-rhnVirtualInstanceEventLog     :: rhnVirtualInstance rhnVirtualInstanceEventType \
-                                  rhnVirtualInstanceState
-rhnVisibleObjects              :: PXTSessions
-rhnWebContactChangeLog         :: rhnWebContactChangeState
-rhnActionChain                 :: web_contact
-rhnActionChainEntry            :: rhnActionChain rhnAction rhnServer
-rhnActionSubChannels           :: rhnAction rhnChannel
-rhnActionSubChannelsList       :: rhnActionSubChannels rhnChannel
-rhnActionSubChannelsTokens     :: suseChannelAccessToken rhnActionSubChannels
-suseChannelAccessToken         :: suseMinionInfo
-suseChannelAccessTokenChannel  :: suseChannelAccessToken rhnChannel
-suseContentProject             :: web_customer
-suseContentProject_alters      :: suseContentEnvironment
-suseContentProjectSource       :: suseContentProject rhnChannel
-suseContentProjectHistoryEntry :: suseContentProject web_contact
-suseContentFilter              :: web_customer
-suseContentFilterProject       :: suseContentProject suseContentFilter
-suseContentEnvironment         :: suseContentProject
-suseContentEnvironmentTarget   :: suseContentEnvironment rhnChannel
-suseCredentials                :: suseCredentialsType web_contact susePaygSshData
-suseCloudRmtHost               :: susePaygSshData
-suseCVEImageChannel            :: suseImageInfo rhnChannel
-suseCVEServerChannel           :: rhnServer rhnChannel
-suseDockerfileProfile          :: suseImageProfile
-suseKiwiProfile                :: suseImageProfile
-suseProfileCustomDataValue     :: rhnCustomDataKey suseImageProfile web_contact
-suseImageCustomDataValue       :: rhnCustomDataKey suseImageInfo web_contact
-suseImageInfo                  :: rhnServerAction suseImageProfile suseImageStore suseMinionInfo \
-                                  rhnChecksum suseSaltPillar
-suseImageInfoPackage           :: suseImageInfo rhnPackageName rhnPackageEVR rhnPackageArch
-suseImageInfoChannel           :: suseImageInfo rhnChannel
-suseImageInfoInstalledProduct  :: suseInstalledProduct suseImageInfo
-suseImageProfile               :: rhnRegTokenChannels web_customer suseImageStore
-suseImageStore                 :: suseCredentials web_customer suseImageStoreType
-suseMaintenanceCalendar        :: web_customer
-suseMaintenanceSchedule        :: web_customer suseMaintenanceCalendar
-suseMgrServerInfo              :: rhnServer rhnPackageEVR suseCredentials
-suseMinionInfo                 :: rhnServer
-suseInstalledProduct           :: rhnPackageArch
-suseMdData                     :: rhnChannel rhnPackage suseMdKeyword
-susePackageEula                :: rhnPackage suseEula
-susePackageProductFile         :: suseProductFile rhnPackage
-susePackageState               :: rhnPackageName rhnPackageEVR rhnPackageArch suseStateRevision \
-                                  susePackageStateType suseVersionConstraintType
-suseProducts                   :: rhnPackageArch rhnChannelFamily
-suseProductChannel             :: suseProducts rhnChannel
-suseProductExtension           :: suseProducts
-suseProductSCCRepository       :: suseProducts suseSCCRepository
-suseSaltPillar                 :: rhnServer rhnServerGroup web_customer
-suseSCCOrderItem               :: suseCredentials
-suseSCCRegCache                :: suseCredentials rhnServer
-suseSCCRepositoryAuth          :: suseCredentials rhnContentSource
-suseSCCSubscription            :: suseCredentials
-suseSCCSubscriptionProduct     :: suseSCCSubscription suseProducts
-suseServerInstalledProduct     :: rhnServer suseInstalledProduct
-suseServerStateRevision        :: rhnServer suseStateRevision
-susePinnedSubscription         :: rhnServer
-suseStateRevision              :: web_contact
-suseUpgradePath                :: suseProducts
-suseServerVirtualHostManager   :: rhnServer suseVirtualHostManager suseVirtualHostManagerNodeInfo
-suseVHMConfig                  :: suseVirtualHostManager
-suseVirtualHostManager         :: web_customer suseCredentials rhnServerGroup
-suseServerGroupStateRevision   :: rhnServerGroup suseStateRevision
-suseOrgStateRevision           :: web_customer suseStateRevision
-web_contact                    :: web_customer
-web_contact_all                :: web_contact
-web_user_contact_permission    :: web_contact
-web_user_site_info             :: web_contact web_user_site_type
-web_user_personal_info         :: web_contact web_user_prefix
-rhnActionScap                  :: rhnAction
-rhnXccdfIdent                  :: rhnXccdfIdentSystem
-rhnXccdfRuleresult             :: rhnXccdfTestresult rhnXccdfIdent rhnXccdfRuleresultType
-rhnXccdfTestresult             :: rhnServer rhnActionScap rhnXccdfBenchmark rhnXccdfProfile
-rhnXccdfRuleIdentMap           :: rhnXccdfRuleresult
-rhnISSSlaveOrgs                :: rhnISSSlave web_customer
-rhnISSMasterOrgs               :: rhnISSMaster web_customer
-rhnChildChannelArchCompat      :: rhnChannelArch
-rhnResetPassword               :: web_contact
-suseUserNotification           :: suseNotificationMessage web_contact
-suseRecurringAction            :: web_customer web_contact rhnServerGroup suseMinionInfo
-suseAnsiblePath                :: rhnServer
-rhnActionPlaybook              :: rhnAction
-susePaygDimensionResult        :: billing_dimension_t susePaygDimensionComputation
+rhnServer                          :: rhnServerArch web_contact web_customer \
+                                      rhnProvisionState suseServerContactMethod \
+                                      suseMaintenanceSchedule
+rhnServerAction                    :: rhnServer rhnAction rhnActionStatus
+rhnServerActionPackageResult       :: rhnActionPackage
+rhnServerActionScriptResult        :: rhnActionScript rhnServer
+rhnServerArch                      :: rhnArchType
+rhnServerChannel                   :: rhnServer rhnChannel
+rhnServerChannelArchCompat         :: rhnServerArch rhnChannelArch
+rhnServerConfigChannel             :: rhnServer rhnConfigChannel
+rhnServerCustomDataValue           :: rhnCustomDataKey
+rhnServerDMI                       :: rhnServer
+rhnServerFQDN                      :: rhnServer
+rhnServerGroup                     :: rhnServerGroupType web_customer
+rhnServerGroupMembers              :: rhnServer rhnServerGroup
+rhnServerGroupTypeFeature          :: rhnFeature rhnServerGroupType
+rhnServerHistory                   :: rhnServer
+rhnServerInfo                      :: rhnServer
+rhnServerUuid                      :: rhnServer
+rhnServerInstallInfo               :: rhnServer
+rhnServerLocation                  :: rhnServer
+rhnServerNeededCache               :: web_customer rhnServer rhnErrata rhnChannel
+rhnServerNotes                     :: rhnServer web_contact
+rhnServerPackage                   :: rhnServer rhnPackageArch rhnPackageName rhnPackageEVR
+rhnServerPackageArchCompat         :: rhnPackageArch rhnServerArch
+rhnServerPath                      :: rhnServer
+rhnServerPreserveFileList          :: rhnServer rhnFileList
+rhnServerProfile                   :: web_customer rhnChannel rhnServerProfileType
+rhnServerProfilePackage            :: rhnServerProfile rhnPackageName rhnPackageEVR
+rhnServerTokenRegs                 :: rhnRegToken rhnServer
+rhnServerServerGroupArchCompat     :: rhnServerGroupType rhnServerArch
+rhnSet                             :: web_contact
+rhnSGTypeBaseAddonCompat           :: rhnServerGroupType
+rhnSnapshot                        :: web_customer rhnSnapshotInvalidReason
+rhnSnapshotChannel                 :: rhnSnapshot rhnChannel
+rhnSnapshotConfigChannel           :: rhnSnapshot rhnConfigChannel
+rhnSnapshotConfigRevision          :: rhnSnapshot rhnConfigRevision
+rhnSnapshotPackage                 :: rhnSnapshot
+rhnSnapshotServerGroup             :: rhnServerGroup rhnSnapshot
+rhnSnapshotTag                     :: rhnSnapshot rhnTag
+rhnSsmOperationServer              :: rhnSsmOperation
+rhnTag                             :: rhnTagName web_customer
+rhnTaskoRun                        :: rhnTaskoTemplate rhnTaskoSchedule
+rhnTaskoSchedule                   :: rhnTaskoBunch
+rhnTaskoTemplate                   :: rhnTaskoBunch rhnTaskoTask
+rhnTransactionPackage              :: rhnTransactionOperation rhnPackageArch \
+                                      rhnPackageEVR rhnPackageName
+rhnUserExtGroup                    :: web_customer
+rhnUserExtGroupMapping             :: rhnUserExtGroup rhnUserGroupType
+rhnUserGroupMembers                :: web_contact rhnUserGroup
+rhnUserGroup                       :: web_customer rhnUserGroupType
+rhnUserInfo                        :: web_contact rhnTimezone
+rhnUserInfoPane                    :: rhnInfoPane web_contact
+rhnUserServerGroupPerms            :: web_contact rhnServerGroup
+rhnUserServerPerms                 :: web_contact rhnServer
+rhnUserServerPrefs                 :: web_contact rhnServer
+rhnVersionInfo                     :: rhnPackageName rhnPackageEVR
+rhnVirtualInstance                 :: rhnServer
+rhnVirtualInstanceInfo             :: rhnVirtualInstance rhnVirtualInstanceType \
+                                      rhnVirtualInstanceState
+rhnVirtualInstanceInstallLog       :: rhnKickstartSession
+rhnVirtualInstanceEventLog         :: rhnVirtualInstance rhnVirtualInstanceEventType \
+                                      rhnVirtualInstanceState
+rhnVisibleObjects                  :: PXTSessions
+rhnWebContactChangeLog             :: rhnWebContactChangeState
+rhnActionChain                     :: web_contact
+rhnActionChainEntry                :: rhnActionChain rhnAction rhnServer
+rhnActionSubChannels               :: rhnAction rhnChannel
+rhnActionSubChannelsList           :: rhnActionSubChannels rhnChannel
+rhnActionSubChannelsTokens         :: suseChannelAccessToken rhnActionSubChannels
+suseChannelAccessToken             :: suseMinionInfo
+suseChannelAccessTokenChannel      :: suseChannelAccessToken rhnChannel
+suseContentProject                 :: web_customer
+suseContentProject_alters          :: suseContentEnvironment
+suseContentProjectSource           :: suseContentProject rhnChannel
+suseContentProjectHistoryEntry     :: suseContentProject web_contact
+suseContentFilter                  :: web_customer
+suseContentFilterProject           :: suseContentProject suseContentFilter
+suseContentEnvironment             :: suseContentProject
+suseContentEnvironmentTarget       :: suseContentEnvironment rhnChannel
+suseCredentials                    :: suseCredentialsType web_contact susePaygSshData
+suseCloudRmtHost                   :: susePaygSshData
+suseCVEImageChannel                :: suseImageInfo rhnChannel
+suseCVEServerChannel               :: rhnServer rhnChannel
+suseDockerfileProfile              :: suseImageProfile
+suseKiwiProfile                    :: suseImageProfile
+suseProfileCustomDataValue         :: rhnCustomDataKey suseImageProfile web_contact
+suseImageCustomDataValue           :: rhnCustomDataKey suseImageInfo web_contact
+suseImageInfo                      :: rhnServerAction suseImageProfile suseImageStore suseMinionInfo \
+                                      rhnChecksum suseSaltPillar
+suseImageInfoPackage               :: suseImageInfo rhnPackageName rhnPackageEVR rhnPackageArch
+suseImageInfoChannel               :: suseImageInfo rhnChannel
+suseImageInfoInstalledProduct      :: suseInstalledProduct suseImageInfo
+suseImageProfile                   :: rhnRegTokenChannels web_customer suseImageStore
+suseImageStore                     :: suseCredentials web_customer suseImageStoreType
+suseMaintenanceCalendar            :: web_customer
+suseMaintenanceSchedule            :: web_customer suseMaintenanceCalendar
+suseMgrServerInfo                  :: rhnServer rhnPackageEVR suseCredentials
+suseMinionInfo                     :: rhnServer
+suseInstalledProduct               :: rhnPackageArch
+suseMdData                         :: rhnChannel rhnPackage suseMdKeyword
+suseOVALPlatform                   ::
+suseOVALPlatformVulnerablePackage  :: suseOVALPlatform rhnCVE suseOVALVulnerablePackage
+suseOVALVulnerablePackage          ::
+susePackageEula                    :: rhnPackage suseEula
+susePackageProductFile             :: suseProductFile rhnPackage
+susePackageState                   :: rhnPackageName rhnPackageEVR rhnPackageArch suseStateRevision \
+                                      susePackageStateType suseVersionConstraintType
+suseProducts                       :: rhnPackageArch rhnChannelFamily
+suseProductChannel                 :: suseProducts rhnChannel
+suseProductExtension               :: suseProducts
+suseProductSCCRepository           :: suseProducts suseSCCRepository
+suseSaltPillar                     :: rhnServer rhnServerGroup web_customer
+suseSCCOrderItem                   :: suseCredentials
+suseSCCRegCache                    :: suseCredentials rhnServer
+suseSCCRepositoryAuth              :: suseCredentials rhnContentSource
+suseSCCSubscription                :: suseCredentials
+suseSCCSubscriptionProduct         :: suseSCCSubscription suseProducts
+suseServerInstalledProduct         :: rhnServer suseInstalledProduct
+suseServerStateRevision            :: rhnServer suseStateRevision
+susePinnedSubscription             :: rhnServer
+suseStateRevision                  :: web_contact
+suseUpgradePath                    :: suseProducts
+suseServerVirtualHostManager       :: rhnServer suseVirtualHostManager suseVirtualHostManagerNodeInfo
+suseVHMConfig                      :: suseVirtualHostManager
+suseVirtualHostManager             :: web_customer suseCredentials rhnServerGroup
+suseServerGroupStateRevision       :: rhnServerGroup suseStateRevision
+suseOrgStateRevision               :: web_customer suseStateRevision
+web_contact                        :: web_customer
+web_contact_all                    :: web_contact
+web_user_contact_permission        :: web_contact
+web_user_site_info                 :: web_contact web_user_site_type
+web_user_personal_info             :: web_contact web_user_prefix
+rhnActionScap                      :: rhnAction
+rhnXccdfIdent                      :: rhnXccdfIdentSystem
+rhnXccdfRuleresult                 :: rhnXccdfTestresult rhnXccdfIdent rhnXccdfRuleresultType
+rhnXccdfTestresult                 :: rhnServer rhnActionScap rhnXccdfBenchmark rhnXccdfProfile
+rhnXccdfRuleIdentMap               :: rhnXccdfRuleresult
+rhnISSSlaveOrgs                    :: rhnISSSlave web_customer
+rhnISSMasterOrgs                   :: rhnISSMaster web_customer
+rhnChildChannelArchCompat          :: rhnChannelArch
+rhnResetPassword                   :: web_contact
+suseUserNotification               :: suseNotificationMessage web_contact
+suseRecurringAction                :: web_customer web_contact rhnServerGroup suseMinionInfo
+suseAnsiblePath                    :: rhnServer
+rhnActionPlaybook                  :: rhnAction
+susePaygDimensionResult            :: billing_dimension_t susePaygDimensionComputation
