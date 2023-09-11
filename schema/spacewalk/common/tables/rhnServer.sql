@@ -63,7 +63,8 @@ CREATE TABLE rhnServer
     created             TIMESTAMPTZ
                             DEFAULT (current_timestamp) NOT NULL,
     modified            TIMESTAMPTZ
-                            DEFAULT (current_timestamp) NOT NULL
+                            DEFAULT (current_timestamp) NOT NULL,
+    cpe                 VARCHAR(64)
 )
 
 ;
