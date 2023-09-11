@@ -130,6 +130,24 @@ public class TaskFactory extends HibernateFactory {
     }
 
     /**
+     * Delete tasks matching a name and a data, ignoring priority and organization.
+     *
+     * @param name the tasks name
+     * @param data the tasks data
+     */
+    public static void deleteByNameData(String name, Long data) {
+        Session session = HibernateFactory.getSession();
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaDelete<Task> criteriaDelete = builder.createCriteriaDelete(Task.class);
+        Root<Task> root = criteriaDelete.from(Task.class);
+        criteriaDelete.where(builder.and(
+                builder.equal(root.get("name"), name),
+                builder.equal(root.get("data"), data)
+        ));
+        session.createQuery(criteriaDelete).executeUpdate();
+    }
+
+    /**
      * Gets the list of "update errata cache for channel" tasks.
      * @param org The org containing the tasks
      * @return Returns a list of task objects
