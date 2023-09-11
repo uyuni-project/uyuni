@@ -26,6 +26,7 @@ import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.errata.ClonedErrata;
 import com.redhat.rhn.domain.errata.Cve;
 import com.redhat.rhn.domain.errata.Errata;
+import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
@@ -41,6 +42,12 @@ import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.channel.manage.ErrataHelper;
 
+import com.suse.oval.OVALCachingFactory;
+import com.suse.oval.OVALCleaner;
+import com.suse.oval.OsFamily;
+import com.suse.oval.ovaltypes.DefinitionType;
+import com.suse.oval.ovaltypes.OvalRootType;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -48,6 +55,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import static com.redhat.rhn.domain.rhnpackage.test.PackageNameTest.createTestPackageName;
 
 
 /**
@@ -353,6 +362,44 @@ public class ErrataTestUtils {
         return result;
     }
 
+    public static Package createTestPackage(User user, Errata errata, Channel channel, String arch, String name,
+                                            String epoch, String version, String release) {
+        Package result = createTestPackage(user, errata, channel, arch);
+
+        PackageEvr pevr =
+                PackageEvrFactory.lookupOrCreatePackageEvr(epoch, version, release, result.getPackageType());
+
+        result.setRpmVersion(result.getRpmVersion());
+        result.setDescription(result.getDescription());
+        result.setSummary(result.getSummary());
+        result.setPackageSize(result.getPackageSize());
+        result.setPayloadSize(result.getPayloadSize());
+        result.setBuildHost(result.getBuildHost());
+        result.setVendor(result.getVendor());
+        result.setPayloadFormat(result.getPayloadFormat());
+        result.setCompat(result.getCompat());
+        result.setPath(result.getPath());
+        result.setHeaderSignature(result.getHeaderSignature());
+        result.setCopyright(result.getCopyright());
+        result.setCookie(result.getCookie());
+        result.setPackageName(createTestPackageName(name));
+        result.setPackageEvr(pevr);
+        result.setPackageGroup(result.getPackageGroup());
+
+        TestUtils.saveAndFlush(result);
+
+        return result;
+    }
+
+    public static Package createTestPackage(User user, Channel channel, String arch, String name,
+                                            String epoch, String version, String release) {
+        return createTestPackage(user,null, channel, arch, name, epoch, version, release);
+    }
+
+    public static Package createTestPackage(User user, Channel channel, String arch, String name) {
+        return createTestPackage(user,null, channel, arch, name, "1", "0", "1");
+    }
+
     /**
      * Create a {@link Package} which has a greater version number than another.
      * @param user the package owner
@@ -495,5 +542,12 @@ public class ErrataTestUtils {
 
         // Copy the packages
         copy.setPackages(new HashSet<>(original.getPackages()));
+    }
+
+    public static void extractAndSaveVulnerablePackages(OvalRootType rootType) {
+        OVALCleaner.cleanup(rootType, OsFamily.openSUSE_LEAP, "15.4");
+        OVALCachingFactory.savePlatformsVulnerablePackages(rootType);
+
+        HibernateFactory.getSession().flush();
     }
 }
