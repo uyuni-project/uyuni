@@ -20,7 +20,7 @@ import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.MethodInvalidParamException;
 import com.redhat.rhn.frontend.xmlrpc.UnknownCVEIdentifierFaultException;
 import com.redhat.rhn.manager.audit.CVEAuditImage;
-import com.redhat.rhn.manager.audit.CVEAuditManager;
+import com.redhat.rhn.manager.audit.CVEAuditManagerOVAL;
 import com.redhat.rhn.manager.audit.CVEAuditServer;
 import com.redhat.rhn.manager.audit.PatchStatus;
 import com.redhat.rhn.manager.audit.UnknownCVEIdentifierException;
@@ -57,7 +57,7 @@ public class CVEAuditHandler extends BaseHandler {
      */
     @ReadOnly
     public List<CVEAuditServer> listSystemsByPatchStatus(User loggedInUser,
-            String cveIdentifier) {
+                                                         String cveIdentifier) {
         return listSystemsByPatchStatus(loggedInUser, cveIdentifier, null);
     }
 
@@ -110,17 +110,12 @@ public class CVEAuditHandler extends BaseHandler {
             }
         }
 
-        try {
-            List<CVEAuditServer> result = CVEAuditManager.listSystemsByPatchStatus(
-                    loggedInUser, cveIdentifier, patchStatuses);
+        List<CVEAuditServer> result = CVEAuditManagerOVAL.listSystemsByPatchStatus(
+                loggedInUser, cveIdentifier, patchStatuses);
 
-            result.sort(Comparator.comparingInt(s -> s.getPatchStatus().getRank()));
+        result.sort(Comparator.comparingInt(s -> s.getPatchStatus().getRank()));
 
-            return result;
-        }
-        catch (UnknownCVEIdentifierException e) {
-            throw new UnknownCVEIdentifierFaultException();
-        }
+        return result;
     }
 
     /**
@@ -177,7 +172,8 @@ public class CVEAuditHandler extends BaseHandler {
      */
     @ReadOnly
     public List<CVEAuditImage> listImagesByPatchStatus(User loggedInUser,
-            String cveIdentifier, List<String> patchStatusLabels) throws FaultException {
+                                                       String cveIdentifier, List<String> patchStatusLabels)
+            throws FaultException {
 
         // Convert list of strings to patch status objects
         EnumSet<PatchStatus> patchStatuses = EnumSet.noneOf(PatchStatus.class);
@@ -196,7 +192,7 @@ public class CVEAuditHandler extends BaseHandler {
         }
 
         try {
-            List<CVEAuditImage> result = CVEAuditManager.listImagesByPatchStatus(
+            List<CVEAuditImage> result = CVEAuditManagerOVAL.listImagesByPatchStatus(
                     loggedInUser, cveIdentifier, patchStatuses);
 
             result.sort(Comparator.comparingInt(i -> i.getPatchStatus().getRank()));
