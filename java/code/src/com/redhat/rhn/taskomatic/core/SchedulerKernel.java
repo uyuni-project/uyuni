@@ -135,6 +135,7 @@ public class SchedulerKernel {
         MessageQueue.startMessaging();
         MessageQueue.configureDefaultActions(GlobalInstanceHolder.SALT_API);
         try {
+            TaskoQuartzHelper.cleanInvalidTriggers();
             SchedulerKernel.scheduler.start();
             initializeAllSatSchedules();
             synchronized (this.shutdownLock) {
