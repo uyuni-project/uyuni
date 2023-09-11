@@ -603,7 +603,7 @@ public class CVEAuditManager {
      *   - contained in a certain channel
      * in order to detect if the system is affected or not by a certain CVE
      */
-    private static class CVEPatchStatus {
+    public static class CVEPatchStatus {
 
         private final long systemId;
         private final String systemName;
@@ -802,8 +802,8 @@ public class CVEAuditManager {
 
     }
 
-    private static Stream<CVEPatchStatus> listSystemsByPatchStatus(User user,
-        String cveIdentifier) {
+    public static Stream<CVEPatchStatus> listSystemsByPatchStatus(User user,
+                                                                  String cveIdentifier) {
         SelectMode m = ModeFactory.getMode("cve_audit_queries",
                 "list_systems_by_patch_status");
 
