@@ -21,7 +21,7 @@
 
   <property name="deploy.host" value="deployhost" />
   <property name="deploy.port" value="22" />
-  <property name="deploy.dir" value="/srv/tomcat/webapps/rhn" />
+  <property name="deploy.dir" value="/usr/share/susemanager/www/tomcat/webapps/rhn" />
   <property name="deploy.user" value="root" />
   <property name="deploy.namespace" value="default"/>
 
@@ -242,7 +242,7 @@
         <available file="${basedir}/../susemanager" type="dir"/>
       </not>
     </condition>
-    <condition property="static.files.dir" value="/var/www/html" else="/srv/www/htdocs">
+    <condition property="static.files.dir" value="/var/www/html" else="/usr/share/susemanager/www/htdocs">
       <isset property="spacewalk.upstream"/>
     </condition>
 

@@ -408,6 +408,26 @@ if [ -f $MANAGER_COMPLETE ]; then
 fi
 }
 
+
+
+#TODO most of the apache configuration are set in the perl script, so these changes should be there...but since we want to deprecate perl, the final
+# goal would be to move everything here.
+#
+setup_apache() {
+    sed -i 's|DocumentRoot "/srv|DocumentRoot "/usr/share/susemanager|g' /etc/apache2/default-server.conf
+    sed -i 's|<Directory "/srv|<Directory "/usr/share/susemanager|g' /etc/apache2/default-server.conf
+    sed -i 's|<Directory "/srv|<Directory "/usr/share/susemanager|g' /etc/apache2/conf.d/zz-spacewalk-www.conf
+    sed -i 's|ScriptAlias /cgi-bin/ "/srv|ScriptAlias /cgi-bin/ "/usr/share/susemanager|g' /etc/apache2/default-server.conf
+    sed -i 's|DocumentRoot "/srv|DocumentRoot "/usr/share/susemanager|g' /etc/apache2/vhosts.d/vhost-ssl.conf
+    sed -i 's|DocumentRoot "/srv|DocumentRoot "/usr/share/susemanager|g' /etc/apache2/vhosts.d/vhost-ssl.template
+}
+
+#TODO move this on the permission check function
+setup_permission() {
+    chown tomcat:tomcat -R /usr/share/susemanager/www/htdocs
+    chmod 777 -R /usr/share/susemanager/www/htdocs
+}
+
 setup_spacewalk() {
     CERT_COUNTRY=`echo -n $CERT_COUNTRY|tr '[:lower:]' '[:upper:]'`
 
@@ -505,6 +525,10 @@ ssl-server-key = $SERVER_KEY" >> /root/spacewalk-answers
     if [ ! -f /srv/susemanager/salt/images/rhn-org-trusted-ssl-cert-osimage-1.0-1.noarch.rpm ]; then
         /usr/sbin/mgr-package-rpm-certificate-osimage
     fi
+
+    setup_apache
+
+    setup_permission
 
     # rm /root/spacewalk-answers
     if [ "$SWRET" != "0" ]; then

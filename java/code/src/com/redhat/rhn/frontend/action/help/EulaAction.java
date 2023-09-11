@@ -36,7 +36,7 @@ import javax.servlet.http.HttpServletResponse;
  * EULA action page.
  */
 public class EulaAction extends org.apache.struts.action.Action {
-    private static final File EULA_PATH = new File("/srv/www/htdocs/help/eula.html");
+    private static final File EULA_PATH = new File("/usr/share/susemanager/www/htdocs/help/eula.html");
 
     /** {@inheritDoc} */
     @Override

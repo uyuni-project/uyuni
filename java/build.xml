@@ -564,7 +564,7 @@
   </target>
 
   <target name="install-tomcat9-suse">
-       <property name="webapp-dir" value="/srv/tomcat/webapps/" />
+       <property name="webapp-dir" value="/usr/share/susemanager/www/tomcat/webapps/" />
        <echo message="${prefix}" />
        <echo message="${webapp-dir}" />
        <antcall target="install" />
