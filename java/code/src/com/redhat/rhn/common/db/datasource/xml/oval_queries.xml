@@ -1,0 +1,22 @@
+<datasource_modes>
+    <callable-mode name="add_product_vulnerable_package">
+        <query params="package_name, fix_version, product_name, cve_name">
+            call insert_product_vulnerable_packages(:package_name, :fix_version, :product_name, :cve_name)
+        </query>
+    </callable-mode>
+
+    <mode name="get_vulnerable_packages">
+        <query params="cve_name, product_cpe">
+            SELECT vulnerablePkg.name AS vulnerablePkgName, vulnerablePkg.fix_version AS vulnerablePkgFixVersion
+            FROM suseovalvulnerablepackage vulnerablePkg,
+                 rhncve cve,
+                 suseovalplatform platform,
+                 suseovalplatformvulnerablepackage platVulnerablePkg
+            WHERE cve.name = :cve_name
+              AND platform.cpe = :product_cpe
+              AND platVulnerablePkg.cve_id = cve.id
+              AND platVulnerablePkg.platform_id = platform.id
+              AND platVulnerablePkg.vulnerable_pkg_id = vulnerablePkg.id;
+        </query>
+    </mode>
+</datasource_modes>

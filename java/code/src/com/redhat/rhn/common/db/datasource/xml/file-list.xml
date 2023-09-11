@@ -25,6 +25,7 @@
     <template name="cve_audit_queries" filename="xml/cve_audit_queries.xml" />
     <template name="ResetPassword_queries" filename="xml/ResetPassword_queries.xml" />
     <template name="Product_queries" filename="xml/Product_queries.xml" />
+    <template name="oval_queries" filename="xml/oval_queries.xml"/>
 
     <!-- Reporting queries -->
     <template name="GeneralReport_queries" filename="xml/GeneralReport_queries.xml" />
