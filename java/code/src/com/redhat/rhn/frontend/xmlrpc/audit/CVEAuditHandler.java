@@ -14,22 +14,28 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.audit;
 
+import static java.util.stream.Collectors.groupingBy;
+
 import com.redhat.rhn.FaultException;
+import com.redhat.rhn.domain.rhnpackage.PackageType;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.MethodInvalidParamException;
 import com.redhat.rhn.frontend.xmlrpc.UnknownCVEIdentifierFaultException;
+import com.redhat.rhn.manager.audit.CVEAffectedPackageItem;
 import com.redhat.rhn.manager.audit.CVEAuditImage;
 import com.redhat.rhn.manager.audit.CVEAuditManagerOVAL;
 import com.redhat.rhn.manager.audit.CVEAuditServer;
 import com.redhat.rhn.manager.audit.PatchStatus;
 import com.redhat.rhn.manager.audit.UnknownCVEIdentifierException;
-
 import com.suse.manager.api.ReadOnly;
+import com.suse.oval.OVALCachingFactory;
 
 import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * CVESearchHandler
@@ -207,5 +213,38 @@ public class CVEAuditHandler extends BaseHandler {
         catch (UnknownCVEIdentifierException e) {
             throw new UnknownCVEIdentifierFaultException();
         }
+    }
+
+    @ReadOnly
+    public List<CVEAffectedServer> listAffectedSystems(User loggedInUser, String cveIdentifier) {
+        List<CVEAffectedPackageItem> affectedPackageItems =
+                OVALCachingFactory.listSystemsAffectedPackages(cveIdentifier);
+
+        Map<Long, List<CVEAffectedPackageItem>> affectedPackageItemsBySystem =
+                affectedPackageItems.stream().collect(groupingBy(CVEAffectedPackageItem::getSystemId));
+
+        return affectedPackageItemsBySystem.entrySet().stream()
+                .map(entry -> {
+                    Long systemId = entry.getKey();
+                    List<CVEAffectedPackageItem> systemAffectedPackageItems = entry.getValue();
+
+                    String systemName = systemAffectedPackageItems.get(0).getSystemName();
+
+                    List<CVEAffectedPackage> affectedPackages = systemAffectedPackageItems
+                            .stream()
+                            .map(CVEAuditHandler::toAffectedPackage).collect(Collectors.toList());
+
+                    return new CVEAffectedServer(systemId, systemName, affectedPackages);
+
+                }).collect(Collectors.toList());
+    }
+
+    private static CVEAffectedPackage toAffectedPackage(CVEAffectedPackageItem packageItem) {
+        String packageName = packageItem.getPackageName();
+        PackageType packageType = packageItem.getPackageType();
+        String installedVersion = packageItem.getInstalledPackageEvr().toUniversalEvrString();
+        String patchedVersion = packageItem.getPatchedVersion();
+
+        return new CVEAffectedPackage(packageName, installedVersion, patchedVersion, packageType);
     }
 }
