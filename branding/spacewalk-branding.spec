@@ -24,8 +24,10 @@
 %global wwwdocroot %{_var}/www/html
 %else
 %if 0%{?suse_version}
-%global tomcat_path /srv/tomcat
-%global wwwdocroot /srv/www/htdocs
+%global susemanager_shared_path /usr/share/susemanager
+%global wwwroot %{susemanager_shared_path}/www
+%global tomcat_path %{wwwroot}/tomcat
+%global wwwdocroot %{wwwroot}/htdocs
 %else
 %global tomcat_path %{_var}/lib/tomcat6
 %global wwwdocroot %{_var}/www/html
@@ -93,6 +95,11 @@ ln -s %{_datadir}/rhn/lib/java-branding.jar %{buildroot}%{tomcat_path}/webapps/r
 %{tomcat_path}/webapps/rhn/WEB-INF/lib/java-branding.jar
 %license LICENSE
 %if 0%{?suse_version}
+%attr(775,tomcat,tomcat) %dir %{susemanager_shared_path}
+%attr(775,tomcat,tomcat) %dir %{wwwroot}
+%attr(775,tomcat,tomcat) %dir %{wwwdocroot}
+%attr(775,tomcat,tomcat) %dir %{tomcat_path}
+%attr(775,tomcat,tomcat) %dir %{tomcat_path}/webapps
 %attr(775,tomcat,tomcat) %dir %{tomcat_path}/webapps/rhn
 %attr(775,tomcat,tomcat) %dir %{tomcat_path}/webapps/rhn/WEB-INF
 %attr(775,tomcat,tomcat) %dir %{tomcat_path}/webapps/rhn/WEB-INF/lib/

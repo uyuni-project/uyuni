@@ -22,7 +22,7 @@
 %endif
 
 %if 0%{?suse_version}
-%global serverdir  /srv
+%global serverdir  /usr/share/susemanager
 %global wwwdocroot %{serverdir}/www/htdocs
 %else
 %global serverdir  %{_localstatedir}

@@ -4,7 +4,7 @@
 TOP = ..
 
 # Project defines
-INSTALL_DEST	= /srv/www/htdocs
+INSTALL_DEST	= /usr/share/susemanager/www/htdocs
 
 # common stuff
 include $(TOP)/Makefile.defs

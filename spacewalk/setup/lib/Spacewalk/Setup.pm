@@ -107,7 +107,7 @@ use constant DB_MIGRATION_LOG_FILE =>
 use constant EMBEDDED_DB_ANSWERS =>
   '/usr/share/spacewalk/setup/defaults.d/embedded-postgresql.conf';
 our $DEFAULT_DOC_ROOT = "/var/www/html";
-our $SUSE_DOC_ROOT = "/srv/www/htdocs";
+our $SUSE_DOC_ROOT = "/usr/share/susemanager/www/htdocs";
 
 our $CA_TRUST_DIR = '/etc/pki/ca-trust/source/anchors';
 our $SUSE_CA_TRUST_DIR = '/etc/pki/trust/anchors';
