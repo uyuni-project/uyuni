@@ -22,6 +22,8 @@ import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 
+import com.redhat.rhn.domain.rhnpackage.PackageType;
+import com.redhat.rhn.manager.audit.CVEAffectedPackageItem;
 import com.suse.oval.manager.OVALLookupHelper;
 import com.suse.oval.ovaltypes.DefinitionType;
 import com.suse.oval.ovaltypes.OvalRootType;
@@ -138,6 +140,32 @@ public class OVALCachingFactory extends HibernateFactory {
         DataResult result = m.execute(params);
 
         return !result.isEmpty();
+    }
+
+    public static List<CVEAffectedPackageItem> listSystemsAffectedPackages(String cve) {
+        SelectMode mode = ModeFactory.getMode("oval_queries", "list_systems_affected_packages");
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("cve_name", cve);
+
+        DataResult<Row> result = mode.execute(params);
+
+        return result.stream()
+                .map(OVALCachingFactory::createCVEAffectedPackageItemFromRow)
+                .collect(Collectors.toList());
+    }
+
+    private static CVEAffectedPackageItem createCVEAffectedPackageItemFromRow(Row row) {
+        return new CVEAffectedPackageItem(
+                (Long) row.get("system_id"),
+                (String) row.get("system_name"),
+                (String) row.get("package_name"),
+                PackageType.fromDbString((String) row.get("package_type")),
+                (String) row.get("patched_version"),
+                (String) row.get("installed_epoch"),
+                (String) row.get("installed_version"),
+                (String) row.get("installed_release")
+        );
     }
 
     @Override
