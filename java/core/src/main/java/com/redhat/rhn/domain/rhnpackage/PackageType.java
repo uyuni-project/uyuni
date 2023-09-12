@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.rhnpackage;
 
+import java.util.EnumSet;
+
 public enum PackageType {
     RPM("rpm"),
     DEB("deb");
@@ -26,5 +28,11 @@ public enum PackageType {
 
     public String getDbString() {
         return dbString;
+    }
+
+    public static PackageType fromDbString(String dbString) {
+        return EnumSet.allOf(PackageType.class).stream()
+                .filter(packageType -> packageType.dbString.equals(dbString))
+                .findAny().orElseThrow();
     }
 }

@@ -70,4 +70,35 @@
         </query>
     </write-mode>
 
+    <mode name="list_systems_affected_packages">
+        <query params="cve_name">
+            SELECT s.id AS system_id,
+                   s.name AS system_name,
+                   pn.name AS package_name,
+                   pe.type AS package_type,
+                   (vulnerablePkg.fix_version).version AS patched_version,
+                   pe.epoch AS installed_epoch,
+                   pe.version AS installed_version,
+                   pe.release AS installed_release,
+                   cve.name
+            FROM rhnCVE cve
+            JOIN suseOVALPlatformVulnerable platVulnerable
+              ON platVulnerable.cve_id = cve.id
+                AND cve.name = :cve_name
+            JOIN suseOVALPlatform platform
+              ON platform.id = platVulnerable.platform_id
+            JOIN rhnServer s
+              ON s.cpe = platform.cpe
+            JOIN suseOVALVulnerablePackage vulnerablePkg
+              ON vulnerablePkg.plat_vuln_id = platVulnerable.id
+            JOIN rhnPackageName pn
+              ON pn.name = vulnerablePkg.name
+            JOIN rhnServerPackage sp
+              ON sp.server_id = s.id
+                AND sp.name_id = pn.id
+            JOIN rhnPackageEVR pe
+              ON pe.id = sp.evr_id;
+        </query>
+    </mode>
+
 </datasource_modes>

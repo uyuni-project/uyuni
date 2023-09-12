@@ -23,6 +23,8 @@ import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
+import com.redhat.rhn.domain.rhnpackage.PackageType;
+import com.redhat.rhn.manager.audit.CVEAffectedPackageItem;
 import com.redhat.rhn.manager.audit.CVEAuditManagerOVAL;
 
 import com.suse.oval.manager.OVALResourcesCache;
@@ -156,6 +158,38 @@ public class OVALCachingFactory extends HibernateFactory {
             vulnerablePackage.setAffected((Boolean) row.get("affected"));
             return vulnerablePackage;
         }).collect(Collectors.toList());
+    }
+
+    /**
+     * List all systems affected by the given CVE.
+     *
+     * @param cve the cve to list affected systems for
+     * @return the list of affected systems
+     * */
+    public static List<CVEAffectedPackageItem> listSystemsAffectedPackages(String cve) {
+        SelectMode mode = ModeFactory.getMode("oval_queries", "list_systems_affected_packages");
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("cve_name", cve);
+
+        DataResult<Row> result = mode.execute(params);
+
+        return result.stream()
+                .map(OVALCachingFactory::createCVEAffectedPackageItemFromRow)
+                .collect(Collectors.toList());
+    }
+
+    private static CVEAffectedPackageItem createCVEAffectedPackageItemFromRow(Row row) {
+        return new CVEAffectedPackageItem(
+                (Long) row.get("system_id"),
+                (String) row.get("system_name"),
+                (String) row.get("package_name"),
+                PackageType.fromDbString((String) row.get("package_type")),
+                (String) row.get("patched_version"),
+                (String) row.get("installed_epoch"),
+                (String) row.get("installed_version"),
+                (String) row.get("installed_release")
+        );
     }
 
     /**
