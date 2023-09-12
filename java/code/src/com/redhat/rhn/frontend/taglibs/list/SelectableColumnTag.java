@@ -415,7 +415,7 @@ public class SelectableColumnTag extends TagSupport {
         ListTag parent = (ListTag)TagSupport.findAncestorWithClass(this, ListTag.class);
 
         String selectionsKey = ListSetHelper.makeSelectionsName(parent.getName());
-        Map selections = (Map)pageContext.getRequest().getAttribute(selectionsKey);
+        Map<String, Object> selections = (Map<String, Object>)pageContext.getRequest().getAttribute(selectionsKey);
 
         return selections != null && selections.containsKey(valueExpr);
     }

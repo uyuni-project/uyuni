@@ -15430,7 +15430,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         </context-group>
         </trans-unit>
         <trans-unit id="targetsystems.jsp.summary" xml:space="preserve">
-          <source>The systems listed below do not have files managed via @@PRODUCT_NAME@@ configuration management.  For systems to be capable of being managed by @@PRODUCT_NAME@@ configuration management, they need to have particular mgr-cfg-* packages installed. You can enable configuration management on selected systems by using the 'Enable @@PRODUCT_NAME@@ Configuration Management' button below.</source>
+          <source>The systems listed below do not have files managed via @@PRODUCT_NAME@@ configuration management.  For systems to be capable of being managed by @@PRODUCT_NAME@@ configuration management, they need to have particular *-salt-minion packages installed. You can enable configuration management on selected systems by using the 'Enable @@PRODUCT_NAME@@ Configuration Management' button below.</source>
           <target state="needs-adaptation">கீழே பட்டியலிடப்பட்ட கணினிகள் @@PRODUCT_NAME@@ கட்டமைப்பு மேலாண்மை வழியாக மேலாண்மை செய்யப்பட்ட கோப்புகளை கொண்டிருப்பதில்லை. @@PRODUCT_NAME@@ கட்டமைப்பு மேலாண்மையை மேலாண்மை செய்ய திறனுள்ள கணினிகளுக்கு, ஒரு வாய்ப்பளித்தல் உரிமம் rhncfg-* தொகுப்புகளை நிறுவ தேவைப்படும். நீங்கள் 'செயல்படுத்திய @@PRODUCT_NAME@@ கட்டமைப்பு மேலாண்மை' பொத்தானை பயன்படுத்தி தேர்ந்தெடுக்கப்பட்ட கணினிகளில் கட்டமைப்பு மேலாண்மையை செயல்படுத்தலாம்.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/TargetSystems.do</context>
@@ -15491,27 +15491,6 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <context context-type="sourcefile">/rhn/configuration/system/TargetSystems.do</context>
         </context-group>
         </trans-unit>
-        <trans-unit id="targetsystems.jsp.installcfg" xml:space="preserve">
-          <source>Schedule mgr-cfg package install</source>
-          <target state="needs-adaptation">rhncfg தொகுப்பை நிறுவ திட்டமிடவும்</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/configuration/system/TargetSystems.do</context>
-        </context-group>
-        </trans-unit>
-        <trans-unit id="targetsystems.jsp.installcfgactions" xml:space="preserve">
-          <source>Schedule mgr-cfg-actions package install</source>
-          <target>mgr-cfg-actions தொகுப்பை நிறுவ திட்டமிடவும்</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/configuration/system/TargetSystems.do</context>
-        </context-group>
-        </trans-unit>
-        <trans-unit id="targetsystems.jsp.installcfgclient" xml:space="preserve">
-          <source>Schedule mgr-cfg-client package install</source>
-          <target state="needs-adaptation">rhncfg-client தொகுப்பை நிறுவ திட்டமிடவும்</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/configuration/system/TargetSystems.do</context>
-        </context-group>
-        </trans-unit>
         <trans-unit id="targetsystems.jsp.pending" xml:space="preserve">
           <source>Package installations currently pending.</source>
           <target>தற்போது விடுபட்ட தொகுப்பு நிறுவல்கள்.</target>
@@ -15534,7 +15513,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         </context-group>
         </trans-unit>
         <trans-unit id="targetsystems.jsp.widgetsummary" xml:space="preserve">
-          <source>You may schedule &lt;code&gt;mgr-cfg*&lt;/code&gt; package installs for the time below. &lt;strong&gt;Note: All other actions will take place immediately.&lt;/strong&gt;</source>
+          <source>You may schedule &lt;code&gt;salt-minion&lt;/code&gt; package installs for the time below. &lt;strong&gt;Note: All other actions will take place immediately.&lt;/strong&gt;</source>
           <target state="needs-adaptation">கீழே உள்ள நேரத்திற்கு &lt;code&gt;rhncfg*&lt;/code&gt; தொகுப்பை நிறுவ திட்டமிட்டிருக்கலாம். &lt;strong&gt;குறிப்பு: அனைத்து வேறு செயல்களும் உடனடியாக எடுக்கப்படும்.&lt;/strong&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/TargetSystems.do</context>
@@ -15556,15 +15535,8 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         </context-group>
         </trans-unit>
         <trans-unit id="summary.jsp.stepone" xml:space="preserve">
-          <source>Run &lt;code&gt;mgr_check&lt;/code&gt; to complete pending mgr-cfg-* package installs.</source>
+          <source>Run &lt;code&gt;mgr_check&lt;/code&gt; to complete pending salt-minion package installs.</source>
           <target state="needs-adaptation">&lt;code&gt;rhn_check&lt;/code&gt;ஐ இயக்கி மீதமுள்ள rhncfg-* தொகுப்பு நிறுவல்களை முடிக்கவும்.</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/configuration/system/Summary.do</context>
-        </context-group>
-        </trans-unit>
-        <trans-unit id="summary.jsp.steptwo" xml:space="preserve">
-          <source>Run the following command: &lt;code&gt;mgr-actions-control --enable-all&lt;/code&gt;</source>
-          <target state="needs-adaptation">பின்வரும் கட்டளையை இயக்கவும்: &lt;code&gt;rhn-actions-control --enable-all&lt;/code&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/Summary.do</context>
         </context-group>
@@ -15604,14 +15576,8 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <context context-type="sourcefile">/rhn/configuration/system/Summary.do</context>
         </context-group>
         </trans-unit>
-        <trans-unit id="summary.jsp.appstream" xml:space="preserve">
-          <source>Could not subscribe to the AppStream channel.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/configuration/system/Summary.do</context>
-        </context-group>
-        </trans-unit>
         <trans-unit id="summary.jsp.packages" xml:space="preserve">
-          <source>Could not schedule mgr-cfg* package installations.</source>
+          <source>Could not schedule salt-minion package installations.</source>
           <target state="needs-adaptation">rhncfg* தொகுப்பு நிறுவல்களுக்கு திட்டமிட முடியாது.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/Summary.do</context>
@@ -19240,7 +19206,7 @@ any of these revisions.  Are you sure you want to do this?</source>
         </context-group>
         </trans-unit>
         <trans-unit id="ssmenable.jsp.summary" xml:space="preserve">
-          <source>The systems listed below do not have files managed via @@PRODUCT_NAME@@ configuration management. For systems to be capable of being managed by @@PRODUCT_NAME@@ configuration management, they will need to have particular mgr-cfg-* packages installed. You can enable configuration management on the systems listed below. &lt;strong&gt;Note:&lt;/strong&gt; nothing will happen to already enabled systems.</source>
+          <source>The systems listed below do not have files managed via @@PRODUCT_NAME@@ configuration management. For systems to be capable of being managed by @@PRODUCT_NAME@@ configuration management, they will need to have particular salt-minion packages installed. You can enable configuration management on the systems listed below. &lt;strong&gt;Note:&lt;/strong&gt; nothing will happen to already enabled systems.</source>
           <target state="needs-adaptation">@@PRODUCT_NAME@@ கட்டமைப்பு மேலாண்மை வழியாக மேலாண்மை செய்யப்பட்ட கோப்புகள் கீழே பட்டியலில் இருக்காது.  @@PRODUCT_NAME@@ கட்டமைப்பு மேலாண்மை வழியாக மேலாண்மை செய்யப்படும் கணினிகளுக்கு ஒரு வாய்ப்பளித்தல் உரிமம் ஒரு குறிப்பிட்ட rhncfg-* தொகுப்புகளை நிறுவ சேர்க்கப்படும். நீங்கள் கட்டமைப்பு மேலாண்மையை கீழே பட்டியலிடப்பட்ட கணினிகளுக்கு செயல்படுத்தலாம். &lt;strong&gt;குறிப்பு:&lt;/strong&gt; ஏற்கனவே செயல்படுத்தப்பட்ட கணினிகளுக்கு ஒன்றும் ஏற்படாது.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/config/Enable.do</context>
@@ -20434,11 +20400,12 @@ any of these revisions.  Are you sure you want to do this?</source>
         </context-group>
         </trans-unit>
         <trans-unit id="ssm.operations.provisioning.remotecommand.no_script_run" xml:space="preserve">
-          <source>You must enable Remote Command execution on the target system by installing the &lt;code&gt;mgr-cfg-actions&lt;/code&gt; RPM.</source>
+          <source>You must enable Remote Command execution on the target system by installing the &lt;code&gt;salt-minion&lt;/code&gt; RPM.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/kickstart/KickstartableSystems.do</context>
         </context-group>
-        </trans-unit>
+        <target state="needs-adaptation"/>
+      </trans-unit>
         <trans-unit id="stringutil.scriptcheck.error.noshelldefined" xml:space="preserve">
           <source>Script does not contain shell definition.</source>
         <context-group name="ctx">

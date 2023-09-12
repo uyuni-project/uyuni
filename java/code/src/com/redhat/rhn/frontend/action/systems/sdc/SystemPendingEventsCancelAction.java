@@ -89,7 +89,7 @@ public class SystemPendingEventsCancelAction extends RhnAction {
 
             set.clear();
             RhnSetManager.store(set);
-            Map params = makeParamMap(request);
+            Map<String, Object> params = makeParamMap(request);
             params.put("sid", server.getId());
             return getStrutsDelegate().forwardParams(
                     mapping.findForward(RhnHelper.CONFIRM_FORWARD), params);

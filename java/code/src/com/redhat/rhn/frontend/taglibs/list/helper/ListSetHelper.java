@@ -96,7 +96,7 @@ public abstract class ListSetHelper extends ListHelper {
      * @param request the servlet request
      * @param params the parameter map for this request
      */
-    ListSetHelper(Listable inp, HttpServletRequest request, Map params) {
+    ListSetHelper(Listable inp, HttpServletRequest request, Map<String, Object> params) {
         super(inp, request, params);
     }
 

@@ -17,8 +17,6 @@ package com.redhat.rhn.frontend.dto;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.config.ConfigurationFactory;
-import com.redhat.rhn.domain.server.Server;
-import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
 
 import java.util.ArrayList;
@@ -43,7 +41,6 @@ public class ConfigSystemDto extends BaseDto {
     private int results;
     private Integer errorCode;
     private boolean rhnTools;
-    private boolean appStream;
     private Date modified;
 
     //when dealing with single revisions for systems
@@ -54,82 +51,8 @@ public class ConfigSystemDto extends BaseDto {
     private String configChannelType;
     private String configChannelName;
 
-    //these three ints will be chosen from the following static integers
-    private int rhncfg;
-    private int rhncfgActions;
-    private int rhncfgClient;
-
     public static final int INSTALLED = 0;
     public static final int PENDING = 1;
-    public static final int NEEDED = 2;
-
-    /**
-     * Parses the query-returned character into a discernable static integer.
-     * @param queryRetval
-     * @return the integer corresponding to the package status
-     */
-    private int decideStatus(String queryRetval) {
-        if (queryRetval.equalsIgnoreCase("Y")) {
-            return INSTALLED;
-        }
-        else if (queryRetval.equalsIgnoreCase("P")) {
-            return PENDING;
-        }
-        else {
-            return NEEDED;
-        }
-    }
-
-    /**
-     * @param rhncfgIn The rhncfg to set.
-     */
-    public void setRhncfg(String rhncfgIn) {
-        rhncfg = decideStatus(rhncfgIn);
-    }
-
-
-    /**
-     * @param rhncfgActionsIn The rhncfgActions to set.
-     */
-    public void setRhncfgActions(String rhncfgActionsIn) {
-        rhncfgActions = decideStatus(rhncfgActionsIn);
-    }
-
-
-    /**
-     * @param rhncfgClientIn The rhncfgClient to set.
-     */
-    public void setRhncfgClient(String rhncfgClientIn) {
-        rhncfgClient = decideStatus(rhncfgClientIn);
-    }
-
-
-    /**
-     * @return Returns the rhncfg.
-     */
-    public int getRhncfg() {
-        return rhncfg;
-    }
-
-
-    /**
-     * @return Returns the rhncfgActions.
-     */
-    public int getRhncfgActions() {
-        return rhncfgActions;
-    }
-
-
-    /**
-     * @return Returns the rhncfgClient.
-     */
-    public int getRhncfgClient() {
-        return rhncfgClient;
-    }
-
-
-
-
 
     /**
      * Whether the system is subscribed to an rhn-tools channel
@@ -139,14 +62,6 @@ public class ConfigSystemDto extends BaseDto {
         return rhnTools;
     }
 
-    /**
-     * Whether the system is subscribed to an AppStream channel
-     * @return Returns the AppStream
-     */
-    public boolean isAppStream() {
-        return appStream;
-    }
-
 
     /**
      * @param rhnToolsIn The rhnTools to set.
@@ -154,16 +69,6 @@ public class ConfigSystemDto extends BaseDto {
     public void setRhnTools(String rhnToolsIn) {
         this.rhnTools = rhnToolsIn.equalsIgnoreCase("Y");
     }
-
-    /**
-     * @param appStreamIn the AppStrem to set.
-     */
-    public void setAppStream(String appStreamIn) {
-        this.appStream = appStreamIn.equalsIgnoreCase("Y");
-    }
-
-
-
 
     /**
      * @return Returns the errorCode.
@@ -327,32 +232,13 @@ public class ConfigSystemDto extends BaseDto {
             return ""; //for those that have the egg but lost the chicken
         }
         LocalizationService ls = LocalizationService.getInstance();
-        List actions = new ArrayList<>();
-        Server server = ServerFactory.lookupById(id);
-        if (server.getOs().startsWith("redhat-release") && server.getRelease().startsWith("8")) {
-            displayHelper(actions, appStream, ls, "subscribeappstream");
-        }
-        else {
-            displayHelper(actions, rhnTools, ls, "subscribetools");
-        }
-        displayHelper(actions, rhncfg != NEEDED, ls, "installcfg");
-        displayHelper(actions, rhncfgActions != NEEDED, ls, "installcfgactions");
-        displayHelper(actions, rhncfgClient != NEEDED, ls, "installcfgclient");
+        List<String> actions = new ArrayList<>();
+        displayHelper(actions, rhnTools, ls, "subscribetools");
 
-        /* make sure to check that there actually is a pending action somewhere.
-         * if there system is in such a state that they don't have the capability, but
-         * they have all the requirements for capability, then make sure that we
-         * don't tell them that configuration management is pending
-         */
-        if (actions.isEmpty() && (rhncfg == PENDING ||
-                rhncfgActions == PENDING || rhncfgClient == PENDING)) {
-            return ls.getMessage("targetsystems.jsp.pending");
-        }
         return StringUtil.join("<br />", actions);
     }
 
-    private void displayHelper(List list, boolean decider,
-            LocalizationService ls, String resource) {
+    private void displayHelper(List<String> list, boolean decider, LocalizationService ls, String resource) {
         if (!decider) {
             list.add(ls.getMessage("targetsystems.jsp." + resource));
         }
@@ -384,8 +270,6 @@ public class ConfigSystemDto extends BaseDto {
                 return ls.getMessage("summary.jsp.rhntools");
             case ConfigurationManager.ENABLE_ERROR_PACKAGES:
                 return ls.getMessage("summary.jsp.packages");
-            case ConfigurationManager.ENABLE_ERROR_APPSTREAM:
-                return ls.getMessage("summary.jsp.appstream");
             default:
                 return "";
         }

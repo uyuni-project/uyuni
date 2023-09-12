@@ -152,7 +152,7 @@ public class AdminPaygHandler extends BaseHandler {
      *   #struct_end()
      * @apidoc.returntype #return_int_success()
      */
-    public int setDetails(User loggedInUser, String host, Map details) {
+    public int setDetails(User loggedInUser, String host, Map<String, Object> details) {
 
         ensureSatAdmin(loggedInUser);
         return paygAdminManager.setDetails(host,  details) != null ? 1 : 0;

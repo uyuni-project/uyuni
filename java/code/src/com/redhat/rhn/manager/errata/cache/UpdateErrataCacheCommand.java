@@ -19,6 +19,7 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.CallableMode;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.org.Org;
@@ -75,13 +76,12 @@ public class UpdateErrataCacheCommand extends BaseTransactionCommand {
             return;
         }
 
-        DataResult dr = ErrataCacheManager.allServerIdsForOrg(org);
+        DataResult<Row> dr = ErrataCacheManager.allServerIdsForOrg(org);
         if (log.isDebugEnabled()) {
             log.debug("allservers returned [{}]", dr.size());
         }
 
-        for (Object oIn : dr) {
-            Map item = (Map) oIn;
+        for (Row item : dr) {
             Long sid = (Long) item.get("id");
             log.debug("Working on server [{}]", sid);
             processServer(sid);

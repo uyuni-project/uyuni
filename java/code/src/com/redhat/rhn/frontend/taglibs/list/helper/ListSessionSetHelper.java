@@ -203,7 +203,7 @@ public class ListSessionSetHelper extends ListSetHelper {
         }
         decl = prefix;
 
-        Map params = getParamMap();
+        Map<String, Object> params = getParamMap();
         if (!params.isEmpty()) {
             decl = decl + params.hashCode();
         }

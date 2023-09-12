@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-08-11 15:28+0200\n"
+"POT-Creation-Date: 2023-09-08 14:40+0200\n"
 "PO-Revision-Date: 2022-03-19 20:12+0000\n"
 "Last-Translator: Matías Silva Bustos <matiasasb@gmail.com>\n"
 "Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/backend/es/"
@@ -1297,28 +1297,6 @@ msgstr ""
 msgid "+++ email requested, but there is nothing to send +++"
 msgstr "+++ email requerido, pero no hay nada que enviar +++"
 
-#: ../satellite_tools/rhn_satellite_activate.py:198
-#, python-format
-msgid ""
-"\"%s\" (specified in commandline)\n"
-"could not be opened and read:\n"
-"%s"
-msgstr ""
-"«%s» (especificado en línea de comandos)\n"
-"no pudo ser abierto ni leído:\n"
-"%s"
-
-#: ../satellite_tools/rhn_satellite_activate.py:205
-#, python-format
-msgid ""
-"\"%s\" could not be opened\n"
-"and/or written to:\n"
-"%s"
-msgstr ""
-"«%s» no pudo ser abierto\n"
-"ni/o escrito a:\n"
-"%s"
-
 #: ../satellite_tools/satsync.py:258
 #, python-format
 msgid "No handler for step %s"
@@ -2083,6 +2061,26 @@ msgstr "  28.— Error: --master solo es válido con --mount-point"
 #, python-format
 msgid "ERROR: unknown dump version, try one of %s"
 msgstr "ERROR: versión de volcado desconocida; pruebe una de %s"
+
+#, python-format
+#~ msgid ""
+#~ "\"%s\" (specified in commandline)\n"
+#~ "could not be opened and read:\n"
+#~ "%s"
+#~ msgstr ""
+#~ "«%s» (especificado en línea de comandos)\n"
+#~ "no pudo ser abierto ni leído:\n"
+#~ "%s"
+
+#, python-format
+#~ msgid ""
+#~ "\"%s\" could not be opened\n"
+#~ "and/or written to:\n"
+#~ "%s"
+#~ msgstr ""
+#~ "«%s» no pudo ser abierto\n"
+#~ "ni/o escrito a:\n"
+#~ "%s"
 
 #, fuzzy
 #~ msgid "Invalid crash name"

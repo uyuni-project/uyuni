@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-08-11 15:28+0200\n"
+"POT-Creation-Date: 2023-09-08 14:40+0200\n"
 "PO-Revision-Date: 2022-08-11 16:13+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/backend/sk/"
@@ -1274,28 +1274,6 @@ msgstr "%s sync. správa od %s"
 msgid "+++ email requested, but there is nothing to send +++"
 msgstr "+++ požadovaný e-mail, ale nie je čo +++"
 
-#: ../satellite_tools/rhn_satellite_activate.py:198
-#, python-format
-msgid ""
-"\"%s\" (specified in commandline)\n"
-"could not be opened and read:\n"
-"%s"
-msgstr ""
-"\"%s\" (uvedené v príkazovom riadku)\n"
-"sa nepodarilo otvoriť a čítať:\n"
-"%s"
-
-#: ../satellite_tools/rhn_satellite_activate.py:205
-#, python-format
-msgid ""
-"\"%s\" could not be opened\n"
-"and/or written to:\n"
-"%s"
-msgstr ""
-"\"%s\" sa nepodarilo otvoriť\n"
-"a/alebo zapísať do:\n"
-"%s"
-
 #: ../satellite_tools/satsync.py:258
 #, python-format
 msgid "No handler for step %s"
@@ -2073,6 +2051,26 @@ msgstr "  28 - chyba: --master je platné iba s --mount-point"
 #, python-format
 msgid "ERROR: unknown dump version, try one of %s"
 msgstr "CHYBA: neznáma verzia výpisu, vyskúšajte jeden z %s"
+
+#, python-format
+#~ msgid ""
+#~ "\"%s\" (specified in commandline)\n"
+#~ "could not be opened and read:\n"
+#~ "%s"
+#~ msgstr ""
+#~ "\"%s\" (uvedené v príkazovom riadku)\n"
+#~ "sa nepodarilo otvoriť a čítať:\n"
+#~ "%s"
+
+#, python-format
+#~ msgid ""
+#~ "\"%s\" could not be opened\n"
+#~ "and/or written to:\n"
+#~ "%s"
+#~ msgstr ""
+#~ "\"%s\" sa nepodarilo otvoriť\n"
+#~ "a/alebo zapísať do:\n"
+#~ "%s"
 
 #~ msgid "Crash information is invalid or incomplete"
 #~ msgstr "Informácie o zlyhaní sú neplatné alebo neúplné"

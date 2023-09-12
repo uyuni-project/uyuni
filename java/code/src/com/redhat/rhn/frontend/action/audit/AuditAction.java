@@ -45,9 +45,9 @@ public class AuditAction extends RhnAction implements Listable<AuditMachineDto> 
                                  ActionForm form,
                                  HttpServletRequest request,
                                  HttpServletResponse response) {
-        Enumeration paramNames;
+        Enumeration<String> paramNames;
         ListHelper helper = new ListHelper(this, request);
-        Map forwardParams = makeParamMap(request);
+        Map<String, Object> forwardParams = makeParamMap(request);
         String str;
 
         helper.execute();

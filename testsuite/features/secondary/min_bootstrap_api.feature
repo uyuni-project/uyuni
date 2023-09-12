@@ -47,6 +47,7 @@ Feature: Register a Salt minion via API
     Given I am on the Systems overview page of this "sle_minion"
     Then I run spacecmd listevents for "sle_minion"
 
+@susemanager
   Scenario: API bootstrap: subscribe to base channel
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Software" in the content area
@@ -57,6 +58,27 @@ Feature: Register a Salt minion via API
     And I include the recommended child channels
     And I check "SLE-Module-DevTools15-SP4-Pool for x86_64"
     And I check "Fake-RPM-SUSE-Channel" 
+    And I click on "Next"
+    Then I should see a "Confirm Software Channel Change" text
+    When I click on "Confirm"
+    Then I should see a "Changing the channels has been scheduled." text
+    And I wait until event "Subscribe channels scheduled by admin" is completed
+
+@uyuni
+  Scenario: API bootstrap: subscribe to base channel
+    Given I am on the Systems overview page of this "sle_minion"
+    When I follow "Software" in the content area
+    And I follow "Software Channels" in the content area
+    And I wait until I do not see "Loading..." text
+    And I check radio button "openSUSE Leap 15.4 (x86_64)"
+    And I wait until I do not see "Loading..." text
+    And I check "openSUSE 15.4 non oss (x86_64)"
+    And I check "openSUSE Leap 15.4 non oss Updates (x86_64)"
+    And I check "openSUSE Leap 15.4 Updates (x86_64)"
+    And I check "Update repository of openSUSE Leap 15.4 Backports (x86_64)"
+    And I check "Update repository with updates from SUSE Linux Enterprise 15 for openSUSE Leap 15.4 (x86_64)"
+    And I check "Uyuni Client Tools for openSUSE Leap 15.4 (x86_64)"
+    And I check "Fake-RPM-SUSE-Channel"
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text
     When I click on "Confirm"

@@ -207,7 +207,7 @@ public abstract class CobblerCommand {
         }
         //lookup by ID failed, so lets try by mac
 
-        Map sysmap = getSystemMapByMac(server);
+        Map<String, Object> sysmap = getSystemMapByMac(server);
         if (sysmap != null) {
             log.debug("getSystemHandleByMAC.found match.");
             String uid = (String) sysmap.get("uid");

@@ -185,7 +185,6 @@
 <RefSect1><Title>Files</Title>
 <simplelist>
     <member>/usr/bin/mgr-bootstrap</member>
-    <member>/usr/bin/client_config_update.py</member>
     <member>/usr/bin/client-config-overrides.txt</member>
 </simplelist>
 </RefSect1>

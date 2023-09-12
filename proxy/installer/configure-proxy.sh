@@ -167,7 +167,6 @@ while : ; do
         --ssl-email) set_value "$1" SSL_EMAIL "$2"; shift;;
         --ssl-password) set_value "$1" SSL_PASSWORD "$2"; shift;;
         --ssl-cname) SSL_CNAME_PARSED[CNAME_INDEX++]="--set-cname=$2"; shift;;
-        --populate-config-channel) POPULATE_CONFIG_CHANNEL="${2:-Y}"; shift;;
         --start-services) START_SERVICES="${2:-Y}"; shift;;
         --rhn-user) set_value "$1" RHN_USER "$2"; shift;;
         --rhn-password) set_value "$1" RHN_PASSWORD "$2"; shift;;
@@ -193,17 +192,6 @@ if [[ $INTERACTIVE == 0 && -z $ANSWER_FILE ]]; then
     exit 1
 fi
 
-
-if [[ $INTERACTIVE == 0 ]]; then
-    if [[ -z $POPULATE_CONFIG_CHANNEL ]]; then
-        # if POPULATE_CONFIG_CHANNEL is not defined set its value to 'N'
-        # because default value for this variable is 'Y'
-        POPULATE_CONFIG_CHANNEL='N'
-    elif [[ $(yes_no $POPULATE_CONFIG_CHANNEL) == 1 && ( -z  $RHN_USER || -z $RHN_PASSWORD ) ]]; then
-        echo "Error: When --populate-config-channel is set to Yes both --rhn-user and --rhn-password have to be provided."
-        exit 1
-    fi
-fi
 ACCUMULATED_ANSWERS=""
 
 generate_answers() {
@@ -584,50 +572,6 @@ if [ "$USE_EXISTING_SSH_PUSH_KEY" -eq "1" ]; then
     /usr/sbin/mgr-proxy-ssh-push-init -k $EXISTING_SSH_KEY
 else
     /usr/sbin/mgr-proxy-ssh-push-init
-fi
-
-
-CHANNEL_LABEL="rhn_proxy_config_$SYSTEM_ID"
-default_or_input "Create and populate configuration channel $CHANNEL_LABEL?" POPULATE_CONFIG_CHANNEL 'Y/n'
-POPULATE_CONFIG_CHANNEL=$(yes_no $POPULATE_CONFIG_CHANNEL)
-if [ "$POPULATE_CONFIG_CHANNEL" = "1" ]; then
-    RHNCFG_STATUS=1
-
-    for i in $(seq 1 $INTERACTIVE_RETRIES) ; do
-        default_or_input "SUSE Manager username:" RHN_USER ''
-        CONFIG_CHANNELS=$(rhncfg-manager list-channels ${RHN_USER:+--username="${RHN_USER}"} ${RHN_PASSWORD:+--password="${RHN_PASSWORD}"} --server-name="$RHN_PARENT")
-
-        RHNCFG_STATUS="$?"
-
-        if [ "$RHNCFG_STATUS" != "0" ] ; then
-            if [ "$INTERACTIVE" = "1" ] ; then
-                # In case of incorrect username/password, we want to re-ask user
-                unset RHN_USER
-                unset RHN_PASSWORD
-            fi
-        else
-            break
-        fi
-    done
-
-    if [ "$RHNCFG_STATUS" != "0" ] ; then
-        exit "$RHNCFG_STATUS"
-    fi
-
-    if ! grep -q -E "^ +$CHANNEL_LABEL$" <<<"$CONFIG_CHANNELS" ; then
-        rhncfg-manager create-channel --server-name "$RHN_PARENT" "$CHANNEL_LABEL"
-    fi
-    arr_conf_list=( $HTTPDCONF_DIR/vhosts.d/ssl.conf
-                    $RHNCONF_DIR/rhn.conf
-                    $SQUID_DIR/squid.conf
-                    $HTTPDCONFD_DIR/cobbler-proxy.conf
-                    $HTTPDCONF_DIR/httpd.conf )
-    for conf_file in ${arr_conf_list[*]}; do
-        [ -e ${conf_file} ] && arr_conf=(${arr_conf[*]} ${conf_file})
-    done
-    rhncfg-manager update --server-name "$RHN_PARENT" \
-        --channel="$CHANNEL_LABEL" \
-        ${arr_conf[*]}
 fi
 
 open_firewall_ports

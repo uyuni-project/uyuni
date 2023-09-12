@@ -9887,11 +9887,11 @@ tree will not be usable for autoinstalling.</source>
         <target state="final">已将找到的登录信息发送到 {0}。如果您未收到该信息，请确保您拥有使用提供的电子邮件注册的帐户。</target>
       </trans-unit>
       <trans-unit id="config.multiple.channels" xml:space="preserve">
-        <source>A selected system has multiple child channels available that contain the mgr-cfg package. You must manually subscribe to the child channel you want and then try this action again.</source>
+        <source>A selected system has multiple child channels available that contain the venv-salt-minion package. You must manually subscribe to the child channel you want and then try this action again.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/TargetSystemsSubmit.do</context>
         </context-group>
-        <target state="translated">选定的系统具有多个包含 mgr-cfg 软件包的可用子通道。您必须手动订阅所需的子通道，然后重试此操作。</target>
+        <target state="needs-adaptation">选定的系统具有多个包含 mgr-cfg 软件包的可用子通道。您必须手动订阅所需的子通道，然后重试此操作。</target>
       </trans-unit>
       <trans-unit id="External Links" xml:space="preserve">
         <source>External Links</source>

@@ -98,9 +98,9 @@ public class SsmRemovePackagesAction extends SsmPackagesAction {
             allServerIds.add(sid);
 
             // Get the packages out of the elaborator
-            List<Map> elabList = (List<Map>) data.get("elaborator0");
+            List<Map<String, Object>> elabList = (List<Map<String, Object>>) data.get("elaborator0");
             if (elabList != null) {
-                for (Map elabMap : elabList) {
+                for (Map<String, Object> elabMap : elabList) {
                     String idCombo = (String) elabMap.get("id_combo");
                     PackageListItem item = PackageListItem.parse(idCombo);
                     allPackages.add(item);

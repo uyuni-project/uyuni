@@ -64,7 +64,7 @@ public class TaskoSchedule {
      * @param cronExprIn cron expression
      */
     public TaskoSchedule(Integer orgIdIn, TaskoBunch bunchIn, String jobLabelIn,
-            Map dataIn, Date activeFromIn, Date activeTillIn, String cronExprIn) {
+            Map<String, Object> dataIn, Date activeFromIn, Date activeTillIn, String cronExprIn) {
         setOrgId(orgIdIn);
         setBunch(bunchIn);
         setJobLabel(jobLabelIn);
@@ -101,7 +101,7 @@ public class TaskoSchedule {
         setActiveTill(new Date());
     }
 
-    private byte[] serializeMap(Map dataMap) {
+    private byte[] serializeMap(Map<String, Object> dataMap) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         if (null != dataMap) {
             ObjectOutputStream out;
@@ -138,7 +138,7 @@ public class TaskoSchedule {
      * set job parameters
      * @param dataMap job parameters
      */
-    public void setDataMap(Map dataMap) {
+    public void setDataMap(Map<String, Object> dataMap) {
         data = serializeMap(dataMap);
     }
 

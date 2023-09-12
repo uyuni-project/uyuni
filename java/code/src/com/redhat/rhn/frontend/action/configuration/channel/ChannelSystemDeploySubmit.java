@@ -83,7 +83,7 @@ public class ChannelSystemDeploySubmit extends BaseSetOperateOnSelectedItemsActi
         if (set.isEmpty()) {
             return handleEmptySelection(mapping, formIn, request);
         }
-        Map params = makeParamMap(formIn, request);
+        Map<String, Object> params = makeParamMap(formIn, request);
         return getStrutsDelegate().forwardParams(
                                 mapping.findForward(RhnHelper.CONFIRM_FORWARD), params);
     }

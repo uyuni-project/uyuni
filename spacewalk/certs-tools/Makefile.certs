@@ -18,7 +18,7 @@
 
 SUBDIR	=   certs
 FILES	=   __init__ rhn_ssl_tool sslToolCli sslToolConfig sslToolLib \
-            timeLib rhn_bootstrap rhn_bootstrap_strings client_config_update \
+            timeLib rhn_bootstrap rhn_bootstrap_strings \
             mgr_ssl_cert_setup
 INSTALL_ROOT_FILES   = gen-rpm.sh sign.sh update-ca-cert-trust.sh
 
@@ -51,16 +51,8 @@ install :: $(SBINFILES) $(BINFILES) $(PYBINFILES) $(MANS) $(PREFIX)/$(MANDIR)
 		$(INSTALL_BIN) $(f) $(PREFIX)$(BINDIR)/$(f) ; )
 	$(foreach f,$(PYBINFILES), \
 		$(INSTALL_BIN) $(f) $(PREFIX)$(BINDIR)/$(f)-$(PYTHONVERSION) ; )
-
-install :: instClientScript
 	@$(foreach f,$(INSTALL_ROOT_FILES), \
 		$(INSTALL_DATA) $(f) $(PREFIX)$(ROOT)/$(SUBDIR)/$(f) ; )
-
-# note: this file is in two places. One in the RPM and one in pub/bootstrap/
-instClientScript: $(PUB_BOOTSTRAP_DIR)/client_config_update.py
-
-$(PUB_BOOTSTRAP_DIR)/client_config_update.py : $(PREFIX)/$(PUB_BOOTSTRAP_DIR) client_config_update.py
-	install -m 0755 client_config_update.py $(PREFIX)/$@
 
 %.$(MANSECT) : %.sgml
 	/usr/bin/docbook2man $<

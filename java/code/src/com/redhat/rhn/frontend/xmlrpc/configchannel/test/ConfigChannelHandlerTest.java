@@ -642,7 +642,7 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
 
         try {
             // validate that system must have config deployment capability
-            // in order to deploy config files... (e.g. rhncfg* pkgs installed)
+            // in order to deploy config files...
             handler.deployAllSystems(regular, gcc1.getLabel(), date);
 
             fail("Shouldn't be permitted to deploy without config deploy capability.");

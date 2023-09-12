@@ -61,7 +61,7 @@ public class ChannelSystemDeploySetup extends BaseSetListAction {
 
     @Override
     protected Map makeParamMap(HttpServletRequest request) {
-        Map m = super.makeParamMap(request);
+        Map<String, Object> m = super.makeParamMap(request);
         ConfigChannel cc = ConfigActionHelper.getChannel(request);
         ConfigActionHelper.processParamMap(cc, m);
         return m;

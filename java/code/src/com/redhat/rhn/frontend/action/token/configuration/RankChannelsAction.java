@@ -145,7 +145,7 @@ public class RankChannelsAction  extends RhnAction {
             saveMessage("common.config.rank.jsp.error.nojavascript", request);
         }
 
-        Map map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
         processParams(context, map);
         Set<String> set = getSet(context);
         setup(context, (DynaActionForm)formIn, set);
@@ -238,7 +238,7 @@ public class RankChannelsAction  extends RhnAction {
         }
     }
 
-    private void processParams(RequestContext context, Map map) {
+    private void processParams(RequestContext context, Map<String, Object> map) {
         ActivationKey key = context.lookupAndBindActivationKey();
         map.put(RequestContext.TOKEN_ID, key.getId().toString());
 

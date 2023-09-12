@@ -63,7 +63,7 @@ public class LocalRevisionDeployAction extends RhnAction {
                                  HttpServletRequest request, HttpServletResponse response) {
 
         RequestContext requestContext = new RequestContext(request);
-        Map params = makeParamMap(request);
+        Map<String, Object> params = makeParamMap(request);
         ConfigActionHelper.processParamMap(request, params);
 
         DynaActionForm dForm = (DynaActionForm) form;

@@ -1,4 +1,4 @@
-# Copyright (c) 2021 SUSE LLC
+# Copyright (c) 2021-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_recurring_actions
@@ -17,7 +17,7 @@ Feature: Change the schedule of a task
     When I follow the left menu "Admin > Task Schedules"
     And I follow "sandbox-cleanup-default"
     Then I should see a "Friday" text
-    And radio button "weekly" is checked
+    And radio button "weekly" should be checked
 
   Scenario: Change the schedule of task sandbox-cleanup-default to monthly
     When I follow the left menu "Admin > Task Schedules"
@@ -28,7 +28,7 @@ Feature: Change the schedule of a task
     Then I should see a "Schedule sandbox-cleanup-default has been updated." text
     When I follow the left menu "Admin > Task Schedules"
     And I follow "sandbox-cleanup-default"
-    Then radio button "monthly" is checked
+    Then radio button "monthly" should be checked
 
   Scenario: Change the schedule of task sandbox-cleanup-default back to daily
     When I follow the left menu "Admin > Task Schedules"
@@ -38,4 +38,4 @@ Feature: Change the schedule of a task
     Then I should see a "Schedule sandbox-cleanup-default has been updated." text
     When I follow the left menu "Admin > Task Schedules"
     And I follow "sandbox-cleanup-default"
-    Then radio button "daily" is checked
+    Then radio button "daily" should be checked

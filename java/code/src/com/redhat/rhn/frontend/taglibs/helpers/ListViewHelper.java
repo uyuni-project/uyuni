@@ -195,7 +195,7 @@ public class ListViewHelper {
     private void filterMaps(List accum) {
         String filterValue = getFilterParam();
         for (Object oIn : this.result) {
-            Map row = (Map) oIn;
+            Map<String, Object> row = (Map<String, Object>) oIn;
             String value = (String) row.get(this.filterByField);
             if (value != null && value.contains(filterValue)) {
                 accum.add(row);

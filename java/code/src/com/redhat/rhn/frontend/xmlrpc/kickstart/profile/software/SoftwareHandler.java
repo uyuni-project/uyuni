@@ -194,7 +194,7 @@ public class SoftwareHandler extends BaseHandler {
      *          #struct_end()
      * @apidoc.returntype #return_int_success()
      */
-    public int setSoftwareDetails(User loggedInUser, String ksLabel, Map params) {
+    public int setSoftwareDetails(User loggedInUser, String ksLabel, Map<String, Object> params) {
         KickstartData ksData = KickstartFactory.lookupKickstartDataByLabelAndOrgId(
                 ksLabel, loggedInUser.getOrg().getId());
         if (params.containsKey("noBase")) {

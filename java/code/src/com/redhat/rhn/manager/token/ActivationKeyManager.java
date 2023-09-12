@@ -544,9 +544,7 @@ public class ActivationKeyManager {
     }
 
     private void addConfigMgmtPackages(ActivationKey key) {
-        String [] names = { PackageManager.RHNCFG,
-                            PackageManager.RHNCFG_CLIENT,
-                            PackageManager.RHNCFG_ACTIONS};
+        String [] names = { "venv-salt-minion" };
         for (String name : names) {
             PackageName pn = PackageManager.lookupPackageName(name);
             if (pn != null) {

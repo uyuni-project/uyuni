@@ -27,7 +27,7 @@ public interface ManifestFactoryBuilder {
     * @param param Map of parameters to produce this Factory by
     * @return Object Object created by Factory
     */
-    Object createObject(Map param);
+    Object createObject(Map<String, Object> param);
 
     /** get the filename associated with this builder
      *   TODO: probably should be a URL instead

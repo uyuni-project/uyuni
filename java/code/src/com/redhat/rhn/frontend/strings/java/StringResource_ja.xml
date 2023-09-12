@@ -9882,11 +9882,11 @@ tree will not be usable for autoinstalling.</source>
         <target state="final">検出されたログイン情報が {0} に送信されました。受信されない場合は、指定された電子メールアドレスで登録されたアカウントを持っていることを確認してください。</target>
       </trans-unit>
       <trans-unit id="config.multiple.channels" xml:space="preserve">
-        <source>A selected system has multiple child channels available that contain the mgr-cfg package. You must manually subscribe to the child channel you want and then try this action again.</source>
+        <source>A selected system has multiple child channels available that contain the venv-salt-minion package. You must manually subscribe to the child channel you want and then try this action again.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/TargetSystemsSubmit.do</context>
         </context-group>
-        <target state="translated">選択したシステムには、mgr-cfg パッケージを持つ子チャンネルが複数あります。必要な子チャンネルに手動でサブスクライブしてから、この動作を再試行する必要があります。</target>
+        <target state="needs-adaptation">選択したシステムには、mgr-cfg パッケージを持つ子チャンネルが複数あります。必要な子チャンネルに手動でサブスクライブしてから、この動作を再試行する必要があります。</target>
       </trans-unit>
       <trans-unit id="External Links" xml:space="preserve">
         <source>External Links</source>

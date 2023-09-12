@@ -49,7 +49,7 @@ public class ActivationKeyPackagesAction extends RhnAction {
                                  HttpServletResponse response) {
 
         DynaActionForm form = (DynaActionForm)formIn;
-        Map params = makeParamMap(request);
+        Map<String, Object> params = makeParamMap(request);
         RequestContext ctx = new RequestContext(request);
 
         // keep the token id

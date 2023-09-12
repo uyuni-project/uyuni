@@ -1,4 +1,4 @@
-# Copyright (c) 2021-2022 SUSE LLC
+# Copyright (c) 2021-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 # skip if container because we do not have a domain name and the
@@ -80,12 +80,13 @@ Feature: Maintenance windows
     And I click on "Confirm"
     Then I should see a "Maintenance schedule has been assigned" text
 
+@susemanager
   Scenario: Schedule channel change action
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
-    Then radio button "SLE-Product-SLES15-SP4-Pool for x86_64" is checked
+    Then radio button "SLE-Product-SLES15-SP4-Pool for x86_64" should be checked
     When I wait until I do not see "Loading..." text
     Then I should see "SLE15-SP4-Installer-Updates for x86_64" as unchecked
     When I check "SLE15-SP4-Installer-Updates for x86_64"

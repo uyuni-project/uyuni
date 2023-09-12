@@ -57,6 +57,7 @@
         <Logger name="com.suse.manager.webui.controllers.login.LoginController" level="info" />
         <Logger name="com.redhat.rhn.frontend.action.LogoutAction" level="info" />
         <Logger name="com.redhat.rhn.manager.content.ContentSyncManager" level="info" />
+        <Logger name="com.redhat.rhn.manager.content.MgrSyncUtils" level="warn" /> <!-- change to info for getting mirror path info -->
         <Logger name="com.suse.manager.webui.controllers.DownloadController" level="info" />
 
         <!-- these are here to avoid spewing the logs when DEBUG is

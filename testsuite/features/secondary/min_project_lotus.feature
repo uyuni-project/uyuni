@@ -56,7 +56,7 @@ Feature: Project Lotus
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
-    Then radio button "SLE-Product-SLES15-SP4-Pool for x86_64" is checked
+    Then radio button "SLE-Product-SLES15-SP4-Pool for x86_64" should be checked
     And I wait until I do not see "Loading..." text
     And I check "Custom Channel for SLES15SP4 PTFs"
     And I click on "Next"

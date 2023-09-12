@@ -16403,8 +16403,8 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         </context-group>
       </trans-unit>
       <trans-unit id="targetsystems.jsp.summary" xml:space="preserve">
-          <source>The systems listed below do not have files managed via @@PRODUCT_NAME@@ configuration management.  For systems to be capable of being managed by @@PRODUCT_NAME@@ configuration management, they need to have particular mgr-cfg-* packages installed. You can enable configuration management on selected systems by using the 'Enable @@PRODUCT_NAME@@ Configuration Management' button below.</source>
-        <target state="translated">以下のシステムには @@PRODUCT_NAME@@ 設定管理で管理されているファイルがありません。  @@PRODUCT_NAME@@ 設定管理でシステムを管理できるようにするには、特定の mgr-cfg-* パッケージをインストールする必要があります。以下の '@@PRODUCT_NAME@@ 設定管理を有効にする' ボタンを使って、選択したシステムで設定管理を有効にすることもできます。</target>
+          <source>The systems listed below do not have files managed via @@PRODUCT_NAME@@ configuration management.  For systems to be capable of being managed by @@PRODUCT_NAME@@ configuration management, they need to have particular *-salt-minion packages installed. You can enable configuration management on selected systems by using the 'Enable @@PRODUCT_NAME@@ Configuration Management' button below.</source>
+        <target state="needs-adaptation">以下のシステムには @@PRODUCT_NAME@@ 設定管理で管理されているファイルがありません。  @@PRODUCT_NAME@@ 設定管理でシステムを管理できるようにするには、特定の mgr-cfg-* パッケージをインストールする必要があります。以下の '@@PRODUCT_NAME@@ 設定管理を有効にする' ボタンを使って、選択したシステムで設定管理を有効にすることもできます。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/TargetSystems.do</context>
         </context-group>
@@ -16465,27 +16465,6 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <context context-type="sourcefile">/rhn/configuration/system/TargetSystems.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="targetsystems.jsp.installcfg" xml:space="preserve">
-          <source>Schedule mgr-cfg package install</source>
-        <target state="translated">mgr-cfg パッケージのインストールのスケジュール</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/configuration/system/TargetSystems.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="targetsystems.jsp.installcfgactions" xml:space="preserve">
-          <source>Schedule mgr-cfg-actions package install</source>
-        <target>mgr-cfg-actions パッケージインストールのスケジュール</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/configuration/system/TargetSystems.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="targetsystems.jsp.installcfgclient" xml:space="preserve">
-          <source>Schedule mgr-cfg-client package install</source>
-        <target state="translated">mgr-cfg-client パッケージのインストールのスケジュール</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/configuration/system/TargetSystems.do</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="targetsystems.jsp.pending" xml:space="preserve">
           <source>Package installations currently pending.</source>
         <target>パッケージのインストールは現在待機中です。</target>
@@ -16508,8 +16487,8 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         </context-group>
       </trans-unit>
       <trans-unit id="targetsystems.jsp.widgetsummary" xml:space="preserve">
-          <source>You may schedule &lt;code&gt;mgr-cfg*&lt;/code&gt; package installs for the time below. &lt;strong&gt;Note: All other actions will take place immediately.&lt;/strong&gt;</source>
-        <target state="translated">以下の時間に &lt;code&gt;mgr-cfg*&lt;/code&gt; パッケージのインストールをスケジュールすることができます。&lt;strong&gt;注記: その他のすべての動作は直ちに行なわれます。&lt;/strong&gt;</target>
+          <source>You may schedule &lt;code&gt;salt-minion&lt;/code&gt; package installs for the time below. &lt;strong&gt;Note: All other actions will take place immediately.&lt;/strong&gt;</source>
+        <target state="needs-adaptation">以下の時間に &lt;code&gt;mgr-cfg*&lt;/code&gt; パッケージのインストールをスケジュールすることができます。&lt;strong&gt;注記: その他のすべての動作は直ちに行なわれます。&lt;/strong&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/TargetSystems.do</context>
         </context-group>
@@ -16530,15 +16509,8 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         </context-group>
       </trans-unit>
       <trans-unit id="summary.jsp.stepone" xml:space="preserve">
-          <source>Run &lt;code&gt;mgr_check&lt;/code&gt; to complete pending mgr-cfg-* package installs.</source>
-        <target state="translated">&lt;code&gt;mgr_check&lt;/code&gt; を実行して待機中の mgr-cfg-* パッケージインストールを完了します。</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/configuration/system/Summary.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="summary.jsp.steptwo" xml:space="preserve">
-          <source>Run the following command: &lt;code&gt;mgr-actions-control --enable-all&lt;/code&gt;</source>
-        <target state="translated">次のコマンドを実行します: &lt;code&gt;mgr-actions-control --enable-all&lt;/code&gt;</target>
+          <source>Run &lt;code&gt;mgr_check&lt;/code&gt; to complete pending salt-minion package installs.</source>
+        <target state="needs-adaptation">&lt;code&gt;mgr_check&lt;/code&gt; を実行して待機中の mgr-cfg-* パッケージインストールを完了します。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/Summary.do</context>
         </context-group>
@@ -16578,16 +16550,9 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <context context-type="sourcefile">/rhn/configuration/system/Summary.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="summary.jsp.appstream" xml:space="preserve">
-          <source>Could not subscribe to the AppStream channel.</source>
-        <target>AppStream チャンネルのサブスクライブができませんでした。</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/configuration/system/Summary.do</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="summary.jsp.packages" xml:space="preserve">
-          <source>Could not schedule mgr-cfg* package installations.</source>
-        <target state="translated">mgr-cfg* パッケージのインストールをスケジュールできませんでした。</target>
+          <source>Could not schedule salt-minion package installations.</source>
+        <target state="needs-adaptation">mgr-cfg* パッケージのインストールをスケジュールできませんでした。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/Summary.do</context>
         </context-group>
@@ -20281,8 +20246,8 @@ any of these revisions.  Are you sure you want to do this?</source>
         </context-group>
       </trans-unit>
       <trans-unit id="ssmenable.jsp.summary" xml:space="preserve">
-          <source>The systems listed below do not have files managed via @@PRODUCT_NAME@@ configuration management. For systems to be capable of being managed by @@PRODUCT_NAME@@ configuration management, they will need to have particular mgr-cfg-* packages installed. You can enable configuration management on the systems listed below. &lt;strong&gt;Note:&lt;/strong&gt; nothing will happen to already enabled systems.</source>
-        <target state="translated">以下に表示されるシステムには @@PRODUCT_NAME@@ 設定管理で管理されるファイルがありません。@@PRODUCT_NAME@@ 設定管理でシステムを管理できるようにするには、特定の mgr-cfg-* パッケージをインストールする必要があります。以下に表示されるシステムで設定管理を有効にすることができます。&lt;strong&gt;注記:&lt;/strong&gt;すでに有効になっているシステムはそのままの状態となります。</target>
+          <source>The systems listed below do not have files managed via @@PRODUCT_NAME@@ configuration management. For systems to be capable of being managed by @@PRODUCT_NAME@@ configuration management, they will need to have particular salt-minion packages installed. You can enable configuration management on the systems listed below. &lt;strong&gt;Note:&lt;/strong&gt; nothing will happen to already enabled systems.</source>
+        <target state="needs-adaptation">以下に表示されるシステムには @@PRODUCT_NAME@@ 設定管理で管理されるファイルがありません。@@PRODUCT_NAME@@ 設定管理でシステムを管理できるようにするには、特定の mgr-cfg-* パッケージをインストールする必要があります。以下に表示されるシステムで設定管理を有効にすることができます。&lt;strong&gt;注記:&lt;/strong&gt;すでに有効になっているシステムはそのままの状態となります。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/config/Enable.do</context>
         </context-group>
@@ -21523,8 +21488,8 @@ any of these revisions.  Are you sure you want to do this?</source>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.operations.provisioning.remotecommand.no_script_run" xml:space="preserve">
-          <source>You must enable Remote Command execution on the target system by installing the &lt;code&gt;mgr-cfg-actions&lt;/code&gt; RPM.</source>
-        <target>&lt;code&gt;mgr-cfg-actions&lt;/code&gt; RPM をインストールして対象システムでリモートコマンドを実行できるようにする必要があります。</target>
+          <source>You must enable Remote Command execution on the target system by installing the &lt;code&gt;salt-minion&lt;/code&gt; RPM.</source>
+        <target state="needs-adaptation">&lt;code&gt;mgr-cfg-actions&lt;/code&gt; RPM をインストールして対象システムでリモートコマンドを実行できるようにする必要があります。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/kickstart/KickstartableSystems.do</context>
         </context-group>

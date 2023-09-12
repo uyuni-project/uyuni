@@ -99,7 +99,7 @@ public class ManifestFactory {
      * be public or Digester freaks out, otherwise it would be private.
      * @param m used by Digester to build template
      */
-    public void addFactoryTemplate(Map m) {
+    public void addFactoryTemplate(Map<String, Object> m) {
         String name = (String)m.get("name");
         if (name == null) {
             throw new NullPointerException("factory/template must have name attribute");

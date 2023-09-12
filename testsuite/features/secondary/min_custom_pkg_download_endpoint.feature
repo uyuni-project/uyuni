@@ -1,4 +1,4 @@
-# Copyright (c) 2019-2022 SUSE LLC
+# Copyright (c) 2019-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # In order to use different end-point to download rpms other than the manager instance itself, one can do so with
@@ -11,6 +11,7 @@ Feature: Repos file generation based on custom pillar data
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
+@susemanager
   Scenario: Subscribe the SLES minion to a channel
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Software" in the content area
@@ -19,6 +20,21 @@ Feature: Repos file generation based on custom pillar data
     And I check radio button "SLE-Product-SLES15-SP4-Pool for x86_64"
     And I wait until I see "SLE-Module-Basesystem15-SP4-Pool for x86_64" text
     And I uncheck "SLE-Module-Basesystem15-SP4-Pool for x86_64"
+    And I click on "Next"
+    Then I should see a "Confirm Software Channel Change" text
+    When I click on "Confirm"
+    Then I should see a "Changing the channels has been scheduled." text
+    When I follow "scheduled" in the content area
+    And I wait until I see "1 system successfully completed this action." text, refreshing the page
+
+@uyuni
+  Scenario: Subscribe the openSUSE minion to a channel
+    Given I am on the Systems overview page of this "sle_minion"
+    When I follow "Software" in the content area
+    And I follow "Software Channels" in the content area
+    And I wait until I do not see "Loading..." text
+    And I check radio button "openSUSE Leap 15.4 (x86_64)"
+    And I wait until I see "openSUSE 15.4 non oss (x86_64)" text
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text
     When I click on "Confirm"
@@ -38,6 +54,7 @@ Feature: Repos file generation based on custom pillar data
     And I install the package download endpoint pillar file on the server
     And I refresh the pillar data
 
+@susemanager
   Scenario: Subscribe the SLES minion to a channel again so new RPM end-point will be taken into account
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
@@ -45,6 +62,22 @@ Feature: Repos file generation based on custom pillar data
     And I check radio button "SLE-Product-SLES15-SP4-Pool for x86_64"
     And I wait until I see "SLE-Module-Basesystem15-SP4-Pool for x86_64" text
     And I uncheck "SLE-Module-Basesystem15-SP4-Pool for x86_64"
+    And I click on "Next"
+    Then I should see a "Confirm Software Channel Change" text
+    When I click on "Confirm"
+    Then I should see a "Changing the channels has been scheduled." text
+    When I follow "scheduled" in the content area
+    And I wait until I see "1 system successfully completed this action." text, refreshing the page
+
+
+@uyuni
+  Scenario: Subscribe the openSUSE minion to a channel again so new RPM end-point will be taken into account
+    When I follow "Software" in the content area
+    And I follow "Software Channels" in the content area
+    And I wait until I do not see "Loading..." text
+    And I check radio button "openSUSE Leap 15.4 (x86_64)"
+    And I wait until I see "openSUSE 15.4 non oss (x86_64)" text
+    And I check "openSUSE 15.4 non oss (x86_64)"
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text
     When I click on "Confirm"
@@ -62,6 +95,7 @@ Feature: Repos file generation based on custom pillar data
     And I install a salt pillar top file for "disable_local_repos_off, salt_bundle_config" with target "*" on the server
     And I refresh the pillar data
 
+@susemanager
   Scenario: Cleanup: subscribe the SLES minion to a channel
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
@@ -70,6 +104,26 @@ Feature: Repos file generation based on custom pillar data
     And I wait until I see "SLE15-SP4-Installer-Updates for x86_64" text
     And I include the recommended child channels
     And I check "SLE-Module-DevTools15-SP4-Pool for x86_64"
+    And I check "Fake-RPM-SUSE-Channel"
+    And I click on "Next"
+    Then I should see a "Confirm Software Channel Change" text
+    When I click on "Confirm"
+    Then I should see a "Changing the channels has been scheduled." text
+    When I follow "scheduled" in the content area
+    And I wait until I see "1 system successfully completed this action." text, refreshing the page
+
+@uyuni
+  Scenario: Cleanup: subscribe the SLES minion to a channel
+    When I follow "Software" in the content area
+    And I follow "Software Channels" in the content area
+    And I wait until I do not see "Loading..." text
+    And I check radio button "openSUSE Leap 15.4 (x86_64)"
+    And I wait until I see "openSUSE 15.4 non oss (x86_64)" text
+    And I check "openSUSE Leap 15.4 non oss Updates (x86_64)"
+    And I check "openSUSE Leap 15.4 Updates (x86_64)"
+    And I check "Update repository of openSUSE Leap 15.4 Backports (x86_64)"
+    And I check "Update repository with updates from SUSE Linux Enterprise 15 for openSUSE Leap 15.4 (x86_64)"
+    And I check "Uyuni Client Tools for openSUSE Leap 15.4 (x86_64)"
     And I check "Fake-RPM-SUSE-Channel"
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text

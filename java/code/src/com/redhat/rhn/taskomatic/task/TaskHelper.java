@@ -17,6 +17,7 @@ package com.redhat.rhn.taskomatic.task;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
@@ -107,11 +108,11 @@ public class TaskHelper {
         SelectMode m = ModeFactory.getMode("User_queries", "active_org_admin_emails");
         Map<String, Object> params = new HashMap<>();
         params.put("org_id", orgId);
-        DataResult<Map> dr = m.execute(params);
-        List toReturn = new ArrayList<String>();
+        DataResult<Row> dr = m.execute(params);
+        List<String> toReturn = new ArrayList<>();
         if (dr != null) {
-            for (Map item : dr) {
-                toReturn.add(item.get("email"));
+            for (Row item : dr) {
+                toReturn.add((String)item.get("email"));
             }
         }
 

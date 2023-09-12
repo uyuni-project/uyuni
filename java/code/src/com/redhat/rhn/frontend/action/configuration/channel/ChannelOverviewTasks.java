@@ -73,7 +73,7 @@ public class ChannelOverviewTasks extends RhnAction {
                                  HttpServletRequest req,
                                  HttpServletResponse resp) {
 
-        Map params = makeParamMap(req);
+        Map<String, Object> params = makeParamMap(req);
         String mode = req.getParameter(MODE_PARAM);
 
         if (ALL_FILES_TO_ALL_SYS.equals(mode)) {
@@ -116,7 +116,7 @@ public class ChannelOverviewTasks extends RhnAction {
     private void initializeSets(
             ActionMapping map,
             HttpServletRequest req,
-            Map params,
+            Map<String, Object> params,
             boolean chooseFiles,
             boolean chooseSystems) {
         RequestContext ctx = new RequestContext(req);
@@ -154,7 +154,7 @@ public class ChannelOverviewTasks extends RhnAction {
     private void submitDiffAction(
             ActionMapping map,
             HttpServletRequest req,
-            Map params) {
+            Map<String, Object> params) {
 
         ConfigurationManager mgr = ConfigurationManager.getInstance();
         ConfigChannel cc = ConfigActionHelper.getChannel(req);
