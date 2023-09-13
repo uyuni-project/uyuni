@@ -79,9 +79,7 @@ def twopence_init(host)
   # Look at support/lavanda.rb for more details
   node.extend(LavandaBasic)
 
-  if host == 'server'
-    return initialize_server(host, node)
-  end
+  return initialize_server(host, node) if host == 'server'
 
   # Initialize hostname
   hostname, local, remote, code = node.test_and_store_results_together('hostname', 'root', 500)
