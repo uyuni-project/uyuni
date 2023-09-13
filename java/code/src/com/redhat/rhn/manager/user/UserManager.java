@@ -50,7 +50,6 @@ import com.redhat.rhn.frontend.dto.VisibleSystems;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.taglibs.list.decorators.PageSizeDecorator;
 import com.redhat.rhn.manager.BaseManager;
-import com.redhat.rhn.manager.SatManager;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 
@@ -596,35 +595,6 @@ public class UserManager extends BaseManager {
      */
     public static void storeUser(User user) {
         UserFactory.save(user);
-    }
-
-
-    /**
-     * Deletes a User
-     * @param loggedInUser The user doing the deleting
-     * @param targetUid The id for the user we're deleting
-     */
-    public static void deleteUser(User loggedInUser, Long targetUid) {
-        if (!loggedInUser.hasRole(RoleFactory.ORG_ADMIN)) {
-            //Throw an exception with a nice error message so the user
-            //knows what went wrong.
-            LocalizationService ls = LocalizationService.getInstance();
-            throw new PermissionException("Deleting a user requires an Org Admin.",
-                    ls.getMessage("permission.jsp.title.deleteuser"),
-                    ls.getMessage("permission.jsp.summary.deleteuser"));
-        }
-
-        // Do not allow deletion of the last Satellite Administrator:
-        User toDelete = UserFactory.lookupById(loggedInUser, targetUid);
-        // 1542556 - Check all remaining SW admins, not just active.
-        if (toDelete.hasRole(RoleFactory.SAT_ADMIN)) {
-            if (SatManager.getAllSatAdmins().size() == 1) {
-                log.warn("Cannot delete the last SUSE Manager Administrator");
-                throw new DeleteSatAdminException(toDelete);
-            }
-        }
-
-        UserFactory.deleteUser(targetUid);
     }
 
     /**
