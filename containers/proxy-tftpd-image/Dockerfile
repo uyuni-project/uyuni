@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
 #!BuildTag: uyuni/proxy-tftpd:latest uyuni/proxy-tftpd:4.4.0 uyuni/proxy-tftpd:4.4.0.%RELEASE%
 
-ARG BASE=registry.suse.com/bci/bci-base:15.4
+ARG BASE=registry.suse.com/bci/bci-base:15.5
 FROM $BASE AS base
 
 ARG PRODUCT_REPO
@@ -27,7 +27,7 @@ COPY tftp_wrapper.py /usr/bin/tftp_wrapper.py
 RUN chmod +x /usr/bin/tftp_wrapper.py
 
 # Define slim image
-ARG BASE=registry.suse.com/bci/bci-base:15.4
+ARG BASE=registry.suse.com/bci/bci-base:15.5
 FROM $BASE AS slim
 
 ARG PRODUCT=Uyuni
