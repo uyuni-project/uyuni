@@ -55,8 +55,13 @@ function srpm_package_defs() {
   #      done < <(srpm_package_defs)
   #
   test -n "$PACKAGE" || {
-    PACKAGE=$(find "$SRPM_DIR" -mindepth 1 -maxdepth 1 -type d -printf "%P\n" \
-              | grep -v -x -e heirloom-pkgtools -e rhnclient -e smartpm -e jabberd-selinux -e oracle-rhnsat-selinux -e oracle-selinux -e oracle-xe-selinux -e spacewalk-monitoring-selinux -e spacewalk-proxy-selinux -e spacewalk-selinux -e cx_Oracle -e apt-spacewalk -e perl-DBD-Oracle)
+    if test "$OSCAPI" == "https://api.suse.de"; then
+        # The init-image is not needed for SUMA: BCI:Init will be used instead
+        PACKAGE=$(find "$SRPM_DIR" -mindepth 1 -maxdepth 1 -type d -printf "%P\n" \
+                  | grep -v -x -e init-image)
+    else
+        PACKAGE=$(find "$SRPM_DIR" -mindepth 1 -maxdepth 1 -type d -printf "%P\n")
+    fi
   }
   for N in $PACKAGE; do
     test -d "$SRPM_DIR/$N" || {
