@@ -31,7 +31,6 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.action.common.BadParameterException;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
-import com.redhat.rhn.frontend.xmlrpc.DeleteUserException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidOperationException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidServerGroupException;
 import com.redhat.rhn.frontend.xmlrpc.LookupServerGroupException;
@@ -41,7 +40,6 @@ import com.redhat.rhn.frontend.xmlrpc.UserNotUpdatedException;
 import com.redhat.rhn.manager.SatManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.user.CreateUserCommand;
-import com.redhat.rhn.manager.user.DeleteSatAdminException;
 import com.redhat.rhn.manager.user.UpdateUserCommand;
 import com.redhat.rhn.manager.user.UserManager;
 
@@ -536,20 +534,19 @@ public class UserHandler extends BaseHandler {
      * to lookup the user corresponding to login or if the user does not exist.
      *
      * @apidoc.doc Delete a user.
+     * <p>
+     * <strong>Deprecated</strong> - This method will be removed in a future API version. Please use disable instead.
+     * @deprecated This method will be removed in a future API version. Please use disable instead.
      * @apidoc.param #session_key()
      * @apidoc.param #param_desc("string", "login", "User login name to delete.")
      * @apidoc.returntype #return_int_success()
      */
+    @Deprecated
     public int delete(User loggedInUser, String login) throws FaultException {
         ensureOrgAdmin(loggedInUser);
-        User target = XmlRpcUserHelper.getInstance().lookupTargetUser(loggedInUser, login);
 
-        try {
-            UserManager.deleteUser(loggedInUser, target.getId());
-        }
-        catch (DeleteSatAdminException e) {
-            throw new DeleteUserException("user.cannot.delete.last.sat.admin");
-        }
+        User target = XmlRpcUserHelper.getInstance().lookupTargetUser(loggedInUser, login);
+        UserManager.disableUser(loggedInUser, target);
 
         return 1;
     }

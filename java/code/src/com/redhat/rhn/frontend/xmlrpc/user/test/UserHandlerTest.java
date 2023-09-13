@@ -21,7 +21,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.FaultException;
-import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
@@ -328,24 +327,6 @@ public class UserHandlerTest extends BaseHandlerTestCase {
 
         User created = UserFactory.lookupByLogin(login);
         assertNotNull(created);
-
-        try {
-            handler.delete(regular, login);
-            fail();
-        }
-        catch (PermissionCheckFailureException e) {
-            //success
-        }
-
-        handler.delete(admin, login);
-        try {
-            UserFactory.lookupByLogin(login);
-            fail("Deleted User Exists!");
-        }
-        catch (LookupException le) {
-         //cool deleted user is gone!
-        }
-
     }
 
     @Test
