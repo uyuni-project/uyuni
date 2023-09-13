@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-#!BuildTag: uyuni/proxy-salt-broker:latest uyuni/proxy-salt-broker:4.4.1 uyuni/proxy-salt-broker:4.4.1.%RELEASE%
+#!BuildTag: uyuni/proxy-salt-broker:latest
 
 ARG BASE=registry.suse.com/bci/bci-base:15.5
 FROM $BASE AS fat
