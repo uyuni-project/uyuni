@@ -19,7 +19,7 @@ echo
 read -n 1 -s -r -p "Press any key to start the migration or CTRL+C to cancel...";
 echo
 
-NEW_VERSION_ID=15.4
+NEW_VERSION_ID=15.5
 
 CHECK_OS=$(cat /etc/os-release  | grep PRETTY_NAME)
 
@@ -56,8 +56,10 @@ if [[ "${CURRENT_VERSION_ID}" != "\"${NEW_VERSION_ID}\"" ]]; then
 fi
 
 echo "==================================================================="
-echo "OS migrated successfully, now please migrate to the new postgres version "
-echo "by running /usr/lib/susemanager/bin/pg-migrate-x-to-y.sh"
+echo "OS migrated successfully"
+#TODO Upgrade from 15.4 to 15.5 will not migrate postgres
+#echo "Now please migrate to the new postgres version "
+#echo "by running /usr/lib/susemanager/bin/pg-migrate-x-to-y.sh"
 echo
 echo "Reboot system afterwards."
 echo "==================================================================="
