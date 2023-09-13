@@ -136,6 +136,9 @@ def do_user_create(self, args):
 
 
 def help_user_delete(self):
+    print(_('This method is deprecated and will be removed in a future API version. '
+            'Please use user_disable instead.'))
+    logging.warning(_("This method is deprecated and will be removed in a future API version"))
     print(_('user_delete: Delete an user'))
     print(_('usage: user_delete NAME'))
 
@@ -145,6 +148,10 @@ def complete_user_delete(self, text, line, beg, end):
 
 
 def do_user_delete(self, args):
+    print(_('This method is deprecated and will be removed in a future API version. '
+            'Please use user_disable instead.'))
+    logging.warning(_("This method is deprecated and will be removed in a future API version"))
+
     arg_parser = get_argument_parser()
 
     (args, _options) = parse_command_arguments(args, arg_parser)
@@ -155,11 +162,9 @@ def do_user_delete(self, args):
 
     name = args[0]
 
-    if self.options.yes or self.user_confirm('Delete this user [y/N]:'):
-        self.client.user.delete(self.session, name)
-        return 0
-    else:
-        return 1
+    self.client.user.disable(self.session, name)
+
+    return 0
 
 ####################
 
