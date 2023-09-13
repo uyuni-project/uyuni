@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-#!BuildTag: uyuni/proxy-tftpd:latest uyuni/proxy-tftpd:4.3.10 uyuni/proxy-tftpd:4.3.10.%RELEASE%
+#!BuildTag: uyuni/proxy-tftpd:latest
 
 ARG BASE=registry.suse.com/bci/bci-base:15.4
 FROM $BASE AS base
