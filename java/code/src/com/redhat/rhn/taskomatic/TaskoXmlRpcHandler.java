@@ -308,6 +308,7 @@ public class TaskoXmlRpcHandler {
         TaskoSchedule schedule = new TaskoSchedule(orgId, bunch, jobLabel, params, start, null, null);
         TaskoFactory.save(schedule);
         TaskoFactory.commitTransaction();
+        log.info("Schedule created for {}. Creating quartz Job...", jobLabel);
         // create job
         try {
             return TaskoQuartzHelper.createJob(schedule);
@@ -316,6 +317,7 @@ public class TaskoXmlRpcHandler {
             log.error("Unable to create job {}", schedule.getJobLabel(), e);
             TaskoFactory.delete(schedule);
             HibernateFactory.commitTransaction();
+            log.debug("Schedule removed.");
             throw e;
         }
     }

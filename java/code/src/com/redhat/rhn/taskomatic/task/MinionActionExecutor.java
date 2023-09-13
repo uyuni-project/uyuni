@@ -85,15 +85,14 @@ public class MinionActionExecutor extends RhnJavaJob {
      */
     @Override
     public void execute(JobExecutionContext context) {
+        long actionId = context.getJobDetail().getJobDataMap().getLongValueFromString("action_id");
         if (log.isDebugEnabled()) {
-            log.debug("Start minion action executor");
+            log.debug("Start minion action executor for action {}", actionId);
         }
 
         // Measure time to calculate the total duration
         long start = System.currentTimeMillis();
         boolean forcePackageListRefresh = false;
-        long actionId = context.getJobDetail()
-                .getJobDataMap().getLongValueFromString("action_id");
         User user = Optional.ofNullable(context.getJobDetail().getJobDataMap().get("user_id"))
                 .map(id -> Long.parseLong(id.toString()))
                 .map(UserFactory::lookupById)
@@ -112,6 +111,10 @@ public class MinionActionExecutor extends RhnJavaJob {
         }
 
         Action action = ActionFactory.lookupById(actionId);
+
+        if (log.isDebugEnabled()) {
+            log.debug("Number of Queued Server Actions for {}: {}", actionId, countQueuedServerActions(action));
+        }
 
         // HACK: it is possible that this Taskomatic task triggered before the corresponding Action was really
         // COMMITted in the database. Wait for some minutes checking if it appears
