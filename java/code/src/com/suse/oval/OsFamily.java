@@ -48,6 +48,10 @@ public enum OsFamily {
         legalReleasePattern = Pattern.compile(legalReleaseRegex);
     }
 
+    public String fullname() {
+        return fullname;
+    }
+
     public boolean isSupportedRelease(String release) {
         return legalReleasePattern.matcher(release).matches();
     }
