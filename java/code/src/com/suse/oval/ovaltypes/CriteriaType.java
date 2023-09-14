@@ -68,7 +68,7 @@ public class CriteriaType implements BaseCriteria {
     /**
      * Gets the value of the operator property.
      *
-     * @return the operator property or {@link LogicOperatorType.AND} if none is specified
+     * @return the operator property or {@link LogicOperatorType#AND} if none is specified
      */
     public LogicOperatorType getOperator() {
         if (operator == null) {
