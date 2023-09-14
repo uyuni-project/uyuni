@@ -333,7 +333,7 @@ public class CVEAuditManagerOVAL {
     public static void syncOVAL() {
         List<OVALProduct> productsToSync = getProductsToSync();
 
-        LOG.warn("Detected {} products eligible for OVAL synchronization", productsToSync.size());
+        LOG.warn("Detected {} products eligible for OVAL synchronization: {}", productsToSync.size(), productsToSync);
 
         OVALDownloader ovalDownloader = new OVALDownloader(OVALConfigLoader.load());
         for (OVALProduct product : productsToSync) {
@@ -409,6 +409,11 @@ public class CVEAuditManagerOVAL {
 
         public void setOsVersion(String osVersion) {
             this.osVersion = osVersion;
+        }
+
+        @Override
+        public String toString() {
+            return osFamily.fullname() + " " + osVersion;
         }
     }
 }
