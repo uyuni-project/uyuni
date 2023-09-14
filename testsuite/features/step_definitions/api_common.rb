@@ -115,23 +115,27 @@ Then(/^I should not get role "([^"]*)"$/) do |rolename|
   refute_includes(@roles, rolename)
 end
 
-When(/^I call user\.create\(\) with login "([^"]*)"$/) do |user|
-  refute($api_test.user.create(user, 'JamesBond007', 'Hans', 'Mustermann', 'hans.mustermann@suse.com') != 1)
-end
-
 When(/^I call user\.add_role\(\) on "([^"]*)" with the role "([^"]*)"$/) do |user, role|
   refute($api_test.user.add_role(user, role) != 1)
 end
 
-When(/^I delete user "([^"]*)"$/) do |user|
-  $api_test.user.delete(user)
+When(/^I create or enable user with login "([^"]*)"$/) do |user|
+  if $api_test.user.list_users.map { |u| u['login'] }.select { |l| l == user }.empty?
+    refute($api_test.user.create(user, 'JamesBond007', 'Hans', 'Mustermann', 'hans.mustermann@suse.com') != 1)
+  else
+    $api_test.user.enable(user)
+  end
 end
 
-When(/^I make sure "([^"]*)" is not present$/) do |user|
+When(/^I disable user "([^"]*)"$/) do |user|
+  $api_test.user.disable(user)
+end
+
+When(/^I make sure "([^"]*)" is not active$/) do |user|
   $api_test.user.list_users
            .map { |u| u['login'] }
            .select { |l| l == user }
-           .each { $api_test.user.delete(user) }
+           .each { $api_test.user.disable(user) }
 end
 
 When(/^I call user\.remove_role\(\) on "([^"]*)" with the role "([^"]*)"$/) do |luser, rolename|

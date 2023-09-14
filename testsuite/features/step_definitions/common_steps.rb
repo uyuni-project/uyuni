@@ -537,3 +537,30 @@ When(/^I schedule a task to update ReportDB$/) do
     And I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
   '
 end
+
+When(/^I create or enable user "([^"]*)" with first names "([^"]*)" and last name "([^"]*)" */) do |user, first, last|
+  if $api_test.user.list_users.map { |u| u['login'] }.select { |l| l == user }.empty?
+    steps %(And I follow the left menu "Users > User List > Active"
+      And I follow "Create User"
+      And I enter "#{user}" as "login"
+      And I enter "#{user}" as "desiredpassword"
+      And I enter "#{user}" as "desiredpasswordConfirm"
+      And I select "Mr." from "prefix"
+      And I enter "#{first}" as "firstNames"
+      And I enter "#{last}" as "lastName"
+      And I enter "galaxy-noise@suse.de" as "email"
+      And I select "(GMT+0800) Malaysia" from "timezone"
+      And I click on "Create Login"
+      Then I should see a "Account #{user} created" text
+    )
+  else
+    steps %(When I follow the left menu "Users > User List > Active"
+      And I follow "Deactivated"
+      And I follow "#{user}"
+      Then I should see a "Reactivate User" link
+      When I follow "Reactivate User"
+      Then I click on "Reactivate User"
+      Then I should see a "Active Users" text
+    )
+  end
+end
