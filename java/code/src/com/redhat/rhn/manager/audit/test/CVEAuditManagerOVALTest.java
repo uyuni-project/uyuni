@@ -24,7 +24,6 @@ import static com.redhat.rhn.testing.ErrataTestUtils.createTestInstalledPackage;
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestPackage;
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestServer;
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestUser;
-import static com.redhat.rhn.testing.ErrataTestUtils.extractAndSaveVulnerablePackages;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -45,6 +44,9 @@ import com.redhat.rhn.manager.audit.UnknownCVEIdentifierException;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
+import com.suse.oval.OVALCachingFactory;
+import com.suse.oval.OVALCleaner;
+import com.suse.oval.OsFamily;
 import com.suse.oval.OvalParser;
 import com.suse.oval.ovaltypes.OvalRootType;
 
@@ -101,7 +103,7 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
      * This test verifies this scenario.
      * */
     @Test
-    void testDoAuditSystemNotAffected_WhenOSIsAffected() throws Exception {
+    void testDoAuditSystemNotAffectedWhenOSIsAffected() throws Exception {
         OvalRootType ovalRoot = ovalParser.parse(TestUtils
                 .findTestData("/com/redhat/rhn/manager/audit/test/oval/oval-def-1.xml"));
 
@@ -277,7 +279,7 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
     }
 
     @Test
-    void testDoAuditSystemAffectedPartialPatchAvailable_FalsePositive() throws Exception {
+    void testDoAuditSystemAffectedPartialPatchAvailableFalsePositive() throws Exception {
         OvalRootType ovalRoot = ovalParser.parse(TestUtils
                 .findTestData("/com/redhat/rhn/manager/audit/test/oval/oval-def-3.xml"));
 
@@ -398,7 +400,8 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
         CVEAuditManager.populateCVEChannels();
         // We set the rank to SUCCESSOR_PRODUCT_RANK_BOUNDARY in order to imply that it's a successor product
         // migration channel
-        RankedChannel otherChannelRanked = new RankedChannel(otherChannel.getId(), CVEAuditManager.SUCCESSOR_PRODUCT_RANK_BOUNDARY);
+        RankedChannel otherChannelRanked = new RankedChannel(otherChannel.getId(),
+                CVEAuditManager.SUCCESSOR_PRODUCT_RANK_BOUNDARY);
         // We don't have to care about the internals of populateCVEChannels and weather it will assign otherChannel as
         // a relevant channel to server; we add it ourselves.
         Map<Server, List<RankedChannel>> relevantChannels = new HashMap<>();
@@ -483,5 +486,12 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
 
         assertDoesNotThrow(() -> CVEAuditManagerOVAL.listSystemsByPatchStatus(user, knownCve.getName(),
                 EnumSet.allOf(PatchStatus.class)));
+    }
+
+    private static void extractAndSaveVulnerablePackages(OvalRootType rootType) {
+        OVALCleaner.cleanup(rootType, OsFamily.openSUSE_LEAP, "15.4");
+        OVALCachingFactory.savePlatformsVulnerablePackages(rootType);
+
+        HibernateFactory.getSession().flush();
     }
 }
