@@ -45,11 +45,6 @@ import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.channel.manage.ErrataHelper;
 
-import com.suse.oval.OVALCachingFactory;
-import com.suse.oval.OVALCleaner;
-import com.suse.oval.OsFamily;
-import com.suse.oval.ovaltypes.OvalRootType;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -362,6 +357,19 @@ public class ErrataTestUtils {
         return result;
     }
 
+    /**
+     * Create a {@link Package}.
+     *
+     * @param user the package owner
+     * @param errata an errata that will contain the new package
+     * @param channel the channel in which the new package is to be published
+     * @param arch the package architecture label
+     * @param name the package name
+     * @param epoch the package epoch in EVR
+     * @param version the package version in EVR
+     * @param release the package release in EVR
+     * @return the newly created patch
+     */
     public static Package createTestPackage(User user, Errata errata, Channel channel, String arch, String name,
                                             String epoch, String version, String release) {
         Package result = createTestPackage(user, errata, channel, arch);
@@ -391,11 +399,32 @@ public class ErrataTestUtils {
         return result;
     }
 
+    /**
+     * Create a {@link Package}.
+     *
+     * @param user the package owner
+     * @param channel the channel in which the new package is to be published
+     * @param arch the package architecture label
+     * @param name the package name
+     * @param epoch the package epoch in EVR
+     * @param version the package version in EVR
+     * @param release the package release in EVR
+     * @return the newly created patch
+     */
     public static Package createTestPackage(User user, Channel channel, String arch, String name,
                                             String epoch, String version, String release) {
         return createTestPackage(user, null, channel, arch, name, epoch, version, release);
     }
 
+    /**
+     * Create a {@link Package}.
+     *
+     * @param user the package owner
+     * @param channel the channel in which the new package is to be published
+     * @param arch the package architecture label
+     * @param name the package name
+     * @return the newly created patch
+     */
     public static Package createTestPackage(User user, Channel channel, String arch, String name) {
         return createTestPackage(user, null, channel, arch, name, "1", "0", "1");
     }
@@ -542,12 +571,5 @@ public class ErrataTestUtils {
 
         // Copy the packages
         copy.setPackages(new HashSet<>(original.getPackages()));
-    }
-
-    public static void extractAndSaveVulnerablePackages(OvalRootType rootType) {
-        OVALCleaner.cleanup(rootType, OsFamily.openSUSE_LEAP, "15.4");
-        OVALCachingFactory.savePlatformsVulnerablePackages(rootType);
-
-        HibernateFactory.getSession().flush();
     }
 }

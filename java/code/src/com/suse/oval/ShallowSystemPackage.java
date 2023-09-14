@@ -16,7 +16,6 @@
 package com.suse.oval;
 
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
-import com.redhat.rhn.domain.rhnpackage.PackageType;
 import com.redhat.rhn.frontend.dto.IdComboDto;
 
 /**
