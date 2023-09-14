@@ -47,6 +47,14 @@ public abstract class CriteriaTreeBasedExtractor implements VulnerablePackagesEx
      */
     protected abstract boolean test(BaseCriteria criteria);
 
+    /**
+     * Walk the criteria tree and extact product vulnerable packages based on the implementation of
+     * {@code test()} and {@code extractItem()}
+     *
+     * @return a list of ProductVulnerablePackages. It's a list because an OVAL definition could encapsulate
+     * vulnerability information for multiple products. In that case, each item in the returned list gives the list of
+     * vulnerable packages for one product.
+     * */
     public final List<ProductVulnerablePackages> extract() {
         List<BaseCriteria> matchedCriteriaList = walkCriteriaTree();
 
@@ -55,6 +63,14 @@ public abstract class CriteriaTreeBasedExtractor implements VulnerablePackagesEx
                 .collect(Collectors.toList());
     }
 
+    /**
+     * A helper method to recursively collect the children criterions contained at most {@code maxNestingLevel} levels
+     * inside the given {@code criteria} or returns the actual {@code criteria} if it's of type {@link CriterionType}
+     *
+     * @param criteria the criteria to collect criterions from
+     * @param maxNestingLevel the maximum level to reach when recursively collecting criterions
+     * @return the list of criterions inside {@code criteria}
+     * */
     public List<CriterionType> collectCriterions(BaseCriteria criteria, int maxNestingLevel) {
         List<CriterionType> result = new ArrayList<>();
 
@@ -63,6 +79,13 @@ public abstract class CriteriaTreeBasedExtractor implements VulnerablePackagesEx
         return result;
     }
 
+    /**
+     * A helper method to collect the children criterions contained directly inside the given {@code criteria}
+     * or returns the actual {@code criteria} if it's of type {@link CriterionType}
+     *
+     * @param criteria the criteria to collect criterions from
+     * @return the list of criterions inside {@code criteria}
+     * */
     public List<CriterionType> collectCriterions(BaseCriteria criteria) {
         return collectCriterions(criteria, 0);
     }

@@ -31,6 +31,11 @@ public class VulnerablePackage {
         this.name = nameIn;
     }
 
+    /**
+     * Returns the fix version of the package if exist.
+     *
+     * @return the fix version or {@code Optional.empty} if package is unpatched.
+     * */
     public Optional<String> getFixVersion() {
         if (StringUtils.isEmpty(fixVersion)) {
             return Optional.empty();

@@ -28,13 +28,6 @@ public class ProductVulnerablePackages {
     private final List<VulnerablePackage> vulnerablePackages = new ArrayList<>();
     private String productUserFriendlyName;
 
-    /**
-     *
-     * */
-    public ProductVulnerablePackages() {
-
-    }
-
     public String getProductCpe() {
         return productCpe;
     }
@@ -47,6 +40,11 @@ public class ProductVulnerablePackages {
         return vulnerablePackages;
     }
 
+    /**
+     * Sets the list of vulnerable packages
+     *
+     * @param vulnerablePackagesIn the list of vulnerable packages
+     * */
     public void setVulnerablePackages(List<VulnerablePackage> vulnerablePackagesIn) {
         this.vulnerablePackages.clear();
         this.vulnerablePackages.addAll(vulnerablePackagesIn);
