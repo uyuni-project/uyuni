@@ -48,6 +48,11 @@ public class OVALCachingFactory extends HibernateFactory {
         // Left empty on purpose
     }
 
+    /**
+     * Extracts and save the list of vulnerable packages from {@code rootType}
+     *
+     * @param rootType the OVAL root to extract from
+     * */
     public static void savePlatformsVulnerablePackages(OvalRootType rootType) {
         CallableMode mode = ModeFactory.getCallableMode("oval_queries", "add_product_vulnerable_package");
 
@@ -91,6 +96,13 @@ public class OVALCachingFactory extends HibernateFactory {
         LOG.warn("Ending...");
     }
 
+    /**
+     * Lookup the list of vulnerable packages by the pair of cpe and cve
+     *
+     * @param cve the cve
+     * @param productCpe the product cpe
+     * @return the list of vulnerable packages
+     * */
     public static List<VulnerablePackage> getVulnerablePackagesByProductAndCve(String productCpe, String cve) {
         SelectMode mode = ModeFactory.getMode("oval_queries", "get_vulnerable_packages");
 
@@ -108,6 +120,13 @@ public class OVALCachingFactory extends HibernateFactory {
         }).collect(Collectors.toList());
     }
 
+    /**
+     * Verify the presence of OVAL data in the database for the given CVE to determine whether an audit of the CVE
+     * can be conducted.
+     *
+     * @param cve the cve to check for
+     * @return {@code True} if we can audit for CVE and {@code False} otherwise
+     * */
     public static boolean canAuditCVE(String cve) {
         SelectMode m = ModeFactory.getMode("oval_queries", "can_audit_cve");
         Map<String, Object> params = new HashMap<>();
