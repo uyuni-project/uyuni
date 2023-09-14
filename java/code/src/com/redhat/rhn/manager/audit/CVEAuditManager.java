@@ -41,10 +41,6 @@ import com.redhat.rhn.manager.distupgrade.DistUpgradeManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -63,6 +59,10 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 /**
  * CVESearchManager.
@@ -803,6 +803,13 @@ public class CVEAuditManager {
 
     }
 
+    /**
+     * List visible systems with their patch status regarding a given CVE identifier.
+     *
+     * @param user the calling user
+     * @param cveIdentifier the CVE identifier to lookup
+     * @return list of system records with patch status
+     */
     public static Stream<CVEPatchStatus> listSystemsByPatchStatus(User user,
                                                                   String cveIdentifier) {
         SelectMode m = ModeFactory.getMode("cve_audit_queries",
@@ -948,6 +955,15 @@ public class CVEAuditManager {
         return ret;
     }
 
+    /**
+     * Audit the given system with an id {@code systemId} based on Channels data exclusively.
+     *
+     * @param systemId      the id of the system to audit
+     * @param systemResults list produced by {@link CVEAuditManager#listSystemsByPatchStatus(User, String)},
+     *                      helpful for determining patch status and relevant channels and erratas
+     * @return a record with data about a single system containing that system's patch status regarding a certain
+     * given CVE identifier as well as sets of relevant channels and erratas.
+     */
     public static CVEAuditSystemBuilder doAuditSystem(Long systemId, List<CVEPatchStatus> systemResults) {
         CVEAuditSystemBuilder system = new CVEAuditSystemBuilder(systemId);
         system.setSystemName(systemResults.get(0).getSystemName());
@@ -1131,9 +1147,11 @@ public class CVEAuditManager {
         if (hasErrata) {
             if (allPackagesForAllErrataInstalled) {
                 return PatchStatus.PATCHED;
-            } else if (allChannelsForOneErrataAssigned) {
+            }
+            else if (allChannelsForOneErrataAssigned) {
                 return PatchStatus.AFFECTED_FULL_PATCH_APPLICABLE;
-            } else if (patchInSuccessorProduct) {
+            }
+            else if (patchInSuccessorProduct) {
                 return PatchStatus.AFFECTED_PATCH_INAPPLICABLE_SUCCESSOR_PRODUCT;
             }
             else {
