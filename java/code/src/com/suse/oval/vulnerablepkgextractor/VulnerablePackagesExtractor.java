@@ -28,7 +28,21 @@ import java.util.List;
  * OVAL, thus, we need a different implementation for each distribution.
  */
 public interface VulnerablePackagesExtractor {
+    /**
+     * Extracts the list of vulnerable packages along the vulnerable product and CVE.
+     *
+     * @return a list of ProductVulnerablePackages. It's a list because an OVAL definition could encapsulate
+     * vulnerability information for multiple products. In that case, each item in the returned list gives the list of
+     * vulnerable packages for one product.
+     * */
     List<ProductVulnerablePackages> extract();
 
+    /**
+     * Following the fail fast principle, we assert that the current extractor implementation is capable of extorting
+     * from the given OVAL definition. This method to be called as soon as possible, preferably before any
+     * exacting has started.
+     *
+     * @param definition the OVAL definition to assert we can extract from.
+     * */
     void assertDefinitionIsValid(DefinitionType definition);
 }

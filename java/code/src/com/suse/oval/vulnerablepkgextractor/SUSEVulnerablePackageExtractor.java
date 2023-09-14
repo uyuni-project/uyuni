@@ -51,7 +51,10 @@ public class SUSEVulnerablePackageExtractor extends CriteriaTreeBasedExtractor {
     private final OVALLookupHelper ovalLookupHelper;
 
     /**
+     * Standard constructor
      *
+     * @param vulnerabilityDefinitionIn the vulnerability definition to extract vulnerable packages from
+     * @param ovalLookupHelperIn the oval lookup helper
      * */
     public SUSEVulnerablePackageExtractor(DefinitionType vulnerabilityDefinitionIn,
                                           OVALLookupHelper ovalLookupHelperIn) {
@@ -166,7 +169,8 @@ public class SUSEVulnerablePackageExtractor extends CriteriaTreeBasedExtractor {
         // Making sure that the product criterions contain indeed product names
         return productCriterions.stream()
                 .map(CriterionType::getComment)
-                .anyMatch(comment -> comment.startsWith("SUSE Linux Enterprise") || comment.startsWith("openSUSE Leap"));
+                .anyMatch(comment -> comment.startsWith("SUSE Linux Enterprise") ||
+                        comment.startsWith("openSUSE Leap"));
     }
 
     private Cpe deriveCpe(TestType productTest) {

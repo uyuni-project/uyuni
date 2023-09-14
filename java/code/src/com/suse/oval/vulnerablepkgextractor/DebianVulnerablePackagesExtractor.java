@@ -39,6 +39,11 @@ public class DebianVulnerablePackagesExtractor extends CriteriaTreeBasedExtracto
     private static final Pattern DEBIAN_PACKAGE_REGEX = Pattern
             .compile("(?<packageName>\\S+) DPKG is earlier than (?<evr>.*)");
 
+    /**
+     * Standard constructor
+     *
+     * @param vulnerabilityDefinition the vulnerability definition to extract vulnerable packages from
+     * */
     public DebianVulnerablePackagesExtractor(DefinitionType vulnerabilityDefinition) {
         super(vulnerabilityDefinition);
     }
@@ -78,7 +83,7 @@ public class DebianVulnerablePackagesExtractor extends CriteriaTreeBasedExtracto
         return List.of(productVulnerablePackages);
     }
 
-    public Cpe deriveCpe() {
+    private Cpe deriveCpe() {
         String osVersion = definition.getOsVersion();
 
         return new CpeBuilder()
