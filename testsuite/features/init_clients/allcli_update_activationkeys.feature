@@ -74,14 +74,14 @@ Feature: Update activation keys
     When I follow the left menu "Systems > Activation Keys"
     And I follow "SUSE Test Key x86_64" in the content area
     And I wait until I do not see "Loading..." text
-    And I select "openSUSE Leap 15.4 (x86_64)" from "selectedBaseChannel"
+    And I select "openSUSE Leap 15.5 (x86_64)" from "selectedBaseChannel"
     And I wait until I do not see "Loading..." text
-    And I check "openSUSE 15.4 non oss (x86_64)"
-    And I check "openSUSE Leap 15.4 non oss Updates (x86_64)"
-    And I check "openSUSE Leap 15.4 Updates (x86_64)"
-    And I check "Update repository of openSUSE Leap 15.4 Backports (x86_64)"
-    And I check "Update repository with updates from SUSE Linux Enterprise 15 for openSUSE Leap 15.4 (x86_64)"
-    And I check "Uyuni Client Tools for openSUSE Leap 15.4 (x86_64)"
+    And I check "openSUSE 15.5 non oss (x86_64)"
+    And I check "openSUSE Leap 15.5 non oss Updates (x86_64)"
+    And I check "openSUSE Leap 15.5 Updates (x86_64)"
+    And I check "Update repository of openSUSE Leap 15.5 Backports (x86_64)"
+    And I check "Update repository with updates from SUSE Linux Enterprise 15 for openSUSE Leap 15.5 (x86_64)"
+    And I check "Uyuni Client Tools for openSUSE Leap 15.5 (x86_64)"
     And I check "Fake-RPM-SUSE-Channel"
     When I click on "Update Activation Key"
     Then I should see a "Activation key SUSE Test Key x86_64 has been modified" text
@@ -107,14 +107,14 @@ Feature: Update activation keys
     When I follow the left menu "Systems > Activation Keys"
     And I follow "SUSE SSH Test Key x86_64" in the content area
     And I wait until I do not see "Loading..." text
-    And I select "openSUSE Leap 15.4 (x86_64)" from "selectedBaseChannel"
+    And I select "openSUSE Leap 15.5 (x86_64)" from "selectedBaseChannel"
     And I wait until I do not see "Loading..." text
-    And I check "openSUSE 15.4 non oss (x86_64)"
-    And I check "openSUSE Leap 15.4 non oss Updates (x86_64)"
-    And I check "openSUSE Leap 15.4 Updates (x86_64)"
-    And I check "Update repository of openSUSE Leap 15.4 Backports (x86_64)"
-    And I check "Update repository with updates from SUSE Linux Enterprise 15 for openSUSE Leap 15.4 (x86_64)"
-    And I check "Uyuni Client Tools for openSUSE Leap 15.4 (x86_64)"
+    And I check "openSUSE 15.5 non oss (x86_64)"
+    And I check "openSUSE Leap 15.5 non oss Updates (x86_64)"
+    And I check "openSUSE Leap 15.5 Updates (x86_64)"
+    And I check "Update repository of openSUSE Leap 15.5 Backports (x86_64)"
+    And I check "Update repository with updates from SUSE Linux Enterprise 15 for openSUSE Leap 15.5 (x86_64)"
+    And I check "Uyuni Client Tools for openSUSE Leap 15.5 (x86_64)"
     And I check "Fake-RPM-SUSE-Channel"
     And I click on "Update Activation Key"
     Then I should see a "Activation key SUSE SSH Test Key x86_64 has been modified" text
@@ -140,14 +140,14 @@ Feature: Update activation keys
     When I follow the left menu "Systems > Activation Keys"
     And I follow "SUSE SSH Tunnel Test Key x86_64" in the content area
     And I wait until I do not see "Loading..." text
-    And I select "openSUSE Leap 15.4 (x86_64)" from "selectedBaseChannel"
+    And I select "openSUSE Leap 15.5 (x86_64)" from "selectedBaseChannel"
     And I wait until I do not see "Loading..." text
-    And I check "openSUSE 15.4 non oss (x86_64)"
-    And I check "openSUSE Leap 15.4 non oss Updates (x86_64)"
-    And I check "openSUSE Leap 15.4 Updates (x86_64)"
-    And I check "Update repository of openSUSE Leap 15.4 Backports (x86_64)"
-    And I check "Update repository with updates from SUSE Linux Enterprise 15 for openSUSE Leap 15.4 (x86_64)"
-    And I check "Uyuni Client Tools for openSUSE Leap 15.4 (x86_64)"
+    And I check "openSUSE 15.5 non oss (x86_64)"
+    And I check "openSUSE Leap 15.5 non oss Updates (x86_64)"
+    And I check "openSUSE Leap 15.5 Updates (x86_64)"
+    And I check "Update repository of openSUSE Leap 15.5 Backports (x86_64)"
+    And I check "Update repository with updates from SUSE Linux Enterprise 15 for openSUSE Leap 15.5 (x86_64)"
+    And I check "Uyuni Client Tools for openSUSE Leap 15.5 (x86_64)"
     And I check "Fake-RPM-SUSE-Channel"
     And I click on "Update Activation Key"
     Then I should see a "Activation key SUSE SSH Tunnel Test Key x86_64 has been modified" text
@@ -177,15 +177,15 @@ Feature: Update activation keys
     When I follow the left menu "Systems > Activation Keys"
     And I follow "Proxy Key x86_64" in the content area
     And I wait for child channels to appear
-    And I select "openSUSE Leap 15.4 (x86_64)" from "selectedBaseChannel"
+    And I select "openSUSE Leap 15.5 (x86_64)" from "selectedBaseChannel"
     And I wait for child channels to appear
-    And I check "openSUSE 15.4 non oss (x86_64)"
-    And I check "openSUSE Leap 15.4 non oss Updates (x86_64)"
-    And I check "openSUSE Leap 15.4 Updates (x86_64)"
-    And I check "Update repository of openSUSE Leap 15.4 Backports (x86_64)"
-    And I check "Update repository with updates from SUSE Linux Enterprise 15 for openSUSE Leap 15.4 (x86_64)"
-    And I check "Uyuni Client Tools for openSUSE Leap 15.4 (x86_64)"
-    And I check "Uyuni Proxy Devel for openSUSE Leap 15.4 (x86_64)"
+    And I check "openSUSE 15.5 non oss (x86_64)"
+    And I check "openSUSE Leap 15.5 non oss Updates (x86_64)"
+    And I check "openSUSE Leap 15.5 Updates (x86_64)"
+    And I check "Update repository of openSUSE Leap 15.5 Backports (x86_64)"
+    And I check "Update repository with updates from SUSE Linux Enterprise 15 for openSUSE Leap 15.5 (x86_64)"
+    And I check "Uyuni Client Tools for openSUSE Leap 15.5 (x86_64)"
+    And I check "Uyuni Proxy Devel for openSUSE Leap 15.5 (x86_64)"
     When I click on "Update Activation Key"
     Then I should see a "Activation key Proxy Key x86_64 has been modified" text
 

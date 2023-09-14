@@ -197,11 +197,10 @@ sle_base_channel =
   if ENV['PROVIDER'].include? 'podman'
     'Fake Base Channel'
   elsif ENV['SERVER'].include?('uyuni') || ENV['SERVER'].include?('suma-pr')
-    'openSUSE Leap 15.4 (x86_64)'
+    'openSUSE Leap 15.5 (x86_64)'
   else
     'SLES15-SP4-Pool'
   end
-
 # Names of our base/parent channels
 # The keys are the Twopence targets
 # The values can be found in the webUI under Software -> Manage -> Channels -> Create Channel
@@ -269,7 +268,7 @@ BASE_CHANNEL_BY_CLIENT = { 'SUSE Manager' =>
                             },
                             'Uyuni' =>
                             {
-                              'proxy' => 'openSUSE Leap 15.4 (x86_64)',
+                              'proxy' => 'openSUSE Leap 15.5 (x86_64)',
                               'sle_minion' => sle_base_channel,
                               'ssh_minion' => 'SLES15-SP4-Pool',
                               'rhlike_minion' => 'RHEL8-Pool for x86_64',
@@ -365,6 +364,7 @@ LABEL_BY_BASE_CHANNEL = { 'SUSE Manager' =>
                           },
                           'Uyuni' =>
                           {
+                            'openSUSE Leap 15.5 (x86_64)' => 'opensuse_leap15_5-x86_64',
                             'openSUSE Leap 15.4 (x86_64)' => 'opensuse_leap15_4-x86_64',
                             'SLES12-SP4-Pool' => 'sles12-sp4-pool-x86_64',
                             'SLES12-SP5-Pool' => 'sles12-sp5-pool-x86_64',
@@ -426,6 +426,7 @@ CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = { 'SUSE Manager' =>
                                           },
                                           'Uyuni' =>
                                           {
+                                            'openSUSE Leap 15.5 (x86_64)' => 'openSUSE-Leap-15.5-x86_64-uyuni',
                                             'openSUSE Leap 15.4 (x86_64)' => 'openSUSE-Leap-15.4-x86_64-uyuni',
                                             'SLES12-SP4-Pool' => 'SLE-12-SP4-x86_64',
                                             'SLES12-SP5-Pool' => 'SLE-12-SP5-x86_64',
@@ -489,6 +490,7 @@ PARENT_CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = { 'SUSE Manager' =>
                                                   },
                                                   'Uyuni' =>
                                                   {
+                                                    'openSUSE Leap 15.5 (x86_64)' => nil,
                                                     'openSUSE Leap 15.4 (x86_64)' => nil,
                                                     'SLES12-SP4-Pool' => nil,
                                                     'SLES12-SP5-Pool' => nil,
@@ -677,6 +679,17 @@ CHANNEL_TO_SYNCH_BY_OS_VERSION = {
     opensuse_leap15_4-x86_64-sle-updates
     uyuni-proxy-devel-leap-x86_64
     opensuse_leap15_4-uyuni-client-x86_64
+  ],
+  '15.5' =>
+  %w[
+    opensuse_leap15_5-x86_64
+    opensuse_leap15_5-x86_64-non-oss
+    opensuse_leap15_5-x86_64-non-oss-updates
+    opensuse_leap15_5-x86_64-updates
+    opensuse_leap15_5-x86_64-backports-updates
+    opensuse_leap15_5-x86_64-sle-updates
+    uyuni-proxy-devel-leap-x86_64
+    opensuse_leap15_5-uyuni-client-x86_64
   ]
 }.freeze
 

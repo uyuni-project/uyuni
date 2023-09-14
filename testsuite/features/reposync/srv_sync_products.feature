@@ -63,8 +63,8 @@ Feature: Synchronize products in the products page of the Setup Wizard
     Then the SLE15 SP4 product should be added
 
 @uyuni
-  Scenario: Add openSUSE Leap 15.4 product, including Uyuni Client Tools
-    When I use spacewalk-common-channel to add channel "opensuse_leap15_4 opensuse_leap15_4-non-oss opensuse_leap15_4-non-oss-updates opensuse_leap15_4-updates opensuse_leap15_4-backports-updates opensuse_leap15_4-sle-updates uyuni-proxy-devel-leap opensuse_leap15_4-uyuni-client" with arch "x86_64"
+  Scenario: Add openSUSE Leap 15.5 product, including Uyuni Client Tools
+    When I use spacewalk-common-channel to add channel "opensuse_leap15_5 opensuse_leap15_5-non-oss opensuse_leap15_5-non-oss-updates opensuse_leap15_5-updates opensuse_leap15_5-backports-updates opensuse_leap15_5-sle-updates uyuni-proxy-devel-leap opensuse_leap15_5-uyuni-client" with arch "x86_64"
 
 @proxy
 @susemanager

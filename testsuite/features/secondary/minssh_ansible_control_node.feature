@@ -13,8 +13,15 @@ Feature: Operate an Ansible control node in SSH minion
   Scenario: Pre-requisite: Deploy test playbooks and inventory file
     When I deploy testing playbooks and inventory files to "ssh_minion"
 
+@susemanager
   Scenario: Pre-requisite: Enable client tools repositories
     When I enable the repositories "tools_update_repo tools_pool_repo" on this "ssh_minion"
+    And I refresh the metadata for "ssh_minion"
+
+# TODO: Check why tools_update_repo is not available on the openSUSE minion
+@uyuni
+  Scenario: Pre-requisite: Enable client tools repositories
+    When I enable the repositories "tools_pool_repo os_pool_repo" on this "ssh_minion"
     And I refresh the metadata for "ssh_minion"
 
   Scenario: Enable "Ansible control node" system type
@@ -82,11 +89,17 @@ Feature: Operate an Ansible control node in SSH minion
     And I uncheck "ansible_control_node"
     And I click on "Update Properties"
     Then I should see a "System properties changed" text
-    And I disable the repositories "tools_update_repo tools_pool_repo" on this "ssh_minion"
     And I remove package "orion-dummy" from this "ssh_minion" without error control
     And I remove "/tmp/file.txt" from "ssh_minion"
 
+@susemanager
   Scenario: Cleanup: Disable client tools repositories
     Given I am on the Systems overview page of this "ssh_minion"
     When I disable the repositories "tools_update_repo tools_pool_repo" on this "ssh_minion"
+    And I refresh the metadata for "ssh_minion"
+
+@uyuni
+  Scenario: Cleanup: Disable client tools repositories
+    Given I am on the Systems overview page of this "ssh_minion"
+    When I disable the repositories "tools_pool_repo os_pool_repo" on this "ssh_minion"
     And I refresh the metadata for "ssh_minion"

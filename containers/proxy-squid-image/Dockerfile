@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
 #!BuildTag: uyuni/proxy-squid:latest uyuni/proxy-squid:4.4.0 uyuni/proxy-squid:4.4.0.%RELEASE%
 
-ARG BASE=registry.suse.com/bci/bci-base:15.4
+ARG BASE=registry.suse.com/bci/bci-base:15.5
 FROM $BASE AS base
 
 ARG PRODUCT_REPO
@@ -35,7 +35,7 @@ RUN chown squid:squid /var/cache/squid
 RUN chmod a+x /var/log
 
 # Define slim image
-ARG BASE=registry.suse.com/bci/bci-base:15.4
+ARG BASE=registry.suse.com/bci/bci-base:15.5
 FROM $BASE AS slim
 
 USER squid

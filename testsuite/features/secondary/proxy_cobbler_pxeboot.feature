@@ -35,9 +35,17 @@ Feature: PXE boot a terminal with Cobbler
     And I click on "Apply Highstate"
     And I wait until event "Apply highstate scheduled by admin" is completed
 
+@susemanager
   Scenario: Install TFTP boot package on the server
     When I install package tftpboot-installation on the server
     And I wait for "tftpboot-installation-SLE-15-SP4-x86_64" to be installed on "server"
+
+# TODO: Not available in any Leap repository, yet
+# See https://suse.slack.com/archives/C02CKHR76Q2/p1694189245268889
+#@uyuni
+# Scenario: Install TFTP boot package on the server
+#   When I install package tftpboot-installation on the server
+#   And I wait for "tftpboot-installation-openSUSE-Leap-15.4-x86_64" to be installed on "server"
 
   Scenario: Create auto installation distribution
     When I follow the left menu "Systems > Autoinstallation > Distributions"

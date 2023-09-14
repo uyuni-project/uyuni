@@ -320,9 +320,17 @@ Feature: Manage KVM virtual machines via the GUI
     And I should see a "test-net2" virtual network on "kvm_server"
     And "test-net2" virtual network on "kvm_server" should have "192.168.128.1" IPv4 address with 24 prefix
 
+@susemanager
   Scenario: Install TFTP boot package on the server
     When I install package tftpboot-installation on the server
     And I wait for "tftpboot-installation-SLE-15-SP4-x86_64" to be installed on "server"
+
+# TODO: Not available in any Leap repository, yet
+# See https://suse.slack.com/archives/C02CKHR76Q2/p1694189245268889
+#@uyuni
+#  Scenario: Install TFTP boot package on the server
+#    And I install package tftpboot-installation on the server
+#    And I wait for "tftpboot-installation-openSUSE-Leap-15.4-x86_64" to be installed on "server"
 
 @virthost_kvm
   Scenario: Edit a virtual network
