@@ -29,6 +29,14 @@ public class VulnerablePackagesExtractors {
 
     private VulnerablePackagesExtractors() {
     }
+    /**
+     * Create and returns a {@link VulnerablePackagesExtractor} instance based on the given {@code osFamily} argument
+     *
+     * @param definition the definition to extract vulnerable packages from
+     * @param osFamily the os family
+     * @param ovalLookupHelper a helper class to lookup OVAL resources efficiently
+     * @return a vulnerable package extractor instance
+     * */
     public static VulnerablePackagesExtractor create(DefinitionType definition, OsFamily osFamily,
                                                      OVALLookupHelper ovalLookupHelper) {
         switch (osFamily) {

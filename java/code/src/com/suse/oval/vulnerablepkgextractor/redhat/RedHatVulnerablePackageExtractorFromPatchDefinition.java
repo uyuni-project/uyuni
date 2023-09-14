@@ -16,7 +16,6 @@
 package com.suse.oval.vulnerablepkgextractor.redhat;
 
 import com.suse.oval.OsFamily;
-
 import com.suse.oval.ovaltypes.Advisory;
 import com.suse.oval.ovaltypes.BaseCriteria;
 import com.suse.oval.ovaltypes.CriterionType;
@@ -44,6 +43,11 @@ public class RedHatVulnerablePackageExtractorFromPatchDefinition extends Criteri
             .compile("(?<packageName>\\S+) is earlier than (?<evr>.*)");
     private static final Logger LOG = LogManager.getLogger(RedHatVulnerablePackageExtractorFromPatchDefinition.class);
 
+    /**
+     * Standard constructor
+     *
+     * @param patchDefinition the patch definition to extract vulnerable packages from
+     * */
     public RedHatVulnerablePackageExtractorFromPatchDefinition(DefinitionType patchDefinition) {
         super(patchDefinition);
         assertDefinitionIsValid(patchDefinition);
