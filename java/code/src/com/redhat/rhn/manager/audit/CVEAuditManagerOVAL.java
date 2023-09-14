@@ -25,11 +25,21 @@ import com.redhat.rhn.manager.rhnpackage.PackageManager;
 
 import com.suse.oval.OVALCachingFactory;
 import com.suse.oval.ShallowSystemPackage;
+
+import com.suse.oval.OVALCleaner;
+import com.suse.oval.OsFamily;
+import com.suse.oval.OvalParser;
+import com.suse.oval.config.OVALConfigLoader;
+import com.suse.oval.ovaldownloader.OVALDownloadResult;
+import com.suse.oval.ovaldownloader.OVALDownloader;
+import com.suse.oval.ovaltypes.OvalRootType;
 import com.suse.oval.vulnerablepkgextractor.VulnerablePackage;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
@@ -297,5 +307,78 @@ public class CVEAuditManagerOVAL {
      * */
     public static void populateCVEChannels() {
         CVEAuditManager.populateCVEChannels();
+    }
+
+    static List<OVALProduct> productsToSync = new ArrayList<>();
+    static {
+        /*productsToSync.add(new OVALProduct(OsFamily.openSUSE_LEAP, "15.4"));*/
+        productsToSync.add(new OVALProduct(OsFamily.openSUSE_LEAP, "15.3"));
+        productsToSync.add(new OVALProduct(OsFamily.REDHAT_ENTERPRISE_LINUX, "9"));
+    }
+    public static void syncOVAL() {
+        OVALDownloader ovalDownloader = new OVALDownloader(OVALConfigLoader.load());
+        for (OVALProduct product : productsToSync) {
+            LOG.warn("Downloading OVAL for {} {}", product.getOsFamily(), product.getOsVersion());
+            OVALDownloadResult downloadResult;
+            try {
+                downloadResult = ovalDownloader.download(product.getOsFamily(), product.getOsVersion());
+            }
+            catch (IOException e) {
+                throw new RuntimeException("Failed to download OVAL data", e);
+            }
+            LOG.warn("Downloading finished");
+
+            LOG.warn("OVAL vulnerability file: " +
+                    downloadResult.getVulnerabilityFile().map(File::getAbsoluteFile).orElse(null));
+            LOG.warn("OVAL patch file: " + downloadResult.getPatchFile().map(File::getAbsoluteFile).orElse(null));
+
+            downloadResult.getVulnerabilityFile().ifPresent(ovalVulnerabilityFile -> {
+                OvalParser ovalParser = new OvalParser();
+                OvalRootType ovalRoot = ovalParser.parse(ovalVulnerabilityFile);
+
+                LOG.warn("Saving Vulnerability OVAL for {} {}", product.getOsFamily(), product.getOsVersion());
+
+                OVALCleaner.cleanup(ovalRoot, product.getOsFamily(), product.getOsVersion());
+                OVALCachingFactory.savePlatformsVulnerablePackages(ovalRoot);
+            });
+
+            downloadResult.getPatchFile().ifPresent(patchFile -> {
+                OvalParser ovalParser = new OvalParser();
+                OvalRootType ovalRoot = ovalParser.parse(patchFile);
+
+                LOG.warn("Saving Patch OVAL for {} {}", product.getOsFamily(), product.getOsVersion());
+
+                OVALCleaner.cleanup(ovalRoot, product.getOsFamily(), product.getOsVersion());
+                OVALCachingFactory.savePlatformsVulnerablePackages(ovalRoot);
+            });
+
+            LOG.warn("Saving OVAL finished");
+        }
+    }
+
+    public static class OVALProduct {
+        private OsFamily osFamily;
+        private String osVersion;
+
+        public OVALProduct(OsFamily osFamily, String osVersion) {
+            this.osFamily = osFamily;
+            this.osVersion = osVersion;
+        }
+
+        public OsFamily getOsFamily() {
+            return osFamily;
+        }
+
+        public void setOsFamily(OsFamily osFamily) {
+            this.osFamily = osFamily;
+        }
+
+        public String getOsVersion() {
+            return osVersion;
+        }
+
+        public void setOsVersion(String osVersion) {
+            this.osVersion = osVersion;
+        }
     }
 }
