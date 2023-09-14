@@ -63,7 +63,7 @@ import java.util.stream.Collectors;
 // TODO: Test that if we get AFFECTED_PATCH_INAPPLICABLE auditServer.Channels and auditServer.Erratas are not null
 public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
     private static final Logger LOG = LogManager.getLogger(CVEAuditManagerOVALTest.class);
-    OvalParser ovalParser = new OvalParser();
+    private OvalParser ovalParser = new OvalParser();
 
     @Test
     void testDoAuditSystemNotAffected() throws Exception {
@@ -117,8 +117,6 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
         Server server = createTestServer(user, channels);
         server.setCpe("cpe:/o:opensuse:leap:15.4"); // openSUSE Leap 15.4, same as the affected OS in OVAL
 
-        createTestInstalledPackage(createLeap15_4_Package(user, errata, channel), server);
-
         CVEAuditManager.populateCVEChannels();
 
         List<CVEAuditManager.CVEPatchStatus> results = CVEAuditManager.listSystemsByPatchStatus(user, cve.getName())
@@ -151,7 +149,6 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
         Package patched = createLaterTestPackage(user, null, channel, unpatched,
                 "0", "4.12.14", "150100.197.137.2");
 
-        createTestInstalledPackage(createLeap15_4_Package(user, null, channel), server);
         createTestInstalledPackage(patched, server);
 
         CVEAuditManager.populateCVEChannels();
@@ -189,7 +186,6 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
         Package patched = createTestPackage(user, errata, channel, "noarch",
                 "kernel-debug-base", "0", "4.12.14", "150100.197.137.2");
 
-        createTestInstalledPackage(createLeap15_4_Package(user, errata, channel), server);
         createTestInstalledPackage(unpatched, server);
 
         CVEAuditManager.populateCVEChannels();
@@ -225,7 +221,6 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
         Package affected =  createTestPackage(user, channel, "noarch", "MozillaFirefox");
         createTestPackage(user, channel, "noarch", "MozillaFirefox-devel");
 
-        createTestInstalledPackage(createLeap15_4_Package(user, errata, channel), server);
         createTestInstalledPackage(affected, server);
 
         CVEAuditManager.populateCVEChannels();
@@ -268,7 +263,6 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
                 createTestPackage(user, channel, "noarch", "MozillaFirefox-devel", "0",
                         "2.3.0", "150400.1.12");
 
-        createTestInstalledPackage(createLeap15_4_Package(user, errata, channel), server);
         createTestInstalledPackage(unpatched1, server);
         createTestInstalledPackage(unpatched2, server);
 
@@ -312,7 +306,6 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
         // which is installed, has a patch that can be applied.
         createTestPackage(user, channel, "noarch", "MozillaFirefox-devel");
 
-        createTestInstalledPackage(createLeap15_4_Package(user, errata, channel), server);
         createTestInstalledPackage(unpatched, server);
 
         CVEAuditManager.populateCVEChannels();
@@ -353,7 +346,6 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
         createTestPackage(user, errata, otherChannel, "noarch",
                 "kernel-debug-base", "0", "4.12.14", "150100.197.137.2");
 
-        createTestInstalledPackage(createLeap15_4_Package(user, errata, channel), server);
         createTestInstalledPackage(unpatched, server);
 
         CVEAuditManager.populateCVEChannels();
@@ -401,7 +393,6 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
         createTestPackage(user, errata, otherChannel, "noarch",
                 "kernel-debug-base", "0", "4.12.14", "150100.197.137.2");
 
-        createTestInstalledPackage(createLeap15_4_Package(user, errata, channel), server);
         createTestInstalledPackage(unpatched, server);
 
         CVEAuditManager.populateCVEChannels();
@@ -453,7 +444,6 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
         Package patched = createLaterTestPackage(user, errata, channel, unpatched,
                 "0", "4.12.14", "150100.197.137.2");
 
-        createTestInstalledPackage(createLeap15_4_Package(user, errata, channel), server);
         createTestInstalledPackage(patched, server);
 
         CVEAuditManager.populateCVEChannels();
@@ -493,14 +483,5 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
 
         assertDoesNotThrow(() -> CVEAuditManagerOVAL.listSystemsByPatchStatus(user, knownCve.getName(),
                 EnumSet.allOf(PatchStatus.class)));
-    }
-
-    /**
-     * This package is used to distinguish openSUSE Leap 15.4 distributions. We use very often in tests, so
-     * it's abstracted here
-     * */
-    private static Package createLeap15_4_Package(User user, Errata errata, Channel channel) throws Exception {
-        return createTestPackage(user, channel, "noarch", "openSUSE-release",
-                "0", "15.4", "0");
     }
 }
