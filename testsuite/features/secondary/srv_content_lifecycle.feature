@@ -46,9 +46,9 @@ Feature: Content lifecycle
     When I follow the left menu "Content Lifecycle > Projects"
     And I follow "clp_name"
     And I click on "Attach/Detach Sources"
-    And I select "openSUSE Leap 15.4 (x86_64)" from "selectedBaseChannel"
+    And I select "openSUSE Leap 15.5 (x86_64)" from "selectedBaseChannel"
     And I click on "Save"
-    And I wait until I see "openSUSE Leap 15.4 (x86_64)" text
+    And I wait until I see "openSUSE Leap 15.5 (x86_64)" text
     Then I should see a "Version 1: (draft - not built) - Check the changes below" text
 
 @susemanager
@@ -62,7 +62,7 @@ Feature: Content lifecycle
   Scenario: Verify added sources
     When I follow the left menu "Content Lifecycle > Projects"
     And I follow "clp_name"
-    Then I should see a "openSUSE Leap 15.4 (x86_64)" text
+    Then I should see a "openSUSE Leap 15.5 (x86_64)" text
     And I should see a "Build (1)" text
 
   Scenario: Add environments to the project
