@@ -323,6 +323,12 @@ public class PackageManager extends BaseManager {
         return PackageManager.getPackagesPerSystem(sid, "system_package_list", pc);
     }
 
+    /**
+     * Returns list of packages for given server
+     *
+     * @param sid Server Id
+     * @return list of packages for given server
+     */
     public static DataResult<ShallowSystemPackage> shallowSystemPackageList(Long sid) {
         SelectMode m = ModeFactory.getMode("Package_queries", "shallow_system_package_list");
 
