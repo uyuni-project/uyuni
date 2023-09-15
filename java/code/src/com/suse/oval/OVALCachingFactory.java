@@ -25,7 +25,7 @@ import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 
-import com.suse.oval.manager.OVALLookupHelper;
+import com.suse.oval.manager.OVALResourcesCache;
 import com.suse.oval.ovaltypes.DefinitionType;
 import com.suse.oval.ovaltypes.OvalRootType;
 import com.suse.oval.vulnerablepkgextractor.ProductVulnerablePackages;
@@ -63,12 +63,12 @@ public class OVALCachingFactory extends HibernateFactory {
     public static void savePlatformsVulnerablePackages(OvalRootType rootType) {
         CallableMode mode = ModeFactory.getCallableMode("oval_queries", "add_product_vulnerable_package");
 
-        OVALLookupHelper ovalLookupHelper = new OVALLookupHelper(rootType);
+        OVALResourcesCache ovalResourcesCache = new OVALResourcesCache(rootType);
 
         List<ProductVulnerablePackages> productVulnerablePackages = new ArrayList<>();
         for (DefinitionType definition : rootType.getDefinitions()) {
             VulnerablePackagesExtractor vulnerablePackagesExtractor =
-                    VulnerablePackagesExtractors.create(definition, rootType.getOsFamily(), ovalLookupHelper);
+                    VulnerablePackagesExtractors.create(definition, rootType.getOsFamily(), ovalResourcesCache);
 
             productVulnerablePackages.addAll(vulnerablePackagesExtractor.extract());
         }
