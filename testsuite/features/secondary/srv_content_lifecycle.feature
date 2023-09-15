@@ -188,10 +188,10 @@ Feature: Content lifecycle
   Scenario: Cleanup: remove the created channels
     When I delete these channels with spacewalk-remove-channel:
       |clp_label-prod_label-fake_base_channel|
-      |clp_label-prod_label-opensuse_leap15_4-x86_64|
+      |clp_label-prod_label-opensuse_leap15_5-x86_64|
       |clp_label-qa_label-fake_base_channel|
-      |clp_label-qa_label-opensuse_leap15_4-x86_64|
+      |clp_label-qa_label-opensuse_leap15_5-x86_64|
       |clp_label-dev_label-fake_base_channel|
-      |clp_label-dev_label-opensuse_leap15_4-x86_64|
+      |clp_label-dev_label-opensuse_leap15_5-x86_64|
     And I list channels with spacewalk-remove-channel
     Then I shouldn't get "clp_label"

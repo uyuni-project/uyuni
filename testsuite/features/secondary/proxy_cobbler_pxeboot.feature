@@ -45,7 +45,7 @@ Feature: PXE boot a terminal with Cobbler
 #@uyuni
 # Scenario: Install TFTP boot package on the server
 #   When I install package tftpboot-installation on the server
-#   And I wait for "tftpboot-installation-openSUSE-Leap-15.4-x86_64" to be installed on "server"
+#   And I wait for "tftpboot-installation-openSUSE-Leap-15.5-x86_64" to be installed on "server"
 
   Scenario: Create auto installation distribution
     When I follow the left menu "Systems > Autoinstallation > Distributions"
