@@ -30,9 +30,9 @@ Feature: Assign child channel to a system
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
-    Then radio button "openSUSE Leap 15.4 (x86_64)" should be checked
+    Then radio button "openSUSE Leap 15.5 (x86_64)" should be checked
     And I wait until I do not see "Loading..." text
-    And I should see "Uyuni Proxy Devel for openSUSE Leap 15.4 (x86_64) (Development)" as unchecked
+    And I should see "Uyuni Proxy Devel for openSUSE Leap 15.5 (x86_64) (Development)" as unchecked
 
 # susemanager has the Client Tools channels more than uyuni. (+2)
 # in Head also Beta Client Tools Channels (+2)
@@ -46,7 +46,7 @@ Feature: Assign child channel to a system
   Scenario: Check old channels are still enabled on the system before channel change completes
     When I refresh the metadata for "sle_minion"
     Then "8" channels should be enabled on "sle_minion"
-    And channel "openSUSE Leap 15.4 (x86_64)" should be enabled on "sle_minion"
+    And channel "openSUSE Leap 15.5 (x86_64)" should be enabled on "sle_minion"
 
 @susemanager
   Scenario: Assign a child channel to the system
@@ -69,16 +69,16 @@ Feature: Assign child channel to a system
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
-    Then radio button "openSUSE Leap 15.4 (x86_64)" should be checked
+    Then radio button "openSUSE Leap 15.5 (x86_64)" should be checked
     And I wait until I do not see "Loading..." text
-    And I check "Uyuni Proxy Devel for openSUSE Leap 15.4 (x86_64) (Development)"
+    And I check "Uyuni Proxy Devel for openSUSE Leap 15.5 (x86_64) (Development)"
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text
     And I click on "Confirm"
     Then I should see a "Changing the channels has been scheduled." text
     When I follow "scheduled" in the content area
     And I wait until I see "1 system successfully completed this action." text, refreshing the page
-    Then channel "Uyuni Proxy Devel for openSUSE Leap 15.4 (x86_64) (Development)" should be enabled on "sle_minion"
+    Then channel "Uyuni Proxy Devel for openSUSE Leap 15.5 (x86_64) (Development)" should be enabled on "sle_minion"
 
   Scenario: Check channel change has completed for the system
     Given I am on the Systems overview page of this "sle_minion"
@@ -99,9 +99,9 @@ Feature: Assign child channel to a system
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
-    Then radio button "openSUSE Leap 15.4 (x86_64)" should be checked
+    Then radio button "openSUSE Leap 15.5 (x86_64)" should be checked
     And I wait until I do not see "Loading..." text
-    And I should see "Uyuni Proxy Devel for openSUSE Leap 15.4 (x86_64) (Development)" as checked
+    And I should see "Uyuni Proxy Devel for openSUSE Leap 15.5 (x86_64) (Development)" as checked
 
 @susemanager
   Scenario: Check the new channels are enabled on the system
@@ -114,8 +114,8 @@ Feature: Assign child channel to a system
   Scenario: Check the new channels are enabled on the system
     When I refresh the metadata for "sle_minion"
     Then "9" channels should be enabled on "sle_minion"
-    And channel "openSUSE Leap 15.4 (x86_64)" should be enabled on "sle_minion"
-    And channel "Uyuni Proxy Devel for openSUSE Leap 15.4 (x86_64) (Development)" should be enabled on "sle_minion"
+    And channel "openSUSE Leap 15.5 (x86_64)" should be enabled on "sle_minion"
+    And channel "Uyuni Proxy Devel for openSUSE Leap 15.5 (x86_64) (Development)" should be enabled on "sle_minion"
 
 @susemanager
   Scenario: Cleanup: subscribe the system back to previous channels
@@ -142,21 +142,21 @@ Feature: Assign child channel to a system
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
-    Then radio button "openSUSE Leap 15.4 (x86_64)" should be checked
+    Then radio button "openSUSE Leap 15.5 (x86_64)" should be checked
     And I wait until I do not see "Loading..." text
-    And I wait until I see "openSUSE Leap 15.4 Updates (x86_64)" text
-    And I check "openSUSE 15.4 non oss (x86_64)"
-    And I check "openSUSE Leap 15.4 non oss Updates (x86_64)"
-    And I check "openSUSE Leap 15.4 Updates (x86_64)"
-    And I check "Update repository of openSUSE Leap 15.4 Backports (x86_64)"
-    And I check "Update repository with updates from SUSE Linux Enterprise 15 for openSUSE Leap 15.4 (x86_64)"
-    And I check "Uyuni Client Tools for openSUSE Leap 15.4 (x86_64)"
+    And I wait until I see "openSUSE Leap 15.5 Updates (x86_64)" text
+    And I check "openSUSE 15.5 non oss (x86_64)"
+    And I check "openSUSE Leap 15.5 non oss Updates (x86_64)"
+    And I check "openSUSE Leap 15.5 Updates (x86_64)"
+    And I check "Update repository of openSUSE Leap 15.5 Backports (x86_64)"
+    And I check "Update repository with updates from SUSE Linux Enterprise 15 for openSUSE Leap 15.5 (x86_64)"
+    And I check "Uyuni Client Tools for openSUSE Leap 15.5 (x86_64)"
     And I check "Fake-RPM-SUSE-Channel"
-    And I uncheck "Uyuni Proxy Devel for openSUSE Leap 15.4 (x86_64) (Development)"
+    And I uncheck "Uyuni Proxy Devel for openSUSE Leap 15.5 (x86_64) (Development)"
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text
     When I click on "Confirm"
     Then I should see a "Changing the channels has been scheduled." text
     When I follow "scheduled" in the content area
     And I wait until I see "1 system successfully completed this action." text, refreshing the page
-    Then channel "Uyuni Proxy Devel for openSUSE Leap 15.4 (x86_64) (Development)" should not be enabled on "sle_minion"
+    Then channel "Uyuni Proxy Devel for openSUSE Leap 15.5 (x86_64) (Development)" should not be enabled on "sle_minion"
