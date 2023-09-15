@@ -128,8 +128,8 @@ def check_text_and_catch_request_timeout_popup?(text1, text2: nil, timeout: Capy
   start_time = Time.now
   repeat_until_timeout(message: "'#{text1}' still not visible", timeout: DEFAULT_TIMEOUT) do
     while Time.now - start_time <= timeout
-      return true if has_text?(text1, wait: 0.5)
-      return true if !text2.nil? && has_text?(text2, wait: 0.5)
+      return true if has_text?(text1, wait: 4)
+      return true if !text2.nil? && has_text?(text2, wait: 4)
       next unless has_text?('Request has timed out', wait: 0)
       log 'Request timeout found, performing reload'
       click_button('reload the page')
