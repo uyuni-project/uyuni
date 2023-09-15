@@ -15,6 +15,7 @@
 
 package com.suse.oval.manager;
 
+import com.suse.oval.parser.OVALResourcesResult;
 import com.suse.oval.ovaltypes.ObjectType;
 import com.suse.oval.ovaltypes.OvalRootType;
 import com.suse.oval.ovaltypes.StateType;
@@ -26,7 +27,7 @@ import java.util.Optional;
  * A cache for OVAL resources (objects, states and tests) to be able to efficiently look up OVAL resources
  * by their id.
  * */
-public class OVALLookupHelper {
+public class OVALResourcesCache {
     private final OvalStateManager stateManager;
     private final OvalTestManager testManager;
     private final OvalObjectManager objectManager;
@@ -36,10 +37,16 @@ public class OVALLookupHelper {
      *
      * @param rootType the root to get OVAL resources from
      */
-    public OVALLookupHelper(OvalRootType rootType) {
+    public OVALResourcesCache(OvalRootType rootType) {
         this.stateManager = new OvalStateManager(rootType.getStates());
         this.testManager = new OvalTestManager(rootType.getTests());
         this.objectManager = new OvalObjectManager(rootType.getObjects());
+    }
+
+    public OVALResourcesCache(OVALResourcesResult resourcesResult) {
+        this.stateManager = new OvalStateManager(resourcesResult.getStates());
+        this.testManager = new OvalTestManager(resourcesResult.getTests());
+        this.objectManager = new OvalObjectManager(resourcesResult.getObjects());
     }
 
     /**
