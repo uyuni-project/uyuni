@@ -53,6 +53,8 @@ public class OVALCachingFactory extends HibernateFactory {
      *
      * @param rootType the OVAL root to extract from
      * */
+    // TODO: Following the single responsibility principle this method shouldn't have to extract vulnerable packages
+    //  itself
     public static void savePlatformsVulnerablePackages(OvalRootType rootType) {
         CallableMode mode = ModeFactory.getCallableMode("oval_queries", "add_product_vulnerable_package");
 
