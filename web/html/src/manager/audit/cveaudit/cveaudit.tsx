@@ -353,8 +353,13 @@ class CVEAudit extends React.Component<Props, State> {
               header={t("Actions")}
               cell={(row, criteria) => {
                 if (this.state.resultType === TARGET_SERVER) {
-                  if (row.patchStatus === NOT_AFFECTED || row.patchStatus === PATCHED ||
-                      row.patchStatus === AFFECTED_PATCH_UNAVAILABLE || row.patchStatus === AFFECTED_PATCH_UNAVAILABLE_IN_UYUNI) {
+                  if (row.patchStatus === AFFECTED_PATCH_UNAVAILABLE_IN_UYUNI) {
+                    return t("No patches were found in the available channels. Try syncing existing channels or adding more channels");
+                  } else if (row.patchStatus === AFFECTED_PATCH_UNAVAILABLE) {
+                    return t("Vulnerability doesn't have a patch. This could be due to it being a zero-day vulnerability or having been marked as 'Won't fix' by the distribution maintainer. We recommend searching online for any available mitigations that you can apply.");
+                  }
+                  else if (row.patchStatus === NOT_AFFECTED || row.patchStatus === PATCHED ||
+                      row.patchStatus === AFFECTED_PATCH_UNAVAILABLE) {
                     return t("No action required");
                   } else if (row.patchStatus === AFFECTED_FULL_PATCH_APPLICABLE) {
                     return (

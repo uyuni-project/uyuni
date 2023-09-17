@@ -185,11 +185,11 @@ public class CVEAuditManagerOVAL {
         else {
             boolean allPackagesPatched = patchedVulnerablePackages.stream().allMatch(patchedPackage ->
                     allInstalledPackages.stream()
-                            .filter(installedPackage ->
-                                    Objects.equals(installedPackage.getName(), patchedPackage.getName()))
-                            .anyMatch(installedPackage ->
-                                    installedPackage.getPackageEVR()
-                                            .compareTo(PackageEvr.parseRpm(patchedPackage.getFixVersion().get())) >= 0));
+                        .filter(installedPackage ->
+                                Objects.equals(installedPackage.getName(), patchedPackage.getName()))
+                        .anyMatch(installedPackage ->
+                                installedPackage.getPackageEVR()
+                                        .compareTo(PackageEvr.parseRpm(patchedPackage.getFixVersion().get())) >= 0));
 
             if (allPackagesPatched) {
                 cveAuditServerBuilder.setPatchStatus(PatchStatus.PATCHED);
