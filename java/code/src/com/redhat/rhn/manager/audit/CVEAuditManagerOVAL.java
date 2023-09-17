@@ -177,7 +177,9 @@ public class CVEAuditManagerOVAL {
                 .filter(vulnerablePackage -> vulnerablePackage.getFixVersion().isEmpty()).collect(
                         Collectors.toSet());
 
-        if (patchedVulnerablePackages.isEmpty() && !unpatchedVulnerablePackages.isEmpty()) {
+        boolean allPackagesUnpatched = unpatchedVulnerablePackages.size() == clientProductVulnerablePackages.size();
+
+        if (allPackagesUnpatched) {
             cveAuditServerBuilder.setPatchStatus(PatchStatus.AFFECTED_PATCH_UNAVAILABLE);
         }
         else {
@@ -187,8 +189,7 @@ public class CVEAuditManagerOVAL {
                                     Objects.equals(installedPackage.getName(), patchedPackage.getName()))
                             .anyMatch(installedPackage ->
                                     installedPackage.getPackageEVR()
-                                            .compareTo(PackageEvr.parseRpm(
-                                                    patchedPackage.getFixVersion().get())) >= 0));
+                                            .compareTo(PackageEvr.parseRpm(patchedPackage.getFixVersion().get())) >= 0));
 
             if (allPackagesPatched) {
                 cveAuditServerBuilder.setPatchStatus(PatchStatus.PATCHED);
@@ -250,10 +251,10 @@ public class CVEAuditManagerOVAL {
                     }
                     else if (somePackagesHavePatchInUnassignedChannels) {
                         //TODO: Not sure how to handle...
-                        cveAuditServerBuilder.setPatchStatus(PatchStatus.AFFECTED_PATCH_UNAVAILABLE);
+                        cveAuditServerBuilder.setPatchStatus(PatchStatus.AFFECTED_PATCH_UNAVAILABLE_IN_UYUNI);
                     }
                     else {
-                        cveAuditServerBuilder.setPatchStatus(PatchStatus.AFFECTED_PATCH_UNAVAILABLE);
+                        cveAuditServerBuilder.setPatchStatus(PatchStatus.AFFECTED_PATCH_UNAVAILABLE_IN_UYUNI);
                     }
                 }
             }
