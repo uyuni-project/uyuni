@@ -22,10 +22,12 @@ const AFFECTED_FULL_PATCH_APPLICABLE = "AFFECTED_FULL_PATCH_APPLICABLE";
 const NOT_AFFECTED = "NOT_AFFECTED";
 const PATCHED = "PATCHED";
 const AFFECTED_PATCH_UNAVAILABLE = "AFFECTED_PATCH_UNAVAILABLE";
+const AFFECTED_PATCH_UNAVAILABLE_IN_UYUNI = "AFFECTED_PATCH_UNAVAILABLE_IN_UYUNI";
 const AFFECTED_PARTIAL_PATCH_APPLICABLE = "AFFECTED_PARTIAL_PATCH_APPLICABLE";
 
 const ALL = [
   AFFECTED_PATCH_UNAVAILABLE,
+  AFFECTED_PATCH_UNAVAILABLE_IN_UYUNI,
   AFFECTED_PARTIAL_PATCH_APPLICABLE,
   AFFECTED_PATCH_INAPPLICABLE,
   AFFECTED_PATCH_INAPPLICABLE_SUCCESSOR_PRODUCT,
@@ -56,7 +58,11 @@ const PATCH_STATUS_LABEL = {
   },
   AFFECTED_PATCH_UNAVAILABLE: {
     className: "fa-exclamation-circle text-danger",
-    label: t("Affected, patch is unavailable")
+    label: t("Affected, patch is unavailable anywhere (possibly a zero-day vulnerability or a \"Won't fix\" )")
+  },
+  AFFECTED_PATCH_UNAVAILABLE_IN_UYUNI: {
+    className: "fa-exclamation-circle text-danger",
+    label: t("Affected, patch is unavailable in any of the synced channels")
   },
   AFFECTED_PARTIAL_PATCH_APPLICABLE: {
     className: "fa-shield text-danger",
@@ -348,7 +354,7 @@ class CVEAudit extends React.Component<Props, State> {
               cell={(row, criteria) => {
                 if (this.state.resultType === TARGET_SERVER) {
                   if (row.patchStatus === NOT_AFFECTED || row.patchStatus === PATCHED ||
-                      row.patchStatus === AFFECTED_PATCH_UNAVAILABLE) {
+                      row.patchStatus === AFFECTED_PATCH_UNAVAILABLE || row.patchStatus === AFFECTED_PATCH_UNAVAILABLE_IN_UYUNI) {
                     return t("No action required");
                   } else if (row.patchStatus === AFFECTED_FULL_PATCH_APPLICABLE) {
                     return (
