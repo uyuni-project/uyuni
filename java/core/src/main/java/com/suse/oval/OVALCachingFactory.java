@@ -179,6 +179,23 @@ public class OVALCachingFactory extends HibernateFactory {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * List all systems affected by any CVE.
+     *
+     * @return the list of affected systems
+     * */
+    public static List<CVEAffectedPackageItem> listSystemsAffectedPackages() {
+        SelectMode mode = ModeFactory.getMode("oval_queries", "list_systems_affected_packages_all_cves");
+
+        Map<String, Object> params = new HashMap<>();
+
+        DataResult<Row> result = mode.execute(params);
+
+        return result.stream()
+                .map(OVALCachingFactory::createCVEAffectedPackageItemFromRow)
+                .collect(Collectors.toList());
+    }
+
     private static CVEAffectedPackageItem createCVEAffectedPackageItemFromRow(Row row) {
         return new CVEAffectedPackageItem(
                 (Long) row.get("system_id"),
@@ -188,7 +205,8 @@ public class OVALCachingFactory extends HibernateFactory {
                 (String) row.get("patched_version"),
                 (String) row.get("installed_epoch"),
                 (String) row.get("installed_version"),
-                (String) row.get("installed_release")
+                (String) row.get("installed_release"),
+                (String) row.get("cve")
         );
     }
 
