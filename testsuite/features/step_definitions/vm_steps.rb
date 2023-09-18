@@ -182,6 +182,9 @@ end
 When(/^I wait until virtual machine "([^"]*)" on "([^"]*)" is started$/) do |vm, host|
   node = get_target(host)
   repeat_until_timeout(message: "#{vm} virtual machine on #{host} OS failed did not come up yet") do
+    _output, code = node.run("grep -i 'firstboot' /tmp/#{vm}.console.log", check_errors: false)
+    break if code.zero?
+
     _output, code = node.run("grep -i 'login\:' /tmp/#{vm}.console.log", check_errors: false)
     break if code.zero?
 
