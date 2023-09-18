@@ -18,18 +18,19 @@ The guidelines noted here describe the expectations that should be met when subm
 
 ### Pull Request Creators
 
-- Please fill out the Pull Request template.
-- Please provide a description for someone not familiar with your code changes to be still able to understand your changes in the context of the project.
-- Please enable the reviewer with the provided information in the description to understand the PR without opening any external resources like bug reports.
-- Please ensure that before hitting the "Create" button on GitHub you have read and understood the `CONTRIBUTING.md` and linked GitHub Wiki pages.
-- Please make sure to introduce appropriate tests for any new functionality. Keep in mind that different parts of the codebase has different test infrastructures (JUnit for Java, Jest for JS, etc).
-- Please ensure all automation on GitHub receives a positive result checkmark.
-- Please state in a comment why a negative result - if occurring - is incorrect or not your fault.
-- Please use the GitHub functionality of re-requesting a review in case you haven't gotten a review after a reasonable time.
-- Please re-request a review in case you made substantial changes to the Pull Request.
-- Please write detailed and meaningful commit messages. Avoid the usage of generic messages like "fix bug". Further information can be found here:
-    - https://cbea.ms/git-commit/
-    - https://www.freecodecamp.org/news/how-to-write-better-git-commit-messages/
+Please follow these steps when creating a new Pull Request:
+  - Fill out the Pull Request template.
+  - Provide a description for someone not familiar with your code changes to be still able to understand your changes in the context of the project.
+  - Enable the reviewer with the provided information in the description to understand the PR without opening any external resources like bug reports.
+  - Ensure that before hitting the "Create" button on GitHub you have read and understood the `CONTRIBUTING.md` and linked GitHub Wiki pages.
+  - Make sure to introduce appropriate tests for any new functionality. Keep in mind that different parts of the codebase has different test infrastructures (JUnit for Java, Jest for JS, etc).
+  - Ensure all automation on GitHub receives a positive result checkmark.
+  - State in a comment why a negative result - if occurring - is incorrect or not your fault.
+  - Use the GitHub functionality of re-requesting a review in case you haven't gotten a review after a reasonable time.
+  - Re-request a review in case you made substantial changes to the Pull Request.
+  - Write detailed and meaningful commit messages. Avoid the usage of generic messages like "fix bug". Further information can be found here:
+      - https://cbea.ms/git-commit/
+      - https://www.freecodecamp.org/news/how-to-write-better-git-commit-messages/
 
 ### Pull Request Reviewers
 
