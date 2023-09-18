@@ -325,13 +325,6 @@ Feature: Manage KVM virtual machines via the GUI
     When I install package tftpboot-installation on the server
     And I wait for "tftpboot-installation-SLE-15-SP4-x86_64" to be installed on "server"
 
-# TODO: Not available in any Leap repository, yet
-# See https://suse.slack.com/archives/C02CKHR76Q2/p1694189245268889
-#@uyuni
-#  Scenario: Install TFTP boot package on the server
-#    And I install package tftpboot-installation on the server
-#    And I wait for "tftpboot-installation-openSUSE-Leap-15.5-x86_64" to be installed on "server"
-
 @virthost_kvm
   Scenario: Edit a virtual network
     Given I am on the "Virtualization" page of this "kvm_server"
@@ -349,7 +342,7 @@ Feature: Manage KVM virtual machines via the GUI
     And "test-net2" virtual network on "kvm_server" should have "192.168.130.1" IPv4 address with 24 prefix
 
 # Start provisioning scenarios
-
+@susemanager
 @scc_credentials
   Scenario: Create auto installation distribution
     When I follow the left menu "Systems > Autoinstallation > Distributions"
@@ -363,6 +356,7 @@ Feature: Manage KVM virtual machines via the GUI
     Then I should see a "Autoinstallable Distributions" text
     And I should see a "SLE-15-SP4-KVM" link
 
+@susemanager
 @scc_credentials
   Scenario: Create auto installation profile
     And I follow the left menu "Systems > Autoinstallation > Profiles"
@@ -375,6 +369,7 @@ Feature: Manage KVM virtual machines via the GUI
     Then I should see a "Autoinstallation: 15-sp4-kvm" text
     And I should see a "Autoinstallation Details" text
 
+@susemanager
 @scc_credentials
   Scenario: Configure auto installation profile
     When I enter "self_update=0" as "kernel_options"
@@ -385,6 +380,7 @@ Feature: Manage KVM virtual machines via the GUI
     And I follow "Autoinstallation File"
     Then I should see a "SLE-15-SP4-KVM" text
 
+@susemanager
 @scc_credentials
   Scenario: Create an auto installing KVM virtual machine
     Given I am on the "Virtualization" page of this "kvm_server"
@@ -406,6 +402,7 @@ Feature: Manage KVM virtual machines via the GUI
     And "test-vm2" virtual machine on "kvm_server" should not stop on reboot at next start
     And I wait at most 1000 seconds until Salt master sees "test-vm2" as "unaccepted"
 
+@susemanager
 @scc_credentials
   Scenario: VNC console for the auto installing KVM virtual machine
     When I click on "Graphical Console" in row "test-vm2"
@@ -413,6 +410,7 @@ Feature: Manage KVM virtual machines via the GUI
     And I wait until I see the VNC graphical console
     And I close the last opened window
 
+@susemanager
 @scc_credentials
   Scenario: Cleanup: remove the auto installation profile
     When I follow the left menu "Systems > Autoinstallation > Profiles"
@@ -421,6 +419,7 @@ Feature: Manage KVM virtual machines via the GUI
     And I click on "Delete Autoinstallation"
     Then I should not see a "15-sp4-kvm" text
 
+@susemanager
 @scc_credentials
   Scenario: Cleanup: remove the auto installation distribution
     When I follow the left menu "Systems > Autoinstallation > Distributions"
@@ -429,6 +428,7 @@ Feature: Manage KVM virtual machines via the GUI
     And I click on "Delete Distribution"
     Then I should not see a "SLE-15-SP4-KVM" text
 
+@susemanager
   Scenario: Cleanup: Remove the TFTP boot package from the server
     When I remove package "tftpboot-installation-SLE-15-SP4-x86_64" from this "server" without error control
     And I wait for "tftpboot-installation-SLE-15-SP4-x86_64" to be uninstalled on "server"
