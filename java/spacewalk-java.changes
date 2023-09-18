@@ -1,59 +1,122 @@
-- show error message in action result even on parser error
-- cache debian package metadata snippets in DB
-- Fixed a bug that caused the tab Autoinstallation to hide when clicking on Power
-  Management Management/Operations on SSM -> Provisioning
-- catch yaml exceptions and report which metadata file is wrong (bsc#1208720)
-- Improve handling of websocket exceptions
-- Release DB connection in RHN Message Dispatcher thread
-- Update version of tomcat build dependencies
-- Disable jinja processing for the roster file (bsc#1211650)
-- Make sure that all hibernate connections are closed (bsc#1208687)
-- Add option to disable SSL
-- Removed the expensive 'diff' column (bsc#1208427)
-- replace kickstart profile advanced option "md5_crypt_rootpw"
-  with "sha256_crypt_rootpw" to use sha256 crypt when password
-  is provided in plain text
-- remove old hashing and crypting algorithms like MD5 and SHA1
-  and replace them with new SHA256 based algorithms
-- regenerate random passwords with new cipher algorithm
-- Do not use regex in PackageFilter
-- Fix misleading error message regarding SCC credentials removal (bsc#1207941)
-- Reimplement queries for system metrics
-- Enforce minimum version of 1.11 for byte-buddy.
-- Updated EL9 jaxb-api symlinks to Uyuni provided package.
-- Fix issue with `aclChannelTypeCapable` that prevented errata view in
-  deb arch
-- Update system overview in case of manual system reboot
-- Add uyuni_systems_scrape_duration_seconds metric
-- OES credentials do not allow access to SCC. Skip them when an
-  SCCClientException is thrown and move forward (bsc#1212550)
-- show virtualization host info in systems overview page
-- Refresh pillars after setting custom values via SSM (bsc#1210659)
-- Report SSM power management errors in 'rhn_web_ui' (bsc#1210406)
-- Allow processing big state results (bsc#1210957)
-- Fix server error in HTTP API authentication (bsc#1210394)
-- set swap memory value if available
-- set primary FQDN to hostname if none is set (bsc#1209156)
-- Do not throw on missing saltboot group
-- fix ISE when neither SCC credentials nor a local mirror is configured
-- only set self_update URL if functionality is not disabled in
-  distro or profile
-- execute highstate on registration with a user if available
-- Ensure installation of 'xalan-j2' for building.
-- Simplify Java package dependencies.
-- Safe XSLT processing in SCAP transformations
-- Fix Internal Server Error when downloading static assets (bsc#1207691)
-- Recurring custom states
-- Update Cobbler profile when a new image is deployed
-- Add mapping of image URLs for containerized proxy
-- Fix image size entries in xml-rpc
-- kernel options: only add quotes if there is a space in the value (bsc#1209926)
-- fix displaying system channels when no base product is installed
-  (bsc#1206423)
-- fix NPE in cobbler system sync when server has no creator set
-- remove channels from client after transfer to a different
-  organization (bsc#1209220)
-- Fix RHEL9 / SLL9 product discovery (bsc#1209993)
+-------------------------------------------------------------------
+Mon Sep 18 14:30:24 CEST 2023 - rosuna@suse.com
+
+- version 4.4.19-1
+  * Add environment build/promote date to CLM API output (jsc#SUMA-280)
+  * Call mgr-libmod with its absolute path
+  * Introduced new API to update the products page metadata
+  * Extracted additional authentication information needed for PAYG
+  * Fixed handling of null credentials in RMT credentials check
+  * Integrate instance-flavor-check to detect if the instance is PAYG
+  * Added rule to count only servers with SUSE Manager Tools as managed clients
+  * create flag to disable update status (bsc#1212730)
+  * fix syntax error in sql query for source package search
+  * catch exceptions and log a message when mailer setup failed (bsc#1213009)
+  * fix logging of libraries using apache-commons-logging
+  * invalidate PAYG client credentials after repeated connection failure (bsc#1213445)
+  * Restrict product migrations for PAYG
+  * Add warning message in login UI for PAYG with SCC credentials and no forward registration.
+  * Restrict cloning channels under different product channels for PAYG
+  * Avoid sending data to SCC about PAYG instances
+  * Optimize org channel accessibility query (bsc#1211874)
+  * Fix processing of pkg.purged results (bsc#1213288)
+  * Fix NPE in auth endpoint when an empty body is provided
+  * Fix action executor to prevent blocking Taskomatic for actions that are already finished (bsc#1214121)
+  * Filter out modules properly with 'none' matcher (bsc#1212770)
+  * Fix the URL for inactive systems page
+  * Read null values from Virtual Host Gatherer data
+  * Fix the CSV download issue for packages, patches and system groups
+  * Added taskomatic job to compute and store billing dimensions for PAYG
+  * Disable Secure XSLT processing due to Xalan bug
+  * parse virtual-host-gatherer null value
+  * show reasons for state apply errors in UI
+  * Detect a Cloud PAYG instance and connect it to the RMT infrastructure
+  * Access SUSE Manager Proxy repositories from cloud rmt infrastructure
+  * restrict registration on pure PAYG Server
+  * Optimize memory usage in UbuntuErrataManager
+  * Consider venv-salt-minion package update as salt update
+    to prevent backtraces on upgrading salt with itself (bsc#1211884)
+  * Fix system tab not visible in Ansible / Inventories tab (bsc#1211897)
+  * Extend success message after adding monitoring property (bsc#1212168)
+  * Show recurring states names in events history (bsc#1211929)
+  * Don't force ssl verification on reportdb using localhost
+  * Do not ignore scheduling errors in Taskomatic
+  * check csp billing adapter status
+  * fix X-Instance-Identifier header when doing a product refresh at Cloud RMT Server (bsc#1214889)
+  * improve error message when instance-flavor-check tool is not installed
+  * add compliance checks when running as PAYG
+  * drop mgr-cfg from java code
+  * fix auto product refresh in case of SUSE Manager PAYG Server
+  * add RHUI support to Pay-as-you-go connection feature
+  * Add saltboot redeploy and repartition based on pillars
+    (jsc#SUMA-158)
+  * Add system pillar API access {get|set}Pillar
+  * Fix recurring state execution not using the correct order (bsc#1215027)
+  * Change default scheduler from (none) to (system)
+  * Set user for package list refresh action if possible
+  * Fix debian Packages file generation (bsc#1213716)
+  * Fix Most Critical Systems list (bsc#1214316)
+  * Ignore mandatory channels results that don't match list of channels (bsc#1204270)
+  * Remove all systems tasks for all organizations after updating 
+    systems
+  * Shows a notification when an update for Uyuni is available
+  * Fix PAYG credentials extraction for SLES 12 clients (bsc#1215352)
+  * show error message in action result even on parser error
+  * cache debian package metadata snippets in DB
+  * Fixed a bug that caused the tab Autoinstallation to hide when clicking on Power
+    Management Management/Operations on SSM -> Provisioning
+  * catch yaml exceptions and report which metadata file is wrong (bsc#1208720)
+  * Improve handling of websocket exceptions
+  * Release DB connection in RHN Message Dispatcher thread
+  * Update version of tomcat build dependencies
+  * Disable jinja processing for the roster file (bsc#1211650)
+  * Make sure that all hibernate connections are closed (bsc#1208687)
+  * Add option to disable SSL
+  * Removed the expensive 'diff' column (bsc#1208427)
+  * replace kickstart profile advanced option "md5_crypt_rootpw"
+    with "sha256_crypt_rootpw" to use sha256 crypt when password
+    is provided in plain text
+  * remove old hashing and crypting algorithms like MD5 and SHA1
+    and replace them with new SHA256 based algorithms
+  * regenerate random passwords with new cipher algorithm
+  * Do not use regex in PackageFilter
+  * Fix misleading error message regarding SCC credentials removal (bsc#1207941)
+  * Reimplement queries for system metrics
+  * Enforce minimum version of 1.11 for byte-buddy.
+  * Updated EL9 jaxb-api symlinks to Uyuni provided package.
+  * Fix issue with `aclChannelTypeCapable` that prevented errata view in
+    deb arch
+  * Update system overview in case of manual system reboot
+  * Add uyuni_systems_scrape_duration_seconds metric
+  * OES credentials do not allow access to SCC. Skip them when an
+    SCCClientException is thrown and move forward (bsc#1212550)
+  * show virtualization host info in systems overview page
+  * Refresh pillars after setting custom values via SSM (bsc#1210659)
+  * Report SSM power management errors in 'rhn_web_ui' (bsc#1210406)
+  * Allow processing big state results (bsc#1210957)
+  * Fix server error in HTTP API authentication (bsc#1210394)
+  * set swap memory value if available
+  * set primary FQDN to hostname if none is set (bsc#1209156)
+  * Do not throw on missing saltboot group
+  * fix ISE when neither SCC credentials nor a local mirror is configured
+  * only set self_update URL if functionality is not disabled in
+    distro or profile
+  * execute highstate on registration with a user if available
+  * Ensure installation of 'xalan-j2' for building.
+  * Simplify Java package dependencies.
+  * Safe XSLT processing in SCAP transformations
+  * Fix Internal Server Error when downloading static assets (bsc#1207691)
+  * Recurring custom states
+  * Update Cobbler profile when a new image is deployed
+  * Add mapping of image URLs for containerized proxy
+  * Fix image size entries in xml-rpc
+  * kernel options: only add quotes if there is a space in the value (bsc#1209926)
+  * fix displaying system channels when no base product is installed
+    (bsc#1206423)
+  * fix NPE in cobbler system sync when server has no creator set
+  * remove channels from client after transfer to a different
+    organization (bsc#1209220)
+  * Fix RHEL9 / SLL9 product discovery (bsc#1209993)
 
 -------------------------------------------------------------------
 Thu Jun 22 18:59:40 CEST 2023 - marina.latini@suse.com
