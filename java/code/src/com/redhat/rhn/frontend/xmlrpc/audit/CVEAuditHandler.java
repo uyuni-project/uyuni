@@ -216,6 +216,17 @@ public class CVEAuditHandler extends BaseHandler {
         }
     }
 
+    /**
+     * List visible systems with their corresponding affected packages regarding a given CVE identifier
+     *
+     * @param loggedInUser  The current user
+     * @param cveIdentifier the CVE number to search for
+     *
+     * @apidoc.doc List visible systems with their corresponding affected packages regarding a given CVE identifier
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("string", "cveIdentifier")
+     * @apidoc.returntype #return_array_begin() $CVEAffectedServerSerializer #array_end()
+     */
     @ReadOnly
     public List<CVEAffectedServer> listAffectedSystems(User loggedInUser, String cveIdentifier) {
         List<CVEAffectedPackageItem> affectedPackageItems =
