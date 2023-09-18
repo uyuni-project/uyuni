@@ -1,4 +1,10 @@
-- Fixed property name to tune for salt events queue processing
+-------------------------------------------------------------------
+Mon Sep 18 14:38:09 CEST 2023 - rosuna@suse.com
+
+- version 4.4.5-1
+  * write configured crypto-policy in supportconfig
+  * add cloud and payg checks
+  * Fixed property name to tune for salt events queue processing
 
 -------------------------------------------------------------------
 Wed Apr 19 12:57:55 CEST 2023 - marina.latini@suse.com
