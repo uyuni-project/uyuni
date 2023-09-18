@@ -235,6 +235,17 @@ public class CVEAuditHandler extends BaseHandler {
         return groupAffectedPackagesBySystemAndCollect(affectedPackageItems);
     }
 
+
+    /**
+     * List known CVEs along the visible systems affected by the CVE with their corresponding affected packages
+     *
+     * @param loggedInUser  The current user
+     *
+     * @apidoc.doc List known CVEs along the visible systems affected by the CVE with their corresponding
+     * affected packages
+     * @apidoc.param #session_key()
+     * @apidoc.returntype #return_array_begin() $CVEAffectedServerSerializer #array_end()
+     */
     @ReadOnly
     public Map<String, List<CVEAffectedServer>> listAffectedSystemsByCve(User loggedInUser) {
         List<CVEAffectedPackageItem> affectedPackageItems =
