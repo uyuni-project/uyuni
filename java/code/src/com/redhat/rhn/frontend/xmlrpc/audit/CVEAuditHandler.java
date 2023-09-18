@@ -28,6 +28,7 @@ import com.redhat.rhn.manager.audit.CVEAuditManagerOVAL;
 import com.redhat.rhn.manager.audit.CVEAuditServer;
 import com.redhat.rhn.manager.audit.PatchStatus;
 import com.redhat.rhn.manager.audit.UnknownCVEIdentifierException;
+
 import com.suse.manager.api.ReadOnly;
 import com.suse.oval.OVALCachingFactory;
 
@@ -220,8 +221,33 @@ public class CVEAuditHandler extends BaseHandler {
         List<CVEAffectedPackageItem> affectedPackageItems =
                 OVALCachingFactory.listSystemsAffectedPackages(cveIdentifier);
 
-        Map<Long, List<CVEAffectedPackageItem>> affectedPackageItemsBySystem =
-                affectedPackageItems.stream().collect(groupingBy(CVEAffectedPackageItem::getSystemId));
+        return groupAffectedPackagesBySystemAndCollect(affectedPackageItems);
+    }
+
+    @ReadOnly
+    public Map<String, List<CVEAffectedServer>> listAffectedSystemsByCve(User loggedInUser) {
+        List<CVEAffectedPackageItem> affectedPackageItems =
+                OVALCachingFactory.listSystemsAffectedPackages();
+
+        Map<String, List<CVEAffectedPackageItem>> affectedPackageItemsByCve =
+                affectedPackageItems.stream().collect(groupingBy(CVEAffectedPackageItem::getCve));
+
+        return affectedPackageItemsByCve.entrySet()
+                .stream().map(entry -> {
+                    String cve = entry.getKey();
+                    List<CVEAffectedPackageItem> cveAffectedPackageItems = entry.getValue();
+
+                    List<CVEAffectedServer> affectedServers =
+                            groupAffectedPackagesBySystemAndCollect(cveAffectedPackageItems);
+
+                    return Map.entry(cve, affectedServers);
+                }).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+    }
+
+    private static List<CVEAffectedServer> groupAffectedPackagesBySystemAndCollect(
+            List<CVEAffectedPackageItem> affectedPackageItems) {
+        Map<Long, List<CVEAffectedPackageItem>> affectedPackageItemsBySystem = affectedPackageItems.stream()
+                .collect(groupingBy(CVEAffectedPackageItem::getSystemId));
 
         return affectedPackageItemsBySystem.entrySet().stream()
                 .map(entry -> {

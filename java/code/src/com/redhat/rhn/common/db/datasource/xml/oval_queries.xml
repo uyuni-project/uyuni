@@ -40,7 +40,7 @@
                    rhnpackageevr.epoch    installed_epoch,
                    rhnpackageevr.version  installed_version,
                    rhnpackageevr.release  installed_release,
-                   rhncve.name
+                   rhncve.name            cve
             FROM rhnserver,
                  rhncve,
                  suseovalplatformvulnerablepackage ovalPlatVulPkg,
@@ -58,6 +58,36 @@
               AND ovalPlatVulPkg.platform_id = ovalPlat.id
               AND ovalPlatVulPkg.vulnerable_pkg_id = ovalVulPkg.id
               AND rhncve.name = :cve_name;
+        </query>
+    </mode>
+
+    <mode name="list_systems_affected_packages_all_cves">
+        <query>
+            SELECT rhnServer.id           system_id,
+                   rhnServer.name         system_name,
+                   rhnpackagename.name    package_name,
+                   rhnpackageevr.type     package_type,
+                   ovalVulPkg.fix_version patched_version,
+                   rhnpackageevr.epoch    installed_epoch,
+                   rhnpackageevr.version  installed_version,
+                   rhnpackageevr.release  installed_release,
+                   rhncve.name            cve
+            FROM rhnserver,
+                 rhncve,
+                 suseovalplatformvulnerablepackage ovalPlatVulPkg,
+                 suseovalplatform ovalPlat,
+                 suseovalvulnerablepackage ovalVulPkg,
+                 rhnserverpackage serverPkg,
+                 rhnpackagename,
+                 rhnpackageevr
+            WHERE rhnserver.cpe = ovalPlat.cpe
+              AND rhnserver.id = serverPkg.server_id
+              AND rhnpackagename.id = serverPkg.name_id
+              AND rhnpackageevr.id = serverPkg.evr_id
+              AND rhnpackagename.name = ovalVulPkg.name
+              AND ovalPlatVulPkg.cve_id = rhncve.id
+              AND ovalPlatVulPkg.platform_id = ovalPlat.id
+              AND ovalPlatVulPkg.vulnerable_pkg_id = ovalVulPkg.id
         </query>
     </mode>
 </datasource_modes>

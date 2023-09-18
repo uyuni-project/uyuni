@@ -25,18 +25,20 @@ public class CVEAffectedPackageItem {
     private PackageType packageType;
     private String patchedVersion;
     private PackageEvr installedPackageEvr;
+    private String cve;
 
     /**
      * Standard constructor
      * */
     public CVEAffectedPackageItem(Long systemId, String systemName, String packageName, PackageType packageType, String patchedVersion,
-                                  String installedEpoch, String installedVersion, String installedRelease) {
+                                  String installedEpoch, String installedVersion, String installedRelease, String cveIn) {
         this.systemId = systemId;
         this.systemName = systemName;
         this.packageName = packageName;
         this.packageType = packageType;
         this.patchedVersion = patchedVersion;
         this.installedPackageEvr = new PackageEvr(installedEpoch, installedVersion, installedRelease, packageType);
+        cve = cveIn;
     }
 
     public Long getSystemId() {
@@ -85,5 +87,13 @@ public class CVEAffectedPackageItem {
 
     public void setInstalledPackageEvr(PackageEvr installedPackageEvr) {
         this.installedPackageEvr = installedPackageEvr;
+    }
+
+    public String getCve() {
+        return cve;
+    }
+
+    public void setCve(String cveIn) {
+        cve = cveIn;
     }
 }
