@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Sep 18 14:47:49 CEST 2023 - rosuna@suse.com
+
+- version 4.4.6-1
+  * Use new apache wsgi mod package name
+  * remove usage of mgr-cfg tools in post script
+
+-------------------------------------------------------------------
 Wed Apr 19 12:53:43 CEST 2023 - marina.latini@suse.com
 
 - version 4.4.5-1
