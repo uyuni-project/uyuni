@@ -15,7 +15,7 @@ mgr_install_products:
 {%- endif %}
 {%- endif %}
 
-{%- if grains['os_family'] == 'Suse' and grains['instance_id'] is defined %}
+{%- if grains['os_family'] == 'Suse' and grains['instance_id'] is defined and "opensuse" not in grains['oscodename']|lower%}
 {# install flavor check tool in cloud instances to be able to detect payg instances #}
 mgr_install_flavor_check:
   pkg.installed:
