@@ -1,4 +1,12 @@
-- Recurring custom states
+-------------------------------------------------------------------
+Mon Sep 18 14:40:51 CEST 2023 - rosuna@suse.com
+
+- version 4.4.7-1
+  * Store the PAYG products
+  * Added new tables to handle PAYG instances computations
+  * Added PAYG dimension computation taskomatic job configuration
+  * add new credentials type RHUI
+  * Recurring custom states
 
 -------------------------------------------------------------------
 Wed Apr 19 12:57:12 CEST 2023 - marina.latini@suse.com
