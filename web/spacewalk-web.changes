@@ -1,19 +1,35 @@
-- Fix VHM CPU and RAM display when 0 (bsc#1175823)
-- Align the order of the Refresh and Create buttons for more
-  consistency
-- Fix layout alignment on pages showing failed states logs (bsc#1211713)
-- Fix parsing error when showing notification message details (bsc#1211469)
-- Fix spelling on monitoring-admin page.
-- force all mandatory channels being selected in software channel
-  change page (bsc#1211062)
-- Fix font contrast in dark theme search field (bsc#1201337)
-- Ignore mandatory channels results that don't match list of channels (bsc#1204270)
-- Show loading indicator on formula details pages (bsc#1179747)
-- Fix systems list sorting buttons
-- Fix wrong credentials error message (bsc#1210456)
-- Recurring custom states
-- Increase datetimepicker font sizes (bsc#1210437)
-- Disable login button with empty password
+-------------------------------------------------------------------
+Mon Sep 18 14:37:15 CEST 2023 - rosuna@suse.com
+
+- version 4.4.11-1
+  * Integrate @formatjs/intl as a replacement for t()
+  * Fix link interpolation in message maps
+  * Update the messages after syncing the products
+  * Fixed issue that prevented to delete credentials
+  * Add warning message in login UI for PAYG with SCC credentials and no forward registration.
+  * Hide SSH info for `localhost` in Pay-as-you-go section
+  * disable editing for special local payg connection
+  * Enhance new systems list filter UI
+  * Add missing translation wrappers for Salt formula catalog
+  * remove unused config variable
+  * Adjust the version number in web/conf/rhn_web.conf (web.version.uyuni)
+  * Shows a notification when an update for Uyuni is available
+  * Fix VHM CPU and RAM display when 0 (bsc#1175823)
+  * Align the order of the Refresh and Create buttons for more
+    consistency
+  * Fix layout alignment on pages showing failed states logs (bsc#1211713)
+  * Fix parsing error when showing notification message details (bsc#1211469)
+  * Fix spelling on monitoring-admin page.
+  * force all mandatory channels being selected in software channel
+    change page (bsc#1211062)
+  * Fix font contrast in dark theme search field (bsc#1201337)
+  * Ignore mandatory channels results that don't match list of channels (bsc#1204270)
+  * Show loading indicator on formula details pages (bsc#1179747)
+  * Fix systems list sorting buttons
+  * Fix wrong credentials error message (bsc#1210456)
+  * Recurring custom states
+  * Increase datetimepicker font sizes (bsc#1210437)
+  * Disable login button with empty password
 
 -------------------------------------------------------------------
 Wed Apr 19 12:48:03 CEST 2023 - marina.latini@suse.com

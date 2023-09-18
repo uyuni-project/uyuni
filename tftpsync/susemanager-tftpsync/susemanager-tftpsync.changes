@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Sep 18 14:50:34 CEST 2023 - rosuna@suse.com
+
+- version 4.4.4-1
+  * Remove obsolete migrations and fixes
+
+-------------------------------------------------------------------
 Wed Apr 19 12:55:46 CEST 2023 - marina.latini@suse.com
 
 - version 4.4.3-1

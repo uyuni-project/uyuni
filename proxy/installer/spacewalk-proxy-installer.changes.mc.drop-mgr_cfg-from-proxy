@@ -1,2 +1,0 @@
-- remove old provide/obsoletes dependency
-- remove dependency to mgr-cfg which remove the possibility to create config channels for the proxy

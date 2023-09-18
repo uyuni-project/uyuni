@@ -1,4 +1,9 @@
-- Link /usr/bin/initdb for Enterprise Linux.
+-------------------------------------------------------------------
+Mon Sep 18 14:23:53 CEST 2023 - rosuna@suse.com
+
+- version 4.4.4-1
+  * remove old obsoletes in spec
+  * Link /usr/bin/initdb for Enterprise Linux.
 
 -------------------------------------------------------------------
 Tue Feb 21 14:04:30 CET 2023 - jgonzalez@suse.com

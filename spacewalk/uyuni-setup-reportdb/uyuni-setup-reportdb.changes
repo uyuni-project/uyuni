@@ -1,4 +1,10 @@
-- Automatically detect PostgreSQL service and data folder name.
+-------------------------------------------------------------------
+Mon Sep 18 14:44:28 CEST 2023 - rosuna@suse.com
+
+- version 4.4.5-1
+  * use pg_isactive to wait for postgres
+  * only use fqdn when nothing provided in --host
+  * Automatically detect PostgreSQL service and data folder name.
 
 -------------------------------------------------------------------
 Tue Feb 21 12:33:30 CET 2023 - jgonzalez@suse.com

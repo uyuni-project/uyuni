@@ -1,5 +1,11 @@
-- Bypass traditional systems check on older SUMA instances (bsc#1208612)
-- fix argument parsing of distribution_update (bsc#1210458)
+-------------------------------------------------------------------
+Mon Sep 18 14:19:12 CEST 2023 - rosuna@suse.com
+
+- version 4.4.8-1
+  * Add spacecmd function: cryptokey_update
+  * Update translation strings
+  * Bypass traditional systems check on older SUMA instances (bsc#1208612)
+  * fix argument parsing of distribution_update (bsc#1210458)
 
 -------------------------------------------------------------------
 Wed Apr 19 12:49:39 CEST 2023 - marina.latini@suse.com

@@ -330,7 +330,7 @@ Feature: Manage KVM virtual machines via the GUI
 #@uyuni
 #  Scenario: Install TFTP boot package on the server
 #    And I install package tftpboot-installation on the server
-#    And I wait for "tftpboot-installation-openSUSE-Leap-15.4-x86_64" to be installed on "server"
+#    And I wait for "tftpboot-installation-openSUSE-Leap-15.5-x86_64" to be installed on "server"
 
 @virthost_kvm
   Scenario: Edit a virtual network

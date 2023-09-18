@@ -1,6 +1,11 @@
-- Changed Apache user/group from "root" to "apache" for Enterprise
-  Linux operating systems.
-- Add www group to tomcat user
+-------------------------------------------------------------------
+Mon Sep 18 14:42:15 CEST 2023 - rosuna@suse.com
+
+- version 4.4.2-1
+  * Only build 'uyuni-base-server' package for server and not for client tools
+  * Changed Apache user/group from "root" to "apache" for Enterprise
+    Linux operating systems.
+  * Add www group to tomcat user
 
 -------------------------------------------------------------------
 Wed Sep 28 11:08:28 CEST 2022 - jgonzalez@suse.com

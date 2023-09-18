@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
 #!BuildTag: uyuni/proxy-salt-broker:latest uyuni/proxy-salt-broker:4.4.0 uyuni/proxy-salt-broker:4.4.0.%RELEASE%
 
-ARG BASE=registry.suse.com/bci/bci-base:15.4
+ARG BASE=registry.suse.com/bci/bci-base:15.5
 FROM $BASE AS fat
 
 ARG PRODUCT_REPO
@@ -22,7 +22,7 @@ COPY prepare_target.sh .
 RUN sh prepare_target.sh
 
 # Define slim image
-ARG BASE=registry.suse.com/bci/bci-base:15.4
+ARG BASE=registry.suse.com/bci/bci-base:15.5
 FROM $BASE AS slim
 
 ARG PRODUCT=Uyuni

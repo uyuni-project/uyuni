@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
 #!BuildTag: uyuni/proxy-httpd:latest uyuni/proxy-httpd:4.4.0 uyuni/proxy-httpd:4.4.0.%RELEASE%
 
-ARG BASE=registry.suse.com/bci/bci-base:15.4
+ARG BASE=registry.suse.com/bci/bci-base:15.5
 FROM $BASE AS base
 
 
@@ -32,7 +32,7 @@ COPY uyuni-configure.py /usr/bin/uyuni-configure.py
 RUN chmod +x /usr/bin/uyuni-configure.py
 
 # Define slim image
-ARG BASE=registry.suse.com/bci/bci-base:15.4
+ARG BASE=registry.suse.com/bci/bci-base:15.5
 FROM $BASE AS slim
 
 ARG PRODUCT=Uyuni

@@ -1,1 +1,0 @@
-- Do not rely on rpm runtime status, rather check rhn.conf if is configured (bsc#1210935)

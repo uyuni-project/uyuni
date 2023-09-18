@@ -1,9 +1,21 @@
-- Fix to detect correct Apache group instead of assuming it (gh#7092).
-- Align /var/spacewalk folder permissions with uyuni-base-server package.
-- Move set tomcat user setup to uyuni-base spec file
-- Add option to disable SSL setup
-- Corrected requirement to install Tomcat before spacewalk-setup.
-- Automatically detect PostgreSQL service and data folder name.
+-------------------------------------------------------------------
+Mon Sep 18 14:35:43 CEST 2023 - rosuna@suse.com
+
+- version 4.4.9-1
+  * remove storing CA in DB directly as it is now part of mgr-ssl-cert-setup (bsc#1212856)
+  * Do not rely on rpm runtime status, rather check rhn.conf if is configured (bsc#1210935)
+  * Drop usage of salt.ext.six in embedded_diskspace_check
+  * drop spacewalk-setup-sudoers which does only cleanups which should be
+    applied already since several years. The functionality is obsolete
+  * Don't force ssl verification to setup reportdb using localhost
+  * Setup cobbler with provided FQDN rather than from system discovery
+  * Print the command that is running in Setup.pm to ease debugging
+  * Fix to detect correct Apache group instead of assuming it (gh#7092)
+  * Align /var/spacewalk folder permissions with uyuni-base-server package.
+  * Move set tomcat user setup to uyuni-base spec file
+  * Add option to disable SSL setup
+  * Corrected requirement to install Tomcat before spacewalk-setup.
+  * Automatically detect PostgreSQL service and data folder name.
 
 -------------------------------------------------------------------
 Wed Apr 19 13:00:08 CEST 2023 - marina.latini@suse.com

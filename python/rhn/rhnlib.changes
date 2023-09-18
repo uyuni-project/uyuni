@@ -1,4 +1,8 @@
-- Only use TLSv1+ for SSL connections
+-------------------------------------------------------------------
+Mon Sep 18 14:13:24 CEST 2023 - rosuna@suse.com
+
+- version 4.4.4-1
+  * Only use TLSv1+ for SSL connections
 
 -------------------------------------------------------------------
 Tue Feb 21 14:04:09 CET 2023 - jgonzalez@suse.com

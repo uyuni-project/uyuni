@@ -1,1 +1,0 @@
-- catch exceptions and log a message when mailer setup failed (bsc#1213009)
