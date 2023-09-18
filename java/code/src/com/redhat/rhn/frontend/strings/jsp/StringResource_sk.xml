@@ -1584,7 +1584,7 @@
       </trans-unit>
       <trans-unit id="header.jsp.packages" xml:space="preserve">
         <source>Packages</source>
-        <target/>
+        <target>Balíky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/header.jsp</context>
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
@@ -1592,7 +1592,7 @@
       </trans-unit>
       <trans-unit id="header.jsp.my_organization" xml:space="preserve">
         <source>My Organization</source>
-        <target/>
+        <target>Moja organizácia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/header.jsp</context>
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
@@ -1600,7 +1600,7 @@
       </trans-unit>
       <trans-unit id="header.jsp.satellite_wide" xml:space="preserve">
         <source>@@PRODUCT_NAME@@-Wide</source>
-        <target/>
+        <target>Celkový @@PRODUCT_NAME@@</target>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/header.jsp</context>
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
@@ -1608,21 +1608,21 @@
       </trans-unit>
       <trans-unit id="header.jsp.errata" xml:space="preserve">
         <source>Patches</source>
-        <target/>
+        <target>Opravy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/header.jsp</context>
         </context-group>
       </trans-unit>
       <trans-unit id="header.jsp.singleSystemSelected" xml:space="preserve">
         <source>system selected</source>
-        <target/>
+        <target>vybraný systém</target>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/header.jsp</context>
         </context-group>
       </trans-unit>
       <trans-unit id="header.jsp.systemsSelected" xml:space="preserve">
         <source>systems selected</source>
-        <target/>
+        <target>vybrané systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/header.jsp</context>
           <context context-type="paramnotes">
@@ -1633,14 +1633,14 @@
       <!-- footer.jsp -->
       <trans-unit id="footer.jsp.copyright" xml:space="preserve">
         <source>&lt;a href="/rhn/help/Copyright.do"&gt;Copyright Notice&lt;/a&gt;</source>
-        <target/>
+        <target>&lt;a href="/rhn/help/Copyright.do"&gt;Upozornenie na autorské práva&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/footer.jsp</context>
         </context-group>
       </trans-unit>
       <trans-unit id="footer.jsp.legalStatement" xml:space="preserve">
         <source>Legal statement</source>
-        <target/>
+        <target>Právne vyhlásenie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/footer.jsp</context>
         </context-group>
@@ -29596,25 +29596,25 @@ given channel.</source>
         <source>Security updates unknown, disabled on settings.</source>
         <target state="new"/>
       </trans-unit>
-    <trans-unit id="bunch.jsp.description.payg-dimension-computation-bunch" xml:space="preserve">
+      <trans-unit id="bunch.jsp.description.payg-dimension-computation-bunch" xml:space="preserve">
         <source>Collect data of managed clients for SUSE Manager PAYG</source>
-            <context-group name="ctx">
+        <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="task.status.payg-dimension-computation" xml:space="preserve">
         <source>PAYG Computation</source>
-      <target state="new"/>
-  </trans-unit>
-       <trans-unit id="task.status.recurring-action-executor" xml:space="preserve">
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="task.status.recurring-action-executor" xml:space="preserve">
         <source>Execute Recurring Actions</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="PAYG Connections" xml:space="preserve">
         <source>PAYG Connections</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="new"/>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
