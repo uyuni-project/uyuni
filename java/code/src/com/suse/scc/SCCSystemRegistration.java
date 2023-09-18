@@ -80,10 +80,9 @@ public class SCCSystemRegistration {
     /**
      * Registers systems in SCC
      *
-     * @param sccClient
-     * @param items
-     * @param primaryCredential
-     * @return items with updated SCC information
+     * @param sccClient         the SCC client
+     * @param items             the items to register
+     * @param primaryCredential the current primary organization credential
      */
     public static void register(
             SCCClient sccClient,

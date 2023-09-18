@@ -120,13 +120,8 @@ public class SCCSystemRegistrationTest extends BaseTestCaseWithUser {
         sccSystemRegistrationManager.register(testSystems, getCredentials());
 
         // assertions
-        assertEquals(0, sccWebClient.getCallCnt(), "no SCC requests should be made");
-        assertEquals(0, testSystems.stream().filter(i -> i.getOptSccId().isPresent()).count(), "no system should have a scc id");
-        assertEquals(0, testSystems.stream().filter(i -> i.isSccRegistrationRequired()).count(), "no system should still be requiring registration");
-        assertEquals(0, testSystems.stream().filter(i -> i.getOptRegistrationErrorTime().isPresent()).count(), "no system should have a registration error time set");
-        assertEquals(0, testSystems.stream().filter(i -> i.getOptCredentials().isPresent()).count(), "no new systems should have credentials");
+        assertPosConditions(sccWebClient, 0, 0, 0, 0);
     }
-
 
     /**
      * Tests when all systems are payg.
@@ -146,11 +141,7 @@ public class SCCSystemRegistrationTest extends BaseTestCaseWithUser {
         sccSystemRegistrationManager.register(testSystems, getCredentials());
 
         // assertions
-        assertEquals(0, sccWebClient.getCallCnt(), "no SCC requests should be made");
-        assertEquals(0, testSystems.stream().filter(i -> i.getOptSccId().isPresent()).count(), "no system should have a scc id");
-        assertEquals(0, testSystems.stream().filter(i -> i.isSccRegistrationRequired()).count(), "no system should still be requiring registration");
-        assertEquals(0, testSystems.stream().filter(i -> i.getOptRegistrationErrorTime().isPresent()).count(), "no system should have a registration error time set");
-        assertEquals(15, testSystems.stream().filter(i -> i.getOptCredentials().isPresent()).count(), "all systems should have credentials");
+        assertPosConditions(sccWebClient, 0, 0, 0, 15);
     }
 
     /**
@@ -170,11 +161,7 @@ public class SCCSystemRegistrationTest extends BaseTestCaseWithUser {
         sccSystemRegistrationManager.register(testSystems, getCredentials());
 
         // assertions
-        assertEquals(5, sccWebClient.getCallCnt(), "number of SCC request mismatch");
-        assertEquals(15, testSystems.stream().filter(i -> i.getOptSccId().isPresent()).count(), "all systems should have a scc id");
-        assertEquals(0, testSystems.stream().filter(i -> i.isSccRegistrationRequired()).count(), "no system should still be requiring registration");
-        assertEquals(0, testSystems.stream().filter(i -> i.getOptRegistrationErrorTime().isPresent()).count(), "no system should have a registration error time set");
-        assertEquals(15, testSystems.stream().filter(i -> i.getOptCredentials().isPresent()).count(), "all systems should have credentials");
+        assertPosConditions(sccWebClient, 5, 15, 0, 15);
     }
 
 
@@ -204,11 +191,7 @@ public class SCCSystemRegistrationTest extends BaseTestCaseWithUser {
         sccSystemRegistrationManager.register(testSystems, getCredentials());
 
         // assertions
-        assertEquals(5, sccWebClient.getCallCnt(), "number of SCC request mismatch");
-        assertEquals(0, testSystems.stream().filter(i -> i.getOptSccId().isPresent()).count(), "no system should have a scc id");
-        assertEquals(15, testSystems.stream().filter(i -> i.isSccRegistrationRequired()).count(), "all systems should still be requiring registration");
-        assertEquals(15, testSystems.stream().filter(i -> i.getOptRegistrationErrorTime().isPresent()).count(), "all system should have a registration error time set");
-        assertEquals(0, testSystems.stream().filter(i -> i.getOptCredentials().isPresent()).count(), "no system should have credentials");
+        assertPosConditions(sccWebClient, 5, 0, 15, 0);
     }
 
 
@@ -267,11 +250,7 @@ public class SCCSystemRegistrationTest extends BaseTestCaseWithUser {
         sccSystemRegistrationManager.register(testSystems, getCredentials());
 
         // assertions
-        assertEquals(3, sccWebClient.getCallCnt(), "number of SCC request mismatch");
-        assertEquals(9, testSystems.stream().filter(i -> i.isSccRegistrationRequired()).count(), "only first batch should still be requiring registration");
-        assertEquals(9, testSystems.stream().filter(i -> i.getOptRegistrationErrorTime().isPresent()).count(), "only first batch should have a registration error time");
-        assertEquals(systemSize - batchSize, testSystems.stream().filter(i -> i.getOptCredentials().isPresent()).count(), "only successfully registered systems and the skipped ones should have credentials");
-        assertEquals(systemSize - skipRegister - batchSize, testSystems.stream().filter(i -> i.getOptSccId().isPresent()).count(), "only successfully registered systems should have a scc id");
+        assertPosConditions(sccWebClient, 6, 16, 9, 21);
     }
 
 
@@ -279,12 +258,65 @@ public class SCCSystemRegistrationTest extends BaseTestCaseWithUser {
      * Asserts the pre-conditions for the tests.
      */
     private void assertPreConditions() {
-        assertEquals(this.systemSize.intValue(), this.testSystems.stream().filter(i -> i.isSccRegistrationRequired()).count(), "initially all systems should require registration");
-        assertEquals(0, this.testSystems.stream().filter(i -> i.getOptRegistrationErrorTime().isPresent()).count(), "initially no system should have a registration error time");
-        assertEquals(0, this.testSystems.stream().filter(i -> i.getOptCredentials().isPresent()).count(), "initially no system should have credentials");
-        assertEquals(0, this.testSystems.stream().filter(i -> i.getOptSccId().isPresent()).count(), "initially no system should have a scc id");
+        assertEquals(
+                this.systemSize.intValue(),
+                this.testSystems.stream().filter(i -> i.isSccRegistrationRequired()).count(),
+                "initially all systems should require registration"
+        );
+        assertEquals(
+                0,
+                this.testSystems.stream().filter(i -> i.getOptRegistrationErrorTime().isPresent()).count(),
+                "initially no system should have a registration error time"
+        );
+        assertEquals(
+                0,
+                this.testSystems.stream().filter(i -> i.getOptCredentials().isPresent()).count(),
+                "initially no system should have credentials"
+        );
+        assertEquals(
+                0,
+                this.testSystems.stream().filter(i -> i.getOptSccId().isPresent()).count(),
+                "initially no system should have a scc id"
+        );
     }
 
+    /**
+     * Asserts the post-conditions for the tests.
+     * @param sccWebClient the SCCWebClient used for the test
+     * @param expectedSccRequests expected number of SCC requests
+     * @param expectedRegistered expected number of systems successfully registered
+     * @param expectedFailed expected number of systems that failed to register
+     * @param expectedProcessed expected number of systems that were processed (registered or PAYG)
+     */
+    private void assertPosConditions(
+            TestSCCWebClient sccWebClient,
+            int expectedSccRequests,
+            int expectedRegistered,
+            int expectedFailed,
+            int expectedProcessed
+    ) {
+        assertEquals(expectedSccRequests, sccWebClient.getCallCnt(), "Wrong number of SCC requests");
+        assertEquals(
+                expectedRegistered,
+                testSystems.stream().filter(i -> i.getOptSccId().isPresent()).count(),
+                "Sucessful registered systems mismatch"
+        );
+        assertEquals(
+                expectedFailed,
+                testSystems.stream().filter(i -> i.isSccRegistrationRequired()).count(),
+                "no system should still be requiring registration"
+        );
+        assertEquals(
+                expectedFailed,
+                testSystems.stream().filter(i -> i.getOptRegistrationErrorTime().isPresent()).count(),
+                "no system should have a registration error time set"
+        );
+        assertEquals(
+                expectedProcessed,
+                testSystems.stream().filter(i -> i.getOptCredentials().isPresent()).count(),
+                "no new systems should have credentials"
+        );
+    }
 
     /**
      * Wrapper for a SCCWebClient that supports a custom counter
