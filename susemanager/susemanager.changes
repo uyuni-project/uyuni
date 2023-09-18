@@ -1,11 +1,24 @@
-- Add option to disable SSL setup
-- Use newest venv-salt-minion version available to generate the
-  venv-enabled-*.txt file in bootstrap repos (bsc#1211958)
-- Add bootstrap repository definitions for openSUSE Leap Micro 5.4
-- Add bootstrap repository definitions for SLE Micro 5.4
-- Ensure installation of make for building.
-- Automatically detect PostgreSQL service and data folder name.
-- Adjust product name in setup script output (bsc#1195380)
+-------------------------------------------------------------------
+Mon Sep 18 14:40:08 CEST 2023 - rosuna@suse.com
+
+- version 4.4.7-1
+  * Add missing Salt 3006.0 dependencies to bootstrap repo definitions (bsc#1212700)
+  * Require LTSS channel for SUSE Manager Proxy 4.2 (bsc#1214187)
+  * Skip swap creation and BTRFS check when we have overlayfs
+  * require LTSS channels for SLE 15 SP1, SLE 15 SP2 and SLE 15 SP3 (bsc#1213432)
+  * drop unused susemanager-upgrade.sh
+  * Make mgr-salt-ssh to properly fix HOME environment to avoid issues with gitfs (bsc#1210994)
+  * Read hostname from input file
+  * Use environment variables in mgr-setup if available
+  * Allow setting the timezone from a TZ variable
+  * Add option to disable SSL setup
+  * Use newest venv-salt-minion version available to generate the
+    venv-enabled-*.txt file in bootstrap repos (bsc#1211958)
+  * Add bootstrap repository definitions for openSUSE Leap Micro 5.4
+  * Add bootstrap repository definitions for SLE Micro 5.4
+  * Ensure installation of make for building.
+  * Automatically detect PostgreSQL service and data folder name.
+  * Adjust product name in setup script output (bsc#1195380)
 
 -------------------------------------------------------------------
 Wed Apr 19 12:48:42 CEST 2023 - marina.latini@suse.com
