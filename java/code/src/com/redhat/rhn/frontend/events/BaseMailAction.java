@@ -52,16 +52,16 @@ public abstract class BaseMailAction {
      * @return the mailer associated with this class
      */
     protected Mail getMail() {
-        String clazz = Config.get().getString(
-                "web.mailer_class");
+        String clazz = Config.get().getString("web.mailer_class");
         if (clazz == null) {
             return new SmtpMail();
         }
         try {
-            Class cobj = Class.forName(clazz);
-            return (Mail) cobj.newInstance();
+            Class<? extends Mail> cobj = Class.forName(clazz).asSubclass(Mail.class);
+            return cobj.getDeclaredConstructor().newInstance();
         }
-        catch (Exception e) {
+        catch (Throwable e) {
+            getLogger().error("An exception was thrown while initializing custom mailer class", e);
             return new SmtpMail();
         }
     }

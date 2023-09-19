@@ -78,7 +78,7 @@ public class UserNotificationFactory extends HibernateFactory {
             mailer = cobj.getDeclaredConstructor().newInstance();
         }
         catch (Throwable e) {
-            log.warn("An exception was thrown while configuring Mailer", e);
+            log.error("An exception was thrown while initializing custom mailer class", e);
             mailer = new SmtpMail();
         }
     }
