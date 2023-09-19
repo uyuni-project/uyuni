@@ -176,7 +176,7 @@ module LavandaBasic
     if check_errors
       raise "FAIL: #{cmd} returned status code = #{code}.\nOutput:\n#{out}" unless successcodes.include?(code)
     end
-    STDOUT.puts "#{cmd} returned status code = #{code}.\nOutput:\n#{out}" if verbose
+    STDOUT.puts "#{cmd} returned status code = #{code}.\nOutput:\n'#{out}'" if verbose
     if separated_results
       [out, err, code]
     else

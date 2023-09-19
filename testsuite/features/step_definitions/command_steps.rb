@@ -355,8 +355,9 @@ When(/^I kill all running spacewalk\-repo\-sync, excepted the ones needed to boo
   reposync_not_running_streak = 0
   reposync_left_running_streak = 0
   while reposync_not_running_streak <= 60
-    command_output, _code = get_target('server').run('ps axo pid,cmd | grep spacewalk-repo-sync | grep -v grep', check_errors: false)
+    command_output, _code = get_target('server').run('ps axo pid,cmd | grep spacewalk-repo-sync | grep -v grep', check_errors: false, verbose: true)
     if command_output.empty?
+      log "Empty command!"
       reposync_not_running_streak += 1
       reposync_left_running_streak = 0
       sleep 1
@@ -366,6 +367,7 @@ When(/^I kill all running spacewalk\-repo\-sync, excepted the ones needed to boo
 
     process = command_output.split("\n")[0]
     channel = process.split(' ')[5]
+    log "Processing channel '#{channel}'"
     if do_not_kill.include? channel
       $channels_synchronized.add(channel)
       log "Reposync of channel #{channel} left running" if (reposync_left_running_streak % 60).zero?
