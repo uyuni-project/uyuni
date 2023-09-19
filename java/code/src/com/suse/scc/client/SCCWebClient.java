@@ -221,10 +221,11 @@ public class SCCWebClient implements SCCClient {
 
     @Override
     public void deleteSystem(long id, String username, String password) throws SCCClientException {
-        HttpDelete request = new HttpDelete(config.getUrl() + "/connect/organizations/systems/" + id);
+        String url = config.getUrl() + "/connect/organizations/systems/" + id;
+        HttpDelete request = new HttpDelete(url);
         addHeaders(request);
         BufferedReader streamReader = null;
-        LOG.debug("Send DELETE to {}", config.getUrl() + "/connect/organizations/systems/" + id);
+        LOG.debug("Send DELETE to {}", url);
 
         try {
             // Connect and parse the response on success
@@ -363,7 +364,9 @@ public class SCCWebClient implements SCCClient {
             //TODO only created is documented by scc we still need to check what they return on update.
             if (responseCode != HttpStatus.SC_OK) {
                 // Request was not successful
-                LOG.error(response.toString());
+                if (LOG.isErrorEnabled()) {
+                    LOG.error(response.toString());
+                }
                 throw new SCCClientException(responseCode, request.getURI().toString(),
                         "Got response code " + responseCode + " connecting to " + request.getURI());
             }

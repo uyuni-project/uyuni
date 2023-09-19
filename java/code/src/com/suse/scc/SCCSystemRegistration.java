@@ -152,9 +152,7 @@ public class SCCSystemRegistration {
         }
 
         // save all items
-        items.forEach(cacheItem -> {
-            cacheItem.getOptServer().ifPresent(ServerFactory::save);
-        });
+        items.forEach(cacheItem -> cacheItem.getOptServer().ifPresent(ServerFactory::save));
     }
 
     private List<SCCSystemCredentialsJson> batchRegisterSystems(
