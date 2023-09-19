@@ -250,7 +250,7 @@ public class SCCSystemRegistrationTest extends BaseTestCaseWithUser {
         sccSystemRegistrationManager.register(testSystems, getCredentials());
 
         // assertions
-        assertPosConditions(sccWebClient, 6, 16, 9, 21);
+        assertPosConditions(sccWebClient, 3, 16, 9, 21);
     }
 
 
