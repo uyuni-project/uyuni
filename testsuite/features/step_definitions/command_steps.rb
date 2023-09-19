@@ -299,7 +299,8 @@ When(/^I enable product "([^"]*)" without recommended$/) do |prd|
 end
 
 When(/^I execute mgr\-sync "([^"]*)" with user "([^"]*)" and password "([^"]*)"$/) do |arg1, u, p|
-  $command_output, _code = get_target('server').run("echo -e '#{u}\n#{p}\n' | mgr-sync #{arg1}", check_errors: false, buffer_size: 1_000_000)
+  get_target('server').run("echo -e \'mgrsync.user = \"#{u}\"\nmgrsync.password = \"#{p}\"\n\' > ~/.mgr-sync")
+  $command_output, _code = get_target('server').run("mgr-sync #{arg1}", check_errors: false, buffer_size: 1_000_000)
 end
 
 When(/^I execute mgr\-sync "([^"]*)"$/) do |arg1|
