@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Sep 19 15:15:06 CEST 2023 - rosuna@suse.com
+
+- version 4.4.8-1
+  * Update server-migrator to dist-upgrade to openSUSE 15.5
+
+-------------------------------------------------------------------
 Mon Sep 18 14:40:08 CEST 2023 - rosuna@suse.com
 
 - version 4.4.7-1
