@@ -289,7 +289,7 @@ spec:
         volumeMounts:
           - mountPath: /mnt
             name: etc-rhn
-      - name: init-etc-systemd
+      - name: init-etc-systemd-multi
         image: {{- include "deployment.container.image" (dict "name" "server" "global" .) | indent 1}}
         imagePullPolicy: {{ .Values.pullPolicy }}
         command:
@@ -304,7 +304,23 @@ spec:
             fi
         volumeMounts:
           - mountPath: /mnt
-            name: etc-systemd
+            name: etc-systemd-multi
+      - name: init-etc-systemd-sockets
+        image: {{- include "deployment.container.image" (dict "name" "server" "global" .) | indent 1}}
+        imagePullPolicy: {{ .Values.pullPolicy }}
+        command:
+          - sh
+          - -x
+          - -c
+          - >
+            chown --reference=/etc/systemd/system/sockets.target.wants /mnt;
+            chmod --reference=/etc/systemd/system/sockets.target.wants /mnt;
+            if [ -z "$(ls -A /mnt)" ]; then
+              cp -a /etc/systemd/system/sockets.target.wants/. /mnt;
+            fi
+        volumeMounts:
+          - mountPath: /mnt
+            name: etc-systemd-sockets
       - name: init-etc-salt
         image: {{- include "deployment.container.image" (dict "name" "server" "global" .) | indent 1}}
         imagePullPolicy: {{ .Values.pullPolicy }}
@@ -458,7 +474,9 @@ spec:
           - mountPath: /etc/rhn
             name: etc-rhn
           - mountPath: /etc/systemd/system/multi-user.target.wants
-            name: etc-systemd
+            name: etc-systemd-multi
+          - mountPath: /etc/systemd/system/sockets.target.wants
+            name: etc-systemd-sockets
           - mountPath: /etc/salt
             name: etc-salt
           - mountPath: /etc/tomcat
@@ -563,9 +581,12 @@ spec:
       - name: etc-rhn
         persistentVolumeClaim:
           claimName: etc-rhn
-      - name: etc-systemd
+      - name: etc-systemd-multi
         persistentVolumeClaim:
-          claimName: etc-systemd
+          claimName: etc-systemd-multi
+      - name: etc-systemd-multi
+        persistentVolumeClaim:
+          claimName: etc-systemd-multi
       - name: etc-salt
         persistentVolumeClaim:
           claimName: etc-salt

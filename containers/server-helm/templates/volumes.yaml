@@ -409,7 +409,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: etc-systemd
+  name: etc-systemd-multi
   namespace: "{{ .Release.Namespace }}"
 spec:
 {{- if .Values.storageClass }}
@@ -427,7 +427,31 @@ spec:
 {{- if .Values.matchPvByLabel }}
   selector:
     matchLabels:
-      data: etc-systemd
+      data: etc-systemd-multi
+{{- end }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: etc-systemd-sockets
+  namespace: "{{ .Release.Namespace }}"
+spec:
+{{- if .Values.storageClass }}
+{{- if (eq "-" .Values.storageClass) }}
+  storageClassName: ""
+{{- else }}
+  storageClassName: "{{ .Values.storageClass }}"
+{{- end }}
+{{- end }}
+  accessModes:
+{{ toYaml .Values.accessModes | indent 4 }}
+  resources:
+    requests:
+      storage: 10Mi
+{{- if .Values.matchPvByLabel }}
+  selector:
+    matchLabels:
+      data: etc-systemd-sockets
 {{- end }}
 ---
 apiVersion: v1
