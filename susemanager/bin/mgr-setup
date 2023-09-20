@@ -414,7 +414,6 @@ fi
 # goal would be to move everything here.
 #
 setup_apache() {
-
     sed -i 's|DocumentRoot "/srv|DocumentRoot "/usr/share/susemanager|g' /etc/apache2/default-server.conf
     sed -i 's|<Directory "/srv|<Directory "/usr/share/susemanager|g' /etc/apache2/default-server.conf
     sed -i 's|<Directory "/srv|<Directory "/usr/share/susemanager|g' /etc/apache2/conf.d/zz-spacewalk-www.conf
@@ -423,6 +422,14 @@ setup_apache() {
     sed -i 's|DocumentRoot "/srv|DocumentRoot "/usr/share/susemanager|g' /etc/apache2/vhosts.d/vhost-ssl.template
 }
 
+#TODO move this on the permission check function
+setup_permission() {
+    mkdir -p /srv/susemanager/salt/tmp
+    mkdir -p /srv/susemanager/salt/custom
+    chown tomcat:susemanager -R /srv/susemanager/salt/tmp
+    chown tomcat:susemanager -R /srv/susemanager/salt/custom
+    chmod 777 -R /srv/susemanager/salt
+}
 
 setup_spacewalk() {
     CERT_COUNTRY=`echo -n $CERT_COUNTRY|tr '[:lower:]' '[:upper:]'`
@@ -523,6 +530,8 @@ ssl-server-key = $SERVER_KEY" >> /root/spacewalk-answers
     fi
 
     setup_apache
+
+    setup_permission
 
     # rm /root/spacewalk-answers
     if [ "$SWRET" != "0" ]; then
