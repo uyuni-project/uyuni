@@ -36,6 +36,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.util.Collection;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -62,6 +63,19 @@ public class DebPackageWriter implements Closeable {
         out = new BufferedWriter(new FileWriter(filenamePackages, true));
     }
 
+    private String getFilename(PackageDto pkgDto) {
+        StringBuilder buf = new StringBuilder();
+        buf.append("Filename: ").append(channelLabel).append("/getPackage/")
+           .append(pkgDto.getName()).append("_");
+        String epoch = pkgDto.getEpoch();
+        if (epoch != null && !epoch.equalsIgnoreCase("")) {
+            buf.append(epoch).append(":");
+        }
+        buf.append(pkgDto.getVersion()).append("-").append(pkgDto.getRelease())
+           .append(".").append(pkgDto.getArchLabel()).append(".deb");
+        return buf.toString();
+    }
+
     /**
      * add package info to Packages file in repository
      *
@@ -72,7 +86,21 @@ public class DebPackageWriter implements Closeable {
         // we use the primary xml cache for debian package entry
         String pkgSnippet = pkgDto.getPrimaryXml();
         if (ConfigDefaults.get().useDBRepodata() && !StringUtils.isBlank(pkgSnippet)) {
-            out.write(pkgSnippet);
+            // deb repos currently contain file path in the metadata specific to a channel which makes them
+            // unusable for cloned channels. With this we use most of the cached version to preserve speed while
+            // regenerating the file path.
+            String fixedSnippet = pkgSnippet.lines()
+                    .map(line -> {
+                        if (line.startsWith("Filename: ")) {
+                            return getFilename(pkgDto);
+                        }
+                        else {
+                            return line;
+                        }
+                    })
+                    .collect(Collectors.joining(System.lineSeparator()));
+            out.write(fixedSnippet);
+            out.newLine();
             out.newLine();
             return;
         }
@@ -145,13 +173,7 @@ public class DebPackageWriter implements Closeable {
                 TaskConstants.TASK_QUERY_REPOMD_GENERATOR_CAPABILITY_BREAKS,
                 pkgDto.getId(), "Breaks");
 
-        buf.write("Filename: " + channelLabel + "/getPackage/");
-        buf.write(pkgDto.getName() + "_");
-        if (epoch != null && !epoch.equalsIgnoreCase("")) {
-            buf.write(epoch + ":");
-        }
-        buf.write(pkgDto.getVersion() + "-" + pkgDto.getRelease());
-        buf.write("." + pkgDto.getArchLabel() + ".deb");
+        buf.write(getFilename(pkgDto));
         buf.newLine();
 
         // size of package, is checked by apt
