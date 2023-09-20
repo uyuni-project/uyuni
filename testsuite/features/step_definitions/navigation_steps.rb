@@ -1064,8 +1064,9 @@ When(/^I select the next maintenance window$/) do
   find(:xpath, '//select[@id=\'maintenance-window-select\']/option', match: :first).select_option
 end
 
-When(/^I enter the server hostname as the redfish server address$/) do
-  step %(I enter "#{get_target('server').full_hostname}:8443" as "powerAddress")
+When(/^I enter the controller hostname as the redfish server address$/) do
+  hostname = `hostname -f`.strip
+  step %(I enter "#{hostname}:8443" as "powerAddress")
 end
 
 When(/^I clear browser cookies$/) do
