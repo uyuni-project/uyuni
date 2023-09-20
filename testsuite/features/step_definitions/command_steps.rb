@@ -574,26 +574,38 @@ When(/^the server stops mocking an IPMI host$/) do
   get_target('server').run('pkill fake_ipmi_host.sh || :')
 end
 
-When(/^the server starts mocking a Redfish host$/) do
-  get_target('server').run('mkdir -p /root/Redfish-Mockup-Server/')
-  %w[redfishMockupServer.py rfSsdpServer.py].each do |file|
-    source = File.dirname(__FILE__) + '/../upload_files/Redfish-Mockup-Server/' + file
-    dest = '/root/Redfish-Mockup-Server/' + file
-    return_code = file_inject(get_target('server'), source, dest)
-    raise 'File injection failed' unless return_code.zero?
+When(/^the controller starts mocking a Redfish host$/) do
+  # We need the controller hostname to generate its SSL certificate
+  hostname = `hostname -f`.strip
+
+  _out, code = get_target('server').run_local("systemctl is-active k3s", check_errors: false)
+  if code.zero?
+    # On kubernetes, the server has no clue about certificates
+    crt_path, key_path, _ca_path = generate_certificate("controller", hostname)
+    get_target('server').extract_file(crt_path, '/root/controller.crt')
+    get_target('server').extract_file(key_path, '/root/controller.key')
+  else
+    get_target('server').run("mgr-ssl-tool --gen-server -d /root/ssl-build --no-rpm -p spacewalk --set-hostname #{hostname} --server-cert=controller.crt --server-key=controller.key")
+    key_path, _err = get_target('server').run('ls /root/ssl-build/*/controller.key')
+    crt_path, _err = get_target('server').run('ls /root/ssl-build/*/controller.crt')
+
+    file_extract(get_target('server'), key_path.strip, '/root/controller.key')
+    file_extract(get_target('server'), crt_path.strip, '/root/controller.crt')
   end
-  get_target('server').run('curl --output /root/DSP2043_2019.1.zip https://www.dmtf.org/sites/default/files/standards/documents/DSP2043_2019.1.zip')
-  get_target('server').run('unzip /root/DSP2043_2019.1.zip -d /root/')
-  cmd = "/usr/bin/python3 /root/Redfish-Mockup-Server/redfishMockupServer.py " \
-        "-H #{get_target('server').full_hostname} -p 8443 " \
+
+  `curl --output /root/DSP2043_2019.1.zip https://www.dmtf.org/sites/default/files/standards/documents/DSP2043_2019.1.zip`
+  `unzip /root/DSP2043_2019.1.zip -d /root/`
+  cmd = "/usr/bin/python3 #{File.dirname(__FILE__)}/../upload_files/Redfish-Mockup-Server/redfishMockupServer.py " \
+        "-H #{hostname} -p 8443 " \
         "-S -D /root/DSP2043_2019.1/public-catfish/ " \
-        "--ssl --cert /etc/pki/tls/certs/spacewalk.crt --key /etc/pki/tls/private/spacewalk.key " \
+        "--ssl --cert /root/controller.crt --key /root/controller.key " \
         "< /dev/null > /dev/null 2>&1 &"
-  get_target('server').run(cmd)
+  `#{cmd}`
 end
 
-When(/^the server stops mocking a Redfish host$/) do
-  get_target('server').run('pkill -e -f /root/Redfish-Mockup-Server/redfishMockupServer.py')
+When(/^the controller stops mocking a Redfish host$/) do
+  `pkill -e -f #{File.dirname(__FILE__)}/../upload_files/Redfish-Mockup-Server/redfishMockupServer.py`
+  `rm -rf /root/DSP2043_2019.1*`
 end
 
 When(/^I install a user-defined state for "([^"]*)" on the server$/) do |host|
@@ -1011,40 +1023,7 @@ When(/^I copy server\'s keys to the proxy$/) do
   _out, code = get_target('server').run_local("systemctl is-active k3s", check_errors: false)
   if code.zero?
     # Server running in Kubernetes doesn't know anything about SSL CA
-    certificate = "apiVersion: cert-manager.io/v1\\n"\
-                  "kind: Certificate\\n"\
-                  "metadata:\\n"\
-                  "  name: uyuni-proxy\\n"\
-                  "spec:\\n"\
-                  "  secretName: uyuni-proxy-cert\\n"\
-                  "  subject:\\n"\
-                  "    countries: ['DE']\\n"\
-                  "    provinces: ['Bayern']\\n"\
-                  "    localities: ['Nuernberg']\\n"\
-                  "    organizations: ['SUSE']\\n"\
-                  "    organizationalUnits: ['SUSE']\\n"\
-                  "  emailAddresses:\\n"\
-                  "    - galaxy-noise@suse.de\\n"\
-                  "  commonName: #{get_target('proxy').full_hostname}\\n"\
-                  "  dnsNames:\\n"\
-                  "    - #{get_target('proxy').full_hostname}\\n"\
-                  "  issuerRef:\\n"\
-                  "    name: uyuni-ca-issuer\\n"\
-                  "    kind: Issuer"
-    _out, return_code = get_target('server').run_local("echo -e \"#{certificate}\" | kubectl apply -f -")
-    raise 'Failed to define proxy Certificate resource' unless return_code.zero?
-    # cert-manager takes some time to generate the secret, wait for it before continuing
-    repeat_until_timeout(timeout: 600, message: "Kubernetes uyuni-proxy-cert secret has not been defined") do
-      _result, code = get_target('server').run_local("kubectl get secret uyuni-proxy-cert", check_errors: false)
-      break if code.zero?
-      sleep 1
-    end
-    _out, return_code = get_target('server').run_local("kubectl get secret uyuni-proxy-cert -o jsonpath='{.data.tls\\.crt}' | base64 -d >/tmp/proxy.crt")
-    raise 'Failed to store proxy certificate' unless return_code.zero?
-    _out, return_code = get_target('server').run_local("kubectl get secret uyuni-proxy-cert -o jsonpath='{.data.tls\\.key}' | base64 -d >/tmp/proxy.key")
-    raise 'Failed to store proxy key' unless return_code.zero?
-    _out, return_code = get_target('server').run_local("kubectl get secret uyuni-proxy-cert -o jsonpath='{.data.ca\\.crt}' | base64 -d >/tmp/ca.crt")
-    raise 'Failed to store CA certificate' unless return_code.zero?
+    generate_certificate("proxy", get_target('proxy').full_hostname)
 
     %w[proxy.crt proxy.key ca.crt].each do |file|
       return_code, = get_target('server').extract_file("/tmp/#{file}", "/tmp/#{file}")
