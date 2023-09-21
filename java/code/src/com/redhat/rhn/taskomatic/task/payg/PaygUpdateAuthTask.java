@@ -18,19 +18,21 @@ package com.redhat.rhn.taskomatic.task.payg;
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
+import com.redhat.rhn.common.util.FileLocks;
 import com.redhat.rhn.domain.cloudpayg.PaygSshData;
 import com.redhat.rhn.domain.cloudpayg.PaygSshDataFactory;
 import com.redhat.rhn.domain.notification.NotificationMessage;
 import com.redhat.rhn.domain.notification.UserNotificationFactory;
 import com.redhat.rhn.domain.notification.types.PaygAuthenticationUpdateFailed;
 import com.redhat.rhn.domain.role.RoleFactory;
+import com.redhat.rhn.manager.content.ContentSyncException;
+import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.task.RhnJavaJob;
 import com.redhat.rhn.taskomatic.task.payg.beans.PaygInstanceInfo;
 
 import com.suse.cloud.CloudPaygManager;
 import com.suse.manager.admin.PaygAdminManager;
-
 
 import com.jcraft.jsch.JSchException;
 
@@ -88,15 +90,26 @@ public class PaygUpdateAuthTask extends RhnJavaJob {
 
         manageLocalHostPayg();
 
-        if (jobExecutionContext != null && jobExecutionContext.getJobDetail().getJobDataMap().containsKey(KEY_ID)) {
-            Optional<PaygSshData> paygData = PaygSshDataFactory.lookupById(
-                    Integer.parseInt((String) jobExecutionContext.getJobDetail().getJobDataMap().get(KEY_ID)));
-            paygData.ifPresent(this::updateInstanceData);
-        }
-        else {
-            PaygSshDataFactory.lookupPaygSshData()
-                    .forEach(this::updateInstanceData);
-        }
+        FileLocks.SCC_REFRESH_LOCK.withFileLock(() -> {
+            if (jobExecutionContext != null && jobExecutionContext.getJobDetail().getJobDataMap().containsKey(KEY_ID)) {
+                Optional<PaygSshData> paygData = PaygSshDataFactory.lookupById(
+                        Integer.parseInt((String) jobExecutionContext.getJobDetail().getJobDataMap().get(KEY_ID)));
+                paygData.ifPresent(this::updateInstanceData);
+            }
+            else {
+                PaygSshDataFactory.lookupPaygSshData()
+                        .forEach(this::updateInstanceData);
+            }
+
+            // Call the content sync manager to refresh all repositories content sources and the authorizations
+            try {
+                ContentSyncManager contentSyncManager = new ContentSyncManager();
+                contentSyncManager.updateRepositories(null);
+            }
+            catch (ContentSyncException ex) {
+                LOG.error("Unable to refresh repositories", ex);
+            }
+        });
     }
 
     /**
