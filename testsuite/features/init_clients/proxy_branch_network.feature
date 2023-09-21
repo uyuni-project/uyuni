@@ -203,7 +203,7 @@ Feature: Setup Uyuni for Retail branch network
   Scenario: Disable repositories after installing branch services
     When I disable repositories after installing branch server
     # WORKAROUND: the following event fails because the proxy needs 10 minutes to become responsive again
-    # And I wait until event "Package List Refresh scheduled by (system)" is completed
+    # And I wait until event "Package List Refresh" is completed
     And I wait for "700" seconds
 
 @proxy
