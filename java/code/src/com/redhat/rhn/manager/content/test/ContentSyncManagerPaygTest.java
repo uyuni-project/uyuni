@@ -32,12 +32,14 @@ import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
 import com.redhat.rhn.domain.scc.SCCRepository;
 import com.redhat.rhn.domain.scc.SCCRepositoryAuth;
+import com.redhat.rhn.manager.content.ContentSyncException;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.taskomatic.task.payg.PaygAuthDataExtractor;
 import com.redhat.rhn.taskomatic.task.payg.PaygUpdateAuthTask;
 import com.redhat.rhn.taskomatic.task.payg.beans.PaygInstanceInfo;
 import com.redhat.rhn.taskomatic.task.payg.beans.PaygProductInfo;
 import com.redhat.rhn.taskomatic.task.payg.test.PaygUpdateAuthTaskTest;
+import com.redhat.rhn.testing.MockFileLocks;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
@@ -102,6 +104,15 @@ public class ContentSyncManagerPaygTest extends RhnBaseTestCase {
             }
         };
         PAYG_DATA_TASK.setPaygDataExtractor(paygAuthDataExtractorMock);
+
+        ContentSyncManager contentSyncManager = new ContentSyncManager() {
+            @Override
+            public void updateRepositories(String mirrorUrl) throws ContentSyncException {
+                // Nothing to do
+            }
+        };
+        PAYG_DATA_TASK.setContentSyncManager(contentSyncManager);
+        PAYG_DATA_TASK.setSccRefreshLock(new MockFileLocks());
     }
 
     @Override
