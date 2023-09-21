@@ -14,8 +14,10 @@
  */
 package com.redhat.rhn.frontend.action.renderers.setupwizard;
 
+import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.frontend.action.renderers.RendererHelper;
 import com.redhat.rhn.manager.content.ContentSyncException;
+import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.manager.setup.MirrorCredentialsDto;
 import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
 import com.redhat.rhn.manager.setup.MirrorCredentialsNotUniqueException;
@@ -46,6 +48,7 @@ public class MirrorCredentialsRenderer {
     private static final String ATTRIB_MIRRCREDS = "credentials";
     private static final String ATTRIB_CREDS_ID = "credentialsId";
     private static final String ATTRIB_SUCCESS = "success";
+    private static final String ATTRIB_FROM_DIR = "fromDir";
     private static final String ATTRIB_SUBSCRIPTIONS = "subscriptions";
 
     // Save credentials return codes
@@ -197,7 +200,11 @@ public class MirrorCredentialsRenderer {
         // Download if forced refresh or status unknown
         subs = credsManager.getSubscriptions(creds, request, refresh);
 
+        // Check if `fromDir` var is set to avoid checking credentials
+        String localPath = Config.get().getString(ContentSyncManager.RESOURCE_PATH, null);
+
         request.setAttribute(ATTRIB_SUCCESS, subs != null);
+        request.setAttribute(ATTRIB_FROM_DIR, localPath != null);
         request.setAttribute(ATTRIB_CREDS_ID, id);
         HttpServletResponse response = webContext.getHttpServletResponse();
         return RendererHelper.renderRequest(CREDS_VERIFY_URL, request, response);
