@@ -29,6 +29,7 @@
 %define omit_tests      1
 
 %if 0%{?suse_version}
+%define shareddir       /usr/share
 %define susemanagershareddir       /usr/share/susemanager
 %define serverdir       %{susemanagershareddir}/www
 %define apache_group    www
@@ -532,14 +533,18 @@ install -d -m 755 $RPM_BUILD_ROOT%{cobdirsnippets}
 install -d -m 755 $RPM_BUILD_ROOT/%{_localstatedir}/lib/spacewalk/scc
 install -d -m 755 $RPM_BUILD_ROOT/%{_localstatedir}/lib/spacewalk/subscription-matcher
 
+mkdir -p $RPM_BUILD_ROOT%{shareddir}/susemanager/salt/salt_ssh/temp_bootstrap_keys
+mkdir -p $RPM_BUILD_ROOT%{shareddir}/susemanager/pillar_data/images
+mkdir -p $RPM_BUILD_ROOT%{shareddir}/susemanager/formula_data
+mkdir -p $RPM_BUILD_ROOT%{shareddir}/susemanager/tmp
 install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d
-install -d $RPM_BUILD_ROOT%{serverdir}/susemanager/salt
-install -d $RPM_BUILD_ROOT%{serverdir}/susemanager/salt/salt_ssh
+install -d $RPM_BUILD_ROOT%{shareddir}/susemanager/salt
+install -d $RPM_BUILD_ROOT%{shareddir}/susemanager/salt/salt_ssh
 install -d $RPM_BUILD_ROOT%{serverdir}/susemanager/salt/salt_ssh/temp_bootstrap_keys
-install -d -m 775 $RPM_BUILD_ROOT%{serverdir}/susemanager/pillar_data
-install -d -m 775 $RPM_BUILD_ROOT%{serverdir}/susemanager/pillar_data/images
-install -d $RPM_BUILD_ROOT%{serverdir}/susemanager/formula_data
-install -d $RPM_BUILD_ROOT%{serverdir}/susemanager/tmp
+install -d -m 775 $RPM_BUILD_ROOT%{shareddir}/susemanager/pillar_data
+install -d -m 775 $RPM_BUILD_ROOT%{shareddir}/susemanager/pillar_data/images
+install -d $RPM_BUILD_ROOT%{shareddir}/susemanager/formula_data
+install -d $RPM_BUILD_ROOT%{shareddir}/susemanager/tmp
 
 install -m 644 conf/default/rhn_hibernate.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_hibernate.conf
 install -m 644 conf/default/rhn_reporting_hibernate.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_reporting_hibernate.conf
@@ -694,7 +699,6 @@ chown tomcat:%{apache_group} /var/log/rhn/gatherer.log
 
 %files
 %defattr(-,root,root)
-%dir %{susemanagershareddir}
 %dir %{serverdir}
 %dir %{_localstatedir}/lib/spacewalk
 %defattr(644,tomcat,tomcat,775)
@@ -800,7 +804,6 @@ chown tomcat:%{apache_group} /var/log/rhn/gatherer.log
 %defattr(644,root,root,755)
 %dir %{_prefix}/share/rhn/search
 %dir %{_prefix}/share/rhn/search/lib
-%dir %{susemanagershareddir}
 %dir %{serverdir}
 %{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/postgresql-jdbc.jar
 %{_prefix}/share/rhn/search/lib/postgresql-jdbc.jar
