@@ -60,6 +60,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -378,13 +379,25 @@ public class AnsibleController {
      * @return the Set of hostnames
      */
     public static Set<String> parseInventoryAndGetHostnames(Map<String, Map<String, Object>> inventoryMap) {
-        // Assumption: "_meta" and the nested "hostvars" keys always present in the map to contains all hostnames
-        if (inventoryMap.containsKey("_meta") &&
-                inventoryMap.get("_meta").containsKey("hostvars") &&
-                inventoryMap.get("_meta").get("hostvars") instanceof Map) {
-            return ((Map<String, Object>) inventoryMap.get("_meta").get("hostvars")).keySet();
+        HashSet<String> hostnames = new HashSet<>();
+
+        Optional<List<String>> ungrouped = Optional.ofNullable((List<String>)inventoryMap.get("ungrouped").get("hosts"));
+        if (ungrouped.isPresent()) {
+            ungrouped.get().stream().forEach(host -> hostnames.add(host));
         }
-        return new HashSet<>();
+
+        for (Map.Entry<String, Map<String, Object>> entry : inventoryMap.entrySet()) {
+            String ansibleGroupName = entry.getKey();
+            if (!ansibleGroupName.equals("ungrouped") && !ansibleGroupName.equals("all") &&
+                    !ansibleGroupName.equals("_meta")) {
+                Optional<List<String>> list = Optional.ofNullable((List<String>)entry.getValue().get("hosts"));
+                if (list.isPresent()) {
+                    list.get().stream().forEach(host -> hostnames.add(host));
+                }
+            }
+        }
+
+        return hostnames;
     }
 
     /**
