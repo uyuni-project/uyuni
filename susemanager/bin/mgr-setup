@@ -427,7 +427,9 @@ setup_permission() {
     mkdir -p /srv/susemanager/salt/custom
     chown tomcat:susemanager -R /srv/susemanager/salt/tmp
     chown tomcat:susemanager -R /srv/susemanager/salt/custom
+    chown tomcat:tomcat -R /usr/share/susemanager/www/htdocs
     chmod 777 -R /srv/susemanager/salt
+    chmod 777 -R /usr/share/susemanager/www/htdocs
 }
 
 setup_spacewalk() {

@@ -698,14 +698,15 @@ chown tomcat:%{apache_group} /var/log/rhn/gatherer.log
 %dir %{serverdir}
 %dir %{_localstatedir}/lib/spacewalk
 %defattr(644,tomcat,tomcat,775)
-%attr(775, %{salt_user_group}, %{salt_user_group}) %dir %{serverdir}/susemanager/salt/salt_ssh
-%attr(700, %{salt_user_group}, %{salt_user_group}) %dir %{serverdir}/susemanager/salt/salt_ssh/temp_bootstrap_keys
-%dir %{serverdir}/susemanager
-%dir %{serverdir}/susemanager/salt
-%attr(775,tomcat,susemanager) %dir %{serverdir}/susemanager/pillar_data
-%attr(775,tomcat,susemanager) %dir %{serverdir}/susemanager/pillar_data/images
-%dir %{serverdir}/susemanager/formula_data
-%attr(770, tomcat, %{salt_user_group}) %dir %{serverdir}/susemanager/tmp
+%attr(775, %{salt_user_group}, %{salt_user_group}) %dir %{userserverdir}/susemanager/salt/salt_ssh
+%attr(700, %{salt_user_group}, %{salt_user_group}) %dir %{userserverdir}/susemanager/salt/salt_ssh/temp_bootstrap_keys
+%attr(775, tomcat, tomcat) %dir %{serverdir}/tomcat/webapps
+%dir %{userserverdir}/susemanager
+%dir %{userserverdir}/susemanager/salt
+%attr(775,tomcat,susemanager) %dir %{userserverdir}/susemanager/pillar_data
+%attr(775,tomcat,susemanager) %dir %{userserverdir}/susemanager/pillar_data/images
+%dir %{userserverdir}/susemanager/formula_data
+%attr(770, tomcat, %{salt_user_group}) %dir %{userserverdir}/susemanager/tmp
 %dir %{serverdir}/tomcat/webapps/rhn/
 %{serverdir}/tomcat/webapps/rhn/apidoc/
 %{serverdir}/tomcat/webapps/rhn/css/
