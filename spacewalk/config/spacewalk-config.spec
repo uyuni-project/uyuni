@@ -17,10 +17,6 @@
 #
 
 
-%global susemanager_shared_path /usr/share/susemanager
-%global wwwroot %{susemanager_shared_path}/www
-%global wwwdocroot %{wwwroot}/htdocs
-
 %if 0%{?suse_version}
 %define apacheconfdir %{_sysconfdir}/apache2
 %define apachepkg apache2
@@ -82,7 +78,7 @@ mv usr $RPM_BUILD_ROOT/
 %if 0%{?suse_version}
 export NO_BRP_STALE_LINK_ERROR=yes
 mv $RPM_BUILD_ROOT/etc/httpd $RPM_BUILD_ROOT%{apacheconfdir}
-sed -i 's|/var/www/html|%{wwwdocroot}|g' $RPM_BUILD_ROOT%{apacheconfdir}/conf.d/zz-spacewalk-www.conf
+sed -i 's|var/www/html|srv/www/htdocs|g' $RPM_BUILD_ROOT%{apacheconfdir}/conf.d/zz-spacewalk-www.conf
 %endif
 
 touch $RPM_BUILD_ROOT/%{_sysconfdir}/rhn/rhn.conf

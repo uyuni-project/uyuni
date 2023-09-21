@@ -416,7 +416,6 @@ fi
 setup_apache() {
     sed -i 's|DocumentRoot "/srv|DocumentRoot "/usr/share/susemanager|g' /etc/apache2/default-server.conf
     sed -i 's|<Directory "/srv|<Directory "/usr/share/susemanager|g' /etc/apache2/default-server.conf
-    sed -i 's|<Directory "/srv|<Directory "/usr/share/susemanager|g' /etc/apache2/conf.d/zz-spacewalk-www.conf
     sed -i 's|ScriptAlias /cgi-bin/ "/srv|ScriptAlias /cgi-bin/ "/usr/share/susemanager|g' /etc/apache2/default-server.conf
     sed -i 's|DocumentRoot "/srv|DocumentRoot "/usr/share/susemanager|g' /etc/apache2/vhosts.d/vhost-ssl.conf
     sed -i 's|DocumentRoot "/srv|DocumentRoot "/usr/share/susemanager|g' /etc/apache2/vhosts.d/vhost-ssl.template

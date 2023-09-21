@@ -41,7 +41,7 @@
 %global apache_user wwwrun
 %global apache_group www
 %global apache_pkg apache2
-%global documentroot /usr/share/susemanager/www/htdocs
+%global documentroot /srv/www/htdocs
 %global m2crypto python3-M2Crypto
 %global sslrootcert %{_sysconfdir}/pki/trust/anchors/
 %endif

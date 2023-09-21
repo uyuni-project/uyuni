@@ -28,9 +28,9 @@
 %define run_checkstyle  0
 %define omit_tests      1
 
+%if 0%{?suse_version}
 %define susemanagershareddir       /usr/share/susemanager
 %define serverdir       %{susemanagershareddir}/www
-%if 0%{?suse_version}
 %define apache_group    www
 %define salt_user_group salt
 %define apache2         apache2
