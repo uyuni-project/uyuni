@@ -48,6 +48,10 @@ public class PaygUpdateAuthTask extends RhnJavaJob {
 
     private CloudPaygManager cloudPaygManager = GlobalInstanceHolder.PAYG_MANAGER;
 
+    private ContentSyncManager contentSyncManager = new ContentSyncManager();
+
+    private FileLocks sccRefreshLock = FileLocks.SCC_REFRESH_LOCK;
+
     private static final String KEY_ID = "sshData_id";
 
     @Override
@@ -84,7 +88,7 @@ public class PaygUpdateAuthTask extends RhnJavaJob {
 
         manageLocalHostPayg();
 
-        FileLocks.SCC_REFRESH_LOCK.withFileLock(() -> {
+        sccRefreshLock.withFileLock(() -> {
             if (jobExecutionContext != null && jobExecutionContext.getJobDetail().getJobDataMap().containsKey(KEY_ID)) {
                 Optional<PaygSshData> paygData = PaygSshDataFactory.lookupById(
                         Integer.parseInt((String) jobExecutionContext.getJobDetail().getJobDataMap().get(KEY_ID)));
@@ -97,7 +101,6 @@ public class PaygUpdateAuthTask extends RhnJavaJob {
 
             // Call the content sync manager to refresh all repositories content sources and the authorizations
             try {
-                ContentSyncManager contentSyncManager = new ContentSyncManager();
                 contentSyncManager.updateRepositories(null);
             }
             catch (ContentSyncException ex) {
@@ -115,11 +118,27 @@ public class PaygUpdateAuthTask extends RhnJavaJob {
     }
 
     /**
-     * Need for automatic tests
+     * Needed for unit tests
      * @param mgrIn
      */
     public void setCloudPaygManager(CloudPaygManager mgrIn) {
         cloudPaygManager = mgrIn;
+    }
+
+    /**
+     * Needed for unit tests
+     * @param contentSyncManagerIn
+     */
+    public void setContentSyncManager(ContentSyncManager contentSyncManagerIn) {
+        this.contentSyncManager = contentSyncManagerIn;
+    }
+
+    /**
+     * Needed for unit testing
+     * @param sccRefreshLockIn
+     */
+    public void setSccRefreshLock(FileLocks sccRefreshLockIn) {
+        this.sccRefreshLock = sccRefreshLockIn;
     }
 
     private void updateInstanceData(PaygSshData instance) {
