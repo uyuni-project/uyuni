@@ -778,6 +778,13 @@ public class ContentManager {
         }
     }
 
+    private static void syncGpgKeyInfo(Channel source, Channel target) {
+        target.setGPGCheck(source.isGPGCheck());
+        target.setGPGKeyFp(source.getGPGKeyFp());
+        target.setGPGKeyId(source.getGPGKeyId());
+        target.setGPGKeyUrl(source.getGPGKeyUrl());
+    }
+
     /**
      * Clone {@link Channel}s to given {@link ContentEnvironment}
      *
@@ -853,6 +860,9 @@ public class ContentManager {
         else {
             tgt.cloneModulesFrom(newSource);
         }
+
+        // Sync GPG key info to target in case it's updated since last build
+        syncGpgKeyInfo(newSource, tgt);
 
         return swTgt;
     }
