@@ -37,6 +37,8 @@ import java.util.Set;
  */
 public class Credentials extends BaseDomainHelper {
 
+    private static final String INVALIDATED_PASSWORD = new String(Base64.encodeBase64("invalidated".getBytes()));
+
     // Available type labels
     public static final String TYPE_SCC = "scc";
     public static final String TYPE_VIRT_HOST_MANAGER = "vhm";
@@ -222,6 +224,22 @@ public class Credentials extends BaseDomainHelper {
         return StringUtils.isEmpty(username) &&
                 StringUtils.isEmpty(encodedPassword) &&
                 StringUtils.isEmpty(url);
+    }
+
+    /**
+     * Marks the current credential as invalid
+     */
+    public void invalidate() {
+        this.extraAuthData = "{}".getBytes();
+        this.encodedPassword = INVALIDATED_PASSWORD;
+    }
+
+    /**
+     * Check if this credential is valid
+     * @return true if valid
+     */
+    public boolean isValid() {
+        return isComplete() && !INVALIDATED_PASSWORD.equals(encodedPassword);
     }
 
     /**

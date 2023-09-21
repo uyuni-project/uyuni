@@ -287,12 +287,10 @@ public class PaygAuthDataProcessor {
      */
     public void invalidateCredentials(PaygSshData instance) {
         Optional.ofNullable(instance.getCredentials())
-                .ifPresent(c -> {
-                    Map<String, String> headers = new HashMap<>();
-                    c.setExtraAuthData(GSON.toJson(headers).getBytes());
-                    c.setPassword("invalidated");
-                    CredentialsFactory.storeCredentials(c);
-                });
+            .ifPresent(credentials -> {
+                credentials.invalidate();
+                CredentialsFactory.storeCredentials(credentials);
+            });
     }
 
 }
