@@ -15,6 +15,7 @@
 
 package com.redhat.rhn.taskomatic.task.payg.test;
 
+import static com.redhat.rhn.testing.RhnBaseTestCase.assertContains;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -34,13 +35,14 @@ import com.redhat.rhn.domain.notification.types.NotificationType;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
-import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.taskomatic.task.payg.PaygAuthDataExtractor;
 import com.redhat.rhn.taskomatic.task.payg.PaygDataExtractException;
 import com.redhat.rhn.taskomatic.task.payg.PaygUpdateAuthTask;
 import com.redhat.rhn.taskomatic.task.payg.beans.PaygInstanceInfo;
 import com.redhat.rhn.taskomatic.task.payg.beans.PaygProductInfo;
+import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
+import com.redhat.rhn.testing.MockFileLocks;
 import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.cloud.CloudPaygManager;
@@ -55,13 +57,9 @@ import com.jcraft.jsch.JSchException;
 import org.apache.commons.io.FileUtils;
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
-import org.jmock.junit5.JUnit5Mockery;
-import org.jmock.lib.concurrent.Synchroniser;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -78,11 +76,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-@ExtendWith(JUnit5Mockery.class)
-public class PaygUpdateAuthTaskTest extends BaseHandlerTestCase {
-
-    private static PaygAuthDataExtractor paygAuthDataExtractorMock;
-    private static final PaygUpdateAuthTask PAYG_DATA_TASK = new PaygUpdateAuthTask();
+public class PaygUpdateAuthTaskTest extends JMockBaseTestCaseWithUser {
 
     private static final Gson GSON = new GsonBuilder()
             .serializeNulls()
@@ -93,19 +87,13 @@ public class PaygUpdateAuthTaskTest extends BaseHandlerTestCase {
     private static final String PRODUCT_TREE = "/com/redhat/rhn/manager/content/test/smallBase/product_tree.json";
     private static final String UPGRADE_PATHS = "/com/redhat/rhn/manager/content/test/smallBase/upgrade_paths.json";
 
-    @RegisterExtension
-    protected static final JUnit5Mockery CONTEXT = new JUnit5Mockery() {{
-        setThreadingPolicy(new Synchroniser());
-    }};
+    private PaygAuthDataExtractor paygAuthDataExtractorMock;
 
-    static {
-        CONTEXT.setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
-        paygAuthDataExtractorMock = CONTEXT.mock(PaygAuthDataExtractor.class);
-        PAYG_DATA_TASK.setPaygDataExtractor(paygAuthDataExtractorMock);
-    }
+    private PaygUpdateAuthTask paygUpdateAuthTask;
 
     private PaygSshData paygData;
     private PaygInstanceInfo paygInstanceInfo;
+    private ContentSyncManager contentSyncManagerMock;
 
     @Override
     @BeforeEach
@@ -113,7 +101,20 @@ public class PaygUpdateAuthTaskTest extends BaseHandlerTestCase {
         super.setUp();
         clearDb();
 
-        PAYG_DATA_TASK.setCloudPaygManager(new CloudPaygManager());
+        setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
+
+        paygAuthDataExtractorMock = mock(PaygAuthDataExtractor.class);
+        contentSyncManagerMock = mock(ContentSyncManager.class);
+
+        checking(new Expectations() {{ allowing(contentSyncManagerMock).updateRepositories(null); }});
+
+        paygUpdateAuthTask = new PaygUpdateAuthTask();
+
+        paygUpdateAuthTask.setCloudPaygManager(new CloudPaygManager());
+        paygUpdateAuthTask.setPaygDataExtractor(paygAuthDataExtractorMock);
+        paygUpdateAuthTask.setContentSyncManager(contentSyncManagerMock);
+        paygUpdateAuthTask.setSccRefreshLock(new MockFileLocks());
+
         paygData = createPaygSshData();
         PaygSshDataFactory.savePaygSshData(paygData);
         paygInstanceInfo = createPaygInstanceInfo();
@@ -141,7 +142,7 @@ public class PaygUpdateAuthTaskTest extends BaseHandlerTestCase {
 
     @Test
     public void testLocalhostPaygConnection() throws Exception {
-        CONTEXT.checking(new Expectations() {
+        checking(new Expectations() {
             {
                 oneOf(paygAuthDataExtractorMock).extractAuthData(with(any(PaygSshData.class)));
                 will(returnValue(paygInstanceInfo));
@@ -156,8 +157,8 @@ public class PaygUpdateAuthTaskTest extends BaseHandlerTestCase {
                 return true;
             }
         };
-        PAYG_DATA_TASK.setCloudPaygManager(mgr);
-        PAYG_DATA_TASK.execute(null);
+        paygUpdateAuthTask.setCloudPaygManager(mgr);
+        paygUpdateAuthTask.execute(null);
         for (PaygSshData outPaygData : PaygSshDataFactory.lookupPaygSshData()) {
             switch (outPaygData.getHost()) {
                 case "localhost":
@@ -227,8 +228,8 @@ public class PaygUpdateAuthTaskTest extends BaseHandlerTestCase {
                 return false;
             }
         };
-        PAYG_DATA_TASK.setCloudPaygManager(mgr);
-        PAYG_DATA_TASK.execute(null);
+        paygUpdateAuthTask.setCloudPaygManager(mgr);
+        paygUpdateAuthTask.execute(null);
         for (PaygSshData outPaygData : PaygSshDataFactory.lookupPaygSshData()) {
             switch (outPaygData.getHost()) {
                 case "my-instance":
@@ -243,12 +244,12 @@ public class PaygUpdateAuthTaskTest extends BaseHandlerTestCase {
     }
     public void testRHUIConnection() throws Exception {
         PaygInstanceInfo rhuiInstanceInfo = createRHUIInstanceInfo();
-        CONTEXT.checking(new Expectations() {
+        checking(new Expectations() {
             {
                 oneOf(paygAuthDataExtractorMock).extractAuthData(with(any(PaygSshData.class)));
                 will(returnValue(rhuiInstanceInfo));
             }});
-        PAYG_DATA_TASK.execute(null);
+        paygUpdateAuthTask.execute(null);
         for (PaygSshData outPaygData : PaygSshDataFactory.lookupPaygSshData()) {
             Credentials creds = outPaygData.getCredentials();
             assertEquals("rhui", creds.getType().getLabel());
@@ -309,12 +310,12 @@ public class PaygUpdateAuthTaskTest extends BaseHandlerTestCase {
 
     @Test
     public void testJschException() throws Exception {
-        CONTEXT.checking(new Expectations() {
+        checking(new Expectations() {
             {
                 oneOf(paygAuthDataExtractorMock).extractAuthData(with(any(PaygSshData.class)));
                 will(throwException(new JSchException("My JSchException exception")));
             }});
-        PAYG_DATA_TASK.execute(null);
+        paygUpdateAuthTask.execute(null);
         paygData = HibernateFactory.reload(paygData);
         assertContains(paygData.getErrorMessage(), "My JSchException exception");
         assertEquals(paygData.getStatus(), PaygSshData.Status.E);
@@ -325,12 +326,12 @@ public class PaygUpdateAuthTaskTest extends BaseHandlerTestCase {
 
     @Test
     public void testPaygDataExtractException() throws Exception {
-        CONTEXT.checking(new Expectations() {
+        checking(new Expectations() {
             {
                 oneOf(paygAuthDataExtractorMock).extractAuthData(with(any(PaygSshData.class)));
                 will(throwException(new PaygDataExtractException("My PaygDataExtractException")));
             }});
-        PAYG_DATA_TASK.execute(null);
+        paygUpdateAuthTask.execute(null);
         paygData = HibernateFactory.reload(paygData);
         assertContains(paygData.getErrorMessage(), "My PaygDataExtractException");
         assertEquals(paygData.getStatus(), PaygSshData.Status.E);
@@ -347,7 +348,7 @@ public class PaygUpdateAuthTaskTest extends BaseHandlerTestCase {
      */
     @Test
     public void testPaygDataExtractExceptionInvalidateCredentials() throws Exception {
-        CONTEXT.checking(new Expectations() {
+        checking(new Expectations() {
             {
                 oneOf(paygAuthDataExtractorMock).extractAuthData(with(any(PaygSshData.class)));
                 will(returnValue(paygInstanceInfo));
@@ -359,7 +360,7 @@ public class PaygUpdateAuthTaskTest extends BaseHandlerTestCase {
                 will(returnValue(paygInstanceInfo));
             }});
         // first call successfull - set credentials and a header
-        PAYG_DATA_TASK.execute(null);
+        paygUpdateAuthTask.execute(null);
         paygData = HibernateFactory.reload(paygData);
         assertEquals(paygData.getStatus(), PaygSshData.Status.S);
         Credentials creds = paygData.getCredentials();
@@ -369,7 +370,7 @@ public class PaygUpdateAuthTaskTest extends BaseHandlerTestCase {
                 new String(creds.getExtraAuthData()));
 
         // second call failed - set status to Error, but keep credentials
-        PAYG_DATA_TASK.execute(null);
+        paygUpdateAuthTask.execute(null);
         paygData = HibernateFactory.reload(paygData);
 
         assertContains(paygData.getErrorMessage(), "My PaygDataExtractException");
@@ -384,7 +385,7 @@ public class PaygUpdateAuthTaskTest extends BaseHandlerTestCase {
                 new String(creds.getExtraAuthData()));
 
         // third call failed - invalidate credentials
-        PAYG_DATA_TASK.execute(null);
+        paygUpdateAuthTask.execute(null);
         paygData = HibernateFactory.reload(paygData);
 
         assertContains(paygData.getErrorMessage(), "My PaygDataExtractException");
@@ -395,7 +396,7 @@ public class PaygUpdateAuthTaskTest extends BaseHandlerTestCase {
         assertEquals("{}", new String(creds.getExtraAuthData()));
 
         // forth call successfull - restore credentials and a header again
-        PAYG_DATA_TASK.execute(null);
+        paygUpdateAuthTask.execute(null);
         paygData = HibernateFactory.reload(paygData);
         assertEquals(paygData.getStatus(), PaygSshData.Status.S);
         creds = paygData.getCredentials();
@@ -407,13 +408,13 @@ public class PaygUpdateAuthTaskTest extends BaseHandlerTestCase {
 
     @Test
     public void testGenericException() throws Exception {
-        CONTEXT.checking(new Expectations() {
+        checking(new Expectations() {
             {
 
                 oneOf(paygAuthDataExtractorMock).extractAuthData(with(any(PaygSshData.class)));
                 will(throwException(new Exception("My Exception")));
             }});
-        PAYG_DATA_TASK.execute(null);
+        paygUpdateAuthTask.execute(null);
         paygData = HibernateFactory.reload(paygData);
         assertNull(paygData.getErrorMessage());
         assertEquals(paygData.getStatus(), PaygSshData.Status.E);
@@ -424,12 +425,12 @@ public class PaygUpdateAuthTaskTest extends BaseHandlerTestCase {
 
     @Test
     public void testSuccessClearStatus() throws Exception {
-        CONTEXT.checking(new Expectations() {
+        checking(new Expectations() {
             {
                 oneOf(paygAuthDataExtractorMock).extractAuthData(with(any(PaygSshData.class)));
                 will(returnValue(paygInstanceInfo));
             }});
-        PAYG_DATA_TASK.execute(null);
+        paygUpdateAuthTask.execute(null);
         paygData = HibernateFactory.reload(paygData);
         assertNull(paygData.getErrorMessage());
         assertEquals(paygData.getStatus(), PaygSshData.Status.S);
