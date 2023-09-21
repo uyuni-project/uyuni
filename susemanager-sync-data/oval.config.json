@@ -132,12 +132,24 @@
         }
       }
     },
-    "DEBIAN": {
+    "UBUNTU": {
       "content": {
-        "10": {
-          "vulnerability": "https://www.debian.org/security/oval/oval-definitions-buster.xml.bz2",
+        "20.04": {
+          "vulnerability": "https://security-metadata.canonical.com/oval/com.ubuntu.focal.cve.oval.xml.bz2",
           "patch": ""
         },
+        "22.04": {
+          "vulnerability": "https://security-metadata.canonical.com/oval/com.ubuntu.jammy.cve.oval.xml.bz2",
+          "patch": ""
+        },
+        "24.04": {
+          "vulnerability": "https://security-metadata.canonical.com/oval/com.ubuntu.noble.cve.oval.xml.bz2",
+          "patch": ""
+        }
+      }
+    },
+    "DEBIAN": {
+      "content": {
         "11": {
           "vulnerability": "https://www.debian.org/security/oval/oval-definitions-bullseye.xml.bz2",
           "patch": ""
