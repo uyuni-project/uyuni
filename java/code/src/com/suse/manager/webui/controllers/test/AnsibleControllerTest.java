@@ -32,17 +32,9 @@ import java.util.Map;
 import java.util.Set;
 
 public class AnsibleControllerTest extends BaseTestCaseWithUser {
-    @BeforeAll
-    public static void beforeAll() {}
-
-    @Override
-    @BeforeEach
-    public void setUp() throws Exception {}
-
-    @Override
-    @AfterEach
-    public void tearDown() throws Exception {}
-
+    /**
+     * Class used for test `testParseInventoryAndGetHostnames`
+     */
     private class InventoryTestCase {
         private String TestName;
         private Map<String, Map<String, Object>> Inventory;
@@ -67,7 +59,12 @@ public class AnsibleControllerTest extends BaseTestCaseWithUser {
             return ExpectedResult;
         }
     }
-    public List<InventoryTestCase> getTestInventories() {
+
+    /**
+     *
+     * @return some testing Ansible inventories to test `AnsibleController.parseInventoryAndGetHostnames`
+     */
+    private List<InventoryTestCase> getTestInventories() {
         return new LinkedList<>() {{
             add(new InventoryTestCase(
                     "1_empty_inventory",
@@ -160,6 +157,9 @@ public class AnsibleControllerTest extends BaseTestCaseWithUser {
         }};
     }
 
+    /**
+     * Tests `AnsibleController.parseInventoryAndGetHostnames`
+     */
     @Test
     public void testParseInventoryAndGetHostnames() {
         List<InventoryTestCase> testCases = getTestInventories();
