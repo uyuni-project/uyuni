@@ -8,16 +8,16 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-03-17 13:46+0100\n"
-"PO-Revision-Date: 2020-08-17 13:26+0000\n"
+"PO-Revision-Date: 2023-09-21 13:15+0000\n"
 "Last-Translator: Ricardo Mateus <rmateus@suse.com>\n"
-"Language-Team: Portuguese <https://l10n.opensuse.org/projects/uyuni/backend/"
-"pt/>\n"
+"Language-Team: Portuguese <https://l10n.opensuse.org/projects/uyuni/"
+"backend-4-3/pt/>\n"
 "Language: pt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Weblate 3.6.1\n"
+"X-Generator: Weblate 4.9.1\n"
 
 #: ../server/apacheAuth.py:66
 #, python-format
@@ -27,16 +27,16 @@ msgstr "Token de autenticação de proxy incompleto: %s"
 #: ../server/apacheAuth.py:84
 #, python-format
 msgid "Sent proxy signature %s does not match ours %s."
-msgstr ""
+msgstr "Assinatura enviada pelo proxy %s não corresponde ao esperado %s."
 
 #: ../server/apacheAuth.py:119
 msgid "declined proxy authentication"
-msgstr ""
+msgstr "autenticação de proxy rejeitada"
 
 #: ../server/apacheRequest.py:59
 #, python-format
 msgid "Invalid request received (%s)."
-msgstr ""
+msgstr "Resquest recebido é inválido (%s)."
 
 #: ../server/apacheRequest.py:120
 #, python-format
@@ -103,7 +103,7 @@ msgstr ""
 
 #: ../server/handlers/xmlrpc/proxy.py:93
 msgid "This server ID no longer exists"
-msgstr ""
+msgstr "O ID do servidor não existe"
 
 #: ../server/handlers/xmlrpc/queue.py:434
 #, python-format
@@ -113,11 +113,11 @@ msgstr ""
 #: ../server/handlers/xmlrpc/queue.py:462
 #, python-format
 msgid "Action %s does not belong to server %s"
-msgstr ""
+msgstr "A acção %s não pertence ao servidor %s"
 
 #: ../server/handlers/xmlrpc/registration.py:196
 msgid "Required data missing"
-msgstr ""
+msgstr "Faltam dados obrigatórios"
 
 #: ../server/handlers/xmlrpc/registration.py:200
 msgid "Required members missing"
