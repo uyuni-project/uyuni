@@ -14,9 +14,9 @@
  */
 package com.redhat.rhn.domain.notification.types.test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.notification.NotificationMessage;
@@ -29,12 +29,10 @@ import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
-
 class UpdateAvailableTest extends MockObjectTestCase {
 
-    private static Runtime runtimeMock;
-    private static Process processMock;
+    private Runtime runtimeMock;
+    private Process processMock;
 
     @BeforeEach
     public void setUp() {
@@ -62,40 +60,30 @@ class UpdateAvailableTest extends MockObjectTestCase {
     }
 
     @Test
-    public void testUpdatesAvailable() {
+    public void testUpdatesAvailable() throws Exception {
         // Return 0 on all invocations of exec() -> an update is available
-        try {
-            checking(new Expectations() {{
-                 allowing(runtimeMock).exec(with(any(String[].class)));
-                 will(returnValue(processMock));
-                 allowing(processMock).waitFor();
-                 allowing(processMock).exitValue();
-                 will(returnValue(0));
-            }});
-        }
-        catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-        }
+        checking(new Expectations() {{
+             allowing(runtimeMock).exec(with(any(String[].class)));
+             will(returnValue(processMock));
+             allowing(processMock).waitFor();
+             allowing(processMock).exitValue();
+             will(returnValue(0));
+        }});
 
         UpdateAvailable notification = new UpdateAvailable(runtimeMock);
         assertTrue(notification.updateAvailable());
     }
 
     @Test
-    public void testNoUpdatesAvailable() {
+    public void testNoUpdatesAvailable() throws Exception {
         // Return 1 on all invocations of exec() -> no update is available
-        try {
-            checking(new Expectations() {{
-                 allowing(runtimeMock).exec(with(any(String[].class)));
-                 will(returnValue(processMock));
-                 allowing(processMock).waitFor();
-                 allowing(processMock).exitValue();
-                 will(returnValue(1));
-            }});
-        }
-        catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-        }
+        checking(new Expectations() {{
+             allowing(runtimeMock).exec(with(any(String[].class)));
+             will(returnValue(processMock));
+             allowing(processMock).waitFor();
+             allowing(processMock).exitValue();
+             will(returnValue(1));
+        }});
 
         UpdateAvailable notification = new UpdateAvailable(runtimeMock);
         assertFalse(notification.updateAvailable());
