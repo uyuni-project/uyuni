@@ -129,7 +129,7 @@ py.test%{?rhel:-3}
 
 %post
 # HACK! Create broken link when it will be replaces with the real file
-ln -sf %{wwwdocroot}/pub/RHN-ORG-TRUSTED-SSL-CERT \
+ln -sf /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT \
    /usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT 2>&1 ||:
 
 %posttrans
