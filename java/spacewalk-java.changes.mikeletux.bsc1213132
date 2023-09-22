@@ -1,0 +1,1 @@
+- Fix bug about listing Ansible inventories (bsc#1213132)
