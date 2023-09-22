@@ -223,10 +223,6 @@ public class FileUtils {
             log.error("File not found: {}", pathToFile);
             throw new RuntimeException(e);
         }
-        catch (IOException e) {
-            log.error("Could not read from: {}", pathToFile);
-            throw new RuntimeException(e);
-        }
         finally {
             org.apache.commons.io.IOUtils.closeQuietly(fileStream);
         }
