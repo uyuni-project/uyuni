@@ -12,7 +12,8 @@ for schema in ${available_schemas[@]}; do
     specfile=$(find ${src_dir}/schema/${schema}/ -name *.spec)
     # Use Perl extended regexp and look-around assertions to extract only the values from the spec properties
     schema_name=$(grep -oP "Name:\s+\K(.*)$" ${specfile})
-    schema_version=$(grep -oP "Version:\s+\K(.*)$" ${specfile})
+    # Get the installed version
+    schema_version=$(sudo -i podman exec uyuni-server-all-in-one-test bash -c "rpm -q ${schema_name} | rev | cut -d - -f2   | rev")
 
     sudo -i podman exec uyuni-server-all-in-one-test bash -c "/testsuite/podman_runner/run_db_migrations.sh ${schema_name} ${schema_version}"
 done
