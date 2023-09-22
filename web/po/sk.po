@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-08 14:40+0200\n"
+"POT-Creation-Date: 2023-09-22 14:36+0200\n"
 "PO-Revision-Date: 2023-09-10 14:15+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
@@ -1170,7 +1170,7 @@ msgstr "Obnoviť katalóg produktov zo Zákazníckeho centra SUSE"
 #: ../html/src/manager/images/image-profiles.tsx:151
 #: ../html/src/manager/images/image-stores.tsx:151
 #: ../html/src/manager/images/image-view.tsx:375
-#: ../html/src/manager/notifications/notification-messages.tsx:451
+#: ../html/src/manager/notifications/notification-messages.tsx:455
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:242
 msgid "Refresh"
 msgstr "Obnoviť"
@@ -1499,7 +1499,7 @@ msgstr "Momentálne na serveri nie sú spustené žiadne úlohy."
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:262
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:110
-#: ../html/src/manager/notifications/notification-messages.tsx:575
+#: ../html/src/manager/notifications/notification-messages.tsx:579
 msgid "Session expired, please reload the page to see up-to-date data."
 msgstr ""
 "Sedenie vypršalo, prosím, znovu načítajte stránku, aby ste zobrazili "
@@ -1507,7 +1507,7 @@ msgstr ""
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:264
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:112
-#: ../html/src/manager/notifications/notification-messages.tsx:577
+#: ../html/src/manager/notifications/notification-messages.tsx:581
 #: ../html/src/utils/network.ts:103
 msgid "Server error, please check log files."
 msgstr "Chyba servera, prosím, skontrolujte súbory záznamov."
@@ -2737,7 +2737,7 @@ msgstr "žiadne kanály potomkov"
 #: ../html/src/manager/images/image-view-patches.tsx:79
 #: ../html/src/manager/images/image-view.tsx:642
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:105
-#: ../html/src/manager/notifications/notification-messages.tsx:513
+#: ../html/src/manager/notifications/notification-messages.tsx:517
 #: ../html/src/manager/state/highstate-summary.tsx:73
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:296
 msgid "Type"
@@ -4148,7 +4148,7 @@ msgid "Applying the packages states has been "
 msgstr "Použitie stavov balíkov bolo "
 
 #: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:22
-#: ../html/src/manager/notifications/notification-messages.tsx:519
+#: ../html/src/manager/notifications/notification-messages.tsx:523
 msgid "Summary"
 msgstr "Súhrn"
 
@@ -4248,93 +4248,98 @@ msgstr "Koniec životného cyklu"
 msgid "Subscription Warning"
 msgstr "Upozornenie na predplatné"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:148
+#: ../html/src/manager/notifications/notification-messages.tsx:61
+#, fuzzy
+msgid "Update Notification"
+msgstr "Vymazať oznámenie"
+
+#: ../html/src/manager/notifications/notification-messages.tsx:152
 msgid "Filter by type"
 msgstr "Filtrovať podľa typu"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:256
-#: ../html/src/manager/notifications/notification-messages.tsx:257
+#: ../html/src/manager/notifications/notification-messages.tsx:260
+#: ../html/src/manager/notifications/notification-messages.tsx:261
 msgid "Info"
 msgstr "Informácie"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:264
-#: ../html/src/manager/notifications/notification-messages.tsx:265
+#: ../html/src/manager/notifications/notification-messages.tsx:268
+#: ../html/src/manager/notifications/notification-messages.tsx:269
 msgid "Warning"
 msgstr "Varovanie"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:272
-#: ../html/src/manager/notifications/notification-messages.tsx:273
+#: ../html/src/manager/notifications/notification-messages.tsx:276
+#: ../html/src/manager/notifications/notification-messages.tsx:277
 msgid "Error"
 msgstr "Chyba"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:335
+#: ../html/src/manager/notifications/notification-messages.tsx:339
 msgid "show details"
 msgstr "zobraziť podrobnosti"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:384
+#: ../html/src/manager/notifications/notification-messages.tsx:388
 msgid "Retry onboarding"
 msgstr "Skúste znova začlenenie sa"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:394
+#: ../html/src/manager/notifications/notification-messages.tsx:398
 msgid "Retry repo sync"
 msgstr "Zopakovať synchronizáciu repozitárov"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:418
+#: ../html/src/manager/notifications/notification-messages.tsx:422
 msgid "Unread Messages"
 msgstr "Neprečítané správy"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:423
+#: ../html/src/manager/notifications/notification-messages.tsx:427
 msgid "All Messages"
 msgstr "Všetky správy"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:455
-#: ../html/src/manager/notifications/notification-messages.tsx:456
+#: ../html/src/manager/notifications/notification-messages.tsx:459
+#: ../html/src/manager/notifications/notification-messages.tsx:460
 msgid "Delete selected messages"
 msgstr "Vymazať vybraté správy"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:463
-#: ../html/src/manager/notifications/notification-messages.tsx:464
+#: ../html/src/manager/notifications/notification-messages.tsx:467
+#: ../html/src/manager/notifications/notification-messages.tsx:468
 msgid "Mark selected as read"
 msgstr "Označiť vybrané ako prečítané"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:481
-#: ../html/src/manager/notifications/notification-messages.tsx:563
+#: ../html/src/manager/notifications/notification-messages.tsx:485
+#: ../html/src/manager/notifications/notification-messages.tsx:567
 msgid "Notification Messages"
 msgstr "Správy s upozorneniami"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:486
+#: ../html/src/manager/notifications/notification-messages.tsx:490
 msgid "The server has collected the following notification messages."
 msgstr "Server zhromaždil nasledujúce správy s upozorneniami."
 
-#: ../html/src/manager/notifications/notification-messages.tsx:501
+#: ../html/src/manager/notifications/notification-messages.tsx:505
 msgid "Filter by summary"
 msgstr "Filtrovať podľa súhrnu"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:507
+#: ../html/src/manager/notifications/notification-messages.tsx:511
 msgid "Severity"
 msgstr "Závažnosť"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:525
+#: ../html/src/manager/notifications/notification-messages.tsx:529
 msgid "Created"
 msgstr "Vytvorené"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:530
+#: ../html/src/manager/notifications/notification-messages.tsx:534
 msgid "Action"
 msgstr "Akcia"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:536
+#: ../html/src/manager/notifications/notification-messages.tsx:540
 msgid "Read|Delete"
 msgstr "Čítať|Vymazať"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:545
+#: ../html/src/manager/notifications/notification-messages.tsx:549
 msgid "Flag as Unread"
 msgstr "Označiť ako neprečítané"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:545
+#: ../html/src/manager/notifications/notification-messages.tsx:549
 msgid "Flag as Read"
 msgstr "Označiť ako prečítané"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:551
+#: ../html/src/manager/notifications/notification-messages.tsx:555
 msgid "Delete Notification"
 msgstr "Vymazať oznámenie"
 

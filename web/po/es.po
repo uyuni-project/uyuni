@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-08 14:40+0200\n"
+"POT-Creation-Date: 2023-09-22 14:36+0200\n"
 "PO-Revision-Date: 2020-09-01 09:07+0000\n"
 "Last-Translator: Adolfo Jayme Barrientos <fitoschido@gmail.com>\n"
 "Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/web/es/>\n"
@@ -1203,7 +1203,7 @@ msgstr ""
 #: ../html/src/manager/images/image-profiles.tsx:151
 #: ../html/src/manager/images/image-stores.tsx:151
 #: ../html/src/manager/images/image-view.tsx:375
-#: ../html/src/manager/notifications/notification-messages.tsx:451
+#: ../html/src/manager/notifications/notification-messages.tsx:455
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:242
 msgid "Refresh"
 msgstr ""
@@ -1513,14 +1513,14 @@ msgstr "En este momento no hay ninguna tarea ejecutándose en el servidor."
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:262
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:110
-#: ../html/src/manager/notifications/notification-messages.tsx:575
+#: ../html/src/manager/notifications/notification-messages.tsx:579
 msgid "Session expired, please reload the page to see up-to-date data."
 msgstr ""
 "La sesión ha caducado. Vuelva a cargar la página para ver datos actualizados."
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:264
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:112
-#: ../html/src/manager/notifications/notification-messages.tsx:577
+#: ../html/src/manager/notifications/notification-messages.tsx:581
 #: ../html/src/utils/network.ts:103
 msgid "Server error, please check log files."
 msgstr "Se produjo un error en el servidor; revise los archivos de registro."
@@ -2744,7 +2744,7 @@ msgstr ""
 #: ../html/src/manager/images/image-view-patches.tsx:79
 #: ../html/src/manager/images/image-view.tsx:642
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:105
-#: ../html/src/manager/notifications/notification-messages.tsx:513
+#: ../html/src/manager/notifications/notification-messages.tsx:517
 #: ../html/src/manager/state/highstate-summary.tsx:73
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:296
 msgid "Type"
@@ -4156,7 +4156,7 @@ msgid "Applying the packages states has been "
 msgstr ""
 
 #: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:22
-#: ../html/src/manager/notifications/notification-messages.tsx:519
+#: ../html/src/manager/notifications/notification-messages.tsx:523
 msgid "Summary"
 msgstr ""
 
@@ -4254,95 +4254,100 @@ msgstr ""
 msgid "Subscription Warning"
 msgstr "Suscripciones"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:148
+#: ../html/src/manager/notifications/notification-messages.tsx:61
+#, fuzzy
+msgid "Update Notification"
+msgstr "Mensajes de notificación"
+
+#: ../html/src/manager/notifications/notification-messages.tsx:152
 #, fuzzy
 msgid "Filter by type"
 msgstr "Tipo de filtro"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:256
-#: ../html/src/manager/notifications/notification-messages.tsx:257
+#: ../html/src/manager/notifications/notification-messages.tsx:260
+#: ../html/src/manager/notifications/notification-messages.tsx:261
 msgid "Info"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:264
-#: ../html/src/manager/notifications/notification-messages.tsx:265
+#: ../html/src/manager/notifications/notification-messages.tsx:268
+#: ../html/src/manager/notifications/notification-messages.tsx:269
 msgid "Warning"
 msgstr "Alerta"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:272
-#: ../html/src/manager/notifications/notification-messages.tsx:273
+#: ../html/src/manager/notifications/notification-messages.tsx:276
+#: ../html/src/manager/notifications/notification-messages.tsx:277
 msgid "Error"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:335
+#: ../html/src/manager/notifications/notification-messages.tsx:339
 msgid "show details"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:384
+#: ../html/src/manager/notifications/notification-messages.tsx:388
 msgid "Retry onboarding"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:394
+#: ../html/src/manager/notifications/notification-messages.tsx:398
 msgid "Retry repo sync"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:418
+#: ../html/src/manager/notifications/notification-messages.tsx:422
 msgid "Unread Messages"
 msgstr "Mensajes no leídos"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:423
+#: ../html/src/manager/notifications/notification-messages.tsx:427
 msgid "All Messages"
 msgstr "Todos los mensajes"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:455
-#: ../html/src/manager/notifications/notification-messages.tsx:456
+#: ../html/src/manager/notifications/notification-messages.tsx:459
+#: ../html/src/manager/notifications/notification-messages.tsx:460
 msgid "Delete selected messages"
 msgstr "Eliminar mensajes seleccionados"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:463
-#: ../html/src/manager/notifications/notification-messages.tsx:464
+#: ../html/src/manager/notifications/notification-messages.tsx:467
+#: ../html/src/manager/notifications/notification-messages.tsx:468
 msgid "Mark selected as read"
 msgstr "Marcar seleccionados como leídos"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:481
-#: ../html/src/manager/notifications/notification-messages.tsx:563
+#: ../html/src/manager/notifications/notification-messages.tsx:485
+#: ../html/src/manager/notifications/notification-messages.tsx:567
 msgid "Notification Messages"
 msgstr "Mensajes de notificación"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:486
+#: ../html/src/manager/notifications/notification-messages.tsx:490
 msgid "The server has collected the following notification messages."
 msgstr "El servidor ha reunido los mensajes de notificación siguientes."
 
-#: ../html/src/manager/notifications/notification-messages.tsx:501
+#: ../html/src/manager/notifications/notification-messages.tsx:505
 #, fuzzy
 msgid "Filter by summary"
 msgstr "Filtrar por nombre de sistema"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:507
+#: ../html/src/manager/notifications/notification-messages.tsx:511
 msgid "Severity"
 msgstr "Gravedad"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:525
+#: ../html/src/manager/notifications/notification-messages.tsx:529
 msgid "Created"
 msgstr "Creación"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:530
+#: ../html/src/manager/notifications/notification-messages.tsx:534
 msgid "Action"
 msgstr "Acción"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:536
+#: ../html/src/manager/notifications/notification-messages.tsx:540
 msgid "Read|Delete"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:545
+#: ../html/src/manager/notifications/notification-messages.tsx:549
 msgid "Flag as Unread"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:545
+#: ../html/src/manager/notifications/notification-messages.tsx:549
 msgid "Flag as Read"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:551
+#: ../html/src/manager/notifications/notification-messages.tsx:555
 msgid "Delete Notification"
 msgstr ""
 
