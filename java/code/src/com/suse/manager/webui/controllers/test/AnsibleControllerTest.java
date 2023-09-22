@@ -18,10 +18,9 @@ package com.suse.manager.webui.controllers.test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+
 import com.suse.manager.webui.controllers.AnsibleController;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
+
 import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
@@ -36,27 +35,27 @@ public class AnsibleControllerTest extends BaseTestCaseWithUser {
      * Class used for test `testParseInventoryAndGetHostnames`
      */
     private class InventoryTestCase {
-        private String TestName;
-        private Map<String, Map<String, Object>> Inventory;
-        private Set<String> ExpectedResult;
+        private String testName;
+        private Map<String, Map<String, Object>> inventory;
+        private Set<String> expectedResult;
 
-        public InventoryTestCase(String TestName, Map<String, Map<String, Object>> Inventory, Set<String> ExpectedResult) {
-            this.TestName = TestName;
-            this.Inventory = Inventory;
-            this.ExpectedResult = ExpectedResult;
+        InventoryTestCase(String testNameIn, Map<String, Map<String, Object>> inventoryIn,
+                                 Set<String> expectedResultIn) {
+            testName = testNameIn;
+            inventory = inventoryIn;
+            expectedResult = expectedResultIn;
         }
 
-
         public String getTestName() {
-            return TestName;
+            return testName;
         }
 
         public Map<String, Map<String, Object>> getInventory() {
-            return Inventory;
+            return inventory;
         }
 
         public Set<String> getExpectedResult() {
-            return ExpectedResult;
+            return expectedResult;
         }
     }
 
