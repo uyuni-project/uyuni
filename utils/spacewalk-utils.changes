@@ -1,8 +1,14 @@
-- Drop Python2 compatibility
-- Add RHEL 7, 8, 9 pool and tools channels
-- Add openSUSE Leap Micro 5.4 repositories
-- Add SLE Micro 5.4 Uyuni Client Tools repositories
-- spacewalk-hostname-rename remains stuck at refreshing pillars (bsc#1207550)
+-------------------------------------------------------------------
+Mon Sep 18 14:36:37 CEST 2023 - rosuna@suse.com
+
+- version 4.4.8-1
+  * Add missing Debian 10 and 11 backports repositories for spacewalk-common-channels
+  * Add openSUSE Leap 15.5 common channels
+  * Drop Python2 compatibility
+  * Add RHEL 7, 8, 9 pool and tools channels
+  * Add openSUSE Leap Micro 5.4 repositories
+  * Add SLE Micro 5.4 Uyuni Client Tools repositories
+  * spacewalk-hostname-rename remains stuck at refreshing pillars (bsc#1207550)
 
 -------------------------------------------------------------------
 Wed Apr 19 12:58:26 CEST 2023 - marina.latini@suse.com

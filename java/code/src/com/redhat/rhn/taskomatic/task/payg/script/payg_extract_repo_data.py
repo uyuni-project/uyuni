@@ -50,12 +50,12 @@ def is_payg_instance():
                         "For a correct PAYG detection please install the 'python-instance-billing-flavor-check' package"])
 
     try:
-        result = subprocess.run(flavor_check, check=False, stdout=subprocess.PIPE, universal_newlines=True).stdout.strip()
+        result = subprocess.call(flavor_check, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     except subprocess.CalledProcessError as e:
         system_exit(1, ["Failed to execute instance-flavor-check tool.", e])
 
-    return result == "PAYG"
-
+    # instance-flavor-check return 10 for PAYG. Other possible values are 11 -> BYOS and 12 -> Unknown
+    return result == 10
 
 
 SuseCloudInfo = namedtuple('SuseCloudInfo', ['header_auth', 'hostname'])

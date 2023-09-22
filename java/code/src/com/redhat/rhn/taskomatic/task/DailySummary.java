@@ -24,6 +24,7 @@ import com.redhat.rhn.domain.notification.NotificationMessage;
 import com.redhat.rhn.domain.notification.UserNotificationFactory;
 import com.redhat.rhn.domain.notification.types.EndOfLifePeriod;
 import com.redhat.rhn.domain.notification.types.SubscriptionWarning;
+import com.redhat.rhn.domain.notification.types.UpdateAvailable;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.frontend.dto.ActionMessage;
@@ -85,6 +86,7 @@ public class DailySummary extends RhnJavaJob {
     @Override
     public void execute(JobExecutionContext ctxIn) {
 
+        processUpdateAvailableNotification();
         processEndOfLifeNotification();
         processSubscriptionWarningNotification();
 
@@ -136,6 +138,16 @@ public class DailySummary extends RhnJavaJob {
                     UserNotificationFactory.createNotificationMessage(new SubscriptionWarning());
             UserNotificationFactory.storeNotificationMessageFor(notificationMessage,
                     Collections.singleton(RoleFactory.ORG_ADMIN), Optional.empty());
+        }
+    }
+
+    private void  processUpdateAvailableNotification() {
+        UpdateAvailable uan = new UpdateAvailable(Runtime.getRuntime());
+        if (uan.updateAvailable()) {
+            NotificationMessage notificationMessage =
+                    UserNotificationFactory.createNotificationMessage(uan);
+            UserNotificationFactory.storeNotificationMessageFor(notificationMessage,
+                    Collections.singleton(RoleFactory.SAT_ADMIN), Optional.empty());
         }
     }
 

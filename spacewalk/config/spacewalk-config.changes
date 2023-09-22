@@ -1,5 +1,11 @@
-- Add /saltboot directory
-- Mark /os-images and /tftp as static content
+-------------------------------------------------------------------
+Mon Sep 18 14:29:42 CEST 2023 - rosuna@suse.com
+
+- version 4.4.3-1
+  * allow calling instance-flavor-check via sudo
+  * drop gpg keyrings and certificates to connect to redhat cdn
+  * Add /saltboot directory
+  * Mark /os-images and /tftp as static content
 
 -------------------------------------------------------------------
 Wed Dec 14 14:14:18 CET 2022 - jgonzalez@suse.com

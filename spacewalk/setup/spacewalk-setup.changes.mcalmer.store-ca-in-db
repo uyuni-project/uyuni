@@ -1,1 +1,0 @@
-- remove storing CA in DB directly as it is now part of mgr-ssl-cert-setup (bsc#1212856)

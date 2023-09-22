@@ -1,5 +1,19 @@
-- Only show missing /root/.curlrc error with log_level = 5 (bsc#1212507)
-- Make spacewalk-data-fsck compatible to Enterprise Linux rpm version.
+-------------------------------------------------------------------
+Mon Sep 18 14:26:50 CEST 2023 - rosuna@suse.com
+
+- version 4.4.11-1
+  * Use a constant to get the product name in python code rather than reading rhn.conf (bsc#1212943)
+  * add hint about missing auth header for PAYG instances (bsc#1213445)
+  * rhn-ssl-dbstore read ca from STDIN (bsc#1212856)
+  * Add cobbler collections to supportconfig
+  * Fix spacewalk-data-fsck src.rpm handling
+  * Accept missing rhn.conf file
+  * use credentials file for reposync if password is in URL
+  * Use context manager for Apache Webserver details.
+  * drop never used activation tool to connect to redhat cdn
+  * implement new RHUI support in reposync
+  * Only show missing /root/.curlrc error with log_level = 5 (bsc#1212507)
+  * Make spacewalk-data-fsck compatible to Enterprise Linux rpm version.
 
 -------------------------------------------------------------------
 Wed Apr 19 12:51:32 CEST 2023 - marina.latini@suse.com

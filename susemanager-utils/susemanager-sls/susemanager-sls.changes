@@ -1,13 +1,24 @@
-- Prevent product installation from being executed before executing product migration (bsc#1210475)
-- Include automatic migration from Salt 3000 to Salt Bundle in highstate
-- fix duplicate packages in state
-- Fix enabling bundle build via custom info
-- Rename internal state 'synccustomall' to 'syncall'
-- Recurring custom states
-- Do not include pillar_only formulas in highstate
-- Allow KiwiNG to be used on SLE12 buildhosts (bsc#1204089)
-- Add kiwi supported disk images to be collectable (bsc#1208522)
-- disable salt-minion and remove its config file on cleanup (bsc#1209277)
+-------------------------------------------------------------------
+Mon Sep 18 14:41:33 CEST 2023 - rosuna@suse.com
+
+- version 4.4.8-1
+  * Integrate instance-flavor-check to detect if the instance is PAYG
+  * do not disable salt-minion on salt-ssh managed clients
+  * Mask uyuni roster module password on logs
+  * Don't install product packages on openSUSE clients
+  * keep original traditional stack tools for RHEL7 RHUI connection
+  * Retry loading of pillars from DB on connection error
+  * Use recurse stratedy to merge formula pillar with existing pillars
+  * Prevent product installation from being executed before executing product migration (bsc#1210475)
+  * Include automatic migration from Salt 3000 to Salt Bundle in highstate
+  * fix duplicate packages in state
+  * Fix enabling bundle build via custom info
+  * Rename internal state 'synccustomall' to 'syncall'
+  * Recurring custom states
+  * Do not include pillar_only formulas in highstate
+  * Allow KiwiNG to be used on SLE12 buildhosts (bsc#1204089)
+  * Add kiwi supported disk images to be collectable (bsc#1208522)
+  * disable salt-minion and remove its config file on cleanup (bsc#1209277)
 
 -------------------------------------------------------------------
 Wed Apr 19 12:56:27 CEST 2023 - marina.latini@suse.com

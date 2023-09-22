@@ -1,2 +1,0 @@
-- drop spacewalk-setup-sudoers which does only cleanups which should be
-  applied already since several years. The functionality is obsolete

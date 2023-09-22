@@ -1,1 +1,0 @@
-- Make mgr-salt-ssh to properly fix HOME environment to avoid issues with gitfs (bsc#1210994)

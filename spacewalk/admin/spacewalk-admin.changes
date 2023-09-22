@@ -1,5 +1,14 @@
-- Fix to detect correct Apache group instead of assuming it (gh#7092).
-- Added missing python3-websockify runtime requirement.
+-------------------------------------------------------------------
+Mon Sep 18 14:25:35 CEST 2023 - rosuna@suse.com
+
+- version 4.4.6-1
+  * add mgr-check-payg service
+  * remove python2 leftovers
+  * integrate instance-flavor-check to detect if the instance is PAYG
+  * add checks for csp-billing-adapter in case of a PAYG instance
+  * remove unused GPG keyfile
+  * Fix to detect correct Apache group instead of assuming it (gh#7092)
+  * Added missing python3-websockify runtime requirement.
 
 -------------------------------------------------------------------
 Wed Apr 19 12:50:23 CEST 2023 - marina.latini@suse.com

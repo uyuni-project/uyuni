@@ -42,7 +42,7 @@
 Summary:        Python libraries for the Spacewalk project
 License:        GPL-2.0-only
 Name:           rhnlib
-Version:        4.4.3
+Version:        4.4.4
 Release:        1
 %if "%{_vendor}" == "debbuild"
 Group:          python

@@ -1,4 +1,9 @@
-- Integrate the containerized proxy into the usual rel-eng workflow
+-------------------------------------------------------------------
+Mon Sep 18 16:57:58 CEST 2023 - rosuna@suse.com
+
+- version 4.4.1
+  * Adapt to openSUSE Leap 15.5
+  * Integrate the containerized proxy into the usual rel-eng workflow
 
 -------------------------------------------------------------------
 Tue Feb 21 13:16:02 UTC 2023 - Julio González Gil <jgonzalez@suse.com>
