@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Fri Sep 22 08:37:53 CEST 2023 - rosuna@suse.com
+
+- version 4.3.64-1
+  * Fix token issue with cloned deb channels (bsc#1214982)
+  * Fix PAYG credentials extraction for SLES 12 clients (bsc#1215352)
+  * Improved detection of the best authentication for accessing a
+    repository in case of PAYG credentials (bsc#1215362)
+  * Do not warn about missing Client Tools Channel subscription in a
+    PAYG environment
+
+-------------------------------------------------------------------
 Mon Sep 04 10:02:24 CEST 2023 - marina.latini@suse.com
 
 - version 4.3.63-1

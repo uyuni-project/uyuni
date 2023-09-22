@@ -15,6 +15,7 @@
 package com.redhat.rhn.manager.content.test;
 
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
@@ -23,7 +24,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
-
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
@@ -54,6 +54,7 @@ import com.redhat.rhn.domain.scc.SCCCachingFactory;
 import com.redhat.rhn.domain.scc.SCCOrderItem;
 import com.redhat.rhn.domain.scc.SCCRepository;
 import com.redhat.rhn.domain.scc.SCCRepositoryAuth;
+import com.redhat.rhn.domain.scc.SCCRepositoryBasicAuth;
 import com.redhat.rhn.domain.scc.SCCRepositoryCloudRmtAuth;
 import com.redhat.rhn.domain.scc.SCCRepositoryTokenAuth;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -1240,41 +1241,14 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testSwitchFromCloudRmtToScc() throws Exception {
-        Credentials credentials = CredentialsFactory.createCloudRmtCredentials();
-        credentials.setPassword("dummy");
-        credentials.setUrl("dummy");
-        credentials.setUsername("dummy");
-        credentials.setUser(user);
-        CredentialsFactory.storeCredentials(credentials);
+        Credentials credentials = createCloudCredentials("dummy");
 
         // Create Repositories
-        SCCRepository repo = new SCCRepository();
-        repo.setAutorefresh(false);
-        repo.setDescription("SLE-Product-SLES15-Pool for sle-15-x86_64");
-        repo.setName("SLE-Product-SLES15-Pool");
-        repo.setDistroTarget("sle-15-x86_64");
-        repo.setSccId(2707L);
-        repo.setUrl("https://updates.suse.com/SUSE/Products/SLE-Product-SLES/15/x86_64/product");
-        SCCCachingFactory.saveRepository(repo);
+        SCCRepository repo = createRepo(2707L, "SLE-Product-SLES15-Pool", "sle-15-x86_64");
+        createRepoAuth(credentials, repo);
 
-        SCCRepositoryCloudRmtAuth authRepo1 = new SCCRepositoryCloudRmtAuth();
-        authRepo1.setRepo(repo);
-        authRepo1.setCredentials(credentials);
-        SCCCachingFactory.saveRepositoryAuth(authRepo1);
-
-        SCCRepository repo2 = new SCCRepository();
-        repo2.setAutorefresh(true);
-        repo2.setDescription("SLE-Product-SLES15-Updates for sle-15-x86_64");
-        repo2.setName("SLE-Product-SLES15-Updates");
-        repo2.setDistroTarget("sle-15-x86_64");
-        repo2.setSccId(2705L);
-        repo2.setUrl("https://updates.suse.com/SUSE/Updates/SLE-Product-SLES/15/x86_64/update/");
-        SCCCachingFactory.saveRepository(repo2);
-
-        SCCRepositoryCloudRmtAuth authRepo2 = new SCCRepositoryCloudRmtAuth();
-        authRepo2.setRepo(repo2);
-        authRepo2.setCredentials(credentials);
-        SCCCachingFactory.saveRepositoryAuth(authRepo2);
+        SCCRepository repo2 = createRepo(2705L, "SLE-Product-SLES15-Updates", "sle-15-x86_64");
+        createRepoAuth(credentials, repo2);
 
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
@@ -1295,22 +1269,10 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         assertEquals(upRepo.getBestAuth().get().getOptionalCredentials().get().getType().getLabel(),
                 Credentials.TYPE_CLOUD_RMT);
 
-        Credentials credentialsScc = CredentialsFactory.createSCCCredentials();
-        credentialsScc.setPassword("dummy2");
-        credentialsScc.setUrl("dummy");
-        credentialsScc.setUsername("dummy");
-        credentialsScc.setUser(user);
-        CredentialsFactory.storeCredentials(credentialsScc);
+        Credentials credentialsScc = createSccCredentials("dummy");
 
-        SCCRepositoryTokenAuth authRepo1Scc = new SCCRepositoryTokenAuth();
-        authRepo1Scc.setRepo(repo);
-        authRepo1Scc.setCredentials(credentialsScc);
-        SCCCachingFactory.saveRepositoryAuth(authRepo1Scc);
-
-        SCCRepositoryTokenAuth authRepo2Scc = new SCCRepositoryTokenAuth();
-        authRepo2Scc.setRepo(repo2);
-        authRepo2Scc.setCredentials(credentialsScc);
-        SCCCachingFactory.saveRepositoryAuth(authRepo2Scc);
+        SCCRepositoryAuth authRepo1Scc = createRepoAuth(credentialsScc, repo);
+        SCCRepositoryAuth authRepo2Scc = createRepoAuth(credentialsScc, repo2);
 
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
@@ -1329,6 +1291,183 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         assertTrue(upRepo.getBestAuth().get() instanceof SCCRepositoryTokenAuth, "Best Auth is not token auth");
         assertEquals(upRepo.getBestAuth().get().getOptionalCredentials().get().getType().getLabel(),
                 Credentials.TYPE_SCC);
+    }
+
+    /**
+     * Test 2 Credentials giving access to the same repo and switching "best auth"
+     * @throws Exception if anything goes wrong
+     */
+    @Test
+    public void testMultipleCloudRMTCredentials() throws Exception {
+        // Create Repositories
+        SCCRepository sle15Pool = createRepo(2707L, "SLE-Product-SLES15-Pool", "sle-15-x86_64");
+        SCCRepository sle15Updates = createRepo(2705L, "SLE-Product-SLES15-Updates", "sle-15-x86_64");
+
+        SCCRepository sle12Pool = createRepo(2703L, "SLE-Product-SLES12-Pool", "sle-12-x86_64");
+        SCCRepository sle12Updates = createRepo(2701L, "SLE-Product-SLES12-Updates", "sle-12-x86_64");
+
+        // First RMT Credentials: gives access to SLE-Product-SLES15-Pool and SLE-Product-SLES15-Updates
+        Credentials cloudCred1 = createCloudCredentials("cloudCred1");
+
+        SCCRepositoryAuth authRepo1 = createRepoAuth(cloudCred1, sle15Pool);
+        createRepoAuth(cloudCred1, sle15Updates);
+
+        // Second RMT Credentials: gives access to SLE-Product-SLES12-Pool and SLE-Product-SLES12-Updates but it's
+        // invalid
+        Credentials cloudCred2 = createCloudCredentials("cloudCred2");
+        cloudCred2.invalidate();
+        CredentialsFactory.storeCredentials(cloudCred2);
+
+        createRepoAuth(cloudCred2, sle12Pool);
+        SCCRepositoryAuth authRepo4 = createRepoAuth(cloudCred2, sle12Updates);
+
+        // Third RMT Credentials: gives access to SLE-Product-SLES15-Pool and SLE-Product-SLES12-Pool
+        Credentials cloudCred3 = createCloudCredentials("cloudCred3");
+        CredentialsFactory.storeCredentials(cloudCred3);
+
+        createRepoAuth(cloudCred3, sle15Pool);
+        SCCRepositoryAuth authRepo5 = createRepoAuth(cloudCred3, sle12Pool);
+
+        // SCC Repository: gives access to SLE-Product-SLES15-Updates
+        Credentials sccCred1 = createSccCredentials("sccCred1");
+
+        SCCRepositoryAuth authRepo6 = createRepoAuth(sccCred1, sle15Updates);
+
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        // Using assertAll to test all repo independently
+        assertAll(
+            () -> {
+                // SLE-Product-SLES15-Pool -> should be cloud rmt 1
+                Optional<SCCRepository> upRepoOpt = SCCCachingFactory.lookupRepositoryBySccId(2707L);
+                assertTrue(upRepoOpt.isPresent(), "SLE-Product-SLES15-Pool Repo not found");
+                assertTrue(upRepoOpt.get().getBestAuth().isPresent(), "No best auth found for SLE-Product-SLES15-Pool");
+
+                SCCRepositoryAuth bestRepoAuth = upRepoOpt.get().getBestAuth().get();
+                assertTrue(bestRepoAuth instanceof SCCRepositoryCloudRmtAuth,
+                    "Best Auth is not cloud rmt auth for SLE-Product-SLES15-Pool");
+                assertTrue(bestRepoAuth.getOptionalCredentials().isPresent(),
+                    "No credentials for auth for SLE-Product-SLES15-Pool");
+                Credentials bestCred = bestRepoAuth.getOptionalCredentials().get();
+                assertEquals(Credentials.TYPE_CLOUD_RMT, bestCred.getType().getLabel());
+                assertEquals(authRepo1.getOptionalCredentials().get().getUsername(),
+                bestRepoAuth.getOptionalCredentials().get().getUsername(),
+                    "Wrong credentials for SLE-Product-SLES15-Pool");
+                assertEquals(authRepo1.getId(), bestRepoAuth.getId(),
+                    "Auth Id do not match for SLE-Product-SLES15-Pool");
+            },
+            () -> {
+                // SLE-Product-SLES15-Updates -> Should be scc
+                Optional<SCCRepository> upRepoOpt = SCCCachingFactory.lookupRepositoryBySccId(2705L);
+                assertTrue(upRepoOpt.isPresent(), "SLE-Product-SLES15-Updates Repo not found");
+                assertTrue(upRepoOpt.get().getBestAuth().isPresent(),
+                    "No best auth found for SLE-Product-SLES15-Updates");
+
+                SCCRepositoryAuth bestRepoAuth = upRepoOpt.get().getBestAuth().get();
+                assertTrue(bestRepoAuth instanceof SCCRepositoryTokenAuth,
+                    "Best Auth is not token auth for SLE-Product-SLES15-Updates");
+                assertTrue(bestRepoAuth.getOptionalCredentials().isPresent(),
+                    "No credentials for auth for SLE-Product-SLES15-Updates");
+                Credentials bestCred = bestRepoAuth.getOptionalCredentials().get();
+                assertEquals(Credentials.TYPE_SCC, bestCred.getType().getLabel());
+                assertEquals(authRepo6.getOptionalCredentials().get().getUsername(),
+                    bestRepoAuth.getOptionalCredentials().get().getUsername(),
+                    "Wrong credentials for SLE-Product-SLES15-Updates");
+                assertEquals(authRepo6.getId(), bestRepoAuth.getId(),
+                    "Auth Id do not match for SLE-Product-SLES15-Updates");
+            },
+            () -> {
+                // SLE-Product-SLES12-Pool -> Should be cloud rmt 3
+                Optional<SCCRepository> upRepoOpt = SCCCachingFactory.lookupRepositoryBySccId(2703L);
+                assertTrue(upRepoOpt.isPresent(), "SLE-Product-SLES12-Pool Repo not found");
+                assertTrue(upRepoOpt.get().getBestAuth().isPresent(), "No best auth found for SLE-Product-SLES12-Pool");
+
+                SCCRepositoryAuth bestRepoAuth = upRepoOpt.get().getBestAuth().get();
+                assertTrue(bestRepoAuth instanceof SCCRepositoryCloudRmtAuth,
+                    "Best Auth is not cloud rmt auth for SLE-Product-SLES12-Pool");
+                assertTrue(bestRepoAuth.getOptionalCredentials().isPresent(),
+                    "No credentials for auth for SLE-Product-SLES12-Pool");
+                Credentials bestCred = bestRepoAuth.getOptionalCredentials().get();
+                assertEquals(Credentials.TYPE_CLOUD_RMT, bestCred.getType().getLabel());
+                assertEquals(authRepo5.getOptionalCredentials().get().getUsername(),
+                    bestRepoAuth.getOptionalCredentials().get().getUsername(),
+                    "Wrong credentials for SLE-Product-SLES12-Pool");
+                assertEquals(authRepo5.getId(), bestRepoAuth.getId(),
+                    "Auth Id do not match for SLE-Product-SLES12-Pool");
+            },
+            () -> {
+                // SLE-Product-SLES12-Updated -> Should be cloud rmt 2 even if invalid
+                Optional<SCCRepository> upRepoOpt = SCCCachingFactory.lookupRepositoryBySccId(2701L);
+                assertTrue(upRepoOpt.isPresent(), "SLE-Product-SLES12-Update Repo not found");
+                assertTrue(upRepoOpt.get().getBestAuth().isPresent(),
+                    "No best auth found for SLE-Product-SLES12-Update");
+
+                SCCRepositoryAuth bestRepoAuth = upRepoOpt.get().getBestAuth().get();
+                assertTrue(bestRepoAuth instanceof SCCRepositoryCloudRmtAuth,
+                    "Best Auth is not cloud rmt auth for SLE-Product-SLES12-Update");
+                assertTrue(bestRepoAuth.getOptionalCredentials().isPresent(),
+                    "No credentials for auth for SLE-Product-SLES12-Update");
+                Credentials bestCred = bestRepoAuth.getOptionalCredentials().get();
+                assertEquals(Credentials.TYPE_CLOUD_RMT, bestCred.getType().getLabel());
+                assertEquals(authRepo4.getOptionalCredentials().get().getUsername(),
+                    bestRepoAuth.getOptionalCredentials().get().getUsername(),
+                    "Wrong credentials for SLE-Product-SLES12-Update");
+                assertEquals(authRepo4.getId(), bestRepoAuth.getId(),
+                    "Auth Id do not match for SLE-Product-SLES12-Update");
+            }
+        );
+    }
+
+
+    private static SCCRepositoryAuth createRepoAuth(Credentials cred, SCCRepository repo) {
+        SCCRepositoryAuth authRepo;
+        if (cred.isTypeOf(Credentials.TYPE_CLOUD_RMT)) {
+            authRepo = new SCCRepositoryCloudRmtAuth();
+        }
+        else if (cred.isTypeOf(Credentials.TYPE_SCC)) {
+            authRepo = new SCCRepositoryTokenAuth();
+        }
+        else {
+            authRepo = new SCCRepositoryBasicAuth();
+        }
+
+        authRepo.setRepo(repo);
+        authRepo.setCredentials(cred);
+        SCCCachingFactory.saveRepositoryAuth(authRepo);
+        return authRepo;
+    }
+
+    private Credentials createSccCredentials(String username) {
+        Credentials sccCred1 = CredentialsFactory.createSCCCredentials();
+        sccCred1.setPassword("dummy");
+        sccCred1.setUrl("dummy");
+        sccCred1.setUsername(username);
+        sccCred1.setUser(user);
+        CredentialsFactory.storeCredentials(sccCred1);
+        return sccCred1;
+    }
+
+    private Credentials createCloudCredentials(String username) {
+        Credentials cloudCred1 = CredentialsFactory.createCloudRmtCredentials();
+        cloudCred1.setPassword("dummy");
+        cloudCred1.setUrl("dummy");
+        cloudCred1.setUsername(username);
+        cloudCred1.setUser(user);
+        CredentialsFactory.storeCredentials(cloudCred1);
+        return cloudCred1;
+    }
+
+    private static SCCRepository createRepo(long sccId, String name, String target) {
+        SCCRepository repository = new SCCRepository();
+        repository.setAutorefresh(false);
+        repository.setDescription(name + " for " + target);
+        repository.setName(name);
+        repository.setDistroTarget(target);
+        repository.setSccId(sccId);
+        repository.setUrl("https://updates.suse.com/dummy/" + name);
+        SCCCachingFactory.saveRepository(repository);
+        return repository;
     }
 
     /**
