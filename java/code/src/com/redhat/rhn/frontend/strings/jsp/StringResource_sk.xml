@@ -1647,14 +1647,14 @@
       </trans-unit>
       <trans-unit id="footer.jsp.privacyStatement" xml:space="preserve">
         <source>Privacy statement</source>
-        <target/>
+        <target>Vyhlásenie o ochrane osobných údajov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/footer.jsp</context>
         </context-group>
       </trans-unit>
       <trans-unit id="footer.jsp.release" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ release &lt;a href="{0}" target="_blank"&gt;{1}&lt;/a&gt;</source>
-        <target/>
+        <target>Vydanie @@PRODUCT_NAME@@ &lt;a href="{0}" target="_blank"&gt;{1}&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/footer.jsp</context>
           <context context-type="paramnotes">
@@ -1665,14 +1665,14 @@
       <!-- legends -->
       <trans-unit id="errata-legend.jsp.title" xml:space="preserve">
         <source>Patches Legend</source>
-        <target/>
+        <target>Legenda opráv</target>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/legends/errata-legend.jsp</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata-legend.jsp.security" xml:space="preserve">
         <source>Security</source>
-        <target/>
+        <target>Bezpečnosť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/legends/errata-legend.jsp</context>
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
@@ -1681,7 +1681,7 @@
       </trans-unit>
       <trans-unit id="errata-legend.jsp.bugfix" xml:space="preserve">
         <source>Bug Fix</source>
-        <target/>
+        <target>Oprava chyby</target>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/legends/errata-legend.jsp</context>
           <context context-type="sourcefile">/rhn/errata/details/Details.do</context>
@@ -1689,7 +1689,7 @@
       </trans-unit>
       <trans-unit id="errata-legend.jsp.enhancement" xml:space="preserve">
         <source>Enhancement</source>
-        <target/>
+        <target>Vylepšenie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/legends/errata-legend.jsp</context>
           <context context-type="sourcefile">/rhn/errata/details/Details.do</context>
@@ -1697,28 +1697,28 @@
       </trans-unit>
       <trans-unit id="system-legend.jsp.title" xml:space="preserve">
         <source>System Legend</source>
-        <target/>
+        <target>Systémová legenda</target>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/legends/system-legend.jsp</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system-legend.jsp.fully" xml:space="preserve">
         <source>OK</source>
-        <target/>
+        <target>OK</target>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/legends/system-legend.jsp</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system-legend.jsp.critical" xml:space="preserve">
         <source>Critical</source>
-        <target/>
+        <target>Kritické</target>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/legends/system-legend.jsp</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system-legend.jsp.updates" xml:space="preserve">
         <source>Warning</source>
-        <target/>
+        <target>Varovanie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/legends/system-legend.jsp</context>
         </context-group>
