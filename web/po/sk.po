@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-09-22 14:36+0200\n"
-"PO-Revision-Date: 2023-09-10 14:15+0000\n"
+"PO-Revision-Date: 2023-09-23 17:15+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -4249,9 +4249,8 @@ msgid "Subscription Warning"
 msgstr "Upozornenie na predplatné"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:61
-#, fuzzy
 msgid "Update Notification"
-msgstr "Vymazať oznámenie"
+msgstr "Upozornenie na aktualizáciu"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:152
 msgid "Filter by type"
