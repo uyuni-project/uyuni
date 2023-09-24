@@ -60,7 +60,7 @@ public abstract class BaseMailAction {
             Class<? extends Mail> cobj = Class.forName(clazz).asSubclass(Mail.class);
             return cobj.getDeclaredConstructor().newInstance();
         }
-        catch (Throwable e) {
+        catch (Exception | LinkageError e) {
             getLogger().error("An exception was thrown while initializing custom mailer class", e);
             return new SmtpMail();
         }
