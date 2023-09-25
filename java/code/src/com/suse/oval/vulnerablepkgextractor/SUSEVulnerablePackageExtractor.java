@@ -175,7 +175,7 @@ public class SUSEVulnerablePackageExtractor extends CriteriaTreeBasedExtractor {
 
     private Cpe deriveCpe(TestType productTest) {
         OsFamily osProduct = definition.getOsFamily();
-        if (osProduct == OsFamily.openSUSE_LEAP) {
+        if (osProduct == OsFamily.LEAP) {
             return deriveOpenSUSELeapCpe();
         }
         else {
@@ -234,7 +234,7 @@ public class SUSEVulnerablePackageExtractor extends CriteriaTreeBasedExtractor {
         super.assertDefinitionIsValid(definitionIn);
 
         OsFamily osFamily = definitionIn.getOsFamily();
-        assert osFamily == OsFamily.openSUSE_LEAP ||
+        assert osFamily == OsFamily.LEAP ||
                 osFamily == OsFamily.SUSE_LINUX_ENTERPRISE_SERVER ||
                 osFamily == OsFamily.SUSE_LINUX_ENTERPRISE_DESKTOP;
 

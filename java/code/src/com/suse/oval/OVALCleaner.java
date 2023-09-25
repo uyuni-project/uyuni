@@ -59,7 +59,7 @@ public class OVALCleaner {
         }
 
         if (osFamily == OsFamily.DEBIAN || osFamily == OsFamily.SUSE_LINUX_ENTERPRISE_SERVER ||
-                osFamily == OsFamily.SUSE_LINUX_ENTERPRISE_DESKTOP || osFamily == OsFamily.openSUSE_LEAP) {
+                osFamily == OsFamily.SUSE_LINUX_ENTERPRISE_DESKTOP || osFamily == OsFamily.LEAP) {
             // For the above OS families, we only need OVAL vulnerability definitions
             root.getDefinitions().removeIf(def -> def.getDefinitionClass() != DefinitionClassEnum.VULNERABILITY);
         }
@@ -86,7 +86,7 @@ public class OVALCleaner {
     private static void fillCves(DefinitionType definition, OsFamily osFamily) {
         switch (osFamily) {
             case REDHAT_ENTERPRISE_LINUX:
-            case openSUSE_LEAP:
+            case LEAP:
             case SUSE_LINUX_ENTERPRISE_SERVER:
             case SUSE_LINUX_ENTERPRISE_DESKTOP:
                 List<String> cves =
