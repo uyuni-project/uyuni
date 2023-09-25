@@ -1725,70 +1725,70 @@
       </trans-unit>
       <trans-unit id="system-legend.jsp.locked" xml:space="preserve">
         <source>Locked</source>
-        <target/>
+        <target>Zamknuté</target>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/legends/system-legend.jsp</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system-legend.jsp.kickstarting" xml:space="preserve">
         <source>Autoinstalling</source>
-        <target/>
+        <target>Automatické inštalovanie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/legends/system-legend.jsp</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system-legend.jsp.pending" xml:space="preserve">
         <source>Pending Actions</source>
-        <target/>
+        <target>Čakajúce akcie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/legends/system-legend.jsp</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system-legend.jsp.notcheckingin" xml:space="preserve">
         <source>Unknown</source>
-        <target/>
+        <target>Neznáme</target>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/legends/system-legend.jsp</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system-legend.jsp.unentitled" xml:space="preserve">
         <source>No System Types</source>
-        <target/>
+        <target>Žiadne typy systémov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/legends/system-legend.jsp</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system-legend.jsp.monitoring" xml:space="preserve">
         <source>Monitoring Status</source>
-        <target/>
+        <target>Stav monitorovania</target>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/legends/system-legend.jsp</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system-group-legend.jsp.title" xml:space="preserve">
         <source>System Group Legend</source>
-        <target/>
+        <target>Legenda systémových skupín</target>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/legends/system-group-legend.jsp</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system-group-legend.jsp.fully" xml:space="preserve">
         <source>OK</source>
-        <target/>
+        <target>OK</target>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/legends/system-group-legend.jsp</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system-group-legend.jsp.critical" xml:space="preserve">
         <source>Critical</source>
-        <target/>
+        <target>Kritické</target>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/legends/system-group-legend.jsp</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system-group-legend.jsp.updates" xml:space="preserve">
         <source>Warning</source>
-        <target/>
+        <target>Varovanie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/legends/system-group-legend.jsp</context>
         </context-group>
