@@ -40,7 +40,7 @@ public class VulnerablePackagesExtractors {
     public static VulnerablePackagesExtractor create(DefinitionType definition, OsFamily osFamily,
                                                      OVALLookupHelper ovalLookupHelper) {
         switch (osFamily) {
-            case openSUSE_LEAP:
+            case LEAP:
             case SUSE_LINUX_ENTERPRISE_SERVER:
             case SUSE_LINUX_ENTERPRISE_DESKTOP:
                 return new SUSEVulnerablePackageExtractor(definition, ovalLookupHelper);
