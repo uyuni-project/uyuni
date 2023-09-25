@@ -78,13 +78,25 @@ public class SCCRepositoryCloudRmtAuth extends SCCRepositoryAuth {
             String newQuery = StringUtils.join(sourceParams, "&");
 
             URI newURI = new URI(credUrl.getScheme(), url.getUserInfo(), credUrl.getHost(), credUrl.getPort(),
-                    credUrl.getPath() + url.getPath(), newQuery, credUrl.getFragment());
+                    mergeUrls(credUrl, url), newQuery, credUrl.getFragment());
             return newURI.toString();
         }
         catch (URISyntaxException ex) {
             log.error("Unable to parse URL: {}", getUrl());
         }
         return null;
+    }
+
+    private static String mergeUrls(URI credentialUrl, URI repositoryUrl) {
+        // If the paths start in the same way we have a clashing folder to remove.
+        // This happens when the credential url is https://host/repo/ and the repo path is /repo/whatever/dir/
+        // We DON'T want to end up with https://host/repo/repo/whatever/dir/
+        if (repositoryUrl.getPath().startsWith(credentialUrl.getPath())) {
+            return credentialUrl.resolve(repositoryUrl.getPath()).getPath();
+        }
+
+        // Otherwise Just combine the two paths
+        return credentialUrl.getPath() + repositoryUrl.getPath();
     }
 
     @Override
