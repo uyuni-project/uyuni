@@ -24,7 +24,6 @@ import com.suse.manager.webui.controllers.AnsibleController;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -64,96 +63,88 @@ public class AnsibleControllerTest extends BaseTestCaseWithUser {
      * @return some testing Ansible inventories to test `AnsibleController.parseInventoryAndGetHostnames`
      */
     private List<InventoryTestCase> getTestInventories() {
-        return new LinkedList<>() {{
-            add(new InventoryTestCase(
-                    "1_empty_inventory",
-                    new LinkedHashMap<>() {{
-                        put("_meta", new LinkedHashMap<>() {{
-                            put("hostvars", new LinkedList<String>());
-                        }});
-                    }},
-                    new HashSet<>()
-            ));
-
-            add(new InventoryTestCase(
-                    "2_inventory_with_ungrouped_hosts",
-                    new LinkedHashMap<>() {{
-                        put("_meta", new LinkedHashMap<>() {{
-                            put("hostvars", new LinkedList<String>());
-                        }});
-                        put("all", new LinkedHashMap<>() {{
-                            put("children", new LinkedList<String>() {{
-                                add("ungrouped");
-                            }});
-                        }});
-                        put("ungrouped", new LinkedHashMap<>() {{
-                            put("hosts", new LinkedList<String>() {{
-                                add("gray-fox.shadow-moses.island");
-                                add("meryl.shadow-moses.island");
-                                add("otacon.shadow-moses.island");
-                            }});
-                        }});
-                    }},
-                    new HashSet<>() {{
-                        add("gray-fox.shadow-moses.island");
-                        add("meryl.shadow-moses.island");
-                        add("otacon.shadow-moses.island");
-                    }}
-            ));
-
-            add(new InventoryTestCase(
-                            "3_inventory_with_ungrouped_servers_grouped_servers_and_nested_groups",
-                            new LinkedHashMap<>() {
-                                {
-                                    put("_meta", new LinkedHashMap<>() {{
-                                        put("hostvars", new LinkedList<String>());
-                                    }});
-                                    put("all", new LinkedHashMap<>() {{
-                                        put("children", new LinkedList<String>() {{
-                                            add("ungrouped");
-                                            add("government");
-                                            add("fox-hound");
-                                        }});
-                                    }});
-                                    put("ungrouped", new LinkedHashMap<>() {{
-                                        put("hosts", new LinkedList<String>() {{
-                                            add("gray-fox.shadow-moses.island");
-                                            add("meryl.shadow-moses.island");
-                                            add("otacon.shadow-moses.island");
-                                        }});
-                                    }});
-                                    put("government", new LinkedHashMap<>() {{
-                                        put("hosts", new LinkedList<String>() {{
-                                            add("solid-snake.shadow-moses.island");
-                                            add("cambell.shadow-moses.island");
-                                        }});
-                                    }});
-                                    put("fox-hound", new LinkedHashMap<>() {{
-                                        put("hosts", new LinkedList<String>() {{
-                                            add("liquid-snake.shadow-moses.island");
-                                            add("ocelot.shadow-moses.island");
-                                        }});
-                                    }});
-                                    put("characters", new LinkedHashMap<>() {{
-                                        put("children", new LinkedList<String>() {{
-                                            add("government");
-                                            add("fox-hound");
-                                        }});
-                                    }});
-                                }
-                            },
-                            new HashSet<>() {{
-                                add("gray-fox.shadow-moses.island");
-                                add("meryl.shadow-moses.island");
-                                add("otacon.shadow-moses.island");
-                                add("solid-snake.shadow-moses.island");
-                                add("cambell.shadow-moses.island");
-                                add("liquid-snake.shadow-moses.island");
-                                add("ocelot.shadow-moses.island");
-                            }}
+        return List.of(
+            new InventoryTestCase(
+                "1_empty_inventory",
+                Map.of("_meta", Map.of(
+                        "hostvars", new LinkedList<String>()
+                        )
+                    ),
+                new HashSet<>()
+            ),
+            new InventoryTestCase(
+                "2_inventory_with_ungrouped_hosts",
+                Map.of(
+                    "_meta", Map.of(
+                        "hostvars", new LinkedList<String>()
+                    ),
+                    "all", Map.of(
+                        "children", List.of(
+                            "ungrouped"
+                        )
+                    ),
+                    "ungrouped", Map.of(
+                        "hosts", List.of(
+                                "gray-fox.shadow-moses.island",
+                                "meryl.shadow-moses.island",
+                                "otacon.shadow-moses.island"
+                        )
                     )
-            );
-        }};
+                ),
+                Set.of(
+                    "gray-fox.shadow-moses.island",
+                    "meryl.shadow-moses.island",
+                    "otacon.shadow-moses.island"
+                )
+            ),
+            new InventoryTestCase(
+                "3_inventory_with_ungrouped_servers_grouped_servers_and_nested_groups",
+                Map.of(
+                    "_meta", Map.of("hostvars", new LinkedList<String>()),
+                    "all", Map.of(
+                        "children", List.of(
+                                "ungrouped",
+                                "government",
+                                "fox-hound"
+                        )
+                    ),
+                    "ungrouped", Map.of(
+                        "hosts", List.of(
+                            "gray-fox.shadow-moses.island",
+                            "meryl.shadow-moses.island",
+                            "otacon.shadow-moses.island"
+                        )
+                    ),
+                    "government", Map.of(
+                        "hosts", List.of(
+                            "solid-snake.shadow-moses.island",
+                            "cambell.shadow-moses.island"
+                        )
+                    ),
+                    "fox-hound", Map.of(
+                        "hosts", List.of(
+                                "liquid-snake.shadow-moses.island",
+                                "ocelot.shadow-moses.island"
+                        )
+                    ),
+                    "characters", Map.of(
+                        "children", List.of(
+                            "government",
+                            "fox-hound"
+                        )
+                    )
+                ),
+                Set.of(
+                    "gray-fox.shadow-moses.island",
+                    "meryl.shadow-moses.island",
+                    "otacon.shadow-moses.island",
+                    "solid-snake.shadow-moses.island",
+                    "cambell.shadow-moses.island",
+                    "liquid-snake.shadow-moses.island",
+                    "ocelot.shadow-moses.island"
+                )
+            )
+        );
     }
 
     /**
