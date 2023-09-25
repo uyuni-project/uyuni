@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Tue Sep 19 15:14:02 CEST 2023 - rosuna@suse.com
+
+- version 4.4.1-1
+  * require csp-billing-adapter service
+  * add required dependencies to package and service
+  * change billing api datastructure
+  * show data for managed systems and monitored systems
+
+-------------------------------------------------------------------
 Tue May 09 13:43:10 CEST 2023 - mc@suse.de
 
 - version 0.1-1
