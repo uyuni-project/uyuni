@@ -18,6 +18,9 @@ package com.redhat.rhn.domain.contentmgmt;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 
+import java.time.Instant;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.regex.Pattern;
 
 import javax.persistence.DiscriminatorValue;
@@ -31,6 +34,8 @@ import javax.persistence.Transient;
 @DiscriminatorValue("package")
 public class PackageFilter extends ContentFilter<Package> {
 
+    public static final String BUILD_DATE = "build_date";
+
     private Pattern pattern;
 
     @Override
@@ -43,19 +48,15 @@ public class PackageFilter extends ContentFilter<Package> {
             case CONTAINS:
                 return getField(pack, field, String.class).contains(value);
             case LOWER:
-                return checkNameAndArch(field, value, pack) && pack.getPackageEvr().compareTo(
-                        PackageEvr.parsePackageEvr(pack.getPackageType(), getEvr(field, value))) < 0;
+                return preCondition(pack, field, value) && compareField(pack, field, value) < 0;
             case LOWEREQ:
-                return checkNameAndArch(field, value, pack) && pack.getPackageEvr().compareTo(
-                        PackageEvr.parsePackageEvr(pack.getPackageType(), getEvr(field, value))) <= 0;
+                return preCondition(pack, field, value) && compareField(pack, field, value) <= 0;
             case EQUALS:
                 return getField(pack, field, String.class).equals(value);
             case GREATEREQ:
-                return checkNameAndArch(field, value, pack) && pack.getPackageEvr().compareTo(
-                        PackageEvr.parsePackageEvr(pack.getPackageType(), getEvr(field, value))) >= 0;
+                return preCondition(pack, field, value) && compareField(pack, field, value) >= 0;
             case GREATER:
-                return checkNameAndArch(field, value, pack) && pack.getPackageEvr().compareTo(
-                        PackageEvr.parsePackageEvr(pack.getPackageType(), getEvr(field, value))) > 0;
+                return preCondition(pack, field, value) && compareField(pack, field, value) > 0;
             case MATCHES:
                 if (pattern == null) {
                     pattern = Pattern.compile(value);
@@ -68,6 +69,24 @@ public class PackageFilter extends ContentFilter<Package> {
             default:
                 throw new UnsupportedOperationException("Matcher " + matcher + " not supported");
         }
+    }
+
+    private int compareField(Package pack, String field, String value) {
+        return BUILD_DATE.equals(field) ? compareBuildDate(pack, value) : comparePackageEvr(pack, field, value);
+    }
+
+    private boolean preCondition(Package pack, String field, String value) {
+        return BUILD_DATE.equals(field) ? pack.getBuildTime() != null : checkNameAndArch(field, value, pack);
+    }
+
+    private int comparePackageEvr(Package pack, String field, String value) {
+        return pack.getPackageEvr().compareTo(PackageEvr.parsePackageEvr(pack.getPackageType(), getEvr(field, value)));
+    }
+
+    private int compareBuildDate(Package pack, String value) {
+        Instant valDate = ZonedDateTime.parse(value, DateTimeFormatter.ISO_OFFSET_DATE_TIME).toInstant();
+        Instant issueDate = pack.getBuildTime().toInstant();
+        return issueDate.compareTo(valDate);
     }
 
     private static <T> T getField(Package pack, String field, Class<T> type) {
