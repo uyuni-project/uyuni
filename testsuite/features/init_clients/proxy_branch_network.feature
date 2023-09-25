@@ -191,6 +191,8 @@ Feature: Setup Uyuni for Retail branch network
     When I follow "States" in the content area
     And I click on "Apply Highstate"
     And I wait until event "Apply highstate scheduled by admin" is completed
+    # This also triggers a "Package List Refresh" event that will fail
+    # because the Salt connexion is disoriented after those changes
     Then service "dhcpd" is enabled on "proxy"
     And service "dhcpd" is active on "proxy"
     And service "named" is enabled on "proxy"
@@ -201,10 +203,8 @@ Feature: Setup Uyuni for Retail branch network
 @proxy
 @private_net
   Scenario: Disable repositories after installing branch services
+    Given the Salt master can reach "proxy"
     When I disable repositories after installing branch server
-    # WORKAROUND: the following event fails because the proxy needs 10 minutes to become responsive again
-    # And I wait until event "Package List Refresh" is completed
-    And I wait for "700" seconds
 
 @proxy
 @private_net
