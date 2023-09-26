@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 SUSE LLC
+ * Copyright (c) 2021--2023 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -12,7 +12,6 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-
 package com.suse.manager.webui.controllers;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
@@ -47,6 +46,7 @@ import com.suse.utils.Json;
 
 import com.google.gson.Gson;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.yaml.snakeyaml.Yaml;
@@ -60,7 +60,6 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -384,9 +383,10 @@ public class AnsibleController {
         for (Map.Entry<String, Map<String, Object>> entry : inventoryMap.entrySet()) {
             String ansibleGroupName = entry.getKey();
             if (!ansibleGroupName.equals("_meta")) {
-                Optional<List<String>> list = Optional.ofNullable((List<String>)entry.getValue().get("hosts"));
-                if (list.isPresent()) {
-                    list.get().stream().forEach(host -> hostnames.add(host));
+                @SuppressWarnings("unchecked")
+                List<String> hostList = (List<String>)entry.getValue().get("hosts");
+                if (CollectionUtils.isNotEmpty(hostList)) {
+                    hostnames.addAll(hostList);
                 }
             }
         }
