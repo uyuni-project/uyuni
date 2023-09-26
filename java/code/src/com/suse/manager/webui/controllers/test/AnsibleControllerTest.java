@@ -67,17 +67,15 @@ public class AnsibleControllerTest extends BaseTestCaseWithUser {
             new InventoryTestCase(
                 "1_empty_inventory",
                 Map.of("_meta", Map.of(
-                        "hostvars", new LinkedList<String>()
-                        )
+                        "hostvars", List.of())
                     ),
-                new HashSet<>()
+                Set.of()
             ),
             new InventoryTestCase(
                 "2_inventory_with_ungrouped_hosts",
                 Map.of(
                     "_meta", Map.of(
-                        "hostvars", new LinkedList<String>()
-                    ),
+                        "hostvars", List.of()),
                     "all", Map.of(
                         "children", List.of(
                             "ungrouped"
@@ -100,7 +98,7 @@ public class AnsibleControllerTest extends BaseTestCaseWithUser {
             new InventoryTestCase(
                 "3_inventory_with_ungrouped_servers_grouped_servers_and_nested_groups",
                 Map.of(
-                    "_meta", Map.of("hostvars", new LinkedList<String>()),
+                    "_meta", Map.of("hostvars", List.of()),
                     "all", Map.of(
                         "children", List.of(
                                 "ungrouped",
