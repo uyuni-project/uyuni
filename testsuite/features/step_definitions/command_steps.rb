@@ -578,8 +578,7 @@ When(/^the controller starts mocking a Redfish host$/) do
   # We need the controller hostname to generate its SSL certificate
   hostname = `hostname -f`.strip
 
-  _out, code = get_target('server').run_local("systemctl is-active k3s", check_errors: false)
-  if code.zero?
+  if running_k3s?
     # On kubernetes, the server has no clue about certificates
     crt_path, key_path, _ca_path = generate_certificate("controller", hostname)
     get_target('server').extract_file(crt_path, '/root/controller.crt')
@@ -1020,8 +1019,7 @@ When(/^I open avahi port on the proxy$/) do
 end
 
 When(/^I copy server\'s keys to the proxy$/) do
-  _out, code = get_target('server').run_local("systemctl is-active k3s", check_errors: false)
-  if code.zero?
+  if running_k3s?
     # Server running in Kubernetes doesn't know anything about SSL CA
     generate_certificate("proxy", get_target('proxy').full_hostname)
 
@@ -1043,8 +1041,6 @@ When(/^I copy server\'s keys to the proxy$/) do
 end
 
 When(/^I configure the proxy$/) do
-  _out, code = get_target('server').run_local("systemctl is-active k3s", check_errors: false)
-
   # prepare the settings file
   settings = "RHN_PARENT=#{get_target('server').full_hostname}\n" \
              "HTTP_PROXY=''\n" \
@@ -1054,7 +1050,7 @@ When(/^I configure the proxy$/) do
              "POPULATE_CONFIG_CHANNEL=y\n" \
              "RHN_USER=admin\n" \
              "ACTIVATE_SLP=y\n"
-  settings += if code.zero?
+  settings += if running_k3s?
                 "USE_EXISTING_CERTS=y\n" \
                 "CA_CERT=/tmp/ca.crt\n" \
                 "SERVER_KEY=/tmp/proxy.key\n" \
@@ -1402,11 +1398,26 @@ Then(/^I flush firewall on "([^"]*)"$/) do |target|
 end
 
 When(/^I generate the configuration "([^"]*)" of Containerized Proxy on the server$/) do |file_path|
-  # Doc: https://www.uyuni-project.org/uyuni-docs/en/uyuni/reference/spacecmd/proxy_container.html
-  command = "echo spacewalk > cert_pass && spacecmd -u admin -p admin proxy_container_config_generate_cert" \
-            " -- -o #{file_path} -p 8022 #{get_target('proxy').full_hostname.sub('pxy', 'pod-pxy')} #{get_target('server').full_hostname}" \
-            " 2048 galaxy-noise@suse.de --ca-pass cert_pass" \
-            " && rm cert_pass"
+  if running_k3s?
+    # A server container on kubernetes has no clue about SSL certificates
+    # We need to generate them using `cert-manager` and use the files as 3rd party certificate
+    generate_certificate("proxy", get_target('proxy').full_hostname)
+
+    # Copy the cert files in the container to use them with spacecmd
+    %w[proxy.crt proxy.key ca.crt].each do |file|
+      get_target('server').inject("/tmp/#{file}", "/tmp/#{file}")
+    end
+
+    command = "spacecmd -u admin -p admin proxy_container_config -- -o #{file_path} -p 8022 " \
+              "#{get_target('proxy').full_hostname.sub('pxy', 'pod-pxy')} #{get_target('server').full_hostname} 2048 galaxy-noise@suse.de " \
+              "/tmp/ca.crt /tmp/proxy.crt /tmp/proxy.key"
+  else
+    # Doc: https://www.uyuni-project.org/uyuni-docs/en/uyuni/reference/spacecmd/proxy_container.html
+    command = "echo spacewalk > cert_pass && spacecmd -u admin -p admin proxy_container_config_generate_cert" \
+              " -- -o #{file_path} -p 8022 #{get_target('proxy').full_hostname.sub('pxy', 'pod-pxy')} #{get_target('server').full_hostname}" \
+              " 2048 galaxy-noise@suse.de --ca-pass cert_pass" \
+              " && rm cert_pass"
+  end
   get_target('server').run(command)
 end
 

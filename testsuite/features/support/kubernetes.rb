@@ -44,3 +44,9 @@ def generate_certificate(name, fqdn)
   get_target('server').run_local("kubectl get secret uyuni-#{name}-cert -o jsonpath='{.data.ca\\.crt}' | base64 -d >#{ca_path}")
   [crt_path, key_path, ca_path]
 end
+
+# Returns whether the server is running in a k3s container or not
+def running_k3s?
+  _out, code = get_target('server').run_local('systemctl is-active k3s', check_errors: false)
+  code.zero?
+end
