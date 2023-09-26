@@ -21,6 +21,7 @@ export default class Loggerhead {
     if (this.console.info) {
       console.info(message);
     }
+    window.performance.mark(message);
   }
 
   debug(message: string) {
@@ -30,6 +31,7 @@ export default class Loggerhead {
     if (this.console.debug) {
       console.debug(message);
     }
+    this.mark({ level: "debug", message });
   }
 
   warn(message: string) {
@@ -39,6 +41,7 @@ export default class Loggerhead {
     if (this.console.warning) {
       console.warn(message);
     }
+    this.mark({ level: "warning", message });
   }
 
   error(message: string) {
@@ -48,6 +51,19 @@ export default class Loggerhead {
     if (this.console.error) {
       console.error(message);
     }
+    this.mark({ level: "error", message });
+  }
+
+  /**
+   * Debugging information that's stored only if the user is creating a performance recording for debugging purposes.
+   * NB! This is NOT sent to the server logs as it may contain sensitive data.
+   */
+  debugRecordingOnly(message: unknown) {
+    this.mark({ level: "trace", message });
+  }
+
+  private mark<T extends { level: string; message: unknown }>(input: T) {
+    window.performance.mark(JSON.stringify(input));
   }
 
   private postData(data: { level: Level; message: string }) {

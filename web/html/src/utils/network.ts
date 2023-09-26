@@ -50,12 +50,26 @@ function request<Returns>(
     // Setting the contentType to false lets the browser define the header with the boundary.
     contentType: contentType === "multipart/form-data" ? false : `${contentType}; charset=UTF-8`,
     processData: processData,
-    beforeSend: (xhr) => {
+    beforeSend: (jqXHR) => {
+      Loggerhead.debugRecordingOnly({
+        type: "network",
+        event: "beforeSend",
+        url,
+        data,
+      });
       if (headers !== undefined) {
         Object.keys(headers).forEach((header) => {
-          xhr.setRequestHeader(header, headers[header]);
+          jqXHR.setRequestHeader(header, headers[header]);
         });
       }
+    },
+    complete: (jqXHR) => {
+      Loggerhead.debugRecordingOnly({
+        type: "network",
+        event: "complete",
+        url,
+        responseText: jqXHR.responseText,
+      });
     },
   });
   return Utils.cancelable(Promise.resolve(a), () => a.abort());
