@@ -23,8 +23,6 @@ import com.suse.manager.webui.controllers.AnsibleController;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
