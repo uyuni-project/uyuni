@@ -4,77 +4,70 @@ type Headers = Record<string, string>;
 type Level = "info" | "debug" | "warning" | "error";
 
 export default class Loggerhead {
+  private _log = console.log.bind(console);
+  private _info = console.info.bind(console);
+  private _debug = console.debug.bind(console);
+  private _warn = console.warn.bind(console);
+  private _error = console.error.bind(console);
+
   private url = "";
-  private levels: Record<Level, boolean> = { info: true, debug: true, warning: true, error: true };
-  private console: Record<Level, boolean> = { info: true, debug: true, warning: true, error: true };
   private setHeaders: (headers: Headers) => Headers;
 
   constructor(url: string, setHeaders: (headers: Headers) => Headers) {
+    if (!url) {
+      throw new TypeError("No url provided for LoggerHead");
+    }
     this.url = url;
     this.setHeaders = setHeaders;
+
+    // We hijack the global console to ensure errors thrown in third-party code get logged too
+    console.log = this.log;
+    console.info = this.info;
+    console.debug = this.debug;
+    console.warn = this.warn;
+    console.error = this.error;
   }
 
-  info(message: string) {
-    if (this.levels.info) {
-      this.postData({ level: "info", message });
-    }
-    if (this.console.info) {
-      console.info(message);
-    }
-    window.performance.mark(message);
-  }
+  // This is only used for binding third-party code, to log with the default level, use info()
+  private log = (
+    // Since we also wrap logging for external code, we need to support a variable number of arguments here
+    ...args: Parameters<typeof console["log"]>
+  ) => {
+    // Use level "info" for our own logs, console.log() for the browser
+    this._log(...args);
+    this.postData({ level: "info", message: args.toString() });
+    this.mark({ level: "info", message: args.toString() });
+  };
 
-  debug(message: string) {
-    if (this.levels.debug) {
-      this.postData({ level: "debug", message });
-    }
-    if (this.console.debug) {
-      console.debug(message);
-    }
-    this.mark({ level: "debug", message });
-  }
+  info = (...args: Parameters<typeof console["info"]>) => {
+    this._info(...args);
+    this.postData({ level: "info", message: args.toString() });
+    this.mark({ level: "info", message: args.toString() });
+  };
 
-  warn(message: string) {
-    if (this.levels.warning) {
-      this.postData({ level: "warning", message });
-    }
-    if (this.console.warning) {
-      console.warn(message);
-    }
-    this.mark({ level: "warning", message });
-  }
+  debug = (...args: Parameters<typeof console["debug"]>) => {
+    this._debug(...args);
+    this.postData({ level: "debug", message: args.toString() });
+    this.mark({ level: "debug", message: args.toString() });
+  };
 
-  error(message: string) {
-    if (this.levels.error) {
-      this.postData({ level: "error", message });
-    }
-    if (this.console.error) {
-      console.error(message);
-    }
-    this.mark({ level: "error", message });
-  }
+  warn = (...args: Parameters<typeof console["warn"]>) => {
+    this._warn(...args);
+    this.postData({ level: "warning", message: args.toString() });
+    this.mark({ level: "warning", message: args.toString() });
+  };
 
-  /**
-   * Debugging information that's stored only if the user is creating a performance recording for debugging purposes.
-   * NB! This is NOT sent to the server logs as it may contain sensitive data.
-   */
-  debugRecordingOnly(message: unknown) {
-    this.mark({ level: "trace", message });
-  }
+  error = (...args: Parameters<typeof console["error"]>) => {
+    this._error(...args);
+    this.postData({ level: "error", message: args.toString() });
+    this.mark({ level: "error", message: args.toString() });
+  };
 
-  private mark<T extends { level: string; message: unknown }>(input: T) {
-    window.performance.mark(JSON.stringify(input));
+  private mark(input: { level: Level; message: string }) {
+    performance.mark(JSON.stringify(input));
   }
 
   private postData(data: { level: Level; message: string }) {
-    if (this.url === "") {
-      const errorMessage = "[Loggerhead] ERROR: no server enpoint URL set to send the POST request!! ";
-      if (this.console.error) {
-        console.error(errorMessage);
-      }
-      return;
-    }
-
     const headers: Headers = {
       "Content-Type": "application/json; charset=utf-8",
     };
@@ -90,12 +83,10 @@ export default class Loggerhead {
       if (xhr.status !== 200) {
         // Try to parse the xhr response, but catch if it fails to avoid an infinite loop of failure-and-logging
         try {
-          console.error(JSON.parse(xhr.response));
+          this._error(JSON.parse(xhr.response));
         } catch (e) {
-          console.error(
-            "The POST request to the url: '" +
-              this.url +
-              "' was not successfully completed and the response cannot be parsed."
+          this._error(
+            `The POST request to the url: '${this.url}' was not successfully completed and the response cannot be parsed.`
           );
         }
       }
