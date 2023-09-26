@@ -243,8 +243,8 @@ Feature: Register and test a Containerized Proxy
 
   Scenario: Cleanup: Remove Containerized Proxy configuration
     When I ensure folder "/etc/uyuni/proxy/*" doesn't exist on "proxy"
-    And I remove "/tmp/proxy_container_config.zip" from "proxy"
-    And I remove "/tmp/proxy_container_config.zip" from "server"
+    And I remove "/tmp/proxy_container_config.tar.gz" from "proxy"
+    And I remove "/tmp/proxy_container_config.tar.gz" from "server"
 
   Scenario: Cleanup: Remove "Pod Proxy Channel" configuration channel
     When I follow the left menu "Configuration > Channels"
