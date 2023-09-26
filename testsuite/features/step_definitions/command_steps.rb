@@ -129,6 +129,10 @@ When(/^I list channels with spacewalk\-remove\-channel$/) do
   raise "Unable to run spacewalk-remove-channel -l command on server" unless return_code.zero?
 end
 
+When(/^I add "([^"]*)" channel$/) do |channel|
+  get_target('server').run("echo -e \"admin\nadmin\n\" | mgr-sync add channel #{channel}", buffer_size: 1_000_000)
+end
+
 When(/^I use spacewalk\-channel to add "([^"]*)"$/) do |child_channel|
   command = "spacewalk-channel --add -c #{child_channel} -u admin -p admin"
   $command_output, _code = get_target('client').run(command)
