@@ -1,7 +1,7 @@
-// This file is allowed to use console, everyone else is not
-/* eslint-disable no-console */
 type Headers = Record<string, string>;
 type Level = "info" | "debug" | "warning" | "error";
+
+// TODO: Why does ESLint's no-console not work?
 
 export default class Loggerhead {
   private _log = console.log.bind(console);
@@ -35,32 +35,37 @@ export default class Loggerhead {
   ) => {
     // Use level "info" for our own logs, console.log() for the browser
     this._log(...args);
-    this.postData({ level: "info", message: args.toString() });
-    this.mark({ level: "info", message: args.toString() });
+    const message = args.toString();
+    this.postData({ level: "info", message });
+    this.mark({ level: "info", message });
   };
 
   info = (...args: Parameters<typeof console["info"]>) => {
     this._info(...args);
-    this.postData({ level: "info", message: args.toString() });
-    this.mark({ level: "info", message: args.toString() });
+    const message = args.toString();
+    this.postData({ level: "info", message });
+    this.mark({ level: "info", message });
   };
 
   debug = (...args: Parameters<typeof console["debug"]>) => {
     this._debug(...args);
-    this.postData({ level: "debug", message: args.toString() });
-    this.mark({ level: "debug", message: args.toString() });
+    const message = args.toString();
+    this.postData({ level: "debug", message });
+    this.mark({ level: "debug", message });
   };
 
   warn = (...args: Parameters<typeof console["warn"]>) => {
     this._warn(...args);
-    this.postData({ level: "warning", message: args.toString() });
-    this.mark({ level: "warning", message: args.toString() });
+    const message = args.toString();
+    this.postData({ level: "warning", message });
+    this.mark({ level: "warning", message });
   };
 
   error = (...args: Parameters<typeof console["error"]>) => {
     this._error(...args);
-    this.postData({ level: "error", message: args.toString() });
-    this.mark({ level: "error", message: args.toString() });
+    const message = args.toString();
+    this.postData({ level: "error", message });
+    this.mark({ level: "error", message });
   };
 
   private mark(input: { level: Level; message: string }) {
