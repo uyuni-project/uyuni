@@ -1,5 +1,6 @@
 type Headers = Record<string, string>;
-type Level = "info" | "debug" | "warning" | "error";
+type Level = "info" | "debug" | "trace" | "warning" | "error";
+type LogParams = Parameters<typeof console["log"]>;
 
 // TODO: Why does ESLint's no-console not work?
 
@@ -26,44 +27,57 @@ export default class Loggerhead {
     console.debug = this.debug;
     console.warn = this.warn;
     console.error = this.error;
+
+    // This class is also used in unit tests so window might not be available
+    if (window) {
+      // See https://stackoverflow.com/q/12571650/1470607
+      window.addEventListener("unhandledrejection", (event) => {
+        this.error(`Unhandled promise rejection: ${String(event.reason)}`);
+        return false;
+      });
+      window.addEventListener("error", (event) => {
+        this.error(event.error);
+        return false;
+      });
+    }
   }
 
   // This is only used for binding third-party code, to log with the default level, use info()
   private log = (
     // Since we also wrap logging for external code, we need to support a variable number of arguments here
-    ...args: Parameters<typeof console["log"]>
+    ...args: LogParams
   ) => {
     // Use level "info" for our own logs, console.log() for the browser
     this._log(...args);
-    const message = args.toString();
+    const message = String(args);
     this.postData({ level: "info", message });
     this.mark({ level: "info", message });
   };
 
-  info = (...args: Parameters<typeof console["info"]>) => {
+  info = (...args: LogParams) => {
     this._info(...args);
-    const message = args.toString();
+    const message = String(args);
     this.postData({ level: "info", message });
     this.mark({ level: "info", message });
   };
 
-  debug = (...args: Parameters<typeof console["debug"]>) => {
+  debug = (...args: LogParams) => {
     this._debug(...args);
-    const message = args.toString();
+    const message = String(args);
     this.postData({ level: "debug", message });
     this.mark({ level: "debug", message });
   };
 
-  warn = (...args: Parameters<typeof console["warn"]>) => {
+  warn = (...args: LogParams) => {
     this._warn(...args);
-    const message = args.toString();
+    const message = String(args);
     this.postData({ level: "warning", message });
     this.mark({ level: "warning", message });
   };
 
-  error = (...args: Parameters<typeof console["error"]>) => {
+  error = (...args: LogParams) => {
     this._error(...args);
-    const message = args.toString();
+    const message = String(args);
     this.postData({ level: "error", message });
     this.mark({ level: "error", message });
   };
