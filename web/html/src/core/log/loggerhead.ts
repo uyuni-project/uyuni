@@ -12,24 +12,21 @@ export default class Loggerhead {
   private _error = console.error.bind(console);
 
   private url = "";
-  private setHeaders: (headers: Headers) => Headers;
+  private setHeaders: (headers: Headers) => Headers = (headers) => headers;
 
   constructor(url: string, setHeaders: (headers: Headers) => Headers) {
-    if (!url) {
-      throw new TypeError("No url provided for LoggerHead");
-    }
     this.url = url;
     this.setHeaders = setHeaders;
 
     // We hijack the global console to ensure errors thrown in third-party code get logged too
-    console.log = this.log;
-    console.info = this.info;
-    console.debug = this.debug;
-    console.warn = this.warn;
-    console.error = this.error;
+    // If we're running unit tests in a Node env, skip this
+    if (typeof window !== "undefined") {
+      console.log = this.log;
+      console.info = this.info;
+      console.debug = this.debug;
+      console.warn = this.warn;
+      console.error = this.error;
 
-    // This class is also used in unit tests so window might not be available
-    if (window) {
       // See https://stackoverflow.com/q/12571650/1470607
       window.addEventListener("unhandledrejection", (event) => {
         this.error(`Unhandled promise rejection: ${String(event.reason)}`);
@@ -83,10 +80,17 @@ export default class Loggerhead {
   };
 
   private mark(input: { level: Level; message: string }) {
-    performance.mark(JSON.stringify(input));
+    // Older Node doesn't have this method, this check should be safe once we upgrade to Node 20
+    if (typeof performance !== "undefined" && "mark" in performance) {
+      performance.mark(JSON.stringify(input));
+    }
   }
 
   private postData(data: { level: Level; message: string }) {
+    if (!this.url) {
+      return;
+    }
+
     const headers: Headers = {
       "Content-Type": "application/json; charset=utf-8",
     };
@@ -105,7 +109,7 @@ export default class Loggerhead {
           this._error(JSON.parse(xhr.response));
         } catch (e) {
           this._error(
-            `The POST request to the url: '${this.url}' was not successfully completed and the response cannot be parsed.`
+            `The POST request to the url '${this.url}' completed with status ${xhr.status} and the response cannot be parsed.`
           );
         }
       }
