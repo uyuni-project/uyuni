@@ -53,6 +53,10 @@ public class VulnerablePackagesExtractors {
                 else if (definition.getDefinitionClass() == DefinitionClassEnum.PATCH) {
                     return new RedHatVulnerablePackageExtractorFromPatchDefinition(definition);
                 }
+                else {
+                    throw new IllegalArgumentException(
+                            "Only VULNERABILITY and PATCH definitions are allowed for RedHat OVALs");
+                }
             default:
                 throw new IllegalArgumentException(
                         "Cannot find any vulnerable packages extractor implementation for " + osFamily);
