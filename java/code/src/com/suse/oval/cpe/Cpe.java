@@ -113,7 +113,7 @@ public class Cpe {
         String cpe = "cpe:/o:" + vendor + ":" + product + ":" + version + ":" + update;
 
         // Removing trailing colons ':'
-        return cpe.replaceAll(":*$", "");
+        return cpe.replaceAll(":{1,4}$", "");
     }
 
     @Override
