@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Sep 27 13:26:33 CEST 2023 - marina.latini@suse.com
+
+- version 4.3.66-1
+  * Fix RHUI support for RHEL 7 clients (bsc#1215756)
+
+-------------------------------------------------------------------
 Tue Sep 26 09:25:46 CEST 2023 - marina.latini@suse.com
 
 - version 4.3.65-1
