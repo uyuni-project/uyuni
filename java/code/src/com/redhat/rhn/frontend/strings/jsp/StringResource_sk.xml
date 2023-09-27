@@ -1867,14 +1867,14 @@
       <!-- yourchangeemail.jsp -->
       <trans-unit id="yourchangeemail.jsp.title" xml:space="preserve">
         <source>Change Email Address</source>
-        <target/>
+        <target>Zmeniť e-mailovú adresu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/ChangeEmail</context>
         </context-group>
       </trans-unit>
       <trans-unit id="yourchangeemail.instructions" xml:space="preserve">
         <source>Please enter your new email address below.</source>
-        <target/>
+        <target>Prosím, zadajte svoju novú e-mailovú adresu nižšie.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/ChangeEmail</context>
         </context-group>
@@ -1882,28 +1882,28 @@
       <!-- channelmanagementperms.jsp -->
       <trans-unit id="channelManagementPerms.title" xml:space="preserve">
         <source>Channel Management Permissions</source>
-        <target/>
+        <target>Oprávnenia na správu kanálov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/ChannelManagementPerms</context>
         </context-group>
       </trans-unit>
       <trans-unit id="channelManagementPerms.summary" xml:space="preserve">
         <source> Below is the list of channels available to your organization. You may grant explicit channel management permission to this user for each of the channels listed.</source>
-        <target/>
+        <target> Nižšie je uvedený zoznam kanálov, ktoré má vaša organizácia k dispozícii. Tomuto používateľovi môžete udeliť explicitné oprávnenie na správu kanálov pre každý z uvedených kanálov.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/ChannelManagementPerms</context>
         </context-group>
       </trans-unit>
       <trans-unit id="channelManagementPerms.granted" xml:space="preserve">
         <source> Management permission granted through org/channel admin status </source>
-        <target/>
+        <target> Oprávnenie na správu udelené prostredníctvom stavu administrátora org/kanál </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/ChannelManagementPerms</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Channel admin status" xml:space="preserve">
         <source>Channel admin status</source>
-        <target/>
+        <target>Stav administrátora kanálov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/ChannelManagementPerms</context>
         </context-group>
@@ -1911,28 +1911,28 @@
       <!-- addresses.jsp -->
       <trans-unit id="addresses.summary" xml:space="preserve">
         <source> Addresses associated with your @@PRODUCT_NAME@@ account are listed below. </source>
-        <target/>
+        <target> Adresy spojené s vaším účtom @@PRODUCT_NAME@@ sú uvedené nižšie. </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/Addresses</context>
         </context-group>
       </trans-unit>
       <trans-unit id="address.jsp.associated" xml:space="preserve">
         <source> The following addresses are associated with this user's account. </source>
-        <target/>
+        <target> K účtu tohto používateľa sú priradené tieto adresy. </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/Addresses</context>
         </context-group>
       </trans-unit>
       <trans-unit id="address.jsp.addresses" xml:space="preserve">
         <source>Addresses</source>
-        <target/>
+        <target>Adresy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/Addresses</context>
         </context-group>
       </trans-unit>
       <trans-unit id="disableself.jsp.account_deactivation" xml:space="preserve">
         <source>Account Deactivation</source>
-        <target/>
+        <target>Deaktivácia účtu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/AccountDeactivation</context>
         </context-group>
