@@ -96,7 +96,7 @@ def get_rhui_url(url):
     global cloud_vendor
     surl = url.strip().replace(',', "")
     urlparams = urlparse.urlparse(surl)
-    if urlparams.hostname.startswith("rhui.") and urlparams.hostname.endswith(".redhat.com"):
+    if urlparams.hostname.startswith("rhui") and urlparams.hostname.endswith(".redhat.com"):
         cloud_vendor = "aws"
         return surl
     elif urlparams.hostname.startswith("rhui") and urlparams.hostname.endswith(".microsoft.com"):
