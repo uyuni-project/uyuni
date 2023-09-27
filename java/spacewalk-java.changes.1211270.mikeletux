@@ -1,0 +1,1 @@
+- Avoid SCC credentials check if `server.susemanager.fromdir` is set (bsc#1211270)
