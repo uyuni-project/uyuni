@@ -34,12 +34,6 @@ public class ShallowSystemPackage extends IdComboDto {
     private String type;
 
     /**
-     * Default constructor
-     * */
-    public ShallowSystemPackage() {
-    }
-
-    /**
      * @return Returns the Id.
      */
     @Override
