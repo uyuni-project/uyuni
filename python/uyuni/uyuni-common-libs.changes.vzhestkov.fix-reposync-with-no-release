@@ -1,0 +1,1 @@
+- Prevent reposync tracebacks on packages with empty release (bsc#1213738)
