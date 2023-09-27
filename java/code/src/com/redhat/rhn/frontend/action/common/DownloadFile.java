@@ -65,6 +65,8 @@ import java.io.OutputStreamWriter;
 import java.io.RandomAccessFile;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -222,7 +224,7 @@ public class DownloadFile extends DownloadAction {
             for (int i = labelPos + 1; i < split.length; i++) {
                 path.append("/").append(split[i]);
             }
-            ret.put("path", path.toString());
+            ret.put("path", URLDecoder.decode(path.toString(), StandardCharsets.UTF_8));
         }
         catch (ArrayIndexOutOfBoundsException e) {
             return null;
