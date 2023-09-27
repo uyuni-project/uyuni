@@ -23,9 +23,6 @@ import com.suse.oval.ovaltypes.CriterionType;
 import com.suse.oval.ovaltypes.DefinitionClassEnum;
 import com.suse.oval.ovaltypes.DefinitionType;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -35,7 +32,6 @@ import java.util.regex.Pattern;
  * Vulnerable package extractor for OVALs from: <a href="https://www.debian.org/security/oval/">Debian OVAL</a>
  * */
 public class DebianVulnerablePackagesExtractor extends CriteriaTreeBasedExtractor {
-    private static final Logger LOG = LogManager.getLogger(DebianVulnerablePackagesExtractor.class);
     private static final Pattern DEBIAN_PACKAGE_REGEX = Pattern
             .compile("(?<packageName>\\S+) DPKG is earlier than (?<evr>.*)");
 

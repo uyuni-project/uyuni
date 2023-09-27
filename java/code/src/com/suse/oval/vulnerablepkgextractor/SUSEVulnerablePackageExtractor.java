@@ -30,12 +30,6 @@ import com.suse.oval.ovaltypes.ObjectType;
 import com.suse.oval.ovaltypes.StateType;
 import com.suse.oval.ovaltypes.TestType;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -50,7 +44,6 @@ import java.util.stream.Collectors;
 public class SUSEVulnerablePackageExtractor extends CriteriaTreeBasedExtractor {
     private static final Pattern RELEASE_PACKAGE_REGEX = Pattern.compile(
             "^\\s*(?<releasePackage>[-a-zA-Z_]+) is\\s*==\\s*(?<releasePackageVersion>[0-9.]+)\\s*$");
-    private static final Logger LOG = LogManager.getLogger(SUSEVulnerablePackageExtractor.class);
     private final OVALLookupHelper ovalLookupHelper;
 
     /**
