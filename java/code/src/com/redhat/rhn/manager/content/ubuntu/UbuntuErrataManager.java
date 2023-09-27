@@ -289,7 +289,6 @@ public class UbuntuErrataManager {
                     return Stream.empty();
                 }
 
-                errata.setAdvisoryRel(Long.parseLong(split[1]));
                 errata.setProduct("Ubuntu");
                 errata.setSolution("-");
                 errata.setSynopsis(entry.getIsummary());
