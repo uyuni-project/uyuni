@@ -180,6 +180,6 @@ public class OVALCleaner {
         else {
             throw new IllegalArgumentException("Invalid debian version: " + osVersion);
         }
-        return id.replaceAll("debian", "debian-" + codename);
+        return id.replace("debian", "debian-" + codename);
     }
 }
