@@ -191,7 +191,7 @@ install -Dd -m 0755 %{buildroot}%{_prefix}/share/salt-formulas/states
 install -Dd -m 0755 %{buildroot}%{_prefix}/share/salt-formulas/metadata
 
 %post
-if [ ! -f /etc/rhn/rhn.conf -o $(filesize /etc/rhn/rhn.conf) -eq 0 ]; then
+if [ ! -f /etc/rhn/rhn.conf -o $(stat -c %%s "/etc/rhn/rhn.conf") -eq 0 ]; then
     # rhn.conf does not exists or is empty, this is new installation or update of new installation
     CURRENT_DATE=$(date +"%%Y-%%m-%%dT%%H:%%M:%%S.%%3N")
     cp /etc/tomcat/server.xml /etc/tomcat/server.xml.$CURRENT_DATE
