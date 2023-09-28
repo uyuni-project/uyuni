@@ -27,7 +27,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
 
 import java.time.Instant;
 import java.time.ZoneId;
@@ -105,8 +104,7 @@ public class TaskoJob implements Job {
      * {@inheritDoc}
      */
     @Override
-    public void execute(JobExecutionContext context)
-        throws JobExecutionException {
+    public void execute(JobExecutionContext context) {
         TaskoRun previousRun = null;
 
         TaskoSchedule schedule = TaskoFactory.lookupScheduleById(scheduleId);
