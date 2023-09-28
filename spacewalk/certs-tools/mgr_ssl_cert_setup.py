@@ -56,7 +56,6 @@ class CertCheckError(Exception):
     pass
 
 
-privatekeytype = "unknown"
 FilesContent = namedtuple("FilesContent", ["root_ca", "server_cert", "server_key", "intermediate_cas"])
 
 def log_error(msg):
@@ -300,24 +299,16 @@ def getCertWithText(cert):
 
 
 def getPrivateKey(key):
-    if "-----BEGIN RSA PRIVATE KEY-----" in key:
-        privatekeytype = "rsa"
-    elif "-----BEGIN EC PRIVATE KEY-----" in key:
-        privatekeytype = "ec"
-    else:
-        log_error("Unknown Private Key type")
-        return None
-
     # set an invalid password to prevent asking in case of an encrypted one
     out = subprocess.run(
-        ["openssl", privatekeytype, "-passin", "pass:invalid"],
+        ["openssl", "pkey", "-passin", "pass:invalid", "-text", "-noout"],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         input=key.encode("utf-8")
     )
 
     if out.returncode:
-        log_error("Invalid {} Key: {}".format(privatekeytype.upper(), out.stderr.decode("utf-8")))
+        log_error("Invalid or encrypted Key: {}".format(out.stderr.decode("utf-8")))
         return None
     return out.stdout.decode("utf-8")
 
@@ -330,7 +321,7 @@ def checkKeyBelongToCert(key, cert):
         input=key.encode("utf-8"),
     )
     if out.returncode:
-        log_error("Invalid {} Key: {}".format(privatekeytype.upper(), out.stderr.decode("utf-8")))
+        log_error("Invalid Key: {}".format(out.stderr.decode("utf-8")))
         raise CertCheckError("Invalid Key")
     keyPubKey = out.stdout.decode("utf-8")
     out = subprocess.run(
