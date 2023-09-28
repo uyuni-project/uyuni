@@ -85,10 +85,10 @@ public class ReportDbUpdateTask extends RhnJavaJob {
                 // Iterate further if we can have additional rows
                 if (firstBatch.size() == batchSize) {
                     dbHelper.<Map<String, Object>>batchStream(query, batchSize, batchSize)
-                        .forEach(batch -> {
-                            insert.executeUpdates(batch);
-                            log.debug("Extracted {} rows more for table {}", firstBatch.size(), tableName);
-                        });
+                            .forEach(batch -> {
+                                insert.executeUpdates(batch);
+                                log.debug("Extracted {} rows more for table {}", firstBatch.size(), tableName);
+                            });
                 }
             }
             else {
@@ -122,7 +122,8 @@ public class ReportDbUpdateTask extends RhnJavaJob {
             fillReportDbTable(rh.getSession(), SYSTEM_REPORT_QUERIES, "SystemEntitlement");
             fillReportDbTable(rh.getSession(), SYSTEM_REPORT_QUERIES, "SystemErrata");
             fillReportDbTable(rh.getSession(), SYSTEM_REPORT_QUERIES, "SystemPackageInstalled");
-            fillReportDbTable(rh.getSession(), SYSTEM_REPORT_QUERIES, "SystemPackageUpdate");
+            fillReportDbTableById(rh.getSession(), SYSTEM_REPORT_QUERIES, "SystemPackageUpdate",
+                    "SystemPackageUpdateIDs");
             fillReportDbTable(rh.getSession(), SYSTEM_REPORT_QUERIES, "SystemCustomInfo");
 
             fillReportDbTable(rh.getSession(), CHANNEL_REPORT_QUERIES, "Channel");
@@ -155,6 +156,54 @@ public class ReportDbUpdateTask extends RhnJavaJob {
             rh.closeSession();
             rh.closeSessionFactory();
         }
+    }
+
+    private void fillReportDbTableById(Session session, String xmlName, String tableName, String idsQuery) {
+        TimeUtils.logTime(log, "Refreshing table " + tableName, () -> {
+            SelectMode queryData = ModeFactory.getMode(xmlName, idsQuery, Map.class);
+
+            // Remove all the existing data
+            log.debug("Deleting existing data in table {}", tableName);
+            WriteMode delete = dbHelper.generateDelete(session, tableName);
+            delete.executeUpdate(Map.of("mgm_id", LOCAL_MGM_ID));
+
+            // Get the full data set first
+            @SuppressWarnings("unchecked")
+            DataResult<Map<String, Long>> dataSet = queryData.execute();
+            if (dataSet.isEmpty()) {
+                log.debug("No data extracted for table {}", tableName);
+                return;
+            }
+
+            SelectMode query = ModeFactory.getMode(xmlName, tableName + "_byId", Map.class);
+            for (Map<String, Long> data : dataSet) {
+                Long id = data.get("id");
+
+                // Extract the first batch
+                @SuppressWarnings("unchecked")
+                DataResult<Map<String, Object>> firstBatch = query.execute(
+                        Map.of("id", id, "offset", 0, "limit", batchSize));
+                if (firstBatch.isEmpty()) {
+                    log.debug("No data extracted for table {}", tableName);
+                    continue;
+                }
+                // Generate the insert using the column name retrieved from the select
+                Set<String> columnParameters = firstBatch.get(0).keySet();
+                WriteMode insert = dbHelper.generateInsertWithDate(session, tableName, LOCAL_MGM_ID, columnParameters);
+
+                insert.executeUpdates(firstBatch);
+                log.debug("Extracted {} rows for table {} and id {}", firstBatch.size(), tableName, id);
+
+                // Iterate further if we can have additional rows
+                if (firstBatch.size() == batchSize) {
+                    dbHelper.<Map<String, Object>>batchStream(query, batchSize, batchSize)
+                            .forEach(batch -> {
+                                insert.executeUpdates(batch);
+                                log.debug("Extracted {} rows more for table {}", firstBatch.size(), tableName);
+                            });
+                }
+            }
+        });
     }
 
     @Override
