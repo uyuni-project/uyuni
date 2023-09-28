@@ -1249,7 +1249,7 @@ DATA = {
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/1/bootstrap/'
     },
     'SLES4SAP-15-SP1-x86_64' : {
-        'PDID' : [1772, 1712], 'BETAPDID' : [1928], 'PKGLIST' :  ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        'PDID' : [1772, 1712, 1766], 'BETAPDID' : [1928], 'PKGLIST' :  ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_X86_ARM,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/1/bootstrap/'
     },
     'SLES4SAP-15-SP1-ppc64le' : {
