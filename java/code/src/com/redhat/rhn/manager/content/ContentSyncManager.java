@@ -598,8 +598,7 @@ public class ContentSyncManager {
                     // test for OES credentials
                     if (c == null || !accessibleUrl(OES_URL, c.getUsername(), c.getPassword())) {
                         LOG.info("Credential is not an OES credentials");
-                        // ContentSyncException flag
-                        cse = true;
+                        syncException = e;
                     }
                 }
                 catch (URISyntaxException e) {
