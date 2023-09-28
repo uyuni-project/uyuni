@@ -601,7 +601,7 @@ public class ContentSyncManager {
                     }
                 }
                 catch (URISyntaxException e) {
-                    throw new ContentSyncException(e);
+                    syncException = e;
                 }
             }
             else if (c.isTypeOf(Credentials.TYPE_CLOUD_RMT)) {
@@ -622,8 +622,8 @@ public class ContentSyncManager {
         linkAndRefreshContentSource(mirrorUrl);
         ManagerInfoFactory.setLastMgrSyncRefresh();
 
-        if (cse) {
-            throw new ContentSyncException("Invalid credentials");
+        if (syncException != null) {
+            throw new ContentSyncException(syncException);
         }
     }
 
