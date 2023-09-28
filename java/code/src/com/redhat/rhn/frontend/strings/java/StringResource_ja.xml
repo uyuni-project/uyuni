@@ -10300,7 +10300,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit approved="yes" id="system.entitle.added.monitoring_entitled" xml:space="preserve">
         <source>&lt;strong&gt;Monitoring&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; Since you added the Monitoring system type we automatically assigned the Prometheus Exporters formula to the system. Please apply the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; in order to install and enable the Prometheus metrics exporters.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; Please make sure to open the &lt;a href="/docs/{1}/installation-and-upgrade/ports.html#_external_client_ports" target="_blank"&gt;required network ports&lt;/a&gt; for all installed exporters.</source>
-        <target state="final">&lt;strong&gt;モニタリング&lt;/strong&gt;の種類を適用しました。&lt;br/&gt;&lt;strong&gt;メモ:&lt;/strong&gt; システムに対してモニタリングの種類を追加したため、自動的にPrometheus Exporters formulaの割り当ても行ないました。Prometheus metrics exporters のインストールと有効化については &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt;を適用してください。&lt;br/&gt;&lt;strong&gt;メモ:&lt;/strong&gt;インストールされているすべてのexporterにPlease make sure to open the &lt;a href="/docs/{1}/installation-and-upgrade/ports.html#_external_client_ports" target="_blank"&gt;必要なネットワークポート&lt;/a&gt;を必ず開いてください。</target>
+        <target state="final">&lt;strong&gt;モニタリング&lt;/strong&gt;の種類を適用しました。&lt;br/&gt;&lt;strong&gt;メモ:&lt;/strong&gt; システムに対してモニタリングの種類を追加したため、自動的にPrometheus Exporters formulaの割り当ても行ないました。Prometheus metrics exportersをインストールして有効化するには &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt;を適用してください。&lt;br/&gt;&lt;strong&gt;メモ:&lt;/strong&gt;インストールされているすべてのexportersに&lt;a href="/docs/{1}/installation-and-upgrade/ports.html#_external_client_ports" target="_blank"&gt;必要なネットワークポート&lt;/a&gt;を必ず開いてください。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
@@ -11312,7 +11312,7 @@ For a detailed analysis, please refer to the log files.
       </trans-unit>
       <trans-unit id="notification.updateavailable.detail" xml:space="preserve" approved="yes">
         <source>A new update for @@PRODUCT_NAME@@ is now available. For further details, please refer to the &lt;a href="{0}"&gt;release notes&lt;a&gt;.</source>
-        <target state="final">@@PRODUCT_NAME@@の新しい更新が利用可能になりました。詳細については、&lt;a href="{0}"&gt;リリースノート&lt;a&gt;を参照してください。</target>
+        <target state="final">@@PRODUCT_NAME@@の新しい更新が利用できるようになりました。詳細については、&lt;a href="{0}"&gt;リリースノート&lt;a&gt;を参照してください。</target>
       </trans-unit>
     </body>
   </file>
