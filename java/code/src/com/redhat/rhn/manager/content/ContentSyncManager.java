@@ -521,8 +521,7 @@ public class ContentSyncManager {
      */
     private void refreshRepositoriesAuthentication(String mirrorUrl, boolean excludeSCC) throws ContentSyncException {
         List<Credentials> credentials = filterCredentials();
-        // ContentSyncException flag
-        boolean cse = false;
+        Exception syncException = null;
         ChannelFactory.cleanupOrphanVendorContentSource();
 
         // Query repos for all mirror credentials and consolidate
