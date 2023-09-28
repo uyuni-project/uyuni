@@ -1,0 +1,1 @@
+- Replace "filesize" in spec file with "stat" to allow installation on Enterprise Linux.
