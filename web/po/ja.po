@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-09-22 14:36+0200\n"
-"PO-Revision-Date: 2023-08-24 01:15+0000\n"
+"PO-Revision-Date: 2023-09-28 10:15+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -4255,9 +4255,8 @@ msgid "Subscription Warning"
 msgstr "サブスクライブに関する警告"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:61
-#, fuzzy
 msgid "Update Notification"
-msgstr "通知の削除"
+msgstr "更新通知"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:152
 msgid "Filter by type"
@@ -4852,6 +4851,9 @@ msgid ""
 "groups. Formulas allow automatic installation and configuration of software "
 "and may be installed via RPM packages."
 msgstr ""
+"Formulaカタログページでは、現在インストールされている<link>Salt Formula</link>を表示できます。これらのFormulaを個々"
+"のシステムまたはサーバグループに適用します。Formulaを使用すると、ソフトウェアの自動インストールと設定が可能になり、RPMパッケージを介してインスト"
+"ールできます。"
 
 #: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:95
 msgid "Formula Catalog"
