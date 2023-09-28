@@ -1,0 +1,1 @@
+- Use localhost for Cobbler client to avoid hairpins
