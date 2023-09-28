@@ -2,8 +2,6 @@ type Headers = Record<string, string>;
 type Level = "info" | "debug" | "trace" | "warning" | "error";
 type LogParams = Parameters<typeof console["log"]>;
 
-// TODO: Why does ESLint's no-console not work?
-
 export default class Loggerhead {
   private _log = console.log.bind(console);
   private _info = console.info.bind(console);
@@ -80,7 +78,7 @@ export default class Loggerhead {
   };
 
   private mark(input: { level: Level; message: string }) {
-    // Older Node doesn't have this method, this check should be safe once we upgrade to Node 20
+    // Older Node doesn't have this method, this check should be safe to remove once we upgrade to Node 20
     if (typeof performance !== "undefined" && "mark" in performance) {
       performance.mark(JSON.stringify(input));
     }
