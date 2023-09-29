@@ -50,8 +50,6 @@ import com.suse.oval.OsFamily;
 import com.suse.oval.OvalParser;
 import com.suse.oval.ovaltypes.OvalRootType;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -64,7 +62,7 @@ import java.util.stream.Collectors;
 
 // TODO: Test that if we get AFFECTED_PATCH_INAPPLICABLE auditServer.Channels and auditServer.Erratas are not null
 public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
-    private static final Logger LOG = LogManager.getLogger(CVEAuditManagerOVALTest.class);
+    public static final String CPE_OPENSUSE_LEAP_15_4 = "cpe:/o:opensuse:leap:15.4";
     private OvalParser ovalParser = new OvalParser();
 
     @Test
@@ -109,6 +107,8 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
 
         Cve cve = createTestCve("CVE-2022-2991");
 
+        extractAndSaveVulnerablePackages(ovalRoot);
+
         Set<Cve> cves = Set.of(cve);
         User user = createTestUser();
 
@@ -117,7 +117,7 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
         Set<Channel> channels = Set.of(channel);
 
         Server server = createTestServer(user, channels);
-        server.setCpe("cpe:/o:opensuse:leap:15.4"); // openSUSE Leap 15.4, same as the affected OS in OVAL
+        server.setCpe(CPE_OPENSUSE_LEAP_15_4); // openSUSE Leap 15.4, same as the affected OS in OVAL
 
         CVEAuditManager.populateCVEChannels();
 
@@ -144,7 +144,7 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
         Set<Channel> channels = Set.of(channel);
 
         Server server = createTestServer(user, channels);
-        server.setCpe("cpe:/o:opensuse:leap:15.4");
+        server.setCpe(CPE_OPENSUSE_LEAP_15_4);
 
         Package unpatched = createTestPackage(user, channel, "noarch");
         unpatched.setPackageName(createTestPackageName("kernel-debug-base"));
@@ -180,12 +180,13 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
         Set<Channel> channels = Set.of(channel);
 
         Server server = createTestServer(user, channels);
-        server.setCpe("cpe:/o:opensuse:leap:15.4");
+        server.setCpe(CPE_OPENSUSE_LEAP_15_4);
 
         Package unpatched = createTestPackage(user, channel, "noarch",
                 "kernel-debug-base", "0", "4.12.13", "150100.197.137.2");
 
-        Package patched = createTestPackage(user, errata, channel, "noarch",
+        // Add patched package to assigned channel
+        createTestPackage(user, errata, channel, "noarch",
                 "kernel-debug-base", "0", "4.12.14", "150100.197.137.2");
 
         createTestInstalledPackage(unpatched, server);
@@ -218,7 +219,7 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
         Set<Channel> channels = Set.of(channel);
 
         Server server = createTestServer(user, channels);
-        server.setCpe("cpe:/o:opensuse:leap:15.4");
+        server.setCpe(CPE_OPENSUSE_LEAP_15_4);
 
         Package affected =  createTestPackage(user, channel, "noarch", "MozillaFirefox");
         createTestPackage(user, channel, "noarch", "MozillaFirefox-devel");
@@ -252,7 +253,7 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
         Set<Channel> channels = Set.of(channel);
 
         Server server = createTestServer(user, channels);
-        server.setCpe("cpe:/o:opensuse:leap:15.4");
+        server.setCpe(CPE_OPENSUSE_LEAP_15_4);
 
         // Only package 'MozillaFirefox' has a patch in the assigned channels
         createTestPackage(user, errata, channel, "noarch", "MozillaFirefox", "0", "2.4.0",
@@ -295,7 +296,7 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
         Set<Channel> channels = Set.of(channel);
 
         Server server = createTestServer(user, channels);
-        server.setCpe("cpe:/o:opensuse:leap:15.4");
+        server.setCpe(CPE_OPENSUSE_LEAP_15_4);
 
         createTestPackage(user, errata, channel, "noarch", "MozillaFirefox", "0", "2.4.0", "150400.1.12");
         Package unpatched =  createTestPackage(user, channel, "noarch", "MozillaFirefox", "0", "2.3.0", "150400.1.12");
@@ -339,7 +340,7 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
         Channel otherChannel = createTestChannel(user, errata);
         Set<Channel> assignedChannels = Set.of(channel);
         Server server = createTestServer(user, assignedChannels);
-        server.setCpe("cpe:/o:opensuse:leap:15.4");
+        server.setCpe(CPE_OPENSUSE_LEAP_15_4);
 
         Package unpatched = createTestPackage(user, channel, "noarch",
                 "kernel-debug-base", "0", "4.12.13", "150100.197.137.2");
@@ -386,7 +387,7 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
         Channel otherChannel = createTestChannel(user, errata);
         Set<Channel> assignedChannels = Set.of(channel);
         Server server = createTestServer(user, assignedChannels);
-        server.setCpe("cpe:/o:opensuse:leap:15.4");
+        server.setCpe(CPE_OPENSUSE_LEAP_15_4);
 
         Package unpatched = createTestPackage(user, channel, "noarch",
                 "kernel-debug-base", "0", "4.12.13", "150100.197.137.2");
@@ -440,7 +441,7 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
         Set<Channel> channels = Set.of(channel);
 
         Server server = createTestServer(user, channels);
-        server.setCpe("cpe:/o:opensuse:leap:15.4");
+        server.setCpe(CPE_OPENSUSE_LEAP_15_4);
 
         Package unpatched = createTestPackage(user, channel, "noarch");
         unpatched.setPackageName(createTestPackageName("kernel-debug-base"));
@@ -457,6 +458,39 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
         CVEAuditSystemBuilder systemAuditResult = CVEAuditManagerOVAL.doAuditSystem(cve.getName(), results, server);
 
         assertEquals(PatchStatus.PATCHED, systemAuditResult.getPatchStatus());
+    }
+
+    @Test
+    void testDoAuditSystemAffectedPatchUnavailableInUyuni() throws Exception {
+        OvalRootType ovalRoot = ovalParser.parse(TestUtils
+                .findTestData("/com/redhat/rhn/manager/audit/test/oval/oval-def-1.xml"));
+
+        Cve cve = createTestCve("CVE-2022-2991");
+
+        extractAndSaveVulnerablePackages(ovalRoot);
+
+        User user = createTestUser();
+
+        Channel channel = createTestChannel(user);
+
+        Set<Channel> assignedChannels = Set.of(channel);
+        Server server = createTestServer(user, assignedChannels);
+        server.setCpe(CPE_OPENSUSE_LEAP_15_4);
+
+        // assigned channel contains an unpatched package
+        Package unpatched = createTestPackage(user, channel, "noarch",
+                "kernel-debug-base", "0", "4.12.13", "150100.197.137.2");
+
+        createTestInstalledPackage(unpatched, server);
+
+        CVEAuditManager.populateCVEChannels();
+
+        List<CVEAuditManager.CVEPatchStatus> results = CVEAuditManager.listSystemsByPatchStatus(user, cve.getName())
+                .collect(Collectors.toList());
+
+        CVEAuditSystemBuilder systemAuditResult = CVEAuditManagerOVAL.doAuditSystem(cve.getName(), results, server);
+
+        assertEquals(PatchStatus.AFFECTED_PATCH_UNAVAILABLE_IN_UYUNI, systemAuditResult.getPatchStatus());
     }
 
     @Test
