@@ -1,0 +1,2 @@
+- Revert action executor fix that was intended to prevent blocking of Taskomatic threads (bsc#1214121)
+
