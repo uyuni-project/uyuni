@@ -58,16 +58,16 @@ const PATCH_STATUS_LABEL = {
   },
   AFFECTED_PATCH_UNAVAILABLE: {
     className: "fa-exclamation-circle text-danger",
-    label: t("Affected, patch is unavailable anywhere (possibly a zero-day vulnerability or a \"Won't fix\" )")
+    label: t('Affected, patch is unavailable anywhere (possibly a zero-day vulnerability or a "Won\'t fix" )'),
   },
   AFFECTED_PATCH_UNAVAILABLE_IN_UYUNI: {
     className: "fa-exclamation-circle text-danger",
-    label: t("Affected, patch is unavailable in any of the synced channels")
+    label: t("Affected, patch is unavailable in any of the synced channels"),
   },
   AFFECTED_PARTIAL_PATCH_APPLICABLE: {
     className: "fa-shield text-danger",
-    label: t("Affected, partial patch available in assigned channel")
-  }
+    label: t("Affected, partial patch available in assigned channel"),
+  },
 };
 const TARGET_IMAGE = "IMAGE";
 const TARGET_SERVER = "SERVER";
@@ -354,12 +354,18 @@ class CVEAudit extends React.Component<Props, State> {
               cell={(row, criteria) => {
                 if (this.state.resultType === TARGET_SERVER) {
                   if (row.patchStatus === AFFECTED_PATCH_UNAVAILABLE_IN_UYUNI) {
-                    return t("No patches were found in the available channels. Try syncing existing channels or adding more channels");
+                    return t(
+                      "No patches were found in the available channels. Try syncing existing channels or adding more channels"
+                    );
                   } else if (row.patchStatus === AFFECTED_PATCH_UNAVAILABLE) {
-                    return t("Vulnerability doesn't have a patch. This could be due to it being a zero-day vulnerability or having been marked as 'Won't fix' by the distribution maintainer. We recommend searching online for any available mitigations that you can apply.");
-                  }
-                  else if (row.patchStatus === NOT_AFFECTED || row.patchStatus === PATCHED ||
-                      row.patchStatus === AFFECTED_PATCH_UNAVAILABLE) {
+                    return t(
+                      "Vulnerability doesn't have a patch. This could be due to it being a zero-day vulnerability or having been marked as 'Won't fix' by the distribution maintainer. We recommend searching online for any available mitigations that you can apply."
+                    );
+                  } else if (
+                    row.patchStatus === NOT_AFFECTED ||
+                    row.patchStatus === PATCHED ||
+                    row.patchStatus === AFFECTED_PATCH_UNAVAILABLE
+                  ) {
                     return t("No action required");
                   } else if (row.patchStatus === AFFECTED_FULL_PATCH_APPLICABLE) {
                     return (
@@ -404,27 +410,30 @@ class CVEAudit extends React.Component<Props, State> {
                     );
                   } else if (row.patchStatus === AFFECTED_PARTIAL_PATCH_APPLICABLE) {
                     return (
+                      <div>
                         <div>
-                          <div>
-                            <a href={"/rhn/systems/details/ErrataList.do?sid=" + row.id}>
-                              {t("Install a new partial patch on this system.")}
-                            </a>
-                          </div>
-                          {row.erratas.map((errata) => {
-                            return (
-                                <div>
-                                  <a href={"/rhn/errata/details/SystemsAffected.do?eid=" + errata.id}>{errata.advisory}</a>
-                                </div>
-                            );
-                          })}
+                          <a href={"/rhn/systems/details/ErrataList.do?sid=" + row.id}>
+                            {t("Install a new partial patch on this system.")}
+                          </a>
                         </div>
+                        {row.erratas.map((errata) => {
+                          return (
+                            <div>
+                              <a href={"/rhn/errata/details/SystemsAffected.do?eid=" + errata.id}>{errata.advisory}</a>
+                            </div>
+                          );
+                        })}
+                      </div>
                     );
                   } else {
                     return t("If you see this report a bug.");
                   }
                 } else if (this.state.resultType === TARGET_IMAGE) {
-                  if (row.patchStatus === NOT_AFFECTED || row.patchStatus === PATCHED ||
-                      row.patchStatus === AFFECTED_PATCH_UNAVAILABLE) {
+                  if (
+                    row.patchStatus === NOT_AFFECTED ||
+                    row.patchStatus === PATCHED ||
+                    row.patchStatus === AFFECTED_PATCH_UNAVAILABLE
+                  ) {
                     return t("No action required");
                   } else if (row.patchStatus === AFFECTED_FULL_PATCH_APPLICABLE) {
                     return (
