@@ -942,6 +942,14 @@ DATA = {
         'PDID' : [1772, 1908], 'BETAPDID' : [], 'PKGLIST' :  ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_X86_ARM,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/1/bootstrap/'
     },
+    'SLES4SAP-15-SP1-x86_64' : {
+        'PDID' : [1772, 1712, 1766], 'BETAPDID' : [1928], 'PKGLIST' :  ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/1/bootstrap/'
+    },
+    'SLES4SAP-15-SP1-ppc64le' : {
+        'PDID' : [1770, 1710, 1765], 'BETAPDID' : [1926], 'PKGLIST' :  ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_PPC,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/1/bootstrap/'
+    },
     'SLE-15-SP2-aarch64' : {
         'PDID' : [1943, 1709, 2372], 'BETAPDID' : [1925], 'PKGLIST' :  ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_X86_ARM,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/2/bootstrap/'
@@ -962,6 +970,14 @@ DATA = {
         'PDID' : [1946, 2015], 'BETAPDID' : [], 'PKGLIST' :  ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_X86_ARM,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/2/bootstrap/'
     },
+    'SLES4SAP-15-SP2-x86_64' : {
+        'PDID' : [1946, 1712, 1941], 'BETAPDID' : [1928], 'PKGLIST' :  ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/2/bootstrap/'
+    },
+    'SLES4SAP-15-SP2-ppc64le' : {
+        'PDID' : [1944, 1710, 1940], 'BETAPDID' : [1926], 'PKGLIST' :  ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_PPC,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/2/bootstrap/'
+    },
     'SLE-15-SP3-aarch64' : {
         'PDID' : [2142, 1709, 2567], 'BETAPDID' : [1925], 'PKGLIST' :  ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_X86_ARM,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/3/bootstrap/'
@@ -980,6 +996,14 @@ DATA = {
     },
     'SUMA-42-PROXY-x86_64' : {
         'PDID' : [2145, 2225, 2223], 'BETAPDID' : [], 'PKGLIST' :  ONLYSLE15 + PKGLIST15_SALT_OPT_BUNDLE + PKGLIST15_X86_ARM,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/3/bootstrap/'
+    },
+    'SLES4SAP-15-SP3-x86_64' : {
+        'PDID' : [2145, 1712, 2136], 'BETAPDID' : [1928], 'PKGLIST' :  ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/3/bootstrap/'
+    },
+    'SLES4SAP-15-SP3-ppc64le' : {
+        'PDID' : [2143, 1710, 2135], 'BETAPDID' : [1926], 'PKGLIST' :  ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_PPC,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/3/bootstrap/'
     },
     'SLE-15-SP4-aarch64' : {
