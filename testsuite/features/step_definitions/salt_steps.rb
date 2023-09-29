@@ -10,14 +10,15 @@ require 'tempfile'
 
 Given(/^the Salt master can reach "(.*?)"$/) do |minion|
   system_name = get_system_name(minion)
+  server = get_target('server')
   start = Time.now
-  # 300 is the default 1st keepalive interval for the minion
-  # where it realizes the connection is stuck
-  repeat_until_timeout(timeout: 300, retries: 3, message: "Master can not communicate with #{minion}", report_result: true) do
-    out, _code = get_target('server').run("salt #{system_name} test.ping")
+  # 700 seconds is the maximum time it takes the proxy to recover after being redefined for Retail
+  # 300 seconds would be the default first keepalive interval for the minion before it realizes the connection is stuck
+  repeat_until_timeout(timeout: 700, message: "Master can not communicate with #{minion}", report_result: true) do
+    out, _code = server.run("salt #{system_name} test.ping", check_errors: false)
     if out.include?(system_name) && out.include?('True')
       finished = Time.now
-      log "Took #{finished.to_i - start.to_i} seconds to contact the minion"
+      log "It took #{finished.to_i - start.to_i} seconds to contact the minion"
       break
     end
     sleep 1
