@@ -96,7 +96,7 @@ BuildRequires:  dom4j
 BuildRequires:  dwr >= 3
 BuildRequires:  glassfish-jaxb-runtime
 BuildRequires:  glassfish-jaxb-txw2
-BuildRequires:  google-gson >= 2.2.4
+BuildRequires:  google-gson < 2.10.0
 BuildRequires:  hibernate-commons-annotations
 BuildRequires:  hibernate-types
 BuildRequires:  httpcomponents-asyncclient
@@ -186,7 +186,7 @@ Requires:       glassfish-activation-api
 Requires:       glassfish-jaxb-api
 Requires:       glassfish-jaxb-runtime
 Requires:       glassfish-jaxb-txw2
-Requires:       google-gson >= 2.2.4
+Requires:       google-gson < 2.10.0
 Requires:       hibernate-commons-annotations
 Requires:       hibernate-types
 Requires:       httpcomponents-client
