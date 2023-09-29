@@ -15,4 +15,5 @@ jobs:
     uses: ./.github/workflows/acceptance_tests_common.yml
     with:
       secondary_tests: "17_run_secondary_tests.sh" 
+      server_id: "secondary"
 

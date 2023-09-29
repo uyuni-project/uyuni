@@ -5,6 +5,9 @@ on:
       secondary_tests:
         required: true
         type: string
+      server_id:
+        required: true
+        type: string
 env:
   UYUNI_PROJECT: uyuni-project
   UYUNI_VERSION: master
@@ -84,4 +87,13 @@ jobs:
         run: ./testsuite/podman_runner/18_split_secondary_p_tests.sh
       - name: run_secondary_tests
         run: ./testsuite/podman_runner/${{ inputs.secondary_tests }} 
+      - name: get_server_logs
+        if: ${{ failure() }}
+        run: ./testsuite/podman_runner/19_get_server_logs.sh ${{ inputs.server_id }}
+      - name: upload_server_log_artifacts
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: server_rhn_logs_${{ inputs.server_id }}
+          path: /tmp/test-all-in-one/server-logs/${{ inputs.server_id }}
 
