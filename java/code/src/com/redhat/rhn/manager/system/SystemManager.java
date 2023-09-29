@@ -756,6 +756,7 @@ public class SystemManager extends BaseManager {
 
         server.asMinionServer().ifPresent(minion -> minion.getAccessTokens().forEach(token -> {
             token.setValid(false);
+            token.setMinion(null);
             AccessTokenFactory.save(token);
         }));
 

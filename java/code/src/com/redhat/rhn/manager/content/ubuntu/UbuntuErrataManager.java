@@ -50,6 +50,8 @@ import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Reader;
+import java.lang.reflect.Type;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -64,6 +66,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class UbuntuErrataManager {
+
+    private static final Type ERRATA_INFO_TYPE = new TypeToken<Map<String, UbuntuErrataInfo>>() { }.getType();
 
     private static final Logger LOG = LogManager.getLogger(UbuntuErrataManager.class);
 
@@ -115,20 +119,23 @@ public class UbuntuErrataManager {
         HttpGet httpGet = new HttpGet(jsonDBUrl);
         LOG.info("download ubuntu errata start");
         HttpResponse httpResponse = httpClient.executeRequest(httpGet);
-        if (httpResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-            Map<String, UbuntuErrataInfo> errataInfo = GSON.fromJson(
-                    new InputStreamReader(httpResponse.getEntity().getContent()),
-                    new TypeToken<Map<String, UbuntuErrataInfo>>() { } .getType());
-            LOG.info("download ubuntu errata end");
-            return errataInfo;
+        int statusCode = httpResponse.getStatusLine().getStatusCode();
+        if (statusCode == HttpStatus.SC_OK) {
+            try (
+                InputStream responseStream = httpResponse.getEntity().getContent();
+                Reader responseReader = new InputStreamReader(responseStream);
+            ) {
+                Map<String, UbuntuErrataInfo> errataInfo = GSON.fromJson(responseReader, ERRATA_INFO_TYPE);
+                LOG.info("download ubuntu errata end");
+                return errataInfo;
+            }
         }
         else {
-            throw new IOException("error downloading " + jsonDBUrl + " status code " +
-                   httpResponse.getStatusLine().getStatusCode());
+            throw new IOException("error downloading " + jsonDBUrl + " status code " + statusCode);
         }
     }
 
-    private static List<Entry> parseUbuntuErrata(Map<String, UbuntuErrataInfo> errataInfo) {
+    private static Stream<Entry> parseUbuntuErrata(Map<String, UbuntuErrataInfo> errataInfo) {
         return errataInfo.values().stream().map(ubuntuErrataInfo -> {
             String description = ubuntuErrataInfo.getDescription().length() > 4000 ?
                     ubuntuErrataInfo.getDescription().substring(0, 4000) :
@@ -171,16 +178,19 @@ public class UbuntuErrataManager {
                     description,
                     reboot,
                     packageData);
-        }).collect(Collectors.toList());
+        });
     }
 
     private static Map<String, UbuntuErrataInfo> getUbuntuErrataInfo() throws IOException {
         String jsonDBUrl = "https://usn.ubuntu.com/usn-db/database.json";
         if (isFromDir()) {
             URI uri = MgrSyncUtils.urlToFSPath(jsonDBUrl, "");
-            InputStream inputStream = Files.newInputStream(Paths.get(uri));
-            return GSON.fromJson(new InputStreamReader(inputStream),
-                    new TypeToken<Map<String, UbuntuErrataInfo>>() { }.getType());
+            try (
+                InputStream inputStream = Files.newInputStream(Paths.get(uri));
+                Reader fileReader = new InputStreamReader(inputStream);
+            ) {
+                return GSON.fromJson(fileReader, ERRATA_INFO_TYPE);
+            }
         }
         else {
             return downloadUbuntuErrataInfo(jsonDBUrl);
@@ -193,50 +203,41 @@ public class UbuntuErrataManager {
      * @throws IOException in case of download issues
      */
     public static void sync(Set<Long> channelIds) throws IOException {
-        List<Entry> ubuntuErrataInfo = parseUbuntuErrata(getUbuntuErrataInfo());
-        processUbuntuErrataByIds(channelIds, ubuntuErrataInfo);
+        LOG.debug("sync started - check deb packages in channels, totalMemory:{}, freeMemory:{}",
+            Runtime.getRuntime().totalMemory(), Runtime.getRuntime().freeMemory());
+
+        // Extract the deb packages from each channel
+        var packagesByChannelMap = channelIds.stream()
+                                             .map(ChannelFactory::lookupById)
+                                             .filter(c -> c.isTypeDeb() && !c.isCloned())
+                                             .collect(Collectors.toMap(c -> c, Channel::getPackages));
+
+        if (packagesByChannelMap.isEmpty()) {
+            LOG.info("No deb packages to process in channels: {}", channelIds);
+            LOG.debug("check deb packages in channels finished - done, totalMemory:{}, freeMemory:{}",
+                Runtime.getRuntime().totalMemory(), Runtime.getRuntime().freeMemory());
+            return;
+        }
+
+        LOG.debug("check deb packages in channels finished - get and parse errata");
+        Stream<Entry> ubuntuErrataInfo = parseUbuntuErrata(getUbuntuErrataInfo());
+        LOG.debug("get and parse errata finished - process Ubuntu Errata");
+        processUbuntuErrata(packagesByChannelMap, ubuntuErrataInfo);
+        LOG.debug("process Ubuntu Errata finished - done, totalMemory:{}, freeMemory:{}",
+            Runtime.getRuntime().totalMemory(), Runtime.getRuntime().freeMemory());
     }
 
     /**
      * Processes ubuntu errata and tries to associate them to the given channels
-     * @param channelIds list of channel ids to match errata against
+     * @param packagesMap Map of deb packages by their corresponding channel
      * @param ubuntuErrataInfo list of ubuntu errata entries
      */
-    public static void processUbuntuErrataByIds(Set<Long> channelIds, List<Entry> ubuntuErrataInfo) {
-        processUbuntuErrata(channelIds.stream()
-                .map(ChannelFactory::lookupById)
-                .collect(Collectors.toSet()), ubuntuErrataInfo);
-    }
-
-    /**
-     * Processes ubuntu errata and tries to associate them to the given channels
-     * @param channels list of channels to match errata against
-     * @param ubuntuErrataInfo list of ubuntu errata entries
-     */
-    public static void processUbuntuErrata(Set<Channel> channels, List<Entry> ubuntuErrataInfo) {
-
-        Map<Channel, Set<Package>> ubuntuChannels = channels.stream()
-                .filter(c -> c.isTypeDeb() && !c.isCloned())
-                .collect(Collectors.toMap(c -> c, Channel::getPackages));
-
-        List<String> uniqueCVEs = ubuntuErrataInfo.stream()
-                .flatMap(e -> e.getCves().stream().filter(c -> c.startsWith("CVE-")))
-                .distinct()
-                .collect(Collectors.toList());
-
-        Map<String, Cve> cveByName = TimeUtils.logTime(LOG, "looking up " +  uniqueCVEs.size() + " CVEs",
-                () -> uniqueCVEs.stream()
-                        .map(CveFactory::lookupOrInsertByName)
-                        .collect(Collectors.toMap(Cve::getName, e -> e)));
-
+    public static void processUbuntuErrata(Map<Channel, Set<Package>> packagesMap, Stream<Entry> ubuntuErrataInfo) {
         Set<Errata> changedErrata = new HashSet<>();
-        TimeUtils.logTime(LOG, "writing " + ubuntuErrataInfo.size() + " erratas to db", () -> ubuntuErrataInfo.stream()
-                .flatMap(entry -> {
-
-
+        TimeUtils.logTime(LOG, "writing erratas to db", () -> ubuntuErrataInfo.flatMap(entry -> {
             Map<Channel, Set<Package>> matchingPackagesByChannel =
                     TimeUtils.logTime(LOG, "matching packages for " + entry.getId(),
-                            () -> ubuntuChannels.entrySet().stream()
+                            () -> packagesMap.entrySet().stream()
                                     .collect(Collectors.toMap(Map.Entry::getKey,
                                             c -> c.getValue().stream().filter(p -> entry.getPackages().stream()
                                                     .anyMatch(e -> {
@@ -289,13 +290,17 @@ public class UbuntuErrataManager {
                     return Stream.empty();
                 }
 
-                errata.setAdvisoryRel(Long.parseLong(split[1]));
                 errata.setProduct("Ubuntu");
                 errata.setSolution("-");
                 errata.setSynopsis(entry.getIsummary());
+
+                // faster lookup for existing entries
+                Map<String, Cve> cveByName = errata.getCves().stream()
+                    .collect(Collectors.toMap(Cve::getName, cve -> cve));
+
                 Set<Cve> cves = entry.getCves().stream()
                         .filter(c -> c.startsWith("CVE-"))
-                        .map(cveByName::get)
+                        .map(name -> cveByName.computeIfAbsent(name, CveFactory::lookupOrInsertByName))
                         .collect(Collectors.toSet());
                 errata.setCves(cves);
                 errata.setDescription(entry.getDescription());

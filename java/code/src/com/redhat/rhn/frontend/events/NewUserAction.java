@@ -28,7 +28,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -95,14 +94,11 @@ public class NewUserAction extends BaseMailAction implements MessageAction {
 
 
     private String[] getEmails(NewUserEvent evt) {
-        List adminList = evt.getAdmins();
-        String[] adminEmails = new String[adminList.size()];
-        int index = 0;
-        for (Object oIn : adminList) {
-            adminEmails[index] = ((User) oIn).getEmail();
-            index++;
-        }
-        return adminEmails;
+        return evt.getAdmins().stream()
+                .filter(u -> !u.isDisabled())
+                .filter(u -> u.getEmailNotify() == 1)
+                .map(User::getEmail)
+                .toArray(String[]::new);
     }
 
 

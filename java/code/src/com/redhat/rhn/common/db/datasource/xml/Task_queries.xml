@@ -301,6 +301,13 @@ SELECT id, channel_label, client, reason, force, bypass_filters, next_action
     </query>
 </write-mode>
 
+
+<write-mode name="taskomatic_token_cleanup">
+    <query>
+        DELETE FROM susechannelaccesstoken where expiration &lt; now() OR (valid = 'N' and minion_id is null)
+    </query>
+</write-mode>
+
 <mode name="taskomatic_task_status">
    <query params="">
    SELECT t.name, r.id, r.start_time, r.status

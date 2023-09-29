@@ -79,6 +79,12 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I click the Add Product button
     And I wait until I see "SUSE Linux Enterprise Server 15 SP2 x86_64" product has been added
 
+@cloud
+@sle15sp2_minion
+  Scenario: Add SUSE Linux Enterprise Server 15 SP2 Public Cloud channels
+    When I add "sle-module-public-cloud15-sp2-pool-x86_64" channel
+    And I add "sle-module-public-cloud15-sp2-updates-x86_64" channel
+
 @uyuni
 @sle15sp2_minion
   Scenario: Add SUSE Linux Enterprise Server 15 SP2 Uyuni Client tools
@@ -104,6 +110,12 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
     And I wait until I see "SUSE Linux Enterprise Server 15 SP3 x86_64" product has been added
 
+@cloud
+@sle15sp3_minion
+  Scenario: Add SUSE Linux Enterprise Server 15 SP3 Public Cloud channels
+    When I add "sle-module-public-cloud15-sp3-pool-x86_64" channel
+    And I add "sle-module-public-cloud15-sp3-updates-x86_64" channel
+
 @uyuni
 @sle15sp3_minion
   Scenario: Add SUSE Linux Enterprise Server 15 SP3 Uyuni Client tools
@@ -127,6 +139,12 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
     And I wait until I see "SUSE Linux Enterprise Server 15 SP4 x86_64" product has been added
 
+@cloud
+@sle15sp4_minion
+  Scenario: Add SUSE Linux Enterprise Server 15 SP4 Public Cloud channels
+    When I add "sle-module-public-cloud15-sp4-pool-x86_64" channel
+    And I add "sle-module-public-cloud15-sp4-updates-x86_64" channel
+
 @uyuni
 @sle15sp4_minion
   Scenario: Add SUSE Linux Enterprise Server 15 SP4 Uyuni Client tools
@@ -149,6 +167,12 @@ Scenario: Add SUSE Linux Enterprise Server 15 SP5
   When I click the Add Product button
   And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
   And I wait until I see "SUSE Linux Enterprise Server 15 SP5 x86_64" product has been added
+
+@cloud
+@sle15sp5_minion
+  Scenario: Add SUSE Linux Enterprise Server 15 SP5 Public Cloud channels
+    When I add "sle-module-public-cloud15-sp5-pool-x86_64" channel
+    And I add "sle-module-public-cloud15-sp5-updates-x86_64" channel
 
 @uyuni
 @sle15sp5_minion
@@ -496,6 +520,12 @@ Scenario: Add SUSE Linux Enterprise Server 15 SP5
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
     And I wait until I see "SUSE Manager Proxy 4.3 x86_64" product has been added
+
+@cloud
+@proxy
+  Scenario: Add Manager Proxy 4.3 Public Cloud channels
+    When I add "sle-module-public-cloud15-sp4-pool-x86_64-proxy-4.3" channel
+    And I add "sle-module-public-cloud15-sp4-updates-x86_64-proxy-4.3" channel
 
 @uyuni
 @proxy
