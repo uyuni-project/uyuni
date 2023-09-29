@@ -189,7 +189,7 @@ public class PaygProductFactory extends HibernateFactory {
         String version = product.getVersion();
 
         return ChannelFamilyFactory.PROXY_CHANNEL_FAMILY_LABEL.equals(family.getLabel()) &&
-            RPM_VERSION_COMPARATOR.compare(version, "4.2") >= 0;
+            RPM_VERSION_COMPARATOR.compare(version, "4.3") >= 0;
     }
 
     private static boolean isSupportedOpenSUSEProduct(SUSEProduct product) {
