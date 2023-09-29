@@ -36,10 +36,13 @@ import com.suse.manager.admin.PaygAdminManager;
 
 import com.jcraft.jsch.JSchException;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.quartz.JobExecutionContext;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class PaygUpdateAuthTask extends RhnJavaJob {
 
@@ -88,25 +91,28 @@ public class PaygUpdateAuthTask extends RhnJavaJob {
 
         manageLocalHostPayg();
 
-        sccRefreshLock.withFileLock(() -> {
-            if (jobExecutionContext != null && jobExecutionContext.getJobDetail().getJobDataMap().containsKey(KEY_ID)) {
-                Optional<PaygSshData> paygData = PaygSshDataFactory.lookupById(
-                        Integer.parseInt((String) jobExecutionContext.getJobDetail().getJobDataMap().get(KEY_ID)));
-                paygData.ifPresent(this::updateInstanceData);
-            }
-            else {
-                PaygSshDataFactory.lookupPaygSshData()
-                        .forEach(this::updateInstanceData);
-            }
+        List<PaygSshData> paygSshData;
+        if (jobExecutionContext != null && jobExecutionContext.getJobDetail().getJobDataMap().containsKey(KEY_ID)) {
+            int sshId = Integer.parseInt((String) jobExecutionContext.getJobDetail().getJobDataMap().get(KEY_ID));
+            paygSshData = PaygSshDataFactory.lookupById(sshId).stream().collect(Collectors.toList());
+        }
+        else {
+            paygSshData = PaygSshDataFactory.lookupPaygSshData();
+        }
 
-            // Call the content sync manager to refresh all repositories content sources and the authorizations
-            try {
-                contentSyncManager.updateRepositoriesPayg();
-            }
-            catch (ContentSyncException ex) {
-                log.error("Unable to refresh repositories", ex);
-            }
-        });
+        if (CollectionUtils.isNotEmpty(paygSshData)) {
+            sccRefreshLock.withFileLock(() -> {
+                paygSshData.forEach(this::updateInstanceData);
+
+                // Call the content sync manager to refresh all repositories content sources and the authorizations
+                try {
+                    contentSyncManager.updateRepositoriesPayg();
+                }
+                catch (ContentSyncException ex) {
+                    log.error("Unable to refresh repositories", ex);
+                }
+            });
+        }
     }
 
     /**
