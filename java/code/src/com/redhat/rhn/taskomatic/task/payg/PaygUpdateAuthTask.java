@@ -107,7 +107,7 @@ public class PaygUpdateAuthTask extends RhnJavaJob {
 
             // Call the content sync manager to refresh all repositories content sources and the authorizations
             try {
-                contentSyncManager.updateRepositories(null);
+                contentSyncManager.updateRepositoriesPayg();
             }
             catch (ContentSyncException ex) {
                 LOG.error("Unable to refresh repositories", ex);
