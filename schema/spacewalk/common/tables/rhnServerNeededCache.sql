@@ -53,6 +53,9 @@ CREATE INDEX rhn_snc_cid_idx
     
     ;
 
+CREATE INDEX rhn_snc_seid_idx
+    ON rhnServerNeededCache (server_id, errata_id);
+
 CREATE INDEX rhn_snc_speid_idx
     ON rhnServerNeededCache (server_id, package_id, errata_id)
     
