@@ -91,15 +91,10 @@ public class CVEAuditManagerOVAL {
             CVEAuditSystemBuilder auditWithChannelsResult =
                     CVEAuditManager.doAuditSystem(clientServer.getId(), resultsBySystem.get(clientServer.getId()));
 
-            if (doesSupportOVALAuditing(clientServer)) {
-                systemAuditResult = doAuditSystem(cveIdentifier, resultsBySystem.get(clientServer.getId()),
-                        clientServer);
-                systemAuditResult.setChannels(auditWithChannelsResult.getChannels());
-                systemAuditResult.setErratas(auditWithChannelsResult.getErratas());
-            }
-            else {
-                systemAuditResult = auditWithChannelsResult;
-            }
+            systemAuditResult = doAuditSystem(cveIdentifier, resultsBySystem.get(clientServer.getId()),
+                    clientServer);
+            systemAuditResult.setChannels(auditWithChannelsResult.getChannels());
+            systemAuditResult.setErratas(auditWithChannelsResult.getErratas());
 
             if (patchStatuses.contains(systemAuditResult.getPatchStatus())) {
                 result.add(new CVEAuditServer(
@@ -116,17 +111,6 @@ public class CVEAuditManagerOVAL {
 
     private static boolean isCVEIdentifierUnknown(String cveIdentifier) {
         return !OVALCachingFactory.canAuditCVE(cveIdentifier);
-    }
-
-    /**
-     * Check if server support OVAL CVE auditing
-     *
-     * @param clientServer the server to check
-     * @return {@code True}
-     * */
-    public static boolean doesSupportOVALAuditing(Server clientServer) {
-        // TODO: check if OVAL is synced and client product is support .e.g. Red Hat, Debian, Ubuntu or SUSE
-        return true;
     }
 
     /**

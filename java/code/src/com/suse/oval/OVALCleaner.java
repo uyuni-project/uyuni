@@ -124,9 +124,7 @@ public class OVALCleaner {
         if (osFamily == OsFamily.DEBIAN) {
             test.setId(convertDebianId(test.getId(), osVersion));
             test.setObjectRef(convertDebianId(test.getObjectRef(), osVersion));
-            if (test.getStateRef().isPresent()) {
-                test.setStateRef(convertDebianId(test.getStateRef().get(), osVersion));
-            }
+            test.getStateRef().ifPresent(stateRef -> test.setStateRef(convertDebianId(stateRef, osVersion)));
         }
     }
 
