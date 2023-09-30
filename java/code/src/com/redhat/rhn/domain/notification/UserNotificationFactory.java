@@ -77,7 +77,8 @@ public class UserNotificationFactory extends HibernateFactory {
             Class<? extends Mail> cobj = Class.forName(clazz).asSubclass(Mail.class);
             mailer = cobj.getDeclaredConstructor().newInstance();
         }
-        catch (Exception e) {
+        catch (Exception | LinkageError e) {
+            log.error("An exception was thrown while initializing custom mailer class", e);
             mailer = new SmtpMail();
         }
     }
