@@ -26,7 +26,7 @@ Group:          Applications/Internet
 
 Version:        4.4.4
 Release:        1
-Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}-1.tar.gz
+Source0:        %{name}-%{version}.tar.gz
 Source1:        https://raw.githubusercontent.com/uyuni-project/uyuni/%{name}-%{version}-1/schema/reportdb/%{name}-rpmlintrc
 
 URL:            https://github.com/uyuni-project/uyuni
