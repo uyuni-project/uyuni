@@ -1,0 +1,2 @@
+- Include reboot_suggested and restart_suggested booleans in 
+  errata.getDetails API response
