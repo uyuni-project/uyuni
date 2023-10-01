@@ -642,23 +642,6 @@ public class Errata extends BaseDomainHelper implements Selectable {
     }
 
     /**
-     * Checks whether a keyword is already associated with an erratum.
-     * @param keywordIn The keyword to check.
-     * @return returns whether keyword is already associated with given erratum
-     */
-    public boolean containsKeyword(String keywordIn) {
-        if (this.keywords == null) {
-            return false;
-        }
-        for (Keyword k : this.keywords) {
-            if (k.getKeyword().equals(keywordIn)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
      * @return Returns the keywords.
      */
     public Set<Keyword> getKeywords() {
@@ -674,11 +657,20 @@ public class Errata extends BaseDomainHelper implements Selectable {
 
     /**
      * Search for the given keyword in the set
-     * @param s The keyword to search for
+     *
+     * @param keyword The keyword to search for
      * @return true if keyword was found
      */
-    public boolean hasKeyword(String s) {
-        return containsKeyword(s);
+    public boolean hasKeyword(String keyword) {
+        if (this.keywords == null || keyword == null) {
+            return false;
+        }
+        for (Keyword k : this.keywords) {
+            if (k.getKeyword().equals(keyword)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
