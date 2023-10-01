@@ -79,8 +79,8 @@ import org.apache.logging.log4j.Logger;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -134,12 +134,9 @@ public class ErrataHandler extends BaseHandler {
      */
     @ReadOnly
     public Map<String, Object> getDetails(User loggedInUser, String advisoryName) throws FaultException {
-     // Get the logged in user. We don't care what roles this user has, we
-        // just want to make sure the caller is logged in.
-
         Errata errata = lookupAccessibleErratum(advisoryName, empty(), loggedInUser.getOrg());
 
-        Map<String, Object> errataMap = new HashMap<>();
+        Map<String, Object> errataMap = new LinkedHashMap<>();
 
         errataMap.put("id", errata.getId());
         if (errata.getIssueDate() != null) {
