@@ -42,7 +42,8 @@
 %global wwwroot %{serverdir}/www
 %endif
 
-%global reporoot %{_datarootdir}/susemanager/gpg/
+%global wwwroot %{_datarootdir}/susemanager/www
+%global reporoot %{wwwroot}/pub
 
 %global debug_package %{nil}
 
@@ -294,6 +295,7 @@ sed -i '/You can access .* via https:\/\//d' /tmp/motd 2> /dev/null ||:
 %dir %{pythonsmroot}/susemanager
 %dir %{_prefix}/share/rhn/
 %dir %{_datadir}/susemanager
+%dir %{wwwroot}
 %dir %{reporoot}
 %dir %{reporoot}/repositories
 %dir %{reporoot}/repositories/empty
