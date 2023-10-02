@@ -22,12 +22,26 @@ else
     exit 1
 fi
 
-# Including all sub-folders of the upgrade dir that comes after the one called "${schema_name}-${schema_version}-to-..."
-# This should make sure we apply all the scripts meant to be executed on top of the current schema version.
-# It probably won't happen often that we have multiple pending directories, but it could happen in case of re-tagging
-for i in $(find ${upgrade_dir} -name "$1-*-to-*" | sed -n "/$1-$2-to-.*$/,$ p"); do
-    echo $(basename $i)
-    for j in $(find $i -name *.sql); do
-        echo -e "\t$(basename $j)"; spacewalk-sql ${additional_params} $j | sed 's/^/\t\t/';
-    done;
+# Start with the given schema name and version
+schema="$1"
+version="$2"
+
+# Get the upgrade dir for the current schema and version
+current_dir="$(find ${upgrade_dir} -name "$schema-$version-to-*")"
+until [ -z "${current_dir}" ]
+do
+    basename "${current_dir}"
+
+    # Apply all the sql scripts from this directory
+    while IFS= read -r -d '' file
+    do
+        echo -e "\t$(basename "${file}")"; spacewalk-sql ${additional_params} "${file}" | sed 's/^/\t\t/';
+    done < <(find "${current_dir}" -name '*.sql' -print0)
+
+    # Set the next schema and version from the directory name
+    schema=$(basename "${current_dir}" | sed -e 's/.*-to-\([a-z-]\+\)-.*$/\1/')
+    version=$(basename "${current_dir}" | sed -e 's/.*-\([0-9.]\+\)$/\1/')
+
+    # Check if another upgrade directory exists
+    current_dir=$(find ${upgrade_dir} -name "$schema-$version-to-*")
 done
