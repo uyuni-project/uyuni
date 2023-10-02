@@ -18,10 +18,10 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-02-17 14:33+0100\n"
-"PO-Revision-Date: 2022-03-22 20:12+0000\n"
+"PO-Revision-Date: 2023-10-02 11:15+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
-"Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/spacewalk-"
-"client-tools/ca/>\n"
+"Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/"
+"spacewalk-client-tools-4-3/ca/>\n"
 "Language: ca\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -857,7 +857,7 @@ msgstr ""
 #: ../src/up2date_client/rhnreg_constants.py:136
 #: ../data/rh_register.glade.h:131
 msgid "Are you sure you would like to continue?"
-msgstr "Esteu segur que voleu continuar?"
+msgstr "Segur que voleu continuar?"
 
 #: ../src/up2date_client/rhnreg_constants.py:138
 msgid ""
@@ -2310,7 +2310,7 @@ msgid ""
 "Are you sure you would like to continue?"
 msgstr ""
 "\n"
-"Esteu segur que voleu continuar?"
+"Segur que voleu continuar?"
 
 #: ../data/rh_register.glade.h:117
 msgid "Are you Sure?"
