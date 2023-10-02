@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Oct 02 17:20:54 CEST 2023 - rosuna@suse.com
+
+- version 4.3.67-1
+  * Do not call SCC when updating the repositories authentication
+    for PAYG (bsc#1215857)
+
+-------------------------------------------------------------------
 Wed Sep 27 13:26:33 CEST 2023 - marina.latini@suse.com
 
 - version 4.3.66-1

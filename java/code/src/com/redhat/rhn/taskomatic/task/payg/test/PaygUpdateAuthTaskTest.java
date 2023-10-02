@@ -60,6 +60,7 @@ import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.quartz.JobExecutionException;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -106,8 +107,6 @@ public class PaygUpdateAuthTaskTest extends JMockBaseTestCaseWithUser {
         paygAuthDataExtractorMock = mock(PaygAuthDataExtractor.class);
         contentSyncManagerMock = mock(ContentSyncManager.class);
 
-        checking(new Expectations() {{ allowing(contentSyncManagerMock).updateRepositories(null); }});
-
         paygUpdateAuthTask = new PaygUpdateAuthTask();
 
         paygUpdateAuthTask.setCloudPaygManager(new CloudPaygManager());
@@ -144,6 +143,7 @@ public class PaygUpdateAuthTaskTest extends JMockBaseTestCaseWithUser {
     public void testLocalhostPaygConnection() throws Exception {
         checking(new Expectations() {
             {
+                allowing(contentSyncManagerMock).updateRepositoriesPayg();
                 oneOf(paygAuthDataExtractorMock).extractAuthData(with(any(PaygSshData.class)));
                 will(returnValue(paygInstanceInfo));
                 oneOf(paygAuthDataExtractorMock).extractAuthData(with(any(PaygSshData.class)));
@@ -242,10 +242,13 @@ public class PaygUpdateAuthTaskTest extends JMockBaseTestCaseWithUser {
             }
         }
     }
+
+    @Test
     public void testRHUIConnection() throws Exception {
         PaygInstanceInfo rhuiInstanceInfo = createRHUIInstanceInfo();
         checking(new Expectations() {
             {
+                allowing(contentSyncManagerMock).updateRepositoriesPayg();
                 oneOf(paygAuthDataExtractorMock).extractAuthData(with(any(PaygSshData.class)));
                 will(returnValue(rhuiInstanceInfo));
             }});
@@ -312,6 +315,7 @@ public class PaygUpdateAuthTaskTest extends JMockBaseTestCaseWithUser {
     public void testJschException() throws Exception {
         checking(new Expectations() {
             {
+                allowing(contentSyncManagerMock).updateRepositoriesPayg();
                 oneOf(paygAuthDataExtractorMock).extractAuthData(with(any(PaygSshData.class)));
                 will(throwException(new JSchException("My JSchException exception")));
             }});
@@ -328,6 +332,7 @@ public class PaygUpdateAuthTaskTest extends JMockBaseTestCaseWithUser {
     public void testPaygDataExtractException() throws Exception {
         checking(new Expectations() {
             {
+                allowing(contentSyncManagerMock).updateRepositoriesPayg();
                 oneOf(paygAuthDataExtractorMock).extractAuthData(with(any(PaygSshData.class)));
                 will(throwException(new PaygDataExtractException("My PaygDataExtractException")));
             }});
@@ -350,6 +355,7 @@ public class PaygUpdateAuthTaskTest extends JMockBaseTestCaseWithUser {
     public void testPaygDataExtractExceptionInvalidateCredentials() throws Exception {
         checking(new Expectations() {
             {
+                allowing(contentSyncManagerMock).updateRepositoriesPayg();
                 oneOf(paygAuthDataExtractorMock).extractAuthData(with(any(PaygSshData.class)));
                 will(returnValue(paygInstanceInfo));
                 oneOf(paygAuthDataExtractorMock).extractAuthData(with(any(PaygSshData.class)));
@@ -410,7 +416,7 @@ public class PaygUpdateAuthTaskTest extends JMockBaseTestCaseWithUser {
     public void testGenericException() throws Exception {
         checking(new Expectations() {
             {
-
+                allowing(contentSyncManagerMock).updateRepositoriesPayg();
                 oneOf(paygAuthDataExtractorMock).extractAuthData(with(any(PaygSshData.class)));
                 will(throwException(new Exception("My Exception")));
             }});
@@ -427,6 +433,7 @@ public class PaygUpdateAuthTaskTest extends JMockBaseTestCaseWithUser {
     public void testSuccessClearStatus() throws Exception {
         checking(new Expectations() {
             {
+                allowing(contentSyncManagerMock).updateRepositoriesPayg();
                 oneOf(paygAuthDataExtractorMock).extractAuthData(with(any(PaygSshData.class)));
                 will(returnValue(paygInstanceInfo));
             }});
@@ -435,6 +442,18 @@ public class PaygUpdateAuthTaskTest extends JMockBaseTestCaseWithUser {
         assertNull(paygData.getErrorMessage());
         assertEquals(paygData.getStatus(), PaygSshData.Status.S);
         assertEquals(0, UserNotificationFactory.listAllNotificationMessages().size());
+    }
+
+    @Test
+    public void doNotCallContentSyncManagerIfNoSshDataConnectionIsDefined() throws JobExecutionException {
+        PaygSshDataFactory.lookupPaygSshData().forEach(PaygSshDataFactory::deletePaygSshData);
+        commitAndCloseSession();
+
+        checking(new Expectations() {{
+            never(contentSyncManagerMock).updateRepositoriesPayg();
+        }});
+
+        paygUpdateAuthTask.execute(null);
     }
 
     private PaygSshData createPaygSshData() {
