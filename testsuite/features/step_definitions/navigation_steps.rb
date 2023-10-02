@@ -249,7 +249,7 @@ end
 
 When(/^I enter (\d+) minutes from now as "([^"]*)"$/) do |minutes_to_add, field|
   future_time = Time.now + 60 * minutes_to_add.to_i
-  future_time.strftime('%l:%M %P').to_s.strip
+  future_time.strftime('%H:%M').to_s.strip
   fill_in(field, with: future_time, fill_options: { clear: :backspace })
 end
 
