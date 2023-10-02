@@ -200,7 +200,7 @@ Object.defineProperties(moment, {
 });
 
 const parseTimeString = function (input: string): { hours: number; minutes: number } | null {
-  const parsed = moment(input, ["H:m"]);
+  const parsed = moment(input.trim(), ["H:m", "Hm"]);
   if (parsed.isValid()) {
     return {
       hours: parsed.hours(),
