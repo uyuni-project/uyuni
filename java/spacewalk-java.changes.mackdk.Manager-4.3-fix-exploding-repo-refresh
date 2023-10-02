@@ -1,0 +1,2 @@
+- Do not call SCC when updating the repositories authentication 
+  for PAYG (bsc#1215857)
