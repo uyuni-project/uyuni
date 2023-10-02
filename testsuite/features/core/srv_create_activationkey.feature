@@ -105,14 +105,23 @@ Feature: Create activation keys
     And I click on "Create Activation Key"
     Then I should see a "Activation key Proxy Key x86_64 has been created" text
 
+@buildhost
   Scenario: Create an activation key for the build host
     When I follow the left menu "Systems > Activation Keys"
     And I follow "Create Key"
     And I wait for child channels to appear
     And I enter "Build host Key x86_64" as "description"
     And I enter "BUILD-HOST-KEY-x86_64" as "key"
-    And I enter "20" as "usageLimit"
     And I check "Container Build Host"
     And I check "OS Image Build Host"
     And I click on "Create Activation Key"
     Then I should see a "Activation key Build host Key x86_64 has been created" text
+
+  Scenario: Create an activation key for the terminal
+    When I follow the left menu "Systems > Activation Keys"
+    And I follow "Create Key"
+    And I wait for child channels to appear
+    And I enter "Terminal Key x86_64" as "description"
+    And I enter "TERMINAL-KEY-x86_64" as "key"
+    And I click on "Create Activation Key"
+    Then I should see a "Activation key Terminal Key x86_64 has been created" text
