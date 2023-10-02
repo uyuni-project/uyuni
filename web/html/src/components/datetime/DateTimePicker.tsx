@@ -4,10 +4,10 @@ import { forwardRef, useRef } from "react";
 
 import ReactDatePicker from "react-datepicker";
 
-import { localizedMoment } from "utils";
+import { localizedMoment, parseTimeString } from "utils";
 
 // Turn this on to view internal state under the picker in the UI
-const SHOW_DEBUG_VALUES = false;
+const SHOW_DEBUG_VALUES = true;
 
 type InputPassthroughProps = {
   "data-id": string | undefined;
@@ -173,8 +173,10 @@ export const DateTimePicker = (props: Props) => {
               portalId="time-picker-portal"
               ref={timePickerRef}
               selected={browserTimezoneValue.toDate()}
-              onChange={(date) => {
-                if (date === null) {
+              onChange={(date, event) => {
+                // If this fires without an event, it means the user picked a time from the dropdown
+                // This handler is only used the dropdown selection, onChangeRaw() handles regular user input
+                if (date === null || event) {
                   return;
                 }
                 /**
@@ -183,6 +185,20 @@ export const DateTimePicker = (props: Props) => {
                  */
                 const mergedDate = browserTimezoneValue.toDate();
                 mergedDate.setHours(date.getHours(), date.getMinutes());
+                onChange(mergedDate);
+              }}
+              onChangeRaw={(event) => {
+                const rawValue = event.target.value.trim();
+                // TODO: Alternatively remove everything that isn't a number and a ":"?
+                // If the user pastes in a value or doesn't type a ":", only keep the first four numbers
+                // TODO: Implement
+
+                const parsed = parseTimeString(rawValue);
+                if (!parsed) {
+                  return;
+                }
+                const mergedDate = browserTimezoneValue.toDate();
+                mergedDate.setHours(parsed.hours, parsed.minutes);
                 onChange(mergedDate);
               }}
               showTimeSelect
