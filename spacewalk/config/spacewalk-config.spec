@@ -91,7 +91,7 @@ mkdir -p $RPM_BUILD_ROOT/etc/pki/tls/private/
 %attr(400,root,root) %config(noreplace) %{_sysconfdir}/rhn/spacewalk-repo-sync/uln.conf
 %config %{apacheconfdir}/conf.d/zz-spacewalk-www.conf
 %config %{apacheconfdir}/conf.d/os-images.conf
-%config %{apacheconfdir}/conf.d/public.conf
+%config %{apacheconfdir}/conf.d/z-public.conf
 %attr(440,root,root) %config %{_sysconfdir}/sudoers.d/spacewalk
 %dir %{_var}/lib/cobbler/
 %dir %{_var}/lib/cobbler/kickstarts/
