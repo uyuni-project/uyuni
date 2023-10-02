@@ -64,9 +64,9 @@ export const DateTimePicker = (props: Props) => {
     timePickerRef.current?.setOpen(true);
   };
 
-  const onChange = (newDateValue: Date | null) => {
+  const onChange = (date: Date | null) => {
     // Currently we don't support propagating null values, we might want to do this in the future
-    if (newDateValue === null) {
+    if (date === null) {
       return;
     }
     // The date we get here is now in the browsers local timezone but with values that should be reinterpreted
@@ -76,7 +76,7 @@ export const DateTimePicker = (props: Props) => {
       localizedMoment(
         // We first clone the date again to not modify the original. This has the unintended side effect of converting to
         // UTC and adjusting the values.
-        localizedMoment(newDateValue)
+        localizedMoment(date)
           // To get back to the values we want we just convert back to the browsers local timezone as it was before.
           .local()
           // Then we set the timezone of the date to the users configured timezone without adjusting the values.
@@ -144,6 +144,7 @@ export const DateTimePicker = (props: Props) => {
                   className="form-control no-right-border"
                   // This is used by Cucumber to interact with the component
                   data-testid="date-picker"
+                  maxLength={10}
                 />
               }
               previousMonthAriaLabel={previousMonth}
@@ -172,7 +173,18 @@ export const DateTimePicker = (props: Props) => {
               portalId="time-picker-portal"
               ref={timePickerRef}
               selected={browserTimezoneValue.toDate()}
-              onChange={onChange}
+              onChange={(date) => {
+                if (date === null) {
+                  return;
+                }
+                /**
+                 * NB! Only take the hours and minutes from this change event since react-datepicker updates the date
+                 * value when it should only update the time value (bsc#1202991, bsc#1215820)
+                 */
+                const mergedDate = browserTimezoneValue.toDate();
+                mergedDate.setHours(date.getHours(), date.getMinutes());
+                onChange(mergedDate);
+              }}
               showTimeSelect
               showTimeSelectOnly
               // We want the regular primary display to only show the time here, so using TIME_FORMAT is intentional
@@ -188,22 +200,21 @@ export const DateTimePicker = (props: Props) => {
                   className="form-control"
                   // This is used by Cucumber to interact with the component
                   data-testid="time-picker"
+                  maxLength={5}
                 />
               }
             />
           </>
         )}
         <span className="input-group-addon" key="tz">
-          {props.serverTimeZone ? localizedMoment.serverTimeZoneAbbr : localizedMoment.userTimeZoneAbbr}
+          {timeZone}
         </span>
       </div>
       {process.env.NODE_ENV !== "production" && SHOW_DEBUG_VALUES ? (
         <pre>
           user:{"   "}
-          {props.value.toUserString()}
-          <br />
-          server: {props.value.toServerString()}
-          <br />
+          {props.value.toUserDateTimeString()} ({localizedMoment.userTimeZone})<br />
+          server: {props.value.toServerDateTimeString()} ({localizedMoment.serverTimeZone})<br />
           iso:{"    "}
           {props.value.toISOString()}
         </pre>
