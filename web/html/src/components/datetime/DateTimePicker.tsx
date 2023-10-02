@@ -7,7 +7,7 @@ import ReactDatePicker from "react-datepicker";
 import { localizedMoment, parseTimeString } from "utils";
 
 // Turn this on to view internal state under the picker in the UI
-const SHOW_DEBUG_VALUES = true;
+const SHOW_DEBUG_VALUES = false;
 
 type InputPassthroughProps = {
   "data-id": string | undefined;
