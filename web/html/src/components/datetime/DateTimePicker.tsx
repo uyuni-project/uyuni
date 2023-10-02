@@ -188,12 +188,14 @@ export const DateTimePicker = (props: Props) => {
                 onChange(mergedDate);
               }}
               onChangeRaw={(event) => {
-                const rawValue = event.target.value.trim();
-                // TODO: Alternatively remove everything that isn't a number and a ":"?
-                // If the user pastes in a value or doesn't type a ":", only keep the first four numbers
-                // TODO: Implement
+                // In case the user pastes a value, clean it up and cut it to max length
+                const rawValue = event.target.value.replaceAll(/[^\d:]/g, "");
+                const cutValue = rawValue.includes(":") ? rawValue.substring(0, 5) : rawValue.substring(0, 4);
+                if (cutValue !== event.target.value) {
+                  event.target.value = cutValue;
+                }
 
-                const parsed = parseTimeString(rawValue);
+                const parsed = parseTimeString(cutValue);
                 if (!parsed) {
                   return;
                 }
@@ -216,7 +218,6 @@ export const DateTimePicker = (props: Props) => {
                   className="form-control"
                   // This is used by Cucumber to interact with the component
                   data-testid="time-picker"
-                  maxLength={5}
                 />
               }
             />
