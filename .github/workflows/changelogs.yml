@@ -56,11 +56,11 @@ jobs:
       with:
         filter: '*.changes'
     - name: Fail if the master changelog files are modified
-      if: steps.master.outputs.all
+      if: steps.master.outputs.modified
       run: |
         echo "Master changelog files cannot be modified directly."
         echo "Please revert your changes on the following master changelog file(s):"
-        for file in ${{steps.master.outputs.all}}
+        for file in ${{steps.master.outputs.modified}}
         do
           echo "  - $file"
         done
