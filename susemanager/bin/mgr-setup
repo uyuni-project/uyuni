@@ -425,12 +425,19 @@ setup_apache() {
 #TODO move this on the permission check function
 setup_permission() {
     mkdir -p /srv/susemanager/salt/tmp
+    mkdir -p /srv/susemanager/tmp
     mkdir -p /srv/susemanager/salt/custom
+    mkdir -p /srv/susemanager/salt/salt_ssh
+    mkdir -p /srv/susemanager/pillar_data/images
     chown tomcat:susemanager -R /srv/susemanager/salt/tmp
     chown tomcat:susemanager -R /srv/susemanager/salt/custom
     chown tomcat:tomcat -R /usr/share/susemanager/www/htdocs
     chmod 777 -R /srv/susemanager/salt
+    chmod 777 -R /srv/susemanager/tmp
+    chmod 777 -R /srv/susemanager/salt/custom
     chmod 777 -R /usr/share/susemanager/www/htdocs
+    chmod 777 -R /srv/susemanager/salt/salt_ssh
+    chmod 777 -R /srv/susemanager/pillar_data/images
 }
 
 setup_spacewalk() {
