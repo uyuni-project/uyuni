@@ -335,7 +335,7 @@ public class CVEAuditManagerOVAL {
 
         LOG.warn("Detected {} products eligible for OVAL synchronization: {}", productsToSync.size(), productsToSync);
 
-        OVALDownloader ovalDownloader = new OVALDownloader(OVALConfigLoader.load());
+        OVALDownloader ovalDownloader = new OVALDownloader(OVALConfigLoader.loadDefaultConfig());
         for (OVALProduct product : productsToSync) {
             LOG.warn("Downloading OVAL for {} {}", product.getOsFamily(), product.getOsVersion());
             OVALDownloadResult downloadResult;
