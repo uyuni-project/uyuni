@@ -15,6 +15,7 @@
 package com.redhat.rhn.taskomatic.task;
 
 import com.redhat.rhn.GlobalInstanceHolder;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -117,7 +118,16 @@ public class MinionActionExecutor extends RhnJavaJob {
         // COMMITted in the database. Wait for some minutes checking if it appears
         int waitedTime = 0;
         while (countQueuedServerActions(action) == 0 && waitedTime < ACTION_DATABASE_GRACE_TIME) {
+            if (action != null) {
+                HibernateFactory.getSession().flush();
+                HibernateFactory.getSession().evict(action);
+            }
+
             action = ActionFactory.lookupById(actionId);
+
+            if (log.isDebugEnabled()) {
+                log.debug("Number of Queued Server Actions for {}: {}", actionId, countQueuedServerActions(action));
+            }
             try {
                 Thread.sleep(ACTION_DATABASE_POLL_TIME);
             }
