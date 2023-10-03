@@ -184,12 +184,21 @@ public class TaskoQuartzHelper {
      * @param jobLabel job name
      */
     public static void destroyJob(Integer orgId, String jobLabel) {
+        destroyJob(triggerKey(jobLabel, getGroupName(orgId)));
+    }
+
+    /**
+     * unschedules job
+     *
+     * @param key trigger key
+     */
+    public static void destroyJob(TriggerKey key) {
         try {
-            SchedulerKernel.getScheduler().unscheduleJob(triggerKey(jobLabel, getGroupName(orgId)));
-            log.info("Job {} unscheduled successfully.", jobLabel);
+            SchedulerKernel.getScheduler().unscheduleJob(key);
+            log.info("Job {} unscheduled successfully.", key.getName());
         }
         catch (SchedulerException e) {
-            log.error("Unable to unschedule job {} of organization # {}", jobLabel, orgId, e);
+            log.error("Unable to unschedule job {} of organization # {}", key.getName(), key.getGroup(), e);
         }
     }
 
