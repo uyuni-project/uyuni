@@ -25,13 +25,13 @@ public enum OsFamily {
     openSUSE_LEAP_MICRO("openSUSELeap Micro", "leap-micro", "opensuse",
             oneOf("5.2", "5.3")),
     SUSE_LINUX_ENTERPRISE_SERVER("SUSE Linux Enterprise Server", "sles", "suse",
-            oneOf("10", "11", "12", "15")),
+            oneOf("11", "12", "15")),
     SUSE_LINUX_ENTERPRISE_DESKTOP("SUSE Linux Enterprise Desktop", "sled", "suse",
             oneOf("10", "11", "12", "15")),
     SUSE_LINUX_ENTERPRISE_MICRO("SUSE Linux Enterprise Micro", "sle-micro", "suse",
             oneOf("5.0", "5.1", "5.2", "5.3")),
     REDHAT_ENTERPRISE_LINUX("Red Hat Enterprise Linux", "enterprise_linux", "redhat",
-            withPrefix("7.", "8.", "9.", "10.")),
+            withPrefix("7.", "8.", "9.")),
     UBUNTU("Ubuntu", "ubuntu", "canonical", oneOf("18.04", "20.04", "22.04")),
     DEBIAN("Debian", "debian", "debian", oneOf("10", "11", "12"));
 
