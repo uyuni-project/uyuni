@@ -1,4 +1,4 @@
-import { localizedMoment } from "./localizedMoment";
+import { localizedMoment, parseTimeString } from "./localizedMoment";
 
 describe("localizedMoment", () => {
   const validISOString = "2020-01-30T23:00:00.000Z";
@@ -81,5 +81,13 @@ describe("localizedMoment", () => {
 
     const nextWeek = localizedMoment().add(1, "week");
     expect(nextWeek.calendar()).toEqual(nextWeek.format("YYYY-MM-DD"));
+  });
+
+  // This function is a thin wrapper around moment so we only add basic test coverage
+  test("parseTimeString", () => {
+    expect(parseTimeString("")).toEqual(null);
+    expect(parseTimeString("2345")).toEqual({ hours: 23, minutes: 45 });
+    expect(parseTimeString("23:45")).toEqual({ hours: 23, minutes: 45 });
+    expect(parseTimeString(" 23 45 67 ")).toEqual({ hours: 23, minutes: 45 });
   });
 });
