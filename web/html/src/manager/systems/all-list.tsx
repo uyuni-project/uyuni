@@ -13,6 +13,7 @@ import { SystemsListFilter } from "./list-filter";
 type Props = {
   /** Locale of the help links */
   docsLocale: string;
+  pageSize: number;
   isAdmin: boolean;
   queryColumn?: string;
   query?: string;
@@ -54,6 +55,7 @@ export function AllSystems(props: Props) {
         searchField={<SystemsListFilter />}
         defaultSearchField={props.queryColumn || "server_name"}
         initialSearch={props.query}
+        initialItemsPerPage={props.pageSize}
         emptyText={t("No Systems.")}
       >
         <Column
