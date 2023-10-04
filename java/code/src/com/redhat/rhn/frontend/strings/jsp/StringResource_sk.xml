@@ -2085,14 +2085,14 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="usercreate.requiredField" xml:space="preserve">
         <source>Required Field</source>
-        <target/>
+        <target>Požadované pole</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
       </trans-unit>
       <trans-unit id="usercreate.jsp.createlogin" xml:space="preserve">
         <source>Create Login</source>
-        <target/>
+        <target>Vytvoriť prihlasovacie meno</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/newlogin/CreateCorporate.do</context>
           <context context-type="sourcefile">/rhn/newlogin/CreatePersonal.do</context>
@@ -2100,42 +2100,42 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="usercreate.jsp.pam" xml:space="preserve">
         <source>Pluggable Authentication Modules (PAM): </source>
-        <target/>
+        <target>Pluggable Authentication Modules (PAM): </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="usercreate.jsp.pam.instructions" xml:space="preserve">
         <source>Use PAM to authenticate against LDAP, Kerberos, and other network-based authentication systems. </source>
-        <target/>
+        <target>Použiť PAM na overenie voči LDAP, Kerberos a iným sieťovým systémom overovania. </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="usercreate.jsp.pam.instructions.note" xml:space="preserve">
         <source>Note: The password fields above are not required when this box is checked; however you may fill in a password that will work only when PAM authentication for this user account is disabled.</source>
-        <target/>
+        <target>Poznámka: Vyššie uvedené polia s heslom sa nevyžadujú, ak je toto pole začiarknuté; môžete však vyplniť heslo, ktoré bude fungovať len vtedy, keď je overovanie PAM pre tento používateľský účet zakázané.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="usercreate.jsp.pam.reference" xml:space="preserve">
         <source>If you would like to set up your @@PRODUCT_NAME@@ to authenticate against LDAP, kerberos, and other network-based authentication systems, please see the &lt;a href={0}&gt;documentation&lt;/a&gt; for instructions on how to set up PAM.</source>
-        <target/>
+        <target>Ak chcete svoj @@PRODUCT_NAME@@ nastaviť na overenie voči LDAP, kerberos a iným sieťovým systémom overovania, pozrite si, prosím, &lt;a href={0}&gt;dokumentáciu&lt;/a&gt; s pokynmi na nastavenie PAM.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="usercreate.jsp.api.readOnly" xml:space="preserve">
         <source>Read-only API user:</source>
-        <target/>
+        <target>Používateľ API len na čítanie:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="usercreate.jsp.api.readOnlyHelp" xml:space="preserve">
         <source>Read-only API users are forbidden from the @@PRODUCT_NAME@@ web interface, and allowed access only to a limited subset of the public API.</source>
-        <target/>
+        <target>Používatelia API len na čítanie majú zakázaný prístup k webovému rozhraniu @@PRODUCT_NAME@@ a majú povolený prístup len k obmedzenej podmnožine verejného API.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser.do</context>
         </context-group>
@@ -2143,14 +2143,14 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       <!-- userdetails.jsp -->
       <trans-unit id="userdetails.jsp.header" xml:space="preserve">
         <source>User Details</source>
-        <target/>
+        <target>Podrobnosti o používateľovi</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userdetails.jsp.noemailaddress" xml:space="preserve">
         <source>No email address</source>
-        <target/>
+        <target>Žiadna e-mailová adresa</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
