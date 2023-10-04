@@ -50,6 +50,7 @@ defaultdict = {
     "ubuntu2204_minion": "/SUSE_Updates_Ubuntu_22.04-CLIENT-TOOLS_x86_64/",
     "debian10_minion": "/SUSE_Updates_Debian_10-CLIENT-TOOLS_x86_64/",
     "debian11_minion": "/SUSE_Updates_Debian_11-CLIENT-TOOLS_x86_64/",
+    "debian12_minion": "/SUSE_Updates_Debian_12-CLIENT-TOOLS_x86_64/",
     "opensuse153arm_minion": ["/SUSE_Updates_openSUSE-SLE_15.3/",
                               "/SUSE_Updates_SLE-Manager-Tools_15_aarch64/"],
     "opensuse154arm_minion": ["/SUSE_Updates_openSUSE-SLE_15.4/",

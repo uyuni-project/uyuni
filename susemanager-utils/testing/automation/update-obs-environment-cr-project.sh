@@ -12,6 +12,7 @@ clients="Ubuntu1604-Uyuni-Client-Tools;xUbuntu_16.04 \
     SLE12-Uyuni-Client-Tools;SLE_12 \
     EL8-Uyuni-Client-Tools;EL_8 \
     Debian9-Uyuni-Client-Tools;Debian_9 \
+    Debian12-Uyuni-Client-Tools;Debian_12 \
     Debian11-Uyuni-Client-Tools;Debian_11 \
     Debian10-Uyuni-Client-Tools;Debian_10 \
     CentOS8-Uyuni-Client-Tools;CentOS_8 \

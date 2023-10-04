@@ -824,6 +824,31 @@ PKGLISTDEBIAN11 = [
     "venv-salt-minion"
 ]
 
+PKGLISTDEBIAN12 = [
+    # gnupg dependencies
+    "dirmngr",
+    "gnupg",
+    "gnupg-l10n",
+    "gnupg-utils",
+    "gpg",
+    "gpg-agent",
+    "gpg-wks-client",
+    "gpg-wks-server",
+    "gpgconf",
+    "gpgsm",
+    "libassuan0",
+    "libksba8",
+    "libldap-2.5-0",
+    "libnpth0",
+    "libsasl2-2",
+    "libsasl2-modules-db",
+    "libsqlite3-0",
+    "pinentry-curses",
+    "readline-common",
+    # end of gnupg dependencies
+    "venv-salt-minion"
+]
+
 PKGLISTASTRALINUXOREL = [
     "dctrl-tools",
     "dirmngr",
@@ -1757,7 +1782,12 @@ DATA = {
     },
     'debian11-amd64' : {
         'PDID' : [-32, 2410], 'BETAPDID' : [2411], 'PKGLIST' : PKGLISTDEBIAN11,
-        'DEST' : '/srv/www/htdocs/pub/repositories/debian/11/bootstrap/',
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/debian/11/bootstrap/',
+        'TYPE' : 'deb'
+    },
+    'debian12-amd64' : {
+        'PDID' : [-43, 2677], 'BETAPDID' : [2676], 'PKGLIST' : PKGLISTDEBIAN12,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/debian/12/bootstrap/',
         'TYPE' : 'deb'
     },
     'debian9-amd64-uyuni' : {
@@ -1773,6 +1803,11 @@ DATA = {
      'debian11-amd64-uyuni' : {
          'BASECHANNEL' : 'debian-11-pool-amd64-uyuni', 'PKGLIST' : PKGLISTDEBIAN11,
          'DEST' : DOCUMENT_ROOT + '/pub/repositories/debian/11/bootstrap/',
+         'TYPE' : 'deb'
+     },
+     'debian12-amd64-uyuni' : {
+         'BASECHANNEL' : 'debian-12-pool-amd64-uyuni', 'PKGLIST' : PKGLISTDEBIAN12,
+         'DEST' : DOCUMENT_ROOT + '/pub/repositories/debian/12/bootstrap/',
          'TYPE' : 'deb'
      },
      'astralinux-orel-amd64': {
