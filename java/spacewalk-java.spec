@@ -32,6 +32,7 @@
 %define shareddir       /usr/share
 %define susemanagershareddir       /usr/share/susemanager
 %define serverdir       %{susemanagershareddir}/www
+%define userserverdir       /srv
 %define apache_group    www
 %define salt_user_group salt
 %define apache2         apache2
@@ -533,18 +534,18 @@ install -d -m 755 $RPM_BUILD_ROOT%{cobdirsnippets}
 install -d -m 755 $RPM_BUILD_ROOT/%{_localstatedir}/lib/spacewalk/scc
 install -d -m 755 $RPM_BUILD_ROOT/%{_localstatedir}/lib/spacewalk/subscription-matcher
 
-mkdir -p $RPM_BUILD_ROOT%{shareddir}/susemanager/salt/salt_ssh/temp_bootstrap_keys
-mkdir -p $RPM_BUILD_ROOT%{shareddir}/susemanager/pillar_data/images
-mkdir -p $RPM_BUILD_ROOT%{shareddir}/susemanager/formula_data
-mkdir -p $RPM_BUILD_ROOT%{shareddir}/susemanager/tmp
+mkdir -p $RPM_BUILD_ROOT%{userserverdir}/susemanager/salt/salt_ssh/temp_bootstrap_keys
+mkdir -p $RPM_BUILD_ROOT%{userserverdir}/susemanager/pillar_data/images
+mkdir -p $RPM_BUILD_ROOT%{userserverdir}/susemanager/formula_data
+mkdir -p $RPM_BUILD_ROOT%{userserverdir}/susemanager/tmp
 install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d
-install -d $RPM_BUILD_ROOT%{shareddir}/susemanager/salt
-install -d $RPM_BUILD_ROOT%{shareddir}/susemanager/salt/salt_ssh
-install -d $RPM_BUILD_ROOT%{serverdir}/susemanager/salt/salt_ssh/temp_bootstrap_keys
-install -d -m 775 $RPM_BUILD_ROOT%{shareddir}/susemanager/pillar_data
-install -d -m 775 $RPM_BUILD_ROOT%{shareddir}/susemanager/pillar_data/images
-install -d $RPM_BUILD_ROOT%{shareddir}/susemanager/formula_data
-install -d $RPM_BUILD_ROOT%{shareddir}/susemanager/tmp
+install -d $RPM_BUILD_ROOT%{userserverdir}/susemanager/salt
+install -d $RPM_BUILD_ROOT%{userserverdir}/susemanager/salt/salt_ssh
+install -d $RPM_BUILD_ROOT%{userserverdir}/susemanager/salt/salt_ssh/temp_bootstrap_keys
+install -d -m 775 $RPM_BUILD_ROOT%{userserverdir}/susemanager/pillar_data
+install -d -m 775 $RPM_BUILD_ROOT%{userserverdir}/susemanager/pillar_data/images
+install -d $RPM_BUILD_ROOT%{userserverdir}/susemanager/formula_data
+install -d $RPM_BUILD_ROOT%{userserverdir}/susemanager/tmp
 
 install -m 644 conf/default/rhn_hibernate.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_hibernate.conf
 install -m 644 conf/default/rhn_reporting_hibernate.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_reporting_hibernate.conf
