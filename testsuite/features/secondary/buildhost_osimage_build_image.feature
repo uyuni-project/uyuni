@@ -12,6 +12,8 @@
 # This feature can cause failures in the following features:
 # - features/secondary/proxy_retail_pxeboot_and_mass_import.feature:
 # This feature leaves a JeOS image built that is used in the "PXE boot a Retail terminal" feature.
+# - features/secondary/srv_docker_cve_audit.feature
+# If the image is not created, the message shows is "There are no entries to show."
 
 @skip_if_github_validation
 @skip_if_cloud
