@@ -696,6 +696,7 @@ chown tomcat:%{apache_group} /var/log/rhn/gatherer.log
 
 %files
 %defattr(-,root,root)
+%dir %{susemanagershareddir}
 %dir %{serverdir}
 %dir %{_localstatedir}/lib/spacewalk
 %defattr(644,tomcat,tomcat,775)
@@ -802,6 +803,7 @@ chown tomcat:%{apache_group} /var/log/rhn/gatherer.log
 %dir %{_prefix}/share/rhn/search
 %dir %{_prefix}/share/rhn/search/lib
 %dir %{serverdir}
+%dir %{susemanagershareddir}
 %{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/postgresql-jdbc.jar
 %{_prefix}/share/rhn/search/lib/postgresql-jdbc.jar
 %defattr(644,tomcat,tomcat,775)
