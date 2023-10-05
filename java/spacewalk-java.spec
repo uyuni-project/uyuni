@@ -534,10 +534,6 @@ install -d -m 755 $RPM_BUILD_ROOT%{cobdirsnippets}
 install -d -m 755 $RPM_BUILD_ROOT/%{_localstatedir}/lib/spacewalk/scc
 install -d -m 755 $RPM_BUILD_ROOT/%{_localstatedir}/lib/spacewalk/subscription-matcher
 
-mkdir -p $RPM_BUILD_ROOT%{userserverdir}/susemanager/salt/salt_ssh/temp_bootstrap_keys
-mkdir -p $RPM_BUILD_ROOT%{userserverdir}/susemanager/pillar_data/images
-mkdir -p $RPM_BUILD_ROOT%{userserverdir}/susemanager/formula_data
-mkdir -p $RPM_BUILD_ROOT%{userserverdir}/susemanager/tmp
 install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d
 install -d $RPM_BUILD_ROOT%{userserverdir}/susemanager/salt
 install -d $RPM_BUILD_ROOT%{userserverdir}/susemanager/salt/salt_ssh
