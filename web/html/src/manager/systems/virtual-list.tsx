@@ -13,7 +13,6 @@ import Network from "utils/network";
 type Props = {
   /** Locale of the help links */
   docsLocale: string;
-  pageSize: number;
   isAdmin: boolean;
 };
 
@@ -54,7 +53,6 @@ export function VirtualSystems(props: Props) {
         data="/rhn/manager/api/systems/list/virtual"
         identifier={(item) => item.virtualSystemId || item.uuid}
         initialSortColumnKey="hostServerName"
-        initialItemsPerPage={props.pageSize}
         selectable={(item) => item.hasOwnProperty("virtualSystemId")}
         selectedItems={selectedSystems}
         onSelect={handleSelectedSystems}
