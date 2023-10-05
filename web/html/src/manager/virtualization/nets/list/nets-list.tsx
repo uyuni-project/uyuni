@@ -12,7 +12,6 @@ import { ListTab } from "../../ListTab";
 
 type Props = {
   serverId: string;
-  pageSize: number;
   hypervisor: string;
   allow_changing: boolean;
 };
@@ -46,7 +45,6 @@ export function NetsList(props: Props) {
       <HypervisorCheck hypervisor={props.hypervisor} />
       <ListTab
         serverId={props.serverId}
-        pageSize={props.pageSize}
         type="network"
         urlType="nets"
         title={t("Virtual Networks")}
