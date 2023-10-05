@@ -30,6 +30,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.quartz.SchedulerException;
 import org.quartz.Trigger;
+import org.quartz.TriggerKey;
+import org.quartz.impl.matchers.GroupMatcher;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -206,13 +208,24 @@ public class TaskoXmlRpcHandler {
     public Integer unscheduleBunch(Integer orgId, String jobLabel) {
         // one or none shall be returned
         List<TaskoSchedule> scheduleList = TaskoFactory.listActiveSchedulesByOrgAndLabel(orgId, jobLabel);
+        TriggerKey triggerKey;
         Trigger trigger;
         try {
-            trigger = SchedulerKernel.getScheduler().getTrigger(triggerKey(jobLabel,
-                    TaskoQuartzHelper.getGroupName(orgId)));
+            triggerKey = triggerKey(jobLabel, TaskoQuartzHelper.getGroupName(orgId));
+            trigger = SchedulerKernel.getScheduler().getTrigger(triggerKey);
+
+            // Try to find retry triggers as fallback
+            if (trigger == null) {
+                triggerKey = SchedulerKernel.getScheduler()
+                    .getTriggerKeys(GroupMatcher.anyGroup()).stream()
+                    .filter(it -> it.getName().startsWith(jobLabel + "-retry"))
+                    .findFirst().orElse(null);
+                trigger = SchedulerKernel.getScheduler().getTrigger(triggerKey);
+            }
         }
         catch (SchedulerException e) {
             trigger = null;
+            triggerKey = null;
         }
         // check for inconsistencies
         // quartz unschedules job after trigger end time
@@ -225,7 +238,7 @@ public class TaskoXmlRpcHandler {
             schedule.unschedule();
         }
         if (trigger != null) {
-            TaskoQuartzHelper.destroyJob(orgId, jobLabel);
+            TaskoQuartzHelper.destroyJob(triggerKey);
         }
         return 1;
     }
@@ -308,6 +321,7 @@ public class TaskoXmlRpcHandler {
         TaskoSchedule schedule = new TaskoSchedule(orgId, bunch, jobLabel, params, start, null, null);
         TaskoFactory.save(schedule);
         TaskoFactory.commitTransaction();
+        log.info("Schedule created for {}. Creating quartz Job...", jobLabel);
         // create job
         try {
             return TaskoQuartzHelper.createJob(schedule);
@@ -316,6 +330,7 @@ public class TaskoXmlRpcHandler {
             log.error("Unable to create job {}", schedule.getJobLabel(), e);
             TaskoFactory.delete(schedule);
             HibernateFactory.commitTransaction();
+            log.debug("Schedule removed.");
             throw e;
         }
     }

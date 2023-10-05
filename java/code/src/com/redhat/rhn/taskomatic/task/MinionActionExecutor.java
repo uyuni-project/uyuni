@@ -15,6 +15,7 @@
 package com.redhat.rhn.taskomatic.task;
 
 import com.redhat.rhn.GlobalInstanceHolder;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -85,15 +86,14 @@ public class MinionActionExecutor extends RhnJavaJob {
      */
     @Override
     public void execute(JobExecutionContext context) {
+        long actionId = context.getJobDetail().getJobDataMap().getLongValueFromString("action_id");
         if (log.isDebugEnabled()) {
-            log.debug("Start minion action executor");
+            log.debug("Start minion action executor for action {}", actionId);
         }
 
         // Measure time to calculate the total duration
         long start = System.currentTimeMillis();
         boolean forcePackageListRefresh = false;
-        long actionId = context.getJobDetail()
-                .getJobDataMap().getLongValueFromString("action_id");
         User user = Optional.ofNullable(context.getJobDetail().getJobDataMap().get("user_id"))
                 .map(id -> Long.parseLong(id.toString()))
                 .map(UserFactory::lookupById)
@@ -113,12 +113,24 @@ public class MinionActionExecutor extends RhnJavaJob {
 
         Action action = ActionFactory.lookupById(actionId);
 
+        if (log.isDebugEnabled()) {
+            log.debug("Number of Queued Server Actions for {}: {}", actionId, countQueuedServerActions(action));
+        }
+
         // HACK: it is possible that this Taskomatic task triggered before the corresponding Action was really
         // COMMITted in the database. Wait for some minutes checking if it appears
         int waitedTime = 0;
-        while (countQueuedServerActions(action) == 0 && waitedTime < ACTION_DATABASE_GRACE_TIME &&
-                !allServerActionsFinished(action)) {
+        while (countQueuedServerActions(action) == 0 && waitedTime < ACTION_DATABASE_GRACE_TIME) {
+            if (action != null) {
+                HibernateFactory.getSession().flush();
+                HibernateFactory.getSession().evict(action);
+            }
+
             action = ActionFactory.lookupById(actionId);
+
+            if (log.isDebugEnabled()) {
+                log.debug("Number of Queued Server Actions for {}: {}", actionId, countQueuedServerActions(action));
+            }
             try {
                 Thread.sleep(ACTION_DATABASE_POLL_TIME);
             }
@@ -127,14 +139,6 @@ public class MinionActionExecutor extends RhnJavaJob {
                 Thread.currentThread().interrupt();
             }
             waitedTime += ACTION_DATABASE_POLL_TIME;
-        }
-
-        // Instead of putting the thread to sleep in the loop above, checking if all server actions have already
-        // finished (they might have been manually canceled, for example) will prevent blocking the Taskomatic for
-        // actions that will never appear in the database.
-        if (allServerActionsFinished(action)) {
-            log.warn("All server actions for action {} are finished. Skipping it.", actionId);
-            return;
         }
 
         if (action == null) {
@@ -212,14 +216,5 @@ public class MinionActionExecutor extends RhnJavaJob {
                      .stream()
                      .filter(serverAction -> ActionFactory.STATUS_QUEUED.equals(serverAction.getStatus()))
                      .count();
-    }
-
-    private boolean allServerActionsFinished(Action action) {
-        return action != null &&
-            !CollectionUtils.isEmpty(action.getServerActions()) &&
-            action.getServerActions().stream().allMatch(serverAction ->
-                    ActionFactory.STATUS_FAILED.equals(serverAction.getStatus()) ||
-                    ActionFactory.STATUS_COMPLETED.equals(serverAction.getStatus())
-            );
     }
 }

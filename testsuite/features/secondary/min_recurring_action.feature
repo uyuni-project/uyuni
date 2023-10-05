@@ -139,6 +139,35 @@ Feature: Recurring Actions
     And I click on "Join Selected Groups"
     Then I wait until I see "1 system groups added" text
 
+  Scenario: Pre-requisite: subscribe system to Fake Channel
+    Given I am on the Systems overview page of this "sle_minion"
+    When I follow "Software" in the content area
+    And I follow "Software Channels" in the content area
+    And I wait until I do not see "Loading..." text
+    And I check radio button "Fake Base Channel"
+    And I wait until I do not see "Loading..." text
+    And I check "Fake Child Channel"
+    And I click on "Next"
+    Then I should see a "Confirm Software Channel Change" text
+    When I click on "Confirm"
+    Then I should see a "Changing the channels has been scheduled." text
+    And I wait until event "Subscribe channels scheduled by admin" is completed
+
+  Scenario: Pre-requisite: downgrade milkyway-dummy to lower version
+    When I enable repository "test_repo_rpm_pool" on this "sle_minion"
+    And I install old package "milkyway-dummy-1.0" on this "sle_minion"
+    And I refresh the metadata for "sle_minion"
+    And I follow the left menu "Admin > Task Schedules"
+    And I follow "errata-cache-default"
+    And I follow "errata-cache-bunch"
+    And I click on "Single Run Schedule"
+    Then I should see a "bunch was scheduled" text
+    And I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
+
+  Scenario: Pre-requisite: check that there are updates available
+    Given I am on the Systems overview page of this "sle_minion"
+    Then I should see a "Software Updates Available" text
+
   Scenario: Create a recurring action to apply "uptodate" state to a system group
     When I follow the left menu "Systems > System Groups"
     And I follow "Recurring-Action-test-group"
@@ -162,6 +191,21 @@ Feature: Recurring Actions
     When I am on the "Events" page of this "sle_minion"
     And I follow "History"
     Then I wait until I see the event "Apply recurring states [uptodate] scheduled by admin" completed during last minute, refreshing the page
+    When I am on the Systems overview page of this "sle_minion"
+    Then I wait until I see "System is up to date" text, refreshing the page
+
+  Scenario: Cleanup: subscribe system back to default base channel
+    Given I am on the Systems overview page of this "sle_minion"
+    When I follow "Software" in the content area
+    And I follow "Software Channels" in the content area
+    And I wait until I do not see "Loading..." text
+    And I check default base channel radio button of this "sle_minion"
+    And I wait until I do not see "Loading..." text
+    And I click on "Next"
+    Then I should see a "Confirm Software Channel Change" text
+    When I click on "Confirm"
+    Then I should see a "Changing the channels has been scheduled." text
+    And I wait until event "Subscribe channels scheduled by admin" is completed
 
   Scenario: Edit the group Recurring Action
     When I follow the left menu "Systems > System Groups"

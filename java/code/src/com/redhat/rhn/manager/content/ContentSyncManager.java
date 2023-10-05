@@ -576,7 +576,7 @@ public class ContentSyncManager {
      *
      * @throws ContentSyncException in case of an error
      */
-    private void refreshRepositoriesAuthentication(String mirrorUrl) throws ContentSyncException {
+    private void refreshRepositoriesAuthentication(String mirrorUrl, boolean excludeSCC) throws ContentSyncException {
         List<Credentials> credentials = filterCredentials();
 
         ChannelFactory.cleanupOrphanVendorContentSource();
@@ -586,6 +586,9 @@ public class ContentSyncManager {
             List<SCCRepositoryJson> repos = new LinkedList<>();
             LOG.debug("Getting repos for: {}", c);
             if (c == null || c.isTypeOf(Credentials.TYPE_SCC)) {
+                if (excludeSCC) {
+                    continue;
+                }
                 try {
                     SCCClient scc = getSCCClient(c);
                     repos = scc.listRepositories();
@@ -1499,8 +1502,19 @@ public class ContentSyncManager {
      */
     public void updateRepositories(String mirrorUrl) throws ContentSyncException {
         LOG.info("ContentSyncManager.updateRepository called");
-        refreshRepositoriesAuthentication(mirrorUrl);
+        refreshRepositoriesAuthentication(mirrorUrl, false);
         LOG.info("ContentSyncManager.updateRepository finished");
+    }
+
+    /**
+     * Update repositories and its available authentications for Payg only.
+     *
+     * @throws ContentSyncException in case of an error
+     */
+    public void updateRepositoriesPayg() throws ContentSyncException {
+        LOG.info("ContentSyncManager.updateRepository payg called");
+        refreshRepositoriesAuthentication(null, true);
+        LOG.info("ContentSyncManager.updateRepository payg finished");
     }
 
     /**

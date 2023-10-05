@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Oct 03 00:45:48 CEST 2023 - marina.latini@suse.com
+
+- version 4.3.34-1
+  * Fix datetimepicker erroneously updating the date field (bsc#1210253, bsc#1215820)
+
+-------------------------------------------------------------------
 Tue Aug 29 15:58:54 CEST 2023 - marina.latini@suse.com
 
 - version 4.3.33-1
