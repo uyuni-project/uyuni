@@ -86,7 +86,8 @@ public class ServerSerializer extends ApiResponseSerializer<Server> {
                 .add("profile_name", src.getName())
                 .add("machine_id", src.getMachineId())
                 .add("hostname", src.getHostname())
-                .add("minion_id", src.getMinionId());
+                .add("minion_id", src.getMinionId())
+                .add("payg", src.isPayg());
 
         // Find this server's base entitlement:
         String baseEntitlement = EntitlementManager.UNENTITLED;
