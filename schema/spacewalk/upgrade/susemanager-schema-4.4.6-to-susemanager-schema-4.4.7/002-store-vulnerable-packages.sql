@@ -23,7 +23,6 @@ CREATE TABLE IF NOT EXISTS suseOVALPlatformVulnerablePackage
 
 CREATE OR REPLACE PROCEDURE
     insert_product_vulnerable_packages(package_name_in varchar,fix_version_in varchar,product_cpe_in varchar,cve_name_in varchar)
-    LANGUAGE plpgsql
 AS
 $$
 DECLARE
