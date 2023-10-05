@@ -23,7 +23,6 @@ import { VirtualizationPoolsActionApi } from "../virtualization-pools-action-api
 
 type Props = {
   serverId: string;
-  pageSize: number;
   hypervisor: string;
 };
 
@@ -377,7 +376,6 @@ export function PoolsList(props: Props) {
                   <CustomDataHandler
                     data={getPoolsAndVolumes(tree)}
                     identifier={(raw) => raw.id}
-                    initialItemsPerPage={Number(props.pageSize)}
                     loading={tree == null}
                     additionalFilters={[]}
                     searchField={

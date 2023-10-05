@@ -6,13 +6,12 @@ import { PoolsList } from "./pools-list";
 
 type RendererProps = {
   serverId: string;
-  pageSize: number;
   hypervisor: string;
 };
 
-export const renderer = (id: string, { serverId, pageSize, hypervisor }: RendererProps) => {
+export const renderer = (id: string, { serverId, hypervisor }: RendererProps) => {
   SpaRenderer.renderNavigationReact(
-    <PoolsList pageSize={pageSize} serverId={serverId} hypervisor={hypervisor} />,
+    <PoolsList serverId={serverId} hypervisor={hypervisor} />,
     document.getElementById(id)
   );
 };

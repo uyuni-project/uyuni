@@ -31,7 +31,6 @@ type CreateModalButtonType = (actionType: string, actionData: Array<ModalDataTyp
 type Props = {
   serverId: string;
   saltEntitled: boolean;
-  pageSize: number;
   type: string;
   urlType?: string;
   title: string;
@@ -230,7 +229,6 @@ export function ListTab(props: Props) {
                     emptyText={t(`No virtual ${props.type} to show.`)}
                     identifier={(row) => row[props.idName]}
                     initialSortColumnKey="name"
-                    initialItemsPerPage={props.pageSize}
                     selectable
                     selectedItems={selectedItems.map((item) => item[props.idName])}
                     onSelect={(items) => setSelectedItems(data?.filter((d) => items.includes(d[props.idName])) || [])}
