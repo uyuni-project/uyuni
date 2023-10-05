@@ -609,14 +609,19 @@ public class TaskomaticApi {
     public void scheduleMinionActionExecutions(List<Action> actions, boolean forcePackageListRefresh)
             throws TaskomaticApiException {
         List<Map<String, String>> paramsList = new ArrayList<>();
+        List<String> ids = new ArrayList<>();
         for (Action action: actions) {
             Map<String, String> params = new HashMap<>();
-            params.put("action_id", Long.toString(action.getId()));
+            String id = Long.toString(action.getId());
+            params.put("action_id", id);
             params.put("force_pkg_list_refresh", Boolean.toString(forcePackageListRefresh));
             params.put("earliest_action", action.getEarliestAction().toInstant().toString());
             paramsList.add(params);
+            ids.add(id);
         }
+        LOG.debug("Scheduling actions: {}.", ids);
         invoke("tasko.scheduleRuns", MINION_ACTION_BUNCH_LABEL, MINION_ACTION_JOB_PREFIX, paramsList);
+        LOG.debug("Actions scheduled: {}.", ids);
     }
 
     /**

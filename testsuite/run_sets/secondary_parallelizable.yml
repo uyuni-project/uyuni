@@ -8,7 +8,8 @@
 
 # IDEMPOTENT
 
-- features/secondary/srv_advanced_search.feature
+# Workaround for bug in search server, as mentioned here - https://github.com/SUSE/spacewalk/issues/22594
+# - features/secondary/srv_advanced_search.feature
 - features/secondary/srv_check_sync_source_packages.feature
 - features/secondary/srv_change_password.feature
 - features/secondary/srv_clone_channel_npn.feature

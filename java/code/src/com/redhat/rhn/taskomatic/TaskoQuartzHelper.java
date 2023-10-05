@@ -20,6 +20,9 @@ import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
 import static org.quartz.TriggerBuilder.newTrigger;
 import static org.quartz.TriggerKey.triggerKey;
 
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.frontend.events.TransactionHelper;
 import com.redhat.rhn.taskomatic.core.SchedulerKernel;
 import com.redhat.rhn.taskomatic.domain.TaskoSchedule;
 
@@ -30,6 +33,7 @@ import org.quartz.JobDataMap;
 import org.quartz.SchedulerException;
 import org.quartz.Trigger;
 import org.quartz.TriggerKey;
+import org.quartz.impl.jdbcjobstore.StdJDBCConstants;
 
 import java.time.Instant;
 import java.time.ZoneId;
@@ -41,6 +45,14 @@ import java.util.Date;
  * TaskoQuartzHelper
  */
 public class TaskoQuartzHelper {
+
+    private static final String QRTZ_PREFIX = Config.get()
+            .getString("org.quartz.jobStore.tablePrefix", StdJDBCConstants.DEFAULT_TABLE_PREFIX);
+    private static final String QRTZ_TRIGGERS = QRTZ_PREFIX.concat("TRIGGERS");
+    private static final String QRTZ_SIMPLE_TRIGGERS = QRTZ_PREFIX.concat("SIMPLE_TRIGGERS");
+    private static final String QRTZ_CRON_TRIGGERS = QRTZ_PREFIX.concat("CRON_TRIGGERS");
+    private static final String QRTZ_SIMPROP_TRIGGERS = QRTZ_PREFIX.concat("SIMPROP_TRIGGERS");
+    private static final String QRTZ_BLOB_TRIGGERS = QRTZ_PREFIX.concat("BLOB_TRIGGERS");
 
     private static Logger log = LogManager.getLogger(TaskoQuartzHelper.class);
 
@@ -210,4 +222,35 @@ public class TaskoQuartzHelper {
         }
         return true;
     }
+
+    /**
+     * This method is responsible for detecting and removing invalid triggers from the Quartz database.
+     * In some cases, the Quartz database can become inconsistent, with records in the main QRTZ_TRIGGERS table lacking
+     * corresponding entries in any of the possible detail property tables (QRTZ_CRON_TRIGGERS, QRTZ_SIMPLE_TRIGGERS,
+     * QRTZ_BLOB_TRIGGERS or QRTZ_SIMPROP_TRIGGERS). See: bsc#1202519, bsc#1208635 and
+     * https://github.com/uyuni-project/uyuni/issues/5556
+     *
+     * While the exact scenarios leading to this inconsistency may not be clear, this method provides a solution to
+     * prevent Taskomatic from failing to start, performing a cleanup of invalid triggers before starting the scheduler
+     */
+    public static void cleanInvalidTriggers() {
+        log.info("Checking quartz database consistency...");
+        TransactionHelper.handlingTransaction(
+            () -> {
+                int del = HibernateFactory.getSession().createNativeQuery(cleanInvalidTriggersQuery()).executeUpdate();
+                log.info("Removed {} invalid triggers", del);
+            },
+            e -> log.warn("Error removing invalid triggers.", e)
+        );
+    }
+
+    private static String cleanInvalidTriggersQuery() {
+        return "DELETE FROM " + QRTZ_TRIGGERS + " T " +
+            "WHERE T.SCHED_NAME || T.TRIGGER_NAME || T.TRIGGER_GROUP NOT IN (" +
+                "SELECT c.SCHED_NAME || c.TRIGGER_NAME || c.TRIGGER_GROUP FROM " + QRTZ_CRON_TRIGGERS + " c UNION " +
+                "SELECT s.SCHED_NAME || s.TRIGGER_NAME || s.TRIGGER_GROUP FROM " + QRTZ_SIMPLE_TRIGGERS + " s UNION " +
+                "SELECT b.SCHED_NAME || b.TRIGGER_NAME || b.TRIGGER_GROUP FROM " + QRTZ_BLOB_TRIGGERS + " b UNION " +
+                "SELECT sp.SCHED_NAME || sp.TRIGGER_NAME || sp.TRIGGER_GROUP FROM " + QRTZ_SIMPROP_TRIGGERS + " sp" +
+            ")";
+   }
 }

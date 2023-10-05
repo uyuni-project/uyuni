@@ -201,6 +201,11 @@ When(/^I check radio button "(.*?)"$/) do |arg1|
   raise "#{arg1} can't be checked" unless choose(arg1)
 end
 
+When(/^I check default base channel radio button of this "([^"]*)"$/) do |host|
+  default_base_channel = BASE_CHANNEL_BY_CLIENT[product][host]
+  raise "#{default_base_channel} can't be checked" unless choose(default_base_channel)
+end
+
 When(/^I enter as remote command this script in$/) do |multiline|
   find(:xpath, '//textarea[@name="script_body"]').set(multiline)
 end
@@ -507,7 +512,7 @@ Given(/^metadata generation finished for "([^"]*)"$/) do |channel|
 end
 
 When(/^I push package "([^"]*)" into "([^"]*)" channel$/) do |arg1, arg2|
-  srvurl = "http://#{ENV['SERVER']}/APP"
+  srvurl = "https://#{ENV['SERVER']}/APP"
   command = "rhnpush --server=#{srvurl} -u admin -p admin --nosig -c #{arg2} #{arg1} "
   get_target('server').run(command, timeout: 500)
   get_target('server').run('ls -lR /var/spacewalk/packages', timeout: 500)

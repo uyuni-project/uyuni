@@ -199,6 +199,17 @@ Object.defineProperties(moment, {
   },
 });
 
+const parseTimeString = function (input: string): { hours: number; minutes: number } | null {
+  const parsed = moment(input.trim(), ["H:m", "Hm"]);
+  if (parsed.isValid()) {
+    return {
+      hours: parsed.hours(),
+      minutes: parsed.minutes(),
+    };
+  }
+  return null;
+};
+
 function localizedMomentConstructor(input?: moment.MomentInput) {
   // We make all inputs UTC internally and only format them for output
   const utcMoment =
@@ -214,4 +225,4 @@ function localizedMomentConstructor(input?: moment.MomentInput) {
 }
 
 const localizedMoment: typeof moment = Object.setPrototypeOf(localizedMomentConstructor, moment);
-export { localizedMoment };
+export { localizedMoment, parseTimeString };

@@ -129,16 +129,17 @@ class RHNOptions:
         the configuration cache self.__configs
         """
         # Speed up the most common case
-        timeDiff = self.modifiedYN()
-        if not timeDiff and self.is_initialized():
-            # Nothing to do: the config file did not change and we already
-            # have the config cached
-            return
-        else:
-            # if the timestamp changed, clear the list of cached configs
-            # and retain the new timestamp
-            self.updateLastModified(timeDiff)
-            self.__configs.clear()  # cache cleared
+        if self.is_initialized():
+            timeDiff = self.modifiedYN()
+            if not timeDiff:
+                # Nothing to do: the config file did not change and we already
+                # have the config cached
+                return
+            else:
+                # if the timestamp changed, clear the list of cached configs
+                # and retain the new timestamp
+                self.updateLastModified(timeDiff)
+                self.__configs.clear()  # cache cleared
 
         # parse the defaults.
         self._parseDefaults(allCompsYN=0)

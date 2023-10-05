@@ -18,11 +18,11 @@ import com.redhat.rhn.manager.content.ProductTreeEntry;
 
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.scc.model.SCCOrderJson;
+import com.suse.scc.model.SCCOrganizationSystemsUpdateResponse;
 import com.suse.scc.model.SCCProductJson;
 import com.suse.scc.model.SCCRegisterSystemJson;
 import com.suse.scc.model.SCCRepositoryJson;
 import com.suse.scc.model.SCCSubscriptionJson;
-import com.suse.scc.model.SCCSystemCredentialsJson;
 import com.suse.scc.model.SCCUpdateSystemJson;
 import com.suse.scc.model.SCCVirtualizationHostJson;
 
@@ -102,7 +102,9 @@ public class SCCFileClient implements SCCClient {
     }
 
     @Override
-    public SCCSystemCredentialsJson createSystem(SCCRegisterSystemJson system, String username, String password) {
+    public SCCOrganizationSystemsUpdateResponse createUpdateSystems(
+            List<SCCRegisterSystemJson> systems, String username, String password
+    ) {
         return null;
     }
 

@@ -275,7 +275,13 @@ public class SCCRepository extends BaseDomainHelper {
     @Transient
     public Optional<SCCRepositoryAuth> getBestAuth() {
         Optional<SCCRepositoryAuth> result = Optional.empty();
-        for (SCCRepositoryAuth a : getRepositoryAuth()) {
+
+        Set<SCCRepositoryAuth> repositoryAuth = getRepositoryAuth();
+        if (repositoryAuth.isEmpty()) {
+            return result;
+        }
+
+        for (SCCRepositoryAuth a : repositoryAuth) {
             if (Config.get().getString(ContentSyncManager.RESOURCE_PATH, null) != null) {
                 if (a.getOptionalCredentials().isEmpty()) {
                     return Optional.of(a);
@@ -285,11 +291,12 @@ public class SCCRepository extends BaseDomainHelper {
             else if (a.getOptionalCredentials().isPresent()) {
                 Credentials ct = a.getOptionalCredentials().get(); //NOSONAR empty option is check in previous line
                 if (ct.isTypeOf(Credentials.TYPE_CLOUD_RMT)) {
-                    // if it's Cloud rmt authentication, we want to use it only if SCC credential is not available
-                    if (result.flatMap(SCCRepositoryAuth::getOptionalCredentials)
-                            .map(c -> !c.isTypeOf(Credentials.TYPE_SCC))
-                            .orElse(true)) {
-                        result = Optional.of(a);
+                    // if it's Cloud rmt authentication, we want to use it only if it's valid and we don't have any
+                    // SCC credential available
+                    if (!ct.isValid() || result.flatMap(SCCRepositoryAuth::getOptionalCredentials)
+                        .map(c -> c.isTypeOf(Credentials.TYPE_SCC))
+                        .orElse(false)) {
+                        continue;
                     }
                 }
                 // Not RMT
@@ -303,6 +310,13 @@ public class SCCRepository extends BaseDomainHelper {
                 result = Optional.of(a);
             }
         }
+
+        // If the result is still empty it means all the auths are from invalid TYPE_CLOUD_RMT credentials
+        // Let's just return the first one
+        if (result.isEmpty()) {
+            return repositoryAuth.stream().findFirst();
+        }
+
         return result;
     }
 

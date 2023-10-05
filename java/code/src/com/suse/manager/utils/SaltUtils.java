@@ -550,6 +550,7 @@ public class SaltUtils {
 
         // Determine the final status of the action
         if (actionFailed(function, jsonResult, success, retcode)) {
+            LOG.debug("Status of action {} being set to Failed.", serverAction.getParentAction().getId());
             serverAction.setStatus(ActionFactory.STATUS_FAILED);
             // check if the minion is locked (blackout mode)
             String output = getJsonResultWithPrettyPrint(jsonResult);
@@ -708,6 +709,7 @@ public class SaltUtils {
         else {
            serverAction.setResultMsg(getJsonResultWithPrettyPrint(jsonResult));
         }
+        LOG.debug("Finished update server action for action {}", action.getId());
     }
 
     private void handleStateApplyData(ServerAction serverAction, JsonElement jsonResult, long retcode,

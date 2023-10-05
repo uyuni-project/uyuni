@@ -177,6 +177,7 @@ public class TaskoJob implements Job {
                         TaskoFactory.save(taskRun);
                         HibernateFactory.commitTransaction();
                         HibernateFactory.closeSession();
+                        log.debug("Tasko run for {} created. Running job...", schedule.getJobLabel());
 
                         doExecute(job, context, taskRun);
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 SUSE LLC
+ * Copyright (c) 2021--2023 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -12,7 +12,6 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-
 package com.suse.manager.webui.controllers;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
@@ -47,6 +46,7 @@ import com.suse.utils.Json;
 
 import com.google.gson.Gson;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.yaml.snakeyaml.Yaml;
@@ -380,13 +380,20 @@ public class AnsibleController {
      * @return the Set of hostnames
      */
     public static Set<String> parseInventoryAndGetHostnames(Map<String, Map<String, Object>> inventoryMap) {
-        // Assumption: "_meta" and the nested "hostvars" keys always present in the map to contains all hostnames
-        if (inventoryMap.containsKey("_meta") &&
-                inventoryMap.get("_meta").containsKey("hostvars") &&
-                inventoryMap.get("_meta").get("hostvars") instanceof Map) {
-            return ((Map<String, Object>) inventoryMap.get("_meta").get("hostvars")).keySet();
+        HashSet<String> hostnames = new HashSet<>();
+
+        for (Map.Entry<String, Map<String, Object>> entry : inventoryMap.entrySet()) {
+            String ansibleGroupName = entry.getKey();
+            if (!ansibleGroupName.equals("_meta")) {
+                @SuppressWarnings("unchecked")
+                List<String> hostList = (List<String>)entry.getValue().get("hosts");
+                if (CollectionUtils.isNotEmpty(hostList)) {
+                    hostnames.addAll(hostList);
+                }
+            }
         }
-        return new HashSet<>();
+
+        return hostnames;
     }
 
     /**

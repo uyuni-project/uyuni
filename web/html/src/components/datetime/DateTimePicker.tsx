@@ -4,7 +4,7 @@ import { forwardRef, useRef } from "react";
 
 import ReactDatePicker from "react-datepicker";
 
-import { localizedMoment } from "utils";
+import { localizedMoment, parseTimeString } from "utils";
 
 // Turn this on to view internal state under the picker in the UI
 const SHOW_DEBUG_VALUES = false;
@@ -64,9 +64,9 @@ export const DateTimePicker = (props: Props) => {
     timePickerRef.current?.setOpen(true);
   };
 
-  const onChange = (newDateValue: Date | null) => {
+  const onChange = (date: Date | null) => {
     // Currently we don't support propagating null values, we might want to do this in the future
-    if (newDateValue === null) {
+    if (date === null) {
       return;
     }
     // The date we get here is now in the browsers local timezone but with values that should be reinterpreted
@@ -76,7 +76,7 @@ export const DateTimePicker = (props: Props) => {
       localizedMoment(
         // We first clone the date again to not modify the original. This has the unintended side effect of converting to
         // UTC and adjusting the values.
-        localizedMoment(newDateValue)
+        localizedMoment(date)
           // To get back to the values we want we just convert back to the browsers local timezone as it was before.
           .local()
           // Then we set the timezone of the date to the users configured timezone without adjusting the values.
@@ -144,6 +144,7 @@ export const DateTimePicker = (props: Props) => {
                   className="form-control no-right-border"
                   // This is used by Cucumber to interact with the component
                   data-testid="date-picker"
+                  maxLength={10}
                 />
               }
               previousMonthAriaLabel={previousMonth}
@@ -172,7 +173,36 @@ export const DateTimePicker = (props: Props) => {
               portalId="time-picker-portal"
               ref={timePickerRef}
               selected={browserTimezoneValue.toDate()}
-              onChange={onChange}
+              onChange={(date, event) => {
+                // If this fires without an event, it means the user picked a time from the dropdown
+                // This handler is only used the dropdown selection, onChangeRaw() handles regular user input
+                if (date === null || event) {
+                  return;
+                }
+                /**
+                 * NB! Only take the hours and minutes from this change event since react-datepicker updates the date
+                 * value when it should only update the time value (bsc#1202991, bsc#1215820)
+                 */
+                const mergedDate = browserTimezoneValue.toDate();
+                mergedDate.setHours(date.getHours(), date.getMinutes());
+                onChange(mergedDate);
+              }}
+              onChangeRaw={(event) => {
+                // In case the user pastes a value, clean it up and cut it to max length
+                const rawValue = event.target.value.replaceAll(/[^\d:]/g, "");
+                const cutValue = rawValue.includes(":") ? rawValue.substring(0, 5) : rawValue.substring(0, 4);
+                if (cutValue !== event.target.value) {
+                  event.target.value = cutValue;
+                }
+
+                const parsed = parseTimeString(cutValue);
+                if (!parsed) {
+                  return;
+                }
+                const mergedDate = browserTimezoneValue.toDate();
+                mergedDate.setHours(parsed.hours, parsed.minutes);
+                onChange(mergedDate);
+              }}
               showTimeSelect
               showTimeSelectOnly
               // We want the regular primary display to only show the time here, so using TIME_FORMAT is intentional
@@ -194,16 +224,14 @@ export const DateTimePicker = (props: Props) => {
           </>
         )}
         <span className="input-group-addon" key="tz">
-          {props.serverTimeZone ? localizedMoment.serverTimeZoneAbbr : localizedMoment.userTimeZoneAbbr}
+          {timeZone}
         </span>
       </div>
       {process.env.NODE_ENV !== "production" && SHOW_DEBUG_VALUES ? (
         <pre>
           user:{"   "}
-          {props.value.toUserString()}
-          <br />
-          server: {props.value.toServerString()}
-          <br />
+          {props.value.toUserDateTimeString()} ({localizedMoment.userTimeZone})<br />
+          server: {props.value.toServerDateTimeString()} ({localizedMoment.serverTimeZone})<br />
           iso:{"    "}
           {props.value.toISOString()}
         </pre>

@@ -542,7 +542,14 @@ public class SaltServerActionService {
                 targetMinions = entry.getValue();
             }
 
+            LOG.debug("Executing action {} for {} minions.", actionIn.getId(), targetMinions.size());
             results = execute(actionIn, call, targetMinions, forcePackageListRefresh, isStagingJob);
+            LOG.debug(
+                "Finished action {}. Picked up for {} minions and failed for {} minions.",
+                actionIn.getId(),
+                results.get(true).size(),
+                results.get(false).size()
+            );
 
             if (!isStagingJob) {
                 List<Long> succeededServerIds = results.get(true).stream()

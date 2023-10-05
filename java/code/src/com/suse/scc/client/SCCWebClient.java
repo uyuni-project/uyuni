@@ -21,11 +21,11 @@ import com.redhat.rhn.manager.content.ProductTreeEntry;
 
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.scc.model.SCCOrderJson;
+import com.suse.scc.model.SCCOrganizationSystemsUpdateResponse;
 import com.suse.scc.model.SCCProductJson;
 import com.suse.scc.model.SCCRegisterSystemJson;
 import com.suse.scc.model.SCCRepositoryJson;
 import com.suse.scc.model.SCCSubscriptionJson;
-import com.suse.scc.model.SCCSystemCredentialsJson;
 import com.suse.scc.model.SCCUpdateSystemJson;
 import com.suse.scc.model.SCCVirtualizationHostJson;
 
@@ -36,12 +36,12 @@ import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpDelete;
-import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.message.AbstractHttpMessage;
+import org.apache.http.util.EntityUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -51,6 +51,7 @@ import java.io.Reader;
 import java.lang.reflect.Type;
 import java.net.NoRouteToHostException;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -68,8 +69,8 @@ import java.util.stream.Stream;
 public class SCCWebClient implements SCCClient {
 
     private final ExecutorService executor = Executors.newCachedThreadPool();
-    private static Logger log = LogManager.getLogger(SCCWebClient.class);
-    private Gson gson = new GsonBuilder()
+    private static final Logger LOG = LogManager.getLogger(SCCWebClient.class);
+    private final Gson gson = new GsonBuilder()
             .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
             .registerTypeAdapterFactory(new OptionalTypeAdapterFactory())
             .create();
@@ -172,16 +173,16 @@ public class SCCWebClient implements SCCClient {
             throws SCCClientException {
 
         PaginatedResult<List<T>> firstPage = request(endpoint, SCCClientUtils.toListType(resultType), "GET");
-        log.info("Pages: {}", firstPage.numPages);
+        LOG.info("Pages: {}", firstPage.numPages);
 
         List<CompletableFuture<PaginatedResult<List<T>>>> futures = Stream.iterate(2, i -> i + 1)
                 .limit(Math.max(0, firstPage.numPages - 1)).map(pageNum -> {
             String e = endpoint + "?page=" + pageNum;
             CompletableFuture<PaginatedResult<List<T>>> get = CompletableFuture.supplyAsync(() -> {
                 try {
-                    log.info("Start Page: {}", pageNum);
+                    LOG.info("Start Page: {}", pageNum);
                     PaginatedResult<List<T>> page = request(e, SCCClientUtils.toListType(resultType), "GET");
-                    log.info("End Page: {}", pageNum);
+                    LOG.info("End Page: {}", pageNum);
                     return page;
                 }
                 catch (SCCClientException e1) {
@@ -213,17 +214,18 @@ public class SCCWebClient implements SCCClient {
         // overwrite the default
         request.addHeader("User-Agent", Config.get().getString(ConfigDefaults.PRODUCT_NAME) + "/" +
                 ConfigDefaults.get().getProductVersion());
-        if (log.isDebugEnabled()) {
-            Arrays.stream(request.getAllHeaders()).forEach(h -> log.debug(h.toString()));
+        if (LOG.isDebugEnabled()) {
+            Arrays.stream(request.getAllHeaders()).forEach(h -> LOG.debug(h.toString()));
         }
     }
 
     @Override
     public void deleteSystem(long id, String username, String password) throws SCCClientException {
-        HttpDelete request = new HttpDelete(config.getUrl() + "/connect/organizations/systems/" + id);
+        String url = config.getUrl() + "/connect/organizations/systems/" + id;
+        HttpDelete request = new HttpDelete(url);
         addHeaders(request);
         BufferedReader streamReader = null;
-        log.debug("Send DELETE to {}", config.getUrl() + "/connect/organizations/systems/" + id);
+        LOG.debug("Send DELETE to {}", url);
 
         try {
             // Connect and parse the response on success
@@ -266,9 +268,9 @@ public class SCCWebClient implements SCCClient {
         Map<String, List<SCCUpdateSystemJson>> payload = Map.of("systems", systems);
         request.setEntity(new StringEntity(gson.toJson(payload), ContentType.APPLICATION_JSON));
 
-        if (log.isDebugEnabled()) {
-            log.debug("Send PUT to {}", config.getUrl() + "/connect/organizations/systems");
-            log.debug(gson.toJson(payload));
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Send PUT to {}", config.getUrl() + "/connect/organizations/systems");
+            LOG.debug(gson.toJson(payload));
         }
 
         try {
@@ -296,32 +298,28 @@ public class SCCWebClient implements SCCClient {
     }
 
     @Override
-    public SCCSystemCredentialsJson createSystem(SCCRegisterSystemJson system, String username, String password)
-            throws SCCClientException {
-        HttpPost request = new HttpPost(config.getUrl() + "/connect/organizations/systems");
+    public SCCOrganizationSystemsUpdateResponse createUpdateSystems(
+            List<SCCRegisterSystemJson> systems, String username, String password
+    ) throws SCCClientException {
+        HttpPut request = new HttpPut(config.getUrl() + "/connect/organizations/systems");
         // Additional request headers
         addHeaders(request);
-        request.setEntity(new StringEntity(gson.toJson(system), ContentType.APPLICATION_JSON));
+        Map<String, Collection<SCCRegisterSystemJson>> payload = Map.of("systems", systems);
+        request.setEntity(new StringEntity(gson.toJson(payload), ContentType.APPLICATION_JSON));
 
-        if (log.isDebugEnabled()) {
-            log.debug("Send POST to {}", config.getUrl() + "/connect/organizations/systems");
-            log.debug(gson.toJson(system));
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Send PUT to {}", config.getUrl() + "/connect/organizations/systems");
+            LOG.debug(gson.toJson(payload));
         }
 
-        Reader streamReader = null;
         try {
             // Connect and parse the response on success
-            HttpResponse response = httpClient.executeRequest(request,
-                    username, password);
+            HttpResponse response = httpClient.executeRequest(request, username, password);
 
             int responseCode = response.getStatusLine().getStatusCode();
-
-            //TODO only created is documented by scc we still need to check what they return on update.
             if (responseCode == HttpStatus.SC_CREATED) {
-                streamReader = SCCClientUtils.getLoggingReader(request.getURI(), response,
-                        username, config.getLoggingDir(), !config.isSkipOwner());
-
-                return gson.fromJson(streamReader, SCCSystemCredentialsJson.class);
+                String responseBody = EntityUtils.toString(response.getEntity());
+                return gson.fromJson(responseBody, SCCOrganizationSystemsUpdateResponse.class);
             }
             else {
                 // Request was not successful
@@ -339,7 +337,6 @@ public class SCCWebClient implements SCCClient {
         }
         finally {
             request.releaseConnection();
-            SCCClientUtils.closeQuietly(streamReader);
         }
     }
 
@@ -353,9 +350,9 @@ public class SCCWebClient implements SCCClient {
         request.setEntity(new StringEntity(gson.toJson(Map.of("virtualization_hosts", virtHostInfo)),
                 ContentType.APPLICATION_JSON));
 
-        if (log.isDebugEnabled()) {
-            log.debug("Send PUT to {}", config.getUrl() + "/connect/organizations/virtualization_hosts");
-            log.debug(gson.toJson(Map.of("virtualization_hosts", virtHostInfo)));
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Send PUT to {}", config.getUrl() + "/connect/organizations/virtualization_hosts");
+            LOG.debug(gson.toJson(Map.of("virtualization_hosts", virtHostInfo)));
         }
 
         try {
@@ -367,7 +364,9 @@ public class SCCWebClient implements SCCClient {
             //TODO only created is documented by scc we still need to check what they return on update.
             if (responseCode != HttpStatus.SC_OK) {
                 // Request was not successful
-                log.error(response.toString());
+                if (LOG.isErrorEnabled()) {
+                    LOG.error(response.toString());
+                }
                 throw new SCCClientException(responseCode, request.getURI().toString(),
                         "Got response code " + responseCode + " connecting to " + request.getURI());
             }
