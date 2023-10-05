@@ -885,6 +885,8 @@ public class SystemHandler extends BaseHandler {
                 }
                 m.put("subscribed_channels", channels);
 
+                m.put("payg", server.isPayg());
+
                 Collection<VirtualInstance> guests = server.getGuests();
                 List<Long> guestList = new ArrayList<>();
                 for (VirtualInstance guest : guests) {
