@@ -65,4 +65,4 @@ begin
             cve_id            = EXCLUDED.cve_id,
             vulnerable_pkg_id = EXCLUDED.vulnerable_pkg_id;
 end;
-$$;
+$$ language plpgsql;
