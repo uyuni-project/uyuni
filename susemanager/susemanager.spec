@@ -42,8 +42,7 @@
 %global wwwroot %{serverdir}/www
 %endif
 
-%global wwwroot %{_datarootdir}/susemanager/www
-%global reporoot %{wwwroot}/pub
+%global reporoot %{_datarootdir}/susemanager/www/pub
 
 %global debug_package %{nil}
 
