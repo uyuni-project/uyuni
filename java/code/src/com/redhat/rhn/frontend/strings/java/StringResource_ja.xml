@@ -11306,11 +11306,11 @@ For a detailed analysis, please refer to the log files.
         <source>Registration of '{0}' on SUSE Manager Server rejected. \nTo manage BYOS (Bring-your-own-Subscription) clients you have to configure SCC Credentials at Admin =&gt; Setup Wizard =&gt; Organization Credentials. \n\nIf the instance being onboarded is PAYG, ensure the `python-instance-billing-flavor-check` package is installed and try again.</source>
         <target state="final">SUSE Manager Serverでの「{0}」の登録が拒否されました。 \nBYOS (Bring-your-own-Subscription)クライアントを管理するには、［管理］=&gt;［セットアップウィザード］=&gt;［組織の資格情報］でSCC資格情報を設定する必要があります。\n\nオンボードされているインスタンスがPAYGの場合は、`python-instance-billing-flavor-check`パッケージがインストールされていることを確認して、再試行してください。</target>
       </trans-unit>
-      <trans-unit id="notification.updateavailable.summary" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="notification.updateavailable.summary" xml:space="preserve">
         <source>Updates are available.</source>
         <target state="final">更新が利用できます。</target>
       </trans-unit>
-      <trans-unit id="notification.updateavailable.detail" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="notification.updateavailable.detail" xml:space="preserve">
         <source>A new update for @@PRODUCT_NAME@@ is now available. For further details, please refer to the &lt;a href="{0}"&gt;release notes&lt;a&gt;.</source>
         <target state="final">@@PRODUCT_NAME@@の新しい更新が利用できるようになりました。詳細については、&lt;a href="{0}"&gt;リリースノート&lt;a&gt;を参照してください。</target>
       </trans-unit>

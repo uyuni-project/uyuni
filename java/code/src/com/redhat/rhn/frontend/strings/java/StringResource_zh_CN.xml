@@ -11311,11 +11311,11 @@ For a detailed analysis, please refer to the log files.
         <source>Registration of '{0}' on SUSE Manager Server rejected. \nTo manage BYOS (Bring-your-own-Subscription) clients you have to configure SCC Credentials at Admin =&gt; Setup Wizard =&gt; Organization Credentials. \n\nIf the instance being onboarded is PAYG, ensure the `python-instance-billing-flavor-check` package is installed and try again.</source>
         <target state="final">在 SUSE Manager 服务器上注册 "{0}" 的请求已被拒绝。\n要管理 BYOS（自带订阅）客户端，您必须在 "管理" =&gt; "安装向导" =&gt; "组织身份凭证" 中配置 SCC 身份凭证。\n\n如果初始配置的实例为 PAYG，请确保已安装 `python-instance-billing-flavor-check` 软件包，然后重试。</target>
       </trans-unit>
-      <trans-unit id="notification.updateavailable.summary" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="notification.updateavailable.summary" xml:space="preserve">
         <source>Updates are available.</source>
         <target state="final">有可用更新。</target>
       </trans-unit>
-      <trans-unit id="notification.updateavailable.detail" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="notification.updateavailable.detail" xml:space="preserve">
         <source>A new update for @@PRODUCT_NAME@@ is now available. For further details, please refer to the &lt;a href="{0}"&gt;release notes&lt;a&gt;.</source>
         <target state="final">@@PRODUCT_NAME@@ 现在提供了新的更新。有关更多细节，请参见&lt;a href="{0}"&gt;发行说明&gt;a&gt;。</target>
       </trans-unit>
