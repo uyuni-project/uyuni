@@ -38,13 +38,13 @@ Feature: Reposync works as expected
     And I wait until the channel "sle-module-containers15-sp4-pool-x86_64" has been synced with packages
 
 @uyuni
-  Scenario: Check reposync of openSUSE Leap 15.4 channels being finished
-    Then I wait until the channel "opensuse_leap15_4" has been synced with packages
-    And I wait until the channel "opensuse_leap15_4-non-oss" has been synced with packages
-    And I wait until the channel "opensuse_leap15_4-non-oss-updates" has been synced with packages
-    And I wait until the channel "opensuse_leap15_4-updates" has been synced with packages
-    And I wait until the channel "opensuse_leap15_4-backports-updates" has been synced with packages
-    And I wait until the channel "opensuse_leap15_4-sle-updates" has been synced with packages
+  Scenario: Check reposync of openSUSE Leap 15.5 channels being finished
+    Then I wait until the channel "opensuse_leap15_5" has been synced with packages
+    And I wait until the channel "opensuse_leap15_5-non-oss" has been synced with packages
+    And I wait until the channel "opensuse_leap15_5-non-oss-updates" has been synced with packages
+    And I wait until the channel "opensuse_leap15_5-updates" has been synced with packages
+    And I wait until the channel "opensuse_leap15_5-backports-updates" has been synced with packages
+    And I wait until the channel "opensuse_leap15_5-sle-updates" has been synced with packages
     And I wait until the channel "uyuni-proxy-devel-leap" has been synced with packages
 
 @scc_credentials
@@ -58,6 +58,6 @@ Feature: Reposync works as expected
 
 @uyuni
   Scenario: Check reposync of Client Tools being finished
-    And I wait until the channel "opensuse_leap15_4-uyuni-client" has been synced with packages
+    And I wait until the channel "opensuse_leap15_5-uyuni-client" has been synced with packages
     And I wait until the channel "rockylinux8-uyuni-client-x86_64" has been synced with packages
     And I wait until the channel "ubuntu-2204-amd64-uyuni-client" has been synced with packages
