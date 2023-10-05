@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-08 14:40+0200\n"
+"POT-Creation-Date: 2023-10-05 11:07+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -607,7 +607,7 @@ msgstr ""
 
 #: ../html/src/components/systems.tsx:31
 #: ../html/src/manager/systems/list-filter.tsx:8
-#: ../html/src/manager/systems/virtual-list.tsx:65
+#: ../html/src/manager/systems/virtual-list.tsx:67
 msgid "Virtual Host"
 msgstr ""
 
@@ -813,7 +813,7 @@ msgstr ""
 #: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:121
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:203
 #: ../html/src/manager/minion/packages/package-states.tsx:224
-#: ../html/src/manager/systems/all-list.tsx:62
+#: ../html/src/manager/systems/all-list.tsx:64
 #: ../html/src/manager/systems/list-filter.tsx:41
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:81
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:770
@@ -1006,7 +1006,7 @@ msgstr ""
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:61
 #: ../html/src/manager/images/image-view-runtime.tsx:130
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:780
-#: ../html/src/manager/systems/virtual-list.tsx:84
+#: ../html/src/manager/systems/virtual-list.tsx:86
 msgid "Status"
 msgstr ""
 
@@ -1133,7 +1133,7 @@ msgstr ""
 #: ../html/src/manager/images/image-profiles.tsx:151
 #: ../html/src/manager/images/image-stores.tsx:151
 #: ../html/src/manager/images/image-view.tsx:375
-#: ../html/src/manager/notifications/notification-messages.tsx:451
+#: ../html/src/manager/notifications/notification-messages.tsx:455
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:242
 msgid "Refresh"
 msgstr ""
@@ -1407,7 +1407,7 @@ msgstr ""
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:297
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:280
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:140
-#: ../html/src/manager/systems/virtual-list.tsx:59
+#: ../html/src/manager/systems/virtual-list.tsx:61
 #: ../html/src/manager/virtualization/ListTab.tsx:237
 msgid "Filter by name"
 msgstr ""
@@ -1443,13 +1443,13 @@ msgstr ""
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:262
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:110
-#: ../html/src/manager/notifications/notification-messages.tsx:575
+#: ../html/src/manager/notifications/notification-messages.tsx:579
 msgid "Session expired, please reload the page to see up-to-date data."
 msgstr ""
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:264
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:112
-#: ../html/src/manager/notifications/notification-messages.tsx:577
+#: ../html/src/manager/notifications/notification-messages.tsx:581
 #: ../html/src/utils/network.ts:103
 msgid "Server error, please check log files."
 msgstr ""
@@ -2642,7 +2642,7 @@ msgstr ""
 #: ../html/src/manager/images/image-view-patches.tsx:79
 #: ../html/src/manager/images/image-view.tsx:642
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:105
-#: ../html/src/manager/notifications/notification-messages.tsx:513
+#: ../html/src/manager/notifications/notification-messages.tsx:517
 #: ../html/src/manager/state/highstate-summary.tsx:73
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:296
 msgid "Type"
@@ -2732,7 +2732,7 @@ msgstr ""
 #: ../html/src/manager/header/search/search.tsx:14
 #: ../html/src/manager/images/image-view.tsx:667
 #: ../html/src/manager/images/image-view.tsx:791
-#: ../html/src/manager/systems/all-list.tsx:92
+#: ../html/src/manager/systems/all-list.tsx:94
 #: ../html/src/manager/systems/list-filter.tsx:45
 msgid "Packages"
 msgstr ""
@@ -2740,7 +2740,7 @@ msgstr ""
 #: ../html/src/manager/header/search/search.tsx:18
 #: ../html/src/manager/images/image-view.tsx:654
 #: ../html/src/manager/images/image-view.tsx:790
-#: ../html/src/manager/systems/all-list.tsx:79
+#: ../html/src/manager/systems/all-list.tsx:81
 #: ../html/src/manager/systems/list-filter.tsx:44
 msgid "Patches"
 msgstr ""
@@ -3386,9 +3386,9 @@ msgid "(obsolete)"
 msgstr ""
 
 #: ../html/src/manager/images/image-view.tsx:651
-#: ../html/src/manager/systems/all-list.tsx:68
+#: ../html/src/manager/systems/all-list.tsx:70
 #: ../html/src/manager/systems/list-filter.tsx:43
-#: ../html/src/manager/systems/virtual-list.tsx:90
+#: ../html/src/manager/systems/virtual-list.tsx:92
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:143
 msgid "Updates"
 msgstr ""
@@ -4004,7 +4004,7 @@ msgid "Applying the packages states has been "
 msgstr ""
 
 #: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:22
-#: ../html/src/manager/notifications/notification-messages.tsx:519
+#: ../html/src/manager/notifications/notification-messages.tsx:523
 msgid "Summary"
 msgstr ""
 
@@ -4100,93 +4100,97 @@ msgstr ""
 msgid "Subscription Warning"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:148
+#: ../html/src/manager/notifications/notification-messages.tsx:61
+msgid "Update Notification"
+msgstr ""
+
+#: ../html/src/manager/notifications/notification-messages.tsx:152
 msgid "Filter by type"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:256
-#: ../html/src/manager/notifications/notification-messages.tsx:257
+#: ../html/src/manager/notifications/notification-messages.tsx:260
+#: ../html/src/manager/notifications/notification-messages.tsx:261
 msgid "Info"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:264
-#: ../html/src/manager/notifications/notification-messages.tsx:265
+#: ../html/src/manager/notifications/notification-messages.tsx:268
+#: ../html/src/manager/notifications/notification-messages.tsx:269
 msgid "Warning"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:272
-#: ../html/src/manager/notifications/notification-messages.tsx:273
+#: ../html/src/manager/notifications/notification-messages.tsx:276
+#: ../html/src/manager/notifications/notification-messages.tsx:277
 msgid "Error"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:335
+#: ../html/src/manager/notifications/notification-messages.tsx:339
 msgid "show details"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:384
+#: ../html/src/manager/notifications/notification-messages.tsx:388
 msgid "Retry onboarding"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:394
+#: ../html/src/manager/notifications/notification-messages.tsx:398
 msgid "Retry repo sync"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:418
+#: ../html/src/manager/notifications/notification-messages.tsx:422
 msgid "Unread Messages"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:423
+#: ../html/src/manager/notifications/notification-messages.tsx:427
 msgid "All Messages"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:455
-#: ../html/src/manager/notifications/notification-messages.tsx:456
+#: ../html/src/manager/notifications/notification-messages.tsx:459
+#: ../html/src/manager/notifications/notification-messages.tsx:460
 msgid "Delete selected messages"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:463
-#: ../html/src/manager/notifications/notification-messages.tsx:464
+#: ../html/src/manager/notifications/notification-messages.tsx:467
+#: ../html/src/manager/notifications/notification-messages.tsx:468
 msgid "Mark selected as read"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:481
-#: ../html/src/manager/notifications/notification-messages.tsx:563
+#: ../html/src/manager/notifications/notification-messages.tsx:485
+#: ../html/src/manager/notifications/notification-messages.tsx:567
 msgid "Notification Messages"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:486
+#: ../html/src/manager/notifications/notification-messages.tsx:490
 msgid "The server has collected the following notification messages."
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:501
+#: ../html/src/manager/notifications/notification-messages.tsx:505
 msgid "Filter by summary"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:507
+#: ../html/src/manager/notifications/notification-messages.tsx:511
 msgid "Severity"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:525
+#: ../html/src/manager/notifications/notification-messages.tsx:529
 msgid "Created"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:530
+#: ../html/src/manager/notifications/notification-messages.tsx:534
 msgid "Action"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:536
+#: ../html/src/manager/notifications/notification-messages.tsx:540
 msgid "Read|Delete"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:545
+#: ../html/src/manager/notifications/notification-messages.tsx:549
 msgid "Flag as Unread"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:545
+#: ../html/src/manager/notifications/notification-messages.tsx:549
 msgid "Flag as Read"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:551
+#: ../html/src/manager/notifications/notification-messages.tsx:555
 msgid "Delete Notification"
 msgstr ""
 
@@ -4840,32 +4844,32 @@ msgid ""
 "selected child channels."
 msgstr ""
 
-#: ../html/src/manager/systems/all-list.tsx:37
+#: ../html/src/manager/systems/all-list.tsx:38
 msgid " Systems "
 msgstr ""
 
-#: ../html/src/manager/systems/all-list.tsx:57
+#: ../html/src/manager/systems/all-list.tsx:59
 msgid "No Systems."
 msgstr ""
 
-#: ../html/src/manager/systems/all-list.tsx:106
+#: ../html/src/manager/systems/all-list.tsx:108
 #: ../html/src/manager/systems/list-filter.tsx:46
 msgid "Extra Packages"
 msgstr ""
 
-#: ../html/src/manager/systems/all-list.tsx:120
+#: ../html/src/manager/systems/all-list.tsx:122
 #: ../html/src/manager/systems/list-filter.tsx:47
 msgid "Config Diffs"
 msgstr ""
 
-#: ../html/src/manager/systems/all-list.tsx:135
+#: ../html/src/manager/systems/all-list.tsx:137
 #: ../html/src/manager/systems/list-filter.tsx:48
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:146
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:579
 msgid "Base Channel"
 msgstr ""
 
-#: ../html/src/manager/systems/all-list.tsx:146
+#: ../html/src/manager/systems/all-list.tsx:148
 #: ../html/src/manager/systems/list-filter.tsx:49
 msgid "System Type"
 msgstr ""
@@ -5377,19 +5381,19 @@ msgstr ""
 msgid "Confirm Software Channel Change"
 msgstr ""
 
-#: ../html/src/manager/systems/virtual-list.tsx:42
+#: ../html/src/manager/systems/virtual-list.tsx:43
 msgid "Virtual Systems"
 msgstr ""
 
-#: ../html/src/manager/systems/virtual-list.tsx:60
+#: ../html/src/manager/systems/virtual-list.tsx:62
 msgid "No Virtual Systems."
 msgstr ""
 
-#: ../html/src/manager/systems/virtual-list.tsx:73
+#: ../html/src/manager/systems/virtual-list.tsx:75
 msgid "Virtual System"
 msgstr ""
 
-#: ../html/src/manager/systems/virtual-list.tsx:101
+#: ../html/src/manager/systems/virtual-list.tsx:103
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:176
 msgid "Base Software Channel"
 msgstr ""

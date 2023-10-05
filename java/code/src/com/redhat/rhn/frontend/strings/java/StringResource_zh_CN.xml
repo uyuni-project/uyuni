@@ -10305,7 +10305,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit approved="yes" id="system.entitle.added.monitoring_entitled" xml:space="preserve">
         <source>&lt;strong&gt;Monitoring&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; Since you added the Monitoring system type we automatically assigned the Prometheus Exporters formula to the system. Please apply the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; in order to install and enable the Prometheus metrics exporters.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; Please make sure to open the &lt;a href="/docs/{1}/installation-and-upgrade/ports.html#_external_client_ports" target="_blank"&gt;required network ports&lt;/a&gt; for all installed exporters.</source>
-        <target state="needs-adaptation">已应用&lt;strong&gt;监视&lt;/strong&gt;类型。&lt;br/&gt;&lt;strong&gt;注意：&lt;/strong&gt;由于您添加了 "监视" 系统类型，因此我们已自动将普罗米修斯导出器公式指派到了系统。请应用 &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; 以安装并启用普罗米修斯度量导出器。</target>
+        <target state="final">已应用&lt;strong&gt;监视&lt;/strong&gt;类型。&lt;br/&gt;&lt;strong&gt;注意：&lt;/strong&gt;由于您添加了 "监视" 系统类型，因此我们已自动将 Prometheus 导出器公式指派到了系统。请应用 &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; 以安装并启用 Prometheus 度量导出器。&lt;br/&gt;&lt;strong&gt;注意：&lt;/strong&gt;请确保为安装的所有导出器打开&lt;a href="/docs/{1}/installation-and-upgrade/ports.html#_external_client_ports" target="_blank"&gt;所需的网络端口&lt;/a&gt;。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
@@ -11310,6 +11310,14 @@ For a detailed analysis, please refer to the log files.
       <trans-unit approved="yes" id="bootstrap.minion.error.payg.byosregistered" xml:space="preserve">
         <source>Registration of '{0}' on SUSE Manager Server rejected. \nTo manage BYOS (Bring-your-own-Subscription) clients you have to configure SCC Credentials at Admin =&gt; Setup Wizard =&gt; Organization Credentials. \n\nIf the instance being onboarded is PAYG, ensure the `python-instance-billing-flavor-check` package is installed and try again.</source>
         <target state="final">在 SUSE Manager 服务器上注册 "{0}" 的请求已被拒绝。\n要管理 BYOS（自带订阅）客户端，您必须在 "管理" =&gt; "安装向导" =&gt; "组织身份凭证" 中配置 SCC 身份凭证。\n\n如果初始配置的实例为 PAYG，请确保已安装 `python-instance-billing-flavor-check` 软件包，然后重试。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="notification.updateavailable.summary" xml:space="preserve">
+        <source>Updates are available.</source>
+        <target state="final">有可用更新。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="notification.updateavailable.detail" xml:space="preserve">
+        <source>A new update for @@PRODUCT_NAME@@ is now available. For further details, please refer to the &lt;a href="{0}"&gt;release notes&lt;a&gt;.</source>
+        <target state="final">@@PRODUCT_NAME@@ 现在提供了新的更新。有关更多细节，请参见&lt;a href="{0}"&gt;发行说明&gt;a&gt;。</target>
       </trans-unit>
     </body>
   </file>

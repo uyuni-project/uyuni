@@ -28030,6 +28030,10 @@ given channel.</source>
         <source>PAYG Connections</source>
       <target state="new"/>
   </trans-unit>
+      <trans-unit id="mirror-credentials.jsp.fromDir" xml:space="preserve">
+        <source>cannot verify credentials because `server.susemanager.fromdir` property is set in rhn.conf</source>
+      <target state="new"/>
+  </trans-unit>
       </body>
   </file>
 </xliff>

@@ -11309,6 +11309,14 @@ For a detailed analysis, please refer to the log files.
         <source>Registration of '{0}' on SUSE Manager Server rejected. \nTo manage BYOS (Bring-your-own-Subscription) clients you have to configure SCC Credentials at Admin =&gt; Setup Wizard =&gt; Organization Credentials. \n\nIf the instance being onboarded is PAYG, ensure the `python-instance-billing-flavor-check` package is installed and try again.</source>
         <target state="final">SUSE Manager 서버에서 '{0}' 등록이 거부되었습니다. \nBYOS(Bring-your-own-Subscription) 클라이언트를 관리하려면 관리자 =&gt; 설치 마법사 =&gt; 조직 자격 증명에서 SCC 자격 증명을 구성해야 합니다. \n\n온보딩 중인 인스턴스가 PAYG인 경우 'python-instance-billing-flavor-check' 패키지가 설치되어 있는지 확인하고 다시 시도하십시오.</target>
       </trans-unit>
-    </body>
+    <trans-unit id="notification.updateavailable.summary" xml:space="preserve">
+        <source>Updates are available.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="notification.updateavailable.detail" xml:space="preserve">
+        <source>A new update for @@PRODUCT_NAME@@ is now available. For further details, please refer to the &lt;a href="{0}"&gt;release notes&lt;a&gt;.</source>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>
