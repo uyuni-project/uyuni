@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-22 14:36+0200\n"
+"POT-Creation-Date: 2023-10-05 11:07+0200\n"
 "PO-Revision-Date: 2020-09-01 09:07+0000\n"
 "Last-Translator: Adolfo Jayme Barrientos <fitoschido@gmail.com>\n"
 "Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/web/es/>\n"
@@ -640,7 +640,7 @@ msgstr "Redes"
 
 #: ../html/src/components/systems.tsx:31
 #: ../html/src/manager/systems/list-filter.tsx:8
-#: ../html/src/manager/systems/virtual-list.tsx:65
+#: ../html/src/manager/systems/virtual-list.tsx:67
 #, fuzzy
 msgid "Virtual Host"
 msgstr "Redes"
@@ -868,7 +868,7 @@ msgstr ""
 #: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:121
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:203
 #: ../html/src/manager/minion/packages/package-states.tsx:224
-#: ../html/src/manager/systems/all-list.tsx:62
+#: ../html/src/manager/systems/all-list.tsx:64
 #: ../html/src/manager/systems/list-filter.tsx:41
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:81
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:770
@@ -1066,7 +1066,7 @@ msgstr ""
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:61
 #: ../html/src/manager/images/image-view-runtime.tsx:130
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:780
-#: ../html/src/manager/systems/virtual-list.tsx:84
+#: ../html/src/manager/systems/virtual-list.tsx:86
 msgid "Status"
 msgstr "Estado"
 
@@ -1477,7 +1477,7 @@ msgstr ""
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:297
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:280
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:140
-#: ../html/src/manager/systems/virtual-list.tsx:59
+#: ../html/src/manager/systems/virtual-list.tsx:61
 #: ../html/src/manager/virtualization/ListTab.tsx:237
 msgid "Filter by name"
 msgstr ""
@@ -2840,7 +2840,7 @@ msgstr "Sistemas"
 #: ../html/src/manager/header/search/search.tsx:14
 #: ../html/src/manager/images/image-view.tsx:667
 #: ../html/src/manager/images/image-view.tsx:791
-#: ../html/src/manager/systems/all-list.tsx:92
+#: ../html/src/manager/systems/all-list.tsx:94
 #: ../html/src/manager/systems/list-filter.tsx:45
 msgid "Packages"
 msgstr "Paquetes"
@@ -2848,7 +2848,7 @@ msgstr "Paquetes"
 #: ../html/src/manager/header/search/search.tsx:18
 #: ../html/src/manager/images/image-view.tsx:654
 #: ../html/src/manager/images/image-view.tsx:790
-#: ../html/src/manager/systems/all-list.tsx:79
+#: ../html/src/manager/systems/all-list.tsx:81
 #: ../html/src/manager/systems/list-filter.tsx:44
 msgid "Patches"
 msgstr "Parches"
@@ -3507,9 +3507,9 @@ msgid "(obsolete)"
 msgstr ""
 
 #: ../html/src/manager/images/image-view.tsx:651
-#: ../html/src/manager/systems/all-list.tsx:68
+#: ../html/src/manager/systems/all-list.tsx:70
 #: ../html/src/manager/systems/list-filter.tsx:43
-#: ../html/src/manager/systems/virtual-list.tsx:90
+#: ../html/src/manager/systems/virtual-list.tsx:92
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:143
 msgid "Updates"
 msgstr "Actualizaciones"
@@ -5042,35 +5042,35 @@ msgid ""
 "selected child channels."
 msgstr ""
 
-#: ../html/src/manager/systems/all-list.tsx:37
+#: ../html/src/manager/systems/all-list.tsx:38
 #, fuzzy
 msgid " Systems "
 msgstr "Sistemas"
 
-#: ../html/src/manager/systems/all-list.tsx:57
+#: ../html/src/manager/systems/all-list.tsx:59
 #, fuzzy
 msgid "No Systems."
 msgstr "Sistemas"
 
-#: ../html/src/manager/systems/all-list.tsx:106
+#: ../html/src/manager/systems/all-list.tsx:108
 #: ../html/src/manager/systems/list-filter.tsx:46
 #, fuzzy
 msgid "Extra Packages"
 msgstr "Paquetes"
 
-#: ../html/src/manager/systems/all-list.tsx:120
+#: ../html/src/manager/systems/all-list.tsx:122
 #: ../html/src/manager/systems/list-filter.tsx:47
 msgid "Config Diffs"
 msgstr ""
 
-#: ../html/src/manager/systems/all-list.tsx:135
+#: ../html/src/manager/systems/all-list.tsx:137
 #: ../html/src/manager/systems/list-filter.tsx:48
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:146
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:579
 msgid "Base Channel"
 msgstr "Canal de base"
 
-#: ../html/src/manager/systems/all-list.tsx:146
+#: ../html/src/manager/systems/all-list.tsx:148
 #: ../html/src/manager/systems/list-filter.tsx:49
 #, fuzzy
 msgid "System Type"
@@ -5603,22 +5603,22 @@ msgstr ""
 msgid "Confirm Software Channel Change"
 msgstr ""
 
-#: ../html/src/manager/systems/virtual-list.tsx:42
+#: ../html/src/manager/systems/virtual-list.tsx:43
 #, fuzzy
 msgid "Virtual Systems"
 msgstr "Sistemas virtuales alojados"
 
-#: ../html/src/manager/systems/virtual-list.tsx:60
+#: ../html/src/manager/systems/virtual-list.tsx:62
 #, fuzzy
 msgid "No Virtual Systems."
 msgstr "Sistemas virtuales alojados"
 
-#: ../html/src/manager/systems/virtual-list.tsx:73
+#: ../html/src/manager/systems/virtual-list.tsx:75
 #, fuzzy
 msgid "Virtual System"
 msgstr "Sistemas virtuales alojados"
 
-#: ../html/src/manager/systems/virtual-list.tsx:101
+#: ../html/src/manager/systems/virtual-list.tsx:103
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:176
 msgid "Base Software Channel"
 msgstr "Canal de sóftwer de base"
