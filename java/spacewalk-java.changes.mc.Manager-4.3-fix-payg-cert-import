@@ -1,0 +1,2 @@
+- look for the PAYG CA certificate location in different order to
+  find and import the correct one (bsc#1214759)
