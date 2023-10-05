@@ -3,7 +3,7 @@
 #
 # This feature can cause failures in:
 # If the fake-rpm-repo fails to be created:
-# - features/init_client/allcli_update_activationkeys.feature
+# - features/reposync/srv_sync_fake_channels.feature
 # If Fake-Deb-AMD64-Channel fails to be updated with the repository:
 # - features/secondary/min_deblike_salt_install_package.feature
 # - features/secondary/min_deblike_salt_install_with_staging.feature
