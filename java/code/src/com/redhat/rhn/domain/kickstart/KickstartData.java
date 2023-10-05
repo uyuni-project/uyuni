@@ -38,7 +38,6 @@ import org.apache.logging.log4j.Logger;
 import org.cobbler.CobblerConnection;
 import org.cobbler.Profile;
 
-import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -1459,8 +1458,8 @@ public class KickstartData {
      *              taskomatic.
      * @return the Profile associated to this ks data
      */
-    @Nullable
-    public Profile getCobblerObject(@Nullable User user) {
+
+    public Profile getCobblerObject(User user) {
         if (StringUtils.isBlank(getCobblerId())) {
             return null;
         }
