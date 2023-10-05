@@ -1,1 +1,1 @@
-- Fix file susemanager-utils/susemanager-sls/salt/certs/openeuler.sls
+- Fix the certificate management for openEuler
