@@ -432,5 +432,5 @@ Feature: PXE boot a Retail terminal
     And I wait until event "Apply highstate scheduled by admin" is completed
 
   Scenario: Reset TFTP defaults
-    When I stop tftp on the proxy
+    When I stop the "tftp" service on "proxy"
     And I reset tftp defaults on the proxy

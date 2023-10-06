@@ -129,10 +129,6 @@ When(/^I start tftp on the proxy$/) do
   end
 end
 
-When(/^I stop tftp on the proxy$/) do
-  get_target('proxy').run('systemctl stop tftp.service')
-end
-
 When(/^I set up the private network on the terminals$/) do
   proxy = net_prefix + ADDRESSES['proxy']
   # /etc/sysconfig/network/ifcfg-eth1 and /etc/resolv.conf
