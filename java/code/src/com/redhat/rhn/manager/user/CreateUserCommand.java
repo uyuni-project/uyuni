@@ -102,7 +102,7 @@ public class CreateUserCommand {
      * might be encrypted, thus useless for this method
      */
     public void publishNewUserEvent(User accountCreator,
-                                    List admins,
+                                    List<User> admins,
                                     String domain,
                                     String password) {
         NewUserEvent userevt = new NewUserEvent();
