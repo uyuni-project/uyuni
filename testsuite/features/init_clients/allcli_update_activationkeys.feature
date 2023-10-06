@@ -64,7 +64,7 @@ Feature: Update activation keys
     And I check "SLE-Module-Containers15-SP4-Pool for x86_64"
     And I wait until "SLE-Module-Containers15-SP4-Updates for x86_64" has been checked
     And I check "Fake-RPM-SUSE-Channel"
-    When I click on "Update Activation Key"
+    And I click on "Update Activation Key"
     Then I should see a "Activation key SUSE Test Key x86_64 has been modified" text
 
   Scenario: Update SSH key with synced base product
@@ -93,7 +93,7 @@ Feature: Update activation keys
 
 @scc_credentials
 @susemanager
-  Scenario: Update the Proxy key with synced base product
+  Scenario: Update the SLE Proxy key with synced base product
     When I follow the left menu "Systems > Activation Keys"
     And I follow "Proxy Key x86_64" in the content area
     And I wait for child channels to appear
@@ -106,12 +106,12 @@ Feature: Update activation keys
     And I wait until "SLE-Module-Server-Applications15-SP4-Updates for x86_64 Proxy 4.3" has been checked
     And I wait until "SLE-Module-SUSE-Manager-Proxy-4.3-Pool for x86_64" has been checked
     And I wait until "SLE-Module-SUSE-Manager-Proxy-4.3-Updates for x86_64" has been checked
-    When I click on "Update Activation Key"
+    And I click on "Update Activation Key"
     Then I should see a "Activation key Proxy Key x86_64 has been modified" text
 
 @skip_if_github_validation
 @uyuni
-  Scenario: Update the Proxy key with synced base product
+  Scenario: Update the openSUSE Leap Proxy key with synced base product
     When I follow the left menu "Systems > Activation Keys"
     And I follow "Proxy Key x86_64" in the content area
     And I wait for child channels to appear
@@ -124,7 +124,7 @@ Feature: Update activation keys
     And I check "Update repository with updates from SUSE Linux Enterprise 15 for openSUSE Leap 15.4 (x86_64)"
     And I check "Uyuni Client Tools for openSUSE Leap 15.4 (x86_64)"
     And I check "Uyuni Proxy Devel for openSUSE Leap 15.4 (x86_64)"
-    When I click on "Update Activation Key"
+    And I click on "Update Activation Key"
     Then I should see a "Activation key Proxy Key x86_64 has been modified" text
 
 @skip_if_github_validation
@@ -148,5 +148,5 @@ Feature: Update activation keys
     And I check "SLE-Module-Containers15-SP4-Pool for x86_64"
     And I wait until "SLE-Module-Containers15-SP4-Updates for x86_64" has been checked
     And I check "Fake-RPM-SUSE-Channel"
-    When I click on "Update Activation Key"
+    And I click on "Update Activation Key"
     Then I should see a "Activation key Build host Key x86_64 has been modified" text

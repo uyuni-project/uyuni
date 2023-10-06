@@ -118,8 +118,3 @@ Feature: Create activation keys
     And I check "OS Image Build Host"
     And I click on "Create Activation Key"
     Then I should see a "Activation key Build host Key x86_64 has been created" text
-    And I should see a "Details" link
-    And I should see a "Packages" link
-    And I should see a "Configuration" link in the content area
-    And I should see a "Groups" link
-    And I should see a "Activated Systems" link

@@ -339,7 +339,7 @@ Feature: PXE boot a Retail terminal
     When I follow "pxeboot" terminal
     And I follow "Software" in the content area
     And I follow "Install"
-    And I enter "virgo-dummy-2.0-1.1" as the filtered package name
+    And I enter "virgo" as the filtered package name
     And I click on the filter button
     And I check "virgo-dummy-2.0-1.1" in the list
     And I click on "Install Selected Packages"
