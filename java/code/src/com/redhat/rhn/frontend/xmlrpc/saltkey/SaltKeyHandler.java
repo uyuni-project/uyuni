@@ -20,6 +20,7 @@ import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 import com.redhat.rhn.frontend.xmlrpc.UnsupportedOperationException;
 
+import com.suse.manager.api.ReadOnly;
 import com.suse.manager.utils.SaltKeyUtils;
 
 import java.util.List;
@@ -49,6 +50,7 @@ public class SaltKeyHandler extends BaseHandler {
      * @apidoc.param #session_key()
      * @apidoc.returntype #array_single("string", "Accepted salt key list")
      */
+    @ReadOnly
     public List<String> acceptedList(User loggedInUser) {
         ensureOrgAdmin(loggedInUser);
         return saltKeyUtils.acceptedSaltKeyList(loggedInUser);
@@ -63,6 +65,7 @@ public class SaltKeyHandler extends BaseHandler {
      * @apidoc.param #session_key()
      * @apidoc.returntype #array_single("string", "Pending salt key list")
      */
+    @ReadOnly
     public List<String> pendingList(User loggedInUser) {
         ensureOrgAdmin(loggedInUser);
         return saltKeyUtils.unacceptedSaltKeyList(loggedInUser);
@@ -77,6 +80,7 @@ public class SaltKeyHandler extends BaseHandler {
      * @apidoc.param #session_key()
      * @apidoc.returntype #array_single("string", "Rejected salt key list")
      */
+    @ReadOnly
     public List<String> rejectedList(User loggedInUser) {
         ensureOrgAdmin(loggedInUser);
         return saltKeyUtils.rejectedSaltKeyList(loggedInUser);
@@ -91,6 +95,7 @@ public class SaltKeyHandler extends BaseHandler {
      * @apidoc.param #session_key()
      * @apidoc.returntype #array_single("string", "Denied salt key list")
      */
+    @ReadOnly
     public List<String> deniedList(User loggedInUser) {
         ensureOrgAdmin(loggedInUser);
         return saltKeyUtils.deniedSaltKeyList(loggedInUser);
