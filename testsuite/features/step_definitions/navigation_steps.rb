@@ -248,9 +248,9 @@ When(/^I enter "([^"]*)" as "([^"]*)"$/) do |text, field|
 end
 
 When(/^I enter (\d+) minutes from now as "([^"]*)"$/) do |minutes_to_add, field|
-  future_time = Time.now + 60 * minutes_to_add.to_i
-  future_time.strftime('%H:%M').to_s.strip
+  future_time = get_future_time(minutes_to_add)
   fill_in(field, with: future_time, fill_options: { clear: :backspace })
+  log "Execution time: #{future_time}"
 end
 
 When(/^I enter "([^"]*)" as "([^"]*)" text area$/) do |arg1, arg2|
