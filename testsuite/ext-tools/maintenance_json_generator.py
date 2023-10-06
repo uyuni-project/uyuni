@@ -77,10 +77,12 @@ defaultdict = {
 nodesdict42 = {
     "server": ["/SUSE_Updates_SLE-Module-SUSE-Manager-Server_4.2_x86_64/",
                "/SUSE_Updates_SLE-Product-SUSE-Manager-Server_4.2_x86_64/",
+               "/SUSE_Updates_SLE-Product-SLES_15-SP3-LTSS_x86_64/",
                "/SUSE_Updates_SLE-Module-Basesystem_15-SP3_x86_64/",
                "/SUSE_Updates_SLE-Module-Server-Applications_15-SP3_x86_64/"],
     "proxy": ["/SUSE_Updates_SLE-Module-SUSE-Manager-Proxy_4.2_x86_64/",
-              "/SUSE_Updates_SLE-Product-SUSE-Manager-Proxy_4.2_x86_64",
+              "/SUSE_Updates_SLE-Product-SUSE-Manager-Proxy_4.2_x86_64/",
+              "/SUSE_Updates_SLE-Product-SLES_15-SP3-LTSS_x86_64/",
               "/SUSE_Updates_SLE-Module-Basesystem_15-SP3_x86_64/",
               "/SUSE_Updates_SLE-Module-Server-Applications_15-SP3_x86_64/"]
 }
@@ -91,9 +93,10 @@ nodesdict43 = {
     "server": ["/SUSE_Updates_SLE-Module-SUSE-Manager-Server_4.3_x86_64/",
                "/SUSE_Updates_SLE-Product-SUSE-Manager-Server_4.3_x86_64/",
                "/SUSE_Updates_SLE-Module-Basesystem_15-SP4_x86_64/",
+               "/SUSE_Updates_SLE-Module-Web-Scripting_15-SP4_x86_64/",
                "/SUSE_Updates_SLE-Module-Server-Applications_15-SP4_x86_64/"],
     "proxy": ["/SUSE_Updates_SLE-Module-SUSE-Manager-Proxy_4.3_x86_64/",
-              "/SUSE_Updates_SLE-Product-SUSE-Manager-Proxy_4.3_x86_64",
+              "/SUSE_Updates_SLE-Product-SUSE-Manager-Proxy_4.3_x86_64/",
               "/SUSE_Updates_SLE-Module-Basesystem_15-SP4_x86_64/",
               "/SUSE_Updates_SLE-Module-Server-Applications_15-SP4_x86_64/"]
 }
