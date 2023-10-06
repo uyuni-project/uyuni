@@ -1,0 +1,1 @@
+- fix SLES 15 for SAP not being listed in mgr-create-bootstrap-repo (bsc#1215120)
