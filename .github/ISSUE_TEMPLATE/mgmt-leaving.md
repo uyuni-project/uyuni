@@ -58,6 +58,7 @@ General template for leavers of the SUSE Manager team.
   - [ ] Remove from https://build.suse.de/groups/susemanager-releng (if applicable)
   - [ ] Remove from https://build.suse.de/groups/qam-manager (if applicable)
   - [ ] Remove from https://build.opensuse.org/groups/uyuni-maintainers (if applicable)
+  - [ ] Remove from https://build.opensuse.org/groups/salt-maintainers (if applicable)
 - [ ] Internal
   - [ ] Remove SSH public key from [SUMA infrastructure](https://gitlab.suse.de/galaxy/infrastructure/-/blob/master/srv/salt/ssh/init.sls)
   - [ ] Remove user from SCC organization [SUSE Manager Team Playground](https://scc.suse.com/organizations/432530/users) for SCC mirror credentials

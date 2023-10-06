@@ -54,6 +54,7 @@ General template for new joiners of the SUSE Manager team.
   - [ ] Add to https://build.suse.de/groups/susemanager-releng (if applicable)
   - [ ] Add to https://build.suse.de/groups/qam-manager (if applicable)
   - [ ] Add to https://build.opensuse.org/groups/uyuni-maintainers (if applicable)
+  - [ ] Add to https://build.opensuse.org/groups/salt-maintainers (if applicable)
 - [ ] Add the new employee to our [GitLab group](https://gitlab.suse.de/groups/galaxy/-/group_members)
 - [ ] Schedule new joiner meetups with at least one [member from each squad](https://confluence.suse.com/x/OIGAOQ), with the PO and with the architect
 - [ ] Update the [finglonger config](https://gitlab.suse.de/galaxy/infrastructure/-/blob/master/srv/salt/bugguy-finglonger/galaxy.edn) and [ION squad finglonger config](https://gitlab.suse.de/galaxy/infrastructure/-/blob/master/srv/salt/bugguy-finglonger/salt.edn)
