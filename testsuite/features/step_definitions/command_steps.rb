@@ -697,9 +697,9 @@ Then(/^I should see "(.*?)" in the output$/) do |arg1|
   raise "Command Output #{@command_output} don't include #{arg1}" unless @command_output.include? arg1
 end
 
-When(/^I (start|stop) "([^"]*)" service on "([^"]*)"$/) do |action, service, host|
+When(/^I (start|stop|restart|reload|enable|disable) the "([^"]*)" service on "([^"]*)"$/) do |action, service, host|
   node = get_target(host)
-  node.run("systemctl #{action} #{service}")
+  node.run("systemctl #{action} #{service}", check_errors: true, verbose: true)
 end
 
 Then(/^service "([^"]*)" is enabled on "([^"]*)"$/) do |service, host|
@@ -1868,16 +1868,6 @@ When(/^I enable firewall ports for monitoring on this "([^"]*)"$/) do |host|
   output, _code = node.run('firewall-cmd --list-ports')
   raise StandardError, "Couldn't successfully enable all ports needed for monitoring. Opened ports: #{output}" unless
     output.include? '9100/tcp 9117/tcp 9187/tcp'
-end
-
-When(/^I restart the "([^"]*)" service on "([^"]*)"$/) do |service, minion|
-  node = get_target(minion)
-  node.run("systemctl restart #{service}", check_errors: true, verbose: true)
-end
-
-When(/^I reload the "([^"]*)" service on "([^"]*)"$/) do |service, minion|
-  node = get_target(minion)
-  node.run("systemctl reload #{service}", check_errors: true, verbose: true)
 end
 
 When(/^I delete the system "([^"]*)" via spacecmd$/) do |minion|

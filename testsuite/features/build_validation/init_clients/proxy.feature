@@ -52,7 +52,6 @@ Feature: Setup SUSE Manager proxy
     And file "/etc/sysconfig/apache2" should contain "rewrite" on "proxy"
     And file "/etc/sysconfig/apache2" should contain "version" on "proxy"
     And file "/etc/sysconfig/apache2" should contain "ssl" on "proxy"
-    And file "/etc/sysconfig/apache2" should contain "access_compat" on "proxy"
     And file "/etc/sysconfig/apache2" should contain "wsgi" on "proxy"
     Then I should see "proxy" via spacecmd
     And service "salt-broker" is active on "proxy"

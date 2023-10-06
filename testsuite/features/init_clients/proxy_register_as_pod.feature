@@ -21,7 +21,7 @@ Feature: Setup Containerized Proxy
     When I stop salt-minion on "proxy"
     And I run "spacewalk-proxy stop" on "proxy"
     # workaround for bsc#1205976
-    And I stop "tftp" service on "proxy"
+    And I stop the "tftp" service on "proxy"
     And I wait until "squid" service is inactive on "proxy"
     And I wait until "apache2" service is inactive on "proxy"
     And I wait until "jabberd" service is inactive on "proxy"
@@ -36,7 +36,7 @@ Feature: Setup Containerized Proxy
     And I add avahi hosts in Containerized Proxy configuration
 
   Scenario: Start Containerized Proxy services
-    When I start "uyuni-proxy-pod" service on "proxy"
+    When I start the "uyuni-proxy-pod" service on "proxy"
     And I wait until "uyuni-proxy-pod" service is active on "proxy"
     And I wait until "uyuni-proxy-httpd" service is active on "proxy"
     And I wait until "uyuni-proxy-salt-broker" service is active on "proxy"
