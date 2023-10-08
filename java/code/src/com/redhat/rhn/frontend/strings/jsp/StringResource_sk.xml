@@ -2157,77 +2157,77 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="userdetails.jsp.disable" xml:space="preserve">
         <source>Deactivate User</source>
-        <target/>
+        <target>Deaktivovať používateľa</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userdetails.jsp.enable" xml:space="preserve">
         <source>Reactivate User</source>
-        <target/>
+        <target>Znovu aktivovať používateľa</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userdetails.jsp.summary" xml:space="preserve">
         <source> This user's information may be edited using the form provided below.  Entries marked with an asterisk (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) are &lt;strong&gt;required&lt;/strong&gt;. </source>
-        <target/>
+        <target> Informácie o tomto používateľovi môžete upravovať pomocou formulára nižšie.  Položky označené hviezdičkou (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) sú &lt;strong&gt;povinné&lt;/strong&gt;. </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userdetails.jsp.roles" xml:space="preserve">
         <source>Roles</source>
-        <target/>
+        <target>Roly</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userdetails.jsp.adminRoles" xml:space="preserve">
         <source>Administrative Roles</source>
-        <target/>
+        <target>Administratívne roly</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userdetails.jsp.grantedByOrgAdmin" xml:space="preserve">
         <source>Above roles are granted via the Organization Administrator role.</source>
-        <target/>
+        <target>Vyššie uvedené roly sa prideľujú cez rolu administrátor organizácie.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userdetails.jsp.temporaryroles" xml:space="preserve">
         <source>Roles granted temporarily due to external authentication configuration:</source>
-        <target/>
+        <target>Dočasne pridelené roly z dôvodu konfigurácie externého overovania:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userdetails.jsp.lastsign" xml:space="preserve">
         <source>Last Sign In</source>
-        <target/>
+        <target>Naposledy prihlásený</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userdetails.jsp.error.lastorgadmin" xml:space="preserve">
         <source>This user is the last Organization Administrator and cannot be removed from the Organization Administrator role.</source>
-        <target/>
+        <target>Tento používateľ je posledný administrátor organizácie a nemôže byť odstránený z role administrátora organizácie.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="satadmin.jsp.error.lastsatadmin" xml:space="preserve">
         <source>The user {0} is the last @@PRODUCT_NAME@@ Administrator and cannot be removed from the @@PRODUCT_NAME@@ Administrator role.</source>
-        <target/>
+        <target>Používateľ {0} je posledný administrátor @@PRODUCT_NAME@@ a nemôže byť odstránený z role administrátora @@PRODUCT_NAME@@.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Users</context>
         </context-group>
       </trans-unit>
       <trans-unit id="satadmin.jsp.error.notsatadmin" xml:space="preserve">
         <source>The user {0} is the not a @@PRODUCT_NAME@@ Administrator. Only users with @@PRODUCT_NAME@@ Administrator role can grant  or revoke @@PRODUCT_NAME@@ Administrator roles from other users.</source>
-        <target/>
+        <target>Používateľ {0} nie je administrátorom @@PRODUCT_NAME@@. Len používatelia s rolou administrátora @@PRODUCT_NAME@@ môžu prideľovať  alebo odoberať roly administrátora @@PRODUCT_NAME@@ iným používateľom.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Users</context>
         </context-group>
@@ -29588,10 +29588,10 @@ given channel.</source>
         <source>PAYG Connections</source>
         <target state="new"/>
       </trans-unit>
-    <trans-unit id="mirror-credentials.jsp.fromDir" xml:space="preserve">
+      <trans-unit id="mirror-credentials.jsp.fromDir" xml:space="preserve">
         <source>cannot verify credentials because `server.susemanager.fromdir` property is set in rhn.conf</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="new"/>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
