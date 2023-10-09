@@ -24,7 +24,7 @@ Feature: Build OS images
     And I follow "Create"
     And I enter "suse_os_image" as "label"
     And I select "Kiwi" from "imageType"
-    And I select "1-SUSE-KEY-x86_64" from "activationKey"
+    And I select "1-TERMINAL-KEY-x86_64" from "activationKey"
     And I enter the image filename for "pxeboot_minion" relative to profiles as "path"
     And I click on "create-btn"
     And I wait until no Salt job is running on "build_host"
