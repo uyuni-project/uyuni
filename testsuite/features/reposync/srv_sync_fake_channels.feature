@@ -49,6 +49,7 @@ Feature: Prepare fake SUSE channels
     And solver file for "fake-rpm-suse-channel" should reference "orion-dummy-1.1-1.1.x86_64.rpm"
 
 @uyuni
+@scc_credentials
   Scenario: Add the terminal child channel to the base product channel
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Create Channel"
@@ -62,6 +63,7 @@ Feature: Prepare fake SUSE channels
     Then I should see a "Channel Fake-RPM-Terminal-Channel created." text
 
 @uyuni
+@scc_credentials
   Scenario: Add the repository to the terminal child channel
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Fake-RPM-Terminal-Channel"
@@ -74,6 +76,7 @@ Feature: Prepare fake SUSE channels
     Then I should see a "Fake-RPM-Terminal-Channel repository information was successfully updated" text
 
 @uyuni
+@scc_credentials
   Scenario: Synchronize the repository in the terminal channel
     When I enable source package syncing
     And I follow the left menu "Software > Manage > Channels"
@@ -87,6 +90,7 @@ Feature: Prepare fake SUSE channels
     And I disable source package syncing
 
 @uyuni
+@scc_credentials
   Scenario: Verify state of Fake-RPM-Terminal-Channel custom channel
     Then "orion-dummy-1.1-1.1.x86_64.rpm" package should have been stored
     And solver file for "fake-rpm-terminal-channel" should reference "orion-dummy-1.1-1.1.x86_64.rpm"
