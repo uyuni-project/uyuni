@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.frontend.struts;
 
-import com.redhat.rhn.common.util.Asserts;
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.common.util.ServletUtils;
 import com.redhat.rhn.common.validator.ValidationMessage;
@@ -97,7 +96,9 @@ public class StrutsDelegate {
      * param and value.
      */
     public ActionForward forwardParams(ActionForward base, Map params) {
-        Asserts.assertNotNull(base, "base");
+        if (base == null) {
+            throw new IllegalArgumentException("Base should not be null");
+        }
         String newPath = ServletUtils.pathWithParams(base.getPath(), params);
 
         ActionForward af = new ActionForward(newPath, base.getRedirect());
