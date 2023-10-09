@@ -39,9 +39,11 @@ function prepareDom() {
         .on("zoom", zoomed) as any
     )
     .on("dblclick.zoom", null);
-  function zoomed(d) {
-    // @ts-expect-error: `d3.event.transform` doesn't seem to be correctly typed in the matching version of types
-    container.attr("transform", d3.event.transform);
+
+  function zoomed(this: Element) {
+    // See https://github.com/d3/d3-zoom#zoom-transforms
+    const transform = d3.zoomTransform(this);
+    container.attr("transform", transform.toString());
   }
 
   return container;

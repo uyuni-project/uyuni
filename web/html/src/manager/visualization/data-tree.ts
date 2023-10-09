@@ -36,7 +36,7 @@ declare global {
 //  - refresh - transforms the data according to current preprocessor, filters
 //  and partitioning settings and refresh the DOM
 //
-function dataTree(data, container) {
+function dataTree(data: unknown[], container: ReturnType<typeof Utils.prepareDom>) {
   let preprocessor = Preprocessing.stratify();
   const dimensions = Utils.computeSvgDimensions();
 
@@ -153,7 +153,9 @@ function appendPatchStatus(cell, patchCountsArray) {
   }
 }
 
-function updateDetailBox(d) {
+function updateDetailBox(event) {
+  const target = event.target.closest("g.node");
+  const [d] = d3.select(target).data() as any;
   const data = d.data;
 
   const detailBox = d3.select(".detailBox");

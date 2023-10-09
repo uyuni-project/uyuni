@@ -23,7 +23,7 @@ declare global {
   }
 }
 
-function displayHierarchy(data) {
+function displayHierarchy(data: unknown[]) {
   // disable the #spacewalk-content observer:
   // drawing svg triggers it for every small changes,
   // and it is not the desired behaviour/what the observer stands for
