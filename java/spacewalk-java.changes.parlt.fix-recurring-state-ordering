@@ -1,1 +1,0 @@
-- Fix recurring state execution not using the correct order (bsc#1215027)

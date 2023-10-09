@@ -1,4 +1,41 @@
 -------------------------------------------------------------------
+Mon Oct 09 17:42:23 CEST 2023 - marina.latini@suse.com
+
+- version 4.3.68-1
+  * Sync GPG properties on each build in CLM (bsc#1213689)
+  * Change list endpoints in saltkey namespace to accept GET
+    requests instead of POST (bsc#1214463)
+  * Respect user email preferences when sending 'user creation' emails (bsc#1214553)
+  * Fix server error when visiting the notifications page
+  * Fixed the value of the advisory release for Ubuntu erratas
+  * Restart the bunch from where it was interrupted when rescheduling
+  * Moved the Ubuntu errata processing in its own separate taskomatic
+    task (bsc#1211145)
+  * Stop the taskomatic bunch execution if it was not possible to
+    execute one of the tasks
+  * Add detection of Debian 12
+  * Implement different way to copy data for SystemPackageUpdate
+    report database table (bsc#1211912)
+  * Avoid SCC credentials check if `server.susemanager.fromdir` is
+    set (bsc#1211270)
+  * Fix bug about listing Ansible inventories (bsc#1213132)
+  * Remove SUSE Manager proxy 4.2 product channel for PAYG
+    instance (bsc#1215412)
+  * Show a notification when an update for SUSE Manager is available
+  * Optimize memory usage in UbuntuErrataManager
+  * Handle spaces in /ks/dist/ file names (bsc#1213680)
+  * Change default scheduler from (none) to (system)
+  * Set user for package list refresh action if possible
+  * Fix recurring state execution not using the correct order (bsc#1215027)
+  * Ignore mandatory channels results that don't match list of channels (bsc#1204270)
+  * Token cleanup process removing invalid tokens using sql query (bsc#1213376)
+  * Fix failed actions rescheduling (bsc#1214121)
+  * Fix unscheduling actions when the trigger name changed after retry (bsc#1214121)
+  * Improve Taskomatic by removing invalid triggers before starting and enhancing logs
+  * Revert action executor fix that was intended to prevent blocking of Taskomatic threads (bsc#1214121)
+  * Extend success message after adding monitoring property (bsc#1212168)
+
+-------------------------------------------------------------------
 Mon Oct 02 17:20:54 CEST 2023 - rosuna@suse.com
 
 - version 4.3.67-1
