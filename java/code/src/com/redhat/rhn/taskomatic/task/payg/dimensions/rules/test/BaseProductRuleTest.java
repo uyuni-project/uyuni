@@ -15,8 +15,8 @@
 
 package com.redhat.rhn.taskomatic.task.payg.dimensions.rules.test;
 
-import static com.redhat.rhn.common.util.Asserts.assertTrue;
 import static org.jmock.AbstractExpectations.returnValue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductSet;

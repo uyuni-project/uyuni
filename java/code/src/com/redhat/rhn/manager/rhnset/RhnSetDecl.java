@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.manager.rhnset;
 
-import com.redhat.rhn.common.util.Asserts;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.rhnset.SetCleanup;
@@ -375,7 +374,9 @@ public class RhnSetDecl {
      * @return the created set
      */
     public RhnSet create(User u) {
-        Asserts.assertNotNull(u, "u");
+        if (u == null) {
+            throw new IllegalArgumentException("user should not be null");
+        }
         return RhnSetManager.createSet(u.getId(), label, cleanup);
     }
 
@@ -387,7 +388,9 @@ public class RhnSetDecl {
      * @return the set for user <code>u</code>
      */
     public RhnSet get(User u) {
-        Asserts.assertNotNull(u, "u");
+        if (u == null) {
+            throw new IllegalArgumentException("user should not be null");
+        }
         RhnSet s = lookup(u);
         if (s == null) {
             s = create(u);
