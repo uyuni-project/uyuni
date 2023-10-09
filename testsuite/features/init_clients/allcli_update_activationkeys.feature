@@ -190,6 +190,7 @@ Feature: Update activation keys
     Then I should see a "Activation key Terminal Key x86_64 has been modified" text
 
 @susemanager
+@scc_credentials
   Scenario: Update terminal key with normal SUSE fake channel
     When I follow the left menu "Systems > Activation Keys"
     And I follow "Terminal Key x86_64" in the content area
@@ -199,6 +200,7 @@ Feature: Update activation keys
     Then I should see a "Activation key Terminal Key x86_64 has been modified" text
 
 @uyuni
+@scc_credentials
   Scenario: Update terminal key with specific fake channel
     When I follow the left menu "Systems > Activation Keys"
     And I follow "Terminal Key x86_64" in the content area
