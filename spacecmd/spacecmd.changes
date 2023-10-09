@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Oct 09 18:34:51 CEST 2023 - marina.latini@suse.com
+
+- version 4.3.24-1
+  * Change default scheduler from (none) to (system)
+
+-------------------------------------------------------------------
 Tue Aug 29 16:40:36 CEST 2023 - marina.latini@suse.com
 
 - version 4.3.23-1
