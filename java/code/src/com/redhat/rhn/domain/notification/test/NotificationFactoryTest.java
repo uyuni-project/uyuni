@@ -24,6 +24,7 @@ import com.redhat.rhn.domain.notification.NotificationMessage;
 import com.redhat.rhn.domain.notification.UserNotification;
 import com.redhat.rhn.domain.notification.UserNotificationFactory;
 import com.redhat.rhn.domain.notification.types.OnboardingFailed;
+import com.redhat.rhn.domain.notification.types.StateApplyFailed;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
@@ -60,6 +61,23 @@ public class NotificationFactoryTest extends BaseTestCaseWithUser {
         assertEquals(1, UserNotificationFactory.listUnreadByUser(user).size());
         assertEquals(1, UserNotificationFactory.listAllByUser(user).size());
         mailer.verify();
+        assertContains(mailer.getBody(), "minion1");
+    }
+
+    @Test
+    public final void testEmailContentStripHTML() {
+        mailer.setExpectedSendCount(1);
+        UserNotificationFactory.setMailer(mailer);
+        assertEquals(0, UserNotificationFactory.unreadUserNotificationsSize(user));
+        NotificationMessage msg = UserNotificationFactory.createNotificationMessage(
+                new StateApplyFailed("minion1", 10000010000L, 42L));
+        UserNotificationFactory.storeNotificationMessageFor(msg, Collections.emptySet(), empty());
+
+        assertEquals(1, UserNotificationFactory.unreadUserNotificationsSize(user));
+        assertEquals(1, UserNotificationFactory.listUnreadByUser(user).size());
+        assertEquals(1, UserNotificationFactory.listAllByUser(user).size());
+        mailer.verify();
+        assertContains(mailer.getBody(), "minion1");
     }
 
     @Test
