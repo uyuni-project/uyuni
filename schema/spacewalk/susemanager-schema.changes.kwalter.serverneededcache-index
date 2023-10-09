@@ -1,1 +1,0 @@
-- add index on server needed cache to improve performance for some queries (bsc#1211912)

@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Mon Oct 09 17:50:35 CEST 2023 - marina.latini@suse.com
+
+- version 4.3.21-1
+  * Add index on server needed cache to improve performance for some queries (bsc#1211912)
+  * Moved the Ubuntu errata processing in its own separate taskomatic
+    task (bsc#1211145) 
+
+-------------------------------------------------------------------
 Tue Aug 29 15:40:55 CEST 2023 - marina.latini@suse.com
 
 - version 4.3.20-1
