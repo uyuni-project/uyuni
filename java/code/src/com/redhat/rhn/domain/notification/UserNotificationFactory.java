@@ -175,7 +175,7 @@ public class UserNotificationFactory extends HibernateFactory {
                     message += "\n\n" + data.getDetails();
                 }
                 MailHelper.withMailer(mailer)
-                        .sendEmail(receipients, subject, message.replaceAll("<.+>", ""));
+                        .sendEmail(receipients, subject, message.replaceAll("<[^>]*>", ""));
             }
         }
         // Update Notification WebSocket Sessions right now
