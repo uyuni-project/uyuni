@@ -515,8 +515,9 @@ public class DownloadController {
                 halt(HttpStatus.SC_FORBIDDEN, "This token is not valid");
             }
         }, () -> {
-            LOG.info(String.format("Forbidden: token %s to access %s doesn't exists in the database", token, filename));
-            halt(HttpStatus.SC_FORBIDDEN, "This token is not valid");
+            LOG.debug(String.format(
+                    "Token %s to access %s doesn't exists in the database - could be an image build token",
+                    token, filename));
         });
         try {
             JwtClaims claims = JWT_CONSUMER.processToClaims(token);
