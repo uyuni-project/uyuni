@@ -29,7 +29,9 @@
     "ansi-regex": "5.0.1",
     "glob-parent": "5.1.2",
     "immer": "9.0.6",
+    "loader-utils": "1.4.2",
     "lodash": "4.17.21",
+    "minimatch": "3.0.5",
     "minimist": "1.2.6",
     "moment": "2.29.4",
     "path-parse": "1.0.7",
@@ -39,7 +41,7 @@
     "y18n": "4.0.1"
   },
   "dependencies": {
-    "@babel/core": "7.16.7",
+    "@babel/core": "7.23.0",
     "@babel/plugin-proposal-class-properties": "7.16.7",
     "@babel/plugin-proposal-logical-assignment-operators": "7.16.7",
     "@babel/plugin-proposal-nullish-coalescing-operator": "7.16.7",
