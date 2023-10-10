@@ -3699,7 +3699,7 @@ public class SystemManager extends BaseManager {
         params.put("pref", preference);
         mode.execute(params, new HashMap<>());
         // preference values have a default, only insert if not default
-        if (value != defaultIn) {
+        if (!value.equals(defaultIn)) {
             mode = ModeFactory.getCallableMode("System_queries",
                     "set_user_system_preference_bulk");
             params = new HashMap<>();

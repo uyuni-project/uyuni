@@ -505,7 +505,7 @@ public class Access extends BaseHandler {
         Long cid = getAsLong(ctx.get("cid"));
         Channel c = ChannelFactory.lookupById(cid);
 
-        return c.getOrg().getId() == user.getOrg().getId();
+        return c.getOrg().getId().equals(user.getOrg().getId());
     }
 
     /**
