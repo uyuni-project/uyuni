@@ -888,13 +888,13 @@ ORDER BY E.update_date, E.id
 </mode>
 
 <write-mode name="delete_invalid_erratas_from_set">
-  <query params="label">
+  <query params="label,server_id">
     DELETE FROM rhnSet
       WHERE label = :label
         AND element not in (
-          select errata_id from rhnServerNeededErrataCache where errata_id is not null
+          select errata_id from rhnServerNeededErrataCache where errata_id is not null and server_id = :server_id
         )
-    </query>
+  </query>
 </write-mode>
 
 <mode name="in_set_details" class="com.redhat.rhn.frontend.dto.ErrataOverview">
