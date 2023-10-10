@@ -16,12 +16,13 @@ usage()
 
 packages=""
 
-while getopts ":p:r:a:d:q:" opts;do
+while getopts ":p:r:a:d:q:A:" opts;do
     case "${opts}" in
-        p) echo "PPPP";obs_project=${OPTARG};;
-        r) echo "RRRR";obs_repo=${OPTARG};;
-        a) echo "AAA";obs_arch=${OPTARG};;
-        d) echo "DDDD";repo_dir=${OPTARG};;
+        p) obs_project=${OPTARG};;
+        r) obs_repo=${OPTARG};;
+        a) obs_arch=${OPTARG};;
+        d) repo_dir=${OPTARG};;
+        A) obs_api=${OPTARG};;
         q) packages="${packages} ${OPTARG}";;
         \?) usage;exit -1;;
     esac
@@ -39,14 +40,14 @@ fi
 
 repo_dir=$repo_dir/$obs_project/$obs_repo/$obs_arch
 
-osc getbinaries $obs_project $obs_repo $obs_arch -d $repo_dir
+osc -A $obs_api getbinaries $obs_project $obs_repo $obs_arch -d $repo_dir
 
 # Checkout specific packages. For example, multibuild packages won't
 # be downloaded by using "osc getbinaries PROJECT", so we need to
 # be explicit. For example 000product:Uyuni-Server-release
 
 for i in ${packages};do
-    osc getbinaries $obs_project $i $obs_repo $obs_arch -d $repo_dir
+    osc -A $obs_api getbinaries $obs_project $i $obs_repo $obs_arch -d $repo_dir
 done
 
 cd $repo_dir
