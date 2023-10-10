@@ -33,6 +33,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.Writer;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -348,14 +349,14 @@ public class PrimaryXmlWriter extends RepomdWriter {
      */
     private void addEssentialPackageFiles(long pkgId,
             SimpleContentHandler hndlr) throws SAXException {
-        String regex = ".*bin/.*|^/etc/.*|^/usr/lib.sendmail$|^/lib/cpp$";
+        List<String> fullPaths = List.of("/usr/lib.sendmail", "/lib/cpp");
         Collection<PackageCapabilityDto> files = TaskManager
                 .getPackageCapabilityDtos(
                         pkgId,
                         TaskConstants.TASK_QUERY_REPOMD_GENERATOR_CAPABILITY_FILES);
         for (PackageCapabilityDto file : files) {
             String path = sanitize(pkgId, file.getName());
-            if (path.matches(regex)) {
+            if (path.contains("bin/") || path.startsWith("/etc/") || fullPaths.contains(path)) {
                 hndlr.addElementWithCharacters("file", path);
             }
         }
