@@ -38,8 +38,6 @@ import java.nio.file.Path;
 import java.nio.file.attribute.UserPrincipal;
 import java.nio.file.attribute.UserPrincipalLookupService;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.zip.GZIPInputStream;
 
 /**
@@ -147,10 +145,9 @@ public class SCCClientUtils {
      * @return the filename
      */
     public static String getLogFilename(URI uri, String user) {
-        Pattern pattern = Pattern.compile(".*/(connect|suma)/(.*)");
-        Matcher matcher = pattern.matcher(uri.toString());
-        matcher.matches();
-        String urlFragment = matcher.group(2);
+        String[] parts = uri.toString().split("(connect|suma)");
+
+        String urlFragment = parts[1];
         String name = user + "_" + urlFragment + (urlFragment.endsWith(".json") ? "" : ".json");
 
         return name.replaceAll("[^a-zA-Z0-9\\._]+", "_");
