@@ -220,7 +220,7 @@ public class SyncRepositoriesAction extends RhnAction implements Listable<Conten
 
             String lastLine = lines[lines.length - 1];
             // Downloading packages
-            if (lastLine.matches(".*\\d+/\\d+ : .+")) {
+            if (lastLine.matches("\\D*\\d+/\\d+ : .+")) {
                 // Example:
                 // 2016/09/07 14:41:14 +02:00 22/22 : spacewalk-oscap-2.5.3-1.fc24.noarch
                 String[] lineParts = lastLine.split(" ");
