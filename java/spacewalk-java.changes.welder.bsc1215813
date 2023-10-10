@@ -1,0 +1,1 @@
+- Fix modify kickstart profile when using "Always newest tree" option (bsc#1215813)
