@@ -230,6 +230,11 @@ public class PaygAuthDataProcessor {
 
         instance.setRmtHosts(rmtHost);
         PaygSshDataFactory.savePaygSshData(instance);
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("CloudRmtHost Hostname: {}", rmtHost.getHost());
+            LOG.debug("CloudRmtHost IP: {}", rmtHost.getIp());
+            LOG.debug("CloudRmtHost SSL Cert: {}", rmtHost.getSslCert());
+        }
     }
 
     private Credentials processAndGetCredentials(PaygSshData instance, PaygInstanceInfo paygData)
