@@ -23,7 +23,6 @@ except ImportError:
     #  python3
     import io as StringIO
 import json
-import shutil
 import sys
 import os
 from optparse import OptionParser
