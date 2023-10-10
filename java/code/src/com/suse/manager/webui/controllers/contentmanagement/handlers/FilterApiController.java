@@ -125,7 +125,7 @@ public class FilterApiController {
                 .filter(filterId ->
                         !dbContentProject.getProjectFilters()
                                 .stream()
-                                .filter(filter -> filter.getId() == filterId)
+                                .filter(filter -> filter.getId().equals(filterId))
                                 .findFirst()
                                 .isPresent()
                 )

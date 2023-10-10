@@ -104,10 +104,10 @@ public class SSMGroupConfirmAction extends RhnAction
         for (RhnSetElement element : groupSet.getElements()) {
             Long gid = element.getElement();
             if (groupMap.containsKey(gid)) {
-                if (element.getElementTwo() == SSMGroupManageAction.ADD) {
+                if (element.getElementTwo().equals(SSMGroupManageAction.ADD)) {
                     addList.add(groupMap.get(gid));
                 }
-                else if (element.getElementTwo() == SSMGroupManageAction.REMOVE) {
+                else if (element.getElementTwo().equals(SSMGroupManageAction.REMOVE)) {
                     removeList.add(groupMap.get(gid));
                 }
             }
