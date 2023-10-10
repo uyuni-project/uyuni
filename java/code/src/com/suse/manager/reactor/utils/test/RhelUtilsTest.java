@@ -43,10 +43,10 @@ import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.security.SecureRandom;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Random;
 import java.util.UUID;
 import java.util.function.Consumer;
 
@@ -442,7 +442,7 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
                     suseProd.setRelease(null);
                     suseProd.setReleaseStage(ReleaseStage.released);
                     suseProd.setFriendlyName(friendlyName + "  " + version);
-                    suseProd.setProductId(new Random().nextInt(999999));
+                    suseProd.setProductId(new SecureRandom().nextInt(999999));
                     suseProd.setArch(null); // RES products can contain channels with different archs
                     SUSEProductFactory.save(suseProd);
                     SUSEProductFactory.getSession().flush();
