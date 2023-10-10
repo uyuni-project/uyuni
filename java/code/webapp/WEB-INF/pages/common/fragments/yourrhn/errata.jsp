@@ -34,7 +34,7 @@
     </rhn:column>
 
     <rhn:column header="erratalist.jsp.updated" style="text-align: center;">
-      ${current.updateDate}
+      <rhn:formatDate value="${current.updateDate}" />
     </rhn:column>
 
   </rhn:listdisplay>
