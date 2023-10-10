@@ -67,6 +67,8 @@ public class PXEEventTest extends JMockBaseTestCaseWithUser {
     private static final String SALTBOOT_FORMULA = "formula-saltboot";
     private static final String BOOT_IMAGE = "POS_Image_JeOS7-7.0.0-1";
     private static final String SALTBOOT_GROUP = "groupPrefix";
+    private static final String MAC_ADDRESS = "00:11:22:33:44:55";
+
 
     @Override
     @BeforeEach
@@ -97,11 +99,11 @@ public class PXEEventTest extends JMockBaseTestCaseWithUser {
         MockConnection.clear();
     }
 
-    private Map<String, Object> createTestData(String minionId, String saltbootGroup, String root, String saltDevice,
+    private Map<String, Object> createTestData(String minionId, Object saltbootGroup, String root, String saltDevice,
                                   String bootImage, String kernelOptions, boolean includeMACs) {
         Map<String, Object> data = new HashMap<>();
         Map<String, Object> innerData = new HashMap<>();
-        if (!saltbootGroup.isEmpty()) {
+        if (saltbootGroup != null) {
             innerData.put("minion_id_prefix", saltbootGroup);
         }
         if (!root.isEmpty()) {
@@ -118,7 +120,7 @@ public class PXEEventTest extends JMockBaseTestCaseWithUser {
         }
         if (includeMACs) {
             Map<String, Object> hwAddrs = new HashMap<>();
-            hwAddrs.put("eth1", "00:11:22:33:44:55");
+            hwAddrs.put("eth1", MAC_ADDRESS);
             hwAddrs.put("lo", "00:00:00:00:00:00");
             innerData.put("hwaddr_interfaces", hwAddrs);
         }
@@ -176,8 +178,8 @@ public class PXEEventTest extends JMockBaseTestCaseWithUser {
             assertEquals(Optional.of("custom=option"), e.getKernelParameters());
             assertEquals(BOOT_IMAGE, e.getBootImage());
             // Localhost device should be parsed out
-            assertTrue(e.getHwAddresses().size() == 1);
-            assertEquals(e.getHwAddresses().get(0), "00:11:22:33:44:55");
+            assertEquals(1, e.getHwAddresses().size());
+            assertEquals(MAC_ADDRESS, e.getHwAddresses().get(0));
         });
     }
 
@@ -286,8 +288,8 @@ public class PXEEventTest extends JMockBaseTestCaseWithUser {
             assertEquals(Optional.empty(), e.getKernelParameters());
             assertEquals(BOOT_IMAGE, e.getBootImage());
             // Localhost device should be parsed out
-            assertTrue(e.getHwAddresses().size() == 1);
-            assertEquals(e.getHwAddresses().get(0), "00:11:22:33:44:55");
+            assertEquals(1, e.getHwAddresses().size());
+            assertEquals(MAC_ADDRESS, e.getHwAddresses().get(0));
         });
     }
 
@@ -316,8 +318,40 @@ public class PXEEventTest extends JMockBaseTestCaseWithUser {
             assertEquals(Optional.of("custom=option"), e.getKernelParameters());
             assertEquals(BOOT_IMAGE, e.getBootImage());
             // Localhost device should be parsed out
-            assertTrue(e.getHwAddresses().size() == 1);
-            assertEquals(e.getHwAddresses().get(0), "00:11:22:33:44:55");
+            assertEquals(1, e.getHwAddresses().size());
+            assertEquals(MAC_ADDRESS, e.getHwAddresses().get(0));
+        });
+    }
+
+    /**
+     * Tests parsing {@link PXEEvent} when branch id is numeric
+     */
+    @Test
+    public void testParseBranchIdIsNumeric() {
+        Event event = mock(Event.class);
+        Integer branchId = 12345;
+        Map<String, Object> data = createTestData(MINION_ID, branchId, "root=/dev/sda1",
+                "/dev/sda1", BOOT_IMAGE, "custom=option", true);
+        context().checking(new Expectations() {{
+            allowing(event).getTag();
+            will(returnValue("suse/manager/pxe_update"));
+            allowing(event).getData();
+            will(returnValue(data));
+        }});
+
+        Optional<PXEEvent> parsed = PXEEvent.parse(event);
+
+        assertTrue(parsed.isPresent());
+        parsed.ifPresent(e -> {
+            assertEquals(MINION_ID, e.getMinionId());
+            assertEquals(String.valueOf(branchId), e.getSaltbootGroup());
+            assertEquals("root=/dev/sda1", e.getRoot());
+            assertEquals(Optional.of("/dev/sda1"), e.getSaltDevice());
+            assertEquals(Optional.of("custom=option"), e.getKernelParameters());
+            assertEquals(BOOT_IMAGE, e.getBootImage());
+            // Localhost device should be parsed out
+            assertEquals(1, e.getHwAddresses().size());
+            assertEquals(MAC_ADDRESS, e.getHwAddresses().get(0));
         });
     }
 
