@@ -198,6 +198,7 @@ _compression_types = [
     {"suffix": ".gz", "compression": "gzip"},
     {"suffix": ".bz", "compression": "bzip"},
     {"suffix": ".xz", "compression": "xz"},
+    {"suffix": ".tar.xz", "compression": "xz"},
     {"suffix": ".install.iso", "compression": None},
     {"suffix": ".iso", "compression": None},
     {"suffix": ".qcow2", "compression": None},
@@ -208,6 +209,7 @@ _compression_types = [
     {"suffix": ".vhdx", "compression": None},
     {"suffix": ".vdi", "compression": None},
     {"suffix": ".raw", "compression": None},
+    {"suffix": ".squashfs", "compression": None},
     {"suffix": "", "compression": None},
 ]
 
