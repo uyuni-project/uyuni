@@ -59,7 +59,7 @@ public class PXEEvent {
     }
 
     public String getSaltbootGroup() {
-        return (String)data.get("minion_id_prefix");
+        return String.valueOf(data.get("minion_id_prefix"));
     }
 
     public String getRoot() {
