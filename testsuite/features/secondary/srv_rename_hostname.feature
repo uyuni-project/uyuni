@@ -19,7 +19,6 @@ Feature: Reconfigure the server's hostname
 
   Scenario: Change hostname and reboot server
     When I change the server's short hostname from hosts and hostname files
-    And I reboot the server through SSH
     And I run spacewalk-hostname-rename command on the server
 
   Scenario: Do some minimal smoke test on the renamed server
@@ -40,5 +39,4 @@ Feature: Reconfigure the server's hostname
 
   Scenario: Change hostname back and reboot server
     When I change back the server's hostname
-    And I reboot the server through SSH
     And I run spacewalk-hostname-rename command on the server

@@ -1515,6 +1515,9 @@ When(/^I change the server's short hostname from hosts and hostname files$/) do
                    echo '#{server_node.public_ip} #{server_node.full_hostname} #{old_hostname}' >> /etc/hosts &&
                    echo '#{server_node.public_ip} #{new_hostname}#{server_node.full_hostname.delete_prefix(server_node.hostname)} #{new_hostname}' >> /etc/hosts")
   get_target('server', refresh: true) # This will refresh the attributes of this node
+
+  # Add the new hostname on controller's /etc/hosts to resolve in smoke tests
+  `echo '#{server_node.public_ip} #{new_hostname}#{server_node.full_hostname.delete_prefix(server_node.hostname)} #{new_hostname}' >> /etc/hosts`
 end
 
 When(/^I run spacewalk-hostname-rename command on the server$/) do
@@ -1523,7 +1526,7 @@ When(/^I run spacewalk-hostname-rename command on the server$/) do
     "spacewalk-hostname-rename #{server_node.public_ip} " \
     '--ssl-country=DE --ssl-state=Bayern --ssl-city=Nuremberg ' \
     '--ssl-org=SUSE --ssl-orgunit=SUSE --ssl-email=galaxy-noise@suse.de ' \
-    '--ssl-ca-password=spacewalk'
+    '--ssl-ca-password=spacewalk --overwrite_report_db_host=y'
   out_spacewalk, result_code = server_node.run(command, check_errors: false)
   log "#{out_spacewalk}"
 
@@ -1538,6 +1541,13 @@ When(/^I run spacewalk-hostname-rename command on the server$/) do
     end
     sleep 1
   end
+
+  # Update the server CA certificate since it changed, otherwise all API and browser uses will fail
+  update_ca
+
+  # Reset the API client to take the new CA into account
+  reset_api_client
+
   raise 'Error while running spacewalk-hostname-rename command - see logs above' unless result_code.zero?
   raise 'Error in the output logs - see logs above' if out_spacewalk.include? 'No such file or directory'
 end
@@ -1552,6 +1562,9 @@ When(/^I change back the server's hostname$/) do
                    sed -i \'$d\' /etc/hosts &&
                    sed -i \'$d\' /etc/hosts")
   get_target('server', refresh: true) # This will refresh the attributes of this node
+
+  # Cleanup the temporary entry in /etc/hosts on the controller
+  `sed -i \'$d\' /etc/hosts`
 end
 
 When(/^I enable firewall ports for monitoring on this "([^"]*)"$/) do |host|
