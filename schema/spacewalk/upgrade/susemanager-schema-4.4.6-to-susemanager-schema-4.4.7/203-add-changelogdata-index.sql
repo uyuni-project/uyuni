@@ -29,6 +29,7 @@ select remove_duplicate_changelogdata();
 drop function remove_duplicate_changelogdata();
 
 drop index if exists rhn_pkg_cld_nt_idx;
+drop index if exists rhn_pkg_cld_ntt_idx;
 
 create extension if not exists pgcrypto;
 create unique index concurrently rhn_pkg_cld_ntt_idx
