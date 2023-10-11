@@ -202,6 +202,8 @@ export function ProxyConfig() {
           placeholder={t("e.g., proxy.domain.com")}
           labelClass="col-md-3"
           divClass="col-md-6"
+          validators={[Validation.matches(/^[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*$/)]}
+          invalidHint={t("Has to be a valid FQDN address")}
         />
         <Text
           name="serverFQDN"
@@ -211,6 +213,8 @@ export function ProxyConfig() {
           hint={t("The FQDN of the parent (server or proxy) to connect to.")}
           labelClass="col-md-3"
           divClass="col-md-6"
+          validators={[Validation.matches(/^[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*$/)]}
+          invalidHint={t("Has to be a valid FQDN address")}
         />
         <Text
           name="proxyPort"
