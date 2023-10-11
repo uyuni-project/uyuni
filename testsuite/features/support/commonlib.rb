@@ -414,3 +414,13 @@ end
 def file_inject(node, local_file, remote_file)
   node.inject(local_file, remote_file, 'root', false)
 end
+
+# This function updates the server certificate on the controller node
+def update_ca
+  server_ip = get_target('server').public_ip
+  server_name = get_target('server').full_hostname
+  puts `rm /etc/pki/trust/anchors/*;
+  wget http://#{server_ip}/pub/RHN-ORG-TRUSTED-SSL-CERT -O /etc/pki/trust/anchors/#{server_name}.cert &&
+  update-ca-certificates &&
+  certutil -d sql:/root/.pki/nssdb -A -t TC -n "susemanager" -i  /etc/pki/trust/anchors/#{server_name}.cert`
+end
