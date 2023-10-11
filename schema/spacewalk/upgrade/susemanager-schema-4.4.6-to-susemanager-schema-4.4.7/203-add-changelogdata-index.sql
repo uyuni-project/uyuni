@@ -30,8 +30,8 @@ drop function remove_duplicate_changelogdata();
 
 drop index if exists rhn_pkg_cld_nt_idx;
 
-create extension pgcrypto;
+create extension if not exists pgcrypto;
 create unique index concurrently rhn_pkg_cld_ntt_idx
     on "rhnpackagechangelogdata"
-    using btree(name, digest("text", 'md5'::text), "time");
+    using btree(name, digest("text", 'sha512'::text), "time");
 
