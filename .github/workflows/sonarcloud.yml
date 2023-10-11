@@ -10,7 +10,7 @@ on:
       - '**.py'
       - 'web/html/src/**.ts'
       - 'web/html/src/**.tsx'
-  pull_request:
+  pull_request_target:
     paths:
       - 'java/**.java'
       - 'java/**.xml'
