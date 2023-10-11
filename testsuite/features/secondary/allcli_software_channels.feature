@@ -75,7 +75,7 @@ Feature: Channel subscription via SSM
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
-    Then radio button "SLE-Product-SLES15-SP4-Pool for x86_64" is checked
+    Then radio button "SLE-Product-SLES15-SP4-Pool for x86_64" should be checked
     And I wait until I do not see "Loading..." text
     And I should see "SLE15-SP4-Installer-Updates for x86_64" as unchecked
 
@@ -122,7 +122,7 @@ Feature: Channel subscription via SSM
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
-    Then radio button "Fake Base Channel" is checked
+    Then radio button "Fake Base Channel" should be checked
     And I wait until I do not see "Loading..." text
     And I should see "Fake Child Channel" as checked
 
