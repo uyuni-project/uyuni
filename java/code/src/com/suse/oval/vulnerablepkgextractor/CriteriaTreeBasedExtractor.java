@@ -23,6 +23,7 @@ import com.suse.oval.ovaltypes.DefinitionType;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.BooleanSupplier;
 import java.util.stream.Collectors;
 
 /**
@@ -128,8 +129,10 @@ public abstract class CriteriaTreeBasedExtractor implements VulnerablePackagesEx
     }
 
     @Override
-    public void assertDefinitionIsValid(DefinitionType definitionIn) {
-        assert definitionIn != null;
-        assert definitionIn.getCriteria() != null;
+    public boolean isValidDefinition(DefinitionType definitionTypeIn) {
+        BooleanSupplier definitionIsNotNull = () -> definitionTypeIn != null;
+        BooleanSupplier criteriaTreeNotNull = () -> definitionTypeIn.getCriteria() != null;
+
+        return definitionIsNotNull.getAsBoolean() && criteriaTreeNotNull.getAsBoolean();
     }
 }

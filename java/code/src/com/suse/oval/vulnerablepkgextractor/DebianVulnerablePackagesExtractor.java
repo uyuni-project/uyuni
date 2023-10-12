@@ -100,10 +100,10 @@ public class DebianVulnerablePackagesExtractor extends CriteriaTreeBasedExtracto
     }
 
     @Override
-    public void assertDefinitionIsValid(DefinitionType definitionIn) {
-        super.assertDefinitionIsValid(definitionIn);
+    public boolean isValidDefinition(DefinitionType definitionTypeIn) {
+        boolean isDebianOVAL = definitionTypeIn.getOsFamily() == OsFamily.DEBIAN;
+        boolean isVulnerabilityDefinition = definitionTypeIn.getDefinitionClass() == DefinitionClassEnum.VULNERABILITY;
 
-        assert definitionIn.getOsFamily() == OsFamily.DEBIAN;
-        assert definitionIn.getDefinitionClass() == DefinitionClassEnum.VULNERABILITY;
+        return super.isValidDefinition(definitionTypeIn) && isDebianOVAL && isVulnerabilityDefinition;
     }
 }

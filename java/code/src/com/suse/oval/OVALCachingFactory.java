@@ -42,7 +42,6 @@ import java.util.stream.Collectors;
 
 public class OVALCachingFactory extends HibernateFactory {
     private static final Logger LOG = LogManager.getLogger(OVALCachingFactory.class);
-    private static OVALCachingFactory instance = new OVALCachingFactory();
 
     private OVALCachingFactory() {
         // Left empty on purpose
@@ -134,7 +133,7 @@ public class OVALCachingFactory extends HibernateFactory {
         Map<String, Object> params = new HashMap<>();
         params.put("cve_name", cve);
 
-        DataResult result = m.execute(params);
+        DataResult<Row> result = m.execute(params);
 
         return !result.isEmpty();
     }

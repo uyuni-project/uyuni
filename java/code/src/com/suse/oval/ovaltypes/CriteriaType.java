@@ -45,7 +45,7 @@ public class CriteriaType implements BaseCriteria {
         @XmlElement(name = "criterion",
                 namespace = "http://oval.mitre.org/XMLSchema/oval-definitions-5", type = CriterionType.class)
     })
-    protected List<BaseCriteria> children;
+    private List<BaseCriteria> children;
     @XmlAttribute(name = "operator")
     protected LogicOperatorType operator;
     @XmlAttribute(name = "negate")
