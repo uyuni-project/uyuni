@@ -15,6 +15,9 @@ html(lang=window.preferredLocale.replace("_", "-"))
         // import styles
         link(rel='stylesheet', href='/css/#{webTheme}.css?cb=#{webBuildtimestamp}', id='web-theme')
         link(rel='stylesheet', href='/css/updated-#{webTheme}.css?cb=#{webBuildtimestamp}', id='updated-web-theme', disabled="disabled")
+        script(type='text/javascript').
+            window.preferredLocale = "#{preferredLocale}";
+            window.docsLocale = "#{docsLocale}";
         script(src='/javascript/jquery.js?cb=#{webBuildtimestamp}')
         script(src='/javascript/login.js?cb=#{webBuildtimestamp}')
         script(src='/javascript/bootstrap.js?cb=#{webBuildtimestamp}')
@@ -38,8 +41,6 @@ html(lang=window.preferredLocale.replace("_", "-"))
             | #{request_method}
 
         script(type='text/javascript').
-            window.preferredLocale = "#{preferredLocale}";
-            window.docsLocale = "#{docsLocale}";
             spaImportReactPage('login/login')
                 .then(function (module) {
                     module.renderer(
