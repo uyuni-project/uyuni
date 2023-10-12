@@ -92,6 +92,8 @@ mkdir -p $RPM_BUILD_ROOT/etc/pki/tls/private/
 %config %{apacheconfdir}/conf.d/zz-spacewalk-www.conf
 %config %{apacheconfdir}/conf.d/os-images.conf
 %config %{apacheconfdir}/conf.d/z-public.conf
+%config %{apacheconfdir}/vhosts.d/spacewalk-vhost-ssl.conf
+%config %{apacheconfdir}/vhosts.d/spacewalk-vhost-ssl.template
 %attr(440,root,root) %config %{_sysconfdir}/sudoers.d/spacewalk
 %dir %{_var}/lib/cobbler/
 %dir %{_var}/lib/cobbler/kickstarts/
@@ -138,6 +140,12 @@ sysconf_addword /etc/sysconfig/apache2 APACHE_SERVER_FLAGS SSL
 sysconf_addword /etc/sysconfig/apache2 APACHE_SERVER_FLAGS ISSUSE
 %endif
 
+if [ -f /etc/apache2/vhosts.d/vhost-ssl.conf ]; then
+    mv  /etc/apache2/vhosts.d/vhost-ssl.conf /etc/apache2/vhosts.d/vhost-ssl.conf.bak
+fi
+if [ -f /etc/apache2/vhosts.d/vhost.template ]; then
+    mv  /etc/apache2/vhosts.d/vhost.template /etc/apache2/vhosts.d/vhost.template.bak
+fi
 
 ### TO-REMOVE AFTER: 2023-12-01
 if egrep -m1 "^taskomatic.com.redhat.rhn.taskomatic.task.SSHMinionActionExecutor.parallel_threads[[:space:]]*=" /etc/rhn/rhn.conf >/dev/null; then
