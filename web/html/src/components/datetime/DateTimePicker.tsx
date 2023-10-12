@@ -4,7 +4,7 @@ import { forwardRef, useRef } from "react";
 
 import ReactDatePicker from "react-datepicker";
 
-import { localizedMoment } from "utils";
+import { localizedMoment, parseTimeString } from "utils";
 
 // Turn this on to view internal state under the picker in the UI
 const SHOW_DEBUG_VALUES = false;
@@ -173,8 +173,10 @@ export const DateTimePicker = (props: Props) => {
               portalId="time-picker-portal"
               ref={timePickerRef}
               selected={browserTimezoneValue.toDate()}
-              onChange={(date) => {
-                if (date === null) {
+              onChange={(date, event) => {
+                // If this fires without an event, it means the user picked a time from the dropdown
+                // This handler is only used the dropdown selection, onChangeRaw() handles regular user input
+                if (date === null || event) {
                   return;
                 }
                 /**
@@ -183,6 +185,22 @@ export const DateTimePicker = (props: Props) => {
                  */
                 const mergedDate = browserTimezoneValue.toDate();
                 mergedDate.setHours(date.getHours(), date.getMinutes());
+                onChange(mergedDate);
+              }}
+              onChangeRaw={(event) => {
+                // In case the user pastes a value, clean it up and cut it to max length
+                const rawValue = event.target.value.replaceAll(/[^\d:]/g, "");
+                const cutValue = rawValue.includes(":") ? rawValue.substring(0, 5) : rawValue.substring(0, 4);
+                if (cutValue !== event.target.value) {
+                  event.target.value = cutValue;
+                }
+
+                const parsed = parseTimeString(cutValue);
+                if (!parsed) {
+                  return;
+                }
+                const mergedDate = browserTimezoneValue.toDate();
+                mergedDate.setHours(parsed.hours, parsed.minutes);
                 onChange(mergedDate);
               }}
               showTimeSelect
@@ -200,7 +218,6 @@ export const DateTimePicker = (props: Props) => {
                   className="form-control"
                   // This is used by Cucumber to interact with the component
                   data-testid="time-picker"
-                  maxLength={5}
                 />
               }
             />
