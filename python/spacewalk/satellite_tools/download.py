@@ -153,8 +153,7 @@ class DownloadThread(Thread):
         # pylint: disable=E1101
         self.curl = pycurl.Curl()
         self.mirror = 0
-        self.failed_pkgs = []
-        self.lock = Lock()
+        self.failed_pkgs = set()
 
     @staticmethod
     def __is_file_done(local_path=None, file_obj=None, checksum_type=None, checksum=None):
@@ -285,11 +284,9 @@ class DownloadThread(Thread):
                 self.parent.log_obj.log(success, os.path.basename(params['relative_path']))
             self.queue.task_done()
             if not success:
-                self.lock.acquire()
                 package = os.path.basename(params['relative_path'])
-                # append package without extension
-                self.failed_pkgs.append(package.rsplit('.', maxsplit=1)[0])
-                self.lock.release()
+                # append package name without extension
+                self.failed_pkgs.add(package.rsplit('.', maxsplit=1)[0])
         self.curl.close()
 
 
@@ -328,7 +325,7 @@ class ThreadedDownloader:
         # WORKAROUND - BZ #1439758 - ensure first item in queue is performed alone to properly setup NSS
         self.first_in_queue_done = False
         self.first_in_queue_lock = Lock()
-        self.failed_pkgs = []
+        self.failed_pkgs = set()
 
     def set_log_obj(self, log_obj):
         self.log_obj = log_obj
@@ -383,12 +380,8 @@ class ThreadedDownloader:
                 while any(t.is_alive() for t in started_threads):
                     time.sleep(1)
                 break
-            # accumulate all failed packages, if any
-            failed_pkgs = [pkg for t in started_threads for pkg in t.failed_pkgs]
-            if bool(failed_pkgs):
-                self.lock.acquire()
-                self.failed_pkgs = failed_pkgs
-                self.lock.release()
+            # accumulate all failed packages
+            self.failed_pkgs = {pkg for t in started_threads for pkg in t.failed_pkgs}
 
         # raise first detected exception if any
         if self.exception:
