@@ -1543,7 +1543,8 @@ When(/^I run spacewalk-hostname-rename command on the server$/) do
   end
 
   # Update the server CA certificate since it changed, otherwise all API and browser uses will fail
-  update_ca
+  update_ca('controller')
+  update_ca('proxy')
 
   # Reset the API client to take the new CA into account
   reset_api_client
