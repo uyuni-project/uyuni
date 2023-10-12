@@ -22,7 +22,6 @@ import com.suse.oval.manager.OVALLookupHelper;
 import com.suse.oval.ovaltypes.BaseCriteria;
 import com.suse.oval.ovaltypes.CriteriaType;
 import com.suse.oval.ovaltypes.CriterionType;
-import com.suse.oval.ovaltypes.DefinitionClassEnum;
 import com.suse.oval.ovaltypes.DefinitionType;
 import com.suse.oval.ovaltypes.EVRType;
 import com.suse.oval.ovaltypes.LogicOperatorType;
@@ -50,8 +49,8 @@ public class SUSEVulnerablePackageExtractor extends CriteriaTreeBasedExtractor {
      * Standard constructor
      *
      * @param vulnerabilityDefinitionIn the vulnerability definition to extract vulnerable packages from
-     * @param ovalLookupHelperIn the oval lookup helper
-     * */
+     * @param ovalLookupHelperIn        the oval lookup helper
+     */
     public SUSEVulnerablePackageExtractor(DefinitionType vulnerabilityDefinitionIn,
                                           OVALLookupHelper ovalLookupHelperIn) {
         super(vulnerabilityDefinitionIn);
@@ -73,8 +72,8 @@ public class SUSEVulnerablePackageExtractor extends CriteriaTreeBasedExtractor {
                 .stream()
                 .filter(c ->
                         c.getComment().endsWith("is installed") ||
-                        c.getComment().endsWith("is affected") ||
-                        c.getComment().endsWith("is not affected"))
+                                c.getComment().endsWith("is affected") ||
+                                c.getComment().endsWith("is not affected"))
                 .collect(Collectors.toList());
 
         List<VulnerablePackage> vulnerablePackages = new ArrayList<>();

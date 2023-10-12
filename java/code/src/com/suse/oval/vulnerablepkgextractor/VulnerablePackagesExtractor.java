@@ -46,10 +46,16 @@ public interface VulnerablePackagesExtractor {
      * */
     default void assertDefinitionIsValid(DefinitionType definition) throws IllegalStateException {
         if (!isValidDefinition(definition)) {
-            throw new IllegalStateException("The given OVAL definition doesn't meet the prerequisites required by this extractor " +
-                    "implementation to produce reliable results.");
+            throw new IllegalStateException("The given OVAL definition doesn't meet the prerequisites required by " +
+                    "this extractor implementation to produce reliable results.");
         }
     }
 
+    /**
+     * Checks if the current extractor implementation is capable of extorting from the given OVAL definition.
+     *
+     * @param definitionTypeIn definition to check for.
+     * @return the capability of extracting from definition
+     * */
     boolean isValidDefinition(DefinitionType definitionTypeIn);
 }
