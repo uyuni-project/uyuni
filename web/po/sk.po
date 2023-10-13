@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-05 11:07+0200\n"
+"POT-Creation-Date: 2023-10-13 14:32+0200\n"
 "PO-Revision-Date: 2023-09-23 17:15+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
@@ -192,11 +192,11 @@ msgstr "Zrušiť"
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:132
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:134
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:92
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:66
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:38
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:116
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:271
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:309
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:65
+#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:37
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:115
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:270
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:308
 msgid "Delete"
 msgstr "Vymazať"
 
@@ -236,7 +236,7 @@ msgstr ""
 "údajoch."
 
 #: ../html/src/components/formulas/FormulaComponentGenerator.tsx:155
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:55
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:54
 msgid "Reset"
 msgstr "Resetovať"
 
@@ -480,8 +480,8 @@ msgstr "Konfiguračný kanál: {name}"
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:125
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:127
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:84
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:231
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:121
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:229
+#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:119
 msgid "Edit"
 msgstr "Upraviť"
 
@@ -626,7 +626,7 @@ msgstr "Virtuálny hosť"
 
 #: ../html/src/components/systems.tsx:31
 #: ../html/src/manager/systems/list-filter.tsx:8
-#: ../html/src/manager/systems/virtual-list.tsx:67
+#: ../html/src/manager/systems/virtual-list.tsx:65
 msgid "Virtual Host"
 msgstr "Virtuálny hostiteľ"
 
@@ -845,11 +845,11 @@ msgstr "Vyskytla sa chyba. Stav monitorovania nie je známy. Obnovte stránku."
 #: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:121
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:203
 #: ../html/src/manager/minion/packages/package-states.tsx:224
-#: ../html/src/manager/systems/all-list.tsx:64
+#: ../html/src/manager/systems/all-list.tsx:62
 #: ../html/src/manager/systems/list-filter.tsx:41
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:81
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:770
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:127
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:125
 msgid "System"
 msgstr "Systém"
 
@@ -946,7 +946,7 @@ msgid "Organizations"
 msgstr "Organizácie"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:367
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:50
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:49
 msgid "Restart"
 msgstr "Reštart"
 
@@ -1039,7 +1039,7 @@ msgstr "Hostiteľ"
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:61
 #: ../html/src/manager/images/image-view-runtime.tsx:130
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:780
-#: ../html/src/manager/systems/virtual-list.tsx:86
+#: ../html/src/manager/systems/virtual-list.tsx:84
 msgid "Status"
 msgstr "Stav"
 
@@ -1171,7 +1171,7 @@ msgstr "Obnoviť katalóg produktov zo Zákazníckeho centra SUSE"
 #: ../html/src/manager/images/image-stores.tsx:151
 #: ../html/src/manager/images/image-view.tsx:375
 #: ../html/src/manager/notifications/notification-messages.tsx:455
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:242
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:241
 msgid "Refresh"
 msgstr "Obnoviť"
 
@@ -1463,8 +1463,8 @@ msgstr " sekúnd"
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:297
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:280
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:140
-#: ../html/src/manager/systems/virtual-list.tsx:61
-#: ../html/src/manager/virtualization/ListTab.tsx:237
+#: ../html/src/manager/systems/virtual-list.tsx:59
+#: ../html/src/manager/virtualization/ListTab.tsx:235
 msgid "Filter by name"
 msgstr "Filtrovať podľa názvu"
 
@@ -1569,11 +1569,11 @@ msgstr "Odkaz SUSE Security CVE"
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:83
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:78
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:129
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:71
+#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:69
 #: ../html/src/manager/virtualization/nets/network-properties.tsx:223
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:220
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:95
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:337
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:336
 #: ../html/src/manager/virtualization/pools/pool-properties.tsx:244
 msgid "Name"
 msgstr "Názov"
@@ -1587,8 +1587,8 @@ msgstr "Názov"
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:202
 #: ../html/src/manager/salt/keys/key-management.tsx:195
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:70
-#: ../html/src/manager/virtualization/ListTab.tsx:260
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:356
+#: ../html/src/manager/virtualization/ListTab.tsx:258
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:355
 msgid "Actions"
 msgstr "Akcie"
 
@@ -2840,7 +2840,7 @@ msgstr "Systémy"
 #: ../html/src/manager/header/search/search.tsx:14
 #: ../html/src/manager/images/image-view.tsx:667
 #: ../html/src/manager/images/image-view.tsx:791
-#: ../html/src/manager/systems/all-list.tsx:94
+#: ../html/src/manager/systems/all-list.tsx:92
 #: ../html/src/manager/systems/list-filter.tsx:45
 msgid "Packages"
 msgstr "Balíky"
@@ -2848,7 +2848,7 @@ msgstr "Balíky"
 #: ../html/src/manager/header/search/search.tsx:18
 #: ../html/src/manager/images/image-view.tsx:654
 #: ../html/src/manager/images/image-view.tsx:790
-#: ../html/src/manager/systems/all-list.tsx:81
+#: ../html/src/manager/systems/all-list.tsx:79
 #: ../html/src/manager/systems/list-filter.tsx:44
 msgid "Patches"
 msgstr "Opravy"
@@ -3475,8 +3475,8 @@ msgid "Building"
 msgstr "Zostavovanie"
 
 #: ../html/src/manager/images/image-view.tsx:511
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:232
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:300
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:231
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:299
 msgid "Unknown"
 msgstr "Neznáme"
 
@@ -3498,10 +3498,10 @@ msgid "(obsolete)"
 msgstr "(zastarané)"
 
 #: ../html/src/manager/images/image-view.tsx:651
-#: ../html/src/manager/systems/all-list.tsx:70
+#: ../html/src/manager/systems/all-list.tsx:68
 #: ../html/src/manager/systems/list-filter.tsx:43
-#: ../html/src/manager/systems/virtual-list.tsx:92
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:143
+#: ../html/src/manager/systems/virtual-list.tsx:90
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:141
 msgid "Updates"
 msgstr "Aktualizácie"
 
@@ -4133,9 +4133,9 @@ msgstr "Stavy balíkov"
 #: ../html/src/manager/minion/packages/package-states.tsx:344
 #: ../html/src/manager/proxy/container-config.tsx:318
 #: ../html/src/manager/salt/keys/key-management.tsx:188
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:154
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:77
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:340
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:152
+#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:75
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:339
 msgid "State"
 msgstr "Štát"
 
@@ -5011,32 +5011,32 @@ msgstr ""
 "Akýkoľvek systém zaregistrovaný pomocou tohto aktivačného kľúča bude "
 "prihlásený k vybraným kanálom potomkov."
 
-#: ../html/src/manager/systems/all-list.tsx:38
+#: ../html/src/manager/systems/all-list.tsx:37
 msgid " Systems "
 msgstr " Systémy "
 
-#: ../html/src/manager/systems/all-list.tsx:59
+#: ../html/src/manager/systems/all-list.tsx:57
 msgid "No Systems."
 msgstr "Žiadne systémy."
 
-#: ../html/src/manager/systems/all-list.tsx:108
+#: ../html/src/manager/systems/all-list.tsx:106
 #: ../html/src/manager/systems/list-filter.tsx:46
 msgid "Extra Packages"
 msgstr "Extra balíky"
 
-#: ../html/src/manager/systems/all-list.tsx:122
+#: ../html/src/manager/systems/all-list.tsx:120
 #: ../html/src/manager/systems/list-filter.tsx:47
 msgid "Config Diffs"
 msgstr "Konfiguračné rozdiely"
 
-#: ../html/src/manager/systems/all-list.tsx:137
+#: ../html/src/manager/systems/all-list.tsx:135
 #: ../html/src/manager/systems/list-filter.tsx:48
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:146
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:579
 msgid "Base Channel"
 msgstr "Základný kanál"
 
-#: ../html/src/manager/systems/all-list.tsx:148
+#: ../html/src/manager/systems/all-list.tsx:146
 #: ../html/src/manager/systems/list-filter.tsx:49
 msgid "System Type"
 msgstr "Typ systému"
@@ -5466,7 +5466,7 @@ msgid "system(s) to subscribe"
 msgstr "systém(y) na prihlásenie"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:459
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:179
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:177
 msgid "(none)"
 msgstr "(žiadne)"
 
@@ -5586,20 +5586,20 @@ msgstr "Nie sú k dispozícii žiadne kanály potomkov."
 msgid "Confirm Software Channel Change"
 msgstr "Potvrďte zmenu softvérového kanála"
 
-#: ../html/src/manager/systems/virtual-list.tsx:43
+#: ../html/src/manager/systems/virtual-list.tsx:42
 msgid "Virtual Systems"
 msgstr "Virtuálne systémy"
 
-#: ../html/src/manager/systems/virtual-list.tsx:62
+#: ../html/src/manager/systems/virtual-list.tsx:60
 msgid "No Virtual Systems."
 msgstr "Žiadne virtuálne systémy."
 
-#: ../html/src/manager/systems/virtual-list.tsx:75
+#: ../html/src/manager/systems/virtual-list.tsx:73
 msgid "Virtual System"
 msgstr "Virtuálny systém"
 
-#: ../html/src/manager/systems/virtual-list.tsx:103
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:176
+#: ../html/src/manager/systems/virtual-list.tsx:101
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:174
 msgid "Base Software Channel"
 msgstr "Základný softvérový kanál"
 
@@ -5629,8 +5629,8 @@ msgstr "Sokety CPU"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:98
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:104
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:163
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:170
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:161
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:168
 msgid "N/A"
 msgstr "N/A"
 
@@ -5725,11 +5725,11 @@ msgstr ""
 "KVM ani Xen nie sú spustené. Uistite sa, že sú nainštalované a moduly jadra "
 "sú načítané."
 
-#: ../html/src/manager/virtualization/ListTab.tsx:162
+#: ../html/src/manager/virtualization/ListTab.tsx:161
 msgid "{name} selected"
 msgstr "Vybrané {name}"
 
-#: ../html/src/manager/virtualization/ListTab.tsx:242
+#: ../html/src/manager/virtualization/ListTab.tsx:240
 msgid "Action Status"
 msgstr "Stav akcie"
 
@@ -5842,7 +5842,7 @@ msgid "Create Virtual Machine"
 msgstr "Vytvoriť virtuálny stroj"
 
 #: ../html/src/manager/virtualization/guests/list/MigrateDialog.tsx:42
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:223
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:221
 msgid "Migrate"
 msgstr "Migrovať"
 
@@ -5854,64 +5854,64 @@ msgstr "Vyberte, kam sa má virtuálny hosť migrovať."
 msgid "Target Host"
 msgstr "Cieľový hostiteľ"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:34
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:33
 msgid "Start / Resume"
 msgstr "Spustiť / Pokračovať"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:41
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:31
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:258
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:40
+#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:30
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:257
 msgid "Stop"
 msgstr "Zastaviť"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:46
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:45
 msgid "Force off"
 msgstr "Zakončiť"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:59
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:58
 msgid "Suspend"
 msgstr "Pozastaviť"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:79
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:78
 msgid "Synchronize Guests List"
 msgstr "Synchronizovať zoznam hostí"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:80
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:79
 msgid "Synchronize"
 msgstr "Synchronizovať"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:104
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:102
 msgid "Hosted Virtual Systems"
 msgstr "Hosťované virtuálne systémy"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:105
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:103
 msgid ""
 "This is a list of virtual guests which are configured to run on this host."
 msgstr ""
 "Toto je zoznam virtuálnych hostí, ktorí sú nakonfigurovaní, aby bežali na "
 "tomto hostiteľovi."
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:120
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:118
 msgid "Guest"
 msgstr "Hosť"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:130
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:128
 msgid "Unregistered System"
 msgstr "Neregistrovaný systém"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:162
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:160
 msgid "Current Memory"
 msgstr "Aktuálna pamäť"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:169
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:167
 msgid "vCPUs"
 msgstr "vCPU"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:200
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:198
 msgid "paused"
 msgstr "pozastavené"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:213
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:211
 msgid "Graphical Console"
 msgstr "Grafická konzola"
 
@@ -5996,41 +5996,41 @@ msgstr "Jediný virtuálny stroj využívajúci takmer všetky zdroje hostiteľa
 msgid "Create Virtual Network"
 msgstr "Vytvoriť virtuálnu sieť"
 
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:24
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:113
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:250
+#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:23
+#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:111
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:249
 msgid "Start"
 msgstr "Začiatok"
 
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:52
+#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:50
 msgid "Virtual Networks"
 msgstr "Virtuálne siete"
 
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:53
+#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:51
 msgid ""
 "This is a list of virtual networks which are configured to run on this host."
 msgstr ""
 "Toto je zoznam virtuálnych sietí, ktoré sú nakonfigurované, aby bežali na "
 "tomto hostiteľovi."
 
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:61
+#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:59
 msgid ""
 "The Salt version on this system does not support virtual network creating "
 "and editing"
 msgstr ""
 "Verzia Salt v tomto systéme nepodporuje vytváranie a úpravy virtuálnych sietí"
 
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:84
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:343
+#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:82
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:342
 msgid "Autostart"
 msgstr "Automatické spustenie"
 
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:94
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:346
+#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:92
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:345
 msgid "Persistent"
 msgstr "Trvalé"
 
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:103
+#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:101
 #: ../html/src/manager/virtualization/nets/network-properties.tsx:264
 msgid "Bridge"
 msgstr "Most"
@@ -6373,44 +6373,44 @@ msgstr ""
 msgid "Create Virtual Storage Pool"
 msgstr "Vytvoriť virtuálny úložný fond"
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:117
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:116
 msgid "Virtual Storage Pool"
 msgstr "Virtuálny úložný fond"
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:117
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:116
 msgid "Virtual Storage Volume"
 msgstr "Virtuálny úložný zväzok"
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:143
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:142
 msgid "Delete the pool, including the contained volumes. "
 msgstr "Vymazať fond vrátane obsiahnutých zväzkov. "
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:144
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:143
 msgid "Cannot be undone"
 msgstr "Nie je možné vrátiť späť"
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:264
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:263
 msgid "Edit Pool"
 msgstr "Upraviť fond"
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:349
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:348
 msgid "Location"
 msgstr "Umiestnenie"
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:352
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:351
 msgid "Usage"
 msgstr "Použitie"
 
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:364
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:365
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:366
 msgid "Create Pool"
 msgstr "Vytvoriť fond"
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:372
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:371
 msgid "Virtual Storage Pools and Volumes"
 msgstr "Virtuálne úložné fondy a zväzky"
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:373
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:372
 msgid ""
 "This is the list of storage pools defined on this host containing virtual "
 "guests disks."
@@ -6418,7 +6418,7 @@ msgstr ""
 "Toto je zoznam úložných fondov definovaných na tomto hostiteľovi, ktoré "
 "obsahujú disky virtuálnych hostí."
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:386
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:384
 msgid "Filter by pool or volume name"
 msgstr "Filtrovať podľa názvu zväzku alebo fondu"
 
