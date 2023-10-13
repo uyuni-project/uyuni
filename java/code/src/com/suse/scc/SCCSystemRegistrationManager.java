@@ -14,47 +14,30 @@
  */
 package com.suse.scc;
 
-import static java.util.Optional.ofNullable;
-
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.credentials.Credentials;
-import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
 import com.redhat.rhn.domain.scc.SCCRegCacheItem;
-import com.redhat.rhn.domain.server.CPU;
-import com.redhat.rhn.domain.server.Server;
-import com.redhat.rhn.domain.server.ServerFactory;
-import com.redhat.rhn.manager.content.ContentSyncManager;
 
 import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCClientException;
-import com.suse.scc.model.SCCMinProductJson;
-import com.suse.scc.model.SCCRegisterSystemJson;
-import com.suse.scc.model.SCCSystemCredentialsJson;
 import com.suse.scc.model.SCCUpdateSystemJson;
 import com.suse.scc.model.SCCVirtualizationHostJson;
-import com.suse.utils.Opt;
 
-import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class SCCSystemRegistrationManager {
 
-    private final Logger LOG = LogManager.getLogger(SCCSystemRegistrationManager.class);
+    private static final Logger LOG = LogManager.getLogger(SCCSystemRegistrationManager.class);
     private final SCCClient sccClient;
 
     /**
@@ -138,93 +121,13 @@ public class SCCSystemRegistrationManager {
     }
 
     /**
-     * Register a system at SCC
+     * Register systems in SCC
      *
      * @param items the items to register
      * @param primaryCredential the current primary organization credential
      */
     public void register(List<SCCRegCacheItem> items, Credentials primaryCredential) {
-        items.forEach(cacheItem -> {
-            try {
-                Credentials itemCredentials = cacheItem.getOptCredentials().orElse(primaryCredential);
-                /*
-                    If a system is PAYG, we don't want to send (at least for now) information to SCC
-                    so that the customer is not charged twice for the same machine. In the future we'll
-                    send the machine with the flag `is_payg` set to true, but that will be done when the SCC
-                    team supports it.
-                     */
-                if (cacheItem.getOptServer().filter(s -> s.isForeign()).isEmpty() &&
-                        cacheItem.getOptServer().filter(s -> s.isPayg()).isEmpty()) {
-                    LOG.debug("Forward registration of {}", cacheItem);
-                    SCCSystemCredentialsJson systemCredentials = sccClient.createSystem(
-                            getPayload(cacheItem),
-                            itemCredentials.getUsername(),
-                            itemCredentials.getPassword());
-                    cacheItem.setSccId(systemCredentials.getId());
-                    cacheItem.setSccLogin(systemCredentials.getLogin());
-                    cacheItem.setSccPasswd(systemCredentials.getPassword());
-                }
-                // Foreign systems and PAYG will not be sent to SCC
-                // but we need the entry in case it is a hypervisor and we need to send
-                // virtualization host data to SCC
-                cacheItem.setSccRegistrationRequired(false);
-                cacheItem.setRegistrationErrorTime(null);
-                cacheItem.setCredentials(itemCredentials);
-            }
-            catch (Exception e) {
-                LOG.error("Error registering system {}", cacheItem.getId(), e);
-                cacheItem.setRegistrationErrorTime(new Date());
-            }
-            cacheItem.getOptServer().ifPresent(ServerFactory::save);
-        });
-    }
-
-    private SCCRegisterSystemJson getPayload(SCCRegCacheItem rci) {
-        Server srv = rci.getOptServer().get();
-        List<SCCMinProductJson> products = Opt.fold(srv.getInstalledProductSet(),
-                (Supplier<List<SUSEProduct>>) LinkedList::new,
-                s -> {
-                    List<SUSEProduct> prd = new LinkedList<>();
-                    prd.add(s.getBaseProduct());
-                    prd.addAll(s.getAddonProducts());
-                    return prd;
-                }
-        ).stream()
-                .map(SCCMinProductJson::new)
-                .collect(Collectors.toList());
-
-        Map<String, String> hwinfo = new HashMap<>();
-        Optional<CPU> cpu = ofNullable(srv.getCpu());
-        cpu.flatMap(c -> ofNullable(c.getNrCPU())).ifPresent(c -> hwinfo.put("cpus", c.toString()));
-        cpu.flatMap(c -> ofNullable(c.getNrsocket())).ifPresent(c -> hwinfo.put("sockets", c.toString()));
-        hwinfo.put("arch", srv.getServerArch().getLabel().split("-")[0]);
-        if (srv.isVirtualGuest()) {
-            hwinfo.put("hypervisor", srv.getVirtualInstance().getType().getHypervisor().orElse(""));
-            hwinfo.put("cloud_provider", srv.getVirtualInstance().getType().getCloudProvider().orElse(""));
-            ofNullable(srv.getVirtualInstance().getUuid())
-                    .ifPresent(u -> hwinfo.put("uuid", u.replaceAll("(\\w{8})(\\w{4})(\\w{4})(\\w{4})(\\w{12})",
-                    "$1-$2-$3-$4-$5")));
-        }
-        else {
-            // null == physical instance
-            hwinfo.put("hypervisor", null);
-        }
-
-        String login = rci.getOptSccLogin().orElseGet(() -> {
-            String l = String.format("%s-%s", ContentSyncManager.getUUID(), srv.getId().toString());
-            rci.setSccLogin(l);
-            SCCCachingFactory.saveRegCacheItem(rci);
-            return l;
-        });
-        String passwd = rci.getOptSccPasswd().orElseGet(() -> {
-            String pw = RandomStringUtils.random(64, 0, 0, true, true, null, new SecureRandom());
-            rci.setSccPasswd(pw);
-            SCCCachingFactory.saveRegCacheItem(rci);
-            return pw;
-        });
-
-        return new SCCRegisterSystemJson(login, passwd, srv.getHostname(), hwinfo, products,
-                srv.getServerInfo().getCheckin());
+        SCCSystemRegistration.register(sccClient, items, primaryCredential);
     }
 
     /**
