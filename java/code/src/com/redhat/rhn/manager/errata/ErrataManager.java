@@ -2279,6 +2279,7 @@ public class ErrataManager extends BaseManager {
         String errataLabel = RhnSetDecl.generateCustomSetName(RhnSetDecl.ERRATA, serverId);
         Map<String, Object> params = new HashMap<>();
         params.put("label", errataLabel);
+        params.put("server_id", serverId);
         WriteMode m = ModeFactory.getWriteMode("Errata_queries", "delete_invalid_erratas_from_set");
         m.executeUpdate(params);
     }

@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Oct 09 18:22:10 CEST 2023 - marina.latini@suse.com
+
+- version 4.3.36-1
+  * Do not install instance-flavor-check tool on openSUSE
+
+-------------------------------------------------------------------
 Tue Aug 29 15:57:21 CEST 2023 - marina.latini@suse.com
 
 - version 4.3.35-1

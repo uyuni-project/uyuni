@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Oct 09 18:33:41 CEST 2023 - marina.latini@suse.com
+
+- version 4.3.18-1
+  * Add Debian 12 repositories
+
+-------------------------------------------------------------------
 Tue Jun 27 21:18:22 CEST 2023 - marina.latini@suse.com
 
 - version 4.3.17-1

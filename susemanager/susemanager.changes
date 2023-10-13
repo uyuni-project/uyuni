@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Mon Oct 09 18:28:30 CEST 2023 - marina.latini@suse.com
+
+- version 4.3.32-1
+  * Add bootstrap repository definition for OES2023.4 (bsc#1215514)
+  * Add bootstrap repository definitions for Debian 12
+  * Fix SLES 15 for SAP not being listed in mgr-create-bootstrap-repo (bsc#1215120)
+  * Add missing PKGLIST15_TRAD for SLES 15 SAP mgr-create-bootstrap-repo entries (bsc#1215120)
+  * Fix possible permission issues with database migration script (bsc#1214746)
+
+-------------------------------------------------------------------
 Tue Aug 29 15:44:44 CEST 2023 - marina.latini@suse.com
 
 - version 4.3.31-1

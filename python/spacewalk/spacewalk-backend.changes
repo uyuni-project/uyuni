@@ -1,4 +1,8 @@
-- Only show missing /root/.curlrc error with log_level = 5 (bsc#1212507)
+-------------------------------------------------------------------
+Mon Oct 09 17:31:35 CEST 2023 - marina.latini@suse.com
+
+- version 4.3.24-1
+  * Only show missing /root/.curlrc error with log_level = 5 (bsc#1212507)
 
 -------------------------------------------------------------------
 Tue Aug 29 15:50:56 CEST 2023 - marina.latini@suse.com

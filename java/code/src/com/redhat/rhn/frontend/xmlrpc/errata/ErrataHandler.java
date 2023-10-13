@@ -79,8 +79,8 @@ import org.apache.logging.log4j.Logger;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -125,16 +125,18 @@ public class ErrataHandler extends BaseHandler {
      *          #prop("string", "references")
      *          #prop("string", "notes")
      *          #prop("string", "solution")
+     *          #prop_desc("boolean", "reboot_suggested", "A boolean flag signaling whether a system reboot is
+     *          advisable following the application of the errata. Typical example is upon kernel update.")
+     *          #prop_desc("boolean", "restart_suggested", "A boolean flag signaling a weather reboot of
+     *          the package manager is advisable following the application of the errata. This is commonly
+     *          used to address update stack issues before proceeding with other updates.")
      *     #struct_end()
      */
     @ReadOnly
     public Map<String, Object> getDetails(User loggedInUser, String advisoryName) throws FaultException {
-     // Get the logged in user. We don't care what roles this user has, we
-        // just want to make sure the caller is logged in.
-
         Errata errata = lookupAccessibleErratum(advisoryName, empty(), loggedInUser.getOrg());
 
-        Map<String, Object> errataMap = new HashMap<>();
+        Map<String, Object> errataMap = new LinkedHashMap<>();
 
         errataMap.put("id", errata.getId());
         if (errata.getIssueDate() != null) {
@@ -187,6 +189,8 @@ public class ErrataHandler extends BaseHandler {
             errataMap.put("severity", errata.getSeverity().getLocalizedLabel());
         }
 
+        errataMap.put("reboot_suggested", errata.hasKeyword(Keyword.REBOOT_SUGGESTED));
+        errataMap.put("restart_suggested", errata.hasKeyword(Keyword.RESTART_SUGGESTED));
 
         return errataMap;
     }

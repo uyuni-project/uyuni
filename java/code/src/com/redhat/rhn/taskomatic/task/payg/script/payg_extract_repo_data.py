@@ -115,9 +115,9 @@ def _extract_rmt_server_info(netloc):
         system_exit(4, ["unable to get ip for repository server (error {}):".format(e)])
 
     server_ip = host_ip_output.split(" ")[0].strip()
-    ca_cert_path = "/usr/share/pki/trust/anchors/registration_server_%s.pem" % server_ip.replace('.','_')
+    ca_cert_path = "/etc/pki/trust/anchors/registration_server_%s.pem" % server_ip.replace('.','_')
     if not Path(ca_cert_path).exists():
-        ca_cert_path = "/etc/pki/trust/anchors/registration_server_%s.pem" % server_ip.replace('.','_')
+        ca_cert_path = "/usr/share/pki/trust/anchors/registration_server_%s.pem" % server_ip.replace('.','_')
         if not Path(ca_cert_path).exists():
             system_exit(6, ["CA file for server {} not found (location '/etc/pki/trust/anchors/' or '/usr/share/pki/trust/anchors/')".format( server_ip)])
     with open(ca_cert_path) as f:

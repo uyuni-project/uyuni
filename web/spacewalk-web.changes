@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Oct 09 17:49:34 CEST 2023 - marina.latini@suse.com
+
+- version 4.3.35-1
+  * Add missing translation wrappers for Salt formula catalog
+  * Shows a notification when an update for SUSE Manager is available
+
+-------------------------------------------------------------------
 Tue Oct 03 00:45:48 CEST 2023 - marina.latini@suse.com
 
 - version 4.3.34-1

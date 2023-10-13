@@ -27,7 +27,8 @@ Feature: Add the Oracle 9 distribution custom repositories
     And I wait until I do not see "Loading" text
     And I select "oraclelinux9 for x86_64" from "selectedBaseChannel"
     # "oraclelinux9-appstream for x86_64" is already checked
-    And I check "Uyuni Client Tools for Oracle Linux 9 (x86_64)"
+    And I check "EL9-Manager-Tools-Pool for x86_64 OL9"
+    And I check "EL9-Manager-Tools-Updates for x86_64 OL9"
     And I check "Custom Channel for oracle9_minion"
     And I click on "Save"
     Then I should see a "EL9-Manager-Tools-Pool for x86_64 OL9" text

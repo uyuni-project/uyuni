@@ -61,7 +61,7 @@ describe("DateTimePicker", () => {
     expect(timePicker.value).toEqual("23:30");
   });
 
-  test("clearing the time input doesn't change the date (bsc#1210253)", (done) => {
+  test("clearing or manually editing the time input doesn't change the date (bsc#1210253, bsc#1215820)", (done) => {
     const validISOString = "2020-01-30T15:00:00.000Z";
     let changeEventCount = 0;
 
@@ -88,5 +88,52 @@ describe("DateTimePicker", () => {
     datePicker.click();
     screen.getByText("16").click();
     type(timePicker, "0", false);
+  });
+
+  test("picking a time from the dropdown works", (done) => {
+    const validISOString = "2020-02-01T04:00:00.000Z";
+
+    const Setup = () => {
+      const [value, setValue] = useState(localizedMoment(validISOString));
+      return (
+        <DateTimePicker
+          value={value}
+          onChange={(newValue) => {
+            setValue(newValue);
+
+            expect(newValue.toUserDateTimeString()).toEqual("2020-01-31 14:30");
+            done();
+          }}
+        />
+      );
+    };
+    render(<Setup />);
+
+    const { timePicker } = getInputs();
+    timePicker.click();
+    screen.getByText("14:30").click();
+  });
+
+  test("manually entering a time value works", (done) => {
+    const validISOString = "2020-02-01T04:00:00.000Z";
+
+    const Setup = () => {
+      const [value, setValue] = useState(localizedMoment(validISOString));
+      return (
+        <DateTimePicker
+          value={value}
+          onChange={(newValue) => {
+            setValue(newValue);
+
+            expect(newValue.toUserDateTimeString()).toEqual("2020-01-31 23:45");
+            done();
+          }}
+        />
+      );
+    };
+    render(<Setup />);
+
+    const { timePicker } = getInputs();
+    type(timePicker, "23:45");
   });
 });
