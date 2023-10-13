@@ -156,7 +156,6 @@ Requires:       spacewalk-backend-sql
 Requires:       spacewalk-common
 Requires:       susemanager-build-keys
 Requires:       susemanager-sync-data
-Requires:       uyuni-build-keys
 BuildRequires:  docbook-utils
 
 %description tools
