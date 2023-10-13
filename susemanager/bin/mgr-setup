@@ -172,25 +172,10 @@ fi
 }
 
 setup_mail () {
-
-# fix hostname for postfix
-REALHOSTNAME=`hostname -f`
-if [ -z "$REALHOSTNAME" ]; then
-        for i in `ip -f inet -o addr show scope global | awk '{print $4}' | awk -F \/ '{print $1}'`; do
-                for j in `dig +noall +answer +time=2 +tries=1 -x $i | awk '{print $5}' | sed 's/\.$//'`; do
-                        if [ -n "$j" ]; then
-                                REALHOSTNAME=$j
-                                break 2
-                        fi
-                done
-        done
-fi
-if [ -n "$REALHOSTNAME" ]; then
-        echo "$REALHOSTNAME" > /etc/hostname
-fi
-# bsc#979664 - SUSE Manager requires a working mail system
-systemctl --quiet enable postfix 2>&1
-systemctl restart postfix
+    postconf -e myhostname=$HOSTNAME
+    # bsc#979664 - SUSE Manager requires a working mail system
+    systemctl --quiet enable postfix 2>&1
+    systemctl restart postfix
 }
 
 setup_hostname() {
@@ -922,6 +907,11 @@ do_setup() {
     fi
 
     setup_spacewalk
+
+    # In the container case, we have the MIRROR_PATH environment variable at setup
+    if [ -n "$MIRROR_PATH" ]; then
+        echo "server.susemanager.fromdir = $MIRROR_PATH" >> /etc/rhn/rhn.conf
+    fi
 
     if [ -n "$ISS_PARENT" ]; then
         local certname=`echo "MASTER-$ISS_PARENT-TRUSTED-SSL-CERT" | sed 's/\./_/g'`

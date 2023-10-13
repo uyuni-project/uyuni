@@ -52,7 +52,7 @@ public class KickstartActivationKeysCommand extends BaseKickstartCommand {
             Set<Token> tokenSetCopy = new HashSet<>();
             tokenSetCopy.addAll(this.getKickstartData().getDefaultRegTokens());
             for (Token token : tokenSetCopy) {
-                if (token.getId() == id) {
+                if (token.getId().equals(id)) {
                     this.getKickstartData().getDefaultRegTokens().remove(token);
                     keysToRemove.add(ActivationKeyFactory.lookupByToken(token).getKey());
                 }

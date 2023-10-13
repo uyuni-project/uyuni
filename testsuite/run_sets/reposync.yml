@@ -14,5 +14,6 @@
 - features/reposync/srv_enable_sync_products.feature
 - features/reposync/srv_wait_for_reposync.feature
 - features/reposync/srv_create_repository.feature
+- features/reposync/srv_sync_fake_channels.feature
 
 ## Channels and Product synchronization features END ###

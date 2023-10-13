@@ -35,13 +35,12 @@ Feature: PXE boot a terminal with Cobbler
     And I click on "Apply Highstate"
     And I wait until event "Apply highstate scheduled by admin" is completed
 
-@susemanager
+  # We currently test Cobbler with SLES 15 SP4, even on Uyuni
   Scenario: Install TFTP boot package on the server
     When I install package tftpboot-installation on the server
     And I wait for "tftpboot-installation-SLE-15-SP4-x86_64" to be installed on "server"
 
-# TODO: Not available in any Leap repository, yet
-# See https://suse.slack.com/archives/C02CKHR76Q2/p1694189245268889
+# TODO: use this code when we start testing Cobbler with Leap
 #@uyuni
 # Scenario: Install TFTP boot package on the server
 #   When I install package tftpboot-installation on the server
@@ -81,7 +80,7 @@ Feature: PXE boot a terminal with Cobbler
     When I enter "self_update=0" as "kernel_options"
     And I click on "Update"
     And I follow "Variables"
-    And I enter "distrotree=SLE-15-SP4-TFTP\nregistration_key=1-SUSE-KEY-x86_64\nredhat_management_server=proxy.example.org" as "variables" text area
+    And I enter "distrotree=SLE-15-SP4-TFTP\nregistration_key=1-TERMINAL-KEY-x86_64\nredhat_management_server=proxy.example.org" as "variables" text area
     And I click on "Update Variables"
     And I follow "Autoinstallation File"
     Then I should see a "SLE-15-SP4-TFTP" text

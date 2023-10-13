@@ -129,10 +129,6 @@ When(/^I start tftp on the proxy$/) do
   end
 end
 
-When(/^I stop tftp on the proxy$/) do
-  get_target('proxy').run('systemctl stop tftp.service')
-end
-
 When(/^I set up the private network on the terminals$/) do
   proxy = net_prefix + ADDRESSES['proxy']
   # /etc/sysconfig/network/ifcfg-eth1 and /etc/resolv.conf
@@ -460,7 +456,7 @@ When(/^I enter the MAC address of "([^"]*)" in (.*) field$/) do |host, field|
   elsif host == 'sle15sp4_terminal'
     mac = $sle15sp4_terminal_mac
     mac = 'EE:EE:EE:00:00:06' if mac.nil?
-  elsif (host.include? 'deblike') || (host.include? 'debian11') || (host.include? 'ubuntu')
+  elsif (host.include? 'deblike') || (host.include? 'debian11') || (host.include? 'debian12') || (host.include? 'ubuntu')
     node = get_target(host)
     output, _code = node.run('ip link show dev ens4')
     mac = output.split("\n")[1].split[1]

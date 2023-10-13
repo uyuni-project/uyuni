@@ -163,7 +163,7 @@ public class Acl {
     private static final String ACL_SPLIT_REGEX = "\\s*;\\s*";
 
     /** RegEx to split expressions into multiple statements */
-    private static final String EXPR_SPLIT_REGEX = "\\s+or\\s+";
+    private static final String EXPR_SPLIT_REGEX = "\\sor\\s";
 
     /** RegEx to parse statement to grab negation, function call, params */
     private static final String STMT_PARSE_REGEX = "^(not +)?(.*)\\((.*)\\)$";
@@ -393,7 +393,7 @@ public class Acl {
             int statementLen = statements.length;
 
             for (int stmtIdx = 0; stmtIdx < statementLen; ++stmtIdx) {
-                String statement = statements[stmtIdx];
+                String statement = statements[stmtIdx].trim();
                 log.debug("statement[{}]: {}", stmtIdx, statement);
 
                 result = evalAclStatement(statement, context);

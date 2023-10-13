@@ -30,6 +30,7 @@ Feature: Setup Uyuni for Retail branch network
 @proxy
 @private_net
 @susemanager
+@skip_if_container_server
   Scenario: Install the Retail pattern on the SUSE Manager server
     When I refresh the metadata for "server"
     When I install pattern "suma_retail" on this "server"
@@ -39,6 +40,7 @@ Feature: Setup Uyuni for Retail branch network
 @proxy
 @private_net
 @uyuni
+@skip_if_container_server
   Scenario: Install the Retail pattern on the Uyuni server
     When I refresh the metadata for "server"
     When I install pattern "uyuni_retail" on this "server"

@@ -50,6 +50,7 @@ defaultdict = {
     "ubuntu2204_minion": "/SUSE_Updates_Ubuntu_22.04-CLIENT-TOOLS_x86_64/",
     "debian10_minion": "/SUSE_Updates_Debian_10-CLIENT-TOOLS_x86_64/",
     "debian11_minion": "/SUSE_Updates_Debian_11-CLIENT-TOOLS_x86_64/",
+    "debian12_minion": "/SUSE_Updates_Debian_12-CLIENT-TOOLS_x86_64/",
     "opensuse153arm_minion": ["/SUSE_Updates_openSUSE-SLE_15.3/",
                               "/SUSE_Updates_SLE-Manager-Tools_15_aarch64/"],
     "opensuse154arm_minion": ["/SUSE_Updates_openSUSE-SLE_15.4/",
@@ -76,10 +77,12 @@ defaultdict = {
 nodesdict42 = {
     "server": ["/SUSE_Updates_SLE-Module-SUSE-Manager-Server_4.2_x86_64/",
                "/SUSE_Updates_SLE-Product-SUSE-Manager-Server_4.2_x86_64/",
+               "/SUSE_Updates_SLE-Product-SLES_15-SP3-LTSS_x86_64/",
                "/SUSE_Updates_SLE-Module-Basesystem_15-SP3_x86_64/",
                "/SUSE_Updates_SLE-Module-Server-Applications_15-SP3_x86_64/"],
     "proxy": ["/SUSE_Updates_SLE-Module-SUSE-Manager-Proxy_4.2_x86_64/",
-              "/SUSE_Updates_SLE-Product-SUSE-Manager-Proxy_4.2_x86_64",
+              "/SUSE_Updates_SLE-Product-SUSE-Manager-Proxy_4.2_x86_64/",
+              "/SUSE_Updates_SLE-Product-SLES_15-SP3-LTSS_x86_64/",
               "/SUSE_Updates_SLE-Module-Basesystem_15-SP3_x86_64/",
               "/SUSE_Updates_SLE-Module-Server-Applications_15-SP3_x86_64/"]
 }
@@ -90,9 +93,10 @@ nodesdict43 = {
     "server": ["/SUSE_Updates_SLE-Module-SUSE-Manager-Server_4.3_x86_64/",
                "/SUSE_Updates_SLE-Product-SUSE-Manager-Server_4.3_x86_64/",
                "/SUSE_Updates_SLE-Module-Basesystem_15-SP4_x86_64/",
+               "/SUSE_Updates_SLE-Module-Web-Scripting_15-SP4_x86_64/",
                "/SUSE_Updates_SLE-Module-Server-Applications_15-SP4_x86_64/"],
     "proxy": ["/SUSE_Updates_SLE-Module-SUSE-Manager-Proxy_4.3_x86_64/",
-              "/SUSE_Updates_SLE-Product-SUSE-Manager-Proxy_4.3_x86_64",
+              "/SUSE_Updates_SLE-Product-SUSE-Manager-Proxy_4.3_x86_64/",
               "/SUSE_Updates_SLE-Module-Basesystem_15-SP4_x86_64/",
               "/SUSE_Updates_SLE-Module-Server-Applications_15-SP4_x86_64/"]
 }

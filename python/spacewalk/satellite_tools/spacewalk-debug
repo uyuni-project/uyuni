@@ -328,11 +328,19 @@ fi
 echo "    * get diskspace available"
 df -h > $DIR/diskinfo
 
-echo "    * get database statistics"
-/usr/bin/rhn-db-stats $DIR/database/db-stats.log
+echo "    * get database settings"
+/usr/bin/rhn-db-stats $DIR/database/db-settings.log
 
 echo "    * get schema statistics"
 /usr/bin/rhn-schema-stats $DIR/database/schema-stats.log
+
+echo "    * get tables statistics"
+QUERY="SELECT * FROM pg_stat_user_tables;"
+echo "$QUERY" | /usr/bin/spacewalk-sql --select-mode - > "${DIR}/database/table_stats.log"
+
+echo "    * get per table configuration options"
+QUERY="SELECT relname, reloptions FROM pg_class JOIN pg_namespace ON  pg_namespace.oid = pg_class.relnamespace WHERE pg_namespace.nspname = 'public' AND pg_class.relkind = 'r';"
+echo "$QUERY" | /usr/bin/spacewalk-sql --select-mode - > "${DIR}/database/table_options.log"
 
 # alert.log
 if [ -f /rhnsat/admin/rhnsat/bdump/alert_rhnsat.log ] ; then

@@ -35,7 +35,7 @@ class RPCClient:
     RPC Client
     """
 
-    def __init__(self, user: str = None, password: str = None, url: str = "https://localhost/rpc/api"):
+    def __init__(self, user: str = None, password: str = None, url: str = "http://localhost/rpc/api"):
         """
         XML-RPC client interface.
 

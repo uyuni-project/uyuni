@@ -26,6 +26,7 @@ import com.redhat.rhn.frontend.events.TransactionHelper;
 import com.redhat.rhn.taskomatic.core.SchedulerKernel;
 import com.redhat.rhn.taskomatic.domain.TaskoSchedule;
 
+import org.apache.commons.collections.MapUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.quartz.JobBuilder;
@@ -136,39 +137,44 @@ public class TaskoQuartzHelper {
      * start date.
      * @param schedule for the job to be rescheduled
      * @param startAtDate trigger time
+     * @param bunchStartIndex the index of the starting task in the bunch. Different from zero if it was not possible
+     *                        to execute one of the task of the bunch due to missing capacity
      * @return the date of the trigger or null if scheduling was not successful
      * @throws SchedulerException
      */
-    public static Date rescheduleJob(TaskoSchedule schedule, Instant startAtDate) throws SchedulerException {
+    public static Date rescheduleJob(TaskoSchedule schedule, Instant startAtDate, long bunchStartIndex)
+        throws SchedulerException {
         // create trigger
         String timestamp = TIMESTAMP_FORMAT.format(startAtDate);
-        TriggerKey retryTriggerKey = new TriggerKey(schedule.getJobLabel() + "-retry" + timestamp,
-                getGroupName(schedule.getOrgId()));
+        String quartzGroupName = getGroupName(schedule.getOrgId());
+        TriggerKey retryTriggerKey = new TriggerKey(schedule.getJobLabel() + "-retry" + timestamp, quartzGroupName);
+
         Trigger retryTrigger = SchedulerKernel.getScheduler().getTrigger(retryTriggerKey);
         if (retryTrigger != null) {
             log.warn("Retry trigger {} already exists", retryTriggerKey);
             return retryTrigger.getStartTime();
         }
-        Trigger trigger = newTrigger()
-                    .withIdentity(schedule.getJobLabel() +  "-retry" + timestamp, getGroupName(schedule.getOrgId()))
-                    .startAt(Date.from(startAtDate))
-                    .withSchedule(simpleSchedule()
-                            .withMisfireHandlingInstructionFireNow()) // execute job immediately after discovering
-                                                                      // a misfire situation
-                    .forJob(schedule.getJobLabel(), getGroupName(schedule.getOrgId()))
-                    .build();
+
+        Trigger trigger = newTrigger().withIdentity(retryTriggerKey)
+            .startAt(Date.from(startAtDate))
+            // execute job immediately after discovering a misfire situation
+            .withSchedule(simpleSchedule().withMisfireHandlingInstructionFireNow())
+            .forJob(retryTriggerKey.getName(), retryTriggerKey.getGroup())
+            .build();
+
         // create job
-        JobBuilder jobDetail = newJob(TaskoJob.class)
-                .withIdentity(schedule.getJobLabel(),
-                        getGroupName(schedule.getOrgId()));
+        JobBuilder jobDetail = newJob().ofType(TaskoJob.class)
+                                       .withIdentity(retryTriggerKey.getName(), retryTriggerKey.getGroup())
+                                       .usingJobData("schedule_id", schedule.getId())
+                                       .usingJobData("bunch_start_index", bunchStartIndex);
+
         // set job params
-        if (schedule.getDataMap() != null) {
+        if (MapUtils.isNotEmpty(schedule.getDataMap())) {
             jobDetail.usingJobData(new JobDataMap(schedule.getDataMap()));
         }
-        jobDetail.usingJobData("schedule_id", schedule.getId());
 
         // schedule job
-        Date date = SchedulerKernel.getScheduler().scheduleJob(trigger);
+        Date date = SchedulerKernel.getScheduler().scheduleJob(jobDetail.build(), trigger);
         log.info("Job {} rescheduled with trigger {}", schedule.getJobLabel(), trigger.getKey());
         return date;
     }
@@ -180,12 +186,21 @@ public class TaskoQuartzHelper {
      * @param jobLabel job name
      */
     public static void destroyJob(Integer orgId, String jobLabel) {
+        destroyJob(triggerKey(jobLabel, getGroupName(orgId)));
+    }
+
+    /**
+     * unschedules job
+     *
+     * @param key trigger key
+     */
+    public static void destroyJob(TriggerKey key) {
         try {
-            SchedulerKernel.getScheduler().unscheduleJob(triggerKey(jobLabel, getGroupName(orgId)));
-            log.info("Job {} unscheduled successfully.", jobLabel);
+            SchedulerKernel.getScheduler().unscheduleJob(key);
+            log.info("Job {} unscheduled successfully.", key.getName());
         }
         catch (SchedulerException e) {
-            log.error("Unable to unschedule job {} of organization # {}", jobLabel, orgId, e);
+            log.error("Unable to unschedule job {} of organization # {}", key.getName(), key.getGroup(), e);
         }
     }
 

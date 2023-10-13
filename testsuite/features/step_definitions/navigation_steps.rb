@@ -248,9 +248,9 @@ When(/^I enter "([^"]*)" as "([^"]*)"$/) do |text, field|
 end
 
 When(/^I enter (\d+) minutes from now as "([^"]*)"$/) do |minutes_to_add, field|
-  future_time = Time.now + 60 * minutes_to_add.to_i
-  future_time.strftime('%H:%M').to_s.strip
+  future_time = get_future_time(minutes_to_add)
   fill_in(field, with: future_time, fill_options: { clear: :backspace })
+  log "Execution time: #{future_time}"
 end
 
 When(/^I enter "([^"]*)" as "([^"]*)" text area$/) do |arg1, arg2|
@@ -461,9 +461,8 @@ When(/^I select the hostname of "([^"]*)" from "([^"]*)"((?: if present)?)$/) do
     system_name = get_system_name(host)
   rescue
     raise "Host #{host} not found" if if_present.empty?
-
     log "Host #{host} is not deployed, not trying to select it"
-    return
+    next
   end
   step %(I select "#{system_name}" from "#{field}")
 end
@@ -1065,8 +1064,9 @@ When(/^I select the next maintenance window$/) do
   find(:xpath, '//select[@id=\'maintenance-window-select\']/option', match: :first).select_option
 end
 
-When(/^I enter the server hostname as the redfish server address$/) do
-  step %(I enter "#{get_target('server').full_hostname}:8443" as "powerAddress")
+When(/^I enter the controller hostname as the redfish server address$/) do
+  hostname = `hostname -f`.strip
+  step %(I enter "#{hostname}:8443" as "powerAddress")
 end
 
 When(/^I clear browser cookies$/) do

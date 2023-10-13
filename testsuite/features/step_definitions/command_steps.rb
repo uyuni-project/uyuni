@@ -299,7 +299,8 @@ When(/^I enable product "([^"]*)" without recommended$/) do |prd|
 end
 
 When(/^I execute mgr\-sync "([^"]*)" with user "([^"]*)" and password "([^"]*)"$/) do |arg1, u, p|
-  $command_output, _code = get_target('server').run("echo -e '#{u}\n#{p}\n' | mgr-sync #{arg1}", check_errors: false, buffer_size: 1_000_000)
+  get_target('server').run("echo -e \'mgrsync.user = \"#{u}\"\nmgrsync.password = \"#{p}\"\n\' > ~/.mgr-sync")
+  $command_output, _code = get_target('server').run("mgr-sync #{arg1}", check_errors: false, buffer_size: 1_000_000)
 end
 
 When(/^I execute mgr\-sync "([^"]*)"$/) do |arg1|
@@ -354,8 +355,9 @@ When(/^I kill all running spacewalk\-repo\-sync, excepted the ones needed to boo
   reposync_not_running_streak = 0
   reposync_left_running_streak = 0
   while reposync_not_running_streak <= 60
-    command_output, _code = get_target('server').run('ps axo pid,cmd | grep spacewalk-repo-sync | grep -v grep', check_errors: false)
+    command_output, _code = get_target('server').run('ps axo pid,cmd | grep spacewalk-repo-sync | grep -v grep', check_errors: false, verbose: true)
     if command_output.empty?
+      log "Empty command!"
       reposync_not_running_streak += 1
       reposync_left_running_streak = 0
       sleep 1
@@ -365,6 +367,7 @@ When(/^I kill all running spacewalk\-repo\-sync, excepted the ones needed to boo
 
     process = command_output.split("\n")[0]
     channel = process.split(' ')[5]
+    log "Processing channel '#{channel}'"
     if do_not_kill.include? channel
       $channels_synchronized.add(channel)
       log "Reposync of channel #{channel} left running" if (reposync_left_running_streak % 60).zero?
@@ -454,7 +457,7 @@ end
 
 When(/^I fetch "([^"]*)" to "([^"]*)"$/) do |file, host|
   node = get_target(host)
-  node.run("wget http://#{get_target('server').full_hostname}/#{file}")
+  node.run("curl -s -O http://#{get_target('server').full_hostname}/#{file}")
 end
 
 When(/^I wait until file "([^"]*)" contains "([^"]*)" on server$/) do |file, content|
@@ -571,26 +574,37 @@ When(/^the server stops mocking an IPMI host$/) do
   get_target('server').run('pkill fake_ipmi_host.sh || :')
 end
 
-When(/^the server starts mocking a Redfish host$/) do
-  get_target('server').run('mkdir -p /root/Redfish-Mockup-Server/')
-  %w[redfishMockupServer.py rfSsdpServer.py].each do |file|
-    source = File.dirname(__FILE__) + '/../upload_files/Redfish-Mockup-Server/' + file
-    dest = '/root/Redfish-Mockup-Server/' + file
-    return_code = file_inject(get_target('server'), source, dest)
-    raise 'File injection failed' unless return_code.zero?
+When(/^the controller starts mocking a Redfish host$/) do
+  # We need the controller hostname to generate its SSL certificate
+  hostname = `hostname -f`.strip
+
+  if running_k3s?
+    # On kubernetes, the server has no clue about certificates
+    crt_path, key_path, _ca_path = generate_certificate("controller", hostname)
+    get_target('server').extract_file(crt_path, '/root/controller.crt')
+    get_target('server').extract_file(key_path, '/root/controller.key')
+  else
+    get_target('server').run("mgr-ssl-tool --gen-server -d /root/ssl-build --no-rpm -p spacewalk --set-hostname #{hostname} --server-cert=controller.crt --server-key=controller.key")
+    key_path, _err = get_target('server').run('ls /root/ssl-build/*/controller.key')
+    crt_path, _err = get_target('server').run('ls /root/ssl-build/*/controller.crt')
+
+    file_extract(get_target('server'), key_path.strip, '/root/controller.key')
+    file_extract(get_target('server'), crt_path.strip, '/root/controller.crt')
   end
-  get_target('server').run('curl --output DSP2043_2019.1.zip https://www.dmtf.org/sites/default/files/standards/documents/DSP2043_2019.1.zip')
-  get_target('server').run('unzip DSP2043_2019.1.zip')
-  cmd = "/usr/bin/python3 /root/Redfish-Mockup-Server/redfishMockupServer.py " \
-        "-H #{get_target('server').full_hostname} -p 8443 " \
+
+  `curl --output /root/DSP2043_2019.1.zip https://www.dmtf.org/sites/default/files/standards/documents/DSP2043_2019.1.zip`
+  `unzip /root/DSP2043_2019.1.zip -d /root/`
+  cmd = "/usr/bin/python3 #{File.dirname(__FILE__)}/../upload_files/Redfish-Mockup-Server/redfishMockupServer.py " \
+        "-H #{hostname} -p 8443 " \
         "-S -D /root/DSP2043_2019.1/public-catfish/ " \
-        "--ssl --cert /etc/pki/tls/certs/spacewalk.crt --key /etc/pki/tls/private/spacewalk.key " \
+        "--ssl --cert /root/controller.crt --key /root/controller.key " \
         "< /dev/null > /dev/null 2>&1 &"
-  get_target('server').run(cmd)
+  `#{cmd}`
 end
 
-When(/^the server stops mocking a Redfish host$/) do
-  get_target('server').run('pkill -e -f /root/Redfish-Mockup-Server/redfishMockupServer.py')
+When(/^the controller stops mocking a Redfish host$/) do
+  `pkill -e -f #{File.dirname(__FILE__)}/../upload_files/Redfish-Mockup-Server/redfishMockupServer.py`
+  `rm -rf /root/DSP2043_2019.1*`
 end
 
 When(/^I install a user-defined state for "([^"]*)" on the server$/) do |host|
@@ -690,9 +704,9 @@ Then(/^I should see "(.*?)" in the output$/) do |arg1|
   raise "Command Output #{@command_output} don't include #{arg1}" unless @command_output.include? arg1
 end
 
-When(/^I (start|stop) "([^"]*)" service on "([^"]*)"$/) do |action, service, host|
+When(/^I (start|stop|restart|reload|enable|disable) the "([^"]*)" service on "([^"]*)"$/) do |action, service, host|
   node = get_target(host)
-  node.run("systemctl #{action} #{service}")
+  node.run("systemctl #{action} #{service}", check_errors: true, verbose: true)
 end
 
 Then(/^service "([^"]*)" is enabled on "([^"]*)"$/) do |service, host|
@@ -1005,12 +1019,24 @@ When(/^I open avahi port on the proxy$/) do
 end
 
 When(/^I copy server\'s keys to the proxy$/) do
-  %w[RHN-ORG-PRIVATE-SSL-KEY RHN-ORG-TRUSTED-SSL-CERT rhn-ca-openssl.cnf].each do |file|
-    return_code = file_extract(get_target('server'), '/root/ssl-build/' + file, '/tmp/' + file)
-    raise 'File extraction failed' unless return_code.zero?
-    get_target('proxy').run('mkdir -p /root/ssl-build')
-    return_code = file_inject(get_target('proxy'), '/tmp/' + file, '/root/ssl-build/' + file)
-    raise 'File injection failed' unless return_code.zero?
+  if running_k3s?
+    # Server running in Kubernetes doesn't know anything about SSL CA
+    generate_certificate("proxy", get_target('proxy').full_hostname)
+
+    %w[proxy.crt proxy.key ca.crt].each do |file|
+      return_code, = get_target('server').extract_file("/tmp/#{file}", "/tmp/#{file}")
+      raise 'File extraction failed' unless return_code.zero?
+      return_code = file_inject(get_target('proxy'), "/tmp/#{file}", "/tmp/#{file}")
+      raise 'File injection failed' unless return_code.zero?
+    end
+  else
+    %w[RHN-ORG-PRIVATE-SSL-KEY RHN-ORG-TRUSTED-SSL-CERT rhn-ca-openssl.cnf].each do |file|
+      return_code = file_extract(get_target('server'), '/root/ssl-build/' + file, '/tmp/' + file)
+      raise 'File extraction failed' unless return_code.zero?
+      get_target('proxy').run('mkdir -p /root/ssl-build')
+      return_code = file_inject(get_target('proxy'), '/tmp/' + file, '/root/ssl-build/' + file)
+      raise 'File injection failed' unless return_code.zero?
+    end
   end
 end
 
@@ -1020,20 +1046,28 @@ When(/^I configure the proxy$/) do
              "HTTP_PROXY=''\n" \
              "VERSION=''\n" \
              "TRACEBACK_EMAIL=galaxy-noise@suse.de\n" \
-             "USE_EXISTING_CERTS=n\n" \
              "INSTALL_MONITORING=n\n" \
-             "SSL_PASSWORD=spacewalk\n" \
-             "SSL_ORG=SUSE\n" \
-             "SSL_ORGUNIT=SUSE\n" \
-             "SSL_COMMON=#{get_target('proxy').full_hostname}\n" \
-             "SSL_CITY=Nuremberg\n" \
-             "SSL_STATE=Bayern\n" \
-             "SSL_COUNTRY=DE\n" \
-             "SSL_EMAIL=galaxy-noise@suse.de\n" \
-             "SSL_CNAME_ASK=proxy.example.org\n" \
              "POPULATE_CONFIG_CHANNEL=y\n" \
              "RHN_USER=admin\n" \
              "ACTIVATE_SLP=y\n"
+  settings += if running_k3s?
+                "USE_EXISTING_CERTS=y\n" \
+                "CA_CERT=/tmp/ca.crt\n" \
+                "SERVER_KEY=/tmp/proxy.key\n" \
+                "SERVER_CERT=/tmp/proxy.crt\n"
+              else
+                "USE_EXISTING_CERTS=n\n" \
+                "INSTALL_MONITORING=n\n" \
+                "SSL_PASSWORD=spacewalk\n" \
+                "SSL_ORG=SUSE\n" \
+                "SSL_ORGUNIT=SUSE\n" \
+                "SSL_COMMON=#{get_target('proxy').full_hostname}\n" \
+                "SSL_CITY=Nuremberg\n" \
+                "SSL_STATE=Bayern\n" \
+                "SSL_COUNTRY=DE\n" \
+                "SSL_EMAIL=galaxy-noise@suse.de\n" \
+                "SSL_CNAME_ASK=proxy.example.org\n"
+              end
   path = generate_temp_file('config-answers.txt', settings)
   step 'I copy "' + path + '" to "proxy"'
   `rm #{path}`
@@ -1364,11 +1398,26 @@ Then(/^I flush firewall on "([^"]*)"$/) do |target|
 end
 
 When(/^I generate the configuration "([^"]*)" of Containerized Proxy on the server$/) do |file_path|
-  # Doc: https://www.uyuni-project.org/uyuni-docs/en/uyuni/reference/spacecmd/proxy_container.html
-  command = "echo spacewalk > cert_pass && spacecmd -u admin -p admin proxy_container_config_generate_cert" \
-            " -- -o #{file_path} -p 8022 #{get_target('proxy').full_hostname.sub('pxy', 'pod-pxy')} #{get_target('server').full_hostname}" \
-            " 2048 galaxy-noise@suse.de --ca-pass cert_pass" \
-            " && rm cert_pass"
+  if running_k3s?
+    # A server container on kubernetes has no clue about SSL certificates
+    # We need to generate them using `cert-manager` and use the files as 3rd party certificate
+    generate_certificate("proxy", get_target('proxy').full_hostname)
+
+    # Copy the cert files in the container to use them with spacecmd
+    %w[proxy.crt proxy.key ca.crt].each do |file|
+      get_target('server').inject("/tmp/#{file}", "/tmp/#{file}")
+    end
+
+    command = "spacecmd -u admin -p admin proxy_container_config -- -o #{file_path} -p 8022 " \
+              "#{get_target('proxy').full_hostname.sub('pxy', 'pod-pxy')} #{get_target('server').full_hostname} 2048 galaxy-noise@suse.de " \
+              "/tmp/ca.crt /tmp/proxy.crt /tmp/proxy.key"
+  else
+    # Doc: https://www.uyuni-project.org/uyuni-docs/en/uyuni/reference/spacecmd/proxy_container.html
+    command = "echo spacewalk > cert_pass && spacecmd -u admin -p admin proxy_container_config_generate_cert" \
+              " -- -o #{file_path} -p 8022 #{get_target('proxy').full_hostname.sub('pxy', 'pod-pxy')} #{get_target('server').full_hostname}" \
+              " 2048 galaxy-noise@suse.de --ca-pass cert_pass" \
+              " && rm cert_pass"
+  end
   get_target('server').run(command)
 end
 
@@ -1466,6 +1515,9 @@ When(/^I change the server's short hostname from hosts and hostname files$/) do
                    echo '#{server_node.public_ip} #{server_node.full_hostname} #{old_hostname}' >> /etc/hosts &&
                    echo '#{server_node.public_ip} #{new_hostname}#{server_node.full_hostname.delete_prefix(server_node.hostname)} #{new_hostname}' >> /etc/hosts")
   get_target('server', refresh: true) # This will refresh the attributes of this node
+
+  # Add the new hostname on controller's /etc/hosts to resolve in smoke tests
+  `echo '#{server_node.public_ip} #{new_hostname}#{server_node.full_hostname.delete_prefix(server_node.hostname)} #{new_hostname}' >> /etc/hosts`
 end
 
 When(/^I run spacewalk-hostname-rename command on the server$/) do
@@ -1474,7 +1526,7 @@ When(/^I run spacewalk-hostname-rename command on the server$/) do
     "spacewalk-hostname-rename #{server_node.public_ip} " \
     '--ssl-country=DE --ssl-state=Bayern --ssl-city=Nuremberg ' \
     '--ssl-org=SUSE --ssl-orgunit=SUSE --ssl-email=galaxy-noise@suse.de ' \
-    '--ssl-ca-password=spacewalk'
+    '--ssl-ca-password=spacewalk --overwrite_report_db_host=y'
   out_spacewalk, result_code = server_node.run(command, check_errors: false)
   log "#{out_spacewalk}"
 
@@ -1489,6 +1541,14 @@ When(/^I run spacewalk-hostname-rename command on the server$/) do
     end
     sleep 1
   end
+
+  # Update the server CA certificate since it changed, otherwise all API and browser uses will fail
+  update_ca('controller')
+  update_ca('proxy')
+
+  # Reset the API client to take the new CA into account
+  reset_api_client
+
   raise 'Error while running spacewalk-hostname-rename command - see logs above' unless result_code.zero?
   raise 'Error in the output logs - see logs above' if out_spacewalk.include? 'No such file or directory'
 end
@@ -1503,6 +1563,9 @@ When(/^I change back the server's hostname$/) do
                    sed -i \'$d\' /etc/hosts &&
                    sed -i \'$d\' /etc/hosts")
   get_target('server', refresh: true) # This will refresh the attributes of this node
+
+  # Cleanup the temporary entry in /etc/hosts on the controller
+  `sed -i \'$d\' /etc/hosts`
 end
 
 When(/^I enable firewall ports for monitoring on this "([^"]*)"$/) do |host|
@@ -1516,16 +1579,6 @@ When(/^I enable firewall ports for monitoring on this "([^"]*)"$/) do |host|
   output, _code = node.run('firewall-cmd --list-ports')
   raise StandardError, "Couldn't successfully enable all ports needed for monitoring. Opened ports: #{output}" unless
     output.include? '9100/tcp 9117/tcp 9187/tcp'
-end
-
-When(/^I restart the "([^"]*)" service on "([^"]*)"$/) do |service, minion|
-  node = get_target(minion)
-  node.run("systemctl restart #{service}", check_errors: true, verbose: true)
-end
-
-When(/^I reload the "([^"]*)" service on "([^"]*)"$/) do |service, minion|
-  node = get_target(minion)
-  node.run("systemctl reload #{service}", check_errors: true, verbose: true)
 end
 
 When(/^I delete the system "([^"]*)" via spacecmd$/) do |minion|

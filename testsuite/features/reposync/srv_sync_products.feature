@@ -62,6 +62,32 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until I see "SUSE Linux Enterprise Server 15 SP4 x86_64" product has been added
     Then the SLE15 SP4 product should be added
 
+@scc_credentials
+@uyuni
+  Scenario: Add SLES 15 SP4 product with recommended sub-products for the build host and the terminal
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "Loading" text
+    And I enter "SUSE Linux Enterprise Server 15 SP4" as the filtered product description
+    And I wait until I see "SUSE Linux Enterprise Server 15 SP4 x86_64" text
+    And I open the sub-list of the product "SUSE Linux Enterprise Server 15 SP4 x86_64"
+    And I open the sub-list of the product "Basesystem Module 15 SP4 x86_64"
+    And I open the sub-list of the product "Desktop Applications Module 15 SP4 x86_64"
+    Then I should see that the "Basesystem Module 15 SP4 x86_64" product is "recommended"
+    And I should see that the "Server Applications Module 15 SP4 x86_64" product is "recommended"
+    When I select "SUSE Linux Enterprise Server 15 SP4 x86_64" as a product
+    Then I should see the "SUSE Linux Enterprise Server 15 SP4 x86_64" selected
+    And I should see the "Basesystem Module 15 SP4 x86_64" selected
+    And I should see the "Server Applications Module 15 SP4 x86_64" selected
+    When I select "Desktop Applications Module 15 SP4 x86_64" as a product
+    And I select "Development Tools Module 15 SP4 x86_64" as a product
+    Then I should see the "Desktop Applications Module 15 SP4 x86_64" selected
+    And I should see the "Development Tools Module 15 SP4 x86_64" selected
+    When I select "Containers Module 15 SP4 x86_64" as a product
+    Then I should see the "Containers Module 15 SP4 x86_64" selected
+    When I click the Add Product button
+    And I wait until I see "SUSE Linux Enterprise Server 15 SP4 x86_64" product has been added
+    Then the SLE15 SP4 product should be added
+
 @uyuni
   Scenario: Add openSUSE Leap 15.5 product, including Uyuni Client Tools
     When I use spacewalk-common-channel to add channel "opensuse_leap15_5 opensuse_leap15_5-non-oss opensuse_leap15_5-non-oss-updates opensuse_leap15_5-updates opensuse_leap15_5-backports-updates opensuse_leap15_5-sle-updates uyuni-proxy-devel-leap opensuse_leap15_5-uyuni-client" with arch "x86_64"

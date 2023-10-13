@@ -216,6 +216,7 @@ module.exports = (env, argv) => {
           // Hardcode this so it always matches
           pathname: DEVSERVER_WEBSOCKET_PATHNAME,
         },
+        logging: "error",
       },
       // Override CORS headers for `yarn storybook`, these are not required otherwise
       headers: {

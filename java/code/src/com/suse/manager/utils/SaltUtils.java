@@ -830,6 +830,7 @@ public class SaltUtils {
             SubscribeChannelsAction sca = (SubscribeChannelsAction)action;
             sca.getDetails().getAccessTokens().forEach(token -> {
                 token.setValid(false);
+                token.setMinion(null);
                 AccessTokenFactory.save(token);
             });
 

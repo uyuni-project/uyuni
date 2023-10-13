@@ -129,7 +129,7 @@ end
 def click_button_and_wait(locator = nil, **options)
   click_button(locator, options)
   begin
-    raise 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 5)
+    raise 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 20)
   rescue StandardError, Capybara::ExpectationNotMet => e
     STDOUT.puts e.message # Skip errors related to .senna-loading element
   end
@@ -138,7 +138,7 @@ end
 def click_link_and_wait(locator = nil, **options)
   click_link(locator, options)
   begin
-    raise 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 5)
+    raise 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 20)
   rescue StandardError, Capybara::ExpectationNotMet => e
     STDOUT.puts e.message # Skip errors related to .senna-loading element
   end
@@ -147,7 +147,7 @@ end
 def click_link_or_button_and_wait(locator = nil, **options)
   click_link_or_button(locator, options)
   begin
-    raise 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 5)
+    raise 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 20)
   rescue StandardError, Capybara::ExpectationNotMet => e
     STDOUT.puts e.message # Skip errors related to .senna-loading element
   end
@@ -158,7 +158,7 @@ module CapybaraNodeElementExtension
   def click
     super
     begin
-      raise 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 5)
+      raise 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 20)
     rescue StandardError, Capybara::ExpectationNotMet => e
       STDOUT.puts e.message # Skip errors related to .senna-loading element
     end
@@ -361,14 +361,8 @@ def get_system_name(host)
   when 'containerized_proxy'
     system_name = get_target('proxy').full_hostname.sub('pxy', 'pod-pxy')
   else
-    begin
-      node = get_target(host)
-      system_name = node.full_hostname
-    rescue NotImplementedError => e
-      # If the node for that host is not defined, just return the host parameter as system_name
-      warn e.message
-      system_name = host
-    end
+    node = get_target(host)
+    system_name = node.full_hostname
   end
   system_name
 end
@@ -393,36 +387,50 @@ end
 
 # This function tests whether a file exists on a node
 def file_exists?(node, file)
-  _out, local, _remote, code = node.test_and_store_results_together("test -f #{file}", 'root', 500)
-  code.zero? && local.zero?
+  node.file_exists(file)
 end
 
 # This function tests whether a folder exists on a node
 def folder_exists?(node, file)
-  _out, local, _remote, code = node.test_and_store_results_together("test -d #{file}", 'root', 500)
-  code.zero? && local.zero?
+  node.folder_exists(file)
 end
 
 # This function deletes a file from a node
 def file_delete(node, file)
-  _out, _local, _remote, code = node.test_and_store_results_together("rm  #{file}", 'root', 500)
-  code
+  node.file_delete(file)
 end
 
 # This function deletes a file from a node
 def folder_delete(node, folder)
-  _out, _local, _remote, code = node.test_and_store_results_together("rm -rf #{folder}", 'root', 500)
-  code
+  node.folder_delete(folder)
 end
 
 # This function extracts a file from a node
 def file_extract(node, remote_file, local_file)
-  code, _remote = node.extract_file(remote_file, local_file, 'root', false)
-  code
+  node.extract(remote_file, local_file, 'root', false)
 end
 
 # This function injects a file into a node
 def file_inject(node, local_file, remote_file)
-  code, _remote = node.inject_file(local_file, remote_file, 'root', false)
-  code
+  node.inject(local_file, remote_file, 'root', false)
+end
+
+# This function updates the server certificate on the controller node
+def update_ca(node)
+  server_ip = get_target('server').public_ip
+  server_name = get_target('server').full_hostname
+
+  case node
+  when 'proxy'
+    command = "wget http://#{server_ip}/pub/RHN-ORG-TRUSTED-SSL-CERT -O /etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT; " \
+      'update-ca-certificates;'
+    get_target('proxy').run('rm /etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT', verbose: true)
+    get_target('proxy').run(command, verbose: true)
+  else
+    # controller
+    puts `rm /etc/pki/trust/anchors/*;
+    wget http://#{server_ip}/pub/RHN-ORG-TRUSTED-SSL-CERT -O /etc/pki/trust/anchors/#{server_name}.cert &&
+    update-ca-certificates &&
+    certutil -d sql:/root/.pki/nssdb -A -t TC -n "susemanager" -i  /etc/pki/trust/anchors/#{server_name}.cert`
+  end
 end

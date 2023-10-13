@@ -96,6 +96,9 @@ public class AccessToken {
      * @param validIn the new valid flag
      */
     public void setValid(boolean validIn) {
+        if (validIn && !this.valid && this.minion == null) {
+            throw new AccessTokenChangeException("Cannot set valid token when it's invalid and no minion is set");
+        }
         this.valid = validIn;
     }
 

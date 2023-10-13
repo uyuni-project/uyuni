@@ -109,7 +109,7 @@ public class RebootActionCleanup extends RhnJavaJob {
         Server s = ServerFactory.lookupById(serverId);
         Action a = ActionFactory.lookupById(actionId);
         ServerAction sa = ActionFactory.getServerActionForServerAndAction(s, a);
-        if (sa.getStatus().getName() != "Failed") {
+        if (!"Failed".equals(sa.getStatus().getName())) {
             sa.fail(-100L, "Prerequisite failed", sa.getPickupTime());
 
             s.asMinionServer()

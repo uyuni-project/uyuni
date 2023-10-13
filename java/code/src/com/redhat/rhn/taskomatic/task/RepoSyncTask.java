@@ -25,17 +25,15 @@ import com.redhat.rhn.domain.notification.NotificationMessage;
 import com.redhat.rhn.domain.notification.UserNotificationFactory;
 import com.redhat.rhn.domain.notification.types.ChannelSyncFailed;
 import com.redhat.rhn.domain.notification.types.ChannelSyncFinished;
+import com.redhat.rhn.domain.notification.types.NotificationData;
 import com.redhat.rhn.domain.role.RoleFactory;
-import com.redhat.rhn.manager.content.ubuntu.UbuntuErrataManager;
 
+import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -61,18 +59,16 @@ public class RepoSyncTask extends RhnJavaJob {
      * {@inheritDoc}
      */
     @Override
-    public void execute(JobExecutionContext context) {
-        List<Long> channelIds = getChannelIds(context.getJobDetail().getJobDataMap());
+    public void execute(JobExecutionContext context) throws JobExecutionException {
+        final JobDataMap jobDataMap = context.getJobDetail().getJobDataMap();
+        final List<Long> channelIds = getChannelIds(jobDataMap);
 
-        String[] lparams = {"no-errata", "latest", "sync-kickstart", "fail"};
-        List<String> ltrue = Arrays.asList("true", "1");
+        List<String> lparams = List.of("no-errata", "latest", "sync-kickstart", "fail");
+        List<String> ltrue = List.of("true", "1");
         List<String> params = new ArrayList<>();
         for (String p : lparams) {
-            if (context.getJobDetail().getJobDataMap().containsKey(p)) {
-                if (ltrue.contains(context.getJobDetail().getJobDataMap().get(p).toString()
-                        .toLowerCase().trim())) {
+            if ((ltrue.contains(jobDataMap.getOrDefault(p, "false").toString().toLowerCase().trim()))) {
                     params.add("--" + p);
-                }
             }
         }
         if (!GlobalInstanceHolder.PAYG_MANAGER.isCompliant()) {
@@ -88,49 +84,29 @@ public class RepoSyncTask extends RhnJavaJob {
 
         for (Long channelId : channelIds) {
             Channel channel = ChannelFactory.lookupById(channelId);
-            if (channel != null) {
-                log.info("Syncing repos for channel: {}", channel.getName());
-
-                try {
-                    executeExtCmd(getSyncCommand(channel, params).toArray(new String[0]));
-                }
-                catch (JobExecutionException e) {
-                    NotificationMessage notificationMessage = UserNotificationFactory.createNotificationMessage(
-                            new ChannelSyncFailed(channel.getId(), channel.getName(), e.getMessage())
-                    );
-                    if (channel.getOrg() == null) {
-                        UserNotificationFactory.storeNotificationMessageFor(notificationMessage,
-                                Collections.singleton(RoleFactory.CHANNEL_ADMIN), Optional.empty());
-                    }
-                    else {
-                        UserNotificationFactory.storeNotificationMessageFor(notificationMessage,
-                                Collections.singleton(RoleFactory.CHANNEL_ADMIN), Optional.of(channel.getOrg()));
-                    }
-
-
-                    log.error(e.getMessage(), e);
-                }
-                NotificationMessage notificationMessage = UserNotificationFactory.createNotificationMessage(
-                        new ChannelSyncFinished(channel.getId(), channel.getName())
-                );
-                if (channel.getOrg() == null) {
-                    UserNotificationFactory.storeNotificationMessageFor(notificationMessage,
-                            Collections.singleton(RoleFactory.CHANNEL_ADMIN), Optional.empty());
-                }
-                else {
-                    UserNotificationFactory.storeNotificationMessageFor(notificationMessage,
-                            Collections.singleton(RoleFactory.CHANNEL_ADMIN), Optional.of(channel.getOrg()));
-                }
-            }
-            else {
+            if (channel == null) {
                 log.error("No such channel with channel_id {}", channelId);
+                continue;
             }
-        }
-        try {
-            UbuntuErrataManager.sync(new HashSet<>(channelIds));
-        }
-        catch (IOException e) {
-            log.error(e.getMessage(), e);
+
+            log.info("Syncing repos for channel: {}", channel.getName());
+
+            NotificationData notificationData;
+
+            try {
+                executeExtCmd(getSyncCommand(channel, params).toArray(new String[0]));
+                notificationData = new ChannelSyncFinished(channel.getId(), channel.getName());
+            }
+            catch (JobExecutionException e) {
+                notificationData = new ChannelSyncFailed(channel.getId(), channel.getName(), e.getMessage());
+                log.error("Unable to sync channel {}", channel.getId(), e);
+            }
+
+            UserNotificationFactory.storeNotificationMessageFor(
+                UserNotificationFactory.createNotificationMessage(notificationData),
+                Collections.singleton(RoleFactory.CHANNEL_ADMIN),
+                Optional.ofNullable(channel.getOrg())
+            );
         }
     }
 

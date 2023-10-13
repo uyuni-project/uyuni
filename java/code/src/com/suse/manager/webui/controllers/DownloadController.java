@@ -51,6 +51,7 @@ import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.Key;
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
@@ -70,8 +71,7 @@ public class DownloadController {
 
     private static final Key KEY = TokenBuilder.getKeyForSecret(
             TokenBuilder.getServerSecret().orElseThrow(
-                        () -> new IllegalArgumentException(
-                                "Server has no key configured")));
+                        () -> new IllegalArgumentException("Server has no key configured")));
     private static final JwtConsumer JWT_CONSUMER = new JwtConsumerBuilder()
             .setVerificationKey(KEY)
             .build();
@@ -384,8 +384,7 @@ public class DownloadController {
         }
         catch (URISyntaxException e) {
             LOG.error("Unable to parse: {}", request.url());
-            halt(HttpStatus.SC_INTERNAL_SERVER_ERROR,
-                    String.format("url '%s' is malformed", request.url()));
+            halt(HttpStatus.SC_INTERNAL_SERVER_ERROR, String.format("url '%s' is malformed", request.url()));
         }
 
         String basename = FilenameUtils.getBaseName(path);
@@ -403,8 +402,7 @@ public class DownloadController {
             if (LOG.isDebugEnabled()) {
                 LOG.error("{}: Package not found in channel: {}", path, StringUtil.sanitizeLogInput(channel));
             }
-            halt(HttpStatus.SC_NOT_FOUND,
-                 String.format("%s not found in %s", basename, channel));
+            halt(HttpStatus.SC_NOT_FOUND, String.format("%s not found in %s", basename, channel));
         }
 
         File file = new File(mountPoint, pkg.getPath()).getAbsoluteFile();
@@ -468,8 +466,7 @@ public class DownloadController {
             if (LOG.isInfoEnabled()) {
                 LOG.info("Forbidden: You need a token to access {}", request.pathInfo().replaceAll("[\n\r\t]", "_"));
             }
-            halt(HttpStatus.SC_FORBIDDEN,
-                 String.format("You need a token to access %s", request.pathInfo()));
+            halt(HttpStatus.SC_FORBIDDEN, String.format("You need a token to access %s", request.pathInfo()));
         }
         if ((queryParams.size() > 1 && header == null) ||
                 (!queryParams.isEmpty() && header != null)) {
@@ -507,12 +504,15 @@ public class DownloadController {
      */
     private static void validateToken(String token, String channel, String filename) {
 
-        AccessTokenFactory.lookupByToken(token).ifPresent(obj -> {
-            if (!obj.getValid()) {
-                LOG.info(String.format("Forbidden: invalid token %s to access %s", token, filename));
+        AccessTokenFactory.lookupByToken(token).ifPresentOrElse(obj -> {
+            Instant now = Instant.now();
+            if (!obj.getValid() || now.isAfter(obj.getExpiration().toInstant())) {
+                LOG.info("Forbidden: invalid token {} to access {}", token, filename);
                 halt(HttpStatus.SC_FORBIDDEN, "This token is not valid");
             }
-        });
+        }, () -> LOG.debug("Token {} to access {} doesn't exists in the database - could be an image build token",
+                token, filename)
+        );
         try {
             JwtClaims claims = JWT_CONSUMER.processToClaims(token);
 
@@ -528,13 +528,11 @@ public class DownloadController {
                     // new versions of getStringListClaimValue() return an empty list instead of null
                     .filter(l -> !l.isEmpty());
             Opt.consume(channelClaim,
-                    () -> LOG.info(String.format("Token %s does provide access to any channel", token)),
+                    () -> LOG.info("Token {} does provide access to any channel", token),
                     channels -> {
                 if (!channels.contains(channel)) {
-                    LOG.info(String.format("Forbidden: Token %s does not provide access to channel %s",
-                                           token, channel));
-                    LOG.info(String.format("Token allow access only to the following channels: %s",
-                                           String.join(",", channels)));
+                    LOG.info("Forbidden: Token {} does not provide access to channel {}", token, channel);
+                    LOG.info("Token allow access only to the following channels: {}", String.join(",", channels));
                     halt(HttpStatus.SC_FORBIDDEN, "Token " + token + " does not provide access to channel " + channel);
                 }
             });
@@ -546,14 +544,14 @@ public class DownloadController {
                 halt(HttpStatus.SC_BAD_REQUEST, "Token does not specify the organization");
             }, orgId -> {
                 if (!ChannelFactory.isAccessibleBy(channel, orgId)) {
-                    LOG.info(String.format("Forbidden: Token does not provide access to channel %s", channel));
+                    LOG.info("Forbidden: Token does not provide access to channel {}", channel);
                     halt(HttpStatus.SC_FORBIDDEN, "Token does not provide access to channel " + channel);
                 }
             });
         }
         catch (InvalidJwtException | MalformedClaimException e) {
-            LOG.info(String.format("Forbidden: Token %s is not valid to access %s in %s: %s",
-                    token, filename, channel, e.getMessage()));
+            LOG.info("Forbidden: Token %s is not valid to access {} in {}: {}", token, filename, channel,
+                    e.getMessage());
             halt(HttpStatus.SC_FORBIDDEN,
                  String.format("Token is not valid to access %s in %s: %s", filename, channel, e.getMessage()));
         }

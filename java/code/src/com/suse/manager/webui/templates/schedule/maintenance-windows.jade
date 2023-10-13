@@ -9,8 +9,6 @@ script(type='text/javascript').
     window.type = "#{type}";
     window.isAdmin = "#{isAdmin}";
 
-+userPreferences
-
 script(type='text/javascript').
     spaImportReactPage('maintenance/maintenance-windows')
         .then(function (module) { module.renderer('maintenance-windows') });

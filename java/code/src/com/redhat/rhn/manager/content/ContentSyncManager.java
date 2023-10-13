@@ -521,7 +521,7 @@ public class ContentSyncManager {
      */
     private void refreshRepositoriesAuthentication(String mirrorUrl, boolean excludeSCC) throws ContentSyncException {
         List<Credentials> credentials = filterCredentials();
-
+        Exception syncException = null;
         ChannelFactory.cleanupOrphanVendorContentSource();
 
         // Query repos for all mirror credentials and consolidate
@@ -540,11 +540,11 @@ public class ContentSyncManager {
                     // test for OES credentials
                     if (c == null || !accessibleUrl(OES_URL, c.getUsername(), c.getPassword())) {
                         LOG.info("Credential is not an OES credentials");
-                        throw new ContentSyncException(e);
+                        syncException = e;
                     }
                 }
                 catch (URISyntaxException e) {
-                    throw new ContentSyncException(e);
+                    syncException = e;
                 }
             }
             else if (c.isTypeOf(Credentials.TYPE_CLOUD_RMT)) {
@@ -564,6 +564,10 @@ public class ContentSyncManager {
         ensureSUSEProductChannelData();
         linkAndRefreshContentSource(mirrorUrl);
         ManagerInfoFactory.setLastMgrSyncRefresh();
+
+        if (syncException != null) {
+            throw new ContentSyncException(syncException);
+        }
     }
 
     /**

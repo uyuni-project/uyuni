@@ -1698,7 +1698,8 @@ public class SaltServerActionService {
 
         pillar.put("xccdffile", scapActionDetails.getPath());
         if (scapActionDetails.getOvalfiles() != null) {
-            pillar.put("ovalfiles", Arrays.asList(scapActionDetails.getOvalfiles().split("\\s*,\\s*")));
+            pillar.put("ovalfiles", Arrays.stream(scapActionDetails.getOvalfiles().split(","))
+                    .map(c -> c.trim()).collect(toList()));
         }
         if (profileMatcher.find()) {
             pillar.put("profile", profileMatcher.group(1));
@@ -1712,10 +1713,10 @@ public class SaltServerActionService {
         if (tailoringIdMatcher.find()) {
             pillar.put("tailoring_id", tailoringIdMatcher.group(1));
         }
-        if (scapActionDetails.getParametersContents().matches(".*--fetch-remote-resources.*")) {
+        if (scapActionDetails.getParametersContents().contains("--fetch-remote-resources")) {
             pillar.put("fetch_remote_resources", true);
         }
-        if (scapActionDetails.getParametersContents().matches(".*--remediate.*")) {
+        if (scapActionDetails.getParametersContents().contains("--remediate")) {
             pillar.put("remediate", true);
         }
 

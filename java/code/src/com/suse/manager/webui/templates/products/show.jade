@@ -9,8 +9,6 @@ script(type='text/javascript').
     window.scc_refresh_file_locked_status = #{refreshFileLocked};
     window.noToolsChannelSubscription_flag_from_backend = #{noToolsChannelSubscription};
 
-+userPreferences
-
 script(type='text/javascript').
     spaImportReactPage('admin/setup/products/products')
         .then(function(module) { module.renderer('products') });

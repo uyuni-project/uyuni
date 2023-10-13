@@ -320,7 +320,7 @@ Feature: PXE boot a Retail terminal
     And I disable repositories after installing branch server
 
   Scenario: Bootstrap the PXE boot minion
-    When I create bootstrap script for "proxy.example.org" hostname and set the activation key "1-SUSE-KEY-x86_64" in the bootstrap script on the proxy
+    When I create bootstrap script for "proxy.example.org" hostname and set the activation key "1-TERMINAL-KEY-x86_64" in the bootstrap script on the proxy
     And I bootstrap pxeboot minion via bootstrap script on the proxy
     # Workaround: Increase timeout temporarily get rid of timeout issues
     And I wait at most 350 seconds until Salt master sees "pxeboot_minion" as "unaccepted"
@@ -340,7 +340,7 @@ Feature: PXE boot a Retail terminal
     When I follow "pxeboot" terminal
     And I follow "Software" in the content area
     And I follow "Install"
-    And I enter "virgo-dummy-2.0-1.1" as the filtered package name
+    And I enter "virgo" as the filtered package name
     And I click on the filter button
     And I check "virgo-dummy-2.0-1.1" in the list
     And I click on "Install Selected Packages"
@@ -433,5 +433,5 @@ Feature: PXE boot a Retail terminal
     And I wait until event "Apply highstate scheduled by admin" is completed
 
   Scenario: Reset TFTP defaults
-    When I stop tftp on the proxy
+    When I stop the "tftp" service on "proxy"
     And I reset tftp defaults on the proxy
