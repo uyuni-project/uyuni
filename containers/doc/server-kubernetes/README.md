@@ -39,9 +39,9 @@ for image in cert-manager-cainjector cert-manager-controller cert-manager-ctl ce
   podman save --output $image.tar quay.io/jetstack/$image:latest
 done
 
-podman pull registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni/server:latest
+podman pull registry.opensuse.org/systemsmanagement/uyuni/master/containers/uyuni/server:latest
 
-podman save --output server.tar registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni/server:latest
+podman save --output server.tar registry.opensuse.org/systemsmanagement/uyuni/master/containers/uyuni/server:latest
 ```
 
 or
@@ -52,7 +52,7 @@ for image in cert-manager-cainjector cert-manager-controller cert-manager-ctl ce
     skopeo copy docker://quay.io/jetstack/$image:latest docker-archive:$image.tar:quay.io/jetstack/$image:latest
 done
 
-skopeo copy docker://registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni/server:latest docker-archive:server.tar:registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni/server:latest
+skopeo copy docker://registry.opensuse.org/systemsmanagement/uyuni/master/containers/uyuni/server:latest docker-archive:server.tar:registry.opensuse.org/systemsmanagement/uyuni/master/containers/uyuni/server:latest
 ```
 
 Copy the `cert-manager` and `uyuni/server` helm charts locally:
@@ -123,19 +123,19 @@ helm pull --destination . oci://registry.opensuse.org/uyuni/server
 
 ## For Podman
 
-With K3s it is possible to preload the container images and avoid it to be fetched from a registry.
+With Podman it is possible to preload the container images and avoid it to be fetched from a registry.
 For this, on a machine with internet access, pull the image using `podman`, `docker` or `skopeo` and save it as a `tar` archive.
 For example:
 
 ```
-podman pull registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni/server:latest
-podman save --output server-image.tar registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni/server:latest
+podman pull registry.opensuse.org/systemsmanagement/uyuni/master/containers/uyuni/server:latest
+podman save --output server-image.tar registry.opensuse.org/systemsmanagement/uyuni/master/containers/uyuni/server:latest
 ```
 
 or
 
 ```
-skopeo copy docker://registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni/server:latest docker-archive:server-image.tar:registry.opensuse.org/systemsmanagement/uyuni/master/servercontainer/containers/uyuni/server:latest
+skopeo copy docker://registry.opensuse.org/systemsmanagement/uyuni/master/containers/uyuni/server:latest docker-archive:server-image.tar:registry.opensuse.org/systemsmanagement/uyuni/master/containers/uyuni/server:latest
 ```
 
 Transfer the resulting `server-image.tar` to the server and load it using the following command:
