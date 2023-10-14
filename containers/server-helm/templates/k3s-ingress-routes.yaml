@@ -122,6 +122,20 @@ spec:
     - match: HostSNI(`*`)
       services:
       - name: uyuni-tcp
+        port: 8003
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRouteTCP
+metadata:
+  name: search-debug-router
+  namespace: "{{ .Release.Namespace }}"
+spec:
+  entryPoints:
+    - search-debug
+  routes:
+    - match: HostSNI(`*`)
+      services:
+      - name: uyuni-tcp
         port: 8002
 ---
 apiVersion: traefik.containo.us/v1alpha1
