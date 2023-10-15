@@ -151,22 +151,22 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I use spacewalk-common-channel to add channel "sles15-sp4-devel-uyuni-client" with arch "x86_64"
 
 @sle15sp5_minion
-Scenario: Add SUSE Linux Enterprise Server 15 SP5
-  When I follow the left menu "Admin > Setup Wizard > Products"
-  And I wait until I do not see "Loading" text
-  And I enter "SUSE Linux Enterprise Server 15 SP5" as the filtered product description
-  And I select "SUSE Linux Enterprise Server 15 SP5 x86_64" as a product
-  Then I should see the "SUSE Linux Enterprise Server 15 SP5 x86_64" selected
-  When I open the sub-list of the product "SUSE Linux Enterprise Server 15 SP5 x86_64"
-  And I open the sub-list of the product "Basesystem Module 15 SP5 x86_64"
-  And I select "Desktop Applications Module 15 SP5 x86_64" as a product
-  Then I should see the "Desktop Applications Module 15 SP5 x86_64" selected
-  When I open the sub-list of the product "Desktop Applications Module 15 SP5 x86_64"
-  And I select "Development Tools Module 15 SP5 x86_64" as a product
-  Then I should see the "Development Tools Module 15 SP5 x86_64" selected
-  When I click the Add Product button
-  And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
-  And I wait until I see "SUSE Linux Enterprise Server 15 SP5 x86_64" product has been added
+  Scenario: Add SUSE Linux Enterprise Server 15 SP5
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "Loading" text
+    And I enter "SUSE Linux Enterprise Server 15 SP5" as the filtered product description
+    And I select "SUSE Linux Enterprise Server 15 SP5 x86_64" as a product
+    Then I should see the "SUSE Linux Enterprise Server 15 SP5 x86_64" selected
+    When I open the sub-list of the product "SUSE Linux Enterprise Server 15 SP5 x86_64"
+    And I open the sub-list of the product "Basesystem Module 15 SP5 x86_64"
+    And I select "Desktop Applications Module 15 SP5 x86_64" as a product
+    Then I should see the "Desktop Applications Module 15 SP5 x86_64" selected
+    When I open the sub-list of the product "Desktop Applications Module 15 SP5 x86_64"
+    And I select "Development Tools Module 15 SP5 x86_64" as a product
+    Then I should see the "Development Tools Module 15 SP5 x86_64" selected
+    When I click the Add Product button
+    And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
+    And I wait until I see "SUSE Linux Enterprise Server 15 SP5 x86_64" product has been added
 
 @cloud
 @sle15sp5_minion
@@ -226,7 +226,7 @@ Scenario: Add SUSE Linux Enterprise Server 15 SP5
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
     And I wait until I see "SUSE Linux Enterprise Micro 5.2 x86_64" product has been added
 
-@uyuyni
+@uyuni
 @slemicro52_minion
   Scenario: Add SUSE Linux Enterprise Micro 5.2
     When I follow the left menu "Admin > Setup Wizard > Products"
@@ -290,23 +290,21 @@ Scenario: Add SUSE Linux Enterprise Server 15 SP5
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
     And I wait until I see "SUSE Linux Enterprise Micro 5.4 x86_64" product has been added
 
-# disabled until a new Uyuni version will be released
-# @uyuni
-# @slemicro54_minion
-#   Scenario: Add SUSE Linux Enterprise Micro 5.4
-#     When I follow the left menu "Admin > Setup Wizard > Products"
-#     And I wait until I do not see "Loading" text
-#     And I enter "SUSE Linux Enterprise Micro 5.4" as the filtered product description
-#     And I select "SUSE Linux Enterprise Micro 5.4 x86_64" as a product
-#     Then I should see the "SUSE Linux Enterprise Micro 5.4 x86_64" selected
-#     When I click the Add Product button
-#     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
-#     And I wait until I see "SUSE Linux Enterprise Micro 5.4 x86_64" product has been added
+@uyuni
+@slemicro54_minion
+  Scenario: Add SUSE Linux Enterprise Micro 5.4
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "Loading" text
+    And I enter "SUSE Linux Enterprise Micro 5.4" as the filtered product description
+    And I select "SUSE Linux Enterprise Micro 5.4 x86_64" as a product
+    Then I should see the "SUSE Linux Enterprise Micro 5.4 x86_64" selected
+    When I click the Add Product button
+    And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
+    And I wait until I see "SUSE Linux Enterprise Micro 5.4 x86_64" product has been added
 
-# @uyuni
-# @slemicro54_minion
-#   Scenario: Add SUSE Linux Enterprise Micro 5.4 Uyuni Client tools
-#     When I use spacewalk-common-channel to add channel "sle-micro-5.4-pool-x86_64 sle-micro-5.4-devel-uyuni-client" with arch "x86_64"
+@slemicro54_minion
+  Scenario: Add SUSE Linux Enterprise Micro 5.4 Uyuni Client tools
+    When I use spacewalk-common-channel to add channel "sle-micro-5.4-pool-x86_64 sle-micro-5.4-devel-uyuni-client" with arch "x86_64"
 
 @susemanager
 @opensuse154arm_minion
@@ -502,7 +500,7 @@ Scenario: Add SUSE Linux Enterprise Server 15 SP5
     And I select "Debian 11" as a product
     Then I should see the "Debian 11" selected
     When I click the Add Product button
-     And I wait until I see "Debian 11" product has been added
+    And I wait until I see "Debian 11" product has been added
 
 @uyuni
 @debian11_minion
@@ -518,23 +516,7 @@ Scenario: Add SUSE Linux Enterprise Server 15 SP5
     And I select "Debian 12" as a product
     Then I should see the "Debian 12" selected
     When I click the Add Product button
-     And I wait until I see "Debian 12" product has been added
-
-@uyuni
-@debian12_minion
-  Scenario: Add Debian 12
-    When I use spacewalk-common-channel to add channel "debian-12-pool-amd64-uyuni debian-12-amd64-main-updates-uyuni debian-12-amd64-main-security-uyuni debian-12-amd64-uyuni-client-devel" with arch "amd64-deb"
-
-@susemanager
-@debian12_minion
-  Scenario: Add Debian 12
-    When I follow the left menu "Admin > Setup Wizard > Products"
-    And I wait until I do not see "Loading" text
-    And I enter "Debian 12" as the filtered product description
-    And I select "Debian 12" as a product
-    Then I should see the "Debian 12" selected
-    When I click the Add Product button
-     And I wait until I see "Debian 12" product has been added
+    And I wait until I see "Debian 12" product has been added
 
 @uyuni
 @debian12_minion
