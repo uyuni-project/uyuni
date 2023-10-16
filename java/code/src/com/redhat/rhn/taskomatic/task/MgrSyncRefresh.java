@@ -97,7 +97,7 @@ public class MgrSyncRefresh extends RhnJavaJob {
             }
 
             // Perform the refresh
-            FileLocks.SCC_REFRESH_LOCK.withFileLock(() -> {
+            FileLocks.SCC_REFRESH_LOCK.withTimeoutFileLock(() -> {
                 try {
                     ContentSyncManager csm = new ContentSyncManager();
                     csm.updateChannelFamilies(csm.readChannelFamilies());
@@ -116,7 +116,7 @@ public class MgrSyncRefresh extends RhnJavaJob {
                 catch (ContentSyncException e) {
                     log.error("Error during mgr-sync refresh", e);
                 }
-            });
+            }, 600);
 
             try {
                 // Schedule sync of all vendor channels
