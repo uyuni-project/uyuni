@@ -1,0 +1,1 @@
+- wait for lock to execute scc sync task (bsc#1216030)
