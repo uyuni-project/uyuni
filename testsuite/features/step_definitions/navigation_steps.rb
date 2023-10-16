@@ -110,7 +110,7 @@ When(/^I wait at most (\d+) seconds until the event is completed, refreshing the
 end
 
 When(/^I wait until I see the name of "([^"]*)", refreshing the page$/) do |host|
-  raise 'Overview System page didn\'t load' unless check_text_and_catch_request_timeout_popup?('Download CSV', text2: 'Keys')
+  raise 'Overview System page didn\'t load' unless has_content?('Download CSV') || has_content?('Keys')
   system_name = get_system_name(host)
   step %(I wait until I see the "#{system_name}" system, refreshing the page)
 end
@@ -638,7 +638,7 @@ end
 # Test for a text in the whole page using regexp
 #
 Then(/^I should see a text like "([^"]*)"$/) do |title|
-  raise "Regular expression '#{title}' not found" unless check_text_and_catch_request_timeout_popup?(Regexp.new(title))
+  raise "Regular expression '#{title}' not found" unless has_content?(Regexp.new(title))
 end
 
 #
