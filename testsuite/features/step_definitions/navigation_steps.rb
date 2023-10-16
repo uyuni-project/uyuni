@@ -10,7 +10,7 @@
 
 Then(/^I should see a "(.*)" text in the content area$/) do |text|
   within('#spacewalk-content') do
-    raise "Text '#{text}' not found" unless has_content?(text)
+    raise "Text '#{text}' not found" unless check_text_and_catch_request_timeout_popup?(text)
   end
 end
 
@@ -37,7 +37,7 @@ Then(/^the current path is "([^"]*)"$/) do |arg1|
 end
 
 When(/^I wait until I see "([^"]*)" text$/) do |text|
-  raise "Text '#{text}' not found" unless has_text?(text, wait: DEFAULT_TIMEOUT)
+  raise "Text '#{text}' not found" unless check_text_and_catch_request_timeout_popup?(text, timeout: DEFAULT_TIMEOUT)
 end
 
 When(/^I wait until I do not see "([^"]*)" text$/) do |text|
@@ -45,11 +45,11 @@ When(/^I wait until I do not see "([^"]*)" text$/) do |text|
 end
 
 When(/^I wait at most (\d+) seconds until I see "([^"]*)" text$/) do |seconds, text|
-  raise "Text '#{text}' not found" unless has_content?(text, wait: seconds.to_i)
+  raise "Text '#{text}' not found" unless check_text_and_catch_request_timeout_popup?(text, timeout: seconds.to_i)
 end
 
 When(/^I wait until I see "([^"]*)" text or "([^"]*)" text$/) do |text1, text2|
-  raise "Text '#{text1}' or '#{text2}' not found" unless has_content?(text1, wait: DEFAULT_TIMEOUT) || has_content?(text2, wait: DEFAULT_TIMEOUT)
+  raise "Text '#{text1}' or '#{text2}' not found" unless check_text_and_catch_request_timeout_popup?(text1, text2: text2, timeout: DEFAULT_TIMEOUT)
 end
 
 When(/^I wait until I see "([^"]*)" (text|regex), refreshing the page$/) do |text, type|
@@ -110,7 +110,7 @@ When(/^I wait at most (\d+) seconds until the event is completed, refreshing the
 end
 
 When(/^I wait until I see the name of "([^"]*)", refreshing the page$/) do |host|
-  raise 'Overview System page didn\'t load' unless has_content?('Download CSV') || has_content?('Keys')
+  raise 'Overview System page didn\'t load' unless check_text_and_catch_request_timeout_popup?('Download CSV', text2: 'Keys')
   system_name = get_system_name(host)
   step %(I wait until I see the "#{system_name}" system, refreshing the page)
 end
@@ -410,7 +410,7 @@ end
 
 Given(/^I access the host the first time$/) do
   visit Capybara.app_host
-  raise "Text 'Create #{product} Administrator' not found" unless has_content?("Create #{product} Administrator")
+  raise "Text 'Create #{product} Administrator' not found" unless check_text_and_catch_request_timeout_popup?("Create #{product} Administrator")
 end
 
 # Menu permission check
@@ -484,7 +484,7 @@ end
 Then(/^I wait until table row for "([^"]*)" contains "([^"]*)"$/) do |arg1, arg2|
   xpath_query = "//div[@class=\"table-responsive\"]/table/tbody/tr[.//*[contains(.,'#{arg1}')]]"
   within(:xpath, xpath_query) do
-    raise "xpath: #{xpath_query} has no content #{arg2}" unless has_content?(arg2, wait: DEFAULT_TIMEOUT)
+    raise "xpath: #{xpath_query} has no content #{arg2}" unless check_text_and_catch_request_timeout_popup?(arg2, timeout: DEFAULT_TIMEOUT)
   end
 end
 
@@ -589,7 +589,7 @@ end
 
 Then(/^I should see "([^"]*)" systems selected for SSM$/) do |arg|
   within(:xpath, '//span[@id="spacewalk-set-system_list-counter"]') do
-    raise "There are not #{arg} systems selected" unless has_content?(arg)
+    raise "There are not #{arg} systems selected" unless check_text_and_catch_request_timeout_popup?(arg)
   end
 end
 
@@ -597,26 +597,26 @@ end
 # Test for a text in the whole page
 #
 Then(/^I should see a "([^"]*)" text$/) do |text|
-  raise "Text '#{text}' not found" unless has_content?(text)
+  raise "Text '#{text}' not found" unless check_text_and_catch_request_timeout_popup?(text)
 end
 
 Then(/^I should see a "([^"]*)" text or "([^"]*)" text$/) do |text1, text2|
-  raise "Text '#{text1}' and '#{text2}' not found" unless has_content?(text1) || has_content?(text2)
+  raise "Text '#{text1}' and '#{text2}' not found" unless check_text_and_catch_request_timeout_popup?(text1, text2: text2)
 end
 
 Then(/^I should see "([^"]*)" short hostname$/) do |host|
   system_name = get_system_name(host).partition('.').first
-  raise "Hostname #{system_name} is not present" unless has_content?(system_name)
+  raise "Hostname #{system_name} is not present" unless check_text_and_catch_request_timeout_popup?(system_name)
 end
 
 Then(/^I should see "([^"]*)" hostname$/) do |host|
   system_name = get_system_name(host)
-  raise "Hostname #{system_name} is not present" unless has_content?(system_name)
+  raise "Hostname #{system_name} is not present" unless check_text_and_catch_request_timeout_popup?(system_name)
 end
 
 Then(/^I should not see "([^"]*)" hostname$/) do |host|
   system_name = get_system_name(host)
-  raise "Hostname #{system_name} is present" if has_content?(system_name)
+  raise "Hostname #{system_name} is present" if check_text_and_catch_request_timeout_popup?(system_name)
 end
 
 #
@@ -624,13 +624,13 @@ end
 #
 Then(/^I should see "([^"]*)" in the textarea$/) do |text|
   within('textarea') do
-    raise "Text '#{text}' not found" unless has_content?(text)
+    raise "Text '#{text}' not found" unless check_text_and_catch_request_timeout_popup?(text)
   end
 end
 
 Then(/^I should see "([^"]*)" or "([^"]*)" in the textarea$/) do |text1, text2|
   within('textarea') do
-    raise "Text '#{text1}' and '#{text2}' not found" unless has_content?(text1) || has_content?(text2)
+    raise "Text '#{text1}' and '#{text2}' not found" unless check_text_and_catch_request_timeout_popup?(text1, text2: text2)
   end
 end
 
@@ -638,7 +638,7 @@ end
 # Test for a text in the whole page using regexp
 #
 Then(/^I should see a text like "([^"]*)"$/) do |title|
-  raise "Regular expression '#{title}' not found" unless has_content?(Regexp.new(title))
+  raise "Regular expression '#{title}' not found" unless check_text_and_catch_request_timeout_popup?(Regexp.new(title))
 end
 
 #
@@ -674,19 +674,19 @@ end
 
 Then(/^I should see a "([^"]*)" text in element "([^"]*)"$/) do |text, element|
   within(:xpath, "//div[@id=\"#{element}\" or @class=\"#{element}\"]") do
-    raise "Text '#{text}' not found in #{element}" unless has_content?(text)
+    raise "Text '#{text}' not found in #{element}" unless check_text_and_catch_request_timeout_popup?(text)
   end
 end
 
 Then(/^I should not see a "([^"]*)" text in element "([^"]*)"$/) do |text, element|
   within(:xpath, "//div[@id=\"#{element}\" or @class=\"#{element}\"]") do
-    raise "Text '#{text}' found in #{element}" if has_content?(text)
+    raise "Text '#{text}' found in #{element}" if check_text_and_catch_request_timeout_popup?(text)
   end
 end
 
 Then(/^I should see a "([^"]*)" or "([^"]*)" text in element "([^"]*)"$/) do |text1, text2, element|
   within(:xpath, "//div[@id=\"#{element}\" or @class=\"#{element}\"]") do
-    raise "Texts #{text1} and #{text2} not found in #{element}" unless has_content?(text1) || has_content?(text2)
+    raise "Texts #{text1} and #{text2} not found in #{element}" unless check_text_and_catch_request_timeout_popup?(text1, text2: text2)
   end
 end
 
@@ -807,7 +807,7 @@ end
 
 Then(/^I click on the filter button until page does not contain "([^"]*)" text$/) do |text|
   repeat_until_timeout(message: "'#{text}' still found") do
-    break unless has_content?(text)
+    break unless check_text_and_catch_request_timeout_popup?(text)
     find('button.spacewalk-button-filter').click
     has_text?('is filtered', wait: 10)
   end
@@ -815,7 +815,7 @@ end
 
 Then(/^I click on the filter button until page does contain "([^"]*)" text$/) do |text|
   repeat_until_timeout(message: "'#{text}' was not found") do
-    break if has_content?(text)
+    break if check_text_and_catch_request_timeout_popup?(text)
     find('button.spacewalk-button-filter').click
     has_text?('is filtered', wait: 10)
   end
@@ -1156,7 +1156,7 @@ Then(/^I should see "([^"]*)" hostname as first search result$/) do |host|
   within(:xpath, '//section') do
     row = find(:xpath, '//div[@class=\'table-responsive\']/table/tbody/tr[.//td]', match: :first)
     within(row) do
-      raise "Text '#{system_name}' not found" unless has_text?(system_name)
+      raise "Text '#{system_name}' not found" unless check_text_and_catch_request_timeout_popup?(system_name)
     end
   end
 end

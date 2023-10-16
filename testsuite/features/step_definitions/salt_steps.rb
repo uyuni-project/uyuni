@@ -194,7 +194,7 @@ end
 Then(/^I should see "([^"]*)" in the command output for "([^"]*)"$/) do |text, host|
   system_name = get_system_name(host)
   within("pre[id='#{system_name}-results']") do
-    raise "Text '#{text}' not found in the results of #{system_name}" unless has_content?(text)
+    raise "Text '#{text}' not found in the results of #{system_name}" unless check_text_and_catch_request_timeout_popup?(text)
   end
 end
 
@@ -405,7 +405,7 @@ When(/^I see "([^"]*)" fingerprint$/) do |host|
   salt_call = use_salt_bundle ? 'venv-salt-call' : 'salt-call'
   output, _code = node.run("#{salt_call} --local key.finger")
   fing = output.split("\n")[1].strip!
-  raise "Text: #{fing} not found" unless has_content?(fing)
+  raise "Text: #{fing} not found" unless check_text_and_catch_request_timeout_popup?(fing)
 end
 
 When(/^I accept "([^"]*)" key$/) do |host|
