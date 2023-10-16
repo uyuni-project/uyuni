@@ -107,7 +107,7 @@ public class PaygUpdateAuthTask extends RhnJavaJob {
         }
 
         if (CollectionUtils.isNotEmpty(paygSshData)) {
-            sccRefreshLock.withFileLock(() -> {
+            sccRefreshLock.withTimeoutFileLock(() -> {
                 paygSshData.forEach(this::updateInstanceData);
 
                 // Call the content sync manager to refresh all repositories content sources and the authorizations
@@ -117,7 +117,7 @@ public class PaygUpdateAuthTask extends RhnJavaJob {
                 catch (ContentSyncException ex) {
                     LOG.error("Unable to refresh repositories", ex);
                 }
-            });
+            }, 60);
         }
     }
 
