@@ -284,9 +284,8 @@ class DownloadThread(Thread):
                 self.parent.log_obj.log(success, os.path.basename(params['relative_path']))
             self.queue.task_done()
             if not success:
-                package = os.path.basename(params['relative_path'])
-                # append package name without extension
-                self.failed_pkgs.add(package.rsplit('.', maxsplit=1)[0])
+                package = os.path.basename(params['target_file'])
+                self.failed_pkgs.add(package)
         self.curl.close()
 
 
