@@ -25,31 +25,37 @@ The installation will work perfectly fine without changing anything, but tuning 
 
 # Offline installation
 
-
 ## For K3s
+
+In the following instructions the cert-manager images and charts need to be pulled and used only if third party SSL server certificate will not be provided.
 
 With K3s it is possible to preload the container images and avoid it to be fetched from a registry.
 For this, on a machine with internet access, pull the image using `podman`, `docker` or `skopeo` and save it as a `tar` archive.
 For example:
 
-⚠️ **TODO**: Verify instructions
 ```
+cert_manager_version=$(helm show chart --repo https://charts.jetstack.io/ cert-manager | grep '^version:' | cut -f 2 -d ' ')
 for image in cert-manager-cainjector cert-manager-controller cert-manager-ctl cert-manager-webhook; do
-  podman pull quay.io/jetstack/$image
-  podman save --output $image.tar quay.io/jetstack/$image:latest
+  podman pull quay.io/jetstack/$image:$cert_manager_version
+  podman save --output $image.tar quay.io/jetstack/$image:$cert_manager_version
 done
 
 podman pull registry.opensuse.org/systemsmanagement/uyuni/master/containers/uyuni/server:latest
 
 podman save --output server.tar registry.opensuse.org/systemsmanagement/uyuni/master/containers/uyuni/server:latest
+
+helper_pod_image=$(grep helper-pod -A1 /var/lib/rancher/k3s/server/manifests/local-storage.yaml | grep image | sed 's/^ \+image: //')
+podman pull $helper_pod_image
+podman save --output helper_pod.tar $helper_pod_image
 ```
+
 
 or
 
-⚠️ **TODO**: Verify instructions
 ```
+cert_manager_version=$(helm show chart --repo https://charts.jetstack.io/ cert-manager | grep '^version:' | cut -f 2 -d ' ')
 for image in cert-manager-cainjector cert-manager-controller cert-manager-ctl cert-manager-webhook; do
-    skopeo copy docker://quay.io/jetstack/$image:latest docker-archive:$image.tar:quay.io/jetstack/$image:latest
+    skopeo copy docker://quay.io/jetstack/$image:$cert_manager_version docker-archive:$image.tar:quay.io/jetstack/$image:$cert_manager_version
 done
 
 skopeo copy docker://registry.opensuse.org/systemsmanagement/uyuni/master/containers/uyuni/server:latest docker-archive:server.tar:registry.opensuse.org/systemsmanagement/uyuni/master/containers/uyuni/server:latest
@@ -57,11 +63,9 @@ skopeo copy docker://registry.opensuse.org/systemsmanagement/uyuni/master/contai
 
 Copy the `cert-manager` and `uyuni/server` helm charts locally:
 
-⚠️ **TODO**: verify instructions
-
 ```
 helm pull --repo https://charts.jetstack.io --destination . cert-manager
-helm pull --destination . oci://registry.opensuse.org/uyuni/server
+helm pull --destination . oci://registry.opensuse.org/systemsmanagement/uyuni/master/charts/uyuni/server
 ```
 
 Transfer the resulting `*.tar` images to the K3s node and load them using the following command:
@@ -88,31 +92,36 @@ image:
   pullPolicy: Never
 ```
 
-⚠️ **TODO**: verify the file names
-To use the downloaded helm charts instead of the default ones, pass `--helm-uyuni-chart=server.tgz` and `--helm-certmanager-chart=cert-manager.tgz` or add the following to the `uyuniadm` configuration file:
+To use the downloaded helm charts instead of the default ones, pass `--helm-uyuni-chart=server-2023.9.0.tgz` and `--helm-certmanager-chart=cert-manager-v1.13.1.tgz` or add the following to the `uyuniadm` configuration file. Of course the versions in the file name need to be adjusted to what you downloaded:
 
 ```
 helm:
   uyuni:
-    chart: server.tgz
+    chart: server-2023.9.0.tgz
     values: uyuni-values.yaml
   certmanager:
-    chart: cert-manager.tgz
-    values: cert.values.yaml
+    chart: cert-manager-v1.13.1.tgz
+    values: cert-values.yaml
+```
+
+Set the helper-pod `imagePullPolicy` to `Never` in `/var/lib/rancher/k3s/server/manifests/local-storage.yaml` using the following command:
+
+```
+sed 's/imagePullPolicy: IfNotPresent/imagePullPolicy: Never/' -i /var/lib/rancher/k3s/server/manifests/local-storage.yaml
 ```
 
 ## For RKE2
+
+Just like for K3S, cert-manager images and chart do not need to be copied if a third party SSL server certificate is to be used.
 
 RKE2 doesn't allow to preload images on the nodes.
 Instead, use `skopeo` to import the images in a local registry and use this one to install.
 
 Copy the `cert-manager` and `uyuni/server` helm charts locally:
 
-⚠️ **TODO**: verify instructions
-
 ```
 helm pull --repo https://charts.jetstack.io --destination . cert-manager
-helm pull --destination . oci://registry.opensuse.org/uyuni/server
+helm pull --destination . oci://registry.opensuse.org/systemsmanagement/uyuni/master/charts/uyuni/server
 ```
 
 ⚠️  **TODO** Prepare instructions
