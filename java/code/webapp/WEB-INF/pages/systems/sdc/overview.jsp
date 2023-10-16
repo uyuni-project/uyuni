@@ -200,6 +200,17 @@
             </td>
           </tr>
           </rhn:require>
+          <!-- PAYG info -->
+          <rhn:require acl="system_is_payg()">
+          <tr>
+            <td>
+              <bean:message key="sdc.details.overview.payg"/>
+            </td>
+            <td>
+              <rhn:icon type="system-ok" title="sdc.details.overview.payg_msg"/>
+            </td>
+          </tr>
+          </rhn:require>
           <tr>
             <td><bean:message key="sdc.details.overview.sysid"/></td>
             <td><c:out value="${system.id}" /></td>
