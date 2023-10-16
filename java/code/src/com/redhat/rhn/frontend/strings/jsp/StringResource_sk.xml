@@ -2234,7 +2234,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="userdetails.usepam" xml:space="preserve">
         <source>Use PAM: </source>
-        <target/>
+        <target>Použiť PAM: </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
@@ -2242,28 +2242,28 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       <!-- userlist.jsp -->
       <trans-unit id="userlist.jsp.useroverview" xml:space="preserve">
         <source>Users Overview</source>
-        <target/>
+        <target>Prehľad používateľov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userlist.jsp.status" xml:space="preserve">
         <source>Status</source>
-        <target/>
+        <target>Stav</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userlist.jsp.enabled" xml:space="preserve">
         <source>Active</source>
-        <target/>
+        <target>Aktívny</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userlist.jsp.disabled" xml:space="preserve">
         <source>Deactivated</source>
-        <target/>
+        <target>Deaktivovaný</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserList</context>
         </context-group>
@@ -2271,7 +2271,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       <!-- activelist.jsp -->
       <trans-unit id="users.jsp.imgAlt" xml:space="preserve">
         <source>User Icon</source>
-        <target/>
+        <target>Ikona používateľa</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/ActiveList</context>
           <context context-type="sourcefile">/rhn/users/DisabledList</context>
@@ -2280,21 +2280,21 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="activelist.jsp.title" xml:space="preserve">
         <source>Active Users</source>
-        <target/>
+        <target>Aktívni používatelia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/ActiveList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="activelist.jsp.noUsers" xml:space="preserve">
         <source>No active users.</source>
-        <target/>
+        <target>Žiadni aktívni používatelia.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/ActiveList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="extauth.jsp.noGroups" xml:space="preserve">
         <source>No external groups.</source>
-        <target/>
+        <target>Žiadne externé skupiny.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/ActiveList</context>
         </context-group>
@@ -2302,7 +2302,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       <!-- disabledlist.jsp -->
       <trans-unit id="disabledlist.jsp.title" xml:space="preserve">
         <source>Deactivated Users</source>
-        <target/>
+        <target>Deaktivovaní používatelia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DisabledList</context>
         </context-group>
