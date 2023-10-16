@@ -816,6 +816,7 @@ public class SystemHandler extends BaseHandler {
      *     #struct_begin("server details")
      *       #prop_desc("int", "id", "The server's id")
      *       #prop_desc("string", "name", "The server's name")
+     *       #prop_desc("boolean", "payg", "Whether the server instance is payg or not")
      *       #prop_desc("string", "minion_id", "The server's minion id, in case it is a salt minion client")
      *       #prop_desc("$date", "last_checkin",
      *         "Last time server successfully checked in (in UTC)")
