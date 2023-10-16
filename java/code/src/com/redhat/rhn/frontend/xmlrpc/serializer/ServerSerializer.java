@@ -39,6 +39,7 @@ import java.util.List;
  *         #prop_desc("int", "id", "system ID")
  *         #prop("string", "profile_name")
  *         #prop("string", "machine_id")
+ *         #prop_desc("boolean", "payg", "Whether the server instance is payg or not")
  *         #prop("string", "minion_id")
  *         #prop_desc("string", "base_entitlement", "system's base entitlement label")
  *
