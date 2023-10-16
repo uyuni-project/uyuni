@@ -641,4 +641,23 @@ public class Access extends BaseHandler {
             ServerFactory.isPtfUninstallationSupported(server);
     }
 
+    /**
+     * Checks if a system is Pay-as-you-go
+     * @param ctx acl context
+     * @param params parameters for acl
+     * @return true if the system is Pay-as-you-go
+     */
+    public boolean aclSystemIsPayg(Object ctx, String[] params) {
+        Map map = (Map) ctx;
+        Long sid = getAsLong(map.get("sid"));
+        User user = (User) map.get("user");
+
+        Server server = SystemManager.lookupByIdAndUser(sid, user);
+        if (server == null) {
+            return false;
+        }
+
+        return server.isPayg();
+    }
+
 }
