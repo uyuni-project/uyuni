@@ -8,7 +8,7 @@
 ## Post run features BEGIN ##
 
 # IMMUTABLE ORDER
-
+- features/secondary/srv_rename_hostname.feature
 # this feature is destructive for other features, so it is better at the end
 - features/finishing/srv_smdba.feature
 # these features are needed for gathering log/debug info
