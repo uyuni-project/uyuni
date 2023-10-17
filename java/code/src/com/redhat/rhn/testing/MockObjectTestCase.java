@@ -15,6 +15,8 @@
 
 package com.redhat.rhn.testing;
 
+import com.suse.utils.Exceptions;
+
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.States;
@@ -23,8 +25,6 @@ import org.jmock.internal.ExpectationBuilder;
 import org.jmock.junit5.JUnit5Mockery;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.RegisterExtension;
-
-import java.util.function.Consumer;
 
 /**
  * jMock boilerplate.
@@ -59,10 +59,12 @@ public class MockObjectTestCase {
     /**
      * @param expectationsConsumer consumer to build the expectations
      */
-    public void checking(Consumer<Expectations> expectationsConsumer) {
-        Expectations expectations = new Expectations();
-        expectationsConsumer.accept(expectations);
-        context.checking(expectations);
+    public void checking(Exceptions.ThrowingConsumer<Expectations, Exception> expectationsConsumer) {
+        Exceptions.handleByWrapping(() -> {
+            Expectations expectations = new Expectations();
+            expectationsConsumer.accept(expectations);
+            context.checking(expectations);
+        });
     }
 
     /**
