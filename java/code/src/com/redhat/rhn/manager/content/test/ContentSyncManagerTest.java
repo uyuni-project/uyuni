@@ -16,6 +16,8 @@ package com.redhat.rhn.manager.content.test;
 
 
 import static com.redhat.rhn.domain.channel.test.ChannelFactoryTest.createTestClonedChannel;
+import static com.redhat.rhn.testing.RhnBaseTestCase.assertContains;
+import static com.redhat.rhn.testing.RhnBaseTestCase.assertNotEmpty;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -67,7 +69,7 @@ import com.redhat.rhn.manager.content.MgrSyncProductDto;
 import com.redhat.rhn.manager.content.ProductTreeEntry;
 import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
 import com.redhat.rhn.manager.system.SystemManager;
-import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.cloud.CloudPaygManager;
@@ -75,6 +77,7 @@ import com.suse.manager.webui.services.pillar.MinionGeneralPillarGenerator;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.mgrsync.MgrSyncStatus;
 import com.suse.salt.netapi.parser.JsonParser;
+import com.suse.scc.client.SCCClient;
 import com.suse.scc.model.ChannelFamilyJson;
 import com.suse.scc.model.SCCProductJson;
 import com.suse.scc.model.SCCRepositoryJson;
@@ -111,7 +114,7 @@ import java.util.stream.Stream;
 /**
  * Tests for {@link ContentSyncManager}.
  */
-public class ContentSyncManagerTest extends BaseTestCaseWithUser {
+public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
 
     // Files we read
     private static final String JARPATH = "/com/redhat/rhn/manager/content/test/";
@@ -2380,6 +2383,30 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         assertEquals(2, csm.buildRepoFileUrl(repourl, rpmrepo).size());
     }
 
+    @Test
+    public void updateRepositoriesForPaygDoNotCallSCC() {
+        Credentials credentials = CredentialsFactory.createSCCCredentials();
+        credentials.setPassword("dummy");
+        credentials.setUrl("dummy");
+        credentials.setUsername("dummy");
+        credentials.setUser(user);
+        CredentialsFactory.storeCredentials(credentials);
+
+        SCCClient sccClient = mock(SCCClient.class);
+
+        checking(expectations -> {
+            expectations.never(sccClient).listRepositories();
+        });
+
+        ContentSyncManager csm = new ContentSyncManager() {
+            @Override
+            protected SCCClient getSCCClient(Credentials credentials) {
+                return sccClient;
+            }
+        };
+
+        csm.updateRepositoriesPayg();
+    }
 
     /**
      * {@inheritDoc}
