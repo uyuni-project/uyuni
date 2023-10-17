@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-07-28 15:10+0200\n"
-"PO-Revision-Date: 2023-10-16 13:15+0000\n"
+"PO-Revision-Date: 2023-10-17 07:15+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/spacecmd/ko/>"
 "\n"
@@ -5457,7 +5457,6 @@ msgid "usage: softwarechannel_delete <CHANNEL ...>"
 msgstr "사용법: softwarechannel_delete <CHANNEL ...>"
 
 #: ../src/spacecmd/softwarechannel.py:708
-#, fuzzy
 msgid "Channels"
 msgstr "채널"
 
@@ -6581,7 +6580,6 @@ msgid "Newer there"
 msgstr "저기에 최신"
 
 #: ../src/spacecmd/system.py:76 ../src/spacecmd/system.py:4050
-#, fuzzy
 msgid "Package"
 msgstr "패키지"
 
