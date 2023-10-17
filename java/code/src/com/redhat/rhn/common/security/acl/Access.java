@@ -613,10 +613,9 @@ public class Access extends BaseHandler {
      * @param params parameters for acl
      * @return true if the system is Pay-as-you-go
      */
-    public boolean aclSystemIsPayg(Object ctx, String[] params) {
-        Map map = (Map) ctx;
-        Long sid = getAsLong(map.get("sid"));
-        User user = (User) map.get("user");
+    public boolean aclSystemIsPayg(Map<String, Object> ctx, String[] params) {
+        Long sid = getAsLong(ctx.get("sid"));
+        User user = (User) ctx.get("user");
 
         Server server = SystemManager.lookupByIdAndUser(sid, user);
         if (server == null) {
@@ -625,5 +624,4 @@ public class Access extends BaseHandler {
 
         return server.isPayg();
     }
-
 }
