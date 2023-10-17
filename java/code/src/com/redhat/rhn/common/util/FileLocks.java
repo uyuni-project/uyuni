@@ -40,7 +40,7 @@ import java.util.function.Supplier;
 public class FileLocks {
 
     // Logger instance
-    private static Logger log = LogManager.getLogger(FileLocks.class);
+    private static final Logger LOG = LogManager.getLogger(FileLocks.class);
 
     /**
      * Lock for the scc refresh process
@@ -99,7 +99,7 @@ public class FileLocks {
         ) {
             if (fileLock != null) {
                 try {
-                    log.info("File lock {} acquired.", filePath);
+                    LOG.info("File lock {} acquired.", filePath);
                     try {
                         // Set the user to tomcat so both taskomatic (root) and tomcat (tomcat) can use it.
                         FileSystem fileSystem = FileSystems.getDefault();
@@ -110,7 +110,7 @@ public class FileLocks {
                         }
                     }
                     catch (IOException e) {
-                        log.error("Error adjusting lock file user.", e);
+                        LOG.error("Error adjusting lock file user.", e);
                     }
                     return fn.get();
                 }
@@ -120,12 +120,12 @@ public class FileLocks {
                 }
             }
             else {
-                log.warn("File lock {} already in use.", filePath);
+                LOG.warn("File lock {} already in use.", filePath);
                 throw new OverlappingFileLockException();
             }
         }
         catch (IOException e) {
-            log.error("File lock {} error", filePath, e);
+            LOG.error("File lock {} error", filePath, e);
             throw new RuntimeException(e);
         }
     }
@@ -161,17 +161,17 @@ public class FileLocks {
             }
             catch (OverlappingFileLockException e) {
                 try {
-                    log.debug("waiting to get lock");
+                    LOG.debug("waiting to get lock");
                     TimeUnit.SECONDS.sleep(5);
                 }
                 catch (InterruptedException ie) {
                     Thread.currentThread().interrupt();
-                    log.warn("Interrupted", ie);
+                    LOG.warn("Interrupted", ie);
                     throw new OverlappingFileLockException();
                 }
             }
         } while (Instant.now().isBefore(i));
-        log.warn("TIMEOUT: Lock could not be acquired in time");
+        LOG.warn("TIMEOUT: Lock could not be acquired in time");
         throw new OverlappingFileLockException();
     }
 }
