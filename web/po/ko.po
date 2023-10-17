@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-05 11:01+0200\n"
-"PO-Revision-Date: 2023-10-16 13:15+0000\n"
+"PO-Revision-Date: 2023-10-17 07:15+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web-4-3/ko/>"
 "\n"
@@ -1251,7 +1251,6 @@ msgstr "아키텍처"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:705
 #: ../html/src/manager/packages/list.tsx:156
-#, fuzzy
 msgid "Channels"
 msgstr "채널"
 
@@ -2195,7 +2194,6 @@ msgstr "프로젝트를 삭제하시겠습니까"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:26
 #: ../html/src/manager/packages/list.tsx:150
-#, fuzzy
 msgid "Package"
 msgstr "패키지"
 
