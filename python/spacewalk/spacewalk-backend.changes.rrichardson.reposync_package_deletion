@@ -1,0 +1,3 @@
+- Implement no-strict option:
+  * Make strict=false the default in reposync.py
+  * Add no-script parameter handling to spacewalk-repo-sync
