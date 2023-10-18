@@ -412,7 +412,7 @@ class RepoSync(object):
 
     def __init__(self, channel_label, repo_type=None, url=None, fail=False,
                  filters=None, no_errata=False, sync_kickstart=False, latest=False,
-                 metadata_only=False, strict=0, excluded_urls=None, no_packages=False,
+                 metadata_only=False, strict=False, excluded_urls=None, no_packages=False,
                  log_dir="reposync", log_level=None, force_kickstart=False, force_all_errata=False,
                  check_ssl_dates=True, force_null_org_content=False, show_packages_only=False,
                  noninteractive=False, deep_verify=False):

@@ -23549,6 +23549,12 @@ given channel.</source>
           <context context-type="sourcefile">/rhn/channels/manage/Sync.do</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="channel.manage.sync.nostrict.jsp" xml:space="preserve">
+        <source>Do not use strict mode</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/channels/manage/Sync.do</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="channel.manage.sync.latestonly.jsp" xml:space="preserve">
         <source>Sync only latest packages</source>
         <context-group name="ctx">
