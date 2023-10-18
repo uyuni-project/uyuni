@@ -620,7 +620,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
               SELECT 1
               FROM rhnChannel c
               JOIN rhnTrustedOrgs tr ON c.org_id = tr.org_id
-              WHERE c.parent_channel IS NULL AND c.channel_access = 'public'
+              WHERE c.channel_access = 'public'
               AND c.label = :channel_label
               AND tr.org_trust_id = :org_id
               LIMIT 1
