@@ -400,6 +400,7 @@ LABEL_BY_BASE_CHANNEL = { 'SUSE Manager' =>
                             'ubuntu-2204-amd64-main' => 'ubuntu-2204-amd64-main-amd64',
                             'debian-10-pool' => 'debian-10-pool-amd64',
                             'debian-11-pool' => 'debian-11-pool-amd64',
+                            'debian-12-pool' => 'debian-12-pool-amd64',
                             'openSUSE-Leap-15.4-Pool for aarch64' => 'opensuse-leap-15.4-pool-aarch64',
                             'openSUSE-Leap-15.5-Pool for aarch64' => 'opensuse-leap-15.5-pool-aarch64'
                           },
@@ -428,6 +429,7 @@ LABEL_BY_BASE_CHANNEL = { 'SUSE Manager' =>
                             'Ubuntu 22.04 LTS AMD64 Base for Uyuni' => 'ubuntu-22.04-pool-amd64-uyuni',
                             'Debian 10 (buster) pool for amd64 for Uyuni' => 'debian-10-pool-amd64-uyuni',
                             'Debian 11 (bullseye) pool for amd64 for Uyuni' => 'debian-11-pool-amd64-uyuni',
+                            'Debian 12 (bookworm) pool for amd64 for Uyuni' => 'debian-12-pool-amd64-uyuni',
                             'openSUSE Leap 15.4 (aarch64)' => 'opensuse_leap15_4-aarch64',
                             'openSUSE Leap 15.5 (aarch64)' => 'opensuse_leap15_5-aarch64'
                           } }.freeze
