@@ -510,11 +510,11 @@ spec:
     {{- end }}
     {{- if .Values.migration.ssh.configPath }}
           - name: ssh-config
-            mountPath: /root/.ssh/config
+            mountPath: /tmp/ssh_config
     {{- end }}
     {{- if .Values.migration.ssh.knownHostsPath }}
           - name: ssh-known-hosts
-            mountPath: /root/.ssh/known_hosts
+            mountPath: /etc/ssh/ssh_known_hosts
     {{- end }}
   {{- end }}
   {{- if .Values.migration.dataPath }}
