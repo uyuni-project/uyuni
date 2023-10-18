@@ -302,6 +302,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
     And I wait until I see "SUSE Linux Enterprise Micro 5.4 x86_64" product has been added
 
+@uyuni
 @slemicro54_minion
   Scenario: Add SUSE Linux Enterprise Micro 5.4 Uyuni Client tools
     When I use spacewalk-common-channel to add channel "sle-micro-5.4-pool-x86_64 sle-micro-5.4-devel-uyuni-client" with arch "x86_64"
