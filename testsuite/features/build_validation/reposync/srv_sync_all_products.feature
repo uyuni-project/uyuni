@@ -209,7 +209,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @uyuni
 @slemicro51_minion
   Scenario: Add SUSE Linux Enterprise Micro 5.1 Uyuni Client tools
-    When I use spacewalk-common-channel to add channel "suse-microos-5.1-pool-x86_64 suse-microos-5.1-devel-uyuni-client" with arch "x86_64"
+    When I use spacewalk-common-channel to add channel "suse-microos-5.1-devel-uyuni-client" with arch "x86_64"
 
 @susemanager
 @slemicro52_minion
@@ -241,7 +241,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @uyuni
 @slemicro52_minion
   Scenario: Add SUSE Linux Enterprise Micro 5.2 Uyuni Client tools
-    When I use spacewalk-common-channel to add channel "suse-microos-5.2-pool-x86_64 suse-microos-5.2-devel-uyuni-client" with arch "x86_64"
+    When I use spacewalk-common-channel to add channel "suse-microos-5.2-devel-uyuni-client" with arch "x86_64"
 
 @susemanager
 @slemicro53_minion
@@ -273,7 +273,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @uyuni
 @slemicro53_minion
   Scenario: Add SUSE Linux Enterprise Micro 5.3 Uyuni Client tools
-    When I use spacewalk-common-channel to add channel "sle-micro-5.3-pool-x86_64 sle-micro-5.3-devel-uyuni-client" with arch "x86_64"
+    When I use spacewalk-common-channel to add channel "sle-micro-5.3-devel-uyuni-client" with arch "x86_64"
 
 @susemanager
 @slemicro54_minion
@@ -305,7 +305,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @uyuni
 @slemicro54_minion
   Scenario: Add SUSE Linux Enterprise Micro 5.4 Uyuni Client tools
-    When I use spacewalk-common-channel to add channel "sle-micro-5.4-pool-x86_64 sle-micro-5.4-devel-uyuni-client" with arch "x86_64"
+    When I use spacewalk-common-channel to add channel "sle-micro-5.4-devel-uyuni-client" with arch "x86_64"
 
 @susemanager
 @opensuse154arm_minion
