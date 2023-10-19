@@ -12,8 +12,8 @@ Feature: Synchronize extra products in the products page of the Setup Wizard
     And I should see a "Channels" text
 
 @uyuni
-  Scenario: Enable SLES15 SP4 Uyuni client tools for creating bootstrap repositories
-    When I use spacewalk-common-channel to add channel "sle-product-sles15-sp4-pool-x86_64 sles15-sp4-uyuni-client" with arch "x86_64"
+  Scenario: Add openSUSE Leap 15.5 product, including Uyuni Client Tools
+    When I use spacewalk-common-channel to add channel "opensuse_leap15_5 opensuse_leap15_5-non-oss opensuse_leap15_5-non-oss-updates opensuse_leap15_5-updates opensuse_leap15_5-backports-updates opensuse_leap15_5-sle-updates uyuni-proxy-devel-leap opensuse_leap15_5-uyuni-client" with arch "x86_64"
 
 @scc_credentials
 @susemanager
