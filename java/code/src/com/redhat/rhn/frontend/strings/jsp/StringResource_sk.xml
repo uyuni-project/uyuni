@@ -2309,28 +2309,28 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="disabledlist.jsp.noUsers" xml:space="preserve">
         <source>No deactivated users.</source>
-        <target/>
+        <target>Žiadni deaktivovaní používatelia.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DisabledList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="disabledlist.jsp.disabledBy" xml:space="preserve">
         <source>Deactivated By</source>
-        <target/>
+        <target>Deaktivované</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DisabledList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="disabledlist.jsp.disabledOn" xml:space="preserve">
         <source>Deactivated Date</source>
-        <target/>
+        <target>Dátum deaktivácie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DisabledList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="disabledlist.jsp.reactivate" xml:space="preserve">
         <source>Reactivate</source>
-        <target/>
+        <target>Reaktivovať</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DisabledList</context>
         </context-group>
@@ -2338,21 +2338,21 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       <!-- userconfirm.jsp -->
       <trans-unit id="userconfirm.jsp.header" xml:space="preserve">
         <source>Confirm User Reactivation</source>
-        <target/>
+        <target>Potvrdiť reaktiváciu používateľa</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/ErrataConfirm</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userconfirm.jsp.summary" xml:space="preserve">
         <source>The following users will be reactivated.  These users will have access to @@PRODUCT_NAME@@ and retain all permissions, roles, and data that they had prior to being deactivated.</source>
-        <target/>
+        <target>Nasledujúci používatelia budú reaktivovaní.  Títo používatelia budú mať prístup k @@PRODUCT_NAME@@ a zachovajú si všetky oprávnenia, roly a údaje, ktoré mali pred deaktiváciou.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/ErrataConfirm</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userconfirm.jsp.confirm" xml:space="preserve">
         <source>Confirm</source>
-        <target/>
+        <target>Potvrdiť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/ErrataConfirm</context>
         </context-group>
@@ -2360,21 +2360,21 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       <!-- deleteuser.jsp -->
       <trans-unit id="deleteuser.jsp.delete" xml:space="preserve">
         <source>Delete User</source>
-        <target/>
+        <target>Vymazať používateľa</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DeleteUser</context>
         </context-group>
       </trans-unit>
       <trans-unit id="deleteuser.jsp.confirm" xml:space="preserve">
         <source>Confirm User Deletion</source>
-        <target/>
+        <target>Potvrdiť vymazanie používateľa</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DeleteUser</context>
         </context-group>
       </trans-unit>
       <trans-unit id="deleteuser.jsp.body" xml:space="preserve">
         <source>&lt;p&gt;This will delete this user &lt;strong&gt;permanently&lt;/strong&gt;.&lt;/p&gt; &lt;p&gt;All scheduled actions currently associated with this user will be altered and will no longer be tied to this user.&lt;/p&gt; &lt;p&gt;&lt;strong&gt;Please click the button only once; it will take a few moments for the deletion process to complete.&lt;/strong&gt;&lt;/p&gt;</source>
-        <target/>
+        <target>&lt;p&gt;Týmto sa tento používateľ vymaže &lt;strong&gt;natrvalo&lt;/strong&gt;.&lt;/p&gt; &lt;p&gt;Všetky naplánované akcie, ktoré sú v súčasnosti spojené s týmto používateľom, sa zmenia a už nebudú viazané na tohto používateľa.&lt;/p&gt; &lt;p&gt;&lt;strong&gt;Prosím, kliknite na tlačidlo iba raz; proces vymazania chvíľu potrvá.&lt;/strong&gt;&lt;/p&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DeleteUser</context>
         </context-group>
