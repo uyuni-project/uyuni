@@ -16,6 +16,7 @@ package com.redhat.rhn.frontend.xmlrpc;
 
 import java.io.InputStream;
 import java.io.Writer;
+import javax.servlet.http.HttpServletRequest;
 
 import redstone.xmlrpc.XmlRpcDispatcher;
 import redstone.xmlrpc.XmlRpcServer;
@@ -28,6 +29,7 @@ public class RhnXmlRpcServer extends XmlRpcServer {
     private static ThreadLocal<String> server = new ThreadLocal<>();
     private static ThreadLocal<String> proto = new ThreadLocal<>();
     private static ThreadLocal<String> caller = new ThreadLocal<>();
+    private static ThreadLocal<HttpServletRequest> request = new ThreadLocal<>();
 
     /**
      * Adding a method to get the callerIp into the XmlRpc for logging.
@@ -44,11 +46,12 @@ public class RhnXmlRpcServer extends XmlRpcServer {
      * some error occurs in the SAX driver.
      */
     public void execute(InputStream xmlInput, Writer output, String callerIp,
-            String serverHost, String protoc)
+            String serverHost, String protoc, HttpServletRequest rawRequest)
         throws Throwable {
         server.set(serverHost);
         proto.set(protoc);
         caller.set(callerIp);
+        request.set(rawRequest);
         XmlRpcDispatcher dispatcher = new XmlRpcDispatcher(this, callerIp);
         dispatcher.dispatch(xmlInput, output);
     }
@@ -75,5 +78,13 @@ public class RhnXmlRpcServer extends XmlRpcServer {
      */
     public static String getCallerIp() {
         return caller.get();
+    }
+
+    /**
+     * Retrieve the the raw request of the current xmlrpc call.
+     * @return HttpServletRequest object
+     */
+    public static HttpServletRequest getRequest() {
+        return request.get();
     }
 }
