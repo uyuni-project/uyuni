@@ -213,6 +213,11 @@ if [ -d /var/cache/salt/master/thin ]; then
   rm -rf /var/cache/salt/master/thin
 fi
 
+if [ -f /etc/rhn/rhn.conf ]; then
+    # Ensure all the apache configuration are present, also during upgrade
+    /usr/bin/spacewalk-setup-httpd
+fi
+
 exit 0
 
 %check
