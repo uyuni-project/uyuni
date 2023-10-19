@@ -334,7 +334,7 @@
     <echo message="Copying frontend files to container... " />
     <copy-to-container
       source="${frontend.dist.dir}"
-      target="/srv/www/htdocs"
+      target="/usr/share/susemanager/www/htdocs"
       failonerror="true"
       backend="${container.backend}" />
   </target>
