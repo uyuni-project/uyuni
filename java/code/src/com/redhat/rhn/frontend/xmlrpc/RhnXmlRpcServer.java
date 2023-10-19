@@ -16,6 +16,7 @@ package com.redhat.rhn.frontend.xmlrpc;
 
 import java.io.InputStream;
 import java.io.Writer;
+
 import javax.servlet.http.HttpServletRequest;
 
 import redstone.xmlrpc.XmlRpcDispatcher;
@@ -41,6 +42,7 @@ public class RhnXmlRpcServer extends XmlRpcServer {
      * @param serverHost the hostname/ipaddress that the client used in
      *      reference to the server
      * @param protoc the protocol the client used in connection to the server
+     * @param rawRequest the raw request representing the client connection to the server
      * available  to  custom processors.
      */
     public void execute(InputStream xmlInput, Writer output, String callerIp,
