@@ -44,6 +44,15 @@ mgrchannels_enable_dnf_plugins:
 {#- default is '1' when option is not specififed #}
     - onlyif: grep -e 'plugins=0' -e 'plugins=False' -e 'plugins=no' /etc/dnf/dnf.conf
 {%- endif %}
+
+{# this break the susemanagerplugin as it overwrite HTTP headers (bsc#1214601) #}
+mgrchannels_disable_dnf_rhui_plugin:
+  file.replace:
+    - name: /etc/yum/pluginconf.d/dnf_rhui_plugin.conf
+    - pattern: enabled=.*
+    - repl: enabled=0
+    - onlyif: grep -e 'enabled=1' -e 'enabled=True' -e 'enabled=yes' /etc/yum/pluginconf.d/dnf_rhui_plugin.conf
+
 {%- endif %}
 
 {%- if is_yum %}

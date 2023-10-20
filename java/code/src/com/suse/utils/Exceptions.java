@@ -20,28 +20,45 @@ public final class Exceptions {
 
     /**
      * Represents an operation that does not accept inputs and returns no result, but may throw an exception.
+     * @param <E> type of exception
      */
     @FunctionalInterface
-    public interface ThrowingOperation {
+    public interface ThrowingRunnable<E extends Exception> {
         /**
          * Performs this operation.
-         * @throws Exception when an error occurs during the execution
+         * @throws E when an error occurs during the execution
          */
-        void execute() throws Exception;
+        void run() throws E;
     }
 
     /**
      * Represents an operation that does not accept inputs and returns a value, but may throw an exception.
      * @param <T> the type of the return value
+     * @param <E> type of exception
      */
     @FunctionalInterface
-    public interface ThrowingSupplier<T> {
+    public interface ThrowingSupplier<T, E extends Exception>  {
         /**
          * Performs this operation.
          * @return the result of the operation
-         * @throws Exception when an error occurs during the execution
+         * @throws E when an error occurs during the execution
          */
-        T execute() throws Exception;
+        T get() throws E;
+    }
+
+    /**
+     * Represents an operation that accepts a single input argument and returns no result, but may throw an exception.
+     * @param <T> the type of the return value
+     * @param <E> type of exception
+     */
+    @FunctionalInterface
+    public interface ThrowingConsumer<T, E extends Exception>  {
+        /**
+         * Performs this operation.
+         * @param value the value to consume
+         * @throws E when an error occurs during the execution
+         */
+        void accept(T value) throws E;
     }
 
     private Exceptions() {
@@ -51,11 +68,12 @@ public final class Exceptions {
     /**
      * Executes an operation and returns the exception if occurred during the execution.
      * @param operation the operation to perform
+     * @param <E> type of exception
      * @return an optional wrapping the exception, or empty if the operation completes successfully.
      */
-    public static Optional<? extends Exception> handleByReturning(ThrowingOperation operation) {
+    public static <E extends Exception> Optional<Exception> handleByReturning(ThrowingRunnable<E> operation) {
         try {
-            operation.execute();
+            operation.run();
             return Optional.empty();
         }
         catch (Exception ex) {
@@ -66,11 +84,12 @@ public final class Exceptions {
     /**
      * Executes an operation and wraps any exception into a runtime exception.
      * @param operation the operation to perform
+     * @param <E> type of exception
      * @throws RuntimeException if an exception occurs during the operation.
      */
-    public static void handleByWrapping(ThrowingOperation operation) {
+    public static <E extends Exception> void handleByWrapping(ThrowingRunnable<E> operation) {
         handleByWrapping(() -> {
-            operation.execute();
+            operation.run();
             return null;
         });
     }
@@ -79,12 +98,13 @@ public final class Exceptions {
      * Executes an operation and wraps any exception into a runtime exception.
      * @param operation the operation to perform
      * @param <T> the type of the return value of the operation
+     * @param <E> type of exception
      * @return the result value of the operation
      * @throws RuntimeException if an exception occurs during the operation.
      */
-    public static <T> T handleByWrapping(ThrowingSupplier<T> operation) {
+    public static <T, E extends Exception> T handleByWrapping(ThrowingSupplier<T, E> operation) {
         try {
-            return operation.execute();
+            return operation.get();
         }
         catch (Exception ex) {
             throw new RuntimeException("Unable to execute operation", ex);

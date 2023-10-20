@@ -39,13 +39,13 @@ Feature: Reposync works as expected
 
 @uyuni
   Scenario: Check reposync of openSUSE Leap 15.5 channels being finished
-    Then I wait until the channel "opensuse_leap15_5" has been synced with packages
-    And I wait until the channel "opensuse_leap15_5-non-oss" has been synced with packages
-    And I wait until the channel "opensuse_leap15_5-non-oss-updates" has been synced with packages
-    And I wait until the channel "opensuse_leap15_5-updates" has been synced with packages
-    And I wait until the channel "opensuse_leap15_5-backports-updates" has been synced with packages
-    And I wait until the channel "opensuse_leap15_5-sle-updates" has been synced with packages
-    And I wait until the channel "uyuni-proxy-devel-leap" has been synced with packages
+    Then I wait until the channel "opensuse_leap15_5-x86_64" has been synced with packages
+    And I wait until the channel "opensuse_leap15_5-non-oss-x86_64" has been synced with packages
+    And I wait until the channel "opensuse_leap15_5-non-oss-updates-x86_64" has been synced with packages
+    And I wait until the channel "opensuse_leap15_5-updates-x86_64" has been synced with packages
+    And I wait until the channel "opensuse_leap15_5-backports-updates-x86_64" has been synced with packages
+    And I wait until the channel "opensuse_leap15_5-sle-updates-x86_64" has been synced with packages
+    And I wait until the channel "uyuni-proxy-devel-leap-x86_64" has been synced with packages
 
 @scc_credentials
 @susemanager
@@ -58,6 +58,6 @@ Feature: Reposync works as expected
 
 @uyuni
   Scenario: Check reposync of Client Tools being finished
-    And I wait until the channel "opensuse_leap15_5-uyuni-client" has been synced with packages
+    And I wait until the channel "opensuse_leap15_5-uyuni-client-x86_64" has been synced with packages
     And I wait until the channel "rockylinux8-uyuni-client-x86_64" has been synced with packages
     And I wait until the channel "ubuntu-2204-amd64-uyuni-client" has been synced with packages

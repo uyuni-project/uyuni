@@ -2488,7 +2488,7 @@ public class ContentSyncManager {
      * @throws SCCClientException when access is not possible
      * @return {@link SCCWebClient}
      */
-    private SCCClient getSCCClient(Credentials credentials)
+    protected SCCClient getSCCClient(Credentials credentials)
             throws URISyntaxException, SCCClientException {
         // check that URL is valid
         URI url = new URI(Config.get().getString(ConfigDefaults.SCC_URL));

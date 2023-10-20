@@ -408,16 +408,17 @@ public class RegistrationUtils {
 
             Optional<RedhatProductInfo> redhatProductInfo = systemQuery.redhatProductInfo(minionId);
 
+            String productArch = arch.replace("-redhat-linux", "");
             Optional<RhelUtils.RhelProduct> rhelProduct =
-                    redhatProductInfo.flatMap(x -> RhelUtils.detectRhelProduct(
-                            channels, arch, x.getWhatProvidesRes(), x.getWhatProvidesSLL(),  x.getRhelReleaseContent(),
-                            x.getCentosReleaseContent(), x.getOracleReleaseContent(), x.getAlibabaReleaseContent(),
-                            x.getAlmaReleaseContent(), x.getAmazonReleaseContent(), x.getRockyReleaseContent()));
+                redhatProductInfo.flatMap(x -> RhelUtils.detectRhelProduct(
+                    channels, productArch, x.getWhatProvidesRes(), x.getWhatProvidesSLL(), x.getRhelReleaseContent(),
+                    x.getCentosReleaseContent(), x.getOracleReleaseContent(), x.getAlibabaReleaseContent(),
+                    x.getAlmaReleaseContent(), x.getAmazonReleaseContent(), x.getRockyReleaseContent()));
             return Opt.stream(rhelProduct).flatMap(rhel -> {
 
                 if (rhel.getSuseBaseProduct().isEmpty()) {
                     LOG.warn("No product match found for: {} {} {} {}", rhel.getName(), rhel.getVersion(),
-                            rhel.getRelease(), arch);
+                            rhel.getRelease(), productArch);
                     return Stream.empty();
                 }
                 return rhel.getAllSuseProducts().stream();

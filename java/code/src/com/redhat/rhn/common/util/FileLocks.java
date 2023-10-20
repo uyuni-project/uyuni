@@ -29,6 +29,9 @@ import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.attribute.UserPrincipal;
 import java.nio.file.attribute.UserPrincipalLookupService;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
 /**
@@ -37,7 +40,7 @@ import java.util.function.Supplier;
 public class FileLocks {
 
     // Logger instance
-    private static Logger log = LogManager.getLogger(FileLocks.class);
+    private static final Logger LOG = LogManager.getLogger(FileLocks.class);
 
     /**
      * Lock for the scc refresh process
@@ -96,7 +99,7 @@ public class FileLocks {
         ) {
             if (fileLock != null) {
                 try {
-                    log.info("File lock {} acquired.", filePath);
+                    LOG.info("File lock {} acquired.", filePath);
                     try {
                         // Set the user to tomcat so both taskomatic (root) and tomcat (tomcat) can use it.
                         FileSystem fileSystem = FileSystems.getDefault();
@@ -107,7 +110,7 @@ public class FileLocks {
                         }
                     }
                     catch (IOException e) {
-                        log.error("Error adjusting lock file user.", e);
+                        LOG.error("Error adjusting lock file user.", e);
                     }
                     return fn.get();
                 }
@@ -117,14 +120,58 @@ public class FileLocks {
                 }
             }
             else {
-                log.warn("File lock {} already in use.", filePath);
+                LOG.warn("File lock {} already in use.", filePath);
                 throw new OverlappingFileLockException();
             }
         }
         catch (IOException e) {
-            log.error("File lock {} error", filePath, e);
+            LOG.error("File lock {} error", filePath, e);
             throw new RuntimeException(e);
         }
     }
 
+    /**
+     * Runs fn if the file lock can be acquired. This function will wait maximal "timeout" seconds for the lock.
+     * It will throw OverlappingFileLockException when the lock could not be acquired.
+     * @param fn a function to be called while holding the file lock.
+     * @param timeout maximal time waiting for the lock
+     * @throws RuntimeException in case there is any exception related to the underling file which is used for locking
+     */
+    public void withTimeoutFileLock(Runnable fn, long timeout) {
+        withTimeoutFileLock(() -> {
+            fn.run();
+            return null;
+        }, timeout);
+    }
+
+    /**
+     * Runs fn if the file lock can be acquired. This function will wait maximal "timeout" seconds for the lock.
+     * It will throw OverlappingFileLockException when the lock could not be acquired.
+     * @param fn a function to be called while holding the file lock.
+     * @param <T> return type of fn
+     * @param timeout maximal time waiting for the lock in seconds
+     * @return the result of calling fn
+     * @throws RuntimeException in case there is any exception related to the underling file which is used for locking
+     */
+    public <T> T withTimeoutFileLock(Supplier<T> fn, long timeout) {
+        Instant i = Instant.now().plus(timeout, ChronoUnit.SECONDS);
+        do {
+            try {
+                return withFileLock(fn);
+            }
+            catch (OverlappingFileLockException e) {
+                try {
+                    LOG.debug("waiting to get lock");
+                    TimeUnit.SECONDS.sleep(5);
+                }
+                catch (InterruptedException ie) {
+                    Thread.currentThread().interrupt();
+                    LOG.warn("Interrupted", ie);
+                    throw new OverlappingFileLockException();
+                }
+            }
+        } while (Instant.now().isBefore(i));
+        LOG.warn("TIMEOUT: Lock could not be acquired in time");
+        throw new OverlappingFileLockException();
+    }
 }

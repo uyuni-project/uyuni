@@ -39,6 +39,7 @@ import java.util.List;
  *         #prop_desc("int", "id", "system ID")
  *         #prop("string", "profile_name")
  *         #prop("string", "machine_id")
+ *         #prop_desc("boolean", "payg", "Whether the server instance is payg or not")
  *         #prop("string", "minion_id")
  *         #prop_desc("string", "base_entitlement", "system's base entitlement label")
  *
@@ -86,7 +87,8 @@ public class ServerSerializer extends ApiResponseSerializer<Server> {
                 .add("profile_name", src.getName())
                 .add("machine_id", src.getMachineId())
                 .add("hostname", src.getHostname())
-                .add("minion_id", src.getMinionId());
+                .add("minion_id", src.getMinionId())
+                .add("payg", src.isPayg());
 
         // Find this server's base entitlement:
         String baseEntitlement = EntitlementManager.UNENTITLED;

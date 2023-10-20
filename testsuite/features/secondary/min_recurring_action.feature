@@ -167,7 +167,7 @@ Feature: Recurring Actions
 
   Scenario: Pre-requisite: check that there are updates available
     Given I am on the Systems overview page of this "sle_minion"
-    Then I should see a "Software Updates Available" text
+    And I wait until I see "Software Updates Available" text, refreshing the page
 
   Scenario: Create a recurring action to apply "uptodate" state to a system group
     When I follow the left menu "Systems > System Groups"

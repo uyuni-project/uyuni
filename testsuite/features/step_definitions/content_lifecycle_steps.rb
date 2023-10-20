@@ -28,7 +28,7 @@ end
 
 Then(/^I should see a "([^"]*)" text in the environment "([^"]*)"$/) do |text, env|
   within(:xpath, "//h3[text()='#{env}']/../..") do
-    raise "Text \"#{text}\" not found" unless has_content?(text)
+    raise "Text \"#{text}\" not found" unless check_text_and_catch_request_timeout_popup?(text)
   end
 end
 
@@ -40,7 +40,7 @@ end
 
 When(/^I wait until I see "([^"]*)" text in the environment "([^"]*)"$/) do |text, env|
   within(:xpath, "//h3[text()='#{env}']/../..") do
-    raise "Text \"#{text}\" not found" unless has_text?(text, wait: DEFAULT_TIMEOUT)
+    raise "Text \"#{text}\" not found" unless check_text_and_catch_request_timeout_popup?(text, timeout: DEFAULT_TIMEOUT)
   end
 end
 
