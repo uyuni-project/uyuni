@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.dto;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -21,7 +22,7 @@ import java.util.Map;
 /**
  * AuditDto
  */
-public class AuditDto extends BaseDto {
+public class AuditDto extends BaseDto implements Serializable {
     private Long id;
     private int serial;
     private Date time;

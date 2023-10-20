@@ -16,6 +16,7 @@ package com.redhat.rhn.manager.audit;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.frontend.dto.AuditDto;
 import com.redhat.rhn.frontend.dto.AuditMachineDto;
 import com.redhat.rhn.frontend.dto.AuditReviewDto;
@@ -29,6 +30,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
@@ -79,56 +81,35 @@ public class AuditManager /* extends BaseManager */ {
      * @param end The end time; can be null
      * @return The set of matching audit logs
      */
-    public static DataResult getAuditLogs(String[] types, String machine,
-            Long start, Long end) {
-        DataResult dr = null;
-        List l;
-        Long fileStart, fileEnd;
+    public static DataResult<AuditDto> getAuditLogs(String[] types, String machine, long start, long end) {
+        DataResult<AuditDto> dr = new DataResult<>(new ArrayList<>());
 
         if (types == null) {
             types = new String[0];
         }
 
-        if (start == null) {
-            start = 0L;
-        }
-
-        if (end == null) {
-            end = Long.MAX_VALUE;
-        }
-
         try {
-            DataResult<AuditReviewDto> aureviewsections = getMachineReviewSections(machine);
-            if (aureviewsections != null) {
-                for (AuditReviewDto aureview : getMachineReviewSections(machine)) {
-                    fileStart = aureview.getStart().getTime();
-                    fileEnd = aureview.getEnd().getTime();
+            for (AuditReviewDto aureview : getMachineReviewSections(machine)) {
+                long fileStart = aureview.getStart().getTime();
+                long fileEnd = aureview.getEnd().getTime();
 
-                    if (fileEnd < start || fileStart > end) {
-                        continue;
-                    }
-
-                    File auditLog = new File(
-                        logDirStr + "/" + aureview.getName() + "/audit/audit-" +
-                        (fileStart / 1000) + "-" +
-                        (fileEnd / 1000) + ".parsed");
-
-                    l = readAuditFile(auditLog, types, start, end);
-
-                    if (dr == null) {
-                        dr = new DataResult(l);
-                    }
-                    else {
-                        dr.addAll(l);
-                    }
+                if (fileEnd < start || fileStart > end) {
+                    continue;
                 }
+
+                File auditLog = new File(
+                    logDirStr + File.separator + aureview.getName() + "/audit/audit-" +
+                    (fileStart / 1000) + "-" +
+                    (fileEnd / 1000) + ".parsed");
+
+                dr.addAll(readAuditFile(auditLog, types, start, end));
             }
         }
         catch (IOException ioex) {
             log.warn("AAAAHHHH IOException", ioex);
         }
 
-        if (dr == null || dr.isEmpty()) {
+        if (dr.isEmpty()) {
             return null;
         }
 
@@ -220,12 +201,9 @@ public class AuditManager /* extends BaseManager */ {
         DataResult<AuditReviewDto> dr = getMachineReviewSections(machineName);
 
         for (AuditReviewDto aurev : dr) {
-            if (aurev.getReviewedBy() == null) { // an unreviewed log!
-                if (firstUnreviewed == null ||
-                        aurev.getStart().getTime() <
-                        firstUnreviewed.getStart().getTime()) {
-                    firstUnreviewed = aurev;
-                }
+            if (aurev.getReviewedBy() == null &&  // an unreviewed log!
+                    (firstUnreviewed == null || aurev.getStart().getTime() < firstUnreviewed.getStart().getTime())) {
+                firstUnreviewed = aurev;
             }
         }
 
@@ -242,12 +220,9 @@ public class AuditManager /* extends BaseManager */ {
         DataResult<AuditReviewDto> dr = getMachineReviewSections(machineName);
 
         for (AuditReviewDto aurev : dr) {
-            if (aurev.getReviewedOn() != null) {
-                if (lastReviewed == null ||
-                        aurev.getReviewedOn().getTime() >
-                        lastReviewed.getReviewedOn().getTime()) {
-                    lastReviewed = aurev;
-                }
+            if (aurev.getReviewedOn() != null && (lastReviewed == null ||
+                    aurev.getReviewedOn().getTime() > lastReviewed.getReviewedOn().getTime())) {
+                lastReviewed = aurev;
             }
         }
 
