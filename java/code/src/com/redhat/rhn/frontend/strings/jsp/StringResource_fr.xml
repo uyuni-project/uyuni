@@ -29394,6 +29394,20 @@ canal  {0}. Les systèmes abonnés vont perdre leur accès aux paquetages spéci
         <source>cannot verify credentials because `server.susemanager.fromdir` property is set in rhn.conf</source>
       <target state="new"/>
   </trans-unit>
+      <trans-unit id="sdc.details.overview.payg" xml:space="preserve">
+        <source>Pay-as-you-go:</source>
+          <context-group name="ctx">
+            <context context-type="sourcefile">/systems/details/Overview.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="sdc.details.overview.payg_msg" xml:space="preserve">
+        <source>This is a Pay-as-you-go server</source>
+          <context-group name="ctx">
+            <context context-type="sourcefile">/systems/details/Overview.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
       </body>
   </file>
 </xliff>
