@@ -6,6 +6,8 @@ on:
       - 'web/html/src/**'
       - 'testsuite/**'
       - '.github/workflows/acceptance_tests_secondary.yml'
+      - '.github/workflows/acceptance_tests_secondary_parallel.yml'
+      - '.github/workflows/acceptance_tests_feedback.yml'
       - '.github/workflows/acceptance_tests_common.yml'
       - '!java/*.changes*'
 jobs:
