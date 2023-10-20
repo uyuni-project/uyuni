@@ -2234,7 +2234,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="userdetails.usepam" xml:space="preserve">
         <source>Use PAM: </source>
-        <target/>
+        <target>Použiť PAM: </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
@@ -2242,28 +2242,28 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       <!-- userlist.jsp -->
       <trans-unit id="userlist.jsp.useroverview" xml:space="preserve">
         <source>Users Overview</source>
-        <target/>
+        <target>Prehľad používateľov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userlist.jsp.status" xml:space="preserve">
         <source>Status</source>
-        <target/>
+        <target>Stav</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userlist.jsp.enabled" xml:space="preserve">
         <source>Active</source>
-        <target/>
+        <target>Aktívny</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userlist.jsp.disabled" xml:space="preserve">
         <source>Deactivated</source>
-        <target/>
+        <target>Deaktivovaný</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserList</context>
         </context-group>
@@ -2271,7 +2271,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       <!-- activelist.jsp -->
       <trans-unit id="users.jsp.imgAlt" xml:space="preserve">
         <source>User Icon</source>
-        <target/>
+        <target>Ikona používateľa</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/ActiveList</context>
           <context context-type="sourcefile">/rhn/users/DisabledList</context>
@@ -2280,21 +2280,21 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="activelist.jsp.title" xml:space="preserve">
         <source>Active Users</source>
-        <target/>
+        <target>Aktívni používatelia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/ActiveList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="activelist.jsp.noUsers" xml:space="preserve">
         <source>No active users.</source>
-        <target/>
+        <target>Žiadni aktívni používatelia.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/ActiveList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="extauth.jsp.noGroups" xml:space="preserve">
         <source>No external groups.</source>
-        <target/>
+        <target>Žiadne externé skupiny.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/ActiveList</context>
         </context-group>
@@ -2302,35 +2302,35 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       <!-- disabledlist.jsp -->
       <trans-unit id="disabledlist.jsp.title" xml:space="preserve">
         <source>Deactivated Users</source>
-        <target/>
+        <target>Deaktivovaní používatelia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DisabledList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="disabledlist.jsp.noUsers" xml:space="preserve">
         <source>No deactivated users.</source>
-        <target/>
+        <target>Žiadni deaktivovaní používatelia.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DisabledList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="disabledlist.jsp.disabledBy" xml:space="preserve">
         <source>Deactivated By</source>
-        <target/>
+        <target>Deaktivované</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DisabledList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="disabledlist.jsp.disabledOn" xml:space="preserve">
         <source>Deactivated Date</source>
-        <target/>
+        <target>Dátum deaktivácie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DisabledList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="disabledlist.jsp.reactivate" xml:space="preserve">
         <source>Reactivate</source>
-        <target/>
+        <target>Reaktivovať</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DisabledList</context>
         </context-group>
@@ -2338,21 +2338,21 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       <!-- userconfirm.jsp -->
       <trans-unit id="userconfirm.jsp.header" xml:space="preserve">
         <source>Confirm User Reactivation</source>
-        <target/>
+        <target>Potvrdiť reaktiváciu používateľa</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/ErrataConfirm</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userconfirm.jsp.summary" xml:space="preserve">
         <source>The following users will be reactivated.  These users will have access to @@PRODUCT_NAME@@ and retain all permissions, roles, and data that they had prior to being deactivated.</source>
-        <target/>
+        <target>Nasledujúci používatelia budú reaktivovaní.  Títo používatelia budú mať prístup k @@PRODUCT_NAME@@ a zachovajú si všetky oprávnenia, roly a údaje, ktoré mali pred deaktiváciou.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/ErrataConfirm</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userconfirm.jsp.confirm" xml:space="preserve">
         <source>Confirm</source>
-        <target/>
+        <target>Potvrdiť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/ErrataConfirm</context>
         </context-group>
@@ -2360,21 +2360,21 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       <!-- deleteuser.jsp -->
       <trans-unit id="deleteuser.jsp.delete" xml:space="preserve">
         <source>Delete User</source>
-        <target/>
+        <target>Vymazať používateľa</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DeleteUser</context>
         </context-group>
       </trans-unit>
       <trans-unit id="deleteuser.jsp.confirm" xml:space="preserve">
         <source>Confirm User Deletion</source>
-        <target/>
+        <target>Potvrdiť vymazanie používateľa</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DeleteUser</context>
         </context-group>
       </trans-unit>
       <trans-unit id="deleteuser.jsp.body" xml:space="preserve">
         <source>&lt;p&gt;This will delete this user &lt;strong&gt;permanently&lt;/strong&gt;.&lt;/p&gt; &lt;p&gt;All scheduled actions currently associated with this user will be altered and will no longer be tied to this user.&lt;/p&gt; &lt;p&gt;&lt;strong&gt;Please click the button only once; it will take a few moments for the deletion process to complete.&lt;/strong&gt;&lt;/p&gt;</source>
-        <target/>
+        <target>&lt;p&gt;Týmto sa tento používateľ vymaže &lt;strong&gt;natrvalo&lt;/strong&gt;.&lt;/p&gt; &lt;p&gt;Všetky naplánované akcie, ktoré sú v súčasnosti spojené s týmto používateľom, sa zmenia a už nebudú viazané na tohto používateľa.&lt;/p&gt; &lt;p&gt;&lt;strong&gt;Prosím, kliknite na tlačidlo iba raz; proces vymazania chvíľu potrvá.&lt;/strong&gt;&lt;/p&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DeleteUser</context>
         </context-group>
@@ -29592,6 +29592,20 @@ given channel.</source>
         <source>cannot verify credentials because `server.susemanager.fromdir` property is set in rhn.conf</source>
         <target state="new"/>
       </trans-unit>
-    </body>
+    <trans-unit id="sdc.details.overview.payg" xml:space="preserve">
+        <source>Pay-as-you-go:</source>
+          <context-group name="ctx">
+            <context context-type="sourcefile">/systems/details/Overview.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="sdc.details.overview.payg_msg" xml:space="preserve">
+        <source>This is a Pay-as-you-go server</source>
+          <context-group name="ctx">
+            <context context-type="sourcefile">/systems/details/Overview.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>
