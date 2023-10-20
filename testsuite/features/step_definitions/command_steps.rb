@@ -237,16 +237,6 @@ When(/^vendor change should be enabled for [^"]* on "([^"]*)"$/) do |host|
   raise 'Vendor change option not found in logs' unless return_code.zero?
 end
 
-When(/^I apply highstate on "([^"]*)"$/) do |host|
-  system_name = get_system_name(host)
-  if host.include? 'ssh_minion'
-    cmd = 'mgr-salt-ssh'
-  elsif host.include? 'minion' or host.include? 'build'
-    cmd = 'salt'
-  end
-  get_target('server').run_until_ok("#{cmd} #{system_name} state.highstate")
-end
-
 When(/^I wait until "([^"]*)" service is active on "([^"]*)"$/) do |service, host|
   node = get_target(host)
   cmd = "systemctl is-active #{service}"
