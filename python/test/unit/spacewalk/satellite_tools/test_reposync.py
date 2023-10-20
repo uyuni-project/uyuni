@@ -233,7 +233,7 @@ class RepoSyncTest(unittest.TestCase):
     @patch("spacewalk.satellite_tools.reposync.os", os)
     @patch("spacewalk.satellite_tools.reposync.ThreadedDownloader")
     @patch("spacewalk.satellite_tools.reposync.multiprocessing.Pool")
-    def test_sync_excludes_failed_pkgs(self, pool, downloader):
+    def test_import_packages_excludes_failed_pkgs(self, pool, downloader):
         """
         When downloader fails to download a subset of packages
         Then the RepoSync.import_packages function should not process the failed packages
