@@ -11,34 +11,9 @@ on:
   schedule:
     - cron: '0 6 * * *'
 jobs:
-  pre-comment:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pull-requests: write
-    steps:
-      - uses: peter-evans/create-or-update-comment@v2
-        with:
-          issue-number: ${{ github.event.pull_request.number }}
-          body: |
-            :wave: Hello! Thanks for contributing to our project :smile:
-            :coffe: Acceptance tests will take same time (aprox. 1h)
   test-uyuni:
     uses: ./.github/workflows/acceptance_tests_common.yml
     with:
       secondary_tests: "17_run_secondary_tests.sh" 
       server_id: "secondary"
-  post-comment:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pull-requests: write
-    steps:
-      - uses: peter-evans/create-or-update-comment@v2
-        with:
-          issue-number: ${{ github.event.pull_request.number }}
-          body: |
-            :dance: Test have finish
-            You can check the results
-            Happy hacking!
 
