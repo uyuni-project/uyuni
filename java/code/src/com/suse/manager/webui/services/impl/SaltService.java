@@ -18,6 +18,7 @@ import com.redhat.rhn.common.RhnRuntimeException;
 import com.redhat.rhn.common.client.ClientCertificate;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.messaging.JavaMailException;
+import com.redhat.rhn.common.util.http.HttpClientAdapter;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -188,9 +189,9 @@ public class SaltService implements SystemQuery, SaltApi {
      */
     public SaltService() {
         RequestConfig requestConfig = RequestConfig.custom()
-                .setConnectTimeout(0)
-                .setSocketTimeout(0)
-                .setConnectionRequestTimeout(0)
+                .setConnectTimeout(HttpClientAdapter.getHTTPConnectionTimeout(5))
+                .setSocketTimeout(HttpClientAdapter.getSaltApiHTTPSocketTimeout(12 * 60 * 60))
+                .setConnectionRequestTimeout(5 * 60 * 1000)
                 .setCookieSpec(CookieSpecs.STANDARD)
                 .build();
         HttpAsyncClientBuilder httpClientBuilder = HttpAsyncClients.custom();
