@@ -20,7 +20,7 @@ jobs:
           issue-number: ${{ github.event.pull_request.number }}
           body: |
             :wave: Hello! Thanks for contributing to our project :smile:
-            :coffe: Acceptance tests will take same time (aprox. 1h)
+            :coffee: Acceptance tests will take same time (aprox. 1h)
             :eyes: Once tests finish, you can check the cucumber report.
             See the [troubleshooting guide](https://github.com/uyuni-project/uyuni/wiki/Running-Acceptance-Tests-at-PR#troubleshooting) if you need any help.
             :warning: You should not merge if acceptance tests fail to pass
