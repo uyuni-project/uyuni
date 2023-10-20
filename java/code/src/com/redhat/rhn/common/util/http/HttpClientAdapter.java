@@ -77,6 +77,7 @@ public class HttpClientAdapter {
     public static final String MAX_CONNCECTIONS = "java.mgr_sync_max_connections";
     public static final String HTTP_CONNECTION_TIMEOUT = "java.http_connection_timeout";
     public static final String HTTP_SOCKET_TIMEOUT = "java.http_socket_timeout";
+    public static final String SALT_API_HTTP_SOCKET_TIMEOUT = "java.salt_api_http_socket_timeout";
     private static final int TO_MILLISECONDS = 1000;
 
     /** The log. */
@@ -122,8 +123,8 @@ public class HttpClientAdapter {
 
         clientBuilder.setDefaultCredentialsProvider(credentialsProvider);
         Builder requestConfigBuilder = RequestConfig.custom()
-                .setConnectTimeout(Config.get().getInt(HTTP_CONNECTION_TIMEOUT, 5) * TO_MILLISECONDS)
-                .setSocketTimeout(Config.get().getInt(HTTP_SOCKET_TIMEOUT, 5 * 60) * TO_MILLISECONDS)
+                .setConnectTimeout(HttpClientAdapter.getHTTPConnectionTimeout(5))
+                .setSocketTimeout(HttpClientAdapter.getHTTPSocketTimeout(5 * 60))
                 .setCookieSpec(CookieSpecs.IGNORE_COOKIES);
 
         // Store the proxy settings
@@ -146,8 +147,8 @@ public class HttpClientAdapter {
             }
 
             // Explicitly exclude the NTLM authentication scheme
-            requestConfigBuilder =  requestConfigBuilder.setProxyPreferredAuthSchemes(
-                                    Arrays.asList(AuthSchemes.DIGEST, AuthSchemes.BASIC));
+            requestConfigBuilder = requestConfigBuilder.setProxyPreferredAuthSchemes(
+                    Arrays.asList(AuthSchemes.DIGEST, AuthSchemes.BASIC));
 
             clientBuilder.setProxyAuthenticationStrategy(new ProxyAuthenticationStrategy());
 
@@ -190,7 +191,7 @@ public class HttpClientAdapter {
          */
         @Override
         public HttpRoute determineRoute(final HttpHost host, final HttpRequest request,
-                final HttpContext context) throws HttpException {
+                                        final HttpContext context) throws HttpException {
 
             Boolean ignoreNoProxy = (Boolean) context.getAttribute(IGNORE_NO_PROXY);
             URI requestUri = (URI) context.getAttribute(REQUEST_URI);
@@ -323,5 +324,29 @@ public class HttpClientAdapter {
             }
         }
         return true;
+    }
+
+    /**
+     * @param defaultTimeout default timeout in seconds
+     * @return return the HTTP Connection Timeout in milliseconds
+     */
+    public static int getHTTPConnectionTimeout(int defaultTimeout) {
+        return Config.get().getInt(HTTP_CONNECTION_TIMEOUT, defaultTimeout) * TO_MILLISECONDS;
+    }
+
+    /**
+     * @param defaultTimeout default timeout in seconds
+     * @return return the HTTP Socket Timeout in milliseconds
+     */
+    public static int getHTTPSocketTimeout(int defaultTimeout) {
+        return Config.get().getInt(HTTP_SOCKET_TIMEOUT, defaultTimeout) * TO_MILLISECONDS;
+    }
+
+    /**
+     * @param defaultTimeout default timeout in seconds
+     * @return return the HTTP Socket Timeout in milliseconds for salt api connections
+     */
+    public static int getSaltApiHTTPSocketTimeout(int defaultTimeout) {
+        return Config.get().getInt(SALT_API_HTTP_SOCKET_TIMEOUT, defaultTimeout) * TO_MILLISECONDS;
     }
 }
