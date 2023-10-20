@@ -349,6 +349,7 @@ Style/AndOr:
     - 'features/step_definitions/common_steps.rb'
     - 'features/step_definitions/file_management_steps.rb'
     - 'features/step_definitions/retail_steps.rb'
+    - 'features/step_definitions/salt_steps.rb'
     - 'features/step_definitions/setup_steps.rb'
 
 # Offense count: 1
