@@ -448,14 +448,14 @@
       <!-- Monitoring "Config Macro" records - used to configure the monitoring sat -->
       <trans-unit id="MAIL_MX" xml:space="preserve">
         <source>Local mail exchanger</source>
-        <target/>
+        <target>Локален мејл разменувач</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/GeneralConfig.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="MDOM" xml:space="preserve">
         <source>Mail domain (e.g. 'suse.com' for myemail@suse.com)</source>
-        <target/>
+        <target>Мејл домен ('suse.com' за myemail@suse.com)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/GeneralConfig.do</context>
         </context-group>
