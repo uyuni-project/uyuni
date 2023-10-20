@@ -40,5 +40,6 @@ jobs:
           body: |
             :dance: Test have finish
             You can check the results
+            test
             Happy hacking!
 
