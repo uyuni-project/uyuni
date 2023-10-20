@@ -776,14 +776,14 @@
       </trans-unit>
       <trans-unit id="name" xml:space="preserve">
         <source>name</source>
-        <target/>
+        <target>име</target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
         </context-group>
       </trans-unit>
       <trans-unit id="arch" xml:space="preserve">
         <source>architecture</source>
-        <target/>
+        <target>архитектура</target>
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
         </context-group>
@@ -11171,53 +11171,53 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Sync Salt states to the target system</source>
         <target state="new"/>
       </trans-unit>
-    <trans-unit id="edit.channel.forbiddenclonechannelpayg" xml:space="preserve">
+      <trans-unit id="edit.channel.forbiddenclonechannelpayg" xml:space="preserve">
         <source>Cloning of channels under different product channels on PAYG instances is forbidden</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
-      <target state="needs-adaptation"/>
-  </trans-unit>
+        <target state="needs-adaptation"/>
+      </trans-unit>
       <trans-unit id="spmigration.message.payg.error" xml:space="preserve">
         <source>PAYG ALERT: Cross product migration attempt detected. Please note, migration from openSUSE to SLES or similar is not permitted under your current PAYG plan. Operation has been aborted.</source>
-      <target state="needs-adaptation"/>
-  </trans-unit>
+        <target state="needs-adaptation"/>
+      </trans-unit>
       <trans-unit id="notification.channelsyncforbidden" xml:space="preserve">
         <source>Syncing channels forbidden</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="notification.channelsyncfailed.notcompliant" xml:space="preserve">
         <source>Synchronization of repositories is forbidden as @@PRODUCT_NAME@@ PAYG is unable to send accounting data to the cloud provider.
 For a detailed analysis, please refer to the log files.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="task.action.rejection.notcompliant" xml:space="preserve">
         <source>
 The action you attempted could not be executed because the @@PRODUCT_NAME@@ PAYG system is unable to send accounting data to the cloud provider.
 For a detailed analysis, please refer to the log files.
 	</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="bootstrap.minion.error.conflicting.minionid" xml:space="preserve">
         <source>Systems with conflicting minion ID and machine ID were found ({0}, {1}). Onboarding aborted. Please remove conflicting systems first ({2}, {3})</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="bootstrap.minion.error.payg.dcregistered" xml:space="preserve">
         <source>Registration of '{0}' on SUSE Manager Server rejected. \nTo manage Datacenter clients you have to configure SCC Credentials at Admin =&gt; Setup Wizard =&gt; Organization Credentials.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="bootstrap.minion.error.payg.byosregistered" xml:space="preserve">
         <source>Registration of '{0}' on SUSE Manager Server rejected. \nTo manage BYOS (Bring-your-own-Subscription) clients you have to configure SCC Credentials at Admin =&gt; Setup Wizard =&gt; Organization Credentials. \n\nIf the instance being onboarded is PAYG, ensure the `python-instance-billing-flavor-check` package is installed and try again.</source>
-      <target state="new"/>
-  </trans-unit>
-    <trans-unit id="notification.updateavailable.summary" xml:space="preserve">
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="notification.updateavailable.summary" xml:space="preserve">
         <source>Updates are available.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="notification.updateavailable.detail" xml:space="preserve">
         <source>A new update for @@PRODUCT_NAME@@ is now available. For further details, please refer to the &lt;a href="{0}"&gt;release notes&lt;a&gt;.</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="new"/>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

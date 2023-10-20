@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-09-08 14:40+0200\n"
-"PO-Revision-Date: 2023-05-29 06:14+0000\n"
+"PO-Revision-Date: 2023-10-20 05:15+0000\n"
 "Last-Translator: Kristijan Fremen Velkovski <me@krisfremen.com>\n"
 "Language-Team: Macedonian <https://l10n.opensuse.org/projects/uyuni/backend/"
 "mk/>\n"
@@ -344,7 +344,7 @@ msgstr ""
 
 #: ../server/rhnUser.py:289 ../server/rhnUser.py:292
 msgid "Invalid username/password combination"
-msgstr ""
+msgstr "Невалидна комбинација на корисничко име и лозинка"
 
 #. nope, not reserved either
 #: ../server/rhnUser.py:467
