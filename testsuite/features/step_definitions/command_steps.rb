@@ -1459,13 +1459,18 @@ end
 When(/^I change the server's short hostname from hosts and hostname files$/) do
   server_node = get_target('server')
   old_hostname = server_node.hostname
-  new_hostname = old_hostname + '2'
+  new_hostname = old_hostname + '-renamed'
   log "Old hostname: #{old_hostname} - New hostname: #{new_hostname}"
   server_node.run("sed -i 's/#{old_hostname}/#{new_hostname}/g' /etc/hostname &&
                    hostname #{new_hostname} &&
                    echo '#{server_node.public_ip} #{server_node.full_hostname} #{old_hostname}' >> /etc/hosts &&
                    echo '#{server_node.public_ip} #{new_hostname}#{server_node.full_hostname.delete_prefix(server_node.hostname)} #{new_hostname}' >> /etc/hosts")
-  get_target('server', refresh: true) # This will refresh the attributes of this node
+  # This will refresh the attributes of this node
+  get_target('server', refresh: true)
+  hostname, _result = get_target('server').run('hostname')
+  hostname.strip!
+
+  raise "Wrong hostname after changing it. Is: #{hostname}, should be: #{new_hostname}" unless hostname == new_hostname
 
   # Add the new hostname on controller's /etc/hosts to resolve in smoke tests
   `echo '#{server_node.public_ip} #{new_hostname}#{server_node.full_hostname.delete_prefix(server_node.hostname)} #{new_hostname}' >> /etc/hosts`
@@ -1494,8 +1499,7 @@ When(/^I run spacewalk-hostname-rename command on the server$/) do
   end
 
   # Update the server CA certificate since it changed, otherwise all API and browser uses will fail
-  update_ca('controller')
-  update_ca('proxy')
+  update_controller_ca
 
   # Reset the API client to take the new CA into account
   reset_api_client
@@ -1504,16 +1508,43 @@ When(/^I run spacewalk-hostname-rename command on the server$/) do
   raise 'Error in the output logs - see logs above' if out_spacewalk.include? 'No such file or directory'
 end
 
+When(/^I check all certificates after renaming the server hostname$/) do
+  # get server certificate serial to compare it with the other minions
+  command_server = "openssl x509 --noout --text -in /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT | grep -A1 'Serial' | grep -v 'Serial'"
+  server_cert_serial, result_code = get_target('server').run(command_server)
+  server_cert_serial.strip!
+  log "Server certificate serial: #{server_cert_serial}"
+
+  raise 'Error getting server certificate serial!' unless result_code.zero?
+
+  command_minion = "openssl x509 --noout --text -in /etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT | grep -A1 'Serial' | grep -v 'Serial'"
+  targets = %w[proxy sle_minion ssh_minion rhlike_minion deblike_minion build_host kvm_server]
+  targets.each do |target|
+    # get all defined minions from the environment variables and check their certificate serial
+    next unless ENV.key? ENV_VAR_BY_HOST[target]
+    minion_cert_serial, result_code = get_target(target).run(command_minion)
+    minion_cert_serial.strip!
+    log "#{target} certificate serial: #{minion_cert_serial}"
+
+    raise 'Error getting server certificate serial!' unless result_code.zero?
+    raise "Error comparing #{target} certificate with server!" unless minion_cert_serial == server_cert_serial
+  end
+end
+
 When(/^I change back the server's hostname$/) do
   server_node = get_target('server')
   old_hostname = server_node.hostname
-  new_hostname = old_hostname.delete_suffix('2')
+  new_hostname = old_hostname.delete_suffix('-renamed')
   log "Old hostname: #{old_hostname} - New hostname: #{new_hostname}"
   server_node.run("sed -i 's/#{old_hostname}/#{new_hostname}/g' /etc/hostname &&
                    hostname #{new_hostname} &&
                    sed -i \'$d\' /etc/hosts &&
                    sed -i \'$d\' /etc/hosts")
   get_target('server', refresh: true) # This will refresh the attributes of this node
+  hostname, _result = get_target('server').run('hostname')
+  hostname.strip!
+
+  raise "Wrong hostname after changing it. Is: #{hostname}, should be: #{new_hostname}" unless hostname == new_hostname
 
   # Cleanup the temporary entry in /etc/hosts on the controller
   `sed -i \'$d\' /etc/hosts`

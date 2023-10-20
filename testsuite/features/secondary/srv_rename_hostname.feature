@@ -21,6 +21,51 @@ Feature: Reconfigure the server's hostname
     When I change the server's short hostname from hosts and hostname files
     And I run spacewalk-hostname-rename command on the server
 
+@proxy
+  Scenario: Copy the new server keys and configure the proxy
+    When I copy server's keys to the proxy
+    And I configure the proxy
+    Then I should see "proxy" via spacecmd
+    When I restart the "salt-minion" service on "proxy"
+    Then service "salt-minion" is active on "proxy"
+    When I restart the "salt-broker" service on "proxy"
+    Then service "salt-broker" is active on "proxy"
+
+@proxy
+  Scenario: Apply high state on the proxy to populate new server CA
+    When I apply highstate on "proxy"
+
+@sle_minion
+  Scenario: Apply high state on the SUSE Minion to populate new server CA
+    When I apply highstate on "sle_minion"
+
+@ssh_minion
+  Scenario: Apply high state on the SUSE SSH Minion to populate new server CA
+    When I apply highstate on "ssh_minion"
+
+@rhlike_minion
+  Scenario: Apply high state on the Red Hat-like Minion to populate new server CA
+    When I apply highstate on "rhlike_minion"
+
+@deblike_minion
+  Scenario: Apply high state on the Debian-like Minion to populate new server CA
+    When I apply highstate on "deblike_minion"
+
+@buildhost
+  Scenario: Apply high state on the build host to populate new server CA
+    When I apply highstate on "build_host"
+
+@virthost_kvm
+  Scenario: Apply high state on the virthost to populate new server CA
+    When I apply highstate on "kvm_server"
+
+@pxeboot_minion
+  Scenario: Apply high state on the PXE boot minion to populate new server CA
+    When I apply highstate on "pxeboot_minion"
+
+  Scenario: Check all new server certificates on the minions
+    When I check all certificates after renaming the server hostname
+
   Scenario: Do some minimal smoke test on the renamed server
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Details" in the content area
@@ -40,3 +85,48 @@ Feature: Reconfigure the server's hostname
   Scenario: Change hostname back and reboot server
     When I change back the server's hostname
     And I run spacewalk-hostname-rename command on the server
+
+@proxy
+  Scenario: Copy the new server keys and configure the proxy
+    When I copy server's keys to the proxy
+    And I configure the proxy
+    Then I should see "proxy" via spacecmd
+    When I restart the "salt-minion" service on "proxy"
+    Then service "salt-minion" is active on "proxy"
+    When I restart the "salt-broker" service on "proxy"
+    Then service "salt-broker" is active on "proxy"
+
+@proxy
+  Scenario: Apply high state on the proxy to populate new server CA
+    When I apply highstate on "proxy"
+
+@sle_minion
+  Scenario: Apply high state on the SUSE Minion to populate new server CA
+    When I apply highstate on "sle_minion"
+
+@ssh_minion
+  Scenario: Apply high state on the SUSE SSH Minion to populate new server CA
+    When I apply highstate on "ssh_minion"
+
+@rhlike_minion
+  Scenario: Apply high state on the Red Hat-like Minion to populate new server CA
+    When I apply highstate on "rhlike_minion"
+
+@deblike_minion
+  Scenario: Apply high state on the Debian-like Minion to populate new server CA
+    When I apply highstate on "deblike_minion"
+
+@buildhost
+  Scenario: Apply high state on the build host to populate new server CA
+    When I apply highstate on "build_host"
+
+@virthost_kvm
+  Scenario: Apply high state on the virthost to populate new server CA
+    When I apply highstate on "kvm_server"
+
+@pxeboot_minion
+  Scenario: Apply high state on the PXE boot minion to populate new server CA
+    When I apply highstate on "pxeboot_minion"
+
+  Scenario: Check all new server certificates on the minions
+    When I check all certificates after renaming the server hostname
