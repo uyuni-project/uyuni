@@ -56,6 +56,10 @@ public class RhnXmlRpcServer extends XmlRpcServer {
         request.set(rawRequest);
         XmlRpcDispatcher dispatcher = new XmlRpcDispatcher(this, callerIp);
         dispatcher.dispatch(xmlInput, output);
+        server.remove();
+        proto.remove();
+        caller.remove();
+        request.remove();
     }
 
     /**
