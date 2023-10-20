@@ -47,9 +47,7 @@ Feature: Project Lotus
     And I follow "Sync"
     # no need to click on "Sync Now" as it's automatically enabled by default on Uyuni
     Then I should see a "Repository sync is running" text
-
-  Scenario: Pre-requisite: Wait for reposync to finish
-    Then I wait until all spacewalk-repo-sync finished
+    When I wait until the channel "sles15sp4-ptfs" has been synced
 
   Scenario: Pre-requisite: Add custom channel to minion
     Given I am on the Systems overview page of this "sle_minion"

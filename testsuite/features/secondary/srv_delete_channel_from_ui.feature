@@ -8,7 +8,7 @@
 # If the deletion of "Clone of Fake-RPM-SUSE-Channel" fails, these features will have failing scenarios.
 # - features/secondary/srv_dist_channel_mapping.feature
 # - features/secondary/srv_patches_page.feature
-# If the deletion of "Clone of Fake Base Channel" fails, these features will have failing scenarios.
+# If the deletion of "Clone of Fake-Base-Channel" fails, these features will have failing scenarios.
 
 @scope_configuration_channels
 Feature: Delete channels with child or clone is not allowed
@@ -21,39 +21,39 @@ Feature: Delete channels with child or clone is not allowed
   Scenario: Clone the first channel before deletion from UI test
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Clone Channel"
-    And I select "Fake Base Channel" as the origin channel
+    And I select "Fake-Base-Channel" as the origin channel
     And I click on "Clone Channel"
     Then I should see a "Create Software Channel" text
     And I should see a "Current state of the channel" text
     When I click on "Clone Channel"
-    Then I should see a "Clone of Fake Base Channel" text
+    Then I should see a "Clone of Fake-Base-Channel" text
 
   Scenario: Clone the second channel using first channel as base
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Clone Channel"
-    And I select "Clone of Fake Base Channel" as the origin channel
+    And I select "Clone of Fake-Base-Channel" as the origin channel
     And I click on "Clone Channel"
     Then I should see a "Create Software Channel" text
     And I should see a "Current state of the channel" text
     When I click on "Clone Channel"
-    Then I should see a "Clone of Clone of Fake Base Channel" text
+    Then I should see a "Clone of Clone of Fake-Base-Channel" text
 
   Scenario: Try to delete channel with clone
     When I follow the left menu "Software > Manage > Channels"
-    And I follow "Clone of Fake Base Channel"
+    And I follow "Clone of Fake-Base-Channel"
     And I follow "Delete software channel"
     And I check "unsubscribeSystems"
     And I click on "Delete Channel"
-    Then I should see a "Clone of Fake Base Channel" text
+    Then I should see a "Clone of Fake-Base-Channel" text
     And I should see a "Unable to delete channel" text
 
   Scenario: Delete channel without clones neither children
     When I follow the left menu "Software > Manage > Channels"
-    And I follow "Clone of Clone of Fake Base Channel"
+    And I follow "Clone of Clone of Fake-Base-Channel"
     And I follow "Delete software channel"
     And I check "unsubscribeSystems"
     And I click on "Delete Channel"
-    Then I should see a "Clone of Clone of Fake Base Channel" text
+    Then I should see a "Clone of Clone of Fake-Base-Channel" text
     And I should see a "has been deleted" text
 
   Scenario: Clone a child channel to the clone of x86_64 test channel
@@ -63,17 +63,17 @@ Feature: Delete channels with child or clone is not allowed
     And I click on "Clone Channel"
     Then I should see a "Create Software Channel" text
     And I should see a "Current state of the channel" text
-    When I select "Clone of Fake Base Channel" from "Parent Channel"
+    When I select "Clone of Fake-Base-Channel" from "Parent Channel"
     And I click on "Clone Channel"
     Then I should see a "Clone of Fake-RPM-SUSE-Channel" text
 
   Scenario: Try delete channel with child
     When I follow the left menu "Software > Manage > Channels"
-    And I follow "Clone of Fake Base Channel"
+    And I follow "Clone of Fake-Base-Channel"
     And I follow "Delete software channel"
     And I check "unsubscribeSystems"
     And I click on "Delete Channel"
-    Then I should see a "Clone of Fake Base Channel" text
+    Then I should see a "Clone of Fake-Base-Channel" text
     And I should see a "channel has child channels associated" text
     And I should see a "must delete those channels first before deleting the parent." text
 
@@ -88,9 +88,9 @@ Feature: Delete channels with child or clone is not allowed
 
   Scenario: Cleanup: remove cloned parent channel
     When I follow the left menu "Software > Manage > Channels"
-    And I follow "Clone of Fake Base Channel"
+    And I follow "Clone of Fake-Base-Channel"
     And I follow "Delete software channel"
     And I check "unsubscribeSystems"
     And I click on "Delete Channel"
-    Then I should see a "Clone of Fake Base Channel" text
+    Then I should see a "Clone of Fake-Base-Channel" text
     And I should see a "has been deleted." text

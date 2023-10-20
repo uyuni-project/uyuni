@@ -118,13 +118,13 @@ end
 
 # Channels
 
-When(/^I delete these channels with spacewalk\-remove\-channel:$/) do |table|
+When(/^I delete these channels with spacewalk-remove-channel:$/) do |table|
   channels_cmd = 'spacewalk-remove-channel '
   table.raw.each { |x| channels_cmd = channels_cmd + ' -c ' + x[0] }
   $command_output, return_code = get_target('server').run(channels_cmd, check_errors: false)
 end
 
-When(/^I list channels with spacewalk\-remove\-channel$/) do
+When(/^I list channels with spacewalk-remove-channel$/) do
   $command_output, return_code = get_target('server').run('spacewalk-remove-channel -l')
   raise 'Unable to run spacewalk-remove-channel -l command on server' unless return_code.zero?
 end
@@ -133,14 +133,13 @@ When(/^I add "([^"]*)" channel$/) do |channel|
   get_target('server').run("echo -e \"admin\nadmin\n\" | mgr-sync add channel #{channel}", buffer_size: 1_000_000)
 end
 
-When(/^I use spacewalk\-common\-channel to add channel "([^"]*)" with arch "([^"]*)"$/) do |child_channel, arch|
+When(/^I use spacewalk-common-channel to add channel "([^"]*)" with arch "([^"]*)"$/) do |child_channel, arch|
   command = "spacewalk-common-channels -u admin -p admin -a #{arch} #{child_channel}"
   $command_output, _code = get_target('server').run(command)
 end
 
-When(/^I use spacewalk\-repo\-sync to sync channel "([^"]*)"$/) do |channel|
-  command = "spacewalk-repo-sync -c #{channel}"
-  $command_output, _code = get_target('server').run(command)
+When(/^I use spacewalk-repo-sync to sync channel "([^"]*)"$/) do |channel|
+  $command_output, _code = get_target('server').run_until_ok("spacewalk-repo-sync -c #{channel}")
 end
 
 Then(/^I should get "([^"]*)"$/) do |value|
@@ -298,16 +297,16 @@ When(/^I enable product "([^"]*)" without recommended$/) do |prd|
   raise $command_output.to_s unless executed
 end
 
-When(/^I execute mgr\-sync "([^"]*)" with user "([^"]*)" and password "([^"]*)"$/) do |arg1, u, p|
+When(/^I execute mgr-sync "([^"]*)" with user "([^"]*)" and password "([^"]*)"$/) do |arg1, u, p|
   get_target('server').run("echo -e \'mgrsync.user = \"#{u}\"\nmgrsync.password = \"#{p}\"\n\' > ~/.mgr-sync")
-  $command_output, _code = get_target('server').run("mgr-sync #{arg1}", check_errors: false, buffer_size: 1_000_000)
+  $command_output, _code = get_target('server').run("echo -e '#{u}\n#{p}\n' | mgr-sync #{arg1}", check_errors: false, buffer_size: 1_000_000)
 end
 
-When(/^I execute mgr\-sync "([^"]*)"$/) do |arg1|
+When(/^I execute mgr-sync "([^"]*)"$/) do |arg1|
   $command_output, _code = get_target('server').run("mgr-sync #{arg1}", buffer_size: 1_000_000)
 end
 
-When(/^I remove the mgr\-sync cache file$/) do
+When(/^I remove the mgr-sync cache file$/) do
   $command_output, _code = get_target('server').run('rm -f ~/.mgr-sync')
 end
 
@@ -316,72 +315,43 @@ When(/^I refresh SCC$/) do
   get_target('server').run('echo -e "admin\nadmin\n" | mgr-sync refresh', timeout: refresh_timeout)
 end
 
-When(/^I execute mgr\-sync refresh$/) do
+When(/^I execute mgr-sync refresh$/) do
   $command_output, _code = get_target('server').run('mgr-sync refresh', check_errors: false)
 end
 
-# This function waits for all the reposyncs to complete.
-#
-# This function is written as a state machine. It bails out if no process is seen during
-# 60 seconds in a row.
-When(/^I wait until all spacewalk\-repo\-sync finished$/) do
-  reposync_not_running_streak = 0
-  reposync_left_running_streak = 0
-  while reposync_not_running_streak <= 60
-    command_output, _code = get_target('server').run('ps axo pid,cmd | grep spacewalk-repo-sync | grep -v grep', check_errors: false)
-    if command_output.empty?
-      reposync_not_running_streak += 1
-      reposync_left_running_streak = 0
-      sleep 1
-      next
-    end
-    reposync_not_running_streak = 0
-
-    process = command_output.split("\n")[0]
-    channel = process.split(' ')[5]
-    log "Reposync of channel #{channel} left running" if (reposync_left_running_streak % 60).zero?
-    reposync_left_running_streak += 1
-    sleep 1
-  end
-end
-
-# This function kills all spacewalk-repo-sync processes, excepted the ones in a whitelist.
+# This function kills spacewalk-repo-sync processes for a particular OS product version.
 # It waits for all the reposyncs in the whitelist to complete, and kills all others.
-#
-# This function is written as a state machine. It bails out if no process is seen during
-# 60 seconds in a row, or if the whitelisted reposyncs last more than 7200 seconds in a row.
-When(/^I kill all running spacewalk\-repo\-sync, excepted the ones needed to bootstrap$/) do
-  do_not_kill = compute_channels_to_leave_running
-  reposync_not_running_streak = 0
-  reposync_left_running_streak = 0
-  while reposync_not_running_streak <= 60
-    command_output, _code = get_target('server').run('ps axo pid,cmd | grep spacewalk-repo-sync | grep -v grep', check_errors: false, verbose: true)
-    if command_output.empty?
-      log "Empty command!"
-      reposync_not_running_streak += 1
-      reposync_left_running_streak = 0
-      sleep 1
-      next
-    end
-    reposync_not_running_streak = 0
-
+When(/^I kill running spacewalk-repo-sync for "([^"]*)"$/) do |os_product_version|
+  next if CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION[os_product_version].nil?
+  channels_to_kill = sanitize_client_tools(CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION[os_product_version])
+  log "Killing channels:\n#{channels_to_kill}"
+  time_spent = 0
+  checking_rate = 10
+  repeat_until_timeout(timeout: 900, message: 'Some reposync processes were not killed properly', dont_raise: true) do
+    # Kill a reposync process if it is running for a channel that is in the list to kill
+    command_output, _code = get_target('server').run('ps axo pid,cmd | grep spacewalk-repo-sync | grep -v grep', check_errors: false)
     process = command_output.split("\n")[0]
-    channel = process.split(' ')[5]
-    log "Processing channel '#{channel}'"
-    if do_not_kill.include? channel
-      $channels_synchronized.add(channel)
-      log "Reposync of channel #{channel} left running" if (reposync_left_running_streak % 60).zero?
-      reposync_left_running_streak += 1
-
-      raise 'We have a reposync process that still running after 2 hours' if reposync_left_running_streak > 7200
-      sleep 1
+    if process.nil?
+      log "#{time_spent / 60.to_i} minutes waiting for '#{os_product_version}' remaining channels to start their repo-sync processes:\n#{channels_to_kill}" if ((time_spent += checking_rate) % 60).zero?
+      sleep checking_rate
       next
     end
-    reposync_left_running_streak = 0
-
+    channel = process.split(' ')[5].strip
+    log "Repo-sync process for channel '#{channel}' running." if Time.now.sec % 5
+    next unless CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION[os_product_version].include? channel
+    channels_to_kill.delete(channel)
     pid = process.split(' ')[0]
     get_target('server').run("kill #{pid}", check_errors: false)
     log "Reposync of channel #{channel} killed"
+
+    # Remove from the list to kill those channels that are already synced
+    channels_to_kill.each do |remaining_channel|
+      if channel_is_synced(remaining_channel)
+        log "Channel '#{remaining_channel}' is already synced, so there is no need to kill repo-sync process."
+        channels_to_kill.delete(remaining_channel)
+      end
+    end
+    break if channels_to_kill.empty?
   end
 end
 
@@ -402,56 +372,45 @@ Then(/^the "([^"]*)" reposync logs should not report errors$/) do |list|
 end
 
 Then(/^"([^"]*)" package should have been stored$/) do |pkg|
-  get_target('server').run("find /var/spacewalk/packages -name #{pkg}")
+  get_target('server').run("find /var/spacewalk/packages -name #{pkg}", verbose: true)
 end
 
 Then(/^solver file for "([^"]*)" should reference "([^"]*)"$/) do |channel, pkg|
   repeat_until_timeout(timeout: 600, message: "Reference #{pkg} not found in file.") do
-    _result, code = get_target('server').run("dumpsolv /var/cache/rhn/repodata/#{channel}/solv | grep #{pkg}", check_errors: false)
+    _result, code = get_target('server').run("dumpsolv /var/cache/rhn/repodata/#{channel}/solv | grep #{pkg}", verbose: true, check_errors: false)
     break if code.zero?
   end
 end
 
-When(/^I wait until the channel "([^"]*)" has been synced([^"]*)$/) do |channel, withpkg|
+When(/^I wait until the channel "([^"]*)" has been synced$/) do |channel|
+  time_spent = 0
+  checking_rate = 10
   begin
     repeat_until_timeout(timeout: 7200, message: 'Channel not fully synced') do
-      # solv is the last file to be written when the server synchronizes a channel,
-      # therefore we wait until it exist
-      _result, code = get_target('server').run("test -f /var/cache/rhn/repodata/#{channel}/solv", check_errors: false)
-      if code.zero?
-        # We want to check if no .new files exists.
-        # On a re-sync, the old files stay, the new one have this suffix until it's ready.
-        _result, new_code = get_target('server').run("test -f /var/cache/rhn/repodata/#{channel}/solv.new", check_errors: false)
-        unless new_code.zero?
-          break if withpkg.empty?
-          _result, solv_code = get_target('server').run("dumpsolv /var/cache/rhn/repodata/#{channel}/solv | grep 'repo size: 0 solvables'", check_errors: false)
-          break unless solv_code.zero?
-        end
-      else
-        # maybe a debian repo?
-        _result, code = get_target('server').run("test -f /var/cache/rhn/repodata/#{channel}/Release", check_errors: false)
-        if code.zero?
-          break if withpkg.empty?
-          _result, solv_code = get_target('server').run("test -s /var/cache/rhn/repodata/#{channel}/Packages", check_errors: false)
-          break if solv_code.zero?
-        end
-      end
-      log "I am still waiting for '#{channel}' channel to be synchronized."
-      sleep 10
+      break if channel_is_synced(channel)
+      log "#{time_spent / 60.to_i} minutes waiting for '#{channel}' channel to be synchronized." if ((time_spent += checking_rate) % 60).zero?
+      sleep checking_rate
     end
   rescue StandardError => e
     log e.message # It might be that the MU repository is wrong, but we want to continue in any case
   end
 end
 
-When(/I wait until all synchronized channels have finished$/) do
+When(/^I wait until all synchronized channels have finished$/) do
   $channels_synchronized.each do |channel|
     log "I wait until '#{channel}' synchronized channel has finished"
     step %(I wait until the channel "#{channel}" has been synced)
   end
 end
 
-When(/^I execute mgr\-bootstrap "([^"]*)"$/) do |arg1|
+When(/^I wait until all synchronized channels for "([^"]*)" have finished$/) do |product_os_version|
+  channels_to_wait = sanitize_client_tools(CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION[product_os_version])
+  channels_to_wait.each do |channel|
+    step %(I wait until the channel "#{channel}" has been synced)
+  end
+end
+
+When(/^I execute mgr-bootstrap "([^"]*)"$/) do |arg1|
   $command_output, _code = get_target('server').run("mgr-bootstrap #{arg1}")
 end
 
@@ -783,16 +742,18 @@ Then(/^I wait and check that "([^"]*)" has rebooted$/) do |host|
   check_restart(system_name, get_target(host), reboot_timeout)
 end
 
-When(/^I call spacewalk\-repo\-sync for channel "(.*?)" with a custom url "(.*?)"$/) do |arg1, arg2|
-  @command_output, _code = get_target('server').run("spacewalk-repo-sync -c #{arg1} -u #{arg2}", check_errors: false)
+When(/^I call spacewalk-repo-sync for channel "(.*?)" with a custom url "(.*?)"$/) do |arg1, arg2|
+  # Notice that we are calling it until ok because we might collide with other running process of spacewalk-repo-sync,
+  # and it can only run one process at a time.
+  @command_output, _code = get_target('server').run_until_ok("spacewalk-repo-sync -c #{arg1} -u #{arg2}")
 end
 
-When(/^I call spacewalk\-repo\-sync to sync the channel "(.*?)"$/) do |channel|
-  @command_output, _code = get_target('server').run("spacewalk-repo-sync -c #{channel}", check_errors: false)
+When(/^I call spacewalk-repo-sync to sync the channel "(.*?)"$/) do |channel|
+  @command_output, _code = get_target('server').run_until_ok("spacewalk-repo-sync -c #{channel}")
 end
 
-When(/^I call spacewalk\-repo\-sync to sync the parent channel "(.*?)"$/) do |channel|
-  @command_output, _code = get_target('server').run("spacewalk-repo-sync -p #{channel}", check_errors: false)
+When(/^I call spacewalk-repo-sync to sync the parent channel "(.*?)"$/) do |channel|
+  @command_output, _code = get_target('server').run_until_ok("spacewalk-repo-sync -p #{channel}")
 end
 
 When(/^I get "(.*?)" file details for channel "(.*?)" via spacecmd$/) do |arg1, arg2|

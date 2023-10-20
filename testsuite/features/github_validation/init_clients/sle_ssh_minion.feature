@@ -23,7 +23,7 @@ Feature: Bootstrap a Salt host managed via salt-ssh
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
-    And I check radio button "Fake Base Channel"
+    And I check radio button "Fake-Base-Channel"
     And I wait until I do not see "Loading..." text
     And I check "Fake-RPM-SUSE-Channel"
     And I click on "Next"

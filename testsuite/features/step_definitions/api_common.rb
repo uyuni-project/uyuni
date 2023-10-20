@@ -504,7 +504,7 @@ Then(/^I should get the test channel$/) do
   arch = `uname -m`
   arch.chomp!
   channel = if arch != 'x86_64'
-              'fake-i586-channel'
+              'fake-base-channel-i586'
             else
               'fake-rpm-suse-channel'
             end
@@ -599,13 +599,13 @@ When(/^I create and modify the kickstart system "([^"]*)" with hostname "([^"]*)
 end
 
 When(/^I create a kickstart tree via the API$/) do
-  $api_test.kickstart.tree.create_distro('fedora_kickstart_distro_api', '/var/autoinstall/Fedora_12_i386/', 'fake-rh-like-channel', 'fedora18')
+  $api_test.kickstart.tree.create_distro('fedora_kickstart_distro_api', '/var/autoinstall/Fedora_12_i386/', 'fake-base-channel-rh-like', 'fedora18')
 end
 
 When(/^I create a kickstart tree with kernel options via the API$/) do
-  $api_test.kickstart.tree.create_distro_w_kernel_options('fedora_kickstart_distro_kernel_api', '/var/autoinstall/Fedora_12_i386/', 'fake-rh-like-channel', 'fedora18', 'self_update=0', 'self_update=1')
+  $api_test.kickstart.tree.create_distro_w_kernel_options('fedora_kickstart_distro_kernel_api', '/var/autoinstall/Fedora_12_i386/', 'fake-base-channel-rh-like', 'fedora18', 'self_update=0', 'self_update=1')
 end
 
 When(/^I update a kickstart tree via the API$/) do
-  $api_test.kickstart.tree.update_distro('fedora_kickstart_distro_api', '/var/autoinstall/Fedora_12_i386/', 'fake-rh-like-channel', 'generic_rpm', 'self_update=0', 'self_update=1')
+  $api_test.kickstart.tree.update_distro('fedora_kickstart_distro_api', '/var/autoinstall/Fedora_12_i386/', 'fake-base-channel-rh-like', 'generic_rpm', 'self_update=0', 'self_update=1')
 end

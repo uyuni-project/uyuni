@@ -134,12 +134,12 @@ When(/^I apply state "([^"]*)" to "([^"]*)"$/) do |state, host|
   get_target('server').run("salt #{system_name} state.apply #{state}", verbose: true)
 end
 
-Then(/^salt\-api should be listening on local port (\d+)$/) do |port|
+Then(/^salt-api should be listening on local port (\d+)$/) do |port|
   $output, _code = get_target('server').run("ss -ntl | grep #{port}")
   assert_match(/127.0.0.1:#{port}/, $output)
 end
 
-Then(/^salt\-master should be listening on public port (\d+)$/) do |port|
+Then(/^salt-master should be listening on public port (\d+)$/) do |port|
   $output, _code = get_target('server').run("ss -ntl | grep #{port}")
   assert_match(/(0.0.0.0|\*|\[::\]):#{port}/, $output)
 end

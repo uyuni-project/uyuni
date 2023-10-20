@@ -139,9 +139,9 @@ Feature: Content lifecycle
     Then I should see a "Build (0)" text
     When I click on "Attach/Detach Sources"
     And I uncheck "Vendors"
-    And I add the "Fake Base Channel" channel to sources
+    And I add the "Fake-Base-Channel" channel to sources
     And I click on "Save"
-    Then I wait until I see "Fake Base Channel" text
+    Then I wait until I see "Fake-Base-Channel" text
     And I wait until I see "Build (1)" text
     And I should see a "Version 2: (draft - not built) - Check the changes below" text
     When I click on "Build (1)"
@@ -171,11 +171,11 @@ Feature: Content lifecycle
 @susemanager
   Scenario: Cleanup: remove the created channels
     When I delete these channels with spacewalk-remove-channel:
-      |clp_label-prod_label-fake_base_channel|
+      |clp_label-prod_label-fake-base-channel|
       |clp_label-prod_label-sle-product-sles15-sp4-updates-x86_64|
-      |clp_label-qa_label-fake_base_channel|
+      |clp_label-qa_label-fake-base-channel|
       |clp_label-qa_label-sle-product-sles15-sp4-updates-x86_64|
-      |clp_label-dev_label-fake_base_channel|
+      |clp_label-dev_label-fake-base-channel|
       |clp_label-dev_label-sle-product-sles15-sp4-updates-x86_64|
     And I delete these channels with spacewalk-remove-channel:
       |clp_label-prod_label-sle-product-sles15-sp4-pool-x86_64|
@@ -187,11 +187,11 @@ Feature: Content lifecycle
 @uyuni
   Scenario: Cleanup: remove the created channels
     When I delete these channels with spacewalk-remove-channel:
-      |clp_label-prod_label-fake_base_channel|
-      |clp_label-prod_label-opensuse_leap15_5-x86_64|
-      |clp_label-qa_label-fake_base_channel|
-      |clp_label-qa_label-opensuse_leap15_5-x86_64|
-      |clp_label-dev_label-fake_base_channel|
-      |clp_label-dev_label-opensuse_leap15_5-x86_64|
+      | clp_label-prod_label-fake-base-channel        |
+      | clp_label-prod_label-opensuse_leap15_5-x86_64 |
+      | clp_label-qa_label-fake-base-channel          |
+      | clp_label-qa_label-opensuse_leap15_5-x86_64   |
+      | clp_label-dev_label-fake-base-channel         |
+      | clp_label-dev_label-opensuse_leap15_5-x86_64  |
     And I list channels with spacewalk-remove-channel
     Then I shouldn't get "clp_label"
