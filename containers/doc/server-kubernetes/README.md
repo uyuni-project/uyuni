@@ -77,15 +77,7 @@ done
 ```
 
 In order to tell K3s to not pull the images, set the image pull policy needs to be set to `Never`.
-This needs to be done for both Uyuni and cert-manager helm charts.
-
-For the Uyuni helm chart, set the `pullPolicy` chart value to `Never` by passing a `--helm-uyuni-values=uyuni-values.yaml` parameter to `uyuniadm install` with the following `uyuni-values.yaml` file content:
-
-```
-pullPolicy: Never
-```
-
-For the cert-manager helm chart, create a `cert-values.yaml` file with the following content and pass `--helm-certmanager-values=values.yaml` parameter to `uyuniadm install`:
+Add the `--image-pullPolicy=Never` parameter to `uyuniadm` command or add the following to the configuration file:
 
 ```
 image:
@@ -138,19 +130,19 @@ For example:
 
 ```
 podman pull registry.opensuse.org/systemsmanagement/uyuni/master/containers/uyuni/server:latest
-podman save --output server-image.tar registry.opensuse.org/systemsmanagement/uyuni/master/containers/uyuni/server:latest
+podman save --output server.tar registry.opensuse.org/systemsmanagement/uyuni/master/containers/uyuni/server:latest
 ```
 
 or
 
 ```
-skopeo copy docker://registry.opensuse.org/systemsmanagement/uyuni/master/containers/uyuni/server:latest docker-archive:server-image.tar:registry.opensuse.org/systemsmanagement/uyuni/master/containers/uyuni/server:latest
+skopeo copy docker://registry.opensuse.org/systemsmanagement/uyuni/master/containers/uyuni/server:latest docker-archive:server.tar:registry.opensuse.org/systemsmanagement/uyuni/master/containers/uyuni/server:latest
 ```
 
 Transfer the resulting `server-image.tar` to the server and load it using the following command:
 
 ```
-podman load -i server-image.tar
+podman load -i server.tar
 ```
 
 # Migrating from a regular server
