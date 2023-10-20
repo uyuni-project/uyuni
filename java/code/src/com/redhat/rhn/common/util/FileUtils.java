@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.common.util;
 
+import com.redhat.rhn.common.RhnRuntimeException;
+
 import org.apache.commons.collections.buffer.CircularFifoBuffer;
 import org.apache.commons.io.LineIterator;
 import org.apache.logging.log4j.LogManager;
@@ -145,10 +147,10 @@ public class FileUtils {
             return contents;
         }
         catch (FileNotFoundException e) {
-            throw new RuntimeException("File not found: " + path);
+            throw new RhnRuntimeException("File not found: " + path);
         }
         catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RhnRuntimeException(e);
         }
     }
 
