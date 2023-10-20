@@ -11,6 +11,8 @@ class Susemanager(dnf.Plugin):
         for repo in self.base.repos.get_matching("susemanager:*"):
             try:
                 susemanager_token = repo.cfg.getValue(section=repo.id, key="susemanager_token")
-                repo.set_http_headers(["X-Mgr-Auth: %s" % susemanager_token])
+                hdr = list(repo.get_http_headers())
+                hdr.append("X-Mgr-Auth: %s" % susemanager_token)
+                repo.set_http_headers(hdr)
             except:
                 pass
