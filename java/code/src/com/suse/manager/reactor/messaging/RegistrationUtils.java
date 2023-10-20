@@ -130,9 +130,6 @@ public class RegistrationUtils {
         statesToApply.add(ApplyStatesEventMessage.CERTIFICATE);
         statesToApply.add(ApplyStatesEventMessage.CHANNELS);
         statesToApply.add(ApplyStatesEventMessage.PACKAGES);
-        if (minion.doesOsSupportsTransactionalUpdate()) {
-            statesToApply.add(ApplyStatesEventMessage.TRANSACTIONAL_REBOOT_CONFIG);
-        }
         if (enableMinionService) {
             statesToApply.add(ApplyStatesEventMessage.SALT_MINION_SERVICE);
         }
