@@ -1280,10 +1280,11 @@ public class SaltServerActionService {
     }
 
     private Map<LocalCall<?>, List<MinionSummary>> rebootAction(List<MinionSummary> minionSummaries) {
+        int rebootDelay = ConfigDefaults.get().getRebootDelay();
         return minionSummaries.stream().collect(
             Collectors.groupingBy(
                 m -> m.isTransactionalUpdate() ? TransactionalUpdate.reboot() :
-                        com.suse.salt.netapi.calls.modules.System.reboot(Optional.of(3))
+                        com.suse.salt.netapi.calls.modules.System.reboot(Optional.of(rebootDelay))
             )
         );
     }
