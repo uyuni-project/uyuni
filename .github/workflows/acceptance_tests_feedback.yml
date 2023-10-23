@@ -17,12 +17,11 @@ jobs:
       contents: write
       pull-requests: write
     steps:
-      - uses: peter-evans/create-or-update-comment@v2
+      - uses: actions-cool/maintain-one-comment@v3
         with:
-          issue-number: ${{ github.event.pull_request.number }}
           body: |
             :wave: Hello! Thanks for contributing to our project.
-            Acceptance tests will take same time (aprox. 1h), please be patient :coffee:
+            Acceptance tests will take some time (aprox. 1h), please be patient :coffee:
             You can see the progress at the end of this page and at https://github.com/uyuni-project/uyuni/pull/${{ github.event.pull_request.number  }}/checks
             Once tests finish, if they fail, you can check :eyes: the cucumber report. See the link at the output of the action.
             You can also check the artifacts section, which contains the logs at https://github.com/uyuni-project/uyuni/pull/${{ github.event.pull_request.number }}/checks.
@@ -31,4 +30,5 @@ jobs:
             :warning: You should not merge if acceptance tests fail to pass. :warning:
 
             Happy hacking!
+          body-include: 'Running-Acceptance-Tests-at-PR#troubleshooting'
 
