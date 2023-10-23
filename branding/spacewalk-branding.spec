@@ -23,7 +23,7 @@
 %global tomcat_path %{_var}/lib/tomcat
 %global wwwdocroot %{_var}/www/html
 %else
-%if 0%{?suse_version}
+%if 0%{?sle_version}
 %global susemanager_shared_path /usr/share/susemanager
 %global wwwroot %{susemanager_shared_path}/www
 %global tomcat_path %{wwwroot}/tomcat
