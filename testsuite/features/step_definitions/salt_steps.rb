@@ -563,6 +563,6 @@ When(/^I apply highstate on "([^"]*)"$/) do |host|
   elsif host.include? 'minion' or host.include? 'build' or host.include? 'proxy'
     cmd = 'salt'
   end
-  log "#{cmd} #{system_name} state.highstate"
+  log "Salt command: #{cmd} #{system_name} state.highstate"
   get_target('server').run_until_ok("#{cmd} #{system_name} state.highstate")
 end

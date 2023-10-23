@@ -1840,9 +1840,11 @@ When(/^I run spacewalk-hostname-rename command on the server$/) do
   end
 
   # Update the server CA certificate since it changed, otherwise all API and browser uses will fail
+  log 'Update controller CA certificates'
   update_controller_ca
 
   # Reset the API client to take the new CA into account
+  log 'Resetting the API client'
   reset_api_client
 
   raise 'Error while running spacewalk-hostname-rename command - see logs above' unless result_code.zero?
@@ -1858,17 +1860,30 @@ When(/^I check all certificates after renaming the server hostname$/) do
 
   raise 'Error getting server certificate serial!' unless result_code.zero?
 
-  command_minion = "openssl x509 --noout --text -in /etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT | grep -A1 'Serial' | grep -v 'Serial'"
   targets = %w[proxy sle_minion ssh_minion rhlike_minion deblike_minion build_host kvm_server]
   targets.each do |target|
+    os_family = get_target(target).os_family
     # get all defined minions from the environment variables and check their certificate serial
     next unless ENV.key? ENV_VAR_BY_HOST[target]
+    # Red Hat-like and Debian-like minions store their certificates in a different location
+    certificate = if os_family =~ /^centos/ || os_family =~ /^rocky/
+                    '/etc/pki/ca-trust/source/anchors/RHN-ORG-TRUSTED-SSL-CERT'
+                  elsif os_family =~ /^ubuntu/ || os_family =~ /^debian/
+                    '/usr/local/share/ca-certificates/susemanager/RHN-ORG-TRUSTED-SSL-CERT.crt'
+                  else
+                    '/etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT'
+                  end
+    get_target(target).run("test -s #{certificate}", successcodes: [0], check_errors: true)
+
+    command_minion = "openssl x509 --noout --text -in #{certificate} | grep -A1 'Serial' | grep -v 'Serial'"
     minion_cert_serial, result_code = get_target(target).run(command_minion)
+
+    raise "#{target}: Error getting server certificate serial!" unless result_code.zero?
+
     minion_cert_serial.strip!
     log "#{target} certificate serial: #{minion_cert_serial}"
 
-    raise 'Error getting server certificate serial!' unless result_code.zero?
-    raise "Error comparing #{target} certificate with server!" unless minion_cert_serial == server_cert_serial
+    raise "#{target}: Error, certificate does not match with server one" unless minion_cert_serial == server_cert_serial
   end
 end
 
