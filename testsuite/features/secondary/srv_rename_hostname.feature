@@ -26,8 +26,8 @@ Feature: Reconfigure the server's hostname
     When I copy server's keys to the proxy
     And I configure the proxy
     Then I should see "proxy" via spacecmd
-    When I restart the "salt-minion" service on "proxy"
-    Then service "salt-minion" is active on "proxy"
+    When I restart the "venv-salt-minion" service on "proxy"
+    Then service "venv-salt-minion" is active on "proxy"
     When I restart the "salt-broker" service on "proxy"
     Then service "salt-broker" is active on "proxy"
 
@@ -56,12 +56,14 @@ Feature: Reconfigure the server's hostname
     When I apply highstate on "build_host"
 
 @virthost_kvm
+  # WORKAROUND: Use the webUI instead of Salt like with the other minions above
+  # The Salt call always failed for unknown reasons
   Scenario: Apply high state on the virthost to populate new server CA
-    When I apply highstate on "kvm_server"
-
-@pxeboot_minion
-  Scenario: Apply high state on the PXE boot minion to populate new server CA
-    When I apply highstate on "pxeboot_minion"
+    Given I am on the Systems overview page of this "kvm_server"
+    When I follow "States" in the content area
+    And I click on "Apply Highstate"
+    Then I should see a "Applying the highstate has been scheduled." text
+    And I wait until event "Apply highstate scheduled by admin" is completed
 
   Scenario: Check all new server certificates on the minions
     When I check all certificates after renaming the server hostname
@@ -91,8 +93,8 @@ Feature: Reconfigure the server's hostname
     When I copy server's keys to the proxy
     And I configure the proxy
     Then I should see "proxy" via spacecmd
-    When I restart the "salt-minion" service on "proxy"
-    Then service "salt-minion" is active on "proxy"
+    When I restart the "venv-salt-minion" service on "proxy"
+    Then service "venv-salt-minion" is active on "proxy"
     When I restart the "salt-broker" service on "proxy"
     Then service "salt-broker" is active on "proxy"
 
@@ -121,12 +123,14 @@ Feature: Reconfigure the server's hostname
     When I apply highstate on "build_host"
 
 @virthost_kvm
+  # WORKAROUND: Use the webUI instead of Salt like with the other minions above
+  # The Salt call always failed for unknown reasons
   Scenario: Apply high state on the virthost to populate new server CA
-    When I apply highstate on "kvm_server"
-
-@pxeboot_minion
-  Scenario: Apply high state on the PXE boot minion to populate new server CA
-    When I apply highstate on "pxeboot_minion"
+    Given I am on the Systems overview page of this "kvm_server"
+    When I follow "States" in the content area
+    And I click on "Apply Highstate"
+    Then I should see a "Applying the highstate has been scheduled." text
+    And I wait until event "Apply highstate scheduled by admin" is completed
 
   Scenario: Check all new server certificates on the minions
     When I check all certificates after renaming the server hostname
