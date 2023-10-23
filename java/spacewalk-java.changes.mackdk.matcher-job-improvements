@@ -1,0 +1,2 @@
+- Exclude Uyuni and SUSE Manager if it's PAYG from subscription
+  matching

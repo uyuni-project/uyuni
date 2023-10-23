@@ -18,12 +18,15 @@ package com.suse.manager.matcher;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.iss.IssFactory;
 import com.redhat.rhn.domain.matcher.MatcherRunData;
 import com.redhat.rhn.domain.matcher.MatcherRunDataFactory;
 import com.redhat.rhn.domain.server.PinnedSubscriptionFactory;
 
+import com.suse.cloud.CloudPaygManager;
 import com.suse.manager.webui.services.impl.MonitoringService;
 
 import org.apache.logging.log4j.LogManager;
@@ -57,6 +60,23 @@ public class MatcherRunner {
 
     private static final String MATCHER_CMD = "/usr/bin/subscription-matcher";
 
+    private final CloudPaygManager cloudManager;
+
+    /**
+     * Default Constructor
+     */
+    public MatcherRunner() {
+        this(GlobalInstanceHolder.PAYG_MANAGER);
+    }
+
+    /**
+     * Builds an instance with the given cloud manager. For unit testing.
+     * @param cloudManagerIn the {@link CloudPaygManager} instance to use
+     */
+    public MatcherRunner(CloudPaygManager cloudManagerIn) {
+        this.cloudManager = cloudManagerIn;
+    }
+
     /**
      * Runs subscription-matcher.
      *
@@ -81,11 +101,15 @@ public class MatcherRunner {
         ExecutorService errorReaderService = null;
         ExecutorService inputReaderService = null;
         try {
-            boolean isISSMaster = IssFactory.getCurrentMaster() == null;
-            boolean isSelfMonitoringEnabled = MonitoringService.isMonitoringEnabled();
+            boolean isSUMaPayg = cloudManager.isPaygInstance();
+            boolean isUyuni = ConfigDefaults.get().isUyuni();
+
+            boolean includeSelf = !isSUMaPayg && !isUyuni && IssFactory.getCurrentMaster() == null;
+            boolean isSelfMonitoringEnabled = !isSUMaPayg && !isUyuni && MonitoringService.isMonitoringEnabled();
+
             PinnedSubscriptionFactory.getInstance().cleanStalePins();
             String arch = System.getProperty("os.arch");
-            String s = new MatcherJsonIO().generateMatcherInput(isISSMaster, arch, isSelfMonitoringEnabled);
+            String s = new MatcherJsonIO().generateMatcherInput(includeSelf, arch, isSelfMonitoringEnabled);
 
             Process p = r.exec(args.toArray(new String[0]));
             try (PrintWriter stdin = new PrintWriter(p.getOutputStream())) {
