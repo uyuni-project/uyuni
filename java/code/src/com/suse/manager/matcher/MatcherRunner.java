@@ -111,7 +111,7 @@ public class MatcherRunner {
             PinnedSubscriptionFactory.getInstance().cleanStalePins();
             String arch = System.getProperty("os.arch");
             String s = new MatcherJsonIO()
-                .generateMatcherInput(includeSelf, arch, isSelfMonitoringEnabled, needsEntitlements);
+                .generateMatcherInput(arch, includeSelf, isSelfMonitoringEnabled, needsEntitlements);
 
             Process p = r.exec(args.toArray(new String[0]));
             try (PrintWriter stdin = new PrintWriter(p.getOutputStream())) {
