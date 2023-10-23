@@ -13,8 +13,6 @@
 -- in this software or its documentation.
 --
 
-CREATE EXTENSION IF NOT EXISTS pgcrypto;
-
 CREATE TABLE rhnPackageChangeLogData
 (
     id          NUMERIC NOT NULL
