@@ -58,7 +58,7 @@ public class SystemSearchResultSerializer extends ApiResponseSerializer<SystemSe
 
         if (src.getUuid() != null) {
             builder.add("uuid", src.getUuid());
-	}
+        }
 
         if (src.getHw() != null) {
             builder.add("hw_description", src.getHw().getDescription())
