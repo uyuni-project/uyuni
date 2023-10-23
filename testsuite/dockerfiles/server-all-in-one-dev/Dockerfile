@@ -25,8 +25,9 @@ RUN mkdir /tmp/minima && \
     tar zxvf minima-linux-amd64.tar.gz && \
     cp minima /usr/bin/minima
 RUN /usr/bin/minima sync -c /etc/minima.yaml && \
-    mv /srv/www/htdocs/pub/TestRepoRpmUpdates/repositories/systemsmanagement\:/Uyuni\:/Test-Packages\:/Updates/rpm/* /srv/www/htdocs/pub/TestRepoRpmUpdates/ && \
-   rm -rf /srv/www/htdocs/pub/TestRepoRpmUpdates/repositories/
+    mv /srv/www/htdocs/pub/TestRepoRpmUpdates/repositories/systemsmanagement\:/Uyuni\:/Test-Packages\:/Updates/rpm /srv/www/htdocs/pub/TestRepoRpmUpdates/ && \
+    rm -rf /srv/www/htdocs/pub/TestRepoRpmUpdates/repositories/ \
+    mv /srv/www/htdocs/pub/TestRepoDebUpdates/repositories/systemsmanagement\:/Uyuni\:/Test-Packages\:/Updates/deb /srv/www/htdocs/pub/TestRepoDebUpdates/ && \
+    rm -rf /srv/www/htdocs/pub/TestRepoDebUpdates/repositories/
 RUN cd /srv/www/htdocs/pub && ln -s TestRepoRpmUpdates AnotherRepo
 RUN mkdir /etc/pki/rpm-gpg && wget -c http://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Test-Packages:/Pool/rpm/repodata/repomd.xml.key -O  /etc/pki/rpm-gpg/uyuni-tools-gpg-pubkey-0d20833e.key
-
