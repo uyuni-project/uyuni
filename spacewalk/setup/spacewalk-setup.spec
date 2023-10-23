@@ -197,12 +197,12 @@ if [ ! -f /etc/rhn/rhn.conf -o $(stat -c %%s "/etc/rhn/rhn.conf") -eq 0 ]; then
     CURRENT_DATE=$(date +"%%Y-%%m-%%dT%%H:%%M:%%S.%%3N")
     cp /etc/tomcat/server.xml /etc/tomcat/server.xml.$CURRENT_DATE
     xsltproc %{_datadir}/spacewalk/setup/server.xml.xsl /etc/tomcat/server.xml.$CURRENT_DATE > /etc/tomcat/server.xml
-
-    CURRENT_DATE=$(date +"%%Y-%%m-%%dT%%H:%%M:%%S.%%3N")
-    cp /etc/tomcat/server.xml /etc/tomcat/server.xml.$CURRENT_DATE
-    xsltproc %{_datadir}/spacewalk/setup/add_appbase.xml.xsl /etc/tomcat/server.xml.$CURRENT_DATE > /etc/tomcat/server.xml
 fi
 
+CURRENT_DATE=$(date +"%%Y-%%m-%%dT%%H:%%M:%%S.%%3N")
+cp /etc/tomcat/server.xml /etc/tomcat/server.xml.$CURRENT_DATE
+xsltproc %{_datadir}/spacewalk/setup/add_appbase.xml.xsl /etc/tomcat/server.xml.$CURRENT_DATE > /etc/tomcat/server.xml
+    
 if [ -e /etc/zypp/credentials.d/SCCcredentials ]; then
     chgrp www /etc/zypp/credentials.d/SCCcredentials
     chmod g+r /etc/zypp/credentials.d/SCCcredentials
