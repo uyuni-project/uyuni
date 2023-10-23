@@ -1,3 +1,5 @@
+- Use the base product file to show the correct SUSE Manager
+  product in the subscription matching results page
 - Do not require entitlements if Uyuni or SUSE Manager is PAYG
 - Exclude Uyuni and SUSE Manager if it's PAYG from subscription
   matching

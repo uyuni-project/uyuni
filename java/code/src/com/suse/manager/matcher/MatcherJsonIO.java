@@ -38,6 +38,7 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 
+import com.suse.manager.maintenance.BaseProductManager;
 import com.suse.matcher.json.InputJson;
 import com.suse.matcher.json.MatchJson;
 import com.suse.matcher.json.OutputJson;
@@ -115,9 +116,17 @@ public class MatcherJsonIO {
     private Map<String, Long> monitoringProductByArch;
 
     /**
-     * Constructor
+     * Default constructor
      */
     public MatcherJsonIO() {
+        this(new BaseProductManager());
+    }
+
+    /**
+     * Constructor for unit testing
+     * @param baseProductManager the product manager to extract the product information
+     */
+    public MatcherJsonIO(final BaseProductManager baseProductManager) {
         gson = new GsonBuilder()
             .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
             .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
@@ -137,17 +146,32 @@ public class MatcherJsonIO {
         productIdForEntitlement("SUSE-Manager-Mon-Unlimited-Virtual").ifPresent(
                 from -> monitoringProductId.ifPresent(to -> lifecycleProductsTranslation.put(from, to)));
 
-        selfProductsByArch = new HashMap<>();
-        selfProductsByArch.put(AMD64_ARCH_STR, 1899L);   // SUSE Manager Server 4.0 x86_64
-        selfProductsByArch.put(S390_ARCH_STR, 1898L);    // SUSE Manager Server 4.0 s390
-        selfProductsByArch.put(PPC64LE_ARCH_STR, 1897L); // SUSE Manager Server 4.0 ppc64le
+        // Try to retrieve the products id from the base product information. Fall back to SUMA 4.3 product ids
+        String productName = Optional.ofNullable(baseProductManager.getName()).map(String::toLowerCase).orElse(null);
+        String version = baseProductManager.getVersion();
 
-        monitoringProductByArch = new HashMap<>();
-        monitoringProductByArch.put(AMD64_ARCH_STR, 1201L);   // SUSE Manager Monitoring Single
-        monitoringProductByArch.put(S390_ARCH_STR, 1203L);    // SUSE Manager Monitoring Unlimited Virtual Z
-        monitoringProductByArch.put(PPC64LE_ARCH_STR, 1201L); // SUSE Manager Monitoring Single
+        selfProductsByArch = Map.of(
+            AMD64_ARCH_STR, productIdForSelf(productName, version, "x86_64", 2378L),
+            S390_ARCH_STR, productIdForSelf(productName, version, "s390x", 2377L),
+            PPC64LE_ARCH_STR, productIdForSelf(productName, version, PPC64LE_ARCH_STR, 2376L)
+        );
+
+        monitoringProductByArch = Map.of(
+            AMD64_ARCH_STR, 1201L,      // SUSE Manager Monitoring Single
+            S390_ARCH_STR, 1203L,       // SUSE Manager Monitoring Unlimited Virtual Z
+            PPC64LE_ARCH_STR, 1201L     // SUSE Manager Monitoring Single
+        );
 
         productFactory = new CachingSUSEProductFactory();
+    }
+
+    private long productIdForSelf(String name, String version, String arch, long defaultId) {
+        SUSEProduct ent = SUSEProductFactory.findSUSEProduct(name, version, null, arch, false);
+        if (ent != null) {
+            return ent.getProductId();
+        }
+
+        return defaultId;
     }
 
     /**
