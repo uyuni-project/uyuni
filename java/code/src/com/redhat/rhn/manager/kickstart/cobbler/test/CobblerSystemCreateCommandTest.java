@@ -20,17 +20,28 @@ import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
+import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerSystemCreateCommand;
+import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.UserTestUtils;
 
+import org.cobbler.CobblerConnection;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import java.util.HashMap;
+import java.util.LinkedList;
 
 public class CobblerSystemCreateCommandTest extends BaseTestCaseWithUser {
     @Test
     public void testConstructorDbPersistence() {
         // Arrange
+        CobblerConnection connection = CobblerXMLRPCHelper.getConnection(user);
+        connection.invokeMethod("new_profile");
+        var profileId = ((LinkedList<HashMap>) connection.invokeMethod("get_profiles")).get(0).get("uid");
         KickstartData k = KickstartDataTest.createTestKickstartData(user.getOrg());
+        k.setCobblerId(profileId.toString());
         Server s = ServerFactoryTest.createTestServer(user, false);
 
         // Act
@@ -42,7 +53,11 @@ public class CobblerSystemCreateCommandTest extends BaseTestCaseWithUser {
     @Test
     public void testConstructorUnknown1() {
         // Arrange
+        CobblerConnection connection = CobblerXMLRPCHelper.getConnection(user);
+        connection.invokeMethod("new_profile");
+        var profileId = ((LinkedList<HashMap>) connection.invokeMethod("get_profiles")).get(0).get("uid");
         KickstartData k = KickstartDataTest.createTestKickstartData(user.getOrg());
+        k.setCobblerId(profileId.toString());
         Server s = ServerFactoryTest.createTestServer(user, false);
 
         // Act
@@ -54,8 +69,10 @@ public class CobblerSystemCreateCommandTest extends BaseTestCaseWithUser {
     @Test
     public void testConstructorReactivation() {
         // Arrange
-        KickstartData k = KickstartDataTest.createTestKickstartData(user.getOrg());
-        Server s = ServerFactoryTest.createTestServer(user, false);
+        User admin = UserTestUtils.findNewUser("adminUser", "testOrg" + this.getClass().getSimpleName(), true);
+        KickstartData k = KickstartDataTest.createTestKickstartData(admin.getOrg());
+        k.setCobblerId("test-id");
+        Server s = ServerFactoryTest.createTestServer(admin, false);
 
         // Act
         new CobblerSystemCreateCommand(user, s, "cobblerProfileName", k);
@@ -89,8 +106,12 @@ public class CobblerSystemCreateCommandTest extends BaseTestCaseWithUser {
     @Test
     public void testStore() {
         // Arrange
+        CobblerConnection connection = CobblerXMLRPCHelper.getConnection(user);
+        connection.invokeMethod("new_profile");
+        String profileName = ((LinkedList<HashMap>) connection.invokeMethod("get_profiles"))
+                .get(0).get("name").toString();
         Server s = ServerFactoryTest.createTestServer(user, false);
-        CobblerSystemCreateCommand cobblerSystemCreateCommand = new CobblerSystemCreateCommand(user, s, "nameIn");
+        CobblerSystemCreateCommand cobblerSystemCreateCommand = new CobblerSystemCreateCommand(user, s, profileName);
 
         // Act
         ValidatorError error = cobblerSystemCreateCommand.store();
