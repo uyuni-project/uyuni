@@ -128,6 +128,7 @@ Feature: Create fake channels
     And I click on "Create Channel"
     Then I should see a "Channel Fake-RPM-Terminal-Channel created." text
 
+@deblike_minion
   Scenario: Add Debian-like AMD64 base channel
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Create Channel"
@@ -145,6 +146,7 @@ Feature: Create fake channels
     And I click on "Create Channel"
     Then I should see a "Channel Fake-Base-Channel-Debian-like created." text
 
+@rhlike_minion
   Scenario: Add a RedHat-like base channel
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Create Channel"
