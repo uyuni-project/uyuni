@@ -27,8 +27,7 @@ jobs:
             You can also check the artifacts section, which contains the logs at https://github.com/uyuni-project/uyuni/pull/${{ github.event.pull_request.number }}/checks.
             See the [troubleshooting guide](https://github.com/uyuni-project/uyuni/wiki/Running-Acceptance-Tests-at-PR#troubleshooting) if you need any help.
 
-            :warning: You should not merge if acceptance tests fail to pass. :warning:
-
             Happy hacking!
-          body-include: "<acceptance_tests_at_pr>" 
+            
+          body-include: ":warning: You should not merge if acceptance tests fail to pass. :warning:" 
 
