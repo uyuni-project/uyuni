@@ -228,9 +228,22 @@ class RepoSyncTest(unittest.TestCase):
         plug.repo.pkgdir = "/tmp"
         return plug
 
+    def _mock_packages_list(self, names: list) -> list:
+        packages = []
+        for name in names:
+            package = Mock()
+            package.arch = "arch1"
+            package.checksum = ""
+            package.unique_id.relativepath = name
+            packages.append(package)
+        return packages
+
     @patch("uyuni.common.context_managers.initCFG", Mock())
     @patch("spacewalk.satellite_tools.reposync.log2", Mock())
     @patch("spacewalk.satellite_tools.reposync.os", os)
+    @patch("spacewalk.satellite_tools.reposync.log", Mock())
+    @patch("spacewalk.satellite_tools.reposync.RepoSync._normalize_orphan_vendor_packages", Mock())
+    @patch("spacewalk.satellite_tools.reposync.RepoSync.associate_package", Mock())
     @patch("spacewalk.satellite_tools.reposync.ThreadedDownloader")
     @patch("spacewalk.satellite_tools.reposync.multiprocessing.Pool")
     def test_import_packages_excludes_failed_pkgs(self, pool, downloader):
@@ -240,34 +253,31 @@ class RepoSyncTest(unittest.TestCase):
         """
         rs = _init_reposync(self.reposync)
         _mock_rhnsql(self.reposync, [None, []])
-        rs._normalize_orphan_vendor_packages = Mock()
-        rs.associate_package = Mock()
-        self.reposync.log = Mock()
-        result = Mock()
-        result.get = Mock(return_value=("", 0, "", ""))
-        apply_async_mock = Mock(return_value=result)
-        pool.return_value.__enter__.return_value.apply_async = apply_async_mock
 
         fail_pkg_name = "failed"
         downloader.return_value.failed_pkgs = [fail_pkg_name]
 
-        packs = [Mock(), Mock()]
-        for i, pack in enumerate(packs):
-            pack.arch = "arch1"
-            pack.checksum = ""
-            # The first package failed to download
-            pack.unique_id.relativepath = fail_pkg_name if i == 0 else "pkg"
+        packs = self._mock_packages_list([fail_pkg_name, "package"])
+        plugin = self._mock_repo_plugin(packs)
 
-        plug =  self._mock_repo_plugin(packs)
+        result = Mock()
+        # multiprocessing.Pool.apply_async.get returns a tuple of falsy values to avoid further processing
+        result.get = Mock(return_value=("", 0, "", ""))
+        apply_async_mock = Mock(return_value=result)
+        pool.return_value.__enter__.return_value.apply_async = apply_async_mock
 
         with patch("uyuni.common.context_managers.CFG", self._mock_cfg()), \
-            patch.object(spacewalk.satellite_tools.reposync.RepoSync, "chunks", Mock(return_value=())):
-            rs.import_packages(plug, None, "unused-url-string", None)
+             patch.object(spacewalk.satellite_tools.reposync.RepoSync, "chunks", Mock(return_value=())):
+            rs.import_packages(plugin, None, "unused-url-string", None)
 
         to_process = apply_async_mock.call_args_list[0][1]["args"][0]
+        # repository plugin returned 2 packages, but one failed to download
+        # the number of to_process tuples should be 1
         self.assertTrue(len(to_process) == 1)
-
+        # each tuple contains (pack, to_download, to_link)
+        # get the package by accessing the first value of the first tuple
         pack_to_process = to_process[0][0]
+        # the failed package should be filtered from the `to_process` variable
         self.assertTrue(pack_to_process.unique_id.relativepath != fail_pkg_name)
 
     @patch("uyuni.common.context_managers.initCFG", Mock())

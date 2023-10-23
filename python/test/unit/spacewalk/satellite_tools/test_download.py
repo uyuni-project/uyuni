@@ -59,8 +59,8 @@ def test_reposync_timeout_minrate_are_passed_to_curl():
 @patch("uyuni.common.context_managers.initCFG", Mock())
 @patch("spacewalk.satellite_tools.download.log", Mock())  # no logging
 @patch("spacewalk.satellite_tools.download.log2", Mock())  # no logging
-@patch("spacewalk.satellite_tools.download.PyCurlFileObjectThread", Mock(return_value=None)) # fail download 
-def test_reposync_sets_failed_pkgs():
+@patch("spacewalk.satellite_tools.download.PyCurlFileObjectThread", Mock(return_value=None))  # fail download
+def test_reposync_threaded_downloader_sets_failed_pkgs():
     fail_pkg_name = "fail.rpm"
     params = NoKeyErrorsDict({
         "http_headers": dict(), 
