@@ -15,13 +15,6 @@
 
 package com.suse.manager.matcher;
 
-import static java.util.Optional.ofNullable;
-import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toSet;
-import static java.util.stream.Stream.concat;
-import static java.util.stream.Stream.empty;
-import static java.util.stream.Stream.of;
-
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.matcher.MatcherRunData;
@@ -46,7 +39,6 @@ import com.suse.matcher.json.ProductJson;
 import com.suse.matcher.json.SubscriptionJson;
 import com.suse.matcher.json.SystemJson;
 import com.suse.matcher.json.VirtualizationGroupJson;
-import com.suse.utils.Opt;
 
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
@@ -56,6 +48,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -71,6 +64,8 @@ import java.util.stream.Stream;
  * Serializes and deserializes objects from and to JSON.
  */
 public class MatcherJsonIO {
+
+    private static final Logger LOGGER = LogManager.getLogger(MatcherJsonIO.class);
 
     /** Fake ID for the SUSE Manager server system. */
     public static final long SELF_SYSTEM_ID = 2000010000L;
@@ -104,16 +99,11 @@ public class MatcherJsonIO {
     /** Fast factory for SUSEProduct objects. */
     private final CachingSUSEProductFactory productFactory;
 
-    /**
-     * Logger for this class
-     */
-    private static Logger logger = LogManager.getLogger(MatcherJsonIO.class);
-
     /** SUSE Manager server products (by arch) installed on self **/
-    private Map<String, Long> selfProductsByArch;
+    private final Map<String, Long> selfProductsByArch;
 
     /** Monitoring products by arch **/
-    private Map<String, Long> monitoringProductByArch;
+    private final Map<String, Long> monitoringProductByArch;
 
     /**
      * Default constructor
@@ -167,22 +157,18 @@ public class MatcherJsonIO {
 
     private long productIdForSelf(String name, String version, String arch, long defaultId) {
         SUSEProduct ent = SUSEProductFactory.findSUSEProduct(name, version, null, arch, false);
-        if (ent != null) {
-            return ent.getProductId();
-        }
-
-        return defaultId;
+        return Optional.ofNullable(ent).map(SUSEProduct::getProductId).orElse(defaultId);
     }
 
     /**
-     * @param includeSelf - true if we want to add SUMa products and host
      * @param arch - cpu architecture of this SUMa
+     * @param includeSelf - true if we want to add SUMa products and host
      * @param selfMonitoringEnabled whether the monitoring of SUMA server itself is enabled
      * @param needsEntitlements true if the server needs entitlements for the system is managing
      * @return an object representation of the JSON input for the matcher
      * about systems on this Server
      */
-    public List<SystemJson> getJsonSystems(boolean includeSelf, String arch, boolean selfMonitoringEnabled,
+    public List<SystemJson> getJsonSystems(String arch, boolean includeSelf, boolean selfMonitoringEnabled,
                                            boolean needsEntitlements) {
         Stream<SystemJson> systems = ServerFactory.list(true, true).stream()
             .map(system -> {
@@ -190,7 +176,8 @@ public class MatcherJsonIO {
                 Set<String> entitlements = system.getEntitlementLabels();
                 boolean virtualHost = entitlements.contains(EntitlementManager.VIRTUALIZATION_ENTITLED) ||
                         !system.getGuests().isEmpty();
-                Set<Long> productIds = productIdsForServer(system, needsEntitlements, entitlements).collect(toSet());
+                Set<Long> productIds = productIdsForServer(system, needsEntitlements, entitlements)
+                    .collect(Collectors.toSet());
                 return new SystemJson(
                     system.getId(),
                     system.getName(),
@@ -202,14 +189,15 @@ public class MatcherJsonIO {
                 );
             });
 
-        return concat(systems, jsonSystemForSelf(includeSelf, selfMonitoringEnabled, arch)).collect(toList());
+        return Stream.concat(systems, jsonSystemForSelf(arch, includeSelf, selfMonitoringEnabled))
+            .collect(Collectors.toList());
     }
 
     private static Set<Long> getVirtualGuests(Server system) {
         return system.getGuests().stream()
             .filter(vi -> vi.getGuestSystem() != null)
             .map(vi -> vi.getGuestSystem().getId())
-            .collect(toSet());
+            .collect(Collectors.toSet());
     }
 
     /**
@@ -224,7 +212,7 @@ public class MatcherJsonIO {
                         p.getChannelFamily() != null ? p.getChannelFamily().getLabel() : "",
                         p.isBase(),
                         p.getFree()))
-                .collect(toList());
+                .collect(Collectors.toList());
     }
 
     /**
@@ -248,27 +236,28 @@ public class MatcherJsonIO {
                         subscription.getProducts().stream()
                                 // we want to merge the unlimited virtual products with the single ones
                                 .map(i -> lifecycleProductsTranslation.getOrDefault(i.getProductId(), i.getProductId()))
-                                .collect(toSet())
+                                .collect(Collectors.toSet())
                 );
             })
-            .collect(toList());
+            .collect(Collectors.toList());
     }
 
     /**
      * @return an object representation of the JSON input for the matcher
      * about pinned matches
      */
-    @SuppressWarnings("unchecked")
     public List<MatchJson> getJsonMatches() {
-        return ((List<PinnedSubscription>) HibernateFactory.getSession()
-                .createCriteria(PinnedSubscription.class).list()).stream()
-                .map(p -> new MatchJson(
-                    p.getSystemId(), p.getSubscriptionId(), null, null))
-                .collect(toList());
+        return HibernateFactory.getSession()
+            .createQuery("SELECT ps FROM PinnedSubscription ps", PinnedSubscription.class)
+            .stream()
+            .map(p -> new MatchJson(p.getSystemId(), p.getSubscriptionId(), null, null))
+            .collect(Collectors.toList());
     }
 
     /**
      * Returns input data for subscription-matcher as a string.
+     * @param arch cpu architecture of this SUMA instance. This is important for correct
+     *             product ID computation in case includeSelf == true.
      * @param includeSelf true if we want to add the products of the SUMA instance
      *                    running Matcher to the JSON output. Since SUMA Server is not
      *                    typically a SUMA Client at the same time, its system (with
@@ -276,17 +265,15 @@ public class MatcherJsonIO {
      *
      *                    Typically, this flag is true if this SUMA instance is an ISS
      *                    Master.
-     * @param arch cpu architecture of this SUMA instance. This is important for correct
-     *             product ID computation in case includeSelf == true.
      * @param selfMonitoringEnabled whether the monitoring of SUMA server itself is enabled
      * @param needsEntitlements true if the server needs entitlements for the system is managing
      * @return an object representation of the JSON input for the matcher
      */
-    public String generateMatcherInput(boolean includeSelf, String arch, boolean selfMonitoringEnabled,
+    public String generateMatcherInput(String arch, boolean includeSelf, boolean selfMonitoringEnabled,
                                        boolean needsEntitlements) {
         return gson.toJson(new InputJson(
             new Date(),
-            getJsonSystems(includeSelf, arch, selfMonitoringEnabled, needsEntitlements),
+            getJsonSystems(arch, includeSelf, selfMonitoringEnabled, needsEntitlements),
             getJsonVirtualizationGroups(),
             getJsonProducts(),
             getJsonSubscriptions(),
@@ -317,10 +304,9 @@ public class MatcherJsonIO {
      * @return the input data or empty in case the corresponding data is missing
      */
     public Optional<InputJson> getLastMatcherInput() {
-        MatcherRunData data = MatcherRunDataFactory.getSingle();
-        return ofNullable(gson.fromJson(
-                data == null ? null : data.getInput(),
-                InputJson.class));
+        return Optional.ofNullable(MatcherRunDataFactory.getSingle())
+            .map(MatcherRunData::getInput)
+            .map(input -> gson.fromJson(input, InputJson.class));
     }
 
     /**
@@ -328,10 +314,9 @@ public class MatcherJsonIO {
      * @return the output or empty in case the matcher did not run yet
      */
     public Optional<OutputJson> getLastMatcherOutput() {
-        MatcherRunData data = MatcherRunDataFactory.getSingle();
-        return ofNullable(gson.fromJson(
-                data == null ? null : data.getOutput(),
-                OutputJson.class));
+        return Optional.ofNullable(MatcherRunDataFactory.getSingle())
+            .map(MatcherRunData::getOutput)
+            .map(output -> gson.fromJson(output, OutputJson.class));
     }
 
     /**
@@ -339,15 +324,19 @@ public class MatcherJsonIO {
      * Enterprise product running on this machine.
      */
     private Set<Long> computeSelfProductIds(boolean includeSelf, boolean selfMonitoringEnabled, String arch) {
-        Set<Long> result = new LinkedHashSet<>();
-
-        if (!Arrays.asList(AMD64_ARCH_STR, S390_ARCH_STR, PPC64LE_ARCH_STR).contains(arch)) {
-            logger.warn(String.format("Couldn't determine products for SUMA server itself" +
-                    " for architecture %s. Master SUSE Manager Server system products" +
-                    " won't be reported to the subscription matcher.", arch));
-            return result;
+        if (!includeSelf && !selfMonitoringEnabled) {
+            return Collections.emptySet();
         }
 
+
+        if (!Arrays.asList(AMD64_ARCH_STR, S390_ARCH_STR, PPC64LE_ARCH_STR).contains(arch)) {
+            LOGGER.warn("Couldn't determine products for SUMA server itself" +
+                    " for architecture {}. Master SUSE Manager Server system products" +
+                    " won't be reported to the subscription matcher.", arch);
+            return Collections.emptySet();
+        }
+
+        Set<Long> result = new LinkedHashSet<>();
         if (includeSelf) {
             result.add(selfProductsByArch.get(arch));
         }
@@ -371,14 +360,14 @@ public class MatcherJsonIO {
     private Stream<Long> productIdsForServer(Server server, boolean needsEntitlements, Set<String> entitlements) {
         List<SUSEProduct> products = productFactory.map(server.getInstalledProducts())
                 .filter(product -> !"SLE-M-T".equals(product.getChannelFamily().getLabel()))
-                .collect(toList());
+                .collect(Collectors.toList());
 
         if (products.stream().noneMatch(SUSEProduct::isBase)) {
             return Stream.empty();
         }
 
         // add SUSE Manager entitlements
-        return concat(
+        return Stream.concat(
                 server.isPayg() ? Stream.empty() : products.stream().map(SUSEProduct::getProductId),
                 needsEntitlements ? entitlementIdsForServer(server, entitlements) : Stream.empty()
         );
@@ -408,9 +397,7 @@ public class MatcherJsonIO {
             }
         }
 
-        return Stream.concat(
-                Opt.stream(lifecycleProduct),
-                Opt.stream(monitoringProduct));
+        return Stream.concat(lifecycleProduct.stream(), monitoringProduct.stream());
     }
 
     /**
@@ -420,22 +407,16 @@ public class MatcherJsonIO {
      * which is scheduled at setup time
      */
     private Optional<Long> productIdForEntitlement(String productName) {
-        SUSEProduct ent = SUSEProductFactory.findSUSEProduct(productName, "1.2", null,
-                null, true);
-        if (ent != null) {
-            return Optional.of(ent.getProductId());
-        }
-        else {
-            return Optional.empty();
-        }
+        SUSEProduct ent = SUSEProductFactory.findSUSEProduct(productName, "1.2", null, null, true);
+        return Optional.ofNullable(ent).map(SUSEProduct::getProductId);
     }
 
     /**
      * Returns an optional SystemJson for the SUSE Manager server.
      */
-    private Stream<SystemJson> jsonSystemForSelf(boolean includeSelf, boolean selfMonitoringEnabled, String arch) {
+    private Stream<SystemJson> jsonSystemForSelf(String arch, boolean includeSelf, boolean selfMonitoringEnabled) {
         if (includeSelf || selfMonitoringEnabled) {
-            return of(new SystemJson(
+            return Stream.of(new SystemJson(
                 SELF_SYSTEM_ID,
                 "SUSE Manager Server system",
                 1,
@@ -445,8 +426,7 @@ public class MatcherJsonIO {
                 computeSelfProductIds(includeSelf, selfMonitoringEnabled, arch)
             ));
         }
-        else {
-            return empty();
-        }
+
+        return Stream.empty();
     }
 }
