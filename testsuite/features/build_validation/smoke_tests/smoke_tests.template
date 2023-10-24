@@ -119,7 +119,6 @@ Feature: Smoke tests for <client>
     When I click on "Deploy Files to Selected Systems"
     Then I should see a "1 revision-deploy is being scheduled." text
     And I should see a "0 revision-deploys overridden." text
-    And I reboot the "<client>" if it is a SLE Micro
     And I wait until file "/etc/s-mgr/config" exists on "<client>"
     Then file "/etc/s-mgr/config" should contain "COLOR=white" on "<client>"
 
