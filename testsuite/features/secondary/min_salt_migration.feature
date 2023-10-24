@@ -82,8 +82,6 @@ Feature: Migrate Salt to bundled Salt on a nested Minion VM
     And I wait until I see "1 system successfully completed this action." text, refreshing the page
 
   Scenario: Do some basic testing on the nested VM without Salt bundle
-    When I install packages "venv-salt-minion" on this "salt_migration_minion"
-    Then "venv-salt-minion" should be installed on "salt_migration_minion"
     When I follow the left menu "Salt > Remote Commands"
     Then I should see a "Remote Commands" text in the content area
     When I enter command "file /etc/salt"
