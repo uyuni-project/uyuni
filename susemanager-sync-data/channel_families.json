@@ -80,6 +80,14 @@
     "name" : "SUSE Linux Enterprise High Performance Computing LTSS 15 SP4 x86_64"
   },
   {
+    "label" : "HPC15-SP5-LTSS-ARM64",
+    "name" : "SUSE Linux Enterprise High Performance Computing LTSS 15 SP5 ARM64"
+  },
+  {
+    "label" : "HPC15-SP5-LTSS-X86",
+    "name" : "SUSE Linux Enterprise High Performance Computing LTSS 15 SP5 x86_64"
+  },
+  {
     "label" : "HPE-HELION-OPENSTACK-X86",
     "name" : "HPE Helion Openstack (x86)"
   },
@@ -330,6 +338,22 @@
   {
     "label" : "SLES15-SP3-LTSS-Z",
     "name" : "SUSE Linux Enterprise Server LTSS 15 SP3 Z-Series"
+  },
+  {
+    "label" : "SLES15-SP4-LTSS-ARM64",
+    "name" : "SUSE Linux Enterprise Server LTSS 15 SP4 ARM64"
+  },
+  {
+    "label" : "SLES15-SP4-LTSS-PPC",
+    "name" : "SUSE Linux Enterprise Server LTSS 15 SP4 PPC"
+  },
+  {
+    "label" : "SLES15-SP4-LTSS-X86",
+    "name" : "SUSE Linux Enterprise Server LTSS 15 SP4 x86_64"
+  },
+  {
+    "label" : "SLES15-SP4-LTSS-Z",
+    "name" : "SUSE Linux Enterprise Server LTSS 15 SP4 Z-Series"
   },
   {
     "label" : "SLESMT",
