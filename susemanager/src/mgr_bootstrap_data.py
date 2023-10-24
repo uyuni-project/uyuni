@@ -1224,6 +1224,14 @@ DATA = {
         'BASECHANNEL' : 'opensuse_micro5_4-aarch64', 'PKGLIST' :  PKGLISTMICRO_BUNDLE_ONLY,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/opensusemicro/5/4/bootstrap/'
     },
+    'openSUSE-Leap-Micro-5.5-x86_64-uyuni' : {
+        'BASECHANNEL' : 'opensuse_micro5_5-x86_64', 'PKGLIST' :  PKGLISTMICRO_BUNDLE_ONLY,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/opensusemicro/5/5/bootstrap/'
+    },
+    'openSUSE-Leap-Micro-5.5-aarch64-uyuni' : {
+        'BASECHANNEL' : 'opensuse_micro5_5-aarch64', 'PKGLIST' :  PKGLISTMICRO_BUNDLE_ONLY,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/opensusemicro/5/5/bootstrap/'
+    },
     'openSUSE-MicroOS-x86_64-uyuni' : {
         'BASECHANNEL' : 'opensuse_microos-x86_64', 'PKGLIST' : PKGLISTUMBLEWEED_SALT_NO_BUNDLE,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/opensusemicroos/latest/0/bootstrap/'
