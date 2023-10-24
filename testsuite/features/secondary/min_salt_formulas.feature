@@ -67,6 +67,7 @@ Feature: Use salt formulas
      And I wait at most 300 seconds until event "Apply highstate in test-mode scheduled" is completed
 
   Scenario: Apply the parametrized formula via the highstate
+     When I enable repository "sle_update_repo" on this "sle_minion" without error control
      And I follow "States" in the content area
      And I click on "Apply Highstate"
      Then I should see a "Applying the highstate has been scheduled." text
@@ -74,6 +75,7 @@ Feature: Use salt formulas
      Then the timezone on "sle_minion" should be "+05"
      And the keymap on "sle_minion" should be "ca"
      And the language on "sle_minion" should be "fr_FR.UTF-8"
+     And I disable repository "sle_update_repo" on this "sle_minion" without error control
 
   Scenario: Reset the formula on the minion
      When I follow "Formulas" in the content area
