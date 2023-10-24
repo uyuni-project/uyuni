@@ -46,7 +46,7 @@ Feature: Migrate Salt to bundled Salt on a nested Minion VM
     And I wait until onboarding is completed for "salt_migration_minion"
 
   Scenario: Create the bootstrap repository for the SLES 15 KVM VM in the Salt migration context
-    When I create the bootstrap repository for "sle_minion" on the server
+    When I create the bootstrap repository for "sle15sp4_minion" on the server
 
 @susemanager
   Scenario: Subscribe the SLES 15 KVM VM to the SLES 15 SP4 channel and enable client tools in the Salt migration context
