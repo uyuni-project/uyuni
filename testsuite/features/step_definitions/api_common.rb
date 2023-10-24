@@ -500,13 +500,13 @@ Then(/^I should get status "([^"]+)" for "([^"]+)"$/) do |status, host|
   step %(I should get status "#{status}" for system "#{get_system_id(node)}")
 end
 
-Then(/^I should get the test channel$/) do
-  arch = `uname -m`
+Then(/^I should get the test base channel$/) do
+  arch, _code = get_target('server').run('uname -m')
   arch.chomp!
   channel = if arch != 'x86_64'
               'fake-base-channel-i586'
             else
-              'fake-rpm-suse-channel'
+              'fake-base-channel'
             end
   log "result: #{@result}"
   assert(@result['channel_labels'].include?(channel))
