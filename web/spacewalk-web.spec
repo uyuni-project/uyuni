@@ -48,8 +48,9 @@ BuildArch:      noarch
 Requires(pre):  uyuni-base-common
 BuildRequires:  gettext
 BuildRequires:  make
-BuildRequires:  uyuni-base-common
 BuildRequires:  perl(ExtUtils::MakeMaker)
+BuildRequires:  spacewalk-backend
+BuildRequires:  uyuni-base-common
 
 %if 0%{?suse_version}
 BuildRequires:  apache2
@@ -200,6 +201,15 @@ install -m 644 conf/rhn_web.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defa
 install -m 644 conf/rhn_dobby.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults
 install -m 755 modules/dobby/scripts/check-database-space-usage.sh $RPM_BUILD_ROOT/%{_sysconfdir}/cron.daily/check-database-space-usage.sh
 
+if grep -F 'product_name' %{_datadir}/rhn/config-defaults/rhn.conf | grep 'SUSE Manager' >/dev/null; then
+  SUMA_REL=$(echo %{version} | awk -F. '{print $1"."$2}')
+  SUMA_FULL_REL=$(sed -n 's/web\.version\s*=\s*\(.*\)/\1/p' $RPM_BUILD_ROOT%{_datadir}/rhn/config-defaults/rhn_web.conf)
+  echo "SUSE Manager release $SUMA_REL ($SUMA_FULL_REL)" > $RPM_BUILD_ROOT/%{_sysconfdir}/susemanager-release
+else
+  UYUNI_REL=$(sed -n 's/web\.version.uyuni\s*=\s*\(.*\)/\1/p' $RPM_BUILD_ROOT%{_datadir}/rhn/config-defaults/rhn_web.conf)
+  echo "Uyuni release $UYUNI_REL" > $RPM_BUILD_ROOT/%{_sysconfdir}/uyuni-release
+fi
+
 %{__mkdir_p} %{buildroot}/%{www_path}/css
 %{__mkdir_p} %{buildroot}/%{www_path}/fonts
 %{__mkdir_p} %{buildroot}/%{www_path}/img
@@ -232,6 +242,7 @@ sed -i -e 's/^web.theme_default =.*$/web.theme_default = susemanager-light/' $RP
 %{perl_vendorlib}/RHN/DB.pm
 %{perl_vendorlib}/RHN/DBI.pm
 %{perl_vendorlib}/PXT/Config.pm
+%{_sysconfdir}/*-release
 %license LICENSE
 
 %files -n spacewalk-base-minimal-config
