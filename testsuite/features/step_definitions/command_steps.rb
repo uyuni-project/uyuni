@@ -967,12 +967,18 @@ When(/^I remove package(?:s)? "([^"]*)" from this "([^"]*)"((?: without error co
 end
 
 When(/^I install package tftpboot-installation on the server$/) do
-  output, _code = get_target('server').run('find /var/spacewalk/packages -name tftpboot-installation-SLE-15-SP4-x86_64-*.noarch.rpm')
-  packages = output.split("\n")
-  pattern = '/tftpboot-installation-([^/]+)*.noarch.rpm'
-  # Reverse sort the package name to get the latest version first and install it
-  package = packages.min { |a, b| b.match(pattern)[0] <=> a.match(pattern)[0] }
-  get_target('server').run("rpm -i #{package}", check_errors: false)
+  server = get_target('server')
+  os_version = server.os_version
+  if product == 'Uyuni'
+    server.run("zypper --non-interactive install tftpboot-installation-openSUSE-Leap-#{os_version}-x86_64", check_errors: false, verbose: true)
+  else
+    output, _code = server.run('find /var/spacewalk/packages -name tftpboot-installation-SLE-15-SP4-x86_64-*.noarch.rpm')
+    packages = output.split("\n")
+    pattern = '/tftpboot-installation-([^/]+)*.noarch.rpm'
+    # Reverse sort the package name to get the latest version first and install it
+    package = packages.min { |a, b| b.match(pattern)[0] <=> a.match(pattern)[0] }
+    server.run("rpm -i #{package}", check_errors: false)
+  end
 end
 
 When(/^I reset tftp defaults on the proxy$/) do
