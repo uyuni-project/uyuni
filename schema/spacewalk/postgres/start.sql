@@ -15,3 +15,4 @@
 --
 
 create extension dblink;
+CREATE EXTENSION pgcrypto;
