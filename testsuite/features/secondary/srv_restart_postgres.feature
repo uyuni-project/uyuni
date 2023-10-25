@@ -3,7 +3,7 @@
 
 Feature: Restart the PostgreSQL service
 
-  Scenario: Restart the Postgres database service
+  Scenario: Restart the PostgreSQL database service
     Given I am authorized for the "Admin" section
     When I restart "postgresql.service" service on "server"
     And I wait until "postgresql" service is active on "server"
