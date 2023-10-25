@@ -23,7 +23,7 @@ Feature: Bootstrap a SLE Micro 5.3 Salt minion
     And I wait until I see "Bootstrap process initiated." text
 
   Scenario: Reboot the SLE Micro 5.3 minion and wait until reboot is completed
-    When I reboot the "slemicro53_minion" minion through SSH
+    When I reboot the "slemicro53_minion" minion through the web UI
 
   Scenario: Check the new bootstrapped SLE Micro 5.3 minion in System Overview page
     When I wait until onboarding is completed for "slemicro53_minion"
