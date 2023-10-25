@@ -1,7 +1,7 @@
 # Copyright (c) 2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: Restart the postgres service
+Feature: Restart the PostgreSQL service
 
   Scenario: Restart the Postgres database service
     Given I am authorized for the "Admin" section
