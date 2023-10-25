@@ -104,12 +104,14 @@ public class MatcherRunner {
             boolean isSUMaPayg = cloudManager.isPaygInstance();
             boolean isUyuni = ConfigDefaults.get().isUyuni();
 
+            boolean needsEntitlements = !isUyuni && !isSUMaPayg;
             boolean includeSelf = !isSUMaPayg && !isUyuni && IssFactory.getCurrentMaster() == null;
             boolean isSelfMonitoringEnabled = !isSUMaPayg && !isUyuni && MonitoringService.isMonitoringEnabled();
 
             PinnedSubscriptionFactory.getInstance().cleanStalePins();
             String arch = System.getProperty("os.arch");
-            String s = new MatcherJsonIO().generateMatcherInput(includeSelf, arch, isSelfMonitoringEnabled);
+            String s = new MatcherJsonIO()
+                .generateMatcherInput(includeSelf, arch, isSelfMonitoringEnabled, needsEntitlements);
 
             Process p = r.exec(args.toArray(new String[0]));
             try (PrintWriter stdin = new PrintWriter(p.getOutputStream())) {

@@ -154,10 +154,12 @@ public class MatcherJsonIO {
      * @param includeSelf - true if we want to add SUMa products and host
      * @param arch - cpu architecture of this SUMa
      * @param selfMonitoringEnabled whether the monitoring of SUMA server itself is enabled
+     * @param needsEntitlements true if the server needs entitlements for the system is managing
      * @return an object representation of the JSON input for the matcher
      * about systems on this Server
      */
-    public List<SystemJson> getJsonSystems(boolean includeSelf, String arch, boolean selfMonitoringEnabled) {
+    public List<SystemJson> getJsonSystems(boolean includeSelf, String arch, boolean selfMonitoringEnabled,
+                                           boolean needsEntitlements) {
         Set<String> vCoreCountedChannelFamilies = of("MICROOS-ARM64", "MICROOS-X86", "MICROOS-Z", "MICROOS-PPC")
                 .flatMap(cf -> of("", "-ALPHA", "-BETA").map(s -> cf + s))
                 .collect(Collectors.toSet());
@@ -176,7 +178,7 @@ public class MatcherJsonIO {
                     // For now it is not worth the effort
                     cpus = system.getCpu() == null ? null : system.getCpu().getNrCPU();
                 }
-                Set<Long> productIds = productIdsForServer(system, entitlements).collect(toSet());
+                Set<Long> productIds = productIdsForServer(system, needsEntitlements, entitlements).collect(toSet());
                 return new SystemJson(
                     system.getId(),
                     system.getName(),
@@ -257,24 +259,24 @@ public class MatcherJsonIO {
 
     /**
      * Returns input data for subscription-matcher as a string.
-     *
      * @param includeSelf true if we want to add the products of the SUMA instance
      *                    running Matcher to the JSON output. Since SUMA Server is not
      *                    typically a SUMA Client at the same time, its system (with
-     *                    products) wouldn't reported in the matcher input.
+     *                    products) wouldn't be reported in the matcher input.
      *
-     *                    Typically this flag is true if this SUMA instance is an ISS
+     *                    Typically, this flag is true if this SUMA instance is an ISS
      *                    Master.
-     *
      * @param arch cpu architecture of this SUMA instance. This is important for correct
      *             product ID computation in case includeSelf == true.
      * @param selfMonitoringEnabled whether the monitoring of SUMA server itself is enabled
+     * @param needsEntitlements true if the server needs entitlements for the system is managing
      * @return an object representation of the JSON input for the matcher
      */
-    public String generateMatcherInput(boolean includeSelf, String arch, boolean selfMonitoringEnabled) {
+    public String generateMatcherInput(boolean includeSelf, String arch, boolean selfMonitoringEnabled,
+                                       boolean needsEntitlements) {
         return gson.toJson(new InputJson(
             new Date(),
-            getJsonSystems(includeSelf, arch, selfMonitoringEnabled),
+            getJsonSystems(includeSelf, arch, selfMonitoringEnabled, needsEntitlements),
             getJsonVirtualizationGroups(),
             getJsonProducts(),
             getJsonSubscriptions(),
@@ -352,10 +354,11 @@ public class MatcherJsonIO {
      * (For systems without a SUSE base product, empty stream is returned as we don't
      * require SUSE Manager entitlements for such systems).
      * Filters out the products with "SLE-M-T" product class as they are not considered in
-     * subsription matching.
+     * subscription matching.
      * Also filters out the products for PAYG (Pay-As-You-Go) instances.
+     * The product ids for entitlements are only added if SUSE Manager is BYOS
      */
-    private Stream<Long> productIdsForServer(Server server, Set<String> entitlements) {
+    private Stream<Long> productIdsForServer(Server server, boolean needsEntitlements, Set<String> entitlements) {
         List<SUSEProduct> products = productFactory.map(server.getInstalledProducts())
                 .filter(product -> !"SLE-M-T".equals(product.getChannelFamily().getLabel()))
                 .collect(toList());
@@ -367,7 +370,7 @@ public class MatcherJsonIO {
         // add SUSE Manager entitlements
         return concat(
                 server.isPayg() ? Stream.empty() : products.stream().map(SUSEProduct::getProductId),
-                entitlementIdsForServer(server, entitlements)
+                needsEntitlements ? entitlementIdsForServer(server, entitlements) : Stream.empty()
         );
     }
 

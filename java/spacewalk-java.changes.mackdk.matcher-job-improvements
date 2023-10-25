@@ -1,2 +1,3 @@
+- Do not require entitlements if Uyuni or SUSE Manager is PAYG
 - Exclude Uyuni and SUSE Manager if it's PAYG from subscription
   matching
