@@ -1,1 +1,2 @@
+- Do not require entitlements if SUSE Manager is PAYG
 - Exclude SUSE Manager from subscription matching if it's PAYG
