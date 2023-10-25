@@ -271,7 +271,7 @@ while read PKG_NAME; do
       if [ "${OSCAPI}" == "https://api.suse.de" ]; then
           # SUSE Manager settings
           VERSION=$(sed 's/^\([0-9]\+\.[0-9]\+\).*$/\1/' ${BASE_DIR}/packages/uyuni-base)
-          sed "s/^ARG INIT_BASE=.*$/ARG INIT_BASE=bci/bci-init:15.4/" -i $SRPM_PKG_DIR/Dockerfile
+          sed "s/^ARG INIT_BASE=.*$/ARG INIT_BASE=bci\/bci-init:15.4/" -i $SRPM_PKG_DIR/Dockerfile
           sed "/^#\!BuildTag:/s/uyuni/suse\/manager\/${VERSION}/g" -i $SRPM_PKG_DIR/Dockerfile
           sed "/^# labelprefix=/s/org\.opensuse\.uyuni/com.suse.manager/" -i $SRPM_PKG_DIR/Dockerfile
           sed "s/^ARG VENDOR=.*$/ARG VENDOR=\"SUSE LLC\"/" -i $SRPM_PKG_DIR/Dockerfile
