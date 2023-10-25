@@ -53,5 +53,7 @@ assignees: ''
   - [Head](https://ci.suse.de/view/Manager/view/Manager-Head/job/manager-Head-dev-acceptance-tests-NUE/)
   - [Uyuni](https://ci.suse.de/view/Manager/view/Uyuni/job/uyuni-master-dev-acceptance-tests-NUE/)
   - [4.3 NUE](https://ci.suse.de/view/Manager/view/Manager-4.3/job/manager-4.3-dev-acceptance-tests-NUE/), [4.3 PRV](https://ci.suse.de/view/Manager/view/Manager-4.3/job/manager-4.3-dev-acceptance-tests-PRV/)
+  - [Uyuni Podman](https://ci.suse.de/view/Manager/view/Uyuni/job/uyuni-master-dev-acceptance-tests-podman/)
+  - [Uyuni K3s](https://ci.suse.de/view/Manager/view/Uyuni/job/uyuni-master-dev-acceptance-tests-K3S/)
   - [openQA offline installation (4.3)](https://ci.suse.de/view/Manager/view/Manager-qe/job/manager-4.3-qe-openqa-offline-installation/)
   - [openQA online installation (4.3)](https://ci.suse.de/view/Manager/view/Manager-qe/job/manager-4.3-qe-openqa-installation-online/)
