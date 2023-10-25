@@ -2396,7 +2396,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="disableuser.jsp.body" xml:space="preserve">
         <source>&lt;p&gt;This action will deactivate this user.  This user will no longer be able to log in or perform actions unless it is reactivated.&lt;/p&gt;</source>
-        <target/>
+        <target>&lt;p&gt;Táto akcia deaktivuje tohto používateľa.  Tento používateľ sa už nebude môcť prihlásiť ani vykonávať akcie, pokiaľ ho znovu neaktivujete.&lt;/p&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DisableUser</context>
         </context-group>
@@ -2404,21 +2404,21 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       <!-- disableuser.jsp -->
       <trans-unit id="enableuser.jsp.enable" xml:space="preserve">
         <source>Reactivate User</source>
-        <target/>
+        <target>Znovu aktivovať používateľa</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/EnableUser</context>
         </context-group>
       </trans-unit>
       <trans-unit id="enableuser.jsp.confirm" xml:space="preserve">
         <source>Confirm User Reactivation</source>
-        <target/>
+        <target>Potvrdiť reaktiváciu používateľa</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/EnableUser</context>
         </context-group>
       </trans-unit>
       <trans-unit id="enableuser.jsp.body" xml:space="preserve">
         <source>&lt;p&gt;This action will allow this user to access @@PRODUCT_NAME@@.  This user will retain all permissions, roles, and data that he or she had before being deactivated.&lt;/p&gt;</source>
-        <target/>
+        <target>&lt;p&gt;Táto akcia umožní tomuto používateľovi prístup k @@PRODUCT_NAME@@.  Tento používateľ si zachová všetky oprávnenia, úlohy a údaje, ktoré mal pred deaktiváciou.&lt;/p&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/EnableUser</context>
         </context-group>
@@ -2426,14 +2426,14 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       <!-- systemsadmin.jsp -->
       <trans-unit id="systemsadmined.jsp.header" xml:space="preserve">
         <source>Modify Systems Administered</source>
-        <target/>
+        <target>Upraviť spravované systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/SystemsAdmined</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsadmined.jsp.summary" xml:space="preserve">
         <source>To modify this user's access levels, &lt;a href="{0}"&gt;change the groups&lt;/a&gt; to which this user is assigned.</source>
-        <target/>
+        <target>Ak chcete upraviť úrovne prístupu tohto používateľa, &lt;a href="{0}"&gt;zmeniť skupiny,&lt;/a&gt; do ktorých je tento používateľ.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/SystemsAdmined</context>
           <context context-type="paramnotes">To change the user's access levels,
@@ -2443,28 +2443,28 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="systemsadmined.jsp.headertwo" xml:space="preserve">
         <source>Systems Administered by this User</source>
-        <target/>
+        <target>Systémy spravované týmto používateľom</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/SystemsAdmined</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsadmined.jsp.summarytwo" xml:space="preserve">
         <source>You can select from the systems below for use in the System Set Manager.</source>
-        <target/>
+        <target>Môžete si vybrať jeden z nižšie uvedených systémov na použitie v Správcovi sád systémov.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/SystemsAdmined</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Update List" xml:space="preserve">
         <source>Update List</source>
-        <target/>
+        <target>Aktualizovať zoznam</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page with a List View</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Select All" xml:space="preserve">
         <source>Select All</source>
-        <target/>
+        <target>Vybrať všetko</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page with a List View</context>
         </context-group>
