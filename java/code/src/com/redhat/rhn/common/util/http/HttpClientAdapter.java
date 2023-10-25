@@ -81,22 +81,22 @@ public class HttpClientAdapter {
     private static final int TO_MILLISECONDS = 1000;
 
     /** The log. */
-    private static Logger log = LogManager.getLogger(HttpClientAdapter.class);
+    private static final Logger LOG = LogManager.getLogger(HttpClientAdapter.class);
 
     /** The proxy host. */
     private HttpHost proxyHost;
 
     /** The http client. */
-    private HttpClient httpClient;
+    private final HttpClient httpClient;
 
     /** The no proxy domains. */
-    private List<String> noProxyDomains = new ArrayList<>();
+    private final List<String> noProxyDomains = new ArrayList<>();
 
     /** The request config. */
-    private RequestConfig requestConfig;
+    private final RequestConfig requestConfig;
 
     /** The credentials provider. */
-    private CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
+    private final CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
     /**
      * Initialize an {@link HttpClient} for performing requests. Proxy settings will
      * be read from the configuration and applied transparently.
@@ -115,7 +115,7 @@ public class HttpClientAdapter {
                     SSLConnectionSocketFactory.getDefaultHostnameVerifier()));
         }
         catch (NoSuchAlgorithmException e) {
-            log.warn("No such algorithm. Using default context", e);
+            LOG.warn("No such algorithm. Using default context", e);
         }
 
         HttpClientBuilder clientBuilder = HttpClientBuilder.create();
@@ -158,7 +158,7 @@ public class HttpClientAdapter {
         // Read proxy exceptions from the "no_proxy" config option
         String noProxy = Config.get().getString(NO_PROXY);
         if (!StringUtils.isBlank(noProxy)) {
-            for (String domain : Arrays.asList(noProxy.split(","))) {
+            for (String domain : noProxy.split(",")) {
                 noProxyDomains.add(domain.toLowerCase().trim());
             }
         }
@@ -198,16 +198,51 @@ public class HttpClientAdapter {
 
             if (proxyHost != null &&
                     (Boolean.TRUE.equals(ignoreNoProxy) || useProxyFor(requestUri))) {
-                if (log.isDebugEnabled()) {
-                    log.debug("Using proxy: {}", proxyHost);
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("Using proxy: {}", proxyHost);
                 }
                 return super.determineRoute(host, request, context);
             }
-            if (log.isDebugEnabled()) {
-                log.debug("Using a direct connection (no proxy)");
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Using a direct connection (no proxy)");
             }
             // Return direct route
             return new HttpRoute(host);
+        }
+
+        /**
+         * Check for a given {@link URI} if a proxy should be used or not.
+         *
+         * @param uri the URI to check
+         * @return true if proxy should be used, else false
+         */
+        private boolean useProxyFor(URI uri) {
+            if (uri.getScheme().equals("file")) {
+                return false;
+            }
+            String host = uri.getHost();
+            if (host.equals("localhost") || host.equals("127.0.0.1") || host.equals("::1")) {
+                return false;
+            }
+
+            if (noProxyDomains.isEmpty()) {
+                return true;
+            }
+            else if (noProxyDomains.contains("*")) {
+                return false;
+            }
+
+            // Check for either an exact match or the previous character is a '.',
+            // so that host is within the same domain.
+            for (String domain : noProxyDomains) {
+                if (domain.startsWith(".")) {
+                    domain = domain.substring(1);
+                }
+                if (domain.equals(host) || host.endsWith("." + domain)) {
+                    return false;
+                }
+            }
+            return true;
         }
     }
 
@@ -232,8 +267,8 @@ public class HttpClientAdapter {
      */
     public HttpResponse executeRequest(HttpRequestBase request, boolean ignoreNoProxy)
             throws IOException {
-        if (log.isDebugEnabled()) {
-            log.debug("{} {}", request.getMethod(), request.getURI());
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("{} {}", request.getMethod(), request.getURI());
         }
         // Decide if a proxy should be used for this request
 
@@ -246,8 +281,8 @@ public class HttpClientAdapter {
         request.setConfig(requestConfig);
         HttpResponse httpResponse = httpClient.execute(request, httpContxt);
 
-        if (log.isDebugEnabled()) {
-            log.debug("Response code: {}", httpResponse.getStatusLine().getStatusCode());
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Response code: {}", httpResponse.getStatusLine().getStatusCode());
         }
         return httpResponse;
     }
@@ -289,41 +324,6 @@ public class HttpClientAdapter {
         }
 
         return executeRequest(request, ignoreNoProxy);
-    }
-
-    /**
-     * Check for a given {@link URI} if a proxy should be used or not.
-     *
-     * @param uri the URI to check
-     * @return true if proxy should be used, else false
-     */
-    private boolean useProxyFor(URI uri) {
-        if (uri.getScheme().equals("file")) {
-            return false;
-        }
-        String host = uri.getHost();
-        if (host.equals("localhost") || host.equals("127.0.0.1") || host.equals("::1")) {
-            return false;
-        }
-
-        if (noProxyDomains.isEmpty()) {
-            return true;
-        }
-        else if (noProxyDomains.contains("*")) {
-            return false;
-        }
-
-        // Check for either an exact match or the previous character is a '.',
-        // so that host is within the same domain.
-        for (String domain : noProxyDomains) {
-            if (domain.startsWith(".")) {
-                domain = domain.substring(1);
-            }
-            if (domain.equals(host) || host.endsWith("." + domain)) {
-                return false;
-            }
-        }
-        return true;
     }
 
     /**
