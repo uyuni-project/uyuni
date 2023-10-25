@@ -54,15 +54,7 @@ function srpm_package_defs() {
   #        ...
   #      done < <(srpm_package_defs)
   #
-  test -n "$PACKAGE" || {
-    if test "$OSCAPI" == "https://api.suse.de"; then
-        # The init-image is not needed for SUMA: BCI:Init will be used instead
-        PACKAGE=$(find "$SRPM_DIR" -mindepth 1 -maxdepth 1 -type d -printf "%P\n" \
-                  | grep -v -x -e init-image)
-    else
-        PACKAGE=$(find "$SRPM_DIR" -mindepth 1 -maxdepth 1 -type d -printf "%P\n")
-    fi
-  }
+  PACKAGE=$(find "$SRPM_DIR" -mindepth 1 -maxdepth 1 -type d -printf "%P\n")
   for N in $PACKAGE; do
     test -d "$SRPM_DIR/$N" || {
       echo "No package dir '$SRPM_DIR/$N'" >&2
@@ -271,7 +263,7 @@ while read PKG_NAME; do
       if [ "${OSCAPI}" == "https://api.suse.de" ]; then
           # SUSE Manager settings
           VERSION=$(sed 's/^\([0-9]\+\.[0-9]\+\).*$/\1/' ${BASE_DIR}/packages/uyuni-base)
-          sed "s/^ARG INIT_BASE=.*$/ARG INIT_BASE=bci\/bci-init:15.4/" -i $SRPM_PKG_DIR/Dockerfile
+          sed "s/^ARG INIT_BASE=.*$/ARG INIT_BASE=bci\/bci-base:15.4/" -i $SRPM_PKG_DIR/Dockerfile
           sed "/^#\!BuildTag:/s/uyuni/suse\/manager\/${VERSION}/g" -i $SRPM_PKG_DIR/Dockerfile
           sed "/^# labelprefix=/s/org\.opensuse\.uyuni/com.suse.manager/" -i $SRPM_PKG_DIR/Dockerfile
           sed "s/^ARG VENDOR=.*$/ARG VENDOR=\"SUSE LLC\"/" -i $SRPM_PKG_DIR/Dockerfile
