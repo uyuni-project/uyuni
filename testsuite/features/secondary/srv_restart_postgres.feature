@@ -6,8 +6,7 @@ Feature: Restart the postgres service
   Scenario: Restart the postgres
     Given I am authorized for the "Admin" section
     When I restart "postgresql.service" service on "server"
-    # taskomatic needs 60s to reconnect
-    And I wait for "60" seconds
+    And I wait until "postgresql" service is active on "server"
     And I am on the Systems overview page of this "sle_minion"
     And I follow "States" in the content area
     And I click on "Apply Highstate"
