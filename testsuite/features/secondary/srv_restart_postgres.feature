@@ -5,7 +5,7 @@ Feature: Restart the PostgreSQL service
 
   Scenario: Restart the PostgreSQL database service
     Given I am authorized for the "Admin" section
-    When I restart "postgresql.service" service on "server"
+    When I restart the "postgresql.service" service on "server"
     And I wait until "postgresql" service is active on "server"
     And I am on the Systems overview page of this "sle_minion"
     And I follow "States" in the content area
