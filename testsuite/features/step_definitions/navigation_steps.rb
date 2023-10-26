@@ -932,6 +932,14 @@ When(/^I check "([^"]*)" in the list$/) do |text|
   row.set(true)
 end
 
+When(/^I uncheck "([^"]*)" in the list$/) do |text|
+  top_level_xpath_query = "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{text}')]]//input[@type='checkbox']"
+  row = find(:xpath, top_level_xpath_query, match: :first)
+  raise "xpath: #{top_level_xpath_query} not found" if row.nil?
+
+  row.set(false)
+end
+
 #
 # Test if an option is selected
 #

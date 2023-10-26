@@ -33,6 +33,26 @@ class NamespaceChannel
          .include?(label)
   end
 
+  def list_all_channels
+    channels = @test.call('channel.listAllChannels', sessionKey: @test.token)
+
+    mapped_channels =
+      channels.map do |channel|
+        [
+          channel['label'],
+          {
+            'id' => channel['id'],
+            'name' => channel['name'],
+            'provider_name' => channel['provider_name'],
+            'packages' => channel['packages'],
+            'systems' => channel['systems'],
+            'arch_name' => channel['arch_name']
+          }
+        ]
+      end
+    mapped_channels.to_h
+  end
+
   def list_software_channels
     channels = @test.call('channel.listSoftwareChannels', sessionKey: @test.token)
     channels.map { |channel| channel['label'] }
