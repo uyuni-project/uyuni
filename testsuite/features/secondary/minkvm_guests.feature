@@ -325,6 +325,11 @@ Feature: Manage KVM virtual machines via the GUI
     When I install package tftpboot-installation on the server
     And I wait for "tftpboot-installation-SLE-15-SP4-x86_64" to be installed on "server"
 
+@uyuni
+ Scenario: Install TFTP boot package on the server
+   When I install package tftpboot-installation on the server
+   And I wait for "tftpboot-installation-openSUSE-Leap-15.5-x86_64" to be installed on "server"
+
 @virthost_kvm
   Scenario: Edit a virtual network
     Given I am on the "Virtualization" page of this "kvm_server"
@@ -432,6 +437,22 @@ Feature: Manage KVM virtual machines via the GUI
   Scenario: Cleanup: Remove the TFTP boot package from the server
     When I remove package "tftpboot-installation-SLE-15-SP4-x86_64" from this "server" without error control
     And I wait for "tftpboot-installation-SLE-15-SP4-x86_64" to be uninstalled on "server"
+
+@uyuni
+  Scenario: Cleanup: Remove the TFTP boot package from the server
+    When I remove package "tftpboot-installation-openSUSE-Leap-15.5-x86_64" from this "server" without error control
+    And I wait for "tftpboot-installation-openSUSE-Leap-15.5-x86_64" to be uninstalled on "server"
+
+  Scenario: Cleanup: Stop virtual network
+    Given I am on the "Virtualization" page of this "kvm_server"
+    And I follow "Virtualization" in the content area
+    And I follow "Networks" in the content area
+    And I wait until I do not see "Loading..." text
+    Then table row for "test-net0" should contain "running"
+    When I click on "Stop" in row "test-net0"
+    And I click on "Stop" in "Stop Network" modal
+    Then I wait until table row for "test-net0" contains button "Start"
+    And table row for "test-net0" should contain "stopped"
 
   Scenario: Check for errors in Cobbler monitoring
     Then the local logs for Cobbler should not contain errors

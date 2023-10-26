@@ -30,24 +30,24 @@ Feature: Add a repository to a channel
 
   Scenario: Add the repository to the x86_64 channel
     When I follow the left menu "Software > Manage > Channels"
-    And I follow "Test-Channel-x86_64"
+    And I follow "Test-Base-Channel-x86_64"
     And I enter "file:///etc/pki/rpm-gpg/uyuni-tools-gpg-pubkey-0d20833e.key" as "GPG key URL"
     And I click on "Update Channel"
-    Then I should see a "Channel Test-Channel-x86_64 updated" text
+    Then I should see a "Channel Test-Base-Channel-x86_64 updated" text
     When I follow "Repositories" in the content area
     And I select the "fake-rpm-repo" repo
     And I click on "Save Repositories"
-    Then I should see a "Test-Channel-x86_64 repository information was successfully updated" text
+    Then I should see a "Test-Base-Channel-x86_64 repository information was successfully updated" text
 
   Scenario: Synchronize the repository in the x86_64 channel
     When I follow the left menu "Software > Manage > Channels"
-    And I follow "Test-Channel-x86_64"
+    And I follow "Test-Base-Channel-x86_64"
     And I follow "Repositories" in the content area
     And I follow "Sync"
     And I wait at most 60 seconds until I do not see "Repository sync is running." text, refreshing the page
     And I click on "Sync Now"
-    Then I should see a "Repository sync scheduled for Test-Channel-x86_64." text
-    And I wait until the channel "test-channel-x86_64" has been synced
+    Then I should see a "Repository sync scheduled for Test-Base-Channel-x86_64." text
+    And I wait until the channel "test-base-channel-x86_64" has been synced
 
   Scenario: Add a test repository for i586
     When I follow the left menu "Software > Manage > Repositories"
@@ -60,23 +60,23 @@ Feature: Add a repository to a channel
 
   Scenario: Add the repository to the i586 channel
     When I follow the left menu "Software > Manage > Channels"
-    And I follow "Fake-i586-Channel"
+    And I follow "Fake-Base-Channel-i586"
     And I enter "file:///etc/pki/rpm-gpg/uyuni-tools-gpg-pubkey-0d20833e.key" as "GPG key URL"
     And I click on "Update Channel"
-    Then I should see a "Channel Fake-i586-Channel updated" text
+    Then I should see a "Channel Fake-Base-Channel-i586 updated" text
     When I follow "Repositories" in the content area
     And I select the "fake-i586-repo" repo
     And I click on "Save Repositories"
-    Then I should see a "Fake-i586-Channel repository information was successfully updated" text
+    Then I should see a "Fake-Base-Channel-i586 repository information was successfully updated" text
 
   Scenario: Synchronize the repository in the i586 channel
     When I follow the left menu "Software > Manage > Channels"
-    And I follow "Fake-i586-Channel"
+    And I follow "Fake-Base-Channel-i586"
     And I follow "Repositories" in the content area
     And I follow "Sync"
     And I wait at most 60 seconds until I do not see "Repository sync is running." text, refreshing the page
     And I click on "Sync Now"
-    Then I should see a "Repository sync scheduled for Fake-i586-Channel." text
+    Then I should see a "Repository sync scheduled for Fake-Base-Channel-i586." text
 
 @deblike_minion
   Scenario: Add a test repository for Debian-like
@@ -91,34 +91,33 @@ Feature: Add a repository to a channel
 @deblike_minion
   Scenario: Add the Debian-like repository to the AMD64 channel
     When I follow the left menu "Software > Manage > Channels"
-    And I follow "Fake-Deb-AMD64-Channel"
+    And I follow "Fake-Base-Channel-Debian-like"
     And I follow "Repositories" in the content area
     And I select the "fake-debian-repo" repo
     And I click on "Save Repositories"
-    Then I should see a "Fake-Deb-AMD64-Channel repository information was successfully updated" text
+    Then I should see a "Fake-Base-Channel-Debian-like repository information was successfully updated" text
 
 @deblike_minion
   Scenario: Synchronize the Debian-like repository in the AMD64 channel
     When I follow the left menu "Software > Manage > Channels"
-    And I follow "Fake-Deb-AMD64-Channel"
+    And I follow "Fake-Base-Channel-Debian-like"
     And I follow "Repositories" in the content area
     And I follow "Sync"
     And I wait at most 60 seconds until I do not see "Repository sync is running." text, refreshing the page
     And I click on "Sync Now"
-    Then I should see a "Repository sync scheduled for Fake-Deb-AMD64-Channel." text
+    Then I should see a "Repository sync scheduled for Fake-Base-Channel-Debian-like." text
 
 @rhlike_minion
   Scenario: Add the repository to the RedHat-like channel
     When I follow the left menu "Software > Manage > Channels"
-    And I follow "Fake-RH-Like-Channel"
+    And I follow "Fake-Base-Channel-RH-like"
     And I enter "file:///etc/pki/rpm-gpg/uyuni-tools-gpg-pubkey-0d20833e.key" as "GPG key URL"
     And I click on "Update Channel"
-    Then I should see a "Channel Fake-RH-Like-Channel updated" text
+    Then I should see a "Channel Fake-Base-Channel-RH-like updated" text
     When I follow "Repositories" in the content area
     And I select the "fake-rpm-repo" repo
     And I click on "Save Repositories"
-    Then I should see a "Fake-RH-Like-Channel repository information was successfully updated" text
+    Then I should see a "Fake-Base-Channel-RH-like repository information was successfully updated" text
 
   Scenario: Cleanup disable source package syncing
     Then I disable source package syncing
-

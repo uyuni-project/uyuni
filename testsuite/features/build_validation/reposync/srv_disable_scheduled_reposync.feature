@@ -1,7 +1,7 @@
 # Copyright (c) 2019-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: Wait for reposync activity to finish in CI context
+Feature: Delete the scheduled task for mgr-sync-refresh
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
@@ -12,9 +12,3 @@ Feature: Wait for reposync activity to finish in CI context
     And I choose "disabled"
     And I click on "Update Schedule"
     And I click on "Delete Schedule"
-
-  Scenario: Kill running reposyncs or wait for them to finish
-    When I kill all running spacewalk-repo-sync, excepted the ones needed to bootstrap
-
-  Scenario: Wait until all synchronized channels have finished
-    When I wait until all synchronized channels have finished

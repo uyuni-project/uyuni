@@ -35,7 +35,8 @@ Feature: Synchronize products in the products page of the Setup Wizard
 
 @scc_credentials
 @susemanager
-  Scenario: Add SLES 15 SP4 product with recommended sub-products, including SUMA Client Tools
+  Scenario: Synchronize SLES 15 SP4 product with recommended sub-products, including SUMA Client Tools
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "Loading" text
     And I enter "SUSE Linux Enterprise Server 15 SP4" as the filtered product description
@@ -43,7 +44,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I open the sub-list of the product "SUSE Linux Enterprise Server 15 SP4 x86_64"
     And I open the sub-list of the product "Basesystem Module 15 SP4 x86_64"
     And I open the sub-list of the product "Desktop Applications Module 15 SP4 x86_64"
-    And I open the sub-list of the product "SUSE Manager Client Tools for SLE 15 x86_64"
+    And I open the sub-list of the product "SUSE Manager Client Tools for SLE 15 x86_64" if present
     Then I should see that the "Basesystem Module 15 SP4 x86_64" product is "recommended"
     And I should see that the "Server Applications Module 15 SP4 x86_64" product is "recommended"
     And I should see that the "SUSE Manager Client Tools for SLE 15 x86_64" product is "recommended"
@@ -61,10 +62,12 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I click the Add Product button
     And I wait until I see "SUSE Linux Enterprise Server 15 SP4 x86_64" product has been added
     Then the SLE15 SP4 product should be added
+    When I wait until all synchronized channels for "sles15-sp4" have finished
 
 @scc_credentials
 @uyuni
-  Scenario: Add SLES 15 SP4 product with recommended sub-products for the build host and the terminal
+  Scenario: Synchronize SLES 15 SP4 product with recommended sub-products for Retail feature
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "Loading" text
     And I enter "SUSE Linux Enterprise Server 15 SP4" as the filtered product description
@@ -87,14 +90,20 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I click the Add Product button
     And I wait until I see "SUSE Linux Enterprise Server 15 SP4 x86_64" product has been added
     Then the SLE15 SP4 product should be added
+    When I use spacewalk-common-channel to add channel "sles15-sp4-uyuni-client" with arch "x86_64"
+    And I wait until all synchronized channels for "sles15-sp4" have finished
+    # TODO: Refactor the scenarios in order to don't require a full synchronization of SLES 15 SP4 product in Uyuni
+    # When I kill running spacewalk-repo-sync for "sles15-sp4"
 
 @uyuni
   Scenario: Add openSUSE Leap 15.5 product, including Uyuni Client Tools
     When I use spacewalk-common-channel to add channel "opensuse_leap15_5 opensuse_leap15_5-non-oss opensuse_leap15_5-non-oss-updates opensuse_leap15_5-updates opensuse_leap15_5-backports-updates opensuse_leap15_5-sle-updates uyuni-proxy-devel-leap opensuse_leap15_5-uyuni-client" with arch "x86_64"
+    And I kill running spacewalk-repo-sync for "leap15.5-x86_64"
 
 @proxy
 @susemanager
   Scenario: Add SUSE Manager Proxy 4.3
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "Loading" text
     And I enter "SUSE Manager Proxy 4.3" as the filtered product description
@@ -103,10 +112,12 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
     And I wait until I see "SUSE Manager Proxy 4.3 x86_64" product has been added
+    And I wait until all synchronized channels for "suma-proxy-43" have finished
 
 @proxy
 @susemanager
   Scenario: Add SUSE Manager Retail Branch Server
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "Loading" text
     And I enter "SUSE Manager Retail Branch Server 4.3" as the filtered product description
@@ -115,6 +126,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
     And I wait until I see "SUSE Manager Retail Branch Server 4.3 x86_64" product has been added
+    And  I wait until all synchronized channels for "suma-retail-branch-server-43" have finished
 
 @scc_credentials
 @susemanager
@@ -124,6 +136,11 @@ Feature: Synchronize products in the products page of the Setup Wizard
 
 @scc_credentials
   Scenario: Detect product loading issues from the UI
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
     Then I should not see a "Operation not successful" text
     And I should not see a warning sign
+
+@scc_credentials
+  Scenario: Trigger a refresh of the products synched from SCC
+    When I execute mgr-sync refresh

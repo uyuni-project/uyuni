@@ -19,12 +19,12 @@ Feature: Channel subscription via SSM
     And I follow "channel memberships" in the content area
     Then I should see a "Base Channel" text
     And I should see a "Next" text
-    When I select "Fake Base Channel" from drop-down in table line with "SLE-Product-SLES15-SP4-Pool for x86_64"
+    When I select "Fake-Base-Channel" from drop-down in table line with "SLE-Product-SLES15-SP4-Pool for x86_64"
     And I click on "Next"
     Then I should see a "Child Channels" text
-    And I should see a "Fake Base Channel" text
+    And I should see a "Fake-Base-Channel" text
     And I should see a "1 system(s) to subscribe" text
-    When I choose radio button "Subscribe" for child channel "Fake Child Channel"
+    When I choose radio button "Subscribe" for child channel "Fake-Child-Channel"
     And I click on "Next"
     Then I should see a "Channel Changes Overview" text
     And I should see a "1 system(s) to subscribe" text
@@ -45,12 +45,12 @@ Feature: Channel subscription via SSM
     And I follow "channel memberships" in the content area
     Then I should see a "Base Channel" text
     And I should see a "Next" text
-    When I select "Fake Base Channel" from drop-down in table line with "openSUSE Leap 15.5 (x86_64)"
+    When I select "Fake-Base-Channel" from drop-down in table line with "openSUSE Leap 15.5 (x86_64)"
     And I click on "Next"
     Then I should see a "Child Channels" text
-    And I should see a "Fake Base Channel" text
+    And I should see a "Fake-Base-Channel" text
     And I should see a "1 system(s) to subscribe" text
-    When I choose radio button "Subscribe" for child channel "Fake Child Channel"
+    When I choose radio button "Subscribe" for child channel "Fake-Child-Channel"
     And I click on "Next"
     Then I should see a "Channel Changes Overview" text
     And I should see a "1 system(s) to subscribe" text
@@ -111,24 +111,24 @@ Feature: Channel subscription via SSM
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
-    Then radio button "Fake Base Channel" should be checked
+    Then radio button "Fake-Base-Channel" should be checked
     And I wait until I do not see "Loading..." text
-    And I should see "Fake Child Channel" as checked
+    And I should see "Fake-Child-Channel" as checked
 
 @sle_minion
 @susemanager
   Scenario: Check the new channels are enabled on the SLES minion
     When I refresh the metadata for "sle_minion"
     Then "2" channels should be enabled on "sle_minion"
-    And channel "Fake Base Channel" should be enabled on "sle_minion"
-    And channel "Fake Child Channel" should be enabled on "sle_minion"
+    And channel "Fake-Base-Channel" should be enabled on "sle_minion"
+    And channel "Fake-Child-Channel" should be enabled on "sle_minion"
 
 @uyuni
   Scenario: Check the new channels are enabled on the SLES minion
     When I refresh the metadata for "sle_minion"
     Then "2" channels should be enabled on "sle_minion"
-    And channel "Fake Base Channel" should be enabled on "sle_minion"
-    And channel "Fake Child Channel" should be enabled on "sle_minion"
+    And channel "Fake-Base-Channel" should be enabled on "sle_minion"
+    And channel "Fake-Child-Channel" should be enabled on "sle_minion"
 
 @rhlike_minion
   Scenario: System default channel can't be determined on the Red Hat-like minion
@@ -138,7 +138,7 @@ Feature: Channel subscription via SSM
     Then I should see "1" systems selected for SSM
     When I follow the left menu "Systems > System Set Manager > Overview"
     And I follow "channel memberships" in the content area
-    And I select "System Default Base Channel" from drop-down in table line with "Fake Base Channel"
+    And I select "System Default Base Channel" from drop-down in table line with "Fake-Base-Channel"
     And I click on "Next"
     Then I should see a "Child Channels" text
     And I should see a "Couldn't determine new base channel" text
@@ -158,7 +158,7 @@ Feature: Channel subscription via SSM
     Given I am on the Systems overview page of this "rhlike_minion"
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
-    Then radio button "Fake Base Channel" should be checked
+    Then radio button "Fake-Base-Channel" should be checked
 
 @deblike_minion
   Scenario: System default channel can't be determined on the Debian-like minion
@@ -168,7 +168,7 @@ Feature: Channel subscription via SSM
     Then I should see "1" systems selected for SSM
     When I follow the left menu "Systems > System Set Manager > Overview"
     And I follow "channel memberships" in the content area
-    And I select "System Default Base Channel" from drop-down in table line with "Fake-Deb-AMD64-Channel"
+    And I select "System Default Base Channel" from drop-down in table line with "Fake-Base-Channel-Debian-like"
     And I click on "Next"
     Then I should see a "Child Channels" text
     And I should see a "Couldn't determine new base channel" text
@@ -188,7 +188,7 @@ Feature: Channel subscription via SSM
     Given I am on the Systems overview page of this "deblike_minion"
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
-    Then radio button "Fake-Deb-AMD64-Channel" should be checked
+    Then radio button "Fake-Base-Channel-Debian-like" should be checked
 
 @sle_minion
 @susemanager

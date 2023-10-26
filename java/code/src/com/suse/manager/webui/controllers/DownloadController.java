@@ -460,6 +460,13 @@ public class DownloadController {
      */
     private static String getTokenFromRequest(Request request) {
         Set<String> queryParams = request.queryParams();
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("URL: {}", request.url());
+            LOG.debug("Query Params: {}", request.queryString());
+            for (String hdr: request.headers()) {
+                LOG.debug("Header: {}: {}", hdr, request.headers(hdr));
+            }
+        }
         String header = request.headers("X-Mgr-Auth");
         header = StringUtils.isNotBlank(header) ? header : getTokenForDebian(request);
         if (queryParams.isEmpty() && StringUtils.isBlank(header)) {

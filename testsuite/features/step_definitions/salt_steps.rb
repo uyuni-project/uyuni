@@ -134,12 +134,12 @@ When(/^I apply state "([^"]*)" to "([^"]*)"$/) do |state, host|
   get_target('server').run("salt #{system_name} state.apply #{state}", verbose: true)
 end
 
-Then(/^salt\-api should be listening on local port (\d+)$/) do |port|
+Then(/^salt-api should be listening on local port (\d+)$/) do |port|
   $output, _code = get_target('server').run("ss -ntl | grep #{port}")
   assert_match(/127.0.0.1:#{port}/, $output)
 end
 
-Then(/^salt\-master should be listening on public port (\d+)$/) do |port|
+Then(/^salt-master should be listening on public port (\d+)$/) do |port|
   $output, _code = get_target('server').run("ss -ntl | grep #{port}")
   assert_match(/(0.0.0.0|\*|\[::\]):#{port}/, $output)
 end
@@ -577,4 +577,15 @@ When(/^I purge salt-minion on "([^"]*)" after a migration$/) do |host|
   system_name = node.full_hostname
   cleanup = %(salt #{system_name} state.apply util.mgr_switch_to_venv_minion pillar='{"mgr_purge_non_venv_salt_files": True, "mgr_purge_non_venv_salt": True}')
   get_target('server').run(cleanup, check_errors: true, verbose: true)
+end
+
+When(/^I apply highstate on "([^"]*)"$/) do |host|
+  system_name = get_system_name(host)
+  if host.include? 'ssh_minion'
+    cmd = 'mgr-salt-ssh'
+  elsif host.include? 'minion' or host.include? 'build' or host.include? 'proxy'
+    cmd = 'salt'
+  end
+  log "Salt command: #{cmd} #{system_name} state.highstate"
+  get_target('server').run_until_ok("#{cmd} #{system_name} state.highstate")
 end

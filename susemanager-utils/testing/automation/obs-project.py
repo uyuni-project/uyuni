@@ -2,11 +2,27 @@
 import argparse
 import os
 import sys
-import urllib.request
 import xml.etree.ElementTree as ET
 import datetime
-import configparser
 import re
+import subprocess
+
+def run_osc_api(api_call, api, config_file, data = "", method="GET"):
+    """
+    Run osc api calls.
+    Parameters
+    ----------
+    api_call: The api call, for example "/about" or "/source/project"
+    api: The build service api, for example "https://api.opensuse.org"
+    config_file: Usually ~/.oscrc or ~/.config/osc/oscrc
+    """
+    params = ["osc", "--config={}".format(config_file), "-A", api, "api", api_call, "-X", method]
+    if (data != ""):
+        params.append("-d")
+        params.append(data)
+    sp_result = subprocess.run(params, stdout=subprocess.PIPE)
+    data = sp_result.stdout
+    return ET.fromstring(data)
 
 def add(args):
     api = args.api
@@ -23,39 +39,13 @@ def add(args):
         print("ERROR: config file {} not found".format(config_file))
         sys.exit(-1)
 
-    config = configparser.ConfigParser()
-    try:
-        config.read(config_file)
-    except IOError as e:
-        print("ERROR: Can't read config file ".format(e))
-        sys.exit(-1)
-
-    auth_user = config[api]["user"]
-    auth_passwd = config[api]["pass"]
-
-    if (auth_user == "" or auth_passwd == ""):
-        print("ERROR: could not find user or password in config file")
-        sys.exit(-1)
-
     print("DEBUG: getting api version for debugging purposes")
-    req = urllib.request.Request("{}/about".format(api))
-    with urllib.request.urlopen(req) as response:
-        data = response.read()
-    root = ET.fromstring(data)
+    root = run_osc_api("/about", api, config_file)
     revision = root.find("revision").text
     print("DEBUG: API version: {}".format(revision))
 
     print("DEBUG: getting meta data from {}".format(project))
-    passman = urllib.request.HTTPPasswordMgrWithDefaultRealm()
-    url = api + "/source/" + project + "/_meta"
-    passman.add_password(None, url, auth_user, auth_passwd)
-    authhandler = urllib.request.HTTPBasicAuthHandler(passman)
-    opener = urllib.request.build_opener(authhandler)
-    urllib.request.install_opener(opener)
-    req = urllib.request.Request(url)
-    with urllib.request.urlopen(req) as response:
-        data = response.read()
-    root = ET.fromstring(data)
+    root = run_osc_api("/source/{}/_meta".format(project), api, config_file)
     result = root.find("title").text
     print("DEBUG: found metadata for project with title {}".format(result))
 
@@ -66,17 +56,19 @@ def add(args):
     root.find("title").text = new_title 
 
     if (maintainer!=""):
-        print("DEBUG: Adding user {} as the only maintainer".format(auth_user))
+        print("DEBUG: Adding user {} as the only maintainer".format(maintainer))
         for user in root.findall("person"):
             root.remove(user)
         for group in root.findall("group"):
             root.remove(group)
-        new_person = ET.fromstring("<person userid=\"{}\" role=\"maintainer\"/>".format(auth_user))
+        new_person = ET.fromstring("<person userid=\"{}\" role=\"maintainer\"/>".format(maintainer))
         root.append(new_person)
 
     if (disable_publish):
         print("DEBUG: disabling publishing")
-        root.remove(root.find("publish"))
+        publish_node = root.find("publish")
+        if (publish_node != None):
+            root.remove(publish_node)
         node = ET.fromstring("<publish><disable/></publish>")
         root.append(node)
 
@@ -101,17 +93,9 @@ def add(args):
         repo.append(new_path)
 
     print("DEBUG: creating new project: {}".format(pr_project))
-    passman = urllib.request.HTTPPasswordMgrWithDefaultRealm()
-    url = api + "/source/" + pr_project + "/_meta"
-    passman.add_password(None, url, auth_user, auth_passwd)
-    authhandler = urllib.request.HTTPBasicAuthHandler(passman)
-    opener = urllib.request.build_opener(authhandler)
-    urllib.request.install_opener(opener)
     data = ET.tostring(root)
-    req = urllib.request.Request(url, data = data, method="PUT")
-    with urllib.request.urlopen(req) as response:
-        data = response.read()
-    root = ET.fromstring(data)
+    print("DEBUG: data: {}".format(data))
+    root = run_osc_api("/source/{}/_meta".format(pr_project), api, config_file, data=data, method="PUT")
     print("DEBUG: result: {}".format(root.get("code")))
 
 def print_usage(args):
@@ -129,25 +113,8 @@ def remove(args):
         print("ERROR: config file {} not found".format(config_file))
         sys.exit(-1)
 
-    config = configparser.ConfigParser()
-    try:
-        config.read(config_file)
-    except IOError as e:
-        print("ERROR: Can't read config file ".format(e))
-        sys.exit(-1)
-
-    auth_user = config[api]["user"]
-    auth_passwd = config[api]["pass"]
-
-    if (auth_user == "" or auth_passwd == ""):
-        print("ERROR: could not find user or password in config file")
-        sys.exit(-1)
-
     print("DEBUG: getting api version for debugging purposes")
-    req = urllib.request.Request("{}/about".format(api))
-    with urllib.request.urlopen(req) as response:
-        data = response.read()
-    root = ET.fromstring(data)
+    root = run_osc_api("/about", api, config_file)
     revision = root.find("revision").text
     print("DEBUG: API version: {}".format(revision))
 
@@ -159,17 +126,7 @@ def remove(args):
         if (answer == "n"):
             print("OK. Maybe another day. Bye!")
             sys.exit(-1)
-    passman = urllib.request.HTTPPasswordMgrWithDefaultRealm()
-    url = api + "/source/" + pr_project 
-    passman.add_password(None, url, auth_user, auth_passwd)
-    authhandler = urllib.request.HTTPBasicAuthHandler(passman)
-    opener = urllib.request.build_opener(authhandler)
-    urllib.request.install_opener(opener)
-    data = ET.tostring(root)
-    req = urllib.request.Request(url, data = data, method="DELETE")
-    with urllib.request.urlopen(req) as response:
-        data = response.read()
-    root = ET.fromstring(data)
+    root = run_osc_api("/source/{}".format(pr_project), api, config_file, method="DELETE")
     print("DEBUG: result: {}".format(root.get("code")))
 
 

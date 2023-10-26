@@ -79,7 +79,6 @@ Provides spacewalk-schema-upgrade and spacewalk-sql.
 %setup -q
 
 %build
-find . -name '*.91' | while read i ; do mv $i ${i%%.91} ; done
 make -f Makefile.schema SCHEMA=%{name} VERSION=%{version} RELEASE=%{release}
 pod2man spacewalk-schema-upgrade spacewalk-schema-upgrade.1
 pod2man spacewalk-sql spacewalk-sql.1

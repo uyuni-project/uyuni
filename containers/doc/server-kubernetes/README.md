@@ -43,12 +43,7 @@ done
 podman pull registry.opensuse.org/systemsmanagement/uyuni/master/containers/uyuni/server:latest
 
 podman save --output server.tar registry.opensuse.org/systemsmanagement/uyuni/master/containers/uyuni/server:latest
-
-helper_pod_image=$(grep helper-pod -A1 /var/lib/rancher/k3s/server/manifests/local-storage.yaml | grep image | sed 's/^ \+image: //')
-podman pull $helper_pod_image
-podman save --output helper_pod.tar $helper_pod_image
 ```
-
 
 or
 
@@ -59,6 +54,26 @@ for image in cert-manager-cainjector cert-manager-controller cert-manager-ctl ce
 done
 
 skopeo copy docker://registry.opensuse.org/systemsmanagement/uyuni/master/containers/uyuni/server:latest docker-archive:server.tar:registry.opensuse.org/systemsmanagement/uyuni/master/containers/uyuni/server:latest
+```
+
+If using K3S's default local-path-provider, also pull the helper pod image for offline use:
+Run the following command on the K3S node to find out the name of the image to pull:
+
+```
+grep helper-pod -A1 /var/lib/rancher/k3s/server/manifests/local-storage.yaml | grep image | sed 's/^ \+image: //'
+```
+
+Then set the `helper_pod_image` variable with the returned output on the machine having internet access and run the next commands to pull the image:
+
+```
+podman pull $helper_pod_image
+podman save --output helper_pod.tar $helper_pod_image
+```
+
+or
+
+```
+skopeo copy docker://$(helper_pod_image) docker-archive:helper-pod.tar:$(helper_pod_image)
 ```
 
 Copy the `cert-manager` and `uyuni/server` helm charts locally:
@@ -79,18 +94,7 @@ done
 In order to tell K3s to not pull the images, set the image pull policy needs to be set to `Never`.
 This needs to be done for both Uyuni and cert-manager helm charts.
 
-For the Uyuni helm chart, set the `pullPolicy` chart value to `Never` by passing a `--helm-uyuni-values=uyuni-values.yaml` parameter to `uyuniadm install` with the following `uyuni-values.yaml` file content:
-
-```
-pullPolicy: Never
-```
-
-For the cert-manager helm chart, create a `cert-values.yaml` file with the following content and pass `--helm-certmanager-values=values.yaml` parameter to `uyuniadm install`:
-
-```
-image:
-  pullPolicy: Never
-```
+To prevent Helm from pulling the images pass the `--image=pullPolicy=never` parameter to `uyuniadm install` or `uyuniadm migrate`.
 
 To use the downloaded helm charts instead of the default ones, pass `--helm-uyuni-chart=server-2023.9.0.tgz` and `--helm-certmanager-chart=cert-manager-v1.13.1.tgz` or add the following to the `uyuniadm` configuration file. Of course the versions in the file name need to be adjusted to what you downloaded:
 
@@ -98,13 +102,11 @@ To use the downloaded helm charts instead of the default ones, pass `--helm-uyun
 helm:
   uyuni:
     chart: server-2023.9.0.tgz
-    values: uyuni-values.yaml
   certmanager:
     chart: cert-manager-v1.13.1.tgz
-    values: cert-values.yaml
 ```
 
-Set the helper-pod `imagePullPolicy` to `Never` in `/var/lib/rancher/k3s/server/manifests/local-storage.yaml` using the following command:
+If using K3S's default local-path-provisioner, set the helper-pod `imagePullPolicy` to `Never` in `/var/lib/rancher/k3s/server/manifests/local-storage.yaml` using the following command:
 
 ```
 sed 's/imagePullPolicy: IfNotPresent/imagePullPolicy: Never/' -i /var/lib/rancher/k3s/server/manifests/local-storage.yaml
@@ -138,20 +140,22 @@ For example:
 
 ```
 podman pull registry.opensuse.org/systemsmanagement/uyuni/master/containers/uyuni/server:latest
-podman save --output server-image.tar registry.opensuse.org/systemsmanagement/uyuni/master/containers/uyuni/server:latest
+podman save --output server.tar registry.opensuse.org/systemsmanagement/uyuni/master/containers/uyuni/server:latest
 ```
 
 or
 
 ```
-skopeo copy docker://registry.opensuse.org/systemsmanagement/uyuni/master/containers/uyuni/server:latest docker-archive:server-image.tar:registry.opensuse.org/systemsmanagement/uyuni/master/containers/uyuni/server:latest
+skopeo copy docker://registry.opensuse.org/systemsmanagement/uyuni/master/containers/uyuni/server:latest docker-archive:server.tar:registry.opensuse.org/systemsmanagement/uyuni/master/containers/uyuni/server:latest
 ```
 
 Transfer the resulting `server-image.tar` to the server and load it using the following command:
 
 ```
-podman load -i server-image.tar
+podman load -i server.tar
 ```
+
+To prevent pulling the images pass the `--image=pullPolicy=never` parameter to `uyuniadm install` or `uyuniadm migrate`.
 
 # Migrating from a regular server
 

@@ -4,7 +4,6 @@ set -e
 # Prepare
 cp -r /manager/schema /tmp
 cd /tmp/schema/reportdb
-find . -name '*.91' | while read i ; do mv $i ${i%%.91} ; done
 
 # Build the schema
 make -f Makefile.schema SCHEMA=uyuni-reportdb-schema VERSION=4.3 RELEASE=testing

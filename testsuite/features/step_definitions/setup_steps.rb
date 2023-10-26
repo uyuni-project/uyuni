@@ -110,9 +110,13 @@ When(/^I wait at most (\d+) seconds until the tree item "([^"]+)" contains "([^"
   raise "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query, wait: timeout.to_i)
 end
 
-When(/^I open the sub-list of the product "(.*?)"$/) do |product|
+When(/^I open the sub-list of the product "(.*?)"((?: if present)?)$/) do |product, if_present|
   xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]/div/i[contains(@class, 'fa-angle-right')]"
-  raise "xpath: #{xpath} not found" unless find(:xpath, xpath).click
+  begin
+    find(:xpath, xpath).click
+  rescue Capybara::ElementNotFound
+    raise "xpath: #{xpath} not found" if if_present.empty?
+  end
 end
 
 When(/^I select the addon "(.*?)"$/) do |addon|
@@ -152,9 +156,9 @@ When(/^I click the Add Product button$/) do
   raise 'xpath: button#addProducts not found' unless find('button#addProducts').click
 end
 
-Then(/^the SLE15 (SP3|SP4) product should be added$/) do |sp_version|
+Then(/^the SLE15 (SP3|SP4|SP5) product should be added$/) do |sp_version|
   output, _code = get_target('server').run('echo -e "admin\nadmin\n" | mgr-sync list channels', check_errors: false, buffer_size: 1_000_000)
-  STDOUT.puts "Products list:\n#{output}"
+  log "Products list:\n#{output}"
   match = "[I] SLE-Product-SLES15-#{sp_version}-Pool for x86_64 SUSE Linux Enterprise Server 15 #{sp_version} x86_64 [sle-product-sles15-#{sp_version.downcase}-pool-x86_64]"
   raise "Not included:\n #{match}" unless output.include? match
   match = "[I] SLE-Module-Basesystem15-#{sp_version}-Updates for x86_64 Basesystem Module 15 #{sp_version} x86_64 [sle-module-basesystem15-#{sp_version.downcase}-updates-x86_64]"

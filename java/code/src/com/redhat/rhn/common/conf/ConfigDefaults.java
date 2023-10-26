@@ -370,6 +370,11 @@ public class ConfigDefaults {
     public static final String UNIFY_CUSTOM_CHANNEL_MANAGEMENT = "java.unify_custom_channel_management";
 
     /**
+     * Specify the number of minutes to wait before performing a system reboot
+     * */
+    public static final String REBOOT_DELAY = "java.reboot_delay";
+
+    /**
      * Disable SSL redirection
      */
     public static final String NO_SSL = "server.no_ssl";
@@ -1146,5 +1151,21 @@ public class ConfigDefaults {
      */
     public long getRhuiDefaultOrgId() {
         return Config.get().getInt(RHUI_DEFAULT_ORG_ID, 1);
+    }
+
+    /**
+     * Returns the number of minutes to wait before performing a system reboot
+     *
+     * @return the minutes to wait before a system reboot
+     * */
+    public int getRebootDelay() {
+        int rebootDelay = Config.get().getInt(REBOOT_DELAY, 3);
+        // A value of 0 would cause a direct shutdown which makes it impossible for salt to return
+        // the result back, resulting in a failed action.
+        if (rebootDelay < 1) {
+            rebootDelay = 1;
+        }
+
+        return rebootDelay;
     }
 }
