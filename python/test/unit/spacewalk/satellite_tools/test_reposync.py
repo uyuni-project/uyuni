@@ -243,7 +243,6 @@ class RepoSyncTest(unittest.TestCase):
     @patch("spacewalk.satellite_tools.reposync.os", os)
     @patch("spacewalk.satellite_tools.reposync.log", Mock())
     @patch("spacewalk.satellite_tools.reposync.RepoSync._normalize_orphan_vendor_packages", Mock())
-    @patch("spacewalk.satellite_tools.reposync.RepoSync.associate_package", Mock())
     @patch("spacewalk.satellite_tools.reposync.ThreadedDownloader")
     @patch("spacewalk.satellite_tools.reposync.multiprocessing.Pool")
     def test_import_packages_excludes_failed_pkgs(self, pool, downloader):
@@ -254,31 +253,19 @@ class RepoSyncTest(unittest.TestCase):
         rs = _init_reposync(self.reposync)
         _mock_rhnsql(self.reposync, [None, []])
 
-        fail_pkg_name = "failed"
+        fail_pkg_name = "failed.rpm"
         downloader.return_value.failed_pkgs = [fail_pkg_name]
 
-        packs = self._mock_packages_list([fail_pkg_name, "package"])
+        packs = self._mock_packages_list([fail_pkg_name])
         plugin = self._mock_repo_plugin(packs)
 
-        result = Mock()
-        # multiprocessing.Pool.apply_async.get returns a tuple of falsy values to avoid further processing
-        result.get = Mock(return_value=("", 0, "", ""))
-        apply_async_mock = Mock(return_value=result)
-        pool.return_value.__enter__.return_value.apply_async = apply_async_mock
-
-        with patch("uyuni.common.context_managers.CFG", self._mock_cfg()), \
-             patch.object(spacewalk.satellite_tools.reposync.RepoSync, "chunks", Mock(return_value=())):
+        with patch("uyuni.common.context_managers.CFG", self._mock_cfg()):
             rs.import_packages(plugin, None, "unused-url-string", None)
 
-        to_process = apply_async_mock.call_args_list[0][1]["args"][0]
-        # repository plugin returned 2 packages, but one failed to download
-        # the number of to_process tuples should be 1
-        self.assertTrue(len(to_process) == 1)
-        # each tuple contains (pack, to_download, to_link)
-        # get the package by accessing the first value of the first tuple
-        pack_to_process = to_process[0][0]
-        # the failed package should be filtered from the `to_process` variable
-        self.assertTrue(pack_to_process.unique_id.relativepath != fail_pkg_name)
+        # repository plugin returned 1 package that failed to download
+        # multiprocessing.Pool.apply_async shouldn't be called
+        apply_async_mock = pool.return_value.__enter__.return_value.apply_async
+        self.assertFalse(apply_async_mock.called)
 
     @patch("uyuni.common.context_managers.initCFG", Mock())
     def test_sync_raises_channel_timeout(self):
