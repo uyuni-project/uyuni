@@ -209,41 +209,6 @@ public class HttpClientAdapter {
             // Return direct route
             return new HttpRoute(host);
         }
-
-        /**
-         * Check for a given {@link URI} if a proxy should be used or not.
-         *
-         * @param uri the URI to check
-         * @return true if proxy should be used, else false
-         */
-        private boolean useProxyFor(URI uri) {
-            if (uri.getScheme().equals("file")) {
-                return false;
-            }
-            String host = uri.getHost();
-            if (host.equals("localhost") || host.equals("127.0.0.1") || host.equals("::1")) {
-                return false;
-            }
-
-            if (noProxyDomains.isEmpty()) {
-                return true;
-            }
-            else if (noProxyDomains.contains("*")) {
-                return false;
-            }
-
-            // Check for either an exact match or the previous character is a '.',
-            // so that host is within the same domain.
-            for (String domain : noProxyDomains) {
-                if (domain.startsWith(".")) {
-                    domain = domain.substring(1);
-                }
-                if (domain.equals(host) || host.endsWith("." + domain)) {
-                    return false;
-                }
-            }
-            return true;
-        }
     }
 
     /**
@@ -324,6 +289,41 @@ public class HttpClientAdapter {
         }
 
         return executeRequest(request, ignoreNoProxy);
+    }
+
+    /**
+     * Check for a given {@link URI} if a proxy should be used or not.
+     *
+     * @param uri the URI to check
+     * @return true if proxy should be used, else false
+     */
+    private boolean useProxyFor(URI uri) {
+        if (uri.getScheme().equals("file")) {
+            return false;
+        }
+        String host = uri.getHost();
+        if (host.equals("localhost") || host.equals("127.0.0.1") || host.equals("::1")) {
+            return false;
+        }
+
+        if (noProxyDomains.isEmpty()) {
+            return true;
+        }
+        else if (noProxyDomains.contains("*")) {
+            return false;
+        }
+
+        // Check for either an exact match or the previous character is a '.',
+        // so that host is within the same domain.
+        for (String domain : noProxyDomains) {
+            if (domain.startsWith(".")) {
+                domain = domain.substring(1);
+            }
+            if (domain.equals(host) || host.endsWith("." + domain)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
