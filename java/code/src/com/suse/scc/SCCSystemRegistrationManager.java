@@ -24,6 +24,7 @@ import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCClientException;
 import com.suse.scc.model.SCCUpdateSystemJson;
 import com.suse.scc.model.SCCVirtualizationHostJson;
+import com.suse.scc.registration.SCCSystemRegistration;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -43,7 +44,7 @@ public class SCCSystemRegistrationManager {
     /**
      * Constructor
      *
-     * @param sccClientIn
+     * @param sccClientIn the scc client
      */
     public SCCSystemRegistrationManager(SCCClient sccClientIn) {
         this.sccClient = sccClientIn;
@@ -127,7 +128,7 @@ public class SCCSystemRegistrationManager {
      * @param primaryCredential the current primary organization credential
      */
     public void register(List<SCCRegCacheItem> items, Credentials primaryCredential) {
-        SCCSystemRegistration.register(sccClient, items, primaryCredential);
+        new SCCSystemRegistration().register(sccClient, items, primaryCredential);
     }
 
     /**

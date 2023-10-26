@@ -19,7 +19,6 @@ import com.google.gson.annotations.SerializedName;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * This is a System Item send to SCC for registration.
@@ -29,7 +28,7 @@ public class SCCRegisterSystemJson {
     private String login;
     private String password;
     private String hostname;
-    private Map<String, String> hwinfo;
+    private SCCHwInfoJson hwinfo;
     private List<SCCMinProductJson> products;
     private List<String> regcodes = new LinkedList<>();
     @SerializedName("last_seen_at")
@@ -45,7 +44,7 @@ public class SCCRegisterSystemJson {
      * @param lastSeenIn the last seen date
      */
     public SCCRegisterSystemJson(String loginIn, String passwdIn, String hostnameIn,
-            Map<String, String> hwinfoIn, List<SCCMinProductJson> productsIn, Date lastSeenIn) {
+            SCCHwInfoJson hwinfoIn, List<SCCMinProductJson> productsIn, Date lastSeenIn) {
         login = loginIn;
         password = passwdIn;
         hostname = hostnameIn;
@@ -78,7 +77,7 @@ public class SCCRegisterSystemJson {
     /**
      * @return Returns the hwinfo.
      */
-    public Map<String, String> getHwinfo() {
+    public SCCHwInfoJson getHwinfo() {
         return hwinfo;
     }
 

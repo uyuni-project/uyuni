@@ -12,29 +12,13 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.suse.scc.model;
 
-import java.util.List;
+package com.suse.scc.registration;
 
-/**
- * This is an object that matches the expected response from an SCC organization system update.
- */
-public class SCCOrganizationSystemsUpdateResponse {
-
-    private List<SCCSystemCredentialsJson> systems;
-
+public interface SCCSystemRegistrationContextHandler {
     /**
-     * Constructor
-     * @param systemsIn the systems
+     * Handle the SCC system registration context
+     * @param context object containing variables and specific utils for preforming SCC system registration
      */
-    public SCCOrganizationSystemsUpdateResponse(List<SCCSystemCredentialsJson> systemsIn) {
-        this.systems = systemsIn;
-    }
-
-    /**
-     * @return Returns the systems
-     */
-    public List<SCCSystemCredentialsJson> getSystems() {
-        return systems;
-    }
+    void handle(SCCSystemRegistrationContext context);
 }
