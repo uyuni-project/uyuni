@@ -54,15 +54,7 @@ function srpm_package_defs() {
   #        ...
   #      done < <(srpm_package_defs)
   #
-  test -n "$PACKAGE" || {
-    if test "$OSCAPI" == "https://api.suse.de"; then
-        # The init-image is not needed for SUMA: BCI:Init will be used instead
-        PACKAGE=$(find "$SRPM_DIR" -mindepth 1 -maxdepth 1 -type d -printf "%P\n" \
-                  | grep -v -x -e init-image)
-    else
-        PACKAGE=$(find "$SRPM_DIR" -mindepth 1 -maxdepth 1 -type d -printf "%P\n")
-    fi
-  }
+  PACKAGE=$(find "$SRPM_DIR" -mindepth 1 -maxdepth 1 -type d -printf "%P\n")
   for N in $PACKAGE; do
     test -d "$SRPM_DIR/$N" || {
       echo "No package dir '$SRPM_DIR/$N'" >&2
