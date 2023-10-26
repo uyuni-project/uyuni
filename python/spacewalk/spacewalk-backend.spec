@@ -649,7 +649,7 @@ fi
 %doc README.ULN
 %attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_satellite.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-tools
-%config(noreplace) %{rhnconf}/signing.conf
+%attr(600,root,root) %config(noreplace) %{rhnconf}/signing.conf
 %attr(755,root,root) %{_bindir}/rhn-charsets
 %attr(755,root,root) %{_bindir}/rhn-schema-version
 %attr(755,root,root) %{_bindir}/rhn-ssl-dbstore

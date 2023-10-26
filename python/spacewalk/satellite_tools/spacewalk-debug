@@ -248,6 +248,34 @@ if [ -d /usr/share/rhn/config-defaults ]; then
     cp -fa /usr/share/rhn/config-defaults/* $DIR/config-defaults
 fi
 
+# CLM - Save Current Environment Version Details
+echo "    * querying CLM project history"
+mkdir -p "$DIR/clm/projects"
+echo "SELECT id, label, first_env_id FROM susecontentproject;" | /usr/bin/spacewalk-sql --select-mode - | tail -n +3 | head -n -2 > "$DIR/clm/tmp_projects.txt"
+
+while read -r project; do
+  project_id=$(echo "$project" | awk '{print $1}' |  tr -d '[:space:]')
+  project_label=$(echo "$project" | awk '{print $3}' | tr -d '[:space:]')
+  first_env_id=$(echo "$project" | awk  '{print $5}' | tr -d '[:space:]')
+
+  curr_env=$first_env_id
+  while [ -n "$curr_env" ]; do
+    env_label=$(echo "SELECT label FROM susecontentenvironment WHERE id=$curr_env;" | /usr/bin/spacewalk-sql --select-mode - | tail -n +3 | head -n -2 | tr -d '[:space:]')
+    env_version=$(echo "SELECT version FROM susecontentenvironment WHERE id=$curr_env;" | /usr/bin/spacewalk-sql --select-mode - | tail -n +3 | head -n -2 | tr -d '[:space:]')
+    echo "## Environment: $env_label" >> "$DIR/clm/projects/$project_label.txt"
+    echo "SELECT message, version, created FROM susecontentprojecthistoryentry WHERE project_id=$project_id AND version=$env_version ;" | /usr/bin/spacewalk-sql --select-mode - | head -n -2 >> "$DIR/clm/projects/$project_label.txt"
+    echo -e "\n\n" >> "$DIR/clm/projects/$project_label.txt"
+    next_env=$(echo "SELECT next_env_id FROM susecontentenvironment WHERE id=$curr_env;" | /usr/bin/spacewalk-sql --select-mode - | tail -n +3 | head -n -2 | awk '{print $1}' | tr -d '[:space:]')
+    curr_env="$next_env"
+  done
+done < "$DIR/clm/tmp_projects.txt"
+
+rm "$DIR/clm/tmp_projects.txt"
+
+# Save all CLM releated DB Tables to clm/full_tables.txt
+echo "    * querying CLM tables"
+for i in $(echo "\\dt;" | /usr/bin/spacewalk-sql --select-mode - |grep susecontent | awk '{print $3}'); do echo "$i"; echo "SELECT * FROM $i;" | /usr/bin/spacewalk-sql --select-mode -; done > "$DIR/clm/full_tables.txt"
+
 #cobbler stuff
 echo "    * copying cobbler files"
 if [ -d /etc/cobbler ]; then

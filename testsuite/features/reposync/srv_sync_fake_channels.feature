@@ -29,6 +29,7 @@ Feature: Synchronize fake channels
     Then I should see a "Repository sync scheduled for Fake-Base-Channel." text
     And I wait until the channel "fake-base-channel" has been synced
 
+@sle_minion
   Scenario: Synchronize Fake-RPM-SUSE-Channel channel
     Given I am authorized for the "Admin" section
     When I follow the left menu "Software > Manage > Channels"
@@ -40,6 +41,7 @@ Feature: Synchronize fake channels
     Then I should see a "Repository sync scheduled for Fake-RPM-SUSE-Channel." text
     And I wait until the channel "fake-rpm-suse-channel" has been synced
 
+@sle_minion
   Scenario: Verify state of Fake-RPM-SUSE-Channel channel
     Then "orion-dummy-1.1-1.1.x86_64.rpm" package should have been stored
     And solver file for "fake-rpm-suse-channel" should reference "orion-dummy-1.1-1.1.x86_64.rpm"
@@ -90,6 +92,7 @@ Feature: Synchronize fake channels
     Then I should see a "Repository sync scheduled for Fake-Base-Channel-RH-like." text
     And I wait until the channel "fake-base-channel-rh-like" has been synced
 
+@pxeboot_minion
 @uyuni
 @scc_credentials
   Scenario: Synchronize the repository in the terminal channel
@@ -103,7 +106,7 @@ Feature: Synchronize fake channels
     Then I should see a "Repository sync scheduled for Fake-RPM-Terminal-Channel." text
     And I wait until the channel "fake-rpm-terminal-channel" has been synced
 
-
+@pxeboot_minion
 @uyuni
 @scc_credentials
   Scenario: Verify state of Fake-RPM-Terminal-Channel custom channel

@@ -1,5 +1,5 @@
---
 -- Copyright (c) 2010--2012 Red Hat, Inc.
+-- Copyright (c) 2023 SUSE LLC
 --
 -- This software is licensed to you under the GNU General Public License,
 -- version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -13,11 +13,5 @@
 -- in this software or its documentation.
 --
 
-create temporary table store_searchpath as select setting from pg_settings where name = 'search_path';
-
--- The spaces in front of \i are needed to stop blend from expanding
--- in build time.
-   \i /usr/share/postgresql/extension/dblink--1.0.sql
-
-update pg_settings set setting = (select setting from store_searchpath) where name = 'search_path';
-drop table store_searchpath;
+create extension dblink;
+CREATE EXTENSION pgcrypto;

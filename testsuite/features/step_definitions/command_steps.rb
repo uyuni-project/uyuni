@@ -904,12 +904,18 @@ When(/^I remove packages? "([^"]*)" from this "([^"]*)"((?: without error contro
 end
 
 When(/^I install package tftpboot-installation on the server$/) do
-  output, _code = get_target('server').run('find /var/spacewalk/packages -name tftpboot-installation-SLE-15-SP4-x86_64-*.noarch.rpm')
-  packages = output.split("\n")
-  pattern = '/tftpboot-installation-([^/]+)*.noarch.rpm'
-  # Reverse sort the package name to get the latest version first and install it
-  package = packages.min { |a, b| b.match(pattern)[0] <=> a.match(pattern)[0] }
-  get_target('server').run("rpm -i #{package}", check_errors: false)
+  server = get_target('server')
+  os_version = server.os_version
+  if product == 'Uyuni'
+    server.run("zypper --non-interactive install tftpboot-installation-openSUSE-Leap-#{os_version}-x86_64", check_errors: false, verbose: true)
+  else
+    output, _code = server.run('find /var/spacewalk/packages -name tftpboot-installation-SLE-15-SP4-x86_64-*.noarch.rpm')
+    packages = output.split("\n")
+    pattern = '/tftpboot-installation-([^/]+)*.noarch.rpm'
+    # Reverse sort the package name to get the latest version first and install it
+    package = packages.min { |a, b| b.match(pattern)[0] <=> a.match(pattern)[0] }
+    server.run("rpm -i #{package}", check_errors: false)
+  end
 end
 
 When(/^I reset tftp defaults on the proxy$/) do
@@ -1428,14 +1434,6 @@ When(/^I reboot the server through SSH$/) do
   end
 end
 
-When(/^I reboot the "([^"]*)" minion through SSH$/) do |host|
-  node = get_target(host)
-  node.run('reboot > /dev/null 2> /dev/null &')
-  reboot_timeout = 120
-  check_shutdown(node.public_ip, reboot_timeout)
-  check_restart(get_target('server').public_ip, node, reboot_timeout)
-end
-
 When(/^I reboot the "([^"]*)" minion through the web UI$/) do |host|
   steps %(
     Given I am on the Systems overview page of this "#{host}"
@@ -1451,7 +1449,7 @@ end
 
 When(/^I reboot the "([^"]*)" if it is a SLE Micro$/) do |host|
   if slemicro_host?(host)
-    step %(I reboot the "#{host}" minion through SSH)
+    step %(I reboot the "#{host}" minion through the web UI)
   end
 end
 
@@ -1499,9 +1497,11 @@ When(/^I run spacewalk-hostname-rename command on the server$/) do
   end
 
   # Update the server CA certificate since it changed, otherwise all API and browser uses will fail
+  log 'Update controller CA certificates'
   update_controller_ca
 
   # Reset the API client to take the new CA into account
+  log 'Resetting the API client'
   reset_api_client
 
   raise 'Error while running spacewalk-hostname-rename command - see logs above' unless result_code.zero?
@@ -1517,17 +1517,30 @@ When(/^I check all certificates after renaming the server hostname$/) do
 
   raise 'Error getting server certificate serial!' unless result_code.zero?
 
-  command_minion = "openssl x509 --noout --text -in /etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT | grep -A1 'Serial' | grep -v 'Serial'"
   targets = %w[proxy sle_minion ssh_minion rhlike_minion deblike_minion build_host kvm_server]
   targets.each do |target|
+    os_family = get_target(target).os_family
     # get all defined minions from the environment variables and check their certificate serial
     next unless ENV.key? ENV_VAR_BY_HOST[target]
+    # Red Hat-like and Debian-like minions store their certificates in a different location
+    certificate = if os_family =~ /^centos/ || os_family =~ /^rocky/
+                    '/etc/pki/ca-trust/source/anchors/RHN-ORG-TRUSTED-SSL-CERT'
+                  elsif os_family =~ /^ubuntu/ || os_family =~ /^debian/
+                    '/usr/local/share/ca-certificates/susemanager/RHN-ORG-TRUSTED-SSL-CERT.crt'
+                  else
+                    '/etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT'
+                  end
+    get_target(target).run("test -s #{certificate}", successcodes: [0], check_errors: true)
+
+    command_minion = "openssl x509 --noout --text -in #{certificate} | grep -A1 'Serial' | grep -v 'Serial'"
     minion_cert_serial, result_code = get_target(target).run(command_minion)
+
+    raise "#{target}: Error getting server certificate serial!" unless result_code.zero?
+
     minion_cert_serial.strip!
     log "#{target} certificate serial: #{minion_cert_serial}"
 
-    raise 'Error getting server certificate serial!' unless result_code.zero?
-    raise "Error comparing #{target} certificate with server!" unless minion_cert_serial == server_cert_serial
+    raise "#{target}: Error, certificate does not match with server one" unless minion_cert_serial == server_cert_serial
   end
 end
 

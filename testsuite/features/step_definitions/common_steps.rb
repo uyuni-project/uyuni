@@ -201,6 +201,10 @@ When(/^I check radio button "(.*?)"$/) do |arg1|
   raise "#{arg1} can't be checked" unless choose(arg1)
 end
 
+When(/^I check radio button "(.*?)", if not checked$/) do |arg1|
+  choose(arg1) unless has_checked_field?(arg1)
+end
+
 When(/^I check default base channel radio button of this "([^"]*)"$/) do |host|
   default_base_channel = BASE_CHANNEL_BY_CLIENT[product][host]
   raise "#{default_base_channel} can't be checked" unless choose(default_base_channel)

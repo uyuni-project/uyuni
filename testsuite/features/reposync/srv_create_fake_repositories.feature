@@ -41,6 +41,7 @@ Feature: Create fake repositories for each fake child channel
     And I click on "Save Repositories"
     Then I should see a "Fake-Base-Channel repository information was successfully updated" text
 
+@sle_minion
   Scenario: Add the fake RPM repository to the SUSE fake child channel
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Fake-RPM-SUSE-Channel"
@@ -63,7 +64,7 @@ Feature: Create fake repositories for each fake child channel
     And I click on "Save Repositories"
     Then I should see a "Test-Base-Channel-x86_64 repository information was successfully updated" text
 
-  @rhlike_minion
+@rhlike_minion
   Scenario: Add the fake RPM repository to the RedHat-like base channel
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Fake-Base-Channel-RH-like"
@@ -114,6 +115,7 @@ Feature: Create fake repositories for each fake child channel
     And I click on "Save Repositories"
     Then I should see a "Fake-Base-Channel-Debian-like repository information was successfully updated" text
 
+@pxeboot_minion
 @uyuni
 @scc_credentials
   Scenario: Add the repository to the terminal child channel

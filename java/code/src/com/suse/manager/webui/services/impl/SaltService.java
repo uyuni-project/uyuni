@@ -18,6 +18,7 @@ import com.redhat.rhn.common.RhnRuntimeException;
 import com.redhat.rhn.common.client.ClientCertificate;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.messaging.JavaMailException;
+import com.redhat.rhn.common.util.http.HttpClientAdapter;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -188,9 +189,9 @@ public class SaltService implements SystemQuery, SaltApi {
      */
     public SaltService() {
         RequestConfig requestConfig = RequestConfig.custom()
-                .setConnectTimeout(0)
-                .setSocketTimeout(0)
-                .setConnectionRequestTimeout(0)
+                .setConnectTimeout(HttpClientAdapter.getHTTPConnectionTimeout(5))
+                .setSocketTimeout(HttpClientAdapter.getSaltApiHTTPSocketTimeout(12 * 60 * 60))
+                .setConnectionRequestTimeout(5 * 60 * 1000)
                 .setCookieSpec(CookieSpecs.STANDARD)
                 .build();
         HttpAsyncClientBuilder httpClientBuilder = HttpAsyncClients.custom();
@@ -584,8 +585,8 @@ public class SaltService implements SystemQuery, SaltApi {
             }
             catch (SaltException e) {
                 try {
-                    LOG.error("Unable to connect: {}, retrying in " + DELAY_TIME_SECONDS + " seconds.", e);
-                    Thread.sleep(1000 * DELAY_TIME_SECONDS);
+                    LOG.error("Unable to connect: {}, retrying in {} seconds.", e, DELAY_TIME_SECONDS);
+                    Thread.sleep(1000L * DELAY_TIME_SECONDS);
                     if (retries == 1) {
                         MailHelper.withSmtp().sendAdminEmail("Cannot connect to salt event bus",
                                 "salt-api daemon is not responding. Check the status of " +
@@ -598,6 +599,7 @@ public class SaltService implements SystemQuery, SaltApi {
                 }
                 catch (InterruptedException e1) {
                     LOG.error("Interrupted during sleep", e1);
+                    Thread.currentThread().interrupt();
                 }
             }
         }
@@ -1090,7 +1092,7 @@ public class SaltService implements SystemQuery, SaltApi {
     public Optional<SystemInfo> getSystemInfoFull(String minionId) {
         return rawJsonCall(State.apply(Collections.singletonList(ApplyStatesEventMessage.SYSTEM_INFO_FULL),
                Optional.empty()), minionId)
-               .flatMap(result -> result.result())
+               .flatMap(Result::result)
                .map(result -> Json.GSON.fromJson(result, SystemInfo.class));
     }
 
