@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: MIT
 #!BuildTag: uyuni/server:latest
 
-ARG INIT_BASE=uyuni/init:latest
-FROM $INIT_BASE
+ARG INIT_IMAGE=uyuni/init:latest
+FROM $INIT_IMAGE
 
 ARG PRODUCT_PATTERN_PREFIX="patterns-uyuni"
 
