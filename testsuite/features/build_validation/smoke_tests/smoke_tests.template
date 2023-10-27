@@ -32,9 +32,6 @@ Feature: Smoke tests for <client>
     And the system name for "<client>" should be correct
     And I should see several text fields for "<client>"
 
-# TODO: remove the "skip" tags when Rocky and Alma have patches available.
-@skip_for_rocky9
-@skip_for_alma9
 @skip_for_debianlike
   Scenario: Install a patch on the <client>
     When I follow "Software" in the content area
@@ -157,7 +154,7 @@ Feature: Smoke tests for <client>
     When I click on "Deploy Files to Selected Systems"
     Then I should see a "1 revision-deploy is being scheduled." text
     And I should see a "0 revision-deploys overridden." text
-    And I reboot the "<client>" if it is a SLE Micro
+    When I force picking pending events on "<client>" if necessary
     And I wait until file "/etc/s-mgr/config" exists on "<client>"
     Then file "/etc/s-mgr/config" should contain "COLOR=white" on "<client>"
 
@@ -168,6 +165,7 @@ Feature: Smoke tests for <client>
     And I should see a "Reboot system" button
     When I click on "Reboot system"
     Then I should see a "Reboot scheduled for system" text
+    When I force picking pending events on "<client>" if necessary
     And I wait at most 600 seconds until event "System reboot scheduled by admin" is completed
     Then I should see a "This action's status is: Completed" text
 
@@ -259,7 +257,7 @@ Feature: Smoke tests for <client>
     When I visit the grafana dashboards of this "monitoring_server"
     And I wait until I do not see "Loading Grafana" text
     And I wait until I see "General" text
-    And I check radio button "View as list"
+    And I check radio button "View as list", if not checked
     When I follow "Client Systems"
     Then I should see "<client>" hostname
     When I enter "<client>" hostname on grafana's host field

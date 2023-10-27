@@ -467,7 +467,8 @@ public class IndexManager {
                 pr = new Result(x,
                         doc.getField("id").stringValue(),
                         doc.getField("name").stringValue(),
-                        hits.score(x));
+                        hits.score(x),
+                        doc.getField("uuid").stringValue());
             }
             if (log.isDebugEnabled()) {
                 log.debug("Hit[" + x + "] Score = " + hits.score(x) + ", Result = " + pr);

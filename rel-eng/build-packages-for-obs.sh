@@ -129,6 +129,26 @@ while read PKG_NAME PKG_VER PKG_DIR; do
   ${VERBOSE:+cat "$T_LOG"}
 
   eval $(awk '/^Wrote:.*src.rpm/{srpm=$2}/^Wrote:.*.changes/{changes=$2}END{ printf "SRPM=\"%s\"\n",srpm; printf "CHANGES=\"%s\"\n",changes; }' "$T_LOG")
+  EXTRA_CHANGELOGS=0
+  if [ "$(head -n1 ${CHANGES}|grep '^- ')" == "" ]; then
+    PREVIOUS_CHANGELOGS=0
+  else
+    PREVIOUS_CHANGELOGS=1
+  fi
+  FILELIST="$(ls ${GIT_DIR}/${PKG_DIR}${PKG_NAME}.changes.* 2> /dev/null; true)"
+  for FILE in $FILELIST; do
+    if [ ${PREVIOUS_CHANGELOGS} -eq 0 -a ${EXTRA_CHANGELOGS} -eq 0 ]; then
+      sed -i '1i\\' ${CHANGES}
+    fi
+    EXTRA_CHANGELOGS=1
+    LINENUMBER=1
+    while IFS= read -r LINE; do
+      if [ "${LINE}" != "" ]; then
+        sed -i "${LINENUMBER}i\\${LINE}" ${CHANGES}
+	LINENUMBER=$((LINENUMBER+1))
+      fi
+    done < ${FILE}
+  done
   if [ "$(head -n1 ${CHANGES}|grep '^- ')" != "" ]; then
     echo "*** Untagged package, adding fake header..."
     sed -i "1i Fri Jan 01 00:00:00 CEST 2038 - faketagger@suse.inet\n" ${CHANGES}

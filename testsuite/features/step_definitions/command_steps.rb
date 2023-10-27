@@ -1781,14 +1781,6 @@ When(/^I reboot the server through SSH$/) do
   end
 end
 
-When(/^I reboot the "([^"]*)" minion through SSH$/) do |host|
-  node = get_target(host)
-  node.run('reboot > /dev/null 2> /dev/null &')
-  reboot_timeout = 120
-  check_shutdown(node.public_ip, reboot_timeout)
-  check_restart(get_target('server').public_ip, node, reboot_timeout)
-end
-
 When(/^I reboot the "([^"]*)" minion through the web UI$/) do |host|
   steps %(
     Given I am on the Systems overview page of this "#{host}"
@@ -1804,7 +1796,7 @@ end
 
 When(/^I reboot the "([^"]*)" if it is a SLE Micro$/) do |host|
   if slemicro_host?(host)
-    step %(I reboot the "#{host}" minion through SSH)
+    step %(I reboot the "#{host}" minion through the web UI)
   end
 end
 

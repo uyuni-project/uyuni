@@ -14,8 +14,9 @@
  */
 package com.suse.manager.ssl;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -139,12 +140,10 @@ public class SSLCertData {
      * @return machine name
      */
     public String getMachineName() {
-        List<String> dataList = Arrays.asList(this.getCn().split("\\."));
-        if (dataList.size() > 2) {
-            return String.join(".", dataList.subList(0, dataList.size() - 2));
-        }
-        else {
-            return String.join(".");
-        }
+        String[] hostnameParts = this.getCn().split("\\.");
+
+        return hostnameParts.length > 2 ?
+                StringUtils.join(hostnameParts, ".", 0, hostnameParts.length - 2) :
+                this.getCn();
     }
 }

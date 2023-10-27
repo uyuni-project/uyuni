@@ -532,6 +532,7 @@ public class SystemSearchHelper {
             serverItem.put("rank", result.get("rank"));
             serverItem.put("score", result.get("score"));
             serverItem.put("name", result.get("name"));
+            serverItem.put("uuid", result.get("uuid"));
             String matchingField = (String)result.get("matchingField");
             if (matchingField.length() == 0) {
                 matchingField = (String)result.get("name");

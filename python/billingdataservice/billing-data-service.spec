@@ -27,7 +27,7 @@ Source:         %{name}-%{version}.tar.gz
 BuildArch:      noarch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Requires:       apache2
-Requires:       csp-billing-adapter-service
+Recommends:     csp-billing-adapter-service
 Requires:       python3-Flask
 Requires:       spacewalk-backend-sql
 Requires:       spacewalk-taskomatic

@@ -510,15 +510,6 @@ Before('@skip_for_traditional') do |scenario|
   skip_this_scenario if scenario.location.file.include? 'client'
 end
 
-# TODO: remove these 2 "skip" tags when Rocky and Alma have patches available.
-Before('@skip_for_alma9') do
-  skip_this_scenario if ENV.key?(ENV_VAR_BY_HOST['alma9_minion']) || ENV.key?(ENV_VAR_BY_HOST['alma9_ssh_minion'])
-end
-
-Before('@skip_for_rocky9') do
-  skip_this_scenario if ENV.key?(ENV_VAR_BY_HOST['rocky9_minion']) || ENV.key?(ENV_VAR_BY_HOST['rocky_ssh_minion'])
-end
-
 Before('@skip_for_sle_micro') do |scenario|
   skip_this_scenario if scenario.location.file.include? 'slemicro'
 end

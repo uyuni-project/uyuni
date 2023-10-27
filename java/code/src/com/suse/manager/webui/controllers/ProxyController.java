@@ -135,6 +135,7 @@ public class ProxyController {
             return json(response, HttpStatus.SC_INTERNAL_SERVER_ERROR, msg);
         }
         catch (RhnRuntimeException e) {
+            LOG.error("Failed to generate proxy configuration", e);
             return json(response, HttpStatus.SC_BAD_REQUEST, e.getMessage());
         }
     }

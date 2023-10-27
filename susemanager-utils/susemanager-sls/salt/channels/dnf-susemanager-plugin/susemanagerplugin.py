@@ -1,5 +1,7 @@
 import dnf
 
+from dnfpluginscore import _, logger
+
 class Susemanager(dnf.Plugin):
 
     name = 'susemanager'
@@ -14,5 +16,6 @@ class Susemanager(dnf.Plugin):
                 hdr = list(repo.get_http_headers())
                 hdr.append("X-Mgr-Auth: %s" % susemanager_token)
                 repo.set_http_headers(hdr)
+                logger.debug("Susemanager Plugin: [%s] set token header: 'X-Mgr-Auth: ...%s'" % (repo.id, susemanager_token[-10:]))
             except:
                 pass

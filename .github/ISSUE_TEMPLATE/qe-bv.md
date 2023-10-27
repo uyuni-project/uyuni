@@ -52,6 +52,8 @@ They are delivered together with submissions and we must verify them before appr
     - [ ] debian10_ssh_minion
     - [ ] debian11_minion
     - [ ] debian11_ssh_minion
+    - [ ] debian12_minion
+    - [ ] debian12_ssh_minion
     - [ ] liberty9_minion
     - [ ] liberty9_ssh_minion
     - [ ] oracle9_minion
@@ -93,8 +95,18 @@ They are delivered together with submissions and we must verify them before appr
     - [ ] ubuntu2004_ssh_minion
     - [ ] ubuntu2204_minion
     - [ ] ubuntu2204_ssh_minion
-  - [ ] Containerized proxy passed using Cédric's namespace (ask him to build it and before start the pipeline, [please set it up](https://confluence.suse.com/display/SUSEMANAGER/MI+process+for+Containerized+components))
+  - [ ] Containerized proxy passed using the aggregate namespace [please set it up](https://confluence.suse.com/display/SUSEMANAGER/MI+process+for+Containerized+components#MIprocessforContainerizedcomponents-Finalcurrentsolution)
+    Make sure to read the info and ask maint-coord to create the release requests
+
+    ```
+    Edit `/etc/sysconfig/uyuni-proxy-systemd-services` inside the Pod Proxy VM
+    In the NAMESPACE, use this link exactly:
+    http://registry.suse.de/devel/galaxy/manager/mutesting/4.3/containers/suse/manager/4.3/
+
+    ```
+
   - [ ] Monitoring tests (Grafana dashboards included)
+  - [ ] Retail
     - [ ] SLES12 SP5
     - [ ] SLES15 SP4
   - [ ] Release Notes
