@@ -18,10 +18,10 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-27 14:34+0200\n"
-"PO-Revision-Date: 2023-09-10 15:15+0000\n"
+"PO-Revision-Date: 2023-10-27 19:15+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
-"Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web-4-3/sk/"
-">\n"
+"Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web-4-3/sk/>"
+"\n"
 "Language: sk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -4396,9 +4396,8 @@ msgstr "napr. proxy.domain.com"
 
 #: ../html/src/manager/proxy/container-config.tsx:206
 #: ../html/src/manager/proxy/container-config.tsx:217
-#, fuzzy
 msgid "Has to be a valid FQDN address"
-msgstr "Musí byť IP adresa"
+msgstr "Musí to byť platná adresa FQDN"
 
 #: ../html/src/manager/proxy/container-config.tsx:210
 msgid "Parent FQDN"
