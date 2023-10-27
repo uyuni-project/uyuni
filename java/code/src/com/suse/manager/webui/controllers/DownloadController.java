@@ -259,6 +259,7 @@ public class DownloadController {
             halt(HttpStatus.SC_NOT_FOUND,
                     String.format("Key or signature file not provided: %s", filename));
         }
+        validatePaygCompliant(PAYG_MANAGER);
 
         String token = getTokenFromRequest(request);
         validateMinionInPayg(token, PAYG_MANAGER);
@@ -295,6 +296,7 @@ public class DownloadController {
     public static Object downloadMediaFiles(Request request, Response response) {
         String channelLabel = request.params(":channel");
         String filename = request.params(":file");
+        validatePaygCompliant(PAYG_MANAGER);
 
         String token = getTokenFromRequest(request);
         validateMinionInPayg(token, PAYG_MANAGER);
@@ -405,6 +407,7 @@ public class DownloadController {
         }
 
         String basename = FilenameUtils.getBaseName(path);
+        validatePaygCompliant(PAYG_MANAGER);
         String token = getTokenFromRequest(request);
         validateMinionInPayg(token, PAYG_MANAGER);
 
@@ -582,6 +585,18 @@ public class DownloadController {
                     token, filename, channel, e.getMessage()));
             halt(HttpStatus.SC_FORBIDDEN,
                  String.format("Token is not valid to access %s in %s: %s", filename, channel, e.getMessage()));
+        }
+    }
+
+    /**
+     * Validate if the server is PAYG any compliant.
+     *
+     * @param mgr the Cloud PAYG Manager object
+     */
+    private static void validatePaygCompliant(CloudPaygManager mgr) {
+        if (!mgr.isCompliant()) {
+            log.info("Forbidden: SUSE Manager PAYG Server is not compliant");
+            halt(HttpStatus.SC_FORBIDDEN, "Server is not compliant. Please check the logs");
         }
     }
 
