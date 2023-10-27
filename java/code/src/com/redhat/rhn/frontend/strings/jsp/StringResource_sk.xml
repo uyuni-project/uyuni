@@ -2471,28 +2471,28 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="Unselect All" xml:space="preserve">
         <source>Unselect All</source>
-        <target/>
+        <target>Zrušiť výber všetkého</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page with a List View</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Add to SSM" xml:space="preserve">
         <source>Add Selected to SSM</source>
-        <target/>
+        <target>Pridať vybrané do SSM</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page with a List View</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsadmined.jsp.access" xml:space="preserve">
         <source>Access Granted Through</source>
-        <target/>
+        <target>Prístup udelený prostredníctvom</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/SystemsAdmined</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsadmined.jsp.name" xml:space="preserve">
         <source>Name</source>
-        <target/>
+        <target>Meno</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/SystemsAdmined</context>
         </context-group>
@@ -2501,21 +2501,21 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       <!-- edit_address.jsp -->
       <trans-unit id="edit_address.jsp.address" xml:space="preserve">
         <source> Address</source>
-        <target/>
+        <target> Adresa</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/EditAddress</context>
         </context-group>
       </trans-unit>
       <trans-unit id="edit_address.jsp.summary" xml:space="preserve">
         <source>This user's address information may be edited in the form provided below.  Entries marked with an asterisk (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) are &lt;strong&gt;required&lt;/strong&gt;.</source>
-        <target/>
+        <target>Informácie o adrese tohto používateľa môžete upravovať pomocou formulára nižšie.  Položky označené hviezdičkou (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) sú &lt;strong&gt;povinné&lt;/strong&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/EditAddress</context>
         </context-group>
       </trans-unit>
       <trans-unit id="edit_address.jsp.phone" xml:space="preserve">
         <source>Phone</source>
-        <target/>
+        <target>Telefón</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/EditAddress</context>
           <context context-type="sourcefile">/rhn/account/EditAddress</context>
@@ -2523,7 +2523,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="edit_address.jsp.fax" xml:space="preserve">
         <source>FAX</source>
-        <target/>
+        <target>FAX</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/EditAddress</context>
           <context context-type="sourcefile">/rhn/account/EditAddress</context>
@@ -2531,7 +2531,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="edit_address.jsp.city" xml:space="preserve">
         <source>City</source>
-        <target/>
+        <target>Mesto</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/EditAddress</context>
           <context context-type="sourcefile">/rhn/account/EditAddress</context>
@@ -2539,7 +2539,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="edit_address.jsp.state" xml:space="preserve">
         <source>State/Province</source>
-        <target/>
+        <target>Štát/Provincia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/EditAddress</context>
           <context context-type="sourcefile">/rhn/account/EditAddress</context>
