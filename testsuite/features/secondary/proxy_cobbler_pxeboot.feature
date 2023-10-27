@@ -35,10 +35,15 @@ Feature: PXE boot a terminal with Cobbler
     And I click on "Apply Highstate"
     And I wait until event "Apply highstate scheduled by admin" is completed
 
-  # We currently test Cobbler with SLES 15 SP4, even on Uyuni
+  @susemanager
   Scenario: Install TFTP boot package on the server
     When I install package tftpboot-installation on the server
     And I wait for "tftpboot-installation-SLE-15-SP4-x86_64" to be installed on "server"
+
+  @uyuni
+  Scenario: Install TFTP boot package on the server
+    When I install package tftpboot-installation on the server
+    And I wait for "tftpboot-installation-openSUSE-Leap-15.5-x86_64" to be installed on "server"
 
 # TODO: use this code when we start testing Cobbler with Leap
 #@uyuni
@@ -145,9 +150,15 @@ Feature: PXE boot a terminal with Cobbler
     And I click on "Delete Distribution"
     Then I should not see a "SLE-15-SP4-TFTP" text
 
-  Scenario: Cleanup: remove TFTP boot package from the server
-    And I remove package "tftpboot-installation-SLE-15-SP4-x86_64" from this "server" without error control
+  @susemanager
+  Scenario: Cleanup: Remove the TFTP boot package from the server
+    When I remove package "tftpboot-installation-SLE-15-SP4-x86_64" from this "server" without error control
     And I wait for "tftpboot-installation-SLE-15-SP4-x86_64" to be uninstalled on "server"
+
+  @uyuni
+  Scenario: Cleanup: Remove the TFTP boot package from the server
+    When I remove package "tftpboot-installation-openSUSE-Leap-15.5-x86_64" from this "server" without error control
+    And I wait for "tftpboot-installation-openSUSE-Leap-15.5-x86_64" to be uninstalled on "server"
 
   Scenario: Cleanup: delete the PXE boot minion
     Given I navigate to the Systems overview page of this "pxeboot_minion"
