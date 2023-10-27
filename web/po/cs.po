@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-20 13:52+0200\n"
+"POT-Creation-Date: 2023-10-27 14:34+0200\n"
 "PO-Revision-Date: 2022-09-19 19:13+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/web-4-3/cs/>\n"
@@ -2963,7 +2963,7 @@ msgstr "Import"
 #: ../html/src/manager/images/image-import.tsx:314
 #: ../html/src/manager/images/image-profile-edit.tsx:481
 #: ../html/src/manager/images/image-store-edit.tsx:202
-#: ../html/src/manager/proxy/container-config.tsx:386
+#: ../html/src/manager/proxy/container-config.tsx:390
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:385
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:186
 msgid "Clear fields"
@@ -4105,7 +4105,7 @@ msgid "Package States"
 msgstr "Stavy balíčku"
 
 #: ../html/src/manager/minion/packages/package-states.tsx:344
-#: ../html/src/manager/proxy/container-config.tsx:318
+#: ../html/src/manager/proxy/container-config.tsx:322
 #: ../html/src/manager/salt/keys/key-management.tsx:188
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:154
 #: ../html/src/manager/virtualization/nets/list/nets-list.tsx:77
@@ -4421,108 +4421,114 @@ msgstr ""
 msgid "e.g., proxy.domain.com"
 msgstr "např. proxy.domain.cz"
 
-#: ../html/src/manager/proxy/container-config.tsx:208
+#: ../html/src/manager/proxy/container-config.tsx:206
+#: ../html/src/manager/proxy/container-config.tsx:217
+#, fuzzy
+msgid "Has to be a valid FQDN address"
+msgstr "Zde musí být adresa IP"
+
+#: ../html/src/manager/proxy/container-config.tsx:210
 msgid "Parent FQDN"
 msgstr "FQDN rodiče"
 
-#: ../html/src/manager/proxy/container-config.tsx:210
+#: ../html/src/manager/proxy/container-config.tsx:212
 msgid "e.g., server.domain.com"
 msgstr "např. server.domain.cz"
 
-#: ../html/src/manager/proxy/container-config.tsx:211
+#: ../html/src/manager/proxy/container-config.tsx:213
 msgid "The FQDN of the parent (server or proxy) to connect to."
 msgstr "FQDN nadřazeného serveru nebo proxy serveru, k němuž se připojujete."
 
-#: ../html/src/manager/proxy/container-config.tsx:217
+#: ../html/src/manager/proxy/container-config.tsx:221
 msgid "Proxy SSH port"
 msgstr "Port proxy SSH"
 
-#: ../html/src/manager/proxy/container-config.tsx:218
+#: ../html/src/manager/proxy/container-config.tsx:222
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:479
 msgid "Port range: 1 - 65535"
 msgstr "Rozsah portů: 1 - 65535"
 
-#: ../html/src/manager/proxy/container-config.tsx:227
+#: ../html/src/manager/proxy/container-config.tsx:231
 msgid "Max Squid cache size"
 msgstr "Max. velikost vyrovnávací paměti Squid"
 
-#: ../html/src/manager/proxy/container-config.tsx:228
+#: ../html/src/manager/proxy/container-config.tsx:232
 msgid "The maximum value of the Squid cache in Megabytes"
 msgstr "Maximální hodnota mezipaměti Squid v MB"
 
-#: ../html/src/manager/proxy/container-config.tsx:231
+#: ../html/src/manager/proxy/container-config.tsx:235
 msgid "e.g., 2048"
 msgstr "např. 2048"
 
-#: ../html/src/manager/proxy/container-config.tsx:238
+#: ../html/src/manager/proxy/container-config.tsx:242
 msgid "Proxy admin email"
 msgstr "E-mail správce proxy serveru"
 
-#: ../html/src/manager/proxy/container-config.tsx:239
+#: ../html/src/manager/proxy/container-config.tsx:243
 msgid "The container-based proxy administrator email address"
 msgstr "E-mailová adresa správce proxy serveru založeného na kontejneru"
 
-#: ../html/src/manager/proxy/container-config.tsx:240
+#: ../html/src/manager/proxy/container-config.tsx:244
 msgid "e.g., proxy.admin@mycompany.com"
 msgstr "např. admin@domain.cz"
 
-#: ../html/src/manager/proxy/container-config.tsx:247
-#: ../html/src/manager/proxy/container-config.tsx:248
+#: ../html/src/manager/proxy/container-config.tsx:251
+#: ../html/src/manager/proxy/container-config.tsx:252
 msgid "SSL certificate"
 msgstr "SSL certifikát"
 
-#: ../html/src/manager/proxy/container-config.tsx:256
-#: ../html/src/manager/proxy/container-config.tsx:381
+#: ../html/src/manager/proxy/container-config.tsx:260
+#: ../html/src/manager/proxy/container-config.tsx:385
 msgid "Generate"
 msgstr "Generovat"
 
-#: ../html/src/manager/proxy/container-config.tsx:257
+#: ../html/src/manager/proxy/container-config.tsx:261
 msgid "Use existing"
 msgstr "Použít existující"
 
-#: ../html/src/manager/proxy/container-config.tsx:264
+#: ../html/src/manager/proxy/container-config.tsx:268
 msgid "CA certificate"
 msgstr "CA certifikát"
 
-#: ../html/src/manager/proxy/container-config.tsx:265
-#: ../html/src/manager/proxy/container-config.tsx:274
-#: ../html/src/manager/proxy/container-config.tsx:331
+#: ../html/src/manager/proxy/container-config.tsx:269
+#: ../html/src/manager/proxy/container-config.tsx:278
+#: ../html/src/manager/proxy/container-config.tsx:335
 msgid "To sign the SSL certificate in PEM format"
 msgstr "Podepsat certifikát SSL ve formátu PEM"
 
-#: ../html/src/manager/proxy/container-config.tsx:273
+#: ../html/src/manager/proxy/container-config.tsx:277
 msgid "CA private key"
 msgstr "Privátní klíč CA"
 
-#: ../html/src/manager/proxy/container-config.tsx:282
+#: ../html/src/manager/proxy/container-config.tsx:286
 msgid "CA password"
 msgstr "Heslo CA"
 
-#: ../html/src/manager/proxy/container-config.tsx:283
+#: ../html/src/manager/proxy/container-config.tsx:287
 msgid "The CA private key password"
 msgstr "Heslo privátního klíče CA"
 
-#: ../html/src/manager/proxy/container-config.tsx:291
+#: ../html/src/manager/proxy/container-config.tsx:295
 msgid "SSL Certificate data"
 msgstr "Data certifikátu SSL"
 
-#: ../html/src/manager/proxy/container-config.tsx:298
+#: ../html/src/manager/proxy/container-config.tsx:302
 msgid "Alternate CNAMEs"
 msgstr "Alternativní názvy CNAME"
 
-#: ../html/src/manager/proxy/container-config.tsx:306
+#: ../html/src/manager/proxy/container-config.tsx:310
 msgid "CNAME"
 msgstr "CNAME"
 
-#: ../html/src/manager/proxy/container-config.tsx:312
+#: ../html/src/manager/proxy/container-config.tsx:316
 msgid "2-letter country code"
 msgstr "Dvoupísmenný kód země"
 
-#: ../html/src/manager/proxy/container-config.tsx:319
+#: ../html/src/manager/proxy/container-config.tsx:323
 msgid "City"
 msgstr "Město"
 
-#: ../html/src/manager/proxy/container-config.tsx:320
+#: ../html/src/manager/proxy/container-config.tsx:324
 #: ../html/src/manager/recurring/recurring-actions-utils.tsx:8
 #: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:11
 #: ../html/src/manager/state/highstate-summary.tsx:169
@@ -4531,36 +4537,36 @@ msgstr "Město"
 msgid "Organization"
 msgstr "Organizace"
 
-#: ../html/src/manager/proxy/container-config.tsx:321
+#: ../html/src/manager/proxy/container-config.tsx:325
 msgid "Organization Unit"
 msgstr "Organizační jednotka"
 
-#: ../html/src/manager/proxy/container-config.tsx:322
+#: ../html/src/manager/proxy/container-config.tsx:326
 msgid "Email"
 msgstr "E-mail"
 
-#: ../html/src/manager/proxy/container-config.tsx:330
+#: ../html/src/manager/proxy/container-config.tsx:334
 msgid "The root CA"
 msgstr "Kořenová CA"
 
-#: ../html/src/manager/proxy/container-config.tsx:340
+#: ../html/src/manager/proxy/container-config.tsx:344
 msgid "Intermediate CAs"
 msgstr "Zprostředkující CA"
 
-#: ../html/src/manager/proxy/container-config.tsx:350
+#: ../html/src/manager/proxy/container-config.tsx:354
 msgid "CA file in PEM format"
 msgstr "Soubor CA ve formátu PEM"
 
-#: ../html/src/manager/proxy/container-config.tsx:361
+#: ../html/src/manager/proxy/container-config.tsx:365
 msgid "Proxy certificate"
 msgstr "Certifikát proxy"
 
-#: ../html/src/manager/proxy/container-config.tsx:362
-#: ../html/src/manager/proxy/container-config.tsx:371
+#: ../html/src/manager/proxy/container-config.tsx:366
+#: ../html/src/manager/proxy/container-config.tsx:375
 msgid "In PEM format"
 msgstr "Ve tvaru PEM"
 
-#: ../html/src/manager/proxy/container-config.tsx:370
+#: ../html/src/manager/proxy/container-config.tsx:374
 msgid "Proxy SSL private key"
 msgstr "Privátní klíč SSL proxy"
 
