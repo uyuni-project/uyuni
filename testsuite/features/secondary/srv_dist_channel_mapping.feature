@@ -49,7 +49,7 @@ Feature: Distribution Channel Mapping
     When I enter "Ubuntu 22.04.01 LTS" as "os"
     And I enter "22.04" as "release"
     And I select "x86_64" from "architecture" dropdown
-    And I select "Fake-Base-Channel" from "channel_label" dropdown
+    And I select "Fake-Base-Channel-Debian-like" from "channel_label" dropdown
     And I click on "Create Mapping"
     Then I should see a "Ubuntu 22.04.01 LTS" link in the content area
 
@@ -101,7 +101,7 @@ Feature: Distribution Channel Mapping
     And I should see the text "sle-product-sles15-sp4-pool-x86_64" in the Channel Label field
     When I follow "Ubuntu 22.04.01 LTS"
     And I enter "Ubuntu 22.04.01 LTS modified" as "os"
-    And I select "Fake-Base-Channel" from "channel_label" dropdown
+    And I select "Fake-Base-Channel-Debian-like" from "channel_label" dropdown
     And I click on "Update Mapping"
     Then I should see the text "Ubuntu 22.04.01 LTS modified" in the Operating System field
     And I should see the text "fake-base-channel" in the Channel Label field
