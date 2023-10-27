@@ -161,14 +161,14 @@ Feature: Register and test a Containerized Proxy
 
   Scenario: Remove package from Salt minion
     When I follow "Software" in the content area
-    And I follow "Install"
+    And I follow "List / Remove"
     And I enter the package for "milkyway-dummy-2.0" as the filtered package name
     And I click on the filter button
     And I check the package for "milkyway-dummy-2.0" in the list
-    And I click on "Install Selected Packages"
+    And I click on "Remove Packages"
     And I click on "Confirm"
-    Then I should see a "1 package install has been scheduled for" text
-    And I wait until event "Package Install/Upgrade scheduled by admin" is completed
+    Then I should see a "1 package removal has been scheduled for" text
+    And I wait until event "Package Removal scheduled by admin" is completed
 
   @susemanager
   Scenario: Cleanup: subscribe system back to default base channel
