@@ -124,11 +124,11 @@ public class DownloadController {
      * Public only for unit tests.
      */
     public static class PkgInfo {
-        private String name;
-        private String version;
-        private String release;
-        private String epoch;
-        private String arch;
+        private final String name;
+        private final String version;
+        private final String release;
+        private final String epoch;
+        private final String arch;
         private Optional<Long> orgId = Optional.empty();
         private Optional<String> checksum = Optional.empty();
 
@@ -252,8 +252,10 @@ public class DownloadController {
     public static Object downloadMetadata(Request request, Response response) {
         String channelLabel = request.params(":channel");
         String filename = request.params(":file");
-        File file = new File(new File("/var/cache/rhn/repodata", channelLabel),
-                filename).getAbsoluteFile();
+        String mountPoint = Config.get().getString(ConfigDefaults.REPOMD_CACHE_MOUNT_POINT, "/var/cache");
+        String prefix = Config.get().getString(ConfigDefaults.REPOMD_PATH_PREFIX, "rhn/repodata");
+
+        File file = new File(mountPoint + File.separator + prefix + File.separator + channelLabel).getAbsoluteFile();
 
         if (!file.exists() && (filename.endsWith(".asc") || filename.endsWith(".key"))) {
             halt(HttpStatus.SC_NOT_FOUND,
@@ -285,6 +287,7 @@ public class DownloadController {
 
         return downloadFile(request, response, file);
     }
+
 
     /**
      * Download media metadata taking the channel and filename from the request path.
@@ -443,10 +446,10 @@ public class DownloadController {
         String basename = FilenameUtils.getBaseName(path);
         String arch = StringUtils.substringAfterLast(basename, ".");
         String rest = StringUtils.substringBeforeLast(basename, ".");
-        String release = "";
-        String name = "";
-        String version = "";
-        String epoch = "";
+        String release;
+        String name;
+        String version;
+        String epoch;
 
         // Debian packages names need spacial handling
         if ("deb".equalsIgnoreCase(extension) || "udeb".equalsIgnoreCase(extension)) {
@@ -593,7 +596,7 @@ public class DownloadController {
      */
     private static void validatePaygCompliant(CloudPaygManager mgr) {
         if (!mgr.isCompliant()) {
-            log.info("Forbidden: SUSE Manager PAYG Server is not compliant");
+            LOG.info("Forbidden: SUSE Manager PAYG Server is not compliant");
             halt(HttpStatus.SC_FORBIDDEN, "Server is not compliant. Please check the logs");
         }
     }
@@ -650,12 +653,12 @@ public class DownloadController {
                         .orElse(false);
 
                 if (!isValid) {
-                    log.info("Forbidden: Token is expired or is not a short-token");
+                    LOG.info("Forbidden: Token is expired or is not a short-token");
                     halt(HttpStatus.SC_FORBIDDEN, "Forbidden: Token is expired or is not a short-token");
                 }
             }
             catch (InvalidJwtException | MalformedClaimException e) {
-                log.info(String.format("Forbidden: Short-token %s is not valid or is expired: %s",
+                LOG.info(String.format("Forbidden: Short-token %s is not valid or is expired: %s",
                         token, e.getMessage()));
                 halt(HttpStatus.SC_FORBIDDEN,
                         "Forbidden: Short-token is not valid or is expired");
