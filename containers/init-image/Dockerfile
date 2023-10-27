@@ -2,7 +2,8 @@
 # SPDX-License-Identifier: MIT
 #!BuildTag: uyuni/init:latest
 
-FROM opensuse/leap:15.5
+ARG INIT_BASE=opensuse/leap:15.5
+FROM $INIT_BASE
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=org.opensuse.uyuni.init
