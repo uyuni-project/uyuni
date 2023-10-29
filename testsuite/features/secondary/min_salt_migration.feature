@@ -97,6 +97,8 @@ Feature: Migrate Salt to bundled Salt on a nested Minion VM
 
   Scenario: Migrate the nested VM to the Salt bundle
     Given the Salt master can reach "salt_migration_minion"
+    When I install packages "venv-salt-minion" on this "salt_migration_minion"
+    Then "venv-salt-minion" should be installed on "salt_migration_minion"
     When I migrate "salt_migration_minion" from salt-minion to venv-salt-minion
 
   Scenario: Purge the Minion from the old salt-minion leftovers
