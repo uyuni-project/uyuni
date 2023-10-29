@@ -199,6 +199,7 @@ Feature: Update activation keys
     And I click on "Update Activation Key"
     Then I should see a "Activation key Terminal Key x86_64 has been modified" text
 
+@pxeboot_minion
 @uyuni
 @scc_credentials
   Scenario: Update terminal key with specific fake channel
