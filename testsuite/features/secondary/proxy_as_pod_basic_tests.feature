@@ -153,7 +153,7 @@ Feature: Register and test a Containerized Proxy
   Scenario: Install a patch on the Salt minion
     When I follow "Software" in the content area
     And I follow "Patches" in the content area
-    When I check the first patch in the list
+    When I check the row with the "milkyway-dummy" text
     And I click on "Apply Patches"
     And I click on "Confirm"
     Then I should see a "1 patch update has been scheduled for" text
@@ -162,10 +162,13 @@ Feature: Register and test a Containerized Proxy
   Scenario: Remove package from Salt minion
     When I follow "Software" in the content area
     And I follow "List / Remove"
-    And I enter the package for "milkyway-dummy-2.0" as the filtered package name
+    And I enter the package for "milkyway-dummy" as the filtered package name
     And I click on the filter button
-    And I check the package for "milkyway-dummy-2.0" in the list
+    And I wait until I see "Clear filter to see all" text
+    And I check the package for "milkyway-dummy" in the list
     And I click on "Remove Packages"
+    Then I wait until I see "Confirm Package Removal" text
+    And I should see a "milkyway-dummy" text
     And I click on "Confirm"
     Then I should see a "1 package removal has been scheduled for" text
     And I wait until event "Package Removal scheduled by admin" is completed
