@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-26 13:56+0200\n"
-"PO-Revision-Date: 2023-10-17 07:15+0000\n"
+"PO-Revision-Date: 2023-10-30 07:16+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
 "Language: ko\n"
@@ -4200,9 +4200,8 @@ msgid "Subscription Warning"
 msgstr "구독 경고"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:61
-#, fuzzy
 msgid "Update Notification"
-msgstr "알림 삭제"
+msgstr "알림 업데이트"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:152
 msgid "Filter by type"
@@ -4394,9 +4393,8 @@ msgstr "예: proxy.domain.com"
 
 #: ../html/src/manager/proxy/container-config.tsx:206
 #: ../html/src/manager/proxy/container-config.tsx:217
-#, fuzzy
 msgid "Has to be a valid FQDN address"
-msgstr "IP 주소여야 함"
+msgstr "유효한 FQDN 주소여야 함"
 
 #: ../html/src/manager/proxy/container-config.tsx:210
 msgid "Parent FQDN"
@@ -4801,6 +4799,8 @@ msgid ""
 "groups. Formulas allow automatic installation and configuration of software "
 "and may be installed via RPM packages."
 msgstr ""
+"공식 카탈로그 페이지에서는 현재 설치된 <link>Salt 공식</link>을 볼 수 있습니다. 개별 시스템이나 서버 그룹에 이러한 "
+"공식을 적용하십시오. 공식을 사용하면 소프트웨어의 자동 설치 및 구성이 가능하며 RPM 패키지를 통해 설치할 수 있습니다."
 
 #: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:95
 msgid "Formula Catalog"
