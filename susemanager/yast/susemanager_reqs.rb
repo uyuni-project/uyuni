@@ -218,10 +218,10 @@ module Yast
         "%1 == %2",
         Builtins.sformat(
           "%1.%2",
-          Ops.get_string(@h_out, "stdout", "h"),
-          Ops.get_string(@d_out, "stdout", "d")
+          Ops.get_string(@h_out, "stdout", "h").strip,
+          Ops.get_string(@d_out, "stdout", "d").strip
         ),
-        Ops.get_string(@f_out, "stdout", "x")
+        Ops.get_string(@f_out, "stdout", "x").strip
       )
       Ops.set(
         @h_out,
@@ -239,6 +239,29 @@ module Yast
             _(
               "The output of 'hostname -f' does not match the real hostname. The product will not install correctly."
             ),
+            40,
+            10,
+            _("Continue anyway"),
+            _("Exit installation"),
+            :focus_no
+          )
+          return :abort if Popup.ConfirmAbort(:incomplete)
+        end
+      end
+      @pf_out = Convert.to_map(
+        SCR.Execute(path(".target.bash_output"), "python3 -c 'import socket; print(socket.getfqdn());'", {})
+      )
+      Builtins.y2milestone(
+        "Reverse lookup check: %1 == %2",
+        Ops.get_string(@pf_out, "stdout", "p").strip,
+        Ops.get_string(@f_out, "stdout", "x").strip
+      )
+      if Ops.get_string(@pf_out, "stdout", "p").strip != Ops.get_string(@f_out, "stdout", "x").strip
+        if !Popup.AnyQuestionRichText(
+            _("Illegal FQHN"),
+            _(
+              "The output of 'hostname -f' does not match the hostname from a reverse DNS lookup. The product will not install correctly."
+             ),
             40,
             10,
             _("Continue anyway"),
