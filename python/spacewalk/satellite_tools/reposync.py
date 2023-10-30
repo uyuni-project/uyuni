@@ -292,7 +292,7 @@ def set_filter_opt(option, opt_str, value, parser):
     )
 
 
-def getChannelRepo():
+def getChannelRepo(): # pylint: disable=invalid-name
 
     rhnSQL.initDB()
     items = {}
@@ -318,7 +318,7 @@ def getChannelRepo():
     return items
 
 
-def getParentsChilds(b_only_custom=False):
+def getParentsChilds(b_only_custom=False): # pylint: disable=invalid-name
 
     rhnSQL.initDB()
 
@@ -349,7 +349,7 @@ def getParentsChilds(b_only_custom=False):
     return d_parents
 
 
-def getCustomChannels():
+def getCustomChannels(): # pylint: disable=invalid-name
 
     # with SUSE we sync also Vendor channels with reposync
     # change parameter to False to get not only Custom Channels
@@ -3017,7 +3017,7 @@ class RepoSync(object):
         extra = "Syncing Channel '%s' failed:\n\n" % self.channel_label
         rhnMail.send(headers, extra + body)
 
-    def updateChannelChecksumType(self, repo_checksum_type):
+    def updateChannelChecksumType(self, repo_checksum_type): # pylint: disable=invalid-name
         """
         check, if the checksum_type of the channel matches the one of the repo
         if not, change the type of the channel
