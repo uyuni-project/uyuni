@@ -35,7 +35,7 @@ import java.util.LinkedList;
 
 public class CobblerSystemCreateCommandTest extends BaseTestCaseWithUser {
     @Test
-    public void testConstructorDbPersistence() {
+    public void testConstructorDbPersistence() throws Exception {
         // Arrange
         CobblerConnection connection = CobblerXMLRPCHelper.getConnection(user);
         connection.invokeMethod("new_profile");
@@ -51,7 +51,7 @@ public class CobblerSystemCreateCommandTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testConstructorUnknown1() {
+    public void testConstructorUnknown1() throws Exception {
         // Arrange
         CobblerConnection connection = CobblerXMLRPCHelper.getConnection(user);
         connection.invokeMethod("new_profile");
@@ -67,7 +67,7 @@ public class CobblerSystemCreateCommandTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testConstructorReactivation() {
+    public void testConstructorReactivation() throws Exception {
         // Arrange
         User admin = UserTestUtils.findNewUser("adminUser", "testOrg" + this.getClass().getSimpleName(), true);
         KickstartData k = KickstartDataTest.createTestKickstartData(admin.getOrg());
@@ -81,7 +81,7 @@ public class CobblerSystemCreateCommandTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testConstructorCobblerPassthrough() {
+    public void testConstructorCobblerPassthrough() throws Exception {
         // Arrange
         KickstartData k = KickstartDataTest.createTestKickstartData(user.getOrg());
         Server s = ServerFactoryTest.createTestServer(user, false);
