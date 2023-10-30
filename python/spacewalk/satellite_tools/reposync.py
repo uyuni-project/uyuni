@@ -38,15 +38,15 @@ from rhn.connections import idn_puny_to_unicode
 from rhn.stringutils import ustr
 
 from uyuni.common.usix import raise_with_tb
-
-from spacewalk.server import rhnPackage, rhnSQL, rhnChannel, suseEula
 from uyuni.common import fileutils
-from spacewalk.common import rhnLog, rhnMail, suseLib
-from spacewalk.common.rhnTB import fetchTraceback
-from spacewalk.common import repo
 from uyuni.common.rhnLib import isSUSE, utc
 from uyuni.common.checksum import getFileChecksum
 from uyuni.common.context_managers import cfg_component
+
+from spacewalk.server import rhnPackage, rhnSQL, rhnChannel, suseEula
+from spacewalk.common import rhnLog, rhnMail, suseLib
+from spacewalk.common.rhnTB import fetchTraceback
+from spacewalk.common import repo
 from spacewalk.common.rhnException import rhnFault
 from spacewalk.server.importlib import importLib, mpmSource, packageImport, errataCache
 from spacewalk.server.importlib.packageImport import ChannelPackageSubscription
