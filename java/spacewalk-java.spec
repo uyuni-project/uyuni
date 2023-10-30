@@ -186,7 +186,7 @@ Requires:       glassfish-activation-api
 Requires:       glassfish-jaxb-api
 Requires:       glassfish-jaxb-runtime
 Requires:       glassfish-jaxb-txw2
-Requires:       google-gson < 2.10.0
+Requires:       (google-gson >= 2.2.4 with google-gson < 2.10.0)
 Requires:       hibernate-commons-annotations
 Requires:       hibernate-types
 Requires:       httpcomponents-client
