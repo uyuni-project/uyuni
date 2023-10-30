@@ -29872,24 +29872,24 @@ given channel.</source>
         <source>PAYG Connections</source>
         <target state="final">PAYGの接続</target>
       </trans-unit>
-    <trans-unit id="mirror-credentials.jsp.fromDir" xml:space="preserve">
+      <trans-unit id="mirror-credentials.jsp.fromDir" xml:space="preserve" approved="yes">
         <source>cannot verify credentials because `server.susemanager.fromdir` property is set in rhn.conf</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="sdc.details.overview.payg" xml:space="preserve">
+        <target state="final">`server.susemanager.fromdir`プロパティはrhn.confに設定されているため、資格情報を確認できません</target>
+      </trans-unit>
+      <trans-unit id="sdc.details.overview.payg" xml:space="preserve" approved="yes">
         <source>Pay-as-you-go:</source>
-          <context-group name="ctx">
+        <context-group name="ctx">
             <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="sdc.details.overview.payg_msg" xml:space="preserve">
+        <target state="final">従量課金制:</target>
+      </trans-unit>
+      <trans-unit id="sdc.details.overview.payg_msg" xml:space="preserve" approved="yes">
         <source>This is a Pay-as-you-go server</source>
-          <context-group name="ctx">
+        <context-group name="ctx">
             <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="final">これは従量課金制サーバです</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
