@@ -13,6 +13,10 @@
 # granted to use or replicate Red Hat trademarks that are incorporated
 # in this software or its documentation.
 #
+"""
+The reposync module serves for synchronizing and importing package
+repositories.
+"""
 
 import base64
 import configparser
@@ -138,6 +142,14 @@ def send_mail(sync_type="Repo"):
 
 
 class KSDirParser:
+    """
+    A base class for kickstart directory parsers
+
+    Attributes:
+        file_blacklist (list): filenames excluded from the directory content.
+        dir_content (list): A list of dictionaries that contain
+            the name and type (FILE or DIR) of each entry in the directory.
+    """
     file_blacklist = ["release-notes/"]
 
     def __init__(self):
@@ -148,6 +160,13 @@ class KSDirParser:
 
 
 class KSDirHtmlParser(KSDirParser):
+    """
+    An HTML kickstart parser for processing directory listing contents.
+
+    Args:
+        plug (object): The plugin that fetches directory listing content.
+        dir_name (str): The name of the directory to parse.
+    """
     def __init__(self, plug, dir_name):
         KSDirParser.__init__(self)
 
@@ -175,6 +194,13 @@ class KSDirHtmlParser(KSDirParser):
 
 
 class KSDirLocalParser(KSDirParser):
+    """
+    A kickstart parser for processing local directory contents.
+
+    Args:
+        base_dir (str): The base path of the target.
+        dir_name (str): Target directory name in base_dir.
+    """
     def __init__(self, base_dir, dir_name):
         KSDirParser.__init__(self)
         dir_path = os.path.join(base_dir, dir_name)
