@@ -82,10 +82,9 @@ public class DownloadController {
             .build();
 
     // cached value to avoid multiple calls
-    private static final String MOUNT_POINT_PATH = Config.get()
-            .getString(ConfigDefaults.MOUNT_POINT);
+    private final String MOUNT_POINT_PATH;
 
-    private static final CloudPaygManager PAYG_MANAGER = GlobalInstanceHolder.PAYG_MANAGER;
+    private final CloudPaygManager cloudPaygManager;
     private static final long EXPIRATION_TIME_MINUTES_IN_THE_FUTURE_TEMP_TOKEN = Config.get().getInt(
             ConfigDefaults.TEMP_TOKEN_LIFETIME,
             60
@@ -95,28 +94,20 @@ public class DownloadController {
      * If true, check via JWT tokens that files requested by a minion are actually accessible by that minon. Turning
      * this flag to false disables the checks.
      */
-    private static boolean checkTokens = Config.get().getBoolean(ConfigDefaults.SALT_CHECK_DOWNLOAD_TOKENS);
+    private boolean checkTokens;
 
     /**
      * Invoked from Router. Initialize routes for Systems Views.
      */
-    public static void initRoutes() {
-        get("/manager/download/:channel/getPackage/:file",
-                DownloadController::downloadPackage);
-        get("/manager/download/:channel/getPackage/:org/:checksum/:file",
-                DownloadController::downloadPackage);
-        get("/manager/download/:channel/repodata/:file",
-                DownloadController::downloadMetadata);
-        get("/manager/download/:channel/media.1/:file",
-                DownloadController::downloadMediaFiles);
-        head("/manager/download/:channel/getPackage/:file",
-                DownloadController::downloadPackage);
-        head("/manager/download/:channel/getPackage/:org/:checksum/:file",
-                DownloadController::downloadPackage);
-        head("/manager/download/:channel/repodata/:file",
-                DownloadController::downloadMetadata);
-        head("/manager/download/:channel/media.1/:file",
-                DownloadController::downloadMediaFiles);
+    public void initRoutes() {
+        get("/manager/download/:channel/getPackage/:file", this::downloadPackage);
+        get("/manager/download/:channel/getPackage/:org/:checksum/:file", this::downloadPackage);
+        get("/manager/download/:channel/repodata/:file", this::downloadMetadata);
+        get("/manager/download/:channel/media.1/:file", this::downloadMediaFiles);
+        head("/manager/download/:channel/getPackage/:file", this::downloadPackage);
+        head("/manager/download/:channel/getPackage/:org/:checksum/:file", this::downloadPackage);
+        head("/manager/download/:channel/repodata/:file", this::downloadMetadata);
+        head("/manager/download/:channel/media.1/:file", this::downloadMediaFiles);
     }
 
     /**
@@ -229,7 +220,21 @@ public class DownloadController {
         }
     }
 
-    private DownloadController() {
+    /**
+     * Constructor
+     */
+    public DownloadController() {
+        this(GlobalInstanceHolder.PAYG_MANAGER);
+    }
+
+    /**
+     * Constructor
+     * @param cloudPaygManagerIn the cloud payg manager
+     */
+    public DownloadController(CloudPaygManager cloudPaygManagerIn) {
+        cloudPaygManager = cloudPaygManagerIn;
+        checkTokens = Config.get().getBoolean(ConfigDefaults.SALT_CHECK_DOWNLOAD_TOKENS);
+        MOUNT_POINT_PATH = Config.get().getString(ConfigDefaults.MOUNT_POINT);
     }
 
     /**
@@ -238,7 +243,7 @@ public class DownloadController {
      * @param checkTokensIn true if tokens should be checked
      * accessible by that minon
      */
-    public static void setCheckTokens(boolean checkTokensIn) {
+    public void setCheckTokens(boolean checkTokensIn) {
         checkTokens = checkTokensIn;
     }
 
@@ -249,7 +254,7 @@ public class DownloadController {
      * @param response the response object
      * @return an object to make spark happy
      */
-    public static Object downloadMetadata(Request request, Response response) {
+    public Object downloadMetadata(Request request, Response response) {
         String channelLabel = request.params(":channel");
         String filename = request.params(":file");
         String mountPoint = Config.get().getString(ConfigDefaults.REPOMD_CACHE_MOUNT_POINT, "/var/cache");
@@ -261,10 +266,10 @@ public class DownloadController {
             halt(HttpStatus.SC_NOT_FOUND,
                     String.format("Key or signature file not provided: %s", filename));
         }
-        validatePaygCompliant(PAYG_MANAGER);
+        validatePaygCompliant(cloudPaygManager);
 
         String token = getTokenFromRequest(request);
-        validateMinionInPayg(token, PAYG_MANAGER);
+        validateMinionInPayg(token, cloudPaygManager);
 
         if (checkTokens) {
             validateToken(token, channelLabel, filename);
@@ -296,13 +301,13 @@ public class DownloadController {
      * @param response the response object
      * @return an object to make spark happy
      */
-    public static Object downloadMediaFiles(Request request, Response response) {
+    public Object downloadMediaFiles(Request request, Response response) {
         String channelLabel = request.params(":channel");
         String filename = request.params(":file");
-        validatePaygCompliant(PAYG_MANAGER);
+        validatePaygCompliant(cloudPaygManager);
 
         String token = getTokenFromRequest(request);
-        validateMinionInPayg(token, PAYG_MANAGER);
+        validateMinionInPayg(token, cloudPaygManager);
 
         if (checkTokens) {
             validateToken(token, channelLabel, filename);
@@ -326,7 +331,7 @@ public class DownloadController {
      * @param channel - the channel
      * @return comps file to be used for this channel
      */
-    private static File getCompsFile(Channel channel) {
+    private File getCompsFile(Channel channel) {
         Comps comps = channel.getComps();
 
         if (comps == null && channel.isCloned()) {
@@ -348,7 +353,7 @@ public class DownloadController {
      * @param channel - the channel
      * @return modules file to be used for this channel
      */
-    private static File getModulesFile(Channel channel) {
+    private File getModulesFile(Channel channel) {
         Modules modules = channel.getModules();
 
         if (modules == null && channel.isCloned()) {
@@ -369,7 +374,7 @@ public class DownloadController {
      * @param channel - the channel
      * @return media products file to be used for this channel
      */
-    private static File getMediaProductsFile(Channel channel) {
+    private File getMediaProductsFile(Channel channel) {
         MediaProducts product = channel.getMediaProducts();
 
         if (product == null && channel.isCloned()) {
@@ -390,7 +395,7 @@ public class DownloadController {
      * @param response the response object
      * @return an object to make spark happy
      */
-    public static Object downloadPackage(Request request, Response response) {
+    public Object downloadPackage(Request request, Response response) {
 
         // we can't use request.params(:file)
         // See https://bugzilla.suse.com/show_bug.cgi?id=972158
@@ -410,9 +415,9 @@ public class DownloadController {
         }
 
         String basename = FilenameUtils.getBaseName(path);
-        validatePaygCompliant(PAYG_MANAGER);
+        validatePaygCompliant(cloudPaygManager);
         String token = getTokenFromRequest(request);
-        validateMinionInPayg(token, PAYG_MANAGER);
+        validateMinionInPayg(token, cloudPaygManager);
 
         if (checkTokens) {
             validateToken(token, channel, basename);
@@ -440,7 +445,7 @@ public class DownloadController {
      * @param path url path
      * @return name, epoch, vesion, release, arch of package
      */
-    public static PkgInfo parsePackageFileName(String path) {
+    public PkgInfo parsePackageFileName(String path) {
         List<String> parts = Arrays.asList(path.split("/"));
         String extension = FilenameUtils.getExtension(path);
         String basename = FilenameUtils.getBaseName(path);
@@ -482,7 +487,7 @@ public class DownloadController {
      * @param request the request object
      * @return the token
      */
-    private static String getTokenFromRequest(Request request) {
+    private String getTokenFromRequest(Request request) {
         Set<String> queryParams = request.queryParams();
         if (LOG.isDebugEnabled()) {
             LOG.debug("URL: {}", request.url());
@@ -516,7 +521,7 @@ public class DownloadController {
      * @param request the request object
      * @return the token header
      */
-    private static String getTokenForDebian(Request request) {
+    private String getTokenForDebian(Request request) {
         String authorizationHeader = request.headers("Authorization");
         if (authorizationHeader != null && authorizationHeader.startsWith("Basic")) {
             String encodedData = authorizationHeader.substring("Basic".length()).trim();
@@ -532,7 +537,7 @@ public class DownloadController {
      * @param channel the channel
      * @param filename the filename
      */
-    private static void validateToken(String token, String channel, String filename) {
+    private void validateToken(String token, String channel, String filename) {
 
         AccessTokenFactory.lookupByToken(token).ifPresentOrElse(obj -> {
             Instant now = Instant.now();
@@ -594,7 +599,7 @@ public class DownloadController {
      *
      * @param mgr the Cloud PAYG Manager object
      */
-    private static void validatePaygCompliant(CloudPaygManager mgr) {
+    private void validatePaygCompliant(CloudPaygManager mgr) {
         if (!mgr.isCompliant()) {
             LOG.info("Forbidden: SUSE Manager PAYG Server is not compliant");
             halt(HttpStatus.SC_FORBIDDEN, "Server is not compliant. Please check the logs");
@@ -608,7 +613,7 @@ public class DownloadController {
      * @param response the response object
      * @param file description of the file to send
      */
-    private static Object downloadFile(Request request, Response response, File file) {
+    private Object downloadFile(Request request, Response response, File file) {
         if (!file.exists()) {
             LOG.info("404 - File not found: {}", file.getAbsolutePath());
             halt(HttpStatus.SC_NOT_FOUND, "File not found: " + request.url());
