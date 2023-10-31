@@ -50,6 +50,7 @@ import com.redhat.rhn.testing.RhnMockHttpServletResponse;
 import com.redhat.rhn.testing.SparkTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
+import com.suse.cloud.CloudPaygManager;
 import com.suse.manager.webui.controllers.DownloadController;
 import com.suse.manager.webui.utils.DownloadTokenBuilder;
 import com.suse.manager.webui.utils.TokenBuilder;
@@ -59,6 +60,7 @@ import com.mockobjects.servlet.MockHttpServletResponse;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.http.HttpStatus;
 import org.jose4j.lang.JoseException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -878,5 +880,65 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         assertEquals("2.5.1", pack.getVersion());
         assertEquals("X", pack.getRelease());
         assertEquals("amd64-deb", pack.getArch());
+    }
+
+    @Test
+    public void testValidateMinionInPaygShortToken() {
+        CloudPaygManager cloudPaygManager = new CloudPaygManager() {
+            @Override
+            public boolean isPaygInstance() {
+                return true;
+            }
+            @Override
+            public boolean hasSCCCredentials() {
+                return false;
+            }
+        };
+
+        // Test case - Token passed is not a short-token (must fail)
+        DownloadTokenBuilder tokenBuilderFail = new DownloadTokenBuilder(user.getOrg().getId());
+        tokenBuilderFail.useServerSecret();
+        tokenBuilderFail.setExpirationTimeMinutesInTheFuture(360);
+        try {
+            DownloadController.validateMinionInPayg(tokenBuilderFail.getToken(), cloudPaygManager);
+            fail("Long lived token shouldn't have been accepted");
+        }
+        catch (spark.HaltException e) {
+            assertEquals(HttpStatus.SC_FORBIDDEN, e.getStatusCode());
+            assertTrue(e.getBody().contains("Forbidden: Token is expired or is not a short-token"));
+        }
+        catch (JoseException e) {
+            fail("There was an issue when building the test token");
+        }
+
+        // Test case - Token passed is short-lived (must pass)
+        DownloadTokenBuilder tokenBuilderPass = new DownloadTokenBuilder(user.getOrg().getId());
+        tokenBuilderPass.useServerSecret();
+        tokenBuilderPass.setExpirationTimeMinutesInTheFuture(30);
+        try {
+            DownloadController.validateMinionInPayg(tokenBuilderPass.getToken(), cloudPaygManager);
+        }
+        catch (spark.HaltException e) {
+            fail("Short-lived token must've been accepted");
+        }
+        catch (JoseException e) {
+            fail("There was an issue when building the test token");
+        }
+
+        // Test case - Token passed is expired
+        DownloadTokenBuilder tokenBuilderExpired = new DownloadTokenBuilder(user.getOrg().getId());
+        tokenBuilderExpired.useServerSecret();
+        tokenBuilderExpired.setExpirationTimeMinutesInTheFuture(-15);
+        try {
+            DownloadController.validateMinionInPayg(tokenBuilderExpired.getToken(), cloudPaygManager);
+            fail("A token in the past must no be accepted");
+        }
+        catch (spark.HaltException e) {
+            assertEquals(HttpStatus.SC_FORBIDDEN, e.getStatusCode());
+            assertTrue(e.getBody().contains("Forbidden: Short-token is not valid or is expired"));
+        }
+        catch (JoseException e) {
+            fail("There was an issue when building the test token");
+        }
     }
 }

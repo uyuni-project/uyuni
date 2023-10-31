@@ -14,12 +14,23 @@
  */
 package com.redhat.rhn.frontend.action;
 
+import com.redhat.rhn.GlobalInstanceHolder;
+import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 
+import com.suse.cloud.CloudPaygManager;
+
+import org.apache.commons.lang3.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,6 +42,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class GenericIndexAction extends RhnAction {
 
+    private CloudPaygManager cloudPaygManager = GlobalInstanceHolder.PAYG_MANAGER;
+
     /** {@inheritDoc} */
     @Override
     public ActionForward execute(ActionMapping mapping,
@@ -38,6 +51,27 @@ public class GenericIndexAction extends RhnAction {
                                  HttpServletRequest request,
                                  HttpServletResponse response) {
 
+        RequestContext rctx = new RequestContext(request);
+        User user = rctx.getCurrentUser();
+
+        if (cloudPaygManager.isPaygInstance()) {
+            cloudPaygManager.checkRefreshCache(true);
+            if (!cloudPaygManager.hasSCCCredentials()) {
+                String nonCompliantServers = getNonCompliantByosInPayg(user);
+                if (StringUtils.isNotEmpty(nonCompliantServers)) {
+                    createErrorMessage(request, "message.payg.errorbyosnosccssm", null);
+                }
+            }
+        }
+
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
+    }
+
+    private String getNonCompliantByosInPayg(User user) {
+            List<Server> servers = ServerFactory.listSystemsInSsm(user);
+            return servers.stream()
+                    .filter(s -> !s.isPayg())
+                    .map(Server::getName)
+                    .collect(Collectors.joining(","));
     }
 }
