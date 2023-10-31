@@ -841,7 +841,7 @@ When(/^I enter the hostname of "([^"]*)" as the filtered system name$/) do |host
 end
 
 When(/^I enter "([^"]*)" as the filtered package name$/) do |input|
-  raise "Package name is not set" if input.empty?
+  raise 'Package name is not set' if input.empty?
   find('input[placeholder=\'Filter by Package Name: \']').set(input)
 end
 
@@ -911,7 +911,7 @@ When(/^I check the first row in the list$/) do
 end
 
 When(/^I check "([^"]*)" in the list$/) do |text|
-  raise "Package name is not set" if text.empty?
+  raise 'Package name is not set' if text.empty?
   top_level_xpath_query = "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{text}')]]//input[@type='checkbox']"
   row = find(:xpath, top_level_xpath_query, match: :first)
   raise "xpath: #{top_level_xpath_query} not found" if row.nil?
