@@ -19,9 +19,11 @@ import static spark.Spark.get;
 import static spark.Spark.halt;
 import static spark.Spark.head;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.util.StringUtil;
+import com.redhat.rhn.domain.channel.AccessToken;
 import com.redhat.rhn.domain.channel.AccessTokenFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -31,7 +33,9 @@ import com.redhat.rhn.domain.channel.Modules;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
+import com.redhat.rhn.domain.server.MinionServer;
 
+import com.suse.cloud.CloudPaygManager;
 import com.suse.manager.webui.utils.TokenBuilder;
 import com.suse.utils.Opt;
 
@@ -51,6 +55,7 @@ import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.Key;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.Base64;
@@ -79,6 +84,12 @@ public class DownloadController {
     // cached value to avoid multiple calls
     private static final String MOUNT_POINT_PATH = Config.get()
             .getString(ConfigDefaults.MOUNT_POINT);
+
+    private static final CloudPaygManager PAYG_MANAGER = GlobalInstanceHolder.PAYG_MANAGER;
+    private static final long EXPIRATION_TIME_MINUTES_IN_THE_FUTURE_TEMP_TOKEN = Config.get().getInt(
+            ConfigDefaults.TEMP_TOKEN_LIFETIME,
+            60
+    );
 
     /**
      * If true, check via JWT tokens that files requested by a minion are actually accessible by that minon. Turning
@@ -249,8 +260,10 @@ public class DownloadController {
                     String.format("Key or signature file not provided: %s", filename));
         }
 
+        String token = getTokenFromRequest(request);
+        validateMinionInPayg(token, PAYG_MANAGER);
+
         if (checkTokens) {
-            String token = getTokenFromRequest(request);
             validateToken(token, channelLabel, filename);
         }
 
@@ -283,10 +296,13 @@ public class DownloadController {
         String channelLabel = request.params(":channel");
         String filename = request.params(":file");
 
+        String token = getTokenFromRequest(request);
+        validateMinionInPayg(token, PAYG_MANAGER);
+
         if (checkTokens) {
-            String token = getTokenFromRequest(request);
             validateToken(token, channelLabel, filename);
         }
+
         if (filename.equals("products")) {
             File file = getMediaProductsFile(ChannelFactory.lookupByLabel(channelLabel));
             if (file != null && file.exists()) {
@@ -388,8 +404,10 @@ public class DownloadController {
         }
 
         String basename = FilenameUtils.getBaseName(path);
+        String token = getTokenFromRequest(request);
+        validateMinionInPayg(token, PAYG_MANAGER);
+
         if (checkTokens) {
-            String token = getTokenFromRequest(request);
             validateToken(token, channel, basename);
         }
 
@@ -581,5 +599,52 @@ public class DownloadController {
         response.header("Content-Disposition", "attachment; filename=" + file.getName());
         response.header("X-Sendfile", file.getAbsolutePath());
         return response;
+    }
+
+    /**
+     * validateMinionInPayg In SUMA payg instances, checks if the Minion that corresponds to the given token is BYOS
+     * and if SCC credentials are added. In BYOS and no SCC credentials it halts, and it does nothing otherwise.
+     * @param token the token used to retrieve the Minion from
+     * @param cloudPaygManager Payg manager used to do some checks
+     */
+    public static void validateMinionInPayg(String token, CloudPaygManager cloudPaygManager) {
+        if (!cloudPaygManager.isPaygInstance()) {
+            return;
+        }
+
+        Optional<AccessToken> accessToken = AccessTokenFactory.lookupByToken(token);
+        if (accessToken.isPresent()) {
+            cloudPaygManager.checkRefreshCache(true); // Refresh to have latest SCC data
+            MinionServer minion = accessToken.get().getMinion();
+            if (!cloudPaygManager.hasSCCCredentials() && !minion.isPayg()) {
+                halt(HttpStatus.SC_FORBIDDEN,
+                        "Bring-your-own-subscription instances in Pay-as-you-go SUMA instances is not " +
+                        "allowed without SCC credentials.");
+            }
+        }
+        else {
+            try {
+                JwtClaims claims = JWT_CONSUMER.processToClaims(token);
+                boolean isValid = Optional.ofNullable(claims.getExpirationTime())
+                        .map(exp -> {
+                            long timeDeltaSeconds = Duration.ofMinutes(EXPIRATION_TIME_MINUTES_IN_THE_FUTURE_TEMP_TOKEN)
+                                    .toSeconds();
+                            long expireDeltaSeconds = exp.getValue() - NumericDate.now().getValue();
+                            return expireDeltaSeconds > 0 && expireDeltaSeconds < timeDeltaSeconds;
+                        })
+                        .orElse(false);
+
+                if (!isValid) {
+                    log.info("Forbidden: Token is expired or is not a short-token");
+                    halt(HttpStatus.SC_FORBIDDEN, "Forbidden: Token is expired or is not a short-token");
+                }
+            }
+            catch (InvalidJwtException | MalformedClaimException e) {
+                log.info(String.format("Forbidden: Short-token %s is not valid or is expired: %s",
+                        token, e.getMessage()));
+                halt(HttpStatus.SC_FORBIDDEN,
+                        "Forbidden: Short-token is not valid or is expired");
+            }
+        }
     }
 }
