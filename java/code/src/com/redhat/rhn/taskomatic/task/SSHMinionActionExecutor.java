@@ -92,6 +92,16 @@ public class SSHMinionActionExecutor extends RhnJavaJob {
             return;
         }
 
+        // Check if dealing with SUMA PAYG and BYOS minions without SCC credentials
+        if (cloudPaygManager.isPaygInstance()) {
+            cloudPaygManager.checkRefreshCache(true);
+            if (!cloudPaygManager.hasSCCCredentials()) {
+                if (ActionFactory.rejectScheduleActionIfByos(action)) {
+                    return;
+                }
+            }
+        }
+
         action.getServerActions().stream()
                 .filter(sa -> sshMinionOpt.get().getId().equals(sa.getServerId())).findFirst()
                 .ifPresent(sa -> {

@@ -22,6 +22,7 @@ import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.HibernateRuntimeException;
+import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
 import com.redhat.rhn.domain.action.config.ConfigAction;
 import com.redhat.rhn.domain.action.config.ConfigRevisionAction;
@@ -75,6 +76,7 @@ import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.server.MinionServerFactory;
+import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerHistoryEvent;
@@ -83,6 +85,7 @@ import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.ListUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -100,6 +103,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -113,6 +117,7 @@ public class ActionFactory extends HibernateFactory {
     private static Logger log = LogManager.getLogger(ActionFactory.class);
     private static Set actionArchTypes;
     private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
+    private static final LocalizationService LOCALIZATION = LocalizationService.getInstance();
 
     private ActionFactory() {
         super();
@@ -1008,6 +1013,48 @@ public class ActionFactory extends HibernateFactory {
         HibernateFactory.<Long, List<Long>, Long>splitAndExecuteQuery(
             actionsId, "action_ids", query, query::list, new ArrayList<>(), ListUtils::union
         );
+    }
+
+    /**
+     * rejectScheduleActionIfByos rejects an action if any of the servers within it is byos
+     * @param action action to be checked
+     * @return true if the action was stopped due to byos servers within it, false otherwise
+     */
+    public static boolean rejectScheduleActionIfByos(Action action) {
+        List<MinionSummary> byosMinions = MinionServerFactory.findByosServers(action);
+        if (CollectionUtils.isNotEmpty(byosMinions)) {
+            log.error("To manage BYOS or DC servers from SUSE Manager PAYG, SCC credentials must be " +
+                    "in place.");
+            Object[] args = {formatByosListToStringErrorMsg(byosMinions)};
+            rejectScheduledActions(List.of(action.getId()),
+                    LOCALIZATION.getMessage("task.action.rejection.notcompliantPaygByos", args));
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * formatByosListToStringErrorMsg formats a list of MinionSummary to show it as error message.
+     * If there are 2 or less it will return the names of the BYOS instances. If more than two, it will return a
+     * String with two of the BYOS instances plus "... and X more" to avoid having endless error message.
+     * @param byosMinions
+     * @return the error message formated
+     */
+    public static String formatByosListToStringErrorMsg(List<MinionSummary> byosMinions) {
+        if (byosMinions.size() <= 2) {
+            return byosMinions.stream()
+                    .map(MinionSummary::getMinionId)
+                    .collect(Collectors.joining(","));
+        }
+
+        String errorMsg = byosMinions.stream()
+                .map(MinionSummary::getMinionId)
+                .limit(2)
+                .collect(Collectors.joining(","));
+
+        int numberOfLeftByosServers = byosMinions.size() - 2;
+
+        return String.format("%s and %d more", errorMsg, numberOfLeftByosServers);
     }
 
     /**
