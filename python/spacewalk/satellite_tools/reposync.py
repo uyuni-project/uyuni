@@ -982,7 +982,7 @@ class RepoSync(object):
             tmp.flush()
             return getFileChecksum(hashtype, fd=tmp.fileno())
 
-    def copy_metadata_file(self, plug, filename, comps_type, relative_dir):
+    def copy_metadata_file(self, plug, filename, comps_type, relative_dir): # pylint: disable=unused-argument
         with cfg_component("server.susemanager") as CFG:
             mount_point = CFG.MOUNT_POINT
         old_checksum = None
@@ -1206,7 +1206,6 @@ class RepoSync(object):
         batch = []
         processed_updates = 0
         backend = SQLBackend()
-        channel_advisory_names = self.list_errata()
         for notice in notices:
             notice = self.fix_notice(notice)
 
@@ -1576,7 +1575,7 @@ class RepoSync(object):
         all_packages = set()
 
         for (index, what) in enumerate(to_process):
-            pack, to_download, to_link = what
+            pack, to_download, _ = what
             if not to_download:
                 continue
             import_count += 1
@@ -2589,7 +2588,7 @@ class RepoSync(object):
             }
             if param_dict["arch"] not in self.arches:
                 continue
-            ret = self._process_package(param_dict, advisory_name)
+            ret = self._process_package(param_dict)
             if not ret:
                 if "epoch" not in param_dict:
                     param_dict["epoch"] = ""
@@ -2654,7 +2653,7 @@ class RepoSync(object):
             }
             if param_dict["arch"] not in self.arches:
                 continue
-            ret = self._process_package(param_dict, advisory_name)
+            ret = self._process_package(param_dict)
             if not ret:
                 if "epoch" not in param_dict:
                     param_dict["epoch"] = ""
@@ -2929,7 +2928,7 @@ class RepoSync(object):
 
         return patch_name
 
-    def _process_package(self, param_dict, advisory_name):
+    def _process_package(self, param_dict):
         """Search for a package in the the database
 
         Search for the package specified by 'param_dict' to see if it is
@@ -2937,8 +2936,6 @@ class RepoSync(object):
         IncompletePackage objects, otherwise return None.
 
         :param_dict: dict that represent packages (nerva + channel_id)
-        :advisory_name: the name of the current erratum
-
         """
         pkgepoch = param_dict["epoch"]
         del param_dict["epoch"]
