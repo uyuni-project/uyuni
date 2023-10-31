@@ -162,10 +162,11 @@ Feature: Register and test a Containerized Proxy
   Scenario: Remove package from Salt minion
     When I follow "Software" in the content area
     And I follow "List / Remove"
-    And I enter the package for "milkyway-dummy" as the filtered package name
+    And I enter "milkyway-dummy" as the filtered package name
     And I click on the filter button
     And I wait until I see "Clear filter to see all" text
     And I check the package for "milkyway-dummy" in the list
+    And I check "milkyway-dummy" in the list
     And I click on "Remove Packages"
     Then I wait until I see "Confirm Package Removal" text
     And I should see a "milkyway-dummy" text
