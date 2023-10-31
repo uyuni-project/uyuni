@@ -14,6 +14,7 @@ import suma_minion
 
 
 suma_minion.__opts__ = {}
+suma_minion.__context__ = {}
 suma_minion.psycopg2 = MagicMock()
 
 TEST_FORMULA_ORDER = [
@@ -32,6 +33,9 @@ TEST_FORMULA_ORDER = [
     "vsftpd",
     "bind"
 ]
+
+def cursor_callback(cursor):
+    assert cursor is not None
 
 @pytest.fixture(autouse=True)
 def data_paths():
@@ -76,7 +80,7 @@ def test_formula_pillars_db():
 
 def test_reading_postgres_opts_in__get_cursor():
     """
-    Test reading proper postgres opts in _get_cursor:
+    Test reading proper postgres opts in _get_cursor
     """
     pg_connect_mock = MagicMock(return_value=MagicMock())
     test_opts = {
@@ -90,9 +94,8 @@ def test_reading_postgres_opts_in__get_cursor():
     }
     with patch.object(suma_minion, "__opts__", test_opts), patch(
         "suma_minion.psycopg2.connect", pg_connect_mock
-    ):
-        with suma_minion._get_cursor() as cursor:
-            assert cursor is not None
+    ), patch.dict(suma_minion.__context__, {}):
+        suma_minion._get_cursor(cursor_callback)
         assert pg_connect_mock.call_args_list[0][1] == {
             "host": "test_host",
             "user": "test_user",
@@ -105,10 +108,73 @@ def test_reading_postgres_opts_in__get_cursor():
 
     with patch.object(suma_minion, "__opts__", {"__master_opts__": test_opts}), patch(
         "suma_minion.psycopg2.connect", pg_connect_mock
+    ), patch.dict(suma_minion.__context__, {}):
+        suma_minion._get_cursor(cursor_callback)
+        assert pg_connect_mock.call_args_list[0][1] == {
+            "host": "test_host",
+            "user": "test_user",
+            "password": "test_pass",
+            "dbname": "test_db",
+            "port": 1234,
+        }
+
+
+def test_using_context_in__get_cursor():
+    """
+    Test using context to store postgres postgres connection in  _get_cursor
+    """
+    pg_connect_mock = MagicMock(return_value=MagicMock())
+    test_opts = {
+        "postgres": {
+            "host": "test_host",
+            "user": "test_user",
+            "pass": "test_pass",
+            "db": "test_db",
+            "port": 1234,
+        }
+    }
+    with patch.object(suma_minion, "__opts__", test_opts), patch(
+        "suma_minion.psycopg2.connect", pg_connect_mock
+    ), patch.dict(suma_minion.__context__, {}):
+        # Check if it creates new connection if it's not in the context
+        suma_minion._get_cursor(cursor_callback)
+        assert pg_connect_mock.call_args_list[0][1] == {
+            "host": "test_host",
+            "user": "test_user",
+            "password": "test_pass",
+            "dbname": "test_db",
+            "port": 1234,
+        }
+
+        pg_connect_mock.reset_mock()
+
+        # Check if it reuses the connection from the context
+        suma_minion._get_cursor(cursor_callback)
+
+        pg_connect_mock.assert_not_called()
+
+        assert "suma_minion_cnx" in suma_minion.__context__
+
+    pg_connect_mock.reset_mock()
+
+    pg_cnx_mock = MagicMock()
+    pg_cnx_mock.cursor = MagicMock(side_effect=[True, Exception])
+
+    with patch.object(suma_minion, "__opts__", test_opts), patch(
+        "suma_minion.psycopg2.connect", pg_connect_mock
+    ), patch.object(suma_minion.psycopg2, "InterfaceError", Exception), patch.dict(
+        suma_minion.__context__, {"suma_minion_cnx": pg_cnx_mock}
     ):
-        assert cursor is not None
-        with suma_minion._get_cursor() as cursor:
-            assert cursor is not None
+        # Check if it reuses the connection from the context
+        suma_minion._get_cursor(cursor_callback)
+
+        pg_cnx_mock.cursor.assert_called_once()
+
+        pg_connect_mock.assert_not_called()
+
+        # Check if it tries to recoonect if the connection in the context is not alive
+        suma_minion._get_cursor(cursor_callback)
+
         assert pg_connect_mock.call_args_list[0][1] == {
             "host": "test_host",
             "user": "test_user",
