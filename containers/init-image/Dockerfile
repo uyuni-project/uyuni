@@ -3,18 +3,23 @@
 #!BuildTag: uyuni/init:latest
 
 ARG INIT_BASE=opensuse/leap:15.5
+ARG PRODUCT=Uyuni
+ARG VENDOR="Uyuni project"
+ARG URL="https://www.uyuni-project.org/"
+ARG REFERENCE_PREFIX="registry.opensuse.org/uyuni"
+
 FROM $INIT_BASE
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=org.opensuse.uyuni.init
-LABEL org.opencontainers.image.title="Systemd image"
-LABEL org.opencontainers.image.description="This container runs systemd"
+LABEL org.opencontainers.image.title="${PRODUCT} Init Image"
+LABEL org.opencontainers.image.description="This image initialize users, groups and software for ${PRODUCT} Container"
 LABEL org.opencontainers.image.version="4.4.0"
-LABEL org.opensuse.reference="registry.opensuse.org/uyuni/init:4.4.0.%RELEASE%"
+LABEL org.opensuse.reference="${REFERENCE_PREFIX}/init:4.4.0.%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
-LABEL org.opencontainers.image.vendor="Uyuni project"
-LABEL org.opencontainers.image.url="https://www.uyuni-project.org/"
+LABEL org.opencontainers.image.vendor="${VENDOR}"
+LABEL org.opencontainers.image.url="${URL}"
 # endlabelprefix
 
 # Create stable static UID and GID for salt, tomcat, apache (wwwrun), postgres, ...
