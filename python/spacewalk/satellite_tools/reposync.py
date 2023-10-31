@@ -566,8 +566,7 @@ class RepoSync(object):
             else:
                 # generate empty metadata and quit
                 taskomatic.add_to_repodata_queue_for_channel_package_subscription( # pylint: disable=line-too-long
-                    [channel_label], [], "server.app.yumreposync"
-                )
+                    [channel_label], [], "server.app.yumreposync")
                 rhnSQL.commit()
                 log2(0, 0, "Channel has no URL associated", stream=sys.stderr)
                 if not self.org_id:
@@ -702,32 +701,15 @@ class RepoSync(object):
                             ssl_set = get_single_ssl_set(
                                 keys, check_dates=self.check_ssl_dates
                             )
+                            # pylint: disable=line-too-long
                             if ssl_set:
-                                (
-                                    ca_cert_file,
-                                    client_cert_file,
-                                    client_key_file,
-                                ) = write_ssl_set_cache(
-                                    (
-                                        ssl_set["ca_cert_name"],
-                                        ssl_set["ca_cert"],
-                                        ssl_set["ca_cert_org"],
-                                    ),
-                                    (
-                                        ssl_set["client_cert_name"],
-                                        ssl_set["client_cert"],
-                                        ssl_set["client_cert_org"],
-                                    ),
-                                    (
-                                        ssl_set["client_key_name"],
-                                        ssl_set["client_key"],
-                                        ssl_set["client_key_org"],
-                                    ),
-                                )
+                                (ca_cert_file, client_cert_file, client_key_file) = write_ssl_set_cache(
+                                    (ssl_set["ca_cert_name"], ssl_set["ca_cert"], ssl_set["ca_cert_org"]),
+                                    (ssl_set["client_cert_name"], ssl_set["client_cert"], ssl_set["client_cert_org"]),
+                                    (ssl_set["client_key_name"], ssl_set["client_key"], ssl_set["client_key_org"]))
                             else:
-                                raise ValueError(
-                                    "No valid SSL certificates were found for repository." # pylint: disable=line-too-long
-                                )
+                                raise ValueError("No valid SSL certificates were found for repository.")
+                            # pylint: enable=line-too-long
 
                     try:
                         plugin = self.repo_plugin(
@@ -764,9 +746,10 @@ class RepoSync(object):
                             self.import_groups(plugin)
                             if repo_type == "yum":
                                 self.import_modules(plugin)
-                            ret = self.import_packages(
-                                plugin, data["id"], url, is_non_local_repo
-                            )
+                            ret = self.import_packages(plugin,
+                                                       data["id"],
+                                                       url,
+                                                       is_non_local_repo)
                             failed_packages += ret
 
                         if not self.no_errata:
@@ -777,11 +760,9 @@ class RepoSync(object):
                         # only for repos obtained from the DB
                         if self.sync_kickstart and data["repo_label"]:
                             try:
-                                self.import_kickstart(
-                                    plugin,
-                                    data["repo_label"],
-                                    is_non_local_repo
-                                )
+                                self.import_kickstart(plugin,
+                                                      data["repo_label"],
+                                                      is_non_local_repo)
                             except:
                                 rhnSQL.rollback()
                                 raise
@@ -824,16 +805,16 @@ class RepoSync(object):
                 channel_packages = (
                     rhnSQL.fetchall_dict(
                         """
-                    select p.id, ct.label as checksum_type, c.checksum
-                    from rhnChannelPackage cp,
-                         rhnPackage p,
-                         rhnChecksumType ct,
-                         rhnChecksum c
-                    where cp.channel_id = :channel_id
-                      and cp.package_id = p.id
-                      and p.checksum_id = c.id
-                      and c.checksum_type_id = ct.id
-                    """,
+                        select p.id, ct.label as checksum_type, c.checksum
+                        from rhnChannelPackage cp,
+                             rhnPackage p,
+                             rhnChecksumType ct,
+                             rhnChecksum c
+                        where cp.channel_id = :channel_id
+                          and cp.package_id = p.id
+                          and p.checksum_id = c.id
+                          and c.checksum_type_id = ct.id
+                        """,
                         channel_id=int(self.channel["id"]),
                     )
                     or []
@@ -878,23 +859,18 @@ class RepoSync(object):
         self.update_servers()
 
         # update permissions
-        fileutils.createPath(
-            os.path.join(mount_point, "rhn")
-        )  # if the directory exists update ownership only
+        # if the directory exists update ownership only
+        fileutils.createPath(os.path.join(mount_point, "rhn"))
         with cfg_component("server.susemanager") as CFG:
             for root, dirs, files in os.walk(os.path.join(mount_point, "rhn")):
                 for d in dirs:
-                    fileutils.setPermsPath(
-                        os.path.join(root, d),
-                        group=CFG.httpd_group,
-                        chmod=int("0755", 8),
-                    )
+                    fileutils.setPermsPath(os.path.join(root, d),
+                                           group=CFG.httpd_group,
+                                           chmod=int("0755", 8))
                 for f in files:
-                    fileutils.setPermsPath(
-                        os.path.join(root, f),
-                        group=CFG.httpd_group,
-                        chmod=int("0644", 8),
-                    )
+                    fileutils.setPermsPath(os.path.join(root, f),
+                                           group=CFG.httpd_group,
+                                           chmod=int("0644", 8))
         elapsed_time = datetime.now() - start_time
         if self.error_messages:
             self.sendErrorMail(("Repo Sync Errors: %s" %
@@ -913,8 +889,7 @@ class RepoSync(object):
         subscribed to the synced channel
         """
         server_ids = rhnSQL.fetchall_dict(
-            """
-            SELECT S.id as id
+            """SELECT S.id as id
             FROM rhnServerChannel SC,
                  rhnServer S
             WHERE S.id = SC.server_id
@@ -1064,14 +1039,7 @@ class RepoSync(object):
         src.close()
         if old_checksum and old_checksum != getFileChecksum("sha256", abspath):
             self.regen = True
-        # pylint: disable=line-too-long
-        log(
-            0,
-            "*** NOTE: Importing {1} file for the channel '{0}'.Previous {1} will be discarded.".format(
-                self.channel["label"], comps_type
-            ),
-        )
-        # pylint: enable=line-too-long
+        log(0, "*** NOTE: Importing {1} file for the channel '{0}'. Previous {1} will be discarded.".format(self.channel["label"], comps_type)) # pylint: disable=line-too-long
 
         file_timestamp = os.path.getmtime(filename)
         last_modified = datetime.fromtimestamp(float(file_timestamp), utc)
