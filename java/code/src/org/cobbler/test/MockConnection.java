@@ -365,6 +365,9 @@ public class MockConnection extends CobblerConnection {
         String uid = random();
         String xmlrpcHandle = random();
         profile.put("uid", uid);
+        profile.put("name", random());
+        String distro = newDistro();
+        profile.put("distro", distro);
 
         log.debug("PROFILE: Created w/ uid {} returning handle {}", uid, xmlrpcHandle);
 
@@ -425,6 +428,7 @@ public class MockConnection extends CobblerConnection {
         distro.put("kernel_options_post", new HashMap<>());
         distro.put("autoinstall_meta", new HashMap<>());
         distro.put("redhat_management_key", "");
+        distro.put("name", xmlrpcHandle);
         return xmlrpcHandle;
     }
 

@@ -6599,6 +6599,10 @@ public class SystemHandler extends BaseHandler {
      * @apidoc.returntype #return_int_success()
      */
     public int createSystemRecord(User loggedInUser, Integer sid, String ksLabel) {
+        if (loggedInUser == null) {
+            throw new FaultException(-2, "loggedInUserNull", "The logged in user was null!");
+        }
+
         Server server = null;
         try {
             server = SystemManager.lookupByIdAndUser(sid.longValue(),
@@ -6614,9 +6618,7 @@ public class SystemHandler extends BaseHandler {
         }
 
         KickstartData ksData = lookupKsData(ksLabel, loggedInUser.getOrg());
-        CobblerSystemCreateCommand cmd = new CobblerSystemCreateCommand(
-                loggedInUser, ksData.getCobblerObject(loggedInUser).getName(),
-                ksData, server.getName(), loggedInUser.getOrg().getId());
+        CobblerSystemCreateCommand cmd = new CobblerSystemCreateCommand(loggedInUser, ksData, server);
         cmd.store();
 
         return 1;
@@ -6651,6 +6653,10 @@ public class SystemHandler extends BaseHandler {
      */
     public int createSystemRecord(User loggedInUser, String systemName, String ksLabel,
             String kOptions, String comment, List<Map<String, String>> netDevices) {
+        if (loggedInUser == null) {
+            throw new FaultException(-2, "loggedInUserNull", "The logged in user was null!");
+        }
+
         // Determine the user and lookup the kickstart profile
         KickstartData ksData = lookupKsData(ksLabel, loggedInUser.getOrg());
 
@@ -6660,9 +6666,18 @@ public class SystemHandler extends BaseHandler {
         server.setOrg(loggedInUser.getOrg());
 
         // Create cobbler command
-        CobblerUnregisteredSystemCreateCommand cmd;
-        cmd = new CobblerUnregisteredSystemCreateCommand(loggedInUser, server,
-                ksData.getCobblerObject(loggedInUser).getName());
+        org.cobbler.Profile profile = ksData.getCobblerObject(loggedInUser);
+        if (profile == null) {
+            throw new FaultException(-2, "ksLabelProfileError", String.format(
+                "The profile for the ksLabel \"%s\" could not be found!",
+                ksData.getLabel()
+            ));
+        }
+        CobblerUnregisteredSystemCreateCommand cmd = new CobblerUnregisteredSystemCreateCommand(
+            loggedInUser,
+            server,
+            profile.getName()
+        );
 
         // Set network device information to the server
         for (Map<String, String> map : netDevices) {
