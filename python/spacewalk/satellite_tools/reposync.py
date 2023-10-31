@@ -50,7 +50,7 @@ from uyuni.common.context_managers import cfg_component
 from spacewalk.server import rhnPackage, rhnSQL, rhnChannel, suseEula
 from spacewalk.common import rhnLog, rhnMail, suseLib
 from spacewalk.common.rhnTB import fetchTraceback
-from spacewalk.common import repo
+from spacewalk.common.repo import GeneralRepoException
 from spacewalk.common.rhnException import rhnFault
 from spacewalk.server.importlib import importLib, mpmSource, packageImport, errataCache
 from spacewalk.server.importlib.packageImport import ChannelPackageSubscription
@@ -725,7 +725,7 @@ class RepoSync(object):
                             channel_arch=self.channel_arch,
                             http_headers=source_url["http_headers"],
                         )
-                    except repo.GeneralRepoException as exc:
+                    except GeneralRepoException as exc:
                         log(0, "Plugin error: {}".format(exc))
                         sync_error = -1
                     except Exception as exc:
@@ -1266,7 +1266,7 @@ class RepoSync(object):
         packages = []
         try:
             packages = plug.list_packages(filters, self.latest)
-        except repo.GeneralRepoException as exc:
+        except GeneralRepoException as exc:
             log(0, "Repository failure: {}".format(exc))
         except Exception as exc:
             log(
@@ -2520,7 +2520,8 @@ class RepoSync(object):
                 "%d patches skipped because of incomplete package list."
                 % skipped_updates,
             )
-        if len(batch) > 0:
+        # pylint error fixed in newer pylint
+        if len(batch) > 0: # pylint: disable=len-as-condition
             importer = ErrataImport(batch, backend)
             importer.run()
         self.regen = True
@@ -2992,7 +2993,7 @@ class RepoSync(object):
         package["package_id"] = cs["id"]
         return package
 
-    def sendErrorMail(self, body):
+    def sendErrorMail(self, body): # pylint: disable=invalid-name
         with cfg_component("server.susemanager") as cfg:
             to = cfg.TRACEBACK_MAIL
         fr = to
