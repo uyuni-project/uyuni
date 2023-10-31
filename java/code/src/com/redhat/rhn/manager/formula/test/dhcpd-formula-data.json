@@ -24,6 +24,10 @@
   },
   "list_of_things":{
     "name":"aoeu",
+    "list_of_strings_empty_default": [
+      "foo",
+      "bar"
+    ],
     "partitions_as_primitive_list":[
       "fst",
       "snd",
