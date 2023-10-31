@@ -1,3 +1,5 @@
+# pylint: disable=missing-docstring
+
 #
 # Copyright (c) 2008--2018 Red Hat, Inc.
 # Copyright (c) 2010--2011 SUSE Linux Products GmbH
@@ -13,10 +15,6 @@
 # granted to use or replicate Red Hat trademarks that are incorporated
 # in this software or its documentation.
 #
-"""
-The reposync module serves for synchronizing and importing package
-repositories.
-"""
 
 import base64
 import configparser
@@ -142,14 +140,6 @@ def send_mail(sync_type="Repo"):
 
 
 class KSDirParser:
-    """
-    A base class for kickstart directory parsers
-
-    Attributes:
-        file_blacklist (list): filenames excluded from the directory content.
-        dir_content (list): A list of dictionaries that contain
-            the name and type (FILE or DIR) of each entry in the directory.
-    """
     file_blacklist = ["release-notes/"]
 
     def __init__(self):
@@ -160,13 +150,6 @@ class KSDirParser:
 
 
 class KSDirHtmlParser(KSDirParser):
-    """
-    An HTML kickstart parser for processing directory listing contents.
-
-    Args:
-        plug (object): The plugin that fetches directory listing content.
-        dir_name (str): The name of the directory to parse.
-    """
     def __init__(self, plug, dir_name):
         KSDirParser.__init__(self)
 
@@ -194,13 +177,6 @@ class KSDirHtmlParser(KSDirParser):
 
 
 class KSDirLocalParser(KSDirParser):
-    """
-    A kickstart parser for processing local directory contents.
-
-    Args:
-        base_dir (str): The base path of the target.
-        dir_name (str): Target directory name in base_dir.
-    """
     def __init__(self, base_dir, dir_name):
         KSDirParser.__init__(self)
         dir_path = os.path.join(base_dir, dir_name)
@@ -792,7 +768,7 @@ class RepoSync(object):
                         log(0, "RepoMDError: %s" % e)
                         self.sendErrorMail("RepoMDError: %s" % e)
                         sync_error = -1
-                except:
+                except: # pylint: disable=bare-except
                     log(0, "Unexpected error: %s" % sys.exc_info()[0])
                     log(0, "%s" % traceback.format_exc())
                     self.sendErrorMail(fetchTraceback())
@@ -1268,7 +1244,7 @@ class RepoSync(object):
             packages = plug.list_packages(filters, self.latest)
         except GeneralRepoException as exc:
             log(0, "Repository failure: {}".format(exc))
-        except Exception as exc:
+        except Exception as exc: # pylint: disable=broad-except
             log(
                 0,
                 "Unhandled failure occurred while listing repository packages: {}".format( # pylint: disable=line-too-long
@@ -2388,7 +2364,7 @@ class RepoSync(object):
                 sys.exit(1)
             if credentials["type"] != "rhui":
                 url.username = credentials["username"]
-                url.password = base64.decodestring(
+                url.password = base64.decodestring( # pylint: disable=deprecated-method
                     credentials["password"].encode()
                 ).decode()
             # remove query parameter from url
