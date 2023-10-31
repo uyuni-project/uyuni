@@ -31,7 +31,7 @@ public class ProxyContainerConfigJson {
     private static final String CREATE_SSL = "create-ssl";
     private static final String USE_SSL = "use-ssl";
 
-    private static final Pattern FQDN_PATTERN = Pattern.compile("^[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*$");
+    private static final Pattern FQDN_PATTERN = Pattern.compile("^[A-Za-z0-9-]++(\\.[A-Za-z0-9-]++)*$");
 
     @SerializedName("proxyFQDN")
     private String proxyFqdn;
