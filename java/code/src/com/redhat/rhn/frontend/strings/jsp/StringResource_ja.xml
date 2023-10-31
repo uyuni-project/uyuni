@@ -29903,7 +29903,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.fromDir" xml:space="preserve" approved="yes">
         <source>cannot verify credentials because `server.susemanager.fromdir` property is set in rhn.conf</source>
-        <target state="final">`server.susemanager.fromdir`プロパティはrhn.confに設定されているため、資格情報を確認できません</target>
+        <target state="final">`server.susemanager.fromdir`プロパティがrhn.confに設定されているため、資格情報を確認できません</target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.payg" xml:space="preserve" approved="yes">
         <source>Pay-as-you-go:</source>
