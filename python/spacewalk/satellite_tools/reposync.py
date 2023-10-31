@@ -132,10 +132,10 @@ def send_mail(sync_type="Repo"):
         headers = {
             "Subject": _("%s sync. report from %s") % (sync_type, host_label),
         }
-        with cfg_component("web") as CFG:
+        with cfg_component("web") as cfg:
             sndr = "root@%s" % host_label
-            if CFG.default_mail_from:
-                sndr = CFG.default_mail_from
+            if cfg.default_mail_from:
+                sndr = cfg.default_mail_from
             rhnMail.send(headers, body, sender=sndr)
     else:
         print((_("+++ email requested, but there is nothing to send +++")))
@@ -517,11 +517,11 @@ class RepoSync(object):
         log_path = default_log_location + log_dir + "/" + log_filename
         if log_level is None:
             log_level = 0
-        with cfg_component("server.susemanager") as CFG:
-            CFG.set("DEBUG", log_level)
+        with cfg_component("server.susemanager") as cfg:
+            cfg.set("DEBUG", log_level)
             rhnLog.initLOG(log_path, log_level)
             # os.fchown isn't in 2.4 :/
-            os.system("chgrp " + CFG.httpd_group + " " + log_path)
+            os.system("chgrp " + cfg.httpd_group + " " + log_path)
 
         log2disk(0, "Command: %s" % str(sys.argv))
         log2disk(0, "Sync of channel started.")
@@ -631,8 +631,8 @@ class RepoSync(object):
         sync_error = 0
         repo_checksum_type = "sha1"
         start_time = datetime.now()
-        with cfg_component("server.susemanager") as CFG:
-            mount_point = CFG.MOUNT_POINT
+        with cfg_component("server.susemanager") as cfg:
+            mount_point = cfg.MOUNT_POINT
         for data in self.urls:
             data["source_url_auth"] = self.set_repo_credentials(data)
             data["source_url"] = [u["url"] for u in data["source_url_auth"]]
@@ -848,8 +848,8 @@ class RepoSync(object):
             taskomatic.add_to_erratacache_queue(self.channel_label)
         self.update_date()
         rhnSQL.commit()
-        with cfg_component("server.susemanager") as CFG:
-            if (CFG.AUTO_GENERATE_BOOTSTRAP_REPO
+        with cfg_component("server.susemanager") as cfg:
+            if (cfg.AUTO_GENERATE_BOOTSTRAP_REPO
                     and self.regenerate_bootstrap_repo):
                 log(0, "  Regenerating bootstrap repositories.")
                 subprocess.call(["/usr/sbin/mgr-create-bootstrap-repo",
@@ -861,15 +861,15 @@ class RepoSync(object):
         # update permissions
         # if the directory exists update ownership only
         fileutils.createPath(os.path.join(mount_point, "rhn"))
-        with cfg_component("server.susemanager") as CFG:
+        with cfg_component("server.susemanager") as cfg:
             for root, dirs, files in os.walk(os.path.join(mount_point, "rhn")):
                 for d in dirs:
                     fileutils.setPermsPath(os.path.join(root, d),
-                                           group=CFG.httpd_group,
+                                           group=cfg.httpd_group,
                                            chmod=int("0755", 8))
                 for f in files:
                     fileutils.setPermsPath(os.path.join(root, f),
-                                           group=CFG.httpd_group,
+                                           group=cfg.httpd_group,
                                            chmod=int("0644", 8))
         elapsed_time = datetime.now() - start_time
         if self.error_messages:
@@ -983,8 +983,8 @@ class RepoSync(object):
             return getFileChecksum(hashtype, fd=tmp.fileno())
 
     def copy_metadata_file(self, plug, filename, comps_type, relative_dir): # pylint: disable=unused-argument
-        with cfg_component("server.susemanager") as CFG:
-            mount_point = CFG.MOUNT_POINT
+        with cfg_component("server.susemanager") as cfg:
+            mount_point = cfg.MOUNT_POINT
         old_checksum = None
         db_timestamp = datetime.fromtimestamp(0.0, utc)
         basename = os.path.basename(filename)
@@ -1285,8 +1285,8 @@ class RepoSync(object):
             log(0, "    Packages passed filter rules: %5d" % num_passed)
         channel_id = int(self.channel["id"])
 
-        with cfg_component("server.susemanager") as CFG:
-            mount_point = CFG.MOUNT_POINT
+        with cfg_component("server.susemanager") as cfg:
+            mount_point = cfg.MOUNT_POINT
         for pack in packages:
             if pack.arch not in self.arches:
                 # skip packages with incompatible architecture
@@ -1566,8 +1566,8 @@ class RepoSync(object):
         mpm_src_batch = importLib.Collection()
         affected_channels = []
         upload_caller = "server.app.uploadPackage"
-        with cfg_component("server.susemanager") as CFG:
-            mount_point = CFG.MOUNT_POINT
+        with cfg_component("server.susemanager") as cfg:
+            mount_point = cfg.MOUNT_POINT
 
         to_download_count = sum(p[1] for p in to_process)
         import_count = 0
@@ -1779,8 +1779,8 @@ class RepoSync(object):
 
         channel_id = int(self.channel["id"])
 
-        with cfg_component("server.susemanager") as CFG:
-            mount_point = CFG.MOUNT_POINT
+        with cfg_component("server.susemanager") as cfg:
+            mount_point = cfg.MOUNT_POINT
 
         for pack in packages:
 
@@ -2072,8 +2072,8 @@ class RepoSync(object):
         if len(ks_tree_label) < 4:
             ks_tree_label += "_repo"
 
-        with cfg_component("server.susemanager") as CFG:
-            mount_point = CFG.MOUNT_POINT
+        with cfg_component("server.susemanager") as cfg:
+            mount_point = cfg.MOUNT_POINT
 
         # construct ks_path and check we already have this KS tree synced
         id_request = """
@@ -2941,15 +2941,15 @@ class RepoSync(object):
         del param_dict["epoch"]
 
         if not pkgepoch or pkgepoch == "0":
-            epochStatement = "(pevr.epoch is NULL or pevr.epoch = '0')"
+            epoch_statement = "(pevr.epoch is NULL or pevr.epoch = '0')"
         else:
-            epochStatement = "pevr.epoch = :epoch"
+            epoch_statement = "pevr.epoch = :epoch"
             param_dict["epoch"] = pkgepoch
         if self.org_id:
             param_dict["org_id"] = self.org_id
-            orgidStatement = " = :org_id"
+            orgid_statement = " = :org_id"
         else:
-            orgidStatement = " is NULL"
+            orgid_statement = " is NULL"
 
         h = rhnSQL.prepare(
             """
@@ -2970,7 +2970,7 @@ class RepoSync(object):
                and at.label = 'rpm'
                and cp.channel_id = :channel_id
             """
-            % (orgidStatement, epochStatement)
+            % (orgid_statement, epoch_statement)
         )
         h.execute(**param_dict)
         cs = h.fetchone_dict()
@@ -2993,8 +2993,8 @@ class RepoSync(object):
         return package
 
     def sendErrorMail(self, body):
-        with cfg_component("server.susemanager") as CFG:
-            to = CFG.TRACEBACK_MAIL
+        with cfg_component("server.susemanager") as cfg:
+            to = cfg.TRACEBACK_MAIL
         fr = to
         if isinstance(to, type([])):
             fr = to[0].strip()
@@ -3065,11 +3065,11 @@ class RepoSync(object):
                               and cpac.package_arch_id = pa.id"""
         )
         h.execute(channel_id=channel_id)
-        with cfg_component("server.susemanager") as CFG:
+        with cfg_component("server.susemanager") as cfg:
             arches = [
                 k["label"]
                 for k in h.fetchall_dict()
-                if (CFG.SYNC_SOURCE_PACKAGES
+                if (cfg.SYNC_SOURCE_PACKAGES
                     or k["label"] not in ["src", "nosrc"])
             ]
         return arches
