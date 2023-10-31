@@ -42,7 +42,7 @@ Feature: Migrate a SLES 15 SP3 Salt SSH minion to 15 SP4
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
-    And I check radio button "Test-Channel-x86_64"
+    And I check radio button "Test-Base-Channel-x86_64"
     And I wait until I do not see "Loading..." text
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text

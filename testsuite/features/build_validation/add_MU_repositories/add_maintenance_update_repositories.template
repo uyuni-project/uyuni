@@ -39,3 +39,7 @@ Feature: Add a Maintenance Update custom channel and the custom repositories for
     And I follow "Sync"
     And I click on "Sync Now"
     Then I should see a "Repository sync scheduled" text or "No repositories are currently associated with this channel" text
+
+  Scenario: Wait for running reposyncs to finish after adding custom channel for <client>
+    When I wait until the channel "custom_channel_<client>" has been synced
+    Then the "custom_channel_<client>" reposync logs should not report errors

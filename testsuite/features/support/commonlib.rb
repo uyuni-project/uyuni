@@ -19,34 +19,6 @@ def generate_temp_file(name, content)
   end
 end
 
-# If we for example
-#  - start a reposync in reposync/srv_sync_channels.feature
-#  - then kill it in reposync/srv_wait_for_reposync.feature
-#  - then restart it later on in init_clients/sle_minion.feature
-# then the channel will be in an inconsistent state.
-#
-# This function computes a list of reposyncs to avoid killing, because they might be involved in bootstrapping.
-#
-# This is a safety net only, the best thing to do is to not start the reposync at all.
-def compute_channels_to_leave_running
-  # keep the repos needed for the auto-installation tests
-  do_not_kill =
-    if product == 'Uyuni'
-      CHANNEL_TO_SYNCH_BY_OS_VERSION['15.4']
-    else
-      CHANNEL_TO_SYNCH_BY_OS_VERSION['default']
-    end
-  [get_target('sle_minion'), get_target('build_host'), get_target('ssh_minion'), get_target('rhlike_minion')].each do |node|
-    next unless node
-    os_version = node.os_version
-    os_family = node.os_family
-    next unless os_family == 'sles'
-    log "Can't build list of reposyncs to leave running" unless %w[15-SP3 15-SP4].include? os_version
-    do_not_kill += CHANNEL_TO_SYNCH_BY_OS_VERSION[os_version]
-  end
-  do_not_kill.uniq
-end
-
 def count_table_items
   # count table items using the table counter component
   items_label_xpath = "//span[contains(text(), 'Items ')]"
@@ -55,10 +27,17 @@ def count_table_items
 end
 
 def product
+  return $product unless $product.nil?
   _product_raw, code = get_target('server').run('rpm -q patterns-uyuni_server', check_errors: false)
-  return 'Uyuni' if code.zero?
+  if code.zero?
+    $product = 'Uyuni'
+    return 'Uyuni'
+  end
   _product_raw, code = get_target('server').run('rpm -q patterns-suma_server', check_errors: false)
-  return 'SUSE Manager' if code.zero?
+  if code.zero?
+    $product = 'SUSE Manager'
+    return 'SUSE Manager'
+  end
   raise 'Could not determine product'
 end
 
@@ -99,7 +78,7 @@ end
 # report_result is set to true
 #
 # Implementation works around https://bugs.ruby-lang.org/issues/15886
-def repeat_until_timeout(timeout: DEFAULT_TIMEOUT, retries: nil, message: nil, report_result: false)
+def repeat_until_timeout(timeout: DEFAULT_TIMEOUT, retries: nil, message: nil, report_result: false, dont_raise: false)
   last_result = nil
   Timeout.timeout(timeout) do
     # HACK: Timeout.timeout might not raise Timeout::Error depending on the yielded code block
@@ -121,7 +100,10 @@ def repeat_until_timeout(timeout: DEFAULT_TIMEOUT, retries: nil, message: nil, r
     raise "Timeout after #{timeout} seconds (repeat_until_timeout)#{detail}"
   end
 rescue Timeout::Error
-  raise "Timeout after #{timeout} seconds (Timeout.timeout)#{format_detail(message, last_result, report_result)}"
+  STDOUT.puts "Timeout after #{timeout} seconds (Timeout.timeout)#{format_detail(message, last_result, report_result)}"
+  raise unless dont_raise
+rescue StandardError
+  raise unless dont_raise
 end
 
 def check_text_and_catch_request_timeout_popup?(text1, text2: nil, timeout: Capybara.default_max_wait_time)
@@ -463,4 +445,30 @@ def update_controller_ca
   wget http://#{server_ip}/pub/RHN-ORG-TRUSTED-SSL-CERT -O /etc/pki/trust/anchors/#{server_name}.cert &&
   update-ca-certificates &&
   certutil -d sql:/root/.pki/nssdb -A -t TC -n "susemanager" -i  /etc/pki/trust/anchors/#{server_name}.cert`
+end
+
+# This functions checks if the channel has been synced
+def channel_is_synced(channel)
+  # solv is the last file to be written when the server synchronizes a channel, therefore we wait until it exist
+  result, code = get_target('server').run("dumpsolv /var/cache/rhn/repodata/#{channel}/solv", verbose: true, check_errors: false)
+  if code.zero? && !result.include?('repo size: 0')
+    STDOUT.puts "Channel #{channel} is synced."
+    # We want to check if no .new files exists. On a re-sync, the old files stay, the new one have this suffix until it's ready.
+    _result, new_code = get_target('server').run("dumpsolv /var/cache/rhn/repodata/#{channel}/solv.new", verbose: true, check_errors: false)
+    # Channel synced if no .new files exist
+    !new_code.zero?
+  else
+    # If the solv file doesn't exist, we check if we are under a Debian-like repository
+    command = "test -s /var/cache/rhn/repodata/#{channel}/Release && test -s /var/cache/rhn/repodata/#{channel}/Packages"
+    _result, new_code = get_target('server').run(command, verbose: true, check_errors: false)
+    # Channel synced if Release and Packages files exist
+    new_code.zero?
+  end
+end
+
+# This function deletes the client tools channels from a different product
+def sanitize_client_tools(channels)
+  channels.delete_if { |channel| channel.include? 'manager-tools' } if product == 'Uyuni'
+  channels.delete_if { |channel| channel.include? 'uyuni-client' } if product == 'SUSE Manager'
+  channels
 end
