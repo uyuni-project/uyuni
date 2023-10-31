@@ -209,28 +209,24 @@ end
 When(/^I create an activation key with id "([^"]*)", description "([^"]*)" and limit of (\d+)$/) do |id, dscr, limit|
   key = $api_test.activationkey.create(id, dscr, '', limit.to_i)
   raise 'Key creation failed' if key.nil?
-  raise 'Bad key name' if key != '1-testkey'
+  raise 'Bad key name' if key != "1-#{id}"
 end
 
-Then(/^I should get the new activation key$/) do
-  raise unless $api_test.activationkey.verify('1-testkey')
+Then(/^I should get the new activation key "([^"]*)"$/) do |activation_key|
+  raise unless $api_test.activationkey.verify(activation_key)
 end
 
-When(/^I delete the activation key$/) do
-  raise unless $api_test.activationkey.delete('1-testkey')
-  raise if $api_test.activationkey.verify('1-testkey')
+When(/^I delete the activation key "([^"]*)"$/) do |activation_key|
+  raise unless $api_test.activationkey.delete(activation_key)
+  raise if $api_test.activationkey.verify(activation_key)
 end
 
-When(/^I add config channels "([^"]*)" to a newly created key$/) do |channel_name|
-  raise if $api_test.activationkey.add_config_channels('1-testkey', [channel_name]) < 1
+When(/^I set the description of the activation key "([^"]*)" to "([^"]*)"$/) do |activation_key, description|
+  raise unless $api_test.activationkey.set_details(activation_key, description, '', 10, 'default')
 end
 
-When(/^I set the description of activation key to "([^"]*)"$/) do |description|
-  raise unless $api_test.activationkey.set_details('1-testkey', description, '', 10, 'default')
-end
-
-Then(/^I get the description "([^"]*)" for the activation key$/) do |description|
-  details = $api_test.activationkey.get_details('1-testkey')
+Then(/^I get the description "([^"]*)" for the activation key "([^"]*)"$/) do |description, activation_key|
+  details = $api_test.activationkey.get_details(activation_key)
   log 'Key details:'
   details.each_pair do |k, v|
     log "  #{k}: #{v}"
@@ -486,6 +482,7 @@ end
 
 When(/^I call audit\.list_systems_by_patch_status\(\) with CVE identifier "([^"]*)"$/) do |cve_identifier|
   @result_list = $api_test.audit.list_systems_by_patch_status(cve_identifier) || []
+  log "Result list: #{@result_list}"
 end
 
 Then(/^I should get status "([^"]+)" for system "([0-9]+)"$/) do |status, system|
@@ -500,16 +497,8 @@ Then(/^I should get status "([^"]+)" for "([^"]+)"$/) do |status, host|
   step %(I should get status "#{status}" for system "#{get_system_id(node)}")
 end
 
-Then(/^I should get the test base channel$/) do
-  arch, _code = get_target('server').run('uname -m')
-  arch.chomp!
-  channel = if arch != 'x86_64'
-              'fake-base-channel-i586'
-            else
-              'fake-base-channel'
-            end
-  log "result: #{@result}"
-  assert(@result['channel_labels'].include?(channel))
+Then(/^I should get the "([^"]*)" channel label$/) do |channel_label|
+  assert(@result['channel_labels'].include?(channel_label))
 end
 
 Then(/^I should get the "([^"]*)" patch$/) do |patch|
