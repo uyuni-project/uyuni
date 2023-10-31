@@ -113,6 +113,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
 
     private static String originalMountPoint;
 
+    private DownloadController downloadController;
     @BeforeAll
     public static void beforeAll() {
         Config.get().setString("server.secret_key",
@@ -172,7 +173,8 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         // Change mount point to the parent of the temp file
         Config.get().setString(ConfigDefaults.MOUNT_POINT, packageFile.getParent());
 
-        DownloadController.setCheckTokens(true);
+        downloadController = new DownloadController(new CloudPaygManager());
+        downloadController.setCheckTokens(true);
     }
 
     @Override
@@ -276,7 +278,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         Request request = getMockRequestWithParams(new HashMap<>());
 
         try {
-            DownloadController.downloadPackage(request, response);
+            downloadController.downloadPackage(request, response);
             fail("Controller should fail if no token was given");
         }
         catch (spark.HaltException e) {
@@ -295,7 +297,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         Request request = getMockRequestWithParams(params);
 
         try {
-            DownloadController.downloadPackage(request, response);
+            downloadController.downloadPackage(request, response);
             fail("Controller should fail if wrong token was given");
         }
         catch (spark.HaltException e) {
@@ -313,9 +315,9 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         params.put("invalid-token-should-be-ignored", "");
         Request request = getMockRequestWithParams(params);
 
-        DownloadController.setCheckTokens(false);
+        downloadController.setCheckTokens(false);
         try {
-            DownloadController.downloadPackage(request, response);
+            downloadController.downloadPackage(request, response);
             assertEquals(packageFile.getAbsolutePath(), response.raw().getHeader("X-Sendfile"));
             assertEquals("application/octet-stream", response.raw().getHeader("Content-Type"));
             assertEquals("attachment; filename=" + packageFile.getName(),
@@ -340,7 +342,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
                 Collections.emptyMap(),
                 channel.getLabel(), "comps.xml");
 
-        DownloadController.setCheckTokens(false);
+        downloadController.setCheckTokens(false);
 
         String compsRelativeDirPath = "rhn/comps/" + channel.getName();
         String compsDirPath = Config.get().getString(ConfigDefaults.MOUNT_POINT) + "/" +
@@ -360,7 +362,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
             channel.setComps(comps);
 
             try {
-                assertNotNull(DownloadController.downloadMetadata(request, response));
+                assertNotNull(downloadController.downloadMetadata(request, response));
 
                 assertEquals(compsFile.getAbsolutePath(), response.raw().getHeader("X-Sendfile"));
                 assertEquals("application/octet-stream", response.raw().getHeader("Content-Type"));
@@ -393,7 +395,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         Request request = getMockRequestWithParams(params);
 
         try {
-            DownloadController.downloadPackage(request, response);
+            downloadController.downloadPackage(request, response);
             fail(String.format("%s should halt 400 if 2 tokens given",
                     DownloadController.class.getSimpleName()));
         }
@@ -424,7 +426,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         Request request = getMockRequestWithParams(params);
 
         try {
-            DownloadController.downloadPackage(request, response);
+            downloadController.downloadPackage(request, response);
             fail(String.format("%s should halt 403 if a different channel token is given",
                     DownloadController.class.getSimpleName()));
         }
@@ -453,7 +455,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         Request request = getMockRequestWithParams(params);
 
         try {
-            DownloadController.downloadPackage(request, response);
+            downloadController.downloadPackage(request, response);
             fail(String.format("%s should halt 403 if a different org token is given",
                     DownloadController.class.getSimpleName()));
         }
@@ -483,7 +485,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         Request request = getMockRequestWithParams(params);
 
         try {
-            DownloadController.downloadPackage(request, response);
+            downloadController.downloadPackage(request, response);
             fail(String.format("%s should halt 403 if the token is not assigned to a minion",
                     DownloadController.class.getSimpleName()));
         }
@@ -561,7 +563,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
 
         Request request = requestFactory.apply(tokenChannel);
         try {
-            assertNotNull(DownloadController.downloadPackage(request, response));
+            assertNotNull(downloadController.downloadPackage(request, response));
 
             assertEquals(pkgFile.get().getAbsolutePath(), response.raw().getHeader("X-Sendfile"));
             assertEquals("application/octet-stream", response.raw().getHeader("Content-Type"));
@@ -585,7 +587,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         params.put(tokenChannel, "");
         Request request = getMockRequestWithParamsAndHeaders(params, Collections.emptyMap(), uriFile2);
         try {
-            assertNotNull(DownloadController.downloadPackage(request, response));
+            assertNotNull(downloadController.downloadPackage(request, response));
 
             assertEquals(packageFile2.getAbsolutePath(), response.raw().getHeader("X-Sendfile"));
             assertEquals("application/octet-stream", response.raw().getHeader("Content-Type"));
@@ -614,7 +616,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         Request request = getMockRequestWithParams(params);
 
         try {
-            assertNotNull(DownloadController.downloadPackage(request, response));
+            assertNotNull(downloadController.downloadPackage(request, response));
 
             assertEquals(packageFile.getAbsolutePath(), response.raw().getHeader("X-Sendfile"));
             assertEquals("application/octet-stream", response.raw().getHeader("Content-Type"));
@@ -645,13 +647,40 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         Request request = getMockRequestWithParams(params);
 
         try {
-            DownloadController.downloadPackage(request, response);
+            downloadController.downloadPackage(request, response);
             fail(String.format("%s should halt 403 if an expired token is given",
                     DownloadController.class.getSimpleName()));
         }
         catch (spark.HaltException e) {
             assertEquals(403, e.getStatusCode());
             assertTrue(e.getBody().contains("This token is not valid"));
+            assertNull(response.raw().getHeader("X-Sendfile"));
+        }
+    }
+
+    @Test
+    public void testPaygNotCompliant() {
+        CloudPaygManager pmgr = new CloudPaygManager() {
+            @Override
+            public boolean checkRefreshCache(boolean force) {
+                setCompliant(false);
+                return true;
+            }
+        };
+        DownloadController ctl = new DownloadController(pmgr);
+
+        Map<String, String> params = new HashMap<>();
+        params.put("abcdef1234567890", "");
+        Request request = getMockRequestWithParams(params);
+
+        try {
+            ctl.downloadPackage(request, response);
+            fail(String.format("%s should halt 403 if an expired token is given",
+                    DownloadController.class.getSimpleName()));
+        }
+        catch (spark.HaltException e) {
+            assertEquals(403, e.getStatusCode());
+            assertTrue(e.getBody().contains("Server is not compliant"));
             assertNull(response.raw().getHeader("X-Sendfile"));
         }
     }
@@ -694,7 +723,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
             channel.setComps(comps);
 
             try {
-                assertNotNull(DownloadController.downloadMetadata(request, response));
+                assertNotNull(downloadController.downloadMetadata(request, response));
 
                 assertEquals(compsFile.getAbsolutePath(), response.raw().getHeader("X-Sendfile"));
                 assertEquals("application/octet-stream", response.raw().getHeader("Content-Type"));
@@ -747,7 +776,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
             channel.setModules(modules);
 
             try {
-                assertNotNull(DownloadController.downloadMetadata(request, response));
+                assertNotNull(downloadController.downloadMetadata(request, response));
 
                 assertEquals(modulesFile.getAbsolutePath(), response.raw().getHeader("X-Sendfile"));
                 assertEquals("application/octet-stream", response.raw().getHeader("Content-Type"));
@@ -800,7 +829,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
             channel.setMediaProducts(prd);
 
             try {
-                assertNotNull(DownloadController.downloadMediaFiles(request, response));
+                assertNotNull(downloadController.downloadMediaFiles(request, response));
 
                 assertEquals(productsFile.getAbsolutePath(), response.raw().getHeader("X-Sendfile"));
                 assertEquals("application/octet-stream", response.raw().getHeader("Content-Type"));
@@ -838,7 +867,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
                 channel.getLabel(), "repomd.xml");
 
         try {
-            assertNotNull(DownloadController.downloadMetadata(request, response));
+            assertNotNull(downloadController.downloadMetadata(request, response));
             fail("HaltException expected for missing file!");
         }
         catch (spark.HaltException e) {
@@ -849,7 +878,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
     @Test
     public void testParseDebPkgFilename1() {
         DownloadController.PkgInfo pack =
-                DownloadController.parsePackageFileName(
+                downloadController.parsePackageFileName(
                         "/rhn/manager/download/debchannel/getPackage/gcc-8-base_8-20180414-1ubuntu2.amd64-deb.deb");
         assertEquals("gcc-8-base", pack.getName());
         assertNull(pack.getEpoch());
@@ -861,7 +890,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
     @Test
     public void testParseDebPkgFilename2() {
         DownloadController.PkgInfo pack =
-                DownloadController.parsePackageFileName(
+                downloadController.parsePackageFileName(
                         "/rhn/manager/download/debchannel/getPackage/python-tornado_4.2.1-1ubuntu3.amd64-deb.deb");
         assertEquals("python-tornado", pack.getName());
         assertNull(pack.getEpoch());
@@ -873,7 +902,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
     @Test
     public void testParseDebPkgFilename3() {
         DownloadController.PkgInfo pack =
-                DownloadController.parsePackageFileName(
+                downloadController.parsePackageFileName(
                         "/rhn/manager/download/ubuntu-18.04-amd64-main/getPackage/ruby_1:2.5.1-X.amd64-deb.deb");
         assertEquals("ruby", pack.getName());
         assertEquals("1", pack.getEpoch());

@@ -129,6 +129,7 @@ public class Router implements SparkApplication {
         FormulaController formulaController = new FormulaController(saltApi);
         HttpApiRegistry httpApiRegistry = new HttpApiRegistry();
         FrontendLogController frontendLogController = new FrontendLogController();
+        DownloadController downloadController = new DownloadController(paygManager);
 
         // Login
         LoginController.initRoutes(jade);
@@ -191,7 +192,7 @@ public class Router implements SparkApplication {
         TaskoTop.initRoutes(jade);
 
         // Download endpoint
-        DownloadController.initRoutes();
+        downloadController.initRoutes();
 
         // Formula catalog
         FormulaCatalogController.initRoutes(jade);
