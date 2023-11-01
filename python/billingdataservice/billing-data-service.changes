@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Nov 01 21:02:46 CET 2023 - marina.latini@suse.com
+
+- version 4.4.2-1
+  * Relax dependency to csp-billing-adapter-service
+
+-------------------------------------------------------------------
 Tue Sep 19 15:14:02 CEST 2023 - rosuna@suse.com
 
 - version 4.4.1-1
