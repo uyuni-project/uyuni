@@ -1,4 +1,16 @@
 -------------------------------------------------------------------
+Wed Nov 01 20:47:46 CET 2023 - marina.latini@suse.com
+
+- version 4.4.12-1
+  * Added key import debug logging to reposync (bsc#1213675)
+  * Set stricter file permissions for config file
+  * Add table statistics and options to the support config database output
+  * Add CLM data collection to spacewalk-debug
+  * Fix clear of self.__config cache on rhnConfig.py only when timeDiff change
+  * Add unique index for rhnpackagechangelogdata table
+  * Tito requires to list the package source as %{name}-%{version}.tar.gz
+
+-------------------------------------------------------------------
 Mon Sep 18 14:26:50 CEST 2023 - rosuna@suse.com
 
 - version 4.4.11-1

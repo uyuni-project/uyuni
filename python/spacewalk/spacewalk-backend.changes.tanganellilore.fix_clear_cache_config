@@ -1,1 +1,0 @@
-- fix clear of self.__config cache on rhnConfig.py only when timeDiff change
