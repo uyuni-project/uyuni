@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-27 14:34+0200\n"
-"PO-Revision-Date: 2023-10-15 11:15+0000\n"
+"PO-Revision-Date: 2023-11-01 04:15+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web-4-3/ja/"
 ">\n"
@@ -4399,9 +4399,8 @@ msgstr "例: proxy.domain.com"
 
 #: ../html/src/manager/proxy/container-config.tsx:206
 #: ../html/src/manager/proxy/container-config.tsx:217
-#, fuzzy
 msgid "Has to be a valid FQDN address"
-msgstr "IP アドレスでなければなりません"
+msgstr "有効なFQDNアドレスでなければなりません"
 
 #: ../html/src/manager/proxy/container-config.tsx:210
 msgid "Parent FQDN"
