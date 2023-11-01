@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Nov 01 20:15:51 CET 2023 - marina.latini@suse.com
+
+- version 4.4.9-1
+  * Add Debian 12 repositories
+  * add openSUSE Leap Micro 5.5 to spacewalk-commons-channels
+
+-------------------------------------------------------------------
 Mon Sep 18 14:36:37 CEST 2023 - rosuna@suse.com
 
 - version 4.4.8-1
