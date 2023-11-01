@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-10-26 13:56+0200\n"
-"PO-Revision-Date: 2023-10-16 10:15+0000\n"
+"PO-Revision-Date: 2023-11-01 04:15+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
 "zh_CN/>\n"
@@ -4316,9 +4316,8 @@ msgstr "例如 proxy.domain.com"
 
 #: ../html/src/manager/proxy/container-config.tsx:206
 #: ../html/src/manager/proxy/container-config.tsx:217
-#, fuzzy
 msgid "Has to be a valid FQDN address"
-msgstr "必须为 IP 地址"
+msgstr "必须为有效的 FQDN 地址"
 
 #: ../html/src/manager/proxy/container-config.tsx:210
 msgid "Parent FQDN"
