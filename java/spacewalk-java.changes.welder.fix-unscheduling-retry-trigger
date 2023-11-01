@@ -1,1 +1,0 @@
-- Fix unscheduling actions when the trigger name changed after retry (bsc#1214121)

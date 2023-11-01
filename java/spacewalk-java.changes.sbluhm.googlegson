@@ -1,1 +1,0 @@
-- Disallow Google GSON 2.10 or higher due to removed methods.
