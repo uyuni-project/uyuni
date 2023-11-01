@@ -587,7 +587,7 @@ public class DownloadController {
             });
         }
         catch (InvalidJwtException | MalformedClaimException e) {
-            LOG.info("Forbidden: Token %s is not valid to access {} in {}: {}", token, filename, channel,
+            LOG.info("Forbidden: Token {} is not valid to access {} in {}: {}", token, filename, channel,
                     e.getMessage());
             halt(HttpStatus.SC_FORBIDDEN,
                  String.format("Token is not valid to access %s in %s: %s", filename, channel, e.getMessage()));
