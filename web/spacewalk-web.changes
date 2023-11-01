@@ -1,4 +1,17 @@
 -------------------------------------------------------------------
+Wed Nov 01 20:13:53 CET 2023 - marina.latini@suse.com
+
+- version 4.4.12-1
+  * Fix the use of page size preference in systems and packages lists
+  * Fix datetimepicker erroneously updating the date field (bsc#1210253, bsc#1215820)
+  * Improve datetimepicker input formatting
+  * Improved logging to better capture third-party library issues
+  * Simplify and modernize password generation logic
+  * Update webpack to 5.88.2
+  * Add sanity checks for FQDNs in proxy configuration dialog
+  * Update the version in the WebUI
+
+-------------------------------------------------------------------
 Mon Sep 18 14:37:15 CEST 2023 - rosuna@suse.com
 
 - version 4.4.11-1
