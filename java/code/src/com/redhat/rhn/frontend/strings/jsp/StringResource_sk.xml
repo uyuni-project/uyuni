@@ -2621,63 +2621,63 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="assignedgroups.jsp.defaultsysgroups" xml:space="preserve">
         <source>Default System Groups:</source>
-        <target/>
+        <target>Predvolené systémové skupiny:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/AssignedSystemGroups</context>
         </context-group>
       </trans-unit>
       <trans-unit id="assignedgroups.jsp.nogroups" xml:space="preserve">
         <source>Your organization has no system groups.</source>
-        <target/>
+        <target>Vaša organizácia nemá žiadne systémové skupiny.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/AssignedSystemGroups</context>
         </context-group>
       </trans-unit>
       <trans-unit id="assignedgroups.jsp.submitpermissions" xml:space="preserve">
         <source>Update Permissions</source>
-        <target/>
+        <target>Aktualizovať oprávnenia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/AssignedSystemGroups</context>
         </context-group>
       </trans-unit>
       <trans-unit id="assignedgroups.jsp.submitdefaults" xml:space="preserve">
         <source>Update Defaults</source>
-        <target/>
+        <target>Aktualizovať predvolené nastavenia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/AssignedSystemGroups</context>
         </context-group>
       </trans-unit>
       <trans-unit id="assignedgroups.jsp.group" xml:space="preserve">
         <source>Group</source>
-        <target/>
+        <target>Skupina</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/AssignedSystemGroups</context>
         </context-group>
       </trans-unit>
       <trans-unit id="filter" xml:space="preserve">
         <source>filter</source>
-        <target/>
+        <target>filter</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page with list display</context>
         </context-group>
       </trans-unit>
       <trans-unit id="updatelist" xml:space="preserve">
         <source>updatelist</source>
-        <target/>
+        <target>zoznam aktualizácií</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page with list display</context>
         </context-group>
       </trans-unit>
       <trans-unit id="selectall" xml:space="preserve">
         <source>selectall</source>
-        <target/>
+        <target>vybrať všetko</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page with list display</context>
         </context-group>
       </trans-unit>
       <trans-unit id="unselectall" xml:space="preserve">
         <source>unselectall</source>
-        <target/>
+        <target>zrušiť výber všetkého</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page with list display</context>
         </context-group>
@@ -2685,7 +2685,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       <!-- Scheduled Actions pages -->
       <trans-unit id="actiondetails.jsp.heading2" xml:space="preserve">
         <source>Action Details</source>
-        <target/>
+        <target>Podrobnosti akcie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails</context>
         </context-group>
