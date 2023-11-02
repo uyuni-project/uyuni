@@ -911,7 +911,7 @@ When(/^I check the first row in the list$/) do
 end
 
 When(/^I check "([^"]*)" in the list$/) do |text|
-  raise 'Package name is not set' if text.empty?
+  raise 'The text to check can\'t be empty' if text.empty?
   top_level_xpath_query = "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{text}')]]//input[@type='checkbox']"
   row = find(:xpath, top_level_xpath_query, match: :first)
   raise "xpath: #{top_level_xpath_query} not found" if row.nil?
