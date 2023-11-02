@@ -71,38 +71,36 @@ end
 MultiTest.disable_autorun
 
 # register chromedriver headless mode
-def capybara_register_driver
-  Capybara.register_driver(:headless_chrome) do |app|
-    client = Selenium::WebDriver::Remote::Http::Default.new
-    # WORKAROUND failure at Scenario: Test IPMI functions: increase from 60 s to 180 s
-    client.read_timeout = 180
-    # Chrome driver options
-    chrome_options = %w[no-sandbox disable-dev-shm-usage ignore-certificate-errors disable-gpu window-size=2048,2048, js-flags=--max_old_space_size=2048]
-    chrome_options << 'headless' unless $debug_mode
-    capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
-      chromeOptions: {
-        args: chrome_options,
-        w3c: false,
-        prefs: {
-          download: {
-            prompt_for_download: false,
-            default_directory: '/tmp/downloads'
-          }
+Capybara.register_driver(:headless_chrome) do |app|
+  client = Selenium::WebDriver::Remote::Http::Default.new
+  # WORKAROUND failure at Scenario: Test IPMI functions: increase from 60 s to 180 s
+  client.read_timeout = 240
+  # Chrome driver options
+  chrome_options = %w[no-sandbox disable-dev-shm-usage ignore-certificate-errors disable-gpu window-size=2048,2048, js-flags=--max_old_space_size=2048]
+  chrome_options << 'headless' unless $debug_mode
+  capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
+    chromeOptions: {
+      args: chrome_options,
+      w3c: false,
+      prefs: {
+        download: {
+          prompt_for_download: false,
+          default_directory: '/tmp/downloads'
         }
-      },
-      unexpectedAlertBehaviour: 'accept',
-      unhandledPromptBehavior: 'accept'
-    )
-    Capybara::Selenium::Driver.new(
-      app,
-      browser: :chrome,
-      desired_capabilities: capabilities,
-      http_client: client
-    )
-  end
+      }
+    },
+    unexpectedAlertBehaviour: 'accept',
+    unhandledPromptBehavior: 'accept'
+  )
+
+  Capybara::Selenium::Driver.new(
+    app,
+    browser: :chrome,
+    desired_capabilities: capabilities,
+    http_client: client
+  )
 end
 
-capybara_register_driver
 Selenium::WebDriver.logger.level = :error unless $debug_mode
 Capybara.default_driver = :headless_chrome
 Capybara.javascript_driver = :headless_chrome
@@ -185,7 +183,8 @@ end
 
 AfterStep do
   if has_css?('.senna-loading', wait: 0)
-    log 'Timeout: Waiting AJAX transition' unless has_no_css?('.senna-loading', wait: 30)
+    log 'WARN: Step ends with an ajax transition not finished, let\'s wait a bit!'
+    log 'Timeout: Waiting AJAX transition' unless has_no_css?('.senna-loading', wait: 20)
   end
 end
 
@@ -193,10 +192,6 @@ Before do
   current_time = Time.new
   @scenario_start_time = current_time.to_i
   log "This scenario ran at: #{current_time}\n"
-end
-
-Before('@skip') do
-  skip_this_scenario
 end
 
 # do some tests only if the corresponding node exists

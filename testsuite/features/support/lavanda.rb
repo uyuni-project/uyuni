@@ -169,7 +169,7 @@ module LavandaBasic
   def run_until_ok(cmd, timeout: DEFAULT_TIMEOUT)
     repeat_until_timeout(timeout: timeout, report_result: true) do
       result, code = run(cmd, check_errors: false)
-      return [result, code] if code.zero?
+      break if code.zero?
       sleep 2
       result
     end
@@ -183,7 +183,7 @@ module LavandaBasic
   def run_until_fail(cmd, timeout: DEFAULT_TIMEOUT)
     repeat_until_timeout(timeout: timeout, report_result: true) do
       result, code = run(cmd, check_errors: false)
-      return [result, code] if code.nonzero?
+      break if code.nonzero?
       sleep 2
       result
     end
@@ -197,7 +197,7 @@ module LavandaBasic
   def wait_while_process_running(process)
     repeat_until_timeout(report_result: true) do
       result, code = run("pgrep -x #{process} >/dev/null", check_errors: false)
-      return [result, code] if code.nonzero?
+      break if code.nonzero?
       sleep 2
       result
     end

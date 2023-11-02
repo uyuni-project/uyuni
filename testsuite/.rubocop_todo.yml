@@ -497,7 +497,6 @@ Style/MissingElse:
     - 'features/support/lavanda.rb'
     - 'features/support/twopence_init.rb'
     - 'features/support/twopence_env.rb'
-    - 'features/support/commonlib.rb'
 
 # Offense count: 4
 # Cop supports --auto-correct.
