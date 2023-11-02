@@ -28,6 +28,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -43,6 +44,7 @@ import java.util.regex.Pattern;
  */
 public class AuditManager /* extends BaseManager */ {
 
+    private static final Pattern AUDIT_LOG_FILENAME_PATTERN = Pattern.compile("audit-(\\d+)-(\\d+).parsed");
     private static Logger log = LogManager.getLogger(AuditManager.class);
 
     private AuditManager() {
@@ -303,63 +305,61 @@ public class AuditManager /* extends BaseManager */ {
      * @param machineName The machine to get review sections for; can be null
      * @return The set of review sections
      */
-    public static DataResult<AuditReviewDto> getMachineReviewSections(
-            String machineName) {
-        long start, end;
-        DataResult<AuditReviewDto> dr, rec;
-        File hostDir;
-        LinkedList<AuditReviewDto> aurevs = new LinkedList<>();
-        Matcher fnmatch;
-        Pattern fnregex = Pattern.compile("audit-(\\d+)-(\\d+).parsed");
-
-        // if machineName is null, look up all review sections by recursion
-        if (machineName == null || machineName.length() == 0) {
-            dr = null;
-
-            for (AuditMachineDto aumachine : getMachines()) {
-                if (aumachine.getName() != null) {
-                    rec = getMachineReviewSections(aumachine.getName());
-
-                    if (dr == null) {
-                        dr = rec;
-                    }
-                    else {
-                        dr.addAll(rec);
-                    }
-                }
-            }
-
-            return dr;
+    @SuppressWarnings("javasecurity:S2083") // host.list() is validated right after it is declared
+    public static DataResult<AuditReviewDto> getMachineReviewSections(String machineName) {
+        // if machineName is null, get all review sections by recursion
+        if (machineName == null || machineName.isEmpty()) {
+            return getRecursiveReviewSections();
         }
 
         // otherwise, just look up this one machine
-        hostDir = new File(logDirStr + "/" + machineName + "/audit");
+        File hostDir = Path.of(logDirStr, machineName.replace(File.separator, ""), "audit").toFile();
 
         if (!hostDir.exists()) {
-            return new DataResult(new LinkedList());
+            return new DataResult<>(new LinkedList<>());
         }
 
+        LinkedList<AuditReviewDto> aurevs = new LinkedList<>();
+
         for (String auditLog : hostDir.list()) {
-            fnmatch = fnregex.matcher(auditLog);
+            Matcher fnmatch = AUDIT_LOG_FILENAME_PATTERN.matcher(auditLog);
 
             if (fnmatch.matches()) { // found a matching audit file
-                start = Long.parseLong(fnmatch.group(1)) * 1000;
-                end = Long.parseLong(fnmatch.group(2)) * 1000;
+                long start = Long.parseLong(fnmatch.group(1)) * 1000;
+                long end = Long.parseLong(fnmatch.group(2)) * 1000;
 
                 try { // but is it reviewed yet?
                     aurevs.add(getReviewInfo(machineName, start, end));
                 }
                 catch (IOException ioex) { // on error, assume unreviewed
                     aurevs.add(new AuditReviewDto(machineName, new Date(start),
-                        new Date(end), null, null));
+                            new Date(end), null, null));
                 }
             }
         }
 
         Collections.sort(aurevs);
-        dr = new DataResult<>(aurevs);
+        return new DataResult<>(aurevs);
+    }
 
-        return dr;
+    /**
+     * Look up all review sections by recursion
+     * @return
+     */
+    private static DataResult<AuditReviewDto> getRecursiveReviewSections() {
+        DataResult<AuditReviewDto> dataResult = null;
+        for (AuditMachineDto auditMachineDto : getMachines()) {
+            if (auditMachineDto.getName() != null) {
+                DataResult<AuditReviewDto> machineReviewSections = getMachineReviewSections(auditMachineDto.getName());
+                if (dataResult == null) {
+                    dataResult = machineReviewSections;
+                }
+                else {
+                    dataResult.addAll(machineReviewSections);
+                }
+            }
+        }
+        return dataResult;
     }
 
     /**
