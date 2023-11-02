@@ -3,24 +3,7 @@
 #!BuildTag: uyuni/init:latest
 
 ARG INIT_BASE=opensuse/leap:15.5
-ARG PRODUCT=Uyuni
-ARG VENDOR="Uyuni project"
-ARG URL="https://www.uyuni-project.org/"
-ARG REFERENCE_PREFIX="registry.opensuse.org/uyuni"
-
 FROM $INIT_BASE
-
-# Define labels according to https://en.opensuse.org/Building_derived_containers
-# labelprefix=org.opensuse.uyuni.init
-LABEL org.opencontainers.image.title="${PRODUCT} Init Image"
-LABEL org.opencontainers.image.description="This image initialize users, groups and software for ${PRODUCT} Container"
-LABEL org.opencontainers.image.version="4.4.0"
-LABEL org.opensuse.reference="${REFERENCE_PREFIX}/init:4.4.0.%RELEASE%"
-LABEL org.openbuildservice.disturl="%DISTURL%"
-LABEL org.opencontainers.image.created="%BUILDTIME%"
-LABEL org.opencontainers.image.vendor="${VENDOR}"
-LABEL org.opencontainers.image.url="${URL}"
-# endlabelprefix
 
 # Create stable static UID and GID for salt, tomcat, apache (wwwrun), postgres, ...
 RUN groupadd -r --gid 10550 susemanager && \
@@ -45,4 +28,22 @@ RUN mkdir -p /etc/systemd/system.conf.d/ && \
     printf "[Manager]\nLogColor=no" > \
         /etc/systemd/system.conf.d/01-nocolor.conf
 RUN systemctl disable getty@tty1.service
+
+ARG PRODUCT=Uyuni
+ARG VENDOR="Uyuni project"
+ARG URL="https://www.uyuni-project.org/"
+ARG REFERENCE_PREFIX="registry.opensuse.org/uyuni"
+
+# Define labels according to https://en.opensuse.org/Building_derived_containers
+# labelprefix=org.opensuse.uyuni.init
+LABEL org.opencontainers.image.title="${PRODUCT} Init Image"
+LABEL org.opencontainers.image.description="This image initialize users, groups and software for ${PRODUCT} Container"
+LABEL org.opencontainers.image.created="%BUILDTIME%"
+LABEL org.opencontainers.image.vendor="${VENDOR}"
+LABEL org.opencontainers.image.url="${URL}"
+LABEL org.opencontainers.image.version="4.4.0"
+LABEL org.openbuildservice.disturl="%DISTURL%"
+LABEL org.opensuse.reference="${REFERENCE_PREFIX}/init:4.4.0.%RELEASE%"
+# endlabelprefix
+
 HEALTHCHECK --interval=5s --timeout=5s --retries=5 CMD ["/usr/bin/systemctl", "is-active", "multi-user.target"]
