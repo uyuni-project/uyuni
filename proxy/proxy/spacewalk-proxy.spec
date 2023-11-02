@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-proxy
 #
-# Copyright (c) 2021 SUSE LLC
+# Copyright (c) 2023 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -85,7 +85,7 @@ Requires:       httpd
 Requires:       spacewalk-proxy-package-manager
 %if 0%{?suse_version}
 Requires:       apache2-prefork
-Requires:       apache2-mod_wsgi-python3
+Requires:       apache2-mod_wsgi
 %else
 Requires:       mod_ssl
 Requires:       python3-mod_wsgi
@@ -127,7 +127,7 @@ Requires(pre):  uyuni-base-common
 BuildRequires:  uyuni-base-common
 %if 0%{?suse_version}
 BuildRequires:  apache2
-Requires:       apache2-mod_wsgi-python3
+Requires:       apache2-mod_wsgi
 %else
 BuildRequires:  httpd
 Requires:       mod_ssl

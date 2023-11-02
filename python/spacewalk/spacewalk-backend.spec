@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-backend
 #
-# Copyright (c) 2021 SUSE LLC
+# Copyright (c) 2023 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -32,7 +32,7 @@
 %global apache_user root
 %global apache_group root
 %global apache_pkg httpd
-%global documentroot %{_localstatedir}/www/html 
+%global documentroot %{_localstatedir}/www/html
 %global m2crypto python3-m2crypto
 %global sslrootcert %{_sysconfdir}/pki/ca-trust/source/anchors/
 %endif
@@ -119,7 +119,7 @@ Group:          System/Management
 Requires(pre):  %{name}-sql = %{version}-%{release}
 Requires:       %{name}-sql = %{version}-%{release}
 Requires:       spacewalk-config
-Requires:       (apache2-mod_wsgi-python3 or python3-mod_wsgi)
+Requires:       (apache2-mod_wsgi or python3-mod_wsgi)
 Requires:       (python3-pam or python3-python-pam)
 
 # cobbler-web is known to break our configuration
