@@ -83,7 +83,7 @@ public class DownloadController {
             .build();
 
     // cached value to avoid multiple calls
-    private final String MOUNT_POINT_PATH;
+    private final String mountPointPath;
 
     private final CloudPaygManager cloudPaygManager;
     private static final long EXPIRATION_TIME_MINUTES_IN_THE_FUTURE_TEMP_TOKEN = Config.get().getInt(
@@ -235,7 +235,7 @@ public class DownloadController {
     public DownloadController(CloudPaygManager cloudPaygManagerIn) {
         cloudPaygManager = cloudPaygManagerIn;
         checkTokens = Config.get().getBoolean(ConfigDefaults.SALT_CHECK_DOWNLOAD_TOKENS);
-        MOUNT_POINT_PATH = Config.get().getString(ConfigDefaults.MOUNT_POINT);
+        mountPointPath = Config.get().getString(ConfigDefaults.MOUNT_POINT);
     }
 
     /**
@@ -339,7 +339,7 @@ public class DownloadController {
             comps = channel.getOriginal().getComps();
         }
         if (comps != null) {
-            return new File(MOUNT_POINT_PATH, comps.getRelativeFilename())
+            return new File(mountPointPath, comps.getRelativeFilename())
                     .getAbsoluteFile();
         }
 
@@ -361,7 +361,7 @@ public class DownloadController {
             modules = channel.getOriginal().getModules();
         }
         if (modules != null) {
-            return new File(MOUNT_POINT_PATH, modules.getRelativeFilename()).getAbsoluteFile();
+            return new File(mountPointPath, modules.getRelativeFilename()).getAbsoluteFile();
         }
 
         return null;
@@ -382,7 +382,7 @@ public class DownloadController {
             product = channel.getOriginal().getMediaProducts();
         }
         if (product != null) {
-            return new File(MOUNT_POINT_PATH, product.getRelativeFilename())
+            return new File(mountPointPath, product.getRelativeFilename())
                     .getAbsoluteFile();
         }
 
