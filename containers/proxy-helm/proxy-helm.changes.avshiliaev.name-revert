@@ -1,1 +1,0 @@
-- Reverted the name of the package from proxy to proxy-helm to avoid problems with release tagging
