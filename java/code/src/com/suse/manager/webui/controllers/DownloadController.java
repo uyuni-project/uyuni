@@ -53,6 +53,7 @@ import org.jose4j.jwt.consumer.JwtConsumerBuilder;
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.Path;
 import java.security.Key;
 import java.time.Duration;
 import java.time.Instant;
@@ -260,7 +261,7 @@ public class DownloadController {
         String mountPoint = Config.get().getString(ConfigDefaults.REPOMD_CACHE_MOUNT_POINT, "/var/cache");
         String prefix = Config.get().getString(ConfigDefaults.REPOMD_PATH_PREFIX, "rhn/repodata");
 
-        File file = new File(mountPoint + File.separator + prefix + File.separator + channelLabel).getAbsoluteFile();
+        File file = Path.of(mountPoint, prefix, channelLabel, filename).toAbsolutePath().toFile();
 
         if (!file.exists() && (filename.endsWith(".asc") || filename.endsWith(".key"))) {
             halt(HttpStatus.SC_NOT_FOUND,
