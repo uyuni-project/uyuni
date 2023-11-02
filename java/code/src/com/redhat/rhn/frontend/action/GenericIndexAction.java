@@ -42,7 +42,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class GenericIndexAction extends RhnAction {
 
-    private CloudPaygManager cloudPaygManager = GlobalInstanceHolder.PAYG_MANAGER;
+    private final CloudPaygManager cloudPaygManager = GlobalInstanceHolder.PAYG_MANAGER;
 
     /** {@inheritDoc} */
     @Override

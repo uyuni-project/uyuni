@@ -63,7 +63,7 @@ public class SystemOverviewAction extends RhnAction {
                                                        UserServerPreferenceId
                                                        .RECEIVE_NOTIFICATIONS};
 
-    private CloudPaygManager cloudPaygManager = GlobalInstanceHolder.PAYG_MANAGER;
+    private final CloudPaygManager cloudPaygManager = GlobalInstanceHolder.PAYG_MANAGER;
 
     /** {@inheritDoc} */
     @Override
