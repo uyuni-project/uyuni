@@ -53,10 +53,28 @@ public class ReportDBHelper {
      * @param <T> type of the query result
      * @return stream of batched results
      */
-    @SuppressWarnings("unchecked")
     public <T> Stream<DataResult<T>> batchStream(SelectMode query, int batchSize, int initialOffset) {
+        return batchStream(query, Collections.emptyMap(), batchSize, initialOffset);
+    }
+
+    /**
+     * Returns the result of a query in a stream of batches.
+     * @param query select query
+     * @param staticParams query parameters that do not depend on the batch
+     * @param batchSize max size of a batch
+     * @param initialOffset initial offset
+     * @param <T> type of the query result
+     * @return stream of batched results
+     */
+    @SuppressWarnings("unchecked")
+    public <T> Stream<DataResult<T>> batchStream(SelectMode query, Map<String, Object> staticParams, int batchSize,
+                                                 int initialOffset) {
+        Map<String, Object> parametersMap = new HashMap<>(staticParams);
         return Stream.iterate(initialOffset, i -> i + batchSize)
-                .map(offset -> (DataResult<T>) query.execute(Map.of("offset", offset, "limit", batchSize)))
+                .map(offset -> {
+                    parametersMap.putAll(Map.of("offset", offset, "limit", batchSize));
+                    return (DataResult<T>) query.execute(parametersMap);
+                })
                 .takeWhile(batch -> !batch.isEmpty());
     }
 
