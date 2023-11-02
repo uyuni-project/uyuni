@@ -46,6 +46,22 @@ public class ReportDBHelper {
     }
 
     /**
+     * Update the query parameters map getting the value of the filter field from the last entry of the data batch.
+     *
+     * @param parametersMap the parameters map to update
+     * @param dataBatch the data batch
+     * @param fieldSet the set of fields to update
+     */
+    public void updateParameters(Map<String, Object> parametersMap, DataResult<Map<String, Object>> dataBatch,
+                                 Set<String> fieldSet) {
+        // Update each filters of the parametersMap based on the last entry of the batch so that
+        // we can filter all the rows we have already extracted
+        for (String filterField : fieldSet) {
+            parametersMap.put(filterField, dataBatch.get(dataBatch.size() - 1).get(filterField));
+        }
+    }
+
+    /**
      * Returns the result of a query in a stream of batches.
      * @param query select query
      * @param batchSize max size of a batch
