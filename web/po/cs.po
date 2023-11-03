@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-27 14:34+0200\n"
+"POT-Creation-Date: 2023-11-03 12:00+0100\n"
 "PO-Revision-Date: 2022-09-19 19:13+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/web-4-3/cs/>\n"
@@ -326,11 +326,11 @@ msgstr "Filtrovat podle názvu"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:214
 #: ../html/src/components/package/PackageListActionScheduler.tsx:246
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:143
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:152
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:162
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:232
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:278
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:146
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:155
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:165
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:245
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:291
 #: ../html/src/manager/images/image-view-packages.tsx:49
 #: ../html/src/manager/minion/packages/package-states.tsx:343
 msgid "Package Name"
@@ -632,7 +632,7 @@ msgid "Assign"
 msgstr "Přiřadit"
 
 #: ../html/src/components/systems.tsx:50
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:184
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:187
 msgid "Security Advisory"
 msgstr "Bezpečnostní poradenství"
 
@@ -1271,7 +1271,7 @@ msgstr "Popis výrobku"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:696
 #: ../html/src/manager/admin/setup/products/products.tsx:1074
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:156
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:159
 #: ../html/src/manager/images/image-view-packages.tsx:50
 #: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:32
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:184
@@ -1709,23 +1709,29 @@ msgstr "Přiřazená shoda upravena kvůli sloučeným předplatným"
 msgid "Subscription IDs"
 msgstr "Identifikátory předplatného"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:80
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:63
+msgid ""
+"Subscription with unsupported part number and no associated product has been "
+"ignored."
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:84
 msgid "Please review warning and information messages below."
 msgstr "Přečtěte si varovné a informační zprávy níže."
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:89
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:93
 msgid "Message"
 msgstr "Zpráva"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:95
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:99
 msgid "Additional information"
 msgstr "Další informace"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:104
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:108
 msgid "No messages from the last match run."
 msgstr "Žádné zprávy z posledního běhu párování."
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:109
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:113
 msgid "Messages"
 msgstr "Zprávy"
 
@@ -1969,7 +1975,7 @@ msgstr "Nejsou dostupné žádné moduly"
 
 #: ../html/src/manager/content-management/list-filters/appstreams/module-selector.tsx:42
 #: ../html/src/manager/content-management/list-filters/appstreams/text-input.tsx:9
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:216
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:222
 msgid "Stream"
 msgstr "Proud"
 
@@ -2013,7 +2019,7 @@ msgstr "Vytvořit nový filtr"
 msgid "Filter deleted successfully"
 msgstr "Filtr odebrán úspěšně"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:70
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:73
 msgid ""
 "Bear in mind that all the associated projects need to be rebuilt after a "
 "filter update"
@@ -2021,15 +2027,15 @@ msgstr ""
 "Mějte na paměti, že všechny přidružené projekty je třeba po aktualizaci "
 "filtru znovu sestavit"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:77
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:80
 msgid "Filter Name"
 msgstr "Název filtru"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:87
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:90
 msgid "Prefix"
 msgstr "Předpona"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:90
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:93
 msgid ""
 "The prefix will be prepended to the name of every individual filter created "
 "by the template"
@@ -2037,29 +2043,29 @@ msgstr ""
 "K názvu každého jednotlivého filtru vytvořeného šablonou bude připravena "
 "předpona"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:101
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:104
 msgid "Use a template"
 msgstr "Použijte šablonu"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:105
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:108
 msgid "Use a manual filter"
 msgstr "Použijte manuální filtr"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:116
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:119
 msgid "Filter Type"
 msgstr "Typ filtru"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:129
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:132
 msgid "Matcher"
 msgstr "Párovač"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:153
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:163
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:156
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:166
 msgid "Epoch"
 msgstr "Epocha"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:154
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:164
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:157
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:167
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:105
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:50
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:80
@@ -2070,75 +2076,86 @@ msgstr "Epocha"
 msgid "Version"
 msgstr "Verze"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:155
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:165
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:158
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:168
 msgid "Release"
 msgstr "Vydání"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:172
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:175
 msgid "Advisory name"
 msgstr "Název poradenství"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:185
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:188
 msgid "Bug Fix Advisory"
 msgstr "Rady k opravě chyb"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:186
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:189
 msgid "Product Enhancement Advisory"
 msgstr "Poradenství k vylepšení produktu"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:188
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:168
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:191
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:174
 msgid "Advisory Type"
 msgstr "Typ poradenství"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:197
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:200
 msgid "Issued"
 msgstr "Vydáno"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:207
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:174
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:210
+#: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:70
+#: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:135
+#: ../html/src/manager/images/image-build.tsx:402
+#: ../html/src/manager/images/image-profiles.tsx:198
+#: ../html/src/manager/images/image-view-overview.tsx:626
+#: ../html/src/manager/images/image-view-overview.tsx:725
+#: ../html/src/manager/images/image-view.tsx:671
+msgid "Build"
+msgstr "Sestavení"
+
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:220
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:180
 #: ../html/src/manager/images/image-view-patches.tsx:95
 msgid "Synopsis"
 msgstr "Synopse"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:219
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:232
 msgid "Reboot Required"
 msgstr "Vyžaduje se restart"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:220
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:233
 msgid "Package Manager Restart Required"
 msgstr "Vyžaduje se restart správce balíčků"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:223
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:236
 msgid "Advisory Keywords"
 msgstr "Klíčová slova poradenství"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:242
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:255
 msgid "Package Provides Name"
 msgstr "Balíček poskytuje název"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:252
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:265
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:156
 msgid "Provides Name"
 msgstr "Poskytuje název"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:268
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:228
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:281
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:234
 msgid "Number"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:290
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:303
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:159
 msgid "Deny"
 msgstr "Odmítnout"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:291
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:304
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:179
 msgid "Allow"
 msgstr "Povolit"
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:293
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:306
 msgid "Rule"
 msgstr "Pravidlo"
 
@@ -2384,46 +2401,51 @@ msgid "NEVRA"
 msgstr "NEVRA"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:162
+#, fuzzy
+msgid "Build date"
+msgstr "Sestavit obraz"
+
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:168
 msgid "Advisory Name"
 msgstr "Název poradenství"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:180
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:186
 msgid "Keyword"
 msgstr "Klíčové slovo"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:186
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:192
 msgid "Issue date"
 msgstr "Datum vydání"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:192
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:198
 msgid "Contains Package Name"
 msgstr "Obsahuje název balíčku"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:198
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:204
 msgid "Contains Package Provides Name"
 msgstr "Obsahuje balíček poskytující název"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:204
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:210
 msgid "Contains Package"
 msgstr "Obsahuje balíček"
 
 #. Value options for filtering by Target Type in recurring actions list
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:222
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:228
 #: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:10
 #, fuzzy
 msgid "All"
 msgstr "Povolit"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:240
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:246
 #, fuzzy
 msgid "Fixes Package Name"
 msgstr "Název balíčku"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:261
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:267
 msgid "enable module"
 msgstr "povolit modul"
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:262
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:268
 #, fuzzy
 msgid "disable all modules"
 msgstr "povolit modul"
@@ -2432,16 +2454,6 @@ msgstr "povolit modul"
 #, fuzzy
 msgid "Build ({count})"
 msgstr "Sestavení ({0})"
-
-#: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:70
-#: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:135
-#: ../html/src/manager/images/image-build.tsx:402
-#: ../html/src/manager/images/image-profiles.tsx:198
-#: ../html/src/manager/images/image-view-overview.tsx:626
-#: ../html/src/manager/images/image-view-overview.tsx:725
-#: ../html/src/manager/images/image-view.tsx:671
-msgid "Build"
-msgstr "Sestavení"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:82
 msgid "Build Project"
