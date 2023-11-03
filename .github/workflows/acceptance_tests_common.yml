@@ -21,6 +21,7 @@ jobs:
           echo "Workflow disabled. Sorry for that. We are working on fixing it"
           gh run cancel ${{ github.run_id }}
           gh run watch ${{ github.run_id }}
+        continue-on-error: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: fix podman
