@@ -442,6 +442,9 @@ def channel_is_synced(channel)
     _result, new_code = get_target('server').run("dumpsolv /var/cache/rhn/repodata/#{channel}/solv.new", verbose: false, check_errors: false)
     # Channel synced if no .new files exist
     !new_code.zero?
+  elsif result.include?('repo size: 0')
+    _result, code = get_target('server').run("zcat /var/cache/rhn/repodata/#{channel}/*primary.xml.gz | grep 'packages=\"0\"'", verbose: false, check_errors: false)
+    code.zero?
   else
     # If the solv file doesn't exist, we check if we are under a Debian-like repository
     command = "test -s /var/cache/rhn/repodata/#{channel}/Release && test -s /var/cache/rhn/repodata/#{channel}/Packages"
