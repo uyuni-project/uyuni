@@ -40,3 +40,41 @@ docker run -t -i --rm=true -e "PYTHONPATH=/manager/python/:/manager/client/rhel/
 ```
 
 Within the container shell, just run  `pytest /manager/python/test/` to run all tests.
+
+# Linting
+
+Uyuni uses `pylint` for enforcing code style, and `black` for automatic application of some of the style rules.
+
+For pylint, Uyuni uses Google's [pylintrc](https://google.github.io/styleguide/pylintrc) configuration with the following modifications:
+
+* Use 4 spaces instead of 2 for indentation.
+* Set line length to 90 so that pylint is compatible with `black`.
+
+To install `pylint` and `black` locally, use the `requirements-lint.txt` file:
+
+```
+# Create a venv
+python3 -m venv .venv
+
+# Source the new venv
+. .venv/bin/activate
+
+# Install pylint and black
+pip install -r requirements-lint.txt
+```
+
+Then, you execute `black` and `pylint` to check linting:
+
+```
+# Auto-format a file
+black /path/to/file.py
+
+# Check pylint
+pylint /path/to/file
+```
+
+To use the `pylintrc` file  from any directory, you can create a symbolic link to `~/.pylintrc`:
+
+```
+ln -s `pwd`/pylintrc ~/.pylintrc
+```
