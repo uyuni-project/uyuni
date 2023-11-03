@@ -555,3 +555,14 @@ When(/^I install "([^"]*)" to custom formula metadata directory "([^"]*)"$/) do 
   raise 'File injection failed' unless return_code.zero?
   get_target('server').run("chmod 644 " + dest)
 end
+
+When(/^I apply highstate on "([^"]*)"$/) do |host|
+  system_name = get_system_name(host)
+  if host.include? 'ssh_minion'
+    cmd = 'mgr-salt-ssh'
+  elsif host.include? 'minion' or host.include? 'build' or host.include? 'proxy'
+    cmd = 'salt'
+  end
+  log "Salt command: #{cmd} #{system_name} state.highstate"
+  get_target('server').run_until_ok("#{cmd} #{system_name} state.highstate")
+end

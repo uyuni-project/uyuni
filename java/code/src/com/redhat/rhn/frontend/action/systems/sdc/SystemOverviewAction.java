@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.action.systems.sdc;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.Action;
@@ -33,6 +34,8 @@ import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.user.UserManager;
+
+import com.suse.cloud.CloudPaygManager;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.struts.action.ActionForm;
@@ -59,6 +62,8 @@ public class SystemOverviewAction extends RhnAction {
                                                        .INCLUDE_IN_DAILY_SUMMARY,
                                                        UserServerPreferenceId
                                                        .RECEIVE_NOTIFICATIONS};
+
+    private final CloudPaygManager cloudPaygManager = GlobalInstanceHolder.PAYG_MANAGER;
 
     /** {@inheritDoc} */
     @Override
@@ -171,6 +176,14 @@ public class SystemOverviewAction extends RhnAction {
                         .findFirst()
                         .map(p -> SUSEProductFactory.getLivePatchSupportedProducts().anyMatch(p::equals))
                         .orElse(false));
+
+        // Inform user that SUMA cannot manage BYOS instances if SUMA is PAYG and not SCC credentials are set.
+        if (cloudPaygManager.isPaygInstance()) {
+            cloudPaygManager.checkRefreshCache(true);
+            if (!s.isPayg() && !cloudPaygManager.hasSCCCredentials()) {
+                createErrorMessage(request, "message.payg.errorbyosnoscc", null);
+            }
+        }
 
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
     }

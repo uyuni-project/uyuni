@@ -143,6 +143,7 @@ import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
 import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
+import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.manager.profile.ProfileManager;
 import com.redhat.rhn.manager.rhnpackage.test.PackageManagerTest;
 import com.redhat.rhn.manager.ssm.SsmOperationManager;
@@ -174,6 +175,7 @@ import com.suse.manager.webui.services.test.TestSystemQuery;
 import com.suse.manager.xmlrpc.dto.SystemEventDetailsDto;
 
 import org.apache.commons.lang3.StringUtils;
+import org.cobbler.CobblerConnection;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
@@ -3221,19 +3223,76 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         }
     }
 
+    @Test
+    public void testCreateSystemRecordRegistered() throws Exception {
+        // Arrange
+        CobblerConnection connection = CobblerXMLRPCHelper.getConnection(admin);
+        connection.invokeMethod("new_profile");
+        var profileId = ((LinkedList<HashMap>) connection.invokeMethod("get_profiles")).get(0).get("uid");
+        SystemHandler mockedHandler = getMockedHandler();
+        KickstartData k = KickstartDataTest.createTestKickstartData(admin.getOrg());
+        k.setCobblerId(profileId.toString());
+        int systemId = mockedHandler.createSystemProfile(
+            admin,
+            "test system",
+            Collections.singletonMap("hwAddress", "aa:bb:cc:dd:ee:01")
+        );
+
+        // Act
+        int result = mockedHandler.createSystemRecord(admin, systemId, k.getLabel());
+
+        // Assert
+        assertEquals(1, result);
+    }
+
+    @Test
+    public void testCreateSystemRecordUnregistered() throws Exception {
+        // Arrange
+        CobblerConnection connection = CobblerXMLRPCHelper.getConnection(admin);
+        connection.invokeMethod("new_profile");
+        var profileId = ((LinkedList<HashMap>) connection.invokeMethod("get_profiles")).get(0).get("uid");
+        SystemHandler mockedHandler = getMockedHandler();
+        String systemName = "test system";
+        KickstartData k = KickstartDataTest.createTestKickstartData(admin.getOrg());
+        k.setCobblerId(profileId.toString());
+
+        Map<String, String> netDevices = Map.of(
+            "name", "dev1",
+            "ip", "127.0.0.1",
+            "mac", "00:00:00:00",
+            "dnsname", "test.com"
+        );
+        // Act
+        int result = mockedHandler.createSystemRecord(
+            admin,
+            systemName,
+            k.getLabel(),
+            "",
+            "",
+            List.of(netDevices)
+        );
+
+        // Assert
+        assertEquals(1, result);
+    }
+
     /**
      * Tests creating a system profile.
      * @throws Exception if anything goes wrong
      */
     @Test
     public void testCreateSystemProfile() throws Exception {
+        // Arrange
         String hwAddress = "aa:bb:cc:dd:ee:00";
+
+        // Act
         int result = getMockedHandler().createSystemProfile(admin, "test system",
                 Collections.singletonMap("hwAddress", hwAddress));
+
+        // Assert
         List<NetworkInterface> nics = NetworkInterfaceFactory
                 .lookupNetworkInterfacesByHwAddress(hwAddress)
                 .collect(Collectors.toList());
-
         assertEquals(1, nics.size());
         Server server = nics.get(0).getServer();
         assertEquals("test system", server.getName());

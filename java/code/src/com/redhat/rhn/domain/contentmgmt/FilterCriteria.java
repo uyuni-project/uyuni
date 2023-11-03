@@ -37,6 +37,7 @@ import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.MATCHES_P
 import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.MODULE_NONE;
 import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.PROVIDES_NAME;
 import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.PTF_ALL;
+import static com.redhat.rhn.domain.contentmgmt.PackageFilter.BUILD_DATE;
 import static com.redhat.rhn.domain.contentmgmt.PtfFilter.FIELD_PTF_ALL;
 import static com.redhat.rhn.domain.contentmgmt.PtfFilter.FIELD_PTF_NUMBER;
 import static com.redhat.rhn.domain.contentmgmt.PtfFilter.FIELD_PTF_PACKAGE;
@@ -86,6 +87,10 @@ public class FilterCriteria {
         Triple.of(PACKAGE, GREATEREQ, "nevra"),
         Triple.of(PACKAGE, GREATER, "nevra"),
         Triple.of(PACKAGE, MATCHES, "name"),
+        Triple.of(PACKAGE, LOWER, BUILD_DATE),
+        Triple.of(PACKAGE, LOWEREQ, BUILD_DATE),
+        Triple.of(PACKAGE, GREATER, BUILD_DATE),
+        Triple.of(PACKAGE, GREATEREQ, BUILD_DATE),
         Triple.of(ERRATUM, EQUALS, "advisory_name"),
         Triple.of(ERRATUM, EQUALS, "advisory_type"),
         Triple.of(ERRATUM, EQUALS, "synopsis"),

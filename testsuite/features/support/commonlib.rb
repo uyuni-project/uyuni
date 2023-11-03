@@ -450,3 +450,17 @@ def file_inject(node, local_file, remote_file)
   code, _remote = node.inject_file(local_file, remote_file, 'root', false)
   code
 end
+
+# This function updates the server certificate on the controller node by
+# - deleting the old one from the nss database
+# - importing the new one from the server
+def update_controller_ca
+  server_ip = get_target('server').public_ip
+  server_name = get_target('server').full_hostname
+
+  puts `certutil -d sql:/root/.pki/nssdb -t TC -n "susemanager" -D;
+  rm /etc/pki/trust/anchors/*;
+  wget http://#{server_ip}/pub/RHN-ORG-TRUSTED-SSL-CERT -O /etc/pki/trust/anchors/#{server_name}.cert &&
+  update-ca-certificates &&
+  certutil -d sql:/root/.pki/nssdb -A -t TC -n "susemanager" -i  /etc/pki/trust/anchors/#{server_name}.cert`
+end

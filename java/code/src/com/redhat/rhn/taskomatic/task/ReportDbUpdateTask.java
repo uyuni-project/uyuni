@@ -197,10 +197,11 @@ public class ReportDbUpdateTask extends RhnJavaJob {
 
                 // Iterate further if we can have additional rows
                 if (firstBatch.size() == batchSize) {
-                    dbHelper.<Map<String, Object>>batchStream(query, batchSize, batchSize)
+                    dbHelper.<Map<String, Object>>batchStream(query, Map.of("id", id), batchSize, batchSize)
                             .forEach(batch -> {
                                 insert.executeUpdates(batch);
-                                log.debug("Extracted {} rows more for table {}", firstBatch.size(), tableName);
+                                log.debug("Extracted {} rows more for table {} and id {}",
+                                    firstBatch.size(), tableName, id);
                             });
                 }
             }

@@ -70,6 +70,14 @@
       "$type": "text",
       "$default": "aoeu"
     },
+    "list_of_strings_empty_default": {
+      "$name": "List of strings",
+      "$type": "edit-group",
+      "$prototype": {
+        "$type":"text"
+      },
+      "$default": []
+    },
     "partitions_as_primitive_list": {
       "$name": "HD Partitions as primitive list",
       "$type": "edit-group",

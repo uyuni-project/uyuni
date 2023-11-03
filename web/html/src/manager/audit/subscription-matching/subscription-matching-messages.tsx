@@ -59,6 +59,10 @@ class Messages extends React.Component<Props> {
             ": " +
             systems[data["system_id"]].name;
           break;
+        case "no_products_associated":
+          message = t("Subscription with unsupported part number and no associated product has been ignored.");
+          additionalInformation = data["part_number"];
+          break;
         default:
           message = rawMessage["type"]; // we do not know the shape of the data, it could even be a complex nested object (bsc#1125600)
 

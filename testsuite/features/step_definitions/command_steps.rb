@@ -259,16 +259,6 @@ When(/^vendor change should be enabled for (?:[^"]*) on "([^"]*)"$/) do |host|
   raise 'Vendor change option not found in logs' unless return_code.zero?
 end
 
-When(/^I apply highstate on "([^"]*)"$/) do |host|
-  system_name = get_system_name(host)
-  if host.include? 'ssh_minion'
-    cmd = 'mgr-salt-ssh'
-  elsif host.include? 'minion' or host.include? 'build'
-    cmd = 'salt'
-  end
-  get_target('server').run_until_ok("#{cmd} #{system_name} state.highstate")
-end
-
 When(/^I wait until "([^"]*)" service is active on "([^"]*)"$/) do |service, host|
   node = get_target(host)
   cmd = "systemctl is-active #{service}"
@@ -967,12 +957,18 @@ When(/^I remove package(?:s)? "([^"]*)" from this "([^"]*)"((?: without error co
 end
 
 When(/^I install package tftpboot-installation on the server$/) do
-  output, _code = get_target('server').run('find /var/spacewalk/packages -name tftpboot-installation-SLE-15-SP4-x86_64-*.noarch.rpm')
-  packages = output.split("\n")
-  pattern = '/tftpboot-installation-([^/]+)*.noarch.rpm'
-  # Reverse sort the package name to get the latest version first and install it
-  package = packages.min { |a, b| b.match(pattern)[0] <=> a.match(pattern)[0] }
-  get_target('server').run("rpm -i #{package}", check_errors: false)
+  server = get_target('server')
+  os_version = server.os_version
+  if product == 'Uyuni'
+    server.run("zypper --non-interactive install tftpboot-installation-openSUSE-Leap-#{os_version}-x86_64", check_errors: false, verbose: true)
+  else
+    output, _code = server.run('find /var/spacewalk/packages -name tftpboot-installation-SLE-15-SP4-x86_64-*.noarch.rpm')
+    packages = output.split("\n")
+    pattern = '/tftpboot-installation-([^/]+)*.noarch.rpm'
+    # Reverse sort the package name to get the latest version first and install it
+    package = packages.min { |a, b| b.match(pattern)[0] <=> a.match(pattern)[0] }
+    server.run("rpm -i #{package}", check_errors: false)
+  end
 end
 
 When(/^I reset tftp defaults on the proxy$/) do
@@ -1803,13 +1799,21 @@ end
 When(/^I change the server's short hostname from hosts and hostname files$/) do
   server_node = get_target('server')
   old_hostname = server_node.hostname
-  new_hostname = old_hostname + '2'
-  log "New short hostname: #{new_hostname}"
+  new_hostname = old_hostname + '-renamed'
+  log "Old hostname: #{old_hostname} - New hostname: #{new_hostname}"
   server_node.run("sed -i 's/#{old_hostname}/#{new_hostname}/g' /etc/hostname &&
                    hostname #{new_hostname} &&
                    echo '#{server_node.public_ip} #{server_node.full_hostname} #{old_hostname}' >> /etc/hosts &&
                    echo '#{server_node.public_ip} #{new_hostname}#{server_node.full_hostname.delete_prefix(server_node.hostname)} #{new_hostname}' >> /etc/hosts")
-  get_target('server', refresh: true) # This will refresh the attributes of this node
+  # This will refresh the attributes of this node
+  get_target('server', refresh: true)
+  hostname, _result = get_target('server').run('hostname')
+  hostname.strip!
+
+  raise "Wrong hostname after changing it. Is: #{hostname}, should be: #{new_hostname}" unless hostname == new_hostname
+
+  # Add the new hostname on controller's /etc/hosts to resolve in smoke tests
+  `echo '#{server_node.public_ip} #{new_hostname}#{server_node.full_hostname.delete_prefix(server_node.hostname)} #{new_hostname}' >> /etc/hosts`
 end
 
 # changing hostname
@@ -1834,19 +1838,72 @@ When(/^I run spacewalk-hostname-rename command on the server$/) do
     end
     sleep 1
   end
+
+  # Update the server CA certificate since it changed, otherwise all API and browser uses will fail
+  log 'Update controller CA certificates'
+  update_controller_ca
+
+  # Reset the API client to take the new CA into account
+  log 'Resetting the API client'
+  reset_api_client
+
   raise 'Error while running spacewalk-hostname-rename command - see logs above' unless result_code.zero?
   raise 'Error in the output logs - see logs above' if out_spacewalk.include? 'No such file or directory'
+end
+
+When(/^I check all certificates after renaming the server hostname$/) do
+  # get server certificate serial to compare it with the other minions
+  command_server = "openssl x509 --noout --text -in /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT | grep -A1 'Serial' | grep -v 'Serial'"
+  server_cert_serial, result_code = get_target('server').run(command_server)
+  server_cert_serial.strip!
+  log "Server certificate serial: #{server_cert_serial}"
+
+  raise 'Error getting server certificate serial!' unless result_code.zero?
+
+  targets = %w[proxy sle_minion ssh_minion rhlike_minion deblike_minion build_host kvm_server]
+  targets.each do |target|
+    os_family = get_target(target).os_family
+    # get all defined minions from the environment variables and check their certificate serial
+    next unless ENV.key? ENV_VAR_BY_HOST[target]
+    # Red Hat-like and Debian-like minions store their certificates in a different location
+    certificate = if os_family =~ /^centos/ || os_family =~ /^rocky/
+                    '/etc/pki/ca-trust/source/anchors/RHN-ORG-TRUSTED-SSL-CERT'
+                  elsif os_family =~ /^ubuntu/ || os_family =~ /^debian/
+                    '/usr/local/share/ca-certificates/susemanager/RHN-ORG-TRUSTED-SSL-CERT.crt'
+                  else
+                    '/etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT'
+                  end
+    get_target(target).run("test -s #{certificate}", successcodes: [0], check_errors: true)
+
+    command_minion = "openssl x509 --noout --text -in #{certificate} | grep -A1 'Serial' | grep -v 'Serial'"
+    minion_cert_serial, result_code = get_target(target).run(command_minion)
+
+    raise "#{target}: Error getting server certificate serial!" unless result_code.zero?
+
+    minion_cert_serial.strip!
+    log "#{target} certificate serial: #{minion_cert_serial}"
+
+    raise "#{target}: Error, certificate does not match with server one" unless minion_cert_serial == server_cert_serial
+  end
 end
 
 When(/^I change back the server's hostname$/) do
   server_node = get_target('server')
   old_hostname = server_node.hostname
-  new_hostname = old_hostname.delete_suffix('2')
+  new_hostname = old_hostname.delete_suffix('-renamed')
+  log "Old hostname: #{old_hostname} - New hostname: #{new_hostname}"
   server_node.run("sed -i 's/#{old_hostname}/#{new_hostname}/g' /etc/hostname &&
                    hostname #{new_hostname} &&
                    sed -i \'$d\' /etc/hosts &&
                    sed -i \'$d\' /etc/hosts")
   get_target('server', refresh: true) # This will refresh the attributes of this node
+  hostname, _result = get_target('server').run('hostname')
+  hostname.strip!
+
+  raise "Wrong hostname after changing it. Is: #{hostname}, should be: #{new_hostname}" unless hostname == new_hostname
+
+  # Cleanup the temporary entry in /etc/hosts on the controller
+  `sed -i \'$d\' /etc/hosts`
 end
 
 When(/^I enable firewall ports for monitoring on this "([^"]*)"$/) do |host|
@@ -1905,4 +1962,12 @@ When(/^I do a late hostname initialization of host "([^"]*)"$/) do |host|
   os_version, os_family = get_os_version(node)
   node.init_os_family(os_family)
   node.init_os_version(os_version)
+end
+
+When(/^I wait until I see "([^"]*)" in file "([^"]*)" on "([^"]*)"$/) do |text, file, host|
+  node = get_target(host)
+  repeat_until_timeout(message: "Entry #{text} in file #{file} on #{host} not found") do
+    _output, code = node.run("tail -n 10 #{file} | grep '#{text}' ", check_errors: false)
+    break if code.zero?
+  end
 end

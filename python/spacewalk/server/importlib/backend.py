@@ -26,12 +26,14 @@ from uyuni.common import rhn_rpm
 from spacewalk.common.rhnConfig import CFG
 from spacewalk.common.rhnException import rhnFault
 from spacewalk.common.rhnLog import log_debug
+from spacewalk.satellite_tools import syncLib
 from spacewalk.server import rhnSQL, rhnChannel, taskomatic
 from .importLib import Diff, Package, IncompletePackage, Erratum, \
     AlreadyUploadedError, InvalidPackageError, TransactionError, \
     SourcePackage
 from .backendLib import TableCollection, sanitizeValue, TableDelete, \
     TableUpdate, TableLookup, addHash, TableInsert
+
 
 sequences = {
     'rhnPackageCapability': 'rhn_pkg_capability_id_seq',
@@ -984,10 +986,16 @@ class Backend:
                 package['header_start'] = -1
                 package['header_end'] = -1
 
-            self.__processObjectCollection__([package, ], 'rhnPackage', tableList,
+            try:
+                self.__processObjectCollection__([package, ], 'rhnPackage', tableList,
                                              uploadForce=uploadForce, forceVerify=forceVerify,
                                              ignoreUploaded=ignoreUploaded, severityLimit=1,
                                              transactional=transactional)
+            except Exception as e:
+                syncLib.log(0, "Error during processing package %s-%s-%s:%s.%s.\n%s" %
+                            (package['name'], package['version'], package['release'], package['epoch'], package['arch'],
+                             str(e)))
+                raise
 
     def processErrata(self, errata):
         # Insert/update the packages
