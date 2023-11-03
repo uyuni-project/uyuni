@@ -295,7 +295,6 @@ def set_filter_opt(option, opt_str, value, parser):
 
 
 def getChannelRepo():  # pylint: disable=invalid-name
-
     rhnSQL.initDB()
     items = {}
     sql = """
@@ -321,7 +320,6 @@ def getChannelRepo():  # pylint: disable=invalid-name
 
 
 def getParentsChilds(b_only_custom=False):  # pylint: disable=invalid-name
-
     rhnSQL.initDB()
 
     sql = """
@@ -352,7 +350,6 @@ def getParentsChilds(b_only_custom=False):  # pylint: disable=invalid-name
 
 
 def getCustomChannels():  # pylint: disable=invalid-name
-
     # with SUSE we sync also Vendor channels with reposync
     # change parameter to False to get not only Custom Channels
     d_parents = getParentsChilds(False)
@@ -622,7 +619,7 @@ class RepoSync(object):
                 url = source_url["url"]
                 try:
                     if "://" not in url:
-                        raise Exception("Unknown protocol in repo URL: %s" % url)
+                        raise Exception("Unknown protocol in repo URL: %s" % url)  # pylint: disable=broad-exception-raised
 
                     # If the repository uses a uln:// URL,
                     # switch to the ULN plugin, overriding the command-line
@@ -1443,7 +1440,7 @@ class RepoSync(object):
         log2background(0, "Importing packages finished.")
 
         # Disassociate packages
-        for (checksum_type, checksum) in to_disassociate:
+        for checksum_type, checksum in to_disassociate:
             if to_disassociate[(checksum_type, checksum)]:
                 self.disassociate_package(checksum_type, checksum)
         # Do not re-link if nothing was marked to link
@@ -1563,7 +1560,7 @@ class RepoSync(object):
         failed_packages = 0
         all_packages = set()
 
-        for (index, what) in enumerate(to_process):
+        for index, what in enumerate(to_process):
             pack, to_download, _ = what
             if not to_download:
                 continue
@@ -1574,7 +1571,7 @@ class RepoSync(object):
             try:
                 # check if package was downloaded
                 if not os.path.exists(stage_path):
-                    raise Exception
+                    raise Exception  # pylint: disable=broad-exception-raised
 
                 pack.load_checksum_from_header()
 
@@ -1737,7 +1734,6 @@ class RepoSync(object):
         return affected_channels, failed_packages, all_packages, to_process
 
     def show_packages(self, plug, source_id):
-
         if (not self.filters) and source_id:
             h = rhnSQL.prepare(
                 """
@@ -1773,7 +1769,6 @@ class RepoSync(object):
             mount_point = cfg.MOUNT_POINT
 
         for pack in packages:
-
             packs = rhnPackage.get_info_for_package(
                 [pack.name, pack.version, pack.release, pack.epoch, pack.arch],
                 channel_id,
@@ -1852,13 +1847,11 @@ class RepoSync(object):
             or md_pack.checksum_type != db_pack["checksum_type"]
             or md_pack.checksum != db_pack["checksum"]
         ):
-
             if (
                 os.path.exists(abspath)
                 and getFileChecksum(md_pack.checksum_type, filename=abspath)
                 == md_pack.checksum
             ):
-
                 return True
             else:
                 return False
