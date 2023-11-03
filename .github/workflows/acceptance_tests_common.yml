@@ -16,8 +16,6 @@ jobs:
   test-uyuni:
     runs-on: ubuntu-22.04
     steps:
-      - name: Disable workflow
-        run: echo "Workflow disabled. Sorry for that. We are working on fixing it" && exit -1
       - name: fix podman
         run: sudo apt install podman=3.4.4+ds1-1ubuntu1 --allow-downgrades
       - name: welcome_message
