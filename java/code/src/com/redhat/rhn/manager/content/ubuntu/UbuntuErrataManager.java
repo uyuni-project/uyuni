@@ -41,6 +41,7 @@ import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
+import org.apache.commons.compress.compressors.bzip2.BZip2CompressorInputStream;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
@@ -116,14 +117,16 @@ public class UbuntuErrataManager {
 
     private static Map<String, UbuntuErrataInfo> downloadUbuntuErrataInfo(String jsonDBUrl) throws IOException {
         HttpClientAdapter httpClient = new HttpClientAdapter();
-        HttpGet httpGet = new HttpGet(jsonDBUrl);
+        String bzipJsonDBUrl = jsonDBUrl + ".bz2";
+        HttpGet httpGet = new HttpGet(bzipJsonDBUrl);
         LOG.info("download ubuntu errata start");
         HttpResponse httpResponse = httpClient.executeRequest(httpGet);
         int statusCode = httpResponse.getStatusLine().getStatusCode();
         if (statusCode == HttpStatus.SC_OK) {
             try (
                 InputStream responseStream = httpResponse.getEntity().getContent();
-                Reader responseReader = new InputStreamReader(responseStream);
+                BZip2CompressorInputStream bzIn = new BZip2CompressorInputStream(responseStream);
+                Reader responseReader = new InputStreamReader(bzIn);
             ) {
                 Map<String, UbuntuErrataInfo> errataInfo = GSON.fromJson(responseReader, ERRATA_INFO_TYPE);
                 LOG.info("download ubuntu errata end");
@@ -131,7 +134,23 @@ public class UbuntuErrataManager {
             }
         }
         else {
-            throw new IOException("error downloading " + jsonDBUrl + " status code " + statusCode);
+            LOG.info("Failed to get bzip2 DB - try plain DB");
+            httpGet = new HttpGet(jsonDBUrl);
+            httpResponse = httpClient.executeRequest(httpGet);
+            statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode == HttpStatus.SC_OK) {
+                try (
+                        InputStream responseStream = httpResponse.getEntity().getContent();
+                        Reader responseReader = new InputStreamReader(responseStream);
+                ) {
+                    Map<String, UbuntuErrataInfo> errataInfo = GSON.fromJson(responseReader, ERRATA_INFO_TYPE);
+                    LOG.info("download ubuntu errata end");
+                    return errataInfo;
+                }
+            }
+            else {
+                throw new IOException("error downloading " + jsonDBUrl + " status code " + statusCode);
+            }
         }
     }
 
