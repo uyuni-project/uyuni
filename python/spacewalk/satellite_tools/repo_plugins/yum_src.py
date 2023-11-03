@@ -1200,7 +1200,11 @@ password={passwd}
             checksum = pack.lookup_checksum(solv.SOLVABLE_CHECKSUM)
             new_pack.checksum_type = checksum.typestr()
             new_pack.checksum = checksum.hex()
-            to_return.append(new_pack)
+            if new_pack.is_metadata_valid():
+                to_return.append(new_pack)
+            else:
+                log(0, f"WARNING: package {new_pack.getNVREA()} contains" \
+                    + "incorrect metadata. SKIPPING!")
         return to_return
 
     @staticmethod

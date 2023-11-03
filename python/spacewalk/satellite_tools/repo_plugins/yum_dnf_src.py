@@ -325,6 +325,11 @@ class ContentSource(zypper_ContentSource):
             if new_pack.checksum_type == 'sha':
                 new_pack.checksum_type = 'sha1'
             new_pack.checksum = pack.returnIdSum()[1]
+            if new_pack.is_metadata_valid():
+                to_return.append(new_pack)
+            else:
+                log(0, f"WARNING: package {new_pack.getNVREA()} contains" \
+                    + "incorrect metadata. SKIPPING!")
             to_return.append(new_pack)
         return to_return
 
