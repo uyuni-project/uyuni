@@ -44,15 +44,17 @@ end
 def compute_kiwi_profile_filename(host)
   image = compute_image(host)
   case image
-  when 'sles15sp3', 'sles15sp3o', 'sles15sp4', 'sles15sp4o'
-    # 'Kiwi/POS_Image-JeOS7_42' for 4.2 branch
+  when 'sles15sp4', 'sles15sp4o'
+    # 4.3 currently shares its profile with head
     product == 'Uyuni' ? 'Kiwi/POS_Image-JeOS7_uyuni' : 'Kiwi/POS_Image-JeOS7_head'
+  when 'sles15sp3', 'sles15sp3o'
+    raise 'Kiwi profile for 4.2 has been removed.'
   when 'sles15sp2', 'sles15sp2o'
-    'Kiwi/POS_Image-JeOS7_41'
+    raise 'Kiwi profile for 4.1 has been removed.'
   when 'sles15sp1', 'sles15sp1o'
     raise 'This is not a supported image version.'
   when 'sles12sp5', 'sles12sp5o'
-    # 'Kiwi/POS_Image-JeOS6_42' for 4.2 branch
+    # 4.3 currently shares its profile with head
     'Kiwi/POS_Image-JeOS6_head'
   else
     raise "Is #{image} a supported image version?"
@@ -62,15 +64,17 @@ end
 def compute_kiwi_profile_name(host)
   image = compute_image(host)
   case image
-  when 'sles15sp3', 'sles15sp3o', 'sles15sp4', 'sles15sp4o'
-    # 'POS_Image_JeOS7_42' for 4.2 branch
+  when 'sles15sp4', 'sles15sp4o'
+    # 4.3 currently shares its profile with head
     product == 'Uyuni' ? 'POS_Image_JeOS7_uyuni' : 'POS_Image_JeOS7_head'
+  when 'sles15sp3', 'sles15sp3o'
+    raise 'Kiwi profile for 4.2 has been removed.'
   when 'sles15sp2', 'sles15sp2o'
-    'POS_Image_JeOS7_41'
+    raise 'Kiwi profile for 4.1 has been removed.'
   when 'sles15sp1', 'sles15sp1o'
     raise 'This is not a supported image version.'
   when 'sles12sp5', 'sles12sp5o'
-    # 'POS_Image_JeOS6_42' for 4.2 branch
+    # 4.3 currently shares its profile with head
     'POS_Image_JeOS6_head'
   else
     raise "Is #{image} a supported image version?"
@@ -80,8 +84,12 @@ end
 def compute_kiwi_profile_version(host)
   image = compute_image(host)
   case image
-  when 'sles15sp3', 'sles15sp3o', 'sles15sp4', 'sles15sp4o'
+  when 'sles15sp4', 'sles15sp4o'
     '7.0.0'
+  when 'sles15sp3', 'sles15sp3o'
+    raise 'Kiwi profile for 4.2 has been removed.'
+  when 'sles15sp2', 'sles15sp2o'
+    raise 'Kiwi profile for 4.1 has been removed.'
   when 'sles15sp1', 'sles15sp1o'
     raise 'This is not a supported image version.'
   when 'sles12sp5', 'sles12sp5o'
