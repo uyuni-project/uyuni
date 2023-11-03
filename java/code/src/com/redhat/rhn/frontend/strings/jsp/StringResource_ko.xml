@@ -29064,8 +29064,8 @@ given channel.</source>
         <target>조직 인증서를 어디에서 찾을 수 있습니까?</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.info.p2" xml:space="preserve">
-        <source>You can find them in the &lt;a href="https://scc.suse.com/organization" target="_blank"&gt;Customer Center&lt;/a&gt;.</source>
-        <target>&lt;a href="https://scc.suse.com/organization" target="_blank"&gt;Customer Center&lt;/a&gt;에서 찾을 수 있습니다.</target>
+        <source>You can find them in the &lt;a href="https://scc.suse.com/organizations" target="_blank"&gt;Customer Center&lt;/a&gt;.</source>
+        <target state="needs-adaptation">&lt;a href="https://scc.suse.com/organization" target="_blank"&gt;Customer Center&lt;/a&gt;에서 찾을 수 있습니다.</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.error.duplicate" xml:space="preserve">
         <source>Credentials with this username already exist</source>
@@ -29858,24 +29858,24 @@ given channel.</source>
         <source>PAYG Connections</source>
         <target state="final">PAYG 연결</target>
       </trans-unit>
-    <trans-unit id="mirror-credentials.jsp.fromDir" xml:space="preserve">
+      <trans-unit approved="yes" id="mirror-credentials.jsp.fromDir" xml:space="preserve">
         <source>cannot verify credentials because `server.susemanager.fromdir` property is set in rhn.conf</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="sdc.details.overview.payg" xml:space="preserve">
+        <target state="final">rhn.conf에 `server.susemanager.fromdir` 속성이 설정되어 있으므로 자격 증명을 확인할 수 없습니다.</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="sdc.details.overview.payg" xml:space="preserve">
         <source>Pay-as-you-go:</source>
-          <context-group name="ctx">
+        <context-group name="ctx">
             <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="sdc.details.overview.payg_msg" xml:space="preserve">
+        <target state="final">페이고:</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="sdc.details.overview.payg_msg" xml:space="preserve">
         <source>This is a Pay-as-you-go server</source>
-          <context-group name="ctx">
+        <context-group name="ctx">
             <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="final">페이고 서버입니다.</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

@@ -2471,28 +2471,28 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="Unselect All" xml:space="preserve">
         <source>Unselect All</source>
-        <target/>
+        <target>Zrušiť výber všetkého</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page with a List View</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Add to SSM" xml:space="preserve">
         <source>Add Selected to SSM</source>
-        <target/>
+        <target>Pridať vybrané do SSM</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page with a List View</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsadmined.jsp.access" xml:space="preserve">
         <source>Access Granted Through</source>
-        <target/>
+        <target>Prístup udelený prostredníctvom</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/SystemsAdmined</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsadmined.jsp.name" xml:space="preserve">
         <source>Name</source>
-        <target/>
+        <target>Meno</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/SystemsAdmined</context>
         </context-group>
@@ -2501,21 +2501,21 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       <!-- edit_address.jsp -->
       <trans-unit id="edit_address.jsp.address" xml:space="preserve">
         <source> Address</source>
-        <target/>
+        <target> Adresa</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/EditAddress</context>
         </context-group>
       </trans-unit>
       <trans-unit id="edit_address.jsp.summary" xml:space="preserve">
         <source>This user's address information may be edited in the form provided below.  Entries marked with an asterisk (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) are &lt;strong&gt;required&lt;/strong&gt;.</source>
-        <target/>
+        <target>Informácie o adrese tohto používateľa môžete upravovať pomocou formulára nižšie.  Položky označené hviezdičkou (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) sú &lt;strong&gt;povinné&lt;/strong&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/EditAddress</context>
         </context-group>
       </trans-unit>
       <trans-unit id="edit_address.jsp.phone" xml:space="preserve">
         <source>Phone</source>
-        <target/>
+        <target>Telefón</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/EditAddress</context>
           <context context-type="sourcefile">/rhn/account/EditAddress</context>
@@ -2523,7 +2523,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="edit_address.jsp.fax" xml:space="preserve">
         <source>FAX</source>
-        <target/>
+        <target>FAX</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/EditAddress</context>
           <context context-type="sourcefile">/rhn/account/EditAddress</context>
@@ -2531,7 +2531,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="edit_address.jsp.city" xml:space="preserve">
         <source>City</source>
-        <target/>
+        <target>Mesto</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/EditAddress</context>
           <context context-type="sourcefile">/rhn/account/EditAddress</context>
@@ -2539,7 +2539,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="edit_address.jsp.state" xml:space="preserve">
         <source>State/Province</source>
-        <target/>
+        <target>Štát/Provincia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/EditAddress</context>
           <context context-type="sourcefile">/rhn/account/EditAddress</context>
@@ -2547,7 +2547,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="edit_address.jsp.staterequired" xml:space="preserve">
         <source>(required for US or Canada)</source>
-        <target/>
+        <target>(vyžaduje sa pre USA alebo Kanadu)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/EditAddress</context>
           <context context-type="sourcefile">/rhn/account/EditAddress</context>
@@ -2555,7 +2555,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="edit_address.jsp.zipcode" xml:space="preserve">
         <source>Zipcode</source>
-        <target/>
+        <target>PSČ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/EditAddress</context>
           <context context-type="sourcefile">/rhn/account/EditAddress</context>
@@ -2563,7 +2563,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="edit_address.jsp.country" xml:space="preserve">
         <source>Country</source>
-        <target/>
+        <target>Krajina</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/EditAddress</context>
           <context context-type="sourcefile">/rhn/account/EditAddress</context>
@@ -2571,21 +2571,21 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="yourdetails.jsp.summary" xml:space="preserve">
         <source> Please enter your information in the form provided below.  Entries marked with an asterisk (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) are &lt;strong&gt;required&lt;/strong&gt;.</source>
-        <target/>
+        <target> Prosím, zadajte svoje údaje do nižšie uvedeného formulára.  Položky označené hviezdičkou (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) sú &lt;strong&gt;povinné&lt;/strong&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="your_edit_address_record.displayname" xml:space="preserve">
         <source>Record:</source>
-        <target/>
+        <target>Záznam:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/EditAddress</context>
         </context-group>
       </trans-unit>
       <trans-unit id="your_edit_address.jsp.summary" xml:space="preserve">
         <source>Please enter your information in the form provided below.  Entries marked with an asterisk (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) are &lt;strong&gt;required&lt;/strong&gt;.</source>
-        <target/>
+        <target>Prosím, zadajte svoje údaje do nižšie uvedeného formulára.  Položky označené hviezdičkou (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) sú &lt;strong&gt;povinné&lt;/strong&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/EditAddress</context>
         </context-group>
@@ -2593,91 +2593,91 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       <!-- assignenedgroups.jsp -->
       <trans-unit id="assignedgroups.jsp.header" xml:space="preserve">
         <source>Assigned System Groups</source>
-        <target/>
+        <target>Priradené systémové skupiny</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/AssignedSystemGroups</context>
         </context-group>
       </trans-unit>
       <trans-unit id="assignedgroups.jsp.summary" xml:space="preserve">
         <source>A list of system groups follows. Use the check boxes to set this user's access permissions to each system group.  Org Admins have permissions to all system groups. </source>
-        <target/>
+        <target>Nasleduje zoznam systémových skupín. Pomocou zaškrtávacích polí nastavte prístupové práva tohto používateľa ku každej systémovej skupine.  Administrátori organizácie majú oprávnenia na všetky systémové skupiny. </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/AssignedSystemGroups</context>
         </context-group>
       </trans-unit>
       <trans-unit id="assignedgroups.jsp.asadmin" xml:space="preserve">
         <source>As a System Group Administrator, this user will be able to modify all aspects of the selected system groups. </source>
-        <target/>
+        <target>Ako administrátor systémovej skupiny bude môcť tento používateľ meniť všetky prvky vybraných systémových skupín. </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/AssignedSystemGroups</context>
         </context-group>
       </trans-unit>
       <trans-unit id="assignedgroups.jsp.youcanselect" xml:space="preserve">
         <source>You can select one or more default system groups for this user. When the user registers a system, that system will be assigned to the selected group or groups. This allows the user to have access to the newly-registered system immediately, if he or she has permissions to one or more of the groups the system is assigned to. System Groups to which this user has access to are preceded by a (*). </source>
-        <target/>
+        <target>Pre tohto používateľa môžete vybrať jednu alebo viac predvolených systémových skupín. Keď používateľ zaregistruje systém, tento systém bude priradený k vybranej skupine alebo skupinám. To umožní používateľovi okamžitý prístup k novo zaregistrovanému systému, ak má oprávnenie na jednu alebo viacero skupín, ku ktorým je systém priradený. Systémové skupiny, ku ktorým má tento používateľ prístup, sú uvedené so symbolom (*). </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/AssignedSystemGroups</context>
         </context-group>
       </trans-unit>
       <trans-unit id="assignedgroups.jsp.defaultsysgroups" xml:space="preserve">
         <source>Default System Groups:</source>
-        <target/>
+        <target>Predvolené systémové skupiny:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/AssignedSystemGroups</context>
         </context-group>
       </trans-unit>
       <trans-unit id="assignedgroups.jsp.nogroups" xml:space="preserve">
         <source>Your organization has no system groups.</source>
-        <target/>
+        <target>Vaša organizácia nemá žiadne systémové skupiny.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/AssignedSystemGroups</context>
         </context-group>
       </trans-unit>
       <trans-unit id="assignedgroups.jsp.submitpermissions" xml:space="preserve">
         <source>Update Permissions</source>
-        <target/>
+        <target>Aktualizovať oprávnenia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/AssignedSystemGroups</context>
         </context-group>
       </trans-unit>
       <trans-unit id="assignedgroups.jsp.submitdefaults" xml:space="preserve">
         <source>Update Defaults</source>
-        <target/>
+        <target>Aktualizovať predvolené nastavenia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/AssignedSystemGroups</context>
         </context-group>
       </trans-unit>
       <trans-unit id="assignedgroups.jsp.group" xml:space="preserve">
         <source>Group</source>
-        <target/>
+        <target>Skupina</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/AssignedSystemGroups</context>
         </context-group>
       </trans-unit>
       <trans-unit id="filter" xml:space="preserve">
         <source>filter</source>
-        <target/>
+        <target>filter</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page with list display</context>
         </context-group>
       </trans-unit>
       <trans-unit id="updatelist" xml:space="preserve">
         <source>updatelist</source>
-        <target/>
+        <target>zoznam aktualizácií</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page with list display</context>
         </context-group>
       </trans-unit>
       <trans-unit id="selectall" xml:space="preserve">
         <source>selectall</source>
-        <target/>
+        <target>vybrať všetko</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page with list display</context>
         </context-group>
       </trans-unit>
       <trans-unit id="unselectall" xml:space="preserve">
         <source>unselectall</source>
-        <target/>
+        <target>zrušiť výber všetkého</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page with list display</context>
         </context-group>
@@ -2685,7 +2685,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       <!-- Scheduled Actions pages -->
       <trans-unit id="actiondetails.jsp.heading2" xml:space="preserve">
         <source>Action Details</source>
-        <target/>
+        <target>Podrobnosti akcie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails</context>
         </context-group>
@@ -28887,8 +28887,8 @@ given channel.</source>
         <target/>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.info.p2" xml:space="preserve">
-        <source>You can find them in the &lt;a href="https://scc.suse.com/organization" target="_blank"&gt;Customer Center&lt;/a&gt;.</source>
-        <target/>
+        <source>You can find them in the &lt;a href="https://scc.suse.com/organizations" target="_blank"&gt;Customer Center&lt;/a&gt;.</source>
+        <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.error.duplicate" xml:space="preserve">
         <source>Credentials with this username already exist</source>

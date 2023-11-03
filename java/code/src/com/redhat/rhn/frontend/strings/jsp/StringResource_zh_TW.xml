@@ -28631,7 +28631,8 @@ given channel.</source>
         <source>Where do I find my Organization Credentials?</source>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.info.p2" xml:space="preserve">
-        <source>You can find them in the &lt;a href="https://scc.suse.com/organization" target="_blank"&gt;Customer Center&lt;/a&gt;.</source>
+        <source>You can find them in the &lt;a href="https://scc.suse.com/organizations" target="_blank"&gt;Customer Center&lt;/a&gt;.</source>
+      <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.error.duplicate" xml:space="preserve">
         <source>Credentials with this username already exist</source>
