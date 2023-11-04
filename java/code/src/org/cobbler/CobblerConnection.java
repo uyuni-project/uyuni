@@ -142,11 +142,13 @@ public class CobblerConnection {
     private Object invokeMethod(String procedureName, List<Object> args) {
         if (log.isDebugEnabled()) {
             List<Object> dbgArgs = new LinkedList<>(args);
-            String lastArg = (String) dbgArgs.get(dbgArgs.size() - 1);
-            if (lastArg.length() == 36 && lastArg.endsWith("==")) {
-                // probably a base64 token
-                dbgArgs.remove(dbgArgs.size() - 1);
-                dbgArgs.add("<token>");
+            if (!dbgArgs.isEmpty()) {
+                String lastArg = dbgArgs.get(dbgArgs.size() - 1).toString();
+                if (lastArg.length() == 36 && lastArg.endsWith("==")) {
+                    // probably a base64 token
+                    dbgArgs.remove(dbgArgs.size() - 1);
+                    dbgArgs.add("<token>");
+                }
             }
             log.debug("procedure: {} args: {}", procedureName, dbgArgs);
         }
