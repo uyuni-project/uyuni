@@ -171,7 +171,8 @@ public abstract class CobblerObject {
         Map<String, String> criteria = new HashMap<>();
         criteria.put(critera, value);
         return (List<Map<String, Object>>)
-                client.invokeTokenMethod(findMethod, criteria, false);
+                client.invokeTokenMethod(findMethod, criteria, true);
+
 
     }
 
