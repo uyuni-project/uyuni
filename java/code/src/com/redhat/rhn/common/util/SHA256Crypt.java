@@ -80,7 +80,7 @@ public class SHA256Crypt {
      */
     public static String crypt(String key, String s) {
         //$5$ takes care that sha256 is used
-        s = "$5$" + CryptHelper.getSalt(s, CryptHelper.getSHA256Prefix(), SALT_LENGTH);
+        s = "$5$" + CryptHelper.getSalt(s, CryptHelper.SHA256_PREFIX, SALT_LENGTH);
         return Crypt.crypt(key, s);
     }
 

@@ -389,7 +389,7 @@ public class UserImpl extends BaseDomainHelper implements User {
          * authenticate via pam, otherwise, use the db.
          */
         if (!StringUtils.isBlank(pamAuthService) && this.getUsePamAuthentication()) {
-            if (password.startsWith(CryptHelper.getMD5Prefix())) {
+            if (password.startsWith(CryptHelper.MD5_PREFIX)) {
                 // password field in DB is NOT NULL, so we set a random password
                 // when using PAM authentication. Here the password is still MD5
                 // based. Just set a new one with SHA256crypt
@@ -411,7 +411,7 @@ public class UserImpl extends BaseDomainHelper implements User {
             boolean useEncrPasswds = Config.get().getBoolean(ConfigDefaults.WEB_ENCRYPTED_PASSWORDS);
             if (useEncrPasswds) {
                 // user uses SHA-256 encrypted password
-                if (password.startsWith(CryptHelper.getSHA256Prefix())) {
+                if (password.startsWith(CryptHelper.SHA256_PREFIX)) {
                     result = SHA256Crypt.crypt(thePassword, password).equals(password);
                 }
             }

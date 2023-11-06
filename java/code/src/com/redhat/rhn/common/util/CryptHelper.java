@@ -26,31 +26,13 @@ import java.util.Random;
  * CryptHelper - utility class for crypto routines
  */
 public class CryptHelper {
-    private static String b64t = // a string containing acceptable salt chars
-        "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-    private static String md5prefix = "$1$";
-    private static String sha256prefix = "$5$";
+    public static final String MD5_PREFIX = "$1$";
+    public static final String SHA256_PREFIX = "$5$";
 
     /**
      * CryptHelper
      */
     private CryptHelper() {
-    }
-
-    /**
-     * getMD5Prefix
-     * @return MD5 prefix string
-     */
-    public static String getMD5Prefix() {
-        return md5prefix;
-    }
-
-    /**
-     * getSHA256Prefix
-     * @return SHA-256 prefix string
-     */
-    public static String getSHA256Prefix() {
-        return sha256prefix;
     }
 
     /**
@@ -80,28 +62,13 @@ public class CryptHelper {
     }
 
     /**
-     * to64 - Utility function for generateEncodedKey
-     * @param value value
-     * @param length length
-     * @return String
-     */
-    static String to64(int value, int length) {
-        StringBuilder out = new StringBuilder();
-
-        while (length > 0) {
-            out.append(b64t.substring((value & 0x3f), (value & 0x3f) + 1));
-            --length;
-            value >>= 6;
-        }
-        return out.toString();
-    }
-
-    /**
      * generateRandomSalt - function to generate random salt string
      * @param saltLength - length of the salt string to generate
      * @return String
      */
     static String generateRandomSalt(Integer saltLength) {
+        // a string containing acceptable salt chars
+        String b64t = "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
         StringBuilder salt = new StringBuilder();
         Random r = new SecureRandom();
 
