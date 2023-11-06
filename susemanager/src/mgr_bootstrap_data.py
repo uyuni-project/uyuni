@@ -1558,6 +1558,16 @@ DATA = {
          'DEST' : DOCUMENT_ROOT + '/pub/repositories/debian/12/bootstrap/',
          'TYPE' : 'deb'
      },
+     'raspbianos12-arm64-uyuni' : {
+         'BASECHANNEL' : 'raspbian-12-pool-arm64-uyuni', 'PKGLIST' : PKGLISTDEBIAN12,
+         'DEST' : DOCUMENT_ROOT + '/pub/repositories/raspbianos/12/bootstrap/',
+         'TYPE' : 'deb'
+     },
+     'raspbianos12-armhf-uyuni' : {
+         'BASECHANNEL' : 'raspbian-12-pool-armhf-uyuni', 'PKGLIST' : PKGLISTDEBIAN12,
+         'DEST' : DOCUMENT_ROOT + '/pub/repositories/raspbianos/12/bootstrap/',
+         'TYPE' : 'deb'
+     },
      'astralinux-orel-amd64': {
          'BASECHANNEL' : 'astralinux-orel-pool-amd64', 'PKGLIST' : PKGLISTASTRALINUXOREL,
          'DEST' : DOCUMENT_ROOT + '/pub/repositories/astra/orel/bootstrap/',
