@@ -18,9 +18,27 @@ package com.redhat.rhn.common.util;
 import com.redhat.rhn.common.conf.UserDefaults;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 
+import java.io.ByteArrayOutputStream;
+import java.nio.charset.StandardCharsets;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.security.spec.InvalidKeySpecException;
+import java.util.Arrays;
+import java.util.Base64;
 import java.util.Random;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.PBEKeySpec;
+import javax.crypto.spec.SecretKeySpec;
 
 /**
  * CryptHelper - utility class for crypto routines
@@ -28,6 +46,9 @@ import java.util.Random;
 public class CryptHelper {
     public static final String MD5_PREFIX = "$1$";
     public static final String SHA256_PREFIX = "$5$";
+    private static final byte[] SALTED_MAGIC = "Salted__".getBytes();
+    private static final int ITERATIONS = 10000; // 10000 is the default in openssl
+    private static final int KEY_LENGTH_IN_BYTE = 256 / 8;
 
     /**
      * CryptHelper
@@ -91,5 +112,92 @@ public class CryptHelper {
         // stupid HACK!  Actually this is beyond HACK.
         return RandomStringUtils.random(UserDefaults.get().getMaxPasswordLength(), 0, 0,
                 true, true, null, new SecureRandom());
+    }
+
+    /**
+     * Encrypt a text with a password using AES 256 CTR PKCS5 padding with PBKDF2
+     * This is compatible with openssl enc command:
+     * <p>
+     * echo "this is a secret text" | openssl enc -aes-256-ctr -pbkdf2 -e -a
+     * </p>
+     * @param clearTextIn the text to encrypt
+     * @param passwordIn the password
+     * @return the encrypted text
+     * @throws AESCryptException encrypt errors
+     */
+    public static String aes256Encrypt(String clearTextIn, String passwordIn) throws AESCryptException {
+        if (StringUtils.isEmpty(clearTextIn)) {
+            throw new AESCryptException("No data provided");
+        }
+        try {
+            if (StringUtils.isEmpty(passwordIn)) {
+                throw new InvalidKeyException("Missing password");
+            }
+            byte[] salt = new SecureRandom().generateSeed(8);
+
+            PBEKeySpec keySpec = new PBEKeySpec(passwordIn.toCharArray(), salt, ITERATIONS, 48 * 8);
+            SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
+            byte[] keyAndIv = keyFactory.generateSecret(keySpec).getEncoded();
+            byte[] sKey = Arrays.copyOfRange(keyAndIv, 0, KEY_LENGTH_IN_BYTE);
+            byte[] iv = Arrays.copyOfRange(keyAndIv, KEY_LENGTH_IN_BYTE, KEY_LENGTH_IN_BYTE + 16);
+
+            SecretKeySpec secKey = new SecretKeySpec(sKey, "AES");
+            Cipher cipher = Cipher.getInstance("AES/CTR/PKCS5PADDING");
+            cipher.init(Cipher.ENCRYPT_MODE, secKey, new IvParameterSpec(iv));
+
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            bos.writeBytes(SALTED_MAGIC);
+            bos.writeBytes(salt);
+            bos.writeBytes(cipher.doFinal(clearTextIn.getBytes(StandardCharsets.UTF_8)));
+            return Base64.getEncoder().encodeToString(bos.toByteArray());
+        }
+        catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidAlgorithmParameterException |
+               InvalidKeyException | IllegalBlockSizeException | BadPaddingException | InvalidKeySpecException e) {
+            throw new AESCryptException("Unable to encrypt text", e);
+        }
+    }
+
+    /**
+     * Encrypt a text with a password using AES 256 CTR PKCS5 padding with PBKDF2
+     * This is compatible with openssl enc command:
+     * <p>
+     * echo "U2FsdGVkX1/DriqjEQKkU/Za...." | openssl enc -aes-256-ctr -pbkdf2 -d -a
+     * </p>
+     * @param cipherTextIn the text to decrypt
+     * @param passwordIn the password
+     * @return the decrypted text
+     * @throws AESCryptException decrypt error
+     */
+    public static String aes256Decrypt(String cipherTextIn, String passwordIn) throws AESCryptException {
+        if (StringUtils.isEmpty(cipherTextIn)) {
+            throw new AESCryptException("No encrypted data provided");
+        }
+        try {
+            if (StringUtils.isEmpty(passwordIn)) {
+                throw new InvalidKeyException("Missing password");
+            }
+            byte[] cipherBytes = Base64.getDecoder().decode(cipherTextIn);
+            if (!Arrays.equals(Arrays.copyOfRange(cipherBytes, 0, SALTED_MAGIC.length), SALTED_MAGIC)) {
+                throw new IllegalArgumentException(
+                        "Bad magic number. Initial bytes from input do not match OpenSSL SALTED_MAGIC salt value.");
+            }
+            byte[] salt = Arrays.copyOfRange(cipherBytes, SALTED_MAGIC.length, SALTED_MAGIC.length + 8);
+            cipherBytes = Arrays.copyOfRange(cipherBytes, SALTED_MAGIC.length + 8, cipherBytes.length);
+
+            PBEKeySpec keySpec = new PBEKeySpec(passwordIn.toCharArray(), salt, ITERATIONS, 48 * 8);
+            SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
+            byte[] keyAndIv = keyFactory.generateSecret(keySpec).getEncoded();
+            byte[] sKey = Arrays.copyOfRange(keyAndIv, 0, KEY_LENGTH_IN_BYTE);
+            byte[] iv = Arrays.copyOfRange(keyAndIv, KEY_LENGTH_IN_BYTE, KEY_LENGTH_IN_BYTE + 16);
+
+            SecretKeySpec secKey = new SecretKeySpec(sKey, "AES");
+            Cipher cipher = Cipher.getInstance("AES/CTR/PKCS5PADDING");
+            cipher.init(Cipher.DECRYPT_MODE, secKey, new IvParameterSpec(iv));
+            return new String(cipher.doFinal(cipherBytes));
+        }
+        catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidAlgorithmParameterException |
+                InvalidKeyException | IllegalBlockSizeException | BadPaddingException | InvalidKeySpecException e) {
+            throw new AESCryptException("Unable to decrypt text", e);
+        }
     }
 }
