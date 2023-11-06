@@ -1347,6 +1347,14 @@ DATA = {
         'BASECHANNEL' : 'amazonlinux2-core-aarch64', 'PKGLIST' : RES7,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/amzn/2/bootstrap/'
     },
+    'amazonlinux-2023-x86_64-uyuni' : {
+        'BASECHANNEL' : 'amazonlinux2023-x86_64', 'PKGLIST' : RES9,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/amzn/2023/bootstrap/'
+    },
+    'amazonlinux-22023-aarch64-uyuni' : {
+        'BASECHANNEL' : 'amazonlinux2023-aarch64', 'PKGLIST' : RES9,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/amzn/2023/bootstrap/'
+    },
     'RHEL6-x86_64' : {
         'PDID' : [-5, 1682], 'BETAPDID' : [2064], 'PKGLIST' : RES6,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/res/6/bootstrap/'
