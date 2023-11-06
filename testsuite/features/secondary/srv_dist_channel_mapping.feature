@@ -34,7 +34,7 @@ Feature: Distribution Channel Mapping
     When I enter "Ubuntu 22.04.01 LTS" as "os"
     And I enter "22.04" as "release"
     And I select "x86_64" from "architecture" dropdown
-    And I select "Fake Base Channel" from "channel_label" dropdown
+    And I select "Fake-Base-Channel" from "channel_label" dropdown
     And I click on "Create Mapping"
     Then I should see a "Ubuntu 22.04.01 LTS" link in the content area
 
@@ -45,7 +45,7 @@ Feature: Distribution Channel Mapping
     When I enter "SUSE Linux Enterprise Server 15 SP 4 iSeries" as "os"
     And I enter "15.4" as "release"
     And I select "iSeries" from "architecture" dropdown
-    And I select "Fake-i586-Channel" from "channel_label" dropdown
+    And I select "Fake-Base-Channel-i586" from "channel_label" dropdown
     And I click on "Create Mapping"
     Then I should see a "SUSE Linux Enterprise Server 15 SP 4 iSeries" link in the content area
 
@@ -69,22 +69,22 @@ Feature: Distribution Channel Mapping
     And I should see the text "sle-product-sles15-sp4-pool-x86_64" in the Channel Label field
     When I follow "Ubuntu 22.04.01 LTS"
     And I enter "Ubuntu 22.04.01 LTS modified" as "os"
-    And I select "Fake Base Channel" from "channel_label" dropdown
+    And I select "Fake-Base-Channel" from "channel_label" dropdown
     And I click on "Update Mapping"
     Then I should see the text "Ubuntu 22.04.01 LTS modified" in the Operating System field
-    And I should see the text "fake_base_channel" in the Channel Label field
+    And I should see the text "fake-base-channel" in the Channel Label field
 
   Scenario: Update map for IA-32 SUSE clients using amd deb test channel
     When I follow the left menu "Software > Distribution Channel Mapping"
     Then I should see the text "SUSE Linux Enterprise Server 15 SP 4 iSeries" in the Operating System field
     And I should see the text "iSeries" in the Architecture field
-    And I should see the text "fake-i586-channel" in the Channel Label field
+    And I should see the text "fake-base-channel-i586" in the Channel Label field
     When I follow "SUSE Linux Enterprise Server 15 SP 4 iSeries"
     And I enter "SUSE Linux Enterprise Server 15 SP 4 iSeries modified" as "os"
-    And I select "Fake-Deb-AMD64-Channel" from "channel_label" dropdown
+    And I select "Fake-Base-Channel-Debian-like" from "channel_label" dropdown
     And I click on "Update Mapping"
     Then I should see the text "SUSE Linux Enterprise Server 15 SP 4 iSeries modified" in the Operating System field
-    And I should see the text "fake-deb-amd64-channel" in the Channel Label field
+    And I should see the text "fake-base-channel-debian-like" in the Channel Label field
 
   Scenario: Cleanup: delete the map created for x68_64 SUSE clients
     When I follow the left menu "Software > Distribution Channel Mapping"
@@ -97,7 +97,20 @@ Feature: Distribution Channel Mapping
     Then I should see a "Delete Distribution Channel Map" text
     When I click on "Delete Mapping"
     Then I should not see a "SUSE Linux Enterprise Server 15 SP 4 modified" link
-    
+
+@uyuni
+  Scenario: Cleanup: delete the map created for x68_64 openSUSE clients
+    When I follow the left menu "Software > Distribution Channel Mapping"
+    Then I should see the text "openSUSE Leap 15.5 modified" in the Operating System field
+    And I should see the text "x86_64" in the Architecture field
+    When I follow "openSUSE Leap 15.5 modified"
+    Then I should see a "Update Distribution Channel Map" text
+    And I should see a "Delete Distribution Channel" link
+    When I follow "Delete Distribution Channel Mapping"
+    Then I should see a "Delete Distribution Channel Map" text
+    When I click on "Delete Mapping"
+    Then I should not see a "openSUSE Leap 15.5 modified" link
+
   Scenario: Cleanup: delete the map created for x68_64 Ubuntu clients
     When I follow the left menu "Software > Distribution Channel Mapping"
     Then I should see the text "Ubuntu 22.04.01 LTS modified" in the Operating System field
@@ -109,7 +122,8 @@ Feature: Distribution Channel Mapping
     Then I should see a "Delete Distribution Channel Map" text
     When I click on "Delete Mapping"
     Then I should not see a "Ubuntu 22.04.01 LTS modified" link
-    
+
+@scc_credentials
   Scenario: Cleanup: delete the map created for i586 clients
     When I follow the left menu "Software > Distribution Channel Mapping"
     Then I should see the text "SUSE Linux Enterprise Server 15 SP 4 iSeries modified" in the Operating System field

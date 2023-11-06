@@ -62,7 +62,7 @@ Feature: Create activation keys
     And I wait until I do not see "Loading..." text
     And I enter "RedHat like Test Key" as "description"
     And I enter "RH-LIKE-KEY" as "key"
-    And I select "Fake-RH-Like-Channel" from "selectedBaseChannel"
+    And I select "Fake-Base-Channel-RH-like" from "selectedBaseChannel"
     And I click on "Create Activation Key"
     Then I should see a "Activation key RedHat like Test Key has been created" text
 
@@ -73,7 +73,7 @@ Feature: Create activation keys
     And I wait until I do not see "Loading..." text
     And I enter "Debian-like Test Key" as "description"
     And I enter "DEBLIKE-KEY" as "key"
-    And I select "Fake-Deb-AMD64-Channel" from "selectedBaseChannel"
+    And I select "Fake-Base-Channel-Debian-like" from "selectedBaseChannel"
     And I click on "Create Activation Key"
     Then I should see a "Activation key Debian-like Test Key has been created" text
 
