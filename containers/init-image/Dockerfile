@@ -36,7 +36,7 @@ ARG REFERENCE_PREFIX="registry.opensuse.org/uyuni"
 
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=org.opensuse.uyuni.init
-LABEL org.opencontainers.image.name="init-image"
+LABEL org.opencontainers.image.name=init-image
 LABEL org.opencontainers.image.title="${PRODUCT} Init Image"
 LABEL org.opencontainers.image.description="This image initialize users, groups and software for ${PRODUCT} Container"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
