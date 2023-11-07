@@ -42,7 +42,7 @@ LABEL org.opencontainers.image.description="This image initialize users, groups 
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="${VENDOR}"
 LABEL org.opencontainers.image.url="${URL}"
-LABEL org.opencontainers.image.version="4.4.0"
+LABEL org.opencontainers.image.version=4.4.0
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.reference="${REFERENCE_PREFIX}/init:4.4.0.%RELEASE%"
 # endlabelprefix
