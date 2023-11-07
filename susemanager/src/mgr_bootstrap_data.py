@@ -1585,7 +1585,7 @@ DATA = {
      },
      'raspbianos12-arm64-uyuni' : {
          'BASECHANNEL' : 'raspbianos-12-pool-arm64-uyuni', 'PKGLIST' : PKGLISTRASPBIAN12,
-         'DEST' : DOCUMENT_ROOT + '/pub/repositories/raspbian/12/bootstrap/',
+         'DEST' : DOCUMENT_ROOT + '/pub/repositories/debian/12/bootstrap/',
          'TYPE' : 'deb'
      },
      'raspbianos12-armhf-uyuni' : {
