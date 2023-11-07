@@ -1351,7 +1351,7 @@ DATA = {
         'BASECHANNEL' : 'amazonlinux2023-x86_64', 'PKGLIST' : RES9,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/amzn/2023/bootstrap/'
     },
-    'amazonlinux-22023-aarch64-uyuni' : {
+    'amazonlinux-2023-aarch64-uyuni' : {
         'BASECHANNEL' : 'amazonlinux2023-aarch64', 'PKGLIST' : RES9,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/amzn/2023/bootstrap/'
     },
