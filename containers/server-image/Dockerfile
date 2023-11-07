@@ -83,6 +83,7 @@ ARG REFERENCE_PREFIX="registry.opensuse.org/uyuni"
 
 # Build Service required labels
 # labelprefix=org.opensuse.uyuni.server
+LABEL org.opencontainers.image.name="server-image"
 LABEL org.opencontainers.image.title="${PRODUCT} server container"
 LABEL org.opencontainers.image.description="All-in-one ${PRODUCT} server image"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
