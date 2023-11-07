@@ -550,7 +550,7 @@ PKGLISTDEBIAN12 = [
     "venv-salt-minion"
 ]
 
-PKGLISTDEBIAN12 = [
+PKGLISTRASPBIAN12 = [
     # gnupg dependencies
     "dirmngr",
     "gnupg",
@@ -1585,12 +1585,12 @@ DATA = {
      },
      'raspbianos12-arm64-uyuni' : {
          'BASECHANNEL' : 'raspbianos-12-pool-arm64-uyuni', 'PKGLIST' : PKGLISTRASPBIAN12,
-         'DEST' : DOCUMENT_ROOT + '/pub/repositories/raspbianos/12/bootstrap/',
+         'DEST' : DOCUMENT_ROOT + '/pub/repositories/raspbian/12/bootstrap/',
          'TYPE' : 'deb'
      },
      'raspbianos12-armhf-uyuni' : {
          'BASECHANNEL' : 'raspbianos-12-pool-armhf-uyuni', 'PKGLIST' : PKGLISTRASPBIAN12,
-         'DEST' : DOCUMENT_ROOT + '/pub/repositories/raspbianos/12/bootstrap/',
+         'DEST' : DOCUMENT_ROOT + '/pub/repositories/raspbian/12/bootstrap/',
          'TYPE' : 'deb'
      },
      'astralinux-orel-amd64': {
