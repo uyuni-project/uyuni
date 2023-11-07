@@ -550,6 +550,31 @@ PKGLISTDEBIAN12 = [
     "venv-salt-minion"
 ]
 
+PKGLISTDEBIAN12 = [
+    # gnupg dependencies
+    "dirmngr",
+    "gnupg",
+    "gnupg-l10n",
+    "gnupg-utils",
+    "gpg",
+    "gpg-agent",
+    "gpg-wks-client",
+    "gpg-wks-server",
+    "gpgconf",
+    "gpgsm",
+    "libassuan0",
+    "libksba8",
+    "libldap-2.5-0",
+    "libnpth0",
+    "libsasl2-2",
+    "libsasl2-modules-db",
+    "libsqlite3-0",
+    "pinentry-curses",
+    "readline-common",
+    # end of gnupg dependencies
+    "venv-salt-minion"
+]
+
 PKGLISTASTRALINUXOREL = [
     "dctrl-tools",
     "dirmngr",
@@ -1559,12 +1584,12 @@ DATA = {
          'TYPE' : 'deb'
      },
      'raspbianos12-arm64-uyuni' : {
-         'BASECHANNEL' : 'raspbian-12-pool-arm64-uyuni', 'PKGLIST' : PKGLISTDEBIAN12,
+         'BASECHANNEL' : 'raspbianos-12-pool-arm64-uyuni', 'PKGLIST' : PKGLISTRASPBIAN12,
          'DEST' : DOCUMENT_ROOT + '/pub/repositories/raspbianos/12/bootstrap/',
          'TYPE' : 'deb'
      },
      'raspbianos12-armhf-uyuni' : {
-         'BASECHANNEL' : 'raspbian-12-pool-armhf-uyuni', 'PKGLIST' : PKGLISTDEBIAN12,
+         'BASECHANNEL' : 'raspbianos-12-pool-armhf-uyuni', 'PKGLIST' : PKGLISTRASPBIAN12,
          'DEST' : DOCUMENT_ROOT + '/pub/repositories/raspbianos/12/bootstrap/',
          'TYPE' : 'deb'
      },
