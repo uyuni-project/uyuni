@@ -40,9 +40,9 @@ for image in cert-manager-cainjector cert-manager-controller cert-manager-ctl ce
   podman save --output $image.tar quay.io/jetstack/$image:$cert_manager_version
 done
 
-podman pull registry.opensuse.org/systemsmanagement/uyuni/master/containers/uyuni/server:latest
+podman pull registry.opensuse.org/uyuni/server:latest
 
-podman save --output server.tar registry.opensuse.org/systemsmanagement/uyuni/master/containers/uyuni/server:latest
+podman save --output server.tar registry.opensuse.org/uyuni/server:latest
 ```
 
 or
@@ -53,7 +53,7 @@ for image in cert-manager-cainjector cert-manager-controller cert-manager-ctl ce
     skopeo copy docker://quay.io/jetstack/$image:$cert_manager_version docker-archive:$image.tar:quay.io/jetstack/$image:$cert_manager_version
 done
 
-skopeo copy docker://registry.opensuse.org/systemsmanagement/uyuni/master/containers/uyuni/server:latest docker-archive:server.tar:registry.opensuse.org/systemsmanagement/uyuni/master/containers/uyuni/server:latest
+skopeo copy docker://registry.opensuse.org/uyuni/server:latest docker-archive:server.tar:registry.opensuse.org/uyuni/server:latest
 ```
 
 If using K3S's default local-path-provider, also pull the helper pod image for offline use:
@@ -80,7 +80,7 @@ Copy the `cert-manager` and `uyuni/server` helm charts locally:
 
 ```
 helm pull --repo https://charts.jetstack.io --destination . cert-manager
-helm pull --destination . oci://registry.opensuse.org/systemsmanagement/uyuni/master/charts/uyuni/server-helm
+helm pull --destination . oci://registry.opensuse.org/uyuni/server-helm
 ```
 
 Transfer the resulting `*.tar` images to the K3s node and load them using the following command:
@@ -96,12 +96,12 @@ This needs to be done for both Uyuni and cert-manager helm charts.
 
 To prevent Helm from pulling the images pass the `--image=pullPolicy=never` parameter to `uyuniadm install` or `uyuniadm migrate`.
 
-To use the downloaded helm charts instead of the default ones, pass `--helm-uyuni-chart=server-helm-2023.9.0.tgz` and `--helm-certmanager-chart=cert-manager-v1.13.1.tgz` or add the following to the `uyuniadm` configuration file. Of course the versions in the file name need to be adjusted to what you downloaded:
+To use the downloaded helm charts instead of the default ones, pass `--helm-uyuni-chart=server-helm-2023.10.0.tgz` and `--helm-certmanager-chart=cert-manager-v1.13.1.tgz` or add the following to the `uyuniadm` configuration file. Of course the versions in the file name need to be adjusted to what you downloaded:
 
 ```
 helm:
   uyuni:
-    chart: server-helm-2023.9.0.tgz
+    chart: server-helm-2023.10.0.tgz
   certmanager:
     chart: cert-manager-v1.13.1.tgz
 ```
@@ -123,7 +123,7 @@ Copy the `cert-manager` and `uyuni/server-helm` helm charts locally:
 
 ```
 helm pull --repo https://charts.jetstack.io --destination . cert-manager
-helm pull --destination . oci://registry.opensuse.org/systemsmanagement/uyuni/master/charts/uyuni/server-helm
+helm pull --destination . oci://registry.opensuse.org/uyuni/server-helm
 ```
 
 ⚠️  **TODO** Prepare instructions
@@ -139,14 +139,14 @@ For this, on a machine with internet access, pull the image using `podman`, `doc
 For example:
 
 ```
-podman pull registry.opensuse.org/systemsmanagement/uyuni/master/containers/uyuni/server:latest
-podman save --output server.tar registry.opensuse.org/systemsmanagement/uyuni/master/containers/uyuni/server:latest
+podman pull registry.opensuse.org/uyuni/server:latest
+podman save --output server.tar registry.opensuse.org/uyuni/server:latest
 ```
 
 or
 
 ```
-skopeo copy docker://registry.opensuse.org/systemsmanagement/uyuni/master/containers/uyuni/server:latest docker-archive:server.tar:registry.opensuse.org/systemsmanagement/uyuni/master/containers/uyuni/server:latest
+skopeo copy docker://registry.opensuse.org/uyuni/server:latest docker-archive:server.tar:registry.opensuse.org/uyuni/server:latest
 ```
 
 Transfer the resulting `server-image.tar` to the server and load it using the following command:
