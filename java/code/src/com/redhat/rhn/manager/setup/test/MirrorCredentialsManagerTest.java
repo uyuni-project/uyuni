@@ -161,8 +161,6 @@ public class MirrorCredentialsManagerTest extends RhnMockStrutsTestCase {
 
     /**
      * Store test credentials for a given id.
-     *
-     * @param id the id of stored credentials
      */
     private MirrorCredentialsDto storeTestCredentials() throws ContentSyncException {
         MirrorCredentialsDto creds = new MirrorCredentialsDto();

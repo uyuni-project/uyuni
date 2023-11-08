@@ -141,7 +141,7 @@ public class FileUtils {
             StringWriter writer = new StringWriter();
             IOUtils.getInstance().copyWriter(input, writer);
             String contents = writer.toString();
-            if (noLog && log.isDebugEnabled()) {
+            if (!noLog && log.isDebugEnabled()) {
                 log.debug("contents: {}", contents);
             }
             return contents;
