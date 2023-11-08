@@ -2,6 +2,7 @@ package com.redhat.rhn.domain.audit;
 
 
 import com.redhat.rhn.domain.BaseDomainHelper;
+import com.redhat.rhn.domain.org.Org;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
@@ -10,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -22,6 +24,8 @@ public class TailoringFile extends BaseDomainHelper {
     private String name;
 
     private String fileName;
+
+    private Org org;
 
     /**
      * TailoringFile Default constructor
@@ -81,6 +85,19 @@ public class TailoringFile extends BaseDomainHelper {
         this.fileName = fileNameIn;
     }
 
+    /**
+     * @return the org
+     */
+    @ManyToOne
+    public Org getOrg() {
+        return org;
+    }
+    /**
+     * @param orgIn the org to set
+     */
+    public void setOrg(Org orgIn) {
+        this.org = orgIn;
+    }
     public boolean equals(final Object other) {
         if (this == other) {
             return true;
@@ -93,7 +110,7 @@ public class TailoringFile extends BaseDomainHelper {
         TailoringFile castOther = (TailoringFile) other;
         return new EqualsBuilder()
                 .append(name, castOther.name)
-                .append(fileName, castOther.fileName)
+                .append(org, castOther.org)
                 .isEquals();
     }
 
@@ -103,7 +120,7 @@ public class TailoringFile extends BaseDomainHelper {
     public int hashCode() {
         return new HashCodeBuilder(17, 37)
                 .append(name)
-                .append(fileName)
+                .append(org)
                 .toHashCode();
     }
     @Override
