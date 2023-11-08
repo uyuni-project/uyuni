@@ -85,8 +85,6 @@ public class CVEAuditManagerOVAL {
             CVEAuditSystemBuilder systemAuditResult;
             // We need this initially to be able to get errata and audit channels information for the OVAL
             // implementation.
-            // TODO: We could make a custom query that would get us only the data we're interested in instead of relying
-            //  on CVEAuditManager#doAuditSystem implementation.
 
             CVEAuditSystemBuilder auditWithChannelsResult =
                     CVEAuditManager.doAuditSystem(clientServer.getId(), resultsBySystem.get(clientServer.getId()));
@@ -234,8 +232,7 @@ public class CVEAuditManagerOVAL {
                         }
                     }
                     else if (somePackagesHavePatchInUnassignedChannels) {
-                        //TODO: Not sure how to handle...
-                        cveAuditServerBuilder.setPatchStatus(PatchStatus.AFFECTED_PATCH_UNAVAILABLE_IN_UYUNI);
+                        cveAuditServerBuilder.setPatchStatus(PatchStatus.AFFECTED_PATCH_INAPPLICABLE);
                     }
                     else {
                         cveAuditServerBuilder.setPatchStatus(PatchStatus.AFFECTED_PATCH_UNAVAILABLE_IN_UYUNI);
@@ -282,7 +279,6 @@ public class CVEAuditManagerOVAL {
     public static List<CVEAuditImage> listImagesByPatchStatus(User user,
                                                               String cveIdentifier, EnumSet<PatchStatus> patchStatuses)
             throws UnknownCVEIdentifierException {
-        // TODO: Audit images with OVAL
         return CVEAuditManager.listImagesByPatchStatus(user, cveIdentifier, patchStatuses);
     }
 
