@@ -64,6 +64,7 @@ public class Cve {
         Cve castOther = (Cve) other;
         return new EqualsBuilder()
                 .append(id, castOther.id)
+                .append(name, castOther.name)
                 .isEquals();
     }
 
