@@ -1,0 +1,94 @@
+#! /usr/bin/python3
+
+import os
+import sys
+from optparse import OptionParser
+import string
+import secrets
+
+
+def parseOptions():
+    parser = OptionParser()
+    parser.add_option("", "--min", action="store", type="int",
+                      help="minimal length", default=32)
+    parser.add_option("", "--max", action="store", type="int",
+                      help="maximal length", default=64)
+    parser.add_option("-o", "--output", action="store",
+                      help="output file")
+
+    (options, args) = parser.parse_args()
+
+    if options.min <= 0 or options.max <= 0:
+        sys.stderr.write("Length values must be greater then 0\n")
+        sys.exit(1)
+
+    return options
+
+def generatePassword(minval, maxdif):
+    alphabet = string.digits + " !?%&@/()[]{}<>=#+-_,;.:*^~" + string.ascii_letters
+    cnt = minval + secrets.randbelow(maxdif)
+    return ''.join(secrets.choice(alphabet) for i in range(cnt))
+
+def writeToFile(outfile, password):
+    outdir = os.path.dirname(outfile)
+
+    if os.path.exists(outfile):
+        sys.stderr.write("Output file '{}' must not exist\n".format(outfile))
+        sys.exit(1)
+
+    if not os.path.isdir(outdir):
+        sys.stderr.write("Output directory '{}' does not exist\n".format(outdir))
+        sys.exit(1)
+
+    os.umask(0)
+    descriptor = os.open(
+        path=outfile,
+        flags=(
+            os.O_WRONLY  # access mode: write only
+            | os.O_CREAT  # create if not exists
+            | os.O_EXCL   # error if file exists
+            | os.O_TRUNC  # truncate the file to zero
+        ),
+        mode=0o600
+    )
+
+    with open(descriptor, "w") as fh:
+        fh.write(password)
+
+def writeToStdout(password):
+    sys.stdout.write(password)
+
+
+def main():
+    options = parseOptions()
+
+    if options.min < options.max:
+        minval = options.min
+        maxdif = options.max + 1 - minval
+    elif options.min > options.max:
+        minval = options.max
+        maxdif = options.min + 1 - minval
+    else:
+        minval = options.min
+        maxdif = 1
+
+    password = generatePassword(minval, maxdif)
+
+    if not options.output:
+        writeToStdout(password)
+    else:
+        outfile = os.path.normpath(options.output)
+        writeToFile(outfile, password)
+
+
+if __name__ == '__main__':
+    try:
+        sys.exit(abs(main() or 0))
+    except KeyboardInterrupt:
+        sys.stderr.write("\nProcess has been interrupted.\n")
+        sys.exit(1)
+    except SystemExit as e:
+        sys.exit(e.code)
+    except Exception as e:
+        raise
+

@@ -81,6 +81,7 @@ fi
 %{_sbindir}/spacewalk-startup-helper
 %{_sbindir}/spacewalk-service
 %{_sbindir}/uyuni-update-config
+%{_sbindir}/uyuni-pwgen
 %{_bindir}/rhn-config-satellite.pl
 %{_bindir}/rhn-config-schema.pl
 %{_bindir}/rhn-deploy-ca-cert.pl

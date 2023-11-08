@@ -62,6 +62,15 @@ check_billing_service() {
   enforce_service_installed_running csp-billing-adapter-service csp-billing-adapter
 }
 
+check_masterpassword() {
+    if [ ! -e /etc/rhn/masterpassword ]; then
+        /usr/sbin/uyuni-pwgen -o /etc/rhn/masterpassword
+    fi
+    if [ -e /etc/rhn/masterpassword ]; then
+        chown tomcat.tomcat /etc/rhn/masterpassword
+    fi
+}
+
 check_schema_version() {
     MIN_JAVA_SCHEMA=$( egrep -m1 "^java.min_schema_version[[:space:]]*=" /usr/share/rhn/config-defaults/rhn_java.conf | sed 's/^java.min_schema_version[[:space:]]*=[[:space:]]*\(.*\)/\1/' || echo "" )
     CMP=$(echo "select evr_t_compare(X.evr, evr_t('0', '$MIN_JAVA_SCHEMA', '0', 'rpm')) from (select PE.evr from rhnVersionInfo vi join rhnPackageEVR pe on vi.evr_id = pe.id where vi.label = 'schema') X;" | spacewalk-sql --select-mode - | sed -n 3p | xargs)
@@ -132,6 +141,8 @@ db_migrate_md5_to_scram() {
 }
 
 check_database() {
+    # take care that we have the masterpw
+    check_masterpassword
 
     # Check, if we use the correct database version
     source /etc/os-release
