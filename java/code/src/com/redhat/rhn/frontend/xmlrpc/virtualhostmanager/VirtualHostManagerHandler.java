@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchGathererModuleException;
+import com.redhat.rhn.frontend.xmlrpc.VirtualHostManagerFaultException;
 
 import com.suse.manager.api.ReadOnly;
 import com.suse.manager.gatherer.GathererRunner;
@@ -64,8 +65,7 @@ public class VirtualHostManagerHandler extends BaseHandler {
      * @param loggedInUser the currently logged in user
      * @param label Virtual Host Manager label
      * @param moduleName the name of the Gatherer module
-     * @param parameters additional parameters (credentials, parameters for
-     * virtual-host-gatherer)
+     * @param parameters additional parameters (credentials, parameters for virtual-host-gatherer)
      * @return 1 if successful, exception otherwise
      *
      * @apidoc.doc Creates a Virtual Host Manager from given arguments
@@ -76,8 +76,7 @@ public class VirtualHostManagerHandler extends BaseHandler {
      *         "additional parameters (credentials, parameters for virtual-host-gatherer)")
      * @apidoc.returntype #return_int_success()
      */
-    public int create(User loggedInUser, String label, String moduleName,
-            Map<String, String> parameters) {
+    public int create(User loggedInUser, String label, String moduleName, Map<String, String> parameters) {
         ensureOrgAdmin(loggedInUser);
         if (StringUtils.isEmpty(label)) {
             throw new IllegalArgumentException("Label cannot not be empty.");
@@ -104,7 +103,7 @@ public class VirtualHostManagerHandler extends BaseHandler {
             return BaseHandler.VALID;
         }
         catch (AESCryptException eIn) {
-            throw new RuntimeException(eIn);
+            throw new VirtualHostManagerFaultException(eIn);
         }
 
     }
