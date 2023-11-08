@@ -204,7 +204,7 @@ public class AnnotationRegistry {
         ServerAppStream.class,
         AppStream.class,
         AppStreamApi.class,
-        TokenChannelAppStream.class
+        TokenChannelAppStream.class,
         PaygDimensionResult.class,
         TailoringFile.class
     );
