@@ -29,7 +29,11 @@ no_ssh_push_key_authorized:
   {% set osrelease_major = grains['osrelease_info'][0] %}
   #exceptions to the family rule
   {%- if "opensuse" in grains['oscodename']|lower %}
-    {% set os_base = 'opensuse' %}
+    {%- if "tumbleweed" in grains['oscodename']|lower %}
+      {% set os_base = 'opensusetumbleweed' %}
+    {%- else %}
+      {% set os_base = 'opensuse' %}
+    {%- endif %}
   {%- endif %}
   {%- if (grains['osrelease_info']| length) < 2 %}
     {% set osrelease_minor = 0 %}
@@ -43,9 +47,9 @@ no_ssh_push_key_authorized:
         {% set os_base = os_base|string + 'micro' %}
     {%- endif %}
   {%- endif %}
-  #end of expections
-  {%- if os_base == 'opensusemicroos' %}
-      {% set osrelease = 'latest' %}
+  #end of exceptions
+  {%- if os_base == 'opensusemicroos' or os_base == 'opensusetumbleweed' %}
+      {% set osrelease = 'latest/0' %}
   {%- else %}
       {% set osrelease = osrelease_major|string + '/' + osrelease_minor|string %}
   {%- endif %}
