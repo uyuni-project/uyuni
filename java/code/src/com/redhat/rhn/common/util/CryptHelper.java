@@ -15,13 +15,19 @@
 
 package com.redhat.rhn.common.util;
 
+import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.UserDefaults;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.attribute.PosixFilePermission;
+import java.nio.file.attribute.PosixFilePermissions;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -30,6 +36,7 @@ import java.security.spec.InvalidKeySpecException;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Random;
+import java.util.Set;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -112,6 +119,32 @@ public class CryptHelper {
         // stupid HACK!  Actually this is beyond HACK.
         return RandomStringUtils.random(UserDefaults.get().getMaxPasswordLength(), 0, 0,
                 true, true, null, new SecureRandom());
+    }
+
+    /**
+     * Create a new master password file with a random password
+     *
+     * @return returns true when a new password file was created, otherwise false
+     * @throws IOException when anything goes wrong
+     */
+    public static boolean createNewMasterPassword() throws IOException {
+        File mpwFile = new File(Config.getDefaultMasterPasswordFile());
+        if (mpwFile.exists()) {
+            return false;
+        }
+        if (!mpwFile.createNewFile()) {
+            return false;
+        }
+        Set<PosixFilePermission> wantedPers = PosixFilePermissions.fromString("rw-------");
+        FileUtils.setAttributes(mpwFile.toPath(), "tomcat", "tomcat", wantedPers);
+
+        char[] special = {' ', '!', '?', '%', '&', '@', '/', '(', ')', '[', ']', '{', '}', '<', '>', '=',
+                '\\', '#', '+', '-', '_', ',', ';', '.', ':', '*', '^', '~'};
+        SecureRandom rnd = new SecureRandom();
+        int cnt = 32 + rnd.nextInt(32 + 1); // cnt between 32 and 64
+        String mpw = RandomStringUtils.random(cnt, 0, 0, true, true, special, rnd);
+        Files.write(mpwFile.toPath(), mpw.getBytes());
+        return true;
     }
 
     /**
