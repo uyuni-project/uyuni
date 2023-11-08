@@ -20,6 +20,9 @@ CREATE TABLE IF NOT EXISTS suseOVALVulnerablePackage
 
 CREATE SEQUENCE IF NOT EXISTS suse_oval_vulnerable_pkg_id_seq START WITH 301;
 
+CREATE UNIQUE INDEX IF NOT EXISTS suse_oval_vulnerable_pkg_name_fix_version ON suseOVALVulnerablePackage(name, fix_version);
+
+CREATE SEQUENCE IF NOT EXISTS suse_oval_vulnerable_pkg_id_seq START WITH 301;
 
 CREATE TABLE IF NOT EXISTS suseOVALPlatformVulnerablePackage
 (
