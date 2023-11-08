@@ -4,6 +4,12 @@ include ../common.jade
 
 script(type='text/javascript').
     window.csrfToken = "#{csrf_token}";
+    window.tailoringFileData = {
+        name: !{name != null ? '"' + name + '"' : 'undefined'},
+        id: !{id != null ? id : 'undefined'},
+        description: !{description != null ? '"' + description + '"' : 'undefined'},
+        tailoringFileName: !{tailoringFileName != null ? '"' + tailoringFileName + '"' : 'undefined'}
+    };
 
 script(type='text/javascript').
     spaImportReactPage('audit/create-tailoring-file')

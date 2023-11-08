@@ -12,11 +12,19 @@
 CREATE TABLE suseScapTailoringFile
 (
     id                   NUMERIC                                 NOT NULL
-        CONSTRAINT suseScapTailoringFile_pk PRIMARY KEY,
+                         CONSTRAINT suseScapTailoringFile_pk PRIMARY KEY,
     name                 VARCHAR(255)                            NOT NULL,
     file_name            VARCHAR(255)                            NOT NULL,
+    description          VARCHAR(4000),
+    org_id               NUMERIC                                 NOT NULL
+                         CONSTRAINT suse_trailingf_oid_fk
+                           REFERENCES web_customer (id)
+                           ON DELETE CASCADE,
     created              TIMESTAMPTZ DEFAULT (current_timestamp) NOT NULL,
     modified             TIMESTAMPTZ DEFAULT (current_timestamp) NOT NULL
 );
 
+CREATE UNIQUE INDEX suse_trailingf__oid_name_uq
+    ON suseScapTailoringFile (org_id, name)
+        ;
 CREATE SEQUENCE suseScapTailoringFil_id_seq;

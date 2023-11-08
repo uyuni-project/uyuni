@@ -17,18 +17,20 @@ package com.redhat.rhn.domain.audit;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.domain.org.Org;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.hibernate.type.StandardBasicTypes;
-
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.hibernate.type.StandardBasicTypes;
 
 /**
  * ScapFactory - the singleton class used to fetch and store
@@ -157,13 +159,26 @@ public class ScapFactory extends HibernateFactory {
     public static List<TailoringFile> lookupAllTailoringFiles() {
         return getSession().createQuery("FROM TailoringFile").list();
     }
+    /**
+     * Search for all tailoring files objects in the database
+     * @param org the organization
+     * @return Returns a list of  tailoring files
+     */
+    public static List<TailoringFile> listTailoringFiles(Org org) {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<TailoringFile> criteria = builder.createQuery(TailoringFile.class);
+        Root<TailoringFile> root = criteria.from(TailoringFile.class);
+        criteria.where(builder.equal(root.get("org"), org));
+        return getSession().createQuery(criteria).getResultList();
+    }
 
     /**
-     * search for a tailoring file object based on the id
+     * Lookup for a tailoring file object based on the id and organization
      * @param id tailoring file ID
+     * @param org the organization
      * @return optional of tailoring file object
      */
-    public static Optional<TailoringFile> lookupTailoringFileById(Integer id) {
+    public static Optional<TailoringFile> lookupTailoringFileByIdAndOrg(Integer id, Org org) {
 
         if (Objects.isNull(id)) {
             return Optional.empty();
@@ -171,9 +186,28 @@ public class ScapFactory extends HibernateFactory {
         CriteriaBuilder builder = getSession().getCriteriaBuilder();
         CriteriaQuery<TailoringFile> select = builder.createQuery(TailoringFile.class);
         Root<TailoringFile> root = select.from(TailoringFile.class);
-        select.where(builder.equal(root.get("id"), id));
+        select.where(builder.and(
+                builder.equal(root.get("id"), id),
+                builder.equal(root.get("org"), org)));
 
         return getSession().createQuery(select).uniqueResultOptional();
+    }
+
+    /**
+     * Lookup for Tailoring files by an id list and organization
+     * @param ids image profile id list
+     * @param org the organization
+     * @return Returns a list of image profiles with the given ids if it exists
+     * inside the organization
+     */
+    public static List<TailoringFile>  lookupTailoringFilesByIds(List<Long> ids, Org org) {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<TailoringFile> criteria = builder.createQuery(TailoringFile.class);
+        Root<TailoringFile> root = criteria.from(TailoringFile.class);
+        criteria.where(builder.and(
+                root.get("id").in(ids),
+                builder.equal(root.get("org"), org)));
+        return getSession().createQuery(criteria).getResultList();
     }
 
     /**
