@@ -207,12 +207,15 @@ end
 
 def extract_logs_from_node(node)
   os_family = node.os_family
-  node.run('zypper --non-interactive install tar') if os_family =~ /^opensuse/
-  node.run('journalctl > /var/log/messages', check_errors: false) # Some clients might not support systemd
+  node.run('zypper --non-interactive install tar') if os_family =~ /^opensuse/ && !$is_container_provider
+  node.run('journalctl > /var/log/messages', check_errors: false)
+  node.run('venv-salt-call --local grains.items > /var/log/salt_grains', verbose: true, check_errors: false)
   node.run("tar cfvJP /tmp/#{node.full_hostname}-logs.tar.xz /var/log/ || [[ $? -eq 1 ]]")
   `mkdir logs` unless Dir.exist?('logs')
   code = file_extract(node, "/tmp/#{node.full_hostname}-logs.tar.xz", "logs/#{node.full_hostname}-logs.tar.xz")
   raise 'Download log archive failed' unless code.zero?
+rescue RuntimeError => e
+  STDOUT.puts e.message
 end
 
 def reportdb_server_query(query)
