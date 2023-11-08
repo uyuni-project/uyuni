@@ -15,13 +15,19 @@
 
 package com.redhat.rhn.domain.credentials;
 
+import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.common.util.AESCryptException;
+import com.redhat.rhn.common.util.CryptHelper;
+import com.redhat.rhn.common.util.FileUtils;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +39,7 @@ public class CredentialsFactory extends HibernateFactory {
 
     private static CredentialsFactory singleton = new CredentialsFactory();
     private static Logger log = LogManager.getLogger(CredentialsFactory.class);
+    public static final String SALTED_MAGIC_B64 = "U2FsdGVkX1"; // "Salted_" base64 encoded
 
     private CredentialsFactory() {
         super();
@@ -167,9 +174,10 @@ public class CredentialsFactory extends HibernateFactory {
      * @param credentialsType - credentials type
      * @return new Credentials instance
      */
-    public static Credentials createCredentials(String username, String password, String credentialsType) {
+    public static Credentials createCredentials(String username, String password, String credentialsType)
+            throws AESCryptException {
         if (StringUtils.isEmpty(username)) {
-            return null;
+            throw new IllegalArgumentException("no username provided");
         }
 
         Credentials credentials = null;
@@ -212,6 +220,38 @@ public class CredentialsFactory extends HibernateFactory {
                 .list();
     }
 
+    /**
+     * Re-encode the passsword of all credentials with a new master password.
+     * The old master password is required. Rename the master password file and append the suffix ".old".
+     * Put the new password in the default master password file.
+     * If the password is just base64 encoded, this method will encrpyt it with the new master password using
+     * AES algorithm.
+     * @throws AESCryptException on fatal crypt errors
+     */
+    public static void reencodeCredentials() throws AESCryptException, IOException {
+        String oldPW = null;
+        String oldMasterPasswordFile = String.format("%s.old", Config.getDefaultMasterPasswordFile());
+        if (new File(oldMasterPasswordFile).exists()) {
+            oldPW = FileUtils.readFirstLineFromFile(oldMasterPasswordFile);
+        }
+
+        List<Credentials> creds = getSession().createQuery("FROM Credentials", Credentials.class).list();
+        for (Credentials c : creds) {
+            String encPw = c.getEncodedPassword();
+            if (StringUtils.isBlank(encPw)) {
+                // we have credentials where password is not set
+                continue;
+            }
+            if (encPw.startsWith(SALTED_MAGIC_B64)) {
+                // AES encrypted - we need to decrypt with the old password
+                c.setPassword(CryptHelper.aes256Decrypt(encPw, oldPW));
+            }
+            else {
+                // Base64 encoded - just encrypt it with AES
+                c.setPassword(c.getPassword());
+            }
+        }
+    }
 
     @Override
     protected Logger getLogger() {

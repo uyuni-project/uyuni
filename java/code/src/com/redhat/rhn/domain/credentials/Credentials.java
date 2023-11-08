@@ -15,6 +15,11 @@
 
 package com.redhat.rhn.domain.credentials;
 
+import com.redhat.rhn.common.RhnRuntimeException;
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.util.AESCryptException;
+import com.redhat.rhn.common.util.CryptHelper;
+import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.cloudpayg.PaygCredentialsProduct;
 import com.redhat.rhn.domain.cloudpayg.PaygSshData;
@@ -25,7 +30,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import java.io.IOException;
 import java.util.Optional;
 import java.util.Set;
 
@@ -37,6 +45,7 @@ import java.util.Set;
  */
 public class Credentials extends BaseDomainHelper {
 
+    private static final Logger LOG = LogManager.getLogger(Credentials.class);
     private static final String INVALIDATED_PASSWORD = new String(Base64.encodeBase64("invalidated".getBytes()));
 
     // Available type labels
@@ -158,24 +167,48 @@ public class Credentials extends BaseDomainHelper {
     /**
      * Return the decoded password.
      * @return the password
+     * @throws AESCryptException when password could not be decrypted
      */
-    public String getPassword() {
+    public String getPassword() throws AESCryptException {
         if (this.encodedPassword != null) {
-            return new String(Base64.decodeBase64(this.encodedPassword.getBytes()));
+            try {
+                if (this.encodedPassword.startsWith(CredentialsFactory.SALTED_MAGIC_B64)) {
+                    // password is encrypted
+                    String mpw = FileUtils.readFirstLineFromFile(Config.getDefaultMasterPasswordFile());
+                    return CryptHelper.aes256Decrypt(this.encodedPassword, mpw);
+                }
+                // old plain base64 encoded
+                return new String(Base64.decodeBase64(this.encodedPassword.getBytes()));
+            }
+            catch (IOException e) {
+                LOG.error("Unable read the password file:", e);
+                throw new RhnRuntimeException(e);
+            }
+            catch (AESCryptException e) {
+                LOG.error("Unable to decrypt password:", e);
+                throw e;
+            }
         }
         return this.encodedPassword;
     }
 
     /**
-     * Set the password after encoding it to Base64.
+     * Set the password after encrypting it with AES.
      * @param password the password to set
      */
-    public void setPassword(String password) {
-        if (password != null) {
-            this.encodedPassword = new String(Base64.encodeBase64(password.getBytes()));
+    public void setPassword(String password) throws AESCryptException {
+        try {
+            if (password != null) {
+                String mpw = FileUtils.readFirstLineFromFile(Config.getDefaultMasterPasswordFile());
+                this.encodedPassword = CryptHelper.aes256Encrypt(password, mpw);
+            }
+            else {
+                this.encodedPassword = null;
+            }
         }
-        else {
-            this.encodedPassword = null;
+        catch (IOException eIn) {
+            LOG.error("Unable read the password file:", eIn);
+            throw new RhnRuntimeException(eIn);
         }
     }
 
@@ -274,7 +307,7 @@ public class Credentials extends BaseDomainHelper {
         return new EqualsBuilder()
                 .append(getType(), otherCredentials.getType())
                 .append(getUsername(), otherCredentials.getUsername())
-                .append(getPassword(), otherCredentials.getPassword())
+                .append(getEncodedPassword(), otherCredentials.getEncodedPassword())
                 .append(getUrl(), otherCredentials.getUrl())
                 .append(getExtraAuthData(), otherCredentials.getExtraAuthData())
                 .isEquals();
@@ -288,7 +321,7 @@ public class Credentials extends BaseDomainHelper {
         return new HashCodeBuilder()
             .append(getType())
             .append(getUsername())
-            .append(getPassword())
+            .append(getEncodedPassword())
             .toHashCode();
     }
 

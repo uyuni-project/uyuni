@@ -155,6 +155,18 @@ public class FileUtils {
     }
 
     /**
+     * Read just the first line from the given file path
+     * @param path the path to the file to read
+     * @return the first line
+     * @throws IOException when something goes wrong
+     */
+    public static String readFirstLineFromFile(String path) throws IOException {
+        try (BufferedReader brReader = new BufferedReader(new FileReader(path))) {
+            return brReader.readLine();
+        }
+    }
+
+    /**
      * Read a file off disk into a byte array with specified range
      *
      * This can use lots of memory if you read a large file

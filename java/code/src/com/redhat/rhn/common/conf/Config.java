@@ -26,6 +26,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -164,6 +165,14 @@ public class Config {
      */
     public static String getDefaultConfigFilePath() {
         return getDefaultConfigDir() + "/rhn.conf";
+    }
+
+    /**
+     * Get the path to the master password file
+     * @return String path
+     */
+    public static String getDefaultMasterPasswordFile() {
+        return Path.of(getDefaultConfigDir(), "masterpassword").toString();
     }
 
     /**
