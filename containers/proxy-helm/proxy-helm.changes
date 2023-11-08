@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Nov 08 17:53:44 CET 2023 - marina.latini@suse.com
+
+- version 4.4.3
+  * Add -helm to chart name to avoid conflict with proxy image
+
+-------------------------------------------------------------------
 Thu Nov 02 16:31:41 CET 2023 - marina.latini@suse.com
 
 - version 4.4.2
