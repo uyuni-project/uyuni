@@ -21,22 +21,17 @@ import { DeleteDialog } from "components/dialog/DeleteDialog";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import { ModalButton } from "components/dialog/ModalButton";
 
-const typeMap = {
-  dockerfile: t("Dockerfile"),
-  kiwi: t("Kiwi"),
-};
 
 const msgMap = {
-  not_found: t("Image profile cannot be found."),
-  delete_success: t("Image profile has been deleted."),
-  delete_success_p: t("Image profiles have been deleted."),
+  not_found: t("Tailoring file cannot be found."),
+  delete_success: t("Tailoring file has been deleted."),
+  delete_success_p: t("Tailoring files have been deleted."),
 };
 
 type Props = {};
 
 type State = {
   messages: any;
-  imageprofiles: any;
   selectedItems: any;
   selected?: any;
   tailoringFiles: any;
@@ -47,7 +42,6 @@ class TailoringFiles extends React.Component<PropsType, StateType> {
      super(props);
      this.state = {
        messages: [],
-       imageprofiles: [],
        selectedItems: [],
        tailoringFiles: [],
      };
@@ -60,20 +54,50 @@ class TailoringFiles extends React.Component<PropsType, StateType> {
          model: model,
        });
      };
-   handleDataStreamChange = (name, value) => {
-     console.log(name)
-     console.log(value)
-     this.getProfiles(value);
-   };
-    getProfiles(type) {
-       return Network.get("/rhn/manager/api/audit/profiles/list/" + type).then((data) => {
-         // Preselect store after retrieval
-         this.setState({
-           imageTypes: data,
-         });
-         return data;
+    selectTailoringFile = (row) => {
+       this.setState({
+         selected: row,
        });
-     }
+     };
+   deleteTailoringFiles= (idList) => {
+       console.log("idList");
+       console.log(idList);
+       return Network.post("/rhn/manager/api/audit/scap/tailoring-file/delete", idList).then((data) => {
+         if (data.success) {
+           this.setState({
+             messages: (
+               <Messages
+                 items={[
+                   {
+                     severity: "success",
+                     text: msgMap[idList.length > 1 ? "delete_success_p" : "delete_success"],
+                   },
+                 ]}
+               />
+             ),
+             tailoringFiles: this.state.tailoringFiles.filter((tailoringFile) => !idList.includes(tailoringFile.id)),
+             selectedItems: this.state.selectedItems.filter((item) => !idList.includes(item)),
+           });
+         } else {
+           this.setState({
+             messages: (
+               <Messages
+                 items={data.messages.map((msg) => {
+                   return { severity: "error", text: msgMap[msg] };
+                 })}
+               />
+             ),
+           });
+         }
+       });
+     };
+
+    handleSelectItems = (items) => {
+        this.setState({
+          selectedItems: items,
+        });
+      };
+
    renderButtons() {
        var buttons = [
           <SubmitButton
@@ -90,7 +114,6 @@ class TailoringFiles extends React.Component<PropsType, StateType> {
 
   onCreate = (model) => {
 
-      console.log("2"+model) ;
       return Network.post("/rhn/manager/api/audit/schedule/create",  {
         ids: window.minions?.map((m) => m.id),
           earliest: this.state.earliest,
@@ -132,7 +155,7 @@ class TailoringFiles extends React.Component<PropsType, StateType> {
                 className="btn-default"
                 title={t("Create")}
                 text={t("Create")}
-                href="/rhn/manager/audit/scap/create-tailoring-file"
+                href="/rhn/manager/audit/scap/tailoring-file/create"
             />
 
           </div>
@@ -143,7 +166,6 @@ class TailoringFiles extends React.Component<PropsType, StateType> {
             <TopPanel
               title={t("Tailoring Files")}
               icon="spacewalk-icon-manage-configuration-files"
-              helpUrl="reference/images/images-profiles.html"
               button={panelButtons}
             >
               {this.state.messages}
@@ -164,7 +186,7 @@ class TailoringFiles extends React.Component<PropsType, StateType> {
                   cell={(row) => row.name}
                 />
                 <Column
-                  columnKey="imageType"
+                  columnKey="fileName"
                   width="45%"
                   comparator={Utils.sortByText}
                   header={t("Tailoring File Name")}
@@ -183,7 +205,7 @@ class TailoringFiles extends React.Component<PropsType, StateType> {
                             className="btn-default btn-sm"
                             title={t("Edit")}
                             icon="fa-edit"
-                            href={"/rhn/manager/cm/imageprofiles/edit/" + row.id}
+                            href={"/rhn/manager/audit/scap/tailoring-file/edit/" + row.id}
                           />
                           <ModalButton
                             className="btn-default btn-sm"
@@ -191,7 +213,7 @@ class TailoringFiles extends React.Component<PropsType, StateType> {
                             icon="fa-trash"
                             target="delete-modal"
                             item={row}
-                            onClick={this.selectProfile}
+                            onClick={this.selectTailoringFile}
                           />
                         </div>
                       );
@@ -206,28 +228,28 @@ class TailoringFiles extends React.Component<PropsType, StateType> {
               title={t("Delete Profile")}
               content={
                 <span>
-                  {t("Are you sure you want to delete profile")}{" "}
-                  <strong>{this.state.selected ? this.state.selected.label : ""}</strong>?
+                  {t("Are you sure you want to delete Tailoring file")}{" "}
+                  <strong>{this.state.selected ? this.state.selected.name: "dd"}</strong>?
                 </span>
               }
               item={this.state.selected}
-              onConfirm={(item) => this.deleteProfiles([item.id])}
-              onClosePopUp={() => this.selectProfile(undefined)}
+              onConfirm={(item) => this.deleteTailoringFiles([item.id])}
+              onClosePopUp={() => this.selectTailoringFile(undefined)}
             />
             <DeleteDialog
               id="delete-selected-modal"
-              title={t("Delete Selected Profile(s)")}
+              title={t("Delete Selected Tailoring file(s)")}
               content={
                 <span>
                   {DEPRECATED_unsafeEquals(this.state.selectedItems.length, 1)
-                    ? t("Are you sure you want to delete the selected profile?")
+                    ? t("Are you sure you want to delete the selected Tailoring file?")
                     : t(
-                        "Are you sure you want to delete selected profiles? ({0} profiles selected)",
+                        "Are you sure you want to delete selected Tailoring files? ({0} Tailoring files selected)",
                         this.state.selectedItems.length
                       )}
                 </span>
               }
-              onConfirm={() => this.deleteProfiles(this.state.selectedItems)}
+              onConfirm={() => this.deleteTailoringFiles(this.state.selectedItems)}
             />
           </span>
         );
