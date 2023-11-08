@@ -460,6 +460,13 @@ When(/^I execute spacewalk-debug on the server$/) do
 end
 
 When(/^I extract the log files from all our active nodes$/) do
+  ENV_VAR_BY_HOST.each do |host, _env_var|
+    begin
+      get_target(host)
+    rescue StandardError
+      # Catch exceptions silently
+    end
+  end
   $node_by_host.each do |_host, node|
     next if node.nil?
 
