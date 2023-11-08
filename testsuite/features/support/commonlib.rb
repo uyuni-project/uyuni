@@ -440,16 +440,17 @@ def channel_is_synced(channel)
     STDOUT.puts "Channel #{channel} is synced."
     # We want to check if no .new files exists. On a re-sync, the old files stay, the new one have this suffix until it's ready.
     _result, new_code = get_target('server').run("dumpsolv /var/cache/rhn/repodata/#{channel}/solv.new", verbose: false, check_errors: false)
-    # Channel synced if no .new files exist
+    log 'Channel synced, no .new files exist and number of solvables is bigger than 0' unless new_code.zero?
     !new_code.zero?
   elsif result.include?('repo size: 0')
     _result, code = get_target('server').run("zcat /var/cache/rhn/repodata/#{channel}/*primary.xml.gz | grep 'packages=\"0\"'", verbose: false, check_errors: false)
+    log 'Channel synced, this channel is empty' if code.zero?
     code.zero?
   else
     # If the solv file doesn't exist, we check if we are under a Debian-like repository
     command = "test -s /var/cache/rhn/repodata/#{channel}/Release && test -s /var/cache/rhn/repodata/#{channel}/Packages"
     _result, new_code = get_target('server').run(command, verbose: false, check_errors: false)
-    # Channel synced if Release and Packages files exist
+    log 'Debian-like channel synced, if Release and Packages files exist' if new_code.zero?
     new_code.zero?
   end
 end
