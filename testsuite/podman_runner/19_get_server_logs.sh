@@ -5,7 +5,7 @@ if [ $# -ne 1 ];
 then
 	echo "Usage: ${0} server_id"
 	echo "server_id is used for creating a unique folder"
-	exit -1
+	exit 1
 fi
 
 src_dir=$(cd $(dirname "$0")/../.. && pwd -P)
