@@ -22,7 +22,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlType;
 
 /**
- *
+ * An OVAL {@link com.suse.oval.ovaltypes.TestType} for DPKG packages
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "dpkginfo_test")
