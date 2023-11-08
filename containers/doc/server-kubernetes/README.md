@@ -80,7 +80,7 @@ Copy the `cert-manager` and `uyuni/server` helm charts locally:
 
 ```
 helm pull --repo https://charts.jetstack.io --destination . cert-manager
-helm pull --destination . oci://registry.opensuse.org/systemsmanagement/uyuni/master/charts/uyuni/server
+helm pull --destination . oci://registry.opensuse.org/systemsmanagement/uyuni/master/charts/uyuni/server-helm
 ```
 
 Transfer the resulting `*.tar` images to the K3s node and load them using the following command:
@@ -96,12 +96,12 @@ This needs to be done for both Uyuni and cert-manager helm charts.
 
 To prevent Helm from pulling the images pass the `--image=pullPolicy=never` parameter to `uyuniadm install` or `uyuniadm migrate`.
 
-To use the downloaded helm charts instead of the default ones, pass `--helm-uyuni-chart=server-2023.9.0.tgz` and `--helm-certmanager-chart=cert-manager-v1.13.1.tgz` or add the following to the `uyuniadm` configuration file. Of course the versions in the file name need to be adjusted to what you downloaded:
+To use the downloaded helm charts instead of the default ones, pass `--helm-uyuni-chart=server-helm-2023.9.0.tgz` and `--helm-certmanager-chart=cert-manager-v1.13.1.tgz` or add the following to the `uyuniadm` configuration file. Of course the versions in the file name need to be adjusted to what you downloaded:
 
 ```
 helm:
   uyuni:
-    chart: server-2023.9.0.tgz
+    chart: server-helm-2023.9.0.tgz
   certmanager:
     chart: cert-manager-v1.13.1.tgz
 ```
@@ -119,11 +119,11 @@ Just like for K3S, cert-manager images and chart do not need to be copied if a t
 RKE2 doesn't allow to preload images on the nodes.
 Instead, use `skopeo` to import the images in a local registry and use this one to install.
 
-Copy the `cert-manager` and `uyuni/server` helm charts locally:
+Copy the `cert-manager` and `uyuni/server-helm` helm charts locally:
 
 ```
 helm pull --repo https://charts.jetstack.io --destination . cert-manager
-helm pull --destination . oci://registry.opensuse.org/systemsmanagement/uyuni/master/charts/uyuni/server
+helm pull --destination . oci://registry.opensuse.org/systemsmanagement/uyuni/master/charts/uyuni/server-helm
 ```
 
 ⚠️  **TODO** Prepare instructions
