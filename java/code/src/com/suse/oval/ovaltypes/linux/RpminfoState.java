@@ -23,6 +23,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlType;
 
 /**
+ * An OVAL {@link com.suse.oval.ovaltypes.StateType} for RPM packages
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "rpminfo_state")

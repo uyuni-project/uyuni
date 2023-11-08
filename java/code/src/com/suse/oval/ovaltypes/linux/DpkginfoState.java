@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- *
+ * An OVAL {@link com.suse.oval.ovaltypes.StateType} for DPKG packages
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "dpkginfo_state")

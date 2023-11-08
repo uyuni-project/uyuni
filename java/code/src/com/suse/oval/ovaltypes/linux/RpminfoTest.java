@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- *
+ * An OVAL {@link TestType} for RPM packages
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "rpminfo_test")
