@@ -14,7 +14,9 @@
  */
 package com.redhat.rhn.domain.image;
 
+import com.redhat.rhn.common.RhnRuntimeException;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.common.util.AESCryptException;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.org.Org;
@@ -219,6 +221,12 @@ public class ImageStoreFactory extends HibernateFactory {
         else {
             return null;
         }
-        return CredentialsFactory.createCredentials(params.get(USER_KEY), params.get(PASS_KEY), type);
+        try {
+            return CredentialsFactory.createCredentials(params.get(USER_KEY), params.get(PASS_KEY), type);
+        }
+        catch (AESCryptException eIn) {
+            throw new RhnRuntimeException(eIn);
+        }
+
     }
 }

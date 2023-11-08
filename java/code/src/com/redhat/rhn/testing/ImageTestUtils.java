@@ -15,6 +15,7 @@
 
 package com.redhat.rhn.testing;
 
+import com.redhat.rhn.common.util.AESCryptException;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
@@ -301,7 +302,7 @@ public class ImageTestUtils {
      *
      * @return the credentials
      */
-    public static Credentials createCredentials() {
+    public static Credentials createCredentials() throws AESCryptException {
         return CredentialsFactory.createCredentials("testuser", "testpass",
                 Credentials.TYPE_REGISTRY);
     }

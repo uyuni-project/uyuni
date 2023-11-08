@@ -32,6 +32,7 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.common.util.AESCryptException;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ChannelFamily;
@@ -314,7 +315,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     @Test
-    public void testUpdateRepositories() {
+    public void testUpdateRepositories() throws AESCryptException {
         Gson gson = new GsonBuilder()
                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
                 .create();
@@ -1007,7 +1008,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
      * Test 2 Credentials giving access to the same repo and switching "best auth"
      */
     @Test
-    public void testSwitchFromCloudRmtToScc() {
+    public void testSwitchFromCloudRmtToScc() throws AESCryptException {
         Credentials credentials = createCloudCredentials("dummy");
 
         // Create Repositories
@@ -1064,7 +1065,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
      * Test 2 Credentials giving access to the same repo and switching "best auth"
      */
     @Test
-    public void testMultipleCloudRMTCredentials() {
+    public void testMultipleCloudRMTCredentials() throws AESCryptException {
         // Create Repositories
         SCCRepository sle15Pool = createRepo(2707L, "SLE-Product-SLES15-Pool", "sle-15-x86_64");
         SCCRepository sle15Updates = createRepo(2705L, "SLE-Product-SLES15-Updates", "sle-15-x86_64");
@@ -1204,7 +1205,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         return authRepo;
     }
 
-    private Credentials createSccCredentials(String username) {
+    private Credentials createSccCredentials(String username) throws AESCryptException {
         Credentials sccCred1 = CredentialsFactory.createSCCCredentials();
         sccCred1.setPassword("dummy");
         sccCred1.setUrl("dummy");
@@ -1214,7 +1215,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         return sccCred1;
     }
 
-    private Credentials createCloudCredentials(String username) {
+    private Credentials createCloudCredentials(String username) throws AESCryptException {
         Credentials cloudCred1 = CredentialsFactory.createCloudRmtCredentials();
         cloudCred1.setPassword("dummy");
         cloudCred1.setUrl("dummy");
@@ -1889,7 +1890,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     @Test
-    public void testIsRefreshNeededPAYG() {
+    public void testIsRefreshNeededPAYG() throws AESCryptException {
         for (Credentials c : CredentialsFactory.listSCCCredentials()) {
             CredentialsFactory.removeCredentials(c);
         }
@@ -2384,7 +2385,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     @Test
-    public void updateRepositoriesForPaygDoNotCallSCC() {
+    public void updateRepositoriesForPaygDoNotCallSCC() throws AESCryptException {
         Credentials credentials = CredentialsFactory.createSCCCredentials();
         credentials.setPassword("dummy");
         credentials.setUrl("dummy");

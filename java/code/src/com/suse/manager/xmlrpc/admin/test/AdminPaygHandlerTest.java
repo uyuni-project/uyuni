@@ -21,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.common.util.AESCryptException;
 import com.redhat.rhn.domain.cloudpayg.CloudRmtHost;
 import com.redhat.rhn.domain.cloudpayg.CloudRmtHostFactory;
 import com.redhat.rhn.domain.cloudpayg.PaygSshData;
@@ -380,7 +381,7 @@ public class AdminPaygHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testDelete() {
+    public void testDelete() throws AESCryptException {
         PaygSshDataFactory.savePaygSshData(createPaygSshData(false, "_1"));
         PaygSshData paygData = createPaygSshData(true, "");
         PaygSshDataFactory.savePaygSshData(paygData);

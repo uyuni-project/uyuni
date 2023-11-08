@@ -35,6 +35,7 @@ import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.security.PermissionException;
+import com.redhat.rhn.common.util.AESCryptException;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.common.validator.ValidatorWarning;
@@ -3905,8 +3906,13 @@ public class SystemManager extends BaseManager {
             if (!StringUtils.isAnyBlank(oldHost, oldName) &&
                     !(oldHost.equals(serverInfo.getReportDbHost()) &&
                             oldName.equals(serverInfo.getReportDbName()))) {
-                // something changed, we better reset the user
-                setReportDbUser(minion, false);
+                try {
+                    // something changed, we better reset the user
+                    setReportDbUser(minion, false);
+                }
+                catch (AESCryptException e) {
+                    log.error("Unable to change report db user", e);
+                }
             }
         }
         else {
@@ -3922,7 +3928,7 @@ public class SystemManager extends BaseManager {
      * @param minion the Mgr Server
      * @param forcePwChange force a password change
      */
-    public static void setReportDbUser(MinionServer minion, boolean forcePwChange) {
+    public static void setReportDbUser(MinionServer minion, boolean forcePwChange) throws AESCryptException {
         // Create a report db user when system is a mgr server
         if (!minion.isMgrServer()) {
             return;

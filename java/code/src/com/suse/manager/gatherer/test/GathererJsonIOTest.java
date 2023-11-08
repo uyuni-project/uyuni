@@ -21,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import com.redhat.rhn.common.util.AESCryptException;
 import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
@@ -89,7 +90,7 @@ public class GathererJsonIOTest  {
     }
 
     @Test
-    public void testVHMtoJson() {
+    public void testVHMtoJson() throws AESCryptException {
         Credentials creds = CredentialsFactory.createVHMCredentials();
         creds.setUsername("tux");
         creds.setPassword("penguin");

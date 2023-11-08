@@ -18,6 +18,7 @@ import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.common.util.AESCryptException;
 import com.redhat.rhn.common.util.TimeUtils;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -257,6 +258,16 @@ public class ContentSyncManager {
         }
     }
 
+    private boolean isOESCredentials(Credentials credentialsIn) {
+        try {
+            return accessibleUrl(OES_URL, credentialsIn.getUsername(), credentialsIn.getPassword());
+        }
+        catch (AESCryptException e) {
+            LOG.error("Unable to decrypt OES credentials password", e);
+        }
+        return false;
+    }
+
     /**
      * Returns all products available to all configured credentials.
      * @return list of all available products
@@ -277,7 +288,7 @@ public class ContentSyncManager {
             }
             catch (SCCClientException e) {
                 // test for OES credentials
-                if (!accessibleUrl(OES_URL, c.getUsername(), c.getPassword())) {
+                if (!isOESCredentials(c)) {
                     throw new ContentSyncException(e);
                 }
                 continue;
@@ -538,7 +549,7 @@ public class ContentSyncManager {
                 }
                 catch (SCCClientException e) {
                     // test for OES credentials
-                    if (c == null || !accessibleUrl(OES_URL, c.getUsername(), c.getPassword())) {
+                    if (c == null || !isOESCredentials(c)) {
                         LOG.info("Credential is not an OES credentials");
                         syncException = e;
                     }
@@ -869,6 +880,10 @@ public class ContentSyncManager {
                     LOG.warn("Unable to parse URL");
                     continue;
                 }
+                catch (AESCryptException eIn) {
+                    LOG.error("Unable to decrypt credential password", eIn);
+                    continue;
+                }
             }
             repoIdsFromCredential.add(jrepo.getSCCId());
             if (authsThisCred.isEmpty()) {
@@ -1054,7 +1069,7 @@ public class ContentSyncManager {
      */
     public List<Long> refreshOESRepositoryAuth(Credentials c, String mirrorUrl, List<SCCRepository> oesRepos) {
         List<Long> oesRepoIds = new LinkedList<>();
-        if (!(c == null || accessibleUrl(OES_URL, c.getUsername(), c.getPassword()))) {
+        if (!(c == null || isOESCredentials(c))) {
             return oesRepoIds;
         }
         if (oesRepos == null) {
@@ -1261,7 +1276,7 @@ public class ContentSyncManager {
         }
         catch (SCCClientException e) {
             // test for OES credentials
-            if (!accessibleUrl(OES_URL, credentials.getUsername(), credentials.getPassword())) {
+            if (!isOESCredentials(credentials)) {
                 throw new ContentSyncException(e);
             }
         }
@@ -1331,7 +1346,7 @@ public class ContentSyncManager {
         }
         catch (SCCClientException e) {
             // test for OES credentials
-            if (!accessibleUrl(OES_URL, c.getUsername(), c.getPassword())) {
+            if (!isOESCredentials(c)) {
                 throw new ContentSyncException(e);
             }
         }
@@ -2521,8 +2536,14 @@ public class ContentSyncManager {
                 Gson gson = new GsonBuilder().create();
                 addHeaders = gson.fromJson(new String(credentials.getExtraAuthData()), Map.class);
             }
-            username = credentials.getUsername();
-            password = credentials.getPassword();
+            try {
+                username = credentials.getUsername();
+                password = credentials.getPassword();
+            }
+            catch (AESCryptException eIn) {
+                LOG.error("Unable to decrypt scc password", eIn);
+                throw new SCCClientException(eIn);
+            }
         }
         if (localAbsolutePath != null) {
             return new SCCFileClient(new SCCConfig(localAbsolutePath));

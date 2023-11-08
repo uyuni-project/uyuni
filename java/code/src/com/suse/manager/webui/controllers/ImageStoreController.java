@@ -22,6 +22,7 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPrefer
 import static spark.Spark.get;
 import static spark.Spark.post;
 
+import com.redhat.rhn.common.util.AESCryptException;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.image.ImageStore;
@@ -211,10 +212,16 @@ public class ImageStoreController {
             json.addProperty("storeType", s.getStoreType().getLabel());
 
             if (s.getCreds() != null && s.getCreds().isTypeOf(Credentials.TYPE_REGISTRY)) {
-                Credentials dc = s.getCreds();
-                json.addProperty("username", dc.getUsername());
-                json.addProperty("password", dc.getPassword());
-                json.addProperty("useCredentials", true);
+                try {
+                    Credentials dc = s.getCreds();
+                    json.addProperty("username", dc.getUsername());
+                    json.addProperty("password", dc.getPassword());
+                    json.addProperty("useCredentials", true);
+                }
+                catch (AESCryptException eIn) {
+                    log.error("Failed to load credentials for image store", eIn);
+                    return json(res, ResultJson.error("load_failed"));
+                }
             }
             else {
                 json.addProperty("useCredentials", false);
@@ -251,10 +258,16 @@ public class ImageStoreController {
             json.addProperty("storeType", s.getStoreType().getLabel());
 
             if (s.getCreds() != null && s.getCreds().isTypeOf(Credentials.TYPE_REGISTRY)) {
-                Credentials dc = s.getCreds();
-                json.addProperty("username", dc.getUsername());
-                json.addProperty("password", dc.getPassword());
-                json.addProperty("useCredentials", true);
+                try {
+                    Credentials dc = s.getCreds();
+                    json.addProperty("username", dc.getUsername());
+                    json.addProperty("password", dc.getPassword());
+                    json.addProperty("useCredentials", true);
+                }
+                catch (AESCryptException eIn) {
+                    log.error("Failed to load credentials for image store", eIn);
+                    return json(res, ResultJson.error("load_failed"));
+                }
             }
             else {
                 json.addProperty("useCredentials", false);
@@ -333,7 +346,13 @@ public class ImageStoreController {
             s.setLabel(updateRequest.getLabel());
             s.setUri(updateRequest.getUri());
             s.setOrg(user.getOrg());
-            setStoreCredentials(s, updateRequest);
+            try {
+                setStoreCredentials(s, updateRequest);
+            }
+            catch (AESCryptException eIn) {
+                log.error("Failed to store credentials", eIn);
+                throw Spark.halt(HttpStatus.SC_BAD_REQUEST);
+            }
 
             ImageStoreFactory.save(s);
 
@@ -363,11 +382,17 @@ public class ImageStoreController {
         ImageStore imageStore = new ImageStore();
         imageStore.setLabel(createRequest.getLabel());
         imageStore.setUri(createRequest.getUri());
-        setStoreCredentials(imageStore, createRequest);
+        try {
+            setStoreCredentials(imageStore, createRequest);
+        }
+        catch (AESCryptException eIn) {
+            log.error("Failed to store credentials", eIn);
+            throw Spark.halt(HttpStatus.SC_BAD_REQUEST);
+        }
 
         Optional<ImageStoreType> storeType = ImageStoreFactory.lookupStoreTypeByLabel(createRequest.getStoreType());
 
-        if (!storeType.isPresent()) {
+        if (storeType.isEmpty()) {
             log.warn("Invalid store type: {}", createRequest.getStoreType());
             throw Spark.halt(HttpStatus.SC_BAD_REQUEST);
         }
@@ -412,7 +437,8 @@ public class ImageStoreController {
         }).collect(Collectors.toList());
     }
 
-    private static void setStoreCredentials(ImageStore store, ImageStoreCreateRequest request) {
+    private static void setStoreCredentials(ImageStore store, ImageStoreCreateRequest request)
+            throws AESCryptException {
         if (request.isUseCredentials()) {
             Credentials dc = store.getCreds() != null ?
                     store.getCreds() : CredentialsFactory.createRegistryCredentials();

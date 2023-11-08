@@ -19,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.common.util.AESCryptException;
 import com.redhat.rhn.domain.common.ManagerInfoFactory;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
@@ -75,7 +76,7 @@ public class SCCCachingFactoryTest extends BaseTestCaseWithUser {
      * Test refreshNeeded().
      */
     @Test
-    public void testRefreshNeeded() {
+    public void testRefreshNeeded() throws AESCryptException {
         for (Credentials c : CredentialsFactory.listSCCCredentials()) {
             CredentialsFactory.removeCredentials(c);
         }

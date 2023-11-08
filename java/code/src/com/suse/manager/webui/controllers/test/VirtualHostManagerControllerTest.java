@@ -22,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.common.util.AESCryptException;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerConfig;
@@ -116,7 +117,7 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
      */
     @SuppressWarnings("unchecked")
     @Test
-    public void testGet() {
+    public void testGet() throws AESCryptException {
         VirtualHostManager vhm = createVirtualHostManagerWithLabel("myVHM", user.getOrg());
         String json = (String)VirtualHostManagerController
                 .get(getRequestWithCsrf(""), response, user);
@@ -134,7 +135,7 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
      */
     @SuppressWarnings("unchecked")
     @Test
-    public void testGetWrongOrg() {
+    public void testGetWrongOrg() throws AESCryptException {
         Org otherOrg = UserTestUtils.createNewOrgFull("foobar org");
         String label = "TestVHM_" + TestUtils.randomString(10);
         createVirtualHostManagerWithLabel(label, otherOrg);
@@ -203,7 +204,7 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
      * Test delete.
      */
     @Test
-    public void testDelete() throws UnsupportedEncodingException {
+    public void testDelete() throws UnsupportedEncodingException, AESCryptException {
         String label = "TestVHM_" + TestUtils.randomString(10);
         VirtualHostManager vhm = createVirtualHostManagerWithLabel(label, user.getOrg());
         Request request = getDeleteRequestWithCsrfAndBody("/manager/api/vhms/delete/:id", "", vhm.getId());
@@ -217,7 +218,7 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
      * Test the delete endpoint from a wrong organization.
      */
     @Test
-    public void testGetDeleteWrongOrg() throws UnsupportedEncodingException {
+    public void testGetDeleteWrongOrg() throws UnsupportedEncodingException, AESCryptException {
         Org otherOrg = UserTestUtils.createNewOrgFull("foobar org");
         String label = "TestVHM_" + TestUtils.randomString(10);
         VirtualHostManager vhm = createVirtualHostManagerWithLabel(label, otherOrg);
@@ -274,7 +275,7 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
      * @return the virtual host manager
      */
     private VirtualHostManager createVirtualHostManagerWithLabel(String label,
-            Org org) {
+            Org org) throws AESCryptException {
         VirtualHostManager vhm =
             factory.createVirtualHostManager(label, org, "File",
                     new HashMap<>() {

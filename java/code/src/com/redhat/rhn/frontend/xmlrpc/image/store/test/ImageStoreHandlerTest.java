@@ -21,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import com.redhat.rhn.common.util.AESCryptException;
 import com.redhat.rhn.domain.image.ImageStore;
 import com.redhat.rhn.domain.image.ImageStoreFactory;
 import com.redhat.rhn.domain.image.ImageStoreType;
@@ -105,7 +106,7 @@ public class ImageStoreHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testSetImageStore() {
+    public void testSetImageStore() throws AESCryptException {
         Map<String, String> params = new HashMap<>();
         params.put("username", "admin");
         params.put("password", "secret");

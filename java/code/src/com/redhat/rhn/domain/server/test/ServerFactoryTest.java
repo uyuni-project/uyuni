@@ -23,6 +23,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.common.util.AESCryptException;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.server.test.ServerActionTest;
@@ -659,7 +660,12 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         // the Server class.
         TestUtils.saveAndFlush(owner);
 
-        populateServer(newS, owner, stype);
+        try {
+            populateServer(newS, owner, stype);
+        }
+        catch (AESCryptException eIn) {
+            throw new RuntimeException(eIn);
+        }
         createProvisionState(newS, "Test Description", "Test Label");
         createServerInfo(newS, dateCreated, 0L);
 
@@ -718,7 +724,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         return newS;
     }
 
-    private static void populateServer(Server s, User owner, int type) {
+    private static void populateServer(Server s, User owner, int type) throws AESCryptException {
         s.setCreator(owner);
         s.setOrg(owner.getOrg());
         s.setDigitalServerId("ID-" + TestUtils.randomString());

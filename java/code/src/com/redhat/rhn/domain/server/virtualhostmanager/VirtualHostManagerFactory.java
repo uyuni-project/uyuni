@@ -18,6 +18,7 @@ package com.redhat.rhn.domain.server.virtualhostmanager;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.common.util.AESCryptException;
 import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
@@ -232,7 +233,7 @@ public class VirtualHostManagerFactory extends HibernateFactory {
             String label,
             Org org,
             String moduleName,
-            Map<String, String> parameters) {
+            Map<String, String> parameters) throws AESCryptException {
         if (getLogger().isDebugEnabled()) {
             getLogger().debug("Creating VirtualHostManager with label '{}'.", StringUtil.sanitizeLogInput(label));
         }
@@ -257,7 +258,7 @@ public class VirtualHostManagerFactory extends HibernateFactory {
     public void updateVirtualHostManager(
             VirtualHostManager virtualHostManager,
             String label,
-            Map<String, String> parameters) {
+            Map<String, String> parameters) throws AESCryptException {
         getLogger().debug("Update VirtualHostManager with id '{}'.", virtualHostManager.getId());
 
         virtualHostManager.setLabel(label);
@@ -287,7 +288,7 @@ public class VirtualHostManagerFactory extends HibernateFactory {
             String label,
             Org org,
             String context,
-            InputStream kubeconfigIn) throws IOException {
+            InputStream kubeconfigIn) throws IOException, AESCryptException {
         // ensure we have the base directory
         Path kubeconfigDir = Paths.get(KUBECONFIG_PATH_BASE);
         if (!Files.isDirectory(kubeconfigDir)) {
@@ -329,7 +330,7 @@ public class VirtualHostManagerFactory extends HibernateFactory {
             VirtualHostManager vhm,
             String label,
             String context,
-            Optional<InputStream> kubeconfigInOpt) throws IOException {
+            Optional<InputStream> kubeconfigInOpt) throws IOException, AESCryptException {
         // ensure we have the base directory
         Path kubeconfigDir = Paths.get(KUBECONFIG_PATH_BASE);
         if (!Files.isDirectory(kubeconfigDir)) {
@@ -459,7 +460,7 @@ public class VirtualHostManagerFactory extends HibernateFactory {
      * @param params - non-null map of gatherer parameters
      * @return new Credentials instance
      */
-    private Credentials createCredentialsFromParams(Map<String, String> params) {
+    private Credentials createCredentialsFromParams(Map<String, String> params) throws AESCryptException {
         String username = params.get(CONFIG_USER);
         if (StringUtils.isBlank(username)) {
             return null;

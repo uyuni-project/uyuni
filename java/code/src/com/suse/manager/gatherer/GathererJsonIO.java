@@ -15,6 +15,7 @@
 
 package com.suse.manager.gatherer;
 
+import com.redhat.rhn.common.util.AESCryptException;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerConfig;
 
@@ -156,8 +157,13 @@ public class GathererJsonIO {
             writer.name("id").value(value.getLabel());
             writer.name("module").value(value.getGathererModule());
             if (value.getCredentials() != null) {
-                writer.name("username").value(value.getCredentials().getUsername());
-                writer.name("password").value(value.getCredentials().getPassword());
+                try {
+                    writer.name("username").value(value.getCredentials().getUsername());
+                    writer.name("password").value(value.getCredentials().getPassword());
+                }
+                catch (AESCryptException eIn) {
+                    throw new IOException("Failed to decrypt the password", eIn);
+                }
             }
             for (VirtualHostManagerConfig c : value.getConfigs()) {
                 writer.name(c.getParameter()).value(c.getValue());

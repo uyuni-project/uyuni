@@ -24,6 +24,7 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.withOrgAdmin;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
 
+import com.redhat.rhn.common.util.AESCryptException;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerConfig;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory;
@@ -247,20 +248,23 @@ public class VirtualHostManagerController {
                     .findFirst()
                     .orElse(null);
 
-            VirtualHostManager vhm = getFactory()
-                    .createVirtualHostManager(
-                            label,
-                            user.getOrg(),
-                            moduleName,
-                            gathererModuleParams);
-            getFactory().save(vhm);
-            return json(response,
-                    ResultJson.success());
+            VirtualHostManager vhm = null;
+            try {
+                vhm = getFactory()
+                        .createVirtualHostManager(
+                                label,
+                                user.getOrg(),
+                                moduleName,
+                                gathererModuleParams);
+                getFactory().save(vhm);
+                return json(response,
+                        ResultJson.success());
+            }
+            catch (AESCryptException eIn) {
+                errors.add("Credentials error");
+            }
         }
-        else {
-            return json(response,
-                    ResultJson.error(errors));
-        }
+        return json(response, ResultJson.error(errors));
     }
 
     /**
@@ -285,10 +289,15 @@ public class VirtualHostManagerController {
                 errors.add("All fields are mandatory.");
             }
             if (errors.isEmpty()) {
-                getFactory().updateVirtualHostManager(vhm,
-                        request.queryParams("label"),
-                        gathererModuleParams);
-                return ResultJson.success();
+                try {
+                    getFactory().updateVirtualHostManager(vhm,
+                            request.queryParams("label"),
+                            gathererModuleParams);
+                    return ResultJson.success();
+                }
+                catch (AESCryptException eIn) {
+                    errors.add("Unable to store credentials");
+                }
             }
             return ResultJson.error(errors);
         });
@@ -473,6 +482,11 @@ public class VirtualHostManagerController {
                 return json(response, ResultJson.success());
             }
         }
+        catch (AESCryptException eIn) {
+            LOG.error("Unable to store credentials", eIn);
+            return json(response, HttpStatus.SC_INTERNAL_SERVER_ERROR,
+                    ResultJson.error("Credentials error"));
+        }
         catch (IllegalArgumentException e) {
             return json(response, HttpStatus.SC_BAD_REQUEST,
                     ResultJson.error(e.getMessage()));
@@ -534,6 +548,11 @@ public class VirtualHostManagerController {
             LOG.error("Virtual host manager not found", e);
             return json(response, HttpStatus.SC_NOT_FOUND,
                     ResultJson.error("Virtual Host Manager not found"));
+        }
+        catch (AESCryptException eIn) {
+            LOG.error("Virtual host manager could not store credentials", eIn);
+            return json(response, HttpStatus.SC_INTERNAL_SERVER_ERROR,
+                    ResultJson.error("Virtual Host Manager credentials error"));
         }
     }
 

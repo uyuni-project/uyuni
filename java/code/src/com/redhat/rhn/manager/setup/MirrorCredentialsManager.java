@@ -17,6 +17,7 @@ package com.redhat.rhn.manager.setup;
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.util.AESCryptException;
 import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.credentials.Credentials;
@@ -75,17 +76,22 @@ public class MirrorCredentialsManager {
      * Find all currently available mirror credentials and return them.
      *
      * @return list of all available mirror credentials
+     * @throws ContentSyncException if anything goes wrong
      */
-    public List<MirrorCredentialsDto> findMirrorCredentials() {
+    public List<MirrorCredentialsDto> findMirrorCredentials() throws ContentSyncException {
         List<MirrorCredentialsDto> credsList = new ArrayList<>();
         for (Credentials c : CredentialsFactory.listSCCCredentials()) {
-            MirrorCredentialsDto creds = new MirrorCredentialsDto(
-                    c.getUsername(), c.getPassword());
-            creds.setId(c.getId());
-            if (c.getUrl() != null) {
-                creds.setPrimary(true);
+            try {
+                MirrorCredentialsDto creds = new MirrorCredentialsDto(c.getUsername(), c.getPassword());
+                creds.setId(c.getId());
+                if (c.getUrl() != null) {
+                    creds.setPrimary(true);
+                }
+                credsList.add(creds);
             }
-            credsList.add(creds);
+            catch (AESCryptException eIn) {
+                throw new ContentSyncException(eIn);
+            }
         }
         if (log.isDebugEnabled()) {
             log.debug("Found {} mirror credentials", credsList.size());
@@ -98,20 +104,25 @@ public class MirrorCredentialsManager {
      *
      * @param id of the credentials to find
      * @return credentials for given ID
+     * @throws ContentSyncException if anything goes wrong
      */
-    public MirrorCredentialsDto findMirrorCredentials(long id) {
-        Credentials c = CredentialsFactory.lookupCredentialsById(id);
-        MirrorCredentialsDto creds =
-                new MirrorCredentialsDto(c.getUsername(), c.getPassword());
-        creds.setId(c.getId());
-        // We use the URL to identify primary
-        if (c.getUrl() != null) {
-            creds.setPrimary(true);
+    public MirrorCredentialsDto findMirrorCredentials(long id) throws ContentSyncException {
+        try {
+            Credentials c = CredentialsFactory.lookupCredentialsById(id);
+            MirrorCredentialsDto creds = new MirrorCredentialsDto(c.getUsername(), c.getPassword());
+            creds.setId(c.getId());
+            // We use the URL to identify primary
+            if (c.getUrl() != null) {
+                creds.setPrimary(true);
+            }
+            if (log.isDebugEnabled()) {
+                log.debug("Found credentials ({}): {}", creds.getId(), creds.getUser());
+            }
+            return creds;
         }
-        if (log.isDebugEnabled()) {
-            log.debug("Found credentials ({}): {}", creds.getId(), creds.getUser());
+        catch (AESCryptException eIn) {
+            throw new ContentSyncException(eIn);
         }
-        return creds;
     }
 
     /**
@@ -148,11 +159,16 @@ public class MirrorCredentialsManager {
             MirrorCredentialsDto oldCreds = findMirrorCredentials(creds.getId());
             SetupWizardSessionCache.clearSubscriptions(oldCreds, request);
         }
-        c.setUsername(creds.getUser());
-        c.setPassword(creds.getPassword());
-        CredentialsFactory.storeCredentials(c);
-        if (log.isDebugEnabled()) {
-            log.debug("Stored credentials ({}): {}", c.getId(), c.getUsername());
+        try {
+            c.setUsername(creds.getUser());
+            c.setPassword(creds.getPassword());
+            CredentialsFactory.storeCredentials(c);
+            if (log.isDebugEnabled()) {
+                log.debug("Stored credentials ({}): {}", c.getId(), c.getUsername());
+            }
+        }
+        catch (AESCryptException eIn) {
+            throw new ContentSyncException(eIn);
         }
 
         // Make this the primary pair of credentials if it's the only one

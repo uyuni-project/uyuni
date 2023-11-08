@@ -15,6 +15,7 @@
 
 package com.redhat.rhn.frontend.xmlrpc.virtualhostmanager;
 
+import com.redhat.rhn.common.util.AESCryptException;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory;
 import com.redhat.rhn.domain.user.User;
@@ -96,12 +97,16 @@ public class VirtualHostManagerHandler extends BaseHandler {
         if (!factory.isConfigurationValid(moduleName, parameters)) {
             throw new InvalidParameterException("Parameter validation failed.");
         }
-        else {
+        try {
             VirtualHostManager vhm = factory.createVirtualHostManager(label,
                     loggedInUser.getOrg(), moduleName, parameters);
             factory.save(vhm);
             return BaseHandler.VALID;
         }
+        catch (AESCryptException eIn) {
+            throw new RuntimeException(eIn);
+        }
+
     }
 
     /**

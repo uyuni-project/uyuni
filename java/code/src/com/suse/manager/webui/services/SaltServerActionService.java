@@ -36,6 +36,7 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.common.util.AESCryptException;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainEntry;
@@ -91,6 +92,7 @@ import com.redhat.rhn.domain.channel.AccessToken;
 import com.redhat.rhn.domain.channel.AccessTokenFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.config.ConfigRevision;
+import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.image.DockerfileProfile;
@@ -343,7 +345,15 @@ public class SaltServerActionService {
                 return Collections.emptyMap();
             }
             return ImageStoreFactory.lookupById(details.getImageStoreId())
-                    .map(store -> imageInspectAction(minions, details, store))
+                    .map(store -> {
+                        try {
+                            return imageInspectAction(minions, details, store);
+                        }
+                        catch (AESCryptException eIn) {
+                            LOG.error("Failed to inspect the image", eIn);
+                        }
+                        return null;
+                    })
                     .orElseGet(Collections::emptyMap);
         }
         else if (ActionFactory.TYPE_IMAGE_BUILD.equals(actionType)) {
@@ -1479,21 +1489,23 @@ public class SaltServerActionService {
         return ret;
     }
 
-    private static Map<String, Object> dockerRegPillar(List<ImageStore> stores) {
+    private static Map<String, Object> dockerRegPillar(List<ImageStore> stores) throws AESCryptException {
         Map<String, Object> dockerRegistries = new HashMap<>();
-        stores.forEach(store -> Optional.ofNullable(store.getCreds())
-                .ifPresent(credentials -> {
-                    Map<String, Object> reg = new HashMap<>();
-                    reg.put("email", "tux@example.com");
-                    reg.put("password", credentials.getPassword());
-                    reg.put("username", credentials.getUsername());
-                    dockerRegistries.put(store.getUri(), reg);
-                }));
+        for (ImageStore store : stores) {
+            Credentials credentials = store.getCreds();
+            if (credentials != null) {
+                Map<String, Object> reg = new HashMap<>();
+                reg.put("email", "tux@example.com");
+                reg.put("password", credentials.getPassword());
+                reg.put("username", credentials.getUsername());
+                dockerRegistries.put(store.getUri(), reg);
+            }
+        }
         return dockerRegistries;
     }
 
     private Map<LocalCall<?>, List<MinionSummary>> imageInspectAction(
-            List<MinionSummary> minions, ImageInspectActionDetails details, ImageStore store) {
+            List<MinionSummary> minions, ImageInspectActionDetails details, ImageStore store) throws AESCryptException {
         Map<String, Object> pillar = new HashMap<>();
         Map<LocalCall<?>, List<MinionSummary>> result = new HashMap<>();
         if (ImageStoreFactory.TYPE_OS_IMAGE.equals(store.getStoreType())) {
@@ -1554,9 +1566,14 @@ public class SaltServerActionService {
                     Map<String, Object> pillar = new HashMap<>();
 
                     profile.asDockerfileProfile().ifPresent(dockerfileProfile -> {
-                        Map<String, Object> dockerRegistries = dockerRegPillar(imageStores);
-                        pillar.put("docker-registries", dockerRegistries);
-
+                        try {
+                            Map<String, Object> dockerRegistries = dockerRegPillar(imageStores);
+                            pillar.put("docker-registries", dockerRegistries);
+                        }
+                        catch (AESCryptException eIn) {
+                            LOG.error("Could not get pillar data", eIn);
+                            return;
+                        }
                         String repoPath = profile.getTargetStore().getUri() + "/" + profile.getLabel();
                         String tag = version.orElse("");
                         String certificate = "";

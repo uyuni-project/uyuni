@@ -18,6 +18,7 @@ package com.suse.manager.kubernetes.test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.redhat.rhn.common.util.AESCryptException;
 import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.image.ImageRepoDigest;
 import com.redhat.rhn.domain.image.ImageStore;
@@ -252,11 +253,11 @@ public class KubernetesManagerTest extends JMockBaseTestCaseWithUser {
                 .flatMap(usage -> usage.getContainerInfos().stream());
     }
 
-    private VirtualHostManager createVirtHostManager() {
+    private VirtualHostManager createVirtHostManager() throws AESCryptException {
         return createVirtHostManager("/srv/salt/kubeconfig");
     }
 
-    private VirtualHostManager createVirtHostManager(String kubeconfig) {
+    private VirtualHostManager createVirtHostManager(String kubeconfig) throws AESCryptException {
         Map<String, String> params = new HashMap<>();
 
         params.put("kubeconfig", kubeconfig);

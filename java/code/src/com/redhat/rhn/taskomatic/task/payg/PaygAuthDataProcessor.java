@@ -16,6 +16,7 @@
 package com.redhat.rhn.taskomatic.task.payg;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.util.AESCryptException;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ContentSource;
 import com.redhat.rhn.domain.channel.SslContentSource;
@@ -50,6 +51,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -71,7 +73,8 @@ public class PaygAuthDataProcessor {
      * @param paygData Authentication data and cryptographic material to connect to cloud rmt host
      * @throws URISyntaxException
      */
-    public void processPaygInstanceData(PaygSshData instance, PaygInstanceInfo paygData) throws URISyntaxException {
+    public void processPaygInstanceData(PaygSshData instance, PaygInstanceInfo paygData)
+            throws URISyntaxException, AESCryptException {
 
         LOG.debug("Process data for {}", paygData.getType());
         if (paygData.getType().equals("CLOUDRMT")) {
@@ -107,7 +110,7 @@ public class PaygAuthDataProcessor {
     }
 
     private void processRepositories(PaygInstanceInfo paygData, Map<String, SslCryptoKey> cryptoKeyMap,
-                                     PaygSshData instance, Org org) throws URISyntaxException {
+                                     PaygSshData instance, Org org) throws URISyntaxException, AESCryptException {
         Set<String> newIdents = new HashSet<>();
         for (Map.Entry<String, Map<String, String>> repo : paygData.getRepositories().entrySet()) {
             boolean needCredentials = paygData.getHeaderAuth().containsKey("X-RHUI-ID");
@@ -238,15 +241,16 @@ public class PaygAuthDataProcessor {
     }
 
     private Credentials processAndGetCredentials(PaygSshData instance, PaygInstanceInfo paygData)
-            throws URISyntaxException {
+            throws URISyntaxException, AESCryptException {
 
         if (paygData.getType().equals("CLOUDRMT")) {
             final String username = paygData.getBasicAuth().get("username");
             final String password = paygData.getBasicAuth().get("password");
             Credentials credentialsIn = instance.getCredentials();
-            Credentials credentials = Optional.ofNullable(instance.getCredentials())
-                    .orElseGet(() ->
-                            CredentialsFactory.createCredentials(username, password, Credentials.TYPE_CLOUD_RMT));
+            Credentials credentials = instance.getCredentials();
+            if (Objects.isNull(credentials)) {
+                credentials = CredentialsFactory.createCredentials(username, password, Credentials.TYPE_CLOUD_RMT);
+            }
 
             credentials.setUsername(username);
             credentials.setPassword(password);
@@ -271,9 +275,10 @@ public class PaygAuthDataProcessor {
             return credentials;
         }
         else if (paygData.getType().equals("RHUI")) {
-            Credentials credentials = Optional.ofNullable(instance.getCredentials())
-                    .orElseGet(() ->
-                            CredentialsFactory.createCredentials("RHUI", " ", Credentials.TYPE_RHUI));
+            Credentials credentials = instance.getCredentials();
+            if (Objects.isNull(credentials)) {
+                credentials = CredentialsFactory.createCredentials("RHUI", " ", Credentials.TYPE_RHUI);
+            }
             if (paygData.getHeaderAuth() != null) {
                 credentials.setExtraAuthData(GSON.toJson(paygData.getHeaderAuth()).getBytes());
             }

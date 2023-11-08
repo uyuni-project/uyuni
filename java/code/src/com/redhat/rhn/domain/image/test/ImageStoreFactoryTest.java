@@ -23,6 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import com.redhat.rhn.common.util.AESCryptException;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.image.ImageStore;
 import com.redhat.rhn.domain.image.ImageStoreFactory;
@@ -84,7 +85,7 @@ public class ImageStoreFactoryTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testListImageStore() {
+    public void testListImageStore() throws AESCryptException {
         ImageStore store = createImageStore("mystore", user);
         List<ImageStore> list = ImageStoreFactory.listImageStores(user.getOrg());
 
@@ -105,7 +106,7 @@ public class ImageStoreFactoryTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testListByTypeLabelAndOrg() {
+    public void testListByTypeLabelAndOrg() throws AESCryptException {
         Credentials creds = createCredentials();
         ImageStore store = createImageStore("mystore", creds, user);
 

@@ -24,6 +24,7 @@ import static java.util.stream.Collectors.toSet;
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.RhnRuntimeException;
 import com.redhat.rhn.common.messaging.MessageQueue;
+import com.redhat.rhn.common.util.AESCryptException;
 import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFamily;
@@ -153,7 +154,13 @@ public class RegistrationUtils {
                     true,
                     emptyList()));
         }
-        SystemManager.setReportDbUser(minion, false);
+        try {
+            SystemManager.setReportDbUser(minion, false);
+        }
+        catch (AESCryptException eIn) {
+            LOG.error("Failed to store Report database credentials");
+            throw new RhnRuntimeException(eIn);
+        }
 
         // get hardware and network async
         // Hardware refresh depends on channels being assigned so as a temporary

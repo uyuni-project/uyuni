@@ -19,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.common.util.AESCryptException;
 import com.redhat.rhn.domain.cloudpayg.CloudRmtHost;
 import com.redhat.rhn.domain.cloudpayg.CloudRmtHostFactory;
 import com.redhat.rhn.domain.cloudpayg.PaygSshData;
@@ -83,14 +84,14 @@ public class PaygAuthDataProcessorTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testFirstExecution() throws URISyntaxException {
+    public void testFirstExecution() throws URISyntaxException, AESCryptException {
         paygDataProcessor.processPaygInstanceData(paygData, paygInstanceInfo);
         assertExpectedData();
 
     }
 
     @Test
-    public void testUpdateData() throws URISyntaxException {
+    public void testUpdateData() throws URISyntaxException, AESCryptException {
         Credentials cred = CredentialsFactory.createCredentials("u", "p", Credentials.TYPE_CLOUD_RMT);
         cred.setUrl("//my_url");
         cred.setPaygSshData(paygData);
@@ -112,7 +113,7 @@ public class PaygAuthDataProcessorTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testUpdateRepos() throws URISyntaxException {
+    public void testUpdateRepos() throws URISyntaxException, AESCryptException {
         Credentials cred = CredentialsFactory.createCredentials("u", "p", Credentials.TYPE_CLOUD_RMT);
         cred.setUrl("//my_url");
         cred.setPaygSshData(paygData);
@@ -135,7 +136,7 @@ public class PaygAuthDataProcessorTest extends BaseHandlerTestCase {
         assertExpectedData();
     }
 
-    private void assertExpectedData() {
+    private void assertExpectedData() throws AESCryptException {
         paygData = HibernateFactory.reload(paygData);
 
         assertEquals(9, SCCCachingFactory.lookupRepositoryAuth().size());

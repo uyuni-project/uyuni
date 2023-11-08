@@ -22,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.common.util.AESCryptException;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.Server;
@@ -61,7 +62,7 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
      * Tests creating and retrieving a VirtualHostManager.
      */
     @Test
-    public void testCreateAndGetVHM() {
+    public void testCreateAndGetVHM() throws AESCryptException {
         Map<String, String> config = new HashMap<>();
         config.put("username", "FlashGordon");
         config.put("password", "The savior of the universe");
@@ -80,7 +81,7 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
      * Tests creating and retrieving a VirtualHostManager with credentials.
      */
     @Test
-    public void testCreateAndGetVHManagerWithCreds() {
+    public void testCreateAndGetVHManagerWithCreds() throws AESCryptException {
         Map<String, String> config = new HashMap<>();
         config.put("username", "FlashGordon");
         config.put("password", "The savior of the universe");
@@ -96,7 +97,7 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testUpdateVHM() {
+    public void testUpdateVHM() throws AESCryptException {
         Map<String, String> config = new HashMap<>();
         config.put("username", "FlashGordon");
         config.put("password", "The savior of the universe");
@@ -129,7 +130,7 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
      * Tests creating and retrieving a VirtualHostManager with config.
      */
     @Test
-    public void testCreateAndGetVHMWithConfigs() {
+    public void testCreateAndGetVHMWithConfigs() throws AESCryptException {
         Map<String, String> config = new HashMap<>();
         config.put("username", "FlashGordon");
         config.put("password", "The savior of the universe");
@@ -170,7 +171,7 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
      * Tests deleting an existing Virtual Host Manager.
      */
     @Test
-    public void testDeleteVirtualHostManager() {
+    public void testDeleteVirtualHostManager() throws AESCryptException {
         Map<String, String> config = new HashMap<>();
         config.put("username", "FlashGordon");
         config.put("password", "The savior of the universe");
@@ -212,7 +213,7 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
      * Tests creating and retrieving a list of VirtualHostManager an organization.
      */
     @Test
-    public void testCreateAndGetVHMs() {
+    public void testCreateAndGetVHMs() throws AESCryptException {
         Map<String, String> config = new HashMap<>();
         config.put("username", "FlashGordon");
         config.put("password", "The savior of the universe");
@@ -233,7 +234,7 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
      * Tests that after removing VirtualHostManager, its credentials are removed as well.
      */
     @Test
-    public void testDeleteVHMAndCredentials() {
+    public void testDeleteVHMAndCredentials() throws AESCryptException {
         Map<String, String> config = new HashMap<>();
         config.put("username", "foouser");
         config.put("password", "barpass");
@@ -260,6 +261,9 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
         catch (NullPointerException e) {
             return;
         }
+        catch (AESCryptException eIn) {
+            fail();
+        }
         fail();
     }
 
@@ -273,7 +277,7 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
      * @return the virtual host manager
      */
     private VirtualHostManager createAndSaveVirtualHostManager(String label, Org org,
-            String module, Map<String, String> parameters) {
+            String module, Map<String, String> parameters) throws AESCryptException {
         VirtualHostManager vhm =
                 factory.createVirtualHostManager(label, org, module, parameters);
         factory.save(vhm);

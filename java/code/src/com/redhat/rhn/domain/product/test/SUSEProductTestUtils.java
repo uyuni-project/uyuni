@@ -16,6 +16,7 @@ package com.redhat.rhn.domain.product.test;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.common.util.AESCryptException;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -154,7 +155,7 @@ public class SUSEProductTestUtils extends HibernateFactory {
      * @param user user
      */
     public static void populateRepository(SUSEProduct baseProduct, Channel baseChannel, SUSEProduct product,
-                                    Channel channel, User user) {
+                                    Channel channel, User user) throws AESCryptException {
         Credentials sccc = SUSEProductTestUtils.createSCCCredentials("dummy", user);
         SCCRepository repository = SUSEProductTestUtils.createSCCRepository();
         SUSEProductTestUtils.createSCCRepositoryTokenAuth(sccc, repository);
@@ -461,7 +462,7 @@ public class SUSEProductTestUtils extends HibernateFactory {
      * @param fromdir set true if fromdir option should be simulated
      */
     public static void createVendorSUSEProductEnvironment(User admin, String testDataPath, boolean withRepos,
-                                                          boolean fromdir) {
+                                                          boolean fromdir) throws AESCryptException {
         Gson gson = new GsonBuilder()
                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
                 .create();
@@ -699,14 +700,14 @@ public class SUSEProductTestUtils extends HibernateFactory {
         return TestUtils.saveAndReload(auth);
     }
 
-    public static Credentials createSCCCredentials(String name, User user) {
+    public static Credentials createSCCCredentials(String name, User user) throws AESCryptException {
         Credentials credentials = createSecondarySCCCredentials(name, user);
         credentials.setUrl("dummy");
         CredentialsFactory.storeCredentials(credentials);
         return credentials;
     }
 
-    public static Credentials createSecondarySCCCredentials(String name, User user) {
+    public static Credentials createSecondarySCCCredentials(String name, User user) throws AESCryptException {
         Credentials credentials = CredentialsFactory.createSCCCredentials();
         credentials.setPassword(TestUtils.randomString());
         credentials.setUsername(name);

@@ -18,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.redhat.rhn.common.util.AESCryptException;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.user.User;
@@ -257,7 +258,7 @@ public class CloudPaygManagerTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testHasSCCCredentials() {
+    public void testHasSCCCredentials() throws AESCryptException {
 
         ContentSyncManagerTestHelper csm = new ContentSyncManagerTestHelper();
         CloudPaygManager cpm = new CloudPaygManager(new TaskomaticApi(), csm);

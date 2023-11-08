@@ -18,6 +18,7 @@ package com.redhat.rhn.taskomatic.task.payg;
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
+import com.redhat.rhn.common.util.AESCryptException;
 import com.redhat.rhn.common.util.FileLocks;
 import com.redhat.rhn.domain.cloudpayg.PaygSshData;
 import com.redhat.rhn.domain.cloudpayg.PaygSshDataFactory;
@@ -160,6 +161,10 @@ public class PaygUpdateAuthTask extends RhnJavaJob {
             log.error("error getting instance data ", e);
             saveError(instance,  e.getMessage());
 
+        }
+        catch (AESCryptException e) {
+            log.error("Encryption error", e);
+            saveError(instance, "error getting credentials data");
         }
         catch (Exception e) {
             log.error("error processing instance data", e);

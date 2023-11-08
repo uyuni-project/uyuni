@@ -24,6 +24,7 @@ declare global {
 
 const messageMap = {
   not_found: t("Image store cannot be found."),
+  load_failed: t("Failed to load the Image store"),
   delete_success: t("Image store has been deleted."),
   delete_success_p: t("Image stores have been deleted."),
 };

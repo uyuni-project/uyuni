@@ -18,6 +18,7 @@ package com.redhat.rhn.frontend.xmlrpc.serializer.test;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.redhat.rhn.common.util.AESCryptException;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerConfig;
@@ -76,7 +77,7 @@ public class VirtualHostManagerSerializerTest extends BaseTestCaseWithUser {
      * Test serializing VirtualHostManager with credentials
      */
     @Test
-    public void testWithCreds() {
+    public void testWithCreds() throws AESCryptException {
         Credentials creds = new Credentials();
         creds.setUsername("Somebody");
         creds.setPassword("strongpass");

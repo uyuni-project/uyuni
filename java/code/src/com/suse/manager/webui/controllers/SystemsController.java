@@ -27,6 +27,7 @@ import static spark.Spark.post;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.LookupException;
+import com.redhat.rhn.common.util.AESCryptException;
 import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
@@ -367,12 +368,18 @@ public class SystemsController {
          if (server.isMgrServer()) {
              Optional<MinionServer> minion = server.asMinionServer();
              if (minion.isEmpty()) {
-                 if (LOG.isDebugEnabled()) {
+                 if (LOG.isErrorEnabled()) {
                      LOG.error("System ({}) not a minion", StringUtil.sanitizeLogInput(sidStr));
                  }
                  return json(response, HttpStatus.SC_BAD_REQUEST, ResultJson.error("system_not_mgr_server"));
              }
-             SystemManager.setReportDbUser(minion.get(), true);
+             try {
+                 SystemManager.setReportDbUser(minion.get(), true);
+             }
+             catch (AESCryptException e) {
+                 LOG.error("Failed to store credentials", e);
+                 return json(response, HttpStatus.SC_BAD_REQUEST, ResultJson.error("storing_failed"));
+             }
          }
          else {
              if (LOG.isErrorEnabled()) {
