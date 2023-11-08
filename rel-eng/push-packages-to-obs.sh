@@ -282,7 +282,7 @@ while read PKG_NAME; do
   fi
 
   if [ -f "$SRPM_PKG_DIR/Chart.yaml" ]; then
-      NAME="${PKG_NAME%%-helm}"
+      NAME="${PKG_NAME}"
       if [ "${OSCAPI}" == "https://api.suse.de" ]; then
           # SUSE Manager settings
           VERSION=$(sed 's/^\([0-9]\+\.[0-9]\+\).*$/\1/' ${BASE_DIR}/packages/uyuni-base)
