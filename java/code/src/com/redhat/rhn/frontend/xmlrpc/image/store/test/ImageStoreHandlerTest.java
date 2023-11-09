@@ -122,7 +122,7 @@ public class ImageStoreHandlerTest extends BaseHandlerTestCase {
 
         Map<String, String> details = new HashMap<>();
         details.put("uri", "registry.domain.top");
-        details.put("username", "");
+        details.put("username", ""); // empty string to unset credentials
         ret = handler.setDetails(admin, "registry.mgr", details);
         assertEquals(1, ret);
 

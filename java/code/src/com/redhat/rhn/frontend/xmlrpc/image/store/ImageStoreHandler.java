@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.image.store;
 
+import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.image.ImageStore;
 import com.redhat.rhn.domain.image.ImageStoreFactory;
 import com.redhat.rhn.domain.image.ImageStoreType;
@@ -187,7 +188,7 @@ public class ImageStoreHandler extends BaseHandler {
      *   #struct_end()
      * @apidoc.returntype #return_int_success()
      */
-    public int setDetails(User loggedInUser, String label, Map details) {
+    public int setDetails(User loggedInUser, String label, Map<String, String> details) {
         ensureImageAdmin(loggedInUser);
         Set<String> validKeys = new HashSet<>();
         validKeys.add("uri");
@@ -200,17 +201,23 @@ public class ImageStoreHandler extends BaseHandler {
         }
         Optional<ImageStore> optstore = ImageStoreFactory.lookupBylabelAndOrg(label,
                 loggedInUser.getOrg());
-        if (!optstore.isPresent()) {
+        if (optstore.isEmpty()) {
             throw new NoSuchImageStoreException(label);
         }
         ImageStore store = optstore.get();
 
         if (details.containsKey("uri")) {
-            store.setUri((String) details.get("uri"));
+            store.setUri(details.get("uri"));
         }
         if (details.containsKey("username")) {
-            store.setCreds(ImageStoreFactory.createCredentials(details,
-                    store.getStoreType()));
+            if (details.get("username").isEmpty()) {
+                Optional.ofNullable(store.getCreds()).ifPresent(CredentialsFactory::removeCredentials);
+                store.setCreds(null);
+            }
+            else {
+                store.setCreds(ImageStoreFactory.createCredentials(details,
+                        store.getStoreType()));
+            }
         }
         ImageStoreFactory.save(store);
         return 1;
