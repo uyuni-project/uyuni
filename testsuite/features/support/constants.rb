@@ -919,3 +919,7 @@ CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION = {
       sle-module-suse-manager-retail-branch-server-4.3-updates-x86_64
     ]
 }.freeze
+
+EMPTY_CHANNELS = %w[
+  sle-module-suse-manager-retail-branch-server-4.3-updates-x86_64
+].freeze
