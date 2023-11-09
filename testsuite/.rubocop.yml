@@ -2,6 +2,7 @@ inherit_from: .rubocop_todo.yml
 
 AllCops:
   EnabledByDefault: true
+  TargetRubyVersion: 2.5
 
 Metrics/CyclomaticComplexity:
   Max: 20

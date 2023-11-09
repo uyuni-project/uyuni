@@ -85,56 +85,56 @@ module LavandaBasic
 
   # getter functions, executed on testsuite
   def hostname
-    raise 'empty hostname, something wrong' if @in_hostname.empty?
+    raise KeyError, 'empty hostname, something wrong' if @in_hostname.empty?
     @in_hostname
   end
 
   ##
   # It raises an exception if the hostname is empty, otherwise it returns the hostname.
   def full_hostname
-    raise 'empty hostname, something wrong' if @in_full_hostname.empty?
+    raise KeyError, 'empty hostname, something wrong' if @in_full_hostname.empty?
     @in_full_hostname
   end
 
   ##
   # It raises an exception if the private_ip is empty, otherwise it returns the private_ip.
   def private_ip
-    raise 'empty private_ip, something wrong' if @in_private_ip.empty?
+    raise KeyError, 'empty private_ip, something wrong' if @in_private_ip.empty?
     @in_private_ip
   end
 
   ##
   # It returns the public IP address of the machine.
   def public_ip
-    raise 'empty public_ip, something wrong' if @in_public_ip.empty?
+    raise KeyError, 'empty public_ip, something wrong' if @in_public_ip.empty?
     @in_public_ip
   end
 
   ##
   # Verifies the private interface instance variable. Raises an error if it's empty.
   def private_interface
-    raise 'empty private_interface, something wrong' if @in_private_interface.empty?
+    raise KeyError, 'empty private_interface, something wrong' if @in_private_interface.empty?
     @in_private_interface
   end
 
   ##
   # Verifies the public interface instance variable. Raises an error if it's empty.
   def public_interface
-    raise 'empty public_interface, something wrong' if @in_public_interface.empty?
+    raise KeyError, 'empty public_interface, something wrong' if @in_public_interface.empty?
     @in_public_interface
   end
 
   ##
   # Verifies the os_family instance variable. Raises an error if it's empty.
   def os_family
-    raise 'empty os_family, something wrong' if @in_os_family.empty?
+    raise KeyError, 'empty os_family, something wrong' if @in_os_family.empty?
     @in_os_family
   end
 
   ##
   # Verifies the os_version instance variable. Raises an error if it's empty.
   def os_version
-    raise 'empty os_version, something wrong' if @in_os_version.empty?
+    raise KeyError, 'empty os_version, something wrong' if @in_os_version.empty?
     @in_os_version
   end
 
@@ -174,7 +174,7 @@ module LavandaBasic
       out, _lo, _rem, code = test_and_store_results_together(cmd, user, timeout, buffer_size)
     end
     if check_errors
-      raise "FAIL: #{cmd} returned status code = #{code}.\nOutput:\n#{out}" unless successcodes.include?(code)
+      raise ScriptError, "FAIL: #{cmd} returned status code = #{code}.\nOutput:\n#{out}" unless successcodes.include?(code)
     end
     STDOUT.puts "#{cmd} returned status code = #{code}.\nOutput:\n'#{out}'" if verbose
     if separated_results
@@ -241,7 +241,7 @@ module LavandaBasic
       code, _remote = inject_file(local_file, tmp_file, user, dots)
       if code.zero?
         _out, code = run_local("uyunictl cp --user #{user} #{tmp_file} server:#{remote_file}")
-        raise "Failed to copy #{tmp_file} to container" unless code.zero?
+        raise ScriptError, "Failed to copy #{tmp_file} to container" unless code.zero?
       end
       run_local("rm -r #{tmp_folder}")
     else
@@ -263,9 +263,9 @@ module LavandaBasic
       tmp_folder, _code = run_local('mktemp -d')
       tmp_file = File.join(tmp_folder.strip, File.basename(remote_file))
       _out, code = run_local("uyunictl cp --user #{user} server:#{remote_file} #{tmp_file}")
-      raise "Failed to extract #{remote_file} from container" unless code.zero?
+      raise ScriptError, "Failed to extract #{remote_file} from container" unless code.zero?
       code, _remote = extract_file(tmp_file, local_file, user, dots)
-      raise "Failed to extract #{tmp_file} from host" unless code.zero?
+      raise ScriptError, "Failed to extract #{tmp_file} from host" unless code.zero?
       run_local("rm -r #{tmp_folder}")
     else
       code, _local = extract_file(remote_file, local_file, user, dots)

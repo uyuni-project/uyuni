@@ -5,30 +5,26 @@
 
 # content lifecycle steps
 When(/^I click the environment build button$/) do
-  raise 'Click on environment build failed' unless find_button('cm-build-modal-save-button', disabled: false, wait: DEFAULT_TIMEOUT).click
+  raise ScriptError, 'Click on environment build failed' unless find_button('cm-build-modal-save-button', disabled: false, wait: DEFAULT_TIMEOUT).click
 end
 
 When(/^I click promote from Development to QA$/) do
-  begin
-    promote_first = first(:xpath, '//button[contains(., \'Promote\')]')
-    promote_first.click
-  rescue Capybara::ElementNotFound => e
-    raise "Click on promote from Development failed: #{e}"
-  end
+  promote_first = first(:xpath, '//button[contains(., \'Promote\')]')
+  promote_first.click
+rescue Capybara::ElementNotFound => e
+  raise ScriptError, "Click on promote from Development failed: #{e}"
 end
 
 When(/^I click promote from QA to Production$/) do
-  begin
-    promote_second = find_all(:xpath, '//button[contains(., \'Promote\')]', minimum: 2)[1]
-    promote_second.click
-  rescue Capybara::ElementNotFound => e
-    raise "Click on promote from QA failed: #{e}"
-  end
+  promote_second = find_all(:xpath, '//button[contains(., \'Promote\')]', minimum: 2)[1]
+  promote_second.click
+rescue Capybara::ElementNotFound => e
+  raise ScriptError, "Click on promote from QA failed: #{e}"
 end
 
 Then(/^I should see a "([^"]*)" text in the environment "([^"]*)"$/) do |text, env|
   within(:xpath, "//h3[text()='#{env}']/../..") do
-    raise "Text \"#{text}\" not found" unless check_text_and_catch_request_timeout_popup?(text)
+    raise ScriptError, "Text \"#{text}\" not found" unless check_text_and_catch_request_timeout_popup?(text)
   end
 end
 
@@ -40,13 +36,13 @@ end
 
 When(/^I wait until I see "([^"]*)" text in the environment "([^"]*)"$/) do |text, env|
   within(:xpath, "//h3[text()='#{env}']/../..") do
-    raise "Text \"#{text}\" not found" unless check_text_and_catch_request_timeout_popup?(text, timeout: DEFAULT_TIMEOUT)
+    raise ScriptError, "Text \"#{text}\" not found" unless check_text_and_catch_request_timeout_popup?(text, timeout: DEFAULT_TIMEOUT)
   end
 end
 
 When(/^I add the "([^"]*)" channel to sources$/) do |channel|
   within(:xpath, "//span[text()='#{channel}']/../..") do
-    raise 'Add channel failed' unless find(:xpath, './/input[@type="checkbox"]').set(true)
+    raise ScriptError, 'Add channel failed' unless find(:xpath, './/input[@type="checkbox"]').set(true)
   end
 end
 
@@ -55,10 +51,10 @@ When(/^I click the "([^\"]*)" item (.*?) button$/) do |name, action|
            when /details/ then 'i[contains(@class, \'fa-list\')]'
            when /edit/ then 'i[contains(@class, \'fa-edit\')]'
            when /delete/ then 'i[contains(@class, \'fa-trash\')]'
-           else raise "Unknown element with description '#{action}'"
+           else raise ScriptError, "Unknown element with description '#{action}'"
            end
   xpath = "//td[contains(text(), '#{name}')]/ancestor::tr/td/div/button/#{button}"
-  raise "xpath: #{xpath} not found" unless find(:xpath, xpath).click
+  raise ScriptError, "xpath: #{xpath} not found" unless find(:xpath, xpath).click
 end
 
 When(/^I backup the SSH authorized_keys file of host "([^"]*)"$/) do |host|
@@ -67,7 +63,7 @@ When(/^I backup the SSH authorized_keys file of host "([^"]*)"$/) do |host|
   auth_keys_sav_path = '/root/.ssh/authorized_keys.sav'
   target = get_target(host)
   _, ret_code = target.run("cp #{auth_keys_path} #{auth_keys_sav_path}")
-  raise 'error backing up authorized_keys on host' if ret_code.nonzero?
+  raise ScriptError, 'error backing up authorized_keys on host' if ret_code.nonzero?
 end
 
 When(/^I add pre-generated SSH public key to authorized_keys of host "([^"]*)"$/) do |host|
@@ -79,7 +75,7 @@ When(/^I add pre-generated SSH public key to authorized_keys of host "([^"]*)"$/
     '/tmp/' + key_filename
   )
   target.run("cat /tmp/#{key_filename} >> /root/.ssh/authorized_keys", timeout: 500)
-  raise 'Error copying ssh pubkey to host' if ret_code.nonzero?
+  raise ScriptError, 'Error copying ssh pubkey to host' if ret_code.nonzero?
 end
 
 When(/^I restore the SSH authorized_keys file of host "([^"]*)"$/) do |host|
@@ -95,7 +91,7 @@ When(/^I add "([^\"]*)" calendar file as url$/) do |file|
   source = File.dirname(__FILE__) + '/../upload_files/' + file
   dest = '/srv/www/htdocs/pub/' + file
   return_code = file_inject(get_target('server'), source, dest)
-  raise 'File injection failed' unless return_code.zero?
+  raise ScriptError, 'File injection failed' unless return_code.zero?
   get_target('server').run("chmod 644 #{dest}")
   url = "https://#{get_target('server').full_hostname}/pub/" + file
   log "URL: #{url}"
@@ -108,17 +104,17 @@ When(/^I deploy testing playbooks and inventory files to "([^"]*)"$/) do |host|
   target.run("mkdir -p #{dest}")
   source = File.dirname(__FILE__) + '/../upload_files/ansible/playbooks/orion_dummy/playbook_orion_dummy.yml'
   return_code = file_inject(target, source, dest + 'playbook_orion_dummy.yml')
-  raise 'File injection failed' unless return_code.zero?
+  raise ScriptError, 'File injection failed' unless return_code.zero?
   source = File.dirname(__FILE__) + '/../upload_files/ansible/playbooks/orion_dummy/hosts'
   return_code = file_inject(target, source, dest + 'hosts')
-  raise 'File injection failed' unless return_code.zero?
+  raise ScriptError, 'File injection failed' unless return_code.zero?
   source = File.dirname(__FILE__) + '/../upload_files/ansible/playbooks/orion_dummy/file.txt'
   return_code = file_inject(target, source, dest + 'file.txt')
-  raise 'File injection failed' unless return_code.zero?
+  raise ScriptError, 'File injection failed' unless return_code.zero?
   dest = '/srv/playbooks/'
   source = File.dirname(__FILE__) + '/../upload_files/ansible/playbooks/playbook_ping.yml'
   return_code = file_inject(target, source, dest + 'playbook_ping.yml')
-  raise 'File injection failed' unless return_code.zero?
+  raise ScriptError, 'File injection failed' unless return_code.zero?
 end
 
 When(/^I enter the reactivation key of "([^"]*)"$/) do |host|

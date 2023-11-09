@@ -22,7 +22,7 @@ end
 def count_table_items
   # count table items using the table counter component
   items_label_xpath = '//span[contains(text(), \'Items \')]'
-  raise unless (items_label = find(:xpath, items_label_xpath).text)
+  raise ScriptError, 'Error counting items' unless (items_label = find(:xpath, items_label_xpath).text)
   items_label.split('of ')[1].strip
 end
 
@@ -38,7 +38,7 @@ def product
     $product = 'SUSE Manager'
     return 'SUSE Manager'
   end
-  raise 'Could not determine product'
+  raise NotImplementedError, 'Could not determine product'
 end
 
 def product_version
@@ -48,7 +48,7 @@ def product_version
   product_raw, code = get_target('server').run('rpm -q patterns-suma_server', check_errors: false)
   m = product_raw.match(/patterns-suma_server-(.*)-.*/)
   return m[1] if code.zero? && !m.nil?
-  raise 'Could not determine product version'
+  raise NotImplementedError, 'Could not determine product version'
 end
 
 def use_salt_bundle
@@ -60,7 +60,7 @@ end
 def inject_salt_pillar_file(source, file)
   dest = '/srv/pillar/' + file
   return_code = file_inject(get_target('server'), source, dest)
-  raise 'File injection failed' unless return_code.zero?
+  raise ScriptError, 'File injection failed' unless return_code.zero?
   # make file readable by salt
   get_target('server').run("chgrp salt #{dest}")
   return_code
@@ -96,14 +96,14 @@ def repeat_until_timeout(timeout: DEFAULT_TIMEOUT, retries: nil, message: nil, r
     end
 
     detail = format_detail(message, last_result, report_result)
-    raise "Giving up after #{attempts} attempts#{detail}" if attempts == retries
-    raise "Timeout after #{timeout} seconds (repeat_until_timeout)#{detail}"
+    raise ScriptError, "Giving up after #{attempts} attempts#{detail}" if attempts == retries
+    raise TimeoutError, "Timeout after #{timeout} seconds (repeat_until_timeout)#{detail}"
   end
-rescue Timeout::Error
+rescue Timeout::Error => e
   STDOUT.puts "Timeout after #{timeout} seconds (Timeout.timeout)#{format_detail(message, last_result, report_result)}"
-  raise unless dont_raise
-rescue StandardError
-  raise unless dont_raise
+  raise e unless dont_raise
+rescue StandardError => e
+  raise e unless dont_raise
 end
 
 def check_text_and_catch_request_timeout_popup?(text1, text2: nil, timeout: Capybara.default_max_wait_time)
@@ -116,7 +116,7 @@ def check_text_and_catch_request_timeout_popup?(text1, text2: nil, timeout: Capy
       log 'Request timeout found, performing reload'
       click_button('reload the page')
       start_time = Time.now
-      raise "Request timeout message still present after #{Capybara.default_max_wait_time} seconds." unless has_no_text?('Request has timed out')
+      raise TimeoutError, "Request timeout message still present after #{Capybara.default_max_wait_time} seconds." unless has_no_text?('Request has timed out')
     end
     return false
   end
@@ -131,8 +131,8 @@ end
 def click_button_and_wait(locator = nil, **options)
   click_button(locator, options)
   begin
-    raise 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 20)
-  rescue StandardError, Capybara::ExpectationNotMet => e
+    warn 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 20)
+  rescue StandardError => e
     STDOUT.puts e.message # Skip errors related to .senna-loading element
   end
 end
@@ -140,8 +140,8 @@ end
 def click_link_and_wait(locator = nil, **options)
   click_link(locator, options)
   begin
-    raise 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 20)
-  rescue StandardError, Capybara::ExpectationNotMet => e
+    warn 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 20)
+  rescue StandardError => e
     STDOUT.puts e.message # Skip errors related to .senna-loading element
   end
 end
@@ -149,8 +149,8 @@ end
 def click_link_or_button_and_wait(locator = nil, **options)
   click_link_or_button(locator, options)
   begin
-    raise 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 20)
-  rescue StandardError, Capybara::ExpectationNotMet => e
+    warn 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 20)
+  rescue StandardError => e
     STDOUT.puts e.message # Skip errors related to .senna-loading element
   end
 end
@@ -160,8 +160,8 @@ module CapybaraNodeElementExtension
   def click
     super
     begin
-      raise 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 20)
-    rescue StandardError, Capybara::ExpectationNotMet => e
+      warn 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 20)
+    rescue StandardError => e
       STDOUT.puts e.message # Skip errors related to .senna-loading element
     end
   end
@@ -213,7 +213,7 @@ def extract_logs_from_node(node)
   node.run("tar cfvJP /tmp/#{node.full_hostname}-logs.tar.xz /var/log/ || [[ $? -eq 1 ]]")
   `mkdir logs` unless Dir.exist?('logs')
   code = file_extract(node, "/tmp/#{node.full_hostname}-logs.tar.xz", "logs/#{node.full_hostname}-logs.tar.xz")
-  raise 'Download log archive failed' unless code.zero?
+  raise ScriptError, 'Download log archive failed' unless code.zero?
 rescue RuntimeError => e
   STDOUT.puts e.message
 end
@@ -225,7 +225,7 @@ end
 def get_variable_from_conf_file(host, file_path, variable_name)
   node = get_target(host)
   variable_value, return_code = node.run("sed -n 's/^#{variable_name} = \\(.*\\)/\\1/p' < #{file_path}")
-  raise "Reading #{variable_name} from file on #{host} #{file_path} failed" unless return_code.zero?
+  raise ScriptError, "Reading #{variable_name} from file on #{host} #{file_path} failed" unless return_code.zero?
   variable_value.strip!
 end
 

@@ -37,19 +37,19 @@ When(/^I create a (leap|sles|rhlike|deblike) virtual machine named "([^"]*)" (wi
     name = 'empty'
   end
   net = 'test-net0' if cloudinit == 'without'
-  raise "/var/testsuite-data/#{name} not found" unless file_exists?(node, "/var/testsuite-data/#{name}")
+  raise ScriptError, "/var/testsuite-data/#{name} not found" unless file_exists?(node, "/var/testsuite-data/#{name}")
 
   node.run("cp /var/testsuite-data/#{name} #{disk_path}")
 
   # Actually define the VM, but don't start it
-  raise 'not found: virt-install' unless file_exists?(node, '/usr/bin/virt-install')
+  raise ScriptError, 'not found: virt-install' unless file_exists?(node, '/usr/bin/virt-install')
 
   command = "virt-install --name #{vm_name} --memory #{memory} --vcpus 1 --disk path=#{disk_path},bus=virtio \
             --network network=#{net},mac=#{mac} --graphics vnc,listen=0.0.0.0 --serial file,path=/tmp/#{vm_name}.console.log \
             --import --hvm --noautoconsole --noreboot --osinfo #{os} "
   # with cloud init image
   if cloudinit == 'with'
-    raise "#{cloudinit_image} not found" unless file_exists?(node, cloudinit_image)
+    raise ScriptError, "#{cloudinit_image} not found" unless file_exists?(node, cloudinit_image)
 
     command_cloudinit = "--disk path=#{cloudinit_image},device=cdrom,bus=sata"
     node.run("cp #{cloudinit_image} #{cloudinit_path}")
@@ -62,15 +62,15 @@ end
 When(/^I stop the virtual machine named "([^"]*)" on "([^"]*)"$/) do |vm_name, host|
   node = get_target(host)
   _running, code = node.run("virsh list --name | grep #{vm_name}", check_errors: false)
-  raise "Virtual machine #{vm_name} is not running" unless code.zero?
-  raise 'not found: virsh' unless file_exists?(node, '/usr/bin/virsh')
+  raise ScriptError, "Virtual machine #{vm_name} is not running" unless code.zero?
+  raise ScriptError, 'not found: virsh' unless file_exists?(node, '/usr/bin/virsh')
 
   node.run("virsh destroy #{vm_name}")
 end
 
 When(/^I delete the virtual machine named "([^"]*)" on "([^"]*)"$/) do |vm_name, host|
   node = get_target(host)
-  raise 'not found: virsh' unless file_exists?(node, '/usr/bin/virsh')
+  raise ScriptError, 'not found: virsh' unless file_exists?(node, '/usr/bin/virsh')
 
   step %(I stop the virtual machine named "#{vm_name}" on "#{host}")
   node.run("virsh undefine --nvram #{vm_name}")
@@ -108,7 +108,7 @@ When(/^I create ([^ ]*) virtual network on "([^"]*)"$/) do |net_name, host|
               "  <bridge name='#{net['bridge']}'/>" \
               '</network>'
   else
-    raise "#{net_name} case is not implemented."
+    raise ScriptError, "#{net_name} case is not implemented."
   end
 
   # Some networks like the default one may already be defined.
@@ -312,7 +312,8 @@ Then(/^"([^"]*)" virtual machine on "([^"]*)" should boot using autoyast$/) do |
   has_initrd = tree.xpath('//os/initrd').size == 1
   has_autoyast = tree.xpath('//os/cmdline')[0].to_s.include? ' autoyast='
   unless has_kernel && has_initrd && has_autoyast
-    raise 'Wrong kernel/initrd/cmdline configuration, ' \
+    raise ArgumentError,
+          'Wrong kernel/initrd/cmdline configuration, ' \
           "kernel: #{has_kernel ? '' : 'not'} set, " \
           "initrd: #{has_initrd ? '' : 'not'} set, " \
           "autoyast kernel parameter: #{has_autoyast ? '' : 'not'} set"
@@ -327,7 +328,8 @@ Then(/^"([^"]*)" virtual machine on "([^"]*)" should boot on hard disk at next s
   has_initrd = tree.xpath('//os/initrd').size == 1
   has_cmdline = tree.xpath('//os/cmdline').size == 1
   unless !has_kernel && !has_initrd && !has_cmdline
-    raise 'Virtual machine will not boot on hard disk at next start, ' \
+    raise SystemCallError,
+          'Virtual machine will not boot on hard disk at next start, ' \
           "kernel: #{has_kernel ? '' : 'not'} set, " \
           "initrd: #{has_initrd ? '' : 'not'} set, " \
           "cmdline: #{has_cmdline ? '' : 'not'} set"
@@ -341,7 +343,7 @@ Then(/^"([^"]*)" virtual machine on "([^"]*)" should (not stop|stop) on reboot((
   tree = Nokogiri::XML(output)
   on_reboot = tree.xpath('//on_reboot/text()')[0].to_s
   unless (on_reboot == 'destroy' && stop == 'stop') || (on_reboot == 'restart' && stop == 'not stop')
-    raise "Invalid reboot configuration #{next_start}: on_reboot: #{on_reboot}"
+    raise ScriptError, "Invalid reboot configuration #{next_start}: on_reboot: #{on_reboot}"
   end
 end
 
@@ -351,7 +353,7 @@ Then(/^"([^"]*)" virtual machine on "([^"]*)" should be UEFI enabled$/) do |vm, 
   tree = Nokogiri::XML(output)
   has_loader = tree.xpath('//os/loader').size == 1
   has_nvram = tree.xpath('//os/nvram').size == 1
-  raise 'No loader and nvram set: not UEFI enabled' unless has_loader && has_nvram
+  raise KeyError, 'No loader and nvram set: not UEFI enabled' unless has_loader && has_nvram
 end
 
 When(/^I create empty "([^"]*)" qcow2 disk file on "([^"]*)"$/) do |path, host|

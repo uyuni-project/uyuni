@@ -7,7 +7,7 @@ $cobbler_test = CobblerTest.new
 
 # cobbler daemon
 Given(/^cobblerd is running$/) do
-  raise 'cobblerd is not running' unless $cobbler_test.running?
+  raise StandardError, 'cobblerd is not running' unless $cobbler_test.running?
 end
 
 When(/^I restart cobbler on the server$/) do
@@ -24,27 +24,27 @@ end
 
 # distro and profile management
 Given(/^distro "([^"]*)" exists$/) do |distro|
-  raise "Distro #{distro} does not exist" unless $cobbler_test.element_exists('distros', distro)
+  raise ScriptError, "Distro #{distro} does not exist" unless $cobbler_test.element_exists('distros', distro)
 end
 
 Given(/^profile "([^"]*)" exists$/) do |profile|
-  raise "Profile #{profile} does not exist" unless $cobbler_test.element_exists('profiles', profile)
+  raise ScriptError, "Profile #{profile} does not exist" unless $cobbler_test.element_exists('profiles', profile)
 end
 
 When(/^I create distro "([^"]*)"$/) do |distro|
-  raise "Distro #{distro} already exists" if $cobbler_test.element_exists('distros', distro)
+  raise ScriptError, "Distro #{distro} already exists" if $cobbler_test.element_exists('distros', distro)
 
   $cobbler_test.distro_create(distro, '/var/autoinstall/SLES15-SP4-x86_64/DVD1/boot/x86_64/loader/linux', '/var/autoinstall/SLES15-SP4-x86_64/DVD1/boot/x86_64/loader/initrd')
 end
 
 When(/^I create profile "([^"]*)" for distro "([^"]*)"$/) do |profile, distro|
-  raise "Profile #{profile} already exists" if $cobbler_test.element_exists('profiles', profile)
+  raise ScriptError, "Profile #{profile} already exists" if $cobbler_test.element_exists('profiles', profile)
 
   $cobbler_test.profile_create(profile, distro, '/var/autoinstall/mock/empty.xml')
 end
 
 When(/^I create system "([^"]*)" for profile "([^"]*)"$/) do |system, profile|
-  raise "System #{system} already exists" if $cobbler_test.element_exists('systems', system)
+  raise ScriptError, "System #{system} already exists" if $cobbler_test.element_exists('systems', system)
 
   $cobbler_test.system_create(system, profile)
 end
@@ -108,12 +108,12 @@ end
 Then(/^the cobbler report should contain "([^"]*)" for "([^"]*)"$/) do |text, host|
   node = get_target(host)
   output, _code = get_target('server').run("cobbler system report --name #{node.full_hostname}:1", check_errors: false)
-  raise "Not found:\n#{output}" unless output.include?(text)
+  raise ScriptError, "Not found:\n#{output}" unless output.include?(text)
 end
 
 Then(/^the cobbler report should contain "([^"]*)" for cobbler system name "([^"]*)"$/) do |text, name|
   output, _code = get_target('server').run("cobbler system report --name #{name}", check_errors: false)
-  raise "Not found:\n#{output}" unless output.include?(text)
+  raise ScriptError, "Not found:\n#{output}" unless output.include?(text)
 end
 
 # buildiso
@@ -122,14 +122,14 @@ When(/^I prepare Cobbler for the buildiso command$/) do
   get_target('server').run("mkdir -p #{tmp_dir}")
   # we need bootloaders for the buildiso command
   out, code = get_target('server').run('cobbler mkloaders', verbose: true)
-  raise "error in cobbler mkloaders.\nLogs:\n#{out}" if code.nonzero?
+  raise ScriptError, "error in cobbler mkloaders.\nLogs:\n#{out}" if code.nonzero?
 end
 
 When(/^I run Cobbler buildiso for distro "([^"]*)" and all profiles$/) do |distro|
   tmp_dir = '/var/cache/cobbler/buildiso'
   iso_dir = '/var/cache/cobbler'
   out, code = get_target('server').run("cobbler buildiso --tempdir=#{tmp_dir} --iso #{iso_dir}/profile_all.iso --distro=#{distro}", verbose: true)
-  raise "error in cobbler buildiso.\nLogs:\n#{out}" if code.nonzero?
+  raise ScriptError, "error in cobbler buildiso.\nLogs:\n#{out}" if code.nonzero?
 
   profiles = %w[orchid flame pearl]
   isolinux_profiles = []
@@ -144,25 +144,25 @@ When(/^I run Cobbler buildiso for distro "([^"]*)" and all profiles$/) do |distr
       isolinux_profiles.push(result_isolinux)
     end
   end
-  raise "error during comparison of Cobbler profiles.\nLogs:\nCobbler profiles:\n#{cobbler_profiles}\nisolinux profiles:\n#{isolinux_profiles}" unless cobbler_profiles == isolinux_profiles
+  raise ScriptError, "error during comparison of Cobbler profiles.\nLogs:\nCobbler profiles:\n#{cobbler_profiles}\nisolinux profiles:\n#{isolinux_profiles}" unless cobbler_profiles == isolinux_profiles
 end
 
 When(/^I run Cobbler buildiso for distro "([^"]*)" and profile "([^"]*)"$/) do |distro, profile|
   tmp_dir = '/var/cache/cobbler/buildiso'
   iso_dir = '/var/cache/cobbler'
   out, code = get_target('server').run("cobbler buildiso --tempdir=#{tmp_dir} --iso #{iso_dir}/#{profile}.iso --distro=#{distro} --profile=#{profile}", verbose: true)
-  raise "error in cobbler buildiso.\nLogs:\n#{out}" if code.nonzero?
+  raise ScriptError, "error in cobbler buildiso.\nLogs:\n#{out}" if code.nonzero?
 end
 
 When(/^I run Cobbler buildiso for distro "([^"]*)" and profile "([^"]*)" without dns entries$/) do |distro, profile|
   tmp_dir = '/var/cache/cobbler/buildiso'
   iso_dir = '/var/cache/cobbler'
   out, code = get_target('server').run("cobbler buildiso --tempdir=#{tmp_dir} --iso #{iso_dir}/#{profile}.iso --distro=#{distro} --profile=#{profile} --exclude-dns", verbose: true)
-  raise "error in cobbler buildiso.\nLogs:\n#{out}" if code.nonzero?
+  raise ScriptError, "error in cobbler buildiso.\nLogs:\n#{out}" if code.nonzero?
 
   result, code = get_target('server').run("cat #{tmp_dir}/isolinux/isolinux.cfg | grep -o nameserver", check_errors: false)
   # we have to fail here if the command suceeds
-  raise "error in Cobbler buildiso, nameserver parameter found in isolinux.cfg but should not be found.\nLogs:\n#{result}" if code.zero?
+  raise ScriptError, "error in Cobbler buildiso, nameserver parameter found in isolinux.cfg but should not be found.\nLogs:\n#{result}" if code.zero?
 end
 
 When(/^I run Cobbler buildiso "([^"]*)" for distro "([^"]*)"$/) do |param, distro|
@@ -175,7 +175,7 @@ When(/^I run Cobbler buildiso "([^"]*)" for distro "([^"]*)"$/) do |param, distr
   get_target('server').run("mv #{tmp_dir} #{source_dir}")
   get_target('server').run("mkdir -p #{tmp_dir}")
   out, code = get_target('server').run("cobbler buildiso --tempdir=#{tmp_dir} --iso #{iso_dir}/#{param}.iso --distro=#{distro} --#{param} --source=#{source_dir}", verbose: true)
-  raise "error in cobbler buildiso.\nLogs:\n#{out}" if code.nonzero?
+  raise ScriptError, "error in cobbler buildiso.\nLogs:\n#{out}" if code.nonzero?
 end
 
 When(/^I check Cobbler buildiso ISO "([^"]*)" with xorriso$/) do |name|
@@ -188,10 +188,10 @@ EOF")
   iso_filter = 'awk \'/^El Torito boot img[[:space:]]+:[[:space:]]+[0-9]+[[:space:]]+[a-zA-Z]+[[:space:]]+y/{print $7}\''
   iso_file = "#{tmp_dir}/xorriso_#{name}"
   out, code = get_target('server').run("#{xorriso} | #{iso_filter} >> #{iso_file}")
-  raise "error while executing xorriso.\nLogs:\n#{out}" if code.nonzero?
+  raise ScriptError, "error while executing xorriso.\nLogs:\n#{out}" if code.nonzero?
 
   out, code = get_target('server').run("diff #{tmp_dir}/test_image #{tmp_dir}/xorriso_#{name}")
-  raise "error in verifying Cobbler buildiso image with xorriso.\nLogs:\n#{out}" if code.nonzero?
+  raise ScriptError, "error in verifying Cobbler buildiso image with xorriso.\nLogs:\n#{out}" if code.nonzero?
 end
 
 # xorriso
@@ -202,20 +202,20 @@ end
 # cobbler settings
 Given(/^cobbler settings are successfully migrated$/) do
   out, code = get_target('server').run('cobbler-settings migrate -t /etc/cobbler/settings.yaml')
-  raise "error when running cobbler-settings to migrate current settings.\nLogs:\n#{out}" if code.nonzero?
+  raise ScriptError, "error when running cobbler-settings to migrate current settings.\nLogs:\n#{out}" if code.nonzero?
 end
 
 # cobbler parameters
 Then(/^I add the Cobbler parameter "([^"]*)" with value "([^"]*)" to item "(distro|profile|system)" with name "([^"]*)"$/) do |param, value, item, name|
   result, code = get_target('server').run("cobbler #{item} edit --name=#{name} --#{param}=#{value}", verbose: true)
   puts("cobbler #{item} edit --name #{name} #{param}=#{value}")
-  raise "error in adding parameter and value to Cobbler #{item}.\nLogs:\n#{result}" if code.nonzero?
+  raise ScriptError, "error in adding parameter and value to Cobbler #{item}.\nLogs:\n#{result}" if code.nonzero?
 end
 
 When(/^I check the Cobbler parameter "([^"]*)" with value "([^"]*)" in the isolinux.cfg$/) do |param, value|
   tmp_dir = '/var/cache/cobbler/buildiso'
   result, code = get_target('server').run("cat #{tmp_dir}/isolinux/isolinux.cfg | grep -o #{param}=#{value}")
-  raise "error while verifying isolinux.cfg parameter for Cobbler buildiso.\nLogs:\n#{result}" if code.nonzero?
+  raise ScriptError, "error while verifying isolinux.cfg parameter for Cobbler buildiso.\nLogs:\n#{result}" if code.nonzero?
 end
 
 # backup step
@@ -226,7 +226,7 @@ end
 # cleanup steps
 When(/^I cleanup after Cobbler buildiso$/) do
   result, code = get_target('server').run('rm -Rf /var/cache/cobbler')
-  raise "Error during Cobbler buildiso cleanup.\nLogs:\n#{result}" if code.nonzero?
+  raise ScriptError, "Error during Cobbler buildiso cleanup.\nLogs:\n#{result}" if code.nonzero?
 end
 
 When(/^I cleanup Cobbler files and restart apache and cobblerd services$/) do
@@ -235,10 +235,10 @@ When(/^I cleanup Cobbler files and restart apache and cobblerd services$/) do
                     'cp /etc/cobbler/settings.yaml.bak /etc/cobbler/settings.yaml 2> /dev/null'
   get_target('server').run(cleanup_command.to_s, check_errors: false)
   result, code = get_target('server').run('systemctl restart apache')
-  raise "Error while restarting apache cleanup.\nLogs:\n#{result}" if code.nonzero?
+  raise ScriptError, "Error while restarting apache cleanup.\nLogs:\n#{result}" if code.nonzero?
 
   result, code = get_target('server').run('systemctl restart apache && systemctl restart cobblerd')
-  raise "Error while restarting cobblerd.\nLogs:\n#{result}" if code.nonzero?
+  raise ScriptError, "Error while restarting cobblerd.\nLogs:\n#{result}" if code.nonzero?
 
   step 'I wait until "cobblerd" service is active on "server"'
 end
@@ -255,13 +255,13 @@ When(/^I copy autoinstall mocked files on server$/) do
   return_codes << file_inject(get_target('server'), base_dir + 'mock/empty.xml', source_dir + 'mock/empty.xml')
   return_codes << file_inject(get_target('server'), base_dir + 'sles15sp4/initrd', source_dir + 'SLES15-SP4-x86_64/DVD1/boot/x86_64/loader/initrd')
   return_codes << file_inject(get_target('server'), base_dir + 'sles15sp4/linux', source_dir + 'SLES15-SP4-x86_64/DVD1/boot/x86_64/loader/linux')
-  raise 'File injection failed' unless return_codes.all?(&:zero?)
+  raise ScriptError, 'File injection failed' unless return_codes.all?(&:zero?)
 end
 
 When(/^I run Cobbler sync (with|without) error checking$/) do |checking|
   if checking == 'with'
     out, _code = get_target('server').run('cobbler sync')
-    raise 'cobbler sync failed' if out.include? 'Push failed'
+    raise SystemCallError, 'cobbler sync failed' if out.include? 'Push failed'
   else
     _out, _code = get_target('server').run('cobbler sync')
   end
@@ -304,12 +304,12 @@ Then(/^the local logs for Cobbler should not contain errors$/) do
   cobbler_log_file = '/var/log/cobbler/cobbler_debug.log'
   local_file = '/tmp/cobbler_debug.log'
   return_code = file_extract(get_target('server'), cobbler_log_file, local_file)
-  raise 'File extraction failed' unless return_code.zero?
+  raise ScriptError, 'File extraction failed' unless return_code.zero?
 
   file_data = File.read(local_file).gsub!("\n", ',').chop.gsub('"', ' \' ').gsub('\\\'\'', '"')
   file_data = "[#{file_data}]"
   data_hash = JSON.parse(file_data)
   output = data_hash.select { |key, _hash| key['levelname'] == 'ERROR' }
   get_target('server').run("cp #{cobbler_log_file} #{cobbler_log_file}$(date +\"%Y_%m_%d_%I_%M_%p\")") unless output.empty?
-  raise "Errors in Cobbler logs:\n #{output}" unless output.empty?
+  raise ScriptError, "Errors in Cobbler logs:\n #{output}" unless output.empty?
 end

@@ -15,7 +15,7 @@ end
 
 # Obtain the Public IP for a node
 def client_public_ip(node)
-  raise "Cannot resolve node for host '#{host}'" if node.nil?
+  raise NotImplementedError, "Cannot resolve node for host '#{host}'" if node.nil?
 
   %w[br0 eth0 eth1 ens0 ens1 ens2 ens3 ens4 ens5 ens6].each do |dev|
     output, code = node.run_local("ip address show dev #{dev} | grep 'inet '", check_errors: false)
@@ -26,7 +26,7 @@ def client_public_ip(node)
 
     return output.split[1].split('/')[0]
   end
-  raise "Cannot resolve public ip of #{host}"
+  raise ArgumentError, "Cannot resolve public ip of #{host}"
 end
 
 # Retrieve and set private and public IPs of a node
@@ -46,8 +46,8 @@ def initialize_server(host, node)
   node.init_has_uyunictl if code.zero?
 
   fqdn, code = node.run('sed -n \'s/^java.hostname *= *\(.\+\)$/\1/p\' /etc/rhn/rhn.conf')
-  raise "Cannot connect to get FQDN for '#{$named_nodes[node.hash]}'. Response code: #{code}, local: #{local}, remote: #{remote}" if code.nonzero?
-  raise "No FQDN for '#{$named_nodes[node.hash]}'. Response code: #{code}" if fqdn.empty?
+  raise StandardError, "Cannot connect to get FQDN for '#{$named_nodes[node.hash]}'. Response code: #{code}, local: #{local}, remote: #{remote}" if code.nonzero?
+  raise StandardError, "No FQDN for '#{$named_nodes[node.hash]}'. Response code: #{code}" if fqdn.empty?
   node.init_full_hostname(fqdn)
   node.init_hostname(fqdn.split('.')[0])
 
@@ -71,7 +71,7 @@ def twopence_init(host)
 
   target = "ssh:#{ENV[ENV_VAR_BY_HOST[host]]}"
   node = Twopence.init(target)
-  raise "Twopence node #{host} initialization has failed." if node.nil?
+  raise LoadError, "Twopence node #{host} initialization has failed." if node.nil?
 
   $named_nodes[node.hash] = target.split(':')[1]
 
@@ -87,13 +87,13 @@ def twopence_init(host)
   # special handling for nested VMs since they will only be created later in the test suite
   # we to a late hostname initialization in a special step for those
   unless hostname.empty? || host == 'salt_migration_minion'
-    raise "Cannot connect to get hostname for '#{$named_nodes[node.hash]}'. Response code: #{code}, local: #{local}, remote: #{remote}" if code.nonzero? || remote.nonzero? || local.nonzero?
-    raise "No hostname for '#{$named_nodes[node.hash]}'. Response code: #{code}" if hostname.empty?
+    raise StandardError, "Cannot connect to get hostname for '#{$named_nodes[node.hash]}'. Response code: #{code}, local: #{local}, remote: #{remote}" if code.nonzero? || remote.nonzero? || local.nonzero?
+    raise StandardError, "No hostname for '#{$named_nodes[node.hash]}'. Response code: #{code}" if hostname.empty?
     node.init_hostname(hostname)
 
     fqdn, local, remote, code = node.test_and_store_results_together('hostname -f', 'root', 500)
-    raise "Cannot connect to get FQDN for '#{$named_nodes[node.hash]}'. Response code: #{code}, local: #{local}, remote: #{remote}" if code.nonzero? || remote.nonzero? || local.nonzero?
-    raise "No FQDN for '#{$named_nodes[node.hash]}'. Response code: #{code}" if fqdn.empty?
+    raise StandardError, "Cannot connect to get FQDN for '#{$named_nodes[node.hash]}'. Response code: #{code}, local: #{local}, remote: #{remote}" if code.nonzero? || remote.nonzero? || local.nonzero?
+    raise StandardError, "No FQDN for '#{$named_nodes[node.hash]}'. Response code: #{code}" if fqdn.empty?
     node.init_full_hostname(fqdn)
 
     node = process_os_family_and_version(host, fqdn, hostname, node)

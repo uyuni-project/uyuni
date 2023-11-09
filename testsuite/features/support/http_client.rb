@@ -77,10 +77,10 @@ class HttpClient
         end
       end
     unless answer.status == 200
-      raise "Unexpected HTTP status code #{answer.status}" if answer.body.empty?
+      raise ScriptError, "Unexpected HTTP status code #{answer.status}" if answer.body.empty?
 
       json_body = JSON.parse(answer.body)
-      raise "Unexpected HTTP status code #{answer.status}, message: #{json_body['message']}"
+      raise ScriptError, "Unexpected HTTP status code #{answer.status}, message: #{json_body['message']}"
     end
 
     # Return either new session cookie or HTTP body
@@ -96,7 +96,7 @@ class HttpClient
       session_cookie
     else
       json_body = JSON.parse(answer.body)
-      raise "API failure: #{json_body['message']}" unless json_body['success']
+      raise ScriptError, "API failure: #{json_body['message']}" unless json_body['success']
 
       json_body['result']
     end
