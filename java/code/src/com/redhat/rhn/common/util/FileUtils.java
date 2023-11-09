@@ -20,19 +20,15 @@ import org.apache.commons.collections.buffer.CircularFifoBuffer;
 import org.apache.commons.io.LineIterator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jfree.io.IOUtils;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.StringWriter;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
@@ -134,23 +130,15 @@ public class FileUtils {
             log.debug("readStringFromFile: {}", StringUtil.sanitizeLogInput(path));
         }
 
-        File f = new File(path);
-        BufferedReader input;
         try {
-            input = new BufferedReader(new FileReader(f));
-            StringWriter writer = new StringWriter();
-            IOUtils.getInstance().copyWriter(input, writer);
-            String contents = writer.toString();
+            String contents = Files.readString(Path.of(path));
             if (noLog && log.isDebugEnabled()) {
                 log.debug("contents: {}", contents);
             }
             return contents;
         }
-        catch (FileNotFoundException e) {
-            throw new RhnRuntimeException("File not found: " + path);
-        }
         catch (IOException e) {
-            throw new RhnRuntimeException(e);
+            throw new RhnRuntimeException("Unable to load file content", e);
         }
     }
 
