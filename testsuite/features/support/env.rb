@@ -16,6 +16,7 @@ require 'multi_test'
 require 'set'
 require_relative 'code_coverage'
 require_relative 'twopence_env'
+require_relative 'commonlib'
 
 ## code coverage analysis
 # SimpleCov.start
@@ -104,7 +105,7 @@ def capybara_register_driver
   end
 end
 
-capybara_register_driver
+$capybara_driver = capybara_register_driver
 Selenium::WebDriver.logger.level = :error unless $debug_mode
 Capybara.default_driver = :headless_chrome
 Capybara.javascript_driver = :headless_chrome
@@ -117,6 +118,9 @@ STDOUT.puts "Capybara APP Host: #{Capybara.app_host}:#{Capybara.server_port}"
 
 # enable minitest assertions in steps
 World(MiniTest::Assertions)
+
+# Initialize the API client
+$api_test = new_api_client
 
 # Init CodeCoverage Handler
 $code_coverage = CodeCoverage.new(ENV['REDIS_HOST'], ENV['REDIS_PORT'], ENV['REDIS_USERNAME'], ENV['REDIS_PASSWORD']) if $code_coverage_mode
