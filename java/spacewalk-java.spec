@@ -113,7 +113,6 @@ BuildRequires:  javamail
 BuildRequires:  javapackages-tools
 BuildRequires:  javassist
 BuildRequires:  jboss-logging
-BuildRequires:  jcommon
 BuildRequires:  jdom
 BuildRequires:  joda-time
 BuildRequires:  jose4j
@@ -200,7 +199,6 @@ Requires:       javamail
 Requires:       javapackages-tools
 Requires:       javassist
 Requires:       jboss-logging
-Requires:       jcommon
 Requires:       jdom
 Requires:       joda-time
 Requires:       jose4j
@@ -364,7 +362,6 @@ Requires:       httpcomponents-core
 Requires:       java-%{java_version}-openjdk
 Requires:       javassist
 Requires:       jboss-logging
-Requires:       jcommon
 Requires:       jpa-api
 Requires:       jsch
 Requires:       log4j
