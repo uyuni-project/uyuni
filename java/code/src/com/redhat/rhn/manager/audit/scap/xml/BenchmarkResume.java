@@ -14,26 +14,34 @@
  */
 package com.redhat.rhn.manager.audit.scap.xml;
 
-import org.simpleframework.xml.Attribute;
-import org.simpleframework.xml.Element;
-import org.simpleframework.xml.Root;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Bean used to unmarshall an intermediary SCAP report.
  */
-@Root(name = "benchmark-resume", strict = false)
+@XmlRootElement(name = "benchmark-resume")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class BenchmarkResume {
 
-    @Attribute
+    @XmlAttribute(required = true)
     private String id;
 
-    @Attribute
+    @XmlAttribute(required = true)
     private String version;
 
-    @Element(name = "profile", required = false)
+    @XmlElement(name = "profile")
     private Profile profile;
 
-    @Element(name = "TestResult")
+    @XmlElement(name = "TestResult", required = true)
     private TestResult testResult;
 
     /**
@@ -90,6 +98,46 @@ public class BenchmarkResume {
      */
     public void setTestResult(TestResult testResultIn) {
         this.testResult = testResultIn;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (!(o instanceof BenchmarkResume)) {
+            return false;
+        }
+
+        BenchmarkResume that = (BenchmarkResume) o;
+
+        return new EqualsBuilder()
+            .append(id, that.id)
+            .append(version, that.version)
+            .append(profile, that.profile)
+            .append(testResult, that.testResult)
+            .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+            .append(id)
+            .append(version)
+            .append(profile)
+            .append(testResult)
+            .toHashCode();
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
+            .append("id", id)
+            .append("version", version)
+            .append("profile", profile)
+            .append("testResult", testResult)
+            .toString();
     }
 }
 
