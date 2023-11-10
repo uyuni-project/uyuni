@@ -77,16 +77,9 @@ import java.util.stream.Stream;
  * A class that passes messages from the sender to an action class
  */
 public class MessageQueue {
-
-    /**
-     * Logger for this class
-     */
-    private static Logger logger = LogManager.getLogger(MessageQueue.class);
-
-    private static final Map<Class<? extends EventMessage>, List<MessageAction>> ACTIONS =
-            new HashMap<>();
-    private static BlockingQueue<Runnable> messages = new LinkedBlockingQueue<>();
-    private static Thread dispatcherThread = null;
+    private static final Logger LOGGER = LogManager.getLogger(MessageQueue.class);
+    private static final Map<Class<? extends EventMessage>, List<MessageAction>> ACTIONS = new HashMap<>();
+    private static final BlockingQueue<Runnable> MESSAGE_QUEUE = new LinkedBlockingQueue<>();
     private static MessageDispatcher dispatcher = null;
     private static int messageCount;
 
@@ -102,8 +95,8 @@ public class MessageQueue {
      * @param msg EventMessage to publish to queue.
      */
     public static void publish(EventMessage msg) {
-        if (logger.isDebugEnabled()) {
-            logger.debug("publish(EventMessage) - start: {}", msg.getClass().getName());
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("publish(EventMessage) - start: {}", msg.getClass().getName());
         }
         if (!isMessaging()) {
             startMessaging();
@@ -112,25 +105,25 @@ public class MessageQueue {
             synchronized (ACTIONS) {
                 List<MessageAction> handlers = ACTIONS.get(msg.getClass());
                 if (handlers != null && !handlers.isEmpty()) {
-                    logger.debug("creating ActionExecutor");
+                    LOGGER.debug("creating ActionExecutor");
                     ActionExecutor executor = new ActionExecutor(handlers, msg);
                     try {
-                        messages.put(executor);
+                        MESSAGE_QUEUE.put(executor);
                         messageCount++;
                     }
                     catch (InterruptedException e) {
                         Thread.currentThread().interrupt();
-                        logger.error(e.getMessage(), e);
+                        LOGGER.error(e.getMessage(), e);
                     }
                 }
                 else {
-                    logger.debug("handlers is null, not processing!");
+                    LOGGER.debug("handlers is null, not processing!");
                 }
             }
         }
 
-        if (logger.isDebugEnabled()) {
-            logger.debug("publish(EventMessage) - end");
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("publish(EventMessage) - end");
         }
     }
 
@@ -144,7 +137,7 @@ public class MessageQueue {
     }
 
     static ActionExecutor popEventMessage() throws InterruptedException {
-        ActionExecutor retval = (ActionExecutor) messages.poll(500, TimeUnit.MILLISECONDS);
+        ActionExecutor retval = (ActionExecutor) MESSAGE_QUEUE.poll(500, TimeUnit.MILLISECONDS);
         if (retval != null) {
             synchronized (ACTIONS) {
                 messageCount--;
@@ -157,19 +150,19 @@ public class MessageQueue {
      * Start the messaging system
      */
     public static synchronized void startMessaging() {
-        if (logger.isDebugEnabled()) {
-            logger.debug("startMessaging() - start");
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("startMessaging() - start");
         }
         if (isMessaging()) {
             return;
         }
         dispatcher = new MessageDispatcher();
-        dispatcherThread = new Thread(dispatcher);
+        Thread dispatcherThread = new Thread(dispatcher);
         dispatcherThread.setName("RHN Message Dispatcher");
         dispatcherThread.setDaemon(false);
         dispatcherThread.start();
-        if (logger.isDebugEnabled()) {
-            logger.debug("startMessaging() - end");
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("startMessaging() - end");
         }
     }
 
@@ -177,12 +170,12 @@ public class MessageQueue {
      * Stop the messaging system
      */
     public static synchronized void stopMessaging() {
-        if (logger.isDebugEnabled()) {
-            logger.debug("stopMessaging() - start");
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("stopMessaging() - start");
         }
         dispatcher.stop();
-        if (logger.isDebugEnabled()) {
-            logger.debug("stopMessaging() - end");
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("stopMessaging() - end");
         }
     }
 
@@ -200,8 +193,8 @@ public class MessageQueue {
      * @param eventType type of event.
      */
     public static void registerAction(MessageAction act, Class<? extends EventMessage> eventType) {
-        if (logger.isDebugEnabled()) {
-            logger.debug("registerAction(MessageAction, Class) - : {} class: {}", act, eventType.getName());
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("registerAction(MessageAction, Class) - : {} class: {}", act, eventType.getName());
         }
         synchronized (ACTIONS) {
             List<MessageAction> handlers = ACTIONS.computeIfAbsent(eventType, k -> new ArrayList<>());
@@ -215,15 +208,15 @@ public class MessageQueue {
      * @param eventType Type of event.
      */
     public static void deRegisterAction(MessageAction act, Class<? extends EventMessage> eventType) {
-        if (logger.isDebugEnabled()) {
-            logger.debug("deRegisterAction(MessageAction, Class) - start");
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("deRegisterAction(MessageAction, Class) - start");
         }
         synchronized (ACTIONS) {
             List<MessageAction> handlers = ACTIONS.get(eventType);
             handlers.remove(act);
         }
-        if (logger.isDebugEnabled()) {
-            logger.debug("deRegisterAction(MessageAction, Class) - end");
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("deRegisterAction(MessageAction, Class) - end");
         }
     }
 
@@ -233,8 +226,8 @@ public class MessageQueue {
      * @return String[] array of registered events.
      */
     public static String[] getRegisteredEventNames() {
-        if (logger.isDebugEnabled()) {
-            logger.debug("getRegisteredEventNames() - start");
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("getRegisteredEventNames() - start");
         }
         String[] retval = null;
         synchronized (ACTIONS) {
@@ -248,8 +241,8 @@ public class MessageQueue {
             }
         }
 
-        if (logger.isDebugEnabled()) {
-            logger.debug("getRegisteredEventNames() - end - null");
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("getRegisteredEventNames() - end - null");
         }
         return retval;
     }
