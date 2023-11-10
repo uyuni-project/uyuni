@@ -29,11 +29,11 @@ import java.util.concurrent.TimeUnit;
  */
 public class TaskQueue {
 
+    private final byte[] emptyQueueWait = new byte[0];
     private QueueDriver queueDriver;
     private ThreadPoolExecutor executor = null;
     private int executingWorkers = 0;
     private int queueSize = 0;
-    private byte[] emptyQueueWait = new byte[0];
     private boolean taskQueueDone = true;
     private TaskoRun queueRun = null;
 
@@ -138,6 +138,7 @@ public class TaskQueue {
                 waitForEmptyQueue();
             }
             catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
                 queueDriver.getLogger().error(e.getMessage(), e);
                 HibernateFactory.commitTransaction();
                 HibernateFactory.closeSession();
@@ -168,10 +169,10 @@ public class TaskQueue {
      */
     public void waitForEmptyQueue() throws InterruptedException {
         synchronized (emptyQueueWait) {
-            if (queueSize == 0) {
-                return;
+            while (queueSize != 0) {
+                emptyQueueWait.wait();
             }
-            emptyQueueWait.wait();
+
         }
     }
 
