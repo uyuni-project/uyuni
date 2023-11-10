@@ -44,6 +44,15 @@ public class LookupException extends DatabaseException  {
     /**
      * Constructor
      * @param message exception message
+     * @param cause exception
+     */
+    public LookupException(String message, Throwable cause) {
+        this(message, cause, null, null, null);
+    }
+
+    /**
+     * Constructor
+     * @param message exception message
      * @param localizedTitleIn the localized title
      * @param localizedReason1In the localized first reason
      * @param localizedReason2In the localized second reason
