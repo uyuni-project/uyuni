@@ -28,7 +28,7 @@ import com.redhat.rhn.taskomatic.task.TaskConstants;
 import com.redhat.rhn.taskomatic.task.checkin.CheckinCandidatesResolver;
 import com.redhat.rhn.taskomatic.task.checkin.SystemCheckinUtils;
 import com.redhat.rhn.taskomatic.task.checkin.SystemSummary;
-import com.redhat.rhn.taskomatic.task.threaded.QueueDriver;
+import com.redhat.rhn.taskomatic.task.threaded.AbstractQueueDriver;
 import com.redhat.rhn.taskomatic.task.threaded.QueueWorker;
 
 import com.suse.manager.utils.SaltUtils;
@@ -47,7 +47,7 @@ import java.util.Set;
 /**
  * Provide services for salt ssh clients
  */
-public class SSHServiceDriver implements QueueDriver<SystemSummary> {
+public class SSHServiceDriver extends AbstractQueueDriver<SystemSummary> {
 
     // Synchronized set of systems we are currently talking to
     private static final Set<SystemSummary> CURRENT_SYSTEMS = Collections.synchronizedSet(new HashSet<>());

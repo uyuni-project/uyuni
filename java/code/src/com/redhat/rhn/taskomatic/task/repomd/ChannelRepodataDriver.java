@@ -20,7 +20,7 @@ import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.taskomatic.task.TaskConstants;
-import com.redhat.rhn.taskomatic.task.threaded.QueueDriver;
+import com.redhat.rhn.taskomatic.task.threaded.AbstractQueueDriver;
 import com.redhat.rhn.taskomatic.task.threaded.QueueWorker;
 
 import org.apache.logging.log4j.Logger;
@@ -34,7 +34,7 @@ import java.util.Map;
  *
  *
  */
-public class ChannelRepodataDriver implements QueueDriver<Map<String, Object>> {
+public class ChannelRepodataDriver extends AbstractQueueDriver<Map<String, Object>> {
 
     private Logger logger = null;
 

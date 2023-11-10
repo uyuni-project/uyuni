@@ -16,7 +16,7 @@ package com.redhat.rhn.taskomatic.task.systems;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.domain.task.TaskFactory;
-import com.redhat.rhn.taskomatic.task.threaded.QueueDriver;
+import com.redhat.rhn.taskomatic.task.threaded.AbstractQueueDriver;
 import com.redhat.rhn.taskomatic.task.threaded.QueueWorker;
 
 import org.apache.logging.log4j.Logger;
@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 /**
  * Driver for the threaded system overview update queue
  */
-public class SystemsOverviewUpdateDriver implements QueueDriver<Long> {
+public class SystemsOverviewUpdateDriver extends AbstractQueueDriver<Long> {
 
     public static final String TASK_NAME = "update_system_overview";
     private Logger logger = null;

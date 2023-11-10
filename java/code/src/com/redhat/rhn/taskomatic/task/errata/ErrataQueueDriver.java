@@ -19,7 +19,7 @@ import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.taskomatic.task.TaskConstants;
-import com.redhat.rhn.taskomatic.task.threaded.QueueDriver;
+import com.redhat.rhn.taskomatic.task.threaded.AbstractQueueDriver;
 import com.redhat.rhn.taskomatic.task.threaded.QueueWorker;
 
 import org.apache.logging.log4j.Logger;
@@ -30,7 +30,7 @@ import java.util.Map;
 /**
  * Driver for the threaded errata queue
  */
-public class ErrataQueueDriver implements QueueDriver<Map<String, Long>> {
+public class ErrataQueueDriver extends AbstractQueueDriver<Map<String, Long>> {
 
     private Logger logger = null;
 
