@@ -38,14 +38,6 @@ public class ErrataCacheDriver extends AbstractQueueDriver<Task> {
      * {@inheritDoc}
      */
     @Override
-    public boolean canContinue() {
-        return true;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public List<Task> getCandidates() {
         List<Task> tasks = TaskFactory.getTaskListByNameLike(ErrataCacheWorker.BY_CHANNEL);
         tasks.addAll(consolidateTasks(
@@ -88,14 +80,6 @@ public class ErrataCacheDriver extends AbstractQueueDriver<Task> {
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void initialize() {
-        // empty
-    }
-
-    /**
      * Reduce a given list of tasks to a list with unique data fields. Data is either
      * a system id or a channel id depending on the type of tasks given in.
      *
@@ -111,13 +95,5 @@ public class ErrataCacheDriver extends AbstractQueueDriver<Task> {
             }
         }
         return consolidated;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean isBlockingTaskQueue() {
-        return false;
     }
 }

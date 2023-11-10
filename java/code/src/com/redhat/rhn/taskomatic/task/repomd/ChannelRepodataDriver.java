@@ -62,14 +62,6 @@ public class ChannelRepodataDriver extends AbstractQueueDriver<Map<String, Objec
     }
 
     /**
-     * @return Returns boolean canContinue
-     */
-    @Override
-    public boolean canContinue() {
-        return true;
-    }
-
-    /**
      * @return Returns candidates
      */
     @Override
@@ -117,13 +109,5 @@ public class ChannelRepodataDriver extends AbstractQueueDriver<Map<String, Objec
     @Override
     public QueueWorker makeWorker(Map<String, Object> workItem) {
         return new ChannelRepodataWorker(workItem, getLogger());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean isBlockingTaskQueue() {
-        return false;
     }
 }

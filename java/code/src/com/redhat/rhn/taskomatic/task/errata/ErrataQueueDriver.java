@@ -38,14 +38,6 @@ public class ErrataQueueDriver extends AbstractQueueDriver<Map<String, Long>> {
      * {@inheritDoc}
      */
     @Override
-    public boolean canContinue() {
-        return true;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public List<Map<String, Long>> getCandidates() {
         SelectMode select = ModeFactory.getMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_ERRATA_QUEUE_FIND_CANDIDATES);
@@ -87,22 +79,5 @@ public class ErrataQueueDriver extends AbstractQueueDriver<Map<String, Long>> {
     @Override
     public QueueWorker makeWorker(Map<String, Long> workItem) {
         return new ErrataQueueWorker(workItem, logger);
-    }
-
-    /**
-    *
-    * {@inheritDoc}
-    */
-    @Override
-    public void initialize() {
-        // empty
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean isBlockingTaskQueue() {
-        return false;
     }
 }

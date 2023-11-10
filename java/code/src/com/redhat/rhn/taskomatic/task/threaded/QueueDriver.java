@@ -64,12 +64,16 @@ public interface QueueDriver<T> {
      * This method can return false to cause the queue to stop early.
      * @return true if processing can continue, otherwise false
      */
-    boolean canContinue();
+    default boolean canContinue() {
+        return true;
+    }
 
     /**
      * Actions that has to be executed, when queue is created
      */
-    void initialize();
+    default void initialize() {
+        // Do nothing by default
+    }
 
     /**
      * Specify if this is a blocking worker thread
