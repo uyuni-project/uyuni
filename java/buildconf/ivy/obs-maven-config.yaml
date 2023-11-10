@@ -251,8 +251,6 @@ artifacts:
     # How comes that package is not noarch?
     arch: x86_64
     repository: Uyuni_Other
-  - artifact: simple-xml
-    repository: Uyuni_Other
   - artifact: sitemesh
     repository: Uyuni_Other
   - artifact: slf4j-api
