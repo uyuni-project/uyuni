@@ -59,7 +59,7 @@ public class ChannelRepodataDriver extends AbstractQueueDriver<Map<String, Objec
     }
 
     @Override
-    public List<Map<String, Object>> getCandidates() {
+    protected List<Map<String, Object>> getCandidates() {
         SelectMode select = ModeFactory.getMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_REPOMD_DRIVER_QUERY);
 
@@ -87,7 +87,7 @@ public class ChannelRepodataDriver extends AbstractQueueDriver<Map<String, Objec
     }
 
     @Override
-    public QueueWorker makeWorker(Map<String, Object> workItem) {
+    protected QueueWorker makeWorker(Map<String, Object> workItem) {
         return new ChannelRepodataWorker(workItem, getLogger());
     }
 }

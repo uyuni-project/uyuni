@@ -60,7 +60,7 @@ public class ErrataCacheDriver extends AbstractQueueDriver<Task> {
     }
 
     @Override
-    public QueueWorker makeWorker(Task task) {
+    protected QueueWorker makeWorker(Task task) {
         return new ErrataCacheWorker(task, logger);
     }
 
