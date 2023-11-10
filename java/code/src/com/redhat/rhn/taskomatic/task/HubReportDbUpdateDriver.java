@@ -18,7 +18,7 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.server.MgrServerInfo;
-import com.redhat.rhn.taskomatic.task.threaded.QueueDriver;
+import com.redhat.rhn.taskomatic.task.threaded.AbstractQueueDriver;
 import com.redhat.rhn.taskomatic.task.threaded.QueueWorker;
 
 import org.apache.logging.log4j.Logger;
@@ -37,7 +37,7 @@ import javax.persistence.criteria.CriteriaQuery;
 /**
  * Hub Reporting DB Task Driver
  */
-public class HubReportDbUpdateDriver implements QueueDriver<MgrServerInfo> {
+public class HubReportDbUpdateDriver extends AbstractQueueDriver<MgrServerInfo> {
 
     private static Set<MgrServerInfo> currentMgrServerInfos = Collections.synchronizedSet(new HashSet<>());
     private Logger log;

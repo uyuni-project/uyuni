@@ -17,7 +17,7 @@ package com.redhat.rhn.taskomatic.task.errata;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.domain.task.Task;
 import com.redhat.rhn.domain.task.TaskFactory;
-import com.redhat.rhn.taskomatic.task.threaded.QueueDriver;
+import com.redhat.rhn.taskomatic.task.threaded.AbstractQueueDriver;
 import com.redhat.rhn.taskomatic.task.threaded.QueueWorker;
 
 import org.apache.logging.log4j.Logger;
@@ -30,7 +30,7 @@ import java.util.Set;
 /**
  * Driver for the threaded errata cache update queue
  */
-public class ErrataCacheDriver implements QueueDriver<Task> {
+public class ErrataCacheDriver extends AbstractQueueDriver<Task> {
 
     private Logger logger = null;
 
