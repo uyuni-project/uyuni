@@ -91,7 +91,7 @@ public class SSHServiceDriver extends AbstractQueueDriver<SystemSummary> {
     }
 
     @Override
-    public List<SystemSummary> getCandidates() {
+    protected List<SystemSummary> getCandidates() {
         List<SystemSummary> candidates = new LinkedList<>();
 
         // Find Salt systems currently rebooting,
@@ -150,7 +150,7 @@ public class SSHServiceDriver extends AbstractQueueDriver<SystemSummary> {
     }
 
     @Override
-    public QueueWorker makeWorker(SystemSummary system) {
+    protected QueueWorker makeWorker(SystemSummary system) {
         return new SSHServiceWorker(getLogger(), system,
                 GlobalInstanceHolder.SALT_API,
                 GlobalInstanceHolder.SALT_API.getSaltSSHService(),

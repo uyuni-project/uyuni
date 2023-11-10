@@ -25,11 +25,11 @@ import org.apache.logging.log4j.Logger;
 import org.hibernate.Hibernate;
 import org.hibernate.query.Query;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -39,7 +39,7 @@ import javax.persistence.criteria.CriteriaQuery;
  */
 public class HubReportDbUpdateDriver extends AbstractQueueDriver<MgrServerInfo> {
 
-    private static Set<MgrServerInfo> currentMgrServerInfos = Collections.synchronizedSet(new HashSet<>());
+    private static final Set<MgrServerInfo> CURRENT_MGR_SERVER_INFOS = Collections.synchronizedSet(new HashSet<>());
     private Logger log;
 
     @Override
@@ -53,7 +53,7 @@ public class HubReportDbUpdateDriver extends AbstractQueueDriver<MgrServerInfo> 
     }
 
     public static Set<MgrServerInfo> getCurrentMgrServerInfos() {
-        return currentMgrServerInfos;
+        return CURRENT_MGR_SERVER_INFOS;
     }
 
     /**
@@ -70,18 +70,18 @@ public class HubReportDbUpdateDriver extends AbstractQueueDriver<MgrServerInfo> 
     }
 
     @Override
-    public List<MgrServerInfo> getCandidates() {
-        synchronized (currentMgrServerInfos) {
+    protected List<MgrServerInfo> getCandidates() {
+        synchronized (CURRENT_MGR_SERVER_INFOS) {
             Set<MgrServerInfo> candidates = getMgrServers();
             // Do not return candidates we are talking to already
-            for (MgrServerInfo s : currentMgrServerInfos) {
+            for (MgrServerInfo s : CURRENT_MGR_SERVER_INFOS) {
                 if (candidates.contains(s)) {
                     log.debug("Skipping system: {}", s.getServer().getName());
                     candidates.remove(s);
                 }
             }
             candidates.forEach(e ->  Hibernate.initialize(e.getReportDbCredentials()));
-            return candidates.stream().collect(Collectors.toList());
+            return new ArrayList<>(candidates);
         }
     }
 
@@ -92,7 +92,7 @@ public class HubReportDbUpdateDriver extends AbstractQueueDriver<MgrServerInfo> 
     }
 
     @Override
-    public QueueWorker makeWorker(MgrServerInfo workItem) {
+    protected QueueWorker makeWorker(MgrServerInfo workItem) {
         return new HubReportDbUpdateWorker(log, workItem);
     }
 
