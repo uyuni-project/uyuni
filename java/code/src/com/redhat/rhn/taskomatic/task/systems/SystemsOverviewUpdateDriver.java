@@ -60,19 +60,4 @@ public class SystemsOverviewUpdateDriver extends AbstractQueueDriver<Long> {
     public QueueWorker makeWorker(Long sid) {
         return new SystemsOverviewUpdateWorker(sid, logger);
     }
-
-    @Override
-    public boolean canContinue() {
-        return true;
-    }
-
-    @Override
-    public void initialize() {
-        // Empty
-    }
-
-    @Override
-    public boolean isBlockingTaskQueue() {
-        return false;
-    }
 }
