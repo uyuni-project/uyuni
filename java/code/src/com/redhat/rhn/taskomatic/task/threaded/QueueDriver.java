@@ -16,8 +16,6 @@ package com.redhat.rhn.taskomatic.task.threaded;
 
 import org.apache.logging.log4j.Logger;
 
-import java.util.List;
-
 /**
  * "Driver" for a work queue of worker threads
  * @param <T> type of the queue driver candidates
@@ -37,10 +35,16 @@ public interface QueueDriver<T> {
     Logger getLogger();
 
     /**
-     * List of work items to "prime" the queue
-     * @return list of work items
+     * Retrieves the work items and "prime" the queue
+     * @return the number of work items fetched
      */
-    List<T> getCandidates();
+    int fetchCandidates();
+
+    /**
+     * Check if the queue has additional work item candidates
+     * @return true if work items are available in the queue
+     */
+    boolean hasCandidates();
 
     /**
      * Maximum number of worker threads to run
@@ -49,11 +53,10 @@ public interface QueueDriver<T> {
     int getMaxWorkers();
 
     /**
-     * Create a worker instance to work on a particular work item
-     * @param workItem object contained in the list returned from getCandidates()
+     * Create a worker instance to work on the next work item of the queue
      * @return worker instance
      */
-    QueueWorker makeWorker(T workItem);
+    QueueWorker nextWorker();
 
     /**
      * Logic to tell the queue when to stop running
