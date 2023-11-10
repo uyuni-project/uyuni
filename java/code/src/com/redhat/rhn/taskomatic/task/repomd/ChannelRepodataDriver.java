@@ -38,9 +38,6 @@ public class ChannelRepodataDriver extends AbstractQueueDriver<Map<String, Objec
 
     private Logger logger = null;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void initialize() {
         WriteMode resetChannelRepodata = ModeFactory.getWriteMode(TaskConstants.MODE_NAME,
@@ -61,9 +58,6 @@ public class ChannelRepodataDriver extends AbstractQueueDriver<Map<String, Objec
         }
     }
 
-    /**
-     * @return Returns candidates
-     */
     @Override
     public List<Map<String, Object>> getCandidates() {
         SelectMode select = ModeFactory.getMode(TaskConstants.MODE_NAME,
@@ -77,35 +71,21 @@ public class ChannelRepodataDriver extends AbstractQueueDriver<Map<String, Objec
         return Collections.emptyList();
     }
 
-    /**
-     * @return Returns Logger
-     */
     @Override
     public Logger getLogger() {
         return logger;
     }
-
-    /**
-     * {@inheritDoc}
-     */
 
     @Override
     public void setLogger(Logger loggerIn) {
         logger = loggerIn;
     }
 
-    /**
-     * @return Returns max workers
-     */
     @Override
     public int getMaxWorkers() {
         return ConfigDefaults.get().getTaskoChannelRepodataWorkers();
     }
 
-    /**
-     * @param workItem work item
-     * @return Returns channel repodata worker object
-     */
     @Override
     public QueueWorker makeWorker(Map<String, Object> workItem) {
         return new ChannelRepodataWorker(workItem, getLogger());

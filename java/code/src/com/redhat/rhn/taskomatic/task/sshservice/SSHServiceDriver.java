@@ -71,9 +71,6 @@ public class SSHServiceDriver extends AbstractQueueDriver<SystemSummary> {
         return CURRENT_SYSTEMS;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void initialize() {
         this.checkinCandidatesResolver = new CheckinCandidatesResolver(
@@ -93,9 +90,6 @@ public class SSHServiceDriver extends AbstractQueueDriver<SystemSummary> {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public List<SystemSummary> getCandidates() {
         List<SystemSummary> candidates = new LinkedList<>();
@@ -155,9 +149,6 @@ public class SSHServiceDriver extends AbstractQueueDriver<SystemSummary> {
         return candidates;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public QueueWorker makeWorker(SystemSummary system) {
         return new SSHServiceWorker(getLogger(), system,
@@ -167,25 +158,16 @@ public class SSHServiceDriver extends AbstractQueueDriver<SystemSummary> {
                 GlobalInstanceHolder.SALT_UTILS);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getMaxWorkers() {
         return Config.get().getInt(WORKER_THREADS_KEY, Config.get().getInt("taskomatic.ssh_push_workers", 2));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setLogger(Logger loggerIn) {
         this.log = loggerIn;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Logger getLogger() {
         return log;

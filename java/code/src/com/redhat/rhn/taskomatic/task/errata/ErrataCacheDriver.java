@@ -34,9 +34,6 @@ public class ErrataCacheDriver extends AbstractQueueDriver<Task> {
 
     private Logger logger = null;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public List<Task> getCandidates() {
         List<Task> tasks = TaskFactory.getTaskListByNameLike(ErrataCacheWorker.BY_CHANNEL);
@@ -47,33 +44,21 @@ public class ErrataCacheDriver extends AbstractQueueDriver<Task> {
         return tasks;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Logger getLogger() {
         return logger;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setLogger(Logger loggerIn) {
         logger = loggerIn;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getMaxWorkers() {
         return Config.get().getInt("taskomatic.errata_cache_workers", 2);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public QueueWorker makeWorker(Task task) {
         return new ErrataCacheWorker(task, logger);

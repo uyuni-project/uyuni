@@ -34,9 +34,6 @@ public class ErrataQueueDriver extends AbstractQueueDriver<Map<String, Long>> {
 
     private Logger logger = null;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public List<Map<String, Long>> getCandidates() {
         SelectMode select = ModeFactory.getMode(TaskConstants.MODE_NAME,
@@ -49,33 +46,21 @@ public class ErrataQueueDriver extends AbstractQueueDriver<Map<String, Long>> {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setLogger(Logger loggerIn) {
         logger = loggerIn;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Logger getLogger() {
         return logger;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getMaxWorkers() {
         return Config.get().getInt("taskomatic.errata_queue_workers", 2);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public QueueWorker makeWorker(Map<String, Long> workItem) {
         return new ErrataQueueWorker(workItem, logger);
