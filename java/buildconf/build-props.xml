@@ -139,7 +139,7 @@
               apache-commons-text/commons-text commons-logging ${commons-validator} ${hibernatedeps} ${commons-compress}
               ${tomcat-jars} ${javamail} jdom jsch ${log4j-jars} oro redstone-xmlrpc-client redstone-xmlrpc
               ${struts-jars} ${postgresql-jdbc} quartz ${suse-common-jars} velocity-engine-core simple-core snakeyaml
-              simpleframework/simplexml ${commons-jexl}" />
+              ${commons-jexl}" />
 
   <property name="dist.jar.dependencies"
             value="antlr4/antlr4-runtime ${c3p0} commons-collections commons-beanutils commons-cli commons-codec
@@ -147,7 +147,7 @@
               commons-io ${commons-lang} apache-commons-text/commons-text commons-logging ${commons-compress}
               ${commons-validator} ${hibernatedeps} ${jta} ${jaf} ${jasper-jars} ${javamail} ${jaxb} ${jstl} jdom
               ${tomcat-jars} ${log4j-jars} redstone-xmlrpc-client redstone-xmlrpc oro quartz sitemesh ${struts-jars}
-              ${postgresql-jdbc} snakeyaml simpleframework/simplexml ${suse-common-jars} ${suse-runtime-jars}
+              ${postgresql-jdbc} snakeyaml ${suse-common-jars} ${suse-runtime-jars}
               xalan-j2 xalan-j2-serializer xerces-j2 simple-core ${jcache} ${other-jars}" />
 
   <property name="taskomatic.jar.dependencies" value="${dist.jar.dependencies} jsch" />
