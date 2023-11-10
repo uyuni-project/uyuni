@@ -21,7 +21,6 @@ import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
-import com.redhat.rhn.common.util.DateFormatTransformer;
 import com.redhat.rhn.domain.action.scap.ScapAction;
 import com.redhat.rhn.domain.audit.ScapFactory;
 import com.redhat.rhn.domain.audit.XccdfBenchmark;
@@ -51,8 +50,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.mutable.MutableBoolean;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.simpleframework.xml.core.Persister;
-import org.simpleframework.xml.transform.RegistryMatcher;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -70,6 +67,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
@@ -86,6 +85,8 @@ public class ScapManager extends BaseManager {
 
     private static final List<String> SEARCH_TERM_PRECEDENCE = Arrays.asList(
             "slabel", "start", "end", "result");
+
+    private static JAXBContext jaxbContext;
 
     /**
      * Returns the given system is scap enabled.
@@ -492,12 +493,9 @@ public class ScapManager extends BaseManager {
                                                   InputStream resumeXml) {
         ScapFactory.clearTestResult(server.getId(), action.getId());
         try {
-            BenchmarkResume resume = createXmlPersister()
-                    .read(BenchmarkResume.class, resumeXml);
-            Profile profile = Optional.ofNullable(resume.getProfile()).orElse(
-                    new Profile("None",
-                            "No profile selected. Using defaults.",
-                            ""));
+            BenchmarkResume resume = (BenchmarkResume) getJaxbContext().createUnmarshaller().unmarshal(resumeXml);
+            Profile profile = Optional.ofNullable(resume.getProfile())
+                .orElse(new Profile("None", "No profile selected. Using defaults.", ""));
             TestResult testResults = resume.getTestResult();
             if (testResults == null) {
                 log.error("Scap report misses profile or testresult element");
@@ -550,6 +548,14 @@ public class ScapManager extends BaseManager {
             log.error("Scap xccdf eval failed", e);
             throw new RhnRuntimeException("Scap xccdf eval failed", e);
         }
+    }
+
+    private static JAXBContext getJaxbContext() throws JAXBException {
+        if (jaxbContext == null) {
+            jaxbContext = JAXBContext.newInstance(BenchmarkResume.class);
+        }
+
+        return jaxbContext;
     }
 
     private static void processRuleResult(XccdfTestResult testResult,
@@ -620,12 +626,6 @@ public class ScapManager extends BaseManager {
                                         ruleIdentifier +
                                         ", system=" +
                                         system));
-    }
-
-    private static Persister createXmlPersister() {
-        RegistryMatcher registryMatcher = new RegistryMatcher();
-        registryMatcher.bind(Date.class, DateFormatTransformer.createXmlDateTransformer());
-        return new Persister(registryMatcher);
     }
 
     private static String truncate(String string, int maxLen, MutableBoolean truncated) {

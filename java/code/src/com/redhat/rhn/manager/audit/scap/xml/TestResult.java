@@ -14,53 +14,69 @@
  */
 package com.redhat.rhn.manager.audit.scap.xml;
 
-import org.simpleframework.xml.Attribute;
-import org.simpleframework.xml.ElementList;
-import org.simpleframework.xml.Root;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.Date;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+
 /**
  * Bean used to unmarshall an intermediary SCAP report.
  */
-@Root(strict = false)
+@XmlAccessorType(XmlAccessType.FIELD)
 public class TestResult {
 
-    @Attribute
+    @XmlAttribute(required = true)
     private String id;
 
-    @Attribute(name = "start-time")
+    @XmlAttribute(name = "start-time", required = true)
     private Date startTime;
 
-    @Attribute(name = "end-time")
+    @XmlAttribute(name = "end-time", required = true)
     private Date endTime;
 
-    @ElementList(name = "pass")
+    @XmlElementWrapper(name = "pass", required = true)
+    @XmlElement(name = "rr")
     private List<TestResultRuleResult> pass;
 
-    @ElementList(name = "fail")
+    @XmlElementWrapper(name = "fail", required = true)
+    @XmlElement(name = "rr")
     private List<TestResultRuleResult> fail;
 
-    @ElementList(name = "error")
+    @XmlElementWrapper(name = "error", required = true)
+    @XmlElement(name = "rr")
     private List<TestResultRuleResult> error;
 
-    @ElementList(name = "unknown")
+    @XmlElementWrapper(name = "unknown", required = true)
+    @XmlElement(name = "rr")
     private List<TestResultRuleResult> unknown;
 
-    @ElementList(name = "notapplicable")
+    @XmlElementWrapper(name = "notapplicable", required = true)
+    @XmlElement(name = "rr")
     private List<TestResultRuleResult> notapplicable;
 
-    @ElementList(name = "notchecked")
+    @XmlElementWrapper(name = "notchecked", required = true)
+    @XmlElement(name = "rr")
     private List<TestResultRuleResult> notchecked;
 
-    @ElementList(name = "notselected")
+    @XmlElementWrapper(name = "notselected", required = true)
+    @XmlElement(name = "rr")
     private List<TestResultRuleResult> notselected;
 
-    @ElementList(name = "informational")
+    @XmlElementWrapper(name = "informational", required = true)
+    @XmlElement(name = "rr")
     private List<TestResultRuleResult> informational;
 
-    @ElementList(name = "fixed")
+    @XmlElementWrapper(name = "fixed", required = true)
+    @XmlElement(name = "rr")
     private List<TestResultRuleResult> fixed;
 
     /**
@@ -228,5 +244,69 @@ public class TestResult {
      */
     public void setFixed(List<TestResultRuleResult> fixedIn) {
         this.fixed = fixedIn;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (!(o instanceof TestResult)) {
+            return false;
+        }
+
+        TestResult that = (TestResult) o;
+
+        return new EqualsBuilder()
+            .append(id, that.id)
+            .append(startTime, that.startTime)
+            .append(endTime, that.endTime)
+            .append(pass, that.pass)
+            .append(fail, that.fail)
+            .append(error, that.error)
+            .append(unknown, that.unknown)
+            .append(notapplicable, that.notapplicable)
+            .append(notchecked, that.notchecked)
+            .append(notselected, that.notselected)
+            .append(informational, that.informational)
+            .append(fixed, that.fixed)
+            .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+            .append(id)
+            .append(startTime)
+            .append(endTime)
+            .append(pass)
+            .append(fail)
+            .append(error)
+            .append(unknown)
+            .append(notapplicable)
+            .append(notchecked)
+            .append(notselected)
+            .append(informational)
+            .append(fixed)
+            .toHashCode();
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
+            .append("id", id)
+            .append("startTime", startTime)
+            .append("endTime", endTime)
+            .append("pass", pass)
+            .append("fail", fail)
+            .append("error", error)
+            .append("unknown", unknown)
+            .append("notapplicable", notapplicable)
+            .append("notchecked", notchecked)
+            .append("notselected", notselected)
+            .append("informational", informational)
+            .append("fixed", fixed)
+            .toString();
     }
 }
