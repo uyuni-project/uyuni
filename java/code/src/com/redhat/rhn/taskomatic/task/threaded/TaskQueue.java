@@ -18,10 +18,10 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.taskomatic.domain.TaskoRun;
 
 import java.util.List;
-
-import EDU.oswego.cs.dl.util.concurrent.Channel;
-import EDU.oswego.cs.dl.util.concurrent.LinkedQueue;
-import EDU.oswego.cs.dl.util.concurrent.PooledExecutor;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Generic threaded queue suitable for use wherever Taskomatic
@@ -30,7 +30,7 @@ import EDU.oswego.cs.dl.util.concurrent.PooledExecutor;
 public class TaskQueue {
 
     private QueueDriver queueDriver;
-    private PooledExecutor executor = null;
+    private ThreadPoolExecutor executor = null;
     private int executingWorkers = 0;
     private int queueSize = 0;
     private byte[] emptyQueueWait = new byte[0];
@@ -106,8 +106,8 @@ public class TaskQueue {
      */
     public void run() {
         shutdownExecutor();
-        Channel workers = new LinkedQueue();
-        List candidates = queueDriver.getCandidates();
+        BlockingQueue<Runnable> workers = new LinkedBlockingQueue<>();
+        List<?> candidates = queueDriver.getCandidates();
         queueSize += candidates.size();
         if (queueSize > 0) {
             queueDriver.getLogger().info("In the queue: {}", queueSize);
@@ -123,6 +123,7 @@ public class TaskQueue {
                 unsetTaskQueueDone();
             }
             catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
                 queueDriver.getLogger().error(e.getMessage(), e);
                 HibernateFactory.commitTransaction();
                 HibernateFactory.closeSession();
@@ -130,7 +131,7 @@ public class TaskQueue {
                 return;
             }
         }
-        setupQueue(workers);
+        executor = setupQueue(workers);
 
         if (queueDriver.isBlockingTaskQueue()) {
             try {
@@ -176,37 +177,45 @@ public class TaskQueue {
 
     void shutdown() {
         executor.shutdownNow();
-        while (!executor.isTerminatedAfterShutdown()) {
+        waitExecutorTermination();
+    }
+
+    private void shutdownExecutor() {
+        if (executor != null) {
+            executor.shutdown();
+            waitExecutorTermination();
+            executor = null;
+        }
+    }
+
+    private void waitExecutorTermination() {
+        boolean terminated = executor.isTerminated();
+        while (!terminated) {
             try {
-                Thread.sleep(100);
+                terminated = executor.awaitTermination(100, TimeUnit.MILLISECONDS);
             }
             catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
                 queueDriver.getLogger().error(e.getMessage(), e);
                 return;
             }
         }
     }
 
-    private void shutdownExecutor() {
-        if (executor != null) {
-            executor.shutdownAfterProcessingCurrentlyQueuedTasks();
-            executor = null;
-        }
-    }
+    private ThreadPoolExecutor setupQueue(BlockingQueue<Runnable> workers) {
+        int size = queueDriver.getMaxWorkers();
 
-    private void setupQueue(Channel workers) {
-        int maxPoolSize = queueDriver.getMaxWorkers();
-        executor = new PooledExecutor(workers);
-        executor.waitWhenBlocked();
-        executor.setThreadFactory(new TaskThreadFactory());
-        executor.setKeepAliveTime(5000);
-        executor.setMinimumPoolSize(1);
-        executor.setMaximumPoolSize(maxPoolSize);
-        executor.createThreads(maxPoolSize);
+        TaskThreadFactory factory = new TaskThreadFactory();
+        ThreadPoolExecutor poolExecutor = new ThreadPoolExecutor(size, size, 5, TimeUnit.SECONDS, workers, factory);
+
+        poolExecutor.allowCoreThreadTimeOut(false);
+        poolExecutor.prestartAllCoreThreads();
+
+        return poolExecutor;
     }
 
     /**
-     * - while there're workers in the queue,
+     * - while there are workers in the queue,
      * they will be executed as within the same run
      * to get stored all the logs together
      * - otherwise we would lose the logs,
