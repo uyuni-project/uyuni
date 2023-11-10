@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.taskomatic.task.threaded;
 
-import EDU.oswego.cs.dl.util.concurrent.ThreadFactory;
+import java.util.concurrent.ThreadFactory;
 
 /**
  * ThreadFactory impl for Taskomatic

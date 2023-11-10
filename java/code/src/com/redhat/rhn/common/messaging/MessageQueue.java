@@ -68,10 +68,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
-
-import EDU.oswego.cs.dl.util.concurrent.Channel;
-import EDU.oswego.cs.dl.util.concurrent.LinkedQueue;
 
 /**
  * A class that passes messages from the sender to an action class
@@ -85,7 +85,7 @@ public class MessageQueue {
 
     private static final Map<Class<? extends EventMessage>, List<MessageAction>> ACTIONS =
             new HashMap<>();
-    private static Channel messages = new LinkedQueue();
+    private static BlockingQueue<Runnable> messages = new LinkedBlockingQueue<>();
     private static Thread dispatcherThread = null;
     private static MessageDispatcher dispatcher = null;
     private static int messageCount;
@@ -119,6 +119,7 @@ public class MessageQueue {
                         messageCount++;
                     }
                     catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
                         logger.error(e.getMessage(), e);
                     }
                 }
@@ -143,7 +144,7 @@ public class MessageQueue {
     }
 
     static ActionExecutor popEventMessage() throws InterruptedException {
-        ActionExecutor retval = (ActionExecutor) messages.poll(500);
+        ActionExecutor retval = (ActionExecutor) messages.poll(500, TimeUnit.MILLISECONDS);
         if (retval != null) {
             synchronized (ACTIONS) {
                 messageCount--;
