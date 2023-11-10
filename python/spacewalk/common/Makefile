@@ -21,7 +21,8 @@ SPACEWALK_FILES	=   __init__ \
             rhnTranslate \
             RPC_Base \
             suseLib \
-            repo
+            repo \
+            cryptHelper
 
 SCRIPTS = spacewalk-cfg-get
 
