@@ -65,7 +65,8 @@ hostname = socket.gethostname()
 if '.' not in hostname:
     hostname = socket.getfqdn()
 
-
+config_root = os.environ.get('RHN_CONFIG_PATH', '/etc/rhn')
+masterpw_file = '{}/masterpassword'.format(config_root)
 default_log_location = '/var/log/rhn/'
 relative_comps_dir = 'rhn/comps'
 relative_modules_dir = 'rhn/modules'
@@ -1892,7 +1893,11 @@ class RepoSync(object):
                 sys.exit(1)
             if credentials['type'] != "rhui":
                 url.username = credentials['username']
-                url.password = base64.decodestring(credentials['password'].encode()).decode()
+                if credentials['password'].startswith("U2FsdGVkX1"):
+                    crypt = CryptHelper()
+                    url.password = crypt.aes256Decode(credentials['password'], crypt.pwFromFile(masterpw_file))
+                else:
+                    url.password = base64.decodestring(credentials['password'].encode()).decode()
             # remove query parameter from url
             url.query = ""
             if 'extra_auth' in credentials and credentials['extra_auth']:
