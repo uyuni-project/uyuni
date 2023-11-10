@@ -83,8 +83,6 @@ artifacts:
   - artifact: commons-compress
     package: apache-commons-compress
     repository: Leap
-  - artifact: concurrent
-    repository: Uyuni_Other
   - artifact: concurrentlinkedhashmap-lru
     repository: Uyuni_Other
   - artifact: dom4j
