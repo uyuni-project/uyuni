@@ -35,7 +35,7 @@ public class ErrataQueueDriver extends AbstractQueueDriver<Map<String, Long>> {
     private Logger logger = null;
 
     @Override
-    public List<Map<String, Long>> getCandidates() {
+    protected List<Map<String, Long>> getCandidates() {
         SelectMode select = ModeFactory.getMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_ERRATA_QUEUE_FIND_CANDIDATES);
         try {
@@ -62,7 +62,7 @@ public class ErrataQueueDriver extends AbstractQueueDriver<Map<String, Long>> {
     }
 
     @Override
-    public QueueWorker makeWorker(Map<String, Long> workItem) {
+    protected QueueWorker makeWorker(Map<String, Long> workItem) {
         return new ErrataQueueWorker(workItem, logger);
     }
 }

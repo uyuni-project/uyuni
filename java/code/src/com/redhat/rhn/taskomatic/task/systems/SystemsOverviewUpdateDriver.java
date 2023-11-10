@@ -43,7 +43,7 @@ public class SystemsOverviewUpdateDriver extends AbstractQueueDriver<Long> {
     }
 
     @Override
-    public List<Long> getCandidates() {
+    protected List<Long> getCandidates() {
         // Candidates are system IDs, deduplicated to avoid useless updates
         return TaskFactory.getTaskListByNameLike(TASK_NAME).stream()
             .map(task -> task.getData())
@@ -57,7 +57,7 @@ public class SystemsOverviewUpdateDriver extends AbstractQueueDriver<Long> {
     }
 
     @Override
-    public QueueWorker makeWorker(Long sid) {
+    protected QueueWorker makeWorker(Long sid) {
         return new SystemsOverviewUpdateWorker(sid, logger);
     }
 }
