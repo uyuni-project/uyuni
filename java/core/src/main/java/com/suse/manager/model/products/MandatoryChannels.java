@@ -15,20 +15,15 @@
 
 package com.suse.manager.model.products;
 
-import org.simpleframework.xml.ElementList;
-import org.simpleframework.xml.Root;
-
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * A collection of Channels that are mandatory for a Product.
  */
-@Root(name = "mandatory_channels")
 public class MandatoryChannels {
 
     /** The channel. */
-    @ElementList(inline = true, required = false)
     private List<Channel> channel;
 
     /**
