@@ -1,3 +1,6 @@
+# Copyright (c) 2023 SUSE LLC.
+# Licensed under the terms of the MIT license.
+
 # Create an SSL certificate using cert-manager and return the path on the server where the files have been copied
 def generate_certificate(name, fqdn)
   certificate = 'apiVersion: cert-manager.io/v1\\n'\

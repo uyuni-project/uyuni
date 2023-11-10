@@ -8,17 +8,13 @@ require 'date'
 require 'timeout'
 
 When(/^I enter "([^"]*)" relative to profiles as "([^"]*)"$/) do |path, field|
-  git_profiles = ENV['GITPROFILES']
+  git_profiles = ENV.fetch('GITPROFILES', nil)
   step %(I enter "#{git_profiles}/#{path}" as "#{field}")
 end
 
 When(/^I enter URI, username and password for registry$/) do
   auth_registry_username, auth_registry_password = ENV['AUTH_REGISTRY_CREDENTIALS'].split('|')
-  steps %(
-    When I enter "#{$auth_registry}" as "uri"
-    And I enter "#{auth_registry_username}" as "username"
-    And I enter "#{auth_registry_password}" as "password"
-  )
+  steps %( When I enter "#{$auth_registry}" as "uri" And I enter "#{auth_registry_username}" as "username" And I enter "#{auth_registry_password}" as "password" )
 end
 
 When(/^I wait at most (\d+) seconds until image "([^"]*)" with version "([^"]*)" is built successfully via API$/) do |timeout, name, version|

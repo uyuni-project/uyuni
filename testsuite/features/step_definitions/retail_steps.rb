@@ -224,10 +224,10 @@ end
 # Click on the terminal
 When(/^I follow "([^"]*)" terminal$/) do |host|
   domain = read_branch_prefix_from_yaml
-  if !host.include? 'pxeboot'
-    step %(I follow "#{domain}.#{host}")
-  else
+  if host.include? 'pxeboot'
     step %(I follow "#{host}.#{domain}")
+  else
+    step %(I follow "#{domain}.#{host}")
   end
 end
 

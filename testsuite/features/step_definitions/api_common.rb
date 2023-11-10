@@ -67,12 +67,11 @@ end
 
 When(/^I wait for the OpenSCAP audit to finish$/) do
   @sle_id = $api_test.system.retrieve_server_id(get_target('sle_minion').full_hostname)
-  begin
-    repeat_until_timeout(message: 'Process did not complete') do
-      scans = $api_test.system.scap.list_xccdf_scans(@sle_id)
-      # in the openscap test, we schedule 2 scans
-      break if scans.length > 1
-    end
+
+  repeat_until_timeout(message: 'Process did not complete') do
+    scans = $api_test.system.scap.list_xccdf_scans(@sle_id)
+    # in the openscap test, we schedule 2 scans
+    break if scans.length > 1
   end
 end
 
@@ -139,11 +138,7 @@ end
 When(/^I create the following channels:$/) do |table|
   channels = table.hashes
   channels.each do |ch|
-    assert_equal(1,
-      $api_test.channel.software.create(
-        ch['LABEL'], ch['NAME'], ch['SUMMARY'], ch['ARCH'], ch['PARENT']
-      )
-    )
+    assert_equal(1, $api_test.channel.software.create(ch['LABEL'], ch['NAME'], ch['SUMMARY'], ch['ARCH'], ch['PARENT']))
   end
 end
 
@@ -387,9 +382,7 @@ end
 ## schedule API
 
 Then(/^I should see scheduled action, called "(.*?)"$/) do |label|
-  assert_includes(
-    $api_test.schedule.list_in_progress_actions.map { |a| a['name'] }, label
-  )
+  assert_includes($api_test.schedule.list_in_progress_actions.map { |a| a['name'] }, label)
 end
 
 Then(/^I cancel all scheduled actions$/) do

@@ -21,7 +21,7 @@ require_relative 'commonlib'
 ## code coverage analysis
 # SimpleCov.start
 
-server = ENV['SERVER']
+server = ENV.fetch('SERVER', nil)
 if ENV['DEBUG']
   $debug_mode = true
   STDOUT.puts('DEBUG MODE ENABLED.')
@@ -38,16 +38,16 @@ $channels_synchronized = Set[]
 $context = {}
 
 # Other global variables
-$pxeboot_mac = ENV['PXEBOOT_MAC']
-$pxeboot_image = ENV['PXEBOOT_IMAGE'] || 'sles15sp3o'
-$sle12sp5_terminal_mac = ENV['SLE12SP5_TERMINAL_MAC']
-$sle15sp4_terminal_mac = ENV['SLE15SP4_TERMINAL_MAC']
-$private_net = ENV['PRIVATENET'] if ENV['PRIVATENET']
-$mirror = ENV['MIRROR']
-$server_http_proxy = ENV['SERVER_HTTP_PROXY'] if ENV['SERVER_HTTP_PROXY']
-$custom_download_endpoint = ENV['CUSTOM_DOWNLOAD_ENDPOINT'] if ENV['CUSTOM_DOWNLOAD_ENDPOINT']
-$no_auth_registry = ENV['NO_AUTH_REGISTRY'] if ENV['NO_AUTH_REGISTRY']
-$auth_registry = ENV['AUTH_REGISTRY'] if ENV['AUTH_REGISTRY']
+$pxeboot_mac = ENV.fetch('PXEBOOT_MAC', nil)
+$pxeboot_image = ENV.fetch('PXEBOOT_IMAGE', nil) || 'sles15sp3o'
+$sle12sp5_terminal_mac = ENV.fetch('SLE12SP5_TERMINAL_MAC', nil)
+$sle15sp4_terminal_mac = ENV.fetch('SLE15SP4_TERMINAL_MAC', nil)
+$private_net = ENV.fetch('PRIVATENET', nil) if ENV['PRIVATENET']
+$mirror = ENV.fetch('MIRROR', nil)
+$server_http_proxy = ENV.fetch('SERVER_HTTP_PROXY', nil) if ENV['SERVER_HTTP_PROXY']
+$custom_download_endpoint = ENV.fetch('CUSTOM_DOWNLOAD_ENDPOINT', nil) if ENV['CUSTOM_DOWNLOAD_ENDPOINT']
+$no_auth_registry = ENV.fetch('NO_AUTH_REGISTRY', nil) if ENV['NO_AUTH_REGISTRY']
+$auth_registry = ENV.fetch('AUTH_REGISTRY', nil) if ENV['AUTH_REGISTRY']
 
 # maximal wait before giving up
 # the tests return much before that delay in case of success
@@ -96,12 +96,7 @@ def capybara_register_driver
       unhandledPromptBehavior: 'accept'
     )
 
-    Capybara::Selenium::Driver.new(
-      app,
-      browser: :chrome,
-      desired_capabilities: capabilities,
-      http_client: client
-    )
+    Capybara::Selenium::Driver.new(app, browser: :chrome, desired_capabilities: capabilities, http_client: client)
   end
 end
 
@@ -123,11 +118,11 @@ World(MiniTest::Assertions)
 $api_test = new_api_client
 
 # Init CodeCoverage Handler
-$code_coverage = CodeCoverage.new(ENV['REDIS_HOST'], ENV['REDIS_PORT'], ENV['REDIS_USERNAME'], ENV['REDIS_PASSWORD']) if $code_coverage_mode
+$code_coverage = CodeCoverage.new(ENV.fetch('REDIS_HOST', nil), ENV.fetch('REDIS_PORT', nil), ENV.fetch('REDIS_USERNAME', nil), ENV.fetch('REDIS_PASSWORD', nil)) if $code_coverage_mode
 
 # Define the current feature scope
 Before do |scenario|
-  $feature_scope = scenario.location.file.split(%r{(\.feature|\/)})[-2]
+  $feature_scope = scenario.location.file.split(%r{(\.feature|/)})[-2]
 end
 
 # embed a screenshot after each failed scenario
@@ -159,7 +154,7 @@ end
 def process_code_coverage
   return if $feature_path.nil?
 
-  feature_filename = $feature_path.split(%r{(\.feature|\/)})[-2]
+  feature_filename = $feature_path.split(%r{(\.feature|/)})[-2]
   $code_coverage.jacoco_dump(feature_filename)
   $code_coverage.push_feature_coverage(feature_filename)
 end
@@ -193,9 +188,7 @@ After('@scope_cobbler') do |scenario|
 end
 
 AfterStep do
-  if has_css?('.senna-loading', wait: 0)
-    log 'Timeout: Waiting AJAX transition' unless has_no_css?('.senna-loading', wait: 30)
-  end
+  log 'Timeout: Waiting AJAX transition' if has_css?('.senna-loading', wait: 0) && !has_no_css?('.senna-loading', wait: 30)
 end
 
 Before do
@@ -498,7 +491,7 @@ end
 
 Before('@skip_for_sle_micro_ssh_minion') do |scenario|
   sle_micro_ssh_nodes = %w[slemicro51_ssh_minion slemicro52_ssh_minion slemicro53_ssh_minion slemicro54_ssh_minion]
-  current_feature_node = scenario.location.file.split(%r{(\_smoke_tests.feature|\/)})[-2]
+  current_feature_node = scenario.location.file.split(%r{(_smoke_tests.feature|/)})[-2]
   skip_this_scenario if sle_micro_ssh_nodes.include? current_feature_node
 end
 

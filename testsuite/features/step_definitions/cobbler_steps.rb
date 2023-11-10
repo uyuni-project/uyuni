@@ -76,7 +76,9 @@ When(/^I remove kickstart profiles and distros$/) do
   user_details = $api_test.user.get_details('testing')
   suffix = ":#{user_details['org_id']}:#{user_details['org_name'].delete(' ')}"
 
-  distros_ui = distros.select { |distro| distro.end_with? suffix }.map { |distro| distro.split(':')[0] }
+  distros_ui =
+    distros.select { |distro| distro.end_with? suffix }
+           .map { |distro| distro.split(':')[0] }
   distros_api = distros.reject { |distro| distro.end_with? suffix }
   distros_ui.each { |distro| $api_test.kickstart.tree.delete_tree_and_profiles(distro) }
   # -------------------------------
@@ -180,10 +182,7 @@ end
 
 When(/^I check Cobbler buildiso ISO "([^"]*)" with xorriso$/) do |name|
   tmp_dir = '/var/cache/cobbler'
-  out, code = get_target('server').run("cat >#{tmp_dir}/test_image <<-EOF
-BIOS
-UEFI
-EOF")
+  out, code = get_target('server').run("cat >#{tmp_dir}/test_image <<-EOF BIOS UEFI EOF")
   xorriso = "xorriso -indev #{tmp_dir}/#{name}.iso -report_el_torito 2>/dev/null"
   iso_filter = 'awk \'/^El Torito boot img[[:space:]]+:[[:space:]]+[0-9]+[[:space:]]+[a-zA-Z]+[[:space:]]+y/{print $7}\''
   iso_file = "#{tmp_dir}/xorriso_#{name}"
@@ -230,9 +229,7 @@ When(/^I cleanup after Cobbler buildiso$/) do
 end
 
 When(/^I cleanup Cobbler files and restart apache and cobblerd services$/) do
-  cleanup_command = 'rm /var/lib/cobbler/collections/**/*.json 2> /dev/null && ' \
-                    'rm -r /srv/tftpboot 2> /dev/null && ' \
-                    'cp /etc/cobbler/settings.yaml.bak /etc/cobbler/settings.yaml 2> /dev/null'
+  cleanup_command = 'rm /var/lib/cobbler/collections/**/*.json 2> /dev/null && rm -r /srv/tftpboot 2> /dev/null && cp /etc/cobbler/settings.yaml.bak /etc/cobbler/settings.yaml 2> /dev/null'
   get_target('server').run(cleanup_command.to_s, check_errors: false)
   result, code = get_target('server').run('systemctl restart apache')
   raise ScriptError, "Error while restarting apache cleanup.\nLogs:\n#{result}" if code.nonzero?
@@ -272,18 +269,20 @@ When(/^I start local monitoring of Cobbler$/) do
   cobbler_log_file = '/var/log/cobbler/cobbler_debug.log'
   get_target('server').run("rm #{cobbler_log_file}", check_errors: false)
   _result, code = get_target('server').run("test -f #{cobbler_conf_file}.old", check_errors: false)
-  if !code.zero?
+  if code.zero?
+    get_target('server').run('systemctl restart cobblerd')
+  else
     handler_name = 'FileLogger02'
     formatter_name = 'JSONlogfile'
     handler_class = "\"\n[handler_#{handler_name}]\n" \
-                  "class=FileHandler\n" \
-                  "level=DEBUG\n" \
-                  "formatter=#{formatter_name}\n" \
-                  "args=('#{cobbler_log_file}', 'a')\n\n" \
-                  "[formatter_#{formatter_name}]\n" \
-                  "format ={\\''threadName\\'': \\''%(threadName)s\\'', " \
-                  "\\''asctime\\'': \\''%(asctime)s\\'', \\''levelname\\'':  \\''%(levelname)s\\'', " \
-                  "\\''message\\'': \\''%(message)s\\''}\n\""
+                    "class=FileHandler\n" \
+                    "level=DEBUG\n" \
+                    "formatter=#{formatter_name}\n" \
+                    "args=('#{cobbler_log_file}', 'a')\n\n" \
+                    "[formatter_#{formatter_name}]\n" \
+                    "format ={\\''threadName\\'': \\''%(threadName)s\\'', " \
+                    "\\''asctime\\'': \\''%(asctime)s\\'', \\''levelname\\'':  \\''%(levelname)s\\'', " \
+                    "\\''message\\'': \\''%(message)s\\''}\n\""
     command = "cp #{cobbler_conf_file} #{cobbler_conf_file}.old && " \
               "line_number=`awk \"/\\\[handlers\\\]/{ print NR; exit }\" #{cobbler_conf_file}` && " \
               "sed -e \"$(($line_number + 1))s/$/,#{handler_name}/\" -i #{cobbler_conf_file} && " \
@@ -293,8 +292,6 @@ When(/^I start local monitoring of Cobbler$/) do
               "sed -e \"$(($line_number + 2))s/$/,#{handler_name}/\" -i #{cobbler_conf_file} && " \
               "echo -e #{handler_class} >> #{cobbler_conf_file}"
     get_target('server').run("#{command} && systemctl restart cobblerd")
-  else
-    get_target('server').run('systemctl restart cobblerd')
   end
   # give cobbler a few seconds to come up
   sleep 3

@@ -231,15 +231,7 @@ When(/^I remove "([^"]*)" from salt minion config directory on "([^"]*)"$/) do |
 end
 
 When(/^I configure salt minion on "([^"]*)"$/) do |host|
-  content = %(
-master: #{get_target('server').full_hostname}
-server_id_use_crc: adler32
-enable_legacy_startup_events: False
-enable_fqdns_grains: False
-start_event_grains:
-  - machine_id
-  - saltboot_initrd
-  - susemanager)
+  content = %( master: #{get_target('server').full_hostname} server_id_use_crc: adler32 enable_legacy_startup_events: False enable_fqdns_grains: False start_event_grains: - machine_id - saltboot_initrd - susemanager)
   step %(I store "#{content}" into file "susemanager.conf" in salt minion config directory on "#{host}")
 end
 
@@ -489,7 +481,7 @@ Then(/^I run spacecmd listevents for "([^"]*)"$/) do |host|
 end
 
 When(/^I enter KVM Server password$/) do
-  step %(I enter "#{ENV['VIRTHOST_KVM_PASSWORD']}" as "password")
+  step %(I enter "#{ENV.fetch('VIRTHOST_KVM_PASSWORD', nil)}" as "password")
 end
 
 When(/^I perform a full salt minion cleanup on "([^"]*)"$/) do |host|
@@ -518,8 +510,7 @@ end
 
 When(/^I install a salt pillar top file for "([^"]*)" with target "([^"]*)" on the server$/) do |files, host|
   system_name = host == '*' ? '*' : get_system_name(host)
-  script = "base:\n" \
-            "  '#{system_name}':\n"
+  script = "base:\n  '#{system_name}':\n"
   files.split(/, */).each do |file|
     script += "    - '#{file}'\n"
   end
@@ -531,9 +522,7 @@ end
 When(/^I install the package download endpoint pillar file on the server$/) do
   filepath = '/srv/pillar/pkg_endpoint.sls'
   uri = URI.parse($custom_download_endpoint)
-  content = "pkg_download_point_protocol: #{uri.scheme}\n"\
-            "pkg_download_point_host: #{uri.host}\n"\
-            "pkg_download_point_port: #{uri.port}"
+  content = "pkg_download_point_protocol: #{uri.scheme}\npkg_download_point_host: #{uri.host}\npkg_download_point_port: #{uri.port}"
   get_target('server').run("echo -e \"#{content}\" > #{filepath}")
 end
 

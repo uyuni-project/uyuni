@@ -80,7 +80,7 @@ When(/^I select "(.*?)" in the dropdown list of the architecture filter$/) do |a
   raise ScriptError, "Architecture #{architecture} not found" unless find(:xpath, "//div[@id='select2-drop']/ul/li/div[contains(text(), '#{architecture}')]").click
 end
 
-When(/^I (deselect|select) "([^\"]*)" as a product$/) do |select, product|
+When(/^I (deselect|select) "([^"]*)" as a product$/) do |select, product|
   # click on the checkbox to select the product
   xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]/div/input[@type='checkbox']"
   raise ScriptError, "xpath: #{xpath} not found" unless find(:xpath, xpath).set(select == 'select')
@@ -142,9 +142,7 @@ When(/^I wait until I see "(.*?)" product has been added$/) do |product|
     xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]"
     begin
       product_class = find(:xpath, xpath)[:class]
-      unless product_class.nil?
-        break if product_class.include?('product-installed')
-      end
+      break if !product_class.nil? && product_class.include?('product-installed')
     rescue Capybara::ElementNotFound => e
       log e
     end

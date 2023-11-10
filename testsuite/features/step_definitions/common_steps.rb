@@ -291,7 +291,6 @@ When(/^I refresh the metadata for "([^"]*)"$/) do |host|
   end
 end
 
-# rubocop:disable Metrics/BlockLength
 # WORKAROUND for https://github.com/SUSE/spacewalk/issues/20318
 When(/^I install the needed packages for highstate in build host$/) do
   packages = 'bea-stax
@@ -476,7 +475,6 @@ When(/^I install the needed packages for highstate in build host$/) do
   xtables-plugins'
   get_target('build_host').run("zypper --non-interactive in #{packages}", timeout: 600)
 end
-# rubocop:enable Metrics/BlockLength
 
 Then(/^channel "([^"]*)" should be enabled on "([^"]*)"$/) do |channel, host|
   node = get_target(host)

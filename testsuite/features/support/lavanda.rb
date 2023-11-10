@@ -173,9 +173,7 @@ module LavandaBasic
     else
       out, _lo, _rem, code = test_and_store_results_together(cmd, user, timeout, buffer_size)
     end
-    if check_errors
-      raise ScriptError, "FAIL: #{cmd} returned status code = #{code}.\nOutput:\n#{out}" unless successcodes.include?(code)
-    end
+    raise ScriptError, "FAIL: #{cmd} returned status code = #{code}.\nOutput:\n#{out}" if check_errors && !successcodes.include?(code)
     STDOUT.puts "#{cmd} returned status code = #{code}.\nOutput:\n'#{out}'" if verbose
     if separated_results
       [out, err, code]

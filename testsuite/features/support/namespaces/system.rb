@@ -12,11 +12,7 @@ class NamespaceSystem
     @search = NamespaceSystemSearch.new(api_test)
   end
 
-  attr_reader :config
-  attr_reader :custominfo
-  attr_reader :provisioning
-  attr_reader :scap
-  attr_reader :search
+  attr_reader :config, :custominfo, :provisioning, :scap, :search
 
   # utility: retrieve server ID
   def retrieve_server_id(server)
@@ -25,7 +21,8 @@ class NamespaceSystem
 
     server_id = systems
                 .select { |s| s['name'] == server }
-                .map { |s| s['id'] }.first
+                .map { |s| s['id'] }
+                .first
     raise StandardError, "Cannot find #{server}" if server_id.nil?
 
     server_id
@@ -76,7 +73,8 @@ class NamespaceSystem
       @test.call('system.bootstrap', sessionKey: @test.token, host: host, sshPort: 22, sshUser: 'root', sshPassword: 'linux', activationKey: activation_key, saltSSH: salt_ssh)
     else
       proxy = @test.call('system.searchByName', sessionKey: @test.token, regexp: get_target('proxy').full_hostname)
-      proxy_id = proxy.map { |s| s['id'] }.first
+      proxy_id = proxy.map { |s| s['id'] }
+                      .first
       @test.call('system.bootstrap', sessionKey: @test.token, host: host, sshPort: 22, sshUser: 'root', sshPassword: 'linux', activationKey: activation_key, proxyId: proxy_id, saltSSH: salt_ssh)
     end
   end

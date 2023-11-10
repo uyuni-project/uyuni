@@ -69,7 +69,7 @@ def twopence_init(host)
     return
   end
 
-  target = "ssh:#{ENV[ENV_VAR_BY_HOST[host]]}"
+  target = "ssh:#{ENV.fetch(ENV_VAR_BY_HOST[host], nil)}"
   node = Twopence.init(target)
   raise LoadError, "Twopence node #{host} initialization has failed." if node.nil?
 

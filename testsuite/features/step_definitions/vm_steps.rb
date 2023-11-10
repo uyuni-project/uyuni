@@ -92,21 +92,17 @@ When(/^I create ([^ ]*) virtual network on "([^"]*)"$/) do |net_name, host|
   case net_name
   when 'test-net0', 'test-net1'
     netdef = '<network>' \
-              "  <name>#{net_name}</name>" \
-              '  <forward mode=\'nat\'/>' \
-              "  <bridge name='#{net['bridge']}' stp='on' delay='0'/>" \
-              "  <ip address='192.168.#{net['subnet']}.1' netmask='255.255.255.0'>" \
-              '    <dhcp>' \
-              "      <range start='192.168.#{net['subnet']}.2' end='192.168.#{net['subnet']}.254'/>" \
-              '    </dhcp>' \
-              '  </ip>' \
-              '</network>'
+             "  <name>#{net_name}</name>" \
+             '  <forward mode=\'nat\'/>' \
+             "  <bridge name='#{net['bridge']}' stp='on' delay='0'/>" \
+             "  <ip address='192.168.#{net['subnet']}.1' netmask='255.255.255.0'>" \
+             '    <dhcp>' \
+             "      <range start='192.168.#{net['subnet']}.2' end='192.168.#{net['subnet']}.254'/>" \
+             '    </dhcp>' \
+             '  </ip>' \
+             '</network>'
   when 'salt-sles', 'salt-leap', 'salt-rhlike', 'salt-deblike'
-    netdef = '<network>' \
-              "  <name>#{net_name}</name>" \
-              '  <forward mode=\'bridge\'/>' \
-              "  <bridge name='#{net['bridge']}'/>" \
-              '</network>'
+    netdef = '<network>' + "  <name>#{net_name}</name>" + '  <forward mode=\'bridge\'/>' + "  <bridge name='#{net['bridge']}'/>" + '</network>'
   else
     raise ScriptError, "#{net_name} case is not implemented."
   end

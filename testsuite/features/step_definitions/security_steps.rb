@@ -17,25 +17,19 @@ When(/^I retrieve any static resource$/) do
 end
 
 Then(/^the response header "(.*?)" should be "(.*?)"$/) do |arg1, arg2|
-  assert_includes(@headers.keys, arg1.downcase,
-                  "Header '#{arg1}' not present in '#{@url}'")
-  assert_equal(arg2, @headers[arg1.downcase],
-               "Header '#{arg1}' in '#{@url}' is not '#{arg2}'")
+  assert_includes(@headers.keys, arg1.downcase, "Header '#{arg1}' not present in '#{@url}'")
+  assert_equal(arg2, @headers[arg1.downcase], "Header '#{arg1}' in '#{@url}' is not '#{arg2}'")
 end
 
 Then(/^the response header "(.*?)" should not be "(.*?)"$/) do |arg1, arg2|
-  refute_equal(arg2, @headers[arg1.downcase],
-               "Header '#{arg1}' in '#{@url}' is '#{arg2}'")
+  refute_equal(arg2, @headers[arg1.downcase], "Header '#{arg1}' in '#{@url}' is '#{arg2}'")
 end
 
 Then(/^the response header "(.*?)" should contain "(.*?)"$/) do |arg1, arg2|
-  assert_includes(@headers.keys, arg1.downcase,
-                  "Header '#{arg1}' not present in '#{@url}'")
-  assert_includes(@headers[arg1.downcase], arg2,
-                  "Header '#{arg1}' in '#{@url}' does not contain '#{arg2}'")
+  assert_includes(@headers.keys, arg1.downcase, "Header '#{arg1}' not present in '#{@url}'")
+  assert_includes(@headers[arg1.downcase], arg2, "Header '#{arg1}' in '#{@url}' does not contain '#{arg2}'")
 end
 
 Then(/^the response header "(.*?)" should not be present$/) do |arg1|
-  refute_includes(@headers.keys, arg1.downcase,
-                  "Header '#{arg1}' present in '#{@url}'")
+  refute_includes(@headers.keys, arg1.downcase, "Header '#{arg1}' present in '#{@url}'")
 end

@@ -978,7 +978,7 @@ When(/^I open avahi port on the proxy$/) do
   get_target('proxy').run('firewall-offline-cmd --zone=public --add-service=mdns')
 end
 
-When(/^I copy server\'s keys to the proxy$/) do
+When(/^I copy server's keys to the proxy$/) do
   if running_k3s?
     # Server running in Kubernetes doesn't know anything about SSL CA
     generate_certificate("proxy", get_target('proxy').full_hostname)
@@ -1166,14 +1166,12 @@ When(/^I (enable|disable) the necessary repositories before installing Prometheu
   os_family = node.os_family
   # TODO: Check why tools_update_repo is not available on the openSUSE minion
   repositories = os_family =~ /^opensuse/ ? 'tools_pool_repo' : 'tools_pool_repo tools_update_repo'
-  if os_family =~ /^opensuse/ || os_family =~ /^sles/
-    if product != 'Uyuni'
-      repositories.concat(' tools_additional_repo')
-      # Needed because in SLES15SP3 and openSUSE 15.3 and higher, firewalld will replace this package.
-      # But the tools_update_repo's priority doesn't allow to cope with the obsoletes option from firewalld.
-      if os_version.to_f >= 15.3
-        node.run('zypper addlock -r tools_additional_repo firewalld-prometheus-config')
-      end
+  if (os_family =~ /^opensuse/ || os_family =~ /^sles/) && (product != 'Uyuni')
+    repositories.concat(' tools_additional_repo')
+    # Needed because in SLES15SP3 and openSUSE 15.3 and higher, firewalld will replace this package.
+    # But the tools_update_repo's priority doesn't allow to cope with the obsoletes option from firewalld.
+    if os_version.to_f >= 15.3
+      node.run('zypper addlock -r tools_additional_repo firewalld-prometheus-config')
     end
   end
   step %(I #{action} the repositories "#{repositories}" on this "#{host}"#{error_control})
