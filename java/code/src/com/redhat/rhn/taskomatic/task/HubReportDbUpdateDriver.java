@@ -42,17 +42,11 @@ public class HubReportDbUpdateDriver extends AbstractQueueDriver<MgrServerInfo> 
     private static Set<MgrServerInfo> currentMgrServerInfos = Collections.synchronizedSet(new HashSet<>());
     private Logger log;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setLogger(Logger loggerIn) {
         this.log = loggerIn;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Logger getLogger() {
         return log;
@@ -75,9 +69,6 @@ public class HubReportDbUpdateDriver extends AbstractQueueDriver<MgrServerInfo> 
         return new HashSet<>(mgrServerInfos);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public List<MgrServerInfo> getCandidates() {
         synchronized (currentMgrServerInfos) {
@@ -94,26 +85,17 @@ public class HubReportDbUpdateDriver extends AbstractQueueDriver<MgrServerInfo> 
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getMaxWorkers() {
         return Config.get()
                 .getInt(ConfigDefaults.REPORT_DB_HUB_WORKERS, 2);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public QueueWorker makeWorker(MgrServerInfo workItem) {
         return new HubReportDbUpdateWorker(log, workItem);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isBlockingTaskQueue() {
         return true;
