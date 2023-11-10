@@ -15,20 +15,15 @@
 
 package com.suse.manager.model.products;
 
-import org.simpleframework.xml.ElementList;
-import org.simpleframework.xml.Root;
-
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * A collection of Channels that are optional for a Product.
  */
-@Root(name = "optional_channels")
 public class OptionalChannels {
 
     /** The channel. */
-    @ElementList(inline = true, required = false)
     private List<Channel> channel;
 
     /**
