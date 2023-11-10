@@ -17,7 +17,6 @@ package com.redhat.rhn.taskomatic.task.threaded;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.taskomatic.domain.TaskoRun;
 
-import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -117,14 +116,12 @@ public class TaskQueue {
     public void run() {
         shutdownExecutor();
         BlockingQueue<Runnable> workers = new LinkedBlockingQueue<>();
-        List<?> candidates = queueDriver.getCandidates();
-        queueSize += candidates.size();
+        queueSize += queueDriver.fetchCandidates();
         if (queueSize > 0) {
             queueDriver.getLogger().info("In the queue: {}", queueSize);
         }
-        while (!candidates.isEmpty() && queueDriver.canContinue()) {
-            Object candidate = candidates.remove(0);
-            QueueWorker worker = queueDriver.makeWorker(candidate);
+        while (queueDriver.hasCandidates() && queueDriver.canContinue()) {
+            QueueWorker worker = queueDriver.nextWorker();
             worker.setParentQueue(this);
             try {
                 queueDriver.getLogger().debug("Putting worker");
