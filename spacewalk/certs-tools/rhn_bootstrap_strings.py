@@ -441,7 +441,7 @@ if [ "$INSTALLER" == yum ]; then
         elif [ -f /etc/redhat-release ]; then
             grep -v '^#' /etc/redhat-release | grep -q '\(Red Hat\)' && BASE="res"
             VERSION=`grep -v '^#' /etc/redhat-release | grep -Po '(?<=release )\d+'`
-	    elif [ -f /etc/openEuler-release ]; then
+        elif [ -f /etc/openEuler-release ]; then
             grep -v '^#' /etc/openEuler-release | grep -q '\(openEuler\)' && BASE="openEuler"
             VERSION=`grep -v '^#' /etc/openEuler-release | grep -Po '(?<=release )(\d+\.)+\d+'`
         elif [ -f /etc/os-release ]; then

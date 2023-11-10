@@ -550,7 +550,7 @@ PKGLISTDEBIAN12 = [
     "venv-salt-minion"
 ]
 
-PKGLISTRASPBIAN12 = [
+PKGLISTRASPBERRYPIOS12 = [
     # gnupg dependencies
     "dirmngr",
     "gnupg",
@@ -1583,13 +1583,13 @@ DATA = {
          'DEST' : DOCUMENT_ROOT + '/pub/repositories/debian/12/bootstrap/',
          'TYPE' : 'deb'
      },
-     'raspbianos12-arm64-uyuni' : {
-         'BASECHANNEL' : 'raspbianos-12-pool-arm64-uyuni', 'PKGLIST' : PKGLISTRASPBIAN12,
+     'raspberrypios-12-arm64-uyuni' : {
+         'BASECHANNEL' : 'raspberrypios-12-pool-arm64-uyuni', 'PKGLIST' : PKGLISTRASPBERRYPIOS12,
          'DEST' : DOCUMENT_ROOT + '/pub/repositories/debian/12/bootstrap/',
          'TYPE' : 'deb'
      },
-     'raspbianos12-armhf-uyuni' : {
-         'BASECHANNEL' : 'raspbianos-12-pool-armhf-uyuni', 'PKGLIST' : PKGLISTRASPBIAN12,
+     'raspberrypios-12-armhf-uyuni' : {
+         'BASECHANNEL' : 'raspberrypios-12-pool-armhf-uyuni', 'PKGLIST' : PKGLISTRASPBERRYPIOS12,
          'DEST' : DOCUMENT_ROOT + '/pub/repositories/raspbian/12/bootstrap/',
          'TYPE' : 'deb'
      },
