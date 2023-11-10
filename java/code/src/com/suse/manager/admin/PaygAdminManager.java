@@ -15,8 +15,10 @@
 
 package com.suse.manager.admin;
 
+import com.redhat.rhn.common.RhnRuntimeException;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
+import com.redhat.rhn.common.util.AESCryptException;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -42,6 +44,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -68,7 +71,7 @@ public class PaygAdminManager {
      * @param paygProperties payg properties to create the instance
      * @return a new payg ssh connection data instance
      */
-    public PaygSshData create(PaygProperties paygProperties) {
+    public PaygSshData create(PaygProperties paygProperties) throws AESCryptException, IOException {
         ValidatorResult result = new ValidatorResult();
         Integer port = null;
         Integer bastionPort = null;
@@ -101,6 +104,7 @@ public class PaygAdminManager {
                 paygProperties.getBastionUsername(), paygProperties.getBastionPassword(),
                 paygProperties.getBastionKey(), paygProperties.getBastionKeyPassword());
     }
+
     /**
      * @param description        Description for the ssh connection data
      * @param host               hostname or IP address to the instance
@@ -120,7 +124,8 @@ public class PaygAdminManager {
     public PaygSshData create(String description, String host, Integer port, String username,
                       String password, String key, String keyPassword,
                       String bastionHost, Integer bastionPort, String bastionUsername,
-                      String bastionPassword, String bastionKey, String bastionKeyPassword) {
+                      String bastionPassword, String bastionKey, String bastionKeyPassword)
+            throws AESCryptException, IOException {
 
         PaygAdminValidator.validatePaygData(description,
                 host, port, username, password, key, keyPassword,
@@ -198,11 +203,17 @@ public class PaygAdminManager {
             keyPassword = paygProperties.getKeyPassword();
         }
         else {
-            port = paygSshData.getPort();
-            username = paygSshData.getUsername();
-            password = paygSshData.getPassword();
-            key = paygSshData.getKey();
-            keyPassword = paygSshData.getKeyPassword();
+            try {
+                port = paygSshData.getPort();
+                username = paygSshData.getUsername();
+                password = paygSshData.getPassword();
+                key = paygSshData.getKey();
+                keyPassword = paygSshData.getKeyPassword();
+            }
+            catch (AESCryptException | IOException eIn) {
+                LOG.error("Decryption error: ", eIn);
+                throw new LookupException("Decryption Error", eIn);
+            }
         }
 
         String bastionHost;
@@ -227,12 +238,18 @@ public class PaygAdminManager {
             bastionKeyPassword = paygProperties.getBastionKeyPassword();
         }
         else {
-            bastionPort = paygSshData.getBastionPort();
-            bastionHost = paygSshData.getBastionHost();
-            bastionUsername = paygSshData.getBastionUsername();
-            bastionPassword = paygSshData.getBastionPassword();
-            bastionKey = paygSshData.getBastionKey();
-            bastionKeyPassword = paygSshData.getBastionKeyPassword();
+            try {
+                bastionPort = paygSshData.getBastionPort();
+                bastionHost = paygSshData.getBastionHost();
+                bastionUsername = paygSshData.getBastionUsername();
+                bastionPassword = paygSshData.getBastionPassword();
+                bastionKey = paygSshData.getBastionKey();
+                bastionKeyPassword = paygSshData.getBastionKeyPassword();
+            }
+            catch (AESCryptException | IOException eIn) {
+                LOG.error("Decryption error: ", eIn);
+                throw new LookupException("Decryption error", eIn);
+            }
         }
 
         return setDetails(paygSshData,
@@ -265,39 +282,45 @@ public class PaygAdminManager {
                 .orElseThrow(() -> new LookupException("Host not found: " + host));
         validateSetDetailsFields(details);
 
-        String description = (String)details.getOrDefault(PaygAdminFields.description.name(),
-                paygSshData.getDescription());
+        try {
+            String description = (String) details.getOrDefault(PaygAdminFields.description.name(),
+                    paygSshData.getDescription());
 
-        Integer port = (Integer) details.getOrDefault(PaygAdminFields.port.name(),
-                paygSshData.getPort());
-        String username = (String)details.getOrDefault(PaygAdminFields.username.name(),
-                paygSshData.getUsername());
-        String password = (String)details.getOrDefault(PaygAdminFields.password.name(),
-                paygSshData.getPassword());
-        String key = (String)details.getOrDefault(PaygAdminFields.key.name(),
-                paygSshData.getKey());
-        String keyPassword = (String)details.getOrDefault(PaygAdminFields.key_password.name(),
-                paygSshData.getKeyPassword());
+            Integer port = (Integer) details.getOrDefault(PaygAdminFields.port.name(),
+                    paygSshData.getPort());
+            String username = (String) details.getOrDefault(PaygAdminFields.username.name(),
+                    paygSshData.getUsername());
+            String password = (String) details.getOrDefault(PaygAdminFields.password.name(),
+                    paygSshData.getPassword());
+            String key = (String) details.getOrDefault(PaygAdminFields.key.name(),
+                    paygSshData.getKey());
+            String keyPassword = (String) details.getOrDefault(PaygAdminFields.key_password.name(),
+                    paygSshData.getKeyPassword());
 
-        String bastionHost = (String)details.getOrDefault(PaygAdminFields.bastion_host.name(),
-                paygSshData.getBastionHost());
-        Integer bastionPort = (Integer)details.getOrDefault(PaygAdminFields.bastion_port.name(),
-                paygSshData.getBastionPort());
-        String bastionUsername = (String)details.getOrDefault(PaygAdminFields.bastion_username.name(),
-                paygSshData.getBastionUsername());
-        String bastionPassword = (String)details.getOrDefault(PaygAdminFields.bastion_password.name(),
-                paygSshData.getBastionPassword());
-        String bastionKey = (String)details.getOrDefault(PaygAdminFields.bastion_key.name(),
-                paygSshData.getBastionKey());
-        String bastionKeyPassword = (String)details.getOrDefault(PaygAdminFields.bastion_key_password.name(),
-                paygSshData.getBastionKeyPassword());
+            String bastionHost = (String) details.getOrDefault(PaygAdminFields.bastion_host.name(),
+                    paygSshData.getBastionHost());
+            Integer bastionPort = (Integer) details.getOrDefault(PaygAdminFields.bastion_port.name(),
+                    paygSshData.getBastionPort());
+            String bastionUsername = (String) details.getOrDefault(PaygAdminFields.bastion_username.name(),
+                    paygSshData.getBastionUsername());
+            String bastionPassword = (String) details.getOrDefault(PaygAdminFields.bastion_password.name(),
+                    paygSshData.getBastionPassword());
+            String bastionKey = (String) details.getOrDefault(PaygAdminFields.bastion_key.name(),
+                    paygSshData.getBastionKey());
+            String bastionKeyPassword = (String) details.getOrDefault(PaygAdminFields.bastion_key_password.name(),
+                    paygSshData.getBastionKeyPassword());
 
-        return setDetails(paygSshData,
-                description,
-                host, port, username, password,
-                key, keyPassword,
-                bastionHost, bastionPort, bastionUsername, bastionPassword,
-                bastionKey, bastionKeyPassword);
+            return setDetails(paygSshData,
+                    description,
+                    host, port, username, password,
+                    key, keyPassword,
+                    bastionHost, bastionPort, bastionUsername, bastionPassword,
+                    bastionKey, bastionKeyPassword);
+        }
+        catch (AESCryptException | IOException eIn) {
+            LOG.error("Crypt errors detected: ", eIn);
+            throw new LookupException("Crypt errors detected: ", eIn);
+        }
     }
 
     private PaygSshData setDetails(PaygSshData paygSshData,
@@ -320,24 +343,30 @@ public class PaygAdminManager {
                 bastionHost, bastionPort, bastionUsername, bastionPassword,
                 bastionKey, bastionKeyPassword);
 
-        paygSshData.setDescription(description);
-        // in the update we don't set the hostname, it cannot be changed
-        paygSshData.setPort(port);
-        paygSshData.setUsername(username);
-        paygSshData.setPassword(password);
-        paygSshData.setKey(key);
-        paygSshData.setKeyPassword(keyPassword);
+        try {
+            paygSshData.setDescription(description);
+            // in the update we don't set the hostname, it cannot be changed
+            paygSshData.setPort(port);
+            paygSshData.setUsername(username);
+            paygSshData.setPassword(password);
+            paygSshData.setKey(key);
+            paygSshData.setKeyPassword(keyPassword);
 
-        paygSshData.setBastionHost(bastionHost);
-        paygSshData.setBastionPort(bastionPort);
-        paygSshData.setBastionUsername(bastionUsername);
-        paygSshData.setBastionPassword(bastionPassword);
-        paygSshData.setBastionKey(bastionKey);
-        paygSshData.setBastionKeyPassword(bastionKeyPassword);
+            paygSshData.setBastionHost(bastionHost);
+            paygSshData.setBastionPort(bastionPort);
+            paygSshData.setBastionUsername(bastionUsername);
+            paygSshData.setBastionPassword(bastionPassword);
+            paygSshData.setBastionKey(bastionKey);
+            paygSshData.setBastionKeyPassword(bastionKeyPassword);
 
-        paygSshData.setStatus(PaygSshData.Status.P);
-        paygSshData.setErrorMessage("");
-        PaygSshDataFactory.savePaygSshData(paygSshData);
+            paygSshData.setStatus(PaygSshData.Status.P);
+            paygSshData.setErrorMessage("");
+            PaygSshDataFactory.savePaygSshData(paygSshData);
+        }
+        catch (AESCryptException | IOException eIn) {
+            LOG.error("Unable to store encrypted data: ", eIn);
+            throw new RhnRuntimeException("Unable to store encrypted data: ", eIn);
+        }
         // we need to commit before call the taskomatic task, otherwise new data will not be available
         HibernateFactory.commitTransaction();
 

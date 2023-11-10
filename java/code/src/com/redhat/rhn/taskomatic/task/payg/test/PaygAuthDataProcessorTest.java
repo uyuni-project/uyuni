@@ -208,7 +208,7 @@ public class PaygAuthDataProcessorTest extends BaseHandlerTestCase {
         return TestUtils.saveAndReload(repo);
     }
 
-    private PaygSshData createPaygSshData() {
+    private PaygSshData createPaygSshData() throws Exception {
         PaygSshData paygSshData = PaygSshDataFactory.createPaygSshData();
         paygSshData.setDescription("My special instance");
         paygSshData.setHost("my-instance");

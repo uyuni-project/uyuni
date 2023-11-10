@@ -22,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.common.util.AESCryptException;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ContentSource;
 import com.redhat.rhn.domain.channel.SslContentSource;
@@ -62,6 +63,7 @@ import org.junit.jupiter.api.Test;
 import org.quartz.JobExecutionException;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.nio.file.Files;
@@ -452,7 +454,7 @@ public class PaygUpdateAuthTaskTest extends JMockBaseTestCaseWithUser {
         paygUpdateAuthTask.execute(null);
     }
 
-    private PaygSshData createPaygSshData() {
+    private PaygSshData createPaygSshData() throws AESCryptException, IOException {
         PaygSshData paygSshData = PaygSshDataFactory.createPaygSshData();
         paygSshData.setDescription("My special instance");
         paygSshData.setHost("my-instance");

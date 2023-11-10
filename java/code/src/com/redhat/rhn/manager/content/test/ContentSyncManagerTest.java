@@ -1890,7 +1890,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     @Test
-    public void testIsRefreshNeededPAYG() throws AESCryptException {
+    public void testIsRefreshNeededPAYG() throws Exception {
         for (Credentials c : CredentialsFactory.listSCCCredentials()) {
             CredentialsFactory.removeCredentials(c);
         }

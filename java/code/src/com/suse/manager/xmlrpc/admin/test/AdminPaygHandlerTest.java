@@ -21,7 +21,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.common.util.AESCryptException;
 import com.redhat.rhn.domain.cloudpayg.CloudRmtHost;
 import com.redhat.rhn.domain.cloudpayg.CloudRmtHostFactory;
 import com.redhat.rhn.domain.cloudpayg.PaygSshData;
@@ -153,7 +152,7 @@ public class AdminPaygHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testCreate() throws TaskomaticApiException {
+    public void testCreate() throws Exception {
         context.checking(new Expectations() {
             {
                 oneOf(taskoApiMock)
@@ -179,7 +178,7 @@ public class AdminPaygHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testCreateFull() throws TaskomaticApiException {
+    public void testCreateFull() throws Exception {
         context.checking(new Expectations() {
             {
                 oneOf(taskoApiMock)
@@ -213,7 +212,7 @@ public class AdminPaygHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testUpdate1() throws TaskomaticApiException {
+    public void testUpdate1() throws Exception {
         context.checking(new Expectations() {
             {
                 oneOf(taskoApiMock)
@@ -258,7 +257,7 @@ public class AdminPaygHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testUpdate2() throws TaskomaticApiException {
+    public void testUpdate2() throws Exception {
         context.checking(new Expectations() {
             {
                 oneOf(taskoApiMock)
@@ -291,7 +290,7 @@ public class AdminPaygHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testUpdate3() throws TaskomaticApiException {
+    public void testUpdate3() throws Exception {
         context.checking(new Expectations() {
             {
                 oneOf(taskoApiMock)
@@ -337,7 +336,7 @@ public class AdminPaygHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testList() {
+    public void testList() throws Exception {
         PaygSshDataFactory.savePaygSshData(createPaygSshData(true, "_1"));
         PaygSshDataFactory.savePaygSshData(createPaygSshData(true, "_2"));
         PaygSshDataFactory.savePaygSshData(createPaygSshData(false, "_3"));
@@ -347,7 +346,7 @@ public class AdminPaygHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testGetDetails() {
+    public void testGetDetails() throws Exception {
         PaygSshData paygData = createPaygSshData(true, "");
         PaygSshDataFactory.savePaygSshData(paygData);
         PaygSshDataFactory.savePaygSshData(createPaygSshData(false, "_1"));
@@ -368,7 +367,7 @@ public class AdminPaygHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testDelete1() {
+    public void testDelete1() throws Exception {
         PaygSshDataFactory.savePaygSshData(createPaygSshData(false, "_1"));
         PaygSshData paygData = createPaygSshData(true, "");
         PaygSshDataFactory.savePaygSshData(paygData);
@@ -381,7 +380,7 @@ public class AdminPaygHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testDelete() throws AESCryptException {
+    public void testDelete() throws Exception {
         PaygSshDataFactory.savePaygSshData(createPaygSshData(false, "_1"));
         PaygSshData paygData = createPaygSshData(true, "");
         PaygSshDataFactory.savePaygSshData(paygData);
@@ -426,7 +425,7 @@ public class AdminPaygHandlerTest extends BaseHandlerTestCase {
 
     }
 
-    private void assertNullBastion(PaygSshData paygSshData) {
+    private void assertNullBastion(PaygSshData paygSshData) throws Exception {
         assertNull(paygSshData.getBastionHost());
         assertNull(paygSshData.getBastionPort());
         assertNull(paygSshData.getBastionUsername());
@@ -446,7 +445,7 @@ public class AdminPaygHandlerTest extends BaseHandlerTestCase {
         return repo;
     }
 
-    private PaygSshData createPaygSshData(boolean bastion, String sufix) {
+    private PaygSshData createPaygSshData(boolean bastion, String sufix) throws Exception {
         PaygSshData paygSshData = PaygSshDataFactory.createPaygSshData();
         paygSshData.setDescription("My special instance" + sufix);
         paygSshData.setHost("my-instance" + sufix);

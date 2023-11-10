@@ -30,7 +30,6 @@ import com.redhat.rhn.domain.cloudpayg.PaygSshDataFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
-import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.admin.PaygAdminManager;
@@ -50,7 +49,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.UnsupportedEncodingException;
 import java.util.Optional;
 
 public class PaygApiControllerTest extends BaseControllerTestCase {
@@ -88,7 +86,7 @@ public class PaygApiControllerTest extends BaseControllerTestCase {
         HibernateFactory.commitTransaction();
     }
 
-    private PaygSshData createPaygSshData() {
+    private PaygSshData createPaygSshData() throws Exception {
         PaygSshData paygSshData = PaygSshDataFactory.createPaygSshData();
         paygSshData.setDescription("My special instance");
         paygSshData.setHost("my-instance");
@@ -103,7 +101,7 @@ public class PaygApiControllerTest extends BaseControllerTestCase {
     }
 
     @Test
-    public void testRemovePermitionCheck() {
+    public void testRemovePermitionCheck() throws Exception {
         try {
             PaygSshData paygInfo = createPaygSshData();
             PaygApiContoller.removePaygInstance(
@@ -117,7 +115,7 @@ public class PaygApiControllerTest extends BaseControllerTestCase {
     }
 
     @Test
-    public void testRemove() {
+    public void testRemove() throws Exception {
         PaygSshData paygInfo = createPaygSshData();
         String json = PaygApiContoller.removePaygInstance(
                 getRequestWithCsrf("/manager/api/admin/config/payg/:id", paygInfo.getId()),
@@ -130,7 +128,7 @@ public class PaygApiControllerTest extends BaseControllerTestCase {
     }
 
     @Test
-    public void testUpdatePaygPermitionCheck() {
+    public void testUpdatePaygPermitionCheck() throws Exception {
         try {
             PaygSshData paygInfo = createPaygSshData();
             PaygApiContoller.updatePayg(
@@ -144,7 +142,7 @@ public class PaygApiControllerTest extends BaseControllerTestCase {
     }
 
     @Test
-    public void testUpdatePayg1() throws UnsupportedEncodingException {
+    public void testUpdatePayg1() throws Exception {
         PaygSshData paygInfo = createPaygSshData();
         String dataJson = PaygApiContoller.updatePayg(
                 getPostRequestWithCsrfAndBody("/manager/api/admin/config/payg/:id",
@@ -157,7 +155,7 @@ public class PaygApiControllerTest extends BaseControllerTestCase {
     }
 
     @Test
-    public void testUpdatePayg2() throws UnsupportedEncodingException, TaskomaticApiException {
+    public void testUpdatePayg2() throws Exception {
         context.checking(new Expectations() {
             {
                 oneOf(taskomaticMock)
@@ -214,7 +212,7 @@ public class PaygApiControllerTest extends BaseControllerTestCase {
     }
 
     @Test
-    public void testCreate() throws UnsupportedEncodingException, TaskomaticApiException {
+    public void testCreate() throws Exception {
         context.checking(new Expectations() {
             {
                 oneOf(taskomaticMock)

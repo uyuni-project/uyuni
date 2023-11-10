@@ -15,6 +15,8 @@
 
 package com.suse.manager.xmlrpc.admin;
 
+import com.redhat.rhn.common.RhnRuntimeException;
+import com.redhat.rhn.common.util.AESCryptException;
 import com.redhat.rhn.domain.cloudpayg.PaygSshData;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
@@ -22,6 +24,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 
 import com.suse.manager.admin.PaygAdminManager;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -118,10 +121,15 @@ public class AdminPaygHandler extends BaseHandler {
                       String bastionKey, String bastionKeyPassword) {
 
         ensureSatAdmin(loggedInUser);
-        return paygAdminManager.create(description,
-                host, port, username, password, key, keyPassword,
-                bastionHost, bastionPort, bastionUsername, bastionPassword,
-                bastionKey, bastionKeyPassword) != null ? 1 : 0;
+        try {
+            return paygAdminManager.create(description,
+                    host, port, username, password, key, keyPassword,
+                    bastionHost, bastionPort, bastionUsername, bastionPassword,
+                    bastionKey, bastionKeyPassword) != null ? 1 : 0;
+        }
+        catch (AESCryptException | IOException eIn) {
+            throw new RhnRuntimeException(eIn);
+        }
     }
 
     /**
