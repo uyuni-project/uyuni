@@ -179,14 +179,6 @@ public class SSHServiceDriver extends AbstractQueueDriver<SystemSummary> {
      * {@inheritDoc}
      */
     @Override
-    public boolean canContinue() {
-        return true;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void setLogger(Logger loggerIn) {
         this.log = loggerIn;
     }
@@ -245,13 +237,5 @@ public class SSHServiceDriver extends AbstractQueueDriver<SystemSummary> {
         HashMap<String, Object> params = new HashMap<>();
         params.put("job_label", JOB_LABEL);
         return delete.executeUpdate(params);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean isBlockingTaskQueue() {
-        return false;
     }
 }

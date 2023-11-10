@@ -115,22 +115,6 @@ public class HubReportDbUpdateDriver extends AbstractQueueDriver<MgrServerInfo> 
      * {@inheritDoc}
      */
     @Override
-    public boolean canContinue() {
-        return true;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void initialize() {
-        //empty
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public boolean isBlockingTaskQueue() {
         return true;
     }
