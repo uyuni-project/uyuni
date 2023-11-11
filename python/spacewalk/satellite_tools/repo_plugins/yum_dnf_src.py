@@ -29,6 +29,7 @@ from libdnf.conf import ConfigParser
 from dnf.exceptions import Error, RepoError
 from uyuni.common import checksum, fileutils
 from uyuni.common.context_managers import cfg_component
+from spacewalk.satellite_tools import syncLib
 
 # pylint: disable-next=unused-import
 from spacewalk.common.suseLib import get_proxy
@@ -220,8 +221,9 @@ class ContentSource(zypper_ContentSource):
         Setup repository and fetch metadata
         """
         repo.metadata_expire = 0
-        repo.mirrorlist = self.url
-        repo.baseurl = [self.url]
+        dnf_repo_url = self._prep_dnf_repo_url(self.url, uln_repo)
+        repo.mirrorlist = dnf_repo_url
+        repo.baseurl = [dnf_repo_url]
         # pylint: disable-next=invalid-name
         with cfg_component("server.satellite") as CFG:
             pkgdir = os.path.join(CFG.MOUNT_POINT, CFG.PREPENDED_DIR, self.org, "stage")
@@ -248,7 +250,7 @@ class ContentSource(zypper_ContentSource):
 
         if no_mirrors:
             repo.mirrorlist = ""
-        self.digest = hashlib.sha256(self.url.encode("utf8")).hexdigest()[:16]
+        self.digest = hashlib.sha256(dnf_repo_url.encode("utf8")).hexdigest()[:16]
         self.dnfbase.repos.add(repo)
         self.repoid = repo.id
         # Try loading the repo configuration
@@ -410,6 +412,31 @@ class ContentSource(zypper_ContentSource):
                     found = g
                     break
         return found
+
+    def _prep_dnf_repo_url(self, url, uln_repo):
+        """
+        Prepare the repository baseurl to use in the Dnf repo file.
+        Mainly a ULN url will be converted
+
+        :returns: str
+        """
+        if uln_repo:
+            default_up2date_url = "linux-update.oracle.com"
+            uln_url = None
+            label = None
+            if url.startswith("uln:///"):
+                uln_url = "https://" + default_up2date_url
+                label = url[7:]
+            elif url.startswith("uln://"):
+                parts = url[6:].split("/")
+                uln_url = "https://" + parts[0]
+                label = parts[1]
+            else:
+                raise syncLib.RhnSyncException(
+                    "url format error, url must start with uln://"
+                )
+            return uln_url + "/XMLRPC/GET-REQ/" + label
+        return url
 
     def _expand_comps_type(self, comps_type, environments, groups, filters):
         new_filters = []
