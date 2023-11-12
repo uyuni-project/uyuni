@@ -546,7 +546,11 @@ class MgrSync(object):  # pylint: disable=too-few-public-methods
                 return
         else:
             user = credentials[0]
-            pw = credentials[1]
+            if len(credentials) >= 2:
+                pw = credentials[1]
+            else:
+                print("Read password from STDIN")
+                pw = sys.stdin.readline().rstrip()
 
         saved_users = self._fetch_credentials()
         if any(user == saved_user['user'] for saved_user in saved_users):
