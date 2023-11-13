@@ -16,6 +16,10 @@ Feature: Bootstrap a Salt minion via the GUI
     And I wait until I see the name of "sle_minion", refreshing the page
     Then the Salt master can reach "sle_minion"
 
+  Scenario: Set debug log level to the Salt configuration on the SLE Minion
+    When I run "echo 'log_level: debug' >> /etc/venv-salt-minion/minion.d/z_debug.conf" on "sle_minion"
+    And I run "venv-salt-call --local grains.items | tee -a /var/log/salt_grains" on "sle_minion"
+
   Scenario: Subscribe the SLE minion to a base channel
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Software" in the content area
