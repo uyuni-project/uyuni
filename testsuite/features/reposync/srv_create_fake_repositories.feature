@@ -30,17 +30,6 @@ Feature: Create fake repositories for each fake child channel
     Then I should see a "Repository updated successfully" text
     And I should see "metadataSigned" as unchecked
 
-  Scenario: Add the fake RPM repository to the SUSE fake base channel
-    When I follow the left menu "Software > Manage > Channels"
-    And I follow "Fake-Base-Channel"
-    And I enter "file:///etc/pki/rpm-gpg/uyuni-tools-gpg-pubkey-0d20833e.key" as "GPG key URL"
-    And I click on "Update Channel"
-    Then I should see a "Channel Fake-Base-Channel updated" text
-    When I follow "Repositories" in the content area
-    And I select the "fake-rpm-repo" repo
-    And I click on "Save Repositories"
-    Then I should see a "Fake-Base-Channel repository information was successfully updated" text
-
 @sle_minion
   Scenario: Add the fake RPM repository to the SUSE fake child channel
     When I follow the left menu "Software > Manage > Channels"

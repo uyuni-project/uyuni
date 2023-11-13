@@ -18,17 +18,6 @@ Feature: Synchronize fake channels
     Given I am authorized for the "Admin" section
     And I enable source package syncing
 
-  Scenario: Synchronize Fake-Base-Channel channel
-    Given I am authorized for the "Admin" section
-    When I follow the left menu "Software > Manage > Channels"
-    And I follow "Fake-Base-Channel"
-    And I follow "Repositories" in the content area
-    And I follow "Sync"
-    And I wait at most 60 seconds until I do not see "Repository sync is running." text, refreshing the page
-    And I click on "Sync Now"
-    Then I should see a "Repository sync scheduled for Fake-Base-Channel." text
-    And I wait until the channel "fake-base-channel" has been synced
-
 @sle_minion
   Scenario: Synchronize Fake-RPM-SUSE-Channel channel
     Given I am authorized for the "Admin" section
