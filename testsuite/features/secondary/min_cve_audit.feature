@@ -82,7 +82,7 @@ Feature: CVE Audit on SLE Salt Minions
     Then I should get status "NOT_AFFECTED" for "sle_minion"
     When I call audit.list_systems_by_patch_status() with CVE identifier "CVE-1999-9999"
     Then I should get status "AFFECTED_PATCH_APPLICABLE" for "sle_minion"
-    And I should get the "fake-base-channel" channel label
+    And I should get the "fake-rpm-suse-channel" channel label
     And I should get the "milkyway-dummy-2345" patch
 
   Scenario: Apply patches
