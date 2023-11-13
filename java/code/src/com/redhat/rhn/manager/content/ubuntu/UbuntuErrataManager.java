@@ -126,7 +126,7 @@ public class UbuntuErrataManager {
             try (
                 InputStream responseStream = httpResponse.getEntity().getContent();
                 BZip2CompressorInputStream bzIn = new BZip2CompressorInputStream(responseStream);
-                Reader responseReader = new InputStreamReader(bzIn);
+                Reader responseReader = new InputStreamReader(bzIn)
             ) {
                 Map<String, UbuntuErrataInfo> errataInfo = GSON.fromJson(responseReader, ERRATA_INFO_TYPE);
                 LOG.info("download ubuntu errata end");
@@ -141,7 +141,7 @@ public class UbuntuErrataManager {
             if (statusCode == HttpStatus.SC_OK) {
                 try (
                         InputStream responseStream = httpResponse.getEntity().getContent();
-                        Reader responseReader = new InputStreamReader(responseStream);
+                        Reader responseReader = new InputStreamReader(responseStream)
                 ) {
                     Map<String, UbuntuErrataInfo> errataInfo = GSON.fromJson(responseReader, ERRATA_INFO_TYPE);
                     LOG.info("download ubuntu errata end");
@@ -154,8 +154,8 @@ public class UbuntuErrataManager {
         }
     }
 
-    private static Stream<Entry> parseUbuntuErrata(Map<String, UbuntuErrataInfo> errataInfo) {
-        return errataInfo.values().stream().map(ubuntuErrataInfo -> {
+    private static Stream<Entry> parseUbuntuErrata(Map<String, UbuntuErrataInfo> errataInfo, Set<String> packageNames) {
+        return errataInfo.values().stream().flatMap(ubuntuErrataInfo -> {
             String description = ubuntuErrataInfo.getDescription().length() > 4000 ?
                     ubuntuErrataInfo.getDescription().substring(0, 4000) :
                     ubuntuErrataInfo.getDescription();
@@ -164,6 +164,9 @@ public class UbuntuErrataManager {
                     .flatMap(release ->
                             release.getValue().getBinaries().entrySet().stream().flatMap(binary -> {
                                 String name = binary.getKey();
+                                if (!packageNames.contains(name)) {
+                                    return Stream.empty();
+                                }
                                 String version = binary.getValue().getVersion();
 
                                 List<String> archs = release.getValue().getArchs()
@@ -188,7 +191,12 @@ public class UbuntuErrataManager {
                             })
                     ).collect(Collectors.toList());
 
-            return new Entry(
+            if (packageData.isEmpty()) {
+                // Skip Errata when we have no matching packages
+                LOG.debug("Skipping errata without matching packages: {}", ubuntuErrataInfo.getId());
+                return Stream.empty();
+            }
+            return Stream.of(new Entry(
                     ubuntuErrataInfo.getId(),
                     ubuntuErrataInfo.getCves(),
                     ubuntuErrataInfo.getSummary(),
@@ -196,7 +204,7 @@ public class UbuntuErrataManager {
                     ubuntuErrataInfo.getTimestamp(),
                     description,
                     reboot,
-                    packageData);
+                    packageData));
         });
     }
 
@@ -206,7 +214,7 @@ public class UbuntuErrataManager {
             URI uri = MgrSyncUtils.urlToFSPath(jsonDBUrl, "");
             try (
                 InputStream inputStream = Files.newInputStream(Paths.get(uri));
-                Reader fileReader = new InputStreamReader(inputStream);
+                Reader fileReader = new InputStreamReader(inputStream)
             ) {
                 return GSON.fromJson(fileReader, ERRATA_INFO_TYPE);
             }
@@ -237,9 +245,13 @@ public class UbuntuErrataManager {
                 Runtime.getRuntime().totalMemory(), Runtime.getRuntime().freeMemory());
             return;
         }
+        Set<String> packageNames = packagesByChannelMap.entrySet().stream()
+                .flatMap(entry -> entry.getValue().stream())
+                .map(p -> p.getPackageName().getName())
+                .collect(Collectors.toSet());
 
         LOG.debug("check deb packages in channels finished - get and parse errata");
-        Stream<Entry> ubuntuErrataInfo = parseUbuntuErrata(getUbuntuErrataInfo());
+        Stream<Entry> ubuntuErrataInfo = parseUbuntuErrata(getUbuntuErrataInfo(), packageNames);
         LOG.debug("get and parse errata finished - process Ubuntu Errata");
         processUbuntuErrata(packagesByChannelMap, ubuntuErrataInfo);
         LOG.debug("process Ubuntu Errata finished - done, totalMemory:{}, freeMemory:{}",
@@ -354,8 +366,8 @@ public class UbuntuErrataManager {
         // add changed errata to notification queue
         Map<Long, List<Long>> errataToChannels = changedErrata.stream().collect(
                 Collectors.toMap(
-                        e -> e.getId(),
-                        e -> e.getChannels().stream().map(c -> c.getId()).collect(Collectors.toList())
+                        Errata::getId,
+                        e -> e.getChannels().stream().map(Channel::getId).collect(Collectors.toList())
                         )
                 );
         changedErrata.stream().flatMap(e -> e.getChannels().stream()).distinct()
