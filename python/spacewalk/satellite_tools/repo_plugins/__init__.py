@@ -66,6 +66,12 @@ class ContentPackage:
         return nra
 
     def setNVREA(self, name, version, release, epoch, arch):
+        if not all((name, version, release, arch)):
+            raise ValueError(
+                (
+                    "Incorrect package NVRA values: "
+                    f"N: {name}, V: {version}, R: {release}, A: {arch}"
+                ))
         self.name = name
         self.version = version
         self.release = release
@@ -114,14 +120,6 @@ class ContentPackage:
             self.checksum = checksum_in
             if not((checksum_type_in in self.checksums) and (self.checksums[checksum_type_in] == checksum_in)):
                 self.checksums[checksum_type_in] = checksum_in
-
-    def get_nvra_tuple(self) -> tuple:
-        """returns a tuple of name, version, release, arch"""
-        return (self.name, self.version, self.release, self.arch)
-
-    def is_metadata_valid(self) -> bool:
-        """Returns True if the package NVREA is set"""
-        return all(self.get_nvra_tuple())
 
     def __str__(self):
         return f'ContentPackage: name = {self.name}, epoch = {self.epoch}, version = {self.version}, release = {self.release}, arch = {self.arch}, checksum_type = {self.checksum_type}, checksum = {self.checksum}, checksums = {self.checksums}, path = {self.path}, a_pkg = {self.a_pkg}, unique_id = <{self.unique_id}>'

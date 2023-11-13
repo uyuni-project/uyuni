@@ -1195,16 +1195,17 @@ password={passwd}
         for pack in pkglist:
             new_pack = ContentPackage()
             epoch, version, release = RawSolvablePackage._parse_solvable_evr(pack.evr)
-            new_pack.setNVREA(pack.name, version, release, epoch, pack.arch)
+            try:
+                new_pack.setNVREA(pack.name, version, release, epoch, pack.arch)
+            except ValueError as e:
+                log(0, "WARNING: package contains incorrect metadata. SKIPPING!")
+                log(0, e)
+                continue
             new_pack.unique_id = RawSolvablePackage(pack)
             checksum = pack.lookup_checksum(solv.SOLVABLE_CHECKSUM)
             new_pack.checksum_type = checksum.typestr()
             new_pack.checksum = checksum.hex()
-            if new_pack.is_metadata_valid():
-                to_return.append(new_pack)
-            else:
-                log(0, f"WARNING: package {new_pack.getNVREA()} contains" \
-                    + "incorrect metadata. SKIPPING!")
+            to_return.append(new_pack)
         return to_return
 
     @staticmethod
