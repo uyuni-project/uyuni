@@ -59,11 +59,14 @@ describe("localizedMoment", () => {
   });
 
   test("full server string keeps offset", () => {
+    // Japan doesn't observe daylight saving time
     expect(localizedMoment().toServerString()).toContain("JST");
+    expect(localizedMoment().toServerString()).toMatch(/PST|PDT/);
   });
 
   test("full user string keeps offset", () => {
-    expect(localizedMoment().toUserString()).toContain("PDT");
+    expect(localizedMoment().toUserString()).toContain("JST");
+    expect(localizedMoment().toUserString()).toMatch(/PST|PDT/);
   });
 
   test("calendar output uses config formats", () => {

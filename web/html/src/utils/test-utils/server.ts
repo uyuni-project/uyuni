@@ -4,7 +4,7 @@ import { setupServer } from "msw/node";
 const baseServer = setupServer();
 const serverAddons = {
   /** Mock a GET request to `url` with a successful JSON response containing `response` */
-  mockGetJson(url, response) {
+  mockGetJson<T>(url: string, response: T) {
     return server.use(
       rest.get(url, (req, res, ctx) => {
         return res(ctx.json(response));
