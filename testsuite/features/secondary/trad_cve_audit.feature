@@ -83,8 +83,8 @@ Feature: CVE Audit on traditional clients
     When I call audit.list_systems_by_patch_status() with CVE identifier "CVE-1999-9979"
     Then I should get status "NOT_AFFECTED" for this client
     When I call audit.list_systems_by_patch_status() with CVE identifier "CVE-1999-9999"
-    Then I should get status "AFFECTED_PATCH_APPLICABLE" for this client
-    And I should get the test channel
+    Then I should get status "AFFECTED_PATCH_APPLICABLE" for "sle_minion"
+    And I should get the "fake-rpm-suse-channel" channel label
     And I should get the "milkyway-dummy-2345" patch
 
   Scenario: Apply patches

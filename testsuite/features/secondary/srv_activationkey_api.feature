@@ -9,11 +9,11 @@ Feature: API "activationkey" namespace
 
   Scenario: Create activation key
     When I create an activation key with id "testkey", description "Key for testing" and limit of 10
-    Then I should get the new activation key
+    Then I should get the new activation key "1-testkey"
 
   Scenario: Activation key details
-    When I set the description of activation key to "Key description"
-    Then I get the description "Key description" for the activation key
+    When I set the description of the activation key "1-testkey" to "Key description"
+    Then I get the description "Key description" for the activation key "1-testkey"
 
   Scenario: Cleanup: delete activation key
-    When I delete the activation key
+    When I delete the activation key "1-testkey"
