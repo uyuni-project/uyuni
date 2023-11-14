@@ -21,7 +21,7 @@ def generate_certificate(name, fqdn)
                 '    name: uyuni-ca-issuer\\n'\
                 '    kind: Issuer'
   _out, return_code = get_target('server').run_local("echo -e \"#{certificate}\" | kubectl apply -f -")
-  raise "Failed to define #{name} Certificate resource" unless return_code.zero?
+  raise SystemCallError, "Failed to define #{name} Certificate resource" unless return_code.zero?
 
   # cert-manager takes some time to generate the secret, wait for it before continuing
   repeat_until_timeout(timeout: 600, message: "Kubernetes uyuni-#{name}-cert secret has not been defined") do
@@ -36,10 +36,10 @@ def generate_certificate(name, fqdn)
   ca_path = '/tmp/ca.crt'
 
   _out, return_code = get_target('server').run_local("kubectl get secret uyuni-#{name}-cert -o jsonpath='{.data.tls\\.crt}' | base64 -d >#{crt_path}")
-  raise "Failed to store #{name} certificate" unless return_code.zero?
+  raise SystemCallError, "Failed to store #{name} certificate" unless return_code.zero?
 
   _out, return_code = get_target('server').run_local("kubectl get secret uyuni-#{name}-cert -o jsonpath='{.data.tls\\.key}' | base64 -d >#{key_path}")
-  raise "Failed to store #{name} key" unless return_code.zero?
+  raise SystemCallError, "Failed to store #{name} key" unless return_code.zero?
 
   get_target('server').run_local("kubectl get secret uyuni-#{name}-cert -o jsonpath='{.data.ca\\.crt}' | base64 -d >#{ca_path}")
   [crt_path, key_path, ca_path]

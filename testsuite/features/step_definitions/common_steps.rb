@@ -64,7 +64,7 @@ end
 Then(/^the IPv6 address for "([^"]*)" should be correct$/) do |host|
   node = get_target(host)
   interface, code = node.run("ip -6 address show #{node.public_interface}")
-  raise unless code.zero?
+  raise RuntimeError unless code.zero?
 
   lines = interface.lines
   # selects only lines with IPv6 addresses and proceeds to form an array with only those addresses
@@ -74,7 +74,7 @@ Then(/^the IPv6 address for "([^"]*)" should be correct$/) do |host|
   # confirms that the IPv6 address shown on the page is part of that list and, therefore, valid
   ipv6_address = find(:xpath, '//td[text()=\'IPv6 Address:\']/following-sibling::td[1]').text
   log "IPv6 address: #{ipv6_address}"
-  raise "List of IPv6 addresses: #{ipv6_addresses_list} doesn't include #{ipv6_address}" unless ipv6_addresses_list.include? ipv6_address
+  raise ScriptError, "List of IPv6 addresses: #{ipv6_addresses_list} doesn't include #{ipv6_address}" unless ipv6_addresses_list.include? ipv6_address
 end
 
 Then(/^the system ID for "([^"]*)" should be correct$/) do |host|
@@ -193,12 +193,12 @@ Then(/^the up2date logs on "([^"]*)" should contain no Traceback error$/) do |ho
   node = get_target(host)
   cmd = 'if grep "Traceback" /var/log/up2date ; then exit 1; else exit 0; fi'
   _out, code = node.run(cmd)
-  raise 'error found, check the client up2date logs' if code.nonzero?
+  raise ScriptError, 'error found, check the client up2date logs' if code.nonzero?
 end
 
 # action chains
 When(/^I check radio button "(.*?)"$/) do |arg1|
-  raise "#{arg1} can't be checked" unless choose(arg1)
+  raise ScriptError, "#{arg1} can't be checked" unless choose(arg1)
 end
 
 When(/^I check radio button "(.*?)", if not checked$/) do |arg1|
@@ -207,7 +207,7 @@ end
 
 When(/^I check default base channel radio button of this "([^"]*)"$/) do |host|
   default_base_channel = BASE_CHANNEL_BY_CLIENT[product][host]
-  raise "#{default_base_channel} can't be checked" unless choose(default_base_channel)
+  raise ScriptError, "#{default_base_channel} can't be checked" unless choose(default_base_channel)
 end
 
 When(/^I enter as remote command this script in$/) do |multiline|
@@ -249,7 +249,7 @@ Then(/^I should see the power is "([^"]*)"$/) do |status|
       break if check_text_and_catch_request_timeout_popup?(status)
       find(:xpath, '//button[@value="Get status"]').click
     end
-    raise "Power status #{status} not found" unless check_text_and_catch_request_timeout_popup?(status)
+    raise ScriptError, "Power status #{status} not found" unless check_text_and_catch_request_timeout_popup?(status)
   end
 end
 
@@ -280,7 +280,7 @@ When(/^I refresh the metadata for "([^"]*)"$/) do |host|
   elsif os_family =~ /^ubuntu/
     node.run('apt-get update')
   else
-    raise "The host #{host} has not yet a implementation for that step"
+    raise ScriptError, "The host #{host} has not yet a implementation for that step"
   end
 end
 
@@ -479,21 +479,21 @@ end
 Then(/^channel "([^"]*)" should not be enabled on "([^"]*)"$/) do |channel, host|
   node = get_target(host)
   _out, code = node.run("zypper lr -E | grep '#{channel}'", check_errors: false)
-  raise "'#{channel}' was not expected but was found." if code.to_i.zero?
+  raise ScriptError, "'#{channel}' was not expected but was found." if code.to_i.zero?
 end
 
 Then(/^"(\d+)" channels should be enabled on "([^"]*)"$/) do |count, host|
   node = get_target(host)
   node.run('zypper lr -E | tail -n +5', verbose: true)
   out, _code = node.run('zypper lr -E | tail -n +5 | wc -l')
-  raise "Expected #{count} channels enabled but found #{out}." unless count.to_i == out.to_i
+  raise ScriptError, "Expected #{count} channels enabled but found #{out}." unless count.to_i == out.to_i
 end
 
 Then(/^"(\d+)" channels with prefix "([^"]*)" should be enabled on "([^"]*)"$/) do |count, prefix, host|
   node = get_target(host)
   node.run("zypper lr -E | tail -n +5 | grep '#{prefix}'", verbose: true)
   out, _code = node.run("zypper lr -E | tail -n +5 | grep '#{prefix}' | wc -l")
-  raise "Expected #{count} channels enabled but found #{out}." unless count.to_i == out.to_i
+  raise ScriptError, "Expected #{count} channels enabled but found #{out}." unless count.to_i == out.to_i
 end
 
 # metadata steps

@@ -186,26 +186,26 @@ end
 ## activationkey namespace
 
 Then(/^I should get some activation keys$/) do
-  raise if $api_test.activationkey.get_activation_keys_count < 1
+  raise ScriptError if $api_test.activationkey.get_activation_keys_count < 1
 end
 
 When(/^I create an activation key with id "([^"]*)", description "([^"]*)" and limit of (\d+)$/) do |id, dscr, limit|
   key = $api_test.activationkey.create(id, dscr, '', limit.to_i)
-  raise 'Key creation failed' if key.nil?
-  raise 'Bad key name' if key != "1-#{id}"
+  raise ScriptError, 'Key creation failed' if key.nil?
+  raise ScriptError, 'Bad key name' if key != "1-#{id}"
 end
 
 Then(/^I should get the new activation key "([^"]*)"$/) do |activation_key|
-  raise unless $api_test.activationkey.verify(activation_key)
+  raise ScriptError unless $api_test.activationkey.verify(activation_key)
 end
 
 When(/^I delete the activation key "([^"]*)"$/) do |activation_key|
-  raise unless $api_test.activationkey.delete(activation_key)
-  raise if $api_test.activationkey.verify(activation_key)
+  raise ScriptError unless $api_test.activationkey.delete(activation_key)
+  raise ScriptError if $api_test.activationkey.verify(activation_key)
 end
 
 When(/^I set the description of the activation key "([^"]*)" to "([^"]*)"$/) do |activation_key, description|
-  raise unless $api_test.activationkey.set_details(activation_key, description, '', 10, 'default')
+  raise RuntimeError unless $api_test.activationkey.set_details(activation_key, description, '', 10, 'default')
 end
 
 Then(/^I get the description "([^"]*)" for the activation key "([^"]*)"$/) do |description, activation_key|
@@ -215,7 +215,7 @@ Then(/^I get the description "([^"]*)" for the activation key "([^"]*)"$/) do |d
     log "  #{k}: #{v}"
   end
   log
-  raise unless details['description'] == description
+  raise ScriptError unless details['description'] == description
 end
 
 When(/^I create an activation key including custom channels for "([^"]*)" via API$/) do |client|
@@ -529,11 +529,9 @@ When(/^I deploy all systems registered to channel "([^"]*)"$/) do |channel|
 end
 
 When(/^I delete channel "([^"]*)" via API((?: without error control)?)$/) do |channel, error_control|
-  begin
-    $api_test.configchannel.delete_channels([channel])
-  rescue
-    raise 'Error deleting channel' if error_control.empty?
-  end
+  $api_test.configchannel.delete_channels([channel])
+rescue
+  raise SystemCallError, 'Error deleting channel' if error_control.empty?
 end
 
 When(/^I call system.create_system_profile\(\) with name "([^"]*)" and HW address "([^"]*)"$/) do |name, hw_address|
