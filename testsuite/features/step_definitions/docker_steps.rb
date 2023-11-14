@@ -7,17 +7,6 @@ require 'time'
 require 'date'
 require 'timeout'
 
-# retrieve build host id, needed for scheduleImageBuild call
-def retrieve_build_host_id
-  systems = $api_test.system.list_systems
-  refute_nil(systems)
-  build_host_id = systems
-                  .select { |s| s['name'] == get_target('build_host').full_hostname }
-                  .map { |s| s['id'] }.first
-  refute_nil(build_host_id, "Build host #{get_target('build_host').full_hostname} is not yet registered?")
-  build_host_id
-end
-
 When(/^I enter "([^"]*)" relative to profiles as "([^"]*)"$/) do |path, field|
   git_profiles = ENV['GITPROFILES']
   step %(I enter "#{git_profiles}/#{path}" as "#{field}")

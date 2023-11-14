@@ -320,18 +320,6 @@ When(/^I wait until there is no Salt job calling the module "([^"]*)" on "([^"]*
   target.run_until_fail("#{salt_call} -lquiet saltutil.running | grep #{salt_module}", timeout: 600)
 end
 
-def pillar_get(key, minion)
-  system_name = get_system_name(minion)
-  if minion == 'sle_minion'
-    cmd = 'salt'
-  elsif %w[ssh_minion rhlike_minion deblike_minion].include?(minion)
-    cmd = 'mgr-salt-ssh'
-  else
-    raise 'Invalid target'
-  end
-  get_target('server').run("#{cmd} #{system_name} pillar.get #{key}")
-end
-
 Then(/^the pillar data for "([^"]*)" should be "([^"]*)" on "([^"]*)"$/) do |key, value, minion|
   output, _code = pillar_get(key, minion)
   if value == ''

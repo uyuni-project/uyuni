@@ -468,3 +468,60 @@ def sanitize_client_tools(channels)
   channels.delete_if { |channel| channel.include? 'uyuni-client' } if product == 'SUSE Manager'
   channels
 end
+
+# This function initializes the API client
+def new_api_client
+  ssl_verify = !$is_container_provider
+  if $debug_mode
+    ApiTestXmlrpc.new(get_target('server').full_hostname)
+  else
+    product == 'Uyuni' ? ApiTestHttp.new(get_target('server').full_hostname, ssl_verify) : ApiTestXmlrpc.new(get_target('server').full_hostname)
+  end
+end
+
+# Get a time in the future, adding the minutes passed as parameter
+def get_future_time(minutes_to_add)
+  now = Time.new
+  future_time = now + 60 * Integer(minutes_to_add, 10)
+  future_time.strftime('%H:%M').to_s.strip
+end
+
+# Get a token for the given secret and claims
+# Valid claims:
+#   - org
+#   - onlyChannels
+def token(secret, claims = {})
+  payload = {}
+  payload.merge!(claims)
+  log secret
+  JWT.encode payload, [secret].pack('H*').bytes.to_a.pack('c*'), 'HS256'
+end
+
+# Get the server secret
+def server_secret
+  rhnconf, _code = get_target('server').run('cat /etc/rhn/rhn.conf', check_errors: false)
+  data = /server.secret_key\s*=\s*(\h+)$/.match(rhnconf)
+  data[1].strip
+end
+
+# Get a Salt pillar value passing the key and the minion name
+def pillar_get(key, minion)
+  system_name = get_system_name(minion)
+  if minion == 'sle_minion'
+    cmd = 'salt'
+  elsif %w[ssh_minion rhlike_minion deblike_minion].include?(minion)
+    cmd = 'mgr-salt-ssh'
+  else
+    raise 'Invalid target'
+  end
+  get_target('server').run("#{cmd} #{system_name} pillar.get #{key}")
+end
+
+# Wait for an action to be completed, passing the action id and a timeout
+def wait_action_complete(actionid, timeout: DEFAULT_TIMEOUT)
+  repeat_until_timeout(timeout: timeout, message: 'Action was not found among completed actions') do
+    list = $api_test.schedule.list_completed_actions
+    break if list.any? { |a| a['id'] == actionid }
+    sleep 2
+  end
+end
