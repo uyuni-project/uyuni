@@ -236,7 +236,7 @@ public class MigrationManagerTest extends BaseTestCaseWithUser {
         for (ServerHistoryEvent event : server.getHistory()) {
             if (event.getSummary().equals("System migration") &&
                 event.getDetails().contains("From organization: " + origOrg.getName()) &&
-                event.getDetails().contains("To organization: " + destOrg.getName()) &&
+                event.getDetails().contains("To organization " + destOrg.getName()) &&
                 (event.getCreated() != null)) {
                 migrationRecorded = true;
             }
