@@ -79,10 +79,11 @@ reports/
 *.mypy*
 
 # VS Code
-java/.vscode
+.vscode/
 
 # Python
 venv/
+.venv/
 
 # Schema
 
