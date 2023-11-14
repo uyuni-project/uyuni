@@ -25,9 +25,13 @@ import com.redhat.rhn.domain.errata.CveFactory;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.product.Tuple3;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
+import com.redhat.rhn.domain.rhnpackage.PackageFactory;
+import com.redhat.rhn.frontend.dto.PackageDto;
+import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.manager.content.MgrSyncUtils;
 import com.redhat.rhn.manager.errata.ErrataManager;
@@ -237,7 +241,9 @@ public class UbuntuErrataManager {
         var packagesByChannelMap = channelIds.stream()
                                              .map(ChannelFactory::lookupById)
                                              .filter(c -> c.isTypeDeb() && !c.isCloned())
-                                             .collect(Collectors.toMap(c -> c, Channel::getPackages));
+                                             .collect(Collectors.toMap(c -> c,
+                                                     c -> Set.copyOf(ChannelManager.listAllPackages(c))));
+
 
         if (packagesByChannelMap.isEmpty()) {
             LOG.info("No deb packages to process in channels: {}", channelIds);
@@ -247,7 +253,7 @@ public class UbuntuErrataManager {
         }
         Set<String> packageNames = packagesByChannelMap.entrySet().stream()
                 .flatMap(entry -> entry.getValue().stream())
-                .map(p -> p.getPackageName().getName())
+                .map(PackageDto::getName)
                 .collect(Collectors.toSet());
 
         LOG.debug("check deb packages in channels finished - get and parse errata");
@@ -263,10 +269,10 @@ public class UbuntuErrataManager {
      * @param packagesMap Map of deb packages by their corresponding channel
      * @param ubuntuErrataInfo list of ubuntu errata entries
      */
-    public static void processUbuntuErrata(Map<Channel, Set<Package>> packagesMap, Stream<Entry> ubuntuErrataInfo) {
+    public static void processUbuntuErrata(Map<Channel, Set<PackageDto>> packagesMap, Stream<Entry> ubuntuErrataInfo) {
         Set<Errata> changedErrata = new HashSet<>();
         TimeUtils.logTime(LOG, "writing erratas to db", () -> ubuntuErrataInfo.flatMap(entry -> {
-            Map<Channel, Set<Package>> matchingPackagesByChannel =
+            Map<Channel, Set<PackageDto>> matchingPackagesByChannel =
                     TimeUtils.logTime(LOG, "matching packages for " + entry.getId(),
                             () -> packagesMap.entrySet().stream()
                                     .collect(Collectors.toMap(Map.Entry::getKey,
@@ -275,20 +281,18 @@ public class UbuntuErrataManager {
 
                                     PackageEvr packageEvr = PackageEvr.parseDebian(e.getB());
                                     return e.getC().stream()
-                                            .anyMatch(arch -> p.getPackageName().getName().equals(e.getA()) &&
+                                            .anyMatch(arch -> p.getName().equals(e.getA()) &&
                                                 archToPackageArchLabel(arch)
-                                                        .map(a -> p.getPackageArch().getLabel().equals(a))
+                                                        .map(a -> p.getArchLabel().equals(a))
                                                         .orElse(false) &&
-                                                p.getPackageEvr().getVersion().equals(packageEvr.getVersion()) &&
-                                                p.getPackageEvr().getRelease().equals(packageEvr.getRelease()) &&
-                                                Optional.ofNullable(p.getPackageEvr().getEpoch())
-                                                        .equals(Optional.ofNullable(packageEvr.getEpoch())) &&
-                                                p.getPackageEvr().getPackageType()
-                                                        .equals(packageEvr.getPackageType()));
+                                                p.getVersion().equals(packageEvr.getVersion()) &&
+                                                p.getRelease().equals(packageEvr.getRelease()) &&
+                                                Optional.ofNullable(p.getEpoch())
+                                                        .equals(Optional.ofNullable(packageEvr.getEpoch())));
 
                                 })).collect(Collectors.toSet()))));
 
-            Map<Optional<Org>, Map<Channel, Set<Package>>> collect = matchingPackagesByChannel.entrySet().stream()
+            Map<Optional<Org>, Map<Channel, Set<PackageDto>>> collect = matchingPackagesByChannel.entrySet().stream()
                     .collect(Collectors.groupingBy(e -> Optional.ofNullable(e.getKey().getOrg()),
                             Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)));
 
@@ -339,6 +343,8 @@ public class UbuntuErrataManager {
 
                 Set<Package> packages = e.getValue().entrySet().stream()
                         .flatMap(x -> x.getValue().stream())
+                        .map(d -> PackageFactory.lookupByIdAndOrg(d.getId(),
+                                org.orElseGet(OrgFactory::getSatelliteOrg)))
                         .collect(Collectors.toSet());
                 if (errata.getPackages() == null) {
                     errata.setPackages(packages);
