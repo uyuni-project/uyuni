@@ -109,7 +109,7 @@ public class MigrationManager extends BaseManager {
             event.setCreated(new Date());
             event.setServer(server);
             event.setSummary("System migration");
-            String details = String.format("From organization: %s, To organization %s. " +
+            String details = String.format("From organization: %s, To organization: %s. " +
                     "User that initiated the transfer: %s", fromOrg.getName(), toOrg.getName(), user.getLogin());
             event.setDetails(details);
             server.getHistory().add(event);
