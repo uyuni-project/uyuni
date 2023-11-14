@@ -465,8 +465,8 @@ When(/^I extract the log files from all our active nodes$/) do
   rescue StandardError
     # Catch exceptions silently
   end
-  $node_by_host.each do |_host, node|
-    next if node.nil?
+  $node_by_host.each do |host, node|
+    next if node.nil? || %w[salt_migration_minion localhost *-ctl].include?(host)
 
     STDOUT.puts "Node: #{node.full_hostname}"
     extract_logs_from_node(node)
