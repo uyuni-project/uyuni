@@ -20,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.common.util.AESCryptException;
 import com.redhat.rhn.common.util.CryptHelper;
+import com.redhat.rhn.domain.credentials.CredentialsFactory;
 
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
@@ -37,7 +38,7 @@ public class CryptHelperTest {
         String password = "This Is my secret password";
         try {
             String encrypted = CryptHelper.aes256Encrypt(clearText, password);
-            assertEquals("U2FsdGVkX1", encrypted.substring(0, 10));
+            assertEquals(CredentialsFactory.SALTED_MAGIC_B64, encrypted.substring(0, 10));
             String decrypted = CryptHelper.aes256Decrypt(encrypted, password);
             assertEquals(clearText, decrypted);
         }
