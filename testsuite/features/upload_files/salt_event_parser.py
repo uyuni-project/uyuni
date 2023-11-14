@@ -20,13 +20,17 @@ f.close()
 failure_count = 0
 for error in errors:
     try:
-        j = json.loads("".join(error))
+        joined_error = "".join(error)
+        j = json.loads(joined_error)
         if not "return" in j:
             continue
+        if not isinstance(j["return"], dict):
+            continue
+        for k, v in j["return"].items():
+            if isinstance(v, dict) and not v.get("result", True):
+                failure_count += 1
+                print("\n# Failure", failure_count, ", _stamp:", j['_stamp'], json.dumps(v, sort_keys=True, indent=4))
     except ValueError as e:
         print("JSON cannot be parsed due to {0}".format(e))
         continue
-    for k in j["return"]:
-        if not j["return"][k]["result"]:
-            failure_count += 1
-            print("\n# Failure", failure_count, ", _stamp:", j['_stamp'], json.dumps(j["return"][k], sort_keys=True, indent=4))
+
