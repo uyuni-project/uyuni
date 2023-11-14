@@ -82,7 +82,7 @@ BuildRequires:  apache-commons-cli
 BuildRequires:  apache-commons-codec
 BuildRequires:  apache-commons-collections
 BuildRequires:  apache-commons-el
-BuildRequires:  apache-commons-io
+BuildRequires:  apache-commons-io >= 2.11.0
 BuildRequires:  apache-commons-jexl
 BuildRequires:  apache-commons-lang3 >= 3.4
 BuildRequires:  apache-commons-logging
