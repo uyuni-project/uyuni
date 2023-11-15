@@ -914,7 +914,14 @@ When(/^I install package tftpboot-installation on the server$/) do
   server = get_target('server')
   os_version = server.os_version
   if product == 'Uyuni'
-    server.run("zypper --non-interactive install tftpboot-installation-openSUSE-Leap-#{os_version}-x86_64", check_errors: false, verbose: true)
+    # TODO Remove the following rpm installation of SLES in Uyuni when we switch to Leap and switch to the zypper command
+    # server.run("zypper --non-interactive install tftpboot-installation-openSUSE-Leap-#{os_version}-x86_64", check_errors: false, verbose: true)
+    output, _code = server.run('find /var/spacewalk/packages -name tftpboot-installation-SLE-15-SP4-x86_64-*.noarch.rpm')
+    packages = output.split("\n")
+    pattern = '/tftpboot-installation-([^/]+)*.noarch.rpm'
+    # Reverse sort the package name to get the latest version first and install it
+    package = packages.min { |a, b| b.match(pattern)[0] <=> a.match(pattern)[0] }
+    server.run("rpm -i #{package}", check_errors: false)
   else
     output, _code = server.run('find /var/spacewalk/packages -name tftpboot-installation-SLE-15-SP4-x86_64-*.noarch.rpm')
     packages = output.split("\n")
@@ -922,6 +929,28 @@ When(/^I install package tftpboot-installation on the server$/) do
     # Reverse sort the package name to get the latest version first and install it
     package = packages.min { |a, b| b.match(pattern)[0] <=> a.match(pattern)[0] }
     server.run("rpm -i #{package}", check_errors: false)
+  end
+end
+
+When(/^I remove package tftpboot-installation from the server$/) do
+  server = get_target('server')
+  os_version = server.os_version
+  if product == 'Uyuni'
+    # TODO Remove the following rpm uninstallation of SLES in Uyuni when we switch to Leap and switch to the zypper command
+    # server.run("zypper --non-interactive remove tftpboot-installation-openSUSE-Leap-#{os_version}-x86_64", check_errors: false, verbose: true)
+    output, _code = server.run('find /var/spacewalk/packages -name tftpboot-installation-SLE-15-SP4-x86_64-*.noarch.rpm')
+    packages = output.split("\n")
+    pattern = '/tftpboot-installation-([^/]+)*.noarch.rpm'
+    # Reverse sort the package name to get the latest version first and install it
+    package = packages.min { |a, b| b.match(pattern)[0] <=> a.match(pattern)[0] }
+    server.run("rpm -e #{package}", check_errors: false)
+  else
+    output, _code = server.run('find /var/spacewalk/packages -name tftpboot-installation-SLE-15-SP4-x86_64-*.noarch.rpm')
+    packages = output.split("\n")
+    pattern = '/tftpboot-installation-([^/]+)*.noarch.rpm'
+    # Reverse sort the package name to get the latest version first and install it
+    package = packages.min { |a, b| b.match(pattern)[0] <=> a.match(pattern)[0] }
+    server.run("rpm -e #{package}", check_errors: false)
   end
 end
 
