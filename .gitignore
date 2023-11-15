@@ -79,7 +79,8 @@ reports/
 *.mypy*
 
 # VS Code
-.vscode/
+java/.vscode
+python/.vscode
 
 # Python
 venv/
