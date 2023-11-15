@@ -17,9 +17,9 @@ global.t = t;
 
 const loggerHead = new Loggerhead("", (headers) => headers);
 
-loggerHead.info = (message: string) => console.info(`[Loggerhead] INFO : ${message}`);
-loggerHead.debug = (message: string) => console.debug(`[Loggerhead] DEBUG : ${message}`);
-loggerHead.warn = (message: string) => console.warn(`[Loggerhead] WARN : ${message}`);
-loggerHead.error = (message: string) => console.error(`[Loggerhead] ERROR : ${message}`);
+loggerHead.info = console.info.bind(console, "[Loggerhead] INFO:");
+loggerHead.debug = console.debug.bind(console, "[Loggerhead] DEBUG:");
+loggerHead.warn = console.warn.bind(console, "[Loggerhead] WARN:");
+loggerHead.error = console.error.bind(console, "[Loggerhead] ERROR:");
 
 global.Loggerhead = loggerHead;
