@@ -14,9 +14,9 @@
  */
 package com.redhat.rhn.manager.audit;
 
+import com.redhat.rhn.common.RhnRuntimeException;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.db.datasource.DataResult;
-import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.frontend.dto.AuditDto;
 import com.redhat.rhn.frontend.dto.AuditMachineDto;
 import com.redhat.rhn.frontend.dto.AuditReviewDto;
@@ -279,7 +279,6 @@ public class AuditManager /* extends BaseManager */ {
      * @param machineName The machine to get review sections for; can be null
      * @return The set of review sections
      */
-    @SuppressWarnings("javasecurity:S2083") // host.list() is validated right after it is declared
     public static DataResult<AuditReviewDto> getMachineReviewSections(String machineName) {
         // if machineName is null, get all review sections by recursion
         if (machineName == null || machineName.isEmpty()) {
@@ -287,7 +286,18 @@ public class AuditManager /* extends BaseManager */ {
         }
 
         // otherwise, just look up this one machine
-        File hostDir = Path.of(logDirStr, machineName.replace(File.separator, ""), "audit").toFile();
+        File hostDir = Path.of(logDirStr, machineName, "audit").toFile();
+
+        try {
+            String hostPath = hostDir.getCanonicalPath();
+            if (!hostPath.startsWith(logDirStr)) {
+                throw new RhnRuntimeException("Invalid machine name");
+            }
+        }
+        catch (IOException e) {
+            log.warn("Failed getting canonical path of {}", hostDir.getAbsolutePath(), e);
+            return new DataResult<>(new LinkedList<>());
+        }
 
         if (!hostDir.exists()) {
             return new DataResult<>(new LinkedList<>());
