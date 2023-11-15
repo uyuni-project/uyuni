@@ -84,6 +84,8 @@ import com.suse.manager.webui.services.iface.VirtManager;
 
 import org.apache.http.HttpStatus;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 
 import spark.ModelAndView;
@@ -247,7 +249,8 @@ public class Router implements SparkApplication {
             if (isJson(response) || isApiRequest(request)) {
                 return json(response, Collections.singletonMap("message", "404 Not found"));
             }
-            var data = Collections.singletonMap("currentUrl", request.pathInfo());
+            var data = Collections.singletonMap("currentUrl",
+                    URLEncoder.encode(request.pathInfo(), StandardCharsets.UTF_8));
             return jade.render(new ModelAndView(data, "templates/errors/404.jade"));
         });
 
@@ -257,7 +260,8 @@ public class Router implements SparkApplication {
                 response.body(json(response, Collections.singletonMap("message", "404 Not found")));
             }
             else {
-                var data = Collections.singletonMap("currentUrl", request.pathInfo());
+                var data = Collections.singletonMap("currentUrl",
+                        URLEncoder.encode(request.pathInfo(), StandardCharsets.UTF_8));
                 response.body(jade.render(new ModelAndView(data, "templates/errors/404.jade")));
             }
         });

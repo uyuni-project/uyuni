@@ -1,0 +1,1 @@
+- Safeguard request URLs against tempering (bsc#1216754)
