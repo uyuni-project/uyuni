@@ -44,7 +44,7 @@ class Config(object):
         self._config = ConfigObj()
         self._config[Config.USER] = ''
         self._config[Config.PASSWORD] = ''
-        self._config[Config.HOST] = socket.getfqdn()
+        self._config[Config.HOST] = "localhost"
         self._config[Config.PORT] = 80
         self._config[Config.URI] = "/rpc/api"
         self._config[Config.TOKEN] = ''

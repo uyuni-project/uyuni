@@ -110,7 +110,9 @@ class ExtOptionParser(OptionParser):
 
 
 def connect(user, password, server):
-    server_url = "http://%s/rpc/api" % server
+    server_url = "https://%s/rpc/api" % server
+    if server in ["localhost", "127.0.0.1"]:
+        server_url = "http://%s/rpc/api" % server
 
     if options.verbose and options.verbose > 2:
         client_verbose = options.verbose - 2
