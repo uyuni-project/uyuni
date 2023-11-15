@@ -42,9 +42,16 @@ class MgrSync(object):  # pylint: disable=too-few-public-methods
 
     def __init__(self):
         self.config = Config()
-        url = "http://{0}:{1}{2}".format(self.config.host,
-                                         self.config.port,
-                                         self.config.uri)
+
+        # Use http on localhost by default to avoid hairpins when running in kubernetes
+        scheme = "http"
+        if self.config.host not in ["localhost", "127.0.0.1"]:
+            scheme = "https"
+            self.config.port = 443
+        url = "{0}://{1}:{2}{3}".format(scheme,
+                                        self.config.host,
+                                        self.config.port,
+                                        self.config.uri)
         self.conn = xmlrpc_client.ServerProxy(url)
         self.auth = Authenticator(connection=self.conn,
                                   user=self.config.user,
