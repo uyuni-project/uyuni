@@ -173,16 +173,16 @@ public class SCCWebClient implements SCCClient {
             throws SCCClientException {
 
         PaginatedResult<List<T>> firstPage = request(endpoint, SCCClientUtils.toListType(resultType), "GET");
-        LOG.info("Pages: {}", firstPage.numPages);
+        LOG.info("GET: {}{} Pages: {}", config.getUrl(), endpoint, firstPage.numPages);
 
         List<CompletableFuture<PaginatedResult<List<T>>>> futures = Stream.iterate(2, i -> i + 1)
                 .limit(Math.max(0, firstPage.numPages - 1)).map(pageNum -> {
             String e = endpoint + "?page=" + pageNum;
             CompletableFuture<PaginatedResult<List<T>>> get = CompletableFuture.supplyAsync(() -> {
                 try {
-                    LOG.info("Start Page: {}", pageNum);
+                    LOG.debug("Start Page: {}", pageNum);
                     PaginatedResult<List<T>> page = request(e, SCCClientUtils.toListType(resultType), "GET");
-                    LOG.info("End Page: {}", pageNum);
+                    LOG.debug("End Page: {}", pageNum);
                     return page;
                 }
                 catch (SCCClientException e1) {
@@ -225,7 +225,7 @@ public class SCCWebClient implements SCCClient {
         HttpDelete request = new HttpDelete(url);
         addHeaders(request);
         BufferedReader streamReader = null;
-        LOG.debug("Send DELETE to {}", url);
+        LOG.info("Send DELETE to {}", url);
 
         try {
             // Connect and parse the response on success
@@ -268,8 +268,8 @@ public class SCCWebClient implements SCCClient {
         Map<String, List<SCCUpdateSystemJson>> payload = Map.of("systems", systems);
         request.setEntity(new StringEntity(gson.toJson(payload), ContentType.APPLICATION_JSON));
 
+        LOG.info("Send PUT to {}{}", config.getUrl(), "/connect/organizations/systems");
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Send PUT to {}", config.getUrl() + "/connect/organizations/systems");
             LOG.debug(gson.toJson(payload));
         }
 
@@ -307,8 +307,8 @@ public class SCCWebClient implements SCCClient {
         Map<String, Collection<SCCRegisterSystemJson>> payload = Map.of("systems", systems);
         request.setEntity(new StringEntity(gson.toJson(payload), ContentType.APPLICATION_JSON));
 
+        LOG.info("Send PUT to {}{}", config.getUrl(), "/connect/organizations/systems");
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Send PUT to {}", config.getUrl() + "/connect/organizations/systems");
             LOG.debug(gson.toJson(payload));
         }
 
@@ -350,8 +350,8 @@ public class SCCWebClient implements SCCClient {
         request.setEntity(new StringEntity(gson.toJson(Map.of("virtualization_hosts", virtHostInfo)),
                 ContentType.APPLICATION_JSON));
 
+        LOG.info("Send PUT to {}{}", config.getUrl(), "/connect/organizations/virtualization_hosts");
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Send PUT to {}", config.getUrl() + "/connect/organizations/virtualization_hosts");
             LOG.debug(gson.toJson(Map.of("virtualization_hosts", virtHostInfo)));
         }
 
