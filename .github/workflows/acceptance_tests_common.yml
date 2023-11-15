@@ -53,46 +53,52 @@ jobs:
         run: ./testsuite/podman_runner/04_setup_ssh_controller.sh 
       - name: install_gems_in_controller
         run: ./testsuite/podman_runner/05_install_gems_in_controller.sh
+      - name: collect_and_tag_flaky_tests_in_controller
+        # Until we refactor the usage of the secret, it only runs on uyuni-project/uyuni repository branches
+        if: github.repository == 'uyuni-project/uyuni'
+        run: ./testsuite/podman_runner/06_collect_and_tag_flaky_tests_in_controller.sh
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN_GALAXY_CI }}
       - name: start-server-container
-        run: ./testsuite/podman_runner/06_start_server.sh 
+        run: ./testsuite/podman_runner/07_start_server.sh
       - name: mgr-setup
-        run: ./testsuite/podman_runner/07_manager_setup.sh 
+        run: ./testsuite/podman_runner/08_manager_setup.sh
       - name: build_code
-        run: ./testsuite/podman_runner/08_build_server_code.sh 
+        run: ./testsuite/podman_runner/09_build_server_code.sh
 #     - name: copy_ca
 #     run: podman exec uyuni-server-all-in-one-test bash -c "cp /etc/pki/tls/certs/spacewalk.crt /tmp"
 #     - name: update_ca_in_controller
 #       run: podman exec controller-test bash -c "cat /tmp/spacewalk.crt >> /etc/ssl/ca-bundle.pem"
       - name: sle-sshminion
-        run: ./testsuite/podman_runner/09_run_sshminion.sh 
+        run: ./testsuite/podman_runner/10_run_sshminion.sh
       - name: test_from_host
         run: curl --insecure https://localhost:8443/rhn/help/Copyright.do
       - name: test_from_container
         run: sudo -i podman exec opensusessh curl --insecure https://uyuni-server-all-in-one-test:443/rhn/help/Copyright.do
       - name: setup_sshd
-        run: ./testsuite/podman_runner/10_setup_sshd.sh 
+        run: ./testsuite/podman_runner/11_setup_sshd.sh
       - name: run_cucumber_core
-        run: ./testsuite/podman_runner/11_run_core_tests.sh 
+        run: ./testsuite/podman_runner/12_run_core_tests.sh
       - name: sle-salt-minion
-        run: ./testsuite/podman_runner/12_run_salt_sle_minion.sh 
+        run: ./testsuite/podman_runner/13_run_salt_sle_minion.sh
       - name: rhlike-minion
-        run: ./testsuite/podman_runner/13_run_salt_rhlike_minion.sh 
+        run: ./testsuite/podman_runner/14_run_salt_rhlike_minion.sh
       - name: deblike-minion
-        run: ./testsuite/podman_runner/14_run_salt_deblike_minion.sh 
+        run: ./testsuite/podman_runner/15_run_salt_deblike_minion.sh
       - name: accept_keys
-        run: ./testsuite/podman_runner/15_accept_all_keys.sh 
+        run: ./testsuite/podman_runner/16_accept_all_keys.sh
       - name: run_cucumber_clients
-        run: ./testsuite/podman_runner/16_run_init_clients_tests.sh 
+        run: ./testsuite/podman_runner/17_run_init_clients_tests.sh
       - name: split_secondary
-        run: ./testsuite/podman_runner/18_split_secondary_p_tests.sh
+        run: ./testsuite/podman_runner/19_split_secondary_p_tests.sh
       - name: run_secondary_tests
         run: ./testsuite/podman_runner/${{ inputs.secondary_tests }} 
       - name: get_server_logs
         if: ${{ failure() }}
-        run: ./testsuite/podman_runner/19_get_server_logs.sh ${{ inputs.server_id }}
+        run: ./testsuite/podman_runner/20_get_server_logs.sh ${{ inputs.server_id }}
       - name: get_client_logs
         if: ${{ failure() }}
-        run: ./testsuite/podman_runner/20_get_client_logs.sh ${{ inputs.server_id }}
+        run: ./testsuite/podman_runner/21_get_client_logs.sh ${{ inputs.server_id }}
       - name: upload_server_log_artifacts
         if: ${{ failure() }}
         uses: actions/upload-artifact@v3

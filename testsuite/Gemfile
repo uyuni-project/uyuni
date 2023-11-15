@@ -32,3 +32,4 @@ gem 'redis', '~> 5.0'
 gem 'twopence', "~> 0.4"
 gem 'pg', "~> 1.4"
 gem 'public_suffix', '~> 4.0'
+gem 'netrc', '~> 0.11.0'
