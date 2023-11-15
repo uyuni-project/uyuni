@@ -56,7 +56,7 @@ public class PaygAuthDataExtractor {
         .create();
 
     public enum OsSpecificExtractor {
-        SLES_EXTRACTOR("SLES", "sudo python3", "script/payg_extract_repo_data.py"),
+        SLES_EXTRACTOR("SLE", "sudo python3", "script/payg_extract_repo_data.py"),
         RHEL_EXTRACTOR("RHEL", "sudo /usr/libexec/platform-python", "script/rhui_extract_repo_data.py"),
         RHEL7_EXTRACTOR("RHEL7", "sudo python", "script/rhui7_extract_repo_data.py");
 
