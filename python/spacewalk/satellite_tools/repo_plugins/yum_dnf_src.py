@@ -317,10 +317,14 @@ class ContentSource(zypper_ContentSource):
             if pack.arch == 'src':
                 continue
             new_pack = ContentPackage()
-            new_pack.setNVREA(pack.name, pack.version, pack.release,
-                              pack.epoch, pack.arch)
+            try:
+                new_pack.setNVREA(pack.name, pack.version, pack.release,
+                                  pack.epoch, pack.arch)
+            except ValueError as e:
+                log(0, "WARNING: package contains incorrect metadata. SKIPPING!")
+                log(0, e)
+                continue
             new_pack.unique_id = RawSolvablePackage(pack)
-#            new_pack.hawkey_id = pack
             new_pack.checksum_type = pack.returnIdSum()[0]
             if new_pack.checksum_type == 'sha':
                 new_pack.checksum_type = 'sha1'

@@ -66,6 +66,12 @@ class ContentPackage:
         return nra
 
     def setNVREA(self, name, version, release, epoch, arch):
+        if not all((name, version, release, arch)):
+            raise ValueError(
+                (
+                    "Incorrect package NVRA values: "
+                    f"N: {name}, V: {version}, R: {release}, A: {arch}"
+                ))
         self.name = name
         self.version = version
         self.release = release
