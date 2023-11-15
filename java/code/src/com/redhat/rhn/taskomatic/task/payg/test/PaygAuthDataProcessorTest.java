@@ -33,7 +33,6 @@ import com.redhat.rhn.domain.product.SUSEProductSCCRepository;
 import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
 import com.redhat.rhn.domain.scc.SCCRepository;
-import com.redhat.rhn.domain.scc.SCCRepositoryAuth;
 import com.redhat.rhn.domain.scc.SCCRepositoryCloudRmtAuth;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 import com.redhat.rhn.taskomatic.task.payg.PaygAuthDataProcessor;
@@ -54,6 +53,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class PaygAuthDataProcessorTest extends BaseHandlerTestCase {
 
@@ -137,7 +138,7 @@ public class PaygAuthDataProcessorTest extends BaseHandlerTestCase {
 
     private void assertExpectedData() {
         PaygSshData data = HibernateFactory.reload(paygData);
-        assertEquals(9, SCCCachingFactory.lookupRepositoryAuth().size());
+        assertEquals(12, SCCCachingFactory.lookupRepositoryAuth().size());
         assertEquals(1, HibernateFactory.getSession()
                 .createQuery("SELECT a FROM BaseCredentials a", BaseCredentials.class).getResultList().size());
         assertEquals(1, CloudRmtHostFactory.lookupCloudRmtHosts().size());
@@ -157,20 +158,24 @@ public class PaygAuthDataProcessorTest extends BaseHandlerTestCase {
         assertEquals(cloudRMTCredentials.get().getUrl(),
                 "https://" + paygInstanceInfo.getRmtHost().get("hostname") + "/repo");
 
-        List<SCCRepositoryAuth> repoAuths = SCCCachingFactory.
-                lookupRepositoryAuthByCredential(cloudCredentials);
-        assertEquals(repoAuths.size(), 9);
-        assertTrue(repoAuths.stream().anyMatch(r -> r.getRepo().getName().equals("sles-12.1-Pool")));
-        assertTrue(repoAuths.stream().anyMatch(r -> r.getRepo().getName().equals("sles-12.1-Updates")));
-        assertTrue(repoAuths.stream().anyMatch(r -> r.getRepo().getName().equals("sles-12.1-debuginfo")));
-        assertTrue(repoAuths.stream().anyMatch(r -> r.getRepo().getName().equals("sles-15.1-Pool")));
-        assertTrue(repoAuths.stream().anyMatch(r -> r.getRepo().getName().equals("sles-15.1-Updates")));
-        assertTrue(repoAuths.stream().anyMatch(r -> r.getRepo().getName().equals("sles-15.1-debuginfo")));
-        assertTrue(repoAuths.stream().anyMatch(r -> r.getRepo().getName().equals("sle-module-basesystem-15.1-Pool")));
-        assertTrue(repoAuths.stream().anyMatch(r -> r.getRepo().getName()
-                .equals("sle-module-basesystem-15.1-Updates")));
-        assertTrue(repoAuths.stream().anyMatch(r -> r.getRepo().getName()
-                .equals("sle-module-basesystem-15.1-debuginfo")));
+        Set<String> repoNamesSet = SCCCachingFactory.lookupRepositoryAuthByCredential(cloudCredentials)
+            .stream()
+            .map(r -> r.getRepo().getName())
+            .collect(Collectors.toSet());
+
+        assertEquals(repoNamesSet.size(), 12);
+        assertContains(repoNamesSet, "sles-12.1-Pool");
+        assertContains(repoNamesSet, "sles-12.1-Updates");
+        assertContains(repoNamesSet, "sles-12.1-debuginfo");
+        assertContains(repoNamesSet, "sles-15.1-Pool");
+        assertContains(repoNamesSet, "sles-15.1-Updates");
+        assertContains(repoNamesSet, "sles-15.1-debuginfo");
+        assertContains(repoNamesSet, "sle-module-basesystem-15.1-Pool");
+        assertContains(repoNamesSet, "sle-module-basesystem-15.1-Updates");
+        assertContains(repoNamesSet, "sle-module-basesystem-15.1-debuginfo");
+        assertContains(repoNamesSet, "sle-module-basesystem-15.5-Pool");
+        assertContains(repoNamesSet, "sle-module-basesystem-15.5-Updates");
+        assertContains(repoNamesSet, "sle-module-basesystem-15.5-debuginfo");
 
         assertNotNull(data.getRmtHosts());
         assertEquals(paygInstanceInfo.getRmtHost().get("ip"), data.getRmtHosts().getIp());
