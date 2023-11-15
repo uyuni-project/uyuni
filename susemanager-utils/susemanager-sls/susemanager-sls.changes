@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Wed Nov 01 19:46:00 CET 2023 - marina.latini@suse.com
+
+- version 4.4.9-1
+  * Use HTTP for connections to localhost
+  * Disable dnf_rhui_plugin as it break our susemanagerplugin (bsc#1214601)
+  * Fix susemanagerplugin to not overwrite header fields set by other plugins
+  * Let the dnf plugin log when a token was set
+  * Do not install instance-flavor-check tool on openSUSE
+
+-------------------------------------------------------------------
 Mon Sep 18 14:41:33 CEST 2023 - rosuna@suse.com
 
 - version 4.4.8-1

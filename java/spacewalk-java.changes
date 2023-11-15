@@ -1,4 +1,71 @@
 -------------------------------------------------------------------
+Wed Nov 01 20:23:38 CET 2023 - marina.latini@suse.com
+
+- version 4.4.21-1
+  * Avoid SUSE Customer Center credentials check if
+    `server.susemanager.fromdir` is set (bsc#1211270)
+  * Include reboot_suggested and restart_suggested booleans in
+    errata.getDetails API response
+  * Add a config to specify the number of minutes to wait before
+    performing a system reboot
+  * Sync GPG properties on each build in CLM (bsc#1213689)
+  * Change list endpoints in saltkey namespace to accept GET
+    requests instead of POST (bsc#1214463)
+  * Respect user email preferences when sending 'user creation'
+    emails (bsc#1214553)
+  * Fix the use of page size preference in systems and packages lists
+  * Improved logging to better capture third-party library issues
+  * Fix server error when visiting the notifications page
+  * Fix token issue with cloned deb channels (bsc#1214982)
+  * Fixed detection in case RHEL-based products (bsc#1214280)
+  * Do not call SCC when updating the repositories authentication
+    for Pay-as-you-go (bsc#1215857)
+  * Restart the bunch from where it was interrupted when rescheduling
+  * Moved the Ubuntu errata processing in its own separate Taskomatic
+    task (bsc#1211145)
+  * Stop the Taskomatic bunch execution if it was not possible to
+    execute one of the tasks
+  * Combine the Pay-as-you-go credentials and the repository paths
+    when they collide (bsc#1215413)
+  * Improved detection of the best authentication for accessing a
+    repository in case of Pay-as-you-go credentials (bsc#1215362)
+  * Do not warn about missing Client Tools Channel subscription in
+    a Pay-as-you-go environment
+  * Add detection of Debian 12
+  * Update Tomcat jars to version greater than 9.0.75
+  * Implement different way to copy data for SystemPackageUpdate
+    report database table (bsc#1211912)
+  * Fix notification messages email content (bsc#1216041)
+  * Look for the Pay-as-you-go CA certificate location in different
+    order to find and import the correct one (bsc#1214759)
+  * Add salt-api socket timeout to abort stuck taskomatic
+    jobs (bsc#1211649)
+  * Wait for lock to execute SUSE Customer Center sync
+    task (bsc#1216030)
+  * Fix system.provisionSystem xmlrpc endpoint to calculate host
+    properly (bsc#1215209)
+  * Add Pay-as-you-go info to UI and rest API
+  * Fix bug about listing Ansible inventories (bsc#1213132)
+  * Fix issue where bad SUSE Customer Center credentials prevented
+    other credentials to refresh (bsc#1211355)
+  * Handle spaces in /ks/dist/ file names (bsc#1213680)
+  * Fix token validation for shared (public) child channels (bsc#1216128)
+  * Update SUSE Customer Center REST call to register systems in bulk
+  * Fix FQDN machine name mapping on proxy configuration
+  * Token cleanup process removing invalid tokens using sql query (bsc#1213376)
+  * Fix failed actions rescheduling (bsc#1214121)
+  * Fix unscheduling actions when the trigger name changed after
+    retry (bsc#1214121)
+  * Consider server ID when removing invalid erratas from
+    rhnSet (bsc#1204235, bsc#1207012, bsc#1211560)
+  * Improve Taskomatic by removing invalid triggers before starting
+    and enhancing logs
+  * Revert action executor fix that was intended to prevent blocking
+    of Taskomatic threads (bsc#1214121)
+  * Disallow Google GSON 2.10 or higher due to removed methods.
+  * Tito requires to list the source as %{name}-%{version}.tar.gz
+
+-------------------------------------------------------------------
 Wed Sep 27 17:44:34 CEST 2023 - rosuna@suse.com
 
 - version 4.4.20-1

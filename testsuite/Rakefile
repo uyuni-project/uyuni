@@ -69,7 +69,7 @@ namespace :utils do
   task :split_secondary_p, [:sets] do |_t, args|
     sets_n = args[:sets].to_i
     if sets_n < 2
-      puts "sets should be 2 or greater"
+      puts 'sets should be 2 or greater'
     else
       all_secondary_p = YAML.load_file('run_sets/secondary_parallelizable.yml')
       if all_secondary_p.length%sets_n != 0
@@ -79,12 +79,12 @@ namespace :utils do
       end
       split_sets = all_secondary_p.each_slice(size).to_a
       puts "split_sets.length: #{split_sets.length}"
-      for i in 1..split_sets.length
+      (1..split_sets.length).each { |i|
         puts "writing #{i}"
-        File.open("run_sets/secondary_parallelizable_#{i}.yml", "w") { |file|
-          file.write(split_sets[i-1].to_yaml)
+        File.open("run_sets/secondary_parallelizable_#{i}.yml", 'w') { |file|
+          file.write(split_sets[i - 1].to_yaml)
         }
-      end
+      }
     end
   end
 
@@ -178,6 +178,11 @@ namespace :utils do
     sh 'find . -size 0 -delete', verbose: false
     sh "node index.js #{result_folder} &> cucumber_reporter.log", verbose: false
     sh "cp cucumber_report/cucumber_report.html #{result_folder}"
+  end
+
+  desc 'Collect and tag flaky tests'
+  task :collect_and_tag_flaky_tests do
+    `ruby ext-tools/collect_and_tag_flaky_tests.rb features`
   end
 end
 

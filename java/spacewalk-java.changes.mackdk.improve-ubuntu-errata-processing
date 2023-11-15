@@ -1,5 +1,0 @@
-- Restart the bunch from where it was interrupted when rescheduling
-- Moved the Ubuntu errata processing in its own separate taskomatic
-  task (bsc#1211145)
-- Stop the taskomatic bunch execution if it was not possible to
-  execute one of the tasks

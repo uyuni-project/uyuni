@@ -59,7 +59,7 @@ Name:           spacewalk-java
 Summary:        Java web application files for Spacewalk
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.4.20
+Version:        4.4.21
 Release:        1
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        %{name}-%{version}.tar.gz
@@ -82,7 +82,7 @@ BuildRequires:  apache-commons-cli
 BuildRequires:  apache-commons-codec
 BuildRequires:  apache-commons-collections
 BuildRequires:  apache-commons-el
-BuildRequires:  apache-commons-io
+BuildRequires:  apache-commons-io >= 2.11.0
 BuildRequires:  apache-commons-jexl
 BuildRequires:  apache-commons-lang3 >= 3.4
 BuildRequires:  apache-commons-logging
@@ -96,7 +96,7 @@ BuildRequires:  dom4j
 BuildRequires:  dwr >= 3
 BuildRequires:  glassfish-jaxb-runtime
 BuildRequires:  glassfish-jaxb-txw2
-BuildRequires:  google-gson >= 2.2.4
+BuildRequires:  (google-gson >= 2.2.4 with google-gson < 2.10.0)
 BuildRequires:  hibernate-commons-annotations
 BuildRequires:  hibernate-types
 BuildRequires:  httpcomponents-asyncclient
@@ -186,7 +186,7 @@ Requires:       glassfish-activation-api
 Requires:       glassfish-jaxb-api
 Requires:       glassfish-jaxb-runtime
 Requires:       glassfish-jaxb-txw2
-Requires:       google-gson >= 2.2.4
+Requires:       (google-gson >= 2.2.4 with google-gson < 2.10.0)
 Requires:       hibernate-commons-annotations
 Requires:       hibernate-types
 Requires:       httpcomponents-client

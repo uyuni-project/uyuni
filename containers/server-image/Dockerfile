@@ -83,14 +83,15 @@ ARG REFERENCE_PREFIX="registry.opensuse.org/uyuni"
 
 # Build Service required labels
 # labelprefix=org.opensuse.uyuni.server
+LABEL org.opencontainers.image.name=server-image
 LABEL org.opencontainers.image.title="${PRODUCT} server container"
 LABEL org.opencontainers.image.description="All-in-one ${PRODUCT} server image"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="${VENDOR}"
 LABEL org.opencontainers.image.url="${URL}"
-LABEL org.opencontainers.image.version="4.4.0"
+LABEL org.opencontainers.image.version=4.4.1
 LABEL org.openbuildservice.disturl="%DISTURL%"
-LABEL org.opensuse.reference="${REFERENCE_PREFIX}/server:4.4.0.%RELEASE%"
+LABEL org.opensuse.reference="${REFERENCE_PREFIX}/server:4.4.1.%RELEASE%"
 # endlabelprefix
 
 CMD ["/usr/lib/systemd/systemd"]

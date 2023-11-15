@@ -1,11 +1,11 @@
-FROM registry.suse.com/bci/bci-init:15.4
+FROM registry.suse.com/bci/bci-init:15.5
 # from https://raw.githubusercontent.com/rjmateus/uyuni-container/main/uyuni/Dockerfile
 
-RUN zypper ar -G http://download.opensuse.org/update/leap/15.4/backports/ backports_update_repo
-RUN zypper ar -G http://download.opensuse.org/distribution/leap/15.4/repo/oss/ os_pool_repo
-RUN zypper ar -G http://download.opensuse.org/update/leap/15.4/oss/ os_update_repo
+RUN zypper ar -G http://download.opensuse.org/update/leap/15.5/backports/ backports_update_repo
+RUN zypper ar -G http://download.opensuse.org/distribution/leap/15.5/repo/oss/ os_pool_repo
+RUN zypper ar -G http://download.opensuse.org/update/leap/15.5/oss/ os_update_repo
 RUN zypper ar -G http://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Stable/images/repo/Uyuni-Server-POOL-x86_64-Media1/ server_pool_repo
-RUN zypper ar -G http://download.opensuse.org/update/leap/15.4/sle/ sle_update_repo
+RUN zypper ar -G http://download.opensuse.org/update/leap/15.5/sle/ sle_update_repo
 RUN zypper ar -G http://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Stable/images/repo/Testing-Overlay-POOL-x86_64-Media1/ testing_overlay_devel_repo
 
 copy setup_env.sh /root/setup_env.sh

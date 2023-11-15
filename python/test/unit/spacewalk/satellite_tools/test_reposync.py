@@ -212,6 +212,60 @@ class RepoSyncTest(unittest.TestCase):
                          ((["Label"], [], "server.app.yumreposync"), {}))
         self.assertEqual(self.reposync.taskomatic.add_to_erratacache_queue.call_args,
                          (("Label", ), {}))
+    
+    def _mock_cfg(self) -> Mock:
+        CFG = Mock()
+        CFG.MOUNT_POINT = '/tmp'
+        CFG.PREPENDED_DIR = ''
+        CFG.AUTO_GENERATE_BOOTSTRAP_REPO = 1
+        return CFG
+    
+    def _mock_repo_plugin(self, pkg_list) -> Mock:
+        plug = Mock()
+        plug.list_packages = Mock(return_value=pkg_list)
+        plug.num_packages = len(pkg_list)
+        plug.num_excluded = 0
+        plug.repo.pkgdir = "/tmp"
+        return plug
+
+    def _mock_packages_list(self, names: list) -> list:
+        packages = []
+        for name in names:
+            package = Mock()
+            package.arch = "arch1"
+            package.checksum = ""
+            package.unique_id.relativepath = name
+            packages.append(package)
+        return packages
+
+    @patch("uyuni.common.context_managers.initCFG", Mock())
+    @patch("spacewalk.satellite_tools.reposync.log2", Mock())
+    @patch("spacewalk.satellite_tools.reposync.os", os)
+    @patch("spacewalk.satellite_tools.reposync.log", Mock())
+    @patch("spacewalk.satellite_tools.reposync.RepoSync._normalize_orphan_vendor_packages", Mock())
+    @patch("spacewalk.satellite_tools.reposync.ThreadedDownloader")
+    @patch("spacewalk.satellite_tools.reposync.multiprocessing.Pool")
+    def test_import_packages_excludes_failed_pkgs(self, pool, downloader):
+        """
+        When downloader fails to download a subset of packages
+        Then the RepoSync.import_packages function should not process the failed packages
+        """
+        rs = _init_reposync(self.reposync)
+        _mock_rhnsql(self.reposync, [None, []])
+
+        fail_pkg_name = "failed.rpm"
+        downloader.return_value.failed_pkgs = [fail_pkg_name]
+
+        packs = self._mock_packages_list([fail_pkg_name])
+        plugin = self._mock_repo_plugin(packs)
+
+        with patch("uyuni.common.context_managers.CFG", self._mock_cfg()):
+            rs.import_packages(plugin, None, "unused-url-string", None)
+
+        # repository plugin returned 1 package that failed to download
+        # multiprocessing.Pool.apply_async shouldn't be called
+        apply_async_mock = pool.return_value.__enter__.return_value.apply_async
+        self.assertFalse(apply_async_mock.called)
 
     @patch("uyuni.common.context_managers.initCFG", Mock())
     def test_sync_raises_channel_timeout(self):

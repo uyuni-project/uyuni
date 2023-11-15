@@ -31,6 +31,7 @@ import com.suse.manager.api.SerializedApiResponse;
  *      #prop_desc("$date",  "last_checkin", "last time server
  *              successfully checked in")
  *      #prop("string", "hostname")
+ *      #prop("string", "uuid")
  *      #prop("string", "ip")
  *      #prop_desc("string",  "hw_description", "HW description if not null")
  *      #prop_desc("string",  "hw_device_id", "HW device id if not null")
@@ -54,6 +55,10 @@ public class SystemSearchResultSerializer extends ApiResponseSerializer<SystemSe
                 .add("last_checkin", src.getLastCheckinDate())
                 .add("hostname", src.getHostname())
                 .add("ip", src.getIpaddr());
+
+        if (src.getUuid() != null) {
+            builder.add("uuid", src.getUuid());
+        }
 
         if (src.getHw() != null) {
             builder.add("hw_description", src.getHw().getDescription())

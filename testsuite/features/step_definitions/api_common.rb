@@ -6,23 +6,6 @@
 require 'json'
 require 'socket'
 
-def reset_api_client
-  ## Testing inside containers needs to be done without ssl
-  ssl_verify = if $is_container_provider
-                 false
-               else
-                 true
-               end
-
-  $api_test = if $debug_mode
-                ApiTestXmlrpc.new(get_target('server').full_hostname)
-              else
-                product == 'Uyuni' ? ApiTestHttp.new(get_target('server').full_hostname, ssl_verify) : ApiTestXmlrpc.new(get_target('server').full_hostname)
-              end
-end
-
-reset_api_client
-
 ## system namespace
 
 Given(/^I want to operate on this "([^"]*)"$/) do |host|
@@ -203,40 +186,36 @@ end
 ## activationkey namespace
 
 Then(/^I should get some activation keys$/) do
-  raise if $api_test.activationkey.get_activation_keys_count < 1
+  raise ScriptError if $api_test.activationkey.get_activation_keys_count < 1
 end
 
 When(/^I create an activation key with id "([^"]*)", description "([^"]*)" and limit of (\d+)$/) do |id, dscr, limit|
   key = $api_test.activationkey.create(id, dscr, '', limit.to_i)
-  raise 'Key creation failed' if key.nil?
-  raise 'Bad key name' if key != '1-testkey'
+  raise ScriptError, 'Key creation failed' if key.nil?
+  raise ScriptError, 'Bad key name' if key != "1-#{id}"
 end
 
-Then(/^I should get the new activation key$/) do
-  raise unless $api_test.activationkey.verify('1-testkey')
+Then(/^I should get the new activation key "([^"]*)"$/) do |activation_key|
+  raise ScriptError unless $api_test.activationkey.verify(activation_key)
 end
 
-When(/^I delete the activation key$/) do
-  raise unless $api_test.activationkey.delete('1-testkey')
-  raise if $api_test.activationkey.verify('1-testkey')
+When(/^I delete the activation key "([^"]*)"$/) do |activation_key|
+  raise ScriptError unless $api_test.activationkey.delete(activation_key)
+  raise ScriptError if $api_test.activationkey.verify(activation_key)
 end
 
-When(/^I add config channels "([^"]*)" to a newly created key$/) do |channel_name|
-  raise if $api_test.activationkey.add_config_channels('1-testkey', [channel_name]) < 1
+When(/^I set the description of the activation key "([^"]*)" to "([^"]*)"$/) do |activation_key, description|
+  raise RuntimeError unless $api_test.activationkey.set_details(activation_key, description, '', 10, 'default')
 end
 
-When(/^I set the description of activation key to "([^"]*)"$/) do |description|
-  raise unless $api_test.activationkey.set_details('1-testkey', description, '', 10, 'default')
-end
-
-Then(/^I get the description "([^"]*)" for the activation key$/) do |description|
-  details = $api_test.activationkey.get_details('1-testkey')
+Then(/^I get the description "([^"]*)" for the activation key "([^"]*)"$/) do |description, activation_key|
+  details = $api_test.activationkey.get_details(activation_key)
   log 'Key details:'
   details.each_pair do |k, v|
     log "  #{k}: #{v}"
   end
   log
-  raise unless details['description'] == description
+  raise ScriptError unless details['description'] == description
 end
 
 When(/^I create an activation key including custom channels for "([^"]*)" via API$/) do |client|
@@ -407,14 +386,6 @@ end
 
 ## schedule API
 
-def wait_action_complete(actionid, timeout: DEFAULT_TIMEOUT)
-  repeat_until_timeout(timeout: timeout, message: 'Action was not found among completed actions') do
-    list = $api_test.schedule.list_completed_actions
-    break if list.any? { |a| a['id'] == actionid }
-    sleep 2
-  end
-end
-
 Then(/^I should see scheduled action, called "(.*?)"$/) do |label|
   assert_includes(
     $api_test.schedule.list_in_progress_actions.map { |a| a['name'] }, label
@@ -486,6 +457,7 @@ end
 
 When(/^I call audit\.list_systems_by_patch_status\(\) with CVE identifier "([^"]*)"$/) do |cve_identifier|
   @result_list = $api_test.audit.list_systems_by_patch_status(cve_identifier) || []
+  log "Result list: #{@result_list}"
 end
 
 Then(/^I should get status "([^"]+)" for system "([0-9]+)"$/) do |status, system|
@@ -500,16 +472,8 @@ Then(/^I should get status "([^"]+)" for "([^"]+)"$/) do |status, host|
   step %(I should get status "#{status}" for system "#{get_system_id(node)}")
 end
 
-Then(/^I should get the test base channel$/) do
-  arch, _code = get_target('server').run('uname -m')
-  arch.chomp!
-  channel = if arch != 'x86_64'
-              'fake-base-channel-i586'
-            else
-              'fake-base-channel'
-            end
-  log "result: #{@result}"
-  assert(@result['channel_labels'].include?(channel))
+Then(/^I should get the "([^"]*)" channel label$/) do |channel_label|
+  assert(@result['channel_labels'].include?(channel_label))
 end
 
 Then(/^I should get the "([^"]*)" patch$/) do |patch|
@@ -565,11 +529,9 @@ When(/^I deploy all systems registered to channel "([^"]*)"$/) do |channel|
 end
 
 When(/^I delete channel "([^"]*)" via API((?: without error control)?)$/) do |channel, error_control|
-  begin
-    $api_test.configchannel.delete_channels([channel])
-  rescue
-    raise 'Error deleting channel' if error_control.empty?
-  end
+  $api_test.configchannel.delete_channels([channel])
+rescue
+  raise SystemCallError, 'Error deleting channel' if error_control.empty?
 end
 
 When(/^I call system.create_system_profile\(\) with name "([^"]*)" and HW address "([^"]*)"$/) do |name, hw_address|

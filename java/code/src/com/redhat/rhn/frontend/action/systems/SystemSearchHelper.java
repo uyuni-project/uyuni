@@ -479,6 +479,7 @@ public class SystemSearchHelper {
             serverItem.put("rank", result.get("rank"));
             serverItem.put(SCORE, result.get(SCORE));
             serverItem.put("name", result.get("name"));
+            serverItem.put("uuid", result.get("uuid"));
             String matchingField = (String)result.get(MATCHING_FIELD);
             if (matchingField.isEmpty()) {
                 matchingField = (String)result.get("name");

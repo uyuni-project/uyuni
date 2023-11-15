@@ -104,7 +104,7 @@ Feature: Distribution Channel Mapping
     And I select "Fake-Base-Channel-Debian-like" from "channel_label" dropdown
     And I click on "Update Mapping"
     Then I should see the text "Ubuntu 22.04.01 LTS modified" in the Operating System field
-    And I should see the text "fake-base-channel" in the Channel Label field
+    And I should see the text "fake-base-channel-suse-like" in the Channel Label field
 
 @scc_credentials
   Scenario: Update map for IA-32 SUSE clients using amd deb test channel

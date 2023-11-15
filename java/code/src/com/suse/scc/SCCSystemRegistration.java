@@ -216,6 +216,7 @@ public class SCCSystemRegistration {
             ofNullable(srv.getVirtualInstance().getUuid())
                     .ifPresent(u -> hwinfo.put("uuid", u.replaceAll("(\\w{8})(\\w{4})(\\w{4})(\\w{4})(\\w{12})",
                             "$1-$2-$3-$4-$5")));
+            hwinfo.put("mem_total", srv.getVirtualInstance().getTotalMemory().toString());
         }
         else {
             // null == physical instance

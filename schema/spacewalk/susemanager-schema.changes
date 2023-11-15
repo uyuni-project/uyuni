@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Wed Nov 01 19:59:54 CET 2023 - marina.latini@suse.com
+
+- version 4.4.8-1
+  * Add index on server needed cache to improve performance for some queries (bsc#1211912)
+  * Moved the Ubuntu errata processing in its own separate taskomatic
+    task (bsc#1211145)
+  * Drop special versioned schema files
+  * Tito requires to list the package source as %{name}-%{version}.tar.gz
+  * Add unique index for rhnpackagechangelogdata table
+
+-------------------------------------------------------------------
 Mon Sep 18 14:40:51 CEST 2023 - rosuna@suse.com
 
 - version 4.4.7-1

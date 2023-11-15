@@ -331,10 +331,10 @@ BASE_CHANNEL_BY_CLIENT = { 'SUSE Manager' =>
                             },
                            'Fake' =>
                              {
-                               'sle_minion' => 'Fake-Base-Channel',
-                               'pxeboot_minion' => 'Fake-Base-Channel',
-                               'proxy' => 'Fake-Base-Channel',
-                               'buildhost' => 'Fake-Base-Channel'
+                               'sle_minion' => 'Fake-Base-Channel-SUSE-like',
+                               'pxeboot_minion' => 'Fake-Base-Channel-SUSE-like',
+                               'proxy' => 'Fake-Base-Channel-SUSE-like',
+                               'buildhost' => 'Fake-Base-Channel-SUSE-like'
                              } }.freeze
 
 # Used for creating activation keys
@@ -358,7 +358,7 @@ LABEL_BY_BASE_CHANNEL = { 'SUSE Manager' =>
                             'SLE-Micro-5.3-Pool for x86_64' => 'sle-micro-5.3-pool-x86_64',
                             'SLE-Micro-5.4-Pool for x86_64' => 'sle-micro-5.4-pool-x86_64',
                             'almalinux9 for x86_64' => 'no-appstream-alma-9-result-almalinux9-x86_64',
-                            'Fake-Base-Channel' => 'fake-base-channel',
+                            'Fake-Base-Channel-SUSE-like' => 'fake-base-channel-suse-like',
                             'RHEL x86_64 Server 7' => 'rhel-x86_64-server-7',
                             'EL9-Pool for x86_64' => 'no-appstream-liberty-9-result-el9-pool-x86_64',
                             'oraclelinux9 for x86_64' => 'no-appstream-oracle-9-result-oraclelinux9-x86_64',
@@ -388,7 +388,7 @@ LABEL_BY_BASE_CHANNEL = { 'SUSE Manager' =>
                             'SLE-Micro-5.3-Pool for x86_64' => 'sle-micro-5.3-pool-x86_64',
                             'SLE-Micro-5.4-Pool for x86_64' => 'sle-micro-5.4-pool-x86_64',
                             'AlmaLinux 9 (x86_64)' => 'no-appstream-alma-9-result-almalinux9-x86_64',
-                            'Fake-Base-Channel' => 'fake-base-channel',
+                            'Fake-Base-Channel-SUSE-like' => 'fake-base-channel-suse-like',
                             'CentOS 7 (x86_64)' => 'centos7-x86_64',
                             'EL9-Pool for x86_64' => 'no-appstream-liberty-9-result-el9-pool-x86_64',
                             'Oracle Linux 9 (x86_64)' => 'no-appstream-oracle-9-result-oraclelinux9-x86_64',
@@ -422,7 +422,7 @@ CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = { 'SUSE Manager' =>
                                             'SLE-Micro-5.3-Pool for x86_64' => 'SLE-MICRO-5.3-x86_64',
                                             'SLE-Micro-5.4-Pool for x86_64' => 'SLE-MICRO-5.4-x86_64',
                                             'almalinux9 for x86_64' => 'almalinux-9-x86_64',
-                                            'Fake-Base-Channel' => 'fake-base-channel-x86_64',
+                                            'Fake-Base-Channel-SUSE-like' => 'fake-base-channel-suse-like',
                                             'RHEL x86_64 Server 7' => 'RES7-x86_64',
                                             'EL9-Pool for x86_64' => 'SUSE-LibertyLinux9-x86_64',
                                             'oraclelinux9 for x86_64' => 'oracle-9-x86_64',
@@ -452,7 +452,7 @@ CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = { 'SUSE Manager' =>
                                             'SLE-Micro-5.3-Pool for x86_64' => 'SLE-MICRO-5.3-x86_64',
                                             'SLE-Micro-5.4-Pool for x86_64' => 'SLE-MICRO-5.4-x86_64',
                                             'AlmaLinux 9 (x86_64)' => 'almalinux-9-x86_64-uyuni',
-                                            'Fake-Base-Channel' => 'fake-base-channel-x86_64',
+                                            'Fake-Base-Channel-SUSE-like' => 'fake-base-channel-suse-like',
                                             'CentOS 7 (x86_64)' => 'centos-7-x86_64-uyuni',
                                             'EL9-Pool for x86_64' => 'SUSE-LibertyLinux9-x86_64',
                                             'Oracle Linux 9 (x86_64)' => 'oracle-9-x86_64-uyuni',
@@ -877,8 +877,8 @@ CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION = {
     ],
   'fake' =>
     %w[
-      fake-base-channel
-      fake_child_channel
+      fake-base-channel-suse-like
+      fake-child-channel-suse-like
       fake-base-channel-i586
       fake-child-channel-i586
       test-base-channel-x86_64
@@ -919,3 +919,7 @@ CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION = {
       sle-module-suse-manager-retail-branch-server-4.3-updates-x86_64
     ]
 }.freeze
+
+EMPTY_CHANNELS = %w[
+  sle-module-suse-manager-retail-branch-server-4.3-updates-x86_64
+].freeze

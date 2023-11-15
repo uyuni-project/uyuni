@@ -1,1 +1,0 @@
-- Fix issue where bad scc creds were preventing other credentials to refresh (bsc#1211355)

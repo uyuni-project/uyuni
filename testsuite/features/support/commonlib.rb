@@ -5,6 +5,8 @@ require 'tempfile'
 require 'yaml'
 require 'nokogiri'
 require 'timeout'
+require_relative 'constants'
+require_relative 'api_test'
 
 # return current URL
 def current_url
@@ -22,7 +24,7 @@ end
 def count_table_items
   # count table items using the table counter component
   items_label_xpath = '//span[contains(text(), \'Items \')]'
-  raise unless (items_label = find(:xpath, items_label_xpath).text)
+  raise ScriptError, 'Error counting items' unless (items_label = find(:xpath, items_label_xpath).text)
   items_label.split('of ')[1].strip
 end
 
@@ -38,7 +40,7 @@ def product
     $product = 'SUSE Manager'
     return 'SUSE Manager'
   end
-  raise 'Could not determine product'
+  raise NotImplementedError, 'Could not determine product'
 end
 
 def product_version
@@ -48,7 +50,7 @@ def product_version
   product_raw, code = get_target('server').run('rpm -q patterns-suma_server', check_errors: false)
   m = product_raw.match(/patterns-suma_server-(.*)-.*/)
   return m[1] if code.zero? && !m.nil?
-  raise 'Could not determine product version'
+  raise NotImplementedError, 'Could not determine product version'
 end
 
 def use_salt_bundle
@@ -60,7 +62,7 @@ end
 def inject_salt_pillar_file(source, file)
   dest = '/srv/pillar/' + file
   return_code = file_inject(get_target('server'), source, dest)
-  raise 'File injection failed' unless return_code.zero?
+  raise ScriptError, 'File injection failed' unless return_code.zero?
   # make file readable by salt
   get_target('server').run("chgrp salt #{dest}")
   return_code
@@ -96,14 +98,14 @@ def repeat_until_timeout(timeout: DEFAULT_TIMEOUT, retries: nil, message: nil, r
     end
 
     detail = format_detail(message, last_result, report_result)
-    raise "Giving up after #{attempts} attempts#{detail}" if attempts == retries
-    raise "Timeout after #{timeout} seconds (repeat_until_timeout)#{detail}"
+    raise ScriptError, "Giving up after #{attempts} attempts#{detail}" if attempts == retries
+    raise TimeoutError, "Timeout after #{timeout} seconds (repeat_until_timeout)#{detail}"
   end
-rescue Timeout::Error
+rescue Timeout::Error => e
   STDOUT.puts "Timeout after #{timeout} seconds (Timeout.timeout)#{format_detail(message, last_result, report_result)}"
-  raise unless dont_raise
-rescue StandardError
-  raise unless dont_raise
+  raise e unless dont_raise
+rescue StandardError => e
+  raise e unless dont_raise
 end
 
 def check_text_and_catch_request_timeout_popup?(text1, text2: nil, timeout: Capybara.default_max_wait_time)
@@ -116,7 +118,7 @@ def check_text_and_catch_request_timeout_popup?(text1, text2: nil, timeout: Capy
       log 'Request timeout found, performing reload'
       click_button('reload the page')
       start_time = Time.now
-      raise "Request timeout message still present after #{Capybara.default_max_wait_time} seconds." unless has_no_text?('Request has timed out')
+      raise TimeoutError, "Request timeout message still present after #{Capybara.default_max_wait_time} seconds." unless has_no_text?('Request has timed out')
     end
     return false
   end
@@ -131,8 +133,8 @@ end
 def click_button_and_wait(locator = nil, **options)
   click_button(locator, options)
   begin
-    raise 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 20)
-  rescue StandardError, Capybara::ExpectationNotMet => e
+    warn 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 20)
+  rescue StandardError => e
     STDOUT.puts e.message # Skip errors related to .senna-loading element
   end
 end
@@ -140,8 +142,8 @@ end
 def click_link_and_wait(locator = nil, **options)
   click_link(locator, options)
   begin
-    raise 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 20)
-  rescue StandardError, Capybara::ExpectationNotMet => e
+    warn 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 20)
+  rescue StandardError => e
     STDOUT.puts e.message # Skip errors related to .senna-loading element
   end
 end
@@ -149,8 +151,8 @@ end
 def click_link_or_button_and_wait(locator = nil, **options)
   click_link_or_button(locator, options)
   begin
-    raise 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 20)
-  rescue StandardError, Capybara::ExpectationNotMet => e
+    warn 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 20)
+  rescue StandardError => e
     STDOUT.puts e.message # Skip errors related to .senna-loading element
   end
 end
@@ -160,8 +162,8 @@ module CapybaraNodeElementExtension
   def click
     super
     begin
-      raise 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 20)
-    rescue StandardError, Capybara::ExpectationNotMet => e
+      warn 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 20)
+    rescue StandardError => e
       STDOUT.puts e.message # Skip errors related to .senna-loading element
     end
   end
@@ -207,12 +209,15 @@ end
 
 def extract_logs_from_node(node)
   os_family = node.os_family
-  node.run('zypper --non-interactive install tar') if os_family =~ /^opensuse/
-  node.run('journalctl > /var/log/messages', check_errors: false) # Some clients might not support systemd
+  node.run('zypper --non-interactive install tar') if os_family =~ /^opensuse/ && !$is_container_provider
+  node.run('journalctl > /var/log/messages', check_errors: false)
+  node.run('venv-salt-call --local grains.items | tee -a /var/log/salt_grains', verbose: true, check_errors: false) unless $host_by_node[node] == 'server'
   node.run("tar cfvJP /tmp/#{node.full_hostname}-logs.tar.xz /var/log/ || [[ $? -eq 1 ]]")
   `mkdir logs` unless Dir.exist?('logs')
   code = file_extract(node, "/tmp/#{node.full_hostname}-logs.tar.xz", "logs/#{node.full_hostname}-logs.tar.xz")
-  raise 'Download log archive failed' unless code.zero?
+  raise ScriptError, 'Download log archive failed' unless code.zero?
+rescue RuntimeError => e
+  STDOUT.puts e.message
 end
 
 def reportdb_server_query(query)
@@ -222,7 +227,7 @@ end
 def get_variable_from_conf_file(host, file_path, variable_name)
   node = get_target(host)
   variable_value, return_code = node.run("sed -n 's/^#{variable_name} = \\(.*\\)/\\1/p' < #{file_path}")
-  raise "Reading #{variable_name} from file on #{host} #{file_path} failed" unless return_code.zero?
+  raise ScriptError, "Reading #{variable_name} from file on #{host} #{file_path} failed" unless return_code.zero?
   variable_value.strip!
 end
 
@@ -434,18 +439,27 @@ end
 # This functions checks if the channel has been synced
 def channel_is_synced(channel)
   # solv is the last file to be written when the server synchronizes a channel, therefore we wait until it exist
-  result, code = get_target('server').run("dumpsolv /var/cache/rhn/repodata/#{channel}/solv", verbose: true, check_errors: false)
+  result, code = get_target('server').run("dumpsolv /var/cache/rhn/repodata/#{channel}/solv", verbose: false, check_errors: false)
+  STDOUT.puts "#{channel} -> #{result.match(/^repo size:.*/)}"
   if code.zero? && !result.include?('repo size: 0')
     STDOUT.puts "Channel #{channel} is synced."
     # We want to check if no .new files exists. On a re-sync, the old files stay, the new one have this suffix until it's ready.
-    _result, new_code = get_target('server').run("dumpsolv /var/cache/rhn/repodata/#{channel}/solv.new", verbose: true, check_errors: false)
-    # Channel synced if no .new files exist
+    _result, new_code = get_target('server').run("dumpsolv /var/cache/rhn/repodata/#{channel}/solv.new", verbose: false, check_errors: false)
+    log 'Channel synced, no .new files exist and number of solvables is bigger than 0' unless new_code.zero?
     !new_code.zero?
+  elsif result.include?('repo size: 0')
+    if EMPTY_CHANNELS.include?(channel)
+      true
+    else
+      _result, code = get_target('server').run("zcat /var/cache/rhn/repodata/#{channel}/*primary.xml.gz | grep 'packages=\"0\"'", verbose: false, check_errors: false)
+      log "/var/cache/rhn/repodata/#{channel}/*primary.xml.gz contains 0 packages" if code.zero?
+      false
+    end
   else
     # If the solv file doesn't exist, we check if we are under a Debian-like repository
     command = "test -s /var/cache/rhn/repodata/#{channel}/Release && test -s /var/cache/rhn/repodata/#{channel}/Packages"
-    _result, new_code = get_target('server').run(command, verbose: true, check_errors: false)
-    # Channel synced if Release and Packages files exist
+    _result, new_code = get_target('server').run(command, verbose: false, check_errors: false)
+    log 'Debian-like channel synced, if Release and Packages files exist' if new_code.zero?
     new_code.zero?
   end
 end
@@ -455,4 +469,61 @@ def sanitize_client_tools(channels)
   channels.delete_if { |channel| channel.include? 'manager-tools' } if product == 'Uyuni'
   channels.delete_if { |channel| channel.include? 'uyuni-client' } if product == 'SUSE Manager'
   channels
+end
+
+# This function initializes the API client
+def new_api_client
+  ssl_verify = !$is_container_provider
+  if $debug_mode
+    ApiTestXmlrpc.new(get_target('server').full_hostname)
+  else
+    product == 'Uyuni' ? ApiTestHttp.new(get_target('server').full_hostname, ssl_verify) : ApiTestXmlrpc.new(get_target('server').full_hostname)
+  end
+end
+
+# Get a time in the future, adding the minutes passed as parameter
+def get_future_time(minutes_to_add)
+  now = Time.new
+  future_time = now + 60 * Integer(minutes_to_add, 10)
+  future_time.strftime('%H:%M').to_s.strip
+end
+
+# Get a token for the given secret and claims
+# Valid claims:
+#   - org
+#   - onlyChannels
+def token(secret, claims = {})
+  payload = {}
+  payload.merge!(claims)
+  log secret
+  JWT.encode payload, [secret].pack('H*').bytes.to_a.pack('c*'), 'HS256'
+end
+
+# Get the server secret
+def server_secret
+  rhnconf, _code = get_target('server').run('cat /etc/rhn/rhn.conf', check_errors: false)
+  data = /server.secret_key\s*=\s*(\h+)$/.match(rhnconf)
+  data[1].strip
+end
+
+# Get a Salt pillar value passing the key and the minion name
+def pillar_get(key, minion)
+  system_name = get_system_name(minion)
+  if minion == 'sle_minion'
+    cmd = 'salt'
+  elsif %w[ssh_minion rhlike_minion deblike_minion].include?(minion)
+    cmd = 'mgr-salt-ssh'
+  else
+    raise 'Invalid target'
+  end
+  get_target('server').run("#{cmd} #{system_name} pillar.get #{key}")
+end
+
+# Wait for an action to be completed, passing the action id and a timeout
+def wait_action_complete(actionid, timeout: DEFAULT_TIMEOUT)
+  repeat_until_timeout(timeout: timeout, message: 'Action was not found among completed actions') do
+    list = $api_test.schedule.list_completed_actions
+    break if list.any? { |a| a['id'] == actionid }
+    sleep 2
+  end
 end

@@ -134,6 +134,7 @@ public class XmlRpcSystemHelper {
         Map<String, Object> serverMap = new HashMap<>();
         serverMap.put("id", server.getId());
         serverMap.put("name", server.getName());
+        serverMap.put("uuid", server.getServerUuid());
         serverMap.put("last_checkin", server.getLastCheckin());
         return serverMap;
     }

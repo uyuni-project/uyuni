@@ -73,21 +73,6 @@ defaultdict = {
                           "/SUSE_Updates_SLE-Micro_5.4_x86_64/"],
 }
 
-# Dictionary for SUMA 4.2 Server and Proxy, which is then added together with the common dictionary for client tools
-nodesdict42 = {
-    "server": ["/SUSE_Updates_SLE-Module-SUSE-Manager-Server_4.2_x86_64/",
-               "/SUSE_Updates_SLE-Product-SUSE-Manager-Server_4.2_x86_64/",
-               "/SUSE_Updates_SLE-Product-SLES_15-SP3-LTSS_x86_64/",
-               "/SUSE_Updates_SLE-Module-Basesystem_15-SP3_x86_64/",
-               "/SUSE_Updates_SLE-Module-Server-Applications_15-SP3_x86_64/"],
-    "proxy": ["/SUSE_Updates_SLE-Module-SUSE-Manager-Proxy_4.2_x86_64/",
-              "/SUSE_Updates_SLE-Product-SUSE-Manager-Proxy_4.2_x86_64/",
-              "/SUSE_Updates_SLE-Product-SLES_15-SP3-LTSS_x86_64/",
-              "/SUSE_Updates_SLE-Module-Basesystem_15-SP3_x86_64/",
-              "/SUSE_Updates_SLE-Module-Server-Applications_15-SP3_x86_64/"]
-}
-nodesdict42.update(defaultdict)
-
 # Dictionary for SUMA 4.3 Server and Proxy, which is then added together with the common dictionary for client tools
 nodesdict43 = {
     "server": ["/SUSE_Updates_SLE-Module-SUSE-Manager-Server_4.3_x86_64/",
@@ -108,7 +93,7 @@ def parse_args():
         description="This script reads the open qam-manager requests and creates a json file that can be fed in the "
                     "BV testsuite pipeline")
     parser.add_argument("-v", "--version", dest="version",
-                        help="Version of SUMA you want to run this script for, options are 42 for 4.2 or 43 for 4.3",
+                        help="Version of SUMA you want to run this script for, the only option for now is 43 for 4.3",
                         default="43", action='store')
     parser.add_argument("-i", "--mi_ids", dest="mi_ids", help="MI IDs", default=None, action='store')
 
@@ -140,9 +125,7 @@ def read_requests():
 
 
 def find_valid_repos(mi_ids, version):
-    if version == '42':
-        dict_version = nodesdict42
-    elif version == '43':
+    if version == '43':
         dict_version = nodesdict43
     else:
         print("You have not given one of the correct options, run the script with -h to see the correct ones")

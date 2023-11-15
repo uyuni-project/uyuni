@@ -1,4 +1,20 @@
 -------------------------------------------------------------------
+Wed Nov 01 20:05:26 CET 2023 - marina.latini@suse.com
+
+- version 4.4.9-1
+  * Add bootstrap repository definition for
+    Open Enterprise Server 2023.4 (bsc#1215514)
+  * Add bootstrap repository definitions for Debian 12
+  * Move empty repositories from pub to /usr/share/susemanager
+  * Setup postfix hostname using conf file
+  * Remove uyuni-build-keys dependency
+  * Add bootstrap repository data for SUSE Linux Enterprise Micro 5.5 (bsc#1217038)
+  * Add bootstrap repository definition for openSUSE Leap Micro 5.5
+  * Fix SUSE Linux Enterprise Server 15 for SAP not being listed in
+    mgr-create-bootstrap-repo (bsc#1215120)
+  * Fix possible permission issues with database migration script (bsc#1214746)
+
+-------------------------------------------------------------------
 Tue Sep 19 15:15:06 CEST 2023 - rosuna@suse.com
 
 - version 4.4.8-1

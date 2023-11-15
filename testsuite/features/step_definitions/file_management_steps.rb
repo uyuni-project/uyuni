@@ -69,7 +69,7 @@ When(/^I bootstrap "([^"]*)" using bootstrap script with activation key "([^"]*)
   output, = target.run(cmd, verbose: true)
   unless output.include? key
     log output
-    raise "Key: #{key} not included"
+    raise ScriptError, "Key: #{key} not included"
   end
 
   # Run bootstrap script and check for result
@@ -77,12 +77,12 @@ When(/^I bootstrap "([^"]*)" using bootstrap script with activation key "([^"]*)
   source = File.dirname(__FILE__) + '/../upload_files/' + boostrap_script
   dest = '/tmp/' + boostrap_script
   return_code = file_inject(target, source, dest)
-  raise 'File injection failed' unless return_code.zero?
+  raise ScriptError, 'File injection failed' unless return_code.zero?
   system_name = get_system_name(host)
   output, = target.run("sed -i '/^set timeout /c\\set timeout #{DEFAULT_TIMEOUT}' /tmp/#{boostrap_script} && expect -f /tmp/#{boostrap_script} #{system_name}", verbose: true)
   unless output.include? '-bootstrap complete-'
     log output.encode('utf-8', invalid: :replace, undef: :replace, replace: '_')
-    raise 'Bootstrap didn\'t finish properly'
+    raise ScriptError, 'Bootstrap didn\'t finish properly'
   end
 end
 

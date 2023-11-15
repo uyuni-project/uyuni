@@ -25,7 +25,16 @@ jobs:
             You can see the progress at the end of this page and at https://github.com/uyuni-project/uyuni/pull/${{ github.event.pull_request.number  }}/checks
             Once tests finish, if they fail, you can check :eyes: the cucumber report. See the link at the output of the action.
             You can also check the artifacts section, which contains the logs at https://github.com/uyuni-project/uyuni/pull/${{ github.event.pull_request.number }}/checks.
-            See the [troubleshooting guide](https://github.com/uyuni-project/uyuni/wiki/Running-Acceptance-Tests-at-PR#troubleshooting) if you need any help.
+            
+            If you are unsure the failing tests are related to your code, you can check the "reference jobs". These are jobs that run on a scheduled time with code from master. If they fail for the same reason as your build, it means the tests or the infrastructure are broken. If they do not fail, but yours do, it means it is related to your code.
+            
+            Reference tests:
+            
+              * https://github.com/uyuni-project/uyuni/actions/workflows/acceptance_tests_secondary_parallel.yml?query=event%3Aschedule
+            
+              * https://github.com/uyuni-project/uyuni/actions/workflows/acceptance_tests_secondary.yml?query=event%3Aschedule
+
+            For more tips on troubleshooting, see the [troubleshooting guide](https://github.com/uyuni-project/uyuni/wiki/Running-Acceptance-Tests-at-PR#troubleshooting).
 
             Happy hacking!
             

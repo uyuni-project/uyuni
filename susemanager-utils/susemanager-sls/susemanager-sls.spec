@@ -30,7 +30,7 @@
 %endif
 
 Name:           susemanager-sls
-Version:        4.4.8
+Version:        4.4.9
 Release:        1
 Summary:        Static Salt state files for SUSE Manager
 License:        Apache-2.0 AND LGPL-2.1-only

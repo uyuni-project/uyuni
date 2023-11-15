@@ -1,1 +1,0 @@
-- add salt-api socket timeout to abort stuck taskomatic jobs (bsc#1211649)

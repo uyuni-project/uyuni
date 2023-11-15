@@ -1,2 +1,0 @@
-- disable dnf_rhui_plugin as it break our susemanagerplugin (bsc#1214601)
-- fix susemanagerplugin to not overwrite header fields set by other plugins

@@ -4,93 +4,6 @@
 ### This file contains the definitions for all steps concerning the different
 ### kinds of minions as well as PXE boot and Retail.
 
-# This function returns the net prefix, caching it
-def net_prefix
-  $net_prefix = $private_net.sub(%r{\.0+/24$}, '.') if $net_prefix.nil?
-  $net_prefix
-end
-
-# extract various data from Retail yaml configuration
-def read_terminals_from_yaml
-  name = File.dirname(__FILE__) + '/../upload_files/massive-import-terminals.yml'
-  tree = YAML.load_file(name)
-  tree['branches'].values[0]['terminals'].keys
-end
-
-def read_branch_prefix_from_yaml
-  name = File.dirname(__FILE__) + '/../upload_files/massive-import-terminals.yml'
-  tree = YAML.load_file(name)
-  tree['branches'].values[0]['branch_prefix']
-end
-
-# determine profile for PXE boot and terminal tests
-def compute_image(host)
-  # TODO: now that the terminals derive from sumaform's pxe_boot module,
-  #       we could also specify the desired image as an environment variable
-  case host
-  when 'pxeboot_minion'
-    $pxeboot_image
-  when 'sle12sp5_terminal'
-    'sles12sp5o'
-  when 'sle15sp3_terminal'
-    'sles15sp3o'
-  when 'sle15sp4_terminal'
-    'sles15sp4o'
-  else
-    raise "Is #{host} a supported terminal?"
-  end
-end
-
-def compute_kiwi_profile_filename(host)
-  image = compute_image(host)
-  case image
-  when 'sles15sp3', 'sles15sp3o', 'sles15sp4', 'sles15sp4o'
-    # 'Kiwi/POS_Image-JeOS7_42' for 4.2 branch
-    product == 'Uyuni' ? 'Kiwi/POS_Image-JeOS7_uyuni' : 'Kiwi/POS_Image-JeOS7_head'
-  when 'sles15sp2', 'sles15sp2o'
-    'Kiwi/POS_Image-JeOS7_41'
-  when 'sles15sp1', 'sles15sp1o'
-    raise 'This is not a supported image version.'
-  when 'sles12sp5', 'sles12sp5o'
-    # 'Kiwi/POS_Image-JeOS6_42' for 4.2 branch
-    'Kiwi/POS_Image-JeOS6_head'
-  else
-    raise "Is #{image} a supported image version?"
-  end
-end
-
-def compute_kiwi_profile_name(host)
-  image = compute_image(host)
-  case image
-  when 'sles15sp3', 'sles15sp3o', 'sles15sp4', 'sles15sp4o'
-    # 'POS_Image_JeOS7_42' for 4.2 branch
-    product == 'Uyuni' ? 'POS_Image_JeOS7_uyuni' : 'POS_Image_JeOS7_head'
-  when 'sles15sp2', 'sles15sp2o'
-    'POS_Image_JeOS7_41'
-  when 'sles15sp1', 'sles15sp1o'
-    raise 'This is not a supported image version.'
-  when 'sles12sp5', 'sles12sp5o'
-    # 'POS_Image_JeOS6_42' for 4.2 branch
-    'POS_Image_JeOS6_head'
-  else
-    raise "Is #{image} a supported image version?"
-  end
-end
-
-def compute_kiwi_profile_version(host)
-  image = compute_image(host)
-  case image
-  when 'sles15sp3', 'sles15sp3o', 'sles15sp4', 'sles15sp4o'
-    '7.0.0'
-  when 'sles15sp1', 'sles15sp1o'
-    raise 'This is not a supported image version.'
-  when 'sles12sp5', 'sles12sp5o'
-    '6.0.0'
-  else
-    raise "Is #{image} a supported image version?"
-  end
-end
-
 When(/^I (enable|disable) repositories (before|after) installing branch server$/) do |action, _when|
   os_version = get_target('proxy').os_version
   os_family = get_target('proxy').os_family
@@ -165,7 +78,7 @@ When(/^I set up the private network on the terminals$/) do
   nodes.each do |node|
     next if node.nil?
     return_code = file_inject(node, source, dest)
-    raise 'File injection failed' unless return_code.zero?
+    raise ScriptError, 'File injection failed' unless return_code.zero?
     node.run('netplan apply')
   end
   # PXE boot minion
@@ -177,7 +90,7 @@ end
 Then(/^terminal "([^"]*)" should have got a retail network IP address$/) do |host|
   node = get_target(host)
   output, return_code = node.run('ip -4 address show eth1')
-  raise "Terminal #{host} did not get an address on eth1: #{output}" unless return_code.zero? and output.include? net_prefix
+  raise SystemCallError, "Terminal #{host} did not get an address on eth1: #{output}" unless return_code.zero? and output.include? net_prefix
 end
 
 Then(/^name resolution should work on terminal "([^"]*)"$/) do |host|
@@ -187,13 +100,13 @@ Then(/^name resolution should work on terminal "([^"]*)"$/) do |host|
   # direct name resolution
   %w[proxy.example.org dns.google.com].each do |dest|
     output, return_code = node.run("host #{dest}", check_errors: false)
-    raise "Direct name resolution of #{dest} on terminal #{host} doesn't work: #{output}" unless return_code.zero?
+    raise SystemCallError, "Direct name resolution of #{dest} on terminal #{host} doesn't work: #{output}" unless return_code.zero?
     log "#{output}"
   end
   # reverse name resolution
   [node.private_ip, '8.8.8.8'].each do |dest|
     output, return_code = node.run("host #{dest}", check_errors: false)
-    raise "Reverse name resolution of #{dest} on terminal #{host} doesn't work: #{output}" unless return_code.zero?
+    raise SystemCallError, "Reverse name resolution of #{dest} on terminal #{host} doesn't work: #{output}" unless return_code.zero?
     log "#{output}"
   end
 end
@@ -209,7 +122,7 @@ When(/^I restart the network on the PXE boot minion$/) do
   source = File.dirname(__FILE__) + '/../upload_files/' + file
   dest = '/tmp/' + file
   return_code = file_inject(get_target('proxy'), source, dest)
-  raise 'File injection failed' unless return_code.zero?
+  raise ScriptError, 'File injection failed' unless return_code.zero?
   # We have no direct access to the PXE boot minion
   # so we run the command from the proxy
   get_target('proxy').run("expect -f /tmp/#{file} #{ipv6}")
@@ -233,7 +146,7 @@ When(/^I reboot the (Retail|Cobbler) terminal "([^"]*)"$/) do |context, host|
   source = File.dirname(__FILE__) + '/../upload_files/' + file
   dest = '/tmp/' + file
   return_code = file_inject(get_target('proxy'), source, dest)
-  raise 'File injection failed' unless return_code.zero?
+  raise ScriptError, 'File injection failed' unless return_code.zero?
   get_target('proxy').run("expect -f /tmp/#{file} #{ipv6} #{context}")
 end
 
@@ -245,8 +158,8 @@ When(/^I create bootstrap script for "([^"]+)" hostname and set the activation k
 
   get_target('proxy').run("sed -i '/^ACTIVATION_KEYS=/c\\ACTIVATION_KEYS=#{key}' /srv/www/htdocs/pub/bootstrap/bootstrap.sh")
   output, _code = get_target('proxy').run('cat /srv/www/htdocs/pub/bootstrap/bootstrap.sh')
-  raise "Key: #{key} not included" unless output.include? key
-  raise "Hostname: #{host} not included" unless output.include? host
+  raise ScriptError, "Key: #{key} not included" unless output.include? key
+  raise ScriptError, "Hostname: #{host} not included" unless output.include? host
 end
 
 When(/^I bootstrap pxeboot minion via bootstrap script on the proxy$/) do
@@ -254,7 +167,7 @@ When(/^I bootstrap pxeboot minion via bootstrap script on the proxy$/) do
   source = File.dirname(__FILE__) + '/../upload_files/' + file
   dest = '/tmp/' + file
   return_code = file_inject(get_target('proxy'), source, dest)
-  raise 'File injection failed' unless return_code.zero?
+  raise ScriptError, 'File injection failed' unless return_code.zero?
   ipv4 = net_prefix + ADDRESSES['pxeboot_minion']
   get_target('proxy').run("expect -f /tmp/#{file} #{ipv4}", verbose: true)
 end
@@ -268,7 +181,7 @@ When(/^I install the GPG key of the test packages repository on the PXE boot min
   source = File.dirname(__FILE__) + '/../upload_files/' + file
   dest = '/tmp/' + file
   return_code = file_inject(get_target('server'), source, dest)
-  raise 'File injection failed' unless return_code.zero?
+  raise ScriptError, 'File injection failed' unless return_code.zero?
   system_name = get_system_name('pxeboot_minion')
   get_target('server').run("salt-cp #{system_name} #{dest} #{dest}")
   get_target('server').run("salt #{system_name} cmd.run 'rpmkeys --import #{dest}'")
@@ -279,7 +192,7 @@ When(/^I wait until Salt client is inactive on the PXE boot minion$/) do
   source = File.dirname(__FILE__) + '/../upload_files/' + file
   dest = '/tmp/' + file
   return_code = file_inject(get_target('proxy'), source, dest)
-  raise 'File injection failed' unless return_code.zero?
+  raise ScriptError, 'File injection failed' unless return_code.zero?
   ipv4 = net_prefix + ADDRESSES['pxeboot_minion']
   get_target('proxy').run("expect -f /tmp/#{file} #{ipv4}")
 end
@@ -288,7 +201,7 @@ When(/^I prepare the retail configuration file on server$/) do
   source = File.dirname(__FILE__) + '/../upload_files/massive-import-terminals.yml'
   dest = '/tmp/massive-import-terminals.yml'
   return_code = file_inject(get_target('server'), source, dest)
-  raise "File #{file} couldn't be copied to server" unless return_code.zero?
+  raise ScriptError, "File #{file} couldn't be copied to server" unless return_code.zero?
 
   sed_values = "s/<PROXY_HOSTNAME>/#{get_target('proxy').full_hostname}/; "
   sed_values << "s/<NET_PREFIX>/#{net_prefix}/; "
@@ -570,5 +483,5 @@ end
 Then(/^the image for "([^"]*)" should exist on the branch server$/) do |host|
   image = compute_kiwi_profile_name(host)
   images, _code = get_target('proxy').run('ls /srv/saltboot/image/')
-  raise "Image #{image} for #{host} does not exist" unless images.include? image
+  raise ScriptError, "Image #{image} for #{host} does not exist" unless images.include? image
 end
