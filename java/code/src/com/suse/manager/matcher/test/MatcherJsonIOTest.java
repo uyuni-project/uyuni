@@ -322,6 +322,61 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
     }
 
     @Test
+    public void testServerPaygSlesSapShouldNotRequireAnEntitlement() throws Exception {
+        SUSEProductTestUtils.clearAllProducts();
+        SUSEProductTestUtils.createVendorSUSEProducts();
+        SUSEProductTestUtils.createVendorEntitlementProducts();
+
+        Set<InstalledProduct> sleSap = Set.of(createInstalledProduct("SLES_SAP", "15.5", "0", "x86_64", true));
+        Set<InstalledProduct> sles = Set.of(createInstalledProduct("SLES", "15.1", "0", "x86_64", true));
+
+        Server h1 = ServerTestUtils.createTestSystem();
+        h1.setName("byos-sles.example.com");
+        h1.setCpu(createCPU(h1, 8L));
+        h1.setPayg(false);
+        h1.setInstalledProducts(sles);
+
+        Server h2 = ServerTestUtils.createTestSystem();
+        h2.setName("payg-sles.example.com");
+        h2.setCpu(createCPU(h2, 8L));
+        h2.setPayg(true);
+        h2.setInstalledProducts(sles);
+
+        Server h3 = ServerTestUtils.createTestSystem();
+        h3.setName("byos-sles4sap.example.com");
+        h3.setCpu(createCPU(h3, 8L));
+        h3.setPayg(false);
+        h3.setInstalledProducts(sleSap);
+
+        Server h4 = ServerTestUtils.createTestSystem();
+        h4.setName("payg-sles4sap.example.com");
+        h4.setCpu(createCPU(h4, 8L));
+        h4.setPayg(true);
+        h4.setInstalledProducts(sleSap);
+
+        // Test on BYOS SUMA
+        List<SystemJson> result = getMatcherJsonIO().getJsonSystems(AMD64_ARCH, true, true, true);
+        SystemJson sumaItself = findSystem(MatcherJsonIO.SELF_SYSTEM_ID, result);
+        assertEquals(Set.of(SUMA_X8664_PROD_ID, MONITORING_SINGLE_PROD_ID), sumaItself.getProductIds());
+
+        // System is BYOS sles, we need both the product id and the entitlement
+        SystemJson byosSlesSystem = findSystem(h1.getId(), result);
+        assertEquals(Set.of(1326L, MGMT_SINGLE_PROD_ID), byosSlesSystem.getProductIds());
+
+        // System is PAYG SLES, only entitlement needed
+        SystemJson paygSlesSystem = findSystem(h2.getId(), result);
+        assertEquals(Set.of(MGMT_SINGLE_PROD_ID), paygSlesSystem.getProductIds());
+
+        // System is BYOS sles_sap, we need both the product id and the entitlement
+        SystemJson byosSlesSapSystem = findSystem(h3.getId(), result);
+        assertEquals(Set.of(2467L, MGMT_SINGLE_PROD_ID), byosSlesSapSystem.getProductIds());
+
+        // System is PAYG SLES, no product id and no entitlement
+        SystemJson paygSlesSapSystem = findSystem(h4.getId(), result);
+        assertEquals(Set.of(), paygSlesSapSystem.getProductIds());
+    }
+
+    @Test
     public void testProductsToJson() throws Exception {
         SUSEProductTestUtils.clearAllProducts();
         SUSEProductTestUtils.createVendorSUSEProducts();

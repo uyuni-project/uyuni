@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.matcher.MatcherRunDataFactory;
 import com.redhat.rhn.domain.product.CachingSUSEProductFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
+import com.redhat.rhn.domain.product.SUSEProductSet;
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
 import com.redhat.rhn.domain.scc.SCCSubscription;
 import com.redhat.rhn.domain.server.PinnedSubscription;
@@ -378,8 +379,14 @@ public class MatcherJsonIO {
      */
     private Stream<Long> entitlementIdsForServer(Server server, Set<String> entitlements) {
         Optional<Long> lifecycleProduct = Optional.empty();
-        if (entitlements.contains(EntitlementManager.SALT_ENTITLED) ||
-                entitlements.contains(EntitlementManager.ENTERPRISE_ENTITLED)) {
+        boolean managementIncluded = server.isPayg() && server.getInstalledProductSet()
+            .map(SUSEProductSet::getBaseProduct)
+            .map(SUSEProduct::getName)
+            .filter(baseProductName -> "sles_sap".equals(baseProductName))
+            .isPresent();
+
+        if (!managementIncluded && (entitlements.contains(EntitlementManager.SALT_ENTITLED) ||
+                entitlements.contains(EntitlementManager.ENTERPRISE_ENTITLED))) {
             if (server.getServerArch().equals(s390arch)) {
                 lifecycleProduct = productIdForS390xSystem;
             }
