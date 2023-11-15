@@ -102,6 +102,7 @@ public class SCCSystemRegistrationSystemDataAcquisitor implements SCCSystemRegis
             ofNullable(srv.getVirtualInstance().getUuid())
                     .ifPresent(u -> hwInfo.setUuid(u.replaceAll("(\\w{8})(\\w{4})(\\w{4})(\\w{4})(\\w{12})",
                             "$1-$2-$3-$4-$5")));
+            hwInfo.setMemTotal(srv.getVirtualInstance().getTotalMemory().intValue());
         }
 
         String login = rci.getOptSccLogin().orElseGet(() -> {
