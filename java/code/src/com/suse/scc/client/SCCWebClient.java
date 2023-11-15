@@ -86,7 +86,7 @@ public class SCCWebClient implements SCCClient {
      *
      * @param <T> the generic type
      */
-    private class PaginatedResult<T> {
+    private static class PaginatedResult<T> {
 
         /** The result. */
         private final T result;
@@ -178,7 +178,7 @@ public class SCCWebClient implements SCCClient {
         List<CompletableFuture<PaginatedResult<List<T>>>> futures = Stream.iterate(2, i -> i + 1)
                 .limit(Math.max(0, firstPage.numPages - 1)).map(pageNum -> {
             String e = endpoint + "?page=" + pageNum;
-            CompletableFuture<PaginatedResult<List<T>>> get = CompletableFuture.supplyAsync(() -> {
+            return CompletableFuture.supplyAsync(() -> {
                 try {
                     LOG.debug("Start Page: {}", pageNum);
                     PaginatedResult<List<T>> page = request(e, SCCClientUtils.toListType(resultType), "GET");
@@ -189,11 +189,10 @@ public class SCCWebClient implements SCCClient {
                     throw new RuntimeException(e1);
                 }
             }, executor);
-            return get;
         }).collect(Collectors.toList());
 
         CompletableFuture<Void> voidCompletableFuture = CompletableFuture.allOf(
-                futures.toArray(new CompletableFuture[futures.size()]));
+                futures.toArray(new CompletableFuture[0]));
         voidCompletableFuture.join();
         return Stream.concat(
                 Stream.of(firstPage),
