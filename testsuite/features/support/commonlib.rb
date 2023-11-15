@@ -5,6 +5,8 @@ require 'tempfile'
 require 'yaml'
 require 'nokogiri'
 require 'timeout'
+require_relative 'constants'
+require_relative 'api_test'
 
 # return current URL
 def current_url
