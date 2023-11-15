@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 SUSE LLC
+ * Copyright (c) 2023 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -23,6 +23,10 @@ public class SCCHwInfoJson {
 
     private int cpus;
     private int sockets;
+
+    @SerializedName("mem_total")
+    private int memTotal;
+
     private String arch;
     private String uuid;
     private String hypervisor;
@@ -76,5 +80,13 @@ public class SCCHwInfoJson {
 
     public void setCloudProvider(String cloudProviderIn) {
         cloudProvider = cloudProviderIn;
+    }
+
+    public int getMemTotal() {
+        return memTotal;
+    }
+
+    public void setMemTotal(int memTotalIn) {
+        memTotal = memTotalIn;
     }
 }

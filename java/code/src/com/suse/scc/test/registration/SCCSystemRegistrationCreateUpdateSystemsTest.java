@@ -198,9 +198,12 @@ public class SCCSystemRegistrationCreateUpdateSystemsTest extends AbstractSCCSys
         }
     }
 
+
     /**
      * Creates a Default {@link TestSCCWebClient} instance for testing purposes.
      * All systems are updated successfully.
+     * @return a default SccWebClient instance for testing purposes
+     * @throws URISyntaxException
      */
     public TestSCCWebClient getDefaultTestSCCWebClient() throws URISyntaxException {
         TestSCCWebClient sccWebClient = new TestSCCWebClient(new SCCConfig(

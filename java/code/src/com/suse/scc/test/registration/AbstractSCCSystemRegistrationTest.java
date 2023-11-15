@@ -26,8 +26,6 @@ import com.redhat.rhn.testing.ServerTestUtils;
 
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 
-import org.junit.jupiter.api.BeforeEach;
-
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Date;
