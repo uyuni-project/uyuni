@@ -568,6 +568,13 @@ public class SaltUtils {
             handleStateApplyData(serverAction, jsonResult, retcode, success);
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_SCRIPT_RUN)) {
+            if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
+                serverAction.setResultMsg("Failed to execute script. [jid=" + jid + "]");
+            }
+            else {
+                serverAction.setResultMsg("Script executed successfully. [jid=" +
+                        jid + "]");
+            }
             Map<String, StateApplyResult<CmdResult>> stateApplyResult = Json.GSON.fromJson(jsonResult,
                     new TypeToken<Map<String, StateApplyResult<CmdResult>>>() { }.getType());
             CmdResult result = stateApplyResult.entrySet().stream()
@@ -594,13 +601,6 @@ public class SaltUtils {
             scriptResult.setStopDate(serverAction.getCompletionTime());
 
             // Depending on the status show stdout or stderr in the output
-            if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
-                serverAction.setResultMsg("Failed to execute script. [jid=" + jid + "]");
-            }
-            else {
-                serverAction.setResultMsg("Script executed successfully. [jid=" +
-                        jid + "]");
-            }
             scriptResult.setOutput(printStdMessages(result.getStderr(), result.getStdout()).getBytes());
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_IMAGE_BUILD)) {
