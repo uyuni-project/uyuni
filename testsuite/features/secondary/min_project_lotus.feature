@@ -39,12 +39,23 @@ Feature: Project Lotus
     And I click on "Save Repositories"
     Then I should see a "repository information was successfully updated" text
 
-  Scenario: Pre-requisite: Sync PTF repository
+@uyuni_or_head
+  Scenario: Pre-requisite: Sync PTF repository in Uyuni
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Custom Channel for SLES15SP4 PTFs"
     And I follow "Repositories" in the content area
     And I follow "Sync"
     # no need to click on "Sync Now" as it's automatically enabled by default on Uyuni
+    Then I should see a "Repository sync is running" text
+    When I wait until the channel "sles15sp4-ptfs" has been synced
+
+@susemanager_43
+  Scenario: Pre-requisite: Sync PTF repository in SUSE Manager
+    When I follow the left menu "Software > Manage > Channels"
+    And I follow "Custom Channel for SLES15SP4 PTFs"
+    And I follow "Repositories" in the content area
+    And I follow "Sync"
+    And I click on "Sync Now"
     Then I should see a "Repository sync is running" text
     When I wait until the channel "sles15sp4-ptfs" has been synced
 

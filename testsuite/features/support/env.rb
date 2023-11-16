@@ -550,6 +550,16 @@ Before('@uyuni') do
   skip_this_scenario unless product == 'Uyuni'
 end
 
+# do some tests only if the server is using Uyuni or SUMA Head
+Before('@uyuni_or_head') do
+  skip_this_scenario unless product == 'Uyuni' || product_version.include?('head')
+end
+
+# do some tests only if the server is using SUSE Manager 4.3
+Before('@susemanager_43') do
+  skip_this_scenario unless product_version.include? '4.3'
+end
+
 # do some tests only if we are using salt bundle
 Before('@salt_bundle') do
   skip_this_scenario unless use_salt_bundle
