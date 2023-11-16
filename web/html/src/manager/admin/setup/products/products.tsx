@@ -286,7 +286,7 @@ class ProductsPageWrapper extends React.Component {
               </>
             )),
             true,
-            t("The following channel installations for '{product}' failed. Please check log files.", { product })
+            t('The following channel installations for "{product}" failed. Please check log files.', { product })
           );
         }
         this.setState({
