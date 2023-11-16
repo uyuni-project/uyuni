@@ -249,14 +249,6 @@ When(/^I enter "([^"]*)" as "([^"]*)"$/) do |text, field|
 end
 
 When(/^I enter (\d+) minutes from now as "([^"]*)"$/) do |minutes_to_add, field|
-  # Ensure 'minutes_to_add' is a string representation of an integer
-  minutes_to_add = minutes_to_add.to_s
-
-  # Validate that 'minutes_to_add' is a valid integer string
-  unless minutes_to_add.match?(/^\d+$/)
-    raise ArgumentError, "Invalid input: '#{minutes_to_add}' is not a valid integer."
-  end
-
   future_time = get_future_time(minutes_to_add)
   fill_in(field, with: future_time, fill_options: { clear: :backspace })
   log "Execution time: #{future_time}"
