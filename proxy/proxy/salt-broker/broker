@@ -36,19 +36,65 @@ log_to_file: 1
 
 ######   ZeroMQ connection options    ######
 ############################################
-# Documentation notes: TBD
+# For more details about the following parameters check ZeroMQ documentation:
+# http://api.zeromq.org/4-2:zmq-setsockopt
+# All of these parameters will be set to the backend sockets
+# (from the salt-broker to the salt-master)
 
-# The following options are not the default ones,
-#  but for testing purpose to make salt-broker more reactive
+# connect_timeout (sets ZMQ_CONNECT_TIMEOUT)
+# default: 0
+# value unit: milliseconds
+# Sets how long to wait before timing-out a connect to the remote socket.
+# 0 could take much time, so it could be better to set to more strict value
+# for particular environment depending on the network conditions.
+# The value equal to 10000 is setting 10 seconds connect timeout.
+connect_timeout: 0
 
-connect_timeout: 10000
+# reconnect_ivl (sets ZMQ_RECONNECT_IVL)
+# default: 100
+# value unit: milliseconds
+# Sets the interval of time before reconnection attempt on connection drop.
+reconnect_ivl: 100
 
-reconnect_ivl: 20000
+# heartbeat_ivl (sets ZMQ_HEARTBEAT_IVL)
+# default: 0
+# value unit: milliseconds
+# This parameter is important for detection of loosing the connection.
+# In case of value equal to 0 it is not sending heartbits.
+# It's better to set to more relevant value for the particular environment,
+# depending on possible network issues.
+# The value equal to 20000 (20 seconds) works good for most cases.
+heartbeat_ivl: 0
 
-heartbeat_ivl: 60000
+# heartbeat_timeout (sets ZMQ_HEARTBEAT_TIMEOUT)
+# default: 0
+# value unit: milliseconds
+# Sets the interval of time to consider that the connection is timed out
+# after sending the heartbeat and not getting the response on it.
+# The value equal to 60000 (1 minute) is considering the connection is down
+# after 1 minute of no response to the heartbeat.
+heartbeat_timeout: 0
 
-heartbeat_timeout: 60000
 
-drop_after_retries: 10
+######   Other connection options    ######
+# The following parameters are not related to ZeroMQ,
+# but the internal parameters of the salt-broker.
+# drop_after_retries
+# default: -1
+# value unit: number of retries
+# Drop the frontend sockets of the salt-broker in case if it reaches
+# the number of retries to reconnect to the backend socket.
+# -1 means not drop the frontend sockets
+# It's better to choose more relevant value for the particular environment.
+# 10 can be a good choise for most of the cases.
+drop_after_retries: -1
 
-wait_for_backend: True
+# wait_for_backend
+# default: False
+# The main aim of this parameter is to prevent  collecting the messages
+# with the open frontend socket and prevent pushing them on connecting
+# the backend socket to prevent large number of messages to be pushed
+# at once to salt-master.
+# It's better to set it to True if there is significant numer of minions
+# behind the salt-broker.
+wait_for_backend: False
