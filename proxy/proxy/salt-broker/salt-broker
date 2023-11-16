@@ -74,6 +74,10 @@ class AbstractChannelProxy(multiprocessing.Process):
         (zmq.TCP_KEEPALIVE_IDLE, "tcp_keepalive_idle"),
         (zmq.TCP_KEEPALIVE_CNT, "tcp_keepalive_cnt"),
         (zmq.TCP_KEEPALIVE_INTVL, "tcp_keepalive_intvl"),
+        (zmq.CONNECT_TIMEOUT, "connect_timeout"),
+        (zmq.RECONNECT_IVL, "reconnect_ivl"),
+        (zmq.HEARTBEAT_IVL, "heartbeat_ivl"),
+        (zmq.HEARTBEAT_TIMEOUT, "heartbeat_timeout"),
     )
     _FRONTEND_SOCKOPTS = ()
 
@@ -147,10 +151,11 @@ class AbstractChannelProxy(multiprocessing.Process):
 
     def set_sockopts(self, socket, sockopts):
         for opt, opt_src in sockopts:
-            socket.setsockopt(
-                opt,
-                opt_src[0] if isinstance(opt_src, tuple) else self.opts[opt_src],
-            )
+            if opt_src in self.opts[opt_src]:
+                socket.setsockopt(
+                    opt,
+                    self.opts[opt_src],
+                )
 
     def backend_socket_monitor(self, monitor_socket):
         while monitor_socket.poll():
