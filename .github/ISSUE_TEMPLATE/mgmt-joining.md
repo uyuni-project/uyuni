@@ -52,9 +52,19 @@ General template for new joiners of the SUSE Manager team.
   - [ ] Add to https://build.suse.de/groups/suse-manager-maintainers (if applicable)
   - [ ] Add to https://build.suse.de/groups/suse-manager-developers (if applicable)
   - [ ] Add to https://build.suse.de/groups/susemanager-releng (if applicable)
-  - [ ] Add to https://build.suse.de/groups/qam-manager (if applicable)
   - [ ] Add to https://build.opensuse.org/groups/uyuni-maintainers (if applicable)
   - [ ] Add to https://build.opensuse.org/groups/salt-maintainers (if applicable)
 - [ ] Add the new employee to our [GitLab group](https://gitlab.suse.de/groups/galaxy/-/group_members)
 - [ ] Schedule new joiner meetups with at least one [member from each squad](https://confluence.suse.com/x/OIGAOQ), with the PO and with the architect
 - [ ] Update the [finglonger config](https://gitlab.suse.de/galaxy/infrastructure/-/blob/master/srv/salt/bugguy-finglonger/galaxy.edn)
+- [ ] QE specific
+  - [ ] IBS/OBS: Add to the https://build.suse.de/groups/qam-manager group
+  - [ ] Add QE account on [manager.mgr.suse.de](https://manager.mgr.suse.de) for the QE organization
+  - [ ] Add user entries for private hypervisor to [SUMA infrastructure](https://gitlab.suse.de/galaxy/infrastructure/-/blob/master/srv/salt/qa/users/init.sls)
+  - [ ] Add user entries for DNS to [SUMA infrastructure](https://gitlab.suse.de/galaxy/infrastructure/-/tree/master/srv/salt/bind-server)
+  - [ ] Add user entries for DHCP to [SUMA infrastructure](https://gitlab.suse.de/galaxy/infrastructure/-/tree/master/srv/salt/dhcpd-server)
+  - [ ] Add to [galaxy-qa](https://mailman.suse.de/mailman/admin/galaxy-qa/members/add) mailing list
+  - [ ] Add to [SUSE Manager QE Team](https://github.com/orgs/SUSE/teams/suse-manager-qe/members) on GitHub
+  - [ ] Add to [Uyuni QE developer Team](https://github.com/orgs/uyuni-project/teams/qe) on GitHub
+  - [ ] Add to [QE project board member list](https://github.com/orgs/SUSE/projects/32/views/1?pane=info) on GitHub
+  - [ ] Add to outlook group of the [SUMA QE Squad](https://outlook.office365.com/people/group/mysuse.onmicrosoft.com/sumaqesquad)

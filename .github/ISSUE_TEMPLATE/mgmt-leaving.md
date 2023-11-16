@@ -56,7 +56,6 @@ General template for leavers of the SUSE Manager team.
   - [ ] Remove from https://build.suse.de/groups/suse-manager-maintainers (if applicable)
   - [ ] Remove from https://build.suse.de/groups/suse-manager-developers (if applicable)
   - [ ] Remove from https://build.suse.de/groups/susemanager-releng (if applicable)
-  - [ ] Remove from https://build.suse.de/groups/qam-manager (if applicable)
   - [ ] Remove from https://build.opensuse.org/groups/uyuni-maintainers (if applicable)
   - [ ] Remove from https://build.opensuse.org/groups/salt-maintainers (if applicable)
 - [ ] Internal
@@ -72,3 +71,14 @@ General template for leavers of the SUSE Manager team.
   - [ ] Consider any content in e.g. w3.suse.de or o365 and maybe share it permanently (e.g. recordings, slides)
   - [ ] Remove the person from our [GitLab group](https://gitlab.suse.de/groups/galaxy/-/group_members)
   - [ ] Update the [finglonger config](https://gitlab.suse.de/galaxy/infrastructure/-/blob/master/srv/salt/bugguy-finglonger/galaxy.edn)
+- [ ] QE specific
+  - [ ] IBS/OBS: Remove from the https://build.suse.de/groups/qam-manager group
+  - [ ] Remove QE account on [manager.mgr.suse.de](https://manager.mgr.suse.de) for the QE organization
+  - [ ] Remove user entries for private hypervisor from [SUMA infrastructure](https://gitlab.suse.de/galaxy/infrastructure/-/blob/master/srv/salt/qa/users/init.sls)
+  - [ ] Remove user entries for DNS from [SUMA infrastructure](https://gitlab.suse.de/galaxy/infrastructure/-/tree/master/srv/salt/bind-server)
+  - [ ] Remove user entries for DHCP from [SUMA infrastructure](https://gitlab.suse.de/galaxy/infrastructure/-/tree/master/srv/salt/dhcpd-server)
+  - [ ] Remove from [galaxy-qa](https://mailman.suse.de/mailman/admin/galaxy-qa/members/remove) mailing list
+  - [ ] Remove from [SUSE Manager QE Team](https://github.com/orgs/SUSE/teams/suse-manager-qe/members) on GitHub
+  - [ ] Remove from [Uyuni QE developer Team](https://github.com/orgs/uyuni-project/teams/qe) on GitHub
+  - [ ] Remove from [QE project board member list](https://github.com/orgs/SUSE/projects/32/views/1?pane=info) on GitHub
+  - [ ] Remove from outlook group of the [SUMA QE Squad](https://outlook.office365.com/people/group/mysuse.onmicrosoft.com/sumaqesquad)
