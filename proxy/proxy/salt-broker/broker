@@ -36,11 +36,6 @@ log_to_file: 1
 
 ######   ZeroMQ connection options    ######
 ############################################
-# Documentation notes: TBD
-
-# The following options are not the default ones,
-#  but for testing purpose to make salt-broker more reactive
-
 # For more details about the following parameters check ZeroMQ documentation:
 # http://api.zeromq.org/4-2:zmq-setsockopt
 # All of these parameters will be set to the backend sockets
@@ -80,9 +75,10 @@ heartbeat_ivl: 0
 # after 1 minute of no response to the heartbeat.
 heartbeat_timeout: 0
 
+
+######   Other connection options    ######
 # The following parameters are not related to ZeroMQ,
 # but the internal parameters of the salt-broker.
-
 # drop_after_retries
 # default: -1
 # value unit: number of retries
