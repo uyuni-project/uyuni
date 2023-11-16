@@ -46,16 +46,39 @@ Feature: Synchronize fake channels
     Then I should see a "Repository sync scheduled for Test-Base-Channel-x86_64." text
     And I wait until the channel "test-base-channel-x86_64" has been synced
 
-  Scenario: Synchronize Fake-Base-Channel-i586 channel
+  Scenario: Synchronize Fake-Child-Channel-i586 channel
     Given I am authorized for the "Admin" section
     When I follow the left menu "Software > Manage > Channels"
-    And I follow "Fake-Base-Channel-i586"
+    And I follow "Fake-Child-Channel-i586"
     And I follow "Repositories" in the content area
     And I follow "Sync"
     And I wait at most 60 seconds until I do not see "Repository sync is running." text, refreshing the page
     And I click on "Sync Now"
-    Then I should see a "Repository sync scheduled for Fake-Base-Channel-i586." text
-    And I wait until the channel "fake-base-channel-i586" has been synced
+    Then I should see a "Repository sync scheduled for Fake-Child-Channel-i586." text
+    And I wait until the channel "fake-child-channel-i586" has been synced
+
+  Scenario: Synchronize Test-Child-Channel-x86_64 channel
+    Given I am authorized for the "Admin" section
+    When I follow the left menu "Software > Manage > Channels"
+    And I follow "Test-Child-Channel-x86_64"
+    And I follow "Repositories" in the content area
+    And I follow "Sync"
+    And I wait at most 60 seconds until I do not see "Repository sync is running." text, refreshing the page
+    And I click on "Sync Now"
+    Then I should see a "Repository sync scheduled for Test-Child-Channel-x86_64." text
+    And I wait until the channel "test-child-channel-x86_64" has been synced
+
+@sle_minion
+  Scenario: Synchronize Fake-Child-Channel-SUSE-like channel
+    Given I am authorized for the "Admin" section
+    When I follow the left menu "Software > Manage > Channels"
+    And I follow "Fake-Child-Channel-SUSE-like"
+    And I follow "Repositories" in the content area
+    And I follow "Sync"
+    And I wait at most 60 seconds until I do not see "Repository sync is running." text, refreshing the page
+    And I click on "Sync Now"
+    Then I should see a "Repository sync scheduled for Fake-Child-Channel-SUSE-like." text
+    And I wait until the channel "fake-child-channel-suse-like" has been synced
 
 @deblike_minion
   Scenario: Synchronize Fake-Base-Channel-Debian-like channel
