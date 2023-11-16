@@ -104,6 +104,9 @@ public class SCCSystemRegistrationSystemDataAcquisitor implements SCCSystemRegis
                             "$1-$2-$3-$4-$5")));
             hwInfo.setMemTotal(srv.getVirtualInstance().getTotalMemory().intValue());
         }
+        else {
+            hwInfo.setMemTotal((int) srv.getRam());
+        }
 
         String login = rci.getOptSccLogin().orElseGet(() -> {
             String l = String.format("%s-%s", ContentSyncManager.getUUID(), srv.getId().toString());
