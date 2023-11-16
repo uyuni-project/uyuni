@@ -146,7 +146,7 @@ function getZ_CLIENT_CODE_BASE() {
         PATCHLEVEL="$(grep '^\(VERSION_ID\)' /etc/os-release | sed -n 's/.*\.\([[:digit:]]*\).*/\1/p')"
         # openSUSE MicroOS
         grep -q 'MicroOS' /etc/os-release && BASE='opensusemicroos' && VERSION='latest'
-        # openSUSE MicroOS
+        # openSUSE Tumbleweed
         grep -q 'Tumbleweed' /etc/os-release && BASE='opensusetumbleweed' && VERSION='latest'
     fi
     Z_CLIENT_CODE_BASE="${BASE:-unknown}"
