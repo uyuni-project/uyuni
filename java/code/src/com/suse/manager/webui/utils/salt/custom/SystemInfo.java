@@ -61,7 +61,12 @@ public class SystemInfo {
      * @return the grains
      */
     public Optional<Number> getUptimeSeconds() {
-       return upTime != null ?  Optional.of((Number)upTime.getChanges().getRet().get("seconds")) : Optional.empty();
+        if (upTime != null && upTime.getChanges().getRet() != null) {
+            return Optional.of((Number)upTime.getChanges().getRet().get("seconds"));
+        }
+        else {
+            return Optional.empty();
+        }
     }
 
     /**
