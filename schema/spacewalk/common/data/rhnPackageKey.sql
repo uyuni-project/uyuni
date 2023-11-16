@@ -172,6 +172,9 @@ insert into rhnPackageKey (id, key_id, key_type_id, provider_id) (select sequenc
 -- Amazon Linux 2
 insert into rhnPackageKey (id, key_id, key_type_id, provider_id) (select sequence_nextval('rhn_pkey_id_seq'), '11cf1f95c87f5b1a', lookup_package_key_type('gpg'), lookup_package_provider('Amazon') from dual where not exists (select 1 from rhnPackageKey where key_id = '11cf1f95c87f5b1a'));
 
+-- Amazon Linux 2023
+insert into rhnPackageKey (id, key_id, key_type_id, provider_id) (select sequence_nextval('rhn_pkey_id_seq'), '2f7fe951904ad832c631', lookup_package_key_type('gpg'), lookup_package_provider('Amazon') from dual where not exists (select 1 from rhnPackageKey where key_id = '2f7fe951904ad832c631'));
+
 -- Rocky Linux 8
 insert into rhnPackageKey (id, key_id, key_type_id, provider_id) (select sequence_nextval('rhn_pkey_id_seq'), '15af5dac6d745a60', lookup_package_key_type('gpg'), lookup_package_provider('Rocky Linux') from dual where not exists (select 1 from rhnPackageKey where key_id = '15af5dac6d745a60'));
 -- Rocky Linux 9
