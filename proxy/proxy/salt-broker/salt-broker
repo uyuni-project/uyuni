@@ -378,7 +378,7 @@ if __name__ == "__main__":
         "tcp_keepalive_intvl": -1,
         "log_to_file": 1,
         "connect_timeout": 0,
-        "reconnect_ivl": 10000,
+        "reconnect_ivl": 100,
         "heartbeat_ivl": 0,
         "heartbeat_timeout": 0,
         "drop_after_retries": -1,
