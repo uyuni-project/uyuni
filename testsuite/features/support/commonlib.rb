@@ -483,8 +483,9 @@ end
 
 # Get a time in the future, adding the minutes passed as parameter
 def get_future_time(minutes_to_add)
+  raise TypeError, 'minutes_to_add should be an Integer' unless minutes_to_add.is_a?(Integer)
   now = Time.new
-  future_time = now + 60 * Integer(minutes_to_add, 10)
+  future_time = now + 60 * minutes_to_add
   future_time.strftime('%H:%M').to_s.strip
 end
 
