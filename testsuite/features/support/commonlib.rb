@@ -484,7 +484,7 @@ end
 # Get a time in the future, adding the minutes passed as parameter
 def get_future_time(minutes_to_add)
   now = Time.new
-  future_time = now + 60 * Integer(minutes_to_add, 10)
+  future_time = now + 60 * minutes_to_add.to_i
   future_time.strftime('%H:%M').to_s.strip
 end
 
