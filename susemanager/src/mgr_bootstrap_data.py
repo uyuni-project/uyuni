@@ -1260,6 +1260,10 @@ DATA = {
         'PDID' : [-30, 2362], 'BETAPDID' : [2364], 'PKGLIST' : RES8,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/centos/8/bootstrap/'
     },
+    'centos-9-x86_64' : {
+        'PDID' : [-13, 2007], 'BETAPDID' : [2066], 'PKGLIST' : RES9,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/centos/9/bootstrap/'
+    },
     'centos-6-x86_64-uyuni' : {
         'BASECHANNEL' : 'centos6-x86_64', 'PKGLIST' : RES6,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/centos/6/bootstrap/'
@@ -1287,6 +1291,10 @@ DATA = {
     'centos-8-aarch64-uyuni' : {
         'BASECHANNEL' : 'centos8-aarch64', 'PKGLIST' : RES8,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/centos/8/bootstrap/'
+    },
+    'centos-9-x86_64-uyuni' : {
+        'BASECHANNEL' : 'centos9-x86_64', 'PKGLIST' : RES9,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/centos/9/bootstrap/'
     },
     'oracle-6-x86_64' : {
         'PDID' : [-15, 1682], 'BETAPDID' : [2064], 'PKGLIST' : RES6,
