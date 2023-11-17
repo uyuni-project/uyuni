@@ -532,6 +532,14 @@ public class DownloadController {
     }
 
     /**
+     * @param token the token
+     * @return the last characters of the token
+     */
+    private static String sanitizeToken(String token) {
+        return token.substring(token.length() - 20);
+    }
+
+    /**
      * Validate a given token for a given channel.
      *
      * @param token the token to validate
@@ -543,7 +551,7 @@ public class DownloadController {
         AccessTokenFactory.lookupByToken(token).ifPresentOrElse(obj -> {
             Instant now = Instant.now();
             if (!obj.getValid() || now.isAfter(obj.getExpiration().toInstant())) {
-                LOG.info(String.format("Forbidden: invalid token %s to access %s", token, filename));
+                LOG.info("Forbidden: invalid token ...{} to access {}", sanitizeToken(token), filename);
                 halt(HttpStatus.SC_FORBIDDEN, "This token is not valid");
             }
         }, () -> LOG.debug(String.format(
@@ -564,14 +572,15 @@ public class DownloadController {
                     // new versions of getStringListClaimValue() return an empty list instead of null
                     .filter(l -> !l.isEmpty());
             Opt.consume(channelClaim,
-                    () -> LOG.info(String.format("Token %s does provide access to any channel", token)),
+                    () -> LOG.info(String.format("Token ...%s does provide access to any channel",
+                            sanitizeToken(token))),
                     channels -> {
                 if (!channels.contains(channel)) {
-                    LOG.info(String.format("Forbidden: Token %s does not provide access to channel %s",
-                                           token, channel));
+                    LOG.info(String.format("Forbidden: Token ...%s does not provide access to channel %s",
+                            sanitizeToken(token), channel));
                     LOG.info(String.format("Token allow access only to the following channels: %s",
                                            String.join(",", channels)));
-                    halt(HttpStatus.SC_FORBIDDEN, "Token " + token + " does not provide access to channel " + channel);
+                    halt(HttpStatus.SC_FORBIDDEN, "Token does not provide access to channel " + channel);
                 }
             });
 
@@ -588,8 +597,8 @@ public class DownloadController {
             });
         }
         catch (InvalidJwtException | MalformedClaimException e) {
-            LOG.info(String.format("Forbidden: Token %s is not valid to access %s in %s: %s",
-                    token, filename, channel, e.getMessage()));
+            LOG.info(String.format("Forbidden: Token ...%s is not valid to access %s in %s: %s",
+                    sanitizeToken(token), filename, channel, e.getMessage()));
             halt(HttpStatus.SC_FORBIDDEN,
                  String.format("Token is not valid to access %s in %s: %s", filename, channel, e.getMessage()));
         }
@@ -664,8 +673,8 @@ public class DownloadController {
                 }
             }
             catch (InvalidJwtException | MalformedClaimException e) {
-                LOG.info(String.format("Forbidden: Short-token %s is not valid or is expired: %s",
-                        token, e.getMessage()));
+                LOG.info(String.format("Forbidden: Short-token ...%s is not valid or is expired: %s",
+                        sanitizeToken(token), e.getMessage()));
                 halt(HttpStatus.SC_FORBIDDEN,
                         "Forbidden: Short-token is not valid or is expired");
             }
