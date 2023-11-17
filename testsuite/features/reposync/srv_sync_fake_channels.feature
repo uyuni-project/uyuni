@@ -35,17 +35,6 @@ Feature: Synchronize fake channels
     Then "orion-dummy-1.1-1.1.x86_64.rpm" package should have been stored
     And solver file for "fake-rpm-suse-channel" should reference "orion-dummy-1.1-1.1.x86_64.rpm"
 
-  Scenario: Synchronize Test-Base-Channel-x86_64 channel
-    Given I am authorized for the "Admin" section
-    When I follow the left menu "Software > Manage > Channels"
-    And I follow "Test-Base-Channel-x86_64"
-    And I follow "Repositories" in the content area
-    And I follow "Sync"
-    And I wait at most 60 seconds until I do not see "Repository sync is running." text, refreshing the page
-    And I click on "Sync Now"
-    Then I should see a "Repository sync scheduled for Test-Base-Channel-x86_64." text
-    And I wait until the channel "test-base-channel-x86_64" has been synced
-
   Scenario: Synchronize Fake-Child-Channel-i586 channel
     Given I am authorized for the "Admin" section
     When I follow the left menu "Software > Manage > Channels"
