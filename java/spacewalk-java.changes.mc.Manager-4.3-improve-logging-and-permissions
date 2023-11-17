@@ -1,0 +1,2 @@
+- use 600 permissions for logfiles (bsc#1210928)
+- log potential sensitive information only in debug mode (bsc#1210928)
