@@ -131,9 +131,10 @@ Feature: Synchronize fake channels
     And I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
 
   Scenario: Reposync handles wrong encoding on RPM attributes
-    When I follow the left menu "Software > Channel List"
-    And I follow "Test-Base-Channel-x86_64"
+    When I follow the left menu "Software > Manage > Channels"
+    And I follow "Fake-Child-Channel-SUSE-like"
     And I follow "Packages" in the content area
+    And I follow "List / Remove Packages"
     And I wait until I see "blackhole-dummy" text, refreshing the page
 
 @deblike_minion
