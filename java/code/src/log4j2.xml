@@ -2,25 +2,29 @@
 <Configuration status="warn" name="UyuniConfig">
     <Appenders>
         <RollingFile name="rootAppender" fileName="/var/log/rhn/rhn_web_ui.log"
-                     filePattern="/var/log/rhn/rhn_web_ui-%i.log">
+		filePattern="/var/log/rhn/rhn_web_ui-%i.log"
+		filePermissions="rw-------">
             <PatternLayout pattern="%d [%t] %-5p %c - %m%n" />
             <SizeBasedTriggeringPolicy size="10MB" />
             <DefaultRolloverStrategy max="5" />
         </RollingFile>
         <RollingFile name="apiLogFileAppender" fileName="/var/log/rhn/rhn_web_api.log"
-                     filePattern="/var/log/rhn/rhn_web_api-%i.log">
+		filePattern="/var/log/rhn/rhn_web_api-%i.log"
+		filePermissions="rw-------">
             <PatternLayout pattern="[%d] %-5p - %m%n" />
             <SizeBasedTriggeringPolicy size="10MB" />
             <DefaultRolloverStrategy max="5" />
         </RollingFile>
         <RollingFile name="frontendLogControllerAppender" fileName="/var/log/rhn/rhn_web_frontend.log"
-                     filePattern="/var/log/rhn/rhn_web_frontend-%i.log">
+		filePattern="/var/log/rhn/rhn_web_frontend-%i.log"
+		filePermissions="rw-------">
             <PatternLayout pattern="%d [%t] %-5p %c - %m%n" />
             <SizeBasedTriggeringPolicy size="10MB" />
             <DefaultRolloverStrategy max="30" />
         </RollingFile>
         <RollingFile name="remoteCommandsAppender" fileName="/var/log/rhn/rhn_salt_remote_commands.log"
-                     filePattern="/var/log/rhn/rhn_salt_remote_commands-%i.log">
+		filePattern="/var/log/rhn/rhn_salt_remote_commands-%i.log"
+		filePermissions="rw-------">
             <PatternLayout pattern="%d [%t] %-5p %c - %m%n" />
             <SizeBasedTriggeringPolicy size="10MB" />
             <DefaultRolloverStrategy max="30" />

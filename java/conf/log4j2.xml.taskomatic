@@ -2,13 +2,15 @@
 <Configuration status="warn" name="TaskomaticConfig">
     <Appenders>
         <RollingFile name="rootAppender" fileName="/var/log/rhn/rhn_taskomatic_daemon.log"
-                     filePattern="/var/log/rhn/rhn_taskomatic_daemon-%i.log">
+		filePattern="/var/log/rhn/rhn_taskomatic_daemon-%i.log"
+		filePermissions="rw-------">
             <PatternLayout pattern="%d [%t] %-5p %c - %m%n" />
             <SizeBasedTriggeringPolicy size="10MB" />
             <DefaultRolloverStrategy max="5" />
         </RollingFile>
         <RollingFile name="paygDimensionsAppender" fileName="/var/log/rhn/rhn_payg_dimensions.log"
-                     filePattern="/var/log/rhn/rhn_payg_dimensions-%i.log">
+		filePattern="/var/log/rhn/rhn_payg_dimensions-%i.log"
+		filePermissions="rw-------">
             <PatternLayout pattern="%d [%t] %-5p %c - %m%n" />
             <SizeBasedTriggeringPolicy size="10MB" />
             <DefaultRolloverStrategy max="5" />
