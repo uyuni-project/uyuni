@@ -258,22 +258,6 @@ Then(/^I should see "([^"]*)" at least (\d+) minutes after I scheduled an action
   raise "#{text_time.to_s} is not #{minutes} minutes later than '#{initial.to_s}'" unless (text_time + Rational(1, 1440)) >= after
 end
 
-# Valid claims:
-#   - org
-#   - onlyChannels
-def token(secret, claims = {})
-  payload = {}
-  payload.merge!(claims)
-  log secret
-  JWT.encode payload, [secret].pack('H*').bytes.to_a.pack('c*'), 'HS256'
-end
-
-def server_secret
-  rhnconf, _code = get_target('server').run('cat /etc/rhn/rhn.conf', check_errors: false)
-  data = /server.secret_key\s*=\s*(\h+)$/.match(rhnconf)
-  data[1].strip
-end
-
 Given(/^I have a valid token for organization "([^"]*)"$/) do |org|
   @token = token(server_secret, org: org.to_i)
 end

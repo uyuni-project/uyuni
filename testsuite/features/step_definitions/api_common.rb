@@ -6,12 +6,6 @@
 require 'json'
 require 'socket'
 
-$api_test = if $debug_mode
-              ApiTestXmlrpc.new(get_target('server').full_hostname)
-            else
-              product == 'Uyuni' ? ApiTestHttp.new(get_target('server').full_hostname) : ApiTestXmlrpc.new(get_target('server').full_hostname)
-            end
-
 ## system namespace
 
 Given(/^I want to operate on this "([^"]*)"$/) do |host|
@@ -430,14 +424,6 @@ When(/^I wait until there are no more action chains$/) do
 end
 
 ## schedule API
-
-def wait_action_complete(actionid, timeout: DEFAULT_TIMEOUT)
-  repeat_until_timeout(timeout: timeout, message: 'Action was not found among completed actions') do
-    list = $api_test.schedule.list_completed_actions
-    break if list.any? { |a| a['id'] == actionid }
-    sleep 2
-  end
-end
 
 Then(/^I should see scheduled action, called "(.*?)"$/) do |label|
   assert_includes(

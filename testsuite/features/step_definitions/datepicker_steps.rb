@@ -9,12 +9,6 @@ require 'date'
 # Based on https://github.com/akarzim/capybara-bootstrap-datepicker
 # (MIT license)
 
-def get_future_time(minutes_to_add)
-  now = Time.new
-  future_time = now + 60 * minutes_to_add.to_i
-  future_time.strftime('%H:%M').to_s.strip
-end
-
 Given(/^I pick "([^"]*)" as date$/) do |desired_date|
   value = Date.parse(desired_date)
   date_input = find('input[data-testid="date-picker"]')
