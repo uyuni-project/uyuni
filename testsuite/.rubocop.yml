@@ -15,6 +15,9 @@ Bundler/GemComment:
 Layout/FirstMethodArgumentLineBreak:
   Enabled: false
 
+Layout/HashAlignment:
+  Enabled: false
+
 Layout/LineLength:
   Enabled: false
 
@@ -69,13 +72,28 @@ Naming/VariableNumber:
 Naming/HeredocDelimiterNaming:
   Enabled: false
 
+Security/Open:
+  Enabled: false
+
 Style/AccessorGrouping:
+  Enabled: false
+
+Style/CollectionMethods:
+  Enabled: false
+
+Style/DateTime:
+  Enabled: false
+
+Style/EmptyElse:
   Enabled: false
 
 Style/FrozenStringLiteralComment:
   Enabled: false
 
 Style/GlobalVars:
+  Enabled: false
+
+Style/RegexpLiteral:
   Enabled: false
 
 Style/Semicolon:
@@ -87,11 +105,20 @@ Style/MethodCallWithArgsParentheses:
 Style/ModuleFunction:
   Enabled: false
 
+Style/ImplicitRuntimeError:
+  Enabled: false
+
+Style/InlineComment:
+  Enabled: false
+
 Style/IpAddresses:
   Enabled: false
 
 Style/FormatStringToken:
   EnforcedStyle: template
+
+Style/SafeNavigation:
+  Enabled: false
 
 Style/StringHashKeys:
   Enabled: false

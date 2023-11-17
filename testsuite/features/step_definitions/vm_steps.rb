@@ -102,7 +102,7 @@ When(/^I create ([^ ]*) virtual network on "([^"]*)"$/) do |net_name, host|
              '  </ip>' \
              '</network>'
   when 'salt-sles', 'salt-leap', 'salt-rhlike', 'salt-deblike'
-    netdef = '<network>' + "  <name>#{net_name}</name>" + '  <forward mode=\'bridge\'/>' + "  <bridge name='#{net['bridge']}'/>" + '</network>'
+    netdef = "<network>  <name>#{net_name}</name>  <forward mode='bridge'/>  <bridge name='#{net['bridge']}'/></network>"
   else
     raise ScriptError, "#{net_name} case is not implemented."
   end

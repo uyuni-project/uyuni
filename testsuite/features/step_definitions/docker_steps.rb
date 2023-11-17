@@ -14,7 +14,11 @@ end
 
 When(/^I enter URI, username and password for registry$/) do
   auth_registry_username, auth_registry_password = ENV['AUTH_REGISTRY_CREDENTIALS'].split('|')
-  steps %( When I enter "#{$auth_registry}" as "uri" And I enter "#{auth_registry_username}" as "username" And I enter "#{auth_registry_password}" as "password" )
+  steps %(
+    When I enter "#{$auth_registry}" as "uri"
+    And I enter "#{auth_registry_username}" as "username"
+    And I enter "#{auth_registry_password}" as "password"
+  )
 end
 
 When(/^I wait at most (\d+) seconds until image "([^"]*)" with version "([^"]*)" is built successfully via API$/) do |timeout, name, version|
@@ -34,6 +38,7 @@ When(/^I wait at most (\d+) seconds until image "([^"]*)" with version "([^"]*)"
     log "Image Details: #{image_details}"
     break if image_details['buildStatus'] == 'completed'
     raise SystemCallError, 'image build failed.' if image_details['buildStatus'] == 'failed'
+
     sleep 5
   end
 end
@@ -55,6 +60,7 @@ When(/^I wait at most (\d+) seconds until image "([^"]*)" with version "([^"]*)"
     log "Image Details: #{image_details}"
     break if image_details['inspectStatus'] == 'completed'
     raise SystemCallError, 'image inspect failed.' if image_details['inspectStatus'] == 'failed'
+
     sleep 5
   end
 end
@@ -67,6 +73,7 @@ When(/^I wait at most (\d+) seconds until all "([^"]*)" container images are bui
     step 'I wait until I do not see "There are no entries to show." text'
     raise SystemCallError, 'error detected while building images' if has_xpath?('//tr[td[text()=\'Container Image\']][td//*[contains(@title, \'Failed\')]]')
     break if has_xpath?('//tr[td[text()=\'Container Image\']][td//*[contains(@title, \'Built\')]]', count: count)
+
     sleep 5
   end
 end
@@ -159,6 +166,7 @@ When(/^I set and get details of image store via API$/) do
   details = $api_test.image.store.get_details('Norimberga')
   raise ScriptError, "uri should be Germania but is #{details['uri']}" unless details['uri'] == 'Germania'
   raise ScriptError, "username should be empty but is #{details['username']}" unless details['username'] == ''
+
   $api_test.image.store.delete('Norimberga')
 end
 
@@ -178,10 +186,12 @@ When(/^I create and delete profile custom values via API$/) do
   $api_test.image.profile.set_custom_values('fakeone', values)
   pro_det = $api_test.image.profile.get_custom_values('fakeone')
   raise ScriptError, "setting custom profile value failed: #{pro_det['arancio']} != 'arancia API tests'" unless pro_det['arancio'] == 'arancia API tests'
+
   pro_type = $api_test.image.profile.list_image_profile_types
   raise ScriptError, "Number of image profile types is #{pro_type.length}" unless pro_type.length == 2
   raise ScriptError, "type #{pro_type[0]} is not dockerfile" unless pro_type[0] == 'dockerfile'
   raise ScriptError, "type #{pro_type[1]} is not kiwi" unless pro_type[1] == 'kiwi'
+
   key = ['arancio']
   $api_test.image.profile.delete_custom_values('fakeone', key)
 end
@@ -202,5 +212,6 @@ When(/^I set and get profile details via API$/) do
   cont_detail = $api_test.image.profile.get_details('fakeone')
   raise ScriptError, "label test fail! #{cont_detail['label']} != 'fakeone'" unless cont_detail['label'] == 'fakeone'
   raise ScriptError, "imagetype test fail! #{cont_detail['imageType']} != 'dockerfile'" unless cont_detail['imageType'] == 'dockerfile'
+
   $api_test.image.profile.delete('fakeone')
 end

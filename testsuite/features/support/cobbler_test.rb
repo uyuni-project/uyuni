@@ -15,7 +15,7 @@ class CobblerTest
   ##
   # Creates a new XMLRPC::client object, and then checks to see if the server is running.
   def initialize
-    server_address = ENV.fetch('SERVER', nil)
+    server_address = get_target('server').full_hostname
     @server = XMLRPC::Client.new2("http://#{server_address}/cobbler_api", nil, DEFAULT_TIMEOUT)
     raise(SystemCallError, "No running server at found at #{server_address}") unless running?
   end
@@ -316,6 +316,7 @@ class CobblerTest
   #   name: The name of the distribution to be removed.
   def distro_remove(name)
     raise(::IndexError, "Distribution cannot be found. #{$ERROR_INFO}") unless distro_exists(name)
+
     begin
       @server.call('remove_distro', name, @token)
     rescue ::StandardError
@@ -333,6 +334,7 @@ class CobblerTest
   #   name: The name of the profile to be removed.
   def profile_remove(name)
     raise(::IndexError, "Profile cannot be found. #{$ERROR_INFO}") unless profile_exists(name)
+
     begin
       @server.call('remove_profile', name, @token)
     rescue ::StandardError

@@ -8,7 +8,7 @@ require 'base64'
 require 'capybara'
 require 'capybara/cucumber'
 require 'cucumber'
-#require 'simplecov'
+# require 'simplecov'
 require 'minitest/autorun'
 require 'securerandom'
 require 'selenium-webdriver'
@@ -24,11 +24,11 @@ require_relative 'commonlib'
 server = ENV.fetch('SERVER', nil)
 if ENV['DEBUG']
   $debug_mode = true
-  STDOUT.puts('DEBUG MODE ENABLED.')
+  $stdout.puts('DEBUG MODE ENABLED.')
 end
 if ENV['REDIS_HOST']
   $code_coverage_mode = true
-  STDOUT.puts('CODE COVERAGE MODE ENABLED.')
+  $stdout.puts('CODE COVERAGE MODE ENABLED.')
 end
 
 # Channels triggered by our tests to be synchronized
@@ -51,18 +51,18 @@ $auth_registry = ENV.fetch('AUTH_REGISTRY', nil) if ENV['AUTH_REGISTRY']
 
 # maximal wait before giving up
 # the tests return much before that delay in case of success
-STDOUT.sync = true
+$stdout.sync = true
 STARTTIME = Time.new.to_i
 Capybara.default_max_wait_time = ENV['CAPYBARA_TIMEOUT'] ? ENV['CAPYBARA_TIMEOUT'].to_i : 10
 DEFAULT_TIMEOUT = ENV['DEFAULT_TIMEOUT'] ? ENV['DEFAULT_TIMEOUT'].to_i : 250
 $is_cloud_provider = ENV['PROVIDER'].include? 'aws'
 $is_container_provider = ENV['PROVIDER'].include? 'podman'
 $is_container_server = %w[k3s podman].include? ENV.fetch('CONTAINER_RUNTIME', '')
-$is_using_build_image = ENV.fetch('IS_USING_BUILD_IMAGE') { false }
+$is_using_build_image = ENV.fetch('IS_USING_BUILD_IMAGE', false)
 $is_using_scc_repositories = (ENV.fetch('IS_USING_SCC_REPOSITORIES', 'False') != 'False')
 
 # QAM and Build Validation pipelines will provide a json file including all custom (MI) repositories
-custom_repos_path = File.dirname(__FILE__) + '/../upload_files/' + 'custom_repositories.json'
+custom_repos_path = "#{File.dirname(__FILE__)}/../upload_files/custom_repositories.json"
 if File.exist?(custom_repos_path)
   custom_repos_file = File.read(custom_repos_path)
   $custom_repositories = JSON.parse(custom_repos_file)
@@ -79,7 +79,7 @@ def capybara_register_driver
     # WORKAROUND failure at Scenario: Test IPMI functions: increase from 60 s to 180 s
     client.read_timeout = 180
     # Chrome driver options
-    chrome_options = %w[no-sandbox disable-dev-shm-usage ignore-certificate-errors disable-gpu window-size=2048,2048, js-flags=--max_old_space_size=2048]
+    chrome_options = %w[no-sandbox disable-dev-shm-usage ignore-certificate-errors disable-gpu window-size=2048,2048 js-flags=--max_old_space_size=2048]
     chrome_options << 'headless' unless $debug_mode
     capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
       chromeOptions: {
@@ -109,7 +109,7 @@ Capybara.enable_aria_label = true
 Capybara.automatic_label_click = true
 Capybara.app_host = "https://#{server}"
 Capybara.server_port = 8888 + ENV['TEST_ENV_NUMBER'].to_i
-STDOUT.puts "Capybara APP Host: #{Capybara.app_host}:#{Capybara.server_port}"
+$stdout.puts "Capybara APP Host: #{Capybara.app_host}:#{Capybara.server_port}"
 
 # enable minitest assertions in steps
 World(MiniTest::Assertions)
@@ -178,12 +178,12 @@ end
 # get the Cobbler log output when it fails
 After('@scope_cobbler') do |scenario|
   if scenario.failed?
-    STDOUT.puts '=> /var/log/cobbler/cobbler.log'
+    $stdout.puts '=> /var/log/cobbler/cobbler.log'
     out, _code = get_target('server').run('tail -n20 /var/log/cobbler/cobbler.log')
     out.each_line do |line|
-      STDOUT.puts line.to_s
+      $stdout.puts line.to_s
     end
-    STDOUT.puts
+    $stdout.puts
   end
 end
 
@@ -567,16 +567,16 @@ end
 
 # have more infos about the errors
 def print_server_logs
-  STDOUT.puts '=> /var/log/rhn/rhn_web_ui.log'
+  $stdout.puts '=> /var/log/rhn/rhn_web_ui.log'
   out, _code = get_target('server').run('tail -n20 /var/log/rhn/rhn_web_ui.log | awk -v limit="$(date --date=\'5 minutes ago\' \'+%Y-%m-%d %H:%M:%S\')" \' $0 > limit\'')
   out.each_line do |line|
-    STDOUT.puts line.to_s
+    $stdout.puts line.to_s
   end
-  STDOUT.puts
-  STDOUT.puts '=> /var/log/rhn/rhn_web_api.log'
+  $stdout.puts
+  $stdout.puts '=> /var/log/rhn/rhn_web_api.log'
   out, _code = get_target('server').run('tail -n20 /var/log/rhn/rhn_web_api.log | awk -v limit="$(date --date=\'5 minutes ago\' \'+%Y-%m-%d %H:%M:%S\')" \' $0 > limit\'')
   out.each_line do |line|
-    STDOUT.puts line.to_s
+    $stdout.puts line.to_s
   end
-  STDOUT.puts
+  $stdout.puts
 end

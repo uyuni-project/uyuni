@@ -182,7 +182,10 @@ end
 
 When(/^I check Cobbler buildiso ISO "([^"]*)" with xorriso$/) do |name|
   tmp_dir = '/var/cache/cobbler'
-  out, code = get_target('server').run("cat >#{tmp_dir}/test_image <<-EOF BIOS UEFI EOF")
+  _out, _code = get_target('server').run("cat >#{tmp_dir}/test_image <<-EOF
+BIOS
+UEFI
+EOF")
   xorriso = "xorriso -indev #{tmp_dir}/#{name}.iso -report_el_torito 2>/dev/null"
   iso_filter = 'awk \'/^El Torito boot img[[:space:]]+:[[:space:]]+[0-9]+[[:space:]]+[a-zA-Z]+[[:space:]]+y/{print $7}\''
   iso_file = "#{tmp_dir}/xorriso_#{name}"
@@ -244,14 +247,14 @@ end
 When(/^I copy autoinstall mocked files on server$/) do
   target_dirs = '/var/autoinstall/Fedora_12_i386/images/pxeboot /var/autoinstall/SLES15-SP4-x86_64/DVD1/boot/x86_64/loader /var/autoinstall/mock'
   get_target('server').run("mkdir -p #{target_dirs}")
-  base_dir = File.dirname(__FILE__) + '/../upload_files/autoinstall/cobbler/'
+  base_dir = "#{File.dirname(__FILE__)}/../upload_files/autoinstall/cobbler/"
   source_dir = '/var/autoinstall/'
   return_codes = []
-  return_codes << file_inject(get_target('server'), base_dir + 'fedora12/vmlinuz', source_dir + 'Fedora_12_i386/images/pxeboot/vmlinuz')
-  return_codes << file_inject(get_target('server'), base_dir + 'fedora12/initrd.img', source_dir + 'Fedora_12_i386/images/pxeboot/initrd.img')
-  return_codes << file_inject(get_target('server'), base_dir + 'mock/empty.xml', source_dir + 'mock/empty.xml')
-  return_codes << file_inject(get_target('server'), base_dir + 'sles15sp4/initrd', source_dir + 'SLES15-SP4-x86_64/DVD1/boot/x86_64/loader/initrd')
-  return_codes << file_inject(get_target('server'), base_dir + 'sles15sp4/linux', source_dir + 'SLES15-SP4-x86_64/DVD1/boot/x86_64/loader/linux')
+  return_codes << file_inject(get_target('server'), "#{base_dir}fedora12/vmlinuz", "#{source_dir}Fedora_12_i386/images/pxeboot/vmlinuz")
+  return_codes << file_inject(get_target('server'), "#{base_dir}fedora12/initrd.img", "#{source_dir}Fedora_12_i386/images/pxeboot/initrd.img")
+  return_codes << file_inject(get_target('server'), "#{base_dir}mock/empty.xml", "#{source_dir}mock/empty.xml")
+  return_codes << file_inject(get_target('server'), "#{base_dir}sles15sp4/initrd", "#{source_dir}SLES15-SP4-x86_64/DVD1/boot/x86_64/loader/initrd")
+  return_codes << file_inject(get_target('server'), "#{base_dir}sles15sp4/linux", "#{source_dir}SLES15-SP4-x86_64/DVD1/boot/x86_64/loader/linux")
   raise ScriptError, 'File injection failed' unless return_codes.all?(&:zero?)
 end
 

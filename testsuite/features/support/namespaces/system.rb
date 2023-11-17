@@ -73,8 +73,7 @@ class NamespaceSystem
       @test.call('system.bootstrap', sessionKey: @test.token, host: host, sshPort: 22, sshUser: 'root', sshPassword: 'linux', activationKey: activation_key, saltSSH: salt_ssh)
     else
       proxy = @test.call('system.searchByName', sessionKey: @test.token, regexp: get_target('proxy').full_hostname)
-      proxy_id = proxy.map { |s| s['id'] }
-                      .first
+      proxy_id = proxy.map { |s| s['id'] }.first
       @test.call('system.bootstrap', sessionKey: @test.token, host: host, sshPort: 22, sshUser: 'root', sshPassword: 'linux', activationKey: activation_key, proxyId: proxy_id, saltSSH: salt_ssh)
     end
   end

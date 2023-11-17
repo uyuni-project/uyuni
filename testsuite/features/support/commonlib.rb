@@ -17,11 +17,13 @@ def count_table_items
   # count table items using the table counter component
   items_label_xpath = '//span[contains(text(), \'Items \')]'
   raise ScriptError, 'Error counting items' unless (items_label = find(:xpath, items_label_xpath).text)
+
   items_label.split('of ')[1].strip
 end
 
 def product
   return $product unless $product.nil?
+
   _product_raw, code = get_target('server').run('rpm -q patterns-uyuni_server', check_errors: false)
   if code.zero?
     $product = 'Uyuni'
@@ -39,9 +41,11 @@ def product_version
   product_raw, code = get_target('server').run('rpm -q patterns-uyuni_server', check_errors: false)
   m = product_raw.match(/patterns-uyuni_server-(.*)-.*/)
   return m[1] if code.zero? && !m.nil?
+
   product_raw, code = get_target('server').run('rpm -q patterns-suma_server', check_errors: false)
   m = product_raw.match(/patterns-suma_server-(.*)-.*/)
   return m[1] if code.zero? && !m.nil?
+
   raise NotImplementedError, 'Could not determine product version'
 end
 
@@ -53,7 +57,7 @@ end
 # WARN: It's working for /24 mask, but couldn't not work properly with others
 def get_reverse_net(net)
   a = net.split('.')
-  a[2] + '.' + a[1] + '.' + a[0] + '.in-addr.arpa'
+  "#{a[2]}.#{a[1]}.#{a[0]}.in-addr.arpa"
 end
 
 # Repeatedly executes a block raising an exception in case it is not finished within timeout seconds
@@ -81,10 +85,11 @@ def repeat_until_timeout(timeout: DEFAULT_TIMEOUT, retries: nil, message: nil, r
 
     detail = format_detail(message, last_result, report_result)
     raise ScriptError, "Giving up after #{attempts} attempts#{detail}" if attempts == retries
+
     raise TimeoutError, "Timeout after #{timeout} seconds (repeat_until_timeout)#{detail}"
   end
 rescue Timeout::Error => e
-  STDOUT.puts "Timeout after #{timeout} seconds (Timeout.timeout)#{format_detail(message, last_result, report_result)}"
+  $stdout.puts "Timeout after #{timeout} seconds (Timeout.timeout)#{format_detail(message, last_result, report_result)}"
   raise e unless dont_raise
 rescue StandardError => e
   raise e unless dont_raise
@@ -97,6 +102,7 @@ def check_text_and_catch_request_timeout_popup?(text1, text2: nil, timeout: Capy
       return true if has_text?(text1, wait: 4)
       return true if !text2.nil? && has_text?(text2, wait: 4)
       next unless has_text?('Request has timed out', wait: 0)
+
       log 'Request timeout found, performing reload'
       click_button('reload the page')
       start_time = Time.now
@@ -117,7 +123,7 @@ def click_button_and_wait(locator = nil, **options)
   begin
     warn 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 20)
   rescue StandardError => e
-    STDOUT.puts e.message # Skip errors related to .senna-loading element
+    $stdout.puts e.message # Skip errors related to .senna-loading element
   end
 end
 
@@ -126,7 +132,7 @@ def click_link_and_wait(locator = nil, **options)
   begin
     warn 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 20)
   rescue StandardError => e
-    STDOUT.puts e.message # Skip errors related to .senna-loading element
+    $stdout.puts e.message # Skip errors related to .senna-loading element
   end
 end
 
@@ -135,7 +141,7 @@ def click_link_or_button_and_wait(locator = nil, **options)
   begin
     warn 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 20)
   rescue StandardError => e
-    STDOUT.puts e.message # Skip errors related to .senna-loading element
+    $stdout.puts e.message # Skip errors related to .senna-loading element
   end
 end
 
@@ -146,7 +152,7 @@ module CapybaraNodeElementExtension
     begin
       warn 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 20)
     rescue StandardError => e
-      STDOUT.puts e.message # Skip errors related to .senna-loading element
+      $stdout.puts e.message # Skip errors related to .senna-loading element
     end
   end
 end
@@ -199,7 +205,7 @@ def extract_logs_from_node(node)
   code = file_extract(node, "/tmp/#{node.full_hostname}-logs.tar.xz", "logs/#{node.full_hostname}-logs.tar.xz")
   raise ScriptError, 'Download log archive failed' unless code.zero?
 rescue RuntimeError => e
-  STDOUT.puts e.message
+  $stdout.puts e.message
 end
 
 def reportdb_server_query(query)
@@ -229,7 +235,7 @@ def check_shutdown(host, time_out)
   repeat_until_timeout(timeout: time_out, message: 'machine didn\'t reboot') do
     _out = `#{cmd}`
     if $CHILD_STATUS.exitstatus.nonzero?
-      STDOUT.puts "machine: #{host} went down"
+      $stdout.puts "machine: #{host} went down"
       break
     else
       sleep 1
@@ -242,7 +248,7 @@ def check_restart(host, node, time_out)
   repeat_until_timeout(timeout: time_out, message: 'machine didn\'t come up') do
     _out = `#{cmd}`
     if $CHILD_STATUS.exitstatus.zero?
-      STDOUT.puts "machine: #{host} network is up"
+      $stdout.puts "machine: #{host} network is up"
       break
     else
       sleep 1
@@ -251,7 +257,7 @@ def check_restart(host, node, time_out)
   repeat_until_timeout(timeout: time_out, message: 'machine didn\'t come up') do
     _out, code = node.run('ls', check_errors: false, timeout: 10)
     if code.zero?
-      STDOUT.puts "machine: #{host} ssh is up"
+      $stdout.puts "machine: #{host} ssh is up"
       break
     else
       sleep 1
@@ -278,19 +284,20 @@ def get_os_version(node)
   os_version.delete! '"'
   # on SLES, we need to replace the dot with '-SP'
   os_version.gsub!('.', '-SP') if os_family =~ /^sles/
-  STDOUT.puts "Node: #{node.hostname}, OS Version: #{os_version}, Family: #{os_family}"
+  $stdout.puts "Node: #{node.hostname}, OS Version: #{os_version}, Family: #{os_family}"
   [os_version, os_family]
 end
 
 def get_gpg_keys(node, target = get_target('server'))
   os_version, os_family = get_os_version(node)
-  if os_family =~ /^sles/
+  case os_family
+  when /^sles/
     # HACK: SLE 15 uses SLE 12 GPG key
     os_version = 12 if os_version =~ /^15/
     # SLE12 GPG keys don't contain service pack strings
     os_version = os_version.split('-')[0] if os_version =~ /^12/
     gpg_keys, _code = target.run("cd /srv/www/htdocs/pub/ && ls -1 sle#{os_version}*", check_errors: false)
-  elsif os_family =~ /^centos/
+  when /^centos/
     gpg_keys, _code = target.run("cd /srv/www/htdocs/pub/ && ls -1 #{os_family}#{os_version}* res*", check_errors: false)
   else
     gpg_keys, _code = target.run("cd /srv/www/htdocs/pub/ && ls -1 #{os_family}*", check_errors: false)
@@ -391,9 +398,9 @@ end
 def channel_is_synced(channel)
   # solv is the last file to be written when the server synchronizes a channel, therefore we wait until it exist
   result, code = get_target('server').run("dumpsolv /var/cache/rhn/repodata/#{channel}/solv", verbose: false, check_errors: false)
-  STDOUT.puts "#{channel} -> #{result.match(/^repo size:.*/)}"
+  $stdout.puts "#{channel} -> #{result.match(/^repo size:.*/)}"
   if code.zero? && !result.include?('repo size: 0')
-    STDOUT.puts "Channel #{channel} is synced."
+    $stdout.puts "Channel #{channel} is synced."
     # We want to check if no .new files exists. On a re-sync, the old files stay, the new one have this suffix until it's ready.
     _result, new_code = get_target('server').run("dumpsolv /var/cache/rhn/repodata/#{channel}/solv.new", verbose: false, check_errors: false)
     log 'Channel synced, no .new files exist and number of solvables is bigger than 0' unless new_code.zero?
@@ -425,18 +432,17 @@ end
 # This function initializes the API client
 def new_api_client
   ssl_verify = !$is_container_provider
-  if $debug_mode
+  if $debug_mode || product == 'SUSE Manager'
     ApiTestXmlrpc.new(get_target('server', refresh: true).full_hostname)
-  elsif product == 'Uyuni' && !$debug_mode
-    ApiTestHttp.new(get_target('server', refresh: true).full_hostname, ssl_verify)
   else
-    ApiTestXmlrpc.new(get_target('server', refresh: true).full_hostname)
+    ApiTestHttp.new(get_target('server', refresh: true).full_hostname, ssl_verify)
   end
 end
 
 # Get a time in the future, adding the minutes passed as parameter
 def get_future_time(minutes_to_add)
   raise TypeError, 'minutes_to_add should be an Integer' unless minutes_to_add.is_a?(Integer)
+
   now = Time.new
   future_time = now + (60 * minutes_to_add)
   future_time.strftime('%H:%M').to_s.strip
@@ -478,6 +484,7 @@ def wait_action_complete(actionid, timeout: DEFAULT_TIMEOUT)
   repeat_until_timeout(timeout: timeout, message: 'Action was not found among completed actions') do
     list = $api_test.schedule.list_completed_actions
     break if list.any? { |a| a['id'] == actionid }
+
     sleep 2
   end
 end

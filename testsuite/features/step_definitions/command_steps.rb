@@ -95,7 +95,7 @@ Then(/^it should be possible to reach the build sources$/) do
 end
 
 Then(/^it should be possible to reach the Docker profiles$/) do
-  git_profiles = ENV['GITPROFILES']
+  git_profiles = ENV.fetch('GITPROFILES', nil)
   url = git_profiles.sub(/github\.com/, 'raw.githubusercontent.com')
                     .sub(/\.git#:/, '/master/')
                     .sub(/$/, '/Docker/Dockerfile')
@@ -120,8 +120,8 @@ end
 
 When(/^I delete these channels with spacewalk-remove-channel:$/) do |table|
   channels_cmd = 'spacewalk-remove-channel '
-  table.raw.each { |x| channels_cmd = channels_cmd + ' -c ' + x[0] }
-  $command_output, return_code = get_target('server').run(channels_cmd, check_errors: false)
+  table.raw.each { |x| channels_cmd = "#{channels_cmd} -c #{x[0]}" }
+  $command_output, _return_code = get_target('server').run(channels_cmd, check_errors: false)
 end
 
 When(/^I list channels with spacewalk-remove-channel$/) do
@@ -198,7 +198,7 @@ When(/^I query latest Salt changes on "(.*?)"$/) do |host|
   if host == 'server'
     salt = 'salt'
   end
-  result, return_code = node.run("LANG=en_US.UTF-8 rpm -q --changelog #{salt}")
+  result, _return_code = node.run("LANG=en_US.UTF-8 rpm -q --changelog #{salt}")
   result.split("\n")[0, 15].each do |line|
     line.force_encoding('UTF-8')
     log line
@@ -214,7 +214,7 @@ When(/^I query latest Salt changes on Debian-like system "(.*?)"$/) do |host|
       'salt'
     end
   changelog_file = use_salt_bundle ? 'changelog.gz' : 'changelog.Debian.gz'
-  result, return_code = node.run("zcat /usr/share/doc/#{salt}/#{changelog_file}")
+  result, _return_code = node.run("zcat /usr/share/doc/#{salt}/#{changelog_file}")
   result.split("\n")[0, 15].each do |line|
     line.force_encoding('UTF-8')
     log line
@@ -263,8 +263,10 @@ When(/^I enable product "([^"]*)"$/) do |prd|
   linenum = 0
   list_output.each_line do |line|
     next unless /^ *\[ \]/ =~ line
+
     linenum += 1
     next unless line.include? prd
+
     executed = true
     $command_output, _code = get_target('server').run("echo '#{linenum}' | mgr-sync add product", check_errors: false, buffer_size: 1_000_000)
     break
@@ -278,8 +280,10 @@ When(/^I enable product "([^"]*)" without recommended$/) do |prd|
   linenum = 0
   list_output.each_line do |line|
     next unless /^ *\[ \]/ =~ line
+
     linenum += 1
     next unless line.include? prd
+
     executed = true
     $command_output, _code = get_target('server').run("echo '#{linenum}' | mgr-sync add product --no-recommends", check_errors: false, buffer_size: 1_000_000)
     break
@@ -310,9 +314,10 @@ When(/^I execute mgr-sync refresh$/) do
 end
 
 # This function kills spacewalk-repo-sync processes for a particular OS product version.
-# It waits for all the reposyncs in the whitelist to complete, and kills all others.
+# It waits for all the reposyncs in the allow-list to complete, and kills all others.
 When(/^I kill running spacewalk-repo-sync for "([^"]*)"$/) do |os_product_version|
   next if CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION[os_product_version].nil?
+
   channels_to_kill = sanitize_client_tools(CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION[os_product_version])
   log "Killing channels:\n#{channels_to_kill}"
   time_spent = 0
@@ -326,11 +331,12 @@ When(/^I kill running spacewalk-repo-sync for "([^"]*)"$/) do |os_product_versio
       sleep checking_rate
       next
     end
-    channel = process.split(' ')[5].strip
+    channel = process.split[5].strip
     log "Repo-sync process for channel '#{channel}' running." if Time.now.sec % 5
     next unless CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION[os_product_version].include? channel
+
     channels_to_kill.delete(channel)
-    pid = process.split(' ')[0]
+    pid = process.split[0]
     get_target('server').run("kill #{pid}", check_errors: false)
     log "Reposync of channel #{channel} killed"
 
@@ -378,6 +384,7 @@ When(/^I wait until the channel "([^"]*)" has been synced$/) do |channel|
   begin
     repeat_until_timeout(timeout: 7200, message: 'Channel not fully synced') do
       break if channel_is_synced(channel)
+
       log "#{time_spent / 60.to_i} minutes waiting for '#{channel}' channel to be synchronized." if ((time_spent += checking_rate) % 60).zero?
       sleep checking_rate
     end
@@ -413,6 +420,7 @@ When(/^I wait until file "([^"]*)" contains "([^"]*)" on server$/) do |file, con
   repeat_until_timeout(message: "#{content} not found in file #{file}", report_result: true) do
     output, _code = get_target('server').run("grep #{content} #{file}", check_errors: false)
     break if output =~ /#{content}/
+
     sleep 2
     "\n-----\n#{output}\n-----\n"
   end
@@ -421,6 +429,7 @@ end
 Then(/^file "([^"]*)" should contain "([^"]*)" on server$/) do |file, content|
   output, _code = get_target('server').run("grep -F '#{content}' #{file}", check_errors: false)
   raise ScriptError, "'#{content}' not found in file #{file}" if output !~ /#{content}/
+
   "\n-----\n#{output}\n-----\n"
 end
 
@@ -468,7 +477,7 @@ When(/^I extract the log files from all our active nodes$/) do
   $node_by_host.each do |host, node|
     next if node.nil? || %w[salt_migration_minion localhost *-ctl].include?(host)
 
-    STDOUT.puts "Node: #{node.full_hostname}"
+    $stdout.puts "Node: #{node.full_hostname}"
     extract_logs_from_node(node)
   end
 end
@@ -482,10 +491,10 @@ Then(/^the repo file should contain the (custom|normal) download endpoint on the
   base_url, _code = node.run('grep "baseurl" /etc/zypp/repos.d/susemanager\:channels.repo')
   base_url = base_url.strip.split('=')[1].delete '"'
   real_uri = URI.parse(base_url)
-  log 'Real protocol: ' + real_uri.scheme + '  host: ' + real_uri.host + '  port: ' + real_uri.port.to_s
+  log "Real protocol: #{real_uri.scheme}  host: #{real_uri.host}  port: #{real_uri.port}"
   normal_download_endpoint = "https://#{get_target('proxy').full_hostname}:443"
   expected_uri = URI.parse(type == 'custom' ? $custom_download_endpoint : normal_download_endpoint)
-  log 'Expected protocol: ' + expected_uri.scheme + '  host: ' + expected_uri.host + '  port: ' + expected_uri.port.to_s
+  log "Expected protocol: #{expected_uri.scheme}  host: #{expected_uri.host}  port: #{expected_uri.port}"
   raise ScriptError, 'Some parameters are not as expected' unless real_uri.scheme == expected_uri.scheme && real_uri.host == expected_uri.host && real_uri.port == expected_uri.port
 end
 
@@ -500,6 +509,7 @@ When(/^I copy "([^"]*)" file from "([^"]*)" to "([^"]*)"$/) do |file_path, from_
   to_node = get_target(to_host)
   return_code = file_extract(from_node, file_path, file_path)
   raise ScriptError, 'File extraction failed' unless return_code.zero?
+
   return_code = file_inject(to_node, file_path, file_path)
   raise ScriptError, 'File injection failed' unless return_code.zero?
 end
@@ -514,8 +524,8 @@ end
 
 When(/^the server starts mocking an IPMI host$/) do
   %w[ipmisim1.emu lan.conf fake_ipmi_host.sh].each do |file|
-    source = File.dirname(__FILE__) + '/../upload_files/' + file
-    dest = '/etc/ipmi/' + file
+    source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
+    dest = "/etc/ipmi/#{file}"
     return_code = file_inject(get_target('server'), source, dest)
     raise ScriptError, 'File injection failed' unless return_code.zero?
   end
@@ -534,7 +544,7 @@ When(/^the controller starts mocking a Redfish host$/) do
 
   if running_k3s?
     # On kubernetes, the server has no clue about certificates
-    crt_path, key_path, _ca_path = generate_certificate("controller", hostname)
+    crt_path, key_path, _ca_path = generate_certificate('controller', hostname)
     get_target('server').extract_file(crt_path, '/root/controller.crt')
     get_target('server').extract_file(key_path, '/root/controller.key')
   else
@@ -550,9 +560,9 @@ When(/^the controller starts mocking a Redfish host$/) do
   `unzip /root/DSP2043_2019.1.zip -d /root/`
   cmd = "/usr/bin/python3 #{File.dirname(__FILE__)}/../upload_files/Redfish-Mockup-Server/redfishMockupServer.py " \
         "-H #{hostname} -p 8443 " \
-        "-S -D /root/DSP2043_2019.1/public-catfish/ " \
-        "--ssl --cert /root/controller.crt --key /root/controller.key " \
-        "< /dev/null > /dev/null 2>&1 &"
+        '-S -D /root/DSP2043_2019.1/public-catfish/ ' \
+        '--ssl --cert /root/controller.crt --key /root/controller.key ' \
+        '< /dev/null > /dev/null 2>&1 &'
   `#{cmd}`
 end
 
@@ -565,10 +575,11 @@ When(/^I install a user-defined state for "([^"]*)" on the server$/) do |host|
   system_name = get_system_name(host)
   # copy state file to server
   file = 'user_defined_state.sls'
-  source = File.dirname(__FILE__) + '/../upload_files/' + file
-  dest = '/srv/salt/' + file
+  source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
+  dest = "/srv/salt/#{file}"
   return_code = file_inject(get_target('server'), source, dest)
   raise ScriptError, 'File injection failed' unless return_code.zero?
+
   # generate top file and copy it to server
   script = "base:\n" \
            "  '#{system_name}':\n" \
@@ -576,6 +587,7 @@ When(/^I install a user-defined state for "([^"]*)" on the server$/) do |host|
   path = generate_temp_file('top.sls', script)
   return_code = file_inject(get_target('server'), path, '/srv/salt/top.sls')
   raise ScriptError, 'File injection failed' unless return_code.zero?
+
   `rm #{path}`
   # make both files readeable by salt
   get_target('server').run('chgrp salt /srv/salt/*')
@@ -595,10 +607,10 @@ When(/^I configure tftp on the "([^"]*)"$/) do |host|
 
   case host
   when 'server'
-    get_target('server').run("configure-tftpsync.sh #{ENV['PROXY']}")
+    get_target('server').run("configure-tftpsync.sh #{get_target('proxy').full_hostname}")
   when 'proxy'
     cmd = "configure-tftpsync.sh --non-interactive --tftpbootdir=/srv/tftpboot \
---server-fqdn=#{ENV['SERVER']} \
+--server-fqdn=#{get_target('server').full_hostname} \
 --proxy-fqdn='proxy.example.org'"
     get_target('proxy').run(cmd)
   else
@@ -626,6 +638,7 @@ When(/^I clean the search index on the server$/) do
   output, _code = get_target('server').run('/usr/sbin/rhn-search cleanindex', check_errors: false)
   log 'Search reindex finished.' if output.include?('Index files have been deleted and database has been cleaned up, ready to reindex')
   raise ScriptError, 'The output includes an error log' if output.include?('ERROR')
+
   step 'I wait until rhn-search is responding'
 end
 
@@ -646,8 +659,9 @@ Then(/^I wait until mgr-sync refresh is finished$/) do
   # mgr-sync refresh is a slow operation, we don't use the default timeout
   cmd = 'spacecmd -u admin -p admin api sync.content.listProducts | grep SLES'
   repeat_until_timeout(timeout: 1800, message: '\'mgr-sync refresh\' did not finish') do
-    result, code = get_target('server').run(cmd, check_errors: false)
+    result, _code = get_target('server').run(cmd, check_errors: false)
     break if result.include? 'SLES'
+
     sleep 5
   end
 end
@@ -717,6 +731,7 @@ When(/^I wait at most (\d+) seconds until file "([^"]*)" exists on "([^"]*)"$/) 
   node = get_target(host)
   repeat_until_timeout(timeout: seconds.to_i) do
     break if file_exists?(node, file)
+
     sleep(1)
   end
 end
@@ -724,6 +739,7 @@ end
 When(/^I wait until file "(.*)" exists on server$/) do |file|
   repeat_until_timeout do
     break if file_exists?(get_target('server'), file)
+
     sleep(1)
   end
 end
@@ -776,29 +792,32 @@ When(/^I (enable|disable) (the repositories|repository) "([^"]*)" on this "([^"]
   node = get_target(host)
   os_family = node.os_family
   cmd = ''
-  if os_family =~ /^opensuse/ || os_family =~ /^sles/
+  case os_family
+  when /^opensuse/, /^sles/
     mand_repos = ''
-    repos.split(' ').map do |repo|
+    repos.split.map do |repo|
       mand_repos = "#{mand_repos} #{repo}"
     end
     cmd = "zypper mr --#{action} #{mand_repos}" unless mand_repos.empty?
-  elsif os_family =~ /^centos/ || os_family =~ /^rocky/
-    repos.split(' ').each do |repo|
+  when /^centos/, /^rocky/
+    repos.split.each do |repo|
       cmd = "#{cmd} && " unless cmd.empty?
-      cmd = if action == 'enable'
-              "#{cmd}sed -i 's/enabled=.*/enabled=1/g' /etc/yum.repos.d/#{repo}.repo"
-            else
-              "#{cmd}sed -i 's/enabled=.*/enabled=0/g' /etc/yum.repos.d/#{repo}.repo"
-            end
+      cmd =
+        if action == 'enable'
+          "#{cmd}sed -i 's/enabled=.*/enabled=1/g' /etc/yum.repos.d/#{repo}.repo"
+        else
+          "#{cmd}sed -i 's/enabled=.*/enabled=0/g' /etc/yum.repos.d/#{repo}.repo"
+        end
     end
-  elsif os_family =~ /^ubuntu/ || os_family =~ /^debian/
-    repos.split(' ').each do |repo|
+  when /^ubuntu/, /^debian/
+    repos.split.each do |repo|
       cmd = "#{cmd} && " unless cmd.empty?
-      cmd = if action == 'enable'
-              "#{cmd}sed -i '/^#\\s*deb.*/ s/^#\\s*deb /deb /' /etc/apt/sources.list.d/#{repo}.list"
-            else
-              "#{cmd}sed -i '/^deb.*/ s/^deb /# deb /' /etc/apt/sources.list.d/#{repo}.list"
-            end
+      cmd =
+        if action == 'enable'
+          "#{cmd}sed -i '/^#\\s*deb.*/ s/^#\\s*deb /deb /' /etc/apt/sources.list.d/#{repo}.list"
+        else
+          "#{cmd}sed -i '/^deb.*/ s/^deb /# deb /' /etc/apt/sources.list.d/#{repo}.list"
+        end
     end
   end
   node.run(cmd, verbose: true, check_errors: error_control.empty?)
@@ -837,11 +856,12 @@ end
 When(/^I (install|remove) OpenSCAP dependencies (on|from) "([^"]*)"$/) do |action, where, host|
   node = get_target(host)
   os_family = node.os_family
-  if os_family =~ /^opensuse/ || os_family =~ /^sles/
+  case os_family
+  when /^opensuse/, /^sles/
     pkgs = 'openscap-utils openscap-content scap-security-guide'
-  elsif os_family =~ /^centos/ || os_family =~ /^rocky/
+  when /^centos/, /^rocky/
     pkgs = 'openscap-utils scap-security-guide-redhat'
-  elsif os_family =~ /^ubuntu/
+  when /^ubuntu/
     pkgs = 'libopenscap8 scap-security-guide-ubuntu'
   else
     raise ScriptError, "The node #{node.hostname} has not a supported OS Family (#{os_family})"
@@ -933,7 +953,7 @@ When(/^I wait until the package "(.*?)" has been cached on this "(.*?)"$/) do |p
     cmd = "ls /var/cache/apt/archives/#{pkg_name}*.deb"
   end
   repeat_until_timeout(message: "Package #{pkg_name} was not cached") do
-    result, return_code = node.run(cmd, check_errors: false)
+    _result, return_code = node.run(cmd, check_errors: false)
     break if return_code.zero?
   end
 end
@@ -943,13 +963,14 @@ When(/^I create the bootstrap repository for "([^"]*)" on the server$/) do |host
   channel = CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL[product][base_channel]
   parent_channel = PARENT_CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL[product][base_channel]
   get_target('server').wait_while_process_running('mgr-create-bootstrap-repo')
-  cmd = if parent_channel.nil?
-          "mgr-create-bootstrap-repo --create #{channel} --with-custom-channels --flush"
-        else
-          "mgr-create-bootstrap-repo --create #{channel} --with-parent-channel #{parent_channel} --with-custom-channels --flush"
-        end
+  cmd =
+    if parent_channel.nil?
+      "mgr-create-bootstrap-repo --create #{channel} --with-custom-channels --flush"
+    else
+      "mgr-create-bootstrap-repo --create #{channel} --with-parent-channel #{parent_channel} --with-custom-channels --flush"
+    end
   log 'Creating the boostrap repository on the server:'
-  log '  ' + cmd
+  log "  #{cmd}"
   get_target('server').run(cmd)
 end
 
@@ -981,20 +1002,22 @@ end
 When(/^I copy server's keys to the proxy$/) do
   if running_k3s?
     # Server running in Kubernetes doesn't know anything about SSL CA
-    generate_certificate("proxy", get_target('proxy').full_hostname)
+    generate_certificate('proxy', get_target('proxy').full_hostname)
 
     %w[proxy.crt proxy.key ca.crt].each do |file|
       return_code, = get_target('server').extract_file("/tmp/#{file}", "/tmp/#{file}")
       raise ScriptError, 'File extraction failed' unless return_code.zero?
+
       return_code = file_inject(get_target('proxy'), "/tmp/#{file}", "/tmp/#{file}")
       raise ScriptError, 'File injection failed' unless return_code.zero?
     end
   else
     %w[RHN-ORG-PRIVATE-SSL-KEY RHN-ORG-TRUSTED-SSL-CERT rhn-ca-openssl.cnf].each do |file|
-      return_code = file_extract(get_target('server'), '/root/ssl-build/' + file, '/tmp/' + file)
+      return_code = file_extract(get_target('server'), "/root/ssl-build/#{file}", "/tmp/#{file}")
       raise ScriptError, 'File extraction failed' unless return_code.zero?
+
       get_target('proxy').run('mkdir -p /root/ssl-build')
-      return_code = file_inject(get_target('proxy'), '/tmp/' + file, '/root/ssl-build/' + file)
+      return_code = file_inject(get_target('proxy'), "/tmp/#{file}", "/root/ssl-build/#{file}")
       raise ScriptError, 'File injection failed' unless return_code.zero?
     end
   end
@@ -1010,26 +1033,27 @@ When(/^I configure the proxy$/) do
              "POPULATE_CONFIG_CHANNEL=y\n" \
              "RHN_USER=admin\n" \
              "ACTIVATE_SLP=y\n"
-  settings += if running_k3s?
-                "USE_EXISTING_CERTS=y\n" \
-                "CA_CERT=/tmp/ca.crt\n" \
-                "SERVER_KEY=/tmp/proxy.key\n" \
-                "SERVER_CERT=/tmp/proxy.crt\n"
-              else
-                "USE_EXISTING_CERTS=n\n" \
-                "INSTALL_MONITORING=n\n" \
-                "SSL_PASSWORD=spacewalk\n" \
-                "SSL_ORG=SUSE\n" \
-                "SSL_ORGUNIT=SUSE\n" \
-                "SSL_COMMON=#{get_target('proxy').full_hostname}\n" \
-                "SSL_CITY=Nuremberg\n" \
-                "SSL_STATE=Bayern\n" \
-                "SSL_COUNTRY=DE\n" \
-                "SSL_EMAIL=galaxy-noise@suse.de\n" \
-                "SSL_CNAME_ASK=proxy.example.org\n"
-              end
+  settings +=
+    if running_k3s?
+      "USE_EXISTING_CERTS=y\n" \
+      "CA_CERT=/tmp/ca.crt\n" \
+      "SERVER_KEY=/tmp/proxy.key\n" \
+      "SERVER_CERT=/tmp/proxy.crt\n"
+    else
+      "USE_EXISTING_CERTS=n\n" \
+      "INSTALL_MONITORING=n\n" \
+      "SSL_PASSWORD=spacewalk\n" \
+      "SSL_ORG=SUSE\n" \
+      "SSL_ORGUNIT=SUSE\n" \
+      "SSL_COMMON=#{get_target('proxy').full_hostname}\n" \
+      "SSL_CITY=Nuremberg\n" \
+      "SSL_STATE=Bayern\n" \
+      "SSL_COUNTRY=DE\n" \
+      "SSL_EMAIL=galaxy-noise@suse.de\n" \
+      "SSL_CNAME_ASK=proxy.example.org\n"
+    end
   path = generate_temp_file('config-answers.txt', settings)
-  step 'I copy "' + path + '" to "proxy"'
+  step "I copy \"#{path}\" to \"proxy\""
   `rm #{path}`
   # perform the configuration
   filename = File.basename(path)
@@ -1111,15 +1135,17 @@ Then(/^I wait until refresh package list on "(.*?)" is finished$/) do |client|
   # Gather all the ids of package refreshes existing at SUMA
   refreshes, = get_target('server').run('spacecmd -u admin -p admin schedule_list | grep \'Package List Refresh\' | cut -f1 -d\' \'', check_errors: false)
   node_refreshes = ''
-  refreshes.split(' ').each do |refresh_id|
+  refreshes.split.each do |refresh_id|
     next unless refresh_id.match('/[0-9]{1,4}/')
+
     refresh_result, = get_target('server').run("spacecmd -u admin -p admin schedule_details #{refresh_id}") # Filter refreshes for specific system
     next unless refresh_result.include? node
+
     node_refreshes += "^#{refresh_id}|"
   end
   cmd = "spacecmd -u admin -p admin schedule_list #{current_time} #{timeout_time} | egrep '#{node_refreshes.delete_suffix('|')}'"
   repeat_until_timeout(timeout: long_wait_delay, message: '\'refresh package list\' did not finish') do
-    result, code = get_target('server').run(cmd, check_errors: false)
+    result, _code = get_target('server').run(cmd, check_errors: false)
     sleep 1
     next if result.include? '0    0    1'
     break if result.include? '1    0    0'
@@ -1132,7 +1158,7 @@ When(/^spacecmd should show packages "([^"]*)" installed on "([^"]*)"$/) do |pac
   get_target('server').run('spacecmd -u admin -p admin clear_caches')
   command = "spacecmd -u admin -p admin system_listinstalledpackages #{node}"
   result, _code = get_target('server').run(command, check_errors: false)
-  packages.split(' ').each do |package|
+  packages.split.each do |package|
     pkg = package.strip
     raise ScriptError, "package #{pkg} is not installed" unless result.include? pkg
   end
@@ -1145,6 +1171,7 @@ When(/^I wait until package "([^"]*)" is installed on "([^"]*)" via spacecmd$/) 
   repeat_until_timeout(timeout: 600, message: "package #{pkg} is not installed yet") do
     result, _code = get_target('server').run(command, check_errors: false)
     break if result.include? pkg
+
     sleep 1
   end
 end
@@ -1154,7 +1181,7 @@ When(/^I wait until package "([^"]*)" is removed from "([^"]*)" via spacecmd$/) 
   get_target('server').run('spacecmd -u admin -p admin clear_caches')
   command = "spacecmd -u admin -p admin system_listinstalledpackages #{node}"
   repeat_until_timeout(timeout: 600, message: "package #{pkg} is still present") do
-    result, code = get_target('server').run(command, check_errors: false)
+    result, _code = get_target('server').run(command, check_errors: false)
     sleep 1
     break unless result.include? pkg
   end
@@ -1183,22 +1210,23 @@ When(/^I apply "([^"]*)" local salt state on "([^"]*)"$/) do |state, host|
   if host == 'server'
     salt_call = 'salt-call'
   end
-  source = File.dirname(__FILE__) + '/../upload_files/salt/' + state + '.sls'
-  remote_file = '/usr/share/susemanager/salt/' + state + '.sls'
+  source = "#{File.dirname(__FILE__)}/../upload_files/salt/#{state}.sls"
+  remote_file = "/usr/share/susemanager/salt/#{state}.sls"
   return_code = file_inject(node, source, remote_file)
   raise ScriptError, 'File injection failed' unless return_code.zero?
+
   node.run("#{salt_call} --local --file-root=/usr/share/susemanager/salt --module-dirs=/usr/share/susemanager/salt/ --log-level=info --retcode-passthrough state.apply " + state)
 end
 
 When(/^I copy unset package file on server$/) do
-  base_dir = File.dirname(__FILE__) + '/../upload_files/unset_package/'
-  return_code = file_inject(get_target('server'), base_dir + 'subscription-tools-1.0-0.noarch.rpm', '/root/subscription-tools-1.0-0.noarch.rpm')
+  base_dir = "#{File.dirname(__FILE__)}/../upload_files/unset_package/"
+  return_code = file_inject(get_target('server'), "#{base_dir}subscription-tools-1.0-0.noarch.rpm", '/root/subscription-tools-1.0-0.noarch.rpm')
   raise ScriptError, 'File injection failed' unless return_code.zero?
 end
 
 When(/^I copy vCenter configuration file on server$/) do
-  base_dir = File.dirname(__FILE__) + '/../upload_files/virtualization/'
-  return_code = file_inject(get_target('server'), base_dir + 'vCenter.json', '/var/tmp/vCenter.json')
+  base_dir = "#{File.dirname(__FILE__)}/../upload_files/virtualization/"
+  return_code = file_inject(get_target('server'), "#{base_dir}vCenter.json", '/var/tmp/vCenter.json')
   raise ScriptError, 'File injection failed' unless return_code.zero?
 end
 
@@ -1215,7 +1243,7 @@ When(/^I import data with ISS v2 from "([^"]*)"$/) do |path|
 end
 
 Then(/^"(.*?)" folder on server is ISS v2 export directory$/) do |folder|
-  raise ScriptError, "Folder #{folder} not found" unless file_exists?(get_target('server'), folder + '/sql_statements.sql.gz')
+  raise ScriptError, "Folder #{folder} not found" unless file_exists?(get_target('server'), "#{folder}/sql_statements.sql.gz")
 end
 
 Then(/^export folder "(.*?)" shouldn't exist on "(.*?)"$/) do |folder, host|
@@ -1239,6 +1267,7 @@ end
 Given(/^I have a user with admin access to the ReportDB$/) do
   users_and_permissions, return_code = get_target('server').run(reportdb_server_query('\\du'))
   raise SystemCallError, 'Couldn\'t connect to the ReportDB on the server' unless return_code.zero?
+
   # extract only the line for the suma user
   suma_user_permissions = users_and_permissions[/pythia_susemanager(.*)}/]
   raise ScriptError, 'ReportDB admin user pythia_susemanager doesn\'t have the required permissions' unless
@@ -1252,6 +1281,7 @@ When(/^I create a read-only user for the ReportDB$/) do
   dest = "/tmp/#{file}"
   return_code = file_inject(get_target('server'), source, dest)
   raise ScriptError, 'File injection in server failed' unless return_code.zero?
+
   get_target('server').run("expect -f /tmp/#{file} #{$reportdb_ro_user}")
 end
 
@@ -1266,6 +1296,7 @@ When(/^I delete the read-only user for the ReportDB$/) do
   dest = "/tmp/#{file}"
   return_code = file_inject(get_target('server'), source, dest)
   raise ScriptError, 'File injection in server failed' unless return_code.zero?
+
   get_target('server').run("expect -f /tmp/#{file} #{$reportdb_ro_user}")
 end
 
@@ -1360,7 +1391,7 @@ When(/^I generate the configuration "([^"]*)" of Containerized Proxy on the serv
   if running_k3s?
     # A server container on kubernetes has no clue about SSL certificates
     # We need to generate them using `cert-manager` and use the files as 3rd party certificate
-    generate_certificate("proxy", get_target('proxy').full_hostname)
+    generate_certificate('proxy', get_target('proxy').full_hostname)
 
     # Copy the cert files in the container to use them with spacecmd
     %w[proxy.crt proxy.key ca.crt].each do |file|
@@ -1369,13 +1400,13 @@ When(/^I generate the configuration "([^"]*)" of Containerized Proxy on the serv
 
     command = "spacecmd -u admin -p admin proxy_container_config -- -o #{file_path} -p 8022 " \
               "#{get_target('proxy').full_hostname.sub('pxy', 'pod-pxy')} #{get_target('server').full_hostname} 2048 galaxy-noise@suse.de " \
-              "/tmp/ca.crt /tmp/proxy.crt /tmp/proxy.key"
+              '/tmp/ca.crt /tmp/proxy.crt /tmp/proxy.key'
   else
     # Doc: https://www.uyuni-project.org/uyuni-docs/en/uyuni/reference/spacecmd/proxy_container.html
-    command = "echo spacewalk > cert_pass && spacecmd -u admin -p admin proxy_container_config_generate_cert" \
+    command = 'echo spacewalk > cert_pass && spacecmd -u admin -p admin proxy_container_config_generate_cert' \
               " -- -o #{file_path} -p 8022 #{get_target('proxy').full_hostname.sub('pxy', 'pod-pxy')} #{get_target('server').full_hostname}" \
-              " 2048 galaxy-noise@suse.de --ca-pass cert_pass" \
-              " && rm cert_pass"
+              ' 2048 galaxy-noise@suse.de --ca-pass cert_pass' \
+              ' && rm cert_pass'
   end
   get_target('server').run(command)
 end
@@ -1427,8 +1458,8 @@ When(/^I reboot the server through SSH$/) do
   check_restart(get_target('server').public_ip, temp_server, default_timeout)
 
   repeat_until_timeout(timeout: default_timeout, message: 'Spacewalk didn\'t come up') do
-    out, code = temp_server.run('spacewalk-service status', check_errors: false, timeout: 10)
-    if !out.to_s.include? 'dead' and out.to_s.include? 'running'
+    out, _code = temp_server.run('spacewalk-service status', check_errors: false, timeout: 10)
+    if !out.to_s.include?('dead') && out.to_s.include?('running')
       log 'Server spacewalk service is up'
       break
     end
@@ -1459,7 +1490,7 @@ end
 When(/^I change the server's short hostname from hosts and hostname files$/) do
   server_node = get_target('server')
   old_hostname = server_node.hostname
-  new_hostname = old_hostname + '-renamed'
+  new_hostname = "#{old_hostname}-renamed"
   log "Old hostname: #{old_hostname} - New hostname: #{new_hostname}"
   server_node.run("sed -i 's/#{old_hostname}/#{new_hostname}/g' /etc/hostname &&
                    hostname #{new_hostname} &&
@@ -1479,19 +1510,19 @@ end
 When(/^I run spacewalk-hostname-rename command on the server$/) do
   server_node = get_target('server')
   command = 'spacecmd --nossl -q api api.getVersion -u admin -p admin; ' \
-    "spacewalk-hostname-rename #{server_node.public_ip} " \
-    '--ssl-country=DE --ssl-state=Bayern --ssl-city=Nuremberg ' \
-    '--ssl-org=SUSE --ssl-orgunit=SUSE --ssl-email=galaxy-noise@suse.de ' \
-    '--ssl-ca-password=spacewalk --overwrite_report_db_host=y'
+            "spacewalk-hostname-rename #{server_node.public_ip} " \
+            '--ssl-country=DE --ssl-state=Bayern --ssl-city=Nuremberg ' \
+            '--ssl-org=SUSE --ssl-orgunit=SUSE --ssl-email=galaxy-noise@suse.de ' \
+            '--ssl-ca-password=spacewalk --overwrite_report_db_host=y'
   out_spacewalk, result_code = server_node.run(command, check_errors: false)
-  log "#{out_spacewalk}"
+  log out_spacewalk.to_s
 
   server_node = get_target('server', refresh: true) # This will refresh the attributes of this node
 
   default_timeout = 300
   repeat_until_timeout(timeout: default_timeout, message: 'Spacewalk didn\'t come up') do
     out, _code = server_node.run('spacewalk-service status', check_errors: false, timeout: 10)
-    if !out.to_s.include? 'dead' and out.to_s.include? 'running'
+    if !out.to_s.include?('dead') && out.to_s.include?('running')
       log 'Server: spacewalk service is up'
       break
     end
@@ -1524,14 +1555,17 @@ When(/^I check all certificates after renaming the server hostname$/) do
     os_family = get_target(target).os_family
     # get all defined minions from the environment variables and check their certificate serial
     next unless ENV.key? ENV_VAR_BY_HOST[target]
+
     # Red Hat-like and Debian-like minions store their certificates in a different location
-    certificate = if os_family =~ /^centos/ || os_family =~ /^rocky/
-                    '/etc/pki/ca-trust/source/anchors/RHN-ORG-TRUSTED-SSL-CERT'
-                  elsif os_family =~ /^ubuntu/ || os_family =~ /^debian/
-                    '/usr/local/share/ca-certificates/susemanager/RHN-ORG-TRUSTED-SSL-CERT.crt'
-                  else
-                    '/etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT'
-                  end
+    certificate =
+      case os_family
+      when /^centos/, /^rocky/
+        '/etc/pki/ca-trust/source/anchors/RHN-ORG-TRUSTED-SSL-CERT'
+      when /^ubuntu/, /^debian/
+        '/usr/local/share/ca-certificates/susemanager/RHN-ORG-TRUSTED-SSL-CERT.crt'
+      else
+        '/etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT'
+      end
     get_target(target).run("test -s #{certificate}", successcodes: [0], check_errors: true)
 
     command_minion = "openssl x509 --noout --text -in #{certificate} | grep -A1 'Serial' | grep -v 'Serial'"
@@ -1597,6 +1631,7 @@ When(/^I check the cloud-init status on "([^"]*)"$/) do |host|
   repeat_until_timeout(report_result: true) do
     command_output, code = node.run('cloud-init status --wait', check_errors: true, verbose: false)
     break if command_output.include?('done')
+
     sleep 2
     raise StandardError 'Error during cloud-init.' if code == 1
   end
@@ -1610,14 +1645,16 @@ When(/^I do a late hostname initialization of host "([^"]*)"$/) do |host|
   hostname, local, remote, code = node.test_and_store_results_together('hostname', 'root', 500)
   raise ScriptError, "Cannot connect to get hostname for '#{$named_nodes[node.hash]}'. Response code: #{code}, local: #{local}, remote: #{remote}" if code.nonzero? || remote.nonzero? || local.nonzero?
   raise ScriptError, "No hostname for '#{$named_nodes[node.hash]}'. Response code: #{code}" if hostname.empty?
+
   node.init_hostname(hostname)
 
   fqdn, local, remote, code = node.test_and_store_results_together('hostname -f', 'root', 500)
   raise ScriptError, "Cannot connect to get FQDN for '#{$named_nodes[node.hash]}'. Response code: #{code}, local: #{local}, remote: #{remote}" if code.nonzero? || remote.nonzero? || local.nonzero?
   raise ScriptError, "No FQDN for '#{$named_nodes[node.hash]}'. Response code: #{code}" if fqdn.empty?
+
   node.init_full_hostname(fqdn)
 
-  STDOUT.puts "Host '#{$named_nodes[node.hash]}' is alive with determined hostname #{hostname.strip} and FQDN #{fqdn.strip}"
+  $stdout.puts "Host '#{$named_nodes[node.hash]}' is alive with determined hostname #{hostname.strip} and FQDN #{fqdn.strip}"
   os_version, os_family = get_os_version(node)
   node.init_os_family(os_family)
   node.init_os_version(os_version)

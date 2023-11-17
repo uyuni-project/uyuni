@@ -71,7 +71,7 @@ When(/^I pick (\d+) minutes from now as schedule time$/) do |arg1|
 end
 
 When(/^I schedule action to (\d+) minutes from now$/) do |minutes|
-  action_time = (DateTime.now + (Rational(1,1440) * minutes.to_i) + Rational(59,86400)).strftime('%Y-%m-%dT%H:%M%:z')
+  action_time = (DateTime.now + (Rational(1, 1440) * minutes.to_i) + Rational(59, 86_400)).strftime('%Y-%m-%dT%H:%M%:z')
   execute_script("window.schedulePage.setScheduleTime('#{action_time}')")
 end
 

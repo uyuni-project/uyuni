@@ -43,7 +43,7 @@ end
 
 # Create salt pillar file in the default pillar_roots location
 def inject_salt_pillar_file(source, file)
-  dest = '/srv/pillar/' + file
+  dest = "/srv/pillar/#{file}"
   return_code = file_inject(get_target('server'), source, dest)
   raise ScriptError, 'File injection failed' unless return_code.zero?
 

@@ -27,7 +27,7 @@ When(/^I enter the SCC credentials$/) do
 end
 
 When(/^I wait until the SCC credentials are valid$/) do
-  scc_username, scc_password = ENV['SCC_CREDENTIALS'].split('|')
+  scc_username, _scc_password = ENV['SCC_CREDENTIALS'].split('|')
   within(:xpath, "//h3[contains(text(), '#{scc_username}')]/../..") do
     raise ScriptError, 'Success icon not found' unless find('i.text-success', wait: 30)
   end
@@ -55,6 +55,7 @@ When(/^I wait for the trash icon to appear for "([^"]*)"$/) do |user|
   within(:xpath, "//h3[contains(text(), '#{user}')]/../..") do
     repeat_until_timeout(message: 'Trash icon is still greyed out') do
       break unless find('i.fa-trash-o')[:style].include? 'not-allowed'
+
       sleep 1
     end
   end
@@ -105,8 +106,8 @@ When(/^I wait at most (\d+) seconds until the tree item "([^"]+)" contains "([^"
 end
 
 When(/^I wait at most (\d+) seconds until the tree item "([^"]+)" contains "([^"]+)" button$/) do |timeout, item, button|
-  xpath_query = "//span[contains(text(), '#{item}')]/"\
-      "ancestor::div[contains(@class, 'product-details-wrapper')]/descendant::*[@title='#{button}']"
+  xpath_query = "//span[contains(text(), '#{item}')]/" \
+                "ancestor::div[contains(@class, 'product-details-wrapper')]/descendant::*[@title='#{button}']"
   raise ScriptError, "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query, wait: timeout.to_i)
 end
 
@@ -159,8 +160,10 @@ Then(/^the SLE15 (SP3|SP4|SP5) product should be added$/) do |sp_version|
   log "Products list:\n#{output}"
   match = "[I] SLE-Product-SLES15-#{sp_version}-Pool for x86_64 SUSE Linux Enterprise Server 15 #{sp_version} x86_64 [sle-product-sles15-#{sp_version.downcase}-pool-x86_64]"
   raise ScriptError, "Not included:\n #{match}" unless output.include? match
+
   match = "[I] SLE-Module-Basesystem15-#{sp_version}-Updates for x86_64 Basesystem Module 15 #{sp_version} x86_64 [sle-module-basesystem15-#{sp_version.downcase}-updates-x86_64]"
   raise ScriptError, "Not included:\n #{match}" unless output.include? match
+
   match = "[I] SLE-Module-Server-Applications15-#{sp_version}-Pool for x86_64 Server Applications Module 15 #{sp_version} x86_64 [sle-module-server-applications15-#{sp_version.downcase}-pool-x86_64]"
   raise ScriptError, "Not included:\n #{match}" unless output.include? match
 end
@@ -217,6 +220,7 @@ Then(/^I should see "([^"]*)" via spacecmd$/) do |host|
     get_target('server').run('spacecmd -u admin -p admin clear_caches')
     result, _code = get_target('server').run(command, check_errors: false, verbose: true)
     break if result.include? system_name
+
     sleep 1
   end
 end
@@ -232,7 +236,7 @@ When(/^I remember when I scheduled an action$/) do
   if defined?($moments)
     $moments[moment] = val
   else
-    $moments = {moment => val}
+    $moments = { moment => val }
   end
 end
 
@@ -240,13 +244,16 @@ Then(/^I should see "([^"]*)" at least (\d+) minutes after I scheduled an action
   # TODO: is there a better way then page.all ?
   elements = all('div', text: text)
   raise ScriptError, "Text #{text} not found in the page" if elements.nil?
+
   match = elements[0].text.match(/#{text}\s*(\d+\/\d+\/\d+ \d+:\d+:\d+ (AM|PM)+ [^\s]+)/)
   raise ScriptError, "No element found matching text '#{text}'" if match.nil?
-  text_time = DateTime.strptime("#{match.captures[0]}", '%m/%d/%C %H:%M:%S %p %Z')
-  raise ScriptError, 'Time the action was scheduled not found in memory' unless defined?($moments) and $moments['schedule_action']
+
+  text_time = DateTime.strptime(match.captures[0].to_s, '%m/%d/%C %H:%M:%S %p %Z')
+  raise ScriptError, 'Time the action was scheduled not found in memory' unless defined?($moments) && $moments['schedule_action']
+
   initial = $moments['schedule_action']
-  after = initial + Rational(1, 1440) * minutes.to_i
-  raise ScriptError, "#{text_time.to_s} is not #{minutes} minutes later than '#{initial.to_s}'" unless (text_time + Rational(1, 1440)) >= after
+  after = initial + (Rational(1, 1440) * minutes)
+  raise ScriptError, "#{text_time} is not #{minutes} minutes later than '#{initial}'" unless (text_time + Rational(1, 1440)) >= after
 end
 
 Given(/^I have a valid token for organization "([^"]*)"$/) do |org|
@@ -342,6 +349,7 @@ When(/^I select the child channel "([^"]*)"$/) do |target_channel|
   channel_checkbox_id = find(:xpath, xpath)['for']
 
   raise ScriptError, "Field #{channel_checkbox_id} is checked" if has_checked_field?(channel_checkbox_id)
+
   find(:xpath, "//input[@id='#{channel_checkbox_id}']").click
 end
 
@@ -379,7 +387,7 @@ Then(/^the notification badge and the table should count the same amount of mess
     log 'All notification-messages are read, I expect no notification badge'
     raise ScriptError, "xpath: #{badge_xpath} found" if has_xpath?(badge_xpath)
   else
-    log 'Unread notification-messages count = ' + table_notifications_count
+    log "Unread notification-messages count = #{table_notifications_count}"
     raise ScriptError, "xpath: #{badge_xpath} not found" unless find(:xpath, badge_xpath)
   end
 end
@@ -388,6 +396,7 @@ When(/^I wait until radio button "([^"]*)" is checked, refreshing the page$/) do
   unless has_checked_field?(arg1)
     repeat_until_timeout(message: "Couldn't find checked radio button #{arg1}") do
       break if has_checked_field?(arg1)
+
       begin
         accept_prompt do
           execute_script 'window.location.reload()'

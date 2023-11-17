@@ -83,7 +83,17 @@ class NamespaceConfigchannel
   #   file: The file name, including the path.
   #   contents: The contents of the file.
   def create_or_update_path(channel, file, contents)
-    @test.call('configchannel.createOrUpdatePath', sessionKey: @test.token, label: channel, path: file, isDir: false, pathInfo: { contents: contents, owner: 'root', group: 'root', permissions: '644' })
+    @test.call('configchannel.createOrUpdatePath',
+               sessionKey: @test.token,
+               label: channel,
+               path: file,
+               isDir: false,
+               pathInfo: {
+                 contents: contents,
+                 owner: 'root',
+                 group: 'root',
+                 permissions: '644'
+               })
   end
 
   ##
