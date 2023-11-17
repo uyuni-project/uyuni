@@ -268,8 +268,9 @@ public class RemoteMinionCommands {
                             .runRemoteCommandAsync(new MinionList(previewedMinions),
                                     msg.getCommand(), failAfter);
                     if (LOG.isInfoEnabled()) {
-                        LOG.info("User '{}' has sent the command '{}' to minions [{}]", webSession.getUser().getLogin(),
-                                msg.getCommand(), String.join(", ", previewedMinions));
+                        LOG.info("User '{}' has sent a command to minions [{}]", webSession.getUser().getLogin(),
+                                String.join(", ", previewedMinions));
+                        LOG.debug("Command '{}'", msg.getCommand());
                     }
 
                 }
