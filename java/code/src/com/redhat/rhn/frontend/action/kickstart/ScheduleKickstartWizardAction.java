@@ -65,6 +65,7 @@ import org.cobbler.SystemRecord;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -945,7 +946,7 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
      * him if he's sure first.
      */
     protected boolean showDiskWarning(KickstartData data, DynaActionForm form) {
-        Set<KickstartCommand> commands = data.getOptions();
+        Set<KickstartCommand> commands = data == null ? Collections.emptySet() : data.getOptions();
         boolean containsClearpartCommand = false;
         for (KickstartCommand command : commands) {
             if (command.getCommandName() != null &&
