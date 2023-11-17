@@ -538,7 +538,11 @@ public class DownloadController {
      * @return the last characters of the token
      */
     private static String sanitizeToken(String token) {
-        return token.substring(token.length() - 20);
+        if (token != null) {
+            String tk = StringUtil.sanitizeLogInput(token);
+            return tk.substring(tk.length() - 20);
+        }
+        return token;
     }
 
     /**
