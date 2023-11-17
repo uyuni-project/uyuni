@@ -1,3 +1,3 @@
-- sanitize token before logging it (bsc#1210930)
-- use 600 permissions for logfiles (bsc#1210928)
-- log potential sensitive information only in debug mode (bsc#1210928)
+- sanitize token before logging it CVE-2023-22644 (bsc#1210930)
+- use 600 permissions for logfiles CVE-2023-22644 (bsc#1210928)
+- log potential sensitive information only in debug mode CVE-2023-22644 (bsc#1210928)
