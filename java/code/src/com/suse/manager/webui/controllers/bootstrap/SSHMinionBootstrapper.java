@@ -97,7 +97,8 @@ public class SSHMinionBootstrapper extends AbstractMinionBootstrapper {
     @Override
     protected BootstrapResult bootstrapInternal(BootstrapParameters params, User user,
                                                 String defaultContactMethod) {
-        Optional<MgrUtilRunner.SshKeygenResult> res = saltApi.generateSSHKey(SaltSSHService.SSH_KEY_PATH);
+        Optional<MgrUtilRunner.SshKeygenResult> res = saltApi.generateSSHKey(SaltSSHService.SSH_KEY_PATH,
+                SaltSSHService.SUMA_SSH_PUB_KEY);
         if (res.isEmpty()) {
             LOG.error("Could not generate salt-ssh public key.");
             return new BootstrapResult(false, LOCALIZATION.getMessage("bootstrap.minion.error.generatekey"));

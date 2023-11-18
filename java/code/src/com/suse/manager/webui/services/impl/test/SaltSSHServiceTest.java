@@ -69,7 +69,7 @@ public class SaltSSHServiceTest extends JMockBaseTestCaseWithUser {
         assertEquals(List.of(
                 "StrictHostKeyChecking=no",
                 "ProxyCommand='" +
-                        "/usr/bin/ssh -p 22 -i /srv/susemanager/salt/salt_ssh/mgr_ssh_id -o StrictHostKeyChecking=no " +
+                        "/usr/bin/ssh -p 22 -i /var/lib/salt/.ssh/mgr_ssh_id -o StrictHostKeyChecking=no " +
                         "-o User=mgrsshtunnel -W minion:22 proxy1 '"),
                 res.get());
     }
@@ -82,7 +82,7 @@ public class SaltSSHServiceTest extends JMockBaseTestCaseWithUser {
         assertEquals(List.of(
                 "StrictHostKeyChecking=no",
                 "ProxyCommand='" +
-                        "/usr/bin/ssh -p 24 -i /srv/susemanager/salt/salt_ssh/mgr_ssh_id -o StrictHostKeyChecking=no " +
+                        "/usr/bin/ssh -p 24 -i /var/lib/salt/.ssh/mgr_ssh_id -o StrictHostKeyChecking=no " +
                         "-o User=mgrsshtunnel -W minion:22 proxy1 '"),
                 res.get());
     }
@@ -95,7 +95,7 @@ public class SaltSSHServiceTest extends JMockBaseTestCaseWithUser {
         assertEquals(List.of(
                 "StrictHostKeyChecking=no",
                 "ProxyCommand='" +
-                        "/usr/bin/ssh -p 23 -i /srv/susemanager/salt/salt_ssh/mgr_ssh_id -o StrictHostKeyChecking=no " +
+                        "/usr/bin/ssh -p 23 -i /var/lib/salt/.ssh/mgr_ssh_id -o StrictHostKeyChecking=no " +
                         "-o User=mgrsshtunnel proxy1 " +
                         "/usr/bin/ssh -p 22 -i /var/lib/spacewalk/mgrsshtunnel/.ssh/id_susemanager_ssh_push " +
                         "-o StrictHostKeyChecking=no -o User=mgrsshtunnel -W minion:22 proxy2 '"),
@@ -110,7 +110,7 @@ public class SaltSSHServiceTest extends JMockBaseTestCaseWithUser {
         assertEquals(List.of(
                 "StrictHostKeyChecking=no",
                 "ProxyCommand='" +
-                        "/usr/bin/ssh -p 22 -i /srv/susemanager/salt/salt_ssh/mgr_ssh_id -o StrictHostKeyChecking=no " +
+                        "/usr/bin/ssh -p 22 -i /var/lib/salt/.ssh/mgr_ssh_id -o StrictHostKeyChecking=no " +
                         "-o User=mgrsshtunnel proxy1 " +
                         "/usr/bin/ssh -p 22 -i /var/lib/spacewalk/mgrsshtunnel/.ssh/id_susemanager_ssh_push " +
                         "-o StrictHostKeyChecking=no -o User=mgrsshtunnel -W minion:22 proxy2 '"),

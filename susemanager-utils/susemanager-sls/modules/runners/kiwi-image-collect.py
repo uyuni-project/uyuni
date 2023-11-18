@@ -21,7 +21,7 @@ def upload_file_from_minion(minion, minion_ip, filetoupload, targetdir):
         res = __salt__['salt.cmd'](
             'rsync.rsync',
             src, targetdir,
-            rsh="ssh -o IdentityFile=/srv/susemanager/salt/salt_ssh/mgr_ssh_id -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -p {}".format(ssh_port)
+            rsh="ssh -o IdentityFile=/var/lib/salt/.ssh/mgr_ssh_id -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -p {}".format(ssh_port)
         )
         # In case of unexplained error, try again (can be dns failure, networking failure, ...)
         if res.get('retcode', 0) != 255:

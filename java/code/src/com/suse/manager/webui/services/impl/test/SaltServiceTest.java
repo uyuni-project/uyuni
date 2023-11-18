@@ -136,7 +136,7 @@ public class SaltServiceTest extends JMockBaseTestCaseWithUser {
 
         SaltService systemQuery = new SaltService(saltClient);
         Optional<MgrUtilRunner.SshKeygenResult> res = systemQuery
-                .generateSSHKey(keyPath.substring(0, keyPath.length() - 4));
+                .generateSSHKey(keyPath.substring(0, keyPath.length() - 4), null);
         assertTrue(res.isPresent());
         assertEquals(0, res.orElseThrow().getReturnCode());
         systemQuery.close();
