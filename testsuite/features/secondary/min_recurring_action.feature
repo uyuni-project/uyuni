@@ -198,6 +198,7 @@ Feature: Recurring Actions
   Scenario: Cleanup: subscribe system back to default base channel
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Software" in the content area
+    And I disable repository "test_repo_rpm_pool" on this "sle_minion" without error control
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
     And I check default base channel radio button of this "sle_minion"
@@ -224,6 +225,7 @@ Feature: Recurring Actions
   Scenario: Cleanup: subscribe system back to default base channel
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Software" in the content area
+    And I disable repository "test_repo_rpm_pool" on this "sle_minion" without error control
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
     And I check default base channel radio button of this "sle_minion"
