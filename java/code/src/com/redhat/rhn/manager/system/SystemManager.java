@@ -2301,7 +2301,8 @@ public class SystemManager extends BaseManager {
         Map<String, Object> sshRootConfig = new HashMap<>();
         Map<String, Object> sshConfig = new HashMap<>();
 
-        MgrUtilRunner.SshKeygenResult result = saltApi.generateSSHKey(SaltSSHService.SSH_KEY_PATH)
+        MgrUtilRunner.SshKeygenResult result = saltApi.generateSSHKey(SaltSSHService.SSH_KEY_PATH,
+                        SaltSSHService.SUMA_SSH_PUB_KEY)
                 .orElseThrow(raiseAndLog("Could not generate salt-ssh public key."));
         if (!(result.getReturnCode() == 0 || result.getReturnCode() == -1)) {
             throw raiseAndLog("Generating salt-ssh public key failed: " + result.getStderr()).get();
@@ -2309,7 +2310,8 @@ public class SystemManager extends BaseManager {
         sshConfig.put("server_ssh_key_pub", result.getPublicKey());
 
         // Create the proxy SSH keys
-        result = saltApi.generateSSHKey(null).orElseThrow(raiseAndLog("Could not generate proxy salt-ssh SSH keys."));
+        result = saltApi.generateSSHKey(null, null)
+                .orElseThrow(raiseAndLog("Could not generate proxy salt-ssh SSH keys."));
         if (!(result.getReturnCode() == 0 || result.getReturnCode() == -1)) {
             throw raiseAndLog("Generating proxy salt-ssh SSH keys failed: " + result.getStderr()).get();
         }

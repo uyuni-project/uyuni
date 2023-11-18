@@ -75,6 +75,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.attribute.FileAttribute;
+import java.nio.file.attribute.PosixFilePermission;
+import java.nio.file.attribute.PosixFilePermissions;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -104,10 +107,11 @@ import java.util.stream.Stream;
  */
 public class SaltSSHService {
 
-    private static final String SSH_KEY_DIR = "/srv/susemanager/salt/salt_ssh";
+    private static final String SSH_KEY_DIR = "/var/lib/salt/.ssh";
     public static final String SSH_KEY_PATH = SSH_KEY_DIR + "/mgr_ssh_id";
     public static final String SSH_PUBKEY_PATH = SSH_KEY_DIR + "/mgr_ssh_id.pub";
-    private static final String SSH_TEMP_BOOTSTRAP_KEY_DIR = SSH_KEY_DIR + "/temp_bootstrap_keys";
+    public static final String SUMA_SSH_PUB_KEY = "/srv/susemanager/salt/salt_ssh/mgr_ssh_id.pub";
+    private static final Path SSH_TEMP_BOOTSTRAP_KEY_DIR = Path.of(SSH_KEY_DIR,  "temp_bootstrap_keys");
     private static final String PROXY_SSH_PUSH_USER = "mgrsshtunnel";
     private static final String PROXY_SSH_PUSH_KEY =
             "/var/lib/spacewalk/" + PROXY_SSH_PUSH_USER + "/.ssh/id_susemanager_ssh_push";
@@ -559,8 +563,14 @@ public class SaltSSHService {
 
     // create temp key absolute path
     private Path createTempKeyFilePath() {
+        if (Files.notExists(SSH_TEMP_BOOTSTRAP_KEY_DIR)) {
+            if (!GlobalInstanceHolder.SALT_API.mkDir(SSH_TEMP_BOOTSTRAP_KEY_DIR, "0600").orElse(false)) {
+                LOG.error("Unable to create temp ssh bootstrap directory");
+                return null;
+            }
+        }
         String fileName = "boostrapKeyTmp-" + UUID.randomUUID();
-        return Path.of(SSH_TEMP_BOOTSTRAP_KEY_DIR).resolve(fileName).toAbsolutePath();
+        return SSH_TEMP_BOOTSTRAP_KEY_DIR.resolve(fileName).toAbsolutePath();
     }
 
     private void cleanUpTempKeyFile(Path path) {

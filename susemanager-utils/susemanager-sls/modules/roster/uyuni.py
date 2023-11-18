@@ -36,7 +36,7 @@ PROXY_SSH_PUSH_KEY = (
     "/var/lib/spacewalk/" + PROXY_SSH_PUSH_USER + "/.ssh/id_susemanager_ssh_push"
 )
 SALT_SSH_CONNECT_TIMEOUT = 180
-SSH_KEY_DIR = "/srv/susemanager/salt/salt_ssh"
+SSH_KEY_DIR = "/var/lib/salt/.ssh"
 SSH_KEY_PATH = SSH_KEY_DIR + "/mgr_ssh_id"
 SSH_PRE_FLIGHT_SCRIPT = None
 SSH_PUSH_PORT = 22

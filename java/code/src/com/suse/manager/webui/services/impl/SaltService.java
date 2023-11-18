@@ -1276,8 +1276,8 @@ public class SaltService implements SystemQuery, SaltApi {
      * {@inheritDoc}
      */
     @Override
-    public Optional<MgrUtilRunner.SshKeygenResult> generateSSHKey(String path) {
-        RunnerCall<MgrUtilRunner.SshKeygenResult> call = MgrUtilRunner.generateSSHKey(path);
+    public Optional<MgrUtilRunner.SshKeygenResult> generateSSHKey(String path, String pubkeyCopy) {
+        RunnerCall<MgrUtilRunner.SshKeygenResult> call = MgrUtilRunner.generateSSHKey(path, pubkeyCopy);
         return callSync(call);
     }
 
@@ -1421,6 +1421,16 @@ public class SaltService implements SystemQuery, SaltApi {
         return callSync(createFile);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Optional<Boolean> mkDir(Path path, String modeString) {
+        ensureAbsolutePath(path);
+        String absolutePath = path.toAbsolutePath().toString();
+        RunnerCall<Boolean> mkdir = MgrRunner.mkDir(absolutePath, modeString);
+        return callSync(mkdir);
+    }
     /**
      * {@inheritDoc}
      */

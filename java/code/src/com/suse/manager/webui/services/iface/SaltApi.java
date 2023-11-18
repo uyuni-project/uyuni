@@ -27,6 +27,7 @@ import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
 import com.suse.manager.webui.utils.salt.custom.SystemInfo;
 import com.suse.salt.netapi.calls.LocalAsyncResult;
 import com.suse.salt.netapi.calls.LocalCall;
+import com.suse.salt.netapi.calls.RunnerCall;
 import com.suse.salt.netapi.calls.modules.SaltUtil;
 import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.calls.runner.Jobs;
@@ -97,6 +98,15 @@ public interface SaltApi {
     Optional<Boolean> removeFile(Path path);
 
     /**
+     * Create a directory using RunnerCall
+     *
+     * @param path the absolute path of the directory
+     * @param modeString the desired mode
+     * @return Optional with true if the directory was created
+     */
+    Optional<Boolean> mkDir(Path path, String modeString);
+
+    /**
      * Copy given file using RunnerCall
      *
      * @param src the source path of file to be removed
@@ -149,9 +159,10 @@ public interface SaltApi {
      * Call the custom mgrutil.ssh_keygen runner if the key files are not present.
      *
      * @param path of the key files
+     * @param pubkeyCopy create a copy of the pubkey at this place. Set NULL when no copy should be created
      * @return the result of the runner call as a map
      */
-    Optional<MgrUtilRunner.SshKeygenResult> generateSSHKey(String path);
+    Optional<MgrUtilRunner.SshKeygenResult> generateSSHKey(String path, String pubkeyCopy);
 
     /**
      * Chain ssh calls over one or more hops to run a command on the last host in the chain.

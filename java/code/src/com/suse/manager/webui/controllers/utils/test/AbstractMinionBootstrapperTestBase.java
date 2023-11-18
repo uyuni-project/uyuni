@@ -173,7 +173,7 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
             will(returnValue(keyPair));
 
             MgrUtilRunner.ExecResult mockResult = new MgrUtilRunner.SshKeygenResult("key", "pubkey");
-            allowing(saltServiceMock).generateSSHKey(SaltSSHService.SSH_KEY_PATH);
+            allowing(saltServiceMock).generateSSHKey(SaltSSHService.SSH_KEY_PATH, SaltSSHService.SUMA_SSH_PUB_KEY);
             will(returnValue(of(mockResult)));
 
             List<String> bootstrapMods = bootstrapMods();
@@ -241,7 +241,7 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
             will(returnValue(keyPair));
 
             MgrUtilRunner.ExecResult mockResult = new MgrUtilRunner.SshKeygenResult("key", "pubkey");
-            allowing(saltServiceMock).generateSSHKey(SaltSSHService.SSH_KEY_PATH);
+            allowing(saltServiceMock).generateSSHKey(SaltSSHService.SSH_KEY_PATH, SaltSSHService.SSH_PUBKEY_PATH);
             will(returnValue(of(mockResult)));
 
             List<String> bootstrapMods = bootstrapMods();

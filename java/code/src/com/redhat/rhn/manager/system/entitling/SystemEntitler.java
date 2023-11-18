@@ -105,7 +105,7 @@ public class SystemEntitler {
             // no special installed package required
         }
         else if (EntitlementManager.OSIMAGE_BUILD_HOST.equals(ent)) {
-            saltApi.generateSSHKey(SaltSSHService.SSH_KEY_PATH);
+            saltApi.generateSSHKey(SaltSSHService.SSH_KEY_PATH, SaltSSHService.SUMA_SSH_PUB_KEY);
         }
 
         entitleServer(server, ent);

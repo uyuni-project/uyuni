@@ -536,7 +536,6 @@ install -d -m 755 $RPM_BUILD_ROOT/%{_localstatedir}/lib/spacewalk/subscription-m
 install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d
 install -d $RPM_BUILD_ROOT%{userserverdir}/susemanager/salt
 install -d $RPM_BUILD_ROOT%{userserverdir}/susemanager/salt/salt_ssh
-install -d $RPM_BUILD_ROOT%{userserverdir}/susemanager/salt/salt_ssh/temp_bootstrap_keys
 install -d $RPM_BUILD_ROOT%{userserverdir}/susemanager/tmp
 
 install -m 644 conf/default/rhn_hibernate.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_hibernate.conf
@@ -698,7 +697,6 @@ chown tomcat:%{apache_group} /var/log/rhn/gatherer.log
 %dir %{_localstatedir}/lib/spacewalk
 %defattr(644,tomcat,tomcat,775)
 %attr(775, %{salt_user_group}, %{salt_user_group}) %dir %{userserverdir}/susemanager/salt/salt_ssh
-%attr(700, %{salt_user_group}, %{salt_user_group}) %dir %{userserverdir}/susemanager/salt/salt_ssh/temp_bootstrap_keys
 %attr(775, tomcat, tomcat) %dir %{serverdir}/tomcat/webapps
 %dir %{userserverdir}/susemanager
 %dir %{userserverdir}/susemanager/salt
