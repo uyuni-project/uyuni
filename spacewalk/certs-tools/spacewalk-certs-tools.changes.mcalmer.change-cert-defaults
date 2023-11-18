@@ -1,0 +1,1 @@
+- change certificate defaults using RSA 4096 Bit and sha384 hash algorithm

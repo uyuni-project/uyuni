@@ -262,7 +262,7 @@ ERROR: a CA private key already exists:
 """ % ca_key)
         sys.exit(errnoGeneralError)
 
-    args = ("/usr/bin/openssl genpkey -pass pass:%s %s -out %s -algorithm rsa -pkeyopt rsa_keygen_bits:2048"
+    args = ("/usr/bin/openssl genpkey -pass pass:%s %s -out %s -algorithm rsa -pkeyopt rsa_keygen_bits:4096"
             % ('%s', CRYPTO, repr(cleanupAbsPath(ca_key))))
 
     if verbosity >= 0:
@@ -400,7 +400,7 @@ def genServerKey(d, verbosity=0):
     server_key = os.path.join(serverKeyPairDir,
                               os.path.basename(d['--server-key']))
 
-    args = ("/usr/bin/openssl genrsa -out %s 2048"
+    args = ("/usr/bin/openssl genrsa -out %s 4096"
             % (repr(cleanupAbsPath(server_key))))
 
     # generate the server key
