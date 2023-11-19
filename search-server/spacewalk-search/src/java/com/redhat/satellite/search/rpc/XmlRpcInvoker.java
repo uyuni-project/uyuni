@@ -31,20 +31,16 @@ import simple.http.Response;
 
 /**
  * SimpleWeb ProtocolHandler used to pass requests to the XML-RPC layer
- *
- * @version $Rev$
- *
  */
 public class XmlRpcInvoker implements ProtocolHandler {
 
-    private static Logger log = LogManager.getLogger(XmlRpcInvoker.class);
-    private XmlRpcServer server;
+    private static final Logger LOG = LogManager.getLogger(XmlRpcInvoker.class);
+    private final XmlRpcServer server;
 
     /**
      * Constructor
      *
-     * @param xmlrpcServer
-     *            handles actual XML-RPC calls
+     * @param xmlrpcServer handles actual XML-RPC calls
      */
     public XmlRpcInvoker(XmlRpcServer xmlrpcServer) {
         server = xmlrpcServer;
@@ -55,8 +51,8 @@ public class XmlRpcInvoker implements ProtocolHandler {
      */
     public void handle(Request request, Response response) {
         String uri = request.getURI();
-        log.info(uri);
-        try {
+        LOG.info(uri);
+        try (StringWriter writer = new StringWriter()) {
             if (!uri.startsWith("/RPC2")) {
                 response.setCode(404);
                 response.setText(uri);
@@ -70,7 +66,6 @@ public class XmlRpcInvoker implements ProtocolHandler {
             }
             else {
                 InputStream in = request.getInputStream();
-                StringWriter writer = new StringWriter();
                 server.execute(in, writer);
                 OutputStream out = response.getOutputStream();
                 response.set("Content-Type", "text/xml");
@@ -81,17 +76,15 @@ public class XmlRpcInvoker implements ProtocolHandler {
             }
         }
         catch (IOException e) {
-            e.printStackTrace();
+            LOG.error(e);
         }
         finally {
             try {
                 response.commit();
             }
             catch (IOException e) {
-                e.printStackTrace();
+                LOG.error(e);
             }
         }
-
     }
-
 }

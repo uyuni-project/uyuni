@@ -23,8 +23,6 @@ import java.util.Map;
 
 /**
  * IndexSnapshotTagsTask
- * @version $Rev$
- *
  */
 public class IndexSnapshotTagsTask extends GenericIndexTask {
 
@@ -32,15 +30,14 @@ public class IndexSnapshotTagsTask extends GenericIndexTask {
      *  {@inheritDoc}
      */
     @Override
-    protected Map<String, String> getFieldMap(GenericRecord data)
-            throws ClassCastException {
+    protected Map<String, String> getFieldMap(GenericRecord data) throws ClassCastException {
         SnapshotTag sTag = (SnapshotTag)data;
-        Map<String, String> attrs = new HashMap<String, String>();
+        Map<String, String> attrs = new HashMap<>();
         attrs.put("uniqId", sTag.getUniqId());
-        attrs.put("snapshotId", new Long(sTag.getSnapshotId()).toString());
-        attrs.put("tagNameId", new Long(sTag.getTagNameId()).toString());
-        attrs.put("serverId", new Long(sTag.getServerId()).toString());
-        attrs.put("orgId", new Long(sTag.getOrgId()).toString());
+        attrs.put("snapshotId", Long.toString(sTag.getSnapshotId()));
+        attrs.put("tagNameId", Long.toString(sTag.getTagNameId()));
+        attrs.put("serverId", Long.toString(sTag.getServerId()));
+        attrs.put("orgId", Long.toString(sTag.getOrgId()));
         attrs.put("name", sTag.getName());
         attrs.put("created", sTag.getCreated());
         attrs.put("modified", sTag.getModified());

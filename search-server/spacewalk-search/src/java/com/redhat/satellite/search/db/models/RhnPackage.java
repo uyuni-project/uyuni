@@ -17,7 +17,6 @@ package com.redhat.satellite.search.db.models;
 
 /**
  * Simple Package DTO
- * @version $Rev$
  */
 public class RhnPackage {
 
@@ -160,7 +159,7 @@ public class RhnPackage {
 
     /**
      * Getter for "pretty" versino
-     * @return <version>-<release>
+     * @return &lt;version&gt;-&lt;release&gt;
      */
     public String getPrettyVersion() {
         return version + "-" + release;
@@ -168,7 +167,7 @@ public class RhnPackage {
 
     /**
      * Reconstructs filename from various parts of pkg metadata
-     * @return <name>-<version>-<release>.<arch>
+     * @return &lt;name&gt;-&lt;version&gt;-&lt;release&gt.&lt;arch&gt;
      */
     public String getFileName() {
         return name + "-" + version + "-" + release + "." + arch;

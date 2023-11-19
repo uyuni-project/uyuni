@@ -43,31 +43,27 @@ import java.util.Map;
 
 /**
  * GenericIndexTask
- * @version $Rev$
  */
 public abstract class GenericIndexTask implements StatefulJob {
 
-    private static Logger log = LogManager.getLogger(GenericIndexTask.class);
-    private String lang = "en";
+    private static final Logger LOG = LogManager.getLogger(GenericIndexTask.class);
+    private static final String LANG = "en";
     /**
      * {@inheritDoc}
      */
     public void execute(JobExecutionContext ctx)
         throws JobExecutionException {
         JobDataMap jobData = ctx.getJobDetail().getJobDataMap();
-        DatabaseManager databaseManager =
-            (DatabaseManager)jobData.get("databaseManager");
-        IndexManager indexManager =
-            (IndexManager)jobData.get("indexManager");
+        DatabaseManager databaseManager = (DatabaseManager)jobData.get("databaseManager");
+        IndexManager indexManager = (IndexManager)jobData.get("indexManager");
 
         try {
             //try to create the index first incase we never actually
             //   have any records (BZ 537502)
-            indexManager.createIndex(getIndexName(), lang);
+            indexManager.createIndex(getIndexName(), LANG);
             List<GenericRecord> data = getRecords(databaseManager);
             int count = 0;
-            log.info(super.getClass().toString() + "found [" +
-                    data.size() + "] items to index");
+            LOG.info("{} found [{}] items to index", super.getClass(), data.size());
             for (Iterator<GenericRecord> iter = data.iterator(); iter.hasNext();) {
                 GenericRecord current = iter.next();
                 indexRecord(indexManager, current);
@@ -84,25 +80,24 @@ public abstract class GenericIndexTask implements StatefulJob {
             // we should delete from our indexes.
             //
             int numDel = handleDeletedRecords(databaseManager, indexManager);
-            log.info("Deleted " + numDel + " records from index <" +
-                    getIndexName() + ">");
+            LOG.info("Deleted {} records from index <{}>", numDel, getIndexName());
         }
         catch (SQLException e) {
             e.printStackTrace();
             throw new JobExecutionException(e);
         }
         catch (IndexingException e) {
-            log.debug(e);
+            LOG.debug(e);
             if (e.getMessage().contains("LockObtainFailedException: Lock obtain timed out")) {
-                log.info("Indexer already running. Skipping");
+                LOG.info("Indexer already running. Skipping");
                 return;
             }
             throw new JobExecutionException(e);
         }
     }
     /**
-     * @param databaseManager
-     * @param sid
+     * @param databaseManager the database manager
+     * @param sid the server id
      */
     private void updateLastRecord(DatabaseManager databaseManager, long sid)
         throws SQLException {
@@ -111,7 +106,7 @@ public abstract class GenericIndexTask implements StatefulJob {
         WriteQuery insertQuery = null;
 
         try {
-            Map<String, Object> params = new HashMap<String, Object>();
+            Map<String, Object> params = new HashMap<>();
             params.put("id", sid);
             params.put("last_modified", Calendar.getInstance().getTime());
 
@@ -135,33 +130,31 @@ public abstract class GenericIndexTask implements StatefulJob {
     }
 
     /**
-     * @param indexManager
-     * @param current
+     * @param indexManager the index manager
+     * @param data the data
      */
     private void indexRecord(IndexManager indexManager,
             GenericRecord data)
         throws IndexingException {
 
         Map<String, String> attrs = getFieldMap(data);
-        log.info(super.getClass().toString() + " Indexing object: " +
-                data.getId() + ": " + attrs.toString());
+        LOG.info("{} Indexing object: {}: {}", super.getClass(), data.getId(), attrs);
         DocumentBuilder pdb = BuilderFactory.getBuilder(getIndexName());
-        Document doc = pdb.buildDocument(new Long(data.getId()), attrs);
-        indexManager.addUniqueToIndex(getIndexName(), doc, getUniqueFieldId(),
-                lang);
+        Document doc = pdb.buildDocument(data.getId(), attrs);
+        indexManager.addUniqueToIndex(getIndexName(), doc, getUniqueFieldId(), LANG);
     }
 
 
     /**
-     * @param databaseManager
-     * @return
+     * @param databaseManager the database manager
+     * @return list of records
      */
     private List<GenericRecord> getRecords(DatabaseManager databaseManager)
         throws SQLException {
         // What was the last object id we indexed?
-        List<GenericRecord> retval = null;
+        List<GenericRecord> retval;
         Query<Long> query = databaseManager.getQuery(getQueryLastRecord());
-        Long sid = null;
+        Long sid;
         try {
             sid = query.load();
         }
@@ -169,11 +162,11 @@ public abstract class GenericIndexTask implements StatefulJob {
             query.close();
         }
         if (sid == null) {
-            sid = new Long(0);
+            sid = 0L;
         }
         // When was the last time we ran the indexing of servers?
         Query<Date> queryLast = databaseManager.getQuery(getQueryLastIndexDate());
-        Date lastRun = null;
+        Date lastRun;
         try {
             lastRun = queryLast.load();
         }
@@ -187,14 +180,12 @@ public abstract class GenericIndexTask implements StatefulJob {
         Query<GenericRecord> srvrQuery = databaseManager.getQuery(
                 getQueryRecordsToIndex());
         try {
-            Map<String, Object> params = new HashMap<String, Object>();
+            Map<String, Object> params = new HashMap<>();
             params.put("id", sid);
             params.put("last_modified", lastRun);
-            log.info("GenericIndexTask<" + super.getClass().toString() +
-                    " last processed id = " + sid + ", lastRun was " + lastRun);
+            LOG.info("GenericIndexTask<{} last processed id = {}, lastRun was {}>", super.getClass(), sid, lastRun);
             retval = srvrQuery.loadList(params);
-            log.info("GenericIndexTask<" + super.getClass().toString() +
-                    " number of results returned = " + retval.size());
+            LOG.info("GenericIndexTask<{} number of results returned = {}>", super.getClass(), retval.size());
         }
         finally {
             srvrQuery.close();
@@ -210,17 +201,17 @@ public abstract class GenericIndexTask implements StatefulJob {
     protected int handleDeletedRecords(DatabaseManager databaseManager,
             IndexManager indexManager)
         throws SQLException {
-        List<Object> records = null;
+        List<Object> records;
         Query<Object> query = null;
-        String uniqField = null;
-        String indexName = null;
-        HashSet<String> idSet = null;
+        String uniqField;
+        String indexName;
+        HashSet<String> idSet;
         try {
             query = databaseManager.getQuery(getQueryAllIds());
-            records = query.loadList(Collections.EMPTY_MAP);
-            idSet = new HashSet<String>();
-            for (Object record : records) {
-                idSet.add(record.toString());
+            records = query.loadList(Collections.emptyMap());
+            idSet = new HashSet<>();
+            for (Object dbrecord : records) {
+                idSet.add(dbrecord.toString());
             }
             uniqField = getUniqueFieldId();
             indexName = getIndexName();

@@ -25,35 +25,31 @@ import org.apache.logging.log4j.Logger;
 /**
  * XML-RPC handler which handles calls for administration
  * Updating indexes maybe more tasks later
- *
- * @version $Rev$
  */
 public class AdminHandler {
 
-    private static Logger log = LogManager.getLogger(AdminHandler.class);
-    private ScheduleManager scheduleManager;
+    private static final Logger LOG = LogManager.getLogger(AdminHandler.class);
+    private final ScheduleManager scheduleManager;
 
     /**
      * Constructor
      *
-     * @param idxManager
-     *            Search engine interface
+     * @param idxManager Search engine interface
+     * @param dbMgr database manager
+     * @param schedMgr schedule manager
      */
-    public AdminHandler(IndexManager idxManager, DatabaseManager dbMgr,
-            ScheduleManager schedMgr) {
-        log.info("** AdminHandler constructor invoked");
+    public AdminHandler(IndexManager idxManager, DatabaseManager dbMgr, ScheduleManager schedMgr) {
+        LOG.info("** AdminHandler constructor invoked");
         scheduleManager = schedMgr;
     }
     /**
      * Causes the task associated with the indexName to run and index new data.
      *
-     * @param indexName
+     * @param indexName index name
      * @return true if index update is scheduled, false if unable to schedule.
      */
     public boolean updateIndex(String indexName) {
-        if (log.isDebugEnabled()) {
-            log.debug("AdminHandler::updateIndex(" + indexName);
-        }
+        LOG.debug("AdminHandler::updateIndex({})", indexName);
         return scheduleManager.triggerIndexTask(indexName);
     }
 }

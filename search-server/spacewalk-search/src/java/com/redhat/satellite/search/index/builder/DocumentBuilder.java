@@ -21,7 +21,6 @@ import java.util.Map;
 
 /**
  * DocumentBuilder
- * @version $Rev$
  */
 public interface DocumentBuilder {
     /**

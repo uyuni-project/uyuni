@@ -21,8 +21,6 @@ import java.sql.SQLException;
 
 /**
  * Callback interface for Connection-based queries
- *
- * @version $Rev$
  */
 public interface ResultHandler {
 

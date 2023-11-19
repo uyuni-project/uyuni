@@ -19,7 +19,6 @@ import org.apache.lucene.document.Document;
 
 /**
  * Result
- * @version $Rev$
  */
 public class HardwareDeviceResult extends Result {
     private String serverId;

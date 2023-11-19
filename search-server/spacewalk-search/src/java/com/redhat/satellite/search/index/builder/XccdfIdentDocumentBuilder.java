@@ -17,13 +17,11 @@ package com.redhat.satellite.search.index.builder;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 
-import java.util.Iterator;
 import java.util.Map;
 
 
 /**
  * XccdfIdentDocumentBuilder
- * @version $Rev$
  */
 public class XccdfIdentDocumentBuilder implements DocumentBuilder {
 
@@ -32,18 +30,16 @@ public class XccdfIdentDocumentBuilder implements DocumentBuilder {
      */
     public Document buildDocument(Long objId, Map<String, String> metadata) {
         Document doc = new Document();
-        doc.add(new Field("id", objId.toString(), Field.Store.YES,
-                Field.Index.UN_TOKENIZED));
+        doc.add(new Field("id", objId.toString(), Field.Store.YES, Field.Index.UN_TOKENIZED));
 
-        for (Iterator<String> iter = metadata.keySet().iterator(); iter.hasNext();) {
+        for (Map.Entry<String, String> entry : metadata.entrySet()) {
             Field.Store store = Field.Store.YES;
             Field.Index tokenize = Field.Index.TOKENIZED;
 
-            String name = iter.next();
-            String value = metadata.get(name);
+            String key = entry.getKey();
+            String value = entry.getValue();
 
-            doc.add(new Field(name, String.valueOf(value), store,
-                    tokenize));
+            doc.add(new Field(key, String.valueOf(value), store, tokenize));
         }
         return doc;
     }

@@ -41,7 +41,10 @@ public class BuilderFactory {
      * @return Suitable builder.
      */
     public static DocumentBuilder getBuilder(String type) {
-        if (ERRATA_TYPE.equals(type)) {
+        if (type == null) {
+            throw new UnsupportedOperationException("NULL is an unsuppported type");
+        }
+        else if (ERRATA_TYPE.equals(type)) {
             return new ErrataDocumentBuilder();
         }
         else if (PACKAGES_TYPE.equals(type)) {

@@ -30,23 +30,24 @@ import org.picocontainer.defaults.DefaultPicoContainer;
  */
 public class Main {
 
-    private static Logger log = LogManager.getLogger(Main.class);
-    private static final Class[] COMPONENTS = {DatabaseManager.class,
+    private static final Logger LOG = LogManager.getLogger(Main.class);
+    private static final Class<?>[] COMPONENTS = {DatabaseManager.class,
                                                IndexManager.class,
                                                RpcServer.class,
                                                ScheduleManager.class};
 
-    private DefaultPicoContainer container;
     private ContainerRunner runner;
 
     /**
+     * @param argv args
+     * @return ignore
      */
     public Integer start(String[] argv) {
         Configuration config = new Configuration();
-        container = new DefaultPicoContainer();
+        DefaultPicoContainer container = new DefaultPicoContainer();
         container.registerComponentInstance(config);
-        for (int x = 0; x < COMPONENTS.length; x++) {
-            container.registerComponentImplementation(COMPONENTS[x]);
+        for (Class<?> component : COMPONENTS) {
+            container.registerComponentImplementation(component);
         }
         runner = new ContainerRunner(container);
         Thread t = new Thread(runner);
@@ -57,9 +58,11 @@ public class Main {
     }
 
     /**
-    */
+     * @param arg args
+     * @return return value
+     */
     public int stop(int arg) {
-        log.info("Stopping Main");
+        LOG.info("Stopping Main");
         runner.stop();
         return 0;
     }
@@ -71,8 +74,8 @@ public class Main {
     public static void main(String[] argv) {
         Main m = new Main();
         m.start(argv);
-        if (log.isDebugEnabled()) {
-            log.debug("Returned from Main.start");
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Returned from Main.start");
         }
     }
 }

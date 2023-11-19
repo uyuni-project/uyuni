@@ -28,7 +28,6 @@ import org.apache.lucene.analysis.PerFieldAnalyzerWrapper;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.DateTools;
 import org.apache.lucene.document.Document;
-import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.Term;
@@ -40,7 +39,6 @@ import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
-import org.apache.lucene.store.LockObtainFailedException;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -54,25 +52,22 @@ import java.util.TreeMap;
 
 /**
  * Indexing workhorse class
- *
- * @version $Rev$
  */
 public class IndexManager {
 
-    private static Logger log = LogManager.getLogger(IndexManager.class);
+    private static final Logger LOG = LogManager.getLogger(IndexManager.class);
     private String indexWorkDir;
-    private int maxHits;
-    private double score_threshold;
-    private double system_score_threshold;
-    private double errata_score_threshold;
-    private double errata_advisory_score_threshold;
-    private int min_ngram;
-    private int max_ngram;
+    private final int maxHits;
+    private final double scoreThreshold;
+    private final double systemScoreThreshold;
+    private final double errataScoreThreshold;
+    private final double errataAdvisoryScoreThreshold;
+    private final int minNgram;
+    private final int maxNgram;
     private boolean filterDocResults = false;
     private boolean explainResults = false;
     // Name conflict with our Configuration class and Hadoop's
-    private Map<String, String> docLocaleLookUp = new TreeMap<String, String>
-                                                                                                (String.CASE_INSENSITIVE_ORDER);
+    private final Map<String, String> docLocaleLookUp = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
     /**
      * Constructor
      *
@@ -88,13 +83,13 @@ public class IndexManager {
         if (!indexWorkDir.endsWith("/")) {
             indexWorkDir += "/";
         }
-        score_threshold = config.getDouble("search.score_threshold", .30);
-        system_score_threshold = config.getDouble("search.system_score_threshold", .30);
-        errata_score_threshold = config.getDouble("search.errata_score_threshold", .30);
-        errata_advisory_score_threshold =
+        scoreThreshold = config.getDouble("search.score_threshold", .30);
+        systemScoreThreshold = config.getDouble("search.system_score_threshold", .30);
+        errataScoreThreshold = config.getDouble("search.errata_score_threshold", .30);
+        errataAdvisoryScoreThreshold =
             config.getDouble("search.errata.advisory_score_threshold", .30);
-        min_ngram = config.getInt("search.min_ngram", 1);
-        max_ngram = config.getInt("search.max_ngram", 5);
+        minNgram = config.getInt("search.min_ngram", 1);
+        maxNgram = config.getInt("search.max_ngram", 5);
         filterDocResults = config.getBoolean("search.doc.limit_results");
         explainResults = config.getBoolean("search.log.explain.results");
     }
@@ -115,7 +110,7 @@ public class IndexManager {
      * @param lang language
      * @return list of hits
      * @throws IndexingException if there is a problem indexing the content.
-     * @throws QueryParseException
+     * @throws QueryParseException when something goes wrong
      */
     public List<Result> search(String indexName, String query, String lang)
             throws IndexingException, QueryParseException {
@@ -137,7 +132,7 @@ public class IndexManager {
      *
      * @return list of hits
      * @throws IndexingException if there is a problem indexing the content.
-     * @throws QueryParseException
+     * @throws QueryParseException when something goes wrong
      */
     public List<Result> search(String indexName, String query, String lang,
             boolean isFineGrained)
@@ -150,17 +145,17 @@ public class IndexManager {
             searcher = getIndexSearcher(indexName, lang);
             QueryParser qp = getQueryParser(indexName, lang, isFineGrained);
             Query q = qp.parse(query);
-            if (log.isDebugEnabled()) {
-                log.debug("Original query was: " + query);
-                log.debug("Parsed Query is: " + q.toString());
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Original query was: {}", query);
+                LOG.debug("Parsed Query is: {}", q);
             }
             Hits hits = searcher.search(q);
-            if (log.isDebugEnabled()) {
-                log.debug(hits.length() + " results were found.");
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("{} results were found.", hits.length());
             }
-            Set<Term> queryTerms = null;
+            Set<Term> queryTerms;
             try {
-                queryTerms = new HashSet<Term>();
+                queryTerms = new HashSet<>();
                 Query newQ = q.rewrite(reader);
                 newQ.extractTerms(queryTerms);
             }
@@ -177,11 +172,12 @@ public class IndexManager {
             // this exception is thrown, when there're no packages or errata on the system
             // and the user performs a search
             // if this is the case, just return 0 results, otherwise rethrow the exception
-            if (!e.getMessage().contains("no segments* file found in org.apache.lucene.store.FSDirectory@/var/lib/rhn/search/indexes")) {
+            if (!e.getMessage().contains(
+                    "no segments* file found in org.apache.lucene.store.FSDirectory@/var/lib/rhn/search/indexes")) {
                 throw new IndexingException(e);
             }
-            log.error(e.getMessage());
-            retval = new ArrayList<Result>();
+            LOG.error(e.getMessage());
+            retval = new ArrayList<>();
         }
         catch (ParseException e) {
             throw new QueryParseException("Could not parse query: '" + query + "'");
@@ -196,7 +192,7 @@ public class IndexManager {
                 }
             }
             catch (IOException ex) {
-                throw new IndexingException(ex);
+                LOG.error("Index Manager Error: ", ex);
             }
         }
         return retval;
@@ -227,12 +223,6 @@ public class IndexManager {
                     unlockIndex(indexName);
                 }
             }
-        }
-        catch (CorruptIndexException e) {
-            throw new IndexingException(e);
-        }
-        catch (LockObtainFailedException e) {
-            throw new IndexingException(e);
         }
         catch (IOException e) {
             throw new IndexingException(e);
@@ -267,22 +257,16 @@ public class IndexManager {
                 }
             }
         }
-        catch (CorruptIndexException e) {
-            throw new IndexingException(e);
-        }
-        catch (LockObtainFailedException e) {
-            throw new IndexingException(e);
-        }
         catch (IOException e) {
             throw new IndexingException(e);
         }
     }
     /**
-     * @param indexName
+     * @param indexName the index name
      * @param doc document with data to index
      * @param uniqueField field in doc which identifies this uniquely
      * @param lang language
-     * @throws IndexingException
+     * @throws IndexingException something went wrong adding the document
      */
     public void addUniqueToIndex(String indexName, Document doc,
             String uniqueField, String lang)
@@ -312,9 +296,10 @@ public class IndexManager {
             }
         }
         if (numFound > 0) {
-            log.info("Found " + numFound + " <" + indexName + " docs for " +
-                    uniqueField + ":" + doc.get(uniqueField) +
-                    " will remove them now.");
+            if (LOG.isInfoEnabled()) {
+                LOG.info("Found {} <{}> docs for {}:{} will remove them now.", numFound, indexName,
+                        uniqueField, doc.get(uniqueField));
+            }
             removeFromIndex(indexName, uniqueField, doc.get(uniqueField));
         }
         addToIndex(indexName, doc, lang);
@@ -330,8 +315,7 @@ public class IndexManager {
      */
     public void removeFromIndex(String indexName, String uniqueField, String objectId)
             throws IndexingException {
-        log.info("Removing <" + indexName + "> " + uniqueField + ":" +
-                objectId);
+        LOG.info("Removing <{}> {}:{}", indexName, uniqueField, objectId);
         Term t = new Term(uniqueField, objectId);
         IndexReader reader;
         try {
@@ -341,13 +325,8 @@ public class IndexManager {
                 reader.flush();
             }
             finally {
-               if (reader != null) {
-                    reader.close();
-               }
+                reader.close();
             }
-        }
-        catch (CorruptIndexException e) {
-            throw new IndexingException(e);
         }
         catch (IOException e) {
             throw new IndexingException(e);
@@ -369,9 +348,7 @@ public class IndexManager {
         }
     }
 
-    private IndexWriter getIndexWriter(String name, String lang)
-            throws CorruptIndexException, LockObtainFailedException,
-            IOException {
+    private IndexWriter getIndexWriter(String name, String lang) throws IOException {
         String path = indexWorkDir + name;
         File f = new File(path);
         f.mkdirs();
@@ -381,31 +358,21 @@ public class IndexManager {
         return writer;
     }
 
-    private IndexReader getIndexReader(String indexName, String locale)
-            throws CorruptIndexException, IOException {
+    private IndexReader getIndexReader(String indexName, String locale) throws IOException {
         String path = indexWorkDir + indexName;
-        log.info("IndexManager::getIndexReader(" + indexName + ", " + locale +
-                ") path = " + path);
+        LOG.info("IndexManager::getIndexReader({}, {}) path = {}", indexName, locale, path);
         File f = new File(path);
-        IndexReader retval = IndexReader.open(FSDirectory.getDirectory(f));
-        return retval;
+        return IndexReader.open(FSDirectory.getDirectory(f));
     }
 
-    private IndexSearcher getIndexSearcher(String indexName, String locale)
-            throws CorruptIndexException, IOException {
+    private IndexSearcher getIndexSearcher(String indexName, String locale) throws IOException {
         String path = indexWorkDir + indexName;
-        log.info("IndexManager::getIndexSearcher(" + indexName + ", " + locale +
-                ") path = " + path);
-        IndexSearcher retval = new IndexSearcher(path);
-        return retval;
+        LOG.info("IndexManager::getIndexSearcher({}, {}) path = {}", indexName, locale, path);
+        return new IndexSearcher(path);
     }
 
-    private QueryParser getQueryParser(String indexName, String lang,
-            boolean isFineGrained) {
-        if (log.isDebugEnabled()) {
-            log.debug("getQueryParser(" + indexName + ", " + lang + ", " +
-                    isFineGrained + ")");
-        }
+    private QueryParser getQueryParser(String indexName, String lang, boolean isFineGrained) {
+        LOG.debug("getQueryParser({}, {}, {})", indexName, lang, isFineGrained);
         Analyzer analyzer = getAnalyzer(indexName, lang);
         QueryParser qp = new NGramQueryParser("name", analyzer, isFineGrained);
         qp.setDateResolution(DateTools.Resolution.MINUTE);
@@ -414,27 +381,21 @@ public class IndexManager {
 
 
     private Analyzer getAnalyzer(String indexName, String lang) {
-        if (log.isDebugEnabled()) {
-            log.debug("getAnalyzer(" + indexName + ", " + lang + ")");
-        }
-        if (indexName.compareTo(BuilderFactory.SERVER_TYPE) == 0) {
-            return getServerAnalyzer();
-        }
-        else if (indexName.compareTo(BuilderFactory.ERRATA_TYPE) == 0) {
-            return getErrataAnalyzer();
-        }
-        else if (indexName.compareTo(BuilderFactory.SNAPSHOT_TAG_TYPE) == 0) {
-            return getSnapshotTagAnalyzer();
-        }
-        else if (indexName.compareTo(BuilderFactory.HARDWARE_DEVICE_TYPE) == 0) {
-            return getHardwareDeviceAnalyzer();
-        }
-        else if (indexName.compareTo(BuilderFactory.SERVER_CUSTOM_INFO_TYPE) == 0) {
-            return getServerCustomInfoAnalyzer();
-        }
-        else {
-            log.debug(indexName + " using getDefaultAnalyzer()");
-            return getDefaultAnalyzer();
+        LOG.debug("getAnalyzer({}, {})", indexName, lang);
+        switch (indexName) {
+            case BuilderFactory.SERVER_TYPE:
+                return getServerAnalyzer();
+            case BuilderFactory.ERRATA_TYPE:
+                return getErrataAnalyzer();
+            case BuilderFactory.SNAPSHOT_TAG_TYPE:
+                return getSnapshotTagAnalyzer();
+            case BuilderFactory.HARDWARE_DEVICE_TYPE:
+                return getHardwareDeviceAnalyzer();
+            case BuilderFactory.SERVER_CUSTOM_INFO_TYPE:
+                return getServerCustomInfoAnalyzer();
+            default:
+                LOG.debug("{} using getDefaultAnalyzer()", indexName);
+                return getDefaultAnalyzer();
         }
     }
 
@@ -448,39 +409,42 @@ public class IndexManager {
             if (!isScoreAcceptable(indexName, hits, x, query)) {
                 break;
             }
-            else if (indexName.compareTo(BuilderFactory.HARDWARE_DEVICE_TYPE) == 0) {
-                pr = new HardwareDeviceResult(x, hits.score(x), doc);
+            switch (indexName) {
+                case BuilderFactory.SERVER_TYPE:
+                    pr = new Result(x,
+                            doc.getField("id").stringValue(),
+                            doc.getField("name").stringValue(),
+                            hits.score(x),
+                            doc.getField("uuid").stringValue());
+                    break;
+                case BuilderFactory.SNAPSHOT_TAG_TYPE:
+                    pr = new SnapshotTagResult(x, hits.score(x), doc);
+                    break;
+                case BuilderFactory.HARDWARE_DEVICE_TYPE:
+                    pr = new HardwareDeviceResult(x, hits.score(x), doc);
+                    break;
+                case BuilderFactory.SERVER_CUSTOM_INFO_TYPE:
+                    pr = new ServerCustomInfoResult(x, hits.score(x), doc);
+                    break;
+                case BuilderFactory.XCCDF_IDENT_TYPE:
+                    pr = new Result(x,
+                            doc.getField("id").stringValue(),
+                            doc.getField("identifier").stringValue(),
+                            hits.score(x));
+                    break;
+                default:
+                    //Type Errata and Package
+                    pr = new Result(x,
+                            doc.getField("id").stringValue(),
+                            doc.getField("name").stringValue(),
+                            hits.score(x));
+                    break;
             }
-            else if (indexName.compareTo(BuilderFactory.SNAPSHOT_TAG_TYPE) == 0) {
-                pr = new SnapshotTagResult(x, hits.score(x), doc);
+
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Hit[{}] Score = {}, Result = {}", x, hits.score(x), pr);
             }
-            else if (indexName.compareTo(BuilderFactory.SERVER_CUSTOM_INFO_TYPE) == 0) {
-                pr = new ServerCustomInfoResult(x, hits.score(x), doc);
-            }
-            else if (indexName.compareTo(BuilderFactory.XCCDF_IDENT_TYPE) == 0) {
-                pr = new Result(x,
-                        doc.getField("id").stringValue(),
-                        doc.getField("identifier").stringValue(),
-                        hits.score(x));
-            }
-            else if (indexName.compareTo(BuilderFactory.SERVER_TYPE) == 0) {
-                pr = new Result(x,
-                        doc.getField("id").stringValue(),
-                        doc.getField("name").stringValue(),
-                        hits.score(x),
-                        doc.getField("uuid").stringValue());
-            }
-            else {
-                //Type Errata and Package
-                pr = new Result(x,
-                        doc.getField("id").stringValue(),
-                        doc.getField("name").stringValue(),
-                        hits.score(x));
-            }
-            if (log.isDebugEnabled()) {
-                log.debug("Hit[" + x + "] Score = " + hits.score(x) + ", Result = " + pr);
-            }
-            /**
+            /*
              * matchingField will help the webUI to understand what field was responsible
              * for this match.  Later implementation should use "Explanation" to determine
              * field, for now we will simply grab one term and return it's field.
@@ -489,16 +453,13 @@ public class IndexManager {
                 MatchingField match = new MatchingField(query, doc, queryTerms);
                 pr.setMatchingField(match.getFieldName());
                 pr.setMatchingFieldValue(match.getFieldValue());
-                log.info("hit[" + x + "] matchingField is being set to: <" +
-                    pr.getMatchingField() + "> based on passed in query field.  " +
-                    "matchingFieldValue = " + pr.getMatchingFieldValue());
+                LOG.info("hit[{}] matchingField is being set to: <{}> based on passed in query field. " +
+                        "matchingFieldValue = {}", x, pr.getMatchingField(), pr.getMatchingFieldValue());
             }
             catch (Exception e) {
-                log.error("Caught exception: ", e);
+                LOG.error("Caught exception: ", e);
             }
-            if (pr != null) {
-                retval.add(pr);
-            }
+            retval.add(pr);
             if (maxHits > 0 && x == maxHits) {
                 break;
             }
@@ -507,78 +468,57 @@ public class IndexManager {
     }
     /**
      *
-     * @param indexName
-     * @param hits
-     * @param x
-     * @param query
+     * @param indexName index name
+     * @param hits hits
+     * @param x x
+     * @param queryIn query
      * @return  true - score is acceptable
      *          false - score is NOT acceptable
-     * @throws IOException
+     * @throws IOException when something goes wrong
      */
-    private boolean isScoreAcceptable(String indexName, Hits hits, int x, String queryIn)
-        throws IOException {
+    private boolean isScoreAcceptable(String indexName, Hits hits, int x, String queryIn) throws IOException {
         String guessMainQueryTerm = MatchingField.getFirstFieldName(queryIn);
 
-        /**
+        /*
          * Dropping matches which are a poor fit.
          * system searches are filtered based on "system_score_threshold"
          * other searches will return 10 best matches, then filter anything below
          * "score_threshold"
          */
-        if ((indexName.compareTo(BuilderFactory.SERVER_TYPE) == 0) ||
-                (indexName.compareTo(BuilderFactory.SERVER_CUSTOM_INFO_TYPE) == 0) ||
-                (indexName.compareTo(BuilderFactory.SNAPSHOT_TAG_TYPE)  == 0) ||
-                (indexName.compareTo(BuilderFactory.HARDWARE_DEVICE_TYPE) == 0)) {
-            if (hits.score(x) < system_score_threshold) {
-                if (log.isDebugEnabled()) {
-                    log.debug("hits.score(" + x + ") is " + hits.score(x));
-                    log.debug("Filtering out search results from " + x + " to " +
-                            hits.length() + ", due to their score being below " +
-                            "system_score_threshold = " + system_score_threshold);
-                }
+        if ((indexName.equals(BuilderFactory.SERVER_TYPE) ||
+                indexName.equals(BuilderFactory.SERVER_CUSTOM_INFO_TYPE) ||
+                indexName.equals(BuilderFactory.SNAPSHOT_TAG_TYPE) ||
+                indexName.equals(BuilderFactory.HARDWARE_DEVICE_TYPE)) &&
+                (hits.score(x) < systemScoreThreshold)) {
+            LOG.debug("hits.score({}) is {}", x, hits.score(x));
+            LOG.debug("Filtering out search results from {} to {}, due to their score being below " +
+                    "system_score_threshold = {}", x, hits.length(), systemScoreThreshold);
+            return false;
+        }
+        else if (indexName.compareTo(BuilderFactory.ERRATA_TYPE) == 0) {
+            if (guessMainQueryTerm.equals("name") && (hits.score(x) < errataAdvisoryScoreThreshold)) {
+                LOG.debug("hits.score({}) is {}", x, hits.score(x));
+                LOG.debug("Filtering out search results from {} to {}, due to their score being below " +
+                        "errata_advisory_score_threshold = {}", x, hits.length(), errataAdvisoryScoreThreshold);
+                return false;
+            }
+            else if (hits.score(x) < errataScoreThreshold) {
+                LOG.debug("hits.score({}) is {}", x, hits.score(x));
+                LOG.debug("Filtering out search results from {} to {}, due to their score being below " +
+                        "errata_score_threshold = {}", x, hits.length(), errataScoreThreshold);
                 return false;
             }
         }
-        else if (indexName.compareTo(BuilderFactory.ERRATA_TYPE) == 0) {
-            if (guessMainQueryTerm.compareTo("name") == 0) {
-                if (hits.score(x) < errata_advisory_score_threshold) {
-                    if (log.isDebugEnabled()) {
-                        log.debug("hits.score(" + x + ") is " + hits.score(x));
-                        log.debug("Filtering out search results from " + x + " to " +
-                            hits.length() + ", due to their score being below " +
-                            "errata_advisory_score_threshold = " +
-                            errata_advisory_score_threshold);
-                    }
-                    return false;
-                }
-            }
-            else {
-                if (hits.score(x) < errata_score_threshold) {
-                    if (log.isDebugEnabled()) {
-                        log.debug("hits.score(" + x + ") is " + hits.score(x));
-                        log.debug("Filtering out search results from " + x + " to " +
-                            hits.length() + ", due to their score being below " +
-                            "errata_score_threshold = " +
-                            errata_score_threshold);
-                    }
-                    return false;
-                }
-            }
-        }
-        else if (((hits.score(x) < score_threshold) && (x > 10)) ||
-                (hits.score(x) < 0.001)) {
-            /**
+        else if (((hits.score(x) < scoreThreshold) && (x > 10)) || (hits.score(x) < 0.001)) {
+            /*
              * Dropping matches which are a poor fit.
              * First term is configurable, it allows matches like spelling errors or
              * suggestions to be possible.
              * Second term is intended to get rid of pure and utter crap hits
              */
-            if (log.isDebugEnabled()) {
-                log.debug("hits.score(" + x + ") is " + hits.score(x));
-                log.debug("Filtering out search results from " + x + " to " +
-                        hits.length() + ", due to their score being below " +
-                        "score_threshold = " + score_threshold);
-            }
+            LOG.debug("hits.score({}) is {}", x, hits.score(x));
+            LOG.debug("Filtering out search results from {} to {}, due to their score being below " +
+                    "score_threshold = {}", x, hits.length(), scoreThreshold);
             return false;
         }
         return true;
@@ -607,23 +547,17 @@ public class IndexManager {
                     Document doc = reader.document(i);
                     String uniqId = doc.getField(uniqField).stringValue();
                     if (!ids.contains(uniqId)) {
-                        log.info(indexName + ":" + uniqField  + ":  <" + uniqId +
-                                "> not found in list of current/good values " +
-                                "assuming this has been deleted from Database and we " +
-                                "should remove it.");
+                        LOG.info("{}:{}: <{}> not found in list of current/good values assuming this has been " +
+                                "deleted from Database and we should remove it.", indexName, uniqField, uniqId);
                         removeFromIndex(indexName, uniqField, uniqId);
                         count++;
                     }
                 }
             }
         }
-        catch (IOException e) {
+        catch (IOException | IndexingException e) {
             e.printStackTrace();
-            log.info("deleteRecordsNotInList() caught exception : " + e);
-        }
-        catch (IndexingException e) {
-            e.printStackTrace();
-            log.info("deleteRecordsNotInList() caught exception : " + e);
+            LOG.info("deleteRecordsNotInList() caught exception : ", e);
         }
         finally {
             if (reader != null) {
@@ -639,30 +573,27 @@ public class IndexManager {
     }
 
     private void debugExplainResults(String indexName, Hits hits, IndexSearcher searcher,
-            Query q, Set<Term> queryTerms)
-        throws IOException {
-        log.debug("Parsed Query is " + q.toString());
-        log.debug("Looking at index:  " + indexName);
+            Query q, Set<Term> queryTerms) throws IOException {
+        LOG.debug("Parsed Query is {}", q);
+        LOG.debug("Looking at index: {}", indexName);
         for (int i = 0; i < hits.length(); i++) {
             if ((i < 10)) {
                 Document doc = hits.doc(i);
                 Float score = hits.score(i);
                 Explanation ex = searcher.explain(q, hits.id(i));
-                log.debug("Looking at hit<" + i + ", " + hits.id(i) + ", " + score +
-                        ">: " + doc);
-                log.debug("Explanation: " + ex);
+                LOG.debug("Looking at hit<{}, {}, {}>: {}", i, hits.id(i), score, doc);
+                LOG.debug("Explanation: {}", ex);
                 MatchingField match = new MatchingField(q.toString(), doc, queryTerms);
                 String fieldName = match.getFieldName();
                 String fieldValue = match.getFieldValue();
-                log.debug("Guessing that matched fieldName is " + fieldName + " = " +
-                        fieldValue);
+                LOG.debug("Guessing that matched fieldName is {} = {}", fieldName, fieldValue);
             }
         }
     }
 
     private Analyzer getServerAnalyzer() {
         PerFieldAnalyzerWrapper analyzer = new PerFieldAnalyzerWrapper(new
-                NGramAnalyzer(min_ngram, max_ngram));
+                NGramAnalyzer(minNgram, maxNgram));
         analyzer.addAnalyzer("checkin", new KeywordAnalyzer());
         analyzer.addAnalyzer("registered", new KeywordAnalyzer());
         analyzer.addAnalyzer("ram", new KeywordAnalyzer());
@@ -676,7 +607,7 @@ public class IndexManager {
 
     private Analyzer getErrataAnalyzer() {
         PerFieldAnalyzerWrapper analyzer = new PerFieldAnalyzerWrapper(new
-                NGramAnalyzer(min_ngram, max_ngram));
+                NGramAnalyzer(minNgram, maxNgram));
         analyzer.addAnalyzer("advisoryName", new KeywordAnalyzer());
         analyzer.addAnalyzer("synopsis", new StandardAnalyzer());
         analyzer.addAnalyzer("description", new StandardAnalyzer());
@@ -688,7 +619,7 @@ public class IndexManager {
 
     private Analyzer getSnapshotTagAnalyzer() {
         PerFieldAnalyzerWrapper analyzer = new PerFieldAnalyzerWrapper(new
-                NGramAnalyzer(min_ngram, max_ngram));
+                NGramAnalyzer(minNgram, maxNgram));
         analyzer.addAnalyzer("id", new KeywordAnalyzer());
         analyzer.addAnalyzer("snapshotId", new KeywordAnalyzer());
         analyzer.addAnalyzer("orgId", new KeywordAnalyzer());
@@ -701,7 +632,7 @@ public class IndexManager {
 
     private Analyzer getHardwareDeviceAnalyzer() {
         PerFieldAnalyzerWrapper analyzer = new PerFieldAnalyzerWrapper(new
-                NGramAnalyzer(min_ngram, max_ngram));
+                NGramAnalyzer(minNgram, maxNgram));
         analyzer.addAnalyzer("id", new KeywordAnalyzer());
         analyzer.addAnalyzer("serverId", new KeywordAnalyzer());
         analyzer.addAnalyzer("pciType", new KeywordAnalyzer());
@@ -710,7 +641,7 @@ public class IndexManager {
 
     private Analyzer getServerCustomInfoAnalyzer() {
         PerFieldAnalyzerWrapper analyzer = new PerFieldAnalyzerWrapper(new
-                NGramAnalyzer(min_ngram, max_ngram));
+                NGramAnalyzer(minNgram, maxNgram));
         analyzer.addAnalyzer("id", new KeywordAnalyzer());
         analyzer.addAnalyzer("serverId", new KeywordAnalyzer());
         analyzer.addAnalyzer("created", new KeywordAnalyzer());
@@ -722,7 +653,7 @@ public class IndexManager {
 
     private Analyzer getDefaultAnalyzer() {
         PerFieldAnalyzerWrapper analyzer = new PerFieldAnalyzerWrapper(new
-                NGramAnalyzer(min_ngram, max_ngram));
+                NGramAnalyzer(minNgram, maxNgram));
         analyzer.addAnalyzer("id", new KeywordAnalyzer());
         analyzer.addAnalyzer("arch", new KeywordAnalyzer());
         analyzer.addAnalyzer("epoch", new KeywordAnalyzer());

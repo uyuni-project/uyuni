@@ -23,7 +23,6 @@ import java.util.Map;
 
 /**
  * IndexHardwareDevicesTask
- * @version $Rev$
  */
 public class IndexHardwareDevicesTask extends GenericIndexTask {
 
@@ -31,14 +30,13 @@ public class IndexHardwareDevicesTask extends GenericIndexTask {
      *  {@inheritDoc}
      */
     @Override
-    protected Map<String, String> getFieldMap(GenericRecord data)
-            throws ClassCastException {
+    protected Map<String, String> getFieldMap(GenericRecord data) throws ClassCastException {
         HardwareDevice dev = (HardwareDevice)data;
-        Map<String, String> attrs = new HashMap<String, String>();
-        attrs.put("serverId", new Long(dev.getServerId()).toString());
+        Map<String, String> attrs = new HashMap<>();
+        attrs.put("serverId", Long.toString(dev.getServerId()));
         attrs.put("classInfo", dev.getClassInfo());
         attrs.put("bus", dev.getBus());
-        attrs.put("detached", new Long(dev.getDetached()).toString());
+        attrs.put("detached", Long.toString(dev.getDetached()));
         attrs.put("device", dev.getDevice());
         attrs.put("driver", dev.getDriver());
         attrs.put("description", dev.getDescription());
@@ -46,7 +44,7 @@ public class IndexHardwareDevicesTask extends GenericIndexTask {
         attrs.put("deviceId", dev.getDeviceId());
         attrs.put("subVendorId", dev.getSubVendorId());
         attrs.put("subDeviceId", dev.getSubDeviceId());
-        attrs.put("pciType", new Long(dev.getPciType()).toString());
+        attrs.put("pciType", Long.toString(dev.getPciType()));
         return attrs;
     }
 

@@ -20,9 +20,10 @@ import com.redhat.satellite.search.index.builder.HardwareDeviceDocumentBuilder;
 
 import org.apache.lucene.document.Document;
 
-import junit.framework.TestCase;
 import java.util.HashMap;
 import java.util.Map;
+
+import junit.framework.TestCase;
 
 
 
@@ -39,10 +40,10 @@ public class HardwareDeviceDocumentBuilderTest extends TestCase {
 
         DocumentBuilder db = BuilderFactory.getBuilder(BuilderFactory.HARDWARE_DEVICE_TYPE);
         assertTrue(db instanceof HardwareDeviceDocumentBuilder);
-        Document doc = db.buildDocument(new Long(10), metadata);
+        Document doc = db.buildDocument(10L, metadata);
 
         assertNotNull(doc);
-        assertEquals(doc.getField("id").stringValue(), new Long(10).toString());
+        assertEquals(doc.getField("id").stringValue(), Long.toString(10));
         assertEquals(doc.getField("name").stringValue(), "Name");
         assertEquals(doc.getField("description").stringValue(), "Description");
     }

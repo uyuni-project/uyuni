@@ -17,7 +17,6 @@ package com.redhat.satellite.search.index;
 
 /**
  * QueryParseException thrown if there is a problem parsing the query input.
- * @version $Rev$
  */
 public class QueryParseException extends Exception {
     /**

@@ -17,11 +17,10 @@ package com.redhat.satellite.search.index.ngram;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.LowerCaseFilter;
-import org.apache.lucene.analysis.standard.StandardTokenizer;
-import org.apache.lucene.analysis.standard.StandardFilter;
 import org.apache.lucene.analysis.TokenStream;
-// From Lucene Sandbox
-import org.apache.lucene.analysis.ngram.NGramTokenFilter;
+import org.apache.lucene.analysis.ngram.NGramTokenFilter; // From Lucene Sandbox
+import org.apache.lucene.analysis.standard.StandardFilter;
+import org.apache.lucene.analysis.standard.StandardTokenizer;
 
 import java.io.Reader;
 
@@ -29,13 +28,12 @@ import java.io.Reader;
  * NGramAnalyzer
  * A ngram will take a term and break it up into a series of smaller
  * permutations of different letter combinations.
- * @version $Rev$
  */
 public class NGramAnalyzer extends Analyzer {
     //Controls minimum size ngram to construct
-    protected int min_ngram;
+    protected int minNgram;
     //Controls maximum size ngram to construct
-    protected int max_ngram;
+    protected int maxNgram;
 
   /**
    * Constructor
@@ -44,8 +42,8 @@ public class NGramAnalyzer extends Analyzer {
    */
     public NGramAnalyzer(int min, int max) {
         super();
-        min_ngram = min;
-        max_ngram = max;
+        minNgram = min;
+        maxNgram = max;
     }
     /**
      * Constructs a pre populated
@@ -65,6 +63,6 @@ public class NGramAnalyzer extends Analyzer {
         return new NGramTokenFilter(
                 new LowerCaseFilter(
                     new StandardFilter(
-                        new StandardTokenizer(reader))), min_ngram, max_ngram);
+                        new StandardTokenizer(reader))), minNgram, maxNgram);
     }
 }

@@ -15,6 +15,13 @@
 
 package com.redhat.satellite.search.db;
 
+import com.redhat.satellite.search.config.ConfigException;
+import com.redhat.satellite.search.config.Configuration;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -23,43 +30,30 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.Properties;
 
-import com.redhat.satellite.search.config.Configuration;
-import com.redhat.satellite.search.config.ConfigException;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.apache.ibatis.session.SqlSessionFactoryBuilder;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 /**
  * Manages DB activity - connections, running queries, etc
- * @version $Rev$
  */
 public class DatabaseManager {
 
-    private SqlSessionFactory sessionFactory = null;
-    private static boolean isOracle;
-    private static Logger log = LogManager.getLogger(DatabaseManager.class);
-
+    private final SqlSessionFactory sessionFactory;
+    private static final String DB_NAME = "db_name";
 
     /**
      * Constructor
-     * @param config
-     * @throws IOException
+     * @param config the config
+     * @throws IOException when something goes wrong
      */
     public DatabaseManager(Configuration config) throws IOException {
-        String configPath = config.getString("search.db_config_path",
-                "classpath");
-        Reader reader = null;
+        String configPath = config.getString("search.db_config_path", "classpath");
+        Reader reader;
         if (configPath.equals("classpath")) {
             ClassLoader cl = Thread.currentThread().getContextClassLoader();
             InputStream stream = cl
                     .getResourceAsStream("com/redhat/satellite/search/db/config.xml");
             if (stream == null) {
                 throw new IllegalArgumentException(
-                        "com/redhat/satellite/search/db/" +
-                                "config.xml resource missing");
+                        "com/redhat/satellite/search/db/config.xml resource missing");
             }
             reader = new InputStreamReader(stream);
         }
@@ -68,37 +62,32 @@ public class DatabaseManager {
         }
         Properties overrides = config.getNamespaceProperties("search");
 
-        String[] options = {"db_name", "db_password", "db_user"};
+        String[] options = {DB_NAME, "db_password", "db_user"};
         for (String option : options) {
             overrides.setProperty(option, config.getString(option));
         }
-        isOracle = config.getString("db_backend").equals("oracle");
-        if (isOracle) {
-            overrides.setProperty("db_name", "@" + overrides.getProperty("db_name"));
-        } else {
-            String dbHost = config.getString("db_host");
-            if (!StringUtils.isEmpty(dbHost)) {
-                String connectionUrl = "//" + dbHost;
-                String dbPort = config.getString("db_port");
-                if (!StringUtils.isEmpty(dbPort)) {
-                    connectionUrl += ":" + dbPort;
-                }
-                connectionUrl += "/" + overrides.getProperty("db_name");
-
-                if (config.getBoolean("db_ssl_enabled")) {
-                    connectionUrl += "?ssl=true";
-                    String trustStore = config.getString("java.ssl_truststore");
-                    if (trustStore == null || ! new File(trustStore).isFile()) {
-                        throw new ConfigException("Can not find java truststore at " +
-                            trustStore + ". Path can be changed with java.ssl_truststore option.");
-                    }
-                    System.setProperty("javax.net.ssl.trustStore", trustStore);
-                }
-                overrides.setProperty("db_name", connectionUrl);
+        String dbHost = config.getString("db_host");
+        if (!StringUtils.isEmpty(dbHost)) {
+            String connectionUrl = "//" + dbHost;
+            String dbPort = config.getString("db_port");
+            if (!StringUtils.isEmpty(dbPort)) {
+                connectionUrl += ":" + dbPort;
             }
+            connectionUrl += "/" + overrides.getProperty(DB_NAME);
+
+            if (config.getBoolean("db_ssl_enabled")) {
+                connectionUrl += "?ssl=true";
+                String trustStore = config.getString("java.ssl_truststore");
+                if (trustStore == null || !new File(trustStore).isFile()) {
+                    throw new ConfigException("Can not find java truststore at " +
+                            trustStore + ". Path can be changed with java.ssl_truststore option.");
+                }
+                System.setProperty("javax.net.ssl.trustStore", trustStore);
+            }
+            overrides.setProperty(DB_NAME, connectionUrl);
         }
 
-        sessionFactory = new SqlSessionFactoryBuilder(). build(reader, overrides);
+        sessionFactory = new SqlSessionFactoryBuilder().build(reader, overrides);
     }
 
     /**
@@ -108,7 +97,7 @@ public class DatabaseManager {
      * @return query object
      */
     public <T> Query<T> getQuery(String name) {
-        return new Query<T>(sessionFactory.openSession(), name);
+        return new Query<>(sessionFactory.openSession(), name);
     }
 
     /**
@@ -118,9 +107,5 @@ public class DatabaseManager {
      */
     public WriteQuery getWriterQuery(String name) {
         return new WriteQuery(sessionFactory.openSession(), name);
-    }
-
-    public static boolean isOracle() {
-        return isOracle;
     }
 }

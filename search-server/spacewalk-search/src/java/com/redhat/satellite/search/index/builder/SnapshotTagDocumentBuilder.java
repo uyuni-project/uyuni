@@ -17,13 +17,11 @@ package com.redhat.satellite.search.index.builder;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 
-import java.util.Iterator;
 import java.util.Map;
 
 
 /**
  * SnapshotTagDocumentBuilder
- * @version $Rev$
  */
 public class SnapshotTagDocumentBuilder implements DocumentBuilder {
 
@@ -32,31 +30,22 @@ public class SnapshotTagDocumentBuilder implements DocumentBuilder {
      */
     public Document buildDocument(Long objId, Map<String, String> metadata) {
         Document doc = new Document();
-        doc.add(new Field("id", objId.toString(), Field.Store.YES,
-                Field.Index.UN_TOKENIZED));
+        doc.add(new Field("id", objId.toString(), Field.Store.YES, Field.Index.UN_TOKENIZED));
 
-        for (Iterator<String> iter = metadata.keySet().iterator(); iter.hasNext();) {
-            Field.Store store = Field.Store.YES;
+        for (Map.Entry<String, String> entry : metadata.entrySet()) {
             Field.Index tokenize = Field.Index.TOKENIZED;
 
-            String name = iter.next();
-            String value = metadata.get(name);
+            String key = entry.getKey();
+            String value = entry.getValue();
 
-            if (name.equals("name")) {
-                store = Field.Store.YES;
-            }
-            else if (name.equals("created") || (name.equals("modified"))) {
-                store = Field.Store.YES;
+            if (key.equals("created") || key.equals("modified") ||
+                    key.equals("snapshotId") || key.equals("tagNameId") ||
+                    key.equals("serverId") || key.equals("orgId")) {
                 tokenize = Field.Index.UN_TOKENIZED;
             }
-            else if (name.equals("snapshotId") || name.equals("tagNameId") ||
-                    name.equals("serverId") || name.equals("orgId")) {
-                store = Field.Store.YES;
-                tokenize = Field.Index.UN_TOKENIZED;
-            }
+            // else name.equals("name")
 
-            doc.add(new Field(name, String.valueOf(value), store,
-                    tokenize));
+            doc.add(new Field(key, String.valueOf(value), Field.Store.YES, tokenize));
         }
         return doc;
     }

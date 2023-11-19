@@ -17,13 +17,11 @@ package com.redhat.satellite.search.index.builder;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 
-import java.util.Iterator;
 import java.util.Map;
 
 
 /**
  * ServerDocumentBuilder
- * @version $Rev$
  */
 public class ServerDocumentBuilder implements DocumentBuilder {
 
@@ -36,35 +34,27 @@ public class ServerDocumentBuilder implements DocumentBuilder {
         // if you tokenize this it will break deleting documents, we'll
         // no longer have unique documents per id.
 
-        doc.add(new Field("id", objId.toString(), Field.Store.YES,
-                Field.Index.UN_TOKENIZED));
+        doc.add(new Field("id", objId.toString(), Field.Store.YES, Field.Index.UN_TOKENIZED));
         // This is the tokenized form of 'id' so we can do searches on it and
         // use ngram flexibility
-        doc.add(new Field("system_id", objId.toString(), Field.Store.YES,
-                Field.Index.TOKENIZED));
+        doc.add(new Field("system_id", objId.toString(), Field.Store.YES, Field.Index.TOKENIZED));
 
-        for (Iterator<String> iter = metadata.keySet().iterator(); iter.hasNext();) {
-            Field.Store store = Field.Store.YES;
+        for (Map.Entry<String, String> entry : metadata.entrySet()) {
             Field.Index tokenize = Field.Index.TOKENIZED;
 
-            String name = iter.next();
-            String value = metadata.get(name);
+            String key = entry.getKey();
+            String value = entry.getValue();
 
-            if (name.equals("name") || name.equals("cpuModel") ||
-                    name.equals("hostname") || name.equals("ipaddr") ||
-                    name.equals("ip6addr") ||
-                    (name.equals("runningKernel"))) {
-                store = Field.Store.YES;
-            }
-            else if (name.equals("checkin") || name.equals("registered") ||
-                    name.equals("ram") || name.equals("swap") ||
-                    name.equals("cpuMHz") | name.equals("cpuNumberOfCpus")) {
-                store = Field.Store.YES;
+            if (key.equals("checkin") || key.equals("registered") ||
+                    key.equals("ram") || key.equals("swap") ||
+                    key.equals("cpuMHz") | key.equals("cpuNumberOfCpus")) {
                 tokenize = Field.Index.UN_TOKENIZED;
             }
+            // else name.equals("name") || name.equals("cpuModel") ||
+            //      name.equals("hostname") || name.equals("ipaddr") ||
+            //      name.equals("ip6addr") || name.equals("runningKernel")
 
-            doc.add(new Field(name, String.valueOf(value), store,
-                    tokenize));
+            doc.add(new Field(key, String.valueOf(value), Field.Store.YES, tokenize));
         }
         return doc;
     }

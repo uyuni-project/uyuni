@@ -41,14 +41,11 @@ import redstone.xmlrpc.XmlRpcFault;
  * errata_handler.xml.
  * 2) Screenhits returned, verify these objects are allowed to be seen by the logged in
  * user.
- *
- *
- * @version $Rev$
  */
 public class DatabaseHandler {
 
-    private static Logger log = LogManager.getLogger(DatabaseHandler.class);
-    private DatabaseManager databaseManager;
+    private static final Logger LOG = LogManager.getLogger(DatabaseHandler.class);
+    private final DatabaseManager databaseManager;
     /**
      * Constructor
      * @param idxManager IndexManager - unused param, needed for interface compatibility
@@ -58,8 +55,7 @@ public class DatabaseHandler {
      * @param schedManager ScheduleManager unused param, needed for interface compatibility
      * with RpcServer constructing us.
      */
-    public DatabaseHandler(IndexManager idxManager, DatabaseManager dbMgr,
-            ScheduleManager schedManager) {
+    public DatabaseHandler(IndexManager idxManager, DatabaseManager dbMgr, ScheduleManager schedManager) {
         databaseManager = dbMgr;
     }
 
@@ -93,29 +89,21 @@ public class DatabaseHandler {
      */
     public List<Result> search(long sessionId, String namespace, String query)
             throws XmlRpcFault {
-        if (log.isDebugEnabled()) {
-            log.debug("DatabaseHandler:: searching for <" + namespace + ">: " + query);
-        }
+        LOG.debug("DatabaseHandler:: searching for <{}>: {}", namespace, query);
         try {
             String queryName = getQueryName(query);
             Map<String, Object> params = getQueryParams(query);
-            if (log.isDebugEnabled()) {
-                log.debug("Calling runQuery(" + sessionId + ", " + namespace +
-                        ", " + queryName + ", " + params + ")");
-            }
-            List<Result> hits = runQuery(sessionId, namespace, queryName,
-                    params);
-            log.info("Returned " + hits.size() + " records");
+            LOG.debug("Calling runQuery({}, {}, {}, {})", sessionId, namespace, queryName, params);
+            List<Result> hits = runQuery(sessionId, namespace, queryName, params);
+            LOG.info("Returned {} records", hits.size());
             return hits;
         }
         catch (SQLException e) {
-            log.warn("Caught SQLException: " + e.getMessage());
-            e.printStackTrace();
+            LOG.warn("Caught SQLException: {}", e.getMessage(), e);
             throw new XmlRpcFault(IndexHandler.DB_ERROR, e.getMessage());
         }
         catch (QueryParseException e) {
-            log.warn("Caught QueryParseException: " + e.getMessage());
-            e.printStackTrace();
+            LOG.warn("Caught QueryParseException: {}", e.getMessage(), e);
             throw new XmlRpcFault(IndexHandler.QUERY_ERROR, e.getMessage());
         }
     }
@@ -132,8 +120,7 @@ public class DatabaseHandler {
         if (index < 0) {
             throw new QueryParseException("Could not parse query: '" + queryIn + "'");
         }
-        String queryName = queryIn.substring(0, index);
-        return queryName;
+        return queryIn.substring(0, index);
     }
     /**
      *
@@ -155,7 +142,7 @@ public class DatabaseHandler {
         index = index + delim.length() - 1;  // We want to be pointed to end of location of
                                             // delim
         String[] temps = queryIn.substring(index + delim.length() - 1, indexB).split(",");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         for (int i = 0; i < temps.length; i++) {
             params.put(String.format("param%d", i), temps[i].trim());
         }
@@ -169,8 +156,7 @@ public class DatabaseHandler {
      * @param args       parameters to the query
      * @return List of results
      */
-    private List<Result> runQuery(Long sessionId, String namespace, String queryName,
-            Map<String, Object> args)
+    private List<Result> runQuery(Long sessionId, String namespace, String queryName, Map<String, Object> args)
         throws SQLException {
         // Look up Query in DB
         args.put("sessionId", sessionId);

@@ -19,7 +19,6 @@ import org.apache.lucene.document.Document;
 
 /**
  * SnapshotTagResult
- * @version $Rev$
  */
 public class SnapshotTagResult extends Result {
     private String serverId;
@@ -84,6 +83,4 @@ public class SnapshotTagResult extends Result {
     public void setSnapshotId(String snapshotIdIn) {
         this.snapshotId = snapshotIdIn;
     }
-
-
 }

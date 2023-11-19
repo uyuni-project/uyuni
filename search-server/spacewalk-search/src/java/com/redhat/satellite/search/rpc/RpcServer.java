@@ -30,7 +30,6 @@ import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.SocketAddress;
 import java.net.UnknownHostException;
-import java.util.Iterator;
 import java.util.Map;
 
 import redstone.xmlrpc.XmlRpcServer;
@@ -39,33 +38,28 @@ import simple.http.connect.ConnectionFactory;
 
 /**
  * Manages the embedded webserver and configures the XML-RPC runtime
- *
- * @version $Rev$
  */
 public class RpcServer implements Startable {
 
-    private int listenPort;
+    private final int listenPort;
     private InetAddress listenAddress;
-    private Map<String, String> handlers;
-    private XmlRpcServer xmlrpcServer;
+    private final Map<String, String> handlers;
     private ServerSocket socket;
-    private IndexManager indexManager;
-    private DatabaseManager databaseManager;
-    private ScheduleManager scheduleManager;
+    private final IndexManager indexManager;
+    private final DatabaseManager databaseManager;
+    private final ScheduleManager scheduleManager;
 
     /**
      * Constructor
      *
-     * @param config
-     *            dependency
-     * @param idxManager
-     *            dependency
-     * @throws UnknownHostException
-     *             if config contains bad rpc_address
+     * @param config configuration
+     * @param idxManager index manager
+     * @param dbManager database manager
+     * @param schedMgr schedule manager
+     * @throws UnknownHostException if config contains bad rpc_address
      */
-    public RpcServer(Configuration config, IndexManager idxManager,
-            DatabaseManager dbManager, ScheduleManager schedMgr) throws
-                UnknownHostException {
+    public RpcServer(Configuration config, IndexManager idxManager, DatabaseManager dbManager, ScheduleManager schedMgr)
+            throws UnknownHostException {
         listenPort = config.getInt("search.rpc_port", 2828);
         String addr = config.getString("search.rpc_address", "127.0.0.1");
         if (addr != null) {
@@ -86,12 +80,10 @@ public class RpcServer implements Startable {
      * @throws RuntimeException something bad happened
      */
     public void start() {
-        xmlrpcServer = new XmlRpcServer();
-        for (Iterator<String> iter = handlers.keySet().iterator(); iter
-                .hasNext();) {
-            String name = iter.next();
-            String className = handlers.get(name);
-            xmlrpcServer.addInvocationHandler(name, loadHandler(className));
+        XmlRpcServer xmlrpcServer = new XmlRpcServer();
+        for (Map.Entry<String, String> entry: handlers.entrySet()) {
+            String className = entry.getValue();
+            xmlrpcServer.addInvocationHandler(entry.getKey(), loadHandler(className));
         }
         XmlRpcInvoker invoker = new XmlRpcInvoker(xmlrpcServer);
         Connection connection = ConnectionFactory.getConnection(invoker);
@@ -115,8 +107,6 @@ public class RpcServer implements Startable {
 
     /**
      * Stops the server
-     *
-     * @throws IOException
      */
     public void stop() {
         try {
@@ -126,33 +116,19 @@ public class RpcServer implements Startable {
             throw new RuntimeException(e);
         }
     }
+
     @SuppressWarnings("unchecked")
     private Object loadHandler(String className) {
         try {
             ClassLoader cl = Thread.currentThread().getContextClassLoader();
-            Class klass = cl.loadClass(className);
-            Class[] paramTypes = { IndexManager.class, DatabaseManager.class,
-                    ScheduleManager.class };
+            Class<?> klass = cl.loadClass(className);
+            Class<?>[] paramTypes = { IndexManager.class, DatabaseManager.class, ScheduleManager.class };
             Object[] params = { indexManager, databaseManager, scheduleManager};
-            Constructor c = klass.getConstructor(paramTypes);
+            Constructor<?> c = klass.getConstructor(paramTypes);
             return c.newInstance(params);
         }
-        catch (NoSuchMethodException e) {
-            throw new RuntimeException(e);
-        }
-        catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        catch (IllegalArgumentException e) {
-            throw new RuntimeException(e);
-        }
-        catch (InstantiationException e) {
-            throw new RuntimeException(e);
-        }
-        catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
-        catch (InvocationTargetException e) {
+        catch (NoSuchMethodException | ClassNotFoundException | IllegalArgumentException | InstantiationException |
+               IllegalAccessException | InvocationTargetException e) {
             throw new RuntimeException(e);
         }
     }

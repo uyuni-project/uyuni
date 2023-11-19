@@ -14,20 +14,17 @@
  */
 package com.redhat.satellite.search.index;
 
-import java.io.Reader;
-
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.CharTokenizer;
+import org.apache.lucene.analysis.TokenStream;
 
+import java.io.Reader;
 
 
 /**
  * KeywordAnalyzer
  * Used to retain all characters associated with a search term.  Basically
  * use this if you don't want the search term to be tokenized.
- *
- * @version $Rev$
  */
 public class KeywordAnalyzer extends Analyzer {
     /**

@@ -20,12 +20,10 @@ import org.picocontainer.defaults.DefaultPicoContainer;
 /**
  * Runs a PicoContainer instance in a separate thread
  * to prevent the main process from exiting
- *
- * @version $Rev$
  */
 class ContainerRunner implements Runnable {
 
-    private DefaultPicoContainer container;
+    private final DefaultPicoContainer container;
 
     /**
      * Constructor
@@ -48,6 +46,7 @@ class ContainerRunner implements Runnable {
         }
         catch (InterruptedException e) {
             container.stop();
+            Thread.currentThread().interrupt();
         }
     }
 
@@ -56,7 +55,7 @@ class ContainerRunner implements Runnable {
      */
     public void stop() {
         synchronized (this) {
-            this.notify();
+            this.notifyAll();
         }
     }
 }

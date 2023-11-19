@@ -17,6 +17,7 @@ package com.redhat.satellite.search.config;
 
 import com.redhat.satellite.search.config.translator.TranslatorRegistry;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -27,12 +28,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Properties;
 import java.util.TreeSet;
 
@@ -49,7 +49,7 @@ import java.util.TreeSet;
  */
 public class Configuration {
 
-    private static Logger logger = LogManager.getLogger(Configuration.class);
+    private static final Logger LOGGER = LogManager.getLogger(Configuration.class);
 
     //
     // Location of config files
@@ -89,31 +89,27 @@ public class Configuration {
      * array of prefix in the order they should be search
      * if the given lookup string is without a namespace.
      */
-    private String[] prefixOrder = new String[] {"web", "server"};
+    private final String[] prefixOrder = new String[] {"web", "server"};
 
     /** hash of configuration properties */
-    private Properties configValues = new Properties();
+    private final Properties configValues = new Properties();
 
-    private List<KeyTranslator> translators;
+    private final List<KeyTranslator> translators;
 
     /** set of configuration file names */
-    private TreeSet<File> fileList = new TreeSet<File>(new Comparator<File>() {
+    private final TreeSet<File> fileList = new TreeSet<>((f1, f2) -> {
+        // Need to make sure we read the child namespace before the base
+        // namespace.  To do that, we sort the list in reverse order based
+        // on the length of the file name.  If two filenames have the same
+        // length, then we need to do a lexigraphical comparison to make
+        // sure that the filenames themselves are different.
 
-        /** {inheritDoc} */
-    public int compare(File f1, File f2) {
-            // Need to make sure we read the child namespace before the base
-            // namespace.  To do that, we sort the list in reverse order based
-            // on the length of the file name.  If two filenames have the same
-            // length, then we need to do a lexigraphical comparison to make
-            // sure that the filenames themselves are different.
+        int lenDif = f2.getAbsolutePath().length() - f1.getAbsolutePath().length();
 
-            int lenDif = f2.getAbsolutePath().length() - f1.getAbsolutePath().length();
-
-            if (lenDif != 0) {
-                return lenDif;
-            }
-            return f2.compareTo(f1);
+        if (lenDif != 0) {
+            return lenDif;
         }
+        return f2.compareTo(f1);
     });
 
     /**
@@ -160,18 +156,6 @@ public class Configuration {
         addFiles(path);
     }
 
-    /**
-     * static method to get the singleton Config option
-     *
-     * @return the config option
-     */
-//    public static synchronized Config get() {
-//        if (singletonConfig == null) {
-//            singletonConfig = new Config();
-//        }
-//        return singletonConfig;
-//    }
-
     private static String getRHNConfigDir() {
         String confDir = System.getProperty(RHN_CONF_DIR_PROPERTY);
 
@@ -209,8 +193,8 @@ public class Configuration {
     public String getString(String name, String defValue) {
         String ret = getString(name);
         if (ret == null) {
-            if (logger.isDebugEnabled()) {
-                logger.debug("getString() - returning default value");
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debug("getString() - returning default value");
             }
             ret = defValue;
         }
@@ -225,12 +209,12 @@ public class Configuration {
      */
     public Map<String, String> getMap(String name) {
         String value = getString(name);
-        Map<String,String> retval = null;
+        Map<String, String> retval = null;
         if (value != null) {
-            retval = new HashMap<String, String>();
+            retval = new HashMap<>();
             String[] pairs = value.split(",");
-            for (int x = 0; x < pairs.length; x++) {
-                String[] nv = pairs[x].split(":");
+            for (String pair : pairs) {
+                String[] nv = pair.split(":");
                 if (nv.length != 2) {
                     continue;
                 }
@@ -247,8 +231,8 @@ public class Configuration {
      * @return the value
      */
     public String getString(String value) {
-        if (logger.isDebugEnabled()) {
-            logger.debug("getString() -     getString() called with: " + value);
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("getString() -     getString() called with: {}", value);
         }
         if (value == null) {
             return null;
@@ -261,32 +245,31 @@ public class Configuration {
             property = value.substring(lastDot + 1);
             ns = value.substring(0, lastDot);
         }
-        if (logger.isDebugEnabled()) {
-            logger.debug("getString() -     getString() -> Getting property: " +
-                    property);
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("getString() -     getString() -> Getting property: {}", property);
         }
         String result = configValues.getProperty(property);
-        if (logger.isDebugEnabled()) {
-            logger.debug("getString() -     getString() -> result: " + result);
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("getString() -     getString() -> result: {}", result);
         }
         if (result == null) {
-            if (!"".equals(ns)) {
+            if (!ns.isEmpty()) {
                 result = configValues.getProperty(ns + "." + property);
             }
             else {
-                for (int i = 0; i < prefixOrder.length; i++) {
-                    result = configValues.getProperty(prefixOrder[i] + "." + property);
+                for (String s : prefixOrder) {
+                    result = configValues.getProperty(s + "." + property);
                     if (result != null) {
                         break;
                     }
-                 }
+                }
             }
         }
-        if (logger.isDebugEnabled()) {
-            logger.debug("getString() -     getString() -> returning: " + result);
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("getString() -     getString() -> returning: {}", result);
         }
 
-        if (result == null || result.equals("")) {
+        if (StringUtils.isEmpty(result)) {
             return null;
         }
 
@@ -316,7 +299,7 @@ public class Configuration {
         if (val == null) {
             return defaultValue;
         }
-        return val.intValue();
+        return val;
     }
 
     /**
@@ -342,7 +325,7 @@ public class Configuration {
         if (val == null) {
             return defaultValue;
         }
-        return new Double(val).doubleValue();
+        return Double.parseDouble(val);
     }
 
     /**
@@ -356,7 +339,7 @@ public class Configuration {
         if (val == null) {
             return null;
         }
-        return new Integer(val);
+        return Integer.getInteger(val);
     }
 
     /**
@@ -365,7 +348,7 @@ public class Configuration {
      * @return instance of java.util.List populated with config values
      */
     public List<String> getList(String name) {
-        List<String> retval = new LinkedList<String>();
+        List<String> retval = new LinkedList<>();
         String[] vals = getStringArray(name);
         if (vals != null) {
             retval.addAll(Arrays.asList(vals));
@@ -381,12 +364,12 @@ public class Configuration {
      */
     public String[] getStringArray(String s) {
         if (s == null) {
-            return null;
+            return new String[0];
         }
         String value = getString(s);
 
         if (value == null) {
-            return null;
+            return new String[0];
         }
 
         return value.split(",");
@@ -395,12 +378,11 @@ public class Configuration {
     /**
      * get the config entry for string name
      *
-     * @param name string to set the value of
+     * @param name  string to set the value of
      * @param value new value
-     * @return the previous value of the property
      */
-    public String setString(String name, String value) {
-        return (String) configValues.setProperty(name, value);
+    public void setString(String name, String value) {
+        configValues.setProperty(name, value);
     }
 
     /**
@@ -411,8 +393,8 @@ public class Configuration {
      */
     public boolean getBoolean(String s) {
         String value = getString(s);
-        if (logger.isDebugEnabled()) {
-            logger.debug("getBoolean() - " + s + " is : " + value);
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("getBoolean() - {} is {}", s, value);
         }
         if (value == null) {
             return false;
@@ -423,10 +405,10 @@ public class Configuration {
         // get the job done for an integer as a String.
 
 
-        for (int i = 0; i < TRUE_VALUES.length; i++) {
-            if (TRUE_VALUES[i].equalsIgnoreCase(value)) {
-                if (logger.isDebugEnabled()) {
-                    logger.debug("getBoolean() - Returning true: " + value);
+        for (String trueValue : TRUE_VALUES) {
+            if (trueValue.equalsIgnoreCase(value)) {
+                if (LOGGER.isDebugEnabled()) {
+                    LOGGER.debug("getBoolean() - Returning true: {}", value);
                 }
                 return true;
             }
@@ -444,8 +426,8 @@ public class Configuration {
         // need to check the possible true values
         // tried to use BooleanUtils, but that didn't
         // get the job done for an integer as a String.
-        for (int i = 0; i < TRUE_VALUES.length; i++) {
-            if (TRUE_VALUES[i].equalsIgnoreCase(b)) {
+        for (String trueValue : TRUE_VALUES) {
+            if (trueValue.equalsIgnoreCase(b)) {
                 configValues.setProperty(s, "1");
 
                 // get out we're done here
@@ -460,10 +442,10 @@ public class Configuration {
 
         if (f.isDirectory()) {
             // bugzilla: 154517; only add items that end in .conf
-            File[] files = f.listFiles();
-            for (int i = 0; i < files.length; i++) {
-                if (files[i].getName().endsWith((".conf"))) {
-                    fileList.add(files[i]);
+            File[] files = Optional.ofNullable(f.listFiles()).orElse(ArrayUtils.toArray());
+            for (File file : files) {
+                if (file.getName().endsWith((".conf"))) {
+                    fileList.add(file);
                 }
             }
         }
@@ -484,7 +466,7 @@ public class Configuration {
 
         ns = ns.replaceFirst("rhn_", "");
         ns = ns.substring(0, ns.lastIndexOf('.'));
-        ns = ns.replaceAll("_", ".");
+        ns = ns.replace("_", ".");
         return ns;
     }
 
@@ -496,13 +478,13 @@ public class Configuration {
         // loop through all of the config values in the properties file
         // making sure the prefix is there.
         Properties newProps = new Properties();
-        for (Iterator j = props.keySet().iterator(); j.hasNext();) {
-            String key = (String) j.next();
+        for (Object o : props.keySet()) {
+            String key = (String) o;
             String newKey = key;
             if (!key.startsWith(namespace)) {
                 newKey = namespace + "." + key;
             }
-            logger.debug("Adding: " + newKey + ": " + props.getProperty(key));
+            LOGGER.debug("Adding: {}: {}", newKey, props.getProperty(key));
             // translate the original key
             newKey = translateKey(key);
             newProps.put(newKey, props.getProperty(key));
@@ -514,8 +496,7 @@ public class Configuration {
      * Parse all of the added files.
      */
     public void parseFiles() {
-        for (Iterator i = fileList.iterator(); i.hasNext();) {
-            File curr = (File) i.next();
+        for (File curr : fileList) {
             parseFile(curr);
         }
     }
@@ -523,14 +504,13 @@ public class Configuration {
     private void parseFile(File file) {
         Properties props = new Properties();
         String ns = makeNamespace(file);
-        logger.debug("Adding namespace: " + ns + " for file: " +
-                file.getAbsolutePath());
+        LOGGER.debug("Adding namespace: {} for file: {}", ns, file.getAbsolutePath());
 
         try {
             parseStream(props, ns, new FileInputStream(file));
         }
         catch (IOException e) {
-            logger.error("Could not parse file" + file, e);
+            LOGGER.error("Could not parse file {}", file, e);
         }
     }
 
@@ -544,11 +524,11 @@ public class Configuration {
      */
     public Properties getNamespaceProperties(String namespace) {
         Properties prop = new Properties();
-        for (Iterator i = configValues.keySet().iterator(); i.hasNext();) {
-            String key = (String) i.next();
+        for (Object o : configValues.keySet()) {
+            String key = (String) o;
             if (key.startsWith(namespace)) {
-                if (logger.isDebugEnabled()) {
-                    logger.debug("Looking for key: [" + key + "]");
+                if (LOGGER.isDebugEnabled()) {
+                    LOGGER.debug("Looking for key: [{}]", key);
                 }
                 prop.put(key, configValues.getProperty(key));
             }
@@ -557,8 +537,7 @@ public class Configuration {
     }
 
     private String translateKey(String key) {
-        for (Iterator itr = translators.iterator(); itr.hasNext();) {
-            KeyTranslator trans = (KeyTranslator) itr.next();
+        for (KeyTranslator trans : translators) {
             if (trans.shouldTranslate(key)) {
                 key = trans.translateKey(key);
             }
@@ -568,7 +547,7 @@ public class Configuration {
     }
 
     private static class ReaderWrapper extends InputStream {
-        private Reader rdr;
+        private final Reader rdr;
 
         public ReaderWrapper(Reader reader) {
             rdr = reader;

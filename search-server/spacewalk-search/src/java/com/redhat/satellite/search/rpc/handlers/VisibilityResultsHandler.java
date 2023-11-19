@@ -27,13 +27,10 @@ import java.util.List;
 /**
  * Cheesy class for screening hit results based
  * on user's security context
- *
- * @version $Rev $
  */
 class VisibilityResultsHandler implements ResultHandler {
-    private static Logger log = LogManager
-            .getLogger(VisibilityResultsHandler.class);
-    private List<String> results = new ArrayList<String>();
+    private static final Logger LOG = LogManager.getLogger(VisibilityResultsHandler.class);
+    private final List<String> results = new ArrayList<>();
 
 
     /**
@@ -49,7 +46,7 @@ class VisibilityResultsHandler implements ResultHandler {
      * @return results
      */
     List<String> getResults() {
-        log.warn("returning results");
+        LOG.warn("returning results");
         return results;
     }
 }
