@@ -1,4 +1,17 @@
 -------------------------------------------------------------------
+Mon Nov 20 11:37:23 CET 2023 - rosuna@suse.com
+
+- version 4.3.36-1
+  * Safeguard request URLs against tempering (bsc#1216754)
+  * Improve datetimepicker input formatting
+  * Improve logging to better capture third-party library issues
+  * Simplify and modernize password generation logic
+  * Update webpack to 5.88.2
+  * Handle new message from subscription-matcher (bsc#1216506)
+  * Add sanity checks for FQDNs in proxy configuration dialog
+  * Add option to filter packages by build time in CLM (jsc#SUMA-282)
+
+-------------------------------------------------------------------
 Mon Oct 09 17:49:34 CEST 2023 - marina.latini@suse.com
 
 - version 4.3.35-1
