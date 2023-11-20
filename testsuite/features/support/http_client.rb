@@ -96,7 +96,7 @@ class HttpClient
       session_cookie
     else
       json_body = JSON.parse(answer.body)
-      raise ScriptError, "API failure: #{json_body['message']}" unless json_body['success']
+      raise SystemCallError, "API failure: #{json_body['message']}" unless json_body['success']
 
       json_body['result']
     end
