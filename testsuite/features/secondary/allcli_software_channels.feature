@@ -138,7 +138,7 @@ Feature: Channel subscription via SSM
     Then I should see "1" systems selected for SSM
     When I follow the left menu "Systems > System Set Manager > Overview"
     And I follow "channel memberships" in the content area
-    And I select "System Default Base Channel" from drop-down in table line with "Fake-Base-Channel-SUSE-like"
+    And I select "System Default Base Channel" from drop-down in table line with "Fake-Base-Channel-RH-like"
     And I click on "Next"
     Then I should see a "Child Channels" text
     And I should see a "Couldn't determine new base channel" text
@@ -158,7 +158,7 @@ Feature: Channel subscription via SSM
     Given I am on the Systems overview page of this "rhlike_minion"
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
-    Then radio button "Fake-Base-Channel-SUSE-like" should be checked
+    Then radio button "Fake-Base-Channel-RH-like" should be checked
 
 @deblike_minion
   Scenario: System default channel can't be determined on the Debian-like minion
