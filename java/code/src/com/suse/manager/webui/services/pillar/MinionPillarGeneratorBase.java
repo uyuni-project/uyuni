@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 SUSE LLC
+ * Copyright (c) 2023 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -15,32 +15,21 @@
 
 package com.suse.manager.webui.services.pillar;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.server.MinionServer;
-import com.redhat.rhn.domain.server.Pillar;
-
-import java.util.Optional;
 
 /**
- * Common interface for generating specific minion pillar data
+ * Base class for generating minion pillar data
  */
-public interface MinionPillarGenerator {
+abstract class MinionPillarGeneratorBase implements MinionPillarGenerator {
 
-    /**
-     * Generates specific pillar data for a the passed minion
-     * @param minion the minion server
-     * @return the Pillar containing the pillar data
-     */
-    Optional<Pillar> generatePillarData(MinionServer minion);
-
-    /**
-     * @return the pillar category for the generator
-     */
-    String getCategory();
-
-    /**
-     * Remove the pillar data from the given minion
-     * @param minion the minion server
-     */
-    void removePillar(MinionServer minion);
+    @Override
+    public void removePillar(MinionServer minion) {
+        minion.getPillarByCategory(getCategory())
+                .ifPresent(pillar -> {
+                    minion.getPillars().remove(pillar);
+                    HibernateFactory.getSession().remove(pillar);
+                });
+    }
 
 }

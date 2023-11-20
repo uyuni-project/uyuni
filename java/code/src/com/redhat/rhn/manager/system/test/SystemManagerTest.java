@@ -188,7 +188,6 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     public static final int HOST_SWAP_MB = 1024;
 
     private SaltService saltServiceMock;
-    protected Path tmpPillarRoot;
     protected Path tmpSaltRoot;
     protected Path metadataDirOfficial;
     private SystemEntitlementManager systemEntitlementManager;

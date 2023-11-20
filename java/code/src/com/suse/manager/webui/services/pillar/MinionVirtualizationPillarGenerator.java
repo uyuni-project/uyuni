@@ -14,9 +14,6 @@
  */
 package com.suse.manager.webui.services.pillar;
 
-import static com.suse.manager.webui.services.SaltConstants.PILLAR_DATA_FILE_EXT;
-import static com.suse.manager.webui.services.SaltConstants.PILLAR_DATA_FILE_PREFIX;
-
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Pillar;
 
@@ -25,7 +22,7 @@ import java.util.Optional;
 /**
  * Class for generating pillar data for the virtual hosts
  */
-public class MinionVirtualizationPillarGenerator implements MinionPillarGenerator {
+public class MinionVirtualizationPillarGenerator extends MinionPillarGeneratorBase {
 
     public static final MinionVirtualizationPillarGenerator INSTANCE = new MinionVirtualizationPillarGenerator();
 
@@ -39,12 +36,8 @@ public class MinionVirtualizationPillarGenerator implements MinionPillarGenerato
     public Optional<Pillar> generatePillarData(MinionServer minion) {
         // The virtpoller pillar data used to be created on minions in the past.
         // We want to ensure those are not lingering around.
+        removePillar(minion);
         return Optional.empty();
-    }
-
-    @Override
-    public String getFilename(String minionId) {
-        return PILLAR_DATA_FILE_PREFIX + "_" + minionId + "_" + "virtualization" + "." + PILLAR_DATA_FILE_EXT;
     }
 
     @Override
