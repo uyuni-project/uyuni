@@ -1,4 +1,47 @@
 -------------------------------------------------------------------
+Mon Nov 20 11:27:04 CET 2023 - rosuna@suse.com
+
+- version 4.3.69-1
+  * Include reboot_suggested and restart_suggested booleans in 
+    errata.getDetails API response
+  * Fix filter ID comparison when attaching filters to a CLM project (bsc#1215949)
+  * Fix validation of lists with empty defaults in formulas (bsc#1216555)
+  * Safeguard request URLs against tempering (bsc#1216754)
+  * Improved logging to better capture third-party library issues
+  * Fix issue of non-installed package listed as errata package
+    update candidates (bsc#1212904)
+  * Fix issue with reporting database query pagination
+  * Update tomcat jars to version greater than 9.0.75
+  * Fix notification messages email content (bsc#1216041)
+  * Look for the PAYG CA certificate location in different order to
+    find and import the correct one (bsc#1214759)
+  * Sanitize token before logging it CVE-2023-22644 (bsc#1210930)
+  * Use 600 permissions for logfiles CVE-2023-22644 (bsc#1210928)
+  * Log potential sensitive information only in debug mode CVE-2023-22644 (bsc#1210928)
+  * Add salt-api socket timeout to abort stuck taskomatic jobs (bsc#1211649)
+  * Fix SLE-Micro PAYG detection
+  * Wait for lock to execute SCC sync task (bsc#1216030)
+  * Fix url pointing to SCC (bsc#1216690)
+  * Prevent download when a PAYG Server is not compliant
+  * Fix system.provisionSystem xmlrpc endpoint to calculate host properly (bsc#1215209)
+  * Include "uuid" as system search xmlrpc results (bsc#1216380)
+  * Prevent losing Remote Command action result if returned JSON cannot be parsed
+  * Add PAYG info to UI and rest API
+  * Add management restrictions to SUMA PAYG when dealing with BYOS instances
+    when no SCC credentials are set.
+  * Fix issue where bad SCC credentials were preventing other credentials to refresh (bsc#1211355)
+  * Fix conversion to string if branchid is numeric in PXEEvent
+  * Fix token validation for shared (public) child channels (bsc#1216128)
+  * Prevent NPE in updateSystemInfo (bsc#1217224)
+  * Update SCC REST call to register systems in bulk
+  * Enhance hardware data sent to SCC by memory
+  * Fix FQDN machine name mapping on proxy configuration
+  * Fix NPE when creating PXE config for an unmanaged profile (bsc#1217223)
+  * Add option to filter packages by build time in CLM (jsc#SUMA-282)
+  * Consider server id when removing invalid erratas from rhnSet (bsc#1204235,bsc#1207012,bsc#1211560)
+  * Fix createSystemRecord XML-RPC API call so the Cobbler UID is persisted (bsc#1207532)
+
+-------------------------------------------------------------------
 Mon Oct 09 17:42:23 CEST 2023 - marina.latini@suse.com
 
 - version 4.3.68-1

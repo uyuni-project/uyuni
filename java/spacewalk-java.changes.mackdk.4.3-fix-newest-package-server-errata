@@ -1,2 +1,0 @@
-- Fix issue of non-installed package listed as errata package
-  update candidates (bsc#1212904)
