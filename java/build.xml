@@ -553,7 +553,7 @@
   </target>
 
   <target name="install-tomcat">
-       <property name="webapp-dir" value="/var/lib/tomcat/webapps/" />
+       <property name="webapp-dir" value="/usr/share/susemanager/www/tomcat/webapps/" />
     <!--
      - initializing prefix otherwise webapp is not copied to tomcat directory
      -->
