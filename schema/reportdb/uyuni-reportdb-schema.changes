@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Nov 20 11:43:03 CET 2023 - rosuna@suse.com
+
+- version 4.3.8-1
+  * Provide reportdb upgrade schema path structure
+
+-------------------------------------------------------------------
 Tue Jun 27 16:18:10 CEST 2023 - marina.latini@suse.com
 
 - version 4.3.7-1
