@@ -74,10 +74,10 @@ mv etc $RPM_BUILD_ROOT/
 mv var $RPM_BUILD_ROOT/
 mv usr $RPM_BUILD_ROOT/
 
+#TODO invert this logic: the default should be for suse, the if should contains directive for other distros
 %if 0%{?suse_version}
 export NO_BRP_STALE_LINK_ERROR=yes
 mv $RPM_BUILD_ROOT/etc/httpd $RPM_BUILD_ROOT%{apacheconfdir}
-sed -i 's|var/www/html|srv/www/htdocs|g' $RPM_BUILD_ROOT%{apacheconfdir}/conf.d/zz-spacewalk-www.conf
 %endif
 
 touch $RPM_BUILD_ROOT/%{_sysconfdir}/rhn/rhn.conf
@@ -90,6 +90,7 @@ mkdir -p $RPM_BUILD_ROOT/etc/pki/tls/private/
 %attr(400,root,root) %config(noreplace) %{_sysconfdir}/rhn/spacewalk-repo-sync/uln.conf
 %config %{apacheconfdir}/conf.d/zz-spacewalk-www.conf
 %config %{apacheconfdir}/conf.d/os-images.conf
+%config %{apacheconfdir}/conf.d/z-public.conf
 %attr(440,root,root) %config %{_sysconfdir}/sudoers.d/spacewalk
 %dir %{_var}/lib/cobbler/
 %dir %{_var}/lib/cobbler/kickstarts/
@@ -135,7 +136,6 @@ sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES deflate
 sysconf_addword /etc/sysconfig/apache2 APACHE_SERVER_FLAGS SSL
 sysconf_addword /etc/sysconfig/apache2 APACHE_SERVER_FLAGS ISSUSE
 %endif
-
 
 ### TO-REMOVE AFTER: 2023-12-01
 if egrep -m1 "^taskomatic.com.redhat.rhn.taskomatic.task.SSHMinionActionExecutor.parallel_threads[[:space:]]*=" /etc/rhn/rhn.conf >/dev/null; then
