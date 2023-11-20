@@ -25,13 +25,13 @@
 %global rhnconf %{_sysconfdir}/rhn
 %global m2crypto m2crypto
 %global python3rhnroot %{python3_sitelib}/spacewalk
-%global documentroot /usr/share/susemanager/www/htdocs
 
 %if 0%{?fedora} || 0%{?rhel}
 %global apacheconfd %{_sysconfdir}/httpd/conf.d
 %global apache_user root
 %global apache_group root
 %global apache_pkg httpd
+%global documentroot %{_localstatedir}/www/html
 %global m2crypto python3-m2crypto
 %global sslrootcert %{_sysconfdir}/pki/ca-trust/source/anchors/
 %endif
@@ -41,6 +41,7 @@
 %global apache_user wwwrun
 %global apache_group www
 %global apache_pkg apache2
+%global documentroot /srv/www/htdocs
 %global m2crypto python3-M2Crypto
 %global sslrootcert %{_sysconfdir}/pki/trust/anchors/
 %endif
