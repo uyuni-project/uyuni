@@ -8,6 +8,9 @@ Feature: Channel subscription with recommended or required dependencies
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
+  Scenario: Pre-requisite: remove remaining systems from SSM after software channel tests
+    When I click on the clear SSM button
+
 @susemanager
   Scenario: Play with recommended and required child channels selection for a single system
     Given I am on the Systems overview page of this "sle_minion"
