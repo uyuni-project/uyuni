@@ -112,33 +112,6 @@ def format_detail(message, last_result, report_result)
   "#{formatted_message}#{formatted_result}"
 end
 
-def click_button_and_wait(locator = nil, **options)
-  click_button(locator, options)
-  begin
-    warn 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 20)
-  rescue StandardError => e
-    STDOUT.puts e.message # Skip errors related to .senna-loading element
-  end
-end
-
-def click_link_and_wait(locator = nil, **options)
-  click_link(locator, options)
-  begin
-    warn 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 20)
-  rescue StandardError => e
-    STDOUT.puts e.message # Skip errors related to .senna-loading element
-  end
-end
-
-def click_link_or_button_and_wait(locator = nil, **options)
-  click_link_or_button(locator, options)
-  begin
-    warn 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 20)
-  rescue StandardError => e
-    STDOUT.puts e.message # Skip errors related to .senna-loading element
-  end
-end
-
 # Capybara Node Element extension to override click method, clicking and then waiting for ajax transition
 module CapybaraNodeElementExtension
   def click

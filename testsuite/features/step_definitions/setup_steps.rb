@@ -132,9 +132,7 @@ end
 
 Then(/^I should see the "(.*?)" selected$/) do |product|
   xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]"
-  within(:xpath, xpath) do
-    raise ScriptError, "#{find(:xpath, '.')['data-identifier']} is not checked" unless find(:xpath, './div/input[@type=\'checkbox\']').checked?
-  end
+  raise ScriptError, "#{find(:xpath, xpath)['data-identifier']} is not checked" unless find(:xpath, "#{xpath}/div/input[@type='checkbox']").checked?
 end
 
 When(/^I wait until I see "(.*?)" product has been added$/) do |product|
@@ -175,23 +173,20 @@ end
 # configuration management steps
 
 Then(/^I should see a table line with "([^"]*)", "([^"]*)", "([^"]*)"$/) do |arg1, arg2, arg3|
-  within(:xpath, "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{arg1}')]]") do
-    raise ScriptError, "Link #{arg2} not found" unless find_link(arg2)
-    raise ScriptError, "Link #{arg3} not found" unless find_link(arg3)
-  end
+  xpath = "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{arg1}')]]"
+  raise ScriptError, "Link #{arg2} not found" unless find("#{xpath}//*[text()[contains(.,'#{arg2}')]]")
+  raise ScriptError, "Link #{arg3} not found" unless find("#{xpath}//*[text()[contains(.,'#{arg3}')]]")
 end
 
 Then(/^I should see a table line with "([^"]*)", "([^"]*)"$/) do |arg1, arg2|
-  within(:xpath, "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{arg1}')]]") do
-    raise ScriptError, "Link #{arg2} not found" unless find_link(arg2)
-  end
+  xpath = "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{arg1}')]]//*[text()[contains(.,'#{arg2}')]]"
+  raise ScriptError, "Link #{arg2} not found" unless find(xpath)
 end
 
 Then(/^a table line should contain system "([^"]*)", "([^"]*)"$/) do |host, text|
   system_name = get_system_name(host)
-  within(:xpath, "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{system_name}')]]") do
-    raise ScriptError, "Text #{text} not found" unless find_all(:xpath, "//td[contains(., '#{text}')]")
-  end
+  xpath = "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{system_name}')]]//td[contains(., '#{text}')]"
+  raise ScriptError, "Text #{text} not found" unless find_all(:xpath, xpath)
 end
 
 # Register client
@@ -415,10 +410,8 @@ Then(/^I check the first notification message$/) do
   if count_table_items == '0'
     log 'There are no notification messages, nothing to do then'
   else
-    within(:xpath, '//section') do
-      row = find(:xpath, '//div[@class="table-responsive"]/table/tbody/tr[.//td]', match: :first)
-      row.find(:xpath, './/input[@type="checkbox"]', match: :first).set(true)
-    end
+    row = find(:xpath, '//section//div[@class="table-responsive"]/table/tbody/tr[.//td]', match: :first)
+    row.find(:xpath, './/input[@type="checkbox"]', match: :first).set(true)
   end
 end
 

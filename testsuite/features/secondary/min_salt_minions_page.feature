@@ -34,7 +34,7 @@ Feature: Management of minion keys
     And I restart salt-minion on "sle_minion"
     And I wait at most 10 seconds until Salt master sees "sle_minion" as "unaccepted"
     And I follow the left menu "Salt > Keys"
-    And I refresh page until I see "sle_minion" hostname as text
+    And I wait until I see the name of "sle_minion", refreshing the page
     Then I should see a "Fingerprint" text
     And I see "sle_minion" fingerprint
     And I should see a "pending" text
@@ -47,7 +47,7 @@ Feature: Management of minion keys
     # we stop the service so the minion does not resubmit its key spontaneously
     When I stop salt-minion on "sle_minion"
     And I delete "sle_minion" from the Rejected section
-    And I refresh page until I do not see "sle_minion" hostname as text
+    And I wait until I do not see the name of "sle_minion", refreshing the page
 
   Scenario: Accepted minion shows up as a registered system
     When I start salt-minion on "sle_minion"

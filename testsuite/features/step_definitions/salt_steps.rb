@@ -402,18 +402,6 @@ When(/^I accept "([^"]*)" key$/) do |host|
   raise ScriptError, "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query).click
 end
 
-When(/^I refresh page until I see "(.*?)" hostname as text$/) do |minion|
-  within('#spacewalk-content') do
-    step %(I wait until I see the name of "#{minion}", refreshing the page)
-  end
-end
-
-When(/^I refresh page until I do not see "(.*?)" hostname as text$/) do |minion|
-  within('#spacewalk-content') do
-    step %(I wait until I do not see the name of "#{minion}", refreshing the page)
-  end
-end
-
 When(/^I list packages with "(.*?)"$/) do |str|
   find('input#package-search').set(str)
   repeat_until_timeout(timeout: 60, retries: 30, message: 'Search button not enabled', report_result: true) do

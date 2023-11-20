@@ -20,16 +20,12 @@ Then(/^I should not see a "(.*)" text in the content area$/) do |text|
   end
 end
 
-When(/^I click on "([^"]+)" in row "([^"]+)"$/) do |link, item|
-  within(:xpath, "//tr[td[contains(.,'#{item}')]]") do
-    click_link_or_button_and_wait(link)
-  end
+When(/^I click on "([^"]+)" in row "([^"]+)"$/) do |text, item|
+  find_and_wait_click(:xpath, "//tr[td[contains(.,'#{item}')]]/*[contains(text(),'#{text}')]").click
 end
 
-When(/^I click on "([^"]+)" in tree item "(.*?)"$/) do |button, item|
-  within(:xpath, "//span[contains(text(), '#{item}')]/ancestor::div[contains(@class, 'product-details-wrapper')]") do
-    click_link_or_button_and_wait(button)
-  end
+When(/^I click on "([^"]+)" in tree item "(.*?)"$/) do |text, item|
+  find(:xpath, "//span[contains(text(), '#{item}')]/ancestor::div[contains(@class, 'product-details-wrapper')]/*[contains(text(),'#{text}')]").click
 end
 
 Then(/^the current path is "([^"]*)"$/) do |arg1|
@@ -281,7 +277,7 @@ end
 # Click on a button
 #
 When(/^I click on "([^"]*)"$/) do |text|
-  click_button_and_wait(text, match: :first)
+  click_button(text, match: :first)
 end
 
 #
@@ -289,7 +285,7 @@ end
 # the given "id"
 When(/^I click on "([^"]*)" in element "([^"]*)"$/) do |text, element_id|
   within(:xpath, "//div[@id=\"#{element_id}\"]") do
-    click_button_and_wait(text, match: :first)
+    click_button(text, match: :first)
   end
 end
 
@@ -307,40 +303,36 @@ end
 # Click on a link
 #
 When(/^I follow "([^"]*)"$/) do |text|
-  click_link_and_wait(text)
+  click_link(text)
 end
 
 #
 # Click on the first link
 #
 When(/^I follow first "([^"]*)"$/) do |text|
-  click_link_and_wait(text, match: :first)
+  click_link(text, match: :first)
 end
 
 #
 # Click on a link which appears inside of <div> with
 # the given "id"
 
-When(/^I follow "([^"]*)" in the (.+)$/) do |arg1, arg2|
-  tag = case arg2
+When(/^I follow "([^"]*)" in the (.+)$/) do |text, scope|
+  tag = case scope
         when /tab bar|tabs/ then 'header'
         when /content area/ then 'section'
-        else raise ScriptError, "Unknown element with description '#{arg2}'"
+        else raise ScriptError, "Unknown element with description '#{scope}'"
         end
-  within(:xpath, "//#{tag}") do
-    step %(I follow "#{arg1}")
-  end
+  find_and_wait_click(:xpath, "//#{tag}//*[text()[contains(.,'#{text}')]]").click
 end
 
-When(/^I follow first "([^"]*)" in the (.+)$/) do |arg1, arg2|
-  tag = case arg2
+When(/^I follow first "([^"]*)" in the (.+)$/) do |text, scope|
+  tag = case scope
         when /tab bar|tabs/ then 'header'
         when /content area/ then 'section'
-        else raise ScriptError, "Unknown element with description '#{arg2}'"
+        else raise ScriptError, "Unknown element with description '#{scope}'"
         end
-  within(:xpath, "//#{tag}") do
-    step "I follow first \"#{arg1}\""
-  end
+  find_and_wait_click(:xpath, "//#{tag}//*[text()[contains(.,'#{text}')]]", match: :first).click
 end
 
 When(/^I follow "([^"]*)" on "(.*?)" row$/) do |text, host|
@@ -555,7 +547,7 @@ Given(/^I am authorized as "([^"]*)" with password "([^"]*)"$/) do |user, passwd
   raise ScriptError, 'Login page is not correctly loaded' unless has_field?('username')
   fill_in('username', with: user)
   fill_in('password', with: passwd)
-  click_button_and_wait('Sign In', match: :first)
+  click_button('Sign In', match: :first)
 
   step 'I should be logged in'
 end
@@ -1138,7 +1130,7 @@ end
 
 # In case of a search reindex not having finished yet, keep retrying until successful search or timeout
 When(/^I click on the search button$/) do
-  click_button_and_wait('Search', match: :first)
+  click_button('Search', match: :first)
   # after a search reindex, the UI will show a "Could not connect to search server" followed by a false "No matches found" for a while
   if has_text?('Could not connect to search server.', wait: 0)
     repeat_until_timeout(message: 'Could not perform a successful search after reindexation', timeout: 10) do
