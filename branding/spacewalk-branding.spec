@@ -20,8 +20,10 @@
 %global debug_package %{nil}
 
 %if 0%{?fedora} || 0%{?rhel} >= 7
-%global tomcat_path %{_var}/lib/tomcat
-%global wwwdocroot %{_var}/www/html
+%global susemanager_shared_path /usr/share/susemanager
+%global wwwroot %{susemanager_shared_path}/www
+%global tomcat_path %{wwwroot}/tomcat
+%global wwwdocroot %{wwwroot}/www/html
 %else
 %if 0%{?sle_version}
 %global susemanager_shared_path /usr/share/susemanager
@@ -94,7 +96,6 @@ ln -s %{_datadir}/rhn/lib/java-branding.jar %{buildroot}%{tomcat_path}/webapps/r
 %{_datadir}/rhn/lib/java-branding.jar
 %{tomcat_path}/webapps/rhn/WEB-INF/lib/java-branding.jar
 %license LICENSE
-%if 0%{?suse_version}
 %attr(775,tomcat,tomcat) %dir %{susemanager_shared_path}
 %attr(775,tomcat,tomcat) %dir %{wwwroot}
 %attr(775,tomcat,tomcat) %dir %{wwwdocroot}
@@ -105,6 +106,5 @@ ln -s %{_datadir}/rhn/lib/java-branding.jar %{buildroot}%{tomcat_path}/webapps/r
 %attr(775,tomcat,tomcat) %dir %{tomcat_path}/webapps/rhn/WEB-INF/lib/
 %dir %{_prefix}/share/rhn
 %dir %{_prefix}/share/rhn/lib
-%endif
 
 %changelog
