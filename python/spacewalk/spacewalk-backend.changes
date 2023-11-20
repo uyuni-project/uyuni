@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Mon Nov 20 11:24:46 CET 2023 - rosuna@suse.com
+
+- version 4.3.25-1
+  * Use the new apache2-mod_wsgi package name
+  * Set stricter file permissions for config file
+  * Add table statistics and options to the support config database output
+  * Add CLM data collection to spacewalk-debug
+  * Add unique index for rhnpackagechangelogdata table
+
+-------------------------------------------------------------------
 Mon Oct 09 17:31:35 CEST 2023 - marina.latini@suse.com
 
 - version 4.3.24-1
