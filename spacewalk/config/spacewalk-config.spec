@@ -78,6 +78,10 @@ mv usr $RPM_BUILD_ROOT/
 %if 0%{?suse_version}
 export NO_BRP_STALE_LINK_ERROR=yes
 mv $RPM_BUILD_ROOT/etc/httpd $RPM_BUILD_ROOT%{apacheconfdir}
+%else
+sed -i 's|srv/www/htdocs|var/www/html|g' $RPM_BUILD_ROOT%{apacheconfdir}/conf.d/z-public.conf
+sed -i 's|/usr/share/apache2/|/usr/share/httpd/|g' $RPM_BUILD_ROOT%{apacheconfdir}/conf.d/zz-spacewalk-www.conf
+
 %endif
 
 touch $RPM_BUILD_ROOT/%{_sysconfdir}/rhn/rhn.conf
