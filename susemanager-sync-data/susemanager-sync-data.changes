@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Mon Nov 20 11:41:11 CET 2023 - rosuna@suse.com
+
+- version 4.3.14-1
+  * Add SLES15 SP4 LTSS
+  * Add ESPOS and LTSS for HPC 15 SP5
+  * Change OES version from 2023.4 to 23.4 (bsc#1215514)
+
+-------------------------------------------------------------------
 Mon Oct 09 18:23:48 CEST 2023 - marina.latini@suse.com
 
 - version 4.3.13-1
