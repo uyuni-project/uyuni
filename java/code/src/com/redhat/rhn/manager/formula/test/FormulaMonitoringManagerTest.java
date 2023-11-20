@@ -69,7 +69,6 @@ public class FormulaMonitoringManagerTest extends BaseTestCaseWithUser {
     public void setUp() throws Exception {
         super.setUp();
         metadataDir = Files.createTempDirectory("metadata");
-        FormulaFactory.setDataDir(tmpSaltRoot.toString());
         FormulaFactory.setMetadataDirOfficial(metadataDir.toString());
         createMetadataFiles();
     }
@@ -88,7 +87,6 @@ public class FormulaMonitoringManagerTest extends BaseTestCaseWithUser {
     @Test
     public void testIsMonitoringCleanupNeeded() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
-        FormulaFactory.setDataDir(tmpSaltRoot.resolve(TEMP_PATH).toString());
         FormulaFactory.setMetadataDirOfficial(metadataDir + File.separator);
 
         // No group or system level assignment of the `prometheus-exporters` Formula

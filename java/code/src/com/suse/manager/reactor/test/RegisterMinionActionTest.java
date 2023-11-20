@@ -100,7 +100,6 @@ import com.suse.salt.netapi.utils.Xor;
 import com.suse.utils.Json;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.io.FileUtils;
@@ -112,9 +111,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -279,7 +276,6 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
 
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         Config.get().setString("server.secret_key", "d8d796b3322d65928511769d180d284d2b15158165eb83083efa02c9024aa6cc");
-        FormulaFactory.setDataDir(tmpSaltRoot.resolve("formulas/").toString() + "/");
 
        metadataDirOfficial = Files.createTempDirectory("meta");
        FormulaFactory.setMetadataDirOfficial(metadataDirOfficial.toString());
@@ -1495,32 +1491,6 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                 null,
                 DEFAULT_CONTACT_METHOD,
                 Optional.of(minionStartUpGrains));
-    }
-
-    private void saveTestLegacyFormulasFile(String minionId, List<String> formulas) throws Exception {
-        File dataFile = new File(FormulaFactory.getServerDataFile());
-        if (!dataFile.exists()) {
-            dataFile.getParentFile().mkdirs();
-            dataFile.createNewFile();
-        }
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(dataFile))) {
-            Gson gson = new GsonBuilder().serializeNulls().create();
-            writer.write(gson.toJson(Map.of(minionId, formulas)));
-        }
-    }
-
-    private void saveTestLegacyFormulaValue(String minionId, String formula, Map<String, Object> data)
-            throws Exception {
-        File file = new File(FormulaFactory.getPillarDir() + minionId + "_" + formula + ".json");
-        if (!file.exists()) {
-            file.getParentFile().mkdirs();
-            file.createNewFile();
-        }
-
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-            Gson gson = new GsonBuilder().serializeNulls().create();
-            writer.write(gson.toJson(data));
-        }
     }
 
     /**

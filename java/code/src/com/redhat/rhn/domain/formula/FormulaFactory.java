@@ -16,7 +16,6 @@ package com.redhat.rhn.domain.formula;
 
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.dto.EndpointInfo;
@@ -33,13 +32,8 @@ import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 
 import com.suse.manager.saltboot.SaltbootException;
 import com.suse.manager.saltboot.SaltbootUtils;
-import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
 import com.suse.utils.Maps;
 import com.suse.utils.Opt;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.collections.ListUtils;
 import org.apache.logging.log4j.LogManager;
@@ -48,18 +42,13 @@ import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.SafeConstructor;
 import org.yaml.snakeyaml.error.YAMLException;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -83,37 +72,17 @@ public class FormulaFactory {
     // Logger for this class
     private static final Logger LOG = LogManager.getLogger(FormulaFactory.class);
 
-    private static String dataDir = "/srv/susemanager/formula_data/";
     private static String metadataDirManager = "/usr/share/susemanager/formulas/metadata/";
     private static final String METADATA_DIR_STANDALONE_SALT = "/usr/share/salt-formulas/metadata/";
     private static final String METADATA_DIR_CUSTOM = "/srv/formula_metadata/";
-    private static final String PILLAR_DIR = "pillar/";
-    private static final String GROUP_PILLAR_DIR = "group_pillar/";
-    private static final String GROUP_DATA_FILE  = "group_formulas.json";
-    private static final String SERVER_DATA_FILE = "minion_formulas.json";
-    private static final String ORDER_FILE = "formula_order.json";
     private static final String LAYOUT_FILE = "form.yml";
     private static final String METADATA_FILE = "metadata.yml";
     private static final String PILLAR_EXAMPLE_FILE = "pillar.example";
-    private static final String PILLAR_FILE_EXTENSION = "json";
     private static final String ORDER_PILLAR_CATEGORY = "formula_order";
-
-    private static final Gson GSON = new GsonBuilder()
-            .registerTypeAdapter(Date.class, new ECMAScriptDateAdapter())
-            .serializeNulls()
-            .create();
 
     private static SystemEntitlementManager systemEntitlementManager = GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER;
 
     private FormulaFactory() { }
-
-    /**
-     * Setter for data directory, used for testing.
-     * @param dataDirPath base path to where store files
-     */
-    public static void setDataDir(String dataDirPath) {
-        FormulaFactory.dataDir = dataDirPath.endsWith(File.separator) ? dataDirPath : dataDirPath + File.separator;
-    }
 
     /**
      * Setter for metadata directory, used for testing.
@@ -122,46 +91,6 @@ public class FormulaFactory {
     public static void setMetadataDirOfficial(String metadataDirPath) {
         FormulaFactory.metadataDirManager =
                 metadataDirPath.endsWith(File.separator) ? metadataDirPath : metadataDirPath + File.separator;
-    }
-
-    /**
-     * Getter for directory path of group pillar
-     * @return group pillar directory
-     */
-    public static String getGroupPillarDir() {
-        return dataDir + GROUP_PILLAR_DIR;
-    }
-
-    /**
-     * Getter for directory path of system pillar
-     * @return system pillar directory
-     */
-    public static String getPillarDir() {
-        return dataDir + PILLAR_DIR;
-    }
-
-    /**
-     * Getter for path of group data file
-     * @return group data file
-     */
-    public static String getGroupDataFile() {
-        return dataDir + GROUP_DATA_FILE;
-    }
-
-    /**
-     * Getter for path of server data file
-     * @return server data file
-     */
-    public static String getServerDataFile() {
-        return dataDir + SERVER_DATA_FILE;
-    }
-
-    /**
-     * Getter for path of order data file
-     * @return order data file
-     */
-    public static String getOrderDataFile() {
-        return dataDir + ORDER_FILE;
     }
 
     /**
@@ -242,9 +171,6 @@ public class FormulaFactory {
      * @param formulaName the name of the formula
      */
     public static void saveGroupFormulaData(Map<String, Object> formData, ServerGroup group, String formulaName) {
-        // Ensure the formulas are converted to pillar in database
-        convertGroupFormulasFromFiles(group);
-
         group.getPillarByCategory(PREFIX + formulaName).orElseGet(() -> {
             Pillar pillar = new Pillar(PREFIX + formulaName, Collections.emptyMap(), group);
             group.getPillars().add(pillar);
@@ -300,62 +226,12 @@ public class FormulaFactory {
     }
 
     /**
-     * Convert legacy server formulas to DB
-     *
-     * @param server the server
-     */
-    public static void convertServerFormulasFromFiles(MinionServer server) {
-        Map<String, List<String>> serverFormulas = readFormulaFile(getServerDataFile());
-        List<String> legacyFormulas = new LinkedList<>(serverFormulas.getOrDefault(server.getMinionId(),
-                new LinkedList<>()));
-
-        if (!legacyFormulas.isEmpty()) {
-            legacyFormulas.forEach(formula -> {
-                Optional<Map<String, Object>> data = getFormulaValuesByNameAndMinion(formula, server);
-                // If data are empty -> load from files. If anything is already in database, ignore files
-                if (data.isEmpty()) {
-                    File dataFile = new File(getPillarDir() + server.getMinionId() + "_" + formula + "." +
-                            PILLAR_FILE_EXTENSION);
-                    try {
-                        data = Optional.ofNullable(GSON.fromJson(new BufferedReader(new FileReader(dataFile)),
-                                                new TypeToken<Map<String, Object>>() { }.getType()));
-                    }
-                    catch (FileNotFoundException e) {
-                        // This happens if the formula has default value
-                        data = Optional.of(new HashMap<>());
-                    }
-                    data.map(FormulaFactory::convertIntegers).ifPresent(d -> {
-                        Pillar pillar = new Pillar(PREFIX + formula, d, server);
-                        server.getPillars().add(pillar);
-                    });
-                }
-                else {
-                    LOG.warn("Minion \"{}\" pillar \"{}\" already in database, not migrating pillar file",
-                            server.getMinionId(), formula);
-                }
-                FileUtils.deleteFile(new File(getPillarDir() +
-                        server.getMinionId() + "_" + formula + "." + PILLAR_FILE_EXTENSION).toPath());
-            });
-
-            // Remove the entry from the data file
-            try {
-                removeEntryFromFormulaFile(server.getMinionId(), getServerDataFile());
-            }
-            catch (IOException ignored) {
-            }
-        }
-    }
-
-    /**
      * Saves the values of a formula for a server.
      * @param formData the values to save
      * @param minion the minion
      * @param formulaName the name of the formula
      */
     public static void saveServerFormulaData(Map<String, Object> formData, MinionServer minion, String formulaName) {
-        // Ensure all the minion formulas are converted to pillar in DB
-        convertServerFormulasFromFiles(minion);
-
         minion.getPillarByCategory(PREFIX + formulaName).orElseGet(() -> {
             Pillar pillar = new Pillar(PREFIX + formulaName, Collections.emptyMap(), minion);
             minion.getPillars().add(pillar);
@@ -395,19 +271,6 @@ public class FormulaFactory {
                 .map(pillar -> pillar.getCategory().substring(PREFIX.length()))
                 .collect(Collectors.toList());
 
-        // Still try the legacy way since the formula data may not be converted yet
-        File groupDataFile = new File(getGroupDataFile());
-        if (formulas.isEmpty() && groupDataFile.exists()) {
-            try {
-                Map<String, List<String>> serverFormulas =
-                        GSON.fromJson(new BufferedReader(new FileReader(groupDataFile)),
-                                Map.class);
-                return orderFormulas(serverFormulas.getOrDefault(group.getId().toString(),
-                        Collections.emptyList()));
-            }
-            catch (FileNotFoundException e) {
-            }
-        }
         return orderFormulas(formulas);
     }
 
@@ -422,19 +285,6 @@ public class FormulaFactory {
                 .map(pillar -> pillar.getCategory().substring(PREFIX.length()))
                 .collect(Collectors.toList()));
 
-        // Still try the legacy way since the formula data may not be converted yet
-        File serverDataFile = new File(getServerDataFile());
-        if (formulas.isEmpty() && serverDataFile.exists()) {
-            try {
-                Map<String, List<String>> serverFormulas =
-                        GSON.fromJson(new BufferedReader(new FileReader(serverDataFile)),
-                                Map.class);
-                return orderFormulas(serverFormulas.getOrDefault(minion.getMinionId(),
-                        Collections.emptyList()));
-            }
-            catch (FileNotFoundException e) {
-            }
-        }
         return orderFormulas(formulas);
     }
 
@@ -535,51 +385,7 @@ public class FormulaFactory {
     public static Optional<Map<String, Object>> getGroupFormulaValuesByNameAndGroup(
             String name, ServerGroup group) {
         Optional<Map<String, Object>> data = group.getPillarByCategory(PREFIX + name).map(Pillar::getPillar);
-
-        // Load data from the legacy file if not converted yet
-        if (data.isEmpty()) {
-            File dataFile = new File(getGroupPillarDir() +
-                    group.getId() + "_" + name + "." + PILLAR_FILE_EXTENSION);
-            try {
-                data = Optional.ofNullable(GSON.fromJson(new BufferedReader(new FileReader(dataFile)),
-                                new TypeToken<Map<String, Object>>() { }.getType()));
-            }
-            catch (FileNotFoundException e) {
-                data = Optional.of(new HashMap<>());
-            }
-        }
         return data.map(FormulaFactory::convertIntegers);
-    }
-
-    /**
-     * Convert the legacy formulas of a group.
-     *
-     * @param group the group
-     */
-    public static void convertGroupFormulasFromFiles(ServerGroup group) {
-        Map<String, List<String>> groupFormulas = readFormulaFile(getGroupDataFile());
-        List<String> legacyFormulas = new LinkedList<>(groupFormulas.getOrDefault(group.getId().toString(),
-                new LinkedList<>()));
-
-        if (!legacyFormulas.isEmpty()) {
-            legacyFormulas.forEach(formula -> {
-                Optional<Map<String, Object>> data = getGroupFormulaValuesByNameAndGroup(formula, group);
-                data.ifPresent(formData -> group.getPillarByCategory(PREFIX + formula).orElseGet(() -> {
-                    Pillar pillar = new Pillar(PREFIX + formula, Collections.emptyMap(), group);
-                    group.getPillars().add(pillar);
-                    return pillar;
-                }).setPillar(formData));
-                FileUtils.deleteFile(new File(getGroupPillarDir() +
-                        group.getId() + "_" + formula + "." + PILLAR_FILE_EXTENSION).toPath());
-            });
-
-            // Remove the entry from the data file
-            try {
-                removeEntryFromFormulaFile(group.getId().toString(), getGroupDataFile());
-            }
-            catch (IOException ignored) {
-            }
-        }
     }
 
     /**
@@ -593,9 +399,6 @@ public class FormulaFactory {
             throws ValidatorException {
         validateFormulaPresence(selectedFormulas);
         saveFormulaOrder();
-
-        // Ensure the formulas are converted to pillar in database
-        convertGroupFormulasFromFiles(group);
 
         // Remove formula data for unselected formulas
         List<String> deletedFormulas = getFormulasByGroup(group);
@@ -698,19 +501,6 @@ public class FormulaFactory {
         }
     }
 
-    private static Map<String, List<String>> readFormulaFile(String path) {
-        File dataFile = new File(path);
-        Map<String, List<String>> formulas = new HashMap<>();
-        try {
-            formulas = Optional
-                    .ofNullable(GSON.fromJson(new BufferedReader(new FileReader(dataFile)), Map.class))
-                    .orElse(new HashMap<>());
-        }
-        catch (FileNotFoundException e) {
-        }
-        return formulas;
-    }
-
     /**
      * Save the selected formulas for a server.
      * This also deletes all saved values of that formula.
@@ -722,9 +512,6 @@ public class FormulaFactory {
             throws ValidatorException {
         validateFormulaPresence(selectedFormulas);
         saveFormulaOrder();
-
-        // Ensure all the minion formulas are converted to pillar in DB
-        convertServerFormulasFromFiles(minion);
 
         // Remove formula data for unselected formulas
         List<String> deletedFormulas = getFormulasByMinion(minion);
@@ -758,35 +545,6 @@ public class FormulaFactory {
             systemEntitlementManager.removeServerEntitlement(minion, EntitlementManager.MONITORING);
         }
         ServerFactory.save(minion);
-    }
-
-    /**
-     * Ensure the minion id is removed from the legacy formula file.
-     *
-     * @param id the minion or group id to look for
-     * @param filePath the path of the formula file
-     * @throws IOException if the data file failed to be written
-     */
-    public static void removeEntryFromFormulaFile(String id, String filePath) throws IOException {
-        File dataFile = new File(filePath);
-
-        if (dataFile.exists()) {
-            Map<String, List<String>> serverFormulas = Optional
-                    .ofNullable(GSON.fromJson(new BufferedReader(new FileReader(dataFile)), Map.class))
-                    .orElse(new HashMap<>());
-
-            if (serverFormulas.containsKey(id)) {
-                serverFormulas.remove(id);
-                if (serverFormulas.isEmpty() && dataFile.exists()) {
-                    dataFile.delete();
-                }
-                else {
-                    try (BufferedWriter writer = new BufferedWriter(new FileWriter(dataFile))) {
-                        writer.write(GSON.toJson(serverFormulas));
-                    }
-                }
-            }
-        }
     }
 
     /**
@@ -841,9 +599,6 @@ public class FormulaFactory {
                 .findFirst()
                 .orElseGet(() -> Pillar.createGlobalPillar(ORDER_PILLAR_CATEGORY, Collections.emptyMap()));
         orderPillar.setPillar(Collections.singletonMap("formula_order", orderedList));
-
-        // Ensure the legacy order file is removed
-        FileUtils.deleteFile(new File(getOrderDataFile()).toPath());
     }
 
     /**

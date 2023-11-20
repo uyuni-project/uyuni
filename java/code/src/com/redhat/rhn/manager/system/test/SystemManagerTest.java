@@ -207,7 +207,6 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         saltServiceMock = mock(SaltService.class);
         tmpSaltRoot = Files.createTempDirectory("salt");
         metadataDirOfficial = Files.createTempDirectory("meta");
-        FormulaFactory.setDataDir(tmpSaltRoot.toString());
         FormulaFactory.setMetadataDirOfficial(metadataDirOfficial.toString());
         context().checking(new Expectations() {
             {
@@ -320,7 +319,6 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         String minionId = minion.getMinionId();
         String formulaName = "test-formula";
-        File formulaValues = Paths.get(FormulaFactory.getPillarDir(), minionId + "_" + formulaName + ".json").toFile();
         Map<String, Object> formulaData = singletonMap("fooKey", "barVal");
         FormulaFactory.saveServerFormulas(minion, singletonList(formulaName));
         FormulaFactory.saveServerFormulaData(formulaData, minion, formulaName);
@@ -328,7 +326,6 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertNotEmpty(FormulaFactory.getFormulasByMinion(minion));
         assertTrue(FormulaFactory.getFormulaValuesByNameAndMinion(formulaName, minion).isPresent());
         // Test the filesystem part:
-        assertFalse(formulaValues.exists());
         assertEquals(formulaData,
                 minion.getPillarByCategory(FormulaFactory.PREFIX + formulaName).orElseThrow().getPillar());
 
@@ -340,8 +337,6 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         systemManager.deleteServer(user, minion.getId());
 
         assertFalse(MinionServerFactory.findByMinionId(minion.getMinionId()).isPresent());
-        assertFalse(formulaValues.exists());
-        assertFalse(new File(FormulaFactory.getServerDataFile()).exists());
     }
 
     @Test
@@ -350,7 +345,6 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         String minionId = minion.getMinionId();
 
         String formulaName = "test-formula";
-        File formulaValues = Paths.get(FormulaFactory.getPillarDir(), minionId + "_" + formulaName + ".json").toFile();
         FormulaFactory.saveServerFormulas(minion, singletonList(formulaName));
 
         context().checking(new Expectations() {{
@@ -361,8 +355,6 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         systemManager.deleteServer(user, minion.getId());
 
         assertFalse(MinionServerFactory.findByMinionId(minion.getMinionId()).isPresent());
-        assertFalse(formulaValues.exists());
-        assertFalse(new File(FormulaFactory.getServerDataFile()).exists());
     }
 
     @Test

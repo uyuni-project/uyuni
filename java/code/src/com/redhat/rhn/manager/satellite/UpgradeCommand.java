@@ -379,13 +379,7 @@ public class UpgradeCommand extends BaseTransactionCommand {
         List<MinionServer> minions = MinionServerFactory.listMinions();
         minions.forEach(minion -> {
             MinionPillarManager.INSTANCE.generatePillar(minion);
-            FormulaFactory.convertServerFormulasFromFiles(minion);
         });
-
-        // Convert group formulas
-        OrgFactory.lookupAllOrgs().forEach(org -> ServerGroupFactory.listManagedGroups(org)
-                .forEach(FormulaFactory::convertGroupFormulasFromFiles));
-        log.warn("Migrated pillars and formula pillars to database");
     }
 
     private void convertSystemThresholdFromConfig() {
