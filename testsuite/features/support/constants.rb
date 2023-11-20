@@ -195,16 +195,6 @@ PACKAGE_BY_CLIENT = { 'sle_minion' => 'bison',
 # The values can be found under Software -> Channel List -> Create Channel
 # Then have a look at Parent Channel and find the desired name
 
-# For containers we do not have SCC, so we set the Fake Base Channel
-# for sle_minion
-sle_base_channel =
-  if ENV['PROVIDER'].include? 'podman'
-    'Fake Base Channel'
-  elsif ENV['SERVER'].include?('uyuni') || ENV['SERVER'].include?('suma-pr') || ENV['SERVER'].include?('suma-test')
-    'openSUSE Leap 15.5 (x86_64)'
-  else
-    'SLES15-SP4-Pool'
-  end
 # Names of our base/parent channels
 # The keys are the Twopence targets
 # The values can be found in the webUI under Software -> Manage -> Channels -> Create Channel
