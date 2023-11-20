@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Nov 20 11:54:38 CET 2023 - rosuna@suse.com
+
+- version 4.3.22-1
+  * Drop special versioned schema files
+  * Add unique index for rhnpackagechangelogdata table
+
+-------------------------------------------------------------------
 Mon Oct 09 17:50:35 CEST 2023 - marina.latini@suse.com
 
 - version 4.3.21-1
