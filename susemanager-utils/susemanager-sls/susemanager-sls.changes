@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Mon Nov 20 11:39:39 CET 2023 - rosuna@suse.com
+
+- version 4.3.37-1
+  * Disable dnf_rhui_plugin as it breaks our susemanagerplugin (bsc#1214601)
+  * Fix susemanagerplugin to not overwrite header fields set by other plugins
+  * Let the dnf plugin log when a token was set
+  * Retry loading of pillars from DB on connection error (bsc#1214186)
+  * Recognize squashfs build results from kiwi (bsc#1216085)
+
+-------------------------------------------------------------------
 Mon Oct 09 18:22:10 CEST 2023 - marina.latini@suse.com
 
 - version 4.3.36-1
