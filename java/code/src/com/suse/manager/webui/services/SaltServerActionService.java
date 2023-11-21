@@ -2505,8 +2505,8 @@ public class SaltServerActionService {
                     }, jsonResult -> {
                         String function = (String) call.getPayload().get("fun");
 
-                        /* bsc#1197591 ssh push reboot has an answer that is not a failure but the action needs to
-                        *  stay in picked up, in this way SSHPushDriver::getCandidates can schedule a reboot correctly
+                        /* bsc#1197591 ssh push reboot has an answer that is not a failure but the action needs to stay
+                        *  in picked up, in this way SSHServiceDriver::getCandidates can schedule a reboot correctly
                         */
                         if (!action.getActionType().equals(ActionFactory.TYPE_REBOOT)) {
                             saltUtils.updateServerAction(sa, 0L, true, "n/a", jsonResult,

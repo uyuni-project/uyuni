@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013 SUSE LLC
+ * Copyright (c) 2013--2023 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.taskomatic.task.sshpush;
+package com.redhat.rhn.taskomatic.task.sshservice;
 
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.conf.Config;
@@ -45,9 +45,9 @@ import java.util.Optional;
 import java.util.Set;
 
 /**
- * Call rhn_check on relevant systems via SSH using remote port forwarding.
+ * Provide services for salt ssh clients
  */
-public class SSHPushDriver implements QueueDriver<SystemSummary> {
+public class SSHServiceDriver implements QueueDriver<SystemSummary> {
 
     // Synchronized set of systems we are currently talking to
     private static final Set<SystemSummary> CURRENT_SYSTEMS = Collections.synchronizedSet(new HashSet<>());
@@ -55,9 +55,9 @@ public class SSHPushDriver implements QueueDriver<SystemSummary> {
     // String constants
     private static final String WORKER_THREADS_KEY = "taskomatic.ssh_push_workers";
     private static final String PORT_HTTPS_KEY = "ssh_push_port_https";
-    private static final String JOB_LABEL = "ssh-push-default";
+    private static final String JOB_LABEL = "ssh-service-default";
 
-    // Logger passed in from the Job class (SSHPush)
+    // Logger passed in from the Job class (SSHService)
     private Logger log;
 
     // Port number to use for remote port forwarding
@@ -83,7 +83,7 @@ public class SSHPushDriver implements QueueDriver<SystemSummary> {
         // Read the remote port for SSH tunneling from config
         remotePort = Config.get().getInt(PORT_HTTPS_KEY);
         if (log.isDebugEnabled()) {
-            log.debug("SSHPushDriver will use port {}", remotePort);
+            log.debug("SSHServiceDriver will use port {}", remotePort);
         }
 
         this.checkinCandidatesResolver = new CheckinCandidatesResolver(
@@ -170,7 +170,7 @@ public class SSHPushDriver implements QueueDriver<SystemSummary> {
      */
     @Override
     public QueueWorker makeWorker(SystemSummary system) {
-        return new SSHPushWorkerSalt(getLogger(), system,
+        return new SSHServiceWorker(getLogger(), system,
                 GlobalInstanceHolder.SALT_API,
                 GlobalInstanceHolder.SALT_API.getSaltSSHService(),
                 GlobalInstanceHolder.SALT_SERVER_ACTION_SERVICE,

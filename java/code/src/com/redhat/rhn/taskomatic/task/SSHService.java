@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013 SUSE LLC
+ * Copyright (c) 2013--2023 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -14,26 +14,26 @@
  */
 package com.redhat.rhn.taskomatic.task;
 
-import com.redhat.rhn.taskomatic.task.sshpush.SSHPushDriver;
+import com.redhat.rhn.taskomatic.task.sshservice.SSHServiceDriver;
 
 /**
- * Call rhn_check on relevant systems via SSH using remote port forwarding.
+ * Provide services for salt ssh clients
  */
-public class SSHPush extends RhnQueueJob<SSHPushDriver> {
+public class SSHService extends RhnQueueJob<SSHServiceDriver> {
 
-    public static final String QUEUE_NAME = "ssh_push";
+    public static final String QUEUE_NAME = "ssh_service";
 
     @Override
     public String getConfigNamespace() {
-        return "sshpush";
+        return "sshservice";
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected Class<SSHPushDriver> getDriverClass() {
-        return SSHPushDriver.class;
+    protected Class<SSHServiceDriver> getDriverClass() {
+        return SSHServiceDriver.class;
     }
 
     /**
