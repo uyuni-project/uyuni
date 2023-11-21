@@ -84,8 +84,8 @@ ln -s %{_datadir}/rhn/lib/java-branding.jar %{buildroot}%{tomcat_path}/webapps/r
 %{_datadir}/rhn/lib/java-branding.jar
 %{tomcat_path}/webapps/rhn/WEB-INF/lib/java-branding.jar
 %license LICENSE
-%attr(775,tomcat,tomcat) %dir %{susemanager_shared_path}
-%attr(775,tomcat,tomcat) %dir %{wwwroot}
+%dir %{susemanager_shared_path}
+%dir %{wwwroot}
 %attr(775,tomcat,tomcat) %dir %{wwwdocroot}
 %attr(775,tomcat,tomcat) %dir %{tomcat_path}
 %attr(775,tomcat,tomcat) %dir %{tomcat_path}/webapps
