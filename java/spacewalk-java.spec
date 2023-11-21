@@ -537,9 +537,6 @@ install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d
 install -d $RPM_BUILD_ROOT%{userserverdir}/susemanager/salt
 install -d $RPM_BUILD_ROOT%{userserverdir}/susemanager/salt/salt_ssh
 install -d $RPM_BUILD_ROOT%{userserverdir}/susemanager/salt/salt_ssh/temp_bootstrap_keys
-install -d -m 775 $RPM_BUILD_ROOT%{userserverdir}/susemanager/pillar_data
-install -d -m 775 $RPM_BUILD_ROOT%{userserverdir}/susemanager/pillar_data/images
-install -d $RPM_BUILD_ROOT%{userserverdir}/susemanager/formula_data
 install -d $RPM_BUILD_ROOT%{userserverdir}/susemanager/tmp
 
 install -m 644 conf/default/rhn_hibernate.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_hibernate.conf
@@ -703,9 +700,6 @@ chown tomcat:%{apache_group} /var/log/rhn/gatherer.log
 %attr(775, tomcat, tomcat) %dir %{serverdir}/tomcat/webapps
 %dir %{userserverdir}/susemanager
 %dir %{userserverdir}/susemanager/salt
-%attr(775,tomcat,susemanager) %dir %{userserverdir}/susemanager/pillar_data
-%attr(775,tomcat,susemanager) %dir %{userserverdir}/susemanager/pillar_data/images
-%dir %{userserverdir}/susemanager/formula_data
 %attr(770, tomcat, %{salt_user_group}) %dir %{userserverdir}/susemanager/tmp
 %dir %{serverdir}/tomcat/webapps/rhn/
 %{serverdir}/tomcat/webapps/rhn/apidoc/
