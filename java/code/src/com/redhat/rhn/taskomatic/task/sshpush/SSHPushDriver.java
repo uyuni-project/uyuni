@@ -108,8 +108,7 @@ public class SSHPushDriver implements QueueDriver<SystemSummary> {
      */
     @Override
     public List<SystemSummary> getCandidates() {
-        // Find traditional systems with actions scheduled
-        List<SystemSummary> candidates = new LinkedList<>(getTraditionalCandidates());
+        List<SystemSummary> candidates = new LinkedList<>();
 
         // Find Salt systems currently rebooting,
         // i.e with reboot actions in status picked-up with picked-up time older than 4 minutes
@@ -171,17 +170,11 @@ public class SSHPushDriver implements QueueDriver<SystemSummary> {
      */
     @Override
     public QueueWorker makeWorker(SystemSummary system) {
-        // Create a Salt worker if the system has a minion id
-        if (system.getMinionId() != null) {
-            return new SSHPushWorkerSalt(getLogger(), system,
-                    GlobalInstanceHolder.SALT_API,
-                    GlobalInstanceHolder.SALT_API.getSaltSSHService(),
-                    GlobalInstanceHolder.SALT_SERVER_ACTION_SERVICE,
-                    GlobalInstanceHolder.SALT_UTILS);
-        }
-        else {
-            return new SSHPushWorker(getLogger(), remotePort, system);
-        }
+        return new SSHPushWorkerSalt(getLogger(), system,
+                GlobalInstanceHolder.SALT_API,
+                GlobalInstanceHolder.SALT_API.getSaltSSHService(),
+                GlobalInstanceHolder.SALT_SERVER_ACTION_SERVICE,
+                GlobalInstanceHolder.SALT_UTILS);
     }
 
     /**
@@ -214,17 +207,6 @@ public class SSHPushDriver implements QueueDriver<SystemSummary> {
     @Override
     public Logger getLogger() {
         return log;
-    }
-
-    /**
-     * Run query to find all candidates with actions scheduled for right now.
-     *
-     * @return list of candidates with actions scheduled
-     */
-    private DataResult<SystemSummary> getTraditionalCandidates() {
-        SelectMode select = ModeFactory.getMode(TaskConstants.MODE_NAME,
-                TaskConstants.TASK_QUERY_SSH_PUSH_FIND_TRADITIONAL_CANDIDATES);
-        return select.execute();
     }
 
     /**
