@@ -56,7 +56,7 @@ Feature: Project Lotus
     And I follow "Repositories" in the content area
     And I follow "Sync"
     And I click on "Sync Now"
-    Then I should see a "Repository sync is running" text
+    Then I should see a "Repository sync scheduled" text
     When I wait until the channel "sles15sp4-ptfs" has been synced
 
   Scenario: Pre-requisite: Add custom channel to minion
