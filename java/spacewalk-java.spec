@@ -151,7 +151,7 @@ BuildRequires:  salt-netapi-client >= 0.20
 BuildRequires:  simple-core
 BuildRequires:  simple-xml
 BuildRequires:  sitemesh
-BuildRequires:  snakeyaml
+BuildRequires:  snakeyaml >= 1.33
 BuildRequires:  spark-core
 BuildRequires:  spark-template-jade
 BuildRequires:  statistics
@@ -226,7 +226,7 @@ Requires:       objectweb-asm
 Requires:       pgjdbc-ng
 Requires:       prometheus-client-java
 Requires:       salt-netapi-client >= 0.20
-Requires:       snakeyaml
+Requires:       snakeyaml >= 1.33
 Requires:       spark-core
 Requires:       spark-template-jade
 Requires:       statistics
