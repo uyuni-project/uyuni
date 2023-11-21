@@ -518,6 +518,7 @@ When(/^I extract the log files from all our active nodes$/) do
   $node_by_host.each do |host, node|
     next if node.nil? || %w[salt_migration_minion localhost *-ctl].include?(host)
 
+    $stdout.puts "Host: #{host}"
     $stdout.puts "Node: #{node.full_hostname}"
     extract_logs_from_node(node)
   end
