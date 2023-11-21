@@ -136,7 +136,7 @@ BuildRequires:  salt-netapi-client >= 0.20
 BuildRequires:  simple-core
 BuildRequires:  simple-xml
 BuildRequires:  sitemesh
-BuildRequires:  snakeyaml
+BuildRequires:  snakeyaml >= 1.33
 BuildRequires:  spark-core
 BuildRequires:  spark-template-jade
 BuildRequires:  statistics
@@ -222,7 +222,7 @@ Requires:       salt-netapi-client >= 0.20
 Requires:       simple-core
 Requires:       simple-xml
 Requires:       sitemesh
-Requires:       snakeyaml
+Requires:       snakeyaml >= 1.33
 Requires:       spacewalk-branding
 Requires:       spacewalk-java-config
 Requires:       spacewalk-java-jdbc
