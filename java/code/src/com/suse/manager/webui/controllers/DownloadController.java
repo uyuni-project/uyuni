@@ -502,7 +502,7 @@ public class DownloadController {
         header = StringUtils.isNotBlank(header) ? header : getTokenForDebian(request);
         if (queryParams.isEmpty() && StringUtils.isBlank(header)) {
             if (LOG.isInfoEnabled()) {
-                LOG.info("Forbidden: You need a token to access {}", request.pathInfo().replaceAll("[\n\r\t]", "_"));
+                LOG.info("Forbidden: You need a token to access {}", StringUtil.sanitizeLogInput(request.pathInfo()));
             }
             halt(HttpStatus.SC_FORBIDDEN, String.format("You need a token to access %s", request.pathInfo()));
         }
@@ -534,6 +534,18 @@ public class DownloadController {
     }
 
     /**
+     * @param token the token
+     * @return the last characters of the token
+     */
+    private static String sanitizeToken(String token) {
+        if (token != null) {
+            String tk = StringUtil.sanitizeLogInput(token);
+            return tk.substring(tk.length() - 20);
+        }
+        return token;
+    }
+
+    /**
      * Validate a given token for a given channel.
      *
      * @param token the token to validate
@@ -545,11 +557,11 @@ public class DownloadController {
         AccessTokenFactory.lookupByToken(token).ifPresentOrElse(obj -> {
             Instant now = Instant.now();
             if (!obj.getValid() || now.isAfter(obj.getExpiration().toInstant())) {
-                LOG.info("Forbidden: invalid token {} to access {}", token, filename);
+                LOG.info("Forbidden: invalid token ...{} to access {}", sanitizeToken(token), filename);
                 halt(HttpStatus.SC_FORBIDDEN, "This token is not valid");
             }
-        }, () -> LOG.debug("Token {} to access {} doesn't exists in the database - could be an image build token",
-                token, filename)
+        }, () -> LOG.debug("Token ...{} to access {} doesn't exists in the database - could be an image build token",
+                sanitizeToken(token), filename)
         );
         try {
             JwtClaims claims = JWT_CONSUMER.processToClaims(token);
@@ -566,13 +578,14 @@ public class DownloadController {
                     // new versions of getStringListClaimValue() return an empty list instead of null
                     .filter(l -> !l.isEmpty());
             Opt.consume(channelClaim,
-                    () -> LOG.info("Token {} does provide access to any channel",
-                            StringUtil.sanitizeLogInput(token)),
+                    () -> LOG.info("Token ...{} does provide access to any channel",
+                            sanitizeToken(token)),
                     channels -> {
                 if (!channels.contains(channel)) {
-                    LOG.info("Forbidden: Token {} does not provide access to channel {}", token, channel);
+                    LOG.info("Forbidden: Token ...{} does not provide access to channel {}",
+                            sanitizeToken(token), channel);
                     LOG.info("Token allow access only to the following channels: {}", String.join(",", channels));
-                    halt(HttpStatus.SC_FORBIDDEN, "Token " + token + " does not provide access to channel " + channel);
+                    halt(HttpStatus.SC_FORBIDDEN, "Token does not provide access to channel " + channel);
                 }
             });
 
@@ -589,8 +602,8 @@ public class DownloadController {
             });
         }
         catch (InvalidJwtException | MalformedClaimException e) {
-            LOG.info("Forbidden: Token {} is not valid to access {} in {}: {}", token, filename, channel,
-                    e.getMessage());
+            LOG.info("Forbidden: Token ...{} is not valid to access {} in {}: {}",
+                    sanitizeToken(token), filename, channel, e.getMessage());
             halt(HttpStatus.SC_FORBIDDEN,
                  String.format("Token is not valid to access %s in %s: %s", filename, channel, e.getMessage()));
         }
@@ -665,8 +678,8 @@ public class DownloadController {
                 }
             }
             catch (InvalidJwtException | MalformedClaimException e) {
-                LOG.info(String.format("Forbidden: Short-token %s is not valid or is expired: %s",
-                        token, e.getMessage()));
+                LOG.info("Forbidden: Short-token ...{} is not valid or is expired: {}",
+                        sanitizeToken(token), e.getMessage());
                 halt(HttpStatus.SC_FORBIDDEN,
                         "Forbidden: Short-token is not valid or is expired");
             }
