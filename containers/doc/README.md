@@ -94,7 +94,7 @@ done
 In order to tell K3s to not pull the images, set the image pull policy needs to be set to `Never`.
 This needs to be done for both Uyuni and cert-manager helm charts.
 
-To prevent Helm from pulling the images pass the `--image=pullPolicy=never` parameter to `uyuniadm install` or `uyuniadm migrate`.
+To prevent Helm from pulling the images pass the `--image-pullPolicy=never` parameter to `uyuniadm install` or `uyuniadm migrate`.
 
 To use the downloaded helm charts instead of the default ones, pass `--helm-uyuni-chart=server-helm-2023.10.0.tgz` and `--helm-certmanager-chart=cert-manager-v1.13.1.tgz` or add the following to the `uyuniadm` configuration file. Of course the versions in the file name need to be adjusted to what you downloaded:
 
@@ -155,7 +155,7 @@ Transfer the resulting `server-image.tar` to the server and load it using the fo
 podman load -i server.tar
 ```
 
-To prevent pulling the images pass the `--image=pullPolicy=never` parameter to `uyuniadm install` or `uyuniadm migrate`.
+To prevent pulling the images pass the `--image-pullPolicy=never` parameter to `uyuniadm install` or `uyuniadm migrate`.
 
 # Migrating from a regular server
 
