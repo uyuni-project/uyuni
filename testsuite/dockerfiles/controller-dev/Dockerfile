@@ -37,3 +37,4 @@ RUN zypper ref -f && \
     zypper clean -a
 COPY etc_pam.d_sshd /etc/pam.d/sshd
 CMD ssh-keygen -A && /usr/sbin/sshd -De
+RUN curl https://raw.githubusercontent.com/uyuni-project/uyuni/master/testsuite/Gemfile -o Gemfile && bundle.ruby2.5 install && rm Gemfile
