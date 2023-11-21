@@ -58,7 +58,7 @@ public class MinionCheckin extends RhnJavaJob {
     /**
      * Retrieves the IDs of regular minions candidates to perform a check-in.
      *
-     * @see CheckinRegularMinionsResolver#getCheckinCandidates()
+     * @see CheckinCandidatesResolver#getCheckinCandidates()
      * @return a list of minion IDs
      */
     private List<String> findCheckinCandidatesIds() {

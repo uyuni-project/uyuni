@@ -40,8 +40,8 @@ import org.apache.logging.log4j.Logger;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -50,14 +50,14 @@ import java.util.Optional;
  */
 public class SSHServiceWorker implements QueueWorker {
 
-    private Logger log;
-    private SystemSummary system;
+    private final Logger log;
+    private final SystemSummary system;
     private TaskQueue parentQueue;
 
-    private SaltApi saltApi;
-    private SaltSSHService saltSSHService;
-    private SaltServerActionService saltServerActionService;
-    private SaltUtils saltUtils;
+    private final SaltApi saltApi;
+    private final SaltSSHService saltSSHService;
+    private final SaltServerActionService saltServerActionService;
+    private final SaltUtils saltUtils;
 
 
     /**
@@ -67,7 +67,7 @@ public class SSHServiceWorker implements QueueWorker {
      * @param saltServiceIn the salt service to work with
      * @param saltSSHServiceIn the {@link SaltSSHService} to work with
      * @param saltServerActionServiceIn the {@link SaltServerActionService} to work with
-     * @param saltUtilsIn
+     * @param saltUtilsIn the {@link SaltUtils} to work with
      */
     public SSHServiceWorker(Logger logger, SystemSummary systemIn,
                             SaltApi saltServiceIn, SaltSSHService saltSSHServiceIn,
@@ -168,7 +168,7 @@ public class SSHServiceWorker implements QueueWorker {
                 },
                 Optional::of);
 
-        if (!confValues.isPresent() || confValues.get().isEmpty()) {
+        if (confValues.isEmpty() || confValues.get().isEmpty()) {
             log.debug("No action chain execution pending on minion {}", minion.getMinionId());
             return false;
         }
@@ -231,11 +231,11 @@ public class SSHServiceWorker implements QueueWorker {
         }
 
         Optional<LocalDateTime> currentBootTime = parseDateTime(minion, currentBoot);
-        if (!currentBootTime.isPresent()) {
+        if (currentBootTime.isEmpty()) {
             return false;
         }
         Optional<LocalDateTime> persistBootTime = parseDateTime(minion, persistBoot);
-        if (!currentBootTime.isPresent()) {
+        if (persistBootTime.isEmpty()) {
             return false;
         }
 
@@ -272,9 +272,10 @@ public class SSHServiceWorker implements QueueWorker {
 
             Result<Map<String, State.ApplyResult>> chunkResult = res.get(minion.getMinionId());
             if (chunkResult != null) {
-                if (chunkResult.result().isPresent()) {
+                Optional<Map<String, State.ApplyResult>> optResult = chunkResult.result();
+                if (optResult.isPresent()) {
                     return saltServerActionService
-                            .handleActionChainSSHResult(nextActionId, minion.getMinionId(), chunkResult.result().get());
+                            .handleActionChainSSHResult(nextActionId, minion.getMinionId(), optResult.get());
                 }
                 else {
                     String errMsg = chunkResult.error().map(saltErr -> saltErr.fold(
@@ -343,11 +344,11 @@ public class SSHServiceWorker implements QueueWorker {
     private void updateSystemInfo(MinionList minionTarget) {
         try {
             LocalCall<SystemInfo> systeminfo =
-                    State.apply(Arrays.asList(ApplyStatesEventMessage.SYSTEM_INFO),
+                    State.apply(List.of(ApplyStatesEventMessage.SYSTEM_INFO),
                     Optional.empty(), Optional.of(true), Optional.empty(), SystemInfo.class);
             Map<String, Result<SystemInfo>> systemInfoMap = saltSSHService.callSyncSSH(systeminfo, minionTarget);
-            systemInfoMap.entrySet().stream().forEach(entry-> entry.getValue().result().ifPresent(si-> {
-                Optional<MinionServer> minionServer = MinionServerFactory.findByMinionId(entry.getKey());
+            systemInfoMap.forEach((key, value) -> value.result().ifPresent(si -> {
+                Optional<MinionServer> minionServer = MinionServerFactory.findByMinionId(key);
                 minionServer.ifPresent(minion -> saltUtils.updateSystemInfo(si, minion));
             }));
         }
