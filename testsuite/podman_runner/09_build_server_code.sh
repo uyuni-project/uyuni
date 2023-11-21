@@ -1,5 +1,8 @@
 #!/bin/bash
 set -xe
+sudo -i podman exec uyuni-server-all-in-one-test bash -c "dig download.opensuse.org || true"
+sudo -i podman exec uyuni-server-all-in-one-test bash -c "nslookup download.opensuse.org || true"
+sudo -i podman exec uyuni-server-all-in-one-test bash -c "traceroute download.opensuse.org || true"
 sudo -i podman exec uyuni-server-all-in-one-test bash -c "curl -I -vvv http://download.opensuse.org || true"
 sudo -i podman exec uyuni-server-all-in-one-test bash -c "curl -I4 -vvv http://download.opensuse.org || true"
 sudo -i podman exec uyuni-server-all-in-one-test bash -c "curl -I6 -vvv http://download.opensuse.org || true"
