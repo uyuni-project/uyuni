@@ -8345,6 +8345,12 @@ Follow this url to see the full list of inactive systems:
           To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup/MirrorCredentials.do"&gt;here&lt;/a&gt;.
         </source>
       </trans-unit>
+      <trans-unit id="message.payg.errornotcompliant" xml:space="preserve">
+        <source>
+          This @@PRODUCT_NAME@@ Pay-as-you-go instance is not compliant and some of its functions will be disabled. Please contact your administrator to
+          amend the situation before continuing using the product.
+        </source>
+      </trans-unit>
       <trans-unit id="message.payg.errorbyosnosccssm" xml:space="preserve">
         <source>
 @@PRODUCT_NAME@@ is not able to manage these instances since there are one or more Bring-your-own-subscription and no SCC credentials are set.
