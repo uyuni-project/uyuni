@@ -17,7 +17,9 @@
 
 
 %if 0%{?suse_version}
-%global wwwdocroot /usr/share/susemanager/www/htdocs
+%global susemanager_shared_path /usr/share/susemanager
+%global wwwroot %{susemanager_shared_path}/www
+%global wwwdocroot %{wwwroot}/htdocs
 %else
 %global wwwdocroot %{_localstatedir}/www/html
 %endif
@@ -68,6 +70,11 @@ install -m 644 license.txt $RPM_BUILD_ROOT/%_defaultdocdir/susemanager/
 %docdir %_defaultdocdir/susemanager
 %dir %_defaultdocdir/susemanager
 %_defaultdocdir/susemanager/license.txt
+%if 0%{?suse_version}
+%dir %{susemanager_shared_path}
+%dir %{wwwroot}
+%endif
+%dir %{wwwdocroot}
 %dir %{wwwdocroot}/help
 %{wwwdocroot}/help/eula.html
 
