@@ -944,7 +944,8 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                 "oel".equalsIgnoreCase(grains.getValueAsString("os")) ||
                 "alibaba cloud (aliyun)".equalsIgnoreCase(grains.getValueAsString("os")) ||
                 "almalinux".equalsIgnoreCase(grains.getValueAsString("os")) ||
-                "amazon".equalsIgnoreCase(grains.getValueAsString("os")) ||
+                ("amazon".equalsIgnoreCase(grains.getValueAsString("os")) &&
+                 "2".equalsIgnoreCase(grains.getValueAsString("osmajorrelease"))) ||
                 "rocky".equalsIgnoreCase(grains.getValueAsString("os"))) {
             MinionList target = new MinionList(Arrays.asList(minionId));
             Optional<Result<String>> whatprovidesRes = saltApi.runRemoteCommand(target,
