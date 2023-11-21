@@ -823,11 +823,11 @@ class RepoSync(object):
         absdir = os.path.join(mount_point, relativedir)
         if not os.path.exists(absdir):
             os.makedirs(absdir)
-        compressed_suffixes = ['.gz', '.bz', '.xz']
-        if comps_type == 'comps' and not re.match('comps.xml(' + "|".join(compressed_suffixes) + ')*', basename):
+        compressed_suffixes = ['.gz', '.bz', '.xz', '.bz2']
+        if comps_type == 'comps' and not re.match('comps.xml(' + "|".join(compressed_suffixes) + ')?$', basename):
             log(0, "  Renaming non-standard filename %s to %s." % (basename, 'comps' + basename[basename.find('.'):]))
             basename = 'comps' + basename[basename.find('.'):]
-        elif comps_type == 'modules' and re.match('modules.yaml(' + "|".join(compressed_suffixes) + ')*', basename):
+        elif comps_type == 'modules' and re.match('modules.yaml(' + "|".join(compressed_suffixes) + ')?$', basename):
             # decompress only for getting the checksum
             checksum = self._get_decompressed_file_checksum(filename, 'sha256')
             basename = checksum + "-" + basename
