@@ -37,12 +37,12 @@ public class CheckinCandidatesResolver {
     private static final Logger LOG = LogManager.getLogger(CheckinCandidatesResolver.class);
 
     // Properties used for generating random checkin thresholds
-    private long thresholdMax;
+    private final long thresholdMax;
     protected int thresholdMin;
-    private double mean;
-    private double stddev;
+    private final double mean;
+    private final double stddev;
 
-    private String findCheckinCandidatesQuery;
+    private final String findCheckinCandidatesQuery;
 
     /**
      * Constructor for CheckinCandidatesResolver.
@@ -53,9 +53,9 @@ public class CheckinCandidatesResolver {
         this.findCheckinCandidatesQuery = findCheckinCandidatesQueryIn;
         this.thresholdMax = SatConfigFactory.getSatConfigLongValue(SatConfigFactory.SYSTEM_CHECKIN_THRESHOLD, 1L) *
                 86400;
-        this.thresholdMin = Math.round(this.thresholdMax / 2);
+        this.thresholdMin = (int) (this.thresholdMax / 2);
         this.mean = this.thresholdMax;
-        this.stddev = this.thresholdMax / 6;
+        this.stddev = this.thresholdMax / 6.0;
     }
 
     /**
