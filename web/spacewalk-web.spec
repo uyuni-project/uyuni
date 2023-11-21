@@ -16,22 +16,16 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
-%if 0%{?suse_version}
-%define shared_path /usr/share/susemanager
+%define shared_path %{_datadir}/susemanager
 %define shared_www_path %{shared_path}/www
 %define www_path %{shared_www_path}/htdocs
+
 %if 0%{?suse_version}
-%define apache_user wwwrun
 %define apache_group www
 %else
-%if 0%{?rhel}
-%define apache_user root
-%define apache_group root
-%else
-%define apache_user apache
 %define apache_group apache
 %endif
-%endif
+
 %{!?rhel: %global sbinpath /sbin}%{?rhel: %global sbinpath %{_sbindir}}
 %{!?nodejs_sitelib:%define nodejs_sitelib %{_prefix}/lib/node_modules}
 
@@ -252,10 +246,8 @@ sed -i -e 's/^web.theme_default =.*$/web.theme_default = susemanager-light/' $RP
 
 %files -n spacewalk-html -f spacewalk-web.lang
 %defattr(644,root,root,755)
-%if 0%{?suse_version}
 %dir %{shared_path}
 %dir %{shared_www_path}
-%endif
 %dir %{www_path}
 %dir %{www_path}/css
 %{www_path}/css/*.{css,js}

@@ -28,7 +28,6 @@
 %define run_checkstyle  0
 %define omit_tests      1
 
-%define shareddir       %{_datadir}
 %define susemanagershareddir       %{_datadir}/susemanager
 %define serverdir       %{susemanagershareddir}/www
 %define salt_user_group salt

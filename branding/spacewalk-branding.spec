@@ -20,13 +20,13 @@
 %global debug_package %{nil}
 
 %if 0%{?fedora} || 0%{?rhel} >= 7
-%global susemanager_shared_path /usr/share/susemanager
+%global susemanager_shared_path  %{_datadir}/susemanager
 %global wwwroot %{susemanager_shared_path}/www
 %global tomcat_path %{wwwroot}/tomcat
 %global wwwdocroot %{wwwroot}/www/html
 %else
 %if 0%{?sle_version}
-%global susemanager_shared_path /usr/share/susemanager
+%global susemanager_shared_path  %{_datadir}/susemanager
 %global wwwroot %{susemanager_shared_path}/www
 %global tomcat_path %{wwwroot}/tomcat
 %global wwwdocroot %{wwwroot}/htdocs
