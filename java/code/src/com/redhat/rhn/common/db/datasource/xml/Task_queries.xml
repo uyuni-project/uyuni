@@ -697,7 +697,7 @@ SELECT DISTINCT s.id, s.name, scm.label as contact_method_label, smi.minion_id
   </query>
 </mode>
 
-<mode name="ssh_push_find_queued_minion_actions_with_prereq" class="com.redhat.rhn.taskomatic.task.sshpush.SSHPushAction">
+<mode name="ssh_push_find_queued_minion_actions_with_prereq" class="com.redhat.rhn.taskomatic.task.sshservice.SSHPushAction">
   <query>
 SELECT at.label AS action_type, sa.status AS action_status, a.id AS action_id, s.id AS system_id, s.name AS system_name, smi.minion_id AS minion_id
   FROM rhnServer s

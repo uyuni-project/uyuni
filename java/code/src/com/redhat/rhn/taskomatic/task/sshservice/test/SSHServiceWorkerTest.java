@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.taskomatic.task.sshpush.test;
+package com.redhat.rhn.taskomatic.task.sshservice.test;
 
 import static com.redhat.rhn.domain.action.ActionFactory.STATUS_COMPLETED;
 import static com.redhat.rhn.domain.action.ActionFactory.STATUS_QUEUED;
@@ -30,7 +30,7 @@ import com.redhat.rhn.domain.action.test.ActionFactoryTest;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.taskomatic.task.checkin.SystemSummary;
-import com.redhat.rhn.taskomatic.task.sshpush.SSHPushWorkerSalt;
+import com.redhat.rhn.taskomatic.task.sshservice.SSHServiceWorker;
 import com.redhat.rhn.taskomatic.task.threaded.TaskQueue;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
@@ -69,9 +69,9 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * SSHPushWorkerSaltTest
+ * SSHServiceWorkerTest
  */
-public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
+public class SSHServiceWorkerTest extends JMockBaseTestCaseWithUser {
 
     private Logger logger = LogManager.getLogger(SSHMinionBootstrapperTest.class);
 
@@ -120,7 +120,7 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
             }
         };
 
-        SSHPushWorkerSalt worker = successWorker(new TestSystemQuery(), saltApi);
+        SSHServiceWorker worker = successWorker(new TestSystemQuery(), saltApi);
 
         context().checking(new Expectations() {{
 
@@ -189,7 +189,7 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
                 return Optional.of(true);
             }
         };
-        SSHPushWorkerSalt worker = successWorker(new TestSystemQuery(), saltApi);
+        SSHServiceWorker worker = successWorker(new TestSystemQuery(), saltApi);
 
         context().checking(new Expectations() {{
 
@@ -248,7 +248,7 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
             }
         };
 
-        SSHPushWorkerSalt worker = successWorker(new TestSystemQuery(), saltApi);
+        SSHServiceWorker worker = successWorker(new TestSystemQuery(), saltApi);
 
         context().checking(new Expectations() {{
             oneOf(saltSSHServiceMock).cleanPendingActionChainAsync(with(any(MinionServer.class)));
@@ -309,10 +309,10 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
         return mockQueue;
     }
 
-    private SSHPushWorkerSalt successWorker(SystemQuery systemQuery, SaltApi saltApi) {
+    private SSHServiceWorker successWorker(SystemQuery systemQuery, SaltApi saltApi) {
         SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi);
         SaltKeyUtils saltKeyUtils = new SaltKeyUtils(saltApi);
-        return new SSHPushWorkerSalt(
+        return new SSHServiceWorker(
                 logger,
                 sshPushSystemMock,
                 saltApi,

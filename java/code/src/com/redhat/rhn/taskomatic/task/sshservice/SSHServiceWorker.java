@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 SUSE LLC
+ * Copyright (c) 2016--2023 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.taskomatic.task.sshpush;
+package com.redhat.rhn.taskomatic.task.sshservice;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -46,9 +46,9 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * SSH push worker for checking in ssh-push systems and resuming action chains via Salt SSH.
+ * SSH Service worker for checking in ssh-push systems and resuming action chains via Salt SSH.
  */
-public class SSHPushWorkerSalt implements QueueWorker {
+public class SSHServiceWorker implements QueueWorker {
 
     private Logger log;
     private SystemSummary system;
@@ -69,9 +69,9 @@ public class SSHPushWorkerSalt implements QueueWorker {
      * @param saltServerActionServiceIn the {@link SaltServerActionService} to work with
      * @param saltUtilsIn
      */
-    public SSHPushWorkerSalt(Logger logger, SystemSummary systemIn,
-            SaltApi saltServiceIn, SaltSSHService saltSSHServiceIn,
-            SaltServerActionService saltServerActionServiceIn, SaltUtils saltUtilsIn) {
+    public SSHServiceWorker(Logger logger, SystemSummary systemIn,
+                            SaltApi saltServiceIn, SaltSSHService saltSSHServiceIn,
+                            SaltServerActionService saltServerActionServiceIn, SaltUtils saltUtilsIn) {
         log = logger;
         system = systemIn;
         saltApi = saltServiceIn;
@@ -127,7 +127,7 @@ public class SSHPushWorkerSalt implements QueueWorker {
             HibernateFactory.closeSession();
 
             // Finished talking to this system
-            SSHPushDriver.getCurrentSystems().remove(system);
+            SSHServiceDriver.getCurrentSystems().remove(system);
         }
     }
 
