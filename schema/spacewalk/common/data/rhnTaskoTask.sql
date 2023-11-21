@@ -69,7 +69,7 @@ INSERT INTO rhnTaskoTask (id, name, class)
          VALUES (sequence_nextval('rhn_tasko_task_id_seq'), 'cleanup-packagechangelog-data', 'com.redhat.rhn.taskomatic.task.ChangeLogCleanUp');
 
 INSERT INTO rhnTaskoTask (id, name, class)
-         VALUES (sequence_nextval('rhn_tasko_task_id_seq'), 'ssh-push', 'com.redhat.rhn.taskomatic.task.SSHPush');
+         VALUES (sequence_nextval('rhn_tasko_task_id_seq'), 'ssh-service', 'com.redhat.rhn.taskomatic.task.SSHService');
 
 INSERT INTO rhnTaskoTask (id, name, class)
          VALUES (sequence_nextval('rhn_tasko_task_id_seq'), 'cve-server-channels', 'com.redhat.rhn.taskomatic.task.CVEServerChannels');
