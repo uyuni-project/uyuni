@@ -184,14 +184,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                          table="suseMinionInfo">
             <key column="server_id"/>
             <property name="minionId" column="minion_id" />
-            <!--
-            We typically look at the packages installed on a system to identify whether a reboot is necessary.
-            This property initially only works for transactional systems, but the idea is that gradually the
-            other types of systems also provide this information directly to be stored here so we no longer rely
-            on package related inference to determine whether a reboot is necessary. Even because this
-            information does not always depend only on the packages.
-            -->
-            <property name="rebootNeeded" column="reboot_needed" type="yes_no" />
+            <property name="rebootRequiredAfter" column="reboot_required_after" type="timestamp" />
             <property name="osFamily" column="os_family"  type="string" length="32" />
             <property name="kernelLiveVersion" column="kernel_live_version"  type="string" length="255" />
             <property name="sshPushPort" column="ssh_push_port" access="field"/>
