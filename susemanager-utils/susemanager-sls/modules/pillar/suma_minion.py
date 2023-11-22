@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 '''
 Retrieve SUSE Manager pillar data for a minion_id.
-- Adds generated and static SUSE Manager pillar data.
+- Adds generated SUSE Manager pillar data.
 - Adds formula pillar data.
 
 .. code-block:: yaml
@@ -26,15 +26,10 @@ try:
 except ImportError:
     HAS_POSTGRES = False
 
-# SUSE Manager static pillar paths:
-MANAGER_STATIC_PILLAR_DATA_PATH = '/usr/share/susemanager/pillar_data'
-MANAGER_PILLAR_DATA_PATHS = ['/srv/susemanager/pillar_data', '/var/lib/susemanager/pillar_data']
-
 # SUSE Manager formulas paths:
 MANAGER_FORMULAS_METADATA_MANAGER_PATH = '/usr/share/susemanager/formulas/metadata'
 MANAGER_FORMULAS_METADATA_STANDALONE_PATH = '/usr/share/salt-formulas/metadata'
 CUSTOM_FORMULAS_METADATA_PATH = '/srv/formula_metadata'
-FORMULAS_DATA_PATHS = ['/srv/susemanager/formula_data', '/var/lib/susemanager/formula_data']
 FORMULA_PREFIX = 'formula-'
 
 def find_path(path_list):
@@ -45,17 +40,6 @@ def find_path(path_list):
         if os.path.isdir(path):
             return path
     return path_list[0]
-
-# Reassign alternative paths for different OS.
-MANAGER_PILLAR_DATA_PATH = find_path(MANAGER_PILLAR_DATA_PATHS)
-FORMULAS_DATA_PATH = find_path(FORMULAS_DATA_PATHS)
-
-# OS images path:
-IMAGES_DATA_PATH = os.path.join(MANAGER_PILLAR_DATA_PATH, 'images')
-
-# SUSE Manager static pillar data.
-MANAGER_STATIC_PILLAR = [
-]
 
 formulas_metadata_cache = dict()
 
@@ -163,9 +147,6 @@ def ext_pillar(minion_id, pillar, *args):
     group_formulas = {}
     system_formulas = {}
 
-    # Load the pillar from the legacy files
-    ret = load_static_pillars(ret)
-
     # Load the global pillar from DB
     def _load_db_pillar(cursor):
         nonlocal ret
@@ -185,14 +166,6 @@ def ext_pillar(minion_id, pillar, *args):
                    strategy='recurse')
     except Exception as error:
         log.error('Error accessing formula pillar data: %s', error)
-
-    # Including images pillar
-    try:
-        ret = salt.utils.dictupdate.merge(ret,
-                   image_pillars(minion_id, ret.get("group_ids", []), ret.get("org_id", 1)),
-                   strategy='recurse')
-    except Exception as error:
-        log.error('Error accessing image pillar data: {}'.format(str(error)))
 
     return ret
 
@@ -283,19 +256,6 @@ def load_system_pillars(minion_id, cursor, pillar):
             pillar = salt.utils.dictupdate.merge(pillar, row[1], strategy='recurse')
 
     return (server_formulas, pillar)
-
-
-def load_static_pillars(pillar):
-    """
-    Including SUSE Manager static pillar data
-    """
-    for static_pillar in MANAGER_STATIC_PILLAR:
-        static_pillar_filename = os.path.join(MANAGER_STATIC_PILLAR_DATA_PATH, static_pillar)
-        try:
-            pillar.update(yaml.load(open('{0}.yml'.format(static_pillar_filename)).read(), Loader=yaml.FullLoader))
-        except Exception as exc:
-            log.error('Error accessing "{0}": {1}'.format(static_pillar_filename, exc))
-    return pillar
 
 
 def formula_pillars(system_formulas, group_formulas, all_pillar):
@@ -448,45 +408,6 @@ def get_edit_group_subtype(element):
         if prototype.get("$key") is not None and prototype.get("$type", "group") == "group":
             return EditGroupSubtype.DICTIONARY_OF_DICTIONARIES
     return None
-
-def image_pillars(minion_id, group_ids, org_id):
-    '''
-    Load image pillars
-
-    Image pillars are automatically created after image build and are available to all minions
-    '''
-    ret = {}
-    group_dirs = []
-    org_dirs = []
-
-    for pillar in os.listdir(IMAGES_DATA_PATH):
-        pillar_path = os.path.join(IMAGES_DATA_PATH, pillar)
-
-        # read also pilars from top dir, for backward compatibility
-        if os.path.isfile(pillar_path) and pillar.endswith('.sls'):
-            try:
-                with open(pillar_path) as p:
-                    ret = salt.utils.dictupdate.merge(ret, yaml.load(p.read(), Loader=yaml.FullLoader), strategy='recurse')
-            except Exception as error:
-                log.error('Error loading data for image "{image}": {message}'.format(image=pillar.path(), message=str(error)))
-
-        elif os.path.isdir(pillar_path):
-            if pillar.startswith('org') and int(pillar[3:]) == org_id:
-                org_dirs.append(pillar_path)
-            elif pillar.startswith('group') and int(pillar[5:]) in group_ids:
-                group_dirs.append(pillar_path)
-
-    for pillar_dir in org_dirs + group_dirs:
-        for pillar in os.listdir(pillar_dir):
-            pillar_path = os.path.join(pillar_dir, pillar)
-            if os.path.isfile(pillar_path) and pillar.endswith('.sls'):
-                try:
-                    with open(pillar_path) as p:
-                        ret = salt.utils.dictupdate.merge(ret, yaml.load(p.read(), Loader=yaml.FullLoader), strategy='recurse')
-                except Exception as error:
-                    log.error('Error loading data for image "{image}": {message}'.format(image=pillar.path(), message=str(error)))
-
-    return ret
 
 def load_formula_metadata(formula_name):
     if formula_name in formulas_metadata_cache:
