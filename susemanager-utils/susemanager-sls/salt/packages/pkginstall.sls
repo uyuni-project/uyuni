@@ -1,6 +1,7 @@
 {% if pillar.get('param_pkgs') %}
 pkg_installed:
   pkg.installed:
+    -   normalize: false
     -   refresh: true
 {%- if grains['os_family'] == 'Debian' %}
     - skip_verify: {{ not pillar.get('mgr_metadata_signing_enabled', false) }}
