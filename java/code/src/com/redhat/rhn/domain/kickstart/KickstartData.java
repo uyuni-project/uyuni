@@ -1458,6 +1458,7 @@ public class KickstartData {
      *              taskomatic.
      * @return the Profile associated to this ks data
      */
+
     public Profile getCobblerObject(User user) {
         if (StringUtils.isBlank(getCobblerId())) {
             return null;
