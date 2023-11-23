@@ -356,7 +356,7 @@ end
 
 Then(/^solver file for "([^"]*)" should reference "([^"]*)"$/) do |channel, pkg|
   repeat_until_timeout(timeout: 600, message: "Reference #{pkg} not found in file.") do
-    _result, code = get_target('server').run("dumpsolv /var/cache/rhn/repodata/#{channel}/solv | grep #{pkg}", verbose: true, check_errors: false)
+    _result, code = get_target('server').run("dumpsolv /var/cache/rhn/repodata/#{channel}/solv | grep #{pkg}", verbose: false, check_errors: false)
     break if code.zero?
   end
 end
