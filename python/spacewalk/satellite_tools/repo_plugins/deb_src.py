@@ -21,6 +21,7 @@ import time
 import re
 import fnmatch
 import requests
+import logging
 from functools import cmp_to_key
 from salt.utils.versions import LooseVersion
 from uyuni.common import fileutils
@@ -44,7 +45,7 @@ except ImportError:
 RETRIES = 10
 RETRY_DELAY = 1
 FORMAT_PRIORITY = ['.xz', '.gz', '']
-
+log = logging.getLogger(__name__)
 
 class DebPackage:
     def __init__(self):
@@ -401,8 +402,13 @@ class ContentSource:
         to_return = []
         for pack in pkglist:
             new_pack = ContentPackage()
-            new_pack.setNVREA(pack.name, pack.version, pack.release,
-                              pack.epoch, pack.arch)
+            try:
+                new_pack.setNVREA(pack.name, pack.version, pack.release,
+                                pack.epoch, pack.arch)
+            except ValueError as e:
+                log(0, "WARNING: package contains incorrect metadata. SKIPPING!")
+                log(0, e)
+                continue
             new_pack.unique_id = pack
             new_pack.checksum_type = pack.checksum_type
             new_pack.checksum = pack.checksum
