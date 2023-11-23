@@ -197,4 +197,15 @@ public class ContentSource extends BaseDomainHelper implements Identifiable {
     public void setRepositoryAuth(SCCRepositoryAuth repoAuth) {
         repositoryAuth = repoAuth;
     }
+
+    @Override
+    public String toString() {
+        return "ContentSource{" +
+                "id=" + id +
+                ", org=" + org +
+                ", type=" + type +
+                ", label='" + label + '\'' +
+                ", metadataSigned=" + metadataSigned +
+                '}';
+    }
 }

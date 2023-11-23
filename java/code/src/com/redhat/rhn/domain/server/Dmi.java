@@ -199,6 +199,17 @@ public class Dmi extends BaseDomainHelper {
                                     .toHashCode();
     }
 
+    @Override
+    public String toString() {
+        return "Dmi{" +
+                "id=" + id +
+                ", server=" + server +
+                ", vendor='" + vendor + '\'' +
+                ", system='" + system + '\'' +
+                ", bios='" + getBios() +
+                '}';
+    }
+
     /**
      * Bios class
      */
@@ -293,6 +304,15 @@ public class Dmi extends BaseDomainHelper {
                                         .append(version)
                                         .append(release)
                                         .toHashCode();
+        }
+
+        @Override
+        public String toString() {
+            return "Bios{" +
+                    "vendor='" + vendor + '\'' +
+                    ", version='" + version + '\'' +
+                    ", release='" + release + '\'' +
+                    '}';
         }
     }
 }
