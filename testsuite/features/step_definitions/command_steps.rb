@@ -133,6 +133,32 @@ When(/^I add "([^"]*)" channel$/) do |channel|
   get_target('server').run("echo -e \"admin\nadmin\n\" | mgr-sync add channel #{channel}", buffer_size: 1_000_000)
 end
 
+When(/^I use spacewalk-channel to add "([^"]*)"$/) do |child_channel|
+  command = "spacewalk-channel --add -c #{child_channel} -u admin -p admin"
+  $command_output, _code = get_target('client').run(command)
+end
+
+Then(/^spacewalk-channel should fail adding "([^"]*)"$/) do |invalid_channel|
+  command = "spacewalk-channel --add -c #{invalid_channel} -u admin -p admin"
+  $command_output, code = get_target('client').run(command, check_errors: false)
+  raise "#{command} should fail, but hasn't" if code.zero?
+end
+
+When(/^I use spacewalk-channel to remove "([^"]*)"$/) do |child_channel|
+  command = "spacewalk-channel --remove -c #{child_channel} -u admin -p admin"
+  $command_output, _code = get_target('client').run(command)
+end
+
+When(/^I use spacewalk-channel to list channels$/) do
+  command = "spacewalk-channel --list"
+  $command_output, _code = get_target('client').run(command)
+end
+
+When(/^I use spacewalk-channel to list available channels$/) do
+  command = "spacewalk-channel --available-channels -u admin -p admin"
+  $command_output, _code = get_target('client').run(command)
+end
+
 When(/^I use spacewalk-common-channel to add channel "([^"]*)" with arch "([^"]*)"$/) do |child_channel, arch|
   command = "spacewalk-common-channels -u admin -p admin -a #{arch} #{child_channel}"
   $command_output, _code = get_target('server').run(command)
