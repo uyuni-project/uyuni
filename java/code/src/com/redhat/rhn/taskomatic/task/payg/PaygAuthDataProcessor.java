@@ -24,8 +24,10 @@ import com.redhat.rhn.domain.cloudpayg.CloudRmtHostFactory;
 import com.redhat.rhn.domain.cloudpayg.PaygProductFactory;
 import com.redhat.rhn.domain.cloudpayg.PaygSshData;
 import com.redhat.rhn.domain.cloudpayg.PaygSshDataFactory;
-import com.redhat.rhn.domain.credentials.Credentials;
+import com.redhat.rhn.domain.credentials.CloudCredentials;
+import com.redhat.rhn.domain.credentials.CloudRMTCredentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
+import com.redhat.rhn.domain.credentials.RHUICredentials;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.crypto.SslCryptoKey;
 import com.redhat.rhn.domain.org.Org;
@@ -75,7 +77,7 @@ public class PaygAuthDataProcessor {
 
         LOG.debug("Process data for {}", paygData.getType());
         if (paygData.getType().equals("CLOUDRMT")) {
-            Credentials credentials = processAndGetCredentials(instance, paygData);
+            CloudRMTCredentials credentials = processAndGetCloudRMTCredentials(instance, paygData);
             LOG.debug("Number installed Products: {}", paygData.getProducts().size());
 
             // Update the PAYG products associated with the credentials
@@ -117,7 +119,7 @@ public class PaygAuthDataProcessor {
             String queryString = uri.getQuery();
 
             if (needCredentials) {
-                Credentials credentials = processAndGetCredentials(instance, paygData);
+                CloudCredentials credentials = processAndGetCredentials(instance, paygData);
                 queryString = buildQueryString(uri.getQuery(), "credentials", "mirrcred_" + credentials.getId());
             }
             ContentSource contentSource =
@@ -237,54 +239,60 @@ public class PaygAuthDataProcessor {
         }
     }
 
-    private Credentials processAndGetCredentials(PaygSshData instance, PaygInstanceInfo paygData)
-            throws URISyntaxException {
-
-        if (paygData.getType().equals("CLOUDRMT")) {
-            final String username = paygData.getBasicAuth().get("username");
-            final String password = paygData.getBasicAuth().get("password");
-            Credentials credentialsIn = instance.getCredentials();
-            Credentials credentials = Optional.ofNullable(instance.getCredentials())
-                    .orElseGet(() ->
-                            CredentialsFactory.createCredentials(username, password, Credentials.TYPE_CLOUD_RMT));
-
-            credentials.setUsername(username);
-            credentials.setPassword(password);
-
-            URI credentialsURI = new URI("https", paygData.getRmtHost().get("hostname"), "/repo", null);
-            credentials.setUrl(credentialsURI.toString());
-
-            if (paygData.getHeaderAuth() != null) {
-                credentials.setExtraAuthData(GSON.toJson(paygData.getHeaderAuth()).getBytes());
-            }
-            credentials.setPaygSshData(instance);
-
-            if (credentialsIn == null || !credentialsIn.equals(credentials)) {
-                // storeCredentials update the modified date which should only be
-                // done when the data really change as it would force a full
-                // scc product refresh
-                CredentialsFactory.storeCredentials(credentials);
-            }
-
-            instance.setCredentials(credentials);
-            PaygSshDataFactory.savePaygSshData(instance);
-            return credentials;
+    private CloudRMTCredentials processAndGetCloudRMTCredentials(PaygSshData instance, PaygInstanceInfo paygData)
+        throws URISyntaxException {
+        if (!paygData.getType().equals("CLOUDRMT")) {
+            throw new PaygDataExtractException("Instance data type is not CloudRMT PAYG");
         }
-        else if (paygData.getType().equals("RHUI")) {
-            Credentials credentials = Optional.ofNullable(instance.getCredentials())
-                    .orElseGet(() ->
-                            CredentialsFactory.createCredentials("RHUI", " ", Credentials.TYPE_RHUI));
-            if (paygData.getHeaderAuth() != null) {
-                credentials.setExtraAuthData(GSON.toJson(paygData.getHeaderAuth()).getBytes());
-            }
-            credentials.setPaygSshData(instance);
 
+        final String username = paygData.getBasicAuth().get("username");
+        final String password = paygData.getBasicAuth().get("password");
+        URI rmtUri = new URI("https", paygData.getRmtHost().get("hostname"), "/repo", null);
+
+        CloudCredentials credentialsIn = instance.getCredentials();
+        CloudRMTCredentials credentials = Optional.ofNullable(credentialsIn)
+            .flatMap(c -> c.castAs(CloudRMTCredentials.class))
+            .map(creds -> {
+                creds.setUsername(username);
+                creds.setPassword(password);
+                creds.setUrl(rmtUri.toString());
+                return creds;
+            })
+            .orElseGet(() -> CredentialsFactory.createCloudRmtCredentials(username, password, rmtUri.toString()));
+
+
+        if (paygData.getHeaderAuth() != null) {
+            credentials.setExtraAuthData(GSON.toJson(paygData.getHeaderAuth()).getBytes());
+        }
+        credentials.setPaygSshData(instance);
+
+        if (credentialsIn == null || !credentialsIn.equals(credentials)) {
+            // storeCredentials update the modified date which should only be
+            // done when the data really change as it would force a full
+            // scc product refresh
             CredentialsFactory.storeCredentials(credentials);
-            instance.setCredentials(credentials);
-            PaygSshDataFactory.savePaygSshData(instance);
-            return credentials;
         }
-        throw new PaygDataExtractException("Unknown data type: " + paygData.getType());
+
+        PaygSshDataFactory.savePaygSshData(instance);
+        return credentials;
+    }
+
+    private RHUICredentials processAndGetCredentials(PaygSshData instance, PaygInstanceInfo paygData) {
+        if (!paygData.getType().equals("RHUI")) {
+            throw new PaygDataExtractException("Instance data type is not RHUI");
+        }
+
+        RHUICredentials credentials = Optional.ofNullable(instance.getCredentials())
+            .flatMap(c -> c.castAs(RHUICredentials.class))
+            .orElseGet(() -> CredentialsFactory.createRhuiCredentials());
+        if (paygData.getHeaderAuth() != null) {
+            credentials.setExtraAuthData(GSON.toJson(paygData.getHeaderAuth()).getBytes());
+        }
+        credentials.setPaygSshData(instance);
+
+        CredentialsFactory.storeCredentials(credentials);
+        PaygSshDataFactory.savePaygSshData(instance);
+        return credentials;
     }
     /**
      * Invalidate PAYG Instance credentials
@@ -292,6 +300,7 @@ public class PaygAuthDataProcessor {
      */
     public void invalidateCredentials(PaygSshData instance) {
         Optional.ofNullable(instance.getCredentials())
+            .flatMap(c -> c.castAs(CloudRMTCredentials.class))
             .ifPresent(credentials -> {
                 credentials.invalidate();
                 CredentialsFactory.storeCredentials(credentials);

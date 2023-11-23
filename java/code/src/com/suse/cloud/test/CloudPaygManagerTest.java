@@ -18,8 +18,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
+import com.redhat.rhn.domain.credentials.SCCCredentials;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
@@ -49,11 +49,12 @@ public class CloudPaygManagerTest extends BaseTestCaseWithUser {
         public void setIsSCCCredentialsResult(boolean resultIn) {
             isSCCCredentialsResult = resultIn;
         }
-        public boolean isSCCCredentials(Credentials c) {
+
+        @Override
+        public boolean isSCCCredentials(SCCCredentials c) {
             return isSCCCredentialsResult;
         }
     }
-
     private static class TaskomaticApiTestHelper extends TaskomaticApi {
         private Optional<Map<String, String>> result;
         private Optional<TaskomaticApiException> exception;
@@ -267,10 +268,8 @@ public class CloudPaygManagerTest extends BaseTestCaseWithUser {
 
         // test 2 - credentials available identifies as SCC credentials
         csm.setIsSCCCredentialsResult(true);
-        Credentials credentials = CredentialsFactory.createSCCCredentials();
-        credentials.setPassword("dummy");
+        SCCCredentials credentials = CredentialsFactory.createSCCCredentials("dummy", "dummy");
         credentials.setUrl("dummy");
-        credentials.setUsername("dummy");
         CredentialsFactory.storeCredentials(credentials);
 
         assertTrue(cpm.checkRefreshCache(true), "Not refreshed");
@@ -284,9 +283,7 @@ public class CloudPaygManagerTest extends BaseTestCaseWithUser {
 
         // test 4 - credentials available not identified as SCC credentials
         csm.setIsSCCCredentialsResult(false);
-        credentials = CredentialsFactory.createSCCCredentials();
-        credentials.setPassword("dummy");
-        credentials.setUsername("mf_user");
+        credentials = CredentialsFactory.createSCCCredentials("mf_user", "dummy");
         CredentialsFactory.storeCredentials(credentials);
 
         assertTrue(cpm.checkRefreshCache(true), "Not refreshed");

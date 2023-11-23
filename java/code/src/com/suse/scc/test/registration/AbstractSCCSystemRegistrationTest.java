@@ -15,8 +15,8 @@
 
 package com.suse.scc.test.registration;
 
-import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
+import com.redhat.rhn.domain.credentials.SCCCredentials;
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
 import com.redhat.rhn.domain.scc.SCCRegCacheItem;
 import com.redhat.rhn.domain.server.Server;
@@ -34,7 +34,7 @@ import java.util.stream.Collectors;
 
 public class AbstractSCCSystemRegistrationTest extends BaseTestCaseWithUser {
 
-    private Credentials credentials = CredentialsFactory.createSCCCredentials();
+    private final SCCCredentials credentials = CredentialsFactory.createSCCCredentials("username", "password");
     private List<SCCRegCacheItem> testSystems;
 
     /**
@@ -66,7 +66,7 @@ public class AbstractSCCSystemRegistrationTest extends BaseTestCaseWithUser {
     }
 
 
-    public Credentials getCredentials() {
+    public SCCCredentials getCredentials() {
         return credentials;
     }
 

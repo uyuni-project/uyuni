@@ -29,8 +29,8 @@ import com.redhat.rhn.common.util.RpmVersionComparator;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.config.ConfigChannel;
-import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
+import com.redhat.rhn.domain.credentials.ReportDBCredentials;
 import com.redhat.rhn.domain.dto.SystemIDInfo;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.org.CustomDataKey;
@@ -1571,7 +1571,7 @@ public class ServerFactory extends HibernateFactory {
         if (serverInfo == null) {
             return;
         }
-        Credentials credentials = serverInfo.getReportDbCredentials();
+        ReportDBCredentials credentials = serverInfo.getReportDbCredentials();
         CredentialsFactory.removeCredentials(credentials);
         SINGLETON.removeObject(serverInfo);
         minion.setMgrServerInfo(null);

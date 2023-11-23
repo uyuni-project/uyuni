@@ -17,7 +17,7 @@ package com.suse.scc.client;
 /**
  * Exception to be thrown in case of problems with SCC.
  */
-public class SCCClientException extends Exception {
+public class SCCClientException extends RuntimeException {
 
     private final int httpStatusCode;
     private final String httpRequestURI;
