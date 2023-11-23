@@ -28,3 +28,5 @@ gem 'rubocop', '0.83.0'
 # or build and install from https://github.com/openSUSE/twopence
 gem 'twopence', "~> 0.4"
 gem 'pg', "~> 1.4"
+gem 'public_suffix', '~> 4.0'
+gem 'netrc', '~> 0.11.0'
