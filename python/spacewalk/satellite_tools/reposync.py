@@ -1841,9 +1841,8 @@ class RepoSync(object):
                 sys.exit(1)
             # SCC - read credentials from DB
             h = rhnSQL.prepare("""
-                SELECT c.username, c.password, c.extra_auth, ct.label type
+                SELECT c.username, c.password, c.extra_auth, c.type
                   FROM suseCredentials c
-                  JOIN suseCredentialsType ct on c.type_id = ct.id
                   WHERE c.id = :id
             """)
             h.execute(id=creds_no)

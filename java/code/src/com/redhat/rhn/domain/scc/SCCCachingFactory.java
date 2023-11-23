@@ -20,10 +20,13 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.channel.ContentSource;
 import com.redhat.rhn.domain.credentials.Credentials;
+import com.redhat.rhn.domain.credentials.RemoteCredentials;
+import com.redhat.rhn.domain.credentials.SCCCredentials;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.product.SUSEProductSCCRepository;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.frontend.xmlrpc.sync.content.ContentSyncSource;
 
 import com.suse.scc.model.SCCRepositoryJson;
 import com.suse.scc.model.SCCSubscriptionJson;
@@ -131,7 +134,7 @@ public class SCCCachingFactory extends HibernateFactory {
      * @param subscriptionBySccId lookup map of subscriptions by scc id
      * @return generated SCC Subscription
      */
-    public static SCCSubscription saveJsonSubscription(SCCSubscriptionJson jsonSub, Credentials creds,
+    public static SCCSubscription saveJsonSubscription(SCCSubscriptionJson jsonSub, RemoteCredentials creds,
             Map<Long, SUSEProduct> productsBySccId, Map<Long, SCCSubscription> subscriptionBySccId) {
 
         SCCSubscription sub = Optional.ofNullable(subscriptionBySccId.get(jsonSub.getId()))
@@ -206,23 +209,6 @@ public class SCCCachingFactory extends HibernateFactory {
     }
 
     /**
-     * Clear all subscriptions from the database assigned to the
-     * credential.
-     * @param c the credentials
-     */
-    public static void clearSubscriptions(Credentials c) {
-        if (c == null) {
-            clearSubscriptions();
-            return;
-        }
-        CriteriaBuilder builder = getSession().getCriteriaBuilder();
-        CriteriaDelete<SCCSubscription> delete = builder.createCriteriaDelete(SCCSubscription.class);
-        Root<SCCSubscription> e = delete.from(SCCSubscription.class);
-        delete.where(builder.equal(e.get("credentials"), c));
-        getSession().createQuery(delete).executeUpdate();
-    }
-
-    /**
      * Lookup all Order Items
      * @return list of Order Items
      */
@@ -236,15 +222,19 @@ public class SCCCachingFactory extends HibernateFactory {
 
     /**
      * Return a list of OrderItems fetched with the provided Credentials
-     * @param c the Credentials
+     * @param source the credentials source
      * @return the list of OrderItems
      */
-    public static List<SCCOrderItem> listOrderItemsByCredentials(Credentials c) {
-        CriteriaBuilder builder = getSession().getCriteriaBuilder();
-        CriteriaQuery<SCCOrderItem> query = builder.createQuery(SCCOrderItem.class);
-        Root<SCCOrderItem> root = query.from(SCCOrderItem.class);
-        query.where(builder.equal(root.get("credentials"), c));
-        return getSession().createQuery(query).getResultList();
+    public static List<SCCOrderItem> listOrderItemsByCredentials(ContentSyncSource source) {
+        return source.getCredentials()
+            .map(credentials -> {
+                CriteriaBuilder builder = getSession().getCriteriaBuilder();
+                CriteriaQuery<SCCOrderItem> query = builder.createQuery(SCCOrderItem.class);
+                Root<SCCOrderItem> root = query.from(SCCOrderItem.class);
+                query.where(builder.equal(root.get("credentials"), credentials));
+                return getSession().createQuery(query).getResultList();
+            })
+            .orElse(Collections.emptyList());
     }
 
     /**
@@ -328,8 +318,7 @@ public class SCCCachingFactory extends HibernateFactory {
      */
     public static boolean refreshNeeded(Optional<Date> lastRefreshDateIn) {
         return getSession()
-                .createQuery(
-                        "SELECT MAX(modified) FROM Credentials WHERE type.label IN ('scc', 'cloudrmt')", Date.class)
+                .createNamedQuery("BaseCredentials.getLastSCCRefreshDate", Date.class)
                 .uniqueResultOptional()
                 .map(lastModified -> {
                     // When was the cache last modified?
@@ -357,7 +346,7 @@ public class SCCCachingFactory extends HibernateFactory {
      * @param c the credential to query
      * @return list of scc subscription ids
      */
-    public static List<Long> listSubscriptionsIdsByCredentials(Credentials c) {
+    public static List<Long> listSubscriptionsIdsByCredentials(RemoteCredentials c) {
         CriteriaBuilder builder = getSession().getCriteriaBuilder();
         CriteriaQuery<SCCSubscription> query = builder.createQuery(SCCSubscription.class);
         Root<SCCSubscription> root = query.from(SCCSubscription.class);
@@ -404,6 +393,24 @@ public class SCCCachingFactory extends HibernateFactory {
         Root<SCCRepository> root = select.from(SCCRepository.class);
         select.where(builder.equal(root.get("name"), name));
         return getSession().createQuery(select).uniqueResultOptional();
+    }
+
+    /**
+     * Get all repositories auth for a given Credential
+     * @param source contentsyncsource
+     * @return a list of SCCRepositoriesAuth
+     */
+    public static List<SCCRepositoryAuth> lookupRepositoryAuthByCredential(ContentSyncSource source) {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<SCCRepositoryAuth> select = builder.createQuery(SCCRepositoryAuth.class);
+        Root<SCCRepositoryAuth> root = select.from(SCCRepositoryAuth.class);
+
+        source.getCredentials().ifPresentOrElse(
+            remoteCredentials -> select.where(builder.equal(root.get("credentials"), remoteCredentials)),
+            () -> select.where(builder.isNull(root.get("credentials")))
+        );
+
+        return getSession().createQuery(select).getResultList();
     }
 
     /**
@@ -600,8 +607,8 @@ public class SCCCachingFactory extends HibernateFactory {
      * @return a list of maps with the keys scc_login, scc_passwd, checkin
      */
     @SuppressWarnings("unchecked")
-    public static List<Map<String, Object>> listUpdateLastSeenCandidates(Credentials cred) {
-        List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
+    public static List<Map<String, Object>> listUpdateLastSeenCandidates(SCCCredentials cred) {
+        List<Map<String, Object>> result = new ArrayList<>();
         List<Object[]> rows = getSession().createQuery(
                 "SELECT reg.sccLogin, reg.sccPasswd, si.checkin " +
                 "FROM com.redhat.rhn.domain.scc.SCCRegCacheItem AS reg " +

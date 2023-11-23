@@ -22,8 +22,8 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPrefer
 import static spark.Spark.get;
 import static spark.Spark.post;
 
-import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
+import com.redhat.rhn.domain.credentials.RegistryCredentials;
 import com.redhat.rhn.domain.image.ImageStore;
 import com.redhat.rhn.domain.image.ImageStoreFactory;
 import com.redhat.rhn.domain.image.ImageStoreType;
@@ -46,7 +46,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Arrays;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -210,8 +209,8 @@ public class ImageStoreController {
             json.addProperty("uri", s.getUri());
             json.addProperty("storeType", s.getStoreType().getLabel());
 
-            if (s.getCreds() != null && s.getCreds().isTypeOf(Credentials.TYPE_REGISTRY)) {
-                Credentials dc = s.getCreds();
+            if (s.getCreds() != null && s.getCreds().isTypeOf(RegistryCredentials.class)) {
+                RegistryCredentials dc = s.getCreds();
                 json.addProperty("username", dc.getUsername());
                 json.addProperty("password", dc.getPassword());
                 json.addProperty("useCredentials", true);
@@ -250,8 +249,8 @@ public class ImageStoreController {
             json.addProperty("uri", uriPrefix + s.getUri());
             json.addProperty("storeType", s.getStoreType().getLabel());
 
-            if (s.getCreds() != null && s.getCreds().isTypeOf(Credentials.TYPE_REGISTRY)) {
-                Credentials dc = s.getCreds();
+            if (s.getCreds() != null && s.getCreds().isTypeOf(RegistryCredentials.class)) {
+                RegistryCredentials dc = s.getCreds();
                 json.addProperty("username", dc.getUsername());
                 json.addProperty("password", dc.getPassword());
                 json.addProperty("useCredentials", true);
@@ -414,11 +413,16 @@ public class ImageStoreController {
 
     private static void setStoreCredentials(ImageStore store, ImageStoreCreateRequest request) {
         if (request.isUseCredentials()) {
-            Credentials dc = store.getCreds() != null ?
-                    store.getCreds() : CredentialsFactory.createRegistryCredentials();
-            dc.setUsername(request.getUsername());
-            dc.setPassword(request.getPassword());
-            dc.setModified(new Date());
+            String username = request.getUsername();
+            String password = request.getPassword();
+
+            RegistryCredentials dc = Optional.ofNullable(store.getCreds())
+                .map(existingCreds -> {
+                    existingCreds.setUsername(username);
+                    existingCreds.setPassword(password);
+                    return existingCreds;
+                })
+                .orElseGet(() -> CredentialsFactory.createRegistryCredentials(username, password));
 
             store.setCreds(dc);
         }

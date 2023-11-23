@@ -16,6 +16,7 @@ package com.redhat.rhn.common.conf;
 
 import com.redhat.rhn.common.validator.HostPortValidator;
 import com.redhat.rhn.domain.kickstart.KickstartData;
+import com.redhat.rhn.manager.content.ContentSyncManager;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -632,6 +633,13 @@ public class ConfigDefaults {
         return "http://" + cobblerServer + ":" + cobblerServerPort;
     }
 
+    public Optional<String> getOfflineMirrorDir() {
+        return Optional.ofNullable(Config.get().getString(ContentSyncManager.RESOURCE_PATH, null));
+    }
+
+    public boolean isOfflineMirrorSetup() {
+        return getOfflineMirrorDir().isPresent();
+    }
 
     /**
      * Get just the cobbler hostname

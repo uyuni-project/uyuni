@@ -18,8 +18,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
-import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
+import com.redhat.rhn.domain.credentials.SCCCredentials;
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
 import com.redhat.rhn.domain.scc.SCCRegCacheItem;
 import com.redhat.rhn.domain.server.Server;
@@ -56,7 +56,7 @@ public class SCCSystemRegistrationTest extends BaseTestCaseWithUser {
     private static final int DEFAULT_SYSTEM_SIZE = 15;
     private static final int DEFAULT_BATCH_SIZE = 3;
 
-    private Credentials credentials;
+    private SCCCredentials credentials;
     private List<Server> servers;
     private List<SCCRegCacheItem> testSystems;
 
@@ -69,9 +69,7 @@ public class SCCSystemRegistrationTest extends BaseTestCaseWithUser {
     public void setUp() throws Exception {
         super.setUp();
 
-        this.credentials = CredentialsFactory.createSCCCredentials();
-        this.credentials.setUsername("username");
-        this.credentials.setPassword("password");
+        this.credentials = CredentialsFactory.createSCCCredentials("username", "password");
         this.credentials.setUrl("https://scc.suse.com");
         CredentialsFactory.storeCredentials(credentials);
 
@@ -359,7 +357,7 @@ public class SCCSystemRegistrationTest extends BaseTestCaseWithUser {
         return sccWebClient;
     }
 
-    public Credentials getCredentials() {
+    public SCCCredentials getCredentials() {
         return credentials;
     }
 

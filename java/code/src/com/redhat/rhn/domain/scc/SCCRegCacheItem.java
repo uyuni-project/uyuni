@@ -17,7 +17,7 @@ package com.redhat.rhn.domain.scc;
 import static java.util.Optional.ofNullable;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
-import com.redhat.rhn.domain.credentials.Credentials;
+import com.redhat.rhn.domain.credentials.SCCCredentials;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 
@@ -106,7 +106,7 @@ public class SCCRegCacheItem extends BaseDomainHelper {
     private Server server;
     private String sccLogin;
     private String sccPasswd;
-    private Credentials credentials;
+    private SCCCredentials credentials;
     private Date registrationErrorTime;
 
     /**
@@ -161,7 +161,7 @@ public class SCCRegCacheItem extends BaseDomainHelper {
      */
     @ManyToOne
     @JoinColumn(name = "creds_id")
-    protected Credentials getCredentials() {
+    protected SCCCredentials getCredentials() {
         return credentials;
     }
 
@@ -170,7 +170,7 @@ public class SCCRegCacheItem extends BaseDomainHelper {
      * @return the mirror credentials
      */
     @Transient
-    public Optional<Credentials> getOptCredentials() {
+    public Optional<SCCCredentials> getOptCredentials() {
         return ofNullable(credentials);
     }
 
@@ -277,7 +277,7 @@ public class SCCRegCacheItem extends BaseDomainHelper {
      * Set the mirror credentials this repo can be retrieved with.
      * @param credentialsIn the credentials to set
      */
-    public void setCredentials(Credentials credentialsIn) {
+    public void setCredentials(SCCCredentials credentialsIn) {
         credentials = credentialsIn;
     }
 

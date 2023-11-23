@@ -18,7 +18,7 @@ package com.suse.manager.matcher;
 import static java.util.stream.Stream.of;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.domain.credentials.Credentials;
+import com.redhat.rhn.domain.credentials.RemoteCredentials;
 import com.redhat.rhn.domain.matcher.MatcherRunData;
 import com.redhat.rhn.domain.matcher.MatcherRunDataFactory;
 import com.redhat.rhn.domain.product.CachingSUSEProductFactory;
@@ -238,7 +238,9 @@ public class MatcherJsonIO {
         return SCCCachingFactory.lookupOrderItems().stream()
             .map(order -> {
                 SCCSubscription subscription = SCCCachingFactory.lookupSubscriptionBySccId(order.getSubscriptionId());
-                Credentials credentials = order.getCredentials();
+                RemoteCredentials credentials = Optional.ofNullable(order.getCredentials())
+                    .flatMap(cr -> cr.castAs(RemoteCredentials.class))
+                    .orElse(null);
                 return new SubscriptionJson(
                     order.getSccId(),
                     order.getSku(),
