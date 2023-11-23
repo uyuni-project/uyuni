@@ -29,13 +29,13 @@ When(/^I start tftp on the proxy$/) do
   case product
   # TODO: Should we handle this in Sumaform?
   when 'Uyuni'
-    step %(I enable repositories before installing branch server)
+    step 'I enable repositories before installing branch server'
     cmd = 'zypper --non-interactive --ignore-unknown remove atftp && ' \
           'zypper --non-interactive install tftp && ' \
           'systemctl enable tftp.service && ' \
           'systemctl start tftp.service'
     get_target('proxy').run(cmd)
-    step %(I disable repositories after installing branch server)
+    step 'I disable repositories after installing branch server'
   else
     cmd = 'systemctl enable tftp.service && systemctl start tftp.service'
     get_target('proxy').run(cmd)
@@ -61,7 +61,7 @@ When(/^I set up the private network on the terminals$/) do
   file2 = '/etc/sysconfig/network'
   nodes.each do |node|
     next if node.nil?
-    domain, _code = node.run("grep '^search' /etc/resolv.conf | sed 's/^search//'")
+    domain, _code = node.run('grep \'^search\' /etc/resolv.conf | sed \'s/^search//\'')
     conf = "DOMAIN='#{domain.strip}'\\nDEVICE='eth1'\\nSTARTMODE='auto'\\nBOOTPROTO='dhcp'\\nDNS1='#{proxy}'"
     service =
       if node.os_family =~ /^rocky/
@@ -83,7 +83,7 @@ When(/^I set up the private network on the terminals$/) do
   end
   # PXE boot minion
   if $pxeboot_mac
-    step %(I restart the network on the PXE boot minion)
+    step 'I restart the network on the PXE boot minion'
   end
 end
 
@@ -445,7 +445,7 @@ When(/^I press "Remove Item" in (.*) CNAME of (.*) zone section$/) do |alias_nam
 end
 
 When(/^I press "Remove" in the routers section$/) do
-  cname_xpath = "//div[@id='dhcpd#subnets#0#routers#0']/button"
+  cname_xpath = '//div[@id=\'dhcpd#subnets#0#routers#0\']/button'
   find(:xpath, cname_xpath).click
 end
 

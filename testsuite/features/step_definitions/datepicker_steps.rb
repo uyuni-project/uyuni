@@ -44,7 +44,7 @@ Then(/^the date picker title should be the current month and year$/) do
 end
 
 Then(/^the date picker title should be "([^"]*)"$/) do |arg1|
-  step %(I open the date picker) if has_no_css?('.date-time-picker-popup')
+  step 'I open the date picker' if has_no_css?('.date-time-picker-popup')
   switch = find('.date-time-picker-popup .react-datepicker__current-month')
   raise unless switch.has_content?(arg1)
 end
@@ -65,13 +65,13 @@ end
 
 When(/^I pick (\d+) minutes from now as schedule time$/) do |arg1|
   action_time = get_future_time(arg1)
-  raise unless find(:xpath, "//*[@id='date_timepicker_widget_input']", wait: 2)
+  raise unless find(:xpath, '//*[@id=\'date_timepicker_widget_input\']', wait: 2)
 
   step %(I enter "#{action_time}" as "date_timepicker_widget_input")
 end
 
 When(/^I schedule action to (\d+) minutes from now$/) do |minutes|
-  action_time = (DateTime.now + Rational(1,1440) * minutes.to_i + Rational(59,86400)).strftime("%Y-%m-%dT%H:%M%:z")
+  action_time = (DateTime.now + Rational(1,1440) * minutes.to_i + Rational(59,86400)).strftime('%Y-%m-%dT%H:%M%:z')
   execute_script("window.schedulePage.setScheduleTime('#{action_time}')")
 end
 

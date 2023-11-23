@@ -54,7 +54,7 @@ end
 When(/^I wait for the trash icon to appear for "([^"]*)"$/) do |user|
   within(:xpath, "//h3[contains(text(), '#{user}')]/../..") do
     repeat_until_timeout(message: 'Trash icon is still greyed out') do
-      break unless find('i.fa-trash-o')[:style].include? "not-allowed"
+      break unless find('i.fa-trash-o')[:style].include? 'not-allowed'
       sleep 1
     end
   end
@@ -74,7 +74,7 @@ end
 
 When(/^I select "(.*?)" in the dropdown list of the architecture filter$/) do |architecture|
   # let the the select2js box filter open the hidden options
-  xpath_query = "//div[@id='s2id_product-arch-filter']/ul/li/input"
+  xpath_query = '//div[@id=\'s2id_product-arch-filter\']/ul/li/input'
   raise "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query).click
   # select the desired option
   raise "Architecture #{architecture} not found" unless find(:xpath, "//div[@id='select2-drop']/ul/li/div[contains(text(), '#{architecture}')]").click
@@ -83,7 +83,7 @@ end
 When(/^I (deselect|select) "([^\"]*)" as a product$/) do |select, product|
   # click on the checkbox to select the product
   xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]/div/input[@type='checkbox']"
-  raise "xpath: #{xpath} not found" unless find(:xpath, xpath).set(select == "select")
+  raise "xpath: #{xpath} not found" unless find(:xpath, xpath).set(select == 'select')
 end
 
 When(/^I wait at most (\d+) seconds until the tree item "([^"]+)" has no sub-list$/) do |timeout, item|
@@ -133,7 +133,7 @@ end
 Then(/^I should see the "(.*?)" selected$/) do |product|
   xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]"
   within(:xpath, xpath) do
-    raise "#{find(:xpath, '.')['data-identifier']} is not checked" unless find(:xpath, "./div/input[@type='checkbox']").checked?
+    raise "#{find(:xpath, '.')['data-identifier']} is not checked" unless find(:xpath, './div/input[@type=\'checkbox\']').checked?
   end
 end
 
@@ -153,7 +153,7 @@ When(/^I wait until I see "(.*?)" product has been added$/) do |product|
 end
 
 When(/^I click the Add Product button$/) do
-  raise "xpath: button#addProducts not found" unless find('button#addProducts').click
+  raise 'xpath: button#addProducts not found' unless find('button#addProducts').click
 end
 
 Then(/^the SLE15 (SP3|SP4|SP5) product should be added$/) do |sp_version|
@@ -220,10 +220,10 @@ When(/^I wait until onboarding is completed for "([^"]*)"((?: salt minion)?)$/) 
 end
 
 Then(/^I should see "([^"]*)" via spacecmd$/) do |host|
-  command = "spacecmd -u admin -p admin system_list"
+  command = 'spacecmd -u admin -p admin system_list'
   system_name = get_system_name(host)
   repeat_until_timeout(message: "system #{system_name} is not in the list yet") do
-    get_target('server').run("spacecmd -u admin -p admin clear_caches")
+    get_target('server').run('spacecmd -u admin -p admin clear_caches')
     result, _code = get_target('server').run(command, check_errors: false, verbose: true)
     break if result.include? system_name
     sleep 1
@@ -236,7 +236,7 @@ Then(/^I should see "([^"]*)" as link$/) do |host|
 end
 
 When(/^I remember when I scheduled an action$/) do
-  moment = "schedule_action"
+  moment = 'schedule_action'
   val = DateTime.now
   if defined?($moments)
     $moments[moment] = val
@@ -252,8 +252,8 @@ Then(/^I should see "([^"]*)" at least (\d+) minutes after I scheduled an action
   match = elements[0].text.match(/#{text}\s*(\d+\/\d+\/\d+ \d+:\d+:\d+ (AM|PM)+ [^\s]+)/)
   raise "No element found matching text '#{text}'" if match.nil?
   text_time = DateTime.strptime("#{match.captures[0]}", '%m/%d/%C %H:%M:%S %p %Z')
-  raise "Time the action was scheduled not found in memory" unless defined?($moments) and $moments["schedule_action"]
-  initial = $moments["schedule_action"]
+  raise 'Time the action was scheduled not found in memory' unless defined?($moments) and $moments['schedule_action']
+  initial = $moments['schedule_action']
   after = initial + Rational(1, 1440) * minutes.to_i
   raise "#{text_time.to_s} is not #{minutes} minutes later than '#{initial.to_s}'" unless (text_time + Rational(1, 1440)) >= after
 end
@@ -288,10 +288,10 @@ end
 Then(/^I should see the toggler "([^"]*)"$/) do |target_status|
   case target_status
   when 'enabled'
-    xpath = "//i[contains(@class, 'fa-toggle-on')]"
+    xpath = '//i[contains(@class, \'fa-toggle-on\')]'
     raise "xpath: #{xpath} not found" unless find(:xpath, xpath)
   when 'disabled'
-    xpath = "//i[contains(@class, 'fa-toggle-off')]"
+    xpath = '//i[contains(@class, \'fa-toggle-off\')]'
     raise "xpath: #{xpath} not found" unless find(:xpath, xpath)
   else
     raise 'Invalid target status.'
@@ -301,10 +301,10 @@ end
 When(/^I click on the "([^"]*)" toggler$/) do |target_status|
   case target_status
   when 'enabled'
-    xpath = "//i[contains(@class, 'fa-toggle-on')]"
+    xpath = '//i[contains(@class, \'fa-toggle-on\')]'
     raise "xpath: #{xpath} not found" unless find(:xpath, xpath).click
   when 'disabled'
-    xpath = "//i[contains(@class, 'fa-toggle-off')]"
+    xpath = '//i[contains(@class, \'fa-toggle-off\')]'
     raise "xpath: #{xpath} not found" unless find(:xpath, xpath).click
   else
     raise 'Invalid target status.'
@@ -332,7 +332,7 @@ Then(/^I should see the child channel "([^"]*)" "([^"]*)" and "([^"]*)"$/) do |t
 
   xpath = "//label[contains(text(), '#{target_channel}')]"
   channel_checkbox_id = find(:xpath, xpath)['for']
-  "disabled".eql?(is_disabled) || raise('Invalid disabled flag value')
+  'disabled'.eql?(is_disabled) || raise('Invalid disabled flag value')
 
   case target_status
   when 'selected'
@@ -385,10 +385,10 @@ Then(/^the notification badge and the table should count the same amount of mess
   badge_xpath = "//i[contains(@class, 'fa-bell')]/following-sibling::*[text()='#{table_notifications_count}']"
 
   if table_notifications_count == '0'
-    log "All notification-messages are read, I expect no notification badge"
+    log 'All notification-messages are read, I expect no notification badge'
     raise "xpath: #{badge_xpath} found" if has_xpath?(badge_xpath)
   else
-    log "Unread notification-messages count = " + table_notifications_count
+    log 'Unread notification-messages count = ' + table_notifications_count
     raise "xpath: #{badge_xpath} not found" unless find(:xpath, badge_xpath)
   end
 end
@@ -420,10 +420,10 @@ end
 
 Then(/^I check the first notification message$/) do
   if count_table_items == '0'
-    log "There are no notification messages, nothing to do then"
+    log 'There are no notification messages, nothing to do then'
   else
     within(:xpath, '//section') do
-      row = find(:xpath, "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td]", match: :first)
+      row = find(:xpath, '//div[@class="table-responsive"]/table/tbody/tr[.//td]', match: :first)
       row.find(:xpath, './/input[@type="checkbox"]', match: :first).set(true)
     end
   end
@@ -434,7 +434,7 @@ When(/^I delete it via the "([^"]*)" button$/) do |target_button|
     xpath_for_delete_button = "//button[@title='#{target_button}']"
     raise "xpath: #{xpath_for_delete_button} not found" unless find(:xpath, xpath_for_delete_button).click
 
-    step %(I wait until I see "1 message deleted successfully." text)
+    step 'I wait until I see "1 message deleted successfully." text'
   end
 end
 
@@ -443,18 +443,18 @@ When(/^I mark as read it via the "([^"]*)" button$/) do |target_button|
     xpath_for_read_button = "//button[@title='#{target_button}']"
     raise "xpath: #{xpath_for_read_button} not found" unless find(:xpath, xpath_for_read_button).click
 
-    step %(I wait until I see "1 message read status updated successfully." text)
+    step 'I wait until I see "1 message read status updated successfully." text'
   end
 end
 
 When(/^I check for failed events on history event page$/) do
-  steps %(
+  steps '
     When I follow "Events" in the content area
     And I follow "History" in the content area
     Then I should see a "System History" text
-  )
-  failings = ""
-  event_table_xpath = "//div[@class='table-responsive']/table/tbody"
+  '
+  failings = ''
+  event_table_xpath = '//div[@class=\'table-responsive\']/table/tbody'
   rows = find(:xpath, event_table_xpath)
   rows.all('tr').each do |tr|
     if tr.all(:css, '.fa.fa-times-circle-o.fa-1-5x.text-danger').any?

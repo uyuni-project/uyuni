@@ -54,9 +54,9 @@ STDOUT.sync = true
 STARTTIME = Time.new.to_i
 Capybara.default_max_wait_time = ENV['CAPYBARA_TIMEOUT'] ? ENV['CAPYBARA_TIMEOUT'].to_i : 10
 DEFAULT_TIMEOUT = ENV['DEFAULT_TIMEOUT'] ? ENV['DEFAULT_TIMEOUT'].to_i : 250
-$is_cloud_provider = ENV["PROVIDER"].include? 'aws'
-$is_container_provider = ENV["PROVIDER"].include? 'podman'
-$is_container_server = %w[k3s podman].include? ENV.fetch("CONTAINER_RUNTIME", '')
+$is_cloud_provider = ENV['PROVIDER'].include? 'aws'
+$is_container_provider = ENV['PROVIDER'].include? 'podman'
+$is_container_server = %w[k3s podman].include? ENV.fetch('CONTAINER_RUNTIME', '')
 $is_using_build_image = ENV.fetch('IS_USING_BUILD_IMAGE') { false }
 $is_using_scc_repositories = (ENV.fetch('IS_USING_SCC_REPOSITORIES', 'False') != 'False')
 
@@ -134,7 +134,7 @@ After do |scenario|
   log "This scenario took: #{current_epoch - @scenario_start_time} seconds"
   if scenario.failed?
     begin
-      Dir.mkdir("screenshots") unless File.directory?("screenshots")
+      Dir.mkdir('screenshots') unless File.directory?('screenshots')
       path = "screenshots/#{scenario.name.tr(' ./', '_')}.png"
       # only click on Details when we have errors during bootstrapping and more Details available
       click_button('Details') if has_content?('Bootstrap Minions') && has_content?('Details')
@@ -146,7 +146,7 @@ After do |scenario|
     ensure
       print_server_logs
       previous_url = current_url
-      step %(I am authorized for the "Admin" section)
+      step 'I am authorized for the "Admin" section'
       visit previous_url
     end
   end
@@ -182,7 +182,7 @@ end
 After('@scope_cobbler') do |scenario|
   if scenario.failed?
     STDOUT.puts '=> /var/log/cobbler/cobbler.log'
-    out, _code = get_target('server').run("tail -n20 /var/log/cobbler/cobbler.log")
+    out, _code = get_target('server').run('tail -n20 /var/log/cobbler/cobbler.log')
     out.each_line do |line|
       STDOUT.puts line.to_s
     end
@@ -620,13 +620,13 @@ end
 # have more infos about the errors
 def print_server_logs
   STDOUT.puts '=> /var/log/rhn/rhn_web_ui.log'
-  out, _code = get_target('server').run("tail -n20 /var/log/rhn/rhn_web_ui.log | awk -v limit=\"$(date --date='5 minutes ago' '+%Y-%m-%d %H:%M:%S')\" ' $0 > limit'")
+  out, _code = get_target('server').run('tail -n20 /var/log/rhn/rhn_web_ui.log | awk -v limit="$(date --date=\'5 minutes ago\' \'+%Y-%m-%d %H:%M:%S\')" \' $0 > limit\'')
   out.each_line do |line|
     STDOUT.puts line.to_s
   end
   STDOUT.puts
   STDOUT.puts '=> /var/log/rhn/rhn_web_api.log'
-  out, _code = get_target('server').run("tail -n20 /var/log/rhn/rhn_web_api.log | awk -v limit=\"$(date --date='5 minutes ago' '+%Y-%m-%d %H:%M:%S')\" ' $0 > limit'")
+  out, _code = get_target('server').run('tail -n20 /var/log/rhn/rhn_web_api.log | awk -v limit="$(date --date=\'5 minutes ago\' \'+%Y-%m-%d %H:%M:%S\')" \' $0 > limit\'')
   out.each_line do |line|
     STDOUT.puts line.to_s
   end

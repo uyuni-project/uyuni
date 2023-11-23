@@ -66,7 +66,6 @@ When(/^I remove distro "([^"]*)" as user "([^"]*)" with password "([^"]*)"$/) do
 end
 
 When(/^I remove kickstart profiles and distros$/) do
-  host = get_target('server').full_hostname
   # -------------------------------
   # Cleanup kickstart distros and their profiles, if any.
 
@@ -142,7 +141,7 @@ When(/^I run Cobbler buildiso for distro "([^"]*)" and all profiles$/) do |distr
     result_cobbler, code = get_target('server').run("cobbler profile list | grep -o #{profile}", verbose: true)
     cobbler_profiles.push(result_cobbler) if code.zero?
     # get all profiles from isolinux.cfg
-    result_isolinux, code = get_target('server').run("cat #{tmp_dir}/isolinux/isolinux.cfg | grep -o #{profile} | cut -c -6 | head -n 1")
+    result_isolinux, _code = get_target('server').run("cat #{tmp_dir}/isolinux/isolinux.cfg | grep -o #{profile} | cut -c -6 | head -n 1")
     unless result_isolinux.empty?
       isolinux_profiles.push(result_isolinux)
     end
@@ -188,7 +187,7 @@ BIOS
 UEFI
 EOF")
   xorriso = "xorriso -indev #{tmp_dir}/#{name}.iso -report_el_torito 2>/dev/null"
-  iso_filter = "awk '/^El Torito boot img[[:space:]]+:[[:space:]]+[0-9]+[[:space:]]+[a-zA-Z]+[[:space:]]+y/{print $7}'"
+  iso_filter = 'awk \'/^El Torito boot img[[:space:]]+:[[:space:]]+[0-9]+[[:space:]]+[a-zA-Z]+[[:space:]]+y/{print $7}\''
   iso_file = "#{tmp_dir}/xorriso_#{name}"
   out, code = get_target('server').run("#{xorriso} | #{iso_filter} >> #{iso_file}")
   raise "error while executing xorriso.\nLogs:\n#{out}" if code.nonzero?
@@ -243,7 +242,7 @@ When(/^I cleanup Cobbler files and restart apache and cobblerd services$/) do
   result, code = get_target('server').run('systemctl restart apache && systemctl restart cobblerd')
   raise "Error while restarting cobblerd.\nLogs:\n#{result}" if code.nonzero?
 
-  step %(I wait until "cobblerd" service is active on "server")
+  step 'I wait until "cobblerd" service is active on "server"'
 end
 
 # cobbler commands
@@ -309,7 +308,7 @@ Then(/^the local logs for Cobbler should not contain errors$/) do
   return_code = file_extract(get_target('server'), cobbler_log_file, local_file)
   raise 'File extraction failed' unless return_code.zero?
 
-  file_data = File.read(local_file).gsub!("\n", ',').chop.gsub('"', " ' ").gsub("\\''", '"')
+  file_data = File.read(local_file).gsub!("\n", ',').chop.gsub('"', ' \' ').gsub('\\\'\'', '"')
   file_data = "[#{file_data}]"
   data_hash = JSON.parse(file_data)
   output = data_hash.select { |key, _hash| key['levelname'] == 'ERROR' }

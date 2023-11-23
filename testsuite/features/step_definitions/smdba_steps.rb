@@ -56,7 +56,7 @@ When(/^I configure "(.*?)" parameter "(.*?)" to "(.*?)"$/) do |config_file, para
 end
 
 Then(/^I check internally configuration for "(.*?)" option$/) do |_config_key|
-  $current_checked_config_value, _code = get_target('server').run("cd /;sudo -u postgres psql -c 'show wal_level;'", check_errors: false)
+  $current_checked_config_value, _code = get_target('server').run('cd /;sudo -u postgres psql -c \'show wal_level;\'', check_errors: false)
 end
 
 Then(/^the configuration should be set to "(.*?)"$/) do |value|

@@ -83,7 +83,7 @@ When(/^I bootstrap (traditional|minion) client "([^"]*)" using bootstrap script 
   output, = target.run("sed -i '/^set timeout /c\\set timeout #{DEFAULT_TIMEOUT}' /tmp/#{boostrap_script} && expect -f /tmp/#{boostrap_script} #{system_name}", verbose: true)
   unless output.include? '-bootstrap complete-'
     log output.encode('utf-8', invalid: :replace, undef: :replace, replace: '_')
-    raise "Bootstrap didn't finish properly"
+    raise 'Bootstrap didn\'t finish properly'
   end
 end
 

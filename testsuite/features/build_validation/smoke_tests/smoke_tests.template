@@ -30,7 +30,7 @@ Feature: Smoke tests for <client>
     And the IPv6 address for "<client>" should be correct
     And the system ID for "<client>" should be correct
     And the system name for "<client>" should be correct
-    And I should see several text fields for "<client>"
+    And I should see several text fields
 
 @skip_for_debianlike
   Scenario: Install a patch on the <client>

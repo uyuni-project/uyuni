@@ -10,7 +10,7 @@ end
 
 When(/^I click promote from Development to QA$/) do
   begin
-    promote_first = first(:xpath, "//button[contains(., 'Promote')]")
+    promote_first = first(:xpath, '//button[contains(., \'Promote\')]')
     promote_first.click
   rescue Capybara::ElementNotFound => e
     raise "Click on promote from Development failed: #{e}"
@@ -19,7 +19,7 @@ end
 
 When(/^I click promote from QA to Production$/) do
   begin
-    promote_second = find_all(:xpath, "//button[contains(., 'Promote')]", minimum: 2)[1]
+    promote_second = find_all(:xpath, '//button[contains(., \'Promote\')]', minimum: 2)[1]
     promote_second.click
   rescue Capybara::ElementNotFound => e
     raise "Click on promote from QA failed: #{e}"
@@ -46,15 +46,15 @@ end
 
 When(/^I add the "([^"]*)" channel to sources$/) do |channel|
   within(:xpath, "//span[text()='#{channel}']/../..") do
-    raise "Add channel failed" unless find(:xpath, './/input[@type="checkbox"]').set(true)
+    raise 'Add channel failed' unless find(:xpath, './/input[@type="checkbox"]').set(true)
   end
 end
 
 When(/^I click the "([^\"]*)" item (.*?) button$/) do |name, action|
   button = case action
-           when /details/ then "i[contains(@class, 'fa-list')]"
-           when /edit/ then "i[contains(@class, 'fa-edit')]"
-           when /delete/ then "i[contains(@class, 'fa-trash')]"
+           when /details/ then 'i[contains(@class, \'fa-list\')]'
+           when /edit/ then 'i[contains(@class, \'fa-edit\')]'
+           when /delete/ then 'i[contains(@class, \'fa-trash\')]'
            else raise "Unknown element with description '#{action}'"
            end
   xpath = "//td[contains(text(), '#{name}')]/ancestor::tr/td/div/button/#{button}"
@@ -93,7 +93,7 @@ end
 
 When(/^I add "([^\"]*)" calendar file as url$/) do |file|
   source = File.dirname(__FILE__) + '/../upload_files/' + file
-  dest = "/srv/www/htdocs/pub/" + file
+  dest = '/srv/www/htdocs/pub/' + file
   return_code = file_inject(get_target('server'), source, dest)
   raise 'File injection failed' unless return_code.zero?
   get_target('server').run("chmod 644 #{dest}")
@@ -104,20 +104,20 @@ end
 
 When(/^I deploy testing playbooks and inventory files to "([^"]*)"$/) do |host|
   target = get_target(host)
-  dest = "/srv/playbooks/orion_dummy/"
+  dest = '/srv/playbooks/orion_dummy/'
   target.run("mkdir -p #{dest}")
   source = File.dirname(__FILE__) + '/../upload_files/ansible/playbooks/orion_dummy/playbook_orion_dummy.yml'
-  return_code = file_inject(target, source, dest + "playbook_orion_dummy.yml")
+  return_code = file_inject(target, source, dest + 'playbook_orion_dummy.yml')
   raise 'File injection failed' unless return_code.zero?
   source = File.dirname(__FILE__) + '/../upload_files/ansible/playbooks/orion_dummy/hosts'
-  return_code = file_inject(target, source, dest + "hosts")
+  return_code = file_inject(target, source, dest + 'hosts')
   raise 'File injection failed' unless return_code.zero?
   source = File.dirname(__FILE__) + '/../upload_files/ansible/playbooks/orion_dummy/file.txt'
-  return_code = file_inject(target, source, dest + "file.txt")
+  return_code = file_inject(target, source, dest + 'file.txt')
   raise 'File injection failed' unless return_code.zero?
-  dest = "/srv/playbooks/"
+  dest = '/srv/playbooks/'
   source = File.dirname(__FILE__) + '/../upload_files/ansible/playbooks/playbook_ping.yml'
-  return_code = file_inject(target, source, dest + "playbook_ping.yml")
+  return_code = file_inject(target, source, dest + 'playbook_ping.yml')
   raise 'File injection failed' unless return_code.zero?
 end
 

@@ -49,7 +49,7 @@ Feature: The system details of each minion and client provides an overview of th
     And the system ID for "sle_minion" should be correct
     And the system name for "sle_minion" should be correct
     And the uptime for "sle_minion" should be correct
-    And I should see several text fields for "sle_minion"
+    And I should see several text fields
 
 @rhlike_minion
   Scenario: Red Hat-like minion hardware refresh
@@ -71,7 +71,7 @@ Feature: The system details of each minion and client provides an overview of th
     And the system ID for "rhlike_minion" should be correct
     And the system name for "rhlike_minion" should be correct
     And the uptime for "rhlike_minion" should be correct
-    And I should see several text fields for "rhlike_minion"
+    And I should see several text fields
 
 @deblike_minion
   Scenario: Debian-like minion hardware refresh
@@ -93,7 +93,7 @@ Feature: The system details of each minion and client provides an overview of th
     And the system ID for "deblike_minion" should be correct
     And the system name for "deblike_minion" should be correct
     And the uptime for "deblike_minion" should be correct
-    And I should see several text fields for "deblike_minion"
+    And I should see several text fields
 
 @ssh_minion
   Scenario: SSH-managed minion hardware refresh
@@ -114,4 +114,4 @@ Feature: The system details of each minion and client provides an overview of th
     And the system ID for "ssh_minion" should be correct
     And the system name for "ssh_minion" should be correct
     And the uptime for "ssh_minion" should be correct
-    And I should see several text fields for "ssh_minion"
+    And I should see several text fields

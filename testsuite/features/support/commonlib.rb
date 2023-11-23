@@ -23,7 +23,7 @@ end
 
 def count_table_items
   # count table items using the table counter component
-  items_label_xpath = "//span[contains(text(), 'Items ')]"
+  items_label_xpath = '//span[contains(text(), \'Items \')]'
   raise unless (items_label = find(:xpath, items_label_xpath).text)
   items_label.split('of ')[1].strip
 end
@@ -252,7 +252,7 @@ end
 
 def check_shutdown(host, time_out)
   cmd = "ping -c1 #{host}"
-  repeat_until_timeout(timeout: time_out, message: "machine didn't reboot") do
+  repeat_until_timeout(timeout: time_out, message: 'machine didn\'t reboot') do
     _out = `#{cmd}`
     if $CHILD_STATUS.exitstatus.nonzero?
       STDOUT.puts "machine: #{host} went down"
@@ -265,7 +265,7 @@ end
 
 def check_restart(host, node, time_out)
   cmd = "ping -c1 #{host}"
-  repeat_until_timeout(timeout: time_out, message: "machine didn't come up") do
+  repeat_until_timeout(timeout: time_out, message: 'machine didn\'t come up') do
     _out = `#{cmd}`
     if $CHILD_STATUS.exitstatus.zero?
       STDOUT.puts "machine: #{host} network is up"
@@ -274,7 +274,7 @@ def check_restart(host, node, time_out)
       sleep 1
     end
   end
-  repeat_until_timeout(timeout: time_out, message: "machine didn't come up") do
+  repeat_until_timeout(timeout: time_out, message: 'machine didn\'t come up') do
     _out, code = node.run('ls', check_errors: false, timeout: 10)
     if code.zero?
       STDOUT.puts "machine: #{host} ssh is up"

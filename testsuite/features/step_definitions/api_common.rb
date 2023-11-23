@@ -14,7 +14,7 @@ Given(/^I want to operate on this "([^"]*)"$/) do |host|
   refute_nil($client_id, "Could not find system with hostname #{system_name}")
 end
 
-When(/^I call system\.bootstrap\(\) on host "([^"]*)" and salt\-ssh "([^"]*)"$/) do |host, salt_ssh_enabled|
+When(/^I call system\.bootstrap\(\) on host "([^"]*)" and salt-ssh "([^"]*)"$/) do |host, salt_ssh_enabled|
   system_name = get_system_name(host)
   salt_ssh = (salt_ssh_enabled == 'enabled')
   akey = salt_ssh ? '1-SUSE-SSH-KEY-x86_64' : '1-SUSE-KEY-x86_64'
@@ -32,8 +32,7 @@ When(/^I call system\.bootstrap\(\) on unknown host, I should get an API fault$/
   assert(exception_thrown, 'Exception must be thrown for non-existing host.')
 end
 
-When(/^I call system\.bootstrap\(\) on a Salt minion with saltSSH = true, \
-but with activation key with default contact method, I should get an API fault$/) do
+When(/^I call system\.bootstrap\(\) on a Salt minion with saltSSH = true, but with activation key with default contact method, I should get an API fault$/) do
   exception_thrown = false
   begin
     $api_test.system.bootstrap_system(get_target('sle_minion').full_hostname, '1-SUSE-KEY-x86_64', true)
@@ -494,20 +493,21 @@ end
 
 ## audit namespace
 
-When(/^I call audit\.list_systems_by_patch_status\(\) with CVE identifier "([^\"]*)"$/) do |cve_identifier|
+When(/^I call audit\.list_systems_by_patch_status\(\) with CVE identifier "([^"]*)"$/) do |cve_identifier|
   @result_list = $api_test.audit.list_systems_by_patch_status(cve_identifier) || []
   log "Result list: #{@result_list}"
 end
 
-Then(/^I should get status "([^\"]+)" for system "([0-9]+)"$/) do |status, system|
+Then(/^I should get status "([^"]+)" for system "([0-9]+)"$/) do |status, system|
   @result = @result_list.select { |item| item['system_id'] == system.to_i }
   refute_empty(@result)
   @result = @result[0]
   assert_equal(status, @result['patch_status'])
 end
 
-Then(/^I should get status "([^\"]+)" for this client$/) do |status|
-  step "I should get status \"#{status}\" for system \"#{client_system_id_to_i}\""
+Then(/^I should get status "([^"]+)" for "([^"]+)"$/) do |status, host|
+  node = get_target(host)
+  step %(I should get status "#{status}" for system "#{get_system_id(node)}")
 end
 
 Then(/^I should get the "([^"]*)" channel label$/) do |channel_label|
@@ -554,7 +554,7 @@ When(/^I call configchannel.get_file_revision\(\) with file "([^"]*)", revision 
   @get_file_revision_result = $api_test.configchannel.get_file_revision(channel, file_path, revision.to_i)
 end
 
-Then(/^I should get file contents "([^\"]*)"$/) do |contents|
+Then(/^I should get file contents "([^"]*)"$/) do |contents|
   assert_equal(contents, @get_file_revision_result['contents'])
 end
 
