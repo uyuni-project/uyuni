@@ -52,9 +52,15 @@ jobs:
     - name: Compress build results
       run: tar cf java-build.tar.gz java/build java/lib
 
+    - name: Save PR data to file
+      run: |
+        echo "PR_NUMBER=${{ github.event.number }}" >>pr_data
+        echo "PR_BASE=${{ github.event.pull_request.base.ref }}" >>pr_data
+
     - name: Archive Java build artifacts
       uses: actions/upload-artifact@v3
       with:
         name: java-built-files
         path: |
           java-build.tar.gz
+          pr_data

@@ -18,6 +18,7 @@ jobs:
         with:
           repository: ${{ github.event.workflow_run.head_repository.full_name }}
           ref: ${{ github.event.workflow_run.head_branch }}
+          fetch-depth: 0
 
       - name: Download Java built artifact
         uses: actions/github-script@v6
@@ -47,6 +48,9 @@ jobs:
       - name: Unpacking the build results
         run: tar xf java-build.tar.gz
 
+      - name: Read the PR data file
+        run: cat pr_data >>"$GITHUB_ENV"
+
       - name: SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@master
         env:
@@ -57,6 +61,6 @@ jobs:
             -Dsonar.junit.reportPaths=""
             -Dsonar.coverage.jacoco.xmlReportPaths=""
             -Dsonar.scm.revision=${{ github.event.workflow_run.head_sha }}
-            -Dsonar.pullrequest.key=${{ github.event.workflow_run.pull_requests[0].number }}
-            -Dsonar.pullrequest.branch=${{ github.event.workflow_run.pull_requests[0].head.ref }}
-            -Dsonar.pullrequest.base=${{ github.event.workflow_run.pull_requests[0].base.ref }}
+            -Dsonar.pullrequest.key=${{ env.PR_NUMBER }}
+            -Dsonar.pullrequest.branch=${{ github.event.workflow_run.head_branch }}
+            -Dsonar.pullrequest.base=${{ env.PR_BASE }}
