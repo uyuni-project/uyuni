@@ -26,7 +26,7 @@ When(/^I call system\.bootstrap\(\) on unknown host, I should get an API fault$/
   exception_thrown = false
   begin
     $api_test.system.bootstrap_system('imprettysureidontexist', '', false)
-  rescue
+  rescue SystemCallError
     exception_thrown = true
   end
   assert(exception_thrown, 'Exception must be thrown for non-existing host.')
@@ -37,7 +37,7 @@ but with activation key with default contact method, I should get an API fault$/
   exception_thrown = false
   begin
     $api_test.system.bootstrap_system(get_target('sle_minion').full_hostname, '1-SUSE-KEY-x86_64', true)
-  rescue
+  rescue SystemCallError
     exception_thrown = true
   end
   assert(exception_thrown, 'Exception must be thrown for non-compatible activation keys.')
