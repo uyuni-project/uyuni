@@ -2,6 +2,8 @@
 # Licensed under the terms of the MIT license.
 
 @scope_maintenance_windows
+@sle_minion
+@sle_client
 Feature: Maintenance windows
 
   Scenario: Log in as admin user
