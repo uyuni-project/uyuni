@@ -483,9 +483,11 @@ end
 def new_api_client
   ssl_verify = !$is_container_provider
   if $debug_mode
-    ApiTestXmlrpc.new(get_target('server').full_hostname)
+    ApiTestXmlrpc.new(get_target('server', refresh: true).full_hostname)
+  elsif product == 'Uyuni' && !$debug_mode
+    ApiTestHttp.new(get_target('server', refresh: true).full_hostname, ssl_verify)
   else
-    product == 'Uyuni' ? ApiTestHttp.new(get_target('server').full_hostname, ssl_verify) : ApiTestXmlrpc.new(get_target('server').full_hostname)
+    ApiTestXmlrpc.new(get_target('server', refresh: true).full_hostname)
   end
 end
 
