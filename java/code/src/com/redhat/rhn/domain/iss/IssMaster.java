@@ -248,14 +248,9 @@ public class IssMaster extends BaseDto {
         }
         IssMaster other = (IssMaster) obj;
         if (id == null) {
-            if (other.id != null) {
-                return false;
-            }
+            return other.id == null;
         }
-        else if (!id.equals(other.id)) {
-            return false;
-        }
-        return true;
+        return id.equals(other.id);
     }
 
     @Override
