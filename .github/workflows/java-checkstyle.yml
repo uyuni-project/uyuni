@@ -5,10 +5,6 @@ on:
     branches:
       - master
     paths:
-      # We also trigger on non-java code changes since this triggers sonarcloud scanner after
-      - '**.py'
-      - 'web/html/src/**.ts'
-      - 'web/html/src/**.tsx'
       - 'java/**.java'
       - 'java/**.xml'
       - '.github/workflows/java-checkstyle.yml'
