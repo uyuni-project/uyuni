@@ -26,7 +26,7 @@ import com.redhat.rhn.common.hibernate.ConnectionManagerFactory;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.ReportDbHibernateFactory;
 import com.redhat.rhn.common.util.TimeUtils;
-import com.redhat.rhn.domain.credentials.Credentials;
+import com.redhat.rhn.domain.credentials.ReportDBCredentials;
 import com.redhat.rhn.domain.server.MgrServerInfo;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -147,7 +147,7 @@ public class HubReportDbUpdateWorker implements QueueWorker {
             parentQueue.workerStarting();
             ConnectionManager localRcm = ConnectionManagerFactory.localReportingConnectionManager();
             ReportDbHibernateFactory localRh = new ReportDbHibernateFactory(localRcm);
-            Credentials credentials = mgrServerInfo.getReportDbCredentials();
+            ReportDBCredentials credentials = mgrServerInfo.getReportDbCredentials();
             ConnectionManager remoteDBCM = ConnectionManagerFactory.reportingConnectionManager(
                     credentials.getUsername(), credentials.getPassword(),
                     ConfigDefaults.get().remoteReportDBUrl(

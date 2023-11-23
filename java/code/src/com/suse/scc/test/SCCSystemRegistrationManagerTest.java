@@ -20,8 +20,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
-import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
+import com.redhat.rhn.domain.credentials.SCCCredentials;
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
 import com.redhat.rhn.domain.scc.SCCRegCacheItem;
 import com.redhat.rhn.domain.server.CPU;
@@ -116,9 +116,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
         List<SCCRegCacheItem> testSystems = allUnregistered.stream()
                 .filter(i -> i.getOptServer().get().equals(testSystem))
                 .collect(Collectors.toList());
-        Credentials credentials = CredentialsFactory.createSCCCredentials();
-        credentials.setUsername("username");
-        credentials.setPassword("password");
+        SCCCredentials credentials = CredentialsFactory.createSCCCredentials("username", "password");
         credentials.setUrl("https://scc.suse.com");
         CredentialsFactory.storeCredentials(credentials);
 
@@ -177,10 +175,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
                 .filter(i -> i.getOptServer().get().equals(testSystem))
                 .collect(Collectors.toList());
 
-        Credentials credentials = CredentialsFactory.createSCCCredentials();
-        credentials.setUsername("username");
-        credentials.setPassword("password");
-        credentials.setUrl("https://scc.suse.com");
+        SCCCredentials credentials = CredentialsFactory.createSCCCredentials("username", "password");
         CredentialsFactory.storeCredentials(credentials);
 
         sccSystemRegistrationManager.register(testSystems, credentials);
@@ -239,9 +234,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
         List<SCCRegCacheItem> testSystems = allUnregistered.stream()
                 .filter(i -> i.getOptServer().get().equals(testSystem))
                 .collect(Collectors.toList());
-        Credentials credentials = CredentialsFactory.createSCCCredentials();
-        credentials.setUsername("username");
-        credentials.setPassword("password");
+        SCCCredentials credentials = CredentialsFactory.createSCCCredentials("username", "password");
         credentials.setUrl("https://scc.suse.com");
         CredentialsFactory.storeCredentials(credentials);
         sccSystemRegistrationManager.register(testSystems, credentials);
@@ -311,9 +304,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
         List<SCCRegCacheItem> testSystems = allUnregistered.stream()
                 .filter(i -> i.getOptServer().get().getServerInfo().getCheckin().equals(new Date(0)))
                 .collect(Collectors.toList());
-        Credentials credentials = CredentialsFactory.createSCCCredentials();
-        credentials.setUsername("username");
-        credentials.setPassword("password");
+        SCCCredentials credentials = CredentialsFactory.createSCCCredentials("username", "password");
         credentials.setUrl("https://scc.suse.com");
         CredentialsFactory.storeCredentials(credentials);
         sccSystemRegistrationManager.register(testSystems, credentials);
@@ -397,9 +388,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
             }
         };
 
-        Credentials credentials = CredentialsFactory.createSCCCredentials();
-        credentials.setUsername("username");
-        credentials.setPassword("password");
+        SCCCredentials credentials = CredentialsFactory.createSCCCredentials("username", "password");
         credentials.setUrl("https://scc.suse.com");
         CredentialsFactory.storeCredentials(credentials);
 
@@ -488,9 +477,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
             }
         };
 
-        Credentials credentials = CredentialsFactory.createSCCCredentials();
-        credentials.setUsername("username");
-        credentials.setPassword("password");
+        SCCCredentials credentials = CredentialsFactory.createSCCCredentials("username", "password");
         credentials.setUrl("https://scc.suse.com");
         CredentialsFactory.storeCredentials(credentials);
 
@@ -594,9 +581,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
             }
         };
 
-        Credentials credentials = CredentialsFactory.createSCCCredentials();
-        credentials.setUsername("username");
-        credentials.setPassword("password");
+        SCCCredentials credentials = CredentialsFactory.createSCCCredentials("username", "password");
         credentials.setUrl("https://scc.suse.com");
         CredentialsFactory.storeCredentials(credentials);
 

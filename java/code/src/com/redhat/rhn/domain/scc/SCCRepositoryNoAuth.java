@@ -14,8 +14,7 @@
  */
 package com.redhat.rhn.domain.scc;
 
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.manager.content.ContentSyncManager;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.manager.content.MgrSyncUtils;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -44,7 +43,7 @@ public class SCCRepositoryNoAuth extends SCCRepositoryAuth {
     @Override
     @Transient
     public String getUrl() {
-        if (Config.get().getString(ContentSyncManager.RESOURCE_PATH, null) != null) {
+        if (ConfigDefaults.get().isOfflineMirrorSetup()) {
             return MgrSyncUtils.urlToFSPath(getRepo().getUrl(), getRepo().getName()).toString();
         }
         return getRepo().getUrl();

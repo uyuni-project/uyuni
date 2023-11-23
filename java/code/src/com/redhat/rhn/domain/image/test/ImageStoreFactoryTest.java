@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import com.redhat.rhn.domain.credentials.Credentials;
+import com.redhat.rhn.domain.credentials.RegistryCredentials;
 import com.redhat.rhn.domain.image.ImageStore;
 import com.redhat.rhn.domain.image.ImageStoreFactory;
 import com.redhat.rhn.domain.image.ImageStoreType;
@@ -95,7 +95,7 @@ public class ImageStoreFactoryTest extends BaseTestCaseWithUser {
         assertTrue(list.stream().filter(s -> s.equals(store)).findFirst().isPresent());
         assertNull(list.stream().filter(s -> s.equals(store)).findFirst().get().getCreds());
 
-        Credentials creds = createCredentials();
+        RegistryCredentials creds = createCredentials();
         ImageStore storeWithCreds = createImageStore("mystorewithcreds", creds, user);
 
         list = ImageStoreFactory.listImageStores(user.getOrg());
@@ -105,8 +105,8 @@ public class ImageStoreFactoryTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testListByTypeLabelAndOrg() {
-        Credentials creds = createCredentials();
+    public void testListByTypeLabelAndOrg() throws Exception {
+        RegistryCredentials creds = createCredentials();
         ImageStore store = createImageStore("mystore", creds, user);
 
         assertEquals(ImageStoreFactory.TYPE_REGISTRY, store.getStoreType());

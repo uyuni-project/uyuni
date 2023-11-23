@@ -15,6 +15,8 @@
 package com.suse.utils;
 
 
+import com.redhat.rhn.domain.product.Tuple2;
+
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.Optional;
@@ -107,6 +109,19 @@ public class Opt {
         else {
             return second;
         }
+    }
+
+    /**
+     * Takes two optionals of a and b and produces a optional of tuple a b if both are present
+     * otherwise returns empty
+     * @param oa option a
+     * @param ob option b
+     * @return optional of tuple a b
+     * @param <A> type of option a
+     * @param <B> type of option b
+     */
+    public static <A, B> Optional<Tuple2<A, B>> and(Optional<A> oa, Optional<B> ob) {
+       return oa.flatMap(a -> ob.map(b -> new Tuple2<>(a, b)));
     }
 
     /**
