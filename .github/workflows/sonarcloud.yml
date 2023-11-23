@@ -44,20 +44,6 @@ jobs:
         run: |
           unzip java-built-files.zip
 
-      - name: Cache dependencies
-        id: cache-dependencies
-        uses: actions/cache@v3
-        with:
-          path: java/lib
-          key: ${{ runner.os }}-java-lib-${{ hashFiles('java/buildconf/ivy/*.*') }}
-
-      - name: Resolve dependencies
-        if: steps.cache-dependencies.outputs.cache-hit != 'true'
-        run: |
-          docker run -v $PWD:/src -w /src \
-            registry.opensuse.org/systemsmanagement/uyuni/master/docker/containers/uyuni-master-pgsql:latest \
-            ant -f java/manager-build.xml ivy
-
       - name: Unpacking the build results
         run: tar xf java-build.tar.gz
 

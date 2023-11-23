@@ -50,7 +50,7 @@ jobs:
       run: ant -f java/manager-build.xml checkstyle
 
     - name: Compress build results
-      run: tar cf java-build.tar.gz java/build
+      run: tar cf java-build.tar.gz java/build java/lib
 
     - name: Archive Java build artifacts
       uses: actions/upload-artifact@v3
