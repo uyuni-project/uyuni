@@ -22,11 +22,11 @@
 %endif
 
 %if 0%{?suse_version}
-%global serverdir  /usr/share/susemanager
-%global wwwdocroot %{serverdir}/www/htdocs
+%global serverdir  /srv
+%global wwwpubroot %{serverdir}/www/htdocs
 %else
 %global serverdir  %{_localstatedir}
-%global wwwdocroot %{serverdir}/www/html
+%global wwwpubroot %{serverdir}/www/html
 %endif
 
 Name:           susemanager-sls
@@ -129,7 +129,7 @@ py.test%{?rhel:-3}
 
 %post
 # HACK! Create broken link when it will be replaces with the real file
-ln -sf /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT \
+ln -sf %{wwwpubroot}/pub/RHN-ORG-TRUSTED-SSL-CERT \
    /usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT 2>&1 ||:
 
 %posttrans

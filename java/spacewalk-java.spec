@@ -28,19 +28,18 @@
 %define run_checkstyle  0
 %define omit_tests      1
 
-%if 0%{?suse_version}
-%define shareddir       /usr/share
-%define susemanagershareddir       /usr/share/susemanager
+%define susemanagershareddir       %{_datadir}/susemanager
 %define serverdir       %{susemanagershareddir}/www
+%define salt_user_group salt
+
+%if 0%{?suse_version}
 %define userserverdir       /srv
 %define apache_group    www
-%define salt_user_group salt
 %define apache2         apache2
 %define java_version    11
 %else
-%define serverdir       %{_sharedstatedir}
+%define userserverdir       %{_sharedstatedir}
 %define apache_group    apache
-%define salt_user_group salt
 %define apache2         httpd
 %define java_version    1:11
 %endif

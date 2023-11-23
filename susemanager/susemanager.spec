@@ -42,7 +42,7 @@
 %global wwwroot %{serverdir}/www
 %endif
 
-%global sharedwwwroot %{_datarootdir}/susemanager/www
+%global sharedwwwroot %{_datadir}/susemanager/www
 %global reporoot %{sharedwwwroot}/pub
 
 %global debug_package %{nil}
