@@ -22,6 +22,7 @@ import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.notification.NotificationMessage;
+import com.redhat.rhn.domain.notification.PaygNotCompliantWarning;
 import com.redhat.rhn.domain.notification.UserNotificationFactory;
 import com.redhat.rhn.domain.notification.types.EndOfLifePeriod;
 import com.redhat.rhn.domain.notification.types.SubscriptionWarning;
@@ -92,6 +93,7 @@ public class DailySummary extends RhnJavaJob {
         processUpdateAvailableNotification();
         processEndOfLifeNotification();
         processSubscriptionWarningNotification();
+        processPaygNotCompliantNotification();
 
         processEmails();
     }
@@ -151,6 +153,21 @@ public class DailySummary extends RhnJavaJob {
                     UserNotificationFactory.createNotificationMessage(uan);
             UserNotificationFactory.storeNotificationMessageFor(notificationMessage,
                     Collections.singleton(RoleFactory.SAT_ADMIN), Optional.empty());
+        }
+    }
+
+    private void processPaygNotCompliantNotification() {
+        if (Instant.now().atZone(ZoneId.systemDefault()).getDayOfWeek() != DayOfWeek.MONDAY) {
+            // we want to show this notification only on Mondays
+            return;
+        }
+
+        // This notification will be process only if SUMA is PAYG but is not compliant
+        if (cloudPaygManager.isPaygInstance() && !cloudPaygManager.isCompliant()) {
+            NotificationMessage notificationMessage =
+                    UserNotificationFactory.createNotificationMessage(new PaygNotCompliantWarning());
+            UserNotificationFactory.storeNotificationMessageFor(notificationMessage,
+                    Collections.singleton(RoleFactory.ORG_ADMIN), Optional.empty());
         }
     }
 
