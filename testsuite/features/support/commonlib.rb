@@ -368,8 +368,12 @@ def get_system_name(host)
   when 'containerized_proxy'
     system_name = get_target('proxy').full_hostname.sub('pxy', 'pod-pxy')
   else
-    node = get_target(host)
-    system_name = node.full_hostname
+    if $node_by_host.key? host
+      node = get_target(host)
+      system_name = node.full_hostname
+    else
+      system_name = host
+    end
   end
   system_name
 end
