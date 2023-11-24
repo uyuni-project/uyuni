@@ -369,12 +369,10 @@ def get_system_name(host)
   when 'containerized_proxy'
     system_name = get_target('proxy').full_hostname.sub('pxy', 'pod-pxy')
   else
-    begin
+    if $node_by_host.key? host
       node = get_target(host)
       system_name = node.full_hostname
-    rescue NotImplementedError => e
-      # If the node for that host is not defined, just return the host parameter as system_name
-      warn e.message
+    else
       system_name = host
     end
   end
