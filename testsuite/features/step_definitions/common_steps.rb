@@ -20,7 +20,7 @@ When(/^I wait for "(\d+)" seconds?$/) do |arg1|
   sleep(arg1.to_i)
 end
 
-When(/^I mount as "([^"]+)" the ISO from "([^"]+)" in the server$/) do |name, url|
+When(/^I mount as "([^"]+)" the ISO from "([^"]+)" in the server, validating its checksum$/) do |name, url|
   # When using a mirror it is automatically mounted at /mirror
   if $mirror
     iso_path = url.sub(/^https?:\/\/[^\/]+/, '/mirror')
@@ -28,6 +28,13 @@ When(/^I mount as "([^"]+)" the ISO from "([^"]+)" in the server$/) do |name, ur
     iso_path = "/tmp/#{name}.iso"
     get_target('server').run("wget --no-check-certificate -O #{iso_path} #{url}", timeout: 1500)
   end
+
+  iso_dir = File.dirname(iso_path)
+  original_iso_name = url.split('/').last
+  checksum_path = get_checksum_path(iso_dir, original_iso_name, url)
+
+  raise "SHA256 checksum validation failed" unless validate_checksum_with_file(original_iso_name, iso_path, checksum_path)
+
   mount_point = "/srv/www/htdocs/#{name}"
   get_target('server').run("mkdir -p #{mount_point}")
   get_target('server').run("grep #{iso_path} /etc/fstab || echo '#{iso_path}  #{mount_point}  iso9660  loop,ro,_netdev  0 0' >> /etc/fstab")
