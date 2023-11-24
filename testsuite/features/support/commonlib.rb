@@ -367,12 +367,13 @@ def get_system_name(host)
     system_name = 'sle15sp4terminal.example.org' if system_name.nil?
   when 'containerized_proxy'
     system_name = get_target('proxy').full_hostname.sub('pxy', 'pod-pxy')
-  # needed for the virtualizion tests, as the VM isn't an initialized twopence node
-  when 'test-vm2'
-    system_name = 'test-vm2'
   else
-    node = get_target(host)
-    system_name = node.full_hostname
+    if $node_by_host.key? host
+      node = get_target(host)
+      system_name = node.full_hostname
+    else
+      system_name = host
+    end
   end
   system_name
 end
