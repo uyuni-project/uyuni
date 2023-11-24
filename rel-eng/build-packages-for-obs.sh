@@ -58,8 +58,7 @@ trap "test -d \"$SRPMBUILD_DIR\" && /bin/rm -rf -- \"$SRPMBUILD_DIR\" " 0 1 2 3 
 export RPMBUILD_BASEDIR=$SRPMBUILD_DIR
 
 function git_package_defs() {
-  # - "PKG_NAME PKG_VER PKG_DIR" from git:/rel-eng/packages/, using
-  #   a hardcoded blacklist of packages we do not build.
+  # - "PKG_NAME PKG_VER PKG_DIR" from git:/rel-eng/packages/
   # - define $PACKAGE to build a specific set of packages.
   # - usage:
   #      while read PKG_NAME PKG_VER PKG_DIR; do
@@ -67,8 +66,7 @@ function git_package_defs() {
   #      done < <(git_package_defs)
   #
   test -n "$PACKAGE" || {
-    PACKAGE=$(ls "$GIT_DIR"/rel-eng/packages/ \
-              | grep -v -x -e heirloom-pkgtools -e rhnclient -e smartpm -e jabberd-selinux -e oracle-rhnsat-selinux -e oracle-selinux -e oracle-xe-selinux -e spacewalk-monitoring-selinux -e spacewalk-proxy-selinux -e spacewalk-selinux -e cx_Oracle -e apt-spacewalk -e perl-DBD-Oracle -e spacewalk-jpp-workaround)
+      PACKAGE=$(ls "$GIT_DIR"/rel-eng/packages/)
   }
   for N in $PACKAGE; do
     awk -vN=$N '{printf "%s %s %s\n", N, $1, $2}' "$GIT_DIR"/rel-eng/packages/$N
