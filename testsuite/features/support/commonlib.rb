@@ -13,14 +13,6 @@ def current_url
   driver.current_url
 end
 
-# generate temporary file on the controller
-def generate_temp_file(name, content)
-  Tempfile.open(name) do |file|
-    file.write(content)
-    return file.path
-  end
-end
-
 def count_table_items
   # count table items using the table counter component
   items_label_xpath = '//span[contains(text(), \'Items \')]'
@@ -56,16 +48,6 @@ end
 def use_salt_bundle
   # Use venv-salt-minion in Uyuni, or SUMA Head, 4.2 and 4.3
   product == 'Uyuni' || %w[head 4.3 4.2].include?(product_version)
-end
-
-# create salt pillar file in the default pillar_roots location
-def inject_salt_pillar_file(source, file)
-  dest = '/srv/pillar/' + file
-  return_code = file_inject(get_target('server'), source, dest)
-  raise ScriptError, 'File injection failed' unless return_code.zero?
-  # make file readable by salt
-  get_target('server').run("chgrp salt #{dest}")
-  return_code
 end
 
 # WARN: It's working for /24 mask, but couldn't not work properly with others
@@ -197,11 +179,11 @@ end
 
 def generate_repository_name(repo_url)
   repo_name = repo_url.strip
-  repo_name.sub!(%r{http:\/\/download.suse.de\/ibs\/SUSE:\/Maintenance:\/}, '')
-  repo_name.sub!(%r{http:\/\/download.suse.de\/download\/ibs\/SUSE:\/Maintenance:\/}, '')
-  repo_name.sub!(%r{http:\/\/download.suse.de\/download\/ibs\/SUSE:\/}, '')
-  repo_name.sub!(%r{http:\/\/.*compute.internal\/SUSE:\/}, '')
-  repo_name.sub!(%r{http:\/\/.*compute.internal\/SUSE:\/Maintenance:\/}, '')
+  repo_name.sub!(%r{http://download.suse.de/ibs/SUSE:/Maintenance:/}, '')
+  repo_name.sub!(%r{http://download.suse.de/download/ibs/SUSE:/Maintenance:/}, '')
+  repo_name.sub!(%r{http://download.suse.de/download/ibs/SUSE:/}, '')
+  repo_name.sub!(%r{http://.*compute.internal/SUSE:/}, '')
+  repo_name.sub!(%r{http://.*compute.internal/SUSE:/Maintenance:/}, '')
   repo_name.gsub!('/', '_')
   repo_name.gsub!(':', '_')
   repo_name[0...64] # HACK: Due to the 64 characters size limit of a repository label
@@ -222,13 +204,6 @@ end
 
 def reportdb_server_query(query)
   "echo \"#{query}\" | spacewalk-sql --reportdb --select-mode -"
-end
-
-def get_variable_from_conf_file(host, file_path, variable_name)
-  node = get_target(host)
-  variable_value, return_code = node.run("sed -n 's/^#{variable_name} = \\(.*\\)/\\1/p' < #{file_path}")
-  raise ScriptError, "Reading #{variable_name} from file on #{host} #{file_path} failed" unless return_code.zero?
-  variable_value.strip!
 end
 
 def get_uptime_from_host(host)
@@ -302,7 +277,7 @@ def get_os_version(node)
 
   os_version.delete! '"'
   # on SLES, we need to replace the dot with '-SP'
-  os_version.gsub!(/\./, '-SP') if os_family =~ /^sles/
+  os_version.gsub!('.', '-SP') if os_family =~ /^sles/
   STDOUT.puts "Node: #{node.hostname}, OS Version: #{os_version}, Family: #{os_family}"
   [os_version, os_family]
 end
@@ -383,7 +358,7 @@ end
 # Get MAC address of system
 def get_mac_address(host)
   if host == 'pxeboot_minion'
-    mac = ENV['PXEBOOT_MAC']
+    mac = ENV.fetch('PXEBOOT_MAC', nil)
   else
     node = get_target(host)
     output, _code = node.run('ip link show dev eth1')
@@ -396,36 +371,6 @@ end
 def net_prefix
   $net_prefix = $private_net.sub(%r{\.0+/24$}, '.') if $net_prefix.nil? && !$private_net.nil?
   $net_prefix
-end
-
-# This function tests whether a file exists on a node
-def file_exists?(node, file)
-  node.file_exists(file)
-end
-
-# This function tests whether a folder exists on a node
-def folder_exists?(node, file)
-  node.folder_exists(file)
-end
-
-# This function deletes a file from a node
-def file_delete(node, file)
-  node.file_delete(file)
-end
-
-# This function deletes a file from a node
-def folder_delete(node, folder)
-  node.folder_delete(folder)
-end
-
-# This function extracts a file from a node
-def file_extract(node, remote_file, local_file)
-  node.extract(remote_file, local_file, 'root', false)
-end
-
-# This function injects a file into a node
-def file_inject(node, local_file, remote_file)
-  node.inject(local_file, remote_file, 'root', false)
 end
 
 # This function updates the server certificate on the controller node by
@@ -493,7 +438,7 @@ end
 def get_future_time(minutes_to_add)
   raise TypeError, 'minutes_to_add should be an Integer' unless minutes_to_add.is_a?(Integer)
   now = Time.new
-  future_time = now + 60 * minutes_to_add
+  future_time = now + (60 * minutes_to_add)
   future_time.strftime('%H:%M').to_s.strip
 end
 
