@@ -37,6 +37,7 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.audit.CVEAuditManager;
 import com.redhat.rhn.manager.audit.CVEAuditManagerOVAL;
+import com.redhat.rhn.manager.audit.CVEAuditServer;
 import com.redhat.rhn.manager.audit.CVEAuditSystemBuilder;
 import com.redhat.rhn.manager.audit.PatchStatus;
 import com.redhat.rhn.manager.audit.RankedChannel;
@@ -60,7 +61,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-// TODO: Test that if we get AFFECTED_PATCH_INAPPLICABLE auditServer.Channels and auditServer.Erratas are not null
 public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
     public static final String CPE_OPENSUSE_LEAP_15_4 = "cpe:/o:opensuse:leap:15.4";
     private OvalParser ovalParser = new OvalParser();
@@ -99,7 +99,7 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
      * is vulnerable. For example, if none of the vulnerable packages are installed on the system,
      * it means that the system is by definition NOT_AFFECTED.
      * This test verifies this scenario.
-     * */
+     */
     @Test
     void testDoAuditSystemNotAffectedWhenOSIsAffected() throws Exception {
         OvalRootType ovalRoot = ovalParser.parse(TestUtils
@@ -221,7 +221,7 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
         Server server = createTestServer(user, channels);
         server.setCpe(CPE_OPENSUSE_LEAP_15_4);
 
-        Package affected =  createTestPackage(user, channel, "noarch", "MozillaFirefox");
+        Package affected = createTestPackage(user, channel, "noarch", "MozillaFirefox");
         createTestPackage(user, channel, "noarch", "MozillaFirefox-devel");
 
         createTestInstalledPackage(affected, server);
@@ -520,6 +520,54 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
 
         assertDoesNotThrow(() -> CVEAuditManagerOVAL.listSystemsByPatchStatus(user, knownCve.getName(),
                 EnumSet.allOf(PatchStatus.class)));
+    }
+
+    @Test
+    public void testListSystemsByPatchStatusAffectedPatchInapplicable() throws Exception {
+        OvalRootType ovalRoot = ovalParser.parse(TestUtils
+                .findTestData("/com/redhat/rhn/manager/audit/test/oval/oval-def-1.xml"));
+
+        Cve cve = createTestCve("CVE-2022-2991");
+
+        extractAndSaveVulnerablePackages(ovalRoot);
+
+        Set<Cve> cves = Set.of(cve);
+        User user = createTestUser();
+
+        Errata errata = createTestErrata(user, cves);
+        Channel channel = createTestChannel(user);
+
+        // This channel is not assigned to server
+        Channel otherChannel = createTestChannel(user, errata);
+        Set<Channel> assignedChannels = Set.of(channel);
+        Server server = createTestServer(user, assignedChannels);
+        server.setCpe(CPE_OPENSUSE_LEAP_15_4);
+
+        Package unpatched = createTestPackage(user, channel, "noarch",
+                "kernel-debug-base", "0", "4.12.13", "150100.197.137.2");
+
+        // Patch exists in an unassigned channel
+        createTestPackage(user, errata, otherChannel, "noarch",
+                "kernel-debug-base", "0", "4.12.14", "150100.197.137.2");
+
+        createTestInstalledPackage(unpatched, server);
+
+        CVEAuditManager.populateCVEChannels();
+        // We don't have to care about the internals of populateCVEChannels and weather it will assign otherChannel as
+        // a relevant channel to server; we add it ourselves.
+        RankedChannel otherChannelRanked = new RankedChannel(otherChannel.getId(), 0);
+        Map<Server, List<RankedChannel>> relevantChannels = new HashMap<>();
+        relevantChannels.put(server, List.of(otherChannelRanked));
+        CVEAuditManager.insertRelevantServerChannels(relevantChannels);
+        HibernateFactory.getSession().flush();
+
+        List<CVEAuditServer> auditServers = CVEAuditManagerOVAL.listSystemsByPatchStatus(user, cve.getName(),
+                EnumSet.allOf(PatchStatus.class));
+        CVEAuditServer auditServer = auditServers.stream().findAny().get();
+
+        assertNotEmpty(auditServer.getChannels());
+        assertNotEmpty(auditServer.getErratas());
+        assertEquals(PatchStatus.AFFECTED_PATCH_INAPPLICABLE, auditServer.getPatchStatus());
     }
 
     private static void extractAndSaveVulnerablePackages(OvalRootType rootType) {
