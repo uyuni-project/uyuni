@@ -136,7 +136,7 @@ public class CVEAuditManagerOVAL {
         List<ShallowSystemPackage> allInstalledPackages =
                 PackageManager.shallowSystemPackageList(clientServer.getId());
 
-        LOG.error("Vul packages before filtering: {}",
+        LOG.debug("Vulnerable packages before filtering: {}",
                 OVALCachingFactory.getVulnerablePackagesByProductAndCve(clientServer.getCpe(), cveIdentifier));
 
         Set<VulnerablePackage> clientProductVulnerablePackages =
@@ -144,7 +144,7 @@ public class CVEAuditManagerOVAL {
                         .filter(pkg -> isPackageInstalled(pkg, allInstalledPackages))
                         .collect(Collectors.toSet());
 
-        LOG.error("Vul packages: {}", clientProductVulnerablePackages);
+        LOG.debug("Vulnerable packages after filtering: {}", clientProductVulnerablePackages);
 
         if (clientProductVulnerablePackages.isEmpty()) {
             cveAuditServerBuilder.setPatchStatus(PatchStatus.NOT_AFFECTED);
@@ -241,7 +241,8 @@ public class CVEAuditManagerOVAL {
             }
         }
 
-        LOG.error("Patch Status: {}", cveAuditServerBuilder.getPatchStatus());
+        LOG.debug("'{}' patch status: {}", cveAuditServerBuilder.getSystemName(),
+                cveAuditServerBuilder.getPatchStatus());
 
         return cveAuditServerBuilder;
     }
