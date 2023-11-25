@@ -151,6 +151,7 @@ public class CVEAuditManagerOVAL {
             return cveAuditServerBuilder;
         }
 
+        // The list of vulnerable packages for which a patch has been released
         Set<VulnerablePackage> patchedVulnerablePackages = clientProductVulnerablePackages.stream()
                 .filter(vulnerablePackage -> vulnerablePackage.getFixVersion().isPresent()).collect(
                         Collectors.toSet());
@@ -166,12 +167,9 @@ public class CVEAuditManagerOVAL {
         }
         else {
             boolean allPackagesPatched = patchedVulnerablePackages.stream().allMatch(patchedPackage ->
-                    allInstalledPackages.stream()
-                        .filter(installedPackage ->
-                                Objects.equals(installedPackage.getName(), patchedPackage.getName()))
-                        .anyMatch(installedPackage ->
-                                installedPackage.getPackageEVR()
-                                        .compareTo(PackageEvr.parseRpm(patchedPackage.getFixVersion().get())) >= 0));
+                    getInstalledPackageVersions(patchedPackage, allInstalledPackages)
+                            .stream().allMatch(installedPackage -> installedPackage.getPackageEVR()
+                                    .compareTo(PackageEvr.parseRpm(patchedPackage.getFixVersion().get())) >= 0));
 
             if (allPackagesPatched) {
                 cveAuditServerBuilder.setPatchStatus(PatchStatus.PATCHED);
@@ -266,6 +264,17 @@ public class CVEAuditManagerOVAL {
     private static boolean isPackageInstalled(VulnerablePackage pkg, List<ShallowSystemPackage> allInstalledPackages) {
         return allInstalledPackages.stream()
                 .anyMatch(installed -> Objects.equals(installed.getName(), pkg.getName()));
+    }
+
+    /**
+     * Returns the list of installed versions of {@code pkg}
+     * */
+    private static List<ShallowSystemPackage> getInstalledPackageVersions(
+            VulnerablePackage pkg,
+            List<ShallowSystemPackage> allInstalledPackages) {
+
+        return allInstalledPackages.stream().filter(installed -> Objects.equals(installed.getName(), pkg.getName()))
+                .collect(Collectors.toList());
     }
 
     /**
