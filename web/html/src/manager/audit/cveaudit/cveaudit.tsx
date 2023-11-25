@@ -39,34 +39,54 @@ const PATCH_STATUS_LABEL = {
   AFFECTED_PATCH_INAPPLICABLE: {
     className: "fa-exclamation-triangle text-warning",
     label: t("Affected, patches available in channels which are not assigned"),
+    description: t(
+      "The client is affected by a vulnerability and Uyuni has a patch for it," +
+        " but the channels offering the patch are not assigned to the client."
+    ),
   },
   AFFECTED_PATCH_INAPPLICABLE_SUCCESSOR_PRODUCT: {
     className: "fa-exclamation-triangle text-warning",
     label: t("Affected, patches available in a Product Migration target"),
+    description: t(
+      "The client is affected by a vulnerability and Uyuni has a patch for it," +
+        " but applying the patch requires migrating the product to a newer version."
+    ),
   },
   AFFECTED_FULL_PATCH_APPLICABLE: {
     className: "fa-shield text-warning",
     label: t("Affected, at least one patch available in an assigned channel"),
+    description: t("Affected, at least one patch available in an assigned channel"),
   },
   NOT_AFFECTED: {
     className: "fa-circle text-success",
     label: t("Not affected"),
+    description: t("The client is not affected because none of the known CVE vulnerable packages are installed."),
   },
   PATCHED: {
     className: "fa-check-circle text-success",
     label: t("Patched"),
+    description: t("A patch has been successfully installed on the client."),
   },
   AFFECTED_PATCH_UNAVAILABLE: {
     className: "fa-exclamation-circle text-danger",
-    label: t('Affected, patch is unavailable anywhere (possibly a zero-day vulnerability or a "Won\'t fix" )'),
+    label: t("Affected, patch is unavailable"),
+    description: t("The client is affected by a vulnerability for which a patch has not yet been released."),
   },
   AFFECTED_PATCH_UNAVAILABLE_IN_UYUNI: {
     className: "fa-exclamation-circle text-danger",
-    label: t("Affected, patch is unavailable in any of the synced channels"),
+    label: t("Affected, patch is unavailable in relevant channels"),
+    description: t(
+      "The client is affected by a vulnerability for which a patch has been released, but Uyuni is unable" +
+        " to locate the patch in relevant channels."
+    ),
   },
   AFFECTED_PARTIAL_PATCH_APPLICABLE: {
     className: "fa-shield text-danger",
     label: t("Affected, partial patch available in assigned channel"),
+    description: t(
+      "The client is affected by a vulnerability and Uyuni has a patch for it," +
+        " but applying the patch will only update some of the vulnerable packages."
+    ),
   },
 };
 const TARGET_IMAGE = "IMAGE";
@@ -324,7 +344,7 @@ class CVEAudit extends React.Component<Props, State> {
                 <div>
                   <i
                     className={"fa fa-big " + PATCH_STATUS_LABEL[row.patchStatus].className}
-                    title={PATCH_STATUS_LABEL[row.patchStatus].label}
+                    title={PATCH_STATUS_LABEL[row.patchStatus].description}
                   />
                 </div>
               )}
@@ -353,17 +373,11 @@ class CVEAudit extends React.Component<Props, State> {
               header={t("Actions")}
               cell={(row, criteria) => {
                 if (this.state.resultType === TARGET_SERVER) {
-                  if (row.patchStatus === AFFECTED_PATCH_UNAVAILABLE_IN_UYUNI) {
-                    return t(
-                      "No patches were found in the available channels. Try syncing existing channels or adding more channels"
-                    );
-                  } else if (row.patchStatus === AFFECTED_PATCH_UNAVAILABLE) {
-                    return t(
-                      "Vulnerability doesn't have a patch. This could be due to it being a zero-day vulnerability or having been marked as 'Won't fix' by the distribution maintainer. We recommend searching online for any available mitigations that you can apply."
-                    );
-                  } else if (
+                  if (
                     row.patchStatus === NOT_AFFECTED ||
                     row.patchStatus === PATCHED ||
+                    row.patchStatus === AFFECTED_PATCH_UNAVAILABLE ||
+                    row.patchStatus === AFFECTED_PATCH_UNAVAILABLE_IN_UYUNI ||
                     row.patchStatus === AFFECTED_PATCH_UNAVAILABLE
                   ) {
                     return t("No action required");
