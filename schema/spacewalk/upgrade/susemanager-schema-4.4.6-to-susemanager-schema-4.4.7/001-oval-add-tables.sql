@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS suseOVALPlatform
     cpe      VARCHAR
 );
 
-CREATE SEQUENCE IF NOT EXISTS suse_oval_platform_id_seq START WITH 101;
+CREATE SEQUENCE IF NOT EXISTS suse_oval_platform_id_seq;
 
 CREATE UNIQUE INDEX IF NOT EXISTS suse_oval_aff_platform_cpe_uq
     ON suseovalplatform(cpe);
@@ -18,11 +18,9 @@ CREATE TABLE IF NOT EXISTS suseOVALVulnerablePackage
     fix_version    VARCHAR
 );
 
-CREATE SEQUENCE IF NOT EXISTS suse_oval_vulnerable_pkg_id_seq START WITH 301;
+CREATE SEQUENCE IF NOT EXISTS suse_oval_vulnerable_pkg_id_seq;
 
 CREATE UNIQUE INDEX IF NOT EXISTS suse_oval_vulnerable_pkg_name_fix_version ON suseOVALVulnerablePackage(name, fix_version);
-
-CREATE SEQUENCE IF NOT EXISTS suse_oval_vulnerable_pkg_id_seq START WITH 301;
 
 CREATE TABLE IF NOT EXISTS suseOVALPlatformVulnerablePackage
 (
