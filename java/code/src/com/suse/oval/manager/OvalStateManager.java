@@ -20,6 +20,7 @@ import com.suse.oval.ovaltypes.StateType;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * A cache for {@link StateType} to access OVAL states quickly
@@ -44,21 +45,7 @@ public class OvalStateManager {
      * @param stateId the id of state to lookup
      * @return the state
      * */
-    public StateType get(String stateId) {
-        StateType state = statesMap.get(stateId);
-        if (state == null) {
-            throw new IllegalArgumentException("The state id is invalid: " + stateId);
-        }
-        return state;
-    }
-
-    /**
-     * Check if an OVAL state with an id of {@code stateId} exists
-     *
-     * @param stateId the state id to check if exists
-     * @return whether a state with {@code stateId} exist or not
-     * */
-    protected boolean exists(String stateId) {
-        return statesMap.containsKey(stateId);
+    public Optional<StateType> get(String stateId) {
+        return Optional.ofNullable(statesMap.get(stateId));
     }
 }

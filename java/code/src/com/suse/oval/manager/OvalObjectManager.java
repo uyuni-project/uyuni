@@ -20,6 +20,7 @@ import com.suse.oval.ovaltypes.ObjectType;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * A cache for {@link ObjectType} to access OVAL objects quickly
@@ -44,17 +45,7 @@ public class OvalObjectManager {
      * @param objectId the object id to look up
      * @return the cached {@link ObjectType} object that correspond to the object id
      * */
-    public ObjectType get(String objectId) {
-        ObjectType object = objectsMap.get(objectId);
-        if (object == null) {
-            throw new IllegalArgumentException("The object id is invalid: " + objectId);
-        }
-        return object;
-    }
-    /**
-     * Check if an OVAL object with an id of {@code objectId} exists
-     * */
-    protected boolean exists(String objectId) {
-        return objectsMap.containsKey(objectId);
+    public Optional<ObjectType> get(String objectId) {
+        return Optional.ofNullable(objectsMap.get(objectId));
     }
 }
