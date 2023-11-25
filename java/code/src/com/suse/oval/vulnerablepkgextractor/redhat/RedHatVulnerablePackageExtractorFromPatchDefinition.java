@@ -76,8 +76,9 @@ public class RedHatVulnerablePackageExtractorFromPatchDefinition extends Criteri
 
         List<String> affectedCpeList = definition.getMetadata().getAdvisory().map(Advisory::getAffectedCpeList)
                 .orElse(Collections.emptyList());
+
         if (affectedCpeList.isEmpty()) {
-            LOG.warn("RedHat affected CPE list is not meant to be empty");
+            LOG.warn("RedHat affected CPE list cannot be empty");
         }
 
         List<ProductVulnerablePackages> result = new ArrayList<>();

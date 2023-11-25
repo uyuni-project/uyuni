@@ -91,8 +91,6 @@ public class OVALCachingFactory extends HibernateFactory {
         }
 
         mode.getQuery().executeBatchUpdates(new DataResult<>(batch));
-
-        LOG.warn("Ending...");
     }
 
     /**
