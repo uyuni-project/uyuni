@@ -8787,8 +8787,8 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <trans-unit id="bunch.jsp.description.repo-sync-bunch" xml:space="preserve">
         <source>Synchronizes @@PRODUCT_NAME@@ repositories</source>
       </trans-unit>
-      <trans-unit id="bunch.jsp.description.ssh-push-bunch" xml:space="preserve">
-        <source>Manages clients via SSH Server Push</source>
+      <trans-unit id="bunch.jsp.description.ssh-service-bunch" xml:space="preserve">
+        <source>Manages checkins and action chain resumes for SSH Push Clients</source>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.cve-server-channels-bunch" xml:space="preserve">
         <source>Generates data required for performing CVE audit queries</source>
