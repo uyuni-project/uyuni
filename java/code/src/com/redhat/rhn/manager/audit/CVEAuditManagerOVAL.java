@@ -85,7 +85,6 @@ public class CVEAuditManagerOVAL {
             CVEAuditSystemBuilder systemAuditResult;
             // We need this initially to be able to get errata and audit channels information for the OVAL
             // implementation.
-
             CVEAuditSystemBuilder auditWithChannelsResult =
                     CVEAuditManager.doAuditSystem(clientServer.getId(), resultsBySystem.get(clientServer.getId()));
 
