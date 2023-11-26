@@ -53,7 +53,7 @@ public class SSHServiceDriver implements QueueDriver<SystemSummary> {
     private static final Set<SystemSummary> CURRENT_SYSTEMS = Collections.synchronizedSet(new HashSet<>());
 
     // String constants
-    private static final String WORKER_THREADS_KEY = "taskomatic.ssh_push_workers";
+    private static final String WORKER_THREADS_KEY = "taskomatic.ssh_service_workers";
     private static final String JOB_LABEL = "ssh-service-default";
 
     // Logger passed in from the Job class (SSHService)
@@ -172,7 +172,7 @@ public class SSHServiceDriver implements QueueDriver<SystemSummary> {
      */
     @Override
     public int getMaxWorkers() {
-        return Config.get().getInt(WORKER_THREADS_KEY, 2);
+        return Config.get().getInt(WORKER_THREADS_KEY, Config.get().getInt("taskomatic.ssh_push_workers", 2));
     }
 
     /**
