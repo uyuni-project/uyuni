@@ -54,14 +54,10 @@ public class SSHServiceDriver implements QueueDriver<SystemSummary> {
 
     // String constants
     private static final String WORKER_THREADS_KEY = "taskomatic.ssh_push_workers";
-    private static final String PORT_HTTPS_KEY = "ssh_push_port_https";
     private static final String JOB_LABEL = "ssh-service-default";
 
     // Logger passed in from the Job class (SSHService)
     private Logger log;
-
-    // Port number to use for remote port forwarding
-    private int remotePort;
 
     private CheckinCandidatesResolver checkinCandidatesResolver;
 
@@ -80,12 +76,6 @@ public class SSHServiceDriver implements QueueDriver<SystemSummary> {
      */
     @Override
     public void initialize() {
-        // Read the remote port for SSH tunneling from config
-        remotePort = Config.get().getInt(PORT_HTTPS_KEY);
-        if (log.isDebugEnabled()) {
-            log.debug("SSHServiceDriver will use port {}", remotePort);
-        }
-
         this.checkinCandidatesResolver = new CheckinCandidatesResolver(
                 TaskConstants.TASK_QUERY_SSH_PUSH_FIND_CHECKIN_CANDIDATES);
 
