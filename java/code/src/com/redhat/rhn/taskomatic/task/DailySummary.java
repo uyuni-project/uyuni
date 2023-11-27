@@ -22,9 +22,9 @@ import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.notification.NotificationMessage;
-import com.redhat.rhn.domain.notification.PaygNotCompliantWarning;
 import com.redhat.rhn.domain.notification.UserNotificationFactory;
 import com.redhat.rhn.domain.notification.types.EndOfLifePeriod;
+import com.redhat.rhn.domain.notification.types.PaygNotCompliantWarning;
 import com.redhat.rhn.domain.notification.types.SubscriptionWarning;
 import com.redhat.rhn.domain.notification.types.UpdateAvailable;
 import com.redhat.rhn.domain.org.OrgFactory;
@@ -165,7 +165,8 @@ public class DailySummary extends RhnJavaJob {
         // This notification will be process only if SUMA is PAYG but is not compliant
         if (cloudPaygManager.isPaygInstance() && !cloudPaygManager.isCompliant()) {
             NotificationMessage notificationMessage =
-                    UserNotificationFactory.createNotificationMessage(new PaygNotCompliantWarning());
+                    UserNotificationFactory.createNotificationMessage(
+                            new PaygNotCompliantWarning());
             UserNotificationFactory.storeNotificationMessageFor(notificationMessage,
                     Collections.singleton(RoleFactory.ORG_ADMIN), Optional.empty());
         }
