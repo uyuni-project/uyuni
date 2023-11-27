@@ -40,15 +40,15 @@ const PATCH_STATUS_LABEL = {
     className: "fa-exclamation-triangle text-warning",
     label: t("Affected, patches available in channels which are not assigned"),
     description: t(
-      "The client is affected by a vulnerability and Uyuni has a patch for it," +
-        " but the channels offering the patch are not assigned to the client."
+      "The client is affected by a vulnerability and we have a patch for it," +
+        " but the channel(s) offering the patch are not assigned to the client."
     ),
   },
   AFFECTED_PATCH_INAPPLICABLE_SUCCESSOR_PRODUCT: {
     className: "fa-exclamation-triangle text-warning",
     label: t("Affected, patches available in a Product Migration target"),
     description: t(
-      "The client is affected by a vulnerability and Uyuni has a patch for it," +
+      "The client is affected by a vulnerability and we have a patch for it," +
         " but applying the patch requires migrating the product to a newer version."
     ),
   },
@@ -76,15 +76,15 @@ const PATCH_STATUS_LABEL = {
     className: "fa-exclamation-circle text-danger",
     label: t("Affected, patch is unavailable in relevant channels"),
     description: t(
-      "The client is affected by a vulnerability for which a patch has been released, but Uyuni is unable" +
-        " to locate the patch in relevant channels."
+      "The client is affected by a vulnerability for which a patch has been released," +
+        " but the patch can't be found in the relevant channels."
     ),
   },
   AFFECTED_PARTIAL_PATCH_APPLICABLE: {
     className: "fa-shield text-danger",
     label: t("Affected, partial patch available in assigned channel"),
     description: t(
-      "The client is affected by a vulnerability and Uyuni has a patch for it," +
+      "The client is affected by a vulnerability and we have a patch for it," +
         " but applying the patch will only update some of the vulnerable packages."
     ),
   },
