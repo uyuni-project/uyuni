@@ -95,6 +95,7 @@ import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.kickstart.ProvisionVirtualInstanceCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerVirtualSystemCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
+import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
@@ -126,6 +127,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * ActionManager - the singleton class used to provide Business Operations
@@ -1950,6 +1952,41 @@ public class ActionManager extends BaseManager {
         return action;
     }
 
+
+    private static List<Map<String, Object>> removeDuplicatedName(List<Map<String, Long>> packageMaps) {
+        Map<String, Map<String, Object>> packageMapsWithoutDuplicated = new HashMap<>();
+
+        for (Map<String, Long> map : packageMaps) {
+
+            Map<String, Object> newMap = map.entrySet().stream()
+                 .collect(Collectors.toMap(Map.Entry::getKey, e -> (Object)e.getValue()));
+
+            Map<String, Object> previous = packageMapsWithoutDuplicated.put(
+                    newMap.get("name_id").toString(), newMap);
+
+            if (previous != null) {
+                String previousNevra = PackageManager.buildPackageNevra(
+                        Long.valueOf(previous.get("name_id").toString()),
+                        Long.valueOf(previous.get("evr_id").toString()),
+                        Long.valueOf(previous.get("arch_id").toString()));
+
+                String currentNevra = PackageManager.buildPackageNevra(
+                        Long.valueOf(map.get("name_id").toString()),
+                        Long.valueOf(map.get("evr_id").toString()),
+                        Long.valueOf(map.get("arch_id").toString()));
+
+                log.warn("Package {}, will be not be installed cause also {} has been " +
+                        "provided. This is because " +
+                        "salt fails installing to package with the same name. If the " +
+                        "installed package is not the one desired, " +
+                        "you can install it the correct one after."
+                        , previousNevra, currentNevra);
+
+            }
+        }
+        return new ArrayList<>(packageMapsWithoutDuplicated.values());
+
+    }
     /**
      * Adds package details to some Actions
      * @param actions the actions
@@ -1959,10 +1996,13 @@ public class ActionManager extends BaseManager {
     public static void addPackageActionDetails(Collection<Action> actions,
             List<Map<String, Long>> packageMaps) {
         if (packageMaps != null) {
+
+            List<Map<String, Object>> uniquePackagesMaps = removeDuplicatedName(packageMaps);
+
             List<Map<String, Object>> paramList =
                 actions.stream().flatMap(action -> {
                     String packageParameter = getPackageParameter(action);
-                    return packageMaps.stream().map(packageMap -> {
+                    return uniquePackagesMaps.stream().map(packageMap -> {
                         Map<String, Object> params = new HashMap<>();
                         params.put("action_id", action.getId());
                         params.put("name_id", packageMap.get("name_id"));
@@ -1976,8 +2016,8 @@ public class ActionManager extends BaseManager {
 
             ModeFactory.getWriteMode("Action_queries", "schedule_action")
                 .executeUpdates(paramList);
-        }
     }
+        }
 
     /**
      * Returns the pkg_parameter parameter to the schedule_action queries in
