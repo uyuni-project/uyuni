@@ -60,6 +60,10 @@ const _MESSAGE_TYPE = {
     id: "UpdateAvailable",
     text: t("Update Notification"),
   },
+  PaygNotCompliantWarning: {
+    id: "PaygNotCompliantWarning",
+    text: t("Payg Not Compliant Warning"),
+  },
 };
 
 function reloadData(dataUrlSlice: string) {
