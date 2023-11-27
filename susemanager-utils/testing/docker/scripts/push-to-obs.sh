@@ -84,12 +84,12 @@ fi
 
 # Build SRPMS
 echo "*************** BUILDING PACKAGES ***************"
-./build-packages-for-obs.sh ${PACKAGES}
+build-packages-for-obs ${PACKAGES}
 
 # Submit 
 for DESTINATION in $(echo ${DESTINATIONS}|tr ',' ' '); do
   export OSCAPI=$(echo ${DESTINATION}|cut -d'|' -f1)
   export OBS_PROJ=$(echo ${DESTINATION}|cut -d'|' -f2)
   echo "*************** PUSHING TO ${OBS_PROJ} ***************"
-  ./push-packages-to-obs.sh ${PACKAGES}
+  push-packages-to-obs ${PACKAGES}
 done

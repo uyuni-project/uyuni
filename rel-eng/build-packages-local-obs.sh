@@ -133,7 +133,7 @@ echo "**************************************************************"
 echo " Building tarballs, specs and changelogs..."
 echo "**************************************************************"
 export TEST='TRUE' # So tito runs with --test and uses HEAD and tags
-${BASE_DIR}/build-packages-for-obs.sh ${PACKAGES}
+build-packages-for-obs ${PACKAGES}
 echo "**************************************************************"
 echo " Building packages with osc build for ${REPOSITORY}..."
 echo "**************************************************************"
