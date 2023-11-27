@@ -32,10 +32,9 @@ public class PackageArchTest extends RhnBaseTestCase {
      * Simple test to make sure we can lookup PackageArchs from
      * the db. Turn on hibernate.show_sql to make sure hibernate
      * is only going to the db once.
-     * @throws Exception HibernateException
      */
     @Test
-    public void testPackageArch() throws Exception {
+    public void testPackageArch() {
 
         Long testid = 100L;
         String query = "PackageArch.findById";

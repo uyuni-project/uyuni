@@ -41,9 +41,10 @@ public class DumpFilter implements Filter {
     private static Logger log = LogManager.getLogger(DumpFilter.class);
 
     /** {@inheritDoc} */
+    @Override
     public void doFilter(ServletRequest req,
-            ServletResponse resp,
-            FilterChain chain)
+                         ServletResponse resp,
+                         FilterChain chain)
             throws IOException, ServletException {
 
         if (log.isDebugEnabled()) {

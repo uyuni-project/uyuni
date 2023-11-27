@@ -71,7 +71,6 @@ public class RequestContext {
     public static final String COBBLER_ID = "cobbler_id";
     public static final String FILTER_STRING = "filter_string";
     public static final String PREVIOUS_FILTER_STRING = "prev_filter_value";
-    public static final String LIST_DISPLAY_EXPORT = "lde";
     public static final String TOKEN_ID = "tid";
 
     public static final String LIST_SORT = "sort";
@@ -266,9 +265,7 @@ public class RequestContext {
      * @throws IllegalArgumentException if no server with the ID given in the
      * request can be found
      */
-    // TODO Write unit tests for lookupServer()
-    public Server lookupAndBindServer()
-    throws IllegalArgumentException {
+    public Server lookupAndBindServer() throws IllegalArgumentException {
         if (request.getAttribute(SYSTEM) == null) {
             request.setAttribute(SYSTEM, lookupServer());
         }
@@ -475,13 +472,8 @@ public class RequestContext {
     public Long getRequiredParam(String paramName) {
         Long result = getParamAsLong(paramName);
         if (result == null) {
-            // TODO: One day, BadParameterException will take a message and we
-            // can do
-            // throw new BadParameterException("The parameter " + param +
-            // " is required and must be a Long, but was '" + p +"'");
-            // That one day has finally arrived! And the coders rejoiced.
             throw new BadParameterException("The parameter " + paramName +
-            " is required, when accessing " + request.getRequestURI());
+                " is required, when accessing " + request.getRequestURI());
         }
         return result;
     }
@@ -496,8 +488,7 @@ public class RequestContext {
     public String getRequiredParamAsString(String paramName) {
         String p = request.getParameter(paramName);
         if (StringUtils.isBlank(p)) {
-            throw new BadParameterException("The parameter " + paramName +
-            " is required.");
+            throw new BadParameterException("The parameter " + paramName + " is required.");
         }
         return p;
     }
@@ -516,21 +507,6 @@ public class RequestContext {
             " is required.");
         }
         return p;
-    }
-
-    /**
-     * If this current Request includes a parameter to indicate the User is attempting
-     * to produce an export of viewable data then return true.
-     *
-     * Only for use with the Old list tag's exporter.  The new list tag doesn't use
-     *      "lde" as a parameter, it uses   lde_unique(listName).
-     *
-     * @return if this request includes an export param
-     */
-    // TODO Write unit tests for isRequestedExport()
-    public boolean isRequestedExport() {
-        String lde = request.getParameter(LIST_DISPLAY_EXPORT);
-        return (lde != null && lde.equals("1"));
     }
 
     /**
@@ -583,7 +559,7 @@ public class RequestContext {
         Map<String, Object> params = new HashMap<>();
         String lower = processPagination();
 
-        if (lower != null && lower.length() > 0 && StringUtils.isNumeric(lower)) {
+        if (lower != null && !lower.isEmpty() && StringUtils.isNumeric(lower)) {
             params.put("lower", lower);
         }
 

@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.rhnset.RhnSetElement;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.BaseSetOperateOnSelectedItemsAction;
 import com.redhat.rhn.frontend.action.configuration.ConfigActionHelper;
+import com.redhat.rhn.frontend.dto.ConfigFileDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
@@ -40,10 +41,12 @@ import javax.servlet.http.HttpServletResponse;
 public class ChannelFilesImportSubmit extends BaseSetOperateOnSelectedItemsAction {
     public static final String KEY_IMPORT = "addfiles.jsp.import.jspf.submit";
 
+    @Override
     protected void processMethodKeys(Map<String, String> map) {
         map.put(KEY_IMPORT, "processImport");
     }
 
+    @Override
     protected void processParamMap(ActionForm formIn,
                                    HttpServletRequest request,
                                    Map<String, Object> params) {
@@ -106,9 +109,10 @@ public class ChannelFilesImportSubmit extends BaseSetOperateOnSelectedItemsActio
         return Boolean.TRUE;
     }
 
-    protected DataResult getDataResult(User u,
-                                       ActionForm formIn,
-                                       HttpServletRequest request) {
+    @Override
+    protected DataResult<ConfigFileDto> getDataResult(User u,
+                                                      ActionForm formIn,
+                                                      HttpServletRequest request) {
         RequestContext ctx = new RequestContext(request);
         ConfigChannel cc = ConfigActionHelper.getChannel(request);
         ConfigActionHelper.setupRequestAttributes(ctx, cc);
@@ -120,6 +124,7 @@ public class ChannelFilesImportSubmit extends BaseSetOperateOnSelectedItemsActio
      * We affect the selected-files set
      * @return FILE_LISTS identifier
      */
+    @Override
     public RhnSetDecl getSetDecl() {
         return RhnSetDecl.CONFIG_FILES;
     }

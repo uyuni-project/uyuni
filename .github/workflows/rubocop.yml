@@ -3,8 +3,10 @@ name: RuboCop
 on:
   pull_request:
     paths:
-      - 'testsuite/features/**.rb'
       - '.github/workflows/rubocop.yml'
+      - 'testsuite/features/**.rb'
+      - 'testsuite/.rubocop.yml'
+      - 'testsuite/.rubocop_todo.yml'
 
 jobs:
   rubocop:
@@ -12,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - uses: ruby/setup-ruby@v1
       with:
         ruby-version: '2.5'

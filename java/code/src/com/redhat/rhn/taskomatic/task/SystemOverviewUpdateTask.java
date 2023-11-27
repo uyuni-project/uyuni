@@ -20,7 +20,6 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.task.systems.SystemsOverviewUpdateDriver;
 
 import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
 
 /**
  * Taskomatic task updating the suseSystemOverview table
@@ -33,7 +32,7 @@ public class SystemOverviewUpdateTask extends RhnJavaJob {
     }
 
     @Override
-    public void execute(JobExecutionContext context) throws JobExecutionException {
+    public void execute(JobExecutionContext context) {
 
         // Queue one task for each system to be picked by ServerOverviewUpdateQueue
         SystemManager.listSystemIds().forEach(sid ->

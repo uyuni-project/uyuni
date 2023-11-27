@@ -47,6 +47,7 @@ public class LocalizedSubmitTag extends SubmitTag {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getStyleClass() {
         if (super.getStyleClass() != null) {
             return (super.getStyleClass());
@@ -57,6 +58,7 @@ public class LocalizedSubmitTag extends SubmitTag {
     /** {@inheritDoc}
      * @throws JspException JSP exception
      */
+    @Override
     public int doStartTag() throws JspException {
         this.setValue(LocalizationService.getInstance().getMessage(getValueKey()));
         super.doStartTag();
@@ -66,6 +68,7 @@ public class LocalizedSubmitTag extends SubmitTag {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void release() {
         valueKey = null;
         super.release();

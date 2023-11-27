@@ -53,6 +53,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.ConfigTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
+import com.suse.cloud.CloudPaygManager;
 import com.suse.manager.webui.controllers.bootstrap.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.bootstrap.SSHMinionBootstrapper;
 import com.suse.manager.webui.services.iface.SaltApi;
@@ -89,8 +90,10 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
     private TaskomaticApi taskomaticApi = new TaskomaticApi();
     private SaltApi saltApi = new TestSaltApi();
     private SystemQuery systemQuery = new TestSystemQuery();
-    private RegularMinionBootstrapper regularMinionBootstrapper = new RegularMinionBootstrapper(systemQuery, saltApi);
-    private SSHMinionBootstrapper sshMinionBootstrapper = new SSHMinionBootstrapper(systemQuery, saltApi);
+    private CloudPaygManager paygManager = new CloudPaygManager();
+    private RegularMinionBootstrapper regularMinionBootstrapper =
+            new RegularMinionBootstrapper(systemQuery, saltApi, paygManager);
+    private SSHMinionBootstrapper sshMinionBootstrapper = new SSHMinionBootstrapper(systemQuery, saltApi, paygManager);
     private XmlRpcSystemHelper xmlRpcSystemHelper = new XmlRpcSystemHelper(
             regularMinionBootstrapper,
             sshMinionBootstrapper
@@ -153,7 +156,7 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
 
         try {
             // validate that system must have config deployment capability
-            // in order to deploy config files... (e.g. rhncfg* pkgs installed)
+            // in order to deploy config files...
             handler.deployAll(regular, systems, date);
 
             fail("Shouldn't be permitted to deploy without config deploy capability.");
@@ -397,7 +400,7 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testLookupFileInfoNoData() throws Exception {
+    public void testLookupFileInfoNoData() {
         Server srv1 = ServerFactoryTest.createTestServer(regular, true);
         List<String> paths = new LinkedList<>();
         paths.add("/no/such/file.txt");
@@ -414,7 +417,7 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testAddPath() throws Exception {
+    public void testAddPath() {
         Server srv1 = ServerFactoryTest.createTestServer(regular, true);
 
         String path = "/tmp/foo/path" + TestUtils.randomString();
@@ -461,7 +464,7 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testListFiles() throws Exception {
+    public void testListFiles() {
         Server srv1 = ServerFactoryTest.createTestServer(regular, true);
 
         for (int j = 0; j < 2; j++) {
@@ -508,7 +511,7 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testRemovePaths() throws Exception {
+    public void testRemovePaths() {
         Server srv1 = ServerFactoryTest.createTestServer(regular, true);
 
         for (int i = 0; i < 2; i++) {

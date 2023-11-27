@@ -35,6 +35,8 @@ import com.suse.manager.api.SerializedApiResponse;
  *      #prop("string", "stepping")
  *      #prop("string", "count")
  *      #prop("int", "socket_count (if available)")
+ *      #prop("int", "core_count (if available) number of cores per socket")
+ *      #prop("int", "thread_count (if available) number of threads per core")
  *  #struct_end()
  *
  */
@@ -58,6 +60,8 @@ public class CpuSerializer extends ApiResponseSerializer<CPU> {
                 .add("stepping", src.getStepping())
                 .add("count", src.getNrCPU())
                 .add("socket_count", src.getNrsocket())
+                .add("core_count", src.getNrCore())
+                .add("thread_count", src.getNrThread())
                 .build();
     }
 }

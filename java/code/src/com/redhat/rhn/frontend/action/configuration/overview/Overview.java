@@ -38,10 +38,11 @@ public class Overview extends RhnAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     public final ActionForward execute(ActionMapping mapping,
-            ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                       ActionForm formIn,
+                                       HttpServletRequest request,
+                                       HttpServletResponse response) {
 
         RequestContext requestContext = new RequestContext(request);
 
@@ -49,7 +50,7 @@ public class Overview extends RhnAction {
 
         ConfigurationManager manager = ConfigurationManager.getInstance();
 
-        Map summary = manager.getOverviewSummary(user);
+        Map<String, Long> summary = manager.getOverviewSummary(user);
         request.setAttribute("summary", summary);
         request.setAttribute("is_admin", AclManager
                 .hasAcl("user_role(org_admin)",

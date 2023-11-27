@@ -57,6 +57,7 @@ public class CompressingDigestOutputWriter extends OutputStream {
      * @param arg0 int arg
      * @throws IOException ioexception
      */
+    @Override
     public void write(int arg0) throws IOException {
         bufferedStream.write(arg0);
     }
@@ -66,6 +67,7 @@ public class CompressingDigestOutputWriter extends OutputStream {
      * @param b byte
      * @throws IOException ioexception
      */
+    @Override
     public void write(byte[] b) throws IOException {
         bufferedStream.write(b);
     }
@@ -74,6 +76,7 @@ public class CompressingDigestOutputWriter extends OutputStream {
      * flush stream
      * @throws IOException ioexception
      */
+    @Override
     public void flush() throws IOException {
         bufferedStream.flush();
     }
@@ -82,6 +85,7 @@ public class CompressingDigestOutputWriter extends OutputStream {
      * close stream
      * @throws IOException ioexception
      */
+    @Override
     public void close() throws IOException {
         bufferedStream.close();
     }

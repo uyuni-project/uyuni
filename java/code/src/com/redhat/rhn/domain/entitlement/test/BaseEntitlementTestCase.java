@@ -78,8 +78,8 @@ public abstract class BaseEntitlementTestCase extends BaseTestCaseWithUser {
         systemEntitlementManager.setBaseEntitlement(traditional, EntitlementManager.MANAGEMENT);
         systemEntitlementManager.setBaseEntitlement(foreign, EntitlementManager.FOREIGN);
 
-        assertTrue(traditional.getValidAddonEntitlementsForServer().size() > 0);
-        assertTrue(foreign.getValidAddonEntitlementsForServer().size() == 0);
+        assertFalse(traditional.getValidAddonEntitlementsForServer().isEmpty());
+        assertTrue(foreign.getValidAddonEntitlementsForServer().isEmpty());
     }
 
     @Test

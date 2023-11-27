@@ -28,7 +28,7 @@ import java.util.Set;
  */
 public class ConfigUploadMtimeAction extends Action {
 
-    private Set configDateFileActions;
+    private Set<ConfigDateFileAction> configDateFileActions;
 
     private Set<ConfigChannelAssociation> configChannelAssociations;
 
@@ -37,13 +37,14 @@ public class ConfigUploadMtimeAction extends Action {
     /**
      * @return Returns the configDateFileActions.
      */
-    public Set getConfigDateFileActions() {
+    public Set<ConfigDateFileAction> getConfigDateFileActions() {
         return configDateFileActions;
     }
+
     /**
      * @param configDateFileActionsIn The configDateFileActions to set.
      */
-    public void setConfigDateFileActions(Set configDateFileActionsIn) {
+    public void setConfigDateFileActions(Set<ConfigDateFileAction> configDateFileActionsIn) {
         this.configDateFileActions = configDateFileActionsIn;
     }
 
@@ -53,7 +54,7 @@ public class ConfigUploadMtimeAction extends Action {
      */
     public void addConfigDateFileAction(ConfigDateFileAction cdIn) {
         if (configDateFileActions == null) {
-            configDateFileActions = new HashSet();
+            configDateFileActions = new HashSet<>();
         }
         cdIn.setParentAction(this);
         configDateFileActions.add(cdIn);
@@ -64,26 +65,26 @@ public class ConfigUploadMtimeAction extends Action {
      * @return Returns the configChannels associated with this Action
      */
     public ConfigChannel[] getConfigChannels() {
-        Iterator i = configChannelAssociations.iterator();
-        Set retval = new HashSet();
+        Iterator<ConfigChannelAssociation> i = configChannelAssociations.iterator();
+        Set<ConfigChannel> retval = new HashSet<>();
         while (i.hasNext()) {
-            ConfigChannelAssociation ca = (ConfigChannelAssociation)i.next();
+            ConfigChannelAssociation ca = i.next();
             retval.add(ca.getConfigChannel());
         }
-        return (ConfigChannel[])retval.toArray(new ConfigChannel[0]);
+        return retval.toArray(new ConfigChannel[0]);
     }
 
     /**
      * @return Returns the servers associated with this Action
      */
     public Server[] getServers() {
-        Iterator i = configChannelAssociations.iterator();
-        Set retval = new HashSet();
+        Iterator<ConfigChannelAssociation> i = configChannelAssociations.iterator();
+        Set<Server> retval = new HashSet<>();
         while (i.hasNext()) {
-            ConfigChannelAssociation ca = (ConfigChannelAssociation)i.next();
+            ConfigChannelAssociation ca = i.next();
             retval.add(ca.getServer());
         }
-        return (Server[])retval.toArray(new Server[0]);
+        return retval.toArray(new Server[0]);
     }
 
     /**
@@ -99,7 +100,7 @@ public class ConfigUploadMtimeAction extends Action {
         newCA.setModified(new Date());
         newCA.setCreated(new Date());
         if (configChannelAssociations == null) {
-            configChannelAssociations = new HashSet();
+            configChannelAssociations = new HashSet<>();
         }
         newCA.setParentAction(this);
         configChannelAssociations.add(newCA);

@@ -27,6 +27,7 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * AclGuardTest
@@ -37,14 +38,14 @@ public class AclGuardTest extends RhnBaseTestCase {
     public void testNoAclDefined() {
         NavNode node = new NavNode();
         AclFactory aclFactory = new AclFactory(new Access());
-        AclGuard aclGuard = new AclGuard(new HashMap(), aclFactory);
+        AclGuard aclGuard = new AclGuard(new HashMap<>(), aclFactory);
         boolean rc = aclGuard.canRender(node, 0);
         assertTrue(rc);
     }
 
     @Test
     public void testNullNodeDefined() {
-        AclGuard aclGuard = new AclGuard(new HashMap(), new AclFactory(new Access()));
+        AclGuard aclGuard = new AclGuard(new HashMap<>(), new AclFactory(new Access()));
         boolean rc = aclGuard.canRender(null, 0);
         assertTrue(rc);
     }
@@ -53,7 +54,7 @@ public class AclGuardTest extends RhnBaseTestCase {
     public void testAclDefinedFailsRender() {
         NavNode node = new NavNode();
         node.setAcl("false_test()");
-        AclGuard aclGuard = new AclGuard(new HashMap(),
+        AclGuard aclGuard = new AclGuard(new HashMap<>(),
                 MockAclHandler.class.getName(), new AclFactory(new Access()));
         boolean rc = aclGuard.canRender(node, 0);
         assertFalse(rc);
@@ -63,7 +64,7 @@ public class AclGuardTest extends RhnBaseTestCase {
     public void testAclDefinedShouldRender() {
         NavNode node = new NavNode();
         node.setAcl("true_test()");
-        AclGuard aclGuard = new AclGuard(new HashMap(),
+        AclGuard aclGuard = new AclGuard(new HashMap<>(),
                 MockAclHandler.class.getName(), new AclFactory(new Access()));
         boolean rc = aclGuard.canRender(node, 0);
         assertTrue(rc);
@@ -76,7 +77,7 @@ public class AclGuardTest extends RhnBaseTestCase {
          * @param params ignored
          * @return true
          */
-        public boolean aclTrueTest(Object ctx, String[] params) {
+        public boolean aclTrueTest(Map<String, Object> ctx, String[] params) {
             return true;
         }
 
@@ -86,7 +87,7 @@ public class AclGuardTest extends RhnBaseTestCase {
          * @param params ignored
          * @return false
          */
-        public boolean aclFalseTest(Object ctx, String[] params) {
+        public boolean aclFalseTest(Map<String, Object> ctx, String[] params) {
             return false;
         }
     }

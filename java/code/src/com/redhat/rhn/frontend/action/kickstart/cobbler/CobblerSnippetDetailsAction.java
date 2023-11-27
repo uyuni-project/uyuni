@@ -55,10 +55,11 @@ public class CobblerSnippetDetailsAction extends RhnAction {
                 "/com/redhat/rhn/frontend/action/kickstart/" +
                         "cobbler/validation/cobblerSnippetsForm.xsd";
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-                                  ActionForm formIn,
-                                  HttpServletRequest request,
-                                  HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
         DynaActionForm form = (DynaActionForm) formIn;
         RequestContext ctx = new RequestContext(request);
 
@@ -101,8 +102,8 @@ public class CobblerSnippetDetailsAction extends RhnAction {
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
     }
 
-    private Map makeValidationMap(DynaActionForm form) {
-        Map map = new HashMap();
+    private Map<String, String> makeValidationMap(DynaActionForm form) {
+        Map<String, String> map = new HashMap<>();
         map.put(NAME, form.getString(NAME));
         map.put(OLD_NAME, form.getString(OLD_NAME));
         map.put(CONTENTS, form.getString(CONTENTS));

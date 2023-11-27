@@ -15,7 +15,7 @@
             {
               "device": "disk",
               "format": "qcow2",
-              "image": "/var/testsuite-data/disk-image-template.qcow2",
+              "image": "/var/testsuite-data/leap-disk-image-template.qcow2",
               "model": "virtio",
               "name": "system",
               "pool": "default"

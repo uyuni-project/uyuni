@@ -179,8 +179,7 @@ public class ErrataConfirmSetupAction extends RhnAction implements Listable, Mai
                         hparams);
             }
             catch (TaskomaticApiException e) {
-                log.error("Could not schedule errata application:");
-                log.error(e);
+                log.error("Could not schedule errata application:", e);
                 ActionErrors errors = new ActionErrors();
                 strutsDelegate.addError(errors, "taskscheduler.down");
                 strutsDelegate.saveMessages(request, errors);
@@ -191,7 +190,7 @@ public class ErrataConfirmSetupAction extends RhnAction implements Listable, Mai
          * TODO: Error page or some other shout-to-user-venue
          * What happens if a few ServerActions fail to be scheduled?
          */
-        Map params = makeParamMap(request);
+        Map<String, Object> params = makeParamMap(request);
         return strutsDelegate.forwardParams(
                 mapping.findForward(RhnHelper.DEFAULT_FORWARD), params);
     }
@@ -206,7 +205,7 @@ public class ErrataConfirmSetupAction extends RhnAction implements Listable, Mai
     protected Map makeParamMap(HttpServletRequest request) {
         RequestContext requestContext = new RequestContext(request);
 
-        Map params = requestContext.makeParamMapWithPagination();
+        Map<String, Object> params = requestContext.makeParamMapWithPagination();
         Long sid = requestContext.getRequiredParam("sid");
         if (sid != null) {
             params.put("sid", sid);

@@ -229,6 +229,13 @@ def getCAPassword(options, confirmYN=1):
     global DEFS
     while not options.password:
         pw = _pw = None
+        if options.password_file:
+            if os.path.isfile(options.password_file):
+                with open(options.password_file, 'r') as fd:
+                    pw = _pw = fd.read().strip()
+            else:
+                print("No such file '{}'".format(options.password_file))
+
         while not pw:
             pw = getpass.getpass("CA password: ")
         if confirmYN:
@@ -255,7 +262,7 @@ ERROR: a CA private key already exists:
 """ % ca_key)
         sys.exit(errnoGeneralError)
 
-    args = ("/usr/bin/openssl genpkey -pass pass:%s %s -out %s -algorithm rsa -pkeyopt rsa_keygen_bits:2048"
+    args = ("/usr/bin/openssl genpkey -pass pass:%s %s -out %s -algorithm rsa -pkeyopt rsa_keygen_bits:4096"
             % ('%s', CRYPTO, repr(cleanupAbsPath(ca_key))))
 
     if verbosity >= 0:
@@ -393,7 +400,7 @@ def genServerKey(d, verbosity=0):
     server_key = os.path.join(serverKeyPairDir,
                               os.path.basename(d['--server-key']))
 
-    args = ("/usr/bin/openssl genrsa -out %s 2048"
+    args = ("/usr/bin/openssl genrsa -out %s 4096"
             % (repr(cleanupAbsPath(server_key))))
 
     # generate the server key
@@ -839,7 +846,7 @@ def getTarballFilename(d, version='1.0', release='1'):
         current = os.path.basename(current)
 
     # incoming release (usually coming from RPM version) is factored in
-    # ...if RPM version-release is greater then that is used.
+    # ...if RPM version-release is greater than that is used.
     v = next[len(server_tar_name)+1:-4]
     v = v.split('-')
     v[-1] = str(max(int(v[-1]), int(release)))

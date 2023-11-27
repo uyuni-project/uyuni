@@ -26,7 +26,7 @@ import org.junit.jupiter.api.Test;
 public class SessionStatusActionTest extends BaseSessionTestCase {
 
     @Test
-    public void testExecute() throws Exception {
+    public void testExecute() {
         setRequestPathInfo("/systems/details/kickstart/SessionStatus");
         actionPerform();
         assertNotNull(request.getAttribute(RequestContext.SYSTEM));

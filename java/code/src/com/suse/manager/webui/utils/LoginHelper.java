@@ -50,7 +50,7 @@ import org.apache.commons.lang3.time.StopWatch;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -58,7 +58,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.security.auth.login.LoginException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -192,13 +191,8 @@ public class LoginHelper {
     }
 
     private static String decodeFromIso88591(String string, String defaultString) {
-        try {
-            if (string != null) {
-                return new String(string.getBytes("ISO8859-1"), "UTF-8");
-            }
-        }
-        catch (UnsupportedEncodingException e) {
-            log.warn("Unable to decode: {}", string);
+        if (string != null) {
+            return new String(string.getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
         }
         return defaultString;
     }
@@ -340,7 +334,7 @@ public class LoginHelper {
 
         SelectMode m = ModeFactory.getMode("General_queries", "pg_version_num");
         DataResult<HashMap> dr = m.execute();
-        if (dr.size() > 0) {
+        if (!dr.isEmpty()) {
             serverVersion = Long.valueOf((String) dr.get(0).get("server_version_num"));
         }
         if (serverVersion == null) {
@@ -348,7 +342,7 @@ public class LoginHelper {
         }
         m = ModeFactory.getMode("General_queries", "pg_version");
         dr = m.execute();
-        if (dr.size() > 0) {
+        if (!dr.isEmpty()) {
             pgVersion = (String) dr.get(0).get("server_version");
         }
 
@@ -388,7 +382,7 @@ public class LoginHelper {
 
         m = ModeFactory.getMode("General_queries", "installed_schema_version");
         dr = m.execute();
-        if (dr.size() == 0) {
+        if (dr.isEmpty()) {
             validationErrors.add(ls.getMessage("error.unfinished_schema_upgrade"));
             log.error(ls.getMessage("error.unfinished_schema_upgrade"));
         }
@@ -410,7 +404,7 @@ public class LoginHelper {
         SelectMode m = ModeFactory.getMode("General_queries", "installed_schema_version");
         DataResult<HashMap> dr = m.execute();
         String installedSchemaVersion = null;
-        if (dr.size() > 0) {
+        if (!dr.isEmpty()) {
             installedSchemaVersion = (String) dr.get(0).get("version");
         }
 
@@ -433,26 +427,6 @@ public class LoginHelper {
         SystemCommandExecutor ce = new SystemCommandExecutor();
         return ce.execute(rpmCommand) == 0 ?
             ce.getLastCommandOutput().replace("\n", "") : null;
-    }
-
-    /**
-     * Log a user into the site and create the user's session.
-     *
-     * @param username login name
-     * @param password unencrypted password
-     * @param errors list of error messages to be populated
-     * @return the user object
-     */
-    public static User loginUser(String username, String password, List<String> errors) {
-        User user = null;
-
-        try {
-            user = UserManager.loginUser(username, password);
-        }
-        catch (LoginException e) {
-            errors.add(e.getMessage());
-        }
-        return user;
     }
 
     /**

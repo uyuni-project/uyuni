@@ -20,7 +20,8 @@ import static spark.Spark.post;
 
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.SetLabels;
-import com.redhat.rhn.frontend.taglibs.DWRItemSelector;
+import com.redhat.rhn.frontend.struts.SessionSetHelper;
+import com.redhat.rhn.frontend.taglibs.ItemSelector;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 
 import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
@@ -38,6 +39,7 @@ import org.apache.logging.log4j.Logger;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -85,7 +87,7 @@ public class SetController {
                     .filter(item -> data.get(item).equals(add))
                     .collect(Collectors.toList());
             try {
-                return DWRItemSelector.updateSetFromRequest(request.raw(), setLabel,
+                return ItemSelector.updateSetFromRequest(request.raw(), setLabel,
                         changes.toArray(new String[0]), add, user);
             }
             catch (Exception e) {
@@ -110,15 +112,22 @@ public class SetController {
      */
     public static String clearSet(Request request, Response response, User user) {
         String setLabel = request.params("label");
+        if (SessionSetHelper.exists(request.raw(), setLabel)) {
+            Set<String> sessionSet = SessionSetHelper.lookupAndBind(request.raw(), setLabel);
+            sessionSet.clear();
+            return json(response, 0);
+        }
+
         RhnSetDecl setDecl = RhnSetDecl.find(setLabel);
-        if (setDecl == null) {
-            return json(response, HttpStatus.SC_NOT_FOUND, Map.of("error", "No such set: " + setLabel));
+        if (setDecl != null) {
+            setDecl.clear(user);
+            if (setLabel.equals(SetLabels.SYSTEM_LIST)) {
+                LOG.debug("Updating SSM count via websocket");
+                Notification.spreadUpdate(Notification.SSM_COUNT);
+            }
+            return json(response, 0);
         }
-        setDecl.clear(user);
-        if (setLabel.equals(SetLabels.SYSTEM_LIST)) {
-            LOG.debug("Updating SSM count via websocket");
-            Notification.spreadUpdate(Notification.SSM_COUNT);
-        }
-        return json(response, 0);
+
+        return json(response, HttpStatus.SC_NOT_FOUND, Map.of("error", "No such set: " + setLabel));
     }
 }

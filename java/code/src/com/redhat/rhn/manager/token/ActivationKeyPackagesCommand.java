@@ -103,7 +103,7 @@ public class ActivationKeyPackagesCommand {
             if (token != null) {
                 token = token.trim();
 
-                if (token.length() == 0) {
+                if (token.isEmpty()) {
                     continue;
                 }
 

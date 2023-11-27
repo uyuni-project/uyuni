@@ -21,7 +21,6 @@ import com.redhat.rhn.domain.action.ActionFormatter;
  */
 public class ImageInspectActionFormatter extends ActionFormatter {
 
-    private final ImageInspectActionDetails actionDetails;
 
     /**
      * Instantiates a new Image inspect action formatter.
@@ -30,7 +29,6 @@ public class ImageInspectActionFormatter extends ActionFormatter {
      */
     public ImageInspectActionFormatter(ImageInspectAction actionIn) {
         super(actionIn);
-        actionDetails = actionIn.getDetails();
     }
 
     /**

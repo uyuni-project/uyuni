@@ -187,7 +187,7 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
         manager.enableFormula(minion, FORMULA_NAME);
         List<String> enabledFormulas = FormulaFactory.getFormulasByMinion(minion);
         assertNotNull(enabledFormulas);
-        assertEquals(true, enabledFormulas.contains(FORMULA_NAME));
+        assertTrue(enabledFormulas.contains(FORMULA_NAME));
     }
 
     /**
@@ -210,7 +210,7 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
                         .orElseGet(Collections::emptyMap);
         assertNotNull(savedFormulaData);
         assertEquals(contents, savedFormulaData);
-        assertEquals(true, savedFormulaData.equals(contents));
+        assertTrue(savedFormulaData.equals(contents));
     }
 
     /**

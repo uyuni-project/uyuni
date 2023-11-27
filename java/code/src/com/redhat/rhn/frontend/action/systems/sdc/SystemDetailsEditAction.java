@@ -15,7 +15,6 @@
 package com.redhat.rhn.frontend.action.systems.sdc;
 
 import com.redhat.rhn.GlobalInstanceHolder;
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.common.validator.ValidatorResult;
@@ -194,8 +193,8 @@ public class SystemDetailsEditAction extends RhnAction {
 
             // Set the contact method
             Long contactId = (Long) daForm.get(CONTACT_METHOD);
-            if (contactId != null && (contactId != s.getContactMethod().getId()) &&
-                    !s.asMinionServer().isPresent()) {
+            if (contactId != null && !contactId.equals(s.getContactMethod().getId()) &&
+                    s.asMinionServer().isEmpty()) {
                 s.setContactMethod(ServerFactory.findContactMethodById(contactId));
             }
 
@@ -273,14 +272,14 @@ public class SystemDetailsEditAction extends RhnAction {
                 log.debug("Entitling server with: {}", e);
                 ValidatorResult vr = systemEntitlementManager.addEntitlementToServer(s, e);
 
-                if (vr.getWarnings().size() > 0) {
+                if (!vr.getWarnings().isEmpty()) {
                     getStrutsDelegate().saveMessages(request,
                             RhnValidationHelper.validatorWarningToActionMessages(
                                     vr.getWarnings().toArray(new ValidatorWarning[] {})));
                 }
 
 
-                if (vr.getErrors().size() > 0) {
+                if (!vr.getErrors().isEmpty()) {
                     ValidatorError ve = vr.getErrors().get(0);
                     log.debug("Got error: {}", ve);
                     getStrutsDelegate().saveMessages(request,
@@ -295,16 +294,10 @@ public class SystemDetailsEditAction extends RhnAction {
                     }
 
                     log.debug("adding entitlement success msg");
-                    if (ConfigDefaults.get().isDocAvailable()) {
-                        createSuccessMessage(request,
-                                "system.entitle.added." + e.getLabel(),
-                                s.getId().toString());
-                    }
-                    else {
-                        createSuccessMessage(request,
-                                "system.entitle.added." + e.getLabel() + ".nodoc",
-                                s.getId().toString());
-                    }
+                    createMessage(request,
+                            "system.entitle.added." + e.getLabel(),
+                            s.getId().toString(),
+                            GlobalInstanceHolder.USER_PREFERENCE_UTILS.getDocsLocale(user));
                 }
             }
             else if ((daForm.get(e.getLabel()) == null ||
@@ -397,7 +390,7 @@ public class SystemDetailsEditAction extends RhnAction {
         LocalizationService ls = LocalizationService.getInstance();
         Entitlement baseEntitlement = s.getBaseEntitlement();
 
-        List entitlements = new ArrayList();
+        List entitlements = new ArrayList<>();
 
         if (baseEntitlement == null) {
             entitlements.add(new LabelValueBean(
@@ -427,7 +420,7 @@ public class SystemDetailsEditAction extends RhnAction {
         LocalizationService ls = LocalizationService.getInstance();
         Map cmap = ls.availableCountries();
         Iterator i = cmap.keySet().iterator();
-        List countries = new LinkedList();
+        List countries = new LinkedList<>();
 
         countries.add(new LabelValueBean(ls.getMessage("sdc.details.edit.none"), ""));
         while (i.hasNext()) {

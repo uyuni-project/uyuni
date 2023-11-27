@@ -15,6 +15,7 @@
 package com.redhat.rhn.frontend.action.kickstart;
 
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
+import com.redhat.rhn.domain.kickstart.KickstartableTree;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -34,12 +35,13 @@ import javax.servlet.http.HttpServletResponse;
  * Handles listing of kickstart distributions
  *
  */
-public class ViewTreesAction extends RhnAction implements Listable {
+public class ViewTreesAction extends RhnAction implements Listable<KickstartableTree> {
     /**
      * ${@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
-            HttpServletRequest request, HttpServletResponse response) throws Exception {
+                                 HttpServletRequest request, HttpServletResponse response) {
         ListHelper helper = new ListHelper(this, request);
         helper.execute();
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
@@ -48,8 +50,8 @@ public class ViewTreesAction extends RhnAction implements Listable {
     /**
      * {@inheritDoc}
      */
-    public List getResult(RequestContext contextIn) {
+    @Override
+    public List<KickstartableTree> getResult(RequestContext contextIn) {
         return KickstartFactory.listTreesByOrg(contextIn.getCurrentUser().getOrg());
     }
-
 }

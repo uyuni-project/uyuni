@@ -21,6 +21,7 @@ import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.OperationDetailsDto;
+import com.redhat.rhn.frontend.dto.ServerOperationDataDto;
 import com.redhat.rhn.manager.BaseManager;
 
 import java.util.HashMap;
@@ -220,7 +221,7 @@ public class SsmOperationManager extends BaseManager {
      * @return list of maps, one per server ID, where each map contains a single
      *         entry (key: server_id) containing the server ID
      */
-    public static DataResult findServerDataForOperation(long operationId) {
+    public static DataResult<ServerOperationDataDto> findServerDataForOperation(long operationId) {
         SelectMode m = ModeFactory.getMode("ssm_operation_queries",
             "find_server_data_for_operation_id");
 

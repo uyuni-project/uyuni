@@ -10832,19 +10832,19 @@ Please note that some manual configuration of these scripts may still be require
         </context-group>
         <target state="translated">変数 '{0}' の指定が正しくありません。変数は '=' で区切られた名前と値の対でなければならず、各対は別々の行に記述しなければなりません。例: 'ip=192.168.0.1'</target>
       </trans-unit>
-      <trans-unit id="kickstart.jsp.error.template_generation" xml:space="preserve">
+      <trans-unit approved="yes" id="kickstart.jsp.error.template_generation" xml:space="preserve">
         <source>There are errors in your kickstart/autoYaST template. Please check the '{0}' tab to determine the problem with the template.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details</context>
         </context-group>
-        <target state="needs-adaptation">キックスタートテンプレートにエラーが存在します。'{0}' タブをチェックしてテンプレートの問題を確認してください。</target>
+        <target state="final">キックスタート/AutoYastテンプレートにエラーがあります。「{0}」タブを確認してテンプレートの問題を特定してください。</target>
       </trans-unit>
-      <trans-unit id="kickstart.jsp.error.template_message" xml:space="preserve">
+      <trans-unit approved="yes" id="kickstart.jsp.error.template_message" xml:space="preserve">
         <source>There are errors in your kickstart/autoYaST template. Please check the error message below.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details</context>
         </context-group>
-        <target state="needs-adaptation">キックスタートテンプレートにエラーが存在します。以下のエラーメッセージを確認してください。</target>
+        <target state="final">キックスタート/AutoYaSTテンプレートにエラーがあります。以下のエラーメッセージを確認してください。</target>
       </trans-unit>
       <trans-unit id="kickstartdetails.jsp.kernel_options" xml:space="preserve">
         <source>Kernel Options</source>
@@ -16403,8 +16403,8 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         </context-group>
       </trans-unit>
       <trans-unit id="targetsystems.jsp.summary" xml:space="preserve">
-          <source>The systems listed below do not have files managed via @@PRODUCT_NAME@@ configuration management.  For systems to be capable of being managed by @@PRODUCT_NAME@@ configuration management, they need to have particular mgr-cfg-* packages installed. You can enable configuration management on selected systems by using the 'Enable @@PRODUCT_NAME@@ Configuration Management' button below.</source>
-        <target state="translated">以下のシステムには @@PRODUCT_NAME@@ 設定管理で管理されているファイルがありません。  @@PRODUCT_NAME@@ 設定管理でシステムを管理できるようにするには、特定の mgr-cfg-* パッケージをインストールする必要があります。以下の '@@PRODUCT_NAME@@ 設定管理を有効にする' ボタンを使って、選択したシステムで設定管理を有効にすることもできます。</target>
+          <source>The systems listed below do not have files managed via @@PRODUCT_NAME@@ configuration management.  For systems to be capable of being managed by @@PRODUCT_NAME@@ configuration management, they need to have particular *-salt-minion packages installed. You can enable configuration management on selected systems by using the 'Enable @@PRODUCT_NAME@@ Configuration Management' button below.</source>
+        <target state="needs-adaptation">以下のシステムには @@PRODUCT_NAME@@ 設定管理で管理されているファイルがありません。  @@PRODUCT_NAME@@ 設定管理でシステムを管理できるようにするには、特定の mgr-cfg-* パッケージをインストールする必要があります。以下の '@@PRODUCT_NAME@@ 設定管理を有効にする' ボタンを使って、選択したシステムで設定管理を有効にすることもできます。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/TargetSystems.do</context>
         </context-group>
@@ -16465,27 +16465,6 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <context context-type="sourcefile">/rhn/configuration/system/TargetSystems.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="targetsystems.jsp.installcfg" xml:space="preserve">
-          <source>Schedule mgr-cfg package install</source>
-        <target state="translated">mgr-cfg パッケージのインストールのスケジュール</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/configuration/system/TargetSystems.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="targetsystems.jsp.installcfgactions" xml:space="preserve">
-          <source>Schedule mgr-cfg-actions package install</source>
-        <target>mgr-cfg-actions パッケージインストールのスケジュール</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/configuration/system/TargetSystems.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="targetsystems.jsp.installcfgclient" xml:space="preserve">
-          <source>Schedule mgr-cfg-client package install</source>
-        <target state="translated">mgr-cfg-client パッケージのインストールのスケジュール</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/configuration/system/TargetSystems.do</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="targetsystems.jsp.pending" xml:space="preserve">
           <source>Package installations currently pending.</source>
         <target>パッケージのインストールは現在待機中です。</target>
@@ -16508,8 +16487,8 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         </context-group>
       </trans-unit>
       <trans-unit id="targetsystems.jsp.widgetsummary" xml:space="preserve">
-          <source>You may schedule &lt;code&gt;mgr-cfg*&lt;/code&gt; package installs for the time below. &lt;strong&gt;Note: All other actions will take place immediately.&lt;/strong&gt;</source>
-        <target state="translated">以下の時間に &lt;code&gt;mgr-cfg*&lt;/code&gt; パッケージのインストールをスケジュールすることができます。&lt;strong&gt;注記: その他のすべての動作は直ちに行なわれます。&lt;/strong&gt;</target>
+          <source>You may schedule &lt;code&gt;salt-minion&lt;/code&gt; package installs for the time below. &lt;strong&gt;Note: All other actions will take place immediately.&lt;/strong&gt;</source>
+        <target state="needs-adaptation">以下の時間に &lt;code&gt;mgr-cfg*&lt;/code&gt; パッケージのインストールをスケジュールすることができます。&lt;strong&gt;注記: その他のすべての動作は直ちに行なわれます。&lt;/strong&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/TargetSystems.do</context>
         </context-group>
@@ -16530,15 +16509,8 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         </context-group>
       </trans-unit>
       <trans-unit id="summary.jsp.stepone" xml:space="preserve">
-          <source>Run &lt;code&gt;mgr_check&lt;/code&gt; to complete pending mgr-cfg-* package installs.</source>
-        <target state="translated">&lt;code&gt;mgr_check&lt;/code&gt; を実行して待機中の mgr-cfg-* パッケージインストールを完了します。</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/configuration/system/Summary.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="summary.jsp.steptwo" xml:space="preserve">
-          <source>Run the following command: &lt;code&gt;mgr-actions-control --enable-all&lt;/code&gt;</source>
-        <target state="translated">次のコマンドを実行します: &lt;code&gt;mgr-actions-control --enable-all&lt;/code&gt;</target>
+          <source>Run &lt;code&gt;mgr_check&lt;/code&gt; to complete pending salt-minion package installs.</source>
+        <target state="needs-adaptation">&lt;code&gt;mgr_check&lt;/code&gt; を実行して待機中の mgr-cfg-* パッケージインストールを完了します。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/Summary.do</context>
         </context-group>
@@ -16578,16 +16550,9 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <context context-type="sourcefile">/rhn/configuration/system/Summary.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="summary.jsp.appstream" xml:space="preserve">
-          <source>Could not subscribe to the AppStream channel.</source>
-        <target>AppStream チャンネルのサブスクライブができませんでした。</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/configuration/system/Summary.do</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="summary.jsp.packages" xml:space="preserve">
-          <source>Could not schedule mgr-cfg* package installations.</source>
-        <target state="translated">mgr-cfg* パッケージのインストールをスケジュールできませんでした。</target>
+          <source>Could not schedule salt-minion package installations.</source>
+        <target state="needs-adaptation">mgr-cfg* パッケージのインストールをスケジュールできませんでした。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/Summary.do</context>
         </context-group>
@@ -20281,8 +20246,8 @@ any of these revisions.  Are you sure you want to do this?</source>
         </context-group>
       </trans-unit>
       <trans-unit id="ssmenable.jsp.summary" xml:space="preserve">
-          <source>The systems listed below do not have files managed via @@PRODUCT_NAME@@ configuration management. For systems to be capable of being managed by @@PRODUCT_NAME@@ configuration management, they will need to have particular mgr-cfg-* packages installed. You can enable configuration management on the systems listed below. &lt;strong&gt;Note:&lt;/strong&gt; nothing will happen to already enabled systems.</source>
-        <target state="translated">以下に表示されるシステムには @@PRODUCT_NAME@@ 設定管理で管理されるファイルがありません。@@PRODUCT_NAME@@ 設定管理でシステムを管理できるようにするには、特定の mgr-cfg-* パッケージをインストールする必要があります。以下に表示されるシステムで設定管理を有効にすることができます。&lt;strong&gt;注記:&lt;/strong&gt;すでに有効になっているシステムはそのままの状態となります。</target>
+          <source>The systems listed below do not have files managed via @@PRODUCT_NAME@@ configuration management. For systems to be capable of being managed by @@PRODUCT_NAME@@ configuration management, they will need to have particular salt-minion packages installed. You can enable configuration management on the systems listed below. &lt;strong&gt;Note:&lt;/strong&gt; nothing will happen to already enabled systems.</source>
+        <target state="needs-adaptation">以下に表示されるシステムには @@PRODUCT_NAME@@ 設定管理で管理されるファイルがありません。@@PRODUCT_NAME@@ 設定管理でシステムを管理できるようにするには、特定の mgr-cfg-* パッケージをインストールする必要があります。以下に表示されるシステムで設定管理を有効にすることができます。&lt;strong&gt;注記:&lt;/strong&gt;すでに有効になっているシステムはそのままの状態となります。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/config/Enable.do</context>
         </context-group>
@@ -21523,8 +21488,8 @@ any of these revisions.  Are you sure you want to do this?</source>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.operations.provisioning.remotecommand.no_script_run" xml:space="preserve">
-          <source>You must enable Remote Command execution on the target system by installing the &lt;code&gt;mgr-cfg-actions&lt;/code&gt; RPM.</source>
-        <target>&lt;code&gt;mgr-cfg-actions&lt;/code&gt; RPM をインストールして対象システムでリモートコマンドを実行できるようにする必要があります。</target>
+          <source>You must enable Remote Command execution on the target system by installing the &lt;code&gt;salt-minion&lt;/code&gt; RPM.</source>
+        <target state="needs-adaptation">&lt;code&gt;mgr-cfg-actions&lt;/code&gt; RPM をインストールして対象システムでリモートコマンドを実行できるようにする必要があります。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/kickstart/KickstartableSystems.do</context>
         </context-group>
@@ -24543,11 +24508,11 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <target>ソケット:</target>
       </trans-unit>
       <trans-unit id="sdc.details.hardware.cores" xml:space="preserve">
-        <source>Cores:</source>
+        <source>Cores per Socket:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/SystemHardware.do</context>
         </context-group>
-        <target>コア:</target>
+        <target state="translated">ソケットあたりのコア数:</target>
       </trans-unit>
       <trans-unit id="sdc.details.hardware.cache" xml:space="preserve">
         <source>Cache:</source>
@@ -29084,7 +29049,7 @@ given channel.</source>
         <target>このユーザ名の資格情報は既に存在しています</target>
       </trans-unit>
       <trans-unit approved="yes" id="copyright.jsp.title" xml:space="preserve">
-        <source>Copyright (c) 2011 - 2022 SUSE LLC.</source>
+        <source>Copyright (c) 2011 - 2023 SUSE LLC.</source>
         <target state="final">Copyright (c) 2011 - 2021 SUSE LLC.</target>
       </trans-unit>
       <trans-unit id="copyright.jsp.urlagreement" xml:space="preserve">
@@ -29154,8 +29119,8 @@ given channel.</source>
         <target>OS イメージビルドホスト</target>
       </trans-unit>
       <trans-unit id="monitoring_entitled" xml:space="preserve">
-        <source>Monitoring</source>
-        <target>モニタリング</target>
+        <source>Monitored Host</source>
+        <target state="needs-adaptation">モニタリング</target>
       </trans-unit>
       <trans-unit id="Formulas" xml:space="preserve">
         <source>Formulas</source>
@@ -29323,10 +29288,6 @@ given channel.</source>
       <trans-unit approved="yes" id="Highstate" xml:space="preserve">
         <source>Highstate</source>
         <target>Highstate</target>
-      </trans-unit>
-      <trans-unit id="Recurring States" xml:space="preserve">
-        <source>Recurring States</source>
-        <target>繰り返し状態</target>
       </trans-unit>
       <trans-unit id="Configuration Channels" xml:space="preserve">
         <source>Configuration Channels</source>
@@ -29602,7 +29563,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit approved="yes" id="overview.jsp.transactionalupdate.reboot" xml:space="preserve">
         <source>There is a pending transaction for this system, please reboot it to activate the changes.</source>
-        <target state="needs-adaptation">トランザクション型更新のあるOS: パッケージおよび/またはチャンネルが変更されたら再起動してください。</target>
+        <target state="final">このシステムには待機中のトランザクションがあります。システムを再起動して変更を有効にしてください。</target>
       </trans-unit>
       <trans-unit approved="yes" id="appstream.jsp.nomodules" xml:space="preserve">
         <source>No Modules</source>
@@ -29680,15 +29641,11 @@ given channel.</source>
         <target state="final">ベンダアドバイザリー</target>
       </trans-unit>
       <trans-unit approved="yes" id="bunch.jsp.description.update-payg-data-bunch" xml:space="preserve">
-        <source>Collect authentication data from configure pay-as-you-go cloud instances</source>
+        <source>Collect authentication data from configured PAYG cloud instances</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-        <target state="final">従量課金制のクラウドインスタンスの構成から認証データを収集します</target>
-      </trans-unit>
-      <trans-unit approved="yes" id="Pay-as-you-go" xml:space="preserve">
-        <source>Pay-as-you-go</source>
-        <target state="final">従量課金制</target>
+        <target state="final">PAYGのクラウドインスタンスの構成から認証データを収集します</target>
       </trans-unit>
       <trans-unit approved="yes" id="bunch.jsp.description.mgr-update-reporting-bunch" xml:space="preserve">
         <source>Update Reporting Database</source>
@@ -29756,64 +29713,210 @@ given channel.</source>
         </context-group>
         <target state="final">カスタムチャンネルの自動同期が有効になっています。このチャンネルは、ベンダチャンネルと自動的に同期されます。</target>
       </trans-unit>
-    <trans-unit id="exportcolumn.extraPkgCount" xml:space="preserve">
+      <trans-unit id="exportcolumn.extraPkgCount" xml:space="preserve">
             <source>Extra Packages</source>
-            <context-group name="ctx">
+        <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
             </context-group>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="exportcolumn.configFilesWithDifferences" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="exportcolumn.configFilesWithDifferences" xml:space="preserve">
             <source>Config Diffs</source>
-            <context-group name="ctx">
+        <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
             </context-group>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="exportcolumn.proxy" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="exportcolumn.proxy" xml:space="preserve">
             <source>Proxy</source>
-            <context-group name="ctx">
+        <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
             </context-group>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="exportcolumn.mgrServer" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="exportcolumn.mgrServer" xml:space="preserve">
             <source>Manager Server</source>
-            <context-group name="ctx">
+        <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
             </context-group>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="exportcolumn.virtualHost" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="exportcolumn.virtualHost" xml:space="preserve">
             <source>Virtual Host</source>
-            <context-group name="ctx">
+        <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
             </context-group>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="exportcolumn.virtualGuest" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="exportcolumn.virtualGuest" xml:space="preserve">
             <source>Virtual Guest</source>
-            <context-group name="ctx">
+        <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
             </context-group>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="exportcolumn.requiresReboot" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="exportcolumn.requiresReboot" xml:space="preserve">
             <source>Requires Reboot</source>
-            <context-group name="ctx">
+        <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
             </context-group>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="exportcolumn.statusType" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="exportcolumn.statusType" xml:space="preserve">
             <source>Status Type</source>
-            <context-group name="ctx">
+        <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
             </context-group>
         <target state="new"/>
-  </trans-unit>
+      </trans-unit>
       <trans-unit id="overview.jsp.traditionalstack.deprecated" xml:space="preserve">
         <source>The traditional stack is unsupported and scheduled for removal. Consider migrating to salt minions.</source>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="ssm.misc.reboot.message.scheduled" xml:space="preserve">
+          <source>Some systems already have a reboot scheduled.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
+        </context-group>
+        <target state="translated">一部のシステムで既に再起動がスケジュールされています。</target>
+      </trans-unit>
+      <trans-unit id="systemlist.jsp.rebootneeded" xml:space="preserve">
+        <source>System requires reboot</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/SystemList</context>
+          <context context-type="sourcefile">/systems/SystemEntitlements</context>
+        </context-group>
+        <target state="translated">システムの再起動が必要です</target>
+      </trans-unit>
+      <trans-unit id="sdc.details.overview.rebootaction" xml:space="preserve">
+        <source>(&lt;a href="{0}"&gt;System Reboot Action&lt;/a&gt;)</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Overview.do</context>
+        </context-group>
+        <target state="translated">(&lt;a href="{0}"&gt;システムの再起動アクション&lt;/a&gt;)</target>
+      </trans-unit>
+      <trans-unit id="sdc.details.overview.rebootscheduled" xml:space="preserve">
+        <source>System reboot scheduled</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Overview.do</context>
+        </context-group>
+        <target state="translated">システムの再起動がスケジュールされています</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="packagelist.jsp.packagesummary" xml:space="preserve">
+        <source>Summary</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/packages/InstallPackages</context>
+        </context-group>
+        <target state="final">概要</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="targetsystems.jsp.description_ptf_package" xml:space="preserve">
+        <source>This package is part of a Product Temporary Fix (PTF) and cannot be installed directly. Please select the main package of the temporary fix to review the target systems.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/software/packages/TargetSystems.do</context>
+        </context-group>
+        <target state="final">このパッケージはProduct Temporary Fix (PTF)の一部であり、直接インストールすることはできません。一時的な修正のメインパッケージを選択して、ターゲットシステムを確認してください。</target>
+      </trans-unit>
+      <trans-unit id="task.status.system-overview-update-queue" xml:space="preserve">
+        <source>System Overview Update Queue</source>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="task.status.update-system-overview" xml:space="preserve">
+        <source>Update System Overview</source>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit approved="yes" id="spmigration.jsp.error.no-maintenance-window" xml:space="preserve">
+        <source>Systems assigned to these schedules do not have a maintenance window at {0}</source>
+        <target state="final">これらのスケジュールに割り当てられたシステムには、{0} のメンテナンス ウィンドウがありません</target>
+      </trans-unit>
+      <trans-unit id="sdc.details.hardware.cpus" xml:space="preserve">
+        <source>CPUs:</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/SystemHardware.do</context>
+        </context-group>
+        <target state="translated">CPU:</target>
+      </trans-unit>
+      <trans-unit id="sdc.details.hardware.threads" xml:space="preserve">
+        <source>Threads per Core:</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/SystemHardware.do</context>
+        </context-group>
+        <target state="translated">コアあたりのスレッド数:</target>
+      </trans-unit>
+      <trans-unit id="bunch.jsp.description.system-profile-refresh-bunch" xml:space="preserve">
+        <source>Schedule System Profile refresh on all managed systems</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
+        </context-group>
+        <target state="translated">すべての管理対象システムでシステムプロファイルの更新をスケジュールします</target>
+      </trans-unit>
+      <trans-unit id="task.status.system-profile-refresh" xml:space="preserve">
+        <source>System Profile Refresh</source>
+        <target state="translated">システムプロファイルの更新</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="preferences.subscription-warning.name" xml:space="preserve">
+        <source>Subscription Warning</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/users/UserPreferences</context>
+        </context-group>
+        <target state="final">サブスクライブに関する警告</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="preferences.subscription-warning.description" xml:space="preserve">
+        <source> Show expired subscriptions warning.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/users/UserPreferences</context>
+        </context-group>
+        <target state="final"> 期限切れのサブスクライブに関する警告を表示します。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="Recurring Actions" xml:space="preserve">
+        <source>Recurring Actions</source>
+        <target state="final">定期的なアクション</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="sdc.details.overview.virtualization.host" xml:space="preserve">
+        <source>Virtualization Host:</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Overview.do</context>
+        </context-group>
+        <target state="final">仮想化ホスト:</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="grouplist.jsp.unknown" xml:space="preserve">
+        <source>Security updates unknown, disabled on settings.</source>
+        <target state="final">セキュリティ更新が不明で、設定で無効になっています。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="bunch.jsp.description.payg-dimension-computation-bunch" xml:space="preserve">
+        <source>Collect data of managed clients for SUSE Manager PAYG</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
+        </context-group>
+        <target state="final">SUSE Manager PAYGの管理対象クライアントのデータを収集</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="task.status.payg-dimension-computation" xml:space="preserve">
+        <source>PAYG Computation</source>
+        <target state="final">PAYGの計算</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="task.status.recurring-action-executor" xml:space="preserve">
+        <source>Execute Recurring Actions</source>
+        <target state="final">定期的なアクションの実行</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="PAYG Connections" xml:space="preserve">
+        <source>PAYG Connections</source>
+        <target state="final">PAYGの接続</target>
+      </trans-unit>
+    <trans-unit id="mirror-credentials.jsp.fromDir" xml:space="preserve">
+        <source>cannot verify credentials because `server.susemanager.fromdir` property is set in rhn.conf</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="sdc.details.overview.payg" xml:space="preserve">
+        <source>Pay-as-you-go:</source>
+          <context-group name="ctx">
+            <context context-type="sourcefile">/systems/details/Overview.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="sdc.details.overview.payg_msg" xml:space="preserve">
+        <source>This is a Pay-as-you-go server</source>
+          <context-group name="ctx">
+            <context context-type="sourcefile">/systems/details/Overview.do</context>
+        </context-group>
       <target state="new"/>
   </trans-unit>
       </body>

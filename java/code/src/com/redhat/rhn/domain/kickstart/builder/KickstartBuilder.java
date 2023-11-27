@@ -294,7 +294,7 @@ public class KickstartBuilder {
         boolean errorOnFail = false;
         for (String currentLine : lines) {
             if (currentLine.startsWith(prefix)) {
-                if (buf.toString().length() > 0) {
+                if (!buf.toString().isEmpty()) {
                     storeScript(prefix, ksData, buf, interpreter, chroot, errorOnFail);
                 }
                 buf = new StringBuilder();

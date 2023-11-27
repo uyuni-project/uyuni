@@ -21,9 +21,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.frontend.listview.PageControl;
+import com.redhat.rhn.testing.SparkTestUtils;
 
 import com.suse.manager.webui.utils.PageControlHelper;
-import com.suse.manager.webui.utils.SparkTestUtils;
 
 import org.junit.jupiter.api.Test;
 

@@ -65,6 +65,7 @@ import org.cobbler.SystemRecord;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -167,6 +168,7 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
         /**
          * {@inheritDoc}
          */
+        @Override
         public List<KickstartDto> getResult(RequestContext ctx) {
             Long sid = ctx.getParamAsLong(RequestContext.SID);
             User user = ctx.getCurrentUser();
@@ -174,7 +176,7 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
             KickstartScheduleCommand cmd = getKickstartScheduleCommand(sid,
                     user);
             DataResult<KickstartDto> profiles = cmd.getKickstartProfiles();
-            if (profiles.size() == 0) {
+            if (profiles.isEmpty()) {
                 addMessage(ctx.getRequest(), "kickstart.schedule.noprofiles");
                 ctx.getRequest().setAttribute(HAS_PROFILES,
                         Boolean.FALSE.toString());
@@ -198,7 +200,7 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
     public static void setupProxyInfo(RequestContext ctx) {
         List<OrgProxyServer> proxies = SystemManager.
                 listProxies(ctx.getCurrentUser().getOrg());
-        if (proxies != null && proxies.size() > 0) {
+        if (proxies != null && !proxies.isEmpty()) {
             List<LabelValueBean> formatted = new LinkedList<>();
 
             formatted.add(lvl10n("kickstart.schedule.default.proxy.jsp", ""));
@@ -409,10 +411,9 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
                 ctx.getRequest(), form, "date", DatePicker.YEAR_RANGE_POSITIVE);
 
         SdcHelper.ssmCheck(ctx.getRequest(), system.getId(), user);
-        Map<String, Long> params = new HashMap<>();
+        Map<String, Object> params = new HashMap<>();
         params.put(RequestContext.SID, sid);
-        ListHelper helper = new ListHelper(new Profiles(), ctx.getRequest(),
-                params);
+        ListHelper helper = new ListHelper(new Profiles(), ctx.getRequest(), params);
         helper.execute();
         if (!StringUtils.isBlank(form.getString(RequestContext.COBBLER_ID))) {
             ListTagHelper.selectRadioValue(ListHelper.LIST,
@@ -494,11 +495,11 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
             // Disable the package/system sync radio buttons if no profiles are
             // available:
             String syncPackageDisabled = "false";
-            if (packageProfiles.size() == 0) {
+            if (packageProfiles.isEmpty()) {
                 syncPackageDisabled = "true";
             }
             String syncSystemDisabled = "false";
-            if (systemProfiles.size() == 0) {
+            if (systemProfiles.isEmpty()) {
                 syncSystemDisabled = "true";
             }
             ctx.getRequest()
@@ -542,7 +543,7 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
 
             if (distro.getKernelOptions().isEmpty()) {
                 ctx.getRequest().setAttribute("distro_kernel_params",
-                        Distro.INHERIT_KEY);
+                        CobblerObject.INHERIT_KEY);
             }
             else {
                 ctx.getRequest().setAttribute("distro_kernel_params",
@@ -552,7 +553,7 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
             }
             if (distro.getKernelOptionsPost().isEmpty()) {
                 ctx.getRequest().setAttribute("distro_post_kernel_params",
-                        Distro.INHERIT_KEY);
+                        CobblerObject.INHERIT_KEY);
             }
             else {
                 ctx.getRequest().setAttribute("distro_post_kernel_params",
@@ -566,7 +567,7 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
 
             if (profile.getKernelOptions().isEmpty()) {
                 ctx.getRequest().setAttribute("profile_kernel_params",
-                        org.cobbler.Profile.INHERIT_KEY);
+                        CobblerObject.INHERIT_KEY);
             }
             else {
                 ctx.getRequest().setAttribute("profile_kernel_params",
@@ -576,7 +577,7 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
             }
             if (profile.getKernelOptionsPost().isEmpty()) {
                 ctx.getRequest().setAttribute("profile_post_kernel_params",
-                        org.cobbler.Profile.INHERIT_KEY);
+                        CobblerObject.INHERIT_KEY);
             }
             else {
                 ctx.getRequest().setAttribute("profile_post_kernel_params",
@@ -593,7 +594,7 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
                     if (StringUtils.isBlank(form.getString(KERNEL_PARAMS_TYPE))) {
                         form.set(KERNEL_PARAMS_TYPE, KERNEL_PARAMS_CUSTOM);
                         if (rec.getKernelOptions().isEmpty()) {
-                            form.set(KERNEL_PARAMS, org.cobbler.Profile.INHERIT_KEY);
+                            form.set(KERNEL_PARAMS, CobblerObject.INHERIT_KEY);
                         }
                         else {
                             form.set(KERNEL_PARAMS,
@@ -604,7 +605,7 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
                     if (StringUtils.isBlank(form.getString(POST_KERNEL_PARAMS_TYPE))) {
                         form.set(POST_KERNEL_PARAMS_TYPE, KERNEL_PARAMS_CUSTOM);
                         if (rec.getKernelOptionsPost().isEmpty()) {
-                            form.set(POST_KERNEL_PARAMS, org.cobbler.Profile.INHERIT_KEY);
+                            form.set(POST_KERNEL_PARAMS, CobblerObject.INHERIT_KEY);
                         }
                         else {
                             form.set(POST_KERNEL_PARAMS,
@@ -787,8 +788,7 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
             return mapping.findForward("fifth");
         }
 
-        CobblerSystemCreateCommand cmd = new CobblerSystemCreateCommand(server,
-                profile.getName(), data);
+        CobblerSystemCreateCommand cmd = new CobblerSystemCreateCommand(user, server, profile.getName(), data);
         cmd.store();
         log.debug("cobbler system record created.");
         String[] args = new String[2];
@@ -914,7 +914,7 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
             }
         }
 
-        if (errors.size() > 0) {
+        if (!errors.isEmpty()) {
             addErrors(ctx.getRequest(), errors);
             return false;
         }
@@ -946,7 +946,7 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
      * him if he's sure first.
      */
     protected boolean showDiskWarning(KickstartData data, DynaActionForm form) {
-        Set<KickstartCommand> commands = data.getOptions();
+        Set<KickstartCommand> commands = data == null ? Collections.emptySet() : data.getOptions();
         boolean containsClearpartCommand = false;
         for (KickstartCommand command : commands) {
             if (command.getCommandName() != null &&

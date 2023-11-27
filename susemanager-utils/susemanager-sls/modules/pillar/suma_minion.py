@@ -14,7 +14,6 @@ Retrieve SUSE Manager pillar data for a minion_id.
 # Import python libs
 from __future__ import absolute_import
 from enum import Enum
-from contextlib import contextmanager
 import os
 import logging
 import yaml
@@ -77,31 +76,81 @@ def __virtual__():
     '''
     return HAS_POSTGRES
 
-@contextmanager
-def _get_cursor():
-    options = {
-        "host": "localhost",
-        "user": "",
-        "pass": "",
-        "db": "susemanager",
-        "port": 5432,
-    }
-    options.update(__opts__.get("__master_opts__", __opts__).get("postgres", {}))
 
-    cnx = psycopg2.connect(
+def _is_salt_ssh(opts):
+    """Check if this pillar is computed for Salt SSH.
+
+    Only in salt/client/ssh/__init__.py, the master_opts are moved into
+    opts[__master_opts__], which we use to detect Salt SSH usage.
+    """
+    return "__master_opts__" in opts
+
+
+def _get_cursor(func):
+    def _connect_db():
+        options = {
+            "host": "localhost",
+            "user": "",
+            "pass": "",
+            "db": "susemanager",
+            "port": 5432,
+        }
+        options.update(__opts__.get("__master_opts__", __opts__).get("postgres", {}))
+        return psycopg2.connect(
             host=options['host'],
             user=options['user'],
             password=options['pass'],
             dbname=options['db'],
-            port=options['port'])
-    cursor = cnx.cursor()
+            port=options['port'],
+        )
+
+    if "suma_minion_cnx" in __context__:
+        cnx = __context__["suma_minion_cnx"]
+        log.debug("Reusing DB connection from the context")
+    else:
+        try:
+            cnx = _connect_db()
+            log.debug("Connected to the DB")
+            if not _is_salt_ssh(__opts__):
+                __context__["suma_minion_cnx"] = cnx
+        except psycopg2.OperationalError as err:
+            log.error("Error on getting database pillar: %s", err.args)
+            return
     try:
-        log.debug("Connected to DB")
-        yield cursor
-    except psycopg2.DatabaseError as err:
-        log.error("Error in database pillar: %s", err.args)
-    finally:
-        cnx.close()
+        cursor = cnx.cursor()
+    except psycopg2.InterfaceError as err:
+        log.debug("Reconnecting to the DB")
+        try:
+            cnx = _connect_db()
+            log.debug("Reconnected to the DB")
+            if not _is_salt_ssh(__opts__):
+                __context__["suma_minion_cnx"] = cnx
+            cursor = cnx.cursor()
+        except psycopg2.OperationalError as err:
+            log.error("Error on getting database pillar: %s", err.args)
+            return
+    retry = 0
+    while True:
+        try:
+            if retry:
+                cnx = _connect_db()
+                log.debug("Reconnected to the DB")
+                if not _is_salt_ssh(__opts__):
+                    __context__["suma_minion_cnx"] = cnx
+                cursor = cnx.cursor()
+
+            func(cursor)
+            break
+        except psycopg2.DatabaseError as err:
+            retry += 1
+            if retry == 3:
+                log.error("Error on getting database pillar, giving up: %s", err.args)
+                break
+            else:
+                log.error("Error on getting database pillar, trying again: %s", err.args)
+        finally:
+            if _is_salt_ssh(__opts__):
+                cnx.close()
 
 
 def ext_pillar(minion_id, pillar, *args):
@@ -111,20 +160,29 @@ def ext_pillar(minion_id, pillar, *args):
 
     log.debug('Getting pillar data for the minion "{0}"'.format(minion_id))
     ret = {}
+    group_formulas = {}
+    system_formulas = {}
 
     # Load the pillar from the legacy files
     ret = load_static_pillars(ret)
 
     # Load the global pillar from DB
-    with _get_cursor() as cursor:
+    def _load_db_pillar(cursor):
+        nonlocal ret
+        nonlocal group_formulas
+        nonlocal system_formulas
         ret = load_global_pillars(cursor, ret)
         ret = load_org_pillars(minion_id, cursor, ret)
         group_formulas, ret = load_group_pillars(minion_id, cursor, ret)
-        system_formulas, ret= load_system_pillars(minion_id, cursor, ret)
+        system_formulas, ret = load_system_pillars(minion_id, cursor, ret)
+
+    _get_cursor(_load_db_pillar)
 
     # Including formulas into pillar data
     try:
-        ret.update(formula_pillars(system_formulas, group_formulas, ret))
+        ret = salt.utils.dictupdate.merge(ret,
+                   formula_pillars(system_formulas, group_formulas, ret),
+                   strategy='recurse')
     except Exception as error:
         log.error('Error accessing formula pillar data: %s', error)
 
@@ -252,7 +310,8 @@ def formula_pillars(system_formulas, group_formulas, all_pillar):
         formula_metadata = load_formula_metadata(formula_name)
         if formula_name in out_formulas:
             continue # already processed
-        out_formulas.append(formula_name)
+        if not formula_metadata.get('pillar_only', False):
+            out_formulas.append(formula_name)
         pillar = salt.utils.dictupdate.merge(pillar,
                        load_formula_pillar(system_formulas.get(formula_name, {}),
                            group_formulas[formula_name],
@@ -264,16 +323,18 @@ def formula_pillars(system_formulas, group_formulas, all_pillar):
     for formula_name in system_formulas:
         if formula_name in out_formulas:
             continue # already processed
-        out_formulas.append(formula_name)
+        formula_metadata = load_formula_metadata(formula_name)
+        if not formula_metadata.get('pillar_only', False):
+            out_formulas.append(formula_name)
         pillar = salt.utils.dictupdate.merge(pillar,
                 load_formula_pillar(system_formulas[formula_name], {}, formula_name), strategy='recurse')
 
     # Loading the formula order
     order = get_formula_order(all_pillar)
     if order:
-        pillar["formulas"] = [formula for formula in order if formula in out_formulas]
-    else:
-        pillar["formulas"] = out_formulas
+        out_formulas = [formula for formula in order if formula in out_formulas]
+
+    pillar['formulas'] = out_formulas
 
     return pillar
 
@@ -455,16 +516,3 @@ def load_formula_metadata(formula_name):
 
     formulas_metadata_cache[formula_name] = metadata
     return metadata
-
-def _pillar_value_by_path(data, path):
-    result = data
-    first_key = None
-    for token in path.split(":"):
-        if token == "*":
-            first_key = next(iter(result))
-            result = result[first_key] if first_key else None
-        elif token in result:
-            result = result[token]
-        else:
-            break
-    return result, first_key

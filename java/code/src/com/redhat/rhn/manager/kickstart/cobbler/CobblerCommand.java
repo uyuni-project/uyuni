@@ -200,18 +200,18 @@ public abstract class CobblerCommand {
      */
     protected SystemRecord lookupExisting(Server server) {
         if (server.getCobblerId() != null) {
-            SystemRecord rec = SystemRecord.lookupById(CobblerXMLRPCHelper.getConnection(user), server.getCobblerId());
+            SystemRecord rec = SystemRecord.lookupById(this.getCobblerConnection(user), server.getCobblerId());
             if (rec != null) {
                 return rec;
             }
         }
         //lookup by ID failed, so lets try by mac
 
-        Map sysmap = getSystemMapByMac(server);
+        Map<String, Object> sysmap = getSystemMapByMac(server);
         if (sysmap != null) {
             log.debug("getSystemHandleByMAC.found match.");
             String uid = (String) sysmap.get("uid");
-            SystemRecord rec = SystemRecord.lookupById(CobblerXMLRPCHelper.getConnection(user), uid);
+            SystemRecord rec = SystemRecord.lookupById(this.getCobblerConnection(user), uid);
             if (rec != null) {
                 return rec;
             }
@@ -225,7 +225,7 @@ public abstract class CobblerCommand {
      */
     protected Map getSystemMapByMac(Server server) {
         // Build up list of mac addrs
-        List macs = new LinkedList();
+        List macs = new LinkedList<>();
         for (NetworkInterface n : server.getNetworkInterfaces()) {
             // Skip localhost and non real interfaces
             if (!n.isMacValid()) {
@@ -237,7 +237,7 @@ public abstract class CobblerCommand {
 
         }
 
-        List<String> args = new ArrayList();
+        List<String> args = new ArrayList<>();
         args.add(xmlRpcToken);
         List<Map> systems = (List) invokeXMLRPC("get_systems", args);
         for (Map row : systems) {

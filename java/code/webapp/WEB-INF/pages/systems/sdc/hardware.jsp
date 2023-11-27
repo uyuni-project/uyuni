@@ -46,8 +46,8 @@
                     <tr>
                         <th><bean:message key="sdc.details.hardware.arch" /></th>
                         <td>${cpu_arch}</td>
-                        <th><bean:message key="sdc.details.hardware.sockets" /></th>
-                        <td>${cpu_sockets}</td>
+                        <th><bean:message key="sdc.details.hardware.cpus" /></th>
+                        <td>${cpu_count}</td>
                         <th><bean:message key="sdc.details.hardware.cache" /></th>
                         <td>${cpu_cache}</td>
                     </tr>
@@ -62,23 +62,19 @@
                     <tr>
                         <th><bean:message key="sdc.details.hardware.family" /></th>
                         <td>${cpu_family}</td>
-                        <th><bean:message key="sdc.details.hardware.stepping" /></th>
-                        <td>${cpu_stepping}</td>
+                        <th><bean:message key="sdc.details.hardware.threads" /></th>
+                        <td>${cpu_threads}</td>
                         <th><bean:message key="sdc.details.hardware.swap" /></th>
                         <td>${system_swap}MB</td>
                     </tr>
-                    <c:if test="${not empty machine_id}">
                     <tr>
                         <th><bean:message key="sdc.details.hardware.machine_id" /></th>
-                        <td>
-                            ${machine_id}
-                        </td>
-                        <th></th>
-                        <td></td>
-                        <th></th>
-                        <td></td>
+                        <td>${machine_id}</td>
+                        <th><bean:message key="sdc.details.hardware.sockets" /></th>
+                        <td>${cpu_sockets}</td>
+                        <th><bean:message key="sdc.details.hardware.stepping" /></th>
+                        <td>${cpu_stepping}</td>
                     </tr>
-                    </c:if>
                 </table>
             </div>
         </div>

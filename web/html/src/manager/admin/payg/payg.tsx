@@ -42,6 +42,7 @@ export type PaygFullType = {
 type Props = {
   payg: PaygFullType;
   wasFreshlyCreatedMessage?: string;
+  readOnly?: boolean;
 };
 
 const Payg = (props: Props) => {
@@ -64,19 +65,25 @@ const Payg = (props: Props) => {
 
   return (
     <TopPanel
-      title={t("Instance Hostname: {0}", payg.properties.host)}
+      title={t("Instance Hostname: {host}", { host: payg.properties.host })}
       button={
         <div className="pull-right btn-group">
-          <ModalButton className="btn-danger" title={t("Delete")} text={t("Delete")} target="delete-payg-modal" />
+          <ModalButton
+            className="btn-danger"
+            title={t("Delete")}
+            text={t("Delete")}
+            target="delete-payg-modal"
+            disabled={props.readOnly}
+          />
         </div>
       }
     >
       <DeleteDialog
         id="delete-payg-modal"
-        title={t("Delete Pay-as-you-go")}
+        title={t("Delete PAYG Connection")}
         content={
           <span>
-            {t("Are you sure you want to delete project")} <strong>{payg.properties.host}</strong>?
+            {t("Are you sure you want to delete connection")} <strong>{payg.properties.host}</strong>?
           </span>
         }
         onConfirm={() =>
@@ -91,33 +98,40 @@ const Payg = (props: Props) => {
       />
       <PaygInfoEdit
         payg={payg}
+        readOnly={props.readOnly}
         onChange={(projectWithNewProperties) => {
           setPayg(projectWithNewProperties);
           cancelAction();
         }}
       />
-      <PaygSshDataEdit
-        paygSshData={payg.properties}
-        paygId={payg.id}
-        isInstance={true}
-        labelPrefix={"Instance"}
-        editing={true}
-        onChange={(projectWithNewProperties) => {
-          setPayg(projectWithNewProperties);
-          cancelAction();
-        }}
-      />
-      <PaygSshDataEdit
-        paygSshData={payg.properties}
-        paygId={payg.id}
-        isInstance={false}
-        labelPrefix={"Bastion"}
-        editing={true}
-        onChange={(projectWithNewProperties) => {
-          setPayg(projectWithNewProperties);
-          cancelAction();
-        }}
-      />
+
+      {!props.readOnly && (
+        <>
+          <PaygSshDataEdit
+            paygSshData={payg.properties}
+            paygId={payg.id}
+            isInstance={true}
+            labelPrefix={"Instance"}
+            readOnly={props.readOnly}
+            onChange={(projectWithNewProperties) => {
+              setPayg(projectWithNewProperties);
+              cancelAction();
+            }}
+          />
+
+          <PaygSshDataEdit
+            paygSshData={payg.properties}
+            paygId={payg.id}
+            isInstance={false}
+            labelPrefix={"Bastion"}
+            readOnly={props.readOnly}
+            onChange={(projectWithNewProperties) => {
+              setPayg(projectWithNewProperties);
+              cancelAction();
+            }}
+          />
+        </>
+      )}
     </TopPanel>
   );
 };

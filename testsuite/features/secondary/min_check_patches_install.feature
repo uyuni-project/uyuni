@@ -22,22 +22,23 @@ Feature: Display patches
   Scenario: Check all patches exist
     When I follow the left menu "Patches > Patch List > Relevant"
     Then I should see an update in the list
-    And I should see a "virgo-dummy-3456" link
+    When I wait until I see "virgo-dummy" text, refreshing the page
+    Then I should see a "virgo-dummy-3456" link
 
   Scenario: Check SLES release 6789 patches
     When I follow the left menu "Patches > Patch List > Relevant"
     And I follow "andromeda-dummy-6789"
     Then I should see a "andromeda-dummy-6789 - Bug Fix Advisory" text
     And I should see a "Test update for andromeda-dummy" text
-    And I should see a "Fake-RPM-SLES-Channel" link
+    And I should see a "Fake-RPM-SUSE-Channel" link
     And I should see a "reboot_suggested" text
 
   Scenario: Check packages of SLES release 6789 patches
     When I follow the left menu "Patches > Patch List > Relevant"
     And I follow "andromeda-dummy-6789"
     And I follow "Packages"
-    Then I should see a "Fake-RPM-SLES-Channel" link
-    And I should see a "sha256:ba3f6d939fce43b60f4d20a09887e211f11024b61defb246dd62705bf4f4ced0" text
+    Then I should see a "Fake-RPM-SUSE-Channel" link
+    And I should see a "sha512:6bc584eb0af1bc04705c78e59ca0e4154ea86c46cd75abee57c82bfc4ebb57f3660ed21e9aceceae03855264e163853acbcde88005609d773c20f185587f70cc" text
     And I should see a "andromeda-dummy-2.0-1.1-noarch" link
 
   Scenario: Check relevant patches for this client

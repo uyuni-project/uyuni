@@ -15,6 +15,7 @@
 package com.redhat.rhn.frontend.xmlrpc.kickstart.profile.software.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.kickstart.KickstartData;
@@ -43,7 +44,7 @@ public class SoftwareHandlerTest extends BaseHandlerTestCase {
         List<String> packages = handler.getSoftwareList(admin, ksProfile.getLabel());
 
         // Note: the test profile created should have had at least 1 package listed
-        assertTrue(ksProfile.getKsPackages().size() > 0);
+        assertFalse(ksProfile.getKsPackages().isEmpty());
         assertEquals(ksProfile.getKsPackages().size(), packages.size());
     }
 
@@ -66,7 +67,7 @@ public class SoftwareHandlerTest extends BaseHandlerTestCase {
         }
         assertEquals(1, result);
         assertEquals(ksProfile.getKsPackages().size(), 1);
-        assertEquals(pkgFound, true);
+        assertTrue(pkgFound);
     }
 
     // Test API with nobase and ignoremissing
@@ -89,9 +90,9 @@ public class SoftwareHandlerTest extends BaseHandlerTestCase {
         }
         assertEquals(1, result);
         assertEquals(ksProfile.getKsPackages().size(), 1);
-        assertEquals(pkgFound, true);
-        assertEquals(ksProfile.getNoBase(), true);
-        assertEquals(ksProfile.getIgnoreMissing(), true);
+        assertTrue(pkgFound);
+        assertTrue(ksProfile.getNoBase());
+        assertTrue(ksProfile.getIgnoreMissing());
     }
 
     @Test

@@ -95,7 +95,7 @@ public class ValidatorService {
      * @return ValidatorResult
      */
     public ValidatorResult validateObject(Object validateIn, Validator validatorIn,
-            List constraintNames) {
+            List<String> constraintNames) {
 
         ValidatorResult result = new ValidatorResult();
         for (Object oIn : validatorIn.getConstraints()) {

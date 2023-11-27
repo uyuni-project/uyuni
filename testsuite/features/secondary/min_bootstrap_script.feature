@@ -1,18 +1,20 @@
-# Copyright (c) 2019-2021 SUSE LLC
+# Copyright (c) 2019-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
-#
-# 1) delete SLES minion and register again with bootstrap script
-# 2) subscribe minion to a base channels
-# 3) install and remove a package
+# This feature can cause failures in the following features:
+# - features/secondary/min_ssh_tunnel.feature
+# If the minion fails to bootstrap
 
+@skip_if_github_validation
 @sle_minion
 @scope_onboarding
-Feature: Register a Salt minion via Bootstrap-script
+Feature: Register a Salt minion with a bootstrap script
+  1) delete SLES minion and register again with bootstrap script
+  2) subscribe minion to a base channels
+  3) install and remove a package
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
-    And I am logged in API as user "admin" and password "admin"
 
   Scenario: Delete SLES minion system profile before script bootstrap test
     Given I am on the Systems overview page of this "sle_minion"
@@ -20,6 +22,7 @@ Feature: Register a Salt minion via Bootstrap-script
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
     And I wait until I see "has been deleted" text
+    And I wait until Salt client is inactive on "sle_minion"
     Then "sle_minion" should not be registered
 
   Scenario: Bootstrap the minion using the script
@@ -36,6 +39,7 @@ Feature: Register a Salt minion via Bootstrap-script
   Scenario: Detect latest Salt changes on the script-bootstrapped SLES minion
     When I query latest Salt changes on "sle_minion"
 
+@susemanager
   Scenario: Subscribe the script-bootstrapped SLES minion to a base channel
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Software" in the content area
@@ -45,7 +49,23 @@ Feature: Register a Salt minion via Bootstrap-script
     And I wait until I do not see "Loading..." text
     And I include the recommended child channels
     And I check "SLE-Module-DevTools15-SP4-Pool for x86_64"
-    And I check "Fake-RPM-SLES-Channel"
+    And I check "Fake-RPM-SUSE-Channel"
+    And I click on "Next"
+    Then I should see a "Confirm Software Channel Change" text
+    When I click on "Confirm"
+    Then I should see a "Changing the channels has been scheduled." text
+    And I wait until event "Subscribe channels scheduled by admin" is completed
+
+@uyuni
+  Scenario: Subscribe the script-bootstrapped SLES minion to a base channel
+    Given I am on the Systems overview page of this "sle_minion"
+    When I follow "Software" in the content area
+    And I follow "Software Channels" in the content area
+    And I wait until I do not see "Loading..." text
+    And I check radio button "openSUSE Leap 15.5 (x86_64)"
+    And I wait until I do not see "Loading..." text
+    And I check "Uyuni Client Tools for openSUSE Leap 15.5 (x86_64)"
+    And I check "Fake-RPM-SUSE-Channel"
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text
     When I click on "Confirm"
@@ -84,6 +104,3 @@ Feature: Register a Salt minion via Bootstrap-script
   Scenario: Cleanup: remove package from script-bootstrapped SLES minion
    When I remove package "orion-dummy-1.1-1.1" from this "sle_minion"
    Then "orion-dummy-1.1-1.1" should not be installed on "sle_minion"
-
-  Scenario: Cleanup: Logout from API
-    When I logout from API

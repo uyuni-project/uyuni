@@ -31,7 +31,7 @@ public class ChainedListener implements TriggerListener {
 
     public static final String LISTENER_NAME = "ChainedListener";
 
-    private List listenerChain = new ArrayList();
+    private List listenerChain = new ArrayList<>();
 
     /**
      * {@inheritDoc}

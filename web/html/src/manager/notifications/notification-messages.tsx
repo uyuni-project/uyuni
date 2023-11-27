@@ -2,8 +2,6 @@ import { hot } from "react-hot-loader/root";
 
 import * as React from "react";
 
-import escapeHtml from "html-react-parser";
-
 import { AsyncButton } from "components/buttons";
 import { Dialog } from "components/dialog/LegacyDialog";
 import { showDialog } from "components/dialog/util";
@@ -14,6 +12,7 @@ import { Column } from "components/table/Column";
 import { SearchField } from "components/table/SearchField";
 import { Table } from "components/table/Table";
 
+import { stringToReact } from "utils";
 import { Utils } from "utils/functions";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import Network from "utils/network";
@@ -47,7 +46,7 @@ const _MESSAGE_TYPE = {
   },
   PaygAuthenticationUpdateFailed: {
     id: "PaygAuthenticationUpdateFailed",
-    text: t("Pay-as-you-go refresh authentication data failed"),
+    text: t("PAYG refresh authentication data failed"),
   },
   EndOfLifePeriod: {
     id: "EndOfLifePeriod",
@@ -56,6 +55,10 @@ const _MESSAGE_TYPE = {
   SubscriptionWarning: {
     id: "SubscriptionWarning",
     text: t("Subscription Warning"),
+  },
+  UpdateAvailable: {
+    id: "UpdateAvailable",
+    text: t("Update Notification"),
   },
 };
 
@@ -339,7 +342,7 @@ class NotificationMessages extends React.Component<Props, State> {
 
     return (
       <span>
-        {escapeHtml(row["summary"])}
+        {stringToReact(row["summary"])}
         &nbsp;
         {row["details"] && popupLink}
       </span>
@@ -348,12 +351,12 @@ class NotificationMessages extends React.Component<Props, State> {
 
   buildPopupSummary = () => {
     const summary = (this.state.popupItem || {}).summary || "";
-    return escapeHtml(summary);
+    return stringToReact(summary);
   };
 
   buildPopupDetails = () => {
     const details = (this.state.popupItem || {}).details || "";
-    return escapeHtml(details);
+    return stringToReact(details);
   };
 
   retryOnboarding = (minionId) => {

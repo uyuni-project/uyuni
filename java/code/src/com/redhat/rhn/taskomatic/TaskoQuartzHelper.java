@@ -20,9 +20,13 @@ import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
 import static org.quartz.TriggerBuilder.newTrigger;
 import static org.quartz.TriggerKey.triggerKey;
 
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.frontend.events.TransactionHelper;
 import com.redhat.rhn.taskomatic.core.SchedulerKernel;
 import com.redhat.rhn.taskomatic.domain.TaskoSchedule;
 
+import org.apache.commons.collections.MapUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.quartz.JobBuilder;
@@ -30,6 +34,7 @@ import org.quartz.JobDataMap;
 import org.quartz.SchedulerException;
 import org.quartz.Trigger;
 import org.quartz.TriggerKey;
+import org.quartz.impl.jdbcjobstore.StdJDBCConstants;
 
 import java.time.Instant;
 import java.time.ZoneId;
@@ -41,6 +46,14 @@ import java.util.Date;
  * TaskoQuartzHelper
  */
 public class TaskoQuartzHelper {
+
+    private static final String QRTZ_PREFIX = Config.get()
+            .getString("org.quartz.jobStore.tablePrefix", StdJDBCConstants.DEFAULT_TABLE_PREFIX);
+    private static final String QRTZ_TRIGGERS = QRTZ_PREFIX.concat("TRIGGERS");
+    private static final String QRTZ_SIMPLE_TRIGGERS = QRTZ_PREFIX.concat("SIMPLE_TRIGGERS");
+    private static final String QRTZ_CRON_TRIGGERS = QRTZ_PREFIX.concat("CRON_TRIGGERS");
+    private static final String QRTZ_SIMPROP_TRIGGERS = QRTZ_PREFIX.concat("SIMPROP_TRIGGERS");
+    private static final String QRTZ_BLOB_TRIGGERS = QRTZ_PREFIX.concat("BLOB_TRIGGERS");
 
     private static Logger log = LogManager.getLogger(TaskoQuartzHelper.class);
 
@@ -64,7 +77,7 @@ public class TaskoQuartzHelper {
                     triggerKey(trigger.getKey().getName(), trigger.getKey().getGroup()));
         }
         catch (SchedulerException e) {
-            // be silent
+            log.error("Unable to remove scheduled trigger {}", trigger.getJobKey(), e);
         }
     }
 
@@ -73,8 +86,9 @@ public class TaskoQuartzHelper {
      * @param schedule schedule as a job template
      * @return date of first schedule
      * @throws InvalidParamException thrown in case of invalid cron expression
+     * @throws SchedulerException
      */
-    public static Date createJob(TaskoSchedule schedule) throws InvalidParamException {
+    public static Date createJob(TaskoSchedule schedule) throws InvalidParamException, SchedulerException {
         // create trigger
         Trigger trigger = null;
         if (isCronExpressionEmpty(schedule.getCronExpr())) {
@@ -113,16 +127,9 @@ public class TaskoQuartzHelper {
         jobDetail.usingJobData("schedule_id", schedule.getId());
 
         // schedule job
-        try {
-            Date date =
-                    SchedulerKernel.getScheduler().scheduleJob(jobDetail.build(), trigger);
-            log.info("Job {} scheduled successfully.", schedule.getJobLabel());
-            return date;
-        }
-        catch (SchedulerException e) {
-            log.warn("Job {} failed to schedule.", schedule.getJobLabel());
-            return null;
-        }
+        Date date = SchedulerKernel.getScheduler().scheduleJob(jobDetail.build(), trigger);
+        log.info("Job {} scheduled successfully.", schedule.getJobLabel());
+        return date;
     }
 
     /**
@@ -130,69 +137,70 @@ public class TaskoQuartzHelper {
      * start date.
      * @param schedule for the job to be rescheduled
      * @param startAtDate trigger time
+     * @param bunchStartIndex the index of the starting task in the bunch. Different from zero if it was not possible
+     *                        to execute one of the task of the bunch due to missing capacity
      * @return the date of the trigger or null if scheduling was not successful
+     * @throws SchedulerException
      */
-    public static Date rescheduleJob(TaskoSchedule schedule, Instant startAtDate) {
+    public static Date rescheduleJob(TaskoSchedule schedule, Instant startAtDate, long bunchStartIndex)
+        throws SchedulerException {
         // create trigger
         String timestamp = TIMESTAMP_FORMAT.format(startAtDate);
-        TriggerKey retryTriggerKey = new TriggerKey(schedule.getJobLabel() + "-retry" + timestamp,
-                getGroupName(schedule.getOrgId()));
-        try {
-            Trigger retryTrigger = SchedulerKernel.getScheduler().getTrigger(retryTriggerKey);
-            if (retryTrigger != null) {
-                log.warn("Retry trigger {} already exists", retryTriggerKey);
-                return retryTrigger.getStartTime();
-            }
+        String quartzGroupName = getGroupName(schedule.getOrgId());
+        TriggerKey retryTriggerKey = new TriggerKey(schedule.getJobLabel() + "-retry" + timestamp, quartzGroupName);
+
+        Trigger retryTrigger = SchedulerKernel.getScheduler().getTrigger(retryTriggerKey);
+        if (retryTrigger != null) {
+            log.warn("Retry trigger {} already exists", retryTriggerKey);
+            return retryTrigger.getStartTime();
         }
-        catch (SchedulerException e) {
-            log.warn("no trigger found {}", retryTriggerKey);
-        }
-        Trigger trigger = newTrigger()
-                    .withIdentity(schedule.getJobLabel() +  "-retry" + timestamp, getGroupName(schedule.getOrgId()))
-                    .startAt(Date.from(startAtDate))
-                    .withSchedule(simpleSchedule()
-                            .withMisfireHandlingInstructionFireNow()) // execute job immediately after discovering
-                                                                      // a misfire situation
-                    .forJob(schedule.getJobLabel(), getGroupName(schedule.getOrgId()))
-                    .build();
+
+        Trigger trigger = newTrigger().withIdentity(retryTriggerKey)
+            .startAt(Date.from(startAtDate))
+            // execute job immediately after discovering a misfire situation
+            .withSchedule(simpleSchedule().withMisfireHandlingInstructionFireNow())
+            .forJob(retryTriggerKey.getName(), retryTriggerKey.getGroup())
+            .build();
+
         // create job
-        JobBuilder jobDetail = newJob(TaskoJob.class)
-                .withIdentity(schedule.getJobLabel(),
-                        getGroupName(schedule.getOrgId()));
+        JobBuilder jobDetail = newJob().ofType(TaskoJob.class)
+                                       .withIdentity(retryTriggerKey.getName(), retryTriggerKey.getGroup())
+                                       .usingJobData("schedule_id", schedule.getId())
+                                       .usingJobData("bunch_start_index", bunchStartIndex);
+
         // set job params
-        if (schedule.getDataMap() != null) {
+        if (MapUtils.isNotEmpty(schedule.getDataMap())) {
             jobDetail.usingJobData(new JobDataMap(schedule.getDataMap()));
         }
-        jobDetail.usingJobData("schedule_id", schedule.getId());
 
         // schedule job
-        try {
-            Date date =
-                    SchedulerKernel.getScheduler().scheduleJob(trigger);
-            log.info("Job {} rescheduled with trigger {}", schedule.getJobLabel(), trigger.getKey());
-            return date;
-        }
-        catch (SchedulerException e) {
-            log.info("Job {} failed to be reschedule with trigger {}", schedule.getJobLabel(), trigger.getKey(), e);
-            return null;
-        }
+        Date date = SchedulerKernel.getScheduler().scheduleJob(jobDetail.build(), trigger);
+        log.info("Job {} rescheduled with trigger {}", schedule.getJobLabel(), trigger.getKey());
+        return date;
     }
 
     /**
      * unschedules job
-     * @param orgId organization id
+     *
+     * @param orgId    organization id
      * @param jobLabel job name
-     * @return 1 if successful
      */
-    public static Integer destroyJob(Integer orgId, String jobLabel) {
+    public static void destroyJob(Integer orgId, String jobLabel) {
+        destroyJob(triggerKey(jobLabel, getGroupName(orgId)));
+    }
+
+    /**
+     * unschedules job
+     *
+     * @param key trigger key
+     */
+    public static void destroyJob(TriggerKey key) {
         try {
-            SchedulerKernel.getScheduler()
-                    .unscheduleJob(triggerKey(jobLabel, getGroupName(orgId)));
-            log.info("Job {} unscheduled successfully.", jobLabel);
-            return 1;
+            SchedulerKernel.getScheduler().unscheduleJob(key);
+            log.info("Job {} unscheduled successfully.", key.getName());
         }
         catch (SchedulerException e) {
-            return null;
+            log.error("Unable to unschedule job {} of organization # {}", key.getName(), key.getGroup(), e);
         }
     }
 
@@ -229,4 +237,35 @@ public class TaskoQuartzHelper {
         }
         return true;
     }
+
+    /**
+     * This method is responsible for detecting and removing invalid triggers from the Quartz database.
+     * In some cases, the Quartz database can become inconsistent, with records in the main QRTZ_TRIGGERS table lacking
+     * corresponding entries in any of the possible detail property tables (QRTZ_CRON_TRIGGERS, QRTZ_SIMPLE_TRIGGERS,
+     * QRTZ_BLOB_TRIGGERS or QRTZ_SIMPROP_TRIGGERS). See: bsc#1202519, bsc#1208635 and
+     * https://github.com/uyuni-project/uyuni/issues/5556
+     *
+     * While the exact scenarios leading to this inconsistency may not be clear, this method provides a solution to
+     * prevent Taskomatic from failing to start, performing a cleanup of invalid triggers before starting the scheduler
+     */
+    public static void cleanInvalidTriggers() {
+        log.info("Checking quartz database consistency...");
+        TransactionHelper.handlingTransaction(
+            () -> {
+                int del = HibernateFactory.getSession().createNativeQuery(cleanInvalidTriggersQuery()).executeUpdate();
+                log.info("Removed {} invalid triggers", del);
+            },
+            e -> log.warn("Error removing invalid triggers.", e)
+        );
+    }
+
+    private static String cleanInvalidTriggersQuery() {
+        return "DELETE FROM " + QRTZ_TRIGGERS + " T " +
+            "WHERE T.SCHED_NAME || T.TRIGGER_NAME || T.TRIGGER_GROUP NOT IN (" +
+                "SELECT c.SCHED_NAME || c.TRIGGER_NAME || c.TRIGGER_GROUP FROM " + QRTZ_CRON_TRIGGERS + " c UNION " +
+                "SELECT s.SCHED_NAME || s.TRIGGER_NAME || s.TRIGGER_GROUP FROM " + QRTZ_SIMPLE_TRIGGERS + " s UNION " +
+                "SELECT b.SCHED_NAME || b.TRIGGER_NAME || b.TRIGGER_GROUP FROM " + QRTZ_BLOB_TRIGGERS + " b UNION " +
+                "SELECT sp.SCHED_NAME || sp.TRIGGER_NAME || sp.TRIGGER_GROUP FROM " + QRTZ_SIMPROP_TRIGGERS + " sp" +
+            ")";
+   }
 }

@@ -42,7 +42,7 @@ public class TaskomaticDaemon {
     public static final int SUCCESS = Integer.MIN_VALUE;
     public static final Logger LOG = LogManager.getLogger(TaskomaticDaemon.class);
 
-    private Map masterOptionsMap = new HashMap();
+    private Map<String, Option> masterOptionsMap = new HashMap<>();
     private SchedulerKernel kernel;
 
     /**
@@ -141,7 +141,7 @@ public class TaskomaticDaemon {
     }
 
     protected int onStartup(CommandLine commandLine) {
-        Map overrides = null;
+        Map<String, Object> overrides;
         int retval = SUCCESS;
 
         if (commandLine != null) {
@@ -170,17 +170,13 @@ public class TaskomaticDaemon {
     }
 
     protected int onShutdown(boolean breakFromUser) {
-        // TODO Auto-generated method stub
         return 0;
     }
 
-    private Map parseOverrides(CommandLine commandLine) {
-        Map configOverrides = new HashMap();
+    private Map<String, Object> parseOverrides(CommandLine commandLine) {
+        Map<String, Object> configOverrides = new HashMap<>();
         // Loop thru all possible options and let's see what we get
-        for (Object oIn : this.masterOptionsMap.keySet()) {
-
-            String optionName = (String) oIn;
-
+        for (String optionName : this.masterOptionsMap.keySet()) {
             if (commandLine.hasOption(optionName)) {
 
                 // All of these options are single-value options so they're

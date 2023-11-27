@@ -41,6 +41,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -57,6 +58,8 @@ public class SUSEProductFactory extends HibernateFactory {
 
     private static Logger log = LogManager.getLogger(SUSEProductFactory.class);
     private static SUSEProductFactory singleton = new SUSEProductFactory();
+
+    private static final RpmVersionComparator RPM_VERSION_COMPARATOR = new RpmVersionComparator();
 
     private SUSEProductFactory() {
         super();
@@ -99,7 +102,7 @@ public class SUSEProductFactory extends HibernateFactory {
      */
     public static List<SUSEProductSCCRepository> allProductRepos() {
         Criteria c = getSession().createCriteria(SUSEProductSCCRepository.class);
-        return (List<SUSEProductSCCRepository>) c.list();
+        return c.list();
     }
 
     /**
@@ -129,10 +132,9 @@ public class SUSEProductFactory extends HibernateFactory {
         Session session = getSession();
         Criteria c = session.createCriteria(SUSEProductSCCRepository.class);
         c.add(Restrictions.eq("channelLabel", channelLabel));
-        RpmVersionComparator rpmVersionComparator = new RpmVersionComparator();
         return ((List<SUSEProductSCCRepository>) c.list()).stream()
                 .sorted((a, b) ->
-                        rpmVersionComparator.compare(b.getProduct().getVersion(), a.getProduct().getVersion()))
+                        RPM_VERSION_COMPARATOR.compare(b.getProduct().getVersion(), a.getProduct().getVersion()))
                 .collect(Collectors.toList());
     }
 
@@ -205,7 +207,7 @@ public class SUSEProductFactory extends HibernateFactory {
      */
     public static List<SUSEProductSCCRepository> lookupByChannelLabel(String channelLabel) {
         Session session = HibernateFactory.getSession();
-        return (List<SUSEProductSCCRepository>)session.getNamedQuery("SUSEProductSCCRepository.lookupByLabel")
+        return session.getNamedQuery("SUSEProductSCCRepository.lookupByLabel")
                 .setParameter("label", channelLabel).list();
     }
 
@@ -229,14 +231,13 @@ public class SUSEProductFactory extends HibernateFactory {
      * @return SUSEProductSCCRepository entry with the newest product
      */
     public static Optional<SUSEProductSCCRepository> lookupByChannelLabelFirst(String channelLabel) {
-        RpmVersionComparator rpmVersionComparator = new RpmVersionComparator();
         return  lookupByChannelLabel(channelLabel)
                 .stream()
                 // sort so we always choose the latest version
-                .sorted((a, b) ->  rpmVersionComparator.compare(b.getProduct().getVersion(),
+                .sorted((a, b) ->  RPM_VERSION_COMPARATOR.compare(b.getProduct().getVersion(),
                         a.getProduct().getVersion()))
 
-                // We take the first item since there can be more then one entry.
+                // We take the first item since there can be more than one entry.
                 // This only happens for sles11 sp1/2  and rolling release attempts like caasp 1/2
                 .findFirst();
     }
@@ -263,7 +264,7 @@ public class SUSEProductFactory extends HibernateFactory {
             return Optional.empty();
         }
         else {
-            // We take the first item since there can be more then one entry.
+            // We take the first item since there can be more than one entry.
             // All entries should point to the same "product" with only arch differences.
             // The only exception to this is sles11 sp1/2 but they are out of maintenance
             // and we decided to ignore this inconsistency until the great rewrite.
@@ -278,17 +279,37 @@ public class SUSEProductFactory extends HibernateFactory {
      */
     public static Stream<Channel> findSyncedMandatoryChannels(String channelLabel) {
         Channel channel = ChannelFactory.lookupByLabel(channelLabel);
+        if (channel == null) {
+            throw new NoSuchElementException("Broken channel " + channelLabel);
+        }
         Channel baseChannel = Optional.ofNullable(channel.getParentChannel()).orElse(channel);
         if (channel.isCloned()) {
             if (ConfigDefaults.get().getClonedChannelAutoSelection()) {
                 return channel.originChain().filter(c -> !c.isCloned()).findFirst().map(original -> {
-                    return findSyncedMandatoryChannels(original.getLabel())
-                            .flatMap(c -> c.allClonedChannels())
-                            .filter(c ->
-                                    (c.getParentChannel() != null && c.getParentChannel()
-                                            .equals(channel.getParentChannel())) || c.equals(channel.getParentChannel())
-                            )
-                            .map(c -> (Channel) c);
+                    // There is a problem that filtering cloned channels by the unique parts does not filter
+                    // out chained channels created via CLM. If you have a CLM project based on another CLM
+                    // project the names of the chained channels contain all the unique parts and are thus
+                    // not filtered out although they should (See bsc#1204270 for more info).
+                    List<String> originalParts = List.of(original.getLabel().split("-"));
+                    List<String> selectedParts = List.of(channel.getLabel().split("-"));
+                    List<String> uniqueParts = selectedParts.stream()
+                            .filter(s -> !originalParts.contains(s))
+                            .collect(Collectors.toList());
+
+                    if (channel.isBaseChannel()) {
+                        return Stream.<Channel>empty();
+                    }
+                    else {
+                        return findSyncedMandatoryChannels(original.getLabel())
+                                .flatMap(c -> {
+                                    return c.allClonedChannels().filter(clone -> {
+                                        List<String> cloneParts = List.of(clone.getLabel().split("-"));
+                                        return cloneParts.containsAll(uniqueParts) &&
+                                                Objects.equals(clone.getOrg(), channel.getOrg());
+                                    });
+                                })
+                                .map(c -> (Channel) c);
+                    }
                 }).orElse(Stream.empty());
             }
             else {
@@ -364,7 +385,7 @@ public class SUSEProductFactory extends HibernateFactory {
      */
     public static Stream<SUSEProductSCCRepository> findNotSyncedMandatoryChannels(String channelLabel) {
         return findAllMandatoryChannels(channelLabel).
-                filter(spsr -> !Optional.ofNullable(ChannelFactory.lookupByLabel(spsr.getChannelLabel())).isPresent())
+                filter(spsr -> Objects.nonNull(ChannelFactory.lookupByLabel(spsr.getChannelLabel())))
                 .sorted(Comparator.comparing(SUSEProductSCCRepository::getParentChannelLabel,
                         Comparator.nullsFirst(Comparator.naturalOrder())));
     }
@@ -478,7 +499,7 @@ public class SUSEProductFactory extends HibernateFactory {
      */
     public static SUSEProduct getProductById(Long id) {
         Session session = HibernateFactory.getSession();
-        SUSEProduct p = (SUSEProduct) session.get(SUSEProduct.class, id);
+        SUSEProduct p = session.get(SUSEProduct.class, id);
         return p;
     }
 
@@ -500,12 +521,9 @@ public class SUSEProductFactory extends HibernateFactory {
      */
     public static Map<Long, SUSEProduct> productsByProductIds() {
         Session session = getSession();
-        Criteria c = session.createCriteria(SUSEProduct.class);
-        Map<Long, SUSEProduct> result = new HashMap<>();
-        for (SUSEProduct prd: (List<SUSEProduct>) c.list()) {
-            result.put(prd.getProductId(), prd);
-        }
-        return result;
+        return session.createQuery("from com.redhat.rhn.domain.product.SUSEProduct", SUSEProduct.class)
+                .stream()
+                .collect(Collectors.toMap(SUSEProduct::getProductId, p -> p));
     }
 
     /**
@@ -573,7 +591,6 @@ public class SUSEProductFactory extends HibernateFactory {
      * @param root root product
      * @return list of product extension of the given product and root
      */
-    @SuppressWarnings("unchecked")
     public static List<SUSEProduct> findAllExtensionProductsForRootOf(SUSEProduct base, SUSEProduct root) {
         Map<String, Object> params = new HashMap<>();
         params.put("baseId", base.getId());
@@ -602,10 +619,8 @@ public class SUSEProductFactory extends HibernateFactory {
      * @param ext product to find bases for
      * @return list of base products of the given product
      */
-    @SuppressWarnings("unchecked")
     public static List<SUSEProduct> findAllBaseProductsOf(SUSEProduct ext) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("extId", ext.getId());
+        Map<String, Object> params = Map.of("extId", ext.getId());
         return singleton.listObjectsByNamedQuery("SUSEProductExtension.findAllBaseProductsOf", params);
     }
 
@@ -615,7 +630,6 @@ public class SUSEProductFactory extends HibernateFactory {
      * @param root the root product
      * @return list of base products of the given product and root
      */
-    @SuppressWarnings("unchecked")
     public static List<SUSEProduct> findAllBaseProductsOf(SUSEProduct ext, SUSEProduct root) {
         Map<String, Object> params = new HashMap<>();
         params.put("extId", ext.getId());
@@ -625,14 +639,12 @@ public class SUSEProductFactory extends HibernateFactory {
 
     /**
      * Find all root products of a product.
-     * @param base product to find roots for
+     * @param prd product to find roots for
      * @return list of root products of the given product
      */
-    @SuppressWarnings("unchecked")
-    public static List<SUSEProduct> findAllRootProductsOf(SUSEProduct base) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("baseId", base.getId());
-        return singleton.listObjectsByNamedQuery("SUSEProductExtension.findAllRootProductsOf", params);
+    public static List<SUSEProduct> findAllRootProductsOf(SUSEProduct prd) {
+        return singleton.listObjectsByNamedQuery("SUSEProductExtension.findAllRootProductsOf",
+                Map.of("extId", prd.getId()));
     }
 
     /**
@@ -642,6 +654,19 @@ public class SUSEProductFactory extends HibernateFactory {
     @SuppressWarnings("unchecked")
     public static List<SUSEProduct> findAllSUSEProducts() {
         return getSession().createCriteria(SUSEProduct.class).list();
+    }
+
+    /**
+     * Find all extensions of a given root product. When the given product
+     * is not a root product, the result is empty.
+     * @param root the root product
+     * @return List of {@link SUSEProduct} extensions
+     */
+    public static List<SUSEProduct> findAllExtensionsOfRootProduct(SUSEProduct root) {
+        return getSession()
+                .createNamedQuery("SUSEProductExtension.findAllExtensionsOfRootProduct", SUSEProduct.class)
+                .setParameter("rootId", root.getId())
+                .list();
     }
 
     /**

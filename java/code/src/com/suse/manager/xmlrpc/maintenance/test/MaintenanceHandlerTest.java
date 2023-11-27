@@ -16,7 +16,7 @@ package com.suse.manager.xmlrpc.maintenance.test;
 
 import static java.util.Collections.emptyList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.action.Action;
@@ -136,7 +136,7 @@ public class MaintenanceHandlerTest extends BaseHandlerTestCase {
                 assertContains(actual, "<string>Patch Update</string>");
             }
             else {
-                assertTrue(false, "Not expected result set");
+                fail("Not expected result set");
             }
         }
     }

@@ -33,6 +33,7 @@ public class LocalAddFileAction extends BaseAddFilesAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected ConfigChannel getConfigChannel(HttpServletRequest request) {
         RequestContext ctx = new RequestContext(request);
         //new files will always go to the sandbox, not the local override.
@@ -42,6 +43,7 @@ public class LocalAddFileAction extends BaseAddFilesAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processRequest(HttpServletRequest request) {
         RequestContext ctx = new RequestContext(request);
         Server server = ctx.lookupAndBindServer();
@@ -49,8 +51,9 @@ public class LocalAddFileAction extends BaseAddFilesAction {
         SdcHelper.ssmCheck(request, server.getId(), user);
     }
 
+    @Override
     protected Map makeParamMap(HttpServletRequest request) {
-        Map map = super.makeParamMap(request);
+        Map<String, Object> map = super.makeParamMap(request);
         RequestContext ctx = new RequestContext(request);
         map.put(RequestContext.SID,
                 ctx.lookupAndBindServer().getId().toString());

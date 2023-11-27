@@ -43,8 +43,9 @@ public class ScriptsSetupAction extends RhnAction {
      *
      * {@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping, ActionForm formIn,
-            HttpServletRequest request, HttpServletResponse response) {
+                                 HttpServletRequest request, HttpServletResponse response) {
         RequestContext rctx = new RequestContext(request);
         Org org = rctx.getCurrentUser().getOrg();
         KickstartData ksdata = KickstartFactory.lookupKickstartDataByIdAndOrg(org,

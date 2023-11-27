@@ -42,6 +42,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.BodyTagSupport;
+import javax.servlet.jsp.tagext.IterationTag;
+import javax.servlet.jsp.tagext.Tag;
+import javax.servlet.jsp.tagext.TagSupport;
 
 /**
  * Renders a list of data bean in a page
@@ -158,8 +161,7 @@ public class ListTag extends BodyTagSupport {
                 }
                 ListDecorator dec = (ListDecorator) cl.loadClass(decName)
                         .newInstance();
-                ListSetTag parent = (ListSetTag) BodyTagSupport
-                        .findAncestorWithClass(this, ListSetTag.class);
+                ListSetTag parent = (ListSetTag) TagSupport.findAncestorWithClass(this, ListSetTag.class);
                 dec.setEnvironment(pageContext, parent, getUniqueName());
                 return dec;
             }
@@ -350,7 +352,7 @@ public class ListTag extends BodyTagSupport {
             }
         }
         else {
-            pageData = Collections.EMPTY_LIST;
+            pageData = Collections.emptyList();
         }
     }
 
@@ -376,7 +378,7 @@ public class ListTag extends BodyTagSupport {
      * @throws JspException if row name is empty
      */
     public void setRowname(String nameIn) throws JspException {
-        if (rowName == null || rowName.length() == 0) {
+        if (rowName == null || rowName.isEmpty()) {
             throw new JspException("Row name cannot be empty");
         }
         rowName = nameIn;
@@ -400,7 +402,7 @@ public class ListTag extends BodyTagSupport {
 
         ListTagUtil.write(pageContext, "<!-- END " + getUniqueName() + " -->");
         release();
-        return BodyTagSupport.EVAL_PAGE;
+        return Tag.EVAL_PAGE;
     }
 
     private void doAfterBodyRenderTopAddons() throws JspException {
@@ -548,7 +550,7 @@ public class ListTag extends BodyTagSupport {
         request.setAttribute("dataSize", String
                .valueOf(pageData.size() + 1));
 
-        if (pageData != null && pageData.size() > 0) {
+        if (pageData != null && !pageData.isEmpty()) {
             iterator = pageData.iterator();
         }
         else {
@@ -571,7 +573,7 @@ public class ListTag extends BodyTagSupport {
             // close list
             ListTagUtil.write(pageContext, "</div>");
 
-            return BodyTagSupport.SKIP_BODY;
+            return Tag.SKIP_BODY;
         }
         ListTagUtil.write(pageContext, "<tbody>");
 
@@ -610,14 +612,14 @@ public class ListTag extends BodyTagSupport {
         else  {
             return doAfterBodyRenderAfterData();
         }
-        return BodyTagSupport.EVAL_BODY_AGAIN;
+        return IterationTag.EVAL_BODY_AGAIN;
     }
 
     private int doAfterBodyRenderAfterData() throws JspException {
         ListTagUtil.setCurrentCommand(pageContext, getUniqueName(),
                 ListCommand.AFTER_RENDER);
         ListTagUtil.write(pageContext, "</tbody>");
-        return BodyTagSupport.EVAL_BODY_AGAIN;
+        return IterationTag.EVAL_BODY_AGAIN;
     }
 
     private void doAfterBodyRenderColHeaders() throws JspException {
@@ -738,7 +740,7 @@ public class ListTag extends BodyTagSupport {
         }
         // close list
         ListTagUtil.write(pageContext, "</div>");
-        return BodyTagSupport.SKIP_BODY;
+        return Tag.SKIP_BODY;
     }
 
     private void doAfterBodyRenderListBegin() throws JspException {
@@ -770,7 +772,7 @@ public class ListTag extends BodyTagSupport {
      */
     @Override
     public int doAfterBody() throws JspException {
-        int retval = BodyTagSupport.EVAL_BODY_AGAIN;
+        int retval = IterationTag.EVAL_BODY_AGAIN;
 
         ListCommand nextCmd = getNextCommand();
 
@@ -841,7 +843,7 @@ public class ListTag extends BodyTagSupport {
             }
         }
         else {
-            pageData = Collections.EMPTY_LIST;
+            pageData = Collections.emptyList();
         }
     }
     /**
@@ -858,7 +860,7 @@ public class ListTag extends BodyTagSupport {
                 getUniqueName(), isParentAnElement());
         ListTagUtil.setCurrentCommand(pageContext, getUniqueName(),
                     ListCommand.ENUMERATE);
-        return BodyTagSupport.EVAL_BODY_INCLUDE;
+        return Tag.EVAL_BODY_INCLUDE;
     }
 
     private void setupManipulator() throws JspException {
@@ -874,7 +876,7 @@ public class ListTag extends BodyTagSupport {
             ListTagUtil.write(pageContext, "<div class=\"site-info\">");
 
             if (manip.getTotalDataSetSize() != manip.getUnfilteredDataSize()) {
-                if (manip.getAllData().size() == 0) {
+                if (manip.getAllData().isEmpty()) {
                     ListTagUtil.write(pageContext, ls.getMessage(
                             "listtag.filteredmessageempty",
                             manip.getTotalDataSetSize()));
@@ -897,7 +899,7 @@ public class ListTag extends BodyTagSupport {
 
                 ListTagUtil.write(pageContext,
                         ListTagUtil.makeParamsLink(pageContext.getRequest(), name,
-                                Collections.EMPTY_MAP, excludeParams));
+                                Collections.emptyMap(), excludeParams));
 
                 ListTagUtil.write(pageContext, "\">" +
                                             ls.getMessage("listtag.clearfilter"));
@@ -1074,7 +1076,7 @@ public class ListTag extends BodyTagSupport {
     }
 
     private void verifyEnvironment() throws JspException {
-        if (BodyTagSupport.findAncestorWithClass(this, ListSetTag.class) == null) {
+        if (TagSupport.findAncestorWithClass(this, ListSetTag.class) == null) {
             throw new JspException("List must be enclosed by a ListSetTag");
         }
     }

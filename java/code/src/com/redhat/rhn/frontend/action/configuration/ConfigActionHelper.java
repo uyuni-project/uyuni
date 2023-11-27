@@ -110,7 +110,7 @@ public abstract class ConfigActionHelper {
      * @param cc ConfigChannel of interest
      * @param params The map in which findings should be stored.
      */
-    public static void processParamMap(ConfigChannel cc, Map params) {
+    public static void processParamMap(ConfigChannel cc, Map<String, Object> params) {
         params.put(CHANNEL_ID, cc.getId());
     }
 
@@ -120,7 +120,7 @@ public abstract class ConfigActionHelper {
      * @param request The HttServletRequest to get identifiers from
      * @param params The map to which findings should be stored.
      */
-    public static void processParamMap(HttpServletRequest request, Map params) {
+    public static void processParamMap(HttpServletRequest request, Map<String, Object> params) {
         ConfigFile file = getFile(request);
         ConfigRevision cr = getRevision(request, file);
 

@@ -112,7 +112,7 @@ public class KickstartUrlHelperTest extends BaseKickstartCommandTestCase {
 
 
     @Test
-    public void testGetCobblerMediaUrl() throws Exception {
+    public void testGetCobblerMediaUrl() {
         helper = new KickstartUrlHelper(ksdata);
         String expected = "http://" +
             KickstartUrlHelper.COBBLER_SERVER_VARIABLE +
@@ -122,7 +122,7 @@ public class KickstartUrlHelperTest extends BaseKickstartCommandTestCase {
     }
 
     @Test
-    public void testGetCobblerMediaUrlBase() throws Exception {
+    public void testGetCobblerMediaUrlBase() {
         helper = new KickstartUrlHelper(ksdata);
         String expected = "http://" +
             KickstartUrlHelper.COBBLER_SERVER_VARIABLE;

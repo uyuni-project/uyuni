@@ -31,6 +31,7 @@ public class KickstartScriptDeleteAction extends BaseKickstartEditAction {
     public static final String KICKSTART_SCRIPT = "ksscript";
 
 
+    @Override
     protected BaseKickstartCommand getCommand(RequestContext ctx) {
         return new KickstartScriptDeleteCommand(
                 ctx.getRequiredParam(RequestContext.KICKSTART_ID),
@@ -41,15 +42,17 @@ public class KickstartScriptDeleteAction extends BaseKickstartEditAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected ValidatorError processFormValues(HttpServletRequest request,
-            DynaActionForm form,
-            BaseKickstartCommand cmd) {
+                                               DynaActionForm form,
+                                               BaseKickstartCommand cmd) {
         return null;
     }
 
     /**
      * {@inheritDoc}
      */
+    @Override
     protected String getSuccessKey() {
         return "kickstart.script.delete";
     }
@@ -57,6 +60,7 @@ public class KickstartScriptDeleteAction extends BaseKickstartEditAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected String getSuccessForward() {
         return "success";
     }
@@ -65,8 +69,9 @@ public class KickstartScriptDeleteAction extends BaseKickstartEditAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void setupFormValues(RequestContext ctx, DynaActionForm form,
-            BaseKickstartCommand cmd) {
+                                   BaseKickstartCommand cmd) {
         KickstartScriptDeleteCommand dcmd = (KickstartScriptDeleteCommand) cmd;
         ctx.getRequest().setAttribute(KICKSTART_SCRIPT, dcmd.getScript());
     }

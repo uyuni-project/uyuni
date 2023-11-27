@@ -82,7 +82,7 @@ public class RuleResultDiffer {
     public List<RuleResultComparator> getData(Boolean differs) {
         List<RuleResultComparator> result = new ArrayList<>();
         for (RuleResultComparator item : dataMap.values()) {
-            if (item.getDiffers() == differs) {
+            if (item.getDiffers().equals(differs)) {
                 result.add(item);
             }
         }

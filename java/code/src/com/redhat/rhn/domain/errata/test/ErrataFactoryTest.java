@@ -20,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
@@ -217,7 +218,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
     @Test
     public void testBugs() throws Exception {
         var e = createTestErrata(user.getOrg().getId());
-        assertTrue(e.getBugs() == null || e.getBugs().size() == 0);
+        assertTrue(e.getBugs() == null || e.getBugs().isEmpty());
         e.addBug(ErrataFactory.createBug(123L, "test bug",
                 "https://bugzilla.redhat.com/show_bug.cgi?id=" + (Long) 123L));
         assertEquals(1, e.getBugs().size());
@@ -262,7 +263,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         return e;
     }
 
-    private static void fillOutErrata(Errata e, Long orgId, Optional<String> advisory) throws Exception {
+    private static void fillOutErrata(Errata e, Long orgId, Optional<String> advisory) {
         String name = Opt.fold(advisory, () -> "JAVA-Test-" + advisorySeq++, Function.identity());
         Org org = null;
         if (orgId != null) {
@@ -289,12 +290,12 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         Package testPackage = PackageTest.createTestPackage(org);
 
         ErrataFile ef;
-        Set errataFilePackages = new HashSet();
+        Set<Package> errataFilePackages = new HashSet<>();
         errataFilePackages.add(testPackage);
         e.addPackage(testPackage);
         ef = ErrataFactory.createErrataFile(ErrataFactory.
                 lookupErrataFileType("RPM"),
-                    "SOME FAKE CHECKSUM",
+                    "SOME FAKE CHECKSUM: 123456789012",
                     "test errata file" + TestUtils.randomString(), errataFilePackages);
 
         e.addFile(ef);
@@ -329,7 +330,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
 
         assertEquals(1, list.size());
         var clone = (ClonedErrata) list.get(0);
-        assertTrue(clone.getOriginal().equals(testErrata));
+        assertEquals(clone.getOriginal(), testErrata);
     }
 
     @Test
@@ -354,7 +355,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
 
         }
         catch (Exception e) {
-            assertTrue(false);
+            fail();
         }
     }
 

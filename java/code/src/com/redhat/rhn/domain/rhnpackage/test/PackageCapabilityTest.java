@@ -56,10 +56,8 @@ public class PackageCapabilityTest extends RhnBaseTestCase {
      * Create a test PackageCapability
      * @param capabilityName the capability name
      * @return Returns a committed test PackageCapability
-     * @throws Exception something bad happened
      */
-    public static PackageCapability createTestCapability(String capabilityName)
-    throws Exception {
+    public static PackageCapability createTestCapability(String capabilityName) {
         PackageCapability p = new PackageCapability();
         p.setName(capabilityName);
         p.setVersion("-1.0");

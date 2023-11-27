@@ -30,7 +30,7 @@ import org.junit.jupiter.api.Test;
 public class ChannelListActionTest extends RhnMockStrutsTestCase {
 
     @Test
-    public void testExecute() throws Exception {
+    public void testExecute() {
         //Create a config channel and a server
         ConfigChannel channel = ConfigTestUtils.createConfigChannel(user.getOrg());
         Server server = ServerFactoryTest.createTestServer(user, true);

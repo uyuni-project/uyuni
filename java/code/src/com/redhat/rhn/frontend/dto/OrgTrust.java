@@ -36,6 +36,7 @@ public class OrgTrust extends BaseDto {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Long getId() {
         return org.getId();
     }

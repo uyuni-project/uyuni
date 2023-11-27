@@ -35,8 +35,7 @@ public class OrgConfigSatAction extends OrgConfigAction {
     /** {@inheritDoc} */
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm formIn,
-            HttpServletRequest request, HttpServletResponse response)
-    throws Exception {
+            HttpServletRequest request, HttpServletResponse response) {
         RequestContext ctx = new RequestContext(request);
         Org org = ctx.lookupAndBindOrg();
         if (ctx.isSubmitted()) {

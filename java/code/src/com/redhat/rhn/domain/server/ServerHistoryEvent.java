@@ -113,6 +113,7 @@ public class ServerHistoryEvent extends BaseDomainHelper {
     /**
      * @return Returns date of creating of the event
      */
+    @Override
     public Date getCreated() {
         return created;
     }
@@ -120,6 +121,7 @@ public class ServerHistoryEvent extends BaseDomainHelper {
     /**
      * @param createdIn Date of creation of the event
      */
+    @Override
     public void setCreated(Date createdIn) {
         this.created = createdIn;
     }
@@ -148,6 +150,7 @@ public class ServerHistoryEvent extends BaseDomainHelper {
      *
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(Object obj) {
         ServerHistoryEvent that = (ServerHistoryEvent) obj;
         return new EqualsBuilder().
@@ -160,6 +163,7 @@ public class ServerHistoryEvent extends BaseDomainHelper {
      *
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
 
        HashCodeBuilder builder = new HashCodeBuilder();

@@ -68,6 +68,7 @@ public class MinionServer extends Server implements SaltConfigurable {
     /**
      * @return the minion id
      */
+    @Override
     public String getMinionId() {
         return minionId;
     }
@@ -164,15 +165,16 @@ public class MinionServer extends Server implements SaltConfigurable {
      *
      * @return <code>true</code> if OS supports Transactional Update
      */
+    @Override
     public boolean doesOsSupportsTransactionalUpdate() {
-        return isSLEMicro();
+        return isSLEMicro() || isLeapMicro() || isopenSUSEMicroOS();
     }
 
     @Override
     public boolean doesOsSupportsMonitoring() {
         return isSLES12() || isSLES15() || isLeap15() || isUbuntu1804() || isUbuntu2004() || isUbuntu2204() ||
-                isRedHat6() || isRedHat7() || isRedHat8() || isRedHat9() || isAlibaba2() || isAmazon2() || isRocky8() ||
-                isRocky9() || isDebian11() || isDebian10();
+                isRedHat6() || isRedHat7() || isRedHat8() || isRedHat9() || isAlibaba2() || isAmazon2() ||
+                isAmazon2023() || isRocky8() || isRocky9() || isDebian12() || isDebian11() || isDebian10();
     }
 
     /**
@@ -188,6 +190,13 @@ public class MinionServer extends Server implements SaltConfigurable {
     public void setPillars(Set<Pillar> pillarsIn) {
         pillars.clear();
         pillars.addAll(pillarsIn);
+    }
+
+    /**
+     * @param pillarIn value of pillar
+     */
+    public void addPillar(Pillar pillarIn) {
+        pillars.add(pillarIn);
     }
 
     /**

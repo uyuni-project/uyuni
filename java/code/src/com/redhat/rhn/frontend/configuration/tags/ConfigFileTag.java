@@ -22,7 +22,7 @@ import java.io.IOException;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
-import javax.servlet.jsp.tagext.BodyTagSupport;
+import javax.servlet.jsp.tagext.Tag;
 import javax.servlet.jsp.tagext.TagSupport;
 
 
@@ -77,7 +77,7 @@ public class ConfigFileTag extends TagSupport {
          catch (IOException e) {
              throw new JspException(e);
          }
-         return BodyTagSupport.SKIP_BODY;
+         return Tag.SKIP_BODY;
      }
 
      /**
@@ -129,7 +129,7 @@ public class ConfigFileTag extends TagSupport {
          this.revisionId = rev;
      }
 
-     private String writeIcon() throws JspException {
+     private String writeIcon() {
          IconTag i = new IconTag();
          if ("dir".equalsIgnoreCase(type) || "directory".equalsIgnoreCase(type) ||
                  "folder".equalsIgnoreCase(type)) {

@@ -39,8 +39,9 @@ public abstract class RhnXmlRpcCustomSerializer implements XmlRpcCustomSerialize
     /**
      * {@inheritDoc}
      */
+    @Override
     public void serialize(Object obj, Writer writer, XmlRpcSerializer serializer)
-            throws XmlRpcException, IOException {
+            throws XmlRpcException {
         HibernateFactory.doWithoutAutoFlushing(() -> {
             try {
                 doSerialize(obj, writer, serializer);
@@ -66,11 +67,6 @@ public abstract class RhnXmlRpcCustomSerializer implements XmlRpcCustomSerialize
         }
         return helper;
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    public abstract Class getSupportedClass();
 
     protected abstract void doSerialize(Object obj, Writer writer,
                     XmlRpcSerializer serializer) throws XmlRpcException, IOException;

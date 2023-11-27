@@ -92,10 +92,19 @@ plugin_command "salt-minion --versions-report"
 
 plugin_command "cp /var/log/zypper.log $LOG"
 
+section_header "Crypto Policy"
+
+if [ -f /etc/crypto-policies/config ]; then
+        plugin_command "cat /etc/crypto-policies/config"
+elif [ $(cat /proc/sys/crypto/fips_enabled) -ne 0 ]; then
+        plugin_message "FIPS"
+else
+        plugin_command "grep -v '#' /usr/share/crypto-policies/default-config"
+fi
+
 section_header "Proxy Containers Configuration Files"
 
 plugin_command "ls -l /etc/uyuni/proxy/"
-
 
 section_header "Proxy Containers Systems Status"
 
@@ -139,3 +148,7 @@ if which podman >/dev/null 2>&1; then
         plugin_command "podman logs $CONTAINER"
     done
 fi
+
+section_header "Cloud / PAYG"
+plugin_command "test -e /usr/bin/instance-flavor-check && /usr/bin/instance-flavor-check"
+validate_rpm_if_installed "python-instance-billing-flavor-check"

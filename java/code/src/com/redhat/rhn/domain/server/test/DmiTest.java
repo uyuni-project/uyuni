@@ -65,7 +65,7 @@ public class DmiTest extends RhnBaseTestCase {
     }
 
 
-    private void verifyInDb(Long id, Map params) throws Exception {
+    private void verifyInDb(Long id, Map params) {
         // Now lets manually test to see if the user got updated
         HibernateFactory.getSession().doWork(connection -> {
             ResultSet rs = null;

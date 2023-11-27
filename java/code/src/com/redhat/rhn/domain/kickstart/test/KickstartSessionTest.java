@@ -48,6 +48,7 @@ public class KickstartSessionTest extends BaseTestCaseWithUser {
     private KickstartSession ksession;
     private Server s;
 
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
@@ -63,7 +64,7 @@ public class KickstartSessionTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testIdsForSS() throws Exception {
+    public void testIdsForSS() {
         assertNotNull(KickstartFactory.SESSION_STATE_CREATED.getId());
         assertNotNull(KickstartFactory.SESSION_STATE_COMPLETE.getId());
         assertNotNull(KickstartFactory.SESSION_STATE_FAILED.getId());
@@ -72,7 +73,7 @@ public class KickstartSessionTest extends BaseTestCaseWithUser {
 
 
     @Test
-    public void testKickstartDataTest() throws Exception {
+    public void testKickstartDataTest() {
 
         KickstartSession ks2 = KickstartFactory.
             lookupKickstartSessionById(ksession.getId());
@@ -82,7 +83,7 @@ public class KickstartSessionTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testLookupByServer() throws Exception {
+    public void testLookupByServer() {
 
         KickstartSession lookedUp = KickstartFactory.
             lookupKickstartSessionByServer(s.getId());
@@ -129,12 +130,11 @@ public class KickstartSessionTest extends BaseTestCaseWithUser {
         assertNotNull(url);
         // http://xmlrpc.rhn.webdev.redhat.com/ty/gtIKQrRN
         assertTrue(url.startsWith("http"));
-        assertTrue(url.indexOf("http://xmlrpc.rhn.webdev.redhat.com/ty/") == 0);
+        assertEquals(0, url.indexOf("http://xmlrpc.rhn.webdev.redhat.com/ty/"));
 
     }
 
-    public static KickstartSession addHistory(KickstartSession session)
-        throws Exception {
+    public static KickstartSession addHistory(KickstartSession session) {
         session.addHistory(KickstartFactory.SESSION_STATE_STARTED,
                 "some hist" + TestUtils.randomString());
         return session;

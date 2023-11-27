@@ -28,7 +28,7 @@ import java.util.Set;
  */
 public class ManagedServerGroup extends ServerGroup {
 
-    private Set associatedAdmins = new HashSet();
+    private Set<User> associatedAdmins = new HashSet<>();
     private final ServerGroupManager serverGroupManager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
 
     /**
@@ -38,7 +38,7 @@ public class ManagedServerGroup extends ServerGroup {
      * list does not include that.
      * @return a set of users
      */
-    protected Set getAssociatedAdmins() {
+    protected Set<User> getAssociatedAdmins() {
         return associatedAdmins;
     }
 
@@ -50,9 +50,8 @@ public class ManagedServerGroup extends ServerGroup {
      * @param user needed for authentication
      * @return a set of users
      */
-    public Set getAssociatedAdminsFor(User user) {
-        serverGroupManager.
-                validateAdminCredentials(user);
+    public Set<User> getAssociatedAdminsFor(User user) {
+        serverGroupManager.validateAdminCredentials(user);
         return getAssociatedAdmins();
     }
 
@@ -60,7 +59,7 @@ public class ManagedServerGroup extends ServerGroup {
      * sets admins
      * @param newUsers the associated users of the group
      */
-    protected void setAssociatedAdmins(Set newUsers) {
+    protected void setAssociatedAdmins(Set<User> newUsers) {
         this.associatedAdmins = newUsers;
     }
 

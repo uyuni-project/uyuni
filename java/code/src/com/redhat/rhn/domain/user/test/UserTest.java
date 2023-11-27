@@ -51,14 +51,16 @@ public class UserTest extends RhnBaseTestCase {
     /**
      * {@inheritDoc}
      */
+    @Override
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         TestUtils.disableLocalizationLogging();
     }
 
     /**
      * {@inheritDoc}
      */
+    @Override
     @AfterEach
     public void tearDown() throws Exception {
         TestUtils.enableLocalizationLogging();
@@ -80,10 +82,9 @@ public class UserTest extends RhnBaseTestCase {
     * Test to make sure that the authenticate method
     * functions properly.  If this test fails it could be
     * because the password changed.
-    * @throws Exception something bad happened
-    */
+     */
     @Test
-    public void testAuthenticateTrue() throws Exception {
+    public void testAuthenticateTrue() {
         User usr = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
         // relies on UserTestUtils.createUser setting password to "password"
@@ -93,10 +94,9 @@ public class UserTest extends RhnBaseTestCase {
     /**
     * Test to make sure if the wrong password is passed
     * in that we actually fail the authenticate method
-    * @throws Exception something bad happened
-    */
+     */
     @Test
-    public void testAuthenticateFail() throws Exception {
+    public void testAuthenticateFail() {
         User usr = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
         assertFalse(usr.authenticate("this should fail"));
@@ -106,10 +106,9 @@ public class UserTest extends RhnBaseTestCase {
     * We are having a problem when you lookup a user, then an org, and then
     * a user again.  The second user is using the ORG tables array, which
     * is bad, test that so that it doesn't happen again.
-    * @throws Exception something bad happened
-    */
+     */
     @Test
-    public void testLookupSameUserTwice() throws Exception {
+    public void testLookupSameUserTwice() {
         User usr = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
         Long userId = usr.getId();
@@ -120,10 +119,9 @@ public class UserTest extends RhnBaseTestCase {
 
     /**
     * Check to make sure we can add an Address to a User.
-    * @throws Exception something bad happened
-    */
+     */
     @Test
-    public void testAddAddress() throws Exception {
+    public void testAddAddress() {
         User usr = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
         Address addr = UserTestUtils.createTestAddress(usr);
@@ -193,12 +191,12 @@ public class UserTest extends RhnBaseTestCase {
         assertEquals(50, usr.getPageSize());
 
         usr.setTimeZone(UserFactory.getTimeZone("America/Los_Angeles"));
-        assertTrue(usr.getTimeZone().equals(UserFactory
-                .getTimeZone("America/Los_Angeles")));
-        assertTrue(usr.getTimeZone().getOlsonName().equals("America/Los_Angeles"));
+        assertEquals(usr.getTimeZone(), UserFactory
+                .getTimeZone("America/Los_Angeles"));
+        assertEquals("America/Los_Angeles", usr.getTimeZone().getOlsonName());
 
         usr.setUsePamAuthentication(false);
-        assertEquals(false, usr.getUsePamAuthentication());
+        assertFalse(usr.getUsePamAuthentication());
 
         usr.setShowSystemGroupList(foo);
         assertEquals(foo, usr.getShowSystemGroupList());
@@ -261,7 +259,7 @@ public class UserTest extends RhnBaseTestCase {
             // This fails, though it succeeds in testAUthenticateTrue, giving
             // us some confidence that a different auth mechanism was indeed
             // being used
-            assertTrue(!usr.authenticate("password"));
+            assertFalse(usr.authenticate("password"));
         }
         finally {
             Config.get().setString("web.pam_auth_service", oldValue);

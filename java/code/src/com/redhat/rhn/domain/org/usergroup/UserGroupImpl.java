@@ -35,6 +35,7 @@ public class UserGroupImpl extends BaseDomainHelper implements UserGroup {
      * Getter for id
      * {@inheritDoc}
      */
+    @Override
     public Long getId() {
         return this.id;
     }
@@ -43,6 +44,7 @@ public class UserGroupImpl extends BaseDomainHelper implements UserGroup {
      * Setter for id
      * {@inheritDoc}
      */
+    @Override
     public void setId(Long idIn) {
         this.id = idIn;
     }
@@ -51,6 +53,7 @@ public class UserGroupImpl extends BaseDomainHelper implements UserGroup {
      * Getter for name
      * {@inheritDoc}
      */
+    @Override
     public String getName() {
         return this.name;
     }
@@ -59,6 +62,7 @@ public class UserGroupImpl extends BaseDomainHelper implements UserGroup {
      * Setter for name
      * {@inheritDoc}
      */
+    @Override
     public void setName(String nameIn) {
         this.name = nameIn;
     }
@@ -67,6 +71,7 @@ public class UserGroupImpl extends BaseDomainHelper implements UserGroup {
      * Getter for description
      * {@inheritDoc}
      */
+    @Override
     public String getDescription() {
         return this.description;
     }
@@ -75,6 +80,7 @@ public class UserGroupImpl extends BaseDomainHelper implements UserGroup {
      * Setter for description
      * {@inheritDoc}
      */
+    @Override
     public void setDescription(String descriptionIn) {
         this.description = descriptionIn;
     }
@@ -83,6 +89,7 @@ public class UserGroupImpl extends BaseDomainHelper implements UserGroup {
      * Getter for currentMembers
      * {@inheritDoc}
      */
+    @Override
     public Long getCurrentMembers() {
         return this.currentMembers;
     }
@@ -91,6 +98,7 @@ public class UserGroupImpl extends BaseDomainHelper implements UserGroup {
      * Setter for currentMembers
      * {@inheritDoc}
      */
+    @Override
     public void setCurrentMembers(Long currentMembersIn) {
         this.currentMembers = currentMembersIn;
     }
@@ -99,6 +107,7 @@ public class UserGroupImpl extends BaseDomainHelper implements UserGroup {
      * Getter for groupType
      * {@inheritDoc}
      */
+    @Override
     public Role getRole() {
         return role;
     }
@@ -107,6 +116,7 @@ public class UserGroupImpl extends BaseDomainHelper implements UserGroup {
      * Setter for groupType
      * {@inheritDoc}
      */
+    @Override
     public void setRole(Role roleIn) {
         role = roleIn;
     }
@@ -115,6 +125,7 @@ public class UserGroupImpl extends BaseDomainHelper implements UserGroup {
      * Getter for orgId
      * {@inheritDoc}
      */
+    @Override
     public Long getOrgId() {
         return this.orgId;
     }
@@ -123,6 +134,7 @@ public class UserGroupImpl extends BaseDomainHelper implements UserGroup {
      * Setter for orgId
      * {@inheritDoc}
      */
+    @Override
     public void setOrgId(Long orgIdIn) {
         this.orgId = orgIdIn;
     }
@@ -130,6 +142,7 @@ public class UserGroupImpl extends BaseDomainHelper implements UserGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isAssociatedRole(Role rin) {
         return (rin.equals(role));
     }
@@ -137,6 +150,7 @@ public class UserGroupImpl extends BaseDomainHelper implements UserGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString() {
         return "ID: " + id + " name: " + name +
                   " desc: " + description + " orgid: " + orgId;

@@ -1,4 +1,4 @@
-# Copyright (c) 2022 SUSE LLC
+# Copyright (c) 2022-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # This feature DON'T aims to prepare the Proxy to be tested by all our supported clients
@@ -17,27 +17,23 @@ Feature: Register and test a Containerized Proxy
   
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
-    And I am logged in API as user "admin" and password "admin"
 
   Scenario: Pre-requisite: Unregister Salt minion in the traditional proxy
     Given I am on the Systems overview page of this "sle15sp4_minion"
-    When I stop salt-minion on "sle15sp4_minion"
-    And I follow "Delete System"
+    When I follow "Delete System"
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
-    Then I wait until I see "Cleanup timed out. Please check if the machine is reachable." text
-    When I click on "Delete Profile Without Cleanup" in "An error occurred during cleanup" modal
     And I wait until I see "has been deleted" text
+    And I wait until Salt client is inactive on "sle15sp4_minion"
     Then "sle15sp4_minion" should not be registered
 
   Scenario: Pre-requisite: Stop traditional proxy service
     When I stop salt-minion on "proxy"
     And I run "spacewalk-proxy stop" on "proxy"
     # workaround for bsc#1205976
-    And I stop "tftp" service on "proxy"
+    And I stop the "tftp" service on "proxy"
     And I wait until "squid" service is inactive on "proxy"
     And I wait until "apache2" service is inactive on "proxy"
-    And I wait until "jabberd" service is inactive on "proxy"
     And I wait until "tftp" service is inactive on "proxy"
 
   Scenario: Generate Containerized Proxy configuration
@@ -49,7 +45,7 @@ Feature: Register and test a Containerized Proxy
     And I add avahi hosts in Containerized Proxy configuration
 
   Scenario: Start Containerized Proxy services
-    When I start "uyuni-proxy-pod" service on "proxy"
+    When I start the "uyuni-proxy-pod" service on "proxy"
     And I wait until "uyuni-proxy-pod" service is active on "proxy"
     And I wait until "uyuni-proxy-httpd" service is active on "proxy"
     And I wait until "uyuni-proxy-salt-broker" service is active on "proxy"
@@ -77,7 +73,7 @@ Feature: Register and test a Containerized Proxy
     And I enter "linux" as "password"
     And I select the hostname of "containerized_proxy" from "proxies"
     And I click on "Bootstrap"
-    And I wait until I see "Successfully bootstrapped host!" text
+    And I wait until I see "Bootstrap process initiated." text
 
   Scenario: Check the new bootstrapped minion in System Overview page
     When I follow the left menu "Salt > Keys"
@@ -111,7 +107,7 @@ Feature: Register and test a Containerized Proxy
     And the system ID for "sle15sp4_minion" should be correct
     And the system name for "sle15sp4_minion" should be correct
     And the uptime for "sle15sp4_minion" should be correct
-    And I should see several text fields for "sle15sp4_minion"
+    And I should see several text fields
 
   Scenario: Install a patch on the Salt minion
     When I follow "Software" in the content area
@@ -214,13 +210,11 @@ Feature: Register and test a Containerized Proxy
 
   Scenario: Cleanup: Unregister a Salt minion in the Containerized Proxy
     Given I am on the Systems overview page of this "sle15sp4_minion"
-    When I stop salt-minion on "sle15sp4_minion"
-    And I follow "Delete System"
+    When I follow "Delete System"
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
-    Then I wait until I see "Cleanup timed out. Please check if the machine is reachable." text
-    When I click on "Delete Profile Without Cleanup" in "An error occurred during cleanup" modal
     And I wait until I see "has been deleted" text
+    And I wait until Salt client is inactive on "sle15sp4_minion"
     Then "sle15sp4_minion" should not be registered
 
   Scenario: Cleanup: Unregister Containerized Proxy
@@ -233,7 +227,7 @@ Feature: Register and test a Containerized Proxy
     Then "containerized_proxy" should not be registered
 
   Scenario: Cleanup: Stop Containerized Proxy services
-    When I stop "uyuni-proxy-pod" service on "proxy"
+    When I stop the "uyuni-proxy-pod" service on "proxy"
 
   Scenario: Cleanup: Remove Containerized Proxy configuration
     When I ensure folder "/etc/uyuni/proxy/*" doesn't exist on "proxy"
@@ -251,10 +245,9 @@ Feature: Register and test a Containerized Proxy
     When I start salt-minion on "proxy"
     And I run "spacewalk-proxy start" on "proxy"
     # workaround for bsc#1205976
-    And I start "tftp" service on "proxy"
+    And I start the "tftp" service on "proxy"
     And I wait until "squid" service is active on "proxy"
     And I wait until "apache2" service is active on "proxy"
-    And I wait until "jabberd" service is active on "proxy"
     And I wait until "tftp" service is active on "proxy"
 
   Scenario: Cleanup: Bootstrap a Salt minion in the traditional proxy
@@ -266,7 +259,7 @@ Feature: Register and test a Containerized Proxy
     And I enter "linux" as "password"
     And I select the hostname of "proxy" from "proxies"
     And I click on "Bootstrap"
-    And I wait until I see "Successfully bootstrapped host!" text
+    And I wait until I see "Bootstrap process initiated." text
 
   Scenario: Cleanup: Check the new bootstrapped minion in System Overview page
     When I follow the left menu "Salt > Keys"
@@ -276,6 +269,3 @@ Feature: Register and test a Containerized Proxy
     And I wait until I see the name of "sle15sp4_minion", refreshing the page
     And I wait until onboarding is completed for "sle15sp4_minion"
     Then the Salt master can reach "sle15sp4_minion"
-
-  Scenario: Cleanup: Logout from API
-    When I logout from API

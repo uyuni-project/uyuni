@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.action.iss;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.iss.IssFactory;
@@ -98,8 +99,7 @@ public class EditMasterAction extends RhnAction {
     }
 
     private Long updateMasterDetails(ActionMapping mapping, DynaActionForm dynaForm,
-                    HttpServletRequest request, HttpServletResponse response)
-                    throws Exception {
+                    HttpServletRequest request, HttpServletResponse response) {
 
         RequestContext ctxt = new RequestContext(request);
         ActionMessages msg = new ActionMessages();
@@ -109,7 +109,7 @@ public class EditMasterAction extends RhnAction {
             IssMaster newMaster = new IssMaster();
             applyFormValues(dynaForm, newMaster);
             IssFactory.save(newMaster);
-            newMaster = (IssMaster)IssFactory.reload(newMaster);
+            newMaster = HibernateFactory.reload(newMaster);
             mid = newMaster.getId();
 
             msg.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(
@@ -152,7 +152,7 @@ public class EditMasterAction extends RhnAction {
             LocalizationService l = LocalizationService.getInstance();
             retval = false;
             ActionErrors errs = new ActionErrors();
-            errs.add(ActionErrors.GLOBAL_MESSAGE, new ActionMessage(
+            errs.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(
                             "errors.required",
                             l.getMessage("iss.master.label")));
             getStrutsDelegate().saveMessages(request, errs);
@@ -164,7 +164,7 @@ public class EditMasterAction extends RhnAction {
             if (isNew && tmpMaster != null) {
                 retval = false;
                 ActionErrors errs = new ActionErrors();
-                errs.add(ActionErrors.GLOBAL_MESSAGE,
+                errs.add(ActionMessages.GLOBAL_MESSAGE,
                                 new ActionMessage("iss.error.master.exists", label));
                 getStrutsDelegate().saveMessages(request, errs);
             }

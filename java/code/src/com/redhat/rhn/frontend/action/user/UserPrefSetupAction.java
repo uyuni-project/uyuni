@@ -34,7 +34,6 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.DynaActionForm;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -49,6 +48,7 @@ import javax.servlet.http.HttpServletResponse;
 public class UserPrefSetupAction extends BaseUserSetupAction {
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm formIn,
                                  HttpServletRequest request,
@@ -120,8 +120,8 @@ public class UserPrefSetupAction extends BaseUserSetupAction {
      * Returns list of page sizes in increments of 5 upto max.
      * @return List of page sizes in increments of 5 upto max.
      */
-    private List getPageSizes() {
-        List pages = new ArrayList();
+    private List<Map<String, String>> getPageSizes() {
+        List<Map<String, String>> pages = new ArrayList<>();
         for (int i : PageSizeDecorator.getPageSizes()) {
             String istr = String.valueOf(i);
             pages.add(createDisplayMap(istr, istr));
@@ -131,22 +131,18 @@ public class UserPrefSetupAction extends BaseUserSetupAction {
 
     private void setupTasks(DynaActionForm form, User user) {
         // sets up the possible tasks...
-        Set userPanes = user.getHiddenPanes();
+        Set<Pane> userPanes = user.getHiddenPanes();
+        List<LabelValueEnabledBean> displayPanes = new ArrayList<>();
+        List<String> selectedPanes = new ArrayList<>();
 
-        List displayPanes = new ArrayList();
+        Map<String, Pane> allPanes = PaneFactory.getAllPanes();
 
-        List selectedPanes = new ArrayList();
-
-        Map allPanes = PaneFactory.getAllPanes();
-
-        for (Object oIn : allPanes.keySet()) {
-            String key = (String) oIn;
-            Pane pane = (Pane) allPanes.get(key);
+        for (Map.Entry<String, Pane> entry : allPanes.entrySet()) {
+            Pane pane = entry.getValue();
             if (pane.isValidFor(user)) {
-                displayPanes.add(new LabelValueEnabledBean(makeDisplayString(pane),
-                        key));
+                displayPanes.add(new LabelValueEnabledBean(makeDisplayString(pane), entry.getKey()));
                 if (!userPanes.contains(pane)) {
-                    selectedPanes.add(key);
+                    selectedPanes.add(entry.getKey());
                 }
             }
         }
@@ -159,12 +155,5 @@ public class UserPrefSetupAction extends BaseUserSetupAction {
         LocalizationService service = LocalizationService.getInstance();
         return "<strong>" + service.getMessage(pane.getNameKey()) +
                    ":</strong>" + service.getMessage(pane.getDescriptionKey());
-    }
-
-    private Map createDisplayMap(String display, String value) {
-        Map selection = new HashMap();
-        selection.put("display", display);
-        selection.put("value", value);
-        return selection;
     }
 }

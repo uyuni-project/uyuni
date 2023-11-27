@@ -340,10 +340,12 @@ public class SaltUtils {
         boolean fullRefreshNeeded = changes.entrySet().stream().anyMatch(
             e ->
                 e.getKey().endsWith("-release") ||
+                // Live patching requires refresh to fetch the updated LP version
+                e.getKey().startsWith("kernel-livepatch-") ||
                 (e.getValue().getNewValue().isLeft() &&
                  e.getValue().getOldValue().isLeft())
-
         );
+
         if (fullRefreshNeeded) {
             return PackageChangeOutcome.NEEDS_REFRESHING;
         }
@@ -474,12 +476,50 @@ public class SaltUtils {
                         .getType()
             ).getRet();
         }
+        else if (json.getAsJsonObject().has("installed") && json.getAsJsonObject().has("removed")) {
+            var installedRemoved =
+            Json.GSON.<InstalledRemoved<Map<String, Change<Xor<String, List<Info>>>>>>fromJson(
+                json,
+                new TypeToken<InstalledRemoved<Map<String, Change<Xor<String, List<Info>>>>>>() { }
+                        .getType()
+            );
+
+            var delta = new HashMap<>(installedRemoved.getInstalled());
+            delta.putAll(installedRemoved.getRemoved());
+            return delta;
+        }
         else {
             return Json.GSON.fromJson(
                 json,
                 new TypeToken<Map<String, Change<Xor<String, List<Pkg.Info>>>>>() { }
                     .getType()
             );
+        }
+    }
+
+    /**
+     * Wrapper object representing a "changes" element containing "installed" and "removed" elements inside:
+     * "changes: { "installed": "pkg_name": { "new": "", "old": "1.7.9" } }
+     *
+     * @deprecated Temporarily here until available in a new version of salt-net-api.
+     *
+     * @param <T> the type that is wrapped
+     */
+    @Deprecated
+    static class InstalledRemoved<T> {
+        private T installed;
+        private T removed;
+
+        InstalledRemoved() {
+            // default constructor
+        }
+
+        public T getInstalled() {
+            return this.installed;
+        }
+
+        public T getRemoved() {
+            return this.removed;
         }
     }
 
@@ -510,6 +550,7 @@ public class SaltUtils {
 
         // Determine the final status of the action
         if (actionFailed(function, jsonResult, success, retcode)) {
+            LOG.debug("Status of action {} being set to Failed.", serverAction.getParentAction().getId());
             serverAction.setStatus(ActionFactory.STATUS_FAILED);
             // check if the minion is locked (blackout mode)
             String output = getJsonResultWithPrettyPrint(jsonResult);
@@ -527,6 +568,13 @@ public class SaltUtils {
             handleStateApplyData(serverAction, jsonResult, retcode, success);
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_SCRIPT_RUN)) {
+            if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
+                serverAction.setResultMsg("Failed to execute script. [jid=" + jid + "]");
+            }
+            else {
+                serverAction.setResultMsg("Script executed successfully. [jid=" +
+                        jid + "]");
+            }
             Map<String, StateApplyResult<CmdResult>> stateApplyResult = Json.GSON.fromJson(jsonResult,
                     new TypeToken<Map<String, StateApplyResult<CmdResult>>>() { }.getType());
             CmdResult result = stateApplyResult.entrySet().stream()
@@ -553,13 +601,6 @@ public class SaltUtils {
             scriptResult.setStopDate(serverAction.getCompletionTime());
 
             // Depending on the status show stdout or stderr in the output
-            if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
-                serverAction.setResultMsg("Failed to execute script. [jid=" + jid + "]");
-            }
-            else {
-                serverAction.setResultMsg("Script executed successfully. [jid=" +
-                        jid + "]");
-            }
             scriptResult.setOutput(printStdMessages(result.getStderr(), result.getStdout()).getBytes());
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_IMAGE_BUILD)) {
@@ -668,6 +709,7 @@ public class SaltUtils {
         else {
            serverAction.setResultMsg(getJsonResultWithPrettyPrint(jsonResult));
         }
+        LOG.debug("Finished update server action for action {}", action.getId());
     }
 
     private void handleStateApplyData(ServerAction serverAction, JsonElement jsonResult, long retcode,
@@ -788,6 +830,7 @@ public class SaltUtils {
             SubscribeChannelsAction sca = (SubscribeChannelsAction)action;
             sca.getDetails().getAccessTokens().forEach(token -> {
                 token.setValid(false);
+                token.setMinion(null);
                 AccessTokenFactory.save(token);
             });
 
@@ -1433,6 +1476,12 @@ public class SaltUtils {
             }
         }
 
+        // Update last boot time
+        handleUptimeUpdate(server, result.getUpTime()
+                .map(ut -> (Number)ut.getChanges().getRet().get("seconds"))
+                .map(n -> n.longValue())
+                .orElse(null));
+
         // Update live patching version
         server.setKernelLiveVersion(result.getKernelLiveVersionInfo()
                 .map(klv -> klv.getChanges().getRet()).filter(Objects::nonNull)
@@ -1670,6 +1719,7 @@ public class SaltUtils {
                 new ValueMap(result.getGrains()));
         hwMapper.mapCpuInfo(new ValueMap(result.getCpuInfo()));
         server.setRam(hwMapper.getTotalMemory());
+        server.setSwap(hwMapper.getTotalSwapMemory());
         if (CpuArchUtil.isDmiCapable(hwMapper.getCpuArch())) {
             hwMapper.mapDmiInfo(
                     result.getSmbiosRecordsBios().orElse(Collections.emptyMap()),
@@ -1809,7 +1859,7 @@ public class SaltUtils {
                 rhelProductInfo.get().getName(), rhelProductInfo.get().getVersion(),
                 rhelProductInfo.get().getRelease(), server.getServerArch().getName());
 
-        return rhelProductInfo.get().getSuseProduct().map(product -> {
+        return rhelProductInfo.get().getAllSuseProducts().stream().map(product -> {
             String arch = server.getServerArch().getLabel().replace("-redhat-linux", "");
 
             InstalledProduct installedProduct = new InstalledProduct();
@@ -1817,10 +1867,10 @@ public class SaltUtils {
             installedProduct.setVersion(product.getVersion());
             installedProduct.setRelease(product.getRelease());
             installedProduct.setArch(PackageFactory.lookupPackageArchByLabel(arch));
-            installedProduct.setBaseproduct(true);
+            installedProduct.setBaseproduct(product.isBase());
 
-            return Collections.singleton(installedProduct);
-        }).orElse(Collections.emptySet());
+            return installedProduct;
+        }).collect(Collectors.toSet());
     }
 
     private static Set<InstalledProduct> getInstalledProductsForRhel(
@@ -1851,7 +1901,7 @@ public class SaltUtils {
                  rhelProductInfo.get().getName(), rhelProductInfo.get().getVersion(),
                  rhelProductInfo.get().getRelease(), image.getImageArch().getName());
 
-         return rhelProductInfo.get().getSuseProduct().map(product -> {
+         return rhelProductInfo.get().getAllSuseProducts().stream().map(product -> {
              String arch = image.getImageArch().getLabel().replace("-redhat-linux", "");
 
              InstalledProduct installedProduct = new InstalledProduct();
@@ -1861,8 +1911,8 @@ public class SaltUtils {
              installedProduct.setArch(PackageFactory.lookupPackageArchByLabel(arch));
              installedProduct.setBaseproduct(true);
 
-             return Collections.singleton(installedProduct);
-         }).orElse(Collections.emptySet());
+             return installedProduct;
+         }).collect(Collectors.toSet());
      }
 
     /**
@@ -1939,14 +1989,16 @@ public class SaltUtils {
      * @param minion the minion
      * @param uptimeSeconds uptime time in seconds
      */
-    public void handleUptimeUpdate(MinionServer minion, Long uptimeSeconds) {
+    public static void handleUptimeUpdate(MinionServer minion, Long uptimeSeconds) {
+        if (uptimeSeconds == null) {
+            return;
+        }
         Date bootTime = new Date(
                 System.currentTimeMillis() - (uptimeSeconds * 1000));
         LOG.debug("Set last boot for {} to {}", minion.getMinionId(), bootTime);
         minion.setLastBoot(bootTime.getTime() / 1000);
 
         // cleanup old reboot actions
-        @SuppressWarnings("unchecked")
         List<ServerAction> serverActions = ActionFactory
                 .listServerActionsForServer(minion);
         int actionsChanged = 0;
@@ -1965,7 +2017,7 @@ public class SaltUtils {
         }
     }
 
-    private boolean shouldCleanupAction(Date bootTime, ServerAction sa) {
+    private static boolean shouldCleanupAction(Date bootTime, ServerAction sa) {
         Action action = sa.getParentAction();
         boolean result = false;
         if (action.getActionType().equals(ActionFactory.TYPE_REBOOT)) {

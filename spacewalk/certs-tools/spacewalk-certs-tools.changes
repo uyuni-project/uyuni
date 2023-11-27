@@ -1,5 +1,51 @@
-- remove jabberd and osa-dispatcher
-- drop legacy way to prevent disabling local repos
+-------------------------------------------------------------------
+Wed Nov 01 20:43:30 CET 2023 - marina.latini@suse.com
+
+- version 4.4.8-1
+  * Handle server keys in PKCS8 format in mgr-ssl-cert-setup
+
+-------------------------------------------------------------------
+Mon Sep 18 14:28:41 CEST 2023 - rosuna@suse.com
+
+- version 4.4.7-1
+  * mgr-ssl-cert-setup: store CA certificate in database (bsc#1212856)
+  * support EC Cryptography with mgr-ssl-cert-setup
+  * Revert openssl3 compatibility because it breaks cert validation
+  * Remove server keys to allow reregistering to different master
+  * mgr-bootstrap read the hostname from rhn.conf if possible
+  * Remove client_config_update.py
+  * Add openssl3 compatibility.
+  * Read CA password from a file
+  * Also ship SUSE specific files on Enterprise Linux.
+  * Use the CA cert in the pki config to generate build host rpm
+  * Add shadow as dependency of osimage certificate package
+    (bsc#1210834 bsc#1204089)
+
+-------------------------------------------------------------------
+Wed Apr 19 12:52:17 CEST 2023 - marina.latini@suse.com
+
+- version 4.4.6-1
+  * remove unused dependencies
+
+-------------------------------------------------------------------
+Tue Feb 21 14:03:19 CET 2023 - jgonzalez@suse.com
+
+- version 4.4.5-1
+  * Ensure installation of make for building
+
+-------------------------------------------------------------------
+Mon Jan 23 08:27:21 CET 2023 - jgonzalez@suse.com
+
+- version 4.4.4-1
+  * add transactional system support to the bootstrap generator
+  * change bootstrap script generator to detect SLE Micro
+
+-------------------------------------------------------------------
+Wed Dec 14 14:12:51 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.3-1
+  * remove jabberd and osa-dispatcher
+  * drop legacy way to prevent disabling local repos
 
 -------------------------------------------------------------------
 Fri Nov 18 15:04:43 CET 2022 - jgonzalez@suse.com

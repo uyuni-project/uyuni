@@ -51,7 +51,7 @@ public class ServletTestUtils  {
     }
 
     private static Set createQueryStringParameterSet(String queryString) {
-        Set parameterSet = new TreeSet();
+        Set parameterSet = new TreeSet<>();
         CollectionUtils.addAll(parameterSet, queryString.split("&"));
 
         return parameterSet;

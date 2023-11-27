@@ -21,6 +21,7 @@ export type ProjectSoftwareSourceType = {
 };
 
 export type ProjectEnvironmentType = {
+  id: number;
   projectLabel: string;
   label: string;
   name: string;

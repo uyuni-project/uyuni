@@ -14,28 +14,22 @@
  */
 package com.redhat.rhn.testing;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import com.redhat.rhn.common.RhnRuntimeException;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.messaging.MessageQueue;
-import com.redhat.rhn.common.util.Asserts;
 
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.test.TestSaltApi;
-import com.suse.manager.webui.services.test.TestSystemQuery;
 
-import org.apache.commons.beanutils.PropertyUtils;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 
 import java.io.File;
-import java.io.Serializable;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.Date;
 
@@ -45,13 +39,13 @@ import java.util.Date;
  * test to similuate what happens when the code is run
  * in a web application server.
  */
-public abstract class RhnBaseTestCase  {
+public abstract class RhnBaseTestCase implements HibernateTestCaseUtils  {
 
     /**
      * Default Constructor
      */
     public RhnBaseTestCase() {
-        MessageQueue.configureDefaultActions(new TestSystemQuery(), new TestSaltApi());
+        MessageQueue.configureDefaultActions(new TestSaltApi());
     }
 
     /**
@@ -73,43 +67,6 @@ public abstract class RhnBaseTestCase  {
     }
 
     /**
-     * PLEASE Refrain from using this unless you really have to.
-     *
-     * Try clearSession() instead
-     * @throws HibernateException hibernate exception
-     */
-    protected void commitAndCloseSession() throws HibernateException {
-        HibernateFactory.commitTransaction();
-        HibernateFactory.closeSession();
-    }
-
-    protected void flushAndEvict(Object obj) throws HibernateException {
-        Session session = HibernateFactory.getSession();
-        session.flush();
-        session.evict(obj);
-    }
-
-    protected <T> T reload(Class<T> objClass, Serializable id) throws HibernateException {
-        assertNotNull(id);
-        T obj = TestUtils.reload(objClass, id);
-        return reload(obj);
-    }
-
-    /**
-     * Reload a Hibernate entity.
-     * @param obj the entity to reload
-     * @param <T> type of object to reload
-     * @return the new instance
-     * @throws HibernateException in case of error
-     */
-    public static <T> T reload(T obj) throws HibernateException {
-        assertNotNull(obj);
-        T result = TestUtils.reload(obj);
-        assertNotSame(obj, result);
-        return result;
-    }
-
-    /**
      * Get a date representing "now" and wait for one second to
      * ensure that future attempts to get a date will use a date
      * that is definitely later.
@@ -122,7 +79,7 @@ public abstract class RhnBaseTestCase  {
             Thread.sleep(1000);
         }
         catch (InterruptedException e) {
-            throw new RuntimeException("Sleep interrupted", e);
+            throw new RhnRuntimeException("Sleep interrupted", e);
         }
         return now;
     }
@@ -138,14 +95,24 @@ public abstract class RhnBaseTestCase  {
      * @param elem the element that should be in the collection
      */
     public static <A> void assertContains(Collection<A> coll, A elem) {
-        Asserts.assertContains(coll, elem);
+        assertTrue(coll.contains(elem));
+    }
+
+    /**
+     * Assert that <code>coll</code> does not contain <code>elem</code>
+     * @param <A> element type
+     * @param coll a collection
+     * @param elem the element that should not be in the collection
+     */
+    public static <A> void assertNotContains(Collection<A> coll, A elem) {
+        assertFalse(coll.contains(elem));
     }
 
     /**
      * Assert that <code>coll</code> is not empty
      * @param coll the collection
      */
-    public static void assertNotEmpty(Collection coll) {
+    public static void assertNotEmpty(Collection<?> coll) {
         assertNotEmpty(null, coll);
     }
 
@@ -154,32 +121,10 @@ public abstract class RhnBaseTestCase  {
      * @param msg the message to print if the assertion fails
      * @param coll the collection
      */
-    public static void assertNotEmpty(String msg, Collection coll) {
+    public static void assertNotEmpty(String msg, Collection<?> coll) {
         assertNotNull(coll);
-        if (coll.size() == 0) {
+        if (coll.isEmpty()) {
             fail(msg);
-        }
-    }
-
-    /**
-     * Assert that the beans <code>exp</code> and <code>act</code> have the same values
-     * for property <code>propName</code>
-     *
-     * @param propName name of the proeprty to compare
-     * @param exp the bean with the expected values
-     * @param act the bean with the actual values
-     */
-    public static void assertPropertyEquals(String propName, Object exp, Object act) {
-        assertEquals(getProperty(exp, propName), getProperty(act, propName));
-    }
-
-    private static Object getProperty(Object bean, String propName) {
-        try {
-            return PropertyUtils.getProperty(bean, propName);
-        }
-        catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
-            throw new RuntimeException("Could not get property " + propName +
-                    " from " + bean, e);
         }
     }
 
@@ -213,12 +158,12 @@ public abstract class RhnBaseTestCase  {
         if (dir.exists() && !dir.isDirectory()) {
             if (!dir.renameTo(new File(dir.getPath() + ".bak")) &&
                          !dir.delete()) {
-                throw new RuntimeException(error);
+                throw new RhnRuntimeException(error);
             }
         }
 
         if (!dir.exists() && !dir.mkdirs()) {
-            throw new RuntimeException(error);
+            throw new RhnRuntimeException(error);
         }
     }
 }

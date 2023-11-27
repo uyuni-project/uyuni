@@ -34,6 +34,7 @@ public class TestConfigureSatelliteCommand extends ConfigureSatelliteCommand {
     /**
      * {@inheritDoc}
      */
+    @Override
     public ValidatorError[] storeConfiguration() {
         this.clearUpdates();
         return null;

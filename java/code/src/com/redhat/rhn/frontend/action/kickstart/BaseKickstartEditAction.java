@@ -61,7 +61,7 @@ public abstract class BaseKickstartEditAction extends RhnAction {
         }
         String forwardname = RhnHelper.DEFAULT_FORWARD;
         DynaActionForm form = (DynaActionForm) formIn;
-        Map params = makeParamMap(request);
+        Map<String, Object> params = makeParamMap(request);
         RequestContext requestContext = new RequestContext(request);
         BaseKickstartCommand cmd = getCommand(requestContext);
 

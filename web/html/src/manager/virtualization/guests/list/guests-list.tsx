@@ -19,7 +19,6 @@ export type HostInfo = {
 
 type Props = {
   serverId: string;
-  pageSize: number;
   saltEntitled: boolean;
   foreignEntitled: boolean;
   isAdmin: boolean;
@@ -99,7 +98,6 @@ export function GuestsList(props: Props) {
       <ListTab
         serverId={props.serverId}
         saltEntitled={props.saltEntitled}
-        pageSize={props.pageSize}
         type="guest"
         title={t("Hosted Virtual Systems")}
         description={t("This is a list of virtual guests which are configured to run on this host.")}
@@ -160,14 +158,14 @@ export function GuestsList(props: Props) {
               columnKey="memory"
               comparator={Utils.sortByNumber}
               header={t("Current Memory")}
-              cell={(row) => `${row.memory} MiB`}
+              cell={(row) => (row.memory !== 0 ? `${row.memory} MiB` : t("N/A"))}
             />,
             <Column
               key="vcpus"
               columnKey="vcpus"
               comparator={Utils.sortByNumber}
               header={t("vCPUs")}
-              cell={(row) => row.vcpus}
+              cell={(row) => (row.vcpus !== 0 ? row.vcpus : t("N/A"))}
             />,
             <Column
               key="channel"

@@ -95,6 +95,9 @@ function getY_CLIENT_CODE_BASE() {
     if [ -L /usr/share/doc/sles_es-release ]; then
         BASE="res"
         VERSION=6
+    elif [ -f /etc/openEuler-release ]; then
+        grep -v '^#' /etc/openEuler-release | grep -q '\(openEuler\)' && BASE="openEuler"
+	VERSION=`grep -v '^#' /etc/openEuler-release | grep -Po '(?<=release )(\d+\.)+\d+'`
     elif [ -f /etc/almalinux-release ]; then
         grep -v '^#' /etc/almalinux-release | grep -q '\(AlmaLinux\)' && BASE="almalinux"
         VERSION=`grep -v '^#' /etc/almalinux-release | grep -Po '(?<=release )\d+'`
@@ -138,8 +141,13 @@ function getZ_CLIENT_CODE_BASE() {
         if [ "$BASE" != "sle" ]; then
             grep -q 'openSUSE' /etc/os-release && BASE='opensuse'
         fi
+        grep -q 'Micro' /etc/os-release && BASE="${BASE}micro"
         VERSION="$(grep '^\(VERSION_ID\)' /etc/os-release | sed -n 's/.*"\([[:digit:]]\+\).*/\1/p')"
         PATCHLEVEL="$(grep '^\(VERSION_ID\)' /etc/os-release | sed -n 's/.*\.\([[:digit:]]*\).*/\1/p')"
+        # openSUSE MicroOS
+        grep -q 'MicroOS' /etc/os-release && BASE='opensusemicroos' && VERSION='latest'
+        # openSUSE Tumbleweed
+        grep -q 'Tumbleweed' /etc/os-release && BASE='opensusetumbleweed' && VERSION='latest'
     fi
     Z_CLIENT_CODE_BASE="${BASE:-unknown}"
     Z_CLIENT_CODE_VERSION="${VERSION:-unknown}"

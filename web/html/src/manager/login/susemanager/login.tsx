@@ -1,8 +1,9 @@
 import * as React from "react";
+import { useState } from "react";
 
 import { docsLocale } from "core/user-preferences";
 
-import { AsyncButton } from "components/buttons";
+import { SubmitButton } from "components/buttons";
 import { useInputValue } from "components/hooks/forms/useInputValue";
 import { Messages } from "components/messages";
 
@@ -19,12 +20,14 @@ const SusemanagerThemeLogin = (props: ThemeProps) => {
   const loginInput = useInputValue("");
   const passwordInput = useInputValue("");
   const { onLogin, success, messages } = useLoginApi();
+  const [isLoading, setIsLoading] = useState(false);
 
   const { product } = props;
   const globalMessages = getGlobalMessages(
     props.validationErrors,
     props.schemaUpgradeRequired,
-    props.diskspaceSeverity
+    props.diskspaceSeverity,
+    props.sccForwardWarning
   );
   const formMessages = getFormMessages(success, messages);
   const errorMessages = globalMessages.concat(formMessages).filter((item) => item.severity !== "success");
@@ -37,14 +40,16 @@ const SusemanagerThemeLogin = (props: ThemeProps) => {
             <h1 className={styles.title}>{product.bodyTitle}</h1>
             <p>{t("Discover a new way of managing your servers, packages, patches and more via one interface.")}</p>
           </div>
-          {t(
-            <p className={styles.productInfo}>
-              <a href={product.url} target="_blank" rel="noopener noreferrer" className={styles.productLink}>
-                Learn more
-              </a>{" "}
-              about {product.key}.
-            </p>
-          )}
+          <p className={styles.productInfo}>
+            {t("<link>Learn more</link> about {product}.", {
+              link: (str) => (
+                <a href={product.url} target="_blank" rel="noopener noreferrer" className={styles.productLink}>
+                  {str}
+                </a>
+              ),
+              product: product.key,
+            })}
+          </p>
         </div>
         <div className={`${styles.loginArea} is-wrap`}>
           <div className={styles.loginHeader}>
@@ -53,7 +58,26 @@ const SusemanagerThemeLogin = (props: ThemeProps) => {
               <Messages items={errorMessages} />
             </div>
           </div>
-          <form onSubmit={(event) => event.preventDefault()} className={styles.loginForm}>
+          <form
+            className={styles.loginForm}
+            onSubmit={async (event) => {
+              event.preventDefault();
+              if (isLoading) {
+                return;
+              }
+
+              setIsLoading(true);
+              const success = await onLogin({
+                login: loginInput.value,
+                password: passwordInput.value,
+              });
+              if (success) {
+                window.location.replace(props.bounce);
+              }
+              setIsLoading(false);
+            }}
+            name="loginForm"
+          >
             <h1 className={flatten([styles.title, styles.loginTitle])}>{t("Sign In")}</h1>
             <label htmlFor="username">{t("Username")}</label>
             <input
@@ -62,6 +86,7 @@ const SusemanagerThemeLogin = (props: ThemeProps) => {
               className={`form-control ${styles.input}`}
               type="text"
               maxLength={parseInt(props.loginLength, 10)}
+              required
               autoFocus={true}
               {...loginInput}
             />
@@ -73,26 +98,17 @@ const SusemanagerThemeLogin = (props: ThemeProps) => {
               type="password"
               autoComplete="password"
               maxLength={parseInt(props.passwordLength, 10)}
+              required
               {...passwordInput}
             />
-            <AsyncButton
+            <SubmitButton
               id="login-btn"
-              className={`btn-block ${styles.button}`}
-              defaultType="btn-primary"
+              className={`btn-block btn-success ${styles.button}`}
               text={t("Sign In")}
-              action={() =>
-                onLogin({
-                  login: loginInput.value,
-                  password: passwordInput.value,
-                }).then((success) => {
-                  if (!success) {
-                    return;
-                  }
-                  window.location.replace(props.bounce);
-                })
-              }
+              disabled={isLoading}
             />
           </form>
+
           <div className={styles.loginFooter}>
             <a href="/rhn/help/Copyright.do">Copyright Notice</a>
             <span>

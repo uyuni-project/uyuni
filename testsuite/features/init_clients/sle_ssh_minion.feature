@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2022 SUSE LLC
+# Copyright (c) 2016-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @ssh_minion
@@ -7,7 +7,7 @@ Feature: Bootstrap a Salt host managed via salt-ssh
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
-  Scenario: Register this SSH minion for service pack migration
+  Scenario: Bootstrap a SLES SSH minion
     When I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
     When I check "manageWithSSH"
@@ -15,7 +15,7 @@ Feature: Bootstrap a Salt host managed via salt-ssh
     And I enter "linux" as "password"
     And I select the hostname of "proxy" from "proxies" if present
     And I click on "Bootstrap"
-    And I wait until I see "Successfully bootstrapped host!" text
+    And I wait until I see "Bootstrap process initiated." text
     And I follow the left menu "Systems > System List > All"
     And I wait until I see the name of "ssh_minion", refreshing the page
     And I wait until onboarding is completed for "ssh_minion"

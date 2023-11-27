@@ -27,7 +27,6 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.HashSet;
@@ -57,10 +56,9 @@ public class VirtualHostManagerSerializerTest extends BaseTestCaseWithUser {
 
     /**
      * Minimal test
-     * @throws IOException if anything goes wrong
      */
     @Test
-    public void testSimple() throws IOException {
+    public void testSimple() {
         VirtualHostManagerSerializer serializer = new VirtualHostManagerSerializer();
         Writer output = new StringWriter();
         serializer.serialize(manager, output, new XmlRpcSerializer());
@@ -76,10 +74,9 @@ public class VirtualHostManagerSerializerTest extends BaseTestCaseWithUser {
 
     /**
      * Test serializing VirtualHostManager with credentials
-     * @throws IOException if anything goes wrong
      */
     @Test
-    public void testWithCreds() throws IOException {
+    public void testWithCreds() {
         Credentials creds = new Credentials();
         creds.setUsername("Somebody");
         creds.setPassword("strongpass");
@@ -99,10 +96,9 @@ public class VirtualHostManagerSerializerTest extends BaseTestCaseWithUser {
 
     /**
      * Test serializing VirtualHostManager with configs
-     * @throws IOException if anything goes wrong
      */
     @Test
-    public void testWithConfigs() throws IOException {
+    public void testWithConfigs() {
         Set<VirtualHostManagerConfig> configs = new HashSet<>();
         VirtualHostManagerConfig config = new VirtualHostManagerConfig();
         config.setVirtualHostManager(manager);

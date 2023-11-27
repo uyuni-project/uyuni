@@ -15,7 +15,7 @@ type Props = {
   isInstance: boolean;
   labelPrefix: string;
   onChange: Function;
-  editing?: boolean;
+  readOnly?: boolean;
 };
 
 const PaygSshDataEdit = (props: Props) => {
@@ -30,7 +30,7 @@ const PaygSshDataEdit = (props: Props) => {
     onAction(item, "update", props.paygId)
       .then((data) => {
         closeDialog();
-        showSuccessToastr(t("Pay-as-you-go properties updated successfully"));
+        showSuccessToastr(t("PAYG properties updated successfully"));
         props.onChange(data);
       })
       .catch((error) => {
@@ -60,6 +60,7 @@ const PaygSshDataEdit = (props: Props) => {
           setItem(props.paygSshData);
           setErrors(null);
         }}
+        disableEditing={props.readOnly}
         renderContent={() => (
           <React.Fragment>
             <PaygSshDataView payg={props.paygSshData} isInstance={props.isInstance} />

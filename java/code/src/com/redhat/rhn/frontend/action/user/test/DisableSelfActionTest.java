@@ -27,7 +27,7 @@ import org.junit.jupiter.api.Test;
 public class DisableSelfActionTest extends RhnBaseTestCase {
 
     @Test
-    public void testExecute() throws Exception {
+    public void testExecute() {
         DisableSelfAction action = new DisableSelfAction();
         ActionHelper ah = new ActionHelper();
         ActionForward af;

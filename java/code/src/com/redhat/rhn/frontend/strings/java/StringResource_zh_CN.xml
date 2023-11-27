@@ -751,7 +751,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target state="translated">管理软件源</target>
+        <target state="translated">管理储存库</target>
       </trans-unit>
       <trans-unit id="Distribution Channel Mapping" xml:space="preserve">
         <source>Distribution Channel Mapping</source>
@@ -1024,7 +1024,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target state="translated">储存的配置文件</target>
+        <target state="translated">存储的配置文件</target>
       </trans-unit>
       <trans-unit id="Subscription" xml:space="preserve">
         <source>Subscription</source>
@@ -2248,7 +2248,7 @@ channel is available to your @@PRODUCT_NAME@@. If it is not, please contact your
 and try again.
 &lt;/li&gt;
 &lt;li&gt;
-Make sure the spacewalk-koan package corresponding to this kickstart are
+Make sure the required packages corresponding to this kickstart are
 available in the kickstart's base channel's tools channel. If not, you
 will need to make them available for this kickstart profile to function properly.
 &lt;/li&gt;
@@ -2262,7 +2262,7 @@ available for this kickstart profile to function properly.
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Profile Details pages.</context>
         </context-group>
-        <target state="final">&lt;div style="text-align: left;"&gt;
+        <target state="needs-adaptation">&lt;div style="text-align: left;"&gt;
 &lt;p&gt;要解决此问题，请检查以下事项：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
@@ -2403,7 +2403,7 @@ and try again.
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartOptionsEdit</context>
         </context-group>
-        <target state="translated">&lt;strong&gt;注意：&lt;/strong&gt;默认的 @@PRODUCT_NAME@@ kickstart URL 使用该文件路径储存，这样 @@PRODUCT_NAME@@ 便知道何时动态调整 kickstart 文件所呈现的 URL 中的主机名（代理服务器等）。您可以自定义此值，将其改为完全限定的 URL，这样它在 kickstart 文件中将会以给定的值显示。</target>
+        <target state="translated">&lt;strong&gt;注意：&lt;/strong&gt;默认的 @@PRODUCT_NAME@@ kickstart URL 使用该文件路径存储，这样 @@PRODUCT_NAME@@ 便知道何时动态调整 kickstart 文件所呈现的 URL 中的主机名（代理服务器等）。您可以自定义此值，将其改为完全限定的 URL，这样它在 kickstart 文件中将会以给定的值显示。</target>
       </trans-unit>
       <trans-unit id="kickstart.options.rootpw.note" xml:space="preserve">
         <source>&lt;strong&gt;NOTE:&lt;/strong&gt; You may set a password hashed with any algorithm (that this operating system supports) in this field. The hash algorithm in the &lt;strong&gt;auth&lt;/strong&gt; option will affect future passwords created, you may want it to be the same as the agorithm used here. If you enter a plaintext password you must select &lt;strong&gt;Encrypt&lt;/strong&gt; above to encrypt it, if you don't you will be unable to login when the kickstart is finished.</source>
@@ -2843,12 +2843,12 @@ and try again.
         </context-group>
         <target state="translated">创建通知过滤器</target>
       </trans-unit>
-      <trans-unit id="toolbar.upload.kickstart" xml:space="preserve">
+      <trans-unit approved="yes" id="toolbar.upload.kickstart" xml:space="preserve">
         <source>Upload Kickstart/AutoYaST File</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserList</context>
         </context-group>
-        <target state="needs-adaptation">上载 Kickstart/Autoyast 文件</target>
+        <target state="final">上载 Kickstart/AutoYaST 文件</target>
       </trans-unit>
       <trans-unit id="toolbar.create.kickstart" xml:space="preserve">
         <source>Create Kickstart Profile</source>
@@ -6093,7 +6093,7 @@ user before attempting to deactivate their account.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/GeneralConfig.do</context>
         </context-group>
-        <target state="translated">发生错误，无法储存您的 @@PRODUCT_NAME@@ 的配置更改。请联系支持人员获得详细信息</target>
+        <target state="translated">发生错误，无法存储您的 @@PRODUCT_NAME@@ 的配置更改。请联系支持人员获得详细信息</target>
       </trans-unit>
       <trans-unit id="restart.config.success" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ restarting.  If this page has not refreshed in 5 minutes please click &lt;a href="/rhn/YourRhn.do"&gt;here&lt;/a&gt; to try manually. </source>
@@ -6535,27 +6535,6 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
         <target state="translated">无法自动安装系统 {0}，因为它没有 &lt;strong&gt; {1} &lt;/strong&gt; 网络设备。</target>
-      </trans-unit>
-      <trans-unit approved="yes" id="kickstart.schedule.nopackage" xml:space="preserve">
-        <source>Could not find the needed @@PRODUCT_NAME@@ provisioning packages given this system's current base channel and desired target channel: {0}</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
-        </context-group>
-        <target state="final">根据此系统的当前基础通道和所需目标通道 {0}，找不到需要的 @@PRODUCT_NAME@@ 置备软件包</target>
-      </trans-unit>
-      <trans-unit id="kickstart.schedule.cantsubscribe" xml:space="preserve">
-        <source>You have no remaining subscriptions to the @@PRODUCT_NAME@@ provisioning channel for &lt;strong&gt;{0}&lt;/strong&gt;'s current base channel.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
-        </context-group>
-        <target state="translated">您没有属于 &lt;strong&gt;{0}&lt;/strong&gt; 当前基础通道的 @@PRODUCT_NAME@@ 置备通道的剩余订阅。</target>
-      </trans-unit>
-      <trans-unit id="kickstart.schedule.cantsubscribe.channel" xml:space="preserve">
-        <source>You have no remaining subscriptions to the channel {0} for &lt;strong&gt;{1}&lt;/strong&gt;'s current base channel.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
-        </context-group>
-        <target state="translated">您在 &lt;strong&gt;{1}&lt;/strong&gt; 当前基础通道中没有通道 {0} 的剩余订阅。</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.noup2date" xml:space="preserve">
         <source>An autoinstallation was not scheduled for &lt;strong&gt;&lt;a href="/rhn/systems/details/Overview.do?sid={0}"&gt;{1}&lt;/a&gt;&lt;/strong&gt; because the package profile did not contain the 'up2date' package. An update of that system's package profile may be required.</source>
@@ -7263,13 +7242,6 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/errata/manage/CloneErrata.do</context>
         </context-group>
         <target state="translated">电子邮件地址</target>
-      </trans-unit>
-      <trans-unit id="server|jabber_server" xml:space="preserve">
-        <source>Hostname</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/errata/manage/CloneErrata.do</context>
-        </context-group>
-        <target state="translated">主机名</target>
       </trans-unit>
       <!-- SDC Overview Page -->
       <trans-unit id="sdc.details.overview.notifications.disabled" xml:space="preserve">
@@ -8590,13 +8562,6 @@ Follow this url to see the full list of inactive systems:
         </context-group>
         <target state="translated">此通道中已存在名为 "{0}" 的文件。</target>
       </trans-unit>
-      <trans-unit id="system.entitle.notoolschannel" xml:space="preserve">
-        <source>Could not automatically subscribe the system to the @@PRODUCT_NAME@@ Tools Channel. This channel contains packages required for virtualization.  This is most likely caused by a lack of channel entitlements.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
-        </context-group>
-        <target state="translated">无法自动为系统订阅 @@PRODUCT_NAME@@ 工具通道。此通道包含虚拟化所需的软件包。原因很可能是缺少通道权利。</target>
-      </trans-unit>
       <trans-unit id="system.entitle.multiplechannelswithpackage" xml:space="preserve">
         <source>Found multiple child channels with package: {0}. Please manually subscribe this system to the appropriate child channel.</source>
         <context-group name="ctx">
@@ -8604,40 +8569,12 @@ Follow this url to see the full list of inactive systems:
         </context-group>
         <target state="translated">找到多个包含软件包 {0} 的子通道。请手动为此系统订阅合适的子通道。</target>
       </trans-unit>
-      <trans-unit id="system.entitle.multiplechannelswithpackagepleaseinstall" xml:space="preserve">
-        <source>Found multiple child channels with package: {0}. Please manually subscribe this system to the appropriate child channel, and schedule this package for installation.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
-        </context-group>
-        <target state="translated">找到多个包含软件包 {0} 的子通道。请手动为此系统订阅合适的子通道，并安排安装此软件包。</target>
-      </trans-unit>
-      <trans-unit id="system.entitle.novirtchannel" xml:space="preserve">
-        <source>Could not automatically subscribe the system to the RHEL Virtualization Channel.  This channel contains packages required for virtualization.  This is most likely caused by a lack of channel entitlements.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
-        </context-group>
-        <target state="translated">无法自动为系统订阅 RHEL 虚拟化通道。此通道包含虚拟化所需的软件包。原因很可能是缺少通道权利。</target>
-      </trans-unit>
-      <trans-unit id="system.entitle.novirtpackage" xml:space="preserve">
-        <source>Could not find a channel with the {0} package. This package is required to manage virtual guests with @@PRODUCT_NAME@@.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
-        </context-group>
-        <target state="translated">找不到包含 {0} 软件包的通道。使用 @@PRODUCT_NAME@@ 管理虚拟 Guest 需要此软件包。</target>
-      </trans-unit>
       <trans-unit id="system.entitle.alreadyentitled" xml:space="preserve">
         <source>The system already has the {0} system type.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
         <target state="translated">系统已具有 {0} 系统类型。</target>
-      </trans-unit>
-      <trans-unit id="system.virtualization.help" xml:space="preserve">
-        <source>NOTE: To enable and use virtualization capabilities within @@PRODUCT_NAME@@ for this system, install the mgr-virtualization-host package from the associated Tools child channel. Review the documentation for any other considerations and requirements for enabling Virtualization of a Host system.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/virtualization/VirtualGuestsList.do</context>
-        </context-group>
-        <target state="translated">注意：要在 @@PRODUCT_NAME@@ 中为此系统启用并使用虚拟化功能，请安装关联的工具子通道中的 mgr-virtualization-host 软件包。有关为主机系统启用虚拟化的任何其他注意事项和要求，请查看文档。</target>
       </trans-unit>
       <trans-unit approved="yes" id="system.migrate.user_no_perms" xml:space="preserve">
         <source>This user lacks the required permissions to transfer this system.</source>
@@ -9664,11 +9601,11 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="message.syncscheduled" xml:space="preserve">
         <source>Repository sync scheduled for {0}.</source>
-        <target state="translated">已为 {0} 安排软件源同步。</target>
+        <target state="translated">已为 {0} 安排储存库同步。</target>
       </trans-unit>
       <trans-unit id="message.syncinprogress" xml:space="preserve">
         <source>Repository sync is running.</source>
-        <target>软件源同步正在运行。</target>
+        <target>储存库同步正在运行。</target>
       </trans-unit>
       <trans-unit id="message.channelsubscribers" xml:space="preserve">
         <source>Per-User subscription restrictions may be applied in the Subscribers tab</source>
@@ -9740,23 +9677,23 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="channel.edit.repo.neversynced" xml:space="preserve">
         <source>This channel has never been synced to external repositories.</source>
-        <target state="translated">此通道从未与外部软件源同步过。</target>
+        <target state="translated">此通道从未与外部储存库同步过。</target>
       </trans-unit>
       <trans-unit id="channel.edit.repo.updated" xml:space="preserve">
         <source>{0} repository information was successfully updated</source>
-        <target state="translated">已成功更新 {0} 软件源信息</target>
+        <target state="translated">已成功更新 {0} 储存库信息</target>
       </trans-unit>
       <trans-unit id="edit.channel.repo.repolabelinuse" xml:space="preserve">
         <source>The repository label '{0}' is already in use, please choose a different label</source>
-        <target state="translated">软件源标签 "{0}" 已被使用，请选择其他标签</target>
+        <target state="translated">储存库标签 "{0}" 已被使用，请选择其他标签</target>
       </trans-unit>
       <trans-unit id="edit.channel.repo.invalidrepotype" xml:space="preserve">
         <source>The repository type '{0}' is invalid or already in use with given url, please choose a different type</source>
-        <target>软件源类型 "{0}" 无效或已在给定的 URL 中使用，请选择其他类型</target>
+        <target>储存库类型 "{0}" 无效或已在给定的 URL 中使用，请选择其他类型</target>
       </trans-unit>
       <trans-unit id="edit.channel.repo.repourlinuse" xml:space="preserve">
         <source>There's already a defined repository with given url, please reuse it.</source>
-        <target state="translated">已有定义的软件源使用给定 URL，请重复使用该软件源。</target>
+        <target state="translated">已有定义的储存库使用给定 URL，请重复使用该储存库。</target>
       </trans-unit>
       <trans-unit id="edit.channel.repo.repourlinvalid" xml:space="preserve">
         <source>The given url is invalid. Please enter an url with valid syntax (e.g. specify the protocol).</source>
@@ -9950,11 +9887,11 @@ tree will not be usable for autoinstalling.</source>
         <target state="final">已将找到的登录信息发送到 {0}。如果您未收到该信息，请确保您拥有使用提供的电子邮件注册的帐户。</target>
       </trans-unit>
       <trans-unit id="config.multiple.channels" xml:space="preserve">
-        <source>A selected system has multiple child channels available that contain the mgr-cfg package. You must manually subscribe to the child channel you want and then try this action again.</source>
+        <source>A selected system has multiple child channels available that contain the venv-salt-minion package. You must manually subscribe to the child channel you want and then try this action again.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/TargetSystemsSubmit.do</context>
         </context-group>
-        <target state="translated">选定的系统具有多个包含 mgr-cfg 软件包的可用子通道。您必须手动订阅所需的子通道，然后重试此操作。</target>
+        <target state="needs-adaptation">选定的系统具有多个包含 mgr-cfg 软件包的可用子通道。您必须手动订阅所需的子通道，然后重试此操作。</target>
       </trans-unit>
       <trans-unit id="External Links" xml:space="preserve">
         <source>External Links</source>
@@ -10199,7 +10136,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="task.status.repo-sync" xml:space="preserve">
         <source>Repository Sync</source>
-        <target>软件源同步</target>
+        <target>储存库同步</target>
       </trans-unit>
       <trans-unit id="task.status.ssh-push" xml:space="preserve">
         <source>SSH Server Push</source>
@@ -10239,7 +10176,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="bunch.jsp.description.repo-sync-bunch" xml:space="preserve">
         <source>Synchronizes @@PRODUCT_NAME@@ repositories</source>
-        <target state="translated">同步 @@PRODUCT_NAME@@ 软件源</target>
+        <target state="translated">同步 @@PRODUCT_NAME@@ 储存库</target>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.ssh-push-bunch" xml:space="preserve">
         <source>Manages clients via SSH Server Push</source>
@@ -10352,21 +10289,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="system.entitle.added.container_build_host.nodoc" xml:space="preserve">
-        <source>&lt;strong&gt;Container Build Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
-        <target>已应用&lt;strong&gt;容器构建主机&lt;/strong&gt;类型。&lt;br/&gt;&lt;strong&gt;注意：&lt;/strong&gt;此操作&lt;em&gt;不会&lt;/em&gt;导致应用状态。要应用该状态，请使用&lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;状态页&lt;/a&gt;，或者在命令行中运行 &lt;code class="text-info"&gt;state.highstate&lt;/code&gt;。</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="system.entitle.added.osimage_build_host" xml:space="preserve">
-        <source>&lt;strong&gt;OS Image Build Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
-        <target>已应用&lt;strong&gt;操作系统映像构建主机&lt;/strong&gt;类型。&lt;br/&gt;&lt;strong&gt;注意：&lt;/strong&gt;此操作&lt;em&gt;不会&lt;/em&gt;导致应用状态。要应用该状态，请使用&lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;状态页&lt;/a&gt;，或者在命令行中运行 &lt;code class="text-info"&gt;state.highstate&lt;/code&gt;。</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="system.entitle.added.osimage_build_host.nodoc" xml:space="preserve">
         <source>&lt;strong&gt;OS Image Build Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
         <target>已应用&lt;strong&gt;操作系统映像构建主机&lt;/strong&gt;类型。&lt;br/&gt;&lt;strong&gt;注意：&lt;/strong&gt;此操作&lt;em&gt;不会&lt;/em&gt;导致应用状态。要应用该状态，请使用&lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;状态页&lt;/a&gt;，或者在命令行中运行 &lt;code class="text-info"&gt;state.highstate&lt;/code&gt;。</target>
         <context-group name="ctx">
@@ -10380,23 +10303,9 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="system.entitle.added.virtualization_host.nodoc" xml:space="preserve">
-        <source>Since you added a Virtualization system type to the system we also performed some extra steps to ensure your system will be able to manage virtual guests better.</source>
-        <target>由于您已将 "虚拟化系统" 类型添加到系统，因此我们还执行了一些额外的步骤来确保您的系统能够更好地管理虚拟 Guest。</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
-        </context-group>
-      </trans-unit>
       <trans-unit approved="yes" id="system.entitle.added.monitoring_entitled" xml:space="preserve">
-        <source>&lt;strong&gt;Monitoring&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; Since you added the Monitoring system type we automatically assigned the Prometheus Exporters formula to the system. Please apply the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; in order to install and enable the Prometheus metrics exporters.</source>
-        <target state="final">已应用&lt;strong&gt;监视&lt;/strong&gt;类型。&lt;br/&gt;&lt;strong&gt;注意：&lt;/strong&gt;由于您添加了 "监视" 系统类型，因此我们已自动将普罗米修斯导出器公式指派到了系统。请应用 &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; 以安装并启用普罗米修斯度量导出器。</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit approved="yes" id="system.entitle.added.monitoring_entitled.nodoc" xml:space="preserve">
-        <source>&lt;strong&gt;Monitoring&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; Since you added the Monitoring system type we automatically assigned the Prometheus Exporters formula to the system. Please apply the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; in order to install and enable the Prometheus metrics exporters.</source>
-        <target state="final">已应用&lt;strong&gt;监视&lt;/strong&gt;类型。&lt;br/&gt;&lt;strong&gt;注意：&lt;/strong&gt;由于您添加了 "监视" 系统类型，因此我们已自动将普罗米修斯导出器公式指派到了系统。请应用 &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; 以安装并启用普罗米修斯度量导出器。</target>
+        <source>&lt;strong&gt;Monitoring&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; Since you added the Monitoring system type we automatically assigned the Prometheus Exporters formula to the system. Please apply the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; in order to install and enable the Prometheus metrics exporters.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; Please make sure to open the &lt;a href="/docs/{1}/installation-and-upgrade/ports.html#_external_client_ports" target="_blank"&gt;required network ports&lt;/a&gt; for all installed exporters.</source>
+        <target state="final">已应用&lt;strong&gt;监视&lt;/strong&gt;类型。&lt;br/&gt;&lt;strong&gt;注意：&lt;/strong&gt;由于您添加了 "监视" 系统类型，因此我们已自动将 Prometheus 导出器公式指派到了系统。请应用 &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; 以安装并启用 Prometheus 度量导出器。&lt;br/&gt;&lt;strong&gt;注意：&lt;/strong&gt;请确保为安装的所有导出器打开&lt;a href="/docs/{1}/installation-and-upgrade/ports.html#_external_client_ports" target="_blank"&gt;所需的网络端口&lt;/a&gt;。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
@@ -10612,7 +10521,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="notification.bootstraprepofailed" xml:space="preserve">
         <source>Error generating bootstrap repo for: {0}</source>
-        <target>为 {0} 生成引导软件源时出错</target>
+        <target>为 {0} 生成引导储存库时出错</target>
       </trans-unit>
       <trans-unit id="notification.stateapplyfailed" xml:space="preserve">
         <source>Error running state.apply on: &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;{2}&lt;/a&gt;</source>
@@ -10869,7 +10778,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="edit.channel.repo.invalidrepolabel" xml:space="preserve">
         <source>The repository label '{0}' is invalid. Repository label must begin with a letter and may contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), numerals, spaces, parentheses and forward slashes ('/').</source>
-        <target state="translated">软件源标签 "{0}" 无效。软件源标签必须以字母开头，并且只能包含小写字母、连字符 ("-")、点 (".")、下划线 ("_")、数字、空格、圆括号和正斜杠 ("/")。</target>
+        <target state="translated">储存库标签 "{0}" 无效。储存库标签必须以字母开头，并且只能包含小写字母、连字符 ("-")、点 (".")、下划线 ("_")、数字、空格、圆括号和正斜杠 ("/")。</target>
       </trans-unit>
       <trans-unit approved="yes" id="virt.network_create" xml:space="preserve">
         <source>Virtual network creation</source>
@@ -10917,13 +10826,6 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <target state="final">虚拟网络更新</target>
       </trans-unit>
       <trans-unit approved="yes" id="system.entitle.added.ansible_control_node" xml:space="preserve">
-        <source>&lt;strong&gt;Ansible Control Node&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
-        </context-group>
-        <target state="final">已应用 &lt;strong&gt;Ansible 控制节点&lt;/strong&gt;类型。&lt;br/&gt;&lt;strong&gt;注意：&lt;/strong&gt;此操作&lt;em&gt;不会&lt;/em&gt;导致应用状态。要应用该状态，请使用&lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;状态页&lt;/a&gt;，或者在命令行中运行 &lt;code class="text-info"&gt;state.highstate&lt;/code&gt;。</target>
-      </trans-unit>
-      <trans-unit approved="yes" id="system.entitle.added.ansible_control_node.nodoc" xml:space="preserve">
         <source>&lt;strong&gt;Ansible Control Node&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
@@ -11086,28 +10988,28 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <target state="final">堡垒 SSH 私用密钥通行口令不能超过 32 个字符。</target>
       </trans-unit>
       <trans-unit approved="yes" id="payg.ssh_data_created" xml:space="preserve">
-        <source>Pay-as-you-go {0} created successfully</source>
-        <target state="final">已成功创建 Pay-as-you-go {0}</target>
+        <source>PAYG {0} created successfully</source>
+        <target state="final">已成功创建 PAYG {0}</target>
       </trans-unit>
       <trans-unit approved="yes" id="payg.host_exists" xml:space="preserve">
-        <source>Pay-as-you-go host already exists</source>
-        <target state="final">Pay-as-you-go 主机已存在</target>
+        <source>PAYG host already exists</source>
+        <target state="final">PAYG 主机已存在</target>
       </trans-unit>
       <trans-unit approved="yes" id="payg.ssh_data_deleted" xml:space="preserve">
-        <source>Pay-as-you-go {0} deleted successfully</source>
-        <target state="final">已成功删除 Pay-as-you-go {0}</target>
+        <source>PAYG {0} deleted successfully</source>
+        <target state="final">已成功删除 PAYG {0}</target>
       </trans-unit>
       <trans-unit approved="yes" id="notification.paygauthenticationupdatefailed" xml:space="preserve">
         <source>Error when updating authentication data from: &lt;a href="/rhn/manager/admin/setup/payg/{0}"&gt;{1}&lt;/a&gt;</source>
         <target state="final">更新以下位置的身份验证数据时出错： &lt;a href="/rhn/manager/admin/setup/payg/{0}"&gt;{1}&lt;/a&gt;</target>
       </trans-unit>
       <trans-unit approved="yes" id="task.status.update-payg-auth" xml:space="preserve">
-        <source>Pay-as-you-go authentication update</source>
-        <target state="final">Pay-as-you-go 身份验证更新</target>
+        <source>PAYG authentication update</source>
+        <target state="final">PAYG 身份验证更新</target>
       </trans-unit>
       <trans-unit approved="yes" id="task.status.update-payg-hosts" xml:space="preserve">
-        <source>Pay-as-you-go update RMT hosts</source>
-        <target state="final">Pay-as-you-go 更新 RMT 主机</target>
+        <source>PAYG update RMT hosts</source>
+        <target state="final">PAYG 更新 RMT 主机</target>
       </trans-unit>
       <trans-unit approved="yes" id="setup.product.error.dataneedsrefresh" xml:space="preserve">
         <source>Product data needs refresh.</source>
@@ -11223,28 +11125,200 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>IPMI lanplus</source>
         <target state="final">IPMI lanplus</target>
       </trans-unit>
-    <trans-unit id="bunch.jsp.description.update-system-overview-bunch" xml:space="preserve">
+      <trans-unit id="bunch.jsp.description.update-system-overview-bunch" xml:space="preserve">
         <source>Regularly ensure the systems overview data are up to date</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="bunch.jsp.description.system-overview-update-queue-bunch" xml:space="preserve">
         <source>Update the systems overview data</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="api.schedule.cannotcancelpickedup" xml:space="preserve">
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit approved="yes" id="api.schedule.cannotcancelpickedup" xml:space="preserve">
         <source>Cannot cancel an action in PICKED UP state.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="api.schedule.cannotcancelchild" xml:space="preserve">
+        <target state="final">无法取消处于 "已提取" 状态的操作。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="api.schedule.cannotcancelchild" xml:space="preserve">
         <source>Cannot cancel an action with a pending prerequisite.</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="final">无法取消未满足先决条件的操作。</target>
+      </trans-unit>
+      <trans-unit id="java|hostname" xml:space="preserve">
+        <source>Hostname</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/errata/manage/CloneErrata.do</context>
+        </context-group>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit approved="yes" id="notification.subscriptionwarning.summary" xml:space="preserve">
+        <source>You have subscriptions that need attention.</source>
+        <target state="final">您有需要注意的订阅。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="notification.subscriptionwarning.detail" xml:space="preserve">
+        <source>You have subscriptions that are expiring soon or already expired. Please check the &lt;a href="/rhn/manager/subscription-matching"&gt;Subscription Matching&lt;/a&gt; page.</source>
+        <target state="final">您的某些订阅即将失效或已经失效。请查看&lt;a href="/rhn/manager/subscription-matching"&gt;订阅匹配&lt;/a&gt;页面。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="api.package.ptfpackage" xml:space="preserve">
+        <source>Packages part of a Program Temporary Fix (PTF): {0}</source>
+        <target state="final">程序临时修复 (PTF) 的软件包组件：{0}</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="api.package.ptfmaster" xml:space="preserve">
+        <source>Program Temporary Fixes (PTFs) packages: {0}</source>
+        <target state="final">程序临时修复 (PTF) 软件包：{0}</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="activation-key.java.nochannel" xml:space="preserve">
+          <source>No Base Channel selected.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Activation Key Pages</context>
+        </context-group>
+        <target state="final">未选择任何基础通道。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="contentmanagement.validation.modularitydisabled" xml:space="preserve">
+        <source>Modularity is currently disabled. To enable modules, please remove the 'disable all modules' filter.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
+        </context-group>
+        <target state="final">目前已禁用模块化。要启用模块，请去除 "禁用所有模块" 过滤器。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="contentmanagement.validation.nomodules" xml:space="preserve">
+        <source>Modularity is disabled. No modules will be included in the target repositories.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
+        </context-group>
+        <target state="final">已禁用模块化。目标储存库中将不会包含任何模块。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="PTF" xml:space="preserve">
+        <source>PTFs</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Program Temporary Fixes (PTFs) Navigation Tabs</context>
+        </context-group>
+        <target state="final">PTF</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="contentmanagement.non_environment_channels_found" xml:space="preserve">
+        <source>Cannot remove. There are custom channels that are not part of the channels built by the environment. Please remove these channels first: {0}</source>
+        <target state="final">无法去除。一些自定义通道不属于该环境所构建的通道。请先去除这些通道：{0}</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="contentmanagement.used_in_autoinstallation_profile" xml:space="preserve">
+        <source>The target is being used in an autoinstallation profile. Cannot remove.</source>
+        <target state="final">自动安装配置文件中正在使用该目标。无法去除。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="task.action.rejection.reason" xml:space="preserve">
+        <source>This action was not executed because its earliest execution date was too old. When more than {0} hours pass between the scheduling and the picking up, the action is discarded because it is considered no longer relevant.
+          Please reschedule this action if you really want it to be executed.</source>
+        <target state="final">未执行此操作，因为其最早执行日期已过去太久。如果从安排到选择进行处理相隔的时间超过 {0} 个小时，系统就会将该操作视为不再相关，因而会将其丢弃。
+          如果您确实希望系统执行此操作，请重新安排此操作。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="recurring_action.empty_action_type" xml:space="preserve">
+        <source>Recurring Action type must be provided</source>
+        <target state="final">必须提供重复性操作类型</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="recurring_action.empty_states_config" xml:space="preserve">
+        <source>States configuration must be provided</source>
+        <target state="final">必须提供状态配置</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="recurring_action.invalid_action_type" xml:space="preserve">
+        <source>Recurring action has invalid type.</source>
+        <target state="final">重复性操作的类型无效。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="internal_state.certs" xml:space="preserve">
+        <source>Install the server's SSL certificate and trust it on the target system</source>
+        <target state="final">在目标系统上安装并信任服务器的 SSL 证书</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="internal_state.channels" xml:space="preserve">
+        <source>Make sure that channel subscriptions are in sync with the server side configuration</source>
+        <target state="final">确保通道订阅与服务器端配置保持同步</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="internal_state.hardware_profileupdate" xml:space="preserve">
+        <source>Update information about installed hardware</source>
+        <target state="final">更新所安装硬件的相关信息</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="internal_state.packages" xml:space="preserve">
+        <source>Apply package states as configured for the target system</source>
+        <target state="final">根据针对目标系统的配置应用软件包状态</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="internal_state.packages_profileupdate" xml:space="preserve">
+        <source>Update information about installed software (packages and products)</source>
+        <target state="final">更新所安装软件（软件包和产品）的相关信息</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="internal_state.uptodate" xml:space="preserve">
+        <source>Update the system, rebooting if required</source>
+        <target state="final">更新系统，并根据需要进行重引导</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="internal_state.util_syncbeacons" xml:space="preserve">
+        <source>Sync Salt beacons to the target system</source>
+        <target state="final">将 Salt 信标同步到目标系统</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="internal_state.util_syncall" xml:space="preserve">
+        <source>Sync all Salt artifacts (modules, states, grains and beacons) to the target system</source>
+        <target state="final">将所有 Salt 工件（模块、状态、grain 和信标）同步到目标系统</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="internal_state.util_syncgrains" xml:space="preserve">
+        <source>Sync Salt grains to the target system</source>
+        <target state="final">将 Salt grain 同步到目标系统</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="internal_state.util_syncmodules" xml:space="preserve">
+        <source>Sync Salt modules to the target system</source>
+        <target state="final">将 Salt 模块同步到目标系统</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="internal_state.util_syncstates" xml:space="preserve">
+        <source>Sync Salt states to the target system</source>
+        <target state="final">将 Salt 状态同步到目标系统</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="edit.channel.forbiddenclonechannelpayg" xml:space="preserve">
+        <source>Cloning of channels under different product channels on PAYG instances is forbidden</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/channels/manage/Edit</context>
+        </context-group>
+        <target state="final">禁止在 PAYG 实例上克隆不同产品通道下的通道</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="spmigration.message.payg.error" xml:space="preserve">
+        <source>PAYG ALERT: Cross product migration attempt detected. Please note, migration from openSUSE to SLES or similar is not permitted under your current PAYG plan. Operation has been aborted.</source>
+        <target state="final">PAYG 警报：检测到跨产品迁移操作。请注意，根据您的当前 PAYG 计划，不允许从 openSUSE 迁移到 SLES 或类似系统。已中止该操作。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="notification.channelsyncforbidden" xml:space="preserve">
+        <source>Syncing channels forbidden</source>
+        <target state="final">禁止同步通道</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="notification.channelsyncfailed.notcompliant" xml:space="preserve">
+        <source>Synchronization of repositories is forbidden as @@PRODUCT_NAME@@ PAYG is unable to send accounting data to the cloud provider.
+For a detailed analysis, please refer to the log files.</source>
+        <target state="final">禁止同步储存库，因为 @@PRODUCT_NAME@@ PAYG 无法向云提供商发送记账数据。
+有关详细分析，请参见日志文件。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="task.action.rejection.notcompliant" xml:space="preserve">
+        <source>
+The action you attempted could not be executed because the @@PRODUCT_NAME@@ PAYG system is unable to send accounting data to the cloud provider.
+For a detailed analysis, please refer to the log files.
+	</source>
+        <target state="final">
+无法执行您尝试进行的操作，因为 @@PRODUCT_NAME@@ PAYG 系统无法向云提供商发送记账数据。
+有关详细分析，请参见日志文件。
+	</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="bootstrap.minion.error.conflicting.minionid" xml:space="preserve">
+        <source>Systems with conflicting minion ID and machine ID were found ({0}, {1}). Onboarding aborted. Please remove conflicting systems first ({2}, {3})</source>
+        <target state="final">发现具有冲突受控端 ID 和计算机 ID的系统（{0}、{1}）。已中止初始配置。请先去除冲突的系统（{2}、{3}）</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="bootstrap.minion.error.payg.dcregistered" xml:space="preserve">
+        <source>Registration of '{0}' on SUSE Manager Server rejected. \nTo manage Datacenter clients you have to configure SCC Credentials at Admin =&gt; Setup Wizard =&gt; Organization Credentials.</source>
+        <target state="final">在 SUSE Manager 服务器上注册 "{0}" 的请求已被拒绝。\n要管理数据中心客户端，您必须在 "管理" =&gt; "安装向导" =&gt; "组织身份凭证" 中配置 SCC 身份凭证。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="bootstrap.minion.error.payg.byosregistered" xml:space="preserve">
+        <source>Registration of '{0}' on SUSE Manager Server rejected. \nTo manage BYOS (Bring-your-own-Subscription) clients you have to configure SCC Credentials at Admin =&gt; Setup Wizard =&gt; Organization Credentials. \n\nIf the instance being onboarded is PAYG, ensure the `python-instance-billing-flavor-check` package is installed and try again.</source>
+        <target state="final">在 SUSE Manager 服务器上注册 "{0}" 的请求已被拒绝。\n要管理 BYOS（自带订阅）客户端，您必须在 "管理" =&gt; "安装向导" =&gt; "组织身份凭证" 中配置 SCC 身份凭证。\n\n如果初始配置的实例为 PAYG，请确保已安装 `python-instance-billing-flavor-check` 软件包，然后重试。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="notification.updateavailable.summary" xml:space="preserve">
+        <source>Updates are available.</source>
+        <target state="final">有可用更新。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="notification.updateavailable.detail" xml:space="preserve">
+        <source>A new update for @@PRODUCT_NAME@@ is now available. For further details, please refer to the &lt;a href="{0}"&gt;release notes&lt;a&gt;.</source>
+        <target state="final">@@PRODUCT_NAME@@ 现在提供了新的更新。有关更多细节，请参见&lt;a href="{0}"&gt;发行说明&gt;a&gt;。</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

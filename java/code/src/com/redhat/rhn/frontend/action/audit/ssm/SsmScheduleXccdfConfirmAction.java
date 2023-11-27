@@ -51,10 +51,11 @@ public class SsmScheduleXccdfConfirmAction extends BaseSsmScheduleXccdfAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-            ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
         StrutsDelegate strutsDelegate = getStrutsDelegate();
         DynaActionForm form = (DynaActionForm) formIn;
 
@@ -90,8 +91,7 @@ public class SsmScheduleXccdfConfirmAction extends BaseSsmScheduleXccdfAction {
                 new ActionMessage("message.entitlement.missing", e.getMessage()));
         }
         catch (TaskomaticApiException e) {
-            log.error("Could not schedule XCCDF evaluation:");
-            log.error(e);
+            log.error("Could not schedule XCCDF evaluation:", e);
             strutsDelegate.addError(errors, "taskscheduler.down");
         }
 
@@ -108,7 +108,7 @@ public class SsmScheduleXccdfConfirmAction extends BaseSsmScheduleXccdfAction {
         msgs.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("message.xccdfeval.ssm"));
         strutsDelegate.saveMessages(request, msgs);
 
-        Map paramMap = makeParamMap(request);
+        Map<String, Object> paramMap = makeParamMap(request);
         paramMap.put("aid", scapAction.getId());
         return strutsDelegate.forwardParams(mapping.findForward(RhnHelper.DEFAULT_FORWARD),
                 paramMap);

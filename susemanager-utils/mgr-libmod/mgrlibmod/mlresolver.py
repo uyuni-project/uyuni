@@ -68,7 +68,11 @@ class StreamIndexer:
         '''
         get_dep_streams - get the first-level dependencies as (name, stream) tuples for a specified stream context
         '''
-        deps = ctx.get_dependencies()[0]
+        deps = ctx.get_dependencies()
+        if not deps:
+            return []
+
+        deps = deps[0]
         dep_mods = [m for m in deps.get_runtime_modules() \
                     if m not in RESERVED_STREAMS and m != ctx.get_module_name()]
 

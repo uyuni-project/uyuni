@@ -48,6 +48,7 @@ public abstract class BaseSetListAction extends BaseListAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processRequestAttributes(RequestContext rctx) {
         RhnSet set = getSetDecl().get(rctx.getCurrentUser());
         rctx.getRequest().setAttribute("set", set);
@@ -80,6 +81,7 @@ public abstract class BaseSetListAction extends BaseListAction {
      *
      * {@inheritDoc}
      */
+    @Override
     protected void processForm(RequestContext rctx, ActionForm form) {
         super.processForm(rctx, form);
 
@@ -107,7 +109,7 @@ public abstract class BaseSetListAction extends BaseListAction {
      */
     protected Iterator getSelectedItemsIterator(RequestContext ctx,
                                                     ActionForm form) {
-        return Collections.EMPTY_LIST.iterator();
+        return Collections.emptyList().iterator();
     }
 
     /**
@@ -124,6 +126,7 @@ public abstract class BaseSetListAction extends BaseListAction {
     }
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm formIn,
                                  HttpServletRequest request,

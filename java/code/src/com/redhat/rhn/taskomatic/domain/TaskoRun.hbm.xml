@@ -23,8 +23,6 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <property name="scheduleId" type="long" column="schedule_id"/>
         <property name="startTime" type="timestamp" column="start_time"/>
         <property name="endTime" type="timestamp" column="end_time"/>
-        <property name="stdOutputPath" type="string" column="std_output_path"/>
-        <property name="stdErrorPath" type="string" column="std_error_path"/>
         <property name="status" type="string" column="status"/>
 
         <property name="created" column="created" type="timestamp"

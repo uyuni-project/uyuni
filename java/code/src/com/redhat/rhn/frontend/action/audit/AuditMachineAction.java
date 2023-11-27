@@ -16,6 +16,7 @@ package com.redhat.rhn.frontend.action.audit;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.util.StringUtil;
+import com.redhat.rhn.frontend.dto.AuditReviewDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -42,20 +43,21 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * AuditMachineAction
  */
-public class AuditMachineAction extends RhnAction implements Listable {
+public class AuditMachineAction extends RhnAction implements Listable<AuditReviewDto> {
 
     private static Logger log = LogManager.getLogger(AuditMachineAction.class);
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm form,
                                  HttpServletRequest request,
                                  HttpServletResponse response) {
         ActionMessages amsgs;
-        Enumeration paramNames;
+        Enumeration<String> paramNames;
         ListHelper helper = new ListHelper(this, request);
         Long start, end;
-        Map forwardParams = makeParamMap(request);
+        Map<String, Object> forwardParams = makeParamMap(request);
         RequestContext requestContext = new RequestContext(request);
         String str, reviewed, machine, username;
 
@@ -67,7 +69,7 @@ public class AuditMachineAction extends RhnAction implements Listable {
         reviewed = request.getParameter("reviewed");
 
         // is this a review?
-        if (reviewed != null && reviewed.length() > 0) {
+        if (reviewed != null && !reviewed.isEmpty()) {
             start = Long.parseLong(request.getParameter("startMilli"));
             end = Long.parseLong(request.getParameter("endMilli"));
             username = requestContext.getCurrentUser().getLogin();
@@ -110,7 +112,8 @@ public class AuditMachineAction extends RhnAction implements Listable {
     }
 
     /** {@inheritDoc} */
-    public DataResult getResult(RequestContext context) {
+    @Override
+    public DataResult<AuditReviewDto> getResult(RequestContext context) {
         return AuditManager.getMachineReviewSections(
             context.getParam("machine", false));
     }

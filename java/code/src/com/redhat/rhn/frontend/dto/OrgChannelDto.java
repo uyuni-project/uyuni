@@ -30,6 +30,7 @@ public class OrgChannelDto extends BaseDto {
      *
      * @return the value of id
      */
+    @Override
     public Long getId() {
         return this.id;
     }

@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.servlets;
 
+import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
@@ -56,10 +57,19 @@ public class SystemDetailsMessageFilter implements Filter {
         chain.doFilter(request, response);
         HttpServletRequest req = (HttpServletRequest) request;
         RequestContext rctx = new RequestContext(req);
-        Long sid = rctx.getRequiredParam("sid");
+        Long sid = rctx.getParamAsLong("sid");
+        if (sid == null) {
+            return;
+        }
+
         User user = rctx.getCurrentUser();
-        Server s = SystemManager.lookupByIdAndUser(sid, user);
-        this.processSystemMessages(req, s);
+        try {
+            Server s = SystemManager.lookupByIdAndUser(sid, user);
+            this.processSystemMessages(req, s);
+        }
+        catch (LookupException e) {
+            // Expected to happen when transferring systems between orgs, nothing to do.
+        }
     }
 
     /**

@@ -121,7 +121,7 @@ public class DebPackageWriterTest extends JMockBaseTestCaseWithUser {
                         "Depends: python:any (>= 2.4~), python-crypto (>= 2.5.0)\n" +
                         "Filename: channel/getPackage/pkg_1_1:1.0.0-1.noarch.deb\n" +
                         "Size: 42\n" +
-                        "MD5sum: some-md5sum\n" +
+                        "SHA256: some-sha256sum\n" +
                         "Section: some-section\n" +
                         "Tag1: value1\n" +
                         "Tag2: value2\n" +
@@ -134,7 +134,7 @@ public class DebPackageWriterTest extends JMockBaseTestCaseWithUser {
                         "Installed-Size: 42\n" +
                         "Filename: channel/getPackage/pkg_2_1:1.0.0-1.noarch.deb\n" +
                         "Size: 42\n" +
-                        "MD5sum: some-md5sum\n" +
+                        "SHA256: some-sha256sum\n" +
                         "Section: some-section\n" +
                         "Tag3: value3\n" +
                         "Tag2: value2\n" +
@@ -147,7 +147,7 @@ public class DebPackageWriterTest extends JMockBaseTestCaseWithUser {
                         "Installed-Size: 42\n" +
                         "Filename: channel/getPackage/pkg_3_1:1.0.0-1.noarch.deb\n" +
                         "Size: 42\n" +
-                        "MD5sum: some-md5sum\n" +
+                        "SHA256: some-sha256sum\n" +
                         "Section: some-section\n" +
                         "Description: RHN-JAVA Package Test\n" +
                         "\n" +
@@ -157,7 +157,7 @@ public class DebPackageWriterTest extends JMockBaseTestCaseWithUser {
                         "Maintainer: Rhn-Java\n" +
                         "Filename: channel/getPackage/pkg_4_1:1.0.0-1.noarch.deb\n" +
                         "Size: 42\n" +
-                        "MD5sum: some-md5sum\n" +
+                        "SHA256: some-sha256sum\n" +
                         "Section: some-section\n" +
                         "Description: RHN-JAVA Package Test",
                 packagesContent.trim());
@@ -167,6 +167,8 @@ public class DebPackageWriterTest extends JMockBaseTestCaseWithUser {
         packagesContent = packagesContent.replaceAll("Filename: channel.*/getPackage/",
                 "Filename: channel/getPackage/");
         packagesContent = packagesContent.replaceAll("MD5sum: .*\\s", "MD5sum: some-md5sum\n");
+        packagesContent = packagesContent.replaceAll("SHA1: .*\\s", "SHA1: some-sha1sum\n");
+        packagesContent = packagesContent.replaceAll("SHA256: .*\\s", "SHA256: some-sha256sum\n");
         packagesContent = packagesContent.replaceAll("Section: .*\\s", "Section: some-section\n");
         return packagesContent;
     }

@@ -40,13 +40,14 @@ report = {}
 
 def is_sha256_capable():
     import rpm
+    from rhn.stringutils import sstr
     ts = rpm.TransactionSet()
     mi = ts.dbMatch('Providename', 'spacewalk-schema')
     cmp = -1
     try:
         h = next(mi)
-        cmp = rpm.labelCompare([h['name'].decode("utf-8"), h['version'].decode("utf-8"), h['release'].decode("utf-8")],
-                               [h['name'].decode("utf-8"), '0.8.1', '1'])
+        cmp = rpm.labelCompare([sstr(h['name']), sstr(h['version']), sstr(h['release'])],
+                               [sstr(h['name']), '0.8.1', '1'])
     except StopIteration:
         pass
     return (cmp > 0)
@@ -58,10 +59,18 @@ def db_init():
 
 
 def src_package_query():
-    query = """select p.id
-                 from rhnPackage p
+    query = """select p.source_rpm_id
+                 from rhnPackageSource p
                 where p.path like :filename"""
     return query
+
+
+def package_find_by_src_id():
+    query = """select id
+                 from rhnPackage p
+                 where source_rpm_id = :id"""
+    return query
+
 
 def package_query(options, bind_path=False):
     query = """select %s
@@ -352,8 +361,15 @@ def is_orphaned_srpm(path, file):
     if is_srpm(file):
         query = src_package_query()
         h = rhnSQL.prepare(query)
-        wildcard_filename = "%/" + file.replace('src','%')
+        wildcard_filename = "%/" + os.path.basename(file)
         h.execute(filename=wildcard_filename)
+        row = h.fetchone_dict()
+        if not row:
+            log(0, f"SRPM not in DB: {path}")
+            return True
+        query = package_find_by_src_id()
+        h = rhnSQL.prepare(query)
+        h.execute(id=row['source_rpm_id'])
         row = h.fetchone_dict()
         if not row:
             log(0, "SRPM without matching RPM in db: %s" % (path))

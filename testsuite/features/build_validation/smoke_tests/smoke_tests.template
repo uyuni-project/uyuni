@@ -1,4 +1,4 @@
-# Copyright (c) 2020-2022 SUSE LLC.
+# Copyright (c) 2020-2023 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 @<client>
@@ -30,7 +30,7 @@ Feature: Smoke tests for <client>
     And the IPv6 address for "<client>" should be correct
     And the system ID for "<client>" should be correct
     And the system name for "<client>" should be correct
-    And I should see several text fields for "<client>"
+    And I should see several text fields
 
 @skip_for_debianlike
   Scenario: Install a patch on the <client>
@@ -43,7 +43,9 @@ Feature: Smoke tests for <client>
     And I click on "Confirm"
     Then I should see a "1 patch update has been scheduled for" text
     And I wait until event "Patch Update:" is completed
+    And I reboot the "<client>" if it is a SLE Micro
 
+@skip_for_sle_micro_ssh_minion
   Scenario: Install a package on the <client>
     When I follow "Software" in the content area
     And I follow "Install"
@@ -54,7 +56,9 @@ Feature: Smoke tests for <client>
     And I click on "Confirm"
     Then I should see a "1 package install has been scheduled for" text
     And I wait until event "Package Install/Upgrade scheduled by admin" is completed
+    And I reboot the "<client>" if it is a SLE Micro
 
+@skip_for_sle_micro_ssh_minion
   Scenario: Remove package from <client>
     When I follow "Software" in the content area
     And I follow "List / Remove"
@@ -65,6 +69,7 @@ Feature: Smoke tests for <client>
     And I click on "Confirm"
     Then I should see a "1 package removal has been scheduled" text
     And I wait until event "Package Removal scheduled by admin" is completed
+    And I reboot the "<client>" if it is a SLE Micro
 
   Scenario: Run a remote command on <client> minion
     When I follow the left menu "Salt > Remote Commands"
@@ -100,6 +105,7 @@ Feature: Smoke tests for <client>
     And I click on "Continue"
     And I click on "Update Channel Rankings"
     Then I should see a "Channel Subscriptions successfully changed for" text
+    And I reboot the "<client>" if it is a SLE Micro
 
   Scenario: Deploy the configuration file to <client>
     And I follow the left menu "Configuration > Channels"
@@ -126,6 +132,8 @@ Feature: Smoke tests for <client>
     And I wait at most 600 seconds until event "System reboot scheduled by admin" is completed
     Then I should see a "This action's status is: Completed" text
 
+@skip_for_sle_micro
+  # The client tools of SLE Micro (intentionally) do not contain spacecmd
   Scenario: Install spacecmd from the client tools on the <client>
     When I follow "Software" in the content area
     And I follow "Install"
@@ -136,29 +144,10 @@ Feature: Smoke tests for <client>
     And I click on "Confirm"
     Then I should see a "1 package install has been scheduled for" text
     And I wait until event "Package Install/Upgrade scheduled by admin" is completed
+    And I reboot the "<client>" if it is a SLE Micro
 
-@suse_minion
-  Scenario: Test Prometheus formula on the <client>
-    Given I am on the Systems overview page of this "<client>"
-    When I follow "Formulas" in the content area
-    And I check the "prometheus" formula
-    And I click on "Save"
-    Then I wait until I see "Formula saved" text
-    When I follow "Prometheus" in the content area
-    And I click on "Expand All Sections"
-    And I enter "admin" as "Username"
-    And I enter "admin" as "Password"
-    And I click on "Save Formula"
-    Then I should see a "Formula saved" text
-    When I follow "States" in the content area
-    And I click on "Apply Highstate"
-    Then I should see a "Applying the highstate has been scheduled." text
-    And I wait until event "Apply highstate scheduled by admin" is completed
-    # Visit monitoring endpoints on the minion
-    When I wait until "prometheus" service is active on "<client>"
-    And I visit "Prometheus" endpoint of this "<client>"
-
-  Scenario: Test Prometheus exporter formula on the <client>
+@skip_for_sle_micro_ssh_minion
+  Scenario: Enable Prometheus Node exporter formula on the <client>
     Given I am on the Systems overview page of this "<client>"
     When I follow "Formulas" in the content area
     And I check the "prometheus-exporters" formula
@@ -169,19 +158,56 @@ Feature: Smoke tests for <client>
     And I click on "Expand All Sections"
     And I should see a "Enable and configure Prometheus exporters for managed systems." text
     And I check "node" exporter
+    And I click on "Save"
+    Then I should see a "Formula saved" text
+
+@skip_for_sle_micro
+  Scenario: Enable Prometheus Apache and Postgres exporter formula on the <client>
+    Given I am on the Systems overview page of this "<client>"
+    When I follow "Formulas" in the content area
+    When I follow "Prometheus Exporters" in the content area
+    And I click on "Expand All Sections"
+    And I should see a "Enable and configure Prometheus exporters for managed systems." text
     And I check "apache" exporter
     And I check "postgres" exporter
     And I click on "Save"
     Then I should see a "Formula saved" text
-    # Apply highstate for Prometheus exporters
+
+@skip_for_sle_micro_ssh_minion
+  Scenario: Apply highstate for the Prometheus exporters on the <client>
+    Given I am on the Systems overview page of this "<client>"
     When I follow "States" in the content area
     And I click on "Apply Highstate"
     Then I should see a "Applying the highstate has been scheduled." text
     And I wait until event "Apply highstate scheduled by admin" is completed
-    # Visit monitoring endpoints on the minion
+
+@skip_for_sle_micro_ssh_minion
+@sle_micro_minion
+  # workaround for SLE Micro minion issue bsc#1209374
+  Scenario: Enable and start Prometheus Node Exporter service
+    And I start the "prometheus-node_exporter.service" service on "<client>"
+    And I enable the "prometheus-node_exporter.service" service on "<client>"
+
+@skip_for_sle_micro_ssh_minion
+  Scenario: Visit Node monitoring endpoint on the <client>
     When I wait until "node" exporter service is active on "<client>"
     And I visit "Prometheus node exporter" endpoint of this "<client>"
-    And I wait until "apache" exporter service is active on "<client>"
+
+@skip_for_sle_micro
+  Scenario: Visit Apache and Postgres monitoring endpoint on the <client>
+    When I wait until "apache" exporter service is active on "<client>"
     And I visit "Prometheus apache exporter" endpoint of this "<client>"
     And I wait until "postgres" exporter service is active on "<client>"
     And I visit "Prometheus postgres exporter" endpoint of this "<client>"
+
+@skip_for_sle_micro_ssh_minion
+@monitoring_server
+  Scenario: Test <client> on Grafana
+    When I visit the grafana dashboards of this "monitoring_server"
+    And I wait until I do not see "Loading Grafana" text
+    And I wait until I see "General" text
+    And I check radio button "View as list", if not checked
+    When I follow "Client Systems"
+    Then I should see "<client>" hostname
+    When I enter "<client>" hostname on grafana's host field
+    Then I should not see a "No data" text

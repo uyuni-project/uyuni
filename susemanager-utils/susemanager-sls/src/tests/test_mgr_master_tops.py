@@ -24,7 +24,8 @@ TEST_MANAGER_STATIC_TOP = {
         "services.salt-minion",
         "services.docker",
         "services.kiwi-image-server",
-        "ansible"
+        "ansible",
+        "switch_to_bundle.mgr_switch_to_venv_minion"
     ]
 }
 

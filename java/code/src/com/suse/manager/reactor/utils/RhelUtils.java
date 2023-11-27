@@ -22,10 +22,12 @@ import com.redhat.rhn.domain.server.Server;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * Utilities related to RHEL minions.
@@ -35,43 +37,54 @@ public class RhelUtils {
     private RhelUtils() { }
 
     private static final Pattern RHEL_RELEASE_MATCHER =
-            Pattern.compile("(.+)\\srelease\\s([\\d.]+)\\s*\\((.+)\\).*", Pattern.DOTALL);
+            Pattern.compile("([\\d.]+)\\s*+\\(([^)]++)\\).*+", Pattern.DOTALL);
     private static final Pattern ORACLE_RELEASE_MATCHER =
-            Pattern.compile("(.+)\\srelease\\s([\\d.]+).*", Pattern.DOTALL);
+            Pattern.compile("([\\d.]+).*", Pattern.DOTALL);
     private static final Pattern ALIBABA_RELEASE_MATCHER =
-            Pattern.compile("(.+)\\srelease\\s([\\d.]+)\\s*LTS\\s*\\((.+)\\).*", Pattern.DOTALL);
+            Pattern.compile("([\\d.]+)\\s*+LTS\\s*+\\(([^)]++)\\).*+", Pattern.DOTALL);
 
     /**
      * Information about RHEL based OSes.
      */
     public static class RhelProduct {
 
-        private Optional<SUSEProduct> suseProduct;
+        private Optional<SUSEProduct> suseBaseProduct;
+        private Set<SUSEProduct> suseAdditionalProducts;
         private String name;
         private String version;
         private String release;
 
         /**
          * Constructor.
-         * @param suseProductIn the suse product that corresponds to this OS
+         * @param suseBaseProductIn the suse product that corresponds to this OS
+         * @param suseAdditionalProductsIn any possible additional SUSE products like SLL ones
          * @param nameIn the name of the OS
          * @param versionIn the version
          * @param releaseIn the release name
-         * @param archIn the arch
          */
-        public RhelProduct(Optional<SUSEProduct> suseProductIn, String nameIn,
-                           String versionIn, String releaseIn, String archIn) {
-            this.suseProduct = suseProductIn;
+        public RhelProduct(Optional<SUSEProduct> suseBaseProductIn, Set<SUSEProduct> suseAdditionalProductsIn,
+                           String nameIn, String versionIn, String releaseIn) {
+            this.suseBaseProduct = suseBaseProductIn;
+            this.suseAdditionalProducts = suseAdditionalProductsIn;
             this.name = nameIn;
             this.version = versionIn;
             this.release = releaseIn;
         }
 
         /**
-         * @return the SUSE product, if any.
+         * @return the SUSE base product, if any.
          */
-        public Optional<SUSEProduct> getSuseProduct() {
-            return suseProduct;
+        public Optional<SUSEProduct> getSuseBaseProduct() {
+            return suseBaseProduct;
+        }
+
+        /**
+         * @return all the SUSE products if any.
+         */
+        public Set<SUSEProduct> getAllSuseProducts() {
+            Set<SUSEProduct> set = new HashSet<>(suseAdditionalProducts);
+            suseBaseProduct.ifPresent(set::add);
+            return set;
         }
 
         /**
@@ -157,40 +170,42 @@ public class RhelUtils {
      * @return the parsed content of the release file
      */
     public static Optional<ReleaseFile> parseReleaseFile(String releaseFile) {
+        String[] parts = releaseFile.split("\\srelease\\s", 2);
+        if (parts.length != 2) {
+            return Optional.empty();
+        }
+
         // We match here data from the system and try to find the product
         // how it is named in SCC or sumatoolbox. This requires sometimes
         // some changes on the string we parse.
         //
         // AlmaLinux and AmazonLinux are also matched by the RHEL matcher
-        Matcher matcher = RHEL_RELEASE_MATCHER.matcher(releaseFile);
+        Matcher matcher = RHEL_RELEASE_MATCHER.matcher(parts[1]);
         if (matcher.matches()) {
-            String name =
-                    matcher.group(1).replaceAll("(?i)linux", "").replaceAll(" ", "");
+            String name = parts[0].replaceAll("(?i)linux", "").replace(" ", "");
             if (name.startsWith("Alma") || name.startsWith("Amazon") || name.startsWith("Rocky")) {
-                name = matcher.group(1).replaceAll(" ", "");
+                name = parts[0].replace(" ", "");
             }
-            String majorVersion = StringUtils.substringBefore(matcher.group(2), ".");
-            String minorVersion = StringUtils.substringAfter(matcher.group(2), ".");
-            String release = matcher.group(3);
+            String majorVersion = StringUtils.substringBefore(matcher.group(1), ".");
+            String minorVersion = StringUtils.substringAfter(matcher.group(1), ".");
+            String release = matcher.group(2);
             return Optional.of(new ReleaseFile(name, majorVersion, minorVersion, release));
         }
         else {
-            Matcher amatcher = ALIBABA_RELEASE_MATCHER.matcher(releaseFile);
+            Matcher amatcher = ALIBABA_RELEASE_MATCHER.matcher(parts[1]);
             if (amatcher.matches()) {
-                String name =
-                        amatcher.group(1).replaceAll("(?i)linux", "").replaceAll(" ", "");
-                String majorVersion = StringUtils.substringBefore(amatcher.group(2), ".");
-                String minorVersion = StringUtils.substringAfter(amatcher.group(2), ".");
-                String release = amatcher.group(3);
+                String name = parts[0].replaceAll("(?i)linux", "").replace(" ", "");
+                String majorVersion = StringUtils.substringBefore(amatcher.group(1), ".");
+                String minorVersion = StringUtils.substringAfter(amatcher.group(1), ".");
+                String release = amatcher.group(2);
                 return Optional.of(new ReleaseFile(name, majorVersion, minorVersion, release));
             }
             else {
-                Matcher omatcher = ORACLE_RELEASE_MATCHER.matcher(releaseFile);
+                Matcher omatcher = ORACLE_RELEASE_MATCHER.matcher(parts[1]);
                 if (omatcher.matches()) {
-                    String name =
-                            omatcher.group(1).replaceAll("(?i)server", "").replaceAll(" ", "");
-                    String majorVersion = StringUtils.substringBefore(omatcher.group(2), ".");
-                    String minorVersion = StringUtils.substringAfter(omatcher.group(2), ".");
+                    String name = parts[0].replaceAll("(?i)server", "").replace(" ", "");
+                    String majorVersion = StringUtils.substringBefore(omatcher.group(1), ".");
+                    String minorVersion = StringUtils.substringAfter(omatcher.group(1), ".");
                     return Optional.of(new ReleaseFile(name, majorVersion, minorVersion, ""));
                 }
             }
@@ -239,20 +254,22 @@ public class RhelUtils {
         String release = releaseFile.map(ReleaseFile::getRelease).orElse("unknown");
 
         Optional<SUSEProduct> suseProduct = Optional.ofNullable(SUSEProductFactory
-                        .findSUSEProduct(productName, majorVersion, release, arch, true))
-                .flatMap(resProduct -> {
+                .findSUSEProduct(productName, majorVersion, release, arch, true));
+
+        Optional<SUSEProduct> suseBaseProduct = suseProduct.filter(p -> p.isBase()).isPresent() ? suseProduct :
+                suseProduct.flatMap(resProduct -> {
                     if (resProduct.isBase()) {
                         return Optional.of(resProduct);
                     }
                     else {
                         return Optional.ofNullable(SUSEProductFactory
-                                .findSUSEProduct("rhel-base", majorVersion, release, arch, true));
+                                .findSUSEProduct(getBaseProductName(majorVersion), majorVersion, release, arch, true));
                     }
                 })
                 .filter(SUSEProduct::isBase);
 
-        return Optional.of(new RhelProduct(suseProduct, name,
-                majorVersion, release, arch));
+        return Optional.of(new RhelProduct(suseBaseProduct, suseProduct.stream().collect(Collectors.toSet()), name,
+                majorVersion, release));
     }
 
     /**
@@ -427,6 +444,14 @@ public class RhelUtils {
         );
     }
 
+    private static String getBaseProductName(String majorVersion) {
+        Matcher versionMatcher = Pattern.compile("^(\\d+)").matcher(majorVersion);
+        if (versionMatcher.matches() && Integer.parseInt(versionMatcher.group(1)) >= 9) {
+            return "el-base";
+        }
+        return "rhel-base";
+    }
+
     private static RhelProduct detectPlainRHEL(String releaseFileContent,
                                                String arch, String defaultName) {
         Optional<ReleaseFile> releaseFile = parseReleaseFile(releaseFileContent);
@@ -436,10 +461,10 @@ public class RhelUtils {
         String release = releaseFile.map(ReleaseFile::getRelease).orElse("unknown");
         Optional<SUSEProduct> suseProduct = defaultName.equals("RedHatEnterprise") ?
                 Optional.ofNullable(SUSEProductFactory
-                        .findSUSEProduct("rhel-base", majorVersion, release, arch, true)) :
+                        .findSUSEProduct(getBaseProductName(majorVersion), majorVersion, release, arch, true)) :
                 Optional.ofNullable(SUSEProductFactory
                         .findSUSEProduct(name, majorVersion, release, arch, true));
-        return new RhelProduct(suseProduct, name, majorVersion, release, arch);
+        return new RhelProduct(suseProduct, Set.of(), name, majorVersion, release);
     }
 
 }

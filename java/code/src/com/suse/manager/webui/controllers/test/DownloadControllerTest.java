@@ -47,17 +47,21 @@ import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ErrataTestUtils;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
+import com.redhat.rhn.testing.SparkTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
+import com.suse.cloud.CloudPaygManager;
 import com.suse.manager.webui.controllers.DownloadController;
 import com.suse.manager.webui.utils.DownloadTokenBuilder;
-import com.suse.manager.webui.utils.SparkTestUtils;
+import com.suse.manager.webui.utils.TokenBuilder;
 
 import com.mockobjects.servlet.MockHttpServletResponse;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.http.HttpStatus;
+import org.jose4j.lang.JoseException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -67,9 +71,8 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.attribute.FileTime;
-import java.time.Duration;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
@@ -110,6 +113,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
 
     private static String originalMountPoint;
 
+    private DownloadController downloadController;
     @BeforeAll
     public static void beforeAll() {
         Config.get().setString("server.secret_key",
@@ -169,7 +173,8 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         // Change mount point to the parent of the temp file
         Config.get().setString(ConfigDefaults.MOUNT_POINT, packageFile.getParent());
 
-        DownloadController.setCheckTokens(true);
+        downloadController = new DownloadController(new CloudPaygManager());
+        downloadController.setCheckTokens(true);
     }
 
     @Override
@@ -182,6 +187,24 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         Files.deleteIfExists(packageFile.toPath());
         Files.deleteIfExists(debPackageFile.toPath());
         Files.deleteIfExists(debPackageFile2.toPath());
+    }
+
+    /**
+     * helper method to save a token to the database
+     * @param tokenBuilder
+     * @return the access token database object
+     * @throws JoseException if an error happens during token build
+     */
+    private AccessToken saveTokenToDataBase(TokenBuilder tokenBuilder) throws JoseException {
+        AccessToken newToken = new AccessToken();
+        newToken.setStart(Date.from(tokenBuilder.getIssuedAt()));
+        newToken.setToken(tokenBuilder.getToken());
+        Instant expiration = tokenBuilder.getIssuedAt()
+                .plus(tokenBuilder.getExpirationTimeMinutesInTheFuture(),
+                        ChronoUnit.MINUTES);
+        newToken.setExpiration(Date.from(expiration));
+        TestUtils.saveAndFlush(newToken);
+        return newToken;
     }
 
     /**
@@ -255,7 +278,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         Request request = getMockRequestWithParams(new HashMap<>());
 
         try {
-            DownloadController.downloadPackage(request, response);
+            downloadController.downloadPackage(request, response);
             fail("Controller should fail if no token was given");
         }
         catch (spark.HaltException e) {
@@ -274,7 +297,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         Request request = getMockRequestWithParams(params);
 
         try {
-            DownloadController.downloadPackage(request, response);
+            downloadController.downloadPackage(request, response);
             fail("Controller should fail if wrong token was given");
         }
         catch (spark.HaltException e) {
@@ -292,9 +315,9 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         params.put("invalid-token-should-be-ignored", "");
         Request request = getMockRequestWithParams(params);
 
-        DownloadController.setCheckTokens(false);
+        downloadController.setCheckTokens(false);
         try {
-            DownloadController.downloadPackage(request, response);
+            downloadController.downloadPackage(request, response);
             assertEquals(packageFile.getAbsolutePath(), response.raw().getHeader("X-Sendfile"));
             assertEquals("application/octet-stream", response.raw().getHeader("Content-Type"));
             assertEquals("attachment; filename=" + packageFile.getName(),
@@ -319,7 +342,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
                 Collections.emptyMap(),
                 channel.getLabel(), "comps.xml");
 
-        DownloadController.setCheckTokens(false);
+        downloadController.setCheckTokens(false);
 
         String compsRelativeDirPath = "rhn/comps/" + channel.getName();
         String compsDirPath = Config.get().getString(ConfigDefaults.MOUNT_POINT) + "/" +
@@ -336,11 +359,10 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
             Comps comps = new Comps();
             comps.setChannel(channel);
             comps.setRelativeFilename(compsRelativeDirPath + "/" + compsFile.getName());
-            comps.setLastModified(new Date());
             channel.setComps(comps);
 
             try {
-                assertNotNull(DownloadController.downloadMetadata(request, response));
+                assertNotNull(downloadController.downloadMetadata(request, response));
 
                 assertEquals(compsFile.getAbsolutePath(), response.raw().getHeader("X-Sendfile"));
                 assertEquals("application/octet-stream", response.raw().getHeader("Content-Type"));
@@ -373,7 +395,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         Request request = getMockRequestWithParams(params);
 
         try {
-            DownloadController.downloadPackage(request, response);
+            downloadController.downloadPackage(request, response);
             fail(String.format("%s should halt 400 if 2 tokens given",
                     DownloadController.class.getSimpleName()));
         }
@@ -404,7 +426,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         Request request = getMockRequestWithParams(params);
 
         try {
-            DownloadController.downloadPackage(request, response);
+            downloadController.downloadPackage(request, response);
             fail(String.format("%s should halt 403 if a different channel token is given",
                     DownloadController.class.getSimpleName()));
         }
@@ -433,7 +455,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         Request request = getMockRequestWithParams(params);
 
         try {
-            DownloadController.downloadPackage(request, response);
+            downloadController.downloadPackage(request, response);
             fail(String.format("%s should halt 403 if a different org token is given",
                     DownloadController.class.getSimpleName()));
         }
@@ -463,7 +485,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         Request request = getMockRequestWithParams(params);
 
         try {
-            DownloadController.downloadPackage(request, response);
+            downloadController.downloadPackage(request, response);
             fail(String.format("%s should halt 403 if the token is not assigned to a minion",
                     DownloadController.class.getSimpleName()));
         }
@@ -536,11 +558,12 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         tokenBuilder.onlyChannels(
                 new HashSet<>(
                         Arrays.asList(channel.getLabel())));
-        String tokenChannel = tokenBuilder.getToken();
+        AccessToken accessToken = saveTokenToDataBase(tokenBuilder);
+        String tokenChannel = accessToken.getToken();
 
         Request request = requestFactory.apply(tokenChannel);
         try {
-            assertNotNull(DownloadController.downloadPackage(request, response));
+            assertNotNull(downloadController.downloadPackage(request, response));
 
             assertEquals(pkgFile.get().getAbsolutePath(), response.raw().getHeader("X-Sendfile"));
             assertEquals("application/octet-stream", response.raw().getHeader("Content-Type"));
@@ -557,13 +580,14 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         DownloadTokenBuilder tokenBuilder = new DownloadTokenBuilder(user.getOrg().getId());
         tokenBuilder.useServerSecret();
         tokenBuilder.onlyChannels(new HashSet<>(Arrays.asList(channel.getLabel())));
-        String tokenChannel = tokenBuilder.getToken();
+        AccessToken accessToken = saveTokenToDataBase(tokenBuilder);
+        String tokenChannel = accessToken.getToken();
 
         Map<String, String> params = new HashMap<>();
         params.put(tokenChannel, "");
         Request request = getMockRequestWithParamsAndHeaders(params, Collections.emptyMap(), uriFile2);
         try {
-            assertNotNull(DownloadController.downloadPackage(request, response));
+            assertNotNull(downloadController.downloadPackage(request, response));
 
             assertEquals(packageFile2.getAbsolutePath(), response.raw().getHeader("X-Sendfile"));
             assertEquals("application/octet-stream", response.raw().getHeader("Content-Type"));
@@ -584,14 +608,15 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
     public void testCorrectOrg() throws Exception {
         DownloadTokenBuilder tokenBuilder = new DownloadTokenBuilder(user.getOrg().getId());
         tokenBuilder.useServerSecret();
-        String tokenOrg = tokenBuilder.getToken();
+        AccessToken accessToken = saveTokenToDataBase(tokenBuilder);
+        String tokenOrg = accessToken.getToken();
 
         Map<String, String> params = new HashMap<>();
         params.put(tokenOrg, "");
         Request request = getMockRequestWithParams(params);
 
         try {
-            assertNotNull(DownloadController.downloadPackage(request, response));
+            assertNotNull(downloadController.downloadPackage(request, response));
 
             assertEquals(packageFile.getAbsolutePath(), response.raw().getHeader("X-Sendfile"));
             assertEquals("application/octet-stream", response.raw().getHeader("Content-Type"));
@@ -614,20 +639,48 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         tokenBuilder.useServerSecret();
         // already expired
         tokenBuilder.setExpirationTimeMinutesInTheFuture(-1);
-        String expiredToken = tokenBuilder.getToken();
+        AccessToken accessToken = saveTokenToDataBase(tokenBuilder);
+        String expiredToken = accessToken.getToken();
 
         Map<String, String> params = new HashMap<>();
         params.put(expiredToken, "");
         Request request = getMockRequestWithParams(params);
 
         try {
-            DownloadController.downloadPackage(request, response);
+            downloadController.downloadPackage(request, response);
             fail(String.format("%s should halt 403 if an expired token is given",
                     DownloadController.class.getSimpleName()));
         }
         catch (spark.HaltException e) {
             assertEquals(403, e.getStatusCode());
-            assertTrue(e.getBody().contains("The JWT is no longer valid"));
+            assertTrue(e.getBody().contains("This token is not valid"));
+            assertNull(response.raw().getHeader("X-Sendfile"));
+        }
+    }
+
+    @Test
+    public void testPaygNotCompliant() {
+        CloudPaygManager pmgr = new CloudPaygManager() {
+            @Override
+            public boolean checkRefreshCache(boolean force) {
+                setCompliant(false);
+                return true;
+            }
+        };
+        DownloadController ctl = new DownloadController(pmgr);
+
+        Map<String, String> params = new HashMap<>();
+        params.put("abcdef1234567890", "");
+        Request request = getMockRequestWithParams(params);
+
+        try {
+            ctl.downloadPackage(request, response);
+            fail(String.format("%s should halt 403 if an expired token is given",
+                    DownloadController.class.getSimpleName()));
+        }
+        catch (spark.HaltException e) {
+            assertEquals(403, e.getStatusCode());
+            assertTrue(e.getBody().contains("Server is not compliant"));
             assertNull(response.raw().getHeader("X-Sendfile"));
         }
     }
@@ -641,7 +694,8 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
     public void testDownloadComps() throws Exception {
         DownloadTokenBuilder tokenBuilder = new DownloadTokenBuilder(user.getOrg().getId());
         tokenBuilder.useServerSecret();
-        String tokenOrg = tokenBuilder.getToken();
+        AccessToken accessToken = saveTokenToDataBase(tokenBuilder);
+        String tokenOrg = accessToken.getToken();
 
         Map<String, String> params = new HashMap<>();
         params.put(tokenOrg, "");
@@ -666,11 +720,10 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
             Comps comps = new Comps();
             comps.setChannel(channel);
             comps.setRelativeFilename(compsRelativeDirPath + "/" + compsFile.getName());
-            comps.setLastModified(new Date());
             channel.setComps(comps);
 
             try {
-                assertNotNull(DownloadController.downloadMetadata(request, response));
+                assertNotNull(downloadController.downloadMetadata(request, response));
 
                 assertEquals(compsFile.getAbsolutePath(), response.raw().getHeader("X-Sendfile"));
                 assertEquals("application/octet-stream", response.raw().getHeader("Content-Type"));
@@ -695,7 +748,8 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
     public void testDownloadModules() throws Exception {
         DownloadTokenBuilder tokenBuilder = new DownloadTokenBuilder(user.getOrg().getId());
         tokenBuilder.useServerSecret();
-        String tokenOrg = tokenBuilder.getToken();
+        AccessToken accessToken = saveTokenToDataBase(tokenBuilder);
+        String tokenOrg = accessToken.getToken();
 
         Map<String, String> params = new HashMap<>();
         params.put(tokenOrg, "");
@@ -705,35 +759,28 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
                 Collections.emptyMap(),
                 channel.getLabel(), "modules.yaml");
 
-        Path modulesRelativeDir = Path.of("rhn", "modules", channel.getName());
-        Path modulesDir = Path.of(Config.get().getString(ConfigDefaults.MOUNT_POINT)).resolve(modulesRelativeDir);
+        String modulesRelativeDirPath = "rhn/modules/" + channel.getName();
+        String modulesDirPath = Config.get().getString(ConfigDefaults.MOUNT_POINT) + "/" + modulesRelativeDirPath;
+        String modulesName = modulesRelativeDirPath + "123hash123-modules";
+        File modulesDir = new File(modulesDirPath);
         try {
-            Files.createDirectories(modulesDir);
-            Path modulesFile = Files.createTempFile(modulesDir, "n3wha5h", "-modules.yaml");
-            Files.write(modulesFile, TestUtils.randomString().getBytes());
+            assertTrue(modulesDir.mkdirs());
+            File modulesFile = File.createTempFile(modulesDirPath + "/" + modulesName, ".yaml", modulesDir);
+            Files.write(modulesFile.getAbsoluteFile().toPath(),
+                    TestUtils.randomString().getBytes());
 
             // create modules object
-            Modules modulesLatest = new Modules(modulesRelativeDir.resolve(modulesFile.getFileName()).toString(),
-                    Date.from(Files.getLastModifiedTime(modulesFile).toInstant()));
-            channel.addModules(modulesLatest);
-
-            // Create a second, older modules.yaml file
-            Path modulesFileOlder = Files.createTempFile(modulesDir, "01dha5h", "-modules.yaml");
-            Files.write(modulesFileOlder, TestUtils.randomString().getBytes());
-            // Set file time to 1 second earlier than the other one
-            Files.setLastModifiedTime(modulesFileOlder,
-                    FileTime.from(Files.getLastModifiedTime(modulesFile).toInstant().minus(Duration.ofSeconds(1))));
-
-            Modules modulesOlder = new Modules(modulesRelativeDir.resolve(modulesFileOlder.getFileName()).toString(),
-                    Date.from(Files.getLastModifiedTime(modulesFileOlder).toInstant()));
-            channel.addModules(modulesOlder);
+            Modules modules = new Modules();
+            modules.setChannel(channel);
+            modules.setRelativeFilename(modulesRelativeDirPath + "/" + modulesFile.getName());
+            channel.setModules(modules);
 
             try {
-                assertNotNull(DownloadController.downloadMetadata(request, response));
+                assertNotNull(downloadController.downloadMetadata(request, response));
 
-                assertEquals(modulesFile.toAbsolutePath().toString(), response.raw().getHeader("X-Sendfile"));
+                assertEquals(modulesFile.getAbsolutePath(), response.raw().getHeader("X-Sendfile"));
                 assertEquals("application/octet-stream", response.raw().getHeader("Content-Type"));
-                assertEquals("attachment; filename=" + modulesFile.getFileName().toString(),
+                assertEquals("attachment; filename=" + modulesFile.getName(),
                         response.raw().getHeader("Content-Disposition"));
             }
             catch (spark.HaltException e) {
@@ -741,7 +788,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
             }
         }
         finally {
-            FileUtils.deleteDirectory(modulesDir.toFile());
+            FileUtils.deleteDirectory(modulesDir);
         }
     }
 
@@ -754,7 +801,8 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
     public void testDownloadMediaProducts() throws Exception {
         DownloadTokenBuilder tokenBuilder = new DownloadTokenBuilder(user.getOrg().getId());
         tokenBuilder.useServerSecret();
-        String tokenOrg = tokenBuilder.getToken();
+        AccessToken accessToken = saveTokenToDataBase(tokenBuilder);
+        String tokenOrg = accessToken.getToken();
 
         Map<String, String> params = new HashMap<>();
         params.put(tokenOrg, "");
@@ -778,11 +826,10 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
             MediaProducts prd = new MediaProducts();
             prd.setChannel(channel);
             prd.setRelativeFilename(productsRelativeDirPath + "/" + productsFile.getName());
-            prd.setLastModified(new Date());
             channel.setMediaProducts(prd);
 
             try {
-                assertNotNull(DownloadController.downloadMediaFiles(request, response));
+                assertNotNull(downloadController.downloadMediaFiles(request, response));
 
                 assertEquals(productsFile.getAbsolutePath(), response.raw().getHeader("X-Sendfile"));
                 assertEquals("application/octet-stream", response.raw().getHeader("Content-Type"));
@@ -808,7 +855,8 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
     public void testDownloadMissingFile() throws Exception {
         DownloadTokenBuilder tokenBuilder = new DownloadTokenBuilder(user.getOrg().getId());
         tokenBuilder.useServerSecret();
-        String tokenOrg = tokenBuilder.getToken();
+        AccessToken accessToken = saveTokenToDataBase(tokenBuilder);
+        String tokenOrg = accessToken.getToken();
 
         Map<String, String> params = new HashMap<>();
         params.put(tokenOrg, "");
@@ -819,18 +867,18 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
                 channel.getLabel(), "repomd.xml");
 
         try {
-            assertNotNull(DownloadController.downloadMetadata(request, response));
+            assertNotNull(downloadController.downloadMetadata(request, response));
             fail("HaltException expected for missing file!");
         }
         catch (spark.HaltException e) {
-            assertTrue(e.getStatusCode() == 404, "Not Found Exception expected");
+            assertEquals(404, e.getStatusCode(), "Not Found Exception expected");
         }
     }
 
     @Test
     public void testParseDebPkgFilename1() {
         DownloadController.PkgInfo pack =
-                DownloadController.parsePackageFileName(
+                downloadController.parsePackageFileName(
                         "/rhn/manager/download/debchannel/getPackage/gcc-8-base_8-20180414-1ubuntu2.amd64-deb.deb");
         assertEquals("gcc-8-base", pack.getName());
         assertNull(pack.getEpoch());
@@ -842,7 +890,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
     @Test
     public void testParseDebPkgFilename2() {
         DownloadController.PkgInfo pack =
-                DownloadController.parsePackageFileName(
+                downloadController.parsePackageFileName(
                         "/rhn/manager/download/debchannel/getPackage/python-tornado_4.2.1-1ubuntu3.amd64-deb.deb");
         assertEquals("python-tornado", pack.getName());
         assertNull(pack.getEpoch());
@@ -854,12 +902,72 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
     @Test
     public void testParseDebPkgFilename3() {
         DownloadController.PkgInfo pack =
-                DownloadController.parsePackageFileName(
+                downloadController.parsePackageFileName(
                         "/rhn/manager/download/ubuntu-18.04-amd64-main/getPackage/ruby_1:2.5.1-X.amd64-deb.deb");
         assertEquals("ruby", pack.getName());
         assertEquals("1", pack.getEpoch());
         assertEquals("2.5.1", pack.getVersion());
         assertEquals("X", pack.getRelease());
         assertEquals("amd64-deb", pack.getArch());
+    }
+
+    @Test
+    public void testValidateMinionInPaygShortToken() {
+        CloudPaygManager cloudPaygManager = new CloudPaygManager() {
+            @Override
+            public boolean isPaygInstance() {
+                return true;
+            }
+            @Override
+            public boolean hasSCCCredentials() {
+                return false;
+            }
+        };
+
+        // Test case - Token passed is not a short-token (must fail)
+        DownloadTokenBuilder tokenBuilderFail = new DownloadTokenBuilder(user.getOrg().getId());
+        tokenBuilderFail.useServerSecret();
+        tokenBuilderFail.setExpirationTimeMinutesInTheFuture(360);
+        try {
+            DownloadController.validateMinionInPayg(tokenBuilderFail.getToken(), cloudPaygManager);
+            fail("Long lived token shouldn't have been accepted");
+        }
+        catch (spark.HaltException e) {
+            assertEquals(HttpStatus.SC_FORBIDDEN, e.getStatusCode());
+            assertTrue(e.getBody().contains("Forbidden: Token is expired or is not a short-token"));
+        }
+        catch (JoseException e) {
+            fail("There was an issue when building the test token");
+        }
+
+        // Test case - Token passed is short-lived (must pass)
+        DownloadTokenBuilder tokenBuilderPass = new DownloadTokenBuilder(user.getOrg().getId());
+        tokenBuilderPass.useServerSecret();
+        tokenBuilderPass.setExpirationTimeMinutesInTheFuture(30);
+        try {
+            DownloadController.validateMinionInPayg(tokenBuilderPass.getToken(), cloudPaygManager);
+        }
+        catch (spark.HaltException e) {
+            fail("Short-lived token must've been accepted");
+        }
+        catch (JoseException e) {
+            fail("There was an issue when building the test token");
+        }
+
+        // Test case - Token passed is expired
+        DownloadTokenBuilder tokenBuilderExpired = new DownloadTokenBuilder(user.getOrg().getId());
+        tokenBuilderExpired.useServerSecret();
+        tokenBuilderExpired.setExpirationTimeMinutesInTheFuture(-15);
+        try {
+            DownloadController.validateMinionInPayg(tokenBuilderExpired.getToken(), cloudPaygManager);
+            fail("A token in the past must no be accepted");
+        }
+        catch (spark.HaltException e) {
+            assertEquals(HttpStatus.SC_FORBIDDEN, e.getStatusCode());
+            assertTrue(e.getBody().contains("Forbidden: Short-token is not valid or is expired"));
+        }
+        catch (JoseException e) {
+            fail("There was an issue when building the test token");
+        }
     }
 }

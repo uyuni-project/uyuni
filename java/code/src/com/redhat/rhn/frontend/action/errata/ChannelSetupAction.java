@@ -52,6 +52,7 @@ public class ChannelSetupAction extends RhnListAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm formIn,
                                  HttpServletRequest request,

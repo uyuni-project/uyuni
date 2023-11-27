@@ -50,10 +50,11 @@ public class SyncSystemsSetupAction extends RhnAction implements Listable<Packag
         new CompareSystemSetupAction();
 
     /** {@inheritDoc} */
+    @Override
     public final ActionForward execute(ActionMapping mapping,
-                                 ActionForm formIn,
-                                 HttpServletRequest request,
-                                 HttpServletResponse response) {
+                                       ActionForm formIn,
+                                       HttpServletRequest request,
+                                       HttpServletResponse response) {
 
         RequestContext requestContext = new RequestContext(request);
 
@@ -95,6 +96,7 @@ public class SyncSystemsSetupAction extends RhnAction implements Listable<Packag
      * @param context RequestContext
      * @return List of packages and differences
      */
+    @Override
     public List<PackageMetadata> getResult(RequestContext context) {
         Long sid = context.getRequiredParam(RequestContext.SID);
         Long sid1 = context.getRequiredParam(RequestContext.SID1);

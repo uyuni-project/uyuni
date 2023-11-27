@@ -20,7 +20,6 @@ import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
-import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -36,7 +35,6 @@ import com.redhat.rhn.domain.kickstart.KickstartVirtualizationType;
 import com.redhat.rhn.domain.kickstart.RegistrationType;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
-import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnpackage.profile.Profile;
 import com.redhat.rhn.domain.rhnpackage.profile.ProfileFactory;
@@ -52,7 +50,6 @@ import com.redhat.rhn.frontend.dto.ProfileDto;
 import com.redhat.rhn.frontend.dto.kickstart.CobblerProfileDto;
 import com.redhat.rhn.frontend.dto.kickstart.KickstartDto;
 import com.redhat.rhn.manager.action.ActionManager;
-import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerSystemCreateCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.manager.profile.ProfileManager;
@@ -69,11 +66,9 @@ import org.apache.logging.log4j.Logger;
 import org.cobbler.CobblerConnection;
 import org.cobbler.SystemRecord;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -131,7 +126,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
     protected boolean cobblerOnly;
     private KickstartSession kickstartSession;
     private Date scheduleDate;
-    private List packagesToInstall;
+    private List<Map<String, Long>> packagesToInstall;
     private String profileType;
     private String proxyHost;
     private Server targetServer;
@@ -346,13 +341,11 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
     }
 
 
-    private void initialize(Long selectedHostServerId,
-            Long selectedTargetServerId,
-            User userIn) {
+    private void initialize(Long selectedHostServerId, Long selectedTargetServerId, User userIn) {
 
         log.debug("Initializing with selectedHostServerId={}, selectedTargetServerId={}", selectedHostServerId,
                 selectedTargetServerId);
-        this.setPackagesToInstall(new LinkedList());
+        this.setPackagesToInstall(new LinkedList<>());
 
         // There must always be a host server present.
 
@@ -383,7 +376,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
     public DataResult<KickstartDto> getKickstartProfiles() {
         log.debug("getKickstartProfiles()");
         DataResult<KickstartDto> retval = new DataResult<KickstartDto>(
-                Collections.EMPTY_LIST);
+                Collections.emptyList());
 
         // Profiles are associated with the host; the target system might not be created
         // yet.  Also, the host will be the one performing the kickstart, so the profile
@@ -473,7 +466,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
             return ProfileManager.compatibleWithChannel(this.ksdata.getKickstartDefaults().getKstree().getChannel(),
                     user.getOrg(), null);
         }
-        return Collections.EMPTY_LIST;
+        return Collections.emptyList();
 
     }
 
@@ -521,8 +514,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
             return storeInternal();
         }
         catch (TaskomaticApiException e) {
-            log.error("Taskomatic Exception during kickstart schedule:");
-            log.error(e);
+            log.error("Taskomatic Exception during kickstart schedule:", e);
             return new ValidatorError("taskscheduler.down");
         }
     }
@@ -776,7 +768,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
 
         // We will schedule the kickstart action against the host server, since the host
         // server is the liason for the target server.
-        Set fileList = Collections.EMPTY_SET;
+        Set fileList = Collections.emptySet();
 
         if (!isCobblerOnly()) {
             fileList = ksdata.getPreserveFileLists();
@@ -904,7 +896,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
 
 
         // Add child channels to the key
-        if (ksdata.getChildChannels() != null && ksdata.getChildChannels().size() > 0) {
+        if (ksdata.getChildChannels() != null && !ksdata.getChildChannels().isEmpty()) {
             Iterator i = ksdata.getChildChannels().iterator();
             log.debug("Add the child Channels");
             while (i.hasNext()) {
@@ -951,7 +943,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
         log.debug("PROFILE_TYPE={}", profileTypeIn);
 
         if (profileTypeIn == null ||
-                profileTypeIn.length() == 0 || // TODO: fix this hack
+                profileTypeIn.isEmpty() || // TODO: fix this hack
                 profileTypeIn.equals(TARGET_PROFILE_TYPE_NONE)) {
             return null;
         }
@@ -1046,102 +1038,13 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
     }
 
     /**
-     * Get the id of the Package installed for this KS.  Here we'll verify that the
-     * kickstart package exists in the host server's tools channel.  The host server will
-     * need it to perform necessary actions on either itself or the target system (if
-     * different).
-     * @return Long id of Package used for this KS.
+     * Validate if packages for autoinstallation are installed
+     * @return ValidatorError when packages are missing; null otherwise
      */
     public ValidatorError validateKickstartPackage() {
-        if (cobblerOnly || server.asMinionServer().isPresent()) {
-            // cobbler only and minions do not need spacewalk-koan
-            return null;
-        }
-
-        Server hostServer = getHostServer();
-        Set<Long> serverChannelIds = new HashSet<>();
-        for (Channel c : hostServer.getChannels()) {
-            serverChannelIds.add(c.getId());
-        }
-
-        // check for package among channels the server is subscribed to.
-        // If one is found, return
-        Map<String, Long> pkgToInstall = findKickstartPackageToInstall(serverChannelIds);
-        if (pkgToInstall != null) {
-            this.packagesToInstall.add(pkgToInstall);
-            log.debug("    packagesToInstall: {}", packagesToInstall);
-            return null;
-        }
-
-        // otherwise search in channels that can be subscribed.
-        // If one is found, subscribe channel and return
-        Set<Long> subscribableChannelIds = SystemManager.subscribableChannelIds(
-                hostServer.getId(), this.user.getId(), hostServer.getBaseChannel().getId());
-        pkgToInstall = findKickstartPackageToInstall(subscribableChannelIds);
-
-        if (pkgToInstall != null) {
-            this.packagesToInstall.add(pkgToInstall);
-            log.debug("    packagesToInstall: {}", packagesToInstall);
-            Long cid = pkgToInstall.get("channel_id");
-            log.debug("    Subscribing to: {}", cid);
-            Channel c = ChannelFactory.lookupById(cid);
-            try {
-                SystemManager.subscribeServerToChannel(this.user, server, c);
-                log.debug("    Subscribed: {}", cid);
-            }
-            catch (PermissionException pe) {
-                return new ValidatorError("kickstart.schedule.cantsubscribe");
-            }
-            catch (Exception e) {
-                return new ValidatorError("kickstart.schedule.cantsubscribe.channel",
-                        c.getName(), server.getName());
-            }
-            return null;
-        }
-
-        return new ValidatorError("kickstart.schedule.nopackage",
-                this.getKsdata().getChannel().getName());
-    }
-
-    /**
-     * Looks for the kickstart package name for the traditional system ('management' entitlement) among the
-     * specified channels and, if it is found, it returns the highest available version in Map form.
-     * @param channelIds channels the server could be subscribed to
-     * @return a ValidationError or null
-     */
-    public Map<String, Long> findKickstartPackageToInstall(Collection<Long> channelIds) {
-        List<Map<String, Long>> results = new LinkedList<>();
-
-        for (Long chnnelId : channelIds) {
-            log.debug("    Checking on:{} for: {}", chnnelId, this.ksdata.getKickstartPackageNameForTraditional());
-            List<Map<String, Object>> packages = ChannelManager.listLatestPackagesEqual(
-                    chnnelId, this.ksdata.getKickstartPackageNameForTraditional());
-            log.debug("    size: {}", packages.size());
-
-            for (Map<String, Object> aPackage : packages) {
-                log.debug("    Found the package: {}", aPackage);
-                Map<String, Long> result = new HashMap<>();
-                result.put("name_id", (Long)aPackage.get("name_id"));
-                result.put("evr_id", (Long)aPackage.get("evr_id"));
-                result.put("arch_id", (Long)aPackage.get("package_arch_id"));
-                result.put("channel_id", chnnelId);
-
-                results.add(result);
-            }
-        }
-
-        if (!results.isEmpty()) {
-            return Collections.max(results, (o1In, o2In) -> {
-                PackageEvr evr1 = PackageEvrFactory.lookupPackageEvrById(
-                        o1In.get("evr_id"));
-                PackageEvr evr2 = PackageEvrFactory.lookupPackageEvrById(
-                        o2In.get("evr_id"));
-                return evr1.compareTo(evr2);
-            });
-        }
-        else {
-            return null;
-        }
+        // traditional client is not supported anymore and cobblerOnly
+        // and minions do not need special packages for kickstart/autoinstallation
+        return null;
     }
 
     /**
@@ -1155,18 +1058,18 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
     // Check to make sure up2date is 2.9.0
     protected ValidatorError validateUp2dateVersion() {
         Server hostServer = getHostServer();
-        List packages = PackageManager.systemPackageList(hostServer.getId(), null);
+        List<PackageListItem> packages = PackageManager.systemPackageList(hostServer.getId(), null);
         if (packages != null) {
             log.debug("    packages.size() : {}", packages.size());
         }
         // PackageListItem
-        Iterator i = packages.iterator();
+        Iterator<PackageListItem> i = packages.iterator();
         String up2dateepoch = null;
         String up2dateversion = null;
         String up2daterelease = null;
 
         while (i.hasNext()) {
-            PackageListItem pli = (PackageListItem) i.next();
+            PackageListItem pli = i.next();
             if (pli.getName().equals("dnf-plugin-spacewalk")) {
                 // found dnf-plugin-spacewalk - returning
                 return null;
@@ -1224,7 +1127,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
             }
             Package p = PackageFactory.lookupByIdAndUser(packageId, this.user);
 
-            Map evrmap = new HashMap();
+            Map<String, Long> evrmap = new HashMap<>();
             evrmap.put("name_id", p.getPackageName().getId());
             evrmap.put("evr_id", p.getPackageEvr().getId());
             evrmap.put("arch_id", p.getPackageArch().getId());
@@ -1246,7 +1149,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
             return SystemManager.systemsSubscribedToChannel(
                     this.getKsdata().getKickstartDefaults().getKstree().getChannel(), user);
         }
-        return Collections.EMPTY_LIST;
+        return Collections.emptyList();
     }
 
 

@@ -19,9 +19,11 @@ import static spark.Spark.get;
 import static spark.Spark.halt;
 import static spark.Spark.head;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.util.StringUtil;
+import com.redhat.rhn.domain.channel.AccessToken;
 import com.redhat.rhn.domain.channel.AccessTokenFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -31,7 +33,9 @@ import com.redhat.rhn.domain.channel.Modules;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
+import com.redhat.rhn.domain.server.MinionServer;
 
+import com.suse.cloud.CloudPaygManager;
 import com.suse.manager.webui.utils.TokenBuilder;
 import com.suse.utils.Opt;
 
@@ -50,7 +54,10 @@ import org.jose4j.jwt.consumer.JwtConsumerBuilder;
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.Path;
 import java.security.Key;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
@@ -70,42 +77,38 @@ public class DownloadController {
 
     private static final Key KEY = TokenBuilder.getKeyForSecret(
             TokenBuilder.getServerSecret().orElseThrow(
-                        () -> new IllegalArgumentException(
-                                "Server has no key configured")));
+                        () -> new IllegalArgumentException("Server has no key configured")));
     private static final JwtConsumer JWT_CONSUMER = new JwtConsumerBuilder()
             .setVerificationKey(KEY)
             .build();
 
     // cached value to avoid multiple calls
-    private static final String MOUNT_POINT_PATH = Config.get()
-            .getString(ConfigDefaults.MOUNT_POINT);
+    private final String mountPointPath;
+
+    private final CloudPaygManager cloudPaygManager;
+    private static final long EXPIRATION_TIME_MINUTES_IN_THE_FUTURE_TEMP_TOKEN = Config.get().getInt(
+            ConfigDefaults.TEMP_TOKEN_LIFETIME,
+            60
+    );
 
     /**
      * If true, check via JWT tokens that files requested by a minion are actually accessible by that minon. Turning
      * this flag to false disables the checks.
      */
-    private static boolean checkTokens = Config.get().getBoolean(ConfigDefaults.SALT_CHECK_DOWNLOAD_TOKENS);
+    private boolean checkTokens;
 
     /**
      * Invoked from Router. Initialize routes for Systems Views.
      */
-    public static void initRoutes() {
-        get("/manager/download/:channel/getPackage/:file",
-                DownloadController::downloadPackage);
-        get("/manager/download/:channel/getPackage/:org/:checksum/:file",
-                DownloadController::downloadPackage);
-        get("/manager/download/:channel/repodata/:file",
-                DownloadController::downloadMetadata);
-        get("/manager/download/:channel/media.1/:file",
-                DownloadController::downloadMediaFiles);
-        head("/manager/download/:channel/getPackage/:file",
-                DownloadController::downloadPackage);
-        head("/manager/download/:channel/getPackage/:org/:checksum/:file",
-                DownloadController::downloadPackage);
-        head("/manager/download/:channel/repodata/:file",
-                DownloadController::downloadMetadata);
-        head("/manager/download/:channel/media.1/:file",
-                DownloadController::downloadMediaFiles);
+    public void initRoutes() {
+        get("/manager/download/:channel/getPackage/:file", this::downloadPackage);
+        get("/manager/download/:channel/getPackage/:org/:checksum/:file", this::downloadPackage);
+        get("/manager/download/:channel/repodata/:file", this::downloadMetadata);
+        get("/manager/download/:channel/media.1/:file", this::downloadMediaFiles);
+        head("/manager/download/:channel/getPackage/:file", this::downloadPackage);
+        head("/manager/download/:channel/getPackage/:org/:checksum/:file", this::downloadPackage);
+        head("/manager/download/:channel/repodata/:file", this::downloadMetadata);
+        head("/manager/download/:channel/media.1/:file", this::downloadMediaFiles);
     }
 
     /**
@@ -113,11 +116,11 @@ public class DownloadController {
      * Public only for unit tests.
      */
     public static class PkgInfo {
-        private String name;
-        private String version;
-        private String release;
-        private String epoch;
-        private String arch;
+        private final String name;
+        private final String version;
+        private final String release;
+        private final String epoch;
+        private final String arch;
         private Optional<Long> orgId = Optional.empty();
         private Optional<String> checksum = Optional.empty();
 
@@ -218,7 +221,21 @@ public class DownloadController {
         }
     }
 
-    private DownloadController() {
+    /**
+     * Constructor
+     */
+    public DownloadController() {
+        this(GlobalInstanceHolder.PAYG_MANAGER);
+    }
+
+    /**
+     * Constructor
+     * @param cloudPaygManagerIn the cloud payg manager
+     */
+    public DownloadController(CloudPaygManager cloudPaygManagerIn) {
+        cloudPaygManager = cloudPaygManagerIn;
+        checkTokens = Config.get().getBoolean(ConfigDefaults.SALT_CHECK_DOWNLOAD_TOKENS);
+        mountPointPath = Config.get().getString(ConfigDefaults.MOUNT_POINT);
     }
 
     /**
@@ -227,7 +244,7 @@ public class DownloadController {
      * @param checkTokensIn true if tokens should be checked
      * accessible by that minon
      */
-    public static void setCheckTokens(boolean checkTokensIn) {
+    public void setCheckTokens(boolean checkTokensIn) {
         checkTokens = checkTokensIn;
     }
 
@@ -238,19 +255,24 @@ public class DownloadController {
      * @param response the response object
      * @return an object to make spark happy
      */
-    public static Object downloadMetadata(Request request, Response response) {
+    public Object downloadMetadata(Request request, Response response) {
         String channelLabel = request.params(":channel");
         String filename = request.params(":file");
-        File file = new File(new File("/var/cache/rhn/repodata", channelLabel),
-                filename).getAbsoluteFile();
+        String mountPoint = Config.get().getString(ConfigDefaults.REPOMD_CACHE_MOUNT_POINT, "/var/cache");
+        String prefix = Config.get().getString(ConfigDefaults.REPOMD_PATH_PREFIX, "rhn/repodata");
+
+        File file = Path.of(mountPoint, prefix, channelLabel, filename).toAbsolutePath().toFile();
 
         if (!file.exists() && (filename.endsWith(".asc") || filename.endsWith(".key"))) {
             halt(HttpStatus.SC_NOT_FOUND,
                     String.format("Key or signature file not provided: %s", filename));
         }
+        validatePaygCompliant(cloudPaygManager);
+
+        String token = getTokenFromRequest(request);
+        validateMinionInPayg(token, cloudPaygManager);
 
         if (checkTokens) {
-            String token = getTokenFromRequest(request);
             validateToken(token, channelLabel, filename);
         }
 
@@ -272,6 +294,7 @@ public class DownloadController {
         return downloadFile(request, response, file);
     }
 
+
     /**
      * Download media metadata taking the channel and filename from the request path.
      *
@@ -279,14 +302,18 @@ public class DownloadController {
      * @param response the response object
      * @return an object to make spark happy
      */
-    public static Object downloadMediaFiles(Request request, Response response) {
+    public Object downloadMediaFiles(Request request, Response response) {
         String channelLabel = request.params(":channel");
         String filename = request.params(":file");
+        validatePaygCompliant(cloudPaygManager);
+
+        String token = getTokenFromRequest(request);
+        validateMinionInPayg(token, cloudPaygManager);
 
         if (checkTokens) {
-            String token = getTokenFromRequest(request);
             validateToken(token, channelLabel, filename);
         }
+
         if (filename.equals("products")) {
             File file = getMediaProductsFile(ChannelFactory.lookupByLabel(channelLabel));
             if (file != null && file.exists()) {
@@ -305,14 +332,14 @@ public class DownloadController {
      * @param channel - the channel
      * @return comps file to be used for this channel
      */
-    private static File getCompsFile(Channel channel) {
+    private File getCompsFile(Channel channel) {
         Comps comps = channel.getComps();
 
         if (comps == null && channel.isCloned()) {
             comps = channel.getOriginal().getComps();
         }
         if (comps != null) {
-            return new File(MOUNT_POINT_PATH, comps.getRelativeFilename())
+            return new File(mountPointPath, comps.getRelativeFilename())
                     .getAbsoluteFile();
         }
 
@@ -327,14 +354,14 @@ public class DownloadController {
      * @param channel - the channel
      * @return modules file to be used for this channel
      */
-    private static File getModulesFile(Channel channel) {
-        Modules modules = channel.getLatestModules();
+    private File getModulesFile(Channel channel) {
+        Modules modules = channel.getModules();
 
         if (modules == null && channel.isCloned()) {
-            modules = channel.getOriginal().getLatestModules();
+            modules = channel.getOriginal().getModules();
         }
         if (modules != null) {
-            return new File(MOUNT_POINT_PATH, modules.getRelativeFilename()).getAbsoluteFile();
+            return new File(mountPointPath, modules.getRelativeFilename()).getAbsoluteFile();
         }
 
         return null;
@@ -348,14 +375,14 @@ public class DownloadController {
      * @param channel - the channel
      * @return media products file to be used for this channel
      */
-    private static File getMediaProductsFile(Channel channel) {
+    private File getMediaProductsFile(Channel channel) {
         MediaProducts product = channel.getMediaProducts();
 
         if (product == null && channel.isCloned()) {
             product = channel.getOriginal().getMediaProducts();
         }
         if (product != null) {
-            return new File(MOUNT_POINT_PATH, product.getRelativeFilename())
+            return new File(mountPointPath, product.getRelativeFilename())
                     .getAbsoluteFile();
         }
 
@@ -369,7 +396,7 @@ public class DownloadController {
      * @param response the response object
      * @return an object to make spark happy
      */
-    public static Object downloadPackage(Request request, Response response) {
+    public Object downloadPackage(Request request, Response response) {
 
         // we can't use request.params(:file)
         // See https://bugzilla.suse.com/show_bug.cgi?id=972158
@@ -384,13 +411,15 @@ public class DownloadController {
         }
         catch (URISyntaxException e) {
             LOG.error("Unable to parse: {}", request.url());
-            halt(HttpStatus.SC_INTERNAL_SERVER_ERROR,
-                    String.format("url '%s' is malformed", request.url()));
+            halt(HttpStatus.SC_INTERNAL_SERVER_ERROR, String.format("url '%s' is malformed", request.url()));
         }
 
         String basename = FilenameUtils.getBaseName(path);
+        validatePaygCompliant(cloudPaygManager);
+        String token = getTokenFromRequest(request);
+        validateMinionInPayg(token, cloudPaygManager);
+
         if (checkTokens) {
-            String token = getTokenFromRequest(request);
             validateToken(token, channel, basename);
         }
 
@@ -403,8 +432,7 @@ public class DownloadController {
             if (LOG.isDebugEnabled()) {
                 LOG.error("{}: Package not found in channel: {}", path, StringUtil.sanitizeLogInput(channel));
             }
-            halt(HttpStatus.SC_NOT_FOUND,
-                 String.format("%s not found in %s", basename, channel));
+            halt(HttpStatus.SC_NOT_FOUND, String.format("%s not found in %s", basename, channel));
         }
 
         File file = new File(mountPoint, pkg.getPath()).getAbsoluteFile();
@@ -418,16 +446,16 @@ public class DownloadController {
      * @param path url path
      * @return name, epoch, vesion, release, arch of package
      */
-    public static PkgInfo parsePackageFileName(String path) {
+    public PkgInfo parsePackageFileName(String path) {
         List<String> parts = Arrays.asList(path.split("/"));
         String extension = FilenameUtils.getExtension(path);
         String basename = FilenameUtils.getBaseName(path);
         String arch = StringUtils.substringAfterLast(basename, ".");
         String rest = StringUtils.substringBeforeLast(basename, ".");
-        String release = "";
-        String name = "";
-        String version = "";
-        String epoch = "";
+        String release;
+        String name;
+        String version;
+        String epoch;
 
         // Debian packages names need spacial handling
         if ("deb".equalsIgnoreCase(extension) || "udeb".equalsIgnoreCase(extension)) {
@@ -460,16 +488,23 @@ public class DownloadController {
      * @param request the request object
      * @return the token
      */
-    private static String getTokenFromRequest(Request request) {
+    @SuppressWarnings({"javasecurity:S5145"}) // controlled by log level
+    private String getTokenFromRequest(Request request) {
         Set<String> queryParams = request.queryParams();
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("URL: {}", request.url());
+            LOG.debug("Query Params: {}", request.queryString());
+            for (String hdr: request.headers()) {
+                LOG.debug("Header: {}: {}", hdr, request.headers(hdr));
+            }
+        }
         String header = request.headers("X-Mgr-Auth");
         header = StringUtils.isNotBlank(header) ? header : getTokenForDebian(request);
         if (queryParams.isEmpty() && StringUtils.isBlank(header)) {
             if (LOG.isInfoEnabled()) {
-                LOG.info("Forbidden: You need a token to access {}", request.pathInfo().replaceAll("[\n\r\t]", "_"));
+                LOG.info("Forbidden: You need a token to access {}", StringUtil.sanitizeLogInput(request.pathInfo()));
             }
-            halt(HttpStatus.SC_FORBIDDEN,
-                 String.format("You need a token to access %s", request.pathInfo()));
+            halt(HttpStatus.SC_FORBIDDEN, String.format("You need a token to access %s", request.pathInfo()));
         }
         if ((queryParams.size() > 1 && header == null) ||
                 (!queryParams.isEmpty() && header != null)) {
@@ -489,7 +524,7 @@ public class DownloadController {
      * @param request the request object
      * @return the token header
      */
-    private static String getTokenForDebian(Request request) {
+    private String getTokenForDebian(Request request) {
         String authorizationHeader = request.headers("Authorization");
         if (authorizationHeader != null && authorizationHeader.startsWith("Basic")) {
             String encodedData = authorizationHeader.substring("Basic".length()).trim();
@@ -499,20 +534,35 @@ public class DownloadController {
     }
 
     /**
+     * @param token the token
+     * @return the last characters of the token
+     */
+    private static String sanitizeToken(String token) {
+        if (token != null) {
+            String tk = StringUtil.sanitizeLogInput(token);
+            return tk.substring(tk.length() - 20);
+        }
+        return token;
+    }
+
+    /**
      * Validate a given token for a given channel.
      *
      * @param token the token to validate
      * @param channel the channel
      * @param filename the filename
      */
-    private static void validateToken(String token, String channel, String filename) {
+    private void validateToken(String token, String channel, String filename) {
 
-        AccessTokenFactory.lookupByToken(token).ifPresent(obj -> {
-            if (!obj.getValid()) {
-                LOG.info(String.format("Forbidden: invalid token %s to access %s", token, filename));
+        AccessTokenFactory.lookupByToken(token).ifPresentOrElse(obj -> {
+            Instant now = Instant.now();
+            if (!obj.getValid() || now.isAfter(obj.getExpiration().toInstant())) {
+                LOG.info("Forbidden: invalid token ...{} to access {}", sanitizeToken(token), filename);
                 halt(HttpStatus.SC_FORBIDDEN, "This token is not valid");
             }
-        });
+        }, () -> LOG.debug("Token ...{} to access {} doesn't exists in the database - could be an image build token",
+                sanitizeToken(token), filename)
+        );
         try {
             JwtClaims claims = JWT_CONSUMER.processToClaims(token);
 
@@ -528,14 +578,14 @@ public class DownloadController {
                     // new versions of getStringListClaimValue() return an empty list instead of null
                     .filter(l -> !l.isEmpty());
             Opt.consume(channelClaim,
-                    () -> LOG.info(String.format("Token %s does provide access to any channel", token)),
+                    () -> LOG.info("Token ...{} does provide access to any channel",
+                            sanitizeToken(token)),
                     channels -> {
                 if (!channels.contains(channel)) {
-                    LOG.info(String.format("Forbidden: Token %s does not provide access to channel %s",
-                                           token, channel));
-                    LOG.info(String.format("Token allow access only to the following channels: %s",
-                                           String.join(",", channels)));
-                    halt(HttpStatus.SC_FORBIDDEN, "Token " + token + " does not provide access to channel " + channel);
+                    LOG.info("Forbidden: Token ...{} does not provide access to channel {}",
+                            sanitizeToken(token), channel);
+                    LOG.info("Token allow access only to the following channels: {}", String.join(",", channels));
+                    halt(HttpStatus.SC_FORBIDDEN, "Token does not provide access to channel " + channel);
                 }
             });
 
@@ -546,16 +596,28 @@ public class DownloadController {
                 halt(HttpStatus.SC_BAD_REQUEST, "Token does not specify the organization");
             }, orgId -> {
                 if (!ChannelFactory.isAccessibleBy(channel, orgId)) {
-                    LOG.info(String.format("Forbidden: Token does not provide access to channel %s", channel));
+                    LOG.info("Forbidden: Token does not provide access to channel {}", channel);
                     halt(HttpStatus.SC_FORBIDDEN, "Token does not provide access to channel " + channel);
                 }
             });
         }
         catch (InvalidJwtException | MalformedClaimException e) {
-            LOG.info(String.format("Forbidden: Token %s is not valid to access %s in %s: %s",
-                    token, filename, channel, e.getMessage()));
+            LOG.info("Forbidden: Token ...{} is not valid to access {} in {}: {}",
+                    sanitizeToken(token), filename, channel, e.getMessage());
             halt(HttpStatus.SC_FORBIDDEN,
                  String.format("Token is not valid to access %s in %s: %s", filename, channel, e.getMessage()));
+        }
+    }
+
+    /**
+     * Validate if the server is PAYG any compliant.
+     *
+     * @param mgr the Cloud PAYG Manager object
+     */
+    private void validatePaygCompliant(CloudPaygManager mgr) {
+        if (!mgr.isCompliant()) {
+            LOG.info("Forbidden: SUSE Manager PAYG Server is not compliant");
+            halt(HttpStatus.SC_FORBIDDEN, "Server is not compliant. Please check the logs");
         }
     }
 
@@ -566,7 +628,7 @@ public class DownloadController {
      * @param response the response object
      * @param file description of the file to send
      */
-    private static Object downloadFile(Request request, Response response, File file) {
+    private Object downloadFile(Request request, Response response, File file) {
         if (!file.exists()) {
             LOG.info("404 - File not found: {}", file.getAbsolutePath());
             halt(HttpStatus.SC_NOT_FOUND, "File not found: " + request.url());
@@ -575,5 +637,52 @@ public class DownloadController {
         response.header("Content-Disposition", "attachment; filename=" + file.getName());
         response.header("X-Sendfile", file.getAbsolutePath());
         return response;
+    }
+
+    /**
+     * validateMinionInPayg In SUMA payg instances, checks if the Minion that corresponds to the given token is BYOS
+     * and if SCC credentials are added. In BYOS and no SCC credentials it halts, and it does nothing otherwise.
+     * @param token the token used to retrieve the Minion from
+     * @param cloudPaygManager Payg manager used to do some checks
+     */
+    public static void validateMinionInPayg(String token, CloudPaygManager cloudPaygManager) {
+        if (!cloudPaygManager.isPaygInstance()) {
+            return;
+        }
+
+        Optional<AccessToken> accessToken = AccessTokenFactory.lookupByToken(token);
+        if (accessToken.isPresent()) {
+            cloudPaygManager.checkRefreshCache(true); // Refresh to have latest SCC data
+            MinionServer minion = accessToken.get().getMinion();
+            if (!cloudPaygManager.hasSCCCredentials() && !minion.isPayg()) {
+                halt(HttpStatus.SC_FORBIDDEN,
+                        "Bring-your-own-subscription instances in Pay-as-you-go SUMA instances is not " +
+                        "allowed without SCC credentials.");
+            }
+        }
+        else {
+            try {
+                JwtClaims claims = JWT_CONSUMER.processToClaims(token);
+                boolean isValid = Optional.ofNullable(claims.getExpirationTime())
+                        .map(exp -> {
+                            long timeDeltaSeconds = Duration.ofMinutes(EXPIRATION_TIME_MINUTES_IN_THE_FUTURE_TEMP_TOKEN)
+                                    .toSeconds();
+                            long expireDeltaSeconds = exp.getValue() - NumericDate.now().getValue();
+                            return expireDeltaSeconds > 0 && expireDeltaSeconds < timeDeltaSeconds;
+                        })
+                        .orElse(false);
+
+                if (!isValid) {
+                    LOG.info("Forbidden: Token is expired or is not a short-token");
+                    halt(HttpStatus.SC_FORBIDDEN, "Forbidden: Token is expired or is not a short-token");
+                }
+            }
+            catch (InvalidJwtException | MalformedClaimException e) {
+                LOG.info("Forbidden: Short-token ...{} is not valid or is expired: {}",
+                        sanitizeToken(token), e.getMessage());
+                halt(HttpStatus.SC_FORBIDDEN,
+                        "Forbidden: Short-token is not valid or is expired");
+            }
+        }
     }
 }

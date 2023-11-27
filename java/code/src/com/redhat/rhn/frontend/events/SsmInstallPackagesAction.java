@@ -36,10 +36,12 @@ import java.util.Set;
  */
 public class SsmInstallPackagesAction extends SsmPackagesAction {
 
+    @Override
     protected String getOperationName() {
         return "ssm.package.install.operationname";
     }
 
+    @Override
     protected List<Long> getAffectedServers(SsmPackageEvent event, User u) {
         SsmInstallPackagesEvent sipe = (SsmInstallPackagesEvent) event;
         Long channelId = sipe.getChannelId();

@@ -30,7 +30,7 @@ import org.junit.jupiter.api.Test;
 public class CreateOrgCommandTest extends BaseTestCaseWithUser {
 
     @Test
-    public void testCreateOrg() throws Exception {
+    public void testCreateOrg() {
         CreateOrgCommand cmd = new CreateOrgCommand(
                 "newOrg" + TestUtils.randomString(),
                 "login" + TestUtils.randomString(),
@@ -43,7 +43,7 @@ public class CreateOrgCommandTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testFailCreate() throws Exception {
+    public void testFailCreate() {
         CreateOrgCommand cmd = new CreateOrgCommand(
                 "newOrg" + TestUtils.randomString(),
                 user.getLogin(),

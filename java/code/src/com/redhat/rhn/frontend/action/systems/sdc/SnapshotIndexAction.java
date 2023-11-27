@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.action.systems.sdc;
 
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -34,8 +35,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * SnapshotIndexAction
  */
-public class SnapshotIndexAction extends RhnAction
-        implements Listable<Map<String, Object>> {
+public class SnapshotIndexAction extends RhnAction implements Listable<Row> {
 
     /**
      * {@inheritDoc}
@@ -58,7 +58,8 @@ public class SnapshotIndexAction extends RhnAction
     }
 
     /** {@inheritDoc} */
-    public List<Map<String, Object>> getResult(RequestContext context) {
+    @Override
+    public List<Row> getResult(RequestContext context) {
         Long sid = context.getRequiredParam("sid");
         return SystemManager.systemSnapshots(sid, null);
     }

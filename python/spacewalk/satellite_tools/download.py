@@ -153,6 +153,7 @@ class DownloadThread(Thread):
         # pylint: disable=E1101
         self.curl = pycurl.Curl()
         self.mirror = 0
+        self.failed_pkgs = set()
 
     @staticmethod
     def __is_file_done(local_path=None, file_obj=None, checksum_type=None, checksum=None):
@@ -174,13 +175,13 @@ class DownloadThread(Thread):
             # No codes at all or some specified codes
             # 58, 77 - Couple of curl error codes observed in multithreading on RHEL 7 - probably a bug
             if (retrycode is None and code is None) or (retrycode in opts.retrycodes or code in [58, 77]):
-                log2(0, 2, "ERROR: Download failed: %s - %s. Retrying..." % (url, sys.exc_info()[1]),
+                log2(0, 2, "WARNING: Download failed: %s - %s. Retrying..." % (url, sys.exc_info()[1]),
                      stream=sys.stderr)
                 return True
 
         # 14 - HTTP Error
         if retry < (mirrors - 1) and retrycode == 14:
-            log2(0, 2, "ERROR: Download failed: %s - %s. Trying next mirror..." % (url, sys.exc_info()[1]),
+            log2(0, 2, "WARNING: Download failed: %s - %s. Trying next mirror..." % (url, sys.exc_info()[1]),
                  stream=sys.stderr)
             return True
 
@@ -201,16 +202,24 @@ class DownloadThread(Thread):
                                    checksum=params['checksum']):
                 return True
 
+        # 14 => HTTPError (https://github.com/rpm-software-management/urlgrabber/blob/1e6d2debe79efdd1ba2f39913dc808723e51a7f7/urlgrabber/grabber.py#L757)
+        retrycodes = URLGrabberOptions().retrycodes
+        if 14 not in retrycodes:
+            retrycodes.append(14)
+
         opts = URLGrabberOptions(
             ssl_ca_cert=params["ssl_ca_cert"],
             ssl_cert=params["ssl_client_cert"],
             ssl_key=params["ssl_client_key"],
             range=params["bytes_range"],
             proxies=params["proxies"],
-            http_headers=tuple(params["http_headers"].items()),
+            http_headers=params["http_headers"],
             timeout=params["timeout"],
             minrate=params["minrate"],
+            logspec=params["urlgrabber_logspec"],
             keepalive=True,
+            retry=3,
+            retrycodes=retrycodes,
         )
 
         mirrors = len(params['urls'])
@@ -274,6 +283,9 @@ class DownloadThread(Thread):
                 # log_obj must be thread-safe
                 self.parent.log_obj.log(success, os.path.basename(params['relative_path']))
             self.queue.task_done()
+            if not success:
+                package = os.path.basename(params['target_file'])
+                self.failed_pkgs.add(package)
         self.curl.close()
 
 
@@ -312,6 +324,7 @@ class ThreadedDownloader:
         # WORKAROUND - BZ #1439758 - ensure first item in queue is performed alone to properly setup NSS
         self.first_in_queue_done = False
         self.first_in_queue_lock = Lock()
+        self.failed_pkgs = set()
 
     def set_log_obj(self, log_obj):
         self.log_obj = log_obj
@@ -358,14 +371,16 @@ class ThreadedDownloader:
 
             # wait to finish
             try:
-                while any(t.isAlive() for t in started_threads):
+                while any(t.is_alive() for t in started_threads):
                     time.sleep(1)
             except KeyboardInterrupt:
                 e = sys.exc_info()[1]
                 self.fail_download(e)
-                while any(t.isAlive() for t in started_threads):
+                while any(t.is_alive() for t in started_threads):
                     time.sleep(1)
                 break
+            # accumulate all failed packages
+            self.failed_pkgs = {pkg for t in started_threads for pkg in t.failed_pkgs}
 
         # raise first detected exception if any
         if self.exception:

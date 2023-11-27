@@ -33,10 +33,9 @@ public class CPUArchTest extends RhnBaseTestCase {
      * Simple test to make sure we can lookup CPUArchs from
      * the db. Turn on hibernate.show_sql to make sure hibernate
      * is only going to the db once.
-     * @throws Exception HibernateException
      */
     @Test
-    public void testCPUArch() throws Exception {
+    public void testCPUArch() {
 
         String testname = "sun4u";
         String invalid = "foobar4me";

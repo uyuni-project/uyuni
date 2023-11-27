@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.taskomatic.task;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.credentials.Credentials;
@@ -26,9 +27,9 @@ import com.suse.scc.SCCSystemRegistrationManager;
 import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCConfig;
 import com.suse.scc.client.SCCWebClient;
+import com.suse.scc.model.SCCVirtualizationHostJson;
 
 import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -50,14 +51,21 @@ public class ForwardRegistrationTask extends RhnJavaJob {
     }
 
     @Override
-    public void execute(JobExecutionContext arg0) throws JobExecutionException {
+    public void execute(JobExecutionContext arg0) {
         if (!ConfigDefaults.get().isForwardRegistrationEnabled()) {
-            log.debug("Forwarding registrations disabled");
-            return;
+            if (GlobalInstanceHolder.PAYG_MANAGER.isPaygInstance() &&
+                    GlobalInstanceHolder.PAYG_MANAGER.hasSCCCredentials()) {
+                log.warn("SUSE Manager PAYG instances must forward registration data to SCC when " +
+                        "credentials are provided. Data will be sent independently of the configuration setting.");
+            }
+            else {
+                log.debug("Forwarding registrations disabled");
+                return;
+            }
         }
         if (Config.get().getString(ContentSyncManager.RESOURCE_PATH) == null) {
 
-            List<Credentials> credentials = CredentialsFactory.lookupSCCCredentials();
+            List<Credentials> credentials = CredentialsFactory.listSCCCredentials();
             Optional<Credentials> optPrimCred = credentials.stream()
                     .filter(Credentials::isPrimarySCCCredential)
                     .findFirst();
@@ -100,8 +108,12 @@ public class ForwardRegistrationTask extends RhnJavaJob {
             List<SCCRegCacheItem> deregister = SCCCachingFactory.listDeregisterItems();
             log.debug("{} RegCacheItems found to delete", deregister.size());
 
+            List<SCCVirtualizationHostJson> virtHosts = SCCCachingFactory.listVirtualizationHosts();
+            log.debug("{} VirtHosts found to send", virtHosts.size());
+
             sccRegManager.deregister(deregister, false);
             sccRegManager.register(forwardRegistration, primaryCredentials);
+            sccRegManager.virtualInfo(virtHosts, primaryCredentials);
             if (LocalDateTime.now().isAfter(nextLastSeenUpdateRun)) {
                 sccRegManager.updateLastSeen(primaryCredentials);
                 // next run in 22 - 26 hours
@@ -110,7 +122,7 @@ public class ForwardRegistrationTask extends RhnJavaJob {
             }
         }
         catch (URISyntaxException e) {
-            log.error(e);
+            log.error(e.getMessage(), e);
         }
     }
 }

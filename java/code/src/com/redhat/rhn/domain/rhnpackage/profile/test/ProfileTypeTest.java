@@ -15,9 +15,8 @@
 package com.redhat.rhn.domain.rhnpackage.profile.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.rhnpackage.profile.ProfileType;
@@ -44,10 +43,10 @@ public class ProfileTypeTest extends RhnBaseTestCase {
         assertNotNull(ptype1);
         assertNotNull(ptype2);
         assertNotNull(ptype3);
-        assertTrue(ptype1.equals(ptype2));
-        assertFalse(ptype1.equals(ptype3));
+        assertEquals(ptype1, ptype2);
+        assertNotEquals(ptype1, ptype3);
         ptype2 = null;
-        assertFalse(ptype1.equals(ptype2));
+        assertNotEquals(ptype1, ptype2);
     }
 
     /**
@@ -70,9 +69,8 @@ public class ProfileTypeTest extends RhnBaseTestCase {
      * Helper method to get a ProfileType by label
      * @param label the label
      * @return Returns the ProfileType corresponding to label
-     * @throws Exception something bad happened
      */
-    public static ProfileType lookupByLabel(String label) throws Exception {
+    public static ProfileType lookupByLabel(String label) {
         Session session = HibernateFactory.getSession();
         return (ProfileType) session.getNamedQuery("ProfileType.findByLabel")
                                         .setString("label", label)

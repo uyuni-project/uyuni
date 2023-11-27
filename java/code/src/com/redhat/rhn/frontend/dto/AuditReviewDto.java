@@ -48,6 +48,7 @@ public class AuditReviewDto extends BaseDto implements Comparable<AuditReviewDto
     /**
      * @return Returns the id.
      */
+    @Override
     public Long getId() {
         return id;
     }
@@ -88,6 +89,7 @@ public class AuditReviewDto extends BaseDto implements Comparable<AuditReviewDto
     }
 
     /** {@inheritDoc} */
+    @Override
     public int compareTo(AuditReviewDto other) {
         return (int)(this.getStart().getTime() / 1000) -
             (int)(other.getStart().getTime() / 1000);

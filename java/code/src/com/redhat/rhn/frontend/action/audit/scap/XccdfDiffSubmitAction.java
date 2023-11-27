@@ -45,7 +45,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Static action page.
  */
-public class XccdfDiffSubmitAction extends RhnAction implements Listable {
+public class XccdfDiffSubmitAction extends RhnAction implements Listable<RuleResultComparator> {
     public static final String FIRST = "first";
     public static final String SECOND = "second";
     public static final String VIEW = "view";
@@ -54,10 +54,11 @@ public class XccdfDiffSubmitAction extends RhnAction implements Listable {
     private static final String MISSING_MSG = "message.xccdfdiff.missing";
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-                                  ActionForm formIn,
-                                  HttpServletRequest request,
-                                  HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
         RequestContext context = new RequestContext(request);
         DynaActionForm form = (DynaActionForm) formIn;
         ActionErrors errors = RhnValidationHelper.validateDynaActionForm(this, form);
@@ -104,6 +105,7 @@ public class XccdfDiffSubmitAction extends RhnAction implements Listable {
     }
 
     /** {@inheritDoc} */
+    @Override
     public List<RuleResultComparator> getResult(RequestContext context) {
         Long first = context.getRequiredParam(FIRST);
         Long second = context.getRequiredParam(SECOND);

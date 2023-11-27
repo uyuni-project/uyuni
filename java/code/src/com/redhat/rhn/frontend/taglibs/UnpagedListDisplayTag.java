@@ -17,20 +17,14 @@ package com.redhat.rhn.frontend.taglibs;
 
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.DynamicComparator;
-import com.redhat.rhn.common.util.ExportWriter;
-import com.redhat.rhn.common.util.ServletExportHandler;
 import com.redhat.rhn.frontend.dto.BaseListDto;
 import com.redhat.rhn.frontend.dto.UserOverview;
 import com.redhat.rhn.frontend.struts.RequestContext;
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.io.IOException;
 import java.io.Writer;
-import java.util.Arrays;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspTagException;
 import javax.servlet.jsp.JspWriter;
@@ -122,7 +116,7 @@ public class UnpagedListDisplayTag extends ListDisplayTagBase {
 
     private void doSort(String sortedColumn) {
         HttpServletRequest request = (HttpServletRequest)pageContext.getRequest();
-        getPageList().sort(new DynamicComparator(sortedColumn,
+        getPageList().sort(new DynamicComparator<>(sortedColumn,
                 request.getParameter(RequestContext.SORT_ORDER)));
     }
 
@@ -132,6 +126,7 @@ public class UnpagedListDisplayTag extends ListDisplayTagBase {
         return request.getParameter(RequestContext.LIST_SORT);
     }
 
+    @Override
     protected void setupPageList() throws JspTagException {
         super.setupPageList();
         currRow = 0;
@@ -231,21 +226,12 @@ public class UnpagedListDisplayTag extends ListDisplayTagBase {
         return (s != null && s.startsWith("c"));
     }
 
-    /**
-     * If the User requested an Export or not.
-     * @return boolean if export or not
-     */
-    public boolean isExport() {
-        RequestContext ctx = new RequestContext((HttpServletRequest)
-                pageContext.getRequest());
-        return (ctx.isRequestedExport() && getExportColumns() != null);
-    }
-
     //////////////////////////////////////////////////////////////////////////
     // JSP Tag lifecycle methods
     //////////////////////////////////////////////////////////////////////////
 
     /** {@inheritDoc} */
+    @Override
     public int doStartTag() throws JspException {
         rowCnt = 0;
         JspWriter out = null;
@@ -253,12 +239,6 @@ public class UnpagedListDisplayTag extends ListDisplayTagBase {
         try {
             out = pageContext.getOut();
             setupPageList();
-
-            // Now that we have setup the proper tag state we
-            // need to return if this is an export render.
-            if (isExport()) {
-                return SKIP_PAGE;
-            }
 
             String sortedColumn = getSortedColumn();
             if (sortedColumn != null) {
@@ -306,26 +286,12 @@ public class UnpagedListDisplayTag extends ListDisplayTagBase {
     }
 
     /** {@inheritDoc} */
+    @Override
     public int doEndTag() throws JspException {
         JspWriter out = null;
         try {
             if (getPageList().isEmpty()) {
                 return EVAL_PAGE;
-            }
-
-            if (isExport()) {
-                ExportWriter eh = createExportWriter();
-                String[] columns = StringUtils.split(this.getExportColumns(),
-                        ',');
-                eh.setColumns(Arrays.asList(columns));
-                ServletExportHandler seh = new ServletExportHandler(eh);
-                pageContext.getOut().clear();
-                pageContext.getOut().clearBuffer();
-                pageContext.getResponse().reset();
-                seh.writeExporterToOutput(
-                        (HttpServletResponse) pageContext.getResponse(),
-                        getPageList());
-                return SKIP_PAGE;
             }
 
             // Get the JSPWriter that the body used, then pop the
@@ -359,6 +325,7 @@ public class UnpagedListDisplayTag extends ListDisplayTagBase {
     }
 
     /** {@inheritDoc} */
+    @Override
     public int doAfterBody() throws JspException {
         JspWriter out = null;
         try {

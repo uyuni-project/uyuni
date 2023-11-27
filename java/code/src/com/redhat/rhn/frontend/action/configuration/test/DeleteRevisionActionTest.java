@@ -30,7 +30,7 @@ public class DeleteRevisionActionTest extends RhnMockStrutsTestCase {
     // Mostly an existence proof. I wish it was easier to construct more useful
     // struts cases...
     @Test
-    public void testExecute() throws Exception {
+    public void testExecute() {
         UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
 
         ConfigRevision revision = ConfigTestUtils.createConfigRevision(user.getOrg());

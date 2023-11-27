@@ -73,7 +73,7 @@ public class PageControlHelper {
     public <T> void applySort(List<T> data) {
         if (isNotEmpty(sortColumn)) {
             // Sort ascending by default
-            data.sort(new DynamicComparator(sortColumn, !"-1".equals(sortDirection)));
+            data.sort(new DynamicComparator<>(sortColumn, !"-1".equals(sortDirection)));
         }
     }
 

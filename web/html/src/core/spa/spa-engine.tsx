@@ -7,7 +7,9 @@ import App, { HtmlScreen } from "senna";
 
 import SpaRenderer from "core/spa/spa-renderer";
 
-import { showErrorToastr } from "components/toastr/toastr";
+import { showErrorToastr } from "components/toastr";
+
+import { onEndNavigate } from "./theme-loader";
 
 function isLoginPage(pathName) {
   const allLoginPossiblePaths = ["/", "/rhn/manager/login"];
@@ -18,7 +20,7 @@ window.pageRenderers = window.pageRenderers || {};
 window.pageRenderers.spaengine = window.pageRenderers.spaengine || {};
 
 // Navigation hook for standalone renderers to detect navigation
-const onSpaEndNavigationCallbacks: Function[] = [];
+const onSpaEndNavigationCallbacks: Function[] = [onEndNavigate];
 window.pageRenderers.spaengine.onSpaEndNavigation = function onSpaEndNavigation(callback: Function) {
   if (onSpaEndNavigationCallbacks.indexOf(callback) === -1) {
     onSpaEndNavigationCallbacks.push(callback);
@@ -120,10 +122,10 @@ window.pageRenderers.spaengine.init = function init(timeout?: number) {
   }
 };
 
-window.pageRenderers.spaengine.navigate = function navigate(url) {
+window.pageRenderers.spaengine.navigate = function navigate(url: string) {
   if (window.pageRenderers?.spaengine?.appInstance) {
     window.pageRenderers.spaengine.appInstance.navigate(url);
   } else {
-    window.location = url;
+    window.location.href = url;
   }
 };

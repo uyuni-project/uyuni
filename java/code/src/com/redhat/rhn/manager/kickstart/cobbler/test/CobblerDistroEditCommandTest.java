@@ -57,10 +57,9 @@ public class CobblerDistroEditCommandTest extends CobblerCommandTestBase {
      * After editing the distro, tests whether this distro (and its metadata)
      * can be retrieved using the tree.
      *
-     * @throws Exception if anything goes wrong
      */
     @Test
-    public void testDistroEdit() throws Exception {
+    public void testDistroEdit() {
         CobblerDistroEditCommand cmd = new
             CobblerDistroEditCommand(sourceTree, user);
         String newName = TestUtils.randomString();
@@ -75,10 +74,9 @@ public class CobblerDistroEditCommandTest extends CobblerCommandTestBase {
      * If the tree does paravirtualization, but the cobbler xen distro is missing,
      * CobblerDistroEditCommand recreates it.
      *
-     * @throws Exception if anything goes wrong
      */
     @Test
-    public void testParaDistroRecreateXenDistroOnEdit() throws Exception {
+    public void testParaDistroRecreateXenDistroOnEdit() {
         // remove the distro
         Distro xen = Distro.lookupById(connection, sourceTree.getCobblerXenId());
         xen.remove();
@@ -98,10 +96,9 @@ public class CobblerDistroEditCommandTest extends CobblerCommandTestBase {
      * If the tree does NOT paravirtualization, but the cobbler distro exists,
      * CobblerDistroEditCommand removes it.
      *
-     * @throws Exception if anything goes wrong
      */
     @Test
-    public void testParaDistroXenDistroRemovedOnEdit() throws Exception {
+    public void testParaDistroXenDistroRemovedOnEdit() {
         // verify it's there
         assertNotNull(Distro.lookupById(connection, sourceTree.getCobblerXenId()));
 
@@ -120,10 +117,9 @@ public class CobblerDistroEditCommandTest extends CobblerCommandTestBase {
      * Verify that the cobbler xen id stays same after
      * CobblerDistroEditCommand.store when xen distro already exists.
      *
-     * @throws Exception if anything goes wrong
      */
     @Test
-    public void testParaDistroEditIdStaysSameOnEdit() throws Exception {
+    public void testParaDistroEditIdStaysSameOnEdit() {
         String xenIdBefore = sourceTree.getCobblerXenId();
 
         CobblerDistroEditCommand cmd = new

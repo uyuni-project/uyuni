@@ -85,6 +85,45 @@ FAILED_PKG=
 VERBOSE=$VERBOSE
 while read PKG_NAME PKG_VER PKG_DIR; do
  for tries in 1 2 3; do
+
+  if [[ $PKG_DIR == *"containers"* ]]; then
+    CONTAINER_NAME=$(basename "$PKG_DIR")
+    CONTAINS_SPEC_FILE=0
+
+    if ls $GIT_DIR/$PKG_DIR | grep \.spec 1> /dev/null 2>&1; then
+      CONTAINS_SPEC_FILE=1
+    fi
+    if [ ! -d "$GIT_DIR/$PKG_DIR" ]; then
+      FAILED_CNT=$(($FAILED_CNT+1))
+      FAILED_PKG="$FAILED_PKG$(echo -ne "\n    $(basename $PKG_DIR)")"
+      echo "*** FAILED Building package [$(basename $PKG_DIR)] - $PKG_DIR does not exist"
+      continue 2
+    elif [ $CONTAINS_SPEC_FILE == 0 ]; then
+      #check if folder does not contains a spec file, otherwise although it's in containers folder it's a RPM package
+      CONTAINER_NAME=$(basename "$PKG_DIR")
+      echo "=== Building container image [${CONTAINER_NAME}]"
+
+      cp -r "$GIT_DIR/$PKG_DIR" "$SRPM_DIR/"
+      if [ -f "${PKG_DIR}/Chart.yaml" ]; then
+        pushd "${SRPM_DIR}/${CONTAINER_NAME}" >/dev/null
+        CHART_FILES="values.yaml values.schema.json charts crds templates LICENSE README.md"
+        TO_INCLUDE=()
+        for F in ${CHART_FILES}; do
+          if [ -e "${F}" ]; then
+              TO_INCLUDE+=("${F}")
+          fi
+        done
+        tar cf "${SRPM_DIR}/${CONTAINER_NAME}/${CONTAINER_NAME}.tar" "${TO_INCLUDE[@]}"
+        rm -r "${TO_INCLUDE[@]}"
+        popd >/dev/null
+      fi
+      SUCCEED_CNT=$(($SUCCEED_CNT+1))
+      continue 2
+    else # $CONTAINS_SPEC_FILE==1
+      echo "*** [ $PKG_DIR ] contains a spec file"
+    fi
+  fi
+
   echo "=== Building package [$PKG_NAME-$PKG_VER] from $PKG_DIR (Try $tries)"
   rm -rf "$SRPMBUILD_DIR"
   mkdir -p "$SRPMBUILD_DIR"
@@ -101,6 +140,26 @@ while read PKG_NAME PKG_VER PKG_DIR; do
   ${VERBOSE:+cat "$T_LOG"}
 
   eval $(awk '/^Wrote:.*src.rpm/{srpm=$2}/^Wrote:.*.changes/{changes=$2}END{ printf "SRPM=\"%s\"\n",srpm; printf "CHANGES=\"%s\"\n",changes; }' "$T_LOG")
+  EXTRA_CHANGELOGS=0
+  if [ "$(head -n1 ${CHANGES}|grep '^- ')" == "" ]; then
+    PREVIOUS_CHANGELOGS=0
+  else
+    PREVIOUS_CHANGELOGS=1
+  fi
+  FILELIST="$(ls ${GIT_DIR}/${PKG_DIR}${PKG_NAME}.changes.* 2> /dev/null; true)"
+  for FILE in $FILELIST; do
+    if [ ${PREVIOUS_CHANGELOGS} -eq 0 -a ${EXTRA_CHANGELOGS} -eq 0 ]; then
+      sed -i '1i\\' ${CHANGES}
+    fi
+    EXTRA_CHANGELOGS=1
+    LINENUMBER=1
+    while IFS= read -r LINE; do
+      if [ "${LINE}" != "" ]; then
+        sed -i "${LINENUMBER}i\\${LINE}" ${CHANGES}
+	LINENUMBER=$((LINENUMBER+1))
+      fi
+    done < ${FILE}
+  done
   if [ "$(head -n1 ${CHANGES}|grep '^- ')" != "" ]; then
     echo "*** Untagged package, adding fake header..."
     sed -i "1i Fri Jan 01 00:00:00 CEST 2038 - faketagger@suse.inet\n" ${CHANGES}

@@ -30,6 +30,7 @@ public class TestRestartCommand extends RestartCommand {
     /**
      * {@inheritDoc}
      */
+    @Override
     public ValidatorError[] storeConfiguration() {
         return null;
     }

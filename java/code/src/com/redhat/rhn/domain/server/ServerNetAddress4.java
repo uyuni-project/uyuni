@@ -92,6 +92,7 @@ public class ServerNetAddress4 extends BaseDomainHelper implements Serializable 
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(final Object other) {
         if (!(other instanceof ServerNetAddress4)) {
             return false;
@@ -107,6 +108,7 @@ public class ServerNetAddress4 extends BaseDomainHelper implements Serializable 
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder().append(this.getAddress())
                                     .append(this.getBroadcast())

@@ -64,6 +64,7 @@ public class ChannelOverview extends BaseDto implements Comparable {
     /**
      * @return Returns the id.
      */
+    @Override
     public Long getId() {
         return id;
     }
@@ -145,6 +146,7 @@ public class ChannelOverview extends BaseDto implements Comparable {
      *
      * {@inheritDoc}
      */
+    @Override
     public int compareTo(Object o) {
            return getName().compareTo(((ChannelOverview) o).getName());
     }

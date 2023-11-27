@@ -31,7 +31,7 @@ Name:           spacewalk-proxy-installer
 Summary:        Spacewalk Proxy Server Installer
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.4.1
+Version:        4.4.3
 Release:        1
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -39,10 +39,6 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 
 Requires:       firewalld
-Requires:       mgr-cfg
-Requires:       mgr-cfg-actions
-Requires:       mgr-cfg-client
-Requires:       mgr-cfg-management
 Requires(pre):  spacewalk-proxy-common
 Requires:       spacewalk-proxy-salt
 %if 0%{?suse_version}
@@ -63,8 +59,13 @@ Requires:       salt
 Requires:       spacewalk-certs-tools >= 1.6.4
 BuildRequires:  /usr/bin/docbook2man
 
-Obsoletes:      proxy-installer < 5.3.0
-Provides:       proxy-installer = 5.3.0
+# weakremover used on SUSE to get rid of orphan packages which are
+# unsupported and do not have a dependency anymore
+Provides:       weakremover(mgr-cfg)
+Provides:       weakremover(mgr-cfg-actions)
+Provides:       weakremover(mgr-cfg-client)
+Provides:       weakremover(mgr-cfg-management)
+
 
 %define defaultdir %{_usr}/share/rhn/proxy-template
 
@@ -121,23 +122,7 @@ if [ -f /etc/sysconfig/apache2 ]; then
     sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES proxy_http
     sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES headers
 fi
-if [ -e /etc/squid/squid.conf ]; then
-    sed -i -e"s/^range_offset_limit -1 KB/range_offset_limit none/" /etc/squid/squid.conf
-    if ! grep pub\/repositories /etc/squid/squid.conf >/dev/null; then
-        sed -i 's;\(refresh_pattern /rhn/manager/download.*\);\1\nrefresh_pattern /pub/repositories/.*/repodata/.*$ 0 1% 1440 reload-into-ims refresh-ims;' /etc/squid/squid.conf
-    fi
-    if [ -f %{apacheconfdir}/conf.d/cobbler-proxy.conf ]; then
-        sed -i -e "s;download//cobbler_api;download/cobbler_api;g" %{apacheconfdir}/conf.d/cobbler-proxy.conf
-    fi
-fi
 %endif
-if [ $1 -eq 2 ]
-then
-  if [ -e %{apacheconfdir}/vhosts.d/ssl.conf ]
-  then
-    sed 's/^SSLProtocol all.*$//g' %{apacheconfdir}/vhosts.d/ssl.conf
-  fi
-fi
 
 %files
 %defattr(-,root,root,-)

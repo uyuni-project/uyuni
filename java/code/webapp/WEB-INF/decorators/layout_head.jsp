@@ -27,14 +27,23 @@
     <link rel="stylesheet" href="/fonts/font-spacewalk/css/spacewalk-font.css?cb=${cb_version}" />
 
     <!-- import plugins styles -->
-    <link rel="stylesheet" href="/css/jquery.timepicker.css?cb=${cb_version}" />
+    <link rel="stylesheet" href="/css/legacy/jquery.timepicker.css?cb=${cb_version}" />
     <link rel="stylesheet" href="/css/bootstrap-datepicker.css?cb=${cb_version}" />
     <link rel="stylesheet" href="/javascript/select2/select2.css?cb=${cb_version}" />
     <link rel="stylesheet" href="/javascript/select2/select2-bootstrap.css?cb=${cb_version}" />
 
     <!-- import styles -->
     <c:set var="webTheme" value="${GlobalInstanceHolder.USER_PREFERENCE_UTILS.getCurrentWebTheme(pageContext)}"/>
-    <link rel="stylesheet" href="/css/${webTheme}.css?cb=${cb_version}" />
+    <c:choose>
+      <c:when test="${GlobalInstanceHolder.VIEW_HELPER.isBootstrapReady(pageContext.request.requestURI)}">
+        <link rel="stylesheet" href="/css/${webTheme}.css?cb=${cb_version}" id="web-theme" disabled="disabled"/>
+        <link rel="stylesheet" href="/css/updated-${webTheme}.css?cb=${cb_version}" id="updated-web-theme"/>
+      </c:when>
+      <c:otherwise>
+        <link rel="stylesheet" href="/css/${webTheme}.css?cb=${cb_version}" id="web-theme"/>
+        <link rel="stylesheet" href="/css/updated-${webTheme}.css?cb=${cb_version}" id="updated-web-theme" disabled="disabled"/>
+      </c:otherwise>
+    </c:choose>
 
     <!-- expose user preferred language to the application -->
     <c:set var="currentLocale" value="${GlobalInstanceHolder.USER_PREFERENCE_UTILS.getCurrentLocale(pageContext)}"/>
@@ -50,12 +59,14 @@
     <c:set var="userTimeZone" value="${GlobalInstanceHolder.USER_PREFERENCE_UTILS.getExtendedUserTimeZone(pageContext)}"/>
     <c:set var="userDateFormat" value="${GlobalInstanceHolder.USER_PREFERENCE_UTILS.getUserDateFormat(pageContext)}"/>
     <c:set var="userTimeFormat" value="${GlobalInstanceHolder.USER_PREFERENCE_UTILS.getUserTimeFormat(pageContext)}"/>
+    <c:set var="userPageSize" value="${GlobalInstanceHolder.USER_PREFERENCE_UTILS.getUserPageSize(pageContext)}"/>
     <script>
         window.serverTime='${serverTime}'
         window.serverTimeZone='${serverTimeZone}'
         window.userTimeZone='${userTimeZone}'
         window.userDateFormat='${userDateFormat}'
         window.userTimeFormat='${userTimeFormat}'
+        window.userPrefPageSize=${userPageSize}
     </script>
 
     <script src="/javascript/legacy/jquery.min.js?cb=${cb_version}"></script>
@@ -63,11 +74,9 @@
     <script src="/javascript/select2/select2.js?cb=${cb_version}"></script>
     <script src="/javascript/spacewalk-essentials.js?cb=${cb_version}"></script>
     <script src="/javascript/spacewalk-checkall.js?cb=${cb_version}"></script>
+    <script src="/javascript/ajax.js?cb=${cb_version}"></script>
 
-    <script src="/rhn/dwr/engine.js?cb=${cb_version}"></script>
-    <script src="/rhn/dwr/util.js?cb=${cb_version}"></script>
-    <script src="/rhn/dwr/interface/DWRItemSelector.js?cb=${cb_version}"></script>
-    <script src="/javascript/jquery.timepicker.js?cb=${cb_version}"></script>
+    <script src="/javascript/legacy/jquery.timepicker.js?cb=${cb_version}"></script>
     <script src="/javascript/bootstrap-datepicker.js?cb=${cb_version}"></script>
 
     <script src='/javascript/manager/main.bundle.js?cb=${cb_version}'></script>

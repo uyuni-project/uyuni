@@ -16,6 +16,7 @@ package com.redhat.rhn.frontend.action.kickstart.ssm;
 
 import com.redhat.rhn.domain.kickstart.KickstartIpRange;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -37,15 +38,16 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * SsmKickstartableSystemsAction
  */
-public class SsmKickstartableSystemsAction extends RhnAction implements Listable {
+public class SsmKickstartableSystemsAction extends RhnAction implements Listable<SystemOverview> {
     private static final String DISABLE_RANGES = "disableRanges";
     private static final String DISABLE_PROFILES = "disableProfiles";
     private static final String DISABLE_SYSTEMS = "disableSystems";
     /**
      * ${@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
-            HttpServletRequest request, HttpServletResponse response) throws Exception {
+                                 HttpServletRequest request, HttpServletResponse response) {
         RequestContext context = new RequestContext(request);
         if (context.wasDispatched("ssm.config.subscribe.jsp.continue")) {
             if (Boolean.TRUE.toString().equals(request.getParameter("scheduleManual"))) {
@@ -75,9 +77,10 @@ public class SsmKickstartableSystemsAction extends RhnAction implements Listable
     /**
      * ${@inheritDoc}
      */
-    public List getResult(RequestContext context) {
+    @Override
+    public List<SystemOverview> getResult(RequestContext context) {
         User user = context.getCurrentUser();
-        List ret = KickstartManager.getInstance().kickstartableSystemsInSsm(user);
+        List<SystemOverview> ret = KickstartManager.getInstance().kickstartableSystemsInSsm(user);
         if (ret.isEmpty()) {
             context.getRequest().setAttribute(DISABLE_SYSTEMS, Boolean.TRUE);
         }

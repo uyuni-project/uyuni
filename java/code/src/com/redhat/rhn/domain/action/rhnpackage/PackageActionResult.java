@@ -79,6 +79,7 @@ public class PackageActionResult extends BaseDomainHelper implements Serializabl
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(Object obj) {
         if (obj == null || !(obj instanceof PackageActionResult)) {
             return false;
@@ -95,6 +96,7 @@ public class PackageActionResult extends BaseDomainHelper implements Serializabl
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder().append(this.getDetails())
                                     .append(this.getServer())

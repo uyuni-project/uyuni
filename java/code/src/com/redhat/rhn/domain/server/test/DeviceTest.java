@@ -52,7 +52,7 @@ public class DeviceTest extends RhnBaseTestCase {
         assertEquals(1, TestUtils.removeObject(hd));
     }
 
-    private void verifyInDb(Long id, String value) throws Exception {
+    private void verifyInDb(Long id, String value) {
         // Now lets manually test to see if the user got updated
         HibernateFactory.getSession().doWork(connection -> {
             ResultSet rs = null;

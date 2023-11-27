@@ -44,6 +44,7 @@ def _getOptionsTree(defs):
     """
 
     _optCAKeyPassword = make_option('-p', '--password', action='store', type="string", help='CA password')
+    _optCAKeyPasswordFile = make_option('--password-file', action='store', type="string", help='file containing the CA password')
     _optCaKey = make_option('--ca-key', action='store', type="string", help='CA private key filename (default: %s)' % defs['--ca-key'])
     _optCaCert = make_option('--ca-cert', action='store', type="string", help='CA certificate filename (default: %s)' % defs['--ca-cert'])
 
@@ -107,6 +108,7 @@ def _getOptionsTree(defs):
     _caOptions = [
         _optCaForce,
         _optCAKeyPassword,
+        _optCAKeyPasswordFile,
         _optCaKey,
         ]
 
@@ -114,6 +116,7 @@ def _getOptionsTree(defs):
     _caCertOptions = [
         _optCaForce,
         _optCAKeyPassword,
+        _optCAKeyPasswordFile,
         _optCaKey,
         _optCaCert,
         _optCertExp,
@@ -135,6 +138,7 @@ def _getOptionsTree(defs):
     # server cert generation options
     _serverCertOptions = [
         _optCAKeyPassword,
+        _optCAKeyPasswordFile,
         _optCaCert,
         _optCaKey,
         _optServerCertReq,
@@ -144,7 +148,7 @@ def _getOptionsTree(defs):
         ]
 
     # SSL key check options
-    _checkOptions = [_optCAKeyPassword]
+    _checkOptions = [_optCAKeyPassword, _optCAKeyPasswordFile]
 
     # SSL cert check options
     # = nothing

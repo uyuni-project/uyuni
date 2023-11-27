@@ -29,12 +29,14 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
  */
 public class ChannelFilesListSetup extends BaseSetListAction {
 
+    @Override
     protected DataResult getDataResult(RequestContext ctx, PageControl pc) {
         User user = ctx.getCurrentUser();
         ConfigChannel cc = ConfigActionHelper.getChannel(ctx.getRequest());
         return ConfigurationManager.getInstance().listCurrentFiles(user, cc, pc);
     }
 
+    @Override
     protected void processRequestAttributes(RequestContext rctx) {
         if (!rctx.isSubmitted()) {
             getSetDecl().clear(rctx.getCurrentUser());
@@ -44,6 +46,7 @@ public class ChannelFilesListSetup extends BaseSetListAction {
         ConfigActionHelper.setupRequestAttributes(rctx, cc);
     }
 
+    @Override
     protected void processPageControl(PageControl pc) {
         pc.setFilterColumn("path");
         pc.setFilter(true);
@@ -53,6 +56,7 @@ public class ChannelFilesListSetup extends BaseSetListAction {
      * We affect the selected-files set
      * @return FILE_LISTS identifier
      */
+    @Override
     public RhnSetDecl getSetDecl() {
         return RhnSetDecl.CONFIG_FILES;
     }

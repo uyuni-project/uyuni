@@ -51,7 +51,8 @@ public class VirtualHostManagerNodeInfo extends BaseDomainHelper {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "vhmnodeinfo_seq")
-    @SequenceGenerator(name = "vhmnodeinfo_seq", sequenceName = "suse_vhm_nodeinfo_id_seq")
+    @SequenceGenerator(name = "vhmnodeinfo_seq", sequenceName = "suse_vhm_nodeinfo_id_seq",
+                       allocationSize = 1)
     public Long getId() {
         return id;
     }

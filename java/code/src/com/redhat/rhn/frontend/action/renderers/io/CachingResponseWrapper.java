@@ -43,14 +43,16 @@ public class CachingResponseWrapper extends HttpServletResponseWrapper {
     /**
      * {@inheritDoc}
      */
-    public ServletOutputStream getOutputStream() throws IOException {
+    @Override
+    public ServletOutputStream getOutputStream() {
         return stream;
     }
 
     /**
      * {@inheritDoc}
      */
-    public PrintWriter getWriter() throws IOException {
+    @Override
+    public PrintWriter getWriter() {
         return writer;
     }
 

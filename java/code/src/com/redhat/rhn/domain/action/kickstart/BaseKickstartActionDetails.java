@@ -29,7 +29,7 @@ public abstract class BaseKickstartActionDetails extends ActionChild {
     private String cobblerSystemName;
     private String appendString;
     private String kickstartHost;
-    private Set fileLists;
+    private Set<FileList> fileLists;
     private Long id;
 
     /**
@@ -104,7 +104,7 @@ public abstract class BaseKickstartActionDetails extends ActionChild {
      */
     public void addFileList(FileList f) {
         if (fileLists == null) {
-            fileLists = new HashSet();
+            fileLists = new HashSet<>();
         }
         fileLists.add(f);
     }
@@ -112,14 +112,14 @@ public abstract class BaseKickstartActionDetails extends ActionChild {
     /**
      * @return Returns the fileLists.
      */
-    public Set getFileLists() {
+    public Set<FileList> getFileLists() {
         return fileLists;
     }
 
     /**
      * @param f The fileLists to set.
      */
-    public void setFileLists(Set f) {
+    public void setFileLists(Set<FileList> f) {
         this.fileLists = f;
     }
 }

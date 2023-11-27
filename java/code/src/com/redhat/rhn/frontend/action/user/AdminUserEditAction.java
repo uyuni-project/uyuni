@@ -21,12 +21,12 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
+import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.BadParameterException;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.StrutsDelegate;
-import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.user.UserManager;
 
 import org.apache.logging.log4j.LogManager;
@@ -57,8 +57,6 @@ public class AdminUserEditAction extends UserEditActionHelper {
 
     private static Logger log = LogManager.getLogger(AdminUserEditAction.class);
     private static final String ROLE_SETTING_PREFIX = "role_";
-
-    private final ServerGroupManager serverGroupManager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
 
     /** {@inheritDoc} */
     @Override
@@ -193,11 +191,9 @@ public class AdminUserEditAction extends UserEditActionHelper {
                     !targetUser.getAssociatedServerGroups().isEmpty()) {
                 Set<User> admins = new HashSet<>();
                 admins.add(targetUser);
-                for (Iterator itr = targetUser.getAssociatedServerGroups().iterator();
-                        itr.hasNext();) {
-
+                for (Iterator<ServerGroup> itr = targetUser.getAssociatedServerGroups().iterator(); itr.hasNext();) {
                     ManagedServerGroup sg = (ManagedServerGroup) itr.next();
-                    serverGroupManager.dissociateAdmins(sg, admins, loggedInUser);
+                    GlobalInstanceHolder.SERVER_GROUP_MANAGER.dissociateAdmins(sg, admins, loggedInUser);
                     itr.remove();
                 }
             }

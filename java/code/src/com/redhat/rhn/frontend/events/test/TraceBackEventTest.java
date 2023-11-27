@@ -15,6 +15,7 @@
 
 package com.redhat.rhn.frontend.events.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -46,8 +47,9 @@ public class TraceBackEventTest extends RhnBaseTestCase {
 
     private MockMail mailer;
 
+    @Override
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         mailer = new MockMail();
     }
 
@@ -77,6 +79,7 @@ public class TraceBackEventTest extends RhnBaseTestCase {
         TraceBackEvent evt = createTestEventWithValue("password", "no-secret");
         mailer.setExpectedSendCount(1);
         TraceBackAction action = new TraceBackAction() {
+            @Override
             protected Mail getMail() {
                 return mailer;
             }
@@ -93,6 +96,7 @@ public class TraceBackEventTest extends RhnBaseTestCase {
         TraceBackEvent evt = createTestEventWithValue("passsword", "no-secret");
         mailer.setExpectedSendCount(1);
         TraceBackAction action = new TraceBackAction() {
+            @Override
             protected Mail getMail() {
                 return mailer;
             }
@@ -120,14 +124,15 @@ public class TraceBackEventTest extends RhnBaseTestCase {
         TraceBackEvent evt = createTestEvent();
         mailer.setExpectedSendCount(1);
         TraceBackAction action = new TraceBackAction() {
+            @Override
             protected Mail getMail() {
                 return mailer;
             }
         };
         action.execute(evt);
         mailer.verify();
-        assertTrue(mailer.getSubject().indexOf("WEB TRACEBACK from ") == 0);
-        assertTrue(mailer.getBody().indexOf("The following exception occurred") == 0);
+        assertEquals(0, mailer.getSubject().indexOf("WEB TRACEBACK from "));
+        assertEquals(0, mailer.getBody().indexOf("The following exception occurred"));
         assertTrue(mailer.getBody().indexOf("Request:") > 0);
         assertTrue(mailer.getBody().indexOf("User Information:") > 0);
         assertTrue(mailer.getBody().indexOf("Exception:") > 0);
@@ -138,6 +143,7 @@ public class TraceBackEventTest extends RhnBaseTestCase {
         // In the implementation we use getHeaderNames so we override it with
         // one that returns an empty implementation.
         MockHttpServletRequest request = new MockHttpServletRequest() {
+            @Override
             public Enumeration<String> getHeaderNames() {
                 return new Vector<String>().elements();
             }
@@ -163,6 +169,7 @@ public class TraceBackEventTest extends RhnBaseTestCase {
         // In the implementation we use getHeaderNames so we override it with
         // one that returns an empty implementation.
         MockHttpServletRequest request = new MockHttpServletRequest() {
+            @Override
             public Enumeration<String> getHeaderNames() {
                 return new Vector<String>().elements();
             }

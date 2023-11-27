@@ -119,6 +119,7 @@ public class KickstartScriptOrderAction extends RhnLookupDispatchAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected Map<String, String> getKeyMethodMap() {
         Map<String, String> keys = new HashMap<>();
         keys.put("kickstartscript.order.update", "update");
@@ -228,8 +229,9 @@ public class KickstartScriptOrderAction extends RhnLookupDispatchAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected ActionForward unspecified(ActionMapping mapping, ActionForm form,
-            HttpServletRequest request, HttpServletResponse response) {
+                                        HttpServletRequest request, HttpServletResponse response) {
         RequestContext context = new RequestContext(request);
         setup((DynaActionForm) form, context);
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);

@@ -91,7 +91,6 @@ public class HubReportDbUpdateWorker implements QueueWorker {
 
     private List<String> filterExistingTables(Session remoteSession, Long serverId) {
         SelectMode query = dbHelper.generateExistingTables(remoteSession, TABLES);
-        @SuppressWarnings("unchecked")
         DataResult<Map<String, Object>> result = query.execute();
         Set<Map.Entry<String, Object>> tableEntry = result.get(0).entrySet();
         tableEntry.removeIf(t -> {
@@ -116,7 +115,6 @@ public class HubReportDbUpdateWorker implements QueueWorker {
             delete.executeUpdate(Map.of("mgm_id", mgmId));
 
             // Extract the first batch
-            @SuppressWarnings("unchecked")
             DataResult<Map<String, Object>> firstBatch = query.execute(Map.of("offset", 0, "limit", batchSize));
             firstBatch.forEach(e -> e.remove("mgm_id"));
 
@@ -191,7 +189,7 @@ public class HubReportDbUpdateWorker implements QueueWorker {
         catch (Exception e) {
             parentQueue.getQueueRun().failed();
             parentQueue.changeRun(null);
-            log.error(e);
+            log.error(e.getMessage(), e);
         }
         finally {
             parentQueue.workerDone();

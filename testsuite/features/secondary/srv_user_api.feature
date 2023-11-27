@@ -5,8 +5,7 @@
 Feature: API "user" namespace
 
   Scenario: List users
-    When I am logged in API as user "admin" and password "admin"
-    And I call user.list_users()
+    When I call user.list_users()
     Then I should get at least user "admin"
 
   Scenario: List roles
@@ -29,4 +28,3 @@ Feature: API "user" namespace
 
   Scenario: Cleanup: user tests
     When I delete user "testuser"
-    And I logout from API

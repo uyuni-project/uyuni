@@ -23,7 +23,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.MessageFormat;
 import java.time.Year;
-import java.time.ZoneOffset;
+import java.time.ZoneId;
 import java.util.Date;
 
 /**
@@ -123,7 +123,7 @@ public class SUSEErrataParser implements VendorSpecificErrataParser {
 
         // Extract the year from the issue date and not from the advisory id because old ids do not include
         // the date
-        final int year = Year.from(issueDate.toInstant().atZone(ZoneOffset.systemDefault())).getValue();
+        final int year = Year.from(issueDate.toInstant().atZone(ZoneId.systemDefault())).getValue();
 
         // Do not parse advisory issued before 2019 because the number in the id we have in the database does not
         // match with the advisory id used in the url thus all urls we generate for those advisories do not exist.

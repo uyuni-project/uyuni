@@ -18,6 +18,7 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.config.ConfigFileName;
 import com.redhat.rhn.domain.config.ConfigurationFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.ConfigSystemDto;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.struts.BaseListAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
@@ -31,7 +32,8 @@ public class DiffSystemsAction extends BaseListAction {
     /**
      * {@inheritDoc}
      */
-    protected DataResult getDataResult(RequestContext rctxIn, PageControl pc) {
+    @Override
+    protected DataResult<ConfigSystemDto> getDataResult(RequestContext rctxIn, PageControl pc) {
         User user = rctxIn.getCurrentUser();
         Long cfnid = rctxIn.getRequiredParam("cfnid");
 
@@ -41,12 +43,14 @@ public class DiffSystemsAction extends BaseListAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processRequestAttributes(RequestContext rctxIn) {
         Long cfnid = rctxIn.getRequiredParam("cfnid");
         ConfigFileName name = ConfigurationFactory.lookupConfigFileNameById(cfnid);
         rctxIn.getRequest().setAttribute("filepath", name.getPath());
     }
 
+    @Override
     protected void processPageControl(PageControl pcIn) {
         pcIn.setFilter(true);
         pcIn.setFilterColumn("name");

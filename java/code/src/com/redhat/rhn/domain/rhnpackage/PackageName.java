@@ -57,6 +57,7 @@ public class PackageName implements Comparable<PackageName> {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString() {
         return new ToStringBuilder(this).append("id", getId()).append("name", getName())
                 .toString();
@@ -66,6 +67,7 @@ public class PackageName implements Comparable<PackageName> {
      *
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(Object other) {
         if (other instanceof PackageName) {
             PackageName otherPack = (PackageName) other;
@@ -79,6 +81,7 @@ public class PackageName implements Comparable<PackageName> {
      *
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder().append(this.getName()).append(this.getId())
                 .toHashCode();
@@ -87,6 +90,7 @@ public class PackageName implements Comparable<PackageName> {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int compareTo(PackageName o) {
         if (equals(o)) {
             return 0;

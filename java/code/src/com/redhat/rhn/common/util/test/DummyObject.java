@@ -23,13 +23,13 @@ import java.util.Map;
  */
 
 public class DummyObject {
-    private Map values;
+    private Map<Object, Object> values;
 
     public DummyObject() {
-        values = new HashMap();
+        values = new HashMap<>();
     }
 
-    public Map getValues() {
+    public Map<Object, Object> getValues() {
         return values;
     }
     public void put(Object s, Object o) {

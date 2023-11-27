@@ -2248,7 +2248,7 @@ channel is available to your @@PRODUCT_NAME@@. If it is not, please contact your
 and try again.
 &lt;/li&gt;
 &lt;li&gt;
-Make sure the spacewalk-koan package corresponding to this kickstart are
+Make sure the required packages corresponding to this kickstart are
 available in the kickstart's base channel's tools channel. If not, you
 will need to make them available for this kickstart profile to function properly.
 &lt;/li&gt;
@@ -2262,7 +2262,7 @@ available for this kickstart profile to function properly.
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Profile Details pages.</context>
         </context-group>
-        <target state="final">&lt;div style="text-align: left;"&gt;
+        <target state="needs-adaptation">&lt;div style="text-align: left;"&gt;
 &lt;p&gt;この問題を解決するには、下記をご確認ください: &lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt; このキックスタートプロファイルのベースチャンネルに対して、組織がクライアントツール
@@ -2840,12 +2840,12 @@ and try again.
         </context-group>
         <target>通知フィルターを作成</target>
       </trans-unit>
-      <trans-unit id="toolbar.upload.kickstart" xml:space="preserve">
+      <trans-unit approved="yes" id="toolbar.upload.kickstart" xml:space="preserve">
         <source>Upload Kickstart/AutoYaST File</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserList</context>
         </context-group>
-        <target state="needs-adaptation">キックスタート/Autoyastファイルをアップロード</target>
+        <target state="final">キックスタート/AutoYaSTファイルをアップロード</target>
       </trans-unit>
       <trans-unit id="toolbar.create.kickstart" xml:space="preserve">
         <source>Create Kickstart Profile</source>
@@ -6533,27 +6533,6 @@ Follow this url to see the full list of inactive systems:
         </context-group>
         <target>システム {0} には &lt;strong&gt; {1} &lt;/strong&gt; ネットワークデバイスが存在しないため、自動インストールできません。</target>
       </trans-unit>
-      <trans-unit id="kickstart.schedule.nopackage" xml:space="preserve">
-        <source>Could not find the needed @@PRODUCT_NAME@@ provisioning packages given this system's current base channel and desired target channel: {0}</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
-        </context-group>
-        <target>このシステムの現在のベースチャンネルや目的のターゲットチャンネルに必要な @@PRODUCT_NAME@@ Provisioning パッケージが見つかりませんでした: {0}</target>
-      </trans-unit>
-      <trans-unit id="kickstart.schedule.cantsubscribe" xml:space="preserve">
-        <source>You have no remaining subscriptions to the @@PRODUCT_NAME@@ provisioning channel for &lt;strong&gt;{0}&lt;/strong&gt;'s current base channel.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
-        </context-group>
-        <target>このシステムの現在のベースチャンネルに対する @@PRODUCT_NAME@@ チャンネルへのサブスクリプションは残っていません。</target>
-      </trans-unit>
-      <trans-unit id="kickstart.schedule.cantsubscribe.channel" xml:space="preserve">
-        <source>You have no remaining subscriptions to the channel {0} for &lt;strong&gt;{1}&lt;/strong&gt;'s current base channel.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
-        </context-group>
-        <target>このシステムの現在のベースチャンネルに対して、チャンネル {0} へのサブスクリプションが残っていません。</target>
-      </trans-unit>
       <trans-unit id="kickstart.schedule.noup2date" xml:space="preserve">
         <source>An autoinstallation was not scheduled for &lt;strong&gt;&lt;a href="/rhn/systems/details/Overview.do?sid={0}"&gt;{1}&lt;/a&gt;&lt;/strong&gt; because the package profile did not contain the 'up2date' package. An update of that system's package profile may be required.</source>
         <context-group name="ctx">
@@ -7260,13 +7239,6 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/errata/manage/CloneErrata.do</context>
         </context-group>
         <target>Email アドレス</target>
-      </trans-unit>
-      <trans-unit id="server|jabber_server" xml:space="preserve">
-        <source>Hostname</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/errata/manage/CloneErrata.do</context>
-        </context-group>
-        <target>ホスト名</target>
       </trans-unit>
       <!-- SDC Overview Page -->
       <trans-unit id="sdc.details.overview.notifications.disabled" xml:space="preserve">
@@ -8587,13 +8559,6 @@ Follow this url to see the full list of inactive systems:
         </context-group>
         <target>このチャンネルにはファイル名 "{0}" はすでに存在しています。</target>
       </trans-unit>
-      <trans-unit id="system.entitle.notoolschannel" xml:space="preserve">
-        <source>Could not automatically subscribe the system to the @@PRODUCT_NAME@@ Tools Channel. This channel contains packages required for virtualization.  This is most likely caused by a lack of channel entitlements.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
-        </context-group>
-        <target state="translated">システムを @@PRODUCT_NAME@@ ツールチャンネルに自動的にサブスクライブできませんでした。このチャンネルには、仮想化に必要なパッケージが含まれます。この原因としてチャンネルエンタイトルメントがないことが考えられます。</target>
-      </trans-unit>
       <trans-unit id="system.entitle.multiplechannelswithpackage" xml:space="preserve">
         <source>Found multiple child channels with package: {0}. Please manually subscribe this system to the appropriate child channel.</source>
         <context-group name="ctx">
@@ -8601,40 +8566,12 @@ Follow this url to see the full list of inactive systems:
         </context-group>
         <target>パッケージ {0} を持つ子チャンネルは複数存在します。このシステムを適切な子チャンネルに手動でサブスクライブしてください。</target>
       </trans-unit>
-      <trans-unit id="system.entitle.multiplechannelswithpackagepleaseinstall" xml:space="preserve">
-        <source>Found multiple child channels with package: {0}. Please manually subscribe this system to the appropriate child channel, and schedule this package for installation.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
-        </context-group>
-        <target>パッケージ {0} を持つ子チャンネルは複数存在します。このシステムを適切な子チャンネルに手動でサブスクライブし、このパッケージのインストールをスケジュールしてください。</target>
-      </trans-unit>
-      <trans-unit id="system.entitle.novirtchannel" xml:space="preserve">
-        <source>Could not automatically subscribe the system to the RHEL Virtualization Channel.  This channel contains packages required for virtualization.  This is most likely caused by a lack of channel entitlements.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
-        </context-group>
-        <target state="translated">このシステムを RHEL Virtualization チャンネルに自動的にサブスクライブできませんでした。このチャンネルには仮想化に必要なパッケージが含まれています。この原因としてチャンネルエンタイトルメントがないことが考えられます。</target>
-      </trans-unit>
-      <trans-unit id="system.entitle.novirtpackage" xml:space="preserve">
-        <source>Could not find a channel with the {0} package. This package is required to manage virtual guests with @@PRODUCT_NAME@@.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
-        </context-group>
-        <target>{0} パッケージがあるチャンネルが見つかりません。このパッケージは、@@PRODUCT_NAME@@ で仮想ゲストを管理するのに必要です。</target>
-      </trans-unit>
       <trans-unit id="system.entitle.alreadyentitled" xml:space="preserve">
         <source>The system already has the {0} system type.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
         <target>システムはすでに {0} エンタイトルメントを持っています。</target>
-      </trans-unit>
-      <trans-unit id="system.virtualization.help" xml:space="preserve">
-        <source>NOTE: To enable and use virtualization capabilities within @@PRODUCT_NAME@@ for this system, install the mgr-virtualization-host package from the associated Tools child channel. Review the documentation for any other considerations and requirements for enabling Virtualization of a Host system.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/virtualization/VirtualGuestsList.do</context>
-        </context-group>
-        <target state="translated">注記: @@PRODUCT_NAME@@ 内でこのシステムの仮想化機能を有効にして使用する場合には、mgr-virtualization-host パッケージを関連するツールの子チャンネルからインストールします。ホストシステムの仮想化を有効にする際に注意すべき事項や要件などについては、ドキュメンテーションを参照してください。</target>
       </trans-unit>
       <trans-unit id="system.migrate.user_no_perms" xml:space="preserve">
         <source>This user lacks the required permissions to transfer this system.</source>
@@ -9945,11 +9882,11 @@ tree will not be usable for autoinstalling.</source>
         <target state="final">検出されたログイン情報が {0} に送信されました。受信されない場合は、指定された電子メールアドレスで登録されたアカウントを持っていることを確認してください。</target>
       </trans-unit>
       <trans-unit id="config.multiple.channels" xml:space="preserve">
-        <source>A selected system has multiple child channels available that contain the mgr-cfg package. You must manually subscribe to the child channel you want and then try this action again.</source>
+        <source>A selected system has multiple child channels available that contain the venv-salt-minion package. You must manually subscribe to the child channel you want and then try this action again.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/TargetSystemsSubmit.do</context>
         </context-group>
-        <target state="translated">選択したシステムには、mgr-cfg パッケージを持つ子チャンネルが複数あります。必要な子チャンネルに手動でサブスクライブしてから、この動作を再試行する必要があります。</target>
+        <target state="needs-adaptation">選択したシステムには、mgr-cfg パッケージを持つ子チャンネルが複数あります。必要な子チャンネルに手動でサブスクライブしてから、この動作を再試行する必要があります。</target>
       </trans-unit>
       <trans-unit id="External Links" xml:space="preserve">
         <source>External Links</source>
@@ -10347,21 +10284,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="system.entitle.added.container_build_host.nodoc" xml:space="preserve">
-        <source>&lt;strong&gt;Container Build Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
-        <target>&lt;strong&gt;コンテナビルドホスト&lt;/strong&gt; の種類を適用しました。 &lt;br/&gt;&lt;strong&gt;注意:&lt;/strong&gt; この処理は状態を適用するものでは &lt;em&gt;ありません&lt;/em&gt; 。状態を適用したい場合は、 &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;状態ページ&lt;/a&gt; を使用するか、もしくはコマンドラインから &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; を実行してください。</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="system.entitle.added.osimage_build_host" xml:space="preserve">
-        <source>&lt;strong&gt;OS Image Build Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
-        <target>&lt;strong&gt;OS イメージビルドホスト&lt;/strong&gt; の種類を適用しました。 &lt;br/&gt;&lt;strong&gt;注意:&lt;/strong&gt; この処理は状態を適用するものでは &lt;em&gt;ありません&lt;/em&gt; 。状態を適用したい場合は、 &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;状態ページ&lt;/a&gt; を使用するか、もしくはコマンドラインから &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; を実行してください。</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="system.entitle.added.osimage_build_host.nodoc" xml:space="preserve">
         <source>&lt;strong&gt;OS Image Build Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
         <target>&lt;strong&gt;OS イメージビルドホスト&lt;/strong&gt; の種類を適用しました。 &lt;br/&gt;&lt;strong&gt;注意:&lt;/strong&gt; この処理は状態を適用するものでは &lt;em&gt;ありません&lt;/em&gt; 。状態を適用したい場合は、 &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;状態ページ&lt;/a&gt; を使用するか、もしくはコマンドラインから &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; を実行してください。</target>
         <context-group name="ctx">
@@ -10375,23 +10298,9 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="system.entitle.added.virtualization_host.nodoc" xml:space="preserve">
-        <source>Since you added a Virtualization system type to the system we also performed some extra steps to ensure your system will be able to manage virtual guests better.</source>
-        <target>システムに対して仮想化システムの種類を追加したため、仮想化ゲストの管理を管理しやすくするための追加ステップを実行しました。</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
-        </context-group>
-      </trans-unit>
       <trans-unit approved="yes" id="system.entitle.added.monitoring_entitled" xml:space="preserve">
-        <source>&lt;strong&gt;Monitoring&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; Since you added the Monitoring system type we automatically assigned the Prometheus Exporters formula to the system. Please apply the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; in order to install and enable the Prometheus metrics exporters.</source>
-        <target state="final">&lt;strong&gt;モニタリング&lt;/strong&gt; の種類を適用しました。&lt;br/&gt;&lt;strong&gt;注意:&lt;/strong&gt;システムに対してモニタリングの種類を追加したため、自動的に Prometheus Exporters formula の割り当ても行ないました。 Prometheus metrics exporters のインストールと有効化については&lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt;を適用してください。</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit approved="yes" id="system.entitle.added.monitoring_entitled.nodoc" xml:space="preserve">
-        <source>&lt;strong&gt;Monitoring&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; Since you added the Monitoring system type we automatically assigned the Prometheus Exporters formula to the system. Please apply the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; in order to install and enable the Prometheus metrics exporters.</source>
-        <target state="final">&lt;strong&gt;モニタリング&lt;/strong&gt; の種類を適用しました。&lt;br/&gt;&lt;strong&gt;注意:&lt;/strong&gt; システムに対してモニタリングの種類を追加したため、自動的に Prometheus Exporters formula の割り当ても行ないました。 Prometheus metrics exporters のインストールと有効化については&lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt;を適用してください。</target>
+        <source>&lt;strong&gt;Monitoring&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; Since you added the Monitoring system type we automatically assigned the Prometheus Exporters formula to the system. Please apply the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; in order to install and enable the Prometheus metrics exporters.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; Please make sure to open the &lt;a href="/docs/{1}/installation-and-upgrade/ports.html#_external_client_ports" target="_blank"&gt;required network ports&lt;/a&gt; for all installed exporters.</source>
+        <target state="final">&lt;strong&gt;モニタリング&lt;/strong&gt;の種類を適用しました。&lt;br/&gt;&lt;strong&gt;メモ:&lt;/strong&gt; システムに対してモニタリングの種類を追加したため、自動的にPrometheus Exporters formulaの割り当ても行いました。Prometheus metrics exportersをインストールして有効化するには&lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt;を適用してください。&lt;br/&gt;&lt;strong&gt;メモ:&lt;/strong&gt; インストールされているすべてのexportersに&lt;a href="/docs/{1}/installation-and-upgrade/ports.html#_external_client_ports" target="_blank"&gt;必要なネットワークポート&lt;/a&gt;を必ず開いてください。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
@@ -10918,13 +10827,6 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         </context-group>
         <target state="final">&lt;strong&gt;ansible 制御ノード&lt;/strong&gt; の種類を適用しました。&lt;br/&gt;&lt;strong&gt;注意:&lt;/strong&gt; この動作では状態の適用は &lt;em&gt;行なわれません&lt;/em&gt; 。状態を適用するには &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;状態ページ&lt;/a&gt; を使用するか、もしくはコマンドラインから &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; を実行してください。</target>
       </trans-unit>
-      <trans-unit approved="yes" id="system.entitle.added.ansible_control_node.nodoc" xml:space="preserve">
-        <source>&lt;strong&gt;Ansible Control Node&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
-        </context-group>
-        <target state="final">&lt;strong&gt;ansible 制御ノード&lt;/strong&gt; の種類を適用しました。&lt;br/&gt;&lt;strong&gt;注意:&lt;/strong&gt; この動作では状態の適用は &lt;em&gt;行なわれません&lt;/em&gt; 。状態を適用するには &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;状態ページ&lt;/a&gt; を使用するか、もしくはコマンドラインから &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; を実行してください。</target>
-      </trans-unit>
       <trans-unit id="ansible.invalid_path" xml:space="preserve">
         <source>Invalid path (must be a valid absolute path)</source>
         <context-group name="ctx">
@@ -11081,28 +10983,28 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <target state="final">要塞SSH機密鍵パスフレーズは32文字を超えてはなりません。</target>
       </trans-unit>
       <trans-unit approved="yes" id="payg.ssh_data_created" xml:space="preserve">
-        <source>Pay-as-you-go {0} created successfully</source>
-        <target state="final">従量課金制の {0} が正常に作成されました</target>
+        <source>PAYG {0} created successfully</source>
+        <target state="final">PAYGの {0} が正常に作成されました</target>
       </trans-unit>
       <trans-unit approved="yes" id="payg.host_exists" xml:space="preserve">
-        <source>Pay-as-you-go host already exists</source>
-        <target state="final">従量課金制のホストはすでに存在します</target>
+        <source>PAYG host already exists</source>
+        <target state="final">PAYGのホストはすでに存在します</target>
       </trans-unit>
       <trans-unit approved="yes" id="payg.ssh_data_deleted" xml:space="preserve">
-        <source>Pay-as-you-go {0} deleted successfully</source>
-        <target state="final">従量課金制の {0} が正常に削除されました</target>
+        <source>PAYG {0} deleted successfully</source>
+        <target state="final">PAYGの {0} が正常に削除されました</target>
       </trans-unit>
       <trans-unit approved="yes" id="notification.paygauthenticationupdatefailed" xml:space="preserve">
         <source>Error when updating authentication data from: &lt;a href="/rhn/manager/admin/setup/payg/{0}"&gt;{1}&lt;/a&gt;</source>
         <target state="final">次の場所から認証データを更新するときにエラーが発生しました: &lt;a href="/rhn/manager/admin/setup/payg/{0}"&gt;{1}&lt;/a&gt;</target>
       </trans-unit>
       <trans-unit approved="yes" id="task.status.update-payg-auth" xml:space="preserve">
-        <source>Pay-as-you-go authentication update</source>
-        <target state="final">従量課金制の認証の更新</target>
+        <source>PAYG authentication update</source>
+        <target state="final">PAYGの認証の更新</target>
       </trans-unit>
       <trans-unit approved="yes" id="task.status.update-payg-hosts" xml:space="preserve">
-        <source>Pay-as-you-go update RMT hosts</source>
-        <target state="final">従量課金制のRMTホストの更新</target>
+        <source>PAYG update RMT hosts</source>
+        <target state="final">PAYGのRMTホストの更新</target>
       </trans-unit>
       <trans-unit approved="yes" id="setup.product.error.dataneedsrefresh" xml:space="preserve">
         <source>Product data needs refresh.</source>
@@ -11218,28 +11120,200 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>IPMI lanplus</source>
         <target state="final">IPMI lanplus</target>
       </trans-unit>
-    <trans-unit id="bunch.jsp.description.update-system-overview-bunch" xml:space="preserve">
+      <trans-unit id="bunch.jsp.description.update-system-overview-bunch" xml:space="preserve">
         <source>Regularly ensure the systems overview data are up to date</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="bunch.jsp.description.system-overview-update-queue-bunch" xml:space="preserve">
         <source>Update the systems overview data</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="api.schedule.cannotcancelpickedup" xml:space="preserve">
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit approved="yes" id="api.schedule.cannotcancelpickedup" xml:space="preserve">
         <source>Cannot cancel an action in PICKED UP state.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="api.schedule.cannotcancelchild" xml:space="preserve">
+        <target state="final">ピックアップ済み状態のアクションはキャンセルできません。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="api.schedule.cannotcancelchild" xml:space="preserve">
         <source>Cannot cancel an action with a pending prerequisite.</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="final">待機中の前提条件を持つアクションはキャンセルできません。</target>
+      </trans-unit>
+      <trans-unit id="java|hostname" xml:space="preserve">
+        <source>Hostname</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/errata/manage/CloneErrata.do</context>
+        </context-group>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit approved="yes" id="notification.subscriptionwarning.summary" xml:space="preserve">
+        <source>You have subscriptions that need attention.</source>
+        <target state="final">注意が必要なサブスクリプションがあります。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="notification.subscriptionwarning.detail" xml:space="preserve">
+        <source>You have subscriptions that are expiring soon or already expired. Please check the &lt;a href="/rhn/manager/subscription-matching"&gt;Subscription Matching&lt;/a&gt; page.</source>
+        <target state="final">間もなく期限切れになるサブスクリプション、またはすでに期限切れになっているサブスクリプションがあります。 &lt;a href="/rhn/manager/subscription-matching"&gt;サブスクリプションマッチング&lt;/a&gt;ページを確認してください。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="api.package.ptfpackage" xml:space="preserve">
+        <source>Packages part of a Program Temporary Fix (PTF): {0}</source>
+        <target state="final">Program Temporary Fix (PTF)のパッケージの一部: {0}</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="api.package.ptfmaster" xml:space="preserve">
+        <source>Program Temporary Fixes (PTFs) packages: {0}</source>
+        <target state="final">Program Temporary Fixes (PTFs)パッケージ: {0}</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="activation-key.java.nochannel" xml:space="preserve">
+          <source>No Base Channel selected.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Activation Key Pages</context>
+        </context-group>
+        <target state="final">ベースチャンネルが選択されていません。</target>
+      </trans-unit>
+      <trans-unit id="contentmanagement.validation.modularitydisabled" xml:space="preserve">
+        <source>Modularity is currently disabled. To enable modules, please remove the 'disable all modules' filter.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
+        </context-group>
+        <target state="translated">モジュール化は現在無効になっています。モジュールを有効にするには、［すべてのモジュールの無効化］フィルタを解除してください。</target>
+      </trans-unit>
+      <trans-unit id="contentmanagement.validation.nomodules" xml:space="preserve">
+        <source>Modularity is disabled. No modules will be included in the target repositories.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
+        </context-group>
+        <target state="translated">モジュール化は無効になっています。ターゲットリポジトリに含まれるモジュールはありません。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="PTF" xml:space="preserve">
+        <source>PTFs</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Program Temporary Fixes (PTFs) Navigation Tabs</context>
+        </context-group>
+        <target state="final">PTFs</target>
+      </trans-unit>
+      <trans-unit id="contentmanagement.non_environment_channels_found" xml:space="preserve">
+        <source>Cannot remove. There are custom channels that are not part of the channels built by the environment. Please remove these channels first: {0}</source>
+        <target state="translated">削除できません。この環境によって構築されたチャンネルに属さないカスタムチャンネルがあります。まずそれらのチャンネルを削除してください: {0}</target>
+      </trans-unit>
+      <trans-unit id="contentmanagement.used_in_autoinstallation_profile" xml:space="preserve">
+        <source>The target is being used in an autoinstallation profile. Cannot remove.</source>
+        <target state="translated">ターゲットは自動インストールプロファイルで使用されています。削除できません。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="task.action.rejection.reason" xml:space="preserve">
+        <source>This action was not executed because its earliest execution date was too old. When more than {0} hours pass between the scheduling and the picking up, the action is discarded because it is considered no longer relevant.
+          Please reschedule this action if you really want it to be executed.</source>
+        <target state="final">このアクションは、最初の実行日が古すぎるため実行されませんでした。スケジューリングからピックアップまでの時間が {0} 時間を超えると、関連性がなくなったと見なされるため、アクションは破棄されます。
+         このアクションを本当に実行する場合は再スケジュールしてください。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="recurring_action.empty_action_type" xml:space="preserve">
+        <source>Recurring Action type must be provided</source>
+        <target state="final">定期的なアクションタイプを提供する必要があります</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="recurring_action.empty_states_config" xml:space="preserve">
+        <source>States configuration must be provided</source>
+        <target state="final">状態の設定を提供する必要があります</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="recurring_action.invalid_action_type" xml:space="preserve">
+        <source>Recurring action has invalid type.</source>
+        <target state="final">定期的なアクションには無効なタイプがあります。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="internal_state.certs" xml:space="preserve">
+        <source>Install the server's SSL certificate and trust it on the target system</source>
+        <target state="final">サーバのSSL証明書をインストールし、ターゲットシステムで信頼します</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="internal_state.channels" xml:space="preserve">
+        <source>Make sure that channel subscriptions are in sync with the server side configuration</source>
+        <target state="final">チャンネルサブスクリプションがサーバ側の設定と同期していることを確認します</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="internal_state.hardware_profileupdate" xml:space="preserve">
+        <source>Update information about installed hardware</source>
+        <target state="final">インストールされたハードウェアに関する情報を更新します</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="internal_state.packages" xml:space="preserve">
+        <source>Apply package states as configured for the target system</source>
+        <target state="final">ターゲットシステム用に設定されたパッケージの状態を適用します</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="internal_state.packages_profileupdate" xml:space="preserve">
+        <source>Update information about installed software (packages and products)</source>
+        <target state="final">インストールされたソフトウェア(パッケージと製品)に関する情報を更新します</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="internal_state.uptodate" xml:space="preserve">
+        <source>Update the system, rebooting if required</source>
+        <target state="final">システムを更新し、必要に応じて再起動します</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="internal_state.util_syncbeacons" xml:space="preserve">
+        <source>Sync Salt beacons to the target system</source>
+        <target state="final">Saltビーコンをターゲットシステムに同期します</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="internal_state.util_syncall" xml:space="preserve">
+        <source>Sync all Salt artifacts (modules, states, grains and beacons) to the target system</source>
+        <target state="final">すべてのSaltアーティファクト(モジュール、状態、grain、ビーコン)をターゲットシステムに同期します</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="internal_state.util_syncgrains" xml:space="preserve">
+        <source>Sync Salt grains to the target system</source>
+        <target state="final">Salt grainをターゲットシステムに同期します</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="internal_state.util_syncmodules" xml:space="preserve">
+        <source>Sync Salt modules to the target system</source>
+        <target state="final">Saltモジュールをターゲットシステムに同期します</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="internal_state.util_syncstates" xml:space="preserve">
+        <source>Sync Salt states to the target system</source>
+        <target state="final">Salt状態をターゲットシステムに同期します</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="edit.channel.forbiddenclonechannelpayg" xml:space="preserve">
+        <source>Cloning of channels under different product channels on PAYG instances is forbidden</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/channels/manage/Edit</context>
+        </context-group>
+        <target state="final">PAYGインスタンスの異なる製品チャンネルにおけるチャンネルの複製は禁止されています</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="spmigration.message.payg.error" xml:space="preserve">
+        <source>PAYG ALERT: Cross product migration attempt detected. Please note, migration from openSUSE to SLES or similar is not permitted under your current PAYG plan. Operation has been aborted.</source>
+        <target state="final">PAYGアラート: 製品間の移行試行が検出されました。現在のPAYGプランでは、openSUSEからSLESなどへの移行は許可されていないことに注意してください。操作は中止されました。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="notification.channelsyncforbidden" xml:space="preserve">
+        <source>Syncing channels forbidden</source>
+        <target state="final">チャンネルの同期は禁止されています</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="notification.channelsyncfailed.notcompliant" xml:space="preserve">
+        <source>Synchronization of repositories is forbidden as @@PRODUCT_NAME@@ PAYG is unable to send accounting data to the cloud provider.
+For a detailed analysis, please refer to the log files.</source>
+        <target state="final">@@PRODUCT_NAME@@ PAYGは会計データをクラウドプロバイダに送信できないため、リポジトリの同期は禁止されています。
+詳細な分析については、ログファイルを参照してください。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="task.action.rejection.notcompliant" xml:space="preserve">
+        <source>
+The action you attempted could not be executed because the @@PRODUCT_NAME@@ PAYG system is unable to send accounting data to the cloud provider.
+For a detailed analysis, please refer to the log files.
+	</source>
+        <target state="final">
+@@PRODUCT_NAME@@ PAYGシステムが会計データをクラウドプロバイダに送信できないため、試行したアクションを実行できませんでした。
+詳細な分析については、ログ ファイルを参照してください。
+	</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="bootstrap.minion.error.conflicting.minionid" xml:space="preserve">
+        <source>Systems with conflicting minion ID and machine ID were found ({0}, {1}). Onboarding aborted. Please remove conflicting systems first ({2}, {3})</source>
+        <target state="final">競合するminion IDとマシンIDを持つシステムが見つかりました({0}、{1})。オンボーディングが中止されました。まず競合するシステムを削除してください({2}、{3})</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="bootstrap.minion.error.payg.dcregistered" xml:space="preserve">
+        <source>Registration of '{0}' on SUSE Manager Server rejected. \nTo manage Datacenter clients you have to configure SCC Credentials at Admin =&gt; Setup Wizard =&gt; Organization Credentials.</source>
+        <target state="final">SUSE Manager Serverでの「{0}」の登録が拒否されました。 \nデータセンタークライアントを管理するには、［管理］=&gt;［セットアップウィザード］=&gt;［組織の資格情報］でSCC資格情報を設定する必要があります。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="bootstrap.minion.error.payg.byosregistered" xml:space="preserve">
+        <source>Registration of '{0}' on SUSE Manager Server rejected. \nTo manage BYOS (Bring-your-own-Subscription) clients you have to configure SCC Credentials at Admin =&gt; Setup Wizard =&gt; Organization Credentials. \n\nIf the instance being onboarded is PAYG, ensure the `python-instance-billing-flavor-check` package is installed and try again.</source>
+        <target state="final">SUSE Manager Serverでの「{0}」の登録が拒否されました。 \nBYOS (Bring-your-own-Subscription)クライアントを管理するには、［管理］=&gt;［セットアップウィザード］=&gt;［組織の資格情報］でSCC資格情報を設定する必要があります。\n\nオンボードされているインスタンスがPAYGの場合は、`python-instance-billing-flavor-check`パッケージがインストールされていることを確認して、再試行してください。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="notification.updateavailable.summary" xml:space="preserve">
+        <source>Updates are available.</source>
+        <target state="final">更新が利用できます。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="notification.updateavailable.detail" xml:space="preserve">
+        <source>A new update for @@PRODUCT_NAME@@ is now available. For further details, please refer to the &lt;a href="{0}"&gt;release notes&lt;a&gt;.</source>
+        <target state="final">@@PRODUCT_NAME@@の新しい更新が利用できるようになりました。詳細については、&lt;a href="{0}"&gt;リリースノート&lt;a&gt;を参照してください。</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

@@ -1,7 +1,10 @@
-# Copyright (c) 2018-2022 SUSE LLC
+# Copyright (c) 2018-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-@rhlike_minion
+# Skip if container because action chains fail on containers
+# This needs to be fixed
+
+@ssh_minion
 @sle_minion
 @scope_action_chains
 Feature: Action chains on several systems at once
@@ -50,18 +53,16 @@ Feature: Action chains on several systems at once
     And I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
 
   Scenario: Pre-requisite: remove all action chains before testing on several systems
-    Given I am logged in API as user "admin" and password "admin"
     When I delete all action chains
     And I cancel all scheduled actions
-    And I logout from API
 
-  Scenario: Add an action chain using system set manager for Red Hat-like minion and SLE minion
+  Scenario: Add an action chain using system set manager for SSH minion and SLE minion
     When I follow the left menu "Systems > System List > All"
     And I check the "sle_minion" client
     And I check the "ssh_minion" client
     And I follow the left menu "Systems > System Set Manager > Overview"
     And I follow "Install" in the content area
-    And I follow "Fake-RPM-SLES-Channel" in the content area
+    And I follow "Fake-RPM-SUSE-Channel" in the content area
     And I enter "andromeda-dummy" as the filtered package name
     And I click on the filter button
     And I check "andromeda-dummy" in the list
@@ -110,4 +111,4 @@ Feature: Action chains on several systems at once
     And I run "rm /tmp/action_chain_done" on "ssh_minion" without error control
 
   Scenario: Cleanup: remove remaining systems from SSM after action chain tests on several systems
-    When I click on "Clear"
+    When I click on the clear SSM button

@@ -23,7 +23,9 @@ import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.VirtualInstance;
+import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.action.ActionManager;
+import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.reactor.hardware.CpuArchUtil;
@@ -55,6 +57,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 
@@ -87,7 +90,7 @@ public class JobReturnEventMessageAction implements MessageAction {
                 jobReturnEvent.getData().getResult(JsonElement.class));
         }
         catch (JsonSyntaxException e) {
-            LOG.error("JSON syntax error while decoding into a StateApplyResult:");
+            LOG.error("JSON syntax error while decoding into a StateApplyResult:", e);
             LOG.error(jobReturnEvent.getData().getResult(JsonElement.class).toString());
         }
         return jsonResult;
@@ -145,6 +148,7 @@ public class JobReturnEventMessageAction implements MessageAction {
             if (!jobResult.isPresent()) {
                 return;
             }
+            AtomicReference<Optional<User>> scheduler = new AtomicReference<>(Optional.empty());
             JsonElement jsonResult = jobResult.get();
             // The Salt reactor triggers a "suma-action-chain" job (mgractionchains.resume) at
             // 'minion/startup/event/'. This means the result might not be a JSON in case of
@@ -161,6 +165,7 @@ public class JobReturnEventMessageAction implements MessageAction {
                                     .flatMap(ActionChainFactory::getActionChain);
 
                     actionChain.ifPresent(ac -> {
+                            scheduler.set(Optional.ofNullable(ac.getUser()));
                             ac.getEntries().stream()
                                     .flatMap(ace -> ace.getAction().getServerActions().stream())
                                     .filter(sa -> sa.getServer().asMinionServer()
@@ -203,7 +208,7 @@ public class JobReturnEventMessageAction implements MessageAction {
                     .stream()                    // handlePackageChange for all the results in actions chain result.
                     .anyMatch(Boolean.TRUE::equals);
             if (packageRefreshNeeded) {
-                schedulePackageRefresh(jobReturnEvent.getMinionId());
+                schedulePackageRefresh(scheduler.get(), jobReturnEvent.getMinionId());
             }
         });
 
@@ -211,15 +216,19 @@ public class JobReturnEventMessageAction implements MessageAction {
         if (!isActionChainInvolved && !isFunctionTestMode && handlePackageChanges(jobReturnEvent,
                 Optional.ofNullable(function).map(Xor::right), jobResult)) {
             Date earliest = new Date();
+            Optional<User> scheduler = Optional.empty();
             if (actionId.isPresent()) {
                 Optional<Action> action = Optional.ofNullable(ActionFactory.lookupById(actionId.get()));
-                if (action.isPresent() && action.get().getActionType().equals(ActionFactory.TYPE_DIST_UPGRADE)) {
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.add(Calendar.SECOND, 30);
-                    earliest = calendar.getTime();
+                if (action.isPresent()) {
+                    scheduler = Optional.ofNullable(action.get().getSchedulerUser());
+                    if (action.get().getActionType().equals(ActionFactory.TYPE_DIST_UPGRADE)) {
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.add(Calendar.SECOND, 30);
+                        earliest = calendar.getTime();
+                    }
                 }
             }
-            schedulePackageRefresh(jobReturnEvent.getMinionId(), earliest);
+            schedulePackageRefresh(scheduler, jobReturnEvent.getMinionId(), earliest);
         }
 
         // Check if event was triggered in response to state scheduled at minion start-up event
@@ -229,6 +238,7 @@ public class JobReturnEventMessageAction implements MessageAction {
                             .ifPresent(result-> {
                                 SystemInfo systemInfo = Json.GSON.fromJson(result, SystemInfo.class);
                                 saltUtils.updateSystemInfo(systemInfo, minion);
+                                SystemManager.updateSystemOverview(minion.getId());
                             }));
 
             /* Check in case any Action update it could complete any ActionChain that is still pending on that action.
@@ -304,8 +314,7 @@ public class JobReturnEventMessageAction implements MessageAction {
                     }
                      catch (JsonParseException e) {
                         LOG.warn("Could not determine if packages changed in call to {} because of a parse error",
-                                 function);
-                        LOG.warn(e);
+                                 function, e);
                     }
                     return fullPackageRefreshNeeded;
                 })
@@ -316,8 +325,8 @@ public class JobReturnEventMessageAction implements MessageAction {
      * Schedule package refresh on the minion
      * @param minionId ID of the minion for which package refresh should be scheduled
      */
-    private void schedulePackageRefresh(String minionId) {
-        schedulePackageRefresh(minionId, new Date());
+    private void schedulePackageRefresh(Optional<User> user, String minionId) {
+        schedulePackageRefresh(user, minionId, new Date());
     }
 
     /**
@@ -325,13 +334,13 @@ public class JobReturnEventMessageAction implements MessageAction {
      * @param minionId ID of the minion for which package refresh should be scheduled
      * @param earliest The earliest time this action should be run.
      */
-    private void schedulePackageRefresh(String minionId, Date earliest) {
+    private void schedulePackageRefresh(Optional<User> user, String minionId, Date earliest) {
         MinionServerFactory.findByMinionId(minionId).ifPresent(minionServer -> {
             try {
-                ActionManager.schedulePackageRefresh(minionServer.getOrg(), minionServer, earliest);
+                ActionManager.schedulePackageRefresh(user, minionServer, earliest);
             }
             catch (TaskomaticApiException e) {
-                LOG.error(e);
+                LOG.error(e.getMessage(), e);
             }
         });
     }

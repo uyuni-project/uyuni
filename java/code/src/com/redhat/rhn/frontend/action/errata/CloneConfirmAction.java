@@ -73,6 +73,7 @@ public class CloneConfirmAction extends RhnSetAction {
         return mapping.findForward("success");
     }
 
+    @Override
     protected void processMethodKeys(Map<String, String> map) {
         map.put("deleteconfirm.jsp.confirm", "clone");
     }

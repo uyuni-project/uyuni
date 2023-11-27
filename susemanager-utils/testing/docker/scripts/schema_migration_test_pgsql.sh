@@ -17,12 +17,14 @@ if [ ${#} -ne 1 ];then
     usage_and_exit ${SCRIPT}
 fi
 
-schema_rpm=${1}
+schema_rpms=${1}
 
-if [ ! -f /root/${schema_rpm} ];then
-    echo "RPM /root/${schema_rpm} does not exists"
-    usage_and_exit ${SCRIPT}
-fi
+for i in ${schema_rpms};do
+    if [ ! -f /root/${i} ];then
+        echo "RPM /root/${i} does not exists"
+        usage_and_exit ${SCRIPT}
+    fi
+done
 
 cd /manager/susemanager-utils/testing/docker/scripts/
 
@@ -35,7 +37,7 @@ fi
 # Database schema creation
 
 pushd /root/
-rpm -ivh ${schema_rpm}
+rpm -ivh ${schema_rpms}
 popd
 
 export PERLLIB=/manager/spacewalk/setup/lib/:/manager/web/modules/rhn/:/manager/web/modules/pxt/:/manager/schema/spacewalk/lib
@@ -57,7 +59,7 @@ cp /root/rhn.conf /etc/rhn/rhn.conf
 smdba system-check autotuning --max_connections=50
 
 # this command will fail with certificate error. This is ok, so ignore the error
-spacewalk-setup --skip-system-version-test --skip-selinux-test --skip-fqdn-test --skip-ssl-cert-generation --skip-ssl-vhost-setup --skip-services-check --clear-db --answer-file=clear-db-answers-pgsql.txt --external-postgresql --non-interactive ||:
+spacewalk-setup --skip-initial-configuration --skip-system-version-test --skip-selinux-test --skip-fqdn-test --skip-ssl-cert-generation --skip-ssl-vhost-setup --skip-services-check --clear-db --answer-file=clear-db-answers-pgsql.txt --external-postgresql --non-interactive ||:
 
 
 # this copy the latest schema from the git into the system

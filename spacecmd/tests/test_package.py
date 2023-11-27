@@ -562,7 +562,7 @@ class TestSCPackage:
         assert shell.get_package_names.called
         assert mprint.called
 
-        assert_expect(mprint.call_args_list, "No packages has been removed")
+        assert mprint.call_args_list[-1][0][0] == "No packages has been removed"
 
     def test_package_remove_specific_pkg_accepted(self, shell):
         """
@@ -579,6 +579,9 @@ class TestSCPackage:
         shell.user_confirm = MagicMock(return_value=True)
         mprint = MagicMock()
         logger = MagicMock()
+        mocks_order = MagicMock()
+        mocks_order.mprint, mocks_order.removePackage = mprint, shell.client.packages.removePackage
+
         with patch("spacecmd.package.print", mprint) as prn, \
             patch("spacecmd.package.logging", logger) as lgr:
             spacecmd.package.do_package_remove(shell, "vim* gvim pico")
@@ -602,6 +605,10 @@ class TestSCPackage:
             assert_expect([call], next(iter(exp)))
             exp.pop(0)
         assert not exp
+
+        # mprint is called first and removePackage the last
+        assert mocks_order.mock_calls[0][0] == 'mprint'
+        assert mocks_order.mock_calls[-1][0] == 'removePackage'
 
     def test_package_listorphans_noarg(self, shell):
         """
@@ -664,7 +671,7 @@ class TestSCPackage:
         assert out is 1
         assert shell.client.channel.software.listPackagesWithoutChannel.called
 
-        assert_expect(mprint.call_args_list, "No packages were removed")
+        assert mprint.call_args_list[-1][0][0] == "No packages were removed"
 
     def test_package_removeorphans_confirm(self, shell):
         """

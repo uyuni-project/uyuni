@@ -40,10 +40,9 @@ public class MirrorCredentialsManagerTest extends RhnMockStrutsTestCase {
 
     /**
      * Test findMirrorCredentials().
-     * @throws Exception if something goes wrong
      */
     @Test
-    public void testFindAllMirrorCreds() throws Exception {
+    public void testFindAllMirrorCreds() {
         MirrorCredentialsDto creds0 = storeTestCredentials();
         MirrorCredentialsDto creds1 = storeTestCredentials();
         MirrorCredentialsDto creds2 = storeTestCredentials();
@@ -56,10 +55,9 @@ public class MirrorCredentialsManagerTest extends RhnMockStrutsTestCase {
 
     /**
      * Test findMirrorCredentials() sort order.
-     * @throws Exception if something goes wrong
      */
     @Test
-    public void testFindMirrorCredentialsSortOrder() throws Exception {
+    public void testFindMirrorCredentialsSortOrder() {
         // Store some credentials
         storeTestCredentials();
         storeTestCredentials();
@@ -87,10 +85,9 @@ public class MirrorCredentialsManagerTest extends RhnMockStrutsTestCase {
 
     /**
      * Test findMirrorCredentials(long).
-     * @throws Exception if something goes wrong
      */
     @Test
-    public void testFindMirrorCredsById() throws Exception {
+    public void testFindMirrorCredsById() {
         MirrorCredentialsDto creds0 = storeTestCredentials();
         MirrorCredentialsDto creds1 = storeTestCredentials();
         MirrorCredentialsDto creds2 = storeTestCredentials();
@@ -101,10 +98,9 @@ public class MirrorCredentialsManagerTest extends RhnMockStrutsTestCase {
 
     /**
      * Test deleteMirrorCredentials().
-     * @throws Exception if something goes wrong
      */
     @Test
-    public void testDeleteCredentials() throws Exception {
+    public void testDeleteCredentials() {
         MirrorCredentialsDto creds0 = storeTestCredentials();
         MirrorCredentialsDto creds1 = storeTestCredentials();
         int size = credsManager.findMirrorCredentials().size();
@@ -118,10 +114,9 @@ public class MirrorCredentialsManagerTest extends RhnMockStrutsTestCase {
 
     /**
      * Test makePrimaryCredentials()
-     * @throws Exception if something goes wrong
      */
     @Test
-    public void testMakePrimaryCredentials() throws Exception {
+    public void testMakePrimaryCredentials() {
         MirrorCredentialsDto creds0 = storeTestCredentials();
         MirrorCredentialsDto creds1 = storeTestCredentials();
         MirrorCredentialsDto creds2 = storeTestCredentials();

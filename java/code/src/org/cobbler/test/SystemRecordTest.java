@@ -51,10 +51,9 @@ public class SystemRecordTest {
     /**
      * Sets up a connection and system.
      *
-     * @throws Exception in case anything goes wrong
      */
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         connection = new MockConnection("http://localhost", "token");
         Distro distro = new Distro.Builder<String>()
                 .setName("test-distro")

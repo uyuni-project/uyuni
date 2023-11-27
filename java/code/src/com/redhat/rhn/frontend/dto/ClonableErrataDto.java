@@ -31,8 +31,8 @@ public class ClonableErrataDto extends BaseDto {
     protected String synopsis;
     protected String updateDate;
     protected Boolean alreadyCloned;
-    protected List channelId = new ArrayList();
-    protected List channelName =  new ArrayList();
+    protected List channelId = new ArrayList<>();
+    protected List channelName =  new ArrayList<>();
     protected boolean rebootSuggested;
     protected boolean restartSuggested;
 
@@ -82,6 +82,7 @@ public class ClonableErrataDto extends BaseDto {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Long getId() {
         return id;
     }

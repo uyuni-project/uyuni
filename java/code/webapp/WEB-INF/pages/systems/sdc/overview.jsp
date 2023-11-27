@@ -54,8 +54,16 @@
               <c:if test="${rebootRequired}">
                 <div class="systeminfo">
                   <div class="systeminfo-full">
-                    <rhn:icon type="system-reboot" /><bean:message key="sdc.details.overview.requires_reboot"/>
-                    <bean:message key="sdc.details.overview.schedulereboot" arg0="/rhn/systems/details/RebootSystem.do?sid=${system.id}"/>
+                    <c:choose>
+                      <c:when test="${rebootScheduled}">
+                        <rhn:icon type="system-reboot" /><bean:message key="sdc.details.overview.rebootscheduled"/>
+                        <bean:message key="sdc.details.overview.rebootaction" arg0="/rhn/systems/details/history/Event.do?sid=${system.id}&aid=${rebootActionId}"/>
+                      </c:when>
+                      <c:otherwise>
+                        <rhn:icon type="system-reboot" /><bean:message key="sdc.details.overview.requires_reboot"/>
+                        <bean:message key="sdc.details.overview.schedulereboot" arg0="/rhn/systems/details/RebootSystem.do?sid=${system.id}"/>
+                      </c:otherwise>
+                    </c:choose>
                   </div>
                 </div>
               </c:if>
@@ -142,6 +150,21 @@
               <td><c:out value="${system.virtualInstance.type.name}"/></td>
             </tr>
             <tr>
+              <td><bean:message key="sdc.details.overview.virtualization.host"/></td>
+              <c:choose>
+                <c:when test="${system.virtualInstance.hostSystem == null}">
+                  <td><bean:message key="sdc.details.overview.unknown"/></td>
+                </c:when>
+                <c:otherwise>
+                  <td>
+                    <a href="/rhn/systems/details/Overview.do?sid=${system.virtualInstance.hostSystem.id}">
+                      <c:out value="${system.virtualInstance.hostSystem.name}"/>
+                    </a>
+                  </td>
+                </c:otherwise>
+              </c:choose>
+            </tr>
+             <tr>
               <td><bean:message key="sdc.details.overview.uuid"/></td>
               <c:choose>
                 <c:when test="${system.virtualInstance.uuid == null}">
@@ -174,6 +197,17 @@
               <c:if test="${not empty kernelLiveVersion}">
                   <br/><bean:message key="sdc.details.overview.kernel_live" arg0="${kernelLiveVersion}"/>
               </c:if>
+            </td>
+          </tr>
+          </rhn:require>
+          <!-- PAYG info -->
+          <rhn:require acl="system_is_payg()">
+          <tr>
+            <td>
+              <bean:message key="sdc.details.overview.payg"/>
+            </td>
+            <td>
+              <rhn:icon type="system-ok" title="sdc.details.overview.payg_msg"/>
             </td>
           </tr>
           </rhn:require>
@@ -277,7 +311,7 @@
             <td><rhn:formatDate humanStyle="from" value="${system.lastBootAsDate}" type="both" dateStyle="short" timeStyle="long"/><br/>
                   <rhn:require acl="system_feature(ftr_reboot)"
                        mixins="com.redhat.rhn.common.security.acl.SystemAclHandler">
-                <bean:message key="sdc.details.overview.schedulereboot" arg0="/rhn/systems/details/RebootSystem.do?sid=${system.id}"/>
+                    <bean:message key="sdc.details.overview.schedulereboot" arg0="/rhn/systems/details/RebootSystem.do?sid=${system.id}"/>
                   </rhn:require>
             </td>
           </tr>

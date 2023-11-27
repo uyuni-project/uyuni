@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.domain.errata;
 
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.org.Org;
@@ -554,7 +555,7 @@ public class Errata extends BaseDomainHelper implements Selectable {
     /**
      * @param b The bugs to set.
      */
-    public void setBugs(Set b) {
+    public void setBugs(Set<Bug> b) {
         this.bugs = b;
     }
 
@@ -642,23 +643,6 @@ public class Errata extends BaseDomainHelper implements Selectable {
     }
 
     /**
-     * Checks whether a keyword is already associated with an erratum.
-     * @param keywordIn The keyword to check.
-     * @return returns whether keyword is already associated with given erratum
-     */
-    public boolean containsKeyword(String keywordIn) {
-        if (this.keywords == null) {
-            return false;
-        }
-        for (Keyword k : this.keywords) {
-            if (k.getKeyword().equals(keywordIn)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
      * @return Returns the keywords.
      */
     public Set<Keyword> getKeywords() {
@@ -674,11 +658,20 @@ public class Errata extends BaseDomainHelper implements Selectable {
 
     /**
      * Search for the given keyword in the set
-     * @param s The keyword to search for
+     *
+     * @param keyword The keyword to search for
      * @return true if keyword was found
      */
-    public boolean hasKeyword(String s) {
-        return containsKeyword(s);
+    public boolean hasKeyword(String keyword) {
+        if (this.keywords == null || keyword == null) {
+            return false;
+        }
+        for (Keyword k : this.keywords) {
+            if (k.getKeyword().equals(keyword)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -728,13 +721,14 @@ public class Errata extends BaseDomainHelper implements Selectable {
     /**
      * @return all errata notifications
      */
-    public List getNotificationQueue() {
+    public List<Row> getNotificationQueue() {
         return ErrataManager.listErrataNotifications(this);
     }
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString() {
         return getClass().getName() + " : " + id + " : " + advisory + " desc: " + description + " syn: " + synopsis;
     }
@@ -756,6 +750,7 @@ public class Errata extends BaseDomainHelper implements Selectable {
     /**
      * @return whether this object is selectable for RhnSet
      */
+    @Override
     public boolean isSelectable() {
         return true;
     }
@@ -763,6 +758,7 @@ public class Errata extends BaseDomainHelper implements Selectable {
     /**
      * @return the selected
      */
+    @Override
     public boolean isSelected() {
         return selected;
     }
@@ -770,6 +766,7 @@ public class Errata extends BaseDomainHelper implements Selectable {
     /**
      * @param isSelected the selected to set
      */
+    @Override
     public void setSelected(boolean isSelected) {
         this.selected = isSelected;
     }
@@ -777,6 +774,7 @@ public class Errata extends BaseDomainHelper implements Selectable {
     /**
      * @return the selection key
      */
+    @Override
     public String getSelectionKey() {
         return String.valueOf(getId());
     }
@@ -784,6 +782,7 @@ public class Errata extends BaseDomainHelper implements Selectable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof Errata)) {
             return false;
@@ -801,6 +800,7 @@ public class Errata extends BaseDomainHelper implements Selectable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         HashCodeBuilder eb = new HashCodeBuilder();
         eb.append(this.getAdvisory());

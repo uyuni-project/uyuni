@@ -30,14 +30,14 @@ import org.junit.jupiter.api.Test;
 public class KickstartTroubleshootingEditTest extends BaseKickstartEditTestCase {
 
     @Test
-    public void testSetupExecute() throws Exception {
+    public void testSetupExecute() {
         setRequestPathInfo("/kickstart/TroubleshootingEdit");
         actionPerform();
         assertNotNull(request.getAttribute(RequestContext.KICKSTART));
     }
 
     @Test
-    public void testSubmitStandard() throws Exception {
+    public void testSubmitStandard() {
         addDispatchCall(KickstartTroubleshootingEditAction.UPDATE_METHOD);
         setRequestPathInfo("/kickstart/TroubleshootingEdit");
         addRequestParameter(KickstartTroubleshootingEditAction.SUBMITTED,
@@ -51,7 +51,7 @@ public class KickstartTroubleshootingEditTest extends BaseKickstartEditTestCase 
     }
 
     @Test
-    public void testSubmitAdvanced() throws Exception {
+    public void testSubmitAdvanced() {
         addDispatchCall(KickstartTroubleshootingEditAction.UPDATE_METHOD);
         setRequestPathInfo("/kickstart/TroubleshootingEdit");
         addRequestParameter(KickstartTroubleshootingEditAction.SUBMITTED,

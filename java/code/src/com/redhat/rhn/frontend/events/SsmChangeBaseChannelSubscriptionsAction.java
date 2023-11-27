@@ -39,6 +39,7 @@ public class SsmChangeBaseChannelSubscriptionsAction implements MessageAction {
     private static final Logger LOG = LogManager.getLogger(SsmChangeBaseChannelSubscriptionsAction.class);
 
     /** {@inheritDoc} */
+    @Override
     public void execute(EventMessage msg) {
         SsmChangeChannelSubscriptionsEvent event = (SsmChangeChannelSubscriptionsEvent) msg;
 

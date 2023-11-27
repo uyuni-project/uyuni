@@ -17,6 +17,7 @@ package com.redhat.rhn.domain.user;
 import com.redhat.rhn.common.db.datasource.CallableMode;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
@@ -40,7 +41,6 @@ import org.hibernate.query.Query;
 import java.sql.Types;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -61,7 +61,7 @@ public  class UserFactory extends HibernateFactory {
     private static final UserFactory SINGLETON = new UserFactory();
     protected static final Logger LOG = LogManager.getLogger(UserFactory.class);
 
-    private static List timeZoneList;
+    private static List<RhnTimeZone> timeZoneList;
 
     private static final Role[] IMPLIEDROLESARRAY = { RoleFactory.CHANNEL_ADMIN,
             RoleFactory.CONFIG_ADMIN, RoleFactory.SYSTEM_GROUP_ADMIN,
@@ -98,16 +98,17 @@ public  class UserFactory extends HibernateFactory {
      * @param r Role to search for (ORG_ADMIN)
      * @return the responsible user (first org admin) of the org.
      */
+    @SuppressWarnings("unchecked")
     public static User findResponsibleUser(Long orgId, Role r) {
         Session session = HibernateFactory.getSession();
-        Iterator itr = session.getNamedQuery("User.findResponsibleUser")
+        Iterator<Object[]> itr = session.getNamedQuery("User.findResponsibleUser")
                 .setParameter("org_id", orgId)
                 .setParameter("type_id", r.getId())
                 //Retrieve from cache if there
                 .list().iterator();
         if (itr.hasNext()) {
             // only care about the first one
-            Object[] row = (Object[])itr.next();
+            Object[] row = itr.next();
             User u = createUser();
             u.setId((Long) row[0]);
             u.setLogin((String)row[1]);
@@ -177,7 +178,7 @@ public  class UserFactory extends HibernateFactory {
      */
     public static User lookupById(Long id) {
         Session session = HibernateFactory.getSession();
-        return (User)session.get(UserImpl.class, id);
+        return session.get(UserImpl.class, id);
     }
 
 
@@ -206,15 +207,16 @@ public  class UserFactory extends HibernateFactory {
             }
         }
         // Deal with the remainder:
-        if (blockOfIds.size() > 0) {
+        if (!blockOfIds.isEmpty()) {
             results.addAll(realLookupByIds(blockOfIds));
         }
         return results;
     }
 
+    @SuppressWarnings("unchecked")
     private static List<User> realLookupByIds(Collection<Long> ids) {
         Session session = HibernateFactory.getSession();
-        Query query = session.getNamedQuery("User.findByIds")
+        Query<User> query = session.getNamedQuery("User.findByIds")
                 .setParameterList("userIds", ids);
         return query.list();
     }
@@ -227,11 +229,8 @@ public  class UserFactory extends HibernateFactory {
      * @return the user found
      */
     public static User lookupById(User user, Long id) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("uid", id);
-        params.put("orgId", user.getOrg().getId());
-        User returnedUser  = (User)getInstance().lookupObjectByNamedQuery(
-                "User.findByIdandOrgId", params);
+        User returnedUser  = getInstance().lookupObjectByNamedQuery("User.findByIdandOrgId",
+                Map.of("uid", id, "orgId", user.getOrg().getId()));
         if (returnedUser == null || !user.getOrg().equals(returnedUser.getOrg())) {
             throw getNoUserException(id.toString());
         }
@@ -252,10 +251,7 @@ public  class UserFactory extends HibernateFactory {
      * @return the User found
      */
     public static User lookupByLogin(String login) {
-        Map<String, Object> params = new HashMap<>();
-        params.put(LOGIN_UC, login.toUpperCase());
-        User user = (User)getInstance()
-                .lookupObjectByNamedQuery("User.findByLogin", params);
+        User user = getInstance().lookupObjectByNamedQuery("User.findByLogin", Map.of(LOGIN_UC, login.toUpperCase()));
 
         if (user == null) {
             throw getNoUserException(login);
@@ -270,27 +266,13 @@ public  class UserFactory extends HibernateFactory {
      * @return the User found
      */
     public static User lookupByLogin(User user, String login) {
-        Map<String, Object> params = new HashMap<>();
-        params.put(LOGIN_UC, login.toUpperCase());
-        params.put("orgId", user.getOrg().getId());
-        User returnedUser  = (User)getInstance().lookupObjectByNamedQuery(
-                "User.findByLoginAndOrgId", params);
+        User returnedUser  = getInstance().lookupObjectByNamedQuery("User.findByLoginAndOrgId",
+                Map.of(LOGIN_UC, login.toUpperCase(), "orgId", user.getOrg().getId()));
 
         if (returnedUser == null) {
             throw getNoUserException(login);
         }
         return returnedUser;
-    }
-
-    /**
-     * Gets a long value from the dataresult
-     * @param dr The DataResult object containing the output
-     * @param key The key for the output value
-     * @return the long value
-     */
-    private static long getLongValue(DataResult dr, String key) {
-        Long id = (Long)((Map)dr.get(0)).get(key);
-        return id;
     }
 
     /**
@@ -314,10 +296,8 @@ public  class UserFactory extends HibernateFactory {
      * @return Returns true if the user is disabled
      */
     public static boolean isDisabled(User user) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("user", user);
         List<StateChange>  changes =  getInstance().
-                listObjectsByNamedQuery("StateChanges.lookupByUserId", params);
+                listObjectsByNamedQuery("StateChanges.lookupByUserId", Map.of("user", user));
         return changes != null && !changes.isEmpty() &&
                 DISABLED.equals(changes.get(0).getState());
     }
@@ -429,8 +409,6 @@ public  class UserFactory extends HibernateFactory {
      * @param usr the user to sync
      */
     protected void syncUserPerms(User usr) {
-        // Here we are replacing the functionality in add/remove_from_usergroup
-        // and update_perms_for_user stored procedures
         UserImpl uimpl = (UserImpl) usr;
 
         boolean orgAdminChanged = false;
@@ -515,53 +493,55 @@ public  class UserFactory extends HibernateFactory {
      * Get all timezones in apropriate order
      * @return List a list of timezones
      */
-    public static List lookupAllTimeZones() {
+    @SuppressWarnings("unchecked")
+    public static List<RhnTimeZone> lookupAllTimeZones() {
         //timeZoneList is manually cached because instance variable is properly sorted
         //whereas the database is not.
         if (timeZoneList == null) {
-            List timeZones = null; //temporary holding place until sorted
             Session session = HibernateFactory.getSession();
-            timeZones = session.getNamedQuery("RhnTimeZone.loadAll").list();
+            List<RhnTimeZone> timeZones = session.getNamedQuery("RhnTimeZone.loadAll").list();
 
             //Now sort the timezones, GMT+0000 at top, then East-to-West
             if (timeZones != null) {
-                timeZones.sort((Comparator) (o1, o2) -> {
-                    RhnTimeZone t1 = (RhnTimeZone) o1;
-                    RhnTimeZone t2 = (RhnTimeZone) o2;
-                    Integer offSet1 = t1.getTimeZone().getRawOffset();
-                    Integer offSet2 = t2.getTimeZone().getRawOffset();
-
-                    // Make sure GMT+0000 is first
-                    if (offSet1 == 0 && offSet2 != 0) {
-                        // first one GMT
-                        return -1;
-                    }
-
-                    if (offSet1 != 0 && offSet2 == 0) {
-                        // second one GMT
-                        return 1;
-                    }
-
-                    // Make sure negative offsets 'win' over positive
-                    if (offSet1 < 0 && offSet2 > 0) {
-                        return -1;
-                    }
-
-                    if (offSet1 > 0 && offSet2 < 0) {
-                        return 1;
-                    }
-
-                    if (offSet2.equals(offSet1)) {
-                        return t2.getOlsonName().compareTo(t1.getOlsonName());
-                    }
-
-                    return offSet2.compareTo(offSet1);
-                });
+                sortTimezones(timeZones);
             }
 
             timeZoneList = timeZones;
         }
         return timeZoneList;
+    }
+
+    private static void sortTimezones(List<RhnTimeZone> timeZones) {
+        timeZones.sort((t1, t2) -> {
+            int offSet1 = t1.getTimeZone().getRawOffset();
+            Integer offSet2 = t2.getTimeZone().getRawOffset();
+
+            // Make sure GMT+0000 is first
+            if (offSet1 == 0 && offSet2 != 0) {
+                // first one GMT
+                return -1;
+            }
+
+            if (offSet1 != 0 && offSet2 == 0) {
+                // second one GMT
+                return 1;
+            }
+
+            // Make sure negative offsets 'win' over positive
+            if (offSet1 < 0 && offSet2 > 0) {
+                return -1;
+            }
+
+            if (offSet1 > 0 && offSet2 < 0) {
+                return 1;
+            }
+
+            if (offSet2.equals(offSet1)) {
+                return t2.getOlsonName().compareTo(t1.getOlsonName());
+            }
+
+            return offSet2.compareTo(offSet1);
+        });
     }
 
     /**
@@ -608,10 +588,9 @@ public  class UserFactory extends HibernateFactory {
      */
     public static boolean satelliteHasUsers() {
         SelectMode m = ModeFactory.getMode("User_queries", "user_count");
-        DataResult dr = m.execute(new HashMap<>());
-        Map row = (Map) dr.get(0);
-        Long count = (Long) row.get("user_count");
-        return (count > 0);
+        DataResult<Row> dr = m.execute(new HashMap<>());
+        Long count = (Long) dr.get(0).get("user_count");
+        return count > 0;
     }
 
     /**
@@ -630,12 +609,9 @@ public  class UserFactory extends HibernateFactory {
      * @param name preference label we are looking for
      * @return UserServerPreference that corresponds to the parameters
      */
-    public UserServerPreference lookupServerPreferenceByUserServerAndName(User user,
-            Server server,
-            String name) {
+    public UserServerPreference lookupServerPreferenceByUserServerAndName(User user, Server server, String name) {
         UserServerPreferenceId id = new UserServerPreferenceId(user, server, name);
-        Session session = HibernateFactory.getSession();
-        return (UserServerPreference) session.get(UserServerPreference.class, id);
+        return getSession().get(UserServerPreference.class, id);
     }
 
     /**
@@ -646,16 +622,12 @@ public  class UserFactory extends HibernateFactory {
      * @see com.redhat.rhn.domain.user.UserServerPreferenceId
      * @param value true if the preference should be true, false otherwise
      */
-    public void setUserServerPreferenceValue(User user,
-            Server server,
-            String preferenceName,
-            boolean value) {
+    public void setUserServerPreferenceValue(User user, Server server, String preferenceName, boolean value) {
         Session session = HibernateFactory.getSession();
         UserServerPreferenceId id = new UserServerPreferenceId(user,
                 server,
                 preferenceName);
-        UserServerPreference usp = (UserServerPreference)
-                session.get(UserServerPreference.class, id);
+        UserServerPreference usp = session.get(UserServerPreference.class, id);
 
         /* Here, we delete the preference's entry if it should be true.
          * We would hopefully be ok setting the value to "1," but I'm emulating
@@ -683,9 +655,10 @@ public  class UserFactory extends HibernateFactory {
      * @param email String to find users for.
      * @return list of users.
      */
+    @SuppressWarnings("unchecked")
     public static List<User> lookupByEmail(String email) {
         Session session = HibernateFactory.getSession();
-        Query query = session.getNamedQuery("User.findByEmail")
+        Query<User> query = session.getNamedQuery("User.findByEmail")
                 .setParameter("userEmail", email);
         return query.list();
     }
@@ -697,13 +670,9 @@ public  class UserFactory extends HibernateFactory {
      * @return list of users.
      */
     public List<User> findAllUsers(Optional<Org> inOrg) {
-        Map<String, Object> params = new HashMap<>();
         return Opt.fold(inOrg,
-            () -> listObjectsByNamedQuery("User.getAllUsers", params),
-            org -> {
-                params.put("org_id", org.getId());
-                return listObjectsByNamedQuery("User.findAllUsersByOrg", params);
-            });
+            () -> listObjectsByNamedQuery("User.getAllUsers", Map.of()),
+            org -> listObjectsByNamedQuery("User.findAllUsersByOrg", Map.of("org_id", org.getId())));
     }
 
     /**
@@ -713,10 +682,7 @@ public  class UserFactory extends HibernateFactory {
      * @return list of users.
      */
     public List<User> findAllOrgAdmins(Org inOrg) {
-        Session session = HibernateFactory.getSession();
-        Map<String, Object> params = new HashMap<>();
-        params.put("org_id", inOrg.getId());
-        return listObjectsByNamedQuery("User.findAllOrgAdmins", params);
+        return listObjectsByNamedQuery("User.findAllOrgAdmins", Map.of("org_id", inOrg.getId()));
     }
 
     /**

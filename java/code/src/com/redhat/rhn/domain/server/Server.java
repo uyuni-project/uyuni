@@ -727,6 +727,10 @@ public class Server extends BaseDomainHelper implements Identifiable {
     }
 
     /**
+     * This may be null in some cases:
+     * - If a server was bootstrapped with Salt and the key was accepted manually via "salt-key".
+     * - If a server was created by a user and the user was later on deleted.
+     *
      * @return Returns the creator.
      */
     public User getCreator() {
@@ -1019,7 +1023,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
      */
     public Optional<ServerFQDN> lookupFqdn(String fqdnName) {
         return this.fqdns.stream()
-                .filter((fqdn) -> fqdn.getName().equals(fqdnName))
+                .filter(fqdn -> fqdn.getName().equals(fqdnName))
                 .findFirst();
     }
 
@@ -1057,7 +1061,6 @@ public class Server extends BaseDomainHelper implements Identifiable {
             return primaryInterface;
         }
         if (!networkInterfaces.isEmpty()) {
-            Iterator<NetworkInterface> i = networkInterfaces.iterator();
             // First pass look for names
             NetworkInterface ni = null;
 
@@ -1082,7 +1085,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
                 return ni;
             }
             // Second pass look for localhost
-            i = networkInterfaces.iterator();
+            Iterator<NetworkInterface> i = networkInterfaces.iterator();
             while (i.hasNext()) {
                 NetworkInterface n = i.next();
                 for (ServerNetAddress4 ad4 : n.getIPv4Addresses()) {
@@ -1223,7 +1226,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * @return String of RAM.
      */
     public String getRamString() {
-        return Long.valueOf(getRam()).toString();
+        return Long.toString(getRam());
     }
 
     /**
@@ -1606,16 +1609,27 @@ public class Server extends BaseDomainHelper implements Identifiable {
         return hasEntitlement(EntitlementManager.BOOTSTRAP);
     }
 
+    /**
+     * Return <code>true</code> if this is a foreign unmanaged system.
+     * @return <code>true</code> if this is a foreign unmanaged system.
+     */
+    public boolean isForeign() {
+        return hasEntitlement(EntitlementManager.FOREIGN);
+    }
 
     /**
      *
      * @return the virtual guests
      */
-    private Set<VirtualInstance> getVirtualGuests() {
+    public Set<VirtualInstance> getVirtualGuests() {
         return guests;
     }
 
-    private void setVirtualGuests(Set<VirtualInstance> virtualGuests) {
+    /**
+     * @param virtualGuests the virtual guests to use
+     */
+    public void setVirtualGuests(Set<VirtualInstance> virtualGuests) {
+        // This function is used by hibernate
         this.guests = virtualGuests;
     }
 
@@ -1695,7 +1709,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
      */
     @Override
     public boolean equals(final Object other) {
-        if (other == null || !(other instanceof Server)) {
+        if (!(other instanceof Server)) {
             return false;
         }
         Server castOther = (Server) other;
@@ -1829,7 +1843,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
                     retval.add(c);
                 }
             }
-            if (retval.size() == 0) {
+            if (retval.isEmpty()) {
                 return new HashSet<>();
             }
             return retval;
@@ -1930,7 +1944,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
     /**
      * @return Returns the ignoreEntitlementsForMigration.
      */
-    public Boolean getIgnoreEntitlementsForMigration() {
+    public boolean getIgnoreEntitlementsForMigration() {
         return ignoreEntitlementsForMigration;
     }
 
@@ -1995,6 +2009,19 @@ public class Server extends BaseDomainHelper implements Identifiable {
      */
     public Set<InstalledProduct> getInstalledProducts() {
         return installedProducts;
+    }
+
+    /**
+     * Add an InstalledProduct to this server
+     *
+     * @param product the product
+     */
+    public void addInstalledProduct(InstalledProduct product) {
+        if (this.installedProducts == null) {
+            this.installedProducts = new HashSet<>();
+        }
+
+        this.installedProducts.add(product);
     }
 
     /**
@@ -2066,7 +2093,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * @return active Set of active interaces without lo
      */
     public Set<NetworkInterface> getActiveNetworkInterfaces() {
-        Set<NetworkInterface> active = new HashSet();
+        Set<NetworkInterface> active = new HashSet<>();
         for (NetworkInterface n : networkInterfaces) {
             if (!n.isDisabled()) {
                 active.add(n);
@@ -2299,7 +2326,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * @return <code>true</code> if OS supports Transactional Update
      */
     public boolean doesOsSupportsTransactionalUpdate() {
-        return isSLEMicro();
+        return isSLEMicro() || isLeapMicro() || isopenSUSEMicroOS();
     }
 
     /**
@@ -2310,8 +2337,17 @@ public class Server extends BaseDomainHelper implements Identifiable {
      */
     public boolean doesOsSupportsMonitoring() {
         return isSLES12() || isSLES15() || isLeap15() || isUbuntu1804() || isUbuntu2004() || isUbuntu2204() ||
-                isRedHat6() || isRedHat7() || isRedHat8() || isAlibaba2() || isAmazon2() || isRocky8() ||
-                isRocky9() || isDebian11() || isDebian10();
+                isRedHat6() || isRedHat7() || isRedHat8() || isAlibaba2() || isAmazon2() || isAmazon2023() ||
+                isRocky8() || isRocky9() || isDebian12() || isDebian11() || isDebian10();
+    }
+
+    /**
+     * Return <code>true</code> if OS supports Program Temporary Fixes (PTFs)
+     *
+     * @return <code>true</code> if OS supports PTF uninstallation
+     */
+    public boolean doesOsSupportPtf() {
+        return ServerConstants.SLES.equals(getOs());
     }
 
     /**
@@ -2353,6 +2389,20 @@ public class Server extends BaseDomainHelper implements Identifiable {
         return ServerConstants.LEAP.equalsIgnoreCase(getOs()) && getRelease().startsWith("15");
     }
 
+    /**
+     * @return true if the installer type is of openSUSE Leap Micro
+     */
+    boolean isLeapMicro() {
+        return ServerConstants.LEAPMICRO.equals(getOs());
+    }
+
+    /**
+     * @return true if the installer type is of openSUSE MicroOS
+     */
+    boolean isopenSUSEMicroOS() {
+        return ServerConstants.OPENSUSEMICROOS.equals(getOs());
+    }
+
     boolean isUbuntu1804() {
         return ServerConstants.UBUNTU.equals(getOs()) && getRelease().equals("18.04");
     }
@@ -2363,6 +2413,10 @@ public class Server extends BaseDomainHelper implements Identifiable {
 
     boolean isUbuntu2204() {
         return ServerConstants.UBUNTU.equals(getOs()) && getRelease().equals("22.04");
+    }
+
+    boolean isDebian12() {
+        return ServerConstants.DEBIAN.equals(getOs()) && getRelease().equals("12");
     }
 
     boolean isDebian11() {
@@ -2398,6 +2452,10 @@ public class Server extends BaseDomainHelper implements Identifiable {
 
     boolean isAmazon2() {
         return ServerConstants.AMAZON.equals(getOsFamily()) && getRelease().equals("2");
+    }
+
+    boolean isAmazon2023() {
+        return ServerConstants.AMAZON.equals(getOsFamily()) && getRelease().equals("2023");
     }
 
     boolean isRocky8() {

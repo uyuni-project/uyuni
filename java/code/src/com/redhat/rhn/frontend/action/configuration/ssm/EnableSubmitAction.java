@@ -51,6 +51,7 @@ public class EnableSubmitAction extends RhnListDispatchAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processMethodKeys(Map<String, String> map) {
         map.put("targetsystems.jsp.enable", "enable");
     }
@@ -58,8 +59,9 @@ public class EnableSubmitAction extends RhnListDispatchAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processParamMap(ActionForm form, HttpServletRequest request,
-            Map<String, Object> params) {
+                                   Map<String, Object> params) {
         getStrutsDelegate().rememberDatePicker(params, (DynaActionForm)form, "date",
                 DatePicker.YEAR_RANGE_POSITIVE);
     }
@@ -93,8 +95,7 @@ public class EnableSubmitAction extends RhnListDispatchAction {
             return mapping.findForward("default");
         }
         catch (TaskomaticApiException e) {
-            log.error("Could not schedule configuration enablement:");
-            log.error(e);
+            log.error("Could not schedule configuration enablement:", e);
             ValidatorError verrors = new ValidatorError("taskscheduler.down");
             ActionErrors errors = RhnValidationHelper.validatorErrorToActionErrors(verrors);
             getStrutsDelegate().saveMessages(request, errors);

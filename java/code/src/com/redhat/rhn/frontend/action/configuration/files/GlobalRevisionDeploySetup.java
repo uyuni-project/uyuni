@@ -30,6 +30,7 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
  */
 public class GlobalRevisionDeploySetup extends BaseSetListAction {
 
+    @Override
     protected DataResult getDataResult(RequestContext ctx, PageControl pc) {
         User usr = ctx.getCurrentUser();
         ConfigFile cf = ConfigActionHelper.getFile(ctx.getRequest());
@@ -37,11 +38,13 @@ public class GlobalRevisionDeploySetup extends BaseSetListAction {
         return ConfigurationManager.getInstance().listGlobalFileDeployInfo(usr, cc, cf, pc);
     }
 
+    @Override
     protected void processRequestAttributes(RequestContext rctxIn) {
         ConfigActionHelper.processRequestAttributes(rctxIn);
         super.processRequestAttributes(rctxIn);
     }
 
+    @Override
     protected void processPageControl(PageControl pc) {
         pc.setFilterColumn("name");
         pc.setFilter(true);
@@ -51,6 +54,7 @@ public class GlobalRevisionDeploySetup extends BaseSetListAction {
      * We affect the selected-files set
      * @return FILE_LISTS identifier
      */
+    @Override
     public RhnSetDecl getSetDecl() {
         return RhnSetDecl.CONFIG_FILE_DEPLOY_SYSTEMS;
     }

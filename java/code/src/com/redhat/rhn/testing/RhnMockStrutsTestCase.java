@@ -15,12 +15,13 @@
 package com.redhat.rhn.testing;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
+import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.session.WebSession;
 import com.redhat.rhn.domain.user.User;
@@ -35,7 +36,6 @@ import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 
 import org.apache.struts.action.DynaActionForm;
-import org.hibernate.HibernateException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -56,9 +56,10 @@ import servletunit.struts.MockStrutsTestCase;
  * RhnMockStrutsTestCase - simple base class that adds a User to the test since all our
  * Struts Actions use a User.
  */
-public class RhnMockStrutsTestCase extends MockStrutsTestCase {
+public class RhnMockStrutsTestCase extends MockStrutsTestCase implements HibernateTestCaseUtils {
 
     protected User user;
+    private boolean committed = false;
 
     /**
      * {@inheritDoc}
@@ -99,6 +100,7 @@ public class RhnMockStrutsTestCase extends MockStrutsTestCase {
         Path tmpPillarRoot = Files.createTempDirectory("pillar");
         Path tmpSaltRoot = Files.createTempDirectory("salt");
         MinionPillarManager.INSTANCE.setPillarDataPath(tmpPillarRoot.toAbsolutePath());
+        SaltStateGeneratorService.INSTANCE.setSkipSetOwner(true);
         SaltStateGeneratorService.INSTANCE.setSuseManagerStatesFilesRoot(tmpSaltRoot
                 .toAbsolutePath());
     }
@@ -111,6 +113,12 @@ public class RhnMockStrutsTestCase extends MockStrutsTestCase {
     public void tearDown() throws Exception {
         super.tearDown();
         TestCaseHelper.tearDownHelper();
+        if (committed) {
+            OrgFactory.deleteOrg(user.getOrg().getId(), user);
+            commitAndCloseSession();
+        }
+        committed = false;
+        user = null;
     }
 
 
@@ -164,7 +172,7 @@ public class RhnMockStrutsTestCase extends MockStrutsTestCase {
     protected void verifyList(String attribName, Class classIn) {
         List dr = (List) request.getAttribute(attribName);
         Assertions.assertNotNull(dr, "Your list: " + attribName + " is null");
-        Assertions.assertTrue(dr.size() > 0, "Your list: " + attribName + " is empty");
+        assertFalse(dr.isEmpty(), "Your list: " + attribName + " is empty");
         Assertions.assertEquals(classIn, dr.iterator().next().getClass(),
                 "Your list: " + attribName + " is the wrong class");
     }
@@ -195,7 +203,7 @@ public class RhnMockStrutsTestCase extends MockStrutsTestCase {
         DynaActionForm form = (DynaActionForm) getActionForm();
         List dr = (List) form.get(attribName);
         assertNotNull(dr);
-        assertTrue(dr.size() > 0);
+        assertFalse(dr.isEmpty());
         assertEquals(classIn, dr.iterator().next().getClass());
     }
 
@@ -233,16 +241,8 @@ public class RhnMockStrutsTestCase extends MockStrutsTestCase {
         assertTrue(getActualForward().indexOf("/errors") > 0);
     }
 
-    /**
-     * PLEASE Refrain from using this unless you really have to.
-     *
-     * Try clearSession() instead
-     * @throws HibernateException Hibernate exception
-     */
-    protected void commitAndCloseSession() throws HibernateException {
-        HibernateFactory.commitTransaction();
-        HibernateFactory.closeSession();
+    // If we have to commit in mid-test, set up the next transaction correctly
+    protected void commitHappened() {
+        committed = true;
     }
-
-
 }

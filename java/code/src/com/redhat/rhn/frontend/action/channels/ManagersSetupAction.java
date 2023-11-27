@@ -45,7 +45,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * ManagersSetupAction
  */
-public class ManagersSetupAction extends RhnAction implements Listable {
+public class ManagersSetupAction extends RhnAction implements Listable<UserOverview> {
 
 
     /** {@inheritDoc} */
@@ -68,7 +68,7 @@ public class ManagersSetupAction extends RhnAction implements Listable {
         request.setAttribute("is_custom", currentChan.isCustom());
         request.setAttribute(RequestContext.CID, cid);
 
-        Map params = makeParamMap(request);
+        Map<String, Object> params = makeParamMap(request);
         params.put(RequestContext.CID, cid);
 
         ListSessionSetHelper helper = new ListSessionSetHelper(this, request, params);
@@ -126,7 +126,7 @@ public class ManagersSetupAction extends RhnAction implements Listable {
 
     /** {@inheritDoc} */
     @Override
-    public List getResult(RequestContext context) {
+    public List<UserOverview> getResult(RequestContext context) {
         User currentUser = context.getCurrentUser();
         List<UserOverview> userList = UserManager.activeInOrg2(currentUser);
         for (UserOverview uo : userList) {

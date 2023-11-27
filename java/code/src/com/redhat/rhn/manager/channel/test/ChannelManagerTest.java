@@ -116,7 +116,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
     private static TaskomaticApi taskomaticApi;
 
     @Test
-    public void testAllDownloadsTree() throws Exception {
+    public void testAllDownloadsTree() {
     }
 
     @Test
@@ -229,7 +229,6 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testOrphanedChannelTree() throws Exception {
-        user = UserTestUtils.createUserInOrgOne();
         Channel channel = ChannelFactoryTest.createTestChannel(user);
         channel.setEndOfLife(new Date(System.currentTimeMillis() + 10000000L));
         user.getOrg().addOwnedChannel(channel);
@@ -248,7 +247,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testOwnedChannelsTree() throws Exception {
+    public void testOwnedChannelsTree() {
         assertTrue(ChannelManager.ownedChannelsTree(UserTestUtils.findNewUser()).isEmpty());
         assertNotEmpty(ChannelManager.ownedChannelsTree(user));
     }
@@ -642,14 +641,14 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testChildrenAvailableToSet() throws Exception {
+    public void testChildrenAvailableToSet() {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         TestUtils.saveAndFlush(user);
 
         DataResult<ChildChannelDto> childChannels =
                 ChannelManager.childrenAvailableToSet(user);
         assertNotNull(childChannels);
-        assertTrue(childChannels.size() == 0);
+        assertTrue(childChannels.isEmpty());
     }
 
     @Test
@@ -753,10 +752,10 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
 
         // should be one, with one system, and its name should be == the name of the
         // base-channel for the system we just created
-        assertTrue(dr.size() == 1);
+        assertEquals(1, dr.size());
         SystemsPerChannelDto spc = dr.get(0);
-        assertTrue(spc.getName().equals(s.getBaseChannel().getName()));
-        assertTrue(spc.getSystemCount() == 1);
+        assertEquals(spc.getName(), s.getBaseChannel().getName());
+        assertEquals(1, spc.getSystemCount());
     }
 
     @Test
@@ -784,7 +783,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
 
         // There should be two - we now list ALL custom-channelsl
         assertNotNull(compatibles);
-        assertTrue(compatibles.size() == 2);
+        assertEquals(2, compatibles.size());
 
         boolean foundBase = false;
         boolean foundCustom = false;
@@ -872,9 +871,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         TestUtils.saveAndFlush(parent1);
         TestUtils.flushAndEvict(child1);
 
-
-        Map<Channel, Channel> children = ChannelManager.
-                                findCompatibleChildren(parent, parent1, user);
+        Map<Channel, Channel> children = ChannelManager.findCompatibleChildren(parent, parent1, user);
 
         assertNotEmpty(children.keySet());
         assertEquals(child, children.keySet().iterator().next());
@@ -986,7 +983,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         ochan.addPackage(testPackage);
 
         List<ErrataOverview> result = ChannelManager.listErrataNeedingResync(cchan, user);
-        assertTrue(result.size() == 1);
+        assertEquals(1, result.size());
         assertEquals(result.get(0).getId(), ce.getId());
     }
 
@@ -1051,7 +1048,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
 
         List<PackageOverview> result = ChannelManager.listErrataPackagesForResync(
                                          cchan, user, set.getLabel());
-        assertTrue(result.size() == 1);
+        assertEquals(1, result.size());
 
         assertEquals(result.get(0).getId(), testPackage.getId());
     }

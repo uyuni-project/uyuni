@@ -17,7 +17,6 @@ package com.redhat.rhn.taskomatic.task.systems;
 import com.redhat.rhn.common.db.datasource.CallableMode;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.task.TaskFactory;
 import com.redhat.rhn.taskomatic.task.threaded.QueueWorker;
 import com.redhat.rhn.taskomatic.task.threaded.TaskQueue;
@@ -62,7 +61,7 @@ public class SystemsOverviewUpdateWorker implements QueueWorker {
             HibernateFactory.commitTransaction();
         }
         catch (Exception e) {
-            logger.error(e);
+            logger.error(e.getMessage(), e);
             HibernateFactory.rollbackTransaction();
         }
         finally {
@@ -91,7 +90,6 @@ public class SystemsOverviewUpdateWorker implements QueueWorker {
      * @param sid the System id to remove the tasks from
      */
     public static void removeTask(Long sid) {
-        TaskFactory.deleteByOrgNameDataPriority(OrgFactory.getSatelliteOrg(), SystemsOverviewUpdateDriver.TASK_NAME,
-                sid, 0);
+        TaskFactory.deleteByNameData(SystemsOverviewUpdateDriver.TASK_NAME, sid);
     }
 }

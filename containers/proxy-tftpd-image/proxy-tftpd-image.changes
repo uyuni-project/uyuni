@@ -1,4 +1,40 @@
 -------------------------------------------------------------------
+Wed Nov 01 21:25:13 CET 2023 - marina.latini@suse.com
+
+- version 4.4.2
+  * Remove statically defined image tags
+
+-------------------------------------------------------------------
+Mon Sep 18 17:04:14 CEST 2023 - rosuna@suse.com
+
+- version 4.4.1
+  * Adapt to openSUSE Leap 15.5
+  * Show only cobbler menu entries for given branch
+  * Integrate the containerized proxy into the usual rel-eng workflow
+
+-------------------------------------------------------------------
+Wed Apr 19 18:15:40 UTC 2023 - Marina Latini <marina.latini@suse.com>
+
+- Update the image version to 2023.04:
+  * Fix handling of http 404 (bsc#1208624)
+
+-------------------------------------------------------------------
+Tue Feb 21 13:16:11 UTC 2023 - Julio González Gil <jgonzalez@suse.com>
+
+- Update the image version to 2023.03:
+  * Adapt to log_level default value being 1
+
+-------------------------------------------------------------------
+Mon Jan 23 07:34:24 UTC 2023 - Julio González Gil <jgonzalez@suse.com>
+
+- Update the image version to 2023.01
+
+-------------------------------------------------------------------
+Wed Dec 14 13:54:05 UTC 2022 - Julio González Gil <jgonzalez@suse.com>
+
+- Update the image version to 2022.12
+
+-------------------------------------------------------------------
 Fri Nov 18 14:18:05 UTC 2022 - Julio González Gil <jgonzalez@suse.com>
 
 - Update the image version to 2022.11

@@ -5,7 +5,6 @@
  */
 import * as React from "react";
 import { useState } from "react";
-
 import ReactDOM from "react-dom";
 
 import { DateTimePicker } from "components/datetime";
@@ -54,10 +53,10 @@ function mountDateTimePickerTo(mountingPoint: HTMLElement | null) {
     const [value, setValue] = useState(initialValue);
 
     const onChange = (value: moment.Moment) => {
-      // Per default the picker outputs the time in server timezone. Since in this case converting to
-      // server timezone is already done on the backend side we create a copy of the value in the user
-      // selected timezone to prevent applying the offset between server and user timezone twice.
-      const adjustedValue = localizedMoment(value).utc().tz(localizedMoment.userTimeZone);
+      // We transfer the date without timezone information and the server implicitly expects the values
+      // to match the users configured timezone. Since we get the date in utc we need to convert it to the
+      // users configured timezone again.
+      const adjustedValue = localizedMoment(value).tz(localizedMoment.userTimeZone);
       yearInput.value = adjustedValue.year().toString();
       monthInput.value = adjustedValue.month().toString();
       dateInput.value = adjustedValue.date().toString();

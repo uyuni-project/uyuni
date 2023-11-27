@@ -17,23 +17,21 @@ package com.redhat.rhn.frontend.taglibs.list;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.frontend.action.CSVDownloadAction;
-import com.redhat.rhn.frontend.dto.SystemSearchPartialResult;
-import com.redhat.rhn.frontend.dto.SystemSearchResult;
+import com.redhat.rhn.frontend.dto.BaseDto;
 import com.redhat.rhn.frontend.taglibs.IconTag;
 import com.redhat.rhn.frontend.taglibs.list.helper.ListHelper;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.BodyTagSupport;
+import javax.servlet.jsp.tagext.Tag;
+import javax.servlet.jsp.tagext.TagSupport;
 
 /**
  * Exports a List of data to a comma separated value string
- *
  */
 public class CSVTag extends BodyTagSupport {
 
@@ -50,14 +48,13 @@ public class CSVTag extends BodyTagSupport {
 
     private String header = null;
 
-    private List pageData;
+    private List<BaseDto> pageData;
 
     /**
      * Stores the "name" of the list. This is the "salt" used to build the
      * uniqueName used by the ListTag and ColumnTag.
      *
-     * @param nameIn
-     *            list name
+     * @param nameIn list name
      */
     public void setName(String nameIn) {
         name = nameIn;
@@ -80,8 +77,7 @@ public class CSVTag extends BodyTagSupport {
      * Header is a string to go on the top of a CSV exported file,
      * can be used to provide extra info to a user.
      *
-     * @param headerIn
-     *      optional text to be printed as first line of exported CSV file
+     * @param headerIn optional text to be printed as first line of exported CSV file
      */
     public void setHeader(String headerIn) {
         header = headerIn;
@@ -98,12 +94,9 @@ public class CSVTag extends BodyTagSupport {
      * Sets the name of the dataset to use Tries to locate the list in the
      * following order: page context, request attribute, session attribute
      *
-     * @param nameIn
-     *            name of dataset
-     * @throws JspException
-     *             indicates something went wrong
+     * @param nameIn name of dataset
      */
-    public void setDataset(String nameIn) throws JspException {
+    public void setDataset(String nameIn) {
         dataSetName = nameIn;
     }
 
@@ -123,7 +116,7 @@ public class CSVTag extends BodyTagSupport {
         }
         if (d != null) {
             if (d instanceof List) {
-                pageData = (List) d;
+                pageData = (List<BaseDto>) d;
             }
             else {
                 throw new JspException("Dataset named \'" + dataSetName +
@@ -141,8 +134,7 @@ public class CSVTag extends BodyTagSupport {
     }
 
     /**
-     * @param exportIn
-     *            The export to set.
+     * @param exportIn The export to set.
      */
     public void setExportColumns(String exportIn) {
         this.exportColumns = exportIn;
@@ -159,7 +151,7 @@ public class CSVTag extends BodyTagSupport {
             renderExport();
         }
         release();
-        return BodyTagSupport.EVAL_PAGE;
+        return Tag.EVAL_PAGE;
     }
 
     /**
@@ -169,7 +161,7 @@ public class CSVTag extends BodyTagSupport {
     public int doStartTag() throws JspException {
 
         verifyEnvironment();
-        return BodyTagSupport.EVAL_BODY_INCLUDE;
+        return Tag.EVAL_BODY_INCLUDE;
     }
 
     /**
@@ -194,15 +186,15 @@ public class CSVTag extends BodyTagSupport {
      */
     private void renderExport() throws JspException {
         IconTag i = new IconTag("item-download-csv");
-        String exportLink = new String("<div class=\"spacewalk-csv-download\">" +
+        String exportLink = "<div class=\"spacewalk-csv-download\">" +
                 "<a class=\"btn btn-link\" data-senna-off=\"true\" href=\"" + CSV_DOWNLOAD_URI + "?" +
                 makeCSVRequestParams() + "\">" + i.render() + LocalizationService.getInstance().getMessage(
-                "listdisplay.csv") + "</a></div>");
+                "listdisplay.csv") + "</a></div>";
         ListTagUtil.write(pageContext, exportLink);
     }
 
     private void verifyEnvironment() throws JspException {
-        if (BodyTagSupport.findAncestorWithClass(this, ListSetTag.class) == null) {
+        if (TagSupport.findAncestorWithClass(this, ListSetTag.class) == null) {
             throw new JspException("List must be enclosed by a ListSetTag");
         }
     }
@@ -238,8 +230,8 @@ public class CSVTag extends BodyTagSupport {
 
     private String exportDataToSession(HttpSession session) {
         if (pageData != null && pageData instanceof DataResult &&
-                ((DataResult)pageData).getMode() != null &&
-                ((DataResult)pageData).getMode().getQuery() != null) {
+                ((DataResult<BaseDto>)pageData).getMode() != null &&
+                ((DataResult<BaseDto>)pageData).getMode().getQuery() != null) {
             /* We better do not export pageList, let's keep the query instead.
              *   1) Query is usually smaller than data. And since this never gets deleted
              *      from session, the session data doesn't grow that rapidly.
@@ -248,31 +240,18 @@ public class CSVTag extends BodyTagSupport {
              *      Repeated elaboration isn't great thing; bug 453477, 851480, 445895
              */
             String paramQuery = "query_" + getUniqueName();
-            session.setAttribute(paramQuery, ((DataResult)pageData).getMode().getQuery());
+            session.setAttribute(paramQuery, ((DataResult<BaseDto>) pageData).getMode().getQuery());
             /* in some cases session does not contain elabotor for actual tag
              * so it's better to add it into session so we can elaborate for data
              * bug: 960885
              */
             session.setAttribute("list_" + getUniqueName() + TagHelper.ELAB_TAG,
-                    ((DataResult)pageData).getElaborator());
-            if (pageData.iterator().hasNext() && pageData.iterator().next().getClass().
-                    equals(new SystemSearchResult().getClass())) {
-                session.setAttribute("ssr_" + paramQuery, makePartialResult(pageData));
-            }
+                    ((DataResult<BaseDto>) pageData).getElaborator());
+
             return CSVDownloadAction.QUERY_DATA + "=" + paramQuery;
         }
         String paramPageList = "pageList_" + getUniqueName();
         session.setAttribute(paramPageList, pageData);
         return CSVDownloadAction.PAGE_LIST_DATA + "=" + paramPageList;
-    }
-
-    private Map makePartialResult(List result) {
-        Map output = new HashMap();
-        for (Object oIn : result) {
-            SystemSearchResult r = (SystemSearchResult) oIn;
-            SystemSearchPartialResult partial = new SystemSearchPartialResult(r);
-            output.put(r.getId(), partial);
-        }
-        return output;
     }
 }

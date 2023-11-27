@@ -32,10 +32,9 @@ public class ServerArchTest extends RhnBaseTestCase {
      * Simple test to make sure we can lookup ServerArchs from
      * the db. Turn on hibernate.show_sql to make sure hibernate
      * is only going to the db once.
-     * @throws Exception HibernateException
      */
     @Test
-    public void testServerArch() throws Exception {
+    public void testServerArch() {
 
         String testname = "alpha-redhat-linux";
 

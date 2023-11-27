@@ -28,6 +28,7 @@ import com.redhat.rhn.domain.action.server.test.ServerActionTest;
 import com.redhat.rhn.domain.action.test.ActionFactoryTest;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
+import com.redhat.rhn.frontend.dto.ActionedSystem;
 import com.redhat.rhn.frontend.dto.ScheduledAction;
 import com.redhat.rhn.frontend.xmlrpc.UnsupportedOperationException;
 import com.redhat.rhn.frontend.xmlrpc.schedule.ScheduleHandler;
@@ -49,7 +50,7 @@ public class ScheduleHandlerTest extends BaseHandlerTestCase {
         // setup
 
         //obtain number of actions from action manager
-        DataResult actions = ActionManager.allActions(admin, null);
+        DataResult<ScheduledAction> actions = ActionManager.allActions(admin, null);
         int numActions = actions.size();
 
         //compare against number retrieved from api... should be the same
@@ -96,7 +97,7 @@ public class ScheduleHandlerTest extends BaseHandlerTestCase {
 
         // setup
         //obtain number of actions from action manager
-        DataResult actions = ActionManager.allActions(admin, null);
+        DataResult<ScheduledAction> actions = ActionManager.allActions(admin, null);
         int numActions = actions.size();
 
         //compare against number retrieved from api... should be the same
@@ -133,7 +134,7 @@ public class ScheduleHandlerTest extends BaseHandlerTestCase {
     public void testListCompletedActions() throws Exception {
 
         //obtain number of actions from action manager
-        DataResult actions = ActionManager.completedActions(admin, null);
+        DataResult<ScheduledAction> actions = ActionManager.completedActions(admin, null);
         int numActions = actions.size();
 
         //compare against number retrieved from api... should be the same
@@ -181,7 +182,7 @@ public class ScheduleHandlerTest extends BaseHandlerTestCase {
     @Test
     public void testListFailedActions() throws Exception {
         //obtain number of actions from action manager
-        DataResult actions = ActionManager.failedActions(admin, null);
+        DataResult<ScheduledAction> actions = ActionManager.failedActions(admin, null);
         int numActions = actions.size();
 
         //compare against number retrieved from api... should be the same
@@ -205,7 +206,7 @@ public class ScheduleHandlerTest extends BaseHandlerTestCase {
     @Test
     public void testListArchivedActions() throws Exception {
         //obtain number of actions from action manager
-        DataResult actions = ActionManager.archivedActions(admin, null);
+        DataResult<ScheduledAction> actions = ActionManager.archivedActions(admin, null);
         int numActions = actions.size();
 
         //compare against number retrieved from api... should be the same
@@ -230,7 +231,7 @@ public class ScheduleHandlerTest extends BaseHandlerTestCase {
     @Test
     public void testListAllArchivedActions() throws Exception {
         //obtain number of actions from action manager
-        DataResult actions = ActionManager.allArchivedActions(admin, null);
+        DataResult<ScheduledAction> actions = ActionManager.allArchivedActions(admin, null);
         int numActions = actions.size();
 
         //compare against number retrieved from api... should be the same
@@ -267,7 +268,7 @@ public class ScheduleHandlerTest extends BaseHandlerTestCase {
     @Test
     public void testListAllCompletedActions() throws Exception {
         //obtain number of actions from action manager
-        DataResult actions = ActionManager.allCompletedActions(admin, null);
+        DataResult<ScheduledAction> actions = ActionManager.allCompletedActions(admin, null);
         int numActions = actions.size();
 
         //compare against number retrieved from api... should be the same
@@ -309,7 +310,7 @@ public class ScheduleHandlerTest extends BaseHandlerTestCase {
         saction.setStatus(ActionFactory.STATUS_COMPLETED);
 
         //obtain number of systems from action manager
-        DataResult systems = ActionManager.completedSystems(admin, action, null);
+        DataResult<ActionedSystem> systems = ActionManager.completedSystems(admin, action, null);
         int numSystems = systems.size();
 
         //compare against number retrieved from api... should be the same
@@ -330,7 +331,7 @@ public class ScheduleHandlerTest extends BaseHandlerTestCase {
         saction.setStatus(ActionFactory.STATUS_QUEUED);
 
         //obtain number of systems from action manager
-        DataResult systems = ActionManager.inProgressSystems(admin, action, null);
+        DataResult<ActionedSystem> systems = ActionManager.inProgressSystems(admin, action, null);
         int numSystems = systems.size();
 
         //compare against number retrieved from api... should be the same
@@ -351,7 +352,7 @@ public class ScheduleHandlerTest extends BaseHandlerTestCase {
         saction.setStatus(ActionFactory.STATUS_FAILED);
 
         //obtain number of systems from action manager
-        DataResult systems = ActionManager.failedSystems(admin, action, null);
+        DataResult<ActionedSystem> systems = ActionManager.failedSystems(admin, action, null);
         int numSystems = systems.size();
 
         //compare against number retrieved from api... should be the same

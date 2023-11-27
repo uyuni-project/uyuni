@@ -25,8 +25,8 @@ def schedule_errata_cache_update(channels):
         return
     h = rhnSQL.prepare("""
         insert into rhnTaskQueue
-       (org_id, task_name, task_data, priority, earliest)
-       select coalesce(c.org_id, 1), 'update_errata_cache_by_channel', c.id, 0, current_timestamp
+       (id, org_id, task_name, task_data, priority, earliest)
+       select nextval('rhn_task_queue_id_seq'), coalesce(c.org_id, 1), 'update_errata_cache_by_channel', c.id, 0, current_timestamp
        from rhnChannel c
        where c.label = :label
     """)

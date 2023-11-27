@@ -14,8 +14,8 @@
  */
 package com.redhat.rhn.manager.org.test;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.db.datasource.DataList;
 import com.redhat.rhn.domain.org.Org;
@@ -52,6 +52,6 @@ public class OrgManagerTest extends RhnBaseTestCase {
 
         DataList orgs = OrgManager.activeOrgs(user);
         assertNotNull(orgs);
-        assertTrue(orgs.size() > 0);
+        assertFalse(orgs.isEmpty());
     }
 }

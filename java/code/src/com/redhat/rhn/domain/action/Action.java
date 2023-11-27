@@ -30,7 +30,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -317,7 +316,7 @@ public class Action extends BaseDomainHelper implements Serializable, WebSocketA
     // Get the number of ServerAction objects that match
     // the passed in ActionStatus
     private long getActionStatusCount(ActionStatus status) {
-        return ActionFactory.getServerActionCountByStatus(this.getOrg(), this, status);
+        return ActionFactory.getServerActionCountByStatus(this, status);
     }
 
     /**
@@ -384,24 +383,6 @@ public class Action extends BaseDomainHelper implements Serializable, WebSocketA
      */
     public void onCancelAction() {
         // Something to do, when action is canceled.
-        // Override this method for specific action.
-    }
-
-    /**
-     * Hook when action is deleted.
-     * @param params A map of params. Each implementation should have its own keys.
-     */
-    public void onDeleteAction(Map params) {
-        // Something to do, when action is deleted.
-        // Override this method for specific action.
-    }
-
-    /**
-     * Hook when action is created.
-     * @param params A map of params. Each implementation should have its own keys.
-     */
-    public void onCreateAction(Map params) {
-        // Something to do, when action is created.
         // Override this method for specific action.
     }
 

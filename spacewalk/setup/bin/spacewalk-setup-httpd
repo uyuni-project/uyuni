@@ -103,6 +103,20 @@ sub modify_conf_content {
         return $conf_content;
 }
 
+sub setup_mod_nossl {
+    my $sslconf_dir = is_suse_like() ? '/etc/apache2/vhosts.d' : '/etc/httpd/conf.d';
+    my $sslconf     = is_suse_like() ? 'vhost-nossl.conf' : 'nossl.conf';
+
+	my $sslconf_path = "$sslconf_dir/$sslconf";
+    if(is_suse_like() && ! -f $sslconf_path)
+	{
+        my $config_path = Spacewalk::Setup::SHARED_DIR . "/vhost-nossl.conf";
+		`cp "$config_path" "$sslconf_path"`;
+	}
+
+    return;
+}
+
 sub setup_mod_ssl {
         my $fips_mode_on = shift;
 
@@ -164,17 +178,20 @@ sub setup_mod_ssl {
 
 my $help;
 my $fips_mode_on;
+my $no_ssl;
 
 my $usage = <<EOHELP;
-Usage: $0 --help | --fips-mode-on
+Usage: $0 --help | --fips-mode-on | --no-ssl
 Options:
         --help                  Print this help message
         --fips-mode-on  Turn SSL FIPS mode on (when applicable)
+        --no-ssl        Configure without SSL
 EOHELP
 
 GetOptions(
         "help" => \$help,
-        "fips-mode-on" => \$fips_mode_on
+        "fips-mode-on" => \$fips_mode_on,
+        "no-ssl" => \$no_ssl
         ) or die $usage;
 
 if ($help) {
@@ -182,7 +199,11 @@ if ($help) {
         exit 0;
 }
 
-setup_mod_ssl($fips_mode_on);
+if ($no_ssl) {
+    setup_mod_nossl();
+} else {
+    setup_mod_ssl($fips_mode_on);
+}
 
 =head1 NAME
 
@@ -194,6 +215,7 @@ Uyuni / SUSE Manager
 B<spacewalk-setup-httpd>
 [B<--help>]
 [B<--fips-mode-on>]
+[B<--no-ssl>]
 
 =head1 OPTIONS
 
@@ -203,6 +225,10 @@ B<spacewalk-setup-httpd>
 
 Configure httpd to work correctly in FIPS mode. For mod_ssl, this means turning
 the SSLFIPS directive on in ssl.conf where applicable.
+
+=item B<--no-ssl>
+
+Configure httpd without SSL.
 
 =item B<--help>
 

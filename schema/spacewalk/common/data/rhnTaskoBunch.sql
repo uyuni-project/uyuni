@@ -109,7 +109,7 @@ INSERT INTO rhnTaskoBunch (id, name, description, org_bunch)
    VALUES (sequence_nextval('rhn_tasko_bunch_id_seq'), 'minion-checkin-bunch', 'Perform a regular check-in on minions', null);
 
 INSERT INTO RhnTaskoBunch (id, name, description, org_bunch)
-   VALUES (sequence_nextval('rhn_tasko_bunch_id_seq'), 'recurring-state-apply-bunch', 'Applies salt state to minion/group/org', null);
+   VALUES (sequence_nextval('rhn_tasko_bunch_id_seq'), 'recurring-action-executor-bunch', 'Schedules actions for minion/group/org', null);
 
 INSERT INTO rhnTaskoBunch (id, name, description, org_bunch)
    VALUES (sequence_nextval('rhn_tasko_bunch_id_seq'), 'ssh-minion-action-executor-bunch', 'Execute actions on SSH Minions', null);
@@ -134,5 +134,11 @@ VALUES (sequence_nextval('rhn_tasko_bunch_id_seq'), 'system-overview-update-queu
 
 INSERT INTO rhnTaskoBunch (id, name, description, org_bunch)
 VALUES (sequence_nextval('rhn_tasko_bunch_id_seq'), 'update-system-overview-bunch', 'Update the DB table gathering the systems data to show in lists', null);
+
+INSERT INTO rhnTaskoBunch (id, name, description, org_bunch)
+VALUES (sequence_nextval('rhn_tasko_bunch_id_seq'), 'system-profile-refresh-bunch', 'Refresh System Profiles of all registered servers', null);
+
+INSERT INTO rhnTaskoBunch (id, name, description, org_bunch)
+VALUES (sequence_nextval('rhn_tasko_bunch_id_seq'), 'payg-dimension-computation-bunch', 'Compute the dimensions data required for PAYG billing', null);
 
 commit;

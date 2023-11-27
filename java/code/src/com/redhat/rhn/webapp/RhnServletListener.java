@@ -20,6 +20,8 @@ import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.manager.satellite.StartupTasksCommand;
 import com.redhat.rhn.manager.satellite.UpgradeCommand;
 
+import com.suse.manager.metrics.PrometheusExporter;
+import com.suse.manager.metrics.SystemsCollector;
 import com.suse.manager.reactor.SaltReactor;
 
 import org.apache.logging.log4j.LogManager;
@@ -55,13 +57,14 @@ public class RhnServletListener implements ServletContextListener {
     private final SaltReactor saltReactor = new SaltReactor(
             GlobalInstanceHolder.SALT_API, GlobalInstanceHolder.SYSTEM_QUERY,
             GlobalInstanceHolder.SALT_SERVER_ACTION_SERVICE,
-            GlobalInstanceHolder.SALT_UTILS);
+            GlobalInstanceHolder.SALT_UTILS,
+            GlobalInstanceHolder.PAYG_MANAGER);
 
     private void startMessaging() {
         // Start the MessageQueue thread listening for
         // Events
         MessageQueue.startMessaging();
-        MessageQueue.configureDefaultActions(GlobalInstanceHolder.SYSTEM_QUERY, GlobalInstanceHolder.SALT_API);
+        MessageQueue.configureDefaultActions(GlobalInstanceHolder.SALT_API);
     }
 
     private void stopMessaging() {
@@ -117,12 +120,16 @@ public class RhnServletListener implements ServletContextListener {
     }
 
     /** {@inheritDoc} */
+    @Override
     public void contextInitialized(ServletContextEvent sce) {
         startMessaging();
         logStart("Messaging");
 
+        HibernateFactory.registerComponentName(SystemsCollector.PRODUCT_NAME);
         startHibernate();
         logStart("Hibernate");
+
+        PrometheusExporter.INSTANCE.registerSystemsCollector();
 
         // the following is not safe to run in the testsuite
         // and will be excluded from test runs
@@ -154,6 +161,7 @@ public class RhnServletListener implements ServletContextListener {
     }
 
     /** {@inheritDoc} */
+    @Override
     public void contextDestroyed(ServletContextEvent sce) {
         saltReactor.stop();
         logStop("Salt reactor");

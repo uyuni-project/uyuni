@@ -28,6 +28,7 @@ import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 
+import com.suse.cloud.CloudPaygManager;
 import com.suse.manager.kubernetes.KubernetesManager;
 import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.utils.SaltUtils;
@@ -61,6 +62,7 @@ public class GlobalInstanceHolder {
     private static final SaltService SALT_SERVICE = new SaltService();
     public static final SystemQuery SYSTEM_QUERY = SALT_SERVICE;
     public static final SaltApi SALT_API = SALT_SERVICE;
+    public static final CloudPaygManager PAYG_MANAGER = new CloudPaygManager();
     public static final ServerGroupManager SERVER_GROUP_MANAGER = new ServerGroupManager(SALT_API);
     public static final FormulaManager FORMULA_MANAGER = new FormulaManager(SALT_API);
     public static final SaltUtils SALT_UTILS = new SaltUtils(SYSTEM_QUERY, SALT_API);
@@ -73,14 +75,13 @@ public class GlobalInstanceHolder {
     public static final MenuTree MENU_TREE = new MenuTree(ACL_FACTORY);
     public static final UserPreferenceUtils USER_PREFERENCE_UTILS = new UserPreferenceUtils(ACL_FACTORY);
     public static final RenderUtils RENDER_UTILS = new RenderUtils(ACL_FACTORY);
-    public static final MinionActionUtils MINION_ACTION_UTILS = new MinionActionUtils(
-            SALT_SERVER_ACTION_SERVICE, SALT_API, SALT_UTILS);
+    public static final MinionActionUtils MINION_ACTION_UTILS = new MinionActionUtils(SALT_API, SALT_UTILS);
     public static final KubernetesManager KUBERNETES_MANAGER = new KubernetesManager(SALT_API);
     public static final VirtManager VIRT_MANAGER = new VirtManagerSalt(SALT_API);
     public static final RegularMinionBootstrapper REGULAR_MINION_BOOTSTRAPPER =
-            new RegularMinionBootstrapper(SYSTEM_QUERY, SALT_API);
+            new RegularMinionBootstrapper(SYSTEM_QUERY, SALT_API, PAYG_MANAGER);
     public static final SSHMinionBootstrapper SSH_MINION_BOOTSTRAPPER =
-            new SSHMinionBootstrapper(SYSTEM_QUERY, SALT_API);
+            new SSHMinionBootstrapper(SYSTEM_QUERY, SALT_API, PAYG_MANAGER);
     public static final MonitoringManager MONITORING_MANAGER = new FormulaMonitoringManager(SALT_API);
     public static final SystemEntitlementManager SYSTEM_ENTITLEMENT_MANAGER = new SystemEntitlementManager(
             new SystemUnentitler(VIRT_MANAGER, MONITORING_MANAGER, SERVER_GROUP_MANAGER),

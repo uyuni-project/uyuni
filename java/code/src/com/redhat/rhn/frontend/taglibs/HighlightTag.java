@@ -72,6 +72,7 @@ public class HighlightTag extends BodyTagSupport {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int doEndTag() throws JspException {
 
         // Make sure there is something in the body for this tag
@@ -206,6 +207,7 @@ public class HighlightTag extends BodyTagSupport {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void release() {
         tag = null;
         startTag = null;

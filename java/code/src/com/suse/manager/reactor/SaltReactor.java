@@ -25,6 +25,7 @@ import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.suse.cloud.CloudPaygManager;
 import com.suse.manager.reactor.messaging.AbstractLibvirtEngineMessage;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessageAction;
@@ -43,9 +44,6 @@ import com.suse.manager.reactor.messaging.LibvirtEngineNetworkMessageAction;
 import com.suse.manager.reactor.messaging.LibvirtEnginePoolLifecycleMessage;
 import com.suse.manager.reactor.messaging.LibvirtEnginePoolMessageAction;
 import com.suse.manager.reactor.messaging.LibvirtEnginePoolRefreshMessage;
-import com.suse.manager.reactor.messaging.MinionStartEventDatabaseMessage;
-import com.suse.manager.reactor.messaging.MinionStartEventMessage;
-import com.suse.manager.reactor.messaging.MinionStartEventMessageAction;
 import com.suse.manager.reactor.messaging.RefreshGeneratedSaltFilesEventMessage;
 import com.suse.manager.reactor.messaging.RefreshGeneratedSaltFilesEventMessageAction;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessage;
@@ -94,6 +92,7 @@ public class SaltReactor {
     private final SystemQuery systemQuery;
     private final SaltServerActionService saltServerActionService;
     private final SaltUtils saltUtils;
+    private final CloudPaygManager paygMgr;
 
     // The event stream object
     private EventStream eventStream;
@@ -109,13 +108,15 @@ public class SaltReactor {
      * @param systemQueryIn instance to get system information.
      * @param saltServerActionServiceIn
      * @param saltUtilsIn
+     * @param paygMgrIn
      */
     public SaltReactor(SaltApi saltApiIn, SystemQuery systemQueryIn, SaltServerActionService saltServerActionServiceIn,
-                       SaltUtils saltUtilsIn) {
+                       SaltUtils saltUtilsIn, CloudPaygManager paygMgrIn) {
         this.saltApi = saltApiIn;
         this.systemQuery = systemQueryIn;
         this.saltServerActionService = saltServerActionServiceIn;
         this.saltUtils = saltUtilsIn;
+        this.paygMgr = paygMgrIn;
     }
 
     /**
@@ -125,12 +126,8 @@ public class SaltReactor {
         VirtManager virtManager = new VirtManagerSalt(saltApi);
 
         // Configure message queue to handle minion registrations
-        MessageQueue.registerAction(new RegisterMinionEventMessageAction(systemQuery, saltApi),
+        MessageQueue.registerAction(new RegisterMinionEventMessageAction(systemQuery, saltApi, paygMgr),
                 RegisterMinionEventMessage.class);
-        MessageQueue.registerAction(new MinionStartEventMessageAction(saltApi),
-                MinionStartEventMessage.class);
-        MessageQueue.registerAction(new MinionStartEventMessageAction(saltApi),
-                MinionStartEventDatabaseMessage.class);
         MessageQueue.registerAction(new ApplyStatesEventMessageAction(),
                 ApplyStatesEventMessage.class);
         MessageQueue.registerAction(new JobReturnEventMessageAction(saltServerActionService, saltUtils),
@@ -264,7 +261,6 @@ public class SaltReactor {
             LOG.debug("Trigger start and registration for minion: {}", minionId);
         }
         return of(
-            new MinionStartEventMessage(minionId),
             new RegisterMinionEventMessage(minionId, startupGrains)
         );
     }
@@ -317,11 +313,11 @@ public class SaltReactor {
                             () -> MinionServerFactory.findByMinionId(beaconEvent.getMinionId())
                                     .ifPresent(minionServer -> {
                         try {
-                            ActionManager.schedulePackageRefresh(minionServer.getOrg(), minionServer);
+                            ActionManager.schedulePackageRefresh(Optional.empty(), minionServer);
                         }
                         catch (TaskomaticApiException e) {
-                            LOG.error("Could not schedule package refresh for minion: {}", minionServer.getMinionId());
-                            LOG.error(e);
+                            LOG.error("Could not schedule package refresh for minion: {}",
+                                    minionServer.getMinionId(), e);
                         }
                     }))
             );

@@ -107,7 +107,7 @@ use constant DB_MIGRATION_LOG_FILE =>
 use constant EMBEDDED_DB_ANSWERS =>
   '/usr/share/spacewalk/setup/defaults.d/embedded-postgresql.conf';
 our $DEFAULT_DOC_ROOT = "/var/www/html";
-our $SUSE_DOC_ROOT = "/srv/www/htdocs";
+our $SUSE_DOC_ROOT = "/usr/share/susemanager/www/htdocs";
 
 our $CA_TRUST_DIR = '/etc/pki/ca-trust/source/anchors';
 our $SUSE_CA_TRUST_DIR = '/etc/pki/trust/anchors';
@@ -123,9 +123,13 @@ use constant SCC_CREDENTIAL_FILE =>
 my $DEBUG;
 $DEBUG = 0;
 
+my $DRY_RUN;
+$DRY_RUN = 0;
+
 sub parse_options {
   my @valid_opts = (
             "help",
+            "skip-initial-configuration",
             "skip-system-version-test",
             "skip-selinux-test",
             "skip-fqdn-test",
@@ -162,7 +166,7 @@ sub parse_options {
 
   my $usage = loc("usage: %s %s\n",
                   $0,
-                  "[ --help ] [ --answer-file=<filename> ] [ --non-interactive ] [ --skip-system-version-test ] [ --skip-selinux-test ] [ --skip-fqdn-test ] [ --skip-db-install ] [ --skip-db-diskspace-check ] [ --skip-db-population ] [--skip-reportdb-setup ] [ --skip-ssl-cert-generation ] [--skip-ssl-ca-generation] [--skip-ssl-vhost-setup] [ --skip-services-check ] [ --skip-services-restart ] [ --clear-db ] [ --re-register ] [ --upgrade ] [ --run-updater=<yes|no>] [--run-cobbler] [ --enable-tftp=<yes|no>] [ --external-postgresql [ --external-postgresql-over-ssl ] ] [--scc] [--disconnected]" );
+                  "[ --help ] [ --answer-file=<filename> ] [ --non-interactive ] [ --skip-initial-configuration ] [ --skip-system-version-test ] [ --skip-selinux-test ] [ --skip-fqdn-test ] [ --skip-db-install ] [ --skip-db-diskspace-check ] [ --skip-db-population ] [--skip-reportdb-setup ] [ --skip-ssl-cert-generation ] [--skip-ssl-ca-generation] [--skip-ssl-vhost-setup] [ --skip-services-check ] [ --skip-services-restart ] [ --clear-db ] [ --re-register ] [ --upgrade ] [ --run-updater=<yes|no>] [--run-cobbler] [ --enable-tftp=<yes|no>] [ --external-postgresql [ --external-postgresql-over-ssl ] ] [--scc] [--disconnected]" );
 
   # Terminate if any errors were encountered parsing the command line args:
   my %opts;
@@ -204,6 +208,9 @@ sub read_config {
       $value =~ s/^\s*//msg;
       $value =~ s/\s*$//msg;
       $options->{$key} = $value;
+      if ($DEBUG) {
+        print("read $key = $value from $config_file\n");
+      }
     }
   }
   return;
@@ -278,6 +285,8 @@ sub system_debug {
 
   if ($DEBUG) {
     print "Command: '" . join(' ', @args) . "'\n";
+  }
+  if ($DRY_RUN) {
     return 0;
   }
   else {
@@ -525,7 +534,7 @@ EOQ
         $drop_sth->execute();
     }
 
-    if ($DEBUG) {
+    if ($DRY_RUN) {
         $dbh->rollback();
     }
     else {
@@ -663,6 +672,7 @@ sub print_progress {
                 err_code => 1,
                 system_opts => 1,
         });
+        print "Running " . join(" ", @{$params{system_opts}}) . "\n";
 
         local *LOGFILE;
         open(LOGFILE, ">>", $params{log_file_name}) or do {
@@ -863,10 +873,9 @@ sub postgresql_setup_db {
     my $populate_db = 0;
 
     set_hibernate_conf($answers);
-    write_rhn_conf($answers, 'db-backend', 'db-host', 'db-port', 'db-name', 'db-user', 'db-password', 'db-ssl-enabled', 'hibernate.dialect', 'hibernate.connection.driver_class', 'hibernate.connection.driver_proto');
+    write_rhn_conf($answers, 'db-backend', 'db-host', 'db-port', 'db-name', 'db-user', 'db-password', 'db-ssl-enabled');
 
     postgresql_populate_db($opts, $answers, $populate_db);
-
     return 1;
 }
 
@@ -881,16 +890,19 @@ sub postgresql_reportdb_setup {
 
     if ($opts->{"clear-db"}) {
         print Spacewalk::Setup::loc("** Database: --clear-db option used.  Clearing report database.\n");
-	  postgresql_drop_reportdb($answers);
+	postgresql_drop_reportdb($answers);
     }
 
     $ENV{PGSSLROOTCERT} = $answers->{'report-db-ca-cert'};
-    $ENV{PGSSLMODE} = "verify-full";
+    if ($answers->{'report-db-host'} ne 'localhost') {
+        $ENV{PGSSLMODE} = "verify-full";
+    }
+
+    write_rhn_conf($answers, 'externaldb-admin-user','externaldb-admin-password', 'report-db-backend', 'report-db-host', 'report-db-port', 'report-db-name', 'report-db-user', 'report-db-password', 'report-db-ssl-enabled');
 
     my @cmd = ('/usr/bin/uyuni-setup-reportdb', 'create', '--db', $answers->{'report-db-name'},
         '--user', $answers->{'report-db-user'}, '--host', $answers->{'report-db-host'});
 
-    write_rhn_conf($answers, 'report-db-backend', 'report-db-host', 'report-db-port', 'report-db-name', 'report-db-user', 'report-db-password', 'report-db-ssl-enabled');
     if ($answers->{'externaldb'}) {
         push @cmd, "--externaldb-admin-user", $answers->{'externaldb-admin-user'},
         "--externaldb-admin-password", $answers->{'externaldb-admin-password'},
@@ -920,11 +932,10 @@ sub postgresql_reportdb_setup {
     
     if (-e Spacewalk::Setup::DEFAULT_RHN_CONF_LOCATION) {
         my %dbOptions = ();
+        ### uyuni-setup-reportdb writes param in rhn.conf. We need to read them and persists them in satellite-local-rules.conf
         read_config(Spacewalk::Setup::DEFAULT_RHN_CONF_LOCATION, \%dbOptions);
-        foreach my $key (keys %dbOptions) {
-            delete $dbOptions{$key} if ($key !~ /^report_/);
-        }
-        write_config(\%dbOptions, '/var/lib/rhn/rhn-satellite-prep/etc/rhn/rhn.conf' );
+        ### here we need _ instead of - cause we read them from rhn.conf
+        write_rhn_conf(\%dbOptions, 'report_db_backend', 'report_db_host', 'report_db_port', 'report_db_name', 'report_db_user', 'report_db_password', 'report_db_ssl_enabled','report_db_sslrootcert');
     }
     print loc("** Database: Installation complete.\n");
 
@@ -932,8 +943,9 @@ sub postgresql_reportdb_setup {
 }
 
 sub postgresql_start {
-    system('service postgresql status >&/dev/null');
-    system('service postgresql start >&/dev/null') if ($? >> 8);
+    my $pgservice=`systemctl list-unit-files | grep postgresql | cut -f1 -d. | tr -d '\n'`;
+    system("service $pgservice status >&/dev/null");
+    system("service $pgservice start >&/dev/null") if ($? >> 8);
     return ($? >> 8);
 }
 
@@ -958,7 +970,9 @@ EOQ
         exit 24;
     }
 
-    if (-d "/var/lib/pgsql/data/base" and
+    my $pgdata=`runuser -l postgres -c env | grep PGDATA | cut -f2- -d=`;
+
+    if (-d "$pgdata/base" and
         ! system(qq{/usr/bin/spacewalk-setup-postgresql check --db $answers->{'db-name'}})) {
         my $shared_dir = SHARED_DIR;
         print loc(<<EOQ);
@@ -973,7 +987,7 @@ EOQ
 
     if (not $opts->{"skip-db-diskspace-check"}) {
         system_or_exit(['python3', SHARED_DIR .
-            '/embedded_diskspace_check.py', '/var/lib/pgsql/data', '12288'], 14,
+            '/embedded_diskspace_check.py', '$pgdata', '12288'], 14,
             'There is not enough space available for the embedded database.');
     }
     else {
@@ -1255,6 +1269,7 @@ sub write_rhn_conf {
         }
 
         write_config(\%config, DEFAULT_RHN_CONF_LOCATION);
+        write_config(\%config, Spacewalk::Setup::DEFAULT_SATCON_DICT);
 }
 
 # Set hibernate strings into answers according to DB backend.
@@ -1266,6 +1281,7 @@ sub set_hibernate_conf {
         $answers->{'hibernate.connection.driver_class'} = "org.postgresql.Driver";
         $answers->{'hibernate.connection.driver_proto'} = "jdbc:postgresql";
     }
+    write_rhn_conf($answers, 'hibernate.dialect', 'hibernate.connection.driver_class', 'hibernate.connection.driver_proto');
 }
 
 =head1 DESCRIPTION

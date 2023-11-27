@@ -48,7 +48,7 @@ public class ImageRepoDigest extends BaseDomainHelper {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "imgrepodigest_seq")
     @SequenceGenerator(name = "imgrepodigest_seq",
-            sequenceName = "suse_img_repodigest_id_seq")
+            sequenceName = "suse_img_repodigest_id_seq", allocationSize = 1)
     public Long getId() {
         return id;
     }
@@ -94,6 +94,7 @@ public class ImageRepoDigest extends BaseDomainHelper {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(final Object other) {
         if (!(other instanceof ImageRepoDigest)) {
             return false;
@@ -108,6 +109,7 @@ public class ImageRepoDigest extends BaseDomainHelper {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder()
                 .append(imageInfo)

@@ -53,7 +53,7 @@ public class CreateUserActionTest extends RhnPostMockStrutsTestCase {
     }
 
     @Test
-    public void testNewUserIntoOrgSatellite() throws Exception {
+    public void testNewUserIntoOrgSatellite() {
 
 
         setRequestPathInfo("/newlogin/CreateUserSubmit");

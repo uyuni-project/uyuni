@@ -13,6 +13,7 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
+import csv
 import subprocess
 import xml.etree.ElementTree as ET
 from urllib.parse import urlparse, parse_qs
@@ -21,6 +22,7 @@ import sys
 from pathlib import Path
 import glob
 import os
+import platform
 from collections import namedtuple
 
 INPUT_TEMPLATE = """RESOLVEURL
@@ -32,6 +34,7 @@ path: %s
 
 CREDENTIALS_NAME = "SCCcredentials"
 
+
 def system_exit(code, messages=None):
     "Exit with a code and optional message(s). Saved a few lines of code."
 
@@ -39,10 +42,24 @@ def system_exit(code, messages=None):
         print(message, file=sys.stderr)
     sys.exit(code)
 
+
 def is_payg_instance():
-    return os.path.isfile('/usr/sbin/registercloudguest')
+    flavor_check = "/usr/bin/instance-flavor-check"
+    if not os.path.isfile(flavor_check) or not os.access(flavor_check, os.X_OK):
+        system_exit(1, ["instance-flavor-check tool is not available.",
+                        "For a correct PAYG detection please install the 'python-instance-billing-flavor-check' package"])
+
+    try:
+        result = subprocess.call(flavor_check, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    except subprocess.CalledProcessError as e:
+        system_exit(1, ["Failed to execute instance-flavor-check tool.", e])
+
+    # instance-flavor-check return 10 for PAYG. Other possible values are 11 -> BYOS and 12 -> Unknown
+    return result == 10
+
 
 SuseCloudInfo = namedtuple('SuseCloudInfo', ['header_auth', 'hostname'])
+
 
 def _get_suse_cloud_info():
     input = INPUT_TEMPLATE % (CREDENTIALS_NAME, "/")
@@ -54,8 +71,25 @@ def _get_suse_cloud_info():
     full_output = auth_data_output.split("\n")
     _, header_auth, _, repository_url = full_output
     repository_url_parsed = urlparse(repository_url)
+    k, v = header_auth.split(":", 1)
 
-    return SuseCloudInfo(header_auth, repository_url_parsed.netloc)
+    headers = _get_instance_identification()
+    headers[k] = v
+
+    return SuseCloudInfo(headers, repository_url_parsed.netloc)
+
+
+def _get_instance_identification():
+    product_xml = ET.parse("/etc/products.d/baseproduct")
+    if product_xml.find("./vendor").text == 'SUSE':
+        return {
+            "X-Instance-Identifier": product_xml.find("./name").text,
+            "X-Instance-Version": product_xml.find("./version").text,
+            "X-Instance-Arch": product_xml.find("./arch").text
+        }
+
+    return {}
+
 
 def _extract_http_auth(credentials):
     credentials_file = '/etc/zypp/credentials.d/' + credentials
@@ -72,6 +106,7 @@ def _extract_http_auth(credentials):
                 password = var.strip()
     return {"username": username, "password": password}
 
+
 def _extract_rmt_server_info(netloc):
     try:
         # we need to find the IP address, since it is not resolvable in any DNS. It is hardcoded in the hosts file
@@ -80,9 +115,9 @@ def _extract_rmt_server_info(netloc):
         system_exit(4, ["unable to get ip for repository server (error {}):".format(e)])
 
     server_ip = host_ip_output.split(" ")[0].strip()
-    ca_cert_path = "/usr/share/pki/trust/anchors/registration_server_%s.pem" % server_ip.replace('.','_')
+    ca_cert_path = "/etc/pki/trust/anchors/registration_server_%s.pem" % server_ip.replace('.','_')
     if not Path(ca_cert_path).exists():
-        ca_cert_path = "/etc/pki/trust/anchors/registration_server_%s.pem" % server_ip.replace('.','_')
+        ca_cert_path = "/usr/share/pki/trust/anchors/registration_server_%s.pem" % server_ip.replace('.','_')
         if not Path(ca_cert_path).exists():
             system_exit(6, ["CA file for server {} not found (location '/etc/pki/trust/anchors/' or '/usr/share/pki/trust/anchors/')".format( server_ip)])
     with open(ca_cert_path) as f:
@@ -104,8 +139,13 @@ def _get_installed_suse_products():
                 "version": product_xml.find("./version").text,
                 "arch": product_xml.find("./arch").text
             }
+            if product["name"] == "sle-manager-tools":
+                # no payg product has manager tools. When it appears, it comes from
+                # a registration against SUSE Manager
+                continue
             products.append(product)
     return products
+
 
 def load_instance_info():
     header_auth, hostname = _get_suse_cloud_info()
@@ -114,14 +154,16 @@ def load_instance_info():
     credentials_data = _extract_http_auth(CREDENTIALS_NAME)
     products = _get_installed_suse_products()
 
-    return { "products": products,
+    return { "type": "CLOUDRMT",
+             "products": products,
              "basic_auth": credentials_data,
              "header_auth": header_auth,
              "rmt_host": rmt_host_data}
 
+
 def main():
     if not is_payg_instance():
-        system_exit(1, ["instance is not pay-as-you-go"])
+        system_exit(1, ["instance is not PAYG"])
 
     payg_data = load_instance_info()
     print(json.dumps(payg_data))

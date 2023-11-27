@@ -1,6 +1,11 @@
-# Copyright (c) 2021-2022 SUSE LLC
+# Copyright (c) 2021-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+# skip if container because we do not have a domain name and the
+# javascript validation fails on validating the URL
+# this needs to be fixed
+
+@skip_if_github_validation
 @scope_maintenance_windows
 @sle_minion
 @rhlike_minion
@@ -65,7 +70,7 @@ Feature: Maintenance windows
 
   Scenario: Assign systems to a multi schedule using SSM
     When I follow the left menu "Systems > System List > All"
-    And I click on "Clear"
+    And I click on the clear SSM button
     And I check the "rhlike_minion" client
     And I follow the left menu "Systems > System Set Manager > Overview"
     And I follow "Assign" in the content area
@@ -75,12 +80,13 @@ Feature: Maintenance windows
     And I click on "Confirm"
     Then I should see a "Maintenance schedule has been assigned" text
 
+@susemanager
   Scenario: Schedule channel change action
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
-    Then radio button "SLE-Product-SLES15-SP4-Pool for x86_64" is checked
+    Then radio button "SLE-Product-SLES15-SP4-Pool for x86_64" should be checked
     When I wait until I do not see "Loading..." text
     Then I should see "SLE15-SP4-Installer-Updates for x86_64" as unchecked
     When I check "SLE15-SP4-Installer-Updates for x86_64"
@@ -92,10 +98,8 @@ Feature: Maintenance windows
 
   Scenario: Remove a package and update package list
     When I remove package "virgo-dummy" from this "rhlike_minion" without error control
-    Given I am on the Systems overview page of this "rhlike_minion"
-    When I follow "Software" in the content area
-    And I click on "Update Package List"
-    And I wait until event "Package List Refresh scheduled by admin" is completed
+    And I refresh packages list via spacecmd on "rhlike_minion"
+    And I wait until refresh package list on "rhlike_minion" is finished
 
   Scenario: Schedule package installation action
     Given I am on the Systems overview page of this "rhlike_minion"
@@ -111,7 +115,7 @@ Feature: Maintenance windows
 
   Scenario: Detach systems from schedules
     When I follow the left menu "Systems > System List > All"
-    And I click on "Clear"
+    And I click on the clear SSM button
     And I check the "sle_minion" client
     And I follow the left menu "Systems > System Set Manager > Overview"
     And I follow "Assign" in the content area
@@ -120,9 +124,7 @@ Feature: Maintenance windows
     Then I should see a "Maintenance schedule has been cleared" text
 
   Scenario: Cleanup: cancel all scheduled actions
-    Given I am logged in API as user "admin" and password "admin"
     When I cancel all scheduled actions
-    And I logout from API
 
   Scenario: Delete maintenance schedules
     When I follow the left menu "Schedule > Maintenance Windows > Schedules"

@@ -49,7 +49,7 @@ public class AclManager {
             return true;
         }
         return hasAcl(acl, new RequestContext(request).getCurrentUser(), mixins,
-                new HashMap(request.getParameterMap()));
+                new HashMap<>(request.getParameterMap()));
     }
 
     /**
@@ -62,7 +62,7 @@ public class AclManager {
      * @return has acl boolean
      */
     public static boolean hasAcl(String acl, User user, String mixins,
-            Map context) {
+            Map<String, Object> context) {
         if (acl == null || "".equals(acl)) {
             return true;
         }
@@ -73,7 +73,7 @@ public class AclManager {
         // when needed.
         Acl aclObj = ACL_FACTORY.getAcl(mixins);
         if (context == null) {
-           context = new HashMap();
+           context = new HashMap<>();
         }
 
         if (user != null) {

@@ -25,7 +25,7 @@ CREATE TABLE suseContentFilter(
     name     VARCHAR(128) NOT NULL,
     matcher  VARCHAR(32) NOT NULL,
     field    VARCHAR(32) NOT NULL,
-    value    VARCHAR(128) NOT NULL,
+    value    VARCHAR(128),
     created  TIMESTAMPTZ
                  DEFAULT (current_timestamp) NOT NULL,
     modified TIMESTAMPTZ

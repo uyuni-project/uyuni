@@ -50,10 +50,11 @@ public class DeleteErratumAction extends LookupDispatchAction {
      * @param response ServletResponse
      * @return The ActionForward to go to next.
      */
+    @Override
     public ActionForward unspecified(ActionMapping mapping,
-                                      ActionForm formIn,
-                                      HttpServletRequest request,
-                                      HttpServletResponse response) {
+                                     ActionForm formIn,
+                                     HttpServletRequest request,
+                                     HttpServletResponse response) {
 
         RequestContext requestContext = new RequestContext(request);
         Errata errata = requestContext.lookupErratum();
@@ -93,8 +94,9 @@ public class DeleteErratumAction extends LookupDispatchAction {
     /**
      * {@inheritDoc}
      */
-    protected Map getKeyMethodMap() {
-        Map map = new HashMap();
+    @Override
+    protected Map<String, Object> getKeyMethodMap() {
+        Map<String, Object> map = new HashMap<>();
         map.put("delete.jsp.delete", "deleteErratum");
         return map;
     }

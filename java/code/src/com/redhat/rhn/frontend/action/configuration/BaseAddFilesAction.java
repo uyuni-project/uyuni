@@ -53,7 +53,7 @@ public abstract class BaseAddFilesAction extends RhnAction {
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response) {
 
-        Map params = makeParamMap(request);
+        Map<String, Object> params = makeParamMap(request);
         ConfigFileForm cff = (ConfigFileForm) form;
 
         processRequest(request);
@@ -96,7 +96,7 @@ public abstract class BaseAddFilesAction extends RhnAction {
      */
     protected boolean passesValidation(HttpServletRequest req,
             ConfigFileForm cff, ActionMapping mapping, ConfigChannel channel,
-            Map params) {
+            Map<String, Object> params) {
 
         RhnValidationHelper.setFailedValidation(req);
         // File-upload errors? Bug out if so
@@ -113,7 +113,7 @@ public abstract class BaseAddFilesAction extends RhnAction {
 
     protected ActionForward doCreate(HttpServletRequest req,
             DynaActionForm form, ActionMapping mapping, ConfigChannel channel,
-            Map params) {
+            Map<String, Object> params) {
 
         ConfigFileForm cff = (ConfigFileForm) form;
 
@@ -136,7 +136,7 @@ public abstract class BaseAddFilesAction extends RhnAction {
             getStrutsDelegate().saveMessages(req, ve.getResult());
         }
         catch (Exception e) {
-            LOG.error(e);
+            LOG.error(e.getMessage(), e);
         }
         // If we got here, something went wrong - try again
         return getStrutsDelegate().forwardParams(

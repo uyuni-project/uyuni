@@ -260,6 +260,7 @@ public class IconTag extends TagSupport {
     /** {@inheritDoc}
      * @throws JspException JSP exception
      */
+    @Override
     public int doStartTag() throws JspException {
         if (!icons.containsKey(type)) {
             throw new IllegalArgumentException("Unknown icon type: \"" + type + "\".");
@@ -280,6 +281,7 @@ public class IconTag extends TagSupport {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void release() {
         type = null;
         title = null;

@@ -15,14 +15,14 @@
 package com.suse.manager.webui.controllers.test; import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
-
-import com.suse.manager.webui.utils.SparkTestUtils;
+import com.redhat.rhn.testing.SparkTestUtils;
 
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.junit.jupiter.api.BeforeEach;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Collections;
+import java.util.Map;
 
 import spark.Request;
 import spark.RequestResponseFactory;
@@ -60,6 +60,20 @@ public class BaseControllerTestCase extends JMockBaseTestCaseWithUser {
      */
     protected Request getRequestWithCsrf(String uri, Object... vars) {
         Request request = SparkTestUtils.createMockRequest(baseUri + uri, vars);
+        request.session(true).attribute("csrf_token", "bleh");
+        return request;
+    }
+
+    /**
+     * Creates a request with csrf token and params.
+     *
+     * @param uri the uri
+     * @param queryParams the params
+     * @param vars the vars
+     * @return the request with csrf
+     */
+    protected Request getRequestWithCsrfAndParams(String uri, Map<String, String> queryParams, Object... vars) {
+        Request request = SparkTestUtils.createMockRequestWithParams(baseUri + uri, queryParams, vars);
         request.session(true).attribute("csrf_token", "bleh");
         return request;
     }

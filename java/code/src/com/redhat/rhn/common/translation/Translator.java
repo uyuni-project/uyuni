@@ -40,7 +40,7 @@ public class Translator extends Translations {
      * @param want The Class to convert to.
      * @return the converted object
      */
-    public static Object convert(Object have, Class want) {
+    public static Object convert(Object have, Class<?> want) {
         return convert(Translator.class, have, want);
     }
 
@@ -58,8 +58,8 @@ public class Translator extends Translations {
      * @param i The integer to add to the list
      * @return Returns a list containing i
      */
-    public static List int2List(Integer i) {
-        List list = new ArrayList();
+    public static List<Integer> int2List(Integer i) {
+        List<Integer> list = new ArrayList<>();
         if (i != null) {
             list.add(i);
         }
@@ -87,20 +87,16 @@ public class Translator extends Translations {
     /** Convert from Integer to User
      * @param l The Long to convert
      * @return The resulting User
-     * @throws Exception if anything goes wrong while doing the conversion.
      */
-    public static User long2User(Integer l)
-        throws Exception {
+    public static User long2User(Integer l) {
         return UserFactory.lookupById(l.longValue());
     }
 
     /** Convert from Long to long
      * @param l The Long to convert
      * @return The resulting long
-     * @throws Exception if anything goes wrong while doing the conversion.
      */
-    public static long long2Objlong(Long l)
-        throws Exception {
+    public static long long2Objlong(Long l) {
         return (l == null) ? 0 : l;
     }
 
@@ -125,30 +121,24 @@ public class Translator extends Translations {
     /** Convert from BigDecimal to int
      * @param bd The BigDecimal to convert
      * @return The resulting int
-     * @throws Exception if anything goes wrong while doing the conversion.
      */
-    public static int bigDecimal2Int(BigDecimal bd)
-        throws Exception {
+    public static int bigDecimal2Int(BigDecimal bd) {
         return (bd == null) ? 0 : bd.intValue();
     }
 
     /** Convert from BigDecimal to Integer
      * @param bd The BigDecimal to convert
      * @return The resulting Integer
-     * @throws Exception if anything goes wrong while doing the conversion.
      */
-    public static Integer bigDecimal2IntObject(BigDecimal bd)
-        throws Exception {
+    public static Integer bigDecimal2IntObject(BigDecimal bd) {
         return (bd == null) ? Integer.valueOf(0) : Integer.valueOf(bd.intValue());
     }
 
     /** Convert from BigDecimal to long
      * @param bd The BigDecimal to convert
      * @return The resulting long
-     * @throws Exception if anything goes wrong while doing the conversion.
      */
-    public static long bigDecimal2Long(BigDecimal bd)
-        throws Exception {
+    public static long bigDecimal2Long(BigDecimal bd) {
         return (bd == null) ? 0 : bd.longValue();
     }
 
@@ -156,10 +146,8 @@ public class Translator extends Translations {
      * Convert from BigDecimal to Long
      * @param bd The BigDecimal to convert
      * @return The resulting Long
-     * @throws Exception if anything goes wrong while doing the conversion.
      */
-    public static Long bigDecimal2LongObj(BigDecimal bd)
-        throws Exception {
+    public static Long bigDecimal2LongObj(BigDecimal bd) {
         return (bd == null) ? null : bd.longValue();
     }
 
@@ -167,10 +155,8 @@ public class Translator extends Translations {
      * Convert from String to boolean.
      * @param str The string to convert
      * @return true if the string equals "Y", false otherwise.
-     * @throws Exception if anything goes wrong while doing the conversion.
      */
-    public static boolean string2boolean(String str)
-        throws Exception {
+    public static boolean string2boolean(String str) {
         if (str == null) {
             return false;
         }
@@ -195,7 +181,7 @@ public class Translator extends Translations {
      * @param l list to be converted
      * @return List.toString()
      */
-    public static String list2String(List l) {
+    public static String list2String(List<Object> l) {
         return (l == null) ? "" : l.toString();
     }
 
@@ -204,7 +190,7 @@ public class Translator extends Translations {
      * @param m map to be converted
      * @return map.toString()
      */
-    public static String map2String(Map m) {
+    public static String map2String(Map<?, ?> m) {
         return (m == null) ? "" : m.toString();
     }
 

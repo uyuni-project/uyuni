@@ -67,6 +67,7 @@ public class ScheduledAction extends BaseDto implements RowCallback {
      * Returns the Action's id.
      * @return the Action's id.
      */
+    @Override
     public Long getId() {
         return id;
     }
@@ -249,6 +250,7 @@ public class ScheduledAction extends BaseDto implements RowCallback {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void callback(ResultSet rs) throws SQLException {
         if (rs != null) {
 
@@ -279,6 +281,7 @@ public class ScheduledAction extends BaseDto implements RowCallback {
      *
      * {@inheritDoc}
      */
+    @Override
     public List<String> getCallBackColumns() {
         List<String> list = new ArrayList<>();
         list.add("ACTION_STATUS".toLowerCase());

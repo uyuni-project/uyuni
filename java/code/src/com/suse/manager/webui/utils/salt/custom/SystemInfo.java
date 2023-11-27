@@ -32,8 +32,11 @@ public class SystemInfo {
 
     @SerializedName("mgrcompat_|-status_uptime_|-status.uptime_|-module_run")
     private StateApplyResult<Ret<Map<String, Object>>> upTime;
+    // support both grains.item and grains.items
     @SerializedName("mgrcompat_|-grains_update_|-grains.item_|-module_run")
     private StateApplyResult<Ret<Map<String, Object>>> grains;
+    @SerializedName("mgrcompat_|-grains_update_|-grains.items_|-module_run")
+    private StateApplyResult<Ret<Map<String, Object>>> grainsFull;
     @SerializedName("mgrcompat_|-kernel_live_version_|-sumautil.get_kernel_live_version_|-module_run")
     private StateApplyResult<Ret<KernelLiveVersionInfo>> kernelLiveVersion;
 
@@ -42,8 +45,14 @@ public class SystemInfo {
      *
      * @return the grains
      */
-    private ValueMap getGrains() {
-        return new ValueMap(grains != null ? grains.getChanges().getRet() : new HashMap<>());
+    public ValueMap getGrains() {
+        if (grainsFull != null) {
+            return new ValueMap(grainsFull.getChanges().getRet());
+        }
+        if (grains != null) {
+            return new ValueMap(grains.getChanges().getRet());
+        }
+        return new ValueMap(new HashMap<>());
     }
 
     /**
@@ -52,7 +61,12 @@ public class SystemInfo {
      * @return the grains
      */
     public Optional<Number> getUptimeSeconds() {
-       return upTime != null ?  Optional.of((Number)upTime.getChanges().getRet().get("seconds")) : Optional.empty();
+        if (upTime != null && upTime.getChanges().getRet() != null) {
+            return Optional.of((Number)upTime.getChanges().getRet().get("seconds"));
+        }
+        else {
+            return Optional.empty();
+        }
     }
 
     /**

@@ -77,8 +77,8 @@ Group:          admin
 %else
 Group:          System Environment/Base
 %endif
-Version:        4.4.2
-Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}-1.tar.gz
+Version:        4.4.6
+Source0:        %{name}-%{version}.tar.gz
 Source1:        https://raw.githubusercontent.com/uyuni-project/uyuni/%{name}-%{version}-1/client/rhel/%{name}/%{name}-rpmlintrc
 URL:            https://github.com/uyuni-project/uyuni
 Release:        1
@@ -123,15 +123,14 @@ Requires:       coreutils
 BuildRequires:  rpm
 
 Conflicts:      rhn-kickstart < 5.4.3-1
-Conflicts:      rhn-virtualization-host < 5.4.36-2
 Conflicts:      rhncfg < 5.9.23-1
-Conflicts:      spacewalk-koan < 0.2.7-1
 Conflicts:      up2date < 5.0.0
 Conflicts:      yum-rhn-plugin < 1.6.4-1
 
 BuildRequires:  desktop-file-utils
 BuildRequires:  gettext
 BuildRequires:  intltool
+BuildRequires:  make
 
 %if 0%{?fedora}
 BuildRequires:  dnf
@@ -217,7 +216,6 @@ Requires:       python-newt
 Requires:       dbus-python
 %endif # 0{?suse_version}
 Requires:       logrotate
-Requires:       suseRegisterInfo
 
 %if %{with test} && 0%{?rhel} != 6
 # The following BuildRequires are for check only
@@ -385,7 +383,6 @@ Requires:       usermode-consoleonly >= 1.36
 %endif
 Requires:       %{name} = %{version}-%{release}
 Requires:       %{rhnsd}
-Requires:       suseRegisterInfo
 
 %description -n spacewalk-client-setup
 spacewalk-client-setup contains programs and utilities to configure a system to use

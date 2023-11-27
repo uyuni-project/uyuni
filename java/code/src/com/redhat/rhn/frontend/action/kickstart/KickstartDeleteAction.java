@@ -31,6 +31,7 @@ public class KickstartDeleteAction extends BaseKickstartEditAction {
    /**
     * {@inheritDoc}
     */
+   @Override
    protected String getSuccessKey() {
        return "kickstart.delete.success";
    }
@@ -38,6 +39,7 @@ public class KickstartDeleteAction extends BaseKickstartEditAction {
    /**
     * {@inheritDoc}
     */
+   @Override
    protected String getSuccessForward() {
        return "success";
    }
@@ -45,6 +47,7 @@ public class KickstartDeleteAction extends BaseKickstartEditAction {
    /**
     * {@inheritDoc}
     */
+   @Override
    protected BaseKickstartCommand getCommand(RequestContext ctx) {
        return new KickstartDeleteCommand(ctx.getRequiredParam(RequestContext.KICKSTART_ID),
                ctx.getCurrentUser());
@@ -53,17 +56,19 @@ public class KickstartDeleteAction extends BaseKickstartEditAction {
    /**
     * {@inheritDoc}
     */
+   @Override
    protected ValidatorError processFormValues(HttpServletRequest request,
-           DynaActionForm form,
-           BaseKickstartCommand cmd) {
+                                              DynaActionForm form,
+                                              BaseKickstartCommand cmd) {
        return null;
    }
 
    /**
     * {@inheritDoc}
     */
+   @Override
    protected void setupFormValues(RequestContext ctx, DynaActionForm form,
-                                                    BaseKickstartCommand cmd) {
+                                  BaseKickstartCommand cmd) {
        // no-op
    }
 }

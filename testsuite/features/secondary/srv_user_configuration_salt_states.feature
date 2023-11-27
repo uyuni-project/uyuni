@@ -1,13 +1,17 @@
 # Copyright (c) 2021 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@skip_if_github_validation
 @scope_visualization
 @scope_salt
 Feature: Create organizations, users, groups, and activation keys using Salt states
 
+@skip_if_container_server
   Scenario: Apply configuration salt state to server
     When I manually install the "uyuni-config" formula on the server
-    And I apply "setup_users_configuration" local salt state on "server"
+
+  Scenario: Apply setup_users_configuration state to server
+    When I apply "setup_users_configuration" local salt state on "server"
 
   Scenario: Organization my_org was correctly created
     Given I am authorized as "my_org_user" with password "my_org_user"
@@ -41,7 +45,7 @@ Feature: Create organizations, users, groups, and activation keys using Salt sta
     Given I am authorized as "user2" with password "user2"
     When I follow the left menu "Software > Channel List > All"
     And I follow "Show All Child Channels"
-    And I follow "Fake-RPM-SLES-Channel"
+    And I follow "Fake-RPM-SUSE-Channel"
     And I follow "Managers"
 
   Scenario: User Roles were assigned
@@ -58,13 +62,16 @@ Feature: Create organizations, users, groups, and activation keys using Salt sta
   Scenario: Activation Key was correctly created
     When I follow the left menu "Systems > Activation Keys"
     And I follow "My Activation Key created via Salt"
-    Then I should see "10" in field "usageLimit"
+    Then I should see "10" in field identified by "usageLimit"
     And I should see "virtualization_host" as checked
     And I should see a "Push via SSH" text
     And I should see "enable-config-auto-deploy" as checked
 
   Scenario: Cleanup: apply configuration teardown salt state to server
     When I apply "teardown_users_configuration" local salt state on "server"
+
+@skip_if_container_server
+  Scenario: Cleanup: uninstall the uyuni-config formula from the server
     And I manually uninstall the "uyuni-config" formula from the server
 
   Scenario: Cleanup: all organizations were successfully removed

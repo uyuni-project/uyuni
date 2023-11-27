@@ -31,10 +31,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeSet;
+import java.util.Set;
 
 /*
  * Test for {@link Acl}
@@ -43,20 +42,22 @@ import java.util.TreeSet;
 public class AclTest extends RhnBaseTestCase {
 
     private Acl acl = null;
-    private Map context = null;
+    private Map<String, Object> context = null;
     private MockAclHandler handler = null;
 
     /** Sets up the acl, handler, and context objects. */
+    @Override
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         acl = new Acl();
-        context = new HashMap();
+        context = new HashMap<>();
         handler = new MockAclHandler();
 
         acl.registerHandler(handler);
     }
 
     /** Tears down the acl, handler, and context objects. */
+    @Override
     @AfterEach
     public void tearDown() throws Exception {
         super.tearDown();
@@ -271,17 +272,6 @@ public class AclTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testBadRegisterByClass() {
-        try {
-            acl.registerHandler(Object.class);
-            fail("Expected call to fail");
-        }
-        catch (IllegalArgumentException e) {
-            // good.
-        }
-    }
-
-    @Test
     public void testRegisterByString() {
         acl.registerHandler(MockAclHandlerWithFunkyNames.class.getName());
         assertTrue(acl.evalAcl(context, "xml_test()"));
@@ -312,7 +302,7 @@ public class AclTest extends RhnBaseTestCase {
     public void testGetAclHandlerNames() {
         Acl localAcl = new Acl();
         localAcl.registerHandler(MockAclHandler.class.getName());
-        TreeSet ts = localAcl.getAclHandlerNames();
+        Set<String> ts = localAcl.getAclHandlerNames();
         ts.contains("handler_zero");
         ts.contains("handler_one");
         ts.contains("handle_two");
@@ -328,13 +318,13 @@ public class AclTest extends RhnBaseTestCase {
      * first parameter equals "true", then handleAcl() returns true.
      */
    public static class MockAclHandler implements AclHandler, Verifiable {
-       private Map expected = null;
+       private Map<String, Object> expected = null;
 
        public MockAclHandler() {
            reset();
        }
        private void reset() {
-           expected = new HashMap();
+           expected = new HashMap<>();
            expected.put("handler_zero",
                    new ExpectationValue("handler_zero params"));
            expected.put("handler_one",
@@ -346,8 +336,7 @@ public class AclTest extends RhnBaseTestCase {
            // otherwise, calling setActual() might throw an Exception,
            // which we don't want because then we won't get our
            // assert exceptions
-           Collection expectedValues = expected.values();
-           for (Object expectedValueIn : expectedValues) {
+           for (Object expectedValueIn : expected.values()) {
                ExpectationValue exp = (ExpectationValue) expectedValueIn;
                exp.setFailOnVerify();
            }
@@ -366,18 +355,18 @@ public class AclTest extends RhnBaseTestCase {
                exp.setExpected(Arrays.asList(params));
            }
        }
-       public boolean aclHandlerZero(Object ctx, String[] params) {
+       public boolean aclHandlerZero(Map<String, Object> ctx, String[] params) {
            return handlerDelegate("handler_zero", ctx, params);
        }
-       public boolean aclHandlerOne(Object ctx, String[] params) {
+       public boolean aclHandlerOne(Map<String, Object> ctx, String[] params) {
            return handlerDelegate("handler_one", ctx, params);
        }
-       public boolean aclHandlerTwo(Object ctx, String[] params) {
+       public boolean aclHandlerTwo(Map<String, Object> ctx, String[] params) {
            return handlerDelegate("handler_two", ctx, params);
        }
 
        private boolean handlerDelegate(
-               String name, Object ctx, String[] params) {
+               String name, Map<String, Object> ctx, String[] params) {
            ExpectationValue exp = (ExpectationValue)expected.get(name);
            exp.setActual(Arrays.asList(params));
 
@@ -393,9 +382,9 @@ public class AclTest extends RhnBaseTestCase {
         * the parameters given to the handler when Acl calls handleAcl.
         * The expectation values get reset when this is called.
         */
+       @Override
        public void verify() {
-           Collection expectedValues = expected.values();
-           for (Object expectedValueIn : expectedValues) {
+           for (Object expectedValueIn : expected.values()) {
                ExpectationValue exp = (ExpectationValue) expectedValueIn;
                exp.verify();
            }
@@ -408,19 +397,19 @@ public class AclTest extends RhnBaseTestCase {
     */
    public static class MockAclHandlerWithFunkyNames implements AclHandler {
        public boolean aclTheQuickBrownFoxJumpedOverTheLazyDog(
-               Object ctx, String[] params) {
+               Map<String, Object> ctx, String[] params) {
            return true;
        }
-       public boolean aclTestXMLFile(Object ctx, String[] params) {
+       public boolean aclTestXMLFile(Map<String, Object> ctx, String[] params) {
            return true;
        }
-       public boolean aclTestX(Object ctx, String[] params) {
+       public boolean aclTestX(Map<String, Object> ctx, String[] params) {
            return true;
        }
-       public boolean aclTestXML(Object ctx, String[] params) {
+       public boolean aclTestXML(Map<String, Object> ctx, String[] params) {
            return true;
        }
-       public boolean aclXMLTest(Object ctx, String[] params) {
+       public boolean aclXMLTest(Map<String, Object> ctx, String[] params) {
            return true;
        }
    }

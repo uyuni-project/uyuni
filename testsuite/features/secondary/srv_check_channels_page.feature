@@ -34,7 +34,7 @@ Feature: The channels page
   Scenario: Check packages in test channel
     When I follow the left menu "Software > Channel List > All"
     And I follow "Show All Child Channels"
-    And I follow "Fake-RPM-SLES-Channel"
+    And I follow "Fake-RPM-SUSE-Channel"
     And I follow "Packages"
     Then I should see package "andromeda-dummy-2.0-1.1.noarch"
     And I should see package "hoag-dummy-1.1-1.1.i586"
@@ -46,19 +46,19 @@ Feature: The channels page
   Scenario: Check package metadata
     When I follow the left menu "Software > Channel List > All"
     And I follow "Show All Child Channels"
-    And I follow "Fake-RPM-SLES-Channel"
+    And I follow "Fake-RPM-SUSE-Channel"
     And I follow "Packages"
     And I follow "andromeda-dummy-2.0-1.1.noarch"
     Then I should see a "This is the andromeda dummy package used for testing SUSE Manager" text
-    And I should see a "Fake-RPM-SLES-Channel" link
+    And I should see a "Fake-RPM-SUSE-Channel" link
     And I should see a "build.opensuse.org" text
-    And I should see a "SHA256sum:" text
-    And I should see a "packages/1/ba3/andromeda-dummy/2.0-1.1/noarch/ba3f6d939fce43b60f4d20a09887e211f11024b61defb246dd62705bf4f4ced0/andromeda-dummy-2.0-1.1.noarch.rpm" text
+    And I should see a "SHA512sum:" text
+    And I should see a "packages/1/6bc/andromeda-dummy/2.0-1.1/noarch/6bc584eb0af1bc04705c78e59ca0e4154ea86c46cd75abee57c82bfc4ebb57f3660ed21e9aceceae03855264e163853acbcde88005609d773c20f185587f70cc/andromeda-dummy-2.0-1.1.noarch.rpm" text
 
   Scenario: Check package dependencies page
     When I follow the left menu "Software > Channel List > All"
     And I follow "Show All Child Channels"
-    And I follow "Fake-RPM-SLES-Channel"
+    And I follow "Fake-RPM-SUSE-Channel"
     And I follow "Packages"
     And I follow "andromeda-dummy-2.0-1.1.noarch"
     And I follow "Dependencies"
@@ -69,7 +69,7 @@ Feature: The channels page
   Scenario: Check package change log page
     When I follow the left menu "Software > Channel List > All"
     And I follow "Show All Child Channels"
-    And I follow "Fake-RPM-SLES-Channel"
+    And I follow "Fake-RPM-SUSE-Channel"
     And I follow "Packages"
     And I follow "andromeda-dummy-2.0-1.1.noarch"
     And I follow "Change Log"
@@ -79,7 +79,7 @@ Feature: The channels page
   Scenario: Check package file list page
     When I follow the left menu "Software > Channel List > All"
     And I follow "Show All Child Channels"
-    And I follow "Fake-RPM-SLES-Channel"
+    And I follow "Fake-RPM-SUSE-Channel"
     And I follow "Packages"
     And I follow "andromeda-dummy-2.0-1.1.noarch"
     And I follow "File List"

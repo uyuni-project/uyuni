@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.EntityExistsFaultException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchImageException;
+import com.redhat.rhn.frontend.xmlrpc.util.PillarUtils;
 
 import com.suse.manager.api.ReadOnly;
 
@@ -82,7 +83,8 @@ public class DeltaImageInfoHandler extends BaseHandler {
      * @param pillar pillar data
      * @return 1 on success
      *
-     * @apidoc.doc Import an image and schedule an inspect afterwards
+     * @apidoc.doc Import an image and schedule an inspect afterwards. The "size" entries in the pillar
+     * should be passed as string.
      * @apidoc.param #session_key()
      * @apidoc.param #param("int", "sourceImageId")
      * @apidoc.param #param("int", "targetImageId")
@@ -108,6 +110,7 @@ public class DeltaImageInfoHandler extends BaseHandler {
             throw new EntityExistsFaultException(existing.get());
         }
 
+        pillar = PillarUtils.convertSizeToLong(pillar);
         ImageInfoFactory.createDeltaImageInfo(sourceOpt.get(), targetOpt.get(), file, pillar);
 
         return 1L;

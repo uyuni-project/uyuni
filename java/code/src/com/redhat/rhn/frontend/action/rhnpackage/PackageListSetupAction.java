@@ -16,6 +16,7 @@ package com.redhat.rhn.frontend.action.rhnpackage;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.frontend.dto.PackageListItem;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 
@@ -29,9 +30,18 @@ public class PackageListSetupAction extends BaseSystemPackagesAction {
      * @param server The system.
      * @return List of installed packages
      */
-    protected DataResult getDataResult(Server server) {
+    @Override
+    protected DataResult<PackageListItem> getDataResult(Server server) {
         DataResult<PackageListItem> result = PackageManager.systemPackageList(server.getId(), null);
         result.elaborate();
+
+        // Force the selection to be restricted to only non ptf packages.
+        // Master ptf will be selectable only if unistallation is supported by the package manager
+        boolean ptfUninstallationSupported = ServerFactory.isPtfUninstallationSupported(server);
+        result.stream()
+              .filter(p -> p.isPartOfPtf() || (!ptfUninstallationSupported && p.isMasterPtfPackage()))
+              .forEach(p -> p.setSelectable(false));
+
         return result;
     }
 }

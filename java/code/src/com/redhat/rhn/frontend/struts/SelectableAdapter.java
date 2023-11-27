@@ -24,6 +24,7 @@ public abstract class SelectableAdapter implements Selectable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public abstract String getSelectionKey();
 
     /**
@@ -34,6 +35,7 @@ public abstract class SelectableAdapter implements Selectable {
      * disabled="${not current.selectable}"  /&gt;</code>
      * @return whether this object is selectable for RhnSet
      */
+    @Override
     public boolean isSelectable() {
         return true;
     }
@@ -41,6 +43,7 @@ public abstract class SelectableAdapter implements Selectable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isSelected() {
         return selected;
     }
@@ -48,6 +51,7 @@ public abstract class SelectableAdapter implements Selectable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setSelected(boolean selectedIn) {
         selected = selectedIn;
     }

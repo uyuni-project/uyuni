@@ -1,5 +1,7 @@
-# Copyright (c) 2010-2019 SUSE LLC.
+# Copyright (c) 2010-2023 SUSE LLC.
 # Licensed under the terms of the MIT license.
+
+### This file contains the definitions for all steps used to lock packages on a system.
 
 Then(/^"(.*?)" is (locked|unlocked) on "(.*?)"$/) do |pkg, action, system|
   node = get_target(system)
@@ -13,23 +15,23 @@ end
 
 Then(/^package "(.*?)" is reported as locked$/) do |pkg|
   find(:xpath, "(//a[text()='#{pkg}'])[1]")
-  locked_pkgs = all(:xpath, "//i[@class='fa fa-lock']/../a")
-  raise 'No packages locked' if locked_pkgs.empty?
-  raise "Package #{pkg} not found as locked" unless locked_pkgs.find { |a| a.text =~ /^#{pkg}/ }
+  locked_pkgs = all(:xpath, '//i[@class=\'fa fa-lock\']/../a')
+  raise ScriptError, 'No packages locked' if locked_pkgs.empty?
+  raise ScriptError, "Package #{pkg} not found as locked" unless locked_pkgs.find { |a| a.text =~ /^#{pkg}/ }
 end
 
 Then(/^package "(.*?)" is reported as unlocked$/) do |pkg|
   find(:xpath, "(//a[text()='#{pkg}'])[1]")
-  locked_pkgs = all(:xpath, "//i[@class='fa fa-lock']/../a")
+  locked_pkgs = all(:xpath, '//i[@class=\'fa fa-lock\']/../a')
 
-  raise "Package #{pkg} found as locked" if locked_pkgs.find { |a| a.text =~ /^#{pkg}/ }
+  raise ScriptError, "Package #{pkg} found as locked" if locked_pkgs.find { |a| a.text =~ /^#{pkg}/ }
 end
 
 Then(/^the package scheduled is "(.*?)"$/) do |pkg|
-  match = find(:xpath, "//li[@class='list-group-item']//li")
+  match = find(:xpath, '//li[@class=\'list-group-item\']//li')
 
-  raise 'List of packages not found' unless match
-  raise "Package #{pkg} not found" unless match.text =~ /^#{pkg}/
+  raise ScriptError, 'List of packages not found' unless match
+  raise ScriptError, "Package #{pkg} not found" unless match.text =~ /^#{pkg}/
 end
 
 Then(/^the action status is "(.*?)"$/) do |status|
@@ -81,5 +83,5 @@ Then(/^only packages "(.*?)" are reported as pending to be unlocked$/) do |pkgs|
                 "span[@class='label label-info' and contains(text(), 'Unlocking...')]]"
   matches = all(:xpath, xpath_query)
 
-  raise "Matches count #{matches.size} is different than packages count #{pkgs.size}" if matches.size != pkgs.size
+  raise ScriptError, "Matches count #{matches.size} is different than packages count #{pkgs.size}" if matches.size != pkgs.size
 end

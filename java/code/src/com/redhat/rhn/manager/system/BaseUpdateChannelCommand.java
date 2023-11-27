@@ -40,6 +40,7 @@ public class BaseUpdateChannelCommand extends BasePersistOperation {
     /**
      * {@inheritDoc}
      */
+    @Override
     public ValidatorError store() {
         publishUpdateErrataCacheEvent();
         return null;

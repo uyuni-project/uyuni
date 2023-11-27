@@ -1,8 +1,10 @@
 # Copyright (c) 2015-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@skip_if_github_validation
 @scope_power_management
 @scope_cobbler
+@sle_minion
 Feature: IPMI Power management
 
   Scenario: Fake an IPMI host
@@ -10,6 +12,9 @@ Feature: IPMI Power management
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
+
+  Scenario: Start Cobbler monitoring
+    When I start local monitoring of Cobbler
 
   Scenario: Check the power management page
     Given I am on the Systems overview page of this "sle_minion"
@@ -52,7 +57,7 @@ Feature: IPMI Power management
 
   Scenario: Check power management SSM configuration
     When I follow the left menu "Systems > System List > All"
-    And I click on "Clear"
+    And I click on the clear SSM button
     And I check the "sle_minion" client
     And I follow the left menu "Systems > System Set Manager > Overview"
     And I follow "Configure power management" in the content area
@@ -82,12 +87,10 @@ Feature: IPMI Power management
     And I should see a "Reboot" button
 
   Scenario: Cleanup: reset IPMI values
-    Given I am logged in API as user "admin" and password "admin"
-    And I want to operate on this "sle_minion"
+    Given I want to operate on this "sle_minion"
     When I set power management value "" for "powerAddress"
     And I set power management value "" for "powerUsername"
     And I set power management value "" for "powerPassword"
-    And I logout from API
     Then the cobbler report should contain "Power Management Address       :" for "sle_minion"
     And the cobbler report should contain "Power Management Username      :" for "sle_minion"
     And the cobbler report should contain "Power Management Password      :" for "sle_minion"
@@ -97,4 +100,7 @@ Feature: IPMI Power management
     When the server stops mocking an IPMI host
 
   Scenario: Cleanup: remove remaining systems from SSM after power management tests
-    When I click on "Clear"
+    When I click on the clear SSM button
+
+  Scenario: Check for errors in Cobbler monitoring
+    Then the local logs for Cobbler should not contain errors

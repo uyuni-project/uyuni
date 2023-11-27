@@ -367,7 +367,7 @@ Configuration channel will be named rhn_proxy_config_${SYSTEM_ID}.</para>
 
 <RefSect1><Title>See Also</Title>
 <simplelist>
-    <member>rhn-proxy-activate(8), rhncfg-manager(8)</member>
+    <member>rhn-proxy-activate(8)</member>
 </simplelist>
 </RefSect1>
 

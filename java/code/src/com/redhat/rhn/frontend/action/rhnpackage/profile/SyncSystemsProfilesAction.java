@@ -85,7 +85,7 @@ public class SyncSystemsProfilesAction extends BaseProfilesAction {
                 addHardwareMessage(pa, requestContext);
 
                 // sid, actionid, servername, profilename
-                List args = new ArrayList();
+                List<String> args = new ArrayList<>();
                 args.add(sid.toString());
                 args.add(pa.getId().toString());
                 args.add(StringUtil.htmlifyText(
@@ -120,8 +120,7 @@ public class SyncSystemsProfilesAction extends BaseProfilesAction {
                     params);
         }
         catch (TaskomaticApiException e) {
-            log.error("Could not schedule package synchronization:");
-            log.error(e);
+            log.error("Could not schedule package synchronization:", e);
             ActionErrors errors = new ActionErrors();
             getStrutsDelegate().addError(errors, "taskscheduler.down");
             getStrutsDelegate().saveMessages(request, errors);
@@ -138,8 +137,9 @@ public class SyncSystemsProfilesAction extends BaseProfilesAction {
     /**
      * {@inheritDoc}
      */
-    protected Map getKeyMethodMap() {
-        Map map = new HashMap();
+    @Override
+    protected Map<String, String> getKeyMethodMap() {
+        Map<String, String> map = new HashMap<>();
         map.put("schedulesync.jsp.schedulesync", "scheduleSync");
         return map;
     }

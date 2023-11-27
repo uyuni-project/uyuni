@@ -80,6 +80,7 @@ public class SsmErrataEvent implements EventDatabaseMessage {
      *
      * @return will not be <code>null</code>
      */
+    @Override
     public Long getUserId() {
         return userId;
     }
@@ -130,11 +131,13 @@ public class SsmErrataEvent implements EventDatabaseMessage {
     }
 
     /** {@inheritDoc} */
+    @Override
     public String toText() {
         return this.toString();
     }
 
     /** {@inheritDoc} */
+    @Override
     public Transaction getTransaction() {
         return txn;
     }

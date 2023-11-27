@@ -362,7 +362,16 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                                          AND n.name = 'zypper')
         ]]>
     </query>
-    
+
+    <query name="Server.findZypperEvr">
+        <![CDATA[SELECT p.evr
+                   FROM com.redhat.rhn.domain.server.InstalledPackage as p
+                            JOIN p.name as n
+                            JOIN p.server as s
+                  WHERE s.id = :sid AND n.name = 'zypper'
+        ]]>
+    </query>
+
     <sql-query name="Server.findUnscheduledErrataByServerIds">
         <return-scalar column="serverId" type="long"/>
         <return-scalar column="errataId" type="long"/>
@@ -506,7 +515,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
             CASE
               WHEN (SELECT COUNT(*) FROM rhnErrataPackage k WHERE e.id = k.errata_id AND k.package_id IN
                 (SELECT id FROM rhnPackage p WHERE p.name_id IN
-                  (SELECT id FROM rhnPackageName pn WHERE pn.name = 'salt'))) > 0
+                  (SELECT id FROM rhnPackageName pn WHERE pn.name = 'salt' OR pn.name = 'venv-salt-minion'))) > 0
             THEN 1
             ELSE 0
             END AS includeSalt
@@ -600,6 +609,21 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <![CDATA[UPDATE Server s
                     SET s.maintenanceSchedule = :schedule
                   WHERE s.id IN (:systemIds)]]>
+    </query>
+
+
+    <query name="Server.findServersPendingRebootAction">
+        <![CDATA[SELECT distinct(sa.server.id) FROM ServerAction sa
+                      WHERE sa.server.id IN (:systemIds)
+                        AND sa.parentAction.actionType.label = 'reboot.reboot'
+                        AND status in ( 0, 1 )]]>
+    </query>
+
+    <query name="Server.listAllServerIds">
+        <![CDATA[SELECT s.id
+                   FROM com.redhat.rhn.domain.server.Server AS s
+               ORDER BY s.id
+        ]]>
     </query>
 
 </hibernate-mapping>

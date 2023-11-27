@@ -171,7 +171,8 @@ public abstract class CobblerObject {
         Map<String, String> criteria = new HashMap<>();
         criteria.put(critera, value);
         return (List<Map<String, Object>>)
-                client.invokeTokenMethod(findMethod, criteria);
+                client.invokeTokenMethod(findMethod, criteria, true);
+
 
     }
 
@@ -690,15 +691,22 @@ public abstract class CobblerObject {
                 keyList.add((String) map.get(key));
             }
             if (keyList.isEmpty()) {
-                string.append(key + " ");
+                string.append(key).append(" ");
             }
             else {
                 for (String value : keyList) {
-                    string.append(key + "=" + value + " ");
+                    string.append(key).append("=");
+                    if (value != null && value.contains(" ")) {
+                        string.append('"').append(value).append('"');
+                    }
+                    else {
+                        string.append(value);
+                    }
+                    string.append(" ");
                 }
             }
         }
-        return string.toString();
+        return string.toString().strip();
     }
 
     /**
@@ -845,7 +853,7 @@ public abstract class CobblerObject {
      * will also return True. All other cases return False.
      */
     protected boolean isBlank(String str) {
-        return str == null || str.trim().length() == 0;
+        return str == null || str.trim().isEmpty();
     }
 
     /**

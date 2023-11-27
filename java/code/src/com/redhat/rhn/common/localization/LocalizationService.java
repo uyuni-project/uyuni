@@ -62,6 +62,7 @@ public class LocalizationService {
      */
     public static final String RHN_DB_DATEFORMAT = "yyyy-MM-dd HH:mm:ss";
     public static final String RHN_CUSTOM_DATEFORMAT = "yyyy-MM-dd HH:mm:ss z";
+    private static final String DOC_FOLDER = "/usr/share/susemanager/www/htdocs/docs";
 
     private static Logger log = LogManager.getLogger(LocalizationService.class);
     private static Logger msgLogger = LogManager.getLogger("com.redhat.rhn.common.localization.messages");
@@ -104,7 +105,7 @@ public class LocalizationService {
         for (String packageIn : packages) {
             addKeysToMap(packageIn);
         }
-        if (supportedLocales.size() > 0) {
+        if (!supportedLocales.isEmpty()) {
             supportedLocales.clear();
         }
         loadSupportedLocales();
@@ -113,7 +114,7 @@ public class LocalizationService {
     /** Add the keys from the specified class to the Service's Map. */
     private void addKeysToMap(String className) {
         try {
-            Class z = Class.forName(className);
+            Class<?> z = Class.forName(className);
             // All the keys must exist in the en_US XML files first. The other
             // languages may have subsets but no unique keys. If this is a
             // problem
@@ -253,8 +254,8 @@ public class LocalizationService {
         if (msgLogger.isDebugEnabled()) {
             msgLogger.debug("Resolving message \"{}\" for locale {}", logSafeMessageId, userLocale);
         }
-        String mess = null;
-        Class z = null;
+        String mess;
+        Class<?> z = null;
         try {
             // If the keyMap doesn't contain the requested key
             // then there is no hope and we return.
@@ -537,7 +538,7 @@ public class LocalizationService {
         SelectMode prefixMode = ModeFactory.getMode("util_queries",
                 "available_prefixes");
         // no params for this query
-        DataResult<Map<String, Object>> dr = prefixMode.execute(new HashMap());
+        DataResult<Map<String, Object>> dr = prefixMode.execute(new HashMap<>());
 
         SortedSet<String> ret = new TreeSet<>();
         for (Map<String, Object> row : dr) {
@@ -624,7 +625,7 @@ public class LocalizationService {
         List<String> tmp = new LinkedList<>();
 
         // Get locales of installed documentations
-        File f = new File("/srv/www/htdocs/docs");
+        File f = new File(DOC_FOLDER);
         String[] locales = f.list();
         if (locales != null) {
             tmp.addAll(Arrays.asList(locales));

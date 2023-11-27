@@ -1,4 +1,24 @@
 -------------------------------------------------------------------
+Mon Sep 18 14:38:09 CEST 2023 - rosuna@suse.com
+
+- version 4.4.5-1
+  * write configured crypto-policy in supportconfig
+  * add cloud and payg checks
+  * Fixed property name to tune for salt events queue processing
+
+-------------------------------------------------------------------
+Wed Apr 19 12:57:55 CEST 2023 - marina.latini@suse.com
+
+- version 4.4.4-1
+  * fix db connection check tool (bsc#1208586)
+
+-------------------------------------------------------------------
+Mon Jan 23 08:29:01 CET 2023 - jgonzalez@suse.com
+
+- version 4.4.3-1
+  * update susemanager plugin to export the number of pending salt events
+
+-------------------------------------------------------------------
 Fri Nov 18 15:09:16 CET 2022 - jgonzalez@suse.com
 
 - version 4.4.2-1

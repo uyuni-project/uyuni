@@ -61,13 +61,16 @@ class Highstate extends React.Component<HighstateProps, HighstateState> {
         const msg = MessagesUtils.info(
           this.state.actionChain ? (
             <span>
-              {t("Action has been successfully added to the ")}
-              <ActionChainLink id={data}>{this.state.actionChain ? this.state.actionChain.text : ""}</ActionChainLink>
+              {t("Action has been successfully added to the action chain <link>'{name}'</link>.", {
+                name: this.state.actionChain.text,
+                link: (str) => <ActionChainLink id={data}>{str}</ActionChainLink>,
+              })}
             </span>
           ) : (
             <span>
-              {t("Applying the highstate has been ")}
-              <ActionLink id={data}>{t("scheduled.")}</ActionLink>
+              {t("Applying the highstate has been <link>scheduled</link>.", {
+                link: (str) => <ActionLink id={data}>{str}</ActionLink>,
+              })}
             </span>
           )
         );
@@ -130,7 +133,7 @@ class Highstate extends React.Component<HighstateProps, HighstateState> {
     ];
 
     const loc = window.location;
-    const createLink = loc.pathname.replace("/highstate", "/recurring-states") + loc.search + "#/create";
+    const createLink = loc.pathname.replace("/highstate", "/recurring-actions") + loc.search + "#/create";
     const buttonsLeft = [
       <LinkButton icon="fa-plus" href={createLink} className="btn-default" text={t("Create Recurring")} />,
     ];

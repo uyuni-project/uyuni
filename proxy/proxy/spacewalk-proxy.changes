@@ -1,5 +1,34 @@
-- Handle tftp in rhn-proxy (bsc#1205976)
-- remove jabberd and osa-dispatcher
+-------------------------------------------------------------------
+Mon Sep 18 14:47:49 CEST 2023 - rosuna@suse.com
+
+- version 4.4.6-1
+  * Use new apache wsgi mod package name
+  * remove usage of mgr-cfg tools in post script
+
+-------------------------------------------------------------------
+Wed Apr 19 12:53:43 CEST 2023 - marina.latini@suse.com
+
+- version 4.4.5-1
+  * Better error message on missing systemid file (bsc#1209119)
+
+-------------------------------------------------------------------
+Tue Feb 21 12:30:07 CET 2023 - jgonzalez@suse.com
+
+- version 4.4.4-1
+  * Avoid unnecessary debug messages from proxy backend (bsc#1207490)
+
+-------------------------------------------------------------------
+Mon Jan 23 08:24:37 CET 2023 - jgonzalez@suse.com
+
+- version 4.4.3-1
+  * Updated logrotate configuration (bsc#1206470)
+
+-------------------------------------------------------------------
+Wed Dec 14 14:07:53 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.2-1
+  * Handle tftp in rhn-proxy (bsc#1205976)
+  * remove jabberd and osa-dispatcher
 
 -------------------------------------------------------------------
 Wed Sep 28 10:44:28 CEST 2022 - jgonzalez@suse.com

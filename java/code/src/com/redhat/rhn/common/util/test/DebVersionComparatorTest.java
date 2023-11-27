@@ -36,12 +36,12 @@ public class DebVersionComparatorTest {
     private DebVersionComparator cmp;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         cmp = new DebVersionComparator();
     }
 
     @AfterEach
-    public void tearDown() throws Exception {
+    public void tearDown() {
         cmp = null;
     }
 
@@ -116,8 +116,8 @@ public class DebVersionComparatorTest {
     private int testDebianVersionCompareInDatabase(String operand1, String operand2) {
         // test the stored function
         CallableMode m = ModeFactory.getCallableMode("test_queries", "debstrcmp");
-        Map inParams = new HashMap();
-        Map outParams = new HashMap();
+        Map<String, Object> inParams = new HashMap<>();
+        Map<String, Integer> outParams = new HashMap<>();
         outParams.put("compareResult", Types.INTEGER);
         Integer result;
         inParams.put("operand1", operand1);

@@ -38,17 +38,18 @@ import javax.servlet.http.HttpServletResponse;
 public class SystemFailEventAction extends RhnAction {
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-            ActionForm form,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                 ActionForm form,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
         RequestContext context = new RequestContext(request);
         DynaActionForm daForm = (DynaActionForm)form;
         Long sid = context.getRequiredParam("sid");
         Long aid = context.getRequiredParam("aid");
         request.setAttribute("sid", sid);
         request.setAttribute("aid", aid);
-        Map params = makeParamMap(request);
+        Map<String, Object> params = makeParamMap(request);
         if (isSubmitted(daForm)) {
             User user = context.getCurrentUser();
             String description = daForm.getString("description");

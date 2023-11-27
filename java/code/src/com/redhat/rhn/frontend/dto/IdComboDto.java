@@ -82,6 +82,7 @@ public abstract class IdComboDto extends BaseDto {
      * Adds this object to the set using both applicable ids.
      * @param set The set to which we are adding this object's ids
      */
+    @Override
     public void addToSet(RhnSet set) {
         set.addElement(idOne, idTwo, idThree);
     }

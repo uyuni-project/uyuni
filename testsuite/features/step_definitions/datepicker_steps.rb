@@ -1,51 +1,20 @@
-# Copyright (c) 2017-2021 SUSE LLC.
+# Copyright (c) 2017-2023 SUSE LLC.
 # Licensed under the terms of the MIT license.
+
+### This file contains the definitions for all steps concerning the selection,
+### handling or finding of dates and times including timestamps.
 
 require 'date'
 
 # Based on https://github.com/akarzim/capybara-bootstrap-datepicker
 # (MIT license)
 
-def days_find(picker_days, day)
-  day_xpath = <<-eos
-   //*[contains(concat(" ", normalize-space(@class), " "), " day ")
-    and not (contains(concat(" ", normalize-space(@class), " "), " new "))
-    and not(contains(concat(" ", normalize-space(@class), " "), " old "))
-    and normalize-space(text())="#{day}"]
-   eos
-  picker_days.find(:xpath, day_xpath).click
-end
-
-def get_future_time(minutes_to_add)
-  now = Time.new
-  future_time = now + 60 * minutes_to_add.to_i
-  future_time.strftime('%l:%M %P').to_s.strip
-end
-
 Given(/^I pick "([^"]*)" as date$/) do |desired_date|
   value = Date.parse(desired_date)
   date_input = find('input[data-testid="date-picker"]')
   date_input.click
-  picker = find(:xpath, '//body').find('.datepicker')
-  picker_years = picker.find('.datepicker-years', visible: false)
-  picker_months = picker.find('.datepicker-months', visible: false)
-  picker_days = picker.find('.datepicker-days', visible: false)
-  picker_current_decade = picker_years.find('th.datepicker-switch', visible: false)
-  picker_current_year = picker_months.find('th.datepicker-switch', visible: false)
-  picker_current_month = picker_days.find('th.datepicker-switch', visible: false)
-  picker_current_month.click if picker_days.visible?
-  picker_current_year.click if picker_months.visible?
-  decade_start, decade_end = picker_current_decade.text.split('-').map(&:to_i)
-  if value.year < decade_start
-    gap = decade_start / 10 - value.year / 10
-    gap.times { picker_years.find('th.prev').click }
-  elsif value.year > decade_end
-    gap = value.year / 10 - decade_end / 10
-    gap.times { picker_years.find('th.next').click }
-  end
-  picker_years.find('.year', text: value.year).click
-  picker_months.find('.month', text: value.strftime('%b')).click
-  days_find(picker_days, value.day)
+  # TODO: Switch this over to .clear once we update Selenium
+  date_input.send_keys [:control, 'a'], :backspace, value.strftime('%Y-%m-%d'), :enter
 end
 
 Then(/^the date field should be set to "([^"]*)"$/) do |expected_date|
@@ -55,10 +24,10 @@ Then(/^the date field should be set to "([^"]*)"$/) do |expected_date|
   month_compat = find('input#date_month', visible: false)
   year_compat = find('input#date_year', visible: false)
 
-  raise if day_compat.value.to_i != value.day
+  raise ScriptError if day_compat.value.to_i != value.day
   # month field is 0-11, ruby 1-12
-  raise if month_compat.value.to_i + 1 != value.month
-  raise if year_compat.value.to_i != value.year
+  raise ScriptError if month_compat.value.to_i + 1 != value.month
+  raise ScriptError if year_compat.value.to_i != value.year
 end
 
 Given(/^I open the date picker$/) do
@@ -66,7 +35,7 @@ Given(/^I open the date picker$/) do
 end
 
 Then(/^the date picker should be closed$/) do
-  raise unless has_no_css?('.datepicker')
+  raise ScriptError, 'The date picker is not closed' unless has_no_css?('.date-time-picker-popup')
 end
 
 Then(/^the date picker title should be the current month and year$/) do
@@ -75,35 +44,34 @@ Then(/^the date picker title should be the current month and year$/) do
 end
 
 Then(/^the date picker title should be "([^"]*)"$/) do |arg1|
-  step %(I open the date picker) if has_no_css?('.datepicker')
-  switch = find('.datepicker .datepicker-days th.datepicker-switch')
-  raise unless switch.has_content?(arg1)
+  step 'I open the date picker' if has_no_css?('.date-time-picker-popup')
+  switch = find('.date-time-picker-popup .react-datepicker__current-month')
+  raise ScriptError, 'The date picker title has a different value or it cant be found' unless switch.has_content?(arg1)
 end
 
-Given(/^I pick "([^"]*)" as time$/) do |arg1|
-  find('.ui-timepicker-input').click
-  timepicker = find('ul.ui-timepicker-list', match: :first)
-  time = timepicker.find(:xpath, "//*[normalize-space(text())='#{arg1}']")
+Given(/^I pick "([^"]*)" as time$/) do |desired_time|
+  find('input[data-testid="time-picker"]').click
+  timepicker = find('ul.react-datepicker__time-list', match: :first)
+  time = timepicker.find(:xpath, "//*[normalize-space(text())='#{desired_time}']")
   time.click
 end
 
-When(/^I pick "([^"]*)" as time from "([^"]*)"$/) do |arg1, arg2|
-  find('.ui-timepicker-input', id: arg2).click
-  timepicker = find('ul.ui-timepicker-list', match: :first)
-  time = timepicker.find(:xpath, "//*[normalize-space(text())='#{arg1}']")
+When(/^I pick "([^"]*)" as time from "([^"]*)"$/) do |desired_time, element_id|
+  find('input[data-testid="time-picker"]', id: element_id).click
+  timepicker = find('ul.react-datepicker__time-list', match: :first)
+  time = timepicker.find(:xpath, "//*[normalize-space(text())='#{desired_time}']")
   time.click
 end
 
 When(/^I pick (\d+) minutes from now as schedule time$/) do |arg1|
   action_time = get_future_time(arg1)
-  raise unless find(:xpath, "//*[@id='date_timepicker_widget_input']", wait: 2)
+  raise ScriptError unless find(:xpath, '//*[@id=\'date_timepicker_widget_input\']', wait: 2)
 
-  execute_script("$('#date_timepicker_widget_input')
-    .timepicker('setTime', '#{action_time}').trigger('change');")
+  step %(I enter "#{action_time}" as "date_timepicker_widget_input")
 end
 
 When(/^I schedule action to (\d+) minutes from now$/) do |minutes|
-  action_time = (DateTime.now + Rational(1,1440) * minutes.to_i + Rational(59,86400)).strftime("%Y-%m-%dT%H:%M%:z")
+  action_time = (DateTime.now + Rational(1,1440) * minutes.to_i + Rational(59,86400)).strftime('%Y-%m-%dT%H:%M%:z')
   execute_script("window.schedulePage.setScheduleTime('#{action_time}')")
 end
 

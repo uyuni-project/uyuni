@@ -78,9 +78,9 @@ class MLLibmodProc:
                 idx = Modulemd.ModuleIndex.new()
                 if self._is_meta_compressed(path):
                     with gzip.open(path) as gzmeta:
-                        idx.update_from_string(gzmeta.read().decode("utf-8"), True)
+                        idx.update_from_string(gzmeta.read().decode("utf-8"), False)
                 else:
-                    idx.update_from_file(path, True)
+                    idx.update_from_file(path, False)
                 mgr.associate_index(idx, 0)
             self._mod_index = mgr.resolve()
 

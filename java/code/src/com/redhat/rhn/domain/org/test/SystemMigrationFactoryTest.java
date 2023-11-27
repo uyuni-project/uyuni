@@ -61,7 +61,7 @@ public class SystemMigrationFactoryTest extends RhnBaseTestCase {
         // Test createSystemMigration
 
         // Migrate the first server from org1 to org2
-        SystemMigration migration1 = SystemMigrationFactory.createSystemMigration();
+        SystemMigration migration1 = new SystemMigration();
         assertNotNull(migration1);
         migration1.setToOrg(orgAdmin2.getOrg());
         migration1.setFromOrg(servers.get(0).getOrg());
@@ -70,7 +70,7 @@ public class SystemMigrationFactoryTest extends RhnBaseTestCase {
         SystemMigrationFactory.save(migration1);
 
         // Migrate the second server from org1 to org3
-        SystemMigration migration2 = SystemMigrationFactory.createSystemMigration();
+        SystemMigration migration2 = new SystemMigration();
         assertNotNull(migration2);
         migration2.setToOrg(orgAdmin3.getOrg());
         migration2.setFromOrg(servers.get(1).getOrg());
@@ -79,7 +79,7 @@ public class SystemMigrationFactoryTest extends RhnBaseTestCase {
         SystemMigrationFactory.save(migration2);
 
         // Migrate the third server from org1 to org2
-        SystemMigration migration3 = SystemMigrationFactory.createSystemMigration();
+        SystemMigration migration3 = new SystemMigration();
         assertNotNull(migration3);
         migration3.setToOrg(orgAdmin2.getOrg());
         migration3.setFromOrg(servers.get(2).getOrg());

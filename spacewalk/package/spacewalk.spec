@@ -18,7 +18,7 @@
 
 
 Name:           spacewalk
-Version:        4.4.1
+Version:        4.4.4
 Release:        1
 Summary:        Spacewalk Systems Management Application
 License:        GPL-2.0-only
@@ -35,7 +35,6 @@ inventory, provision, update and control your Linux machines.
 %package common
 Summary:        Spacewalk Systems Management Application with postgresql database backend
 Group:          Applications/Internet
-Obsoletes:      spacewalk < 0.7.0
 
 BuildRequires:  python3
 BuildRequires:  spacewalk-backend
@@ -82,9 +81,7 @@ Recommends:     virtual-host-gatherer-VMware
 Requires:       subscription-matcher
 Requires:       susemanager-sls
 
-Obsoletes:      spacewalk-monitoring < 2.3
-
-Requires:       cobbler >= 3
+Requires:       cobbler
 Requires:       susemanager-jsp_en
 
 # weakremover used on SUSE to get rid of orphan packages which are
@@ -105,7 +102,6 @@ inventory, provision, update and control your Linux machines.
 %package postgresql
 Summary:        Spacewalk Systems Management Application with PostgreSQL database backend
 Group:          Applications/Internet
-Obsoletes:      spacewalk < 0.7.0
 Requires:       spacewalk-common = %{version}-%{release}
 Conflicts:      spacewalk-oracle
 Provides:       spacewalk-db-virtual = %{version}-%{release}
@@ -163,6 +159,10 @@ for i in ${RDBMS} ; do
 db-backend = $i
 EOF
 done
+install -d $RPM_BUILD_ROOT/%{_bindir}
+%if 0%{?rhel}
+ln -s /usr/pgsql-14/bin/initdb $RPM_BUILD_ROOT/%{_bindir}/initdb
+%endif
 
 %files common
 %{_sysconfdir}/*-release
@@ -176,5 +176,8 @@ done
 
 %files postgresql
 %{_datadir}/spacewalk/setup/defaults.d/postgresql-backend.conf
+%if 0%{?rhel}
+%{_bindir}/initdb
+%endif
 
 %changelog

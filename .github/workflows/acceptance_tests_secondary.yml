@@ -1,0 +1,19 @@
+name: acceptance-tests-secondary
+on:
+  pull_request:
+    paths:
+      - 'java/**'
+      - 'web/html/src/**'
+      - 'testsuite/**'
+      - '.github/workflows/acceptance_tests_secondary.yml'
+      - '.github/workflows/acceptance_tests_common.yml'
+      - '!java/*.changes*'
+  schedule:
+    - cron: '0 6 * * *'
+jobs:
+  test-uyuni:
+    uses: ./.github/workflows/acceptance_tests_common.yml
+    with:
+      secondary_tests: "18_run_secondary_tests.sh"
+      server_id: "secondary"
+

@@ -15,6 +15,7 @@
 package com.redhat.rhn.common.hibernate;
 
 import com.redhat.rhn.domain.cloudpayg.CloudRmtHost;
+import com.redhat.rhn.domain.cloudpayg.PaygCredentialsProduct;
 import com.redhat.rhn.domain.cloudpayg.PaygSshData;
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
 import com.redhat.rhn.domain.contentmgmt.ContentFilter;
@@ -26,6 +27,7 @@ import com.redhat.rhn.domain.contentmgmt.ErrataFilter;
 import com.redhat.rhn.domain.contentmgmt.ModuleFilter;
 import com.redhat.rhn.domain.contentmgmt.PackageFilter;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource;
+import com.redhat.rhn.domain.contentmgmt.PtfFilter;
 import com.redhat.rhn.domain.contentmgmt.SoftwareEnvironmentTarget;
 import com.redhat.rhn.domain.contentmgmt.SoftwareProjectSource;
 import com.redhat.rhn.domain.image.DeltaImageInfo;
@@ -47,7 +49,11 @@ import com.redhat.rhn.domain.product.SUSEProductSCCRepository;
 import com.redhat.rhn.domain.recurringactions.GroupRecurringAction;
 import com.redhat.rhn.domain.recurringactions.MinionRecurringAction;
 import com.redhat.rhn.domain.recurringactions.OrgRecurringAction;
-import com.redhat.rhn.domain.recurringactions.RecurringAction;
+import com.redhat.rhn.domain.recurringactions.state.InternalState;
+import com.redhat.rhn.domain.recurringactions.state.RecurringConfigChannel;
+import com.redhat.rhn.domain.recurringactions.state.RecurringInternalState;
+import com.redhat.rhn.domain.recurringactions.type.RecurringHighstate;
+import com.redhat.rhn.domain.recurringactions.type.RecurringState;
 import com.redhat.rhn.domain.rhnpackage.PackageBreaks;
 import com.redhat.rhn.domain.rhnpackage.PackageConflicts;
 import com.redhat.rhn.domain.rhnpackage.PackageEnhances;
@@ -75,6 +81,8 @@ import com.redhat.rhn.domain.server.ansible.PlaybookPath;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerNodeInfo;
 import com.redhat.rhn.domain.task.Task;
 
+import com.suse.cloud.domain.PaygDimensionComputation;
+import com.suse.cloud.domain.PaygDimensionResult;
 import com.suse.manager.model.maintenance.MaintenanceCalendar;
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
 
@@ -82,8 +90,6 @@ import java.util.List;
 
 
 /**
- * AnnotationRegistry
- *
  * Stores a list of hibernate annotation classes for registration the first time the
  * ConnectionManager.
  */
@@ -128,6 +134,7 @@ public class AnnotationRegistry {
         PackageFilter.class,
         ErrataFilter.class,
         ModuleFilter.class,
+        PtfFilter.class,
         EnvironmentTarget.class,
         SoftwareEnvironmentTarget.class,
         ContentProjectHistoryEntry.class,
@@ -142,7 +149,6 @@ public class AnnotationRegistry {
         PackageSuggests.class,
         PackagePreDepends.class,
         PackageEnhances.class,
-        RecurringAction.class,
         MinionRecurringAction.class,
         GroupRecurringAction.class,
         OrgRecurringAction.class,
@@ -155,7 +161,15 @@ public class AnnotationRegistry {
         Pillar.class,
         CloudRmtHost.class,
         PaygSshData.class,
-        Task.class
+        PaygCredentialsProduct.class,
+        Task.class,
+        RecurringHighstate.class,
+        RecurringState.class,
+        RecurringConfigChannel.class,
+        RecurringInternalState.class,
+        InternalState.class,
+        PaygDimensionComputation.class,
+        PaygDimensionResult.class
     );
 
     /**

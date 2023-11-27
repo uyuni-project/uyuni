@@ -17,6 +17,7 @@ package com.suse.manager.webui.controllers.virtualization.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -93,7 +94,6 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
     @Override
     @BeforeEach
     public void setUp() throws Exception {
@@ -186,11 +186,10 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
     /**
      * Test getting the data from a virtual host
      *
-     * @throws Exception if anything unexpected happens during the test
      */
     @SuppressWarnings("unchecked")
     @Test
-    public void testData() throws Exception {
+    public void testData() {
         int size = host.getGuests().size();
         VirtualInstance[] guests = host.getGuests().toArray(new VirtualInstance[size]);
         Long sid = host.getId();
@@ -348,10 +347,9 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
     /**
      * Test the API querying the XML definition of a VM using salt.
      *
-     * @throws Exception if anything unexpected happens during the test
      */
     @Test
-    public void testGetGuest() throws Exception {
+    public void testGetGuest() {
         String json = virtualGuestsController.getGuest(
                 getRequestWithCsrf("/manager/api/systems/details/virtualization/guests/:sid/guest/:uuid",
                         host.getId(), guid),
@@ -380,7 +378,7 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
         assertEquals("raw", def.getDisks().get(1).getFormat());
         assertEquals("hda", def.getDisks().get(1).getTarget());
         assertEquals("ide", def.getDisks().get(1).getBus());
-        assertEquals(null, def.getDisks().get(1).getSource());
+        assertNull(def.getDisks().get(1).getSource());
 
         assertEquals("volume", def.getDisks().get(2).getType());
         assertEquals("disk", def.getDisks().get(2).getDevice());
@@ -410,10 +408,9 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
     /**
      * Test the API querying the domains capabilities of a virtual host using salt.
      *
-     * @throws Exception if anything unexpected happens during the test
      */
     @Test
-    public void testGetDomainsCapabilities() throws Exception {
+    public void testGetDomainsCapabilities() {
         Map<String, String> placeholders = new HashMap<>();
         placeholders.put("[\"ide\", \"fdc\", \"scsi\", \"virtio\", \"usb\"]", "[\"ide\", \"fdc\", \"scsi\", \"usb\"]");
 

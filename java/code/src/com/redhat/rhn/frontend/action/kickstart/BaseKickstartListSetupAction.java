@@ -39,10 +39,11 @@ import javax.servlet.http.HttpServletResponse;
 public abstract class BaseKickstartListSetupAction extends BaseSetListAction {
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-                                  ActionForm formIn,
-                                  HttpServletRequest request,
-                                  HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
 
         if (!AclManager.hasAcl("user_role(org_admin) or user_role(config_admin)",
             request, null)) {
@@ -59,6 +60,7 @@ public abstract class BaseKickstartListSetupAction extends BaseSetListAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processForm(RequestContext rctx, ActionForm form) {
         super.processForm(rctx, form);
         KickstartData ksdata = KickstartFactory

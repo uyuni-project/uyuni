@@ -47,6 +47,7 @@ public class KickstartCloneCommand extends BaseKickstartCommand {
      *
      * @return ValidatorError if there was a problem
      */
+    @Override
     public ValidatorError store() {
         if (clonedKickstart != null) {
             throw new UnsupportedOperationException(

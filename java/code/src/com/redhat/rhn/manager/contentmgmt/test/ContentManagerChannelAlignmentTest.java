@@ -28,6 +28,7 @@ import static java.util.Optional.of;
 import static java.util.stream.Collectors.toSet;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -115,10 +116,9 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
     /**
      * Test that the packages and errata of the target are aligned to the source.
      *
-     * @throws Exception if anything goes wrong
      */
     @Test
-    public void testAlignEntities() throws Exception {
+    public void testAlignEntities() {
         // let's add a package to the target. it should be removed after aligning
         tgtChannel.getPackages().add(PackageTest.createTestPackage(user.getOrg()));
         contentManager.alignEnvironmentTargetSync(emptyList(), srcChannel, tgtChannel, user);
@@ -139,10 +139,9 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
     /**
      * Test that the cache of newest packages in the channel is refreshed
      *
-     * @throws Exception if anything goes wrong
      */
     @Test
-    public void testNewestPackagesCacheRefreshed() throws Exception {
+    public void testNewestPackagesCacheRefreshed() {
         Package pack2 = PackageTest.createTestPackage(user.getOrg());
 
         tgtChannel.getPackages().add(pack2);
@@ -167,10 +166,9 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
      *
      * Expected result: Target channel newest packages cache contains packages 4 and 5
      *
-     * @throws Exception if anything goes wrong
      */
     @Test
-    public void testNewestPackagesCacheRefreshedWithFilter() throws Exception {
+    public void testNewestPackagesCacheRefreshedWithFilter() {
         Package pack2 = PackageTest.createTestPackage(user.getOrg());
         Package pack3 = PackageTest.createTestPackage(user.getOrg());
         Package pack4 = PackageTest.createTestPackage(user.getOrg());
@@ -789,7 +787,7 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
         contentManager.alignEnvironmentTargetSync(emptyList(), srcChannel, tgtChannel, user);
 
         assertEquals(1, tgtChannel.getErratas().size()); // assumption
-        assertFalse(tgtChannel.getErratas().iterator().next().getAdvisoryStatus() == AdvisoryStatus.RETRACTED);
+        assertNotSame(tgtChannel.getErratas().iterator().next().getAdvisoryStatus(), AdvisoryStatus.RETRACTED);
 
         // enable patch sync in my org, retract patch, align again
         OrgManager.setClmSyncPatchesConfig(user, user.getOrg().getId(), true);
@@ -798,7 +796,7 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
         assertEquals(AdvisoryStatus.RETRACTED, tgtChannel.getErratas().iterator().next().getAdvisoryStatus());
     }
 
-    private static Package copyPackage(Package fromPkg, User user, String version) throws Exception {
+    private static Package copyPackage(Package fromPkg, User user, String version) {
         Package olderPkg = PackageTest.createTestPackage(user.getOrg());
         PackageEvr packageEvr = fromPkg.getPackageEvr();
         olderPkg.setPackageEvr(PackageEvrFactoryTest.createTestPackageEvr(

@@ -18,6 +18,7 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.config.ConfigFile;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.configuration.ConfigActionHelper;
+import com.redhat.rhn.frontend.dto.ConfigSystemDto;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.struts.BaseSetListAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
@@ -32,10 +33,12 @@ public class CompareDeployedAction extends BaseSetListAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     public RhnSetDecl getSetDecl() {
         return RhnSetDecl.CONFIG_SYSTEMS;
     }
 
+    @Override
     protected void processRequestAttributes(RequestContext rctxIn) {
         ConfigActionHelper.processRequestAttributes(rctxIn);
         super.processRequestAttributes(rctxIn);
@@ -44,7 +47,8 @@ public class CompareDeployedAction extends BaseSetListAction {
     /**
      * {@inheritDoc}
      */
-    protected DataResult getDataResult(RequestContext rctxIn, PageControl pcIn) {
+    @Override
+    protected DataResult<ConfigSystemDto> getDataResult(RequestContext rctxIn, PageControl pcIn) {
         User user = rctxIn.getCurrentUser();
         ConfigFile file = ConfigActionHelper.getFile(rctxIn.getRequest());
         Long cfnid =  file.getConfigFileName().getId();

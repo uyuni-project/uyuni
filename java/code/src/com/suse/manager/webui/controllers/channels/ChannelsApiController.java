@@ -24,10 +24,13 @@ import static spark.Spark.get;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.contentmgmt.ContentProjectFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.ChannelTreeNode;
+import com.redhat.rhn.manager.channel.ChannelManager;
 
 import com.suse.manager.webui.utils.gson.ChannelsJson;
 import com.suse.manager.webui.utils.gson.ResultJson;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
@@ -51,6 +54,8 @@ public class ChannelsApiController {
                 withUser(ChannelsApiController::getAllChannels));
         get("/manager/api/channels/modular",
                 withUser(ChannelsApiController::getModularChannels));
+        get("/manager/api/channels/owned",
+                withUser(ChannelsApiController::getOwnedChannels));
     }
 
     /**
@@ -102,4 +107,17 @@ public class ChannelsApiController {
         return json(res, ResultJson.success(jsonChannels));
     }
 
+
+    /**
+     * Get channels owned by a user
+     *
+     * @param req the request
+     * @param res the response
+     * @param user the current user
+     * @return the json response
+     */
+    public static String getOwnedChannels(Request req, Response res, User user) {
+        List<ChannelTreeNode> channels = new ArrayList<>(ChannelManager.ownedChannelsTree(user));
+        return json(res, ResultJson.success(channels));
+    }
 }

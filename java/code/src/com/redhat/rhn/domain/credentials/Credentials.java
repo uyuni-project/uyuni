@@ -16,6 +16,7 @@
 package com.redhat.rhn.domain.credentials;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
+import com.redhat.rhn.domain.cloudpayg.PaygCredentialsProduct;
 import com.redhat.rhn.domain.cloudpayg.PaygSshData;
 import com.redhat.rhn.domain.user.User;
 
@@ -25,6 +26,9 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import java.util.Optional;
+import java.util.Set;
+
 /**
  * Credentials - Java representation of the table SUSECREDENTIALS.
  *
@@ -33,12 +37,15 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  */
 public class Credentials extends BaseDomainHelper {
 
+    private static final String INVALIDATED_PASSWORD = new String(Base64.encodeBase64("invalidated".getBytes()));
+
     // Available type labels
     public static final String TYPE_SCC = "scc";
     public static final String TYPE_VIRT_HOST_MANAGER = "vhm";
     public static final String TYPE_REGISTRY = "registrycreds";
     public static final String TYPE_CLOUD_RMT = "cloudrmt";
     public static final String TYPE_REPORT_CREDS = "reportcreds";
+    public static final String TYPE_RHUI = "rhui";
 
     private Long id;
     private User user;
@@ -49,6 +56,8 @@ public class Credentials extends BaseDomainHelper {
     private String encodedPassword;
 
     private PaygSshData paygSshData;
+
+    private Set<PaygCredentialsProduct> paygProducts;
 
     /**
      * Get the ID of this object.
@@ -186,6 +195,14 @@ public class Credentials extends BaseDomainHelper {
         this.paygSshData = paygSshDataIn;
     }
 
+    public Set<PaygCredentialsProduct> getPaygProducts() {
+        return paygProducts;
+    }
+
+    public void setPaygProducts(Set<PaygCredentialsProduct> paygProductsIn) {
+        this.paygProducts = paygProductsIn;
+    }
+
     /**
      * Credentials are considered as valid as soon as we have a user and a
      * password.
@@ -210,11 +227,39 @@ public class Credentials extends BaseDomainHelper {
     }
 
     /**
+     * Marks the current credential as invalid
+     */
+    public void invalidate() {
+        this.extraAuthData = "{}".getBytes();
+        this.encodedPassword = INVALIDATED_PASSWORD;
+    }
+
+    /**
+     * Check if this credential is valid
+     * @return true if valid
+     */
+    public boolean isValid() {
+        return isComplete() && !INVALIDATED_PASSWORD.equals(encodedPassword);
+    }
+
+    /**
      * @return if this credential is the current primary scc credential which
      * is at the moment denoted by having the url field set.
      */
     public boolean isPrimarySCCCredential() {
-        return type.getLabel().equals(TYPE_SCC) && url != null;
+        return isTypeOf(TYPE_SCC) && url != null;
+    }
+
+    /**
+     * Check if this credential is of type credentialType
+     * @param credentialType type to check for
+     * @return true if the type match, otherwise false
+     */
+    public boolean isTypeOf(String credentialType) {
+        return Optional.ofNullable(getType())
+                .map(CredentialsType::getLabel)
+                .filter(s -> s.equals(credentialType))
+                .isPresent();
     }
 
     /**
@@ -227,10 +272,12 @@ public class Credentials extends BaseDomainHelper {
         }
         Credentials otherCredentials = (Credentials) other;
         return new EqualsBuilder()
-            .append(getType(), otherCredentials.getType())
-            .append(getUsername(), otherCredentials.getUsername())
-            .append(getPassword(), otherCredentials.getPassword())
-            .isEquals();
+                .append(getType(), otherCredentials.getType())
+                .append(getUsername(), otherCredentials.getUsername())
+                .append(getPassword(), otherCredentials.getPassword())
+                .append(getUrl(), otherCredentials.getUrl())
+                .append(getExtraAuthData(), otherCredentials.getExtraAuthData())
+                .isEquals();
     }
 
     /**

@@ -120,7 +120,7 @@ public class AuditSearchAction extends RhnAction {
         return dpresults;
     }
 
-    private List prepareAuditTypes() {
+    private List<String> prepareAuditTypes() {
         BufferedReader brdr;
         LinkedList<String> typelist;
         Process proc;
@@ -155,6 +155,7 @@ public class AuditSearchAction extends RhnAction {
     }
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm form,
                                  HttpServletRequest request,
@@ -166,7 +167,7 @@ public class AuditSearchAction extends RhnAction {
         DynaActionForm dform = (DynaActionForm)form;
         HttpSession session = request.getSession(true);
         JSONWriter jsonwr = new JSONWriter();
-        List result = null;
+        List<String> result = null;
         Long start, end, seqno, cacheSeqno;
         Map<String, String[]> typemap;
         RequestContext requestContext = new RequestContext(request);
@@ -243,7 +244,7 @@ public class AuditSearchAction extends RhnAction {
                 if (!unrev) {
                     // we need to be able to mark reviewable sections as
                     // 'reviewed' even if they're empty
-                    result = new LinkedList();
+                    result = new LinkedList<>();
                 }
                 else {
                     amsgs.add(ActionMessages.GLOBAL_MESSAGE,

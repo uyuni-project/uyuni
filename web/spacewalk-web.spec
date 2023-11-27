@@ -16,21 +16,16 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
+%define shared_path %{_datadir}/susemanager
+%define shared_www_path %{shared_path}/www
+%define www_path %{shared_www_path}/htdocs
 
 %if 0%{?suse_version}
-%define www_path /srv/www/htdocs
-%define apache_user wwwrun
 %define apache_group www
 %else
-%define www_path %{_var}/www/html
-%if 0%{?rhel}
-%define apache_user root
-%define apache_group root
-%else
-%define apache_user apache
 %define apache_group apache
 %endif
-%endif
+
 %{!?rhel: %global sbinpath /sbin}%{?rhel: %global sbinpath %{_sbindir}}
 %{!?nodejs_sitelib:%define nodejs_sitelib %{_prefix}/lib/node_modules}
 
@@ -38,7 +33,7 @@ Name:           spacewalk-web
 Summary:        Spacewalk Web site - Perl modules
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.4.3
+Version:        4.4.12
 Release:        1
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}.tar.gz
@@ -47,6 +42,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 Requires(pre):  uyuni-base-common
 BuildRequires:  gettext
+BuildRequires:  make
 BuildRequires:  uyuni-base-common
 BuildRequires:  perl(ExtUtils::MakeMaker)
 
@@ -66,7 +62,7 @@ but it does generate a number of sub-packages.
 
 %package -n spacewalk-html
 Summary:        HTML document files for Spacewalk
-License:        0BSD AND BSD-3-Clause AND GPL-2.0-only AND ISC AND LGPL-3.0-or-later AND MIT AND MPL-2.0
+License:        (MPL-2.0 OR Apache-2.0) AND 0BSD AND BSD-3-Clause AND GPL-2.0-only AND ISC AND LGPL-3.0-or-later AND MIT AND MPL-2.0
 Group:          Applications/Internet
 Requires:       httpd
 Requires:       spacewalk-branding
@@ -250,8 +246,13 @@ sed -i -e 's/^web.theme_default =.*$/web.theme_default = susemanager-light/' $RP
 
 %files -n spacewalk-html -f spacewalk-web.lang
 %defattr(644,root,root,755)
+%dir %{shared_path}
+%dir %{shared_www_path}
+%dir %{www_path}
 %dir %{www_path}/css
 %{www_path}/css/*.{css,js}
+%dir %{www_path}/css/legacy
+%{www_path}/css/legacy/*.css
 %dir %{www_path}/fonts
 %{www_path}/fonts/*
 %dir %{www_path}/img
@@ -266,6 +267,10 @@ sed -i -e 's/^web.theme_default =.*$/web.theme_default = susemanager-light/' $RP
 %{www_path}/javascript/manager/*.{js,js.LICENSE.txt,css}
 %dir %{www_path}/javascript/legacy
 %{www_path}/javascript/legacy/*.{js,js.LICENSE.txt,css}
+%dir %{www_path}/javascript/legacy/select2
+%{www_path}/javascript/legacy/select2/*
+%dir %{www_path}/javascript/legacy/ace-editor
+%{www_path}/javascript/legacy/ace-editor/*
 %license LICENSE
 
 %files -n spacewalk-html-debug

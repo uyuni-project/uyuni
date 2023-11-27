@@ -17,8 +17,10 @@ package com.redhat.rhn.common.client;
 import com.redhat.rhn.frontend.html.XmlTag;
 
 import org.apache.commons.codec.binary.Hex;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -38,6 +40,7 @@ public class ClientCertificate {
     private final Map<String, String[]> byName;
     private final Map<String, String> checksumFields;
 
+    private static final Logger LOG = LogManager.getLogger(ClientCertificate.class);
 
     /**
      * Default Constructor
@@ -152,31 +155,32 @@ public class ClientCertificate {
 
         try {
             MessageDigest md = null;
-            if (secret.length() == 32) {
-                md = MessageDigest.getInstance("MD5");
-            }
-            else if (secret.length() == 64) {
+            if (secret.length() == 64) {
                 md = MessageDigest.getInstance("SHA-256");
+            }
+            else {
+                LOG.error("Unsupported message digest requested");
+                throw new InvalidCertificateException("Unsupported message digest requested");
             }
 
             // I'm not one to loop through things more than once
             // but this seems to be the algorithm found in Server.pm
 
             // add secret
-            byte[] secretBytes = secret.getBytes("UTF-8");
+            byte[] secretBytes = secret.getBytes(StandardCharsets.UTF_8);
             md.update(secretBytes);
 
             // add the values for the fields
             for (String str : strs) {
                 String value = getValueByName(str);
-                byte[] valueBytes = value.getBytes("UTF-8");
+                byte[] valueBytes = value.getBytes(StandardCharsets.UTF_8);
                 md.update(valueBytes);
             }
 
 
             // add field names
             for (String str : strs) {
-                byte[] fieldBytes = str.getBytes("UTF-8");
+                byte[] fieldBytes = str.getBytes(StandardCharsets.UTF_8);
                 md.update(fieldBytes);
             }
 
@@ -186,13 +190,9 @@ public class ClientCertificate {
             // hexify this puppy
             signature = new String(Hex.encodeHex(digest));
         }
-        catch (UnsupportedEncodingException e) {
-            throw new InvalidCertificateException(
-                    "Problem getting bytes for signature", e);
-        }
         catch (NoSuchAlgorithmException e) {
             throw new InvalidCertificateException(
-                    "Problem getting MD5 message digest.", e);
+                    "Problem getting SHA-256 message digest.", e);
         }
 
         return signature;

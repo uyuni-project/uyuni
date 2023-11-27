@@ -45,6 +45,7 @@ public class ServerPath extends SystemOverview {
      *
      * @return id of proxy
      */
+    @Override
     public Long getId() {
         return id;
     }
@@ -53,6 +54,7 @@ public class ServerPath extends SystemOverview {
      *
      * @param idIn id of proxy to set
      */
+    @Override
     public void setId(Long idIn) {
         this.id = idIn;
     }
@@ -61,6 +63,7 @@ public class ServerPath extends SystemOverview {
      *
      * @return name of proxy
      */
+    @Override
     public String getName() {
         return name;
     }
@@ -69,6 +72,7 @@ public class ServerPath extends SystemOverview {
      *
      * @param nameIn name of proxy to set
      */
+    @Override
     public void setName(String nameIn) {
         this.name = nameIn;
     }

@@ -40,6 +40,7 @@ public final class ClassBuilder implements ManifestFactoryBuilder {
     }
 
     /** {@inheritDoc} */
+    @Override
     public Object createObject(Map params) {
         String className = (String)params.get("classname");
         if (className == null) {
@@ -56,6 +57,7 @@ public final class ClassBuilder implements ManifestFactoryBuilder {
     }
 
     /** {@inheritDoc} */
+    @Override
     public String getManifestFilename() {
         return filename;
     }

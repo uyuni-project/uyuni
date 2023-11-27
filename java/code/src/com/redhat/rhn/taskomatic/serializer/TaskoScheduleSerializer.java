@@ -35,6 +35,7 @@ public class TaskoScheduleSerializer extends RhnXmlRpcCustomSerializer {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Class getSupportedClass() {
         return TaskoSchedule.class;
     }
@@ -42,8 +43,9 @@ public class TaskoScheduleSerializer extends RhnXmlRpcCustomSerializer {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void doSerialize(Object value, Writer output,
-            XmlRpcSerializer serializer)
+                            XmlRpcSerializer serializer)
         throws XmlRpcException, IOException {
 
         TaskoSchedule schedule = (TaskoSchedule) value;
@@ -57,9 +59,9 @@ public class TaskoScheduleSerializer extends RhnXmlRpcCustomSerializer {
         if (schedule.getCronExpr() != null) {
             helper.add("cron_expr", schedule.getCronExpr());
         }
-        Map dataMap = schedule.getDataMap();
+        Map<String, Object> dataMap = schedule.getDataMap();
         if (dataMap == null) {
-            dataMap = new HashMap();
+            dataMap = new HashMap<>();
         }
         helper.add("data_map", dataMap);
 

@@ -136,6 +136,7 @@ public class ResponseMappers {
                 .stream()
                 .map(envDB -> {
                     EnvironmentResponse environmentResponse = new EnvironmentResponse();
+                    environmentResponse.setId(envDB.getId());
                     environmentResponse.setLabel(envDB.getLabel());
                     environmentResponse.setName(envDB.getName());
                     environmentResponse.setVersion(envDB.getVersion());

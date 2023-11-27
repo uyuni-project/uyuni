@@ -90,6 +90,7 @@ public class ToolTipTag extends TagSupport {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int doEndTag() throws JspException {
         JspWriter writer = pageContext.getOut();
         try {
@@ -104,6 +105,7 @@ public class ToolTipTag extends TagSupport {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void release() {
         typeKey = "Tip";
         key = null;

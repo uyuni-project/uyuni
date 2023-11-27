@@ -14,9 +14,11 @@
  */
 package com.redhat.rhn.taskomatic.task.repomd;
 
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.frontend.dto.PackageCapabilityDto;
 import com.redhat.rhn.frontend.dto.PackageDto;
+import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.task.TaskManager;
 import com.redhat.rhn.taskomatic.task.TaskConstants;
 
@@ -31,8 +33,10 @@ import java.io.Closeable;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.StringWriter;
 import java.util.Collection;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -44,6 +48,7 @@ public class DebPackageWriter implements Closeable {
     private String filenamePackages = "";
     private String channelLabel = "";
     private BufferedWriter out;
+
     /**
      *
      * @param channel debian channel
@@ -55,8 +60,20 @@ public class DebPackageWriter implements Closeable {
         channelLabel = channel.getLabel();
         filenamePackages = prefix + "Packages";
         FileUtils.deleteQuietly(new File(filenamePackages));
-        out = new BufferedWriter(new FileWriter(
-                filenamePackages, true));
+        out = new BufferedWriter(new FileWriter(filenamePackages, true));
+    }
+
+    private String getFilename(PackageDto pkgDto) {
+        StringBuilder buf = new StringBuilder();
+        buf.append("Filename: ").append(channelLabel).append("/getPackage/")
+           .append(pkgDto.getName()).append("_");
+        String epoch = pkgDto.getEpoch();
+        if (epoch != null && !epoch.equalsIgnoreCase("")) {
+            buf.append(epoch).append(":");
+        }
+        buf.append(pkgDto.getVersion()).append("-").append(pkgDto.getRelease())
+           .append(".").append(pkgDto.getArchLabel()).append(".deb");
+        return buf.toString();
     }
 
     /**
@@ -66,123 +83,144 @@ public class DebPackageWriter implements Closeable {
      * @throws IOException in case of IO erro
      */
     public void addPackage(PackageDto pkgDto) throws IOException {
+        // we use the primary xml cache for debian package entry
+        String pkgSnippet = pkgDto.getPrimaryXml();
+        if (ConfigDefaults.get().useDBRepodata() && !StringUtils.isBlank(pkgSnippet)) {
+            // deb repos currently contain file path in the metadata specific to a channel which makes them
+            // unusable for cloned channels. With this we use most of the cached version to preserve speed while
+            // regenerating the file path.
+            String fixedSnippet = pkgSnippet.lines()
+                    .map(line -> {
+                        if (line.startsWith("Filename: ")) {
+                            return getFilename(pkgDto);
+                        }
+                        else {
+                            return line;
+                        }
+                    })
+                    .collect(Collectors.joining(System.lineSeparator()));
+            out.write(fixedSnippet);
+            out.newLine();
+            out.newLine();
+            return;
+        }
+        StringWriter wrt = new StringWriter();
+        BufferedWriter buf = new BufferedWriter(wrt);
         String packageName = pkgDto.getName();
-        out.write("Package: ");
-        out.write(packageName);
-        out.newLine();
+        buf.write("Package: ");
+        buf.write(packageName);
+        buf.newLine();
 
-        out.write("Version: ");
+        buf.write("Version: ");
         String epoch = pkgDto.getEpoch();
         if (epoch != null && !epoch.equalsIgnoreCase("")) {
-            out.write(epoch + ":");
+            buf.write(epoch + ":");
         }
-        out.write(pkgDto.getVersion());
+        buf.write(pkgDto.getVersion());
         String release = pkgDto.getRelease();
         if (release != null && !release.equalsIgnoreCase("X")) {
-            out.write("-" + release);
+            buf.write("-" + release);
         }
-        out.newLine();
+        buf.newLine();
 
-        out.write("Architecture: ");
-        out.write(pkgDto.getArchLabel().replace("-deb", ""));
-        out.newLine();
+        buf.write("Architecture: ");
+        buf.write(pkgDto.getArchLabel().replace("-deb", ""));
+        buf.newLine();
 
         String vendor = StringUtils.defaultString(pkgDto.getVendor(), "Debian");
-        out.write("Maintainer: ");
-        out.write(vendor);
-        out.newLine();
+        buf.write("Maintainer: ");
+        buf.write(vendor);
+        buf.newLine();
 
         Long packagePayloadSize = Optional.ofNullable(pkgDto.getPayloadSize()).orElse(0L);
         if (packagePayloadSize > 0) {
-            out.write("Installed-Size: ");
-            out.write(pkgDto.getPayloadSize().toString());
-            out.newLine();
+            buf.write("Installed-Size: ");
+            buf.write(pkgDto.getPayloadSize().toString());
+            buf.newLine();
         }
 
         // dependencies
         addPackageDepData(
-                out,
+                buf,
                 TaskConstants.TASK_QUERY_REPOMD_GENERATOR_CAPABILITY_PROVIDES,
                 pkgDto.getId(), "Provides");
         addPackageDepData(
-                out,
+                buf,
                 TaskConstants.TASK_QUERY_REPOMD_GENERATOR_CAPABILITY_REQUIRES,
                 pkgDto.getId(), "Depends");
         addPackageDepData(
-                out,
+                buf,
                 TaskConstants.TASK_QUERY_REPOMD_GENERATOR_CAPABILITY_CONFLICTS,
                 pkgDto.getId(), "Conflicts");
         addPackageDepData(
-                out,
+                buf,
                 TaskConstants.TASK_QUERY_REPOMD_GENERATOR_CAPABILITY_OBSOLETES,
                 pkgDto.getId(), "Replaces");
         addPackageDepData(
-                out,
+                buf,
                 TaskConstants.TASK_QUERY_REPOMD_GENERATOR_CAPABILITY_SUGGESTS,
                 pkgDto.getId(), "Suggests");
         addPackageDepData(
-                out,
+                buf,
                 TaskConstants.TASK_QUERY_REPOMD_GENERATOR_CAPABILITY_RECOMMENDS,
                 pkgDto.getId(), "Recommends");
         addPackageDepData(
-                out,
+                buf,
                 TaskConstants.TASK_QUERY_REPOMD_GENERATOR_CAPABILITY_PREDEPENDS,
                 pkgDto.getId(), "Pre-Depends");
         addPackageDepData(
-                out,
+                buf,
                 TaskConstants.TASK_QUERY_REPOMD_GENERATOR_CAPABILITY_BREAKS,
                 pkgDto.getId(), "Breaks");
 
-        out.write("Filename: " + channelLabel + "/getPackage/");
-        out.write(pkgDto.getName() + "_");
-        if (epoch != null && !epoch.equalsIgnoreCase("")) {
-            out.write(epoch + ":");
-        }
-        out.write(pkgDto.getVersion() + "-" + pkgDto.getRelease());
-        out.write("." + pkgDto.getArchLabel() + ".deb");
-        out.newLine();
+        buf.write(getFilename(pkgDto));
+        buf.newLine();
 
         // size of package, is checked by apt
-        out.write("Size: ");
-        out.write(pkgDto.getPackageSize().toString());
-        out.newLine();
+        buf.write("Size: ");
+        buf.write(pkgDto.getPackageSize().toString());
+        buf.newLine();
 
         // at least one checksum is required by apt
         if (pkgDto.getChecksumType().equalsIgnoreCase("md5")) {
-            out.write("MD5sum: ");
-            out.write(pkgDto.getChecksum());
-            out.newLine();
+            buf.write("MD5sum: ");
+            buf.write(pkgDto.getChecksum());
+            buf.newLine();
         }
 
         if (pkgDto.getChecksumType().equalsIgnoreCase("sha1")) {
-            out.write("SHA1: ");
-            out.write(pkgDto.getChecksum());
-            out.newLine();
+            buf.write("SHA1: ");
+            buf.write(pkgDto.getChecksum());
+            buf.newLine();
         }
 
         if (pkgDto.getChecksumType().equalsIgnoreCase("sha256")) {
-            out.write("SHA256: ");
-            out.write(pkgDto.getChecksum());
-            out.newLine();
+            buf.write("SHA256: ");
+            buf.write(pkgDto.getChecksum());
+            buf.newLine();
         }
 
-        out.write("Section: ");
-        out.write(pkgDto.getPackageGroupName());
-        out.newLine();
+        buf.write("Section: ");
+        buf.write(pkgDto.getPackageGroupName());
+        buf.newLine();
 
         if (pkgDto.getExtraTags() != null) {
             for (var entry : pkgDto.getExtraTags().entrySet()) {
-                out.write(entry.getKey());
-                out.write(": ");
-                out.write(entry.getValue());
-                out.newLine();
+                buf.write(entry.getKey());
+                buf.write(": ");
+                buf.write(entry.getValue());
+                buf.newLine();
             }
         }
 
-        out.write("Description: ");
-        out.write(pkgDto.getDescription());
-        out.newLine();
+        buf.write("Description: ");
+        buf.write(pkgDto.getDescription());
+        buf.newLine();
 
+        buf.flush();
+        String pkg = wrt.toString();
+        PackageManager.updateRepoPrimary(pkgDto.getId(), pkg);
+        out.write(pkg);
         // new line after package metadata
         out.newLine();
     }

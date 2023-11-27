@@ -150,6 +150,7 @@ public class DistChannelMap implements Serializable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(final Object other) {
         if (!(other instanceof DistChannelMap)) {
             return false;
@@ -163,6 +164,7 @@ public class DistChannelMap implements Serializable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder().append(getOs()).append(getRelease()).append(
                 getChannelArch()).append(getChannel()).toHashCode();
@@ -171,6 +173,7 @@ public class DistChannelMap implements Serializable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString() {
         return new ToStringBuilder(this).append("os", os).append("release",
                 release).append("channelArch", channelArch).append("channel",

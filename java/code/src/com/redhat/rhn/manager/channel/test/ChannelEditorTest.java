@@ -50,7 +50,7 @@ public class ChannelEditorTest extends RhnBaseTestCase {
         assertTrue(UserManager.verifyChannelAdmin(user, channel));
         assertEquals(0, channel.getPackages().size());
 
-        List pkgList = new ArrayList();
+        List pkgList = new ArrayList<>();
         pkgList.add(pkg.getId().intValue());
         Integer bogusId = (int) System.currentTimeMillis();
         pkgList.add(bogusId);
@@ -88,7 +88,7 @@ public class ChannelEditorTest extends RhnBaseTestCase {
         editor.removePackages(user, channel, pkgList);
         assertEquals(0, c.getPackages().size());
 
-        List intList = new ArrayList();
+        List intList = new ArrayList<>();
         intList.add(pkg.getId().intValue());
         editor.addPackages(user, channel, intList);
         assertEquals(1, channel.getPackages().size());

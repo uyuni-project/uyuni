@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.action.systems.customkey;
 
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.org.CustomDataKey;
@@ -41,21 +42,22 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Handles the deletion of a key.
  */
-public class UpdateCustomKeyAction extends RhnAction implements Listable {
+public class UpdateCustomKeyAction extends RhnAction implements Listable<Row> {
 
-    private final String CIKID_PARAM = "cikid";
-    private final String LABEL_PARAM = "label";
-    private final String DESC_PARAM = "description";
-    private final String CREATE_PARAM = "created";
-    private final String MODIFY_PARAM = "modified";
-    private final String CREATOR_PARAM = "creator";
-    private final String MODIFIER_PARAM = "modifier";
+    private static final String CIKID_PARAM = "cikid";
+    private static final String LABEL_PARAM = "label";
+    private static final String DESC_PARAM = "description";
+    private static final String CREATE_PARAM = "created";
+    private static final String MODIFY_PARAM = "modified";
+    private static final String CREATOR_PARAM = "creator";
+    private static final String MODIFIER_PARAM = "modifier";
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-            ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
 
         RequestContext context = new RequestContext(request);
         DynaActionForm form = (DynaActionForm)formIn;
@@ -122,7 +124,8 @@ public class UpdateCustomKeyAction extends RhnAction implements Listable {
     }
 
     /** {@inheritDoc} **/
-    public  List getResult(RequestContext context) {
+    @Override
+    public  List<Row> getResult(RequestContext context) {
         User user  = context.getCurrentUser();
         Long cikid = context.getParamAsLong(CIKID_PARAM);
 

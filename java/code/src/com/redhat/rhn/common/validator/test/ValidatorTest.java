@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.common.validator.test;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -46,14 +47,14 @@ public class ValidatorTest  {
      * {@inheritDoc}
      */
     @AfterEach
-    public void tearDown() throws Exception {
+    public void tearDown() {
         TestUtils.enableLocalizationLogging();
     }
 
 
 
     @Test
-    public void testDataConverter() throws Exception {
+    public void testDataConverter() {
         DataConverter dc = DataConverter.getInstance();
         assertNotNull(dc.getJavaType("date"));
         assertNotNull(dc.getJavaType("string"));
@@ -67,19 +68,19 @@ public class ValidatorTest  {
 
     @Test
     public void testGetConstraints() {
-        assertTrue(validator.getConstraints().size() > 0);
+        assertFalse(validator.getConstraints().isEmpty());
         Object constraint = validator.getConstraints().get(0);
         assertTrue(constraint instanceof Constraint);
     }
 
     @Test
-    public void testNullValue() throws Exception {
+    public void testNullValue() {
         TestObject to = new TestObject();
         assertNotNull(validator.validate("stringField", to));
     }
 
     @Test
-    public void testStringLength() throws Exception {
+    public void testStringLength() {
         TestObject to = new TestObject();
         to.setStringField("short");
         assertNull(validator.validate("stringField", to));
@@ -94,7 +95,7 @@ public class ValidatorTest  {
     }
 
     @Test
-    public void testASCIIString() throws Exception {
+    public void testASCIIString() {
         TestObject to = new TestObject();
         to.setAsciiString("shughes_login");
         assertNull(validator.validate("asciiString", to));
@@ -103,7 +104,7 @@ public class ValidatorTest  {
     }
 
     @Test
-    public void testUserNameString() throws Exception {
+    public void testUserNameString() {
         TestObject to = new TestObject();
 
         // bad user names
@@ -222,14 +223,14 @@ public class ValidatorTest  {
     }
 
     @Test
-    public void testDateField() throws Exception {
+    public void testDateField() {
         TestObject to = new TestObject();
         to.setDateField(new Date());
         assertNull(validator.validate("dateField", to));
     }
 
     @Test
-    public void testLongField() throws Exception {
+    public void testLongField() {
 
         TestObject to = new TestObject();
         to.setLongField(10L);
@@ -252,7 +253,7 @@ public class ValidatorTest  {
 
     /* TODO: Implement the multi-value fields */
     @Test
-    public void testMultiValueField() throws Exception {
+    public void testMultiValueField() {
         TestObject to = new TestObject();
         to.setStringField("ZZZ");
         to.setCompoundField("something");

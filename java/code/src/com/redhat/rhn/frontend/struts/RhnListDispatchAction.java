@@ -41,6 +41,7 @@ public abstract class RhnListDispatchAction extends RhnLookupDispatchAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected Map<String, String> getKeyMethodMap() {
         Map<String, String> map = new HashMap<>();
         map.put(RequestContext.FILTER_KEY, "filter");
@@ -80,6 +81,7 @@ public abstract class RhnListDispatchAction extends RhnLookupDispatchAction {
      * @param response ServletResponse
      * @return The ActionForward to go to next.
      */
+    @Override
     public ActionForward unspecified(ActionMapping mapping,
                                      ActionForm formIn,
                                      HttpServletRequest request,

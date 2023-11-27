@@ -772,8 +772,7 @@ public class ActivationKeyHandler extends BaseHandler {
         for (Map<String, String> pkg : packages) {
             name = pkg.get("name");
             if (name.contains(" ")) {
-                throw new InvalidArgsException(
-                        "More than one package names are specified.");
+                throw new InvalidArgsException("More than one package names are specified.");
             }
             PackageName packageName = PackageFactory.lookupOrCreatePackageByName(name);
 

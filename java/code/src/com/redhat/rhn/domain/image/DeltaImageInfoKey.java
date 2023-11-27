@@ -60,6 +60,7 @@ public class DeltaImageInfoKey implements Serializable {
      *
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         HashCodeBuilder builder =  new HashCodeBuilder()
                 .append(sourceImageInfo.getId())
@@ -71,6 +72,7 @@ public class DeltaImageInfoKey implements Serializable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(Object other) {
 
         if (other instanceof DeltaImageInfoKey) {

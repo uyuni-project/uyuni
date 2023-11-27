@@ -19,6 +19,7 @@ import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.MaintenanceWindowsAware;
+import com.redhat.rhn.frontend.dto.ConfigFileNameDto;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
 import com.redhat.rhn.frontend.struts.BaseListAction;
@@ -42,7 +43,8 @@ public abstract class FileListConfirmSetupAction extends BaseListAction implemen
     /**
      * {@inheritDoc}
      */
-    protected DataResult getDataResult(RequestContext rctxIn, PageControl pcIn) {
+    @Override
+    protected DataResult<ConfigFileNameDto> getDataResult(RequestContext rctxIn, PageControl pcIn) {
         User user = rctxIn.getCurrentUser();
         Server server = rctxIn.lookupAndBindServer();
         // if a var called selectall=true is bound, then do a select all
@@ -55,10 +57,12 @@ public abstract class FileListConfirmSetupAction extends BaseListAction implemen
                 getSetDecl().getLabel(), pcIn);
     }
 
+    @Override
     protected void processRequestAttributes(RequestContext rctxIn) {
         rctxIn.lookupAndBindServer();
     }
 
+    @Override
     protected void processForm(RequestContext ctxt, ActionForm form) {
         DatePicker picker = getStrutsDelegate().prepopulateDatePicker(ctxt.getRequest(),
                 (DynaActionForm) form, "date", DatePicker.YEAR_RANGE_POSITIVE);
@@ -82,7 +86,7 @@ public abstract class FileListConfirmSetupAction extends BaseListAction implemen
     private void selectAll(User user, Server server) {
         RhnSetHelper helper = new RhnSetHelper(getSetDecl());
 
-        List list =  ConfigurationManager.getInstance()
+        List<ConfigFileNameDto> list =  ConfigurationManager.getInstance()
                             .listFileNamesForSystem(user, server, null);
         helper.selectAllData(list, user);
     }

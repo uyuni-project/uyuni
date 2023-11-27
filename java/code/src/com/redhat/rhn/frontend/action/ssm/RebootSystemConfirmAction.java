@@ -145,6 +145,7 @@ public class RebootSystemConfirmAction extends RhnAction
     }
 
     /** {@inheritDoc} */
+    @Override
     public List<SystemOverview> getResult(RequestContext context) {
         return SystemManager.inSet(context.getCurrentUser(),
               getSetDecl().getLabel());

@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
-#!BuildTag: uyuni/proxy-salt-broker:latest uyuni/proxy-salt-broker:%PKG_VERSION% uyuni/proxy-salt-broker:%PKG_VERSION%.%RELEASE%
+#!BuildTag: uyuni/proxy-salt-broker:latest
 
-ARG BASE=registry.suse.com/bci/bci-base:15.4
+ARG BASE=registry.suse.com/bci/bci-base:15.5
 FROM $BASE AS fat
 
 ARG PRODUCT_REPO
@@ -22,7 +22,7 @@ COPY prepare_target.sh .
 RUN sh prepare_target.sh
 
 # Define slim image
-ARG BASE=registry.suse.com/bci/bci-base:15.4
+ARG BASE=registry.suse.com/bci/bci-base:15.5
 FROM $BASE AS slim
 
 ARG PRODUCT=Uyuni
@@ -40,9 +40,10 @@ LABEL org.opencontainers.image.description="Image contains a ${PRODUCT} proxy co
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="${VENDOR}"
 LABEL org.opencontainers.image.url="${URL}"
-LABEL org.opencontainers.image.version="%PKG_VERSION%"
+LABEL org.opencontainers.image.name=proxy-salt-broker-image
+LABEL org.opencontainers.image.version=4.4.2
 LABEL org.openbuildservice.disturl="%DISTURL%"
-LABEL org.opensuse.reference="${REFERENCE_PREFIX}/proxy-salt-broker:%PKG_VERSION%.%RELEASE%"
+LABEL org.opensuse.reference="${REFERENCE_PREFIX}/proxy-salt-broker:4.4.2.%RELEASE%"
 # endlabelprefix
 
 # Salt

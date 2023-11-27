@@ -128,7 +128,7 @@ public class CreateAction extends RhnSetAction {
             for (Object keywordIn : keywords) {
                 String keyword = (String) keywordIn;
                 keyword = keyword.trim();
-                if (keyword != null && keyword.length() > 0) {
+                if (keyword != null && !keyword.isEmpty()) {
                     e.addKeyword(keyword);
                 }
             }
@@ -165,8 +165,8 @@ public class CreateAction extends RhnSetAction {
      */
     private Bug createBug(DynaActionForm form) {
         //if id and summary are not null, we can create a new bug, otherwise return null
-        if (form.getString("buglistId").length() > 0 &&
-            form.getString("buglistSummary").length() > 0) {
+        if (!form.getString("buglistId").isEmpty() &&
+                !form.getString("buglistSummary").isEmpty()) {
             Long id = Long.valueOf(form.getString("buglistId"));
             String summary = form.getString("buglistSummary");
             String url = form.getString("buglistUrl");

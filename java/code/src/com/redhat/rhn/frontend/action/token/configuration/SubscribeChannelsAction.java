@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.config.ConfigurationFactory;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.token.BaseListAction;
+import com.redhat.rhn.frontend.dto.ConfigChannelDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.StrutsDelegate;
 import com.redhat.rhn.frontend.taglibs.list.helper.ListSessionSetHelper;
@@ -43,7 +44,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author paji
  * SubscribeChannelsAction
  */
-public class SubscribeChannelsAction extends BaseListAction {
+public class SubscribeChannelsAction extends BaseListAction<ConfigChannelDto> {
     public static final String WIZARD_MODE = "wizardMode";
     public static final String DECL = "decl";
 
@@ -89,7 +90,8 @@ public class SubscribeChannelsAction extends BaseListAction {
     }
 
     /** {@inheritDoc} */
-    public List getResult(RequestContext context) {
+    @Override
+    public List<ConfigChannelDto> getResult(RequestContext context) {
         ConfigurationManager cm = ConfigurationManager.getInstance();
         return cm.listGlobalChannelsForActivationKeySubscriptions(
                         context.lookupAndBindActivationKey(),

@@ -61,10 +61,11 @@ public class SyncErrataPackagesAction extends RhnAction implements
      *
      * {@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-            ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
 
         RequestContext rc = new RequestContext(request);
         User user = rc.getCurrentUser();
@@ -122,6 +123,7 @@ public class SyncErrataPackagesAction extends RhnAction implements
      *
      * {@inheritDoc}
      */
+    @Override
     public List<PackageOverview> getResult(RequestContext context) {
         User user = context.getCurrentUser();
         Channel chan = ChannelManager.lookupByIdAndUser(

@@ -44,16 +44,17 @@ import javax.servlet.http.HttpServletResponse;
  * @author paji
  * AddGroupsAction
  */
-public class AddGroupsAction extends BaseListAction {
+public class AddGroupsAction extends BaseListAction<ManagedServerGroup> {
     private static final String ACCESS_MAP = "accessMap";
 
     private final ServerGroupManager sgm = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward handleDispatch(ListSessionSetHelper helper,
-                                    ActionMapping mapping,
-            ActionForm formIn, HttpServletRequest request,
-            HttpServletResponse response) {
+                                        ActionMapping mapping,
+                                        ActionForm formIn, HttpServletRequest request,
+                                        HttpServletResponse response) {
         RequestContext context = new RequestContext(request);
         ActivationKey key = context.lookupAndBindActivationKey();
         User user = context.getCurrentUser();
@@ -73,6 +74,7 @@ public class AddGroupsAction extends BaseListAction {
     }
 
     /** {@inheritDoc} */
+    @Override
     public List<ManagedServerGroup> getResult(RequestContext context) {
         ActivationKey key = context.lookupAndBindActivationKey();
         User user = context.getCurrentUser();

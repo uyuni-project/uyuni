@@ -86,7 +86,7 @@ public class CobblerConnectionTest {
     }
 
     @Test
-    public void testVersion() throws Exception {
+    public void testVersion() {
         // Arrange
         Double expectedResult = 2.2;
         CobblerConnection connection = new CobblerConnection("http://localhost", new MockXmlRpcClient());

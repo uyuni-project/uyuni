@@ -81,6 +81,7 @@ public class CobblerProfileCreateCommand extends CobblerProfileCommand {
      * Save the Cobbler profile to cobbler.
      * @return ValidatorError if there was a problem
      */
+    @Override
     public ValidatorError store() {
         CobblerConnection con = getCobblerConnection();
         Distro distro =  getDistroForKickstart();

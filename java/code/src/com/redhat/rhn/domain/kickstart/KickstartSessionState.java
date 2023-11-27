@@ -144,6 +144,7 @@ public class KickstartSessionState {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(final Object other) {
         if (!(other instanceof KickstartSessionState)) {
             return false;
@@ -157,6 +158,7 @@ public class KickstartSessionState {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder().append(this.getId()).
             append(this.getLabel()).toHashCode();

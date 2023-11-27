@@ -61,6 +61,7 @@ public class ConfigDefaults {
     public static final String WEB_SMTP_STARTTLS = "java.smtp_starttls";
     public static final String WEB_SMTP_USER = "java.smtp_user";
     public static final String WEB_SMTP_PASS = "java.smtp_pass";
+    public static final String WEB_DISABLE_UPDATE_STATUS = "java.disable_update_status";
 
     public static final String ERRATA_CACHE_COMPUTE_THRESHOLD
     = "errata_cache_compute_threshold";
@@ -117,7 +118,7 @@ public class ConfigDefaults {
     public static final String REPOMD_CACHE_MOUNT_POINT = "repomd_cache_mount_point";
 
     //Comma separated names of possible kickstart packages
-    private static final String POSSIBLE_KICKSTART_PACKAGE_NAMES = "spacewalk-koan,salt";
+    private static final String POSSIBLE_KICKSTART_PACKAGE_NAMES = "salt";
 
     private static final String KICKSTART_PACKAGE_NAMES = "kickstart_packages";
 
@@ -373,6 +374,21 @@ public class ConfigDefaults {
      * Specify if custom channels are synced together with vendor channels
      */
     public static final String UNIFY_CUSTOM_CHANNEL_MANAGEMENT = "java.unify_custom_channel_management";
+
+    /**
+     * Specify the number of minutes to wait before performing a system reboot
+     * */
+    public static final String REBOOT_DELAY = "java.reboot_delay";
+
+    /**
+     * Disable SSL redirection
+     */
+    public static final String NO_SSL = "server.no_ssl";
+
+    /**
+     * Specify if custom repositories for RHUI should be created with a different org than 1
+     */
+    public static final String RHUI_DEFAULT_ORG_ID = "java.rhui_default_org_id";
 
     private ConfigDefaults() {
     }
@@ -732,7 +748,7 @@ public class ConfigDefaults {
      * selection
      */
     public boolean getClonedChannelAutoSelection() {
-        return Config.get().getBoolean(CLONED_CHANNEL_AUTO_SELECTION);
+        return Config.get().getBoolean(CLONED_CHANNEL_AUTO_SELECTION, true);
     }
 
     /**
@@ -837,28 +853,20 @@ public class ConfigDefaults {
         }
 
         final StringBuilder connectionUrl = new StringBuilder(proto).append(':');
-        if (host != null && host.length() > 0) {
+        if (host != null && !host.isEmpty()) {
             connectionUrl.append("//").append(host);
-            if (port != null && port.length() > 0) {
+            if (port != null && !port.isEmpty()) {
                 connectionUrl.append(':').append(port);
             }
             connectionUrl.append('/');
         }
         connectionUrl.append(name);
 
-        if (useSsl) {
+        if (!"localhost".equals(host) && useSsl) {
             connectionUrl.append("?ssl=true&sslrootcert=" + sslrootcert + "&sslmode=" + sslmode);
         }
 
         return connectionUrl.toString();
-    }
-
-    /**
-     * is documentation available
-     * @return true if so
-     */
-    public boolean isDocAvailable() {
-        return !isSpacewalk();
     }
 
     /**
@@ -1143,4 +1151,35 @@ public class ConfigDefaults {
         return Config.get().getBoolean(UNIFY_CUSTOM_CHANNEL_MANAGEMENT, true);
     }
 
+    /**
+     * @return true if SSL is enabled, false otherwise
+     */
+    public boolean isSsl() {
+        return !Config.get().getBoolean(NO_SSL, false);
+    }
+
+    /**
+     * Returns the organization id which should be used to create custom repositories for
+     * when creating RHUI repos. Configure via rhn.conf with java.rhui_default_org_id
+     * @return the org id
+     */
+    public long getRhuiDefaultOrgId() {
+        return Config.get().getInt(RHUI_DEFAULT_ORG_ID, 1);
+    }
+
+    /**
+     * Returns the number of minutes to wait before performing a system reboot
+     *
+     * @return the minutes to wait before a system reboot
+     * */
+    public int getRebootDelay() {
+        int rebootDelay = Config.get().getInt(REBOOT_DELAY, 3);
+        // A value of 0 would cause a direct shutdown which makes it impossible for salt to return
+        // the result back, resulting in a failed action.
+        if (rebootDelay < 1) {
+            rebootDelay = 1;
+        }
+
+        return rebootDelay;
+    }
 }

@@ -2,6 +2,16 @@ inherit_from: .rubocop_todo.yml
 
 AllCops:
   EnabledByDefault: true
+  TargetRubyVersion: 2.5
+
+Metrics/CyclomaticComplexity:
+  Max: 20
 
 Metrics/ClassLength:
+  Enabled: false
+
+Metrics/ModuleLength:
+  Enabled: false
+
+Style/MissingElse:
   Enabled: false

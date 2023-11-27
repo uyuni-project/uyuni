@@ -18,7 +18,7 @@
 
 
 Name:           spacewalk-setup-postgresql
-Version:        4.4.1
+Version:        4.4.2
 Release:        1
 Summary:        Tools to setup embedded PostgreSQL database for Spacewalk
 License:        GPL-2.0-only
@@ -40,9 +40,6 @@ Requires:       postgresql-contrib >= 12
 Requires:       postgresql-server > 12
 %endif
 Requires:       lsof
-Requires:       spacewalk-dobby
-Requires:       perl(DBD::Pg)
-Obsoletes:      spacewalk-setup-embedded-postgresql
 
 %description
 Script, which will setup PostgreSQL database for Spacewalk.

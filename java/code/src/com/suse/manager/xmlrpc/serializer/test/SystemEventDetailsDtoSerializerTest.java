@@ -24,7 +24,6 @@ import com.suse.manager.xmlrpc.serializer.SystemEventDetailsDtoSerializer;
 
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.sql.Date;
@@ -39,7 +38,7 @@ public class SystemEventDetailsDtoSerializerTest {
      * Verify if the serialization to xml contains the expected tags
      */
     @Test
-    public void testSerializeSystemEventDetailDto() throws IOException {
+    public void testSerializeSystemEventDetailDto() {
 
         final SystemEventDetailsDtoSerializer serializer = new SystemEventDetailsDtoSerializer();
 
@@ -49,7 +48,7 @@ public class SystemEventDetailsDtoSerializerTest {
         dto.setHistoryType(ActionFactory.TYPE_HARDWARE_REFRESH_LIST.getLabel());
         dto.setHistoryTypeName(ActionFactory.TYPE_HARDWARE_REFRESH_LIST.getName());
         dto.setHistoryStatus(ActionFactory.STATUS_COMPLETED.getName());
-        dto.setSummary("Hardware List Refresh scheduled by (none)");
+        dto.setSummary("Hardware List Refresh scheduled by (system)");
         dto.setCreated(Date.from(LocalDateTime.of(2021, 10, 5, 16, 55)
                 .atZone(ZoneOffset.systemDefault())
                 .toInstant()));
@@ -82,7 +81,7 @@ public class SystemEventDetailsDtoSerializerTest {
         assertTrue(xml.contains("<string>Completed</string>"));
 
         assertTrue(xml.contains("<name>summary</name>"));
-        assertTrue(xml.contains("<string>Hardware List Refresh scheduled by (none)</string>"));
+        assertTrue(xml.contains("<string>Hardware List Refresh scheduled by (system)</string>"));
 
         assertTrue(xml.contains("<name>created</name>"));
         assertTrue(xml.contains("<dateTime.iso8601>20211005T16:55:00</dateTime.iso8601>"));

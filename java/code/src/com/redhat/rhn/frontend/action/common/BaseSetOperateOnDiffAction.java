@@ -191,6 +191,7 @@ public abstract class BaseSetOperateOnDiffAction extends RhnSetAction {
      * Get the RhnSet 'Decl' for the action
      * @return The set decleration
      */
+    @Override
     public abstract RhnSetDecl getSetDecl();
 
     /**

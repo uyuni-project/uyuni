@@ -78,6 +78,7 @@ public class ServerSnapshotTagLink extends BaseDomainHelper implements Serializa
      *
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder().append(server.hashCode())
                                     .append(tag.hashCode()).append(snapshot.hashCode())
@@ -87,6 +88,7 @@ public class ServerSnapshotTagLink extends BaseDomainHelper implements Serializa
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(Object obj) {
         ServerSnapshotTagLink link = (ServerSnapshotTagLink) obj;
         EqualsBuilder build = new EqualsBuilder();

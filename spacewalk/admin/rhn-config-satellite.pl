@@ -17,6 +17,9 @@
 
 use strict;
 use warnings;
+use Time::Piece;
+use Time::HiRes;
+
 
 use Getopt::Long;
 use English;
@@ -49,12 +52,11 @@ if (! grep { $_ eq $target} @allowed_target_files) {
   die("Cannot modify a file that is not a spacewalk config file: " . $target);
 }
 
-if (-e $target . ".orig") {
-  unlink($target . ".orig") or die "Could not remove $target to ${target}.orig prior to new backup: $OS_ERROR";
-}
+my ($seconds,$microseconds) = Time::HiRes::gettimeofday;
+my $current_time = sprintf '%s.%06d', gmtime($seconds)->strftime('%Y-%m-%d_%H:%M:%S'), $microseconds;
 
 if (-e $target) {
-  link($target, $target . ".orig") or die "Could not rename $target to ${target}.orig: $OS_ERROR";
+  link($target, $target . "." . $current_time) or die "Could not rename $target to ${target}.${current_time}: $OS_ERROR";
   open(TARGET, "< $target") or die "Could not open $target: $OS_ERROR";
 }
 
@@ -63,7 +65,8 @@ umask 0027;
 open(TMP, "> $tmpfile") or die "Could not open $tmpfile for writing: $OS_ERROR";
 if ($tmpfile =~ m!^/etc/rhn/!) {
   # Chown for different potential apache group names (SUSE/RHEL)
-  chown 0, (getgrnam("www") // "") . (getgrnam("apache") // ""), $tmpfile;
+  my $apache_group = getgrnam(`grep -hsoP "(?<=Group ).*" /etc/httpd/conf/*.conf /etc/apache2/*.conf | tr -d '\n'`);
+  chown 0, $apache_group, $tmpfile;
 }
 
 while (my $line = <TARGET>) {
@@ -126,7 +129,7 @@ B<rhn-config-satellite.pl> --target=<target_file> --option=<key,value> [ --optio
 
 =head1 DESCRIPTION
 
-This script will make sure that in F<target_file> are present configuration variables in format C<key=value>. If such key already exist there, it is removed and new variables are put at the end of the F<target_file>. Original file is preserved as F<target_file.orig>
+This script will make sure that in F<target_file> are present configuration variables in format C<key=value>. If such key already exist there, it is removed and new variables are put at the end of the F<target_file>. Original file is preserved as F<target_file.CURRENT_TIME>
 
 This script is used internally by B<spacewalk-setup>(1)
 =head1 OPTIONS

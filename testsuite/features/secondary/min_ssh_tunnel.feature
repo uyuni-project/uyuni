@@ -1,13 +1,20 @@
 # Copyright (c) 2020-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
+#
+# This feature can cause failures in the following features:
+# - features/secondary/min_activationkey.feature
+# If the minion fails to bootstrap again.
 
+@skip_if_github_validation
 @scope_salt_ssh
 @ssh_minion
 Feature: Register a Salt system to be managed via SSH tunnel
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
-    And I am logged in API as user "admin" and password "admin"
+
+  Scenario: Pre-requisite: remove package before ssh tunnel test
+    When I remove package "milkyway-dummy" from this "ssh_minion" without error control
 
   Scenario: Delete the Salt minion for SSH tunnel bootstrap
     Given I am on the Systems overview page of this "ssh_minion"
@@ -28,7 +35,7 @@ Feature: Register a Salt system to be managed via SSH tunnel
     And I select the hostname of "proxy" from "proxies" if present
     And I check "manageWithSSH"
     And I click on "Bootstrap"
-    And I wait until I see "Successfully bootstrapped host!" text
+    And I wait until I see "Bootstrap process initiated." text
     And I wait until onboarding is completed for "ssh_minion"
 
   Scenario: The contact method is SSH tunnel on this minion
@@ -41,7 +48,7 @@ Feature: Register a Salt system to be managed via SSH tunnel
     And I follow "Install"
     And I enter "milkyway-dummy" as the filtered package name
     And I click on the filter button
-    And I check "milkyway-dummy" in the list
+    And I check row with "milkyway-dummy" and arch of "ssh_minion"
     And I click on "Install Selected Packages"
     And I click on "Confirm"
     Then I should see a "1 package install has been scheduled for" text
@@ -53,6 +60,7 @@ Feature: Register a Salt system to be managed via SSH tunnel
     And I follow "List / Remove"
     And I enter "milkyway-dummy" as the filtered package name
     And I click on the filter button
+    And I wait until I see "milkyway-dummy" text
     And I check "milkyway-dummy" in the list
     And I click on "Remove Packages"
     And I click on "Confirm"
@@ -81,11 +89,8 @@ Feature: Register a Salt system to be managed via SSH tunnel
     Then "ssh_minion" should not be registered
 
   Scenario: Cleanup: register a Salt minion after SSH tunnel tests
-    When I bootstrap "ssh_minion" using bootstrap script with activation key "1-SUSE-KEY-x86_64" from the proxy
+    When I bootstrap "ssh_minion" using bootstrap script with activation key "1-SUSE-SSH-KEY-x86_64" from the proxy
     And I wait at most 10 seconds until Salt master sees "ssh_minion" as "unaccepted"
     And I accept "ssh_minion" key in the Salt master
     Then I should see "ssh_minion" via spacecmd
     And I wait until onboarding is completed for "ssh_minion"
-
-  Scenario: Cleanup: Logout from API
-    When I logout from API

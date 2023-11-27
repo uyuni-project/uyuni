@@ -99,11 +99,9 @@ public class ServerTestUtils {
      * @param version redhat-release version. (i.e. 5Server)
      * @param release redhat-release release. (i.e. 5.1.0)
      * @return Reloaded server object.
-     * @throws Exception Um, if something goes wrong. :)
      */
     public static Server addRedhatReleasePackageToServer(User user, Server addTo,
-            String version, String release)
-        throws Exception {
+            String version, String release) {
 
         InstalledPackage testInstPack = new InstalledPackage();
         String epoch = null;

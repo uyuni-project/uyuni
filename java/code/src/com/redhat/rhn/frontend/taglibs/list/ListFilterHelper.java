@@ -47,7 +47,7 @@ public class ListFilterHelper {
         }
 
         // Otherwise, filter it
-        List filteredData = new ArrayList();
+        List filteredData = new ArrayList<>();
         Expandable parent = null;
         for (Object object : dataSet) {
             if (filter.filter(object, filterBy, filterValue)) {

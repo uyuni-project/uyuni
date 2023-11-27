@@ -18,6 +18,7 @@ import static com.redhat.rhn.manager.channel.CloneChannelCommand.CloneBehavior.C
 import static com.redhat.rhn.manager.channel.CloneChannelCommand.CloneBehavior.ORIGINAL_STATE;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.util.StringUtil;
@@ -43,6 +44,7 @@ import com.redhat.rhn.frontend.xmlrpc.InvalidGPGUrlException;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.channel.CloneChannelCommand;
 import com.redhat.rhn.manager.channel.CreateChannelCommand;
+import com.redhat.rhn.manager.channel.ForbiddenCloneChannelPAYGException;
 import com.redhat.rhn.manager.channel.InvalidGPGFingerprintException;
 import com.redhat.rhn.manager.channel.UpdateChannelCommand;
 import com.redhat.rhn.manager.download.DownloadManager;
@@ -166,7 +168,7 @@ public class EditChannelAction extends RhnAction implements Listable<OrgTrust> {
                 // forward to confirm page
                 request.setAttribute("org", ctx.getCurrentUser().getOrg());
                 formToAttributes(request, form);
-                Map urlParams = new HashMap();
+                Map<String, Object> urlParams = new HashMap<>();
                 urlParams.put(RequestContext.CID,
                             ctx.getRequiredParam(RequestContext.CID));
                 ListHelper helper = new ListHelper(this, request, urlParams);
@@ -411,7 +413,7 @@ public class EditChannelAction extends RhnAction implements Listable<OrgTrust> {
             String sharing = (String) form.get(SUBSCRIPTIONS);
             updated.setGloballySubscribable((sharing != null) &&
                     ("all".equals(sharing)), loggedInUser.getOrg());
-            updated = (Channel) ChannelFactory.reload(updated);
+            updated = HibernateFactory.reload(updated);
             ServerFactory.listMinionsByChannel(updated.getId()).stream()
                     .forEach(ms -> MinionPillarManager.INSTANCE.generatePillar(ms, false, Collections.emptySet()));
 
@@ -498,6 +500,10 @@ public class EditChannelAction extends RhnAction implements Listable<OrgTrust> {
         }
         catch (IllegalArgumentException iae) {
             errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(iae.getMessage()));
+        }
+        catch (ForbiddenCloneChannelPAYGException f) {
+            errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(
+                    "edit.channel.forbiddenclonechannelpayg"));
         }
         return null;
     }

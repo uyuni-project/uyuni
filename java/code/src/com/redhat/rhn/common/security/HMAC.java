@@ -15,7 +15,6 @@
 package com.redhat.rhn.common.security;
 
 import java.security.InvalidKeyException;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import javax.crypto.Mac;
@@ -52,15 +51,15 @@ public class HMAC {
     }
 
     /**
-     * Generate an HMAC hash for the given text and key using SHA1 as the
+     * Generate an HMAC hash for the given text and key using SHA256 as the
      * hash function.
      * @param text The text to hash
      * @param key The key to use when generating the hash.
      * @return The resulting hash string
      */
-    public static String sha1(String text, String key) {
+    public static String sha256(String text, String key) {
         try {
-            SecretKey skey = new SecretKeySpec(key.getBytes(), "HMACSHA1");
+            SecretKey skey = new SecretKeySpec(key.getBytes(), "HMACSHA256");
             Mac mac = Mac.getInstance(skey.getAlgorithm());
             mac.init(skey);
             mac.update(text.getBytes());
@@ -72,81 +71,5 @@ public class HMAC {
         catch (InvalidKeyException e) {
             throw new IllegalArgumentException("Invalid key: " + e);
         }
-    }
-
-    /**
-     * Generate an HMAC hash for the given text and key using MD5 as the
-     * hash function.
-     * @param text The text to hash
-     * @param key The key to use when generating the hash.
-     * @return The resulting hash string
-     * TODO: Make this use the JDK MD5 algorithm as above vs
-     * the custom one below.
-     */
-    public static String md5(String text, String key) {
-        return generate(text, key, "MD5");
-    }
-
-    private static String generate(String text, String key, String algorithm) {
-        MessageDigest msgDigest = null;
-        try {
-            msgDigest = MessageDigest.getInstance(algorithm);
-        }
-        catch (NoSuchAlgorithmException e) {
-            throw new IllegalArgumentException("Algorithm " + algorithm +
-                                               " not found");
-        }
-
-        byte[] keyBytes;
-        /* if key is longer than 64 bytes reset it to key=MD5(key) */
-        if (key.length() > 64) {
-            msgDigest.update(key.getBytes());
-            keyBytes = msgDigest.digest();
-            msgDigest.reset();
-        }
-        else {
-            keyBytes = key.getBytes();
-        }
-        byte[] temp = new byte[64];
-        for (int i = 0; i < 64; i++) {
-            if (i < keyBytes.length) {
-                temp[i] = keyBytes[i];
-            }
-            else {
-                temp[i] = 0;
-            }
-        }
-        keyBytes = temp;
-
-        /*
-         * the HMAC_MD5 transform looks like:
-         *
-         * MD5(K XOR opad, MD5(K XOR ipad, text))
-         *
-         * where K is an n byte key
-         * ipad is the byte 0x36 repeated 64 times
-         * opad is the byte 0x5c repeated 64 times
-         * and text is the data being protected
-         */
-
-        /* start out by storing key in pads */
-        byte[] iPad = new byte[64];
-        byte[] oPad = new byte[64];
-
-        /* XOR key with ipad and opad values */
-        for (int i = 0; i < 64; i++) {
-            iPad[i] = (byte)(keyBytes[i] ^ 0x36);
-            oPad[i] = (byte)(keyBytes[i] ^ 0x5c);
-        }
-
-        msgDigest.update(iPad);
-        msgDigest.update(text.getBytes());
-        byte[] digest = msgDigest.digest();
-        msgDigest.reset();
-
-        msgDigest.update(oPad);
-        msgDigest.update(digest);
-        byte[] res = msgDigest.digest();
-        return byteArrayToHex(res);
     }
 }

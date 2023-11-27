@@ -73,7 +73,7 @@ public class UpdateUserCommand {
 
     private void buildValidPrefixes() {
         Iterator i = LocalizationService.getInstance().availablePrefixes().iterator();
-        validPrefixes = new LinkedList();
+        validPrefixes = new LinkedList<>();
         while (i.hasNext()) {
             validPrefixes.add(i.next());
         }

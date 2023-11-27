@@ -43,6 +43,7 @@ public class DepthGuard implements RenderGuard {
     }
 
     /** {@inheritDoc} */
+    @Override
     public boolean canRender(NavNode node, int depth) {
         return canRender(depth);
     }

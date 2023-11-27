@@ -18,9 +18,9 @@
 package com.redhat.rhn.frontend.struts.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.domain.action.ActionChain;
@@ -74,7 +74,7 @@ public class ActionChainHelperTest extends BaseTestCaseWithUser {
         formMap.put(ActionChainHelper.LABEL_PROPERTY_NAME, TestUtils.randomString());
         ActionChain newChain = ActionChainHelper.readActionChain(form, user);
         assertNotNull(newChain);
-        assertTrue(!chain.getId().equals(newChain.getId()));
+        assertFalse(chain.getId().equals(newChain.getId()));
     }
 
     /**

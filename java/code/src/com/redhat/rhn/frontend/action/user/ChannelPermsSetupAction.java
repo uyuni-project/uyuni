@@ -30,8 +30,6 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.DynaActionForm;
 
-import java.util.ArrayList;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -42,6 +40,7 @@ import javax.servlet.http.HttpServletResponse;
 public class ChannelPermsSetupAction extends RhnListAction {
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm formIn,
                                  HttpServletRequest request,
@@ -66,22 +65,16 @@ public class ChannelPermsSetupAction extends RhnListAction {
 
         clampListBounds(pc, request, requestContext.getCurrentUser());
 
-        DataResult dr = UserManager.channelSubscriptions(user, pc);
-
-        ArrayList selectedChannels = new ArrayList(dr.size());
-        for (Object oIn : dr) {
-            ChannelPerms current = (ChannelPerms) oIn;
-            if (current.isHasPerm()) {
-                selectedChannels.add(String.valueOf(current.getId()));
-            }
-        }
+        DataResult<ChannelPerms> dr = UserManager.channelSubscriptions(user, pc);
 
         request.setAttribute(RequestContext.PAGE_LIST, dr);
         request.setAttribute("user", user);
         request.setAttribute("role", "subscribe");
         request.setAttribute("userIsChannelAdmin",
                 user.hasRole(RoleFactory.CHANNEL_ADMIN));
-        form.set("selectedChannels", selectedChannels.toArray(new String[0]));
+        form.set("selectedChannels", dr.stream()
+                .filter(ChannelPerms::isHasPerm)
+                .map(p -> String.valueOf(p.getId())).toArray(String[]::new));
 
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
     }

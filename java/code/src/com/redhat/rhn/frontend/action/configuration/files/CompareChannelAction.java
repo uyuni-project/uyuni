@@ -17,6 +17,7 @@ package com.redhat.rhn.frontend.action.configuration.files;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.configuration.ConfigActionHelper;
+import com.redhat.rhn.frontend.dto.ConfigChannelDto;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.struts.BaseListAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
@@ -27,6 +28,7 @@ import com.redhat.rhn.manager.configuration.ConfigurationManager;
  */
 public class CompareChannelAction extends BaseListAction {
 
+    @Override
     protected void processRequestAttributes(RequestContext rctxIn) {
         ConfigActionHelper.processRequestAttributes(rctxIn);
     }
@@ -34,7 +36,8 @@ public class CompareChannelAction extends BaseListAction {
     /**
      * {@inheritDoc}
      */
-    protected DataResult getDataResult(RequestContext rctxIn, PageControl pcIn) {
+    @Override
+    protected DataResult<ConfigChannelDto> getDataResult(RequestContext rctxIn, PageControl pcIn) {
         User user = rctxIn.getCurrentUser();
 
         ConfigurationManager cm = ConfigurationManager.getInstance();

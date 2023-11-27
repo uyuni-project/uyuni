@@ -19,6 +19,7 @@ import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.rhnset.RhnSetElement;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -52,7 +53,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * SSMUpdateHardwareProfileConfirm
  */
-public class SSMUpdateHardwareProfileConfirm extends RhnAction implements Listable {
+public class SSMUpdateHardwareProfileConfirm extends RhnAction implements Listable<SystemOverview> {
     /** Logger instance */
     private static Logger log = LogManager.getLogger(SSMUpdateHardwareProfileConfirm.class);
 
@@ -61,17 +62,18 @@ public class SSMUpdateHardwareProfileConfirm extends RhnAction implements Listab
     /**
      * {@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-            ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
         RequestContext context = new RequestContext(request);
 
         User user = context.getCurrentUser();
         RhnSet set = RhnSetDecl.SYSTEMS.get(user);
         request.setAttribute("system_count", set.size());
         DynaActionForm daForm = (DynaActionForm)formIn;
-        Map params = makeParamMap(request);
+        Map<String, Object> params = makeParamMap(request);
 
         if (isSubmitted(daForm)) {
             Iterator it = set.iterator();
@@ -99,8 +101,7 @@ public class SSMUpdateHardwareProfileConfirm extends RhnAction implements Listab
                         mapping.findForward("success"), params);
             }
             catch (TaskomaticApiException e) {
-                log.error("Could not schedule hardware refresh:");
-                log.error(e);
+                log.error("Could not schedule hardware refresh:", e);
                 ActionErrors errors = new ActionErrors();
                 getStrutsDelegate().addError(errors, "taskscheduler.down");
                 getStrutsDelegate().saveMessages(request, errors);
@@ -114,9 +115,8 @@ public class SSMUpdateHardwareProfileConfirm extends RhnAction implements Listab
     /**
      * {@inheritDoc}
      */
-    public List getResult(RequestContext contextIn) {
-        return SystemManager.inSet(contextIn.getCurrentUser(),
-                                        RhnSetDecl.SYSTEMS.getLabel());
+    @Override
+    public List<SystemOverview> getResult(RequestContext contextIn) {
+        return SystemManager.inSet(contextIn.getCurrentUser(), RhnSetDecl.SYSTEMS.getLabel());
     }
-
 }

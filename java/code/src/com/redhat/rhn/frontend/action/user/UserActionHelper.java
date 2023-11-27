@@ -40,7 +40,7 @@ public class UserActionHelper {
      * package protected, because nothing outside of actions should need this.*/
     public static List getPrefixes() {
         // SETUP Prefix list
-        List preselct = new LinkedList();
+        List preselct = new LinkedList<>();
 
         for (String keyval : LocalizationService.getInstance().availablePrefixes()) {
             String display = LocalizationService.getInstance().getMessage("user prefix " + keyval);
@@ -55,7 +55,7 @@ public class UserActionHelper {
     static List getCountries() {
         Map cmap = LocalizationService.getInstance().availableCountries();
         Iterator i = cmap.keySet().iterator();
-        List countries = new LinkedList();
+        List countries = new LinkedList<>();
         while (i.hasNext()) {
             String name = (String) i.next();
             String code = (String) cmap.get(name);

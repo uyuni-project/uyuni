@@ -33,7 +33,7 @@ Terms:
               May be: [namespace/]basename[.ext].  When the namespace
               is not specified, the name is unqualified and resolved
               using the "path".  Using the extension is only necessary
-              when more then (1) file exists in a given namespace with
+              when more than (1) file exists in a given namespace with
               the same name but with different extensions.
 
 Format:

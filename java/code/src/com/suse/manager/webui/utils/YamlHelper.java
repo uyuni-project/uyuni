@@ -15,6 +15,7 @@
 package com.suse.manager.webui.utils;
 
 import org.yaml.snakeyaml.DumperOptions;
+import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
 
 /**
@@ -63,6 +64,22 @@ public enum YamlHelper {
         String result = dump(object);
         options.setDefaultScalarStyle(oldStyle);
         return result;
+    }
+
+    /**
+     * Load potentially big yaml data as a given type.
+     * Allows data up to the max size of a String
+     *
+     * @param data the data to load
+     * @param clazz the class of the return
+     * @return the parsed object
+     * @param <T> the type of the return
+     */
+    public static <T> T loadAs(String data, Class<T> clazz) {
+        LoaderOptions loaderOptions = new LoaderOptions();
+        loaderOptions.setCodePointLimit(Integer.MAX_VALUE);
+        Yaml yaml = new Yaml(loaderOptions);
+        return yaml.loadAs(data, clazz);
     }
 }
 

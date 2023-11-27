@@ -45,6 +45,7 @@ public class TaskFactory extends HibernateFactory {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected Logger getLogger() {
         return log;
     }
@@ -64,7 +65,7 @@ public class TaskFactory extends HibernateFactory {
         t.setData(data);
         t.setEarliest(new Date()); //set to now
         save(t); //store the task to the db
-        return t;
+        return reload(t);
     }
 
     /**
@@ -124,6 +125,24 @@ public class TaskFactory extends HibernateFactory {
                 builder.equal(root.get("data"), data),
                 builder.equal(root.get("org"), org),
                 builder.equal(root.get("priority"), priority)
+        ));
+        session.createQuery(criteriaDelete).executeUpdate();
+    }
+
+    /**
+     * Delete tasks matching a name and a data, ignoring priority and organization.
+     *
+     * @param name the tasks name
+     * @param data the tasks data
+     */
+    public static void deleteByNameData(String name, Long data) {
+        Session session = HibernateFactory.getSession();
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaDelete<Task> criteriaDelete = builder.createCriteriaDelete(Task.class);
+        Root<Task> root = criteriaDelete.from(Task.class);
+        criteriaDelete.where(builder.and(
+                builder.equal(root.get("name"), name),
+                builder.equal(root.get("data"), data)
         ));
         session.createQuery(criteriaDelete).executeUpdate();
     }

@@ -72,6 +72,7 @@ public abstract class BaseSystemPackagesConfirmAction extends RhnAction implemen
     private static final String HEADER_KEY = "header";
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm formIn,
                                  HttpServletRequest request,
@@ -227,8 +228,7 @@ public abstract class BaseSystemPackagesConfirmAction extends RhnAction implemen
             strutsDelegate.saveMessages(request, msgs);
         }
         catch (TaskomaticApiException e) {
-            log.error("Could not schedule package action:");
-            log.error(e);
+            log.error("Could not schedule package action:", e);
             ActionErrors errors = new ActionErrors();
             strutsDelegate.addError("taskscheduler.down", errors);
             strutsDelegate.saveMessages(request, errors);
@@ -248,7 +248,7 @@ public abstract class BaseSystemPackagesConfirmAction extends RhnAction implemen
      */
     protected void processParamMap(ActionForm formIn,
                                    HttpServletRequest request,
-                                   Map params) {
+                                   Map<String, Object> params) {
         RequestContext requestContext = new RequestContext(request);
         Long sid = requestContext.getRequiredParam("sid");
         params.put("sid", sid);

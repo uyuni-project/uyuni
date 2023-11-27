@@ -9,7 +9,7 @@ include:
 {%- endif %}
 {% include 'channels/disablelocalrepos.sls' %}
 
-{%- if grains['os_family'] == 'RedHat' %}
+{%- if grains['os_family'] == 'RedHat' or grains['os_family'] == 'openEuler' %}
 
 {%- set yum_version = salt['pkg.version']("yum") %}
 {%- set is_yum = yum_version and salt['pkg.version_cmp'](yum_version, "4") < 0 %}
@@ -44,6 +44,15 @@ mgrchannels_enable_dnf_plugins:
 {#- default is '1' when option is not specififed #}
     - onlyif: grep -e 'plugins=0' -e 'plugins=False' -e 'plugins=no' /etc/dnf/dnf.conf
 {%- endif %}
+
+{# this break the susemanagerplugin as it overwrite HTTP headers (bsc#1214601) #}
+mgrchannels_disable_dnf_rhui_plugin:
+  file.replace:
+    - name: /etc/yum/pluginconf.d/dnf_rhui_plugin.conf
+    - pattern: enabled=.*
+    - repl: enabled=0
+    - onlyif: grep -e 'enabled=1' -e 'enabled=True' -e 'enabled=yes' /etc/yum/pluginconf.d/dnf_rhui_plugin.conf
+
 {%- endif %}
 
 {%- if is_yum %}
@@ -79,7 +88,7 @@ mgrchannels_repo:
   file.managed:
 {%- if grains['os_family'] == 'Suse' %}
     - name: "/etc/zypp/repos.d/susemanager:channels.repo"
-{%- elif grains['os_family'] == 'RedHat' %}
+{%- elif grains['os_family'] == 'RedHat' or grains['os_family'] == 'openEuler' %}
     - name: "/etc/yum.repos.d/susemanager:channels.repo"
 {%- elif grains['os_family'] == 'Debian' %}
     - name: "/etc/apt/sources.list.d/susemanager:channels.list"
@@ -92,7 +101,7 @@ mgrchannels_repo:
     - mode: 644
     - require:
        - file: mgr_ca_cert
-{%- if grains['os_family'] == 'RedHat' %}
+{%- if grains['os_family'] == 'RedHat' or grains['os_family'] == 'openEuler' %}
 {%- if is_dnf %}
        - file: mgrchannels_susemanagerplugin_dnf
        - file: mgrchannels_susemanagerplugin_conf_dnf
@@ -118,7 +127,7 @@ aptauth_conf:
     - mode: 600
 {%- endif %}
 
-{%- if grains['os_family'] == 'RedHat' %}
+{%- if grains['os_family'] == 'RedHat' or grains['os_family'] == 'openEuler' %}
 {%- if is_dnf %}
 mgrchannels_dnf_clean_all:
   cmd.run:
@@ -145,7 +154,7 @@ install_gnupg_debian:
 {%- endif %}
 
 {%- if not salt['pillar.get']('susemanager:distupgrade:dryrun', False) %}
-{%- if grains['os_family'] == 'Suse' and grains['osmajorrelease']|int > 11 and not grains['oscodename'] == 'openSUSE Leap 15.3' %}
+{%- if grains['os_family'] == 'Suse' and grains['osmajorrelease']|int > 11 and "opensuse" not in grains['oscodename']|lower %}
 mgrchannels_install_products:
   product.all_installed:
     - require:
@@ -155,6 +164,17 @@ mgrchannels_install_products:
 {%- else %}
       - mgrcompat: sync_states
 {%- endif %}
+{%- if salt['pillar.get']('susemanager:distupgrade', False) %}
+      - mgrcompat: spmigration
+{%- endif %}
+{%- endif %}
 {%- endif %}
 
+{%- if grains['os_family'] == 'Suse' and "opensuse" not in grains['oscodename']|lower %}
+{# take care that the suse-build-key package with the PTF key is installed #}
+mgrchannels_inst_suse_build_key:
+  pkg.installed:
+    - name: suse-build-key
+    - require:
+      - file: mgrchannels_repo
 {%- endif %}

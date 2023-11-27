@@ -17,27 +17,30 @@ package com.redhat.rhn.domain.scc;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.channel.ContentSource;
 import com.redhat.rhn.domain.credentials.Credentials;
-import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
+import com.redhat.rhn.domain.product.SUSEProductFactory;
+import com.redhat.rhn.domain.product.SUSEProductSCCRepository;
 import com.redhat.rhn.domain.server.Server;
 
 import com.suse.scc.model.SCCRepositoryJson;
 import com.suse.scc.model.SCCSubscriptionJson;
+import com.suse.scc.model.SCCVirtualizationHostJson;
 import com.suse.utils.Opt;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -101,7 +104,6 @@ public class SCCCachingFactory extends HibernateFactory {
      * Clear all repositories from the database.
      */
     public static void clearRepositories() {
-        //getSession().getNamedQuery("SCCRepository.deleteAll").executeUpdate();
         CriteriaBuilder builder = getSession().getCriteriaBuilder();
         CriteriaDelete<SCCRepository> delete = builder.createCriteriaDelete(SCCRepository.class);
         CriteriaDelete<SCCRepositoryAuth> deleteAuth = builder.createCriteriaDelete(SCCRepositoryAuth.class);
@@ -147,10 +149,8 @@ public class SCCCachingFactory extends HibernateFactory {
         Set<SUSEProduct> products = sub.getProducts();
         List<Long> currentProductIds = jsonSub.getProductIds();
         for (Long pid : currentProductIds) {
-            if (productsBySccId.containsKey(pid)) {
-                if (!products.contains(productsBySccId.get(pid))) {
-                    products.add(productsBySccId.get(pid));
-                }
+            if (productsBySccId.containsKey(pid) && !products.contains(productsBySccId.get(pid))) {
+                products.add(productsBySccId.get(pid));
             }
         }
         Set<SUSEProduct> toRemove = new HashSet<>();
@@ -196,10 +196,9 @@ public class SCCCachingFactory extends HibernateFactory {
      * Clear all subscriptions from the database.
      */
     public static void clearSubscriptions() {
-        //getSession().getNamedQuery("SCCSubscription.deleteAll").executeUpdate();
         CriteriaBuilder builder = getSession().getCriteriaBuilder();
         CriteriaDelete<SCCSubscription> delete = builder.createCriteriaDelete(SCCSubscription.class);
-        Root d = delete.from(SCCSubscription.class);
+        delete.from(SCCSubscription.class);
         getSession().createQuery(delete).executeUpdate();
 
     }
@@ -326,30 +325,29 @@ public class SCCCachingFactory extends HibernateFactory {
      * @return true if refresh is needed, false otherwise
      */
     public static boolean refreshNeeded(Optional<Date> lastRefreshDateIn) {
-        Session session = getSession();
-        Criteria c = session.createCriteria(Credentials.class);
-        c.add(Restrictions.eq("type", CredentialsFactory
-                .findCredentialsTypeByLabel(Credentials.TYPE_SCC)));
-        c = c.setProjection(Projections.max("modified"));
-        Date modifiedCreds = (Date) c.uniqueResult();
-        if (modifiedCreds == null) {
-            log.debug("REFRESH NEEDED - no credentials found");
-            return true;
-        }
-
-        // When was the cache last modified?
-        return Opt.fold(
-                lastRefreshDateIn,
-                () -> {
-                    log.debug("REFRESH NEEDED - never refreshed");
+        return getSession()
+                .createQuery(
+                        "SELECT MAX(modified) FROM Credentials WHERE type.label IN ('scc', 'cloudrmt')", Date.class)
+                .uniqueResultOptional()
+                .map(lastModified -> {
+                    // When was the cache last modified?
+                    return Opt.fold(
+                            lastRefreshDateIn,
+                            () -> {
+                                log.debug("REFRESH NEEDED - never refreshed");
+                                return true;
+                            },
+                            modifiedCache -> {
+                                log.debug("COMPARE: {} and {} : {}", modifiedCache, lastModified,
+                                        lastModified.compareTo(modifiedCache));
+                                return lastModified.compareTo(modifiedCache) > 0;
+                            }
+                    );
+                })
+                .orElseGet(() -> {
+                    log.debug("REFRESH NEEDED - no credentials found");
                     return true;
-                },
-                modifiedCache -> {
-                    log.debug("COMPARE: {} and {} : {}", modifiedCache, modifiedCreds,
-                            modifiedCache.compareTo(modifiedCreds));
-                    return modifiedCache.compareTo(modifiedCreds) < 0;
-                }
-        );
+                });
     }
 
     /**
@@ -459,24 +457,50 @@ public class SCCCachingFactory extends HibernateFactory {
      * @return list of {@link SCCRepository} for the given channel family label
      */
     public static List<SCCRepository> lookupRepositoriesByChannelFamily(String channelFamily) {
-        return getSession().getNamedQuery("SCCRepository.lookupByChannelFamily")
+        return getSession().createNamedQuery("SCCRepository.lookupByChannelFamily", SCCRepository.class)
                 .setParameter("channelFamily", channelFamily).getResultList();
     }
 
     /**
-     * Returns a list of repositories for a product, independent of the version, and arch.
+     * Returns a set of repositories for a product, independent of the version, and arch.
      *
      * @param productName name of the product we want to filter
      * @param archName arch name we want to filter
-     * @return List of repositories for all version of one product and arch
+     * @return Set of repositories for all version of one product and arch
      */
-    public static List<SCCRepository> lookupRepositoriesByProductNameAndArchForPayg(String productName,
-                                                                                    String archName) {
-        return getSession().getNamedQuery("SCCRepository.lookupByProductNameAndArchForPayg")
+    public static Set<SCCRepository> lookupRepositoriesByProductNameAndArchForPayg(
+            String productName, String archName) {
+        return new HashSet<>(getSession()
+                .createNamedQuery("SCCRepository.lookupByProductNameAndArchForPayg", SCCRepository.class)
                 .setParameter("product_name", productName)
                 .setParameter("arch_name", archName)
-                .getResultList();
+                .list());
     }
+
+    /**
+     * Returns a set of repositories for a root product
+     *
+     * @param productName name of the product we want to filter
+     * @param productVersion version of the product we want to filter
+     * @param archName arch name we want to filter
+     * @return Set of repositories for one root product with extensions
+     */
+    public static Set<SCCRepository> lookupRepositoriesByRootProductNameVersionArchForPayg(
+            String productName, String productVersion, String archName) {
+        SUSEProduct product = SUSEProductFactory.findSUSEProduct(productName, productVersion, null, archName, true);
+        if (product == null) {
+            return Collections.emptySet();
+        }
+        List<SUSEProduct> prds = SUSEProductFactory.findAllExtensionsOfRootProduct(product);
+        prds.add(product);
+        List<String> cfList = List.of(product.getChannelFamily().getLabel(),
+                ChannelFamilyFactory.MODULE_CHANNEL_FAMILY_LABEL);
+        return prds.stream()
+                .filter(p -> cfList.contains(p.getChannelFamily().getLabel()))
+                .flatMap(p -> p.getRepositories().stream())
+                .map(SUSEProductSCCRepository::getRepository)
+                .collect(Collectors.toSet());
+        }
 
     /**
      * Find a compatible SCCRepository using a json repository
@@ -513,7 +537,8 @@ public class SCCCachingFactory extends HibernateFactory {
         List<Server> newServer = getSession()
                 .getNamedQuery("SCCRegCache.newServersRequireRegistration")
                 .getResultList();
-        newServer.stream().forEach(s -> {
+        newServer.stream()
+                .forEach(s -> {
             SCCRegCacheItem rci = new SCCRegCacheItem(s);
             saveRegCacheItem(rci);
             log.debug("New RegCacheItem saved: {}", rci);
@@ -574,14 +599,15 @@ public class SCCCachingFactory extends HibernateFactory {
      */
     @SuppressWarnings("unchecked")
     public static List<Map<String, Object>> listUpdateLastSeenCandidates(Credentials cred) {
-        List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
+        List<Map<String, Object>> result = new ArrayList<>();
         List<Object[]> rows = getSession().createQuery(
                 "SELECT reg.sccLogin, reg.sccPasswd, si.checkin " +
                 "FROM com.redhat.rhn.domain.scc.SCCRegCacheItem AS reg " +
                 "JOIN reg.server AS s " +
                 "JOIN s.serverInfo AS si " +
                 "WHERE reg.registrationErrorTime IS NULL " +
-                "AND reg.credentials = :cred")
+                "AND reg.credentials = :cred " +
+                "AND reg.sccId IS NOT NULL ")
                 .setParameter("cred", cred)
                 .list();
         for (Object[] row : rows) {
@@ -624,5 +650,18 @@ public class SCCCachingFactory extends HibernateFactory {
                     item.setSccRegistrationRequired(rereg);
                     saveRegCacheItem(item);
                 });
+    }
+
+    /**
+     * @return a list of Virtualization Hosts which need to be send to SCC
+     */
+    public static List<SCCVirtualizationHostJson> listVirtualizationHosts() {
+        int regErrorExpireTime = Config.get().getInt(ConfigDefaults.REG_ERROR_EXPIRE_TIME, 168);
+        Calendar retryTime = Calendar.getInstance();
+        retryTime.add(Calendar.HOUR, -1 * regErrorExpireTime);
+
+        return getSession().createNamedQuery("SCCRegCache.hypervisorInfo", SCCVirtualizationHostJson.class)
+                .setParameter("retryTime", new Date(retryTime.getTimeInMillis()))
+                .getResultList();
     }
 }

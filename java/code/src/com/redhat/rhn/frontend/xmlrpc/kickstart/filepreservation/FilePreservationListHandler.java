@@ -19,6 +19,7 @@ import com.redhat.rhn.domain.common.CommonFactory;
 import com.redhat.rhn.domain.common.FileList;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.FilePreservationDto;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.FileListAlreadyExistsException;
 import com.redhat.rhn.manager.common.CreateFileListCommand;
@@ -54,7 +55,7 @@ public class FilePreservationListHandler extends BaseHandler {
      *      #array_end()
      */
     @ReadOnly
-    public List listAllFilePreservations(User loggedInUser)
+    public List<FilePreservationDto> listAllFilePreservations(User loggedInUser)
         throws FaultException {
 
         Org org = loggedInUser.getOrg();

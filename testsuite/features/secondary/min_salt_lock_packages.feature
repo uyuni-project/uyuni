@@ -1,5 +1,9 @@
 # Copyright (c) 2021-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
+#
+# This feature can cause failures in the following features:
+# - features/secondary/min_salt_install_with_staging.feature
+# If the "orion-dummy-1.1-1.1" is not properly unlocked
 
 @sle_minion
 @scope_salt

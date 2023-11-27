@@ -298,33 +298,34 @@ def getCertWithText(cert):
     return out.stdout.decode("utf-8")
 
 
-def getRsaKey(key):
+def getPrivateKey(key):
     # set an invalid password to prevent asking in case of an encrypted one
     out = subprocess.run(
-        ["openssl", "rsa", "-passin", "pass:invalid"],
+        ["openssl", "pkey", "-passin", "pass:invalid", "-text", "-noout"],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         input=key.encode("utf-8")
     )
+
     if out.returncode:
-        log_error("Invalid RSA Key: {}".format(out.stderr.decode("utf-8")))
+        log_error("Invalid or encrypted Key: {}".format(out.stderr.decode("utf-8")))
         return None
     return out.stdout.decode("utf-8")
 
 
 def checkKeyBelongToCert(key, cert):
     out = subprocess.run(
-        ["openssl", "rsa", "-noout", "-modulus"],
+        ["openssl", "pkey", "-pubout"],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         input=key.encode("utf-8"),
     )
     if out.returncode:
-        log_error("Invalid RSA Key: {}".format(out.stderr.decode("utf-8")))
+        log_error("Invalid Key: {}".format(out.stderr.decode("utf-8")))
         raise CertCheckError("Invalid Key")
-    keyModulus = out.stdout.decode("utf-8")
+    keyPubKey = out.stdout.decode("utf-8")
     out = subprocess.run(
-        ["openssl", "x509", "-noout", "-modulus"],
+        ["openssl", "x509", "-noout", "-pubkey"],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         input=cert.encode("utf-8"),
@@ -333,9 +334,10 @@ def checkKeyBelongToCert(key, cert):
         log_error("Invalid Cert file: {}".format(out.stderr.decode("utf-8")))
         raise CertCheckError("Invalid Certificate")
 
-    certModulus = out.stdout.decode("utf-8")
-    if keyModulus != certModulus:
+    certPubKey = out.stdout.decode("utf-8")
+    if keyPubKey != certPubKey:
         log_error("The provided key does not belong to the server certificate")
+        log("{} vs. {}".format(keyPubKey, certPubKey), 1)
         raise CertCheckError("Key does not belong to Certificate")
 
 
@@ -472,6 +474,25 @@ def deployPg(server_key_content):
 
         log("""$> systemctl restart postgresql.service """)
 
+def deployCAInDB(certData):
+    if not os.path.exists("/usr/bin/rhn-ssl-dbstore"):
+        # not a Uyuni Server - skip deploying into DB
+        return
+
+    for h, ca in certData.items():
+        if ca["root"]:
+            out = subprocess.run(
+                ["/usr/bin/rhn-ssl-dbstore", "--ca-cert", "-"],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                input=ca["content"].encode("utf-8"),
+            )
+            if out.returncode:
+                log_error("Failed to upload CA Certificate to DB: {}".format(out.stderr.decode("utf-8")))
+                raise OSError("Failed to upload CA Certificate to DB")
+            break
+
+
 def deployCAUyuni(certData):
     for h, ca in certData.items():
         if ca["root"]:
@@ -501,8 +522,8 @@ def checks(server_key_content,server_cert_content, certData):
     """
     Perform different checks on the input data
     """
-    if not getRsaKey(server_key_content):
-        raise CertCheckError("Unable to read the server key. Encrypted?")
+    if not getPrivateKey(server_key_content):
+        raise CertCheckError("Unable to read the server key. Is it maybe encrypted?")
 
     checkKeyBelongToCert(server_key_content, server_cert_content)
 
@@ -557,6 +578,7 @@ def _main():
     deployApache(apache_cert_content, files_content.server_key)
     deployPg(files_content.server_key)
     deployCAUyuni(certData)
+    deployCAInDB(certData)
 
 
 def main():

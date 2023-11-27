@@ -75,6 +75,7 @@ public class AbstractLabelNameHelper extends BaseDomainHelper {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder().append(this.getId())
                                     .append(this.getName())
@@ -85,6 +86,7 @@ public class AbstractLabelNameHelper extends BaseDomainHelper {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(Object oth) {
         if (!(oth instanceof AbstractLabelNameHelper)) {
             return false;
@@ -99,6 +101,7 @@ public class AbstractLabelNameHelper extends BaseDomainHelper {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString() {
         return getClass().getName() + " : id: " + getId();
     }

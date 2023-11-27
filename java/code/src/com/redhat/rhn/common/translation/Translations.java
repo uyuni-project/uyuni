@@ -32,7 +32,7 @@ public class Translations {
     // This is a HACK!  Basically, we can't get to the Class object from
     // within a static method.  So, we pass the Class object in from
     // a sub-class.
-    protected static Object convert(Class thisClass, Object have, Class want) {
+    protected static Object convert(Class<?> thisClass, Object have, Class<?> want) {
 
         // Don't worry about classes that are assignable; i.e., HashMap -> Map
         if (want.isAssignableFrom(have.getClass())) {
@@ -58,20 +58,16 @@ public class Translations {
     }
 
     private static Object findMatch(Method[] methods, Object have,
-                                    Class want, boolean bestMatch)
+                                    Class<?> want, boolean bestMatch)
             throws TranslationException {
 
         for (Method methodIn : methods) {
-            Class returnType = methodIn.getReturnType();
-            Class[] params = methodIn.getParameterTypes();
+            Class<?> returnType = methodIn.getReturnType();
+            Class<?>[] params = methodIn.getParameterTypes();
 
             // All conversions have a single parameter, the object to transform
-            if (!bestMatch && have != null &&
-                    (params.length != 1 || !params[0].equals(have.getClass()))) {
-                continue;
-            }
-            else if (bestMatch && have != null &&
-                    (params.length != 1 || !params[0].isAssignableFrom(have.getClass()))) {
+            if (!bestMatch && have != null && (params.length != 1 || !params[0].equals(have.getClass())) ||
+                bestMatch && have != null && (params.length != 1 || !params[0].isAssignableFrom(have.getClass()))) {
                 continue;
             }
 

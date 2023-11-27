@@ -50,6 +50,7 @@ public abstract class RhnLookupDispatchAction extends LookupDispatchAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected String getMethodName(ActionMapping mapping,
                                    ActionForm form,
                                    HttpServletRequest request,

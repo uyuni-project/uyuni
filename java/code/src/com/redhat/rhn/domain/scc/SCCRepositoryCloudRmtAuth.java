@@ -15,7 +15,10 @@
 
 package com.redhat.rhn.domain.scc;
 
+import com.redhat.rhn.manager.content.MgrSyncUtils;
+
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -51,10 +54,22 @@ public class SCCRepositoryCloudRmtAuth extends SCCRepositoryAuth {
     /**
      * @return the URL including authentication info
      */
+    @Override
     @Transient
     public String getUrl() {
         try {
             URI url = new URI(getRepo().getUrl());
+            if (!url.getHost().startsWith(MgrSyncUtils.OFFICIAL_SUSE_UPDATE_HOST)) {
+                /*
+                SCC data contain repositories which point to external server and are free to access.
+                Examples are openSUSE and nVidia repositories. These repos are not available on the RMT servers
+                and the URLs shoudl not be re-written. Creating them at type {@link SCCRepositoryNoAuth}
+                requires to get the json definition of the repo somehow as input into
+                {@link ContentSyncManager#refreshRepositoriesAuthentication}. Otherwise the repo will be removed again.
+                Just returning the original URL here is better to understand.
+                */
+                return getRepo().getUrl();
+            }
             URI credUrl = new URI(getCredentials().getUrl());
 
             List<String> sourceParams = new ArrayList<>(Arrays.asList(
@@ -63,13 +78,25 @@ public class SCCRepositoryCloudRmtAuth extends SCCRepositoryAuth {
             String newQuery = StringUtils.join(sourceParams, "&");
 
             URI newURI = new URI(credUrl.getScheme(), url.getUserInfo(), credUrl.getHost(), credUrl.getPort(),
-                    credUrl.getPath() + url.getPath(), newQuery, credUrl.getFragment());
+                    mergeUrls(credUrl, url), newQuery, credUrl.getFragment());
             return newURI.toString();
         }
         catch (URISyntaxException ex) {
             log.error("Unable to parse URL: {}", getUrl());
         }
         return null;
+    }
+
+    private static String mergeUrls(URI credentialUrl, URI repositoryUrl) {
+        // If the paths start in the same way we have a clashing folder to remove.
+        // This happens when the credential url is https://host/repo/ and the repo path is /repo/whatever/dir/
+        // We DON'T want to end up with https://host/repo/repo/whatever/dir/
+        if (repositoryUrl.getPath().startsWith(credentialUrl.getPath())) {
+            return credentialUrl.resolve(repositoryUrl.getPath()).getPath();
+        }
+
+        // Otherwise Just combine the two paths
+        return credentialUrl.getPath() + repositoryUrl.getPath();
     }
 
     @Override
@@ -79,5 +106,16 @@ public class SCCRepositoryCloudRmtAuth extends SCCRepositoryAuth {
             Function<SCCRepositoryTokenAuth, ? extends T> tokenAuth,
             Function<SCCRepositoryCloudRmtAuth, ? extends T> cloudRmtAuth) {
         return cloudRmtAuth.apply(this);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .appendSuper(super.toString())
+                .append("authType", "rmtAuth")
+                .toString();
     }
 }

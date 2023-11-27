@@ -46,6 +46,7 @@ public class DepthAwareBean implements DepthAware {
     /**
      * {@inheritDoc}
      */
+    @Override
     public long depth() {
         // TODO Auto-generated method stub
         return depth;
@@ -63,6 +64,7 @@ public class DepthAwareBean implements DepthAware {
      *
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -81,6 +83,7 @@ public class DepthAwareBean implements DepthAware {
      *
      * {@inheritDoc}
      */
+    @Override
     public String toString() {
         return "(" + content + ", " + depth + ")";
     }
@@ -89,6 +92,7 @@ public class DepthAwareBean implements DepthAware {
      *
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder().append(content).append(depth).toHashCode();
     }

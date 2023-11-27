@@ -17,6 +17,7 @@ package com.redhat.rhn.manager.action;
 import static java.util.Collections.singleton;
 import static java.util.Collections.singletonList;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
@@ -260,11 +261,12 @@ public class ActionChainManager {
 
         String name = ActionManager.getActionName(type);
 
-        Set<Action> result = scheduleActions(user, type, name, earliestAction,
+        Set<Action> result = createActions(user, type, name, earliestAction,
             actionChain, sortOrder, serverIds);
 
         ActionManager.addPackageActionDetails(result, packages);
 
+        taskoScheduleActions(result, user, actionChain);
         return result;
     }
 
@@ -295,7 +297,7 @@ public class ActionChainManager {
         Set<Long> sidSet = new HashSet<>();
         sidSet.addAll(sids);
 
-        Set<Action> result = scheduleActions(user, ActionFactory.TYPE_SCRIPT_RUN, name,
+        Set<Action> result = createActions(user, ActionFactory.TYPE_SCRIPT_RUN, name,
             earliest, actionChain, null, sidSet);
         for (Action action : result) {
             ScriptActionDetails actionScript = ActionFactory.createScriptActionDetails(
@@ -304,6 +306,7 @@ public class ActionChainManager {
             ((ScriptRunAction)action).setScriptActionDetails(actionScript);
             ActionFactory.save(action);
         }
+        taskoScheduleActions(result, user, actionChain);
         return result;
     }
 
@@ -332,7 +335,7 @@ public class ActionChainManager {
         sidSet.addAll(sids);
 
         String summary = "Apply highstate" + (test.isPresent() && test.get() ? " in test-mode" : "");
-        Set<Action> result = scheduleActions(user, ActionFactory.TYPE_APPLY_STATES, summary,
+        Set<Action> result = createActions(user, ActionFactory.TYPE_APPLY_STATES, summary,
                 earliest, actionChain, null, sidSet);
         for (Action action : result) {
             ApplyStatesActionDetails applyState = new ApplyStatesActionDetails();
@@ -341,6 +344,7 @@ public class ActionChainManager {
             ((ApplyStatesAction)action).setDetails(applyState);
             ActionFactory.save(action);
         }
+        taskoScheduleActions(result, user, actionChain);
         return result;
     }
 
@@ -502,8 +506,10 @@ public class ActionChainManager {
      */
     public static Set<Action> scheduleRebootActions(User user, Set<Long> serverIds,
         Date earliest, ActionChain actionChain) throws TaskomaticApiException {
-        return scheduleActions(user, ActionFactory.TYPE_REBOOT,
+        Set<Action> result = createActions(user, ActionFactory.TYPE_REBOOT,
             ActionFactory.TYPE_REBOOT.getName(), earliest, actionChain, null, serverIds);
+        taskoScheduleActions(result, user, actionChain);
+        return result;
     }
 
     /**
@@ -596,7 +602,7 @@ public class ActionChainManager {
     }
 
     /**
-     * Schedules generic actions on multiple servers.
+     * Creates generic actions on multiple servers.
      * @param user the user scheduling actions
      * @param type the type
      * @param name the name
@@ -604,32 +610,17 @@ public class ActionChainManager {
      * @param actionChain the action chain or null
      * @param sortOrder the sort order or null
      * @param serverIds the affected servers' IDs
-     * @return scheduled actions
-     * @throws TaskomaticApiException if there was a Taskomatic error
-     * (typically: Taskomatic is down)
+     * @return created actions
      * @see com.redhat.rhn.manager.action.ActionManager#scheduleAction
      */
-    private static Set<Action> scheduleActions(User user, ActionType type, String name,
-            Date earliest, ActionChain actionChain, Integer sortOrder, Set<Long> serverIds)
-        throws TaskomaticApiException {
+    private static Set<Action> createActions(User user, ActionType type, String name,
+            Date earliest, ActionChain actionChain, Integer sortOrder, Set<Long> serverIds) {
         Set<Action> result = new HashSet<>();
 
         if (actionChain == null) {
             Action action = ActionManager.createAction(user, type, name, earliest);
             ActionManager.scheduleForExecution(action, serverIds);
             result.add(action);
-            if (ActionFactory.TYPE_SUBSCRIBE_CHANNELS.equals(type)) {
-                // Subscribing to channels is handled by the MinionActionExecutor even
-                // for traditional clients. Also the user must be passed for traditional
-                // clients.
-                taskomaticApi.scheduleSubscribeChannels(user, (SubscribeChannelsAction)action);
-            }
-            else {
-                taskomaticApi.scheduleActionExecution(action);
-            }
-            if (ActionFactory.TYPE_PACKAGES_UPDATE.equals(type)) {
-                MinionActionManager.scheduleStagingJobsForMinions(singletonList(action), user.getOrg());
-            }
         }
         else {
             Integer nextSortOrder = sortOrder;
@@ -641,12 +632,51 @@ public class ActionChainManager {
                 ActionChainFactory.queueActionChainEntry(action, actionChain, serverId,
                     nextSortOrder);
                 result.add(action);
-                if (ActionFactory.TYPE_PACKAGES_UPDATE.equals(type)) {
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Schedule multiple actions via taskomatic API.
+     * @param actions the actions
+     * @param user the user scheduling actions
+     * @param actionChain the action chain or null
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
+     */
+    private static void taskoScheduleActions(Set<Action> actions, User user, ActionChain actionChain)
+        throws TaskomaticApiException {
+        try {
+            for (Action action : actions) {
+                if (actionChain == null) {
+                    if (ActionFactory.TYPE_SUBSCRIBE_CHANNELS.equals(action.getActionType())) {
+                        // Subscribing to channels is handled by the MinionActionExecutor even
+                        // for traditional clients. Also the user must be passed for traditional
+                        // clients.
+                        taskomaticApi.scheduleSubscribeChannels(user, (SubscribeChannelsAction)action);
+                    }
+                    else {
+                        taskomaticApi.scheduleActionExecution(action);
+                    }
+                }
+                if (ActionFactory.TYPE_PACKAGES_UPDATE.equals(action.getActionType())) {
                     MinionActionManager.scheduleStagingJobsForMinions(singletonList(action), user.getOrg());
                 }
             }
         }
-        return result;
+        catch (TaskomaticApiException e) {
+            String cancellationMessage = "Taskomatic error, please check log files";
+            // do not leave actions queued forever
+            actions.stream().map(a -> HibernateFactory.reload(a)).forEach(a -> {
+                a.getServerActions().stream().forEach(sa -> {
+                    ActionManager.failSystemAction(user, sa.getServerId(), a.getId(), cancellationMessage);
+                });
+                ActionFactory.save(a);
+            });
+
+            throw e;
+        }
     }
 
     /**
@@ -717,7 +747,7 @@ public class ActionChainManager {
                                                               Date earliest,
                                                               ActionChain actionChain)
             throws TaskomaticApiException {
-        Set<Action> result = scheduleActions(user, ActionFactory.TYPE_SUBSCRIBE_CHANNELS, "Subscribe channels",
+        Set<Action> result = createActions(user, ActionFactory.TYPE_SUBSCRIBE_CHANNELS, "Subscribe channels",
                 earliest, actionChain, null, serverIds);
         for (Action action : result) {
             SubscribeChannelsActionDetails details = new SubscribeChannelsActionDetails();
@@ -727,6 +757,7 @@ public class ActionChainManager {
             ((SubscribeChannelsAction)action).setDetails(details);
             ActionFactory.save(action);
         }
+        taskoScheduleActions(result, user, actionChain);
         return result;
     }
 
@@ -747,7 +778,7 @@ public class ActionChainManager {
 
         ImageInfo info = ImageInfoFactory.createImageInfo(buildHostId, version, profile);
 
-        Set<Action> result = scheduleActions(user, ActionFactory.TYPE_IMAGE_BUILD, "Image Build " + profile.getLabel(),
+        Set<Action> result = createActions(user, ActionFactory.TYPE_IMAGE_BUILD, "Image Build " + profile.getLabel(),
                 earliest, actionChain, null, Collections.singleton(buildHostId));
 
         ImageBuildAction action = (ImageBuildAction)result.stream().findFirst()
@@ -767,6 +798,8 @@ public class ActionChainManager {
         info.setBuildAction(action);
 
         ImageInfoFactory.save(info);
+
+        taskoScheduleActions(result, user, actionChain);
 
         return action;
     }
@@ -789,9 +822,10 @@ public class ActionChainManager {
             throws TaskomaticApiException {
         String playbookName = FileUtils.getFile(playbookPath).getName();
 
-        PlaybookAction action = (PlaybookAction) scheduleActions(scheduler, ActionFactory.TYPE_PLAYBOOK,
+        Set<Action> result = createActions(scheduler, ActionFactory.TYPE_PLAYBOOK,
                 String.format("Execute playbook '%s'", playbookName), earliest, actionChain, null,
-                singleton(controlNodeId)).stream().findFirst()
+                singleton(controlNodeId));
+        PlaybookAction action = (PlaybookAction) result.stream().findFirst()
                 .orElseThrow(() -> new RuntimeException("Action scheduling result missing"));
 
         PlaybookActionDetails details = new PlaybookActionDetails();
@@ -801,6 +835,7 @@ public class ActionChainManager {
         details.setFlushCache(flushCache);
         action.setDetails(details);
         ActionFactory.save(action);
+        taskoScheduleActions(result, scheduler, actionChain);
 
         return action;
     }

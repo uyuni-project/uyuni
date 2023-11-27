@@ -16,8 +16,7 @@ package com.redhat.rhn.frontend.action.multiorg;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
-import com.redhat.rhn.common.conf.UserDefaults;
-import com.redhat.rhn.common.util.MD5Crypt;
+import com.redhat.rhn.common.util.CryptHelper;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.frontend.action.user.UserActionHelper;
 import com.redhat.rhn.frontend.servlets.PxtSessionDelegate;
@@ -50,10 +49,11 @@ public class OrgCreateAction extends RhnAction {
 
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-            ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
 
         ActionForward retval = mapping.findForward(RhnHelper.DEFAULT_FORWARD);
         DynaActionForm dynaForm = (DynaActionForm) formIn;
@@ -68,7 +68,7 @@ public class OrgCreateAction extends RhnAction {
          * checkbox and instructions
          */
         String pamAuthService = Config.get().getString(ConfigDefaults.WEB_PAM_AUTH_SERVICE);
-        if (pamAuthService != null && pamAuthService.trim().length() > 0) {
+        if (pamAuthService != null && !pamAuthService.trim().isEmpty()) {
             request.setAttribute("displaypamcheckbox", "true");
         }
 
@@ -86,8 +86,7 @@ public class OrgCreateAction extends RhnAction {
          */
             if (dynaForm.get("usepam") != null &&
                     (Boolean) dynaForm.get("usepam")) {
-                String fakePassword = MD5Crypt.crypt("" + System.currentTimeMillis()).
-                    substring(0, UserDefaults.get().getMaxPasswordLength());
+                String fakePassword = CryptHelper.getRandomPasswordForPamAuth();
                 if (StringUtils.isEmpty(
                         (String) dynaForm.get(UserActionHelper.DESIRED_PASS))) {
                     dynaForm.set(UserActionHelper.DESIRED_PASS, fakePassword);

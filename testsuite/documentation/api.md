@@ -15,10 +15,7 @@ DEFAULT_TIMEOUT = 300
 
 # $api_test = ApiTestHttp.new(server)
 $api_test = ApiTestXmlrpc.new(server)
-
-$api_test.auth.login(user, password)
 puts $api_test.system.search.hostname('min')
-$api_test.auth.logout
 ```
 
 The same script can work with both APIs (XML-RPC and HTTP),

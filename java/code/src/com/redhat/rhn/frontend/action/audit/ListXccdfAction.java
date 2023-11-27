@@ -16,6 +16,7 @@ package com.redhat.rhn.frontend.action.audit;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.XccdfTestResultDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -37,14 +38,15 @@ import javax.servlet.http.HttpServletResponse;
  * ListXccdfAction
  */
 
-public class ListXccdfAction extends RhnAction implements Listable {
+public class ListXccdfAction extends RhnAction implements Listable<XccdfTestResultDto> {
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping, ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
         ListHelper helper = new ListHelper(this, request);
         helper.execute();
 
@@ -54,10 +56,11 @@ public class ListXccdfAction extends RhnAction implements Listable {
     /**
      * {@inheritDoc}
      */
-    public List getResult(RequestContext context) {
+    @Override
+    public List<XccdfTestResultDto> getResult(RequestContext context) {
         HttpServletRequest request = context.getRequest();
         User user = context.getCurrentUser();
-        DataResult results = ScapManager.latestTestResultByUser(user);
+        DataResult<XccdfTestResultDto> results = ScapManager.latestTestResultByUser(user);
         TagHelper.bindElaboratorTo("groupSet", results.getElaborator(), request);
         return results;
     }

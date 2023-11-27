@@ -67,6 +67,7 @@ public class SuseProductWriter extends RepomdWriter {
     /**
      * End XML creation.
      */
+    @Override
     public void end() {
         try {
             handler.endElement("products");
@@ -81,6 +82,7 @@ public class SuseProductWriter extends RepomdWriter {
      * Start XML creation.
      * @param c channel info
      */
+    @Override
     public void begin(Channel c) {
         try {
             handler.startElement("products");

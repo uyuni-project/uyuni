@@ -55,10 +55,11 @@ public abstract class BaseCryptoKeyEditAction extends RhnAction {
     public static final String CSRF_TOKEN = "csrfToken";
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-                                  ActionForm formIn,
-                                  HttpServletRequest request,
-                                  HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
 
         if (!AclManager.hasAcl("user_role(org_admin) or user_role(config_admin)",
             request, null)) {
@@ -77,7 +78,7 @@ public abstract class BaseCryptoKeyEditAction extends RhnAction {
         StrutsDelegate strutsDelegate = getStrutsDelegate();
 
         request.setAttribute(KEY, cmd.getCryptoKey());
-        List types = new LinkedList();
+        List types = new LinkedList<>();
         types.add(lvl10n("crypto.key.gpg",
                 KickstartFactory.KEY_TYPE_GPG.getLabel()));
         types.add(lvl10n("crypto.key.ssl",

@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.action.systems.sdc;
 
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
 
@@ -22,10 +23,11 @@ import java.util.List;
 /**
  * SnapshotConfigFilesAction
  */
-public class SnapshotConfigFilesAction extends SnapshotBaseAction {
+public class SnapshotConfigFilesAction extends SnapshotBaseAction<Row> {
 
     /** {@inheritDoc} */
-    public List getResult(RequestContext context) {
+    @Override
+    public List<Row> getResult(RequestContext context) {
         Long ssid = context.getRequiredParam(SNAPSHOT_ID);
         return ConfigurationManager.systemSnapshotConfigFiles(ssid, null);
     }

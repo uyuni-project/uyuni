@@ -355,10 +355,9 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
     /**
      * Test discover playbooks in an non-existing path
      *
-     * @throws Exception
      */
     @Test
-    public void testDiscoverPlaybooksNonExistingPath() throws Exception {
+    public void testDiscoverPlaybooksNonExistingPath() {
         try {
             ansibleManager.discoverPlaybooks(-1234, user);
             fail("An exception should have been thrown.");

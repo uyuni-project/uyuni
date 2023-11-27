@@ -14,6 +14,7 @@
 --
 --
 --
+DROP VIEW rhnServerOverview;
 
 create or replace view
 rhnServerOverview

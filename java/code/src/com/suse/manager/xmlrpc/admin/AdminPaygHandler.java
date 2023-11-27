@@ -30,7 +30,7 @@ import java.util.Map;
  * Payg-as-you-go XMLRPC Handler
  *
  * @apidoc.namespace admin
- * @apidoc.doc Provides methods to access and modify pay-as-you-go ssh connection data
+ * @apidoc.doc Provides methods to access and modify PAYG ssh connection data
  */
 public class AdminPaygHandler extends BaseHandler {
 
@@ -152,7 +152,7 @@ public class AdminPaygHandler extends BaseHandler {
      *   #struct_end()
      * @apidoc.returntype #return_int_success()
      */
-    public int setDetails(User loggedInUser, String host, Map details) {
+    public int setDetails(User loggedInUser, String host, Map<String, Object> details) {
 
         ensureSatAdmin(loggedInUser);
         return paygAdminManager.setDetails(host,  details) != null ? 1 : 0;

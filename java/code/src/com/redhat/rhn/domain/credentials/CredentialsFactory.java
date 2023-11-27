@@ -20,13 +20,9 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Restrictions;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -76,10 +72,7 @@ public class CredentialsFactory extends HibernateFactory {
         if (label == null) {
             return null;
         }
-        Map<String, Object> params = new HashMap<>();
-        params.put("label", label);
-        return (CredentialsType) singleton.lookupObjectByNamedQuery(
-                "CredentialsType.findByLabel", params);
+        return singleton.lookupObjectByNamedQuery("CredentialsType.findByLabel", Map.of("label", label));
     }
 
     /**
@@ -97,15 +90,8 @@ public class CredentialsFactory extends HibernateFactory {
      * Helper method for looking up SCC credentials.
      * @return credentials or null
      */
-    @SuppressWarnings("unchecked")
-    public static List<Credentials> lookupSCCCredentials() {
-        Session session = getSession();
-        Criteria c = session.createCriteria(Credentials.class);
-        c.add(Restrictions.eq("type", CredentialsFactory
-                .findCredentialsTypeByLabel(Credentials.TYPE_SCC)));
-        c.addOrder(Order.asc("url"));
-        c.addOrder(Order.asc("id"));
-        return c.list();
+    public static List<Credentials> listSCCCredentials() {
+        return listCredentialsByType(Credentials.TYPE_SCC);
     }
 
     /**
@@ -153,6 +139,17 @@ public class CredentialsFactory extends HibernateFactory {
     }
 
     /**
+     * Helper method for creating new RHUI {@link Credentials}
+     * @return new credential with type RHUI
+     */
+    public static Credentials createRhuiCredentials() {
+        Credentials creds = createCredentials();
+        creds.setType(CredentialsFactory
+                .findCredentialsTypeByLabel(Credentials.TYPE_RHUI));
+        return creds;
+    }
+
+    /**
      * Helper method for creating new Virtual Host Manager {@link Credentials}
      * @return new credential with type Virtual Host Manager
      */
@@ -168,11 +165,9 @@ public class CredentialsFactory extends HibernateFactory {
      * @param username - the username
      * @param password - the password
      * @param credentialsType - credentials type
-     * @param params - optional paramaters
      * @return new Credentials instance
      */
-    public static Credentials createCredentials(String username, String password,
-            String credentialsType, Map<String, String> params) {
+    public static Credentials createCredentials(String username, String password, String credentialsType) {
         if (StringUtils.isEmpty(username)) {
             return null;
         }
@@ -190,6 +185,9 @@ public class CredentialsFactory extends HibernateFactory {
         else if (credentialsType.equals(Credentials.TYPE_CLOUD_RMT)) {
             credentials = CredentialsFactory.createCloudRmtCredentials();
         }
+        else if (credentialsType.equals(Credentials.TYPE_RHUI)) {
+            credentials = CredentialsFactory.createRhuiCredentials();
+        }
         else if (credentialsType.equals(Credentials.TYPE_REPORT_CREDS)) {
             credentials = CredentialsFactory.createReportCredentials();
         }
@@ -202,6 +200,18 @@ public class CredentialsFactory extends HibernateFactory {
 
         return credentials;
     }
+
+    /**
+     * @param type the credential type label
+     * @return return a list of credentials of the given type
+     */
+    public static List<Credentials> listCredentialsByType(String type) {
+        return getSession()
+                .createNamedQuery("Credentials.listByType", Credentials.class)
+                .setParameter("type", findCredentialsTypeByLabel(type))
+                .list();
+    }
+
 
     @Override
     protected Logger getLogger() {

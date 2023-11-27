@@ -22,9 +22,6 @@ import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
 
-import org.directwebremoting.WebContext;
-import org.directwebremoting.WebContextFactory;
-
 import java.io.IOException;
 
 import javax.servlet.ServletException;
@@ -40,24 +37,23 @@ public class ActionChainEntryRenderer {
     /**
      * Renders Action Chain entries from an Action Chain having a certain sort
      * order number.
+     * @param request the request
+     * @param response the response
      * @param actionChainId Action Chain identifier
      * @param sortOrder sort order number
      * @return a response string
      * @throws ServletException if something goes wrong
      * @throws IOException if something goes wrong
      */
-    public String renderAsync(Long actionChainId, Integer sortOrder)
+    public String renderAsync(HttpServletRequest request, HttpServletResponse response, Long actionChainId,
+                              Integer sortOrder)
         throws ServletException, IOException {
-        WebContext webContext = WebContextFactory.get();
-        HttpServletRequest request = webContext.getHttpServletRequest();
         User u = new RequestContext(request).getCurrentUser();
-
         ActionChain actionChain = ActionChainFactory.getActionChain(u, actionChainId);
         request.setAttribute("sortOrder", sortOrder);
         request.setAttribute("entries",
             ActionChainFactory.getActionChainEntries(actionChain, sortOrder));
 
-        HttpServletResponse response = webContext.getHttpServletResponse();
         return RendererHelper.renderRequest(
             "/WEB-INF/pages/common/fragments/schedule/actionchainentries.jsp", request,
             response);

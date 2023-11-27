@@ -43,7 +43,6 @@ public final class ProxySettingsManager {
         ProxySettingsDto settings = new ProxySettingsDto();
         settings.setHostname(Config.get().getString(KEY_PROXY_HOSTNAME));
         settings.setUsername(Config.get().getString(KEY_PROXY_USERNAME));
-        settings.setPassword(Config.get().getString(KEY_PROXY_PASSWORD));
         return settings;
     }
 

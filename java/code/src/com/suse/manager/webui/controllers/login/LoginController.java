@@ -20,9 +20,11 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static spark.Spark.get;
 import static spark.Spark.post;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.conf.sso.SSOConfig;
+import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.security.AuthenticationServiceFactory;
 import com.redhat.rhn.manager.acl.AclManager;
@@ -41,12 +43,16 @@ import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+
+import javax.security.auth.login.LoginException;
+import javax.servlet.http.HttpServletResponse;
 
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
+import spark.Spark;
 import spark.template.jade.JadeTemplateEngine;
 
 /**
@@ -130,6 +136,13 @@ public class LoginController {
         model.put("webTheme", ConfigDefaults.get().getDefaultWebTheme());
         model.put("diskspaceSeverity", LoginHelper.validateDiskSpaceAvailability());
 
+        // Pay as you go code
+        boolean sccForwardWarning = GlobalInstanceHolder.PAYG_MANAGER.isPaygInstance() &&
+                GlobalInstanceHolder.PAYG_MANAGER.hasSCCCredentials() &&
+                !ConfigDefaults.get().isForwardRegistrationEnabled();
+
+        model.put("sccForwardWarning", sccForwardWarning);
+
         return new ModelAndView(model, "controllers/login/templates/login.jade");
     }
 
@@ -141,20 +154,24 @@ public class LoginController {
      * @return the JSON result of the login operation
      */
     public static String login(Request request, Response response) {
-        List<String> errors = new ArrayList<>();
+        Optional<String> errorMsg = Optional.empty();
         LoginCredentials creds = GSON.fromJson(request.body(), LoginCredentials.class);
         User user = LoginHelper.checkExternalAuthentication(request.raw(), new ArrayList<>(), new ArrayList<>());
 
         // External-auth didn't return a user - try local-auth
         if (user == null) {
-            user = LoginHelper.loginUser(creds.getLogin(), creds.getPassword(), errors);
-            if (errors.isEmpty()) {
-                // No errors, log success
-                log.info("LOCAL AUTH SUCCESS: [{}]", user.getLogin());
+            if (creds == null) {
+                Spark.halt(HttpServletResponse.SC_BAD_REQUEST);
             }
             else {
-                // Errors, log failure
-                log.error("LOCAL AUTH FAILURE: [{}]", creds.getLogin());
+                try {
+                    user = UserManager.loginUser(creds.getLogin(), creds.getPassword());
+                    log.info("LOCAL AUTH SUCCESS: [{}]", user.getLogin());
+                }
+                catch (LoginException e) {
+                    log.error("LOCAL AUTH FAILURE: [{}]", creds.getLogin());
+                    errorMsg = Optional.of(LocalizationService.getInstance().getMessage(e.getMessage()));
+                }
             }
         }
         // External-auth returned a user and no errors
@@ -162,13 +179,14 @@ public class LoginController {
             log.info("EXTERNAL AUTH SUCCESS: [{}]", user.getLogin());
         }
 
-        if (errors.isEmpty()) {
+        if (errorMsg.isEmpty()) {
             LoginHelper.successfulLogin(request.raw(), response.raw(), user);
-            return json(response, new LoginResult(true));
+            return json(response, new LoginResult(true, null));
         }
         else {
             log.error("LOCAL AUTH FAILURE: [{}]", creds.getLogin());
-            return json(response, new LoginResult(false, errors.toArray(new String[0])));
+            response.status(HttpServletResponse.SC_UNAUTHORIZED);
+            return json(response, new LoginResult(false, errorMsg.get()));
         }
     }
 
@@ -182,7 +200,7 @@ public class LoginController {
     public static String logout(Request request, Response response, User user) {
         AuthenticationServiceFactory.getInstance().getAuthenticationService().invalidate(request.raw(), response.raw());
         log.info("WEB LOGOUT: [{}]", user.getLogin());
-        return json(response, new LoginResult(true));
+        return json(response, new LoginResult(true, null));
     }
 
     /**
@@ -190,6 +208,9 @@ public class LoginController {
      */
     public static class LoginCredentials {
         private String login;
+
+        // You can choose to use either login and username, both should work equally.
+        private String username;
         private String password;
 
         /**
@@ -205,6 +226,7 @@ public class LoginController {
          */
         public LoginCredentials(String loginIn, String passwordIn) {
             this.login = loginIn;
+            this.username = loginIn;
             this.password = passwordIn;
         }
 
@@ -212,7 +234,7 @@ public class LoginController {
          * @return the login
          */
         public String getLogin() {
-            return login;
+            return login != null ? login : username;
         }
 
         /**
@@ -229,15 +251,15 @@ public class LoginController {
     public static class LoginResult {
 
         private final boolean success;
-        private final String[] messages;
+        private final String message;
 
         /**
          * @param successIn success
-         * @param messagesIn messages
+         * @param messageIn message
          */
-        public LoginResult(boolean successIn, String... messagesIn) {
+        public LoginResult(boolean successIn, String messageIn) {
             this.success = successIn;
-            this.messages = messagesIn;
+            this.message = messageIn;
         }
 
         /**
@@ -248,10 +270,10 @@ public class LoginController {
         }
 
         /**
-         * @return messages
+         * @return message
          */
-        public String[] getMessages() {
-            return messages;
+        public String getMessage() {
+            return message;
         }
     }
 }

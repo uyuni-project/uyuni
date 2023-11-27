@@ -95,7 +95,7 @@ public class ServerSnapshotSerializer extends ApiResponseSerializer<ServerSnapsh
             builder.add("Invalid_reason", src.getInvalidReason().getName());
         }
 
-        Set<String> tags = new HashSet();
+        Set<String> tags = new HashSet<>();
         for (SnapshotTag tag : src.getTags()) {
             tags.add(tag.getName().getName());
         }

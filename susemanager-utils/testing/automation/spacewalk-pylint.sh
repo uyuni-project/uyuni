@@ -63,17 +63,10 @@ utils/systemSnapshot.py
 utils/taskotop
 spacewalk/certs-tools/
 spacewalk/setup/share/embedded_diskspace_check.py
-suseRegisterInfo/suseRegister/
 
 client/debian/apt-spacewalk/packages.py
 client/debian/apt-spacewalk/post_invoke.py
 client/debian/apt-spacewalk/pre_invoke.py
-client/rhel/yum-rhn-plugin/actions/errata.py
-client/rhel/yum-rhn-plugin/actions/packages.py
-client/rhel/yum-rhn-plugin/rhnplugin.py
-client/rhel/dnf-plugin-spacewalk/actions/errata.py
-client/rhel/dnf-plugin-spacewalk/actions/packages.py
-client/rhel/dnf-plugin-spacewalk/spacewalk.py
 client/rhel/spacewalk-client-tools/src/actions/
 client/rhel/spacewalk-client-tools/src/bin/rhn-profile-sync.py
 client/rhel/spacewalk-client-tools/src/bin/rhn_check.py
@@ -91,23 +84,12 @@ client/rhel/spacewalk-client-tools/src/firstboot-legacy-rhel6/rhn_register.py
 client/rhel/spacewalk-client-tools/src/firstboot-legacy-rhel6/rhn_review_gui.py
 client/rhel/spacewalk-client-tools/src/firstboot-legacy-rhel6/rhn_start_gui.py
 client/rhel/spacewalk-client-tools/src/up2date_client/
-client/tools/spacewalk-abrt/src/spacewalk_abrt/
-client/tools/spacewalk-koan/actions/kickstart.py
-client/tools/spacewalk-koan/actions/kickstart_guest.py
-client/tools/spacewalk-koan/spacewalkkoan/
 client/tools/spacewalk-client-cert/clientcert.py
-client/tools/spacewalk-oscap/scap.py
 client/tools/mgr-cfg/actions/
 client/tools/mgr-cfg/config_client/
 client/tools/mgr-cfg/config_common/
 client/tools/mgr-cfg/config_management/
-client/tools/mgr-custom-info/rhn-custom-info.py
-client/tools/mgr-osad/invocation.py
-client/tools/mgr-osad/src/
 client/tools/mgr-push/
-client/tools/mgr-virtualization/actions/image.py
-client/tools/mgr-virtualization/actions/virt.py
-client/tools/mgr-virtualization/virtualization/
 
 scripts/clone-errata/rhn-clone-errata.py
 scripts/datasource-query-usage.py
@@ -141,7 +123,7 @@ susemanager-utils/susemanager-sls/src/
 "
 
 INITIAL_CMD="/manager/susemanager-utils/testing/automation/initial-objects.sh"
-PYLINT_CMD="mkdir -p /manager/reports; cd /manager/; pylint --disable=E0203,E0611,E1101,E1102,C0111,I0011,R0801 --ignore=test --output-format=parseable --rcfile /manager/spacewalk/pylint/spacewalk-pylint.rc --reports=y --msg-template=\"{path}:{line}: [{msg_id}({symbol}), {obj}] {msg}\""
+PYLINT_CMD="mkdir -p /manager/reports; cd /manager/; pylint --disable=E0203,E0611,E1101,E1102,C0111,I0011,R0801 --ignore=test --output-format=parseable --rcfile /manager/susemanager-utils/testing/automation/spacewalk-pylint.rc --reports=y --msg-template=\"{path}:{line}: [{msg_id}({symbol}), {obj}] {msg}\""
 CHOWN_CMD="/manager/susemanager-utils/testing/automation/chown-objects.sh $(id -u) $(id -g)"
 
 docker pull $REGISTRY/$PGSQL_CONTAINER

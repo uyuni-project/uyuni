@@ -37,6 +37,7 @@ public class ErrataCacheDriver implements QueueDriver<Task> {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean canContinue() {
         return true;
     }
@@ -44,6 +45,7 @@ public class ErrataCacheDriver implements QueueDriver<Task> {
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<Task> getCandidates() {
         List<Task> tasks = TaskFactory.getTaskListByNameLike(ErrataCacheWorker.BY_CHANNEL);
         tasks.addAll(consolidateTasks(
@@ -56,6 +58,7 @@ public class ErrataCacheDriver implements QueueDriver<Task> {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Logger getLogger() {
         return logger;
     }
@@ -63,6 +66,7 @@ public class ErrataCacheDriver implements QueueDriver<Task> {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setLogger(Logger loggerIn) {
         logger = loggerIn;
     }
@@ -70,6 +74,7 @@ public class ErrataCacheDriver implements QueueDriver<Task> {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getMaxWorkers() {
         return Config.get().getInt("taskomatic.errata_cache_workers", 2);
     }
@@ -77,6 +82,7 @@ public class ErrataCacheDriver implements QueueDriver<Task> {
     /**
      * {@inheritDoc}
      */
+    @Override
     public QueueWorker makeWorker(Task task) {
         return new ErrataCacheWorker(task, logger);
     }
@@ -84,6 +90,7 @@ public class ErrataCacheDriver implements QueueDriver<Task> {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void initialize() {
         // empty
     }

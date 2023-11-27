@@ -10,19 +10,22 @@ import Network from "utils/network";
 const capitalize = Utils.capitalize;
 
 export const renderer = (renderId, { serverId, warningMessage }) => {
-  const messageTexts = {
-    formulas_saved: (
-      <p>
-        {t("Formula saved. Edit configuration options in the enabled formulas and apply the ")}
-        <a href={"/rhn/manager/systems/details/highstate?sid=" + serverId}>{t("Highstate")}</a>
-        {t(" for the changes to take effect.")}
-      </p>
+  const messageMap = {
+    formulas_saved: t(
+      "Formula saved. Edit configuration options in the enabled formulas and apply the <link>Highstate</link> for the changes to take effect.",
+      {
+        link: (str) => (
+          <a href={"/rhn/manager/systems/details/highstate?sid=" + serverId} key="link">
+            {str}
+          </a>
+        ),
+      }
     ),
     error_invalid_target: t("Invalid target type."),
   };
 
-  function getMessageText(msg) {
-    return messageTexts[msg] ? messageTexts[msg] : msg;
+  function getMessageText(msg: string) {
+    return messageMap[msg] || msg;
   }
 
   function saveRequest(component, selectedFormulas) {

@@ -19,6 +19,7 @@ import com.redhat.rhn.domain.audit.XccdfTestResult;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.systems.sdc.SdcHelper;
+import com.redhat.rhn.frontend.dto.XccdfRuleResultDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -41,14 +42,15 @@ import javax.servlet.http.HttpServletResponse;
  * XccdfDetailsAction
  */
 
-public class XccdfDetailsAction extends RhnAction implements Listable {
+public class XccdfDetailsAction extends RhnAction implements Listable<XccdfRuleResultDto> {
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping, ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
         RequestContext context = new RequestContext(request);
         User user = context.getCurrentUser();
         Long sid = context.getRequiredParam("sid");
@@ -71,7 +73,8 @@ public class XccdfDetailsAction extends RhnAction implements Listable {
     /**
      * {@inheritDoc}
      */
-    public List getResult(RequestContext context) {
+    @Override
+    public List<XccdfRuleResultDto> getResult(RequestContext context) {
         Long xid = context.getRequiredParam("xid");
         return ScapManager.ruleResultsPerScan(xid);
     }

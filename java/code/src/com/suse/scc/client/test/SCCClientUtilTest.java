@@ -34,6 +34,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Tests {@link SCCClientUtils}
@@ -69,7 +70,7 @@ public class SCCClientUtilTest extends MockObjectTestCase {
         // get fake data
         String expected = "testGetLoggingReader" + TestUtils.randomString();
         InputStream expectedInputStream =
-                new ByteArrayInputStream(expected.getBytes("UTF-8"));
+                new ByteArrayInputStream(expected.getBytes(StandardCharsets.UTF_8));
 
         // get fake connection to TEST_URL that returns fake data above
         HttpEntity entityMock = mock(HttpEntity.class);

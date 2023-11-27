@@ -37,7 +37,7 @@ public class Profile extends BaseDomainHelper implements Identifiable {
     private Org org;
     private Channel baseChannel;
     private ProfileType profileType;
-    private Set packageEntries;
+    private Set<ProfileEntry> packageEntries;
 
 
     /**
@@ -85,6 +85,7 @@ public class Profile extends BaseDomainHelper implements Identifiable {
     /**
      * @return Returns the id.
      */
+    @Override
     public Long getId() {
         return id;
     }
@@ -155,6 +156,7 @@ public class Profile extends BaseDomainHelper implements Identifiable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(final Object other) {
         if (!(other instanceof Profile)) {
             return false;
@@ -173,6 +175,7 @@ public class Profile extends BaseDomainHelper implements Identifiable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder().append(id)
                                     .append(name)
@@ -187,6 +190,7 @@ public class Profile extends BaseDomainHelper implements Identifiable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString() {
         return new ToStringBuilder(this).append("id", id).append("name", name).toString();
     }
@@ -195,7 +199,7 @@ public class Profile extends BaseDomainHelper implements Identifiable {
     /**
      * @return Returns the packageEntries.
      */
-    public Set getPackageEntries() {
+    public Set<ProfileEntry> getPackageEntries() {
         return packageEntries;
     }
 
@@ -203,7 +207,7 @@ public class Profile extends BaseDomainHelper implements Identifiable {
     /**
      * @param packageEntriesIn The packageEntries to set.
      */
-    public void setPackageEntries(Set packageEntriesIn) {
+    public void setPackageEntries(Set<ProfileEntry> packageEntriesIn) {
         this.packageEntries = packageEntriesIn;
     }
 

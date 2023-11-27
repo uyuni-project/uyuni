@@ -1,4 +1,41 @@
 -------------------------------------------------------------------
+Wed Nov 08 17:53:44 CET 2023 - marina.latini@suse.com
+
+- version 4.4.3
+  * Add -helm to chart name to avoid conflict with proxy image
+
+-------------------------------------------------------------------
+Thu Nov 02 16:31:41 CET 2023 - marina.latini@suse.com
+
+- version 4.4.2
+  * Remove statically defined image tags
+  * Reverted the name of the package from proxy to proxy-helm
+    to avoid problems with release tagging
+
+-------------------------------------------------------------------
+Mon Sep 18 16:54:48 CEST 2023 - rosuna@suse.com
+
+- version 4.4.1
+  * Integrate the containerized proxy into the usual rel-eng workflow
+
+-------------------------------------------------------------------
+Tue Feb 21 13:14:10 UTC 2023 - Julio González Gil <jgonzalez@suse.com>
+
+- Update the chart version to 2023.03
+  * Default log_level to 1
+
+-------------------------------------------------------------------
+Mon Jan 23 07:33:12 UTC 2023 - Julio González Gil <jgonzalez@suse.com>
+
+- Update the chart version to 2023.01
+  * Allow using container images from different registry paths
+
+-------------------------------------------------------------------
+Wed Dec 14 13:50:56 UTC 2022 - Julio González Gil <jgonzalez@suse.com>
+
+- Update the chart version to 2022.12
+
+-------------------------------------------------------------------
 Fri Nov 18 14:15:41 UTC 2022 - Julio González Gil <jgonzalez@suse.com>
 
 - Update the chart version to 2022.11

@@ -27,7 +27,7 @@ except ImportError:
     from StringIO import StringIO
 from datetime import datetime, timedelta
 
-from mock import Mock, patch, call
+from mock import MagicMock, Mock, patch, call
 
 import spacewalk.satellite_tools.reposync
 from spacewalk.satellite_tools.repo_plugins import ContentPackage
@@ -212,6 +212,60 @@ class RepoSyncTest(unittest.TestCase):
                          ((["Label"], [], "server.app.yumreposync"), {}))
         self.assertEqual(self.reposync.taskomatic.add_to_erratacache_queue.call_args,
                          (("Label", ), {}))
+    
+    def _mock_cfg(self) -> Mock:
+        CFG = Mock()
+        CFG.MOUNT_POINT = '/tmp'
+        CFG.PREPENDED_DIR = ''
+        CFG.AUTO_GENERATE_BOOTSTRAP_REPO = 1
+        return CFG
+    
+    def _mock_repo_plugin(self, pkg_list) -> Mock:
+        plug = Mock()
+        plug.list_packages = Mock(return_value=pkg_list)
+        plug.num_packages = len(pkg_list)
+        plug.num_excluded = 0
+        plug.repo.pkgdir = "/tmp"
+        return plug
+
+    def _mock_packages_list(self, names: list) -> list:
+        packages = []
+        for name in names:
+            package = Mock()
+            package.arch = "arch1"
+            package.checksum = ""
+            package.unique_id.relativepath = name
+            packages.append(package)
+        return packages
+
+    @patch("uyuni.common.context_managers.initCFG", Mock())
+    @patch("spacewalk.satellite_tools.reposync.log2", Mock())
+    @patch("spacewalk.satellite_tools.reposync.os", os)
+    @patch("spacewalk.satellite_tools.reposync.log", Mock())
+    @patch("spacewalk.satellite_tools.reposync.RepoSync._normalize_orphan_vendor_packages", Mock())
+    @patch("spacewalk.satellite_tools.reposync.ThreadedDownloader")
+    @patch("spacewalk.satellite_tools.reposync.multiprocessing.Pool")
+    def test_import_packages_excludes_failed_pkgs(self, pool, downloader):
+        """
+        When downloader fails to download a subset of packages
+        Then the RepoSync.import_packages function should not process the failed packages
+        """
+        rs = _init_reposync(self.reposync)
+        _mock_rhnsql(self.reposync, [None, []])
+
+        fail_pkg_name = "failed.rpm"
+        downloader.return_value.failed_pkgs = [fail_pkg_name]
+
+        packs = self._mock_packages_list([fail_pkg_name])
+        plugin = self._mock_repo_plugin(packs)
+
+        with patch("uyuni.common.context_managers.CFG", self._mock_cfg()):
+            rs.import_packages(plugin, None, "unused-url-string", None)
+
+        # repository plugin returned 1 package that failed to download
+        # multiprocessing.Pool.apply_async shouldn't be called
+        apply_async_mock = pool.return_value.__enter__.return_value.apply_async
+        self.assertFalse(apply_async_mock.called)
 
     @patch("uyuni.common.context_managers.initCFG", Mock())
     def test_sync_raises_channel_timeout(self):
@@ -634,7 +688,7 @@ class RepoSyncTest(unittest.TestCase):
                 "http://example.com/?credentials=testcreds_42"
             ]
         }
-        _mock_rhnsql(self.reposync, [{ 'username' : 'foo', 'password': 'c2VjcmV0' , 'extra_auth': memoryview(b'{\"my_header\":  \"my_value\"}')}])
+        _mock_rhnsql(self.reposync, [{ 'username' : 'foo', 'password': 'c2VjcmV0', 'type': 'cloudrmt', 'extra_auth': memoryview(b'{\"my_header\":  \"my_value\"}')}])
         self.assertEqual(
             rs.set_repo_credentials(url), [{"url":"http://foo:secret@example.com/", "http_headers": {"my_header": "my_value"}}])
 
@@ -776,7 +830,8 @@ class SyncTest(unittest.TestCase):
         config = {
             'return_value.fetchone_dict.return_value': {
                 "username": "user#1",
-                "password": base64.encodestring(password.encode()).decode()
+                "password": base64.encodestring(password.encode()).decode(),
+                "type": "SCC"
             }
         }
         patcher = patch(
@@ -788,7 +843,7 @@ class SyncTest(unittest.TestCase):
                 {"url": 'http://{0}:{1}@some.url'.format(username, password), "http_headers": {}}
             )
             mock_prepare.assert_called_once_with(
-                'SELECT username, password, extra_auth FROM suseCredentials WHERE id = :id'
+                '\n                SELECT c.username, c.password, c.extra_auth, ct.label type\n                  FROM suseCredentials c\n                  JOIN suseCredentialsType ct on c.type_id = ct.id\n                  WHERE c.id = :id\n            ' 
             )
             mock_prepare().execute.assert_called_once_with(id=credentials_id)
 
@@ -1083,3 +1138,29 @@ def _mock_rhnsql(module, return_values):
     query.fetchall_dict = query.fetchone_dict = returned_obj
     module.rhnSQL.execute = Mock(return_value=query)
     module.rhnSQL.prepare = Mock(return_value=query)
+
+
+def test_ksdirhtmlparser():
+    HTML_OUTPUT = b'''
+<a href="./item1">item1/</a>
+<a href="./item1/">item1</a>
+<a href="./item1.rpm">item1.rpm</a>
+<a href="./item1.mirrorlist">item1.mirrorlist</a>
+<a href="./foobar/grub/grub.cfg">grub.cfg</a>
+<a href="./foobar/boot/">boot/</a>
+<a href="#">#</a>
+<a href="..">..</a>
+    '''
+
+    EXPECTATIONS = [
+        {'name': './item1', 'type': 'FILE'},
+        {'name': './item1/', 'type': 'DIR'},
+        {'name': './foobar/grub/grub.cfg', 'type': 'FILE'},
+        {'name': './foobar/boot/', 'type': 'DIR'}
+    ]
+
+    plugin = Mock()
+    plugin.get_file = MagicMock(return_value=HTML_OUTPUT)
+    parser = spacewalk.satellite_tools.reposync.KSDirHtmlParser(plugin, "foobar")
+
+    assert all([a == b for a, b in zip(parser.dir_content, EXPECTATIONS)])

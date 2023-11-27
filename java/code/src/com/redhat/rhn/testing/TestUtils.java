@@ -23,7 +23,6 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.HibernateRuntimeException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.MethodUtil;
-import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.session.WebSession;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.servlets.PxtCookieManager;
@@ -210,14 +209,8 @@ public class TestUtils {
         req.setupServerName("mymachine.rhndev.redhat.com");
         req.setSession(session);
 
-        User u = null;
-        try {
-            u = UserTestUtils.createUserInOrgOne();
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-        u.removePermanentRole(RoleFactory.ORG_ADMIN);
+        User u = UserTestUtils.findNewUser("testUser",
+            "testOrg_getRequestWithSessionAndUser" + RandomStringUtils.randomAlphanumeric(5));
         Long userid = u.getId();
 
         RequestContext requestContext = new RequestContext(req);
@@ -245,9 +238,8 @@ public class TestUtils {
      * be formulated to ensure a single object is returned or
      * an error will occur.
      * @return Object found or null if not
-     * @throws Exception if there was a Hibernate related exception
      */
-    public static Object lookupTestObject(String query) throws Exception {
+    public static Object lookupTestObject(String query) {
         Session session = HibernateFactory.getSession();
         Query q = session.createQuery(query);
         return q.uniqueResult();
@@ -257,9 +249,8 @@ public class TestUtils {
      * Finds a list of persistent objects.
      * @param query The query to find the persistent objects.
      * @return Object found or null if not
-     * @throws Exception if there was a Hibernate related exception
      */
-    public static List lookupTestObjects(String query) throws Exception {
+    public static List lookupTestObjects(String query) {
         Session session = HibernateFactory.getSession();
         Query q = session.createQuery(query);
         return q.list();
@@ -288,10 +279,9 @@ public class TestUtils {
      * @param queryname Queryname for the query you want to run.
      *        queryname *MUST* have a :label attribute in it.
      * @return Returns the object corresponding to label
-     * @throws Exception exception
      */
     public static Object lookupFromCacheByLabel(String label,
-                                                String queryname) throws Exception {
+                                                String queryname) {
         Session session = HibernateFactory.getSession();
         return session.getNamedQuery(queryname)
                       .setString("label", label)

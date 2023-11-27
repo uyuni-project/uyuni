@@ -18,6 +18,7 @@ package com.redhat.rhn.domain.contentmgmt.validation;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
+import com.redhat.rhn.domain.contentmgmt.ModuleFilter;
 import com.redhat.rhn.domain.contentmgmt.SoftwareProjectSource;
 
 import java.util.Collections;
@@ -28,7 +29,7 @@ import java.util.List;
  */
 public class ModularSourcesValidator implements ContentValidator {
 
-    private LocalizationService loc = LocalizationService.getInstance();
+    private final LocalizationService loc = LocalizationService.getInstance();
 
     @Override
     public List<ContentValidationMessage> validate(ContentProject project) {
@@ -37,8 +38,7 @@ public class ModularSourcesValidator implements ContentValidator {
                 .map(SoftwareProjectSource::getChannel)
                 .anyMatch(Channel::isModular);
 
-        boolean hasModuleFilters = project.getActiveFilters().stream()
-                .anyMatch(f -> f.asModuleFilter().isPresent());
+        boolean hasModuleFilters = project.getActiveFilters().stream().anyMatch(f -> f instanceof ModuleFilter);
 
         ContentValidationMessage msg = null;
         if (hasModularSources && !hasModuleFilters) {

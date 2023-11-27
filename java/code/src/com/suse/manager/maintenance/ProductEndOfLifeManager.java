@@ -28,6 +28,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 
 import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
@@ -102,7 +103,7 @@ public class ProductEndOfLifeManager {
         while (reader.hasNext()) {
             final int event = reader.next();
 
-            if (event == XMLStreamReader.START_ELEMENT && reader.getLocalName().equals(elementToFind)) {
+            if (event == XMLStreamConstants.START_ELEMENT && reader.getLocalName().equals(elementToFind)) {
                 if (!elementsIterator.hasNext()) {
                     // we reached the leaf, let's return the text
                     return reader.getElementText();
@@ -111,7 +112,7 @@ public class ProductEndOfLifeManager {
                 parent = elementToFind;
                 elementToFind = elementsIterator.next();
             }
-            else if (event == XMLStreamReader.END_ELEMENT && reader.getLocalName().equals(parent)) {
+            else if (event == XMLStreamConstants.END_ELEMENT && reader.getLocalName().equals(parent)) {
                 // The parent element is closed, and we did not find the element we were looking for
                 throw new XMLStreamException("Unable to find element " + elementToFind + " within parent " + parent);
             }

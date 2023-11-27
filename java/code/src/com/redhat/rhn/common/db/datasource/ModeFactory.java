@@ -47,11 +47,13 @@ public class ModeFactory implements ManifestFactoryBuilder {
     private static XMLReader parser = null;
 
     /** {@inheritDoc} */
+    @Override
     public String getManifestFilename() {
         return "xml/file-list.xml";
     }
 
     /** {@inheritDoc} */
+    @Override
     public Object createObject(Map params) {
         try {
             if (parser == null) {

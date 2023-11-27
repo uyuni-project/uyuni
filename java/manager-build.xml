@@ -17,10 +17,13 @@
   <property file="conf/rhn_java.conf"/>
 
   <!-- Other properties -->
+  <property name="container.backend" value="" />
+
   <property name="deploy.host" value="deployhost" />
   <property name="deploy.port" value="22" />
-  <property name="deploy.dir" value="/srv/tomcat/webapps/rhn" />
+  <property name="deploy.dir" value="/usr/share/susemanager/www/tomcat/webapps/rhn" />
   <property name="deploy.user" value="root" />
+  <property name="deploy.namespace" value="default"/>
 
   <property name="tests.includes" value="buildconf/manager-test-includes" />
   <property name="tests.excludes" value="buildconf/manager-test-excludes" />
@@ -43,10 +46,15 @@
 
   <!-- Paths -->
   <path id="libjars">
-    <fileset dir="${lib.dir}" includes="**/*.jar" />
+    <fileset dir="${lib.dir}">
+      <include name="**/*.jar"/>
+      <!-- Exclude checkstyle and jacoco -->
+      <exclude name="all-8.30.jar" />
+      <exclude name="nodeps-0.8.7.jar" />
+    </fileset>
   </path>
   <path id="managertestjars">
-    <fileset dir="${lib.dir}" includes="**/*.jar" />
+    <path refid="libjars" />
     <fileset file="${build.dir}/rhn.jar" />
   </path>
 
@@ -221,19 +229,22 @@
     <fail>yarn is not in the PATH. Please install yarn first.</fail>
   </target>
 
-  <target name="deploy-static-resources" depends="open-ssh-socket,warn-if-yarn-not-installed" description="Deploy css/js/img/font files">
+  <target name="build-js" depends="warn-if-yarn-not-installed" description="Build js files">
+    <echo message="Calling yarn build ..."/>
+    <exec failonerror="true" executable="yarn" dir="${frontend.src.dir}">
+      <arg line="build:novalidate"/>
+    </exec>
+  </target>
+
+  <target name="deploy-static-resources" depends="open-ssh-socket,build-js" description="Deploy css/js/img/font files">
     <condition property="spacewalk.upstream">
       <not>
         <available file="${basedir}/../susemanager" type="dir"/>
       </not>
     </condition>
-    <condition property="static.files.dir" value="/var/www/html" else="/srv/www/htdocs">
+    <condition property="static.files.dir" value="/var/www/html" else="/usr/share/susemanager/www/htdocs">
       <isset property="spacewalk.upstream"/>
     </condition>
-    <echo message="Calling yarn build ..."/>
-    <exec failonerror="true" executable="yarn" dir="${frontend.src.dir}">
-      <arg line="build:novalidate"/>
-    </exec>
 
     <echo message="Copying frontend files to remote host...${static.files.dir}"/>
     <exec failonerror="true" executable="rsync">
@@ -289,6 +300,136 @@
 
   <target name="deploy-restart" depends="deploy, restart-tomcat, restart-taskomatic" />
 
+  <!-- container related -->
+  <target name="is-uyunictl-installed" description="Checks if uyunictl is installed">
+    <exec failifexecutionfails="false" resultproperty="uyunictl.installed" executable="uyunictl">
+      <arg line="--version" />
+    </exec>
+  </target>
+
+  <target name="warn-if-uyunictl-not-installed" depends="is-uyunictl-installed" unless="uyunictl.installed">
+    <fail>uyunictl is not in the PATH. Please install uyunictl first.</fail>
+  </target>
+
+  <target name="deploy-container" depends="webapp, warn-if-uyunictl-not-installed" description="Deploy a new copy of SUSE Manager in a running container">
+    <echo message="Copying files to container..." />
+
+    <exec failonerror="true" executable="sh">
+      <arg line="-c 'tar c -C ${build.dir}/webapp -f - --exclude=log4j2.xml . | uyunictl exec -i -- tar xf - -C ${deploy.dir}'" />
+    </exec>
+
+    <echo message="Linking the branding jar..." />
+    <uyunictl argline="exec -- mv ${deploy.dir}/WEB-INF/lib/java-branding.jar /usr/share/rhn/lib" />
+    <uyunictl argline="exec -- ln -sf /usr/share/rhn/lib/java-branding.jar ${deploy.dir}/WEB-INF/lib/java-branding.jar" />
+
+    <echo message="Linking jars for Taskomatic..." />
+    <uyunictl argline="exec -- ln -sf ${deploy.dir}/WEB-INF/lib/*.jar /usr/share/spacewalk/taskomatic" />
+    <uyunictl argline="exec -- mv ${deploy.dir}/WEB-INF/lib/rhn.jar /usr/share/rhn/lib" />
+    <uyunictl argline="exec -- ln -sf /usr/share/rhn/lib/rhn.jar ${deploy.dir}/WEB-INF/lib" />
+
+  </target>
+
+
+  <target name="deploy-static-resources-container" depends="build-js,warn-if-uyunictl-not-installed" description="Deploy css/js/img/font files in a running container">
+    <echo message="Copying frontend files to container... " />
+    <copy-to-container
+      source="${frontend.dist.dir}"
+      target="/usr/share/susemanager/www/htdocs"
+      failonerror="true"
+      backend="${container.backend}" />
+  </target>
+
+  <target name="deploy-salt-files-container" depends="warn-if-uyunictl-not-installed" description="Deploy Salt files in a running container">
+    <property name="salt.state.files.dir" value="/usr/share/susemanager/salt" />
+    <property name="salt.reactor.files.dir" value="/usr/share/susemanager/reactor" />
+
+    <echo message="Copying Salt sls files to remote host..." />
+    <copy-to-container
+      source="${basedir}/../susemanager-utils/susemanager-sls/salt/"
+      target="${salt.state.files.dir}"
+      backend="${container.backend}"
+    />
+
+    <echo message="Copying Salt grains, beacons, modules and pillars to remote host..." />
+    <copy-to-container
+      source="${basedir}/../susemanager-utils/susemanager-sls/src/grains/"
+      target="${salt.state.files.dir}/_grains/"
+      backend="${container.backend}" />
+    <copy-to-container
+      source="${basedir}/../susemanager-utils/susemanager-sls/src/beacons/"
+      target="${salt.state.files.dir}/_beacons/"
+      backend="${container.backend}" />
+    <copy-to-container
+      source="${basedir}/../susemanager-utils/susemanager-sls/src/modules/"
+      target="${salt.state.files.dir}/_modules/"
+      backend="${container.backend}" />
+    <copy-to-container
+      source="${basedir}/../susemanager-utils/susemanager-sls/modules/pillar/"
+      target="/usr/share/susemanager/modules/pillar/"
+      backend="${container.backend}" />
+
+    <echo message="Copying Salt reactor to remote host..." />
+    <copy-to-container
+      source="${basedir}/../susemanager-utils/susemanager-sls/reactor"
+      target="/usr/share/susemanager/modules/pillar/"
+      backend="${container.backend}" />
+  </target>
+
+  <target name="restart-tomcat-container" depends="warn-if-uyunictl-not-installed" description="Restarts the tomcat process in a running container">
+    <echo message="Launching Tomcat restart..." />
+    <uyunictl argline="exec rctomcat restart" />
+  </target>
+
+  <target name="restart-taskomatic-container" depends="warn-if-uyunictl-not-installed" description="Restarts the taskomatic process in a container">
+    <echo message="Launching Taskomatic restart..." />
+    <uyunictl argline="exec rctaskomatic restart" />
+  </target>
+
+  <target name="deploy-restart-container">
+    <antcall target="deploy-container" />
+    <antcall target="restart-tomcat-container" />
+    <antcall target="restart-taskomatic-container" />
+  </target>
+
+
+  <!-- wraps uyunictl command, executing the given argline -->
+  <macrodef name="uyunictl">
+    <attribute name="argline" />
+    <attribute name="failonerror" default="true" />
+    <attribute name="backend" default="" />
+    <sequential>
+      <condition property="backend.flag" value="--backend @{backend}" else="">
+        <not>
+          <equals arg1="@{backend}" arg2="" />
+        </not>
+      </condition>
+      <exec failonerror="@{failonerror}" executable="uyunictl">
+        <arg line="@{argline} ${backend.flag}" />
+      </exec>
+    </sequential>
+  </macrodef>
+
+  <!-- copies the given source path to the given target path in the container -->
+  <macrodef name="copy-to-container">
+    <attribute name="source" />
+    <attribute name="target" />
+    <attribute name="failonerror" default="false" />
+    <attribute name="backend" default="" />
+    <sequential>
+      <condition property="backend.flag" value="--backend @{backend}" else="">
+        <not>
+          <equals arg1="@{backend}" arg2="" />
+        </not>
+      </condition>
+
+      <exec failonerror="@{failonerror}" executable="uyunictl">
+        <arg line="cp @{source} server:@{target} ${backend.flag}" />
+      </exec>
+    </sequential>
+  </macrodef>
+
+  <!-- ./container related -->
+
   <target name="test-report" depends="test" description="Run unit tests and produce a report">
     <junitreport todir="${tests.results.dir}">
       <fileset dir="${tests.results.dir}">
@@ -311,7 +452,7 @@
     <echo message="${tests.includes.text}" />
     <echo message="and excluding:" />
     <echo message="${tests.excludes.text}" />
-    <taskdef resource="org/jacoco/ant/antlib.xml" classpathref="libjars" />
+    <taskdef resource="org/jacoco/ant/antlib.xml" classpath="${lib.dir}/nodeps-0.8.7.jar" />
     <agent property="jacocoagent" destfile="${tests.coverage.destfile}"/>
 
     <!-- Once all CI containers are using ant 1.10+ we can add the printSummary="true" parameter
@@ -350,7 +491,7 @@
   </target>
 
   <target name="checkstyle" depends="compile" description="Runs the checkstyle tool on sources">
-    <taskdef resource="com/puppycrawl/tools/checkstyle/ant/checkstyle-ant-task.properties" classpathref="libjars" />
+    <taskdef resource="com/puppycrawl/tools/checkstyle/ant/checkstyle-ant-task.properties" classpath="${lib.dir}/all-8.30.jar" />
     <checkstyle config="${basedir}/buildconf/checkstyle.xml">
       <classpath>
         <path location="${build.dir}/classes" />
@@ -449,7 +590,7 @@
     <mkdir dir="${report.dir}/apidocs/${template.dir}/" />
     <mkdir dir="${report.dir}/apidocs/${template.dir}/handlers/" />
     <javadoc doclet="com.redhat.rhn.internal.doclet.${doclet.class}" docletpathref="javadocpath" classpathref="libjars" sourcepath="code/src"
-        additionalparam="-d ${apidoc.output} -templates buildconf/apidoc/${template.dir} -product '${product.name}' -apiversion '${java.apiversion}'">
+        additionalparam="-debug -d ${apidoc.output} -templates buildconf/apidoc/${template.dir} -product '${product.name}' -apiversion '${java.apiversion}'">
       <fileset dir="code" >
         <include name="**/src/com/redhat/rhn/frontend/xmlrpc/**/*Handler.java" />
         <include name="**/src/com/redhat/rhn/frontend/xmlrpc/serializer/*Serializer.java" />
@@ -464,4 +605,31 @@
 
   </target>
 
+  <target name="deploy-local" depends="webapp" description="Deploy a new copy of SUSE Manager">
+    <echo message="Copying files to local host..." />
+    <exec failonerror="true" executable="rsync">
+      <arg line="-a --delete --exclude log4j2.xml ${build.dir}/webapp/ ${deploy.dir}/" />
+    </exec>
+
+    <echo message="Linking the branding jar..." />
+    <exec failonerror="true" executable="mv">
+      <arg line="${deploy.dir}/WEB-INF/lib/java-branding.jar /usr/share/rhn/lib"/>
+    </exec>
+
+    <exec failonerror="true" executable="ln">
+      <arg line="-sf /usr/share/rhn/lib/java-branding.jar ${deploy.dir}/WEB-INF/lib/java-branding.jar"/>
+    </exec>
+
+    <echo message="Linking jars for Taskomatic..."/>
+    <exec failonerror="true" executable="ln">
+      <arg line="-sf ${deploy.dir}/WEB-INF/lib/*.jar /usr/share/spacewalk/taskomatic"/>
+    </exec>
+    <exec failonerror="true" executable="mv">
+      <arg line="${deploy.dir}/WEB-INF/lib/rhn.jar /usr/share/rhn/lib"/>
+    </exec>
+    <exec failonerror="true" executable="ln">
+      <arg line="-sf /usr/share/rhn/lib/rhn.jar ${deploy.dir}/WEB-INF/lib"/>
+    </exec>
+
+  </target>
 </project>

@@ -8,14 +8,13 @@
 
 # IDEMPOTENT
 
-- features/secondary/srv_advanced_search.feature
+# Workaround for bug in search server, as mentioned here - https://github.com/SUSE/spacewalk/issues/22594
+# - features/secondary/srv_advanced_search.feature
 - features/secondary/srv_check_sync_source_packages.feature
 - features/secondary/srv_change_password.feature
 - features/secondary/srv_clone_channel_npn.feature
 - features/secondary/srv_manage_activationkey.feature
 - features/secondary/srv_activationkey_api.feature
-- features/secondary/srv_distro_cobbler.feature
-- features/secondary/srv_cobbler_buildiso.feature
 - features/secondary/srv_mainpage.feature
 - features/secondary/srv_user_api.feature
 - features/secondary/srv_salt_download_endpoint.feature
@@ -39,15 +38,13 @@
 - features/secondary/srv_reportdb.feature
 - features/secondary/srv_dist_channel_mapping.feature
 - features/secondary/srv_task_status_engine.feature
-- features/secondary/srv_cobbler_sync.feature
 
 - features/secondary/proxy_retail_pxeboot_and_mass_import.feature
 - features/secondary/allcli_overview_systems_details.feature
 - features/secondary/allcli_system_group.feature
 - features/secondary/allcli_config_channel.feature
 - features/secondary/allcli_software_channels.feature
-# tests to be rewritten using the "dummy" packages instead of real synced packages
-# - features/secondary/allcli_software_channels_dependencies.feature
+- features/secondary/allcli_software_channels_dependencies.feature
 
 - features/secondary/min_rhlike_salt_install_package_and_patch.feature
 - features/secondary/min_rhlike_monitoring.feature
@@ -78,6 +75,7 @@
 - features/secondary/min_cve_audit.feature
 - features/secondary/min_cve_id_new_syntax.feature
 - features/secondary/min_check_patches_install.feature
+- features/secondary/min_project_lotus.feature
 
 - features/secondary/minkvm_guests.feature
 

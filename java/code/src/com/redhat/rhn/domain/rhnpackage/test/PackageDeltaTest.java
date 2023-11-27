@@ -30,10 +30,9 @@ public class PackageDeltaTest extends RhnBaseTestCase {
     /**
      * Simple test to make sure we can create
      * PackageDeltas and write them to the db.
-     * @throws Exception Exception
      */
     @Test
-    public void testPackageDelta() throws Exception {
+    public void testPackageDelta() {
         PackageDelta p = new PackageDelta();
         p.setLabel("Test Label " + TestUtils.randomString());
         assertNull(p.getId());

@@ -70,6 +70,7 @@ public class ChecksumType extends BaseDomainHelper {
     }
 
     /** {@inheritDoc} */
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -84,11 +85,13 @@ public class ChecksumType extends BaseDomainHelper {
     }
 
     /** {@inheritDoc} */
+    @Override
     public int hashCode() {
         return id != null ? id.hashCode() : 0;
     }
 
     /** {@inheritDoc} */
+    @Override
     public String toString() {
         return label;
     }

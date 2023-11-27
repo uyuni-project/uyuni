@@ -116,6 +116,7 @@ public final class XmlResourceBundle extends java.util.ResourceBundle {
      * @return The value found. This will be a java.lang.String and can be cased
      * accordingly.
      */
+    @Override
     public Object handleGetObject(String key) {
         return strings.get(key);
     }
@@ -125,6 +126,7 @@ public final class XmlResourceBundle extends java.util.ResourceBundle {
      * @return Enumeration of the keys contained in this bundle.
      *         Useful for searching for a partial match.
      */
+    @Override
     public Enumeration<String> getKeys() {
         List<String> keys = new LinkedList<>();
 

@@ -19,7 +19,6 @@ package com.redhat.rhn.taskomatic.task.repomd;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
-import com.redhat.rhn.common.translation.SqlExceptionTranslator;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.frontend.dto.PackageChangelogDto;
 import com.redhat.rhn.frontend.dto.PackageDto;
@@ -32,7 +31,6 @@ import org.xml.sax.SAXException;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import java.io.Writer;
-import java.sql.SQLException;
 import java.util.Collection;
 
 /**
@@ -53,6 +51,7 @@ public class OtherXmlWriter extends RepomdWriter {
      * Start xml metadata generation
      * @param channel channel info
      */
+    @Override
     public void begin(Channel channel) {
         SimpleAttributesImpl attr = new SimpleAttributesImpl();
         attr.addAttribute("xmlns", "http://linux.duke.edu/metadata/other");
@@ -69,6 +68,7 @@ public class OtherXmlWriter extends RepomdWriter {
     /**
      * end xml metadata generation
      */
+    @Override
     public void end() {
         try {
             handler.endElement("otherdata");
@@ -111,19 +111,15 @@ public class OtherXmlWriter extends RepomdWriter {
         catch (SAXException e) {
             throw new RepomdRuntimeException(e);
         }
-        catch (SQLException e) {
-            SqlExceptionTranslator.sqlException(e);
-        }
     }
 
     /**
      *
      * @param pkgDto pkg changelog info to add to xml
      * @throws SAXException sax exception
-     * @throws SQLException sql exception
      */
     private void addPackageChangelog(PackageDto pkgDto,
-            SimpleContentHandler tmpHandler) throws SAXException, SQLException {
+            SimpleContentHandler tmpHandler) throws SAXException {
 
         Long pkgId = pkgDto.getId();
         Collection<PackageChangelogDto> changelogEntries = TaskManager

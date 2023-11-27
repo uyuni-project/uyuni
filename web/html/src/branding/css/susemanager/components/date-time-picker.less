@@ -1,0 +1,76 @@
+/* This element already has `position: absolute` */
+.react-datepicker-popper {
+  z-index: 1050 !important;
+}
+
+.react-datepicker,
+.react-datepicker__current-month,
+.react-datepicker-time__header,
+.react-datepicker-year-header {
+  font: inherit !important;
+}
+
+.react-datepicker__navigation-icon::before {
+  width: 1rem !important;
+  height: 1rem !important;
+  top: 1rem !important;
+}
+
+.react-datepicker__day--selected,
+.react-datepicker__day--in-selecting-range,
+.react-datepicker__day--in-range,
+.react-datepicker__month-text--selected,
+.react-datepicker__month-text--in-selecting-range,
+.react-datepicker__month-text--in-range,
+.react-datepicker__quarter-text--selected,
+.react-datepicker__quarter-text--in-selecting-range,
+.react-datepicker__quarter-text--in-range,
+.react-datepicker__year-text--selected,
+.react-datepicker__year-text--in-selecting-range,
+.react-datepicker__year-text--in-range,
+.react-datepicker__day--keyboard-selected,
+.react-datepicker__month-text--keyboard-selected,
+.react-datepicker__quarter-text--keyboard-selected,
+.react-datepicker__year-text--keyboard-selected,
+.react-datepicker__time-list-item--selected {
+  background: #666 !important;
+  border-radius: 0 !important;
+}
+
+.react-datepicker__navigation {
+  top: 6px;
+}
+
+.react-datepicker__day-name,
+.react-datepicker__day,
+.react-datepicker__time-name {
+  margin: 0;
+  padding: 7px;
+  box-sizing: content-box;
+}
+
+.form-control.date-time-picker-wrapper {
+  padding: 0 !important;
+  position: relative;
+}
+
+.react-datepicker__input-container,
+.react-datepicker__input-container > input {
+  display: block !important;
+  width: 100%;
+  height: 100%;
+}
+
+.react-datepicker__header--time {
+  display: none !important;
+}
+
+// Only for the time picker, change the triangle color since the colliding box is a different color
+#time-picker-portal .react-datepicker__triangle::after {
+  border-bottom-color: #fff;
+}
+
+// Fix double borders with input-group-addon elements
+.no-right-border {
+  border-right-width: 0 !important;
+}

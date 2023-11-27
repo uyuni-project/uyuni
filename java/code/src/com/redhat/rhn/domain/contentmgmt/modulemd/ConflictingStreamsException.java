@@ -16,7 +16,7 @@
 package com.redhat.rhn.domain.contentmgmt.modulemd;
 
 /**
- * Exception thrown when more then one stream is selected for a module
+ * Exception thrown when more than one stream is selected for a module
  */
 public class ConflictingStreamsException extends ModulemdApiException {
 

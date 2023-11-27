@@ -1,3 +1,5 @@
+[![OpenSSF Best Practices](https://bestpractices.coreinfrastructure.org/projects/6593/badge)](https://bestpractices.coreinfrastructure.org/projects/6593)
+
 Uyuni
 =====
 
@@ -19,5 +21,5 @@ Following links might be of value in case you are interested:
   * [Gitter](https://www.uyuni-project.org/pages/contact.html#Gitter) (Chat)
   * [Mailing lists](https://www.uyuni-project.org/pages/contact.html#ml)
   * [Bug reports](https://github.com/uyuni-project/uyuni/issues)
-  * [Contributing](https://github.com/uyuni-project/uyuni/wiki/Contributing)
+  * [Development Guides](https://github.com/uyuni-project/uyuni/wiki#development-guides)
   * [SUSE Manager](https://www.suse.com/products/suse-manager/)

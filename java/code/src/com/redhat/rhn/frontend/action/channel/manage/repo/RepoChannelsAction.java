@@ -15,6 +15,7 @@
 package com.redhat.rhn.frontend.action.channel.manage.repo;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
@@ -38,16 +39,15 @@ public class RepoChannelsAction extends RhnAction {
     /**
      * ${@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
-            HttpServletRequest request, HttpServletResponse response) throws Exception {
+                                 HttpServletRequest request, HttpServletResponse response) {
 
         request.setAttribute(mapping.getParameter(), Boolean.TRUE);
         RequestContext context = new RequestContext(request);
         User user = context.getCurrentUser();
         Long csid = context.getRequiredParam("id");
-        DataResult result;
-
-        result = ChannelManager.channelsForContentSource(csid, null);
+        DataResult<Row> result = ChannelManager.channelsForContentSource(csid, null);
         request.setAttribute(RequestContext.PAGE_LIST, result);
         request.setAttribute(ListTagHelper.PARENT_URL, request.getRequestURI());
         request.setAttribute("repo_name", ChannelFactory.lookupContentSource(csid,

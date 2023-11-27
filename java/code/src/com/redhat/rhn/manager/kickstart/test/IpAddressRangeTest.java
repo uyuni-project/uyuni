@@ -15,7 +15,7 @@
 package com.redhat.rhn.manager.kickstart.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -78,8 +78,8 @@ public class IpAddressRangeTest extends BaseTestCaseWithUser {
         IpAddressRange range2 = new IpAddressRange(min2, max2, k.getId());
         IpAddressRange range3 = new IpAddressRange(min3, max3, k.getId());
 
-        assertTrue(range1.equals(range2));
-        assertFalse(range1.equals(range3));
+        assertEquals(range1, range2);
+        assertNotEquals(range1, range3);
         assertEquals(range1.getMax().getNumber(), range2.getMax().getNumber());
         assertEquals(range1.getMin().getNumber(), range2.getMin().getNumber());
 

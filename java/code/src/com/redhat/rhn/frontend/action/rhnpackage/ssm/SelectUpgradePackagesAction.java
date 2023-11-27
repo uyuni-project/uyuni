@@ -15,6 +15,7 @@
 package com.redhat.rhn.frontend.action.rhnpackage.ssm;
 
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.SsmUpgradablePackageListItem;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -38,12 +39,12 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  */
-public class SelectUpgradePackagesAction extends RhnAction implements Listable {
+public class SelectUpgradePackagesAction extends RhnAction implements Listable<SsmUpgradablePackageListItem> {
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping actionMapping, ActionForm actionForm,
-                                 HttpServletRequest request, HttpServletResponse response)
-        throws Exception {
+                                 HttpServletRequest request, HttpServletResponse response) {
 
         request.setAttribute(ListTagHelper.PARENT_URL, request.getRequestURI());
 
@@ -68,7 +69,8 @@ public class SelectUpgradePackagesAction extends RhnAction implements Listable {
     }
 
     /** {@inheritDoc} */
-    public List getResult(RequestContext context) {
+    @Override
+    public List<SsmUpgradablePackageListItem> getResult(RequestContext context) {
         User user = context.getCurrentUser();
         return PackageManager.upgradablePackagesFromServerSet(user);
     }

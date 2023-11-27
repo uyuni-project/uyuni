@@ -2,20 +2,31 @@
 # Licensed under the terms of the MIT license.
 #
 # This feature is a dependency for:
-# - features/secondary/min_monitoring.feature: if this feature fails,
-#   it could let the monitoring feature disabled for the SLE minion
-# - features/secondary/min_rhlike_monitoring.feature: if this feature fails,
-#   it could let the monitoring feature disabled for the Red Hat-like minion
+# - features/secondary/min_monitoring.feature
+# - features/secondary/min_rhlike_monitoring.feature
+# - features/secondary/min_deblike_monitoring.feature
 #
 # This feature depends on:
 # - sumaform: as it is configuring monitoring to be enabled after deployment
+#
+# This feature can cause failures in the following features:
+# - features/secondary/min_monitoring.feature
+# If this feature fails,
+# it could let the monitoring feature disabled for the SLE minion
+# - features/secondary/min_rhlike_monitoring.feature
+# If this feature fails,
+# it could let the monitoring feature disabled for the Red Hat-like minion
+# - features/secondary/min_deblike_monitoring.feature
+# If this feature fails,
+# it could let the monitoring feature disabled for the Debian-like minion
 
+@skip_if_github_validation
+@skip_if_container_server
 @scope_monitoring
 Feature: Disable and re-enable monitoring of the server
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
-
   # This assumes that monitoring is enabled via sumaform
   Scenario: Disable monitoring from the UI
     When I follow the left menu "Admin > Manager Configuration > Monitoring"

@@ -1,6 +1,12 @@
-# Copyright (c) 2015-2022 SUSE LLC
+# Copyright (c) 2015-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
+#
+# This feature can cause failures in the following features:
+# - features/secondary/min_salt_mgrcompat_state.feature
+# If the minion fails to bootstrap again.
 
+@skip_if_github_validation
+@sle_minion
 @scope_salt
 Feature: Management of minion keys
   In Order to validate the minion onboarding page
@@ -9,7 +15,6 @@ Feature: Management of minion keys
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
-    And I am logged in API as user "admin" and password "admin"
 
   Scenario: Delete SLES minion system profile before exploring the onboarding page
     Given I am on the Systems overview page of this "sle_minion"
@@ -17,13 +22,15 @@ Feature: Management of minion keys
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
     And I wait until I see "has been deleted" text
+    And I wait until Salt client is inactive on "sle_minion"
     Then "sle_minion" should not be registered
 
   Scenario: Completeness of the onboarding page
-    And I follow the left menu "Salt > Keys"
+    When I follow the left menu "Salt > Keys"
     Then I should see a "Keys" text in the content area
 
   Scenario: Minion is visible in the Pending section
+    When I configure salt minion on "sle_minion"
     And I restart salt-minion on "sle_minion"
     And I wait at most 10 seconds until Salt master sees "sle_minion" as "unaccepted"
     And I follow the left menu "Salt > Keys"
@@ -76,26 +83,8 @@ Feature: Management of minion keys
     And I enter "22" as "port"
     And I enter "root" as "user"
     And I enter "linux" as "password"
+    And I select "1-SUSE-KEY-x86_64" from "activationKeys"
     And I select the hostname of "proxy" from "proxies" if present
     And I click on "Bootstrap"
-    And I wait until I see "Successfully bootstrapped host!" text
+    And I wait until I see "Bootstrap process initiated." text
     And I wait until onboarding is completed for "sle_minion"
-
-  Scenario: Cleanup: restore channels on the minion
-    Given I am on the Systems overview page of this "sle_minion"
-    When I follow "Software" in the content area
-    Then I follow "Software Channels" in the content area
-    And I wait until I do not see "Loading..." text
-    And I check radio button "SLE-Product-SLES15-SP4-Pool for x86_64"
-    And I wait until I do not see "Loading..." text
-    And I include the recommended child channels
-    And I check "SLE-Module-DevTools15-SP4-Pool for x86_64"
-    And I check "Fake-RPM-SLES-Channel"
-    And I click on "Next"
-    Then I should see a "Confirm Software Channel Change" text
-    When I click on "Confirm"
-    Then I should see a "Changing the channels has been scheduled." text
-    And I wait until event "Subscribe channels scheduled by admin" is completed
-
-  Scenario: Cleanup: Logout from API
-    When I logout from API

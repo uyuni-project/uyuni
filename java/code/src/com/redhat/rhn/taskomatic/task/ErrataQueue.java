@@ -16,9 +16,6 @@ package com.redhat.rhn.taskomatic.task;
 
 import com.redhat.rhn.taskomatic.task.errata.ErrataQueueDriver;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 /**
  * Manages the pending errata queue
  *
@@ -26,19 +23,10 @@ import org.apache.logging.log4j.Logger;
 public class ErrataQueue extends RhnQueueJob<ErrataQueueDriver> {
 
     public static final String DISPLAY_NAME = "errata_queue";
-    private static Logger log = null;
 
     @Override
     public String getConfigNamespace() {
         return "errata_queue";
-    }
-
-    @Override
-    protected Logger getLogger() {
-        if (log == null) {
-            log = LogManager.getLogger(ErrataQueue.class);
-        }
-        return log;
     }
 
     @Override

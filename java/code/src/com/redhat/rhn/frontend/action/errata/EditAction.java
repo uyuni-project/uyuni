@@ -47,13 +47,13 @@ import org.apache.struts.actions.LookupDispatchAction;
 import org.hibernate.HibernateException;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -76,6 +76,7 @@ public class EditAction extends LookupDispatchAction {
      * @param response HttpServletResponse
      * @return ActionForward, the forward for the jsp
      */
+    @Override
     public ActionForward unspecified(ActionMapping mapping,
                                      ActionForm formIn,
                                      HttpServletRequest request,
@@ -175,7 +176,7 @@ public class EditAction extends LookupDispatchAction {
 
         DynaActionForm form = (DynaActionForm) formIn;
         //Validate the form to make sure everything was filled out correctly
-        List bugs = new ArrayList();
+        List<String[]> bugs = new ArrayList<>();
         ActionErrors errors = validateForm(form, request, e, bugs);
 
         //set l10n-ed advisoryTypeLabels list for select drop down
@@ -233,25 +234,17 @@ public class EditAction extends LookupDispatchAction {
         }
 
         //add bugs from the form
-        for (Object bugIn : bugs) {
-            String[] bug = (String[]) bugIn;
-            Long bugid = Long.valueOf(bug[0]);
-            String summary = bug[1];
-            String url = bug[2];
-            e.addBug(ErrataFactory.createBug(bugid, summary, url));
-        }
+        bugs.stream().map(bug -> ErrataFactory.createBug(Long.valueOf(bug[0]), bug[1], bug[2]))
+                .forEach(bug -> e.addBug(bug));
 
         //add keywords... split on commas and add separately to list
         String keywordsField = form.getString("keywords");
-        if (keywordsField != null && keywordsField.length() > 0) {
-            List keywordsOnPage = Arrays.asList(keywordsField.split(","));
-            for (Object oIn : keywordsOnPage) {
-                String keyword = (String) oIn;
-                keyword = keyword.trim();
-                if (keyword != null && keyword.length() > 0) {
-                    e.addKeyword(keyword);
-                }
-            }
+        if (keywordsField != null && !keywordsField.isEmpty()) {
+            List<String> keywordsOnPage = List.of(keywordsField.split(","));
+            keywordsOnPage.stream()
+                    .map(keyword -> keyword.trim())
+                    .filter(keyword -> !keyword.isEmpty())
+                    .forEach(keyword -> e.addKeyword(keyword));
         }
 
         //Save errata back to db
@@ -274,7 +267,7 @@ public class EditAction extends LookupDispatchAction {
      * @return ActionErrors, empty if no errors
      */
     public ActionErrors validateForm(DynaActionForm form, HttpServletRequest request,
-                                     Errata errata, List bugs) {
+                                     Errata errata, List<String[]> bugs) {
 
         ActionErrors errors = RhnValidationHelper.validateDynaActionForm(this, form);
 
@@ -285,7 +278,7 @@ public class EditAction extends LookupDispatchAction {
         String advisoryNameFromForm = form.getString("advisoryName");
 
         //Get all the parameters (so we can detect changes to existing bugs)
-        Iterator params = request.getParameterMap().keySet().iterator();
+        Set<String> params = request.getParameterMap().keySet();
 
         /*
          * Now we add each bug id to a list
@@ -293,15 +286,11 @@ public class EditAction extends LookupDispatchAction {
          * The implementation here is a little annoying, but since there can be
          * any number of bugs here, this seems to be the only real way.
          */
-        List bugIds = new ArrayList();
-        while (params.hasNext()) {
-            String next = (String) params.next();
-            if (next.startsWith("buglistId")) {
-                bugIds.add(next);
-            }
-        }
+        List<String> bugIds = params.stream()
+                .filter(param -> param.startsWith("buglistId"))
+                .collect(Collectors.toList());
 
-        User user = new RequestContext((HttpServletRequest)request).getCurrentUser();
+        User user = new RequestContext(request).getCurrentUser();
         // Make sure advisoryName is unique
         if (!ErrataManager.advisoryNameIsUnique(errata.getId(), advisoryNameFromForm,
                 user.getOrg())) {
@@ -314,10 +303,10 @@ public class EditAction extends LookupDispatchAction {
                        new ActionMessage("errata.edit.error.rhAdvisoryName"));
         }
 
-        Iterator i = bugIds.iterator();
-        Set ids = new HashSet(); //This is for verifying that each id is unique
+        Iterator<String> i = bugIds.iterator();
+        Set<String> ids = new HashSet<>(); //This is for verifying that each id is unique
         while (i.hasNext()) {
-            String next = (String)i.next();
+            String next = i.next();
             String id;
             String summary;
             String url;
@@ -342,21 +331,21 @@ public class EditAction extends LookupDispatchAction {
             }
 
             //Test that all existing bugs have the id field filled in
-            if (!newbug && id.length() == 0) {
+            if (!newbug && id.isEmpty()) {
                 errors.add(ActionMessages.GLOBAL_MESSAGE,
                            new ActionMessage("errata.edit.error.id"));
             }
             //Test that all existing bugs have the summary field filled in
-            if (!newbug && summary.length() == 0) {
+            if (!newbug && summary.isEmpty()) {
                 errors.add(ActionMessages.GLOBAL_MESSAGE,
                         new ActionMessage("errata.edit.error.summary"));
             }
             //Test that new bugs have either both or neither id and summary
-            if (newbug && id.length() > 0 && summary.length() == 0) {
+            if (newbug && !id.isEmpty() && summary.isEmpty()) {
                 errors.add(ActionMessages.GLOBAL_MESSAGE,
                         new ActionMessage("errata.edit.error.summary"));
             }
-            if (newbug && summary.length() > 0 && id.length() == 0) {
+            if (newbug && !summary.isEmpty() && id.isEmpty()) {
                 errors.add(ActionMessages.GLOBAL_MESSAGE,
                         new ActionMessage("errata.edit.error.id"));
             }
@@ -383,7 +372,7 @@ public class EditAction extends LookupDispatchAction {
 
             //Add this bug to the collection so that we can update the errata easily
             ids.add(id);
-            if (!newbug || id.length() > 0) {
+            if (!newbug || !id.isEmpty()) {
                 String[] bug = new String[3];
                 bug[0] = id;
                 bug[1] = summary;
@@ -398,8 +387,9 @@ public class EditAction extends LookupDispatchAction {
     /**
      * {@inheritDoc}
      */
-    protected Map getKeyMethodMap() {
-        Map map = new HashMap();
+    @Override
+    protected Map<String, Object> getKeyMethodMap() {
+        Map<String, Object> map = new HashMap<>();
         map.put("errata.edit.sendnotification", "notify");
         map.put("errata.edit.submit", "addBug");
         map.put("errata.edit.delete", "deleteBug");

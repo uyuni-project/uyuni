@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.action.schedule;
 
+import com.redhat.rhn.frontend.dto.ScheduledAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
@@ -37,6 +38,7 @@ public class CompletedActionsSetupAction extends BaseScheduledListAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected RhnSetDecl getSetDecl() {
         return RhnSetDecl.ACTIONS_COMPLETED;
     }
@@ -45,7 +47,8 @@ public class CompletedActionsSetupAction extends BaseScheduledListAction {
      *
      * {@inheritDoc}
      */
-    public List getResult(RequestContext context) {
+    @Override
+    public List<ScheduledAction> getResult(RequestContext context) {
         return ActionManager.completedActions(context.getCurrentUser(), null);
     }
 
@@ -53,9 +56,10 @@ public class CompletedActionsSetupAction extends BaseScheduledListAction {
      *
      * {@inheritDoc}
      */
+    @Override
     protected ActionForward handleSubmit(ActionMapping mapping,
-            ActionForm formIn, HttpServletRequest request,
-            HttpServletResponse response) {
+                                         ActionForm formIn, HttpServletRequest request,
+                                         HttpServletResponse response) {
 
         return archiveAction(mapping, formIn, request, response);
     }

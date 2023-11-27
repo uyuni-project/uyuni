@@ -39,6 +39,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ChangeEmailAction extends RhnAction {
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm formIn,
                                  HttpServletRequest request,
@@ -60,24 +61,18 @@ public class ChangeEmailAction extends RhnAction {
         String newEmail = (String)form.get("email");
 
         if (!email.equals(newEmail)) {
-            try {
-                validateAddress(newEmail, errors);
-                if (errors.isEmpty()) {
-                    user.setEmail(newEmail);
-                    UserManager.storeUser(user);
-                    ActionMessages msgs = new ActionMessages();
-                    msgs.add(ActionMessages.GLOBAL_MESSAGE,
-                        new ActionMessage("email.verified"));
-                    strutsDelegate.saveMessages(request, msgs);
+            validateAddress(newEmail, errors);
+            if (errors.isEmpty()) {
+                user.setEmail(newEmail);
+                UserManager.storeUser(user);
+                ActionMessages msgs = new ActionMessages();
+                msgs.add(ActionMessages.GLOBAL_MESSAGE,
+                    new ActionMessage("email.verified"));
+                strutsDelegate.saveMessages(request, msgs);
 
-                    return strutsDelegate.forwardParam(mapping.findForward("updated"),
-                        "uid", user.getId().toString());
-               }
-            }
-            catch (AddressException e) {
-                errors.add(ActionMessages.GLOBAL_MESSAGE,
-                           new ActionMessage("error.addr_invalid", newEmail));
-            }
+                return strutsDelegate.forwardParam(mapping.findForward("updated"),
+                    "uid", user.getId().toString());
+           }
         }
         else if (email.equals(newEmail)) {
             errors.add(ActionMessages.GLOBAL_MESSAGE,
@@ -94,16 +89,13 @@ public class ChangeEmailAction extends RhnAction {
      * Validates the given email.
      * @param email Email address to be validated
      * @see javax.mail.internet.InternetAddress
-     * @exception AddressException thrown if email does not pass validation.
      */
-    private void validateAddress(String email, ActionErrors errors)
-                             throws AddressException {
+    private void validateAddress(String email, ActionErrors errors) {
         try {
             new InternetAddress(email).validate();
         }
         catch (AddressException e) {
-            errors.add(ActionMessages.GLOBAL_MESSAGE,
-                    new ActionMessage("error.addr_invalid", email));
+            errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("error.addr_invalid", email));
         }
     }
 }

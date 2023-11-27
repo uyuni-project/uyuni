@@ -1,5 +1,9 @@
-# Copyright (c) 2021-2022 SUSE LLC
+# Copyright (c) 2021-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
+#
+# This feature can cause failures in the following features:
+# - features/secondary/proxy_as_pod_basic_tests.feature:
+# If the minion is not properly bootstrapped again.
 
 @sle_minion
 @proxy
@@ -7,7 +11,6 @@ Feature: Move a minion from a proxy to direct connection
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
-    And I am logged in API as user "admin" and password "admin"
 
   Scenario: Delete minion system profile before bootstrap
     Given I am on the Systems overview page of this "sle_minion"
@@ -15,6 +18,7 @@ Feature: Move a minion from a proxy to direct connection
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
     And I wait until I see "has been deleted" text
+    And I wait until Salt client is inactive on "sle_minion"
     Then "sle_minion" should not be registered
 
   Scenario: Bootstrap a minion
@@ -27,7 +31,7 @@ Feature: Move a minion from a proxy to direct connection
     And I select "1-SUSE-KEY-x86_64" from "activationKeys"
     And I select the hostname of "proxy" from "proxies" if present
     And I click on "Bootstrap"
-    And I wait until I see "Successfully bootstrapped host!" text
+    And I wait until I see "Bootstrap process initiated." text
     And I wait until onboarding is completed for "sle_minion"
 
   Scenario: Check the new bootstrapped minion in System Overview page
@@ -70,7 +74,7 @@ Feature: Move a minion from a proxy to direct connection
     # be sure that the old events are older than 1 minute
     Given I wait for "120" seconds
     When I follow the left menu "Systems > System List > All"
-    And I click on "Clear"
+    And I click on the clear SSM button
     And I check the "sle_minion" client
     And I should see "1" systems selected for SSM
     And I follow the left menu "Systems > System Set Manager > Overview"
@@ -101,6 +105,3 @@ Feature: Move a minion from a proxy to direct connection
   Scenario: Check events history for failures on the minion
     Given I am on the Systems overview page of this "sle_minion"
     Then I check for failed events on history event page
-
-  Scenario: Cleanup: Logout from API
-    When I logout from API

@@ -33,7 +33,6 @@ import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.token.Token;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
-import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -231,14 +230,7 @@ public class KickstartFormatter {
         buf.append("%" + KickstartScript.TYPE_PRE);
         buf.append(NEWLINE);
 
-        if (CobblerXMLRPCHelper.getCobblerVersion() >= 2.2) {
-            addCobblerSnippet(buf, "kickstart_start");
-        }
-        else {
-            buf.append("$kickstart_start");
-            buf.append(NEWLINE);
-        }
-
+        addCobblerSnippet(buf, "autoinstall_start");
         buf.append(NEWLINE);
         addCobblerSnippet(buf, "pre_install_network_config");
         buf.append(NEWLINE);
@@ -282,12 +274,7 @@ public class KickstartFormatter {
         addCobblerSnippet(buf, "koan_environment");
         buf.append(NEWLINE);
 
-        if (CobblerXMLRPCHelper.getCobblerVersion() >= 2.2) {
-            addCobblerSnippet(buf, "kickstart_done");
-        }
-        else {
-            buf.append("$kickstart_done");
-        }
+        addCobblerSnippet(buf, "autoinstall_done");
 
         buf.append(NEWLINE);
         buf.append(END + NEWLINE);
@@ -422,7 +409,7 @@ public class KickstartFormatter {
             String ksDistro) {
 
         String gateway;
-        if (preferIpv6Gateway && gw6 != null && gw6.length() != 0) {
+        if (preferIpv6Gateway && gw6 != null && !gw6.isEmpty()) {
             gateway = gw6;
         }
         else {
@@ -432,17 +419,17 @@ public class KickstartFormatter {
         String command = String.format(STATIC_NETWORK_COMMAND, device, gateway,
             nameServer, hostName);
 
-        if (ip4 != null && ip4.length() > 0 && nm4 != null && nm4.length() > 0) {
+        if (ip4 != null && !ip4.isEmpty() && nm4 != null && !nm4.isEmpty()) {
             command += String.format(STATIC_NETWORK_COMMAND1, ip4, nm4);
         }
         else {
             command += " --noipv4";
         }
 
-        if (ip6 != null && ip6.length() > 0 && ksDistro != null &&
+        if (ip6 != null && !ip6.isEmpty() && ksDistro != null &&
             (ksDistro.startsWith(KickstartInstallType.FEDORA_PREFIX) ||
              ksDistro.equals(KickstartInstallType.RHEL_6))) {
-            if (nm6 == null || nm6.length() == 0 ||
+            if (nm6 == null || nm6.isEmpty() ||
                 !ksDistro.startsWith(KickstartInstallType.FEDORA_PREFIX)) {
                 command += String.format(STATIC_NETWORK_COMMAND2, ip6);
             }

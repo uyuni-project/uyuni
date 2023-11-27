@@ -24,9 +24,9 @@ Summary:        SQL schema for Spacewalk server
 License:        GPL-2.0-only
 Group:          Applications/Internet
 
-Version:        4.4.2
+Version:        4.4.8
 Release:        1
-Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}-1.tar.gz
+Source0:        %{name}-%{version}.tar.gz
 Source1:        https://raw.githubusercontent.com/uyuni-project/uyuni/%{name}-%{version}-1/schema/spacewalk/%{name}-rpmlintrc
 
 URL:            https://github.com/uyuni-project/uyuni
@@ -35,6 +35,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 
 BuildRequires:  /usr/bin/pod2man
 BuildRequires:  fdupes
+BuildRequires:  make
 BuildRequires:  perl-macros
 BuildRequires:  python3
 BuildRequires:  perl(Digest::SHA)
@@ -78,7 +79,6 @@ Provides spacewalk-schema-upgrade and spacewalk-sql.
 %setup -q
 
 %build
-find . -name '*.91' | while read i ; do mv $i ${i%%.91} ; done
 make -f Makefile.schema SCHEMA=%{name} VERSION=%{version} RELEASE=%{release}
 pod2man spacewalk-schema-upgrade spacewalk-schema-upgrade.1
 pod2man spacewalk-sql spacewalk-sql.1

@@ -40,16 +40,15 @@ class ErrataQueueWorker implements QueueWorker {
     private Logger logger;
     private Long errataId;
     private Long channelId;
-    private Long orgId;
     private TaskQueue parentQueue;
 
     ErrataQueueWorker(Map<String, Long> row, Logger parentLogger) {
         channelId = row.get("channel_id");
         errataId = row.get("errata_id");
-        orgId = row.get("org_id");
         logger = parentLogger;
     }
 
+    @Override
     public void run() {
         try {
             parentQueue.workerStarting();
@@ -72,7 +71,7 @@ class ErrataQueueWorker implements QueueWorker {
             HibernateFactory.commitTransaction();
         }
         catch (Exception e) {
-            logger.error(e);
+            logger.error(e.getMessage(), e);
             HibernateFactory.rollbackTransaction();
         }
         finally {
@@ -107,6 +106,7 @@ class ErrataQueueWorker implements QueueWorker {
         }
     }
 
+    @Override
     public void setParentQueue(TaskQueue queue) {
         parentQueue = queue;
     }

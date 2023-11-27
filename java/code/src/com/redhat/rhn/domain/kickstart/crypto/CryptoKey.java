@@ -17,9 +17,7 @@ package com.redhat.rhn.domain.kickstart.crypto;
 import com.redhat.rhn.domain.Identifiable;
 import com.redhat.rhn.domain.org.Org;
 
-import org.apache.commons.lang3.StringUtils;
-
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 
 /**
  * CryptoKey - Class representation of the table rhnCryptoKey.
@@ -38,6 +36,7 @@ public class CryptoKey implements Identifiable {
      * Getter for id
      * @return Long to get
     */
+    @Override
     public Long getId() {
         return this.id;
     }
@@ -134,18 +133,10 @@ public class CryptoKey implements Identifiable {
      * @return String version of the key.
      */
     public String getKeyString() {
-        try {
-            if (this.key != null) {
-                String retval = new String(this.key, "UTF-8");
-                if (!StringUtils.isEmpty(retval)) {
-                    return retval;
-                }
-            }
+        if (this.key != null) {
+            return new String(this.key, StandardCharsets.UTF_8);
         }
-        catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
-        }
-        return null;
+        return "";
     }
 
 }

@@ -1,8 +1,0 @@
-# This file describes the order of features in a Build Validation test suite run.
-
-## Wait for product channels synchronization BEGIN ###
-
-- features/build_validation/reposync/srv_wait_for_product_reposync.feature
-
-## Wait for product channels synchronization END ###
-

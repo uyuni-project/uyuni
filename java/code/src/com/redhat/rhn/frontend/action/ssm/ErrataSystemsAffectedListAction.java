@@ -44,8 +44,7 @@ public class ErrataSystemsAffectedListAction extends RhnAction implements
             ActionMapping mapping,
             ActionForm actionForm,
             HttpServletRequest request,
-            HttpServletResponse response)
-        throws Exception {
+            HttpServletResponse response) {
 
         request.setAttribute("erratum", new RequestContext(request).lookupErratum());
 
@@ -58,6 +57,7 @@ public class ErrataSystemsAffectedListAction extends RhnAction implements
     }
 
     /** {@inheritDoc} */
+    @Override
     @SuppressWarnings("rawtypes")
     public List getResult(RequestContext context) {
         return ErrataManager.systemsAffectedInSet(context.getCurrentUser(),

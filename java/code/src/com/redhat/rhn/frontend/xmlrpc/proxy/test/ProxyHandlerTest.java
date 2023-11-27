@@ -21,7 +21,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.client.ClientCertificate;
-import com.redhat.rhn.common.util.Asserts;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerConstants;
@@ -37,6 +36,7 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.testing.RhnJmockBaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import com.suse.cloud.CloudPaygManager;
 import com.suse.manager.ssl.SSLCertData;
 import com.suse.manager.ssl.SSLCertPair;
 import com.suse.manager.webui.controllers.bootstrap.RegularMinionBootstrapper;
@@ -63,9 +63,11 @@ public class ProxyHandlerTest extends RhnJmockBaseTestCase {
 
     private final SaltApi saltApi = new TestSaltApi();
     private final SystemQuery systemQuery = new TestSystemQuery();
+    private final CloudPaygManager paygManager = new CloudPaygManager();
     private final RegularMinionBootstrapper regularMinionBootstrapper = new RegularMinionBootstrapper(
-            systemQuery, saltApi);
-    private final SSHMinionBootstrapper sshMinionBootstrapper = new SSHMinionBootstrapper(systemQuery, saltApi);
+            systemQuery, saltApi, paygManager);
+    private final SSHMinionBootstrapper sshMinionBootstrapper =
+            new SSHMinionBootstrapper(systemQuery, saltApi, paygManager);
     private final XmlRpcSystemHelper xmlRpcSystemHelper = new XmlRpcSystemHelper(
             regularMinionBootstrapper,
             sshMinionBootstrapper
@@ -74,7 +76,7 @@ public class ProxyHandlerTest extends RhnJmockBaseTestCase {
             saltApi);
 
     @BeforeEach
-    protected void setUp() throws Exception {
+    protected void setUp() {
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         SaltStateGeneratorService.INSTANCE.setSkipSetOwner(true);
     }
@@ -163,7 +165,8 @@ public class ProxyHandlerTest extends RhnJmockBaseTestCase {
                 .listProxyClients(user, toIntExact(proxy.getId()));
 
         // verify client id is in results
-        Asserts.assertContains(clientIds, minion.getId());
+
+        assertTrue(clientIds.contains(minion.getId()));
     }
 
     @Test

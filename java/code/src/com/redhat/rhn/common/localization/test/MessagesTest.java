@@ -45,8 +45,9 @@ public class MessagesTest extends RhnBaseTestCase {
     /**
      * sets up the test
      */
+    @Override
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         getMessage = "Get this";
         germanMessage = "Ich bin ein Berliner";
         oneArg = "one arg: fooboo";
@@ -63,6 +64,7 @@ public class MessagesTest extends RhnBaseTestCase {
     /*
      * Setup before each test.
      */
+    @Override
     @AfterEach
     public void tearDown() throws Exception {
         super.tearDown();

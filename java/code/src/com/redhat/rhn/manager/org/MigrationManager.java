@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.manager.org;
 
+import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.org.Org;
@@ -39,6 +40,7 @@ import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.UpdateChildChannelsCommand;
 
+import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 
 import java.util.ArrayList;
@@ -99,6 +101,8 @@ public class MigrationManager extends BaseManager {
             else {
                 server.setCreator(UserFactory.findRandomOrgAdmin(toOrg));
             }
+            // remove old channels from system
+            MessageQueue.publish(new ChannelsChangedEventMessage(server.getId(), user.getId(), true));
 
             // update server history to record the migration.
             ServerHistoryEvent event = new ServerHistoryEvent();
@@ -110,7 +114,7 @@ public class MigrationManager extends BaseManager {
             event.setDetails(details);
             server.getHistory().add(event);
 
-            SystemMigration migration = SystemMigrationFactory.createSystemMigration();
+            SystemMigration migration = new SystemMigration();
             migration.setToOrg(toOrg);
             migration.setFromOrg(fromOrg);
             migration.setServer(server);
@@ -142,7 +146,7 @@ public class MigrationManager extends BaseManager {
 
         // Unsubscribe from all channels to change channel entitlements
         UpdateChildChannelsCommand cmd = new UpdateChildChannelsCommand(user, server,
-                new ArrayList());
+                new ArrayList<>());
         cmd.store();
         SystemManager.unsubscribeServerFromChannel(server, server.getBaseChannel());
 

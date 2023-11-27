@@ -1,4 +1,32 @@
 -------------------------------------------------------------------
+Wed Nov 01 21:24:06 CET 2023 - marina.latini@suse.com
+
+- version 4.4.2
+  * Remove statically defined image tags
+
+-------------------------------------------------------------------
+Mon Sep 18 16:57:58 CEST 2023 - rosuna@suse.com
+
+- version 4.4.1
+  * Adapt to openSUSE Leap 15.5
+  * Integrate the containerized proxy into the usual rel-eng workflow
+
+-------------------------------------------------------------------
+Tue Feb 21 13:16:02 UTC 2023 - Julio González Gil <jgonzalez@suse.com>
+
+- Update the image version to 2023.03
+
+-------------------------------------------------------------------
+Mon Jan 23 07:34:15 UTC 2023 - Julio González Gil <jgonzalez@suse.com>
+
+- Update the image version to 2023.01
+
+-------------------------------------------------------------------
+Wed Dec 14 13:53:55 UTC 2022 - Julio González Gil <jgonzalez@suse.com>
+
+- Update the iamge version to 2022.12
+
+-------------------------------------------------------------------
 Fri Nov 18 14:17:21 UTC 2022 - Julio González Gil <jgonzalez@suse.com>
 
 - Update the image version to 2022.11

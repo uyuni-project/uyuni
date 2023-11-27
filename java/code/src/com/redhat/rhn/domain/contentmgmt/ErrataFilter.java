@@ -24,7 +24,6 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
@@ -114,12 +113,11 @@ public class ErrataFilter extends ContentFilter<Errata> {
                         throw new UnsupportedOperationException("Matcher " + matcher + " not supported");
                 }
             case "advisory_type":
-                switch (matcher) {
-                    case EQUALS:
-                        return getField(erratum, field, String.class).equals(value);
-                    default:
-                        throw new UnsupportedOperationException("Matcher " + matcher + " not supported");
+                if (matcher == FilterCriteria.Matcher.EQUALS) {
+                    return getField(erratum, field, String.class).equals(value);
                 }
+
+                throw new UnsupportedOperationException("Matcher " + matcher + " not supported");
             case "synopsis":
                 switch (matcher) {
                     case EQUALS:
@@ -135,22 +133,20 @@ public class ErrataFilter extends ContentFilter<Errata> {
                         throw new UnsupportedOperationException("Matcher " + matcher + " not supported");
                 }
             case "keyword":
-                switch (matcher) {
-                    case CONTAINS:
-                        return erratum.hasKeyword(value);
-                    default:
-                        throw new UnsupportedOperationException("Matcher " + matcher + " not supported");
+                if (matcher == FilterCriteria.Matcher.CONTAINS) {
+                    return erratum.hasKeyword(value);
                 }
+
+                throw new UnsupportedOperationException("Matcher " + matcher + " not supported");
             case "package_provides_name":
-                switch (matcher) {
-                case CONTAINS_PROVIDES_NAME:
+                if (matcher == FilterCriteria.Matcher.CONTAINS_PROVIDES_NAME) {
                     return erratum.getPackages().stream()
-                            .flatMap(pkg -> pkg.getProvides().stream())
-                            .map(p -> p.getCapability().getName())
-                            .anyMatch(n -> n.equals(value));
-                default:
-                    throw new UnsupportedOperationException("Matcher " + matcher + " not supported");
+                                  .flatMap(pkg -> pkg.getProvides().stream())
+                                  .map(p -> p.getCapability().getName())
+                                  .anyMatch(n -> n.equals(value));
                 }
+
+                throw new UnsupportedOperationException("Matcher " + matcher + " not supported");
             default:
                 throw new UnsupportedOperationException("Field " + field + " not supported");
         }
@@ -177,18 +173,4 @@ public class ErrataFilter extends ContentFilter<Errata> {
         return EntityType.ERRATUM;
     }
 
-    @Override
-    public Optional<PackageFilter> asPackageFilter() {
-        return Optional.empty();
-    }
-
-    @Override
-    public Optional<ErrataFilter> asErrataFilter() {
-        return Optional.of(this);
-    }
-
-    @Override
-    public Optional<ModuleFilter> asModuleFilter() {
-        return Optional.empty();
-    }
 }

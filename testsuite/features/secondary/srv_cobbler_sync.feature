@@ -1,10 +1,16 @@
-# Copyright (c) 2022 SUSE LLC
+# Copyright (c) 2022-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@skip_if_github_validation
+@scope_cobbler
 Feature: Run Cobbler Sync via WebUI
 
   Scenario: Login as admin
     Given I am authorized for the "Admin" section
+
+  Scenario: Start Cobbler monitoring
+    When I start local monitoring of Cobbler
+    And I backup Cobbler settings file
 
   @uyuni
   Scenario: Check that the Cobbler Settings Page exists
@@ -36,3 +42,9 @@ Feature: Run Cobbler Sync via WebUI
     And I click on "Update"
     And I follow the left menu "Admin > Task Engine Status > Last Execution Times"
     Then I should see the correct timestamp for task "Cobbler Sync:"
+
+  Scenario: Check for errors in Cobbler monitoring
+    Then the local logs for Cobbler should not contain errors
+
+  Scenario: Cleanup Cobbler after the feature has run
+    When I cleanup Cobbler files and restart apache and cobblerd services

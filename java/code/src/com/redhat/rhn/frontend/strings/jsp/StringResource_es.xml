@@ -15275,7 +15275,7 @@ Esto puede tener algún efecto en los archivos de configuración que se implemen
         </context-group>
         </trans-unit>
         <trans-unit id="targetsystems.jsp.summary" xml:space="preserve">
-          <source>The systems listed below do not have files managed via @@PRODUCT_NAME@@ configuration management.  For systems to be capable of being managed by @@PRODUCT_NAME@@ configuration management, they need to have particular mgr-cfg-* packages installed. You can enable configuration management on selected systems by using the 'Enable @@PRODUCT_NAME@@ Configuration Management' button below.</source> <target state="needs-adaptation">Los sistemas listados a continuación no tienen archivos administrados a través de la administración de configuración de @@PRODUCT_NAME@@. Para que los sistemas puedan ser administrados a través de la administración de configuración de @@PRODUCT_NAME@@, deben tener los derechos de aprovisionamiento y tener instalados los paquetes rhncfg-*. Se puede activar la administración de configuración en sistemas seleccionados mediante el botón 'Activar la administración de configuración de @@PRODUCT_NAME@@'.</target>
+          <source>The systems listed below do not have files managed via @@PRODUCT_NAME@@ configuration management.  For systems to be capable of being managed by @@PRODUCT_NAME@@ configuration management, they need to have particular *-salt-minion packages installed. You can enable configuration management on selected systems by using the 'Enable @@PRODUCT_NAME@@ Configuration Management' button below.</source> <target state="needs-adaptation">Los sistemas listados a continuación no tienen archivos administrados a través de la administración de configuración de @@PRODUCT_NAME@@. Para que los sistemas puedan ser administrados a través de la administración de configuración de @@PRODUCT_NAME@@, deben tener los derechos de aprovisionamiento y tener instalados los paquetes rhncfg-*. Se puede activar la administración de configuración en sistemas seleccionados mediante el botón 'Activar la administración de configuración de @@PRODUCT_NAME@@'.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/TargetSystems.do</context>
         </context-group>
@@ -15327,24 +15327,6 @@ Esto puede tener algún efecto en los archivos de configuración que se implemen
           <context context-type="sourcefile">/rhn/configuration/system/TargetSystems.do</context>
         </context-group>
         </trans-unit>
-        <trans-unit id="targetsystems.jsp.installcfg" xml:space="preserve">
-          <source>Schedule mgr-cfg package install</source> <target state="needs-adaptation">Programar instalación de paquete rhncfg</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/configuration/system/TargetSystems.do</context>
-        </context-group>
-        </trans-unit>
-        <trans-unit id="targetsystems.jsp.installcfgactions" xml:space="preserve">
-          <source>Schedule mgr-cfg-actions package install</source> <target>Programar instalación de paquete mgr-cfg-actions</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/configuration/system/TargetSystems.do</context>
-        </context-group>
-        </trans-unit>
-        <trans-unit id="targetsystems.jsp.installcfgclient" xml:space="preserve">
-          <source>Schedule mgr-cfg-client package install</source> <target state="needs-adaptation">Programar instalación de paquete rhncfg-client</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/configuration/system/TargetSystems.do</context>
-        </context-group>
-        </trans-unit>
         <trans-unit id="targetsystems.jsp.pending" xml:space="preserve">
           <source>Package installations currently pending.</source> <target>Instalaciones de paquetes actualmente pendientes.</target>
         <context-group name="ctx">
@@ -15364,7 +15346,7 @@ Esto puede tener algún efecto en los archivos de configuración que se implemen
         </context-group>
         </trans-unit>
         <trans-unit id="targetsystems.jsp.widgetsummary" xml:space="preserve">
-          <source>You may schedule &lt;code&gt;mgr-cfg*&lt;/code&gt; package installs for the time below. &lt;strong&gt;Note: All other actions will take place immediately.&lt;/strong&gt;</source> <target state="needs-adaptation">Puede programar la instalación del paquete &lt;code&gt;rhncfg*&lt;/code&gt; para la hora determinada. &lt;strong&gt;Nota: todas las otras acciones serán ejecutadas inmediatamente.&lt;/strong&gt;</target>
+          <source>You may schedule &lt;code&gt;salt-minion&lt;/code&gt; package installs for the time below. &lt;strong&gt;Note: All other actions will take place immediately.&lt;/strong&gt;</source> <target state="needs-adaptation">Puede programar la instalación del paquete &lt;code&gt;rhncfg*&lt;/code&gt; para la hora determinada. &lt;strong&gt;Nota: todas las otras acciones serán ejecutadas inmediatamente.&lt;/strong&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/TargetSystems.do</context>
         </context-group>
@@ -15383,13 +15365,7 @@ Esto puede tener algún efecto en los archivos de configuración que se implemen
         </context-group>
         </trans-unit>
         <trans-unit id="summary.jsp.stepone" xml:space="preserve">
-          <source>Run &lt;code&gt;mgr_check&lt;/code&gt; to complete pending mgr-cfg-* package installs.</source> <target state="needs-adaptation">Ejecute &lt;code&gt;rhn_check&lt;/code&gt; para completar las instalaciones pendientes del paquete rhncfg-*.</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/configuration/system/Summary.do</context>
-        </context-group>
-        </trans-unit>
-        <trans-unit id="summary.jsp.steptwo" xml:space="preserve">
-          <source>Run the following command: &lt;code&gt;mgr-actions-control --enable-all&lt;/code&gt;</source> <target state="needs-adaptation">Ejecute el siguiente comando: &lt;code&gt;rhn-actions-control --enable-all&lt;/code&gt;</target>
+          <source>Run &lt;code&gt;mgr_check&lt;/code&gt; to complete pending salt-minion package installs.</source> <target state="needs-adaptation">Ejecute &lt;code&gt;rhn_check&lt;/code&gt; para completar las instalaciones pendientes del paquete rhncfg-*.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/Summary.do</context>
         </context-group>
@@ -15422,13 +15398,8 @@ Esto puede tener algún efecto en los archivos de configuración que se implemen
           <context context-type="sourcefile">/rhn/configuration/system/Summary.do</context>
         </context-group>
         </trans-unit>
-        <trans-unit id="summary.jsp.appstream" xml:space="preserve">
-          <source>Could not subscribe to the AppStream channel.</source> <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/configuration/system/Summary.do</context>
-        </context-group>
-        </trans-unit>
         <trans-unit id="summary.jsp.packages" xml:space="preserve">
-          <source>Could not schedule mgr-cfg* package installations.</source> <target state="needs-adaptation">No se pudo programar la instalación del paquete rhncfg*.</target>
+          <source>Could not schedule salt-minion package installations.</source> <target state="needs-adaptation">No se pudo programar la instalación del paquete rhncfg*.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/Summary.do</context>
         </context-group>
@@ -18863,7 +18834,7 @@ concerniente con esas revisiones. ¿Está seguro que es ésto lo que desea hacer
         </context-group>
         </trans-unit>
         <trans-unit id="ssmenable.jsp.summary" xml:space="preserve">
-          <source>The systems listed below do not have files managed via @@PRODUCT_NAME@@ configuration management. For systems to be capable of being managed by @@PRODUCT_NAME@@ configuration management, they will need to have particular mgr-cfg-* packages installed. You can enable configuration management on the systems listed below. &lt;strong&gt;Note:&lt;/strong&gt; nothing will happen to already enabled systems.</source> <target state="needs-adaptation">A continuación se listan los sistemas que no tienen archivos administrados por el administrador de configuración de @@PRODUCT_NAME@@. Para que los sistemas puedan ser administrados por el administrador de configuración de @@PRODUCT_NAME@@, éstos necesitan derechos al nivel de servicios de aprovisionamiento y deben tener los paquetes rhncfg-* instalados. Puede activar la administración de configuración en los sistemas listados a continuación. &lt;strong&gt;Nota:&lt;/strong&gt; nada sucederá en los sistemas que ya han sido activados.</target>
+          <source>The systems listed below do not have files managed via @@PRODUCT_NAME@@ configuration management. For systems to be capable of being managed by @@PRODUCT_NAME@@ configuration management, they will need to have particular salt-minion packages installed. You can enable configuration management on the systems listed below. &lt;strong&gt;Note:&lt;/strong&gt; nothing will happen to already enabled systems.</source> <target state="needs-adaptation">A continuación se listan los sistemas que no tienen archivos administrados por el administrador de configuración de @@PRODUCT_NAME@@. Para que los sistemas puedan ser administrados por el administrador de configuración de @@PRODUCT_NAME@@, éstos necesitan derechos al nivel de servicios de aprovisionamiento y deben tener los paquetes rhncfg-* instalados. Puede activar la administración de configuración en los sistemas listados a continuación. &lt;strong&gt;Nota:&lt;/strong&gt; nada sucederá en los sistemas que ya han sido activados.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/config/Enable.do</context>
         </context-group>
@@ -19912,7 +19883,7 @@ concerniente con esas revisiones. ¿Está seguro que es ésto lo que desea hacer
         </context-group>
         </trans-unit>
         <trans-unit id="ssm.operations.provisioning.remotecommand.no_script_run" xml:space="preserve">
-          <source>You must enable Remote Command execution on the target system by installing the &lt;code&gt;mgr-cfg-actions&lt;/code&gt; RPM.</source> <target>Debe habilitar la ejecución de comandos remotos en el sistema de destino al instalar el RPM &lt;code&gt;mgr-cfg-actions&lt;/code&gt; . </target>
+          <source>You must enable Remote Command execution on the target system by installing the &lt;code&gt;salt-minion&lt;/code&gt; RPM.</source> <target state="needs-adaptation">Debe habilitar la ejecución de comandos remotos en el sistema de destino al instalar el RPM &lt;code&gt;mgr-cfg-actions&lt;/code&gt; . </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/kickstart/KickstartableSystems.do</context>
         </context-group>
@@ -22758,11 +22729,11 @@ La ruta del árbol, el RPM Kickstart, el canal base y la generación del instala
         <target>Sockets:</target>
       </trans-unit>
       <trans-unit id="sdc.details.hardware.cores" xml:space="preserve">
-        <source>Cores:</source>
+        <source>Cores per Socket:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/SystemHardware.do</context>
         </context-group>
-        <target>Núcleos:</target>
+        <target state="needs-adaptation">Núcleos:</target>
       </trans-unit>
       <trans-unit id="sdc.details.hardware.cache" xml:space="preserve">
         <source>Cache:</source>
@@ -27024,7 +26995,7 @@ given channel.</source>
         <target>Ya existen credenciales con este nombre de usuario</target>
       </trans-unit>
       <trans-unit id="copyright.jsp.title" xml:space="preserve">
-        <source>Copyright (c) 2011 - 2022 SUSE LLC.</source>
+        <source>Copyright (c) 2011 - 2023 SUSE LLC.</source>
         <target state="needs-adaptation">Derechos de autor © 2011-2019 SUSE LLC.</target>
       </trans-unit>
       <trans-unit id="copyright.jsp.urlagreement" xml:space="preserve">
@@ -27079,7 +27050,8 @@ given channel.</source>
         <source>OS Image Build Host</source>
       </trans-unit>
       <trans-unit id="monitoring_entitled" xml:space="preserve">
-        <source>Monitoring</source>
+        <source>Monitored Host</source>
+      <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="Formulas" xml:space="preserve">
         <source>Formulas</source>
@@ -27209,9 +27181,6 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="Highstate" xml:space="preserve">
         <source>Highstate</source>
-      </trans-unit>
-      <trans-unit id="Recurring States" xml:space="preserve">
-        <source>Recurring States</source>
       </trans-unit>
       <trans-unit id="Configuration Channels" xml:space="preserve">
         <source>Configuration Channels</source>
@@ -27565,15 +27534,11 @@ given channel.</source>
       <target state="new"/>
   </trans-unit>
       <trans-unit id="bunch.jsp.description.update-payg-data-bunch" xml:space="preserve">
-        <source>Collect authentication data from configure pay-as-you-go cloud instances</source>
+        <source>Collect authentication data from configured PAYG cloud instances</source>
             <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="Pay-as-you-go" xml:space="preserve">
-        <source>Pay-as-you-go</source>
-      <target state="new"/>
+      <target state="needs-adaptation"/>
   </trans-unit>
       <trans-unit id="bunch.jsp.description.mgr-update-reporting-bunch" xml:space="preserve">
         <source>Update Reporting Database</source>
@@ -27699,6 +27664,155 @@ given channel.</source>
   </trans-unit>
       <trans-unit id="overview.jsp.traditionalstack.deprecated" xml:space="preserve">
         <source>The traditional stack is unsupported and scheduled for removal. Consider migrating to salt minions.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="ssm.misc.reboot.message.scheduled" xml:space="preserve">
+          <source>Some systems already have a reboot scheduled.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
+        </context-group>
+        <target state="new"/>
+  </trans-unit>
+        <trans-unit id="systemlist.jsp.rebootneeded" xml:space="preserve">
+        <source>System requires reboot</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/SystemList</context>
+          <context context-type="sourcefile">/systems/SystemEntitlements</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="sdc.details.overview.rebootaction" xml:space="preserve">
+        <source>(&lt;a href="{0}"&gt;System Reboot Action&lt;/a&gt;)</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Overview.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="sdc.details.overview.rebootscheduled" xml:space="preserve">
+        <source>System reboot scheduled</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Overview.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="packagelist.jsp.packagesummary" xml:space="preserve">
+        <source>Summary</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/packages/InstallPackages</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="targetsystems.jsp.description_ptf_package" xml:space="preserve">
+        <source>This package is part of a Product Temporary Fix (PTF) and cannot be installed directly. Please select the main package of the temporary fix to review the target systems.</source>
+            <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/software/packages/TargetSystems.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="task.status.system-overview-update-queue" xml:space="preserve">
+        <source>System Overview Update Queue</source>
+      <target state="new"/>
+  </trans-unit>
+        <trans-unit id="task.status.update-system-overview" xml:space="preserve">
+        <source>Update System Overview</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="spmigration.jsp.error.no-maintenance-window" xml:space="preserve">
+        <source>Systems assigned to these schedules do not have a maintenance window at {0}</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="sdc.details.hardware.cpus" xml:space="preserve">
+        <source>CPUs:</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/SystemHardware.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="sdc.details.hardware.threads" xml:space="preserve">
+        <source>Threads per Core:</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/SystemHardware.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="bunch.jsp.description.system-profile-refresh-bunch" xml:space="preserve">
+        <source>Schedule System Profile refresh on all managed systems</source>
+            <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="task.status.system-profile-refresh" xml:space="preserve">
+        <source>System Profile Refresh</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="preferences.subscription-warning.name" xml:space="preserve">
+        <source>Subscription Warning</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/users/UserPreferences</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="preferences.subscription-warning.description" xml:space="preserve">
+        <source> Show expired subscriptions warning.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/users/UserPreferences</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+
+
+ 
+      <trans-unit id="Recurring Actions" xml:space="preserve">
+        <source>Recurring Actions</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="sdc.details.overview.virtualization.host" xml:space="preserve">
+        <source>Virtualization Host:</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Overview.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="grouplist.jsp.unknown" xml:space="preserve">
+        <source>Security updates unknown, disabled on settings.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="bunch.jsp.description.payg-dimension-computation-bunch" xml:space="preserve">
+        <source>Collect data of managed clients for SUSE Manager PAYG</source>
+            <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="task.status.payg-dimension-computation" xml:space="preserve">
+        <source>PAYG Computation</source>
+      <target state="new"/>
+  </trans-unit>
+       <trans-unit id="task.status.recurring-action-executor" xml:space="preserve">
+        <source>Execute Recurring Actions</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="PAYG Connections" xml:space="preserve">
+        <source>PAYG Connections</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="mirror-credentials.jsp.fromDir" xml:space="preserve">
+        <source>cannot verify credentials because `server.susemanager.fromdir` property is set in rhn.conf</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="sdc.details.overview.payg" xml:space="preserve">
+        <source>Pay-as-you-go:</source>
+          <context-group name="ctx">
+            <context context-type="sourcefile">/systems/details/Overview.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="sdc.details.overview.payg_msg" xml:space="preserve">
+        <source>This is a Pay-as-you-go server</source>
+          <context-group name="ctx">
+            <context context-type="sourcefile">/systems/details/Overview.do</context>
+        </context-group>
       <target state="new"/>
   </trans-unit>
       </body>

@@ -81,7 +81,7 @@ public class SystemPendingEventsCancelAction extends RhnAction {
                         Integer.toString(result.size()));
             }
             catch (TaskomaticApiException e) {
-                LOG.error(e);
+                LOG.error(e.getMessage(), e);
                 createErrorMessage(request,
                         "system.event.pending.canceled.taskscheduler.down",
                         StringUtils.EMPTY);
@@ -89,7 +89,7 @@ public class SystemPendingEventsCancelAction extends RhnAction {
 
             set.clear();
             RhnSetManager.store(set);
-            Map params = makeParamMap(request);
+            Map<String, Object> params = makeParamMap(request);
             params.put("sid", server.getId());
             return getStrutsDelegate().forwardParams(
                     mapping.findForward(RhnHelper.CONFIRM_FORWARD), params);

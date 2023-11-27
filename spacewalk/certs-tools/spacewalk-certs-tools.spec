@@ -18,16 +18,13 @@
 # needsbinariesforbuild
 
 
-%define rhn_client_tools spacewalk-client-tools
-%define rhn_setup	 spacewalk-client-setup
-%define rhn_check	 spacewalk-check
-%define rhnsd		 mgr-daemon
-
 %if 0%{?suse_version}
-%global pub_bootstrap_dir /srv/www/htdocs/pub/bootstrap
+%global pub_dir /srv/www/htdocs/pub
 %else
-%global pub_bootstrap_dir /var/www/html/pub/bootstrap
+%global pub_dir /var/www/html/pub
 %endif
+
+%global pub_bootstrap_dir %{pub_dir}/bootstrap
 %global rhnroot %{_datadir}/rhn
 %global __python /usr/bin/python3
 
@@ -35,20 +32,20 @@ Name:           spacewalk-certs-tools
 Summary:        Spacewalk SSL Key/Cert Tool
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.4.2
+Version:        4.4.8
 Release:        1
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 Requires(pre):  python3-%{name} = %{version}-%{release}
-Requires:       %{rhn_client_tools}
 Requires:       openssl
 Requires:       rpm-build
 Requires:       spacewalk-base-minimal-config
 Requires:       sudo
 Requires:       tar
 BuildRequires:  docbook-utils
+BuildRequires:  make
 %if 0%{?suse_version}
 BuildRequires:  filesystem
 Requires:       susemanager-build-keys-web
@@ -56,12 +53,6 @@ Requires:       susemanager-build-keys-web
 Requires(post): python3-uyuni-common-libs
 Requires(post): python3-rhnlib
 Requires(post): python3-rpm
-
-Obsoletes:      rhns-certs < 5.3.0
-Obsoletes:      rhns-certs-tools < 5.3.0
-# can not provides = %{version} since some old packages expect > 3.6.0
-Provides:       rhns-certs = 5.3.0
-Provides:       rhns-certs-tools = 5.3.0
 
 %description
 This package contains tools to generate the SSL certificates required by
@@ -71,7 +62,6 @@ Spacewalk.
 Summary:        Spacewalk SSL Key/Cert Tool
 Group:          Applications/Internet
 Requires:       %{name} = %{version}-%{release}
-Requires:       python3-rhn-client-tools
 Requires:       python3-uyuni-common-libs
 Requires:       spacewalk-backend
 BuildRequires:  python3
@@ -97,7 +87,7 @@ sed -i 's|etc/httpd/conf|etc/apache2|g' ssl-howto.txt
 %install
 install -d -m 755 $RPM_BUILD_ROOT/%{rhnroot}/certs
 
-sed -i '1s|python\b|python3|' rhn-ssl-tool mgr-package-rpm-certificate-osimage rhn-bootstrap client_config_update.py
+sed -i '1s|python\b|python3|' rhn-ssl-tool mgr-package-rpm-certificate-osimage rhn-bootstrap
 make -f Makefile.certs install PREFIX=$RPM_BUILD_ROOT ROOT=%{rhnroot} \
     PYTHONPATH=%{python3_sitelib} PYTHONVERSION=%{python3_version} \
     MANDIR=%{_mandir} PUB_BOOTSTRAP_DIR=%{pub_bootstrap_dir}
@@ -108,24 +98,16 @@ ln -s rhn-bootstrap-%{python3_version} $RPM_BUILD_ROOT%{_bindir}/rhn-bootstrap
 ln -s mgr-ssl-tool.1.gz $RPM_BUILD_ROOT/%{_mandir}/man1/rhn-ssl-tool.1.gz
 ln -s mgr-bootstrap.1.gz $RPM_BUILD_ROOT/%{_mandir}/man1/rhn-bootstrap.1.gz
 
-%if 0%{?suse_version}
 ln -s rhn-bootstrap $RPM_BUILD_ROOT/%{_bindir}/mgr-bootstrap
 ln -s rhn-ssl-tool $RPM_BUILD_ROOT/%{_bindir}/mgr-ssl-tool
 ln -s rhn-sudo-ssl-tool $RPM_BUILD_ROOT/%{_bindir}/mgr-sudo-ssl-tool
 ln -s spacewalk-push-register $RPM_BUILD_ROOT/%{_sbindir}/mgr-push-register
 ln -s spacewalk-ssh-push-init $RPM_BUILD_ROOT/%{_sbindir}/mgr-ssh-push-init
 
+%if 0%{?suse_version}
 %py3_compile -O %{buildroot}/%{python3_sitelib}
 %endif
 
-%post
-case "$1" in
-  2)
-       if [ ! -f /usr/share/susemanager/salt/images/rhn-org-trusted-ssl-cert-osimage-1.0-1.noarch.rpm ]; then
-               /usr/sbin/mgr-package-rpm-certificate-osimage
-       fi
-  ;;
-esac
 
 %files
 %defattr(-,root,root,-)
@@ -144,17 +126,14 @@ esac
 %doc %{_mandir}/man1/mgr-*.1*
 %doc ssl-howto-simple.txt ssl-howto.txt
 %license LICENSE
-%{pub_bootstrap_dir}/client_config_update.py*
-%if 0%{?suse_version}
 %dir %{rhnroot}
-%dir /srv/www/htdocs/pub
+%dir %{pub_dir}
 %dir %{pub_bootstrap_dir}
 %{_bindir}/mgr-bootstrap
 %{_bindir}/mgr-ssl-tool
 %{_bindir}/mgr-sudo-ssl-tool
 %{_sbindir}/mgr-push-register
 %{_sbindir}/mgr-ssh-push-init
-%endif
 
 %files -n python3-%{name}
 %{python3_sitelib}/certs

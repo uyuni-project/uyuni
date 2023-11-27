@@ -123,8 +123,7 @@ public class SSMCreateRecordCommand {
                 systemOverview.getName());
         }
 
-        CobblerSystemCreateCommand command = new CobblerSystemCreateCommand(server,
-            profile.getName(), data);
+        CobblerSystemCreateCommand command = new CobblerSystemCreateCommand(user, server, profile.getName(), data);
         ValidatorError error = command.store();
         if (error == null) {
             succeededServers.add(server);

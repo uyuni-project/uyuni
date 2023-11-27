@@ -87,7 +87,7 @@ public class ServerGroupHandler extends BaseHandler {
      *   #array_end()
      */
     @ReadOnly
-    public List listAdministrators(User loggedInUser, String systemGroupName) {
+    public List<User> listAdministrators(User loggedInUser, String systemGroupName) {
         ManagedServerGroup sg = serverGroupManager.lookup(systemGroupName, loggedInUser);
         return serverGroupManager.listAdministrators(sg, loggedInUser);
     }
@@ -184,8 +184,8 @@ public class ServerGroupHandler extends BaseHandler {
      *          $SystemOverviewSerializer
      *      #array_end()
      */
-    public List<SystemOverview>
-            listSystemsMinimal(User loggedInUser, String systemGroupName) {
+    @ReadOnly
+    public List<SystemOverview> listSystemsMinimal(User loggedInUser, String systemGroupName) {
         ManagedServerGroup group = serverGroupManager.lookup(systemGroupName, loggedInUser);
         return SystemManager.systemsInGroupShort(group.getId());
     }
@@ -308,7 +308,7 @@ public class ServerGroupHandler extends BaseHandler {
      *      #array_end()
      */
     @ReadOnly
-    public List listGroupsWithNoAssociatedAdmins(User loggedInUser) {
+    public List<ServerGroup> listGroupsWithNoAssociatedAdmins(User loggedInUser) {
         ensureOrgAdmin(loggedInUser);
         return serverGroupManager.listNoAdminGroups(loggedInUser);
     }
@@ -331,7 +331,7 @@ public class ServerGroupHandler extends BaseHandler {
     public List<ManagedServerGroup> listAllGroups(User loggedInUser) {
         List<ManagedServerGroup> groups = ServerGroupFactory.listManagedGroups(
                 loggedInUser.getOrg());
-        List<ManagedServerGroup> toReturn = new ArrayList();
+        List<ManagedServerGroup> toReturn = new ArrayList<>();
         for (ManagedServerGroup group : groups) {
             if (serverGroupManager.canAccess(loggedInUser, group)) {
                 toReturn.add(group);

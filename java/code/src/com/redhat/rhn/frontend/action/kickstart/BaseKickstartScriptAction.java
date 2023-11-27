@@ -46,9 +46,10 @@ public abstract class BaseKickstartScriptAction extends BaseKickstartEditAction 
     /**
      * {@inheritDoc}
      */
+    @Override
     protected ValidatorError processFormValues(HttpServletRequest request,
-            DynaActionForm form,
-            BaseKickstartCommand cmd) {
+                                               DynaActionForm form,
+                                               BaseKickstartCommand cmd) {
 
         BaseKickstartScriptCommand kssc = (BaseKickstartScriptCommand) cmd;
 
@@ -91,6 +92,7 @@ public abstract class BaseKickstartScriptAction extends BaseKickstartEditAction 
     /**
      * {@inheritDoc}
      */
+    @Override
     protected String getSuccessKey() {
         return "kickstart.script.success";
     }
@@ -98,9 +100,10 @@ public abstract class BaseKickstartScriptAction extends BaseKickstartEditAction 
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void setupFormValues(RequestContext ctx, DynaActionForm form,
-            BaseKickstartCommand cmd) {
-        List types = new LinkedList();
+                                   BaseKickstartCommand cmd) {
+        List types = new LinkedList<>();
         types.add(lvl10n("kickstart.script.pre", KickstartScript.TYPE_PRE));
         types.add(lvl10n("kickstart.script.post", KickstartScript.TYPE_POST));
         ctx.getRequest().setAttribute(TYPES, types);
@@ -132,6 +135,7 @@ public abstract class BaseKickstartScriptAction extends BaseKickstartEditAction 
     /**
      * {@inheritDoc}
      */
+    @Override
     protected String getSuccessForward() {
         return "success";
     }

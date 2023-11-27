@@ -37,7 +37,7 @@ import java.util.Set;
 public class InstalledProductTest extends RhnBaseTestCase {
 
     @Test
-    public void testInstalledProduct() throws Exception {
+    public void testInstalledProduct() {
         SUSEProductTestUtils.createVendorSUSEProducts();
 
         InstalledProduct installedPrd = new InstalledProduct();

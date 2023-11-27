@@ -51,12 +51,12 @@ public abstract class BaseIssTestAction extends RhnMockStrutsTestCase {
     }
 
     @Test
-    public void testPermission() throws Exception {
+    public void testPermission() {
         permissionCheck();
     }
 
     @Test
-    public void testList() throws Exception {
+    public void testList() {
         if (getListName() == null) {
             return;
         }

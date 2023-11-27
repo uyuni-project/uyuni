@@ -1,5 +1,63 @@
-- remove jabberd and osa-dispatcher
-- spacewalk-hostname-rename changes also report db host(bsc#1200801)
+-------------------------------------------------------------------
+Mon Nov 06 13:37:46 CET 2023 - rosuna@suse.com
+
+- version 4.4.10-1
+  * Fix Debian 12 wrong repo url for Uyuni client tools (stable)
+
+-------------------------------------------------------------------
+Wed Nov 01 20:15:51 CET 2023 - marina.latini@suse.com
+
+- version 4.4.9-1
+  * Add Debian 12 repositories
+  * add openSUSE Leap Micro 5.5 to spacewalk-commons-channels
+
+-------------------------------------------------------------------
+Mon Sep 18 14:36:37 CEST 2023 - rosuna@suse.com
+
+- version 4.4.8-1
+  * Add missing Debian 10 and 11 backports repositories for spacewalk-common-channels
+  * Add openSUSE Leap 15.5 common channels
+  * Drop Python2 compatibility
+  * Add RHEL 7, 8, 9 pool and tools channels
+  * Add openSUSE Leap Micro 5.4 repositories
+  * Add SLE Micro 5.4 Uyuni Client Tools repositories
+  * spacewalk-hostname-rename remains stuck at refreshing pillars (bsc#1207550)
+
+-------------------------------------------------------------------
+Wed Apr 19 12:58:26 CEST 2023 - marina.latini@suse.com
+
+- version 4.4.7-1
+  * change GPG Key URL for openSUSE Leap to local file URL
+  * Avoid conflicting names for openSUSE channels
+  * Add openEuler 22.03 repositories
+
+-------------------------------------------------------------------
+Tue Feb 28 11:54:37 CET 2023 - jgonzalez@suse.com
+
+- version 4.4.6-1
+  * Use json instead of simplejson for spacewalk-clone-by-date 
+
+-------------------------------------------------------------------
+Tue Feb 21 12:31:34 CET 2023 - jgonzalez@suse.com
+
+- version 4.4.5-1
+  * Add openSUSE Leap Micro 5.3 and openSUSE MicroOS repositories 
+  * Add SLES 15 SP5 client tools repositories to spacewalk-common-channels
+  * Add openSUSE Leap 15.5 repositories to spacewalk-common-channels
+
+-------------------------------------------------------------------
+Mon Jan 23 08:24:57 CET 2023 - jgonzalez@suse.com
+
+- version 4.4.4-1
+  * Add Uyuni SLE-Micro Client Tools repositories
+  * fix Oracle Linux 9 repository definition
+
+-------------------------------------------------------------------
+Wed Dec 14 14:08:09 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.3-1
+  * remove jabberd and osa-dispatcher
+  * spacewalk-hostname-rename changes also report db host (bsc#1200801)
 
 -------------------------------------------------------------------
 Fri Nov 18 15:02:27 CET 2022 - jgonzalez@suse.com

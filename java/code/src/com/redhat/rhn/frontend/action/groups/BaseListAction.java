@@ -34,8 +34,9 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author paji
+ * @param <T> the type of list items
  */
-public abstract class BaseListAction extends RhnAction implements Listable {
+public abstract class BaseListAction<T> extends RhnAction implements Listable<T> {
 
     protected void setup(HttpServletRequest request) {
         RequestContext context = new RequestContext(request);

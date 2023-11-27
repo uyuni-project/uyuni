@@ -30,7 +30,7 @@ import org.junit.jupiter.api.Test;
 public class KickstartDetailsEditTest extends BaseKickstartEditTestCase {
 
     @Test
-    public void testExecute() throws Exception {
+    public void testExecute() {
         setRequestPathInfo("/kickstart/KickstartDetailsEdit");
         addRequestParameter(KickstartDetailsEditAction.SUBMITTED, Boolean.FALSE.toString());
         actionPerform();
@@ -43,7 +43,7 @@ public class KickstartDetailsEditTest extends BaseKickstartEditTestCase {
     }
 
     @Test
-    public void testSubmit() throws Exception {
+    public void testSubmit() {
         setRequestPathInfo("/kickstart/KickstartDetailsEdit");
         addRequestParameter(KickstartDetailsEditAction.SUBMITTED, Boolean.TRUE.toString());
         addRequestParameter(KickstartDetailsEditAction.COMMENTS, "some comment");

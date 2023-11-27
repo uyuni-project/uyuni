@@ -80,7 +80,6 @@ public class ReportDBHelper {
 
         GeneratedSelectMode orderQuery = new GeneratedSelectMode("orderquery." + table, session, orderSQL , List.of());
 
-        @SuppressWarnings("unchecked")
         DataResult<Map<String, String>> order = orderQuery.execute();
         String orderColumns = order.stream().findFirst().map(o -> o.getOrDefault("order", "ctid")).orElse("ctid");
 

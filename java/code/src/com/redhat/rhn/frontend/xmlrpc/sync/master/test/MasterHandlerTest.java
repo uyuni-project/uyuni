@@ -46,6 +46,7 @@ public class MasterHandlerTest extends BaseHandlerTestCase {
     private String[] masterOrgNames = {"masterOrg01", "masterOrg02", "masterOrg03"};
     private String masterName;
 
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
@@ -175,13 +176,13 @@ public class MasterHandlerTest extends BaseHandlerTestCase {
             assertEquals(1, rc);
             IssMaster retMaster = handler.getDefaultMaster(admin);
             assertNotNull(retMaster);
-            assertTrue(retMaster.getId().equals(master1.getId()));
+            assertEquals(retMaster.getId(), master1.getId());
 
             rc = handler.makeDefault(admin, master3.getId().intValue());
             assertEquals(1, rc);
             retMaster = handler.getDefaultMaster(admin);
             assertNotNull(retMaster);
-            assertTrue(retMaster.getId().equals(master3.getId()));
+            assertEquals(retMaster.getId(), master3.getId());
 
             retMaster = handler.getMaster(admin, master1.getId().intValue());
             assertNotNull(retMaster);
@@ -397,7 +398,7 @@ public class MasterHandlerTest extends BaseHandlerTestCase {
         IssMasterOrg org = new IssMasterOrg();
         org.setMasterOrgName("newMasterOrg");
         org.setMasterOrgId(1013L);
-        List<Map<String, Object>> mapOrgs = new ArrayList();
+        List<Map<String, Object>> mapOrgs = new ArrayList<>();
         mapOrgs.add(orgToMap(org));
         IssMaster m3 = handler.getMaster(admin, master.getId().intValue());
         int rc = handler.setMasterOrgs(admin,
@@ -506,7 +507,7 @@ public class MasterHandlerTest extends BaseHandlerTestCase {
 
     private List<IssMasterOrg> getBareOrgs(boolean map) {
         long id = 1001L;
-        List<IssMasterOrg> orgs = new ArrayList();
+        List<IssMasterOrg> orgs = new ArrayList<>();
         for (String name : masterOrgNames) {
             IssMasterOrg org = new IssMasterOrg();
             org.setMasterOrgName(name);

@@ -1,4 +1,23 @@
-- unify user notification code on java side
+-------------------------------------------------------------------
+Mon Sep 18 14:43:06 CEST 2023 - rosuna@suse.com
+
+- version 4.4.4-1
+  * Workaround for python3-debian bug about collecting control file (bsc#1211525, bsc#1208692)
+  * Accept missing rhn.conf file
+  * Use context manager for apache users in fileutils.py.
+
+-------------------------------------------------------------------
+Wed Apr 19 12:55:12 CEST 2023 - marina.latini@suse.com
+
+- version 4.4.3-1
+  * Ensure installation of make for building.
+  * Use versioned Python during packaging.
+
+-------------------------------------------------------------------
+Wed Dec 14 14:13:10 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.2-1
+  * unify user notification code on java side
 
 -------------------------------------------------------------------
 Wed Sep 28 11:05:47 CEST 2022 - jgonzalez@suse.com

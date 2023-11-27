@@ -40,7 +40,7 @@ public class DateFormatTransformer implements Transform<Date> {
     }
 
     @Override
-    public String write(Date date) throws Exception {
+    public String write(Date date) {
         return dateFormat.format(date);
     }
 

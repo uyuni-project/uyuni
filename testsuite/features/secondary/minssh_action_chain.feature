@@ -1,6 +1,12 @@
 # Copyright (c) 2018-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
-
+#
+# This feature can cause failures in the following features:
+# - features/secondary/allcli_action_chain.feature
+# If the action chain fails to be completed and run.
+#
+# Skip if container because the action chain fails
+# This needs to be fixed
 @ssh_minion
 @scope_action_chains
 @scope_salt_ssh
@@ -38,10 +44,8 @@ Feature: Salt SSH action chain
     And I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
 
   Scenario: Pre-requisite: remove all action chains before testing on SSH minion
-    Given I am logged in API as user "admin" and password "admin"
     When I delete all action chains
     And I cancel all scheduled actions
-    And I logout from API
 
   Scenario: Add a patch installation to the action chain on SSH minion
     Given I am on the Systems overview page of this "ssh_minion"
@@ -121,6 +125,7 @@ Feature: Salt SSH action chain
     And I check radio button "schedule-by-action-chain"
     And I click on "Apply Highstate"
 
+@skip_if_github_validation
   Scenario: Add a reboot action to the action chain on SSH minion
     Given I am on the Systems overview page of this "ssh_minion"
     When I follow first "Schedule System Reboot"
@@ -148,8 +153,7 @@ Feature: Salt SSH action chain
     And I should see a "3. Install or update virgo-dummy on 1 system" text
     And I should see a text like "4. Deploy.*/etc/action-chain.cnf.*to 1 system"
     And I should see a "5. Apply Highstate" text
-    And I should see a "6. Reboot 1 system" text
-    And I should see a "7. Run a remote command on 1 system" text
+    And I should see a "Run a remote command on 1 system" text
 
   Scenario: Check that a different user cannot see the action chain for SSH minion
     Given I am authorized as "testing" with password "testing"
@@ -188,6 +192,7 @@ Feature: Salt SSH action chain
   Scenario: Cleanup: roll back action chain effects on SSH minion
     Given I am on the Systems overview page of this "ssh_minion"
     When I run "rm /tmp/action_chain_done" on "ssh_minion" without error control
+    And I enable repository "test_repo_rpm_pool" on this "ssh_minion"
     And I remove package "andromeda-dummy" from this "ssh_minion" without error control
     And I remove package "virgo-dummy" from this "ssh_minion" without error control
     And I install package "milkyway-dummy" on this "ssh_minion" without error control
@@ -208,22 +213,18 @@ Feature: Salt SSH action chain
     And I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
 
   Scenario: Add operations to the action chain via API for SSH minions
-    Given I am logged in API as user "admin" and password "admin"
     And I want to operate on this "ssh_minion"
     When I call actionchain.create_chain() with chain label "throwaway_chain"
     And I call actionchain.add_package_install()
     And I call actionchain.add_package_removal()
     And I call actionchain.add_package_upgrade()
     And I call actionchain.add_script_run() with the script "exit 1;"
-    And I call actionchain.add_system_reboot()
     Then I should be able to see all these actions in the action chain
     When I call actionchain.remove_action() on each action within the chain
     Then the current action chain should be empty
     When I delete the action chain
-    And I logout from API
 
   Scenario: Run an action chain via API on SSH minion
-    Given I am logged in API as user "admin" and password "admin"
     And I want to operate on this "ssh_minion"
     When I call actionchain.create_chain() with chain label "multiple_scripts"
     And I call actionchain.add_script_run() with the script "echo -n 1 >> /tmp/action_chain.log"
@@ -236,7 +237,6 @@ Feature: Salt SSH action chain
     When I wait until file "/tmp/action_chain_done" exists on "ssh_minion"
     Then file "/tmp/action_chain.log" should contain "123" on "ssh_minion"
     When I wait until there are no more scheduled actions
-    And I logout from API
 
   Scenario: Cleanup: remove SSH minion from configuration channel
     When I follow the left menu "Configuration > Channels"

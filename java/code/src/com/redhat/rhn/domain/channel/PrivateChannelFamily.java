@@ -98,6 +98,7 @@ public class PrivateChannelFamily implements Serializable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(final Object other) {
         if (!(other instanceof PrivateChannelFamily)) {
             return false;
@@ -111,6 +112,7 @@ public class PrivateChannelFamily implements Serializable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder().append(this.getChannelFamily()).append(this.getOrg())
                 .toHashCode();

@@ -129,7 +129,6 @@ public class VirtNotifications {
      * @param messageBody the message as string
      */
     @OnMessage
-    @SuppressWarnings("unchecked")
     public void onMessage(Session session, String messageBody) {
         // Each session sends messages to tell us what action ID they need to monitor
         Set<VirtNotificationMessage> serverIds = wsSessions.get(session);

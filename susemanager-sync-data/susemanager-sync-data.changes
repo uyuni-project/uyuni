@@ -1,7 +1,28 @@
-- change OES 2023 URL to https and make the tools channels mandatory
-  (bsc#1205644)
-- remove version from product names as they are held separate
-- change "EL 9 Base" to "RHEL and Liberty 9 Base"
+-------------------------------------------------------------------
+Wed Nov 01 19:42:46 CET 2023 - marina.latini@suse.com
+
+- version 4.4.5-1
+  * Add Open Enterprise Server 2023.4 (bsc#1215514)
+  * Add SUSE Linux Enterprise 15 SP4
+    Long Term Service Pack Support (LTSS)
+  * Add Extended Service Pack Overlay Support (ESPOS) and
+    Long Term Service Pack Support (LTSS) for High Performance Computing 15 SP5
+
+-------------------------------------------------------------------
+Mon Sep 18 14:49:54 CEST 2023 - rosuna@suse.com
+
+- version 4.4.4-1
+  * drop obsolete upgrade_paths.json
+  * drop unused product_tree.json as it is only used from online resource
+
+-------------------------------------------------------------------
+Wed Dec 14 14:06:57 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.3-1
+  * change OES 2023 URL to https and make the tools channels mandatory
+    (bsc#1205644)
+  * remove version from product names as they are held separate
+  * change "EL 9 Base" to "RHEL and Liberty 9 Base"
 
 -------------------------------------------------------------------
 Fri Nov 18 15:01:19 CET 2022 - jgonzalez@suse.com

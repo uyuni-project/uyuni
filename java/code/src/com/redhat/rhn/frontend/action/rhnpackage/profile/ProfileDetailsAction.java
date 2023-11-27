@@ -38,13 +38,14 @@ import javax.servlet.http.HttpServletResponse;
 public class ProfileDetailsAction extends RhnAction {
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm formIn,
                                  HttpServletRequest request,
                                  HttpServletResponse response) {
 
         DynaActionForm form = (DynaActionForm)formIn;
-        Map params = makeParamMap(request);
+        Map<String, Object> params = makeParamMap(request);
         RequestContext context = new RequestContext(request);
 
         Long prid = context.getRequiredParam(RequestContext.PRID);

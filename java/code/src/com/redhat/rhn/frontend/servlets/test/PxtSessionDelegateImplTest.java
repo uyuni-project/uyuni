@@ -61,6 +61,7 @@ public class PxtSessionDelegateImplTest extends MockObjectTestCase {
             findPxtSessionByIdCallback = callback;
         }
 
+        @Override
         public WebSession findPxtSessionById(Long id) {
             return (WebSession)findPxtSessionByIdCallback.transform(id);
         }
@@ -73,6 +74,7 @@ public class PxtSessionDelegateImplTest extends MockObjectTestCase {
             return (WebSession)createPxtSessionCallback.transform(null);
         }
 
+        @Override
         public void loadPxtSession(HttpServletRequest request) {
             if (!isLoadPxtSessionStubbed) {
                 super.loadPxtSession(request);
@@ -83,10 +85,12 @@ public class PxtSessionDelegateImplTest extends MockObjectTestCase {
             isLoadPxtSessionStubbed = isStubbed;
         }
 
+        @Override
         public Long getPxtSessionId(HttpServletRequest request) {
             return super.getPxtSessionId(request);
         }
 
+        @Override
         protected void savePxtSession(WebSession pxtSession) {
             ++savePxtSessionCounter;
         }
@@ -139,7 +143,7 @@ public class PxtSessionDelegateImplTest extends MockObjectTestCase {
     }
 
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         mockRequest = mock(HttpServletRequest.class);
         mockResponse = mock(HttpServletResponse.class);
         mockPxtSession = mock(WebSession.class);

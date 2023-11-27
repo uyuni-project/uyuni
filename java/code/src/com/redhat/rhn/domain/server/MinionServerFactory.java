@@ -18,6 +18,7 @@ import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionStatus;
 import com.redhat.rhn.domain.action.server.ServerAction;
@@ -28,6 +29,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.query.Query;
@@ -36,6 +38,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -61,7 +64,7 @@ public class MinionServerFactory extends HibernateFactory {
     public static List<MinionServer> lookupByOrg(Long orgId) {
         return HibernateFactory.getSession()
                 .createCriteria(MinionServer.class)
-                .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
+                .setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY)
                 .add(Restrictions.eq("org.id", orgId))
                 .list();
     }
@@ -116,7 +119,7 @@ public class MinionServerFactory extends HibernateFactory {
     @SuppressWarnings("unchecked")
     public static List<MinionServer> listMinions() {
         return getSession().createCriteria(MinionServer.class)
-                .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
+                .setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY)
                 .list();
     }
 
@@ -129,7 +132,7 @@ public class MinionServerFactory extends HibernateFactory {
     public static List<String> findMinionIdsByOrgId(Long orgId) {
         return getSession().createCriteria(MinionServer.class)
                 .setProjection(Projections.property("minionId"))
-                .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
+                .setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY)
                 .add(Restrictions.eq("org.id", orgId))
                 .list();
     }
@@ -166,8 +169,8 @@ public class MinionServerFactory extends HibernateFactory {
             return emptyList();
         }
         else {
-            return ServerFactory.getSession().createCriteria(MinionServer.class)
-                    .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
+            return HibernateFactory.getSession().createCriteria(MinionServer.class)
+                    .setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY)
                     .add(Restrictions.in("minionId", minionIds))
                     .list();
         }
@@ -178,7 +181,7 @@ public class MinionServerFactory extends HibernateFactory {
      * @return map of SSH minion id and its contact method
      */
     public static List<MinionServer> listSSHMinions() {
-        return ServerFactory.getSession().createCriteria(MinionServer.class)
+        return HibernateFactory.getSession().createCriteria(MinionServer.class)
                 .createAlias("contactMethod", "m")
                 .add(Restrictions.in("m.label",
                         "ssh-push", "ssh-push-tunnel"))
@@ -311,5 +314,18 @@ public class MinionServerFactory extends HibernateFactory {
         List<Object[]> results = findByIds(serverIds, "Server.findSimpleMinionsByServerIds", "serverIds");
         return results.stream().map(row -> new MinionIds(((BigDecimal) row[0]).longValue(), row[1].toString()))
                 .collect(toList());
+    }
+
+    /**
+     * findByosServers looks for BYOS servers in a SUMA PAYG scenario given an action
+     * @param action action that is going to be carried out
+     * @return a list of BYOS servers
+     */
+    public static List<MinionSummary> findByosServers(Action action) {
+        List<MinionSummary> allMinions = MinionServerFactory.findQueuedMinionSummaries(action.getId());
+        return allMinions.stream().filter(
+                minionSummary -> MinionServerFactory.findByMinionId(minionSummary.getMinionId())
+                .map(server -> !server.isPayg())
+                .orElse(false)).collect(Collectors.toList());
     }
 }

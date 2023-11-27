@@ -34,6 +34,7 @@ public class TraceBackAction extends BaseMailAction implements MessageAction {
 
     private static Logger log = LogManager.getLogger(TraceBackAction.class);
 
+    @Override
     protected String getSubject(BaseEvent evtIn) {
         // setup subject
         StringBuilder subject = new StringBuilder();
@@ -46,7 +47,7 @@ public class TraceBackAction extends BaseMailAction implements MessageAction {
         }
         catch (java.net.UnknownHostException uhe) {
             String message = "TraceBackAction can't find localhost!";
-            log.warn(message);
+            getLogger().warn(message);
             throw new MessageExecuteException(message);
         }
         subject.append(" (");
@@ -56,6 +57,7 @@ public class TraceBackAction extends BaseMailAction implements MessageAction {
         return subject.toString();
     }
 
+    @Override
     protected String[] getRecipients(User userIn) {
         Config c = Config.get();
         String[] retval = null;
@@ -76,5 +78,10 @@ public class TraceBackAction extends BaseMailAction implements MessageAction {
     @Override
     public boolean needsTransactionHandling() {
         return false;
+    }
+
+    @Override
+    protected Logger getLogger() {
+        return log;
     }
 }

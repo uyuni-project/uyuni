@@ -37,7 +37,7 @@ public class ClientCertificateDigesterTest extends RhnBaseTestCase {
         assertNotNull(cert, "SystemId is null");
 
         // hardcoded key from test system
-        cert.validate("3050cf46ac0417297e2dd964fdaac1ae");
+        cert.validate("h13MzDNjItVNsXd2YOU7etBUh8EefWdKouUM7DETP5ISYWxXAa9vnWYZV7LD7EuM");
     }
 
     @Test
@@ -50,7 +50,8 @@ public class ClientCertificateDigesterTest extends RhnBaseTestCase {
         assertNotNull(cert, "SystemId is null");
 
         // hardcoded key from test system
-        cert.validate("3050cf46ac0417297e2dd964fdaac1ae");
+        //cert.validate("3050cf46ac0417297e2dd964fdaac1ae");
+        cert.validate("h13MzDNjItVNsXd2YOU7etBUh8EefWdKouUM7DETP5ISYWxXAa9vnWYZV7LD7EuM");
     }
 
     @Test
@@ -59,7 +60,7 @@ public class ClientCertificateDigesterTest extends RhnBaseTestCase {
                 TestUtils.findTestData("systemid.xml").openStream());
 
         assertEquals("4AS", cert.getValueByName("os_release"));
-        assertEquals("8c9a5c69ea45c9fc850058e9fd457e59",
+        assertEquals("682269dc79d694980f9c2aa3c8aa3a74d6c2f634f7a7e2bcbb3c6059b9800ee2",
                 cert.getValueByName("checksum"));
         assertEquals("REAL", cert.getValueByName("type"));
         assertEquals("x86_64", cert.getValueByName("architecture"));
@@ -84,7 +85,7 @@ public class ClientCertificateDigesterTest extends RhnBaseTestCase {
                 TestUtils.findTestData("systemid.xml").openStream());
 
         assertEquals("4AS", cert.getValuesByName("os_release")[0]);
-        assertEquals("8c9a5c69ea45c9fc850058e9fd457e59",
+        assertEquals("682269dc79d694980f9c2aa3c8aa3a74d6c2f634f7a7e2bcbb3c6059b9800ee2",
                 cert.getValuesByName("checksum")[0]);
         assertEquals("REAL", cert.getValuesByName("type")[0]);
         assertEquals("x86_64", cert.getValuesByName("architecture")[0]);

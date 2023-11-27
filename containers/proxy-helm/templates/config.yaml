@@ -10,7 +10,7 @@ data:
     proxy_fqdn: {{ .Values.proxy_fqdn }}
     email: {{ .Values.email }}
     max_cache_size_mb: {{ .Values.max_cache_size_mb }}
-    log_level: {{ .Values.log_level }}
+    log_level: {{ .Values.log_level | default 1 }}
     ca_crt: |
 {{ .Values.ca_crt | indent 6 }}
 ---

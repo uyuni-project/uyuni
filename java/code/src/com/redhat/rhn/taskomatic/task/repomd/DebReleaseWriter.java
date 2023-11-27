@@ -28,6 +28,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -72,7 +73,7 @@ public class DebReleaseWriter {
         if (f.exists()) {
             f.delete();
         }
-        try (PrintWriter writer = new PrintWriter(filenameRelease, "UTF-8")) {
+        try (PrintWriter writer = new PrintWriter(filenameRelease, StandardCharsets.UTF_8)) {
             writer.println("Archive: " + channel.getLabel());
             writer.println("Label: " + channel.getLabel());
             writer.println("Suite: " + channel.getLabel());

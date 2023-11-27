@@ -41,10 +41,11 @@ public class CustomValueAction extends RhnAction implements
     /**
      * ${@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-            ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
         ListHelper helper = new ListHelper(this, request);
         helper.setListName("keyList");
         helper.setDataSetName(RequestContext.PAGE_LIST);
@@ -55,6 +56,7 @@ public class CustomValueAction extends RhnAction implements
     /**
      * ${@inheritDoc}
      */
+    @Override
     public List<CustomDataKeyOverview> getResult(RequestContext context) {
         return SystemManager.listDataKeys(context.getCurrentUser());
     }

@@ -112,6 +112,7 @@ public interface RhnSet extends Set {
     /**
      * Clear the set - remove all elements
      */
+    @Override
     void clear();
 
     /**
@@ -157,11 +158,13 @@ public interface RhnSet extends Set {
      * Returns the size of the element list for the set
      * @return elements.size()
      */
+    @Override
     int size();
 
     /**
      * Determine if the set is empty
      * @return true if the set is empty
      */
+    @Override
     boolean isEmpty();
 }

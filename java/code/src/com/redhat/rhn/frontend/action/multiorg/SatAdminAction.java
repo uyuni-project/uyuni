@@ -39,10 +39,11 @@ import javax.servlet.http.HttpServletResponse;
 public class SatAdminAction extends RhnAction {
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-                                  ActionForm formIn,
-                                  HttpServletRequest request,
-                                  HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
 
         RequestContext requestContext = new RequestContext(request);
         Long uid = requestContext.getParamAsLong(RequestContext.USER_ID);
@@ -51,7 +52,7 @@ public class SatAdminAction extends RhnAction {
         ActionForward retval = mapping.findForward(RhnHelper.DEFAULT_FORWARD);
 
         // protect self from removing sat admin role
-        if (current.getId() == u.getId()) {
+        if (current.getId().equals(u.getId())) {
             //make sure we always have at least one sat admin
             if (SatManager.getActiveSatAdmins().size() == 1) {
                 createErrorMessage(request, "satadmin.jsp.error.lastsatadmin",

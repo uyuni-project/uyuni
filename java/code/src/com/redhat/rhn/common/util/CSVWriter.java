@@ -15,6 +15,7 @@
 
 package com.redhat.rhn.common.util;
 
+import com.redhat.rhn.common.RhnRuntimeException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.frontend.dto.BaseDto;
 
@@ -63,6 +64,7 @@ public class CSVWriter extends BufferedWriter implements ExportWriter {
      * Set columns
      * @param columnsIn List of Strings containing the names of the columns
      */
+    @Override
     public void setColumns(List<String> columnsIn) {
         columns = new LinkedList<>();
         for (String column : columnsIn) {
@@ -86,13 +88,10 @@ public class CSVWriter extends BufferedWriter implements ExportWriter {
      *
      */
     public String getHeaderText() {
-        String hdrStr = headerText;
-        if (hdrStr != null) {
-            for (int i = 0; i < columns.size() - 1; i++) {
-                hdrStr += separatorChar;
-            }
+        if (headerText == null) {
+            return null;
         }
-        return hdrStr;
+        return headerText + String.valueOf(separatorChar).repeat(Math.max(0, columns.size() - 1));
     }
 
     /**
@@ -105,96 +104,100 @@ public class CSVWriter extends BufferedWriter implements ExportWriter {
     /**
      * {@inheritDoc}
      */
-    public void write(List listIn) {
+    @Override
+    public void write(List<?> listIn) {
         try {
             this.writeList(listIn);
         }
         catch (IOException e) {
-            throw new RuntimeException("IOException caught trying to write the list: " + e);
+            throw new RhnRuntimeException("IOException caught trying to write the list: " + e);
         }
     }
 
-
-    /**
-     * Write a List to the stream
-     * @param values you want to write
-     * @throws IOException if there is error
-     */
-    private void writeList(List values) throws IOException {
-        Iterator itr = values.iterator();
-
-        // Write out the column headers
+    private void writeColumns() throws IOException {
         if (columns != null) {
-            Iterator citer = columns.iterator();
+            Iterator<String> citer = columns.iterator();
             while (citer.hasNext()) {
-                String cname = (String) citer.next();
-                if (LocalizationService.
-                        getInstance().hasMessage("exportcolumn." + cname)) {
-                    write(LocalizationService.
-                            getInstance().getMessage("exportcolumn." + cname));
+                String cname = citer.next();
+                if (LocalizationService.getInstance().hasMessage("exportcolumn." + cname)) {
+                    write(LocalizationService.getInstance().getMessage("exportcolumn." + cname));
                 }
                 else {
-                    write(LocalizationService.
-                            getInstance().getMessage(cname));
+                    write(LocalizationService.getInstance().getMessage(cname));
                 }
-
                 if (citer.hasNext()) {
                     writeSeparator();
                 }
             }
             newLine();
         }
+    }
+
+    private void writeDto(Object value, boolean addNewline) throws IOException {
+        if (columns == null || !columns.iterator().hasNext()) {
+            throw new IllegalArgumentException("Tried to csv export without" +
+                    " setting up the list of columns first");
+        }
+        Iterator<String> citer = columns.iterator();
+        while (citer.hasNext()) {
+            String columnKey = citer.next();
+            Object colVal = getObjectValue(value, columnKey);
+            if (colVal != null) {
+                write(colVal.toString());
+            }
+            if (citer.hasNext()) {
+                writeSeparator();
+            }
+        }
+        if (addNewline) {
+            newLine();
+        }
+    }
+
+    /**
+     * Write a List to the stream
+     * @param values you want to write
+     * @throws IOException if there is error
+     */
+    private void writeList(List<?> values) throws IOException {
+        Iterator<?> itr = values.iterator();
+
+        // Write out the column headers
+        writeColumns();
+
         // Iterate over the values
         while (itr.hasNext()) {
             Object value = itr.next();
-            // If its a List of Strings
+            // If it's a List of Strings
             if (value instanceof String) {
                 write((String) value);
                 if (itr.hasNext()) {
                     writeSeparator();
                 }
             }
-            // If its a list of Maps or Dtos
+            // If it's a list of Maps or Dtos
             else if (value instanceof Map || value instanceof BaseDto) {
-                if (columns == null || !columns.iterator().hasNext()) {
-                    throw new IllegalArgumentException("Tried to csv export without" +
-                            " setting up the list of columns first");
-                }
-                Iterator citer = columns.iterator();
-                while (citer.hasNext()) {
-                    String columnKey = (String) citer.next();
-                    Object colVal = getObjectValue(value, columnKey);
-                    if (colVal != null) {
-                        write(colVal.toString());
-                    }
-                    if (citer.hasNext()) {
-                        writeSeparator();
-                    }
-                }
-                if (itr.hasNext()) {
-                    newLine();
-                }
+                writeDto(value, itr.hasNext());
             }
             else {
-                throw new IllegalArgumentException("Must pass in a List of Strings, " +
-                        "Maps or AbstractDto classes");
+                throw new IllegalArgumentException("Must pass in a List of Strings, Maps or AbstractDto classes");
             }
         }
-        // Its always good to end a file with
-        // a newline.
+        // It's always good to end a file with a newline.
         newLine();
     }
 
     /**
      * Util function to get the value for the current row/column in the List.
      */
+    @SuppressWarnings("unchecked")
     private Object getObjectValue(Object row, String columnKey) {
         if (row instanceof Map) {
-            Map rowmap = (Map) row;
+            Map<String, ?> rowmap = (Map<String, ?>) row;
             return rowmap.get(columnKey);
         }
         else if (row instanceof BaseDto) {
-            String ovalue = null;
+            String ovalue;
             try {
                 ovalue = BeanUtils.getProperty(row, columnKey);
             }
@@ -222,6 +225,7 @@ public class CSVWriter extends BufferedWriter implements ExportWriter {
      * Write a string to the Writer
      * {@inheritDoc}
      */
+    @Override
     public void write(String s) throws IOException {
         // If the string does not contain a comma, just write it out
         if (s.indexOf(separatorChar) == -1 && s.indexOf('"') == -1) {
@@ -260,6 +264,7 @@ public class CSVWriter extends BufferedWriter implements ExportWriter {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getContents() {
         try {
             this.flush();
@@ -278,6 +283,7 @@ public class CSVWriter extends BufferedWriter implements ExportWriter {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getMimeType() {
         return "text/csv";
     }
@@ -285,6 +291,7 @@ public class CSVWriter extends BufferedWriter implements ExportWriter {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getFileExtension() {
         return "csv";
     }

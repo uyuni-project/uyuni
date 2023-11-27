@@ -59,6 +59,7 @@ public class SnapshotTagName extends BaseDomainHelper {
      *
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder().append(name)
                                     .toHashCode();
@@ -68,6 +69,7 @@ public class SnapshotTagName extends BaseDomainHelper {
      *
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(Object obj) {
         SnapshotTagName other = (SnapshotTagName) obj;
         return new EqualsBuilder().append(name, other.name)

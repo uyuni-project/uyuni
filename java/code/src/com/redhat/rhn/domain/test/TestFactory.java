@@ -19,7 +19,6 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -47,6 +46,7 @@ public class TestFactory extends HibernateFactory {
     /** Get the Logger for the derived class so log messages
     *   show up on the correct class
     */
+    @Override
     protected Logger getLogger() {
         return log;
     }
@@ -57,13 +57,11 @@ public class TestFactory extends HibernateFactory {
 
     public static TestInterface lookupByFoobar(String f) {
         // Get PersonalInfo row
-        Map m = new HashMap();
-        m.put("fooBar", f);
-        return (TestInterface) singleton.lookupObjectByNamedQuery("Test.findByFoobar", m);
+        return singleton.lookupObjectByNamedQuery("Test.findByFoobar", Map.of("fooBar", f));
     }
 
-    public static List lookupAll() {
-        return singleton.listObjectsByNamedQuery("Test.findAll", null);
+    public static List<TestInterface> lookupAll() {
+        return singleton.listObjectsByNamedQuery("Test.findAll", Map.of());
     }
 
     public static void save(TestInterface t) {

@@ -104,7 +104,7 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
      */
     @Override
     public ActionForward unspecified(ActionMapping mapping, ActionForm form,
-            HttpServletRequest request, HttpServletResponse response) throws Exception {
+            HttpServletRequest request, HttpServletResponse response) {
         log.debug("unspecified()");
 
         RequestContext rctx = new RequestContext(request);
@@ -130,7 +130,7 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
         strutsDelegate.saveMessages(request, msgs);
 
         return strutsDelegate.forwardParams(mapping.findForward("success"),
-                new HashMap());
+                new HashMap<>());
     }
 
     private ActionForward handleDataHasChanged(ActionMapping mapping,
@@ -144,7 +144,7 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
         strutsDelegate.saveMessages(request, msgs);
 
         return strutsDelegate.forwardParams(mapping.findForward("success"),
-                new HashMap());
+                new HashMap<>());
     }
 
     /**
@@ -172,7 +172,7 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
 
         // Technically speaking an inattentive user could submit this screen with all
         // channels set to "No Change":
-        if (changedChannels.entrySet().size() == 0) {
+        if (changedChannels.entrySet().isEmpty()) {
             return handleNoChanges(mapping, request);
         }
 
@@ -218,7 +218,7 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
                     }
                 }
 
-                if (skippedServers.size() > 0) {
+                if (!skippedServers.isEmpty()) {
                     // Display the name list of not manageable to the user
                     // and return empty handed.
                     StrutsDelegate strutsDelegate = getStrutsDelegate();
@@ -236,7 +236,7 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
                     strutsDelegate.saveMessages(request, msgs);
 
                     return strutsDelegate.forwardParams(mapping.findForward("success"),
-                            new HashMap());
+                            new HashMap<>());
                 }
 
                 List<DistChannelMap> dcms = ChannelFactory.listDistChannelMaps(oldBase);
@@ -296,7 +296,7 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
                     strutsDelegate.saveMessages(request, msgs);
 
                     return strutsDelegate.forwardParams(mapping.findForward("success"),
-                            new HashMap());
+                            new HashMap<>());
                 }
                 //case 2 --> evaluate the new base channel selected and use it
                 newBase = ChannelManager.lookupByIdAndUser(newBaseChannelId, user);
@@ -314,7 +314,7 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
                             SystemManager.
                         getSsmSystemsSubscribedToChannel(user, c.getId());
                     log.debug("found {} servers in set with channel: {}", serversAffected.size(), c.getId());
-                    if (serversAffected.size() > 0) {
+                    if (!serversAffected.isEmpty()) {
                         matched.add(new ChildChannelPreservationDto(c.getId(), c.getName(),
                                 match.getId(), match.getName(), serversAffected));
                     }
@@ -325,7 +325,7 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
                         List<Map<String, Object>> serversAffected =
                             SystemManager.getSsmSystemsSubscribedToChannel(user, c.getId());
                         log.debug("found {} servers in set with channel: {}", serversAffected.size(), c.getId());
-                        if (serversAffected.size() > 0) {
+                        if (!serversAffected.isEmpty()) {
                             unmatched.add(new ChildChannelPreservationDto(c.getId(),
                                     c.getName(), c.getParentChannel().getId(),
                                     c.getParentChannel().getName(), serversAffected));
@@ -349,7 +349,7 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
 
         request.setAttribute(ListTagHelper.PARENT_URL, request.getRequestURI());
         request.setAttribute(MATCHED_CHILD_CHANNELS, matched);
-        request.setAttribute(FOUND_UNMATCHED_CHANNELS, unmatched.size() > 0);
+        request.setAttribute(FOUND_UNMATCHED_CHANNELS, !unmatched.isEmpty());
         request.setAttribute(UNMATCHED_CHILD_CHANNELS, unmatched);
 
         log.debug("end confirmUpdateBaseChannels()");
@@ -464,8 +464,7 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
             //  change the systems base channel
             Channel c = ChannelFactory.lookupById(spc.getId());
 
-            List<EssentialChannelDto> compatibles = ChannelManager
-                    .listCompatibleBaseChannelsForChannel(user, c);
+            List<EssentialChannelDto> compatibles = ChannelManager.listCompatibleBaseChannelsForChannel(user, c);
             log.debug("Sorting channels: {}", compatibles.size());
             List<EssentialChannelDto> rhn = new ArrayList<>();
             List<EssentialChannelDto> custom = new ArrayList<>();
@@ -510,7 +509,7 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
                 SystemManager.systemsWithoutBaseChannelsInSet(user);
 
         // If there are any...
-        if (noBase != null && noBase.size() > 0) {
+        if (noBase != null && !noBase.isEmpty()) {
             // ...create the "(None)" row
             rslt = createNoneRow(noBase);
 
@@ -684,7 +683,7 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
             if (srvrs.isEmpty()) {
                 continue;
             }
-            else if (toId == -1L) {
+            else if (toId != null && toId == -1L) {
                 am = new ActionMessage("basesub.jsp.success-default", srvrs.size());
                 msgs.add(ActionMessages.GLOBAL_MESSAGE, am);
             }
@@ -698,7 +697,7 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
             if (srvrs.isEmpty()) {
                 continue;
             }
-            else if (toId == -1L) {
+            else if (toId != null && toId == -1L) {
                 am = new ActionMessage("basesub.jsp.skip-default", srvrs.size());
                 msgs.add(ActionMessages.GLOBAL_MESSAGE, am);
             }

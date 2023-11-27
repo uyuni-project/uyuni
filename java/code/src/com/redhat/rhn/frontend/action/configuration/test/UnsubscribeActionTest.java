@@ -39,7 +39,7 @@ import org.junit.jupiter.api.Test;
 public class UnsubscribeActionTest extends RhnMockStrutsTestCase {
 
     @Test
-    public void testExecute() throws Exception {
+    public void testExecute() {
         //give the user config admin status
         UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
 

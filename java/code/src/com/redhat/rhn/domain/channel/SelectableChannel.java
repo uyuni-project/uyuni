@@ -23,7 +23,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
  * Wrapper class to enable Channels to be used and be selectable
  * SelectableChannel
  */
-public class SelectableChannel  implements Selectable, Comparable {
+public class SelectableChannel  implements Selectable, Comparable<SelectableChannel> {
 
     private Channel channel;
     private boolean selected = false;
@@ -139,9 +139,8 @@ public class SelectableChannel  implements Selectable, Comparable {
      * {@inheritDoc}
      */
     @Override
-    public int compareTo(Object o) {
-       return this.getChannel().getName().compareTo(((SelectableChannel)o).
-               getChannel().getName());
+    public int compareTo(SelectableChannel o) {
+       return this.getChannel().getName().compareTo(o.getChannel().getName());
     }
 
     /**

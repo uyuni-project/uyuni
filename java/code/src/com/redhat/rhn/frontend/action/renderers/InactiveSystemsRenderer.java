@@ -37,6 +37,7 @@ public class InactiveSystemsRenderer extends BaseFragmentRenderer {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void render(User user, PageControl pc, HttpServletRequest request) {
         LocalizationService ls = LocalizationService.getInstance();
         DataResult<SystemOverview> isdr =
@@ -80,6 +81,7 @@ public class InactiveSystemsRenderer extends BaseFragmentRenderer {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected String getPageUrl() {
         return "/WEB-INF/pages/common/fragments/yourrhn/inactiveSystems.jsp";
     }

@@ -24,6 +24,8 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.BadParameterException;
 import com.redhat.rhn.frontend.action.configuration.ConfigActionHelper;
 import com.redhat.rhn.frontend.action.configuration.ConfigChannelSetComparator;
+import com.redhat.rhn.frontend.dto.ConfigChannelDto;
+import com.redhat.rhn.frontend.dto.ConfigSystemDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -68,9 +70,10 @@ public class SubscribeConfirm extends RhnAction {
      * @param response HttpServletResponse
      * @return an ActionForward to the same page
      */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-            ActionForm formIn, HttpServletRequest request,
-            HttpServletResponse response) {
+                                 ActionForm formIn, HttpServletRequest request,
+                                 HttpServletResponse response) {
         //check that we have a viable priority
         checkPosition(request);
 
@@ -93,8 +96,8 @@ public class SubscribeConfirm extends RhnAction {
             HttpServletRequest request, User user) {
         //Get the data
         ConfigurationManager cm = ConfigurationManager.getInstance();
-        List channels = cm.ssmChannelsInSetForSubscribe(user);
-        List systems = cm.ssmSystemsForSubscribe(user);
+        List<ConfigChannelDto> channels = cm.ssmChannelsInSetForSubscribe(user);
+        List<ConfigSystemDto> systems = cm.ssmSystemsForSubscribe(user);
 
         //Create the parent url. Copy the one important parameter.
 

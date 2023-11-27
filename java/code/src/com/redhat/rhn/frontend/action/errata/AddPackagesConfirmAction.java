@@ -24,6 +24,7 @@ import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.rhnset.RhnSetElement;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.PackageOverview;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -49,14 +50,14 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class AddPackagesConfirmAction extends RhnAction implements Listable {
+public class AddPackagesConfirmAction extends RhnAction implements Listable<PackageOverview> {
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping actionMapping,
                                  ActionForm actionForm,
                                  HttpServletRequest request,
-                                 HttpServletResponse response)
-        throws Exception {
+                                 HttpServletResponse response) {
 
         request.setAttribute(ListTagHelper.PARENT_URL, request.getRequestURI());
 
@@ -83,7 +84,8 @@ public class AddPackagesConfirmAction extends RhnAction implements Listable {
     }
 
     /** {@inheritDoc} */
-    public List getResult(RequestContext context) {
+    @Override
+    public List<PackageOverview> getResult(RequestContext context) {
         User user = context.getCurrentUser();
 
         HttpServletRequest request = context.getRequest();
@@ -93,7 +95,7 @@ public class AddPackagesConfirmAction extends RhnAction implements Listable {
         String setName = RhnSetDecl.PACKAGES_TO_ADD.createCustom(
                 context.getRequiredParam("eid")).getLabel();
 
-        DataResult dr = PackageManager.packageIdsInSet(user, setName);
+        DataResult<PackageOverview> dr = PackageManager.packageIdsInSet(user, setName);
 
         // Put the advisory into the request for the page header
         Errata errata = new RequestContext(request).lookupErratum();

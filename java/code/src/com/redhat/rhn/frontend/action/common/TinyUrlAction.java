@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.frontend.action.common;
 
-import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.common.CommonFactory;
 import com.redhat.rhn.domain.common.TinyUrl;
 import com.redhat.rhn.frontend.struts.RhnAction;
@@ -24,8 +23,6 @@ import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-
-import java.util.Enumeration;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -47,15 +44,6 @@ public class TinyUrlAction extends RhnAction {
             HttpServletRequest request, HttpServletResponse response)
         throws Exception {
         String token = request.getParameter(TY_TOKEN);
-        if (log.isDebugEnabled()) {
-            log.debug("token: {}", StringUtil.sanitizeLogInput(token));
-            Enumeration<String> e = request.getParameterNames();
-            while (e.hasMoreElements()) {
-                String name = e.nextElement();
-                log.debug("param.name: {} val: {}", StringUtil.sanitizeLogInput(name),
-                        StringUtil.sanitizeLogInput(request.getParameter(name)));
-            }
-        }
 
         TinyUrl turl = CommonFactory.lookupTinyUrl(token);
         if (turl != null) {

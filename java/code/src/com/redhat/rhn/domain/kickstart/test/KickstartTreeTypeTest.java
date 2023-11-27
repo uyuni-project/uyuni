@@ -29,7 +29,7 @@ import org.junit.jupiter.api.Test;
 public class KickstartTreeTypeTest extends RhnBaseTestCase {
 
     @Test
-    public void testKsTreeType() throws Exception {
+    public void testKsTreeType() {
         Long testid = 1L;
         String query = "KickstartTreeType.findById";
 

@@ -23,6 +23,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -34,6 +35,7 @@ import javax.servlet.http.HttpServletResponse;
 public class RedirectServletTest extends MockObjectTestCase {
 
     private class RedirectServletStub extends RedirectServlet {
+        @Override
         public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
@@ -51,7 +53,7 @@ public class RedirectServletTest extends MockObjectTestCase {
     private String redirectURI;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         redirect = new RedirectServletStub();
 
         mockRequest = mock(HttpServletRequest.class);
@@ -106,7 +108,7 @@ public class RedirectServletTest extends MockObjectTestCase {
         redirect.doGet(getRequest(), getResponse());
     }
 
-    private String encode(String string) throws Exception {
-        return URLEncoder.encode(string, "UTF-8");
+    private String encode(String string) {
+        return URLEncoder.encode(string, StandardCharsets.UTF_8);
     }
 }

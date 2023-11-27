@@ -84,7 +84,7 @@ public class ConfigFileBuilder {
             User user, String path, ConfigChannel cc) {
         ConfigFile file = null;
 
-        if (path != null && path.trim().length() > 0) {
+        if (path != null && !path.trim().isEmpty()) {
             file = ConfigurationManager.getInstance().
                 lookupConfigFile(user, cc.getId(), path);
         }
@@ -99,12 +99,11 @@ public class ConfigFileBuilder {
      * @param user the logged in user.
      * @param channel the channel to create file in.
      * @return the newest revision of the created config file..
-     * @throws IOException in the case of issues with content stream reading.
      * @throws ValidatorException in the case of invalid data passed in.
      */
     public ConfigRevision create(ConfigFileData cff,
                         User user, ConfigChannel channel)
-                                throws IOException, ValidatorException {
+                                throws ValidatorException {
         validateForCreate(cff, user, channel);
         // Yay! We actually might be able to create this file!
         ConfigFile cf = channel.createConfigFile(ConfigFileState.normal(),

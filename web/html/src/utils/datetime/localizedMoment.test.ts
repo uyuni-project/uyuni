@@ -1,4 +1,4 @@
-import { localizedMoment } from "./localizedMoment";
+import { localizedMoment, parseTimeString } from "./localizedMoment";
 
 describe("localizedMoment", () => {
   const validISOString = "2020-01-30T23:00:00.000Z";
@@ -59,10 +59,36 @@ describe("localizedMoment", () => {
   });
 
   test("full server string keeps offset", () => {
-    expect(localizedMoment().toServerString()).toContain("Asia/Tokyo");
+    // Japan doesn't observe daylight saving time
+    expect(localizedMoment().toServerString()).toContain("JST");
   });
 
   test("full user string keeps offset", () => {
-    expect(localizedMoment().toUserString()).toContain("America/Los_Angeles");
+    expect(localizedMoment().toUserString()).toMatch(/PST|PDT/);
+  });
+
+  test("calendar output uses config formats", () => {
+    expect(localizedMoment().subtract(1, "day").calendar()).toContain("Yesterday at");
+    expect(localizedMoment().add(1, "day").calendar()).toContain("Tomorrow at");
+
+    const twoDaysAgo = localizedMoment().subtract(2, "day");
+    expect(twoDaysAgo.calendar()).toEqual(twoDaysAgo.format("YYYY-MM-DD"));
+
+    const inTwoDays = localizedMoment().add(2, "day");
+    expect(inTwoDays.calendar()).toEqual(inTwoDays.format("YYYY-MM-DD"));
+
+    const lastWeek = localizedMoment().subtract(1, "week");
+    expect(lastWeek.calendar()).toEqual(lastWeek.format("YYYY-MM-DD"));
+
+    const nextWeek = localizedMoment().add(1, "week");
+    expect(nextWeek.calendar()).toEqual(nextWeek.format("YYYY-MM-DD"));
+  });
+
+  // This function is a thin wrapper around moment so we only add basic test coverage
+  test("parseTimeString", () => {
+    expect(parseTimeString("")).toEqual(null);
+    expect(parseTimeString("2345")).toEqual({ hours: 23, minutes: 45 });
+    expect(parseTimeString("23:45")).toEqual({ hours: 23, minutes: 45 });
+    expect(parseTimeString(" 23 45 67 ")).toEqual({ hours: 23, minutes: 45 });
   });
 });

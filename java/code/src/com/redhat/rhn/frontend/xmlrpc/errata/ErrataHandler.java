@@ -33,7 +33,6 @@ import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ClonedChannel;
-import com.redhat.rhn.domain.channel.InvalidChannelRoleException;
 import com.redhat.rhn.domain.errata.AdvisoryStatus;
 import com.redhat.rhn.domain.errata.Bug;
 import com.redhat.rhn.domain.errata.Cve;
@@ -48,6 +47,7 @@ import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.CVE;
+import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.DuplicateErrataException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidAdvisoryReleaseException;
@@ -79,8 +79,8 @@ import org.apache.logging.log4j.Logger;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -125,16 +125,18 @@ public class ErrataHandler extends BaseHandler {
      *          #prop("string", "references")
      *          #prop("string", "notes")
      *          #prop("string", "solution")
+     *          #prop_desc("boolean", "reboot_suggested", "A boolean flag signaling whether a system reboot is
+     *          advisable following the application of the errata. Typical example is upon kernel update.")
+     *          #prop_desc("boolean", "restart_suggested", "A boolean flag signaling a weather reboot of
+     *          the package manager is advisable following the application of the errata. This is commonly
+     *          used to address update stack issues before proceeding with other updates.")
      *     #struct_end()
      */
     @ReadOnly
     public Map<String, Object> getDetails(User loggedInUser, String advisoryName) throws FaultException {
-     // Get the logged in user. We don't care what roles this user has, we
-        // just want to make sure the caller is logged in.
-
         Errata errata = lookupAccessibleErratum(advisoryName, empty(), loggedInUser.getOrg());
 
-        Map<String, Object> errataMap = new HashMap<>();
+        Map<String, Object> errataMap = new LinkedHashMap<>();
 
         errataMap.put("id", errata.getId());
         if (errata.getIssueDate() != null) {
@@ -187,6 +189,8 @@ public class ErrataHandler extends BaseHandler {
             errataMap.put("severity", errata.getSeverity().getLocalizedLabel());
         }
 
+        errataMap.put("reboot_suggested", errata.hasKeyword(Keyword.REBOOT_SUGGESTED));
+        errataMap.put("restart_suggested", errata.hasKeyword(Keyword.RESTART_SUGGESTED));
 
         return errataMap;
     }
@@ -267,8 +271,7 @@ public class ErrataHandler extends BaseHandler {
         validKeys.add("summary");
         validKeys.add("url");
         if (details.containsKey("bugs")) {
-            for (Map<String, Object> bugMap :
-                (ArrayList<Map<String, Object>>) details.get("bugs")) {
+            for (Map<String, Object> bugMap : (ArrayList<Map<String, Object>>) details.get("bugs")) {
 
                 validateMap(validKeys, bugMap);
             }
@@ -331,9 +334,9 @@ public class ErrataHandler extends BaseHandler {
         }
         if (details.containsKey("advisory_type")) {
             String pea = "Product Enhancement Advisory"; // hack for checkstyle
-            if (!((String)details.get("advisory_type")).equals("Security Advisory") &&
-            !((String)details.get("advisory_type")).equals(pea) &&
-            !((String)details.get("advisory_type")).equals("Bug Fix Advisory")) {
+            if (!(details.get("advisory_type")).equals("Security Advisory") &&
+            !(details.get("advisory_type")).equals(pea) &&
+            !(details.get("advisory_type")).equals("Bug Fix Advisory")) {
                 throw new InvalidParameterException("Invalid advisory type");
             }
             errata.setAdvisoryType((String)details.get("advisory_type"));
@@ -465,7 +468,7 @@ public class ErrataHandler extends BaseHandler {
         List<Errata> erratas = lookupVendorAndUserErrataByAdvisoryAndOrg(advisoryName, loggedInUser.getOrg());
         List<Long> errataIds = erratas.stream().map(Errata::getId).collect(toList());
 
-        DataResult dr = ErrataManager.systemsAffectedXmlRpc(loggedInUser, errataIds);
+        DataResult<SystemOverview> dr = ErrataManager.systemsAffectedXmlRpc(loggedInUser, errataIds);
 
         return dr.toArray();
     }
@@ -500,7 +503,7 @@ public class ErrataHandler extends BaseHandler {
         // Get the logged in user
         List<Errata> erratas = lookupVendorAndUserErrataByAdvisoryAndOrg(advisoryName, loggedInUser.getOrg());
 
-        return (Map<Long, String>) erratas.stream().flatMap(e -> e.getBugs().stream())
+        return erratas.stream().flatMap(e -> e.getBugs().stream())
                 .collect(toMap(Bug::getId, Bug::getSummary));
     }
 
@@ -566,7 +569,7 @@ public class ErrataHandler extends BaseHandler {
         List<Long> errataIds = erratas.stream().map(Errata::getId).collect(toList());
 
         return ErrataManager.applicableChannels(errataIds,
-                loggedInUser.getOrg().getId(), null, Map.class).toArray();
+                loggedInUser.getOrg().getId()).toArray();
     }
 
     /**
@@ -587,14 +590,14 @@ public class ErrataHandler extends BaseHandler {
      * @apidoc.returntype #array_single("string", "CVE name")
      */
     @ReadOnly
-    public List listCves(User loggedInUser, String advisoryName) throws FaultException {
+    public List<String> listCves(User loggedInUser, String advisoryName) throws FaultException {
         // Get the logged in user
         List<Errata> erratas = lookupVendorAndUserErrataByAdvisoryAndOrg(advisoryName, loggedInUser.getOrg());
         List<Long> errataIds = erratas.stream().map(Errata::getId).collect(toList());
 
-        DataResult dr = ErrataManager.errataCVEs(errataIds);
+        DataResult<CVE> dr = ErrataManager.errataCVEs(errataIds);
 
-        return (List) dr.stream().map(cve -> ((CVE) cve).getName()).collect(toList());
+        return dr.stream().map(CVE::getName).collect(toList());
     }
 
     /**
@@ -641,7 +644,7 @@ public class ErrataHandler extends BaseHandler {
      *           #array_end()
      */
     @ReadOnly
-    public List<Map> listPackages(User loggedInUser, String advisoryName) throws FaultException {
+    public List<Map<String, Object>> listPackages(User loggedInUser, String advisoryName) throws FaultException {
         // Get the logged in user
         List<Errata> erratas = lookupVendorAndUserErrataByAdvisoryAndOrg(advisoryName, loggedInUser.getOrg());
 
@@ -792,7 +795,6 @@ public class ErrataHandler extends BaseHandler {
      * @param channelLabel the channel's label that we are cloning into
      * @param advisoryNames an array of String objects containing the advisory name
      *          of every errata you want to clone
-     * @throws InvalidChannelRoleException if the user perms are incorrect
      * @return Returns an array of Errata objects, which get serialized into XMLRPC
      *
      * @apidoc.doc Clone a list of errata into the specified channel.
@@ -805,8 +807,7 @@ public class ErrataHandler extends BaseHandler {
      *              $ErrataSerializer
      *          #array_end()
      */
-    public Object[] clone(User loggedInUser, String channelLabel, List<String> advisoryNames)
-            throws InvalidChannelRoleException {
+    public Object[] clone(User loggedInUser, String channelLabel, List<String> advisoryNames) {
         return clone(loggedInUser, channelLabel, advisoryNames, false, false);
     }
 
@@ -926,7 +927,6 @@ public class ErrataHandler extends BaseHandler {
      * @param channelLabel the cloned channel's label that we are cloning into
      * @param advisoryNames an array of String objects containing the advisory name
      *          of every errata you want to clone
-     * @throws InvalidChannelRoleException if the user perms are incorrect
      * @return Returns an array of Errata objects, which get serialized into XMLRPC
      *
      * @apidoc.doc Clones a list of errata into a specified cloned channel according the original erratas.
@@ -939,8 +939,7 @@ public class ErrataHandler extends BaseHandler {
      *              $ErrataSerializer
      *          #array_end()
      */
-    public Object[] cloneAsOriginal(User loggedInUser, String channelLabel, List<String> advisoryNames)
-            throws InvalidChannelRoleException {
+    public Object[] cloneAsOriginal(User loggedInUser, String channelLabel, List<String> advisoryNames) {
         return clone(loggedInUser, channelLabel, advisoryNames, true, false);
     }
 
@@ -952,7 +951,6 @@ public class ErrataHandler extends BaseHandler {
      * @param channelLabel the cloned channel's label that we are cloning into
      * @param advisoryNames an array of String objects containing the advisory name
      *          of every errata you want to clone
-     * @throws InvalidChannelRoleException if the user perms are incorrect
      * @return 1 on success, exception thrown otherwise.
      *
      * @apidoc.doc Asynchronously clones a list of errata into a specified cloned channel
@@ -963,13 +961,12 @@ public class ErrataHandler extends BaseHandler {
      * @apidoc.param #array_single_desc("string", "advisoryNames", "the advisory names of the errata to clone")
      * @apidoc.returntype #return_int_success()
      */
-    public int cloneAsOriginalAsync(User loggedInUser, String channelLabel, List<String> advisoryNames)
-            throws InvalidChannelRoleException {
+    public int cloneAsOriginalAsync(User loggedInUser, String channelLabel, List<String> advisoryNames) {
         clone(loggedInUser, channelLabel, advisoryNames, true, true);
         return 1;
     }
 
-    private Object getRequiredAttribute(Map map, String attribute) {
+    private Object getRequiredAttribute(Map<String, Object> map, String attribute) {
         Object value = map.get(attribute);
         if (value == null || StringUtils.isEmpty(value.toString())) {
             throw new MissingErrataAttributeException(attribute);
@@ -1002,7 +999,6 @@ public class ErrataHandler extends BaseHandler {
      * @param keywords a List of keywords for the errata
      * @param packageIds a List of package Id packageId Integers
      * @param channelLabels an array of channel labels to add patches to
-     * @throws InvalidChannelRoleException if the user perms are incorrect
      * @return The errata created
      *
      * @apidoc.doc Create a custom errata
@@ -1043,8 +1039,7 @@ public class ErrataHandler extends BaseHandler {
      */
     public Errata create(User loggedInUser, Map<String, Object> errataInfo,
                          List<Map<String, Object>> bugs, List<String> keywords,
-                         List<Integer> packageIds, List<String> channelLabels)
-            throws InvalidChannelRoleException {
+                         List<Integer> packageIds, List<String> channelLabels) {
 
         // confirm that the user only provided valid keys in the map
         Set<String> validKeys = new HashSet<>();
@@ -1151,7 +1146,7 @@ public class ErrataHandler extends BaseHandler {
             newErrata.addKeyword(keyword);
         }
 
-        newErrata.setPackages(new HashSet());
+        newErrata.setPackages(new HashSet<>());
         for (Integer pid : packageIds) {
             Package pack = PackageFactory.lookupByIdAndOrg(pid.longValue(),
                     loggedInUser.getOrg());
@@ -1225,7 +1220,6 @@ public class ErrataHandler extends BaseHandler {
      * @param loggedInUser The current user
      * @param advisoryName The advisory Name of the errata to add
      * @param channelLabels List of channels to add the errata to
-     * @throws InvalidChannelRoleException if the user perms are incorrect
      * @return the added errata
      *
      * @apidoc.doc Adds an existing cloned errata to a set of cloned
@@ -1235,8 +1229,7 @@ public class ErrataHandler extends BaseHandler {
      * @apidoc.param #array_single_desc("string", "channelLabels", "list of channel labels to add to")
      * @apidoc.returntype $ErrataSerializer
      */
-    public Errata publishAsOriginal(User loggedInUser, String advisoryName, List<String> channelLabels)
-            throws InvalidChannelRoleException {
+    public Errata publishAsOriginal(User loggedInUser, String advisoryName, List<String> channelLabels) {
         List<Channel> channels = verifyChannelList(channelLabels, loggedInUser, Collections.emptyList());
         for (Channel c : channels) {
             ClonedChannel cc = null;
@@ -1280,7 +1273,7 @@ public class ErrataHandler extends BaseHandler {
      */
     private List<Channel> verifyChannelList(List<String> channelsLabels, User user,
                                             List<String> vendorChannelOverride) {
-        if (channelsLabels.size() == 0) {
+        if (channelsLabels.isEmpty()) {
             throw new NoChannelsSelectedException();
         }
 

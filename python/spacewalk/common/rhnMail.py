@@ -24,7 +24,7 @@ from uyuni.common.context_managers import cfg_component
 from spacewalk.common.rhnConfig import PRODUCT_NAME
 from typing import NamedTuple, Union
 
-with cfg_component(None) as CFG:
+with cfg_component(component=None) as CFG:
     PRODUCT_NAME = CFG.PRODUCT_NAME
     FALLBACK_TRACEBACK_MAIL = CFG.TRACEBACK_MAIL
 

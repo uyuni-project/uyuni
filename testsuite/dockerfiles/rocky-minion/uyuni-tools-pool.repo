@@ -1,0 +1,7 @@
+[tools_pool_repo]
+baseurl=http://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Stable:/EL8-Uyuni-Client-Tools/EL_8/
+enabled=1
+gpgcheck=0
+name=tools_pool_repo
+priority=98
+refresh=1

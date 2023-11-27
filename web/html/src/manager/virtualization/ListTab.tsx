@@ -31,7 +31,6 @@ type CreateModalButtonType = (actionType: string, actionData: Array<ModalDataTyp
 type Props = {
   serverId: string;
   saltEntitled: boolean;
-  pageSize: number;
   type: string;
   urlType?: string;
   title: string;
@@ -159,7 +158,7 @@ export function ListTab(props: Props) {
           icon={action.icon}
           className="btn-default"
           text={action.name}
-          title={t("{0} selected", action.name)}
+          title={t("{name} selected", { name: action.name })}
           disabled={selectedItems.length === 0}
           handler={() => {
             // Mark the corresponding bulk modal as shown
@@ -230,7 +229,6 @@ export function ListTab(props: Props) {
                     emptyText={t(`No virtual ${props.type} to show.`)}
                     identifier={(row) => row[props.idName]}
                     initialSortColumnKey="name"
-                    initialItemsPerPage={props.pageSize}
                     selectable
                     selectedItems={selectedItems.map((item) => item[props.idName])}
                     onSelect={(items) => setSelectedItems(data?.filter((d) => items.includes(d[props.idName])) || [])}

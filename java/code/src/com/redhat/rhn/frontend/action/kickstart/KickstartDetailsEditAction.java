@@ -42,6 +42,7 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.DynaActionForm;
+import org.cobbler.CobblerObject;
 import org.cobbler.Distro;
 import org.cobbler.Profile;
 
@@ -81,6 +82,7 @@ public class KickstartDetailsEditAction extends BaseKickstartEditAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm formIn,
                                  HttpServletRequest request,
@@ -101,6 +103,7 @@ public class KickstartDetailsEditAction extends BaseKickstartEditAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void setupFormValues(RequestContext ctx,
                                    DynaActionForm form, BaseKickstartCommand cmdIn) {
         KickstartEditCommand cmd = (KickstartEditCommand) cmdIn;
@@ -150,13 +153,13 @@ public class KickstartDetailsEditAction extends BaseKickstartEditAction {
                 ctx.getCurrentUser()), data.getCobblerId());
         if (prof != null) {
             if (prof.getKernelOptions().isEmpty()) {
-                form.set(KERNEL_OPTIONS, Profile.INHERIT_KEY);
+                form.set(KERNEL_OPTIONS, CobblerObject.INHERIT_KEY);
             }
             else {
                 form.set(KERNEL_OPTIONS, prof.convertOptionsMap(prof.getKernelOptions().get()));
             }
             if (prof.getKernelOptionsPost().isEmpty()) {
-                form.set(POST_KERNEL_OPTIONS, Profile.INHERIT_KEY);
+                form.set(POST_KERNEL_OPTIONS, CobblerObject.INHERIT_KEY);
             }
             else {
                 form.set(POST_KERNEL_OPTIONS, prof.convertOptionsMap(prof.getKernelOptionsPost().get()));
@@ -176,7 +179,7 @@ public class KickstartDetailsEditAction extends BaseKickstartEditAction {
             }
             else {
                 if (prof.getVirtBridge().isEmpty()) {
-                    setFormValueOrDefault(form, VIRT_BRIDGE, Profile.INHERIT_KEY, data.getDefaultVirtBridge());
+                    setFormValueOrDefault(form, VIRT_BRIDGE, CobblerObject.INHERIT_KEY, data.getDefaultVirtBridge());
                 }
                 else {
                     setFormValueOrDefault(form, VIRT_BRIDGE, prof.getVirtBridge().get(), data.getDefaultVirtBridge());
@@ -185,7 +188,7 @@ public class KickstartDetailsEditAction extends BaseKickstartEditAction {
                     setFormValueOrDefault(
                             form,
                             VIRT_BRIDGE,
-                            Profile.INHERIT_KEY,
+                            CobblerObject.INHERIT_KEY,
                             ConfigDefaults.get().getDefaultVirtCpus()
                     );
                 }
@@ -201,7 +204,7 @@ public class KickstartDetailsEditAction extends BaseKickstartEditAction {
                     setFormValueOrDefault(
                             form,
                             VIRT_DISK_SIZE,
-                            Profile.INHERIT_KEY,
+                            CobblerObject.INHERIT_KEY,
                             ConfigDefaults.get().getDefaultVirtDiskSize()
                     );
                 }
@@ -217,7 +220,7 @@ public class KickstartDetailsEditAction extends BaseKickstartEditAction {
                     setFormValueOrDefault(
                             form,
                             VIRT_MEMORY,
-                            Profile.INHERIT_KEY,
+                            CobblerObject.INHERIT_KEY,
                             ConfigDefaults.get().getDefaultVirtMemorySize(data)
                     );
                 }
@@ -250,6 +253,7 @@ public class KickstartDetailsEditAction extends BaseKickstartEditAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected ValidatorError processFormValues(HttpServletRequest request,
                                                DynaActionForm form,
                                                BaseKickstartCommand cmdIn) {
@@ -301,6 +305,7 @@ public class KickstartDetailsEditAction extends BaseKickstartEditAction {
         }
     }
 
+    @Override
     protected String getSuccessKey() {
         return "kickstart.details.success";
     }
@@ -308,6 +313,7 @@ public class KickstartDetailsEditAction extends BaseKickstartEditAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected BaseKickstartCommand getCommand(RequestContext ctx) {
         return new KickstartEditCommand(ctx.getRequiredParam(RequestContext.KICKSTART_ID),
                 ctx.getCurrentUser());

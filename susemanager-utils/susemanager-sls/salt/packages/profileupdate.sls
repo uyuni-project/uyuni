@@ -39,6 +39,11 @@ grains_update:
 {%- endif %}
 
 {% if not pillar.get('imagename') %}
+
+status_uptime:
+  mgrcompat.module_run:
+    - name: status.uptime
+
 kernel_live_version:
   mgrcompat.module_run:
     - name: sumautil.get_kernel_live_version

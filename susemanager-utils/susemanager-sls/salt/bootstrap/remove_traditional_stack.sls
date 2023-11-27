@@ -32,16 +32,9 @@ remove_traditional_stack_all:
       - mgr-osad
       - spacewalksd
       - mgr-daemon
-      - rhnlib
       - rhnmd
 {%- if grains['os_family'] == 'Suse' %}
       - zypp-plugin-spacewalk
-{%- elif grains['os_family'] == 'RedHat' %}
-      - yum-rhn-plugin
-      - rhnsd
-      - rhn-check
-      - rhn-setup
-      - rhn-client-tools
 {%- elif grains['os_family'] == 'Debian' %}
       - apt-transport-spacewalk
 {%- endif %}
@@ -77,7 +70,7 @@ remove_spacewalk_sources:
 
 # Remove suseRegisterInfo in a separate yum transaction to avoid being called by
 # the yum plugin.
-{%- if grains['os_family'] == 'RedHat' %}
+{%- if grains['os_family'] == 'RedHat' or grains['os_family'] == 'openEuler' %}
 remove_suse_register_info_rh:
   pkg.removed:
     - name: suseRegisterInfo

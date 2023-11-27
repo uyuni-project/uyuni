@@ -32,6 +32,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * RhnListActionTest - test RhnListAction code.
@@ -44,6 +45,7 @@ public class BaseSetListActionTest extends RhnBaseTestCase {
     /**
      * {@inheritDoc}
      */
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         tla = new TestSetupListAction();
@@ -66,37 +68,23 @@ public class BaseSetListActionTest extends RhnBaseTestCase {
         assertEquals(200, dr.getTotalSize());
     }
 
-    /**
-     * Test to make sure we check for the right filter value string
-     * @throws Exception something bad happened
-     */
-    @Test
-    public void testExport() throws Exception {
-        // Need to fetch the 0 value one and put the 1 back in.
-        sah.getRequest().getParameter(RequestContext.LIST_DISPLAY_EXPORT);
-        sah.getRequest().setupAddParameter(RequestContext.LIST_DISPLAY_EXPORT, "1");
-        sah.executeAction();
-        assertNotNull(sah.getRequest().getAttribute("pageList"));
-        DataResult dr = (DataResult) sah.getRequest().getAttribute("pageList");
-        assertEquals(1, dr.getStart());
-        assertEquals(200, dr.getTotalSize());
-    }
-
     public class TestSetupListAction extends BaseSetListAction {
 
-        protected DataResult getDataResult(RequestContext rctx, PageControl pc) {
+        @Override
+        protected DataResult<Map<String, String>> getDataResult(RequestContext rctx, PageControl pc) {
 
-            List values = new LinkedList();
+            List<Map<String, String>> values = new LinkedList<>();
             for (int i = 0; i < 20; i++) {
                 values.addAll(CSVWriterTest.getTestListOfMaps());
             }
-            DataResult dr = new DataResult(values);
+            DataResult<Map<String, String>> dr = new DataResult<>(values);
             if (pc != null) {
                 dr = dr.subList(pc.getStart(), pc.getEnd());
             }
             return dr;
         }
 
+        @Override
         public RhnSetDecl getSetDecl() {
             return RhnSetDecl.TEST;
         }

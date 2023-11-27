@@ -110,31 +110,25 @@ if ($opts{'db-only'}) {
     exit;
 }
 
-print Spacewalk::Setup::loc("* Configuring tomcat.\n");
-setup_tomcat(\%opts, \%answers);
-
 remove_old_jvm(\%opts, \%answers);
 remove_tomcat_cache(\%opts);
-
-print Spacewalk::Setup::loc("* Setting up users and groups.\n");
-setup_users_and_groups();
 
 setup_services();
 
 setup_admin_email(\%opts, \%answers, \%rhnOptions);
 
-print Spacewalk::Setup::loc("* Performing initial configuration.\n");
-my $config_opts = populate_initial_configs(\%opts, \%answers);
-mkdir_mount_points($config_opts->{'mount_point'},
-        $config_opts->{'mount_point'} . '/packages',
-        $config_opts->{'mount_point'} . '/systems',
-        $config_opts->{'kickstart_mount_point'});
-chmod 0775, $config_opts->{'mount_point'} . '/systems';
-# Check for both potential Apache groups (SUSE/RHEL)
-my $www_gid = (getgrnam("www") // "") . (getgrnam("apache") // "");
-chown -1, $www_gid, $config_opts->{'mount_point'} . '/systems';
-
-setup_sudoers();
+if(not $opts{"skip-initial-configuration"}) {
+    print Spacewalk::Setup::loc("* Performing initial configuration.\n");
+    my $config_opts = populate_initial_configs(\%opts, \%answers);
+    mkdir_mount_points($config_opts->{'mount_point'},
+            $config_opts->{'mount_point'} . '/packages',
+            $config_opts->{'mount_point'} . '/systems',
+            $config_opts->{'kickstart_mount_point'});
+    chmod 0775, $config_opts->{'mount_point'} . '/systems';
+    # Check for both potential Apache groups (SUSE/RHEL)
+    my $www_gid = getgrnam(`grep -hsoP "(?<=Group ).*" /etc/httpd/conf/*.conf /etc/apache2/*.conf | tr -d '\n'`);
+    chown -1, $www_gid, $config_opts->{'mount_point'} . '/systems';
+}
 
 
 print Spacewalk::Setup::loc("* Configuring apache SSL virtual host.\n");
@@ -145,10 +139,9 @@ setup_ssl_certs(\%opts, \%answers);
 
 if(not $opts{"skip-reportdb-setup"}) {
     Spacewalk::Setup::postgresql_reportdb_setup(\%opts, \%answers);
+    print Spacewalk::Setup::loc("* Report DB Configured. \n");
 }
 
-print Spacewalk::Setup::loc("* Deploying configuration files.\n");
-populate_final_configs(\%opts, \%answers);
 
 if(not $opts{"skip-db-population"}) {
     print Spacewalk::Setup::loc("* Update configuration in database.\n");
@@ -157,6 +150,9 @@ if(not $opts{"skip-db-population"}) {
 
 print Spacewalk::Setup::loc("* Setting up Cobbler..\n");
 setup_cobbler(\%opts, \%answers);
+
+print Spacewalk::Setup::loc("* Deploying configuration files.\n");
+populate_final_configs(\%opts, \%answers);
 
 if ($opts{'upgrade'}) {
   Spacewalk::Setup::postgresql_start() if (Spacewalk::Setup::is_embedded_db(\%opts));
@@ -246,7 +242,7 @@ sub setup_cobbler {
 
   my %options = ();
   Spacewalk::Setup::read_config('/usr/share/rhn/config-defaults/rhn.conf',\%options);
-  system(COBBLER_COMMAND . " --apache2-config-directory " . $options{'httpd_config_dir'});
+  system(COBBLER_COMMAND . " --apache2-config-directory " . $options{'httpd_config_dir'} . " -f " . $answers->{'hostname'});
 
   my $skip_rhnconf = 0;
   open(FILE, "<" . Spacewalk::Setup::DEFAULT_RHN_CONF_LOCATION);
@@ -385,11 +381,6 @@ sub setup_cc {
       -password => 1);
 }
 
-sub setup_sudoers {
-  Spacewalk::Setup::system_or_exit(['/usr/bin/spacewalk-setup-sudoers', ''], 1,
-    'Could not setup sudo for Spacewalk commands.');
-  return;
-}
 
 sub passwords_match {
   my $password_1 = shift;
@@ -481,22 +472,21 @@ sub setup_mod_ssl {
     return;
   }
 
-  system('/usr/bin/spacewalk-setup-httpd');
+  my $no_ssl_arg = ($answers->{"no-ssl"} && $answers->{"no-ssl"} =~ /^[Yy]/) ? ' --no-ssl' : '';
 
-}
+  system(split / /, "/usr/bin/spacewalk-setup-httpd$no_ssl_arg");
 
-sub setup_tomcat {
-  my $opts = shift;
-  my $answers = shift;
-
-  Spacewalk::Setup::system_or_exit(['/usr/bin/spacewalk-setup-tomcat', ''], 43,
-               'Could not setup tomcat.');
-  return;
 }
 
 sub setup_ssl_certs {
   my $opts = shift;
   my $answers = shift;
+
+  if ($opts{"skip-ssl-cert-generation"} || $opts{"upgrade"}) {
+    print Spacewalk::Setup::loc("** Skipping SSL certificate generation.\n");
+    return;
+  }
+
   Spacewalk::Setup::ask(
     -noninteractive => $opts{"non-interactive"},
     -question => "Do you want to import exising certificates?",
@@ -507,11 +497,6 @@ sub setup_ssl_certs {
 
   my $use_own_certs = $answers->{'ssl-use-existing-certs'} &&
                       $answers->{'ssl-use-existing-certs'} =~ /^[Yy]/;
-
-  if ($opts{"skip-ssl-cert-generation"} || $opts{"upgrade"}) {
-    print Spacewalk::Setup::loc("** Skipping SSL certificate generation.\n");
-    return;
-  }
 
   if (!$use_own_certs) {
       my ($password_1, $password_2);
@@ -711,8 +696,6 @@ sub setup_ssl_certs {
 
   Spacewalk::Setup::system_or_exit(['/usr/bin/mgr-ssl-cert-setup', @opts], 37,
                  "Could not deploy the certificates.");
-
-  store_ssl_cert(-ssl_dir => $answers->{'ssl-dir'});
 }
 
 sub print_country_list {
@@ -796,21 +779,6 @@ sub generate_server_cert {
   return;
 }
 
-sub store_ssl_cert {
-  my %params = validate(@_, { ssl_dir => 1,
-                              ca_cert => { default => DEFAULT_CA_CERT_NAME },
-                            });
-
-
-  my $cert_path = File::Spec->catfile($params{ssl_dir}, $params{ca_cert});
-  my @opts = ("--ca-cert=${cert_path}");
-
-  Spacewalk::Setup::system_or_exit(['/usr/bin/rhn-ssl-dbstore', @opts], 39,
-                 "There was a problem storing the SSL certificate.");
-
-  return;
-}
-
 sub populate_initial_configs {
     my $opts = shift;
     my $answers = shift;
@@ -843,8 +811,8 @@ sub populate_initial_configs {
      db_port => $answers->{'db-port'},
      db_ssl_enabled => $answers->{'db-ssl-enabled'},
      externaldb => $answers->{'externaldb'},
-     external_db_admin_user => $answers->{'externaldb-admin-user'},
-     external_db_admin_password => $answers->{'externaldb-admin-password'},
+     externaldb_admin_user => $answers->{'externaldb-admin-user'},
+     externaldb_admin_password => $answers->{'externaldb-admin-password'},
      db_sslrootcert => $answers->{'db-ca-cert'},
      hibernate_dialect => $answers->{'hibernate.dialect'},
      hibernate_driver => $answers->{'hibernate.connection.driver_class'},
@@ -860,7 +828,7 @@ sub populate_initial_configs {
      report_db_host => $answers->{'report-db-host'},
      report_db_port => $answers->{'report-db-port'},
      report_db_ssl_enabled => $answers->{'report-db-ssl-enabled'},
-     report_db_sslrootcert => $answers->{'report-db-ca-cert'}
+     report_db_sslrootcert => $answers->{'report-db-ca-cert'},
     );
 
     for ($config_opts{'db_password'}) {
@@ -900,7 +868,7 @@ sub populate_initial_configs {
                                         "echo \"$st\" | spacewalk-sql --select-mode - 2>&1"],
                                        1, "*** Setup Organization Credentials failed.");
 
-      my $apache_gid = getgrnam('www');
+      my $apache_gid = getgrnam(`grep -hsoP "(?<=Group ).*" /etc/httpd/conf/*.conf /etc/apache2/*.conf | tr -d '\n'`);
       if ($apache_gid && -e Spacewalk::Setup::SCC_CREDENTIAL_FILE) {
           chown -1, $apache_gid, Spacewalk::Setup::SCC_CREDENTIAL_FILE;
           chmod 0640, Spacewalk::Setup::SCC_CREDENTIAL_FILE;
@@ -938,6 +906,11 @@ sub populate_final_configs {
 
   Spacewalk::Setup::satcon_deploy(-tree => '/var/lib/rhn/rhn-satellite-prep/etc/rhn',
                 -dest => '/etc/rhn');
+  if($answers->{"no-ssl"} && $answers->{"no-ssl"} =~ /^[Yy]/) {
+      open(my $FILE, '>>', '/etc/rhn/rhn.conf');
+      print $FILE "server.no_ssl = 1";
+      close $FILE;
+  }
 
   return;
 }
@@ -1027,59 +1000,6 @@ sub is_suse_like {
   }
   close $fh;
   return;
-}
-
-sub setup_users_and_groups {
-  if(is_suse_like)
-  {
-    # Check to be sure the required users and groups exist.
-    my @required_groups = qw/www/;
-    Spacewalk::Setup::check_groups_exist(@required_groups);
-
-    # Need user tomcat in the apache group so the Java stack can read the same
-    # configuration files as the rest of the application.
-    (undef, undef, my $apache_group_id, my $apache_group_members) = getgrnam("www");
-    if (not defined $apache_group_id) {
-        print Spacewalk::Setup::loc("The group 'www' should exist.\n");
-    }
-    if (not grep { $_ eq 'tomcat' } split /\s+/, $apache_group_members) {
-        Spacewalk::Setup::system_or_exit(['/usr/sbin/usermod', '-G', 'www', '-a', 'tomcat'], 9,
-            'Could not add tomcat to the www group.');
-        # If you have for example NIS before passwd in nsswitch.conf, the usermod
-        # will not modify what the system uses. Let's check.
-        (undef, undef, undef, my $test_apache_group_members) = getgrnam("www");
-        if (not grep { $_ eq 'tomcat' } split /\s+/, $test_apache_group_members) {
-            print Spacewalk::Setup::loc("The usermod failed to add tomcat to www group.\n");
-            exit 87;
-        }
-    }
-  }
-  else
-  {
-    # Check to be sure the required users and groups exist.
-    my @required_groups = qw/apache/;
-    Spacewalk::Setup::check_groups_exist(@required_groups);
-
-    # Need user tomcat in the apache group so the Java stack can read the same
-    # configuration files as the rest of the application.
-    (undef, undef, my $apache_group_id, my $apache_group_members) = getgrnam("apache");
-    if (not defined $apache_group_id) {
-      print Spacewalk::Setup::loc("The group 'apache' should exist.\n");
-    }
-    if (not grep { $_ eq 'tomcat' } split /\s+/, $apache_group_members) {
-        Spacewalk::Setup::system_or_exit(['/usr/sbin/usermod', '-G', 'apache', '-a', 'tomcat'], 9,
-            'Could not add tomcat to the apache group.');
-        # If you have for example NIS before passwd in nsswitch.conf, the usermod
-        # will not modify what the system uses. Let's check.
-        (undef, undef, undef, my $test_apache_group_members) = getgrnam("apache");
-        if (not grep { $_ eq 'tomcat' } split /\s+/, $test_apache_group_members) {
-            print Spacewalk::Setup::loc("The usermod failed to add tomcat to apache group.\n");
-            exit 87;
-        }
-    }
-  }
-
-    return 1;
 }
 
 sub check_ca_key{

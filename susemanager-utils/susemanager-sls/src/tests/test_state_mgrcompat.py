@@ -27,7 +27,7 @@ def test_module_run_on_phosphorous():
         mgrcompat.__grains__, {'saltversioninfo': [3005, None, None, None]}
     ), patch.dict(mgrcompat.__states__, {'module.run': mock}):
         mgrcompat.module_run(**MGRCOMPAT_MODULE_RUN_KWARGS)
-        mock.assert_called_once_with(**TAILORED_MODULE_RUN_KWARGS)
+        mock.assert_called_once_with(**MGRCOMPAT_MODULE_RUN_KWARGS)
 
 def test_module_run_on_silicon():
     mock = MagicMock(return_value={'changes': {'service.running': 'foobar'}})

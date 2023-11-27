@@ -44,14 +44,16 @@ public class SubscribeSubmit extends BaseSetOperateOnSelectedItemsAction {
     /**
      * {@inheritDoc}
      */
-    protected DataResult getDataResult(User user, ActionForm form,
-            HttpServletRequest request) {
+    @Override
+    protected DataResult<ConfigChannelDto> getDataResult(User user, ActionForm form,
+                                                        HttpServletRequest request) {
         return ConfigurationManager.getInstance().ssmChannelListForSubscribe(user, null);
     }
 
     /**
      * {@inheritDoc}
      */
+    @Override
     protected RhnSetDecl getSetDecl() {
         return RhnSetDecl.CONFIG_CHANNELS_RANKING;
     }
@@ -59,6 +61,7 @@ public class SubscribeSubmit extends BaseSetOperateOnSelectedItemsAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processMethodKeys(Map<String, String> map) {
         map.put("ssm.config.subscribe.jsp.continue", "proceed");
     }
@@ -66,8 +69,9 @@ public class SubscribeSubmit extends BaseSetOperateOnSelectedItemsAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processParamMap(ActionForm form,
-            HttpServletRequest request, Map<String, Object> params) {
+                                   HttpServletRequest request, Map<String, Object> params) {
         //no-op
     }
 
@@ -105,10 +109,9 @@ public class SubscribeSubmit extends BaseSetOperateOnSelectedItemsAction {
            so they take place in the ranking.
          */
         ConfigurationManager manager = ConfigurationManager.getInstance();
-        DataResult channels = manager.ssmChannelListForSubscribeAlreadySubbed(user);
+        DataResult<ConfigChannelDto> channels = manager.ssmChannelListForSubscribeAlreadySubbed(user);
 
-        for (Object channelIn : channels) {
-            ConfigChannelDto channel = (ConfigChannelDto) channelIn;
+        for (ConfigChannelDto channel : channels) {
             set.addElement(channel.getId());
         }
 
@@ -122,6 +125,7 @@ public class SubscribeSubmit extends BaseSetOperateOnSelectedItemsAction {
      *
      * {@inheritDoc}
      */
+    @Override
     protected ActionMessage getNoScriptMessage() {
        return new ActionMessage(
                "common.config.subscription.jsp.error.nojavascript");

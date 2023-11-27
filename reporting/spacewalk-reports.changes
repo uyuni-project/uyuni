@@ -1,4 +1,14 @@
-- Check if options.params is empty
+-------------------------------------------------------------------
+Mon Sep 18 14:34:53 CEST 2023 - rosuna@suse.com
+
+- version 4.4.4-1
+  * Drop Python2 compatibility (bsc#1212588)
+
+-------------------------------------------------------------------
+Wed Dec 14 14:13:25 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.3-1
+  * Check if options.params is empty
 
 -------------------------------------------------------------------
 Fri Nov 18 15:05:43 CET 2022 - jgonzalez@suse.com

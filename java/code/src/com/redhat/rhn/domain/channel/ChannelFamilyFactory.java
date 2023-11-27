@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.domain.channel;
 
+import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
@@ -40,8 +41,11 @@ public class ChannelFamilyFactory extends HibernateFactory {
 
     private static ChannelFamilyFactory singleton = new ChannelFamilyFactory();
     private static Logger log = LogManager.getLogger(ChannelFamilyFactory.class);
+    public static final String TOOLS_CHANNEL_FAMILY_LABEL = "SLE-M-T";
     public static final String SATELLITE_CHANNEL_FAMILY_LABEL = "SMS";
     public static final String PROXY_CHANNEL_FAMILY_LABEL = "SMP";
+    public static final String MODULE_CHANNEL_FAMILY_LABEL = "MODULE";
+    public static final String OPENSUSE_CHANNEL_FAMILY_LABEL = "OPENSUSE";
 
     private ChannelFamilyFactory() {
         super();
@@ -51,6 +55,7 @@ public class ChannelFamilyFactory extends HibernateFactory {
      * Get the Logger for the derived class so log messages
      * show up on the correct class
      */
+    @Override
     protected Logger getLogger() {
         return log;
     }
@@ -61,7 +66,7 @@ public class ChannelFamilyFactory extends HibernateFactory {
      * @return the ChannelFamily found
      */
     public static ChannelFamily lookupById(Long id) {
-        return (ChannelFamily)HibernateFactory.getSession().get(ChannelFamily.class, id);
+        return HibernateFactory.getSession().get(ChannelFamily.class, id);
     }
 
     /**
@@ -88,10 +93,7 @@ public class ChannelFamilyFactory extends HibernateFactory {
      * @return the ChannelFamily found
      */
     public static ChannelFamily lookupByOrg(Org orgIn) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("orgId", orgIn.getId());
-        return (ChannelFamily) singleton.lookupObjectByNamedQuery(
-                                       "ChannelFamily.findByOrgId", params);
+        return singleton.lookupObjectByNamedQuery("ChannelFamily.findByOrgId", Map.of("orgId", orgIn.getId()));
     }
 
     /**
@@ -138,20 +140,21 @@ public class ChannelFamilyFactory extends HibernateFactory {
      * @return A list of ids as Longs of the channel families for which
      *         permissions were updated.
      */
-    private static List updateFamilyPermissions(Org org) {
+    private static List<Long> updateFamilyPermissions(Org org) {
         //Get a list of channel families that belong to this org
         //for which this org does not have appropriate permissions
         SelectMode m = ModeFactory.getMode("Channel_queries",
                 "families_for_org_without_permissions");
         Map<String, Object> params = new HashMap<>();
         params.put("org_id", org.getId());
-        Iterator i = m.execute(params).iterator();
+        DataResult<ChannelOverview> dr = m.execute(params);
+        Iterator<ChannelOverview> i = dr.iterator();
 
         //Insert permissions for this org
-        List ids = new ArrayList();
+        List<Long> ids = new ArrayList<>();
         WriteMode m2 = ModeFactory.getWriteMode("Channel_queries", "insert_family_perms");
         while (i.hasNext()) {
-            Long next = ((ChannelOverview) i.next()).getId();
+            Long next = i.next().getId();
             ids.add(next);
 
             params.clear();
@@ -177,6 +180,13 @@ public class ChannelFamilyFactory extends HibernateFactory {
      * @param cfam ChannelFamily to be removed from database.
      */
     public static void remove(ChannelFamily cfam) {
+        if (cfam.isPublic()) {
+            singleton.removeObject(cfam.getPublicChannelFamily());
+        }
+        else {
+            cfam.getPrivateChannelFamilies()
+                    .forEach(pcf -> singleton.removeObject(pcf));
+        }
         singleton.removeObject(cfam);
     }
 
@@ -203,13 +213,14 @@ public class ChannelFamilyFactory extends HibernateFactory {
      * @param orgIn owning the Channel.  Pass in NULL if you want a NULL org channel
      * @return List of Channel objects
      */
-    public static List lookupByLabelLike(String label, Org orgIn) {
+    @SuppressWarnings("unchecked")
+    public static List<ChannelFamily> lookupByLabelLike(String label, Org orgIn) {
         Session session = getSession();
         Criteria c = session.createCriteria(ChannelFamily.class);
         c.add(Restrictions.like("label", label + "%"));
         c.add(Restrictions.or(Restrictions.eq("org", orgIn),
               Restrictions.isNull("org")));
-        return  c.list();
+        return c.list();
     }
 
     /**

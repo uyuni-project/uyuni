@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.action.systems.sdc;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.Action;
@@ -33,6 +34,8 @@ import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.user.UserManager;
+
+import com.suse.cloud.CloudPaygManager;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.struts.action.ActionForm;
@@ -60,6 +63,8 @@ public class SystemOverviewAction extends RhnAction {
                                                        UserServerPreferenceId
                                                        .RECEIVE_NOTIFICATIONS};
 
+    private final CloudPaygManager cloudPaygManager = GlobalInstanceHolder.PAYG_MANAGER;
+
     /** {@inheritDoc} */
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
@@ -76,16 +81,15 @@ public class SystemOverviewAction extends RhnAction {
 
         if (s.getDescription() != null) {
             description = StringEscapeUtils.escapeHtml4(s.getDescription())
-                .replaceAll("\\n", "<br/>");
+                .replace("\\n", "<br/>");
         }
 
         // System Channels
-        Map baseChannel = new HashMap();
-        List childChannels = new ArrayList();
-        DataResult channelList = SystemManager.systemChannelSubscriptions(sid);
+        Map<String, Object> baseChannel = new HashMap<>();
+        List<Map<String, Object>> childChannels = new ArrayList<>();
+        DataResult<Map<String, Object>> channelList = SystemManager.systemChannelSubscriptions(sid);
 
-        for (Object oIn : channelList) {
-            Map ch = (HashMap) oIn;
+        for (Map<String, Object> ch : channelList) {
 
             if (s.getBaseChannel() != null &&
                     ch.get("id").equals(s.getBaseChannel().getId())) {
@@ -111,6 +115,14 @@ public class SystemOverviewAction extends RhnAction {
         // Reboot needed after certain types of updates
         boolean rebootRequired = SystemManager.requiresReboot(user, sid);
 
+        // Check if reboot is scheduled
+        boolean rebootScheduled = false;
+        Action rebootAction = ActionFactory.isRebootScheduled(sid);
+        if (rebootAction != null) {
+            request.setAttribute("rebootActionId", rebootAction.getId());
+            rebootScheduled = true;
+        }
+
         if (!processLock(user, s, rctx)) {
             request.setAttribute("serverLock", s.getLock());
         }
@@ -132,6 +144,7 @@ public class SystemOverviewAction extends RhnAction {
         }
 
         request.setAttribute("rebootRequired", rebootRequired);
+        request.setAttribute("rebootScheduled", rebootScheduled);
         request.setAttribute("unentitled", s.getEntitlements().isEmpty());
         request.setAttribute("entitlements", entitlements);
         request.setAttribute("systemInactive", s.isInactive());
@@ -163,11 +176,19 @@ public class SystemOverviewAction extends RhnAction {
                         .map(p -> SUSEProductFactory.getLivePatchSupportedProducts().anyMatch(p::equals))
                         .orElse(false));
 
+        // Inform user that SUMA cannot manage BYOS instances if SUMA is PAYG and not SCC credentials are set.
+        if (cloudPaygManager.isPaygInstance()) {
+            cloudPaygManager.checkRefreshCache(true);
+            if (!s.isPayg() && !cloudPaygManager.hasSCCCredentials()) {
+                createErrorMessage(request, "message.payg.errorbyosnoscc", null);
+            }
+        }
+
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
     }
 
-    protected List findUserServerPreferences(User user, Server s) {
-        List serverPreferenceList = new ArrayList();
+    protected List<String> findUserServerPreferences(User user, Server s) {
+        List<String> serverPreferenceList = new ArrayList<>();
 
         if (user.getEmailNotify() == 0) {
             serverPreferenceList.add("sdc.details.overview.notifications.disabled");

@@ -34,6 +34,7 @@ public class RhnMockJspWriter extends MockJspWriter {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void clear() {
         // Do nothing
     }
@@ -41,6 +42,7 @@ public class RhnMockJspWriter extends MockJspWriter {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void clearBuffer() {
         // Do nothing
     }
@@ -49,6 +51,7 @@ public class RhnMockJspWriter extends MockJspWriter {
      *
      * {@inheritDoc}
      */
+    @Override
     public void print(String stringIn) {
         buf.append(stringIn);
         super.println(stringIn);
@@ -57,6 +60,7 @@ public class RhnMockJspWriter extends MockJspWriter {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void println(String stringIn) {
         buf.append(stringIn);
         buf.append("\n");
@@ -67,6 +71,7 @@ public class RhnMockJspWriter extends MockJspWriter {
      *
      * {@inheritDoc}
      */
+    @Override
     public String toString() {
         return buf.toString();
     }
@@ -75,6 +80,7 @@ public class RhnMockJspWriter extends MockJspWriter {
      *
      * {@inheritDoc}
      */
+    @Override
     public void println(Object anObject) {
         buf.append(anObject);
         buf.append("\n");
@@ -85,6 +91,7 @@ public class RhnMockJspWriter extends MockJspWriter {
      *
      * {@inheritDoc}
      */
+    @Override
     public void write(String str) throws IOException {
         buf.append(str);
         super.write(str);

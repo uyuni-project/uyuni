@@ -34,7 +34,7 @@ const typeMap = {
   kiwi: { name: "Kiwi", buildType: "osimage_build_host" },
 };
 
-const msgMap = {
+const messageMap = {
   unknown_error: t("An unknown error has occurred."),
   build_scheduled: t("The image build has been scheduled."),
   taskomatic_error: t(
@@ -222,7 +222,7 @@ class BuildImage extends React.Component<Props, State> {
           messages: (
             <Messages
               items={data.messages.map((msg) => {
-                return { severity: "error", text: msgMap[msg] };
+                return { severity: "error", text: messageMap[msg] };
               })}
             />
           ),

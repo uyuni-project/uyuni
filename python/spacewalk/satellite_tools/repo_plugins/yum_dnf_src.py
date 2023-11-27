@@ -37,8 +37,6 @@ from urllib.parse import urlparse, urlsplit, urlunparse
 
 
 YUMSRC_CONF = '/etc/rhn/spacewalk-repo-sync/yum.conf'
-APACHE_USER = 'apache'
-APACHE_GROUP = 'apache'
 
 
 logging.basicConfig()
@@ -184,7 +182,8 @@ class ContentSource(zypper_ContentSource):
         with cfg_component('server.satellite') as CFG:
             pkgdir = os.path.join(CFG.MOUNT_POINT, CFG.PREPENDED_DIR, self.org, 'stage')
         if not os.path.isdir(pkgdir):
-            fileutils.makedirs(pkgdir, user=APACHE_USER, group=APACHE_GROUP)
+            with cfg_component('server.satellite') as CFG:
+                fileutils.makedirs(pkgdir, user=CFG.httpd_user, group=CFG.httpd_group)
         repo.pkgdir = pkgdir
         repo.sslcacert = ca_cert_file
         repo.sslclientcert = client_cert_file
@@ -203,10 +202,18 @@ class ContentSource(zypper_ContentSource):
         self.digest=hashlib.sha256(self.url.encode('utf8')).hexdigest()[:16]
         self.dnfbase.repos.add(repo)
         self.repoid = repo.id
+        # Try loading the repo configuration
         try:
             self.dnfbase.repos[self.repoid].load()
-            # Don't use mirrors if there are none.
-            if not self.clean_urls(self.dnfbase.repos[self.repoid]._repo.getMirrors()):
+            # Repo config loaded successfully.
+            # Verify whether the supplied mirror list is working as intended. Otherwise don't use mirror lists.
+            try:
+                if not self.clean_urls(self.dnfbase.repos[self.repoid]._repo.getMirrors()):
+                    no_mirrors = True
+                    # Reload repo just in case.
+                    repo.mirrorlist = ""
+                    self.dnfbase.repos[self.repoid].load()
+            except:
                 no_mirrors = True
                 # Reload repo just in case.
                 repo.mirrorlist = ""
@@ -310,10 +317,14 @@ class ContentSource(zypper_ContentSource):
             if pack.arch == 'src':
                 continue
             new_pack = ContentPackage()
-            new_pack.setNVREA(pack.name, pack.version, pack.release,
-                              pack.epoch, pack.arch)
+            try:
+                new_pack.setNVREA(pack.name, pack.version, pack.release,
+                                  pack.epoch, pack.arch)
+            except ValueError as e:
+                log(0, "WARNING: package contains incorrect metadata. SKIPPING!")
+                log(0, e)
+                continue
             new_pack.unique_id = RawSolvablePackage(pack)
-#            new_pack.hawkey_id = pack
             new_pack.checksum_type = pack.returnIdSum()[0]
             if new_pack.checksum_type == 'sha':
                 new_pack.checksum_type = 'sha1'

@@ -16,6 +16,7 @@ package com.redhat.rhn.frontend.xmlrpc.kickstart.profile.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -138,7 +139,7 @@ public class ProfileHandlerTest extends BaseHandlerTestCase {
 
         Channel c1 = ChannelFactoryTest.createTestChannel(admin);
         Channel c2 = ChannelFactoryTest.createTestChannel(admin);
-        assertFalse(c1.getLabel().equals(c2.getLabel()));
+        assertNotEquals(c1.getLabel(), c2.getLabel());
 
         List<String> channelsToSubscribe = new ArrayList<>();
         channelsToSubscribe.add(c1.getLabel());
@@ -236,12 +237,12 @@ public class ProfileHandlerTest extends BaseHandlerTestCase {
 
         //test results
         scripts = handler.listScripts(admin, ks.getLabel());
-        assertTrue(scripts.get(0).getId().intValue() == idPre2);
-        assertTrue(scripts.get(1).getId().intValue() == idPre1);
-        assertTrue(scripts.get(2).getId().intValue() == idPost1);
-        assertTrue(scripts.get(3).getId().intValue() == idPostNochroot1);
-        assertTrue(scripts.get(4).getId().intValue() == idPost2);
-        assertTrue(scripts.get(5).getId().intValue() == idPostNochroot2);
+        assertEquals(scripts.get(0).getId().intValue(), idPre2);
+        assertEquals(scripts.get(1).getId().intValue(), idPre1);
+        assertEquals(scripts.get(2).getId().intValue(), idPost1);
+        assertEquals(scripts.get(3).getId().intValue(), idPostNochroot1);
+        assertEquals(scripts.get(4).getId().intValue(), idPost2);
+        assertEquals(scripts.get(5).getId().intValue(), idPostNochroot2);
     }
 
     @Test
@@ -306,18 +307,18 @@ public class ProfileHandlerTest extends BaseHandlerTestCase {
         KickstartData ks = KickstartDataTest.createKickstartWithProfile(admin);
 
         Object[] s1 = handler.getAdvancedOptions(admin, ks.getLabel());
-        List<Map> l1 = new ArrayList();
+        List<Map<String, String>> l1 = new ArrayList<>();
 
         for (Object oIn : s1) {
-            l1.add((Map) oIn);
+            l1.add((Map<String, String>) oIn);
         }
 
-        Map m1 = new HashMap();
-        Map m2 = new HashMap();
-        Map m3 = new HashMap();
-        Map m4 = new HashMap();
-        Map m5 = new HashMap();
-        Map m6 = new HashMap();
+        Map<String, String> m1 = new HashMap<>();
+        Map<String, String> m2 = new HashMap<>();
+        Map<String, String> m3 = new HashMap<>();
+        Map<String, String> m4 = new HashMap<>();
+        Map<String, String> m5 = new HashMap<>();
+        Map<String, String> m6 = new HashMap<>();
 
         //all required options
         m1.put("name", "lang");
@@ -353,8 +354,7 @@ public class ProfileHandlerTest extends BaseHandlerTestCase {
         for (int i = 0; i < s1.length; i++) {
             KickstartCommand k = (KickstartCommand) s2[i];
             if (k.getCommandName().getName().equals("url")) {
-                assertTrue(k.getArguments().
-                        equals("--url /rhn/kickstart/ks-rhel-i386-kkk"));
+                assertEquals("--url /rhn/kickstart/ks-rhel-i386-kkk", k.getArguments());
             }
         }
 
@@ -368,18 +368,18 @@ public class ProfileHandlerTest extends BaseHandlerTestCase {
         KickstartData ks = KickstartDataTest.createKickstartWithProfile(admin);
 
         Object[] s1 = handler.getAdvancedOptions(admin, ks.getLabel());
-        List<Map> l1 = new ArrayList();
+        List<Map<String, String>> l1 = new ArrayList<>();
 
         for (Object oIn : s1) {
-            l1.add((Map) oIn);
+            l1.add((Map<String, String>) oIn);
         }
 
-        Map m1 = new HashMap();
-        Map m2 = new HashMap();
-        Map m3 = new HashMap();
-        Map m4 = new HashMap();
-        Map m5 = new HashMap();
-        Map m6 = new HashMap();
+        Map<String, String> m1 = new HashMap<>();
+        Map<String, String> m2 = new HashMap<>();
+        Map<String, String> m3 = new HashMap<>();
+        Map<String, String> m4 = new HashMap<>();
+        Map<String, String> m5 = new HashMap<>();
+        Map<String, String> m6 = new HashMap<>();
 
         //all required options
         m1.put("name", "lang");
@@ -415,8 +415,7 @@ public class ProfileHandlerTest extends BaseHandlerTestCase {
         for (int i = 0; i < s1.length; i++) {
             KickstartCommand k = (KickstartCommand) s2[i];
             if (k.getCommandName().getName().equals("url")) {
-                assertTrue(k.getArguments().
-                        equals("--url /rhn/kickstart/ks-rhel-i386-kkk"));
+                assertEquals("--url /rhn/kickstart/ks-rhel-i386-kkk", k.getArguments());
             }
         }
 
@@ -441,7 +440,7 @@ public class ProfileHandlerTest extends BaseHandlerTestCase {
         handler.addIpRange(admin, ks1.getLabel(), "192.168.1.1", "192.168.1.10");
         ks1 = KickstartFactory.lookupKickstartDataByLabelAndOrgId(ks1.getLabel(),
                 admin.getOrg().getId());
-        assertTrue(ks1.getIps().size() == 2);
+        assertEquals(2, ks1.getIps().size());
     }
 
     @Test
@@ -457,17 +456,17 @@ public class ProfileHandlerTest extends BaseHandlerTestCase {
         assertTrue(caught);
         ks1 = KickstartFactory.lookupKickstartDataByLabelAndOrgId(ks1.getLabel(),
                 admin.getOrg().getId());
-        assertTrue(ks1.getIps().size() == 1);
+        assertEquals(1, ks1.getIps().size());
     }
 
     @Test
     public void testRemoveIpRange() throws Exception {
         KickstartData ks1 = setupIpRanges(100);
-        assertTrue(ks1.getIps().size() == 1);
+        assertEquals(1, ks1.getIps().size());
         handler.removeIpRange(admin, ks1.getLabel(), "192.168.0.1");
         ks1 = KickstartFactory.lookupKickstartDataByLabelAndOrgId(ks1.getLabel(),
                 admin.getOrg().getId());
-        assertTrue(ks1.getIps().size() == 0);
+        assertTrue(ks1.getIps().isEmpty());
     }
 
     @Test

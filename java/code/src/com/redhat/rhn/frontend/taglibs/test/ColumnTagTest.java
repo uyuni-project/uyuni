@@ -89,12 +89,12 @@ public class ColumnTagTest extends RhnBaseTestCase {
         ct1.setWidth("10%");
         ct1.setNowrap("false");
 
-        assertTrue(ct.equals(ct1));
-        assertTrue(ct1.equals(ct));
+        assertEquals(ct, ct1);
+        assertEquals(ct1, ct);
 
         ct1.setUrl("http://www.hostname.com?sgid=1234");
-        assertTrue(ct.equals(ct1));
-        assertTrue(ct1.equals(ct));
+        assertEquals(ct, ct1);
+        assertEquals(ct1, ct);
     }
 
     @Test

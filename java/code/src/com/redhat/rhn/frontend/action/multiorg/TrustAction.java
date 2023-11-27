@@ -86,7 +86,7 @@ abstract class FormDispatcher extends RhnAction {
             ActionMapping mapping,
             ActionForm form,
             HttpServletRequest request,
-            HttpServletResponse response) throws Exception;
+            HttpServletResponse response);
 
     protected abstract ActionForward confirmAction(
             ActionMapping mapping,
@@ -98,13 +98,13 @@ abstract class FormDispatcher extends RhnAction {
             ActionMapping mapping,
             ActionForm form,
             HttpServletRequest request,
-            HttpServletResponse response) throws Exception;
+            HttpServletResponse response);
 
     protected abstract ActionForward affectedSystemsAction(
             ActionMapping mapping,
             ActionForm form,
             HttpServletRequest request,
-            HttpServletResponse response) throws Exception;
+            HttpServletResponse response);
 }
 
 /**
@@ -124,7 +124,7 @@ public class TrustAction extends FormDispatcher {
         ActionMapping mapping,
         ActionForm form,
         HttpServletRequest request,
-        HttpServletResponse response) throws Exception {
+        HttpServletResponse response) {
 
         RequestContext context = new RequestContext(request);
         RhnListSetHelper helper = new RhnListSetHelper(request);
@@ -214,7 +214,7 @@ public class TrustAction extends FormDispatcher {
         for (Org org : getRemoved(theOrg, set)) {
             DataResult<Map<String, Object>> dr =
                 SystemManager.subscribedInOrgTrust(theOrg.getId(), org.getId());
-            if (dr.size() == 0) {
+            if (dr.isEmpty()) {
                 continue;
             }
             OrgTrust trust = new OrgTrust(org);
@@ -224,7 +224,7 @@ public class TrustAction extends FormDispatcher {
             }
             removed.add(trust);
         }
-        if (removed.size() == 0) {
+        if (removed.isEmpty()) {
             return commitAction(mapping, form, request, response);
         }
         request.setAttribute("org", theOrg);
@@ -236,12 +236,11 @@ public class TrustAction extends FormDispatcher {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     protected ActionForward commitAction(
             ActionMapping mapping,
             ActionForm form,
             HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
+            HttpServletResponse response) {
 
         RequestContext context = new RequestContext(request);
         RhnListSetHelper helper = new RhnListSetHelper(request);
@@ -301,7 +300,7 @@ public class TrustAction extends FormDispatcher {
             ActionMapping mapping,
             ActionForm form,
             HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
+            HttpServletResponse response) {
 
         Long userorg =
             Long.valueOf(request.getParameter(RequestContext.ORG_ID));

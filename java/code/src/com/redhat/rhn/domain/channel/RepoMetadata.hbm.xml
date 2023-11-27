@@ -17,7 +17,6 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         </id>
         <discriminator column="comps_type_id" type="java.lang.Integer"/>
         <property name="relativeFilename" type="string" column="relative_filename" not-null="true"/>
-        <property name="lastModified" type="timestamp" column="last_modified" not-null="true" />
 
         <many-to-one name="channel"
                      class="com.redhat.rhn.domain.channel.Channel"

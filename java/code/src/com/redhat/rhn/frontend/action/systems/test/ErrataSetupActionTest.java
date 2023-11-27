@@ -34,6 +34,7 @@ import org.junit.jupiter.api.Test;
  * ErrataSetupActionTest
  */
 public class ErrataSetupActionTest extends RhnMockStrutsTestCase {
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
@@ -67,7 +68,7 @@ public class ErrataSetupActionTest extends RhnMockStrutsTestCase {
                     request.getAttribute("showApplyErrata"));
         assertTrue(getActualForward().contains("errata.jsp"));
 
-        assertTrue(request.getAttribute("showApplyErrata").equals("true"));
+        assertEquals("true", request.getAttribute("showApplyErrata"));
         clearRequestParameters();
         addRequestParameter("sid", server.getId().toString());
         addRequestParameter("allowVendorChange", new String[]{ "false" });

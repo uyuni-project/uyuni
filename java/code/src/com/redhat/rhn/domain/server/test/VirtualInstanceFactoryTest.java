@@ -61,8 +61,9 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
     private GuestBuilder builder;
     private SystemEntitlementManager systemEntitlementManager;
 
+    @Override
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         virtualInstanceDAO = new VirtualInstanceFactory();
         user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -174,7 +175,7 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
      * Commeting out test for satellite.
     @Test
     public void testFindGuestsWithNonVirtHostByOrg() throws Exception {
-        Set expectedViews = new HashSet();
+        Set expectedViews = new HashSet<>();
 
         expectedViews.add(builder.createGuest().withNonVirtHost()
                 .withPersistence().build().asGuestAndNonVirtHostView());
@@ -198,7 +199,7 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
 
     @Test
     public void testFindGuestsWithoutAHostByOrg() throws Exception {
-        Set expectedViews = new HashSet();
+        Set expectedViews = new HashSet<>();
 
         expectedViews.add(builder.createGuest().withPersistence().build()
                 .asGuestAndNonVirtHostView());
@@ -278,7 +279,7 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
         VirtualInstance vi = host.getGuests().iterator().next();
         vi.setState(VirtualInstanceFactory.getInstance().getRunningState());
         TestUtils.saveAndFlush(vi);
-        assertTrue(vi.getState() != null);
+        assertNotNull(vi.getState());
     }
 
     @Test

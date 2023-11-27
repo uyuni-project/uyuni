@@ -16,6 +16,7 @@ package com.redhat.rhn.frontend.listview.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
@@ -48,7 +49,7 @@ public class ListControlTest extends RhnBaseTestCase {
 
         assertEquals(lc.getFilterColumn(), "TestFilterColumn");
         assertEquals(lc.getFilterData(), "TestFilterData");
-        assertEquals(lc.hasIndex(), true);
+        assertTrue(lc.hasIndex());
     }
 
     /**

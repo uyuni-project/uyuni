@@ -94,7 +94,6 @@ public class DistUpgradeManager extends BaseManager {
         HashMap<String, Object> params = new HashMap<>();
         params.put("user_id", user.getId());
         params.put("sid", server.getId());
-        @SuppressWarnings("unchecked")
         DataResult<Map<String, ? extends Number>> dr = m.execute(params);
         return dr.get(0).get("count").intValue() > 0;
     }
@@ -105,7 +104,6 @@ public class DistUpgradeManager extends BaseManager {
      * @param productId SUSE product ID
      * @return list of possible migration target product IDs
      */
-    @SuppressWarnings("unchecked")
     public static List<SUSEProductDto> findTargetProducts(long productId) {
         SelectMode m = ModeFactory.getMode("distupgrade_queries", "find_target_products");
         HashMap<String, Object> params = new HashMap<>();
@@ -119,7 +117,6 @@ public class DistUpgradeManager extends BaseManager {
      * @param productId SUSE product ID
      * @return list of possible migration source product IDs
      */
-    @SuppressWarnings("unchecked")
     public static List<SUSEProductDto> findSourceProducts(long productId) {
         SelectMode m = ModeFactory.getMode("distupgrade_queries", "find_source_products");
         HashMap<String, Object> params = new HashMap<>();
@@ -135,7 +132,6 @@ public class DistUpgradeManager extends BaseManager {
      * @param baseChannelID the base channel id for the product set
      * @return list of channel DTOs
      */
-    @SuppressWarnings("unchecked")
     public static List<EssentialChannelDto> getRequiredChannels(SUSEProductSet productSet, long baseChannelID) {
         List<Long> productIDs = productSet.getProductIDs();
         HashMap<String, Object> params = new HashMap<>();
@@ -153,7 +149,6 @@ public class DistUpgradeManager extends BaseManager {
      * @param arch channel arch
      * @return base channel
      */
-    @SuppressWarnings("unchecked")
     public static EssentialChannelDto getProductBaseChannelDto(long productID, ChannelArch arch) {
         HashMap<String, Object> params = new HashMap<>();
         params.put("pid", productID);
@@ -161,7 +156,7 @@ public class DistUpgradeManager extends BaseManager {
         SelectMode m = ModeFactory.getMode("Channel_queries", "suse_base_channels_for_suse_product");
         List<EssentialChannelDto> channels = makeDataResult(params, null, null, m);
         EssentialChannelDto ret = null;
-        if (channels.size() > 0) {
+        if (!channels.isEmpty()) {
             ret = channels.get(0);
         }
         if (channels.size() > 1) {
@@ -611,6 +606,7 @@ public class DistUpgradeManager extends BaseManager {
 
     /**
      * Schedule a distribution upgrade for a given server.
+     * (private as it does not take PAYG into account)
      *
      * @param user the user who is scheduling
      * @param server the server to migrate
@@ -623,7 +619,7 @@ public class DistUpgradeManager extends BaseManager {
      * @throws TaskomaticApiException if there was a Taskomatic error
      * (typically: Taskomatic is down)
      */
-    public static Long scheduleDistUpgrade(User user, Server server,
+    private static Long scheduleDistUpgrade(User user, Server server,
             SUSEProductSet targetSet, Collection<Long> channelIDs,
             boolean dryRun, boolean allowVendorChange, Date earliest) throws TaskomaticApiException {
         // Create action details
@@ -684,6 +680,57 @@ public class DistUpgradeManager extends BaseManager {
 
         // Return the ID of the scheduled action
         return ActionManager.scheduleDistUpgrade(user, server, details, earliest).getId();
+    }
+
+    /**
+     * Schedule a distribution upgrade for a given server, allowing passing the PAYG flag.
+     *
+     * @param user the user who is scheduling
+     * @param server the server to migrate
+     * @param targetSet set of target products (base product and addons)
+     * @param channelIDs IDs of all channels to subscribe
+     * @param dryRun perform a dry run
+     * @param allowVendorChange allow vendor change during dist upgrade
+     * @param earliest earliest schedule date
+     * @param isPayg tells the method how to behave if SUMA is PAYG
+     * @return the action ID
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * @throws DistUpgradePaygException if the SUSE Manager instance is PAYG.
+     */
+    public static Long scheduleDistUpgrade(User user, Server server,
+                                           SUSEProductSet targetSet, Collection<Long> channelIDs,
+                                           boolean dryRun, boolean allowVendorChange, Date earliest,
+                                           boolean isPayg)
+            throws TaskomaticApiException, DistUpgradePaygException {
+
+        if (isPayg) {
+            /*
+            Changing product family I.e
+              - SLES 15 SP5 to SLES for SAP 15 SP4 or
+              - from OpenSUSE Leap 15.4 to SLES 15 SP4
+            is not allowed.
+            Only SP migrations should be possible.
+            Also individual assigning channels to perform a migration is forbidden
+            */
+            SUSEProduct installedBaseProduct = server.getInstalledProductSet()
+                    .map(SUSEProductSet::getBaseProduct)
+                    .orElseThrow(() ->
+                            new FaultException(-1, "listMigrationTargetError", "Server has no Products installed."));
+            if (targetSet != null) {
+                SUSEProduct targetBaseProduct = targetSet.getBaseProduct();
+                if (targetBaseProduct.getChannelFamily() == null ||
+                        installedBaseProduct.getChannelFamily() == null ||
+                        !targetBaseProduct.getChannelFamily().equals(installedBaseProduct.getChannelFamily())) {
+                    throw new DistUpgradePaygException(
+                            "In PAYG SUMA instances, changing the product family is forbidden");
+                }
+            }
+            else {
+                throw new DistUpgradePaygException("In PAYG SUMA instances, individual migrations are forbidden");
+            }
+        }
+
+        return scheduleDistUpgrade(user, server, targetSet, channelIDs, dryRun, allowVendorChange, earliest);
     }
 
     /**

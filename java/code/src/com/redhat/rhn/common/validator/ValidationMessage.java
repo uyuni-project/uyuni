@@ -61,6 +61,7 @@ public abstract class ValidationMessage {
       }
 
       /** {@inheritDoc} */
+      @Override
       public String toString() {
           return "ValidatorMessage [Key: " + key + "]";
       }

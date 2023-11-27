@@ -15,6 +15,7 @@
 package com.redhat.rhn.frontend.xmlrpc.kickstart.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -60,7 +61,7 @@ public class KickstartHandlerTest extends BaseHandlerTestCase {
         KickstartableTreeTest.createTestKickstartableTree(baseChan,
                 KickstartInstallType.FEDORA_PREFIX + "18");
         List<Channel> ksChannels = handler.listKickstartableChannels(admin);
-        assertTrue(ksChannels.size() > 0);
+        assertFalse(ksChannels.isEmpty());
         assertTrue(ksChannels.contains(baseChan));
     }
 
@@ -70,7 +71,7 @@ public class KickstartHandlerTest extends BaseHandlerTestCase {
         KickstartableTreeTest.createTestKickstartableTree(baseChan,
                 KickstartInstallType.SLES_PREFIX + "12generic");
         List<Channel> ksChannels = handler.listAutoinstallableChannels(admin);
-        assertTrue(ksChannels.size() > 0);
+        assertFalse(ksChannels.isEmpty());
         assertTrue(ksChannels.contains(baseChan));
     }
 
@@ -80,7 +81,7 @@ public class KickstartHandlerTest extends BaseHandlerTestCase {
         KickstartableTree testTree = KickstartableTreeTest.
             createTestKickstartableTree(baseChan);
         List ksTrees = new KickstartTreeHandler().list(admin, baseChan.getLabel());
-        assertTrue(ksTrees.size() > 0);
+        assertFalse(ksTrees.isEmpty());
 
         boolean found = false;
         for (Object ksTreeIn : ksTrees) {
@@ -94,7 +95,7 @@ public class KickstartHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testListKickstartableTreesByNonExistentChannelLabel() throws Exception {
+    public void testListKickstartableTreesByNonExistentChannelLabel() {
         try {
             new KickstartTreeHandler().list(admin, "no such label");
             fail();
@@ -236,7 +237,7 @@ public class KickstartHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testCreateWithInvalidKickstartLabel() throws Exception {
+    public void testCreateWithInvalidKickstartLabel() {
         String profileLabel = "new-ks-profile";
         try {
             handler.createProfileWithCustomUrl(admin, profileLabel, "none",

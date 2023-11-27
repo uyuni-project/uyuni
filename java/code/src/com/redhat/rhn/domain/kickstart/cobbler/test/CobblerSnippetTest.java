@@ -38,7 +38,7 @@ import java.io.File;
 public class CobblerSnippetTest extends BaseTestCaseWithUser {
 
     @Test
-    public void testReadOnly() throws Exception {
+    public void testReadOnly() {
        String contents = TestUtils.randomString();
        String path = CobblerSnippet.getCobblerSnippetsDir() +
                                    "/" + TestUtils.randomString();
@@ -67,7 +67,7 @@ public class CobblerSnippetTest extends BaseTestCaseWithUser {
    }
 
     @Test
-    public void testEditable() throws Exception {
+    public void testEditable() {
         String contents = TestUtils.randomString();
         String name = TestUtils.randomString();
         CobblerSnippet snip = CobblerSnippet.createOrUpdate(true, name,
@@ -100,7 +100,7 @@ public class CobblerSnippetTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testIllegalCreates() throws Exception {
+    public void testIllegalCreates() {
         String contents = TestUtils.randomString();
         String name = TestUtils.randomString() + "/HoHO";
         try {

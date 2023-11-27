@@ -100,6 +100,7 @@ public class SnapshotTag extends BaseDomainHelper {
      *
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder().append(name.hashCode())
                                     .append(org.hashCode())
@@ -110,6 +111,7 @@ public class SnapshotTag extends BaseDomainHelper {
      *
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(Object obj) {
         SnapshotTag other = (SnapshotTag) obj;
         return new EqualsBuilder().append(name.hashCode(), other.name.hashCode())

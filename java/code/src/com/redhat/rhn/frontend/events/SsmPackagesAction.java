@@ -46,6 +46,7 @@ public abstract class SsmPackagesAction implements MessageAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void execute(EventMessage msg) {
         SsmPackageEvent event = (SsmPackageEvent) msg;
 
@@ -93,8 +94,7 @@ public abstract class SsmPackagesAction implements MessageAction {
             }
         }
         catch (TaskomaticApiException e) {
-            LOG.error("Could not schedule package action:");
-            LOG.error(e);
+            LOG.error("Could not schedule package action:", e);
             throw new RuntimeException(e);
         }
         catch (Exception e) {

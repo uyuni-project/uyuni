@@ -1,14 +1,16 @@
 import * as React from "react";
 
+import _partition from "lodash/partition";
+
 import SpaRenderer from "core/spa/spa-renderer";
 
 import { AsyncButton, Button } from "components/buttons";
 import { CustomDiv } from "components/custom-objects";
-import { ModalLink } from "components/dialog/ModalLink";
+import { DangerDialog } from "components/dialog/DangerDialog";
+import { Dialog } from "components/dialog/Dialog";
 import { ChannelLink } from "components/links";
 import { Messages, MessageType } from "components/messages";
 import { Utils as MessagesUtils } from "components/messages";
-import { PopUp } from "components/popup";
 import { SectionToolbar } from "components/section-toolbar/section-toolbar";
 import { CustomDataHandler } from "components/table/CustomDataHandler";
 import { SearchField } from "components/table/SearchField";
@@ -42,7 +44,7 @@ declare global {
   }
 }
 
-const msgMap = {
+const messageMap = {
   // Nothing for now
 };
 
@@ -69,7 +71,7 @@ const _SETUP_WIZARD_STEPS = [
   },
   {
     id: "wizard-step-suse-payg",
-    label: "Pay-as-you-go",
+    label: "PAYG Connections",
     url: "/rhn/manager/admin/setup/payg",
     active: false,
   },
@@ -96,6 +98,10 @@ const _COLS = {
   channels: { width: 7, um: "em" },
   mix: { width: 13, um: "em" },
 };
+
+function loadMetadata() {
+  return Network.get("/rhn/manager/api/admin/products/metadata");
+}
 
 function reloadData() {
   return Network.get("/rhn/manager/api/admin/products");
@@ -138,18 +144,33 @@ class ProductsPageWrapper extends React.Component {
 
   refreshServerData = () => {
     this.setState({ loading: true });
-    var currentObject = this;
-    let resultMessages: MessageType[] = currentObject.state.errors;
-    if (currentObject.state.noToolsChannelSubscription && currentObject.state.issMaster) {
-      resultMessages = MessagesUtils.warning(
-        t("No SUSE Manager Server Subscription available. Products requiring Client Tools Channel will not be shown.")
-      );
-    }
+    const currentObject = this;
+
+    loadMetadata()
+      .then((metadata) => {
+        currentObject.setState({
+          issMaster: metadata.issMaster,
+          refreshNeeded: metadata.refreshNeeded,
+          refreshRunning: metadata.refreshRunning || metadata.refreshFileLocked,
+          noToolsChannelSubscription: metadata.noToolsChannelSubscription,
+        });
+
+        if (currentObject.state.noToolsChannelSubscription && currentObject.state.issMaster) {
+          currentObject.setState({
+            errors: MessagesUtils.warning(
+              t(
+                "No SUSE Manager Server Subscription available. Products requiring Client Tools Channel will not be shown."
+              )
+            ),
+          });
+        }
+      })
+      .catch(this.handleResponseError);
+
     reloadData()
       .then((data) => {
         currentObject.setState({
           serverData: data[_DATA_ROOT_ID],
-          errors: resultMessages,
           loading: false,
           selectedItems: [],
           scheduleResyncItems: [],
@@ -248,8 +269,40 @@ class ProductsPageWrapper extends React.Component {
       .catch(currentObject.handleResponseError);
   };
 
+  addOptionalChannels = (product, channels) => {
+    this.setState({ addingProducts: true, errors: [] });
+    Network.post("/rhn/manager/admin/setup/channels/optional", channels)
+      .then((data) => {
+        // returned data format is { channel : "error" }. If the value is null or missing the operation succeeded
+        let failedChannels = channels.filter((c) => data[c] != null);
+        let resultMessages: MessageType[] | null = null;
+        if (failedChannels.length === 0) {
+          resultMessages = MessagesUtils.success(t("Selected channels were scheduled successfully for syncing."));
+        } else {
+          resultMessages = MessagesUtils.warning(
+            failedChannels.map((c) => (
+              <>
+                {c}: {data[c]}
+              </>
+            )),
+            true,
+            t("The following channel installations for '{product}' failed. Please check log files.", { product })
+          );
+        }
+        this.setState({
+          errors: resultMessages,
+          selectedItems: [],
+          addingProducts: false,
+        });
+        this.refreshServerData();
+      })
+      .catch(this.handleResponseError);
+  };
+
   handleResponseError = (jqXHR: JQueryXHR, arg = "") => {
-    const msg = Network.responseErrorMessage(jqXHR, (status, msg) => (msgMap[msg] ? t(msgMap[msg], arg) : null));
+    const msg = Network.responseErrorMessage(jqXHR, (status, msg) =>
+      messageMap[msg] ? t(messageMap[msg], arg) : null
+    );
     this.setState({ errors: this.state.errors.concat(msg) });
   };
 
@@ -343,6 +396,7 @@ class ProductsPageWrapper extends React.Component {
                 handleUnselectedItems={this.handleUnselectedItems}
                 selectedItems={this.state.selectedItems}
                 resyncProduct={this.resyncProduct}
+                addOptionalChannels={this.addOptionalChannels}
                 scheduledItems={this.state.scheduledItems}
                 scheduleResyncItems={this.state.scheduleResyncItems}
               />
@@ -434,6 +488,7 @@ type ProductsProps = {
   loading?: boolean;
   readOnlyMode?: boolean;
   resyncProduct: any;
+  addOptionalChannels: any;
   scheduledItems: any;
   scheduleResyncItems: any;
   selectedItems: any[];
@@ -583,7 +638,13 @@ class Products extends React.Component<ProductsProps> {
             childrenDisabled={false}
           />
         </CustomDataHandler>
-        <ChannelsPopUp item={this.state.popupItem} />
+        {this.state.popupItem ? (
+          <ChannelsPopUp
+            item={this.state.popupItem}
+            addOptionalChannels={this.props.addOptionalChannels}
+            onClose={() => this.setState({ popupItem: null })}
+          />
+        ) : null}
       </div>
     );
   }
@@ -1021,14 +1082,13 @@ class CheckListItem extends React.Component<CheckListItemProps> {
           >
             {channelSyncContent}
             {childProductChannelSyncContent}
-            <ModalLink
-              id={"showChannelsFor-" + currentItem.identifier}
-              className="showChannels"
-              icon="fa-list"
-              title={t("Show product's channels")}
-              target="show-channels-popup"
+            <button
+              className="btn-link showChannels"
               onClick={() => this.props.bypassProps.showChannelsfor(currentItem)}
-            />
+              title={t("Show product's channels")}
+            >
+              <i className="fa fa-list" />
+            </button>
           </CustomDiv>
           <CustomDiv
             className="col text-right"
@@ -1057,27 +1117,81 @@ class CheckListItem extends React.Component<CheckListItemProps> {
 }
 
 const ChannelsPopUp = (props) => {
-  const titlePopup = t("Product Channels - ") + (props.item != null ? props.item.label : "");
-  const contentPopup =
-    props.item != null ? (
-      <div>
-        <ChannelList
-          title={t("Mandatory Channels")}
-          items={props.item.channels
-            .filter((c) => !c.optional)
-            .sort((a, b) => a.label.toLowerCase().localeCompare(b.label.toLowerCase()))}
-          className={"product-channel-list"}
-        />
-        <ChannelList
-          title={t("Optional Channels")}
-          items={props.item.channels
-            .filter((c) => c.optional)
-            .sort((a, b) => a.label.toLowerCase().localeCompare(b.label.toLowerCase()))}
-          className={"product-channel-list"}
-        />
-      </div>
-    ) : null;
-  return <PopUp id="show-channels-popup" title={titlePopup} content={contentPopup} className="modal-xs" />;
+  const [checked, setChecked] = React.useState<boolean[]>([]);
+  const [installed, setInstalled] = React.useState<boolean>(props.item.status === _PRODUCT_STATUS.installed);
+
+  const sorted = props.item.channels.sort((a, b) => a.label.toLowerCase().localeCompare(b.label.toLowerCase()));
+  const [mandatoryChannels, optionalChannels] = _partition(sorted, (c) => !c.optional);
+
+  React.useEffect(() => {
+    setInstalled(props.item.status === _PRODUCT_STATUS.installed);
+    setChecked(optionalChannels.map((i) => i.status === _CHANNEL_STATUS.synced));
+  }, [props.item]);
+
+  const updateChecked = (index) => {
+    const updated = [...checked];
+    updated[index] = !checked[index];
+    setChecked(updated);
+  };
+
+  const showConfirm = () => {
+    return !!optionalChannels.filter(
+      (c) => c.status === _CHANNEL_STATUS.notSynced || c.status === _CHANNEL_STATUS.failed
+    ).length;
+  };
+
+  const addOptionalChannels = () => {
+    const channels = optionalChannels
+      .filter((item, index) => checked[index])
+      .filter((c) => c.status === _CHANNEL_STATUS.notSynced || c.status === _CHANNEL_STATUS.failed);
+    channels.length !== 0 &&
+      props.addOptionalChannels(
+        props.item.label,
+        channels.map((c) => c.label)
+      );
+  };
+
+  const titlePopup = t("Product Channels - ") + props.item.label;
+  const contentPopup = [
+    installed && showConfirm() ? (
+      <Messages
+        key="messages"
+        items={MessagesUtils.info(t("Select the optional channels you wish to add and confirm."))}
+      />
+    ) : null,
+    <div key="channel-lists">
+      <ChannelList title={t("Mandatory Channels")} items={mandatoryChannels} className={"product-channel-list"} />
+      <ChannelList
+        title={t("Optional Channels")}
+        items={optionalChannels}
+        className={"product-channel-list"}
+        checked={installed ? checked : null}
+        updateChecked={updateChecked}
+      />
+    </div>,
+  ];
+
+  return installed ? (
+    <DangerDialog
+      id={"show-channels-popup"}
+      title={titlePopup}
+      isOpen={!!props.item}
+      onClose={() => props.onClose()}
+      content={contentPopup}
+      submitText={t("Confirm")}
+      submitIcon="fa-check"
+      btnClass="btn-success"
+      onConfirm={showConfirm() ? () => addOptionalChannels() : undefined}
+    />
+  ) : (
+    <Dialog
+      id="show-channels-popup"
+      isOpen={!!props.item}
+      onClose={() => props.onClose()}
+      content={contentPopup}
+      title={titlePopup}
+    />
+  );
 };
 
 const decodeChannelStatus = (status) => {
@@ -1104,9 +1218,23 @@ const ChannelList = (props) => {
     <div>
       <h4>{props.title}</h4>
       <ul className={props.className}>
-        {props.items.map((c) => (
+        {props.items.map((c, i) => (
           <li key={c.label}>
-            <strong>{c.name}</strong>
+            {props.checked && c.optional ? (
+              <label style={{ marginBottom: "0px" }}>
+                <input
+                  type={"checkbox"}
+                  checked={props.checked[i]}
+                  onChange={() => props.updateChecked(i)}
+                  disabled={c.status === _CHANNEL_STATUS.synced || c.status === _CHANNEL_STATUS.syncing}
+                />
+                &nbsp;<strong>{c.name}</strong>
+              </label>
+            ) : (
+              <>
+                &nbsp;<strong>{c.name}</strong>
+              </>
+            )}
             &nbsp;{decodeChannelStatus(c.status)}
             <br />
             {!DEPRECATED_unsafeEquals(c.id, -1) ? (

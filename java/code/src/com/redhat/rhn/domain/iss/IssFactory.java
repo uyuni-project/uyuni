@@ -21,7 +21,6 @@ import com.redhat.rhn.domain.org.Org;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -38,13 +37,10 @@ public class IssFactory extends HibernateFactory {
         super();
     }
 
+    @Override
     protected Logger getLogger() {
         return log;
     }
-
-    /***
-     *  IssSlave helpers
-     ***/
 
     /**
      * Lookup a IssSlave by its id
@@ -52,10 +48,7 @@ public class IssFactory extends HibernateFactory {
      * @return the IssSlave found
      */
     public static IssSlave lookupSlaveById(Long id) {
-        Map<String, Long> params = new HashMap<>();
-        params.put("id", id);
-        return (IssSlave) singleton.lookupObjectByNamedQuery(
-                "IssSlave.findById", params);
+        return singleton.lookupObjectByNamedQuery("IssSlave.findById", Map.of("id", id));
     }
 
     /**
@@ -64,10 +57,7 @@ public class IssFactory extends HibernateFactory {
      * @return the IssSlave found
      */
     public static IssSlave lookupSlaveByName(String inName) {
-        Map<String, String> params = new HashMap<>();
-        params.put("slave", inName);
-        return (IssSlave) singleton.lookupObjectByNamedQuery(
-                "IssSlave.findByName", params);
+        return singleton.lookupObjectByNamedQuery("IssSlave.findByName", Map.of("slave", inName));
     }
 
     /**
@@ -75,14 +65,8 @@ public class IssFactory extends HibernateFactory {
      * @return list of all the slaves
      */
     public static List<IssSlave> listAllIssSlaves() {
-        Map<String, Object> params = new HashMap<>();
-        return singleton.listObjectsByNamedQuery(
-                "IssSlave.lookupAll", params);
+        return singleton.listObjectsByNamedQuery("IssSlave.lookupAll", Map.of());
     }
-
-    /***
-     *  IssMaster helpers
-     ***/
 
     /**
      * Lookup a IssMaster by its id
@@ -90,10 +74,7 @@ public class IssFactory extends HibernateFactory {
      * @return the IssMaster entry found
      */
     public static IssMaster lookupMasterById(Long id) {
-        Map<String, Long> params = new HashMap<>();
-        params.put("id", id);
-        return (IssMaster) singleton.lookupObjectByNamedQuery(
-                "IssMaster.findById", params);
+        return singleton.lookupObjectByNamedQuery("IssMaster.findById", Map.of("id", id));
     }
 
     /**
@@ -102,10 +83,7 @@ public class IssFactory extends HibernateFactory {
      * @return the IssMaster entry found
      */
     public static IssMaster lookupMasterByLabel(String label) {
-        Map<String, String> params = new HashMap<>();
-        params.put("label", label);
-        return (IssMaster) singleton.lookupObjectByNamedQuery(
-                "IssMaster.findByLabel", params);
+        return singleton.lookupObjectByNamedQuery("IssMaster.findByLabel", Map.of("label", label));
     }
 
     /**
@@ -113,9 +91,7 @@ public class IssFactory extends HibernateFactory {
      * @return list of all masters known to this slave
      */
     public static List<IssMaster> listAllMasters() {
-        Map<String, Object> params = new HashMap<>();
-        return singleton.listObjectsByNamedQuery(
-                "IssMaster.lookupAll", params);
+        return singleton.listObjectsByNamedQuery("IssMaster.lookupAll", Map.of());
     }
 
     /**
@@ -123,9 +99,7 @@ public class IssFactory extends HibernateFactory {
      * @return master where master.isDefaultMaster() == true, null else
      */
     public static IssMaster getCurrentMaster() {
-        Map<String, Object> params = new HashMap<>();
-        return (IssMaster) singleton.lookupObjectByNamedQuery(
-                "IssMaster.lookupDefaultMaster", params);
+        return singleton.lookupObjectByNamedQuery("IssMaster.lookupDefaultMaster", Map.of());
     }
 
     /**
@@ -141,10 +115,6 @@ public class IssFactory extends HibernateFactory {
     }
 
     /**
-     * IssMasterOrg helpers
-     */
-
-    /**
      * Remove a given local-org from being mapped to any master-orgs
      * @param inOrg the local-org we want to unmap
      */
@@ -154,10 +124,6 @@ public class IssFactory extends HibernateFactory {
             setParameter("inOrg", inOrg).
             executeUpdate();
     }
-
-    /***
-     *  Common helpers
-     ***/
 
     /**
      * Delete an entity.

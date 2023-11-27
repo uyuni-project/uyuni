@@ -19,6 +19,7 @@ import com.redhat.rhn.domain.config.ConfigChannelType;
 import com.redhat.rhn.domain.config.ConfigFile;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.configuration.ConfigActionHelper;
+import com.redhat.rhn.frontend.dto.ConfigSystemDto;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
@@ -29,7 +30,8 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
  */
 public class CopyFileSandboxAction extends BaseCopyConfigFileAction {
 
-    protected DataResult getDataResult(RequestContext rctxIn, PageControl pcIn) {
+    @Override
+    protected DataResult<ConfigSystemDto> getDataResult(RequestContext rctxIn, PageControl pcIn) {
         User user = rctxIn.getCurrentUser();
         ConfigFile file = ConfigActionHelper.getFile(rctxIn.getRequest());
         ConfigurationManager cm = ConfigurationManager.getInstance();
@@ -40,18 +42,22 @@ public class CopyFileSandboxAction extends BaseCopyConfigFileAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     public RhnSetDecl getSetDecl() {
         return RhnSetDecl.CONFIG_SYSTEMS;
     }
 
+    @Override
     protected String getLabel() {
         return ConfigChannelType.sandbox().getLabel();
     }
 
+    @Override
     protected String getType() {
         return BaseCopyConfigFileAction.SANDBOX_TYPE;
     }
 
+    @Override
     protected String getFilterAttr() {
         return BaseCopyConfigFileAction.SYSTEM_FILTER;
     }

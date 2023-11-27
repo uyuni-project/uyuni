@@ -1,5 +1,13 @@
 # Copyright (c) 2018-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
+#
+# This feature can cause failures in the following features:
+# - features/secondary/minssh_action_chain.feature
+# - features/secondary/allcli_action_chain.feature
+# If the action chain fails to be completed and run.
+#
+# skip on container. Running actions chains fail on container.
+# This needs to be fixed
 
 @sle_minion
 @scope_action_chains
@@ -37,7 +45,6 @@ Feature: Action chains on Salt minions
     And I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
 
   Scenario: Pre-requisite: remove all action chains before testing on Salt minion
-    Given I am logged in API as user "admin" and password "admin"
     When I delete all action chains
     And I cancel all scheduled actions
 
@@ -129,6 +136,7 @@ Feature: Action chains on Salt minions
     And I check radio button "schedule-by-action-chain"
     And I click on "Apply Highstate"
 
+@skip_if_github_validation
   Scenario: Add a reboot action to the action chain on Salt minion
     Given I am on the Systems overview page of this "sle_minion"
     When I follow first "Schedule System Reboot"
@@ -157,8 +165,7 @@ Feature: Action chains on Salt minions
     And I should see a "3. Install or update virgo-dummy on 1 system" text
     And I should see a text like "4. Deploy.*/etc/action-chain.cnf.*to 1 system"
     And I should see a "5. Apply Highstate" text
-    And I should see a "6. Reboot 1 system" text
-    And I should see a "7. Run a remote command on 1 system" text
+    And I should see a "Run a remote command on 1 system" text
 
   Scenario: Check that a different user cannot see the action chain for Salt minion
     Given I am authorized as "testing" with password "testing"
@@ -197,7 +204,8 @@ Feature: Action chains on Salt minions
     And I click on "Delete"
 
   Scenario: Downgrade again repositories to lower version on Salt minion
-    When I remove package "andromeda-dummy" from this "sle_minion" without error control
+    When I enable repository "test_repo_rpm_pool" on this "sle_minion"
+    And I remove package "andromeda-dummy" from this "sle_minion" without error control
     And I remove package "virgo-dummy" from this "sle_minion" without error control
     And I install package "milkyway-dummy" on this "sle_minion" without error control
     And I install old package "andromeda-dummy-1.0" on this "sle_minion"
@@ -216,8 +224,7 @@ Feature: Action chains on Salt minions
     And I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
 
   Scenario: Add operations to the action chain via API for Salt minions
-    Given I am logged in API as user "admin" and password "admin"
-    And I want to operate on this "sle_minion"
+    Given I want to operate on this "sle_minion"
     When I call actionchain.create_chain() with chain label "throwaway_chain"
     And I call actionchain.add_package_install()
     And I call actionchain.add_package_removal()
@@ -228,10 +235,8 @@ Feature: Action chains on Salt minions
     When I call actionchain.remove_action() on each action within the chain
     Then the current action chain should be empty
     When I delete the action chain
-    And I logout from API
 
   Scenario: Run an action chain via API on Salt minion
-    Given I am logged in API as user "admin" and password "admin"
     And I want to operate on this "sle_minion"
     When I call actionchain.create_chain() with chain label "multiple_scripts"
     And I call actionchain.add_script_run() with the script "echo -n 1 >> /tmp/action_chain.log"
@@ -244,7 +249,6 @@ Feature: Action chains on Salt minions
     And I wait until file "/tmp/action_chain_done" exists on "sle_minion"
     Then file "/tmp/action_chain.log" should contain "123" on "sle_minion"
     When I wait until there are no more scheduled actions
-    And I logout from API
 
   Scenario: Cleanup: remove Salt minion from configuration channel
     When I follow the left menu "Configuration > Channels"

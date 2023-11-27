@@ -36,6 +36,7 @@ public class WebSessionImpl implements WebSession {
     }
 
     /** {@inheritDoc} */
+    @Override
     public Long getId() {
         return id;
     }
@@ -49,11 +50,13 @@ public class WebSessionImpl implements WebSession {
     }
 
     /** {@inheritDoc} */
+    @Override
     public Long getWebUserId() {
         return webUserId;
     }
 
     /** {@inheritDoc} */
+    @Override
     public void setWebUserId(Long idIn) {
         if (idIn != null && idIn == 0) {
             throw new IllegalArgumentException("user id must be null or non-zero");
@@ -62,6 +65,7 @@ public class WebSessionImpl implements WebSession {
     }
 
     /** {@inheritDoc} */
+    @Override
     public User getUser() {
         if (webUserId != null) {
             return UserFactory.lookupById(webUserId);
@@ -70,16 +74,19 @@ public class WebSessionImpl implements WebSession {
     }
 
     /** {@inheritDoc} */
+    @Override
     public long getExpires() {
         return expires;
     }
 
     /** {@inheritDoc} */
+    @Override
     public void setExpires(long expIn) {
         expires = expIn;
     }
 
     /** {@inheritDoc} */
+    @Override
     public boolean isExpired() {
         long expireTime = getExpires();
         //if the expire time is less than the allowable values, it shouldn't be
@@ -89,6 +96,7 @@ public class WebSessionImpl implements WebSession {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getValue() {
         return value;
     }
@@ -100,6 +108,7 @@ public class WebSessionImpl implements WebSession {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getKey() {
         if (id == null || id < 0) {
             throw new InvalidSessionIdException("Attempted to get key for session with " +

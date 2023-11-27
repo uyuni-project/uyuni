@@ -1,6 +1,6 @@
 
-<script language="javascript" type="text/javascript" src="/javascript/ace-editor/src-min-noconflict/ace.js"></script>
-<script language="javascript" type="text/javascript" src="/javascript/ace-editor/src-min-noconflict/ext-modelist.js"></script>
+<script language="javascript" type="text/javascript" src="/javascript/legacy/ace-editor/ace.js"></script>
+<script language="javascript" type="text/javascript" src="/javascript/legacy/ace-editor/ext-modelist.js"></script>
 
 <!-- This fragment is obsolete and only includes the editor itself, but
       just add data-editor="language" to the textarea to ge the editor

@@ -15,6 +15,9 @@
 
 package com.redhat.rhn.testing;
 
+import com.suse.utils.Exceptions;
+
+import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.States;
 import org.jmock.api.Imposteriser;
@@ -51,6 +54,17 @@ public class MockObjectTestCase {
      */
     public void checking(ExpectationBuilder expectations) {
         context.checking(expectations);
+    }
+
+    /**
+     * @param expectationsConsumer consumer to build the expectations
+     */
+    public void checking(Exceptions.ThrowingConsumer<Expectations, Exception> expectationsConsumer) {
+        Exceptions.handleByWrapping(() -> {
+            Expectations expectations = new Expectations();
+            expectationsConsumer.accept(expectations);
+            context.checking(expectations);
+        });
     }
 
     /**

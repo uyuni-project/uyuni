@@ -20,7 +20,6 @@ import com.redhat.rhn.domain.server.Server;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -43,25 +42,9 @@ import java.util.Map;
     * show up on the correct class
     * @return Logger to use
     */
+    @Override
     protected Logger getLogger() {
         return log;
-    }
-
-    /**
-     * Create a new SystemMigration
-     * @return SystemMigration to be used.
-     */
-    public static SystemMigration createSystemMigration() {
-        return new SystemMigration();
-    }
-
-    /**
-     * Delete the system migration.
-     *
-     * @param migration the system migration to remove
-     */
-    public static void removeSystemMigration(SystemMigration migration) {
-        singleton.removeObject(migration);
     }
 
     /**
@@ -70,10 +53,7 @@ import java.util.Map;
      * @return list of SystemMigrations found
      */
     public static List<SystemMigration> lookupByFromOrg(Org fromOrg) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("fromOrg", fromOrg);
-        return singleton.listObjectsByNamedQuery(
-                "SystemMigration.lookupByFromOrg", params);
+        return singleton.listObjectsByNamedQuery("SystemMigration.lookupByFromOrg", Map.of("fromOrg", fromOrg));
     }
 
     /**
@@ -83,10 +63,7 @@ import java.util.Map;
      * @return list of SystemMigrations found
      */
     public static List<SystemMigration> lookupByToOrg(Org toOrg) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("toOrg", toOrg);
-        return singleton.listObjectsByNamedQuery(
-                "SystemMigration.lookupByToOrg", params);
+        return singleton.listObjectsByNamedQuery("SystemMigration.lookupByToOrg", Map.of("toOrg", toOrg));
     }
 
     /**
@@ -95,10 +72,7 @@ import java.util.Map;
      * @return list of SystemMigrations found
      */
     public static List<SystemMigration> lookupByServer(Server server) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("server", server);
-        return singleton.listObjectsByNamedQuery(
-                "SystemMigration.lookupByServer", params);
+        return singleton.listObjectsByNamedQuery("SystemMigration.lookupByServer", Map.of("server", server));
     }
 
     /**

@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.common.util.test;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -42,10 +43,10 @@ public class DatePickerTest  {
     public void testDateFormat() {
         DatePicker p = makePicker(Locale.ENGLISH);
         assertTrue(p.isLatin());
-        assertTrue(!p.isDayBeforeMonth());
+        assertFalse(p.isDayBeforeMonth());
 
         p = makePicker(Locale.GERMAN);
-        assertTrue(!p.isLatin());
+        assertFalse(p.isLatin());
         assertTrue(p.isDayBeforeMonth());
     }
 
@@ -78,7 +79,7 @@ public class DatePickerTest  {
 
     @Test
     public void testReadWriteFromMap() throws ParseException {
-        Map form = new HashMap();
+        Map<String, Integer> form = new HashMap<>();
         DatePicker p = makePicker(Locale.ENGLISH);
         Date d = parseDate("1996-08-03T15:33");
         p.setDate(d);

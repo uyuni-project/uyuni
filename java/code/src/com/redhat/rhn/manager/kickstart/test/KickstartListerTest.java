@@ -18,7 +18,6 @@ package com.redhat.rhn.manager.kickstart.test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.common.CommonFactory;
@@ -64,7 +63,7 @@ public class KickstartListerTest extends BaseTestCaseWithUser {
    public void testKickstartsInOrg() throws Exception {
         KickstartData k = KickstartDataTest.createKickstartWithOptions(user.getOrg());
         DataResult dr = KickstartLister.getInstance().kickstartsInOrg(k.getOrg(), null);
-        assertTrue(dr.size() > 0);
+        assertFalse(dr.isEmpty());
         KickstartDto row = (KickstartDto) dr.get(0);
         assertNotNull(row.getId());
         assertEquals(k.getOrg().getId().longValue(), row.getOrgId().longValue());
@@ -75,31 +74,31 @@ public class KickstartListerTest extends BaseTestCaseWithUser {
    }
 
     @Test
-   public void testListKeys() throws Exception {
+   public void testListKeys() {
        Org o = UserTestUtils.findNewOrg(TestStatics.TESTORG);
        CryptoKey key = CryptoTest.createTestKey(o);
        KickstartFactory.saveCryptoKey(key);
        flushAndEvict(key);
 
-       DataResult dr = KickstartLister.getInstance().cryptoKeysInOrg(o);
-       assertTrue(dr.size() > 0);
-       assertTrue(dr.get(0) instanceof CryptoKeyDto);
+       DataResult<CryptoKeyDto> dr = KickstartLister.getInstance().cryptoKeysInOrg(o);
+        assertFalse(dr.isEmpty());
+        assertNotNull(dr.get(0));
    }
 
     @Test
-   public void testListFiles() throws Exception {
+   public void testListFiles() {
        Org o = UserTestUtils.findNewOrg(TestStatics.TESTORG);
        FileList f = FileListTest.createTestFileList(o);
        CommonFactory.saveFileList(f);
        flushAndEvict(f);
 
-       DataResult dr = KickstartLister.getInstance().preservationListsInOrg(o, null);
-       assertTrue(dr.get(0) instanceof FilePreservationDto);
-       assertTrue(dr.size() > 0);
+       DataResult<FilePreservationDto> dr = KickstartLister.getInstance().preservationListsInOrg(o, null);
+       assertNotNull(dr.get(0));
+        assertFalse(dr.isEmpty());
    }
 
     @Test
-    public void testGetActivationKeysInOrg() throws Exception {
+    public void testGetActivationKeysInOrg() {
         ActivationKeyFactory.createNewKey(user, null, "ak- " + TestUtils.randomString(),
                 "", 1L, null, true);
 
@@ -112,7 +111,7 @@ public class KickstartListerTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testGetBootstrapActivationKeysInOrg() throws Exception {
+    public void testGetBootstrapActivationKeysInOrg() {
         ActivationKey activationKey =
                 ActivationKeyFactory.createNewKey(user, null,
                         "ak- " + TestUtils.randomString(), "", 1L, null, true);
@@ -127,14 +126,13 @@ public class KickstartListerTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testGetActiveActivationKeysInOrg() throws Exception {
+    public void testGetActiveActivationKeysInOrg() {
         ActivationKeyFactory.createNewKey(user, null, "ak- " + TestUtils.randomString(),
                 "", 1L, null, true);
 
         PageControl pc = new PageControl();
         pc.setStart(1);
 
-        @SuppressWarnings("unchecked")
         DataResult<ActivationKeyDto> result =
                 KickstartLister.getInstance().getActiveActivationKeysInOrg(user.getOrg(),
                         pc);
@@ -142,7 +140,7 @@ public class KickstartListerTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testGetBootstrapActiveActivationKeysInOrg() throws Exception {
+    public void testGetBootstrapActiveActivationKeysInOrg() {
         ActivationKey activationKey =
                 ActivationKeyFactory.createNewKey(user, null,
                         "ak- " + TestUtils.randomString(), "", 1L, null, true);
@@ -151,7 +149,6 @@ public class KickstartListerTest extends BaseTestCaseWithUser {
         PageControl pc = new PageControl();
         pc.setStart(1);
 
-        @SuppressWarnings("unchecked")
         DataResult<ActivationKeyDto> result =
                 KickstartLister.getInstance().getActiveActivationKeysInOrg(user.getOrg(),
                         pc);
@@ -159,7 +156,7 @@ public class KickstartListerTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testListCobblerProfiles() throws Exception {
+    public void testListCobblerProfiles() {
         CobblerConnection connection = CobblerXMLRPCHelper.getConnection("test");
         Distro distro = new Distro.Builder<Map<String, Object>>()
                 .setName("test-distro")

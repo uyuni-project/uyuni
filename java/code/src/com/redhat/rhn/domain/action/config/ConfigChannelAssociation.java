@@ -69,6 +69,7 @@ public class ConfigChannelAssociation extends ActionChild implements Serializabl
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(Object obj) {
         if (obj == null || !(obj instanceof ConfigChannelAssociation)) {
             return false;
@@ -85,6 +86,7 @@ public class ConfigChannelAssociation extends ActionChild implements Serializabl
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder().append(getServer())
                                     .append(getCreated())

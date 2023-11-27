@@ -17,6 +17,7 @@ package com.redhat.rhn.frontend.action.kickstart;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.rhnset.RhnSetElement;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.CryptoKeyDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.kickstart.KickstartCryptoKeyCommand;
 import com.redhat.rhn.manager.kickstart.KickstartLister;
@@ -40,8 +41,9 @@ public class KickstartCryptoKeysSubmitAction extends BaseKickstartListSubmitActi
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void operateOnRemovedElements(List<RhnSetElement> elements,
-            HttpServletRequest request) {
+                                            HttpServletRequest request) {
         RequestContext rctx = new RequestContext(request);
         KickstartCryptoKeyCommand cmd = new KickstartCryptoKeyCommand(
                 rctx.getRequiredParam(RequestContext.KICKSTART_ID), rctx.getCurrentUser());
@@ -53,8 +55,9 @@ public class KickstartCryptoKeysSubmitAction extends BaseKickstartListSubmitActi
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void operateOnAddedElements(List<RhnSetElement> elements,
-            HttpServletRequest request) {
+                                          HttpServletRequest request) {
         RequestContext rctx = new RequestContext(request);
         KickstartCryptoKeyCommand cmd = new KickstartCryptoKeyCommand(
                 rctx.getRequiredParam(RequestContext.KICKSTART_ID), rctx.getCurrentUser());
@@ -66,22 +69,26 @@ public class KickstartCryptoKeysSubmitAction extends BaseKickstartListSubmitActi
      *
      * {@inheritDoc}
      */
+    @Override
     public RhnSetDecl getSetDecl() {
         return RhnSetDecl.GPGSSL_KEYS;
     }
 
-    protected DataResult getDataResult(User user,
-                                       ActionForm formIn,
-                                       HttpServletRequest request) {
+    @Override
+    protected DataResult<CryptoKeyDto> getDataResult(User user,
+                                                     ActionForm formIn,
+                                                     HttpServletRequest request) {
         RequestContext rctx = new RequestContext(request);
         return KickstartLister.getInstance().
             cryptoKeysInOrg(rctx.getCurrentUser().getOrg());
     }
 
+    @Override
     protected void processMethodKeys(Map<String, String> map) {
         map.put(UPDATE_METHOD, "operateOnDiff");
     }
 
+    @Override
     protected Iterator getCurrentItemsIterator(RequestContext ctx) {
         KickstartCryptoKeyCommand cmd = new KickstartCryptoKeyCommand(
                 ctx.getRequiredParam(RequestContext.KICKSTART_ID), ctx.getCurrentUser());

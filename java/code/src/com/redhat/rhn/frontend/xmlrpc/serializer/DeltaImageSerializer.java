@@ -15,6 +15,7 @@
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.domain.image.DeltaImageInfo;
+import com.redhat.rhn.frontend.xmlrpc.util.PillarUtils;
 
 import com.suse.manager.api.ApiResponseSerializer;
 import com.suse.manager.api.SerializationBuilder;
@@ -43,7 +44,7 @@ public class DeltaImageSerializer extends ApiResponseSerializer<DeltaImageInfo> 
                 .add("source_id", src.getSourceImageInfo().getId())
                 .add("target_id", src.getTargetImageInfo().getId())
                 .add("file", src.getFile())
-                .add("pillar", src.getPillar().getPillar())
+                .add("pillar", PillarUtils.convertSizeToString(src.getPillar().getPillar()))
                 .build();
     }
 }

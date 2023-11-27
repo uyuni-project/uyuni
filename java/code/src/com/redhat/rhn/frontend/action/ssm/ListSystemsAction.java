@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.action.ssm;
 
+import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -35,15 +36,16 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * ListSystemsAction
  */
-public class ListSystemsAction extends RhnAction implements Listable {
+public class ListSystemsAction extends RhnAction implements Listable<SystemOverview> {
 
     /**
      * ${@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-            ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
         ListHelper helper = new ListHelper(this, request);
         helper.setListName("systemList");
         helper.setDataSetName(RequestContext.PAGE_LIST);
@@ -54,8 +56,8 @@ public class ListSystemsAction extends RhnAction implements Listable {
     /**
      * ${@inheritDoc}
      */
-    public List getResult(RequestContext context) {
-        return SystemManager.inSet(context.getCurrentUser(),
-                RhnSetDecl.SYSTEMS.getLabel());
+    @Override
+    public List<SystemOverview> getResult(RequestContext context) {
+        return SystemManager.inSet(context.getCurrentUser(), RhnSetDecl.SYSTEMS.getLabel());
     }
 }

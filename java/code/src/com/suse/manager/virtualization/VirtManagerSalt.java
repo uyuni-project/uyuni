@@ -186,6 +186,7 @@ public class VirtManagerSalt implements VirtManager {
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<JsonObject> getHostDevices(String minionId) {
         LocalCall<List<JsonObject>> call =
                 new LocalCall<>("virt.node_devices", Optional.empty(), Optional.empty(),
@@ -197,6 +198,7 @@ public class VirtManagerSalt implements VirtManager {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Map<String, JsonObject> getPools(String minionId) {
         Map<String, Object> args = new LinkedHashMap<>();
         LocalCall<Map<String, JsonElement>> call =
@@ -231,6 +233,7 @@ public class VirtManagerSalt implements VirtManager {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void updateLibvirtEngine(MinionServer minion) {
         Map<String, Object> pillar = new HashMap<>();
         pillar.put("virt_entitled", minion.hasVirtualizationEntitlement());
@@ -241,6 +244,7 @@ public class VirtManagerSalt implements VirtManager {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Optional<HostInfo> getHostInfo(String minionId) {
         LocalCall<HostInfo> call =
                 new LocalCall<>("virt_utils.host_info", Optional.empty(), Optional.empty(),
@@ -269,6 +273,7 @@ public class VirtManagerSalt implements VirtManager {
      *
      * @return the plan to pass to {@link VirtualInstanceManager#updateGuestsVirtualInstances(Server, List)}
      */
+    @Override
     public Optional<List<VmInfo>> getGuestsUpdatePlan(String minionId) {
         // Get the list of VMs with at least (name, cpu, memory, status) virt.vm_info
         LocalCall<Map<String, Map<String, Object>>> call =

@@ -45,9 +45,10 @@ public class SnapshotTagsDeleteAction extends RhnAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping, ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
         RequestContext context = new RequestContext(request);
         Long sid = context.getRequiredParam("sid");
         User user =  context.getCurrentUser();
@@ -69,7 +70,7 @@ public class SnapshotTagsDeleteAction extends RhnAction {
                     Integer.valueOf(set.size()).toString());
             set.clear();
             RhnSetManager.store(set);
-            Map params = makeParamMap(request);
+            Map<String, Object> params = makeParamMap(request);
             params.put("sid", server.getId());
             return getStrutsDelegate().forwardParams(
                     mapping.findForward(RhnHelper.CONFIRM_FORWARD), params);

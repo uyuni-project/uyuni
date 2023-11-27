@@ -1,7 +1,8 @@
-# Copyright (c) 2015-2021 SUSE LLC
+# Copyright (c) 2015-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: SMBDA database helper tool
+@scope_smdba
+Feature: SMDBA database helper tool
   In order to protect the data in Uyuni
   As a database administrator
   I want to easily take backups and snapshots
@@ -57,11 +58,11 @@ Feature: SMBDA database helper tool
     Given a postgresql database is running
     And there is no such "/smdba-backup-test" directory
     When I create backup directory "/smdba-backup-test" with UID "root" and GID "root"
-    And I issue command "smdba backup-hot --enable=on --backup-dir=/smdba-backup-test"
+    And I take a backup with smdba in folder "/smdba-backup-test"
     Then I should see error message that asks "/smdba-backup-test" belong to the same UID/GID as "/var/lib/pgsql/data" directory
     And I remove backup directory "/smdba-backup-test"
     When I create backup directory "/smdba-backup-test" with UID "postgres" and GID "postgres"
-    And I issue command "smdba backup-hot --enable=on --backup-dir=/smdba-backup-test"
+    And I take a backup with smdba in folder "/smdba-backup-test"
     Then I should see error message that asks "/smdba-backup-test" has same permissions as "/var/lib/pgsql/data" directory
     And I remove backup directory "/smdba-backup-test"
 
@@ -70,7 +71,7 @@ Feature: SMBDA database helper tool
     And there is no such "/smdba-backup-test" directory
     When I create backup directory "/smdba-backup-test" with UID "postgres" and GID "postgres"
     And I change Access Control List on "/smdba-backup-test" directory to "0700"
-    And I issue command "smdba backup-hot --enable=on --backup-dir=/smdba-backup-test"
+    And I take a backup with smdba in folder "/smdba-backup-test"
     Then base backup is taken
     And in "/smdba-backup-test" directory there is "base.tar.gz" file and at least one backup checkpoint file
     And parameter "archive_command" in the configuration file "/var/lib/pgsql/data/postgresql.conf" is "/usr/bin/smdba-pgarchive"
@@ -82,10 +83,12 @@ Feature: SMBDA database helper tool
     When I set a checkpoint
     And I issue command "smdba backup-hot"
     And in the database I create dummy table "dummy" with column "test" and value "bogus data"
+    And I stop the database with the command "smdba db-stop"
     And I destroy "/var/lib/pgsql/data/pg_xlog" directory on server
     And I destroy "/var/lib/pgsql/data/pg_wal" directory on server
     And I restore database from the backup
     And I issue command "smdba db-status"
+    Then the database should be "online"
 
   Scenario: Cleanup: remove backup directory
     Given a postgresql database is running

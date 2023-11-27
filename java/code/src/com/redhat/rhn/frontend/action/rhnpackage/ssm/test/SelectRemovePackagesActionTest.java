@@ -34,6 +34,7 @@ public class SelectRemovePackagesActionTest extends RhnMockStrutsTestCase {
 
     private SsmActionTestUtils utils;
 
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
@@ -74,7 +75,7 @@ public class SelectRemovePackagesActionTest extends RhnMockStrutsTestCase {
         verifyForward("confirm");
     }
 
-    private void selectAllPackagesInUI() throws Exception {
+    private void selectAllPackagesInUI() {
 
         String[] itemsSelected = new String[] {
             "dummy"

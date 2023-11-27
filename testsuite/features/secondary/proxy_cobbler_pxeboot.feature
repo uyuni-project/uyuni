@@ -1,7 +1,10 @@
-# Copyright (c) 2021-2022 SUSE LLC
+# Copyright (c) 2021-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
-#
 
+# We also test 'Bootstrapping using the command line' in this feature with the following script:
+# https://github.com/uyuni-project/uyuni/blob/master/java/conf/cobbler/snippets/minion_script
+
+@skip_if_github_validation
 @proxy
 @private_net
 @pxeboot_minion
@@ -13,7 +16,9 @@ Feature: PXE boot a terminal with Cobbler
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
-    And I am logged in API as user "admin" and password "admin"
+
+  Scenario: Start Cobbler monitoring
+    When I start local monitoring of Cobbler
 
   Scenario: Configure PXE part of DHCP on the proxy
     Given I am on the Systems overview page of this "proxy"
@@ -30,9 +35,17 @@ Feature: PXE boot a terminal with Cobbler
     And I click on "Apply Highstate"
     And I wait until event "Apply highstate scheduled by admin" is completed
 
+  # We currently test Cobbler with SLES 15 SP4, even on Uyuni
+  @susemanager
   Scenario: Install TFTP boot package on the server
     When I install package tftpboot-installation on the server
     And I wait for "tftpboot-installation-SLE-15-SP4-x86_64" to be installed on "server"
+
+# TODO: use this code when we start testing Cobbler with Leap
+#@uyuni
+# Scenario: Install TFTP boot package on the server
+#   When I install package tftpboot-installation on the server
+#   And I wait for "tftpboot-installation-openSUSE-Leap-15.5-x86_64" to be installed on "server"
 
   Scenario: Create auto installation distribution
     When I follow the left menu "Systems > Autoinstallation > Distributions"
@@ -68,16 +81,22 @@ Feature: PXE boot a terminal with Cobbler
     When I enter "self_update=0" as "kernel_options"
     And I click on "Update"
     And I follow "Variables"
-    And I enter "distrotree=SLE-15-SP4-TFTP\nregistration_key=1-SUSE-KEY-x86_64\nredhat_management_server=proxy.example.org" as "variables" text area
+    And I enter "distrotree=SLE-15-SP4-TFTP\nregistration_key=1-TERMINAL-KEY-x86_64\nredhat_management_server=proxy.example.org" as "variables" text area
     And I click on "Update Variables"
     And I follow "Autoinstallation File"
     Then I should see a "SLE-15-SP4-TFTP" text
 
-  Scenario: Set up tftp installation
+  Scenario: Migration of cobbler settings
+    Given cobblerd is running
+    And cobbler settings are successfully migrated
+    When I restart cobbler on the server
+    Then service "cobblerd" is active on "server"
+
+  Scenario: Set up tftp installation and synchronize it
     When I configure tftp on the "server"
     And I start tftp on the proxy
     And I configure tftp on the "proxy"
-    And I synchronize the tftp configuration on the proxy with the server
+    And I run Cobbler sync with error checking
 
   Scenario: Restart squid so proxy.example.org is recognized
     When I restart squid service on the proxy
@@ -89,8 +108,10 @@ Feature: PXE boot a terminal with Cobbler
     And I set the default PXE menu entry to the local boot on the "proxy"
     And I wait at most 1200 seconds until Salt master sees "pxeboot_minion" as "unaccepted"
     And I accept "pxeboot_minion" key in the Salt master
-    And I am on the Systems page
-    And I wait until I see the name of "pxeboot_minion", refreshing the page
+
+  Scenario: Assure the PXE boot minion is onboarded
+    Given I am on the Systems page
+    When I wait until I see the name of "pxeboot_minion", refreshing the page
     And I wait until onboarding is completed for "pxeboot_minion"
     Then "pxeboot_minion" should have been reformatted
 
@@ -104,7 +125,7 @@ Feature: PXE boot a terminal with Cobbler
     And I follow "Software" in the content area
     And I follow "Install"
     And I enter "virgo-dummy-2.0-1.1" as the filtered package name
-    And I click on the filter button 
+    And I click on the filter button
     And I check "virgo-dummy-2.0-1.1" in the list
     And I click on "Install Selected Packages"
     And I click on "Confirm"
@@ -123,18 +144,20 @@ Feature: PXE boot a terminal with Cobbler
     When I follow "SLE-15-SP4-TFTP"
     And I follow "Delete Distribution"
     And I click on "Delete Distribution"
-    And I remove package "tftpboot-installation-SLE-15-SP4-x86_64" from this "server"
-    And I wait for "tftpboot-installation-SLE-15-SP4-x86_64" to be uninstalled on "server"
     Then I should not see a "SLE-15-SP4-TFTP" text
 
+  Scenario: Cleanup: remove TFTP boot package from the server
+    And I remove package "tftpboot-installation-SLE-15-SP4-x86_64" from this "server" without error control
+    And I wait for "tftpboot-installation-SLE-15-SP4-x86_64" to be uninstalled on "server"
+
   Scenario: Cleanup: delete the PXE boot minion
-    Given I am on the Systems overview page of this "pxeboot_minion"
+    Given I navigate to the Systems overview page of this "pxeboot_minion"
     When I follow "Delete System"
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
     And I wait until I see "has been deleted" text
+    And I wait until Salt client is inactive on the PXE boot minion
     Then "pxeboot_minion" should not be registered
-    And I stop salt-minion on the PXE boot minion
 
   Scenario: Cleanup: the PXE boot minion prefers booting via saltboot
     Given I am on the Systems overview page of this "proxy"
@@ -150,5 +173,9 @@ Feature: PXE boot a terminal with Cobbler
     And I click on "Apply Highstate"
     And I wait until event "Apply highstate scheduled by admin" is completed
 
-  Scenario: Cleanup: Logout from API
-    When I logout from API
+@flaky
+  Scenario: Check for errors in Cobbler monitoring
+    Then the local logs for Cobbler should not contain errors
+
+  Scenario: Cleanup Cobbler after the feature has run
+    When I cleanup Cobbler files and restart apache and cobblerd services

@@ -20,7 +20,6 @@
 # Old name and version+1 before renaming to mgr-push
 %define oldname rhnpush
 %define oldversion 5.5.114
-%{!?pylint_check: %global pylint_check 0}
 %global __python /usr/bin/python2
 
 %if 0%{?fedora} || 0%{?suse_version} > 1320 || 0%{?rhel} >= 8
@@ -39,7 +38,7 @@ Summary:        Package uploader for the Spacewalk
 License:        GPL-2.0-only
 Group:          Applications/System
 URL:            https://github.com/uyuni-project/uyuni
-Version:        4.4.1
+Version:        4.4.5
 Release:        1
 Provides:       %{oldname} = %{oldversion}
 Obsoletes:      %{oldname} < %{oldversion}
@@ -52,14 +51,7 @@ BuildArch:      noarch
 Requires:       %{pythonX}-%{name} = %{version}-%{release}
 BuildRequires:  docbook-utils
 BuildRequires:  gettext
-%if 0%{?pylint_check}
-%if 0%{?build_py2}
-BuildRequires:  spacewalk-python2-pylint
-%endif
-%if 0%{?build_py3}
-BuildRequires:  spacewalk-python3-pylint
-%endif
-%endif
+BuildRequires:  make
 
 %description
 rhnpush uploads package headers to the Spacewalk
@@ -139,19 +131,6 @@ make -f Makefile.rhnpush install PREFIX=$RPM_BUILD_ROOT ROOT=%{python3_sitelib} 
 ln -s rhnpush%{default_suffix} $RPM_BUILD_ROOT%{_bindir}/rhnpush
 %if 0%{?suse_version}
 ln -s rhnpush $RPM_BUILD_ROOT/%{_bindir}/mgrpush
-%endif
-
-%check
-%if 0%{?pylint_check}
-# check coding style
-%if 0%{?build_py2}
-export PYTHONPATH=$RPM_BUILD_ROOT%{python_sitelib}
-spacewalk-python2-pylint $RPM_BUILD_ROOT%{_bindir} $RPM_BUILD_ROOT%{python_sitelib}
-%endif
-%if 0%{?build_py3}
-export PYTHONPATH=$RPM_BUILD_ROOT%{python3_sitelib}
-spacewalk-python3-pylint $RPM_BUILD_ROOT%{_bindir} $RPM_BUILD_ROOT%{python3_sitelib}
-%endif
 %endif
 
 %files

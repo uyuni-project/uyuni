@@ -16,7 +16,6 @@ package com.redhat.rhn.frontend.action.errata.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.channel.Channel;
@@ -39,6 +38,7 @@ import org.junit.jupiter.api.Test;
  */
 public class CloneConfirmSetupActionTest extends RhnMockStrutsTestCase {
 
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
@@ -70,6 +70,6 @@ public class CloneConfirmSetupActionTest extends RhnMockStrutsTestCase {
 
         DataResult dr = (DataResult) request.getAttribute("errataList");
         assertNotNull(dr);
-        assertTrue(dr.size() == 5);
+        assertEquals(5, dr.size());
     }
 }

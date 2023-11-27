@@ -142,33 +142,33 @@ public class RendererTest extends RhnBaseTestCase {
 
 
         // preNavLevel
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         r.preNavLevel(buf, depth);
         assertEquals(exp.get("preNavLevel"), buf.toString());
 
         // preNavNode
-        buf = new StringBuffer();
+        buf = new StringBuilder();
         r.preNavNode(buf, depth);
         assertEquals(exp.get("preNavNode"), buf.toString());
 
 
         // navNodeActive
-        buf = new StringBuffer();
+        buf = new StringBuilder();
         r.navNodeActive(buf, node, treeIndex, null, depth);
         assertEquals(exp.get("navNodeActive"), buf.toString());
 
         // navNodeInactive
-        buf = new StringBuffer();
+        buf = new StringBuilder();
         r.navNodeInactive(buf, node, treeIndex, null, depth);
         assertEquals(exp.get("navNodeInactive"), buf.toString());
 
         // postNavNode
-        buf = new StringBuffer();
+        buf = new StringBuilder();
         r.postNavNode(buf, depth);
         assertEquals(exp.get("postNavNode"), buf.toString());
 
         // postNavLevel
-        buf = new StringBuffer();
+        buf = new StringBuilder();
         r.postNavLevel(buf, depth);
         assertEquals(exp.get("postNavLevel"), buf.toString());
 
@@ -219,6 +219,7 @@ public class RendererTest extends RhnBaseTestCase {
          * @param depth the current depth
          * @return boolean whether or not to render
          */
+        @Override
         public boolean canRender(NavNode node, int depth) {
             return false;
         }
@@ -236,6 +237,7 @@ public class RendererTest extends RhnBaseTestCase {
          * @param depth the current depth
          * @return boolean whether or not to render
          */
+        @Override
         public boolean canRender(NavNode node, int depth) {
             return true;
         }

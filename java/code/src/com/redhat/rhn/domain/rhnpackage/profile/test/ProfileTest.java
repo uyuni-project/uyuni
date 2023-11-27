@@ -16,9 +16,9 @@ package com.redhat.rhn.domain.rhnpackage.profile.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
@@ -59,16 +59,16 @@ public class ProfileTest extends RhnBaseTestCase {
         Channel channel = ChannelFactoryTest.createTestChannel(user);
         Profile p1 = createTestProfile(user, channel);
         Profile p2 = new Profile();
-        assertFalse(p1.equals(p2));
+        assertNotEquals(p1, p2);
 
         /*
          * Get coverage on the "!(other instanceof Profile)" block
          * of Profile.equals()
          */
-        assertFalse(p1.equals(channel));
+        assertNotEquals(p1, channel);
 
         p2 = lookupByIdAndOrg(p1.getId(), user.getOrg());
-        assertTrue(p1.equals(p2));
+        assertEquals(p1, p2);
     }
 
     /**
@@ -76,9 +76,8 @@ public class ProfileTest extends RhnBaseTestCase {
      * @param id The profile id
      * @param org The org for this profile.
      * @return Returns the Profile corresponding to id
-     * @throws Exception something bad happened
      */
-    public static Profile lookupByIdAndOrg(Long id, Org org) throws Exception {
+    public static Profile lookupByIdAndOrg(Long id, Org org) {
         Session session = HibernateFactory.getSession();
         return (Profile) session.getNamedQuery("Profile.findByIdAndOrg")
                                     .setLong("id", id)
@@ -91,10 +90,8 @@ public class ProfileTest extends RhnBaseTestCase {
      * @param user the user
      * @param channel the channel
      * @return Returns a fresh Profile
-     * @throws Exception something bad happened
      */
-    public static Profile createTestProfile(User user, Channel channel)
-        throws Exception {
+    public static Profile createTestProfile(User user, Channel channel) {
 
         Profile p = new Profile();
         p.setInfo("Test information for a test Profile.");

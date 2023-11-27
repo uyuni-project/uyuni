@@ -259,7 +259,7 @@ public class ContentProject extends BaseDomainHelper {
         }
         consume(position,
                 () -> sources.add(source),
-                (p) -> sources.add(p, source)
+                p -> sources.add(p, source)
         );
 
         // fix the order

@@ -22,12 +22,10 @@ import static spark.Spark.post;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.action.ActionChain;
-import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.frontend.dto.EssentialChannelDto;
 import com.redhat.rhn.frontend.dto.EssentialServerDto;
 import com.redhat.rhn.frontend.dto.SystemsPerChannelDto;
@@ -41,6 +39,7 @@ import com.redhat.rhn.manager.system.SystemManager;
 
 import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
+import com.suse.manager.webui.utils.MinionActionUtils;
 import com.suse.manager.webui.utils.gson.ResultJson;
 import com.suse.manager.webui.utils.gson.SsmAllowedBaseChannelsJson;
 import com.suse.manager.webui.utils.gson.SsmBaseChannelChangesDto;
@@ -51,10 +50,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -187,15 +184,9 @@ public class SsmController {
      */
     public static String changeChannels(Request request, Response response, User user) {
         SsmScheduleChannelChangesJson changes = GSON.fromJson(request.body(), SsmScheduleChannelChangesJson.class);
-        ZoneId zoneId = Context.getCurrentContext().getTimezone().toZoneId();
-        Date earliestDate = Date.from(
-                changes.getEarliest().orElseGet(LocalDateTime::now).atZone(zoneId).toInstant()
-        );
 
-        ActionChain actionChain = changes.getActionChain()
-                .filter(StringUtils::isNotEmpty)
-                .map(label -> ActionChainFactory.getOrCreateActionChain(label, user))
-                .orElse(null);
+        Date earliestDate = MinionActionUtils.getScheduleDate(changes.getEarliest());
+        ActionChain actionChain = MinionActionUtils.getActionChain(changes.getActionChain(), user);
 
         List<ScheduleChannelChangesResultDto> scheduleResult =
                 SsmManager.scheduleChannelChanges(changes.getChanges(), earliestDate, actionChain, user);

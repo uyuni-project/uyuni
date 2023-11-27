@@ -30,17 +30,19 @@ The corresponding notion in Cucumber steps is "step host names".
 
 Possible values are currently:
 
-| Test host | Ruby target |  Bash environment variable | Step host name | sumaform module |
-| --------- | ----------- | -------------------------- | -------------- | --------------- |
-| Uyuni server | ```$server``` | ```$SERVER``` |  | ```"suse_manager"``` |
-| Uyuni proxy | ```$proxy``` | ```$PROXY``` | ```"proxy"``` | ```"suse_manager_proxy"``` |
-| SLES Salt minion | ```$minion``` | ```$MINION``` | ```"sle_minion"``` | ```"minion"``` |
-| SLES Docker and Kiwi build host | ```$build_host``` | ```$BUILD_HOST``` | ```"build_host"``` | ```"minion"``` |
-| SLES Salt SSH minion | ```$ssh_minion``` | ```$SSH_MINION``` | ```"ssh_minion"``` | ```"minion"``` |
-| Red Hat-like Salt minion | ```$rhlike_minion``` | ```$RHLIKE_MINION``` | ```"rhlike_minion"``` | ```"minion"``` |
-| Debian-like Salt minion | ```$deblike_minion``` | ```$DEBLIKE_MINION``` | ```"deblike_minion"``` | ```"minion"``` |
-| PXE-boot minion |  None | ```$PXEBOOT_MAC``` | ```"pxeboot_minion"``` | ```"pxeboot"``` |
-| KVM virtual host minion | ```$kvm_server``` | ```$VIRTHOST_KVM_URL``` and ```$VIRTHOST_KVM_PASSWORD``` | ```"kvm_server"``` | ```"virthost"``` |
+| Test host                       | Ruby target              | Bash environment variable                                | Step host name           | sumaform module            |
+|---------------------------------|--------------------------|----------------------------------------------------------|--------------------------|----------------------------|
+| Uyuni server                    | ```$server```            | ```$SERVER```                                            |                          | ```"suse_manager"```       |
+| Uyuni proxy                     | ```$proxy```             | ```$PROXY```                                             | ```"proxy"```            | ```"suse_manager_proxy"``` |
+| SLES Salt minion                | ```$minion```            | ```$MINION```                                            | ```"sle_minion"```       | ```"minion"```             |
+| SLES Docker and Kiwi build host | ```$build_host```        | ```$BUILD_HOST```                                        | ```"build_host"```       | ```"build_host"```         |
+| Monitoring Server               | ```$monitoring_server``` | ```$MONITORING_SERVER```                                 | ```"monitoring_server``` | ```"minion"```             |
+| SLES Salt SSH minion            | ```$ssh_minion```        | ```$SSH_MINION```                                        | ```"ssh_minion"```       | ```"minion"```             |
+| Red Hat-like Salt minion        | ```$rhlike_minion```     | ```$RHLIKE_MINION```                                     | ```"rhlike_minion"```    | ```"minion"```             |
+| Debian-like Salt minion         | ```$deblike_minion```    | ```$DEBLIKE_MINION```                                    | ```"deblike_minion"```   | ```"minion"```             |
+| PXE-boot minion                 | None                     | ```$PXEBOOT_MAC```                                       | ```"pxeboot_minion"```   | ```"pxeboot"```            |
+| KVM virtual host minion         | ```$kvm_server```        | ```$VIRTHOST_KVM_URL``` and ```$VIRTHOST_KVM_PASSWORD``` | ```"kvm_server"```       | ```"virthost"```           |
+| Salt bundle migration minion (nested VM)  | ```$salt_migration_minion```      | ```$MIN_NESTED```                                        | ```"salt_migration_minion"```       |      ```"virthost"```       |
 
 These names are such for historical reasons and might be made better in the future.
 
@@ -282,7 +284,7 @@ The radio button can be identified by name, id or label text.
 * Make sure a radio button is checked
 
 ```gherkin
-  Then radio button "radio-comma" is checked
+  Then radio button "radio-comma" should be checked
 ```
 
 * Click on a given check box
@@ -290,7 +292,7 @@ The radio button can be identified by name, id or label text.
 ```gherkin
   When I check "manageWithSSH"
   When I uncheck "role_org_admin"
-  When I check "container_build_host" if not checked
+  When I check "Container Build Host" if not checked
 ```
 
 The check box can be identified by name, id or label text.
@@ -354,10 +356,10 @@ The check box can be identified by name, id or label text.
 
 Note that the text area variant handles the new lines characters while the others don't.
 
-* Make sure a text is in a given input field of a form
+* Make sure a text is in a given input field of a form. The identifier can be the name or ID of the element, but it's always the HTML label, not the shown text.
 
 ```gherkin
-  Then I should see "20" in field "usageLimit"
+  Then I should see "20" in field identified by "usageLimit"
 ```
 
 * Type text in the text editor
@@ -411,7 +413,13 @@ Note that the text area variant handles the new lines characters while the other
   When I restart the spacewalk service
   When I wait until "salt-minion" service is up and running on "rhlike_minion"
   Then service "bind" is enabled on "proxy"
-  Then service "dhcpd" is running on "proxy"
+  And service "dhcpd" is running on "proxy"
+  When I restart the "bind" service on "sle_minion"
+  And I start the "apache2" service on "proxy"
+  And I stop the "apache2" service on "proxy"
+  And I reload the "apache2" service on "proxy"
+  And I enable the "apache2" service on "proxy"
+  And I disable the "apache2" service on "proxy"
 ```
 
 * File removal
@@ -463,10 +471,10 @@ Note that the text area variant handles the new lines characters while the other
   When I execute mgr-sync "list channels -e" with user "admin" and password "admin"
 ```
 
-* Execute mgr-bootstrap
+* Execute mgr-bootstrap to create a bootstrap script
 
 ```gherkin
-  When I execute mgr-bootstrap "--script=bootstrap-test.sh"
+  When I execute mgr-bootstrap "--activation-keys=1-AK-KEY-NAME --script=bootstrap-test.sh"
 ```
 
 * Execute mgr-create-bootstrap-repo
@@ -506,7 +514,7 @@ Note that the text area variant handles the new lines characters while the other
 * Download a package from a channel
 
 ```gherkin
-  When I try to download "virgo-dummy-2.0-1.1.noarch.rpm" from channel "test-channel-x86_64"
+  When I try to download "virgo-dummy-2.0-1.1.noarch.rpm" from channel "test-base-channel-x86_64"
   Then the download should get a 403 response
   Then the download should get no error
 ```
@@ -592,13 +600,6 @@ Note that the text area variant handles the new lines characters while the other
 
 ### XML-RPC or HTTP API
 
-* Log into and out from the API on the server
-
-```gherkin
-  Given I am logged in API as user "admin" and password "admin"
-  When I logout from API
-```
-
 * Calling various API methods
 
 For example:
@@ -615,7 +616,8 @@ The virtual machine is created without Uyuni, directly on the virtual host
 using `qemu-img` and `virt-install`
 
 ```gherkin
-  When I create "test-vm" virtual machine on "virt-server"
+  When I create a leap virtual machine named "test-vm" without cloudinit on "virt-server"
+  When I create a sles virtual machine named "test-vm" with cloudinit on "virt-server"
   When I create empty "/path/to/disk.qcow2" qcow2 disk file on "virt-server"
 ```
 
@@ -651,6 +653,18 @@ Then "test-vm" virtual machine on "virt-server" should boot using autoyast
 Then "test-vm" virtual machine on "virt-server" should boot on hard disk at next start
 Then "test-vm" virtual machine on "virt-server" should stop on reboot
 Then "test-vm" virtual machine on "virt-server" should not stop on reboot at next start
+```
+
+* Stop a virtual machine
+
+```gherkin
+  When I stop the virtual machine named "test-vm" on "kvm_server"
+```
+
+* Delete a virtual machine
+
+```gherkin
+  When I delete the virtual machine named "test-vm" on "kvm_server"
 ```
 
 * Remove disk images from a storage pool
@@ -693,11 +707,11 @@ of the underlying libraries, have a look at
 When implementing a step, to run a command on a target, use:
 
 ```ruby
-$server.run("uptime")
-$minion.run("uptime", check_errors: false)
-$minion.run("uptime", check_errors: true)
-$minion.run("uptime", check_errors: true, timeout: 300)
-$minion.run("uptime", check_errors: false, timeout: 500, user: 'root')
+get_target('server').run("uptime")
+get_target('sle_minion').run("uptime", check_errors: false)
+get_target('sle_minion').run("uptime", check_errors: true)
+get_target('sle_minion').run("uptime", check_errors: true, timeout: 300)
+get_target('sle_minion').run("uptime", check_errors: false, timeout: 500, user: 'root')
 ```
 
 Arguments taken by method ```run``` are:
@@ -715,7 +729,7 @@ retry several times until ```DEFAULT_TIMEOUT```.
 When implementing a step, to get the FQDN of the host, use:
 
 ```ruby
-  STDOUT.puts $minion.full_hostname
+  STDOUT.puts get_target('sle_minion').full_hostname
 ```
 
 ### Converting between host name and target

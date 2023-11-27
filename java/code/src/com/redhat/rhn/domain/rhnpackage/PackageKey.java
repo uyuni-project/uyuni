@@ -75,6 +75,7 @@ public class PackageKey extends BaseDomainHelper implements Comparable<PackageKe
      *
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder().append(getKey()).toHashCode();
     }
@@ -83,6 +84,7 @@ public class PackageKey extends BaseDomainHelper implements Comparable<PackageKe
      *
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(Object archIn) {
 
         if (archIn instanceof PackageKey) {
@@ -96,6 +98,7 @@ public class PackageKey extends BaseDomainHelper implements Comparable<PackageKe
     /**
      * {@inheritDoc}
      */
+    @Override
     public int compareTo(PackageKey o) {
         if (equals(o)) {
             return 0;

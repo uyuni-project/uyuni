@@ -29,7 +29,6 @@ import org.apache.struts.action.DynaActionForm;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -41,43 +40,37 @@ public class GeneralConfigActionTest extends RhnPostMockStrutsTestCase {
     @Test
     public void testTestValue() {
 
-        assertTrue(GeneralConfigAction.ALLOWED_CONFIGS.
-                contains(TEST_CONFIG_BOOLEAN));
+        assertTrue(GeneralConfigAction.getAllowedConfigs().contains(TEST_CONFIG_BOOLEAN));
     }
 
     @Test
-    public void testNonSubmit() throws Exception {
+    public void testNonSubmit() {
         user.getOrg().addRole(RoleFactory.SAT_ADMIN);
         user.addPermanentRole(RoleFactory.SAT_ADMIN);
         setRequestPathInfo("/admin/config/GeneralConfig");
-        Iterator i = GeneralConfigAction.ALLOWED_CONFIGS.iterator();
-        Map originalConfigValues = new HashMap();
-        while (i.hasNext()) {
-            String config = (String) i.next();
+        Map<String, String> originalConfigValues = new HashMap<>();
+        for (String config : GeneralConfigAction.getAllowedConfigs()) {
             String value = Config.get().getString(config);
             if (value != null) {
                 originalConfigValues.put(config, value);
                 Config.get().setString(config, "1");
             }
         }
-        i = GeneralConfigAction.ALLOWED_CONFIGS.iterator();
         actionPerform();
         DynaActionForm af = (DynaActionForm) getActionForm();
-        while (i.hasNext()) {
-            String config =
-                GeneralConfigAction.translateFormPropertyName((String) i.next());
+        for (String configName : GeneralConfigAction.getAllowedConfigs()) {
+            String config = GeneralConfigAction.translateFormPropertyName(configName);
             String configValue = Config.get().getString(config);
             Object formValue = af.get(config);
             if (configValue != null) {
                 assertNotNull(formValue);
-                Config.get().setString(config,
-                        (String) originalConfigValues.get(config));
+                Config.get().setString(config, originalConfigValues.get(config));
             }
         }
     }
 
     @Test
-    public void testSubmit() throws Exception {
+    public void testSubmit() {
         user.getOrg().addRole(RoleFactory.SAT_ADMIN);
         user.addPermanentRole(RoleFactory.SAT_ADMIN);
         setRequestPathInfo("/admin/config/GeneralConfig");

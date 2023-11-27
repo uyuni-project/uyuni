@@ -69,11 +69,12 @@ public class SsmPowerManagementAction implements MessageAction {
                     error = new CobblerPowerCommand(user, server, operation).store();
                 }
                 catch (XmlRpcException e) {
-                    log.error(e);
+                    log.error(e.getMessage(), e);
                     error = new ValidatorError(
                         "ssm.provisioning.powermanagement.cobbler_error");
                 }
                 if (error != null) {
+                    log.error(error.getLocalizedMessage());
                     SsmOperationManager.addNoteToOperationOnServer(operationId,
                         server.getId(), error.getKey());
                 }

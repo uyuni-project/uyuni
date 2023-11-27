@@ -97,6 +97,7 @@ public class SystemOverview extends BaseTupleDto implements Serializable {
     public static final String STATUS_TYPE_UP2DATE = "up2date";
     public static final String STATUS_TYPE_CRITICAL = "critical";
     public static final String STATUS_TYPE_UPDATES = "updates";
+    public static final String STATUS_TYPE_REBOOT_NEEDED = "reboot needed";
 
 
     /**
@@ -111,7 +112,8 @@ public class SystemOverview extends BaseTupleDto implements Serializable {
      * @param tuple JPA tuple
      */
     public SystemOverview(Tuple tuple) {
-        id = ((Number)tuple.get("id")).longValue();
+        // Unregistered virtual systems have no id
+        id = getTupleValue(tuple, "id", Number.class).map(Number::longValue).orElse(null);
         selectable = getTupleValue(tuple, "selectable", Boolean.class).orElse(Boolean.FALSE);
 
         // To speed up selection, when querying the selection we only get 2 fields, ignore the others
@@ -150,15 +152,6 @@ public class SystemOverview extends BaseTupleDto implements Serializable {
         }
     }
 
-    private static <T> Optional<T> getTupleValue(Tuple tuple, String name, Class<T> clazz) {
-        try {
-            return Optional.ofNullable(tuple.get(name, clazz));
-        }
-        catch (IllegalArgumentException e) {
-            return Optional.empty();
-        }
-    }
-
     /**
      * Compute the system status and update the corresponding field.
      *
@@ -181,10 +174,13 @@ public class SystemOverview extends BaseTupleDto implements Serializable {
         else if (Optional.ofNullable(kickstarting).orElse(SystemManager.isKickstarting(user, sid))) {
             type = STATUS_TYPE_KICKSTARTING;
         }
+        else if (SystemManager.requiresReboot(user, sid)) {
+            type = STATUS_TYPE_REBOOT_NEEDED;
+        }
         else if (getEnhancementErrata() + getBugErrata() +
-                     getSecurityErrata() > 0 &&
-                     Optional.ofNullable(unscheduledErrataCount).map(count -> count == 0)
-                             .orElse(SystemManager.hasUnscheduledErrata(user, sid))) {
+                getSecurityErrata() > 0 &&
+                Optional.ofNullable(unscheduledErrataCount).map(count -> count == 0)
+                        .orElse(SystemManager.hasUnscheduledErrata(user, sid))) {
             type = STATUS_TYPE_UPDATES_SCHEDULED;
         }
         else if (Optional.ofNullable(actionsCount).orElse(Long.valueOf(SystemManager.countActions(sid))) > 0) {
@@ -676,7 +672,7 @@ public class SystemOverview extends BaseTupleDto implements Serializable {
         // localized versions of the labels and make into a comma-delimited list
         LocalizationService ls = LocalizationService.getInstance();
         List ent = getEntitlement();
-        if (ent != null && ent.size() > 0) {
+        if (ent != null && !ent.isEmpty()) {
             return ls.getMessage((String) ent.get(0));
         }
         return ls.getMessage("unentitled");

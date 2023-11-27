@@ -135,6 +135,7 @@ public class ImagePackage implements Comparable<ImagePackage> {
      *
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         HashCodeBuilder builder =  new HashCodeBuilder().append(name.getName())
                 .append(evr.getEpoch())
@@ -151,6 +152,7 @@ public class ImagePackage implements Comparable<ImagePackage> {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(Object other) {
 
         if (other instanceof ImagePackage) {
@@ -182,6 +184,7 @@ public class ImagePackage implements Comparable<ImagePackage> {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int compareTo(ImagePackage ip) {
         if (equals(ip)) {
             return 0;

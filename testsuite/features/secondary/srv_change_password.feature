@@ -1,5 +1,9 @@
-# Copyright (c) 2017 SUSE LLC
+# Copyright (c) 2017-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
+#
+# This feature can cause failures in the following features when running in sequential:
+# All features in secondary parallelizable stage
+# If this feature fails to restore the original password.
 
 @scope_visualization
 Feature: Change the user's password

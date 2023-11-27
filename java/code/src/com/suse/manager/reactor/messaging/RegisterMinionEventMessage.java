@@ -47,6 +47,7 @@ public class RegisterMinionEventMessage implements EventMessage {
      *
      * @return null since we don't have a user
      */
+    @Override
     public Long getUserId() {
         return null;
     }
@@ -72,6 +73,7 @@ public class RegisterMinionEventMessage implements EventMessage {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toText() {
         return toString();
     }
@@ -79,6 +81,7 @@ public class RegisterMinionEventMessage implements EventMessage {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString() {
         return "RegisterMinionEvent[minionId: " + minionId + "]";
     }

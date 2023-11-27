@@ -114,6 +114,9 @@ Feature: Salt package states
     And I wait for "6" seconds
     And I should see a "pkg_removed" or "running as PID" text in element "highstate"
 
+# When run inside containers, we can't kill salt-minion or the
+# container will stop
+@skip_if_github_validation
   Scenario: Use Salt presence mechanism on an unreachable minion
     When I follow "States" in the content area
     And I run "pkill salt-minion" on "sle_minion" without error control
@@ -122,8 +125,22 @@ Feature: Salt package states
     And I click on "Show full highstate output"
     And I wait until I see "No reply from minion" text
 
+@skip_if_github_validation
   Scenario: Cleanup: restart the salt service on SLES minion
     When I restart salt-minion on "sle_minion"
+
+  Scenario: Cleanup: set the package states as unmanaged
+    Given I am on the Systems overview page of this "sle_minion"
+    When I follow "States" in the content area
+    And I follow "Packages"
+    And I follow "Search"
+    And I should see a "Package States" text
+    And I list packages with "dummy"
+    And I wait until I see "andromeda-dummy" text
+    And I change the state of "virgo-dummy" to "Unmanaged" and ""
+    And I change the state of "andromeda-dummy" to "Unmanaged" and ""
+    And I click save
+    Then I wait until I see "Package states have been saved." text
 
   Scenario: Cleanup: remove old packages from SLES minion
     When I disable repository "test_repo_rpm_pool" on this "sle_minion"

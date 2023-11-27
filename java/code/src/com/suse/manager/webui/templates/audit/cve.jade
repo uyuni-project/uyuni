@@ -5,8 +5,6 @@ include ../common.jade
 script(type='text/javascript').
     window.csrfToken = "#{csrf_token}";
 
-+userPreferences
-
 script(type='text/javascript').
     spaImportReactPage('audit/cveaudit')
         .then(function(module) { module.renderer('cveaudit') });

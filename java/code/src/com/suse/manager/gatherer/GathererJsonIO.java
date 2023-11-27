@@ -26,6 +26,7 @@ import com.google.gson.JsonSyntaxException;
 import com.google.gson.TypeAdapter;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
 
 import java.io.IOException;
@@ -45,6 +46,7 @@ public class GathererJsonIO {
             .setPrettyPrinting()
             .registerTypeAdapter(GathererModule.class, new GathererModuleAdapter())
             .registerTypeAdapter(VirtualHostManager.class, new VHMAdapter())
+            .serializeNulls()
             .create();
     }
 
@@ -99,11 +101,18 @@ public class GathererJsonIO {
             reader.beginObject();
             while (reader.hasNext()) {
               String key = reader.nextName();
-              if (key.equals("module")) {
-                gm.setName(reader.nextString());
+              String value = null;
+              if (reader.peek() == JsonToken.NULL) {
+                  reader.nextNull();
               }
               else {
-                  gm.addParameter(key, reader.nextString());
+                  value = reader.nextString();
+              }
+              if (key.equals("module")) {
+                  gm.setName(value);
+              }
+              else {
+                  gm.addParameter(key, value);
               }
             }
             reader.endObject();
@@ -133,7 +142,7 @@ public class GathererJsonIO {
          * {@inheritDoc}
          */
         @Override
-        public VirtualHostManager read(JsonReader reader) throws IOException {
+        public VirtualHostManager read(JsonReader reader) {
             throw new UnsupportedOperationException("Reading VirtualHostManager " +
                     "from JSON is not supported.");
         }

@@ -10,14 +10,14 @@ import { DEPRECATED_unsafeEquals } from "utils/legacy";
 const capitalize = Utils.capitalize;
 
 export const renderer = (renderId, { serverId, formulaId }) => {
-  const msgMap = {
-    formula_saved: (
-      <p>
-        {t("Formula saved. Apply the ")}
-        <a href={"/rhn/manager/systems/details/highstate?sid=" + serverId}>{t("Highstate")}</a>
-        {t(" for the changes to take effect.")}
-      </p>
-    ),
+  const messageMap = {
+    formula_saved: t("Formula saved. Apply the <link>Highstate</link> for the changes to take effect.", {
+      link: (str) => (
+        <a href={"/rhn/manager/systems/details/highstate?sid=" + serverId} key="link">
+          {str}
+        </a>
+      ),
+    }),
     error_invalid_target: t("Invalid target type."),
   };
 
@@ -57,7 +57,7 @@ export const renderer = (renderId, { serverId, formulaId }) => {
         return "/rhn/manager/systems/details/formula/" + id + "?sid=" + serverId;
       }}
       scope="system"
-      messageTexts={msgMap}
+      messageTexts={messageMap}
     />,
     document.getElementById(renderId)
   );

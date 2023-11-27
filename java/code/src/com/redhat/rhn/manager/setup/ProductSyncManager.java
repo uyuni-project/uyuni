@@ -133,7 +133,6 @@ public class ProductSyncManager {
      * @param productsId the scc product ids of the product  to check
      * @return a map containing the internal product id and the list of channel that are in conflicting
      */
-    @SuppressWarnings("unchecked")
     public Map<Long, List<String>> verifyChannelConflicts(List<Long> productsId) {
         final SelectMode query = ModeFactory.getMode("Product_queries", "verify_channel_conflicts");
         final DataResult<Map<String, Object>> dataResult = query.execute(productsId);
@@ -153,7 +152,6 @@ public class ProductSyncManager {
      *                   Only the base product and its children will be computed.
      * @return a map specifying for each internal product id which is the internal parent id.
      */
-    @SuppressWarnings("unchecked")
     public Map<Long, Long> getProductTreeMap(List<Long> productsId) {
         final SelectMode query = ModeFactory.getMode("Product_queries", "extract_product_tree");
         final DataResult<Map<String, Long>> dataResult = query.execute(productsId);
@@ -233,15 +231,9 @@ public class ProductSyncManager {
         int failedCounter = 0;
         SyncStatus syncStatus;
         Date maxLastSyncDate = null;
-        StringBuilder debugDetails = new StringBuilder();
-
 
         for (Channel c : product.getMandatoryChannels()) {
             SyncStatus channelStatus = getChannelSyncStatus(c.getLabel(), channelByLabel);
-
-            if (StringUtils.isNotBlank(channelStatus.getDetails())) {
-                debugDetails.append(channelStatus.getDetails());
-            }
 
             if (channelStatus.isNotMirrored()) {
                 LOGGER.debug("Channel not mirrored: {}", c.getLabel());
@@ -278,7 +270,6 @@ public class ProductSyncManager {
         // Status is FAILED if at least one channel has failed
         else if (failedCounter > 0) {
             syncStatus = new SyncStatus(SyncStatus.SyncStage.FAILED);
-            syncStatus.setDetails(debugDetails.toString());
         }
         // Otherwise return IN_PROGRESS
         else {
@@ -329,12 +320,6 @@ public class ProductSyncManager {
                 repoSyncRunFound = true;
                 lastRunEndTime = run.getEndTime();
 
-                // Get debug information
-                String debugInfo = run.getTailOfStdError(1024);
-                if (debugInfo.isEmpty()) {
-                    debugInfo = run.getTailOfStdOutput(1024);
-                }
-
                 // Set the status and debug info
                 String runStatus = run.getStatus();
                 if (LOGGER.isDebugEnabled()) {
@@ -347,7 +332,6 @@ public class ProductSyncManager {
                     // Reposync has failed or has been interrupted
                     SyncStatus status = new SyncStatus(SyncStatus.SyncStage.FAILED);
                     status.setMessageKey(prefix + "message.reposync.failed");
-                    status.setDetails(debugInfo);
 
                     // Don't return from here, there might be a new schedule already
                     lastFailedStatus = Optional.of(status);
@@ -357,7 +341,6 @@ public class ProductSyncManager {
                     // Reposync is in progress
                     SyncStatus status = new SyncStatus(SyncStatus.SyncStage.IN_PROGRESS);
                     status.setMessageKey(prefix + "message.reposync.progress");
-                    status.setDetails(debugInfo);
                     return status;
                 }
 
@@ -391,31 +374,12 @@ public class ProductSyncManager {
                 TaskConstants.TASK_QUERY_REPOMD_CANDIDATES_DETAILS_QUERY);
         Map<String, Object> params = new HashMap<>();
         params.put("channel_label", channelLabel);
-        if (selector.execute(params).size() > 0) {
+        if (!selector.execute(params).isEmpty()) {
             return new SyncStatus(SyncStatus.SyncStage.IN_PROGRESS);
         }
 
         // Otherwise return FAILED
         return new SyncStatus(SyncStatus.SyncStage.FAILED);
-    }
-
-    /**
-     * For a given {@link TaskoSchedule} return the id of the associated channel.
-     * @param schedule a taskomatic schedule
-     * @return channel ID as {@link Long} or null in case of an error
-     */
-    @SuppressWarnings("unchecked")
-    private Long getChannelIdForSchedule(TaskoSchedule schedule) {
-        Long ret = null;
-        Map<String, Object> dataMap = schedule.getDataMap();
-        String channelIdString = (String) dataMap.get("channel_id");
-        try {
-            ret = Long.parseLong(channelIdString);
-        }
-        catch (NumberFormatException e) {
-            LOGGER.error(e.getMessage());
-        }
-        return ret;
     }
 
     /**

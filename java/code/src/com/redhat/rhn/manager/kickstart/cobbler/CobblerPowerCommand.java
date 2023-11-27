@@ -124,7 +124,7 @@ public class CobblerPowerCommand extends CobblerCommand {
                 }
             }
             catch (XmlRpcException e) {
-                log.error(e);
+                log.error(e.getMessage(), e);
             }
             if (success) {
                 if (server != null) {

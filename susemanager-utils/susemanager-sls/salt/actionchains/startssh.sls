@@ -10,4 +10,4 @@ startssh:
 {%- endif %}
 
 include:
-  - util.synccustomall
+  - util.syncall

@@ -1,24 +1,10 @@
-# Copyright (c) 2015-2022 SUSE LLC
+# Copyright (c) 2015-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
+
+### This file contains the definitions for all steps concerning the API.
 
 require 'json'
 require 'socket'
-
-$api_test = if $debug_mode
-              ApiTestXmlrpc.new($server.full_hostname)
-            else
-              $product == 'Uyuni' ? ApiTestHttp.new($server.full_hostname) : ApiTestXmlrpc.new($server.full_hostname)
-            end
-
-## auth namespace
-
-When(/^I am logged in API as user "([^"]*)" and password "([^"]*)"$/) do |user, password|
-  $api_test.auth.login(user, password)
-end
-
-When(/^I logout from API$/) do
-  $api_test.auth.logout
-end
 
 ## system namespace
 
@@ -28,7 +14,7 @@ Given(/^I want to operate on this "([^"]*)"$/) do |host|
   refute_nil($client_id, "Could not find system with hostname #{system_name}")
 end
 
-When(/^I call system\.bootstrap\(\) on host "([^"]*)" and salt\-ssh "([^"]*)"$/) do |host, salt_ssh_enabled|
+When(/^I call system\.bootstrap\(\) on host "([^"]*)" and salt-ssh "([^"]*)"$/) do |host, salt_ssh_enabled|
   system_name = get_system_name(host)
   salt_ssh = (salt_ssh_enabled == 'enabled')
   akey = salt_ssh ? '1-SUSE-SSH-KEY-x86_64' : '1-SUSE-KEY-x86_64'
@@ -40,18 +26,17 @@ When(/^I call system\.bootstrap\(\) on unknown host, I should get an API fault$/
   exception_thrown = false
   begin
     $api_test.system.bootstrap_system('imprettysureidontexist', '', false)
-  rescue
+  rescue SystemCallError
     exception_thrown = true
   end
   assert(exception_thrown, 'Exception must be thrown for non-existing host.')
 end
 
-When(/^I call system\.bootstrap\(\) on a Salt minion with saltSSH = true, \
-but with activation key with default contact method, I should get an API fault$/) do
+When(/^I call system\.bootstrap\(\) on a Salt minion with saltSSH = true, but with activation key with default contact method, I should get an API fault$/) do
   exception_thrown = false
   begin
-    $api_test.system.bootstrap_system($minion.full_hostname, '1-SUSE-KEY-x86_64', true)
-  rescue
+    $api_test.system.bootstrap_system(get_target('sle_minion').full_hostname, '1-SUSE-KEY-x86_64', true)
+  rescue SystemCallError
     exception_thrown = true
   end
   assert(exception_thrown, 'Exception must be thrown for non-compatible activation keys.')
@@ -75,8 +60,13 @@ When(/^I create a system record$/) do
   $api_test.system.create_system_record('testserver', 'fedora_kickstart_profile_upload', '', 'my test server', [dev])
 end
 
+When(/^I create a system record with name "([^"]*)" and kickstart label "([^"]*)"$/) do |name, label|
+  dev = { 'name' => 'eth0', 'ip' => '1.1.1.2', 'mac' => '00:22:22:77:EE:DD', 'dnsname' => 'testserver.example.com' }
+  $api_test.system.create_system_record(name, label, '', 'my test server', [dev])
+end
+
 When(/^I wait for the OpenSCAP audit to finish$/) do
-  @sle_id = $api_test.system.retrieve_server_id($minion.full_hostname)
+  @sle_id = $api_test.system.retrieve_server_id(get_target('sle_minion').full_hostname)
   begin
     repeat_until_timeout(message: 'Process did not complete') do
       scans = $api_test.system.scap.list_xccdf_scans(@sle_id)
@@ -138,7 +128,7 @@ end
 ## channel namespace
 
 When(/^I create a repo with label "([^"]*)" and url$/) do |label|
-  url = "http://#{$server.full_hostname}/pub/AnotherRepo/"
+  url = "http://#{get_target('server').full_hostname}/pub/AnotherRepo/"
   assert($api_test.channel.software.create_repo(label, url))
 end
 
@@ -196,70 +186,82 @@ end
 ## activationkey namespace
 
 Then(/^I should get some activation keys$/) do
-  raise if $api_test.activationkey.get_activation_keys_count < 1
+  raise ScriptError if $api_test.activationkey.get_activation_keys_count < 1
 end
 
 When(/^I create an activation key with id "([^"]*)", description "([^"]*)" and limit of (\d+)$/) do |id, dscr, limit|
   key = $api_test.activationkey.create(id, dscr, '', limit.to_i)
-  raise 'Key creation failed' if key.nil?
-  raise 'Bad key name' if key != '1-testkey'
+  raise ScriptError, 'Key creation failed' if key.nil?
+  raise ScriptError, 'Bad key name' if key != "1-#{id}"
 end
 
-Then(/^I should get the new activation key$/) do
-  raise unless $api_test.activationkey.verify('1-testkey')
+Then(/^I should get the new activation key "([^"]*)"$/) do |activation_key|
+  raise ScriptError unless $api_test.activationkey.verify(activation_key)
 end
 
-When(/^I delete the activation key$/) do
-  raise unless $api_test.activationkey.delete('1-testkey')
-  raise if $api_test.activationkey.verify('1-testkey')
+When(/^I delete the activation key "([^"]*)"$/) do |activation_key|
+  raise ScriptError unless $api_test.activationkey.delete(activation_key)
+  raise ScriptError if $api_test.activationkey.verify(activation_key)
 end
 
-When(/^I add config channels "([^"]*)" to a newly created key$/) do |channel_name|
-  raise if $api_test.activationkey.add_config_channels('1-testkey', [channel_name]) < 1
+When(/^I set the description of the activation key "([^"]*)" to "([^"]*)"$/) do |activation_key, description|
+  raise RuntimeError unless $api_test.activationkey.set_details(activation_key, description, '', 10, 'default')
 end
 
-When(/^I set the description of activation key to "([^"]*)"$/) do |description|
-  raise unless $api_test.activationkey.set_details('1-testkey', description, '', 10, 'default')
-end
-
-Then(/^I get the description "([^"]*)" for the activation key$/) do |description|
-  details = $api_test.activationkey.get_details('1-testkey')
+Then(/^I get the description "([^"]*)" for the activation key "([^"]*)"$/) do |description, activation_key|
+  details = $api_test.activationkey.get_details(activation_key)
   log 'Key details:'
   details.each_pair do |k, v|
     log "  #{k}: #{v}"
   end
   log
-  raise unless details['description'] == description
+  raise ScriptError unless details['description'] == description
 end
 
 When(/^I create an activation key including custom channels for "([^"]*)" via API$/) do |client|
   # Create a key with the base channel for this client
   id = description = "#{client}_key"
-  base_channel = LABEL_BY_BASE_CHANNEL[BASE_CHANNEL_BY_CLIENT[client]]
-  key = $api_test.activationkey.create(id, description, base_channel, 100)
-  raise if key.nil?
+  base_channel = BASE_CHANNEL_BY_CLIENT[product][client]
+  base_channel_label = LABEL_BY_BASE_CHANNEL[product][base_channel]
+  key = $api_test.activationkey.create(id, description, base_channel_label, 100)
+  raise StandardError, 'Error creating activation key via the API' if key.nil?
+  STDOUT.puts "Activation key #{key} created" unless key.nil?
 
   is_ssh_minion = client.include? 'ssh_minion'
-  $api_test.activationkey.set_details(key, description, base_channel, 100, is_ssh_minion ? 'ssh-push' : 'default')
+  $api_test.activationkey.set_details(key, description, base_channel_label, 100, is_ssh_minion ? 'ssh-push' : 'default')
+  entitlements = client.include?('buildhost') ? ['osimage_build_host'] : ''
+  $api_test.activationkey.set_entitlement(key, entitlements) unless entitlements.empty?
 
   # Get the list of child channels for this base channel
-  child_channels = $api_test.channel.software.list_child_channels(base_channel)
+  child_channels = $api_test.channel.software.list_child_channels(base_channel_label)
 
-  # Select all the child channels for this client
+  # Filter out the custom channels
+  # This is needed because we might have both a traditional custom channel and a Salt custom channel
+  child_channels.reject! { |channel| channel.include? 'custom_channel' }
+
+  # Re-add the desired custom channel
+  # This too can go away when we get rid of traditional clients for good
   client.sub! 'ssh_minion', 'minion'
-  if client.include? 'buildhost'
-    selected_child_channels = ["custom_channel_#{client.sub('buildhost', 'minion')}", "custom_channel_#{client.sub('buildhost', 'client')}"]
-  elsif client.include? 'terminal'
-    selected_child_channels = ["custom_channel_#{client.sub('terminal', 'minion')}", "custom_channel_#{client.sub('terminal', 'client')}"]
-  else
-    custom_channel = "custom_channel_#{client}"
-    selected_child_channels = [custom_channel]
-  end
-  child_channels.each do |child_channel|
-    selected_child_channels.push(child_channel) unless child_channel.include? 'custom_channel'
-  end
+  client.sub! 'buildhost', 'minion'
+  client.sub! 'terminal', 'minion'
+  custom_channel = if client.include? 'alma9'
+                     'no-appstream-alma-9-result-custom_channel_alma9_minion'
+                   elsif client.include? 'liberty9'
+                     'no-appstream-liberty-9-result-custom_channel_liberty9_minion'
+                   elsif client.include? 'oracle9'
+                     'no-appstream-oracle-9-result-custom_channel_oracle9_minion'
+                   elsif client.include? 'rocky8'
+                     'no-appstream-8-result-custom_channel_rocky8_minion'
+                   elsif client.include? 'rocky9'
+                     'no-appstream-9-result-custom_channel_rocky9_minion'
+                   else
+                     "custom_channel_#{client}"
+                   end
+  child_channels.push(custom_channel)
+  STDOUT.puts "Child_channels for #{key}: <#{child_channels}>"
 
-  $api_test.activationkey.add_child_channels(key, selected_child_channels)
+  # Add child channels to the key
+  $api_test.activationkey.add_child_channels(key, child_channels)
 end
 
 ## actionchain namespace
@@ -384,14 +386,6 @@ end
 
 ## schedule API
 
-def wait_action_complete(actionid, timeout: DEFAULT_TIMEOUT)
-  repeat_until_timeout(timeout: timeout, message: 'Action was not found among completed actions') do
-    list = $api_test.schedule.list_completed_actions
-    break if list.any? { |a| a['id'] == actionid }
-    sleep 2
-  end
-end
-
 Then(/^I should see scheduled action, called "(.*?)"$/) do |label|
   assert_includes(
     $api_test.schedule.list_in_progress_actions.map { |a| a['name'] }, label
@@ -461,32 +455,25 @@ end
 
 ## audit namespace
 
-When(/^I call audit\.list_systems_by_patch_status\(\) with CVE identifier "([^\"]*)"$/) do |cve_identifier|
+When(/^I call audit\.list_systems_by_patch_status\(\) with CVE identifier "([^"]*)"$/) do |cve_identifier|
   @result_list = $api_test.audit.list_systems_by_patch_status(cve_identifier) || []
+  log "Result list: #{@result_list}"
 end
 
-Then(/^I should get status "([^\"]+)" for system "([0-9]+)"$/) do |status, system|
+Then(/^I should get status "([^"]+)" for system "([0-9]+)"$/) do |status, system|
   @result = @result_list.select { |item| item['system_id'] == system.to_i }
   refute_empty(@result)
   @result = @result[0]
   assert_equal(status, @result['patch_status'])
 end
 
-Then(/^I should get status "([^\"]+)" for "([^\"]+)"$/) do |status, host|
+Then(/^I should get status "([^"]+)" for "([^"]+)"$/) do |status, host|
   node = get_target(host)
   step %(I should get status "#{status}" for system "#{get_system_id(node)}")
 end
 
-Then(/^I should get the test channel$/) do
-  arch = `uname -m`
-  arch.chomp!
-  channel = if arch != 'x86_64'
-              'fake-i586-channel'
-            else
-              'fake-rpm-sles-channel'
-            end
-  log "result: #{@result}"
-  assert(@result['channel_labels'].include?(channel))
+Then(/^I should get the "([^"]*)" channel label$/) do |channel_label|
+  assert(@result['channel_labels'].include?(channel_label))
 end
 
 Then(/^I should get the "([^"]*)" patch$/) do |patch|
@@ -529,7 +516,7 @@ When(/^I call configchannel.get_file_revision\(\) with file "([^"]*)", revision 
   @get_file_revision_result = $api_test.configchannel.get_file_revision(channel, file_path, revision.to_i)
 end
 
-Then(/^I should get file contents "([^\"]*)"$/) do |contents|
+Then(/^I should get file contents "([^"]*)"$/) do |contents|
   assert_equal(contents, @get_file_revision_result['contents'])
 end
 
@@ -542,11 +529,9 @@ When(/^I deploy all systems registered to channel "([^"]*)"$/) do |channel|
 end
 
 When(/^I delete channel "([^"]*)" via API((?: without error control)?)$/) do |channel, error_control|
-  begin
-    $api_test.configchannel.delete_channels([channel])
-  rescue
-    raise 'Error deleting channel' if error_control.empty?
-  end
+  $api_test.configchannel.delete_channels([channel])
+rescue
+  raise SystemCallError, 'Error deleting channel' if error_control.empty?
 end
 
 When(/^I call system.create_system_profile\(\) with name "([^"]*)" and HW address "([^"]*)"$/) do |name, hw_address|
@@ -565,4 +550,24 @@ end
 
 Then(/^"([^"]*)" should be present in the result$/) do |profile_name|
   assert($output.select { |p| p['name'] == profile_name }.count == 1)
+end
+
+When(/^I create and modify the kickstart system "([^"]*)" with hostname "([^"]*)" via XML-RPC$/) do |name, hostname, values|
+  system_id = $api_test.system.create_system_profile(name, 'hostname' => hostname)
+  STDOUT.puts "system_id: #{system_id}"
+  # this works only with a 2 column table where the key is in the left column
+  variables = values.rows_hash
+  $api_test.system.set_variables(system_id, variables)
+end
+
+When(/^I create a kickstart tree via the API$/) do
+  $api_test.kickstart.tree.create_distro('fedora_kickstart_distro_api', '/var/autoinstall/Fedora_12_i386/', 'fake-base-channel-rh-like', 'fedora18')
+end
+
+When(/^I create a kickstart tree with kernel options via the API$/) do
+  $api_test.kickstart.tree.create_distro_w_kernel_options('fedora_kickstart_distro_kernel_api', '/var/autoinstall/Fedora_12_i386/', 'fake-base-channel-rh-like', 'fedora18', 'self_update=0', 'self_update=1')
+end
+
+When(/^I update a kickstart tree via the API$/) do
+  $api_test.kickstart.tree.update_distro('fedora_kickstart_distro_api', '/var/autoinstall/Fedora_12_i386/', 'fake-base-channel-rh-like', 'generic_rpm', 'self_update=0', 'self_update=1')
 end

@@ -203,13 +203,13 @@ def do_package_remove(self, args):
         print(_("No packages found to remove"))
         return 1
 
-    if not self.user_confirm(_('Remove these packages [y/N]:')):
-        print(_("No packages has been removed"))
-        return 1
-
     print(_('Packages'))
     print('--------')
     print('\n'.join(sorted(to_remove)))
+
+    if not self.user_confirm(_('Remove these packages [y/N]:')):
+        print(_("No packages has been removed"))
+        return 1
 
     for package in to_remove:
         for package_id in self.get_package_id(package):
@@ -261,13 +261,13 @@ def do_package_removeorphans(self, args):
         logging.warning(_N('No orphaned packages'))
         return 1
 
-    if not self.user_confirm(_('Remove these packages [y/N]:')):
-        print(_("No packages were removed"))
-        return 1
-
     print(_('Packages'))
     print('--------')
     print('\n'.join(sorted(build_package_names(packages))))
+
+    if not self.user_confirm(_('Remove these packages [y/N]:')):
+        print(_("No packages were removed"))
+        return 1
 
     for package in packages:
         try:

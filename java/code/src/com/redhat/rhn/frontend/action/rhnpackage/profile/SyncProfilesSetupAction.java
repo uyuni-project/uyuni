@@ -18,6 +18,7 @@ import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.domain.rhnpackage.profile.Profile;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.PackageMetadata;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -44,12 +45,13 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * SyncProfilesSetupAction
  */
-public class SyncProfilesSetupAction extends RhnAction implements Listable {
+public class SyncProfilesSetupAction extends RhnAction implements Listable<PackageMetadata> {
 
     private static final CompareProfileSetupAction DECL_ACTION =
         new CompareProfileSetupAction();
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm formIn,
                                  HttpServletRequest request,
@@ -74,7 +76,7 @@ public class SyncProfilesSetupAction extends RhnAction implements Listable {
         if (requestContext.wasDispatched("schedulesync.jsp.schedulesync")) {
             Date time = getStrutsDelegate().readScheduleDate(dynaForm, "date",
                     DatePicker.YEAR_RANGE_POSITIVE);
-            Map syncParam = new HashMap();
+            Map<String, Object> syncParam = new HashMap<>();
             syncParam.put(RequestContext.SID, sid);
             syncParam.put(RequestContext.PRID, prid);
             syncParam.put(RequestContext.DISPATCH,
@@ -95,7 +97,8 @@ public class SyncProfilesSetupAction extends RhnAction implements Listable {
      * @param context RequestContext
      * @return list of packages prepared for synchronization
      */
-    public List getResult(RequestContext context) {
+    @Override
+    public List<PackageMetadata> getResult(RequestContext context) {
         Long sid = context.getRequiredParam("sid");
         Long prid = context.getRequiredParam("prid");
         User user = context.getCurrentUser();

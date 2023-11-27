@@ -21,6 +21,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 /**
  * Represents the data sent from the UI to request a new proxy container configuration
@@ -29,6 +30,8 @@ public class ProxyContainerConfigJson {
 
     private static final String CREATE_SSL = "create-ssl";
     private static final String USE_SSL = "use-ssl";
+
+    private static final Pattern FQDN_PATTERN = Pattern.compile("^[A-Za-z0-9-]++(?:\\.[A-Za-z0-9-]++)*+$");
 
     @SerializedName("proxyFQDN")
     private String proxyFqdn;
@@ -69,7 +72,15 @@ public class ProxyContainerConfigJson {
         else if (CREATE_SSL.equals(sslMode)) {
             valid = caCert != null && caKey != null && caPassword != null;
         }
-        return valid && proxyFqdn != null && serverFqdn != null && maxCache != null && email != null;
+        return valid && isValidFqdn(proxyFqdn) && isValidFqdn(serverFqdn) && maxCache != null && email != null;
+    }
+
+    /**
+     * @param fqdn the fqdn to check
+     * @return whether the fqdn is valid or not
+     */
+    private boolean isValidFqdn(String fqdn) {
+        return fqdn != null && FQDN_PATTERN.matcher(fqdn).matches();
     }
 
     /**

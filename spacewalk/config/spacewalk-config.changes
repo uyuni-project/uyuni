@@ -1,4 +1,23 @@
-- remove jabberd and osa-dispatcher
+-------------------------------------------------------------------
+Wed Nov 01 20:39:27 CET 2023 - marina.latini@suse.com
+
+- version 4.4.4-1
+  * Handle spaces in /ks/dist/ file names (bsc#1213680)
+
+-------------------------------------------------------------------
+Mon Sep 18 14:29:42 CEST 2023 - rosuna@suse.com
+
+- version 4.4.3-1
+  * allow calling instance-flavor-check via sudo
+  * drop gpg keyrings and certificates to connect to redhat cdn
+  * Add /saltboot directory
+  * Mark /os-images and /tftp as static content
+
+-------------------------------------------------------------------
+Wed Dec 14 14:14:18 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.2-1
+  * remove jabberd and osa-dispatcher
 
 -------------------------------------------------------------------
 Wed Sep 28 11:13:24 CEST 2022 - jgonzalez@suse.com

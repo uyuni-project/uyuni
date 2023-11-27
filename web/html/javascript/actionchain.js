@@ -23,11 +23,7 @@ jQuery(function() {
     var sortOrder = group.data("sort-order");
     // if needed, load list via Ajax
     if (list.is(":empty")) {
-      ActionChainEntriesRenderer.renderAsync(
-        actionChainId,
-        sortOrder,
-        makeRendererHandler(listId, false)
-      );
+      ajax("action-chain-entries", { actionChainId, sortOrder }, makeRendererHandler(listId, false).callback)
     }
     else {
       list.fadeToggle();
@@ -129,32 +125,34 @@ jQuery(function() {
       return jQuery(element).data("sort-order");
     }).get();
 
-    ActionChainSaveAction.save(
+    const data = {
       actionChainId,
-      newLabel,
+      label: newLabel,
       deletedEntries,
       deletedSortOrders,
-      reorderedSortOrders,
-      makeAjaxHandler(function(resultString) {
-          var result = JSON.parse(resultString);
-          if (result.success) {
-            jQuery(".entry.deleted").remove();
-            jQuery(".group.deleted").remove();
-            jQuery(".group").each(function(i, element){
-              jQuery(element).data("sort-order", i);
-            });
-            onSuccess(result.text);
-          }
-          else {
-            jQuery("#success-message").hide();
-            jQuery("#error-message").text(result.text).fadeIn();
-          }
-        },
-        function(message) {
-          clearUnsavedData();
-        }
-      )
-    );
+      reorderedSortOrders
+    }
+    function handler(resultString) {
+      const result = JSON.parse(resultString);
+      if (result.success) {
+        jQuery(".entry.deleted").remove();
+        jQuery(".group.deleted").remove();
+        jQuery(".group").each(function(i, element){
+          jQuery(element).data("sort-order", i);
+        });
+        onSuccess(result.text);
+      }
+      else {
+        jQuery("#success-message").hide();
+        jQuery("#error-message").text(result.text).fadeIn();
+      }
+    }
+    function onError(message) {
+      console.log("Error processing ajax request... ", message)
+      clearUnsavedData();
+    }
+
+    ajax("action-chain-save", data, handler, false, onError)
   }
 
   function renumberGroups(){

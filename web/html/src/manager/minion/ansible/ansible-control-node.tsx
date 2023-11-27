@@ -159,7 +159,7 @@ export class AnsibleControlNode extends React.Component<PropsType, StateType> {
           {t("Ansible Control Node Configuration: add paths for Playbook discovery and Inventory files introspection.")}
         </p>
         {this.state.loading ? (
-          <Loading text="Loading.." />
+          <Loading text="Loading..." />
         ) : (
           <div>
             <div className="col-md-6">

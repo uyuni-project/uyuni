@@ -14,6 +14,7 @@ Feature: Use advanced features of Salt formulas
      When I install "form.yml" to custom formula metadata directory "testform"
      And I install "metadata.yml" to custom formula metadata directory "testform"
      When I follow the left menu "Salt > Formula Catalog"
+     And I enter "testform" as the filtered formula name
      Then I should see a "testform" text
 
   Scenario: Assign test formula to minion via group formula

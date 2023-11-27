@@ -57,8 +57,9 @@ public class SystemMigrateAction extends RhnAction {
 
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
-            HttpServletRequest request, HttpServletResponse response) {
+                                 HttpServletRequest request, HttpServletResponse response) {
         RequestContext rctx = new RequestContext(request);
         DynaActionForm daForm = (DynaActionForm) form;
         User user = rctx.getCurrentUser();
@@ -198,7 +199,7 @@ public class SystemMigrateAction extends RhnAction {
 
         //ibm jvm has issues adding set in ArrayList constructor so add separately
         Set set = user.getOrg().getTrustedOrgs();
-        List orgList = new ArrayList();
+        List orgList = new ArrayList<>();
         orgList.addAll(set);
 
         request.setAttribute("trustedOrgCount", trustedOrgCount);

@@ -33,6 +33,7 @@ public class SystemIconDecorator extends BaseListDecorator {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setCurrentList(ListTag current) {
         super.setCurrentList(current);
         if (current != null) {

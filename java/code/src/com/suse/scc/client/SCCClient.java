@@ -17,12 +17,13 @@ package com.suse.scc.client;
 import com.redhat.rhn.manager.content.ProductTreeEntry;
 
 import com.suse.scc.model.SCCOrderJson;
+import com.suse.scc.model.SCCOrganizationSystemsUpdateResponse;
 import com.suse.scc.model.SCCProductJson;
 import com.suse.scc.model.SCCRegisterSystemJson;
 import com.suse.scc.model.SCCRepositoryJson;
 import com.suse.scc.model.SCCSubscriptionJson;
-import com.suse.scc.model.SCCSystemCredentialsJson;
 import com.suse.scc.model.SCCUpdateSystemJson;
+import com.suse.scc.model.SCCVirtualizationHostJson;
 
 import java.util.List;
 
@@ -79,16 +80,18 @@ public interface SCCClient {
      */
     List<ProductTreeEntry> productTree() throws SCCClientException;
 
+
     /**
-     * Create a System at SCC
-     * @param system the system
-     * @param username the username
-     * @param password the password
-     * @return registration result
-     * @throws SCCClientException
+     * Create/Update multiple Systems in SCC
+     * @param systems systems data to update
+     * @param username the username for http basic auth
+     * @param password the password for http basic auth
+     * @throws SCCClientException SCCRegisterSystemItemJson
+     * @return SCCRegisterSystemJson a collection of systems created/updated
      */
-    SCCSystemCredentialsJson createSystem(SCCRegisterSystemJson system, String username, String password)
-            throws SCCClientException;
+    SCCOrganizationSystemsUpdateResponse createUpdateSystems(
+            List<SCCRegisterSystemJson> systems, String username, String password
+    ) throws SCCClientException;
 
     /**
      * Update multiple clients in SCC
@@ -108,4 +111,14 @@ public interface SCCClient {
      * @throws SCCClientException
      */
     void deleteSystem(long id, String username, String password) throws SCCClientException;
+
+    /**
+     * Insert or update virtualization host data at SCC
+     * @param virtHostInfo list of all new or changed virtualization hosts
+     * @param username the username
+     * @param password the password
+     * @throws SCCClientException
+     */
+    void setVirtualizationHost(List<SCCVirtualizationHostJson> virtHostInfo, String username, String password)
+        throws SCCClientException;
 }

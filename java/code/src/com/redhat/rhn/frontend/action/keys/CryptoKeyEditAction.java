@@ -23,6 +23,7 @@ import com.redhat.rhn.manager.kickstart.crypto.EditCryptoKeyCommand;
  */
 public class CryptoKeyEditAction extends BaseCryptoKeyEditAction {
 
+    @Override
     protected BaseCryptoKeyCommand getCommand(RequestContext ctx) {
         return new EditCryptoKeyCommand(ctx.getCurrentUser(),
                 ctx.getRequiredParam(RequestContext.KEY_ID));

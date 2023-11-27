@@ -64,9 +64,8 @@ public class ActionHelper  {
     * @param actionIn The Action we want to setup to test.
     * @param expectedForwardName expected name of the forward you want the Action
     *        to generate.
-    * @throws Exception if error occurs setting up the Action.
-    */
-    public void setUpAction(Action actionIn, String expectedForwardName) throws Exception {
+     */
+    public void setUpAction(Action actionIn, String expectedForwardName) {
         action = actionIn;
         mapping = new ActionMapping();
         setExpectedForward(expectedForwardName);
@@ -203,7 +202,6 @@ public class ActionHelper  {
      * @param filterString the filter string we want to test out.
      */
     public void setupClampListBounds(String filterString) {
-        getRequest().setupAddParameter(RequestContext.LIST_DISPLAY_EXPORT, "0");
         getRequest().setupAddParameter(RequestContext.FILTER_STRING, filterString);
         getRequest().setupAddParameter(RequestContext.PREVIOUS_FILTER_STRING, filterString);
         getRequest().setupAddParameter("newset", (String)null);

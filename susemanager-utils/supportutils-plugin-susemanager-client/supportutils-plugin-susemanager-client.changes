@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Sep 18 14:38:56 CEST 2023 - rosuna@suse.com
+
+- version 4.4.2-1
+  * write configured crypto-policy in supportconfig
+  * add cloud and payg checks
+
+-------------------------------------------------------------------
 Wed Sep 28 11:08:10 CEST 2022 - jgonzalez@suse.com
 
 - version 4.4.1-1

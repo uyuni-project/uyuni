@@ -69,6 +69,7 @@ public class CVEAuditServer extends SelectableAdapter implements CVEAuditSystem 
      * Return the system ID.
      * @return the id
      */
+    @Override
     public long getId() {
         return id;
     }
@@ -77,6 +78,7 @@ public class CVEAuditServer extends SelectableAdapter implements CVEAuditSystem 
      * Return the system name.
      * @return the name
      */
+    @Override
     public String getName() {
         return name;
     }
@@ -85,6 +87,7 @@ public class CVEAuditServer extends SelectableAdapter implements CVEAuditSystem 
      * Return the patch status.
      * @return the patchStatus
      */
+    @Override
     public PatchStatus getPatchStatus() {
         return patchStatus;
     }
@@ -93,6 +96,7 @@ public class CVEAuditServer extends SelectableAdapter implements CVEAuditSystem 
      * Return the set of channels.
      * @return the channels
      */
+    @Override
     public Set<AuditChannelInfo> getChannels() {
         return channels;
     }
@@ -101,6 +105,7 @@ public class CVEAuditServer extends SelectableAdapter implements CVEAuditSystem 
      * Return the set of erratas.
      * @return the erratas
      */
+    @Override
     public Set<ErrataIdAdvisoryPair> getErratas() {
         return erratas;
     }

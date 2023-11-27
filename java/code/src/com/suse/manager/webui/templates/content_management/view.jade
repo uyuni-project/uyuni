@@ -11,8 +11,6 @@ script(type='text/javascript').
     window.isRuntimeInfoEnabled = #{isRuntimeInfoEnabled};
     window.osImageStoreUrl = "#{osImageStoreUrl}";
 
-+userPreferences
-
 script(type='text/javascript').
     spaImportReactPage('images/image-view')
         .then(function(module) { module.renderer('image-view') });

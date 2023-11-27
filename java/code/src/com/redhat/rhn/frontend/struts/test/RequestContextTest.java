@@ -45,10 +45,9 @@ import spark.routematch.RouteMatch;
 public class RequestContextTest extends MockObjectTestCase {
 
     /**
-     * @throws Exception if an error occurs
      */
     @Test
-    public final void testGetLoggedInUser() throws Exception {
+    public final void testGetLoggedInUser() {
         Config.get().setBoolean(ConfigDefaults.SINGLE_SIGN_ON_ENABLED, "false");
 
         final String requestUrl = "http://localhost:8080/rhn/manager/login";
@@ -134,10 +133,9 @@ public class RequestContextTest extends MockObjectTestCase {
     }*/
 
     /**
-     * @throws Exception if an error occurs
      */
     @Test
-    public void testbuildPageLink() throws Exception {
+    public void testbuildPageLink() {
         RhnMockHttpServletRequest request = new RhnMockHttpServletRequest();
         request.setupAddParameter("someparam", "value");
         request.setupQueryString("otherparam=foo&barparam=beer");

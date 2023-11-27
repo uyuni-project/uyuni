@@ -1,18 +1,25 @@
-# Copyright (c) 2018-2022 SUSE LLC
+# Copyright (c) 2018-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 # This feature is not idempotent, we leave the system registered in order to have the history of events
 # available.
-
-# This feature has not dependencies and it can run in parallel with other features.
+# We also test 'Bootstrapping using the command line' in this feature with the following script:
+# https://github.com/uyuni-project/uyuni/blob/master/java/conf/cobbler/snippets/minion_script
+# This feature has no dependencies and it can run in parallel with other features.
 
 @scope_virtualization
 @virthost_kvm
 @scope_cobbler
-Feature: Be able to manage KVM virtual machines via the GUI
+Feature: Manage KVM virtual machines via the GUI
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
+
+  Scenario: Start Cobbler monitoring
+    When I start local monitoring of Cobbler
+
+  Scenario: Show the KVM host system overview
+    Given I am on the Systems overview page of this "kvm_server"
 
   Scenario: Prepare a KVM test virtual machine and list it
     When I delete default virtual network on "kvm_server"
@@ -20,12 +27,9 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I create test-net1 virtual network on "kvm_server"
     And I delete default virtual storage pool on "kvm_server"
     And I create test-pool0 virtual storage pool on "kvm_server"
-    And I create "test-vm" virtual machine on "kvm_server"
+    And I create a leap virtual machine named "test-vm" without cloudinit on "kvm_server"
     And I follow "Virtualization" in the content area
     And I wait until I see "test-vm" text
-
-  Scenario: Show the KVM host virtualization tab
-    Given I follow "Virtualization" in the content area
 
   Scenario: Start a KVM virtual machine
     When I click on "Start" in row "test-vm"
@@ -57,13 +61,13 @@ Feature: Be able to manage KVM virtual machines via the GUI
 
   Scenario: Edit a KVM virtual machine
     When I click on "Edit" in row "test-vm"
-    And I wait until I do not see "Loading..." text
-    Then I should see "512" in field "memory"
-    And I should see "1" in field "vcpu"
+    # WORKAROUND: bsc#1213220 Virtualization page stuck on Loading
+    And I wait until I do not see "Loading..." text, refreshing the page
+    Then I should see "1024" in field identified by "memory"
+    And I should see "1" in field identified by "vcpu"
     And option "VNC" is selected as "graphicsType"
-    And option "test-net0" is selected as "network0_source"
     And option "virtio" is selected as "disk0_bus"
-    When I enter "1024" as "memory"
+    When I enter "512" as "memory"
     And I enter "2" as "vcpu"
     And I select "Spice" from "graphicsType"
     And I select "test-net1" from "network0_source"
@@ -71,7 +75,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I select "scsi" from "disk0_bus"
     And I click on "Update"
     Then I should see a "Hosted Virtual Systems" text
-    And "test-vm" virtual machine on "kvm_server" should have 1024MB memory and 2 vcpus
+    And "test-vm" virtual machine on "kvm_server" should have 512MB memory and 2 vcpus
     And "test-vm" virtual machine on "kvm_server" should have spice graphics device
     And "test-vm" virtual machine on "kvm_server" should have 1 NIC using "test-net1" network
     And "test-vm" virtual machine on "kvm_server" should have a NIC with 02:34:56:78:9a:bc MAC address
@@ -79,7 +83,8 @@ Feature: Be able to manage KVM virtual machines via the GUI
 
   Scenario: Add a network interface to a KVM virtual machine
     When I click on "Edit" in row "test-vm"
-    And I wait until I do not see "Loading..." text
+    # WORKAROUND: bsc#1213220 Virtualization page stuck on Loading
+    And I wait until I do not see "Loading..." text, refreshing the page
     And I click on "add_network"
     And I select "test-net1" from "network1_source"
     And I click on "Update"
@@ -88,7 +93,8 @@ Feature: Be able to manage KVM virtual machines via the GUI
 
   Scenario: Delete a network interface from a KVM virtual machine
     When I click on "Edit" in row "test-vm"
-    And I wait until I do not see "Loading..." text
+    # WORKAROUND: bsc#1213220 Virtualization page stuck on Loading
+    And I wait until I do not see "Loading..." text, refreshing the page
     And I click on "remove_network1"
     And I click on "Update"
     Then I should see a "Hosted Virtual Systems" text
@@ -96,7 +102,8 @@ Feature: Be able to manage KVM virtual machines via the GUI
 
   Scenario: Add a disk and a cdrom to a KVM virtual machine
     When I click on "Edit" in row "test-vm"
-    And I wait until I do not see "Loading..." text
+    # WORKAROUND: bsc#1213220 Virtualization page stuck on Loading
+    And I wait until I do not see "Loading..." text, refreshing the page
     And I click on "add_disk"
     And I click on "add_disk"
     And I select "CDROM" from "disk2_device"
@@ -110,7 +117,8 @@ Feature: Be able to manage KVM virtual machines via the GUI
     When I click on "Edit" in row "test-vm"
     And I wait until I do not see "Loading..." text
     And I store "" into file "/tmp/test-image.iso" on "kvm_server"
-    And I wait until I do not see "Loading..." text
+    # WORKAROUND: bsc#1213220 Virtualization page stuck on Loading
+    And I wait until I do not see "Loading..." text, refreshing the page
     And I enter "/tmp/test-image.iso" as "disk2_source_file"
     And I click on "Update"
     Then I should see a "Hosted Virtual Systems" text
@@ -118,7 +126,8 @@ Feature: Be able to manage KVM virtual machines via the GUI
 
   Scenario: Delete a disk from a KVM virtual machine
     When I click on "Edit" in row "test-vm"
-    And I wait until I do not see "Loading..." text
+    # WORKAROUND: bsc#1213220 Virtualization page stuck on Loading
+    And I wait until I do not see "Loading..." text, refreshing the page
     And I click on "remove_disk2"
     And I click on "Update"
     Then I should see a "Hosted Virtual Systems" text
@@ -135,7 +144,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
     When I follow "Create Guest"
     And I wait until I see "General" text
     And I enter "test-vm2" as "name"
-    And I enter "/var/testsuite-data/disk-image-template.qcow2" as "disk0_source_template"
+    And I enter "/var/testsuite-data/leap-disk-image-template.qcow2" as "disk0_source_template"
     And I select "test-net0" from "network0_source"
     And I select "Spice" from "graphicsType"
     And I click on "add_disk"
@@ -175,7 +184,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
     When I follow "Create Guest"
     And I wait until I see "General" text
     And I enter "test-vm2" as "name"
-    And I enter "/var/testsuite-data/disk-image-template.qcow2" as "disk0_source_template"
+    And I enter "/var/testsuite-data/leap-disk-image-template.qcow2" as "disk0_source_template"
     And I select "test-net0" from "network0_source"
     And I check "uefi"
     And I enter "/usr/share/qemu/ovmf-x86_64-ms.bin" as "uefiLoader"
@@ -252,7 +261,8 @@ Feature: Be able to manage KVM virtual machines via the GUI
 
   Scenario: Delete a virtual volume
     When I follow "Storage"
-    And I wait until I do not see "Loading..." text
+    # WORKAROUND: bsc#1213220 Virtualization page stuck on Loading
+    And I wait until I do not see "Loading..." text, refreshing the page
     And I open the sub-list of the product "tmp"
     And I click on "Delete" in tree item "test-net0.xml"
     And I click on "Delete" in "Delete Virtual Storage Volume" modal
@@ -310,6 +320,16 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I should see a "test-net2" virtual network on "kvm_server"
     And "test-net2" virtual network on "kvm_server" should have "192.168.128.1" IPv4 address with 24 prefix
 
+@susemanager
+  Scenario: Install TFTP boot package on the server
+    When I install package tftpboot-installation on the server
+    And I wait for "tftpboot-installation-SLE-15-SP4-x86_64" to be installed on "server"
+
+@uyuni
+ Scenario: Install TFTP boot package on the server
+   When I install package tftpboot-installation on the server
+   And I wait for "tftpboot-installation-openSUSE-Leap-15.5-x86_64" to be installed on "server"
+
 @virthost_kvm
   Scenario: Edit a virtual network
     Given I am on the "Virtualization" page of this "kvm_server"
@@ -327,11 +347,9 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And "test-net2" virtual network on "kvm_server" should have "192.168.130.1" IPv4 address with 24 prefix
 
 # Start provisioning scenarios
-
+@susemanager
 @scc_credentials
   Scenario: Create auto installation distribution
-    And I install package tftpboot-installation on the server
-    And I wait for "tftpboot-installation-SLE-15-SP4-x86_64" to be installed on "server"
     When I follow the left menu "Systems > Autoinstallation > Distributions"
     And I follow "Create Distribution"
     And I enter "SLE-15-SP4-KVM" as "label"
@@ -343,6 +361,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
     Then I should see a "Autoinstallable Distributions" text
     And I should see a "SLE-15-SP4-KVM" link
 
+@susemanager
 @scc_credentials
   Scenario: Create auto installation profile
     And I follow the left menu "Systems > Autoinstallation > Profiles"
@@ -355,6 +374,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
     Then I should see a "Autoinstallation: 15-sp4-kvm" text
     And I should see a "Autoinstallation Details" text
 
+@susemanager
 @scc_credentials
   Scenario: Configure auto installation profile
     When I enter "self_update=0" as "kernel_options"
@@ -365,6 +385,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I follow "Autoinstallation File"
     Then I should see a "SLE-15-SP4-KVM" text
 
+@susemanager
 @scc_credentials
   Scenario: Create an auto installing KVM virtual machine
     Given I am on the "Virtualization" page of this "kvm_server"
@@ -386,6 +407,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And "test-vm2" virtual machine on "kvm_server" should not stop on reboot at next start
     And I wait at most 1000 seconds until Salt master sees "test-vm2" as "unaccepted"
 
+@susemanager
 @scc_credentials
   Scenario: VNC console for the auto installing KVM virtual machine
     When I click on "Graphical Console" in row "test-vm2"
@@ -393,6 +415,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I wait until I see the VNC graphical console
     And I close the last opened window
 
+@susemanager
 @scc_credentials
   Scenario: Cleanup: remove the auto installation profile
     When I follow the left menu "Systems > Autoinstallation > Profiles"
@@ -401,12 +424,38 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I click on "Delete Autoinstallation"
     Then I should not see a "15-sp4-kvm" text
 
+@susemanager
 @scc_credentials
   Scenario: Cleanup: remove the auto installation distribution
     When I follow the left menu "Systems > Autoinstallation > Distributions"
     And I follow "SLE-15-SP4-KVM"
     And I follow "Delete Distribution"
     And I click on "Delete Distribution"
-    And I remove package "tftpboot-installation-SLE-15-SP4-x86_64" from this "server"
-    And I wait for "tftpboot-installation-SLE-15-SP4-x86_64" to be uninstalled on "server"
     Then I should not see a "SLE-15-SP4-KVM" text
+
+@susemanager
+  Scenario: Cleanup: Remove the TFTP boot package from the server
+    When I remove package "tftpboot-installation-SLE-15-SP4-x86_64" from this "server" without error control
+    And I wait for "tftpboot-installation-SLE-15-SP4-x86_64" to be uninstalled on "server"
+
+@uyuni
+  Scenario: Cleanup: Remove the TFTP boot package from the server
+    When I remove package "tftpboot-installation-openSUSE-Leap-15.5-x86_64" from this "server" without error control
+    And I wait for "tftpboot-installation-openSUSE-Leap-15.5-x86_64" to be uninstalled on "server"
+
+  Scenario: Cleanup: Stop virtual network
+    Given I am on the "Virtualization" page of this "kvm_server"
+    And I follow "Virtualization" in the content area
+    And I follow "Networks" in the content area
+    And I wait until I do not see "Loading..." text
+    Then table row for "test-net0" should contain "running"
+    When I click on "Stop" in row "test-net0"
+    And I click on "Stop" in "Stop Network" modal
+    Then I wait until table row for "test-net0" contains button "Start"
+    And table row for "test-net0" should contain "stopped"
+
+  Scenario: Check for errors in Cobbler monitoring
+    Then the local logs for Cobbler should not contain errors
+
+  Scenario: Cleanup Cobbler after the feature has run
+    When I cleanup Cobbler files and restart apache and cobblerd services

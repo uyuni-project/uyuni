@@ -1,0 +1,1 @@
+- Replaced %{_datarootdir} with %{_datadir} for consistency.

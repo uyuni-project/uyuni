@@ -39,6 +39,7 @@ public class VariablesAction extends KickstartVariableAction {
     private static final String NETBOOT_ENABLED = "netbootEnabled";
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm formIn,
                                  HttpServletRequest request,

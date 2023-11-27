@@ -28,8 +28,8 @@ public class RhnHtmlDiffWriter implements DiffWriter, DiffVisitor {
 
     private static final int CHARS_PER_LINE = 40;
 
-    private final StringBuffer oldfile;
-    private final StringBuffer newfile;
+    private final StringBuilder oldfile;
+    private final StringBuilder newfile;
     private final NumberFormat formatter;
 
     private boolean onlyChanged;
@@ -42,8 +42,8 @@ public class RhnHtmlDiffWriter implements DiffWriter, DiffVisitor {
      */
     public RhnHtmlDiffWriter(int lines) {
         onlyChanged = false;
-        oldfile = new StringBuffer();
-        newfile = new StringBuffer();
+        oldfile = new StringBuilder();
+        newfile = new StringBuilder();
         formatter = new DecimalFormat();
         formatter.setMaximumFractionDigits(0);
         formatter.setMinimumIntegerDigits(Integer.toString(lines).length());
@@ -52,6 +52,7 @@ public class RhnHtmlDiffWriter implements DiffWriter, DiffVisitor {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void writeHunk(Hunk hunk) {
         hunk.visit(this);
     }
@@ -59,6 +60,7 @@ public class RhnHtmlDiffWriter implements DiffWriter, DiffVisitor {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void accept(ChangeHunk hunk) {
         printStartDiv("changed");
         int numOld = printLines(oldfile, hunk.getOldLines());
@@ -77,6 +79,7 @@ public class RhnHtmlDiffWriter implements DiffWriter, DiffVisitor {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void accept(DeleteHunk hunk) {
         printStartDiv("deleted");
         int numlines = printLines(oldfile, hunk.getOldLines());
@@ -91,6 +94,7 @@ public class RhnHtmlDiffWriter implements DiffWriter, DiffVisitor {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void accept(MatchHunk hunk) {
         if (!onlyChanged) {
             printLines(oldfile, hunk.getOldLines());
@@ -106,6 +110,7 @@ public class RhnHtmlDiffWriter implements DiffWriter, DiffVisitor {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void accept(InsertHunk hunk) {
         printStartDiv("inserted");
         int numlines = printLines(newfile, hunk.getNewLines());
@@ -117,7 +122,7 @@ public class RhnHtmlDiffWriter implements DiffWriter, DiffVisitor {
         printEndDiv();
     }
 
-    private int printLines(StringBuffer buffy, FileLines block) {
+    private int printLines(StringBuilder buffy, FileLines block) {
         Iterator<String> i = block.getLines().iterator();
         int numWritten = 0;
         int linenum = block.getFromLine();
@@ -148,7 +153,7 @@ public class RhnHtmlDiffWriter implements DiffWriter, DiffVisitor {
         return numWritten;
     }
 
-    private void printBlankLines(StringBuffer buffy, int number) {
+    private void printBlankLines(StringBuilder buffy, int number) {
         for (int i = 0; i < number; i++) {
             buffy.append("&nbsp;<br />");
         }

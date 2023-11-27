@@ -1,4 +1,4 @@
-# Copyright (c) 2021 SUSE LLC
+# Copyright (c) 2021-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_visualization
@@ -13,14 +13,14 @@ Feature: Managing channels
   Scenario: Fail when trying to add a duplicate channel
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Create Channel"
-    And I enter "Fake Base Channel" as "Channel Name"
-    And I enter "fake_base_channel" as "Channel Label"
+    And I enter "Fake-Base-Channel-SUSE-like" as "Channel Name"
+    And I enter "fake-base-channel-suse-like" as "Channel Label"
     And I select "None" from "Parent Channel"
     And I select "x86_64" from "Architecture:"
     And I enter "Base channel for testing" as "Channel Summary"
     And I enter "No more desdcription for base channel." as "Channel Description"
     And I click on "Create Channel"
-    Then I should see a "The channel name 'Fake Base Channel' is already in use, please enter a different name" text
+    Then I should see a "The channel name 'Fake-Base-Channel-SUSE-like' is already in use, please enter a different name" text
 
   Scenario: Fail when trying to use invalid characters in the channel label
     When I follow the left menu "Software > Manage > Channels"
@@ -40,6 +40,7 @@ Feature: Managing channels
     And I click on "Create Channel"
     Then I should see a "Invalid channel name, please see the format described below" text
 
+@scc_credentials
   Scenario: Fail when trying to use reserved names for channels
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Create Channel"
@@ -49,6 +50,7 @@ Feature: Managing channels
     And I click on "Create Channel"
     Then I should see a "The channel name 'SLE-12-Cloud-Compute5-Pool for x86_64' is reserved, please enter a different name" text
 
+@scc_credentials
   Scenario: Fail when trying to use reserved labels for channels
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Create Channel"
@@ -67,9 +69,18 @@ Feature: Managing channels
     And I click on "Create Channel"
     Then I should see a "Channel aaaSLE-12-Cloud-Compute5-Pool for x86_64 created." text
 
+@scc_credentials
   Scenario: Fail when trying to change the channel name to a reserved name
     When I follow the left menu "Software > Manage > Channels"
     And I follow "aaaSLE-12-Cloud-Compute5-Pool for x86_64"
     And I enter "SLE-12-Cloud-Compute5-Pool for x86_64" as "Channel Name"
     And I click on "Update Channel"
     Then I should see a "The channel name 'SLE-12-Cloud-Compute5-Pool for x86_64' is reserved, please enter a different name" text
+
+  Scenario: Cleanup: Delete created channel
+    When I follow the left menu "Software > Manage > Channels"
+    And I follow "aaaSLE-12-Cloud-Compute5-Pool for x86_64"
+    And I follow "Delete software channel"
+    And I check "unsubscribeSystems"
+    And I click on "Delete Channel"
+    Then I should see a "Channel aaaSLE-12-Cloud-Compute5-Pool for x86_64 has been deleted." text

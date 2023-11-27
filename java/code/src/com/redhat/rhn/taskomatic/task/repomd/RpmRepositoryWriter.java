@@ -324,6 +324,10 @@ public class RpmRepositoryWriter extends RepositoryWriter {
                 }
             }
             log.info("Processed {} packages", i + packageBatch.getEnd());
+            if (commitTransaction) {
+                // commit pre generated XML snippets in the cache
+                HibernateFactory.commitTransaction();
+            }
         }
         primary.end();
         filelists.end();
@@ -472,11 +476,8 @@ public class RpmRepositoryWriter extends RepositoryWriter {
     private void generateBadRepo(Channel channel, String prefix) {
         log.warn("No repo will be generated for channel {}", channel.getLabel());
         deleteRepomdFiles(channel.getLabel(), false);
-        try {
-            FileWriter norepo = new FileWriter(prefix + NOREPO_FILE);
-            norepo.write("No repo will be generated for channel " +
-                    channel.getLabel() + ".\n");
-            norepo.close();
+        try (FileWriter norepo = new FileWriter(prefix + NOREPO_FILE)) {
+            norepo.write("No repo will be generated for channel " + channel.getLabel() + ".\n");
         }
         catch (IOException e) {
             log.warn("Cannot create " + NOREPO_FILE + " file.");
@@ -490,7 +491,7 @@ public class RpmRepositoryWriter extends RepositoryWriter {
                 method = channel.getClass().getMethod("getComps");
             }
             else if (metadataType.equals(MODULES)) {
-                method = channel.getClass().getMethod("getLatestModules");
+                method = channel.getClass().getMethod("getModules");
             }
         }
         catch (NoSuchMethodException e) {
@@ -545,29 +546,36 @@ public class RpmRepositoryWriter extends RepositoryWriter {
             return null;
         }
 
-        DigestInputStream digestStream;
-        try {
-            digestStream = new DigestInputStream(stream, MessageDigest
-                    .getInstance(checksumAlgo));
+        try (DigestInputStream digestStream = new DigestInputStream(stream, MessageDigest.getInstance(checksumAlgo))) {
+
+            if (!computeDigest(digestStream)) {
+                return null;
+            }
+
+            Date timeStamp = new Date(metadataFile.lastModified());
+
+            return new RepomdIndexData(
+                StringUtil.getHexString(digestStream.getMessageDigest().digest()),
+                null,
+                timeStamp
+            );
         }
-        catch (NoSuchAlgorithmException nsae) {
+        catch (IOException | NoSuchAlgorithmException nsae) {
             throw new RepomdRuntimeException(nsae);
         }
-        byte[] bytes = new byte[10];
+    }
 
+    private static boolean computeDigest(DigestInputStream digestStream) {
         try {
+            byte[] bytes = new byte[10];
             while (digestStream.read(bytes) != -1) {
-                // no-op
+                // no-op, just fully consume the stream so that the digest is computed
             }
         }
         catch (IOException e) {
-            return null;
+            return false;
         }
-
-        Date timeStamp = new Date(metadataFile.lastModified());
-
-        return new RepomdIndexData(StringUtil.getHexString(digestStream
-                .getMessageDigest().digest()), null, timeStamp);
+        return true;
     }
 
     /**

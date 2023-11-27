@@ -18,6 +18,7 @@ CREATE TABLE suseRecurringAction
   id                NUMERIC NOT NULL
                     CONSTRAINT suse_recurring_action_id_pk PRIMARY KEY,
   target_type       VARCHAR(32) NOT NULL,
+  action_type       VARCHAR(32) NOT NULL,
   name              VARCHAR(256) NOT NULL,
   cron_expr         VARCHAR(120) NOT NULL,
   minion_id         NUMERIC
@@ -37,7 +38,6 @@ CREATE TABLE suseRecurringAction
                       REFERENCES web_contact(id)
                       ON DELETE CASCADE,
   active            CHAR(1) DEFAULT ('Y') NOT NULL,
-  test_mode         CHAR(1) DEFAULT ('Y') NOT NULL,
   created           TIMESTAMP WITH TIME ZONE
                       DEFAULT (current_timestamp)
                       NOT NULL,

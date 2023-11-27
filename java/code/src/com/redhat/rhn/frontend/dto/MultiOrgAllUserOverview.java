@@ -69,6 +69,7 @@ public class MultiOrgAllUserOverview extends BaseDto {
      * get the id
      * @return the id
      */
+    @Override
     public Long getId() {
         return id;
     }

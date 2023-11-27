@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.rhnset.RhnSetElement;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.BaseSetOperateOnSelectedItemsAction;
+import com.redhat.rhn.frontend.dto.ConfigChannelDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
@@ -47,8 +48,9 @@ public class ChannelListUnsubscribeSubmitAction extends
     /**
      * {@inheritDoc}
      */
-    protected DataResult getDataResult(User user, ActionForm formIn,
-            HttpServletRequest request) {
+    @Override
+    protected DataResult<ConfigChannelDto> getDataResult(User user, ActionForm formIn,
+                                                         HttpServletRequest request) {
         RequestContext rctx = new RequestContext(request);
         Server server = rctx.lookupServer();
         return ConfigurationManager.getInstance().
@@ -58,6 +60,7 @@ public class ChannelListUnsubscribeSubmitAction extends
     /**
      * {@inheritDoc}
      */
+    @Override
     protected RhnSetDecl getSetDecl() {
         return RhnSetDecl.CONFIG_CHANNELS_TO_UNSUBSCRIBE;
     }
@@ -65,6 +68,7 @@ public class ChannelListUnsubscribeSubmitAction extends
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processMethodKeys(Map<String, String> map) {
         map.put(UNSUBSCRIBE_ACTION, "processUnsubscribeAction");
 
@@ -73,8 +77,9 @@ public class ChannelListUnsubscribeSubmitAction extends
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processParamMap(ActionForm form, HttpServletRequest request,
-            Map<String, Object> params) {
+                                   Map<String, Object> params) {
         // TODO Auto-generated method stub
 
     }

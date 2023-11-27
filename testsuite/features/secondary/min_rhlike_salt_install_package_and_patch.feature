@@ -1,6 +1,7 @@
 # Copyright (c) 2015-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@skip_if_github_validation
 @scope_res
 @scope_salt
 @rhlike_minion
@@ -24,7 +25,7 @@ Feature: Install a patch on the Red Hat-like minion via Salt through the UI
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
-    And I check radio button "Fake-RH-Like-Channel"
+    And I check radio button "Fake-Base-Channel-RH-like"
     And I wait until I do not see "Loading..." text
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text

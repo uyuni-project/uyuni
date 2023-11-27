@@ -16,7 +16,7 @@ package com.redhat.rhn.frontend.action.channel.manage;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.channel.ChannelFactory;
-import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.domain.channel.DistChannelMap;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -35,15 +35,14 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * DistChannelMapSetupAction
  */
-public class DistChannelMapSetupAction extends RhnAction implements Listable {
+public class DistChannelMapSetupAction extends RhnAction implements Listable<DistChannelMap> {
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
-            HttpServletRequest request, HttpServletResponse response) throws Exception {
-        RequestContext context = new RequestContext(request);
-        User user =  context.getCurrentUser();
+                                 HttpServletRequest request, HttpServletResponse response) {
         ListHelper helper = new ListHelper(this, request);
         helper.execute();
 
@@ -53,9 +52,8 @@ public class DistChannelMapSetupAction extends RhnAction implements Listable {
     /**
      * {@inheritDoc}
      */
-    public DataResult getResult(RequestContext context) {
-        return new DataResult(
-                ChannelFactory.listAllDistChannelMapsByOrg(
-                    context.getCurrentUser().getOrg()));
+    @Override
+    public DataResult<DistChannelMap> getResult(RequestContext context) {
+        return new DataResult<>(ChannelFactory.listAllDistChannelMapsByOrg(context.getCurrentUser().getOrg()));
     }
 }

@@ -32,11 +32,13 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.EOFException;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -69,8 +71,8 @@ public class Notification {
 
     private static final Object LOCK = new Object();
     private static final Gson GSON = new GsonBuilder().create();
-    private static Map<Session, Set<String>> wsSessions = new HashMap<>();
-    private static Set<Session> brokenSessions = new HashSet<>();
+    private static Map<Session, Set<String>> wsSessions = new ConcurrentHashMap();
+    private static Set<Session> brokenSessions = ConcurrentHashMap.newKeySet();
     private static final WebsocketHeartbeatService HEARTBEAT_SERVICE = GlobalInstanceHolder.WEBSOCKET_SESSION_MANAGER;
 
     /**
@@ -112,29 +114,34 @@ public class Notification {
      */
     @OnMessage
     public void onMessage(Session session, String messageBody) {
-        // Each session sends messages to tell us what action ID they need to monitor
-        Set<String> watched = wsSessions.get(session);
-        if (watched != null) {
-            Optional<User> userOpt = Optional.ofNullable(session.getUserProperties().get(WEB_USER_ID))
-                    .map(webUserID -> UserFactory.lookupById((Long) webUserID));
-            userOpt.ifPresentOrElse(user -> {
-                        try {
-                            Set<String> request = GSON.fromJson(messageBody,
-                                    new TypeToken<Set<String>>() { }.getType());
-                            watched.addAll(request);
+        try {
+            // Each session sends messages to tell us what action ID they need to monitor
+            Set<String> watched = wsSessions.get(session);
+            if (watched != null) {
+                Optional<User> userOpt = Optional.ofNullable(session.getUserProperties().get(WEB_USER_ID))
+                        .map(webUserID -> UserFactory.lookupById((Long) webUserID));
+                userOpt.ifPresentOrElse(user -> {
+                            try {
+                                Set<String> request = GSON.fromJson(messageBody,
+                                        new TypeToken<Set<String>>() { }.getType());
+                                watched.addAll(request);
 
-                            // Send the data
-                            sendData(session, user, request);
-                        }
-                        catch (JsonSyntaxException e) {
-                            LOG.error(String.format("Received invalid request: [message:%s]", messageBody));
-                        }
-                    },
-                    () -> LOG.debug("no authenticated user.")
-                );
+                                // Send the data
+                                sendData(session, user, request);
+                            }
+                            catch (JsonSyntaxException e) {
+                                LOG.error(String.format("Received invalid request: [message:%s]", messageBody));
+                            }
+                        },
+                        () -> LOG.debug("no authenticated user.")
+                    );
+            }
+            else {
+                LOG.debug("Session not registered or broken: [id:{}]", session.getId());
+            }
         }
-        else {
-            LOG.debug("Session not registered or broken: [id:{}]", session.getId());
+        finally {
+            HibernateFactory.closeSession();
         }
     }
 
@@ -176,7 +183,7 @@ public class Notification {
                     handbreakSession(session);
                 }
             }
-            catch (IOException e) {
+            catch (IOException | IllegalStateException e) {
                 LOG.debug(String.format("Could not send websocket message. Session [id:%s] is already closed.",
                         session.getId()));
                 handbreakSession(session);
@@ -186,8 +193,6 @@ public class Notification {
 
     /**
      * A static method to notify all {@link Session}s attached to WebSocket from the outside
-     * Must be synchronized. Sending messages concurrently from separate threads
-     * will result in IllegalStateException.
      *
      * @param property which property to spread to all sessions
      */
@@ -195,16 +200,14 @@ public class Notification {
         // Check for closed sessions before notifying them
         clearBrokenSessions();
 
-        synchronized (LOCK) {
-            // if there are unread messages, notify it to all attached WebSocket sessions
-            wsSessions.forEach((session, watched) -> {
-                if (watched.contains(property)) {
-                    Optional.ofNullable(session.getUserProperties().get(WEB_USER_ID))
-                            .map(webUserID -> UserFactory.lookupById((Long) webUserID))
-                            .ifPresent(user -> sendData(session, user, Set.of(property)));
-                }
-            });
-        }
+        // if there are unread messages, notify it to all attached WebSocket sessions
+        wsSessions.forEach((session, watched) -> {
+            if (watched.contains(property)) {
+                Optional.ofNullable(session.getUserProperties().get(WEB_USER_ID))
+                        .map(webUserID -> UserFactory.lookupById((Long) webUserID))
+                        .ifPresent(user -> sendData(session, user, Set.of(property)));
+            }
+        });
     }
 
     private static void sendData(Session session, User user, Set<String> properties) {
@@ -242,10 +245,14 @@ public class Notification {
                 }
             });
 
+            // this is a temporary list to cope with the scenario
+            // when new "brokenSessions" where added while we were cleaning them
+            List<Session> brokenSessionRemove = new LinkedList<>();
             // remove any invalid/broken session from the valid set
             // try to close it if it is still open
             brokenSessions.forEach(session -> {
                 wsSessions.remove(session);
+                brokenSessionRemove.add(session);
                 if (session.isOpen()) {
                     try {
                         session.close();
@@ -255,7 +262,7 @@ public class Notification {
                     }
                 }
             });
-            brokenSessions.clear();
+            brokenSessions.removeAll(brokenSessionRemove);
         }
     }
 
@@ -265,9 +272,7 @@ public class Notification {
      */
     private static void handshakeSession(Session session) {
         HEARTBEAT_SERVICE.register(session);
-        synchronized (LOCK) {
-            wsSessions.put(session, new HashSet<>());
-        }
+        wsSessions.put(session, new HashSet<>());
     }
 
     /**
@@ -276,9 +281,7 @@ public class Notification {
      */
     private static void handbreakSession(Session session) {
         HEARTBEAT_SERVICE.unregister(session);
-        synchronized (LOCK) {
-            brokenSessions.add(session);
-        }
+        brokenSessions.add(session);
     }
 
     private static ScheduledExecutorService scheduledExecutorService;
@@ -286,7 +289,6 @@ public class Notification {
         scheduledExecutorService = Executors.newScheduledThreadPool(1);
         scheduledExecutorService.scheduleWithFixedDelay(() -> {
             try {
-                clearBrokenSessions();
                 spreadUpdate(USER_NOTIFICATIONS);
             }
             catch (Exception e) {

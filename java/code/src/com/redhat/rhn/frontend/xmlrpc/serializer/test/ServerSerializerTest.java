@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.serializer.test;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.server.Server;
@@ -35,10 +36,9 @@ import redstone.xmlrpc.XmlRpcSerializer;
 public class ServerSerializerTest extends BaseHandlerTestCase {
     /**
      * Test server of type Normal without machine Id
-     * @throws Exception
      */
     @Test
-    public void testSerializeNormalServer() throws Exception {
+    public void testSerializeNormalServer() {
         Server server = ServerFactoryTest.createTestServer(admin, true,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled());
         Writer output = new StringWriter();
@@ -47,7 +47,7 @@ public class ServerSerializerTest extends BaseHandlerTestCase {
         serializer.serialize(server, output, new XmlRpcSerializer());
         String finalOutput = output.toString();
         commonAssertions(finalOutput, server);
-        assertTrue(!finalOutput.contains("machine_id"));
+        assertFalse(finalOutput.contains("machine_id"));
 
     }
     /**
@@ -68,10 +68,9 @@ public class ServerSerializerTest extends BaseHandlerTestCase {
     }
     /**
      * Test server of type Normal with machine Id
-     * @throws Exception
      */
     @Test
-    public void testSerializeNormalServerWithMachineId() throws Exception {
+    public void testSerializeNormalServerWithMachineId() {
         Server server = ServerFactoryTest.createTestServer(admin, true,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled());
         server.setMachineId(TestUtils.randomString());

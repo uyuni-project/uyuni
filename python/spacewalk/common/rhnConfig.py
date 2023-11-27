@@ -100,6 +100,9 @@ class RHNOptions:
     def modifiedYN(self):
         """returns last modified time diff if rhn.conf has changed."""
 
+        if not os.path.exists(self.filename):
+            return 0
+
         try:
             si = os.stat(self.filename)
         except OSError:
@@ -126,23 +129,25 @@ class RHNOptions:
         the configuration cache self.__configs
         """
         # Speed up the most common case
-        timeDiff = self.modifiedYN()
-        if not timeDiff and self.is_initialized():
-            # Nothing to do: the config file did not change and we already
-            # have the config cached
-            return
-        else:
-            # if the timestamp changed, clear the list of cached configs
-            # and retain the new timestamp
-            self.updateLastModified(timeDiff)
-            self.__configs.clear()  # cache cleared
+        if self.is_initialized():
+            timeDiff = self.modifiedYN()
+            if not timeDiff:
+                # Nothing to do: the config file did not change and we already
+                # have the config cached
+                return
+            else:
+                # if the timestamp changed, clear the list of cached configs
+                # and retain the new timestamp
+                self.updateLastModified(timeDiff)
+                self.__configs.clear()  # cache cleared
 
         # parse the defaults.
         self._parseDefaults(allCompsYN=0)
 
         # Now that we parsed the defaults, we parse the multi-key
         # self.filename configuration (ie, /etc/rhn/rhn.conf)
-        self.__parsedConfig = parse_file(self.filename)
+        if os.path.exists(self.filename):
+            self.__parsedConfig = parse_file(self.filename)
 
         # And now generate and cache the current component
         self.__merge()
@@ -534,13 +539,7 @@ def initCFG(component=None, root=None, filename=None):
     CFG.init(component, root, filename)
     CFG.parse()
 
-try:
-    ALL_CFG = RHNOptions('')
-    ALL_CFG.parse()
-    PRODUCT_NAME = ALL_CFG.PRODUCT_NAME
-except ConfigParserError:
-    PRODUCT_NAME = "SUSE Manager"
-
+PRODUCT_NAME = "Uyuni"
 
 def isUyuni():
     return (PRODUCT_NAME == "Uyuni")

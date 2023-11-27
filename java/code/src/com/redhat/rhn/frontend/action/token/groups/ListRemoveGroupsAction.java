@@ -30,10 +30,10 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -43,7 +43,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author paji
  * ListRemoveGroupsAction
  */
-public class ListRemoveGroupsAction extends BaseListAction {
+public class ListRemoveGroupsAction extends BaseListAction<ManagedServerGroup> {
 
     private final ServerGroupManager serverGroupManager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
 
@@ -74,9 +74,13 @@ public class ListRemoveGroupsAction extends BaseListAction {
     }
 
     /** {@inheritDoc} */
+    @Override
     public List<ManagedServerGroup> getResult(RequestContext context) {
         ActivationKey key = context.lookupAndBindActivationKey();
-        List<ManagedServerGroup> groups = new LinkedList(key.getServerGroups());
+        List<ManagedServerGroup> groups = key.getServerGroups().stream()
+                .filter(g -> g instanceof ManagedServerGroup)
+                .map(g -> (ManagedServerGroup)g)
+                .collect(Collectors.toList());
         AddGroupsAction.setupAccessMap(context, groups);
         return groups;
     }

@@ -407,7 +407,7 @@ public class ConfigChannelSaltManager {
      * @return Map containing all the parameters + the type
      */
     public Map<String, Object> getStateParameters(ConfigRevision revision) {
-        List<Map<String, Object>> fileParams = Collections.EMPTY_LIST;
+        List<Map<String, Object>> fileParams = Collections.emptyList();
         if (revision.isFile()) {
             fileParams = getFileStateParams(revision.getConfigFile());
         }

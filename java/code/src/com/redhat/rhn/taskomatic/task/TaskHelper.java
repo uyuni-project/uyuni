@@ -17,6 +17,7 @@ package com.redhat.rhn.taskomatic.task;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
@@ -30,6 +31,7 @@ import com.suse.manager.utils.MailHelper;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.quartz.SchedulerException;
 
 import java.net.InetAddress;
 import java.util.ArrayList;
@@ -106,11 +108,11 @@ public class TaskHelper {
         SelectMode m = ModeFactory.getMode("User_queries", "active_org_admin_emails");
         Map<String, Object> params = new HashMap<>();
         params.put("org_id", orgId);
-        DataResult<Map> dr = m.execute(params);
-        List toReturn = new ArrayList<String>();
+        DataResult<Row> dr = m.execute(params);
+        List<String> toReturn = new ArrayList<>();
         if (dr != null) {
-            for (Map item : dr) {
-                toReturn.add(item.get("email"));
+            for (Row item : dr) {
+                toReturn.add((String)item.get("email"));
             }
         }
 
@@ -141,7 +143,7 @@ public class TaskHelper {
             new TaskoXmlRpcHandler().scheduleSingleSatBunchRun(TaskomaticApi.MINION_ACTION_BUNCH_LABEL,
                     TaskomaticApi.MINION_ACTION_JOB_PREFIX + action.getId(), params, action.getEarliestAction());
         }
-        catch (NoSuchBunchTaskException | InvalidParamException e) {
+        catch (NoSuchBunchTaskException | InvalidParamException | SchedulerException e) {
             LOG.error("Could not schedule action: {}", action.getActionType(), e);
         }
     }

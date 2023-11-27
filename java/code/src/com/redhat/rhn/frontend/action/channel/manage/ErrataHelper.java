@@ -110,7 +110,7 @@ public class ErrataHelper {
         clone.getCves().addAll(original.getCves());
         clone.setSeverity(original.getSeverity());
 
-        clone.setPackages(new HashSet(original.getPackages()));
+        clone.setPackages(new HashSet<>(original.getPackages()));
 
 
         for (Keyword k : original.getKeywords()) {

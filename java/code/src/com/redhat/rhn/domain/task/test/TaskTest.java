@@ -16,6 +16,7 @@ package com.redhat.rhn.domain.task.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -38,7 +39,7 @@ import java.util.List;
 public class TaskTest extends RhnBaseTestCase {
 
     @Test
-    public void testTask() throws Exception {
+    public void testTask() {
 
         Org org = UserTestUtils.findNewOrg("testOrg" + this.getClass().getSimpleName());
         String testname = "task_object_unit_test_" + TestUtils.randomString();
@@ -61,17 +62,17 @@ public class TaskTest extends RhnBaseTestCase {
         assertEquals(0, t.getPriority());
 
         Task t3 = null;
-        assertFalse(t2.equals(t3));
-        assertFalse(t2.equals(session));
+        assertNotEquals(t2, t3);
+        assertNotEquals(t2, session);
         t3 = TaskFactory.lookup(org, testname, testdata);
 
         assertEquals(t2, t3);
         t3.setName("foo");
-        assertFalse(t2.equals(t3), "t2 should not be equal to t3");
+        assertNotEquals(t2, t3, "t2 should not be equal to t3");
     }
 
     @Test
-    public void testLookupNameLike() throws Exception {
+    public void testLookupNameLike() {
         Org org = UserTestUtils.findNewOrg("testOrg" + this.getClass().getSimpleName());
         String testname = "task_object_unit_test_" + TestUtils.randomString();
         Long testdata = 42L;
@@ -79,8 +80,8 @@ public class TaskTest extends RhnBaseTestCase {
 
         List lookedup = TaskFactory.getTaskListByNameLike("task_object_unit_test_");
         assertNotNull(lookedup);
-        assertTrue(lookedup.size() > 0);
-        assertTrue(lookedup.get(0) != null);
+        assertFalse(lookedup.isEmpty());
+        assertNotNull(lookedup.get(0));
         assertTrue(lookedup.get(0) instanceof Task);
     }
 }

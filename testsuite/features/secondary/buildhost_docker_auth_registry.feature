@@ -1,5 +1,8 @@
-# Copyright (c) 2018-2022 SUSE LLC
+# Copyright (c) 2018-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
+#
+# This feature depends on:
+# - features/secondary/min_docker_api.feature
 
 @buildhost
 @scope_building_container_images
@@ -8,7 +11,6 @@ Feature: Build image with authenticated registry
 
   Scenario: Log in as docker user
     Given I am authorized as "docker" with password "docker"
-    And I am logged in API as user "docker" and password "docker"
 
   Scenario: Create an authenticated image store as Docker admin
     When I follow the left menu "Images > Stores"
@@ -39,6 +41,7 @@ Feature: Build image with authenticated registry
     # Verify the status of images in the authenticated image store
     When I wait at most 600 seconds until image "auth_registry_profile" with version "latest" is built successfully via API
     And I wait at most 300 seconds until image "auth_registry_profile" with version "latest" is inspected successfully via API
+    And I wait until no Salt job is running on "build_host"
     And I refresh the page
     Then table row for "auth_registry_profile" should contain "1"
     And the list of packages of image "auth_registry_profile" with version "latest" is not empty
@@ -59,4 +62,6 @@ Feature: Build image with authenticated registry
 
   Scenario: Cleanup: delete registry image
     When I delete the image "auth_registry_profile" with version "latest" via API calls
-    And I logout from API
+
+  Scenario: Cleanup: Make sure no job is left running on buildhost
+    When I wait until no Salt job is running on "build_host"

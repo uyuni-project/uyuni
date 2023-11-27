@@ -769,9 +769,17 @@ public class ContentManager {
     }
 
     private static void stripModuleMetadata(Channel channel) {
-        if (channel != null && channel.isModular()) {
-            channel.getModules().clear();
+        if (channel != null && channel.getModules() != null) {
+            HibernateFactory.getSession().delete(channel.getModules());
+            channel.setModules(null);
         }
+    }
+
+    private static void syncGpgKeyInfo(Channel source, Channel target) {
+        target.setGPGCheck(source.isGPGCheck());
+        target.setGPGKeyFp(source.getGPGKeyFp());
+        target.setGPGKeyId(source.getGPGKeyId());
+        target.setGPGKeyUrl(source.getGPGKeyUrl());
     }
 
     /**
@@ -849,6 +857,9 @@ public class ContentManager {
         else {
             tgt.cloneModulesFrom(newSource);
         }
+
+        // Sync GPG key info to target in case it's updated since last build
+        syncGpgKeyInfo(newSource, tgt);
 
         return swTgt;
     }

@@ -26,6 +26,7 @@ import com.redhat.rhn.manager.ssm.SsmOperationManager;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -42,19 +43,16 @@ import java.util.List;
  */
 public class SsmOperationDataPopulatorTest extends RhnBaseTestCase {
 
+    @Override
     @AfterEach
-    public void tearDown() throws Exception {
+    public void tearDown() {
         // Override so the base class' tearDown doesn't rollback the transaction;
         // for this class we want the data to be persisted and remain there
     }
 
     @Test
-    public void testDummy() {
-        // Stub to have at least one test when all of the actual populate ones are
-        // disabled so JUnit doesn't complain
-    }
-
-    public void aTestPopulateDataSet1() throws Exception {
+    @Disabled
+    public void populateDataSet() throws Exception {
         // The following control the data that are created in this call
         String userLoginName = "admin";
         int numInProgressOperations = 3;
@@ -84,10 +82,10 @@ public class SsmOperationDataPopulatorTest extends RhnBaseTestCase {
         // Cleanup; after the creates the RhnSet is no longer needed
         RhnSetManager.remove(serverSet);
 
-        super.commitAndCloseSession();
+        commitAndCloseSession();
     }
 
-    private List<Server> createServersForUser(User user, int count) throws Exception {
+    private List<Server> createServersForUser(User user, int count) {
         List<Server> servers = new ArrayList<>(count);
 
         for (int ii = 0; ii < count; ii++) {

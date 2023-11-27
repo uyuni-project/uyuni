@@ -16,6 +16,7 @@ package com.redhat.rhn.frontend.action.configuration.overview;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.ConfigFileDto;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.struts.BaseListAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
@@ -26,11 +27,13 @@ import com.redhat.rhn.manager.configuration.ConfigurationManager;
  */
 public class GlobalConfigFileList extends BaseListAction {
 
-    protected DataResult getDataResult(RequestContext context, PageControl pc) {
+    @Override
+    protected DataResult<ConfigFileDto> getDataResult(RequestContext context, PageControl pc) {
         User user = context.getCurrentUser();
         return ConfigurationManager.getInstance().listGlobalConfigFiles(user, pc);
     }
 
+    @Override
     protected void processPageControl(PageControl pc) {
         pc.setFilterColumn("path");
         pc.setFilter(true);

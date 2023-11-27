@@ -71,7 +71,7 @@ public class PowerManagementHandler extends BaseHandler {
     public List<String> listTypes(User loggedInUser) {
         String typeString = ConfigDefaults.get().getCobblerPowerTypes();
         if (typeString != null) {
-            return Arrays.asList(typeString.split(" *, *"));
+            return Arrays.asList(typeString.split(" *+, *+"));
         }
         return new ArrayList<>();
     }

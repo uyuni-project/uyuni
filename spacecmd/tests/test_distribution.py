@@ -107,6 +107,14 @@ class TestSCDistribution:
         shell.client.kickstart.tree.listInstallTypes = MagicMock(return_value=[
             {"label": "image"},
         ])
+        shell.client.kickstart.tree.getDetails = MagicMock(side_effect=[
+            {"channel_id": "ch-id-1", "label": "myname", "abs_path": "/path/tree_old", "install_type": {"label": "image_old"}},
+            {"channel_id": "ch-id-2", "label": "dist-2", "abs_path": "/tmp/d2", "install_type": {"label": "image_old"}},
+        ])
+        shell.client.channel.software.getDetails = MagicMock(side_effect=[
+            {"label": "base-channel-old"},
+            {"label": "channel-two"},
+        ])
         shell.client.kickstart.tree.update = MagicMock()
         shell.client.kickstart.tree.create = MagicMock()
         shell.list_base_channels = MagicMock(return_value=["base-channel"])
@@ -124,10 +132,13 @@ class TestSCDistribution:
         assert not prompt.called
         assert not shell.client.kickstart.tree.listInstallTypes.called
         assert not shell.client.kickstart.tree.create.called
-        assert not shell.client.kickstart.tree.update.called
-        assert logger.error.called
+        assert shell.client.kickstart.tree.update.called
 
-        assert_expect(logger.error.call_args_list, "A path is required")
+        for call in shell.client.kickstart.tree.update.call_args_list:
+            args, kw = call
+            assert args == (shell.session, "myname", "/path/tree_old", "base-channel-old", "image_old")
+            assert not kw
+
 
     def test_distribution_create_args_dspt_update_mode(self, shell):
         """
@@ -138,6 +149,14 @@ class TestSCDistribution:
         """
         shell.client.kickstart.tree.listInstallTypes = MagicMock(return_value=[
             {"label": "image"},
+        ])
+        shell.client.kickstart.tree.getDetails = MagicMock(side_effect=[
+            {"channel_id": "ch-id-1", "label": "dist-1", "abs_path": "/tmp/d1", "install_type": {"label": "image_old"}},
+            {"channel_id": "ch-id-2", "label": "dist-2", "abs_path": "/tmp/d2", "install_type": {"label": "image_old"}},
+        ])
+        shell.client.channel.software.getDetails = MagicMock(side_effect=[
+            {"label": "base-channel-old"},
+            {"label": "channel-two"},
         ])
         shell.client.kickstart.tree.update = MagicMock()
         shell.client.kickstart.tree.create = MagicMock()
@@ -157,10 +176,13 @@ class TestSCDistribution:
         assert not prompt.called
         assert not shell.client.kickstart.tree.listInstallTypes.called
         assert not shell.client.kickstart.tree.create.called
-        assert not shell.client.kickstart.tree.update.called
-        assert logger.error.called
+        assert shell.client.kickstart.tree.update.called
 
-        assert_expect(logger.error.call_args_list, "A base channel is required")
+        for call in shell.client.kickstart.tree.update.call_args_list:
+            args, kw = call
+            assert args == (shell.session, "myname", "/path/tree", "base-channel-old", "image_old")
+            assert not kw
+
 
     def test_distribution_create_args_dsptbc_update_mode(self, shell):
         """
@@ -172,6 +194,14 @@ class TestSCDistribution:
         """
         shell.client.kickstart.tree.listInstallTypes = MagicMock(return_value=[
             {"label": "image"},
+        ])
+        shell.client.kickstart.tree.getDetails = MagicMock(side_effect=[
+            {"channel_id": "ch-id-1", "label": "dist-1", "abs_path": "/tmp/d1", "install_type": {"label": "image_old"}},
+            {"channel_id": "ch-id-2", "label": "dist-2", "abs_path": "/tmp/d2", "install_type": {"label": "image_old"}},
+        ])
+        shell.client.channel.software.getDetails = MagicMock(side_effect=[
+            {"label": "base-channel-old"},
+            {"label": "channel-two"},
         ])
         shell.client.kickstart.tree.update = MagicMock()
         shell.client.kickstart.tree.create = MagicMock()
@@ -191,10 +221,13 @@ class TestSCDistribution:
         assert not prompt.called
         assert not shell.client.kickstart.tree.listInstallTypes.called
         assert not shell.client.kickstart.tree.create.called
-        assert not shell.client.kickstart.tree.update.called
-        assert logger.error.called
+        assert shell.client.kickstart.tree.update.called
 
-        assert_expect(logger.error.call_args_list, "An install type is required")
+        for call in shell.client.kickstart.tree.update.call_args_list:
+            args, kw = call
+            assert args == (shell.session, "myname", "/path/tree", "base-channel", "image_old")
+            assert not kw
+
 
     def test_distribution_create_args_dsptbcit_update_mode(self, shell):
         """
@@ -206,6 +239,14 @@ class TestSCDistribution:
         """
         shell.client.kickstart.tree.listInstallTypes = MagicMock(return_value=[
             {"label": "image"},
+        ])
+        shell.client.kickstart.tree.getDetails = MagicMock(side_effect=[
+            {"channel_id": "ch-id-1", "label": "dist-1", "abs_path": "/tmp/d1", "install_type": {"label": "image_old"}},
+            {"channel_id": "ch-id-2", "label": "dist-2", "abs_path": "/tmp/d2", "install_type": {"label": "image_old"}},
+        ])
+        shell.client.channel.software.getDetails = MagicMock(side_effect=[
+            {"label": "base-channel-old"},
+            {"label": "channel-two"},
         ])
         shell.client.kickstart.tree.update = MagicMock()
         shell.client.kickstart.tree.create = MagicMock()
@@ -551,8 +592,8 @@ class TestSCDistribution:
 
         spacecmd.distribution.do_distribution_update(shell, "")
 
-        assert not shell.do_distribution_create.called
-        assert shell.help_distribution_update.called
+        assert shell.do_distribution_create.called
+        assert not shell.help_distribution_update.called
 
     def test_distribution_update(self, shell):
         """
@@ -573,4 +614,25 @@ class TestSCDistribution:
         for call in shell.do_distribution_create.call_args_list:
             args, kw = call
             assert args == ("my-distro", )
+            assert kw == {"update": True}
+
+    def test_distribution_update_with_options(self, shell):
+        """
+        Test do_distribution_update with options.
+
+        :param shell:
+        :return:
+        """
+
+        shell.help_distribution_update = MagicMock()
+        shell.do_distribution_create = MagicMock()
+
+        spacecmd.distribution.do_distribution_update(shell, "my-distro -p /tmp/distro")
+
+        assert not shell.help_distribution_update.called
+        assert shell.do_distribution_create.called
+
+        for call in shell.do_distribution_create.call_args_list:
+            args, kw = call
+            assert args == ("my-distro -p /tmp/distro", )
             assert kw == {"update": True}

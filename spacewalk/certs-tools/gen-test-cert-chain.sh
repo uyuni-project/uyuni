@@ -6,6 +6,10 @@
 DIR=demoCA
 PASSWORD="secret"
 
+# rsa, or any of "openssl ecparam -list_curves"
+#PKEYALGO="secp384r1"
+PKEYALGO="rsa"
+
 ROOTCA="RootCA"
 ORGCA="OrgCa"
 TEAMCA="TeamCA"
@@ -38,7 +42,7 @@ dir                     = ./$DIR
 database                = \$dir/index.txt
 serial                  = \$dir/serial
 new_certs_dir           = \$dir/newcerts
-default_md              = sha256
+default_md              = sha384
 default_days            = 365
 
 # how closely we follow policy
@@ -96,22 +100,37 @@ OPENSSLCNF
 export commonname=$ROOTCA
 export subaltname=""
 
-openssl req -config $DIR/openssl.cnf -extensions req_ca_x509_extensions -new -x509 -keyout $DIR/$ROOTCA.key -out $DIR/$ROOTCA.crt -days 1024 -passout pass:$PASSWORD
+if [ $PKEYALGO = "rsa" ]; then
+  openssl genrsa -out $DIR/$ROOTCA.key -passout pass:$PASSWORD -aes256 2048
+else
+  openssl ecparam -genkey -name $PKEYALGO | openssl ec -aes256 -passout pass:$PASSWORD -out $DIR/$ROOTCA.key
+fi
+
+openssl req -config $DIR/openssl.cnf -extensions req_ca_x509_extensions -new -x509 -key $DIR/$ROOTCA.key -out $DIR/$ROOTCA.crt -days 1024 -passin pass:$PASSWORD
 
 #-----------------------------------------------------------------
 export commonname=$ORGCA
-openssl genrsa -out $DIR/private/$commonname.key -passout pass:$PASSWORD 2048
+if [ $PKEYALGO = "rsa" ]; then
+  openssl genrsa -out $DIR/private/$commonname.key -passout pass:$PASSWORD -aes256 2048
+else
+  openssl ecparam -genkey -name $PKEYALGO | openssl ec -aes256 -passout pass:$PASSWORD -out $DIR/private/$commonname.key
+fi
 
-openssl req -config $DIR/openssl.cnf -extensions req_ca_x509_extensions -new -key $DIR/private/$commonname.key -out $DIR/requests/$commonname.csr
+
+openssl req -config $DIR/openssl.cnf -extensions req_ca_x509_extensions -new -key $DIR/private/$commonname.key -out $DIR/requests/$commonname.csr -passin pass:$PASSWORD
 
 openssl ca -config $DIR/openssl.cnf -create_serial -extensions req_ca_x509_extensions -in $DIR/requests/$commonname.csr -keyfile $DIR/$ROOTCA.key \
         -cert $DIR/$ROOTCA.crt -passin pass:$PASSWORD -out $DIR/certs/$commonname.crt -days 500 -batch
 
 #-----------------------------------------------------------------
 export commonname=$TEAMCA
-openssl genrsa -out $DIR/private/$commonname.key -passout pass:$PASSWORD 2048
+if [ $PKEYALGO = "rsa" ]; then
+  openssl genrsa -out $DIR/private/$commonname.key -passout pass:$PASSWORD -aes256 2048
+else
+  openssl ecparam -genkey -name $PKEYALGO | openssl ec -aes256 -passout pass:$PASSWORD -out $DIR/private/$commonname.key
+fi
 
-openssl req -config $DIR/openssl.cnf -extensions req_ca_x509_extensions -new -key $DIR/private/$commonname.key -out $DIR/requests/$commonname.csr
+openssl req -config $DIR/openssl.cnf -extensions req_ca_x509_extensions -new -key $DIR/private/$commonname.key -out $DIR/requests/$commonname.csr -passin pass:$PASSWORD
 
 openssl ca -config $DIR/openssl.cnf -create_serial -extensions req_ca_x509_extensions -in $DIR/requests/$commonname.csr -keyfile $DIR/private/$ORGCA.key \
         -cert $DIR/certs/$ORGCA.crt -passin pass:$PASSWORD -out $DIR/certs/$commonname.crt -days 400 -batch
@@ -119,17 +138,25 @@ openssl ca -config $DIR/openssl.cnf -create_serial -extensions req_ca_x509_exten
 #-----------------------------------------------------------------
 export commonname=$SRVCRT
 export subaltname=$SRVALTNAME
-openssl genrsa -out $DIR/private/$commonname.key -passout pass:$PASSWORD 2048
+if [ $PKEYALGO = "rsa" ]; then
+  openssl genrsa -out $DIR/private/$commonname.key -passout pass:$PASSWORD -aes256 2048
+else
+  openssl ecparam -genkey -name $PKEYALGO | openssl ec -aes256 -passout pass:$PASSWORD -out $DIR/private/$commonname.key
+fi
 
-openssl req -config $DIR/openssl.cnf -extensions req_server_x509_extensions -new -key $DIR/private/$commonname.key -out $DIR/requests/$commonname.csr
+openssl req -config $DIR/openssl.cnf -extensions req_server_x509_extensions -new -key $DIR/private/$commonname.key -out $DIR/requests/$commonname.csr -passin pass:$PASSWORD
 
 openssl ca -config $DIR/openssl.cnf -create_serial -extensions req_server_x509_extensions -in $DIR/requests/$commonname.csr -keyfile $DIR/private/$TEAMCA.key \
         -cert $DIR/certs/$TEAMCA.crt -passin pass:$PASSWORD -out $DIR/certs/$commonname.crt -days 365 -batch
 
 mkdir -p $DIR/package
-cp $DIR/$ROOTCA.crt $DIR/package/root-ca.crt
+openssl x509 -text -in $DIR/$ROOTCA.crt > $DIR/package/root-ca.crt
 cat $DIR/certs/$ORGCA.crt $DIR/certs/$TEAMCA.crt > $DIR/package/intermediate-ca.crt
 cp $DIR/certs/$SRVCRT.crt $DIR/package/server.crt
-cp $DIR/private/$SRVCRT.key $DIR/package/server.key
+if [ $PKEYALGO = "rsa" ]; then
+  openssl rsa -passin pass:$PASSWORD -in $DIR/private/$SRVCRT.key -out $DIR/package/server.key
+else
+  openssl ec -passin pass:$PASSWORD -in $DIR/private/$SRVCRT.key -out $DIR/package/server.key
+fi
 
 echo "Test Certificates in $DIR/package/"

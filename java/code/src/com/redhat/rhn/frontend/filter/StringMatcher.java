@@ -27,6 +27,7 @@ class StringMatcher implements Matcher {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean include(Object obj, String filterData, String filterColumn) {
 
         if (StringUtils.isBlank(filterData) ||

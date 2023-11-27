@@ -172,34 +172,28 @@ Feature: Management of configuration of all types of clients in a single channel
 
 @sle_minion
   Scenario: Check configuration channel and files via API for Salt minion
-    Given I am logged in API as user "admin" and password "admin"
     Then channel "mixedchannel" should exist
     And channel "mixedchannel" should contain file "/etc/s-mgr/config"
     And "sle_minion" should be subscribed to channel "mixedchannel"
-    When I logout from API
 
 @sle_minion
   Scenario: Extend configuration channel and deploy files via API for Salt minion
-    Given I am logged in API as user "admin" and password "admin"
     When I store "COLOR=green" into file "/etc/s-mgr/config" on "sle_minion"
     And I add file "/etc/s-mgr/other" containing "NAME=Dante" to channel "mixedchannel"
     And I deploy all systems registered to channel "mixedchannel"
     And I wait until file "/etc/s-mgr/other" exists on "sle_minion"
     Then file "/etc/s-mgr/config" should contain "COLOR=white" on "sle_minion"
     And file "/etc/s-mgr/other" should contain "NAME=Dante" on "sle_minion"
-    When I logout from API
 
 @sle_minion
   Scenario: Unsubscribe systems via API for Salt minion
-    Given I am logged in API as user "admin" and password "admin"
     When I unsubscribe "sle_minion" from configuration channel "mixedchannel"
     Then "sle_minion" should not be subscribed to channel "mixedchannel"
-    When I logout from API
 
 @sle_minion
   Scenario: Re-add SLE Minion via SSM
     When I follow the left menu "Systems > System List > All"
-    And I click on "Clear"
+    And I click on the clear SSM button
     And I check the "sle_minion" client
     And I follow the left menu "Systems > System Set Manager > Overview"
     And I follow "config channel subscriptions" in the content area
@@ -230,4 +224,4 @@ Feature: Management of configuration of all types of clients in a single channel
     When I destroy "/etc/s-mgr" directory on "sle_minion"
 
   Scenario: Cleanup: remove remaining systems from SSM after tests of configuration channel on all clients
-    When I click on "Clear"
+    When I click on the clear SSM button

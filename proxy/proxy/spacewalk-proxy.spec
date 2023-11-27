@@ -15,13 +15,14 @@
 
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
+%{!?python3_sitelib: %global python3_sitelib %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
 
 
 Name:           spacewalk-proxy
 Summary:        Spacewalk Proxy Server
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.4.1
+Version:        4.4.6
 Release:        1
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -32,6 +33,7 @@ Requires:       httpd
 Requires:       python3-uyuni-common-libs
 Requires:       spacewalk-certs-tools
 Requires:       spacewalk-ssl-cert-check
+BuildRequires:  make
 BuildRequires:  mgr-push >= 4.0.0
 BuildRequires:  python3-mgr-push
 BuildRequires:  spacewalk-backend >= 1.7.24
@@ -39,6 +41,7 @@ BuildRequires:  spacewalk-backend >= 1.7.24
 %define rhnroot %{_usr}/share/rhn
 %define destdir %{rhnroot}/proxy
 %define rhnconf %{_sysconfdir}/rhn
+%define python3rhnroot %{python3_sitelib}/spacewalk
 %if 0%{?suse_version}
 %define httpdconf %{_sysconfdir}/apache2/conf.d
 %define apache_user wwwrun
@@ -83,7 +86,7 @@ Group:          Applications/Internet
 Requires:       httpd
 Requires:       spacewalk-proxy-package-manager
 %if 0%{?suse_version}
-Requires:       apache2-mod_wsgi-python3
+Requires:       apache2-mod_wsgi
 Requires:       apache2-prefork
 %else
 Requires:       mod_ssl
@@ -126,7 +129,7 @@ Requires(pre):  uyuni-base-common
 BuildRequires:  uyuni-base-common
 %if 0%{?suse_version}
 BuildRequires:  apache2
-Requires:       apache2-mod_wsgi-python3
+Requires:       apache2-mod_wsgi
 %else
 BuildRequires:  httpd
 Requires:       mod_ssl
@@ -257,7 +260,7 @@ fi
 # In case of an upgrade, get the configured package list directory and clear it
 # out.  Don't worry; it will be rebuilt by the proxy.
 
-RHN_CONFIG_PY=%{rhnroot}/common/rhnConfig.py
+RHN_CONFIG_PY=%{python3rhnroot}/common/rhnConfig.py
 RHN_PKG_DIR=%{_var}/spool/rhn-proxy
 
 if [ -f $RHN_CONFIG_PY ] ; then
@@ -265,9 +268,9 @@ if [ -f $RHN_CONFIG_PY ] ; then
     # Check whether the config command supports the ability to retrieve a
     # config variable arbitrarily.  Versions of  < 4.0.6 (rhn) did not.
 
-    %{python3} $RHN_CONFIG_PY proxy.broker > /dev/null 2>&1
-    if [ $? -eq 1 ] ; then
-        RHN_PKG_DIR=$(%{python3} $RHN_CONFIG_PY get proxy.broker pkg_dir)
+    CFG_RHN_PKG_DIR=$(%{__python3} $RHN_CONFIG_PY get proxy.broker pkg_dir)
+    if [ -n "$CFG_RHN_PKG_DIR" -a $CFG_RHN_PKG_DIR != "None" ]; then
+        RHN_PKG_DIR=$CFG_RHN_PKG_DIR
     fi
 fi
 
@@ -283,26 +286,6 @@ sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES proxy
 sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES rewrite
 sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES version
 sysconf_addword /etc/sysconfig/apache2 APACHE_SERVER_FLAGS SSL
-sysconf_addword -r /etc/sysconfig/apache2 APACHE_MODULES access_compat
-
-# In case of an update, remove superfluous stuff
-# from cobbler-proxy.conf (bnc#796581)
-
-PROXY_CONF=/etc/apache2/conf.d/cobbler-proxy.conf
-TMPFILE=`mktemp`
-
-if grep "^ProxyPass /ks " $PROXY_CONF > /dev/null 2>&1 ; then
-    grep -v "^ProxyPass /ks " $PROXY_CONF | \
-    grep -v "^ProxyPassReverse /ks " | \
-    grep -v "^ProxyPass /download " | \
-    grep -v "^ProxyPassReverse /download " > $TMPFILE
-    mv $TMPFILE $PROXY_CONF
-fi
-
-SSHUSER=mgrsshtunnel
-if getent passwd $SSHUSER | grep ":/home/$SSHUSER:" > /dev/null ; then
-  usermod -m -d %{_var}/lib/spacewalk/$SSHUSER $SSHUSER
-fi
 %endif
 
 %post redirect
@@ -312,22 +295,6 @@ fi
 /sbin/service httpd condrestart > /dev/null 2>&1
 %endif
 # Make sure the scriptlet returns with success
-exit 0
-
-%post management
-# The spacewalk-proxy-management package is also our "upgrades" package.
-# We deploy new conf from configuration channel if needed
-# we deploy new conf only if we install from webui and conf channel exist
-if rhncfg-client verify %{_sysconfdir}/rhn/rhn.conf 2>&1|grep 'Not found'; then
-     %{_bindir}/rhncfg-client get %{_sysconfdir}/rhn/rhn.conf
-fi > /dev/null 2>&1
-if rhncfg-client verify %{_sysconfdir}/squid/squid.conf | grep -E '(modified|missing)'; then
-    rhncfg-client get %{_sysconfdir}/squid/squid.conf
-    rm -rf %{_var}/spool/squid/*
-    %{_usr}/sbin/squid -z
-    /sbin/service squid condrestart
-fi > /dev/null 2>&1
-
 exit 0
 
 %pre salt

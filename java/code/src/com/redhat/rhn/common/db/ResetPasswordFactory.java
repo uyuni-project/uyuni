@@ -46,7 +46,6 @@ import java.util.UUID;
  */
 public class ResetPasswordFactory extends HibernateFactory {
     public static final String EXPIRE_TIME = "password_token_expiration_hours";
-    private static ResetPasswordFactory singleton = new ResetPasswordFactory();
     private static Logger log = LogManager.getLogger(ResetPasswordFactory.class);
 
     private ResetPasswordFactory() {
@@ -82,7 +81,7 @@ public class ResetPasswordFactory extends HibernateFactory {
         Map<String, Object> params = new HashMap<>();
         params.put("token", token);
         DataResult<ResetPassword> dr = sm.execute(params);
-        if (dr == null || dr.size() == 0) {
+        if (dr == null || dr.isEmpty()) {
             return null;
         }
         else {
@@ -120,11 +119,11 @@ public class ResetPasswordFactory extends HibernateFactory {
     /**
      * Create a unique one-use token for a specified User
      * @param u User whose password is to be reset
-     * @return unique SHA1 hash
+     * @return unique SHA256 hash
      */
     public static String generatePasswordToken(User u) {
         try {
-            MessageDigest md = MessageDigest.getInstance("SHA-1");
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
             // What matters is that the token cannot be guessed from publically-available
             // info (like timestamp or login or uid). A random UUID is 'something only
             // the server knows'
@@ -137,7 +136,7 @@ public class ResetPasswordFactory extends HibernateFactory {
             return hash;
         }
         catch (NoSuchAlgorithmException e) {
-            log.error("Failed to find SHA-1?!?", e);
+            log.error("Failed to find SHA-256?!?", e);
             return null;
         }
     }

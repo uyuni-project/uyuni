@@ -45,6 +45,7 @@ public class TableData {
         return tableName;
     }
 
+    @Override
     public String toString() {
         return "name: " + tableName + " Columns: " + columnName + " ids: " + columnId;
     }

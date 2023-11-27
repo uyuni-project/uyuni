@@ -40,6 +40,7 @@ public class CreateFileListCommand extends BaseFileListEditCommand {
      *
      * @return ValidatorError[] if there were errors before the save.
      */
+    @Override
     public ValidatorError store() {
         if (CommonFactory.lookupFileList(this.newLabel, user.getOrg()) == null) {
             list.setLabel(this.newLabel);

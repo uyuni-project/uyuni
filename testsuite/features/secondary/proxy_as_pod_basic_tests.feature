@@ -1,10 +1,23 @@
-# Copyright (c) 2022 SUSE LLC
+# Copyright (c) 2022-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # The scenarios in this feature are skipped if:
 # * there is no proxy ($proxy is nil)
 # * there is no salt minion ($sle_minion is nil)
 # * there is no scope @scope_containerized_proxy
+#
+# This feature can cause failures in the following features:
+# - features/secondary/srv_advanced_search.feature
+# - features/secondary/srv_datepicker.feature
+# - features/secondary/srv_group_union_intersection.feature
+# - features/secondary/srv_custom_system_info.feature
+# - features/secondary/srv_reportdb.feature
+# - features/secondary/allcli_overview_systems_details.feature
+# - features/secondary/allcli_system_group.feature
+# - features/secondary/allcli_config_channel.feature
+# - features/secondary/allcli_software_channels.feature
+# - features/secondary/min_bootstrap_api.feature
+# If the minion is not properly bootstrapped again.
 
 @scope_containerized_proxy
 @proxy
@@ -16,27 +29,23 @@ Feature: Register and test a Containerized Proxy
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
-    And I am logged in API as user "admin" and password "admin"
 
   Scenario: Pre-requisite: Unregister Salt minion in the traditional proxy
     Given I am on the Systems overview page of this "sle_minion"
-    When I stop salt-minion on "sle_minion"
-    And I follow "Delete System"
+    When I follow "Delete System"
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
-    Then I wait until I see "Cleanup timed out. Please check if the machine is reachable." text
-    When I click on "Delete Profile Without Cleanup" in "An error occurred during cleanup" modal
     And I wait until I see "has been deleted" text
+    And I wait until Salt client is inactive on "sle_minion"
     Then "sle_minion" should not be registered
 
   Scenario: Pre-requisite: Stop traditional proxy service
     When I stop salt-minion on "proxy"
     And I run "spacewalk-proxy stop" on "proxy"
     # workaround for bsc#1205976
-    And I stop "tftp" service on "proxy"
+    And I stop the "tftp" service on "proxy"
     And I wait until "squid" service is inactive on "proxy"
     And I wait until "apache2" service is inactive on "proxy"
-    And I wait until "jabberd" service is inactive on "proxy"
     And I wait until "tftp" service is inactive on "proxy"
 
   Scenario: Generate Containerized Proxy configuration
@@ -48,7 +57,7 @@ Feature: Register and test a Containerized Proxy
     And I add avahi hosts in Containerized Proxy configuration
 
   Scenario: Start Containerized Proxy services
-    When I start "uyuni-proxy-pod" service on "proxy"
+    When I start the "uyuni-proxy-pod" service on "proxy"
     And I wait until "uyuni-proxy-pod" service is active on "proxy"
     And I wait until "uyuni-proxy-httpd" service is active on "proxy"
     And I wait until "uyuni-proxy-salt-broker" service is active on "proxy"
@@ -76,7 +85,7 @@ Feature: Register and test a Containerized Proxy
     And I enter "linux" as "password"
     And I select the hostname of "containerized_proxy" from "proxies"
     And I click on "Bootstrap"
-    And I wait until I see "Successfully bootstrapped host!" text
+    And I wait until I see "Bootstrap process initiated." text
 
   Scenario: Check the new bootstrapped minion in System Overview page
     When I follow the left menu "Salt > Keys"
@@ -110,12 +119,41 @@ Feature: Register and test a Containerized Proxy
     And the system ID for "sle_minion" should be correct
     And the system name for "sle_minion" should be correct
     And the uptime for "sle_minion" should be correct
-    And I should see several text fields for "sle_minion"
+    And I should see several text fields
+
+  Scenario: Pre-requisite: subscribe system to Fake Channel
+    Given I am on the Systems overview page of this "sle_minion"
+    When I follow "Software" in the content area
+    And I follow "Software Channels" in the content area
+    And I wait until I do not see "Loading..." text
+    And I check radio button "Fake-Base-Channel-SUSE-like"
+    And I wait until I do not see "Loading..." text
+    And I check "Fake-Child-Channel-SUSE-like"
+    And I click on "Next"
+    Then I should see a "Confirm Software Channel Change" text
+    When I click on "Confirm"
+    Then I should see a "Changing the channels has been scheduled." text
+    And I wait until event "Subscribe channels scheduled by admin" is completed
+
+  Scenario: Pre-requisite: downgrade milkyway-dummy to lower version
+    When I enable repository "test_repo_rpm_pool" on this "sle_minion"
+    And I install old package "milkyway-dummy-1.0" on this "sle_minion"
+    And I refresh the metadata for "sle_minion"
+    And I follow the left menu "Admin > Task Schedules"
+    And I follow "errata-cache-default"
+    And I follow "errata-cache-bunch"
+    And I click on "Single Run Schedule"
+    Then I should see a "bunch was scheduled" text
+    And I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
+
+  Scenario: Pre-requisite: check that there are updates available
+    Given I am on the Systems overview page of this "sle_minion"
+    And I wait until I see "Software Updates Available" text, refreshing the page
 
   Scenario: Install a patch on the Salt minion
     When I follow "Software" in the content area
     And I follow "Patches" in the content area
-    When I check the first patch in the list
+    When I check the row with the "milkyway-dummy" text
     And I click on "Apply Patches"
     And I click on "Confirm"
     Then I should see a "1 patch update has been scheduled for" text
@@ -123,14 +161,64 @@ Feature: Register and test a Containerized Proxy
 
   Scenario: Remove package from Salt minion
     When I follow "Software" in the content area
-    And I follow "Install"
-    And I enter the package for "sle_minion" as the filtered package name
+    And I follow "List / Remove"
+    And I enter "milkyway-dummy" as the filtered package name
     And I click on the filter button
-    And I check the package for "sle_minion" in the list
-    And I click on "Install Selected Packages"
+    And I wait until I see "Clear filter to see all" text
+    And I check "milkyway-dummy" in the list
+    And I click on "Remove Packages"
+    Then I wait until I see "Confirm Package Removal" text
+    And I should see a "milkyway-dummy" text
     And I click on "Confirm"
-    Then I should see a "1 package install has been scheduled for" text
-    And I wait until event "Package Install/Upgrade scheduled by admin" is completed
+    Then I should see a "1 package removal has been scheduled for" text
+    And I wait until event "Package Removal scheduled by admin" is completed
+
+  @susemanager
+  Scenario: Cleanup: subscribe system back to default base channel
+    Given I am on the Systems overview page of this "sle_minion"
+    When I follow "Software" in the content area
+    And I follow "Software Channels" in the content area
+    And I wait until I do not see "Loading..." text
+    And I check default base channel radio button of this "sle_minion"
+    And I wait for child channels to appear
+    And I include the recommended child channels
+    And I wait until "SLE-Module-Basesystem15-SP4-Pool for x86_64" has been checked
+    And I wait until "SLE-Module-Basesystem15-SP4-Updates for x86_64" has been checked
+    And I wait until "SLE-Module-Server-Applications15-SP4-Pool for x86_64" has been checked
+    And I wait until "SLE-Module-Server-Applications15-SP4-Updates for x86_64" has been checked
+    And I check "SLE-Module-DevTools15-SP4-Pool for x86_64"
+    And I wait until "SLE-Module-DevTools15-SP4-Updates for x86_64" has been checked
+    And I wait until "SLE-Module-Desktop-Applications15-SP4-Pool for x86_64" has been checked
+    And I wait until "SLE-Module-Desktop-Applications15-SP4-Updates for x86_64" has been checked
+    And I check "SLE-Module-Containers15-SP4-Pool for x86_64"
+    And I wait until "SLE-Module-Containers15-SP4-Updates for x86_64" has been checked
+    And I check "Fake-RPM-SUSE-Channel"
+    And I click on "Next"
+    Then I should see a "Confirm Software Channel Change" text
+    When I click on "Confirm"
+    Then I should see a "Changing the channels has been scheduled." text
+    And I wait until event "Subscribe channels scheduled by admin" is completed
+
+  @uyuni
+  Scenario: Cleanup: subscribe system back to default base channel
+    Given I am on the Systems overview page of this "sle_minion"
+    When I follow "Software" in the content area
+    And I follow "Software Channels" in the content area
+    And I wait until I do not see "Loading..." text
+    And I check default base channel radio button of this "sle_minion"
+    And I wait for child channels to appear
+    And I check "openSUSE 15.5 non oss (x86_64)"
+    And I check "openSUSE Leap 15.5 non oss Updates (x86_64)"
+    And I check "openSUSE Leap 15.5 Updates (x86_64)"
+    And I check "Update repository of openSUSE Leap 15.5 Backports (x86_64)"
+    And I check "Update repository with updates from SUSE Linux Enterprise 15 for openSUSE Leap 15.5 (x86_64)"
+    And I check "Uyuni Client Tools for openSUSE Leap 15.5 (x86_64)"
+    And I check "Fake-RPM-SUSE-Channel"
+    And I click on "Next"
+    Then I should see a "Confirm Software Channel Change" text
+    When I click on "Confirm"
+    Then I should see a "Changing the channels has been scheduled." text
+    And I wait until event "Subscribe channels scheduled by admin" is completed
 
   Scenario: Run a remote command on Salt minion
     When I follow the left menu "Salt > Remote Commands"
@@ -213,13 +301,11 @@ Feature: Register and test a Containerized Proxy
 
   Scenario: Cleanup: Unregister a Salt minion in the Containerized Proxy
     Given I am on the Systems overview page of this "sle_minion"
-    When I stop salt-minion on "sle_minion"
-    And I follow "Delete System"
+    When I follow "Delete System"
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
-    Then I wait until I see "Cleanup timed out. Please check if the machine is reachable." text
-    When I click on "Delete Profile Without Cleanup" in "An error occurred during cleanup" modal
     And I wait until I see "has been deleted" text
+    And I wait until Salt client is inactive on "sle_minion"
     Then "sle_minion" should not be registered
 
   Scenario: Cleanup: Unregister Containerized Proxy
@@ -232,12 +318,12 @@ Feature: Register and test a Containerized Proxy
     Then "containerized_proxy" should not be registered
 
   Scenario: Cleanup: Stop Containerized Proxy services
-    When I stop "uyuni-proxy-pod" service on "proxy"
+    When I stop the "uyuni-proxy-pod" service on "proxy"
 
   Scenario: Cleanup: Remove Containerized Proxy configuration
     When I ensure folder "/etc/uyuni/proxy/*" doesn't exist on "proxy"
-    And I remove "/tmp/proxy_container_config.zip" from "proxy"
-    And I remove "/tmp/proxy_container_config.zip" from "server"
+    And I remove "/tmp/proxy_container_config.tar.gz" from "proxy"
+    And I remove "/tmp/proxy_container_config.tar.gz" from "server"
 
   Scenario: Cleanup: Remove "Pod Proxy Channel" configuration channel
     When I follow the left menu "Configuration > Channels"
@@ -250,10 +336,9 @@ Feature: Register and test a Containerized Proxy
     When I start salt-minion on "proxy"
     And I run "spacewalk-proxy start" on "proxy"
     # workaround for bsc#1205976
-    And I start "tftp" service on "proxy"
+    And I start the "tftp" service on "proxy"
     And I wait until "squid" service is active on "proxy"
     And I wait until "apache2" service is active on "proxy"
-    And I wait until "jabberd" service is active on "proxy"
     And I wait until "tftp" service is active on "proxy"
 
   Scenario: Cleanup: Bootstrap a Salt minion in the traditional proxy
@@ -263,9 +348,10 @@ Feature: Register and test a Containerized Proxy
     And I enter "22" as "port"
     And I enter "root" as "user"
     And I enter "linux" as "password"
+    And I select "1-SUSE-KEY-x86_64" from "activationKeys"
     And I select the hostname of "proxy" from "proxies"
     And I click on "Bootstrap"
-    And I wait until I see "Successfully bootstrapped host!" text
+    And I wait until I see "Bootstrap process initiated." text
 
   Scenario: Cleanup: Check the new bootstrapped minion in System Overview page
     When I follow the left menu "Salt > Keys"
@@ -275,6 +361,3 @@ Feature: Register and test a Containerized Proxy
     And I wait until I see the name of "sle_minion", refreshing the page
     And I wait until onboarding is completed for "sle_minion"
     Then the Salt master can reach "sle_minion"
-
-  Scenario: Cleanup: Logout from API
-    When I logout from API

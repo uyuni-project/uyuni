@@ -60,6 +60,8 @@
             ${current.advisorySynopsis}
         </rl:column>
         <rl:column headerkey="erratalist.jsp.systems"
+                   sortable="true"
+                   sortattr="systems"
                    styleclass="text-align: center;">
             <a href="/rhn/errata/details/SystemsAffected.do?eid=${current.id}">${current.affectedSystemCount}</a>
         </rl:column>

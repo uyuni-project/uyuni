@@ -181,7 +181,7 @@
     <query params="offset, limit">
           SELECT rhnserverneededcache.server_id AS system_id
                     , count(distinct rhnpackage.name_id) AS packages_out_of_date
-                    , count(rhnserverneededcache.errata_id) AS errata_out_of_date
+                    , count(distinct rhnserverneededcache.errata_id) AS errata_out_of_date
             FROM rhnpackage, rhnserverneededcache
            WHERE rhnserverneededcache.package_id = rhnpackage.id
         GROUP BY rhnserverneededcache.server_id
@@ -323,33 +323,38 @@
     </query>
 </mode>
 
-<mode name="SystemPackageUpdate" class="">
-    <query params="offset, limit">
-          WITH latest AS (
-            SELECT rhnserverneededcache.server_id
-                      , rhnPackage.name_id
-                      , MAX(rhnPackageEvr.evr) AS evr
-              FROM rhnserverneededcache
-                      INNER JOIN rhnPackage ON rhnserverneededcache.package_id = rhnPackage.id
-                      INNER JOIN rhnPackageEvr on rhnPackage.evr_id = rhnPackageEvr.id
-              GROUP BY rhnserverneededcache.server_id
-                      , rhnPackage.name_id
-          )
-          SELECT DISTINCT rhnserverneededcache.server_id AS system_id
-                    , rhnserverneededcache.package_id
-                    , rhnpackagename.name
-                    , rhnpackageevr.epoch
-                    , rhnpackageevr.version
-                    , rhnpackageevr.release
-                    , rhnpackagearch.label AS arch
-                    , rhnpackageevr.type
-                    , rhnpackageevr.evr = latest.evr AS is_latest
-            FROM rhnserverneededcache
-                    INNER JOIN rhnpackage ON rhnserverneededcache.package_id = rhnpackage.id
-                    INNER JOIN rhnpackageevr ON rhnpackage.evr_id = rhnpackageevr.id
-                    INNER JOIN rhnpackagename ON rhnpackage.name_id = rhnpackagename.id
-                    INNER JOIN rhnpackagearch ON rhnpackage.package_arch_id = rhnpackagearch.id
-                    INNER JOIN latest ON (latest.server_id = rhnserverneededcache.server_id AND latest.name_id = rhnpackage.name_id)
+<mode name="SystemPackageUpdateIDs" class="">
+    <query>
+        SELECT DISTINCT server_id AS id FROM rhnserverneededcache
+    </query>
+</mode>
+
+<mode name="SystemPackageUpdate_byId" class="">
+    <query params="id, offset, limit">
+        WITH latest AS (
+          SELECT rhnserverneededcache.server_id, rhnPackage.name_id, MAX(rhnPackageEvr.evr) AS evr
+          FROM rhnserverneededcache
+          INNER JOIN rhnPackage ON rhnserverneededcache.package_id = rhnPackage.id
+          INNER JOIN rhnPackageEvr on rhnPackage.evr_id = rhnPackageEvr.id
+          WHERE rhnserverneededcache.server_id = :id
+          GROUP BY rhnserverneededcache.server_id, rhnPackage.name_id
+        )
+        SELECT DISTINCT rhnserverneededcache.server_id AS system_id
+                      , rhnserverneededcache.package_id
+                      , rhnpackagename.name
+                      , rhnpackageevr.epoch
+                      , rhnpackageevr.version
+                      , rhnpackageevr.release
+                      , rhnpackagearch.label AS arch
+                      , rhnpackageevr.type
+                      , rhnpackageevr.evr = latest.evr AS is_latest
+        FROM rhnserverneededcache
+        INNER JOIN rhnpackage ON rhnserverneededcache.package_id = rhnpackage.id
+        INNER JOIN rhnpackageevr ON rhnpackage.evr_id = rhnpackageevr.id
+        INNER JOIN rhnpackagename ON rhnpackage.name_id = rhnpackagename.id
+        INNER JOIN rhnpackagearch ON rhnpackage.package_arch_id = rhnpackagearch.id
+        INNER JOIN latest ON (latest.server_id = rhnserverneededcache.server_id AND latest.name_id = rhnpackage.name_id)
+        WHERE rhnserverneededcache.server_id = :id
         ORDER BY system_id, name, package_id OFFSET :offset LIMIT :limit
     </query>
 </mode>

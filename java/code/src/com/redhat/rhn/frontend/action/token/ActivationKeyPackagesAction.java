@@ -42,13 +42,14 @@ public class ActivationKeyPackagesAction extends RhnAction {
     public static final String DESCRIPTION = "description";
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm formIn,
                                  HttpServletRequest request,
                                  HttpServletResponse response) {
 
         DynaActionForm form = (DynaActionForm)formIn;
-        Map params = makeParamMap(request);
+        Map<String, Object> params = makeParamMap(request);
         RequestContext ctx = new RequestContext(request);
 
         // keep the token id

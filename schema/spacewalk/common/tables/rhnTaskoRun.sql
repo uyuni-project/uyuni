@@ -28,8 +28,6 @@ CREATE TABLE rhnTaskoRun
     org_id          NUMERIC,
     start_time      TIMESTAMPTZ,
     end_time        TIMESTAMPTZ,
-    std_output_path VARCHAR(100),
-    std_error_path  VARCHAR(100),
     status          VARCHAR(12),
     created         TIMESTAMPTZ
                         DEFAULT (current_timestamp) NOT NULL,

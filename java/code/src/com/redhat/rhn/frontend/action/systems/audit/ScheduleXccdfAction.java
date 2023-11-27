@@ -54,9 +54,10 @@ public class ScheduleXccdfAction extends ScapSetupAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping, ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
         RequestContext context = new RequestContext(request);
         ActionForward forward = null;
         DynaActionForm form = (DynaActionForm) formIn;
@@ -71,7 +72,7 @@ public class ScheduleXccdfAction extends ScapSetupAction {
             if (errors.isEmpty()) {
                 ActionMessages msgs = processForm(user, server, form);
                 strutsDelegate.saveMessages(request, msgs);
-                Map params = makeParamMap(request);
+                Map<String, Object> params = makeParamMap(request);
                 params.put("sid", sid);
                 forward = strutsDelegate.forwardParams(mapping.findForward("submit"),
                         params);
@@ -109,8 +110,7 @@ public class ScheduleXccdfAction extends ScapSetupAction {
             return msgs;
         }
         catch (TaskomaticApiException e) {
-            log.error("Could not schedule package refresh:");
-            log.error(e);
+            log.error("Could not schedule package refresh:", e);
             ActionErrors errors = new ActionErrors();
             getStrutsDelegate().addError(errors, "taskscheduler.down");
             return errors;

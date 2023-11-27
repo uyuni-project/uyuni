@@ -285,16 +285,20 @@ class PackageImport(ChannelPackageSubscription):
                 self.checksums[fchecksumTuple] = None
 
         # Uniquify changelog entries
-        unique_package_changelog_hash = {}
+        unique_package_changelog_hash = set()
         unique_package_changelog = []
         for changelog in package['changelog']:
-            key = (self._fix_encoding(changelog['name'][:128]), self._fix_encoding(changelog['time']), self._fix_encoding(changelog['text'])[:3000])
+            changelog_name = self._fix_encoding(changelog['name'][:128])
+            changelog_time = self._fix_encoding(changelog['time'])
+            changelog_text = self._fix_encoding(changelog['text'])[:3000]
+            key = (changelog_name, changelog_time, changelog_text)
             if key not in unique_package_changelog_hash:
                 self.changelog_data[key] = None
-                changelog['name'] = changelog['name'][:128]
-                changelog['text'] = changelog['text'][:3000]
+                changelog['name'] = changelog_name
+                changelog['text'] = changelog_text
+                changelog['time'] = changelog_time
                 unique_package_changelog.append(changelog)
-                unique_package_changelog_hash[key] = 1
+                unique_package_changelog_hash.add(key)
         package['changelog'] = unique_package_changelog
 
         # fix encoding issues in package summary and description

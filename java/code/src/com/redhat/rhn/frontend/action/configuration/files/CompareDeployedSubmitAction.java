@@ -23,6 +23,7 @@ import com.redhat.rhn.domain.rhnset.RhnSetElement;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.RhnSetAction;
 import com.redhat.rhn.frontend.action.configuration.ConfigActionHelper;
+import com.redhat.rhn.frontend.dto.ConfigSystemDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.manager.action.ActionManager;
@@ -54,9 +55,10 @@ public class CompareDeployedSubmitAction extends RhnSetAction {
     /**
      * {@inheritDoc}
      */
-    protected DataResult getDataResult(User userIn,
-                                       ActionForm formIn,
-                                       HttpServletRequest requestIn) {
+    @Override
+    protected DataResult<ConfigSystemDto> getDataResult(User userIn,
+                                                        ActionForm formIn,
+                                                        HttpServletRequest requestIn) {
         Long cfnid = ConfigActionHelper.getFile(requestIn).getConfigFileName().getId();
 
         ConfigurationManager cm = ConfigurationManager.getInstance();
@@ -66,6 +68,7 @@ public class CompareDeployedSubmitAction extends RhnSetAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected RhnSetDecl getSetDecl() {
         return RhnSetDecl.CONFIG_SYSTEMS;
     }
@@ -73,6 +76,7 @@ public class CompareDeployedSubmitAction extends RhnSetAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processMethodKeys(Map<String, String> mapIn) {
         mapIn.put("comparedeployed.jsp.schedule", "schedule");
     }
@@ -80,6 +84,7 @@ public class CompareDeployedSubmitAction extends RhnSetAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processParamMap(ActionForm formIn,
                                    HttpServletRequest requestIn,
                                    Map<String, Object> paramsIn) {
@@ -108,7 +113,7 @@ public class CompareDeployedSubmitAction extends RhnSetAction {
 
         //We want a set of ids, but we have a set of RhnSetElements.  This
         //does the conversion.
-        Set sids = new HashSet();
+        Set sids = new HashSet<>();
         for (RhnSetElement rhnSetElementIn : set.getElements()) {
             Long sid = rhnSetElementIn.getElement();
             sids.add(sid);
@@ -117,7 +122,7 @@ public class CompareDeployedSubmitAction extends RhnSetAction {
         //We need a set of ids to send to ActionManager.  We only have one id.
         ConfigRevision revision =
             ConfigActionHelper.getRevision(request, ConfigActionHelper.getFile(request));
-        Set crids = new HashSet();
+        Set crids = new HashSet<>();
         crids.add(revision.getId());
 
         Action action = null;

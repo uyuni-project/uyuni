@@ -33,6 +33,8 @@ public abstract class RepositoryWriter {
     protected final String mountPoint;
     protected final Executor cmdExecutor;
 
+    protected boolean commitTransaction = true;
+
     /**
      * Constructor takes in pathprefix and mountpoint
      * @param pathPrefixIn prefix to package path
@@ -46,6 +48,16 @@ public abstract class RepositoryWriter {
     }
 
     /**
+     * Whether to commit hibernate transaction or not. Default is commit.
+     * Only used in unit tests.
+     *
+     * @param commitTransactionIn flag to set
+     */
+    public void setCommitTransaction(boolean commitTransactionIn) {
+        this.commitTransaction = commitTransactionIn;
+    }
+
+   /**
     *
     * @param channel channel info
     * @return repodata sanity

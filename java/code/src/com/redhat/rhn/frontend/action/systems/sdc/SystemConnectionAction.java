@@ -40,10 +40,11 @@ import javax.servlet.http.HttpServletResponse;
 public class SystemConnectionAction extends RhnAction implements Listable<ServerPath> {
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-            ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
 
         RequestContext ctx = new RequestContext(request);
         User user =  ctx.getCurrentUser();
@@ -65,6 +66,7 @@ public class SystemConnectionAction extends RhnAction implements Listable<Server
      * @param context the request context
      * @return the list of server paths
      */
+    @Override
     public List<ServerPath> getResult(RequestContext context) {
         Long sid = context.getRequiredParam(RequestContext.SID);
         DataResult<ServerPath> proxies = SystemManager.getConnectionPath(sid);

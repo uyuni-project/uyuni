@@ -1,4 +1,14 @@
-- remove jabberd and osa-dispatcher
+-------------------------------------------------------------------
+Mon Sep 18 14:39:36 CEST 2023 - rosuna@suse.com
+
+- version 4.4.3-1
+  * write configured crypto-policy in supportconfig
+
+-------------------------------------------------------------------
+Wed Dec 14 14:10:22 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.2-1
+  * remove jabberd and osa-dispatcher
 
 -------------------------------------------------------------------
 Wed Sep 28 10:49:30 CEST 2022 - jgonzalez@suse.com

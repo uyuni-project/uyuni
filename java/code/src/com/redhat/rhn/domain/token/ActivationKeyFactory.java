@@ -17,7 +17,6 @@ package com.redhat.rhn.domain.token;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.common.util.MD5Crypt;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.kickstart.KickstartData;
@@ -31,7 +30,6 @@ import com.redhat.rhn.domain.server.ServerGroupType;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.Scrubber;
 
-import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -39,6 +37,7 @@ import org.apache.logging.log4j.Logger;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * ActivationKeyFactory
@@ -204,8 +203,7 @@ public class ActivationKeyFactory extends HibernateFactory {
      * @return random string
      */
     public static String generateKey() {
-        String random = RandomStringUtils.random(128);
-        return MD5Crypt.md5Hex(random);
+        return UUID.randomUUID().toString().replace("-", "");
     }
 
     /**
@@ -273,7 +271,7 @@ public class ActivationKeyFactory extends HibernateFactory {
      */
     public static int removeKeysForServer(Long sid) {
         WriteMode m = ModeFactory.getWriteMode("System_queries", "remove_activation_keys");
-        Map params = new HashMap();
+        Map<String, Object> params = new HashMap<>();
         params.put("sid", sid);
         return m.executeUpdate(params);
     }
@@ -286,7 +284,7 @@ public class ActivationKeyFactory extends HibernateFactory {
         if (key != null) {
             WriteMode m = ModeFactory.getWriteMode("System_queries",
                     "remove_activation_key");
-            Map params = new HashMap();
+            Map<String, Object> params = new HashMap<>();
             params.put("token", key.getKey());
             m.executeUpdate(params);
         }
@@ -298,10 +296,8 @@ public class ActivationKeyFactory extends HibernateFactory {
      * @return list of kickstartData objects
      */
     public static List<KickstartData> listAssociatedKickstarts(ActivationKey key) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("token", key.getToken());
         return singleton.listObjectsByNamedQuery("ActivationKey.listAssociatedKickstarts",
-                                                                                    params);
+                Map.of("token", key.getToken()));
     }
 
     /**

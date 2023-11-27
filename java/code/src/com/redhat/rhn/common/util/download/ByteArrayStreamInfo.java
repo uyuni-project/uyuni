@@ -17,7 +17,6 @@ package com.redhat.rhn.common.util.download;
 import org.apache.struts.actions.DownloadAction.StreamInfo;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 
 
@@ -44,6 +43,7 @@ public class ByteArrayStreamInfo implements StreamInfo {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getContentType() {
         return contentType;
     }
@@ -51,7 +51,8 @@ public class ByteArrayStreamInfo implements StreamInfo {
     /**
      * {@inheritDoc}
      */
-    public InputStream getInputStream() throws IOException {
+    @Override
+    public InputStream getInputStream() {
         return new ByteArrayInputStream(bytes);
     }
 }

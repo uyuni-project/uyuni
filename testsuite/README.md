@@ -63,8 +63,6 @@ There are also hints about [Pitfalls](documentation/pitfalls.md) when writing co
   - [`master`](https://github.com/uyuni-project/uyuni)
 - Release (to be run against a nightly or released *tagged* version of SUSE Manager):
   - [`Manager-4.3`](https://github.com/SUSE/spacewalk/tree/Manager-4.3)
-  - [`Manager-4.2`](https://github.com/SUSE/spacewalk/tree/Manager-4.2)
-  - [`Manager-4.1`](https://github.com/SUSE/spacewalk/tree/Manager-4.1)
 
 ## Dummy packages used by the test suite
 
@@ -76,10 +74,10 @@ The Open Build System (OBS) projects are:
 - [https://build.opensuse.org/project/show/systemsmanagement:Uyuni:Test-Packages:Pool](https://build.opensuse.org/project/show/systemsmanagement:Uyuni:Test-Packages:Pool):
 packages which must be installed on the client systems already;
 - [https://build.opensuse.org/project/show/systemsmanagement:Uyuni:Test-Packages:Updates](https://build.opensuse.org/project/show/systemsmanagement:Uyuni:Test-Packages:Updates):
-packages for `Test-Channel-x86_64` and `Test-Channel-Deb-AMD64` channels.
+packages for `Test-Base-Channel-x86_64` and `Fake-Base-Channel-Debian-like` channels.
 
 ## Type of provided packages
 
 - Normal dummy packages: `andromeda-dummy`, `hoag-dummy`, `orion-dummy`, `milkyway-dummy`, etc.
 - Wrong encoding of RPM attributes: `blackhole-dummy`. This package should be successfully imported and you will see it
-available as part of the `Test-Channel-x86_64` if reposync handled the encoding correctly.
+available as part of the `Test-Base-Channel-x86_64` if reposync handled the encoding correctly.

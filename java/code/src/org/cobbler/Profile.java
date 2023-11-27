@@ -736,6 +736,7 @@ public class Profile extends CobblerObject {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void syncRedHatManagementKeys(Collection<String> keysToRemove,
                                          Collection<String> keysToAdd) {
         // FIXME: The inheritance in Cobbler should not be broken with this method. Thus it should be completely

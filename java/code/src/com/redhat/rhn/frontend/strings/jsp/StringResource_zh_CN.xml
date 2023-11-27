@@ -8456,14 +8456,14 @@ organization. You may grant or remove the organization administrator role in the
         <context-group name="ctx">
           <context context-type="sourcefile">NOTFILLEDOUT</context>
         </context-group>
-        <target state="translated">创建储存的配置文件</target>
+        <target state="translated">创建存储的配置文件</target>
       </trans-unit>
       <trans-unit id="create.jsp.pagesummary" xml:space="preserve">
         <source>This will create a stored profile, based upon the package set of this system, that you may use for profile comparisons.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">NOTFILLEDOUT</context>
         </context-group>
-        <target state="translated">这将基于此系统的软件包集创建储存的配置文件，您可以使用它来进行配置文件比较。</target>
+        <target state="translated">这将基于此系统的软件包集创建存储的配置文件，您可以使用它来进行配置文件比较。</target>
       </trans-unit>
       <trans-unit id="create.jsp.profiledescription" xml:space="preserve">
         <source>Profile Description</source>
@@ -8757,7 +8757,7 @@ organization management tools if you choose to remove this role from your login.
         <context-group name="ctx">
           <context context-type="sourcefile">NOTFILLEDOUT</context>
         </context-group>
-        <target state="translated">与储存的配置文件比较</target>
+        <target state="translated">与存储的配置文件比较</target>
       </trans-unit>
       <trans-unit id="profile.jsp.comparetosystem" xml:space="preserve">
         <source>Compare to System</source>
@@ -8792,7 +8792,7 @@ organization management tools if you choose to remove this role from your login.
         <context-group name="ctx">
           <context context-type="sourcefile">NOTFILLEDOUT</context>
         </context-group>
-        <target state="translated">将软件包与储存的配置文件进行比较</target>
+        <target state="translated">将软件包与存储的配置文件进行比较</target>
       </trans-unit>
       <trans-unit id="schedulesync.jsp.action" xml:space="preserve">
         <source>Action</source>
@@ -9768,7 +9768,7 @@ administrator privileges.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/GeneralConfig.do</context>
         </context-group>
-        <target state="translated">RPM 软件源安装点</target>
+        <target state="translated">RPM 储存库安装点</target>
       </trans-unit>
       <trans-unit id="general.jsp.solaris" xml:space="preserve">
         <source>Enable Solaris Support</source>
@@ -10154,7 +10154,7 @@ Please note that some manual configuration of these scripts may still be require
       <!-- Repo Sync -->
       <trans-unit id="repos.jsp.summary" xml:space="preserve">
         <source>Use repositories to sync additional packages to your channels. Repositories may be linked to your channels.</source>
-        <target state="translated">使用软件源可将额外的软件包同步到您的通道。软件源可以关联到您的通道。</target>
+        <target state="translated">使用储存库可将额外的软件包同步到您的通道。储存库可以关联到您的通道。</target>
       </trans-unit>
       <trans-unit id="repos.jsp.note.default" xml:space="preserve">
         <source>note here</source>
@@ -10162,11 +10162,11 @@ Please note that some manual configuration of these scripts may still be require
       </trans-unit>
       <trans-unit id="repos.jsp.norepos" xml:space="preserve">
         <source>No repositories currently exist.</source>
-        <target state="translated">当前不存在任何软件源。</target>
+        <target state="translated">当前不存在任何储存库。</target>
       </trans-unit>
       <trans-unit id="repos.jsp.channel.norepos" xml:space="preserve">
         <source>No repositories are currently associated with this channel.</source>
-        <target state="translated">当前没有与此通道关联的软件源。</target>
+        <target state="translated">当前没有与此通道关联的储存库。</target>
       </trans-unit>
       <trans-unit id="repos.jsp.label" xml:space="preserve">
         <source>Label</source>
@@ -10178,7 +10178,7 @@ Please note that some manual configuration of these scripts may still be require
       </trans-unit>
       <trans-unit id="repos.jsp.message.schedulefailed" xml:space="preserve">
         <source>Schedule of Repo Sync failed. Check logs for more information.</source>
-        <target state="translated">安排软件源同步失败。请查看日志了解详细信息。</target>
+        <target state="translated">安排储存库同步失败。请查看日志了解详细信息。</target>
       </trans-unit>
       <trans-unit id="repos.jsp.message.taskomaticdown" xml:space="preserve">
         <source>The scheduling service appears down. Please contact your @@PRODUCT_NAME@@ administrator.</source>
@@ -10189,90 +10189,90 @@ Please note that some manual configuration of these scripts may still be require
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channel/manage/repo/RepoList.do</context>
         </context-group>
-        <target state="translated">创建软件源</target>
+        <target state="translated">创建储存库</target>
       </trans-unit>
       <trans-unit id="toolbar.delete.repos" xml:space="preserve">
         <source>Delete Repository</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channel/manage/repo/RepoDetails.do</context>
         </context-group>
-        <target state="translated">删除软件源</target>
+        <target state="translated">删除储存库</target>
       </trans-unit>
       <trans-unit approved="yes" id="repos.jsp.toolbar" xml:space="preserve">
         <source>Create Repository</source>
-        <target state="final">创建软件源</target>
+        <target state="final">创建储存库</target>
       </trans-unit>
       <trans-unit id="repos.jsp.header" xml:space="preserve">
         <source>Repositories</source>
-        <target state="translated">软件源</target>
+        <target state="translated">储存库</target>
       </trans-unit>
       <trans-unit approved="yes" id="repos.jsp.header2" xml:space="preserve">
         <source>Create Repository</source>
-        <target state="final">创建软件源</target>
+        <target state="final">创建储存库</target>
       </trans-unit>
       <trans-unit id="repos.jsp.create.label" xml:space="preserve">
         <source>Repository Label</source>
-        <target state="translated">软件源标签</target>
+        <target state="translated">储存库标签</target>
       </trans-unit>
       <trans-unit id="repos.jsp.create.url" xml:space="preserve">
         <source>Repository URL</source>
-        <target state="translated">软件源 URL</target>
+        <target state="translated">储存库 URL</target>
       </trans-unit>
       <trans-unit id="repos.jsp.create.type" xml:space="preserve">
         <source>Repository Type</source>
-        <target>软件源类型</target>
+        <target>储存库类型</target>
       </trans-unit>
       <trans-unit id="repos.jsp.create.submit" xml:space="preserve">
         <source>Create Repository</source>
-        <target state="translated">创建软件源</target>
+        <target state="translated">创建储存库</target>
       </trans-unit>
       <trans-unit id="repos.jsp.update.submit" xml:space="preserve">
         <source>Update Repository</source>
-        <target state="translated">更新软件源</target>
+        <target state="translated">更新储存库</target>
       </trans-unit>
       <trans-unit id="repos.jsp.delete.submit" xml:space="preserve">
         <source>Delete Repository</source>
-        <target state="translated">删除软件源</target>
+        <target state="translated">删除储存库</target>
       </trans-unit>
       <trans-unit id="repos.jsp.create.success" xml:space="preserve">
         <source>Repository created successfully</source>
-        <target state="translated">已成功创建软件源</target>
+        <target state="translated">已成功创建储存库</target>
       </trans-unit>
       <trans-unit id="repos.jsp.update.success" xml:space="preserve">
         <source>Repository updated successfully</source>
-        <target state="translated">已成功更新软件源</target>
+        <target state="translated">已成功更新储存库</target>
       </trans-unit>
       <trans-unit id="repos.delete.success" xml:space="preserve">
         <source>Repository deleted successfully</source>
-        <target state="translated">已成功删除软件源</target>
+        <target state="translated">已成功删除储存库</target>
       </trans-unit>
       <trans-unit id="repos.jsp.details.header2" xml:space="preserve">
         <source>Repository Details</source>
-        <target state="translated">软件源细节</target>
+        <target state="translated">储存库细节</target>
       </trans-unit>
       <trans-unit id="repos.jsp.delete.header2" xml:space="preserve">
         <source>Confirm Repository Delete</source>
-        <target state="translated">确认删除软件源</target>
+        <target state="translated">确认删除储存库</target>
       </trans-unit>
       <trans-unit id="repos.jsp.delete.summary" xml:space="preserve">
         <source>Are you sure you want to delete this repository permanently?</source>
-        <target state="translated">您确定要永久删除此软件源吗？</target>
+        <target state="translated">您确定要永久删除此储存库吗？</target>
       </trans-unit>
       <trans-unit id="repos.jsp.delete.warning" xml:space="preserve">
         <source>Deleting this repository will remove any channel mappings this repository is associated with</source>
-        <target state="translated">删除此软件源会去除与其关联的所有通道映射</target>
+        <target state="translated">删除此储存库会去除与其关联的所有通道映射</target>
       </trans-unit>
       <trans-unit id="repos.jsp.delete.info.header" xml:space="preserve">
         <source>Repository Information</source>
-        <target state="translated">软件源信息</target>
+        <target state="translated">储存库信息</target>
       </trans-unit>
       <trans-unit id="repos.jsp.update.channel" xml:space="preserve">
         <source>Save Repositories</source>
-        <target state="translated">保存软件源</target>
+        <target state="translated">保存储存库</target>
       </trans-unit>
       <trans-unit approved="yes" id="repos.jsp.channel.header" xml:space="preserve">
         <source>Repository</source>
-        <target state="final">软件源</target>
+        <target state="final">储存库</target>
       </trans-unit>
       <trans-unit id="repos.jsp.channel.status" xml:space="preserve">
         <source>Sync Status</source>
@@ -10280,7 +10280,7 @@ Please note that some manual configuration of these scripts may still be require
       </trans-unit>
       <trans-unit id="repos.jsp.channel.repos" xml:space="preserve">
         <source>Channel Repositories</source>
-        <target state="translated">通道软件源</target>
+        <target state="translated">通道储存库</target>
       </trans-unit>
       <trans-unit id="repos.jsp.ssl.ca" xml:space="preserve">
         <source>SSL CA Certificate</source>
@@ -10308,19 +10308,19 @@ Please note that some manual configuration of these scripts may still be require
       </trans-unit>
       <trans-unit id="repos.jsp.channelHeader" xml:space="preserve">
         <source>Channels using {0} repository</source>
-        <target state="translated">使用 {0} 软件源的通道</target>
+        <target state="translated">使用 {0} 储存库的通道</target>
       </trans-unit>
       <trans-unit id="repos.jsp.channelSummary" xml:space="preserve">
         <source>Below are channels with {0} repository attached to them.</source>
-        <target state="translated">以下与 {0} 软件源关联的通道。</target>
+        <target state="translated">以下与 {0} 储存库关联的通道。</target>
       </trans-unit>
       <trans-unit id="repos.jsp.noChannels" xml:space="preserve">
         <source>This repository is not linked to any channel.</source>
-        <target state="translated">此软件源未与任何通道关联。</target>
+        <target state="translated">此储存库未与任何通道关联。</target>
       </trans-unit>
       <trans-unit id="repos.jsp.createRepo" xml:space="preserve">
         <source>Create Repository</source>
-        <target>创建软件源</target>
+        <target>创建储存库</target>
       </trans-unit>
       <trans-unit id="os" xml:space="preserve">
         <source>Operating System</source>
@@ -10832,19 +10832,19 @@ Please note that some manual configuration of these scripts may still be require
         </context-group>
         <target state="translated">您指定了无效变量："{0}"。变量应该是名称数值对，中间用 "=" 符号隔开，每个名称数值对之间用换行符隔开。例如："ip=192.168.0.1"</target>
       </trans-unit>
-      <trans-unit id="kickstart.jsp.error.template_generation" xml:space="preserve">
+      <trans-unit approved="yes" id="kickstart.jsp.error.template_generation" xml:space="preserve">
         <source>There are errors in your kickstart/autoYaST template. Please check the '{0}' tab to determine the problem with the template.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details</context>
         </context-group>
-        <target state="needs-adaptation">您的 kickstart/autoyast 模板中有错误。请检查 "{0}" 选项卡确定模板的问题。</target>
+        <target state="final">您的 kickstart/autoYaST 模板中有错误。请检查 "{0}" 选项卡确定模板的问题。</target>
       </trans-unit>
-      <trans-unit id="kickstart.jsp.error.template_message" xml:space="preserve">
+      <trans-unit approved="yes" id="kickstart.jsp.error.template_message" xml:space="preserve">
         <source>There are errors in your kickstart/autoYaST template. Please check the error message below.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details</context>
         </context-group>
-        <target state="needs-adaptation">您的 kickstart/autoyast 模板中有错误。请检查下面的错误消息。</target>
+        <target state="final">您的 kickstart/autoYaST 模板中有错误。请检查下面的错误消息。</target>
       </trans-unit>
       <trans-unit id="kickstartdetails.jsp.kernel_options" xml:space="preserve">
         <source>Kernel Options</source>
@@ -11955,7 +11955,7 @@ For more information, see the &lt;a href={0} target="_blank" &gt;Reference Guide
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeysList.do</context>
         </context-group>
-        <target state="translated">创建储存的密钥/证书</target>
+        <target state="translated">创建存储的密钥/证书</target>
       </trans-unit>
       <trans-unit id="keyedit.jsp.toolbar" xml:space="preserve">
         <source>Edit GPG/SSL Key</source>
@@ -12299,14 +12299,14 @@ For more information, see the &lt;a href={0} target="_blank" &gt;Reference Guide
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartSoftwareEdit</context>
         </context-group>
-        <target state="translated">软件源</target>
+        <target state="translated">储存库</target>
       </trans-unit>
       <trans-unit id="softwareedit.jsp.repos-tooltip" xml:space="preserve">
         <source>Selected Repositories will be available in the &lt;strong&gt;%packages &lt;/strong&gt; section of the kickstart file.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartSoftwareEdit</context>
         </context-group>
-        <target state="translated">选择的软件源将包含在 kickstart 文件的 &lt;strong&gt;%packages &lt;/strong&gt; 部分。</target>
+        <target state="translated">选择的储存库将包含在 kickstart 文件的 &lt;strong&gt;%packages &lt;/strong&gt; 部分。</target>
       </trans-unit>
       <trans-unit id="softwareedit.jsp.warning" xml:space="preserve">
         <source>&lt;span class="small-text"&gt;&lt;strong&gt;Warning:&lt;/strong&gt; If any activation keys are associated with this kickstart profile(under the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;activation keys tab&lt;/a&gt;). the child channel subscriptions above will be overridden. In that situation please use an activation key to specify child channel subscriptions.&lt;/span&gt;</source>
@@ -12580,7 +12580,7 @@ kickstart 前脚本的更多细节，请参见《&lt;strong&gt;@@ENTERPRISE_LINU
       </trans-unit>
       <trans-unit id="snippets.jsp.summary" xml:space="preserve">
           <source>Use autoinstallation snippets to store common blocks of code that can be shared across multiple autoinstallation profiles in @@PRODUCT_NAME@@. When you create an autoinstallation snippet, all autoinstallation profiles including that snippet will be updated accordingly.</source>
-        <target state="translated">自动安装代码段用于储存可在 @@PRODUCT_NAME@@ 中跨多个自动安装配置文件共享的通用代码块。当您创建自动安装代码段时，包含该代码段的所有自动安装配置文件都会相应更新。</target>
+        <target state="translated">自动安装代码段用于存储可在 @@PRODUCT_NAME@@ 中跨多个自动安装配置文件共享的通用代码块。当您创建自动安装代码段时，包含该代码段的所有自动安装配置文件都会相应更新。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/cobbler/DefaultSnippetList.do</context>
           <context context-type="sourcefile">/rhn/kickstart/cobbler/CustomSnippetList.do</context>
@@ -14206,7 +14206,7 @@ kickstart 前脚本的更多细节，请参见《&lt;strong&gt;@@ENTERPRISE_LINU
       <!-- profiles/list.jsp -->
       <trans-unit id="profile.list.header" xml:space="preserve">
           <source>Stored Profiles</source>
-        <target state="translated">储存的配置文件</target>
+        <target state="translated">存储的配置文件</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/profiles/List.do</context>
         </context-group>
@@ -14220,14 +14220,14 @@ kickstart 前脚本的更多细节，请参见《&lt;strong&gt;@@ENTERPRISE_LINU
       </trans-unit>
       <trans-unit id="profile.list.summary" xml:space="preserve">
           <source>The following stored profiles exist within your organization. To create a stored profile from a system, go to the Packages view for that system.</source>
-        <target state="translated">您的组织中有以下储存的配置文件。要从某个系统创建储存的配置文件，请转到该系统的软件包视图。</target>
+        <target state="translated">您的组织中有以下存储的配置文件。要从某个系统创建存储的配置文件，请转到该系统的软件包视图。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/profiles/List.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="profile.list.noprofiles" xml:space="preserve">
           <source>No stored profiles.</source>
-        <target state="translated">没有储存的配置文件。</target>
+        <target state="translated">没有存储的配置文件。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/profiles/List.do</context>
         </context-group>
@@ -14235,7 +14235,7 @@ kickstart 前脚本的更多细节，请参见《&lt;strong&gt;@@ENTERPRISE_LINU
       <!-- profiles/details.jsp -->
       <trans-unit id="profile.details.toolbar" xml:space="preserve">
           <source>Stored Profile: </source>
-        <target state="translated">储存的配置文件： </target>
+        <target state="translated">存储的配置文件： </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/profiles/Details.do</context>
         </context-group>
@@ -14250,7 +14250,7 @@ kickstart 前脚本的更多细节，请参见《&lt;strong&gt;@@ENTERPRISE_LINU
       <!-- profiles/packagelist.jsp -->
       <trans-unit id="profile.packagelist.summary" xml:space="preserve">
           <source>The following packages are associated with this stored profile.</source>
-        <target state="translated">以下软件包与此储存的配置文件相关联。</target>
+        <target state="translated">以下软件包与此存储的配置文件相关联。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/profiles/Details.do</context>
         </context-group>
@@ -16404,8 +16404,8 @@ kickstart 前脚本的更多细节，请参见《&lt;strong&gt;@@ENTERPRISE_LINU
         </context-group>
       </trans-unit>
       <trans-unit id="targetsystems.jsp.summary" xml:space="preserve">
-          <source>The systems listed below do not have files managed via @@PRODUCT_NAME@@ configuration management.  For systems to be capable of being managed by @@PRODUCT_NAME@@ configuration management, they need to have particular mgr-cfg-* packages installed. You can enable configuration management on selected systems by using the 'Enable @@PRODUCT_NAME@@ Configuration Management' button below.</source>
-        <target state="translated">下面列出的系统不包含通过 @@PRODUCT_NAME@@ 配置管理管理的文件。要使系统可由 @@PRODUCT_NAME@@ 配置管理进行管理，需要为其安装特定的 mgr-cfg-* 软件包。您可以用下面的 "启用 @@PRODUCT_NAME@@ 配置管理" 按钮在选定的系统上启用配置管理。</target>
+          <source>The systems listed below do not have files managed via @@PRODUCT_NAME@@ configuration management.  For systems to be capable of being managed by @@PRODUCT_NAME@@ configuration management, they need to have particular *-salt-minion packages installed. You can enable configuration management on selected systems by using the 'Enable @@PRODUCT_NAME@@ Configuration Management' button below.</source>
+        <target state="needs-adaptation">下面列出的系统不包含通过 @@PRODUCT_NAME@@ 配置管理管理的文件。要使系统可由 @@PRODUCT_NAME@@ 配置管理进行管理，需要为其安装特定的 mgr-cfg-* 软件包。您可以用下面的 "启用 @@PRODUCT_NAME@@ 配置管理" 按钮在选定的系统上启用配置管理。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/TargetSystems.do</context>
         </context-group>
@@ -16466,27 +16466,6 @@ kickstart 前脚本的更多细节，请参见《&lt;strong&gt;@@ENTERPRISE_LINU
           <context context-type="sourcefile">/rhn/configuration/system/TargetSystems.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="targetsystems.jsp.installcfg" xml:space="preserve">
-          <source>Schedule mgr-cfg package install</source>
-        <target state="translated">安排 mgr-cfg 软件包安装</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/configuration/system/TargetSystems.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="targetsystems.jsp.installcfgactions" xml:space="preserve">
-          <source>Schedule mgr-cfg-actions package install</source>
-        <target state="translated">安排 mgr-cfg-actions 软件包安装</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/configuration/system/TargetSystems.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="targetsystems.jsp.installcfgclient" xml:space="preserve">
-          <source>Schedule mgr-cfg-client package install</source>
-        <target state="translated">安排 mgr-cfg-client 软件包安装</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/configuration/system/TargetSystems.do</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="targetsystems.jsp.pending" xml:space="preserve">
           <source>Package installations currently pending.</source>
         <target state="translated">软件包安装目前待执行。</target>
@@ -16509,8 +16488,8 @@ kickstart 前脚本的更多细节，请参见《&lt;strong&gt;@@ENTERPRISE_LINU
         </context-group>
       </trans-unit>
       <trans-unit id="targetsystems.jsp.widgetsummary" xml:space="preserve">
-          <source>You may schedule &lt;code&gt;mgr-cfg*&lt;/code&gt; package installs for the time below. &lt;strong&gt;Note: All other actions will take place immediately.&lt;/strong&gt;</source>
-        <target state="translated">可将 &lt;code&gt;mgr-cfg*&lt;/code&gt; 软件包安装安排在以下时间。&lt;strong&gt;注意：所有其他操作将立即发生。&lt;/strong&gt;</target>
+          <source>You may schedule &lt;code&gt;salt-minion&lt;/code&gt; package installs for the time below. &lt;strong&gt;Note: All other actions will take place immediately.&lt;/strong&gt;</source>
+        <target state="needs-adaptation">可将 &lt;code&gt;mgr-cfg*&lt;/code&gt; 软件包安装安排在以下时间。&lt;strong&gt;注意：所有其他操作将立即发生。&lt;/strong&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/TargetSystems.do</context>
         </context-group>
@@ -16531,15 +16510,8 @@ kickstart 前脚本的更多细节，请参见《&lt;strong&gt;@@ENTERPRISE_LINU
         </context-group>
       </trans-unit>
       <trans-unit id="summary.jsp.stepone" xml:space="preserve">
-          <source>Run &lt;code&gt;mgr_check&lt;/code&gt; to complete pending mgr-cfg-* package installs.</source>
-        <target state="translated">运行 &lt;code&gt;mgr_check&lt;/code&gt; 完成等待中的 mgr-cfg-* 软件包安装。</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/configuration/system/Summary.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="summary.jsp.steptwo" xml:space="preserve">
-          <source>Run the following command: &lt;code&gt;mgr-actions-control --enable-all&lt;/code&gt;</source>
-        <target state="translated">运行以下命令：&lt;code&gt;mgr-actions-control --enable-all&lt;/code&gt;</target>
+          <source>Run &lt;code&gt;mgr_check&lt;/code&gt; to complete pending salt-minion package installs.</source>
+        <target state="needs-adaptation">运行 &lt;code&gt;mgr_check&lt;/code&gt; 完成等待中的 mgr-cfg-* 软件包安装。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/Summary.do</context>
         </context-group>
@@ -16579,16 +16551,9 @@ kickstart 前脚本的更多细节，请参见《&lt;strong&gt;@@ENTERPRISE_LINU
           <context context-type="sourcefile">/rhn/configuration/system/Summary.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="summary.jsp.appstream" xml:space="preserve">
-          <source>Could not subscribe to the AppStream channel.</source>
-        <target>无法订阅 AppStream 通道。</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/configuration/system/Summary.do</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="summary.jsp.packages" xml:space="preserve">
-          <source>Could not schedule mgr-cfg* package installations.</source>
-        <target state="translated">无法安排 mgr-cfg* 软件包安装。</target>
+          <source>Could not schedule salt-minion package installations.</source>
+        <target state="needs-adaptation">无法安排 mgr-cfg* 软件包安装。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/Summary.do</context>
         </context-group>
@@ -17806,7 +17771,7 @@ From there, you can deploy the file to systems.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/RevisionDeploy.do</context>
         </context-group>
-        <target state="translated">配置沙箱是用于储存开发中配置文件的位置。
+        <target state="translated">配置沙箱是用于存储处于开发阶段的配置文件的位置。
 如果您确定此配置文件可部署到系统，则可通过上面的 "&lt;a href="{3}"&gt;{4}&lt;/a&gt;" 选项卡&lt;a href="{0}"&gt;将其复制到本地管理的配置通道&lt;/a&gt;
 或者&lt;a href="{1}"&gt;将其复制到全局管理的配置通道&lt;/a&gt;
 您可在该通道中将该文件部署到系统。</target>
@@ -20282,8 +20247,8 @@ any of these revisions.  Are you sure you want to do this?</source>
         </context-group>
       </trans-unit>
       <trans-unit id="ssmenable.jsp.summary" xml:space="preserve">
-          <source>The systems listed below do not have files managed via @@PRODUCT_NAME@@ configuration management. For systems to be capable of being managed by @@PRODUCT_NAME@@ configuration management, they will need to have particular mgr-cfg-* packages installed. You can enable configuration management on the systems listed below. &lt;strong&gt;Note:&lt;/strong&gt; nothing will happen to already enabled systems.</source>
-        <target state="translated">下列系统不包含通过 @@PRODUCT_NAME@@ 配置管理管理的文件。要使系统可由 @@PRODUCT_NAME@@ 配置管理进行管理，需要为其安装特定的 mgr-cfg-* 软件包。您可以在下面列出的系统上启用配置管理。&lt;strong&gt;注意：&lt;/strong&gt;已启用的系统不会有任何变化。</target>
+          <source>The systems listed below do not have files managed via @@PRODUCT_NAME@@ configuration management. For systems to be capable of being managed by @@PRODUCT_NAME@@ configuration management, they will need to have particular salt-minion packages installed. You can enable configuration management on the systems listed below. &lt;strong&gt;Note:&lt;/strong&gt; nothing will happen to already enabled systems.</source>
+        <target state="needs-adaptation">下列系统不包含通过 @@PRODUCT_NAME@@ 配置管理管理的文件。要使系统可由 @@PRODUCT_NAME@@ 配置管理进行管理，需要为其安装特定的 mgr-cfg-* 软件包。您可以在下面列出的系统上启用配置管理。&lt;strong&gt;注意：&lt;/strong&gt;已启用的系统不会有任何变化。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/config/Enable.do</context>
         </context-group>
@@ -20464,7 +20429,7 @@ any of these revisions.  Are you sure you want to do this?</source>
       </trans-unit>
       <trans-unit id="sdc.config.file_list.sandbox_description" xml:space="preserve">
           <source>This sandbox is a place you can store configuration files that are under development. This sandbox is associated with this system, {0}, but you may promote files from this sandbox to a centrally-managed configuration channel using the "{1}" below. After files in this sandbox have been promoted to a centrally-managed configuration channel, you will be able to deploy them to other systems.</source>
-        <target state="translated">此沙箱是您可以在开发阶段储存配置文件的地方。此沙箱与系统 {0} 相关联，但您可以使用下面的 "{1}" 将文件从此沙箱提升到集中管理的配置通道。在此沙箱的文件被提升至集中管理的配置通道后，您便可以将它们部署到其他系统。</target>
+        <target state="translated">此沙箱是您可以存储处于开发阶段的配置文件的地方。此沙箱与系统 {0} 相关联，但您可以使用下面的 "{1}" 将文件从此沙箱提升到集中管理的配置通道。在此沙箱的文件被提升至集中管理的配置通道后，您便可以将它们部署到其他系统。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/ViewModifyCentralPaths.do</context>
           <context context-type="sourcefile">/rhn/systems/details/configuration/ViewModifyLocalPaths.do</context>
@@ -20661,9 +20626,9 @@ any of these revisions.  Are you sure you want to do this?</source>
         </context-group>
       </trans-unit>
       <!-- configuration/sdc/channellist.jsp  -->
-      <trans-unit id="sdc.configlist.jsp.header" xml:space="preserve">
+      <trans-unit approved="yes" id="sdc.configlist.jsp.header" xml:space="preserve">
           <source>Configuration Channels</source>
-        <target state="translated">配置通道</target>
+        <target state="final">配置通道</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/ConfigChannelList.do</context>
         </context-group>
@@ -21524,8 +21489,8 @@ any of these revisions.  Are you sure you want to do this?</source>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.operations.provisioning.remotecommand.no_script_run" xml:space="preserve">
-          <source>You must enable Remote Command execution on the target system by installing the &lt;code&gt;mgr-cfg-actions&lt;/code&gt; RPM.</source>
-        <target state="translated">您必须安装 &lt;code&gt;mgr-cfg-actions&lt;/code&gt; RPM 以支持在目标系统中执行远程命令的功能。</target>
+          <source>You must enable Remote Command execution on the target system by installing the &lt;code&gt;salt-minion&lt;/code&gt; RPM.</source>
+        <target state="needs-adaptation">您必须安装 &lt;code&gt;mgr-cfg-actions&lt;/code&gt; RPM 以支持在目标系统中执行远程命令的功能。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/kickstart/KickstartableSystems.do</context>
         </context-group>
@@ -22908,9 +22873,9 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
 
 "发行套件标签" 字段应该只包含字母、数字、连字符、句点和下划线。至少含有 4 个字符。&lt;br/&gt;&lt;br/&gt;
 
-树路径、基础频道和安装程序代系始终应该匹配。这通常意味着每个字段的版本应该来自 @@ENTERPRISE_LINUX_NAME@@ 的相同版本。&lt;br/&gt;&lt;br/&gt;
+树路径、基础通道和安装程序代系始终应该匹配。这通常意味着每个字段的版本应该来自 @@ENTERPRISE_LINUX_NAME@@ 的相同版本。&lt;br/&gt;&lt;br/&gt;
 
-&lt;p&gt;树路径必须是 @@PRODUCT_NAME@@ 服务器上的一个本地磁盘路径，它包含发行套件的整个可自动安装树，其中包括内核、initrd 和软件源信息，但不包括任何 RPM。Apache 和 Tomcat 用户应该可以读取此目录。如果您有位于 @@PRODUCT_NAME@@ 服务器上 &lt;i&gt;/var/distro-trees/sles-11-server/&lt;/i&gt; 的媒体，则您可以指定该路径为树路径。&lt;/p&gt;
+&lt;p&gt;树路径必须是 @@PRODUCT_NAME@@ 服务器上的一个本地磁盘路径，它包含发行套件的整个可自动安装树，其中包括内核、initrd 和储存库信息，但不包括任何 RPM。Apache 和 Tomcat 用户应该可以读取此目录。如果您有位于 @@PRODUCT_NAME@@ 服务器上 &lt;i&gt;/var/distro-trees/sles-11-server/&lt;/i&gt; 的媒体，则您可以指定该路径为树路径。&lt;/p&gt;
 </target>
       </trans-unit>
       <trans-unit id="treecreate.jsp.header2" xml:space="preserve">
@@ -24543,12 +24508,12 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         </context-group>
         <target state="translated">插槽：</target>
       </trans-unit>
-      <trans-unit id="sdc.details.hardware.cores" xml:space="preserve">
-        <source>Cores:</source>
+      <trans-unit approved="yes" id="sdc.details.hardware.cores" xml:space="preserve">
+        <source>Cores per Socket:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/SystemHardware.do</context>
         </context-group>
-        <target state="translated">核心：</target>
+        <target state="final">每个插槽的核心数：</target>
       </trans-unit>
       <trans-unit id="sdc.details.hardware.cache" xml:space="preserve">
         <source>Cache:</source>
@@ -24996,12 +24961,12 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
       </trans-unit>
       <!-- outage-policy.jsp -->
       <!-- download-ISOs pages -->
-      <trans-unit id="common.download.channelAlt" xml:space="preserve">
+      <trans-unit approved="yes" id="common.download.channelAlt" xml:space="preserve">
           <source>Software Channel</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/software/channel/downloads/Download.do</context>
           </context-group>
-        <target state="translated">软件通道</target>
+        <target state="final">软件通道</target>
       </trans-unit>
       <!-- downloads.jsp -->
       <trans-unit id="isodownload.hosted-only.warn" xml:space="preserve">
@@ -25781,12 +25746,12 @@ As a Channel Administrator, you may change the base channels your systems are su
             <context context-type="sourcefile">/rhn/channel/ssm/BaseChannelSubscribe.do</context>
           </context-group>
       </trans-unit>
-      <trans-unit id="basesub.jsp.unableToLookupSystemDefaultChannel" xml:space="preserve">
+      <trans-unit approved="yes" id="basesub.jsp.unableToLookupSystemDefaultChannel" xml:space="preserve">
           <source>Unable to lookup system default base channel.</source>
         <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/BaseChannelSubscribe.do</context>
           </context-group>
-        <target state="translated">无法查找系统默认基础通道。</target>
+        <target state="final">无法查找系统默认基础通道。</target>
       </trans-unit>
       <trans-unit id="basesub.jsp.unableToLookupSystemDefaultChannelWithParams" xml:space="preserve">
           <source>Unable to lookup 'system default base channel' for [{0}] with the current base channel '{1}'.</source>
@@ -25941,7 +25906,7 @@ given channel.</source>
           <context context-type="sourcefile">/rhn/help/about</context>
         </context-group>
       </trans-unit>
-      <trans-unit approved="yes" id="help.jsp.about.overviewsummary" xml:space="preserve">
+      <trans-unit approved="no" id="help.jsp.about.overviewsummary" xml:space="preserve">
         <source>
         All @@PRODUCT_NAME@@ functionality (system profiles, reporting data, application server, etc.)
         is stored locally on the customer's network. This provides customers with the ability to take their
@@ -25953,13 +25918,13 @@ given channel.</source>
         All information stored in the @@PRODUCT_NAME@@ database is kept on the @@PRODUCT_NAME@@ servers.</source>
         <target>
         所有 @@PRODUCT_NAME@@ 功能（系统配置文件、报告数据、应用程序服务器等）
-        都储存在客户网络本地。这样，客户便可根据需要使其
-        @@PRODUCT_NAME@@ 解决方案脱离公共因特网，同时对其
+        都存储在客户网络本地。这样，客户便可根据需要使其
+        @@PRODUCT_NAME@@ 解决方案脱离公共互联网，同时对其
         系统进行更好的优化和控制。
         将 @@PRODUCT_NAME@@ Proxy 服务器与 @@PRODUCT_NAME@@ 服务器结合使用，
         可将客户的单个系统连接到本地托管的 Proxy。
         Proxy 与 @@PRODUCT_NAME@@ 中央服务器通讯，在本地聚合数据并执行一些任务。
-        @@PRODUCT_NAME@@ 数据库中储存的所有信息都保留在 @@PRODUCT_NAME@@ 服务器上。</target>
+        @@PRODUCT_NAME@@ 数据库中存储的所有信息都保留在 @@PRODUCT_NAME@@ 服务器上。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/about</context>
         </context-group>
@@ -26314,7 +26279,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="system.jsp.customkey.message" xml:space="preserve">
         <source>Custom system info keys allow your adminstrators to store relevant custom key/value pairs with your system profiles. Custom system info values are fully {0}searchable{1}.</source>
-        <target state="translated">使用自定义系统信息键，您的管理员可以储存与您的系统配置文件有关的自定义键/值对。自定义系统信息值全部都{0}可搜索{1}。</target>
+        <target state="translated">使用自定义系统信息键，您的管理员可以存储与您的系统配置文件有关的自定义键/值对。自定义系统信息值全部都{0}可搜索{1}。</target>
       </trans-unit>
       <trans-unit id="system.jsp.customkey.message2" xml:space="preserve">
         <source>The following custom system info keys have been defined for your organization.</source>
@@ -26799,7 +26764,7 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
-        <target state="translated">软件源校验和类型</target>
+        <target state="translated">储存库校验和类型</target>
       </trans-unit>
       <trans-unit id="channel.edit.jsp.checksumtip" xml:space="preserve">
         <source>&lt;strong&gt; Tip:&lt;/strong&gt;
@@ -27436,7 +27401,7 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-        <target state="translated">生成频道软件源数据</target>
+        <target state="translated">生成通道储存库数据</target>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.cleanup-data-bunch" xml:space="preserve">
         <source>Cleans up orphaned and outdated data</source>
@@ -27655,11 +27620,11 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/ConfirmPrivate.do</context>
         </context-group>
-        <target state="final">您确定要将此频道设置为
+        <target state="final">您确定要将此通道设置为
         &lt;strong&gt;专用&lt;/strong&gt;且只能由您组织中的系统访问吗？
-        下面列出的是其他组织中订阅了由此频道提供的内容的系统。
-        去除对此频道的访问权限可能会对这些系统产生负面影响。例如：那些
-        系统将无法再收到此频道提供的内容的关键
+        下面列出的是其他组织中订阅了由此通道提供的内容的系统。
+        去除对此通道的访问权限可能会对这些系统产生负面影响。例如：那些
+        系统将无法再收到此通道提供的内容的关键
         安全更新。</target>
       </trans-unit>
       <trans-unit id="confirmprivate.jsp.confirmmsg.deux" xml:space="preserve">
@@ -27935,7 +27900,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="task.status.channel-repodata" xml:space="preserve">
         <source>Channel Repodata</source>
-        <target state="translated">频道软件源数据</target>
+        <target state="translated">通道储存库数据</target>
       </trans-unit>
       <trans-unit id="task.status.cleanup-timeseries-data" xml:space="preserve">
         <source>TimeSeries Cleanup</source>
@@ -28001,7 +27966,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="channel.jsp.repodata" xml:space="preserve">
         <source>Repo Cache Status</source>
-        <target state="translated">软件源缓存状态</target>
+        <target state="translated">储存库缓存状态</target>
       </trans-unit>
       <trans-unit id="channel.jsp.repodata.completed" xml:space="preserve">
         <source> Completed </source>
@@ -28017,7 +27982,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="channel.jsp.repolastbuild" xml:space="preserve">
         <source>Last Repo Build</source>
-        <target state="translated">上次软件源构建数据</target>
+        <target state="translated">上次储存库构建数据</target>
       </trans-unit>
       <trans-unit id="channel.edit.jsp.lastsynced" xml:space="preserve">
         <source>Last Sync Time</source>
@@ -28113,7 +28078,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="debugsource.unavailable" xml:space="preserve">
         <source>If available, an appropriate debugsource package can be synced from the respective debug channel or repository. Note: Not all packages have published debugsource packages.</source>
-        <target>可以从相关的 debug 频道或软件源同步相应的 debugsource 软件包（如果可用）。注意：并非所有软件包都已发布 debugsource 软件包。</target>
+        <target>可以从相关的 debug 通道或储存库同步相应的 debugsource 软件包（如果可用）。注意：并非所有软件包都已发布 debugsource 软件包。</target>
       </trans-unit>
       <trans-unit id="channel.jsp.changelog.title" xml:space="preserve">
         <source>Change Log</source>
@@ -29083,8 +29048,8 @@ given channel.</source>
         <target>已存在使用此用户名的身份凭证</target>
       </trans-unit>
       <trans-unit approved="yes" id="copyright.jsp.title" xml:space="preserve">
-        <source>Copyright (c) 2011 - 2022 SUSE LLC.</source>
-        <target state="final">版权所有 (c) 2011 - 2022 SUSE LLC。</target>
+        <source>Copyright (c) 2011 - 2023 SUSE LLC.</source>
+        <target state="final">版权所有 (c) 2011 - 2023 SUSE LLC。</target>
       </trans-unit>
       <trans-unit id="copyright.jsp.urlagreement" xml:space="preserve">
         <source>&lt;a href="/rhn/help/Eula.do"&gt;SUSE MANAGER LICENSE AGREEMENT&lt;/a&gt;</source>
@@ -29153,8 +29118,8 @@ given channel.</source>
         <target>操作系统映像构建主机</target>
       </trans-unit>
       <trans-unit id="monitoring_entitled" xml:space="preserve">
-        <source>Monitoring</source>
-        <target>监视</target>
+        <source>Monitored Host</source>
+        <target state="needs-adaptation">监视</target>
       </trans-unit>
       <trans-unit id="Formulas" xml:space="preserve">
         <source>Formulas</source>
@@ -29221,9 +29186,9 @@ given channel.</source>
            remove the deleted channel.
         </source>
         <target>
-           在当前指派了此频道的任何受控端上确认后，将立即
-           安排应用频道状态。这会更新这些受控端上的软件源文件，
-           以去除已删除的频道。
+           在当前指派了此通道的任何受控端上确认后，将立即
+           安排应用通道状态。这会更新这些受控端上的储存库文件，
+           以去除已删除的通道。
         </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Delete.do</context>
@@ -29324,10 +29289,6 @@ given channel.</source>
       <trans-unit approved="yes" id="Highstate" xml:space="preserve">
         <source>Highstate</source>
         <target>Highstate</target>
-      </trans-unit>
-      <trans-unit id="Recurring States" xml:space="preserve">
-        <source>Recurring States</source>
-        <target>重复性状态</target>
       </trans-unit>
       <trans-unit id="Configuration Channels" xml:space="preserve">
         <source>Configuration Channels</source>
@@ -29436,9 +29397,9 @@ given channel.</source>
         </context-group>
         <target state="translated">请选择您偏好的样式主题。</target>
       </trans-unit>
-      <trans-unit id="spmigration.jsp.allow.vendor.change" xml:space="preserve">
+      <trans-unit approved="yes" id="spmigration.jsp.allow.vendor.change" xml:space="preserve">
         <source>Allow Vendor Change</source>
-        <target state="translated">允许供应商更改</target>
+        <target state="final">允许更改供应商</target>
       </trans-unit>
       <trans-unit id="preferences.jsp.docs.lang" xml:space="preserve">
         <source>Documentation Language</source>
@@ -29556,21 +29517,21 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
-        <target state="final">抱歉，找不到该软件源。</target>
+        <target state="final">抱歉，找不到该储存库。</target>
       </trans-unit>
       <trans-unit approved="yes" id="lookup.jsp.reason1.repo" xml:space="preserve">
           <source>The repository requested does not exist. This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
-        <target state="final">请求的软件源不存在。如果您通过书签或其他某种非链接方式进入此页面，则很有可能会出现这种情况。</target>
+        <target state="final">请求的储存库不存在。如果您通过书签或其他某种非链接方式进入此页面，则很有可能会出现这种情况。</target>
       </trans-unit>
       <trans-unit approved="yes" id="lookup.jsp.reason2.repo" xml:space="preserve">
           <source>You do not have permission to view this repository.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
-        <target state="final">您没有查看这个软件源的权限。</target>
+        <target state="final">您没有查看这个储存库的权限。</target>
       </trans-unit>
       <trans-unit approved="yes" id="actionchain.jsp.ansible.playbook" xml:space="preserve">
         <source>Execute Ansible playbook</source>
@@ -29603,7 +29564,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit approved="yes" id="overview.jsp.transactionalupdate.reboot" xml:space="preserve">
         <source>There is a pending transaction for this system, please reboot it to activate the changes.</source>
-        <target state="needs-adaptation">OS 有事务更新：请在任何软件包和/或通道更改后重引导系统。</target>
+        <target state="final">此系统有待处理的事务，请重引导系统以激活更改。</target>
       </trans-unit>
       <trans-unit approved="yes" id="appstream.jsp.nomodules" xml:space="preserve">
         <source>No Modules</source>
@@ -29681,15 +29642,11 @@ given channel.</source>
         <target state="final">供应商建议</target>
       </trans-unit>
       <trans-unit approved="yes" id="bunch.jsp.description.update-payg-data-bunch" xml:space="preserve">
-        <source>Collect authentication data from configure pay-as-you-go cloud instances</source>
+        <source>Collect authentication data from configured PAYG cloud instances</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-        <target state="final">从配置的 Pay-as-you-go 云实例收集身份验证数据</target>
-      </trans-unit>
-      <trans-unit approved="yes" id="Pay-as-you-go" xml:space="preserve">
-        <source>Pay-as-you-go</source>
-        <target state="final">Pay-as-you-go</target>
+        <target state="final">从配置的 PAYG 云实例收集身份验证数据</target>
       </trans-unit>
       <trans-unit approved="yes" id="bunch.jsp.description.mgr-update-reporting-bunch" xml:space="preserve">
         <source>Update Reporting Database</source>
@@ -29757,64 +29714,210 @@ given channel.</source>
         </context-group>
         <target state="final">自动同步自定义通道功能已启用。此通道将自动与供应商通道一起同步。</target>
       </trans-unit>
-    <trans-unit id="exportcolumn.extraPkgCount" xml:space="preserve">
+      <trans-unit id="exportcolumn.extraPkgCount" xml:space="preserve">
             <source>Extra Packages</source>
-            <context-group name="ctx">
+        <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
             </context-group>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="exportcolumn.configFilesWithDifferences" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="exportcolumn.configFilesWithDifferences" xml:space="preserve">
             <source>Config Diffs</source>
-            <context-group name="ctx">
+        <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
             </context-group>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="exportcolumn.proxy" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="exportcolumn.proxy" xml:space="preserve">
             <source>Proxy</source>
-            <context-group name="ctx">
+        <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
             </context-group>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="exportcolumn.mgrServer" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="exportcolumn.mgrServer" xml:space="preserve">
             <source>Manager Server</source>
-            <context-group name="ctx">
+        <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
             </context-group>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="exportcolumn.virtualHost" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="exportcolumn.virtualHost" xml:space="preserve">
             <source>Virtual Host</source>
-            <context-group name="ctx">
+        <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
             </context-group>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="exportcolumn.virtualGuest" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="exportcolumn.virtualGuest" xml:space="preserve">
             <source>Virtual Guest</source>
-            <context-group name="ctx">
+        <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
             </context-group>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="exportcolumn.requiresReboot" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="exportcolumn.requiresReboot" xml:space="preserve">
             <source>Requires Reboot</source>
-            <context-group name="ctx">
+        <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
             </context-group>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="exportcolumn.statusType" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="exportcolumn.statusType" xml:space="preserve">
             <source>Status Type</source>
-            <context-group name="ctx">
+        <context-group name="ctx">
                 <context context-type="sourcefile">/rhn/manager/systems/list/all</context>
             </context-group>
         <target state="new"/>
-  </trans-unit>
+      </trans-unit>
       <trans-unit id="overview.jsp.traditionalstack.deprecated" xml:space="preserve">
         <source>The traditional stack is unsupported and scheduled for removal. Consider migrating to salt minions.</source>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit approved="yes" id="ssm.misc.reboot.message.scheduled" xml:space="preserve">
+          <source>Some systems already have a reboot scheduled.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
+        </context-group>
+        <target state="final">已为某些系统安排了重引导。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="systemlist.jsp.rebootneeded" xml:space="preserve">
+        <source>System requires reboot</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/SystemList</context>
+          <context context-type="sourcefile">/systems/SystemEntitlements</context>
+        </context-group>
+        <target state="final">系统需要重引导</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="sdc.details.overview.rebootaction" xml:space="preserve">
+        <source>(&lt;a href="{0}"&gt;System Reboot Action&lt;/a&gt;)</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Overview.do</context>
+        </context-group>
+        <target state="final">（&lt;a href="{0}"&gt;系统重引导操作&lt;/a&gt;）</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="sdc.details.overview.rebootscheduled" xml:space="preserve">
+        <source>System reboot scheduled</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Overview.do</context>
+        </context-group>
+        <target state="final">已安排系统重引导</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="packagelist.jsp.packagesummary" xml:space="preserve">
+        <source>Summary</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/packages/InstallPackages</context>
+        </context-group>
+        <target state="final">摘要</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="targetsystems.jsp.description_ptf_package" xml:space="preserve">
+        <source>This package is part of a Product Temporary Fix (PTF) and cannot be installed directly. Please select the main package of the temporary fix to review the target systems.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/software/packages/TargetSystems.do</context>
+        </context-group>
+        <target state="final">此软件包是某个程序临时修复 (PTF) 的组件，无法直接安装。请选择该临时修复的主软件包查看目标系统。</target>
+      </trans-unit>
+      <trans-unit id="task.status.system-overview-update-queue" xml:space="preserve">
+        <source>System Overview Update Queue</source>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="task.status.update-system-overview" xml:space="preserve">
+        <source>Update System Overview</source>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit approved="yes" id="spmigration.jsp.error.no-maintenance-window" xml:space="preserve">
+        <source>Systems assigned to these schedules do not have a maintenance window at {0}</source>
+        <target state="final">为这些日程安排指定的系统没有处于 {0} 的维护时段</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="sdc.details.hardware.cpus" xml:space="preserve">
+        <source>CPUs:</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/SystemHardware.do</context>
+        </context-group>
+        <target state="final">CPU：</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="sdc.details.hardware.threads" xml:space="preserve">
+        <source>Threads per Core:</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/SystemHardware.do</context>
+        </context-group>
+        <target state="final">每个核心的线程数：</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="bunch.jsp.description.system-profile-refresh-bunch" xml:space="preserve">
+        <source>Schedule System Profile refresh on all managed systems</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
+        </context-group>
+        <target state="final">在所有受管系统上安排系统配置文件刷新</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="task.status.system-profile-refresh" xml:space="preserve">
+        <source>System Profile Refresh</source>
+        <target state="final">系统配置文件刷新</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="preferences.subscription-warning.name" xml:space="preserve">
+        <source>Subscription Warning</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/users/UserPreferences</context>
+        </context-group>
+        <target state="final">订阅警告</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="preferences.subscription-warning.description" xml:space="preserve">
+        <source> Show expired subscriptions warning.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/users/UserPreferences</context>
+        </context-group>
+        <target state="final"> 显示失效的订阅警告。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="Recurring Actions" xml:space="preserve">
+        <source>Recurring Actions</source>
+        <target state="final">重复性操作</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="sdc.details.overview.virtualization.host" xml:space="preserve">
+        <source>Virtualization Host:</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Overview.do</context>
+        </context-group>
+        <target state="final">虚拟化主机：</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="grouplist.jsp.unknown" xml:space="preserve">
+        <source>Security updates unknown, disabled on settings.</source>
+        <target state="final">安全更新未知，已根据设置禁用。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="bunch.jsp.description.payg-dimension-computation-bunch" xml:space="preserve">
+        <source>Collect data of managed clients for SUSE Manager PAYG</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
+        </context-group>
+        <target state="final">收集 SUSE Manager PAYG 受管客户端的数据</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="task.status.payg-dimension-computation" xml:space="preserve">
+        <source>PAYG Computation</source>
+        <target state="final">PAYG 计算</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="task.status.recurring-action-executor" xml:space="preserve">
+        <source>Execute Recurring Actions</source>
+        <target state="final">执行重复性操作</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="PAYG Connections" xml:space="preserve">
+        <source>PAYG Connections</source>
+        <target state="final">PAYG 连接</target>
+      </trans-unit>
+    <trans-unit id="mirror-credentials.jsp.fromDir" xml:space="preserve">
+        <source>cannot verify credentials because `server.susemanager.fromdir` property is set in rhn.conf</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="sdc.details.overview.payg" xml:space="preserve">
+        <source>Pay-as-you-go:</source>
+          <context-group name="ctx">
+            <context context-type="sourcefile">/systems/details/Overview.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="sdc.details.overview.payg_msg" xml:space="preserve">
+        <source>This is a Pay-as-you-go server</source>
+          <context-group name="ctx">
+            <context context-type="sourcefile">/systems/details/Overview.do</context>
+        </context-group>
       <target state="new"/>
   </trans-unit>
       </body>

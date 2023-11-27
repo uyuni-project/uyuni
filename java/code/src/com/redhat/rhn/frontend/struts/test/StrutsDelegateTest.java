@@ -16,7 +16,6 @@ package com.redhat.rhn.frontend.struts.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.StrutsDelegate;
@@ -61,7 +60,7 @@ public class StrutsDelegateTest  {
 
         String stripped = strutsDelegate.getTextAreaValue(form, "somevalue");
         assertNotNull(stripped);
-        assertTrue(stripped.indexOf('\r') == -1);
+        assertEquals(-1, stripped.indexOf('\r'));
     }
 
 }

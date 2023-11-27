@@ -7,30 +7,6 @@
 <body>
 
 <c:set var="cb_version" value="${rhn:getConfig('web.buildtimestamp')}" />
-<c:if test="${requestScope.subscriptionWarning == 'y'}">
-  <script type="text/javascript" src="/rhn/dwr/interface/SubscriptionWarningRenderer.js?cb=${cb_version}"></script>
-</c:if>
-<c:if test="${requestScope.inactiveSystems == 'y'}">
-  <script type="text/javascript" src="/rhn/dwr/interface/InactiveSystemsRenderer.js?cb=${cb_version}"></script>
-</c:if>
-<c:if test="${requestScope.tasks == 'y'}">
-  <script type="text/javascript" src="/rhn/dwr/interface/TasksRenderer.js?cb=${cb_version}"></script>
-</c:if>
-<c:if test="${requestScope.recentlyRegisteredSystems == 'y'}">
-  <script type="text/javascript" src="/rhn/dwr/interface/RecentSystemsRenderer.js?cb=${cb_version}"></script>
-</c:if>
-<c:if test="${requestScope.latestErrata == 'y'}">
-  <script type="text/javascript" src="/rhn/dwr/interface/LatestErrataRenderer.js?cb=${cb_version}"></script>
-</c:if>
-<c:if test="${requestScope.criticalSystems == 'y'}">
-  <script type="text/javascript" src="/rhn/dwr/interface/CriticalSystemsRenderer.js?cb=${cb_version}"></script>
-</c:if>
-<c:if test="${requestScope.pendingActions =='y'}">
-  <script type="text/javascript" src="/rhn/dwr/interface/PendingActionsRenderer.js?cb=${cb_version}"></script>
-</c:if>
-<c:if test="${requestScope.systemGroupsWidget == 'y'}">
-  <script type="text/javascript" src="/rhn/dwr/interface/SystemGroupsRenderer.js?cb=${cb_version}"></script>
-</c:if>
 
 <rhn:toolbar base="h1" icon="header-taskomatic" imgAlt="yourrhn.jsp.toolbar.img.alt"
              helpUrl="/docs/${rhn:getDocsLocale(pageContext)}/reference/home/home-overview.html">
@@ -47,21 +23,21 @@
       <c:if test="${requestScope.tasks == 'y'}">
       <div class="col-md-6" id="tasks-pane" >
         <script type="text/javascript">
-          TasksRenderer.renderAsync(makeRendererHandler('tasks-pane', false));
+          ajax("tasks", "", makeRendererHandler("tasks-pane", false).callback, "text/html")
         </script>
       </div>
       </c:if>
       <c:if test="${requestScope.subscriptionWarning == 'y'}">
       <div id="subscription-warning" class="col-md-12">
         <script type="text/javascript">
-          SubscriptionWarningRenderer.renderAsync(makeRendererHandler("subscription-warning", false));
+          ajax("subscription-warning", "", makeRendererHandler("subscription-warning", false).callback);
         </script>
       </div>
       </c:if>
       <c:if test="${requestScope.inactiveSystems == 'y'}">
       <div class="col-md-6" id="inactive-systems-pane" >
         <script type="text/javascript">
-          InactiveSystemsRenderer.renderAsync(makeRendererHandler("inactive-systems-pane", false));
+          ajax("inactive-systems", "", makeRendererHandler("inactive-systems-pane", false).callback)
         </script>
       </div>
       </c:if>
@@ -70,35 +46,35 @@
       <c:if test="${requestScope.criticalSystems == 'y'}">
       <div id="critical-systems-pane" class="col-md-12">
         <script type="text/javascript">
-          CriticalSystemsRenderer.renderAsync(makeRendererHandler("critical-systems-pane", false));
+          ajax("critical-systems", "", makeRendererHandler("critical-systems-pane", false).callback, "text/html")
         </script>
       </div>
       </c:if>
       <c:if test="${requestScope.pendingActions =='y'}">
       <div id="pending-actions-pane" class="col-md-12">
         <script type="text/javascript">
-          PendingActionsRenderer.renderAsync(makeRendererHandler("pending-actions-pane", false));
+          ajax("pending-actions", "", makeRendererHandler("pending-actions-pane", false).callback)
         </script>
       </div>
       </c:if>
       <c:if test="${requestScope.latestErrata == 'y'}">
       <div id="latest-errata-pane" class="col-md-12">
         <script type="text/javascript">
-          LatestErrataRenderer.renderAsync(makeRendererHandler("latest-errata-pane", false));
+          ajax("latest-errata", "", makeRendererHandler("latest-errata-pane", false).callback)
         </script>
       </div>
       </c:if>
       <c:if test="${requestScope.systemGroupsWidget == 'y'}">
       <div id="systems-groups-pane" class="col-md-12">
         <script type="text/javascript">
-          SystemGroupsRenderer.renderAsync(makeRendererHandler("systems-groups-pane", false));
+          ajax("systems-groups", "", makeRendererHandler("systems-groups-pane", false).callback, "text/html")
         </script>
       </div>
       </c:if>
       <c:if test="${requestScope.recentlyRegisteredSystems == 'y'}">
       <div id="recently-registered-pane" class="col-md-12">
         <script type="text/javascript">
-          RecentSystemsRenderer.renderAsync(makeRendererHandler("recently-registered-pane", false));
+          ajax("recent-systems", "", makeRendererHandler("recently-registered-pane", false).callback, "text/html")
         </script>
       </div>
       </c:if>

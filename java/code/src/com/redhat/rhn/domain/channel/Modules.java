@@ -14,25 +14,10 @@
  */
 package com.redhat.rhn.domain.channel;
 
-import java.util.Date;
-
 /**
  *
  *
  */
 public class Modules extends RepoMetadata {
-    /**
-     * Create a new empty {@link Modules} instance
-     */
-    public Modules() { }
 
-    /**
-     * Create a new {@link Modules} instance
-     * @param relativeFilename the relative filename of the module metadata file
-     * @param lastModified the 'last modified date' of the module metadata file
-     */
-    public Modules(String relativeFilename, Date lastModified) {
-        this.setRelativeFilename(relativeFilename);
-        this.setLastModified(lastModified);
-    }
 }

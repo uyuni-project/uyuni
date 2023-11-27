@@ -136,7 +136,7 @@ public class CreateProfileWizardAction extends RhnWizardAction {
     @SuppressWarnings("java:S1144")
     private ActionForward runFirst(ActionMapping mapping, DynaActionForm form,
             RequestContext ctx, HttpServletResponse response,
-            WizardStep step) throws Exception {
+            WizardStep step) {
         KickstartWizardHelper cmd = new KickstartWizardHelper(ctx.getCurrentUser());
         List<Channel> channels = cmd.getAvailableChannels();
         if (channels == null || channels.isEmpty()) {
@@ -348,7 +348,7 @@ public class CreateProfileWizardAction extends RhnWizardAction {
         }
         else if (currentChanId == null || prevChanId == null) {
             List channels = (List) form.get(CHANNELS);
-            if (channels != null && channels.size() > 0) {
+            if (channels != null && !channels.isEmpty()) {
                 Channel channel = (Channel) channels.get(0);
                 form.set(CURR_CHAN_ID, channel.getId());
                 form.set(PREV_CHAN_ID, channel.getId());
@@ -360,7 +360,7 @@ public class CreateProfileWizardAction extends RhnWizardAction {
             RequestContext ctx) {
         ActionErrors errs =
                 RhnValidationHelper.validateDynaActionForm(this, form, fieldNames);
-        boolean retval = errs.size() == 0;
+        boolean retval = errs.isEmpty();
 
         if (!retval) {
             saveMessages(ctx.getRequest(), errs);

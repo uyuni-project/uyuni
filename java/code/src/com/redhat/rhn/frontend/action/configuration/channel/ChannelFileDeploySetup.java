@@ -36,16 +36,19 @@ public class ChannelFileDeploySetup extends BaseSetListAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     public RhnSetDecl getSetDecl() {
         return RhnSetDecl.CONFIG_CHANNEL_DEPLOY_REVISIONS;
     }
 
+    @Override
     protected DataResult getDataResult(RequestContext rctx, PageControl pc) {
         User usr = rctx.getCurrentUser();
         ConfigChannel cc = ConfigActionHelper.getChannel(rctx.getRequest());
         return ConfigurationManager.getInstance().listCurrentFiles(usr, cc, pc);
     }
 
+    @Override
     protected void processRequestAttributes(RequestContext rctx) {
         if (!rctx.isSubmitted()) {
             getSetDecl().clear(rctx.getCurrentUser());
@@ -55,13 +58,15 @@ public class ChannelFileDeploySetup extends BaseSetListAction {
         ConfigActionHelper.setupRequestAttributes(rctx, cc);
     }
 
+    @Override
     protected Map makeParamMap(HttpServletRequest request) {
-        Map m = super.makeParamMap(request);
+        Map<String, Object> m = super.makeParamMap(request);
         ConfigChannel cc = ConfigActionHelper.getChannel(request);
         ConfigActionHelper.processParamMap(cc, m);
         return m;
     }
 
+    @Override
     protected void processPageControl(PageControl pc) {
         pc.setFilterColumn("path");
         pc.setFilter(true);

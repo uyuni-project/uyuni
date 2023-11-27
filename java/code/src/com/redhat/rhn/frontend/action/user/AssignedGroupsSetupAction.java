@@ -43,11 +43,13 @@ import org.apache.struts.action.ActionMessages;
 import org.apache.struts.action.DynaActionForm;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -57,14 +59,15 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class AssignedGroupsSetupAction extends RhnListAction {
 
-    private final String LIST_NAME = "groupList";
+    private static final String LIST_NAME = "groupList";
 
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-            ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
 
         RequestContext requestContext = new RequestContext(request);
 
@@ -74,7 +77,7 @@ public class AssignedGroupsSetupAction extends RhnListAction {
         Long uid = requestContext.getRequiredParam("uid");
         User currentUser =  requestContext.getCurrentUser();
         User user = UserFactory.lookupById(currentUser, uid);
-        DataResult dr = UserManager.getSystemGroups(user, null);
+        DataResult<SystemGroupOverview> dr = UserManager.getSystemGroups(user, null);
 
         RhnSet set =  getSetDecl().get(currentUser);
         if (!requestContext.isSubmitted()) {
@@ -82,21 +85,16 @@ public class AssignedGroupsSetupAction extends RhnListAction {
             RhnSetManager.store(set);
         }
 
-
         if (ListTagHelper.getListAction(LIST_NAME, request) != null) {
             helper.execute(set, LIST_NAME, dr);
 
         }
-
 
         request.setAttribute(ListTagHelper.PARENT_URL,
                 request.getRequestURI());
         request.setAttribute("user", user);
         request.setAttribute("userIsOrgAdmin",
                 user.hasRole(RoleFactory.ORG_ADMIN));
-
-
-
 
         String submit = request.getParameter("submit");
         //If the default system groups were submitted
@@ -113,8 +111,7 @@ public class AssignedGroupsSetupAction extends RhnListAction {
         else {
             helper.syncSelections(set, dr);
             set.clear();
-            for (Object oIn : dr) {
-                SystemGroupOverview group = (SystemGroupOverview) oIn;
+            for (SystemGroupOverview group : dr) {
                 if (group.isSelected()) {
                     RhnSetElement elem = new RhnSetElement(currentUser.getId(),
                             RhnSetDecl.SYSTEM_GROUPS.getLabel(), group.getId().toString());
@@ -125,19 +122,15 @@ public class AssignedGroupsSetupAction extends RhnListAction {
             ListTagHelper.setSelectedAmount(LIST_NAME, set.size(), request);
         }
 
-
-
-
         //Bottom form
         DynaActionForm form = (DynaActionForm)formIn;
-        List selDefaults = new ArrayList();
-        List selGroups = new ArrayList();
+        List<Map<String, Object>> selDefaults = new ArrayList<>();
+        List<String> selGroups = new ArrayList<>();
         processList(dr, selGroups, selDefaults);
         form.set("selectedGroups", convert(selGroups));
         form.set("defaultGroups", getDefaultGroupStrings(user));
         request.setAttribute("availableGroups", selDefaults);
         request.setAttribute("targetuser", user);
-
 
         ListTagHelper.bindSetDeclTo(LIST_NAME, getSetDecl(), request);
         request.setAttribute(RequestContext.PAGE_LIST, dr);
@@ -155,19 +148,17 @@ public class AssignedGroupsSetupAction extends RhnListAction {
      * @param selGroups Selected Groups.
      * @param selDefaults Selected Defaults.
      */
-    private void processList(DataResult dr, List selGroups, List selDefaults) {
-        for (Object oIn : dr) {
-            SystemGroupOverview item = (SystemGroupOverview) oIn;
-
+    private void processList(DataResult<SystemGroupOverview> dr, List<String> selGroups,
+                             List<Map<String, Object>> selDefaults) {
+        for (SystemGroupOverview item : dr) {
             String display = item.getName();
-
 
             if (item.isSelected()) {
                 selGroups.add(item.getId().toString());
                 display = " (*) " + display;
             }
 
-            Map map = new HashMap();
+            Map<String, Object> map = new HashMap<>();
             map.put("value", item.getId());
             map.put("display", display);
             selDefaults.add(map);
@@ -179,8 +170,8 @@ public class AssignedGroupsSetupAction extends RhnListAction {
      * @param list List to convert.
      * @return String[] from List.
      */
-    private String[] convert(List list) {
-        return (String[])list.toArray(new String[list.size()]);
+    private String[] convert(List<String> list) {
+        return list.toArray(new String[list.size()]);
     }
 
     /**
@@ -191,12 +182,12 @@ public class AssignedGroupsSetupAction extends RhnListAction {
     private String[] getDefaultGroupStrings(User user) {
         // We need to be setting the defaultGroups stuff to a String[], but
         // we are getting a Set of Longs, so convert it and set it.
-        Set groups = user.getDefaultSystemGroupIds();
-        Set groupStrings = new HashSet();
-        for (Object o : groups) {
+        Set<Long> groups = user.getDefaultSystemGroupIds();
+        Set<String> groupStrings = new HashSet<>();
+        for (Long o : groups) {
             groupStrings.add(o.toString());
         }
-        return (String[]) groupStrings.toArray(new String[0]);
+        return groupStrings.toArray(new String[0]);
     }
 
 
@@ -225,14 +216,9 @@ public class AssignedGroupsSetupAction extends RhnListAction {
         if (user == null) {
             throw new BadParameterException("Invalid uid");
         }
-        //request.setAttribute(RhnHelper.TARGET_USER, user);
-
         String[] groupArray = (String[])form.get("defaultGroups");
 
-        Set groupSet = new HashSet();
-        for (String sIn : groupArray) {
-            groupSet.add(Long.valueOf(sIn));
-        }
+        Set<Long> groupSet = Arrays.stream(groupArray).map(s -> Long.valueOf(s)).collect(Collectors.toSet());
         user.setDefaultSystemGroupIds(groupSet);
 
         UserManager.storeUser(user);
@@ -265,7 +251,6 @@ public class AssignedGroupsSetupAction extends RhnListAction {
         if (user == null) {
             throw new BadParameterException("Invalid uid");
         }
-        //request.setAttribute(RhnHelper.TARGET_USER, user);
 
         RhnSet set =  getSetDecl().get(requestContext.getCurrentUser());
 

@@ -15,6 +15,7 @@
 package com.redhat.rhn.frontend.xmlrpc.kickstart.tree.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -27,6 +28,7 @@ import com.redhat.rhn.domain.kickstart.KickstartInstallType;
 import com.redhat.rhn.domain.kickstart.KickstartableTree;
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
 import com.redhat.rhn.domain.kickstart.test.KickstartableTreeTest;
+import com.redhat.rhn.frontend.dto.kickstart.KickstartableTreeDetail;
 import com.redhat.rhn.frontend.xmlrpc.kickstart.KickstartHandler;
 import com.redhat.rhn.frontend.xmlrpc.kickstart.tree.KickstartTreeHandler;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
@@ -52,7 +54,7 @@ public class KickstartTreeHandlerTest extends BaseHandlerTestCase {
             createTestKickstartableTree(baseChan);
         List ksTrees = handler.list(admin,
                 baseChan.getLabel());
-        assertTrue(ksTrees.size() > 0);
+        assertFalse(ksTrees.isEmpty());
 
         boolean found = false;
         for (Object ksTreeIn : ksTrees) {
@@ -75,11 +77,19 @@ public class KickstartTreeHandlerTest extends BaseHandlerTestCase {
             origCount = trees.size();
         }
         Channel baseChan = ChannelFactoryTest.createTestChannel(admin);
+        String kernelOptions = "self_update=0";
+        String postKernelOptions = "self_update=1";
         handler.create(admin, label,
                 KickstartableTreeTest.KICKSTART_TREE_PATH.getAbsolutePath(),
-                baseChan.getLabel(), KickstartInstallType.RHEL_6);
-        assertTrue(origCount + 1 == KickstartFactory.
+                baseChan.getLabel(), KickstartInstallType.RHEL_6, kernelOptions, postKernelOptions);
+        KickstartableTreeDetail details = handler.getDetails(admin, label);
+        assertEquals(origCount + 1, KickstartFactory.
                 lookupAccessibleTreesByOrg(admin.getOrg()).size());
+        assertEquals(details.getBasePath(), KickstartableTreeTest.KICKSTART_TREE_PATH.getAbsolutePath());
+        assertEquals(details.getChannel().getLabel(), baseChan.getLabel());
+        assertEquals(details.getInstallType().getLabel(), KickstartInstallType.RHEL_6);
+        assertEquals(details.getKernelOptions(), kernelOptions);
+        assertEquals(details.getKernelOptionsPost(), postKernelOptions);
     }
 
     @Test
@@ -90,13 +100,17 @@ public class KickstartTreeHandlerTest extends BaseHandlerTestCase {
         String newBase = "/tmp/kickstart/new-base-path";
         KickstartableTreeTest.createKickstartTreeItems(new File(newBase), admin);
         Channel newChan = ChannelFactoryTest.createTestChannel(admin);
+        String kernelOptions = "self_update=0";
+        String postKernelOptions = "self_update=1";
         handler.update(admin, testTree.getLabel(),
                 newBase, newChan.getLabel(),
-                testTree.getInstallType().getLabel());
+                testTree.getInstallType().getLabel(), kernelOptions, postKernelOptions);
 
         assertEquals(testTree.getBasePath(), newBase);
         assertEquals(testTree.getChannel(), newChan);
         assertNotNull(testTree.getInstallType());
+        assertEquals(testTree.getKernelOptions(), kernelOptions);
+        assertEquals(testTree.getKernelOptionsPost(), postKernelOptions);
     }
 
     @Test
@@ -148,10 +162,10 @@ public class KickstartTreeHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testListTreeTypes() throws Exception {
+    public void testListTreeTypes() {
         List types = handler.listInstallTypes(admin);
         assertNotNull(types);
-        assertTrue(types.size() > 0);
+        assertFalse(types.isEmpty());
         System.out.println("type: " + types.get(0).getClass().getName());
         assertTrue(types.get(0) instanceof KickstartInstallType);
     }

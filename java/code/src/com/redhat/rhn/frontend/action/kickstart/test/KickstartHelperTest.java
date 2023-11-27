@@ -55,6 +55,7 @@ public class KickstartHelperTest extends BaseTestCaseWithUser {
     /**
      * {@inheritDoc}
      */
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
@@ -97,7 +98,7 @@ public class KickstartHelperTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testIpRangeLabel() throws Exception {
+    public void testIpRangeLabel() {
 
 
         KickstartIpRange range = new KickstartIpRange();
@@ -169,7 +170,7 @@ public class KickstartHelperTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testProxyFetch() throws Exception {
+    public void testProxyFetch() {
 
         String proxyheader = "1006681409::1151513167.96:21600.0:VV/xFNEmCYOuHx" +
                 "EBAs7BEw==:fjs-0-08.rhndev.redhat.com,1006681408::1151513034." +

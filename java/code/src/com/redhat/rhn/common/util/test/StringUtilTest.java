@@ -69,7 +69,7 @@ public class StringUtilTest  {
     }
 
     @Test
-    public void testRandomPasswdShort() throws Exception {
+    public void testRandomPasswdShort() {
         try {
             StringUtil.makeRandomPassword(4);
         }

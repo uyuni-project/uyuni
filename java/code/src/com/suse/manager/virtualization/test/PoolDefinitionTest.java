@@ -54,7 +54,7 @@ public class PoolDefinitionTest  {
         assertEquals("libvirt", actual.getSource().getAuth().getUsername());
         assertEquals("usage", actual.getSource().getAuth().getSecretType());
         assertEquals("pool_test-ses", actual.getSource().getAuth().getSecretValue());
-        assertTrue(Arrays.asList("ses2.tf.local:1234", "ses3.tf.local").equals(actual.getSource().getHosts()));
+        assertEquals(Arrays.asList("ses2.tf.local:1234", "ses3.tf.local"), actual.getSource().getHosts());
     }
 
     @Test
@@ -131,7 +131,7 @@ public class PoolDefinitionTest  {
         assertNull(actual.getUuid());
         assertEquals("netfs", actual.getType());
         assertEquals("/var/lib/virt/images", actual.getTarget().getPath());
-        assertTrue(Arrays.asList("nfs.example.com").equals(actual.getSource().getHosts()));
+        assertEquals(Arrays.asList("nfs.example.com"), actual.getSource().getHosts());
         assertEquals("/var/lib/virt/images", actual.getSource().getDir());
         assertEquals("nfs", actual.getSource().getFormat());
     }

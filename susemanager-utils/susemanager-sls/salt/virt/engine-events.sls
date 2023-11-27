@@ -4,7 +4,12 @@
   file.managed:
     - contents: |
         engines:
-          - libvirt_events
+          - libvirt_events:
+              filters:
+                - domain/lifecycle
+                - pool/lifecycle
+                - pool/refresh
+                - network/lifecycle
 
 /var/cache/virt_state.cache:
   file.absent

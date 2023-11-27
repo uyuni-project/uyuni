@@ -42,7 +42,7 @@ import java.util.List;
 public class TaskSchedulerTest extends RhnBaseTestCase {
 
     @Test
-    public void testNull() throws Exception {
+    public void testNull() {
         // A null test until the one below is fixed.
     }
 

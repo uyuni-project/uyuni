@@ -17,6 +17,7 @@ package com.redhat.rhn.frontend.action.systems.audit;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.systems.sdc.SdcHelper;
+import com.redhat.rhn.frontend.dto.XccdfIdentDto;
 import com.redhat.rhn.frontend.dto.XccdfRuleResultDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
@@ -40,14 +41,15 @@ import javax.servlet.http.HttpServletResponse;
  * RuleDetailsAction
  */
 
-public class RuleDetailsAction extends RhnAction implements Listable {
+public class RuleDetailsAction extends RhnAction implements Listable<XccdfIdentDto> {
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping, ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
         RequestContext context = new RequestContext(request);
         User user = context.getCurrentUser();
         Long sid = context.getRequiredParam("sid");
@@ -71,7 +73,8 @@ public class RuleDetailsAction extends RhnAction implements Listable {
     /**
      * {@inheritDoc}
      */
-    public List getResult(RequestContext context) {
+    @Override
+    public List<XccdfIdentDto> getResult(RequestContext context) {
         Long ruleResultId = context.getRequiredParam("rrid");
         XccdfRuleResultDto ruleResult = ScapManager.ruleResultById(ruleResultId);
         if (ruleResult == null) {

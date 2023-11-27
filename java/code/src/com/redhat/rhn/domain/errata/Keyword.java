@@ -25,6 +25,17 @@ import java.io.Serializable;
  * Keyword
  */
 public class Keyword extends BaseDomainHelper implements Serializable {
+    /**
+     * A keyword signaling that a system reboot is advisable following the application of the errata.
+     * Typical example is if the errata requires kernel update.
+     * */
+    public static final String REBOOT_SUGGESTED = "reboot_suggested";
+
+    /**
+     * A keyword signaling that a reboot of the package manager is advisable following the application of
+     * the errata. This is commonly used to address update stack issues before proceeding with other updates.
+     * */
+    public static final String RESTART_SUGGESTED = "restart_suggested";
 
     private String keyword;
     private Errata errata;
@@ -60,6 +71,7 @@ public class Keyword extends BaseDomainHelper implements Serializable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString() {
         return keyword;
     }
@@ -67,6 +79,7 @@ public class Keyword extends BaseDomainHelper implements Serializable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(final Object other) {
         if (!(other instanceof Keyword)) {
             return false;
@@ -80,6 +93,7 @@ public class Keyword extends BaseDomainHelper implements Serializable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder().append(keyword)
                                     .append(errata)

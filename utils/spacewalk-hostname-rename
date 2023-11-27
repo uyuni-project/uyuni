@@ -435,7 +435,7 @@ function refresh_pillar {
         then
             SIDS="$SIDS,$ID"
         else
-            SIDS="$SID"
+            SIDS="$ID"
         fi
     done
     SKIPPED=`spacecmd -q api system.refreshPillar -- -A "[\\\\\"general\\\\\",[$SIDS]]"`
@@ -637,6 +637,10 @@ if [ -e $MGR_SYNC_CONF ]; then
     sed -i "s/^mgrsync.session.token\s\{0,1\}=\s\{0,1\}.*/mgrsync.session.token = \"\"/g" $MGR_SYNC_CONF
 fi
 print_status 0  # just simulate end
+
+echo -n "Changing postfix settings ... " | tee -a $LOG
+postconf -e myhostname=$HOSTNAME
+systemctl restart postfix
 
 echo -n "Starting spacewalk services ... " | tee -a $LOG
 if [ "$DB_SERVICE" != "" ]

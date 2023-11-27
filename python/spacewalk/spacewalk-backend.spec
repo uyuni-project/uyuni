@@ -20,7 +20,6 @@
 %{!?_unitdir: %global _unitdir /lib/systemd/system}
 
 %{!?python3_sitelib: %global python3_sitelib %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
-%{!?pylint_check: %global pylint_check 0}
 %global rhnroot %{_prefix}/share/rhn
 %global rhnconfigdefaults %{rhnroot}/config-defaults
 %global rhnconf %{_sysconfdir}/rhn
@@ -51,10 +50,10 @@ Name:           spacewalk-backend
 Summary:        Common programs needed to be installed on the Spacewalk servers/proxies
 License:        GPL-2.0-only
 Group:          System/Management
-Version:        4.4.4
+Version:        4.4.12
 Release:        1
 URL:            https://github.com/uyuni-project/uyuni
-Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}-1.tar.gz
+Source0:        %{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 %if !0%{?suse_version} || 0%{?suse_version} >= 1120
 BuildArch:      noarch
@@ -72,14 +71,12 @@ Requires:       %{apache_pkg}
 Requires:       python3-pycurl
 # for Debian support
 Requires:       python3-debian >= 0.1.44
-%if 0%{?pylint_check}
-BuildRequires:  spacewalk-python3-pylint
-%endif
 BuildRequires:  %{m2crypto}
 BuildRequires:  /usr/bin/docbook2man
 BuildRequires:  /usr/bin/msgfmt
 BuildRequires:  docbook-utils
 BuildRequires:  fdupes
+BuildRequires:  make
 BuildRequires:  python3
 BuildRequires:  python3-debian
 BuildRequires:  python3-rhn-client-tools
@@ -252,7 +249,7 @@ Requires:       mod_ssl
 %endif
 Requires:       %{m2crypto}
 Requires:       %{name}-xml-export-libs
-Requires:       cobbler >= 3.3.3
+Requires:       cobbler
 Requires:       python3-requests
 Requires:       python3-rhnlib  >= 2.5.57
 
@@ -267,16 +264,6 @@ Requires:       %{name}-server = %{version}-%{release}
 %description xml-export-libs
 Libraries required by various exporting tools
 
-%package cdn
-Summary:        CDN tools
-Group:          System/Management
-Requires:       %{m2crypto}
-Requires:       %{name}-server = %{version}-%{release}
-Requires:       subscription-manager
-
-%description cdn
-Tools for syncing content from Red Hat CDN
-
 %prep
 %setup -q
 
@@ -288,6 +275,10 @@ for i in `find . -type f`;
 do
 	sed -i '1s=^#!/usr/bin/\(python\|env python\)[0-9.]*=#!/usr/bin/python3=' $i;
 done
+
+%if !0%{?is_opensuse} && 0%{?sle_version}
+sed -i 's/PRODUCT_NAME = "Uyuni"/PRODUCT_NAME = "SUSE Manager"/' common/rhnConfig.py
+%endif
 
 %install
 install -d $RPM_BUILD_ROOT%{rhnroot}
@@ -330,14 +321,15 @@ sed -i 's/^product_name.*/product_name = Uyuni/' $RPM_BUILD_ROOT%{rhnconfigdefau
 
 sed -i 's|#DOCUMENTROOT#|%{documentroot}|' $RPM_BUILD_ROOT%{rhnconfigdefaults}/rhn.conf
 sed -i 's|#HTTPD_CONFIG_DIR#|%{apacheconfd}|' $RPM_BUILD_ROOT%{rhnconfigdefaults}/rhn.conf
+sed -i 's|#HTTPD_GROUP#|%{apache_group}|' $RPM_BUILD_ROOT%{rhnconfigdefaults}/rhn.conf
+sed -i 's|#HTTPD_USER#|%{apache_user}|' $RPM_BUILD_ROOT%{rhnconfigdefaults}/rhn.conf
 sed -i 's|#REPORT_DB_SSLROOTCERT#|%{sslrootcert}RHN-ORG-TRUSTED-SSL-CERT|' $RPM_BUILD_ROOT%{rhnconfigdefaults}/rhn.conf
 
-%if 0%{?fedora} || 0%{?rhel} > 6
 sed -i 's/#LOGROTATE-3.8#//' $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/spacewalk-backend-*
-%endif
-%if 0%{?suse_version}
-sed -i 's/#LOGROTATE-3.8#.*/    su root www/' $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/spacewalk-backend-*
+sed -i 's/@HTTPD_GROUP@/%{apache_group}/' $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/spacewalk-backend-*
+sed -i 's/@HTTPD_USER@/%{apache_user}/' $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/spacewalk-backend-*
 
+%if 0%{?suse_version}
 %py3_compile -O %{buildroot}/%{python3rhnroot}
 %fdupes %{buildroot}/%{python3rhnroot}
 %endif
@@ -349,19 +341,6 @@ install -Dd -m 0750 % $RPM_BUILD_ROOT%{_prefix}/lib/zypp/plugins/urlresolver
 %{__install} satellite_tools/spacewalk-uln-resolver $RPM_BUILD_ROOT%{_prefix}/lib/zypp/plugins/urlresolver/spacewalk-uln-resolver
 %{__install} satellite_tools/spacewalk-extra-http-headers $RPM_BUILD_ROOT%{_prefix}/lib/zypp/plugins/urlresolver/spacewalk-extra-http-headers
 
-%check
-
-%if 0%{?pylint_check}
-# check coding style
-export PYTHONPATH=$RPM_BUILD_ROOT%{python3rhnroot}:/usr/lib/rhn:/usr/share/rhn:$RPM_BUILD_ROOT%{python3_sitelib}/uyuni/common-libs
-spacewalk-python3 $RPM_BUILD_ROOT%{python3rhnroot}/common \
-                     $RPM_BUILD_ROOT%{python3rhnroot}/satellite_exporter \
-                     $RPM_BUILD_ROOT%{python3rhnroot}/satellite_tools \
-                     $RPM_BUILD_ROOT%{python3rhnroot}/cdn_tools \
-                     $RPM_BUILD_ROOT%{python3rhnroot}/upload_server \
-                     $RPM_BUILD_ROOT%{python3rhnroot}/wsgi
-
-%endif
 
 %post server
 %if 0%{?suse_version}
@@ -670,9 +649,8 @@ fi
 %doc README.ULN
 %attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_satellite.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-tools
-%config(noreplace) %{rhnconf}/signing.conf
+%attr(600,root,root) %config(noreplace) %{rhnconf}/signing.conf
 %attr(755,root,root) %{_bindir}/rhn-charsets
-%attr(755,root,root) %{_bindir}/rhn-satellite-activate
 %attr(755,root,root) %{_bindir}/rhn-schema-version
 %attr(755,root,root) %{_bindir}/rhn-ssl-dbstore
 %attr(755,root,root) %{_bindir}/satellite-sync
@@ -706,7 +684,6 @@ fi
 %{python3rhnroot}/satellite_tools/satComputePkgHeaders.py*
 %{python3rhnroot}/satellite_tools/syncCache.py*
 %{python3rhnroot}/satellite_tools/sync_handlers.py*
-%{python3rhnroot}/satellite_tools/rhn_satellite_activate.py*
 %{python3rhnroot}/satellite_tools/rhn_ssl_dbstore.py*
 %{python3rhnroot}/satellite_tools/xmlWireSource.py*
 %{python3rhnroot}/satellite_tools/updatePackages.py*
@@ -745,7 +722,6 @@ fi
 %config %attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_iss.conf
 %{_mandir}/man8/rhn-satellite-exporter.8*
 %{_mandir}/man8/rhn-charsets.8*
-%{_mandir}/man8/rhn-satellite-activate.8*
 %{_mandir}/man8/rhn-schema-version.8*
 %{_mandir}/man8/rhn-ssl-dbstore.8*
 %{_mandir}/man8/rhn-db-stats.8*
@@ -790,17 +766,5 @@ fi
 %{python3rhnroot}/satellite_tools/__pycache__/xmlDiskSource.*
 %{python3rhnroot}/satellite_tools/__pycache__/xmlSource.*
 %{python3rhnroot}/satellite_tools/exporter/__pycache__/*
-
-%files cdn
-%defattr(-,root,root)
-%attr(755,root,root) %{_bindir}/cdn-sync
-%dir %{python3rhnroot}/cdn_tools
-%{python3rhnroot}/cdn_tools/*.py*
-%attr(755,root,%{apache_group}) %dir %{_var}/log/rhn/cdnsync
-%config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-cdn
-%{_mandir}/man8/cdn-sync.8*
-%dir %{python3rhnroot}/cdn_tools
-%dir %{python3rhnroot}/cdn_tools/__pycache__/
-%{python3rhnroot}/cdn_tools/__pycache__/*
 
 %changelog

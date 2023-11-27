@@ -43,10 +43,10 @@ public class ScheduleImageDeploymentAction extends RhnAction {
     private static final String SUCCESS_KEY = "images.message.success.scheduled";
 
     /** {@inheritDoc} */
-    @SuppressWarnings("unchecked")
+    @Override
     public ActionForward execute(ActionMapping actionMapping,
             ActionForm actionForm, HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
+            HttpServletResponse response) {
 
         // Get the current user
         RequestContext ctx = new RequestContext(request);

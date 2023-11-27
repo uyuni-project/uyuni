@@ -54,10 +54,11 @@ public class RepositoriesAction extends RhnAction implements Listable<ContentSou
      *
      * {@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-            ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
 
         RequestContext context = new RequestContext(request);
         User user =  context.getCurrentUser();
@@ -134,6 +135,7 @@ public class RepositoriesAction extends RhnAction implements Listable<ContentSou
          *
          * {@inheritDoc}
          */
+        @Override
         public List<ContentSource> getResult(RequestContext context) {
             User user =  context.getCurrentUser();
             return ChannelFactory.lookupContentSources(user.getOrg());

@@ -42,7 +42,7 @@ public class ScrubbingDynaActionForm extends DynaActionForm {
      * Tell the form to "scrub thyself"
      */
     public void scrub() {
-        List keys = new LinkedList(dynaValues.keySet());
+        List keys = new LinkedList<>(dynaValues.keySet());
 
         Set<String> noScrub = new HashSet<>();
         Set<String> noParenScrub = new HashSet<>();

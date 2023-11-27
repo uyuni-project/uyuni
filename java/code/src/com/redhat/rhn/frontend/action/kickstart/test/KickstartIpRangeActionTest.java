@@ -43,6 +43,7 @@ public class KickstartIpRangeActionTest extends RhnPostMockStrutsTestCase {
     protected KickstartIpRange ip1;
     protected KickstartIpRange ip2;
 
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
@@ -54,7 +55,7 @@ public class KickstartIpRangeActionTest extends RhnPostMockStrutsTestCase {
     }
 
     @Test
-    public void testRange() throws Exception {
+    public void testRange() {
         setRequestPathInfo("/kickstart/KickstartIpRangeEdit");
 
         ip1 = new KickstartIpRange();
@@ -83,7 +84,7 @@ public class KickstartIpRangeActionTest extends RhnPostMockStrutsTestCase {
     }
 
     @Test
-    public void testNoRange() throws Exception {
+    public void testNoRange() {
         setRequestPathInfo("/kickstart/KickstartIpRangeEdit");
         actionPerform();
         assertNotNull(request.getAttribute(KickstartIpRangeAction.RANGES));
@@ -91,7 +92,7 @@ public class KickstartIpRangeActionTest extends RhnPostMockStrutsTestCase {
     }
 
     @Test
-    public void testSubmit() throws Exception {
+    public void testSubmit() {
         setRequestPathInfo("/kickstart/KickstartIpRangeEdit");
         addRequestParameter(KickstartDetailsEditAction.SUBMITTED, Boolean.TRUE.toString());
         addRequestParameter(KickstartIpRangeAction.OCTET1A, "192");
@@ -109,7 +110,7 @@ public class KickstartIpRangeActionTest extends RhnPostMockStrutsTestCase {
     }
 
     @Test
-    public void testValidateFailure() throws Exception {
+    public void testValidateFailure() {
         setRequestPathInfo("/kickstart/KickstartIpRangeEdit");
         addRequestParameter(KickstartDetailsEditAction.SUBMITTED, Boolean.TRUE.toString());
         addRequestParameter(KickstartIpRangeAction.OCTET1A, "192");
@@ -127,7 +128,7 @@ public class KickstartIpRangeActionTest extends RhnPostMockStrutsTestCase {
     }
 
     @Test
-    public void testConflictFailure() throws Exception {
+    public void testConflictFailure() {
 
         long [] range1 = {192, 168, 2, 1};
         long [] range2 = {192, 168, 2, 9};
@@ -164,7 +165,7 @@ public class KickstartIpRangeActionTest extends RhnPostMockStrutsTestCase {
     }
 
     @Test
-    public void testDeleteSuccess() throws Exception {
+    public void testDeleteSuccess() {
         long [] range1 = {192, 168, 3, 1};
         long [] range2 = {192, 168, 3, 9};
         IpAddress ipa1 = new IpAddress(range1);
@@ -193,7 +194,7 @@ public class KickstartIpRangeActionTest extends RhnPostMockStrutsTestCase {
     }
 
     @Test
-    public void testDeleteFailure() throws Exception {
+    public void testDeleteFailure() {
         long [] range1 = {192, 168, 4, 1};
         long [] range2 = {192, 168, 4, 9};
         IpAddress ipa1 = new IpAddress(range1);

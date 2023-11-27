@@ -18,15 +18,18 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.isApiRequest;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.isJson;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.setup;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.setupHibernateSessionFilter;
 import static spark.Spark.exception;
 import static spark.Spark.get;
 import static spark.Spark.notFound;
 
 import com.redhat.rhn.GlobalInstanceHolder;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 
+import com.suse.cloud.CloudPaygManager;
 import com.suse.manager.api.HttpApiRegistry;
 import com.suse.manager.kubernetes.KubernetesManager;
 import com.suse.manager.utils.SaltKeyUtils;
@@ -45,11 +48,13 @@ import com.suse.manager.webui.controllers.ImageUploadController;
 import com.suse.manager.webui.controllers.MinionController;
 import com.suse.manager.webui.controllers.MinionsAPI;
 import com.suse.manager.webui.controllers.NotificationMessageController;
+import com.suse.manager.webui.controllers.PackageController;
 import com.suse.manager.webui.controllers.ProductsController;
 import com.suse.manager.webui.controllers.ProxyController;
 import com.suse.manager.webui.controllers.RecurringActionController;
 import com.suse.manager.webui.controllers.SSOController;
 import com.suse.manager.webui.controllers.SaltSSHController;
+import com.suse.manager.webui.controllers.SaltbootController;
 import com.suse.manager.webui.controllers.SetController;
 import com.suse.manager.webui.controllers.SsmController;
 import com.suse.manager.webui.controllers.StatesAPI;
@@ -97,6 +102,7 @@ public class Router implements SparkApplication {
     @Override
     public void init() {
         JadeTemplateEngine jade = setup();
+        setupHibernateSessionFilter();
 
         initNotFoundRoutes(jade);
 
@@ -110,18 +116,20 @@ public class Router implements SparkApplication {
         SaltKeyUtils saltKeyUtils = GlobalInstanceHolder.SALT_KEY_UTILS;
         ServerGroupManager serverGroupManager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
         SystemManager systemManager = GlobalInstanceHolder.SYSTEM_MANAGER;
+        CloudPaygManager paygManager = GlobalInstanceHolder.PAYG_MANAGER;
 
         SystemsController systemsController = new SystemsController(saltApi);
         ProxyController proxyController = new ProxyController(systemManager);
         SaltSSHController saltSSHController = new SaltSSHController(saltApi);
         NotificationMessageController notificationMessageController =
-                new NotificationMessageController(systemQuery, saltApi);
+                new NotificationMessageController(systemQuery, saltApi, paygManager);
         MinionsAPI minionsAPI = new MinionsAPI(saltApi, sshMinionBootstrapper, regularMinionBootstrapper,
                 saltKeyUtils);
         StatesAPI statesAPI = new StatesAPI(saltApi, taskomaticApi, serverGroupManager);
         FormulaController formulaController = new FormulaController(saltApi);
         HttpApiRegistry httpApiRegistry = new HttpApiRegistry();
         FrontendLogController frontendLogController = new FrontendLogController();
+        DownloadController downloadController = new DownloadController(paygManager);
 
         // Login
         LoginController.initRoutes(jade);
@@ -157,6 +165,9 @@ public class Router implements SparkApplication {
         // Systems API
         systemsController.initRoutes(jade);
 
+        // Packages
+        PackageController.initRoutes(jade);
+
         // Proxy
         proxyController.initRoutes(proxyController, jade);
 
@@ -181,7 +192,7 @@ public class Router implements SparkApplication {
         TaskoTop.initRoutes(jade);
 
         // Download endpoint
-        DownloadController.initRoutes();
+        downloadController.initRoutes();
 
         // Formula catalog
         FormulaCatalogController.initRoutes(jade);
@@ -223,6 +234,12 @@ public class Router implements SparkApplication {
 
         // HTTP API
         httpApiRegistry.initRoutes();
+
+        // Saltboot
+        SaltbootController.initRoutes();
+
+        // if the calls above opened Hibernate session, close it now
+        HibernateFactory.closeSession();
     }
 
     private void initNotFoundRoutes(JadeTemplateEngine jade) {

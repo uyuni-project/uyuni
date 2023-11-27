@@ -33,6 +33,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "susePaygSshData")
@@ -304,6 +305,15 @@ public class PaygSshData extends BaseDomainHelper {
 
     public void setRmtHosts(CloudRmtHost rmtHostsIn) {
         this.rmtHosts = rmtHostsIn;
+    }
+
+    /**
+     * Identifies a connection for SUSE Manager PAYG
+     * @return true if this SSH data refers to a SUSE Manager PAYG connection.
+     */
+    @Transient
+    public boolean isSUSEManagerPayg() {
+        return "localhost".equals(host);
     }
 
     @Override

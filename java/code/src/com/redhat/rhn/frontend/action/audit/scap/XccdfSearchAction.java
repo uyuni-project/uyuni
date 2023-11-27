@@ -18,6 +18,7 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.frontend.action.BaseSearchAction;
 import com.redhat.rhn.frontend.action.common.DateRangePicker;
+import com.redhat.rhn.frontend.dto.BaseDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.taglibs.list.TagHelper;
@@ -52,8 +53,9 @@ public class XccdfSearchAction extends BaseSearchAction {
     private static final String TESTRESULT_ID = "tr";
     private static final String RULERESULT_ID = "rr";
 
+    @Override
     protected ActionForward doExecute(HttpServletRequest request, ActionMapping mapping,
-                    DynaActionForm form)
+                                      DynaActionForm form)
             throws MalformedURLException, XmlRpcException, XmlRpcFault {
         RequestContext context = new RequestContext(request);
         String searchString = form.getString(SEARCH_STR);
@@ -63,19 +65,19 @@ public class XccdfSearchAction extends BaseSearchAction {
 
         if (!StringUtils.isBlank(searchString)) {
             picker.processDatePickers(getOptionScanDateSearch(request), false);
-            DataResult results = XccdfSearchHelper.performSearch(searchString,
+            DataResult<BaseDto> results = XccdfSearchHelper.performSearch(searchString,
                 whereToSearch, getPickerDate(request, "start"),
                 getPickerDate(request, "end"), getRuleResultLabel(form),
                 isTestestResultRequested(form), context);
             request.setAttribute(RequestContext.PAGE_LIST,
-                    results != null ? results : Collections.EMPTY_LIST);
+                    results != null ? results : Collections.emptyList());
             if (isTestestResultRequested(form) && results != null) {
                 TagHelper.bindElaboratorTo("searchResultsTr", results.getElaborator(),
                         request);
             }
         }
         else {
-            request.setAttribute(RequestContext.PAGE_LIST, Collections.EMPTY_LIST);
+            request.setAttribute(RequestContext.PAGE_LIST, Collections.emptyList());
             picker.processDatePickers(false, false);
         }
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
@@ -150,7 +152,7 @@ public class XccdfSearchAction extends BaseSearchAction {
                 "system_list".equals(whereToSearch) ? whereToSearch : "all");
         setupRuleResultLabelOptions(request);
         setupShowAsOption(form);
-        Map m = form.getMap();
+        Map<String, Object> m = form.getMap();
         Set<String> keys = m.keySet();
         for (String key : keys) {
             Object vObj = m.get(key);

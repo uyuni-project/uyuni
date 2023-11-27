@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.action.systems.sdc;
 
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
 
@@ -22,10 +23,11 @@ import java.util.List;
 /**
  * SnapshotConfigChannelsAction
  */
-public class SnapshotConfigChannelsAction extends SnapshotBaseAction {
+public class SnapshotConfigChannelsAction extends SnapshotBaseAction<Row> {
 
     /** {@inheritDoc} */
-    public List getResult(RequestContext context) {
+    @Override
+    public List<Row> getResult(RequestContext context) {
         Long sid = context.getRequiredParam(RequestContext.SID);
         Long ssid = context.getRequiredParam(SNAPSHOT_ID);
         return ConfigurationManager.systemSnapshotConfigChannels(sid, ssid, null);

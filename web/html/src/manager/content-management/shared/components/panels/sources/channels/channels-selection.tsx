@@ -151,7 +151,7 @@ const ChannelsSelection = (props: PropsType) => {
   if (isLoading || props.isSourcesApiLoading) {
     return (
       <div className="form-group">
-        <Loading text={props.isSourcesApiLoading ? "Adding sources..." : "Loading.."} />
+        <Loading text={props.isSourcesApiLoading ? "Adding sources..." : "Loading..."} />
       </div>
     );
   }

@@ -30,6 +30,7 @@ import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 import com.redhat.rhn.testing.ServerGroupTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
+import com.suse.cloud.CloudPaygManager;
 import com.suse.manager.webui.controllers.bootstrap.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.bootstrap.SSHMinionBootstrapper;
 import com.suse.manager.webui.services.iface.SaltApi;
@@ -41,7 +42,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -51,8 +51,10 @@ public class SnapshotHandlerTest extends BaseHandlerTestCase {
 
     private SaltApi saltApi = new TestSaltApi();
     private SystemQuery systemQuery = new TestSystemQuery();
-    private RegularMinionBootstrapper regularMinionBootstrapper = new RegularMinionBootstrapper(systemQuery, saltApi);
-    private SSHMinionBootstrapper sshMinionBootstrapper = new SSHMinionBootstrapper(systemQuery, saltApi);
+    private CloudPaygManager paygManager = new CloudPaygManager();
+    private RegularMinionBootstrapper regularMinionBootstrapper =
+            new RegularMinionBootstrapper(systemQuery, saltApi, paygManager);
+    private SSHMinionBootstrapper sshMinionBootstrapper = new SSHMinionBootstrapper(systemQuery, saltApi, paygManager);
     private XmlRpcSystemHelper xmlRpcSystemHelper = new XmlRpcSystemHelper(
             regularMinionBootstrapper,
             sshMinionBootstrapper
@@ -68,7 +70,7 @@ public class SnapshotHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testListSnapshots() throws Exception {
+    public void testListSnapshots() {
         Server server = ServerFactoryTest.createTestServer(admin, true);
         ServerSnapshot snap = generateSnapshot(server);
         ServerGroup grp = ServerGroupTestUtils.createEntitled(server.getOrg(),
@@ -76,16 +78,14 @@ public class SnapshotHandlerTest extends BaseHandlerTestCase {
         snap.addGroup(grp);
 
         TestUtils.saveAndFlush(snap);
-        Map dateInfo = new HashMap();
-        List<ServerSnapshot> list = handler.listSnapshots(admin,
-                server.getId().intValue(), dateInfo);
+        List<ServerSnapshot> list = handler.listSnapshots(admin, server.getId().intValue(), new HashMap<>());
         assertContains(list, snap);
         assertContains(snap.getGroups(), grp);
 
     }
 
     @Test
-    public  void testListSnapshotPackages() throws Exception {
+    public  void testListSnapshotPackages() {
         Server server = ServerFactoryTest.createTestServer(admin, true);
         ServerSnapshot snap = generateSnapshot(server);
         Package pack = PackageTest.createTestPackage(admin.getOrg());
@@ -102,21 +102,19 @@ public class SnapshotHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testDeleteSnapshot() throws Exception {
+    public void testDeleteSnapshot() {
         Server server = ServerFactoryTest.createTestServer(admin, true);
         ServerSnapshot snap = generateSnapshot(server);
         TestUtils.saveAndFlush(snap);
 
         handler.deleteSnapshot(admin, snap.getId().intValue());
-        Map dateInfo = new HashMap();
-        List<ServerSnapshot> list = handler.listSnapshots(admin,
-                server.getId().intValue(), dateInfo);
-        assertTrue(list.size() == 0);
+        List<ServerSnapshot> list = handler.listSnapshots(admin, server.getId().intValue(), new HashMap<>());
+        assertTrue(list.isEmpty());
 
     }
 
     @Test
-    public void testDeleteSnapshots() throws Exception {
+    public void testDeleteSnapshots() {
         Server server = ServerFactoryTest.createTestServer(admin, true);
         ServerSnapshot snap = generateSnapshot(server);
         generateSnapshot(server);
@@ -125,10 +123,8 @@ public class SnapshotHandlerTest extends BaseHandlerTestCase {
         generateSnapshot(server);
         TestUtils.saveAndFlush(snap);
 
-        Map dateInfo = new HashMap();
-        handler.deleteSnapshots(admin, server.getId().intValue(), dateInfo);
-        List<ServerSnapshot> list = handler.listSnapshots(admin,
-                server.getId().intValue(), dateInfo);
-        assertTrue(list.size() == 0);
+        handler.deleteSnapshots(admin, server.getId().intValue(), new HashMap<>());
+        List<ServerSnapshot> list = handler.listSnapshots(admin, server.getId().intValue(), new HashMap<>());
+        assertTrue(list.isEmpty());
     }
 }

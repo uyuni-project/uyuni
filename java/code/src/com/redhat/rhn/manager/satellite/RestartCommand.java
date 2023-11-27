@@ -38,10 +38,11 @@ public class RestartCommand extends BaseConfigureCommand
     /**
      * {@inheritDoc}
      */
+    @Override
     public ValidatorError[] storeConfiguration() {
         Executor e = getExecutor();
         ValidatorError[] errors = new ValidatorError[1];
-        List args = new LinkedList();
+        List args = new LinkedList<>();
         args.add("/usr/bin/sudo");
         args.add("/usr/sbin/rhn-sat-restart-silent");
 

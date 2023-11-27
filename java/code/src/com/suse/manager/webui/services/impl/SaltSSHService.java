@@ -65,7 +65,6 @@ import com.suse.salt.netapi.utils.Xor;
 import com.suse.utils.Opt;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
@@ -126,7 +125,7 @@ public class SaltSSHService {
             "distupgrade", "hardware", "images", "packages/init.sls",
             "packages/patchdownload.sls", "packages/patchinstall.sls", "packages/pkgdownload.sls",
             "packages/pkginstall.sls", "packages/pkgupdate.sls", "packages/pkgremove.sls", "packages/profileupdate.sls",
-            "packages/redhatproductinfo.sls", "remotecommands", "scap", "services",
+            "packages/redhatproductinfo.sls", "remotecommands", "scap", "services", "gpg",
             "custom", "custom_groups", "custom_org", "util", "bootstrap", "formulas.sls");
 
     public static final String ACTION_STATES = ACTION_STATES_LIST
@@ -146,7 +145,6 @@ public class SaltSSHService {
             "services.docker");
     private final String SALT_USER = "admin";
     private final String SALT_PASSWORD = com.redhat.rhn.common.conf.Config.get().getString("server.secret_key");
-    private final AuthModule AUTH_MODULE = AuthModule.FILE;
 
     private final AuthMethod PW_AUTH = new AuthMethod(new PasswordAuth(SALT_USER, SALT_PASSWORD, AuthModule.FILE));
 
@@ -323,10 +321,10 @@ public class SaltSSHService {
             LocalCall<R> call, MinionList target, CompletableFuture<GenericError> cancel,
             Optional<String> extraFilerefs) {
         Optional<SaltRoster> roster = prepareSaltRoster(target, getSshPushTimeout());
-        Map<String, CompletableFuture<Result<R>>> futures = new HashedMap();
-        target.getTarget().forEach(minionId ->
-                futures.put(minionId, new CompletableFuture<>())
-        );
+        Map<String, CompletableFuture<Result<R>>> futures = target.getTarget().stream()
+                .collect(Collectors.toMap(
+                        minionId -> minionId,
+                        minionId -> new CompletableFuture<>()));
         CompletableFuture<Map<String, Result<R>>> asyncCallFuture =
                 CompletableFuture.supplyAsync(() -> {
                     try {
@@ -365,7 +363,7 @@ public class SaltSSHService {
         });
         return futures.entrySet().stream().collect(Collectors.toMap(
                 Map.Entry::getKey,
-                e -> (CompletionStage<Result<R>>) e.getValue()
+                e -> e.getValue()
         ));
     }
 

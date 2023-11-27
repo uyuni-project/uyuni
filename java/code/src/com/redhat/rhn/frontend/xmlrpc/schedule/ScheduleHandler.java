@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.ActionedSystem;
 import com.redhat.rhn.frontend.dto.ScheduledAction;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.TaskomaticApiException;
@@ -146,8 +147,7 @@ public class ScheduleHandler extends BaseHandler {
 
         // the second argument is "PageControl". This is not needed for the api usage;
         // therefore, null will be used.
-        DataResult dr = ActionManager.allActions(loggedInUser, null);
-        return dr.toArray();
+        return ActionManager.allActions(loggedInUser, null).toArray();
     }
 
     /**
@@ -166,7 +166,7 @@ public class ScheduleHandler extends BaseHandler {
     public Object[] listCompletedActions(User loggedInUser) {
         // the second argument is "PageControl". This is not needed for the api usage;
         // therefore, null will be used.
-        DataResult dr = ActionManager.completedActions(loggedInUser, null);
+        DataResult<ScheduledAction> dr = ActionManager.completedActions(loggedInUser, null);
         return dr.toArray();
     }
 
@@ -206,7 +206,7 @@ public class ScheduleHandler extends BaseHandler {
     public Object[] listFailedActions(User loggedInUser) {
         // the second argument is "PageControl". This is not needed for the api usage;
         // therefore, null will be used.
-        DataResult dr = ActionManager.failedActions(loggedInUser, null);
+        DataResult<ScheduledAction> dr = ActionManager.failedActions(loggedInUser, null);
         return dr.toArray();
     }
 
@@ -226,8 +226,7 @@ public class ScheduleHandler extends BaseHandler {
     public Object[] listArchivedActions(User loggedInUser) {
         // the second argument is "PageControl". This is not needed for the api usage;
         // therefore, null will be used.
-        DataResult dr = ActionManager.archivedActions(loggedInUser, null);
-        return dr.toArray();
+        return ActionManager.archivedActions(loggedInUser, null).toArray();
     }
 
     /**
@@ -269,7 +268,7 @@ public class ScheduleHandler extends BaseHandler {
         Action action = ActionManager.lookupAction(loggedInUser, aid);
         // the third argument is "PageControl". This is not needed for the api usage;
         // therefore, null will be used.
-        DataResult dr = ActionManager.completedSystems(loggedInUser, action, null);
+        DataResult<ActionedSystem> dr = ActionManager.completedSystems(loggedInUser, action, null);
         dr.elaborate();
 
         return dr.toArray();
@@ -314,7 +313,7 @@ public class ScheduleHandler extends BaseHandler {
         Action action = ActionManager.lookupAction(loggedInUser, aid);
         // the third argument is "PageControl". This is not needed for the api usage;
         // therefore, null will be used.
-        DataResult dr = ActionManager.inProgressSystems(loggedInUser, action, null);
+        DataResult<ActionedSystem> dr = ActionManager.inProgressSystems(loggedInUser, action, null);
         dr.elaborate();
 
         return dr.toArray();
@@ -340,7 +339,7 @@ public class ScheduleHandler extends BaseHandler {
         Action action = ActionManager.lookupAction(loggedInUser, aid);
         // the third argument is "PageControl". This is not needed for the api usage;
         // therefore, null will be used.
-        DataResult dr = ActionManager.failedSystems(loggedInUser, action, null);
+        DataResult<ActionedSystem> dr = ActionManager.failedSystems(loggedInUser, action, null);
         dr.elaborate();
         return dr.toArray();
     }

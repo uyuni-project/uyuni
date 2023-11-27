@@ -15,6 +15,7 @@
 package com.redhat.rhn.taskomatic.task.test;
 
 
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.errata.Errata;
@@ -24,10 +25,8 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 public class ErrataMailerTest extends BaseTestCaseWithUser {
 
@@ -39,10 +38,11 @@ public class ErrataMailerTest extends BaseTestCaseWithUser {
         // We still test the majority of the stuff in ErrataMailer(), just not
         // the queries that get all the users and errata.
         ErrataMailer em = new ErrataMailer() {
-            protected List getOrgRelevantServers(Long errataId, Long orgId,
-                    Long channelId) {
-                List retval = new LinkedList();
-                Map row = new HashMap();
+            @Override
+            protected List<Row> getOrgRelevantServers(Long errataId, Long orgId,
+                                                      Long channelId) {
+                List<Row> retval = new LinkedList<>();
+                Row row = new Row();
                 row.put("server_id", 5000);
                 row.put("name", "test_client_hostname");
                 row.put("release", "test_release");
@@ -52,9 +52,10 @@ public class ErrataMailerTest extends BaseTestCaseWithUser {
                 return retval;
             }
 
-            protected List getErrataToProcess() {
-                List retval = new LinkedList();
-                Map row = new HashMap();
+            @Override
+            protected List<Row> getErrataToProcess() {
+                List<Row> retval = new LinkedList<>();
+                Row row = new Row();
                 row.put("channel_id", c.getId());
                 row.put("errata_id", e.getId());
                 row.put("org_id", user.getOrg().getId());

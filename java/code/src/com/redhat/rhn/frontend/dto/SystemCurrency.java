@@ -61,6 +61,7 @@ public class SystemCurrency extends BaseDto implements Serializable  {
     /**
      * @return Returns the system id.
      */
+    @Override
     public Long getId() {
         return id;
     }

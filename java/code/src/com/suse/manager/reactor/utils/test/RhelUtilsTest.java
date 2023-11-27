@@ -43,10 +43,10 @@ import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.security.SecureRandom;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Random;
 import java.util.UUID;
 import java.util.function.Consumer;
 
@@ -253,11 +253,12 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
                     minionServer.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
                 },
                 prod -> {
-                    assertTrue(prod.get().getSuseProduct().isPresent());
-                    assertEquals("res", prod.get().getSuseProduct().get().getName());
+                    assertTrue(prod.get().getSuseBaseProduct().isPresent());
+                    assertEquals("res", prod.get().getSuseBaseProduct().get().getName());
                     assertEquals("RedHatEnterpriseServer", prod.get().getName());
                     assertEquals("Maipo", prod.get().getRelease());
                     assertEquals("7", prod.get().getVersion());
+                    assertEquals(1, prod.get().getAllSuseProducts().size());
         });
     }
 
@@ -270,11 +271,12 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
                     minionServer.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
                 },
                 prod -> {
-                    assertTrue(prod.get().getSuseProduct().isPresent(), "SUSE Product not found");
-                    assertEquals("res", prod.get().getSuseProduct().get().getName());
+                    assertTrue(prod.get().getSuseBaseProduct().isPresent(), "SUSE Product not found");
+                    assertEquals("res", prod.get().getSuseBaseProduct().get().getName());
                     assertEquals("CentOS", prod.get().getName());
                     assertEquals("Final", prod.get().getRelease());
                     assertEquals("6", prod.get().getVersion());
+                    assertEquals(1, prod.get().getAllSuseProducts().size());
         });
     }
 
@@ -287,11 +289,12 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
                     minionServer.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
                 },
                 prod -> {
-                    assertTrue(prod.get().getSuseProduct().isPresent());
-                    assertEquals("sll", prod.get().getSuseProduct().get().getName());
+                    assertTrue(prod.get().getSuseBaseProduct().isPresent());
+                    assertEquals("el-base", prod.get().getSuseBaseProduct().get().getName());
                     assertEquals("RedHatEnterprise", prod.get().getName());
                     assertEquals("Plow", prod.get().getRelease());
                     assertEquals("9", prod.get().getVersion());
+                    assertEquals(2, prod.get().getAllSuseProducts().size());
                 });
     }
 
@@ -300,10 +303,11 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
         doTestDetectRhelProduct("dummy_packages_redhatprodinfo_rhel.json",
                 null,
                 prod -> {
-                    assertTrue(prod.get().getSuseProduct().isPresent(), "SUSE Product not found");
+                    assertTrue(prod.get().getSuseBaseProduct().isPresent(), "SUSE Product not found");
                     assertEquals("RedHatEnterpriseServer", prod.get().getName());
                     assertEquals("Maipo", prod.get().getRelease());
                     assertEquals("7", prod.get().getVersion());
+                    assertEquals(1, prod.get().getAllSuseProducts().size());
         });
     }
 
@@ -312,10 +316,11 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
         doTestDetectRhelProduct("dummy_packages_redhatprodinfo_centos.json",
                 null,
                 prod -> {
-                    assertTrue(prod.get().getSuseProduct().isPresent(), "SUSE Product not found");
+                    assertTrue(prod.get().getSuseBaseProduct().isPresent(), "SUSE Product not found");
                     assertEquals("CentOS", prod.get().getName());
                     assertEquals("Core", prod.get().getRelease());
                     assertEquals("7", prod.get().getVersion());
+                    assertEquals(1, prod.get().getAllSuseProducts().size());
         });
     }
 
@@ -324,10 +329,11 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
         doTestDetectRhelProduct("dummy_packages_redhatprodinfo_oracle.json",
                 null,
                 prod -> {
-                    assertTrue(prod.get().getSuseProduct().isPresent(), "SUSE Product not found");
+                    assertTrue(prod.get().getSuseBaseProduct().isPresent(), "SUSE Product not found");
                     assertEquals("OracleLinux", prod.get().getName());
                     assertEquals("", prod.get().getRelease());
                     assertEquals("8", prod.get().getVersion());
+                    assertEquals(1, prod.get().getAllSuseProducts().size());
         });
     }
 
@@ -336,10 +342,11 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
         doTestDetectRhelProduct("dummy_packages_redhatprodinfo_alibaba.json",
                 null,
                 prod -> {
-                    assertFalse(prod.get().getSuseProduct().isPresent());
+                    assertFalse(prod.get().getSuseBaseProduct().isPresent());
                     assertEquals("AlibabaCloud(Aliyun)", prod.get().getName());
                     assertEquals("Hunting Beagle", prod.get().getRelease());
                     assertEquals("2", prod.get().getVersion());
+                    assertEquals(0, prod.get().getAllSuseProducts().size());
                 });
     }
 
@@ -348,10 +355,11 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
         doTestDetectRhelProduct("dummy_packages_redhatprodinfo_almalinux.json",
                 null,
                 prod -> {
-                    assertTrue(prod.get().getSuseProduct().isPresent(), "SUSE Product not found");
+                    assertTrue(prod.get().getSuseBaseProduct().isPresent(), "SUSE Product not found");
                     assertEquals("AlmaLinux", prod.get().getName());
                     assertEquals("Purple Manul", prod.get().getRelease());
                     assertEquals("8", prod.get().getVersion());
+                    assertEquals(1, prod.get().getAllSuseProducts().size());
                 });
     }
 
@@ -360,10 +368,11 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
         doTestDetectRhelProduct("dummy_packages_redhatprodinfo_amazon.json",
                 null,
                 prod -> {
-                    assertTrue(prod.get().getSuseProduct().isPresent(), "SUSE Product not found");
+                    assertTrue(prod.get().getSuseBaseProduct().isPresent(), "SUSE Product not found");
                     assertEquals("AmazonLinux", prod.get().getName());
                     assertEquals("Karoo", prod.get().getRelease());
                     assertEquals("2", prod.get().getVersion());
+                    assertEquals(1, prod.get().getAllSuseProducts().size());
                 });
     }
 
@@ -372,10 +381,11 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
         doTestDetectRhelProduct("dummy_packages_redhatprodinfo_rockylinux.json",
                 null,
                 prod -> {
-                    assertTrue(prod.get().getSuseProduct().isPresent(), "SUSE Product not found");
+                    assertTrue(prod.get().getSuseBaseProduct().isPresent(), "SUSE Product not found");
                     assertEquals("RockyLinux", prod.get().getName());
                     assertEquals("Green Obsidian", prod.get().getRelease());
                     assertEquals("8", prod.get().getVersion());
+                    assertEquals(1, prod.get().getAllSuseProducts().size());
                 });
     }
 
@@ -432,7 +442,7 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
                     suseProd.setRelease(null);
                     suseProd.setReleaseStage(ReleaseStage.released);
                     suseProd.setFriendlyName(friendlyName + "  " + version);
-                    suseProd.setProductId(new Random().nextInt(999999));
+                    suseProd.setProductId(new SecureRandom().nextInt(999999));
                     suseProd.setArch(null); // RES products can contain channels with different archs
                     SUSEProductFactory.save(suseProd);
                     SUSEProductFactory.getSession().flush();

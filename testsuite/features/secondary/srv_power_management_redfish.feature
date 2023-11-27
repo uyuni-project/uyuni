@@ -1,21 +1,26 @@
 # Copyright (c) 2021-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@skip_if_github_validation
 @scope_power_management
 @scope_cobbler
+@sle_minion
 Feature: Redfish Power management
 
   Scenario: Setup a Redfish host
-    When the server starts mocking a Redfish host
+    When the controller starts mocking a Redfish host
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
+
+  Scenario: Start Cobbler monitoring
+    When I start local monitoring of Cobbler
 
   Scenario: Save power management values for Redfish
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Provisioning" in the content area
     And I follow "Power Management" in the content area
-    And I enter the server hostname as the redfish server address
+    And I enter the controller hostname as the redfish server address
     And I enter "ipmiusr" as "powerUsername"
     And I enter "test" as "powerPassword"
     And I select "Redfish" from "powerType"
@@ -48,7 +53,7 @@ Feature: Redfish Power management
 
   Scenario: Check power management SSM configuration for Redfish
     When I follow the left menu "Systems > System List > All"
-    And I click on "Clear"
+    And I click on the clear SSM button
     And I check the "sle_minion" client
     And I follow the left menu "Systems > System Set Manager > Overview"
     And I follow "Configure power management" in the content area
@@ -78,20 +83,21 @@ Feature: Redfish Power management
     And I should see a "Reboot" button
 
   Scenario: Cleanup: reset Redfish values
-    Given I am logged in API as user "admin" and password "admin"
-    And I want to operate on this "sle_minion"
+    Given I want to operate on this "sle_minion"
     When I set power management value "" for "powerAddress"
     And I set power management value "" for "powerUsername"
     And I set power management value "" for "powerPassword"
     And I set power management value "ipmilan" for "powerType"
-    And I logout from API
     Then the cobbler report should contain "Power Management Address       :" for "sle_minion"
     And the cobbler report should contain "Power Management Username      :" for "sle_minion"
     And the cobbler report should contain "Power Management Password      :" for "sle_minion"
     And the cobbler report should contain "Power Management Type          : ipmilan" for "sle_minion"
 
   Scenario: Cleanup: tear down the Redfish host
-    When the server stops mocking a Redfish host
+    When the controller stops mocking a Redfish host
 
   Scenario: Cleanup: remove remaining systems from SSM after Redfish power management tests
-    When I click on "Clear"
+    When I click on the clear SSM button
+
+  Scenario: Check for errors in Cobbler monitoring
+    Then the local logs for Cobbler should not contain errors

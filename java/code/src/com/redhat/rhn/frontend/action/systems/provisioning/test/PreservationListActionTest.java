@@ -14,8 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.systems.provisioning.test;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.common.CommonFactory;
@@ -35,7 +35,7 @@ import org.junit.jupiter.api.Test;
 public class PreservationListActionTest extends RhnMockStrutsTestCase {
 
     @Test
-    public void testExecute() throws Exception {
+    public void testExecute() {
         UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
 
         FileList f = FileListTest.createTestFileList(user.getOrg());
@@ -45,6 +45,6 @@ public class PreservationListActionTest extends RhnMockStrutsTestCase {
         actionPerform();
         DataResult dr = (DataResult) request.getAttribute(RequestContext.PAGE_LIST);
         assertNotNull(dr);
-        assertTrue(dr.size() > 0);
+        assertFalse(dr.isEmpty());
     }
 }

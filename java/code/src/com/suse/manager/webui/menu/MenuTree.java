@@ -122,7 +122,7 @@ public class MenuTree {
                             .withAltUrl("/rhn/multiorg/OrgTrustDetails.do")
                             .withAltUrl("/rhn/multiorg/channels/Consumed.do")
                             .withAltUrl("/rhn/multiorg/channels/Provided.do").withVisibility(adminRoles.get("org")))
-                    .addChild(new MenuItem("Recurring States").withPrimaryUrl("/rhn/manager/yourorg/recurring-states")
+                    .addChild(new MenuItem("Recurring Actions").withPrimaryUrl("/rhn/manager/yourorg/recurring-actions")
                             .withVisibility(adminRoles.get("org")))
                     .addChild(new MenuItem("Configuration Channels").withPrimaryUrl("/rhn/manager/yourorg/custom")
                             .withVisibility(adminRoles.get("org")))
@@ -148,7 +148,7 @@ public class MenuTree {
                             .withPrimaryUrl("/rhn/manager/systems/list/all?qc=group_count&q=0")
                             .withVisibility(adminRoles.get("org")))
                     .addChild(new MenuItem("Inactive")
-                            .withPrimaryUrl("/rhn/manager/systems/list/all?qc=system_kind&q=awol"))
+                            .withPrimaryUrl("/rhn/manager/systems/list/all?qc=status_type&q=awol"))
                     .addChild(new MenuItem("Recently Registered")
                             .withPrimaryUrl("/rhn/manager/systems/list/all?qc=created_days&q=>6"))
                     .addChild(new MenuItem("Proxy")
@@ -296,8 +296,8 @@ public class MenuTree {
                             .withAltUrl("/rhn/channels/manage/errata/AddRedHatErrata.do")
                             .withAltUrl("/rhn/channels/manage/errata/AddCustomErrata.do")
                             .withAltUrl("/rhn/channels/manage/errata/ConfirmErrataAdd.do"))
-                    .addChild(new MenuItem("Packages").withPrimaryUrl("/rhn/software/manage/packages/PackageList.do")
-                            .withDir("/rhn/software/manage/packages")
+                    .addChild(new MenuItem("Packages").withPrimaryUrl("/rhn/manager/packages/list")
+                            .withDir("/rhn/manager/packages")
                             .withVisibility(checkAcl(user, "user_role(channel_admin)")))
                     .addChild(new MenuItem("Repositories").withPrimaryUrl("/rhn/channels/manage/repos/RepoList.do")
                             .withAltUrl("/rhn/channels/manage/repos/RepoEdit.do")
@@ -384,7 +384,7 @@ public class MenuTree {
             .addChild(new MenuItem("Archived Actions").withPrimaryUrl("/rhn/schedule/ArchivedActions.do"))
             .addChild(new MenuItem("Action Chains").withPrimaryUrl("/rhn/schedule/ActionChains.do")
                     .withAltUrl("/rhn/schedule/ActionChain.do"))
-            .addChild(new MenuItem("Recurring States").withPrimaryUrl("/rhn/manager/schedule/recurring-states"))
+            .addChild(new MenuItem("Recurring Actions").withPrimaryUrl("/rhn/manager/schedule/recurring-actions"))
             .addChild(new MenuItem("Maintenance Windows").withDir("/rhn/manager/schedule/maintenance")
                     .addChild(new MenuItem("Schedules").withPrimaryUrl("/rhn/manager/schedule/maintenance/schedules"))
                     .addChild(new MenuItem("Calendars").withPrimaryUrl("/rhn/manager/schedule/maintenance/calendars")));
@@ -419,7 +419,7 @@ public class MenuTree {
                             .withPrimaryUrl("/rhn/admin/setup/MirrorCredentials.do"))
                     .addChild(new MenuItem("Products")
                             .withPrimaryUrl("/rhn/manager/admin/setup/products"))
-                    .addChild(new MenuItem("Pay-as-you-go")
+                    .addChild(new MenuItem("PAYG Connections")
                         .withPrimaryUrl("/rhn/manager/admin/setup/payg")
                         .withDir("/rhn/manager/admin/setup/payg")
                         .withDir("/rhn/manager/admin/setup/payg/create")))
@@ -432,7 +432,7 @@ public class MenuTree {
                     .withAltUrl("/rhn/admin/multiorg/DeleteOrg.do")
                     .withAltUrl("/rhn/admin/multiorg/OrgCreate.do")
                     .withAltUrl("/rhn/manager/multiorg/details/custom")
-                    .withAltUrl("/rhn/manager/multiorg/details/recurring-states")
+                    .withAltUrl("/rhn/manager/multiorg/recurring-actions")
                     .withVisibility(adminRoles.get("satellite")))
             .addChild(new MenuItem("Users")
                     .withPrimaryUrl("/rhn/admin/multiorg/Users.do")
@@ -580,7 +580,7 @@ public class MenuTree {
                     activeItem = item;
                     return activeItem;
                 }
-                if (item.getUrls() != null && item.getUrls().size() > 0) {
+                if (item.getUrls() != null && !item.getUrls().isEmpty()) {
                     for (String link : item.getUrls()) {
                         if (url.equalsIgnoreCase(link)) {
                             activeItem = item;

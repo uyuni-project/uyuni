@@ -26,7 +26,6 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 import org.hibernate.query.Query;
 import org.junit.jupiter.api.Test;
 
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -84,7 +83,7 @@ public class SaltEventFactoryTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testPopSaltEvents() throws NoSuchAlgorithmException {
+    public void testPopSaltEvents() {
         // verify there are no salt events
         List<Long> saltEventsCount = SaltEventFactory.countSaltEvents(4);
         assertEquals(Arrays.asList(0L, 0L, 0L, 0L), saltEventsCount);
@@ -183,7 +182,7 @@ public class SaltEventFactoryTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testFixQueueNumbers() throws NoSuchAlgorithmException {
+    public void testFixQueueNumbers() {
         // verify there are no salt events
         List<Long> saltEventsCount = SaltEventFactory.countSaltEvents(5);
         assertEquals(Arrays.asList(0L, 0L, 0L, 0L, 0L), saltEventsCount);

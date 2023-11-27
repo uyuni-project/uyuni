@@ -88,11 +88,6 @@ RPM = "{http://linux.duke.edu/metadata/rpm}"
 SUSE = "{http://novell.com/package/metadata/suse/common}"
 PATCH = "{http://novell.com/package/metadata/suse/patch}"
 
-if isSUSE():
-    APACHE_GROUP = "www"
-else:
-    APACHE_GROUP = "apache"
-
 class ChannelException(Exception):
     """Channel Error"""
     def __init__(self, value=None):
@@ -146,7 +141,7 @@ class KSDirHtmlParser(KSDirParser):
 
         for s in (m.group(1) for m in re.finditer(r'(?i)<a href="(.+?)"', dir_html.decode())):
             if not (re.match(r'/', s) or re.search(r'\?', s) or re.search(r'\.\.', s) or re.match(r'[a-zA-Z]+:', s) or
-                    re.search(r'\.rpm$', s)):
+                    s.endswith('.rpm') or s.endswith('.mirrorlist') or s == '#'):
                 if re.search(r'/$', s):
                     file_type = 'DIR'
                 else:
@@ -378,21 +373,23 @@ def clear_ssl_cache():
 
 
 def verify_certificates_dates(certs):
+    """
+    One certificate must be valid. Bundles may contain expired certs.
+    It does not make sense to check them all.
+    """
     cert = ""
     is_cert = False
-    has_valid_certs = False
     for line in certs.split('\n'):
         if not is_cert and line.startswith("-----BEGIN CERTIFICATE"):
             is_cert = True
         if is_cert:
             cert += line + '\n'
         if is_cert and line.startswith("-----END CERTIFICATE"):
-            if not verify_certificate_dates(cert):
-                return False
-            cert = ""
+            if verify_certificate_dates(cert):
+                return True
             is_cert = False
-            has_valid_certs = True
-    return has_valid_certs
+            cert = ""
+    return False
 
 
 def get_single_ssl_set(keys, check_dates=False):
@@ -447,9 +444,9 @@ class RepoSync(object):
             log_level = 0
         with cfg_component('server.susemanager') as CFG:
             CFG.set('DEBUG', log_level)
-        rhnLog.initLOG(log_path, log_level)
-        # os.fchown isn't in 2.4 :/
-        os.system("chgrp " + APACHE_GROUP + " " + log_path)
+            rhnLog.initLOG(log_path, log_level)
+            # os.fchown isn't in 2.4 :/
+            os.system("chgrp " + CFG.httpd_group + " " + log_path)
 
         log2disk(0, "Command: %s" % str(sys.argv))
         log2disk(0, "Sync of channel started.")
@@ -722,11 +719,12 @@ class RepoSync(object):
 
         # update permissions
         fileutils.createPath(os.path.join(mount_point, 'rhn'))  # if the directory exists update ownership only
-        for root, dirs, files in os.walk(os.path.join(mount_point, 'rhn')):
-            for d in dirs:
-                fileutils.setPermsPath(os.path.join(root, d), group=APACHE_GROUP, chmod=int('0755', 8))
-            for f in files:
-                fileutils.setPermsPath(os.path.join(root, f), group=APACHE_GROUP, chmod=int('0644', 8))
+        with cfg_component('server.susemanager') as CFG:
+            for root, dirs, files in os.walk(os.path.join(mount_point, 'rhn')):
+                for d in dirs:
+                    fileutils.setPermsPath(os.path.join(root, d), group=CFG.httpd_group, chmod=int('0755', 8))
+                for f in files:
+                    fileutils.setPermsPath(os.path.join(root, f), group=CFG.httpd_group, chmod=int('0644', 8))
         elapsed_time = datetime.now() - start_time
         if self.error_messages:
             self.sendErrorMail("Repo Sync Errors: %s" % '\n'.join(self.error_messages))
@@ -825,11 +823,11 @@ class RepoSync(object):
         absdir = os.path.join(mount_point, relativedir)
         if not os.path.exists(absdir):
             os.makedirs(absdir)
-        compressed_suffixes = ['.gz', '.bz', '.xz']
-        if comps_type == 'comps' and not re.match('comps.xml(' + "|".join(compressed_suffixes) + ')*', basename):
+        compressed_suffixes = ['.gz', '.bz', '.xz', '.bz2']
+        if comps_type == 'comps' and not re.match('comps.xml(' + "|".join(compressed_suffixes) + ')?$', basename):
             log(0, "  Renaming non-standard filename %s to %s." % (basename, 'comps' + basename[basename.find('.'):]))
             basename = 'comps' + basename[basename.find('.'):]
-        elif comps_type == 'modules' and re.match('modules.yaml(' + "|".join(compressed_suffixes) + ')*', basename):
+        elif comps_type == 'modules' and re.match('modules.yaml(' + "|".join(compressed_suffixes) + ')?$', basename):
             # decompress only for getting the checksum
             checksum = self._get_decompressed_file_checksum(filename, 'sha256')
             basename = checksum + "-" + basename
@@ -859,11 +857,7 @@ class RepoSync(object):
         src.close()
         if old_checksum and old_checksum != getFileChecksum('sha256', abspath):
             self.regen = True
-
-        if comps_type == 'modules':
-            log(0, "*** NOTE: Importing {1} file for the channel '{0}'.".format(self.channel['label'], comps_type))
-        else:
-            log(0, "*** NOTE: Importing {1} file for the channel '{0}'. Previous {1} will be discarded.".format(self.channel['label'], comps_type))
+        log(0, "*** NOTE: Importing {1} file for the channel '{0}'. Previous {1} will be discarded.".format(self.channel['label'], comps_type))
 
         repoDataKey = 'group' if comps_type == 'comps' else comps_type
         file_timestamp = os.path.getmtime(filename)
@@ -875,30 +869,26 @@ class RepoSync(object):
             return abspath
 
         # update or insert
-        hu = rhnSQL.prepare("""
-            update rhnChannelComps
-            set relative_filename = :relpath,
-                modified = current_timestamp,
-                last_modified = :last_modified
-            where channel_id = :cid
-                and comps_type_id = (select id from rhnCompsType where label = :ctype)
-                and relative_filename = :relpath""")
+        hu = rhnSQL.prepare("""update rhnChannelComps
+                                  set relative_filename = :relpath,
+                                      modified = current_timestamp,
+                                      last_modified = :last_modified
+                                where channel_id = :cid
+                                  and comps_type_id = (select id from rhnCompsType where label = :ctype)""")
         hu.execute(cid=self.channel['id'], relpath=relativepath, ctype=comps_type,
                    last_modified=last_modified)
 
-        hi = rhnSQL.prepare("""
-            insert into rhnChannelComps(id, channel_id, relative_filename, last_modified, comps_type_id)
-            (select sequence_nextval('rhn_channelcomps_id_seq'),
-                    :cid,
-                    :relpath,
-                    :last_modified,
-                    (select id from rhnCompsType where label = :ctype)
-                from dual
-                where not exists
-                    (select 1 from rhnChannelComps
-                        where channel_id = :cid
-                            and comps_type_id = (select id from rhnCompsType where label = :ctype)
-                            and relative_filename = :relpath))""")
+        hi = rhnSQL.prepare("""insert into rhnChannelComps
+                              (id, channel_id, relative_filename, last_modified, comps_type_id)
+                              (select sequence_nextval('rhn_channelcomps_id_seq'),
+                                      :cid,
+                                      :relpath,
+                                      :last_modified,
+                              (select id from rhnCompsType where label = :ctype)
+                                 from dual
+                                where not exists (select 1 from rhnChannelComps
+                                    where channel_id = :cid
+                                    and comps_type_id = (select id from rhnCompsType where label = :ctype)))""")
         hi.execute(cid=self.channel['id'], relpath=relativepath, ctype=comps_type,
                    last_modified=last_modified)
         return abspath
@@ -1162,6 +1152,9 @@ class RepoSync(object):
         downloader.set_log_obj(logger)
         downloader.run()
 
+        log(0, 'Filtering packages that failed to download')
+        to_process = [i for i in to_process if os.path.basename(i[0].path) not in downloader.failed_pkgs]
+
         log2background(0, "Importing packages started.")
         log(0, '')
         log(0, '  Importing packages to DB:')
@@ -1374,10 +1367,9 @@ class RepoSync(object):
 
                 except (KeyboardInterrupt, rhnSQL.SQLError):
                     raise
-                except Exception:
-                    e = str(sys.exc_info()[1])
-                    if e:
-                        log2(0, 1, e, stream=sys.stderr)
+                except Exception as e:
+                    e_message = f'Exception: {e}'
+                    log2(0, 1, e_message, stream=sys.stderr)
                     if self.fail:
                         raise
                 finally:
@@ -1889,19 +1881,27 @@ class RepoSync(object):
                 )
                 sys.exit(1)
             # SCC - read credentials from DB
-            h = rhnSQL.prepare("SELECT username, password, extra_auth FROM suseCredentials WHERE id = :id")
+            h = rhnSQL.prepare("""
+                SELECT c.username, c.password, c.extra_auth, ct.label type
+                  FROM suseCredentials c
+                  JOIN suseCredentialsType ct on c.type_id = ct.id
+                  WHERE c.id = :id
+            """)
             h.execute(id=creds_no)
             credentials = h.fetchone_dict() or None
             if not credentials:
                 log2(0, 0, "Could not figure out which credentials to use "
                            "for this URL: "+url.getURL(stripPw=True), stream=sys.stderr)
                 sys.exit(1)
-            url.username = credentials['username']
-            url.password = base64.decodestring(credentials['password'].encode()).decode()
+            if credentials['type'] != "rhui":
+                url.username = credentials['username']
+                url.password = base64.decodestring(credentials['password'].encode()).decode()
             # remove query parameter from url
             url.query = ""
             if 'extra_auth' in credentials and credentials['extra_auth']:
                 headers = json.loads(credentials['extra_auth'].tobytes())
+                if not headers:
+                    log2(0, 0, "Empty extra auth headers. Possibly the PAYG instance is down?")
         return {"url": url.getURL(), "http_headers": headers}
 
     def upload_patches(self, notices):

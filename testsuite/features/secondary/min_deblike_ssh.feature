@@ -1,10 +1,18 @@
-# Copyright (c) 2017-2022 SUSE LLC
+# Copyright (c) 2017-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # 1) delete Debian-like minion and register as SSH minion
 # 2) run a remote command
 # 3) delete Debian-like SSH minion and register as normal minion
+#
+# This feature can cause failures in the following features:
+# - features/secondary/min_deblike_salt_install_package.feature
+# - features/secondary/min_deblike_salt_install_with_staging.feature
+# - features/secondary/min_deblike_monitoring.feature
+# If the cleanup bootstrap scenario fails,
+# the minion will not be reachable in those features.
 
+@skip_if_github_validation
 @scope_deblike
 @scope_salt_ssh
 @deblike_minion
@@ -12,7 +20,6 @@ Feature: Bootstrap a SSH-managed Debian-like minion and do some basic operations
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
-    And I am logged in API as user "admin" and password "admin"
 
   Scenario: Delete the Debian-like minion
     When I am on the Systems overview page of this "deblike_minion"
@@ -20,6 +27,7 @@ Feature: Bootstrap a SSH-managed Debian-like minion and do some basic operations
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
     And I wait until I see "has been deleted" text
+    And I wait until Salt client is inactive on "deblike_minion"
     Then "deblike_minion" should not be registered
 
   Scenario: Bootstrap a SSH-managed Debian-like minion
@@ -30,7 +38,7 @@ Feature: Bootstrap a SSH-managed Debian-like minion and do some basic operations
     And I enter "linux" as "password"
     And I select the hostname of "proxy" from "proxies" if present
     And I click on "Bootstrap"
-    And I wait until I see "Successfully bootstrapped host!" text
+    And I wait until I see "Bootstrap process initiated." text
     And I follow the left menu "Systems > System List > All"
     And I wait until I see the name of "deblike_minion", refreshing the page
     And I wait until onboarding is completed for "deblike_minion"
@@ -54,7 +62,7 @@ Feature: Bootstrap a SSH-managed Debian-like minion and do some basic operations
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
-    And I check radio button "Fake-Deb-AMD64-Channel"
+    And I check radio button "Fake-Base-Channel-Debian-like"
     And I wait until I do not see "Loading..." text
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text
@@ -99,7 +107,7 @@ Feature: Bootstrap a SSH-managed Debian-like minion and do some basic operations
     And I enter "linux" as "password"
     And I select the hostname of "proxy" from "proxies" if present
     And I click on "Bootstrap"
-    And I wait until I see "Successfully bootstrapped host!" text
+    And I wait until I see "Bootstrap process initiated." text
     And I follow the left menu "Systems > System List > All"
     And I wait until I see the name of "deblike_minion", refreshing the page
     And I wait until onboarding is completed for "deblike_minion"
@@ -109,13 +117,10 @@ Feature: Bootstrap a SSH-managed Debian-like minion and do some basic operations
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
-    And I check radio button "Fake-Deb-AMD64-Channel"
+    And I check radio button "Fake-Base-Channel-Debian-like"
     And I wait until I do not see "Loading..." text
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text
     When I click on "Confirm"
     Then I should see a "Changing the channels has been scheduled." text
     And I wait until event "Subscribe channels scheduled by admin" is completed
-
-  Scenario: Cleanup: Logout from API
-    When I logout from API

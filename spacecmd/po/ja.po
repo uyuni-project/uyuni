@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-02 15:32+0100\n"
-"PO-Revision-Date: 2022-11-11 10:13+0000\n"
+"POT-Creation-Date: 2023-10-20 13:49+0200\n"
+"PO-Revision-Date: 2023-10-16 13:15+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/spacecmd/"
 "ja/>\n"
@@ -238,7 +238,7 @@ msgstr "名前 (何も指定しない場合自動生成):"
 msgid "Description [None]:"
 msgstr "説明 [無し]:"
 
-#: ../src/spacecmd/activationkey.py:756 ../src/spacecmd/distribution.py:79
+#: ../src/spacecmd/activationkey.py:756 ../src/spacecmd/distribution.py:96
 #: ../src/spacecmd/softwarechannel.py:903
 msgid "Base Channels"
 msgstr "ベースチャンネル"
@@ -269,8 +269,8 @@ msgstr "activationkey_delete: アクティベーションキーを削除"
 msgid "usage: activationkey_delete KEY"
 msgstr "使用方法: activationkey_delete キー"
 
-#: ../src/spacecmd/activationkey.py:831 ../src/spacecmd/cryptokey.py:141
-#: ../src/spacecmd/cryptokey.py:200 ../src/spacecmd/custominfo.py:97
+#: ../src/spacecmd/activationkey.py:831 ../src/spacecmd/cryptokey.py:176
+#: ../src/spacecmd/cryptokey.py:235 ../src/spacecmd/custominfo.py:97
 #, python-format
 msgid "No keys matched argument %s"
 msgstr "パラメータ %s に合致するキーはありません"
@@ -356,41 +356,41 @@ msgstr "エンタイトルメント"
 msgid "System Groups"
 msgstr "システムグループ"
 
-#: ../src/spacecmd/activationkey.py:994 ../src/spacecmd/package.py:210
-#: ../src/spacecmd/package.py:268 ../src/spacecmd/softwarechannel.py:1368
+#: ../src/spacecmd/activationkey.py:994 ../src/spacecmd/package.py:206
+#: ../src/spacecmd/package.py:264 ../src/spacecmd/softwarechannel.py:1368
 #: ../src/spacecmd/softwarechannel.py:1474
 #: ../src/spacecmd/softwarechannel.py:1558
 #: ../src/spacecmd/softwarechannel.py:1810
 msgid "Packages"
 msgstr "パッケージ"
 
-#: ../src/spacecmd/activationkey.py:1009
+#: ../src/spacecmd/activationkey.py:1012
 msgid "activationkey_enableconfigdeployment: Enable config channel deployment"
 msgstr "activationkey_enableconfigdeployment: 設定チャンネルの配備の有効化"
 
-#: ../src/spacecmd/activationkey.py:1011
+#: ../src/spacecmd/activationkey.py:1014
 msgid "usage: activationkey_enableconfigdeployment KEY"
 msgstr "使用方法: activationkey_enableconfigdeployment キー"
 
-#: ../src/spacecmd/activationkey.py:1038
+#: ../src/spacecmd/activationkey.py:1041
 msgid ""
 "activationkey_disableconfigdeployment: Disable config channel deployment"
 msgstr "activationkey_disableconfigdeployment: 設定チャンネルの配備の無効化"
 
-#: ../src/spacecmd/activationkey.py:1040
+#: ../src/spacecmd/activationkey.py:1043
 msgid "usage: activationkey_disableconfigdeployment KEY"
 msgstr "使用方法: activationkey_disableconfigdeployment キー"
 
-#: ../src/spacecmd/activationkey.py:1067
+#: ../src/spacecmd/activationkey.py:1070
 msgid "activationkey_setbasechannel: Set the base channel of an activation key"
 msgstr ""
 "activationkey_setbasechannel: アクティベーションキーのベースチャンネルを設定"
 
-#: ../src/spacecmd/activationkey.py:1069
+#: ../src/spacecmd/activationkey.py:1072
 msgid "usage: activationkey_setbasechannel KEY CHANNEL"
 msgstr "使用方法: activationkey_setbasechannel キー チャンネル"
 
-#: ../src/spacecmd/activationkey.py:1118
+#: ../src/spacecmd/activationkey.py:1121
 msgid ""
 "activationkey_setusagelimit: Set the usage limit of an activation key, can "
 "be a number or \"unlimited\""
@@ -398,35 +398,35 @@ msgstr ""
 "activationkey_setusagelimit: アクティベーションキーの使用制限 (数値または "
 "\"unlimited\" (無制限)) を設定"
 
-#: ../src/spacecmd/activationkey.py:1120
+#: ../src/spacecmd/activationkey.py:1123
 msgid "usage: activationkey_setusagelimit KEY <usage limit>"
 msgstr "使用方法: activationkey_setusagelimit キー <使用制限>"
 
-#: ../src/spacecmd/activationkey.py:1121
+#: ../src/spacecmd/activationkey.py:1124
 msgid "usage: activationkey_setusagelimit KEY unlimited "
 msgstr "使用方法: activationkey_setusagelimit KEY unlimited "
 
-#: ../src/spacecmd/activationkey.py:1153
+#: ../src/spacecmd/activationkey.py:1156
 #, python-format
 msgid "Couldn't convert argument %s to an integer"
 msgstr "パラメータ %s を整数に変換できませんでした"
 
-#: ../src/spacecmd/activationkey.py:1175
+#: ../src/spacecmd/activationkey.py:1178
 msgid ""
 "activationkey_setuniversaldefault: Set this key as the universal default"
 msgstr "activationkey_setuniversaldefault: このキーを汎用デフォルトに設定"
 
-#: ../src/spacecmd/activationkey.py:1177
+#: ../src/spacecmd/activationkey.py:1180
 msgid "usage: activationkey_setuniversaldefault KEY"
 msgstr "使用方法: activationkey_setuniversaldefault キー"
 
-#: ../src/spacecmd/activationkey.py:1218
+#: ../src/spacecmd/activationkey.py:1221
 msgid "activationkey_export: Export activation key(s) to JSON format file"
 msgstr ""
 "activationkey_export: アクティベーションキーを JSON 形式のファイルにエクス"
 "ポートする"
 
-#: ../src/spacecmd/activationkey.py:1219
+#: ../src/spacecmd/activationkey.py:1222
 msgid ""
 "usage: activationkey_export [options] [<KEY> ...])\n"
 "\n"
@@ -450,72 +450,72 @@ msgstr ""
 "注意: <キー> を指定しない場合、全てのキーをエクスポートします "
 
 #. Get the key details
-#: ../src/spacecmd/activationkey.py:1235
+#: ../src/spacecmd/activationkey.py:1238
 #, python-format
 msgid "Getting activation key details for %s"
 msgstr "%s に対するアクティベーションキーの詳細を取得しています"
 
-#: ../src/spacecmd/activationkey.py:1289
+#: ../src/spacecmd/activationkey.py:1292
 #, python-format
 msgid "Exporting ALL activation keys to %s"
 msgstr "全てのアクティベーションキーを %s にエクスポートしています"
 
-#: ../src/spacecmd/activationkey.py:1298
+#: ../src/spacecmd/activationkey.py:1301
 msgid "Invalid activation key passed"
 msgstr "正しくないアクティベーションキーを指定しています"
 
-#: ../src/spacecmd/activationkey.py:1313
+#: ../src/spacecmd/activationkey.py:1316
 #, python-format
 msgid "Exporting key %s to %s"
 msgstr "キー %s を %s にエクスポートしています"
 
-#: ../src/spacecmd/activationkey.py:1322
+#: ../src/spacecmd/activationkey.py:1325
 #, python-format
 msgid "File %s exists, confirm overwrite file? (y/n)"
 msgstr "ファイル %s は既に存在しています。上書きしてよろしいですか？ (y/n)"
 
-#: ../src/spacecmd/activationkey.py:1327
+#: ../src/spacecmd/activationkey.py:1330
 msgid "Failed to save exported keys to file: {}"
 msgstr "エクスポートしたキーをファイルに書き込む処理が失敗しました: {}"
 
-#: ../src/spacecmd/activationkey.py:1336
+#: ../src/spacecmd/activationkey.py:1339
 msgid "activationkey_import: import activation key(s) from JSON file(s)"
 msgstr ""
 "activationkey_import: JSON ファイルからアクティベーションキーをインポートする"
 
-#: ../src/spacecmd/activationkey.py:1337
+#: ../src/spacecmd/activationkey.py:1340
 msgid "usage: activationkey_import <JSONFILE ...>"
 msgstr "使用方法: activationkey_import <JSONファイル ...>"
 
-#: ../src/spacecmd/activationkey.py:1346
+#: ../src/spacecmd/activationkey.py:1349
 msgid "No filename passed"
 msgstr "ファイル名が指定されていません"
 
-#: ../src/spacecmd/activationkey.py:1355
+#: ../src/spacecmd/activationkey.py:1358
 #, python-format
 msgid "Could not read json data from %s"
 msgstr "%s から JSON データを読み込むことができませんでした"
 
-#: ../src/spacecmd/activationkey.py:1360 ../src/spacecmd/activationkey.py:1404
+#: ../src/spacecmd/activationkey.py:1363 ../src/spacecmd/activationkey.py:1407
 #, python-format
 msgid "Failed to import key %s"
 msgstr "キー %s のインポートに失敗しました"
 
-#: ../src/spacecmd/activationkey.py:1374
+#: ../src/spacecmd/activationkey.py:1377
 #, python-format
 msgid "%s already exists! Skipping!"
 msgstr "%s は既に存在しています。処理を飛ばしています！"
 
-#: ../src/spacecmd/activationkey.py:1429
+#: ../src/spacecmd/activationkey.py:1432
 #, python-format
 msgid "System group %s doesn't exist, creating"
 msgstr "システムグループ %s は存在していません。作成します"
 
-#: ../src/spacecmd/activationkey.py:1450
+#: ../src/spacecmd/activationkey.py:1453
 msgid "activationkey_clone: Clone an activation key"
 msgstr "activationkey_clone: アクティベーションキーを複製"
 
-#: ../src/spacecmd/activationkey.py:1451
+#: ../src/spacecmd/activationkey.py:1454
 msgid ""
 "usage examples:\n"
 "                 activationkey_clone foo_key -c bar_key\n"
@@ -546,111 +546,111 @@ msgstr ""
 "                   ラベルや設定チャンネル名を置き換えるための正規表現 \n"
 "                   (\"foo\" を \"bar\" に置き換える) "
 
-#: ../src/spacecmd/activationkey.py:1479 ../src/spacecmd/kickstart.py:467
+#: ../src/spacecmd/activationkey.py:1482 ../src/spacecmd/kickstart.py:467
 #: ../src/spacecmd/system.py:3107
 msgid "Activation Keys"
 msgstr "アクティベーションキー"
 
-#: ../src/spacecmd/activationkey.py:1485
+#: ../src/spacecmd/activationkey.py:1488
 #, python-format
 msgid "Key to clone: %s"
 msgstr "複製するキー: %s"
 
-#: ../src/spacecmd/activationkey.py:1489
+#: ../src/spacecmd/activationkey.py:1492
 msgid "Original Key:"
 msgstr "元のキー:"
 
-#: ../src/spacecmd/activationkey.py:1491
+#: ../src/spacecmd/activationkey.py:1494
 msgid "Cloned Key:"
 msgstr "複製されたキー:"
 
-#: ../src/spacecmd/activationkey.py:1494 ../src/spacecmd/configchannel.py:1441
+#: ../src/spacecmd/activationkey.py:1497 ../src/spacecmd/configchannel.py:1441
 msgid "Error - must specify either -c or -x options!"
 msgstr "エラー - オプション -c と -x は同時に指定できません！"
 
-#: ../src/spacecmd/activationkey.py:1499
+#: ../src/spacecmd/activationkey.py:1502
 #, python-format
 msgid "Key %s already exists"
 msgstr "キー %s は既に存在しています"
 
-#: ../src/spacecmd/activationkey.py:1503
+#: ../src/spacecmd/activationkey.py:1506
 msgid "Error no activationkey to clone passed!"
 msgstr "複製すべきアクティベーションがありません！"
 
-#: ../src/spacecmd/activationkey.py:1557
+#: ../src/spacecmd/activationkey.py:1560
 #, python-format
 msgid "Found child channel %s key %s, %s"
 msgstr "子チャンネル %s (キー %s) %s"
 
-#: ../src/spacecmd/activationkey.py:1559
+#: ../src/spacecmd/activationkey.py:1562
 msgid " does not exist, skipping!"
 msgstr " が存在しません。読み飛ばしています！"
 
-#: ../src/spacecmd/activationkey.py:1566
+#: ../src/spacecmd/activationkey.py:1569
 #, python-format
 msgid "Regex-replacement results in new base-channel %s which does not exist!"
 msgstr "新しいベースチャンネル %s に対する正規表現の結果がありません！"
 
-#: ../src/spacecmd/activationkey.py:1582
+#: ../src/spacecmd/activationkey.py:1585
 #, python-format
 msgid "Found config channel %s for key %s, %s "
 msgstr "設定チャンネル %s (キー %s) %s "
 
-#: ../src/spacecmd/activationkey.py:1584
+#: ../src/spacecmd/activationkey.py:1587
 msgid "does not exist, skipping!"
 msgstr "が存在しません。読み飛ばしています！"
 
-#: ../src/spacecmd/activationkey.py:1602
+#: ../src/spacecmd/activationkey.py:1605
 #, python-format
 msgid "Cloning key %s as %s"
 msgstr "キー %s を %s として複製しています"
 
-#: ../src/spacecmd/activationkey.py:1606 ../src/spacecmd/configchannel.py:1493
+#: ../src/spacecmd/activationkey.py:1609 ../src/spacecmd/configchannel.py:1493
 #, python-format
 msgid "Failed to clone %s to %s"
 msgstr "%s を %s に複製する処理が失敗しました"
 
-#: ../src/spacecmd/activationkey.py:1624
+#: ../src/spacecmd/activationkey.py:1627
 msgid "no activationkey label given"
 msgstr "アクティベーションキーのラベルを指定していません"
 
-#: ../src/spacecmd/activationkey.py:1627
+#: ../src/spacecmd/activationkey.py:1630
 msgid "invalid activationkey label "
 msgstr "アクティベーションキーのラベルが正しくありません "
 
-#: ../src/spacecmd/activationkey.py:1644
+#: ../src/spacecmd/activationkey.py:1647
 msgid "activationkey_diff: Diff activation keys"
 msgstr "activationkey_diff: アクティベーションキーの差分を表示"
 
-#: ../src/spacecmd/activationkey.py:1646
+#: ../src/spacecmd/activationkey.py:1649
 msgid "usage: activationkey_diff SOURCE_KEY TARGET_KEY"
 msgstr "使用方法: activationkey_diff キー_1 キー_2"
 
-#: ../src/spacecmd/activationkey.py:1696
+#: ../src/spacecmd/activationkey.py:1699
 msgid "activationkey_disable: Disable an activation key"
 msgstr "activationkey_disable: アクティベーションキーを無効化"
 
-#: ../src/spacecmd/activationkey.py:1698
+#: ../src/spacecmd/activationkey.py:1701
 msgid "usage: activationkey_disable KEY [KEY ...]"
 msgstr "使用方法: activationkey_disable キー [キー ...]"
 
-#: ../src/spacecmd/activationkey.py:1732
+#: ../src/spacecmd/activationkey.py:1735
 msgid "activationkey_enable: Enable an activation key"
 msgstr "activationkey_enable: アクティベーションキーの有効化"
 
-#: ../src/spacecmd/activationkey.py:1734
+#: ../src/spacecmd/activationkey.py:1737
 msgid "usage: activationkey_enable KEY [KEY ...]"
 msgstr "使用方法: activationkey_enable キー [キー ...]"
 
-#: ../src/spacecmd/activationkey.py:1768
+#: ../src/spacecmd/activationkey.py:1771
 msgid "activationkey_setdescription: Set the activation key description"
 msgstr "activationkey_setdescription: アクティベーションキーの説明を設定"
 
-#: ../src/spacecmd/activationkey.py:1770
+#: ../src/spacecmd/activationkey.py:1773
 msgid "usage: activationkey_setdescription KEY DESCRIPTION"
 msgstr "使用方法: activationkey_setdescription キー 説明"
 
-#: ../src/spacecmd/activationkey.py:1804
+#: ../src/spacecmd/activationkey.py:1807
 msgid ""
 "activationkey_setcontactmethod: Set the contact method to use for systems "
 "registered with this key."
@@ -658,11 +658,11 @@ msgstr ""
 "activationkey_setcontactmethod: このキーで登録されたシステムに対して適用する"
 "連絡方法を設定。"
 
-#: ../src/spacecmd/activationkey.py:1806 ../src/spacecmd/system.py:4411
+#: ../src/spacecmd/activationkey.py:1809 ../src/spacecmd/system.py:4411
 msgid "Available contact methods: "
 msgstr "利用可能な連絡方法: "
 
-#: ../src/spacecmd/activationkey.py:1807
+#: ../src/spacecmd/activationkey.py:1810
 msgid "usage: activationkey_setcontactmethod KEY CONTACT_METHOD"
 msgstr "使用方法: activationkey_setcontactmethod キー 連絡方法"
 
@@ -940,13 +940,13 @@ msgstr "ラベル:       %s"
 msgid "Name:        %s"
 msgstr "名前:        %s"
 
-#: ../src/spacecmd/configchannel.py:446 ../src/spacecmd/cryptokey.py:217
+#: ../src/spacecmd/configchannel.py:446 ../src/spacecmd/cryptokey.py:252
 #: ../src/spacecmd/group.py:573 ../src/spacecmd/system.py:683
 #, python-format
 msgid "Description: %s"
 msgstr "説明: %s"
 
-#: ../src/spacecmd/configchannel.py:447 ../src/spacecmd/cryptokey.py:218
+#: ../src/spacecmd/configchannel.py:447 ../src/spacecmd/cryptokey.py:253
 #: ../src/spacecmd/group.py:574 ../src/spacecmd/kickstart.py:507
 #: ../src/spacecmd/kickstart.py:1976
 #, python-format
@@ -980,7 +980,7 @@ msgstr ""
 "  -t タイプ('normal,'state')"
 
 #: ../src/spacecmd/configchannel.py:480 ../src/spacecmd/custominfo.py:55
-#: ../src/spacecmd/custominfo.py:200 ../src/spacecmd/distribution.py:72
+#: ../src/spacecmd/custominfo.py:200 ../src/spacecmd/distribution.py:89
 #: ../src/spacecmd/filepreservation.py:71 ../src/spacecmd/group.py:185
 #: ../src/spacecmd/repo.py:353 ../src/spacecmd/repo.py:469
 #: ../src/spacecmd/softwarechannel.py:776
@@ -991,7 +991,7 @@ msgstr "名前:"
 msgid "Label:"
 msgstr "ラベル:"
 
-#: ../src/spacecmd/configchannel.py:482 ../src/spacecmd/cryptokey.py:67
+#: ../src/spacecmd/configchannel.py:482 ../src/spacecmd/cryptokey.py:107
 #: ../src/spacecmd/custominfo.py:60 ../src/spacecmd/custominfo.py:205
 #: ../src/spacecmd/group.py:190 ../src/spacecmd/softwarechannel.py:788
 #: ../src/spacecmd/system.py:3798
@@ -1006,7 +1006,7 @@ msgstr "タイプ [normal, state]:"
 msgid "Only [normal/state] values are acceptable for type"
 msgstr "タイプに設定可能な値は [normal/state] のいずれかです"
 
-#: ../src/spacecmd/configchannel.py:494 ../src/spacecmd/distribution.py:110
+#: ../src/spacecmd/configchannel.py:494 ../src/spacecmd/distribution.py:127
 #: ../src/spacecmd/repo.py:361 ../src/spacecmd/repo.py:475
 msgid "A name is required"
 msgstr "名前を指定する必要があります"
@@ -1079,7 +1079,7 @@ msgstr "リビジョンは整数でなければなりません"
 
 #. get the contents of the script
 #: ../src/spacecmd/configchannel.py:638 ../src/spacecmd/configchannel.py:946
-#: ../src/spacecmd/cryptokey.py:69 ../src/spacecmd/kickstart.py:2033
+#: ../src/spacecmd/cryptokey.py:109 ../src/spacecmd/kickstart.py:2033
 #: ../src/spacecmd/snippet.py:143
 msgid "Read an existing file [y/N]:"
 msgstr "既存のファイルの読み込み [y/N]:"
@@ -1563,59 +1563,81 @@ msgstr ""
 "  -d 説明\n"
 "  -f 鍵ファイル"
 
-#: ../src/spacecmd/cryptokey.py:63
+#: ../src/spacecmd/cryptokey.py:69
+#, fuzzy
+msgid "cryptokey_update: Update a cryptographic key"
+msgstr "cryptokey_create: 暗号鍵を作成"
+
+#: ../src/spacecmd/cryptokey.py:70
+#, fuzzy
+msgid ""
+"usage: cryptokey_update [options])\n"
+"\n"
+"options:\n"
+"  -t GPG or SSL\n"
+"  -d DESCRIPTION\n"
+"  -f KEY_FILE"
+msgstr ""
+"使用方法: cryptokey_create [オプション])\n"
+"\n"
+"オプション:\n"
+"  -t GPG または SSL\n"
+"  -d 説明\n"
+"  -f 鍵ファイル"
+
+#: ../src/spacecmd/cryptokey.py:103
 msgid "GPG or SSL [G/S]:"
 msgstr "GPG または SSL [G/S]:"
 
-#: ../src/spacecmd/cryptokey.py:76
+#: ../src/spacecmd/cryptokey.py:116
 msgid "The key type is required"
 msgstr "キーの種類を指定する必要があります"
 
-#: ../src/spacecmd/cryptokey.py:80
+#: ../src/spacecmd/cryptokey.py:120
 msgid "A description is required"
 msgstr "説明を指定する必要があります"
 
-#: ../src/spacecmd/cryptokey.py:84
+#: ../src/spacecmd/cryptokey.py:124
 msgid "A file containing the key is required"
 msgstr "キーを含むファイルを指定する必要があります"
 
-#: ../src/spacecmd/cryptokey.py:92
+#: ../src/spacecmd/cryptokey.py:132
 msgid "No contents of the file"
 msgstr "ファイルの内容がありません"
 
-#: ../src/spacecmd/cryptokey.py:101
+#: ../src/spacecmd/cryptokey.py:141
 msgid "Invalid key type"
 msgstr "鍵の種類が正しくありません"
 
-#: ../src/spacecmd/cryptokey.py:115
+#: ../src/spacecmd/cryptokey.py:150
 msgid "cryptokey_delete: Delete a cryptographic key"
 msgstr "cryptokey_delete: 暗号鍵を削除"
 
-#: ../src/spacecmd/cryptokey.py:116
+#: ../src/spacecmd/cryptokey.py:151
 msgid "usage: cryptokey_delete NAME"
 msgstr "使用方法: cryptokey_delete 名前"
 
-#: ../src/spacecmd/cryptokey.py:147
+#: ../src/spacecmd/cryptokey.py:182
 msgid "Delete key(s) [y/N]:"
 msgstr "鍵を削除します [y/N]:"
 
-#: ../src/spacecmd/cryptokey.py:158
+#: ../src/spacecmd/cryptokey.py:193
 msgid "cryptokey_list: List all cryptographic keys (SSL, GPG)"
 msgstr "cryptokey_list: 全ての暗号鍵 (SSL, GPG) を表示"
 
-#: ../src/spacecmd/cryptokey.py:159
+#: ../src/spacecmd/cryptokey.py:194
 msgid "usage: cryptokey_list"
 msgstr "使用方法: cryptokey_list"
 
-#: ../src/spacecmd/cryptokey.py:177
+#: ../src/spacecmd/cryptokey.py:212
 msgid "cryptokey_details: Show the contents of a cryptographic key"
 msgstr "cryptokey_details: 暗号鍵の内容を表示"
 
-#: ../src/spacecmd/cryptokey.py:178
+#: ../src/spacecmd/cryptokey.py:213
 msgid "usage: cryptokey_details KEY ..."
 msgstr "使用方法: cryptokey_details 鍵 ..."
 
-#: ../src/spacecmd/cryptokey.py:210
+#: ../src/spacecmd/cryptokey.py:245
 #, python-format
 msgid "%s is not a valid crypto key"
 msgstr "%s は正しい暗号鍵ではありません"
@@ -1712,103 +1734,103 @@ msgstr ""
 msgid "The name of the distribution is required"
 msgstr "ディストリビューションの名前を指定する必要があります"
 
-#: ../src/spacecmd/distribution.py:74
+#: ../src/spacecmd/distribution.py:91
 msgid "Path to Kickstart Tree:"
 msgstr "キックスタートツリーのパス:"
 
-#: ../src/spacecmd/distribution.py:84
+#: ../src/spacecmd/distribution.py:101
 msgid "Base Channel:"
 msgstr "ベースチャンネル:"
 
-#: ../src/spacecmd/distribution.py:87
+#: ../src/spacecmd/distribution.py:104
 msgid "Invalid channel label"
 msgstr "チャンネルラベルが正しくありません"
 
-#: ../src/spacecmd/distribution.py:98
+#: ../src/spacecmd/distribution.py:115
 msgid "Install Types"
 msgstr "インストールタイプ"
 
-#: ../src/spacecmd/distribution.py:103
+#: ../src/spacecmd/distribution.py:120
 msgid "Install Type:"
 msgstr "インストールタイプ:"
 
-#: ../src/spacecmd/distribution.py:106
+#: ../src/spacecmd/distribution.py:123
 msgid "Invalid install type"
 msgstr "インストールタイプが正しくありません"
 
-#: ../src/spacecmd/distribution.py:114
+#: ../src/spacecmd/distribution.py:131
 msgid "A path is required"
 msgstr "パスを指定する必要があります"
 
-#: ../src/spacecmd/distribution.py:118 ../src/spacecmd/system.py:2600
+#: ../src/spacecmd/distribution.py:135 ../src/spacecmd/system.py:2600
 msgid "A base channel is required"
 msgstr "ベースチャンネルを指定する必要があります"
 
-#: ../src/spacecmd/distribution.py:122
+#: ../src/spacecmd/distribution.py:139
 msgid "An install type is required"
 msgstr "インストールタイプを指定する必要があります"
 
-#: ../src/spacecmd/distribution.py:144
+#: ../src/spacecmd/distribution.py:161
 msgid "distribution_list: List the available autoinstall trees"
 msgstr "distribution_list: 利用可能な自動インストールツリーを表示"
 
-#: ../src/spacecmd/distribution.py:145
+#: ../src/spacecmd/distribution.py:162
 msgid "usage: distribution_list"
 msgstr "使用方法: distribution_list"
 
-#: ../src/spacecmd/distribution.py:170
+#: ../src/spacecmd/distribution.py:187
 msgid "distribution_delete: Delete a Kickstart tree"
 msgstr "distribution_delete: キックスタートツリーを削除"
 
-#: ../src/spacecmd/distribution.py:171
+#: ../src/spacecmd/distribution.py:188
 msgid "usage: distribution_delete LABEL"
 msgstr "使用方法: distribution_delete ラベル"
 
-#: ../src/spacecmd/distribution.py:197 ../src/spacecmd/distribution.py:236
+#: ../src/spacecmd/distribution.py:214 ../src/spacecmd/distribution.py:253
 #, python-format
 msgid "No distributions matched argument %s"
 msgstr "パラメータ %s に合致するディストリビューションはありません"
 
-#: ../src/spacecmd/distribution.py:203
+#: ../src/spacecmd/distribution.py:220
 msgid "Delete distribution tree(s) [y/N]:"
 msgstr "ディストリビューションツリーを削除します [y/N]:"
 
-#: ../src/spacecmd/distribution.py:213
+#: ../src/spacecmd/distribution.py:230
 msgid "distribution_details: Show the details of a Kickstart tree"
 msgstr "distribution_details: キックスタートツリーの詳細を表示"
 
-#: ../src/spacecmd/distribution.py:214
+#: ../src/spacecmd/distribution.py:231
 msgid "usage: distribution_details LABEL"
 msgstr "使用方法: distribution_details ラベル"
 
-#: ../src/spacecmd/distribution.py:252
+#: ../src/spacecmd/distribution.py:269
 #, python-format
 msgid "Name:    %s"
 msgstr "名前:    %s"
 
-#: ../src/spacecmd/distribution.py:253
+#: ../src/spacecmd/distribution.py:270
 #, python-format
 msgid "Path:    %s"
 msgstr "パス:    %s"
 
-#: ../src/spacecmd/distribution.py:254 ../src/spacecmd/softwarechannel.py:632
+#: ../src/spacecmd/distribution.py:271 ../src/spacecmd/softwarechannel.py:632
 #, python-format
 msgid "Channel: %s"
 msgstr "チャンネル: %s"
 
-#: ../src/spacecmd/distribution.py:262
+#: ../src/spacecmd/distribution.py:279
 msgid "distribution_rename: Rename a Kickstart tree"
 msgstr "distribution_rename: キックスタートツリーの名前を変更"
 
-#: ../src/spacecmd/distribution.py:263
+#: ../src/spacecmd/distribution.py:280
 msgid "usage: distribution_rename OLDNAME NEWNAME"
 msgstr "使用方法: distribution_rename 変更前の名前 変更後の名前"
 
-#: ../src/spacecmd/distribution.py:294
+#: ../src/spacecmd/distribution.py:311
 msgid "distribution_update: Update the path of a Kickstart tree"
 msgstr "distribution_update: キックスタートツリーのパスを更新"
 
-#: ../src/spacecmd/distribution.py:295
+#: ../src/spacecmd/distribution.py:312
 msgid ""
 "usage: distribution_update NAME [options]\n"
 "\n"
@@ -1988,7 +2010,7 @@ msgstr "CVE"
 
 #: ../src/spacecmd/errata.py:431
 msgid "Vendor Advisory"
-msgstr ""
+msgstr "ベンダアドバイザリー"
 
 #: ../src/spacecmd/errata.py:435
 msgid "Solution"
@@ -3565,8 +3587,8 @@ msgstr "%s への接続に失敗しました"
 msgid "API (%s) is too old (>= %s required)"
 msgstr "API (%s) が古すぎます (>= %s が必要です)"
 
-#: ../src/spacecmd/misc.py:345 ../src/spacecmd/utils.py:250
-#: ../src/spacecmd/utils.py:564
+#: ../src/spacecmd/misc.py:345 ../src/spacecmd/utils.py:257
+#: ../src/spacecmd/utils.py:579
 #, python-format
 msgid "Could not read %s"
 msgstr "%s を読み込めませんでした"
@@ -3634,54 +3656,59 @@ msgstr "使用方法: whoamitalkingto"
 msgid "Yourself"
 msgstr "あなた自身です"
 
+#. hasTraditionalSystems endpoint is not available prior to 4.3
+#: ../src/spacecmd/misc.py:475
+msgid "Skipping traditional system check"
+msgstr "従来のシステムチェックのスキップしています"
+
 #. tell the user what's going on
-#: ../src/spacecmd/misc.py:543
+#: ../src/spacecmd/misc.py:547
 msgid "** Generating errata cache **"
 msgstr "** エラータキャッシュを生成しています **"
 
 #. tell the user what's going on
-#: ../src/spacecmd/misc.py:593
+#: ../src/spacecmd/misc.py:597
 msgid "** Generating package cache **"
 msgstr "** パッケージキャッシュを生成しています **"
 
 #. tell the user what's going on
-#: ../src/spacecmd/misc.py:702
+#: ../src/spacecmd/misc.py:706
 msgid "** Generating system cache **"
 msgstr "** システムキャッシュを生成しています **"
 
-#: ../src/spacecmd/misc.py:737
+#: ../src/spacecmd/misc.py:741
 #, python-format
 msgid "Could not create directory %s"
 msgstr "ディレクトリ %s を作成できませんでした"
 
-#: ../src/spacecmd/misc.py:809
+#: ../src/spacecmd/misc.py:813
 #, python-format
 msgid "Can't find system ID for %s"
 msgstr "%s に対するシステム ID が見つかりません"
 
-#: ../src/spacecmd/misc.py:814
+#: ../src/spacecmd/misc.py:818
 msgid "Duplicate system profile names found!"
 msgstr "重複したシステムプロファイル名が見つかりました！"
 
-#: ../src/spacecmd/misc.py:815
+#: ../src/spacecmd/misc.py:819
 msgid "Please reference systems by ID or resolve the"
 msgstr "ID でシステムを参照するか、もしくは"
 
-#: ../src/spacecmd/misc.py:816
+#: ../src/spacecmd/misc.py:820
 msgid "underlying issue with 'system_delete' or 'system_rename'"
 msgstr "'system_delete' や 'system_rename' で問題点をご確認ください"
 
-#: ../src/spacecmd/misc.py:884
+#: ../src/spacecmd/misc.py:888
 #, python-format
 msgid "No systems in group %s"
 msgstr "グループ %s 内にはシステムがありません"
 
-#: ../src/spacecmd/misc.py:898
+#: ../src/spacecmd/misc.py:902
 #, python-format
 msgid "No systems subscribed to %s"
 msgstr "%s をサブスクライブしているシステムはありません"
 
-#: ../src/spacecmd/misc.py:958
+#: ../src/spacecmd/misc.py:962
 msgid "Is this ok [y/N]:"
 msgstr "よろしいですか [y/N]:"
 
@@ -4107,12 +4134,12 @@ msgstr "使用方法: package_remove パッケージ ..."
 msgid "No packages found to remove"
 msgstr "削除すべきパッケージが見つかりませんでした"
 
-#: ../src/spacecmd/package.py:206 ../src/spacecmd/package.py:264
+#: ../src/spacecmd/package.py:210 ../src/spacecmd/package.py:268
 #: ../src/spacecmd/softwarechannel.py:1562 ../src/spacecmd/system.py:951
 msgid "Remove these packages [y/N]:"
 msgstr "これらのパッケージを削除します [y/N]:"
 
-#: ../src/spacecmd/package.py:207
+#: ../src/spacecmd/package.py:211
 msgid "No packages has been removed"
 msgstr "何もパッケージを削除しませんでした"
 
@@ -4145,7 +4172,7 @@ msgstr "孤立したパッケージは見つかりませんでした"
 msgid "No orphaned packages"
 msgstr "孤立したパッケージはありません"
 
-#: ../src/spacecmd/package.py:265
+#: ../src/spacecmd/package.py:269
 msgid "No packages were removed"
 msgstr "何もパッケージを削除しませんでした"
 
@@ -4179,7 +4206,7 @@ msgstr ""
 "proxy_container_config: プロキシシステムを作成し、その設定ファイルを返します"
 
 #: ../src/spacecmd/proxy.py:33
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "usage: proxy_container_config [options] PROXY_FQDN SERVER_FQDN MAX_CACHE "
 "EMAIL ROOT_CA CRT KEY\n"
@@ -4208,7 +4235,7 @@ msgid ""
 "  proxy_container_config -o config.zip proxy.lab server.lab 1024 proxy@acme."
 "org root_ca.crt proxy.crt proxy.key\n"
 msgstr ""
-"使用方法: proxy_container_config [オプション]  PROXY_FQDN SERVER_FQDN "
+"使用方法: proxy_container_config [オプション] PROXY_FQDN SERVER_FQDN "
 "MAX_CACHE EMAIL ROOT_CA CRT KEY\n"
 "\n"
 "パラメータ:\n"
@@ -4224,7 +4251,7 @@ msgstr ""
 "\n"
 "オプション:\n"
 "  -o, --output 生成された設定を作成するパス。デフォルト: 「config.tar.gz」\n"
-"  -p, --ssh-port プロキシがリスンするSSHポート。デフォルト: 22\n"
+"  -p, --ssh-port プロキシがリスンするSSHポート。デフォルト: 8022\n"
 "  -i, --intermediate-ca  PEM形式でプロキシ証明書に署名するために使用される\n"
 "            中間CAへのパス。複数回提供できます。\n"
 "\n"
@@ -4241,7 +4268,7 @@ msgstr ""
 "イルを返します"
 
 #: ../src/spacecmd/proxy.py:90
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "usage: proxy_container_config_generate_cert PROXY_FQDN SERVER_FQDN MAX_CACHE "
 "EMAIL\n"
@@ -4298,7 +4325,7 @@ msgstr ""
 "\n"
 "オプション:\n"
 "  -o, --output 生成された設定を作成するパス。デフォルト: 「config.tar.gz」\n"
-"  -p, --ssh-port プロキシがリスンするSSHポート。デフォルト: 22\n"
+"  -p, --ssh-port プロキシがリスンするSSHポート。デフォルト: 8022\n"
 "  --ca-crt 新しいプロキシ証明書の生成に使用するCAの証明書へのパス。\n"
 "           デフォルトで/root/ ssl-build/RHN-ORG-TRUSTED-SSL-CERTを使用。\n"
 "  --ca-key 新しいプロキシ証明書の生成に使用するCAの機密鍵へのパス。\n"
@@ -5220,7 +5247,7 @@ msgid "softwarechannel_listchildchannels: List child software channels"
 msgstr "softwarechannel_listchildchannels: 子ソフトウェアチャンネルを表示"
 
 #: ../src/spacecmd/softwarechannel.py:178
-#: ../src/spacecmd/softwarechannel.py:2723
+#: ../src/spacecmd/softwarechannel.py:2724
 msgid "usage:"
 msgstr "使用方法:"
 
@@ -5988,9 +6015,9 @@ msgstr "日付の書式 : YYYYMMDD"
 
 #: ../src/spacecmd/softwarechannel.py:1579
 #: ../src/spacecmd/softwarechannel.py:1714
-#: ../src/spacecmd/softwarechannel.py:2608
-#: ../src/spacecmd/softwarechannel.py:2651
-#: ../src/spacecmd/softwarechannel.py:2871
+#: ../src/spacecmd/softwarechannel.py:2609
+#: ../src/spacecmd/softwarechannel.py:2652
+#: ../src/spacecmd/softwarechannel.py:2872
 msgid "Options:"
 msgstr "オプション:"
 
@@ -6236,15 +6263,15 @@ msgid "usage: softwarechannel_errata_diff SOURCE_CHANNEL TARGET_CHANNEL"
 msgstr ""
 "使用方法: softwarechannel_errata_diff 比較元チャンネル 比較先チャンネル"
 
-#: ../src/spacecmd/softwarechannel.py:2236
+#: ../src/spacecmd/softwarechannel.py:2237
 msgid "softwarechannel_sync: "
 msgstr "softwarechannel_sync: "
 
-#: ../src/spacecmd/softwarechannel.py:2237
+#: ../src/spacecmd/softwarechannel.py:2238
 msgid "sync the packages of two software channels"
 msgstr "2 つのソフトウェアチャンネル間でパッケージを同期"
 
-#: ../src/spacecmd/softwarechannel.py:2239
+#: ../src/spacecmd/softwarechannel.py:2240
 msgid ""
 "usage: softwarechannel_sync SOURCE_CHANNEL TARGET_CHANNEL [options])\n"
 "    -q,--quiet : quiet mode (omits the output of common packages in both "
@@ -6255,130 +6282,130 @@ msgstr ""
 "    -q,--quiet : 静寂モード (両方のチャンネルに存在するパッケージの出力を省略"
 "します)"
 
-#: ../src/spacecmd/softwarechannel.py:2281
+#: ../src/spacecmd/softwarechannel.py:2282
 #, python-format
 msgid "%s packages from softwarechannel %s to %s"
 msgstr ""
 "パッケージを %s しています (ソフトウェアチャンネル %s から %s に対して)"
 
-#: ../src/spacecmd/softwarechannel.py:2300
-#: ../src/spacecmd/softwarechannel.py:2308
-#: ../src/spacecmd/softwarechannel.py:2422
-#: ../src/spacecmd/softwarechannel.py:2430
-#: ../src/spacecmd/softwarechannel.py:2562
-#: ../src/spacecmd/softwarechannel.py:2570
+#: ../src/spacecmd/softwarechannel.py:2301
+#: ../src/spacecmd/softwarechannel.py:2309
+#: ../src/spacecmd/softwarechannel.py:2423
+#: ../src/spacecmd/softwarechannel.py:2431
+#: ../src/spacecmd/softwarechannel.py:2563
+#: ../src/spacecmd/softwarechannel.py:2571
 msgid "failed to read key id"
 msgstr "キー ID の読み込みに失敗しました"
 
-#: ../src/spacecmd/softwarechannel.py:2311
+#: ../src/spacecmd/softwarechannel.py:2312
 msgid "packages common in both channels:"
 msgstr "両方のチャンネルに存在するパッケージ:"
 
-#: ../src/spacecmd/softwarechannel.py:2316
+#: ../src/spacecmd/softwarechannel.py:2317
 msgid "Omitting common packages in both specified channels"
 msgstr "両方のチャンネルに存在するパッケージについては省略します"
 
-#: ../src/spacecmd/softwarechannel.py:2321
+#: ../src/spacecmd/softwarechannel.py:2322
 msgid "packages to add to channel \""
 msgstr "下記のチャンネルに追加すべきパッケージ:"
 
-#: ../src/spacecmd/softwarechannel.py:2329
+#: ../src/spacecmd/softwarechannel.py:2330
 msgid "packages to remove from channel \""
 msgstr "下記のチャンネルから削除すべきパッケージ:"
 
-#: ../src/spacecmd/softwarechannel.py:2335
-#: ../src/spacecmd/softwarechannel.py:2457
-#: ../src/spacecmd/softwarechannel.py:2587
+#: ../src/spacecmd/softwarechannel.py:2336
+#: ../src/spacecmd/softwarechannel.py:2458
+#: ../src/spacecmd/softwarechannel.py:2588
 msgid "summary:"
 msgstr "概要:"
 
-#: ../src/spacecmd/softwarechannel.py:2336
 #: ../src/spacecmd/softwarechannel.py:2337
+#: ../src/spacecmd/softwarechannel.py:2338
 msgid " packages"
 msgstr " パッケージ"
 
-#: ../src/spacecmd/softwarechannel.py:2338
+#: ../src/spacecmd/softwarechannel.py:2339
 msgid "    add    "
 msgstr "    追加    "
 
-#: ../src/spacecmd/softwarechannel.py:2339
+#: ../src/spacecmd/softwarechannel.py:2340
 msgid " packages to   "
 msgstr " 個のパッケージを   "
 
-#: ../src/spacecmd/softwarechannel.py:2342
+#: ../src/spacecmd/softwarechannel.py:2343
 msgid "    remove "
 msgstr "    削除 "
 
-#: ../src/spacecmd/softwarechannel.py:2343
+#: ../src/spacecmd/softwarechannel.py:2344
 msgid " packages from "
 msgstr " 個のパッケージを "
 
-#: ../src/spacecmd/softwarechannel.py:2345
-#: ../src/spacecmd/softwarechannel.py:2465
+#: ../src/spacecmd/softwarechannel.py:2346
+#: ../src/spacecmd/softwarechannel.py:2466
 msgid "Perform these changes to channel "
 msgstr "これらの変更をチャンネルに適用します "
 
-#: ../src/spacecmd/softwarechannel.py:2366
+#: ../src/spacecmd/softwarechannel.py:2367
 msgid "softwarechannel_errata_sync: "
 msgstr "softwarechannel_errata_sync: "
 
-#: ../src/spacecmd/softwarechannel.py:2367
+#: ../src/spacecmd/softwarechannel.py:2368
 msgid "sync errata of two software channels"
 msgstr "2 つのソフトウェアチャンネルのエラータを同期"
 
-#: ../src/spacecmd/softwarechannel.py:2369
+#: ../src/spacecmd/softwarechannel.py:2370
 msgid "usage: softwarechannel_errata_sync SOURCE_CHANNEL TARGET_CHANNEL"
 msgstr ""
 "使用方法: softwarechannel_errata_sync 同期元チャンネル 同期先チャンネル"
 
-#: ../src/spacecmd/softwarechannel.py:2408
+#: ../src/spacecmd/softwarechannel.py:2409
 msgid "syncing errata from softwarechannel "
 msgstr "エラータを同期しています。同期元チャンネル: "
 
-#: ../src/spacecmd/softwarechannel.py:2409
-#: ../src/spacecmd/softwarechannel.py:2541
+#: ../src/spacecmd/softwarechannel.py:2410
+#: ../src/spacecmd/softwarechannel.py:2542
 msgid " to "
 msgstr " , 同期先チャンネル: "
 
-#: ../src/spacecmd/softwarechannel.py:2433
+#: ../src/spacecmd/softwarechannel.py:2434
 msgid "errata common in both channels:"
 msgstr "両方のチャンネルに存在するエラータ:"
 
-#: ../src/spacecmd/softwarechannel.py:2442
+#: ../src/spacecmd/softwarechannel.py:2443
 msgid "errata to add to channel \""
 msgstr "下記のチャンネルに追加するエラータ:"
 
-#: ../src/spacecmd/softwarechannel.py:2451
+#: ../src/spacecmd/softwarechannel.py:2452
 msgid "errata to remove from channel \""
 msgstr "下記のチャンネルから削除するエラータ:"
 
-#: ../src/spacecmd/softwarechannel.py:2460
-#: ../src/spacecmd/softwarechannel.py:2590
+#: ../src/spacecmd/softwarechannel.py:2461
+#: ../src/spacecmd/softwarechannel.py:2591
 msgid "    add   "
 msgstr "    追加   "
 
-#: ../src/spacecmd/softwarechannel.py:2461
+#: ../src/spacecmd/softwarechannel.py:2462
 msgid "errata to  "
 msgstr "個のエラータを  "
 
-#: ../src/spacecmd/softwarechannel.py:2462
+#: ../src/spacecmd/softwarechannel.py:2463
 msgid "    remove"
 msgstr "    削除"
 
-#: ../src/spacecmd/softwarechannel.py:2463
+#: ../src/spacecmd/softwarechannel.py:2464
 msgid "errata from"
 msgstr "個のエラータを"
 
-#: ../src/spacecmd/softwarechannel.py:2488
+#: ../src/spacecmd/softwarechannel.py:2489
 msgid "softwarechannel_errata_merge: "
 msgstr "softwarechannel_errata_merge: "
 
-#: ../src/spacecmd/softwarechannel.py:2489
+#: ../src/spacecmd/softwarechannel.py:2490
 msgid "merge errata of one software channel into another"
 msgstr ""
 "一方のソフトウェアチャンネルから他方のソフトウェアチャンネルにエラータを併合"
 
-#: ../src/spacecmd/softwarechannel.py:2491
+#: ../src/spacecmd/softwarechannel.py:2492
 msgid ""
 "usage:   softwarechannel_errata_merge SOURCE_CHANNEL TARGET_CHANNEL "
 "[FROM_DATE] [TO_DATE]"
@@ -6386,113 +6413,113 @@ msgstr ""
 "使用方法:   softwarechannel_errata_merge 併合元チャンネル 併合先チャンネル "
 "[開始日] [終了日]"
 
-#: ../src/spacecmd/softwarechannel.py:2492
+#: ../src/spacecmd/softwarechannel.py:2493
 msgid ""
 "example: softwarechannel_errata_merge OldSoftChannel NewSoftChannel "
 "2018-01-01"
 msgstr ""
 "例: softwarechannel_errata_merge OldSoftChannel NewSoftChannel 2018-01-01"
 
-#: ../src/spacecmd/softwarechannel.py:2493
+#: ../src/spacecmd/softwarechannel.py:2494
 msgid ""
 "note:    Providing only FROM_DATE will merge all errata since that date."
 msgstr ""
 "注意:    開始日だけを指定すると、それ以降に公開された全てのエラータを併合しま"
 "す。"
 
-#: ../src/spacecmd/softwarechannel.py:2494
+#: ../src/spacecmd/softwarechannel.py:2495
 msgid "note:    When no date is provided, all errata will be merged."
 msgstr "注意:    日付を指定しない場合、全てのエラータを併合します。"
 
-#: ../src/spacecmd/softwarechannel.py:2524
-#: ../src/spacecmd/softwarechannel.py:2531
+#: ../src/spacecmd/softwarechannel.py:2525
+#: ../src/spacecmd/softwarechannel.py:2532
 msgid "wrong dateformat: "
 msgstr "日付の書式が正しくありません: "
 
-#: ../src/spacecmd/softwarechannel.py:2524
-#: ../src/spacecmd/softwarechannel.py:2531
+#: ../src/spacecmd/softwarechannel.py:2525
+#: ../src/spacecmd/softwarechannel.py:2532
 msgid " please specify as: YYYY-MM-DD"
 msgstr " 下記の書式で指定してください: YYYY-MM-DD"
 
-#: ../src/spacecmd/softwarechannel.py:2540
+#: ../src/spacecmd/softwarechannel.py:2541
 msgid "merging errata from softwarechannel "
 msgstr "下記のソフトウェアチャンネルからのエラータを併合します: "
 
 #. pylint: disable=len-as-condition
-#: ../src/spacecmd/softwarechannel.py:2577
+#: ../src/spacecmd/softwarechannel.py:2578
 msgid "{} contains no errata which is not already present in {}"
 msgstr "{} には {} に含まれていないエラータがありません"
 
-#: ../src/spacecmd/softwarechannel.py:2582
+#: ../src/spacecmd/softwarechannel.py:2583
 msgid "errata to add to channel {}: "
 msgstr "チャンネル {} に追加されるエラータ: "
 
-#: ../src/spacecmd/softwarechannel.py:2588
 #: ../src/spacecmd/softwarechannel.py:2589
+#: ../src/spacecmd/softwarechannel.py:2590
 msgid " errata"
 msgstr " エラータ"
 
-#: ../src/spacecmd/softwarechannel.py:2591
+#: ../src/spacecmd/softwarechannel.py:2592
 msgid " errata to  "
 msgstr " 個のエラータを下記に追加:  "
 
-#: ../src/spacecmd/softwarechannel.py:2593
+#: ../src/spacecmd/softwarechannel.py:2594
 msgid "Perform these changes to channel {} [y/N]:"
 msgstr "チャンネル {} に対する変更を適用します [y/N]:"
 
-#: ../src/spacecmd/softwarechannel.py:2604
+#: ../src/spacecmd/softwarechannel.py:2605
 msgid "softwarechannel_syncrepos: "
 msgstr "softwarechannel_syncrepos: "
 
-#: ../src/spacecmd/softwarechannel.py:2605
+#: ../src/spacecmd/softwarechannel.py:2606
 msgid "Sync users repos for a software channel"
 msgstr "ソフトウェアチャンネルに対してユーザリポジトリーを同期"
 
-#: ../src/spacecmd/softwarechannel.py:2607
+#: ../src/spacecmd/softwarechannel.py:2608
 msgid "usage: softwarechannel_syncrepos <CHANNEL ...>"
 msgstr "使用方法: softwarechannel_syncrepos <チャンネル ...>"
 
-#: ../src/spacecmd/softwarechannel.py:2609
-#: ../src/spacecmd/softwarechannel.py:2652
+#: ../src/spacecmd/softwarechannel.py:2610
+#: ../src/spacecmd/softwarechannel.py:2653
 msgid "    -e/--no-errata : Do not sync errata"
 msgstr "    -e/--no-errata : エラータを同期しない"
 
-#: ../src/spacecmd/softwarechannel.py:2610
-#: ../src/spacecmd/softwarechannel.py:2653
+#: ../src/spacecmd/softwarechannel.py:2611
+#: ../src/spacecmd/softwarechannel.py:2654
 msgid "    -f/--fail : Terminate upon any error"
 msgstr "    -f/--fail : 何らかのエラー発生で中止する"
 
-#: ../src/spacecmd/softwarechannel.py:2611
-#: ../src/spacecmd/softwarechannel.py:2654
+#: ../src/spacecmd/softwarechannel.py:2612
+#: ../src/spacecmd/softwarechannel.py:2655
 msgid "    -k/--sync-kickstart : Create kickstartable tree"
 msgstr "    -k/--sync-kickstart : キックスタート可能なツリーを作成する"
 
-#: ../src/spacecmd/softwarechannel.py:2612
-#: ../src/spacecmd/softwarechannel.py:2655
+#: ../src/spacecmd/softwarechannel.py:2613
+#: ../src/spacecmd/softwarechannel.py:2656
 msgid "    -l/--latest : Only download latest package versions when repo syncs"
 msgstr ""
 "    -l/--latest : リポジトリーの同期にあたっては最新バージョンのパッケージの"
 "みをダウンロードする"
 
-#: ../src/spacecmd/softwarechannel.py:2647
+#: ../src/spacecmd/softwarechannel.py:2648
 msgid "softwarechannel_setsyncschedule: "
 msgstr "softwarechannel_setsyncschedule: "
 
-#: ../src/spacecmd/softwarechannel.py:2648
+#: ../src/spacecmd/softwarechannel.py:2649
 msgid "Sets the repo sync schedule for a software channel"
 msgstr "ソフトウェアチャンネルに対するリポジトリー同期スケジュールを設定"
 
-#: ../src/spacecmd/softwarechannel.py:2650
+#: ../src/spacecmd/softwarechannel.py:2651
 msgid "usage: softwarechannel_setsyncschedule <CHANNEL> <SCHEDULE>"
 msgstr "使用方法: softwarechannel_setsyncschedule <チャンネル> <スケジュール>"
 
-#: ../src/spacecmd/softwarechannel.py:2657
+#: ../src/spacecmd/softwarechannel.py:2658
 msgid ""
 "The schedule is specified in Quartz CronTrigger format without enclosing "
 "quotes."
 msgstr "スケジュールは引用符無しの Quartz CronTrigger 形式で指定します。"
 
-#: ../src/spacecmd/softwarechannel.py:2658
+#: ../src/spacecmd/softwarechannel.py:2659
 msgid ""
 "For example, to set a schedule of every day at 1am, <SCHEDULE> would be 0 0 "
 "1 * * ?"
@@ -6500,23 +6527,23 @@ msgstr ""
 "たとえば毎日 AM1:00 にスケジュールしたい場合、 <スケジュール> は 0 0 1 * * ? "
 "のようになります"
 
-#: ../src/spacecmd/softwarechannel.py:2659
+#: ../src/spacecmd/softwarechannel.py:2660
 msgid "If <SCHEDULE> is left empty, it will be disabled."
 msgstr "<スケジュール> を指定しない場合、そのスケジュールは無効化されます。"
 
-#: ../src/spacecmd/softwarechannel.py:2694
+#: ../src/spacecmd/softwarechannel.py:2695
 msgid "softwarechannel_removesyncschedule: "
 msgstr "softwarechannel_removesyncschedule: "
 
-#: ../src/spacecmd/softwarechannel.py:2695
+#: ../src/spacecmd/softwarechannel.py:2696
 msgid "Removes the repo sync schedule for a software channel"
 msgstr "ソフトウェアチャンネルに対するリポジトリー同期スケジュールを削除"
 
-#: ../src/spacecmd/softwarechannel.py:2697
+#: ../src/spacecmd/softwarechannel.py:2698
 msgid "usage: softwarechannel_removesyncschedule <CHANNEL>"
 msgstr "使用方法: softwarechannel_removesyncschedule <チャンネル>"
 
-#: ../src/spacecmd/softwarechannel.py:2722
+#: ../src/spacecmd/softwarechannel.py:2723
 msgid ""
 "softwarechannel_listsyncschedule: List sync schedules for all software "
 "channels"
@@ -6524,82 +6551,82 @@ msgstr ""
 "softwarechannel_listsyncschedule: 全てのソフトウェアチャンネルに対する同期ス"
 "ケジュールを表示"
 
-#: ../src/spacecmd/softwarechannel.py:2724
+#: ../src/spacecmd/softwarechannel.py:2725
 msgid "softwarechannel_listsyncschedule : List all channels"
 msgstr "softwarechannel_listsyncschedule : 全てのチャンネルを表示"
 
-#: ../src/spacecmd/softwarechannel.py:2747
+#: ../src/spacecmd/softwarechannel.py:2748
 msgid "key"
 msgstr "キー"
 
-#: ../src/spacecmd/softwarechannel.py:2747
+#: ../src/spacecmd/softwarechannel.py:2748
 msgid "Channel Name"
 msgstr "チャンネル名"
 
-#: ../src/spacecmd/softwarechannel.py:2747
+#: ../src/spacecmd/softwarechannel.py:2748
 msgid "Update Schedule"
 msgstr "更新スケジュール"
 
-#: ../src/spacecmd/softwarechannel.py:2759
+#: ../src/spacecmd/softwarechannel.py:2760
 msgid "softwarechannel_addrepo: Add a repo to a software channel"
 msgstr "softwarechannel_addrepo: ソフトウェアチャンネルにリポジトリーを追加"
 
-#: ../src/spacecmd/softwarechannel.py:2760
+#: ../src/spacecmd/softwarechannel.py:2761
 msgid "usage: softwarechannel_addrepo CHANNEL REPO"
 msgstr "使用方法: softwarechannel_addrepo チャンネル リポジトリー"
 
-#: ../src/spacecmd/softwarechannel.py:2795
+#: ../src/spacecmd/softwarechannel.py:2796
 msgid "softwarechannel_removerepo: Remove a repo from a software channel"
 msgstr ""
 "softwarechannel_removerepo: ソフトウェアチャンネルからリポジトリーを削除"
 
-#: ../src/spacecmd/softwarechannel.py:2796
+#: ../src/spacecmd/softwarechannel.py:2797
 msgid "usage: softwarechannel_removerepo CHANNEL REPO"
 msgstr "使用方法: softwarechannel_removerepo チャンネル リポジトリー"
 
-#: ../src/spacecmd/softwarechannel.py:2838
+#: ../src/spacecmd/softwarechannel.py:2839
 msgid "softwarechannel_listrepos: List the repos for a software channel"
 msgstr ""
 "softwarechannel_listrepos: ソフトウェアチャンネルに対するリポジトリー一覧の表"
 "示"
 
-#: ../src/spacecmd/softwarechannel.py:2839
+#: ../src/spacecmd/softwarechannel.py:2840
 msgid "usage: softwarechannel_listrepos CHANNEL"
 msgstr "使用方法: softwarechannel_listrepos チャンネル"
 
-#: ../src/spacecmd/softwarechannel.py:2862
+#: ../src/spacecmd/softwarechannel.py:2863
 msgid "No repos have been found for this channel."
 msgstr "このチャンネルに対してはリポジトリーが見つかりませんでした。"
 
-#: ../src/spacecmd/softwarechannel.py:2869
+#: ../src/spacecmd/softwarechannel.py:2870
 msgid "softwarechannel_mirrorpackages: Download packages of a given channel"
 msgstr ""
 "softwarechannel_mirrorpackages: 指定したチャンネルのパッケージをダウンロード"
 "する"
 
-#: ../src/spacecmd/softwarechannel.py:2870
+#: ../src/spacecmd/softwarechannel.py:2871
 msgid "usage: softwarechannel_mirrorpackages CHANNEL"
 msgstr "使用方法: softwarechannel_mirrorpackages チャンネル"
 
-#: ../src/spacecmd/softwarechannel.py:2872
+#: ../src/spacecmd/softwarechannel.py:2873
 msgid "    -l/--latest : Only mirror latest package version"
 msgstr "    -l/--latest : パッケージのうち最新バージョンのみをミラーする"
 
-#: ../src/spacecmd/softwarechannel.py:2903
+#: ../src/spacecmd/softwarechannel.py:2904
 msgid "Skipping"
 msgstr "飛ばしています"
 
-#: ../src/spacecmd/softwarechannel.py:2905
+#: ../src/spacecmd/softwarechannel.py:2906
 msgid "Fetching package"
 msgstr "パッケージを取得しています"
 
-#: ../src/spacecmd/softwarechannel.py:2910
+#: ../src/spacecmd/softwarechannel.py:2911
 #, python-format
 msgid "Received package %s from channel %s is broken. Content is too short"
 msgstr ""
 "パッケージ %s (チャンネル %s から) は壊れています。コンテンツが短すぎます"
 
-#: ../src/spacecmd/softwarechannel.py:2914
+#: ../src/spacecmd/softwarechannel.py:2915
 #, python-format
 msgid "Could not fetch package %s from channel %s"
 msgstr "パッケージ %s (チャンネル %s から) を取得できませんでした"
@@ -6884,7 +6911,7 @@ msgstr "%s をスケジュールする処理が失敗しました"
 msgid "Scheduled: %i system(s)"
 msgstr "スケジュール済み: %i 個のシステム"
 
-#: ../src/spacecmd/system.py:548 ../src/spacecmd/utils.py:246
+#: ../src/spacecmd/system.py:548 ../src/spacecmd/utils.py:253
 #, python-format
 msgid "Could not remove %s"
 msgstr "%s を削除できませんでした"
@@ -8379,7 +8406,6 @@ msgstr ""
 "system_scheduleproductmigration: システムに対して製品移行をスケジュールする。"
 
 #: ../src/spacecmd/system.py:4604
-#, fuzzy
 msgid ""
 "usage: system_scheduleproductmigration <SYSTEM> <BASE_CHANNEL_LABEL> "
 "<MIGRATION_TARGET> [options] \n"
@@ -8401,10 +8427,12 @@ msgstr ""
 "    <移行先> として指定可能なターゲットの一覧を表示するには "
 "system_listmigrationtargets を使用する。\n"
 "    <移行先> は下記のような書式で渡されなければならないことに注意: "
-"[3143,3146,3147,3145,3144,3148,3062]. \n"
+"[3143,3146,3147,3145,3144,3148,3062] \n"
 "    オプション: \n"
 "        -s (開始時刻) \n"
-"        -d 予行演習モード (実際には処理を行なわない) \n"
+"        -d 予行演習モード(実際には処理を行なわない) \n"
+"        --allow-vendor-change (ベンダーの変更を許可する) \n"
+"        -r (後継のない製品を削除する) \n"
 "        -c (子チャンネル) (カンマ区切りで子チャンネルのラベルを指定する。空白"
 "は使用しないこと)"
 
@@ -8421,9 +8449,8 @@ msgid "Scheduling Product migration for system "
 msgstr "システムに対して製品移行をスケジュールしています "
 
 #: ../src/spacecmd/system.py:4662
-#, fuzzy
 msgid "Migration target "
-msgstr "  移行ターゲットがありません"
+msgstr "移行ターゲット "
 
 #: ../src/spacecmd/system.py:4668
 msgid "Scheduled action ID: "
@@ -8768,131 +8795,131 @@ msgstr "使用方法: user_setpassword ユーザ パスワード"
 #. So we catch this error and remove the corrupt partial file
 #. If you don't do this then spacecmd will fail with an unhandled
 #. exception until the partial file is manually removed
-#: ../src/spacecmd/utils.py:135
+#: ../src/spacecmd/utils.py:142
 #, python-format
 msgid "Loading cache file %s failed"
 msgstr "キャッシュファイル %s の読み込みに失敗しました"
 
-#: ../src/spacecmd/utils.py:136
+#: ../src/spacecmd/utils.py:143
 #, python-format
 msgid "Cache generation was probably interrupted,removing corrupt %s"
 msgstr ""
 "キャッシュ生成時に割り込みが発生しました。壊れている %s を削除しています"
 
-#: ../src/spacecmd/utils.py:141
+#: ../src/spacecmd/utils.py:148
 #, python-format
 msgid "Couldn't load cache from %s"
 msgstr "%s からキャッシュを読み込めませんでした"
 
-#: ../src/spacecmd/utils.py:162
+#: ../src/spacecmd/utils.py:169
 #, python-format
 msgid "Couldn't write to %s"
 msgstr "%s に書き込めませんでした"
 
-#: ../src/spacecmd/utils.py:207
+#: ../src/spacecmd/utils.py:214
 msgid "Could not open the temporary file"
 msgstr "一時ファイルを開くことができませんでした"
 
-#: ../src/spacecmd/utils.py:226
+#: ../src/spacecmd/utils.py:233
 #, python-format
 msgid "Editor \"%s\" exited with code %i"
 msgstr "エディタ \"%s\" が終了コード %i で終了しました"
 
-#: ../src/spacecmd/utils.py:228
+#: ../src/spacecmd/utils.py:235
 #, python-format
 msgid "General failure running editor: %s"
 msgstr "エディタ実行時の一般的なエラーです: %s"
 
-#: ../src/spacecmd/utils.py:231
+#: ../src/spacecmd/utils.py:238
 msgid "No editors found"
 msgstr "エディタが見つかりませんでした"
 
-#: ../src/spacecmd/utils.py:370
+#: ../src/spacecmd/utils.py:376
 msgid "Invalid time provided"
 msgstr "時刻の指定が正しくありません"
 
-#: ../src/spacecmd/utils.py:459
+#: ../src/spacecmd/utils.py:474
 #, python-format
 msgid "%s is an unknown errata type"
 msgstr "%s は不明なエラータタイプです"
 
-#: ../src/spacecmd/utils.py:467
+#: ../src/spacecmd/utils.py:482
 msgid "Security Errata"
 msgstr "セキュリティエラータ"
 
-#: ../src/spacecmd/utils.py:476
+#: ../src/spacecmd/utils.py:491
 msgid "Bug Fix Errata"
 msgstr "バグ修正エラータ"
 
-#: ../src/spacecmd/utils.py:485
+#: ../src/spacecmd/utils.py:500
 msgid "Enhancement Errata"
 msgstr "機能強化エラータ"
 
-#: ../src/spacecmd/utils.py:495
+#: ../src/spacecmd/utils.py:510
 msgid "Current Selections"
 msgstr "現在の選択"
 
-#: ../src/spacecmd/utils.py:505
+#: ../src/spacecmd/utils.py:520
 msgid "Available Configuration Channels"
 msgstr "利用可能な設定チャンネル"
 
-#: ../src/spacecmd/utils.py:511 ../src/spacecmd/utils.py:531
+#: ../src/spacecmd/utils.py:526 ../src/spacecmd/utils.py:546
 msgid "Channel:"
 msgstr "チャンネル:"
 
-#: ../src/spacecmd/utils.py:514 ../src/spacecmd/utils.py:534
+#: ../src/spacecmd/utils.py:529 ../src/spacecmd/utils.py:549
 msgid "Invalid channel"
 msgstr "チャンネルが正しくありません"
 
-#: ../src/spacecmd/utils.py:518
+#: ../src/spacecmd/utils.py:533
 msgid "New Rank:"
 msgstr "新しい順位:"
 
-#: ../src/spacecmd/utils.py:525 ../src/spacecmd/utils.py:528
+#: ../src/spacecmd/utils.py:540 ../src/spacecmd/utils.py:543
 msgid "Invalid rank"
 msgstr "順位が正しくありません"
 
-#: ../src/spacecmd/utils.py:539
+#: ../src/spacecmd/utils.py:554
 msgid "Clearing current selections"
 msgstr "現在の選択を消去しています"
 
-#: ../src/spacecmd/utils.py:708
+#: ../src/spacecmd/utils.py:735
 msgid "Could not generate json data object!"
 msgstr "JSON データオブジェクトを生成できませんでした！"
 
-#: ../src/spacecmd/utils.py:715
+#: ../src/spacecmd/utils.py:742
 #, python-format
 msgid "Could not open file %s for writing: %s"
 msgstr "ファイル %s を書き込み用に開くことができませんでした: %s"
 
-#: ../src/spacecmd/utils.py:726
+#: ../src/spacecmd/utils.py:753
 #, python-format
 msgid "Could not open file %s for reading: %s"
 msgstr "ファイル %s を読み込み用に開くことができませんでした: %s"
 
-#: ../src/spacecmd/utils.py:728
+#: ../src/spacecmd/utils.py:755
 #, python-format
 msgid "Could not parse JSON data from %s: %s"
 msgstr "JSON データを %s から処理できませんでした: %s"
 
 #. pylint: disable=broad-except
-#: ../src/spacecmd/utils.py:730
+#: ../src/spacecmd/utils.py:757
 #, python-format
 msgid "Error processing file %s: %s"
 msgstr "ファイル %s を処理する際にエラーが発生しました: %s"
 
-#: ../src/spacecmd/utils.py:758
+#: ../src/spacecmd/utils.py:794
 msgid "Skipping usage of common strings: both strings are equal"
 msgstr ""
 "共通する文字列を使用しているため読み飛ばしています: 両方の文字列が同じです"
 
-#: ../src/spacecmd/utils.py:774
+#: ../src/spacecmd/utils.py:810
 msgid "Skipping usage of common strings: number of substrings differ"
 msgstr ""
 "共通する文字列を使用しているため読み飛ばしています: 複数の箇所に違いがありま"
 "す"
 
-#: ../src/spacecmd/utils.py:860
+#: ../src/spacecmd/utils.py:898
 msgid "Parameter {} not a string type, but {}."
 msgstr "パラメータ {} は文字列型ではなく {} です。"
 

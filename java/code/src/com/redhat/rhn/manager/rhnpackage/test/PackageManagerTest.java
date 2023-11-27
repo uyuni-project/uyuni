@@ -51,6 +51,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.PackageDto;
 import com.redhat.rhn.frontend.dto.PackageListItem;
 import com.redhat.rhn.frontend.dto.PackageOverview;
+import com.redhat.rhn.frontend.dto.SsmUpgradablePackageListItem;
 import com.redhat.rhn.frontend.dto.UpgradablePackageListItem;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.manager.channel.ChannelManager;
@@ -166,7 +167,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testGuestimateHandlesNullArchId() throws Exception {
+    public void testGuestimateHandlesNullArchId() {
         PackageListItem pli = PackageListItem.parse("10000|1000");
         assertNull(pli.getIdThree());
         assertNull(PackageManager.guestimatePackageBySystem(10000L, 100L, 100L,
@@ -174,7 +175,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testGuestimateInvalidPackage() throws Exception {
+    public void testGuestimateInvalidPackage() {
         // guestimatePackageBySystem should return null if it
         // can't find a package, not throw an exception.
         try {
@@ -188,11 +189,10 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testUpgradable() throws Exception {
-        Map info = ErrataCacheManagerTest.
-            createServerNeededCache(user, ErrataFactory.ERRATA_TYPE_BUG);
+        Map<String, Object> info = ErrataCacheManagerTest.createServerNeededCache(user, ErrataFactory.ERRATA_TYPE_BUG);
         Server s = (Server) info.get("server");
         Package p = (Package) info.get("package");
-        p = (Package) TestUtils.saveAndReload(p);
+        p = TestUtils.saveAndReload(p);
 
         DataResult<UpgradablePackageListItem> dr =
             PackageManager.upgradable(s.getId(), null);
@@ -202,7 +202,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
             if (p.getPackageName().getName().equals(item.getName())) {
                 containsSamePackage = true;
             }
-            assertTrue(item.getIdCombo().split("\\|").length == 3);
+            assertEquals(3, item.getIdCombo().split("\\|").length);
         }
         assertTrue(containsSamePackage);
     }
@@ -308,10 +308,8 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
      * @param packageName The name of the package to create.
      * @param c The channel to which to add the package
      * @return The package with that name in the channel.
-     * @throws Exception something bad happened
      */
-    public static Package addPackageToChannel(String packageName, Channel c)
-            throws Exception {
+    public static Package addPackageToChannel(String packageName, Channel c) {
 
         PackageName pn = PackageFactory.lookupOrCreatePackageByName(packageName);
         if (pn == null) {
@@ -333,7 +331,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
                 " and package.packageName.id = " + pn.getId());
         List packages = query.list();
         Package retval = null;
-        if (packages != null && packages.size() > 0) {
+        if (packages != null && !packages.isEmpty()) {
             retval = (Package) packages.get(0);
         }
         else {
@@ -362,7 +360,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
         Channel c = ChannelTestUtils.createTestChannel(user);
         DataResult dr = PackageManager.possiblePackagesForPushingIntoChannel(c.getId(),
                 e.getId(), null);
-        assertTrue(dr.size() > 0);
+        assertFalse(dr.isEmpty());
    }
 
 
@@ -379,11 +377,9 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testPackageIdsInSet() throws Exception {
-
-        DataResult dr = PackageManager.packageIdsInSet(user, "packages_to_add",
+    public void testPackageIdsInSet() {
+        DataResult<PackageOverview> dr = PackageManager.packageIdsInSet(user, "packages_to_add",
                                                        new PageControl());
-
         assertNotNull(dr);
     }
 
@@ -494,55 +490,54 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
         Package pack = PackageTest.createTestPackage(null);
         channel1.addPackage(pack);
 
-        List test = PackageManager.lookupPackageForChannelFromChannel(channel1.getId(),
+        List<PackageOverview> test = PackageManager.lookupPackageForChannelFromChannel(channel1.getId(),
                 channel2.getId());
-        assertTrue(test.size() == 1);
-        PackageOverview packOver = (PackageOverview) test.get(0);
+        assertEquals(1, test.size());
+        PackageOverview packOver = test.get(0);
         assertEquals(pack.getId(), packOver.getId());
-
 
         channel2.addPackage(pack);
         test = PackageManager.lookupPackageForChannelFromChannel(channel1.getId(),
                 channel2.getId());
-        assertTrue(test.size() == 0);
+        assertTrue(test.isEmpty());
     }
 
     @Test
     public void testLookupCustomPackagesForChannel() throws Exception {
         Channel channel1 = ChannelFactoryTest.createTestChannel(user);
         Package pack = PackageTest.createTestPackage(user.getOrg());
-        List test = PackageManager.lookupCustomPackagesForChannel(
+        List<PackageOverview> test = PackageManager.lookupCustomPackagesForChannel(
                 channel1.getId(), user.getOrg().getId());
 
-        assertTrue(test.size() == 1);
-        PackageOverview packOver = (PackageOverview) test.get(0);
+        assertEquals(1, test.size());
+        PackageOverview packOver = test.get(0);
         assertEquals(pack.getId(), packOver.getId());
 
         channel1.addPackage(pack);
         test = PackageManager.lookupCustomPackagesForChannel(
                 channel1.getId(), user.getOrg().getId());
 
-        assertTrue(test.size() == 0);
+        assertTrue(test.isEmpty());
     }
 
     @Test
     public void testListOrphanPackages() throws Exception {
         Channel channel1 = ChannelFactoryTest.createTestChannel(user);
         Package pack = PackageTest.createTestPackage(user.getOrg());
-        List test = PackageManager.listOrphanPackages(user.getOrg().getId(), false);
+        List<PackageOverview> test = PackageManager.listOrphanPackages(user.getOrg().getId(), false);
 
-        assertTrue(test.size() == 1);
-        PackageOverview packOver = (PackageOverview) test.get(0);
+        assertEquals(1, test.size());
+        PackageOverview packOver = test.get(0);
         assertEquals(pack.getId(), packOver.getId());
 
         channel1.addPackage(pack);
         test = PackageManager.listOrphanPackages(user.getOrg().getId(), false);
 
-        assertTrue(test.size() == 0);
+        assertTrue(test.isEmpty());
         Package pack2 = PackageTest.createTestPackage(user.getOrg());
         test = PackageManager.listOrphanPackages(user.getOrg().getId(), false);
 
-        assertTrue(test.size() == 1);
+        assertEquals(1, test.size());
 
     }
 
@@ -567,14 +562,14 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
             upgradedPackageEvr, ErrataFactory.ERRATA_TYPE_BUG);
 
         // Test
-        DataResult result = PackageManager.upgradablePackagesFromServerSet(user);
+        DataResult<SsmUpgradablePackageListItem> result = PackageManager.upgradablePackagesFromServerSet(user);
 
-        assertTrue(result != null);
+        assertNotNull(result);
         assertEquals(2, result.size());
     }
 
     @Test
-    public void testDeletePackages() throws Exception {
+    public void testDeletePackages() {
         // Configuration
         final int numPackagesToDelete = 50;
 

@@ -1,4 +1,4 @@
-# Copyright (c) 2020-2022 SUSE LLC
+# Copyright (c) 2020-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # The scenarios in this feature are skipped if there is no proxy
@@ -31,7 +31,7 @@ Feature: Setup SUSE Manager proxy
     And I enter "linux" as "password"
     And I select "1-proxy_key" from "activationKeys"
     And I click on "Bootstrap"
-    And I wait until I see "Successfully bootstrapped host!" text
+    And I wait until I see "Bootstrap process initiated." text
     And I wait until onboarding is completed for "proxy"
 
   # bsc#1085436 - Apache returns 403 Forbidden after a zypper refresh on minion
@@ -41,17 +41,32 @@ Feature: Setup SUSE Manager proxy
   Scenario: Detect latest Salt changes on the proxy
     When I query latest Salt changes on "proxy"
 
-  Scenario: Copy the keys and configure the proxy
+  Scenario: Copy the server keys to the proxy
     When I copy server's keys to the proxy
-    And I configure the proxy
+    
+  Scenario: Configure the proxy    
+    When I configure the proxy
     And I allow all SSL protocols on the proxy's apache
+    And I reload the "apache2.service" service on "proxy"
+    And file "/etc/sysconfig/apache2" should contain "proxy" on "proxy"
+    And file "/etc/sysconfig/apache2" should contain "rewrite" on "proxy"
+    And file "/etc/sysconfig/apache2" should contain "version" on "proxy"
+    And file "/etc/sysconfig/apache2" should contain "ssl" on "proxy"
+    And file "/etc/sysconfig/apache2" should contain "wsgi" on "proxy"
     Then I should see "proxy" via spacecmd
     And service "salt-broker" is active on "proxy"
 
+@susemanager
   Scenario: Check proxy system details
     When I am on the Systems overview page of this "proxy"
     Then I should see "proxy" short hostname
     And I wait until I see "SUSE Manager Proxy" text, refreshing the page
+
+@uyuni
+  Scenario: Check proxy system details
+    When I am on the Systems overview page of this "proxy"
+    Then I should see "proxy" short hostname
+    And I wait until I see "Uyuni Proxy" text, refreshing the page
 
   Scenario: Check events history for failures on the proxy
     When I check for failed events on history event page

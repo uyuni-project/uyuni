@@ -37,6 +37,7 @@ public abstract class BasePackageListAction extends BaseListAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processRequestAttributes(RequestContext rctxIn) {
         HttpServletRequest request = rctxIn.getRequest();
         User user = rctxIn.getCurrentUser();

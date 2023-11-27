@@ -17,12 +17,14 @@ package com.redhat.rhn.frontend.integration;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.security.SessionSwap;
+import com.redhat.rhn.common.util.SHA256Crypt;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerLoginCommand;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.security.SecureRandom;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -82,8 +84,7 @@ public class IntegrationService {
      * we can eventually make this pluggable to go through a list of
      * things that need to setup authorization.
      *
-     * @param username to authorize with
-     * @param password to authorize with
+     * @param login to authorize with
      * @return token created during authorization
      */
     private String authorize(String login) {
@@ -97,15 +98,15 @@ public class IntegrationService {
             passwd = Config.get().getString(ConfigDefaults.WEB_SESSION_SECRET_1);
         }
         else {
-            String md5random = SessionSwap.computeMD5Hash(
-                    RandomStringUtils.random(10, SessionSwap.HEX_CHARS));
-            // Store the md5random number in our map
+            String sha256random = SHA256Crypt.sha256Hex(RandomStringUtils.random(64, 0, 0,
+                    false, false, SessionSwap.HEX_CHARS, new SecureRandom()));
+            // Store the sha256random number in our map
             // and send over the encoded version of it.
             // On the return checkRandomToken() call
             // we will decode the encoded data to make sure it is the
             // unaltered random number.
-            randomTokenStore.put(login, md5random);
-            passwd  = SessionSwap.encodeData(md5random);
+            randomTokenStore.put(login, sha256random);
+            passwd  = SessionSwap.encodeData(sha256random);
         }
 
         log.debug("Authorize called with username: {}", login);

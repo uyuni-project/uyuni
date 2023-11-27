@@ -15,13 +15,20 @@
 
 package com.suse.manager.admin;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.common.validator.ValidatorResult;
+import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.channel.ContentSource;
 import com.redhat.rhn.domain.cloudpayg.CloudRmtHostFactory;
 import com.redhat.rhn.domain.cloudpayg.PaygSshData;
 import com.redhat.rhn.domain.cloudpayg.PaygSshDataFactory;
+import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
+import com.redhat.rhn.domain.kickstart.KickstartFactory;
+import com.redhat.rhn.domain.kickstart.crypto.CryptoKey;
+import com.redhat.rhn.domain.kickstart.crypto.SslCryptoKey;
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
 import com.redhat.rhn.domain.scc.SCCRepositoryAuth;
 import com.redhat.rhn.frontend.action.common.BadParameterException;
@@ -39,6 +46,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class PaygAdminManager {
 
@@ -128,7 +138,7 @@ public class PaygAdminManager {
 
         PaygSshDataFactory.savePaygSshData(paygSshData);
         // we need to commit before call the taskomatic task, otherwise new data will not be available
-        PaygSshDataFactory.commitTransaction();
+        HibernateFactory.commitTransaction();
         try {
             taskomaticApi.scheduleSinglePaygUpdate(paygSshData);
         }
@@ -143,9 +153,9 @@ public class PaygAdminManager {
     private void validateSetDetailsFields(Map<String, Object> details) {
         ValidatorResult result = new ValidatorResult();
         details.keySet().forEach(field -> {
-            if (!Arrays.stream(PaygAdminFields.values())
+            if (Arrays.stream(PaygAdminFields.values())
                     .filter(PaygAdminFields::isEditable)
-                    .anyMatch(f -> f.name().equals(field))) {
+                    .noneMatch(f -> f.name().equals(field))) {
                 result.addError("payg.unknown_edit_field", field);
             }
         });
@@ -168,6 +178,11 @@ public class PaygAdminManager {
         Integer port = null;
         Integer bastionPort = null;
 
+        String username;
+        String password;
+        String key;
+        String keyPassword;
+
         if (paygProperties.isInstanceEdit()) {
             if (!StringUtils.isEmpty(paygProperties.getPort())) {
                 try {
@@ -177,10 +192,25 @@ public class PaygAdminManager {
                     result.addFieldError(PaygAdminFields.port.name(), "payg.port_invalid");
                 }
             }
+            username = paygProperties.getUsername();
+            password = paygProperties.getPassword();
+            key = paygProperties.getKey();
+            keyPassword = paygProperties.getKeyPassword();
         }
         else {
             port = paygSshData.getPort();
+            username = paygSshData.getUsername();
+            password = paygSshData.getPassword();
+            key = paygSshData.getKey();
+            keyPassword = paygSshData.getKeyPassword();
         }
+
+        String bastionHost;
+        String bastionUsername;
+        String bastionPassword;
+        String bastionKey;
+        String bastionKeyPassword;
+
         if (paygProperties.isBastionEdit()) {
             if (!StringUtils.isEmpty(paygProperties.getBastionPort())) {
                 try {
@@ -190,26 +220,35 @@ public class PaygAdminManager {
                     result.addFieldError(PaygAdminFields.bastion_port.name(), "payg.bastion_port_invalid");
                 }
             }
+            bastionHost = paygProperties.getBastionHost();
+            bastionUsername = paygProperties.getBastionUsername();
+            bastionPassword = paygProperties.getBastionPassword();
+            bastionKey = paygProperties.getBastionKey();
+            bastionKeyPassword = paygProperties.getBastionKeyPassword();
         }
         else {
             bastionPort = paygSshData.getBastionPort();
+            bastionHost = paygSshData.getBastionHost();
+            bastionUsername = paygSshData.getBastionUsername();
+            bastionPassword = paygSshData.getBastionPassword();
+            bastionKey = paygSshData.getBastionKey();
+            bastionKeyPassword = paygSshData.getBastionKeyPassword();
         }
 
         return setDetails(paygSshData,
                 paygProperties.getDescription(),
                 paygSshData.getHost(),
                 port,
-                paygProperties.isInstanceEdit() ? paygProperties.getUsername() : paygSshData.getUsername(),
-                paygProperties.isInstanceEdit() ? paygProperties.getPassword() : paygSshData.getPassword(),
-                paygProperties.isInstanceEdit() ? paygProperties.getKey() : paygSshData.getKey(),
-                paygProperties.isInstanceEdit() ? paygProperties.getKeyPassword() : paygSshData.getKeyPassword(),
-                paygProperties.isBastionEdit() ? paygProperties.getBastionHost() : paygSshData.getBastionHost(),
+                username,
+                password,
+                key,
+                keyPassword,
+                bastionHost,
                 bastionPort,
-                paygProperties.isBastionEdit() ? paygProperties.getBastionUsername() : paygSshData.getBastionUsername(),
-                paygProperties.isBastionEdit() ? paygProperties.getBastionPassword() : paygSshData.getBastionPassword(),
-                paygProperties.isBastionEdit() ? paygProperties.getBastionKey() : paygSshData.getBastionKey(),
-                paygProperties.isBastionEdit() ? paygProperties.getBastionKeyPassword() :
-                        paygSshData.getBastionKeyPassword());
+                bastionUsername,
+                bastionPassword,
+                bastionKey,
+                bastionKeyPassword);
     }
 
     /**
@@ -220,7 +259,7 @@ public class PaygAdminManager {
     public PaygSshData setDetails(String host,  Map<String, Object> details) {
         if (StringUtils.isEmpty(host)) {
             LOG.debug("payg empty host");
-            throw new BadParameterException("Pay-as-you-go host cannot be empty");
+            throw new BadParameterException("PAYG host cannot be empty");
         }
         PaygSshData paygSshData = PaygSshDataFactory.lookupByHostname(host)
                 .orElseThrow(() -> new LookupException("Host not found: " + host));
@@ -300,7 +339,7 @@ public class PaygAdminManager {
         paygSshData.setErrorMessage("");
         PaygSshDataFactory.savePaygSshData(paygSshData);
         // we need to commit before call the taskomatic task, otherwise new data will not be available
-        PaygSshDataFactory.commitTransaction();
+        HibernateFactory.commitTransaction();
 
         try {
             taskomaticApi.scheduleSinglePaygUpdate(paygSshData);
@@ -308,7 +347,7 @@ public class PaygAdminManager {
         catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
             LOG.warn("unable to start task to update authentication data", e);
         }
-        return PaygSshDataFactory.reload(paygSshData);
+        return HibernateFactory.reload(paygSshData);
     }
 
     /**
@@ -353,10 +392,27 @@ public class PaygAdminManager {
     }
 
     private boolean delete(PaygSshData paygSshData) {
-        LOG.debug("deleting {} -> {}", paygSshData.getId(), paygSshData.getHost());
-        List<SCCRepositoryAuth> existingRepos = SCCCachingFactory.
-                lookupRepositoryAuthByCredential(paygSshData.getCredentials());
-        existingRepos.forEach(SCCCachingFactory::deleteRepositoryAuth);
+        Credentials creds = paygSshData.getCredentials();
+        LOG.debug("deleting payg data {} -> {}", paygSshData.getId(), paygSshData.getHost());
+        if (creds != null && creds.isTypeOf(Credentials.TYPE_CLOUD_RMT)) {
+            List<SCCRepositoryAuth> existingRepos = SCCCachingFactory.lookupRepositoryAuthByCredential(creds);
+            LOG.debug("deleting repo auth ids {}",
+                    existingRepos.stream().map(r -> r.getId().toString()).collect(Collectors.joining(", ")));
+            existingRepos.forEach(SCCCachingFactory::deleteRepositoryAuth);
+        }
+        else { // RHUI - some clouds have no credentials
+            List<ContentSource> csUrls = PaygSshDataFactory.listRhuiRepositoriesCreatedByInstance(paygSshData);
+            Set<SslCryptoKey> sslCryptoKeys = csUrls.stream()
+                    .flatMap(cs -> cs.getSslSets().stream())
+                    .flatMap(scs -> Stream.of(scs.getCaCert(), scs.getClientCert(), scs.getClientKey()))
+                    .collect(Collectors.toSet());
+            LOG.debug("deleting repositories {}",
+                    csUrls.stream().map(ContentSource::getLabel).collect(Collectors.joining(", ")));
+            csUrls.forEach(ChannelFactory::remove);
+            LOG.debug("deleting crypto keys {}",
+                    sslCryptoKeys.stream().map(CryptoKey::getDescription).collect(Collectors.joining(", ")));
+            sslCryptoKeys.forEach(KickstartFactory::removeCryptoKey);
+        }
         Optional.ofNullable(paygSshData.getCredentials()).ifPresent(CredentialsFactory::removeCredentials);
         Optional.ofNullable(paygSshData.getRmtHosts()).ifPresent(CloudRmtHostFactory::deleteCloudRmtHost);
         PaygSshDataFactory.deletePaygSshData(paygSshData);

@@ -36,7 +36,7 @@ import org.junit.jupiter.api.Test;
  */
 public class ConfigListActionTest extends RhnMockStrutsTestCase {
 
-    private void doTheTest(String path) throws Exception {
+    private void doTheTest(String path) {
         //give the user org_admin role.
         UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
 

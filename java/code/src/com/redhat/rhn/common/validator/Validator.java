@@ -45,13 +45,13 @@ public class Validator {
     private static Logger log = LogManager.getLogger(Validator.class);
 
     /** The instances of this class for use (singleton design pattern) */
-    private static Map instances = null;
+    private static Map<String, Validator> instances = null;
 
     /** The URL of the XML Schema for this <code>Validator</code> */
     private URL schemaURL;
 
     /** The constraints for this XML Schema */
-    private Map constraints;
+    private Map<String, Constraint> constraints;
 
     /**
      * <p>
@@ -85,13 +85,13 @@ public class Validator {
         throws IOException {
         if (instances != null) {
             if (instances.containsKey(schemaURL.toString())) {
-                return (Validator) instances.get(schemaURL.toString());
+                return instances.get(schemaURL.toString());
             }
             Validator validator = new Validator(schemaURL);
             instances.put(schemaURL.toString(), validator);
             return validator;
         }
-        instances = new HashMap();
+        instances = new HashMap<>();
         Validator validator = new Validator(schemaURL);
         instances.put(schemaURL.toString(), validator);
         return validator;
@@ -111,7 +111,7 @@ public class Validator {
      */
     public ValidatorError validate(String constraintName, Object objToValidate) {
         // Validate against the correct constraint
-        Object o = constraints.get(constraintName);
+        Constraint o = constraints.get(constraintName);
 
         log.debug("Validating: {}", constraintName);
 
@@ -136,7 +136,7 @@ public class Validator {
         // TODO: Get rid of the toString and determine the type
         String data = (value == null) ? null : value.toString();
 
-        ValidatorError validationMessage = null;
+        ValidatorError validationMessage;
 
         log.debug("Data: {}", data);
         log.debug("Constraint: {}", constraint);
@@ -174,8 +174,8 @@ public class Validator {
      *
      * @return List of Constraint objects
      */
-    public List getConstraints() {
-        return new LinkedList(constraints.values());
+    public List<Constraint> getConstraints() {
+        return new LinkedList<>(constraints.values());
     }
 
     /**
@@ -194,13 +194,6 @@ public class Validator {
         String dataType = constraint.getDataType();
         String identifier =
             LocalizationService.getInstance().getMessage(constraint.getIdentifier());
-
-        /* code does not change anything, leaving just for demonstration
-        if ((dataType.equals("String")) || (dataType.equals("java.lang.String"))) {
-            validationMessage = null;
-        }
-        else
-        */
 
         if ((dataType.equals("int")) || (dataType.equals("java.lang.Integer"))) {
             try {

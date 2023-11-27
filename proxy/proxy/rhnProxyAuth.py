@@ -82,20 +82,31 @@ class ProxyAuth:
         """ update the systemid/serverid but only if they stat differently.
             returns 0=no updates made; or 1=updates were made
         """
+        mtime = None
+        try:
+            statinfo = os.stat(ProxyAuth.__systemid_filename)
+            mtime = statinfo.st_mtime
+            if statinfo.st_size == 0:
+                raise_with_tb(rhnFault(1000,
+                    _("SUSE Manager Proxy is not configured, systemid file is empty. "
+                      "Please contact your system administrator.")), sys.exc_info()[2])
+
+        except FileNotFoundError as e:
+            raise_with_tb(rhnFault(1000,
+                                   _("SUSE Manager Proxy is not configured, systemid file is missing. "
+                                     "Please contact your system administrator.")), sys.exc_info()[2])
+        except IOError as e:
+            log_error("unable to stat %s: %s" % (ProxyAuth.__systemid_filename, repr(e)))
+            raise_with_tb(rhnFault(1000,
+                                   _("SUSE Manager Proxy error (SUSE Manager Proxy systemid has wrong permissions?). "
+                                     "Please contact your system administrator.")), sys.exc_info()[2])
+
         if not os.access(ProxyAuth.__systemid_filename, os.R_OK):
             log_error("unable to access %s" % ProxyAuth.__systemid_filename)
             raise rhnFault(1000,
                            _("SUSE Manager Proxy error (SUSE Manager Proxy systemid has wrong permissions?). "
                              "Please contact your system administrator."))
 
-        mtime = None
-        try:
-            mtime = os.stat(ProxyAuth.__systemid_filename)[-2]
-        except IOError as e:
-            log_error("unable to stat %s: %s" % (ProxyAuth.__systemid_filename, repr(e)))
-            raise_with_tb(rhnFault(1000,
-                                   _("SUSE Manager Proxy error (SUSE Manager Proxy systemid has wrong permissions?). "
-                                     "Please contact your system administrator.")), sys.exc_info()[2])
 
         if not self.__systemid_mtime:
             ProxyAuth.__systemid_mtime = mtime

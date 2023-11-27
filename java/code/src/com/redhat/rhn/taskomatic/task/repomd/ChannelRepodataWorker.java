@@ -30,6 +30,7 @@ import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.contentmgmt.ContentProjectFactory;
 import com.redhat.rhn.domain.contentmgmt.EnvironmentTarget.Status;
 import com.redhat.rhn.domain.contentmgmt.SoftwareEnvironmentTarget;
+import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.taskomatic.task.TaskConstants;
 import com.redhat.rhn.taskomatic.task.threaded.QueueWorker;
 import com.redhat.rhn.taskomatic.task.threaded.TaskQueue;
@@ -72,7 +73,7 @@ public class ChannelRepodataWorker implements QueueWorker {
         Channel channelToProcess = ChannelFactory.lookupByLabel(channelLabelToProcess);
         // if the channelExists in the db still
         if (channelToProcess != null &&
-            channelToProcess.getChannelArch().getArchType().getLabel().equalsIgnoreCase("deb")) {
+            channelToProcess.getChannelArch().getArchType().getLabel().equalsIgnoreCase(PackageFactory.ARCH_TYPE_DEB)) {
             repoWriter = new DebRepositoryWriter(prefixPath, mountPoint);
         }
         else {
@@ -86,6 +87,7 @@ public class ChannelRepodataWorker implements QueueWorker {
      * Sets the parent queue
      * @param queue task queue
      */
+    @Override
     public void setParentQueue(TaskQueue queue) {
         parentQueue = queue;
     }
@@ -93,6 +95,7 @@ public class ChannelRepodataWorker implements QueueWorker {
     /**
      * runner method to process the parentQueue
      */
+    @Override
     public void run() {
         // if a channel has a EnvironmentTarget associated, we update it too
         Optional<SoftwareEnvironmentTarget> envTarget = ContentProjectFactory
@@ -134,7 +137,7 @@ public class ChannelRepodataWorker implements QueueWorker {
             }
         }
         catch (Exception e) {
-            logger.error(e);
+            logger.error(e.getMessage(), e);
             parentQueue.getQueueRun().failed();
             // unmark channel to be worked on
             markInProgress(false);
@@ -161,7 +164,6 @@ public class ChannelRepodataWorker implements QueueWorker {
     /**
      * populates the queue details for repomd event
      */
-    @SuppressWarnings("unchecked")
     private void populateQueueEntryDetails() {
         SelectMode selector = ModeFactory.getMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_REPOMD_DETAILS_QUERY);

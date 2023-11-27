@@ -17,6 +17,7 @@ package com.redhat.rhn.taskomatic.task.test;
 
 import static com.redhat.rhn.domain.action.ActionFactory.STATUS_QUEUED;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -38,6 +39,7 @@ import com.redhat.rhn.taskomatic.task.MinionActionExecutor;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
+import com.suse.cloud.CloudPaygManager;
 import com.suse.manager.webui.services.SaltServerActionService;
 
 import org.jmock.Expectations;
@@ -109,14 +111,14 @@ public class SubscribeChannelsActionTest extends JMockBaseTestCaseWithUser {
             will(returnValue(dataMap));
         }});
 
-        MinionActionExecutor executor = new MinionActionExecutor();
-        executor.setSaltServerActionService(saltServerActionService);
+        MinionActionExecutor executor = new MinionActionExecutor(saltServerActionService, new CloudPaygManager());
         executor.execute(ctx);
 
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
 
-        MinionServer server2 = MinionServerFactory.lookupById(serverId).get();
+        MinionServer server2 = MinionServerFactory.lookupById(serverId).orElse(null);
+        assertNotNull(server);
         assertEquals(ActionFactory.STATUS_QUEUED, serverAction.getStatus());
         assertNull(serverAction.getResultCode());
         assertEquals(server2, serverAction.getServer());
@@ -125,8 +127,7 @@ public class SubscribeChannelsActionTest extends JMockBaseTestCaseWithUser {
         assertTrue(server2.getChannels().isEmpty());
     }
 
-    private ServerAction createChildServerAction(Action action, Server server, ActionStatus status)
-            throws Exception {
+    private ServerAction createChildServerAction(Action action, Server server, ActionStatus status) {
         ServerAction serverAction = ActionFactoryTest.createServerAction(server, action);
         serverAction.setStatus(status);
         serverAction.setRemainingTries(1L);

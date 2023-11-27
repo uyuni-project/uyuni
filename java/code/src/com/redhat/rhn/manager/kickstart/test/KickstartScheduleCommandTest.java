@@ -237,8 +237,8 @@ public class KickstartScheduleCommandTest extends BaseKickstartCommandTestCase {
         assertNotNull(kickstartAction.getId());
         assertNotNull(kickstartAction.getKickstartActionDetails().
                 getFileLists());
-        assertTrue(kickstartAction.getKickstartActionDetails().
-                getFileLists().size() == 1);
+        assertEquals(1, kickstartAction.getKickstartActionDetails().
+                getFileLists().size());
     }
 
     @Test
@@ -251,9 +251,9 @@ public class KickstartScheduleCommandTest extends BaseKickstartCommandTestCase {
     @Test
     public void testKickstartPackageName() {
         ksdata.getKickstartDefaults().getKstree().setInstallType(KickstartFactory.
-                lookupKickstartInstallTypeByLabel(KickstartInstallType.RHEL_6));
+                lookupKickstartInstallTypeByLabel(KickstartInstallType.SLES_PREFIX));
 
-        assertContains(ksdata.getKickstartPackageNames(), "spacewalk-koan");
+        assertContains(ksdata.getKickstartPackageNames(), "salt");
     }
 
     @Test

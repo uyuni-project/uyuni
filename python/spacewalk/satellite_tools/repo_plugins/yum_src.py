@@ -61,6 +61,7 @@ from spacewalk.common.rhnConfig import CFG, initCFG
 from spacewalk.common.suseLib import get_proxy, URL as suseLibURL
 from rhn.stringutils import sstr
 from urlgrabber.grabber import URLGrabError
+from urlgrabber.mirror import MirrorGroup
 
 
 # namespace prefix to parse patches.xml file
@@ -81,8 +82,8 @@ REPOSYNC_EXTRA_HTTP_HEADERS_CONF = '/etc/rhn/spacewalk-repo-sync/extra_headers.c
 
 RPM_PUBKEY_VERSION_RELEASE_RE = re.compile(r'^gpg-pubkey-([0-9a-fA-F]+)-([0-9a-fA-F]+)')
 
-APACHE_USER = 'wwwrun'
-APACHE_GROUP = 'www'
+# possible urlgrabber errno
+NO_MORE_MIRRORS_TO_TRY = 256
 
 class ZyppoSync:
     """
@@ -134,6 +135,7 @@ class ZyppoSync:
                line_l = line.decode().split(":")
                if line_l[0] == "sig" and "selfsig" in line_l[10]:
                    spacewalk_gpg_keys.setdefault(line_l[4][8:].lower(), []).append(format(int(line_l[5]), 'x'))
+            log(3, "spacewalk keyIds: {}".format([k for k in sorted(spacewalk_gpg_keys)]))
 
             # Collect GPG keys from reposync Zypper RPM database
             process = subprocess.Popen(['rpm', '-q', 'gpg-pubkey', '--dbpath', REPOSYNC_ZYPPER_RPMDB_PATH], stdout=subprocess.PIPE)
@@ -141,6 +143,7 @@ class ZyppoSync:
                 match = RPM_PUBKEY_VERSION_RELEASE_RE.match(line.decode())
                 if match:
                     zypper_gpg_keys[match.groups()[0]] = match.groups()[1]
+            log(3, "zypper keyIds:    {}".format([k for k in sorted(zypper_gpg_keys)]))
 
             # Compare GPG keys and remove keys from reposync that are going to be imported with a newer release.
             for key in zypper_gpg_keys:
@@ -150,12 +153,25 @@ class ZyppoSync:
                     # This GPG key has a newer release on the Spacewalk GPG keyring that on the reposync Zypper RPM database.
                     # We delete this key from the RPM database to allow importing the newer version.
                     os.system("rpm --dbpath {} -e gpg-pubkey-{}-{}".format(REPOSYNC_ZYPPER_RPMDB_PATH, key, zypper_gpg_keys[key]))
+                    log(3, "new version available for gpg-pubkey-{}-{}".format(key, zypper_gpg_keys[key]))
 
             # Finally, once we deleted the existing old key releases from the Zypper RPM database
             # we proceed to import all keys from the Spacewalk GPG keyring. This will allow new GPG
             # keys release are upgraded in the Zypper keyring since rpmkeys does not handle the upgrade
             # properly
-            os.system("rpmkeys --dbpath {} --import {}".format(REPOSYNC_ZYPPER_RPMDB_PATH, f.name))
+            log(3, "rpmkeys -vv --dbpath {} --import {}".format(REPOSYNC_ZYPPER_RPMDB_PATH, f.name))
+            process = subprocess.Popen(["rpmkeys", "-vv", "--dbpath", REPOSYNC_ZYPPER_RPMDB_PATH, "--import", f.name], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            try:
+                outs, errs = process.communicate(timeout=15)
+                if process.returncode is None or process.returncode > 0:
+                    log(0, "Failed to import keys into rpm database ({}): {}".format(process.returncode, outs.decode('utf-8')))
+                else:
+                    log(3, "CMD out: {}".format(outs.decode('utf-8')))
+            except TimeoutExpired:
+                process.kill()
+                log(0, "Timeout exceeded while importing keys to rpm database")
+            keycont = f.read()
+            rhnLog.log_clean(5, keycont.decode('utf-8'))
 
 
 class ZypperRepo:
@@ -170,10 +186,11 @@ class ZypperRepo:
        if self.urls[0][-1] != '/':
            self.urls[0] += '/'
        # Make sure root paths are created
-       if not os.path.isdir(self.root):
-           fileutils.makedirs(self.root, user=APACHE_USER, group=APACHE_GROUP)
-       if not os.path.isdir(self.pkgdir):
-           fileutils.makedirs(self.pkgdir, user=APACHE_USER, group=APACHE_GROUP)
+       with cfg_component(component=None) as CFG:
+           if not os.path.isdir(self.root):
+               fileutils.makedirs(self.root, user=CFG.httpd_user, group=CFG.httpd_group)
+           if not os.path.isdir(self.pkgdir):
+               fileutils.makedirs(self.pkgdir, user=CFG.httpd_user, group=CFG.httpd_group)
        self.is_configured = False
        self.includepkgs = []
        self.exclude = []
@@ -535,12 +552,20 @@ class ContentSource:
         cert = (self.sslclientcert, self.sslclientkey)
         verify = self.sslcacert
         try:
-            webpage = requests.get(url, proxies=proxies, cert=cert, verify=verify)
-            content_type = webpage.headers["Content-Type"]
-            # amazonlinux core channels content-type = binary/octet-stream
-            if "text/plain" not in content_type and "xml" not in content_type and "octet-stream" not in content_type:
-                # Not a valid mirrorlist or metalink; continue without it
-                return returnlist
+            webpage = requests.get(url, proxies=proxies, cert=cert, verify=verify, headers=self.http_headers)
+            # We want to check the page content-type usually, but
+            # we have to wrap the next bit in a try-block for if the resource is
+            # cached and returns a 304; cached page returns no content type
+            # (if page is cached, for now we will assume it is the right type)
+            try:
+                content_type = webpage.headers["Content-Type"]
+                # amazonlinux core channels content-type = binary/octet-stream
+                if "text/plain" not in content_type and "xml" not in content_type and "octet-stream" not in content_type:
+                    # Not a valid mirrorlist or metalink; continue without it
+                    return returnlist
+            except KeyError:
+                # This will then go straight to the next try block.
+                log(1, "No content-type header. Treating as valid.")
         except requests.exceptions.RequestException as exc:
             self.error_msg("ERROR: Failed to reach repo url: {} - {}".format(url, exc))
             return returnlist
@@ -551,7 +576,7 @@ class ContentSource:
             urlgrabber.urlgrab(url, mirrorlist_path, **urlgrabber_opts)
         except URLGrabError as exc:
             repl_url = suseLibURL(url).getURL(stripPw=True)
-            if not hasattr(exc, "code"):
+            if not hasattr(exc, "code") and exc.errno != 2:
                 msg = "ERROR: Mirror list download failed: %s - %s" % (
                     url,
                     exc.strerror,
@@ -643,6 +668,7 @@ class ContentSource:
         """
         Setup repository and fetch metadata
         """
+        plugin_used = False;
         self.zypposync = ZyppoSync(root=repo.root)
         zypp_repo_url = self._prep_zypp_repo_url(self.url, uln_repo)
 
@@ -662,18 +688,27 @@ type=rpm-md
 '''
         if uln_repo:
            _url = 'plugin:spacewalk-uln-resolver?url={}'.format(zypp_repo_url)
+           plugin_used = True
         elif self.http_headers:
            headers_location = os.path.join(repo.root, "etc/zypp/repos.d", str(self.channel_label or self.reponame) + ".headers")
            with open(headers_location, "w") as repo_headers_file:
                repo_headers_file.write(json.dumps(self.http_headers))
-           _url = 'plugin:spacewalk-extra-http-headers?url={}&headers_file={}'.format(quote(zypp_repo_url), quote(headers_location))
+           # RHUI mirror url works only as mirror and cannot be used to download content
+           # but zypp plugins do not work with "mirrorlist" keyword, only with baseurl.
+           # So let's take the first url from the mirrorlist if it exists and use it as baseurl
+           baseurl = mirrorlist[0] if mirrorlist else zypp_repo_url
+           _url = 'plugin:spacewalk-extra-http-headers?url={}&headers_file={}'.format(quote(baseurl), quote(headers_location))
+           plugin_used = True
         else:
            _url = zypp_repo_url if not mirrorlist else os.path.join(repo.root, 'mirrorlist.txt')
 
         with open(os.path.join(repo.root, "etc/zypp/repos.d", str(self.channel_label or self.reponame) + ".repo"), "w") as repo_conf_file:
+            _repo_url = 'baseurl'
+            if mirrorlist and not plugin_used:
+                _repo_url = "mirrorlist"
             repo_conf_file.write(repo_cfg.format(
                 reponame=self.channel_label or self.reponame,
-                repo_url='baseurl' if not mirrorlist else 'mirrorlist',
+                repo_url=_repo_url,
                 url=_url,
                 gpgcheck="0" if self.insecure else "1"
             ))
@@ -731,16 +766,36 @@ type=rpm-md
             query_params['ssl_clientcert'] = self.sslclientcert
         if self.sslclientkey:
             query_params['ssl_clientkey'] = self.sslclientkey
-        new_query = unquote(urlencode(query_params, doseq=True))
         # urlparse cannot handle uln urls, so we need to keep this check
         if uln_repo:
+            new_query = unquote(urlencode(query_params, doseq=True))
             return "{0}&{1}".format(url, new_query)
         parsed_url = urlparse(url)
+        netloc = parsed_url.netloc
+        if parsed_url.username and parsed_url.password:
+            creds_cfg = '''
+username={user}
+password={passwd}
+'''
+            netloc = parsed_url.hostname
+            if parsed_url.port:
+                netloc = "{0}:{1}".format(netloc, parsed_url.port)
+            cdir = os.path.join(REPOSYNC_ZYPPER_ROOT, "etc/zypp/credentials.d")
+            if not os.path.exists(cdir):
+                os.makedirs(cdir)
+            cfile = os.path.join(cdir, str(self.channel_label or self.reponame))
+            with open(cfile, "w") as creds_file:
+                creds_file.write(creds_cfg.format(user=parsed_url.username,
+                                                  passwd=parsed_url.password))
+                query_params['credentials'] = str(self.channel_label or self.reponame)
+            os.chmod(cfile, int('0600', 8))
+        new_query = unquote(urlencode(query_params, doseq=True))
+
         existing_query = parsed_url.query
         combined_query = "&".join([q for q in [existing_query, new_query] if q])
         return urlunparse((
             parsed_url.scheme,
-            parsed_url.netloc,
+            netloc,
             parsed_url.path,
             parsed_url.params,
             combined_query,
@@ -1076,22 +1131,17 @@ type=rpm-md
 
         :returns: str
         """
-        media_products_path = os.path.join(self._get_repodata_path(), 'media.1/products')
-        try:
-            (s,b,p,q,f,o) = urlparse(self.url)
-            if p[-1] != '/':
-                p = p + '/'
-            p = p + 'media.1/products'
-        except (ValueError, IndexError, KeyError) as e:
-            return None
-        url = urlunparse((s,b,p,q,f,o))
+        url = 'media.1/products'
+        media_products_path = os.path.join(self._get_repodata_path(), url)
+        grabber = urlgrabber.grabber.URLGrabber()
+        mirror_group = MirrorGroup(grabber, self.repo.urls)
         try:
             urlgrabber_opts = {}
             self.set_download_parameters(urlgrabber_opts, url, media_products_path)
-            urlgrabber.urlgrab(url, media_products_path, **urlgrabber_opts)
+            mirror_group.urlgrab(url, media_products_path, **urlgrabber_opts)
         except URLGrabError as exc:
             repl_url = suseLibURL(url).getURL(stripPw=True)
-            if not hasattr(exc, "code"):
+            if not hasattr(exc, "code") and exc.errno != NO_MORE_MIRRORS_TO_TRY:
                 msg = "ERROR: Media product file download failed: %s - %s" % (
                     url,
                     exc.strerror,
@@ -1145,7 +1195,12 @@ type=rpm-md
         for pack in pkglist:
             new_pack = ContentPackage()
             epoch, version, release = RawSolvablePackage._parse_solvable_evr(pack.evr)
-            new_pack.setNVREA(pack.name, version, release, epoch, pack.arch)
+            try:
+                new_pack.setNVREA(pack.name, version, release, epoch, pack.arch)
+            except ValueError as e:
+                log(0, "WARNING: package contains incorrect metadata. SKIPPING!")
+                log(0, e)
+                continue
             new_pack.unique_id = RawSolvablePackage(pack)
             checksum = pack.lookup_checksum(solv.SOLVABLE_CHECKSUM)
             new_pack.checksum_type = checksum.typestr()
@@ -1265,24 +1320,19 @@ type=rpm-md
         params['checksum_type'] = checksum_type
         params['checksum'] = checksum_value
         params['bytes_range'] = bytes_range
-        params['http_headers'] = self.http_headers
+        params['http_headers'] = tuple(self.http_headers.items())
         params["timeout"] = self.timeout
         params["minrate"] = self.minrate
         params['proxies'] = get_proxies(self.proxy_url, self.proxy_user, self.proxy_pass)
+        with cfg_component('server.satellite') as CFG:
+            params["urlgrabber_logspec"] = CFG.get("urlgrabber_logspec")
 
     def get_file(self, path, local_base=None):
         try:
             try:
+                grabber = urlgrabber.grabber.URLGrabber()
+                mirror_group = MirrorGroup(grabber, self.repo.urls)
                 temp_file = ""
-                try:
-                    if not urlparse(path).scheme:
-                        (s,b,p,q,f,o) = urlparse(self.url)
-                        if p[-1] != '/':
-                            p = p + '/'
-                        p = p + path
-                        path = urlunparse((s,b,p,q,f,o))
-                except (ValueError, IndexError, KeyError) as e:
-                    return None
 
                 if local_base is not None:
                     target_file = os.path.join(local_base, path)
@@ -1294,13 +1344,13 @@ type=rpm-md
                         os.unlink(temp_file)
                     urlgrabber_opts = {}
                     self.set_download_parameters(urlgrabber_opts, path, temp_file)
-                    downloaded = urlgrabber.urlgrab(path, temp_file, **urlgrabber_opts)
+                    downloaded = mirror_group.urlgrab(path, temp_file, **urlgrabber_opts)
                     os.rename(downloaded, target_file)
                     return target_file
                 else:
                     urlgrabber_opts = {}
                     self.set_download_parameters(urlgrabber_opts, path)
-                    return urlgrabber.urlread(path, **urlgrabber_opts)
+                    return mirror_group.urlread(path, **urlgrabber_opts)
             except urlgrabber.grabber.URLGrabError:
                 return
         finally:

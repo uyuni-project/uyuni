@@ -1,6 +1,7 @@
 # Copyright (c) 2017-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@skip_if_github_validation
 @scope_formulas
 Feature: Use salt formulas
   In order to use simple forms to apply changes to minions
@@ -10,9 +11,13 @@ Feature: Use salt formulas
    Scenario: Log in as admin user
       Given I am authorized for the "Admin" section
 
+   #container already has locale formula installed
+   @skip_if_container_server 
    Scenario: Install the locale formula package on the server
      When I manually install the "locale" formula on the server
-     And I synchronize all Salt dynamic modules on "sle_minion"
+
+   Scenario: I synchronize all Salt dynamic modules on "sle_minion"
+     When I synchronize all Salt dynamic modules on "sle_minion"
 
   Scenario: The new formula appears on the server
      When I follow the left menu "Salt > Formula Catalog"
@@ -62,6 +67,7 @@ Feature: Use salt formulas
      And I wait at most 300 seconds until event "Apply highstate in test-mode scheduled" is completed
 
   Scenario: Apply the parametrized formula via the highstate
+     When I enable repository "sle_update_repo" on this "sle_minion" without error control
      And I follow "States" in the content area
      And I click on "Apply Highstate"
      Then I should see a "Applying the highstate has been scheduled." text
@@ -69,6 +75,7 @@ Feature: Use salt formulas
      Then the timezone on "sle_minion" should be "+05"
      And the keymap on "sle_minion" should be "ca"
      And the language on "sle_minion" should be "fr_FR.UTF-8"
+     And I disable repository "sle_update_repo" on this "sle_minion" without error control
 
   Scenario: Reset the formula on the minion
      When I follow "Formulas" in the content area
@@ -160,8 +167,9 @@ Feature: Use salt formulas
      And the keymap on "sle_minion" should be "us"
      And the language on "sle_minion" should be "en_US.UTF-8"
 
+  @skip_if_container_server
   Scenario: Cleanup: uninstall formula package from the server
      When I manually uninstall the "locale" formula from the server
 
   Scenario: Cleanup: remove remaining systems from SSM after formula tests
-     When I click on "Clear"
+     When I click on the clear SSM button

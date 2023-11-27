@@ -31,7 +31,7 @@ import java.util.Map;
  */
 
 public class ManifestFactory {
-    private Map objects;
+    private Map<String, Object> objects;
     private ManifestFactoryBuilder builder;
 
     /** public constructor, requires a builder
@@ -65,7 +65,7 @@ public class ManifestFactory {
      * Get the list of keys from the factory
      * @return Collection the Collection of keys contained within this Factory
      */
-    public Collection getKeys() {
+    public Collection<String> getKeys() {
         return objects.keySet();
     }
 
@@ -73,7 +73,7 @@ public class ManifestFactory {
         String filename = builder.getManifestFilename();
         URL u = builder.getClass().getResource(filename);
 
-        objects = new HashMap();
+        objects = new HashMap<>();
         parseURL(u);
     }
 
@@ -99,7 +99,7 @@ public class ManifestFactory {
      * be public or Digester freaks out, otherwise it would be private.
      * @param m used by Digester to build template
      */
-    public void addFactoryTemplate(Map m) {
+    public void addFactoryTemplate(Map<String, Object> m) {
         String name = (String)m.get("name");
         if (name == null) {
             throw new NullPointerException("factory/template must have name attribute");

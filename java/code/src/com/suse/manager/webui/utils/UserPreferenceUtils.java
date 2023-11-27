@@ -104,6 +104,16 @@ public class UserPreferenceUtils {
         HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
         User user = new RequestContext(request).getCurrentUser();
 
+        return getDocsLocale(user);
+    }
+
+    /**
+     * Get the user's configured documentation locale. If no user is available return the config default
+     *
+     * @param user the current user
+     * @return the users documentation locale
+     */
+    public String getDocsLocale(User user) {
         if (isUserAuthenticated(user)) {
             String locale = user.getPreferredDocsLocale();
             if (locale != null) {
@@ -180,9 +190,6 @@ public class UserPreferenceUtils {
     }
 
     /**
-     * TODO
-     * Make the parameter configurable from the configuration file
-     *
      * @param pageContext the current PageContext
      * @return the String format of the Date
      */
@@ -191,13 +198,22 @@ public class UserPreferenceUtils {
     }
 
     /**
-     * TODO
-     * Make the parameter configurable from the configuration file
-     *
      * @param pageContext the current PageContext
      * @return the String format of the Time
      */
     public String getUserTimeFormat(PageContext pageContext) {
         return "HH:mm";
+    }
+
+    /**
+     * @param pageContext the current PageContext
+     * @return the user preferred page size
+     */
+    public int getUserPageSize(PageContext pageContext) {
+        User user = getAuthenticatedUser(pageContext);
+        if (isUserAuthenticated(user)) {
+            return user.getPageSize();
+        }
+        return 15;
     }
 }

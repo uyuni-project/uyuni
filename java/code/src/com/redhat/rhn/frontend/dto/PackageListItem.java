@@ -56,10 +56,26 @@ public class PackageListItem extends IdComboDto {
     private String summary;
     private String nvrea;
     private Date installTime;
-    private String locked = null; // Assuming package is free to operate by default.
+    private String locked;
     private String pending; // Either PackageManager.PKG_PENDING_LOCK for "to be locked"
                             // or PackageManager.PKG_PENDING_UNLOCK for "to be unlocked"
     private boolean retracted;
+
+    private boolean ptf;
+
+    private boolean partOfPtf;
+
+    private boolean selectable;
+
+    /**
+     * Default constructor
+     */
+    public PackageListItem() {
+        // Assuming package is free to operate by default.
+        this.locked = null;
+        // Assuming the package can be always selectable
+        this.selectable = true;
+    }
 
     /**
      * Set locked status.
@@ -128,6 +144,38 @@ public class PackageListItem extends IdComboDto {
      */
     public void setRetracted(boolean retractedIn) {
         retracted = retractedIn;
+    }
+
+    /**
+     * Check if the package is the main one of a ptf
+     * @return true if the package is a ptf
+     */
+    public boolean isMasterPtfPackage() {
+        return ptf;
+    }
+
+    /**
+     * Sets if the package is the main one of a ptf
+     * @param ptfIn true if the package is  a ptf
+     */
+    public void setMasterPtfPackage(boolean ptfIn) {
+        this.ptf = ptfIn;
+    }
+
+    /**
+     * Check if the package is part of a ptf
+     * @return true if the package is part of a ptf
+     */
+    public boolean isPartOfPtf() {
+        return partOfPtf;
+    }
+
+    /**
+     * Sets if the package is part of a ptf
+     * @param partOfPtfIn true if the package is part of a ptf
+     */
+    public void setPartOfPtf(boolean partOfPtfIn) {
+        this.partOfPtf = partOfPtfIn;
     }
 
     /**
@@ -208,6 +256,7 @@ public class PackageListItem extends IdComboDto {
     /**
      * @return Returns the Id.
      */
+    @Override
     public Long getId() {
         return id;
     }
@@ -330,10 +379,10 @@ public class PackageListItem extends IdComboDto {
      * a list of HashMaps all in a single convenient Object
      * @return list of HashMaps with name and id keys
      */
-    public List getChannels() {
-        List retval = new ArrayList();
+    public List<Map<String, Object>> getChannels() {
+        List<Map<String, Object>> retval = new ArrayList<>();
         for (int i = 0; i < channelId.size(); i++) {
-            Map current = new HashMap();
+            Map<String, Object> current = new HashMap<>();
             current.put("id", channelId.get(i));
             current.put("name", channelName.get(i));
             retval.add(current);
@@ -477,6 +526,23 @@ public class PackageListItem extends IdComboDto {
     }
 
     /**
+     * Specifies if this package is selectable
+     * @return true if it can be selected
+     */
+    @Override
+    public boolean isSelectable() {
+        return selectable;
+    }
+
+    /**
+     * Sets the selectable status for this package
+     * @param selectableIn true to allow the package to be selected
+     */
+    public void setSelectable(boolean selectableIn) {
+        this.selectable = selectableIn;
+    }
+
+    /**
      * Get a string representation of NEVR:
      *
      * virt-manager-0.2.6-7.0.2.el5
@@ -565,6 +631,7 @@ public class PackageListItem extends IdComboDto {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString() {
         ToStringBuilder builder = new ToStringBuilder(this);
 
@@ -635,6 +702,7 @@ public class PackageListItem extends IdComboDto {
     }
 
     /** {@inheritDoc} */
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -649,6 +717,7 @@ public class PackageListItem extends IdComboDto {
     }
 
     /** {@inheritDoc} */
+    @Override
     public int hashCode() {
         return idCombo != null ? idCombo.hashCode() : 0;
     }

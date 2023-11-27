@@ -148,6 +148,7 @@ public class PreferencesLocaleHandler extends BaseHandler {
         }
 
         /** {@inheritDoc} */
+        @Override
         public boolean evaluate(Object object) {
             RhnTimeZone tz = (RhnTimeZone) object;
             return (tz.getTimeZoneId() == id);
@@ -170,6 +171,7 @@ public class PreferencesLocaleHandler extends BaseHandler {
         }
 
         /** {@inheritDoc} */
+        @Override
         public boolean evaluate(Object object) {
             return (object.equals(locale));
         }

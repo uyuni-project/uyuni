@@ -84,7 +84,7 @@ public class ChannelPackagesCompareMergeAction extends ChannelPackagesCompareAct
         //Since if we are going to the confirm screen, we don't need to
         //actually do anything else, so lets go ahead and forward and save some time
         if (requestContext.wasDispatched("channel.jsp.package.mergebutton") &&
-            set.size() > 0) {
+                !set.isEmpty()) {
             Map<String, Object> params = new HashMap<>();
             params.put(RequestContext.CID, cid);
             return getStrutsDelegate().forwardParams(

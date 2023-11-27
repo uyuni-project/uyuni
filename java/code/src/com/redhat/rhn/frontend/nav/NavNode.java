@@ -121,6 +121,7 @@ public class NavNode {
      *  String version of node
      *  @return String the stringified node
      */
+    @Override
     public String toString() {
         return
             ToStringBuilder.reflectionToString(this,
@@ -312,7 +313,7 @@ public class NavNode {
      * @return "best" most "proper" URL for this node
      */
     public String getPrimaryURL() {
-        if (urls != null && urls.size() > 0) {
+        if (urls != null && !urls.isEmpty()) {
             return urls.get(0);
         }
         throw new IndexOutOfBoundsException("attempt to ask for primary URL of " +

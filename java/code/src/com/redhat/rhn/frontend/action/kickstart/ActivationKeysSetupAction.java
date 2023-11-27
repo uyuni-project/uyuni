@@ -16,6 +16,7 @@ package com.redhat.rhn.frontend.action.kickstart;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.kickstart.KickstartData;
+import com.redhat.rhn.frontend.dto.ActivationKeyDto;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.kickstart.KickstartLister;
@@ -33,7 +34,8 @@ public class ActivationKeysSetupAction extends BaseKickstartListSetupAction {
      *
      * {@inheritDoc}
      */
-    protected DataResult getDataResult(RequestContext rctx, PageControl pc) {
+    @Override
+    protected DataResult<ActivationKeyDto> getDataResult(RequestContext rctx, PageControl pc) {
 
         return KickstartLister.getInstance().
         getActiveActivationKeysInOrg(rctx.getCurrentUser().getOrg(), pc);
@@ -44,6 +46,7 @@ public class ActivationKeysSetupAction extends BaseKickstartListSetupAction {
      *
      * @return the kickstart profile security label
      */
+    @Override
     public RhnSetDecl getSetDecl() {
         return RhnSetDecl.KICKSTART_ACTIVATION_KEYS;
     }
@@ -51,6 +54,7 @@ public class ActivationKeysSetupAction extends BaseKickstartListSetupAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected Iterator getCurrentItemsIterator(KickstartData ksdata) {
         return ksdata.getDefaultRegTokens().iterator();
     }

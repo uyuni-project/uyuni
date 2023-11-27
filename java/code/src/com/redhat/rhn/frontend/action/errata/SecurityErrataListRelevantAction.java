@@ -26,6 +26,7 @@ import java.util.List;
 public class SecurityErrataListRelevantAction extends ErrataListRelevantAction {
 
     /** {@inheritDoc} */
+    @Override
     public List getResult(RequestContext context) {
 
         User user = context.getCurrentUser();
@@ -33,6 +34,7 @@ public class SecurityErrataListRelevantAction extends ErrataListRelevantAction {
     }
 
     /** {@inheritDoc} */
+    @Override
     public boolean isSecurityAction() {
         return true;
     }

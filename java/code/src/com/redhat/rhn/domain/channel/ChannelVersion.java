@@ -43,7 +43,7 @@ public class ChannelVersion {
 
     // Map releases to channel version constants. Anything not in this map
     // will be assumed to be legacy.
-    public static final Map DIST_CHANNEL_MAP_TO_CHANNEL_VERSION = new HashMap();
+    protected static final Map<String, ChannelVersion> DIST_CHANNEL_MAP_TO_CHANNEL_VERSION = new HashMap<>();
 
     static {
         DIST_CHANNEL_MAP_TO_CHANNEL_VERSION.put("7Client", ChannelVersion.RHEL7);
@@ -114,7 +114,7 @@ public class ChannelVersion {
     public static ChannelVersion getChannelVersionForDistChannelMap(
             DistChannelMap dcm) {
         if (DIST_CHANNEL_MAP_TO_CHANNEL_VERSION.containsKey(dcm.getRelease())) {
-            return ((ChannelVersion)DIST_CHANNEL_MAP_TO_CHANNEL_VERSION.get(
+            return (DIST_CHANNEL_MAP_TO_CHANNEL_VERSION.get(
                     dcm.getRelease()));
         }
         return ChannelVersion.LEGACY;

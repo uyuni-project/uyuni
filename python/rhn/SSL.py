@@ -61,11 +61,6 @@ class SSLSocket:
         trusted_certs = trusted_certs or []
         for f in trusted_certs:
             self.add_trusted_cert(f)
-        # SSL method to use
-        if hasattr(SSL, 'PROTOCOL_TLS'):
-            self._ssl_method = SSL.PROTOCOL_TLS
-        else:
-            self._ssl_method = SSL.PROTOCOL_SSLv23
 
         # Buffer size for reads
         self._buffer_size = 8192
@@ -94,28 +89,17 @@ class SSLSocket:
         Initializes the SSL connection.
         """
         self._check_closed()
-        # Get a context
-        if hasattr(SSL, 'SSLContext'):
-            self._ctx = SSL.SSLContext(self._ssl_method)
-            self._ctx.verify_mode = SSL.CERT_REQUIRED
-            self._ctx.check_hostname = True
-            self._ctx.load_default_certs(SSL.Purpose.SERVER_AUTH)
-            if self._trusted_certs:
-               # We have been supplied with trusted CA certs
-                for f in self._trusted_certs:
-                    self._ctx.load_verify_locations(f)
-            self._connection = self._ctx.wrap_socket(self._sock, server_hostname=server_name)
-        else:
-            # Python 2.6-2.7.8
-            cacert = None
-            if self._trusted_certs:
-                # seems python2.6 supports only 1
-                cacert = self._trusted_certs[0]
-            self._connection = SSL.wrap_socket(self._sock,
-                                               ssl_version=self._ssl_method,
-                                               cert_reqs=SSL.CERT_REQUIRED,
-                                               ca_certs=cacert)
-            match_hostname(self._connection.getpeercert(), server_name)
+        self._ctx = SSL.SSLContext(SSL.PROTOCOL_TLS_CLIENT)
+        self._ctx.options |= SSL.OP_NO_TLSv1
+        self._ctx.options |= SSL.OP_NO_TLSv1_1
+        self._ctx.verify_mode = SSL.CERT_REQUIRED
+        self._ctx.check_hostname = True
+        self._ctx.load_default_certs(SSL.Purpose.SERVER_AUTH)
+        if self._trusted_certs:
+           # We have been supplied with trusted CA certs
+            for f in self._trusted_certs:
+                self._ctx.load_verify_locations(f)
+        self._connection = self._ctx.wrap_socket(self._sock, server_hostname=server_name)
 
     def makefile(self, mode, bufsize=None):
         """

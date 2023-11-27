@@ -6,14 +6,14 @@ Feature: The system details of each minion and client provides an overview of th
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
-
 @sle_minion
   Scenario: SLE minion hardware refresh
-    Given I am on the Systems overview page of this "sle_minion"
+    Given I navigate to the Systems overview page of this "sle_minion"
     When I follow "Hardware"
     And I click on "Schedule Hardware Refresh"
     Then I should see a "You have successfully scheduled a hardware profile refresh" text
-    And I wait until event "Hardware List Refresh scheduled by admin" is completed
+    When I wait until event "Hardware List Refresh scheduled by admin" is completed
+    And I wait until there is no Salt job calling the module "hardware.profileupdate" on "sle_minion"
 
 @sle_minion
   Scenario: Minion grains are displayed correctly on the details page
@@ -26,7 +26,7 @@ Feature: The system details of each minion and client provides an overview of th
     And the system ID for "sle_minion" should be correct
     And the system name for "sle_minion" should be correct
     And the uptime for "sle_minion" should be correct
-    And I should see several text fields for "sle_minion"
+    And I should see several text fields
 
 @rhlike_minion
   Scenario: Red Hat-like minion hardware refresh
@@ -34,7 +34,8 @@ Feature: The system details of each minion and client provides an overview of th
     When I follow "Hardware"
     And I click on "Schedule Hardware Refresh"
     Then I should see a "You have successfully scheduled a hardware profile refresh" text
-    And I wait until event "Hardware List Refresh scheduled by admin" is completed
+    When I wait until event "Hardware List Refresh scheduled by admin" is completed
+    And I wait until there is no Salt job calling the module "hardware.profileupdate" on "rhlike_minion"
 
 @rhlike_minion
   Scenario: Red Hat-like minion grains are displayed correctly on the details page
@@ -47,7 +48,7 @@ Feature: The system details of each minion and client provides an overview of th
     And the system ID for "rhlike_minion" should be correct
     And the system name for "rhlike_minion" should be correct
     And the uptime for "rhlike_minion" should be correct
-    And I should see several text fields for "rhlike_minion"
+    And I should see several text fields
 
 @deblike_minion
   Scenario: Debian-like minion hardware refresh
@@ -55,7 +56,8 @@ Feature: The system details of each minion and client provides an overview of th
     When I follow "Hardware"
     And I click on "Schedule Hardware Refresh"
     Then I should see a "You have successfully scheduled a hardware profile refresh" text
-    And I wait until event "Hardware List Refresh scheduled by admin" is completed
+    When I wait until event "Hardware List Refresh scheduled by admin" is completed
+    And I wait until there is no Salt job calling the module "hardware.profileupdate" on "deblike_minion"
 
 @deblike_minion
   Scenario: Debian-like minion grains are displayed correctly on the details page
@@ -68,7 +70,7 @@ Feature: The system details of each minion and client provides an overview of th
     And the system ID for "deblike_minion" should be correct
     And the system name for "deblike_minion" should be correct
     And the uptime for "deblike_minion" should be correct
-    And I should see several text fields for "deblike_minion"
+    And I should see several text fields
 
 @ssh_minion
   Scenario: SSH-managed minion hardware refresh
@@ -78,7 +80,7 @@ Feature: The system details of each minion and client provides an overview of th
     Then I should see a "You have successfully scheduled a hardware profile refresh" text
     And I wait until event "Hardware List Refresh scheduled by admin" is completed
 
-@ssh_minion
+  @ssh_minion
   Scenario: SSH-managed minion grains are displayed correctly on the details page
     Given I am on the Systems overview page of this "ssh_minion"
     Then the hostname for "ssh_minion" should be correct
@@ -89,4 +91,4 @@ Feature: The system details of each minion and client provides an overview of th
     And the system ID for "ssh_minion" should be correct
     And the system name for "ssh_minion" should be correct
     And the uptime for "ssh_minion" should be correct
-    And I should see several text fields for "ssh_minion"
+    And I should see several text fields

@@ -44,7 +44,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * BunchDetailAction
  */
-public class BunchDetailAction extends RhnAction implements Listable {
+public class BunchDetailAction extends RhnAction implements Listable<Map<String, Object>> {
 
     public static final String LIST_NAME = "runList";
 
@@ -86,16 +86,16 @@ public class BunchDetailAction extends RhnAction implements Listable {
 
     /** {@inheritDoc} */
     @Override
-    public List getResult(RequestContext contextIn) {
+    public List<Map<String, Object>> getResult(RequestContext contextIn) {
         User user =  contextIn.getCurrentUser();
         String bunchName = contextIn.getParam("label", true);
         try {
-            return (List<Map>) new TaskomaticApi().findRunsByBunch(user, bunchName);
+            return new TaskomaticApi().findRunsByBunch(user, bunchName);
         }
         catch (TaskomaticApiException e) {
             createErrorMessage(contextIn.getRequest(),
                     "repos.jsp.message.taskomaticdown", null);
-            return new ArrayList();
+            return new ArrayList<>();
         }
     }
 }

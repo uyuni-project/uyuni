@@ -86,6 +86,15 @@ section_header "SSL Configuration"
 pconf_files $(spacewalk-cfg-get documentroot)/pub/RHN-ORG-TRUSTED-SSL-CERT \
             /etc/apache2/ssl.crt/server.crt
 
+section_header "Crypto Policy"
+
+if [ -f /etc/crypto-policies/config ]; then
+        plugin_command "cat /etc/crypto-policies/config"
+elif [ $(cat /proc/sys/crypto/fips_enabled) -ne 0 ]; then
+        plugin_message "FIPS"
+else
+        plugin_command "grep -v '#' /usr/share/crypto-policies/default-config"
+fi
 
 plugin_command "zypper --no-refresh ls"
 plugin_command "zypper --no-refresh lr -u"

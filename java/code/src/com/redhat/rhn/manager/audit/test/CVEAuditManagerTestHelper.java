@@ -41,7 +41,6 @@ public class CVEAuditManagerTestHelper {
      * @param systemID ID of system
      * @return list of relevant channel IDs
      */
-    @SuppressWarnings("unchecked")
     public static List<ServerChannelIdPair> getRelevantChannels(Long systemID) {
         SelectMode selectMode = ModeFactory.getMode("test_queries",
                 "find_relevant_channels");
@@ -55,7 +54,6 @@ public class CVEAuditManagerTestHelper {
      * Return all {@link ServerChannelIdPair} objects from suseCVEServerChannel.
      * @return list of all relevant channels for all systems
      */
-    @SuppressWarnings("unchecked")
     public static List<ServerChannelIdPair> getAllRelevantChannels() {
         SelectMode selectMode = ModeFactory.getMode("test_queries",
                 "find_all_relevant_channels");

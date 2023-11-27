@@ -49,15 +49,16 @@ public class CobblerVirtualSystemCommand extends CobblerSystemCreateCommand {
 
     /**
      * Constructor
+     * @param userIn who is requesting this sync
      * @param serverIn to create in cobbler
      * @param cobblerProfileName to use
      * @param guestNameIn the guest name to create
      * @param ksData the kickstart data to associate
      *      system with
      */
-    public CobblerVirtualSystemCommand(Server serverIn,
+    public CobblerVirtualSystemCommand(User userIn, Server serverIn,
             String cobblerProfileName, String guestNameIn, KickstartData ksData) {
-        super(serverIn, cobblerProfileName, ksData);
+        super(userIn, serverIn, cobblerProfileName, ksData);
         guestName = guestNameIn;
         hostName = serverIn.getName();
     }
@@ -115,7 +116,7 @@ public class CobblerVirtualSystemCommand extends CobblerSystemCreateCommand {
     @Override
     public String getCobblerSystemRecordName() {
         String sep = ConfigDefaults.get().getCobblerNameSeparator();
-        return CobblerVirtualSystemCommand.getCobblerSystemRecordName(hostName, getOrgId()) + sep +
+        return CobblerSystemCreateCommand.getCobblerSystemRecordName(hostName, getOrgId()) + sep +
                 guestName.replace(' ', '_').replaceAll("[^a-zA-Z0-9_\\-\\.]", "");
     }
 
@@ -131,7 +132,7 @@ public class CobblerVirtualSystemCommand extends CobblerSystemCreateCommand {
             String newMac = details.getMacAddress();
             if (newMac == null || newMac.equals("")) {
                 newMac = (String) invokeXMLRPC("get_random_mac",
-                        Collections.EMPTY_LIST);
+                        Collections.emptyList());
             }
             Network net = new Network(getCobblerConnection(), "eth0");
             net.setMacAddress(newMac);

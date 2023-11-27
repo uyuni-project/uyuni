@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.dto;
 
+import java.util.Optional;
+
 import javax.persistence.Tuple;
 
 /**
@@ -35,5 +37,14 @@ public abstract class BaseTupleDto extends BaseDto {
      */
     protected BaseTupleDto(Tuple tuple) {
         super();
+    }
+
+    protected static <T> Optional<T> getTupleValue(Tuple tuple, String name, Class<T> clazz) {
+        try {
+            return Optional.ofNullable(tuple.get(name, clazz));
+        }
+        catch (IllegalArgumentException e) {
+            return Optional.empty();
+        }
     }
 }

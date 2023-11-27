@@ -34,7 +34,7 @@ import org.junit.jupiter.api.Test;
 public class ConfigRevisionTest extends BaseTestCaseWithUser {
 
     @Test
-    public void testCreateConfigRevision() throws Exception {
+    public void testCreateConfigRevision() {
         UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
 
         ConfigRevision cr = ConfigTestUtils.createConfigRevision(user.getOrg());
@@ -52,7 +52,7 @@ public class ConfigRevisionTest extends BaseTestCaseWithUser {
         assertTrue(cr.isDirectory());
 
         assertNotNull(cr.getChangedById());
-        assertTrue(cr.getChangedById().equals(user.getId()));
+        assertEquals(cr.getChangedById(), user.getId());
         assertNotNull(cr.getChangedBy());
         assertEquals(user.getLogin(), cr.getChangedBy().getLogin());
     }

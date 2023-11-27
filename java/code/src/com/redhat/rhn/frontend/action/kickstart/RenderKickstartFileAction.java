@@ -86,7 +86,8 @@ public class RenderKickstartFileAction extends Action {
                 else {
                     if (log.isDebugEnabled()) {
                         log.error("No kickstart filecontents found for: {} params: {} ksdata: {}",
-                                StringUtil.sanitizeLogInput(url), params, ksdata);
+                                StringUtil.sanitizeLogInput(url), StringUtil.sanitizeLogInput(params.toString()),
+                                ksdata);
                     }
                     // send 404 to the user since we don't have a kickstart profile match
                     throw new NoSuchKickstartException();

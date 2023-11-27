@@ -18,7 +18,7 @@ import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.crypto.CryptoKey;
 
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 
 /**
  * BaseCryptoKeyCommand - base for edit/create CryptKeys
@@ -85,13 +85,8 @@ public abstract class BaseCryptoKeyCommand {
      * @param contentsIn to set
      */
     public void setContents(String contentsIn) {
-        if (contentsIn != null) {
-            try {
-                this.key.setKey(contentsIn.getBytes("UTF-8"));
-            }
-            catch (UnsupportedEncodingException e) {
-                throw new IllegalArgumentException("Unsupported encoding!");
-            }
+        if (contentsIn != null && !contentsIn.isEmpty()) {
+            this.key.setKey(contentsIn.getBytes(StandardCharsets.UTF_8));
         }
         else {
             this.key.setKey(null);

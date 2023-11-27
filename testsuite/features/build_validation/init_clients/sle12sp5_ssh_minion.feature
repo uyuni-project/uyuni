@@ -19,7 +19,7 @@ Feature: Bootstrap a SLES 12 SP5 Salt SSH minion
     And I select "1-sle12sp5_ssh_minion_key" from "activationKeys"
     And I select the hostname of "proxy" from "proxies" if present
     And I click on "Bootstrap"
-    And I wait until I see "Successfully bootstrapped host!" text
+    And I wait until I see "Bootstrap process initiated." text
     And I wait until onboarding is completed for "sle12sp5_ssh_minion"
 
 @proxy

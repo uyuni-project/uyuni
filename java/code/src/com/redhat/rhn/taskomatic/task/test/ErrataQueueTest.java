@@ -56,7 +56,5 @@ public class ErrataQueueTest extends BaseTestCaseWithUser {
         TaskoFactory.delete(template);
         TaskoFactory.delete(template.getBunch());
         TaskoFactory.delete(template.getTask());
-        commitAndCloseSession();
-        commitHappened();
     }
 }

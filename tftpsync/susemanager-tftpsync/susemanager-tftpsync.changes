@@ -1,4 +1,26 @@
 -------------------------------------------------------------------
+Mon Sep 18 14:50:34 CEST 2023 - rosuna@suse.com
+
+- version 4.4.4-1
+  * Remove obsolete migrations and fixes
+
+-------------------------------------------------------------------
+Wed Apr 19 12:55:46 CEST 2023 - marina.latini@suse.com
+
+- version 4.4.3-1
+  * Fix server-side cache that's used for only pushing files to
+    proxies that need to be pushed, as well as propagating deletions
+    (bsc#1209215)
+  * Fix removal of proxies section in cobbler settings (bsc#1207063)
+
+-------------------------------------------------------------------
+Mon Jan 23 08:26:55 CET 2023 - jgonzalez@suse.com
+
+- version 4.4.2-1
+  * Introduce threadpool for tftpsync to increase performance
+    while syncing files to proxies (bsc#1205489)
+
+-------------------------------------------------------------------
 Wed Sep 28 11:03:42 CEST 2022 - jgonzalez@suse.com
 
 - version 4.4.1-1

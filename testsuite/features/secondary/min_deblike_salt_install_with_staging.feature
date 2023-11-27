@@ -10,6 +10,7 @@
 #   java.salt_content_staging_advance = 0.05 (3 minutes)
 # which means "between 3 and 1 minutes before package installation or patching"
 
+@skip_if_github_validation
 @deblike_minion
 @scope_deblike
 @scope_content_staging

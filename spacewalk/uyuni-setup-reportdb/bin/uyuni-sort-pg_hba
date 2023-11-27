@@ -4,7 +4,10 @@ import sys
 import os
 import time
 
-pg_hba_conf = '/var/lib/pgsql/data/pg_hba.conf'
+stream = os.popen('runuser -l postgres -c env | grep PGDATA | cut -f2- -d=')
+pgdata = stream.read().strip()
+
+pg_hba_conf = pgdata + '/pg_hba.conf'
 pg_hba_bak = pg_hba_conf + '-' + '-'.join([str(el).zfill(2) for el in list(time.localtime())][:6])
 
 dbconf = {}

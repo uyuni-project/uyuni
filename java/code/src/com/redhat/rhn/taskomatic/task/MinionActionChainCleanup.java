@@ -14,10 +14,6 @@
  */
 package com.redhat.rhn.taskomatic.task;
 
-import com.redhat.rhn.GlobalInstanceHolder;
-
-import com.suse.manager.webui.utils.MinionActionUtils;
-
 import org.quartz.JobExecutionContext;
 
 
@@ -25,8 +21,6 @@ import org.quartz.JobExecutionContext;
  * Finds and cleans up Salt Action Chains for which we missed the JobReturnEvent.
  */
 public class MinionActionChainCleanup extends RhnJavaJob {
-
-    private final MinionActionUtils minionActionUtils = GlobalInstanceHolder.MINION_ACTION_UTILS;
 
     @Override
     public String getConfigNamespace() {

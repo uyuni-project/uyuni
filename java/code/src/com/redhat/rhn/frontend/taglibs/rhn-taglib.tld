@@ -411,10 +411,6 @@
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
-            <name>exportColumns</name>
-            <rtexprvalue>true</rtexprvalue>
-        </attribute>
-        <attribute>
             <name>renderDisabled</name>
             <required>false</required>
         </attribute>
@@ -493,10 +489,6 @@
         <attribute>
             <name>filterBy</name>
             <required>false</required>
-        </attribute>
-        <attribute>
-            <name>exportColumns</name>
-            <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
             <name>renderDisabled</name>

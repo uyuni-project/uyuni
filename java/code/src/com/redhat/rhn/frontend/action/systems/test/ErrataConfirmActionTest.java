@@ -41,6 +41,7 @@ import java.util.TimeZone;
  */
 public class ErrataConfirmActionTest extends RhnPostMockStrutsTestCase {
 
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();

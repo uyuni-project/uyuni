@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
-#!BuildTag: uyuni/proxy-squid:latest uyuni/proxy-squid:%PKG_VERSION% uyuni/proxy-squid:%PKG_VERSION%.%RELEASE%
+#!BuildTag: uyuni/proxy-squid:latest
 
-ARG BASE=registry.suse.com/bci/bci-base:15.4
+ARG BASE=registry.suse.com/bci/bci-base:15.5
 FROM $BASE AS base
 
 ARG PRODUCT_REPO
@@ -35,7 +35,7 @@ RUN chown squid:squid /var/cache/squid
 RUN chmod a+x /var/log
 
 # Define slim image
-ARG BASE=registry.suse.com/bci/bci-base:15.4
+ARG BASE=registry.suse.com/bci/bci-base:15.5
 FROM $BASE AS slim
 
 USER squid
@@ -54,9 +54,10 @@ LABEL org.opencontainers.image.description="Image contains a ${PRODUCT} proxy co
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="${VENDOR}"
 LABEL org.opencontainers.image.url="${URL}"
-LABEL org.opencontainers.image.version="%PKG_VERSION%"
+LABEL org.opencontainers.image.name=proxy-squid-image
+LABEL org.opencontainers.image.version=4.4.2
 LABEL org.openbuildservice.disturl="%DISTURL%"
-LABEL org.opensuse.reference="${REFERENCE_PREFIX}/proxy-squid:%PKG_VERSION%.%RELEASE%"
+LABEL org.opensuse.reference="${REFERENCE_PREFIX}/proxy-squid:4.4.2.%RELEASE%"
 # endlabelprefix
 
 # Squid

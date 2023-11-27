@@ -15,9 +15,9 @@
 package com.redhat.rhn.domain.rhnpackage.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
@@ -64,10 +64,9 @@ public class PackageFactoryTest extends BaseTestCaseWithUser {
 
     /**
      * Test fetching a Package with the logged in User
-     * @throws Exception something bad happened
      */
     @Test
-    public void testLookupWithUser() throws Exception {
+    public void testLookupWithUser() {
         Package pkg = PackageTest.createTestPackage(user.getOrg());
         assertNotNull(pkg.getOrg().getId());
 
@@ -129,7 +128,7 @@ public class PackageFactoryTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testPackageDelete() throws Exception {
+    public void testPackageDelete() {
         Package pkg = PackageTest.createTestPackage(user.getOrg());
         Long id = pkg.getId();
         Org org = pkg.getOrg();
@@ -143,11 +142,11 @@ public class PackageFactoryTest extends BaseTestCaseWithUser {
 
 
     @Test
-   public void testPackageSourceLookup() throws Exception {
+   public void testPackageSourceLookup() {
        Package pack = PackageTest.createTestPackage(user.getOrg());
 
        List<PackageSource> list = PackageFactory.lookupPackageSources(pack);
-       assertTrue(list.size() > 0);
+        assertFalse(list.isEmpty());
 
    }
 

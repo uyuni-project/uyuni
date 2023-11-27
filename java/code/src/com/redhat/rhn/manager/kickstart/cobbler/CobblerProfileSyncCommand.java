@@ -58,10 +58,10 @@ public class CobblerProfileSyncCommand extends CobblerCommand {
      *  Get a map of CobblerID -> profileMap from cobbler
      * @return a list of cobbler profile names
      */
-    private Map<String, Map> getModifiedProfileNames() {
-        Map<String, Map> toReturn = new HashMap<>();
-        List<Map> profiles = (List<Map>)invokeXMLRPC("get_profiles", xmlRpcToken);
-        for (Map profile : profiles) {
+    private Map<String, Map<String, Object>> getModifiedProfileNames() {
+        Map<String, Map<String, Object>> toReturn = new HashMap<>();
+        List<Map<String, Object>> profiles = (List<Map<String, Object>>)invokeXMLRPC("get_profiles", xmlRpcToken);
+        for (Map<String, Object> profile : profiles) {
                 toReturn.put((String)profile.get("uid"), profile);
         }
         return toReturn;
@@ -75,7 +75,7 @@ public class CobblerProfileSyncCommand extends CobblerCommand {
     public ValidatorError store() {
         //First are there any profiles within spacewalk that aren't within cobbler
         List<KickstartData> profiles = KickstartFactory.listAllKickstartData();
-        Map<String, Map> profileNames = getModifiedProfileNames();
+        Map<String, Map<String, Object>> profileNames = getModifiedProfileNames();
         for (KickstartData profile : profiles) {
             /**
              * workaround for bad data left in the DB (bz 525561)
@@ -102,7 +102,7 @@ public class CobblerProfileSyncCommand extends CobblerCommand {
         //Are there any profiles on cobbler that have changed
         for (KickstartData profile : profiles) {
             if (profileNames.containsKey(profile.getCobblerId())) {
-                Map cobProfile = profileNames.get(profile.getCobblerId());
+                Map<String, Object> cobProfile = profileNames.get(profile.getCobblerId());
                 log.debug("{}: {} - {}", profile.getLabel(), cobProfile.get("mtime"), profile.getModified().getTime());
                 if (((Double)cobProfile.get("mtime")).longValue() >
                       profile.getModified().getTime() / 1000) {
@@ -126,15 +126,15 @@ public class CobblerProfileSyncCommand extends CobblerCommand {
      * Sync s the following things:
      *  Distro (if applicable)
      *
-     * then overwrites the 'kickstart' attribute within the cobbler profile
+     * then overwrites the 'autoinstall' attribute within the cobbler profile
      *      (in case they changed it to something spacewalk doesn't know about)
      * @param cobblerProfile
      * @param profile
      */
-    private void syncProfileToSpacewalk(Map cobblerProfile, KickstartData profile) {
+    private void syncProfileToSpacewalk(Map<String, Object> cobblerProfile, KickstartData profile) {
         log.debug("Syncing profile: {} known in cobbler as: {}", profile.getLabel(), cobblerProfile.get("name"));
         //Do we need to sync the distro?
-        Map distro = (Map) invokeXMLRPC("get_distro", cobblerProfile.get("distro"));
+        Map<String, Object> distro = (Map<String, Object>) invokeXMLRPC("get_distro", cobblerProfile.get("distro"));
         if (!distro.get("uid").equals(profile.getTree().getCobblerId()) &&
                !distro.get("uid").equals(profile.getTree().getCobblerXenId())) {
             //lookup the distro locally:
@@ -151,15 +151,15 @@ public class CobblerProfileSyncCommand extends CobblerCommand {
         //Now re-set the filename in case someone set it incorrectly
         Path kickstartPath = Path.of(
                 ConfigDefaults.get().getKickstartConfigDir(),
-                cobblerProfile.get("kickstart").toString()
+                cobblerProfile.get("autoinstall").toString()
         );
         String cobblerKickstartFileName = profile.buildCobblerFileName();
         if (!Path.of(cobblerKickstartFileName).equals(kickstartPath)) {
             try {
-                log.info("Updating cobbler profile, setting 'kickstart' to: {}", cobblerKickstartFileName);
+                log.info("Updating cobbler profile, setting 'autoinstall' to: {}", cobblerKickstartFileName);
                 String handle = (String) invokeXMLRPC("get_profile_handle",
                         cobblerProfile.get("name"), xmlRpcToken);
-                invokeXMLRPC("modify_profile", handle, "kickstart", cobblerKickstartFileName,
+                invokeXMLRPC("modify_profile", handle, "autoinstall", cobblerKickstartFileName,
                         xmlRpcToken);
 
                 invokeXMLRPC("save_profile", handle, xmlRpcToken);

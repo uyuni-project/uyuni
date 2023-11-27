@@ -53,13 +53,21 @@ import javax.persistence.criteria.Root;
  */
 public class UserNotificationFactory extends HibernateFactory {
 
-    private static UserNotificationFactory singleton = new UserNotificationFactory();
     private static Logger log = LogManager.getLogger(UserNotificationFactory.class);
-
+    private static UserNotificationFactory singleton = new UserNotificationFactory();
     private static Mail mailer;
 
     private UserNotificationFactory() {
         super();
+        try {
+            configureMailer();
+        }
+        catch (Exception e) {
+            log.error("Unable to configure the mailer: {}", e.getMessage(), e);
+        }
+    }
+
+    private static void configureMailer() {
         String clazz = Config.get().getString("web.mailer_class");
         if (clazz == null) {
             mailer = new SmtpMail();
@@ -69,7 +77,8 @@ public class UserNotificationFactory extends HibernateFactory {
             Class<? extends Mail> cobj = Class.forName(clazz).asSubclass(Mail.class);
             mailer = cobj.getDeclaredConstructor().newInstance();
         }
-        catch (Exception e) {
+        catch (Exception | LinkageError e) {
+            log.error("An exception was thrown while initializing custom mailer class", e);
             mailer = new SmtpMail();
         }
     }
@@ -79,7 +88,7 @@ public class UserNotificationFactory extends HibernateFactory {
      * @param mailerIn the mailer
      */
     public static void setMailer(Mail mailerIn) {
-        singleton.mailer = mailerIn;
+        mailer = mailerIn;
     }
 
     /**
@@ -90,9 +99,7 @@ public class UserNotificationFactory extends HibernateFactory {
      * @return new UserNotification
      */
     public static UserNotification create(User userIn, NotificationMessage messageIn) {
-        UserNotification userNotification =
-                new UserNotification(userIn, messageIn);
-        return userNotification;
+        return new UserNotification(userIn, messageIn);
     }
 
     /**
@@ -133,8 +140,7 @@ public class UserNotificationFactory extends HibernateFactory {
      * @return new notificationMessage
      */
     public static NotificationMessage createNotificationMessage(NotificationData notification) {
-        NotificationMessage notificationMessage = new NotificationMessage(notification);
-        return notificationMessage;
+        return new NotificationMessage(notification);
     }
 
     /**
@@ -158,7 +164,7 @@ public class UserNotificationFactory extends HibernateFactory {
                                         .filter(user -> user.getEmailNotify() == 1)
                                         .map(User::getEmail)
                                         .toArray(String[]::new);
-            if (receipients.length > 0) {
+            if (receipients.length > 0 && mailer != null) {
                 String subject = String.format("%s Notification from %s: %s",
                         MailHelper.PRODUCT_PREFIX,
                         ConfigDefaults.get().getHostname(),
@@ -168,8 +174,8 @@ public class UserNotificationFactory extends HibernateFactory {
                 if (!StringUtils.isBlank(data.getDetails())) {
                     message += "\n\n" + data.getDetails();
                 }
-                MailHelper.withMailer(singleton.mailer)
-                        .sendEmail(receipients, subject, message.replaceAll("\\<.*?\\>", ""));
+                MailHelper.withMailer(mailer)
+                        .sendEmail(receipients, subject, message.replaceAll("<[^>]*>", ""));
             }
         }
         // Update Notification WebSocket Sessions right now
@@ -318,7 +324,7 @@ public class UserNotificationFactory extends HibernateFactory {
         CriteriaBuilder builder = getSession().getCriteriaBuilder();
         CriteriaDelete<NotificationMessage> delete = builder.createCriteriaDelete(NotificationMessage.class);
         Root<NotificationMessage> root = delete.from(NotificationMessage.class);
-        delete.where(builder.lessThan(root.<Date>get("created"), before));
+        delete.where(builder.lessThan(root.get("created"), before));
         return getSession().createQuery(delete).executeUpdate();
     }
 

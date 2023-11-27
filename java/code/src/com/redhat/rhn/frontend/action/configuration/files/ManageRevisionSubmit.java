@@ -123,7 +123,7 @@ public class ManageRevisionSubmit extends RhnSetAction {
                     new ActionMessage("emptyselectionerror"));
             getStrutsDelegate().saveMessages(request, msg);
 
-            Map params = makeParamMap(form, request);
+            Map<String, Object> params = makeParamMap(form, request);
             return getStrutsDelegate().forwardParams(
                     mapping.findForward(RhnHelper.DEFAULT_FORWARD), params);
         }
@@ -201,7 +201,7 @@ public class ManageRevisionSubmit extends RhnSetAction {
         ConfigFile file = ConfigActionHelper.getFile(request);
         User user = new RequestContext(request).getCurrentUser();
 
-        Map params = makeParamMap(form, request);
+        Map<String, Object> params = makeParamMap(form, request);
         StrutsDelegate strutsDelegate = getStrutsDelegate();
 
         int successCount = 0;
@@ -307,7 +307,7 @@ public class ManageRevisionSubmit extends RhnSetAction {
         boolean acl = AclManager.hasAcl("config_channel_editable(" +
                 configFile.getConfigChannel().getId() + ")", user,
                 "com.redhat.rhn.common.security.acl.ConfigAclHandler",
-                new HashMap());
+                new HashMap<>());
         if (!acl) {
             throw new PermissionException("Can not edit Config Channel.");
         }

@@ -18,6 +18,7 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.common.FileList;
 import com.redhat.rhn.domain.rhnset.RhnSetElement;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.FilePreservationDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.kickstart.FilePreservationListsCommand;
 import com.redhat.rhn.manager.kickstart.KickstartLister;
@@ -42,9 +43,10 @@ public class KickstartPreservationListSubmitAction extends BaseKickstartListSubm
     /**
      * {@inheritDoc}
      */
-    protected DataResult getDataResult(User userIn,
-                                       ActionForm formIn,
-                                       HttpServletRequest request) {
+    @Override
+    protected DataResult<FilePreservationDto> getDataResult(User userIn,
+                                                            ActionForm formIn,
+                                                            HttpServletRequest request) {
         return KickstartLister.getInstance().preservationListsInOrg(
                 userIn.getOrg(), null);
     }
@@ -53,6 +55,7 @@ public class KickstartPreservationListSubmitAction extends BaseKickstartListSubm
      *
      * {@inheritDoc}
      */
+    @Override
     protected void operateOnRemovedElements(List<RhnSetElement> elements,
                                             HttpServletRequest request) {
         RequestContext ctx = new RequestContext(request);
@@ -76,8 +79,9 @@ public class KickstartPreservationListSubmitAction extends BaseKickstartListSubm
      *
      * {@inheritDoc}
      */
+    @Override
     protected void operateOnAddedElements(List<RhnSetElement> elements,
-            HttpServletRequest request) {
+                                          HttpServletRequest request) {
         RequestContext ctx = new RequestContext(request);
 
         FilePreservationListsCommand cmd =
@@ -99,6 +103,7 @@ public class KickstartPreservationListSubmitAction extends BaseKickstartListSubm
      *
      * @return security label for activation keys
      */
+    @Override
     public RhnSetDecl getSetDecl() {
         return RhnSetDecl.FILE_LISTS;
     }
@@ -106,6 +111,7 @@ public class KickstartPreservationListSubmitAction extends BaseKickstartListSubm
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processMethodKeys(Map<String, String> map) {
         map.put(UPDATE_METHOD, "operateOnDiff");
     }
@@ -113,6 +119,7 @@ public class KickstartPreservationListSubmitAction extends BaseKickstartListSubm
     /**
      * {@inheritDoc}
      */
+    @Override
     protected Iterator<FileList> getCurrentItemsIterator(RequestContext ctx) {
         FilePreservationListsCommand cmd =
             new FilePreservationListsCommand(

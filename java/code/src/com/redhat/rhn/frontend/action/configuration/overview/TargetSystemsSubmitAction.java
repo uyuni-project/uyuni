@@ -19,6 +19,7 @@ import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.RhnSetAction;
+import com.redhat.rhn.frontend.dto.ConfigSystemDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnValidationHelper;
 import com.redhat.rhn.manager.channel.MultipleChannelsWithPackageException;
@@ -53,9 +54,10 @@ public class TargetSystemsSubmitAction extends RhnSetAction {
     /**
      * {@inheritDoc}
      */
-    protected DataResult getDataResult(User userIn,
-                                       ActionForm formIn,
-                                       HttpServletRequest requestIn) {
+    @Override
+    protected DataResult<ConfigSystemDto> getDataResult(User userIn,
+                                                        ActionForm formIn,
+                                                        HttpServletRequest requestIn) {
         ConfigurationManager cm = ConfigurationManager.getInstance();
         return cm.listNonManagedSystems(userIn, null);
     }
@@ -63,6 +65,7 @@ public class TargetSystemsSubmitAction extends RhnSetAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected RhnSetDecl getSetDecl() {
         return RhnSetDecl.CONFIG_ENABLE_SYSTEMS;
     }
@@ -70,6 +73,7 @@ public class TargetSystemsSubmitAction extends RhnSetAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processMethodKeys(Map<String, String> mapIn) {
         mapIn.put("targetsystems.jsp.enable", "enableSystems");
     }
@@ -77,6 +81,7 @@ public class TargetSystemsSubmitAction extends RhnSetAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processParamMap(ActionForm form,
                                    HttpServletRequest request,
                                    Map<String, Object> params) {
@@ -115,8 +120,7 @@ public class TargetSystemsSubmitAction extends RhnSetAction {
             return mapping.findForward("default");
         }
         catch (TaskomaticApiException e) {
-            log.error("Could not schedule configuration enablement:");
-            log.error(e);
+            log.error("Could not schedule configuration enablement:", e);
             ValidatorError verrors = new ValidatorError("taskscheduler.down");
             ActionErrors errors = RhnValidationHelper.validatorErrorToActionErrors(verrors);
             getStrutsDelegate().saveMessages(request, errors);

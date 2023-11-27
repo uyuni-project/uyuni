@@ -1,6 +1,7 @@
 import * as React from "react";
+import { useState } from "react";
 
-import { AsyncButton } from "components/buttons";
+import { SubmitButton } from "components/buttons";
 import { useInputValue } from "components/hooks/forms/useInputValue";
 import { Messages } from "components/messages";
 
@@ -15,6 +16,7 @@ const UyuniThemeLogin = (props: ThemeProps) => {
   const loginInput = useInputValue("");
   const passwordInput = useInputValue("");
   const { onLogin, success, messages } = useLoginApi();
+  const [isLoading, setIsLoading] = useState(false);
 
   const { product } = props;
 
@@ -26,7 +28,12 @@ const UyuniThemeLogin = (props: ThemeProps) => {
         <section id="spacewalk-content">
           <div className="wrap">
             <Messages
-              items={getGlobalMessages(props.validationErrors, props.schemaUpgradeRequired, props.diskspaceSeverity)}
+              items={getGlobalMessages(
+                props.validationErrors,
+                props.schemaUpgradeRequired,
+                props.diskspaceSeverity,
+                props.sccForwardWarning
+              )}
             />
             <div className="col-sm-6">
               <h1>{product.bodyTitle}</h1>
@@ -44,7 +51,25 @@ const UyuniThemeLogin = (props: ThemeProps) => {
             <div className="col-sm-5 col-sm-offset-1">
               <Messages items={getFormMessages(success, messages)} />
               <h2 className="gray-text">{t("Sign In")}</h2>
-              <form onSubmit={(event) => event.preventDefault()} name="loginForm">
+              <form
+                onSubmit={async (event) => {
+                  event.preventDefault();
+                  if (isLoading) {
+                    return;
+                  }
+
+                  setIsLoading(true);
+                  const success = await onLogin({
+                    login: loginInput.value,
+                    password: passwordInput.value,
+                  });
+                  if (success) {
+                    window.location.replace(props.bounce);
+                  }
+                  setIsLoading(false);
+                }}
+                name="loginForm"
+              >
                 <div className="margins-updown">
                   <input
                     id="username-field"
@@ -54,6 +79,7 @@ const UyuniThemeLogin = (props: ThemeProps) => {
                     placeholder={t("Login")}
                     maxLength={parseInt(props.loginLength, 10)}
                     autoFocus={true}
+                    required
                     {...loginInput}
                   />
                   <input
@@ -64,19 +90,14 @@ const UyuniThemeLogin = (props: ThemeProps) => {
                     autoComplete="password"
                     placeholder={t("Password")}
                     maxLength={parseInt(props.passwordLength, 10)}
+                    required
                     {...passwordInput}
                   />
-                  <AsyncButton
+                  <SubmitButton
                     id="login-btn"
-                    className="btn-block"
-                    defaultType="btn-success"
+                    className="btn-block btn-success"
                     text={t("Sign In")}
-                    action={() =>
-                      onLogin({
-                        login: loginInput.value,
-                        password: passwordInput.value,
-                      }).then((success) => success && window.location.replace(props.bounce))
-                    }
+                    disabled={isLoading}
                   />
                 </div>
               </form>

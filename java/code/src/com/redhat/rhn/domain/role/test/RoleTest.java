@@ -43,10 +43,9 @@ public class RoleTest extends RhnBaseTestCase {
     * We don't support modification of the Collection
     * of roles so we want to make sure an exception is
     * thrown if the collection is attempted to be modified.
-    * @throws Exception something bad happened
-    */
+     */
     @Test
-    public void testAttemptChangeUserRoles() throws Exception {
+    public void testAttemptChangeUserRoles() {
         User usr = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
         boolean failed = false;
@@ -121,10 +120,9 @@ public class RoleTest extends RhnBaseTestCase {
     /**
     * We need to make sure that the implied roles are added when a user
     * is an org admin.
-    * @throws Exception something bad happened
-    */
+     */
     @Test
-    public void testOrgAdminRole() throws Exception {
+    public void testOrgAdminRole() {
         User usr = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
         Org o1 = usr.getOrg();
@@ -140,10 +138,9 @@ public class RoleTest extends RhnBaseTestCase {
 
     /**
     *  Test to make sure we can add Roles to Orgs
-    * @throws Exception something bad happened
-    */
+     */
     @Test
-    public void testOrgAddRole() throws Exception {
+    public void testOrgAddRole() {
         User usr = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
         Org o1 = usr.getOrg();
@@ -159,21 +156,19 @@ public class RoleTest extends RhnBaseTestCase {
     /**
     * Test to make sure that we support the ability for
     * a user to have no roles
-    * @throws Exception something bad happened
-    */
+     */
     @Test
-    public void testUserWithNoRoles() throws Exception {
+    public void testUserWithNoRoles() {
         User usr = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
-        assertTrue(usr.getRoles().size() == 0);
+        assertTrue(usr.getRoles().isEmpty());
     }
 
     /**
     * Test the RoleFactory's lookupByLabel() method
-    * @throws Exception something bad happened
-    */
+     */
     @Test
-    public void testFindByLabel() throws Exception {
+    public void testFindByLabel() {
         Role role = RoleFactory.lookupByLabel(RoleFactory.ORG_ADMIN.getLabel());
         assertEquals(RoleFactory.ORG_ADMIN.getLabel(), role.getLabel());
         assertEquals("Organization Administrator", role.getName());
@@ -182,10 +177,9 @@ public class RoleTest extends RhnBaseTestCase {
 
     /**
     * Test the RoleFactory's testFindById() method
-    * @throws Exception something bad happened
-    */
+     */
     @Test
-    public void testFindById() throws Exception {
+    public void testFindById() {
         Role r2 = RoleFactory.lookupById(RoleFactory.ORG_ADMIN.getId());
         assertEquals(r2.getLabel(), RoleFactory.ORG_ADMIN.getLabel());
         assertEquals(r2.getName(), "Organization Administrator");
@@ -195,10 +189,9 @@ public class RoleTest extends RhnBaseTestCase {
     /**
     * Test to make sure RoleFactory can support looking for
     * roles that don't exist
-    * @throws Exception something bad happened
-    */
+     */
     @Test
-    public void testFindNonExistentRole() throws Exception {
+    public void testFindNonExistentRole() {
         assertNull(RoleFactory.lookupByLabel("somerolethatdoesntexist"));
     }
 

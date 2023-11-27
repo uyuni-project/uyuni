@@ -19,7 +19,7 @@ echo
 read -n 1 -s -r -p "Press any key to start the migration or CTRL+C to cancel...";
 echo
 
-NEW_VERSION_ID=15.4
+NEW_VERSION_ID=15.5
 
 CHECK_OS=$(cat /etc/os-release  | grep PRETTY_NAME)
 
@@ -37,7 +37,7 @@ zypper ar -n "Main Update Repository" http://download.opensuse.org/update/leap/$
 zypper ar -n "Non-OSS Repository" http://download.opensuse.org/distribution/leap/${NEW_VERSION_ID}/repo/non-oss repo-non-oss
 zypper ar -n "Update Repository (Non-Oss)" http://download.opensuse.org/update/leap/${NEW_VERSION_ID}/non-oss/ repo-update-non-oss
 zypper ar -n "Uyuni Server Stable" https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Stable/images/repo/Uyuni-Server-POOL-x86_64-Media1/ uyuni-server-stable
-zypper ar -n "Update repository wiht updates from SUSE Linux Enterprise" http://download.opensuse.org/update/leap/${NEW_VERSION_ID}/sle repo-sle-update
+zypper ar -n "Update repository with updates from SUSE Linux Enterprise" http://download.opensuse.org/update/leap/${NEW_VERSION_ID}/sle repo-sle-update
 zypper ar -n "Update repository of openSUSE Backports" http://download.opensuse.org/update/leap/${NEW_VERSION_ID}/backports/ repo-backports-update
 zypper ref
 zypper -n dup --allow-vendor-change
@@ -56,8 +56,10 @@ if [[ "${CURRENT_VERSION_ID}" != "\"${NEW_VERSION_ID}\"" ]]; then
 fi
 
 echo "==================================================================="
-echo "OS migrated successfully, now please migrate to the new postgres version "
-echo "by running /usr/lib/susemanager/bin/pg-migrate-x-to-y.sh"
+echo "OS migrated successfully"
+#TODO Upgrade from 15.4 to 15.5 will not migrate postgres
+#echo "Now please migrate to the new postgres version "
+#echo "by running /usr/lib/susemanager/bin/pg-migrate-x-to-y.sh"
 echo
 echo "Reboot system afterwards."
 echo "==================================================================="

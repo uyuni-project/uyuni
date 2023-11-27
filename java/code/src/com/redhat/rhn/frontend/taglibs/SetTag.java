@@ -47,6 +47,7 @@ public class SetTag extends ColumnTag {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int doStartTag() throws JspException {
         if (showButtons) {
             findListDisplay().showButtons();
@@ -84,6 +85,7 @@ public class SetTag extends ColumnTag {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected String renderHeaderData(String hdr, String arg) {
         //We don't care what hdr is, we're rendering a checkbox!
         HtmlTag cbox = new HtmlTag("input");
@@ -115,6 +117,7 @@ public class SetTag extends ColumnTag {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void renderData(JspWriter out, ListDisplayTag parent)
         throws IOException {
         super.renderData(out, parent);
@@ -213,7 +216,7 @@ public class SetTag extends ColumnTag {
      * @param elementIn The element to set.
      */
     public void setElement(String elementIn) {
-        if (elementIn != null && elementIn.length() > 0) {
+        if (elementIn != null && !elementIn.isEmpty()) {
             if (isRadio()) {
                 radioElement = elementIn;
             }
@@ -235,7 +238,7 @@ public class SetTag extends ColumnTag {
      * @param elementIn The elementTwo to set.
      */
     public void setElementTwo(String elementIn) {
-        if (elementIn != null && elementIn.length() > 0) {
+        if (elementIn != null && !elementIn.isEmpty()) {
             elementTwo = Long.decode(elementIn);
         }
     }
@@ -318,6 +321,7 @@ public class SetTag extends ColumnTag {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void release() {
         element = null;
         elementTwo = null;

@@ -21,8 +21,7 @@ ssh root@$TARGET_HOST << EOF
   useradd tomcat
   cp $DOCKER_BASE_DIR/spacewalk-public.cert /usr/share/spacewalk/setup/spacewalk-public.cert
   cp -r $DOCKER_BASE_DIR/gnupg /.gnupg
-  cp $DOCKER_BASE_DIR/webapp-keyring.gpg /etc/webapp-keyring.gpg
-  export PYTHONPATH=/manager/client/rhel/rhnlib/:/manager/suseRegisterInfo:/manager/client/rhel/rhn-client-tools/src
+  export PYTHONPATH=/manager/client/rhel/rhnlib/:/manager/client/rhel/rhn-client-tools/src
   export PERLLIB=/manager/spacewalk/setup/lib/:/manager/web/modules/rhn/:/manager/web/modules/pxt/:/manager/schema/spacewalk/lib
   export PATH=/manager/schema/spacewalk/:/manager/spacewalk/setup/bin/:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 

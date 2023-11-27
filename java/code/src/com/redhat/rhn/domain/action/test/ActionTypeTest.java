@@ -15,8 +15,7 @@
 package com.redhat.rhn.domain.action.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.ActionType;
@@ -38,13 +37,13 @@ public class ActionTypeTest extends RhnBaseTestCase {
     public void testEquals() throws Exception {
         ActionType r1 = new ActionType();
         ActionType r2 = null;
-        assertFalse(r1.equals(r2));
+        assertNotEquals(r1, r2);
         r2 = lookupByLabel("reboot.reboot");
         r1 = lookupByLabel("reboot.reboot");
-        assertTrue(r1.equals(r2));
+        assertEquals(r1, r2);
         ActionType r3 = lookupByLabel("packages.update");
-        assertFalse(r1.equals(r3));
-        assertTrue(r1.equals(r1));
+        assertNotEquals(r1, r3);
+        assertEquals(r1, r1);
     }
 
     /**
@@ -67,9 +66,8 @@ public class ActionTypeTest extends RhnBaseTestCase {
      * Helper method to get a ActionType by label
      * @param label the label
      * @return Returns the ActionType corresponding to label
-     * @throws Exception something bad happened
      */
-    private ActionType lookupByLabel(String label) throws Exception {
+    private ActionType lookupByLabel(String label) {
         Session session = HibernateFactory.getSession();
         return (ActionType) session.getNamedQuery("ActionType.findByLabel")
                                 .setString("label", label)

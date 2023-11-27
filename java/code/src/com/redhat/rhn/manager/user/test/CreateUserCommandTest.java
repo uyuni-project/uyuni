@@ -36,8 +36,9 @@ public class CreateUserCommandTest extends RhnBaseTestCase {
 
     private CreateUserCommand command;
 
+    @Override
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         command = new CreateUserCommand();
         assertNotNull(command.getUser());
     }
@@ -191,7 +192,7 @@ public class CreateUserCommandTest extends RhnBaseTestCase {
 
 
     @Test
-    public void testValidatePasswordHasTabCharacter() throws Exception {
+    public void testValidatePasswordHasTabCharacter() {
         command.setLogin("bilbo");
         command.setEmail("bilbo@baggins.com");
         command.setPassword("aaaaa\tb");
@@ -201,7 +202,7 @@ public class CreateUserCommandTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testValidatePasswordHasNewlineCharacter() throws Exception {
+    public void testValidatePasswordHasNewlineCharacter() {
         command.setLogin("bilbo");
         command.setEmail("bilbo@baggins.com");
         command.setPassword("aaaaa\nb");

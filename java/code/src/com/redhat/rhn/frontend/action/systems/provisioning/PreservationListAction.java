@@ -15,6 +15,7 @@
 package com.redhat.rhn.frontend.action.systems.provisioning;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.frontend.dto.FilePreservationDto;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.struts.BaseSetListAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
@@ -27,7 +28,8 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 public class PreservationListAction extends BaseSetListAction {
 
 
-    protected DataResult getDataResult(RequestContext rctx, PageControl pc) {
+    @Override
+    protected DataResult<FilePreservationDto> getDataResult(RequestContext rctx, PageControl pc) {
         return KickstartLister.getInstance().preservationListsInOrg(
                 rctx.getCurrentUser().getOrg(), pc);
     }
@@ -35,6 +37,7 @@ public class PreservationListAction extends BaseSetListAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     public RhnSetDecl getSetDecl() {
         return RhnSetDecl.FILE_LISTS;
     }

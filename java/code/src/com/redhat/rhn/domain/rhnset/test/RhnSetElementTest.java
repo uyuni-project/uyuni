@@ -15,7 +15,7 @@
 package com.redhat.rhn.domain.rhnset.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -134,10 +134,10 @@ public class RhnSetElementTest extends RhnBaseTestCase {
         r2.setElementTwo(elemTwo);
         assertEquals(r1, r2);
         r2.setElementTwo(elem);
-        assertFalse(r1.equals(r2));
+        assertNotEquals(r1, r2);
         r2.setElementTwo(null);
-        assertFalse(r2.equals(r1));
-        assertFalse(r1.equals(r2));
+        assertNotEquals(r2, r1);
+        assertNotEquals(r1, r2);
         r1.setElementTwo(null);
         assertEquals(r1, r2);
 
@@ -145,10 +145,10 @@ public class RhnSetElementTest extends RhnBaseTestCase {
         r2.setElementThree(elemThree);
         assertEquals(r1, r2);
         r2.setElementThree(elem);
-        assertFalse(r1.equals(r2));
+        assertNotEquals(r1, r2);
         r2.setElementThree(null);
-        assertFalse(r2.equals(r1));
-        assertFalse(r1.equals(r2));
+        assertNotEquals(r2, r1);
+        assertNotEquals(r1, r2);
         r1.setElementThree(null);
         assertEquals(r1, r2);
 

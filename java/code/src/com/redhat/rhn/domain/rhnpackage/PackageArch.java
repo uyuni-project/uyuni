@@ -92,6 +92,7 @@ public class PackageArch extends BaseDomainHelper implements Comparable<PackageA
      *
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder().append(getName()).append(getLabel()).toHashCode();
     }
@@ -99,6 +100,7 @@ public class PackageArch extends BaseDomainHelper implements Comparable<PackageA
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString() {
         ToStringBuilder builder = new ToStringBuilder(this);
         builder.append("id", this.getId()).append("label", this.getLabel()).append("name",
@@ -125,6 +127,7 @@ public class PackageArch extends BaseDomainHelper implements Comparable<PackageA
      *
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(Object archIn) {
 
         if (archIn instanceof PackageArch) {
@@ -139,6 +142,7 @@ public class PackageArch extends BaseDomainHelper implements Comparable<PackageA
     /**
      * {@inheritDoc}
      */
+    @Override
     public int compareTo(PackageArch o) {
         if (equals(o)) {
             return 0;

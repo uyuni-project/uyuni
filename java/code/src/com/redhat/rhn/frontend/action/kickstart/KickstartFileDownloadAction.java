@@ -42,9 +42,10 @@ public class KickstartFileDownloadAction extends BaseKickstartEditAction {
      * {@inheritDoc}
      * no form to process. return null.
      */
+    @Override
     protected ValidatorError processFormValues(HttpServletRequest request,
-            DynaActionForm form,
-            BaseKickstartCommand cmdIn) {
+                                               DynaActionForm form,
+                                               BaseKickstartCommand cmdIn) {
         return null;
     }
 
@@ -53,6 +54,7 @@ public class KickstartFileDownloadAction extends BaseKickstartEditAction {
      * {@inheritDoc}
      * no success msg to process...return empty string.
      */
+    @Override
     protected String getSuccessKey() {
         return "";
     }
@@ -60,8 +62,9 @@ public class KickstartFileDownloadAction extends BaseKickstartEditAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void setupFormValues(RequestContext ctx,
-            DynaActionForm form, BaseKickstartCommand cmdIn) {
+                                   DynaActionForm form, BaseKickstartCommand cmdIn) {
         HttpServletRequest request = ctx.getRequest();
         KickstartFileDownloadCommand cmd = (KickstartFileDownloadCommand) cmdIn;
         KickstartData data = cmd.getKickstartData();
@@ -95,6 +98,7 @@ public class KickstartFileDownloadAction extends BaseKickstartEditAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected BaseKickstartCommand getCommand(RequestContext ctx) {
         return new KickstartFileDownloadCommand(
                 ctx.getRequiredParam(RequestContext.KICKSTART_ID),

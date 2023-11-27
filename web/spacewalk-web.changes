@@ -1,4 +1,107 @@
 -------------------------------------------------------------------
+Wed Nov 01 20:13:53 CET 2023 - marina.latini@suse.com
+
+- version 4.4.12-1
+  * Fix the use of page size preference in systems and packages lists
+  * Fix datetimepicker erroneously updating the date field (bsc#1210253, bsc#1215820)
+  * Improve datetimepicker input formatting
+  * Improved logging to better capture third-party library issues
+  * Simplify and modernize password generation logic
+  * Update webpack to 5.88.2
+  * Add sanity checks for FQDNs in proxy configuration dialog
+  * Update the version in the WebUI
+
+-------------------------------------------------------------------
+Mon Sep 18 14:37:15 CEST 2023 - rosuna@suse.com
+
+- version 4.4.11-1
+  * Integrate @formatjs/intl as a replacement for t()
+  * Fix link interpolation in message maps
+  * Update the messages after syncing the products
+  * Fixed issue that prevented to delete credentials
+  * Add warning message in login UI for PAYG with SCC credentials and no forward registration.
+  * Hide SSH info for `localhost` in Pay-as-you-go section
+  * disable editing for special local payg connection
+  * Enhance new systems list filter UI
+  * Add missing translation wrappers for Salt formula catalog
+  * remove unused config variable
+  * Adjust the version number in web/conf/rhn_web.conf (web.version.uyuni)
+  * Shows a notification when an update for Uyuni is available
+  * Fix VHM CPU and RAM display when 0 (bsc#1175823)
+  * Align the order of the Refresh and Create buttons for more
+    consistency
+  * Fix layout alignment on pages showing failed states logs (bsc#1211713)
+  * Fix parsing error when showing notification message details (bsc#1211469)
+  * Fix spelling on monitoring-admin page.
+  * force all mandatory channels being selected in software channel
+    change page (bsc#1211062)
+  * Fix font contrast in dark theme search field (bsc#1201337)
+  * Ignore mandatory channels results that don't match list of channels (bsc#1204270)
+  * Show loading indicator on formula details pages (bsc#1179747)
+  * Fix systems list sorting buttons
+  * Fix wrong credentials error message (bsc#1210456)
+  * Recurring custom states
+  * Increase datetimepicker font sizes (bsc#1210437)
+  * Disable login button with empty password
+
+-------------------------------------------------------------------
+Wed Apr 19 12:48:03 CEST 2023 - marina.latini@suse.com
+
+- version 4.4.10-1
+  * fix an issue where the datetimepicker shows wrong date (bsc#1209231)
+  * Fix datetime picker appearing behind modal edge
+  * Refactor Software / Manage / Packages to use SQL paging (bsc#1206725)
+  * Fix UI inconsistencies in susemanager-light and susemanager-dark
+    theme
+  * Deprecate jQuery datepicker, integrate React datepicker
+
+-------------------------------------------------------------------
+Tue Feb 28 15:34:47 CET 2023 - jgonzalez@suse.com
+
+- version 4.4.9-1
+  * Update the version for the WebUI
+
+-------------------------------------------------------------------
+Tue Feb 21 14:12:36 CET 2023 - jgonzalez@suse.com
+
+- version 4.4.8-1
+  * Add support to add optional channels via webUI
+  * Fix CLM environments UI for environment labels containing dots (bsc#1207838)
+  * Added pages to install and remove ptf
+
+-------------------------------------------------------------------
+Mon Jan 23 08:32:14 CET 2023 - jgonzalez@suse.com
+
+- version 4.4.7-1
+  * Add 'none' matcher to CLM AppStream filters (bsc#1206817)
+  * Fix salt keys page keeps loading when no key exists (bsc#1206799)
+  * Fix link to documentation in monitoring page
+  * Added CLM filters to match product temporary fixes packages
+  * fix frontend logging in react pages
+  * Fix virtual systems list for unentitled systems
+
+-------------------------------------------------------------------
+Mon Dec 19 11:42:59 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.6-1
+  * Source Select2 and jQuery UI from susemanager-frontend-libs
+
+-------------------------------------------------------------------
+Wed Dec 14 14:16:24 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.5-1
+  * Remove DWR library
+  * Add reboot needed indicator to systems list
+  * Move web dependencies from susemanager-frontend-libs to
+    spacewalk-web
+
+-------------------------------------------------------------------
+Tue Dec 13 13:30:49 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.4-1
+  * Prevent proxy data from being logged (bsc#1205339)
+
+-------------------------------------------------------------------
 Fri Nov 18 15:14:52 CET 2022 - jgonzalez@suse.com
 
 - version 4.4.3-1

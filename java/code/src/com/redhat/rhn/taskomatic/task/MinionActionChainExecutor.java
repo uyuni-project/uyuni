@@ -15,28 +15,57 @@
 package com.redhat.rhn.taskomatic.task;
 
 import com.redhat.rhn.GlobalInstanceHolder;
-import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainEntry;
 import com.redhat.rhn.domain.action.ActionChainFactory;
+import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.server.Server;
 
+import com.suse.cloud.CloudPaygManager;
 import com.suse.manager.webui.services.SaltServerActionService;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.quartz.JobExecutionContext;
 
 import java.time.Duration;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Execute SUSE Manager actions via Salt.
  */
 public class MinionActionChainExecutor extends RhnJavaJob {
 
-    private static final int ACTION_DATABASE_GRACE_TIME = 10000;
-    private static final long MAXIMUM_TIMEDELTA_FOR_SCHEDULED_ACTIONS = 24; // hours
+    public static final int ACTION_DATABASE_GRACE_TIME = 600_000;
+    public static final int ACTION_DATABASE_POLL_TIME = 100;
+    public static final long MAXIMUM_TIMEDELTA_FOR_SCHEDULED_ACTIONS = 24; // hours
+    public static final LocalizationService LOCALIZATION = LocalizationService.getInstance();
 
-    private final SaltServerActionService saltServerActionService = GlobalInstanceHolder.SALT_SERVER_ACTION_SERVICE;
+    private final SaltServerActionService saltServerActionService;
+    private final CloudPaygManager cloudPaygManager;
+
+    /**
+     * Default constructor.
+     */
+    public MinionActionChainExecutor() {
+        this(GlobalInstanceHolder.SALT_SERVER_ACTION_SERVICE, GlobalInstanceHolder.PAYG_MANAGER);
+    }
+
+    /**
+     * Constructs an instance specifying the {@link SaltServerActionService}. Meant to be used only for unit test.
+     * @param saltServerActionServiceIn the salt service
+     * @param cloudPaygManagerIn the cloud payg manager
+     */
+    public MinionActionChainExecutor(SaltServerActionService saltServerActionServiceIn,
+                                     CloudPaygManager cloudPaygManagerIn) {
+        saltServerActionService = saltServerActionServiceIn;
+        cloudPaygManager = cloudPaygManagerIn;
+    }
 
     @Override
     public String getConfigNamespace() {
@@ -58,27 +87,28 @@ public class MinionActionChainExecutor extends RhnJavaJob {
         long actionChainId = Long.parseLong((String)context.getJobDetail()
                 .getJobDataMap().get("actionchain_id"));
 
-        ActionChain actionChain = ActionChainFactory
-                .getActionChain(actionChainId)
-                .orElse(null);
+        ActionChain actionChain = ActionChainFactory.getActionChain(actionChainId).orElse(null);
+        int waitedTime = 0;
+        while (countQueuedServerActions(actionChain) == 0 && waitedTime < ACTION_DATABASE_GRACE_TIME) {
+            actionChain = ActionChainFactory.getActionChain(actionChainId).orElse(null);
+            try {
+                Thread.sleep(ACTION_DATABASE_POLL_TIME);
+            }
+            catch (InterruptedException e) {
+                // never happens
+                Thread.currentThread().interrupt();
+            }
+            waitedTime += ACTION_DATABASE_POLL_TIME;
+        }
 
         if (actionChain == null) {
             log.error("Action chain not found id={}", actionChainId);
             return;
         }
 
-        long serverActionsCount = countServerActions(actionChain);
-        if (serverActionsCount == 0) {
-            log.warn("Waiting " + ACTION_DATABASE_GRACE_TIME + "ms for the Tomcat transaction to complete.");
-            // give a second chance, just in case this was scheduled immediately
-            // and the scheduling transaction did not have the time to commit
-            try {
-                Thread.sleep(ACTION_DATABASE_GRACE_TIME);
-            }
-            catch (InterruptedException e) {
-                // never happens
-            }
-            HibernateFactory.getSession().clear();
+        if (countQueuedServerActions(actionChain) == 0) {
+            log.error("Action chain with id={} has no server where an action is in status QUEUED", actionChainId);
+            return;
         }
 
         // calculate offset between scheduled time of
@@ -90,9 +120,61 @@ public class MinionActionChainExecutor extends RhnJavaJob {
         if (timeDelta >= MAXIMUM_TIMEDELTA_FOR_SCHEDULED_ACTIONS) {
             log.warn("Scheduled action chain {} was scheduled to be executed more than {} hours ago. Skipping it.",
                     actionChain.getId(), MAXIMUM_TIMEDELTA_FOR_SCHEDULED_ACTIONS);
+
+            List<Long> actionsId = actionChain.getEntries()
+                                              .stream()
+                                              .map(ActionChainEntry::getActionId)
+                                              .filter(Objects::nonNull)
+                                              .collect(Collectors.toList());
+
+            ActionFactory.rejectScheduledActions(actionsId,
+                LOCALIZATION.getMessage("task.action.rejection.reason", MAXIMUM_TIMEDELTA_FOR_SCHEDULED_ACTIONS));
+
+            return;
+        }
+        if (!cloudPaygManager.isCompliant()) {
+            log.error("This action was not executed because SUSE Manager Server PAYG is unable to send " +
+                    "accounting data to the cloud provider.");
+            List<Long> actionsId = actionChain.getEntries()
+                    .stream()
+                    .map(ActionChainEntry::getActionId)
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList());
+            ActionFactory.rejectScheduledActions(actionsId,
+                    LOCALIZATION.getMessage("task.action.rejection.notcompliant"));
             return;
         }
 
+        if (cloudPaygManager.isPaygInstance()) {
+            cloudPaygManager.checkRefreshCache(true);
+            if (!cloudPaygManager.hasSCCCredentials()) {
+                boolean hasNonCompliantByosMinion = actionChain.getEntries()
+                        .stream()
+                        .map(entry -> entry.getServer())
+                        .filter(Objects::nonNull)
+                        .anyMatch(server -> !server.isPayg());
+
+                if (hasNonCompliantByosMinion) {
+                    List<Long> actionsId = actionChain.getEntries()
+                            .stream()
+                            .map(ActionChainEntry::getActionId)
+                            .filter(Objects::nonNull)
+                            .collect(Collectors.toList());
+
+                    Set<Server> nonCompliantByosMinions = actionChain.getEntries()
+                            .stream()
+                            .map(entry -> entry.getServer())
+                            .filter(s -> !s.isPayg())
+                            .collect(Collectors.toSet());
+
+                    ActionFactory.rejectScheduledActions(actionsId,
+                            LOCALIZATION.getMessage("task.action.rejection.notcompliantPaygByosActionChain",
+                                    formatByosListToStringErrorMsg(nonCompliantByosMinions)
+                                    ));
+                    return;
+                }
+            }
+        }
         log.info("Executing action chain: {}", actionChainId);
 
         saltServerActionService.executeActionChain(actionChainId);
@@ -103,10 +185,34 @@ public class MinionActionChainExecutor extends RhnJavaJob {
         }
     }
 
-    private long countServerActions(ActionChain actionChain) {
-        return actionChain.getEntries().stream()
-                .map(ActionChainEntry::getAction)
-                .flatMap(action -> action.getServerActions().stream())
-                .count();
+    private long countQueuedServerActions(ActionChain actionChain) {
+        if (actionChain == null || CollectionUtils.isEmpty(actionChain.getEntries())) {
+            return 0;
+        }
+
+        return actionChain.getEntries()
+                          .stream()
+                          .map(ActionChainEntry::getAction)
+                          .filter(action -> action != null && CollectionUtils.isNotEmpty(action.getServerActions()))
+                          .flatMap(action -> action.getServerActions().stream())
+                          .filter(serverAction -> ActionFactory.STATUS_QUEUED.equals(serverAction.getStatus()))
+                          .count();
+    }
+
+    private String formatByosListToStringErrorMsg(Set<Server> byosMinions) {
+        if (byosMinions.size() <= 2) {
+            return byosMinions.stream()
+                    .map(Server::getName)
+                    .collect(Collectors.joining(","));
+        }
+
+        String errorMsg = byosMinions.stream()
+                .map(Server::getName)
+                .limit(2)
+                .collect(Collectors.joining(","));
+
+        int numberOfLeftByosServers = byosMinions.size() - 2;
+
+        return String.format("%s and %d more", errorMsg, numberOfLeftByosServers);
     }
 }

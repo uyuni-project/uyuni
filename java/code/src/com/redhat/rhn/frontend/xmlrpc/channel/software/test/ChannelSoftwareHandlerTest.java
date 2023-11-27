@@ -16,6 +16,7 @@ package com.redhat.rhn.frontend.xmlrpc.channel.software.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -71,6 +72,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import com.suse.cloud.CloudPaygManager;
 import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.controllers.bootstrap.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.bootstrap.SSHMinionBootstrapper;
@@ -112,9 +114,11 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
     private TaskomaticApi taskomaticApi = new TaskomaticApi();
     private final SystemQuery systemQuery = new TestSystemQuery();
     private final SaltApi saltApi = new TestSaltApi();
+    private final CloudPaygManager paygManager = new CloudPaygManager();
     private final ServerGroupManager serverGroupManager = new ServerGroupManager(saltApi);
-    private RegularMinionBootstrapper regularMinionBootstrapper = new RegularMinionBootstrapper(systemQuery, saltApi);
-    private SSHMinionBootstrapper sshMinionBootstrapper = new SSHMinionBootstrapper(systemQuery, saltApi);
+    private RegularMinionBootstrapper regularMinionBootstrapper =
+            new RegularMinionBootstrapper(systemQuery, saltApi, paygManager);
+    private SSHMinionBootstrapper sshMinionBootstrapper = new SSHMinionBootstrapper(systemQuery, saltApi, paygManager);
     private XmlRpcSystemHelper xmlRpcSystemHelper = new XmlRpcSystemHelper(
             regularMinionBootstrapper,
             sshMinionBootstrapper
@@ -128,9 +132,8 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
     private SystemManager systemManager =
             new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON, saltApi);
     private SystemHandler systemHandler = new SystemHandler(taskomaticApi, xmlRpcSystemHelper, systemEntitlementManager,
-            systemManager, serverGroupManager);
-    private ChannelSoftwareHandler handler = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper,
-            systemHandler);
+            systemManager, serverGroupManager, new CloudPaygManager());
+    private ChannelSoftwareHandler handler = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper);
     private ErrataHandler errataHandler = new ErrataHandler();
 
     @RegisterExtension
@@ -322,7 +325,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         assertFalse(child2.isBaseChannel());
 
         SystemHandler sh = new SystemHandler(taskomaticApi, xmlRpcSystemHelper, systemEntitlementManager, systemManager,
-                serverGroupManager);
+                serverGroupManager, new CloudPaygManager());
 
         int sid = server.getId().intValue();
         int rc1 = sh.setBaseChannel(admin, sid, base.getLabel());
@@ -351,7 +354,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
     @Test
     public void testSetBaseChannel() throws Exception {
         SystemHandler sh = new SystemHandler(taskomaticApi, xmlRpcSystemHelper, systemEntitlementManager, systemManager,
-                serverGroupManager);
+                serverGroupManager, new CloudPaygManager());
 
         Channel c1 = ChannelFactoryTest.createTestChannel(admin);
         Server server = ServerFactoryTest.createTestServer(admin, true);
@@ -365,7 +368,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         assertEquals(1, server.getChannels().size());
 
         Channel c2 = ChannelFactoryTest.createTestChannel(admin);
-        assertFalse(c1.getLabel().equals(c2.getLabel()));
+        assertNotEquals(c1.getLabel(), c2.getLabel());
         result = sh.setBaseChannel(admin, server.getId().intValue(), c2.getLabel());
 
         server = reload(server);
@@ -410,7 +413,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
 
     @Test
     public void testListSystemChannels() throws Exception {
-        ChannelSoftwareHandler csh = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper, systemHandler);
+        ChannelSoftwareHandler csh = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper);
 
         Channel c = ChannelFactoryTest.createTestChannel(admin);
         Server s = ServerFactoryTest.createTestServer(admin, true);
@@ -440,7 +443,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
 
     @Test
     public void testListSubscribedSystems() throws Exception {
-        ChannelSoftwareHandler csh = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper, systemHandler);
+        ChannelSoftwareHandler csh = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper);
 
         Channel c = ChannelFactoryTest.createTestChannel(admin);
         Server s = ServerFactoryTest.createTestServer(admin);
@@ -473,21 +476,21 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testListArches() throws Exception {
-        ChannelSoftwareHandler csh = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper, systemHandler);
+    public void testListArches() {
+        ChannelSoftwareHandler csh = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper);
         addRole(admin, RoleFactory.CHANNEL_ADMIN);
         List<ChannelArch> arches = csh.listArches(admin);
         assertNotNull(arches);
-        assertTrue(arches.size() > 0);
+        assertFalse(arches.isEmpty());
     }
 
     @Test
     public void testListArchesPermissionError() {
         try {
-            ChannelSoftwareHandler csh = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper, systemHandler);
+            ChannelSoftwareHandler csh = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper);
             List<ChannelArch> arches = csh.listArches(admin);
             assertNotNull(arches);
-            assertTrue(arches.size() > 0);
+            assertFalse(arches.isEmpty());
         }
         catch (PermissionCheckFailureException e) {
             assertTrue(true);
@@ -558,7 +561,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
 
     @Test
     public void testIsGloballySubscribable() throws Exception {
-        ChannelSoftwareHandler csh = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper, systemHandler);
+        ChannelSoftwareHandler csh = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper);
         addRole(admin, RoleFactory.CHANNEL_ADMIN);
         Channel c = ChannelFactoryTest.createTestChannel(admin);
         assertEquals(1, csh.isGloballySubscribable(admin, c.getLabel()));
@@ -566,8 +569,8 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testIsGloballySubscribableNoSuchChannel() throws Exception {
-        ChannelSoftwareHandler csh = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper, systemHandler);
+    public void testIsGloballySubscribableNoSuchChannel() {
+        ChannelSoftwareHandler csh = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper);
         addRole(admin, RoleFactory.CHANNEL_ADMIN);
         try {
             csh.isGloballySubscribable(admin, "notareallabel");
@@ -580,7 +583,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
 
     @Test
     public void testGetDetails() throws Exception {
-        ChannelSoftwareHandler csh = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper, systemHandler);
+        ChannelSoftwareHandler csh = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper);
         addRole(admin, RoleFactory.CHANNEL_ADMIN);
         Channel c = ChannelFactoryTest.createTestChannel(admin);
         assertNotNull(c);
@@ -595,7 +598,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
 
     @Test
     public void testSetDetails() throws Exception {
-        ChannelSoftwareHandler csh = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper, systemHandler);
+        ChannelSoftwareHandler csh = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper);
         addRole(admin, RoleFactory.CHANNEL_ADMIN);
         Channel c = ChannelFactoryTest.createTestChannel(admin);
         assertNotNull(c);
@@ -625,7 +628,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
 
     @Test
    public void testGetChannelLastBuildById() throws Exception {
-       ChannelSoftwareHandler csh = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper, systemHandler);
+       ChannelSoftwareHandler csh = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper);
        addRole(admin, RoleFactory.CHANNEL_ADMIN);
        Channel c = ChannelFactoryTest.createTestChannel(admin);
        assertNotNull(c);
@@ -657,15 +660,15 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
                     result.getEndOfLife().toString());
         }
         else {
-            assertEquals(null, result.getEndOfLife());
+            assertNull(result.getEndOfLife());
         }
 
-        assertEquals(null, result.getParentChannel());
+        assertNull(result.getParentChannel());
     }
 
     @Test
-    public void testCreate() throws Exception {
-        ChannelSoftwareHandler csh = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper, systemHandler);
+    public void testCreate() {
+        ChannelSoftwareHandler csh = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper);
         addRole(admin, RoleFactory.CHANNEL_ADMIN);
         int i = csh.create(admin, "api-test-chan-label",
                 "apiTestChanName", "apiTestSummary", "channel-x86_64", null);
@@ -683,8 +686,8 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testCreateWithGPGCheckDisabled() throws Exception {
-        ChannelSoftwareHandler csh = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper, systemHandler);
+    public void testCreateWithGPGCheckDisabled() {
+        ChannelSoftwareHandler csh = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper);
         addRole(admin, RoleFactory.CHANNEL_ADMIN);
         int i = csh.create(admin, "api-test-chan-label",
                 "apiTestChanName", "apiTestSummary", "channel-x86_64", null,
@@ -703,8 +706,8 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testCreateWithChecksum() throws Exception {
-        ChannelSoftwareHandler csh = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper, systemHandler);
+    public void testCreateWithChecksum() {
+        ChannelSoftwareHandler csh = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper);
         addRole(admin, RoleFactory.CHANNEL_ADMIN);
         int i = csh.create(admin, "api-test-checksum-chan-label",
                 "apiTestCSChanName", "apiTestSummary", "channel-ia32", null, "sha256");
@@ -723,7 +726,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
 
     @Test
     public void testCreateUnauthUser() {
-        ChannelSoftwareHandler csh = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper, systemHandler);
+        ChannelSoftwareHandler csh = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper);
         try {
             csh.create(regular, "api-test-chan-label",
                    "apiTestChanName", "apiTestSummary", "channel-x86_64", null);
@@ -740,7 +743,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
 
     @Test
     public void testCreateNullRequiredParams() {
-        ChannelSoftwareHandler csh = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper, systemHandler);
+        ChannelSoftwareHandler csh = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper);
         addRole(admin, RoleFactory.CHANNEL_ADMIN);
         // null label
         try {
@@ -776,7 +779,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
 
     @Test
     public void testInvalidChannelNameAndLabel() {
-        ChannelSoftwareHandler csh = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper, systemHandler);
+        ChannelSoftwareHandler csh = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper);
         addRole(admin, RoleFactory.CHANNEL_ADMIN);
         int i;
         try {
@@ -872,7 +875,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         childChan.setParentChannel(baseChan);
 
         SystemHandler sh = new SystemHandler(taskomaticApi, xmlRpcSystemHelper, systemEntitlementManager, systemManager,
-                serverGroupManager);
+                serverGroupManager, new CloudPaygManager());
 
         int return1 = sh.setBaseChannel(admin, server.getId().intValue(), baseChan.getLabel());
         int return2 = sh.setChildChannels(admin, server.getId().intValue(), List.of(childChan.getLabel()));
@@ -1164,23 +1167,23 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         cal.add(Calendar.YEAR, -5);
 
         List<PackageDto> list = handler.listAllPackages(admin, chan.getLabel());
-        assertTrue(list.size() == 1);
+        assertEquals(1, list.size());
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date startDate = sdf.parse("2004-08-20 08:00:00");
         Date endDate = sdf.parse("3004-08-20 08:00:00");
 
         list = handler.listAllPackages(admin, chan.getLabel(), startDate);
-        assertTrue(list.size() == 1);
+        assertEquals(1, list.size());
 
         list = handler.listAllPackages(admin, chan.getLabel(), startDate,
                 endDate);
-        assertTrue(list.size() == 1);
+        assertEquals(1, list.size());
     }
 
     private ChannelSoftwareHandler getMockedHandler() throws Exception {
         TaskomaticApi taskomaticMock = mockContext.mock(TaskomaticApi.class);
-        ChannelSoftwareHandler csh = new ChannelSoftwareHandler(taskomaticMock, xmlRpcSystemHelper, systemHandler);
+        ChannelSoftwareHandler csh = new ChannelSoftwareHandler(taskomaticMock, xmlRpcSystemHelper);
         ChannelManager.setTaskomaticApi(taskomaticMock);
 
         mockContext.checking(new Expectations() {{

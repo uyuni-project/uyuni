@@ -42,13 +42,14 @@ public class DeleteFileAction extends RhnAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping map,
                                  ActionForm form,
                                  HttpServletRequest req,
-                                 HttpServletResponse resp) throws Exception {
+                                 HttpServletResponse resp) {
         RequestContext ctx = new RequestContext(req);
         User usr = ctx.getCurrentUser();
-        Map params =  makeParamMap(req);
+        Map<String, Object> params =  makeParamMap(req);
         ConfigFileForm cff = (ConfigFileForm)form;
 
         ConfigFile cf = ConfigActionHelper.getFile(req);

@@ -127,6 +127,7 @@ public class MockConnection extends CobblerConnection {
         url = urlIn;
     }
 
+    @Override
     public Object invokeMethod(String name, Object... args) {
         //no op -> mock version ..
         log.debug(String.format("No-Op Mock called: \"%s\" args: \"%s\"", name, Arrays.toString(args)));
@@ -365,6 +366,9 @@ public class MockConnection extends CobblerConnection {
         String uid = random();
         String xmlrpcHandle = random();
         profile.put("uid", uid);
+        profile.put("name", random());
+        String distro = newDistro();
+        profile.put("distro", distro);
 
         log.debug("PROFILE: Created w/ uid {} returning handle {}", uid, xmlrpcHandle);
 
@@ -425,6 +429,7 @@ public class MockConnection extends CobblerConnection {
         distro.put("kernel_options_post", new HashMap<>());
         distro.put("autoinstall_meta", new HashMap<>());
         distro.put("redhat_management_key", "");
+        distro.put("name", xmlrpcHandle);
         return xmlrpcHandle;
     }
 
@@ -474,6 +479,7 @@ public class MockConnection extends CobblerConnection {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Object invokeTokenMethod(String procedureName,
                                     Object... args) {
         List<Object> params = new LinkedList<>(Arrays.asList(args));
@@ -486,6 +492,7 @@ public class MockConnection extends CobblerConnection {
      *
      * @param tokenIn the cobbler auth token
      */
+    @Override
     public void setToken(String tokenIn) {
         token = tokenIn;
     }
@@ -498,6 +505,7 @@ public class MockConnection extends CobblerConnection {
         return url + "/cobbler_api";
     }
 
+    @Override
     public Double getVersion() {
         return 2.2;
     }

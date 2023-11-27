@@ -30,7 +30,7 @@ import redstone.xmlrpc.XmlRpcSerializer;
 public class SUSEInstalledProductSerializerTest  {
 
     @Test
-    public void testSerialize() throws Exception {
+    public void testSerialize() {
         SUSEInstalledProduct product = new SUSEInstalledProduct("sles", "12",
                 "x86_64", null, true, "SUSE Linux Enterprise Server 12");
         Writer output = new StringWriter();

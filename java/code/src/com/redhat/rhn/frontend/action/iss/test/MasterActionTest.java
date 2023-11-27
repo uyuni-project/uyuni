@@ -23,14 +23,17 @@ import com.redhat.rhn.frontend.action.iss.MasterAction;
  */
 public class MasterActionTest extends BaseIssTestAction {
 
+    @Override
     protected String getUrl() {
         return "/admin/iss/Master";
     }
 
+    @Override
     protected String getListName() {
         return MasterAction.DATA_SET;
     }
 
+    @Override
     protected Class getListClass() {
         return IssSlave.class;
     }

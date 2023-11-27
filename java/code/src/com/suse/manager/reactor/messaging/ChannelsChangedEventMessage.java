@@ -90,6 +90,7 @@ public class ChannelsChangedEventMessage implements EventDatabaseMessage {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Transaction getTransaction() {
         return this.transaction;
     }

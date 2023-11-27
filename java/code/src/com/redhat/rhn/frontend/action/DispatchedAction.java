@@ -36,6 +36,7 @@ public abstract class DispatchedAction extends RhnAction {
     /**
      * ${@inheritDoc}
      */
+    @Override
     public ActionForward execute(
             ActionMapping mapping,
             ActionForm form,
@@ -62,13 +63,12 @@ public abstract class DispatchedAction extends RhnAction {
      * @param request The requst.
      * @param response The respoinse.
      * @return The action forward.
-     * @throws Exception something bad happened
      */
     protected abstract ActionForward setupAction(
             ActionMapping mapping,
             ActionForm form,
             HttpServletRequest request,
-            HttpServletResponse response) throws Exception;
+            HttpServletResponse response);
 
     /**
      * Called when a page form has been submitted and requires confirmation.

@@ -40,7 +40,7 @@ public class ChannelOverviewActionTest extends RhnMockStrutsTestCase {
     public static final String FWD_ERROR = "/WEB-INF/pages/configuration/channel/channelcreate.jsp";
 
     @Test
-    public void testExecuteNoFiles() throws Exception {
+    public void testExecuteNoFiles() {
         UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
 
         ConfigChannel cc = ConfigTestUtils.createConfigChannel(user.getOrg());

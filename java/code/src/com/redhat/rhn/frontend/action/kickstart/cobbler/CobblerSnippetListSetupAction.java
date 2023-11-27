@@ -44,13 +44,14 @@ public class CobblerSnippetListSetupAction extends RhnAction {
     private static final String CUSTOM = "custom";
     private static final String ALL = "all";
 
-    private static final DynamicComparator NAME_COMPARATOR =
-                new DynamicComparator("name", true);
+    private static final DynamicComparator<CobblerSnippet> NAME_COMPARATOR =
+                new DynamicComparator<>("name", true);
     /**
      * ${@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
-            HttpServletRequest request, HttpServletResponse response) throws Exception {
+                                 HttpServletRequest request, HttpServletResponse response) {
 
         request.setAttribute(mapping.getParameter(), Boolean.TRUE);
         RequestContext context = new RequestContext(request);

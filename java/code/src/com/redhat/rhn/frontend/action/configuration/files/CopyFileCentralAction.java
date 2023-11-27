@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.config.ConfigFile;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.configuration.ConfigActionHelper;
+import com.redhat.rhn.frontend.dto.ConfigChannelDto;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
@@ -31,7 +32,8 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
  */
 public class CopyFileCentralAction  extends BaseCopyConfigFileAction {
 
-    protected DataResult getDataResult(RequestContext rctxIn, PageControl pcIn) {
+    @Override
+    protected DataResult<ConfigChannelDto> getDataResult(RequestContext rctxIn, PageControl pcIn) {
         User user = rctxIn.getCurrentUser();
         ConfigFile file = ConfigActionHelper.getFile(rctxIn.getRequest());
         ConfigurationManager cm = ConfigurationManager.getInstance();
@@ -39,10 +41,12 @@ public class CopyFileCentralAction  extends BaseCopyConfigFileAction {
         return cm.listChannelsForFileCopy(user, file, channelTypeLabel, pcIn);
     }
 
+    @Override
     protected String getLabel() {
         return ConfigChannelType.normal().getLabel();
     }
 
+    @Override
     protected String getType() {
         return BaseCopyConfigFileAction.CENTRAL_TYPE;
     }
@@ -51,6 +55,7 @@ public class CopyFileCentralAction  extends BaseCopyConfigFileAction {
      * Only config-admins get to copy files into central channels
      * {@inheritDoc}
      */
+    @Override
     protected String checkPreConditions(RequestContext rctxIn) {
         User user = rctxIn.getCurrentUser();
         if (!user.hasRole(RoleFactory.CONFIG_ADMIN)) {
@@ -59,6 +64,7 @@ public class CopyFileCentralAction  extends BaseCopyConfigFileAction {
         return null;
     }
 
+    @Override
     protected String getFilterAttr() {
         return BaseCopyConfigFileAction.CHANNEL_FILTER;
     }
@@ -66,6 +72,7 @@ public class CopyFileCentralAction  extends BaseCopyConfigFileAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     public RhnSetDecl getSetDecl() {
         return RhnSetDecl.CONFIG_CHANNELS;
     }

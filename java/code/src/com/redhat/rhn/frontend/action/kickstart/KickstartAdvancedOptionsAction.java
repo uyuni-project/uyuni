@@ -64,10 +64,11 @@ public class KickstartAdvancedOptionsAction extends RhnAction {
      *
      * {@inheritDoc}
      */
+    @Override
     public final ActionForward execute(ActionMapping mapping,
-            ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                       ActionForm formIn,
+                                       HttpServletRequest request,
+                                       HttpServletResponse response) {
 
         RequestContext ctx = new RequestContext(request);
         KickstartHelper helper = new KickstartHelper(request);
@@ -75,7 +76,7 @@ public class KickstartAdvancedOptionsAction extends RhnAction {
             new KickstartOptionsCommand(ctx.getRequiredParam(RequestContext.KICKSTART_ID),
                                         ctx.getCurrentUser());
 
-        List displayList = new LinkedList();
+        List displayList = new LinkedList<>();
 
         //Display message if this kickstart profile's channel is inadequate.
         User user = new RequestContext(request).getCurrentUser();
@@ -101,7 +102,7 @@ public class KickstartAdvancedOptionsAction extends RhnAction {
 
             // store to the db
             if (messages.isEmpty()) {
-                Set s = new HashSet();
+                Set s = new HashSet<>();
 
                 for (Object oIn : cmd.getAvailableOptions()) {
 
@@ -141,7 +142,7 @@ public class KickstartAdvancedOptionsAction extends RhnAction {
 
                 //set custom options
                 String customOps = request.getParameter(CUSTOM_OPTIONS);
-                LinkedHashSet customSet = new LinkedHashSet();
+                LinkedHashSet customSet = new LinkedHashSet<>();
                 log.debug("Adding custom options");
                 if (customOps != null) {
                     for (StringTokenizer strtok = new StringTokenizer(
@@ -181,7 +182,7 @@ public class KickstartAdvancedOptionsAction extends RhnAction {
             displayList = cmd.getDisplayOptions();
         }
         Collections.sort(displayList);
-        LinkedHashSet displaySet = new LinkedHashSet();
+        LinkedHashSet displaySet = new LinkedHashSet<>();
         Iterator<KickstartCommand> iter;
         iter = cmd.getKickstartData().getCustomOptions().iterator();
         while (iter.hasNext()) {

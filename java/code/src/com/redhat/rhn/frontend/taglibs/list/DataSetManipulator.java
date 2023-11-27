@@ -51,7 +51,6 @@ public class DataSetManipulator {
 
     private final int pageSize;
     private List dataset;
-    private ListFilter filter;
     private String filterBy;
     private String filterValue;
     private int totalDataSetSize;
@@ -102,11 +101,10 @@ public class DataSetManipulator {
         filterBy = request.getParameter(filterByKey);
         filterValue = ListTagHelper.getFilterValue(request, uniqueName);
 
-        if (f == null || filterBy == null || filterBy.length() == 0 ||
-                filterValue == null || filterValue.length() == 0) {
+        if (f == null || filterBy == null || filterBy.isEmpty() ||
+                filterValue == null || filterValue.isEmpty()) {
             return;
         }
-        filter = f;
         HtmlTag filterClass = new HtmlTag("input");
         filterClass.setAttribute("type", "hidden");
         filterClass.setAttribute("name", ListTagUtil.makeFilterClassLabel(uniqueName));
@@ -128,11 +126,11 @@ public class DataSetManipulator {
 
         String sortDir = getActiveSortDirection();
         try {
-            dataset.sort(new DynamicComparator(sortAttr, sortDir));
+            dataset.sort(new DynamicComparator<>(sortAttr, sortDir));
         }
         catch (IllegalArgumentException iae) {
             log.warn("Unable to sort dataset according to: {}", sortAttr);
-            dataset.sort(new DynamicComparator(defaultSortAttribute, sortDir));
+            dataset.sort(new DynamicComparator<>(defaultSortAttribute, sortDir));
         }
     }
 
@@ -149,7 +147,7 @@ public class DataSetManipulator {
      * @return list representing one page of data
      */
     public List getPage() {
-        List retval = new LinkedList();
+        List retval = new LinkedList<>();
         if (pageSize > 0) {
             int startOffset = getCurrentPageNumber() * pageSize;
             if (startOffset > dataset.size()) {
@@ -175,7 +173,7 @@ public class DataSetManipulator {
      * @return List representing all data available
      */
     public List getAllData() {
-        List retval = new LinkedList();
+        List retval = new LinkedList<>();
         retval.addAll(dataset);
         return expand(retval);
     }
@@ -297,9 +295,9 @@ public class DataSetManipulator {
      * Builds a map of bog-standard pagination links complete with images
      * @return map (String, String[])
      */
-    public Map getPaginationLinks() {
-        Map links = new HashMap();
-        if (pageSize > 0 && dataset.size() > 0 && getTotalDataSetSize() > pageSize) {
+    public Map<String, String[]> getPaginationLinks() {
+        Map<String, String[]> links = new HashMap<>();
+        if (pageSize > 0 && !dataset.isEmpty() && getTotalDataSetSize() > pageSize) {
             String pageLinkName = "list_" + uniqueName + "_page";
             String[] data = new String[4];
             if (!isFirstPage()) {
@@ -364,7 +362,7 @@ public class DataSetManipulator {
      * @return boolean
      */
     public boolean isListEmpty() {
-        return dataset == null || dataset.size() == 0;
+        return dataset == null || dataset.isEmpty();
     }
 
     /**
@@ -507,7 +505,7 @@ public class DataSetManipulator {
     }
 
     private List expand(List data) {
-        List expanded = new LinkedList();
+        List expanded = new LinkedList<>();
         for (Object obj : data) {
             expanded.add(obj);
             if (obj instanceof Expandable) {

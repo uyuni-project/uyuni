@@ -21,7 +21,7 @@ import com.redhat.rhn.manager.kickstart.KickstartLocaleCommand;
 
 import org.apache.struts.action.DynaActionForm;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -43,11 +43,12 @@ public class KickstartLocaleEditAction extends BaseKickstartEditAction {
      *
      * {@inheritDoc}
      */
+    @Override
     protected void setupFormValues(RequestContext ctx, DynaActionForm form,
-            BaseKickstartCommand cmdIn) {
+                                   BaseKickstartCommand cmdIn) {
         KickstartLocaleCommand cmd = (KickstartLocaleCommand) cmdIn;
 
-        ArrayList timezones = cmd.getValidTimezones();
+        List<Map<String, String>> timezones = cmd.getValidTimezones();
         ctx.getRequest().setAttribute(TIMEZONE_OPTIONS, timezones);
 
         form.set(TIMEZONE, cmd.getTimezone());
@@ -58,17 +59,17 @@ public class KickstartLocaleEditAction extends BaseKickstartEditAction {
      *
      * {@inheritDoc}
      */
+    @Override
     protected ValidatorError processFormValues(HttpServletRequest request,
-            DynaActionForm form,
-            BaseKickstartCommand cmd) {
+                                               DynaActionForm form,
+                                               BaseKickstartCommand cmd) {
 
         ValidatorError retval = null;
 
         KickstartLocaleCommand localeCmd = (KickstartLocaleCommand) cmd;
-        cmd = null;
 
-        ArrayList validTimezones = localeCmd.getValidTimezones();
-        if (isTimezoneValid(validTimezones, form.getString(TIMEZONE)) == Boolean.TRUE) {
+        List<Map<String, String>> validTimezones = localeCmd.getValidTimezones();
+        if (isTimezoneValid(validTimezones, form.getString(TIMEZONE))) {
             localeCmd.setTimezone(form.getString(TIMEZONE));
         }
         else {
@@ -98,6 +99,7 @@ public class KickstartLocaleEditAction extends BaseKickstartEditAction {
      *
      * {@inheritDoc}
      */
+    @Override
     protected String getSuccessKey() {
         return "kickstart.locale.success";
     }
@@ -106,6 +108,7 @@ public class KickstartLocaleEditAction extends BaseKickstartEditAction {
      *
      * {@inheritDoc}
      */
+    @Override
     protected BaseKickstartCommand getCommand(RequestContext ctx) {
         return new KickstartLocaleCommand(ctx.getRequiredParam(RequestContext.KICKSTART_ID),
                 ctx.getCurrentUser());
@@ -117,15 +120,7 @@ public class KickstartLocaleEditAction extends BaseKickstartEditAction {
      * @param timezone the timezone to check for validity
      * @return Boolean valid, or not
      */
-    protected Boolean isTimezoneValid(ArrayList validTimezones, String timezone) {
-
-        for (Object validTimezoneIn : validTimezones) {
-            Map possible = (Map) validTimezoneIn;
-            if (timezone.equals(possible.get("value"))) {
-                return Boolean.TRUE;
-            }
-        }
-
-        return Boolean.FALSE;
+    protected boolean isTimezoneValid(List<Map<String, String>> validTimezones, String timezone) {
+        return validTimezones.stream().anyMatch(tz -> tz.get("value").equals(timezone));
     }
 }

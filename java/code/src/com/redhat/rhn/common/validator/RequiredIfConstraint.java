@@ -37,7 +37,7 @@ public class RequiredIfConstraint extends ParsedConstraint {
 
     private static Logger log = LogManager.getLogger(RequiredIfConstraint.class);
 
-    private List fieldValueList;
+    private List<Map<String, String>> fieldValueList;
 
     /**
      * <p>
@@ -49,7 +49,7 @@ public class RequiredIfConstraint extends ParsedConstraint {
      */
     public RequiredIfConstraint(String identifierIn) {
         super(identifierIn);
-        fieldValueList = new LinkedList();
+        fieldValueList = new LinkedList<>();
 
     }
 
@@ -64,7 +64,7 @@ public class RequiredIfConstraint extends ParsedConstraint {
     */
     public boolean isRequired(Object value, Object objectToCheck) {
 
-        Iterator i = fieldValueList.iterator();
+        Iterator<Map<String, String>> i = fieldValueList.iterator();
         // Default to true, the
         boolean required = true;
         while (i.hasNext()) {
@@ -72,12 +72,12 @@ public class RequiredIfConstraint extends ParsedConstraint {
             // we need to switch required to false unless
             // the below code changes that fact
             required = false;
-            Map field = (Map) i.next();
+            Map<String, String> field = i.next();
             // The fieldValueList contains name/value pairs
             String fieldName = (String) field.keySet().toArray()[0];
-            String fieldValue = (String) field.get(fieldName);
+            String fieldValue = field.get(fieldName);
             // Get the field we want to check against
-            String requiredIfValue = null;
+            String requiredIfValue;
             try {
                 requiredIfValue = PropertyUtils.getProperty(
                         objectToCheck, fieldName).toString();
@@ -87,9 +87,9 @@ public class RequiredIfConstraint extends ParsedConstraint {
                  * other field is not null.
                  */
                 // required tag doesn't contain a value
-                if ((fieldValue == null || fieldValue.length() == 0) &&
+                if ((fieldValue == null || fieldValue.isEmpty()) &&
                             // but something is in the required field
-                            (requiredIfValue != null && requiredIfValue.length() > 0)) {
+                            (requiredIfValue != null && !requiredIfValue.isEmpty())) {
                     required = true; // set this required = true
                 }
                 else if (requiredIfValue.equals(fieldValue)) {
@@ -100,7 +100,7 @@ public class RequiredIfConstraint extends ParsedConstraint {
                 }
                 // If any of the fields match, we return true immediately
                 if (required) {
-                    return required;
+                    return true;
                 }
             }
             catch (Exception e) {
@@ -121,7 +121,7 @@ public class RequiredIfConstraint extends ParsedConstraint {
     * @param fieldValueIn the value of the field
     */
     public void addField(String fieldNameIn, String fieldValueIn) {
-        Map fieldAndValue = new HashMap();
+        Map<String, String> fieldAndValue = new HashMap<>();
         fieldAndValue.put(fieldNameIn, fieldValueIn);
         fieldValueList.add(fieldAndValue);
     }

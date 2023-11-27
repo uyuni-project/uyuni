@@ -40,10 +40,11 @@ import javax.servlet.http.HttpServletResponse;
 public class SatRoleConfirm extends RhnAction {
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-                                  ActionForm formIn,
-                                  HttpServletRequest request,
-                                  HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
 
         if (!AclManager.hasAcl("user_role(satellite_admin)", request, null)) {
             LocalizationService ls = LocalizationService.getInstance();

@@ -46,6 +46,9 @@ const FilterForm = (props: Props) => {
           if (clmFilterOptions.ISSUE_DATE.key === filter.type) {
             draft[clmFilterOptions.ISSUE_DATE.key] = localizedMoment();
           }
+          if (clmFilterOptions.PACKAGE_BUILD_DATE.key === filter.type) {
+            draft[clmFilterOptions.PACKAGE_BUILD_DATE.key] = localizedMoment();
+          }
         })
       );
     }
@@ -201,6 +204,16 @@ const FilterForm = (props: Props) => {
               />
             )}
 
+            {clmFilterOptions.PACKAGE_BUILD_DATE.key === filterType && (
+              <DateTime
+                name={clmFilterOptions.PACKAGE_BUILD_DATE.key}
+                label={t("Build")}
+                labelClass="col-md-3"
+                divClass="col-md-8"
+                required
+              />
+            )}
+
             {clmFilterOptions.SYNOPSIS.key === filterType && (
               <Text
                 name={clmFilterOptions.SYNOPSIS.key}
@@ -258,8 +271,28 @@ const FilterForm = (props: Props) => {
 
             {clmFilterOptions.STREAM.key === filterType && (
               <>
-                <AppStreamsForm />
+                <AppStreamsForm matcher={filter.matcher} />
               </>
+            )}
+
+            {clmFilterOptions.PTF_NUMBER.key === filterType && (
+              <Text
+                name={clmFilterOptions.PTF_NUMBER.key}
+                label={t("Number")}
+                labelClass="col-md-3"
+                divClass="col-md-8"
+                required
+              />
+            )}
+
+            {clmFilterOptions.PTF_PACKAGE_NAME.key === filterType && (
+              <Text
+                name={clmFilterOptions.PTF_PACKAGE_NAME.key}
+                label={t("Package Name")}
+                labelClass="col-md-3"
+                divClass="col-md-8"
+                required
+              />
             )}
 
             {clmFilterOptions.STREAM.key !== filterType && (

@@ -43,7 +43,7 @@ public class ServletExportHandler {
      * @throws IOException if there is an error trying to write to the Response
      */
     public void writeExporterToOutput(HttpServletResponse response,
-                                      List pageList) throws IOException {
+                                      List<?> pageList) throws IOException {
         String charSet = response.getCharacterEncoding();
         response.setContentType(writer.getMimeType() + ";charset=" + charSet);
         response.setHeader("Content-Disposition", "attachment; filename=download." +

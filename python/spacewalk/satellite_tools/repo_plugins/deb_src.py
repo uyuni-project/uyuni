@@ -21,6 +21,7 @@ import time
 import re
 import fnmatch
 import requests
+import logging
 from functools import cmp_to_key
 from salt.utils.versions import LooseVersion
 from uyuni.common import fileutils
@@ -44,7 +45,7 @@ except ImportError:
 RETRIES = 10
 RETRY_DELAY = 1
 FORMAT_PRIORITY = ['.xz', '.gz', '']
-
+log = logging.getLogger(__name__)
 
 class DebPackage:
     def __init__(self):
@@ -168,7 +169,8 @@ class DebRepo:
 
         self.basecachedir = cache_dir
         if not os.path.isdir(self.basecachedir):
-            fileutils.makedirs(self.basecachedir, user='wwwrun', group='www')
+            with cfg_component(component=None) as CFG:
+                fileutils.makedirs(self.basecachedir, user=CFG.httpd_user, group=CFG.httpd_group)
         self.includepkgs = []
         self.exclude = []
         self.pkgdir = pkg_dir
@@ -401,8 +403,13 @@ class ContentSource:
         to_return = []
         for pack in pkglist:
             new_pack = ContentPackage()
-            new_pack.setNVREA(pack.name, pack.version, pack.release,
-                              pack.epoch, pack.arch)
+            try:
+                new_pack.setNVREA(pack.name, pack.version, pack.release,
+                                pack.epoch, pack.arch)
+            except ValueError as e:
+                log(0, "WARNING: package contains incorrect metadata. SKIPPING!")
+                log(0, e)
+                continue
             new_pack.unique_id = pack
             new_pack.checksum_type = pack.checksum_type
             new_pack.checksum = pack.checksum
@@ -506,11 +513,13 @@ class ContentSource:
         params['checksum_type'] = checksum_type
         params['checksum'] = checksum_value
         params['bytes_range'] = bytes_range
-        params['http_headers'] = self.repo.http_headers
+        params['http_headers'] = tuple(self.repo.http_headers.items())
         params["timeout"] = self.timeout
         params["minrate"] = self.minrate
         params['proxies'] = get_proxies(self.repo.proxy, self.repo.proxy_username,
                                         self.repo.proxy_password)
+        with cfg_component('server.satellite') as CFG:
+            params["urlgrabber_logspec"] = CFG.get("urlgrabber_logspec")
 
     @staticmethod
     def get_file(path, local_base=None):

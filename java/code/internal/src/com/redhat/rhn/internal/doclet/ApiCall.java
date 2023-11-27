@@ -31,6 +31,7 @@ public class ApiCall implements Comparable<ApiCall> {
     private String name;
     private String doc;
     private List<String> params = new ArrayList<>();
+    private List<String> paramNames = new ArrayList<>();
     private String returnDoc;
     private boolean deprecated = false;
     private String deprecatedVersion;
@@ -139,7 +140,7 @@ public class ApiCall implements Comparable<ApiCall> {
      * @return the ID
      */
     public String getId() {
-        return name + "-" + getMethod().hashCode();
+        return name + "-" + String.join("-", paramNames);
     }
 
     /**
@@ -164,6 +165,15 @@ public class ApiCall implements Comparable<ApiCall> {
      */
     public void addParam(String param) {
         this.params.add(param);
+    }
+
+    /**
+     * Adds a Java parameter name.
+     *
+     * @param paramName the parameter name to add
+     */
+    public void addParamName(String paramName) {
+        paramNames.add(paramName);
     }
 
     /**

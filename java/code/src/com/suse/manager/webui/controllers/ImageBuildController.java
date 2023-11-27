@@ -25,7 +25,6 @@ import static spark.Spark.post;
 
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.action.ActionChain;
-import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
@@ -411,12 +410,7 @@ public class ImageBuildController {
         }
 
         Date scheduleDate = MinionActionUtils.getScheduleDate(buildRequest.getEarliest());
-
-        ActionChain actionChain = buildRequest.getActionChain()
-                .filter(StringUtils::isNotEmpty)
-                .map(label -> ActionChainFactory.getOrCreateActionChain(label, user))
-                .orElse(null);
-
+        ActionChain actionChain = MinionActionUtils.getActionChain(buildRequest.getActionChain(), user);
 
         Long profileId = Long.parseLong(request.params("id"));
         Optional<ImageProfile> maybeProfile =

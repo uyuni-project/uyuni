@@ -1,5 +1,91 @@
-- Fix server error while bootstrapping SSH-managed Red Hat-like minion (bsc#1205890)
-- drop legacy way to prevent disabling local repos
+-------------------------------------------------------------------
+Wed Nov 01 19:46:00 CET 2023 - marina.latini@suse.com
+
+- version 4.4.9-1
+  * Use HTTP for connections to localhost
+  * Disable dnf_rhui_plugin as it break our susemanagerplugin (bsc#1214601)
+  * Fix susemanagerplugin to not overwrite header fields set by other plugins
+  * Let the dnf plugin log when a token was set
+  * Do not install instance-flavor-check tool on openSUSE
+
+-------------------------------------------------------------------
+Mon Sep 18 14:41:33 CEST 2023 - rosuna@suse.com
+
+- version 4.4.8-1
+  * Integrate instance-flavor-check to detect if the instance is PAYG
+  * do not disable salt-minion on salt-ssh managed clients
+  * Mask uyuni roster module password on logs
+  * Don't install product packages on openSUSE clients
+  * keep original traditional stack tools for RHEL7 RHUI connection
+  * Retry loading of pillars from DB on connection error
+  * Use recurse stratedy to merge formula pillar with existing pillars
+  * Prevent product installation from being executed before executing product migration (bsc#1210475)
+  * Include automatic migration from Salt 3000 to Salt Bundle in highstate
+  * fix duplicate packages in state
+  * Fix enabling bundle build via custom info
+  * Rename internal state 'synccustomall' to 'syncall'
+  * Recurring custom states
+  * Do not include pillar_only formulas in highstate
+  * Allow KiwiNG to be used on SLE12 buildhosts (bsc#1204089)
+  * Add kiwi supported disk images to be collectable (bsc#1208522)
+  * disable salt-minion and remove its config file on cleanup (bsc#1209277)
+
+-------------------------------------------------------------------
+Wed Apr 19 12:56:27 CEST 2023 - marina.latini@suse.com
+
+- version 4.4.7-1
+  * to update everything on a debian system, call dist-upgrade to
+    be able to install and remove packages
+  * Add openEuler 22.03 support
+  * support multiple gpgkey urls for a channel (bsc#1208540)
+  * make SUSE Addon GPG key available on all instance (bsc#1208540)
+  * Improve error handling in mgr_events.py (bsc#1208687)
+
+-------------------------------------------------------------------
+Tue Feb 21 14:10:36 CET 2023 - jgonzalez@suse.com
+
+- version 4.4.6-1
+  * get uptime with package profile update
+  * Fix missing module when bootstraping transactional systems (bsc#1207792)
+  * Install the reboot info beacon using a conf file instead of using pillars
+  * add CPU sockets, threads and total number to standard CPU grains
+  * Fix mgrnet custom module to be compatible with old Python 2.6 (bsc#1206979) (bsc#1206981)
+  * Fix current limitation on Action Chains for SLE Micro
+  * Support SLE Micro migration (bsc#1205011)
+  * Add data for openSUSE Leap Micro 5.3 and openSUSE MicroOS bootstrapping
+
+-------------------------------------------------------------------
+Thu Jan 26 12:27:21 CET 2023 - jgonzalez@suse.com
+
+- version 4.4.5-1
+  * Prevent possible errors from "mgractionschains" module when there
+    is no action chain to resume
+
+-------------------------------------------------------------------
+Mon Jan 23 08:30:18 CET 2023 - jgonzalez@suse.com
+
+- version 4.4.4-1
+  * Do not pass server grains to minions (bsc#1207087)
+  * Reuse DB connection on compiling pillar with suma_minion
+  * Do not use non-compatible unique filter in old jinja2 (bsc#1206979) (bsc#1206981)
+  * Fix custom "mgrcompat.module_run" state module to work with Salt 3005.1
+  * Add missing transactional_update.conf for SLE Micro
+  * filter out libvirt engine events (bsc#1206146)
+  * Improve _mgractionchains.conf logs
+  * install SUSE Liberty v2 GPG key
+  * Detect bootstrap repository path for SLE Micro
+  * Fix reboot info beacon installation
+  * Add state to properly configure the reboot action for transactional systems
+  * enforce installation of the PTF GPG key package
+  * Optimize the number of salt calls on minion startup (bsc#1203532)
+  * Updated logrotate configuration (bsc#1206470)
+
+-------------------------------------------------------------------
+Wed Dec 14 14:15:05 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.3-1
+  * Fix server error while bootstrapping SSH-managed Red Hat-like minion (bsc#1205890)
+  * drop legacy way to prevent disabling local repos
 
 -------------------------------------------------------------------
 Fri Nov 18 15:13:42 CET 2022 - jgonzalez@suse.com

@@ -53,7 +53,7 @@ count			=
 dir				=
 
 #Push to this server (http[s]://<hostname>/APP)
-server 			=	https://localhost/APP
+server 			=	http://localhost/APP
 
 #Manage this channel(s)
 channel			=
@@ -72,9 +72,6 @@ no_session_caching  =   0
 
 #Have rhnpush be tolerant of errors when pushing a large number of packages.
 tolerant        =   0
-
-#The CA cert used to verify the ssl server
-ca_chain        =   /usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT
 
 #Default connection timeout, (no value for default)
 timeout         = 300

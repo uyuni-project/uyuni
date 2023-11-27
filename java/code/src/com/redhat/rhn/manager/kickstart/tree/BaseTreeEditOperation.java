@@ -70,6 +70,7 @@ public abstract class BaseTreeEditOperation extends BasePersistOperation {
     /**
      * {@inheritDoc}
      */
+    @Override
     public ValidatorError store() {
         if (!this.validateLabel()) {
             HibernateFactory.getSession().evict(this.tree);

@@ -24,7 +24,7 @@ import org.junit.jupiter.api.Test;
 public class PackageSearchActionTest extends RhnMockStrutsTestCase {
 
     @Test
-    public void testFilter() throws Exception {
+    public void testFilter() {
         setRequestPathInfo("/channels/software/Search");
         addRequestParameter(RequestContext.FILTER_STRING, "zzzzz");
         addRequestParameter("search_string", "somesearch");

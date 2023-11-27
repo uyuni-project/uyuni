@@ -147,7 +147,7 @@
 </mode>
 
 <!-- Queries starting with rr_by_idents are binded dynamically
-     in ScapManager.ruleResultsByIdents() method. -->
+     in ScapManager.searchByIdentIds() method. -->
 <mode name="rr_by_idents" class="com.redhat.rhn.frontend.dto.XccdfRuleResultDto">
   <query params="user_id">
   SELECT DISTINCT rr.id, rrt.label, rr.testresult_id AS test_result_id

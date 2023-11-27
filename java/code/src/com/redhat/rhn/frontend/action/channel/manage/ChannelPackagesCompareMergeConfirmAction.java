@@ -15,12 +15,14 @@
 package com.redhat.rhn.frontend.action.channel.manage;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.PackageMergeDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.taglibs.list.ListTagHelper;
@@ -72,7 +74,7 @@ public class ChannelPackagesCompareMergeConfirmAction extends ChannelPackagesCom
         }
 
         RhnSet set = RhnSetDecl.PACKAGES_TO_SYNC_CHANNEL.get(user);
-        DataResult result = PackageManager.mergePackagesFromSet(user, set.getLabel());
+        DataResult<PackageMergeDto> result = PackageManager.mergePackagesFromSet(user, set.getLabel());
 
 
         request.setAttribute(RequestContext.CID, chan.getId());
@@ -112,7 +114,7 @@ public class ChannelPackagesCompareMergeConfirmAction extends ChannelPackagesCom
 
     private void mergePackages(User user, Channel chan, RhnSet set) {
         PackageManager.mergeChannelPackagesFromSet(user, chan.getId(), set);
-        chan = (Channel) ChannelFactory.reload(chan);
+        chan = HibernateFactory.reload(chan);
         List<Long> chanList = new ArrayList<>();
         List<Long> packList = new ArrayList<>();
         chanList.add(chan.getId());

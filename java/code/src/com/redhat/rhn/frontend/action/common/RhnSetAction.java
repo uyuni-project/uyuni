@@ -121,6 +121,7 @@ public abstract class RhnSetAction extends RhnListDispatchAction {
      * @param response ServletResponse
      * @return The ActionForward to go to next.
      */
+    @Override
     public ActionForward unspecified(ActionMapping mapping,
                                      ActionForm formIn,
                                      HttpServletRequest request,
@@ -133,6 +134,7 @@ public abstract class RhnSetAction extends RhnListDispatchAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected Map<String, String> getKeyMethodMap() {
         Map<String, String> map = super.getKeyMethodMap();
         map.put(ListDisplayTag.UPDATE_LIST_KEY, "updatelist");

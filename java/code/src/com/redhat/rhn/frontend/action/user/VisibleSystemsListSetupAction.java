@@ -17,6 +17,7 @@ package com.redhat.rhn.frontend.action.user;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.VisibleSystems;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -38,6 +39,7 @@ import javax.servlet.http.HttpServletResponse;
 public class VisibleSystemsListSetupAction extends RhnListAction {
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm formIn,
                                  HttpServletRequest request,
@@ -52,7 +54,7 @@ public class VisibleSystemsListSetupAction extends RhnListAction {
         PageControl pc = new PageControl();
 
         clampListBounds(pc, request, requestContext.getCurrentUser());
-        DataResult dr = UserManager.visibleSystems(user, pc);
+        DataResult<VisibleSystems> dr = UserManager.visibleSystems(user, pc);
         //we want set to change for logged in user rather than the target user
         RhnSet set = RhnSetDecl.SYSTEMS.get(requestContext.getCurrentUser());
 

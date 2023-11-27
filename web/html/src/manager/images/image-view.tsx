@@ -37,10 +37,10 @@ declare global {
   }
 }
 
-const msgMap = {
+const messageMap = {
   not_found: "Image cannot be found.",
   cluster_info_err:
-    "Cannot retrieve data from cluster '{0}'. Please check the logs and make sure the cluster API is accessible.",
+    "Cannot retrieve data from cluster '{arg}'. Please check the logs and make sure the cluster API is accessible.",
   image_overview_not_found: "Image overview not found.",
 };
 
@@ -98,8 +98,8 @@ class ImageView extends React.Component<ImageViewProps, ImageViewState> {
     const add = this.state.messages;
 
     const getMsgObj = (msg) => {
-      if (typeof msgMap[msg] === "string") {
-        return { severity: severity, text: msgMap[msg] };
+      if (typeof messageMap[msg] === "string") {
+        return { severity: severity, text: messageMap[msg] };
       } else {
         return { severity: severity, text: msg };
       }
@@ -152,7 +152,9 @@ class ImageView extends React.Component<ImageViewProps, ImageViewState> {
   };
 
   handleResponseError(jqXHR, arg = "") {
-    const msg = Network.responseErrorMessage(jqXHR, (status, msg) => (msgMap[msg] ? t(msgMap[msg], arg) : null));
+    const msg = Network.responseErrorMessage(jqXHR, (status, msg) =>
+      messageMap[msg] ? t(messageMap[msg], { arg }) : null
+    );
     this.setState({ messages: this.state.messages.concat(msg) });
   }
 
@@ -736,17 +738,16 @@ class ImageViewList extends React.Component<ImageViewListProps, ImageViewListSta
             <span>
               {this.state.selectedItems.length === 1
                 ? t("Are you sure you want to delete the selected image?")
-                : t(
-                    "Are you sure you want to delete selected images? ({0} images selected)",
-                    this.state.selectedItems.length
-                  )}
+                : t("Are you sure you want to delete selected images? ({count} images selected)", {
+                    count: this.state.selectedItems.length,
+                  })}
             </span>
           }
           onConfirm={() => this.props.onDelete(this.state.selectedItems)}
         />
         <PopUp
           id="instance-details-popup"
-          title={t("Instance Details for '{0}'", this.state.instancePopupContent.name)}
+          title={t("Instance Details for '{name}'", { name: this.state.instancePopupContent.name })}
           content={this.state.instancePopupContent.content}
         />
       </div>

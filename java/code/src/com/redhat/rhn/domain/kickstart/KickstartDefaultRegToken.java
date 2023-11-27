@@ -99,6 +99,7 @@ public class KickstartDefaultRegToken implements Serializable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(final Object other) {
         if (!(other instanceof KickstartDefaultRegToken)) {
             return false;
@@ -112,6 +113,7 @@ public class KickstartDefaultRegToken implements Serializable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder().append(ksdata)
                                     .append(token)

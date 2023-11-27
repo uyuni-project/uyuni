@@ -306,7 +306,7 @@ public class SaltActionChainGeneratorService {
      * @return a requisite reference
      */
     private Optional<Pair<String, String>> prevRequisiteRef(List<SaltState> fileStates) {
-        if (fileStates.size() > 0) {
+        if (!fileStates.isEmpty()) {
             SaltState previousState = fileStates.get(fileStates.size() - 1);
             return previousState.getData().entrySet().stream().findFirst()
                 .map(entry -> ((Map<String, ?>)entry.getValue()).entrySet().stream()
@@ -337,7 +337,7 @@ public class SaltActionChainGeneratorService {
                     Map<String, List<List<String>>> paramPillar =
                             (Map<String, List<List<String>>>) moduleRun.getKwargs().get("pillar");
                     if (!paramPillar.get("param_pkgs").stream()
-                            .filter(e -> e.size() > 0)
+                            .filter(e -> !e.isEmpty())
                             .map(e -> e.get(0))
                             .filter("salt"::equals)
                             .collect(Collectors.toList()).isEmpty()) {
@@ -361,7 +361,8 @@ public class SaltActionChainGeneratorService {
     private boolean isRebootAction(SaltState state) {
         if (state instanceof SaltModuleRun) {
             SaltModuleRun moduleRun = (SaltModuleRun) state;
-            if ("system.reboot".equalsIgnoreCase(moduleRun.getName())) {
+            if ("system.reboot".equalsIgnoreCase(moduleRun.getName()) ||
+                    "transactional_update.reboot".equalsIgnoreCase(moduleRun.getName())) {
                 return true;
             }
         }
@@ -491,13 +492,17 @@ public class SaltActionChainGeneratorService {
      */
     public List<String> findFileRefsToDelete(Path targetFilePath) {
         try {
+            List<String> res = new LinkedList<>();
+            if (!targetFilePath.toFile().exists()) {
+                LOG.debug("{} does not exists", targetFilePath.toFile());
+                return res;
+            }
             String slsContent = FileUtils.readFileToString(targetFilePath.toFile());
             // first remove line containing ssh_extra_filerefs because it contains
             // all the files used for an action chain and we want to delete
             // salt:// refs that belong only to the given file
             slsContent = slsContent.replaceAll("ssh_extra_filerefs.+", "");
             Matcher m = SALT_FILE_REF.matcher(slsContent);
-            List<String> res = new LinkedList<>();
             int start = 0;
             while (m.find(start)) {
                 String ref = m.group(2);

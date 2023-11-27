@@ -20,7 +20,7 @@ CREATE TABLE rhnTaskoTask
                   CONSTRAINT rhn_tasko_task_id_pk PRIMARY KEY,
     name      VARCHAR(80) NOT NULL
                   CONSTRAINT rhn_tasko_task_name_uq UNIQUE,
-    class     VARCHAR(60) NOT NULL,
+    class     VARCHAR(120) NOT NULL,
     created   TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL,
     modified  TIMESTAMPTZ

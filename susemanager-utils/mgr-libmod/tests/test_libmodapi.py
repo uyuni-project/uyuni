@@ -293,3 +293,47 @@ class TestLibmodProc:
         assert 1742 == len(result)
         # Assert that no duplicates are reported
         assert len(result) == len(set(result))
+
+    def test_list_modules_liberty(self):
+        # Liberty Linux has some extra fields in its module metadata ("configurations")
+        # Test if mgr-libmod successfully parses it (see bsc#1208908)
+
+        request = {
+            "function": "list_modules",
+            "paths": ["tests/data/sample-modules-liberty.yaml.gz"]
+        }
+
+        self.libmodapi.set_repodata(json.dumps(request)).run()
+        result = self.libmodapi._result['list_modules']
+
+        assert 4 == len(result['modules'])
+
+        for key, value in result['modules'].items():
+            assert 'streams' in value
+            # LL9 doesn't define any defaults
+            assert value['default'] == None
+            assert len(value['streams']) > 0
+
+    def test_module_packages_liberty(self):
+        request = {
+            "function": "module_packages",
+            "paths": ["tests/data/sample-modules-liberty.yaml.gz"],
+            "streams": [
+                {
+                    "name": "nodejs",
+                    "stream": "18"
+                }
+            ]
+        }
+
+        self.libmodapi.set_repodata(json.dumps(request)).run()
+        result = self.libmodapi._result['module_packages']
+
+        assert 'selected' in result
+        assert 2 == len(result['selected'])
+        # 2 different versions must be selected
+        assert result['selected'][0]['version'] != result['selected'][1]['version']
+
+        for selection in result['selected']:
+            assert 'nodejs' == selection['name']
+            assert '18' == selection['stream']

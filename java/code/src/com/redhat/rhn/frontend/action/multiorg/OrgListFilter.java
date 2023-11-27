@@ -30,7 +30,8 @@ public class OrgListFilter extends BaseListFilter {
      *
      * {@inheritDoc}
      */
-    public void processMap(Map map, Locale userLocale) {
+    @Override
+    public void processMap(Map<String, String> map, Locale userLocale) {
         LocalizationService ls =
             LocalizationService.getInstance();
         String orgLabel = ls.getMessage("org.nopunc.displayname", userLocale);

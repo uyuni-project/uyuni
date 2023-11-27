@@ -14,16 +14,20 @@ declare global {
 }
 
 function channelIcon(channel) {
-  let iconClass, iconTitle;
+  let iconClass, iconTitle, iconStyle;
   if (channel.type === "state") {
     iconClass = "fa spacewalk-icon-salt-add";
     iconTitle = t("State Configuration Channel");
+  } else if (channel.type === "internal_state") {
+    iconClass = "fa spacewalk-icon-salt-add";
+    iconTitle = t("Internal State");
+    iconStyle = { border: "1px solid black" };
   } else {
     iconClass = "fa spacewalk-icon-software-channels";
     iconTitle = t("Normal Configuration Channel");
   }
 
-  return <i className={iconClass} title={iconTitle} />;
+  return <i className={iconClass} title={iconTitle} style={iconStyle} />;
 }
 
 type RankingTableProps = {
@@ -113,11 +117,9 @@ class RankingTable extends React.Component<RankingTableProps, RankingTableState>
 
   render() {
     return (
-      <div>
+      <div ref={(node) => (this.node = node)}>
         {this.state.items.length > 0 ? (
-          <div ref={(node) => (this.node = node)} className="list-group">
-            {this.getElements()}
-          </div>
+          <div className="list-group">{this.getElements()}</div>
         ) : (
           <div className="alert alert-info">{this.props.emptyMsg || this.defaultEmptyMsg}</div>
         )}

@@ -73,6 +73,7 @@ public class PackageCapability extends BaseDomainHelper {
      *
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         HashCodeBuilder hash = new HashCodeBuilder();
         hash.append(this.getName());
@@ -84,6 +85,7 @@ public class PackageCapability extends BaseDomainHelper {
      *
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof PackageCapability)) {
             return false;

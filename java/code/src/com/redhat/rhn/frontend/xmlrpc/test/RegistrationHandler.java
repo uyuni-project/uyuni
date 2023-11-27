@@ -29,8 +29,7 @@ public class RegistrationHandler extends BaseHandler {
      * @return privacy statement string
      * @exception Exception if an error occurs
      */
-    public String privacyStatement()
-        throws Exception {
+    public String privacyStatement() {
         return "This is a privacy statement!";
     }
 }

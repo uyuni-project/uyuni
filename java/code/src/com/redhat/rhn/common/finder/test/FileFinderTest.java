@@ -29,13 +29,13 @@ import java.util.List;
 public class FileFinderTest extends RhnBaseTestCase {
 
     @Test
-    public void testGetFinder() throws Exception {
+    public void testGetFinder() {
         Finder f = FinderFactory.getFinder("com.redhat.rhn.common.finder.test");
         assertNotNull(f);
     }
 
     @Test
-    public void testFindFiles() throws Exception {
+    public void testFindFiles() {
         Finder f = FinderFactory.getFinder("com.redhat.rhn.common.finder.test");
         assertNotNull(f);
 
@@ -46,21 +46,21 @@ public class FileFinderTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testFindFilesSubDir() throws Exception {
+    public void testFindFilesSubDir() {
         Finder f = FinderFactory.getFinder("com.redhat.rhn.common.finder");
         assertNotNull(f);
 
         List<String> result = f.find(".class");
-        assertEquals(6, result.size());
+        assertEquals(7, result.size());
     }
 
     @Test
-    public void testFindExcluding() throws Exception {
+    public void testFindExcluding() {
         Finder f = FinderFactory.getFinder("com.redhat.rhn.common.finder");
         assertNotNull(f);
         String[] sarr = {"Test"};
         List<String> result = f.findExcluding(sarr, "class");
-        assertEquals(4, result.size());
+        assertEquals(5, result.size());
     }
 }
 

@@ -48,12 +48,13 @@ import java.util.stream.Collectors;
  */
 public class MgrSyncUtils {
     // Logger instance
-    private static Logger log = LogManager.getLogger(MgrSyncUtils.class);
+    private static final Logger LOG = LogManager.getLogger(MgrSyncUtils.class);
 
     // Source URL handling
     private static final String OFFICIAL_NOVELL_UPDATE_HOST = "nu.novell.com";
+    public static final String OFFICIAL_SUSE_UPDATE_HOST = "updates.suse.com";
     private static final List<String> OFFICIAL_UPDATE_HOSTS =
-            Arrays.asList("updates.suse.com", OFFICIAL_NOVELL_UPDATE_HOST);
+            Arrays.asList(OFFICIAL_SUSE_UPDATE_HOST, OFFICIAL_NOVELL_UPDATE_HOST);
     private static final List<String> PRODUCT_ARCHS = Arrays.asList("i386", "i486", "i586", "i686", "ia64", "ppc64le",
             "ppc64", "ppc", "s390x", "s390", "x86_64", "aarch64", "amd64");
 
@@ -125,15 +126,22 @@ public class MgrSyncUtils {
         else {
             arch = PRODUCT_ARCHS.stream().filter(channelLabel::contains).findFirst().orElse(arch);
         }
-        if (arch.equals("i686") || arch.equals("i586") ||
-                arch.equals("i486") || arch.equals("i386")) {
-            arch = "ia32";
-        }
-        else if (arch.equals("ppc64")) {
-            arch = "ppc";
-        }
-        else if (arch.equals("amd64")) {
-            arch = "amd64-deb";
+        switch (arch) {
+            case "i686":
+            case "i586":
+            case "i486":
+            case "i386":
+                arch = "ia32";
+                break;
+            case "ppc64":
+                arch = "ppc";
+                break;
+            case "amd64":
+                arch = "amd64-deb";
+                break;
+            default:
+                // keep arch unchanged
+                break;
         }
         return ChannelFactory.findArchByLabel("channel-" + arch);
     }
@@ -182,8 +190,7 @@ public class MgrSyncUtils {
      * @return product name
      */
     public static ProductName findOrCreateProductName(String name) {
-        ProductName productName = ChannelFactory.lookupProductNameByLabel(
-                name);
+        ProductName productName = ChannelFactory.lookupProductNameByLabel(name);
         if (productName == null) {
             productName = new ProductName();
             productName.setLabel(name);
@@ -227,10 +234,7 @@ public class MgrSyncUtils {
             }
             String qPath = Arrays.stream(Optional.ofNullable(uri.getQuery()).orElse("").split("&"))
                     .filter(p -> p.contains("=")) // filter out possible auth tokens
-                    .map(p ->
-                        Arrays.stream(p.split("=", 2))
-                            .collect(Collectors.joining(File.separator))
-                    )
+                    .map(p -> String.join(File.separator, p.split("=", 2)))
                     .sorted()
                     .collect(Collectors.joining(File.separator));
             if (!qPath.isBlank()) {
@@ -238,9 +242,12 @@ public class MgrSyncUtils {
             }
         }
         catch (URISyntaxException e) {
-            log.warn("Unable to parse URL: {}", urlString);
+            LOG.warn("Unable to parse URL: {}", urlString);
         }
         String sccDataPath = Config.get().getString(ContentSyncManager.RESOURCE_PATH, null);
+        if (sccDataPath == null) {
+            throw new ContentSyncException("No local mirror path configured");
+        }
         File dataPath = new File(sccDataPath);
         // Case 4
         File mirrorPath = new File(dataPath.getAbsolutePath(), host + File.separator + path);
@@ -248,28 +255,37 @@ public class MgrSyncUtils {
         // Case 2
         if (OFFICIAL_UPDATE_HOSTS.contains(host)) {
             mirrorPath = new File(dataPath.getAbsolutePath(), path);
+            LOG.info("SCC mirrorpath: {}", mirrorPath);
         }
         else if (name != null) {
             // Case 3
             // everything after the first space are suffixes added to make things unique
-            String[] parts  = URLDecoder.decode(name, StandardCharsets.UTF_8).split("[\\s//]");
+            String[] parts  = URLDecoder.decode(name, StandardCharsets.UTF_8).split("[\\s/]");
             if (!(parts[0].isBlank() || parts[0].equals(".."))) {
                 File oldMirrorPath = Paths.get(dataPath.getAbsolutePath(), "repo", "RPMMD", parts[0]).toFile();
+                LOG.info("SMT mirrorpath for '{}': {}", name, oldMirrorPath);
                 if (oldMirrorPath.exists()) {
                     mirrorPath = oldMirrorPath;
                 }
                 else {
                     // mirror in a common folder (bsc#1201753)
                     File commonMirrorPath = Paths.get(dataPath.getAbsolutePath(), path).toFile();
+                    LOG.info("Common mirrorpath for '{}': {}", name, commonMirrorPath);
                     if (commonMirrorPath.exists()) {
                         mirrorPath = commonMirrorPath;
+                    }
+                    else {
+                        LOG.info("Default mirrorpath for '{}': {}", name, mirrorPath);
                     }
                 }
             }
         }
+        else {
+            LOG.info("Default mirrorpath: {}", mirrorPath);
+        }
         Path cleanPath = mirrorPath.toPath().normalize();
         if (!cleanPath.startsWith(sccDataPath)) {
-            log.error("Resulting path outside of configured directory {}: {}", dataPath, urlString);
+            LOG.error("Resulting path outside of configured directory {}: {}", dataPath, urlString);
             cleanPath = dataPath.toPath();
         }
         return cleanPath.toUri().normalize();

@@ -2255,7 +2255,7 @@ channel is available to your @@PRODUCT_NAME@@. If it is not, please contact your
 and try again.
 &lt;/li&gt;
 &lt;li&gt;
-Make sure the spacewalk-koan package corresponding to this kickstart are
+Make sure the required packages corresponding to this kickstart are
 available in the kickstart's base channel's tools channel. If not, you
 will need to make them available for this kickstart profile to function properly.
 &lt;/li&gt;
@@ -2281,9 +2281,9 @@ administrátora @@PRODUCT_NAME@@ a požiadajte o mgr-inter-sync pre kanál
 nástrojov klienta a skúste to znova.
 &lt;/li&gt;
 &lt;li&gt;
-Uistite sa, že balík spacewalk-koan zodpovedajúci tomuto kickstart je k dispozícii
-v kanáli nástrojov základného kanála kickstart. Ak nie je, budete musieť ho sprístupniť,
-aby tento profil kickstart správne fungoval.
+Uistite sa, že požadované balíky zodpovedajúce tomuto kickstart sú k dispozícii
+v kanáli nástrojov základného kanála kickstart. Ak nie je, budete ich musieť 
+sprístupniť, aby tento profil kickstart správne fungoval.
 &lt;/li&gt;
 &lt;li&gt;
 Sú vyššie uvedené balíky k dispozícii v tomto základnom kanáli kickstart? Ak nie, budete ich musieť
@@ -6543,27 +6543,6 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="kickstart.schedule.nopackage" xml:space="preserve">
-        <source>Could not find the needed @@PRODUCT_NAME@@ provisioning packages given this system's current base channel and desired target channel: {0}</source>
-        <target>Nepodarilo sa nájsť potrebné balíky poskytujúce @@PRODUCT_NAME@@ dané aktuálnym základným kanálom tohto systému a požadovaným cieľovým kanálom: {0}</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="kickstart.schedule.cantsubscribe" xml:space="preserve">
-        <source>You have no remaining subscriptions to the @@PRODUCT_NAME@@ provisioning channel for &lt;strong&gt;{0}&lt;/strong&gt;'s current base channel.</source>
-        <target>Nemáte žiadne zostávajúce predplatné ku kanálu poskytujúcemu @@PRODUCT_NAME@@ pre aktuálny základný kanál &lt;strong&gt;{0}&lt;/strong&gt;.</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="kickstart.schedule.cantsubscribe.channel" xml:space="preserve">
-        <source>You have no remaining subscriptions to the channel {0} for &lt;strong&gt;{1}&lt;/strong&gt;'s current base channel.</source>
-        <target>Nemáte žiadne zostávajúce predplatné ku kanálu {0} pre aktuálny základný kanál &lt;strong&gt;{1}&lt;/strong&gt;.</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="kickstart.schedule.noup2date" xml:space="preserve">
         <source>An autoinstallation was not scheduled for &lt;strong&gt;&lt;a href="/rhn/systems/details/Overview.do?sid={0}"&gt;{1}&lt;/a&gt;&lt;/strong&gt; because the package profile did not contain the 'up2date' package. An update of that system's package profile may be required.</source>
         <target>Automatická inštalácia nebola naplánovaná pre &lt;strong&gt;&lt;a href="/rhn/systems/details/Overview.do?sid={0}"&gt;{1}&lt;/a&gt;&lt;/strong&gt;, pretože profil balíkov neobsahoval balík 'up2date'. Môže byť potrebná aktualizácia profilu balíkov tohto systému.</target>
@@ -7267,13 +7246,6 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       <trans-unit id="traceback_mail" xml:space="preserve">
         <source>Email address</source>
         <target>Emailová adresa</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/errata/manage/CloneErrata.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="server|jabber_server" xml:space="preserve">
-        <source>Hostname</source>
-        <target>Názov hostiteľa</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/CloneErrata.do</context>
         </context-group>
@@ -8667,37 +8639,9 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
           <context context-type="paramnotes">A file named "/etc/passwd" already exists in this channel.</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="system.entitle.notoolschannel" xml:space="preserve">
-        <source>Could not automatically subscribe the system to the @@PRODUCT_NAME@@ Tools Channel. This channel contains packages required for virtualization.  This is most likely caused by a lack of channel entitlements.</source>
-        <target state="translated">Nepodarilo sa automaticky prihlásiť systém na kanál nástrojov @@PRODUCT_NAME@@. Tento kanál obsahuje balíky potrebné pre virtualizáciu.  Je to pravdepodobne spôsobené nedostatkom oprávnení na kanál.</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="system.entitle.multiplechannelswithpackage" xml:space="preserve">
         <source>Found multiple child channels with package: {0}. Please manually subscribe this system to the appropriate child channel.</source>
         <target>Nájdených viac kanálov potomkov s balíkom: {0}. Prosím, prihláste tento systém do príslušného kanála potomka ručne.</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="system.entitle.multiplechannelswithpackagepleaseinstall" xml:space="preserve">
-        <source>Found multiple child channels with package: {0}. Please manually subscribe this system to the appropriate child channel, and schedule this package for installation.</source>
-        <target>Nájdené viaceré kanály potomkov s balíkom: {0}. Prosím, prihláste tento systém ručne do príslušného kanála potomka a naplánujte inštaláciu tohto balíka.</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="system.entitle.novirtchannel" xml:space="preserve">
-        <source>Could not automatically subscribe the system to the RHEL Virtualization Channel.  This channel contains packages required for virtualization.  This is most likely caused by a lack of channel entitlements.</source>
-        <target>Nepodarilo sa automaticky prihlásiť systém na Virtualizačný kanál RHEL. Tento kanál obsahuje balíky potrebné pre virtualizáciu.  Je to pravdepodobne spôsobené nedostatkom oprávnení na kanál.</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="system.entitle.novirtpackage" xml:space="preserve">
-        <source>Could not find a channel with the {0} package. This package is required to manage virtual guests with @@PRODUCT_NAME@@.</source>
-        <target>Nepodarilo sa nájsť kanál s balíkom {0}. Tento balík je potrebný na správu virtuálnych hostí s @@PRODUCT_NAME@@.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
@@ -8707,13 +8651,6 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
         <target>Systém už má typ systému {0}.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="system.virtualization.help" xml:space="preserve">
-        <source>NOTE: To enable and use virtualization capabilities within @@PRODUCT_NAME@@ for this system, install the mgr-virtualization-host package from the associated Tools child channel. Review the documentation for any other considerations and requirements for enabling Virtualization of a Host system.</source>
-        <target state="translated">POZNÁMKA: Ak chcete povoliť a používať možnosti virtualizácie v @@PRODUCT_NAME@@ pre tento systém, nainštalujte balík mgr-virtualization-host z pridruženého nástrojového kanála potomka. Preštudujte si dokumentáciu, aby ste zistili všetky ďalšie aspekty a požiadavky na povolenie virtualizácie hostiteľského systému.</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/virtualization/VirtualGuestsList.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system.migrate.user_no_perms" xml:space="preserve">
@@ -10027,8 +9964,8 @@ inštalovateľný strom nebude možné použiť na automatickú inštaláciu.</t
         <target state="translated">Nájdené prihlasovacie meno(á) odoslané na {0}. Ak ju nedostanete, uistite sa, že máte zaregistrovaný účet s prihlasovacím menom a uvedeným emailom.</target>
       </trans-unit>
       <trans-unit id="config.multiple.channels" xml:space="preserve">
-        <source>A selected system has multiple child channels available that contain the mgr-cfg package. You must manually subscribe to the child channel you want and then try this action again.</source>
-        <target state="translated">Vybraný systém má k dispozícii viacero kanálov potomkov, ktoré obsahujú balík mgr-cfg. Musíte sa ručne prihlásiť k požadovanému kanálu potomka a potom skúsiť túto akciu znova.</target>
+        <source>A selected system has multiple child channels available that contain the venv-salt-minion package. You must manually subscribe to the child channel you want and then try this action again.</source>
+        <target state="translated">Vybraný systém má k dispozícii viacero kanálov potomkov, ktoré obsahujú balík venv-salt-minion. Musíte sa ručne prihlásiť k požadovanému kanálu potomka a potom skúsiť túto akciu znova.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/TargetSystemsSubmit.do</context>
         </context-group>
@@ -10471,21 +10408,7 @@ Prípadne si budete chcieť stiahnuť &lt;strong&gt; Inkrementálne obsahové IS
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="system.entitle.added.container_build_host.nodoc" xml:space="preserve">
-        <source>&lt;strong&gt;Container Build Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
-        <target>Bol použitý typ &lt;strong&gt;Hostiteľ zostavený kontajnermi&lt;/strong&gt;.&lt;br/&gt;&lt;strong&gt;Poznámka:&lt;/strong&gt; Táto akcia &lt;em&gt;nebude&lt;/em&gt; mať vplyv na aplikáciu stavu. Ak chcete použiť stav, použite &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;stránku stavov&lt;/a&gt;, alebo spustite &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; z príkazového riadku.</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="system.entitle.added.osimage_build_host" xml:space="preserve">
-        <source>&lt;strong&gt;OS Image Build Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
-        <target>Bol použitý typ &lt;strong&gt;Hostiteľ zostavenia ISO obrazu&lt;/strong&gt;.&lt;br/&gt;&lt;strong&gt;Poznámka:&lt;/strong&gt; Táto akcia &lt;em&gt;nebude&lt;/em&gt; mať vplyv na aplikáciu stavu. Ak chcete použiť stav, použite &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;sstránku stavov&lt;/a&gt;, alebo spustite &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; z príkazového riadku.</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="system.entitle.added.osimage_build_host.nodoc" xml:space="preserve">
         <source>&lt;strong&gt;OS Image Build Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
         <target>Bol použitý typ &lt;strong&gt;Hostiteľ zostavenia ISO obrazu&lt;/strong&gt;.&lt;br/&gt;&lt;strong&gt;Poznámka:&lt;/strong&gt; Táto akcia &lt;em&gt;nebude&lt;/em&gt; mať vplyv na aplikáciu stavu. Ak chcete použiť stav, použite &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;sstránku stavov&lt;/a&gt;, alebo spustite &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; z príkazového riadku.</target>
         <context-group name="ctx">
@@ -10499,23 +10422,9 @@ Prípadne si budete chcieť stiahnuť &lt;strong&gt; Inkrementálne obsahové IS
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="system.entitle.added.virtualization_host.nodoc" xml:space="preserve">
-        <source>Since you added a Virtualization system type to the system we also performed some extra steps to ensure your system will be able to manage virtual guests better.</source>
-        <target>Keďže ste do systému pridali typ virtualizačného systému, vykonali sme tiež niekoľko ďalších krokov, aby sme zabezpečili, že váš systém bude schopný lepšie spravovať virtuálnych hostí.</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="system.entitle.added.monitoring_entitled" xml:space="preserve">
-        <source>&lt;strong&gt;Monitoring&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; Since you added the Monitoring system type we automatically assigned the Prometheus Exporters formula to the system. Please apply the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; in order to install and enable the Prometheus metrics exporters.</source>
-        <target state="translated">Bol použitý typ &lt;strong&gt;Monitorovania&lt;/strong&gt;.&lt;br/&gt;&lt;strong&gt;Poznámka:&lt;/strong&gt; Keďže ste pridali typ systému monitorovania, automaticky sme systému priradili vzorec exportérov Prometheus. Prosím, použite &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt;, aby ste mohli nainštalovať a povoliť exportéry metrík Prometheus.</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="system.entitle.added.monitoring_entitled.nodoc" xml:space="preserve">
-        <source>&lt;strong&gt;Monitoring&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; Since you added the Monitoring system type we automatically assigned the Prometheus Exporters formula to the system. Please apply the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; in order to install and enable the Prometheus metrics exporters.</source>
-        <target state="translated">Bol použitý typ &lt;strong&gt;Monitorovania&lt;/strong&gt;.&lt;br/&gt;&lt;strong&gt;Poznámka:&lt;/strong&gt; Keďže ste pridali typ systému monitorovania, automaticky sme systému priradili vzorec exportérov Prometheus. Prosím, použite &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt;, aby ste mohli nainštalovať a povoliť exportéry metrík Prometheus.</target>
+        <source>&lt;strong&gt;Monitoring&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; Since you added the Monitoring system type we automatically assigned the Prometheus Exporters formula to the system. Please apply the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; in order to install and enable the Prometheus metrics exporters.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; Please make sure to open the &lt;a href="/docs/{1}/installation-and-upgrade/ports.html#_external_client_ports" target="_blank"&gt;required network ports&lt;/a&gt; for all installed exporters.</source>
+        <target state="translated">Bol použitý typ &lt;strong&gt;Monitorovania&lt;/strong&gt;.&lt;br/&gt;&lt;strong&gt;Poznámka:&lt;/strong&gt; Keďže ste pridali typ systému monitorovania, automaticky sme systému priradili vzorec exportérov Prometheus. Prosím, použite &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt;, aby ste mohli nainštalovať a povoliť exportéry metrík Prometheus. &lt;br/&gt;&lt;strong&gt;Poznámka:&lt;/strong&gt; Prosím, uistite sa, že ste otvorili &lt;a href="/docs/{1}/installation-and-upgrade/ports.html#_external_client_ports" target="_blank"&gt;požadované sieťové porty&lt;/a&gt; pre všetky nainštalované exportéry.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
@@ -10923,13 +10832,6 @@ Prípadne si budete chcieť stiahnuť &lt;strong&gt; Inkrementálne obsahové IS
         </context-group>
         <target state="translated">Bol použitý typ &lt;strong&gt;Riadiaci uzol Ansible&lt;/strong&gt;.&lt;br/&gt;&lt;strong&gt;Poznámka:&lt;/strong&gt; Táto akcia &lt;em&gt;nebude&lt;/em&gt; mať vplyv na aplikáciu stavu. Ak chcete použiť stav, použite &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;stránku stavov&lt;/a&gt;, alebo spustite &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; z príkazového riadku.</target>
       </trans-unit>
-      <trans-unit id="system.entitle.added.ansible_control_node.nodoc" xml:space="preserve">
-        <source>&lt;strong&gt;Ansible Control Node&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
-        </context-group>
-        <target state="translated">Bol použitý typ &lt;strong&gt;Riadiaci uzol Ansible&lt;/strong&gt;.&lt;br/&gt;&lt;strong&gt;Poznámka:&lt;/strong&gt; Táto akcia &lt;em&gt;nebude&lt;/em&gt; mať vplyv na aplikáciu stavu. Ak chcete použiť stav, použite &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;stránku stavov&lt;/a&gt;, alebo spustite &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; z príkazového riadku.</target>
-      </trans-unit>
       <trans-unit id="ansible.invalid_path" xml:space="preserve">
         <source>Invalid path (must be a valid absolute path)</source>
         <context-group name="ctx">
@@ -11086,28 +10988,28 @@ Prípadne si budete chcieť stiahnuť &lt;strong&gt; Inkrementálne obsahové IS
         <target state="translated">Heslo súkromného kľúča SSH bašty nesmie presiahnuť 32 znakov.</target>
       </trans-unit>
       <trans-unit id="payg.ssh_data_created" xml:space="preserve">
-        <source>Pay-as-you-go {0} created successfully</source>
-        <target state="translated">Úspešne vytvorená priebežná platba {0}</target>
+        <source>PAYG {0} created successfully</source>
+        <target state="translated">Úspešne vytvorené PAYG {0}</target>
       </trans-unit>
       <trans-unit id="payg.host_exists" xml:space="preserve">
-        <source>Pay-as-you-go host already exists</source>
-        <target state="translated">Priebežne platený hostiteľ už existuje</target>
+        <source>PAYG host already exists</source>
+        <target state="translated">Hostiteľ PAYG už existuje</target>
       </trans-unit>
       <trans-unit id="payg.ssh_data_deleted" xml:space="preserve">
-        <source>Pay-as-you-go {0} deleted successfully</source>
-        <target state="translated">Úspešne vymazaná priebežná platba {0}</target>
+        <source>PAYG {0} deleted successfully</source>
+        <target state="translated">Úspešne vymazané PAYG {0}</target>
       </trans-unit>
       <trans-unit id="notification.paygauthenticationupdatefailed" xml:space="preserve">
         <source>Error when updating authentication data from: &lt;a href="/rhn/manager/admin/setup/payg/{0}"&gt;{1}&lt;/a&gt;</source>
         <target state="translated">Chyba pri aktualizácii overovacích údajov z: &lt;a href="/rhn/manager/admin/setup/payg/{0}"&gt;{1}&lt;/a&gt;</target>
       </trans-unit>
       <trans-unit id="task.status.update-payg-auth" xml:space="preserve">
-        <source>Pay-as-you-go authentication update</source>
-        <target state="translated">Aktualizácia overenia priebežnej platby</target>
+        <source>PAYG authentication update</source>
+        <target state="translated">Aktualizácia overenia PAYG</target>
       </trans-unit>
       <trans-unit id="task.status.update-payg-hosts" xml:space="preserve">
-        <source>Pay-as-you-go update RMT hosts</source>
-        <target state="translated">RMT hostitelia aktualizácií priebežných platieb</target>
+        <source>PAYG update RMT hosts</source>
+        <target state="translated">RMT hostitelia aktualizácií PAYG</target>
       </trans-unit>
       <trans-unit id="setup.product.error.dataneedsrefresh" xml:space="preserve">
         <source>Product data needs refresh.</source>
@@ -11244,6 +11146,178 @@ Prípadne si budete chcieť stiahnuť &lt;strong&gt; Inkrementálne obsahové IS
       <trans-unit id="api.schedule.cannotcancelchild" xml:space="preserve">
         <source>Cannot cancel an action with a pending prerequisite.</source>
         <target state="translated">Nie je možné zrušiť akciu s nevyriešenou podmienkou.</target>
+      </trans-unit>
+      <trans-unit id="java|hostname" xml:space="preserve">
+        <source>Hostname</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/errata/manage/CloneErrata.do</context>
+        </context-group>
+        <target state="translated">Názov hostiteľa</target>
+      </trans-unit>
+      <trans-unit id="notification.subscriptionwarning.summary" xml:space="preserve">
+        <source>You have subscriptions that need attention.</source>
+        <target state="translated">Máte predplatné, ktoré si vyžaduje pozornosť.</target>
+      </trans-unit>
+      <trans-unit id="notification.subscriptionwarning.detail" xml:space="preserve">
+        <source>You have subscriptions that are expiring soon or already expired. Please check the &lt;a href="/rhn/manager/subscription-matching"&gt;Subscription Matching&lt;/a&gt; page.</source>
+        <target state="translated">Vaše predplatné čoskoro vyprší alebo už vypršalo. Prosím, skontrolujte stránku &lt;a href="/rhn/manager/subscription-matching"&gt;Priraďovanie predplatného&lt;/a&gt; page.</target>
+      </trans-unit>
+      <trans-unit id="api.package.ptfpackage" xml:space="preserve">
+        <source>Packages part of a Program Temporary Fix (PTF): {0}</source>
+        <target state="translated">Balíky sú súčasťou Program Temporary Fix (PTF): {0}</target>
+      </trans-unit>
+      <trans-unit id="api.package.ptfmaster" xml:space="preserve">
+        <source>Program Temporary Fixes (PTFs) packages: {0}</source>
+        <target state="translated">Balíky Program Temporary Fixes (PTFs): {0}</target>
+      </trans-unit>
+      <trans-unit id="activation-key.java.nochannel" xml:space="preserve">
+          <source>No Base Channel selected.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Activation Key Pages</context>
+        </context-group>
+        <target state="translated">Nie je vybraný žiadny základný kanál.</target>
+      </trans-unit>
+      <trans-unit id="contentmanagement.validation.modularitydisabled" xml:space="preserve">
+        <source>Modularity is currently disabled. To enable modules, please remove the 'disable all modules' filter.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
+        </context-group>
+        <target state="translated">Modularita je v súčasnosti zakázaná. Ak chcete moduly povoliť, odstráňte filter 'zakázať všetky moduly'.</target>
+      </trans-unit>
+      <trans-unit id="contentmanagement.validation.nomodules" xml:space="preserve">
+        <source>Modularity is disabled. No modules will be included in the target repositories.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
+        </context-group>
+        <target state="translated">Modularita je zakázaná. Do cieľových repozitárov nebudú zahrnuté žiadne moduly.</target>
+      </trans-unit>
+      <trans-unit id="PTF" xml:space="preserve">
+        <source>PTFs</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Program Temporary Fixes (PTFs) Navigation Tabs</context>
+        </context-group>
+        <target state="translated">PTFs</target>
+      </trans-unit>
+      <trans-unit id="contentmanagement.non_environment_channels_found" xml:space="preserve">
+        <source>Cannot remove. There are custom channels that are not part of the channels built by the environment. Please remove these channels first: {0}</source>
+        <target state="translated">Nemožno odstrániť. Existujú vlastné kanály, ktoré nie sú súčasťou kanálov vytvorených prostredím. Najskôr, prosím, odstráňte tieto kanály: {0}</target>
+      </trans-unit>
+      <trans-unit id="contentmanagement.used_in_autoinstallation_profile" xml:space="preserve">
+        <source>The target is being used in an autoinstallation profile. Cannot remove.</source>
+        <target state="translated">Cieľ sa používa v profile automatickej inštalácie. Nemožno odstrániť.</target>
+      </trans-unit>
+      <trans-unit id="task.action.rejection.reason" xml:space="preserve">
+        <source>This action was not executed because its earliest execution date was too old. When more than {0} hours pass between the scheduling and the picking up, the action is discarded because it is considered no longer relevant.
+          Please reschedule this action if you really want it to be executed.</source>
+        <target state="translated">Táto akcia nebola vykonaná, pretože jej najskorší dátum vykonania bol príliš starý. Ak medzi naplánovaním a prevzatím uplynie viac ako {0} hodín, akcia sa vyradí, pretože sa už nepovažuje za relevantnú.
+          Ak naozaj chcete, aby sa táto akcia vykonala, prosím, presuňte ju na iný termín.</target>
+      </trans-unit>
+      <trans-unit id="recurring_action.empty_action_type" xml:space="preserve">
+        <source>Recurring Action type must be provided</source>
+        <target state="translated">Musí byť uvedený typ opakujúcej sa akcie</target>
+      </trans-unit>
+      <trans-unit id="recurring_action.empty_states_config" xml:space="preserve">
+        <source>States configuration must be provided</source>
+        <target state="translated">Musí byť poskytnutá konfigurácia stavov</target>
+      </trans-unit>
+      <trans-unit id="recurring_action.invalid_action_type" xml:space="preserve">
+        <source>Recurring action has invalid type.</source>
+        <target state="translated">Opakujúca sa akcia má neplatný typ.</target>
+      </trans-unit>
+      <trans-unit id="internal_state.certs" xml:space="preserve">
+        <source>Install the server's SSL certificate and trust it on the target system</source>
+        <target state="translated">Inštalovať certifikát SSL servera a dôverovať mu v cieľovom systéme</target>
+      </trans-unit>
+      <trans-unit id="internal_state.channels" xml:space="preserve">
+        <source>Make sure that channel subscriptions are in sync with the server side configuration</source>
+        <target state="translated">Uistite sa, že predplatné kanálov sú synchronizované s konfiguráciou na strane servera</target>
+      </trans-unit>
+      <trans-unit id="internal_state.hardware_profileupdate" xml:space="preserve">
+        <source>Update information about installed hardware</source>
+        <target state="translated">Aktualizovať informácie o nainštalovanom hardvéri</target>
+      </trans-unit>
+      <trans-unit id="internal_state.packages" xml:space="preserve">
+        <source>Apply package states as configured for the target system</source>
+        <target state="translated">Použiť stavy balíkov nakonfigurované pre cieľový systém</target>
+      </trans-unit>
+      <trans-unit id="internal_state.packages_profileupdate" xml:space="preserve">
+        <source>Update information about installed software (packages and products)</source>
+        <target state="translated">Aktualizovať informácie o nainštalovanom softvéri (balíky a produkty)</target>
+      </trans-unit>
+      <trans-unit id="internal_state.uptodate" xml:space="preserve">
+        <source>Update the system, rebooting if required</source>
+        <target state="translated">Aktualizovať systém a v prípade potreby reštartovať</target>
+      </trans-unit>
+      <trans-unit id="internal_state.util_syncbeacons" xml:space="preserve">
+        <source>Sync Salt beacons to the target system</source>
+        <target state="translated">Synchronizácia položiek Salt beacons s cieľovým systémom</target>
+      </trans-unit>
+      <trans-unit id="internal_state.util_syncall" xml:space="preserve">
+        <source>Sync all Salt artifacts (modules, states, grains and beacons) to the target system</source>
+        <target state="translated">Synchronizácia všetkých artefaktov Salt (modulov, stavov, grains a beacons) s cieľovým systémom</target>
+      </trans-unit>
+      <trans-unit id="internal_state.util_syncgrains" xml:space="preserve">
+        <source>Sync Salt grains to the target system</source>
+        <target state="translated">Synchronizácia položiek Salt grains s cieľovým systémom</target>
+      </trans-unit>
+      <trans-unit id="internal_state.util_syncmodules" xml:space="preserve">
+        <source>Sync Salt modules to the target system</source>
+        <target state="translated">Synchronizácia modulov Salt s cieľovým systémom</target>
+      </trans-unit>
+      <trans-unit id="internal_state.util_syncstates" xml:space="preserve">
+        <source>Sync Salt states to the target system</source>
+        <target state="translated">Synchronizácia stavov Salt s cieľovým systémom</target>
+      </trans-unit>
+      <trans-unit id="edit.channel.forbiddenclonechannelpayg" xml:space="preserve">
+        <source>Cloning of channels under different product channels on PAYG instances is forbidden</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/channels/manage/Edit</context>
+        </context-group>
+        <target state="translated">Klonovanie kanálov v rámci rôznych kanálov produktov v inštanciách PAYG je zakázané</target>
+      </trans-unit>
+      <trans-unit id="spmigration.message.payg.error" xml:space="preserve">
+        <source>PAYG ALERT: Cross product migration attempt detected. Please note, migration from openSUSE to SLES or similar is not permitted under your current PAYG plan. Operation has been aborted.</source>
+        <target state="translated">VÝSTRAHA PAYG: Zistený pokus o migráciu medzi produktmi. Vezmite, prosím, na vedomie, že migrácia z openSUSE na SLES alebo podobný systém nie je v rámci vášho súčasného plánu PAYG povolená. Operácia bola prerušená.</target>
+      </trans-unit>
+      <trans-unit id="notification.channelsyncforbidden" xml:space="preserve">
+        <source>Syncing channels forbidden</source>
+        <target state="translated">Synchronizácia kanálov je zakázaná</target>
+      </trans-unit>
+      <trans-unit id="notification.channelsyncfailed.notcompliant" xml:space="preserve">
+        <source>Synchronization of repositories is forbidden as @@PRODUCT_NAME@@ PAYG is unable to send accounting data to the cloud provider.
+For a detailed analysis, please refer to the log files.</source>
+        <target state="translated">Synchronizácia repozitárov je zakázaná, pretože PAYG @@PRODUCT_NAME@@ nedokáže posielať účtovné údaje poskytovateľovi cloudu.
+Ak chcete získať podrobnú analýzu, pozrite si súbory záznamov.</target>
+      </trans-unit>
+      <trans-unit id="task.action.rejection.notcompliant" xml:space="preserve">
+        <source>
+The action you attempted could not be executed because the @@PRODUCT_NAME@@ PAYG system is unable to send accounting data to the cloud provider.
+For a detailed analysis, please refer to the log files.
+	</source>
+        <target state="translated">
+Akciu, o ktorú ste sa pokúsili, nebolo možné vykonať, pretože systém PAYG @@PRODUCT_NAME@@ nedokáže posielať účtovné údaje poskytovateľovi cloudu.
+Ak chcete získať podrobnú analýzu, pozrite si súbory záznamov.
+	</target>
+      </trans-unit>
+      <trans-unit id="bootstrap.minion.error.conflicting.minionid" xml:space="preserve">
+        <source>Systems with conflicting minion ID and machine ID were found ({0}, {1}). Onboarding aborted. Please remove conflicting systems first ({2}, {3})</source>
+        <target state="translated">Boli nájdené systémy s konfliktným ID minion a ID stroja ({0}, {1}). Začlenenie sa bolo prerušené. Prosím, najskôr odstráňte konfliktné systémy ({2}, {3})</target>
+      </trans-unit>
+      <trans-unit id="bootstrap.minion.error.payg.dcregistered" xml:space="preserve">
+        <source>Registration of '{0}' on SUSE Manager Server rejected. \nTo manage Datacenter clients you have to configure SCC Credentials at Admin =&gt; Setup Wizard =&gt; Organization Credentials.</source>
+        <target state="translated">Registrácia '{0}' na serveri SUSE Manager zamietnutá. \nAk chcete spravovať klientov dátového centra, musíte nakonfigurovať prihlasovacie údaje SCC v Admin =&gt; Sprievodca nastavením =&gt; prihlasovacie údaje organizácie.</target>
+      </trans-unit>
+      <trans-unit id="bootstrap.minion.error.payg.byosregistered" xml:space="preserve">
+        <source>Registration of '{0}' on SUSE Manager Server rejected. \nTo manage BYOS (Bring-your-own-Subscription) clients you have to configure SCC Credentials at Admin =&gt; Setup Wizard =&gt; Organization Credentials. \n\nIf the instance being onboarded is PAYG, ensure the `python-instance-billing-flavor-check` package is installed and try again.</source>
+        <target state="translated">Registrácia '{0}' na serveri SUSE Manager zamietnutá. \nAk chcete spravovať klientov BYOS (Bring-your-own-Subscription), musíte nakonfigurovať prihlasovacie údaje SCC v Admin =&gt; Sprievodca nastavením =&gt; prihlasovacie údaje organizácie. \n\nAk je začleňovaná inštancia PAYG, uistite sa, že je nainštalovaný balík `python-instance-billing-flavor-check`, a skúste to znova.</target>
+      </trans-unit>
+      <trans-unit id="notification.updateavailable.summary" xml:space="preserve">
+        <source>Updates are available.</source>
+        <target state="translated">K dispozícii sú aktualizácie.</target>
+      </trans-unit>
+      <trans-unit id="notification.updateavailable.detail" xml:space="preserve">
+        <source>A new update for @@PRODUCT_NAME@@ is now available. For further details, please refer to the &lt;a href="{0}"&gt;release notes&lt;a&gt;.</source>
+        <target state="translated">Teraz je k dispozícii nová aktualizácia pre @@PRODUCT_NAME@@. Ďalšie podrobnosti nájdete v &lt;a href="{0}"&gt;poznámkach k vydaniu&lt;a&gt;.</target>
       </trans-unit>
     </body>
   </file>

@@ -1,7 +1,5 @@
 import * as React from "react";
 
-import ReactHtmlParser from "html-react-parser";
-
 import { isOrgAdmin } from "core/auth/auth.utils";
 import useRoles from "core/auth/use-roles";
 
@@ -116,7 +114,7 @@ const EnvironmentLifecycle = (props: Props) => {
                           closeDialog().then(() => {
                             props.onChange(projectWithDeleteddEnvironment);
                           });
-                          showSuccessToastr(t("Environment {0} deleted successfully", environment.label));
+                          showSuccessToastr(t("Environment {name} deleted successfully", { name: environment.label }));
                         })
                         .catch((error) => {
                           showErrorToastr(error.messages, { autoHide: false });
@@ -137,12 +135,15 @@ const EnvironmentLifecycle = (props: Props) => {
                             <Messages
                               items={MsgUtils.warning(
                                 <>
-                                  {ReactHtmlParser(
-                                    t(
-                                      "This environment cannot be deleted since it is being used in an {0}autoinstallation distribution{1}.",
-                                      '<a target="_blank" href="/rhn/kickstart/ViewTrees.do">',
-                                      "</a>"
-                                    )
+                                  {t(
+                                    "This environment cannot be deleted since it is being used in an <link>autoinstallation distribution</link>.",
+                                    {
+                                      link: (str) => (
+                                        <a target="_blank" href="/rhn/kickstart/ViewTrees.do">
+                                          {str}
+                                        </a>
+                                      ),
+                                    }
                                   )}
                                 </>
                               )}

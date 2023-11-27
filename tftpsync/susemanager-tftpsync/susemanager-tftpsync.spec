@@ -26,7 +26,7 @@
 %define python_sitelib %(%{pythonX} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")
 
 Name:           susemanager-tftpsync
-Version:        4.4.1
+Version:        4.4.4
 Release:        1
 Summary:        Sync cobbler created tftp enviroment to SUSE Manager Proxies
 License:        LGPL-2.1-only
@@ -78,14 +78,6 @@ install -p -D -m 755 configure-tftpsync.sh  %{buildroot}%{_sbindir}/configure-tf
 %endif
 %endif
 
-%post
-if [ -f "/etc/cobbler/settings" ]; then
-  if ! grep "tftpsync_timeout:" /etc/cobbler/settings >/dev/null; then
-    echo "" >> /etc/cobbler/settings
-    echo "tftpsync_timeout: 15" >> /etc/cobbler/settings
-    echo "" >> /etc/cobbler/settings
-  fi
-fi
 
 %files
 %defattr(-,root,root,-)

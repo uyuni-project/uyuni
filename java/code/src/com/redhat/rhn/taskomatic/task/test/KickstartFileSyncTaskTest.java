@@ -21,26 +21,23 @@ import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
 import com.redhat.rhn.domain.role.RoleFactory;
-import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.taskomatic.task.KickstartFileSyncTask;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
-import com.redhat.rhn.testing.UserTestUtils;
 
 import org.cobbler.Profile;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
 
-public class KickstartFileSyncTaskTest extends RhnBaseTestCase {
+public class KickstartFileSyncTaskTest extends BaseTestCaseWithUser {
 
 
 
     @Test
     public void testTask() throws Exception {
 
-        User user = UserTestUtils.createUserInOrgOne();
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
 
         KickstartData ks = KickstartDataTest.createTestKickstartData(user.getOrg());
@@ -49,14 +46,14 @@ public class KickstartFileSyncTaskTest extends RhnBaseTestCase {
         KickstartFactory.saveKickstartData(ks);
 
 
-        ks = (KickstartData) TestUtils.saveAndReload(ks);
+        ks = TestUtils.saveAndReload(ks);
 
         Profile p = Profile.lookupById(CobblerXMLRPCHelper.getConnection(user),
                 ks.getCobblerId());
 
         File f = new File(p.getKickstart());
         assertTrue(f.exists());
-        f.delete();
+        assertTrue(f.delete());
         assertFalse(f.exists());
         KickstartFileSyncTask task = new KickstartFileSyncTask();
         task.execute(null);

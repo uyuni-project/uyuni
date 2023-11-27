@@ -14,7 +14,8 @@
  */
 package com.redhat.rhn.domain.test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.Label;
 import com.redhat.rhn.testing.TestUtils;
@@ -36,10 +37,12 @@ public class LabelTest  {
             this.beerName = name;
         }
 
+        @Override
         public String getName() {
             return beerName;
         }
 
+        @Override
         public String getLabel() {
             return beerLabel;
         }
@@ -57,9 +60,9 @@ public class LabelTest  {
         BeerLabel aprihop = new BeerLabel("Aprihop",
                 "Aprihop....Dogfish Head bringing you America's finest beer");
 
-        assertEquals(true, TestUtils.equalTest(negroModelo, anotherNegroModelo));
-        assertEquals(false, TestUtils.equalTest(negroModelo, aprihop));
-        assertEquals(false, TestUtils.equalTest(negroModelo, new Object()));
+        assertTrue(TestUtils.equalTest(negroModelo, anotherNegroModelo));
+        assertFalse(TestUtils.equalTest(negroModelo, aprihop));
+        assertFalse(TestUtils.equalTest(negroModelo, new Object()));
     }
 
 }

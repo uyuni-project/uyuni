@@ -79,6 +79,7 @@ public class ConfigFileNameDto extends BaseDto {
     /**
      * @return Returns the id.
      */
+    @Override
     public Long getId() {
         return id;
     }
@@ -254,6 +255,7 @@ public class ConfigFileNameDto extends BaseDto {
      *
      * {@inheritDoc}
      */
+    @Override
     public String getSelectionKey() {
         return String.valueOf(getConfigFileId());
     }

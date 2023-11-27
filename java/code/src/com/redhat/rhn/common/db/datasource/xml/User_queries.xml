@@ -193,12 +193,6 @@ SELECT  UIOO.user_id as id, user_login, user_first_name, user_last_name, role_na
   </elaborator>
 </mode>
 
-<callable-mode name="remove_from_usergroup">
-  <query params="user_id, user_group_id">
-     {call rhn_user.remove_from_usergroup(:user_id, :user_group_id)}
-  </query>
-</callable-mode>
-
 <query name="users_in_org_overview" params="">
   SELECT  UIOO.user_id as id, user_login, user_first_name, user_last_name, role_names,
           server_count, server_group_count, last_logged_in, WUPI.email as email,
@@ -286,12 +280,6 @@ SELECT system_group_id
                         AND sg.org_id != u.org_id)
   </query>
 </write-mode>
-
-<callable-mode name="oai_contact_sync">
-  <query params="user_id">
-    { call XXRH_OAI_WRAPPER.sync_contact(:user_id) }
-  </query>
-</callable-mode>
 
 <callable-mode name="update_perms_for_user">
   <query params="user_id">

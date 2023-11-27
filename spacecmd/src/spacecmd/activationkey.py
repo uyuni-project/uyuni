@@ -1000,6 +1000,9 @@ def do_activationkey_details(self, args):
                 name += '.%s' % package.get('arch')
 
             result.append(name)
+    for entry in result:
+        print(_N(entry))
+
     return result
 
 ####################

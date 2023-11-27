@@ -1,4 +1,33 @@
-* Add missing proxy release notes package
+-------------------------------------------------------------------
+Wed Nov 01 21:19:29 CET 2023 - marina.latini@suse.com
+
+- version 4.4.2
+  * Remove statically defined image tags
+
+-------------------------------------------------------------------
+Mon Sep 18 16:55:38 CEST 2023 - rosuna@suse.com
+
+- version 4.4.1
+  * Adapt to openSUSE Leap 15.5
+  * Redirect /saltboot to the server
+  * Integrate the containerized proxy into the usual rel-eng workflow
+
+-------------------------------------------------------------------
+Tue Feb 21 13:14:39 UTC 2023 - Julio González Gil <jgonzalez@suse.com>
+
+- Update the image version to 2023.03
+  * Adapt to log_level default value being 1
+
+-------------------------------------------------------------------
+Mon Jan 23 07:33:34 UTC 2023 - Julio González Gil <jgonzalez@suse.com>
+
+- Update the image version to 2023.01
+
+-------------------------------------------------------------------
+Wed Dec 14 13:51:13 UTC 2022 - Julio González Gil <jgonzalez@suse.com>
+
+- Update the image version to 2022.12:
+  * Add missing proxy release notes package
 
 -------------------------------------------------------------------
 Fri Nov 18 14:16:12 UTC 2022 - Julio González Gil <jgonzalez@suse.com>

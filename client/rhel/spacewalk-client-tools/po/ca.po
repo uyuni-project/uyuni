@@ -17,8 +17,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-25 16:22+0100\n"
-"PO-Revision-Date: 2022-03-22 20:12+0000\n"
+"POT-Creation-Date: 2023-10-20 13:49+0200\n"
+"PO-Revision-Date: 2023-10-02 11:15+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/spacewalk-"
 "client-tools/ca/>\n"
@@ -215,11 +215,11 @@ msgstr "S'ha produït un error:"
 msgid "See /var/log/up2date for more information"
 msgstr "Consulteu /var/log/up2date per a més informació"
 
-#: ../src/up2date_client/rhnreg.py:76
+#: ../src/up2date_client/rhnreg.py:75
 msgid "Warning: unable to enable rhnsd with systemd"
 msgstr "Advertència: no s'ha pogut habilitar rhnsd amb systemd"
 
-#: ../src/up2date_client/rhnreg.py:82
+#: ../src/up2date_client/rhnreg.py:81
 msgid "Warning: unable to enable rhnsd with chkconfig"
 msgstr "Advertència: no s'ha pogut habilitar rhnsd amb chkconfig"
 
@@ -857,7 +857,7 @@ msgstr ""
 #: ../src/up2date_client/rhnreg_constants.py:136
 #: ../data/rh_register.glade.h:131
 msgid "Are you sure you would like to continue?"
-msgstr "Esteu segur que voleu continuar?"
+msgstr "Segur que voleu continuar?"
 
 #: ../src/up2date_client/rhnreg_constants.py:138
 msgid ""
@@ -2310,7 +2310,7 @@ msgid ""
 "Are you sure you would like to continue?"
 msgstr ""
 "\n"
-"Esteu segur que voleu continuar?"
+"Segur que voleu continuar?"
 
 #: ../data/rh_register.glade.h:117
 msgid "Are you Sure?"

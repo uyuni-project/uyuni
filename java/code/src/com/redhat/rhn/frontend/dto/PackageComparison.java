@@ -41,6 +41,7 @@ public class PackageComparison extends BaseDto {
     /**
      * @return Returns the id.
      */
+    @Override
     public Long getId() {
         return id;
     }
@@ -78,6 +79,7 @@ public class PackageComparison extends BaseDto {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString() {
         return new ToStringBuilder(this).append("id", id).append("name", name)
             .append("currentNvre", currentNvrea).append("newNvre", newNvrea)

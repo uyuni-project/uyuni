@@ -103,6 +103,7 @@ public class ConfigUploadAction extends Action {
     /**
      * {@inheritDoc}
      */
+    @Override
     public ActionFormatter getFormatter() {
         if (formatter == null) {
             formatter = new ConfigUploadActionFormatter(this);

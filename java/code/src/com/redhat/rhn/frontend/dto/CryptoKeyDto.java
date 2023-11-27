@@ -28,6 +28,7 @@ public class CryptoKeyDto extends BaseDto {
     /**
      * {@inheritDoc}
      */
+    @Override
     public Long getId() {
         return id;
     }

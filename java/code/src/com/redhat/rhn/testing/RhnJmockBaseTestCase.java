@@ -20,7 +20,7 @@ import org.junit.jupiter.api.AfterEach;
  * RhnJmockBaseTestCase - This is the same thing as {@link RhnBaseTestCase}
  * but it extends from {@link MockObjectTestCase}.
  */
-public abstract class RhnJmockBaseTestCase extends MockObjectTestCase {
+public abstract class RhnJmockBaseTestCase extends MockObjectTestCase implements HibernateTestCaseUtils {
 
     /**
      * Called once per test method to clean up.

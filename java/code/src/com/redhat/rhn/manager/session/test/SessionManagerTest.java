@@ -17,6 +17,7 @@ package com.redhat.rhn.manager.session.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -42,7 +43,7 @@ import org.junit.jupiter.api.Test;
 public class SessionManagerTest extends RhnBaseTestCase {
 
     @Test
-    public void testLifetimeValue() throws Exception {
+    public void testLifetimeValue() {
         long lifetime = SessionManager.lifetimeValue();
         long duration = Long.parseLong(Config.get().getString(
                 ConfigDefaults.WEB_SESSION_DATABASE_LIFETIME));
@@ -50,7 +51,7 @@ public class SessionManagerTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testMakeSession() throws Exception {
+    public void testMakeSession() {
         long expTime = SessionManager.lifetimeValue();
         User u = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -67,19 +68,18 @@ public class SessionManagerTest extends RhnBaseTestCase {
         String k2 = "";
         k1 = SessionManager.generateSessionKey(s);
         k2 = SessionManager.generateSessionKey(s);
-        assertTrue(k1.equals(k2));
+        assertEquals(k1, k2);
     }
 
     @Test
     public void testMakeSecureParamNoTimestamp() {
         String s = "12345678";
         String param = SessionManager.makeSecureParamNoTimestamp(s);
-        assertTrue(param != null, "param == null");
-        assertTrue(!param.equals(""), "param is empty");
+        assertNotNull(param, "param == null");
+        assertFalse(param.equals(""), "param is empty");
         assertTrue(param.indexOf(SessionManager.SEC_PARM_TOKENIZER_CHAR) > 0,
               "token not found");
-        assertTrue(s.equals(SessionManager.extractSecureParam(param)),
-              "s != param");
+        assertEquals(s, SessionManager.extractSecureParam(param), "s != param");
         assertTrue(SessionManager.isValidSecureParam(param),
               "not a valid secure param");
     }
@@ -88,10 +88,10 @@ public class SessionManagerTest extends RhnBaseTestCase {
     public void testMakeSecureParamTimestamped() {
         String s = "12345678";
         String param = SessionManager.makeSecureParamTimestamped(s);
-        assertTrue(param != null);
-        assertTrue(!param.equals(""));
+        assertNotNull(param);
+        assertFalse(param.equals(""));
         assertTrue(param.indexOf(SessionManager.SEC_PARM_TOKENIZER_CHAR) > 0);
-        assertTrue(s.equals(SessionManager.extractSecureParam(param)));
+        assertEquals(s, SessionManager.extractSecureParam(param));
         assertTrue(SessionManager.isValidSecureParam(param));
     }
 
@@ -110,11 +110,11 @@ public class SessionManagerTest extends RhnBaseTestCase {
         String s = "12345678";
         String paramTS = SessionManager.makeSecureParamTimestamped(s);
         String paramNTS = SessionManager.makeSecureParamNoTimestamp(s);
-        assertTrue(SessionManager.extractSecureParam(s).equals(""));
-        assertFalse(SessionManager.extractSecureParam(paramTS).equals(""));
-        assertTrue(SessionManager.extractSecureParam(paramTS).equals(s));
-        assertFalse(SessionManager.extractSecureParam(paramNTS).equals(""));
-        assertTrue(SessionManager.extractSecureParam(paramNTS).equals(s));
+        assertEquals("", SessionManager.extractSecureParam(s));
+        assertNotEquals("", SessionManager.extractSecureParam(paramTS));
+        assertEquals(SessionManager.extractSecureParam(paramTS), s);
+        assertNotEquals("", SessionManager.extractSecureParam(paramNTS));
+        assertEquals(SessionManager.extractSecureParam(paramNTS), s);
     }
 
     @Test
@@ -218,7 +218,7 @@ public class SessionManagerTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testPurgeSession() throws Exception {
+    public void testPurgeSession() {
         long duration = 3600L;
         User u = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());

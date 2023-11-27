@@ -55,6 +55,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
 
+import com.suse.cloud.CloudPaygManager;
 import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.controllers.bootstrap.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.bootstrap.SSHMinionBootstrapper;
@@ -104,8 +105,10 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
             new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
             new SystemEntitler(saltApi, virtManager, monitoringManager, serverGroupManager)
     );
-    private RegularMinionBootstrapper regularMinionBootstrapper = new RegularMinionBootstrapper(systemQuery, saltApi);
-    private SSHMinionBootstrapper sshMinionBootstrapper = new SSHMinionBootstrapper(systemQuery, saltApi);
+    private final CloudPaygManager paygManager = new CloudPaygManager();
+    private RegularMinionBootstrapper regularMinionBootstrapper =
+            new RegularMinionBootstrapper(systemQuery, saltApi, paygManager);
+    private SSHMinionBootstrapper sshMinionBootstrapper = new SSHMinionBootstrapper(systemQuery, saltApi, paygManager);
     private XmlRpcSystemHelper xmlRpcSystemHelper = new XmlRpcSystemHelper(
             regularMinionBootstrapper,
             sshMinionBootstrapper
@@ -133,7 +136,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         minion1.setOrg(user.getOrg());
 
         Package pkg = PackageTest.createTestPackage(user.getOrg());
-        List packageIds = new LinkedList();
+        List packageIds = new LinkedList<>();
         packageIds.add(pkg.getId().intValue());
 
         user.getOrg().getOrgConfig().setStagingContentEnabled(true);
@@ -148,7 +151,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         MinionActionManager.setTaskomaticApi(taskomaticMock);
 
         SystemHandler handler = new SystemHandler(taskomaticMock, xmlRpcSystemHelper, systemEntitlementManager,
-                systemManager, serverGroupManager);
+                systemManager, serverGroupManager, new CloudPaygManager());
         context().checking(new Expectations() { {
             Matcher<Map<Long, ZonedDateTime>> minionMatcher =
                     AllOf.allOf(IsMapContaining.hasKey(minion1.getId()));
@@ -183,7 +186,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         minion1.setOrg(user.getOrg());
 
         Package pkg = PackageTest.createTestPackage(user.getOrg());
-        List packageIds = new LinkedList();
+        List packageIds = new LinkedList<>();
         packageIds.add(pkg.getId().intValue());
 
         user.getOrg().getOrgConfig().setStagingContentEnabled(true);
@@ -199,7 +202,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
 
 
         SystemHandler handler = new SystemHandler(taskomaticMock, xmlRpcSystemHelper, systemEntitlementManager,
-                systemManager, serverGroupManager);
+                systemManager, serverGroupManager, new CloudPaygManager());
 
         context().checking(new Expectations() { {
             Matcher<Map<Long, ZonedDateTime>> minionMatcher =
@@ -236,7 +239,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         minion1.setOrg(user.getOrg());
 
         Package pkg = PackageTest.createTestPackage(user.getOrg());
-        List packageIds = new LinkedList();
+        List packageIds = new LinkedList<>();
         packageIds.add(pkg.getId().intValue());
 
         user.getOrg().getOrgConfig().setStagingContentEnabled(true);
@@ -251,7 +254,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         MinionActionManager.setTaskomaticApi(taskomaticMock);
 
         SystemHandler handler = new SystemHandler(taskomaticMock, xmlRpcSystemHelper, systemEntitlementManager,
-                systemManager, serverGroupManager);
+                systemManager, serverGroupManager, new CloudPaygManager());
 
         context().checking(new Expectations() { {
             exactly(1).of(taskomaticMock)
@@ -287,7 +290,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         minion1.setOrg(user.getOrg());
 
         Package pkg = PackageTest.createTestPackage(user.getOrg());
-        List packageIds = new LinkedList();
+        List packageIds = new LinkedList<>();
         packageIds.add(pkg.getId().intValue());
 
         user.getOrg().getOrgConfig().setStagingContentEnabled(true);
@@ -302,7 +305,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         MinionActionManager.setTaskomaticApi(taskomaticMock);
 
         SystemHandler handler = new SystemHandler(taskomaticMock, xmlRpcSystemHelper, systemEntitlementManager,
-                systemManager, serverGroupManager);
+                systemManager, serverGroupManager, new CloudPaygManager());
         context().checking(new Expectations() {{
             Matcher<Map<Long, ZonedDateTime>> minionMatcher =
                     AllOf.allOf(IsMapContaining.hasKey(minion1.getId()));
@@ -338,7 +341,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         minion1.setOrg(user.getOrg());
 
         Package pkg = PackageTest.createTestPackage(user.getOrg());
-        List packageIds = new LinkedList();
+        List packageIds = new LinkedList<>();
         packageIds.add(pkg.getId().intValue());
 
         user.getOrg().getOrgConfig().setStagingContentEnabled(false);
@@ -353,7 +356,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         MinionActionManager.setTaskomaticApi(taskomaticMock);
 
         SystemHandler handler = new SystemHandler(taskomaticMock, xmlRpcSystemHelper, systemEntitlementManager,
-                systemManager, serverGroupManager);
+                systemManager, serverGroupManager, new CloudPaygManager());
 
         context().checking(new Expectations() { {
             exactly(1).of(taskomaticMock)
@@ -389,7 +392,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         minion2.setOrg(user.getOrg());
 
         Package pkg1 = PackageTest.createTestPackage(user.getOrg());
-        List packageIds = new LinkedList();
+        List packageIds = new LinkedList<>();
         packageIds.add(pkg1.getId().intValue());
 
         Package pkg2 = PackageTest.createTestPackage(user.getOrg());

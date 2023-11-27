@@ -104,7 +104,7 @@ public class BaseHandler implements XmlRpcInvocationHandler {
         WebSession session = null;
         User user = null;
 
-        if (params.size() > 0 && params.get(0) instanceof String &&
+        if (!params.isEmpty() && params.get(0) instanceof String &&
                 isSessionKey((String)params.get(0))) {
             if (!myClass.getName().endsWith("AuthHandler") &&
                 !myClass.getName().endsWith("SearchHandler")) {
@@ -126,6 +126,7 @@ public class BaseHandler implements XmlRpcInvocationHandler {
             foundMethod = fallbackMethod.getA();
             converted = fallbackMethod.getB();
         }
+        XmlRpcLoggingInvocationProcessor.setCalledMethod(foundMethod);
 
         if (user != null && user.isReadOnly()) {
             if (!foundMethod.isAnnotationPresent(ReadOnly.class)) {
@@ -216,7 +217,7 @@ public class BaseHandler implements XmlRpcInvocationHandler {
             return candidates.get(0);
         }
         else  {
-            throw new TranslationException("more then one method candidate found during conversion fallback");
+            throw new TranslationException("more than one method candidate found during conversion fallback");
         }
     }
 

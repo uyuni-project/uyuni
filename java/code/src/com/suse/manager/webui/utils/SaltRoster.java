@@ -18,6 +18,8 @@ import com.redhat.rhn.common.util.FileUtils;
 
 import com.suse.manager.webui.services.SaltConstants;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -108,7 +110,15 @@ public class SaltRoster {
     public Path persistInTempFile() throws IOException {
         Path dirPath = Paths.get(SaltConstants.SALT_FILE_GENERATION_TEMP_PATH);
         Path filePath = Files.createTempFile(dirPath, FILE_PREFIX, ".tmp");
-        FileUtils.writeStringToFile(YamlHelper.INSTANCE.dump(data), filePath.toString());
+
+        // Disable jinja processing for the roster file to avoid processing special sequences like '{%' or '{{'
+        // that might be present in the password field
+        StringBuilder contentBuilder = new StringBuilder();
+        contentBuilder.append("{% raw %}").append('\n');
+        contentBuilder.append(StringUtils.appendIfMissing(YamlHelper.INSTANCE.dump(data), "\n"));
+        contentBuilder.append("{% endraw %}").append('\n');
+
+        FileUtils.writeStringToFile(contentBuilder.toString(), filePath.toString());
         return filePath;
     }
 }

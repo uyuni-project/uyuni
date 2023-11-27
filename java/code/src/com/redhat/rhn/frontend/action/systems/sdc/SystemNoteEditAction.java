@@ -44,10 +44,11 @@ import javax.servlet.http.HttpServletResponse;
 public class SystemNoteEditAction extends RhnAction {
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-            ActionForm form,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                 ActionForm form,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
 
         RequestContext rctx = new RequestContext(request);
         DynaActionForm daForm = (DynaActionForm)form;
@@ -83,7 +84,7 @@ public class SystemNoteEditAction extends RhnAction {
                         new ActionMessage("edit.note.subjecttoolong"));
             }
 
-            if (daForm.getString("subject").length() == 0) {
+            if (daForm.getString("subject").isEmpty()) {
                 errors.add(ActionMessages.GLOBAL_MESSAGE,
                         new ActionMessage("edit.note.subjecttooshort"));
             }

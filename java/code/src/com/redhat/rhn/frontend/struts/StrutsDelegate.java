@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.frontend.struts;
 
-import com.redhat.rhn.common.util.Asserts;
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.common.util.ServletUtils;
 import com.redhat.rhn.common.validator.ValidationMessage;
@@ -34,8 +33,8 @@ import org.apache.struts.action.ActionMessages;
 import org.apache.struts.action.DynaActionForm;
 import org.apache.struts.upload.FormFile;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -97,7 +96,9 @@ public class StrutsDelegate {
      * param and value.
      */
     public ActionForward forwardParams(ActionForward base, Map params) {
-        Asserts.assertNotNull(base, "base");
+        if (base == null) {
+            throw new IllegalArgumentException("Base should not be null");
+        }
         String newPath = ServletUtils.pathWithParams(base.getPath(), params);
 
         ActionForward af = new ActionForward(newPath, base.getRedirect());
@@ -284,18 +285,14 @@ public class StrutsDelegate {
         String retval = null;
         try {
             if (f != null && f.getFileData() != null) {
-                String fileString = new String(f.getFileData(), "UTF-8");
+                String fileString = new String(f.getFileData(), StandardCharsets.UTF_8);
                 if (!StringUtils.isEmpty(fileString)) {
                     retval = fileString;
                 }
             }
         }
-        catch (FileNotFoundException e) {
-            LOG.error(e);
-            throw new RuntimeException(e);
-        }
         catch (IOException e) {
-            LOG.error(e);
+            LOG.error(e.getMessage(), e);
             throw new RuntimeException(e);
         }
         return retval;

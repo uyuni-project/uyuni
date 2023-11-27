@@ -22,7 +22,7 @@ Name:           uyuni-proxy-systemd-services
 Summary:        Uyuni proxy server systemd services containers
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.4.1
+Version:        4.4.2
 Release:        1
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        %{name}-%{version}-1.tar.gz
@@ -67,6 +67,8 @@ for service in %{SERVICES}; do
     install -D -m 644 ${service}.service %{buildroot}%{_unitdir}/${service}.service
     ln -s /usr/sbin/service %{buildroot}%{_sbindir}/rc${service}
 done
+
+install -m 755 uyuni-proxy.sh %{buildroot}%{_sbindir}/uyuni-proxy.sh
 
 %check
 
@@ -118,5 +120,6 @@ done
 %endif
 %{_sysconfdir}/uyuni
 %{_localstatedir}/lib/uyuni
+%{_sbindir}/uyuni-proxy.sh
 
 %changelog

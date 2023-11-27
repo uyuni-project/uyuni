@@ -66,6 +66,7 @@ public class DebRepositoryWriter extends RepositoryWriter {
     * @param channel channel info
     * @return repodata sanity
     */
+    @Override
     public boolean isChannelRepodataStale(Channel channel) {
         File theFile = new File(mountPoint + File.separator + pathPrefix +
                 File.separator + channel.getLabel() + File.separator +
@@ -94,6 +95,7 @@ public class DebRepositoryWriter extends RepositoryWriter {
      * Create repository for APT
      * @param channel channel
      */
+    @Override
     public void writeRepomdFiles(Channel channel) {
         PackageManager.createRepoEntrys(channel.getId());
 
@@ -121,6 +123,11 @@ public class DebRepositoryWriter extends RepositoryWriter {
                 loadExtraTags(packageBatch);
                 for (PackageDto pkgDto : packageBatch) {
                     writer.addPackage(pkgDto);
+                }
+                log.info("Processed {} packages", i + packageBatch.getEnd());
+                if (commitTransaction) {
+                    // commit pre generated package snippets in the cache
+                    HibernateFactory.commitTransaction();
                 }
             }
             packagesFile = writer.getFilenamePackages();

@@ -2,11 +2,24 @@
 <Configuration status="warn" name="TaskomaticConfig">
     <Appenders>
         <RollingFile name="rootAppender" fileName="/var/log/rhn/rhn_taskomatic_daemon.log"
-                     filePattern="/var/log/rhn/rhn_taskomatic_daemon-%i.log">
+		filePattern="/var/log/rhn/rhn_taskomatic_daemon-%i.log"
+		filePermissions="rw-------">
             <PatternLayout pattern="%d [%t] %-5p %c - %m%n" />
             <SizeBasedTriggeringPolicy size="10MB" />
             <DefaultRolloverStrategy max="5" />
         </RollingFile>
+        <RollingFile name="paygDimensionsAppender" fileName="/var/log/rhn/rhn_payg_dimensions.log"
+		filePattern="/var/log/rhn/rhn_payg_dimensions-%i.log"
+		filePermissions="rw-------">
+            <PatternLayout pattern="%d [%t] %-5p %c - %m%n" />
+            <SizeBasedTriggeringPolicy size="10MB" />
+            <DefaultRolloverStrategy max="5" />
+        </RollingFile>
+        <FailOver name="failOver" primary="paygDimensionsAppender">
+            <FailOvers>
+                <AppenderRef ref="rootAppender" />
+            </FailOvers>
+        </FailOver>
         <!-- Uncomment for hibernate logging -->
         <!--
         <File name="hibernateAppender" fileName="/var/log/rhn/rhn_taskomatic_hibernate.log">
@@ -56,6 +69,14 @@
             <AppenderRef ref="hibernateAppender" />
         </Logger>
         -->
+
+        <!-- Loggers for PAYG dimensions computation logfile-->
+        <Logger name="com.redhat.rhn.taskomatic.task.payg.PaygComputeDimensionsTask" level="info" additivity="false">
+            <AppenderRef ref="paygDimensionsAppender" />
+        </Logger>
+        <Logger name="com.redhat.rhn.taskomatic.task.payg.dimensions" level="info" additivity="false">
+            <AppenderRef ref="paygDimensionsAppender" />
+        </Logger>
 
         <!-- Ignore deprecation not yet addressed to reduce log noise -->
         <Logger name="org.hibernate.orm.deprecation" level="warn">

@@ -48,10 +48,11 @@ public class SlaveAction extends RhnAction {
     public static final String DATA_SET = "all";
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-                                  ActionForm formIn,
-                                  HttpServletRequest request,
-                                  HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
 
         if (!AclManager.hasAcl("user_role(satellite_admin)", request, null)) {
             LocalizationService ls = LocalizationService.getInstance();
@@ -94,7 +95,7 @@ public class SlaveAction extends RhnAction {
                     request);
         }
 
-        Map params = makeParamMap(request);
+        Map<String, Object> params = makeParamMap(request);
         request.setAttribute(ListTagHelper.PARENT_URL, request.getRequestURI());
 
         ListTagHelper.bindSetDeclTo(LIST_NAME, getSetDecl(), request);

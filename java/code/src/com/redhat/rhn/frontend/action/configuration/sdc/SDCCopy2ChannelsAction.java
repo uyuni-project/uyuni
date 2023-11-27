@@ -41,6 +41,7 @@ public class SDCCopy2ChannelsAction extends Copy2ChannelsAction {
      *
      * {@inheritDoc}
      */
+    @Override
     protected RhnSetDecl getFileSetDecl() {
         return RhnSetDecl.CONFIG_FILE_NAMES;
     }
@@ -49,6 +50,7 @@ public class SDCCopy2ChannelsAction extends Copy2ChannelsAction {
      *
      * {@inheritDoc}
      */
+    @Override
     protected void setupRequest(HttpServletRequest req) {
         RequestContext ctx = new RequestContext(req);
         Server s = ctx.lookupAndBindServer();
@@ -61,8 +63,9 @@ public class SDCCopy2ChannelsAction extends Copy2ChannelsAction {
      *
      * {@inheritDoc}
      */
+    @Override
     protected ActionForward doCopy(ActionMapping mapping,
-            HttpServletRequest req, User user) {
+                                   HttpServletRequest req, User user) {
         ActionForward forward = super.doCopy(mapping, req, user);
         RequestContext ctx = new RequestContext(req);
         Server s = ctx.lookupAndBindServer();
@@ -74,6 +77,7 @@ public class SDCCopy2ChannelsAction extends Copy2ChannelsAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     public List getData(HttpServletRequest req) {
         RequestContext ctx = new RequestContext(req);
         User user = ctx.getCurrentUser();

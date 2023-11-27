@@ -37,8 +37,9 @@ public class TreeFilterTest extends RhnBaseTestCase {
     private TreeFilter filter;
 
 
+    @Override
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         main = populate();
         filter = new TreeFilter();
     }
@@ -142,7 +143,7 @@ public class TreeFilterTest extends RhnBaseTestCase {
      * @return DataResult of DepthAwareBeans
      */
     private DataResult makeDataResult(String input) {
-        List lst = new LinkedList();
+        List lst = new LinkedList<>();
         //input = "(content,depth) (content,depth)"
         input = input.trim();
         input = input.substring(1, input.length() - 1);

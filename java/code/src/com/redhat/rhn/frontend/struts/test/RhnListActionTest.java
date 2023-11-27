@@ -61,9 +61,10 @@ public class RhnListActionTest extends RhnBaseTestCase {
 
         private PageControl pc;
 
+        @Override
         public final ActionForward execute(ActionMapping mapping,
-                ActionForm formIn, HttpServletRequest request,
-                HttpServletResponse response) {
+                                           ActionForm formIn, HttpServletRequest request,
+                                           HttpServletResponse response) {
 
             RequestContext requestContext = new RequestContext(request);
 

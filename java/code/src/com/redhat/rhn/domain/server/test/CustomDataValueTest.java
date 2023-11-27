@@ -69,4 +69,15 @@ public class CustomDataValueTest extends RhnBaseTestCase {
 
         return val;
     }
+
+    public static CustomDataValue createTestCustomDataValue(User user, CustomDataKey key, Server server, String value) {
+        CustomDataValue val = new CustomDataValue();
+        val.setCreator(user);
+        val.setKey(key);
+        val.setServer(server);
+        val.setValue(value);
+        TestUtils.saveAndFlush(val);
+
+        return val;
+    }
 }

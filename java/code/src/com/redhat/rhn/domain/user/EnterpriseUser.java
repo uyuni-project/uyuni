@@ -15,7 +15,6 @@
 package com.redhat.rhn.domain.user;
 
 import java.util.Date;
-import java.util.Iterator;
 
 /**
  * The interface definition of the enterprise user.
@@ -33,34 +32,6 @@ public interface EnterpriseUser {
      * @param l long value
      */
     void setId(Long l);
-
-    /**
-     * Add a User to this instance.
-     * @param u a User to add
-     */
-    void addUser(User u);
-
-    /**
-     * Remove a User from this instance.
-     * @param u the User to remove
-     */
-    void removeUser(User u);
-
-    /**
-     * Return an iterator over all Users associated with
-     * this instance.
-     * @return  an iterator over all users
-     */
-    Iterator allUsers();
-
-    /**
-     * Find the user having the id provided. Return null if
-     * not found.
-     * @param id to use
-     * @return User or null
-     */
-    User findUserById(Long id);
-
 
     /**
      * Gets the current value of login

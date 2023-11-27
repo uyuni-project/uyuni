@@ -17,6 +17,7 @@ package com.redhat.rhn.domain.session.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -57,7 +58,7 @@ public class WebSessionFactoryTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testId() throws Exception {
+    public void testId() {
         WebSession s = WebSessionFactory.createSession();
         assertNull(s.getId());
         WebSessionFactory.save(s);
@@ -66,14 +67,14 @@ public class WebSessionFactoryTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testCreateSession() throws Exception {
+    public void testCreateSession() {
         WebSession s = WebSessionFactory.createSession();
         verifySession(s);
         assertNotNull(s);
     }
 
     @Test
-    public void testExpired() throws Exception {
+    public void testExpired() {
         WebSession s = WebSessionFactory.createSession();
         verifySession(s);
         assertNotNull(s);
@@ -84,7 +85,7 @@ public class WebSessionFactoryTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testNotExpired() throws Exception {
+    public void testNotExpired() {
         WebSession s = WebSessionFactory.createSession();
         verifySession(s);
         assertNotNull(s);
@@ -95,7 +96,7 @@ public class WebSessionFactoryTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testSetUserId() throws Exception {
+    public void testSetUserId() {
         WebSession s = WebSessionFactory.createSession();
         verifySession(s);
         assertNotNull(s);
@@ -106,7 +107,7 @@ public class WebSessionFactoryTest extends RhnBaseTestCase {
         assertNotNull(u);
         assertEquals(userId, u.getId());
         Long userId2 = UserTestUtils.createUser("sessionTest2", "SessionTestOrg");
-        assertFalse(userId.equals(userId2));
+        assertNotEquals(userId, userId2);
         try {
             s.setWebUserId(userId2);
         }
@@ -130,7 +131,7 @@ public class WebSessionFactoryTest extends RhnBaseTestCase {
         for (int i = 0; i < 50; i++) {
             Long userId = UserTestUtils.createUser("st" +
                     Math.random() + System.currentTimeMillis(), "SessionTestOrg");
-            assertFalse(userId.equals(lastId));
+            assertNotEquals(userId, lastId);
             s.setWebUserId(userId);
             User u = s.getUser();
             assertNotNull(u);
@@ -145,7 +146,7 @@ public class WebSessionFactoryTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testUnifiedCreate() throws Exception {
+    public void testUnifiedCreate() {
         User u = UserTestUtils.findNewUser("sessionTest", "SessionTestOrg");
         WebSession s = SessionManager.makeSession(u.getId(), (long) EXP_TIME);
 
@@ -156,7 +157,7 @@ public class WebSessionFactoryTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testCommitAndRetreive() throws Exception {
+    public void testCommitAndRetreive() {
         WebSession s = WebSessionFactory.createSession();
         verifySession(s);
         assertNotNull(s);
@@ -175,7 +176,7 @@ public class WebSessionFactoryTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testCommitAndRetreiveNullUser() throws Exception {
+    public void testCommitAndRetreiveNullUser() {
         WebSession s = WebSessionFactory.createSession();
         verifySession(s);
         assertNotNull(s);
@@ -216,7 +217,7 @@ public class WebSessionFactoryTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testLookupExpired() throws Exception {
+    public void testLookupExpired() {
         WebSession s = WebSessionFactory.createSession();
         verifySession(s);
         assertNotNull(s);

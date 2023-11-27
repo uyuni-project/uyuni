@@ -19,8 +19,6 @@ import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
-import com.redhat.rhn.domain.rhnpackage.PackageFactory;
-import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.kickstart.KickstartHelper;
@@ -28,7 +26,6 @@ import com.redhat.rhn.frontend.action.kickstart.ScheduleKickstartWizardAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnValidationHelper;
 import com.redhat.rhn.frontend.struts.wizard.WizardStep;
-import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.kickstart.KickstartScheduleCommand;
 import com.redhat.rhn.manager.kickstart.ProvisionVirtualInstanceCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
@@ -39,6 +36,7 @@ import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
+import org.apache.struts.action.ActionMessages;
 import org.apache.struts.action.DynaActionForm;
 import org.cobbler.Profile;
 
@@ -88,15 +86,6 @@ public class ProvisionVirtualizationWizardAction extends ScheduleKickstartWizard
 
         if (StringUtils.isEmpty(form.getString(MAC_ADDRESS))) {
             form.set(MAC_ADDRESS, "");
-        }
-
-        // Check if the server already has rhnVirtHost package installed.
-        InstalledPackage rhnVirtHost = PackageFactory.lookupByNameAndServer(
-                ChannelManager.RHN_VIRT_HOST_PACKAGE_NAME, system);
-
-        if (rhnVirtHost == null) {
-            // system does not have the package installed, tell them to get it.
-            addMessage(ctx.getRequest(), "system.virtualization.help");
         }
 
         return super.runFirst(mapping, form, ctx, response, step);
@@ -263,7 +252,7 @@ public class ProvisionVirtualizationWizardAction extends ScheduleKickstartWizard
         String name = form.getString(GUEST_NAME);
 
         if (name.length() < ProvisionVirtualInstanceCommand.MIN_NAME_SIZE) {
-            errors.add(ActionErrors.GLOBAL_MESSAGE, new ActionMessage(
+            errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(
                     "frontend.actions.systems.virt.invalidguestnamelength",
                     (ProvisionVirtualInstanceCommand.MIN_NAME_SIZE)));
         }
@@ -272,7 +261,7 @@ public class ProvisionVirtualizationWizardAction extends ScheduleKickstartWizard
                 ProvisionVirtualInstanceCommand.GUEST_NAME_REGEXP,
                 Pattern.CASE_INSENSITIVE);
         if (!pattern.matcher(name).matches()) {
-            errors.add(ActionErrors.GLOBAL_MESSAGE, new ActionMessage(
+            errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(
                     "frontend.actions.systems.virt.invalidregexp"));
         }
 
@@ -284,7 +273,7 @@ public class ProvisionVirtualizationWizardAction extends ScheduleKickstartWizard
                 }
             }
             catch (NumberFormatException e) {
-                errors.add(ActionErrors.GLOBAL_MESSAGE, new ActionMessage(
+                errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(
                         "frontend.actions.systems.virt.invalidmemvalue"));
             }
         }
@@ -297,7 +286,7 @@ public class ProvisionVirtualizationWizardAction extends ScheduleKickstartWizard
                 }
             }
             catch (NumberFormatException e) {
-                errors.add(ActionErrors.GLOBAL_MESSAGE, new ActionMessage(
+                errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(
                         "frontend.actions.systems.virt.invalidcpuvalue",
                         (ProvisionVirtualInstanceCommand.MAX_CPU + 1)));
             }
@@ -311,7 +300,7 @@ public class ProvisionVirtualizationWizardAction extends ScheduleKickstartWizard
                 }
             }
             catch (NumberFormatException e) {
-                errors.add(ActionErrors.GLOBAL_MESSAGE, new ActionMessage(
+                errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(
                         "frontend.actions.systems.virt.invalidstoragevalue"));
                 form.set(LOCAL_STORAGE_GB, "");
             }
@@ -327,7 +316,7 @@ public class ProvisionVirtualizationWizardAction extends ScheduleKickstartWizard
                 }
             }
             catch (NumberFormatException e) {
-                errors.add(ActionErrors.GLOBAL_MESSAGE, new ActionMessage(
+                errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(
                         "frontend.actions.systems.virt.invalidmacaddressvalue"));
                 form.set(MAC_ADDRESS, "");
             }

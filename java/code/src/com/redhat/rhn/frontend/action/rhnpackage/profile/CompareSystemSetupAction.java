@@ -45,6 +45,7 @@ public class CompareSystemSetupAction extends RhnAction {
     private static final String LIST_NAME = "compareList";
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm formIn,
                                  HttpServletRequest request,

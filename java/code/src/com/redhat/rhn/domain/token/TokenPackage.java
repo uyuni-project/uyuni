@@ -35,6 +35,7 @@ public class TokenPackage implements Identifiable {
     /**
      * @return Returns the id.
      */
+    @Override
     public Long getId() {
         return id;
     }
@@ -91,6 +92,7 @@ public class TokenPackage implements Identifiable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString() {
         ToStringBuilder builder = new ToStringBuilder(this);
         builder.append("id", getId())
@@ -107,6 +109,7 @@ public class TokenPackage implements Identifiable {
      *
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(Object other) {
 
         if (!(other instanceof TokenPackage)) {
@@ -126,6 +129,7 @@ public class TokenPackage implements Identifiable {
      *
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
 
         HashCodeBuilder builder = new HashCodeBuilder();

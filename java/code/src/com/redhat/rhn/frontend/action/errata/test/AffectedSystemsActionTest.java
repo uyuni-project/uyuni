@@ -48,12 +48,12 @@ import org.junit.jupiter.api.Test;
 public class AffectedSystemsActionTest extends MockObjectTestCase {
 
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
     }
 
     @Test
-    public void testApply() throws Exception {
+    public void testApply() {
         AffectedSystemsAction action = new AffectedSystemsAction();
         final ActionForward forward = new ActionForward("test", "path", true);
         RhnMockHttpServletRequest request = TestUtils.getRequestWithSessionAndUser();

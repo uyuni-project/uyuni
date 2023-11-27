@@ -40,7 +40,7 @@ public class DistroTest {
     private Distro testDistro;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         MockConnection.clear();
         client = new MockConnection("http://localhost", "token");
         String distroName = "testDistro";

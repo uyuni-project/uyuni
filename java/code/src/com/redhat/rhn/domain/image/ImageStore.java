@@ -149,6 +149,7 @@ public class ImageStore extends BaseDomainHelper {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(final Object other) {
         if (!(other instanceof ImageStore)) {
             return false;
@@ -163,6 +164,7 @@ public class ImageStore extends BaseDomainHelper {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder().append(label)
                                     .append(uri)

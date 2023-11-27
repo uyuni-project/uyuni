@@ -23,6 +23,7 @@ import com.redhat.rhn.domain.channel.SelectableChannel;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.PackageOverview;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.RhnListSetHelper;
@@ -58,10 +59,11 @@ public class ChannelPackagesAddAction extends ChannelPackagesBaseAction {
     private final String ORPHAN_PACKAGES_SELECTED = "orphan_selected";
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-            ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
 
         RequestContext requestContext = new RequestContext(request);
         User user =  requestContext.getCurrentUser();
@@ -87,23 +89,18 @@ public class ChannelPackagesAddAction extends ChannelPackagesBaseAction {
         String button = LocalizationService.getInstance().getMessage(
         "channel.jsp.package.addbutton");
         if (button.equals(request.getParameter(RhnHelper.CONFIRM_FORWARD)) &&
-            set.size() > 0) {
+                !set.isEmpty()) {
             Map<String, Object> params = new HashMap<>();
             params.put("cid", cid);
             return getStrutsDelegate().forwardParams(
                                 mapping.findForward(RhnHelper.CONFIRM_FORWARD), params);
         }
 
-
-
-
         String selectedChan = request.getParameter(SELECTED_CHANNEL);
-        DataResult result = null;
-
+        DataResult<PackageOverview> result;
 
         //selected channel id
         long scid = 0;
-
 
         //go ahead and set these to false.  We'll change them down a bit  if we need to
         request.setAttribute(ALL_PACKAGES_SELECTED, false);
@@ -119,7 +116,6 @@ public class ChannelPackagesAddAction extends ChannelPackagesBaseAction {
             }
         }
 
-
         if (ALL_PACKAGES.equals(selectedChan)) {
             result = PackageManager.lookupCustomPackagesForChannel(cid,
                     user.getOrg().getId());
@@ -133,7 +129,6 @@ public class ChannelPackagesAddAction extends ChannelPackagesBaseAction {
             scid = Long.parseLong(selectedChan);
             result = PackageManager.lookupPackageForChannelFromChannel(scid, cid);
         }
-
 
         //Add Red Hat Base Channels, and custom base channels to the list, and if one
         //      is selected, select it

@@ -26,6 +26,7 @@ import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 
+import com.suse.cloud.CloudPaygManager;
 import com.suse.manager.webui.controllers.bootstrap.AbstractMinionBootstrapper;
 import com.suse.manager.webui.controllers.bootstrap.BootstrapResult;
 import com.suse.manager.webui.services.impl.SaltSSHService;
@@ -57,6 +58,7 @@ import java.util.Optional;
 public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCaseWithUser {
 
     protected SaltService saltServiceMock;
+    protected CloudPaygManager paygManager;
 
     // tested object, initialized in subclasses
     protected AbstractMinionBootstrapper bootstrapper;
@@ -67,14 +69,14 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         saltServiceMock = mock(SaltService.class);
+        paygManager = new CloudPaygManager();
     }
 
     /**
      * Tests that the bootstrap fails when the keys for the host already exist.
-     * @throws Exception if something goes wrong
      */
     @Test
-    public void testBootstrapFailsWhenKeysExist() throws Exception {
+    public void testBootstrapFailsWhenKeysExist() {
         BootstrapHostsJson input = mockStandardInput();
         setEmptyActivationKeys(input);
 
@@ -197,9 +199,8 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
      * Base for tests that check that bootstrap FAILS with on current bootstrapper (set in
      * implementations of this base class) and given activation key.
      * @param key activation key
-     * @throws Exception if anything goes wrong
      */
-    protected void testIncompatibleActivationKeysBase(ActivationKey key) throws Exception {
+    protected void testIncompatibleActivationKeysBase(ActivationKey key) {
         BootstrapHostsJson input = mockStandardInput();
         context().checking(new Expectations() {{
             allowing(input).getFirstActivationKey();

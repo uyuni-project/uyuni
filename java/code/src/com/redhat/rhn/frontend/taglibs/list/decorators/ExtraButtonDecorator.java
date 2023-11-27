@@ -34,6 +34,7 @@ public class ExtraButtonDecorator extends BaseListDecorator {
 
 
     /** {@inheritDoc} */
+    @Override
     public void afterList() throws JspException {
 
         // Collect the values needed to hook into the rest of the list tag framework

@@ -15,8 +15,8 @@
 package com.redhat.rhn.domain.kickstart.crypto.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
@@ -28,26 +28,27 @@ import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.Test;
 
+import java.nio.charset.StandardCharsets;
+
 /**
  * CryptoTest - test
  */
 public class CryptoTest extends BaseTestCaseWithUser {
 
-    private static final String UTF8 = "UTF-8";
 
     @Test
-    public void testCryptoKey() throws Exception {
+    public void testCryptoKey() {
         CryptoKey key = createTestKey(user.getOrg());
         KickstartFactory.saveCryptoKey(key);
         key = (CryptoKey) reload(key);
         assertNotNull(key.getId());
         String testString = "aaaaaabbbbb";
-        key.setKey(new String(testString).getBytes(UTF8));
+        key.setKey(new String(testString).getBytes(StandardCharsets.UTF_8));
         assertEquals(key.getKeyString(), testString);
     }
 
     @Test
-    public void testBigKey() throws Exception {
+    public void testBigKey() {
         CryptoKey key = createTestKey(user.getOrg());
         assertNotNull(key);
 
@@ -67,7 +68,7 @@ public class CryptoTest extends BaseTestCaseWithUser {
         KickstartData ksdata = KickstartDataTest.createKickstartWithOptions(user.getOrg());
         ksdata = addKeyToKickstart(ksdata);
         assertNotNull(ksdata.getCryptoKeys());
-        assertTrue(ksdata.getCryptoKeys().size() > 0);
+        assertFalse(ksdata.getCryptoKeys().isEmpty());
     }
 
     public static CryptoKey createTestKey(Org orgIn) {
@@ -92,7 +93,7 @@ public class CryptoTest extends BaseTestCaseWithUser {
         CryptoKey gpgFooKey = new CryptoKey();
         gpgFooKey.setCryptoKeyType(KickstartFactory.KEY_TYPE_GPG);
         gpgFooKey.setDescription("gpg key test" + TestUtils.randomString());
-        gpgFooKey.setKey(gpgContent.getBytes(UTF8));
+        gpgFooKey.setKey(gpgContent.getBytes(StandardCharsets.UTF_8));
         gpgFooKey.setOrg(ksdata.getOrg());
         KickstartFactory.saveCryptoKey(gpgFooKey);
 
@@ -100,7 +101,7 @@ public class CryptoTest extends BaseTestCaseWithUser {
         CryptoKey sslFooKey = new CryptoKey();
         sslFooKey.setCryptoKeyType(KickstartFactory.KEY_TYPE_SSL);
         sslFooKey.setDescription("ssl key test" + TestUtils.randomString());
-        sslFooKey.setKey(sslContent.getBytes(UTF8));
+        sslFooKey.setKey(sslContent.getBytes(StandardCharsets.UTF_8));
         sslFooKey.setOrg(ksdata.getOrg());
         KickstartFactory.saveCryptoKey(sslFooKey);
 

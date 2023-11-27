@@ -66,6 +66,7 @@ public class FileListConfirmSubmitAction extends RhnListDispatchAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processMethodKeys(Map<String, String> map) {
         map.put("sdcimportconfirm.jsp.confirm", "importFile");
         map.put("sdcdeployconfirm.jsp.schedule", "deploy");
@@ -75,8 +76,9 @@ public class FileListConfirmSubmitAction extends RhnListDispatchAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processParamMap(ActionForm formIn, HttpServletRequest request,
-            Map<String, Object> params) {
+                                   Map<String, Object> params) {
         params.put("sid", request.getParameter("sid"));
         getStrutsDelegate().rememberDatePicker(params, (DynaActionForm)formIn,
                 "date", DatePicker.YEAR_RANGE_POSITIVE);
@@ -124,8 +126,7 @@ public class FileListConfirmSubmitAction extends RhnListDispatchAction {
             }
         }
         catch (TaskomaticApiException e) {
-            log.error("Could not schedule config upload:");
-            log.error(e);
+            log.error("Could not schedule config upload:", e);
             return createErrorMessage(request, mapping, formIn, server.getId(),
                     "taskscheduler.down");
         }
@@ -178,7 +179,7 @@ public class FileListConfirmSubmitAction extends RhnListDispatchAction {
         }
 
         //we need a set, so add our one server to a set.
-        Set servers = new HashSet();
+        Set servers = new HashSet<>();
         servers.add(sid);
 
         //create the action
@@ -201,8 +202,7 @@ public class FileListConfirmSubmitAction extends RhnListDispatchAction {
             }
         }
         catch (TaskomaticApiException e) {
-            log.error("Could not schedule config actions:");
-            log.error(e);
+            log.error("Could not schedule config actions:", e);
             return createErrorMessage(request, mapping, form, sid, "taskscheduler.down");
         }
 
@@ -214,7 +214,7 @@ public class FileListConfirmSubmitAction extends RhnListDispatchAction {
     private Set getCfnids(RhnSet rhnSet) {
         //We currently have a set of RhnSetElements, but we need a set
         //of Longs, this does that conversion.
-        Set cfnids = new HashSet();
+        Set cfnids = new HashSet<>();
         for (RhnSetElement rhnSetElementIn : rhnSet.getElements()) {
             cfnids.add(rhnSetElementIn.getElement());
         }
@@ -240,7 +240,7 @@ public class FileListConfirmSubmitAction extends RhnListDispatchAction {
     }
 
     private Set getCrids(RhnSet rhnSet, Long sid) {
-        Set revisions = new HashSet();
+        Set revisions = new HashSet<>();
 
         //go through all of the selected file names
         for (RhnSetElement rhnSetElementIn : rhnSet.getElements()) {

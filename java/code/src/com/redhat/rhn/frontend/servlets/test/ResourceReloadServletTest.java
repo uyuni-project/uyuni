@@ -55,7 +55,7 @@ public class ResourceReloadServletTest extends MockObjectTestCase {
     }
 
     @Test
-    public void testDoGet() throws Exception {
+    public void testDoGet() {
         ResourceReloadServlet servlet = new ResourceReloadServlet();
         boolean orig = Config.get().getBoolean("java.development_environment");
         Config.get().setBoolean("java.development_environment", "true");
@@ -67,7 +67,7 @@ public class ResourceReloadServletTest extends MockObjectTestCase {
     }
 
     @AfterEach
-    public void tearDown() throws Exception {
+    public void tearDown() {
         request = null;
         response = null;
     }

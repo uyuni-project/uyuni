@@ -52,6 +52,12 @@ public enum ViewHelper {
 
     private static final RenderUtils RENDER_UTILS = GlobalInstanceHolder.RENDER_UTILS;
 
+    /**
+     * List of pages that are updated to newer Bootstrap.
+     * @see ViewHelper#isBootstrapReady
+     */
+    private static final List<String> BOOTSTRAP_READY_PAGES = List.of();
+
     ViewHelper() { }
 
     /**
@@ -270,5 +276,17 @@ public enum ViewHelper {
      */
     public boolean hasSshPushContactMethod(Server server) {
         return ContactMethodUtil.isSSHPushContactMethod(server.getContactMethod());
+    }
+
+    /**
+     * Checks if the requested page is updated to newer Bootstrap.
+     * @param uri the page URI
+     * @return true if the URI is in the list of updated pages
+     * @deprecated this is a temporary hook that makes partial Bootstrap migration possible. Will be removed when the
+     * migration is finished.
+     */
+    @Deprecated
+    public boolean isBootstrapReady(String uri) {
+        return BOOTSTRAP_READY_PAGES.contains(uri);
     }
 }

@@ -25,9 +25,10 @@ import org.junit.jupiter.api.Test;
 public class EditSlaveSetupActionTest extends BaseIssTestAction {
 
     @Test
-    public void testExecute() throws Exception {
+    public void testExecute() {
     }
 
+    @Override
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();

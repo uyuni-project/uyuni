@@ -24,6 +24,7 @@ import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.manager.webui.utils.ElementCallJson;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
+import com.suse.manager.webui.utils.salt.custom.SystemInfo;
 import com.suse.salt.netapi.calls.LocalAsyncResult;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.SaltUtil;
@@ -109,15 +110,21 @@ public interface SaltApi {
      * Performs an test.echo on a target set of minions for checkIn purpose.
      * @param targetIn the target
      * @return the LocalAsyncResult of the test.echo call
-     * @throws SaltException if we get a failure from Salt
      */
-    Optional<LocalAsyncResult<String>> checkIn(MinionList targetIn) throws SaltException;
+    Optional<LocalAsyncResult<String>> checkIn(MinionList targetIn);
 
     /**
      * Apply util.systeminfo state on the specified minion list
      * @param minionTarget minion list
      */
     void updateSystemInfo(MinionList minionTarget);
+
+    /**
+     * Apply util.systeminfo_full state on the specified minion and wait for the result
+     * @param minion minion id
+     * @return the SystemInfo result
+     */
+    Optional<SystemInfo> getSystemInfoFull(String minion);
 
     /**
      * Store the files uploaded by a minion to the SCAP storage directory.

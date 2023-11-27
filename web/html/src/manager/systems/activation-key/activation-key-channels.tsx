@@ -96,7 +96,7 @@ class ActivationKeyChannels extends React.Component<ActivationKeyChannelsProps, 
           if (loading) {
             return (
               <div className="form-group">
-                <Loading text={t("Loading..")} />
+                <Loading text={t("Loading...")} />
               </div>
             );
           }

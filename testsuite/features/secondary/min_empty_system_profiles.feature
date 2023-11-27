@@ -4,16 +4,14 @@
 @scope_onboarding
 Feature: Empty minion profile operations
 
+  Scenario: Log in as admin user
+    Given I am authorized for the "Admin" section
+
   Scenario: Create an empty minion profile with HW address via API
-    Given I am logged in API as user "admin" and password "admin"
     When I call system.create_system_profile() with name "empty-profile" and HW address "00:11:22:33:44:55"
 
   Scenario: Create an empty minion profile with hostname via API
     When I call system.create_system_profile() with name "empty-profile-hostname" and hostname "min-retail.mgr.suse.de"
-    And I logout from API
-
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
 
   Scenario: Check the created empty minion profiles in Unprovisioned Systems page
     And I follow the left menu "System > System List > Unprovisioned Systems"
@@ -27,11 +25,9 @@ Feature: Empty minion profile operations
     Then I wait until I see "min-retail.mgr.suse.de" text, refreshing the page
 
   Scenario: Check the empty minion profiles visible via API
-    Given I am logged in API as user "admin" and password "admin"
     When I call system.list_empty_system_profiles()
     Then "empty-profile" should be present in the result
     And "empty-profile-hostname" should be present in the result
-    And I logout from API
 
   Scenario: Cleanup: Delete first empty minion profile
     When I follow the left menu "Systems > System List"

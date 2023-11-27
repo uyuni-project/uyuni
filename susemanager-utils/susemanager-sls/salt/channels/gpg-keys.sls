@@ -30,6 +30,13 @@ mgr_deploy_tools_uyuni_key:
     - makedirs: True
     - mode: 644
 
+mgr_deploy_suse_addon_key:
+  file.managed:
+    - name: /etc/pki/rpm-gpg/suse-addon-97a636db0bad8ecc.key
+    - source: salt://gpg/build-addon-97A636DB0BAD8ECC.key
+    - makedirs: True
+    - mode: 644
+
 {%- if grains['os_family'] == 'RedHat' %}
 {# deploy all keys to the clients. If they get imported dependes on the used channels #}
 
@@ -37,6 +44,13 @@ mgr_deploy_res_gpg_key:
   file.managed:
     - name: /etc/pki/rpm-gpg/res-gpg-pubkey-0182b964.key
     - source: salt://gpg/res-gpg-pubkey-0182b964.key
+    - makedirs: True
+    - mode: 644
+
+mgr_deploy_liberty_v2_gpg_key:
+  file.managed:
+    - name: /etc/pki/rpm-gpg/suse-liberty-v2-gpg-pubkey-177086FAB0F9C64F.key
+    - source: salt://gpg/suse-liberty-v2-gpg-pubkey-177086FAB0F9C64F.key
     - makedirs: True
     - mode: 644
 
@@ -75,11 +89,16 @@ mgr_deploy_{{ keyname }}:
 {%- set gpg_urls = [] %}
 {%- for chan, args in pillar.get(pillar.get('_mgr_channels_items_name', 'channels'), {}).items() %}
 {%- if args['gpgkeyurl'] is defined %}
-{{ gpg_urls.append(args['gpgkeyurl']) | default("", True) }}
+{%- set keys = args['gpgkeyurl'].split(' ') %}
+{%- for gpgkey in keys %}
+{%- if gpgkey not in gpg_urls %}
+{{ gpg_urls.append(gpgkey) | default("", True) }}
+{%- endif %}
+{%- endfor %}
 {%- endif %}
 {%- endfor %}
 
-{% for url in gpg_urls | unique %}
+{% for url in gpg_urls %}
 {{ url | replace(':', '_') }}:
   mgrcompat.module_run:
     - name: pkg.add_repo_key

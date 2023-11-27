@@ -1,4 +1,17 @@
-- remove jabberd and osa-dispatcher
+-------------------------------------------------------------------
+Mon Sep 18 14:32:14 CEST 2023 - rosuna@suse.com
+
+- version 4.4.3-1
+  * remove old provide/obsoletes dependency
+  * remove dependency to mgr-cfg which remove the possibility to create config channels for the proxy
+  * Fix squid refresh_pattern for "venv-enabled-*.txt" files to avoid
+    serving outdated version of the file (bsc#1211956)
+
+-------------------------------------------------------------------
+Wed Dec 14 14:14:01 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.2-1
+  * remove jabberd and osa-dispatcher
 
 -------------------------------------------------------------------
 Wed Sep 28 11:12:52 CEST 2022 - jgonzalez@suse.com

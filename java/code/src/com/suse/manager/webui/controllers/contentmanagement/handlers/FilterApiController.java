@@ -125,7 +125,7 @@ public class FilterApiController {
                 .filter(filterId ->
                         !dbContentProject.getProjectFilters()
                                 .stream()
-                                .filter(filter -> filter.getId() == filterId)
+                                .filter(filter -> filter.getId().equals(filterId))
                                 .findFirst()
                                 .isPresent()
                 )
@@ -174,7 +174,7 @@ public class FilterApiController {
                     createdFilters = TEMPLATE_MGR.createAppStreamFilters(prefix, channel, user);
                 }
                 catch (ModulemdApiException e) {
-                    LOG.error(e);
+                    LOG.error(e.getMessage(), e);
                     return json(GSON, res, ResultJson.error(LOC.getMessage("contentmanagement.modules_error")));
                 }
                 break;
@@ -223,7 +223,7 @@ public class FilterApiController {
         FilterCriteria filterCriteria = new FilterCriteria(
                 FilterCriteria.Matcher.lookupByLabel(createFilterRequest.getMatcher()),
                 createFilterRequest.getCriteriaKey(),
-                createFilterRequest.getCriteriaValue());
+                StringUtils.trimToNull(createFilterRequest.getCriteriaValue()));
 
 
         ContentFilter createdFilter;
@@ -274,7 +274,7 @@ public class FilterApiController {
         FilterCriteria filterCriteria = new FilterCriteria(
                 FilterCriteria.Matcher.lookupByLabel(updateFilterRequest.getMatcher()),
                 updateFilterRequest.getCriteriaKey(),
-                updateFilterRequest.getCriteriaValue());
+                StringUtils.trimToNull(updateFilterRequest.getCriteriaValue()));
         try {
             CONTENT_MGR.updateFilter(
                     Long.parseLong(req.params("filterId")),

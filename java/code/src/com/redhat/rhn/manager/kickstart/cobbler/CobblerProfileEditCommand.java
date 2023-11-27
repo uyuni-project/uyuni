@@ -79,9 +79,10 @@ public class CobblerProfileEditCommand extends CobblerProfileCommand {
     /**
      * {@inheritDoc}
      */
+    @Override
     public ValidatorError store() {
         if (StringUtils.isBlank(ksData.getCobblerId())) {
-            return new CobblerProfileCreateCommand(ksData, user).store();
+            return new CobblerProfileCreateCommand(ksData, user, false).store();
         }
 
         Profile prof = Profile.lookupById(getCobblerConnection(), ksData.getCobblerId());

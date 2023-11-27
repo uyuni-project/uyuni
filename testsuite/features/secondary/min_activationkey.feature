@@ -1,12 +1,16 @@
-# Copyright (c) 2018-2022 SUSE LLC
+# Copyright (c) 2018-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
+#
+# This feature can cause failures in the following features:
+# - features/secondary/min_salt_minions_page.feature
+# If the minion fails to bootstrap.
 
+@skip_if_github_validation
 @scope_onboarding
 Feature: Bootstrap a Salt minion via the GUI with an activation key
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
-    And I am logged in API as user "admin" and password "admin"
 
   Scenario: Delete SLES minion system profile
     Given I am on the Systems overview page of this "sle_minion"
@@ -14,6 +18,7 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
     And I wait until I see "has been deleted" text
+    And I wait until Salt client is inactive on "sle_minion"
     Then "sle_minion" should not be registered
 
   Scenario: Create a configuration channel for the activation key
@@ -33,16 +38,46 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
     And I enter "e^i.pi=-1" in the editor
     And I click on "Create Configuration File"
 
+@susemanager
   Scenario: Create a complete minion activation key
     When I follow the left menu "Systems > Activation Keys"
     And I follow "Create Key"
+    And I wait for child channels to appear
     And I enter "Minion testing" as "description"
     And I enter "MINION-TEST" as "key"
     And I enter "20" as "usageLimit"
     And I select "SLE-Product-SLES15-SP4-Pool for x86_64" from "selectedBaseChannel"
+    And I wait for child channels to appear
     And I include the recommended child channels
     And I check "SLE-Module-DevTools15-SP4-Pool for x86_64"
-    And I check "Fake-RPM-SLES-Channel"
+    And I check "Fake-RPM-SUSE-Channel"
+    And I click on "Create Activation Key"
+    And I follow "Configuration" in the content area
+    And I follow first "Subscribe to Channels" in the content area
+    And I check "Key Channel" in the list
+    And I click on "Continue"
+    And I follow "Packages"
+    And I enter "orion-dummy perseus-dummy" as "packages"
+    And I click on "Update Activation Key"
+    Then I should see a "Activation key Minion testing has been modified" text
+
+@uyuni
+  Scenario: Create a complete minion activation key
+    When I follow the left menu "Systems > Activation Keys"
+    And I follow "Create Key"
+    And I wait for child channels to appear
+    And I enter "Minion testing" as "description"
+    And I enter "MINION-TEST" as "key"
+    And I enter "20" as "usageLimit"
+    And I select "openSUSE Leap 15.5 (x86_64)" from "selectedBaseChannel"
+    And I wait for child channels to appear
+    And I check "openSUSE 15.5 non oss (x86_64)"
+    And I check "openSUSE Leap 15.5 non oss Updates (x86_64)"
+    And I check "openSUSE Leap 15.5 Updates (x86_64)"
+    And I check "Update repository of openSUSE Leap 15.5 Backports (x86_64)"
+    And I check "Update repository with updates from SUSE Linux Enterprise 15 for openSUSE Leap 15.5 (x86_64)"
+    And I check "Uyuni Client Tools for openSUSE Leap 15.5 (x86_64)"
+    And I check "Fake-RPM-SUSE-Channel"
     And I click on "Create Activation Key"
     And I follow "Configuration" in the content area
     And I follow first "Subscribe to Channels" in the content area
@@ -63,7 +98,7 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
     And I select "1-MINION-TEST" from "activationKeys"
     And I select the hostname of "proxy" from "proxies" if present
     And I click on "Bootstrap"
-    And I wait until I see "Successfully bootstrapped host!" text
+    And I wait until I see "Bootstrap process initiated." text
     And I follow the left menu "Systems > System List > All"
     And I wait until I see the name of "sle_minion", refreshing the page
     And I wait until onboarding is completed for "sle_minion"
@@ -79,9 +114,15 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
     Given I am on the Systems overview page of this "sle_minion"
     Then I run spacecmd listevents for "sle_minion"
 
+@susemanager
   Scenario: Verify that minion bootstrapped with base channel
     Given I am on the Systems page
     Then I should see a "SLE-Product-SLES15-SP4-Pool for x86_64" text
+
+@uyuni
+  Scenario: Verify that minion bootstrapped with base channel
+    Given I am on the Systems page
+    Then I should see a "openSUSE Leap 15.5 (x86_64)" text
 
   # bsc#1080807 - Assigning configuration channel in activation key doesn't work
   Scenario: Verify that minion bootstrapped with configuration channel
@@ -122,6 +163,3 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
   Scenario: Check events history for failures on SLES minion with activation key
     Given I am on the Systems overview page of this "sle_minion"
     Then I check for failed events on history event page
-
-  Scenario: Cleanup: Logout from API
-    When I logout from API

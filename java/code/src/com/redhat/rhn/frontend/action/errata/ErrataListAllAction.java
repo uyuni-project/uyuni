@@ -18,6 +18,7 @@ package com.redhat.rhn.frontend.action.errata;
  */
 public class ErrataListAllAction extends ErrataListBaseAction {
 
+    @Override
     protected ErrataFilter getErrataFilter() {
         return ErrataFilter.ALL;
     }

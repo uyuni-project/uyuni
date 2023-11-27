@@ -3,7 +3,6 @@ import os
 import re
 import sys
 
-from salt.ext import six
 from spacewalk.common.rhnConfig import RHNOptions
 
 BASE_REPORT_DEFINITIONS = "/usr/share/spacewalk/reports"
@@ -31,8 +30,8 @@ class report:
         def _load(self, full_path):
                 try:
                         fd = open(full_path, 'r')
-                except (IOError):
-                        six.reraise(spacewalk_unknown_report, None, sys.exc_info()[2])
+                except IOError as e:
+                        raise spacewalk_unknown_report from e
                 tag = None
                 value = ''
                 re_comment = re.compile('^\s*#')

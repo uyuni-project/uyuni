@@ -23,6 +23,7 @@ import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.channel.test.ChannelFamilyFactoryTest;
+import com.redhat.rhn.domain.channel.test.ChannelFamilyTest;
 import com.redhat.rhn.domain.common.ManagerInfoFactory;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
@@ -32,10 +33,8 @@ import com.redhat.rhn.domain.product.SUSEProductChannel;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.product.SUSEProductSCCRepository;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
-import com.redhat.rhn.domain.scc.SCCCachingFactory;
 import com.redhat.rhn.domain.scc.SCCRepository;
 import com.redhat.rhn.domain.scc.SCCRepositoryAuth;
-import com.redhat.rhn.domain.scc.SCCRepositoryNoAuth;
 import com.redhat.rhn.domain.scc.SCCRepositoryTokenAuth;
 import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.Server;
@@ -50,12 +49,12 @@ import com.suse.salt.netapi.parser.JsonParser;
 import com.suse.scc.model.ChannelFamilyJson;
 import com.suse.scc.model.SCCProductJson;
 import com.suse.scc.model.SCCRepositoryJson;
-import com.suse.scc.model.UpgradePathJson;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
@@ -63,6 +62,7 @@ import org.hibernate.Session;
 import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
@@ -74,6 +74,7 @@ import java.util.stream.Collectors;
  */
 public class SUSEProductTestUtils extends HibernateFactory {
 
+    private static final Random RANDOM = new Random();
     private static Logger log = LogManager.getLogger(SUSEProductTestUtils.class);
 
     /**
@@ -86,20 +87,58 @@ public class SUSEProductTestUtils extends HibernateFactory {
      * Create a SUSE product (which is different from a {@link com.redhat.rhn.domain.channel.ChannelProduct}).
      * @param family the channel family
      * @return the newly created SUSE product
-     * @throws Exception if anything goes wrong
      */
     public static SUSEProduct createTestSUSEProduct(ChannelFamily family) throws Exception {
+        return createTestSUSEProduct(family, TestUtils.randomString().toLowerCase());
+    }
+
+    /**
+     * Create a SUSE product (which is different from a {@link com.redhat.rhn.domain.channel.ChannelProduct}).
+     * @param family the channel family
+     * @param name the product name
+     * @return the newly created SUSE product
+     * @throws Exception if anything goes wrong
+     */
+    public static SUSEProduct createTestSUSEProduct(ChannelFamily family, String name) throws Exception {
         SUSEProduct product = new SUSEProduct();
-        String name = TestUtils.randomString().toLowerCase();
         product.setName(name);
         product.setVersion("1");
         product.setFriendlyName("SUSE Test product " + name);
         product.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
         product.setRelease("test");
-        product.setProductId(new Random().nextInt(999999));
+        product.setProductId(RANDOM.nextInt(999999));
         product.setBase(true);
         product.setReleaseStage(ReleaseStage.released);
         product.setChannelFamily(family);
+
+        product = TestUtils.saveAndReload(product);
+
+        return product;
+    }
+
+    /**
+     * Create a SUSEProduct for test with the given pieces of information.
+     * @param user the user
+     * @param name the name of the product
+     * @param version the version
+     * @param arch the architecture
+     * @param family the channel family
+     * @param isBase true if it is a base product
+     * @return the created SUSEProduct
+     */
+    public static SUSEProduct createTestSUSEProduct(User user, String name, String version, String arch, String family,
+                                                    boolean isBase) {
+        SUSEProduct product = new SUSEProduct();
+
+        product.setName(name);
+        product.setVersion(version);
+        product.setFriendlyName("SUSE Test product " + name);
+        product.setArch(PackageFactory.lookupPackageArchByLabel(arch));
+        product.setRelease("test");
+        product.setProductId(RANDOM.nextInt(999999));
+        product.setBase(isBase);
+        product.setReleaseStage(ReleaseStage.released);
+        product.setChannelFamily(ChannelFamilyTest.ensureChannelFamilyExists(user, family));
 
         product = TestUtils.saveAndReload(product);
 
@@ -219,6 +258,33 @@ public class SUSEProductTestUtils extends HibernateFactory {
 
         // Insert into suseServerInstalledProduct
         server.setInstalledProducts(products);
+        HibernateFactory.getSession().flush();
+    }
+
+    /**
+     * Install the specified products on the server
+     * @param server the server
+     * @param products the collection of products to install
+     */
+    public static void installSUSEProductsOnServer(Server server, Collection<SUSEProduct> products) {
+        if (CollectionUtils.isEmpty(products)) {
+            return;
+        }
+
+        products.stream()
+                .map(product -> {
+                    InstalledProduct prd = new InstalledProduct();
+
+                    prd.setName(product.getName());
+                    prd.setVersion(product.getVersion());
+                    prd.setRelease(product.getRelease());
+                    prd.setArch(product.getArch());
+                    prd.setBaseproduct(product.isBase());
+
+                    return prd;
+                })
+                .forEach(server::addInstalledProduct);
+
         HibernateFactory.getSession().flush();
     }
 
@@ -393,10 +459,9 @@ public class SUSEProductTestUtils extends HibernateFactory {
      * @param testDataPath the path to test data
      * @param withRepos set true if repos should be added
      * @param fromdir set true if fromdir option should be simulated
-     * @throws Exception
      */
     public static void createVendorSUSEProductEnvironment(User admin, String testDataPath, boolean withRepos,
-                                                          boolean fromdir) throws Exception {
+                                                          boolean fromdir) {
         Gson gson = new GsonBuilder()
                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
                 .create();
@@ -410,10 +475,6 @@ public class SUSEProductTestUtils extends HibernateFactory {
                 ContentSyncManager.class.getResourceAsStream(testDataPath + "productsUnscoped.json"));
         List<SCCProductJson> products = gson.fromJson(
                 inputStreamReader, new TypeToken<List<SCCProductJson>>() { }.getType());
-        InputStreamReader inputStreamReader2 = new InputStreamReader(
-                ContentSyncManager.class.getResourceAsStream(testDataPath + "upgrade_paths.json"));
-        List<UpgradePathJson> upgradePaths = gson.fromJson(
-                inputStreamReader2, new TypeToken<List<UpgradePathJson>>() { }.getType());
         InputStreamReader inputStreamReader3 = new InputStreamReader(
                 ContentSyncManager.class.getResourceAsStream(testDataPath + "channel_families.json"));
         List<ChannelFamilyJson> channelFamilies = gson.fromJson(
@@ -442,18 +503,20 @@ public class SUSEProductTestUtils extends HibernateFactory {
         }
         repositories.addAll(addRepos);
 
-        ContentSyncManager csm = new ContentSyncManager();
+        ContentSyncManager csm = new ContentSyncManager() {
+            @Override
+            protected boolean accessibleUrl(String url, String user, String password) {
+                // allow all none SCC URLs
+                return true;
+            }
+        };
         Credentials credentials = null;
         if (fromdir) {
             Config.get().setString(ContentSyncManager.RESOURCE_PATH, "sumatest");
             csm = new ContentSyncManager() {
                 @Override
-                protected boolean accessibleUrl(String url) {
-                    return true;
-                }
-
-                @Override
                 protected boolean accessibleUrl(String url, String user, String password) {
+                    // allow all none SCC URLs
                     return true;
                 }
             };
@@ -468,15 +531,11 @@ public class SUSEProductTestUtils extends HibernateFactory {
         }
 
         csm.updateChannelFamilies(channelFamilies);
-        csm.updateSUSEProducts(products, upgradePaths, staticTree, addRepos);
+        csm.updateSUSEProducts(products, staticTree, addRepos);
         if (withRepos) {
+            HibernateFactory.getSession().flush();
+            HibernateFactory.getSession().clear();
             csm.refreshRepositoriesAuthentication(repositories, credentials, null);
-
-            // set noauth for rhel-x86_64-server-7
-            SCCRepositoryNoAuth newAuth = new SCCRepositoryNoAuth();
-            newAuth.setCredentials(credentials);
-            newAuth.setRepo(SCCCachingFactory.lookupRepositoryBySccId(-75L).get());
-            SCCCachingFactory.saveRepositoryAuth(newAuth);
         }
         ManagerInfoFactory.setLastMgrSyncRefresh();
     }
@@ -500,6 +559,36 @@ public class SUSEProductTestUtils extends HibernateFactory {
             }
         });
     }
+
+    /**
+     * Add channels to given product
+     * @param product the product
+     * @param root the root product
+     * @param mandatory add mandatory channels
+     * @param optionalChannelIds list of optional channels ids to add
+     */
+    public static void addChannelsForProductAndParent(SUSEProduct product, SUSEProduct root,
+            boolean mandatory, List<Long> optionalChannelIds) {
+        ContentSyncManager csm = new ContentSyncManager();
+        product.getRepositories()
+        .stream()
+        .filter(pr -> pr.getRootProduct().equals(root))
+        .filter(pr -> (mandatory && pr.isMandatory()) || optionalChannelIds.contains(pr.getRepository().getSccId()))
+        .forEach(pr -> {
+            try {
+                if (pr.getParentChannelLabel() != null &&
+                        ChannelFactory.lookupByLabel(pr.getParentChannelLabel()) == null) {
+                    csm.addChannel(pr.getParentChannelLabel(), null);
+                }
+                csm.addChannel(pr.getChannelLabel(), null);
+            }
+            catch (ContentSyncException e) {
+                log.error("unable to add channel", e);
+                throw new RuntimeException(e);
+            }
+        });
+    }
+
     /**
      * Create standard SUSE Vendor Entitlement products.
      */
@@ -593,7 +682,7 @@ public class SUSEProductTestUtils extends HibernateFactory {
      */
     public static SCCRepository createSCCRepository() {
         SCCRepository bRepo = new SCCRepository();
-        bRepo.setSccId(new Random().nextLong());
+        bRepo.setSccId(RANDOM.nextLong());
         bRepo.setAutorefresh(true);
         bRepo.setDescription(TestUtils.randomString());
         bRepo.setDistroTarget("sle-15-x86_64");

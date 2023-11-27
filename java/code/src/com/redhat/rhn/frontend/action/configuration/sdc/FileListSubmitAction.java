@@ -18,6 +18,7 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.RhnSetAction;
+import com.redhat.rhn.frontend.dto.ConfigFileNameDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
@@ -45,8 +46,9 @@ public class FileListSubmitAction extends RhnSetAction {
     /**
      * {@inheritDoc}
      */
-    protected DataResult getDataResult(User user, ActionForm formIn,
-            HttpServletRequest request) {
+    @Override
+    protected DataResult<ConfigFileNameDto> getDataResult(User user, ActionForm formIn,
+                                                          HttpServletRequest request) {
         Server server = new RequestContext(request).lookupAndBindServer();
         return ConfigurationManager.getInstance()
                 .listFileNamesForSystem(user, server, null);
@@ -55,6 +57,7 @@ public class FileListSubmitAction extends RhnSetAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected RhnSetDecl getSetDecl() {
         return RhnSetDecl.CONFIG_FILE_NAMES;
     }
@@ -62,6 +65,7 @@ public class FileListSubmitAction extends RhnSetAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processMethodKeys(Map<String, String> map) {
         map.put("sdcdeployfile.jsp.confirm", "goToConfirm");
         map.put("sdcdifffile.jsp.confirm", "goToConfirm");
@@ -70,8 +74,9 @@ public class FileListSubmitAction extends RhnSetAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processParamMap(ActionForm formIn,
-            HttpServletRequest request, Map<String, Object> params) {
+                                   HttpServletRequest request, Map<String, Object> params) {
         params.put("sid", new RequestContext(request).getRequiredParam("sid"));
     }
 

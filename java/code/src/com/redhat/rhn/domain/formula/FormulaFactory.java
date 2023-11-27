@@ -216,7 +216,7 @@ public class FormulaFactory {
                 .orElseGet(() -> {
                     LOG.error("Unable to read formulas from folder '{}'. Check if it exists and have the " +
                             "correct permissions (755).", formulasFolder.getAbsolutePath());
-                    return Collections.EMPTY_LIST;
+                    return Collections.emptyList();
                 });
     }
 
@@ -704,7 +704,7 @@ public class FormulaFactory {
         try {
             formulas = Optional
                     .ofNullable(GSON.fromJson(new BufferedReader(new FileReader(dataFile)), Map.class))
-                    .orElse(new HashMap());
+                    .orElse(new HashMap<>());
         }
         catch (FileNotFoundException e) {
         }
@@ -773,7 +773,7 @@ public class FormulaFactory {
         if (dataFile.exists()) {
             Map<String, List<String>> serverFormulas = Optional
                     .ofNullable(GSON.fromJson(new BufferedReader(new FileReader(dataFile)), Map.class))
-                    .orElse(new HashMap());
+                    .orElse(new HashMap<>());
 
             if (serverFormulas.containsKey(id)) {
                 serverFormulas.remove(id);
@@ -873,7 +873,16 @@ public class FormulaFactory {
                 return Collections.emptyMap();
             }
         }
+        catch (YAMLException e) {
+            LOG.error("Unable to parse metadata file: " + name, e);
+            return Collections.emptyMap();
+        }
         catch (IOException e) {
+            LOG.error("IO Error at metadata file: " + name, e);
+            return Collections.emptyMap();
+        }
+        catch (Exception e) {
+            LOG.error("Error in metadata file: " + name, e);
             return Collections.emptyMap();
         }
     }

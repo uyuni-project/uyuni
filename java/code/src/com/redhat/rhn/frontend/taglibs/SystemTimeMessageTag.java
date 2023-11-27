@@ -48,6 +48,7 @@ public class SystemTimeMessageTag extends TagSupport {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int doEndTag() throws JspException {
         JspWriter out = null;
         try {
@@ -106,6 +107,7 @@ public class SystemTimeMessageTag extends TagSupport {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void release() {
         server = null;
         super.release();

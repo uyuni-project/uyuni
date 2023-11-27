@@ -21,8 +21,10 @@ import static com.redhat.rhn.domain.contentmgmt.validation.ContentValidationMess
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
+import com.redhat.rhn.domain.contentmgmt.ModuleFilter;
 import com.redhat.rhn.domain.contentmgmt.SoftwareProjectSource;
 import com.redhat.rhn.domain.contentmgmt.modulemd.ConflictingStreamsException;
+import com.redhat.rhn.domain.contentmgmt.modulemd.ModularityDisabledException;
 import com.redhat.rhn.domain.contentmgmt.modulemd.Module;
 import com.redhat.rhn.domain.contentmgmt.modulemd.ModuleNotFoundException;
 import com.redhat.rhn.domain.contentmgmt.modulemd.ModulemdApi;
@@ -40,8 +42,8 @@ import java.util.stream.Collectors;
  */
 public class ModularDependencyValidator implements ContentValidator {
 
-    private ModulemdApi modulemdApi;
-    private LocalizationService loc = LocalizationService.getInstance();
+    private final ModulemdApi modulemdApi;
+    private final LocalizationService loc = LocalizationService.getInstance();
 
     /**
      * Initialize a modular dependency validator with {@link ModulemdApi} as the default modulemd API
@@ -66,8 +68,7 @@ public class ModularDependencyValidator implements ContentValidator {
                 .map(SoftwareProjectSource::getChannel)
                 .anyMatch(Channel::isModular);
 
-        boolean hasModuleFilters = project.getActiveFilters().stream()
-                .anyMatch(f -> f.asModuleFilter().isPresent());
+        boolean hasModuleFilters = project.getActiveFilters().stream().anyMatch(f -> f instanceof ModuleFilter);
 
         if (!(hasModularSources && hasModuleFilters)) {
             return Collections.emptyList();
@@ -79,11 +80,17 @@ public class ModularDependencyValidator implements ContentValidator {
         try {
             DependencyResolutionResult result = resolver.resolveFilters(project.getActiveFilters());
 
-            // Add a message with the list of resolved modules
-            String selectedModules =
-                    result.getModules().stream().map(Module::getFullName).distinct().collect(Collectors.joining(", "));
-            messages.add(ContentValidationMessage.contentFiltersMessage(
-                    loc.getMessage("contentmanagement.validation.selectedmodules", selectedModules), TYPE_INFO));
+            if (DependencyResolver.isModulesDisabled(result.getFilters())) {
+                messages.add(ContentValidationMessage.contentFiltersMessage(
+                        loc.getMessage("contentmanagement.validation.nomodules"), TYPE_INFO));
+            }
+            else {
+                // Add a message with the list of resolved modules
+                String selectedModules = result.getModules().stream()
+                        .map(Module::getFullName).distinct().collect(Collectors.joining(", "));
+                messages.add(ContentValidationMessage.contentFiltersMessage(
+                        loc.getMessage("contentmanagement.validation.selectedmodules", selectedModules), TYPE_INFO));
+            }
         }
         catch (DependencyResolutionException e) {
             if (e.getCause() instanceof ModuleNotFoundException) {
@@ -101,6 +108,10 @@ public class ModularDependencyValidator implements ContentValidator {
                 messages.add(ContentValidationMessage.contentFiltersMessage(
                         loc.getMessage("contentmanagement.validation.moduleconflict",
                                 module.getFullName(), other.getFullName()), TYPE_ERROR));
+            }
+            else if (e.getCause() instanceof ModularityDisabledException) {
+                messages.add(ContentValidationMessage.contentFiltersMessage(
+                        loc.getMessage("contentmanagement.validation.modularitydisabled"), TYPE_ERROR));
             }
             else {
                 messages.add(ContentValidationMessage.contentFiltersMessage(

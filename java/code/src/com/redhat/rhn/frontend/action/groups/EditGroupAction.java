@@ -53,14 +53,15 @@ public class EditGroupAction extends RhnAction {
     private final ServerGroupManager serverGroupManager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-            ActionForm form,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                 ActionForm form,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
 
         DynaActionForm daForm = (DynaActionForm)form;
         ActionErrors errors = new ActionErrors();
-        Map params = makeParamMap(request);
+        Map<String, Object> params = makeParamMap(request);
         RequestContext ctx = new RequestContext(request);
 
         if (ctx.hasParam("sgid")) {

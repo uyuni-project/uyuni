@@ -48,7 +48,7 @@ public class RockyLinuxErrataParserTest extends BaseErrataTestCase {
         final URI uri = parser.getAdvisoryUri(errata);
 
         assertEquals("RLSA-2021:3893", id);
-        assertEquals("https://errata.rockylinux.org/RLSA-2021:3893", uri.toString());
+        assertEquals("https://errata.build.resf.org/RLSA-2021:3893", uri.toString());
     }
 
     /**

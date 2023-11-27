@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.action.user.test;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.role.RoleFactory;
@@ -54,8 +55,8 @@ public class VisibleSystemsListActionTest extends RhnBaseTestCase {
         ah.getRequest().setupAddParameter("uid", user.getId().toString());
 
         RhnSetDecl.SYSTEMS.clear(user);
-        assertTrue(0 == RhnSetDecl.SYSTEMS.get(user).size());
+        assertTrue(RhnSetDecl.SYSTEMS.get(user).isEmpty());
         ah.executeAction("selectall");
-        assertTrue(0 < RhnSetDecl.SYSTEMS.get(user).size());
+        assertFalse(RhnSetDecl.SYSTEMS.get(user).isEmpty());
     }
 }

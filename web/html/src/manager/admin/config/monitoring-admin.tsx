@@ -22,8 +22,8 @@ const { capitalize } = Utils;
 
 const msgRestart = t("Restart is needed for the configuration changes to take effect.");
 
-const msgMap = {
-  internal_error: t("An internal error has occured. See the server logs for details."),
+const messageMap = {
+  internal_error: t("An internal error has occurred. See the server logs for details."),
   enabling_failed: t("Enabling monitoring failed. See the server logs for details."),
   enabling_failed_partially: t(
     "Failed to enable all monitoring services. Some services are still disabled. See the server logs for details."
@@ -54,7 +54,7 @@ const msgMap = {
   taskomatic_msg_restart: msgRestart,
   self_monitoring_msg_restart: msgRestart,
   no_change: t("Monitoring status hasn't changed."),
-  unknown_status: t("An error occured. Monitoring status unknown. Refresh the page."),
+  unknown_status: t("An error occurred. Monitoring status unknown. Refresh the page."),
 };
 
 const exporterMap = {
@@ -78,7 +78,7 @@ const ExporterIcon = (props: {
         ? "item-enabled-pending"
         : "item-enabled";
     if (props.message) {
-      tooltip = t("Enabled") + ". " + msgMap[props.name + "_msg_" + props.message];
+      tooltip = t("Enabled") + ". " + messageMap[props.name + "_msg_" + props.message];
     } else {
       tooltip = t("Enabled");
     }
@@ -88,7 +88,7 @@ const ExporterIcon = (props: {
         ? "item-error-pending"
         : "item-error";
     if (props.message) {
-      tooltip = t("Disabled") + ". " + msgMap[props.name + "_msg_" + props.message];
+      tooltip = t("Disabled") + ". " + messageMap[props.name + "_msg_" + props.message];
     } else {
       tooltip = t("Disabled");
     }
@@ -146,7 +146,12 @@ const ListPlaceholder = (props) => {
   );
 };
 
-const HelpPanel = (props) => {
+type HelpPanelProps = {
+  isUyuni: boolean;
+};
+
+const HelpPanel = (props: HelpPanelProps) => {
+  const docsDirectory = props.isUyuni ? "/uyuni" : "/suse-manager";
   return (
     <div className="col-sm-3 hidden-xs" id="wizard-faq">
       <h4>{t("Server Monitoring")}</h4>
@@ -160,13 +165,13 @@ const HelpPanel = (props) => {
       <p>
         {t("Refer to the ")}
         <a
-          href={"/docs/" + docsLocale + "/suse-manager/administration/monitoring.html"}
+          href={"/docs/" + docsLocale + docsDirectory + "/administration/monitoring.html"}
           target="_blank"
           rel="noopener noreferrer"
         >
           {t("documentation")}
         </a>
-        {t(" to learn how to to consume these metrics.")}
+        {t(" to learn how to consume these metrics.")}
       </p>
     </div>
   );
@@ -187,7 +192,7 @@ const ExportersMessages = (props: {
           .map((key) => (
             <li key={key}>
               <Icon type="system-warn" className="fa-1-5x" />
-              {msgMap[key + "_msg_" + props.messages[key]]}
+              {messageMap[key + "_msg_" + props.messages[key]]}
             </li>
           ))}
       </ul>
@@ -197,7 +202,11 @@ const ExportersMessages = (props: {
   }
 };
 
-const MonitoringAdmin = (props) => {
+type MonitoringAdminProps = {
+  isUyuni: boolean;
+};
+
+const MonitoringAdmin = (props: MonitoringAdminProps) => {
   const {
     action,
     fetchStatus,
@@ -210,7 +219,9 @@ const MonitoringAdmin = (props) => {
   } = useMonitoringApi();
 
   const handleResponseError = (jqXHR: JQueryXHR, arg: string = "") => {
-    const msg = Network.responseErrorMessage(jqXHR, (status, msg) => (msgMap[msg] ? t(msgMap[msg], arg) : null));
+    const msg = Network.responseErrorMessage(jqXHR, (status, msg) =>
+      messageMap[msg] ? t(messageMap[msg], arg) : null
+    );
     setMessages(msg);
   };
 
@@ -225,9 +236,9 @@ const MonitoringAdmin = (props) => {
     changeStatus(enable)
       .then((result: any) => {
         if (result.success) {
-          setMessages(MessagesUtils.success(msgMap[result.message]));
+          setMessages(MessagesUtils.success(messageMap[result.message]));
         } else {
-          setMessages(MessagesUtils.error(result.message in msgMap ? msgMap[result.message] : result.message));
+          setMessages(MessagesUtils.error(result.message in messageMap ? messageMap[result.message] : result.message));
         }
       })
       .catch(handleResponseError);
@@ -328,7 +339,7 @@ const MonitoringAdmin = (props) => {
         <h1>
           <i className="fa fa-info-circle"></i>
           {t("SUSE Manager Configuration - Monitoring")}
-          <HelpLink url="suse-manager/administration/monitoring.html" />
+          <HelpLink url={`${props.isUyuni ? "uyuni" : "suse-manager"}/administration/monitoring.html`} />
         </h1>
       </div>
       <div className="page-summary">
@@ -402,7 +413,7 @@ const MonitoringAdmin = (props) => {
               <ExportersMessages messages={exportersMessages} />
             </div>
           </div>
-          <HelpPanel />
+          <HelpPanel isUyuni={props.isUyuni} />
         </div>
       </Panel>
     </div>

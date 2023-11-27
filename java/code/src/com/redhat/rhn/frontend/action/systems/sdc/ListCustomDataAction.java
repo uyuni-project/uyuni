@@ -28,14 +28,13 @@ import com.redhat.rhn.manager.system.SystemManager;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.DynaActionForm;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -47,35 +46,33 @@ public class ListCustomDataAction extends RhnAction {
     public static final String SID = "sid";
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-            ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
 
-        DynaActionForm form = (DynaActionForm)formIn;
         RequestContext ctx = new RequestContext(request);
         User user =  ctx.getCurrentUser();
-        Map params = makeParamMap(request);
+        Map<String, Object> params = makeParamMap(request);
         String fwd = RhnHelper.DEFAULT_FORWARD;
 
         Long sid = ctx.getRequiredParam(RequestContext.SID);
         Server server = SystemManager.lookupByIdAndUser(sid, user);
-        Set customDataValues = server.getCustomDataValues();
+        Set<CustomDataValue> customDataValues = server.getCustomDataValues();
 
-        if (customDataValues.size() == 0) {
+        if (customDataValues.isEmpty()) {
             request.setAttribute("listEmpty", "1");
         }
 
-        List<String> keyList = new ArrayList();
-        for (Object customDataValueIn : customDataValues) {
-            CustomDataValue val = (CustomDataValue) customDataValueIn;
-            keyList.add(val.getKey().getLabel());
-        }
-        Collections.sort(keyList);
+        List<String> keyList = customDataValues.stream()
+                .map(val -> val.getKey().getLabel())
+                .sorted()
+                .collect(Collectors.toList());
 
-        List pageList = new ArrayList();
+        List<Map<String, Object>> pageList = new ArrayList<>();
         for (String keyLabel : keyList) {
-            Map returnMap = new HashMap();
+            Map<String, Object> returnMap = new HashMap<>();
 
             CustomDataKey key = OrgFactory.lookupKeyByLabelAndOrg(keyLabel, user.getOrg());
             CustomDataValue val = server.getCustomDataValue(key);
@@ -87,7 +84,7 @@ public class ListCustomDataAction extends RhnAction {
                 returnMap.put("value", val.getValue());
             }
             else {
-                returnMap.put("value", new String(""));
+                returnMap.put("value", "");
             }
             pageList.add(returnMap);
         }
@@ -99,5 +96,4 @@ public class ListCustomDataAction extends RhnAction {
         return getStrutsDelegate().forwardParams(
                 mapping.findForward(fwd), params);
     }
-
 }

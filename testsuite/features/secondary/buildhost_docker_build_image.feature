@@ -1,11 +1,18 @@
-# Copyright (c) 2017-2022 SUSE LLC
+# Copyright (c) 2017-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # Basic images do not contain zypper nor the name of the server,
 # so the inspect functionality is not tested here.
 #
 # This feature is a dependency for:
-# - features/secondary/srv_docker_cve_audit.feature : Due to the images listed in the CVE Audit images
+# - features/secondary/srv_docker_cve_audit.feature 
+#
+# This feature depends on:
+# - features/secondary/min_docker_api.feature
+#
+# This feature can cause failures in the following features:
+# - features/secondary/min_salt_install_with_staging.feature
+# Due to the images listed in the CVE Audit images
 
 @buildhost
 @scope_building_container_images
@@ -14,7 +21,6 @@ Feature: Build container images
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
-    And I am logged in API as user "admin" and password "admin"
 
   Scenario: Create a simple image profile without activation key
     When I follow the left menu "Images > Profiles"
@@ -77,36 +83,42 @@ Feature: Build container images
     And I wait at most 600 seconds until image "suse_real_key" with version "latest" is built successfully via API
     And I wait at most 300 seconds until image "suse_real_key" with version "latest" is inspected successfully via API
     Then the list of packages of image "suse_real_key" with version "latest" is not empty
+    When I wait until no Salt job is running on "build_host"
 
   Scenario: Build suse_key images with different versions
     When I schedule the build of image "suse_key" with version "Latest_key-activation1" via API calls
     And I wait at most 600 seconds until image "suse_key" with version "Latest_key-activation1" is built successfully via API
     And I wait at most 300 seconds until image "suse_key" with version "Latest_key-activation1" is inspected successfully via API
     Then the list of packages of image "suse_key" with version "Latest_key-activation1" is not empty
-  
+    When I wait until no Salt job is running on "build_host"
+
   Scenario: Build suse_simple image with different versions
     When I schedule the build of image "suse_simple" with version "Latest_simple" via API calls
     And I wait at most 600 seconds until image "suse_simple" with version "Latest_simple" is built successfully via API
     And I wait at most 300 seconds until image "suse_simple" with version "Latest_simple" is inspected successfully via API
     Then the list of packages of image "suse_simple" with version "Latest_simple" is not empty
+    When I wait until no Salt job is running on "build_host"
 
   Scenario: Delete image via API calls
     When I delete the image "suse_key" with version "Latest_key-activation1" via API calls
     And I delete the image "suse_simple" with version "Latest_simple" via API calls
     Then the image "suse_simple" with version "Latest_key-activation1" doesn't exist via API calls
     And the image "suse_simple" with version "Latest_simple" doesn't exist via API calls
+    When I wait until no Salt job is running on "build_host"
 
   Scenario: Rebuild suse_simple image
     When I schedule the build of image "suse_simple" with version "Latest_simple" via API calls
     And I wait at most 600 seconds until image "suse_simple" with version "Latest_simple" is built successfully via API
     And I wait at most 300 seconds until image "suse_simple" with version "Latest_simple" is inspected successfully via API
     Then the list of packages of image "suse_simple" with version "Latest_simple" is not empty
+    When I wait until no Salt job is running on "build_host"
 
   Scenario: Rebuild suse_key image
     When I schedule the build of image "suse_key" with version "Latest_key-activation1" via API calls
     And I wait at most 600 seconds until image "suse_key" with version "Latest_key-activation1" is built successfully via API
     And I wait at most 300 seconds until image "suse_key" with version "Latest_key-activation1" is inspected successfully via API
     Then the list of packages of image "suse_key" with version "Latest_key-activation1" is not empty
+    When I wait until no Salt job is running on "build_host"
 
   Scenario: Build an image via the GUI
     When I follow the left menu "Images > Build"
@@ -114,6 +126,7 @@ Feature: Build container images
     And I enter "GUI_BUILT_IMAGE" as "version"
     And I select the hostname of "build_host" from "buildHostId"
     And I click on "submit-btn"
+    And I wait until no Salt job is running on "build_host"
     Then I wait until I see "GUI_BUILT_IMAGE" text
     And I wait at most 600 seconds until image "suse_real_key" with version "GUI_BUILT_IMAGE" is built successfully via API
     And I wait at most 300 seconds until image "suse_real_key" with version "GUI_BUILT_IMAGE" is inspected successfully via API
@@ -125,15 +138,18 @@ Feature: Build container images
     And I enter "GUI_DOCKERADMIN" as "version"
     And I select the hostname of "build_host" from "buildHostId"
     And I click on "submit-btn"
+    And I wait until no Salt job is running on "build_host"
     Then I wait until I see "GUI_DOCKERADMIN" text
     And I wait at most 600 seconds until image "suse_real_key" with version "GUI_DOCKERADMIN" is built successfully via API
     And I wait at most 300 seconds until image "suse_real_key" with version "GUI_DOCKERADMIN" is inspected successfully via API
 
   Scenario: Cleanup: delete all images
     Given I am authorized as "admin" with password "admin"
-    When I delete the image "suse_key" with version "Latest" via API calls
-    And I delete the image "suse_simple" with version "Latest_simple" via API calls
+    When I delete the image "suse_key" with version "latest" via API calls
     And I delete the image "suse_key" with version "Latest_key-activation1" via API calls
+    And I delete the image "suse_simple" with version "latest" via API calls
+    And I delete the image "suse_simple" with version "Latest_simple" via API calls
+    And I delete the image "suse_real_key" with version "latest" via API calls
     And I delete the image "suse_real_key" with version "GUI_BUILT_IMAGE" via API calls
     And I delete the image "suse_real_key" with version "GUI_DOCKERADMIN" via API calls
 
@@ -147,4 +163,6 @@ Feature: Build container images
     And I should see a "Are you sure you want to delete selected profiles?" text
     And I click on the red confirmation button
     And I wait until I see "Image profiles have been deleted" text
-    And I logout from API
+
+  Scenario: Cleanup: Make sure no job is left running on buildhost
+    When I wait until no Salt job is running on "build_host"

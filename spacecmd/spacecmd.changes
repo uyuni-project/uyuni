@@ -1,6 +1,50 @@
-- Correctly understand 'ssm' keyword on scap scheduling
-- Add vendor_advisory information to errata_details call (bsc#1205207)
-* Change default port of "Containerized Proxy configuration" 8022 (#19543)
+-------------------------------------------------------------------
+Wed Nov 01 20:54:15 CET 2023 - marina.latini@suse.com
+
+- version 4.4.9-1
+  * Update translation strings
+
+-------------------------------------------------------------------
+Mon Sep 18 14:19:12 CEST 2023 - rosuna@suse.com
+
+- version 4.4.8-1
+  * Add spacecmd function: cryptokey_update
+  * Update translation strings
+  * Bypass traditional systems check on older SUMA instances (bsc#1208612)
+  * fix argument parsing of distribution_update (bsc#1210458)
+
+-------------------------------------------------------------------
+Wed Apr 19 12:49:39 CEST 2023 - marina.latini@suse.com
+
+- version 4.4.7-1
+  * remove pylint check at build time
+  * Display activation key details after executing the corresponding command (bsc#1208719)
+  * Show targetted packages before actually removing them (bsc#1207830)
+
+-------------------------------------------------------------------
+Tue Feb 21 12:29:28 CET 2023 - jgonzalez@suse.com
+
+- version 4.4.6-1
+  * Fix spacecmd not showing any output for softwarechannel_diff 
+    and softwarechannel_errata_diff (bsc#1207352)
+
+-------------------------------------------------------------------
+Mon Jan 23 08:24:16 CET 2023 - jgonzalez@suse.com
+
+- version 4.4.5-1
+  * Prevent string api parameters to be parsed as dates if not in
+    ISO-8601 format (bsc#1205759)
+  * Add python-dateutil dependency, required to process date values in
+    spacecmd api calls
+  * Remove python3-simplejson dependency
+
+-------------------------------------------------------------------
+Wed Dec 14 14:07:34 CET 2022 - jgonzalez@suse.com
+
+- version 4.4.4-1
+  * Correctly understand 'ssm' keyword on scap scheduling
+  * Add vendor_advisory information to errata_details call (bsc#1205207)
+  * Change default port of "Containerized Proxy configuration" 8022
 
 -------------------------------------------------------------------
 Fri Nov 18 15:02:05 CET 2022 - jgonzalez@suse.com

@@ -1,4 +1,4 @@
-# Copyright (c) 2022 SUSE LLC
+# Copyright (c) 2022-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 # This feature is not idempotent, we leave the system registered in order to have the history of events available
@@ -13,10 +13,11 @@ Feature: Bootstrap a virtualization host minion and set it up for virtualization
   Scenario: Create KVM activation key
     When I follow the left menu "Systems > Activation Keys"
     And I follow "Create Key"
+    And I wait until I do not see "Loading..." text
     When I enter "KVM testing" as "description"
     And I enter "KVM-TEST" as "key"
     And I enter "20" as "usageLimit"
-    And I select "Test-Channel-x86_64" from "selectedBaseChannel"
+    And I select "Test-Base-Channel-x86_64" from "selectedBaseChannel"
     And I click on "Create Activation Key"
     Then I should see a "Activation key KVM testing has been created" text
 
@@ -30,7 +31,7 @@ Feature: Bootstrap a virtualization host minion and set it up for virtualization
     And I select "1-KVM-TEST" from "activationKeys"
     And I select the hostname of "proxy" from "proxies" if present
     And I click on "Bootstrap"
-    And I wait until I see "Successfully bootstrapped host!" text
+    And I wait until I see "Bootstrap process initiated." text
     And I wait until onboarding is completed for "kvm_server"
 
   Scenario: Show the KVM host system overview

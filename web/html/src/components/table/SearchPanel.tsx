@@ -52,11 +52,14 @@ export function SearchPanel(props: SearchPanelProps) {
           onSearchField: props.onSearchField,
         })
       )}
-      <div className="d-inline-block">
-        <span>{t("Items {0} - {1} of {2}", props.fromItem, props.toItem, props.itemCount)}&nbsp;&nbsp;</span>
+      <div className="d-inline-block table-search-select-all">
+        <span>
+          {t("Items {from} - {to} of {total}", { from: props.fromItem, to: props.toItem, total: props.itemCount })}
+          &nbsp;&nbsp;
+        </span>
         {props.selectable && props.selectedCount > 0 && (
           <span>
-            {t("({0} selected)", props.selectedCount)}&nbsp;
+            {t("({selectedCount} selected)", { selectedCount: props.selectedCount })}&nbsp;
             <button className="btn-link" onClick={props.onClear}>
               {t("Clear")}
             </button>

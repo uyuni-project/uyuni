@@ -24,7 +24,7 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.util.FileUtils;
-import com.redhat.rhn.common.util.MD5Crypt;
+import com.redhat.rhn.common.util.SHA256Crypt;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.common.CommonFactory;
@@ -422,10 +422,9 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
      * @param data kickstart data
      * @param c channel
      * @return Returns a committed KickstartDefaults
-     * @throws Exception something bad happened
      */
     public static KickstartDefaults createDefaults(KickstartData data,
-            Channel c) throws Exception {
+            Channel c) {
         KickstartDefaults d = new KickstartDefaults();
         d.setKsdata(data);
         KickstartVirtualizationType type = KickstartFactory.
@@ -446,9 +445,8 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
      * Creates KickstartData for testing purposes.
      * @param orgIn the org
      * @return Returns a committed KickstartData
-     * @throws Exception something bad happened
      */
-    public static KickstartData createTestKickstartData(Org orgIn) throws Exception {
+    public static KickstartData createTestKickstartData(Org orgIn) {
         String label = "KS Data: " + TestUtils.randomString();
         String comments = "KS Data automated test";
 
@@ -533,7 +531,7 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
 
         KickstartCommand root = new KickstartCommand();
         root.setCommandName(rootName);
-        root.setArguments(MD5Crypt.crypt("testing123"));
+        root.setArguments(SHA256Crypt.crypt("testing123"));
         root.setKickstartData(k);
         root.setCreated(created);
         root.setModified(modified);
@@ -713,13 +711,11 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
         k.getKickstartDefaults().setVirtualizationType(
                 KickstartVirtualizationType.kvmGuest());
 
-        assertTrue(k.getDefaultVirtBridge().equals(
-                ConfigDefaults.get().getDefaultKVMVirtBridge()));
+        assertEquals(k.getDefaultVirtBridge(), ConfigDefaults.get().getDefaultKVMVirtBridge());
 
         k.getKickstartDefaults().setVirtualizationType(
                 KickstartVirtualizationType.xenPV());
 
-        assertTrue(k.getDefaultVirtBridge().equals(
-                ConfigDefaults.get().getDefaultXenVirtBridge()));
+        assertEquals(k.getDefaultVirtBridge(), ConfigDefaults.get().getDefaultXenVirtBridge());
     }
 }

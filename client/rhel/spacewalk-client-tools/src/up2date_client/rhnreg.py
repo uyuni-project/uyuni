@@ -22,7 +22,6 @@ from up2date_client.rhnPackageInfo import convertPackagesFromHashToList
 from up2date_client.pkgplatform import getPlatform
 from rhn.stringutils import ustr, sstr
 from rhn.tb import raise_with_tb
-from suseRegister.info import getProductProfile
 
 try: # python2
     import urlparse
@@ -334,8 +333,8 @@ class RegistrationResult:
 def registerSystemAddProductProfile( server, data ):
     if server.capabilities.hasCapability('xmlrpc.packages.suse_products', 1):
         # also send information about the installed products
-        log.log_me('Updating product profile')
-        data["suse_products"] = getProductProfile()
+        log.log_me('Unsupported product profile update called')
+        raise NotImplementedError
 
 def registerSystem(username = None, password = None,
                    profileName = None,

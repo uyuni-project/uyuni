@@ -41,12 +41,7 @@ class JarFinder implements Finder {
         url = packageUrl;
     }
 
-    /** {@inheritDoc} */
-    public List<String> find(String endStr) {
-        return findExcluding(null, endStr);
-    }
-
-    /** {@inheritDoc} */
+    @Override
     public List<String> findExcluding(String[] excludes, String endStr) {
         try {
             JarURLConnection conn = (JarURLConnection)url.openConnection();

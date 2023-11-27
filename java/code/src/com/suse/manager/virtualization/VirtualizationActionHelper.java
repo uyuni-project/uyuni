@@ -43,7 +43,6 @@ import com.suse.manager.webui.controllers.virtualization.gson.VirtualGuestsUpdat
 import com.suse.manager.webui.utils.MinionActionUtils;
 import com.suse.manager.webui.utils.gson.ScheduledRequestJson;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.cobbler.Profile;
@@ -94,9 +93,7 @@ public class VirtualizationActionHelper {
         action.setSchedulerUser(user);
         action.setEarliestAction(MinionActionUtils.getScheduleDate(data.getEarliest()));
 
-        Optional<ActionChain> actionChain = data.getActionChain()
-                .filter(StringUtils::isNotEmpty)
-                .map(label -> ActionChainFactory.getOrCreateActionChain(label, user));
+        ActionChain actionChain = MinionActionUtils.getActionChain(data.getActionChain(), user);
 
         schedule(action, host, actionChain);
         return action.getId().intValue();
@@ -341,7 +338,7 @@ public class VirtualizationActionHelper {
      *
      * @throws TaskomaticApiException if an error happened while scheduling
      */
-    public static void schedule(Action action, Server targetSystem, Optional<ActionChain> actionChain)
+    public static void schedule(Action action, Server targetSystem, ActionChain actionChain)
             throws TaskomaticApiException {
         if (targetSystem == null) {
             throw new UninitializedCommandException("No targetSystem for virtualization action");
@@ -350,13 +347,13 @@ public class VirtualizationActionHelper {
         LOG.debug("schedule() called.");
         ActionFactory.save(action);
 
-        if (actionChain == null || !actionChain.isPresent()) {
+        if (actionChain == null) {
             ActionManager.scheduleForExecution(action, Collections.singleton(targetSystem.getId()));
             taskomaticApi.scheduleActionExecution(action);
         }
         else {
-            Integer sortOrder = ActionChainFactory.getNextSortOrderValue(actionChain.get());
-            ActionChainFactory.queueActionChainEntry(action, actionChain.get(),
+            Integer sortOrder = ActionChainFactory.getNextSortOrderValue(actionChain);
+            ActionChainFactory.queueActionChainEntry(action, actionChain,
                     targetSystem.getId(), sortOrder);
         }
     }

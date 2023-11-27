@@ -53,8 +53,10 @@ public class PkgProfileUpdateSlsResult {
     public static final String PKG_PROFILE_WHATPROVIDES_SLL_RELEASE =
             "cmd_|-sllpkgquery_|-rpm -q --whatprovides 'sll-release'_|-run";
 
-    @SerializedName("mgrcompat_|-kernel_live_version_|-sumautil.get_kernel_live_version_|" +
-            "-module_run")
+    @SerializedName("mgrcompat_|-status_uptime_|-status.uptime_|-module_run")
+    private Optional<StateApplyResult<Ret<Map<String, Object>>>> upTime = Optional.empty();
+
+    @SerializedName("mgrcompat_|-kernel_live_version_|-sumautil.get_kernel_live_version_|-module_run")
     private Optional<StateApplyResult<Ret<KernelLiveVersionInfo>>> kernelLiveVersionInfo = Optional.empty();
 
     @SerializedName("mgrcompat_|-grains_update_|-grains.items_|-module_run")
@@ -92,6 +94,14 @@ public class PkgProfileUpdateSlsResult {
 
     @SerializedName(PKG_PROFILE_WHATPROVIDES_SLL_RELEASE)
     private StateApplyResult<CmdResult> whatProvidesSLLReleasePkg;
+
+    /**
+     * Gets the system uptime
+     * @return the system uptime
+     */
+    public Optional<StateApplyResult<Ret<Map<String, Object>>>> getUpTime() {
+        return upTime;
+    }
 
     /**
      * Gets live patching info.

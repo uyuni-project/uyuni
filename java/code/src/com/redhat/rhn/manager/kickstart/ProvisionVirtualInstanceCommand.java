@@ -74,7 +74,7 @@ public class ProvisionVirtualInstanceCommand extends KickstartScheduleCommand {
      */
     public ProvisionVirtualInstanceCommand(Long selectedServer, User userIn) {
         super(selectedServer, null, (KickstartData)null, userIn, null, null);
-        this.setPackagesToInstall(new LinkedList());
+        this.setPackagesToInstall(new LinkedList<>());
     }
 
     /**
@@ -377,6 +377,7 @@ public class ProvisionVirtualInstanceCommand extends KickstartScheduleCommand {
     /**
      * {@inheritDoc}
      */
+    @Override
     public ValidatorError doValidation() {
         if (guestName.length() < MIN_NAME_SIZE) {
             return new ValidatorError(

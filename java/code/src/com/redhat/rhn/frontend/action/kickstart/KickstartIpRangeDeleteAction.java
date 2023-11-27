@@ -46,12 +46,13 @@ public class KickstartIpRangeDeleteAction extends RhnAction {
      *
      * {@inheritDoc}
      */
+    @Override
     public final ActionForward execute(ActionMapping mapping,
-            ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                       ActionForm formIn,
+                                       HttpServletRequest request,
+                                       HttpServletResponse response) {
 
-        Map params = makeParamMap(request);
+        Map<String, Object> params = makeParamMap(request);
         RequestContext ctx = new RequestContext(request);
         User user = ctx.getCurrentUser();
         ActionErrors messages = new ActionErrors();
@@ -69,8 +70,7 @@ public class KickstartIpRangeDeleteAction extends RhnAction {
             throw new BadParameterException("Missing min, max and/or ksid for ks ip range");
         }
         // make sure org has permission
-        else if (user.getOrg().getId() !=
-            cmd.getKickstartData().getOrg().getId()) {
+        else if (!user.getOrg().getId().equals(cmd.getKickstartData().getOrg().getId())) {
             throw new BadParameterException("Invalid uid for /rhn/kickstart/");
         }
         // delete ip range from kickstart
@@ -79,7 +79,7 @@ public class KickstartIpRangeDeleteAction extends RhnAction {
                     request.getParameter(MIN),
                     request.getParameter(MAX));
             if (success) {
-                createSuccessMessage(request, getSuccessKey(),
+                createSuccessMessage(request, "kickstart.iprange_delete.success",
                         cmd.getKickstartData().getLabel());
             }
             else {
@@ -96,13 +96,4 @@ public class KickstartIpRangeDeleteAction extends RhnAction {
         return strutsDelegate.forwardParams(mapping.findForward(RhnHelper.DEFAULT_FORWARD),
                 params);
     }
-
-    /**
-     *
-     * @return i18n key
-     */
-    private String getSuccessKey() {
-        return "kickstart.iprange_delete.success";
-    }
-
 }

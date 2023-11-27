@@ -29,7 +29,7 @@ import org.junit.jupiter.api.Test;
 public class ChannelFilesImportTest extends RhnPostMockStrutsTestCase {
 
     @Test
-    public void testExecuteNoFiles() throws Exception {
+    public void testExecuteNoFiles() {
         UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
 
         //create a file that is not in this channel
@@ -43,7 +43,7 @@ public class ChannelFilesImportTest extends RhnPostMockStrutsTestCase {
     }
 
     @Test
-    public void testSubmitNoFiles() throws Exception {
+    public void testSubmitNoFiles() {
         UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
 
         ConfigChannel cc = ConfigTestUtils.createConfigChannel(user.getOrg());

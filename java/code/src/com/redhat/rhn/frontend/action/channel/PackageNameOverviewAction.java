@@ -42,8 +42,9 @@ public class PackageNameOverviewAction extends RhnAction {
     private static Logger log = LogManager.getLogger(PackageNameOverviewAction.class);
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
-            HttpServletRequest request, HttpServletResponse response) {
+                                 HttpServletRequest request, HttpServletResponse response) {
         String pkgName = request.getParameter("package_name");
         String subscribedChannels = request.getParameter("search_subscribed_channels");
         String channelFilter = request.getParameter("channel_filter");
@@ -53,7 +54,7 @@ public class PackageNameOverviewAction extends RhnAction {
         RequestContext ctx = new RequestContext(request);
         User user = ctx.getCurrentUser();
 
-        List dr = Collections.EMPTY_LIST;
+        List dr = Collections.emptyList();
         if (StringUtils.equals(subscribedChannels, "yes")) {
             dr = PackageManager.lookupPackageNameOverview(
                     user.getOrg(), pkgName);
@@ -69,7 +70,7 @@ public class PackageNameOverviewAction extends RhnAction {
             }
             catch (NumberFormatException e) {
                 log.warn("Exception caught, unable to parse channel ID: {}", channelFilter);
-                dr = Collections.EMPTY_LIST;
+                dr = Collections.emptyList();
             }
         }
         else if (channelArches != null && channelArches.length > 0) {

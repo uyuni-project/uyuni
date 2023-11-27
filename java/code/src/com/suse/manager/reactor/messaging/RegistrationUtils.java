@@ -22,9 +22,11 @@ import static java.util.stream.Collectors.partitioningBy;
 import static java.util.stream.Collectors.toSet;
 
 import com.redhat.rhn.GlobalInstanceHolder;
+import com.redhat.rhn.common.RhnRuntimeException;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductChannel;
@@ -75,14 +77,12 @@ import java.util.stream.Stream;
  */
 public class RegistrationUtils {
 
-    private static final List<String> BLACKLIST = List.of("rhncfg", "rhncfg-actions", "rhncfg-client",
-            "rhn-virtualization-host", "osad", "mgr-cfg", "mgr-cfg-actions", "mgr-cfg-client",
-            "mgr-virtualization-host", "mgr-osad");
-
     private static final String OS = "os";
     private static final String OS_ARCH = "osarch";
 
     private static final Logger LOG = LogManager.getLogger(RegistrationUtils.class);
+    public static final String OS_MAJOR_RELEASE = "osmajorrelease";
+    public static final String OS_RELEASE = "osrelease";
 
     private static SystemEntitlementManager systemEntitlementManager = GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER;
 
@@ -96,13 +96,11 @@ public class RegistrationUtils {
      * @param activationKey the activation key
      * @param creator user performing the registration
      * @param enableMinionService true if salt-minion service should be enabled and running
+     * @param isSaltSSH true if the minion is ssh push minion
      */
     public static void finishRegistration(MinionServer minion, Optional<ActivationKey> activationKey,
-            Optional<User> creator, boolean enableMinionService) {
+            Optional<User> creator, boolean enableMinionService, boolean isSaltSSH) {
         String minionId = minion.getMinionId();
-
-        // Asynchronously get the uptime of this minion
-        MessageQueue.publish(new MinionStartEventDatabaseMessage(minionId));
 
         // Generate pillar data
         try {
@@ -133,7 +131,7 @@ public class RegistrationUtils {
         if (enableMinionService) {
             statesToApply.add(ApplyStatesEventMessage.SALT_MINION_SERVICE);
         }
-        else {
+        if (isSaltSSH) {
             // SSH Minions need this to set last booted value.
             statesToApply.add(ApplyStatesEventMessage.SYSTEM_INFO);
         }
@@ -146,7 +144,11 @@ public class RegistrationUtils {
 
         // Call final highstate to deploy config channels if required
         if (applyHighstate) {
-            MessageQueue.publish(new ApplyStatesEventMessage(minion.getId(), true, emptyList()));
+            MessageQueue.publish(new ApplyStatesEventMessage(
+                    minion.getId(),
+                    minion.getCreator() != null ? minion.getCreator().getId() : null,
+                    true,
+                    emptyList()));
         }
         SystemManager.setReportDbUser(minion, false);
 
@@ -164,7 +166,7 @@ public class RegistrationUtils {
         }
         catch (TaskomaticApiException e) {
             LOG.error("Could not schedule hardware refresh for system: {}", server.getId());
-            throw new RuntimeException(e);
+            throw new RhnRuntimeException(e);
         }
     }
 
@@ -186,7 +188,6 @@ public class RegistrationUtils {
         serverStateRevision.setCreator(ak.getCreator());
         serverStateRevision.setPackageStates(
                 ak.getPackages().stream()
-                        .filter(p -> !BLACKLIST.contains(p.getPackageName().getName()))
                         .map(tp -> {
                             PackageState state = new PackageState();
                             state.setArch(tp.getPackageArch());
@@ -207,10 +208,10 @@ public class RegistrationUtils {
                     e.isAllowedOnServer(server, grains) &&
                     systemEntitlementManager.canEntitleServer(server, e)) {
                 ValidatorResult vr = systemEntitlementManager.addEntitlementToServer(server, e);
-                if (vr.getWarnings().size() > 0) {
+                if (!vr.getWarnings().isEmpty()) {
                     LOG.warn(vr.getWarnings().toString());
                 }
-                if (vr.getErrors().size() > 0) {
+                if (!vr.getErrors().isEmpty()) {
                     LOG.error(vr.getErrors().toString());
                 }
             }
@@ -344,11 +345,47 @@ public class RegistrationUtils {
         );
     }
 
+    /**
+     * Check if the products installed on the minion are allowed for free
+     * use on a SUSE Manager PAYG Server
+     * @param systemQuery query api
+     * @param minionId the minionId
+     * @param channels assigned channels
+     * @param grains the system grains
+     * @return true if the use is allowed
+     */
+    public static boolean isAllowedOnPayg(SystemQuery systemQuery, String minionId,
+                                          Set<Channel> channels, ValueMap grains) {
+        boolean isPaygClient = grains.getOptionalAsBoolean("is_payg_instance").orElse(false);
+        if (isPaygClient) {
+            return true;
+        }
+        return identifyProduct(systemQuery, minionId, grains.getValueAsString(OS_ARCH), channels, grains)
+                .stream()
+                .allMatch(p -> {
+                    if (p.getFree()) {
+                        return true;
+                    }
+                    ChannelFamily cf = p.getChannelFamily();
+                    if (cf != null) {
+                        return cf.getLabel().equals("SMP") || cf.getLabel().equals("SLE-M-T");
+                    }
+                    return false;
+                });
+    }
+
     private static Set<SUSEProduct> identifyProduct(SystemQuery systemQuery, MinionServer server, ValueMap grains) {
-        if ("suse".equalsIgnoreCase(grains.getValueAsString(OS))) {
+        return identifyProduct(systemQuery, server.getMinionId(), server.getServerArch().getLabel(),
+                server.getChannels(), grains);
+    }
+    private static Set<SUSEProduct> identifyProduct(SystemQuery systemQuery, String minionId, String arch,
+                                                    Set<Channel> channels, ValueMap grains) {
+        String osGrain = grains.getValueAsString(OS);
+        String osArchGrain = grains.getValueAsString(OS_ARCH);
+        if ("suse".equalsIgnoreCase(osGrain)) {
             Optional<List<Zypper.ProductInfo>> productList =
-                    systemQuery.getProducts(server.getMinionId());
-            return Opt.stream(productList).flatMap(pl -> pl.stream()
+                    systemQuery.getProducts(minionId);
+            return productList.stream().flatMap(pl -> pl.stream()
                     .flatMap(pi -> {
                         String osName = pi.getName().toLowerCase();
                         String osVersion = pi.getVersion();
@@ -357,54 +394,48 @@ public class RegistrationUtils {
                         Optional<SUSEProduct> suseProduct =
                                 ofNullable(SUSEProductFactory.findSUSEProduct(osName,
                                         osVersion, osRelease, osArch, true));
-                        if (!suseProduct.isPresent()) {
+                        if (suseProduct.isEmpty()) {
                             LOG.warn("No product match found for: {} {} {} {}", osName, osVersion, osRelease, osArch);
                         }
-                        return Opt.stream(suseProduct);
+                        return suseProduct.stream();
                     })).collect(toSet());
         }
-        else if ("redhat".equalsIgnoreCase(grains.getValueAsString(OS)) ||
-                 "centos".equalsIgnoreCase(grains.getValueAsString(OS)) ||
-                 "oel".equalsIgnoreCase(grains.getValueAsString(OS)) ||
-                 "alibaba cloud (aliyun)".equalsIgnoreCase(grains.getValueAsString(OS)) ||
-                 "almalinux".equalsIgnoreCase(grains.getValueAsString(OS)) ||
-                 "amazon".equalsIgnoreCase(grains.getValueAsString(OS)) ||
-                 "rocky".equalsIgnoreCase(grains.getValueAsString(OS))) {
+        else if (Set.of("redhat", "centos", "oel", "alibaba cloud (aliyun)", "almalinux", "amazon", "rocky")
+                .contains(osGrain.toLowerCase())) {
 
-            Optional<RedhatProductInfo> redhatProductInfo = systemQuery.redhatProductInfo(server.getMinionId());
+            Optional<RedhatProductInfo> redhatProductInfo = systemQuery.redhatProductInfo(minionId);
 
+            String productArch = arch.replace("-redhat-linux", "");
             Optional<RhelUtils.RhelProduct> rhelProduct =
-                    redhatProductInfo.flatMap(x -> RhelUtils.detectRhelProduct(
-                            server, x.getWhatProvidesRes(), x.getWhatProvidesSLL(),  x.getRhelReleaseContent(),
-                            x.getCentosReleaseContent(), x.getOracleReleaseContent(), x.getAlibabaReleaseContent(),
-                            x.getAlmaReleaseContent(), x.getAmazonReleaseContent(), x.getRockyReleaseContent()));
+                redhatProductInfo.flatMap(x -> RhelUtils.detectRhelProduct(
+                    channels, productArch, x.getWhatProvidesRes(), x.getWhatProvidesSLL(), x.getRhelReleaseContent(),
+                    x.getCentosReleaseContent(), x.getOracleReleaseContent(), x.getAlibabaReleaseContent(),
+                    x.getAlmaReleaseContent(), x.getAmazonReleaseContent(), x.getRockyReleaseContent()));
             return Opt.stream(rhelProduct).flatMap(rhel -> {
-                if (rhel.getSuseProduct().isPresent()) {
-                    return Opt.stream(rhel.getSuseProduct());
-                }
-                else {
+
+                if (rhel.getSuseBaseProduct().isEmpty()) {
                     LOG.warn("No product match found for: {} {} {} {}", rhel.getName(), rhel.getVersion(),
-                            rhel.getRelease(), server.getServerArch().getCompatibleChannelArch());
+                            rhel.getRelease(), productArch);
                     return Stream.empty();
                 }
+                return rhel.getAllSuseProducts().stream();
             }).collect(toSet());
         }
-        else if ("ubuntu".equalsIgnoreCase(grains.getValueAsString(OS))) {
+        else if ("ubuntu".equalsIgnoreCase(osGrain)) {
             SUSEProduct product = SUSEProductFactory.findSUSEProduct("ubuntu-client",
-                    grains.getValueAsString("osrelease"), null, grains.getValueAsString(OS_ARCH) + "-deb", false);
+                    grains.getValueAsString(OS_RELEASE), null, osArchGrain + "-deb", false);
             if (product != null) {
                 return Collections.singleton(product);
             }
         }
-        else if ("debian".equalsIgnoreCase(grains.getValueAsString(OS))) {
+        else if ("debian".equalsIgnoreCase(osGrain)) {
            SUSEProduct product = SUSEProductFactory.findSUSEProduct("debian-client",
-                   grains.getValueAsString("osmajorrelease"), null, grains.getValueAsString(OS_ARCH) + "-deb", false);
+                   grains.getValueAsString(OS_MAJOR_RELEASE), null, osArchGrain + "-deb", false);
            if (product != null) {
                return Collections.singleton(product);
            }
         }
-        LOG.warn("No product match found. OS grain is {}, arch is {}", grains.getValueAsString(OS),
-                grains.getValueAsString(OS_ARCH));
+        LOG.warn("No product match found. OS grain is {}, arch is {}", osGrain, osArchGrain);
         return emptySet();
     }
 

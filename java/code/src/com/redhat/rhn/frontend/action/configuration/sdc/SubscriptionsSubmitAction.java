@@ -45,6 +45,7 @@ public class SubscriptionsSubmitAction extends BaseSetOperateOnSelectedItemsActi
     /**
      * {@inheritDoc}
      */
+    @Override
     public RhnSetDecl getSetDecl() {
         return RhnSetDecl.CONFIG_CHANNELS_RANKING;
     }
@@ -52,8 +53,9 @@ public class SubscriptionsSubmitAction extends BaseSetOperateOnSelectedItemsActi
         /**
      * {@inheritDoc}
      */
+    @Override
     protected DataResult getDataResult(User user, ActionForm formIn,
-            HttpServletRequest request) {
+                                       HttpServletRequest request) {
         RequestContext context = new RequestContext(request);
         ConfigurationManager cm = ConfigurationManager.getInstance();
         Server server = context.lookupAndBindServer();
@@ -63,6 +65,7 @@ public class SubscriptionsSubmitAction extends BaseSetOperateOnSelectedItemsActi
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processMethodKeys(Map<String, String> map) {
         map.put(CONTINUE_ACTION, "moveToRankChannel");
     }
@@ -71,6 +74,7 @@ public class SubscriptionsSubmitAction extends BaseSetOperateOnSelectedItemsActi
      *
      * {@inheritDoc}
      */
+    @Override
     protected ActionMessage getNoScriptMessage() {
        return new ActionMessage(
                "common.config.subscription.jsp.error.nojavascript");
@@ -100,16 +104,15 @@ public class SubscriptionsSubmitAction extends BaseSetOperateOnSelectedItemsActi
        }
 
        Server server = context.lookupAndBindServer();
-        //Map params = makeParamMap(formIn, request);
-        Map params2 = new HashMap();
+        Map<String, Object> params2 = new HashMap<>();
         params2.put(RequestContext.SID, server.getId().toString());
         params2.put(WIZARD_MODE, Boolean.TRUE.toString());
-        return getStrutsDelegate().forwardParams(mapping.findForward("rank"),
-                                                                        params2);
+        return getStrutsDelegate().forwardParams(mapping.findForward("rank"), params2);
     }
 
+    @Override
     protected void processParamMap(ActionForm form,
-            HttpServletRequest request, Map<String, Object> params) {
+                                   HttpServletRequest request, Map<String, Object> params) {
         RequestContext  context = new RequestContext(request);
         params.put(RequestContext.SID,
                         context.lookupAndBindServer().getId().toString());

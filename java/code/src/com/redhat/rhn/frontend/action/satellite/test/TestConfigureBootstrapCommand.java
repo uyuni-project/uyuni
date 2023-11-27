@@ -30,6 +30,7 @@ public class TestConfigureBootstrapCommand extends ConfigureBootstrapCommand {
     /**
      * {@inheritDoc}
      */
+    @Override
     public ValidatorError[] storeConfiguration() {
         return null;
     }

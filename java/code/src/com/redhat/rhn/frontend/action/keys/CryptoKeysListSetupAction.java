@@ -15,6 +15,7 @@
 package com.redhat.rhn.frontend.action.keys;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.frontend.dto.CryptoKeyDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -36,12 +37,13 @@ public class CryptoKeysListSetupAction extends RhnAction {
     /**
      * ${@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
-            HttpServletRequest request, HttpServletResponse response) throws Exception {
+                                 HttpServletRequest request, HttpServletResponse response) {
 
         RequestContext requestContext = new RequestContext(request);
 
-        DataResult result = KickstartLister.getInstance().cryptoKeysInOrg(
+        DataResult<CryptoKeyDto> result = KickstartLister.getInstance().cryptoKeysInOrg(
                 requestContext.getCurrentUser().getOrg());
         request.setAttribute(RequestContext.PAGE_LIST, result);
         request.setAttribute(ListTagHelper.PARENT_URL, request.getRequestURI());

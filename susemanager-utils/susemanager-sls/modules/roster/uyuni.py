@@ -89,7 +89,9 @@ class UyuniRoster:
                 )
             )
 
-        log.trace("db_connect string: %s", self.db_connect_str)
+        log.trace("db_connect dbname: %s", db_config["db"])
+        log.trace("db_connect   user: %s", db_config["user"])
+        log.trace("db_connect   host: %s", db_config["host"])
         log.debug("ssh_pre_flight_script: %s", self.ssh_pre_flight_script)
         log.debug("ssh_push_port_https: %d", self.ssh_push_port_https)
         log.debug("ssh_push_sudo_user: %s", self.ssh_push_sudo_user)

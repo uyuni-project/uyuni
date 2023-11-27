@@ -14,16 +14,24 @@
  */
 package com.redhat.rhn.frontend.dto;
 
+import com.redhat.rhn.common.db.datasource.Row;
+
 import org.apache.commons.lang3.StringUtils;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import javax.persistence.Tuple;
 
 /**
  * PackageOverview
  */
-public class PackageOverview extends BaseDto {
+public class PackageOverview extends BaseTupleDto {
 
     private Long id;
     private String packageName;
@@ -31,7 +39,7 @@ public class PackageOverview extends BaseDto {
     private String description;
     private String packageNvre;
     private String nvrea;
-    private List packageChannels;
+    private List<Row> packageChannels;
     private String packageArch;
     private String provider;
     private String version;
@@ -41,16 +49,38 @@ public class PackageOverview extends BaseDto {
 
 
     /**
+     * Default constructor for hibernate
+     */
+    public PackageOverview() {
+    }
+
+    /**
+     * Constructor using a tuple for paged SQL queries
+     * @param tuple the tuple from hibernate
+     */
+    public PackageOverview(Tuple tuple) {
+        id = getTupleValue(tuple, "id", Number.class).map(Number::longValue).orElse(null);
+        nvrea = getTupleValue(tuple, "nvrea", String.class).orElse(null);
+        provider = getTupleValue(tuple, "provider", String.class).orElse(null);
+        packageChannels = getTupleValue(tuple, "channels", String.class)
+                .map(value ->
+                        Arrays.stream(value.split(","))
+                                .map(c -> new Row(Map.of("name", c)))
+                                .collect(Collectors.toList()))
+                .orElse(new ArrayList<>());
+    }
+
+    /**
      * @return Returns the packageChannels.
      */
-    public List getPackageChannels() {
+    public List<Row> getPackageChannels() {
         return packageChannels;
     }
 
     /**
      * @param packageChannelsIn The packageChannels to set.
      */
-    public void setPackageChannels(List packageChannelsIn) {
+    public void setPackageChannels(List<Row> packageChannelsIn) {
         this.packageChannels = packageChannelsIn;
     }
 
@@ -85,6 +115,7 @@ public class PackageOverview extends BaseDto {
     /**
      * @return Returns the id.
      */
+    @Override
     public Long getId() {
         return id;
     }
@@ -131,12 +162,7 @@ public class PackageOverview extends BaseDto {
      */
     public String getUrlEncodedPackageName() {
         if (this.packageName != null) {
-            try {
-                return URLEncoder.encode(packageName, "UTF-8");
-            }
-            catch (UnsupportedEncodingException e) {
-                throw new RuntimeException(e);
-            }
+            return URLEncoder.encode(packageName, StandardCharsets.UTF_8);
         }
         return null;
     }

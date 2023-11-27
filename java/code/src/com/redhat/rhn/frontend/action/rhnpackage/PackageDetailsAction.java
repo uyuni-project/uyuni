@@ -54,10 +54,11 @@ public class PackageDetailsAction extends RhnAction {
     private final String PACKAGE_KEY = "package_key";
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-            ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
 
         RequestContext requestContext = new RequestContext(request);
         User user = requestContext.getCurrentUser();
@@ -73,7 +74,6 @@ public class PackageDetailsAction extends RhnAction {
                 throw new PermissionException("Invalid pid");
             }
 
-            request.setAttribute("type", "rpm");
             request.setAttribute(PACKAGE_NAME, pkg.getFilename());
             if (!pkg.getPackageKeys().isEmpty()) {
                 request.setAttribute(PACKAGE_KEY, pkg.getPackageKeys().iterator().next()

@@ -32,10 +32,12 @@ import java.util.Map;
  */
 public class SsmUpgradePackagesAction extends SsmPackagesAction {
 
+    @Override
     protected String getOperationName() {
         return "ssm.package.upgrade.operationname";
     }
 
+    @Override
     protected List<Long> getAffectedServers(SsmPackageEvent event, User u) {
         SsmUpgradePackagesEvent supe = (SsmUpgradePackagesEvent) event;
         List<Long> sids = new ArrayList<>();
@@ -43,8 +45,9 @@ public class SsmUpgradePackagesAction extends SsmPackagesAction {
        return sids;
     }
 
+    @Override
     protected List<Action> doSchedule(SsmPackageEvent event, User user, List<Long> sids,
-        Date earliest, ActionChain actionChain) throws TaskomaticApiException {
+                                      Date earliest, ActionChain actionChain) throws TaskomaticApiException {
 
         SsmUpgradePackagesEvent supe = (SsmUpgradePackagesEvent) event;
         Map<Long, List<Map<String, Long>>> packageListItems = supe.getSysPackageSet();

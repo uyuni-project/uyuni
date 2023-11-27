@@ -586,7 +586,7 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testParseActionChainStateId() throws Exception {
+    public void testParseActionChainStateId() {
         SaltActionChainGeneratorService service = new SaltActionChainGeneratorService();
         Optional<SaltActionChainGeneratorService.ActionChainStateId> result = service.parseActionChainStateId(
                 "mgrcompat_|-mgr_actionchain_144_action_854_chunk_1_|-state.apply_|-module_run");

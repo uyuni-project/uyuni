@@ -27,6 +27,7 @@ import java.lang.reflect.Method;
 
 public class AttributeCopyRule extends Rule {
     /** {@inheritDoc} */
+    @Override
     public void begin(String namespace, String name,
                       Attributes attributes) throws Exception {
         Object param = digester.peek();

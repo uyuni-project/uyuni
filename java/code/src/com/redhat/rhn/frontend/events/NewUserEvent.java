@@ -33,7 +33,7 @@ public class NewUserEvent extends BaseEvent implements EventMessage  {
     private User accountCreator;
     private String link;
     private String domain;
-    private List adminList;
+    private List<User> adminList;
 
     /**
      * format this message as a string
@@ -41,6 +41,7 @@ public class NewUserEvent extends BaseEvent implements EventMessage  {
      *                  request values
      * @return Text of email.
      */
+    @Override
     public String toText() {
         LocalizationService ls = LocalizationService.getInstance();
         //gather information for the email to newUser
@@ -141,13 +142,13 @@ public class NewUserEvent extends BaseEvent implements EventMessage  {
     /**
      * @return Returns the link.
      */
-    public List getAdmins() {
+    public List<User> getAdmins() {
         return adminList;
     }
     /**
      * @param admins Admins to set.
      */
-    public void setAdmins(List admins) {
+    public void setAdmins(List<User> admins) {
         this.adminList = admins;
     }
 

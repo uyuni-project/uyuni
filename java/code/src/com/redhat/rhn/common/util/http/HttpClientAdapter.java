@@ -77,25 +77,26 @@ public class HttpClientAdapter {
     public static final String MAX_CONNCECTIONS = "java.mgr_sync_max_connections";
     public static final String HTTP_CONNECTION_TIMEOUT = "java.http_connection_timeout";
     public static final String HTTP_SOCKET_TIMEOUT = "java.http_socket_timeout";
+    public static final String SALT_API_HTTP_SOCKET_TIMEOUT = "java.salt_api_http_socket_timeout";
     private static final int TO_MILLISECONDS = 1000;
 
     /** The log. */
-    private static Logger log = LogManager.getLogger(HttpClientAdapter.class);
+    private static final Logger LOG = LogManager.getLogger(HttpClientAdapter.class);
 
     /** The proxy host. */
     private HttpHost proxyHost;
 
     /** The http client. */
-    private HttpClient httpClient;
+    private final HttpClient httpClient;
 
     /** The no proxy domains. */
-    private List<String> noProxyDomains = new ArrayList<>();
+    private final List<String> noProxyDomains = new ArrayList<>();
 
     /** The request config. */
-    private RequestConfig requestConfig;
+    private final RequestConfig requestConfig;
 
     /** The credentials provider. */
-    private CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
+    private final CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
     /**
      * Initialize an {@link HttpClient} for performing requests. Proxy settings will
      * be read from the configuration and applied transparently.
@@ -114,7 +115,7 @@ public class HttpClientAdapter {
                     SSLConnectionSocketFactory.getDefaultHostnameVerifier()));
         }
         catch (NoSuchAlgorithmException e) {
-            log.warn("No such algorithm. Using default context", e);
+            LOG.warn("No such algorithm. Using default context", e);
         }
 
         HttpClientBuilder clientBuilder = HttpClientBuilder.create();
@@ -122,8 +123,8 @@ public class HttpClientAdapter {
 
         clientBuilder.setDefaultCredentialsProvider(credentialsProvider);
         Builder requestConfigBuilder = RequestConfig.custom()
-                .setConnectTimeout(Config.get().getInt(HTTP_CONNECTION_TIMEOUT, 5) * TO_MILLISECONDS)
-                .setSocketTimeout(Config.get().getInt(HTTP_SOCKET_TIMEOUT, 5 * 60) * TO_MILLISECONDS)
+                .setConnectTimeout(HttpClientAdapter.getHTTPConnectionTimeout(5))
+                .setSocketTimeout(HttpClientAdapter.getHTTPSocketTimeout(5 * 60))
                 .setCookieSpec(CookieSpecs.IGNORE_COOKIES);
 
         // Store the proxy settings
@@ -146,8 +147,8 @@ public class HttpClientAdapter {
             }
 
             // Explicitly exclude the NTLM authentication scheme
-            requestConfigBuilder =  requestConfigBuilder.setProxyPreferredAuthSchemes(
-                                    Arrays.asList(AuthSchemes.DIGEST, AuthSchemes.BASIC));
+            requestConfigBuilder = requestConfigBuilder.setProxyPreferredAuthSchemes(
+                    Arrays.asList(AuthSchemes.DIGEST, AuthSchemes.BASIC));
 
             clientBuilder.setProxyAuthenticationStrategy(new ProxyAuthenticationStrategy());
 
@@ -157,7 +158,7 @@ public class HttpClientAdapter {
         // Read proxy exceptions from the "no_proxy" config option
         String noProxy = Config.get().getString(NO_PROXY);
         if (!StringUtils.isBlank(noProxy)) {
-            for (String domain : Arrays.asList(noProxy.split(","))) {
+            for (String domain : noProxy.split(",")) {
                 noProxyDomains.add(domain.toLowerCase().trim());
             }
         }
@@ -190,20 +191,20 @@ public class HttpClientAdapter {
          */
         @Override
         public HttpRoute determineRoute(final HttpHost host, final HttpRequest request,
-                final HttpContext context) throws HttpException {
+                                        final HttpContext context) throws HttpException {
 
             Boolean ignoreNoProxy = (Boolean) context.getAttribute(IGNORE_NO_PROXY);
             URI requestUri = (URI) context.getAttribute(REQUEST_URI);
 
             if (proxyHost != null &&
                     (Boolean.TRUE.equals(ignoreNoProxy) || useProxyFor(requestUri))) {
-                if (log.isDebugEnabled()) {
-                    log.debug("Using proxy: {}", proxyHost);
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("Using proxy: {}", proxyHost);
                 }
                 return super.determineRoute(host, request, context);
             }
-            if (log.isDebugEnabled()) {
-                log.debug("Using a direct connection (no proxy)");
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Using a direct connection (no proxy)");
             }
             // Return direct route
             return new HttpRoute(host);
@@ -231,8 +232,8 @@ public class HttpClientAdapter {
      */
     public HttpResponse executeRequest(HttpRequestBase request, boolean ignoreNoProxy)
             throws IOException {
-        if (log.isDebugEnabled()) {
-            log.debug("{} {}", request.getMethod(), request.getURI());
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("{} {}", request.getMethod(), request.getURI());
         }
         // Decide if a proxy should be used for this request
 
@@ -245,8 +246,8 @@ public class HttpClientAdapter {
         request.setConfig(requestConfig);
         HttpResponse httpResponse = httpClient.execute(request, httpContxt);
 
-        if (log.isDebugEnabled()) {
-            log.debug("Response code: {}", httpResponse.getStatusLine().getStatusCode());
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Response code: {}", httpResponse.getStatusLine().getStatusCode());
         }
         return httpResponse;
     }
@@ -323,5 +324,29 @@ public class HttpClientAdapter {
             }
         }
         return true;
+    }
+
+    /**
+     * @param defaultTimeout default timeout in seconds
+     * @return return the HTTP Connection Timeout in milliseconds
+     */
+    public static int getHTTPConnectionTimeout(int defaultTimeout) {
+        return Config.get().getInt(HTTP_CONNECTION_TIMEOUT, defaultTimeout) * TO_MILLISECONDS;
+    }
+
+    /**
+     * @param defaultTimeout default timeout in seconds
+     * @return return the HTTP Socket Timeout in milliseconds
+     */
+    public static int getHTTPSocketTimeout(int defaultTimeout) {
+        return Config.get().getInt(HTTP_SOCKET_TIMEOUT, defaultTimeout) * TO_MILLISECONDS;
+    }
+
+    /**
+     * @param defaultTimeout default timeout in seconds
+     * @return return the HTTP Socket Timeout in milliseconds for salt api connections
+     */
+    public static int getSaltApiHTTPSocketTimeout(int defaultTimeout) {
+        return Config.get().getInt(SALT_API_HTTP_SOCKET_TIMEOUT, defaultTimeout) * TO_MILLISECONDS;
     }
 }

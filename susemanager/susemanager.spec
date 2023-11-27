@@ -30,7 +30,6 @@
 %global salt_group root
 %global serverdir %{_sharedstatedir}
 %global wwwroot %{_localstatedir}/www
-%global wwwdocroot %{wwwroot}/html
 %endif
 
 %if 0%{?suse_version}
@@ -41,13 +40,15 @@
 %global salt_group salt
 %global serverdir /srv
 %global wwwroot %{serverdir}/www
-%global wwwdocroot %{wwwroot}/htdocs
 %endif
+
+%global sharedwwwroot %{_datadir}/susemanager/www
+%global reporoot %{sharedwwwroot}/pub
 
 %global debug_package %{nil}
 
 Name:           susemanager
-Version:        4.4.2
+Version:        4.4.9
 Release:        1
 Summary:        SUSE Manager specific scripts
 License:        GPL-2.0-only
@@ -60,6 +61,8 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 %if 0%{?rhel}
 BuildRequires:  gettext
 %endif
+
+BuildRequires:  make
 
 %if 0%{?build_py3}
 BuildRequires:  python3-devel
@@ -74,14 +77,13 @@ BuildRequires:  python3-pycurl
 BuildRequires:  python-curl
 BuildRequires:  python-mock
 %endif
-BuildRequires:  python2
 %if !0%{?rhel}
+BuildRequires:  python2
 BuildRequires:  pyxml
 %endif
 BuildRequires:  spacewalk-backend >= 1.7.38.20
 BuildRequires:  spacewalk-backend-server
 BuildRequires:  spacewalk-backend-sql-postgresql
-BuildRequires:  suseRegisterInfo
 
 %if 0%{?suse_version}
 BuildRequires:  %fillup_prereq
@@ -153,7 +155,6 @@ BuildRequires:  python-enum34
 Requires:       spacewalk-backend >= 2.1.55.11
 Requires:       spacewalk-backend-sql
 Requires:       spacewalk-common
-Requires:       suseRegisterInfo
 Requires:       susemanager-build-keys
 Requires:       susemanager-sync-data
 BuildRequires:  docbook-utils
@@ -189,13 +190,15 @@ install -m 0644 etc/logrotate.d/susemanager-tools %{buildroot}/%{_sysconfdir}/lo
 install -m 0644 etc/slp.reg.d/susemanager.reg %{buildroot}/%{_sysconfdir}/slp.reg.d
 make -C src install PREFIX=$RPM_BUILD_ROOT PYTHON_BIN=%{pythonX} MANDIR=%{_mandir}
 install -d -m 755 %{buildroot}/%{wwwroot}/os-images/
+mkdir -p %{buildroot}/etc/apache2/conf.d
+install empty-repo.conf %{buildroot}/etc/apache2/conf.d/empty-repo.conf
 
 # empty repo for rhel base channels
-mkdir -p %{buildroot}%{wwwdocroot}/pub/repositories/
-cp -r pub/empty %{buildroot}%{wwwdocroot}/pub/repositories/
+mkdir -p %{buildroot}%{reporoot}/repositories/
+cp -r pub/empty %{buildroot}%{reporoot}/repositories/
 
 # empty repo for Ubuntu base fake channel
-cp -r pub/empty-deb %{buildroot}%{wwwdocroot}/pub/repositories/
+cp -r pub/empty-deb %{buildroot}%{reporoot}/repositories/
 
 # YaST configuration
 mkdir -p %{buildroot}%{_datadir}/YaST2/clients
@@ -244,39 +247,6 @@ popd
 %endif
 
 %post
-POST_ARG=$1
-if [ -f /etc/sysconfig/atftpd ]; then
-  . /etc/sysconfig/atftpd
-  if [ $ATFTPD_DIRECTORY = "/tftpboot" ]; then
-    sysconf_addword -r /etc/sysconfig/atftpd ATFTPD_DIRECTORY "/tftpboot"
-    sysconf_addword /etc/sysconfig/atftpd ATFTPD_DIRECTORY "%{serverdir}/tftpboot"
-  fi
-fi
-if [ ! -d %{serverdir}/tftpboot ]; then
-  mkdir -p %{serverdir}/tftpboot
-  chmod 750 %{serverdir}/tftpboot
-  chown %{apache_user}:%{tftp_group} %{serverdir}/tftpboot
-fi
-# XE appliance overlay file created this with different user
-chown root.root /etc/sysconfig
-if [ $POST_ARG -eq 2 ] ; then
-    # when upgrading make sure /var/spacewalk/systems has the correct perms and owner
-    MOUNT_POINT=$(grep -oP "^mount_point =\s*\K([^ ]+)" /etc/rhn/rhn.conf || echo "/var/spacewalk")
-    SYSTEMS_DIR="$MOUNT_POINT/systems"
-    if [[ -d "$MOUNT_POINT" && ! -d "$SYSTEMS_DIR" ]]; then
-        mkdir $SYSTEMS_DIR
-    fi
-    if [ -d "$SYSTEMS_DIR" ]; then
-        chmod 775 "$SYSTEMS_DIR"
-        chown %{apache_user}:%{apache_group} "$SYSTEMS_DIR"
-    fi
-fi
-# else new install and the systems dir should be created by spacewalk-setup
-# Fix permissions for existing swapfiles (bsc#1131954, CVE-2019-3684)
-if [[ -f /SWAPFILE && $(stat -c "%a" "/SWAPFILE") != "600" ]]; then
-    chmod 600 /SWAPFILE
-fi
-
 %if !0%{?suse_version}
 sed -i 's/su wwwrun www/su apache apache/' /etc/logrotate.d/susemanager-tools
 %endif
@@ -324,11 +294,15 @@ sed -i '/You can access .* via https:\/\//d' /tmp/motd 2> /dev/null ||:
 %dir %{pythonsmroot}/susemanager
 %dir %{_prefix}/share/rhn/
 %dir %{_datadir}/susemanager
-%dir %{wwwdocroot}/pub
-%dir %{wwwdocroot}/pub/repositories
-%dir %{wwwdocroot}/pub/repositories/empty
-%dir %{wwwdocroot}/pub/repositories/empty/repodata
-%dir %{wwwdocroot}/pub/repositories/empty-deb
+%dir %{wwwroot}
+%dir %{sharedwwwroot}
+%dir %{reporoot}
+%dir %{reporoot}/repositories
+%dir %{reporoot}/repositories/empty
+%dir %{reporoot}/repositories/empty/repodata
+%dir %{reporoot}/repositories/empty-deb
+%dir /etc/apache2
+%dir /etc/apache2/conf.d
 %config(noreplace) %{_sysconfdir}/logrotate.d/susemanager-tools
 %{_prefix}/share/rhn/config-defaults/rhn_*.conf
 %attr(0755,root,root) %{_bindir}/mgr-salt-ssh
@@ -351,8 +325,9 @@ sed -i '/You can access .* via https:\/\//d' /tmp/motd 2> /dev/null ||:
 %{_datadir}/susemanager/__pycache__/
 %endif
 %{_mandir}/man8/mgr-sync.8*
-%{wwwdocroot}/pub/repositories/empty/repodata/*.xml*
-%{wwwdocroot}/pub/repositories/empty-deb/Packages
-%{wwwdocroot}/pub/repositories/empty-deb/Release
+%{reporoot}/repositories/empty/repodata/*.xml*
+%{reporoot}/repositories/empty-deb/Packages
+%{reporoot}/repositories/empty-deb/Release
+/etc/apache2/conf.d/empty-repo.conf
 
 %changelog

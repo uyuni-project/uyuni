@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.frontend.action.configuration.files;
 
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.frontend.action.configuration.ConfigActionHelper;
 import com.redhat.rhn.frontend.action.configuration.ConfigFileForm;
@@ -41,13 +40,13 @@ public class FileDownloadAction extends RhnAction {
     public static final String CSRF_TOKEN = "csrfToken";
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
-            HttpServletRequest request, HttpServletResponse response) {
-        Map params = makeParamMap(request);
+                                 HttpServletRequest request, HttpServletResponse response) {
+        Map<String, Object> params = makeParamMap(request);
         ConfigFileForm cff = (ConfigFileForm) form;
 
         request.setAttribute(CSRF_TOKEN, request.getSession().getAttribute("csrf_token"));
-        request.setAttribute("documentation", ConfigDefaults.get().isDocAvailable());
 
         ConfigRevision cr = ConfigActionHelper.findRevision(request);
 

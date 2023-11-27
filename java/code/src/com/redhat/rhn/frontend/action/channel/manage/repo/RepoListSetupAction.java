@@ -37,13 +37,14 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class RepoListSetupAction extends RhnAction {
 
-    private static final DynamicComparator LABEL_COMPARATOR =
-                new DynamicComparator("label", true);
+    private static final DynamicComparator<ContentSourceDto> LABEL_COMPARATOR =
+                new DynamicComparator<>("label", true);
     /**
      * ${@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
-            HttpServletRequest request, HttpServletResponse response) throws Exception {
+                                 HttpServletRequest request, HttpServletResponse response) {
 
         request.setAttribute(mapping.getParameter(), Boolean.TRUE);
         RequestContext context = new RequestContext(request);

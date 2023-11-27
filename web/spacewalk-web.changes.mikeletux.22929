@@ -1,0 +1,1 @@
+- Fix issue displaying Ansible playbook name (bsc#1216657) 

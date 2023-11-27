@@ -16,25 +16,15 @@ package com.redhat.rhn.taskomatic.task;
 
 import com.redhat.rhn.taskomatic.task.systems.SystemsOverviewUpdateDriver;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 /**
  * Manages the pending system overview updates queue
  *
  */
-public class SystemOverviewUpdateQueue extends RhnQueueJob {
-
-    private static final Logger LOG = LogManager.getLogger(SystemOverviewUpdateQueue.class);
+public class SystemOverviewUpdateQueue extends RhnQueueJob<SystemsOverviewUpdateDriver> {
 
     @Override
     public String getConfigNamespace() {
         return "system_overview_update_queue";
-    }
-
-    @Override
-    protected Logger getLogger() {
-        return LOG;
     }
 
     @Override
@@ -43,7 +33,7 @@ public class SystemOverviewUpdateQueue extends RhnQueueJob {
     }
 
     @Override
-    protected Class getDriverClass() {
+    protected Class<SystemsOverviewUpdateDriver> getDriverClass() {
         return SystemsOverviewUpdateDriver.class;
     }
 }

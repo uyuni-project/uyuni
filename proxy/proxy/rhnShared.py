@@ -211,7 +211,7 @@ class SharedHandler:
             Server (or next proxy) communication.
         """
 
-        log_debug(1)
+        log_debug(2)
 
         # Copy the method from the original request, and use the
         # handler for this server
@@ -285,7 +285,7 @@ class SharedHandler:
         """ Handler part 3
             Forward server's response to the client.
         """
-        log_debug(1)
+        log_debug(2)
 
         try:
             self._forwardServer2Client()
@@ -318,7 +318,7 @@ class SharedHandler:
             For most XMLRPC code, this function is called.
         """
 
-        log_debug(1)
+        log_debug(2)
 
         # Okay, nothing interesting from the server;
         # we'll just forward what we got

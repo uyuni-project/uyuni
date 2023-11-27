@@ -108,6 +108,7 @@ public class SystemMigration implements Serializable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString() {
         ToStringBuilder builder = new ToStringBuilder(this);
         builder.append("toOrg", this.getToOrg())
@@ -120,6 +121,7 @@ public class SystemMigration implements Serializable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(Object obj) {
 
         if (!(obj instanceof SystemMigration)) {
@@ -140,6 +142,7 @@ public class SystemMigration implements Serializable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
 
         HashCodeBuilder builder = new HashCodeBuilder();

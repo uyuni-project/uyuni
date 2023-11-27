@@ -31,14 +31,12 @@ CREATE TABLE rhnChannelComps
                            DEFAULT (current_timestamp) NOT NULL,
     comps_type_id      NUMERIC NOT NULL
                           CONSTRAINT rhn_channelcomps_comps_type_fk
-                               REFERENCES rhnCompsType(id),
-    CONSTRAINT rhn_channelcomps_cid_ctype_filename_uq
-        UNIQUE(channel_id, comps_type_id, relative_filename)
+                               REFERENCES rhnCompsType(id)
 )
 
 ;
 
-CREATE INDEX rhn_channelcomps_cid_ctype_idx
+CREATE UNIQUE INDEX rhn_channelcomps_cid_ctype_uq
     ON rhnChannelComps (channel_id, comps_type_id)
     ;
 

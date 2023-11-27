@@ -38,8 +38,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
-import javax.servlet.jsp.tagext.BodyTagSupport;
 import javax.servlet.jsp.tagext.Tag;
+import javax.servlet.jsp.tagext.TagSupport;
 
 /**
  * Provides various utility functions for the ListTag, ColumnTag, and SpanTag
@@ -105,7 +105,7 @@ public class ListTagUtil {
     public static ListCommand getCurrentCommand(Tag caller, PageContext ctx) {
         ListTag parent = null;
         if (!(caller instanceof ListTag)) {
-            parent = (ListTag) BodyTagSupport.findAncestorWithClass(caller, ListTag.class);
+            parent = (ListTag) TagSupport.findAncestorWithClass(caller, ListTag.class);
         }
         else {
             parent = (ListTag) caller;
@@ -468,7 +468,7 @@ public class ListTagUtil {
      */
     public static boolean toBoolean(String value) {
         boolean retval = false;
-        if (value != null && value.length() > 0) {
+        if (value != null && !value.isEmpty()) {
             retval = Boolean.valueOf(value);
             if (!retval &&
                 (value.equalsIgnoreCase("t") ||
@@ -517,13 +517,13 @@ public class ListTagUtil {
      * @return array of sytles
      */
     public static String[] parseStyles(String styles) {
-        List tmp = new LinkedList();
+        List tmp = new LinkedList<>();
         StringTokenizer strtok = new StringTokenizer(styles, "|");
         while (strtok.hasMoreTokens()) {
             tmp.add(strtok.nextToken().trim());
         }
         String[] retval = null;
-        if (tmp.size() == 0) {
+        if (tmp.isEmpty()) {
             retval = new String[0];
         }
         else {
@@ -541,14 +541,14 @@ public class ListTagUtil {
      * @throws JspException if something bad happens writing to the page
      */
     public static void renderPaginationLinks(PageContext pageContext,
-            String[] linkNames, Map links) throws JspException {
-        if (links.size() == 0) {
+            String[] linkNames, Map<String, String[]> links) throws JspException {
+        if (links.isEmpty()) {
             return;
         }
         ListTagUtil.write(pageContext,
                 "<div class=\"spacewalk-list-pagination-btns btn-group\">");
         for (String linkNameIn : linkNames) {
-            String[] linkData = (String[]) links.get(linkNameIn);
+            String[] linkData = links.get(linkNameIn);
             ListTagUtil.write(pageContext, "<button ");
             ListTagUtil.write(pageContext, "class=\"btn btn-default btn-xs ");
             ListTagUtil.write(pageContext, linkData[0]);
@@ -608,8 +608,8 @@ public class ListTagUtil {
                         StringEscapeUtils.escapeHtml4(filterValue)));
 
 
-        List fields = filter.getFieldNames();
-        if (fields == null || fields.size() == 0) {
+        List<String> fields = filter.getFieldNames();
+        if (fields == null || fields.isEmpty()) {
             throw new JspException(
                     "ListFilter.getFieldNames() returned no field names");
         }
@@ -617,7 +617,7 @@ public class ListTagUtil {
             ListTagUtil.write(pageContext, "<input type=\"hidden\" name=\"");
             ListTagUtil.write(pageContext, filterByKey);
             ListTagUtil.write(pageContext, "\" value=\"");
-            ListTagUtil.write(pageContext, fields.get(0).toString());
+            ListTagUtil.write(pageContext, fields.get(0));
             ListTagUtil.write(pageContext, "\" />");
         }
         else {
@@ -625,8 +625,7 @@ public class ListTagUtil {
             ListTagUtil.write(pageContext, "<select name=\"");
             ListTagUtil.write(pageContext, filterByKey);
             ListTagUtil.write(pageContext, "\">");
-            for (Object fieldIn : fields) {
-                String field = (String) fieldIn;
+            for (String field : fields) {
                 ListTagUtil.write(pageContext, "<option value=\"");
                 ListTagUtil.write(pageContext, field);
                 ListTagUtil.write(pageContext, "\" ");
@@ -646,8 +645,7 @@ public class ListTagUtil {
         // create a new row
         sb.append("<div class=\"input-group input-group-sm\">");
 
-        String placeHolder = StringUtils.defaultString(ls.getMessage("message.filterby",
-                fields.get(0).toString()));
+        String placeHolder = StringUtils.defaultString(ls.getMessage("message.filterby", fields.get(0)));
         sb.append(String.format("<input autofocus=\"autofocus\" type=\"text\" " +
                 "name=\"%s\" value=\"%s\" class=\"form-control\" placeholder=\"%s\" " +
                 "onkeypress=\"return enterKeyHandler(event, jQuery('button[name=%s]'))\"/>",
@@ -703,7 +701,7 @@ public class ListTagUtil {
     private static String makeNonPagedLink(HttpServletRequest request, String listName) {
         String url = (String) request.getAttribute("parentUrl");
         String queryString = request.getQueryString();
-        if (queryString != null && queryString.length() > 0) {
+        if (queryString != null && !queryString.isEmpty()) {
             url += "?";
             for (StringTokenizer strtok = new StringTokenizer(queryString, "&");
                     strtok.hasMoreTokens();) {

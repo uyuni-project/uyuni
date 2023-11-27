@@ -74,6 +74,7 @@ public abstract class BaseKickstartCommand implements PersistOperation {
      * Save the Kickstart Data to DB
      * @return ValdiatorError if there was an error.  Currently always returns null
      */
+    @Override
     public ValidatorError store() {
         KickstartData ksData = getKickstartData();
         if (rebuildPartitionCommands) {
@@ -90,7 +91,7 @@ public abstract class BaseKickstartCommand implements PersistOperation {
 
         KickstartFactory.saveKickstartData(ksData);
 
-        CobblerProfileEditCommand cmd = new CobblerProfileEditCommand(ksdata, user);
+        CobblerProfileEditCommand cmd = new CobblerProfileEditCommand(ksdata, user, false);
         ValidatorError err = cmd.store();
         logger.debug("Did we get an error storing to cobbler: {}", err);
         return err;
@@ -100,6 +101,7 @@ public abstract class BaseKickstartCommand implements PersistOperation {
     /**
      * @return the user
      */
+    @Override
     public User getUser() {
         return user;
     }

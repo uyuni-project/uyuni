@@ -17,6 +17,7 @@ package com.redhat.rhn.frontend.servlets;
 import com.redhat.rhn.common.util.OvalFileAggregator;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
+import com.redhat.rhn.domain.errata.ErrataFile;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.errata.ErrataManager;
@@ -31,14 +32,17 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -49,64 +53,42 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class OvalServlet extends HttpServlet {
 
-    private static Logger logger = LogManager.getLogger(OvalServlet.class);
+    private static final Logger LOG = LogManager.getLogger(OvalServlet.class);
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) {
 
         User user = new RequestContext(request).getCurrentUser();
-        String[] errataIds = request.getParameterValues("errata");
-        if (errataIds == null || errataIds.length == 0) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+        List<String> errataIds = getErrataIds(request, response);
+        if (errataIds.isEmpty()) {
             return;
         }
-        for (int x = 0; x < errataIds.length; x++) {
-            try {
-                String tmp = URLDecoder.decode(errataIds[x], "UTF-8");
-                errataIds[x] = tmp;
-            }
-            catch (UnsupportedEncodingException e) {
-                logger.warn(e.getMessage(), e);
-            }
+        String format = getFormat(request);
+
+        List<Errata> erratas = errataIds.stream()
+                .flatMap(id -> ErrataManager.lookupErrataByIdentifier(id, user.getOrg()).stream())
+                .collect(Collectors.toList());
+        if (erratas.isEmpty()) {
+            sendError(response, HttpServletResponse.SC_NOT_FOUND, errataIds.get(0));
+            return;
         }
-        String format = request.getParameter("format");
-        if (format == null || (!format.equalsIgnoreCase("xml") &&
-                !format.equals("zip"))) {
-            format = "xml";
+        List<ErrataFile> ovalFiles = new LinkedList<>();
+        if (erratas.size() == 1) {
+            Errata errata = erratas.get(0);
+
+            List<ErrataFile> of =
+                ErrataFactory.lookupErrataFilesByErrataAndFileType(errata.getId(), "oval");
+            if (of != null && !of.isEmpty()) {
+                ovalFiles = of;
+            }
         }
         else {
-            format = format.toLowerCase();
+            ovalFiles = erratas.stream()
+                    .flatMap(errata -> ErrataFactory.lookupErrataFilesByErrataAndFileType(errata.getId(), "oval")
+                            .stream())
+                    .collect(Collectors.toList());
         }
-        List erratas = new LinkedList();
-        for (String errataIdIn : errataIds) {
-            List tmp = ErrataManager.lookupErrataByIdentifier(errataIdIn, user.getOrg());
-            if (tmp != null && tmp.size() > 0) {
-                erratas.addAll(tmp);
-            }
-        }
-        if (erratas.size() == 0) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND, errataIds[0]);
-            return;
-        }
-        List ovalFiles = new LinkedList();
-        if (erratas.size() == 1) {
-            Errata errata = (Errata) erratas.get(0);
 
-            List of =
-                ErrataFactory.lookupErrataFilesByErrataAndFileType(errata.getId(), "oval");
-            if (of != null && of.size() > 0) {
-                ovalFiles.addAll(of);
-            }
-        }
-        else if (erratas.size() > 1) {
-            for (Object errataIn : erratas) {
-                Errata errata = (Errata) errataIn;
-                List files =
-                        ErrataFactory.lookupErrataFilesByErrataAndFileType(
-                                errata.getId(), "oval");
-                ovalFiles.addAll(files);
-            }
-        }
         if (format.equals("xml")) {
             streamXml(ovalFiles, response);
         }
@@ -115,54 +97,78 @@ public class OvalServlet extends HttpServlet {
         }
     }
 
-    private void prepareZipFile(List ovalFiles,
-            HttpServletResponse response) throws IOException {
-        File tempFile = File.createTempFile("rhn", "errata", new File("/tmp"));
-        List files = ErrataManager.resolveOvalFiles(ovalFiles);
-        if (files.size() == 0) {
+    private List<String> getErrataIds(HttpServletRequest request, HttpServletResponse response) {
+        String[] errataIds = request.getParameterValues("errata");
+        if (errataIds == null || errataIds.length == 0) {
+            sendError(response, HttpServletResponse.SC_BAD_REQUEST);
+            return Collections.emptyList();
+        }
+        return Arrays.stream(errataIds).map(id -> URLDecoder.decode(id, StandardCharsets.UTF_8))
+                .collect(Collectors.toList());
+    }
+
+    private String getFormat(HttpServletRequest request) {
+        String format = request.getParameter("format");
+        if (format == null || (!format.equalsIgnoreCase("xml") &&
+                !format.equals("zip"))) {
+            format = "xml";
+        }
+        else {
+            format = format.toLowerCase();
+        }
+        return format;
+    }
+
+    private void prepareZipFile(List<ErrataFile> ovalFiles, HttpServletResponse response) {
+        File tempFile = null;
+        try {
+            tempFile = File.createTempFile("rhn", "errata");
+        }
+        catch (IOException e) {
+            LOG.error("Failed to create temporary file", e);
             return;
         }
-        try {
-            ZipOutputStream zipOut = new ZipOutputStream(new FileOutputStream(tempFile));
-            for (Object fileIn : files) {
-                File f = (File) fileIn;
+
+        List<File> files = ErrataManager.resolveOvalFiles(ovalFiles);
+        if (files.isEmpty()) {
+            return;
+        }
+        try (ZipOutputStream zipOut = new ZipOutputStream(new FileOutputStream(tempFile))) {
+            for (File f : files) {
                 ZipEntry entry = new ZipEntry(f.getName());
                 zipOut.putNextEntry(entry);
                 writeFileEntry(f, zipOut);
             }
             zipOut.flush();
-            zipOut.close();
             streamZipFile(tempFile, response);
         }
+        catch (IOException e) {
+            LOG.error("Failed to create Zip file", e);
+        }
         finally {
-            if (!tempFile.delete()) {
-                tempFile.deleteOnExit();
+            try {
+                Files.delete(tempFile.toPath());
+            }
+            catch (IOException e1) {
+                LOG.error("Failed to delete temporary file", e1);
             }
         }
     }
 
-    private void streamZipFile(File zipFile,
-            HttpServletResponse response) throws IOException {
+    private void streamZipFile(File zipFile, HttpServletResponse response) throws IOException {
         response.setContentType("application/zip");
         response.addHeader("Content-disposition", "attachment; filename=oval.zip");
         if (zipFile.length() < Integer.MAX_VALUE) {
             response.setContentLength((int) zipFile.length());
         }
-        InputStream fileIn = null;
-        try {
-            fileIn = new FileInputStream(zipFile);
+        try (InputStream fileIn = new FileInputStream(zipFile)) {
             sendFileContents(fileIn, response);
-        }
-        finally {
-            if (fileIn != null) {
-                fileIn.close();
-            }
         }
     }
 
     private void sendFileContents(InputStream contents,
             HttpServletResponse response) throws IOException {
-        try {
+        try (contents) {
             OutputStream out = response.getOutputStream();
             byte[] chunk = new byte[4096];
             int readsize = -1;
@@ -170,41 +176,31 @@ public class OvalServlet extends HttpServlet {
                 out.write(chunk, 0, readsize);
             }
         }
-        finally {
-            contents.close();
-        }
     }
 
     private void writeFileEntry(File f, ZipOutputStream zipOut) throws IOException {
         byte[] chunk = new byte[4096];
         int readsize = -1;
-        InputStream fileIn = null;
-        try {
-            fileIn = new FileInputStream(f);
+        try (InputStream fileIn = new FileInputStream(f)) {
             while ((readsize = fileIn.read(chunk)) > -1) {
                 zipOut.write(chunk, 0, readsize);
             }
             zipOut.closeEntry();
         }
-        finally {
-            if (fileIn != null) {
-                fileIn.close();
-            }
-        }
     }
 
-    private void streamXml(List files,
-            HttpServletResponse response) throws IOException {
+    private void streamXml(List<ErrataFile> files, HttpServletResponse response) {
         response.setContentType("text/xml");
         String fileName = null;
-        List ovalFiles = ErrataManager.resolveOvalFiles(files);
+        List<File> ovalFiles = ErrataManager.resolveOvalFiles(files);
         switch(ovalFiles.size()) {
             case 0:
                 return;
             case 1:
-                File ftmp = (File) ovalFiles.get(0);
+                File ftmp = ovalFiles.get(0);
                 if (ftmp == null) {
-                    response.sendError(404, (String) files.get(0));
+                    sendError(response, HttpServletResponse.SC_NOT_FOUND, files.get(0).toString());
+                    return;
                 }
                 fileName = ftmp.getName().toLowerCase();
                 if (!fileName.endsWith(".xml")) {
@@ -215,22 +211,17 @@ public class OvalServlet extends HttpServlet {
                 fileName = "oval.xml";
                 break;
         }
-        response.addHeader("Content-disposition", "attachment; filename=" +
-                fileName);
+        response.addHeader("Content-disposition", "attachment; filename=" + fileName);
         if (ovalFiles.size() == 1) {
-            File f = (File) ovalFiles.get(0);
+            File f = ovalFiles.get(0);
             if (f.length() < Integer.MAX_VALUE) {
                 response.setContentLength((int) f.length());
             }
-            InputStream fileIn = null;
-            try {
-                fileIn = new FileInputStream(f);
+            try (InputStream fileIn = new FileInputStream(f)) {
                 sendFileContents(fileIn, response);
             }
-            finally {
-                if (fileIn != null) {
-                    fileIn.close();
-                }
+            catch (IOException e) {
+                LOG.error("Failed to send file contents", e);
             }
         }
         else {
@@ -240,18 +231,35 @@ public class OvalServlet extends HttpServlet {
                 response.getWriter().flush();
             }
             catch (Exception e) {
-                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                logger.error(e.getMessage(), e);
+                LOG.error(e.getMessage(), e);
+                sendError(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             }
         }
     }
 
-    private String aggregateOvalFiles(List files)
+    private void sendError(HttpServletResponse response, int code) {
+        try {
+            response.sendError(code);
+        }
+        catch (IOException e) {
+            LOG.error("Failed to send error response", e);
+        }
+    }
+
+    private void sendError(HttpServletResponse response, int code, String data) {
+        try {
+            response.sendError(code, data);
+        }
+        catch (IOException e) {
+            LOG.error("Failed to send error response", e);
+        }
+    }
+
+    private String aggregateOvalFiles(List<File> files)
             throws JDOMException, IOException {
         OvalFileAggregator aggregator = new OvalFileAggregator();
         String retval = null;
-        for (Object fileIn : files) {
-            File f = (File) fileIn;
+        for (File f : files) {
             if (f == null) {
                 continue;
             }

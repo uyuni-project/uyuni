@@ -221,7 +221,6 @@ public class SSHPushDriver implements QueueDriver<SystemSummary> {
      *
      * @return list of candidates with actions scheduled
      */
-    @SuppressWarnings("unchecked")
     private DataResult<SystemSummary> getTraditionalCandidates() {
         SelectMode select = ModeFactory.getMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_SSH_PUSH_FIND_TRADITIONAL_CANDIDATES);
@@ -233,7 +232,6 @@ public class SSHPushDriver implements QueueDriver<SystemSummary> {
      *
      * @return list of candidates with ongoing reboot actions
      */
-    @SuppressWarnings("unchecked")
     private DataResult<SystemSummary> getRebootingMinions() {
         SelectMode select = ModeFactory.getMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_SSH_PUSH_FIND_REBOOTING_MINIONS);
@@ -246,7 +244,6 @@ public class SSHPushDriver implements QueueDriver<SystemSummary> {
      *
      * @return list of candidates with ongoing reboot actions
      */
-    @SuppressWarnings("unchecked")
     private DataResult<SSHPushAction> getQueuedMinionActionsWithPrerequisites() {
         SelectMode select = ModeFactory.getMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_SSH_PUSH_FIND_QUEUED_MINION_ACTIONS_WITH_PREREQ);

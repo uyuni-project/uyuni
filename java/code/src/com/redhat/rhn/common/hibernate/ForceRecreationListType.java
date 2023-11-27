@@ -140,9 +140,9 @@ public class ForceRecreationListType implements UserCollectionType {
     @Override
     public Object instantiate(int anticipatedSize) {
         if (anticipatedSize > 0) {
-            return new ArrayList(anticipatedSize);
+            return new ArrayList<>(anticipatedSize);
         }
-        return new ArrayList();
+        return new ArrayList<>();
     }
 
     /**
@@ -151,7 +151,7 @@ public class ForceRecreationListType implements UserCollectionType {
      * @return ArrayList as an Object.
      */
     public Object instantiate() {
-        return new ArrayList();
+        return new ArrayList<>();
     }
 
     /**
@@ -185,6 +185,7 @@ public class ForceRecreationListType implements UserCollectionType {
          *
          * {@inheritDoc}
          */
+        @Override
         public boolean needsRecreate(CollectionPersister persister) {
             return true;
         }

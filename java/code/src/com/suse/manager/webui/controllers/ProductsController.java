@@ -26,6 +26,7 @@ import static spark.Spark.get;
 import static spark.Spark.post;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.FileLocks;
 import com.redhat.rhn.common.util.TimeUtils;
@@ -34,12 +35,15 @@ import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.iss.IssFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
-import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.channel.ChannelManager;
+import com.redhat.rhn.manager.content.ContentSyncException;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.manager.content.MgrSyncProductDto;
 import com.redhat.rhn.manager.setup.ProductSyncManager;
 import com.redhat.rhn.taskomatic.TaskoFactory;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.taskomatic.domain.TaskoRun;
 
 import com.suse.manager.model.products.ChannelJson;
@@ -53,14 +57,17 @@ import com.google.gson.reflect.TypeToken;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import spark.ModelAndView;
 import spark.Request;
@@ -91,9 +98,12 @@ public class ProductsController {
         get("/manager/admin/setup/products",
                 withUserPreferences(withCsrfToken(withOrgAdmin(ProductsController::show))), jade);
         get("/manager/api/admin/products", withUser(ProductsController::data));
+        get("/manager/api/admin/products/metadata", withUser(ProductsController::getMetadata));
         post("/manager/api/admin/mandatoryChannels", withUser(ProductsController::getMandatoryChannels));
         post("/manager/admin/setup/products",
                 withProductAdmin(ProductsController::addProduct));
+        post("/manager/admin/setup/channels/optional",
+                withProductAdmin(ProductsController::addOptionalChannels));
         post("/manager/admin/setup/sync/products",
                 withProductAdmin(ProductsController::synchronizeProducts));
         post("/manager/admin/setup/sync/channelfamilies",
@@ -113,18 +123,34 @@ public class ProductsController {
      * @return the ModelAndView object to render the page
      */
     public static ModelAndView show(Request request, Response response, User user) {
+        return new ModelAndView(getMetadataMap(), "templates/products/show.jade");
+    }
+
+    /**
+     * Retrieves the metadata of the products page
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return a JSON object containing the metadata
+     */
+    public static String getMetadata(Request request, Response response, User user) {
+        return json(response, getMetadataMap());
+    }
+
+    private static Map<String, Object> getMetadataMap() {
         TaskoRun latestRun = TaskoFactory.getLatestRun("mgr-sync-refresh-bunch");
-
-        Map<String, Object> data = new HashMap<>();
         ContentSyncManager csm = new ContentSyncManager();
-        data.put(ISS_MASTER, String.valueOf(IssFactory.getCurrentMaster() == null));
-        data.put(REFRESH_NEEDED, String.valueOf(csm.isRefreshNeeded(null)));
-        data.put(REFRESH_RUNNING, String.valueOf(latestRun != null && latestRun.getEndTime() == null));
-        data.put(REFRESH_FILE_LOCKED, String.valueOf(FileLocks.SCC_REFRESH_LOCK.isLocked()));
-        data.put(NO_TOOLS_CHANNEL_SUBSCRIPTION,
-                String.valueOf(!(ConfigDefaults.get().isUyuni() || csm.hasToolsChannelSubscription())));
 
-        return new ModelAndView(data, "templates/products/show.jade");
+        Map<String, Object> metadataMap = new HashMap<>();
+        metadataMap.put(ISS_MASTER, IssFactory.getCurrentMaster() == null);
+        metadataMap.put(REFRESH_NEEDED, csm.isRefreshNeeded(null));
+        metadataMap.put(REFRESH_RUNNING, latestRun != null && latestRun.getEndTime() == null);
+        metadataMap.put(REFRESH_FILE_LOCKED, FileLocks.SCC_REFRESH_LOCK.isLocked());
+        metadataMap.put(NO_TOOLS_CHANNEL_SUBSCRIPTION, !(ConfigDefaults.get().isUyuni() ||
+            csm.hasToolsChannelSubscription() || csm.canSyncToolsChannelViaCloudRMT()));
+
+        return metadataMap;
     }
 
     /**
@@ -136,9 +162,6 @@ public class ProductsController {
      * @return a JSON flag of the success/failed result
      */
     public static String synchronizeProducts(Request request, Response response, User user) {
-        if (!user.hasRole(RoleFactory.SAT_ADMIN)) {
-            throw new IllegalArgumentException("Must be SAT_ADMIN to synchronize products");
-        }
         return FileLocks.SCC_REFRESH_LOCK.withFileLock(() -> {
             try {
                 ContentSyncManager csm = new ContentSyncManager();
@@ -161,9 +184,6 @@ public class ProductsController {
      * @return a JSON flag of the success/failed result
      */
     public static String synchronizeChannelFamilies(Request request, Response response, User user) {
-        if (!user.hasRole(RoleFactory.SAT_ADMIN)) {
-            throw new IllegalArgumentException("Must be SAT_ADMIN to synchronize products");
-        }
         return FileLocks.SCC_REFRESH_LOCK.withFileLock(() -> {
             try {
                 ContentSyncManager csm = new ContentSyncManager();
@@ -186,9 +206,6 @@ public class ProductsController {
      * @return a JSON flag of the success/failed result
      */
     public static String synchronizeRepositories(Request request, Response response, User user) {
-        if (!user.hasRole(RoleFactory.SAT_ADMIN)) {
-            throw new IllegalArgumentException("Must be SAT_ADMIN to synchronize products");
-        }
         return FileLocks.SCC_REFRESH_LOCK.withFileLock(() -> {
             try {
                 ContentSyncManager csm = new ContentSyncManager();
@@ -234,9 +251,6 @@ public class ProductsController {
      */
     public static String addProduct(Request request, Response response, User user) {
         List<String> identifiers = Json.GSON.fromJson(request.body(), new TypeToken<List<String>>() { }.getType());
-        if (!user.hasRole(RoleFactory.SAT_ADMIN)) {
-            throw new IllegalArgumentException("Must be SAT_ADMIN to synchronize products");
-        }
         ContentSyncManager csm = new ContentSyncManager();
         if (csm.isRefreshNeeded(null)) {
             log.fatal("addProduct failed: Product Data refresh needed");
@@ -262,6 +276,51 @@ public class ProductsController {
     }
 
     /**
+     * Add optional channels to be synced in the SUSE Manager Server
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return the map of requested channels with a success/failed flag in a JSON format
+     */
+    public static String addOptionalChannels(Request request, Response response, User user) {
+        List<String> channels = Json.GSON.fromJson(request.body(), new TypeToken<List<String>>() { }.getType());
+        ContentSyncManager csm = new ContentSyncManager();
+        if (csm.isRefreshNeeded(null)) {
+            log.fatal("addOptionalChannels failed: Product Data refresh needed");
+            return json(response, channels.stream().collect(Collectors.toMap(
+                    Function.identity(),
+                    ident -> LocalizationService.getInstance().getMessage("setup.product.error.dataneedsrefresh")
+            )));
+        }
+
+        log.debug("Add/Sync channels: {}", channels);
+
+        List<Channel> channelsToSync = new ArrayList<>();
+        Map<String, String> resultMap = new HashMap<>();
+        for (String channel : channels) {
+            try {
+                csm.addChannel(channel, null);
+                channelsToSync.add(ChannelManager.lookupByLabelAndUser(channel, user));
+            }
+            catch (ContentSyncException | LookupException e) {
+                log.error("addChannel() failed for {}", channel, e);
+                resultMap.put(channel, e.getMessage());
+            }
+        }
+
+        try {
+            TaskomaticApi tapi = new TaskomaticApi();
+            tapi.scheduleSingleRepoSync(channelsToSync);
+        }
+        catch (TaskomaticApiException e) {
+            log.error(e.getMessage());
+        }
+
+        return json(response, resultMap);
+    }
+
+    /**
      * Return Mandatory Channels
      *
      * @param request the request
@@ -274,10 +333,17 @@ public class ProductsController {
             List<Long> channelIdList = Json.GSON.fromJson(request.body(), new TypeToken<List<Long>>() { }.getType());
             Map<Long, List<Long>> result = channelIdList.stream().collect(Collectors.toMap(
                     channelId -> channelId,
-                    channelId -> SUSEProductFactory.findSyncedMandatoryChannels(
-                            ChannelFactory.lookupById(channelId).getLabel())
-                            .map(Channel::getId)
-                            .collect(Collectors.toList())
+                    channelId -> {
+                        Stream<Channel> channels = Stream.empty();
+                        try {
+                            channels = SUSEProductFactory.findSyncedMandatoryChannels(
+                                    ChannelFactory.lookupById(channelId).getLabel());
+                        }
+                        catch (NoSuchElementException e) {
+                            log.error("Fail to load mandatory channels for channel {}", channelId, e);
+                        }
+                        return channels.map(Channel::getId).collect(Collectors.toList());
+                    }
             ));
             return json(response, ResultJson.success(result));
         });

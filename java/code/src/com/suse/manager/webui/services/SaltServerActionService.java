@@ -117,6 +117,7 @@ import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.domain.server.VirtualInstanceFactory;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
+import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.PackageListItem;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
@@ -149,6 +150,7 @@ import com.suse.salt.netapi.calls.LocalAsyncResult;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.calls.modules.State.ApplyResult;
+import com.suse.salt.netapi.calls.modules.TransactionalUpdate;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.errors.GenericError;
 import com.suse.salt.netapi.exception.SaltException;
@@ -487,6 +489,10 @@ public class SaltServerActionService {
             boolean isStagingJob, Optional<Long> stagingJobMinionServerId) {
 
         List<MinionSummary> allMinions = MinionServerFactory.findQueuedMinionSummaries(actionIn.getId());
+        if (CollectionUtils.isEmpty(allMinions)) {
+            LOG.warn("Unable to find any minion that have the action id={} in status QUEUED", actionIn.getId());
+            return;
+        }
 
         // split minions into regular and salt-ssh
         Map<Boolean, List<MinionSummary>> partitionBySSHPush = allMinions.stream()
@@ -536,7 +542,14 @@ public class SaltServerActionService {
                 targetMinions = entry.getValue();
             }
 
+            LOG.debug("Executing action {} for {} minions.", actionIn.getId(), targetMinions.size());
             results = execute(actionIn, call, targetMinions, forcePackageListRefresh, isStagingJob);
+            LOG.debug(
+                "Finished action {}. Picked up for {} minions and failed for {} minions.",
+                actionIn.getId(),
+                results.get(true).size(),
+                results.get(false).size()
+            );
 
             if (!isStagingJob) {
                 List<Long> succeededServerIds = results.get(true).stream()
@@ -724,6 +737,7 @@ public class SaltServerActionService {
                                         .contains(SYSTEM_REBOOT)).orElse(false));
 
                 boolean refreshPkg = false;
+                Optional<User> scheduler = Optional.empty();
                 for (Map.Entry<String, StateApplyResult<Ret<JsonElement>>> entry : actionChainResult.entrySet()) {
                     String stateIdKey = entry.getKey();
                     StateApplyResult<Ret<JsonElement>> stateResult = entry.getValue();
@@ -735,13 +749,13 @@ public class SaltServerActionService {
                         // only reboot needs special handling,
                         // for salt pkg update there's no need to split the sls in case of salt-ssh minions
 
+                        Action action = ActionFactory.lookupById(stateId.getActionId());
                         if (stateResult.getName().map(x -> x.fold(Arrays::asList, List::of)
                                 .contains(SYSTEM_REBOOT)).orElse(false) && stateResult.isResult()) {
-                            Action rebootAction = ActionFactory.lookupById(stateId.getActionId());
 
-                            if (rebootAction.getActionType().equals(ActionFactory.TYPE_REBOOT)) {
+                            if (action.getActionType().equals(ActionFactory.TYPE_REBOOT)) {
                                 Optional<ServerAction> rebootServerAction =
-                                        rebootAction.getServerActions().stream()
+                                        action.getServerActions().stream()
                                                 .filter(sa -> sa.getServer().asMinionServer().isPresent() &&
                                                         sa.getServer().asMinionServer().get()
                                                                 .getMinionId().equals(minionId))
@@ -760,17 +774,18 @@ public class SaltServerActionService {
                         if (stateResult.isResult() &&
                                 saltUtils.shouldRefreshPackageList(stateResult.getName(),
                                         Optional.of(stateResult.getChanges().getRet()))) {
+                            scheduler = Optional.ofNullable(action.getSchedulerUser());
                             refreshPkg = true;
                         }
                     }
                 }
+                Optional<MinionServer> minionServer = MinionServerFactory.findByMinionId(minionId);
                 if (refreshPkg) {
-                    MinionServerFactory.findByMinionId(minionId).ifPresent(minion -> {
+                    Optional<User> finalScheduler = scheduler;
+                    minionServer.ifPresent(minion -> {
                         LOG.info("Scheduling a package profile update for minion {}", minionId);
                         try {
-                            Action pkgList = ActionManager
-                                    .schedulePackageRefresh(minion.getOrg(), minion);
-                            executeSSHAction(pkgList, minion);
+                            ActionManager.schedulePackageRefresh(finalScheduler, minion);
                         }
                         catch (TaskomaticApiException e) {
                             LOG.error("Could not schedule package refresh for minion: {}", minion.getMinionId(), e);
@@ -778,7 +793,7 @@ public class SaltServerActionService {
                     });
                 }
                 // update minion last checkin
-                MinionServerFactory.findByMinionId(minionId).ifPresent(Server::updateServerInfo);
+                minionServer.ifPresent(Server::updateServerInfo);
             }
             else {
                 LOG.error("'state.apply mgractionchains.startssh' was successful " +
@@ -1018,6 +1033,10 @@ public class SaltServerActionService {
                     Integer time = (Integer)kwargs.get("at_time");
                     return new SaltSystemReboot(stateId,
                             serverAction.getParentAction().getId(), time);
+                case "transactional_update.reboot":
+                    // this function will be excluded to the sls file by createActionChainSLSFiles
+                    return new SaltSystemReboot(stateId,
+                            serverAction.getParentAction().getId(), 0);
                 default:
                     throw new RhnRuntimeException("Salt module call " + fun + " can't be converted to a state.");
             }
@@ -1252,7 +1271,7 @@ public class SaltServerActionService {
         }
         if (!regularMinions.isEmpty()) {
             ret.put(State.apply(Arrays.asList(
-                    ApplyStatesEventMessage.SYNC_CUSTOM_ALL,
+                    ApplyStatesEventMessage.SYNC_ALL,
                     ApplyStatesEventMessage.HARDWARE_PROFILE_UPDATE),
                     Optional.empty()), minionSummaries);
         }
@@ -1261,10 +1280,13 @@ public class SaltServerActionService {
     }
 
     private Map<LocalCall<?>, List<MinionSummary>> rebootAction(List<MinionSummary> minionSummaries) {
-        Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
-        ret.put(com.suse.salt.netapi.calls.modules.System
-                .reboot(Optional.of(3)), minionSummaries);
-        return ret;
+        int rebootDelay = ConfigDefaults.get().getRebootDelay();
+        return minionSummaries.stream().collect(
+            Collectors.groupingBy(
+                m -> m.isTransactionalUpdate() ? TransactionalUpdate.reboot() :
+                        com.suse.salt.netapi.calls.modules.System.reboot(Optional.of(rebootDelay))
+            )
+        );
     }
 
     /**
@@ -1369,7 +1391,7 @@ public class SaltServerActionService {
         }
         catch (IOException e) {
             String errorMsg = "Could not write script to file " + scriptFile + " - " + e;
-            LOG.error(errorMsg);
+            LOG.error(errorMsg, e);
             scriptAction.getServerActions().stream()
                     .filter(entry -> entry.getServer().asMinionServer()
                             .map(minionServer -> minions.contains(new MinionSummary(minionServer)))
@@ -1564,10 +1586,8 @@ public class SaltServerActionService {
                                     "autorefresh=1\n\n" +
                                     "baseurl=" + getChannelUrl(minion, s.getLabel()) + "\n\n" +
                                     "type=rpm-md\n\n" +
-                                    "gpgcheck=1\n\n" +
-                                    "repo_gpgcheck=0\n\n" +
-                                    "pkg_gpgcheck=1\n\n").collect(Collectors.joining("\n\n"));
-
+                                    "gpgcheck=0\n\n" // we use trusted content and SSL.
+                                ).collect(Collectors.joining("\n\n"));
                         }
                         pillar.put("repo", repocontent);
 
@@ -1679,7 +1699,8 @@ public class SaltServerActionService {
 
         pillar.put("xccdffile", scapActionDetails.getPath());
         if (scapActionDetails.getOvalfiles() != null) {
-            pillar.put("ovalfiles", Arrays.asList(scapActionDetails.getOvalfiles().split("\\s*,\\s*")));
+            pillar.put("ovalfiles", Arrays.stream(scapActionDetails.getOvalfiles().split(","))
+                    .map(c -> c.trim()).collect(toList()));
         }
         if (profileMatcher.find()) {
             pillar.put("profile", profileMatcher.group(1));
@@ -1693,10 +1714,10 @@ public class SaltServerActionService {
         if (tailoringIdMatcher.find()) {
             pillar.put("tailoring_id", tailoringIdMatcher.group(1));
         }
-        if (scapActionDetails.getParametersContents().matches(".*--fetch-remote-resources.*")) {
+        if (scapActionDetails.getParametersContents().contains("--fetch-remote-resources")) {
             pillar.put("fetch_remote_resources", true);
         }
-        if (scapActionDetails.getParametersContents().matches(".*--remediate.*")) {
+        if (scapActionDetails.getParametersContents().contains("--remediate")) {
             pillar.put("remediate", true);
         }
 
@@ -2460,7 +2481,7 @@ public class SaltServerActionService {
                     result = saltApi.rawJsonCall(call, minion.getMinionId());
                 }
                 catch (RuntimeException e) {
-                    LOG.error("Error executing Salt call for action: {}on minion {}",
+                    LOG.error("Error executing Salt call for action: {} on minion {}",
                             action.getName(), minion.getMinionId(), e);
                     sa.setStatus(STATUS_FAILED);
                     sa.setResultMsg("Error calling Salt: " + e.getMessage());
@@ -2504,14 +2525,12 @@ public class SaltServerActionService {
                                 Optional.of(Xor.right(function)), Optional.of(jsonResult))) {
                             LOG.info("Scheduling a package profile update");
 
-                            Action pkgList;
                             try {
-                                pkgList = ActionManager.schedulePackageRefresh(minion.getOrg(), minion);
-                                executeSSHAction(pkgList, minion);
+                                ActionManager.schedulePackageRefresh(
+                                        Optional.ofNullable(action.getSchedulerUser()), minion);
                             }
                             catch (TaskomaticApiException e) {
-                                LOG.error("Could not schedule package refresh for minion: {}", minion.getMinionId());
-                                LOG.error(e);
+                                LOG.error("Could not schedule package refresh for minion: {}", minion.getMinionId(), e);
                             }
                         }
                     });

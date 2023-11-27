@@ -14,8 +14,8 @@
  */
 package com.redhat.rhn.domain.test;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import com.redhat.rhn.domain.AbstractLabelNameHelper;
 import com.redhat.rhn.testing.RhnBaseTestCase;
@@ -36,21 +36,21 @@ public class AbstractLabelNameHelperTest extends RhnBaseTestCase {
         h1.setName("bar");
         h1.setId(1L);
 
-        assertFalse(h1.equals(h2));
+        assertNotEquals(h1, h2);
 
         h2 = new AbstractLabelNameHelper();
         h2.setLabel("bar");
         h2.setName("foo");
         h2.setId(2L);
-        assertFalse(h1.equals(h2));
+        assertNotEquals(h1, h2);
 
         h2.setLabel("foo");
         h2.setName("bar");
         h2.setId(null);
-        assertFalse(h1.equals(h2));
+        assertNotEquals(h1, h2);
 
         h2.setId(1L);
-        assertTrue(h1.equals(h2));
-        assertTrue(h1.equals(h1));
+        assertEquals(h1, h2);
+        assertEquals(h1, h1);
     }
 }

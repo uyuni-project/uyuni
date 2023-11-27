@@ -51,7 +51,7 @@ public class TestDBAction implements MessageAction {
         DataResult dr =
             TestUtils.runTestQuery("select_test_time_series", params);
 
-        if (dr.size() > 0) {
+        if (!dr.isEmpty()) {
             System.out.println("setMessageReceived ..");
             tm.setMessageReceived(true);
         }

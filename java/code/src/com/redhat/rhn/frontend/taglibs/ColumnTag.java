@@ -149,6 +149,7 @@ public class ColumnTag extends TagSupport {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int doStartTag() throws JspException {
         td = new HtmlTag("td");
         href = new HtmlTag("a");
@@ -376,7 +377,7 @@ public class ColumnTag extends TagSupport {
         if (this.sortProperty != null) {
             HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
             String pageUrl;
-            Map params = new TreeMap(request.getParameterMap());
+            Map params = new TreeMap<>(request.getParameterMap());
             String sortOrder = request.getParameter(RequestContext.SORT_ORDER);
 
             if (RequestContext.SORT_ASC.equals(sortOrder)) {
@@ -575,6 +576,7 @@ public class ColumnTag extends TagSupport {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int doEndTag() throws JspException {
         JspWriter out = null;
         try {
@@ -627,6 +629,7 @@ public class ColumnTag extends TagSupport {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(Object obj) {
         // This method specifically does _NOT_ compare the url portion of
         // the ColumnTag when checking for equality.  Doing so does not work.
@@ -709,6 +712,7 @@ public class ColumnTag extends TagSupport {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         int result = 17;
         result = 37 * (header == null ? 0 : header.hashCode());
@@ -723,6 +727,7 @@ public class ColumnTag extends TagSupport {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void release() {
         header = null;
         arg0 = null;

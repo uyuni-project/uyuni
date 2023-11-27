@@ -1,4 +1,22 @@
 -------------------------------------------------------------------
+Wed Nov 01 20:56:07 CET 2023 - marina.latini@suse.com
+
+- version 4.4.5-1
+  *  Use bundle CA certificate in rhnpush
+
+-------------------------------------------------------------------
+Mon Sep 18 14:13:24 CEST 2023 - rosuna@suse.com
+
+- version 4.4.4-1
+  * Only use TLSv1+ for SSL connections
+
+-------------------------------------------------------------------
+Tue Feb 21 14:04:09 CET 2023 - jgonzalez@suse.com
+
+- version 4.4.3-1
+  * Ensure installation of make for building
+
+-------------------------------------------------------------------
 Fri Nov 18 15:05:05 CET 2022 - jgonzalez@suse.com
 
 - version 4.4.2-1

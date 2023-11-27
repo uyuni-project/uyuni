@@ -72,6 +72,7 @@ public class SsmConfigFilesEvent implements EventDatabaseMessage {
     }
 
     /** @return will not be <code>null</code> */
+    @Override
     public Long getUserId() {
         return userId;
     }
@@ -108,16 +109,19 @@ public class SsmConfigFilesEvent implements EventDatabaseMessage {
     }
 
     /** {@inheritDoc} */
+    @Override
     public String toText() {
         return toString();
     }
 
     /** {@inheritDoc} */
+    @Override
     public String toString() {
         return "SsmConfigFilesEvent[UserId: " + userId + "]";
     }
 
     /** {@inheritDoc} */
+    @Override
     public Transaction getTransaction() {
         return txn;
     }

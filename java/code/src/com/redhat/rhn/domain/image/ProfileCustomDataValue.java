@@ -168,6 +168,7 @@ public class ProfileCustomDataValue {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(final Object other) {
         if (other == null || !(other instanceof ProfileCustomDataValue)) {
             return false;
@@ -182,6 +183,7 @@ public class ProfileCustomDataValue {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder()
                 .append(key)

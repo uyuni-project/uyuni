@@ -33,8 +33,6 @@ public class SystemIdGenerateEventMessageAction implements MessageAction {
     /* Logger for this class */
     private static final Logger LOG = LogManager.getLogger(SystemIdGenerateEventMessageAction.class);
 
-    private static final String EVENT_TAG = "suse/systemid/generated";
-
     private final SystemQuery systemQuery;
 
     /**

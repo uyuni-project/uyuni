@@ -18,6 +18,7 @@ package com.redhat.rhn.domain.user;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerGroup;
 
 import java.util.Date;
 import java.util.Set;
@@ -156,7 +157,6 @@ public interface User {
 
     /**
      * Authenticate the user
-     * @todo  Deal with encoded passwords.
      * @param thePassword password to check if matches against this User's
      * @return boolean if the password is correct
      */
@@ -179,13 +179,13 @@ public interface User {
      * Gets the Set of SystemGroup IDs (Long) associated with this User.
      * @return Set the current value
      */
-    Set getDefaultSystemGroupIds();
+    Set<Long> getDefaultSystemGroupIds();
 
     /**
      * Updates the User's Default System groups.  This
      * @param groups Set of Long System Group IDs
      */
-    void setDefaultSystemGroupIds(Set groups);
+    void setDefaultSystemGroupIds(Set<Long> groups);
 
     /**
      * Tells whether or not a user is disabled
@@ -204,7 +204,7 @@ public interface User {
      * of disable/enable events in rhnWebContactChangeLog
      * @return Returns the set of stateChanges
      */
-    Set getStateChanges();
+    Set<StateChange> getStateChanges();
 
 
 
@@ -353,17 +353,6 @@ public interface User {
     // ***********************************
     // Address Interface
     // ***********************************
-    /**
-     * Set the address value.
-     * @param addIn the address to set
-     */
-    //void setAddress(Address addIn);
-
-    /**
-     * Get the address object for this user.
-     * @return Address of this user
-     */
-    //Address getAddress();
 
     /**
      * Getter for address1
@@ -484,13 +473,13 @@ public interface User {
      * This method retrieves the
      * @return Set of panes used by the user
      */
-    Set getHiddenPanes();
+    Set<Pane> getHiddenPanes();
 
     /**
      * Sets the set of PaneObjects instances.
      * @param panes a set of pane objects
      */
-    void setHiddenPanes(Set panes);
+    void setHiddenPanes(Set<Pane> panes);
 
     /**
      * Returns the user's preferred locale
@@ -553,13 +542,7 @@ public interface User {
      * to rhnUserServerGroupPerms
      * @return set of server groups
      */
-    Set getAssociatedServerGroups();
-
-    /**
-     * Removes all the associated server groups.
-     * This step becomes necessary when
-     */
-    //void clearAssociatedServerGroups();
+    Set<ServerGroup> getAssociatedServerGroups();
 
     /**
      * Returns the set of Server's this user has permissions to manage.

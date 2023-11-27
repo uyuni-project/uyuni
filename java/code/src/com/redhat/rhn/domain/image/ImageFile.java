@@ -53,7 +53,7 @@ public class ImageFile extends BaseDomainHelper {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "imgfile_seq")
     @SequenceGenerator(name = "imgfile_seq",
-            sequenceName = "suse_image_file_id_seq")
+            sequenceName = "suse_image_file_id_seq", allocationSize = 1)
     public Long getId() {
         return id;
     }
@@ -149,6 +149,7 @@ public class ImageFile extends BaseDomainHelper {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(final Object other) {
         if (!(other instanceof ImageFile)) {
             return false;
@@ -165,6 +166,7 @@ public class ImageFile extends BaseDomainHelper {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder()
                 .append(imageInfo)

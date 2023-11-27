@@ -67,6 +67,7 @@ public class XmlMessageResources extends MessageResources  {
     }
 
     /** {@inheritDoc} */
+    @Override
     public String getMessage(Locale locale, String key) {
         if (log.isDebugEnabled()) {
             log.debug("getMessage() : locale (ignored): {} key: {}", locale, key);

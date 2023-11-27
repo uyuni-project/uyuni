@@ -39,10 +39,11 @@ import javax.servlet.http.HttpServletResponse;
 public class EnableUserSetupAction extends RhnAction {
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
-            ActionForm formIn,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+                                 ActionForm formIn,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) {
 
         if (!AclManager.hasAcl("user_role(org_admin)", request, null)) {
             //Throw an exception with a nice error message so the user

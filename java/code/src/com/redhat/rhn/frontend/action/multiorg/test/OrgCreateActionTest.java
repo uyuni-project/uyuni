@@ -29,7 +29,7 @@ import org.junit.jupiter.api.Test;
 public class OrgCreateActionTest extends RhnPostMockStrutsTestCase {
 
     @Test
-    public void testExecuteSubmit() throws Exception {
+    public void testExecuteSubmit() {
         user.getOrg().addRole(RoleFactory.SAT_ADMIN);
         user.addPermanentRole(RoleFactory.SAT_ADMIN);
         TestUtils.saveAndFlush(user);
@@ -48,7 +48,7 @@ public class OrgCreateActionTest extends RhnPostMockStrutsTestCase {
     }
 
     @Test
-    public void testEmptyFields() throws Exception {
+    public void testEmptyFields() {
         user.getOrg().addRole(RoleFactory.SAT_ADMIN);
         user.addPermanentRole(RoleFactory.SAT_ADMIN);
         TestUtils.saveAndFlush(user);
@@ -61,7 +61,7 @@ public class OrgCreateActionTest extends RhnPostMockStrutsTestCase {
     }
 
     @Test
-    public void testCreateDupeUser() throws Exception {
+    public void testCreateDupeUser() {
         user.getOrg().addRole(RoleFactory.SAT_ADMIN);
         user.addPermanentRole(RoleFactory.SAT_ADMIN);
         TestUtils.saveAndFlush(user);

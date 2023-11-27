@@ -17,6 +17,7 @@ package com.redhat.rhn.frontend.action.rhnpackage.ssm;
 import static com.redhat.rhn.common.util.DatePicker.YEAR_RANGE_POSITIVE;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.domain.action.ActionChain;
@@ -68,7 +69,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  */
 public class SchedulePackageRemoveAction extends RhnListAction implements
-        Listable<Map<String, Object>>, MaintenanceWindowsAware {
+        Listable<Row>, MaintenanceWindowsAware {
 
     private static Logger log = LogManager.getLogger(SchedulePackageRemoveAction.class);
 
@@ -76,10 +77,11 @@ public class SchedulePackageRemoveAction extends RhnListAction implements
     private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping actionMapping,
                                  ActionForm actionForm,
                                  HttpServletRequest request,
-                                 HttpServletResponse response) throws Exception {
+                                 HttpServletResponse response) {
 
         RequestContext requestContext = new RequestContext(request);
         DynaActionForm f = (DynaActionForm) actionForm;
@@ -116,7 +118,8 @@ public class SchedulePackageRemoveAction extends RhnListAction implements
     }
 
     /** {@inheritDoc} */
-    public List<Map<String, Object>> getResult(RequestContext context) {
+    @Override
+    public List<Row> getResult(RequestContext context) {
         return getResult(context, false);
 
     }
@@ -128,8 +131,7 @@ public class SchedulePackageRemoveAction extends RhnListAction implements
      *          or a shortened much faster ones
      * @return the List
      */
-    public DataResult<Map<String, Object>>
-            getResult(RequestContext context, boolean shorten) {
+    public DataResult<Row> getResult(RequestContext context, boolean shorten) {
         HttpServletRequest request = context.getRequest();
         User user = context.getCurrentUser();
 
@@ -149,7 +151,7 @@ public class SchedulePackageRemoveAction extends RhnListAction implements
             RhnSetManager.store(packageSet);
         }
 
-        DataResult<Map<String, Object>> results =
+        DataResult<Row> results =
                 SystemManager.ssmSystemPackagesToRemove(user,
             RhnSetDecl.SSM_REMOVE_PACKAGES_LIST.getLabel(), shorten);
 
@@ -194,7 +196,7 @@ public class SchedulePackageRemoveAction extends RhnListAction implements
         ActionChain actionChain = ActionChainHelper.readActionChain(form, user);
 
         // Parse through all of the results
-        DataResult<Map<String, Object>> result = getResult(context, true);
+        DataResult<Row> result = getResult(context, true);
         result.elaborate();
 
         log.debug("Publishing schedule package remove event to message queue.");

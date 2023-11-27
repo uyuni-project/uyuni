@@ -56,8 +56,7 @@ public class SystemDetailsEditAction extends RhnAction {
      */
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
-            HttpServletRequest request, HttpServletResponse response)
-        throws Exception {
+            HttpServletRequest request, HttpServletResponse response) {
            RequestContext context = new RequestContext(request);
            User user = context.getCurrentUser();
 

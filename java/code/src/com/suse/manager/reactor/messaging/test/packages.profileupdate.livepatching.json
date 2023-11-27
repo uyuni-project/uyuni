@@ -254,6 +254,24 @@
         "result": true,
         "start_time": "11:16:23.084040"
       },
+      "mgrcompat_|-status_uptime_|-status.uptime_|-module_run": {
+        "__run_num__": 4,
+        "changes": {
+          "ret": {
+            "seconds": 600.0,
+            "since_iso": "2023-02-14T00:14:34.453950",
+            "since_t": 1676330074.0,
+            "days": 0.0,
+            "time": "13:11",
+            "users": 1.0
+          }
+        },
+        "comment": "Module function status.uptime executed",
+        "duration": 0.420,
+        "name": "status.uptime",
+        "result": true,
+        "start_time": "13:58:37.216400"
+      },
       "mgrcompat_|-kernel_live_version_|-sumautil.get_kernel_live_version_|-module_run": {
         "__run_num__": 5,
         "changes": {

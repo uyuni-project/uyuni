@@ -137,6 +137,9 @@ def cpu_data():
                     "NUMA node(s)": "cpu_numanodes",
                     "Stepping": "cpu_stepping",
                     "Core(s) per socket": "cpu_cores",
+                    "Socket(s)": "cpu_sockets",
+                    "Thread(s) per core": "cpu_threads",
+                    "CPU(s)": "cpu_sum",
                 }
                 values = {}
                 for line in lines:

@@ -22,10 +22,12 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
  */
 public class ManagementEntitlementTest extends BaseEntitlementTestCase {
 
+    @Override
     protected void createEntitlement() {
         ent = new ManagementEntitlement();
     }
 
+    @Override
     protected String getLabel() {
         return EntitlementManager.ENTERPRISE_ENTITLED;
     }

@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.common.util;
 
+import com.redhat.rhn.common.RhnRuntimeException;
+
 import org.apache.commons.collections.buffer.CircularFifoBuffer;
 import org.apache.commons.io.LineIterator;
 import org.apache.logging.log4j.LogManager;
@@ -114,6 +116,20 @@ public class FileUtils {
      * @return String containing file.
      */
     public static String readStringFromFile(String path) {
+        return readStringFromFile(path, false);
+    }
+
+
+    /**
+     * Read a file off disk into a String and return it.
+     *
+     * Expect weird stuff if the file is not textual.
+     *
+     * @param path of file to read in
+     * @param noLog don't log the content of the file
+     * @return String containing file.
+     */
+    public static String readStringFromFile(String path, boolean noLog) {
         if (log.isDebugEnabled()) {
             log.debug("readStringFromFile: {}", StringUtil.sanitizeLogInput(path));
         }
@@ -125,16 +141,16 @@ public class FileUtils {
             StringWriter writer = new StringWriter();
             IOUtils.getInstance().copyWriter(input, writer);
             String contents = writer.toString();
-            if (log.isDebugEnabled()) {
+            if (noLog && log.isDebugEnabled()) {
                 log.debug("contents: {}", contents);
             }
             return contents;
         }
         catch (FileNotFoundException e) {
-            throw new RuntimeException("File not found: " + path);
+            throw new RhnRuntimeException("File not found: " + path);
         }
         catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RhnRuntimeException(e);
         }
     }
 
@@ -207,10 +223,6 @@ public class FileUtils {
         }
         catch (FileNotFoundException e) {
             log.error("File not found: {}", pathToFile);
-            throw new RuntimeException(e);
-        }
-        catch (IOException e) {
-            log.error("Could not read from: {}", pathToFile);
             throw new RuntimeException(e);
         }
         finally {

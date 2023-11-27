@@ -90,8 +90,9 @@ sub process_file {
     # save permissions also but clear access for other
     my $mode =  (stat("$sourcedir/$relative_path"))[2] & 07770;
     chmod $mode, "$destdir/$relative_path";
-    # chgrp apache (Different OS uses different group name, so use both).
-    chown 0, (getgrnam("www") // "") . (getgrnam("apache") // ""), "$destdir/$relative_path";
+    # chgrp apache (Different OS uses different group name, so check config for it).
+    my $apache_group = getgrnam(`grep -hsoP "(?<=Group ).*" /etc/httpd/conf/*.conf /etc/apache2/*.conf | tr -d '\n'`);
+    chown 0, $apache_group, "$destdir/$relative_path";
 
     system '/sbin/restorecon', '-vv', "$destdir/$relative_path";
 

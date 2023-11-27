@@ -41,8 +41,9 @@ public class RollbackAction extends RhnAction implements Listable<Map<String, Ob
     /**
      * ${@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
-            HttpServletRequest request, HttpServletResponse response) {
+                                 HttpServletRequest request, HttpServletResponse response) {
 
         ListHelper helper = new ListHelper(this, request);
         helper.execute();
@@ -53,6 +54,7 @@ public class RollbackAction extends RhnAction implements Listable<Map<String, Ob
     /**
      * ${@inheritDoc}
      */
+    @Override
     public List<Map<String, Object>> getResult(RequestContext context) {
         User user = context.getCurrentUser();
         return SystemManager.listTagsForSystemsInSet(user);

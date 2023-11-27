@@ -17,13 +17,12 @@ package com.redhat.rhn.common.security;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.util.SHA256Crypt;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 /**
@@ -104,7 +103,7 @@ public class SessionSwap {
         throw new SessionSwapTamperException(in);
     }
     /**
-     * compute the md5sum of
+     * compute the sha256sum of
      * key1:key2:(data):key3:key4.
      * @param data to compute
      * @return computed data
@@ -121,29 +120,7 @@ public class SessionSwap {
                 c.getString(ConfigDefaults.WEB_SESSION_SWAP_SECRET_3) +
                 ":" +
                 c.getString(ConfigDefaults.WEB_SESSION_SWAP_SECRET_4);
-        return computeMD5Hash(swapKey);
-    }
-
-    /**
-     * compute md5sum for any arbitrary text
-     *
-     * @param text text to hash
-     * @return md5 computed hash value
-     */
-    public static String computeMD5Hash(String text) {
-        // TODO This should be merged with the md5 method(s)
-        // in HMAC
-        MessageDigest digest = null;
-        try {
-            digest = MessageDigest.getInstance("MD5");
-        }
-        catch (NoSuchAlgorithmException e) {
-            // this really shouldn't happen.  really.
-            throw new IllegalArgumentException("Unable to instantiate MD5 " +
-                    "MessageDigest algorithm");
-        }
-        digest.update(text.getBytes());
-        return HMAC.byteArrayToHex(digest.digest());
+        return SHA256Crypt.sha256Hex(swapKey);
     }
 
     /**
@@ -151,7 +128,7 @@ public class SessionSwap {
      *
      * This is a port of the RHN::SessionSwap:rhn_hmac_data method.
      *
-     * @param text array to SHA1 hash
+     * @param text array to SHA256 hash
      * @return String of hex chars
      */
     public static String rhnHmacData(List<String> text) {
@@ -170,12 +147,7 @@ public class SessionSwap {
 
         String joinedText = StringUtils.join(text.iterator(), "\0");
 
-
-        if (log.isDebugEnabled()) {
-            log.debug("Data     : [{}]", joinedText);
-            log.debug("Key      : [{}]", swapKey);
-        }
-        String retval = HMAC.sha1(joinedText, swapKey.toString());
+        String retval = HMAC.sha256(joinedText, swapKey.toString());
         if (log.isDebugEnabled()) {
             log.debug("retval: {}", retval);
         }

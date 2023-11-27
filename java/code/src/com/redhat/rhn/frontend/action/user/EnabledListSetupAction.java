@@ -15,6 +15,7 @@
 package com.redhat.rhn.frontend.action.user;
 
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.UserOverview;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -34,14 +35,15 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * EnabledListSetupAction
  */
-public class EnabledListSetupAction extends RhnAction implements Listable {
+public class EnabledListSetupAction extends RhnAction implements Listable<UserOverview> {
     public static final String LIST_NAME = "userList";
 
     /**
      * ${@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
-            HttpServletRequest request, HttpServletResponse response) throws Exception {
+                                 HttpServletRequest request, HttpServletResponse response) {
         ListHelper helper = new ListHelper(this, request);
         helper.setListName(LIST_NAME);
         helper.setDataSetName(getDataSetName());
@@ -60,7 +62,8 @@ public class EnabledListSetupAction extends RhnAction implements Listable {
     /**
      * ${@inheritDoc}
      */
-    public List getResult(RequestContext context) {
+    @Override
+    public List<UserOverview> getResult(RequestContext context) {
         User user = context.getCurrentUser();
         return UserManager.activeInOrg2(user);
     }

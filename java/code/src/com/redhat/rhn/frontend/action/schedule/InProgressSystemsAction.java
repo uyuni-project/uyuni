@@ -20,6 +20,7 @@ import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.RhnSetAction;
+import com.redhat.rhn.frontend.dto.ActionedSystem;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.StrutsDelegate;
@@ -75,7 +76,7 @@ public class InProgressSystemsAction extends RhnSetAction {
          */
         int numSystems = updateSet(request).size();
         ActionMessages msgs = new ActionMessages();
-        Map params = makeParamMap(formIn, request);
+        Map<String, Object> params = makeParamMap(formIn, request);
 
         if (numSystems == 0) {
             msgs.add(ActionMessages.GLOBAL_MESSAGE,
@@ -109,8 +110,7 @@ public class InProgressSystemsAction extends RhnSetAction {
             strutsDelegate.saveMessages(request, msgs);
         }
         catch (TaskomaticApiException e) {
-            log.error("Could not unschedule action:");
-            log.error(e);
+            log.error("Could not unschedule action:", e);
             ActionErrors errors = new ActionErrors();
             strutsDelegate.addError(errors, "taskscheduler.down");
             strutsDelegate.saveMessages(request, errors);
@@ -134,9 +134,10 @@ public class InProgressSystemsAction extends RhnSetAction {
     /**
      * {@inheritDoc}
      */
-    protected DataResult getDataResult(User user,
-                                       ActionForm formIn,
-                                       HttpServletRequest request) {
+    @Override
+    protected DataResult<ActionedSystem> getDataResult(User user,
+                                                       ActionForm formIn,
+                                                       HttpServletRequest request) {
         RequestContext requestContext = new RequestContext(request);
         Long aid = requestContext.getParamAsLong("aid");
         Action action = ActionManager.lookupAction(user, aid);
@@ -148,6 +149,7 @@ public class InProgressSystemsAction extends RhnSetAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processMethodKeys(Map<String, String> map) {
         map.put("actions.jsp.unscheduleaction", "unscheduleAction");
     }
@@ -155,6 +157,7 @@ public class InProgressSystemsAction extends RhnSetAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void processParamMap(ActionForm formIn,
                                    HttpServletRequest request,
                                    Map<String, Object> params) {
@@ -165,6 +168,7 @@ public class InProgressSystemsAction extends RhnSetAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected RhnSetDecl getSetDecl() {
         return RhnSetDecl.ACTIONS_UNSCHEDULE;
     }

@@ -15,6 +15,7 @@
 package com.redhat.rhn.common.hibernate.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -42,13 +43,14 @@ import java.util.List;
 public class TestFactoryWrapperTest extends RhnBaseTestCase {
     private static Logger log = LogManager.getLogger(TestFactoryWrapperTest.class);
 
+    @Override
     @BeforeEach
     public void setUp() {
         HibernateFactory.createSessionFactory();
     }
 
     @Test
-    public void testLookupReturnNull() throws Exception {
+    public void testLookupReturnNull() {
         TestInterface obj = TestFactory.lookupByFoobar("NOTFOUND");
         assertNull(obj);
     }
@@ -56,28 +58,28 @@ public class TestFactoryWrapperTest extends RhnBaseTestCase {
     // This is a trivial test, but it proves that we can create a simple
     // SQL query automatically from the table definition.
     @Test
-    public void testLookup() throws Exception {
+    public void testLookup() {
         TestInterface obj = TestFactory.lookupByFoobar("Blarg");
         assertEquals("Blarg", obj.getFoobar());
         // 1 is a magic number, this is basically checking that the id is set
         // correctly.  We know this will be 1, because we create the sequence
         // to start at 0, and Blarg is the first value inserted.
-        assertTrue(obj.getId() == 1);
+        assertEquals(1, (long) obj.getId());
     }
 
     @Test
-     public void testNullIntoPrimitive() throws Exception {
+     public void testNullIntoPrimitive() {
          TestInterface obj = TestFactory.lookupByFoobar("Blarg");
          assertEquals("Blarg", obj.getFoobar());
          assertNull(obj.getPin());
          // 1 is a magic number, this is basically checking that the id is set
          // correctly.  We know this will be 1, because we create the sequence
          // to start at 0, and Blarg is the first value inserted.
-         assertTrue(obj.getId() == 1);
+        assertEquals(1, (long) obj.getId());
      }
 
     @Test
-    public void testNewInsert() throws Exception {
+    public void testNewInsert() {
         TestInterface obj = TestFactory.createTest();
         obj.setFoobar("testNewInsert");
         TestFactory.save(obj);
@@ -89,7 +91,7 @@ public class TestFactoryWrapperTest extends RhnBaseTestCase {
 
 
     @Test
-    public void testUpdate() throws Exception {
+    public void testUpdate() {
 
         TestInterface obj = TestFactory.createTest();
         obj.setFoobar("update_Multi_test");
@@ -107,7 +109,7 @@ public class TestFactoryWrapperTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testUpdateAfterCommit() throws Exception {
+    public void testUpdateAfterCommit() {
         TestInterface obj = TestFactory.createTest();
         obj.setFoobar("update_test");
         TestFactory.save(obj);
@@ -117,13 +119,13 @@ public class TestFactoryWrapperTest extends RhnBaseTestCase {
     }
 
     @Test
-    public void testLookupMultipleObjects() throws Exception {
-        List allTests = TestFactory.lookupAll();
-        assertTrue(allTests.size() > 0);
+    public void testLookupMultipleObjects() {
+        List<TestInterface> allTests = TestFactory.lookupAll();
+        assertFalse(allTests.isEmpty());
     }
 
     @Test
-    public void testUpdateToNullValue() throws Exception {
+    public void testUpdateToNullValue() {
         TestInterface obj = TestFactory.createTest();
         obj.setFoobar("update_test3");
         obj.setTestColumn("AAA");
@@ -137,7 +139,7 @@ public class TestFactoryWrapperTest extends RhnBaseTestCase {
         result.setTestColumn(null);
         TestFactory.save(result);
         result = TestFactory.lookupByFoobar("After_change3");
-        assertTrue(result.getTestColumn() == null);
+        assertNull(result.getTestColumn());
     }
 
     @Test
@@ -145,7 +147,7 @@ public class TestFactoryWrapperTest extends RhnBaseTestCase {
 
         for (int i = 0; i < 20; i++) {
             SelectMode m = ModeFactory.getMode("test_queries", "get_test_users");
-            m.execute(new HashMap());
+            m.execute(new HashMap<>());
             HibernateFactory.commitTransaction();
             HibernateFactory.closeSession();
         }
@@ -198,7 +200,7 @@ public class TestFactoryWrapperTest extends RhnBaseTestCase {
     }
 
     @AfterAll
-    public static void oneTimeTeardown() throws Exception {
+    public static void oneTimeTeardown() {
         HibernateFactory.getSession().doWork(connection -> {
             Statement statement = null;
             try {

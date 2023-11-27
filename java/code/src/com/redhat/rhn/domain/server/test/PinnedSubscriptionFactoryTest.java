@@ -43,7 +43,7 @@ import java.util.stream.Collectors;
 public class PinnedSubscriptionFactoryTest extends BaseTestCaseWithUser {
 
     @Test
-    public void testSave() throws Exception {
+    public void testSave() {
         PinnedSubscription subscription = new PinnedSubscription();
         subscription.setSubscriptionId(10L);
         subscription.setSystemId(100L);
@@ -56,7 +56,7 @@ public class PinnedSubscriptionFactoryTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testRemove() throws Exception {
+    public void testRemove() {
         PinnedSubscription subscription = new PinnedSubscription();
         subscription.setSubscriptionId(10L);
         subscription.setSystemId(100L);
@@ -69,7 +69,7 @@ public class PinnedSubscriptionFactoryTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testCleanStalePins() throws Exception {
+    public void testCleanStalePins() {
         PinnedSubscription subscription = new PinnedSubscription();
         subscription.setSubscriptionId(10L);
         subscription.setSystemId(100L);

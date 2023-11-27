@@ -30,7 +30,7 @@ public class RenderGuardComposite implements RenderGuard {
      */
     public RenderGuardComposite() {
         super();
-        guards = new ArrayList();
+        guards = new ArrayList<>();
     }
 
     /**
@@ -39,6 +39,7 @@ public class RenderGuardComposite implements RenderGuard {
      * @param depth Depth of node.
      * @return true if all renderers return true or no renderers are configured.
      */
+    @Override
     public boolean canRender(NavNode node, int depth) {
         boolean flag = true;
 

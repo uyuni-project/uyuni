@@ -1,4 +1,16 @@
 -------------------------------------------------------------------
+Wed Nov 01 20:18:12 CET 2023 - marina.latini@suse.com
+
+- version 4.4.3-1
+  * Tito requires to list the package source as %{name}-%{version}.tar.gz
+
+-------------------------------------------------------------------
+Mon Sep 18 14:49:23 CEST 2023 - rosuna@suse.com
+
+- version 4.4.2-1
+  * Update translation strings
+
+-------------------------------------------------------------------
 Wed Sep 28 11:19:30 CEST 2022 - jgonzalez@suse.com
 
 - version 4.4.1-1
