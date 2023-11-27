@@ -8347,7 +8347,7 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="message.payg.errornotcompliant" xml:space="preserve">
         <source>
-          This @@PRODUCT_NAME@@ Pay-as-you-go instance is not compliant and some of its functions will be disabled. Please contact your administrator to
+          This @@PRODUCT_NAME@@ PAYG is not compliant and some of its functions will be disabled. Please contact your administrator to
           amend the situation before continuing using the product.
         </source>
       </trans-unit>

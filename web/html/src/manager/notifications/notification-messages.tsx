@@ -62,7 +62,7 @@ const _MESSAGE_TYPE = {
   },
   PaygNotCompliantWarning: {
     id: "PaygNotCompliantWarning",
-    text: t("Payg Not Compliant Warning"),
+    text: t("PAYG instance is not compliant"),
   },
 };
 

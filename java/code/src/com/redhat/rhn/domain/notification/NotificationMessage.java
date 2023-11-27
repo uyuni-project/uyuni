@@ -160,7 +160,7 @@ public class NotificationMessage implements Serializable {
             case EndOfLifePeriod: return "End of Life Period";
             case SubscriptionWarning: return "Subscription Warning";
             case UpdateAvailable: return "Updates are Available";
-            case PaygNotCompliantWarning: return "Pay-as-you-go not compliant warning";
+            case PaygNotCompliantWarning: return "PAYG instance is not compliant";
             default: return getType().name();
         }
     }
