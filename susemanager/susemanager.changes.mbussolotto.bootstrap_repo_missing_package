@@ -1,0 +1,1 @@
+- make python3-looseversion optional in SUSE bootrap repo (bsc#1215120)

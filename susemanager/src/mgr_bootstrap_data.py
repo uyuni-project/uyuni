@@ -212,7 +212,7 @@ PKGLIST15_SALT_NO_BUNDLE = [
     "salt-minion",
     "python3-apipkg*",
     "python3-iniconfig*",
-    "python3-looseversion",
+    "python3-looseversion*",
     "python3-jmespath",
     "xz",
 ]
