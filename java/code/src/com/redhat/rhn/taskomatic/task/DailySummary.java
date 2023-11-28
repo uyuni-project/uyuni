@@ -56,7 +56,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 import java.util.TreeMap;
 
 import javax.xml.stream.XMLStreamException;
@@ -169,7 +168,7 @@ public class DailySummary extends RhnJavaJob {
                     UserNotificationFactory.createNotificationMessage(
                             new PaygNotCompliantWarning());
             UserNotificationFactory.storeNotificationMessageFor(notificationMessage,
-                    Set.of(), Optional.empty()); // This notification will be sent to everyone
+                    Collections.emptySet(), Optional.empty()); // This notification will be sent to everyone
         }
     }
 
