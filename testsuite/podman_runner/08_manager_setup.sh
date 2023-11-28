@@ -2,7 +2,7 @@
 set -xe
 
 src_dir=$(cd $(dirname "$0")/../.. && pwd -P)
-env_file=$(dirname "$0")/env.server
+env_file=${src_dir}/env.server
 
 sudo -i podman exec --env-file=${env_file} uyuni-server-all-in-one-test bash -c "/usr/lib/susemanager/bin/mgr-setup -l /var/log/susemanager_setup.log -s"
 sudo -i podman exec uyuni-server-all-in-one-test bash -c "/usr/bin/spacewalk-schema-upgrade -y"
