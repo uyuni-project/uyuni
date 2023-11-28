@@ -1958,11 +1958,8 @@ public class ActionManager extends BaseManager {
 
         for (Map<String, Long> map : packageMaps) {
 
-            Map<String, Long> newMap = map.entrySet().stream()
-                 .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue()));
-
             Map<String, Long> previous = packageMapsWithoutDuplicated.put(
-                    newMap.get("name_id").toString(), newMap);
+                    map.get("name_id").toString(), map);
 
             if (previous != null) {
                 String previousNevra = PackageManager.buildPackageNevra(
