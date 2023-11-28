@@ -91,6 +91,7 @@ import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.kickstart.ProvisionVirtualInstanceCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerVirtualSystemCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
+import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
@@ -1947,6 +1948,38 @@ public class ActionManager extends BaseManager {
         return action;
     }
 
+
+    private static List<Map<String, ? extends Object>> removeDuplicatedName(List<Map<String, Long>> packageMaps) {
+        Map<String, Map<String, Long>> packageMapsWithoutDuplicated = new HashMap<>();
+
+        for (Map<String, Long> map : packageMaps) {
+
+            Map<String, Long> previous = packageMapsWithoutDuplicated.put(
+                    map.get("name_id").toString(), map);
+
+            if (previous != null) {
+                String previousNevra = PackageManager.buildPackageNevra(
+                        previous.get("name_id"),
+                        previous.get("evr_id"),
+                        previous.get("arch_id"));
+
+                String currentNevra = PackageManager.buildPackageNevra(
+                        map.get("name_id"),
+                        map.get("evr_id"),
+                        map.get("arch_id"));
+
+                log.warn("Package {}, will be not be installed cause also {} has been " +
+                        "provided. This is because " +
+                        "salt fails installing to package with the same name. If the " +
+                        "installed package is not the one desired, " +
+                        "you can install it the correct one after."
+                        , previousNevra, currentNevra);
+
+            }
+        }
+        return new ArrayList<>(packageMapsWithoutDuplicated.values());
+
+    }
     /**
      * Adds package details to some Actions
      * @param actions the actions
@@ -1956,10 +1989,13 @@ public class ActionManager extends BaseManager {
     public static void addPackageActionDetails(Collection<Action> actions,
             List<Map<String, Long>> packageMaps) {
         if (packageMaps != null) {
+
+            List<Map<String, ? extends Object>> uniquePackagesMaps = removeDuplicatedName(packageMaps);
+
             List<Map<String, Object>> paramList =
                 actions.stream().flatMap(action -> {
                     String packageParameter = getPackageParameter(action);
-                    return packageMaps.stream().map(packageMap -> {
+                    return uniquePackagesMaps.stream().map(packageMap -> {
                         Map<String, Object> params = new HashMap<>();
                         params.put("action_id", action.getId());
                         params.put("name_id", packageMap.get("name_id"));
@@ -1973,8 +2009,8 @@ public class ActionManager extends BaseManager {
 
             ModeFactory.getWriteMode("Action_queries", "schedule_action")
                 .executeUpdates(paramList);
-        }
     }
+        }
 
     /**
      * Returns the pkg_parameter parameter to the schedule_action queries in
