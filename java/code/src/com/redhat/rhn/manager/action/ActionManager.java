@@ -1997,7 +1997,7 @@ public class ActionManager extends BaseManager {
             List<Map<String, Long>> packageMaps) {
         if (packageMaps != null) {
 
-            List<Map<String,? extends Object>> uniquePackagesMaps = removeDuplicatedName(packageMaps);
+            List<Map<String, ? extends Object>> uniquePackagesMaps = removeDuplicatedName(packageMaps);
 
             List<Map<String, Object>> paramList =
                 actions.stream().flatMap(action -> {
