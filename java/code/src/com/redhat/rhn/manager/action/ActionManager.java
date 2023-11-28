@@ -1953,27 +1953,27 @@ public class ActionManager extends BaseManager {
     }
 
 
-    private static List<Map<String, Object>> removeDuplicatedName(List<Map<String, Long>> packageMaps) {
-        Map<String, Map<String, Object>> packageMapsWithoutDuplicated = new HashMap<>();
+    private static List<Map<String, ? extends Object>> removeDuplicatedName(List<Map<String, Long>> packageMaps) {
+        Map<String, Map<String, Long>> packageMapsWithoutDuplicated = new HashMap<>();
 
         for (Map<String, Long> map : packageMaps) {
 
-            Map<String, Object> newMap = map.entrySet().stream()
-                 .collect(Collectors.toMap(Map.Entry::getKey, e -> (Object)e.getValue()));
+            Map<String, Long> newMap = map.entrySet().stream()
+                 .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue()));
 
-            Map<String, Object> previous = packageMapsWithoutDuplicated.put(
+            Map<String, Long> previous = packageMapsWithoutDuplicated.put(
                     newMap.get("name_id").toString(), newMap);
 
             if (previous != null) {
                 String previousNevra = PackageManager.buildPackageNevra(
-                        Long.valueOf(previous.get("name_id").toString()),
-                        Long.valueOf(previous.get("evr_id").toString()),
-                        Long.valueOf(previous.get("arch_id").toString()));
+                        previous.get("name_id"),
+                        previous.get("evr_id"),
+                        previous.get("arch_id"));
 
                 String currentNevra = PackageManager.buildPackageNevra(
-                        Long.valueOf(map.get("name_id").toString()),
-                        Long.valueOf(map.get("evr_id").toString()),
-                        Long.valueOf(map.get("arch_id").toString()));
+                        map.get("name_id"),
+                        map.get("evr_id"),
+                        map.get("arch_id"));
 
                 log.warn("Package {}, will be not be installed cause also {} has been " +
                         "provided. This is because " +
@@ -1997,7 +1997,7 @@ public class ActionManager extends BaseManager {
             List<Map<String, Long>> packageMaps) {
         if (packageMaps != null) {
 
-            List<Map<String, Object>> uniquePackagesMaps = removeDuplicatedName(packageMaps);
+            List<Map<String,? extends Object>> uniquePackagesMaps = removeDuplicatedName(packageMaps);
 
             List<Map<String, Object>> paramList =
                 actions.stream().flatMap(action -> {
