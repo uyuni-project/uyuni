@@ -409,6 +409,14 @@ Before('@opensuse155arm_ssh_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['opensuse155arm_ssh_minion']
 end
 
+Before('@sle15sp3s390_minion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp3s390_minion']
+end
+
+Before('@sle15sp3s390_ssh_minion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp3s390_ssh_minion']
+end
+
 Before('@slemicro') do |scenario|
   skip_this_scenario unless scenario.location.file.include? 'slemicro'
 end
