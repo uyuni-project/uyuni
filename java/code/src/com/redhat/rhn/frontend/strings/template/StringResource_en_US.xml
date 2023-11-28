@@ -296,12 +296,12 @@ Thank you for using @@PRODUCT_NAME@@.
              {4} = hostname
              {5} = emailFooter from template db
              {6} = email account info from template db
-             {7} = Pay-as-you-go warning if the instance is not compliant
+             {7} = PAYG warning if the instance is not compliant
           </context>
         </context-group>
       </trans-unit>
       <trans-unit id="dailysummary.email.notpaygcompliant" xml:space="preserve">
-          <source>Warning: This @@PRODUCT_NAME@@ Pay-as-you-go instance is not compliant and some of its functions are disabled.
+          <source>Warning: This @@PRODUCT_NAME@@ PAYG instance is not compliant and some of its functions are disabled.
 Please contact your administrator to amend the situation before continuing using the product.
           </source>
       </trans-unit>
