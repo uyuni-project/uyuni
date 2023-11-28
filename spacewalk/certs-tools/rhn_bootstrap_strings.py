@@ -968,6 +968,10 @@ if [ -n "$SNAPSHOT_ID" ]; then
 module_executors:
   - transactional_update
   - direct_call
+# Include beacon to check for pending transactions indicating that a reboot is necessary
+beacons:
+  reboot_info:
+    - interval: 10
 EOF
 fi # -n SNAPSHOT_ID
 fi # REGISTER_THIS_BOX eq 1
