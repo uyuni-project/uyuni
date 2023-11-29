@@ -110,7 +110,8 @@ Requires:       spacewalk-backend-sql-postgresql
 Requires:       spacewalk-java-postgresql
 Requires:       perl(DBD::Pg)
 %if 0%{?suse_version}
-# Actual version set by prjconf
+# Actual version set by prjconf, default is 14
+%{!?postgresql_version: %global postgresql_version 14}
 Requires:       postgresql-implementation = %{postgresql_version}
 Requires:       postgresql-contrib-implementation = %{postgresql_version}
 %else # not a supported SUSE version or alternative OS.

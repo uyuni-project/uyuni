@@ -27,7 +27,8 @@ Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 %if 0%{?suse_version}
-# Actual version set by prjconf
+# Actual version set by prjconf, default is 14
+%{!?postgresql_version: %global postgresql_version 14}
 Requires:       postgresql-contrib-implementation = %{postgresql_version}
 Requires:       postgresql-server-implementation = %{postgresql_version}
 %else
