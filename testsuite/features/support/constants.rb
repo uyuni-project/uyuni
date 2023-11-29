@@ -75,7 +75,9 @@ ENV_VAR_BY_HOST = { 'localhost' => 'HOSTNAME',
                     'opensuse154arm_minion' => 'OPENSUSE154ARM_MINION',
                     'opensuse154arm_ssh_minion' => 'OPENSUSE154ARM_SSHMINION',
                     'opensuse155arm_minion' => 'OPENSUSE155ARM_MINION',
-                    'opensuse155arm_ssh_minion' => 'OPENSUSE155ARM_SSHMINION' }.freeze
+                    'opensuse155arm_ssh_minion' => 'OPENSUSE155ARM_SSHMINION',
+                    'sle15sp3s390_minion' => 'SLE15SP3S390_MINION',
+                    'sle15sp3s390_ssh_minion' => 'SLE15SP3S390_SSHMINION' }.freeze
 
 ADDRESSES = { 'network'           => '0',
               'sle_client'        => '2',
@@ -215,7 +217,9 @@ PACKAGE_BY_CLIENT = { 'sle_client' => 'bison',
                       'opensuse154arm_minion' => 'bison',
                       'opensuse154arm_ssh_minion' => 'bison',
                       'opensuse155arm_minion' => 'bison',
-                      'opensuse155arm_ssh_minion' => 'bison' }.freeze
+                      'opensuse155arm_ssh_minion' => 'bison',
+                      'sle15sp3s390_minion' => 'bison',
+                      'sle15sp3s390_ssh_minion' => 'bison' }.freeze
 
 # The values can be found under Software -> Channel List -> Create Channel
 # Then have a look at Parent Channel and find the desired name
@@ -296,7 +300,9 @@ BASE_CHANNEL_BY_CLIENT = { 'SUSE Manager' =>
                               'opensuse154arm_minion' => 'openSUSE-Leap-15.4-Pool for aarch64',
                               'opensuse154arm_ssh_minion' => 'openSUSE-Leap-15.4-Pool for aarch64',
                               'opensuse155arm_minion' => 'openSUSE-Leap-15.5-Pool for aarch64',
-                              'opensuse155arm_ssh_minion' => 'openSUSE-Leap-15.5-Pool for aarch64'
+                              'opensuse155arm_ssh_minion' => 'openSUSE-Leap-15.5-Pool for aarch64',
+                              'sle15sp3s390_minion' => 'SLE-Product-SLES15-SP3-Pool for s390x',
+                              'sle15sp3s390_ssh_minion' => 'SLE-Product-SLES15-SP3-Pool for s390x'
                             },
                             'Uyuni' =>
                             {
@@ -361,7 +367,9 @@ BASE_CHANNEL_BY_CLIENT = { 'SUSE Manager' =>
                               'opensuse154arm_minion' => 'openSUSE Leap 15.4 (aarch64)',
                               'opensuse154arm_ssh_minion' => 'openSUSE Leap 15.4 (aarch64)',
                               'opensuse155arm_minion' => 'openSUSE Leap 15.5 (aarch64)',
-                              'opensuse155arm_ssh_minion' => 'openSUSE Leap 15.5 (aarch64)'
+                              'opensuse155arm_ssh_minion' => 'openSUSE Leap 15.5 (aarch64)',
+                              'sle15sp3s390_minion' => 'SLE-Product-SLES15-SP3-Pool for s390x',
+                              'sle15sp3s390_ssh_minion' => 'SLE-Product-SLES15-SP3-Pool for s390x'
                             },
                            'Fake' =>
                              {
@@ -628,7 +636,9 @@ PKGARCH_BY_CLIENT = { 'proxy' => 'x86_64',
                       'opensuse154arm_minion' => 'aarch64',
                       'opensuse154arm_ssh_minion' => 'aarch64',
                       'opensuse155arm_minion' => 'aarch64',
-                      'opensuse155arm_ssh_minion' => 'aarch64' }.freeze
+                      'opensuse155arm_ssh_minion' => 'aarch64',
+                      'sle15sp3s390_minion' => 's390x',
+                      'sle15sp3s390_ssh_minion' => 's390x' }.freeze
 
 CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION = {
   # WARNING:

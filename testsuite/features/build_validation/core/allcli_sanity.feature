@@ -443,6 +443,20 @@ Feature: Sanity checks
     And "opensuse155arm_ssh_minion" should communicate with the server using public interface
     And the clock from "opensuse155arm_ssh_minion" should be exact
 
+@sle15sp3s390_minion
+  Scenario: The SLES 15 SP3 s390x minion is healthy
+    Then "sle15sp3s390_minion" should have a FQDN
+    And reverse resolution should work for "sle15sp3s390_minion"
+    And "sle15sp3s390_minion" should communicate with the server using public interface
+    And the clock from "sle15sp3s390_minion" should be exact
+
+@sle15sp3s390_ssh_minion
+  Scenario: The SLES 15 SP3 s390x SSH minion is healthy
+    Then "sle15sp3s390_ssh_minion" should have a FQDN
+    And reverse resolution should work for "sle15sp3s390_ssh_minion"
+    And "sle15sp3s390_ssh_minion" should communicate with the server using public interface
+    And the clock from "sle15sp3s390_ssh_minion" should be exact
+
 @sle12sp5_buildhost
   Scenario: The SLES 12 SP5 build host is healthy
     Then "sle12sp5_buildhost" should have a FQDN

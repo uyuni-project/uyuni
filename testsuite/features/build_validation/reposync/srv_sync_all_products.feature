@@ -366,6 +366,32 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I use spacewalk-common-channel to add channel "opensuse_leap15_5 opensuse_leap15_5-backports-updates opensuse_leap15_5-non-oss opensuse_leap15_5-non-oss-updates opensuse_leap15_5-sle-updates opensuse_leap15_5-updates opensuse_leap15_5-uyuni-client-devel" with arch "aarch64"
     And I wait until all synchronized channels for "leap15.5-aarch64" have finished
 
+@sle15sp3s390_minion
+  Scenario: Add SUSE Linux Enterprise Server 15 SP3 for s390x
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "Loading" text
+    And I enter "SUSE Linux Enterprise Server 15 SP3" as the filtered product description
+    And I select "SUSE Linux Enterprise Server 15 SP3 s390x" as a product
+    Then I should see the "SUSE Linux Enterprise Server 15 SP3 s390x" selected
+    When I open the sub-list of the product "SUSE Linux Enterprise Server 15 SP3 s390x"
+    And I select "SUSE Linux Enterprise Server LTSS 15 SP3 s390x" as a product
+    Then I should see the "SUSE Linux Enterprise Server LTSS 15 SP3 s390x" selected
+    And I open the sub-list of the product "Basesystem Module 15 SP3 s390x"
+    And I select "Desktop Applications Module 15 SP3 s390x" as a product
+    Then I should see the "Desktop Applications Module 15 SP3 s390x" selected
+    When I open the sub-list of the product "Desktop Applications Module 15 SP3 s390x"
+    And I select "Development Tools Module 15 SP3 s390x" as a product
+    Then I should see the "Development Tools Module 15 SP3 s390x" selected
+    When I click the Add Product button
+    And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
+    And I wait until I see "SUSE Linux Enterprise Server 15 SP3 s390x" product has been added
+    And I wait until all synchronized channels for "sles15-sp3" have finished
+
+@uyuni
+@sle15sp3s390_minion
+  Scenario: Add SUSE Linux Enterprise Server 15 SP3 for s390x Uyuni Client tools
+    When I use spacewalk-common-channel to add channel "sles15-sp3-devel-uyuni-client" with arch "s390x"
+
 @susemanager
 @alma9_minion
   Scenario: Add Alma Linux 9
