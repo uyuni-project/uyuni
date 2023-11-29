@@ -8345,6 +8345,12 @@ Follow this url to see the full list of inactive systems:
           To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup/MirrorCredentials.do"&gt;here&lt;/a&gt;.
         </source>
       </trans-unit>
+      <trans-unit id="message.payg.errornotcompliant" xml:space="preserve">
+        <source>
+          This @@PRODUCT_NAME@@ PAYG is not compliant and some of its functions will be disabled. Please contact your administrator to
+          amend the situation before continuing using the product.
+        </source>
+      </trans-unit>
       <trans-unit id="message.payg.errorbyosnosccssm" xml:space="preserve">
         <source>
 @@PRODUCT_NAME@@ is not able to manage these instances since there are one or more Bring-your-own-subscription and no SCC credentials are set.
@@ -9435,6 +9441,12 @@ For a detailed analysis, please refer to the log files.</source>
       </trans-unit>
       <trans-unit id="notification.subscriptionwarning.detail">
         <source>You have subscriptions that are expiring soon or already expired. Please check the &lt;a href="/rhn/manager/subscription-matching"&gt;Subscription Matching&lt;/a&gt; page.</source>
+      </trans-unit>
+      <trans-unit id="notification.paygnotcompliantwarning.summary">
+        <source>@@PRODUCT_NAME@@ PAYG instance is not compliant.</source>
+      </trans-unit>
+      <trans-unit id="notification.paygnotcompliantwarning.detail">
+        <source>This @@PRODUCT_NAME@@ PAYG instance is not compliant. Some @@PRODUCT_NAME@@ functions will be disabled. Please check with your system administrator.</source>
       </trans-unit>
       <trans-unit id="notification.updateavailable.summary">
         <source>Updates are available.</source>
