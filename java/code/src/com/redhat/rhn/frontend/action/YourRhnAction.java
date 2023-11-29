@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.action;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.notification.types.SubscriptionWarning;
 import com.redhat.rhn.domain.user.Pane;
 import com.redhat.rhn.domain.user.PaneFactory;
@@ -32,9 +33,14 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 
+import com.suse.cloud.CloudPaygManager;
+
+import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionMessage;
+import org.apache.struts.action.ActionMessages;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -51,7 +57,7 @@ import javax.servlet.http.HttpServletResponse;
 public class YourRhnAction extends RhnAction {
 
     public static final String ANY_LISTS_SELECTED = "anyListsSelected";
-
+    private final CloudPaygManager cloudPaygManager = GlobalInstanceHolder.PAYG_MANAGER;
 
     /**
      * No-arg constructor
@@ -101,6 +107,7 @@ public class YourRhnAction extends RhnAction {
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response) {
         RequestContext ctx = new RequestContext(request);
+        ActionErrors errors = new ActionErrors();
         User user = ctx.getCurrentUser();
         Map panes = getDisplayPanes(user);
         boolean anyListsSelected = false;
@@ -119,6 +126,16 @@ public class YourRhnAction extends RhnAction {
         }
         request.setAttribute(ANY_LISTS_SELECTED, anyListsSelected);
         request.setAttribute("legends", "yourrhn");
+
+        if (cloudPaygManager.isPaygInstance() && !cloudPaygManager.isCompliant()) {
+            errors.add(ActionMessages.GLOBAL_MESSAGE,
+                    new ActionMessage("message.payg.errornotcompliant"));
+        }
+
+        if (!errors.isEmpty()) {
+            addErrors(request, errors);
+        }
+
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
     }
 

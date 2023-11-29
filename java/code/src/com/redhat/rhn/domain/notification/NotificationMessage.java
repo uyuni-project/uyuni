@@ -23,6 +23,7 @@ import com.redhat.rhn.domain.notification.types.NotificationData;
 import com.redhat.rhn.domain.notification.types.NotificationType;
 import com.redhat.rhn.domain.notification.types.OnboardingFailed;
 import com.redhat.rhn.domain.notification.types.PaygAuthenticationUpdateFailed;
+import com.redhat.rhn.domain.notification.types.PaygNotCompliantWarning;
 import com.redhat.rhn.domain.notification.types.StateApplyFailed;
 import com.redhat.rhn.domain.notification.types.SubscriptionWarning;
 import com.redhat.rhn.domain.notification.types.UpdateAvailable;
@@ -137,6 +138,8 @@ public class NotificationMessage implements Serializable {
                 return new Gson().fromJson(getData(), SubscriptionWarning.class);
             case UpdateAvailable:
                 return new Gson().fromJson(getData(), UpdateAvailable.class);
+            case PaygNotCompliantWarning:
+                return new Gson().fromJson(getData(), PaygNotCompliantWarning.class);
             default: throw new RuntimeException("Notification type not found");
         }
     }
@@ -157,6 +160,7 @@ public class NotificationMessage implements Serializable {
             case EndOfLifePeriod: return "End of Life Period";
             case SubscriptionWarning: return "Subscription Warning";
             case UpdateAvailable: return "Updates are Available";
+            case PaygNotCompliantWarning: return "PAYG instance is not compliant";
             default: return getType().name();
         }
     }
