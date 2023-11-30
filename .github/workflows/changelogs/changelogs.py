@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import logging
 import argparse
@@ -11,6 +11,7 @@ import bugzilla
 import xmlrpc
 import requests
 import xml.etree.ElementTree as ET
+from dataclasses import dataclass, field
 
 DEFAULT_LINE_LENGTH = 67
 DEFAULT_GIT_REPO = "uyuni-project/uyuni"
@@ -28,7 +29,7 @@ class RegexRules:
     MULTIW = re.compile(r"\S[ \t]{2,}[^ ]")
     TRAILINGW = re.compile(r"[ \t]$")
     WRONG_CAP_START = re.compile(r"^\W*[a-z]")
-    WRONG_CAP_AFTER = re.compile(r"[:.] *[a-z]")
+    WRONG_CAP_AFTER = re.compile(r"\. *[a-z]")
     WRONG_SPACING = re.compile(r"([.,;:])[^ \n]")
     TRACKER_LIKE = re.compile(r".{2,5}#\d+")
 
@@ -80,6 +81,7 @@ class IssueType:
     INVALID_BUG = "Some error occurred when accessing bug #{} in Bugzilla: {}"
     INVALID_PRODUCT = "Bug #{} does not belong to SUSE Manager"
 
+@dataclass
 class Entry:
     """Class that represents a single changelog entry
 
@@ -90,13 +92,13 @@ class Entry:
     The ending line is 'None' if the entry consists of a single line.
     """
 
-    def __init__(self, entry: str, file: str, line: int, end_line: int = None, trackers = {}):
-        self.entry = entry
-        self.file = file
-        self.line = line
-        self.end_line = end_line
-        self.trackers = trackers
+    entry: str
+    file: str
+    line: int
+    end_line: int = None
+    trackers: dict = field(default_factory=dict)
 
+@dataclass
 class Issue:
     """Class that represents a single validation issue
 
@@ -116,19 +118,13 @@ class Issue:
     See: https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions
     """
 
-    def __init__(self, msg, file: str = None, line: int = None, end_line: int = None,
-                 package: str = None, severe: bool = True):
-        self.msg = msg
-        self.severe = severe
-        self.set_details(file, line, end_line, package)
-
-    def set_details(self, file: str = None, line: int = None, end_line: int = None,
-                    package: str = None) -> None:
-        self.file = file
-        # TODO: Pinpoint the column number for issues where applicable
-        self.line = line
-        self.end_line = end_line
-        self.package = package
+    msg: str
+    file: str = None
+    line: int = None
+    end_line: int = None
+    package: str = None
+    severe: bool = True
+    # TODO: Pinpoint the column number for issues where applicable
 
     def get_message_header(self) -> str:
         """Return a message prefix for the issue
@@ -200,12 +196,12 @@ class ChangelogValidator:
         `osc api /issue-trackers`
     """
 
-    def __init__(self, spacewalk_root: str, git_repo: str, pr_number: int, max_line_length: int,
-                 regex_rules: type[RegexRules]):
+    def __init__(self, uyuni_root: str, git_repo: str, pr_number: int, max_line_length: int,
+                 regex_rules: RegexRules):
         if pr_number and not os.getenv("GH_TOKEN"):
             raise Exception("GitHub API key not set. Please set it in 'GH_TOKEN' environment variable.")
 
-        self.spacewalk_root = spacewalk_root
+        self.uyuni_root = uyuni_root
         self.git_repo = git_repo
         self.pr_number = pr_number
         self.max_line_length = max_line_length
@@ -213,7 +209,7 @@ class ChangelogValidator:
         if regex_rules.trackers:
             self.bzapi = self.get_bugzilla_api()
 
-    def get_bugzilla_api(self) -> type[bugzilla.Bugzilla]:
+    def get_bugzilla_api(self) -> bugzilla.Bugzilla:
         """Initialize and authenticate the Bugzilla API"""
 
         api_key = os.getenv("BZ_TOKEN")
@@ -251,7 +247,7 @@ class ChangelogValidator:
             if os.path.normpath(os.path.dirname(f)).startswith(os.path.normpath(pkg_path)):
                 if os.path.basename(f).startswith(pkg_name + ".changes."):
                     # Ignore if the change is a removal
-                    if os.path.isfile(os.path.join(self.spacewalk_root, f)):
+                    if os.path.isfile(os.path.join(self.uyuni_root, f)):
                         pkg_chlogs.append(f)
                 else:
                     pkg_files.append(f)
@@ -275,14 +271,14 @@ class ChangelogValidator:
         package, and its base path.
         """
 
-        packages_dir = os.path.join(self.spacewalk_root, "rel-eng/packages")
+        packages_dir = os.path.join(self.uyuni_root, "rel-eng/packages")
         pkg_idx = {}
 
         try:
             pkg_names = os.listdir(packages_dir)
             logging.debug(f"Found {len(pkg_names)} package(s) in 'rel-eng/packages'")
         except FileNotFoundError:
-            raise Exception(f"Not an Uyuni repository. Consider using '--spacewalk-dir' option.")
+            raise Exception(f"Not an Uyuni repository. Consider using '--uyuni-dir' option.")
 
         for pkg_name in pkg_names:
             if pkg_name.startswith('.'):
@@ -342,12 +338,12 @@ class ChangelogValidator:
             raise Exception("An error occurred when getting the PR information from the GitHub API.")
         return self.extract_trackers(commits)
 
-    def validate_chlog_entry(self, entry: type[Entry]) -> list[type[Issue]]:
+    def validate_chlog_entry(self, entry: Entry) -> list[Issue]:
         """Validate a single changelog entry"""
 
         issues = []
         # Test capitalization
-        if re.search(self.regex.WRONG_CAP_START, entry.entry) or re.search(self.regex.WRONG_CAP_AFTER, entry.entry):
+        if re.match(self.regex.WRONG_CAP_START, entry.entry) or re.search(self.regex.WRONG_CAP_AFTER, entry.entry):
             issues.append(Issue(IssueType.WRONG_CAP, entry.file, entry.line, entry.end_line))
         # Test spacing
         if re.search(self.regex.WRONG_SPACING, entry.entry):
@@ -355,7 +351,7 @@ class ChangelogValidator:
 
         return issues
 
-    def get_entry_obj(self, buffer: list[str], file: str, line_no: int) -> type[Entry]:
+    def get_entry_obj(self, buffer: list[str], file: str, line_no: int) -> Entry:
         """Create an Entry object from a buffer of entry lines
 
         The elements in the 'buffer' list are separate lines of a single entry.
@@ -366,11 +362,11 @@ class ChangelogValidator:
         trackers = self.extract_trackers(msg)
         return Entry(msg, file, line_no - len(buffer), line_no - 1 if len(buffer) > 1 else None, trackers)
 
-    def validate_chlog_file(self, file: str) -> tuple[list[type[Issue]], list[type[Entry]]]:
+    def validate_chlog_file(self, file: str) -> tuple[list[Issue], list[Entry]]:
         """Validate a single changelog file"""
 
         logging.debug(f"Validating changelog file: {file}")
-        file_path = os.path.join(self.spacewalk_root, file)
+        file_path = os.path.join(self.uyuni_root, file)
 
         if os.path.getsize(file_path) == 0:
             return ([Issue(IssueType.EMPTY_CHLOG, file)], [])
@@ -379,11 +375,8 @@ class ChangelogValidator:
         issues = []
         entries = []
         entry_buf: list[str] = [] # List to buffer the lines in a single changelog entry
-        line_no = 0
 
-        for line in f:
-            line_no += 1
-
+        for line_no, line in enumerate(f, start=1):
             if not line.endswith("\n"):
                 issues.append(Issue(IssueType.MISSING_NEWLINE, file))
 
@@ -435,7 +428,7 @@ class ChangelogValidator:
 
         return (issues, entries)
 
-    def validate_bsc(self, entry: type[Entry]) -> list[type[Issue]]:
+    def validate_bsc(self, entry: Entry) -> list[Issue]:
         """Validate Bugzilla trackers against a Bugzilla host"""
 
         issues = []
@@ -465,7 +458,7 @@ class ChangelogValidator:
         return issues
 
 
-    def validate_trackers(self, entries: list[type[Entry]]) -> list[type[Issue]]:
+    def validate_trackers(self, entries: list[Entry]) -> list[Issue]:
         """Validate the trackers mentioned in a list of entries
 
         Checks any possible typos and verifies Bugzilla trackers via the
@@ -495,10 +488,7 @@ class ChangelogValidator:
 
             for kind, trackers in entry.trackers.items():
                 # Collect all trackers in all entries of the changelog
-                if kind not in all_trackers:
-                    all_trackers[kind] = entry.trackers[kind]
-                else:
-                    all_trackers[kind].extend(entry.trackers[kind])
+                all_trackers.setdefault(kind, []).extend(entry.trackers[kind])
 
                 # Check if all the trackers mentioned in the
                 # changelog entry are also mentioned in the PR
@@ -522,7 +512,7 @@ class ChangelogValidator:
 
         return issues
 
-    def validate(self, file_list: list[str]) -> list[type[Issue]]:
+    def validate(self, file_list: list[str]) -> list[Issue]:
         """Validates changelogs in the list of files"""
 
         # Index the list of files by package
@@ -566,7 +556,7 @@ def parse_args():
     parser.add_argument("-t", "--tracker-file",
                         help="tracker definitions XML document retrieved from the OBS/IBS API. Bypass tracker validation if not provided.")
 
-    parser.add_argument("-d", "--spacewalk-dir",
+    parser.add_argument("-d", "--uyuni-dir",
                         default=".",
                         help="path to the local git repository root (default: current directory)")
 
@@ -607,7 +597,7 @@ def main():
     try:
         logging.debug("Initializing the validator")
         regexRules = RegexRules(args.tracker_file)
-        validator = ChangelogValidator(args.spacewalk_dir, args.git_repo, args.pr_number, args.line_length, regexRules)
+        validator = ChangelogValidator(args.uyuni_dir, args.git_repo, args.pr_number, args.line_length, regexRules)
 
         logging.debug(f"Validating {len(args.files)} file(s)")
         issues = validator.validate(args.files)

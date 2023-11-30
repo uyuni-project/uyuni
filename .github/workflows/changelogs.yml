@@ -72,19 +72,17 @@ jobs:
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         BZ_TOKEN: ${{ secrets.BUGZILLA_TOKEN }}
+        GIT_REPO: ${{ github.event.pull_request.base.repo.full_name }}
+        PR_NUM: ${{ github.event.pull_request.number }}
+        TRACKER_FILE: .github/workflows/changelogs/trackers.xml
+        # Tracker file can be retrieved from the OBS/IBS API
+        # by calling 'osc api /issue_trackers/' (with authentication)
       run: |
         pip install python-bugzilla~=3.2.0
 
-        CHANGED_FILES=$(gh pr diff -R ${{ github.event.pull_request.base.repo.full_name }} \
-            ${{ github.event.pull_request.number }} --name-only)
-
-        # Tracker file can be retrieved from the OBS/IBS API
-        # by calling 'osc api /issue_trackers/' (with authentication)
+        CHANGED_FILES=$(gh pr diff -R $GIT_REPO $PR_NUM --name-only)
         python .github/workflows/changelogs/changelogs.py \
-            --tracker-file .github/workflows/changelogs/trackers.xml \
-            --git-repo uyuni-project/uyuni \
-            --pr-number ${{ github.event.pull_request.number }} \
-            $CHANGED_FILES
+            --tracker-file $TRACKER_FILE --git-repo $GIT_REPO --pr-number $PR_NUM $CHANGED_FILES
 
   # Warns the user if they merged the PR, but the changelog test failed
   warn_user_if_merged:
