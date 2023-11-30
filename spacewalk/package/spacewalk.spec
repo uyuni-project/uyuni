@@ -114,6 +114,8 @@ Requires:       perl(DBD::Pg)
 %{!?postgresql_version: %global postgresql_version 14}
 Requires:       postgresql-implementation = %{postgresql_version}
 Requires:       postgresql-contrib-implementation = %{postgresql_version}
+Conflicts:      postgresql-implementation > %{postgresql_version}
+Conflicts:      postgresql-contrib-implementation > %{postgresql_version}
 %else # not a supported SUSE version or alternative OS.
 Requires:       postgresql14
 Requires:       postgresql14-contrib
