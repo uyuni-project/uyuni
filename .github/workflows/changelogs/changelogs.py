@@ -29,7 +29,7 @@ class RegexRules:
     MULTIW = re.compile(r"\S[ \t]{2,}[^ ]")
     TRAILINGW = re.compile(r"[ \t]$")
     WRONG_CAP_START = re.compile(r"^\W*[a-z]")
-    WRONG_CAP_AFTER = re.compile(r"[:.] *[a-z]")
+    WRONG_CAP_AFTER = re.compile(r"\. *[a-z]")
     WRONG_SPACING = re.compile(r"([.,;:])[^ \n]")
     TRACKER_LIKE = re.compile(r".{2,5}#\d+")
 

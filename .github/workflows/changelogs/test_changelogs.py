@@ -215,12 +215,11 @@ def test_validate_chlog_file_multiple_issues_and_entries(validator, chlog_file):
 - This entry has an extra
   whitespace  at the second line
 - Invalid entry with multiple trailing whitespaces at the end  
-- Invalid entry: wrong capitalization after the colon
 """
     chlog_file.write_text(content)
     issues, entries = validator.validate_chlog_file(str(chlog_file))
-    assert len(issues) == 3, issues_to_str(issues, 3)
-    assert len(entries) == 5
+    assert len(issues) == 2, issues_to_str(issues, 2)
+    assert len(entries) == 4
 
 # Tests for the basic rules
 
@@ -234,7 +233,6 @@ def test_validate_chlog_file_multiple_issues_and_entries(validator, chlog_file):
     ("- This entry\n\n  has an empty line in between\n", IssueType.EMPTY_LINE),
     ("- this entry has wrong capitalization\n", IssueType.WRONG_CAP),
     ("- This entry has wrong capitalization\n  in the. second sentence\n", IssueType.WRONG_CAP),
-    ("- This entry has wrong capitalization: right here.\n", IssueType.WRONG_CAP),
     ("- This entry has wrong capitalization.\n  right here.\n", IssueType.WRONG_CAP),
     ("- This entry does not have a space.After a full stop\n", IssueType.WRONG_SPACING),
     ("- This entry does not have a space:After a colon\n", IssueType.WRONG_SPACING),
