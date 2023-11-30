@@ -196,12 +196,12 @@ class ChangelogValidator:
         `osc api /issue-trackers`
     """
 
-    def __init__(self, spacewalk_root: str, git_repo: str, pr_number: int, max_line_length: int,
+    def __init__(self, uyuni_root: str, git_repo: str, pr_number: int, max_line_length: int,
                  regex_rules: RegexRules):
         if pr_number and not os.getenv("GH_TOKEN"):
             raise Exception("GitHub API key not set. Please set it in 'GH_TOKEN' environment variable.")
 
-        self.spacewalk_root = spacewalk_root
+        self.uyuni_root = uyuni_root
         self.git_repo = git_repo
         self.pr_number = pr_number
         self.max_line_length = max_line_length
@@ -247,7 +247,7 @@ class ChangelogValidator:
             if os.path.normpath(os.path.dirname(f)).startswith(os.path.normpath(pkg_path)):
                 if os.path.basename(f).startswith(pkg_name + ".changes."):
                     # Ignore if the change is a removal
-                    if os.path.isfile(os.path.join(self.spacewalk_root, f)):
+                    if os.path.isfile(os.path.join(self.uyuni_root, f)):
                         pkg_chlogs.append(f)
                 else:
                     pkg_files.append(f)
@@ -271,14 +271,14 @@ class ChangelogValidator:
         package, and its base path.
         """
 
-        packages_dir = os.path.join(self.spacewalk_root, "rel-eng/packages")
+        packages_dir = os.path.join(self.uyuni_root, "rel-eng/packages")
         pkg_idx = {}
 
         try:
             pkg_names = os.listdir(packages_dir)
             logging.debug(f"Found {len(pkg_names)} package(s) in 'rel-eng/packages'")
         except FileNotFoundError:
-            raise Exception(f"Not an Uyuni repository. Consider using '--spacewalk-dir' option.")
+            raise Exception(f"Not an Uyuni repository. Consider using '--uyuni-dir' option.")
 
         for pkg_name in pkg_names:
             if pkg_name.startswith('.'):
@@ -366,7 +366,7 @@ class ChangelogValidator:
         """Validate a single changelog file"""
 
         logging.debug(f"Validating changelog file: {file}")
-        file_path = os.path.join(self.spacewalk_root, file)
+        file_path = os.path.join(self.uyuni_root, file)
 
         if os.path.getsize(file_path) == 0:
             return ([Issue(IssueType.EMPTY_CHLOG, file)], [])
@@ -559,7 +559,7 @@ def parse_args():
     parser.add_argument("-t", "--tracker-file",
                         help="tracker definitions XML document retrieved from the OBS/IBS API. Bypass tracker validation if not provided.")
 
-    parser.add_argument("-d", "--spacewalk-dir",
+    parser.add_argument("-d", "--uyuni-dir",
                         default=".",
                         help="path to the local git repository root (default: current directory)")
 
@@ -600,7 +600,7 @@ def main():
     try:
         logging.debug("Initializing the validator")
         regexRules = RegexRules(args.tracker_file)
-        validator = ChangelogValidator(args.spacewalk_dir, args.git_repo, args.pr_number, args.line_length, regexRules)
+        validator = ChangelogValidator(args.uyuni_dir, args.git_repo, args.pr_number, args.line_length, regexRules)
 
         logging.debug(f"Validating {len(args.files)} file(s)")
         issues = validator.validate(args.files)
