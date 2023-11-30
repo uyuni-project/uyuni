@@ -491,10 +491,7 @@ class ChangelogValidator:
 
             for kind, trackers in entry.trackers.items():
                 # Collect all trackers in all entries of the changelog
-                if kind not in all_trackers:
-                    all_trackers[kind] = entry.trackers[kind]
-                else:
-                    all_trackers[kind].extend(entry.trackers[kind])
+                all_trackers.setdefault(kind, []).extend(entry.trackers[kind])
 
                 # Check if all the trackers mentioned in the
                 # changelog entry are also mentioned in the PR
