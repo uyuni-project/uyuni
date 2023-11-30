@@ -188,6 +188,14 @@ If none is running yet, run `eval $(ssh-agent)`.
 Add the SSH key to the running agent using `ssh-add /path/to/the/private/key`.
 The private key password will be prompted.
 
+### In case SELinux is enabled
+
+Verify that SELinux is enabled on the new host by running `getenforce`. If the output is `Enforcing`, SELinux is enabled.
+In such case, we temporarily provide [this custom policy](uyuni-selinux-policy.cil) to allow the migration script to run. This file needs to be copied to `/root/uyuni-selinux-policy.cil` on the new host.
+The migration script will load the policy into the new host and pass it as podman argument to run the migration script.
+
+In the future, we plan to ship this custom policy packaged in a RPM and this step will not be required anymore.
+
 ### Prepare for Kubernetes
 
 Since the migration job will start the container from scratch the Persistent Volumes need to be defined before running the `uyuniadm migrate command`.
