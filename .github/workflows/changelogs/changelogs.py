@@ -343,7 +343,7 @@ class ChangelogValidator:
 
         issues = []
         # Test capitalization
-        if re.search(self.regex.WRONG_CAP_START, entry.entry) or re.search(self.regex.WRONG_CAP_AFTER, entry.entry):
+        if re.match(self.regex.WRONG_CAP_START, entry.entry) or re.search(self.regex.WRONG_CAP_AFTER, entry.entry):
             issues.append(Issue(IssueType.WRONG_CAP, entry.file, entry.line, entry.end_line))
         # Test spacing
         if re.search(self.regex.WRONG_SPACING, entry.entry):
