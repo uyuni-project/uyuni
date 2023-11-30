@@ -68,7 +68,7 @@ public class FileUtils {
         try {
             File file = new File(path);
             if (file.exists()) {
-                file.delete();
+                Files.delete(file.toPath());
             }
             file.createNewFile();
             try (FileOutputStream fos = new FileOutputStream(file);
@@ -82,7 +82,7 @@ public class FileUtils {
         }
         catch (Exception e) {
             log.error("Error trying to write file to disk: [{}]", path, e);
-            throw new RuntimeException(e);
+            throw new RhnRuntimeException(e);
         }
     }
 
@@ -131,7 +131,7 @@ public class FileUtils {
      */
     public static String readStringFromFile(String path, boolean noLog) {
         if (log.isDebugEnabled()) {
-            log.debug("readStringFromFile: {}", path);
+            log.debug("readStringFromFile: {}", StringUtil.sanitizeLogInput(path));
         }
 
         File f = new File(path);
@@ -171,9 +171,7 @@ public class FileUtils {
         log.debug("size of array: {}", size);
         // Create the byte array to hold the data
         byte[] bytes = new byte[size];
-        InputStream is = null;
-        try {
-            is = new FileInputStream(fileToRead);
+        try (InputStream is = new FileInputStream(fileToRead)) {
             // Read in the bytes
             int offset = 0;
             int numRead = 0;
@@ -189,17 +187,7 @@ public class FileUtils {
         }
         catch (IOException fnf) {
             log.error("Could not read from: {}", fileToRead.getAbsolutePath());
-            throw new RuntimeException(fnf);
-        }
-        finally {
-            if (is != null) {
-                try {
-                    is.close();
-                }
-                catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
+            throw new RhnRuntimeException(fnf);
         }
         return bytes;
     }
@@ -211,10 +199,8 @@ public class FileUtils {
      * @return tail of file as string
      */
     public static String getTailOfFile(String pathToFile, Integer lines) {
-        InputStream fileStream = null;
         CircularFifoBuffer buffer = new CircularFifoBuffer(lines);
-        try {
-            fileStream = new FileInputStream(pathToFile);
+        try (InputStream fileStream = new FileInputStream(pathToFile)) {
             LineIterator it = org.apache.commons.io.IOUtils.lineIterator(fileStream,
                                                                          (String) null);
             while (it.hasNext()) {
@@ -223,14 +209,11 @@ public class FileUtils {
         }
         catch (FileNotFoundException e) {
             log.error("File not found: {}", pathToFile);
-            throw new RuntimeException(e);
+            throw new RhnRuntimeException(e);
         }
         catch (IOException e) {
-            log.error("Could not read from: {}", pathToFile);
-            throw new RuntimeException(e);
-        }
-        finally {
-            org.apache.commons.io.IOUtils.closeQuietly(fileStream);
+            log.error(String.format("Failed to close file %s", pathToFile));
+            throw new RhnRuntimeException(e);
         }
         // Construct a string from the buffered lines
         StringBuilder sb = new StringBuilder();

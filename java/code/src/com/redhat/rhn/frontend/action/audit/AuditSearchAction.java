@@ -16,6 +16,7 @@ package com.redhat.rhn.frontend.action.audit;
 
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.frontend.action.common.DateRangePicker;
+import com.redhat.rhn.frontend.dto.AuditDto;
 import com.redhat.rhn.frontend.dto.AuditReviewDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
@@ -98,7 +99,7 @@ public class AuditSearchAction extends RhnAction {
     private DateRangePicker.DatePickerResults processTimeArgs(
                 DynaActionForm dform,
                 HttpServletRequest request,
-                Boolean processDates) {
+                boolean processDates) {
         Date start, end;
         DateRangePicker drp = new DateRangePicker(dform, request,
             new Date(processStartMilli(dform, request)),
@@ -108,7 +109,7 @@ public class AuditSearchAction extends RhnAction {
         DateRangePicker.DatePickerResults dpresults =
                 drp.processDatePickers(processDates, false);
 
-        if (processDates) { // we need to redo {start,end}{Disp,Milli}
+        if (processDates) {
             start = dpresults.getStart().getDate();
             end = dpresults.getEnd().getDate();
             request.setAttribute("startDisp", start.toString());
@@ -120,7 +121,7 @@ public class AuditSearchAction extends RhnAction {
         return dpresults;
     }
 
-    private List prepareAuditTypes() {
+    private List<String> prepareAuditTypes() {
         BufferedReader brdr;
         LinkedList<String> typelist;
         Process proc;
@@ -155,19 +156,20 @@ public class AuditSearchAction extends RhnAction {
     }
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm form,
                                  HttpServletRequest request,
                                  HttpServletResponse response) {
         ActionMessages amsgs;
         AuditReviewDto aureview;
-        Boolean parseDates, submitted, unrev;
+        boolean parseDates, submitted, unrev;
         DateRangePicker.DatePickerResults dpresults;
         DynaActionForm dform = (DynaActionForm)form;
         HttpSession session = request.getSession(true);
         JSONWriter jsonwr = new JSONWriter();
-        List result = null;
-        Long start, end, seqno, cacheSeqno;
+        List<AuditDto> result = null;
+        long start, end;
         Map<String, String[]> typemap;
         RequestContext requestContext = new RequestContext(request);
         String machine;
@@ -181,13 +183,13 @@ public class AuditSearchAction extends RhnAction {
         // what machine are we looking at?
         machine = dform.getString("machine");
         // should we look at the DatePickers?
-        parseDates = (Boolean)dform.get("parseDates") != null;
+        parseDates = dform.get("parseDates") != null;
         // did we receive a form with some checkboxes checked?
         submitted = (autypes != null && autypes.length > 0);
         // can we mark this section reviewed?
-        unrev = (Boolean)dform.get("unreviewable") != null;
+        unrev = dform.get("unreviewable") != null;
         // get the "page creation time" to determine cache usage
-        seqno = (Long)dform.get("seqno");
+        Long seqno = (Long)dform.get("seqno");
 
         if (seqno == null) {
             log.debug("(re-)initializing cache");
@@ -222,7 +224,7 @@ public class AuditSearchAction extends RhnAction {
             start = dpresults.getStart().getDate().getTime();
             end = dpresults.getEnd().getDate().getTime();
 
-            cacheSeqno = (Long)session.getAttribute("auditCacheSeqno");
+            Long cacheSeqno = (Long)session.getAttribute("auditCacheSeqno");
 
             // if the cached seqno is greater or equal to the seqno the browser
             //  sent, we've seen it before; do a new search
@@ -236,14 +238,14 @@ public class AuditSearchAction extends RhnAction {
             else {
                 log.debug("using cached result");
                 // may be null (indicates the cached result was null)
-                result = (List)session.getAttribute("auditResultCache");
+                result = (List<AuditDto>)session.getAttribute("auditResultCache");
             }
 
             if (result == null) {
                 if (!unrev) {
                     // we need to be able to mark reviewable sections as
                     // 'reviewed' even if they're empty
-                    result = new LinkedList();
+                    result = new LinkedList<>();
                 }
                 else {
                     amsgs.add(ActionMessages.GLOBAL_MESSAGE,
