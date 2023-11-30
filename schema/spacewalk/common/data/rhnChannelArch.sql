@@ -91,5 +91,8 @@ insert into rhnChannelArch (id, label, name, arch_type_id) values
 insert into rhnChannelArch (id, label, name, arch_type_id) values
 (sequence_nextval('rhn_channel_arch_id_seq'), 'channel-arm64-deb', 'ARM64 Debian', lookup_arch_type('deb'));
 
+insert into rhnChannelArch (id, label, name, arch_type_id) values
+(sequence_nextval('rhn_channel_arch_id_seq'), 'channel-armhf-deb', 'ARMHF Debian', lookup_arch_type('deb'));
+
 commit;
 

@@ -67,6 +67,8 @@ no_ssh_push_key_authorized:
   {%- elif grains['os'] == 'Ubuntu' %}
     {%- set os_base = grains['os']|lower %}
     {% set osrelease = grains['osrelease_info'][0]|string + '/' + grains['osrelease_info'][1]|string %}
+  {%- elif grains['os'] == 'Raspbian' %}
+    {%- set os_base = grains['os']|lower %}
   {%- endif %}
   #end of expections
 {%- endif %}

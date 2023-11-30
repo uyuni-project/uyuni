@@ -441,7 +441,7 @@ if [ "$INSTALLER" == yum ]; then
         elif [ -f /etc/redhat-release ]; then
             grep -v '^#' /etc/redhat-release | grep -q '\(Red Hat\)' && BASE="res"
             VERSION=`grep -v '^#' /etc/redhat-release | grep -Po '(?<=release )\d+'`
-	elif [ -f /etc/openEuler-release ]; then
+        elif [ -f /etc/openEuler-release ]; then
             grep -v '^#' /etc/openEuler-release | grep -q '\(openEuler\)' && BASE="openEuler"
             VERSION=`grep -v '^#' /etc/openEuler-release | grep -Po '(?<=release )(\d+\.)+\d+'`
         elif [ -f /etc/os-release ]; then
@@ -868,10 +868,10 @@ echo
         # we need to copy certificate to the trustroot outside of transaction for zypper
         cp "$ORG_CA_CERT" /etc/pki/trust/anchors/
         call_tukit "test -d '$CERT_DIR' || mkdir -p '$CERT_DIR'"
-        call_tukit "cp '/etc/pki/trust/anchors/$ORG_CA_CERT' '${CERT_DIR}/${ORG_CERT_FILE}'"
+        call_tukit "cp '/etc/pki/trust/anchors/$ORG_CA_CERT' '${CERT_DIR}/${CERT_FILE}'"
     else
         test -d "$CERT_DIR" || mkdir -p "$CERT_DIR"
-        mv "$ORG_CA_CERT" "${CERT_DIR}/${ORG_CERT_FILE}"
+        mv "$ORG_CA_CERT" "${CERT_DIR}/${CERT_FILE}"
     fi
     echo "* update certificates"
     updateCertificates
