@@ -375,11 +375,8 @@ class ChangelogValidator:
         issues = []
         entries = []
         entry_buf: list[str] = [] # List to buffer the lines in a single changelog entry
-        line_no = 0
 
-        for line in f:
-            line_no += 1
-
+        for line_no, line in enumerate(f):
             if not line.endswith("\n"):
                 issues.append(Issue(IssueType.MISSING_NEWLINE, file))
 
@@ -423,6 +420,7 @@ class ChangelogValidator:
                 issues.append(Issue(IssueType.TRAIL_WHITESPACE, file, line_no))
 
         # EOF
+        line_no += 1
         if entry_buf:
             # Validate and append the last entry
             entry = self.get_entry_obj(entry_buf, file, line_no + 1)
