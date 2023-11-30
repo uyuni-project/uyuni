@@ -197,7 +197,7 @@ class ChangelogValidator:
     """
 
     def __init__(self, spacewalk_root: str, git_repo: str, pr_number: int, max_line_length: int,
-                 regex_rules: type[RegexRules]):
+                 regex_rules: RegexRules):
         if pr_number and not os.getenv("GH_TOKEN"):
             raise Exception("GitHub API key not set. Please set it in 'GH_TOKEN' environment variable.")
 
@@ -209,7 +209,7 @@ class ChangelogValidator:
         if regex_rules.trackers:
             self.bzapi = self.get_bugzilla_api()
 
-    def get_bugzilla_api(self) -> type[bugzilla.Bugzilla]:
+    def get_bugzilla_api(self) -> bugzilla.Bugzilla:
         """Initialize and authenticate the Bugzilla API"""
 
         api_key = os.getenv("BZ_TOKEN")
@@ -338,7 +338,7 @@ class ChangelogValidator:
             raise Exception("An error occurred when getting the PR information from the GitHub API.")
         return self.extract_trackers(commits)
 
-    def validate_chlog_entry(self, entry: type[Entry]) -> list[type[Issue]]:
+    def validate_chlog_entry(self, entry: Entry) -> list[Issue]:
         """Validate a single changelog entry"""
 
         issues = []
@@ -351,7 +351,7 @@ class ChangelogValidator:
 
         return issues
 
-    def get_entry_obj(self, buffer: list[str], file: str, line_no: int) -> type[Entry]:
+    def get_entry_obj(self, buffer: list[str], file: str, line_no: int) -> Entry:
         """Create an Entry object from a buffer of entry lines
 
         The elements in the 'buffer' list are separate lines of a single entry.
@@ -362,7 +362,7 @@ class ChangelogValidator:
         trackers = self.extract_trackers(msg)
         return Entry(msg, file, line_no - len(buffer), line_no - 1 if len(buffer) > 1 else None, trackers)
 
-    def validate_chlog_file(self, file: str) -> tuple[list[type[Issue]], list[type[Entry]]]:
+    def validate_chlog_file(self, file: str) -> tuple[list[Issue], list[Entry]]:
         """Validate a single changelog file"""
 
         logging.debug(f"Validating changelog file: {file}")
@@ -431,7 +431,7 @@ class ChangelogValidator:
 
         return (issues, entries)
 
-    def validate_bsc(self, entry: type[Entry]) -> list[type[Issue]]:
+    def validate_bsc(self, entry: Entry) -> list[Issue]:
         """Validate Bugzilla trackers against a Bugzilla host"""
 
         issues = []
@@ -461,7 +461,7 @@ class ChangelogValidator:
         return issues
 
 
-    def validate_trackers(self, entries: list[type[Entry]]) -> list[type[Issue]]:
+    def validate_trackers(self, entries: list[Entry]) -> list[Issue]:
         """Validate the trackers mentioned in a list of entries
 
         Checks any possible typos and verifies Bugzilla trackers via the
@@ -518,7 +518,7 @@ class ChangelogValidator:
 
         return issues
 
-    def validate(self, file_list: list[str]) -> list[type[Issue]]:
+    def validate(self, file_list: list[str]) -> list[Issue]:
         """Validates changelogs in the list of files"""
 
         # Index the list of files by package
