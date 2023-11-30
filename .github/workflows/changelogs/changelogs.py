@@ -11,6 +11,7 @@ import bugzilla
 import xmlrpc
 import requests
 import xml.etree.ElementTree as ET
+from dataclasses import dataclass, field
 
 DEFAULT_LINE_LENGTH = 67
 DEFAULT_GIT_REPO = "uyuni-project/uyuni"
@@ -80,6 +81,7 @@ class IssueType:
     INVALID_BUG = "Some error occurred when accessing bug #{} at Bugzilla: {}"
     INVALID_PRODUCT = "Bug #{} does not belong to SUSE Manager"
 
+@dataclass
 class Entry:
     """Class that represents a single changelog entry
 
@@ -90,13 +92,13 @@ class Entry:
     The ending line is 'None' if the entry consists of a single line.
     """
 
-    def __init__(self, entry: str, file: str, line: int, end_line: int = None, trackers = {}):
-        self.entry = entry
-        self.file = file
-        self.line = line
-        self.end_line = end_line
-        self.trackers = trackers
+    entry: str
+    file: str
+    line: int
+    end_line: int = None
+    trackers: dict = field(default_factory=dict)
 
+@dataclass
 class Issue:
     """Class that represents a single validation issue
 
@@ -116,19 +118,13 @@ class Issue:
     See: https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions
     """
 
-    def __init__(self, msg, file: str = None, line: int = None, end_line: int = None,
-                 package: str = None, severe: bool = True):
-        self.msg = msg
-        self.severe = severe
-        self.set_details(file, line, end_line, package)
-
-    def set_details(self, file: str = None, line: int = None, end_line: int = None,
-                    package: str = None) -> None:
-        self.file = file
-        # TODO: Pinpoint the column number for issues where applicable
-        self.line = line
-        self.end_line = end_line
-        self.package = package
+    msg: str
+    file: str = None
+    line: int = None
+    end_line: int = None
+    package: str = None
+    severe: bool = True
+    # TODO: Pinpoint the column number for issues where applicable
 
     def get_message_header(self) -> str:
         """Return a message prefix for the issue
