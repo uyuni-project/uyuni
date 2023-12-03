@@ -89,7 +89,7 @@ public class Configuration {
      * array of prefix in the order they should be search
      * if the given lookup string is without a namespace.
      */
-    private final String[] prefixOrder = new String[] {"web", "server"};
+    private final String[] prefixOrder = new String[] {"search", "web", "server"};
 
     /** hash of configuration properties */
     private final Properties configValues = new Properties();
@@ -339,7 +339,7 @@ public class Configuration {
         if (val == null) {
             return null;
         }
-        return Integer.getInteger(val);
+        return Integer.valueOf(val);
     }
 
     /**
@@ -486,7 +486,7 @@ public class Configuration {
             }
             LOGGER.debug("Adding: {}: {}", newKey, props.getProperty(key));
             // translate the original key
-            newKey = translateKey(key);
+            newKey = translateKey(newKey);
             newProps.put(newKey, props.getProperty(key));
         }
         configValues.putAll(newProps);

@@ -99,8 +99,7 @@ public class ConfigurationTest extends TestCase {
     }
 
     public void testTranslation() {
-        assertNull(config.getString("db_user"));
-        assertEquals("rhnsat", config.getString("search.connection.username"));
+        assertEquals("rhnsat", config.getString("search.db_user"));
     }
 
     public void testGetBoolean() {
