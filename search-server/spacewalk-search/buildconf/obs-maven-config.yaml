@@ -1,13 +1,15 @@
 repositories:
   Leap:
-    project: openSUSE:Leap:15.4
+    project: openSUSE:Leap:15.5
     repository: standard
   Uyuni_Other:
     project: systemsmanagement:Uyuni:Master:Other
-    repository: openSUSE_Leap_15.4
+    repository: openSUSE_Leap_15.5
   Uyuni:
     project: systemsmanagement:Uyuni:Master
-    repository: openSUSE_Leap_15.4
+    repository: openSUSE_Leap_15.5
+  Leap_sle:
+    url: https://download.opensuse.org/update/leap/15.5/sle
 artifacts:
   - artifact: simple-core
     # How comes that package is not noarch?
@@ -51,3 +53,29 @@ artifacts:
     repository: Leap
   - artifact: picocontainer
     repository: Uyuni_Other
+  - artifact: javassist
+    repository: Leap_sle
+  - artifact: apache-commons-ognl
+    repository: Leap
+  - artifact: postgresql-jdbc
+    repository: Leap
+  - artifact: client
+    package: ongres-scram-client
+    repository: Leap
+  - artifact: common
+    package: ongres-scram
+    repository: Leap
+  - artifact: stringprep
+    package: ongres-stringprep
+    repository: Leap
+  - artifact: saslprep
+    package: ongres-stringprep-saslprep
+    repository: Leap
+  - artifact: log4j-slf4j-impl
+    jar: log4j-slf4j-impl.jar
+    package: log4j-slf4j
+    repository: Leap
+  - artifact: slf4j-api
+    package: slf4j
+    jar: api
+    repository: Leap
