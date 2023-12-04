@@ -10176,10 +10176,6 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Synchronizes @@PRODUCT_NAME@@ repositories</source>
         <target state="translated">@@PRODUCT_NAME@@ 저장소 동기화</target>
       </trans-unit>
-      <trans-unit id="bunch.jsp.description.ssh-push-bunch" xml:space="preserve">
-        <source>Manages clients via SSH Server Push</source>
-        <target>SSH 서버 푸시를 통한 클라이언트 관리</target>
-      </trans-unit>
       <trans-unit id="bunch.jsp.description.cve-server-channels-bunch" xml:space="preserve">
         <source>Generates data required for performing CVE audit queries</source>
         <target>CVE 감사 쿼리를 실행하기 위해 필요한 데이터 생성</target>
@@ -11309,14 +11305,63 @@ For a detailed analysis, please refer to the log files.
         <source>Registration of '{0}' on SUSE Manager Server rejected. \nTo manage BYOS (Bring-your-own-Subscription) clients you have to configure SCC Credentials at Admin =&gt; Setup Wizard =&gt; Organization Credentials. \n\nIf the instance being onboarded is PAYG, ensure the `python-instance-billing-flavor-check` package is installed and try again.</source>
         <target state="final">SUSE Manager 서버에서 '{0}' 등록이 거부되었습니다. \nBYOS(Bring-your-own-Subscription) 클라이언트를 관리하려면 관리자 =&gt; 설치 마법사 =&gt; 조직 자격 증명에서 SCC 자격 증명을 구성해야 합니다. \n\n온보딩 중인 인스턴스가 PAYG인 경우 'python-instance-billing-flavor-check' 패키지가 설치되어 있는지 확인하고 다시 시도하십시오.</target>
       </trans-unit>
-      <trans-unit id="notification.updateavailable.summary" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="notification.updateavailable.summary" xml:space="preserve">
         <source>Updates are available.</source>
         <target state="final">업데이트가 가능합니다.</target>
       </trans-unit>
-      <trans-unit id="notification.updateavailable.detail" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="notification.updateavailable.detail" xml:space="preserve">
         <source>A new update for @@PRODUCT_NAME@@ is now available. For further details, please refer to the &lt;a href="{0}"&gt;release notes&lt;a&gt;.</source>
         <target state="final">@@PRODUCT_NAME@@의 새 업데이트를 이제 사용할 수 있습니다. 자세한 내용은 &lt;a href="{0}"&gt;릴리스 노트&lt;a&gt;를 참조하십시오.</target>
       </trans-unit>
-    </body>
+    <trans-unit id="message.payg.errorbyosnoscc" xml:space="preserve">
+        <source>
+          @@PRODUCT_NAME@@ is not able to manage this instance since it is Bring-your-own-subscription and no SCC credentials are set.
+          To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup/MirrorCredentials.do"&gt;here&lt;/a&gt;.
+        </source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="message.payg.errornotcompliant" xml:space="preserve">
+        <source>
+          This @@PRODUCT_NAME@@ PAYG is not compliant and some of its functions will be disabled. Please contact your administrator to
+          amend the situation before continuing using the product.
+        </source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="message.payg.errorbyosnosccssm" xml:space="preserve">
+        <source>
+@@PRODUCT_NAME@@ is not able to manage these instances since there are one or more Bring-your-own-subscription and no SCC credentials are set.
+To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup/MirrorCredentials.do"&gt;here&lt;/a&gt; or select in SSM just Pay-as-you-go-instances.
+        </source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="bunch.jsp.description.ssh-service-bunch" xml:space="preserve">
+        <source>Manages checkins and action chain resumes for SSH Push Clients</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="notification.paygnotcompliantwarning.summary" xml:space="preserve">
+        <source>@@PRODUCT_NAME@@ PAYG instance is not compliant.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="notification.paygnotcompliantwarning.detail" xml:space="preserve">
+        <source>This @@PRODUCT_NAME@@ PAYG instance is not compliant. Some @@PRODUCT_NAME@@ functions will be disabled. Please check with your system administrator.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="task.action.rejection.notcompliantPaygByos" xml:space="preserve">
+        <source>
+          The action you attempted could not be executed because @@PRODUCT_NAME@@ is PAYG, there are BYOS servers in the current action and currently no SCC credentials are set.
+          To amend this situation, please set SCC credentials for this @@PRODUCT_NAME@@ instance and try again. You can also execute the action only on Pay-as-you-go instances.
+          Bring-your-own-subscription servers detected: {0}.
+        </source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="task.action.rejection.notcompliantPaygByosActionChain" xml:space="preserve">
+        <source>
+          The action chain you attempted could not be executed because @@PRODUCT_NAME@@ is PAYG, there are BYOS servers in the current action chain and currently no SCC credentials are set.
+          To amend this situation, please set SCC credentials for this @@PRODUCT_NAME@@ instance and try again. You can also execute the action chain only on Pay-as-you-go instances.
+          Bring-your-own-subscription servers detected: {0}.
+        </source>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>
