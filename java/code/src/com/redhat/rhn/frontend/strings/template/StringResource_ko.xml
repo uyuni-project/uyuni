@@ -399,7 +399,8 @@ click the "Details" tab.
         <target>{0}에 대한 일간 @@PRODUCT_NAME@@ 현황 보고서</target>
       </trans-unit>
       <trans-unit approved="yes" id="dailysummary.email.body" xml:space="preserve">
-        <source>This is the @@PRODUCT_NAME@@ Status Report for your account {0}, as of {1}.
+        <source>{7}
+This is the @@PRODUCT_NAME@@ Status Report for your account {0}, as of {1}.
 
 This email will be sent when any of the following apply:
 
@@ -431,7 +432,7 @@ Thank you for using @@PRODUCT_NAME@@.
              {6} = email account info from template db
           </context>
         </context-group>
-        <target>이는 {1}일을 기준으로 {0} 계정의 @@PRODUCT_NAME@@ 현황 보고서입니다.
+        <target state="needs-adaptation">이는 {1}일을 기준으로 {0} 계정의 @@PRODUCT_NAME@@ 현황 보고서입니다.
 
 다음 중 하나에 해당하는 경우 이 이메일이 전송됩니다.
 
@@ -573,6 +574,12 @@ Thank you for using @@PRODUCT_NAME@@.
           </context>
         </context-group>
       </trans-unit>
-    </body>
+    <trans-unit id="dailysummary.email.notpaygcompliant" xml:space="preserve">
+          <source>Warning: This @@PRODUCT_NAME@@ PAYG instance is not compliant and some of its functions are disabled.
+Please contact your administrator to amend the situation before continuing using the product.
+          </source>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>
