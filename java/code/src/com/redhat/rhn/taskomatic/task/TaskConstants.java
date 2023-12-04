@@ -182,9 +182,6 @@ public class TaskConstants {
     public static final String TASK_QUERY_REPOMD_GENERATOR_CLONED_FROM =
         "repomdgenerator_channel_cloned_from";
 
-    public static final String TASK_QUERY_SSH_PUSH_FIND_TRADITIONAL_CANDIDATES =
-            "ssh_push_find_traditional_candidates";
-
     public static final String TASK_QUERY_SSH_PUSH_FIND_REBOOTING_MINIONS =
             "ssh_push_find_rebooting_minions";
 

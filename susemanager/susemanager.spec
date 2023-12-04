@@ -42,12 +42,13 @@
 %global wwwroot %{serverdir}/www
 %endif
 
-%global reporoot %{_datarootdir}/susemanager/gpg/
+%global sharedwwwroot %{_datadir}/susemanager/www
+%global reporoot %{sharedwwwroot}/pub
 
 %global debug_package %{nil}
 
 Name:           susemanager
-Version:        4.4.8
+Version:        4.4.9
 Release:        1
 Summary:        SUSE Manager specific scripts
 License:        GPL-2.0-only
@@ -293,6 +294,8 @@ sed -i '/You can access .* via https:\/\//d' /tmp/motd 2> /dev/null ||:
 %dir %{pythonsmroot}/susemanager
 %dir %{_prefix}/share/rhn/
 %dir %{_datadir}/susemanager
+%dir %{wwwroot}
+%dir %{sharedwwwroot}
 %dir %{reporoot}
 %dir %{reporoot}/repositories
 %dir %{reporoot}/repositories/empty

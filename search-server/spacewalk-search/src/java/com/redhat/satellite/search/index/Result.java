@@ -24,6 +24,7 @@ public class Result {
     private int rank = 0;
     private String id = "";
     private String name = "";
+    private String uuid = "";
     private float score = 0.0f;
 
     /** TODO:
@@ -39,6 +40,7 @@ public class Result {
         rank = -1;
         id = "";
         name = "";
+        uuid = "";
         score = 0;
     }
 
@@ -53,6 +55,21 @@ public class Result {
         id = idIn;
         name = nameIn;
         score = scoreIn;
+    }
+
+    /**
+     * Constructs a pre populated
+     * @param r rank
+     * @param idIn package id
+     * @param nameIn package name
+     * @param uuidIn uuid name
+     */
+    public Result(int r, String idIn, String nameIn, float scoreIn, String uuidIn) {
+        rank = r;
+        id = idIn;
+        name = nameIn;
+        score = scoreIn;
+        uuid = uuidIn;
     }
 
     /**
@@ -142,11 +159,24 @@ public class Result {
         this.matchingFieldValue = matchingFieldValueIn;
     }
     /**
+     * @return the uuid
+     */
+    public String getUuid() {
+        return uuid;
+    }
+
+    /**
+     * @param uuidIn the uuid to set
+     */
+    public void setUuid(String uuidIn) {
+        this.uuid = uuidIn;
+    }
+    /**
      * @return the string representation of this object
     **/
     public String toString() {
         return "Name = " + getName() + ", Id = " + getId() + ", Score = " + getScore() +
-            ", Rank = " + getRank();
+            ", Rank = " + getRank() + ", UUID = " + getUuid();
     }
 
 }

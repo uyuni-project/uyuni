@@ -62,6 +62,7 @@ public class LocalizationService {
      */
     public static final String RHN_DB_DATEFORMAT = "yyyy-MM-dd HH:mm:ss";
     public static final String RHN_CUSTOM_DATEFORMAT = "yyyy-MM-dd HH:mm:ss z";
+    private static final String DOC_FOLDER = "/usr/share/susemanager/www/htdocs/docs";
 
     private static Logger log = LogManager.getLogger(LocalizationService.class);
     private static Logger msgLogger = LogManager.getLogger("com.redhat.rhn.common.localization.messages");
@@ -624,7 +625,7 @@ public class LocalizationService {
         List<String> tmp = new LinkedList<>();
 
         // Get locales of installed documentations
-        File f = new File("/srv/www/htdocs/docs");
+        File f = new File(DOC_FOLDER);
         String[] locales = f.list();
         if (locales != null) {
             tmp.addAll(Arrays.asList(locales));

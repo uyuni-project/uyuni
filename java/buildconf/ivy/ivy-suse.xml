@@ -121,7 +121,7 @@
 
         <!-- Compilation and testing -->
         <dependency org="suse" name="velocity-engine-core" rev="2.3"/>
-        <dependency org="suse" name="jetty-util" rev="9.4.51" />
+        <dependency org="suse" name="jetty-util" rev="9.4.53" />
         <dependency org="checkstyle" name="checkstyle" rev="8.30" transitive="false">
           <artifact name="all" type="jar" url="https://github.com/checkstyle/checkstyle/releases/download/checkstyle-8.30/checkstyle-8.30-all.jar"/>
         </dependency>
@@ -130,7 +130,7 @@
         <dependency org="suse" name="junit" rev="4.13.2" transitive="false"/>
         <dependency org="org.junit.jupiter" name="junit-jupiter-api" rev="5.8.2" transitive="false"/>
         <dependency org="org.junit.platform" name="junit-platform-commons" rev="1.8.2" transitive="false" />
-        <dependency org="org.junit.platform" name="junit-platform-console-standalone" rev="1.8.2" transitive="false" />
+	<dependency org="org.junit.platform" name="junit-platform-console-standalone" rev="1.8.2" transitive="false" />
         <dependency org="org.opentest4j" name="opentest4j" rev="1.2.0" transitive="false"/>
         <dependency org="org.apiguardian" name="apiguardian-api" rev="1.1.0" transitive="false"/>
         <dependency org="org.jmock" name="jmock" rev="2.12.0" transitive="false"/>

@@ -451,7 +451,7 @@ public class IndexManager {
             else if (indexName.compareTo(BuilderFactory.HARDWARE_DEVICE_TYPE) == 0) {
                 pr = new HardwareDeviceResult(x, hits.score(x), doc);
             }
-            else if (indexName.compareTo(BuilderFactory.SNAPSHOT_TAG_TYPE)  == 0) {
+            else if (indexName.compareTo(BuilderFactory.SNAPSHOT_TAG_TYPE) == 0) {
                 pr = new SnapshotTagResult(x, hits.score(x), doc);
             }
             else if (indexName.compareTo(BuilderFactory.SERVER_CUSTOM_INFO_TYPE) == 0) {
@@ -463,7 +463,15 @@ public class IndexManager {
                         doc.getField("identifier").stringValue(),
                         hits.score(x));
             }
+            else if (indexName.compareTo(BuilderFactory.SERVER_TYPE) == 0) {
+                pr = new Result(x,
+                        doc.getField("id").stringValue(),
+                        doc.getField("name").stringValue(),
+                        hits.score(x),
+                        doc.getField("uuid").stringValue());
+            }
             else {
+                //Type Errata and Package
                 pr = new Result(x,
                         doc.getField("id").stringValue(),
                         doc.getField("name").stringValue(),

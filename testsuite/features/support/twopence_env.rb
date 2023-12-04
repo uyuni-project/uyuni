@@ -6,7 +6,7 @@ require 'twopence'
 require_relative 'twopence_init'
 
 # Raise a warning if any of these environment variables is missing
-raise 'Server IP address or domain name variable empty' if ENV['SERVER'].nil?
+raise ArgumentError, 'Server IP address or domain name variable empty' if ENV['SERVER'].nil?
 
 warn 'Proxy IP address or domain name variable empty' if ENV['PROXY'].nil?
 unless $build_validation

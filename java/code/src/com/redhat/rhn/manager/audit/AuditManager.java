@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.manager.audit;
 
+import com.redhat.rhn.common.RhnRuntimeException;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.frontend.dto.AuditDto;
@@ -29,6 +30,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
@@ -45,6 +47,7 @@ import java.util.regex.Pattern;
  */
 public class AuditManager /* extends BaseManager */ {
 
+    private static final Pattern AUDIT_LOG_FILENAME_PATTERN = Pattern.compile("audit-(\\d+)-(\\d+).parsed");
     private static Logger log = LogManager.getLogger(AuditManager.class);
 
     private AuditManager() {
@@ -78,56 +81,35 @@ public class AuditManager /* extends BaseManager */ {
      * @param end The end time; can be null
      * @return The set of matching audit logs
      */
-    public static DataResult getAuditLogs(String[] types, String machine,
-            Long start, Long end) {
-        DataResult dr = null;
-        List l;
-        Long fileStart, fileEnd;
+    public static DataResult<AuditDto> getAuditLogs(String[] types, String machine, long start, long end) {
+        DataResult<AuditDto> dr = new DataResult<>(new ArrayList<>());
 
         if (types == null) {
             types = new String[0];
         }
 
-        if (start == null) {
-            start = 0L;
-        }
-
-        if (end == null) {
-            end = Long.MAX_VALUE;
-        }
-
         try {
-            DataResult<AuditReviewDto> aureviewsections = getMachineReviewSections(machine);
-            if (aureviewsections != null) {
-                for (AuditReviewDto aureview : getMachineReviewSections(machine)) {
-                    fileStart = aureview.getStart().getTime();
-                    fileEnd = aureview.getEnd().getTime();
+            for (AuditReviewDto aureview : getMachineReviewSections(machine)) {
+                long fileStart = aureview.getStart().getTime();
+                long fileEnd = aureview.getEnd().getTime();
 
-                    if (fileEnd < start || fileStart > end) {
-                        continue;
-                    }
-
-                    File auditLog = new File(
-                        logDirStr + "/" + aureview.getName() + "/audit/audit-" +
-                        (fileStart / 1000) + "-" +
-                        (fileEnd / 1000) + ".parsed");
-
-                    l = readAuditFile(auditLog, types, start, end);
-
-                    if (dr == null) {
-                        dr = new DataResult(l);
-                    }
-                    else {
-                        dr.addAll(l);
-                    }
+                if (fileEnd < start || fileStart > end) {
+                    continue;
                 }
+
+                File auditLog = new File(
+                    logDirStr + File.separator + aureview.getName() + "/audit/audit-" +
+                    (fileStart / 1000) + "-" +
+                    (fileEnd / 1000) + ".parsed");
+
+                dr.addAll(readAuditFile(auditLog, types, start, end));
             }
         }
         catch (IOException ioex) {
             log.warn("AAAAHHHH IOException", ioex);
         }
 
-        if (dr == null || dr.isEmpty()) {
+        if (dr.isEmpty()) {
             return null;
         }
 
@@ -219,12 +201,9 @@ public class AuditManager /* extends BaseManager */ {
         DataResult<AuditReviewDto> dr = getMachineReviewSections(machineName);
 
         for (AuditReviewDto aurev : dr) {
-            if (aurev.getReviewedBy() == null) { // an unreviewed log!
-                if (firstUnreviewed == null ||
-                        aurev.getStart().getTime() <
-                        firstUnreviewed.getStart().getTime()) {
-                    firstUnreviewed = aurev;
-                }
+            if (aurev.getReviewedBy() == null &&  // an unreviewed log!
+                    (firstUnreviewed == null || aurev.getStart().getTime() < firstUnreviewed.getStart().getTime())) {
+                firstUnreviewed = aurev;
             }
         }
 
@@ -241,12 +220,9 @@ public class AuditManager /* extends BaseManager */ {
         DataResult<AuditReviewDto> dr = getMachineReviewSections(machineName);
 
         for (AuditReviewDto aurev : dr) {
-            if (aurev.getReviewedOn() != null) {
-                if (lastReviewed == null ||
-                        aurev.getReviewedOn().getTime() >
-                        lastReviewed.getReviewedOn().getTime()) {
-                    lastReviewed = aurev;
-                }
+            if (aurev.getReviewedOn() != null && (lastReviewed == null ||
+                    aurev.getReviewedOn().getTime() > lastReviewed.getReviewedOn().getTime())) {
+                lastReviewed = aurev;
             }
         }
 
@@ -303,63 +279,71 @@ public class AuditManager /* extends BaseManager */ {
      * @param machineName The machine to get review sections for; can be null
      * @return The set of review sections
      */
-    public static DataResult<AuditReviewDto> getMachineReviewSections(
-            String machineName) {
-        long start, end;
-        DataResult<AuditReviewDto> dr, rec;
-        File hostDir;
-        LinkedList<AuditReviewDto> aurevs = new LinkedList<>();
-        Matcher fnmatch;
-        Pattern fnregex = Pattern.compile("audit-(\\d+)-(\\d+).parsed");
-
-        // if machineName is null, look up all review sections by recursion
+    public static DataResult<AuditReviewDto> getMachineReviewSections(String machineName) {
+        // if machineName is null, get all review sections by recursion
         if (machineName == null || machineName.isEmpty()) {
-            dr = null;
-
-            for (AuditMachineDto aumachine : getMachines()) {
-                if (aumachine.getName() != null) {
-                    rec = getMachineReviewSections(aumachine.getName());
-
-                    if (dr == null) {
-                        dr = rec;
-                    }
-                    else {
-                        dr.addAll(rec);
-                    }
-                }
-            }
-
-            return dr;
+            return getRecursiveReviewSections();
         }
 
         // otherwise, just look up this one machine
-        hostDir = Path.of(logDirStr, machineName.replace(File.separator, ""), "audit").toFile();
+        File hostDir = Path.of(logDirStr, machineName, "audit").toFile();
 
-        if (!hostDir.exists()) {
-            return new DataResult(new LinkedList<>());
+        try {
+            String hostPath = hostDir.getCanonicalPath();
+            if (!hostPath.startsWith(logDirStr)) {
+                throw new RhnRuntimeException("Invalid machine name");
+            }
+        }
+        catch (IOException e) {
+            log.warn("Failed getting canonical path of {}", hostDir.getAbsolutePath(), e);
+            return new DataResult<>(new LinkedList<>());
         }
 
+        if (!hostDir.exists()) {
+            return new DataResult<>(new LinkedList<>());
+        }
+
+        LinkedList<AuditReviewDto> aurevs = new LinkedList<>();
+
         for (String auditLog : hostDir.list()) {
-            fnmatch = fnregex.matcher(auditLog);
+            Matcher fnmatch = AUDIT_LOG_FILENAME_PATTERN.matcher(auditLog);
 
             if (fnmatch.matches()) { // found a matching audit file
-                start = Long.parseLong(fnmatch.group(1)) * 1000;
-                end = Long.parseLong(fnmatch.group(2)) * 1000;
+                long start = Long.parseLong(fnmatch.group(1)) * 1000;
+                long end = Long.parseLong(fnmatch.group(2)) * 1000;
 
                 try { // but is it reviewed yet?
                     aurevs.add(getReviewInfo(machineName, start, end));
                 }
                 catch (IOException ioex) { // on error, assume unreviewed
                     aurevs.add(new AuditReviewDto(machineName, new Date(start),
-                        new Date(end), null, null));
+                            new Date(end), null, null));
                 }
             }
         }
 
         Collections.sort(aurevs);
-        dr = new DataResult<>(aurevs);
+        return new DataResult<>(aurevs);
+    }
 
-        return dr;
+    /**
+     * Look up all review sections by recursion
+     * @return
+     */
+    private static DataResult<AuditReviewDto> getRecursiveReviewSections() {
+        DataResult<AuditReviewDto> dataResult = null;
+        for (AuditMachineDto auditMachineDto : getMachines()) {
+            if (auditMachineDto.getName() != null) {
+                DataResult<AuditReviewDto> machineReviewSections = getMachineReviewSections(auditMachineDto.getName());
+                if (dataResult == null) {
+                    dataResult = machineReviewSections;
+                }
+                else {
+                    dataResult.addAll(machineReviewSections);
+                }
+            }
+        }
+        return dataResult;
     }
 
     /**

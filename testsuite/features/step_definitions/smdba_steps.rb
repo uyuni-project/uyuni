@@ -172,7 +172,7 @@ When(/^I restore database from the backup$/) do
   log "\n*** Restoring database from the backup. This will may take a while. ***\n\n"
   output, code = get_target('server').run('smdba backup-restore')
   log "#{output}\n\n"
-  raise 'Restore Failed' unless code.zero?
+  raise SystemCallError, 'Restore Failed' unless code.zero?
 end
 
 Then(/^I disable backup in the directory "(.*?)"$/) do |_arg1|

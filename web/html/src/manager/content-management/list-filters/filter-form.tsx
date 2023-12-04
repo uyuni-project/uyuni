@@ -46,6 +46,9 @@ const FilterForm = (props: Props) => {
           if (clmFilterOptions.ISSUE_DATE.key === filter.type) {
             draft[clmFilterOptions.ISSUE_DATE.key] = localizedMoment();
           }
+          if (clmFilterOptions.PACKAGE_BUILD_DATE.key === filter.type) {
+            draft[clmFilterOptions.PACKAGE_BUILD_DATE.key] = localizedMoment();
+          }
         })
       );
     }
@@ -195,6 +198,16 @@ const FilterForm = (props: Props) => {
               <DateTime
                 name={clmFilterOptions.ISSUE_DATE.key}
                 label={t("Issued")}
+                labelClass="col-md-3"
+                divClass="col-md-8"
+                required
+              />
+            )}
+
+            {clmFilterOptions.PACKAGE_BUILD_DATE.key === filterType && (
+              <DateTime
+                name={clmFilterOptions.PACKAGE_BUILD_DATE.key}
+                label={t("Build")}
                 labelClass="col-md-3"
                 divClass="col-md-8"
                 required

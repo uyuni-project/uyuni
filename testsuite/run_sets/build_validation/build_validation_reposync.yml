@@ -2,7 +2,7 @@
 
 ## Product synchronization features BEGIN ###
 
+- features/build_validation/reposync/srv_disable_scheduled_reposync.feature
 - features/build_validation/reposync/srv_sync_all_products.feature
 
 ## Product synchronization features END ###
-

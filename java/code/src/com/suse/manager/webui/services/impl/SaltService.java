@@ -553,6 +553,7 @@ public class SaltService implements SystemQuery, SaltApi {
         eventStream = null;
     }
 
+    @SuppressWarnings("java:S2276") // sleep fits in this solution as no locks are held
     private synchronized EventStream createOrGetEventStream() {
 
         int retries = 0;

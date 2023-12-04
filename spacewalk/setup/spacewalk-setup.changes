@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Wed Nov 01 20:22:05 CET 2023 - marina.latini@suse.com
+
+- version 4.4.10-1
+  * Use localhost for Cobbler client to avoid hairpins
+  * Replace "filesize" in spec file with "stat" to allow
+    installation on Enterprise Linux.
+
+-------------------------------------------------------------------
 Mon Sep 18 14:35:43 CEST 2023 - rosuna@suse.com
 
 - version 4.4.9-1

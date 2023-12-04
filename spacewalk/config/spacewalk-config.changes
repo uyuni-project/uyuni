@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Nov 01 20:39:27 CET 2023 - marina.latini@suse.com
+
+- version 4.4.4-1
+  * Handle spaces in /ks/dist/ file names (bsc#1213680)
+
+-------------------------------------------------------------------
 Mon Sep 18 14:29:42 CEST 2023 - rosuna@suse.com
 
 - version 4.4.3-1

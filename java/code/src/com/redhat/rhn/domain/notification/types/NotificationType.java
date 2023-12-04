@@ -27,4 +27,5 @@ public enum NotificationType {
     EndOfLifePeriod,
     SubscriptionWarning,
     UpdateAvailable,
+    PaygNotCompliantWarning,
 }

@@ -23,14 +23,14 @@
 
 %if 0%{?suse_version}
 %global serverdir  /srv
-%global wwwdocroot %{serverdir}/www/htdocs
+%global wwwpubroot %{serverdir}/www/htdocs
 %else
 %global serverdir  %{_localstatedir}
-%global wwwdocroot %{serverdir}/www/html
+%global wwwpubroot %{serverdir}/www/html
 %endif
 
 Name:           susemanager-sls
-Version:        4.4.8
+Version:        4.4.9
 Release:        1
 Summary:        Static Salt state files for SUSE Manager
 License:        Apache-2.0 AND LGPL-2.1-only
@@ -129,7 +129,7 @@ py.test%{?rhel:-3}
 
 %post
 # HACK! Create broken link when it will be replaces with the real file
-ln -sf %{wwwdocroot}/pub/RHN-ORG-TRUSTED-SSL-CERT \
+ln -sf %{wwwpubroot}/pub/RHN-ORG-TRUSTED-SSL-CERT \
    /usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT 2>&1 ||:
 
 %posttrans

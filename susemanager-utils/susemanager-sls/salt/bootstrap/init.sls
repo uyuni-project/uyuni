@@ -29,7 +29,11 @@ no_ssh_push_key_authorized:
   {% set osrelease_major = grains['osrelease_info'][0] %}
   #exceptions to the family rule
   {%- if "opensuse" in grains['oscodename']|lower %}
-    {% set os_base = 'opensuse' %}
+    {%- if "tumbleweed" in grains['oscodename']|lower %}
+      {% set os_base = 'opensusetumbleweed' %}
+    {%- else %}
+      {% set os_base = 'opensuse' %}
+    {%- endif %}
   {%- endif %}
   {%- if (grains['osrelease_info']| length) < 2 %}
     {% set osrelease_minor = 0 %}
@@ -43,9 +47,9 @@ no_ssh_push_key_authorized:
         {% set os_base = os_base|string + 'micro' %}
     {%- endif %}
   {%- endif %}
-  #end of expections
-  {%- if os_base == 'opensusemicroos' %}
-      {% set osrelease = 'latest' %}
+  #end of exceptions
+  {%- if os_base == 'opensusemicroos' or os_base == 'opensusetumbleweed' %}
+      {% set osrelease = 'latest/0' %}
   {%- else %}
       {% set osrelease = osrelease_major|string + '/' + osrelease_minor|string %}
   {%- endif %}
@@ -63,6 +67,8 @@ no_ssh_push_key_authorized:
   {%- elif grains['os'] == 'Ubuntu' %}
     {%- set os_base = grains['os']|lower %}
     {% set osrelease = grains['osrelease_info'][0]|string + '/' + grains['osrelease_info'][1]|string %}
+  {%- elif grains['os'] == 'Raspbian' %}
+    {%- set os_base = grains['os']|lower %}
   {%- endif %}
   #end of expections
 {%- endif %}
@@ -290,7 +296,29 @@ include:
       - file: {{ salt_config_dir }}/pki/minion/minion.pub
   {%- endif %}
 
-{# Use transactional reboot support -> server will be rebooted according to maintentance schedule #}
+{# Change REBOOT_METHOD to systemd if it is default, otherwise don't change it #}
+
+{%- if not salt['file.file_exists']('/etc/transactional-update.conf') %}
+copy_conf_file_to_etc:
+  file.copy:
+    - name: /etc/transactional-update.conf
+    - source: /usr/etc/transactional-update.conf
+{%- endif %}
+
+transactional_update_set_reboot_method_systemd:
+  file.keyvalue:
+    - name: /etc/transactional-update.conf
+    - key_values:
+        REBOOT_METHOD: 'systemd'
+    - separator: '='
+    - uncomment: '# '
+    - append_if_not_found: True
+    - require:
+      - file: copy_conf_file_to_etc
+    - unless:
+      - grep -P '^(?=[\s]*+[^#])[^#]*(REBOOT_METHOD=(?!auto))' /etc/transactional-update.conf
+
+{# Use transactional reboot support -> server will be rebooted according to REBOOT_METHOD #}
 reboot_transactional_server:
   mgrcompat.module_run:
     - name: transactional_update.reboot

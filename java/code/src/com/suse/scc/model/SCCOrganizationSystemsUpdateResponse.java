@@ -34,7 +34,7 @@ public class SCCOrganizationSystemsUpdateResponse {
     /**
      * @return Returns the systems
      */
-    public List<com.suse.scc.model.SCCSystemCredentialsJson> getSystems() {
+    public List<SCCSystemCredentialsJson> getSystems() {
         return systems;
     }
 }

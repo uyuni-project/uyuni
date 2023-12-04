@@ -575,7 +575,7 @@ def create_repo(label, options, mgr_bootstrap_data, additional=[]):
             "Description: $desc\n")
             codename="bootstrap"
             reprepro_conf = reprepro_conf_tmpl.substitute(origin="mgr",
-                    label="mgr", codename=codename, arches="amd64 i386 armhf", comps="main", desc="Bootstrap repo")
+                    label="mgr", codename=codename, arches="amd64 i386 armhf arm64", comps="main", desc="Bootstrap repo")
             reprepro_conf_dir = os.path.join(destdirtmp, "conf")
             if not os.path.exists(reprepro_conf_dir):
                 os.makedirs(reprepro_conf_dir)

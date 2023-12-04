@@ -1,1 +1,0 @@
-- Fix datetimepicker erroneously updating the date field (bsc#1210253, bsc#1215820)

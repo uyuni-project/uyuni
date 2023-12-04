@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Nov 01 20:52:06 CET 2023 - marina.latini@suse.com
+
+- version 4.4.7-1
+  * Call service ca-certificates as a dependency for database check
+
+-------------------------------------------------------------------
 Mon Sep 18 14:25:35 CEST 2023 - rosuna@suse.com
 
 - version 4.4.6-1

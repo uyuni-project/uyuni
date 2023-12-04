@@ -121,10 +121,39 @@ Feature: Register and test a Containerized Proxy
     And the uptime for "sle_minion" should be correct
     And I should see several text fields
 
+  Scenario: Pre-requisite: subscribe system to Fake Channel
+    Given I am on the Systems overview page of this "sle_minion"
+    When I follow "Software" in the content area
+    And I follow "Software Channels" in the content area
+    And I wait until I do not see "Loading..." text
+    And I check radio button "Fake-Base-Channel-SUSE-like"
+    And I wait until I do not see "Loading..." text
+    And I check "Fake-Child-Channel-SUSE-like"
+    And I click on "Next"
+    Then I should see a "Confirm Software Channel Change" text
+    When I click on "Confirm"
+    Then I should see a "Changing the channels has been scheduled." text
+    And I wait until event "Subscribe channels scheduled by admin" is completed
+
+  Scenario: Pre-requisite: downgrade milkyway-dummy to lower version
+    When I enable repository "test_repo_rpm_pool" on this "sle_minion"
+    And I install old package "milkyway-dummy-1.0" on this "sle_minion"
+    And I refresh the metadata for "sle_minion"
+    And I follow the left menu "Admin > Task Schedules"
+    And I follow "errata-cache-default"
+    And I follow "errata-cache-bunch"
+    And I click on "Single Run Schedule"
+    Then I should see a "bunch was scheduled" text
+    And I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
+
+  Scenario: Pre-requisite: check that there are updates available
+    Given I am on the Systems overview page of this "sle_minion"
+    And I wait until I see "Software Updates Available" text, refreshing the page
+
   Scenario: Install a patch on the Salt minion
     When I follow "Software" in the content area
     And I follow "Patches" in the content area
-    When I check the first patch in the list
+    When I check the row with the "milkyway-dummy" text
     And I click on "Apply Patches"
     And I click on "Confirm"
     Then I should see a "1 patch update has been scheduled for" text
@@ -132,14 +161,64 @@ Feature: Register and test a Containerized Proxy
 
   Scenario: Remove package from Salt minion
     When I follow "Software" in the content area
-    And I follow "Install"
-    And I enter the package for "sle_minion" as the filtered package name
+    And I follow "List / Remove"
+    And I enter "milkyway-dummy" as the filtered package name
     And I click on the filter button
-    And I check the package for "sle_minion" in the list
-    And I click on "Install Selected Packages"
+    And I wait until I see "Clear filter to see all" text
+    And I check "milkyway-dummy" in the list
+    And I click on "Remove Packages"
+    Then I wait until I see "Confirm Package Removal" text
+    And I should see a "milkyway-dummy" text
     And I click on "Confirm"
-    Then I should see a "1 package install has been scheduled for" text
-    And I wait until event "Package Install/Upgrade scheduled by admin" is completed
+    Then I should see a "1 package removal has been scheduled for" text
+    And I wait until event "Package Removal scheduled by admin" is completed
+
+  @susemanager
+  Scenario: Cleanup: subscribe system back to default base channel
+    Given I am on the Systems overview page of this "sle_minion"
+    When I follow "Software" in the content area
+    And I follow "Software Channels" in the content area
+    And I wait until I do not see "Loading..." text
+    And I check default base channel radio button of this "sle_minion"
+    And I wait for child channels to appear
+    And I include the recommended child channels
+    And I wait until "SLE-Module-Basesystem15-SP4-Pool for x86_64" has been checked
+    And I wait until "SLE-Module-Basesystem15-SP4-Updates for x86_64" has been checked
+    And I wait until "SLE-Module-Server-Applications15-SP4-Pool for x86_64" has been checked
+    And I wait until "SLE-Module-Server-Applications15-SP4-Updates for x86_64" has been checked
+    And I check "SLE-Module-DevTools15-SP4-Pool for x86_64"
+    And I wait until "SLE-Module-DevTools15-SP4-Updates for x86_64" has been checked
+    And I wait until "SLE-Module-Desktop-Applications15-SP4-Pool for x86_64" has been checked
+    And I wait until "SLE-Module-Desktop-Applications15-SP4-Updates for x86_64" has been checked
+    And I check "SLE-Module-Containers15-SP4-Pool for x86_64"
+    And I wait until "SLE-Module-Containers15-SP4-Updates for x86_64" has been checked
+    And I check "Fake-RPM-SUSE-Channel"
+    And I click on "Next"
+    Then I should see a "Confirm Software Channel Change" text
+    When I click on "Confirm"
+    Then I should see a "Changing the channels has been scheduled." text
+    And I wait until event "Subscribe channels scheduled by admin" is completed
+
+  @uyuni
+  Scenario: Cleanup: subscribe system back to default base channel
+    Given I am on the Systems overview page of this "sle_minion"
+    When I follow "Software" in the content area
+    And I follow "Software Channels" in the content area
+    And I wait until I do not see "Loading..." text
+    And I check default base channel radio button of this "sle_minion"
+    And I wait for child channels to appear
+    And I check "openSUSE 15.5 non oss (x86_64)"
+    And I check "openSUSE Leap 15.5 non oss Updates (x86_64)"
+    And I check "openSUSE Leap 15.5 Updates (x86_64)"
+    And I check "Update repository of openSUSE Leap 15.5 Backports (x86_64)"
+    And I check "Update repository with updates from SUSE Linux Enterprise 15 for openSUSE Leap 15.5 (x86_64)"
+    And I check "Uyuni Client Tools for openSUSE Leap 15.5 (x86_64)"
+    And I check "Fake-RPM-SUSE-Channel"
+    And I click on "Next"
+    Then I should see a "Confirm Software Channel Change" text
+    When I click on "Confirm"
+    Then I should see a "Changing the channels has been scheduled." text
+    And I wait until event "Subscribe channels scheduled by admin" is completed
 
   Scenario: Run a remote command on Salt minion
     When I follow the left menu "Salt > Remote Commands"

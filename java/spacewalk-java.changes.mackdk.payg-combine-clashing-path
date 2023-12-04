@@ -1,2 +1,0 @@
-- Combine the PAYG credentials and the repository paths when they 
-  collide (bsc#1215413)

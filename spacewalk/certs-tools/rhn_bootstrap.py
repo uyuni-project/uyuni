@@ -63,11 +63,11 @@ elif os.path.exists('/usr/share/rhn/server') \
 DEFAULT_CA_CERT_PATH = '/usr/share/rhn/'+CA_CRT_NAME
 
 initCFG('server')
-DOC_ROOT = CFG.DOCUMENTROOT
+PUB_ROOT = CFG.DOCUMENTROOT
 
 initCFG('java')
 
-DEFAULT_APACHE_PUB_DIRECTORY = DOC_ROOT + '/pub'
+DEFAULT_APACHE_PUB_DIRECTORY = PUB_ROOT + '/pub'
 DEFAULT_OVERRIDES = 'client-config-overrides.txt'
 DEFAULT_SCRIPT = 'bootstrap.sh'
 

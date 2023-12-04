@@ -159,50 +159,6 @@ OPENEULER2203 = [
         "venv-salt-minion",
 ]
 
-PKGLISTUMBLEWEED_SALT_NO_BUNDLE = [
-    "libgomp1",
-    "libmpdec3",
-    "libpgm-5_2-0",
-    "libpython3_10-1_0",
-    "librpmbuild9",
-    "libsodium23",
-    "libunwind8",
-    "libyaml-0-2",
-    "libzmq5",
-    "python3-salt",
-    "python310",
-    "python310-Jinja2",
-    "python310-M2Crypto",
-    "python310-MarkupSafe",
-    "python310-PyYAML",
-    "python310-apipkg",
-    "python310-base",
-    "python310-certifi",
-    "python310-cffi",
-    "python310-charset-normalizer",
-    "python310-contextvars",
-    "python310-cryptography",
-    "python310-distro",
-    "python310-idna",
-    "python310-immutables",
-    "python310-iniconfig",
-    "python310-msgpack",
-    "python310-psutil",
-    "python310-py",
-    "python310-pyOpenSSL",
-    "python310-pycparser",
-    "python310-pyzmq",
-    "python310-requests",
-    "python310-rpm",
-    "python310-six",
-    "python310-urllib3",
-    "python310-zypp-plugin",
-    "salt",
-    "salt-minion",
-    "salt-transactional-update",
-    "update-alternatives",
-]
-
 PKGLIST15_SALT_NO_BUNDLE = [
     "hostname",
     "iproute2",
@@ -270,6 +226,17 @@ PKGLIST15_SALT_OPT_BUNDLE = PKGLIST15_SALT_NO_BUNDLE + [
 ]
 
 PKGLISTMICRO_BUNDLE_ONLY = [
+    "venv-salt-minion",
+]
+
+PKGLISTMICROOS_BUNDLE_ONLY = [
+    "libnsl3",
+    "libtirpc3",
+    "libtirpc-netconfig",
+    "venv-salt-minion",
+]
+
+PKGLISTTUMBLEWEED_BUNDLE_ONLY = [
     "venv-salt-minion",
 ]
 
@@ -559,6 +526,31 @@ PKGLISTDEBIAN11 = [
 ]
 
 PKGLISTDEBIAN12 = [
+    # gnupg dependencies
+    "dirmngr",
+    "gnupg",
+    "gnupg-l10n",
+    "gnupg-utils",
+    "gpg",
+    "gpg-agent",
+    "gpg-wks-client",
+    "gpg-wks-server",
+    "gpgconf",
+    "gpgsm",
+    "libassuan0",
+    "libksba8",
+    "libldap-2.5-0",
+    "libnpth0",
+    "libsasl2-2",
+    "libsasl2-modules-db",
+    "libsqlite3-0",
+    "pinentry-curses",
+    "readline-common",
+    # end of gnupg dependencies
+    "venv-salt-minion"
+]
+
+PKGLISTRASPBERRYPIOS12 = [
     # gnupg dependencies
     "dirmngr",
     "gnupg",
@@ -1233,12 +1225,32 @@ DATA = {
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/opensusemicro/5/5/bootstrap/'
     },
     'openSUSE-MicroOS-x86_64-uyuni' : {
-        'BASECHANNEL' : 'opensuse_microos-x86_64', 'PKGLIST' : PKGLISTUMBLEWEED_SALT_NO_BUNDLE,
+        'BASECHANNEL' : 'opensuse_microos-x86_64', 'PKGLIST' : PKGLISTMICROOS_BUNDLE_ONLY,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/opensusemicroos/latest/0/bootstrap/'
     },
     'openSUSE-MicroOS-aarch64-uyuni' : {
-        'BASECHANNEL' : 'opensuse_microos-aarch64', 'PKGLIST' : PKGLISTUMBLEWEED_SALT_NO_BUNDLE,
+        'BASECHANNEL' : 'opensuse_microos-aarch64', 'PKGLIST' : PKGLISTMICROOS_BUNDLE_ONLY,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/opensusemicroos/latest/0/bootstrap/'
+    },
+    'openSUSE-MicroOS-ppc64le-uyuni' : {
+        'BASECHANNEL' : 'opensuse_microos-ppc64le', 'PKGLIST' : PKGLISTMICROOS_BUNDLE_ONLY,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/opensusemicroos/latest/0/bootstrap/'
+    },
+    'openSUSE-Tumbleweed-x86_64-uyuni' : {
+        'BASECHANNEL' : 'opensuse_tumbleweed-x86_64', 'PKGLIST' : PKGLISTTUMBLEWEED_BUNDLE_ONLY,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/opensusetumbleweed/latest/0/bootstrap/'
+    },
+    'openSUSE-Tumbleweed-aarch64-uyuni' : {
+        'BASECHANNEL' : 'opensuse_tumbleweed-aarch64', 'PKGLIST' : PKGLISTTUMBLEWEED_BUNDLE_ONLY,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/opensusetumbleweed/latest/0/bootstrap/'
+    },
+    'openSUSE-Tumbleweed-ppc64le-uyuni' : {
+        'BASECHANNEL' : 'opensuse_tumbleweed-ppc64le', 'PKGLIST' : PKGLISTTUMBLEWEED_BUNDLE_ONLY,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/opensusetumbleweed/latest/0/bootstrap/'
+    },
+    'openSUSE-Tumbleweed-s390x-uyuni' : {
+        'BASECHANNEL' : 'opensuse_tumbleweed-s390x', 'PKGLIST' : PKGLISTTUMBLEWEED_BUNDLE_ONLY,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/opensusetumbleweed/latest/0/bootstrap/'
     },
     'centos-6-x86_64' : {
         'PDID' : [-11, 1682], 'BETAPDID' : [2064], 'PKGLIST' : RES6,
@@ -1359,6 +1371,14 @@ DATA = {
     'amazonlinux-2-aarch64-uyuni' : {
         'BASECHANNEL' : 'amazonlinux2-core-aarch64', 'PKGLIST' : RES7,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/amzn/2/bootstrap/'
+    },
+    'amazonlinux-2023-x86_64-uyuni' : {
+        'BASECHANNEL' : 'amazonlinux2023-x86_64', 'PKGLIST' : RES9,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/amzn/2023/bootstrap/'
+    },
+    'amazonlinux-2023-aarch64-uyuni' : {
+        'BASECHANNEL' : 'amazonlinux2023-aarch64', 'PKGLIST' : RES9,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/amzn/2023/bootstrap/'
     },
     'RHEL6-x86_64' : {
         'PDID' : [-5, 1682], 'BETAPDID' : [2064], 'PKGLIST' : RES6,
@@ -1561,6 +1581,16 @@ DATA = {
      'debian12-amd64-uyuni' : {
          'BASECHANNEL' : 'debian-12-pool-amd64-uyuni', 'PKGLIST' : PKGLISTDEBIAN12,
          'DEST' : DOCUMENT_ROOT + '/pub/repositories/debian/12/bootstrap/',
+         'TYPE' : 'deb'
+     },
+     'raspberrypios-12-arm64-uyuni' : {
+         'BASECHANNEL' : 'raspberrypios-12-pool-arm64-uyuni', 'PKGLIST' : PKGLISTRASPBERRYPIOS12,
+         'DEST' : DOCUMENT_ROOT + '/pub/repositories/debian/12/bootstrap/',
+         'TYPE' : 'deb'
+     },
+     'raspberrypios-12-armhf-uyuni' : {
+         'BASECHANNEL' : 'raspberrypios-12-pool-armhf-uyuni', 'PKGLIST' : PKGLISTRASPBERRYPIOS12,
+         'DEST' : DOCUMENT_ROOT + '/pub/repositories/raspbian/12/bootstrap/',
          'TYPE' : 'deb'
      },
      'astralinux-orel-amd64': {

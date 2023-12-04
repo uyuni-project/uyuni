@@ -98,10 +98,8 @@ Feature: Maintenance windows
 
   Scenario: Remove a package and update package list
     When I remove package "virgo-dummy" from this "rhlike_minion" without error control
-    Given I am on the Systems overview page of this "rhlike_minion"
-    When I follow "Software" in the content area
-    And I click on "Update Package List"
-    And I wait until event "Package List Refresh scheduled by admin" is completed
+    And I refresh packages list via spacecmd on "rhlike_minion"
+    And I wait until refresh package list on "rhlike_minion" is finished
 
   Scenario: Schedule package installation action
     Given I am on the Systems overview page of this "rhlike_minion"

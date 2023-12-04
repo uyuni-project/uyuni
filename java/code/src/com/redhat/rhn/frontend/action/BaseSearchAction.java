@@ -156,6 +156,7 @@ public abstract class BaseSearchAction extends RhnAction {
                                           escapedSearchString));
             }
             else {
+                LOG.error("Search failed: ", e);
                 errors.add(ActionMessages.GLOBAL_MESSAGE,
                     new ActionMessage("packages.search.could_not_execute_query",
                                       escapedSearchString));

@@ -223,15 +223,17 @@ public class FormulaManager {
      */
     private void validateListContents(String key, List<Object> actualList, List<Object> expectedListFormat,
                                       Map<String, Object> def) throws InvalidFormulaException {
-        Class<?> expectedClass = expectedListFormat.iterator().next().getClass();
-        if (Map.class.isAssignableFrom(expectedClass)) {
-            for (Object item: actualList) {
-                validateDictionary((Map) item, def);
+        if (!expectedListFormat.isEmpty()) {
+            Class<?> expectedClass = expectedListFormat.iterator().next().getClass();
+            if (Map.class.isAssignableFrom(expectedClass)) {
+                for (Object item : actualList) {
+                    validateDictionary((Map) item, def);
+                }
             }
-        }
-        else {
-            for (Object item:actualList) {
-                validateTypes(key, expectedClass, item.getClass());
+            else {
+                for (Object item : actualList) {
+                    validateTypes(key, expectedClass, item.getClass());
+                }
             }
         }
     }

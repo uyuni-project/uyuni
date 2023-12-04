@@ -42,7 +42,12 @@ public class ValueMap {
      * @param valueMapIn the {@link Map} to wrap
      */
     public ValueMap(Map<String, ?> valueMapIn) {
-        this.valueMap = valueMapIn;
+        if (valueMapIn == null) {
+            this.valueMap = Collections.emptyMap();
+        }
+        else {
+            this.valueMap = valueMapIn;
+        }
     }
 
     /**

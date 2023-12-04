@@ -1,4 +1,18 @@
 -------------------------------------------------------------------
+Wed Nov 08 17:53:44 CET 2023 - marina.latini@suse.com
+
+- version 4.4.3
+  * Add -helm to chart name to avoid conflict with proxy image
+
+-------------------------------------------------------------------
+Thu Nov 02 16:31:41 CET 2023 - marina.latini@suse.com
+
+- version 4.4.2
+  * Remove statically defined image tags
+  * Reverted the name of the package from proxy to proxy-helm
+    to avoid problems with release tagging
+
+-------------------------------------------------------------------
 Mon Sep 18 16:54:48 CEST 2023 - rosuna@suse.com
 
 - version 4.4.1

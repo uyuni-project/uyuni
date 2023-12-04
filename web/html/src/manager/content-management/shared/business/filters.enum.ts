@@ -157,6 +157,12 @@ export const clmFilterOptions: ClmFilterOptionsEnumType = {
     entityType: filterEntity.PACKAGE,
     matchers: [filterMatchers.PROVIDES_NAME],
   },
+  PACKAGE_BUILD_DATE: {
+    key: "build_date",
+    text: t("Build date"),
+    entityType: filterEntity.PACKAGE,
+    matchers: [filterMatchers.LOWER, filterMatchers.LOWEREQ, filterMatchers.GREATER, filterMatchers.GREATEREQ],
+  },
   ADVISORY_NAME: {
     key: "advisory_name",
     text: t("Advisory Name"),

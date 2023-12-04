@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Nov 01 21:19:29 CET 2023 - marina.latini@suse.com
+
+- version 4.4.2
+  * Remove statically defined image tags
+
+-------------------------------------------------------------------
 Mon Sep 18 16:55:38 CEST 2023 - rosuna@suse.com
 
 - version 4.4.1

@@ -49,7 +49,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Tests {@link com.suse.scc.SCCSystemRegistration}.
+ * Tests {@link com.suse.scc.registration.SCCSystemRegistration}.
  */
 public class SCCSystemRegistrationTest extends BaseTestCaseWithUser {
 

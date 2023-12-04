@@ -9,12 +9,6 @@ require 'date'
 # Based on https://github.com/akarzim/capybara-bootstrap-datepicker
 # (MIT license)
 
-def get_future_time(minutes_to_add)
-  now = Time.new
-  future_time = now + 60 * minutes_to_add.to_i
-  future_time.strftime('%H:%M').to_s.strip
-end
-
 Given(/^I pick "([^"]*)" as date$/) do |desired_date|
   value = Date.parse(desired_date)
   date_input = find('input[data-testid="date-picker"]')
@@ -30,10 +24,10 @@ Then(/^the date field should be set to "([^"]*)"$/) do |expected_date|
   month_compat = find('input#date_month', visible: false)
   year_compat = find('input#date_year', visible: false)
 
-  raise if day_compat.value.to_i != value.day
+  raise ScriptError if day_compat.value.to_i != value.day
   # month field is 0-11, ruby 1-12
-  raise if month_compat.value.to_i + 1 != value.month
-  raise if year_compat.value.to_i != value.year
+  raise ScriptError if month_compat.value.to_i + 1 != value.month
+  raise ScriptError if year_compat.value.to_i != value.year
 end
 
 Given(/^I open the date picker$/) do
@@ -41,7 +35,7 @@ Given(/^I open the date picker$/) do
 end
 
 Then(/^the date picker should be closed$/) do
-  raise unless has_no_css?('.date-time-picker-popup')
+  raise ScriptError, 'The date picker is not closed' unless has_no_css?('.date-time-picker-popup')
 end
 
 Then(/^the date picker title should be the current month and year$/) do
@@ -52,7 +46,7 @@ end
 Then(/^the date picker title should be "([^"]*)"$/) do |arg1|
   step 'I open the date picker' if has_no_css?('.date-time-picker-popup')
   switch = find('.date-time-picker-popup .react-datepicker__current-month')
-  raise unless switch.has_content?(arg1)
+  raise ScriptError, 'The date picker title has a different value or it cant be found' unless switch.has_content?(arg1)
 end
 
 Given(/^I pick "([^"]*)" as time$/) do |desired_time|
@@ -71,7 +65,7 @@ end
 
 When(/^I pick (\d+) minutes from now as schedule time$/) do |arg1|
   action_time = get_future_time(arg1)
-  raise unless find(:xpath, '//*[@id=\'date_timepicker_widget_input\']', wait: 2)
+  raise ScriptError unless find(:xpath, '//*[@id=\'date_timepicker_widget_input\']', wait: 2)
 
   step %(I enter "#{action_time}" as "date_timepicker_widget_input")
 end

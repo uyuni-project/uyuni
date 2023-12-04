@@ -5,7 +5,7 @@
 Feature: Add the CentOS 7 distribution custom repositories
 
   Scenario: Download the iso of CentOS 7 DVD and mount it on the server
-    When I mount as "centos-7-iso" the ISO from "http://mirror.chpc.utah.edu/pub/centos/7/isos/x86_64/CentOS-7-x86_64-DVD-2009.iso" in the server
+    When I mount as "centos-7-iso" the ISO from "http://mirror.chpc.utah.edu/pub/centos/7/isos/x86_64/CentOS-7-x86_64-DVD-2009.iso" in the server, validating its checksum
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section

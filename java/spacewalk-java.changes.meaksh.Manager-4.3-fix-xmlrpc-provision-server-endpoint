@@ -1,1 +1,0 @@
-Fix system.provisionSystem xmlrpc endpoint to calculate host properly (bsc#1215209)

@@ -68,10 +68,8 @@ public abstract class RhnJavaJob implements RhnJob {
      */
     protected void finishJob() { }
 
-    protected void executeExtCmd(String[] args)
-        throws JobExecutionException {
-
-        SystemCommandThreadedExecutor ce = new SystemCommandThreadedExecutor(getLogger());
+    protected void executeExtCmd(String[] args, boolean noStdoutLog) throws JobExecutionException {
+        SystemCommandThreadedExecutor ce = new SystemCommandThreadedExecutor(getLogger(), !noStdoutLog);
         int exitCode = ce.execute(args);
 
         if (exitCode != 0) {
@@ -84,8 +82,12 @@ public abstract class RhnJavaJob implements RhnJob {
             }
             throw new JobExecutionException(
                     "Command '" + Arrays.asList(args) +
-                    "' exited with error code " + exitCode +
-                    (msg.isBlank() ? "" : ": " + msg));
+                            "' exited with error code " + exitCode +
+                            (msg.isBlank() ? "" : ": " + msg));
         }
+    }
+
+    protected void executeExtCmd(String[] args) throws JobExecutionException {
+        executeExtCmd(args, false);
     }
 }

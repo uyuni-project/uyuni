@@ -30,17 +30,6 @@ Feature: Create fake repositories for each fake child channel
     Then I should see a "Repository updated successfully" text
     And I should see "metadataSigned" as unchecked
 
-  Scenario: Add the fake RPM repository to the SUSE fake base channel
-    When I follow the left menu "Software > Manage > Channels"
-    And I follow "Fake-Base-Channel"
-    And I enter "file:///etc/pki/rpm-gpg/uyuni-tools-gpg-pubkey-0d20833e.key" as "GPG key URL"
-    And I click on "Update Channel"
-    Then I should see a "Channel Fake-Base-Channel updated" text
-    When I follow "Repositories" in the content area
-    And I select the "fake-rpm-repo" repo
-    And I click on "Save Repositories"
-    Then I should see a "Fake-Base-Channel repository information was successfully updated" text
-
 @sle_minion
   Scenario: Add the fake RPM repository to the SUSE fake child channel
     When I follow the left menu "Software > Manage > Channels"
@@ -55,14 +44,14 @@ Feature: Create fake repositories for each fake child channel
 
   Scenario: Add the fake RPM repository to the Test child channel
     When I follow the left menu "Software > Manage > Channels"
-    And I follow "Test-Base-Channel-x86_64"
+    And I follow "Test-Child-Channel-x86_64"
     And I enter "file:///etc/pki/rpm-gpg/uyuni-tools-gpg-pubkey-0d20833e.key" as "GPG key URL"
     And I click on "Update Channel"
-    Then I should see a "Channel Test-Base-Channel-x86_64 updated" text
+    Then I should see a "Channel Test-Child-Channel-x86_64 updated" text
     When I follow "Repositories" in the content area
     And I select the "fake-rpm-repo" repo
     And I click on "Save Repositories"
-    Then I should see a "Test-Base-Channel-x86_64 repository information was successfully updated" text
+    Then I should see a "Test-Child-Channel-x86_64 repository information was successfully updated" text
 
 @rhlike_minion
   Scenario: Add the fake RPM repository to the RedHat-like base channel
@@ -87,14 +76,23 @@ Feature: Create fake repositories for each fake child channel
 
   Scenario: Add the repository to the i586 channel
     When I follow the left menu "Software > Manage > Channels"
-    And I follow "Fake-Base-Channel-i586"
+    And I follow "Fake-Child-Channel-i586"
     And I enter "file:///etc/pki/rpm-gpg/uyuni-tools-gpg-pubkey-0d20833e.key" as "GPG key URL"
     And I click on "Update Channel"
-    Then I should see a "Channel Fake-Base-Channel-i586 updated" text
+    Then I should see a "Channel Fake-Child-Channel-i586 updated" text
     When I follow "Repositories" in the content area
     And I select the "fake-i586-repo" repo
     And I click on "Save Repositories"
-    Then I should see a "Fake-Base-Channel-i586 repository information was successfully updated" text
+    Then I should see a "Fake-Child-Channel-i586 repository information was successfully updated" text
+
+@sle_minion
+  Scenario: Add the repository to the SUSE-like child channel
+    When I follow the left menu "Software > Manage > Channels"
+    And I follow "Fake-Child-Channel-SUSE-like"
+    And I follow "Repositories" in the content area
+    And I select the "fake-rpm-repo" repo
+    And I click on "Save Repositories"
+    Then I should see a "Fake-Child-Channel-SUSE-like repository information was successfully updated" text
 
 @deblike_minion
   Scenario: Create a fake repository for Debian-like

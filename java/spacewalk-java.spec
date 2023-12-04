@@ -28,16 +28,18 @@
 %define run_checkstyle  0
 %define omit_tests      1
 
-%if 0%{?suse_version}
-%define serverdir       /srv
-%define apache_group    www
+%define susemanagershareddir       %{_datadir}/susemanager
+%define serverdir       %{susemanagershareddir}/www
 %define salt_user_group salt
+
+%if 0%{?suse_version}
+%define userserverdir       /srv
+%define apache_group    www
 %define apache2         apache2
 %define java_version    11
 %else
-%define serverdir       %{_sharedstatedir}
+%define userserverdir       %{_sharedstatedir}
 %define apache_group    apache
-%define salt_user_group salt
 %define apache2         httpd
 %define java_version    1:11
 %endif
@@ -59,10 +61,10 @@ Name:           spacewalk-java
 Summary:        Java web application files for Spacewalk
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.4.20
+Version:        4.4.21
 Release:        1
 URL:            https://github.com/uyuni-project/uyuni
-Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}-1.tar.gz
+Source0:        %{name}-%{version}.tar.gz
 Source1:        https://raw.githubusercontent.com/uyuni-project/uyuni/%{name}-%{version}-1/java/%{name}-rpmlintrc
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
@@ -82,7 +84,7 @@ BuildRequires:  apache-commons-cli
 BuildRequires:  apache-commons-codec
 BuildRequires:  apache-commons-collections
 BuildRequires:  apache-commons-el
-BuildRequires:  apache-commons-io
+BuildRequires:  apache-commons-io >= 2.11.0
 BuildRequires:  apache-commons-jexl
 BuildRequires:  apache-commons-lang3 >= 3.4
 BuildRequires:  apache-commons-logging
@@ -96,7 +98,7 @@ BuildRequires:  dom4j
 BuildRequires:  dwr >= 3
 BuildRequires:  glassfish-jaxb-runtime
 BuildRequires:  glassfish-jaxb-txw2
-BuildRequires:  google-gson >= 2.2.4
+BuildRequires:  (google-gson >= 2.2.4 with google-gson < 2.10.0)
 BuildRequires:  hibernate-commons-annotations
 BuildRequires:  hibernate-types
 BuildRequires:  httpcomponents-asyncclient
@@ -133,7 +135,7 @@ BuildRequires:  salt-netapi-client >= 0.20
 BuildRequires:  simple-core
 BuildRequires:  simple-xml
 BuildRequires:  sitemesh
-BuildRequires:  snakeyaml
+BuildRequires:  snakeyaml >= 1.33
 BuildRequires:  spark-core
 BuildRequires:  spark-template-jade
 BuildRequires:  statistics
@@ -186,7 +188,7 @@ Requires:       glassfish-activation-api
 Requires:       glassfish-jaxb-api
 Requires:       glassfish-jaxb-runtime
 Requires:       glassfish-jaxb-txw2
-Requires:       google-gson >= 2.2.4
+Requires:       (google-gson >= 2.2.4 with google-gson < 2.10.0)
 Requires:       hibernate-commons-annotations
 Requires:       hibernate-types
 Requires:       httpcomponents-client
@@ -219,7 +221,7 @@ Requires:       salt-netapi-client >= 0.20
 Requires:       simple-core
 Requires:       simple-xml
 Requires:       sitemesh
-Requires:       snakeyaml
+Requires:       snakeyaml >= 1.33
 Requires:       spacewalk-branding
 Requires:       spacewalk-java-config
 Requires:       spacewalk-java-jdbc
@@ -498,6 +500,7 @@ export JAVA_HOME=/usr/lib/jvm/java-11-openjdk/
 
 export NO_BRP_STALE_LINK_ERROR=yes
 
+mkdir -p $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib
 %if 0%{?suse_version}
 ant -Dproduct.name="'$PRODUCT_NAME'" -Dprefix=$RPM_BUILD_ROOT -Dtomcat="tomcat9" install-tomcat9-suse
 install -d -m 755 $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/META-INF/
@@ -531,13 +534,13 @@ install -d -m 755 $RPM_BUILD_ROOT/%{_localstatedir}/lib/spacewalk/scc
 install -d -m 755 $RPM_BUILD_ROOT/%{_localstatedir}/lib/spacewalk/subscription-matcher
 
 install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d
-install -d $RPM_BUILD_ROOT%{serverdir}/susemanager/salt
-install -d $RPM_BUILD_ROOT%{serverdir}/susemanager/salt/salt_ssh
-install -d $RPM_BUILD_ROOT%{serverdir}/susemanager/salt/salt_ssh/temp_bootstrap_keys
-install -d -m 775 $RPM_BUILD_ROOT%{serverdir}/susemanager/pillar_data
-install -d -m 775 $RPM_BUILD_ROOT%{serverdir}/susemanager/pillar_data/images
-install -d $RPM_BUILD_ROOT%{serverdir}/susemanager/formula_data
-install -d $RPM_BUILD_ROOT%{serverdir}/susemanager/tmp
+install -d $RPM_BUILD_ROOT%{userserverdir}/susemanager/salt
+install -d $RPM_BUILD_ROOT%{userserverdir}/susemanager/salt/salt_ssh
+install -d $RPM_BUILD_ROOT%{userserverdir}/susemanager/salt/salt_ssh/temp_bootstrap_keys
+install -d -m 775 $RPM_BUILD_ROOT%{userserverdir}/susemanager/pillar_data
+install -d -m 775 $RPM_BUILD_ROOT%{userserverdir}/susemanager/pillar_data/images
+install -d $RPM_BUILD_ROOT%{userserverdir}/susemanager/formula_data
+install -d $RPM_BUILD_ROOT%{userserverdir}/susemanager/tmp
 
 install -m 644 conf/default/rhn_hibernate.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_hibernate.conf
 install -m 644 conf/default/rhn_reporting_hibernate.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_reporting_hibernate.conf
@@ -692,17 +695,18 @@ chown tomcat:%{apache_group} /var/log/rhn/gatherer.log
 
 %files
 %defattr(-,root,root)
+%dir %{serverdir}
 %dir %{_localstatedir}/lib/spacewalk
 %defattr(644,tomcat,tomcat,775)
-%attr(775, %{salt_user_group}, %{salt_user_group}) %dir %{serverdir}/susemanager/salt/salt_ssh
-%attr(700, %{salt_user_group}, %{salt_user_group}) %dir %{serverdir}/susemanager/salt/salt_ssh/temp_bootstrap_keys
-%attr(775, root, tomcat) %dir %{serverdir}/tomcat/webapps
-%dir %{serverdir}/susemanager
-%dir %{serverdir}/susemanager/salt
-%attr(775,tomcat,susemanager) %dir %{serverdir}/susemanager/pillar_data
-%attr(775,tomcat,susemanager) %dir %{serverdir}/susemanager/pillar_data/images
-%dir %{serverdir}/susemanager/formula_data
-%attr(770, tomcat, %{salt_user_group}) %dir %{serverdir}/susemanager/tmp
+%attr(775, %{salt_user_group}, %{salt_user_group}) %dir %{userserverdir}/susemanager/salt/salt_ssh
+%attr(700, %{salt_user_group}, %{salt_user_group}) %dir %{userserverdir}/susemanager/salt/salt_ssh/temp_bootstrap_keys
+%attr(775, tomcat, tomcat) %dir %{serverdir}/tomcat/webapps
+%dir %{userserverdir}/susemanager
+%dir %{userserverdir}/susemanager/salt
+%attr(775,tomcat,susemanager) %dir %{userserverdir}/susemanager/pillar_data
+%attr(775,tomcat,susemanager) %dir %{userserverdir}/susemanager/pillar_data/images
+%dir %{userserverdir}/susemanager/formula_data
+%attr(770, tomcat, %{salt_user_group}) %dir %{userserverdir}/susemanager/tmp
 %dir %{serverdir}/tomcat/webapps/rhn/
 %{serverdir}/tomcat/webapps/rhn/apidoc/
 %{serverdir}/tomcat/webapps/rhn/css/
@@ -722,6 +726,8 @@ chown tomcat:%{apache_group} /var/log/rhn/gatherer.log
 %{serverdir}/tomcat/webapps/rhn/WEB-INF/*.xml
 
 # all jars in WEB-INF/lib/
+%dir %{serverdir}/tomcat
+%dir %{serverdir}/tomcat/webapps
 %{serverdir}/tomcat/webapps/rhn/WEB-INF/lib
 %exclude %{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/postgresql-jdbc.jar
 %exclude %{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/ongres-*.jar
@@ -794,7 +800,12 @@ chown tomcat:%{apache_group} /var/log/rhn/gatherer.log
 %defattr(644,root,root,755)
 %dir %{_prefix}/share/rhn/search
 %dir %{_prefix}/share/rhn/search/lib
+%dir %{serverdir}
+%dir %{susemanagershareddir}
 %{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/postgresql-jdbc.jar
 %{_prefix}/share/rhn/search/lib/postgresql-jdbc.jar
+%defattr(644,tomcat,tomcat,775)
+%dir %{serverdir}/tomcat
+%dir %{serverdir}/tomcat/webapps
 
 %changelog

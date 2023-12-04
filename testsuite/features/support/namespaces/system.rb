@@ -21,12 +21,12 @@ class NamespaceSystem
   # utility: retrieve server ID
   def retrieve_server_id(server)
     systems = list_systems
-    raise 'Cannot list systems' if systems.nil?
+    raise StandardError, 'Cannot list systems' if systems.nil?
 
     server_id = systems
                 .select { |s| s['name'] == server }
                 .map { |s| s['id'] }.first
-    raise "Cannot find #{server}" if server_id.nil?
+    raise StandardError, "Cannot find #{server}" if server_id.nil?
 
     server_id
   end

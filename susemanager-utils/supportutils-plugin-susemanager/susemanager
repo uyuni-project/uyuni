@@ -50,7 +50,7 @@ done
 plugin_command "/bin/ls -l --time-style=long-iso /usr/local/lib"
 plugin_command "/bin/ls -l --time-style=long-iso /usr/local/lib64"
 
-plugin_command "find /srv/tomcat/webapps/rhn/WEB-INF/lib/ | xargs file | grep broken"
+plugin_command "find /usr/share/susemanager/www/tomcat/webapps/rhn/WEB-INF/lib/ | xargs file | grep broken"
 plugin_command "find /usr/share/spacewalk/taskomatic/ | xargs file | grep broken"
 plugin_command "find /usr/share/rhn/search/lib/ | xargs file | grep broken"
 

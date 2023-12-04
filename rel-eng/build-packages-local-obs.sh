@@ -4,7 +4,7 @@ BASE_DIR=$(dirname "${0}")
 OSC_API="https://api.suse.de"
 OSC="osc -A $OSC_API"
 # List of packages that won't be built in any case
-EXCLUDED_PACKAGES=(heirloom-pkgtools oracle-server-admin oracle-server-scripts rhnclient smartpm jabberd-selinux oracle-rhnsat-selinux oracle-selinux oracle-xe-selinux spacewalk-monitoring-selinux spacewalk-proxy-selinux spacewalk-selinux cx_Oracle apt-spacewalk perl-DBD-Oracle spacewalk-jpp-workaround)
+EXCLUDED_PACKAGES=()
 
 print_incorrect_syntax() {
   echo "ERROR: Invalid usage options (use -h for help)"
@@ -133,7 +133,7 @@ echo "**************************************************************"
 echo " Building tarballs, specs and changelogs..."
 echo "**************************************************************"
 export TEST='TRUE' # So tito runs with --test and uses HEAD and tags
-${BASE_DIR}/build-packages-for-obs.sh ${PACKAGES}
+build-packages-for-obs ${PACKAGES}
 echo "**************************************************************"
 echo " Building packages with osc build for ${REPOSITORY}..."
 echo "**************************************************************"

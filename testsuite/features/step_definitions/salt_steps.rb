@@ -161,7 +161,7 @@ end
 Then(/^"(.*?)" should have been reformatted$/) do |host|
   system_name = get_system_name(host)
   output, _code = get_target('server').run("salt #{system_name} file.file_exists /intact")
-  raise "Minion #{host} is intact" unless output.include? 'False'
+  raise ScriptError, "Minion #{host} is intact" unless output.include? 'False'
 end
 
 # user salt steps
@@ -194,7 +194,7 @@ end
 Then(/^I should see "([^"]*)" in the command output for "([^"]*)"$/) do |text, host|
   system_name = get_system_name(host)
   within("pre[id='#{system_name}-results']") do
-    raise "Text '#{text}' not found in the results of #{system_name}" unless check_text_and_catch_request_timeout_popup?(text)
+    raise ScriptError, "Text '#{text}' not found in the results of #{system_name}" unless check_text_and_catch_request_timeout_popup?(text)
   end
 end
 
@@ -255,11 +255,11 @@ When(/^I ([^ ]*) the "([^"]*)" formula$/) do |action, formula|
   # DOM refreshes content of chooseFormulas element by accessing it. Then conditions are evaluated properly.
   find('#chooseFormulas')['innerHTML']
   if has_xpath?(xpath_query, wait: 2)
-    raise "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query, wait: 2).click
+    raise ScriptError, "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query, wait: 2).click
   else
     xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if action == 'check'
     xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if action == 'uncheck'
-    raise "xpath: #{xpath_query} not found" unless has_xpath?(xpath_query, wait: 2)
+    raise ScriptError, "xpath: #{xpath_query} not found" unless has_xpath?(xpath_query, wait: 2)
   end
 end
 
@@ -269,7 +269,7 @@ Then(/^the "([^"]*)" formula should be ([^ ]*)$/) do |formula, state|
   xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if state == 'unchecked'
   # DOM refreshes content of chooseFormulas element by accessing it. Then conditions are evaluated properly.
   find('#chooseFormulas')['innerHTML']
-  raise "Checkbox is not #{state}" if has_xpath?(xpath_query)
+  raise ScriptError, "Checkbox is not #{state}" if has_xpath?(xpath_query)
   xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if state == 'checked'
   xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if state == 'unchecked'
   assert has_xpath?(xpath_query), 'Checkbox could not be found'
@@ -284,13 +284,13 @@ Then(/^the timezone on "([^"]*)" should be "([^"]*)"$/) do |minion, timezone|
   output, _code = node.run('date +%Z')
   result = output.strip
   result = 'CET' if result == 'CEST'
-  raise "The timezone #{timezone} is different to #{result}" unless result == timezone
+  raise ScriptError, "The timezone #{timezone} is different to #{result}" unless result == timezone
 end
 
 Then(/^the keymap on "([^"]*)" should be "([^"]*)"$/) do |minion, keymap|
   node = get_target(minion)
   output, _code = node.run('grep \'KEYMAP=\' /etc/vconsole.conf')
-  raise "The keymap #{keymap} is different to the output: #{output.strip}" unless output.strip == "KEYMAP=#{keymap}"
+  raise ScriptError, "The keymap #{keymap} is different to the output: #{output.strip}" unless output.strip == "KEYMAP=#{keymap}"
 end
 
 Then(/^the language on "([^"]*)" should be "([^"]*)"$/) do |minion, language|
@@ -298,7 +298,7 @@ Then(/^the language on "([^"]*)" should be "([^"]*)"$/) do |minion, language|
   output, _code = node.run('grep \'RC_LANG=\' /etc/sysconfig/language')
   unless output.strip == "RC_LANG=\"#{language}\""
     output, _code = node.run('grep \'LANG=\' /etc/locale.conf')
-    raise "The language #{language} is different to the output: #{output.strip}" unless output.strip == "LANG=#{language}"
+    raise ScriptError, "The language #{language} is different to the output: #{output.strip}" unless output.strip == "LANG=#{language}"
   end
 end
 
@@ -320,36 +320,24 @@ When(/^I wait until there is no Salt job calling the module "([^"]*)" on "([^"]*
   target.run_until_fail("#{salt_call} -lquiet saltutil.running | grep #{salt_module}", timeout: 600)
 end
 
-def pillar_get(key, minion)
-  system_name = get_system_name(minion)
-  if minion == 'sle_minion'
-    cmd = 'salt'
-  elsif %w[ssh_minion rhlike_minion deblike_minion].include?(minion)
-    cmd = 'mgr-salt-ssh'
-  else
-    raise 'Invalid target'
-  end
-  get_target('server').run("#{cmd} #{system_name} pillar.get #{key}")
-end
-
 Then(/^the pillar data for "([^"]*)" should be "([^"]*)" on "([^"]*)"$/) do |key, value, minion|
   output, _code = pillar_get(key, minion)
   if value == ''
-    raise "Output has more than one line: #{output}" unless output.split("\n").length == 1
+    raise ScriptError, "Output has more than one line: #{output}" unless output.split("\n").length == 1
   else
-    raise "Output value wasn't found: #{output}" unless output.split("\n").length > 1
-    raise "Output value is different than #{value}: #{output}" unless output.split("\n")[1].strip == value
+    raise ScriptError, "Output value wasn't found: #{output}" unless output.split("\n").length > 1
+    raise ScriptError, "Output value is different than #{value}: #{output}" unless output.split("\n")[1].strip == value
   end
 end
 
 Then(/^the pillar data for "([^"]*)" should contain "([^"]*)" on "([^"]*)"$/) do |key, value, minion|
   output, _code = pillar_get(key, minion)
-  raise "Output doesn't contain #{value}: #{output}" unless output.include? value
+  raise ScriptError, "Output doesn't contain #{value}: #{output}" unless output.include? value
 end
 
 Then(/^the pillar data for "([^"]*)" should not contain "([^"]*)" on "([^"]*)"$/) do |key, value, minion|
   output, _code = pillar_get(key, minion)
-  raise "Output contains #{value}: #{output}" if output.include? value
+  raise ScriptError, "Output contains #{value}: #{output}" if output.include? value
 end
 
 Then(/^the pillar data for "([^"]*)" should be empty on "([^"]*)"$/) do |key, minion|
@@ -391,13 +379,13 @@ end
 When(/^I reject "([^"]*)" from the Pending section$/) do |host|
   system_name = get_system_name(host)
   xpath_query = "//tr[td[contains(.,'#{system_name}')]]//button[@title = 'Reject']"
-  raise "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query).click
+  raise ScriptError, "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query).click
 end
 
 When(/^I delete "([^"]*)" from the Rejected section$/) do |host|
   system_name = get_system_name(host)
   xpath_query = "//tr[td[contains(.,'#{system_name}')]]//button[@title = 'Delete']"
-  raise "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query).click
+  raise ScriptError, "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query).click
 end
 
 When(/^I see "([^"]*)" fingerprint$/) do |host|
@@ -405,13 +393,13 @@ When(/^I see "([^"]*)" fingerprint$/) do |host|
   salt_call = use_salt_bundle ? 'venv-salt-call' : 'salt-call'
   output, _code = node.run("#{salt_call} --local key.finger")
   fing = output.split("\n")[1].strip!
-  raise "Text: #{fing} not found" unless check_text_and_catch_request_timeout_popup?(fing)
+  raise ScriptError, "Text: #{fing} not found" unless check_text_and_catch_request_timeout_popup?(fing)
 end
 
 When(/^I accept "([^"]*)" key$/) do |host|
   system_name = get_system_name(host)
   xpath_query = "//tr[td[contains(.,'#{system_name}')]]//button[@title = 'Accept']"
-  raise "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query).click
+  raise ScriptError, "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query).click
 end
 
 When(/^I refresh page until I see "(.*?)" hostname as text$/) do |minion|
@@ -460,7 +448,7 @@ Then(/^the salt event log on server should contain no failures$/) do
   source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
   dest = "/tmp/#{file}"
   return_code = file_inject(get_target('server'), source, dest)
-  raise 'File injection failed' unless return_code.zero?
+  raise ScriptError, 'File injection failed' unless return_code.zero?
   # print failures from salt event log
   output, _code = get_target('server').run("python3 /tmp/#{file}")
   count_failures = output.to_s.scan(/false/).length
@@ -468,7 +456,7 @@ Then(/^the salt event log on server should contain no failures$/) do
   # Ignore the error if there is only the expected failure from min_salt_lock_packages.feature
   ignore_error = false
   ignore_error = output.include?('remove lock') if count_failures == 1 && !$build_validation
-  raise "\nFound #{count_failures} failures in salt event log:\n#{output}\n" if count_failures.nonzero? && !ignore_error
+  raise ScriptError, "\nFound #{count_failures} failures in salt event log:\n#{output}\n" if count_failures.nonzero? && !ignore_error
 end
 
 # salt-ssh steps
@@ -552,7 +540,7 @@ end
 When(/^I delete the package download endpoint pillar file from the server$/) do
   filepath = '/srv/pillar/pkg_endpoint.sls'
   return_code = file_delete(get_target('server'), filepath)
-  raise 'File deletion failed' unless return_code.zero?
+  raise ScriptError, 'File deletion failed' unless return_code.zero?
 end
 
 When(/^I install "([^"]*)" to custom formula metadata directory "([^"]*)"$/) do |file, formula|
@@ -561,7 +549,7 @@ When(/^I install "([^"]*)" to custom formula metadata directory "([^"]*)"$/) do 
 
   get_target('server').run('mkdir -p /srv/formula_metadata/' + formula)
   return_code = file_inject(get_target('server'), source, dest)
-  raise 'File injection failed' unless return_code.zero?
+  raise ScriptError, 'File injection failed' unless return_code.zero?
   get_target('server').run('chmod 644 ' + dest)
 end
 

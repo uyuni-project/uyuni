@@ -16,11 +16,9 @@
 #
 
 
-%if 0%{?suse_version}
-%global wwwdocroot /srv/www/htdocs
-%else
-%global wwwdocroot %{_localstatedir}/www/html
-%endif
+%global susemanager_shared_path /usr/share/susemanager
+%global wwwroot %{susemanager_shared_path}/www
+%global wwwdocroot %{wwwroot}/htdocs
 
 Name:           susemanager-branding-oss
 Version:        4.4.1
@@ -68,6 +66,9 @@ install -m 644 license.txt $RPM_BUILD_ROOT/%_defaultdocdir/susemanager/
 %docdir %_defaultdocdir/susemanager
 %dir %_defaultdocdir/susemanager
 %_defaultdocdir/susemanager/license.txt
+%dir %{susemanager_shared_path}
+%dir %{wwwroot}
+%dir %{wwwdocroot}
 %dir %{wwwdocroot}/help
 %{wwwdocroot}/help/eula.html
 
