@@ -7,7 +7,7 @@
 #: ../html/src/components/input/Range.tsx:47
 #: ../html/src/components/input/Range.tsx:59
 #: ../html/src/components/input/Range.tsx:60
-#: ../html/src/core/intl/index.test.tsx:9
+#: ../html/src/core/intl/index.test.tsx:11
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:199
 #: ../html/src/manager/virtualization/nets/properties/NetworkAddress.tsx:79
 #: ../html/src/manager/virtualization/nets/properties/NetworkAddress.tsx:80
@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-03 12:00+0100\n"
+"POT-Creation-Date: 2023-12-04 10:41+0100\n"
 "PO-Revision-Date: 2022-09-19 19:13+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/web-4-3/cs/>\n"
@@ -719,16 +719,16 @@ msgstr "žádný"
 msgid "Require this channel"
 msgstr "Vyžadovat tento kanál"
 
-#: ../html/src/core/intl/index.test.tsx:7
+#: ../html/src/core/intl/index.test.tsx:9
 msgid "foo"
 msgstr "foo"
 
-#: ../html/src/core/intl/index.test.tsx:8
+#: ../html/src/core/intl/index.test.tsx:10
 msgid "undefined"
 msgstr "nedefinováno"
 
-#: ../html/src/core/intl/index.test.tsx:16
-#: ../html/src/core/intl/index.test.tsx:17
+#: ../html/src/core/intl/index.test.tsx:18
+#: ../html/src/core/intl/index.test.tsx:19
 msgid "foo {insert} bar"
 msgstr ""
 
@@ -1145,7 +1145,7 @@ msgstr "Aktualizujte katalog produktů ze zákaznického centra SUSE"
 #: ../html/src/manager/images/image-profiles.tsx:141
 #: ../html/src/manager/images/image-stores.tsx:141
 #: ../html/src/manager/images/image-view.tsx:375
-#: ../html/src/manager/notifications/notification-messages.tsx:455
+#: ../html/src/manager/notifications/notification-messages.tsx:459
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:242
 msgid "Refresh"
 msgstr "Aktualizovat"
@@ -1471,7 +1471,7 @@ msgstr "Na serveru nejsou momentálně spuštěny žádné úkoly."
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:262
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:110
-#: ../html/src/manager/notifications/notification-messages.tsx:579
+#: ../html/src/manager/notifications/notification-messages.tsx:583
 msgid "Session expired, please reload the page to see up-to-date data."
 msgstr ""
 "Platnost relace vypršela. Chcete-li zobrazit aktuální data, načtěte stránku "
@@ -1479,7 +1479,7 @@ msgstr ""
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:264
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:112
-#: ../html/src/manager/notifications/notification-messages.tsx:581
+#: ../html/src/manager/notifications/notification-messages.tsx:585
 #: ../html/src/utils/network.ts:103
 msgid "Server error, please check log files."
 msgstr "Chyba serveru, zkontrolujte soubory protokolu."
@@ -2734,7 +2734,7 @@ msgstr "žádné podřízené kanály"
 #: ../html/src/manager/images/image-view-patches.tsx:79
 #: ../html/src/manager/images/image-view.tsx:642
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:105
-#: ../html/src/manager/notifications/notification-messages.tsx:517
+#: ../html/src/manager/notifications/notification-messages.tsx:521
 #: ../html/src/manager/state/highstate-summary.tsx:73
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:296
 msgid "Type"
@@ -4021,11 +4021,6 @@ msgstr "Zpět do seznamu scénářů"
 msgid "Schedule playbook execution"
 msgstr "Naplánovat provedení scénáře"
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:107
-#, fuzzy
-msgid "Playbook '{name}'"
-msgstr "Scénář '{0}'"
-
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:111
 msgid "Schedule Playbook Execution"
 msgstr "Naplánovat provedení scénáře"
@@ -4134,7 +4129,7 @@ msgid "Applying the packages states has been "
 msgstr "Použití stavů balíčků bylo "
 
 #: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:22
-#: ../html/src/manager/notifications/notification-messages.tsx:523
+#: ../html/src/manager/notifications/notification-messages.tsx:527
 msgid "Summary"
 msgstr "Souhrn"
 
@@ -4240,93 +4235,98 @@ msgstr "Párování předplatného"
 msgid "Update Notification"
 msgstr "Smazat oznámení"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:152
+#: ../html/src/manager/notifications/notification-messages.tsx:65
+#, fuzzy
+msgid "PAYG instance is not compliant"
+msgstr "Instance je zastaralá"
+
+#: ../html/src/manager/notifications/notification-messages.tsx:156
 msgid "Filter by type"
 msgstr "Filtrovat podle typu"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:260
-#: ../html/src/manager/notifications/notification-messages.tsx:261
+#: ../html/src/manager/notifications/notification-messages.tsx:264
+#: ../html/src/manager/notifications/notification-messages.tsx:265
 msgid "Info"
 msgstr "Informace"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:268
-#: ../html/src/manager/notifications/notification-messages.tsx:269
+#: ../html/src/manager/notifications/notification-messages.tsx:272
+#: ../html/src/manager/notifications/notification-messages.tsx:273
 msgid "Warning"
 msgstr "Výstraha"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:276
-#: ../html/src/manager/notifications/notification-messages.tsx:277
+#: ../html/src/manager/notifications/notification-messages.tsx:280
+#: ../html/src/manager/notifications/notification-messages.tsx:281
 msgid "Error"
 msgstr "Chyba"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:339
+#: ../html/src/manager/notifications/notification-messages.tsx:343
 msgid "show details"
 msgstr "ukázat podrobnosti"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:388
+#: ../html/src/manager/notifications/notification-messages.tsx:392
 msgid "Retry onboarding"
 msgstr "Zkuste se registrovat znovu"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:398
+#: ../html/src/manager/notifications/notification-messages.tsx:402
 msgid "Retry repo sync"
 msgstr "Opakovat synchronizaci úložišť"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:422
+#: ../html/src/manager/notifications/notification-messages.tsx:426
 msgid "Unread Messages"
 msgstr "Nepřečtené zprávy"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:427
+#: ../html/src/manager/notifications/notification-messages.tsx:431
 msgid "All Messages"
 msgstr "Všechny zprávy"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:459
-#: ../html/src/manager/notifications/notification-messages.tsx:460
+#: ../html/src/manager/notifications/notification-messages.tsx:463
+#: ../html/src/manager/notifications/notification-messages.tsx:464
 msgid "Delete selected messages"
 msgstr "Odstranit vybrané zprávy"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:467
-#: ../html/src/manager/notifications/notification-messages.tsx:468
+#: ../html/src/manager/notifications/notification-messages.tsx:471
+#: ../html/src/manager/notifications/notification-messages.tsx:472
 msgid "Mark selected as read"
 msgstr "Označit vybrané zprávy jako přečtené"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:485
-#: ../html/src/manager/notifications/notification-messages.tsx:567
+#: ../html/src/manager/notifications/notification-messages.tsx:489
+#: ../html/src/manager/notifications/notification-messages.tsx:571
 msgid "Notification Messages"
 msgstr "Oznámení"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:490
+#: ../html/src/manager/notifications/notification-messages.tsx:494
 msgid "The server has collected the following notification messages."
 msgstr "Server shromáždil následující upozornění."
 
-#: ../html/src/manager/notifications/notification-messages.tsx:505
+#: ../html/src/manager/notifications/notification-messages.tsx:509
 msgid "Filter by summary"
 msgstr "Filtrovat podle souhrnu"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:511
+#: ../html/src/manager/notifications/notification-messages.tsx:515
 msgid "Severity"
 msgstr "Závažnost"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:529
+#: ../html/src/manager/notifications/notification-messages.tsx:533
 msgid "Created"
 msgstr "Vytvořeno"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:534
+#: ../html/src/manager/notifications/notification-messages.tsx:538
 msgid "Action"
 msgstr "Akce"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:540
+#: ../html/src/manager/notifications/notification-messages.tsx:544
 msgid "Read|Delete"
 msgstr "Číst|Odstranit"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:549
+#: ../html/src/manager/notifications/notification-messages.tsx:553
 msgid "Flag as Unread"
 msgstr "Označit jako nepřečtené"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:549
+#: ../html/src/manager/notifications/notification-messages.tsx:553
 msgid "Flag as Read"
 msgstr "Označit jako přečtené"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:555
+#: ../html/src/manager/notifications/notification-messages.tsx:559
 msgid "Delete Notification"
 msgstr "Smazat oznámení"
 
@@ -6577,6 +6577,10 @@ msgstr "Zdroj nebyl nalezen."
 #: ../html/src/utils/network.ts:105
 msgid "HTTP Error code "
 msgstr "Kód chyby HTTP "
+
+#, fuzzy
+#~ msgid "Playbook '{name}'"
+#~ msgstr "Scénář '{0}'"
 
 #~ msgid "Add Pay-as-you-go"
 #~ msgstr "Přidat platbu podle potřeby"
