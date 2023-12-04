@@ -141,6 +141,7 @@ end
 
 # Main function
 def main
+  puts "DEBUG HELLOU"
   if ARGV.length == 1
     directory_path = ARGV[0]
   else
