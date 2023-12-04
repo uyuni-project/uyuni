@@ -29041,8 +29041,8 @@ given channel.</source>
         <target>組織の資格情報を確認するには？</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.info.p2" xml:space="preserve">
-        <source>You can find them in the &lt;a href="https://scc.suse.com/organization" target="_blank"&gt;Customer Center&lt;/a&gt;.</source>
-        <target>&lt;a href="https://scc.suse.com/organization" target="_blank"&gt;カスタマーセンター&lt;/a&gt; をご確認ください。</target>
+        <source>You can find them in the &lt;a href="https://scc.suse.com/organizations" target="_blank"&gt;Customer Center&lt;/a&gt;.</source>
+        <target state="needs-adaptation">&lt;a href="https://scc.suse.com/organization" target="_blank"&gt;カスタマーセンター&lt;/a&gt; をご確認ください。</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.error.duplicate" xml:space="preserve">
         <source>Credentials with this username already exist</source>
@@ -29901,24 +29901,24 @@ given channel.</source>
         <source>PAYG Connections</source>
         <target state="final">PAYGの接続</target>
       </trans-unit>
-    <trans-unit id="mirror-credentials.jsp.fromDir" xml:space="preserve">
+      <trans-unit approved="yes" id="mirror-credentials.jsp.fromDir" xml:space="preserve">
         <source>cannot verify credentials because `server.susemanager.fromdir` property is set in rhn.conf</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="sdc.details.overview.payg" xml:space="preserve">
+        <target state="final">`server.susemanager.fromdir`プロパティがrhn.confに設定されているため、資格情報を確認できません</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="sdc.details.overview.payg" xml:space="preserve">
         <source>Pay-as-you-go:</source>
-          <context-group name="ctx">
+        <context-group name="ctx">
             <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="sdc.details.overview.payg_msg" xml:space="preserve">
+        <target state="final">従量課金制:</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="sdc.details.overview.payg_msg" xml:space="preserve">
         <source>This is a Pay-as-you-go server</source>
-          <context-group name="ctx">
+        <context-group name="ctx">
             <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="final">これは従量課金制サーバです</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

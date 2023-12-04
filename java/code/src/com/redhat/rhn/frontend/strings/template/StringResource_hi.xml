@@ -305,7 +305,8 @@ click the "Details" tab.
         <target>@@PRODUCT_NAME@@ दैनिक स्थिति रिपोर्ट {0} के लिये</target>
       </trans-unit>
       <trans-unit id="dailysummary.email.body" xml:space="preserve">
-        <source>This is the @@PRODUCT_NAME@@ Status Report for your account {0}, as of {1}.
+        <source>{7}
+This is the @@PRODUCT_NAME@@ Status Report for your account {0}, as of {1}.
 
 This email will be sent when any of the following apply:
 
@@ -337,6 +338,7 @@ Thank you for using @@PRODUCT_NAME@@.
              {6} = email account info from template db
           </context>
         </context-group>
+      <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="email.forgotten.password" xml:space="preserve">
         <source>
@@ -413,6 +415,12 @@ Thank you for using @@PRODUCT_NAME@@.
           </context>
         </context-group>
       </trans-unit>
-    </body>
+    <trans-unit id="dailysummary.email.notpaygcompliant" xml:space="preserve">
+          <source>Warning: This @@PRODUCT_NAME@@ PAYG instance is not compliant and some of its functions are disabled.
+Please contact your administrator to amend the situation before continuing using the product.
+          </source>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>

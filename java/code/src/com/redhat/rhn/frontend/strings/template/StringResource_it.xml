@@ -363,7 +363,8 @@ e navigare da "Panoramica" / "Il tuo Account" alla scheda delle "Preferenze".
         <target>Rapporto giornaliero sullo Stato di @@PRODUCT_NAME@@ per {0}</target>
       </trans-unit>
       <trans-unit id="dailysummary.email.body" xml:space="preserve">
-        <source>This is the @@PRODUCT_NAME@@ Status Report for your account {0}, as of {1}.
+        <source>{7}
+This is the @@PRODUCT_NAME@@ Status Report for your account {0}, as of {1}.
 
 This email will be sent when any of the following apply:
 
@@ -395,7 +396,7 @@ Thank you for using @@PRODUCT_NAME@@.
              {6} = email account info from template db
           </context>
         </context-group>
-        <target>Questo è il riporto sullo stato di  @@PRODUCT_NAME@@ per il tuo account {0}, a partire da {1}.
+        <target state="needs-adaptation">Questo è il riporto sullo stato di  @@PRODUCT_NAME@@ per il tuo account {0}, a partire da {1}.
 
 Questa email verrà inviata ogni qualvolta:
 
@@ -508,6 +509,12 @@ Thank you for using @@PRODUCT_NAME@@.
           </context>
         </context-group>
       </trans-unit>
-    </body>
+    <trans-unit id="dailysummary.email.notpaygcompliant" xml:space="preserve">
+          <source>Warning: This @@PRODUCT_NAME@@ PAYG instance is not compliant and some of its functions are disabled.
+Please contact your administrator to amend the situation before continuing using the product.
+          </source>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>
