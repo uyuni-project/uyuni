@@ -154,14 +154,18 @@ def main
   end
 
   if ENV.key? 'GITHUB_TOKEN'
+    puts 'I found a GITHUB_TOKEN'
     token = ENV.fetch('GITHUB_TOKEN', nil)
   else
+    puts 'I did NOT find GITHUB_TOKEN'
     netrc = Netrc.read
     github_credentials = netrc['github.com']
     token = github_credentials.password unless github_credentials.nil?
   end
-
-  exit(1) if token.nil?
+  if token.nil?
+    puts 'NO TOKEN'
+    exit(1)
+  end
 
   organization = 'SUSE'
   project_number = 23
