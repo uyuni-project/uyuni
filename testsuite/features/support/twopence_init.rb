@@ -6,7 +6,7 @@ require_relative 'lavanda'
 
 # Retrieve and set OS Family and Version of a node
 def process_os_family_and_version(host, fqdn, hostname, node)
-  STDOUT.puts "Host '#{host}' is alive with determined hostname #{hostname.strip} and FQDN #{fqdn.strip}" unless $build_validation
+  $stdout.puts "Host '#{host}' is alive with determined hostname #{hostname.strip} and FQDN #{fqdn.strip}" unless $build_validation
   os_version, os_family = get_os_version(node)
   node.init_os_family(os_family)
   node.init_os_version(os_version)
@@ -48,6 +48,7 @@ def initialize_server(host, node)
   fqdn, code = node.run('sed -n \'s/^java.hostname *= *\(.\+\)$/\1/p\' /etc/rhn/rhn.conf')
   raise StandardError, "Cannot connect to get FQDN for '#{$named_nodes[node.hash]}'. Response code: #{code}, local: #{local}, remote: #{remote}" if code.nonzero?
   raise StandardError, "No FQDN for '#{$named_nodes[node.hash]}'. Response code: #{code}" if fqdn.empty?
+
   node.init_full_hostname(fqdn)
   node.init_hostname(fqdn.split('.')[0])
 
@@ -69,7 +70,7 @@ def twopence_init(host)
     return
   end
 
-  target = "ssh:#{ENV[ENV_VAR_BY_HOST[host]]}"
+  target = "ssh:#{ENV.fetch(ENV_VAR_BY_HOST[host], nil)}"
   node = Twopence.init(target)
   raise LoadError, "Twopence node #{host} initialization has failed." if node.nil?
 
@@ -89,11 +90,13 @@ def twopence_init(host)
   unless hostname.empty? || host == 'salt_migration_minion'
     raise StandardError, "Cannot connect to get hostname for '#{$named_nodes[node.hash]}'. Response code: #{code}, local: #{local}, remote: #{remote}" if code.nonzero? || remote.nonzero? || local.nonzero?
     raise StandardError, "No hostname for '#{$named_nodes[node.hash]}'. Response code: #{code}" if hostname.empty?
+
     node.init_hostname(hostname)
 
     fqdn, local, remote, code = node.test_and_store_results_together('hostname -f', 'root', 500)
     raise StandardError, "Cannot connect to get FQDN for '#{$named_nodes[node.hash]}'. Response code: #{code}, local: #{local}, remote: #{remote}" if code.nonzero? || remote.nonzero? || local.nonzero?
     raise StandardError, "No FQDN for '#{$named_nodes[node.hash]}'. Response code: #{code}" if fqdn.empty?
+
     node.init_full_hostname(fqdn)
 
     node = process_os_family_and_version(host, fqdn, hostname, node)

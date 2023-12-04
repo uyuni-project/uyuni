@@ -52,6 +52,7 @@ When(/^I set up the private network on the terminals$/) do
   file2 = '/etc/resolv.conf'
   nodes.each do |node|
     next if node.nil?
+
     node.run("echo -e \"#{conf}\" > #{file} && sed -i #{script2} #{file2} && ifup eth1")
   end
   # /etc/sysconfig/network-scripts/ifcfg-eth1 and /etc/sysconfig/network
@@ -61,6 +62,7 @@ When(/^I set up the private network on the terminals$/) do
   file2 = '/etc/sysconfig/network'
   nodes.each do |node|
     next if node.nil?
+
     domain, _code = node.run('grep \'^search\' /etc/resolv.conf | sed \'s/^search//\'')
     conf = "DOMAIN='#{domain.strip}'\\nDEVICE='eth1'\\nSTARTMODE='auto'\\nBOOTPROTO='dhcp'\\nDNS1='#{proxy}'"
     service =
@@ -73,12 +75,14 @@ When(/^I set up the private network on the terminals$/) do
   end
   # /etc/netplan/01-netcfg.yaml
   nodes = [get_target('deblike_minion')]
-  source = File.dirname(__FILE__) + '/../upload_files/01-netcfg.yaml'
+  source = "#{File.dirname(__FILE__)}/../upload_files/01-netcfg.yaml"
   dest = '/etc/netplan/01-netcfg.yaml'
   nodes.each do |node|
     next if node.nil?
+
     return_code = file_inject(node, source, dest)
     raise ScriptError, 'File injection failed' unless return_code.zero?
+
     node.run('netplan apply')
   end
   # PXE boot minion
@@ -90,7 +94,7 @@ end
 Then(/^terminal "([^"]*)" should have got a retail network IP address$/) do |host|
   node = get_target(host)
   output, return_code = node.run('ip -4 address show eth1')
-  raise SystemCallError, "Terminal #{host} did not get an address on eth1: #{output}" unless return_code.zero? and output.include? net_prefix
+  raise SystemCallError, "Terminal #{host} did not get an address on eth1: #{output}" unless return_code.zero? && output.include?(net_prefix)
 end
 
 Then(/^name resolution should work on terminal "([^"]*)"$/) do |host|
@@ -101,13 +105,15 @@ Then(/^name resolution should work on terminal "([^"]*)"$/) do |host|
   %w[proxy.example.org dns.google.com].each do |dest|
     output, return_code = node.run("host #{dest}", check_errors: false)
     raise SystemCallError, "Direct name resolution of #{dest} on terminal #{host} doesn't work: #{output}" unless return_code.zero?
-    log "#{output}"
+
+    log output.to_s
   end
   # reverse name resolution
   [node.private_ip, '8.8.8.8'].each do |dest|
     output, return_code = node.run("host #{dest}", check_errors: false)
     raise SystemCallError, "Reverse name resolution of #{dest} on terminal #{host} doesn't work: #{output}" unless return_code.zero?
-    log "#{output}"
+
+    log output.to_s
   end
 end
 
@@ -116,13 +122,14 @@ When(/^I restart the network on the PXE boot minion$/) do
   # so the only way to contact it is via IPv6 link-local.
   # We convert MAC address to IPv6 link-local address:
   mac = $pxeboot_mac.tr(':', '')
-  hex = ((mac[0..5] + 'fffe' + mac[6..11]).to_i(16) ^ 0x0200000000000000).to_s(16)
-  ipv6 = 'fe80::' + hex[0..3] + ':' + hex[4..7] + ':' + hex[8..11] + ':' + hex[12..15] + '%eth1'
+  hex = (("#{mac[0..5]}fffe#{mac[6..11]}").to_i(16) ^ 0x0200000000000000).to_s(16)
+  ipv6 = "fe80::#{hex[0..3]}:#{hex[4..7]}:#{hex[8..11]}:#{hex[12..15]}%eth1"
   file = 'restart-network-pxeboot.exp'
-  source = File.dirname(__FILE__) + '/../upload_files/' + file
-  dest = '/tmp/' + file
+  source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
+  dest = "/tmp/#{file}"
   return_code = file_inject(get_target('proxy'), source, dest)
   raise ScriptError, 'File injection failed' unless return_code.zero?
+
   # We have no direct access to the PXE boot minion
   # so we run the command from the proxy
   get_target('proxy').run("expect -f /tmp/#{file} #{ipv6}")
@@ -131,22 +138,24 @@ end
 When(/^I reboot the (Retail|Cobbler) terminal "([^"]*)"$/) do |context, host|
   # we might have no or any IPv4 address on that machine
   # convert MAC address to IPv6 link-local address
-  if host == 'pxeboot_minion'
+  case host
+  when 'pxeboot_minion'
     mac = $pxeboot_mac
-  elsif host == 'sle12sp5_terminal'
+  when 'sle12sp5_terminal'
     mac = $sle12sp5_terminal_mac
-  elsif host == 'sle15sp4_terminal'
+  when 'sle15sp4_terminal'
     mac = $sle15sp4_terminal_mac
   end
   mac = mac.tr(':', '')
-  hex = ((mac[0..5] + 'fffe' + mac[6..11]).to_i(16) ^ 0x0200000000000000).to_s(16)
-  ipv6 = 'fe80::' + hex[0..3] + ':' + hex[4..7] + ':' + hex[8..11] + ':' + hex[12..15] + '%eth1'
+  hex = (("#{mac[0..5]}fffe#{mac[6..11]}").to_i(16) ^ 0x0200000000000000).to_s(16)
+  ipv6 = "fe80::#{hex[0..3]}:#{hex[4..7]}:#{hex[8..11]}:#{hex[12..15]}%eth1"
   log "Rebooting #{ipv6}..."
   file = 'reboot-pxeboot.exp'
-  source = File.dirname(__FILE__) + '/../upload_files/' + file
-  dest = '/tmp/' + file
+  source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
+  dest = "/tmp/#{file}"
   return_code = file_inject(get_target('proxy'), source, dest)
   raise ScriptError, 'File injection failed' unless return_code.zero?
+
   get_target('proxy').run("expect -f /tmp/#{file} #{ipv6} #{context}")
 end
 
@@ -164,10 +173,11 @@ end
 
 When(/^I bootstrap pxeboot minion via bootstrap script on the proxy$/) do
   file = 'bootstrap-pxeboot.exp'
-  source = File.dirname(__FILE__) + '/../upload_files/' + file
-  dest = '/tmp/' + file
+  source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
+  dest = "/tmp/#{file}"
   return_code = file_inject(get_target('proxy'), source, dest)
   raise ScriptError, 'File injection failed' unless return_code.zero?
+
   ipv4 = net_prefix + ADDRESSES['pxeboot_minion']
   get_target('proxy').run("expect -f /tmp/#{file} #{ipv4}", verbose: true)
 end
@@ -178,10 +188,11 @@ end
 
 When(/^I install the GPG key of the test packages repository on the PXE boot minion$/) do
   file = 'uyuni.key'
-  source = File.dirname(__FILE__) + '/../upload_files/' + file
-  dest = '/tmp/' + file
+  source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
+  dest = "/tmp/#{file}"
   return_code = file_inject(get_target('server'), source, dest)
   raise ScriptError, 'File injection failed' unless return_code.zero?
+
   system_name = get_system_name('pxeboot_minion')
   get_target('server').run("salt-cp #{system_name} #{dest} #{dest}")
   get_target('server').run("salt #{system_name} cmd.run 'rpmkeys --import #{dest}'")
@@ -189,16 +200,17 @@ end
 
 When(/^I wait until Salt client is inactive on the PXE boot minion$/) do
   file = 'wait-end-of-cleanup-pxeboot.exp'
-  source = File.dirname(__FILE__) + '/../upload_files/' + file
-  dest = '/tmp/' + file
+  source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
+  dest = "/tmp/#{file}"
   return_code = file_inject(get_target('proxy'), source, dest)
   raise ScriptError, 'File injection failed' unless return_code.zero?
+
   ipv4 = net_prefix + ADDRESSES['pxeboot_minion']
   get_target('proxy').run("expect -f /tmp/#{file} #{ipv4}")
 end
 
 When(/^I prepare the retail configuration file on server$/) do
-  source = File.dirname(__FILE__) + '/../upload_files/massive-import-terminals.yml'
+  source = "#{File.dirname(__FILE__)}/../upload_files/massive-import-terminals.yml"
   dest = '/tmp/massive-import-terminals.yml'
   return_code = file_inject(get_target('server'), source, dest)
   raise ScriptError, "File #{file} couldn't be copied to server" unless return_code.zero?
@@ -224,10 +236,10 @@ end
 # Click on the terminal
 When(/^I follow "([^"]*)" terminal$/) do |host|
   domain = read_branch_prefix_from_yaml
-  if !host.include? 'pxeboot'
-    step %(I follow "#{domain}.#{host}")
-  else
+  if host.include? 'pxeboot'
     step %(I follow "#{host}.#{domain}")
+  else
+    step %(I follow "#{domain}.#{host}")
   end
 end
 
@@ -240,6 +252,7 @@ Then(/^I should not see any terminals imported from the configuration file$/) do
   terminals = read_terminals_from_yaml
   terminals.each do |terminal|
     next if (terminal.include? 'minion') || (terminal.include? 'client')
+
     step %(I should not see a "#{terminal}" text)
   end
 end
@@ -248,6 +261,7 @@ When(/^I delete all the imported terminals$/) do
   terminals = read_terminals_from_yaml
   terminals.each do |terminal|
     next if (terminal.include? 'minion') || (terminal.include? 'client')
+
     log "Deleting terminal with name: #{terminal}"
     steps %(
       When I follow "#{terminal}" terminal
@@ -378,18 +392,18 @@ When(/^I enter the MAC address of "([^"]*)" in (.*) field$/) do |host, field|
     output, _code = node.run('ip link show dev eth1')
     mac = output.split("\n")[1].split[1]
   end
-  fill_in(FIELD_IDS[field], with: 'ethernet ' + mac, fill_options: { clear: :backspace })
+  fill_in(FIELD_IDS[field], with: "ethernet #{mac}", fill_options: { clear: :backspace })
 end
 
 When(/^I enter the local zone name in (.*) field$/) do |field|
   reverse_net = get_reverse_net($private_net)
-  STDOUT.puts "#{$private_net} => #{reverse_net}"
+  $stdout.puts "#{$private_net} => #{reverse_net}"
   step %(I enter "#{reverse_net}" in #{field} field)
 end
 
 When(/^I enter the local file name in (.*) field of zone with local name$/) do |field|
-  reverse_filename = 'master/db.' + get_reverse_net($private_net)
-  STDOUT.puts "#{$private_net} => #{reverse_filename}"
+  reverse_filename = "master/db.#{get_reverse_net($private_net)}"
+  $stdout.puts "#{$private_net} => #{reverse_filename}"
   step %(I enter "#{reverse_filename}" in #{field} field of zone with local name)
 end
 
@@ -410,10 +424,10 @@ end
 When(/^I press "Add Item" in (.*) section$/) do |section|
   sectionids = {
     'host reservations' => 'dhcpd#hosts#add_item',
-    'config options'    => 'bind#config#options#add_item',
-    'configured zones'  => 'bind#configured_zones#add_item',
-    'available zones'   => 'bind#available_zones#add_item',
-    'partitions'        => 'partitioning#0#partitions#add_item'
+    'config options' => 'bind#config#options#add_item',
+    'configured zones' => 'bind#configured_zones#add_item',
+    'available zones' => 'bind#available_zones#add_item',
+    'partitions' => 'partitioning#0#partitions#add_item'
   }
   find(:xpath, "//i[@id='#{sectionids[section]}']").click
 end
@@ -421,9 +435,9 @@ end
 When(/^I press "Add Item" in (A|NS|CNAME|for zones) section of (.*) zone$/) do |field, zone|
   sectionids = {
     'for zones' => 'for_zones',
-    'NS'       => 'NS#@',
-    'CNAME'    => 'CNAME',
-    'A'        => 'A'
+    'NS' => 'NS#@',
+    'CNAME' => 'CNAME',
+    'A' => 'A'
   }
   xpath = "//input[@name='Name' and @value='#{zone}']/ancestor::div[starts-with(@id, 'bind#available_zones#')]//i[contains(@id, '##{sectionids[field]}#add_item')]"
   find(:xpath, xpath).click
@@ -454,7 +468,7 @@ end
 
 # OS image build
 When(/^I enter the image filename for "([^"]*)" relative to profiles as "([^"]*)"$/) do |host, field|
-  git_profiles = ENV['GITPROFILES']
+  git_profiles = ENV.fetch('GITPROFILES', nil)
   path = compute_kiwi_profile_filename(host)
   step %(I enter "#{git_profiles}/#{path}" as "#{field}")
 end
