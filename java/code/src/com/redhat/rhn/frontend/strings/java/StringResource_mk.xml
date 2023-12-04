@@ -11332,6 +11332,21 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         </source>
       <target state="new"/>
   </trans-unit>
+      <trans-unit id="message.payg.errornotcompliant" xml:space="preserve">
+        <source>
+          This @@PRODUCT_NAME@@ PAYG is not compliant and some of its functions will be disabled. Please contact your administrator to
+          amend the situation before continuing using the product.
+        </source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="notification.paygnotcompliantwarning.summary" xml:space="preserve">
+        <source>@@PRODUCT_NAME@@ PAYG instance is not compliant.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="notification.paygnotcompliantwarning.detail" xml:space="preserve">
+        <source>This @@PRODUCT_NAME@@ PAYG instance is not compliant. Some @@PRODUCT_NAME@@ functions will be disabled. Please check with your system administrator.</source>
+      <target state="new"/>
+  </trans-unit>
       </body>
   </file>
 </xliff>
