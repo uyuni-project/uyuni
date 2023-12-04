@@ -7,7 +7,7 @@
 #: ../html/src/components/input/Range.tsx:47
 #: ../html/src/components/input/Range.tsx:59
 #: ../html/src/components/input/Range.tsx:60
-#: ../html/src/core/intl/index.test.tsx:9
+#: ../html/src/core/intl/index.test.tsx:11
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:199
 #: ../html/src/manager/virtualization/nets/properties/NetworkAddress.tsx:79
 #: ../html/src/manager/virtualization/nets/properties/NetworkAddress.tsx:80
@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-26 13:56+0200\n"
+"POT-Creation-Date: 2023-12-04 10:42+0100\n"
 "PO-Revision-Date: 2022-01-11 14:51+0000\n"
 "Last-Translator: Michael Calmer <mc@suse.com>\n"
 "Language-Team: German <https://l10n.opensuse.org/projects/uyuni/web/de/>\n"
@@ -310,11 +310,11 @@ msgstr ""
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:214
 #: ../html/src/components/package/PackageListActionScheduler.tsx:246
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:143
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:152
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:162
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:232
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:278
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:146
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:155
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:165
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:245
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:291
 #: ../html/src/manager/images/image-view-packages.tsx:49
 #: ../html/src/manager/minion/packages/package-states.tsx:343
 msgid "Package Name"
@@ -640,7 +640,7 @@ msgid "Peripheral Server"
 msgstr ""
 
 #: ../html/src/components/systems.tsx:102
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:184
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:187
 msgid "Security Advisory"
 msgstr "Sicherheitshinweis"
 
@@ -679,7 +679,7 @@ msgid "Select All"
 msgstr "Alles auswählen"
 
 #: ../html/src/components/table/SelectSearchField.tsx:5
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:222
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:228
 msgid "All"
 msgstr ""
 
@@ -743,16 +743,16 @@ msgstr "keine"
 msgid "Require this channel"
 msgstr ""
 
-#: ../html/src/core/intl/index.test.tsx:7
+#: ../html/src/core/intl/index.test.tsx:9
 msgid "foo"
 msgstr ""
 
-#: ../html/src/core/intl/index.test.tsx:8
+#: ../html/src/core/intl/index.test.tsx:10
 msgid "undefined"
 msgstr ""
 
-#: ../html/src/core/intl/index.test.tsx:16
-#: ../html/src/core/intl/index.test.tsx:17
+#: ../html/src/core/intl/index.test.tsx:18
+#: ../html/src/core/intl/index.test.tsx:19
 msgid "foo {insert} bar"
 msgstr ""
 
@@ -1151,7 +1151,7 @@ msgstr ""
 #: ../html/src/manager/images/image-profiles.tsx:151
 #: ../html/src/manager/images/image-stores.tsx:151
 #: ../html/src/manager/images/image-view.tsx:375
-#: ../html/src/manager/notifications/notification-messages.tsx:455
+#: ../html/src/manager/notifications/notification-messages.tsx:459
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:241
 msgid "Refresh"
 msgstr ""
@@ -1263,7 +1263,7 @@ msgstr ""
 
 #: ../html/src/manager/admin/setup/products/products.tsx:696
 #: ../html/src/manager/admin/setup/products/products.tsx:1074
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:156
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:159
 #: ../html/src/manager/images/image-view-packages.tsx:50
 #: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:32
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:184
@@ -1461,13 +1461,13 @@ msgstr ""
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:262
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:110
-#: ../html/src/manager/notifications/notification-messages.tsx:579
+#: ../html/src/manager/notifications/notification-messages.tsx:583
 msgid "Session expired, please reload the page to see up-to-date data."
 msgstr ""
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:264
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:112
-#: ../html/src/manager/notifications/notification-messages.tsx:581
+#: ../html/src/manager/notifications/notification-messages.tsx:585
 #: ../html/src/utils/network.ts:103
 msgid "Server error, please check log files."
 msgstr ""
@@ -1937,7 +1937,7 @@ msgstr ""
 
 #: ../html/src/manager/content-management/list-filters/appstreams/module-selector.tsx:42
 #: ../html/src/manager/content-management/list-filters/appstreams/text-input.tsx:9
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:216
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:222
 msgid "Stream"
 msgstr ""
 
@@ -1981,49 +1981,49 @@ msgstr ""
 msgid "Filter deleted successfully"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:70
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:73
 msgid ""
 "Bear in mind that all the associated projects need to be rebuilt after a "
 "filter update"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:77
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:80
 msgid "Filter Name"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:87
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:90
 msgid "Prefix"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:90
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:93
 msgid ""
 "The prefix will be prepended to the name of every individual filter created "
 "by the template"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:101
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:104
 msgid "Use a template"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:105
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:108
 msgid "Use a manual filter"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:116
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:119
 msgid "Filter Type"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:129
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:132
 msgid "Matcher"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:153
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:163
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:156
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:166
 msgid "Epoch"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:154
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:164
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:157
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:167
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:105
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:50
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:80
@@ -2034,75 +2034,86 @@ msgstr ""
 msgid "Version"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:155
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:165
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:158
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:168
 msgid "Release"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:172
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:175
 msgid "Advisory name"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:185
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:188
 msgid "Bug Fix Advisory"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:186
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:189
 msgid "Product Enhancement Advisory"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:188
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:168
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:191
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:174
 msgid "Advisory Type"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:197
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:200
 msgid "Issued"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:207
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:174
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:210
+#: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:70
+#: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:135
+#: ../html/src/manager/images/image-build.tsx:402
+#: ../html/src/manager/images/image-profiles.tsx:198
+#: ../html/src/manager/images/image-view-overview.tsx:626
+#: ../html/src/manager/images/image-view-overview.tsx:725
+#: ../html/src/manager/images/image-view.tsx:671
+msgid "Build"
+msgstr ""
+
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:220
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:180
 #: ../html/src/manager/images/image-view-patches.tsx:95
 msgid "Synopsis"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:219
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:232
 msgid "Reboot Required"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:220
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:233
 msgid "Package Manager Restart Required"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:223
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:236
 msgid "Advisory Keywords"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:242
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:255
 msgid "Package Provides Name"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:252
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:265
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:156
 msgid "Provides Name"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:268
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:228
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:281
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:234
 msgid "Number"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:290
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:303
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:159
 msgid "Deny"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:291
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:304
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:179
 msgid "Allow"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/filter-form.tsx:293
+#: ../html/src/manager/content-management/list-filters/filter-form.tsx:306
 msgid "Rule"
 msgstr ""
 
@@ -2345,53 +2356,47 @@ msgid "NEVRA"
 msgstr ""
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:162
+msgid "Build date"
+msgstr ""
+
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:168
 msgid "Advisory Name"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:180
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:186
 msgid "Keyword"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:186
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:192
 msgid "Issue date"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:192
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:198
 msgid "Contains Package Name"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:198
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:204
 msgid "Contains Package Provides Name"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:204
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:210
 msgid "Contains Package"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:240
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:246
 msgid "Fixes Package Name"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:261
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:267
 msgid "enable module"
 msgstr ""
 
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:262
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:268
 msgid "disable all modules"
 msgstr ""
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:63
 msgid "Build ({count})"
-msgstr ""
-
-#: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:70
-#: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:135
-#: ../html/src/manager/images/image-build.tsx:402
-#: ../html/src/manager/images/image-profiles.tsx:198
-#: ../html/src/manager/images/image-view-overview.tsx:626
-#: ../html/src/manager/images/image-view-overview.tsx:725
-#: ../html/src/manager/images/image-view.tsx:671
-msgid "Build"
 msgstr ""
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:82
@@ -2662,7 +2667,7 @@ msgstr ""
 #: ../html/src/manager/images/image-view-patches.tsx:79
 #: ../html/src/manager/images/image-view.tsx:642
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:105
-#: ../html/src/manager/notifications/notification-messages.tsx:517
+#: ../html/src/manager/notifications/notification-messages.tsx:521
 #: ../html/src/manager/state/highstate-summary.tsx:73
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:296
 msgid "Type"
@@ -3915,10 +3920,6 @@ msgstr ""
 msgid "Schedule playbook execution"
 msgstr ""
 
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:107
-msgid "Playbook '{name}'"
-msgstr ""
-
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:111
 msgid "Schedule Playbook Execution"
 msgstr ""
@@ -4027,7 +4028,7 @@ msgid "Applying the packages states has been "
 msgstr ""
 
 #: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:22
-#: ../html/src/manager/notifications/notification-messages.tsx:523
+#: ../html/src/manager/notifications/notification-messages.tsx:527
 msgid "Summary"
 msgstr ""
 
@@ -4128,93 +4129,97 @@ msgstr ""
 msgid "Update Notification"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:152
+#: ../html/src/manager/notifications/notification-messages.tsx:65
+msgid "PAYG instance is not compliant"
+msgstr ""
+
+#: ../html/src/manager/notifications/notification-messages.tsx:156
 msgid "Filter by type"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:260
-#: ../html/src/manager/notifications/notification-messages.tsx:261
+#: ../html/src/manager/notifications/notification-messages.tsx:264
+#: ../html/src/manager/notifications/notification-messages.tsx:265
 msgid "Info"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:268
-#: ../html/src/manager/notifications/notification-messages.tsx:269
+#: ../html/src/manager/notifications/notification-messages.tsx:272
+#: ../html/src/manager/notifications/notification-messages.tsx:273
 msgid "Warning"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:276
-#: ../html/src/manager/notifications/notification-messages.tsx:277
+#: ../html/src/manager/notifications/notification-messages.tsx:280
+#: ../html/src/manager/notifications/notification-messages.tsx:281
 msgid "Error"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:339
+#: ../html/src/manager/notifications/notification-messages.tsx:343
 msgid "show details"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:388
+#: ../html/src/manager/notifications/notification-messages.tsx:392
 msgid "Retry onboarding"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:398
+#: ../html/src/manager/notifications/notification-messages.tsx:402
 msgid "Retry repo sync"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:422
+#: ../html/src/manager/notifications/notification-messages.tsx:426
 msgid "Unread Messages"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:427
+#: ../html/src/manager/notifications/notification-messages.tsx:431
 msgid "All Messages"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:459
-#: ../html/src/manager/notifications/notification-messages.tsx:460
+#: ../html/src/manager/notifications/notification-messages.tsx:463
+#: ../html/src/manager/notifications/notification-messages.tsx:464
 msgid "Delete selected messages"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:467
-#: ../html/src/manager/notifications/notification-messages.tsx:468
+#: ../html/src/manager/notifications/notification-messages.tsx:471
+#: ../html/src/manager/notifications/notification-messages.tsx:472
 msgid "Mark selected as read"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:485
-#: ../html/src/manager/notifications/notification-messages.tsx:567
+#: ../html/src/manager/notifications/notification-messages.tsx:489
+#: ../html/src/manager/notifications/notification-messages.tsx:571
 msgid "Notification Messages"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:490
+#: ../html/src/manager/notifications/notification-messages.tsx:494
 msgid "The server has collected the following notification messages."
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:505
+#: ../html/src/manager/notifications/notification-messages.tsx:509
 msgid "Filter by summary"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:511
+#: ../html/src/manager/notifications/notification-messages.tsx:515
 msgid "Severity"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:529
+#: ../html/src/manager/notifications/notification-messages.tsx:533
 msgid "Created"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:534
+#: ../html/src/manager/notifications/notification-messages.tsx:538
 msgid "Action"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:540
+#: ../html/src/manager/notifications/notification-messages.tsx:544
 msgid "Read|Delete"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:549
+#: ../html/src/manager/notifications/notification-messages.tsx:553
 msgid "Flag as Unread"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:549
+#: ../html/src/manager/notifications/notification-messages.tsx:553
 msgid "Flag as Read"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:555
+#: ../html/src/manager/notifications/notification-messages.tsx:559
 msgid "Delete Notification"
 msgstr ""
 
