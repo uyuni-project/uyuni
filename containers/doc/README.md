@@ -94,9 +94,9 @@ done
 In order to tell K3s to not pull the images, set the image pull policy needs to be set to `Never`.
 This needs to be done for both Uyuni and cert-manager helm charts.
 
-To prevent Helm from pulling the images pass the `--image-pullPolicy=never` parameter to `uyuniadm install` or `uyuniadm migrate`.
+To prevent Helm from pulling the images pass the `--image-pullPolicy=never` parameter to `mgradm install` or `mgradm migrate`.
 
-To use the downloaded helm charts instead of the default ones, pass `--helm-uyuni-chart=server-helm-2023.10.0.tgz` and `--helm-certmanager-chart=cert-manager-v1.13.1.tgz` or add the following to the `uyuniadm` configuration file. Of course the versions in the file name need to be adjusted to what you downloaded:
+To use the downloaded helm charts instead of the default ones, pass `--helm-uyuni-chart=server-helm-2023.10.0.tgz` and `--helm-certmanager-chart=cert-manager-v1.13.1.tgz` or add the following to the `mgradm` configuration file. Of course the versions in the file name need to be adjusted to what you downloaded:
 
 ```
 helm:
@@ -129,7 +129,7 @@ helm pull --destination . oci://registry.opensuse.org/uyuni/server-helm
 ⚠️  **TODO** Prepare instructions
 ```
 # TODO Copy the cert-manager and uyuni images
-# TODO Set the uyuniadm parameters
+# TODO Set the mgradm parameters
 ```
 
 ## For Podman
@@ -155,7 +155,7 @@ Transfer the resulting `server-image.tar` to the server and load it using the fo
 podman load -i server.tar
 ```
 
-To prevent pulling the images pass the `--image-pullPolicy=never` parameter to `uyuniadm install` or `uyuniadm migrate`.
+To prevent pulling the images pass the `--image-pullPolicy=never` parameter to `mgradm install` or `mgradm migrate`.
 
 # Migrating from a regular server
 
@@ -198,7 +198,7 @@ In the future, we plan to ship this custom policy packaged in a RPM and this ste
 
 ### Prepare for Kubernetes
 
-Since the migration job will start the container from scratch the Persistent Volumes need to be defined before running the `uyuniadm migrate command`.
+Since the migration job will start the container from scratch the Persistent Volumes need to be defined before running the `mgradm migrate command`.
 Refer to the installation section for more details on the volumes preparation.
 
 ## Migrating
@@ -207,23 +207,23 @@ Run the following command to install a new Uyuni server from the source one afte
 This command will synchronize all the data from the source server to the new one: this can take time!
 
 ```
-uyuniadm migrate podman uyuni.source.fqdn
+mgradm migrate podman uyuni.source.fqdn
 ```
 
 or
 
 ```
-uyuniadm migrate kubernetes uyuni.source.fqdn
+mgradm migrate kubernetes uyuni.source.fqdn
 ```
 
 # Installing Uyuni
 
 ## Installing
 
-The installation using `uyuniadm install` will ask for the password if those are not provided using the command line parameters or the configuration file.
+The installation using `mgradm install` will ask for the password if those are not provided using the command line parameters or the configuration file.
 For security reason, using command line parameters to specify passwords should be avoided: use the configuration file with proper permissions instead.
 
-Prepare an `uyuniadm.yaml` file like the following:
+Prepare an `mgradm.yaml` file like the following:
 
 ```
 db:
@@ -232,18 +232,18 @@ cert:
   password: MySuperSecretCAPass
 ```
 
-To dismiss the email prompts add the `email` and `emailFrom` configurations to the above file or use the `--email` and `--emailFrom` parameters for `uyuniadm install`.
+To dismiss the email prompts add the `email` and `emailFrom` configurations to the above file or use the `--email` and `--emailFrom` parameters for `mgradm install`.
 
 Run one of the following command to install after replacing the `uyuni.example.com` by the FQDN of the server to install:
 
 ```
-uyuniadm -c uyuniadm.yaml install podman uyuni.example.com
+mgradm -c mgradm.yaml install podman uyuni.example.com
 ```
 
 or
 
 ```
-uyuniadm -c uyuniadm.yaml install kubernetes uyuni.example.com
+mgradm -c mgradm.yaml install kubernetes uyuni.example.com
 ```
 
 ### Podman specific configuration
@@ -252,7 +252,7 @@ Additional parameters can be passed to Podman using `--podman-arg` parameters.
 
 ### Kubernetes specific configuration
 
-The `uyuniadm install` command comes with parameters and thus configuration values for advanced helm chart configuration.
+The `mgradm install` command comes with parameters and thus configuration values for advanced helm chart configuration.
 To pass additional values to the Uyuni helm chart at installation time, use the `--helm-uyuni-values chart-values.yaml` parameter or a configuration like the following:
 
 ```
@@ -262,7 +262,7 @@ helm:
 ```
 
 The path set as value for this configuration is a YAML file passed to the Uyuni Helm chart.
-Be aware that some of the values in this file will be overriden by the `uyuniadm install` parameters.
+Be aware that some of the values in this file will be overriden by the `mgradm install` parameters.
 
 Note that the Helm chart installs a deployment with one replica.
 The pod name is automatically generated by Kubernetes and changes at every start.
@@ -270,11 +270,11 @@ The pod name is automatically generated by Kubernetes and changes at every start
 
 # Using Uyuni in containers
 
-To get a shell in the pod run `uyunictl exec -ti bash`.
-Note that this command can be used to run any command inside the server like `uyunictl exec tail /var/log/rhn/rhn_web_ui.log`
+To get a shell in the pod run `mgrctl exec -ti bash`.
+Note that this command can be used to run any command inside the server like `mgrctl exec tail /var/log/rhn/rhn_web_ui.log`
 
-To copy files to the server, use the `uyunictl cp <local_path> server:<remote_path>` command.
-Conversely to copy files from the server use `uyunictl cp server:<remote_path> <local_path>`.
+To copy files to the server, use the `mgrctl cp <local_path> server:<remote_path>` command.
+Conversely to copy files from the server use `mgrctl cp server:<remote_path> <local_path>`.
 
 # Developping with the containers
 
@@ -299,7 +299,7 @@ The debugger can now be attached to the usual ports (8003 for tomcat and 8001 fo
 To remove everything including the volumes, run the following command:
 
 ```
-uyuniadm uninstall --purge-volumes
+mgradm uninstall --purge-volumes
 ```
 
-Note that `cert-manager` will not be uninstalled if it was not installed by `uyuniadm`.
+Note that `cert-manager` will not be uninstalled if it was not installed by `mgradm`.

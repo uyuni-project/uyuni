@@ -78,9 +78,9 @@ module LavandaBasic
   end
 
   ##
-  # Initializes the @in_has_uyunictl variable to true.
-  def init_has_uyunictl
-    @in_has_uyunictl = true
+  # Initializes the @in_has_mgrctl variable to true.
+  def init_has_mgrctl
+    @in_has_mgrctl = true
   end
 
   # getter functions, executed on testsuite
@@ -159,7 +159,7 @@ module LavandaBasic
   #   buffer_size: The maximum buffer size in bytes. Defaults to 65536.
   #   verbose: Whether to log the output of the command in case of success. Defaults to false.
   def run(cmd, separated_results: false, check_errors: true, timeout: DEFAULT_TIMEOUT, user: 'root', successcodes: [0], buffer_size: 65_536, verbose: false)
-    cmd_prefixed = @in_has_uyunictl ? "uyunictl exec -i '#{cmd.gsub(/'/, '\'"\'"\'')}'" : cmd
+    cmd_prefixed = @in_has_mgrctl ? "mgrctl exec -i '#{cmd.gsub(/'/, '\'"\'"\'')}'" : cmd
     run_local(cmd_prefixed, separated_results: separated_results, check_errors: check_errors, timeout: timeout, user: user, successcodes: successcodes, buffer_size: buffer_size, verbose: verbose)
   end
 
@@ -245,12 +245,12 @@ module LavandaBasic
   #   remote_file: The path in the destination
   #   user: The owner of the file
   def inject(local_file, remote_file, user = 'root', dots = true)
-    if @in_has_uyunictl
+    if @in_has_mgrctl
       tmp_folder, _code = run_local('mktemp -d')
       tmp_file = File.join(tmp_folder.strip, File.basename(local_file))
       code, _remote = inject_file(local_file, tmp_file, user, dots)
       if code.zero?
-        _out, code = run_local("uyunictl cp --user #{user} #{tmp_file} server:#{remote_file}")
+        _out, code = run_local("mgrctl cp --user #{user} #{tmp_file} server:#{remote_file}")
         raise ScriptError, "Failed to copy #{tmp_file} to container" unless code.zero?
       end
       run_local("rm -r #{tmp_folder}")
@@ -269,10 +269,10 @@ module LavandaBasic
   #   local_file: The path to the file to copy
   #   user: The owner of the file
   def extract(remote_file, local_file, user = 'root', dots = true)
-    if @in_has_uyunictl
+    if @in_has_mgrctl
       tmp_folder, _code = run_local('mktemp -d')
       tmp_file = File.join(tmp_folder.strip, File.basename(remote_file))
-      _out, code = run_local("uyunictl cp --user #{user} server:#{remote_file} #{tmp_file}")
+      _out, code = run_local("mgrctl cp --user #{user} server:#{remote_file} #{tmp_file}")
       raise ScriptError, "Failed to extract #{remote_file} from container" unless code.zero?
 
       code, _remote = extract_file(tmp_file, local_file, user, dots)
@@ -292,8 +292,8 @@ module LavandaBasic
   # Args:
   #   file: The path to check on the node.
   def file_exists(file)
-    if @in_has_uyunictl
-      _out, code = run_local("uyunictl exec -- 'test -f #{file}'", check_errors: false)
+    if @in_has_mgrctl
+      _out, code = run_local("mgrctl exec -- 'test -f #{file}'", check_errors: false)
       exists = code.zero?
     else
       _out, local, _remote, code = test_and_store_results_together("test -f #{file}", 'root', 500)
@@ -309,8 +309,8 @@ module LavandaBasic
   # Args:
   #   file: The path to check on the node.
   def folder_exists(file)
-    if @in_has_uyunictl
-      _out, code = run_local("uyunictl exec -- 'test -d #{file}'", check_errors: false)
+    if @in_has_mgrctl
+      _out, code = run_local("mgrctl exec -- 'test -d #{file}'", check_errors: false)
       exists = code.zero?
     else
       _out, local, _remote, code = test_and_store_results_together("test -d #{file}", 'root', 500)
@@ -326,8 +326,8 @@ module LavandaBasic
   # Args:
   #   file: The path of the file to delete on the node.
   def file_delete(file)
-    if @in_has_uyunictl
-      _out, code = run_local("uyunictl exec -- 'rm #{file}'", check_errors: false)
+    if @in_has_mgrctl
+      _out, code = run_local("mgrctl exec -- 'rm #{file}'", check_errors: false)
     else
       _out, _local, _remote, code = test_and_store_results_together("rm #{file}", 'root', 500)
     end
@@ -341,8 +341,8 @@ module LavandaBasic
   # Args:
   #   folder: The path of the folder to delete on the node.
   def folder_delete(folder)
-    if @in_has_uyunictl
-      _out, code = run_local("uyunictl exec -- 'rm -rf #{folder}'", check_errors: false)
+    if @in_has_mgrctl
+      _out, code = run_local("mgrctl exec -- 'rm -rf #{folder}'", check_errors: false)
     else
       _out, _local, _remote, code = test_and_store_results_together("rm -rf #{folder}", 'root', 500)
     end
