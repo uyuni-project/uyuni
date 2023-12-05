@@ -42,8 +42,8 @@ def process_private_and_public_ip(host, node)
 end
 
 def initialize_server(host, node)
-  _out, code = node.run('which uyunictl', check_errors: false)
-  node.init_has_uyunictl if code.zero?
+  _out, code = node.run('which mgrctl', check_errors: false)
+  node.init_has_mgrctl if code.zero?
 
   fqdn, code = node.run('sed -n \'s/^java.hostname *= *\(.\+\)$/\1/p\' /etc/rhn/rhn.conf')
   raise StandardError, "Cannot connect to get FQDN for '#{$named_nodes[node.hash]}'. Response code: #{code}, local: #{local}, remote: #{remote}" if code.nonzero?
