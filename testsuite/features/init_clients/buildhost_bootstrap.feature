@@ -19,13 +19,6 @@ Feature: Bootstrap a build host via the GUI
     And I click on "Bootstrap"
     And I wait until I see "Bootstrap process initiated." text
 
-  Scenario: Enable necessary repositories for the build host
-    When I enable repository "os_pool_repo" on this "build_host" without error control
-    And I enable repository "os_update_repo" on this "build_host" without error control
-    And I enable repository "containers_pool_repo" on this "build_host" without error control
-    And I enable repository "containers_updates_repo" on this "build_host" without error control
-    Then I execute "zypper ref" on the "build_host"
-
   Scenario: Check the new bootstrapped build host in System Overview page
     When I follow the left menu "Salt > Keys"
     Then I should see a "accepted" text
