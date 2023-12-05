@@ -22,7 +22,7 @@ After:
 
 ## Test coverage
 - No tests: **add explanation** (one explanation can be "already covered")
-- Tests were added: **add explanation**
+- Tests were added: **specify unit and/or cucumber**
 
 - [ ] **DONE**
 
