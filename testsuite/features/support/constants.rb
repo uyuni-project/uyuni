@@ -38,6 +38,8 @@ ENV_VAR_BY_HOST = {
                     'slemicro53_ssh_minion' => 'SLEMICRO53_SSHMINION',
                     'slemicro54_minion' => 'SLEMICRO54_MINION',
                     'slemicro54_ssh_minion' => 'SLEMICRO54_SSHMINION',
+                    'slemicro55_minion' => 'SLEMICRO55_MINION',
+                    'slemicro55_ssh_minion' => 'SLEMICRO55_SSHMINION',
                     'alma9_minion' => 'ALMA9_MINION',
                     'alma9_ssh_minion' => 'ALMA9_SSHMINION',
                     'centos7_minion' => 'CENTOS7_MINION',
@@ -176,6 +178,8 @@ PACKAGE_BY_CLIENT = {
                       'slemicro53_ssh_minion' => 'ethtool',
                       'slemicro54_minion' => 'ethtool',
                       'slemicro54_ssh_minion' => 'ethtool',
+                      'slemicro55_minion' => 'ethtool',
+                      'slemicro55_ssh_minion' => 'ethtool',
                       'alma9_minion' => 'autoconf',
                       'alma9_ssh_minion' => 'autoconf',
                       'centos7_minion' => 'autoconf',
@@ -252,6 +256,8 @@ BASE_CHANNEL_BY_CLIENT = {
                                 'slemicro53_ssh_minion' => 'SLE-Micro-5.3-Pool for x86_64',
                                 'slemicro54_minion' => 'SLE-Micro-5.4-Pool for x86_64',
                                 'slemicro54_ssh_minion' => 'SLE-Micro-5.4-Pool for x86_64',
+                                'slemicro55_minion' => 'SLE-Micro-5.5-Pool for x86_64',
+                                'slemicro55_ssh_minion' => 'SLE-Micro-5.5-Pool for x86_64',
                                 'alma9_minion' => 'almalinux9 for x86_64',
                                 'alma9_ssh_minion' => 'almalinux9 for x86_64',
                                 'centos7_minion' => 'RHEL x86_64 Server 7',
@@ -319,6 +325,8 @@ BASE_CHANNEL_BY_CLIENT = {
                               'slemicro53_ssh_minion' => 'SLE-Micro-5.3-Pool for x86_64',
                               'slemicro54_minion' => 'SLE-Micro-5.4-Pool for x86_64',
                               'slemicro54_ssh_minion' => 'SLE-Micro-5.4-Pool for x86_64',
+                              'slemicro55_minion' => 'SLE-Micro-5.5-Pool for x86_64',
+                              'slemicro55_ssh_minion' => 'SLE-Micro-5.5-Pool for x86_64',
                               'alma9_minion' => 'AlmaLinux 9 (x86_64)',
                               'alma9_ssh_minion' => 'AlmaLinux 9 (x86_64)',
                               'centos7_minion' => 'CentOS 7 (x86_64)',
@@ -380,6 +388,7 @@ LABEL_BY_BASE_CHANNEL = {
                               'SUSE-MicroOS-5.2-Pool for x86_64' => 'suse-microos-5.2-pool-x86_64',
                               'SLE-Micro-5.3-Pool for x86_64' => 'sle-micro-5.3-pool-x86_64',
                               'SLE-Micro-5.4-Pool for x86_64' => 'sle-micro-5.4-pool-x86_64',
+                              'SLE-Micro-5.5-Pool for x86_64' => 'sle-micro-5.5-pool-x86_64',
                               'almalinux9 for x86_64' => 'no-appstream-alma-9-result-almalinux9-x86_64',
                               'Fake-Base-Channel-SUSE-like' => 'fake-base-channel-suse-like',
                               'RHEL x86_64 Server 7' => 'rhel-x86_64-server-7',
@@ -410,6 +419,7 @@ LABEL_BY_BASE_CHANNEL = {
                             'SUSE-MicroOS-5.2-Pool for x86_64' => 'suse-microos-5.2-pool-x86_64',
                             'SLE-Micro-5.3-Pool for x86_64' => 'sle-micro-5.3-pool-x86_64',
                             'SLE-Micro-5.4-Pool for x86_64' => 'sle-micro-5.4-pool-x86_64',
+                            'SLE-Micro-5.5-Pool for x86_64' => 'sle-micro-5.5-pool-x86_64',
                             'AlmaLinux 9 (x86_64)' => 'no-appstream-alma-9-result-almalinux9-x86_64',
                             'Fake-Base-Channel-SUSE-like' => 'fake-base-channel-suse-like',
                             'CentOS 7 (x86_64)' => 'centos7-x86_64',
@@ -446,6 +456,7 @@ CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = {
                                               'SUSE-MicroOS-5.2-Pool for x86_64' => 'SLE-MICRO-5.2-x86_64',
                                               'SLE-Micro-5.3-Pool for x86_64' => 'SLE-MICRO-5.3-x86_64',
                                               'SLE-Micro-5.4-Pool for x86_64' => 'SLE-MICRO-5.4-x86_64',
+                                              'SLE-Micro-5.5-Pool for x86_64' => 'SLE-MICRO-5.5-x86_64',
                                               'almalinux9 for x86_64' => 'almalinux-9-x86_64',
                                               'Fake-Base-Channel-SUSE-like' => 'fake-base-channel-suse-like',
                                               'RHEL x86_64 Server 7' => 'RES7-x86_64',
@@ -476,6 +487,7 @@ CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = {
                                             'SUSE-MicroOS-5.2-Pool for x86_64' => 'SLE-MICRO-5.2-x86_64',
                                             'SLE-Micro-5.3-Pool for x86_64' => 'SLE-MICRO-5.3-x86_64',
                                             'SLE-Micro-5.4-Pool for x86_64' => 'SLE-MICRO-5.4-x86_64',
+                                            'SLE-Micro-5.5-Pool for x86_64' => 'SLE-MICRO-5.5-x86_64',
                                             'AlmaLinux 9 (x86_64)' => 'almalinux-9-x86_64-uyuni',
                                             'Fake-Base-Channel-SUSE-like' => 'fake-base-channel-suse-like',
                                             'CentOS 7 (x86_64)' => 'centos-7-x86_64-uyuni',
@@ -514,6 +526,7 @@ PARENT_CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = {
                                                       'SUSE-MicroOS-5.2-Pool for x86_64' => 'suse-microos-5.2-pool-x86_64',
                                                       'SLE-Micro-5.3-Pool for x86_64' => 'sle-micro-5.3-pool-x86_64',
                                                       'SLE-Micro-5.4-Pool for x86_64' => 'sle-micro-5.4-pool-x86_64',
+                                                      'SLE-Micro-5.5-Pool for x86_64' => 'sle-micro-5.5-pool-x86_64',
                                                       'almalinux9 for x86_64' => nil,
                                                       'Fake-Base-Channel-SUSE-like' => nil,
                                                       'RHEL x86_64 Server 7' => 'rhel-x86_64-server-7',
@@ -544,6 +557,7 @@ PARENT_CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = {
                                                     'SUSE-MicroOS-5.2-Pool for x86_64' => 'suse-microos-5.2-pool-x86_64',
                                                     'SLE-Micro-5.3-Pool for x86_64' => 'sle-micro-5.3-pool-x86_64',
                                                     'SLE-Micro-5.4-Pool for x86_64' => 'sle-micro-5.4-pool-x86_64',
+                                                    'SLE-Micro-5.5-Pool for x86_64' => 'sle-micro-5.5-pool-x86_64',
                                                     'almalinux9 for x86_64' => nil,
                                                     'Fake-Base-Channel-SUSE-like' => nil,
                                                     'CentOS 7 (x86_64)' => 'centos-7-x86_64-uyuni',
@@ -590,6 +604,8 @@ PKGARCH_BY_CLIENT = {
                       'slemicro53_ssh_minion' => 'x86_64',
                       'slemicro54_minion' => 'x86_64',
                       'slemicro54_ssh_minion' => 'x86_64',
+                      'slemicro55_minion' => 'x86_64',
+                      'slemicro55_ssh_minion' => 'x86_64',
                       'alma9_minion' => 'x86_64',
                       'alma9_ssh_minion' => 'x86_64',
                       'centos7_minion' => 'x86_64',
@@ -892,6 +908,14 @@ CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION = {
       sle-manager-tools-for-micro5-updates-x86_64-5.4
       sle-manager-tools-for-micro5-pool-x86_64-5.4
       sle-micro-5.4-uyuni-client-x86_64
+    ],
+  'sle-micro-5.5' =>
+    %w[
+      sle-micro-5.5-pool-x86_64
+      sle-micro-5.5-updates-x86_64
+      sle-manager-tools-for-micro5-updates-x86_64-5.5
+      sle-manager-tools-for-micro5-pool-x86_64-5.5
+      sle-micro-5.5-uyuni-client-x86_64
     ],
   'ubuntu-2004' =>
     %w[
