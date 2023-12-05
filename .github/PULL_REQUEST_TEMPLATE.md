@@ -13,8 +13,7 @@ After:
 - [ ] **DONE**
 
 ## Documentation
-- No documentation needed: **add explanation. This can't be used if there is a GUI diff**
-- No documentation needed: only internal and user invisible changes
+- No documentation needed: **add explanation. This can't be used if there is a GUI diff**, one can be "only internal and user invisible cnages"
 - Documentation issue was created: [Link for SUSE Manager contributors](https://github.com/SUSE/spacewalk/issues/new?template=ISSUE_TEMPLATE_DOCUMENTATION.md&labels=documentation&projects=SUSE/spacewalk/31), [Link for community contributors](https://github.com/uyuni-project/uyuni-docs/issues/new).
 - API documentation added: please review the Wiki page [Writing Documentation for the API](https://github.com/uyuni-project/uyuni/wiki/Writing-documentation-for-the-API) if you have any changes to API documentation.
 - (OPTIONAL) [Documentation PR](https://github.com/uyuni-project/uyuni-docs/pulls)
@@ -22,10 +21,8 @@ After:
 - [ ] **DONE**
 
 ## Test coverage
-- No tests: **add explanation**
-- No tests: already covered
-- Unit tests were added
-- Cucumber tests were added
+- No tests: **add explanation** (one explanation can be "already covered")
+- Tests were added: **add explanation**
 
 - [ ] **DONE**
 
@@ -46,7 +43,6 @@ If you don't need a changelog check, please mark this checkbox:
 
 If you uncheck the checkbox after the PR is created, you will need to re-run `changelog_test` (see below)
 
-
 ## Re-run a test
 
 If you need to re-run a test, please mark the related checkbox, it will be unchecked automatically once it has re-run:
@@ -58,3 +54,7 @@ If you need to re-run a test, please mark the related checkbox, it will be unche
 - [ ] Re-run test "susemanager_unittests"
 - [ ] Re-run test "javascript_lint"
 - [ ] Re-run test "spacecmd_unittests"
+
+# Before you merge
+
+Check [[How to branch and merge properly]]!
