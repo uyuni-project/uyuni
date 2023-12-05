@@ -57,4 +57,4 @@ If you need to re-run a test, please mark the related checkbox, it will be unche
 
 # Before you merge
 
-Check [[How to branch and merge properly]]!
+Check [How to branch and merge properly](https://github.com/uyuni-project/uyuni/wiki/How-to-branch-and-merge-properly)!
