@@ -155,7 +155,10 @@ def is_payg_instance():
         return ret
 
     if result == "PAYG":
+        log.debug("This minion is a PAYG instance. Adding grains: is_payg_instance = True")
         ret['is_payg_instance'] = True
+    else:
+        log.debug("This minion is a BYOS instance.")
 
     return ret
 
