@@ -1,0 +1,97 @@
+<!-- This data here is not accurate nor complete, but we can assume it is for testing purposes -->
+
+<oval_definitions
+        xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:oval="http://oval.mitre.org/XMLSchema/oval-common-5"
+        xmlns:oval-def="http://oval.mitre.org/XMLSchema/oval-definitions-5">
+    <definitions>
+        <definition id="oval:org.opensuse.security:def:20082934" version="1" class="vulnerability">
+            <metadata>
+                <title>CVE-2008-2934</title>
+                <affected family="unix">
+                    <platform>SUSE Linux Enterprise Server 15 SP1-LTSS</platform>
+                    <platform>SUSE Linux Enterprise Server for SAP Applications 15 SP1</platform>
+                </affected>
+                <reference ref_id="Mitre CVE-2008-2934" ref_url="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2008-2934" source="CVE"/>
+                <reference ref_id="SUSE CVE-2008-2934" ref_url="https://www.suse.com/security/cve/CVE-2008-2934" source="SUSE CVE"/>
+                <description>
+                    Mozilla Firefox 3 before 3.0.1 on Mac OS X allows remote attackers to cause a denial of service (application crash) or possibly execute arbitrary code via a crafted GIF file that triggers a free of an uninitialized pointer.
+                </description>
+                <advisory from="security@suse.de">
+                    <issued date="2022-05-20"/>
+                    <updated date="2023-02-10"/>
+                    <severity>Moderate</severity>
+                    <cve impact="moderate" href="https://www.suse.com/security/cve/CVE-2008-2934/">CVE-2008-2934</cve>
+                    <bugzilla href="https://bugzilla.suse.com/407573">SUSE bug 407573</bugzilla>
+                    <affected_cpe_list>
+                        <cpe>cpe:/o:suse:sles-ltss:15:sp1</cpe>
+                        <cpe>cpe:/o:suse:sles_sap:15:sp1</cpe>
+                    </affected_cpe_list>
+                </advisory>
+            </metadata>
+            <criteria operator="AND">
+                <criteria operator="OR">
+                    <criterion test_ref="oval:org.opensuse.security:tst:2009697593" comment="openSUSE Leap 15.4 is installed"/>
+                </criteria>
+                <criteria operator="OR">
+                    <criterion test_ref="oval:org.opensuse.security:tst:2009334013" comment="MozillaFirefox is affected"/>
+                    <criterion test_ref="oval:org.opensuse.security:tst:2009336118" comment="MozillaFirefox-devel is affected"/>
+                </criteria>
+            </criteria>
+        </definition>
+    </definitions>
+
+    <tests>
+
+        <rpminfo_test id="oval:org.opensuse.security:tst:2009697593" version="1" comment="openSUSE-release is ==15.4"
+                      check="at least one" xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux">
+            <object object_ref="oval:org.opensuse.security:obj:2009031246"/>
+            <state state_ref="oval:org.opensuse.security:ste:2009156779"/>
+        </rpminfo_test>
+
+        <rpminfo_test id="oval:org.opensuse.security:tst:2009334013" version="1" comment="MozillaFirefox is &gt;0" check="at least one" xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux">
+            <object object_ref="oval:org.opensuse.security:obj:2009030476"/>
+            <state state_ref="oval:org.opensuse.security:ste:2009079459"/>
+        </rpminfo_test>
+
+        <rpminfo_test id="oval:org.opensuse.security:tst:2009336118" version="1" comment="MozillaFirefox-devel is &gt;0" check="at least one" xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux">
+            <object object_ref="oval:org.opensuse.security:obj:2009034520"/>
+            <state state_ref="oval:org.opensuse.security:ste:2009079459"/>
+        </rpminfo_test>
+
+    </tests>
+
+    <objects>
+
+        <rpminfo_object id="oval:org.opensuse.security:obj:2009031246" version="1"
+                        xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux">
+            <name>openSUSE-release</name>
+        </rpminfo_object>
+
+        <rpminfo_object id="oval:org.opensuse.security:obj:2009030476" version="1" xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux">
+            <name>MozillaFirefox</name>
+        </rpminfo_object>
+
+        <rpminfo_object id="oval:org.opensuse.security:obj:2009034520" version="1" xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux">
+            <name>MozillaFirefox-devel</name>
+        </rpminfo_object>
+
+    </objects>
+    <states>
+
+        <rpminfo_state id="oval:org.opensuse.security:ste:2009156779" version="1"
+                       xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux">
+            <version operation="equals">15.4</version>
+        </rpminfo_state>
+
+        <rpminfo_state id="oval:org.opensuse.security:ste:2009079459" version="1" xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux">
+            <evr datatype="evr_string" operation="greater than">0:0-0</evr>
+        </rpminfo_state>
+
+        <rpminfo_state id="oval:org.opensuse.security:ste:2009079459" version="1" xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux">
+            <evr datatype="evr_string" operation="greater than">0:0-0</evr>
+        </rpminfo_state>
+
+    </states>
+</oval_definitions>

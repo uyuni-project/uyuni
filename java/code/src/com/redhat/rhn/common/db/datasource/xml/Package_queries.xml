@@ -573,6 +573,38 @@ SELECT PN.name as NAME,
   <elaborator name="package_retracted_and_ptf_details" />
 </mode>
 
+<mode name="shallow_system_package_list" class="com.suse.oval.ShallowSystemPackage">
+    <query params="sid">
+        WITH highest_id_packages AS (
+            SELECT p.name_id, p.evr_id, p.package_arch_id, max(p.id) AS id
+            FROM rhnServerPackage sp
+                     INNER JOIN rhnServer s ON sp.server_id = s.id
+                     INNER JOIN rhnServerChannel sc on sc.server_id = s.id
+                     INNER JOIN rhnChannelPackage cp on cp.channel_id = sc.channel_id
+                     INNER JOIN rhnpackage p ON sp.evr_id = p.evr_id AND sp.name_id = p.name_id AND sp.package_arch_id = p.package_arch_id AND p.id = cp.package_id
+            WHERE sp.server_id = :sid AND (p.org_id = s.org_id or p.org_id is null)
+            GROUP BY p.name_id, p.evr_id, p.package_arch_id
+        )
+        SELECT p.id AS package_id,
+               pn.id || '|' || pe.id || '|' || pa.id as id_combo,
+               pn.name as name,
+               pa.label as arch,
+               pe.epoch as epoch,
+               pe.version as version,
+               pe.release as release,
+               pe.type AS type
+        FROM rhnPackageName pn
+                 INNER JOIN rhnServerPackage sp ON sp.name_id = pn.id
+                 INNER JOIN rhnServer s ON sp.server_id = s.id
+                 INNER JOIN rhnPackageEvr pe ON sp.evr_id = pe.id
+                 LEFT JOIN rhnPackageArch pa ON sp.package_arch_id = pa.id
+                 LEFT JOIN highest_id_packages hp ON hp.name_id = sp.name_id AND hp.evr_id = sp.evr_id AND hp.package_arch_id = sp.package_arch_id
+                 LEFT JOIN rhnpackage p ON hp.id = p.id
+        WHERE sp.server_id = :sid
+    </query>
+</mode>
+
+
 <mode name="system_canonical_package_list" class="com.redhat.rhn.frontend.dto.PackageListItem">
   <query params="sid, org_id">
 SELECT PN.id || '|' || SPE.id AS ID_COMBO,

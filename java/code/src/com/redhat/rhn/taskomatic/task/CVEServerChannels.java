@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.taskomatic.task;
 
-import com.redhat.rhn.manager.audit.CVEAuditManager;
+import com.redhat.rhn.manager.audit.CVEAuditManagerOVAL;
 
 import org.quartz.JobExecutionContext;
 
@@ -44,7 +44,7 @@ public class CVEServerChannels extends RhnJavaJob {
 
         // Measure time and calculate the total duration
         Date start = new Date();
-        CVEAuditManager.populateCVEChannels();
+        CVEAuditManagerOVAL.populateCVEChannels();
 
         if (log.isDebugEnabled()) {
             long duration = new Date().getTime() - start.getTime();
