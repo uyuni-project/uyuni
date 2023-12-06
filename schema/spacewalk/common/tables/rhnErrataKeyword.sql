@@ -37,3 +37,5 @@ CREATE INDEX rhn_errkw_eid_idx
     ON rhnErrataKeyword (errata_id)
     ;
 
+CREATE INDEX rhn_errkw_keyword_idx
+    ON rhnErrataKeyword USING btree (keyword);
