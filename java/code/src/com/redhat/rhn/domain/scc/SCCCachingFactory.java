@@ -52,6 +52,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaDelete;
@@ -477,13 +478,12 @@ public class SCCCachingFactory extends HibernateFactory {
      * @param archName arch name we want to filter
      * @return Set of repositories for all version of one product and arch
      */
-    public static Set<SCCRepository> lookupRepositoriesByProductNameAndArchForPayg(
+    public static Stream<SCCRepository> lookupRepositoriesByProductNameAndArchForPayg(
             String productName, String archName) {
-        return new HashSet<>(getSession()
-                .createNamedQuery("SCCRepository.lookupByProductNameAndArchForPayg", SCCRepository.class)
-                .setParameter("product_name", productName)
-                .setParameter("arch_name", archName)
-                .list());
+        return getSession().createNamedQuery("SCCRepository.lookupByProductNameAndArchForPayg", SCCRepository.class)
+            .setParameter("product_name", productName)
+            .setParameter("arch_name", archName)
+            .stream();
     }
 
     /**
@@ -494,11 +494,11 @@ public class SCCCachingFactory extends HibernateFactory {
      * @param archName arch name we want to filter
      * @return Set of repositories for one root product with extensions
      */
-    public static Set<SCCRepository> lookupRepositoriesByRootProductNameVersionArchForPayg(
+    public static Stream<SCCRepository> lookupRepositoriesByRootProductNameVersionArchForPayg(
             String productName, String productVersion, String archName) {
         SUSEProduct product = SUSEProductFactory.findSUSEProduct(productName, productVersion, null, archName, true);
         if (product == null) {
-            return Collections.emptySet();
+            return Stream.empty();
         }
         List<SUSEProduct> prds = SUSEProductFactory.findAllExtensionsOfRootProduct(product);
         prds.add(product);
@@ -507,8 +507,7 @@ public class SCCCachingFactory extends HibernateFactory {
         return prds.stream()
                 .filter(p -> cfList.contains(p.getChannelFamily().getLabel()))
                 .flatMap(p -> p.getRepositories().stream())
-                .map(SUSEProductSCCRepository::getRepository)
-                .collect(Collectors.toSet());
+                .map(SUSEProductSCCRepository::getRepository);
         }
 
     /**

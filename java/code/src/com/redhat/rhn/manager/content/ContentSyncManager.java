@@ -1647,8 +1647,8 @@ public class ContentSyncManager {
      * @param tree broken product tree
      * @return fixed product tree
      */
-    public List<ProductTreeEntry> productTreeFix(List<ProductTreeEntry> tree) {
-        Stream<ProductTreeEntry> productTreeEntries = tree.stream().map(e -> {
+    public List<ProductTreeEntry> productTreeFix(Stream<ProductTreeEntry> tree) {
+        Stream<ProductTreeEntry> productTreeEntries = tree.map(e -> {
             if (e.getProductId() == -7 && e.getRepositoryId() == -81) {
                 return new ProductTreeEntry(
                         e.getChannelLabel(),
@@ -1711,7 +1711,7 @@ public class ContentSyncManager {
             }).findFirst().orElseGet(Collections::emptyList);
         });
         return productTreeFix(
-                tree.stream().filter(e -> e.getTags().isEmpty() || e.getTags().contains(tag)).collect(Collectors.toList())
+                tree.stream().filter(e -> e.getTags().isEmpty() || e.getTags().contains(tag))
         );
     }
 

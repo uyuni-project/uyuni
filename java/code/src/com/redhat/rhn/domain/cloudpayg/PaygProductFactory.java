@@ -42,7 +42,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -143,25 +142,20 @@ public class PaygProductFactory extends HibernateFactory {
      * @return the set of repositories
      */
     private static Stream<SCCRepository> getRepositoryForProducts(Collection<PaygProductInfo> products) {
-        return products.stream()
-            .map(product -> {
-                if (product.getName().equalsIgnoreCase("suse-manager-proxy")) {
-                    return SCCCachingFactory.lookupRepositoriesByRootProductNameVersionArchForPayg(
-                        product.getName(), product.getVersion(), product.getArch());
-                }
+        return products.stream().flatMap(product -> {
+            if (product.getName().equalsIgnoreCase("suse-manager-proxy")) {
+                return SCCCachingFactory.lookupRepositoriesByRootProductNameVersionArchForPayg(
+                    product.getName(), product.getVersion(), product.getArch());
+            }
 
-                return SCCCachingFactory.lookupRepositoriesByProductNameAndArchForPayg(
-                        product.getName(), product.getArch())
-                    .stream()
-                    // We add Tools Channels directly to SLE12 products, but they are not accessible
-                    // via the SLES credentials. We need to remove them from all except the sle-manager-tools
-                    // product
-                    .filter(r -> !(!product.getName().equalsIgnoreCase("sle-manager-tools") &&
-                        r.getName().toLowerCase(Locale.ROOT).startsWith("sle-manager-tools12")))
-                    .collect(Collectors.toSet());
-
-            })
-            .flatMap(Set::stream);
+            return SCCCachingFactory.lookupRepositoriesByProductNameAndArchForPayg(
+                    product.getName(), product.getArch())
+                // We add Tools Channels directly to SLE12 products, but they are not accessible
+                // via the SLES credentials. We need to remove them from all except the sle-manager-tools
+                // product
+                .filter(r -> !(!product.getName().equalsIgnoreCase("sle-manager-tools") &&
+                    r.getName().toLowerCase(Locale.ROOT).startsWith("sle-manager-tools12")));
+        });
     }
 
     /**
