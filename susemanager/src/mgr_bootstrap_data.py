@@ -1393,7 +1393,7 @@ DATA = {
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/res/7/bootstrap/'
     },
     'RHEL7-x86_64-uyuni' : {
-        'BASECHANNEL' : 'rhel7-pool-x86_64', 'PKGLIST' : RES7 + RES7_X86,
+        'BASECHANNEL' : 'rhel7-pool-uyuni-x86_64', 'PKGLIST' : RES7 + RES7_X86,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/res/7/bootstrap/'
     },
     'SLE-ES8-x86_64' : {
@@ -1405,7 +1405,7 @@ DATA = {
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/res/8/bootstrap/'
     },
     'RHEL8-x86_64-uyuni' : {
-        'BASECHANNEL' : 'rhel8-pool-x86_64', 'PKGLIST' : RES8 + RES8_X86,
+        'BASECHANNEL' : 'rhel8-pool-uyuni-x86_64', 'PKGLIST' : RES8 + RES8_X86,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/res/8/bootstrap/'
     },
     'SUSE-LibertyLinux9-x86_64' : {
@@ -1417,7 +1417,7 @@ DATA = {
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/res/9/bootstrap/'
     },
     'RHEL9-x86_64-uyuni' : {
-        'BASECHANNEL' : 'rhel9-pool-x86_64', 'PKGLIST' : RES9,
+        'BASECHANNEL' : 'rhel9-pool-uyuni-x86_64', 'PKGLIST' : RES9,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/res/9/bootstrap/'
     },
     'alibaba-2-x86_64-uyuni': {
