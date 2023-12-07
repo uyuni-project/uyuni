@@ -5081,26 +5081,26 @@ def do_system_needrebootafterupdate(self, args, short=False):
         logging.warning(_N('No systems selected'))
         return 1
 
-
     for system in sorted(systems):
         system_id = self.get_system_id(system)
         system_needs_reboot = False
         erratas = self.client.system.getRelevantErrata(self.session, system_id)
         for errata in erratas:
             errata_details = self.client.errata.getDetails(self.session, errata['advisory_name'])
-            if errata_details['reboot_suggested'] == True:
+            if errata_details['reboot_suggested']:
                 system_needs_reboot = True
+                break
 
-        if system_needs_reboot == True:
-            if not self.options.quiet:
+        if system_needs_reboot:
+            if self.options.quiet:
+                print("{}: 1".format(system))
+            else:
                 print(_("System '{}' needs to be rebooted after update".format(system)))
-            else:
-                print(str(system)+': 1')
         else:
-            if not self.options.quiet:
-                print(_("No reboot needed for system '{}' after appying available updates".format(system)))
+            if self.options.quiet:
+                print("{}: 0".format(system))
             else:
-                print(str(system)+': 0')
+                print(_("No reboot needed for system '{}' after appying available updates".format(system)))
     return 0
 
 
