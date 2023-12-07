@@ -5054,7 +5054,7 @@ def do_system_bootstrap(self, args):
 
 
 def help_system_needrebootafterupdate(self):
-    print(_("system_needrebootafterupdate: Shows if reboot is needed after applying available patches"))
+    print(_("system_needrebootafterupdate: Shows whether a reboot would be needed if available patches were applied"))
     print('')
 
 def complete_system_needrebootafterupdate(self, text, line, beg, end):
