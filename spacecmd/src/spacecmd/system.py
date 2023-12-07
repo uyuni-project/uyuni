@@ -5051,3 +5051,57 @@ def do_system_bootstrap(self, args):
 
 
 ####################
+
+
+def help_system_needrebootafterupdate(self):
+    print(_("system_needrebootafterupdate: Shows if reboot is needed after applying available patches"))
+    print('')
+
+def complete_system_needrebootafterupdate(self, text, line, beg, end):
+    return self.tab_complete_systems(text)
+
+def do_system_needrebootafterupdate(self, args, short=False):
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
+
+    if not args:
+        self.help_system_needrebootafterupdate()
+        return 1
+
+    add_separator = False
+
+    # use the systems listed in the SSM
+    if re.match('ssm', args[0], re.I):
+        systems = self.ssm.keys()
+    else:
+        systems = self.expand_systems(args)
+
+    if not systems:
+        logging.warning(_N('No systems selected'))
+        return 1
+
+
+    for system in sorted(systems):
+        system_id = self.get_system_id(system)
+        system_needs_reboot = False
+        erratas = self.client.system.getRelevantErrata(self.session, system_id)
+        for errata in erratas:
+            errata_details = self.client.errata.getDetails(self.session, errata['advisory_name'])
+            if errata_details['reboot_suggested'] == True:
+                system_needs_reboot = True
+
+        if system_needs_reboot == True:
+            if not self.options.quiet:
+                print(_("System '{}' needs to be rebooted after update".format(system)))
+            else:
+                print(str(system)+': 1')
+        else:
+            if not self.options.quiet:
+                print(_("No reboot needed for system '{}' after appying available updates".format(system)))
+            else:
+                print(str(system)+': 0')
+    return 0
+
+
+####################
