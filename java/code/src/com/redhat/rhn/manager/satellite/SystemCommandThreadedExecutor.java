@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.manager.satellite;
 
+import com.redhat.rhn.common.RhnRuntimeException;
+
 import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedReader;
@@ -133,8 +135,7 @@ public class SystemCommandThreadedExecutor implements Executor {
                 errStream.join();
             }
             catch (InterruptedException e) {
-                throw new RuntimeException(
-                        "InterruptedException while trying to exec: " + e);
+                throw new RhnRuntimeException("InterruptedException while trying to exec: " + e);
             }
             lastCommandError = errStream.getMessage();
             lastCommandOutput = inStream.getMessage();
@@ -142,13 +143,12 @@ public class SystemCommandThreadedExecutor implements Executor {
         catch (IOException ioe) {
             logger.error("execute(String[])", ioe);
 
-            String message = "";
+            StringBuilder message = new StringBuilder();
             for (String argIn : args) {
-                message = message + argIn + " ";
+                message.append(argIn).append(" ");
             }
             logger.error("IOException while trying to exec: {}", message, ioe);
-            throw new RuntimeException(
-                    "IOException while trying to exec: " + message, ioe);
+            throw new RhnRuntimeException("IOException while trying to exec: " + message, ioe);
         }
 
         return retval;

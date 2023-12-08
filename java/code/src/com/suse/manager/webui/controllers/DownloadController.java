@@ -488,6 +488,7 @@ public class DownloadController {
      * @param request the request object
      * @return the token
      */
+    @SuppressWarnings({"javasecurity:S5145"}) // controlled by log level
     private String getTokenFromRequest(Request request) {
         Set<String> queryParams = request.queryParams();
         if (LOG.isDebugEnabled()) {

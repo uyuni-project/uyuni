@@ -14,20 +14,22 @@
  */
 package com.redhat.rhn.frontend.dto;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * AuditDto
  */
-public class AuditDto extends BaseDto {
+public class AuditDto extends BaseDto implements Serializable {
     private Long id;
     private int serial;
     private Date time;
     private int milli;
     private String node;
 
-    private LinkedHashMap<String, String> kvmap;
+    private Map<String, String> kvmap;
 
     private String type;
 
@@ -39,8 +41,7 @@ public class AuditDto extends BaseDto {
      * @param nodeIn Audit generating node
      * @param kvmapIn HashMap of audit data
      */
-    public AuditDto(int serialIn, Date timeIn, int milliIn, String nodeIn,
-                LinkedHashMap<String, String> kvmapIn) {
+    public AuditDto(int serialIn, Date timeIn, int milliIn, String nodeIn, Map<String, String> kvmapIn) {
         this.id = (long) serialIn;
         this.serial = serialIn;
         this.time = timeIn;
@@ -55,6 +56,7 @@ public class AuditDto extends BaseDto {
     /**
      * @return Returns the id.
      */
+    @Override
     public Long getId() {
         return id;
     }
@@ -90,7 +92,7 @@ public class AuditDto extends BaseDto {
     /**
      * @return Returns the key-value audit data.
      */
-    public LinkedHashMap<String, String> getKvmap() {
+    public Map<String, String> getKvmap() {
         return kvmap;
     }
 

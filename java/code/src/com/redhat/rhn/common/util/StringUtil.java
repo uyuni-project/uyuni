@@ -922,4 +922,14 @@ public class StringUtil {
 
         return result;
     }
+
+    /**
+     * Strip characters that could break log pattern. Use this function on all user-provided log parameters
+     *
+     * @param input the input string to sanitize
+     * @return the safe string
+     */
+    public static String sanitizeLogInput(String input) {
+        return input != null ? input.replaceAll("[\n\r\t]", "_") : null;
+    }
 }
