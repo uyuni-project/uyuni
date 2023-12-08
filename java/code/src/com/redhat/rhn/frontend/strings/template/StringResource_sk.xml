@@ -408,7 +408,8 @@ Thank you for using @@PRODUCT_NAME@@.
 {5}
 {6}
 </source>
-        <target state="needs-adaptation">Toto je správa o stave @@PRODUCT_NAME@@ pre váš účet {0} od {1}.
+        <target state="translated">{7}
+Toto je správa o stave @@PRODUCT_NAME@@ pre váš účet {0} od {1}.
 
 Tento email bude odoslaný, keď sa vyskytne niektorá z nasledujúcich situácií:
 
@@ -562,12 +563,14 @@ na {2} a požiadajte o ďalšiu pomoc.
           </context>
         </context-group>
       </trans-unit>
-    <trans-unit id="dailysummary.email.notpaygcompliant" xml:space="preserve">
+      <trans-unit id="dailysummary.email.notpaygcompliant" xml:space="preserve">
           <source>Warning: This @@PRODUCT_NAME@@ PAYG instance is not compliant and some of its functions are disabled.
 Please contact your administrator to amend the situation before continuing using the product.
           </source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="translated">Varovanie: Táto inštancia @@PRODUCT_NAME@@ PAYG nie je vyhovujúca a niektoré jej funkcie sú vypnuté.
+Pred ďalším používaním produktu sa, prosím, obráťte na svojho administrátora, aby situáciu napravil.
+          </target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
