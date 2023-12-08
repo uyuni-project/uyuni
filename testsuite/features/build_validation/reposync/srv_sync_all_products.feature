@@ -321,6 +321,41 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until all synchronized channels for "sle-micro-5.4" have finished
 
 @susemanager
+@slemicro55_minion
+  Scenario: Add SUSE Linux Enterprise Micro 5.5
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "Loading" text
+    And I enter "SUSE Linux Enterprise Micro 5.5" as the filtered product description
+    And I select "SUSE Linux Enterprise Micro 5.5 x86_64" as a product
+    Then I should see the "SUSE Linux Enterprise Micro 5.5 x86_64" selected
+    When I open the sub-list of the product "SUSE Linux Enterprise Micro 5.5 x86_64"
+    And I select "SUSE Manager Client Tools for SLE Micro 5 x86_64" as a product
+    Then I should see the "SUSE Manager Client Tools for SLE Micro 5 x86_64" selected
+    When I click the Add Product button
+    And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
+    And I wait until I see "SUSE Linux Enterprise Micro 5.5 x86_64" product has been added
+    And I wait until all synchronized channels for "sle-micro-5.5" have finished
+
+@uyuni
+@slemicro55_minion
+  Scenario: Add SUSE Linux Enterprise Micro 5.5
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "Loading" text
+    And I enter "SUSE Linux Enterprise Micro 5.5" as the filtered product description
+    And I select "SUSE Linux Enterprise Micro 5.5 x86_64" as a product
+    Then I should see the "SUSE Linux Enterprise Micro 5.5 x86_64" selected
+    When I click the Add Product button
+    And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
+    And I wait until I see "SUSE Linux Enterprise Micro 5.5 x86_64" product has been added
+    And I wait until all synchronized channels for "sle-micro-5.5" have finished
+
+@uyuni
+@slemicro55_minion
+  Scenario: Add SUSE Linux Enterprise Micro 5.5 Uyuni Client tools
+    When I use spacewalk-common-channel to add channel "sle-micro-5.5-devel-uyuni-client" with arch "x86_64"
+    And I wait until all synchronized channels for "sle-micro-5.5" have finished
+
+@susemanager
 @opensuse154arm_minion
   Scenario: Add openSUSE 15.4 for ARM
     When I follow the left menu "Admin > Setup Wizard > Products"
@@ -615,7 +650,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 
 @uyuni
 @proxy
-  Scenario: Add Uyuni Leap 15.4 Proxy, inlcuding Uyuni Client Tools
+  Scenario: Add Uyuni Leap 15.4 Proxy, including Uyuni Client Tools
     When I use spacewalk-common-channel to add channel "opensuse_leap15_4 opensuse_leap15_4-non-oss opensuse_leap15_4-non-oss-updates opensuse_leap15_4-updates opensuse_leap15_4-backports-updates opensuse_leap15_4-sle-updates uyuni-proxy-stable-leap-154 opensuse_leap15_4-uyuni-client-devel" with arch "x86_64"
     And I wait until all synchronized channels for "uyuni-proxy" have finished
 

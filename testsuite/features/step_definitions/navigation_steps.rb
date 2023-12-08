@@ -55,8 +55,10 @@ end
 When(/^I wait until I see "([^"]*)" (text|regex), refreshing the page$/) do |text, type|
   text = Regexp.new(text) if type == 'regex'
   next if has_content?(text, wait: 3)
+
   repeat_until_timeout(message: "Couldn't find text '#{text}'") do
     break if has_content?(text, wait: 3)
+
     begin
       accept_prompt do
         execute_script 'window.location.reload()'
@@ -69,8 +71,10 @@ end
 
 When(/^I wait at most (\d+) seconds until I do not see "([^"]*)" text, refreshing the page$/) do |seconds, text|
   next if has_no_text?(text, wait: 3)
+
   repeat_until_timeout(message: "I still see text '#{text}'", timeout: seconds.to_i) do
     break if has_no_text?(text, wait: 3)
+
     begin
       accept_prompt do
         execute_script 'window.location.reload()'
@@ -83,6 +87,7 @@ end
 
 When(/^I wait at most "([^"]*)" seconds until I do not see "([^"]*)" text$/) do |seconds, text|
   next if has_no_text?(text, wait: 3)
+
   repeat_until_timeout(message: "I still see text '#{text}'", timeout: seconds.to_i) do
     break if has_no_text?(text, wait: 3)
   end
@@ -91,9 +96,11 @@ end
 When(/^I wait at most (\d+) seconds until the event is completed, refreshing the page$/) do |timeout|
   last = Time.now
   next if has_content?('This action\'s status is: Completed.', wait: 3)
+
   repeat_until_timeout(timeout: timeout.to_i, message: 'Event not yet completed') do
     break if has_content?('This action\'s status is: Completed.', wait: 3)
     raise SystemCallError, 'Event failed' if has_content?('This action\'s status is: Failed.', wait: 3)
+
     current = Time.now
     if current - last > 150
       log "#{current} Still waiting for action to complete..."
@@ -111,6 +118,7 @@ end
 
 When(/^I wait until I see the name of "([^"]*)", refreshing the page$/) do |host|
   raise ScriptError, 'Overview System page didn\'t load' unless has_content?('Download CSV') || has_content?('Keys')
+
   system_name = get_system_name(host)
   step %(I wait until I see the "#{system_name}" system, refreshing the page)
 end
@@ -124,8 +132,10 @@ end
 
 When(/^I wait until I do not see "([^"]*)" text, refreshing the page$/) do |text|
   next unless has_content?(text, wait: 3)
+
   repeat_until_timeout(message: "Text '#{text}' is still visible") do
     break unless has_content?(text, wait: 3)
+
     begin
       accept_prompt do
         execute_script 'window.location.reload()'
@@ -228,6 +238,7 @@ When(/^I (include|exclude) the recommended child channels$/) do |action|
   toggle = "//span[@class='pointer']"
   step 'I wait at most 10 seconds until I see "include recommended" text'
   raise ScriptError, 'The toggle is not present' unless page.has_xpath?(toggle, wait: 5)
+
   if action == 'include'
     toggle_off = '//i[contains(@class, \'fa-toggle-off\')]'
     find(:xpath, toggle).click if page.has_xpath?(toggle_off, wait: 5)
@@ -322,22 +333,24 @@ end
 # the given "id"
 
 When(/^I follow "([^"]*)" in the (.+)$/) do |arg1, arg2|
-  tag = case arg2
-        when /tab bar|tabs/ then 'header'
-        when /content area/ then 'section'
-        else raise ScriptError, "Unknown element with description '#{arg2}'"
-        end
+  tag =
+    case arg2
+    when /tab bar|tabs/ then 'header'
+    when /content area/ then 'section'
+    else raise ScriptError, "Unknown element with description '#{arg2}'"
+    end
   within(:xpath, "//#{tag}") do
     step %(I follow "#{arg1}")
   end
 end
 
 When(/^I follow first "([^"]*)" in the (.+)$/) do |arg1, arg2|
-  tag = case arg2
-        when /tab bar|tabs/ then 'header'
-        when /content area/ then 'section'
-        else raise ScriptError, "Unknown element with description '#{arg2}'"
-        end
+  tag =
+    case arg2
+    when /tab bar|tabs/ then 'header'
+    when /content area/ then 'section'
+    else raise ScriptError, "Unknown element with description '#{arg2}'"
+    end
   within(:xpath, "//#{tag}") do
     step "I follow first \"#{arg1}\""
   end
@@ -377,6 +390,7 @@ When(/^I follow the left menu "([^"]*)"$/) do |menu_path|
     target_link_path += (link_path % menu_level)
     # if this is the last element of the path
     break if index == (menu_levels.count - 1)
+
     # open the submenu if needed
     begin
       unless find(:xpath, target_link_path + parent_wrapper_path + parent_level_path)[:class].include?('open')
@@ -465,8 +479,9 @@ end
 When(/^I select the hostname of "([^"]*)" from "([^"]*)"((?: if present)?)$/) do |host, field, if_present|
   begin
     system_name = get_system_name(host)
-  rescue
+  rescue StandardError
     raise KeyError, "Host #{host} not found" if if_present.empty?
+
     log "Host #{host} is not deployed, not trying to select it"
     next
   end
@@ -553,6 +568,7 @@ Given(/^I am authorized as "([^"]*)" with password "([^"]*)"$/) do |user, passwd
   end
 
   raise ScriptError, 'Login page is not correctly loaded' unless has_field?('username')
+
   fill_in('username', with: user)
   fill_in('password', with: passwd)
   click_button_and_wait('Sign In', match: :first)
@@ -732,9 +748,11 @@ When(/^I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINI
     # disregard any number of initial unimportant rows, that is:
     #  - INTERRUPTED rows with no start time (expected when Taskomatic had been restarted)
     #  - SKIPPED rows (expected when Taskomatic triggers the same task concurrently)
-    first_non_skipped = statuses.zip(start_times).drop_while do |status, start_time|
-      (status == 'INTERRUPTED' && (start_time.empty? || start_time == 'Task never started')) || status == 'SKIPPED'
-    end.first.first
+    result =
+      statuses.zip(start_times).drop_while do |status, start_time|
+        (status == 'INTERRUPTED' && (start_time.empty? || start_time == 'Task never started')) || status == 'SKIPPED'
+      end
+    first_non_skipped = result.first.first
 
     # halt in case we are done, or if an error is detected
     break if first_non_skipped == 'FINISHED'
@@ -747,24 +765,26 @@ When(/^I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINI
 end
 
 Then(/^I should see a "([^"]*)" link in the (left menu|tab bar|tabs|content area)$/) do |arg1, arg2|
-  tag = case arg2
-        when /left menu/ then 'aside'
-        when /tab bar|tabs/ then 'header'
-        when /content area/ then 'section'
-        else raise ScriptError, "Unknown element with description '#{arg2}'"
-        end
+  tag =
+    case arg2
+    when /left menu/ then 'aside'
+    when /tab bar|tabs/ then 'header'
+    when /content area/ then 'section'
+    else raise ScriptError, "Unknown element with description '#{arg2}'"
+    end
   within(:xpath, "//#{tag}") do
     step "I should see a \"#{arg1}\" link"
   end
 end
 
 Then(/^I should not see a "([^"]*)" link in the (.+)$/) do |arg1, arg2|
-  tag = case arg2
-        when /left menu/ then 'aside'
-        when /tab bar|tabs/ then 'header'
-        when /content area/ then 'section'
-        else raise ScriptError, "Unknown element with description '#{arg2}'"
-        end
+  tag =
+    case arg2
+    when /left menu/ then 'aside'
+    when /tab bar|tabs/ then 'header'
+    when /content area/ then 'section'
+    else raise ScriptError, "Unknown element with description '#{arg2}'"
+    end
   within(:xpath, "//#{tag}") do
     step "I should not see a \"#{arg1}\" link"
   end
@@ -820,6 +840,7 @@ end
 Then(/^I click on the filter button until page does not contain "([^"]*)" text$/) do |text|
   repeat_until_timeout(message: "'#{text}' still found") do
     break unless check_text_and_catch_request_timeout_popup?(text)
+
     find('button.spacewalk-button-filter').click
     has_text?('is filtered', wait: 10)
   end
@@ -828,6 +849,7 @@ end
 Then(/^I click on the filter button until page does contain "([^"]*)" text$/) do |text|
   repeat_until_timeout(message: "'#{text}' was not found") do
     break if check_text_and_catch_request_timeout_popup?(text)
+
     find('button.spacewalk-button-filter').click
     has_text?('is filtered', wait: 10)
   end
@@ -840,6 +862,7 @@ end
 
 When(/^I enter "([^"]*)" as the filtered package name$/) do |input|
   raise 'Package name is not set' if input.empty?
+
   find('input[placeholder=\'Filter by Package Name: \']').set(input)
 end
 
@@ -910,6 +933,7 @@ end
 
 When(/^I check "([^"]*)" in the list$/) do |text|
   raise 'The text to check can\'t be empty' if text.empty?
+
   top_level_xpath_query = "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{text}')]]//input[@type='checkbox']"
   row = find(:xpath, top_level_xpath_query, match: :first)
   raise ScriptError, "xpath: #{top_level_xpath_query} not found" if row.nil?
@@ -1004,7 +1028,7 @@ end
 # Click on a button in a modal window with a specific title
 When(/^I click on "([^"]*)" in "([^"]*)" modal$/) do |btn, title|
   path = "//*[text() = \"#{title}\"]" \
-    '/ancestor::div[contains(@class, "modal-dialog")]'
+         '/ancestor::div[contains(@class, "modal-dialog")]'
 
   # We wait until the element becomes visible, because
   # the fade in animation might still be in progress
@@ -1029,7 +1053,7 @@ end
 # Wait until a modal window with a specific content is shown
 When(/^I wait at most (\d+) seconds until I see modal containing "([^"]*)" text$/) do |timeout, title|
   path = "//*[contains(@class, \"modal-content\") and contains(., \"#{title}\")]" \
-    '/ancestor::div[contains(@class, "modal-dialog")]'
+         '/ancestor::div[contains(@class, "modal-dialog")]'
 
   dialog = find(:xpath, path, wait: timeout.to_i)
   raise ScriptError, "#{title} modal did not appear" unless dialog
@@ -1050,15 +1074,16 @@ When(/^I visit "([^"]*)" endpoint of this "([^"]*)"$/) do |service, host|
   node = get_target(host)
   system_name = get_system_name(host)
   os_family = node.os_family
-  port, protocol, path, text = case service
-                               when 'Proxy' then [443, 'https', '/pub/', 'Index of /pub']
-                               when 'Prometheus' then [9090, 'http', '', 'graph']
-                               when 'Prometheus node exporter' then [9100, 'http', '', 'Node Exporter']
-                               when 'Prometheus apache exporter' then [9117, 'http', '', 'Apache Exporter']
-                               when 'Prometheus postgres exporter' then [9187, 'http', '', 'Postgres Exporter']
-                               when 'Grafana' then [3000, 'http', '', 'Grafana Labs']
-                               else raise ScriptError, "Unknown port for service #{service}"
-                               end
+  port, protocol, path, text =
+    case service
+    when 'Proxy' then [443, 'https', '/pub/', 'Index of /pub']
+    when 'Prometheus' then [9090, 'http', '', 'graph']
+    when 'Prometheus node exporter' then [9100, 'http', '', 'Node Exporter']
+    when 'Prometheus apache exporter' then [9117, 'http', '', 'Apache Exporter']
+    when 'Prometheus postgres exporter' then [9187, 'http', '', 'Postgres Exporter']
+    when 'Grafana' then [3000, 'http', '', 'Grafana Labs']
+    else raise ScriptError, "Unknown port for service #{service}"
+    end
   # debian based systems don't come with curl installed
   if (os_family.include? 'debian') || (os_family.include? 'ubuntu')
     node.run_until_ok("wget --no-check-certificate -qO- #{protocol}://#{system_name}:#{port}#{path} | grep -i '#{text}'")
@@ -1143,6 +1168,7 @@ When(/^I click on the search button$/) do
   if has_text?('Could not connect to search server.', wait: 0)
     repeat_until_timeout(message: 'Could not perform a successful search after reindexation', timeout: 10) do
       break unless has_text?('Could not connect to search server.', wait: 0) || has_text?('No matches found', wait: 0)
+
       sleep 1
       click_button('Search', match: :first, wait: false)
     end
@@ -1189,10 +1215,12 @@ Then(/^I should see the correct timestamp for task "([^"]*)"/) do |task_name|
   # find row with corresponding task name
   page.find_all(:xpath, '//table[@class=\'table table-responsive\']//tr').each do |tr|
     next unless tr.has_text?(task_name)
+
     # if task name is found, iterate through the columns to find the timestamp
     page.find_all(:xpath, '//table[@class=\'table table-responsive\']//td').each do |td|
       # if a text matching the format xx:xx is found, get and save the text
       next unless td.text.match(/\d{2}:\d{2}/)
+
       # Text from cell, parsed to a Time object must match now +- 5 seconds
       Time.parse(td.text).to_i.between?(now.to_i - 5, now.to_i + 5)
     end

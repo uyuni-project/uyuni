@@ -27,13 +27,10 @@ Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 %if 0%{?suse_version}
-%if 0%{?sle_version} >= 150400
-Requires:       postgresql14-contrib
-Requires:       postgresql14-server
-%else
-Requires:       postgresql13-contrib
-Requires:       postgresql13-server
-%endif
+# Actual version set by prjconf, default is 14
+%{!?postgresql_version: %global postgresql_version 14}
+Requires:       postgresql-contrib-implementation = %{postgresql_version}
+Requires:       postgresql-server-implementation = %{postgresql_version}
 %else
 Requires:       postgresql-contrib >= 12
 Requires:       postgresql-server > 12

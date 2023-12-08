@@ -13,7 +13,7 @@ class XmlrpcClient
   def initialize(host)
     puts 'Activating XML-RPC API'
     protocol = $debug_mode ? 'http://' : 'https://'
-    @xmlrpc_client = XMLRPC::Client.new2(protocol + host + '/rpc/api', nil, DEFAULT_TIMEOUT)
+    @xmlrpc_client = XMLRPC::Client.new2("#{protocol}#{host}/rpc/api", nil, DEFAULT_TIMEOUT)
   end
 
   ##

@@ -53,11 +53,11 @@ public class SCCSystemRegistrationSystemDataAcquisitor implements SCCSystemRegis
         context.getItems().forEach(cacheItem -> {
             if (isSccRegistrationRequired(cacheItem)) {
                 LOG.debug("Forward registration of {}", cacheItem);
-                SCCRegisterSystemJson sccRegisterSystemJson = getPayload(cacheItem);
-                SCCSystemId sccSystemId = new SCCSystemId(sccRegisterSystemJson.getLogin(),
-                        sccRegisterSystemJson.getPassword());
-                context.getItemsBySccSystemId().put(sccSystemId, cacheItem);
-                context.getPendingRegistrationSystems().put(sccSystemId, sccRegisterSystemJson);
+                getPayload(cacheItem).ifPresent(payload -> {
+                    SCCSystemId sccSystemId = new SCCSystemId(payload.getLogin(), payload.getPassword());
+                    context.getItemsBySccSystemId().put(sccSystemId, cacheItem);
+                    context.getPendingRegistrationSystems().put(sccSystemId, payload);
+                });
             }
             else {
                 context.getPaygSystems().add(cacheItem);
@@ -76,54 +76,54 @@ public class SCCSystemRegistrationSystemDataAcquisitor implements SCCSystemRegis
                 cacheItem.getOptServer().filter(Server::isPayg).isEmpty();
     }
 
-    private SCCRegisterSystemJson getPayload(SCCRegCacheItem rci) {
-        Server srv = rci.getOptServer().get();
-        List<SCCMinProductJson> products = Opt.fold(srv.getInstalledProductSet(),
-                        (Supplier<List<SUSEProduct>>) LinkedList::new,
-                        s -> {
-                            List<SUSEProduct> prd = new LinkedList<>();
-                            prd.add(s.getBaseProduct());
-                            prd.addAll(s.getAddonProducts());
-                            return prd;
-                        }
-                ).stream()
-                .map(SCCMinProductJson::new)
-                .collect(Collectors.toList());
+    private Optional<SCCRegisterSystemJson> getPayload(SCCRegCacheItem rci) {
+        return rci.getOptServer().map(srv -> {
+            List<SCCMinProductJson> products = Opt.fold(srv.getInstalledProductSet(),
+                            (Supplier<List<SUSEProduct>>) LinkedList::new,
+                            s -> {
+                                List<SUSEProduct> prd = new LinkedList<>();
+                                prd.add(s.getBaseProduct());
+                                prd.addAll(s.getAddonProducts());
+                                return prd;
+                            }
+                    ).stream()
+                    .map(SCCMinProductJson::new)
+                    .collect(Collectors.toList());
 
-        SCCHwInfoJson hwInfo = new SCCHwInfoJson();
+            SCCHwInfoJson hwInfo = new SCCHwInfoJson();
 
-        Optional<CPU> cpu = ofNullable(srv.getCpu());
-        cpu.flatMap(c -> ofNullable(c.getNrCPU())).ifPresent(c -> hwInfo.setCpus(c.intValue()));
-        cpu.flatMap(c -> ofNullable(c.getNrsocket())).ifPresent(c -> hwInfo.setSockets(c.intValue()));
-        hwInfo.setArch(srv.getServerArch().getLabel().split("-")[0]);
-        if (srv.isVirtualGuest()) {
-            hwInfo.setHypervisor(srv.getVirtualInstance().getType().getHypervisor().orElse(""));
-            hwInfo.setCloudProvider(srv.getVirtualInstance().getType().getCloudProvider().orElse(""));
-            ofNullable(srv.getVirtualInstance().getUuid())
-                    .ifPresent(u -> hwInfo.setUuid(u.replaceAll("(\\w{8})(\\w{4})(\\w{4})(\\w{4})(\\w{12})",
-                            "$1-$2-$3-$4-$5")));
-            hwInfo.setMemTotal(srv.getVirtualInstance().getTotalMemory().intValue());
-        }
-        else {
-            hwInfo.setMemTotal((int) srv.getRam());
-        }
+            Optional<CPU> cpu = ofNullable(srv.getCpu());
+            cpu.flatMap(c -> ofNullable(c.getNrCPU())).ifPresent(c -> hwInfo.setCpus(c.intValue()));
+            cpu.flatMap(c -> ofNullable(c.getNrsocket())).ifPresent(c -> hwInfo.setSockets(c.intValue()));
+            hwInfo.setArch(srv.getServerArch().getLabel().split("-")[0]);
+            if (srv.isVirtualGuest()) {
+                hwInfo.setHypervisor(srv.getVirtualInstance().getType().getHypervisor().orElse(""));
+                hwInfo.setCloudProvider(srv.getVirtualInstance().getType().getCloudProvider().orElse(""));
+                ofNullable(srv.getVirtualInstance().getUuid())
+                        .ifPresent(u -> hwInfo.setUuid(u.replaceAll("(\\w{8})(\\w{4})(\\w{4})(\\w{4})(\\w{12})",
+                                "$1-$2-$3-$4-$5")));
+                hwInfo.setMemTotal(srv.getVirtualInstance().getTotalMemory().intValue());
+            }
+            else {
+                hwInfo.setMemTotal((int) srv.getRam());
+            }
 
-        String login = rci.getOptSccLogin().orElseGet(() -> {
-            String l = String.format("%s-%s", ContentSyncManager.getUUID(), srv.getId().toString());
-            rci.setSccLogin(l);
-            SCCCachingFactory.saveRegCacheItem(rci);
-            return l;
+            String login = rci.getOptSccLogin().orElseGet(() -> {
+                String l = String.format("%s-%s", ContentSyncManager.getUUID(), srv.getId().toString());
+                rci.setSccLogin(l);
+                SCCCachingFactory.saveRegCacheItem(rci);
+                return l;
+            });
+            String passwd = rci.getOptSccPasswd().orElseGet(() -> {
+                String pw = RandomStringUtils.random(64, 0, 0, true, true, null, new SecureRandom());
+                rci.setSccPasswd(pw);
+                SCCCachingFactory.saveRegCacheItem(rci);
+                return pw;
+            });
+
+            return new SCCRegisterSystemJson(login, passwd, srv.getHostname(), hwInfo, products,
+                    srv.getServerInfo().getCheckin());
         });
-        String passwd = rci.getOptSccPasswd().orElseGet(() -> {
-            String pw = RandomStringUtils.random(64, 0, 0, true, true, null, new SecureRandom());
-            rci.setSccPasswd(pw);
-            SCCCachingFactory.saveRegCacheItem(rci);
-            return pw;
-        });
-
-        return new SCCRegisterSystemJson(login, passwd, srv.getHostname(), hwInfo, products,
-                srv.getServerInfo().getCheckin());
     }
-
 
 }

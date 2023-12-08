@@ -36,7 +36,6 @@ Feature: PXE boot a terminal with Cobbler
     And I wait until event "Apply highstate scheduled by admin" is completed
 
   # We currently test Cobbler with SLES 15 SP4, even on Uyuni
-  @susemanager
   Scenario: Install TFTP boot package on the server
     When I install package tftpboot-installation on the server
     And I wait for "tftpboot-installation-SLE-15-SP4-x86_64" to be installed on "server"

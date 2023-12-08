@@ -50,7 +50,7 @@ end
 When(/^I bootstrap "([^"]*)" using bootstrap script with activation key "([^"]*)" from the (server|proxy)$/) do |host, key, target_type|
   # Use server if proxy is not defined as proxy is not mandatory
   target = get_target('proxy')
-  if target_type.include? 'server' or get_target('proxy').nil?
+  if target_type.include?('server') || get_target('proxy').nil?
     log 'WARN: Bootstrapping to server, because proxy is not defined.' unless target_type.include? 'server'
     target = get_target('server')
   end
@@ -74,10 +74,11 @@ When(/^I bootstrap "([^"]*)" using bootstrap script with activation key "([^"]*)
 
   # Run bootstrap script and check for result
   boostrap_script = 'bootstrap-general.exp'
-  source = File.dirname(__FILE__) + '/../upload_files/' + boostrap_script
-  dest = '/tmp/' + boostrap_script
+  source = "#{File.dirname(__FILE__)}/../upload_files/#{boostrap_script}"
+  dest = "/tmp/#{boostrap_script}"
   return_code = file_inject(target, source, dest)
   raise ScriptError, 'File injection failed' unless return_code.zero?
+
   system_name = get_system_name(host)
   output, = target.run("sed -i '/^set timeout /c\\set timeout #{DEFAULT_TIMEOUT}' /tmp/#{boostrap_script} && expect -f /tmp/#{boostrap_script} #{system_name}", verbose: true)
   unless output.include? '-bootstrap complete-'

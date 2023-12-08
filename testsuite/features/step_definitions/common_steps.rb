@@ -33,7 +33,7 @@ When(/^I mount as "([^"]+)" the ISO from "([^"]+)" in the server, validating its
   original_iso_name = url.split('/').last
   checksum_path = get_checksum_path(iso_dir, original_iso_name, url)
 
-  raise "SHA256 checksum validation failed" unless validate_checksum_with_file(original_iso_name, iso_path, checksum_path)
+  raise 'SHA256 checksum validation failed' unless validate_checksum_with_file(original_iso_name, iso_path, checksum_path)
 
   mount_point = "/srv/www/htdocs/#{name}"
   get_target('server').run("mkdir -p #{mount_point}")
@@ -49,7 +49,7 @@ end
 Then(/^the kernel for "([^"]*)" should be correct$/) do |host|
   node = get_target(host)
   kernel_version, _code = node.run('uname -r')
-  log 'I should see kernel version: ' + kernel_version
+  log "I should see kernel version: #{kernel_version}"
   step %(I should see a "#{kernel_version.strip}" text)
 end
 
@@ -86,7 +86,7 @@ end
 
 Then(/^the system ID for "([^"]*)" should be correct$/) do |host|
   client_id = $api_test.system.search_by_name(get_system_name(host)).first['id']
-  step %(I should see a "#{client_id.to_s}" text)
+  step %(I should see a "#{client_id}" text)
 end
 
 Then(/^the system name for "([^"]*)" should be correct$/) do |host|
@@ -100,8 +100,8 @@ Then(/^the uptime for "([^"]*)" should be correct$/) do |host|
   rounded_uptime_minutes = uptime[:minutes].round
   rounded_uptime_hours = uptime[:hours].round
   # needed for the library's conversion of 24h multiples plus 11 hours to consider the next day
-  eleven_hours_in_seconds = 39600 # 11 hours * 60 minutes * 60 seconds
-  rounded_uptime_days = ((uptime[:seconds] + eleven_hours_in_seconds) / 86400.0).round # 60 seconds * 60 minutes * 24 hours
+  eleven_hours_in_seconds = 39_600 # 11 hours * 60 minutes * 60 seconds
+  rounded_uptime_days = ((uptime[:seconds] + eleven_hours_in_seconds) / 86_400.0).round # 60 seconds * 60 minutes * 24 hours
 
   # the moment.js library being used has some weird rules, which these conditionals follow
   if (uptime[:days] >= 1 && rounded_uptime_days < 2) || (uptime[:days] < 1 && rounded_uptime_hours >= 22) # shows "a day ago" after 22 hours and before it's been 1.5 days
@@ -254,6 +254,7 @@ Then(/^I should see the power is "([^"]*)"$/) do |status|
   within(:xpath, '//*[@for=\'powerStatus\']/..') do
     repeat_until_timeout(message: "power is not #{status}") do
       break if check_text_and_catch_request_timeout_popup?(status)
+
       find(:xpath, '//button[@value="Get status"]').click
     end
     raise ScriptError, "Power status #{status} not found" unless check_text_and_catch_request_timeout_popup?(status)
@@ -280,18 +281,18 @@ end
 When(/^I refresh the metadata for "([^"]*)"$/) do |host|
   node = get_target(host)
   os_family = node.os_family
-  if os_family =~ /^opensuse/ || os_family =~ /^sles/
+  case os_family
+  when /^opensuse/, /^sles/
     node.run_until_ok('zypper --non-interactive refresh -s')
-  elsif os_family =~ /^centos/ || os_family =~ /^rocky/
+  when /^centos/, /^rocky/
     node.run('yum clean all && yum makecache', timeout: 600)
-  elsif os_family =~ /^ubuntu/
+  when /^ubuntu/
     node.run('apt-get update')
   else
     raise ScriptError, "The host #{host} has not yet a implementation for that step"
   end
 end
 
-# rubocop:disable Metrics/BlockLength
 # WORKAROUND for https://github.com/SUSE/spacewalk/issues/20318
 When(/^I install the needed packages for highstate in build host$/) do
   packages = 'bea-stax
@@ -476,7 +477,6 @@ When(/^I install the needed packages for highstate in build host$/) do
   xtables-plugins'
   get_target('build_host').run("zypper --non-interactive in #{packages}", timeout: 600)
 end
-# rubocop:enable Metrics/BlockLength
 
 Then(/^channel "([^"]*)" should be enabled on "([^"]*)"$/) do |channel, host|
   node = get_target(host)
@@ -523,7 +523,7 @@ Given(/^metadata generation finished for "([^"]*)"$/) do |channel|
 end
 
 When(/^I push package "([^"]*)" into "([^"]*)" channel$/) do |arg1, arg2|
-  srvurl = "https://#{ENV['SERVER']}/APP"
+  srvurl = "https://#{get_target('server').full_hostname}/APP"
   command = "rhnpush --server=#{srvurl} -u admin -p admin --nosig -c #{arg2} #{arg1} "
   get_target('server').run(command, timeout: 500)
   get_target('server').run('ls -lR /var/spacewalk/packages', timeout: 500)

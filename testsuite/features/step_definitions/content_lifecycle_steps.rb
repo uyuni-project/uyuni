@@ -46,13 +46,14 @@ When(/^I add the "([^"]*)" channel to sources$/) do |channel|
   end
 end
 
-When(/^I click the "([^\"]*)" item (.*?) button$/) do |name, action|
-  button = case action
-           when /details/ then 'i[contains(@class, \'fa-list\')]'
-           when /edit/ then 'i[contains(@class, \'fa-edit\')]'
-           when /delete/ then 'i[contains(@class, \'fa-trash\')]'
-           else raise ScriptError, "Unknown element with description '#{action}'"
-           end
+When(/^I click the "([^"]*)" item (.*?) button$/) do |name, action|
+  button =
+    case action
+    when /details/ then 'i[contains(@class, \'fa-list\')]'
+    when /edit/ then 'i[contains(@class, \'fa-edit\')]'
+    when /delete/ then 'i[contains(@class, \'fa-trash\')]'
+    else raise ScriptError, "Unknown element with description '#{action}'"
+    end
   xpath = "//td[contains(text(), '#{name}')]/ancestor::tr/td/div/button/#{button}"
   raise ScriptError, "xpath: #{xpath} not found" unless find(:xpath, xpath).click
 end
@@ -69,11 +70,7 @@ end
 When(/^I add pre-generated SSH public key to authorized_keys of host "([^"]*)"$/) do |host|
   key_filename = 'id_rsa_bootstrap-passphrase_linux.pub'
   target = get_target(host)
-  ret_code = file_inject(
-    target,
-    File.dirname(__FILE__) + '/../upload_files/ssh_keypair/' + key_filename,
-    '/tmp/' + key_filename
-  )
+  ret_code = file_inject(target, "#{File.dirname(__FILE__)}/../upload_files/ssh_keypair/#{key_filename}", "/tmp/#{key_filename}")
   target.run("cat /tmp/#{key_filename} >> /root/.ssh/authorized_keys", timeout: 500)
   raise ScriptError, 'Error copying ssh pubkey to host' if ret_code.nonzero?
 end
@@ -87,11 +84,12 @@ When(/^I restore the SSH authorized_keys file of host "([^"]*)"$/) do |host|
   target.run("rm #{auth_keys_sav_path}")
 end
 
-When(/^I add "([^\"]*)" calendar file as url$/) do |file|
-  source = File.dirname(__FILE__) + '/../upload_files/' + file
-  dest = '/srv/www/htdocs/pub/' + file
+When(/^I add "([^"]*)" calendar file as url$/) do |file|
+  source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
+  dest = "/srv/www/htdocs/pub/#{file}"
   return_code = file_inject(get_target('server'), source, dest)
   raise ScriptError, 'File injection failed' unless return_code.zero?
+
   get_target('server').run("chmod 644 #{dest}")
   url = "https://#{get_target('server').full_hostname}/pub/" + file
   log "URL: #{url}"
@@ -102,18 +100,21 @@ When(/^I deploy testing playbooks and inventory files to "([^"]*)"$/) do |host|
   target = get_target(host)
   dest = '/srv/playbooks/orion_dummy/'
   target.run("mkdir -p #{dest}")
-  source = File.dirname(__FILE__) + '/../upload_files/ansible/playbooks/orion_dummy/playbook_orion_dummy.yml'
-  return_code = file_inject(target, source, dest + 'playbook_orion_dummy.yml')
+  source = "#{File.dirname(__FILE__)}/../upload_files/ansible/playbooks/orion_dummy/playbook_orion_dummy.yml"
+  return_code = file_inject(target, source, "#{dest}playbook_orion_dummy.yml")
   raise ScriptError, 'File injection failed' unless return_code.zero?
-  source = File.dirname(__FILE__) + '/../upload_files/ansible/playbooks/orion_dummy/hosts'
-  return_code = file_inject(target, source, dest + 'hosts')
+
+  source = "#{File.dirname(__FILE__)}/../upload_files/ansible/playbooks/orion_dummy/hosts"
+  return_code = file_inject(target, source, "#{dest}hosts")
   raise ScriptError, 'File injection failed' unless return_code.zero?
-  source = File.dirname(__FILE__) + '/../upload_files/ansible/playbooks/orion_dummy/file.txt'
-  return_code = file_inject(target, source, dest + 'file.txt')
+
+  source = "#{File.dirname(__FILE__)}/../upload_files/ansible/playbooks/orion_dummy/file.txt"
+  return_code = file_inject(target, source, "#{dest}file.txt")
   raise ScriptError, 'File injection failed' unless return_code.zero?
+
   dest = '/srv/playbooks/'
-  source = File.dirname(__FILE__) + '/../upload_files/ansible/playbooks/playbook_ping.yml'
-  return_code = file_inject(target, source, dest + 'playbook_ping.yml')
+  source = "#{File.dirname(__FILE__)}/../upload_files/ansible/playbooks/playbook_ping.yml"
+  return_code = file_inject(target, source, "#{dest}playbook_ping.yml")
   raise ScriptError, 'File injection failed' unless return_code.zero?
 end
 

@@ -8,7 +8,7 @@ require 'base64'
 require 'capybara'
 require 'capybara/cucumber'
 require 'cucumber'
-#require 'simplecov'
+# require 'simplecov'
 require 'minitest/autorun'
 require 'securerandom'
 require 'selenium-webdriver'
@@ -21,14 +21,14 @@ require_relative 'commonlib'
 ## code coverage analysis
 # SimpleCov.start
 
-server = ENV['SERVER']
+server = ENV.fetch('SERVER', nil)
 if ENV['DEBUG']
   $debug_mode = true
-  STDOUT.puts('DEBUG MODE ENABLED.')
+  $stdout.puts('DEBUG MODE ENABLED.')
 end
 if ENV['REDIS_HOST']
   $code_coverage_mode = true
-  STDOUT.puts('CODE COVERAGE MODE ENABLED.')
+  $stdout.puts('CODE COVERAGE MODE ENABLED.')
 end
 
 # Channels triggered by our tests to be synchronized
@@ -38,31 +38,31 @@ $channels_synchronized = Set[]
 $context = {}
 
 # Other global variables
-$pxeboot_mac = ENV['PXEBOOT_MAC']
-$pxeboot_image = ENV['PXEBOOT_IMAGE'] || 'sles15sp3o'
-$sle12sp5_terminal_mac = ENV['SLE12SP5_TERMINAL_MAC']
-$sle15sp4_terminal_mac = ENV['SLE15SP4_TERMINAL_MAC']
-$private_net = ENV['PRIVATENET'] if ENV['PRIVATENET']
-$mirror = ENV['MIRROR']
-$server_http_proxy = ENV['SERVER_HTTP_PROXY'] if ENV['SERVER_HTTP_PROXY']
-$custom_download_endpoint = ENV['CUSTOM_DOWNLOAD_ENDPOINT'] if ENV['CUSTOM_DOWNLOAD_ENDPOINT']
-$no_auth_registry = ENV['NO_AUTH_REGISTRY'] if ENV['NO_AUTH_REGISTRY']
-$auth_registry = ENV['AUTH_REGISTRY'] if ENV['AUTH_REGISTRY']
+$pxeboot_mac = ENV.fetch('PXEBOOT_MAC', nil)
+$pxeboot_image = ENV.fetch('PXEBOOT_IMAGE', nil) || 'sles15sp3o'
+$sle12sp5_terminal_mac = ENV.fetch('SLE12SP5_TERMINAL_MAC', nil)
+$sle15sp4_terminal_mac = ENV.fetch('SLE15SP4_TERMINAL_MAC', nil)
+$private_net = ENV.fetch('PRIVATENET', nil) if ENV['PRIVATENET']
+$mirror = ENV.fetch('MIRROR', nil)
+$server_http_proxy = ENV.fetch('SERVER_HTTP_PROXY', nil) if ENV['SERVER_HTTP_PROXY']
+$custom_download_endpoint = ENV.fetch('CUSTOM_DOWNLOAD_ENDPOINT', nil) if ENV['CUSTOM_DOWNLOAD_ENDPOINT']
+$no_auth_registry = ENV.fetch('NO_AUTH_REGISTRY', nil) if ENV['NO_AUTH_REGISTRY']
+$auth_registry = ENV.fetch('AUTH_REGISTRY', nil) if ENV['AUTH_REGISTRY']
 
 # maximal wait before giving up
 # the tests return much before that delay in case of success
-STDOUT.sync = true
+$stdout.sync = true
 STARTTIME = Time.new.to_i
 Capybara.default_max_wait_time = ENV['CAPYBARA_TIMEOUT'] ? ENV['CAPYBARA_TIMEOUT'].to_i : 10
 DEFAULT_TIMEOUT = ENV['DEFAULT_TIMEOUT'] ? ENV['DEFAULT_TIMEOUT'].to_i : 250
 $is_cloud_provider = ENV['PROVIDER'].include? 'aws'
 $is_container_provider = ENV['PROVIDER'].include? 'podman'
 $is_container_server = %w[k3s podman].include? ENV.fetch('CONTAINER_RUNTIME', '')
-$is_using_build_image = ENV.fetch('IS_USING_BUILD_IMAGE') { false }
+$is_using_build_image = ENV.fetch('IS_USING_BUILD_IMAGE', false)
 $is_using_scc_repositories = (ENV.fetch('IS_USING_SCC_REPOSITORIES', 'False') != 'False')
 
 # QAM and Build Validation pipelines will provide a json file including all custom (MI) repositories
-custom_repos_path = File.dirname(__FILE__) + '/../upload_files/' + 'custom_repositories.json'
+custom_repos_path = "#{File.dirname(__FILE__)}/../upload_files/custom_repositories.json"
 if File.exist?(custom_repos_path)
   custom_repos_file = File.read(custom_repos_path)
   $custom_repositories = JSON.parse(custom_repos_file)
@@ -79,7 +79,7 @@ def capybara_register_driver
     # WORKAROUND failure at Scenario: Test IPMI functions: increase from 60 s to 180 s
     client.read_timeout = 180
     # Chrome driver options
-    chrome_options = %w[no-sandbox disable-dev-shm-usage ignore-certificate-errors disable-gpu window-size=2048,2048, js-flags=--max_old_space_size=2048]
+    chrome_options = %w[no-sandbox disable-dev-shm-usage ignore-certificate-errors disable-gpu window-size=2048,2048 js-flags=--max_old_space_size=2048]
     chrome_options << 'headless' unless $debug_mode
     capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
       chromeOptions: {
@@ -96,12 +96,7 @@ def capybara_register_driver
       unhandledPromptBehavior: 'accept'
     )
 
-    Capybara::Selenium::Driver.new(
-      app,
-      browser: :chrome,
-      desired_capabilities: capabilities,
-      http_client: client
-    )
+    Capybara::Selenium::Driver.new(app, browser: :chrome, desired_capabilities: capabilities, http_client: client)
   end
 end
 
@@ -114,7 +109,7 @@ Capybara.enable_aria_label = true
 Capybara.automatic_label_click = true
 Capybara.app_host = "https://#{server}"
 Capybara.server_port = 8888 + ENV['TEST_ENV_NUMBER'].to_i
-STDOUT.puts "Capybara APP Host: #{Capybara.app_host}:#{Capybara.server_port}"
+$stdout.puts "Capybara APP Host: #{Capybara.app_host}:#{Capybara.server_port}"
 
 # enable minitest assertions in steps
 World(MiniTest::Assertions)
@@ -123,11 +118,11 @@ World(MiniTest::Assertions)
 $api_test = new_api_client
 
 # Init CodeCoverage Handler
-$code_coverage = CodeCoverage.new(ENV['REDIS_HOST'], ENV['REDIS_PORT'], ENV['REDIS_USERNAME'], ENV['REDIS_PASSWORD']) if $code_coverage_mode
+$code_coverage = CodeCoverage.new(ENV.fetch('REDIS_HOST', nil), ENV.fetch('REDIS_PORT', nil), ENV.fetch('REDIS_USERNAME', nil), ENV.fetch('REDIS_PASSWORD', nil)) if $code_coverage_mode
 
 # Define the current feature scope
 Before do |scenario|
-  $feature_scope = scenario.location.file.split(%r{(\.feature|\/)})[-2]
+  $feature_scope = scenario.location.file.split(%r{(\.feature|/)})[-2]
 end
 
 # embed a screenshot after each failed scenario
@@ -159,7 +154,7 @@ end
 def process_code_coverage
   return if $feature_path.nil?
 
-  feature_filename = $feature_path.split(%r{(\.feature|\/)})[-2]
+  feature_filename = $feature_path.split(%r{(\.feature|/)})[-2]
   $code_coverage.jacoco_dump(feature_filename)
   $code_coverage.push_feature_coverage(feature_filename)
 end
@@ -183,19 +178,17 @@ end
 # get the Cobbler log output when it fails
 After('@scope_cobbler') do |scenario|
   if scenario.failed?
-    STDOUT.puts '=> /var/log/cobbler/cobbler.log'
+    $stdout.puts '=> /var/log/cobbler/cobbler.log'
     out, _code = get_target('server').run('tail -n20 /var/log/cobbler/cobbler.log')
     out.each_line do |line|
-      STDOUT.puts line.to_s
+      $stdout.puts line.to_s
     end
-    STDOUT.puts
+    $stdout.puts
   end
 end
 
 AfterStep do
-  if has_css?('.senna-loading', wait: 0)
-    log 'Timeout: Waiting AJAX transition' unless has_no_css?('.senna-loading', wait: 30)
-  end
+  log 'Timeout: Waiting AJAX transition' if has_css?('.senna-loading', wait: 0) && !has_no_css?('.senna-loading', wait: 30)
 end
 
 Before do
@@ -453,6 +446,14 @@ Before('@slemicro54_ssh_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['slemicro54_ssh_minion']
 end
 
+Before('@slemicro55_minion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['slemicro55_minion']
+end
+
+Before('@slemicro55_ssh_minion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['slemicro55_ssh_minion']
+end
+
 Before('@sle12sp5_buildhost') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle12sp5_buildhost']
 end
@@ -497,8 +498,8 @@ Before('@skip_for_sle_micro') do |scenario|
 end
 
 Before('@skip_for_sle_micro_ssh_minion') do |scenario|
-  sle_micro_ssh_nodes = %w[slemicro51_ssh_minion slemicro52_ssh_minion slemicro53_ssh_minion slemicro54_ssh_minion]
-  current_feature_node = scenario.location.file.split(%r{(\_smoke_tests.feature|\/)})[-2]
+  sle_micro_ssh_nodes = %w[slemicro51_ssh_minion slemicro52_ssh_minion slemicro53_ssh_minion slemicro54_ssh_minion slemicro55_ssh_minion]
+  current_feature_node = scenario.location.file.split(%r{(_smoke_tests.feature|/)})[-2]
   skip_this_scenario if sle_micro_ssh_nodes.include? current_feature_node
 end
 
@@ -574,16 +575,16 @@ end
 
 # have more infos about the errors
 def print_server_logs
-  STDOUT.puts '=> /var/log/rhn/rhn_web_ui.log'
+  $stdout.puts '=> /var/log/rhn/rhn_web_ui.log'
   out, _code = get_target('server').run('tail -n20 /var/log/rhn/rhn_web_ui.log | awk -v limit="$(date --date=\'5 minutes ago\' \'+%Y-%m-%d %H:%M:%S\')" \' $0 > limit\'')
   out.each_line do |line|
-    STDOUT.puts line.to_s
+    $stdout.puts line.to_s
   end
-  STDOUT.puts
-  STDOUT.puts '=> /var/log/rhn/rhn_web_api.log'
+  $stdout.puts
+  $stdout.puts '=> /var/log/rhn/rhn_web_api.log'
   out, _code = get_target('server').run('tail -n20 /var/log/rhn/rhn_web_api.log | awk -v limit="$(date --date=\'5 minutes ago\' \'+%Y-%m-%d %H:%M:%S\')" \' $0 > limit\'')
   out.each_line do |line|
-    STDOUT.puts line.to_s
+    $stdout.puts line.to_s
   end
-  STDOUT.puts
+  $stdout.puts
 end

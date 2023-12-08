@@ -50,8 +50,7 @@ class ApiTest
   attr_reader :schedule
   attr_reader :system
   attr_reader :user
-  attr_reader :token
-  attr_writer :token
+  attr_accessor :token
 
   ##
   # Calls a function with the given name and parameters, and returns its response.
@@ -89,7 +88,7 @@ class ApiTestXmlrpc < ApiTest
   ##
   # Returns a boolean on whether the given attribute is an XMLRPC::DateTime object or not
   def date?(attribute)
-    attribute.class == XMLRPC::DateTime
+    attribute.instance_of?(XMLRPC::DateTime)
   end
 
   ##

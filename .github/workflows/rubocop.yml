@@ -19,8 +19,17 @@ jobs:
       with:
         ruby-version: '2.5'
 
-    - name: Install RuboCop
-      run: gem install rubocop -v 0.83.0
+    - name: Install Rubocop
+      run: |
+        gem install parallel -v 1.10
+        gem install parser -v 3.0.0.0
+        gem install rainbow -v 2.2.2
+        gem install regexp_parser -v 1.8
+        gem install rexml
+        gem install rubocop-ast -v 1.7.0
+        gem install ruby-progressbar -v 1.7
+        gem install unicode-display_width -v 1.4.0
+        gem install rubocop -v 1.17.0
 
     - name: Run RuboCop
       run: |

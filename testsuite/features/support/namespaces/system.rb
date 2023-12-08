@@ -12,11 +12,7 @@ class NamespaceSystem
     @search = NamespaceSystemSearch.new(api_test)
   end
 
-  attr_reader :config
-  attr_reader :custominfo
-  attr_reader :provisioning
-  attr_reader :scap
-  attr_reader :search
+  attr_reader :config, :custominfo, :provisioning, :scap, :search
 
   # utility: retrieve server ID
   def retrieve_server_id(server)
@@ -25,7 +21,8 @@ class NamespaceSystem
 
     server_id = systems
                 .select { |s| s['name'] == server }
-                .map { |s| s['id'] }.first
+                .map { |s| s['id'] }
+                .first
     raise StandardError, "Cannot find #{server}" if server_id.nil?
 
     server_id
