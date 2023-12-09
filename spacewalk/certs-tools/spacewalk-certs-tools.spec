@@ -128,8 +128,6 @@ ln -s rhn-sudo-ssl-tool $RPM_BUILD_ROOT/%{_bindir}/mgr-sudo-ssl-tool
 %{_bindir}/mgr-bootstrap
 %{_bindir}/mgr-ssl-tool
 %{_bindir}/mgr-sudo-ssl-tool
-%{_sbindir}/mgr-push-register
-%{_sbindir}/mgr-ssh-push-init
 
 %files -n python3-%{name}
 %{python3_sitelib}/certs
