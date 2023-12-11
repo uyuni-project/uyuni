@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-search
 #
-# Copyright (c) 2024 SUSE LLC
+# Copyright (c) 2022--2024 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -16,12 +16,11 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
-
+%{!?java_version: %global java_version 11}
 %if 0%{?suse_version}
-%define java_version   11
 %global apache_group www
 %else
-%define java_version   1:11
+%define java_version   1:%{java_version}
 %global apache_group apache
 %endif
 
@@ -61,7 +60,7 @@ BuildRequires:  redstone-xmlrpc
 BuildRequires:  simple-core
 BuildRequires:  slf4j
 BuildRequires:  systemd
-BuildRequires:  (java-devel >= %{java_version} or java-11-openjdk-devel)
+BuildRequires:  (java-devel >= %{java_version} or java-%{java_version}-openjdk-devel)
 BuildRequires:  mvn(javassist:javassist)
 BuildRequires:  mvn(org.apache.commons:commons-ognl)
 BuildRequires:  mvn(org.mybatis:mybatis)
@@ -101,7 +100,7 @@ Spacewalk Server.
 
 %install
 %if 0%{?rhel}
-export JAVA_HOME=/usr/lib/jvm/java-11-openjdk/
+export JAVA_HOME=/usr/lib/jvm/java-%{java_version}-openjdk/
 %endif
 rm -fr ${RPM_BUILD_ROOT}
 ant -Djar.version=%{version} install
