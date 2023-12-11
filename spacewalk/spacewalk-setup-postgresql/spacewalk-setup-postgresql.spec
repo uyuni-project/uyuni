@@ -30,8 +30,12 @@ BuildArch:      noarch
 %if 0%{?suse_version}
 # Actual version set by prjconf, default is 14
 %{!?postgresql_version: %global postgresql_version 14}
-Requires:       postgresql-contrib-implementation = %{postgresql_version}
-Requires:       postgresql-server-implementation = %{postgresql_version}
+%{!?postgresql_version_ban: %global postgresql_version_ban %(expr %{postgresql_version} + 1)}
+Requires:       postgresql-server-implementation >= %{postgresql_version}
+Requires:       postgresql-contrib-implementation >= %{postgresql_version}
+Conflicts:      postgresql-server-implementation > %{postgresql_version_ban}
+Conflicts:      postgresql-contrib-implementation > %{postgresql_version_ban}
+
 %else
 Requires:       postgresql-contrib >= 12
 Requires:       postgresql-server > 12
