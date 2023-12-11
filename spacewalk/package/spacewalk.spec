@@ -112,10 +112,11 @@ Requires:       perl(DBD::Pg)
 %if 0%{?suse_version}
 # Actual version set by prjconf, default is 14
 %{!?postgresql_version: %global postgresql_version 14}
-Requires:       postgresql-implementation = %{postgresql_version}
-Requires:       postgresql-contrib-implementation = %{postgresql_version}
-Conflicts:      postgresql-implementation > %{postgresql_version}
-Conflicts:      postgresql-contrib-implementation > %{postgresql_version}
+%{!?postgresql_version_ban: %global postgresql_version_ban %(expr %{postgresql_version} + 1)}
+Requires:       postgresql-implementation >= %{postgresql_version}
+Requires:       postgresql-contrib-implementation >= %{postgresql_version}
+Conflicts:      postgresql-implementation > %{postgresql_version_ban}
+Conflicts:      postgresql-contrib-implementation > %{postgresql_version_ban}
 %else # not a supported SUSE version or alternative OS.
 Requires:       postgresql14
 Requires:       postgresql14-contrib
