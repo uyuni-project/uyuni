@@ -1888,6 +1888,8 @@ public class ActionManager extends BaseManager {
         Set<Long> serverIds = new HashSet<>();
         serverIds.add(server.getId());
 
+        packages = removeDuplicatedName(packages);
+
         return schedulePackageAction(scheduler, packages,
                 ActionFactory.TYPE_PACKAGES_UPDATE, earliestAction, serverIds);
     }
@@ -1952,7 +1954,7 @@ public class ActionManager extends BaseManager {
     }
 
 
-    private static List<Map<String, ? extends Object>> removeDuplicatedName(List<Map<String, Long>> packageMaps) {
+    private static List<Map<String, Long>> removeDuplicatedName(List<Map<String, Long>> packageMaps) {
         Map<String, Map<String, Long>> packageMapsWithoutDuplicated = new HashMap<>();
 
         for (Map<String, Long> map : packageMaps) {
@@ -1992,13 +1994,10 @@ public class ActionManager extends BaseManager {
     public static void addPackageActionDetails(Collection<Action> actions,
             List<Map<String, Long>> packageMaps) {
         if (packageMaps != null) {
-
-            List<Map<String, ? extends Object>> uniquePackagesMaps = removeDuplicatedName(packageMaps);
-
             List<Map<String, Object>> paramList =
                 actions.stream().flatMap(action -> {
                     String packageParameter = getPackageParameter(action);
-                    return uniquePackagesMaps.stream().map(packageMap -> {
+                    return packageMaps.stream().map(packageMap -> {
                         Map<String, Object> params = new HashMap<>();
                         params.put("action_id", action.getId());
                         params.put("name_id", packageMap.get("name_id"));
