@@ -320,15 +320,10 @@ Feature: Manage KVM virtual machines via the GUI
     And I should see a "test-net2" virtual network on "kvm_server"
     And "test-net2" virtual network on "kvm_server" should have "192.168.128.1" IPv4 address with 24 prefix
 
-@susemanager
-  Scenario: Install TFTP boot package on the server
+  # We currently test KVM with SLES 15 SP4, even on Uyuni
+  Scenario: Install the TFTP boot package on the server for KVM tests
     When I install package tftpboot-installation on the server
     And I wait for "tftpboot-installation-SLE-15-SP4-x86_64" to be installed on "server"
-
-@uyuni
- Scenario: Install TFTP boot package on the server
-   When I install package tftpboot-installation on the server
-   And I wait for "tftpboot-installation-openSUSE-Leap-15.5-x86_64" to be installed on "server"
 
 @virthost_kvm
   Scenario: Edit a virtual network
@@ -433,15 +428,9 @@ Feature: Manage KVM virtual machines via the GUI
     And I click on "Delete Distribution"
     Then I should not see a "SLE-15-SP4-KVM" text
 
-@susemanager
-  Scenario: Cleanup: Remove the TFTP boot package from the server
+  Scenario: Cleanup: Remove the TFTP boot package from the server after KVM tests
     When I remove package "tftpboot-installation-SLE-15-SP4-x86_64" from this "server" without error control
     And I wait for "tftpboot-installation-SLE-15-SP4-x86_64" to be uninstalled on "server"
-
-@uyuni
-  Scenario: Cleanup: Remove the TFTP boot package from the server
-    When I remove package "tftpboot-installation-openSUSE-Leap-15.5-x86_64" from this "server" without error control
-    And I wait for "tftpboot-installation-openSUSE-Leap-15.5-x86_64" to be uninstalled on "server"
 
   Scenario: Cleanup: Stop virtual network
     Given I am on the "Virtualization" page of this "kvm_server"
