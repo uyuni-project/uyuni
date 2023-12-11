@@ -30,7 +30,7 @@ BuildArch:      noarch
 %if 0%{?suse_version}
 # Actual version set by prjconf, default is 14
 %{!?postgresql_version: %global postgresql_version 14}
-%{!?postgresql_version_ban: %global postgresql_version_ban %(expr %{postgresql_version} + 1)}
+%{!?postgresql_version_ban: %global postgresql_version_ban 15}
 Requires:       postgresql-server-implementation >= %{postgresql_version}
 Requires:       postgresql-contrib-implementation >= %{postgresql_version}
 Conflicts:      postgresql-server-implementation > %{postgresql_version_ban}
