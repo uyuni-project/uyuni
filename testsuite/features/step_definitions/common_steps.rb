@@ -23,7 +23,7 @@ end
 When(/^I mount as "([^"]+)" the ISO from "([^"]+)" in the server$/) do |name, url|
   # When using a mirror it is automatically mounted at /mirror
   if $mirror
-    iso_path = url.sub(/^http:.*\/pub/, '/mirror/pub')
+    iso_path = url.sub(/^https?:\/\/[^\/]+/, '/mirror')
   else
     iso_path = "/tmp/#{name}.iso"
     get_target('server').run("wget --no-check-certificate -O #{iso_path} #{url}", timeout: 1500)
