@@ -948,16 +948,17 @@ end
 
 When(/^I install package tftpboot-installation on the server$/) do
   server = get_target('server')
-  os_version = server.os_version
   if product == 'Uyuni'
-    server.run("zypper --non-interactive install tftpboot-installation-openSUSE-Leap-#{os_version}-x86_64", check_errors: false, verbose: true)
-  else
+    # On Uyuni, the server runs on openSUSE Leap, but we must use SLE-15-SP4 on the build host and terminal
     output, _code = server.run('find /var/spacewalk/packages -name tftpboot-installation-SLE-15-SP4-x86_64-*.noarch.rpm')
     packages = output.split("\n")
     pattern = '/tftpboot-installation-([^/]+)*.noarch.rpm'
-    # Reverse sort the package name to get the latest version first and install it
+    # Reverse sort the package names to get the latest version first
     package = packages.min { |a, b| b.match(pattern)[0] <=> a.match(pattern)[0] }
-    server.run("rpm -i #{package}", check_errors: false)
+    server.run("rpm -i #{package}", verbose: true)
+  else
+    # On SUSE Manager, the server, build host and terminal all run on SLE 15 SP4, so let's install it directly
+    server.run('zypper --non-interactive install tftpboot-installation-SLE-15-SP4-x86_64', verbose: true)
   end
 end
 
