@@ -23,6 +23,7 @@ import static java.util.stream.Collectors.toSet;
 import com.redhat.rhn.FaultException;
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.client.ClientCertificate;
+import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.Row;
@@ -4967,6 +4968,10 @@ public class SystemHandler extends BaseHandler {
     public Integer scheduleScriptRun(User loggedInUser, String label, List<Integer>
             sids, String username, String groupname, Integer timeout, String script,
                                      Date earliestOccurrence) {
+
+        if (Config.get().getBoolean(ConfigDefaults.WEB_DISABLE_REMOTE_COMMANDS_FROM_UI)) {
+            throw new PermissionCheckFailureException("Running remote scripts has been disabled");
+        }
 
         ScriptActionDetails scriptDetails = ActionManager.createScript(username, groupname,
                 timeout.longValue(), script);
