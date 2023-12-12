@@ -60,7 +60,7 @@ if (options.insecure):
     debug("setting auto add policy for unknown ssh keys") 
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 debug("connecting to {}".format(hostname))    
-ssh.connect(hostname, options.port, options.username, options.password)
+ssh.connect(hostname, options.port, options.username, options.password, timeout = 60)
 debug("running command {}".format(options.command))
 stdin, stdout, stderr = ssh.exec_command(options.command)
 errs = stderr.readlines()
