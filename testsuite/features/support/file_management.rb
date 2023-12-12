@@ -5,32 +5,38 @@ require 'net/http'
 
 # This function tests whether a file exists on a node
 def file_exists?(node, file)
-  node.file_exists(file)
+  _out, local, _remote, code = node.test_and_store_results_together("test -f #{file}", 'root', 500)
+  code.zero? && local.zero?
 end
 
 # This function deletes a file from a node
 def file_delete(node, file)
-  node.file_delete(file)
+  _out, _local, _remote, code = node.test_and_store_results_together("rm  #{file}", 'root', 500)
+  code
 end
 
 # This function tests whether a folder exists on a node
 def folder_exists?(node, file)
-  node.folder_exists(file)
+  _out, local, _remote, code = node.test_and_store_results_together("test -d #{file}", 'root', 500)
+  code.zero? && local.zero?
 end
 
 # This function deletes a file from a node
 def folder_delete(node, folder)
-  node.folder_delete(folder)
+  _out, _local, _remote, code = node.test_and_store_results_together("rm -rf #{folder}", 'root', 500)
+  code
 end
 
 # This function extracts a file from a node
 def file_extract(node, remote_file, local_file)
-  node.extract(remote_file, local_file, 'root', false)
+  code, _remote = node.extract_file(remote_file, local_file, 'root', false)
+  code
 end
 
 # This function injects a file into a node
 def file_inject(node, local_file, remote_file)
-  node.inject(local_file, remote_file, 'root', false)
+  code, _remote = node.inject_file(local_file, remote_file, 'root', false)
+  code
 end
 
 # Generate temporary file on the controller
