@@ -128,7 +128,7 @@ class ContentSource(zypper_ContentSource):
         self.sslcacert = ca_cert_file
         self.sslclientcert = client_cert_file
         self.sslclientkey = client_key_file
-        self.http_headers = {}
+        self.http_headers = http_headers if http_headers is not None else {}
 
         self.dnfbase = dnf.Base()
         self.dnfbase.conf.read(yumsrc_conf)
@@ -253,6 +253,11 @@ class ContentSource(zypper_ContentSource):
         self.digest = hashlib.sha256(dnf_repo_url.encode("utf8")).hexdigest()[:16]
         self.dnfbase.repos.add(repo)
         self.repoid = repo.id
+        headers = tuple()
+        for key in self.http_headers:
+            headers = headers + (key + ": " + self.http_headers[key],)
+        self.dnfbase.repos[self.repoid].set_http_headers(headers)
+
         # Try loading the repo configuration
         try:
             self.dnfbase.repos[self.repoid].load()

@@ -534,7 +534,7 @@ class ContentSource:
         client_cert_file=None,
         client_key_file=None,
         channel_arch="",
-        http_headers={},
+        http_headers=None,
     ):
         """
         Plugin constructor.
@@ -558,7 +558,7 @@ class ContentSource:
         self.sslcacert = ca_cert_file
         self.sslclientcert = client_cert_file
         self.sslclientkey = client_key_file
-        self.http_headers = http_headers
+        self.http_headers = http_headers if http_headers is not None else {}
 
         # keep authtokens for mirroring
         # pylint: disable-next=invalid-name,unused-variable
