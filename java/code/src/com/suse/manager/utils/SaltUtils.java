@@ -577,9 +577,12 @@ public class SaltUtils {
             }
             Map<String, StateApplyResult<CmdResult>> stateApplyResult = Json.GSON.fromJson(jsonResult,
                     new TypeToken<Map<String, StateApplyResult<CmdResult>>>() { }.getType());
-            CmdResult result = stateApplyResult.entrySet().stream()
-                    .findFirst().map(e -> e.getValue().getChanges())
-                    .orElseGet(CmdResult::new);
+            CmdResult result = new CmdResult();
+            if (stateApplyResult != null) {
+                result = stateApplyResult.entrySet().stream()
+                        .findFirst().map(e -> e.getValue().getChanges())
+                        .orElseGet(CmdResult::new);
+            }
             ScriptRunAction scriptAction = (ScriptRunAction) action;
             ScriptResult scriptResult = Optional.ofNullable(
                     scriptAction.getScriptActionDetails().getResults())
