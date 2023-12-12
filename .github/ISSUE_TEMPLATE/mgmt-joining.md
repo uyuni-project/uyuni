@@ -41,7 +41,7 @@ General template for new joiners of the SUSE Manager team.
 - [ ] Slack
   - [ ] Update workflows (daily standup, meetings, etc.)
   - [ ] Add to user groups (`susemanager-engineers` and squad specific groups, open a ticket on https://sd.suse.com)
-- [ ] Add the user to [SUSE Manager Engineering Team](https://outlook.office.com/people/group/mysuse.onmicrosoft.com/suma-all) and squad groups (if available), to get access to the calendar (PHP, Retrospective, and all other events), and to emails send to the mailing list for the group
+- [ ] Add the user to the Google [SUSE Manager Engineering Team](https://groups.google.com/a/suse.com/g/suma-all/members) and squad groups (if available), to get access to the calendar (PHP, Retrospective, and all other events), and to emails send to the mailing list for the group
 - [ ] Add SSH public key to [SUMA infrastructure](https://gitlab.suse.de/galaxy/infrastructure/-/blob/master/srv/salt/ssh/init.sls)
 - [ ] Provide default passwords if applicable (testsuite VMs, maybe https://gitlab.suse.de/galaxy/credentials)
 - [ ] Add user to SCC organization [SUSE Manager Team Playground](https://scc.suse.com/organizations/432530/users) for SCC mirror credentials
@@ -67,4 +67,4 @@ General template for new joiners of the SUSE Manager team.
   - [ ] Add to [SUSE Manager QE Team](https://github.com/orgs/SUSE/teams/suse-manager-qe/members) on GitHub
   - [ ] Add to [Uyuni QE developer Team](https://github.com/orgs/uyuni-project/teams/qe) on GitHub
   - [ ] Add to [QE project board member list](https://github.com/orgs/SUSE/projects/32/views/1?pane=info) on GitHub
-  - [ ] Add to outlook group of the [SUMA QE Squad](https://outlook.office365.com/people/group/mysuse.onmicrosoft.com/sumaqesquad)
+  - [ ] Add to the Google [SUMA QE Squad](https://groups.google.com/a/suse.com/g/suma-qe/members) group
