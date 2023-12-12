@@ -108,7 +108,8 @@ public class MigrationManager extends BaseManager {
             ServerHistoryEvent event = new ServerHistoryEvent();
             event.setCreated(new Date());
             event.setServer(server);
-            event.setSummary("System migration");
+            // event.setSummary("System migration");
+            event.setSummary(String.format("System migration scheduled by %s", user.getLogin()));
             String details = String.format("From organization: %s, To organization: %s. " +
                     "User that initiated the transfer: %s", fromOrg.getName(), toOrg.getName(), user.getLogin());
             event.setDetails(details);
