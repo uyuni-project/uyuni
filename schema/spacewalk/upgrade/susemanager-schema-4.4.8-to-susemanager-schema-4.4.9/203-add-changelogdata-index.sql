@@ -1,27 +1,28 @@
 create or replace function remove_duplicate_changelogdata()
 returns void as
 $$
-declare original record;
-declare duplicate record;
 begin
-    for original in select min(id) as id
-            from rhnpackagechangelogdata
-            group by name, text, time
-            having count(*) > 1 loop
-        for duplicate in select data2.id
-                from rhnpackagechangelogdata data1, rhnpackagechangelogdata data2
-                where data1.name = data2.name
-                and data1.text = data2.text
-                and data1.time = data2.time
-                and data1.id != data2.id
-                and data1.id = original.id loop
-            update rhnpackagechangelogrec
-                set changelog_data_id = original.id
-                where changelog_data_id = duplicate.id;
-            delete from rhnpackagechangelogdata
-                where id = duplicate.id;
-        end loop;
-    end loop;
+    with originals as (
+        select
+            min(id) as keep_id,
+            array_agg(id) as duplicate_ids
+        from rhnpackagechangelogdata
+        group by name, text, time
+        having count(*) > 1
+    ), redundant as (
+        select id
+        from rhnpackagechangelogdata as data, originals as org
+        where data.id = any(org.duplicate_ids)
+            and data.id <> org.keep_id
+    ), update_changelogdatarec as (
+        update rhnpackagechangelogrec as rec
+            set changelog_data_id = originals.keep_id
+            from redundant, originals
+            where rec.changelog_data_id = redundant.id
+    )
+    delete from rhnpackagechangelogdata as data
+        using redundant
+        where data.id = redundant.id;
 end;
 $$ language plpgsql;
 
