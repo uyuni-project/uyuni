@@ -165,6 +165,9 @@ This package contains SUSE Manager tools
 %package bash-completion
 Summary:        Bash completion for SUSE Manager CLI tools
 Group:          Productivity/Other
+Supplements:    spacewalk-backend
+Supplements:    susemanager
+Supplements:    spacewalk-utils
 
 %description bash-completion
 Bash completion for SUSE Manager CLI tools
