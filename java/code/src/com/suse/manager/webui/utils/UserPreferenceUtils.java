@@ -204,4 +204,16 @@ public class UserPreferenceUtils {
     public String getUserTimeFormat(PageContext pageContext) {
         return "HH:mm";
     }
+
+    /**
+     * @param pageContext the current PageContext
+     * @return the user preferred page size
+     */
+    public int getUserPageSize(PageContext pageContext) {
+        User user = getAuthenticatedUser(pageContext);
+        if (isUserAuthenticated(user)) {
+            return user.getPageSize();
+        }
+        return 15;
+    }
 }

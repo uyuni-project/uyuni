@@ -7,21 +7,16 @@ import { HostInfo } from "./guests-list";
 
 type RendererProps = {
   serverId: string;
-  pageSize: number;
   saltEntitled: boolean;
   foreignEntitled: boolean;
   isAdmin: boolean;
   hostInfo?: HostInfo;
 };
 
-export const renderer = (
-  id: string,
-  { serverId, pageSize, saltEntitled, foreignEntitled, isAdmin, hostInfo }: RendererProps
-) => {
+export const renderer = (id: string, { serverId, saltEntitled, foreignEntitled, isAdmin, hostInfo }: RendererProps) => {
   SpaRenderer.renderNavigationReact(
     <GuestsList
       serverId={serverId}
-      pageSize={pageSize}
       saltEntitled={saltEntitled}
       foreignEntitled={foreignEntitled}
       isAdmin={isAdmin}
