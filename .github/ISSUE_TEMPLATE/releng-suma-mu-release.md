@@ -10,7 +10,7 @@ assignees: ''
 Related: #
 
 A couple of days before the release deadline:
-- [ ] Make sure the documentation team created a Merge Request for the [documentation.suse.com repository](https://gitlab.suse.de/susedoc/docserv-external-tree-suma). It must include the translations.
+- [ ] Ensure that the documentation team integrates the most recent updates into the master branch and the appropriate version directory at the [documentation.suse.com repository](https://gitlab.suse.de/susedoc/docserv-external-tree-suma). This process should encompass all translations, except in cases where an exemption has been explicitly granted.
 
 Release deadline:
 
