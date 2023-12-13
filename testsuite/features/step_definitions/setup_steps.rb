@@ -73,7 +73,7 @@ When(/^I view the subscription list for "([^"]*)"$/) do |user|
   end
 end
 
-When(/^I (deselect|select) "([^\"]*)" as a product$/) do |select, product|
+When(/^I (deselect|select) "([^"]*)" as a product$/) do |select, product|
   # click on the checkbox to select the product
   xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]/div/input[@type='checkbox']"
   raise ScriptError, "xpath: #{xpath} not found" unless find(:xpath, xpath).set(select == 'select')
