@@ -28,17 +28,22 @@ import semver from "semver";
       const satisfiesCoerced = semver.satisfies(installedPkg.version, semver.coerce(expectedVersion).version);
       if (!satisfies && satisfiesCoerced) {
         console.warn(
-          `WARN: ${dependency} version ${installedPkg.version} only matches ${expectedVersion} when coerced`
+          `WARN: Currently installed ${dependency} version ${installedPkg.version} only matches expected version ${expectedVersion} when coerced`
         );
       }
 
       if (!satisfies && !satisfiesCoerced) {
-        console.error(`ERROR: ${dependency} version ${installedPkg.version} does not satisfy ${expectedVersion}`);
+        console.error(
+          `ERROR: Currently installed ${dependency} version ${installedPkg.version} does not satisfy expected version ${expectedVersion}`
+        );
         process.exitCode = 1;
       }
     }
   } catch (error) {
     console.error(error);
     process.exitCode = 1;
+  }
+  if (process.exitCode > 0) {
+    console.error("Have you installed the latest dependencies? Try running: yarn install");
   }
 })();
