@@ -408,7 +408,7 @@ class RecurringEventPicker extends React.Component<RecurringEventPickerProps, Re
                     id="weekly-day-picker"
                     name="date_weekly"
                     selectedId={this.state.weekDay.id}
-                    data={this.weekDays}
+                    options={this.weekDays}
                     onSelect={this.onSelectWeekDay}
                     onFocus={this.onFocusWeekDay}
                   />
@@ -442,7 +442,7 @@ class RecurringEventPicker extends React.Component<RecurringEventPickerProps, Re
                     id="monthly-day-picker"
                     name="date_monthly"
                     selectedId={this.state.monthDay.id}
-                    data={this.monthDays}
+                    options={this.monthDays}
                     onSelect={this.onSelectMonthDay}
                     onFocus={this.onFocusMonthDay}
                   />

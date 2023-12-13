@@ -267,8 +267,6 @@ sed -i -e 's/^web.theme_default =.*$/web.theme_default = susemanager-light/' $RP
 %{www_path}/javascript/manager/*.{js,js.LICENSE.txt,css}
 %dir %{www_path}/javascript/legacy
 %{www_path}/javascript/legacy/*.{js,js.LICENSE.txt,css}
-%dir %{www_path}/javascript/legacy/select2
-%{www_path}/javascript/legacy/select2/*
 %dir %{www_path}/javascript/legacy/ace-editor
 %{www_path}/javascript/legacy/ace-editor/*
 %license LICENSE

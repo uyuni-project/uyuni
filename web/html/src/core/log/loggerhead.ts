@@ -20,7 +20,7 @@ export default class Loggerhead {
     this.setHeaders = setHeaders;
 
     // We hijack the global console to ensure errors thrown in third-party code get logged too
-    // If we're running unit tests in a Node env, skip this
+    // If we're running unit tests in a Node env or a local dev proxy, skip this
     if (window.location.hostname !== "localhost" && typeof window !== "undefined" && process.env.NODE_ENV !== "test") {
       console.log = this.log;
       console.info = this.info;

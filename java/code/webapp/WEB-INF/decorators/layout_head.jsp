@@ -29,8 +29,6 @@
     <!-- import plugins styles -->
     <link rel="stylesheet" href="/css/legacy/jquery.timepicker.css?cb=${cb_version}" />
     <link rel="stylesheet" href="/css/bootstrap-datepicker.css?cb=${cb_version}" />
-    <link rel="stylesheet" href="/javascript/select2/select2.css?cb=${cb_version}" />
-    <link rel="stylesheet" href="/javascript/select2/select2-bootstrap.css?cb=${cb_version}" />
 
     <!-- import styles -->
     <c:set var="webTheme" value="${GlobalInstanceHolder.USER_PREFERENCE_UTILS.getCurrentWebTheme(pageContext)}"/>
@@ -71,7 +69,6 @@
 
     <script src="/javascript/legacy/jquery.min.js?cb=${cb_version}"></script>
     <script src="/javascript/legacy/bootstrap.min.js?cb=${cb_version}"></script>
-    <script src="/javascript/select2/select2.js?cb=${cb_version}"></script>
     <script src="/javascript/spacewalk-essentials.js?cb=${cb_version}"></script>
     <script src="/javascript/spacewalk-checkall.js?cb=${cb_version}"></script>
     <script src="/javascript/ajax.js?cb=${cb_version}"></script>

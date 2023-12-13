@@ -283,7 +283,7 @@ class ActionSchedule extends React.Component<ActionScheduleProps, ActionSchedule
             id="action-chain"
             name="action_chain"
             selectedId={this.state.actionChain?.id}
-            data={this.state.actionChains}
+            options={this.state.actionChains}
             onSelect={this.onSelectActionChain}
             onFocus={this.onFocusActionChain}
           />

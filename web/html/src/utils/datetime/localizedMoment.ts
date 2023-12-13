@@ -225,4 +225,5 @@ function localizedMomentConstructor(input?: moment.MomentInput) {
 }
 
 const localizedMoment: typeof moment = Object.setPrototypeOf(localizedMomentConstructor, moment);
+export type LocalizedMoment = ReturnType<typeof localizedMoment>;
 export { localizedMoment, parseTimeString };
