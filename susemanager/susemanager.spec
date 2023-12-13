@@ -162,6 +162,16 @@ BuildRequires:  docbook-utils
 %description tools
 This package contains SUSE Manager tools
 
+%package bash-completion
+Summary:        Bash completion for SUSE Manager CLI tools
+Group:          Productivity/Other
+Supplements:    spacewalk-backend
+Supplements:    susemanager
+Supplements:    spacewalk-utils
+
+%description bash-completion
+Bash completion for SUSE Manager CLI tools
+
 %prep
 %setup -q
 
@@ -174,6 +184,9 @@ do
     sed -i '1s=^#!/usr/bin/\(python\|env python\)[0-9.]*=#!/usr/bin/python3=' $i;
 done
 %endif
+
+# Bash completion
+%make_build -C bash-completion
 
 %install
 mkdir -p %{buildroot}/%{_prefix}/lib/susemanager/bin/
@@ -229,6 +242,9 @@ rm -f %{buildroot}/%{_prefix}/lib/susemanager/bin/server-migrator.sh
 make -C po install PREFIX=$RPM_BUILD_ROOT
 
 %find_lang susemanager
+
+# Bash completion
+%make_install -C bash-completion
 
 %check
 # we need to build a fake python dir. python did not work with
@@ -329,5 +345,12 @@ sed -i '/You can access .* via https:\/\//d' /tmp/motd 2> /dev/null ||:
 %{reporoot}/repositories/empty-deb/Packages
 %{reporoot}/repositories/empty-deb/Release
 /etc/apache2/conf.d/empty-repo.conf
+
+%files bash-completion
+%{_datadir}/bash-completion/completions/mgr-sync
+%{_datadir}/bash-completion/completions/mgr-create-bootstrap-repo
+%{_datadir}/bash-completion/completions/spacewalk-common-channels
+%{_datadir}/bash-completion/completions/spacewalk-remove-channel
+%{_datadir}/bash-completion/completions/spacewalk-repo-sync
 
 %changelog
