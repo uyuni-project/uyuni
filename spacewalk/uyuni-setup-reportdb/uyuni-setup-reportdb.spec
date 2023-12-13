@@ -15,6 +15,9 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
+# Actual version set by prjconf, default is 14
+%{!?postgresql_version_min: %global postgresql_version_min 14}
+%{!?postgresql_version_max: %global postgresql_version_max 15}
 
 Name:           uyuni-setup-reportdb
 Version:        4.4.6
@@ -27,17 +30,15 @@ Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 %if 0%{?suse_version}
-# Actual version set by prjconf, default is 14
-%{!?postgresql_version_min: %global postgresql_version_min 14}
-%{!?postgresql_version_max: %global postgresql_version_max 15}
 Requires:       postgresql-server-implementation >= %{postgresql_version_min}
 Requires:       postgresql-contrib-implementation >= %{postgresql_version_min}
 Conflicts:      postgresql-server-implementation > %{postgresql_version_max}
 Conflicts:      postgresql-contrib-implementation > %{postgresql_version_max}
-
 %else
-Requires:       postgresql-contrib >= 12
-Requires:       postgresql-server > 12
+Requires:       postgresql-server >= %{postgresql_version_min}
+Requires:       postgresql-contrib >= %{postgresql_version_min}
+Conflicts:      postgresql-server < %{postgresql_version_max}
+Conflicts:      postgresql-contrib < %{postgresql_version_max}
 %endif
 Requires:       lsof
 Requires:       susemanager-schema-utility

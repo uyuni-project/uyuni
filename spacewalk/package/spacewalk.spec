@@ -16,6 +16,9 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
+# Actual version set by prjconf, default is 14
+%{!?postgresql_version_min: %global postgresql_version_min 14}
+%{!?postgresql_version_max: %global postgresql_version_max 15}
 
 Name:           spacewalk
 Version:        4.4.5
@@ -110,20 +113,15 @@ Requires:       spacewalk-backend-sql-postgresql
 Requires:       spacewalk-java-postgresql
 Requires:       perl(DBD::Pg)
 %if 0%{?suse_version}
-# Actual version set by prjconf, default is 14
-%{!?postgresql_version_min: %global postgresql_version_min 14}
-%{!?postgresql_version_max: %global postgresql_version_max 15}
 Requires:       postgresql-implementation >= %{postgresql_version_min}
 Requires:       postgresql-contrib-implementation >= %{postgresql_version_min}
 Conflicts:      postgresql-implementation > %{postgresql_version_max}
 Conflicts:      postgresql-contrib-implementation > %{postgresql_version_max}
 %else # not a supported SUSE version or alternative OS.
-Requires:       postgresql14
-Requires:       postgresql14-contrib
-# we do not support postgresql versions > 14.x yet
-# Hardcoded v15 conflict due to PostgreSQL bug 17507 (instead of >= 15)
-Conflicts:      postgresql15
-Conflicts:      postgresql15-contrib
+Requires:       postgresql >= %{postgresql_version_min}
+Requires:       postgresql-contrib >= %{postgresql_version_min}
+Conflicts:      postgresql > %{postgresql_version_max}
+Conflicts:      postgresql-contrib > %{postgresql_version_max}
 %endif # if sle_Version
 
 %description postgresql
