@@ -77,6 +77,11 @@ public class TestSaltApi implements SaltApi {
     }
 
     @Override
+    public Optional<Boolean> mkDir(Path path, String modeString) {
+        return Optional.empty();
+    }
+
+    @Override
     public Optional<Boolean> copyFile(Path src, Path dst) {
         throw new UnsupportedOperationException();
     }
