@@ -194,6 +194,37 @@ Feature: Synchronize products in the products page of the Setup Wizard
   Scenario: Add SUSE Linux Enterprise Server 15 SP5 Uyuni Client tools
     When I use spacewalk-common-channel to add channel "sles15-sp5-devel-uyuni-client" with arch "x86_64"
 
+
+  @sleforsap15sp5_paygo_minion
+  Scenario: Add SUSE Linux Enterprise Server for SAP Applications 15 SP5
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "Loading" text
+    And I enter "SUSE Linux Enterprise Server for SAP Applications 15 SP5" as the filtered product description
+    And I select "SUSE Linux Enterprise Server for SAP Applications 15 SP5 x86_64" as a product
+    Then I should see the "SUSE Linux Enterprise Server for SAP Applications 15 SP5 x86_64" selected
+    When I open the sub-list of the product "SUSE Linux Enterprise Server for SAP Applications 15 SP5 x86_64"
+    And I open the sub-list of the product "Basesystem Module 15 SP5 x86_64"
+    And I select "Desktop Applications Module 15 SP5 x86_64" as a product
+    Then I should see the "Desktop Applications Module 15 SP5 x86_64" selected
+    When I open the sub-list of the product "Desktop Applications Module 15 SP5 x86_64"
+    And I select "Development Tools Module 15 SP5 x86_64" as a product
+    Then I should see the "Development Tools Module 15 SP5 x86_64" selected
+    When I open the sub-list of the product "Server Applications Module 15 SP5 x86_64"
+    And I select "SAP Applications Module 15 SP5 x86_64" as a product
+    Then I should see the "SAP Applications Module 15 SP5 x86_64" selected
+    When I click the Add Product button
+    And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
+    And I wait until I see "SUSE Linux Enterprise Server for SAP Applications 15 SP5 x86_64" product has been added
+    And I wait until all synchronized channels for "slesforsap15-sp5" have finished
+
+  @cloud
+  @sleforsap15sp5_minion
+  Scenario: Add SUSE Linux Enterprise Server 15 SP5 Public Cloud channels
+    When I add "sle-module-public-cloud15-sp5-pool-x86_64-sap" channel
+    And I wait until the channel "sle-module-public-cloud15-sp5-pool-x86_64-sap" has been synced
+    And I add "sle-module-public-cloud15-sp5-updates-x86_64-sap" channel
+    And I wait until the channel "sle-module-public-cloud15-sp5-updates-x86_64-sap" has been synced
+
 @susemanager
 @slemicro51_minion
   Scenario: Add SUSE Linux Enterprise Micro 5.1
@@ -483,6 +514,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I click the Add Product button
     And I wait until I see "RHEL and Liberty 9 Base" product has been added
 
+@skip_if_paygo_server
 @susemanager
 @rocky8_minion
   Scenario: Add SUSE Linux Enterprise Server with Expanded Support 8

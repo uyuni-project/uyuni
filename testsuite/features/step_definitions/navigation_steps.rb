@@ -412,8 +412,22 @@ Given(/^I am not authorized$/) do
   raise 'Button \'Sign In\' not visible' unless find_button('Sign In').visible?
 end
 
-When(/^I go to the home page$/) do
-  visit Capybara.app_host
+When(/^I go to the home page((?: resetting the session)?)$/) do |reset_session|
+  if reset_session.empty?
+    visit Capybara.app_host
+  else
+    begin
+      page.reset!
+    rescue NoMethodError => e
+      log "The browser session could not be cleaned because there is no browser available: #{e.message}"
+      capybara_register_driver
+    rescue StandardError => e
+      log "The browser session could not be cleaned for unknown issue: #{e.message}"
+      capybara_register_driver
+    ensure
+      visit Capybara.app_host
+    end
+  end
 end
 
 Given(/^I access the host the first time$/) do
@@ -428,6 +442,9 @@ Given(/^I am authorized for the "([^"]*)" section$/) do |section|
     step 'I am authorized as "admin" with password "admin"'
   when 'Images'
     step 'I am authorized as "kiwikiwi" with password "kiwikiwi"'
+  when 'Paygo'
+    paygo_password = $server_instance_id
+    step "I am authorized as \"admin\" with password \"#{paygo_password}\""
   else
     log "Section #{section} not supported"
   end
@@ -534,17 +551,7 @@ end
 # login, logout steps
 
 Given(/^I am authorized as "([^"]*)" with password "([^"]*)"$/) do |user, passwd|
-  begin
-    page.reset!
-  rescue NoMethodError => e
-    log "The browser session could not be cleaned because there is no browser available: #{e.message}"
-    capybara_register_driver
-  rescue StandardError => e
-    log "The browser session could not be cleaned for unknown issue: #{e.message}"
-    capybara_register_driver
-  ensure
-    visit Capybara.app_host
-  end
+  step 'I go to the home page resetting the session'
   next if all(:xpath, "//header//span[text()='#{user}']", wait: 0).any?
 
   begin
@@ -698,6 +705,13 @@ end
 Then(/^I should see a "([^"]*)" or "([^"]*)" text in element "([^"]*)"$/) do |text1, text2, element|
   within(:xpath, "//div[@id=\"#{element}\" or @class=\"#{element}\"]") do
     raise "Texts #{text1} and #{text2} not found in #{element}" unless check_text_and_catch_request_timeout_popup?(text1, text2: text2)
+  end
+end
+
+Then(/^I should see "([^"]*)" hostname in element "([^"]*)"$/) do |host, element|
+  system_name = get_system_name(host)
+  within(:xpath, "//div[@id=\"#{element}\" or @class=\"#{element}\"]") do
+    raise "Texts #{text1} and #{text2} not found in #{element}" unless check_text_and_catch_request_timeout_popup?(system_name)
   end
 end
 

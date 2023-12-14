@@ -1,0 +1,8 @@
+# This file describes the order of features in a Build Validation test suite run.
+
+## PAYGO testing BEGIN ###
+- features/build_validation/paygo_testing/srv_clone_software_channels.feature
+- features/core/srv_organization_credentials.feature
+- features/build_validation/paygo_testing/srv_disable_scc_forward.feature
+
+## PAYGO testing END ###

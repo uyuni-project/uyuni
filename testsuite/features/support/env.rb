@@ -47,6 +47,7 @@ $server_http_proxy = ENV['SERVER_HTTP_PROXY'] if ENV['SERVER_HTTP_PROXY']
 $custom_download_endpoint = ENV['CUSTOM_DOWNLOAD_ENDPOINT'] if ENV['CUSTOM_DOWNLOAD_ENDPOINT']
 $no_auth_registry = ENV['NO_AUTH_REGISTRY'] if ENV['NO_AUTH_REGISTRY']
 $auth_registry = ENV['AUTH_REGISTRY'] if ENV['AUTH_REGISTRY']
+$server_instance_id = ENV['SERVER_INSTANCE_ID'] if ENV['SERVER_INSTANCE_ID']
 
 # maximal wait before giving up
 # the tests return much before that delay in case of success
@@ -58,6 +59,7 @@ $is_cloud_provider = ENV['PROVIDER'].include? 'aws'
 $is_container_provider = ENV['PROVIDER'].include? 'podman'
 $is_container_server = %w[k3s podman].include? ENV.fetch('CONTAINER_RUNTIME', '')
 $is_using_build_image = ENV.fetch('IS_USING_BUILD_IMAGE') { false }
+$is_using_paygo_server = (ENV.fetch('IS_USING_PAYGO_SERVER', 'False') == 'True')
 $is_using_scc_repositories = (ENV.fetch('IS_USING_SCC_REPOSITORIES', 'False') != 'False')
 
 # QAM and Build Validation pipelines will provide a json file including all custom (MI) repositories
@@ -211,6 +213,14 @@ Before('@proxy') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['proxy']
 end
 
+Before('@paygo_server') do
+  skip_this_scenario unless $is_using_paygo_server
+end
+
+Before('@skip_if_paygo_server') do
+  skip_this_scenario if $is_using_paygo_server
+end
+
 Before('@sle_client') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['client']
 end
@@ -343,6 +353,10 @@ Before('@debian12_ssh_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['debian12_ssh_minion']
 end
 
+Before('@sleforsap15sp5_paygo_minion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sleforsap15sp5_paygo_minion']
+end
+
 Before('@sle12sp4_client') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle12sp4_client']
 end
@@ -365,6 +379,10 @@ end
 
 Before('@sle12sp5_ssh_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle12sp5_ssh_minion']
+end
+
+Before('@sle12sp5_paygo_minion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle12sp5_paygo_minion']
 end
 
 Before('@sle15sp1_client') do
@@ -415,6 +433,10 @@ Before('@sle15sp4_ssh_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp4_ssh_minion']
 end
 
+Before('@sle15sp4_byos_minion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp4_byos_minion']
+end
+
 Before('@sle15sp5_client') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp5_client']
 end
@@ -425,6 +447,10 @@ end
 
 Before('@sle15sp5_ssh_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp5_ssh_minion']
+end
+
+Before('@sle15sp5_paygo_minion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp5_paygo_minion']
 end
 
 Before('@opensuse154arm_minion') do

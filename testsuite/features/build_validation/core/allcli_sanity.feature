@@ -72,6 +72,13 @@ Feature: Sanity checks
     And "sle12sp5_minion" should communicate with the server using public interface
     And the clock from "sle12sp5_minion" should be exact
 
+@sle12sp5_paygo_minion
+  Scenario: The SLES 12 SP5 paygo minion is healthy
+    Then "sle12sp5_paygo_minion" should have a FQDN
+    And reverse resolution should work for "sle12sp5_paygo_minion"
+    And "sle12sp5_paygo_minion" should communicate with the server using public interface
+    And the clock from "sle12sp5_paygo_minion" should be exact
+
 @sle12sp5_ssh_minion
   Scenario: The SLES 12 SP5 Salt SSH minion is healthy
     Then "sle12sp5_minion" should have a FQDN
@@ -176,6 +183,13 @@ Feature: Sanity checks
     And reverse resolution should work for "sle15sp5_minion"
     And "sle15sp5_minion" should communicate with the server using public interface
     And the clock from "sle15sp4_minion" should be exact
+
+@sle15sp5_paygo_minion
+  Scenario: The SLES 15 SP5 paygo minion is healthy
+    Then "sle15sp5_paygo_minion" should have a FQDN
+    And reverse resolution should work for "sle15sp5_paygo_minion"
+    And "sle15sp5_paygo_minion" should communicate with the server using public interface
+    And the clock from "sle15sp5_paygo_minion" should be exact
 
 @sle15sp5_ssh_minion
   Scenario: The SLES 15 SP5 Salt SSH minion is healthy

@@ -15,12 +15,14 @@ ENV_VAR_BY_HOST = { 'localhost' => 'HOSTNAME',
                     'build_host' => 'BUILD_HOST',
                     'salt_migration_minion' => 'MIN_NESTED',
                     # Build Validation environment
+                    'sleforsap15sp5_paygo_minion' => 'SLEFORSAP15SP5_PAYGO_MINION',
                     'sle12sp4_client' => 'SLE12SP4_CLIENT',
                     'sle12sp4_minion' => 'SLE12SP4_MINION',
                     'sle12sp4_ssh_minion' => 'SLE12SP4_SSHMINION',
                     'sle12sp5_client' => 'SLE12SP5_CLIENT',
                     'sle12sp5_minion' => 'SLE12SP5_MINION',
                     'sle12sp5_ssh_minion' => 'SLE12SP5_SSHMINION',
+                    'sle12sp5_paygo_minion' => 'SLE12SP5_PAYGO_MINION',
                     'sle12sp5_buildhost' => 'SLE12SP5_BUILDHOST',
                     'sle15sp1_client' => 'SLE15SP1_CLIENT',
                     'sle15sp1_minion' => 'SLE15SP1_MINION',
@@ -33,12 +35,14 @@ ENV_VAR_BY_HOST = { 'localhost' => 'HOSTNAME',
                     'sle15sp3_ssh_minion' => 'SLE15SP3_SSHMINION',
                     'sle15sp4_client' => 'SLE15SP4_CLIENT',
                     'sle15sp4_minion' => 'SLE15SP4_MINION',
+                    'sle15sp4_byos_minion' => 'SLE15SP4_BYOS_MINION',
                     'sle15sp4_ssh_minion' => 'SLE15SP4_SSHMINION',
                     'sle15sp4_buildhost' => 'SLE15SP4_BUILDHOST',
                     'monitoring_server' => 'MONITORING_SERVER',
                     'sle15sp5_client' => 'SLE15SP5_CLIENT',
                     'sle15sp5_minion' => 'SLE15SP5_MINION',
                     'sle15sp5_ssh_minion' => 'SLE15SP5_SSHMINION',
+                    'sle15sp5_paygo_minion' => 'SLE15SP5_PAYGO_MINION',
                     'slemicro51_minion' => 'SLEMICRO51_MINION',
                     'slemicro51_ssh_minion' => 'SLEMICRO51_SSHMINION',
                     'slemicro52_minion' => 'SLEMICRO52_MINION',
@@ -166,6 +170,7 @@ PACKAGE_BY_CLIENT = { 'sle_client' => 'bison',
                       'sle12sp5_client' => 'bison',
                       'sle12sp5_minion' => 'bison',
                       'sle12sp5_ssh_minion' => 'bison',
+                      'sle12sp5_paygo_minion' => 'bison',
                       'sle15sp1_client' => 'bison',
                       'sle15sp1_minion' => 'bison',
                       'sle15sp1_ssh_minion' => 'bison',
@@ -178,9 +183,11 @@ PACKAGE_BY_CLIENT = { 'sle_client' => 'bison',
                       'sle15sp4_client' => 'bison',
                       'sle15sp4_minion' => 'bison',
                       'sle15sp4_ssh_minion' => 'bison',
+                      'sle15sp4_byos_minion' => 'bison',
                       'sle15sp5_client' => 'bison',
                       'sle15sp5_minion' => 'bison',
                       'sle15sp5_ssh_minion' => 'bison',
+                      'sle15sp5_paygo_minion' => 'bison',
                       'slemicro51_minion' => 'ethtool',
                       'slemicro51_ssh_minion' => 'ethtool',
                       'slemicro52_minion' => 'ethtool',
@@ -246,6 +253,7 @@ BASE_CHANNEL_BY_CLIENT = { 'SUSE Manager' =>
                               'sle12sp5_ssh_minion' => 'SLES12-SP5-Pool for x86_64',
                               'sle12sp5_buildhost' => 'SLES12-SP5-Pool for x86_64',
                               'sle12sp5_terminal' => 'SLES12-SP5-Pool for x86_64',
+                              'sle12sp5_paygo_minion' => 'SLES12-SP5-Pool for x86_64',
                               'sle15sp1_client' => 'SLE-Product-SLES15-SP1-Pool for x86_64',
                               'sle15sp1_minion' => 'SLE-Product-SLES15-SP1-Pool for x86_64',
                               'sle15sp1_ssh_minion' => 'SLE-Product-SLES15-SP1-Pool for x86_64',
@@ -259,11 +267,13 @@ BASE_CHANNEL_BY_CLIENT = { 'SUSE Manager' =>
                               'sle15sp4_minion' => 'SLE-Product-SLES15-SP4-Pool for x86_64',
                               'sle15sp4_ssh_minion' => 'SLE-Product-SLES15-SP4-Pool for x86_64',
                               'sle15sp4_buildhost' => 'SLE-Product-SLES15-SP4-Pool for x86_64',
+                              'sle15sp4_byos_minion' => 'SLE-Product-SLES15-SP4-Pool for x86_64',
                               'monitoring_server' => 'SLE-Product-SLES15-SP4-Pool for x86_64',
                               'sle15sp4_terminal' => 'SLE-Product-SLES15-SP4-Pool for x86_64',
                               'sle15sp5_client' => 'SLE-Product-SLES15-SP5-Pool for x86_64',
                               'sle15sp5_minion' => 'SLE-Product-SLES15-SP5-Pool for x86_64',
                               'sle15sp5_ssh_minion' => 'SLE-Product-SLES15-SP5-Pool for x86_64',
+                              'sle15sp5_paygo_minion' => 'SLE-Product-SLES15-SP5-Pool for x86_64',
                               'slemicro51_minion' => 'SUSE-MicroOS-5.1-Pool for x86_64',
                               'slemicro51_ssh_minion' => 'SUSE-MicroOS-5.1-Pool for x86_64',
                               'slemicro52_minion' => 'SUSE-MicroOS-5.2-Pool for x86_64',
@@ -319,6 +329,7 @@ BASE_CHANNEL_BY_CLIENT = { 'SUSE Manager' =>
                               'sle12sp5_ssh_minion' => 'SLES12-SP5-Pool for x86_64',
                               'sle12sp5_buildhost' => 'SLES12-SP5-Pool for x86_64',
                               'sle12sp5_terminal' => 'SLES12-SP5-Pool for x86_64',
+                              'sle12sp5_paygo_minion' => 'SLES12-SP5-Pool for x86_64',
                               'sle15sp1_minion' => 'SLE-Product-SLES15-SP1-Pool for x86_64',
                               'sle15sp1_ssh_minion' => 'SLE-Product-SLES15-SP1-Pool for x86_64',
                               'sle15sp2_minion' => 'SLE-Product-SLES15-SP2-Pool for x86_64',
@@ -327,11 +338,13 @@ BASE_CHANNEL_BY_CLIENT = { 'SUSE Manager' =>
                               'sle15sp3_ssh_minion' => 'SLE-Product-SLES15-SP3-Pool for x86_64',
                               'sle15sp4_minion' => 'SLE-Product-SLES15-SP4-Pool for x86_64',
                               'sle15sp4_ssh_minion' => 'SLE-Product-SLES15-SP4-Pool for x86_64',
+                              'sle15sp4_byos_minion' => 'SLE-Product-SLES15-SP4-Pool for x86_64',
                               'sle15sp4_buildhost' => 'SLE-Product-SLES15-SP4-Pool for x86_64',
                               'monitoring_server' => 'SLE-Product-SLES15-SP4-Pool for x86_64',
                               'sle15sp4_terminal' => 'SLE-Product-SLES15-SP4-Pool for x86_64',
                               'sle15sp5_minion' => 'SLE-Product-SLES15-SP5-Pool for x86_64',
                               'sle15sp5_ssh_minion' => 'SLE-Product-SLES15-SP5-Pool for x86_64',
+                              'sle15sp5_paygo_minion' => 'SLE-Product-SLES15-SP5-Pool for x86_64',
                               'slemicro51_minion' => 'SUSE-MicroOS-5.1-Pool for x86_64',
                               'slemicro51_ssh_minion' => 'SUSE-MicroOS-5.1-Pool for x86_64',
                               'slemicro52_minion' => 'SUSE-MicroOS-5.2-Pool for x86_64',
@@ -585,6 +598,7 @@ PKGARCH_BY_CLIENT = { 'proxy' => 'x86_64',
                       'sle12sp5_client' => 'x86_64',
                       'sle12sp5_minion' => 'x86_64',
                       'sle12sp5_ssh_minion' => 'x86_64',
+                      'sle12sp5_paygo_minion' => 'x86_64',
                       'sle15sp1_client' => 'x86_64',
                       'sle15sp1_minion' => 'x86_64',
                       'sle15sp1_ssh_minion' => 'x86_64',
@@ -597,9 +611,11 @@ PKGARCH_BY_CLIENT = { 'proxy' => 'x86_64',
                       'sle15sp4_client' => 'x86_64',
                       'sle15sp4_minion' => 'x86_64',
                       'sle15sp4_ssh_minion' => 'x86_64',
+                      'sle15sp4_byos_minion' => 'x86_64',
                       'sle15sp5_client' => 'x86_64',
                       'sle15sp5_minion' => 'x86_64',
                       'sle15sp5_ssh_minion' => 'x86_64',
+                      'sle15sp5_paygo_minion' => 'x86_64',
                       'slemicro51_minion' => 'x86_64',
                       'slemicro51_ssh_minion' => 'x86_64',
                       'slemicro52_minion' => 'x86_64',
@@ -836,6 +852,25 @@ CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION = {
       sle-product-sles15-sp5-updates-x86_64
       sles15-sp5-uyuni-client-x86_64
     ],
+  'slesforsap15-sp5' =>
+    %w[
+      sle-manager-tools15-pool-x86_64-sap-sp5
+      sle-manager-tools15-updates-x86_64-sap-sp5
+      sle-module-basesystem15-sp5-pool-x86_64-sap
+      sle-module-basesystem15-sp5-updates-x86_64-sap
+      sle-module-desktop-applications15-sp5-pool-x86_64-sap
+      sle-module-desktop-applications15-sp5-updates-x86_64-sap
+      sle-module-devtools15-sp5-pool-x86_64-sap
+      sle-module-devtools15-sp5-updates-x86_64-sap
+      sle-module-server-applications15-sp5-pool-x86_64-sap
+      sle-module-server-applications15-sp5-updates-x86_64-sap
+      sle-product-sles_sap15-sp5-pool-x86_64
+      sle-product-sles_sap15-sp5-updates-x86_64
+      sle-product-ha15-sp5-pool-x86_64-sap
+      sle-product-ha15-sp5-updates-x86_64-sap
+      sle-module-sap-applications15-sp5-pool-x86_64
+      sle-module-sap-applications15-sp5-updates-x86_64
+    ],
   'res7' =>
     %w[
       rhel-x86_64-server-7
@@ -967,5 +1002,81 @@ CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION = {
       sle-product-suse-manager-retail-branch-server-4.3-updates-x86_64
       sle-module-suse-manager-retail-branch-server-4.3-pool-x86_64
       sle-module-suse-manager-retail-branch-server-4.3-updates-x86_64
+    ]
+}.freeze
+
+PAYGO_DEFAULT_PRODUCTS = {
+  'server' =>
+    [
+      '[ ] AlmaLinux 8 aarch64',
+      '[ ] AlmaLinux 8 x86_64',
+      '[ ] AlmaLinux 9 aarch64',
+      '[ ] AlmaLinux 9 x86_64',
+      '[ ] Amazon Linux 2 aarch64',
+      '[ ] Amazon Linux 2 x86_64',
+      '[ ] CentOS 7 aarch64',
+      '[ ] CentOS 7 x86_64',
+      '[ ] CentOS 8 aarch64',
+      '[ ] CentOS 8 x86_64',
+      '[ ] openSUSE Leap 15.1 x86_64',
+      '[ ] openSUSE Leap 15.2 x86_64',
+      '[ ] openSUSE Leap 15.3 aarch64',
+      '[ ] openSUSE Leap 15.3 ppc64le',
+      '[ ] openSUSE Leap 15.3 s390x',
+      '[ ] openSUSE Leap 15.3 x86_64',
+      '[ ] openSUSE Leap 15.4 aarch64',
+      '[ ] openSUSE Leap 15.4 ppc64le',
+      '[ ] openSUSE Leap 15.4 s390x',
+      '[ ] openSUSE Leap 15.4 x86_64',
+      '[ ] openSUSE Leap 15.5 aarch64',
+      '[ ] openSUSE Leap 15.5 ppc64le',
+      '[ ] openSUSE Leap 15.5 s390x',
+      '[ ] openSUSE Leap 15.5 x86_64',
+      '[ ] Oracle Linux 8 aarch64',
+      '[ ] Oracle Linux 8 x86_64',
+      '[ ] Oracle Linux 9 aarch64',
+      '[ ] Oracle Linux 9 x86_64',
+      '[ ] RHEL and Liberty 9 Base',
+      '[ ] RHEL or SLES ES or CentOS 8 Base',
+      '[ ] RHEL7 Base x86_64',
+      '[ ] Rocky Linux 8 aarch64',
+      '[ ] Rocky Linux 8 x86_64',
+      '[ ] Rocky Linux 9 aarch64',
+      '[ ] Rocky Linux 9 x86_64',
+      '[ ] SUSE Manager Proxy 4.3 x86_64',
+      '[ ] SUSE Manager Server 4.3 x86_64'
+    ],
+  'sle12sp5_paygo_minion' =>
+    [
+      '[ ] SUSE Linux Enterprise Server 12 SP1 x86_64',
+      '[ ] SUSE Linux Enterprise Server 12 SP2 x86_64',
+      '[ ] SUSE Linux Enterprise Server 12 SP3 x86_64',
+      '[ ] SUSE Linux Enterprise Server 12 SP4 x86_64',
+      '[ ] SUSE Linux Enterprise Server 12 SP5 x86_64',
+      '[ ] SUSE Linux Enterprise Server 12 x86_64'
+    ],
+  'sle15sp5_paygo_minion' =>
+    [
+      '[ ] SUSE Linux Enterprise Server 15 SP1 x86_64',
+      '[ ] SUSE Linux Enterprise Server 15 SP2 x86_64',
+      '[ ] SUSE Linux Enterprise Server 15 SP3 x86_64',
+      '[ ] SUSE Linux Enterprise Server 15 SP4 x86_64',
+      '[ ] SUSE Linux Enterprise Server 15 SP5 x86_64',
+      '[ ] SUSE Linux Enterprise Server 15 x86_64'
+    ],
+  'sleforsap15sp5_paygo_minion' =>
+    [
+      '[ ] SUSE Linux Enterprise Server for SAP Applications 12 SP1 x86_64',
+      '[ ] SUSE Linux Enterprise Server for SAP Applications 12 SP2 x86_64',
+      '[ ] SUSE Linux Enterprise Server for SAP Applications 12 SP3 x86_64',
+      '[ ] SUSE Linux Enterprise Server for SAP Applications 12 SP4 x86_64',
+      '[ ] SUSE Linux Enterprise Server for SAP Applications 12 SP5 x86_64',
+      '[ ] SUSE Linux Enterprise Server for SAP Applications 12 x86_64',
+      '[ ] SUSE Linux Enterprise Server for SAP Applications 15 SP1 x86_64',
+      '[ ] SUSE Linux Enterprise Server for SAP Applications 15 SP2 x86_64',
+      '[ ] SUSE Linux Enterprise Server for SAP Applications 15 SP3 x86_64',
+      '[ ] SUSE Linux Enterprise Server for SAP Applications 15 SP4 x86_64',
+      '[ ] SUSE Linux Enterprise Server for SAP Applications 15 SP5 x86_64',
+      '[ ] SUSE Linux Enterprise Server for SAP Applications 15 x86_64'
     ]
 }.freeze
