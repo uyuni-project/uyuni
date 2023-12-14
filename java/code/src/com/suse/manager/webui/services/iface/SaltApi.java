@@ -27,7 +27,6 @@ import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
 import com.suse.manager.webui.utils.salt.custom.SystemInfo;
 import com.suse.salt.netapi.calls.LocalAsyncResult;
 import com.suse.salt.netapi.calls.LocalCall;
-import com.suse.salt.netapi.calls.RunnerCall;
 import com.suse.salt.netapi.calls.modules.SaltUtil;
 import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.calls.runner.Jobs;
