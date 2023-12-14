@@ -563,11 +563,9 @@ public class SaltSSHService {
 
     // create temp key absolute path
     private Path createTempKeyFilePath() {
-        if (Files.notExists(SSH_TEMP_BOOTSTRAP_KEY_DIR)) {
-            if (!GlobalInstanceHolder.SALT_API.mkDir(SSH_TEMP_BOOTSTRAP_KEY_DIR, "0600").orElse(false)) {
-                LOG.error("Unable to create temp ssh bootstrap directory");
-                return null;
-            }
+        if (!GlobalInstanceHolder.SALT_API.mkDir(SSH_TEMP_BOOTSTRAP_KEY_DIR, "0700").orElse(false)) {
+            LOG.error("Unable to create temp ssh bootstrap directory");
+            return null;
         }
         String fileName = "boostrapKeyTmp-" + UUID.randomUUID();
         return SSH_TEMP_BOOTSTRAP_KEY_DIR.resolve(fileName).toAbsolutePath();
