@@ -5,24 +5,19 @@ begin
     with originals as (
         select
             min(id) as keep_id,
-            array_agg(id) as duplicate_ids
+            array_remove(array_agg(id), min(id)) as duplicate_ids
         from rhnpackagechangelogdata
         group by name, text, time
         having count(*) > 1
-    ), redundant as (
-        select id
-        from rhnpackagechangelogdata as data, originals as org
-        where data.id = any(org.duplicate_ids)
-            and data.id <> org.keep_id
-    ), update_changelogdatarec as (
+    ), duplicate_rec as (
         update rhnpackagechangelogrec as rec
             set changelog_data_id = originals.keep_id
-            from redundant, originals
-            where rec.changelog_data_id = redundant.id
+            from originals
+            where rec.changelog_data_id = any(originals.duplicate_ids)
     )
     delete from rhnpackagechangelogdata as data
-        using redundant
-        where data.id = redundant.id;
+        using originals
+        where data.id = any(originals.duplicate_ids);
 end;
 $$ language plpgsql;
 
