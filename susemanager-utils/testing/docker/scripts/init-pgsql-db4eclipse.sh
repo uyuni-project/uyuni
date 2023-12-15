@@ -20,8 +20,8 @@ echo $PERLLIB
 
 export SYSTEMD_NO_WRAP=1
 #sysctl -w kernel.shmmax=18446744073709551615
-su - postgres -c "/usr/lib/postgresql/bin/pg_ctl stop" ||:
-su - postgres -c "/usr/lib/postgresql/bin/pg_ctl start" ||:
+su - postgres -c "/usr/lib/postgresql/bin/pg_ctl -D /var/lib/pgsql/data/ stop" ||:
+su - postgres -c "/usr/lib/postgresql/bin/pg_ctl -D /var/lib/pgsql/data/ start" ||:
 
 # this copy the latest schema from the git into the system
 ./build-schema.sh
@@ -44,7 +44,7 @@ fi
 # run the schema upgrade from git repo
 if ! /manager/schema/spacewalk/spacewalk-schema-upgrade -y; then
     cat /var/log/spacewalk/schema-upgrade/schema-from-*.log
-    su - postgres -c "/usr/lib/postgresql/bin/pg_ctl stop" ||:
+    su - postgres -c "/usr/lib/postgresql/bin/pg_ctl -D /var/lib/pgsql/data/ stop" ||:
     exit 1
 fi
 
@@ -73,10 +73,10 @@ fi
 # run the schema upgrade from git repo
 if ! /manager/schema/spacewalk/spacewalk-schema-upgrade -y --reportdb; then
     cat /var/log/spacewalk/schema-upgrade/schema-from-*.log
-    su - postgres -c "/usr/lib/postgresql/bin/pg_ctl stop" ||:
+    su - postgres -c "/usr/lib/postgresql/bin/pg_ctl -D /var/lib/pgsql/data/ stop" ||:
     exit 1
 fi
 
-su - postgres -c "/usr/lib/postgresql/bin/pg_ctl stop" ||:
+su - postgres -c "/usr/lib/postgresql/bin/pg_ctl -D /var/lib/pgsql/data/ stop" ||:
 su - postgres -c '/usr/lib/postgresql/bin/postgres -D /var/lib/pgsql/data'
 

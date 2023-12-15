@@ -45,8 +45,8 @@ export PATH=/manager/schema/spacewalk/:/manager/spacewalk/setup/bin/:$PATH
 
 export SYSTEMD_NO_WRAP=1
 
-su - postgres -c "/usr/lib/postgresql/bin/pg_ctl stop" ||:
-su - postgres -c "/usr/lib/postgresql/bin/pg_ctl start" ||:
+su - postgres -c "/usr/lib/postgresql/bin/pg_ctl -D /var/lib/pgsql/data/ stop" ||:
+su - postgres -c "/usr/lib/postgresql/bin/pg_ctl -D /var/lib/pgsql/data/ start" ||:
 
 # this copy the latest schema from the git into the system
 cp -r /manager/schema /tmp
