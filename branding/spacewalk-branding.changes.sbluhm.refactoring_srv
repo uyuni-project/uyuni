@@ -1,2 +1,0 @@
-- Adapted Enterprise Linux for /usr/share/susemanager structure.
-- Removed package conflict /usr/share/susemanager/www between other packages.
