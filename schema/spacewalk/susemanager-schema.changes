@@ -1,4 +1,17 @@
 -------------------------------------------------------------------
+Fri Dec 15 17:30:34 CET 2023 - rosuna@suse.com
+
+- version 4.4.9-1
+  * Adjust upgrade script to work from SUSE Manager 4.3
+  * Add provider detection for Amazon Linux 2023 packages
+  * Rename ssh-push-bunch into ssh-service-bunch
+  * Copy current SUSE Manager 4.3 schema to master and remove
+    migration shortcuts
+  * Add schema definition and migration for armhf
+  * Revert adding unique index for rhnpackagechangelogdata table
+    (bsc#1218027)
+
+-------------------------------------------------------------------
 Wed Nov 01 19:59:54 CET 2023 - marina.latini@suse.com
 
 - version 4.4.8-1

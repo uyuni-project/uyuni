@@ -1,2 +1,0 @@
-- Revert adding unique index for rhnpackagechangelogdata table
-  (bsc#1218027)
