@@ -33,6 +33,7 @@ sudo -i podman exec uyuni-server-all-in-one-test bash -c "cd /java && ant -f man
 sudo -i podman exec uyuni-server-all-in-one-test bash -c "cd /java && ant -f manager-build.xml refresh-branding-jar deploy-local"
 sudo -i podman exec uyuni-server-all-in-one-test bash -c "set -xe;cd /web/html/src;[ -d dist ] || mkdir dist;yarn install --force --ignore-optional --production=true --frozen-lockfile;yarn autoclean --force;yarn build:novalidate; rsync -a dist/ /usr/share/susemanager/www/htdocs/"
 sudo -i podman exec uyuni-server-all-in-one-test bash -c "rctomcat restart"
+sudo -i podman exec uyuni-server-all-in-one-test bash -c "rctaskomatic restart"
 
 # mgr-push
 sudo -i podman exec uyuni-server-all-in-one-test bash -c "cp /client/tools/mgr-push/*.py /usr/lib/python3.6/site-packages/rhnpush/"
