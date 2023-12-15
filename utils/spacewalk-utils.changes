@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Fri Dec 15 17:24:43 CET 2023 - rosuna@suse.com
+
+- version 4.4.11-1
+  * Amazon Linux 2023 channels
+  * Update the openSUSE Tumbleweed and MicroOS repositories
+  * Add SUSE Linux Enterprise Micro 5.5 to spacewalk-commons-channels
+  * Add Raspberry Pi OS 12 repositories
+
+-------------------------------------------------------------------
 Mon Nov 06 13:37:46 CET 2023 - rosuna@suse.com
 
 - version 4.4.10-1
