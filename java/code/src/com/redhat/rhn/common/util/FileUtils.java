@@ -48,22 +48,39 @@ public class FileUtils {
     }
 
     /**
-     * Save a String to a file on disk using specified path.
+     * Save a String to a file on disk using specified path. This method DOES NOT validate the path, use it only to
+     * read files that cannot be modified by user input.
      *
-     * WARNING:  This deletes the original file before it writes.
+     * WARNING: This deletes the original file before it writes.
      *
      * @param contents to save to file on disk
      * @param location to save file to.
      */
     public static void writeStringToFile(String contents, String location) {
-        Path path = Path.of(location);
+        writeStringToFile(contents, Path.of(location));
+    }
 
+    /**
+     * Save a String to a file on disk using specified path. This method validates that the file location is contained
+     * within the specified base path.
+     *
+     * WARNING: This deletes the original file before it writes.
+     *
+     * @param basePath the base path for the file to read
+     * @param contents to save to file on disk
+     * @param location to save file to.
+     */
+    public static void writeStringToFile(String contents, String basePath, String location) {
+        writeStringToFile(contents, validateCanonicalPath(basePath, location));
+    }
+
+    private static void writeStringToFile(String contents, Path path) {
         try {
             Files.deleteIfExists(path);
             Files.writeString(path, contents);
         }
         catch (Exception e) {
-            LOGGER.error("Error trying to write file to disk: [{}]", location, e);
+            LOGGER.error("Error trying to write file to disk: [{}]", path, e);
             throw new RhnRuntimeException("Error trying to write file to disk", e);
         }
     }
@@ -91,7 +108,8 @@ public class FileUtils {
 
 
     /**
-     * Read a file off disk into a String and return it.
+     * Read a file off disk into a String and return it. This method DOES NOT validate the path, use it only to read
+     * files that cannot be modified by user input.
      *
      * Expect weird stuff if the file is not textual.
      *
@@ -99,12 +117,12 @@ public class FileUtils {
      * @return String containing file.
      */
     public static String readStringFromFile(String path) {
-        return readStringFromFile(path, false);
+        return readStringFromFile(Path.of(path), false);
     }
 
-
     /**
-     * Read a file off disk into a String and return it.
+     * Read a file off disk into a String and return it. This method DOES NOT validate the path, use it only to read
+     * files that cannot be modified by user input.
      *
      * Expect weird stuff if the file is not textual.
      *
@@ -113,13 +131,46 @@ public class FileUtils {
      * @return String containing file.
      */
     public static String readStringFromFile(String path, boolean noLog) {
+        return readStringFromFile(Path.of(path), noLog);
+    }
+
+    /**
+     * Read a file off disk into a String and return it. This method validates that the file location is contained
+     * within the specified base path.
+     *
+     * Expect weird stuff if the file is not textual.
+     *
+     * @param basePath the base path for the file to read
+     * @param location file to read. Can be absolute or relative to base path.
+     * @return String containing file.
+     */
+    public static String readStringFromFile(String basePath, String location) {
+        return readStringFromFile(validateCanonicalPath(basePath, location), false);
+    }
+
+    /**
+     * Read a file off disk into a String and return it. This method validates that the file location is contained
+     * within the specified base path.
+     *
+     * Expect weird stuff if the file is not textual.
+     *
+     * @param basePath the base path for the file to read
+     * @param location file to read. Can be absolute or relative to base path.
+     * @param noLog don't log the content of the file
+     * @return String containing file.
+     */
+    public static String readStringFromFile(String basePath, String location, boolean noLog) {
+        return readStringFromFile(validateCanonicalPath(basePath, location), noLog);
+    }
+
+    private static String readStringFromFile(Path path, boolean noLog) {
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("readStringFromFile: {}", StringUtil.sanitizeLogInput(path));
+            LOGGER.debug("readStringFromFile: {}", StringUtil.sanitizeLogInput(path.toString()));
         }
 
         try {
-            String contents = Files.readString(Path.of(path));
-            if (noLog && LOGGER.isDebugEnabled()) {
+            String contents = Files.readString(path);
+            if (!noLog && LOGGER.isDebugEnabled()) {
                 LOGGER.debug("contents: {}", contents);
             }
             return contents;
@@ -198,6 +249,37 @@ public class FileUtils {
         }
         catch (IOException e) {
             LOGGER.warn("Could not delete file: {}", path, e);
+        }
+    }
+
+    /**
+     * Checks and validate an untrusted path
+     *
+     * @param basePath the base directory
+     * @param fileLocation the file name
+     *
+     * @return a validated canonical path object
+     */
+    public static Path validateCanonicalPath(String basePath, String fileLocation) {
+        File directory = new File(basePath);
+        if (!directory.isAbsolute()) {
+            throw new IllegalArgumentException("targetDirectory must be an absolute path");
+        }
+
+        File file = new File(fileLocation);
+        if (!file.isAbsolute()) {
+            file = Path.of(basePath, fileLocation).toFile();
+        }
+
+        try {
+            if (!file.getCanonicalPath().startsWith(directory.getCanonicalPath())) {
+                throw new IllegalArgumentException("Entry is outside of the target directory");
+            }
+
+            return file.getCanonicalFile().toPath();
+        }
+        catch (IOException | SecurityException ex) {
+            throw new RhnRuntimeException("Unable to validate path", ex);
         }
     }
 }

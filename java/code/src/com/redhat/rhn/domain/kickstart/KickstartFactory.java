@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.domain.kickstart;
 
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.action.Action;
@@ -432,7 +433,7 @@ public class KickstartFactory extends HibernateFactory {
         }
         String path = ksdataIn.buildCobblerFileName();
         log.debug("writing ks file to : {}", path);
-        FileUtils.writeStringToFile(fileData, path);
+        FileUtils.writeStringToFile(fileData, ConfigDefaults.get().getKickstartConfigDir(), path);
     }
 
     private static String getKickstartTemplatePath(KickstartData ksdata, Profile p) {
