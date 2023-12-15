@@ -1,4 +1,64 @@
 -------------------------------------------------------------------
+Fri Dec 15 17:10:30 CET 2023 - rosuna@suse.com
+
+- version 4.4.22-1
+  * Fix unit test about duplicated packages
+  * Prevent installation of packages with same name 
+    in a single action (bsc#1214791)
+  * When canceling an action which has prerequisites, return hints to
+    get the first action id which can be canceled (bsc#1216988)
+  * Add only 1 IP for Cloud RMT Host in /etc/hosts
+  * Try to download compressed ubuntu usn database
+  * Add notification in daily email as well as in SUMA home page when
+    SUMA Pay-as-you-go is not compliant
+  * Address high rating sonar issues
+  * Refactor SCC registration flow
+  * Fix modify kickstart profile when using "Always newest tree"
+    option (bsc#1215813)
+  * Configure reboot method for SUSE Linux Enterprise Micro when
+    applying bootstrap state (bsc#1213981)
+  * Fix filter ID comparison when attaching filters to a CLM project
+    (bsc#1215949)
+  * Fix validation of lists with empty defaults in formulas
+    (bsc#1216555)
+  * Safeguard request URLs against tempering (bsc#1216754)
+  * Do not store reposync stdout in taskomatic logs
+  * Remove Select2
+  * Enable detection for Amazon Linux 2023
+  * Enforce snakeyaml version requirement (bsc#1215166)
+  * Improve the performances of paginated queries when syncing the 
+    reporting database (bsc#1211912, bsc#1213079)
+  * Move all file managed by RPM from /srv to /usr/share/susemanager
+  * Sanitize token before logging it CVE-2023-22644 (bsc#1210930)
+  * Use 600 permissions for logfiles CVE-2023-22644 (bsc#1210928)
+  * Log potential sensitive information only in debug mode
+    CVE-2023-22644 (bsc#1210928)
+  * Fix SUSE Linux Enterprise Micro Pay-as-you-go detection
+  * Rename SSHPush Task into SSHService Task
+  * Fix url pointing to SCC (bsc#1216690)
+  * Prevent download when a Pay-as-you-go Server is not compliant
+  * Include "uuid" as system search xmlrpc results (bsc#1216380)
+  * Prevent losing Remote Command action result if returned JSON
+    cannot be parsed
+  * Add management restrictions to SUSE Manager Pay-as-you-go when
+    dealing with Bring-your-own-subscription instances when no SCC
+    credentials are set.
+  * Fix conversion to string if branchid is numeric in PXEEvent
+  * Prevent NullPointerException in updateSystemInfo (bsc#1217224)
+  * Address high rating sonar issues
+  * Address sonar reliability bug at scc system registration system
+    data acquisitor
+  * Enhance hardware data sent to SCC by memory
+  * Enforce minimum build version for apache-commons-io to ensure
+    successful build of FileUtils.java
+  * Adapte Enterprise Linux for /usr/share/susemanager structure
+  * Fix NullPointerException when creating PXE config for an unmanaged
+    profile (bsc#1217223)
+  * Add option to filter packages by build time in CLM (jsc#SUMA-282)
+  * Fix createSystemRecord XML-RPC API call so that the Cobbler UID
+    is persistent (bsc#1207532)
+
+-------------------------------------------------------------------
 Wed Nov 01 20:23:38 CET 2023 - marina.latini@suse.com
 
 - version 4.4.21-1

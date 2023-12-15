@@ -1,2 +1,0 @@
-- Prevent installation of packages with same name 
-  in a single action (bsc#1214791)
