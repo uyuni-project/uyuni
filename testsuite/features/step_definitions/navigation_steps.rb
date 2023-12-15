@@ -202,15 +202,6 @@ When(/^I select "([^"]*)" from "([^"]*)"$/) do |option, field|
   end
 end
 
-# select an item from any dropdown
-When(/^I select "(.*?)" from "([^"]*)" dropdown/) do |selection, label|
-  # let the the select2js box filter open the hidden options
-  xpath_query = "//select[@name='#{label}']"
-  raise ScriptError, "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query).click
-  # select the desired option
-  raise ScriptError, "#{label} #{selection} not found" unless find(:xpath, "//select[@name='#{label}']/option[contains(text(), '#{selection}')]").click
-end
-
 When(/^I select the parent channel for the "([^"]*)" from "([^"]*)"$/) do |client, from|
   product_key = $is_container_provider ? 'Fake' : product
   select(BASE_CHANNEL_BY_CLIENT[product_key][client], from: from, exact: false)

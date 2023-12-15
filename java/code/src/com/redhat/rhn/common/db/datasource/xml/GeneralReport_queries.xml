@@ -15,32 +15,36 @@
 <datasource_modes>
 
 <mode name="SystemGroup">
-    <query params="offset, limit">
-            SELECT rhnservergroup.id AS system_group_id
-                      , rhnservergroup.name
-                      , rhnservergroup.description
-                      , rhnservergroup.current_members
-                      , web_customer.name AS organization
-              FROM rhnservergroup
-                      INNER JOIN web_customer ON rhnservergroup.org_id = web_customer.id
-             WHERE rhnservergroup.group_type IS NULL
-        ORDER BY rhnservergroup.id OFFSET :offset LIMIT :limit
+    <query params="system_group_id, limit">
+          SELECT rhnservergroup.id AS system_group_id
+                    , rhnservergroup.name
+                    , rhnservergroup.description
+                    , rhnservergroup.current_members
+                    , web_customer.name AS organization
+            FROM rhnservergroup
+                    INNER JOIN web_customer ON rhnservergroup.org_id = web_customer.id
+           WHERE rhnservergroup.group_type IS NULL
+                    AND rhnservergroup.id  &gt; :system_group_id
+        ORDER BY system_group_id
+           FETCH FIRST :limit ROWS WITH TIES
     </query>
 </mode>
 
 <mode name="SystemGroupPermission" class="">
-    <query params="offset, limit">
+    <query params="system_group_id, account_id, limit">
           SELECT rhnUserServerGroupPerms.server_group_id AS system_group_id
                     , rhnUserServerGroupPerms.user_id AS account_id
                     , rhnServerGroup.name AS group_name
             FROM rhnUserServerGroupPerms
                     INNER JOIN rhnServerGroup ON rhnUserServerGroupPerms.server_group_id = rhnServerGroup.id
-        ORDER BY system_group_id, account_id OFFSET :offset LIMIT :limit
+           WHERE (rhnUserServerGroupPerms.server_group_id, rhnUserServerGroupPerms.user_id) &gt; (:system_group_id, :account_id)
+        ORDER BY system_group_id, account_id
+           FETCH FIRST :limit ROWS WITH TIES
     </query>
 </mode>
 
 <mode name="Account" class="">
-    <query params="offset, limit">
+    <query params="account_id, limit">
           WITH latest_state_change AS (
                SELECT rhnWebContactChangeLog.web_contact_id
                             , rhnWebContactChangeState.label
@@ -48,6 +52,7 @@
                             INNER JOIN rhnWebContactChangeState ON rhnWebContactChangeLog.change_state_id = rhnWebContactChangeState.id
                             LEFT JOIN rhnWebContactChangeLog older ON ( rhnWebContactChangeLog.web_contact_id = older.web_contact_id AND rhnWebContactChangeLog.date_completed &lt; older.date_completed )
               WHERE older.date_completed IS NULL
+                            AND rhnWebContactChangeLog.web_contact_id &gt; :account_id
           )
           SELECT web_contact.id AS account_id
                     , web_contact.login AS username
@@ -65,12 +70,14 @@
                     INNER JOIN web_user_personal_info ON web_contact.id = web_user_personal_info.web_user_id
                     INNER JOIN rhnUserInfo ON web_contact.id = rhnUserInfo.user_id
                     LEFT JOIN latest_state_change ON web_contact.id = latest_state_change.web_contact_id
-        ORDER BY account_id OFFSET :offset LIMIT :limit
+           WHERE web_contact.id &gt; :account_id
+        ORDER BY account_id
+           FETCH FIRST :limit ROWS WITH TIES
     </query>
 </mode>
 
 <mode name="AccountGroup" class="">
-    <query params="offset, limit">
+    <query params="account_id, account_group_id, limit">
           SELECT web_contact.id AS account_id
                     , rhnusergroupmembers.user_group_id AS account_group_id
                     , web_contact.login AS username
@@ -82,7 +89,9 @@
                     INNER JOIN web_contact ON web_contact.id = rhnusergroupmembers.user_id
                     INNER JOIN rhnusergroup ON rhnusergroupmembers.user_group_id = rhnusergroup.id
                     INNER JOIN rhnusergrouptype ON rhnusergroup.group_type = rhnusergrouptype.id
-        ORDER BY account_id, account_group_id OFFSET :offset LIMIT :limit
+           WHERE (web_contact.id, rhnusergroupmembers.user_group_id) &gt; (:account_id, :account_group_id)
+        ORDER BY account_id, account_group_id
+           FETCH FIRST :limit ROWS WITH TIES
     </query>
 </mode>
 

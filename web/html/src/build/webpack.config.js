@@ -65,14 +65,6 @@ module.exports = (env, argv) => {
       },
       // TODO: Take only what we need after we've confirmed it works fine, otherwise there's a lot of fluff in this
       {
-        from: path.resolve(__dirname, "../node_modules/select2"),
-        to: path.resolve(__dirname, "../dist/javascript/legacy/select2"),
-      },
-      {
-        from: path.resolve(__dirname, "../node_modules/select2-bootstrap-css/select2-bootstrap.css"),
-        to: path.resolve(__dirname, "../dist/javascript/legacy/select2"),
-      },
-      {
         from: path.resolve(__dirname, "../node_modules/timepicker/jquery.timepicker.js"),
         to: path.resolve(__dirname, "../dist/javascript/legacy"),
       },

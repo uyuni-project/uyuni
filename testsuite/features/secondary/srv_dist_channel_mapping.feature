@@ -25,8 +25,8 @@ Feature: Distribution Channel Mapping
     Then I should see a "Create Distribution Channel Map" text
     When I enter "SUSE Linux Enterprise Server 15 SP 4" as "os"
     And I enter "15.5" as "release"
-    And I select "x86_64" from "architecture" dropdown
-    And I select "SLE-Product-SLES15-SP4-Pool for x86_64" from "channel_label" dropdown
+    And I select "x86_64" from "architecture"
+    And I select "SLE-Product-SLES15-SP4-Pool for x86_64" from "channel_label"
     And I click on "Create Mapping"
     Then I should see a "SUSE Linux Enterprise Server 15 SP 4" link in the content area
 
@@ -37,8 +37,8 @@ Feature: Distribution Channel Mapping
     Then I should see a "Create Distribution Channel Map" text
     When I enter "openSUSE Leap 15.5" as "os"
     And I enter "15.5" as "release"
-    And I select "x86_64" from "architecture" dropdown
-    And I select "openSUSE Leap 15.5 (x86_64)" from "channel_label" dropdown
+    And I select "x86_64" from "architecture"
+    And I select "openSUSE Leap 15.5 (x86_64)" from "channel_label"
     And I click on "Create Mapping"
     Then I should see a "openSUSE Leap 15.5" link in the content area
 
@@ -48,8 +48,8 @@ Feature: Distribution Channel Mapping
     Then I should see a "Create Distribution Channel Map" text
     When I enter "Ubuntu 22.04.01 LTS" as "os"
     And I enter "22.04" as "release"
-    And I select "x86_64" from "architecture" dropdown
-    And I select "Fake-Base-Channel-Debian-like" from "channel_label" dropdown
+    And I select "x86_64" from "architecture"
+    And I select "Fake-Base-Channel-Debian-like" from "channel_label"
     And I click on "Create Mapping"
     Then I should see a "Ubuntu 22.04.01 LTS" link in the content area
 
@@ -60,8 +60,8 @@ Feature: Distribution Channel Mapping
     Then I should see a "Create Distribution Channel Map" text
     When I enter "SUSE Linux Enterprise Server 15 SP 4 iSeries" as "os"
     And I enter "15.5" as "release"
-    And I select "iSeries" from "architecture" dropdown
-    And I select "Fake-Base-Channel-i586" from "channel_label" dropdown
+    And I select "iSeries" from "architecture"
+    And I select "Fake-Base-Channel-i586" from "channel_label"
     And I click on "Create Mapping"
     Then I should see a "SUSE Linux Enterprise Server 15 SP 4 iSeries" link in the content area
 
@@ -75,7 +75,7 @@ Feature: Distribution Channel Mapping
     When I follow "SUSE Linux Enterprise Server 15 SP 4"
     Then I should see a "Update Distribution Channel Map" text
     When I enter "SUSE Linux Enterprise Server 15 SP 4 modified" as "os"
-    And I select "SLE-Product-SLES15-SP4-Pool for x86_64" from "channel_label" dropdown
+    And I select "SLE-Product-SLES15-SP4-Pool for x86_64" from "channel_label"
     And I click on "Update Mapping"
     Then I should see the text "SUSE Linux Enterprise Server 15 SP 4 modified" in the Operating System field
     And I should see the text "sle-product-sles15-sp4-pool-x86_64" in the Channel Label field
@@ -89,7 +89,7 @@ Feature: Distribution Channel Mapping
     When I follow "openSUSE Leap 15.5"
     Then I should see a "Update Distribution Channel Map" text
     When I enter "openSUSE Leap 15.5 modified" as "os"
-    And I select "openSUSE Leap 15.5 (x86_64)" from "channel_label" dropdown
+    And I select "openSUSE Leap 15.5 (x86_64)" from "channel_label"
     And I click on "Update Mapping"
     Then I should see the text "openSUSE Leap 15.5 modified" in the Operating System field
     And I should see the text "opensuse_leap15_5-x86_64" in the Channel Label field
@@ -101,7 +101,7 @@ Feature: Distribution Channel Mapping
     And I should see the text "sle-product-sles15-sp4-pool-x86_64" in the Channel Label field
     When I follow "Ubuntu 22.04.01 LTS"
     And I enter "Ubuntu 22.04.01 LTS modified" as "os"
-    And I select "Fake-Base-Channel-Debian-like" from "channel_label" dropdown
+    And I select "Fake-Base-Channel-Debian-like" from "channel_label"
     And I click on "Update Mapping"
     Then I should see the text "Ubuntu 22.04.01 LTS modified" in the Operating System field
     And I should see the text "fake-base-channel-suse-like" in the Channel Label field
@@ -114,7 +114,7 @@ Feature: Distribution Channel Mapping
     And I should see the text "fake-base-channel-i586" in the Channel Label field
     When I follow "SUSE Linux Enterprise Server 15 SP 4 iSeries"
     And I enter "SUSE Linux Enterprise Server 15 SP 4 iSeries modified" as "os"
-    And I select "Fake-Base-Channel-Debian-like" from "channel_label" dropdown
+    And I select "Fake-Base-Channel-Debian-like" from "channel_label"
     And I click on "Update Mapping"
     Then I should see the text "SUSE Linux Enterprise Server 15 SP 4 iSeries modified" in the Operating System field
     And I should see the text "fake-base-channel-debian-like" in the Channel Label field

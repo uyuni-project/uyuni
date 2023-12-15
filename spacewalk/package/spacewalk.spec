@@ -111,11 +111,12 @@ Requires:       spacewalk-java-postgresql
 Requires:       perl(DBD::Pg)
 %if 0%{?suse_version}
 # Actual version set by prjconf, default is 14
-%{!?postgresql_version: %global postgresql_version 14}
-Requires:       postgresql-implementation = %{postgresql_version}
-Requires:       postgresql-contrib-implementation = %{postgresql_version}
-Conflicts:      postgresql-implementation > %{postgresql_version}
-Conflicts:      postgresql-contrib-implementation > %{postgresql_version}
+%{!?postgresql_version_min: %global postgresql_version_min 14}
+%{!?postgresql_version_max: %global postgresql_version_max 15}
+Requires:       postgresql-implementation >= %{postgresql_version_min}
+Requires:       postgresql-contrib-implementation >= %{postgresql_version_min}
+Conflicts:      postgresql-implementation > %{postgresql_version_max}
+Conflicts:      postgresql-contrib-implementation > %{postgresql_version_max}
 %else # not a supported SUSE version or alternative OS.
 Requires:       postgresql14
 Requires:       postgresql14-contrib

@@ -61,7 +61,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
 --------------------------------------------------------------------------------
-@emotion/cache v11.4.0
+@emotion/cache v11.11.0
 https://github.com/emotion-js/emotion/tree/main/packages/cache
 --------------------------------------------------------------------------------
 
@@ -89,8 +89,8 @@ SOFTWARE.
 
 
 --------------------------------------------------------------------------------
-@emotion/hash v0.8.0
-https://github.com/emotion-js/emotion/tree/master/packages/hash
+@emotion/hash v0.9.1
+https://github.com/emotion-js/emotion/tree/main/packages/hash
 --------------------------------------------------------------------------------
 
 MIT License
@@ -117,8 +117,8 @@ SOFTWARE.
 
 
 --------------------------------------------------------------------------------
-@emotion/memoize v0.7.5
-https://github.com/emotion-js/emotion/tree/master/packages/memoize
+@emotion/memoize v0.8.1
+https://github.com/emotion-js/emotion/tree/main/packages/memoize
 --------------------------------------------------------------------------------
 
 MIT License
@@ -145,7 +145,7 @@ SOFTWARE.
 
 
 --------------------------------------------------------------------------------
-@emotion/react v11.4.0 - mitchellhamilton <mitchell@mitchellhamilton.me>
+@emotion/react v11.11.1 - Emotion Contributors
 https://github.com/emotion-js/emotion/tree/main/packages/react
 --------------------------------------------------------------------------------
 
@@ -173,7 +173,7 @@ SOFTWARE.
 
 
 --------------------------------------------------------------------------------
-@emotion/serialize v1.0.2
+@emotion/serialize v1.1.2
 https://github.com/emotion-js/emotion/tree/main/packages/serialize
 --------------------------------------------------------------------------------
 
@@ -201,8 +201,8 @@ SOFTWARE.
 
 
 --------------------------------------------------------------------------------
-@emotion/sheet v1.0.1
-https://github.com/emotion-js/emotion/tree/master/packages/sheet
+@emotion/sheet v1.2.2
+https://github.com/emotion-js/emotion/tree/main/packages/sheet
 --------------------------------------------------------------------------------
 
 MIT License
@@ -229,8 +229,8 @@ SOFTWARE.
 
 
 --------------------------------------------------------------------------------
-@emotion/unitless v0.7.5
-https://github.com/emotion-js/emotion/tree/master/packages/unitless
+@emotion/unitless v0.8.1
+https://github.com/emotion-js/emotion/tree/main/packages/unitless
 --------------------------------------------------------------------------------
 
 MIT License
@@ -257,8 +257,8 @@ SOFTWARE.
 
 
 --------------------------------------------------------------------------------
-@emotion/utils v1.0.0
-https://github.com/emotion-js/emotion/tree/master/packages/utils
+@emotion/use-insertion-effect-with-fallbacks v1.0.1
+https://github.com/emotion-js/emotion/tree/main/packages/use-insertion-effect-with-fallbacks
 --------------------------------------------------------------------------------
 
 MIT License
@@ -285,8 +285,36 @@ SOFTWARE.
 
 
 --------------------------------------------------------------------------------
-@emotion/weak-memoize v0.2.5
-https://github.com/emotion-js/emotion/tree/master/packages/weak-memoize
+@emotion/utils v1.2.1
+https://github.com/emotion-js/emotion/tree/main/packages/utils
+--------------------------------------------------------------------------------
+
+MIT License
+
+Copyright (c) Emotion team and other contributors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+
+--------------------------------------------------------------------------------
+@emotion/weak-memoize v0.3.1
+https://github.com/emotion-js/emotion/tree/main/packages/weak-memoize
 --------------------------------------------------------------------------------
 
 MIT License
@@ -1867,7 +1895,7 @@ terms above.
 
 
 --------------------------------------------------------------------------------
-memoize-one v5.1.1 - Alex Reardon <alexreardon@gmail.com>
+memoize-one v5.2.1 - Alex Reardon <alexreardon@gmail.com>
 https://github.com/alexreardon/memoize-one.git
 --------------------------------------------------------------------------------
 
@@ -3040,7 +3068,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
 --------------------------------------------------------------------------------
-stylis v4.0.10 - Sultan Tarimo <sultantarimo@me.com>
+stylis v4.2.0 - Sultan Tarimo <sultantarimo@me.com>
 https://github.com/thysultan/stylis.js
 --------------------------------------------------------------------------------
 

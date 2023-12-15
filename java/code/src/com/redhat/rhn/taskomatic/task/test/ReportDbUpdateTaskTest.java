@@ -14,23 +14,28 @@
  */
 package com.redhat.rhn.taskomatic.task.test;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
-import com.redhat.rhn.common.db.datasource.DataResult;
-import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.hibernate.ConnectionManager;
 import com.redhat.rhn.common.hibernate.ConnectionManagerFactory;
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
-import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
+import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
+import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.test.ServerFactoryTest;
+import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.task.ReportDBHelper;
 import com.redhat.rhn.taskomatic.task.ReportDbUpdateTask;
+import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
+import com.redhat.rhn.testing.PackageTestUtils;
 
-import org.apache.commons.lang3.tuple.Pair;
+import org.apache.commons.collections.CollectionUtils;
 import org.hibernate.Session;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -38,11 +43,12 @@ import org.junit.jupiter.api.Test;
 import org.quartz.JobExecutionContext;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.stream.IntStream;
 
 import javax.persistence.Tuple;
 
@@ -74,64 +80,94 @@ public class ReportDbUpdateTaskTest extends JMockBaseTestCaseWithUser {
     }
 
     @Test
-    public void doesNotProduceConflictWhenDataChanges() throws Exception {
+    public void canSyncTablesUsingAQueryById() throws Exception {
+        // Set up the data for testing the query SystemPackageUpdate_byId
 
-        // Must clean the existing rhnchannelpackage content to make sure the pagination is the one expected by the test
-        HibernateFactory.getSession().createSQLQuery("DELETE FROM rhnchannelpackage").executeUpdate();
+        // Create a channel
+        Channel channel = ChannelTestUtils.createBaseChannel(user);
+        channel.setChecksumType(ChannelFactory.findChecksumTypeByLabel("sha256"));
 
-        Channel firstChannel = ChannelFactoryTest.createTestChannel(user);
-        Channel secondChannel = ChannelFactoryTest.createTestChannel(user);
+        // Create some servers
+        List<Server> servers = IntStream.range(1, 5)
+            .mapToObj(index -> ServerFactoryTest.createTestServer(user))
+            .collect(Collectors.toList());
 
-        List<Package> testPackages = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            testPackages.add(PackageTest.createTestPackage(user.getOrg()));
-        }
+        // Store the packages we create to be able to verify the data at the end
+        Map<Long, List<Package>> updatablePackagesMap = new HashMap<>();
 
-        firstChannel.getPackages().addAll(testPackages.subList(1, 3));
-        secondChannel.getPackages().addAll(testPackages.subList(3, 5));
+        servers.forEach(server -> {
+            // Subscribe the server to the channel
+            SystemManager.subscribeServerToChannel(user, server, channel);
 
-        ReportDBHelper testReportDbHelper = new ReportDBHelper() {
-            @Override
-            public <T> Stream<DataResult<T>> batchStream(SelectMode query, int batchSize, int initialOffset) {
-                // If we are processing the second batch for the ChannelPackage table...
-                if ("ChannelPackage".equals(query.getName())) {
-                    // Add a new package to the first channel. This will change the order of the result and lead to the
-                    // same row from rhnchannelpackage to be extracted twice. This should not translate in an exception
-                    firstChannel.getPackages().add(testPackages.get(0));
-                }
-                return super.batchStream(query, batchSize, initialOffset);
-            }
-        };
+            // Create some packages and add them to the channel
+            List<Package> packages = IntStream.range(1, 10)
+                .mapToObj(index -> PackageTest.createTestPackage(user.getOrg()))
+                .collect(Collectors.toList());
+            channel.getPackages().addAll(packages);
 
-        ReportDbUpdateTask task = new ReportDbUpdateTask(testReportDbHelper, 2);
 
+            // Create a newer version for each of the packages and add  them to the channel as well
+            List<Package> updatedPackages = packages.stream()
+                .map(originalPackage -> PackageTestUtils.newVersionOfPackage(originalPackage, null, "2.0.0", null,
+                    user.getOrg()))
+                .collect(Collectors.toList());
+            channel.getPackages().addAll(updatedPackages);
+            updatablePackagesMap.put(server.getId(), updatedPackages);
+
+            // Install the original package on the server
+            PackageTestUtils.installPackagesOnServer(packages, server);
+            // Update the server needed cache
+            ServerFactory.updateServerNeededCache(server.getId());
+        });
+
+        // Keep a low batch size to iterate multiple times
+        ReportDbUpdateTask task = new ReportDbUpdateTask(ReportDBHelper.INSTANCE, 2);
 
         assertDoesNotThrow(() -> task.execute(contextMock));
 
-        String channelPackageQuery = "SELECT * FROM ChannelPackage WHERE mgm_id = 1 ORDER BY channel_id, package_id";
-        List<Tuple> resultList = getSession().createNativeQuery(channelPackageQuery, Tuple.class).getResultList();
+        // Verify the results for each server
+        String query = "SELECT package_id, name, epoch, version, release, arch, type " +
+            "FROM SystemPackageUpdate " +
+            "WHERE mgm_id = 1 AND system_id = :id " +
+            "ORDER BY package_id";
 
-        assertEquals(4, resultList.size());
+        servers.forEach(testServer -> {
+            List<Tuple> resultList = getSession()
+                .createNativeQuery(query, Tuple.class)
+                .setParameter("id", testServer.getId())
+                .getResultList();
+            assertFalse(CollectionUtils.isEmpty(resultList),
+                "The updatable packages result list should not be empty");
 
-        // Extract a set of pairs from the tuples
-        Set<Pair<Long, Long>> pairSet = resultList.stream()
-                                                  .map(t -> Pair.of(
-                                                          t.get("channel_id", BigDecimal.class).longValue(),
-                                                          t.get("package_id", BigDecimal.class).longValue()
-                                                      )
-                                                  )
-                                                  .collect(Collectors.toSet());
+            List<Package> updatablePackagesForServer = updatablePackagesMap.get(testServer.getId()).stream()
+                .sorted(Comparator.comparing(pck -> pck.getId()))
+                .collect(Collectors.toList());
 
-        // Build the set of expected pairs
-        Set<Pair<Long, Long>> expectedPairSet = Set.of(
-            Pair.of(firstChannel.getId(), testPackages.get(1).getId()),
-            Pair.of(firstChannel.getId(), testPackages.get(2).getId()),
-            Pair.of(secondChannel.getId(), testPackages.get(3).getId()),
-            Pair.of(secondChannel.getId(), testPackages.get(4).getId())
-        );
+            assertFalse(CollectionUtils.isEmpty(updatablePackagesForServer),
+                "The updatable packages reference list should not be empty");
 
-        assertEquals(expectedPairSet, pairSet);
-
+            // Check the results are consistent
+            assertEquals(updatablePackagesForServer.size(), resultList.size());
+            IntStream.range(0, updatablePackagesForServer.size()).forEach(index ->
+                assertAll(
+                    "Package fields do not match",
+                    () -> assertEquals(updatablePackagesForServer.get(index).getId(),
+                        resultList.get(index).get("package_id", BigDecimal.class).longValue()),
+                    () -> assertEquals(updatablePackagesForServer.get(index).getPackageName().getName(),
+                        resultList.get(index).get("name", String.class)),
+                    () -> assertEquals(updatablePackagesForServer.get(index).getPackageEvr().getEpoch(),
+                        resultList.get(index).get("epoch", String.class)),
+                    () -> assertEquals(updatablePackagesForServer.get(index).getPackageEvr().getVersion(),
+                        resultList.get(index).get("version", String.class)),
+                    () -> assertEquals(updatablePackagesForServer.get(index).getPackageEvr().getRelease(),
+                        resultList.get(index).get("release", String.class)),
+                    () -> assertEquals(updatablePackagesForServer.get(index).getPackageArch().getLabel(),
+                        resultList.get(index).get("arch", String.class)),
+                    () -> assertEquals(updatablePackagesForServer.get(index).getPackageEvr().getType(),
+                        resultList.get(index).get("type", String.class))
+                )
+            );
+        });
     }
 
     private static synchronized Session getSession() {

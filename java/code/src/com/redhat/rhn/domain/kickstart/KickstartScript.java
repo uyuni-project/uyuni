@@ -365,4 +365,12 @@ public class KickstartScript extends BaseDto implements Comparable<KickstartScri
         this.raw = rawIn;
     }
 
+    @Override
+    public String toString() {
+        return "KickstartScript{" +
+                "id=" + id +
+                ", scriptType='" + scriptType + '\'' +
+                ", scriptName='" + scriptName + '\'' +
+                '}';
+    }
 }

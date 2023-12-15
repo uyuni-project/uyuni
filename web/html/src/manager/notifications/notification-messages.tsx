@@ -5,6 +5,7 @@ import * as React from "react";
 import { AsyncButton } from "components/buttons";
 import { Dialog } from "components/dialog/LegacyDialog";
 import { showDialog } from "components/dialog/util";
+import { Form, Select } from "components/input";
 import { Messages as MessageContainer, Utils as MessagesUtils } from "components/messages";
 import { TopPanel } from "components/panels/TopPanel";
 import { SectionToolbar } from "components/section-toolbar/section-toolbar";
@@ -16,12 +17,6 @@ import { stringToReact } from "utils";
 import { Utils } from "utils/functions";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import Network from "utils/network";
-
-declare global {
-  interface JQuery {
-    select2: (...args: any[]) => JQuery;
-  }
-}
 
 const _MESSAGE_TYPE = {
   OnboardingFailed: {
@@ -145,20 +140,6 @@ class NotificationMessages extends React.Component<Props, State> {
           messages: [],
           selectedItems: [],
         });
-
-        //HACK: usage of JQuery here is needed to apply the select2js plugin
-        jQuery("select#notification-messages-type-filter.apply-select2js-on-this").each(function (i) {
-          var select = jQuery(this);
-          // apply select2js only one time
-          if (!select.hasClass("select2js-applied")) {
-            select.addClass("select2js-applied");
-
-            var select2js = select.select2({ placeholder: t("Filter by type") });
-            select2js.on("change", function (event) {
-              currentObject.handleFilterTypeChange(select.val() || []);
-            });
-          }
-        });
       })
       .catch((response) => {
         currentObject.setState({
@@ -172,10 +153,6 @@ class NotificationMessages extends React.Component<Props, State> {
           selectedItems: [],
         });
       });
-  };
-
-  handleFilterTypeChange = (types) => {
-    this.setState({ typeCriteria: types });
   };
 
   filterDataByType = (data) => {
@@ -437,18 +414,18 @@ class NotificationMessages extends React.Component<Props, State> {
 
     const typeFilter = (
       <div className="multiple-select-wrapper">
-        <select
-          id="notification-messages-type-filter"
-          name="notification-messages-type-filter"
-          className="form-control d-inline-block apply-select2js-on-this"
-          multiple={true}
-        >
-          {Object.keys(_MESSAGE_TYPE).map((id) => (
-            <option key={id} value={id}>
-              {this.decodeTypeText(id)}
-            </option>
-          ))}
-        </select>
+        {/* TODO: Remove this <Form> wrapper once https://github.com/SUSE/spacewalk/issues/14250 is implemented */}
+        <Form>
+          <Select
+            name="type-criteria"
+            placeholder={t("Filter by type")}
+            options={Object.values(_MESSAGE_TYPE)}
+            getOptionLabel={(item) => item.text}
+            getOptionValue={(item) => item.id}
+            isMulti
+            onChange={(_, typeCriteria) => this.setState({ typeCriteria })}
+          />
+        </Form>
       </div>
     );
 

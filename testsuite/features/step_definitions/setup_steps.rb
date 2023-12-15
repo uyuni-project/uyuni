@@ -73,14 +73,6 @@ When(/^I view the subscription list for "([^"]*)"$/) do |user|
   end
 end
 
-When(/^I select "(.*?)" in the dropdown list of the architecture filter$/) do |architecture|
-  # let the the select2js box filter open the hidden options
-  xpath_query = '//div[@id=\'s2id_product-arch-filter\']/ul/li/input'
-  raise ScriptError, "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query).click
-  # select the desired option
-  raise ScriptError, "Architecture #{architecture} not found" unless find(:xpath, "//div[@id='select2-drop']/ul/li/div[contains(text(), '#{architecture}')]").click
-end
-
 When(/^I (deselect|select) "([^"]*)" as a product$/) do |select, product|
   # click on the checkbox to select the product
   xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]/div/input[@type='checkbox']"
