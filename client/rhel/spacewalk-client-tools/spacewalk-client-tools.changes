@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Dec 15 17:08:53 CET 2023 - rosuna@suse.com
+
+- version 4.4.7-1
+  * Remove unused and deprecated/removed platform.dist import.
+
+-------------------------------------------------------------------
 Wed Nov 01 21:00:35 CET 2023 - marina.latini@suse.com
 
 - version 4.4.6-1
