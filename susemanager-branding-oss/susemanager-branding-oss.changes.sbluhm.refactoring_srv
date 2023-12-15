@@ -1,1 +1,0 @@
-- Replaced /usr/share with macro %{_datadir}.
