@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-12-04 10:42+0100\n"
+"POT-Creation-Date: 2023-12-15 14:09+0100\n"
 "PO-Revision-Date: 2023-05-26 18:14+0000\n"
 "Last-Translator: Marina Latini <marina.latini@suse.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/web/it/>\n"
@@ -113,6 +113,11 @@ msgstr "Aggiungi a:"
 #: ../html/src/components/action-schedule.tsx:297
 msgid "Loading the scheduler..."
 msgstr "Caricamento dello scheduler..."
+
+#: ../html/src/components/combobox.tsx:96
+#, fuzzy
+msgid "Create {label}"
+msgstr "Stato"
 
 #: ../html/src/components/config-channels.tsx:38
 msgid "Configuration Channels"
@@ -281,12 +286,6 @@ msgstr ""
 msgid "No flavor"
 msgstr ""
 
-#: ../html/src/components/package/PackageListActionScheduler.tsx:82
-#: ../html/src/manager/state/highstate.tsx:64
-msgid ""
-"Action has been successfully added to the action chain <link>'{name}'</link>."
-msgstr ""
-
 #: ../html/src/components/package/PackageListActionScheduler.tsx:89
 msgid "The action has been <link>scheduled</link>."
 msgstr ""
@@ -301,7 +300,7 @@ msgstr ""
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:180
 #: ../html/src/components/states-picker.tsx:329
-#: ../html/src/manager/admin/setup/products/products.tsx:1181
+#: ../html/src/manager/admin/setup/products/products.tsx:1144
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:187
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:16
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1130
@@ -338,7 +337,7 @@ msgstr ""
 
 #: ../html/src/components/pagination.tsx:28
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:155
-#: ../html/src/manager/admin/setup/products/products.tsx:457
+#: ../html/src/manager/admin/setup/products/products.tsx:448
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1096
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1127
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:670
@@ -347,7 +346,7 @@ msgstr ""
 
 #: ../html/src/components/pagination.tsx:33
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:161
-#: ../html/src/manager/admin/setup/products/products.tsx:463
+#: ../html/src/manager/admin/setup/products/products.tsx:454
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1077
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1103
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:567
@@ -680,8 +679,10 @@ msgid "({selectedCount} selected)"
 msgstr ""
 
 #: ../html/src/components/table/SearchPanel.tsx:64
-#: ../html/src/manager/admin/setup/products/products.tsx:384
+#: ../html/src/manager/admin/setup/products/products.tsx:375
 #: ../html/src/manager/systems/ssm/ssm-counter.tsx:34
+#: ../html/src/manager/visualization/hierarchy.tsx:307
+#: ../html/src/manager/visualization/hierarchy.tsx:322
 msgid "Clear"
 msgstr ""
 
@@ -1008,7 +1009,7 @@ msgid "Bastion SSH connection data"
 msgstr ""
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:84
-#: ../html/src/manager/admin/setup/products/products.tsx:315
+#: ../html/src/manager/admin/setup/products/products.tsx:306
 msgid "Setup Wizard"
 msgstr ""
 
@@ -1046,7 +1047,7 @@ msgid "never"
 msgstr ""
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:166
-#: ../html/src/manager/admin/setup/products/products.tsx:468
+#: ../html/src/manager/admin/setup/products/products.tsx:459
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:868
 msgid "of"
 msgstr ""
@@ -1160,7 +1161,7 @@ msgstr ""
 #: ../html/src/manager/images/image-profiles.tsx:151
 #: ../html/src/manager/images/image-stores.tsx:151
 #: ../html/src/manager/images/image-view.tsx:375
-#: ../html/src/manager/notifications/notification-messages.tsx:459
+#: ../html/src/manager/notifications/notification-messages.tsx:436
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:241
 msgid "Refresh"
 msgstr ""
@@ -1189,89 +1190,83 @@ msgstr ""
 msgid "Details"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:162
+#: ../html/src/manager/admin/setup/products/products.tsx:153
 msgid ""
 "No SUSE Manager Server Subscription available. Products requiring Client "
 "Tools Channel will not be shown."
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:209
+#: ../html/src/manager/admin/setup/products/products.tsx:200
 msgid "The product catalog refresh is running..."
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:235
+#: ../html/src/manager/admin/setup/products/products.tsx:226
 msgid "The following product installations failed. Please check log files."
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:280
+#: ../html/src/manager/admin/setup/products/products.tsx:271
 msgid "Selected channels were scheduled successfully for syncing."
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:289
-msgid ""
-"The following channel installations for '{product}' failed. Please check log "
-"files."
-msgstr ""
-
-#: ../html/src/manager/admin/setup/products/products.tsx:340
+#: ../html/src/manager/admin/setup/products/products.tsx:331
 msgid ""
 "A refresh of the product data is currently running in the background. Please "
 "try again later."
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:345
+#: ../html/src/manager/admin/setup/products/products.tsx:336
 msgid "The product catalog is still refreshing, please wait."
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:347
+#: ../html/src/manager/admin/setup/products/products.tsx:338
 msgid "Select some product first."
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:356
-#: ../html/src/manager/admin/setup/products/products.tsx:364
+#: ../html/src/manager/admin/setup/products/products.tsx:347
+#: ../html/src/manager/admin/setup/products/products.tsx:355
 msgid "Add products"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:383
+#: ../html/src/manager/admin/setup/products/products.tsx:374
 msgid "Clear products selection"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:424
+#: ../html/src/manager/admin/setup/products/products.tsx:415
 msgid "Why aren't all products displayed in the list?"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:427
+#: ../html/src/manager/admin/setup/products/products.tsx:418
 msgid ""
 "The products displayed on this list are directly linked to your Organization "
 "credentials (Mirror credentials) as well as your SUSE subscriptions."
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:432
+#: ../html/src/manager/admin/setup/products/products.tsx:423
 msgid ""
 "If you believe there are products missing, make sure you have added the "
 "correct Organization credentials in the previous wizard step."
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:442
+#: ../html/src/manager/admin/setup/products/products.tsx:433
 msgid ""
 "This server is configured as an Inter-Server Synchronisation (ISS) slave. "
 "Products can only be managed on the ISS master."
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:519
+#: ../html/src/manager/admin/setup/products/products.tsx:559
 msgid "Filter by architecture"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:614
+#: ../html/src/manager/admin/setup/products/products.tsx:577
 msgid "Filter by product Description"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:690
+#: ../html/src/manager/admin/setup/products/products.tsx:653
 msgid "Product Description"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:696
-#: ../html/src/manager/admin/setup/products/products.tsx:1074
+#: ../html/src/manager/admin/setup/products/products.tsx:659
+#: ../html/src/manager/admin/setup/products/products.tsx:1037
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:159
 #: ../html/src/manager/images/image-view-packages.tsx:50
 #: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:32
@@ -1279,40 +1274,40 @@ msgstr ""
 msgid "Architecture"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:698
+#: ../html/src/manager/admin/setup/products/products.tsx:661
 msgid "Arch"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:705
+#: ../html/src/manager/admin/setup/products/products.tsx:668
 #: ../html/src/manager/packages/list.tsx:158
 msgid "Channels"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:876
+#: ../html/src/manager/admin/setup/products/products.tsx:839
 msgid " channels sync failed"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:884
+#: ../html/src/manager/admin/setup/products/products.tsx:847
 msgid " channels sync in progress"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:892
+#: ../html/src/manager/admin/setup/products/products.tsx:855
 msgid " channels synced"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:917
+#: ../html/src/manager/admin/setup/products/products.tsx:880
 msgid "To enable this product, the parent product should be selected first"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:918
+#: ../html/src/manager/admin/setup/products/products.tsx:881
 msgid "Select this product"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:930
+#: ../html/src/manager/admin/setup/products/products.tsx:893
 msgid "This product is mirrored."
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:959
+#: ../html/src/manager/admin/setup/products/products.tsx:922
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:71
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:144
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:492
@@ -1320,7 +1315,7 @@ msgstr ""
 msgid "recommended"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:977
+#: ../html/src/manager/admin/setup/products/products.tsx:940
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/recommended-toggle.tsx:28
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:173
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:429
@@ -1328,55 +1323,55 @@ msgstr ""
 msgid "include recommended"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1019
+#: ../html/src/manager/admin/setup/products/products.tsx:982
 msgid "SCC product catalog refresh in progress"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1022
+#: ../html/src/manager/admin/setup/products/products.tsx:985
 msgid "Scheduling channels product resync"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1025
+#: ../html/src/manager/admin/setup/products/products.tsx:988
 msgid "Channels product resync scheduled"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1028
+#: ../html/src/manager/admin/setup/products/products.tsx:991
 msgid "Schedule channels product resync"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1088
+#: ../html/src/manager/admin/setup/products/products.tsx:1051
 msgid "Show product's channels"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1154
+#: ../html/src/manager/admin/setup/products/products.tsx:1117
 msgid "Product Channels - "
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1159
+#: ../html/src/manager/admin/setup/products/products.tsx:1122
 msgid "Select the optional channels you wish to add and confirm."
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1163
+#: ../html/src/manager/admin/setup/products/products.tsx:1126
 msgid "Mandatory Channels"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1165
+#: ../html/src/manager/admin/setup/products/products.tsx:1128
 msgid "Optional Channels"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1201
+#: ../html/src/manager/admin/setup/products/products.tsx:1164
 msgid "not synced"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1204
+#: ../html/src/manager/admin/setup/products/products.tsx:1167
 msgid "sync in progress"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1207
+#: ../html/src/manager/admin/setup/products/products.tsx:1170
 msgid "synced"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1210
+#: ../html/src/manager/admin/setup/products/products.tsx:1173
 msgid "sync failed"
 msgstr ""
 
@@ -1470,13 +1465,13 @@ msgstr ""
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:262
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:110
-#: ../html/src/manager/notifications/notification-messages.tsx:583
+#: ../html/src/manager/notifications/notification-messages.tsx:560
 msgid "Session expired, please reload the page to see up-to-date data."
 msgstr ""
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:264
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:112
-#: ../html/src/manager/notifications/notification-messages.tsx:585
+#: ../html/src/manager/notifications/notification-messages.tsx:562
 #: ../html/src/utils/network.ts:103
 msgid "Server error, please check log files."
 msgstr ""
@@ -1694,23 +1689,29 @@ msgstr ""
 msgid "Subscription IDs"
 msgstr ""
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:80
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:63
+msgid ""
+"Subscription with unsupported part number and no associated product has been "
+"ignored."
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:84
 msgid "Please review warning and information messages below."
 msgstr ""
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:89
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:93
 msgid "Message"
 msgstr ""
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:95
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:99
 msgid "Additional information"
 msgstr ""
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:104
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:108
 msgid "No messages from the last match run."
 msgstr ""
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:109
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:113
 msgid "Messages"
 msgstr ""
 
@@ -2678,7 +2679,7 @@ msgstr ""
 #: ../html/src/manager/images/image-view-patches.tsx:79
 #: ../html/src/manager/images/image-view.tsx:642
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:105
-#: ../html/src/manager/notifications/notification-messages.tsx:521
+#: ../html/src/manager/notifications/notification-messages.tsx:498
 #: ../html/src/manager/state/highstate-summary.tsx:73
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:296
 msgid "Type"
@@ -3210,11 +3211,6 @@ msgstr ""
 msgid "Edit store"
 msgstr ""
 
-#: ../html/src/manager/images/image-view-overview.tsx:465
-#: ../html/src/manager/images/image-view.tsx:750
-msgid "Instance Details for '{name}'"
-msgstr ""
-
 #: ../html/src/manager/images/image-view-overview.tsx:520
 #: ../html/src/manager/images/image-view-overview.tsx:521
 #: ../html/src/manager/images/image-view.tsx:484
@@ -3669,10 +3665,6 @@ msgstr ""
 msgid "Current Schedule"
 msgstr ""
 
-#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:115
-msgid "Url '{url}' is invalid"
-msgstr ""
-
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:135
 msgid "Calendar data"
 msgstr ""
@@ -4041,7 +4033,7 @@ msgid "Applying the packages states has been "
 msgstr ""
 
 #: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:22
-#: ../html/src/manager/notifications/notification-messages.tsx:527
+#: ../html/src/manager/notifications/notification-messages.tsx:504
 msgid "Summary"
 msgstr ""
 
@@ -4106,134 +4098,134 @@ msgstr ""
 msgid "Install PTF"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:29
+#: ../html/src/manager/notifications/notification-messages.tsx:24
 msgid "Onboarding failed"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:33
+#: ../html/src/manager/notifications/notification-messages.tsx:28
 msgid "Channel sync failed"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:37
+#: ../html/src/manager/notifications/notification-messages.tsx:32
 msgid "Channel sync finished"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:41
+#: ../html/src/manager/notifications/notification-messages.tsx:36
 msgid "Creating Bootstrap Repository failed"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:45
+#: ../html/src/manager/notifications/notification-messages.tsx:40
 msgid "State apply failed"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:49
+#: ../html/src/manager/notifications/notification-messages.tsx:44
 msgid "PAYG refresh authentication data failed"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:53
+#: ../html/src/manager/notifications/notification-messages.tsx:48
 msgid "End of Life Period"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:57
+#: ../html/src/manager/notifications/notification-messages.tsx:52
 #, fuzzy
 msgid "Subscription Warning"
 msgstr "Abbinamento della sottoscrizione"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:61
+#: ../html/src/manager/notifications/notification-messages.tsx:56
 msgid "Update Notification"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:65
+#: ../html/src/manager/notifications/notification-messages.tsx:60
 msgid "PAYG instance is not compliant"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:156
-msgid "Filter by type"
-msgstr ""
-
-#: ../html/src/manager/notifications/notification-messages.tsx:264
-#: ../html/src/manager/notifications/notification-messages.tsx:265
+#: ../html/src/manager/notifications/notification-messages.tsx:241
+#: ../html/src/manager/notifications/notification-messages.tsx:242
 msgid "Info"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:272
-#: ../html/src/manager/notifications/notification-messages.tsx:273
+#: ../html/src/manager/notifications/notification-messages.tsx:249
+#: ../html/src/manager/notifications/notification-messages.tsx:250
 msgid "Warning"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:280
-#: ../html/src/manager/notifications/notification-messages.tsx:281
+#: ../html/src/manager/notifications/notification-messages.tsx:257
+#: ../html/src/manager/notifications/notification-messages.tsx:258
 msgid "Error"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:343
+#: ../html/src/manager/notifications/notification-messages.tsx:320
 msgid "show details"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:392
+#: ../html/src/manager/notifications/notification-messages.tsx:369
 msgid "Retry onboarding"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:402
+#: ../html/src/manager/notifications/notification-messages.tsx:379
 msgid "Retry repo sync"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:426
+#: ../html/src/manager/notifications/notification-messages.tsx:403
 msgid "Unread Messages"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:431
+#: ../html/src/manager/notifications/notification-messages.tsx:408
 msgid "All Messages"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:463
-#: ../html/src/manager/notifications/notification-messages.tsx:464
+#: ../html/src/manager/notifications/notification-messages.tsx:421
+msgid "Filter by type"
+msgstr ""
+
+#: ../html/src/manager/notifications/notification-messages.tsx:440
+#: ../html/src/manager/notifications/notification-messages.tsx:441
 msgid "Delete selected messages"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:471
-#: ../html/src/manager/notifications/notification-messages.tsx:472
+#: ../html/src/manager/notifications/notification-messages.tsx:448
+#: ../html/src/manager/notifications/notification-messages.tsx:449
 msgid "Mark selected as read"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:489
-#: ../html/src/manager/notifications/notification-messages.tsx:571
+#: ../html/src/manager/notifications/notification-messages.tsx:466
+#: ../html/src/manager/notifications/notification-messages.tsx:548
 msgid "Notification Messages"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:494
+#: ../html/src/manager/notifications/notification-messages.tsx:471
 msgid "The server has collected the following notification messages."
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:509
+#: ../html/src/manager/notifications/notification-messages.tsx:486
 msgid "Filter by summary"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:515
+#: ../html/src/manager/notifications/notification-messages.tsx:492
 msgid "Severity"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:533
+#: ../html/src/manager/notifications/notification-messages.tsx:510
 msgid "Created"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:538
+#: ../html/src/manager/notifications/notification-messages.tsx:515
 msgid "Action"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:544
+#: ../html/src/manager/notifications/notification-messages.tsx:521
 msgid "Read|Delete"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:553
+#: ../html/src/manager/notifications/notification-messages.tsx:530
 msgid "Flag as Unread"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:553
+#: ../html/src/manager/notifications/notification-messages.tsx:530
 msgid "Flag as Read"
 msgstr ""
 
-#: ../html/src/manager/notifications/notification-messages.tsx:559
+#: ../html/src/manager/notifications/notification-messages.tsx:536
 msgid "Delete Notification"
 msgstr ""
 
@@ -6423,82 +6415,94 @@ msgid "Add children to SSM"
 msgstr ""
 
 #: ../html/src/manager/visualization/hierarchy.tsx:65
-msgid "Filtering"
+msgid "There was an error fetching data from the server."
 msgstr ""
 
-#: ../html/src/manager/visualization/hierarchy.tsx:74
-msgid "Partitioning"
-msgstr ""
-
-#: ../html/src/manager/visualization/hierarchy.tsx:88
+#: ../html/src/manager/visualization/hierarchy.tsx:109
 msgid "Show systems with:"
 msgstr ""
 
-#: ../html/src/manager/visualization/hierarchy.tsx:117
+#: ../html/src/manager/visualization/hierarchy.tsx:138
 msgid "security advisories"
 msgstr ""
 
-#: ../html/src/manager/visualization/hierarchy.tsx:122
+#: ../html/src/manager/visualization/hierarchy.tsx:143
 msgid "bug fix advisories"
 msgstr ""
 
-#: ../html/src/manager/visualization/hierarchy.tsx:125
+#: ../html/src/manager/visualization/hierarchy.tsx:146
 msgid "product enhancement advisories"
 msgstr ""
 
 #. System name filter
-#: ../html/src/manager/visualization/hierarchy.tsx:133
+#: ../html/src/manager/visualization/hierarchy.tsx:154
 msgid "Filter by system name"
 msgstr ""
 
-#: ../html/src/manager/visualization/hierarchy.tsx:133
+#: ../html/src/manager/visualization/hierarchy.tsx:154
 msgid "e.g., client.nue.sles"
 msgstr ""
 
 #. Base channel filter
-#: ../html/src/manager/visualization/hierarchy.tsx:139
+#: ../html/src/manager/visualization/hierarchy.tsx:160
 msgid "Filter by system base channel"
 msgstr ""
 
-#: ../html/src/manager/visualization/hierarchy.tsx:139
+#: ../html/src/manager/visualization/hierarchy.tsx:160
 msgid "e.g., SLE12"
 msgstr ""
 
-#. Installed products filter
-#: ../html/src/manager/visualization/hierarchy.tsx:145
+#: ../html/src/manager/visualization/hierarchy.tsx:170
 msgid "Filter by system installed products"
 msgstr ""
 
-#: ../html/src/manager/visualization/hierarchy.tsx:145
+#: ../html/src/manager/visualization/hierarchy.tsx:171
 msgid "e.g., SLES"
 msgstr ""
 
-#: ../html/src/manager/visualization/hierarchy.tsx:187
-msgid "Partition systems based on whether there are patches for them:"
+#: ../html/src/manager/visualization/hierarchy.tsx:274
+msgid "Hide filters"
 msgstr ""
 
-#: ../html/src/manager/visualization/hierarchy.tsx:229
-msgid "There was an error fetching data from the server."
+#: ../html/src/manager/visualization/hierarchy.tsx:274
+msgid "Show filters"
 msgstr ""
 
-#: ../html/src/manager/visualization/hierarchy.tsx:268
-msgid " filters"
+#: ../html/src/manager/visualization/hierarchy.tsx:282
+msgid "Filtering"
 msgstr ""
 
-#: ../html/src/manager/visualization/ui/components.ts:38
+#: ../html/src/manager/visualization/hierarchy.tsx:288
+msgid "Partitioning"
+msgstr ""
+
+#: ../html/src/manager/visualization/hierarchy.tsx:295
 msgid "Partition systems by given check-in time:"
 msgstr ""
 
-#: ../html/src/manager/visualization/ui/components.ts:145
+#: ../html/src/manager/visualization/hierarchy.tsx:304
+#: ../html/src/manager/visualization/hierarchy.tsx:319
+msgid "Apply"
+msgstr ""
+
+#: ../html/src/manager/visualization/hierarchy.tsx:312
+msgid "Partition systems based on whether there are patches for them:"
+msgstr ""
+
+#: ../html/src/manager/visualization/hierarchy.tsx:328
+msgid "Split into groups"
+msgstr ""
+
+#: ../html/src/manager/visualization/hierarchy.tsx:335
 msgid "Add a grouping level"
 msgstr ""
 
-#: ../html/src/manager/visualization/ui/components.ts:183
+#: ../html/src/manager/visualization/hierarchy.tsx:345
 msgid "Select a system group"
 msgstr ""
 
-#: ../html/src/manager/visualization/ui/components.ts:232
-msgid "Split into groups"
+#: ../html/src/manager/visualization/hierarchy.tsx:367
+msgid "Remove this level"
 msgstr ""
 
 #: ../html/src/utils/network.ts:97

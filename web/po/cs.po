@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-12-04 10:42+0100\n"
+"POT-Creation-Date: 2023-12-15 14:09+0100\n"
 "PO-Revision-Date: 2022-09-19 19:13+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/web/cs/>\n"
@@ -111,6 +111,11 @@ msgstr "Přidat k:"
 #: ../html/src/components/action-schedule.tsx:297
 msgid "Loading the scheduler..."
 msgstr "Načítání plánovače..."
+
+#: ../html/src/components/combobox.tsx:96
+#, fuzzy
+msgid "Create {label}"
+msgstr "Vytvořit "
 
 #: ../html/src/components/config-channels.tsx:38
 msgid "Configuration Channels"
@@ -281,13 +286,6 @@ msgstr "Začněte psát..."
 msgid "No flavor"
 msgstr "Bez variant"
 
-#: ../html/src/components/package/PackageListActionScheduler.tsx:82
-#: ../html/src/manager/state/highstate.tsx:64
-#, fuzzy
-msgid ""
-"Action has been successfully added to the action chain <link>'{name}'</link>."
-msgstr "Akce byla úspěšně přidána do Řetězce akcí "
-
 #: ../html/src/components/package/PackageListActionScheduler.tsx:89
 #, fuzzy
 msgid "The action has been <link>scheduled</link>."
@@ -304,7 +302,7 @@ msgstr ""
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:180
 #: ../html/src/components/states-picker.tsx:329
-#: ../html/src/manager/admin/setup/products/products.tsx:1181
+#: ../html/src/manager/admin/setup/products/products.tsx:1144
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:187
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:16
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1130
@@ -342,7 +340,7 @@ msgstr "První"
 
 #: ../html/src/components/pagination.tsx:28
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:155
-#: ../html/src/manager/admin/setup/products/products.tsx:457
+#: ../html/src/manager/admin/setup/products/products.tsx:448
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1096
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1127
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:670
@@ -351,7 +349,7 @@ msgstr "Předchozí"
 
 #: ../html/src/components/pagination.tsx:33
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:161
-#: ../html/src/manager/admin/setup/products/products.tsx:463
+#: ../html/src/manager/admin/setup/products/products.tsx:454
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1077
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1103
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:567
@@ -696,8 +694,10 @@ msgid "({selectedCount} selected)"
 msgstr "Odstranit vybrané"
 
 #: ../html/src/components/table/SearchPanel.tsx:64
-#: ../html/src/manager/admin/setup/products/products.tsx:384
+#: ../html/src/manager/admin/setup/products/products.tsx:375
 #: ../html/src/manager/systems/ssm/ssm-counter.tsx:34
+#: ../html/src/manager/visualization/hierarchy.tsx:307
+#: ../html/src/manager/visualization/hierarchy.tsx:322
 msgid "Clear"
 msgstr "Vyčistit"
 
@@ -1042,7 +1042,7 @@ msgid "Bastion SSH connection data"
 msgstr "Údaje o připojení Bastion SSH"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:84
-#: ../html/src/manager/admin/setup/products/products.tsx:315
+#: ../html/src/manager/admin/setup/products/products.tsx:306
 msgid "Setup Wizard"
 msgstr "Průvodce nastavením"
 
@@ -1080,7 +1080,7 @@ msgid "never"
 msgstr "nikdy"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:166
-#: ../html/src/manager/admin/setup/products/products.tsx:468
+#: ../html/src/manager/admin/setup/products/products.tsx:459
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:868
 msgid "of"
 msgstr "z"
@@ -1199,7 +1199,7 @@ msgstr "Aktualizujte katalog produktů ze zákaznického centra SUSE"
 #: ../html/src/manager/images/image-profiles.tsx:151
 #: ../html/src/manager/images/image-stores.tsx:151
 #: ../html/src/manager/images/image-view.tsx:375
-#: ../html/src/manager/notifications/notification-messages.tsx:459
+#: ../html/src/manager/notifications/notification-messages.tsx:436
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:241
 msgid "Refresh"
 msgstr "Aktualizovat"
@@ -1228,7 +1228,7 @@ msgstr "Operace nebyla úspěšná: Prázdná odpověď ze serveru"
 msgid "Details"
 msgstr "Podrobnosti"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:162
+#: ../html/src/manager/admin/setup/products/products.tsx:153
 msgid ""
 "No SUSE Manager Server Subscription available. Products requiring Client "
 "Tools Channel will not be shown."
@@ -1236,29 +1236,21 @@ msgstr ""
 "Není k dispozici žádné předplatné serveru SUSE Manager. Produkty vyžadující "
 "kanál nástrojů klienta se nezobrazí."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:209
+#: ../html/src/manager/admin/setup/products/products.tsx:200
 msgid "The product catalog refresh is running..."
 msgstr "Probíhá aktualizace katalogu produktů..."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:235
+#: ../html/src/manager/admin/setup/products/products.tsx:226
 msgid "The following product installations failed. Please check log files."
 msgstr ""
 "Následující instalace produktů selhaly. Zkontrolujte žurnálové soubory."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:280
+#: ../html/src/manager/admin/setup/products/products.tsx:271
 #, fuzzy
 msgid "Selected channels were scheduled successfully for syncing."
 msgstr "Některé změny byly úspěšně naplánovány."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:289
-#, fuzzy
-msgid ""
-"The following channel installations for '{product}' failed. Please check log "
-"files."
-msgstr ""
-"Následující instalace produktů selhaly. Zkontrolujte žurnálové soubory."
-
-#: ../html/src/manager/admin/setup/products/products.tsx:340
+#: ../html/src/manager/admin/setup/products/products.tsx:331
 msgid ""
 "A refresh of the product data is currently running in the background. Please "
 "try again later."
@@ -1266,28 +1258,28 @@ msgstr ""
 "Aktualizace údajů o produktu aktuálně běží na pozadí. Zkuste to znovu "
 "později."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:345
+#: ../html/src/manager/admin/setup/products/products.tsx:336
 msgid "The product catalog is still refreshing, please wait."
 msgstr "Katalog produktů se stále aktualizuje, vyčkejte."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:347
+#: ../html/src/manager/admin/setup/products/products.tsx:338
 msgid "Select some product first."
 msgstr "Nejprve vyberte nějaký produkt."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:356
-#: ../html/src/manager/admin/setup/products/products.tsx:364
+#: ../html/src/manager/admin/setup/products/products.tsx:347
+#: ../html/src/manager/admin/setup/products/products.tsx:355
 msgid "Add products"
 msgstr "Přidat produkty"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:383
+#: ../html/src/manager/admin/setup/products/products.tsx:374
 msgid "Clear products selection"
 msgstr "Vymazat výběr produktů"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:424
+#: ../html/src/manager/admin/setup/products/products.tsx:415
 msgid "Why aren't all products displayed in the list?"
 msgstr "Proč se v seznamu nezobrazují všechny produkty?"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:427
+#: ../html/src/manager/admin/setup/products/products.tsx:418
 msgid ""
 "The products displayed on this list are directly linked to your Organization "
 "credentials (Mirror credentials) as well as your SUSE subscriptions."
@@ -1295,7 +1287,7 @@ msgstr ""
 "Produkty zobrazené v tomto seznamu jsou přímo propojeny s přihlašovacími "
 "údaji Vaší organizace (zrcadlená pověření) a Vašimi předplatnými SUSE."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:432
+#: ../html/src/manager/admin/setup/products/products.tsx:423
 msgid ""
 "If you believe there are products missing, make sure you have added the "
 "correct Organization credentials in the previous wizard step."
@@ -1303,7 +1295,7 @@ msgstr ""
 "Domníváte-li se, že nějaké produkty chybí, ujistěte se, že jste v předchozím "
 "kroku průvodce přidali správná pověření organizace."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:442
+#: ../html/src/manager/admin/setup/products/products.tsx:433
 msgid ""
 "This server is configured as an Inter-Server Synchronisation (ISS) slave. "
 "Products can only be managed on the ISS master."
@@ -1311,20 +1303,20 @@ msgstr ""
 "Tento server je konfigurován jako podřízený synchronizace mezi servery "
 "(ISS). Produkty lze spravovat pouze na ISS master."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:519
+#: ../html/src/manager/admin/setup/products/products.tsx:559
 msgid "Filter by architecture"
 msgstr "Filtrovat podle architektury"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:614
+#: ../html/src/manager/admin/setup/products/products.tsx:577
 msgid "Filter by product Description"
 msgstr "Filtrovat podle popisu produktu"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:690
+#: ../html/src/manager/admin/setup/products/products.tsx:653
 msgid "Product Description"
 msgstr "Popis výrobku"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:696
-#: ../html/src/manager/admin/setup/products/products.tsx:1074
+#: ../html/src/manager/admin/setup/products/products.tsx:659
+#: ../html/src/manager/admin/setup/products/products.tsx:1037
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:159
 #: ../html/src/manager/images/image-view-packages.tsx:50
 #: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:32
@@ -1332,41 +1324,41 @@ msgstr "Popis výrobku"
 msgid "Architecture"
 msgstr "Architektura"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:698
+#: ../html/src/manager/admin/setup/products/products.tsx:661
 msgid "Arch"
 msgstr "Arch"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:705
+#: ../html/src/manager/admin/setup/products/products.tsx:668
 #: ../html/src/manager/packages/list.tsx:158
 msgid "Channels"
 msgstr "Kanály"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:876
+#: ../html/src/manager/admin/setup/products/products.tsx:839
 msgid " channels sync failed"
 msgstr " synchronizace kanálů selhala"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:884
+#: ../html/src/manager/admin/setup/products/products.tsx:847
 msgid " channels sync in progress"
 msgstr " probíhá synchronizace kanálů"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:892
+#: ../html/src/manager/admin/setup/products/products.tsx:855
 msgid " channels synced"
 msgstr " kanály synchronizovány"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:917
+#: ../html/src/manager/admin/setup/products/products.tsx:880
 msgid "To enable this product, the parent product should be selected first"
 msgstr ""
 "Chcete-li povolit tento produkt, je třeba nejprve vybrat nadřazený produkt"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:918
+#: ../html/src/manager/admin/setup/products/products.tsx:881
 msgid "Select this product"
 msgstr "Zvolit tento produkt"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:930
+#: ../html/src/manager/admin/setup/products/products.tsx:893
 msgid "This product is mirrored."
 msgstr "Tento produkt je zrcadlen."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:959
+#: ../html/src/manager/admin/setup/products/products.tsx:922
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:71
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:144
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:492
@@ -1374,7 +1366,7 @@ msgstr "Tento produkt je zrcadlen."
 msgid "recommended"
 msgstr "doporučeno"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:977
+#: ../html/src/manager/admin/setup/products/products.tsx:940
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/recommended-toggle.tsx:28
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:173
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:429
@@ -1382,55 +1374,55 @@ msgstr "doporučeno"
 msgid "include recommended"
 msgstr "zahrnout, co je doporučeno"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1019
+#: ../html/src/manager/admin/setup/products/products.tsx:982
 msgid "SCC product catalog refresh in progress"
 msgstr "Probíhá aktualizace katalogu produktů SCC"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1022
+#: ../html/src/manager/admin/setup/products/products.tsx:985
 msgid "Scheduling channels product resync"
 msgstr "Plánování resynchronizace produktů kanálů"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1025
+#: ../html/src/manager/admin/setup/products/products.tsx:988
 msgid "Channels product resync scheduled"
 msgstr "Je naplánována resynchronizace produktu kanálů"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1028
+#: ../html/src/manager/admin/setup/products/products.tsx:991
 msgid "Schedule channels product resync"
 msgstr "Naplánovat resynchronizaci produktů kanálů"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1088
+#: ../html/src/manager/admin/setup/products/products.tsx:1051
 msgid "Show product's channels"
 msgstr "Zobrazit kanály produktu"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1154
+#: ../html/src/manager/admin/setup/products/products.tsx:1117
 msgid "Product Channels - "
 msgstr "Kanály produktů - "
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1159
+#: ../html/src/manager/admin/setup/products/products.tsx:1122
 msgid "Select the optional channels you wish to add and confirm."
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1163
+#: ../html/src/manager/admin/setup/products/products.tsx:1126
 msgid "Mandatory Channels"
 msgstr "Povinné kanály"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1165
+#: ../html/src/manager/admin/setup/products/products.tsx:1128
 msgid "Optional Channels"
 msgstr "Volitelné kanály"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1201
+#: ../html/src/manager/admin/setup/products/products.tsx:1164
 msgid "not synced"
 msgstr "nesynchronizováno"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1204
+#: ../html/src/manager/admin/setup/products/products.tsx:1167
 msgid "sync in progress"
 msgstr "probíhá synchronizace"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1207
+#: ../html/src/manager/admin/setup/products/products.tsx:1170
 msgid "synced"
 msgstr "synchronizováno"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1210
+#: ../html/src/manager/admin/setup/products/products.tsx:1173
 msgid "sync failed"
 msgstr "synchronizace selhala"
 
@@ -1525,7 +1517,7 @@ msgstr "Na serveru nejsou momentálně spuštěny žádné úkoly."
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:262
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:110
-#: ../html/src/manager/notifications/notification-messages.tsx:583
+#: ../html/src/manager/notifications/notification-messages.tsx:560
 msgid "Session expired, please reload the page to see up-to-date data."
 msgstr ""
 "Platnost relace vypršela. Chcete-li zobrazit aktuální data, načtěte stránku "
@@ -1533,7 +1525,7 @@ msgstr ""
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:264
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:112
-#: ../html/src/manager/notifications/notification-messages.tsx:585
+#: ../html/src/manager/notifications/notification-messages.tsx:562
 #: ../html/src/utils/network.ts:103
 msgid "Server error, please check log files."
 msgstr "Chyba serveru, zkontrolujte soubory protokolu."
@@ -1763,23 +1755,29 @@ msgstr "Přiřazená shoda upravena kvůli sloučeným předplatným"
 msgid "Subscription IDs"
 msgstr "Identifikátory předplatného"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:80
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:63
+msgid ""
+"Subscription with unsupported part number and no associated product has been "
+"ignored."
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:84
 msgid "Please review warning and information messages below."
 msgstr "Přečtěte si varovné a informační zprávy níže."
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:89
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:93
 msgid "Message"
 msgstr "Zpráva"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:95
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:99
 msgid "Additional information"
 msgstr "Další informace"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:104
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:108
 msgid "No messages from the last match run."
 msgstr "Žádné zprávy z posledního běhu párování."
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:109
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:113
 msgid "Messages"
 msgstr "Zprávy"
 
@@ -2775,7 +2773,7 @@ msgstr "žádné podřízené kanály"
 #: ../html/src/manager/images/image-view-patches.tsx:79
 #: ../html/src/manager/images/image-view.tsx:642
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:105
-#: ../html/src/manager/notifications/notification-messages.tsx:521
+#: ../html/src/manager/notifications/notification-messages.tsx:498
 #: ../html/src/manager/state/highstate-summary.tsx:73
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:296
 msgid "Type"
@@ -3322,12 +3320,6 @@ msgstr "Upravit profil"
 msgid "Edit store"
 msgstr "Upravit úložiště"
 
-#: ../html/src/manager/images/image-view-overview.tsx:465
-#: ../html/src/manager/images/image-view.tsx:750
-#, fuzzy
-msgid "Instance Details for '{name}'"
-msgstr "Podrobnosti instance pro '{0}'"
-
 #: ../html/src/manager/images/image-view-overview.tsx:520
 #: ../html/src/manager/images/image-view-overview.tsx:521
 #: ../html/src/manager/images/image-view.tsx:484
@@ -3797,11 +3789,6 @@ msgstr "Vyhledávat systémy"
 msgid "Current Schedule"
 msgstr "Aktuální plán"
 
-#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:115
-#, fuzzy
-msgid "Url '{url}' is invalid"
-msgstr "URL '{0}' je neplatné"
-
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:135
 msgid "Calendar data"
 msgstr "Data kalendáře"
@@ -4177,7 +4164,7 @@ msgid "Applying the packages states has been "
 msgstr "Použití stavů balíčků bylo "
 
 #: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:22
-#: ../html/src/manager/notifications/notification-messages.tsx:527
+#: ../html/src/manager/notifications/notification-messages.tsx:504
 msgid "Summary"
 msgstr "Souhrn"
 
@@ -4244,137 +4231,137 @@ msgstr ""
 msgid "Install PTF"
 msgstr "Instalováno"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:29
+#: ../html/src/manager/notifications/notification-messages.tsx:24
 msgid "Onboarding failed"
 msgstr "Vaše registrace se nezdařila"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:33
+#: ../html/src/manager/notifications/notification-messages.tsx:28
 msgid "Channel sync failed"
 msgstr "Synchronizace kanálu selhala"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:37
+#: ../html/src/manager/notifications/notification-messages.tsx:32
 msgid "Channel sync finished"
 msgstr "Synchronizace kanálu dokončena"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:41
+#: ../html/src/manager/notifications/notification-messages.tsx:36
 msgid "Creating Bootstrap Repository failed"
 msgstr "Vytvoření úložiště Bootstrap se nezdařilo"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:45
+#: ../html/src/manager/notifications/notification-messages.tsx:40
 msgid "State apply failed"
 msgstr "Aplikace stavu selhala"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:49
+#: ../html/src/manager/notifications/notification-messages.tsx:44
 #, fuzzy
 msgid "PAYG refresh authentication data failed"
 msgstr "Ověření dat obnovení průběžné platby se nezdařilo"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:53
+#: ../html/src/manager/notifications/notification-messages.tsx:48
 msgid "End of Life Period"
 msgstr "Konec životního cyklu"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:57
+#: ../html/src/manager/notifications/notification-messages.tsx:52
 #, fuzzy
 msgid "Subscription Warning"
 msgstr "Párování předplatného"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:61
+#: ../html/src/manager/notifications/notification-messages.tsx:56
 #, fuzzy
 msgid "Update Notification"
 msgstr "Smazat oznámení"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:65
+#: ../html/src/manager/notifications/notification-messages.tsx:60
 #, fuzzy
 msgid "PAYG instance is not compliant"
 msgstr "Instance je zastaralá"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:156
-msgid "Filter by type"
-msgstr "Filtrovat podle typu"
-
-#: ../html/src/manager/notifications/notification-messages.tsx:264
-#: ../html/src/manager/notifications/notification-messages.tsx:265
+#: ../html/src/manager/notifications/notification-messages.tsx:241
+#: ../html/src/manager/notifications/notification-messages.tsx:242
 msgid "Info"
 msgstr "Informace"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:272
-#: ../html/src/manager/notifications/notification-messages.tsx:273
+#: ../html/src/manager/notifications/notification-messages.tsx:249
+#: ../html/src/manager/notifications/notification-messages.tsx:250
 msgid "Warning"
 msgstr "Výstraha"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:280
-#: ../html/src/manager/notifications/notification-messages.tsx:281
+#: ../html/src/manager/notifications/notification-messages.tsx:257
+#: ../html/src/manager/notifications/notification-messages.tsx:258
 msgid "Error"
 msgstr "Chyba"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:343
+#: ../html/src/manager/notifications/notification-messages.tsx:320
 msgid "show details"
 msgstr "ukázat podrobnosti"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:392
+#: ../html/src/manager/notifications/notification-messages.tsx:369
 msgid "Retry onboarding"
 msgstr "Zkuste se registrovat znovu"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:402
+#: ../html/src/manager/notifications/notification-messages.tsx:379
 msgid "Retry repo sync"
 msgstr "Opakovat synchronizaci úložišť"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:426
+#: ../html/src/manager/notifications/notification-messages.tsx:403
 msgid "Unread Messages"
 msgstr "Nepřečtené zprávy"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:431
+#: ../html/src/manager/notifications/notification-messages.tsx:408
 msgid "All Messages"
 msgstr "Všechny zprávy"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:463
-#: ../html/src/manager/notifications/notification-messages.tsx:464
+#: ../html/src/manager/notifications/notification-messages.tsx:421
+msgid "Filter by type"
+msgstr "Filtrovat podle typu"
+
+#: ../html/src/manager/notifications/notification-messages.tsx:440
+#: ../html/src/manager/notifications/notification-messages.tsx:441
 msgid "Delete selected messages"
 msgstr "Odstranit vybrané zprávy"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:471
-#: ../html/src/manager/notifications/notification-messages.tsx:472
+#: ../html/src/manager/notifications/notification-messages.tsx:448
+#: ../html/src/manager/notifications/notification-messages.tsx:449
 msgid "Mark selected as read"
 msgstr "Označit vybrané zprávy jako přečtené"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:489
-#: ../html/src/manager/notifications/notification-messages.tsx:571
+#: ../html/src/manager/notifications/notification-messages.tsx:466
+#: ../html/src/manager/notifications/notification-messages.tsx:548
 msgid "Notification Messages"
 msgstr "Oznámení"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:494
+#: ../html/src/manager/notifications/notification-messages.tsx:471
 msgid "The server has collected the following notification messages."
 msgstr "Server shromáždil následující upozornění."
 
-#: ../html/src/manager/notifications/notification-messages.tsx:509
+#: ../html/src/manager/notifications/notification-messages.tsx:486
 msgid "Filter by summary"
 msgstr "Filtrovat podle souhrnu"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:515
+#: ../html/src/manager/notifications/notification-messages.tsx:492
 msgid "Severity"
 msgstr "Závažnost"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:533
+#: ../html/src/manager/notifications/notification-messages.tsx:510
 msgid "Created"
 msgstr "Vytvořeno"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:538
+#: ../html/src/manager/notifications/notification-messages.tsx:515
 msgid "Action"
 msgstr "Akce"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:544
+#: ../html/src/manager/notifications/notification-messages.tsx:521
 msgid "Read|Delete"
 msgstr "Číst|Odstranit"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:553
+#: ../html/src/manager/notifications/notification-messages.tsx:530
 msgid "Flag as Unread"
 msgstr "Označit jako nepřečtené"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:553
+#: ../html/src/manager/notifications/notification-messages.tsx:530
 msgid "Flag as Read"
 msgstr "Označit jako přečtené"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:559
+#: ../html/src/manager/notifications/notification-messages.tsx:536
 msgid "Delete Notification"
 msgstr "Smazat oznámení"
 
@@ -6648,83 +6635,98 @@ msgid "Add children to SSM"
 msgstr "Přidat podřízené do SSM"
 
 #: ../html/src/manager/visualization/hierarchy.tsx:65
-msgid "Filtering"
-msgstr "Filtrování"
+msgid "There was an error fetching data from the server."
+msgstr "Při načítání dat ze serveru došlo k chybě."
 
-#: ../html/src/manager/visualization/hierarchy.tsx:74
-msgid "Partitioning"
-msgstr "Dělení na oddíly"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:88
+#: ../html/src/manager/visualization/hierarchy.tsx:109
 msgid "Show systems with:"
 msgstr "Zobrazit systémy s:"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:117
+#: ../html/src/manager/visualization/hierarchy.tsx:138
 msgid "security advisories"
 msgstr "bezpečnostní poradenství"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:122
+#: ../html/src/manager/visualization/hierarchy.tsx:143
 msgid "bug fix advisories"
 msgstr "poradenství k opravám chyb"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:125
+#: ../html/src/manager/visualization/hierarchy.tsx:146
 msgid "product enhancement advisories"
 msgstr "poradenství k vylepšení produktu"
 
 #. System name filter
-#: ../html/src/manager/visualization/hierarchy.tsx:133
+#: ../html/src/manager/visualization/hierarchy.tsx:154
 msgid "Filter by system name"
 msgstr "Filtrovat podle názvu systému"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:133
+#: ../html/src/manager/visualization/hierarchy.tsx:154
 msgid "e.g., client.nue.sles"
 msgstr "např. client.nue.sles"
 
 #. Base channel filter
-#: ../html/src/manager/visualization/hierarchy.tsx:139
+#: ../html/src/manager/visualization/hierarchy.tsx:160
 msgid "Filter by system base channel"
 msgstr "Filtrovat podle kanálu základního systému"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:139
+#: ../html/src/manager/visualization/hierarchy.tsx:160
 msgid "e.g., SLE12"
 msgstr "např. SLE12"
 
-#. Installed products filter
-#: ../html/src/manager/visualization/hierarchy.tsx:145
+#: ../html/src/manager/visualization/hierarchy.tsx:170
 msgid "Filter by system installed products"
 msgstr "Filtrovat podle instalovaných produktů systémů"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:145
+#: ../html/src/manager/visualization/hierarchy.tsx:171
 msgid "e.g., SLES"
 msgstr "např. SLES"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:187
-msgid "Partition systems based on whether there are patches for them:"
-msgstr "Dělit systémy ne/mající opravy:"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:229
-msgid "There was an error fetching data from the server."
-msgstr "Při načítání dat ze serveru došlo k chybě."
-
-#: ../html/src/manager/visualization/hierarchy.tsx:268
-msgid " filters"
+#: ../html/src/manager/visualization/hierarchy.tsx:274
+#, fuzzy
+msgid "Hide filters"
 msgstr " filtry"
 
-#: ../html/src/manager/visualization/ui/components.ts:38
+#: ../html/src/manager/visualization/hierarchy.tsx:274
+#, fuzzy
+msgid "Show filters"
+msgstr " filtry"
+
+#: ../html/src/manager/visualization/hierarchy.tsx:282
+msgid "Filtering"
+msgstr "Filtrování"
+
+#: ../html/src/manager/visualization/hierarchy.tsx:288
+msgid "Partitioning"
+msgstr "Dělení na oddíly"
+
+#: ../html/src/manager/visualization/hierarchy.tsx:295
 msgid "Partition systems by given check-in time:"
 msgstr "Dělit systémy podle daného času registrace:"
 
-#: ../html/src/manager/visualization/ui/components.ts:145
+#: ../html/src/manager/visualization/hierarchy.tsx:304
+#: ../html/src/manager/visualization/hierarchy.tsx:319
+msgid "Apply"
+msgstr "Použít"
+
+#: ../html/src/manager/visualization/hierarchy.tsx:312
+msgid "Partition systems based on whether there are patches for them:"
+msgstr "Dělit systémy ne/mající opravy:"
+
+#: ../html/src/manager/visualization/hierarchy.tsx:328
+msgid "Split into groups"
+msgstr "Rozdělit do skupin"
+
+#: ../html/src/manager/visualization/hierarchy.tsx:335
 msgid "Add a grouping level"
 msgstr "Přidejte úroveň seskupení"
 
-#: ../html/src/manager/visualization/ui/components.ts:183
+#: ../html/src/manager/visualization/hierarchy.tsx:345
 msgid "Select a system group"
 msgstr "Vyberte systémovou skupinu"
 
-#: ../html/src/manager/visualization/ui/components.ts:232
-msgid "Split into groups"
-msgstr "Rozdělit do skupin"
+#: ../html/src/manager/visualization/hierarchy.tsx:367
+#, fuzzy
+msgid "Remove this level"
+msgstr "Odebrat soubor"
 
 #: ../html/src/utils/network.ts:97
 msgid "Session expired, please reload the page."
@@ -6744,6 +6746,27 @@ msgstr "Zdroj nebyl nalezen."
 #: ../html/src/utils/network.ts:105
 msgid "HTTP Error code "
 msgstr "Kód chyby HTTP "
+
+#, fuzzy
+#~ msgid ""
+#~ "Action has been successfully added to the action chain <link>'{name}'</"
+#~ "link>."
+#~ msgstr "Akce byla úspěšně přidána do Řetězce akcí "
+
+#, fuzzy
+#~ msgid ""
+#~ "The following channel installations for '{product}' failed. Please check "
+#~ "log files."
+#~ msgstr ""
+#~ "Následující instalace produktů selhaly. Zkontrolujte žurnálové soubory."
+
+#, fuzzy
+#~ msgid "Instance Details for '{name}'"
+#~ msgstr "Podrobnosti instance pro '{0}'"
+
+#, fuzzy
+#~ msgid "Url '{url}' is invalid"
+#~ msgstr "URL '{0}' je neplatné"
 
 #, fuzzy
 #~ msgid "Playbook '{name}'"
@@ -7033,9 +7056,6 @@ msgstr "Kód chyby HTTP "
 #~ msgstr ""
 #~ "poskytnutý kanál, který odpovídá instalované verzi SUSE Linuxu. Místo "
 #~ "výchozího nastavení "
-
-#~ msgid "Apply"
-#~ msgstr "Použít"
 
 #~ msgid "Upcoming Maintenance Windows"
 #~ msgstr "Nadcházející okénka údržby"
