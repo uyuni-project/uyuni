@@ -313,6 +313,15 @@ When(/^I enable product "([^"]*)" without recommended$/) do |prd|
   raise $command_output.to_s unless executed
 end
 
+Then(/^I should see the "([^"]*)" paygo products$/) do |paygo_product|
+  raise "Error : #{paygo_product} is an incorrect paygo product" unless %w[server sle15sp5_paygo_minion sle12sp5_paygo_minion sleforsap15sp5_paygo_minion].include?(paygo_product)
+  command_output, _code = get_target('server').run('echo -e "admin\nadmin\n" | mgr-sync list products', check_errors: false, buffer_size: 1_000_000)
+  output_lines = command_output.split("\n")
+  raise "Error : Product list is empty" if output_lines.length.zero?
+  missing_elements = PAYGO_DEFAULT_PRODUCTS[paygo_product] - output_lines
+  raise "Error: Missing product(s) #{missing_elements}for the paygo product #{paygo_product}" unless missing_elements.empty?
+end
+
 When(/^I execute mgr-sync "([^"]*)" with user "([^"]*)" and password "([^"]*)"$/) do |arg1, u, p|
   get_target('server').run("echo -e \'mgrsync.user = \"#{u}\"\nmgrsync.password = \"#{p}\"\n\' > ~/.mgr-sync")
   $command_output, _code = get_target('server').run("echo -e '#{u}\n#{p}\n' | mgr-sync #{arg1}", check_errors: false, buffer_size: 1_000_000)
@@ -332,7 +341,7 @@ When(/^I refresh SCC$/) do
 end
 
 When(/^I execute mgr-sync refresh$/) do
-  $command_output, _code = get_target('server').run('mgr-sync refresh', check_errors: false)
+  $command_output, _code = get_target('server').run('echo -e "admin\nadmin\n" | mgr-sync refresh', check_errors: false)
 end
 
 # This function kills spacewalk-repo-sync processes for a particular OS product version.
@@ -438,6 +447,17 @@ end
 When(/^I wait until file "([^"]*)" contains "([^"]*)" on server$/) do |file, content|
   repeat_until_timeout(message: "#{content} not found in file #{file}", report_result: true) do
     output, _code = get_target('server').run("grep #{content} #{file}", check_errors: false)
+    break if output =~ /#{content}/
+    sleep 2
+    "\n-----\n#{output}\n-----\n"
+  end
+end
+
+Then(/^I wait until "([^"]*)" is rejected on server$/) do |minion|
+  file = '/var/log/rhn/rhn_web_ui.log'
+  content = "Registration of '#{get_target(minion).full_hostname}' on #{product} Server rejected."
+  repeat_until_timeout(message: "#{content} not found in file #{file}", report_result: true) do
+    output, _code = get_target('server').run("grep \"#{content}\" #{file}", check_errors: false)
     break if output =~ /#{content}/
     sleep 2
     "\n-----\n#{output}\n-----\n"
@@ -948,16 +968,17 @@ end
 
 When(/^I install package tftpboot-installation on the server$/) do
   server = get_target('server')
-  os_version = server.os_version
   if product == 'Uyuni'
-    server.run("zypper --non-interactive install tftpboot-installation-openSUSE-Leap-#{os_version}-x86_64", check_errors: false, verbose: true)
-  else
+    # On Uyuni, the server runs on openSUSE Leap, but we must use SLE-15-SP4 on the build host and terminal
     output, _code = server.run('find /var/spacewalk/packages -name tftpboot-installation-SLE-15-SP4-x86_64-*.noarch.rpm')
     packages = output.split("\n")
     pattern = '/tftpboot-installation-([^/]+)*.noarch.rpm'
-    # Reverse sort the package name to get the latest version first and install it
+    # Reverse sort the package names to get the latest version first
     package = packages.min { |a, b| b.match(pattern)[0] <=> a.match(pattern)[0] }
-    server.run("rpm -i #{package}", check_errors: false)
+    server.run("rpm -i #{package}", verbose: true)
+  else
+    # On SUSE Manager, the server, build host and terminal all run on SLE 15 SP4, so let's install it directly
+    server.run('zypper --non-interactive install tftpboot-installation-SLE-15-SP4-x86_64', verbose: true)
   end
 end
 

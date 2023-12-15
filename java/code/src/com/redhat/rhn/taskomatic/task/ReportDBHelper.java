@@ -46,35 +46,33 @@ public class ReportDBHelper {
     }
 
     /**
-     * Returns the result of a query in a stream of batches.
-     * @param query select query
-     * @param batchSize max size of a batch
-     * @param initialOffset initial offset
-     * @param <T> type of the query result
-     * @return stream of batched results
+     * Update the query parameters map getting the value of the filter field from the last entry of the data batch.
+     *
+     * @param parametersMap the parameters map to update
+     * @param dataBatch the data batch
+     * @param fieldSet the set of fields to update
      */
-    public <T> Stream<DataResult<T>> batchStream(SelectMode query, int batchSize, int initialOffset) {
-        return batchStream(query, Collections.emptyMap(), batchSize, initialOffset);
+    public void updateParameters(Map<String, Object> parametersMap, DataResult<Map<String, Object>> dataBatch,
+                                 Set<String> fieldSet) {
+        // Update each filters of the parametersMap based on the last entry of the batch so that
+        // we can filter all the rows we have already extracted
+        for (String filterField : fieldSet) {
+            parametersMap.put(filterField, dataBatch.get(dataBatch.size() - 1).get(filterField));
+        }
     }
 
     /**
      * Returns the result of a query in a stream of batches.
      * @param query select query
-     * @param staticParams query parameters that do not depend on the batch
      * @param batchSize max size of a batch
      * @param initialOffset initial offset
      * @param <T> type of the query result
      * @return stream of batched results
      */
     @SuppressWarnings("unchecked")
-    public <T> Stream<DataResult<T>> batchStream(SelectMode query, Map<String, Object> staticParams, int batchSize,
-                                                 int initialOffset) {
-        Map<String, Object> parametersMap = new HashMap<>(staticParams);
+    public <T> Stream<DataResult<T>> batchStream(SelectMode query, int batchSize, int initialOffset) {
         return Stream.iterate(initialOffset, i -> i + batchSize)
-                .map(offset -> {
-                    parametersMap.putAll(Map.of("offset", offset, "limit", batchSize));
-                    return (DataResult<T>) query.execute(parametersMap);
-                })
+                .map(offset -> (DataResult<T>) query.execute(Map.of("offset", offset, "limit", batchSize)))
                 .takeWhile(batch -> !batch.isEmpty());
     }
 

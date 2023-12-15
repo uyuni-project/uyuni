@@ -6,6 +6,7 @@ Feature: Very first settings
   As the admin user
   I want to create the organisation, the first users and set the HTTP proxy
 
+  @skip_if_paygo_server
   Scenario: Create admin user and first organization
     Given I access the host the first time
     And I run "rm -Rf /srv/salt/*" on "server"
@@ -50,6 +51,7 @@ Feature: Very first settings
     Then I should see a "User information updated" text
     And I should see a "testing" text
 
+  @skip_if_paygo_server
   Scenario: Wait for refresh of list of products to finish
     When I wait until mgr-sync refresh is finished
 

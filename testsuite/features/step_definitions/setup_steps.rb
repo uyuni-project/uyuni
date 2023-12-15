@@ -534,3 +534,18 @@ Then(/^I should see a text describing the OS release$/) do
   release = os_family =~ /^opensuse/ ? 'openSUSE-release' : 'sles-release'
   step %(I should see a "OS: #{release}" text)
 end
+
+Then(/^I (enable|disable) SCC forward on server$/) do |action|
+  rhn_configuration_file = '/etc/rhn/rhn.conf'
+  scc_forward_parameter = "server.susemanager.forward_registration"
+  forward_status = action == "enable" ? 1 : 0
+  # Check if scc_forward_parameter is present in the configuration parameter
+  _out, parameter_present = get_target('server').run("grep -q \"#{scc_forward_parameter}\" \"#{rhn_configuration_file}\"", check_errors: false)
+  if parameter_present.zero?
+    # Update scc_forward_parameter if the configuration already exists
+    get_target('server').run("sed -i -E \"s/^(#{scc_forward_parameter}[[:space:]]*=[[:space:]]*)[01]/\\1#{forward_status}/\" \"#{rhn_configuration_file}\"")
+  else
+    ## Add scc_forward_parameter if the configuration doesn't exist
+    get_target('server').run("echo \"#{scc_forward_parameter} = #{forward_status}\" >> \"#{rhn_configuration_file}\"")
+  end
+end

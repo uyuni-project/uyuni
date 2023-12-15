@@ -42,8 +42,7 @@ General template for leavers of the SUSE Manager team.
 - [ ] Slack
   - [ ] Update workflows (daily standup, meetings, etc.)
   - [ ] Remove from user groups (`susemanager-engineers` and squad specific groups, open a ticket on https://sd.suse.com)
-- [ ] Remove from outlook groups of the [SUSE Manager Engineering Team](https://outlook.office.com/people/group/mysuse.onmicrosoft.com/suma-all) and squads (if available)
-- [ ] Remove from outlook group of the [DCM department](https://outlook.office.com/people/group/mysuse.onmicrosoft.com/dcm)
+- [ ] Remove from Google [SUSE Manager Engineering Team](https://groups.google.com/a/suse.com/g/suma-all/members) and squads groups (if available)
 - [ ] Hardware
   - [ ] Collect remaining equipment via ticket
   - [ ] Are there somewhere machines (e.g. RPI) or VMs around managed by this person? Stop them or transfer the management to other team members
@@ -81,4 +80,4 @@ General template for leavers of the SUSE Manager team.
   - [ ] Remove from [SUSE Manager QE Team](https://github.com/orgs/SUSE/teams/suse-manager-qe/members) on GitHub
   - [ ] Remove from [Uyuni QE developer Team](https://github.com/orgs/uyuni-project/teams/qe) on GitHub
   - [ ] Remove from [QE project board member list](https://github.com/orgs/SUSE/projects/32/views/1?pane=info) on GitHub
-  - [ ] Remove from outlook group of the [SUMA QE Squad](https://outlook.office365.com/people/group/mysuse.onmicrosoft.com/sumaqesquad)
+  - [ ] Remove from the Google [SUMA QE Squad](https://groups.google.com/a/suse.com/g/suma-qe/members) group

@@ -18,23 +18,26 @@ package com.suse.manager.matcher;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.iss.IssFactory;
 import com.redhat.rhn.domain.matcher.MatcherRunData;
 import com.redhat.rhn.domain.matcher.MatcherRunDataFactory;
 import com.redhat.rhn.domain.server.PinnedSubscriptionFactory;
 
+import com.suse.cloud.CloudPaygManager;
 import com.suse.manager.webui.services.impl.MonitoringService;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -47,6 +50,8 @@ import java.util.concurrent.Executors;
  */
 public class MatcherRunner {
 
+    private static final Logger LOGGER = LogManager.getLogger(MatcherRunner.class);
+
     /** Path where output from subscription-matcher is stored */
     public static final String OUT_DIRECTORY = "/var/lib/spacewalk/subscription-matcher";
 
@@ -55,10 +60,22 @@ public class MatcherRunner {
 
     private static final String MATCHER_CMD = "/usr/bin/subscription-matcher";
 
+    private final CloudPaygManager cloudManager;
+
     /**
-     * Logger for this class
+     * Default Constructor
      */
-    private static Logger logger = LogManager.getLogger(MatcherRunner.class);
+    public MatcherRunner() {
+        this(GlobalInstanceHolder.PAYG_MANAGER);
+    }
+
+    /**
+     * Builds an instance with the given cloud manager. For unit testing.
+     * @param cloudManagerIn the {@link CloudPaygManager} instance to use
+     */
+    public MatcherRunner(CloudPaygManager cloudManagerIn) {
+        this.cloudManager = cloudManagerIn;
+    }
 
     /**
      * Runs subscription-matcher.
@@ -84,17 +101,23 @@ public class MatcherRunner {
         ExecutorService errorReaderService = null;
         ExecutorService inputReaderService = null;
         try {
-            boolean isISSMaster = IssFactory.getCurrentMaster() == null;
-            boolean isSelfMonitoringEnabled = MonitoringService.isMonitoringEnabled();
+            boolean isSUMaPayg = cloudManager.isPaygInstance();
+            boolean isUyuni = ConfigDefaults.get().isUyuni();
+
+            boolean needsEntitlements = !isUyuni && !isSUMaPayg;
+            boolean includeSelf = !isSUMaPayg && !isUyuni && IssFactory.getCurrentMaster() == null;
+            boolean isSelfMonitoringEnabled = !isSUMaPayg && !isUyuni && MonitoringService.isMonitoringEnabled();
+
             PinnedSubscriptionFactory.getInstance().cleanStalePins();
             String arch = System.getProperty("os.arch");
-            String s = new MatcherJsonIO().generateMatcherInput(isISSMaster, arch, isSelfMonitoringEnabled);
+            String s = new MatcherJsonIO()
+                .generateMatcherInput(arch, includeSelf, isSelfMonitoringEnabled, needsEntitlements);
 
             Process p = r.exec(args.toArray(new String[0]));
-            PrintWriter stdin = new PrintWriter(p.getOutputStream());
-            stdin.println(s);
-            stdin.flush();
-            stdin.close();
+            try (PrintWriter stdin = new PrintWriter(p.getOutputStream())) {
+                stdin.println(s);
+                stdin.flush();
+            }
 
             // we need to exhaust the process output not to get stuck
             errorReaderService = exhaustOutputOnBackground(p.getErrorStream());
@@ -102,7 +125,7 @@ public class MatcherRunner {
 
             int exitCode = p.waitFor();
             if (exitCode != 0) {
-                logger.error("Error while calling the subscription-matcher, exit code {}", exitCode);
+                LOGGER.error("Error while calling the subscription-matcher, exit code {}", exitCode);
                 return;
             }
 
@@ -114,8 +137,12 @@ public class MatcherRunner {
             data.setUnmatchedProductReport(readMatcherFile("unmatched_product_report.csv"));
             MatcherRunDataFactory.updateData(data);
         }
-        catch (IOException | InterruptedException e) {
-            logger.error("execute(String[])", e);
+        catch (IOException e) {
+            LOGGER.error("Unable to execute subscription-matcher process", e);
+        }
+        catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            LOGGER.error("Process was interrupted", e);
         }
         finally {
             if (errorReaderService != null) {
@@ -137,7 +164,7 @@ public class MatcherRunner {
                 }
             }
             catch (IOException e) {
-                logger.warn("Error reading from stream", e);
+                LOGGER.warn("Error reading from stream", e);
             }
         });
         return executorService;
@@ -168,8 +195,7 @@ public class MatcherRunner {
      */
     private static String readMatcherFile(String filename) {
         try {
-            return FileUtils.readFileToString(new File(MatcherRunner.OUT_DIRECTORY,
-                    filename));
+            return Files.readString(Path.of(MatcherRunner.OUT_DIRECTORY, filename));
         }
         catch (IOException e) {
             throw new IllegalStateException("Matcher ran successfully, but it's not" +

@@ -14,3 +14,4 @@ Feature: Organization credentials in the Setup Wizard
     And I enter the SCC credentials
     And I click on "Save"
     And I wait until the SCC credentials are valid
+    And I refresh SCC

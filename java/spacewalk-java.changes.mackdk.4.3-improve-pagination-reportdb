@@ -1,0 +1,2 @@
+- Improved the performances of paginated queries when syncing the 
+  reporting database (bsc#1211912, bsc#1213079)

@@ -317,6 +317,18 @@ public class PaygSshData extends BaseDomainHelper {
     }
 
     @Override
+    public String toString() {
+        return "PaygSshData{" +
+                "id=" + id +
+                ", description='" + description + '\'' +
+                ", host='" + host + '\'' +
+                ", port=" + port +
+                ", username='" + username + '\'' +
+                ", status=" + status +
+                '}';
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;

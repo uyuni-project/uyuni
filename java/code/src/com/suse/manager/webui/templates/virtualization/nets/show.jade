@@ -5,7 +5,6 @@ script(src='/javascript/momentjs/moment-with-langs.min.js?cb=#{webBuildtimestamp
 
 script(type='text/javascript').
     window.csrfToken = "#{csrf_token}";
-+userPreferences
 
 script(type='text/javascript').
     spaImportReactPage('virtualization/nets/list/nets-list')
@@ -14,7 +13,6 @@ script(type='text/javascript').
               'virtualnets',
               {
                   serverId: "#{server.id}",
-                  pageSize: "#{pageSize}",
                   hypervisor: "#{hypervisor}",
                   support_enhanced_network: #{support_enhanced_network}
               }

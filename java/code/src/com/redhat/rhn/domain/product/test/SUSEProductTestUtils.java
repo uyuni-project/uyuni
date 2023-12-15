@@ -388,6 +388,47 @@ public class SUSEProductTestUtils extends HibernateFactory {
         product.setBase(false);
         product.setReleaseStage(ReleaseStage.released);
         TestUtils.saveAndFlush(product);
+
+        ChannelFamily cfSlesSap = ChannelFamilyFactory.lookupByLabel("AiO", null);
+        if (cfSlesSap == null) {
+            cfSlesSap = new ChannelFamily();
+            cfSlesSap.setLabel("AiO");
+            cfSlesSap.setName("SUSE Linux Enterprise Server for SAP");
+            TestUtils.saveAndFlush(cfSlesSap);
+        }
+
+        product = new SUSEProduct();
+        product.setName("sles_sap");
+        product.setVersion("15.5");
+        product.setFriendlyName("SUSE Linux Enterprise Server for SAP Applications 15 SP5 x86_64");
+        product.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
+        product.setProductId(2467);
+        product.setChannelFamily(cfSlesSap);
+        product.setBase(true);
+        product.setReleaseStage(ReleaseStage.released);
+        TestUtils.saveAndFlush(product);
+
+        product = new SUSEProduct();
+        product.setName("sle-module-certifications");
+        product.setVersion("15.5");
+        product.setFriendlyName("Certifications Module 15 SP5 x86_64");
+        product.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
+        product.setProductId(2558);
+        product.setChannelFamily(cfsles);
+        product.setBase(false);
+        product.setReleaseStage(ReleaseStage.released);
+        TestUtils.saveAndFlush(product);
+
+        product = new SUSEProduct();
+        product.setName("sle-module-basesystem");
+        product.setVersion("15.5");
+        product.setFriendlyName("Basesystem Module 15 SP5 x86_64");
+        product.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
+        product.setProductId(2474);
+        product.setChannelFamily(cfsles);
+        product.setBase(false);
+        product.setReleaseStage(ReleaseStage.released);
+        TestUtils.saveAndFlush(product);
     }
 
     /**

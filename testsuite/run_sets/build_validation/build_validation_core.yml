@@ -4,6 +4,9 @@
 
 # IMMUTABLE ORDER
 
+# for paygo server, change admin password
+- features/build_validation/paygo_testing/srv_change_admin_password.feature
+
 # initialize SUSE Manager server
 - features/build_validation/core/srv_first_settings.feature
 - features/build_validation/core/srv_user_preferences.feature
@@ -13,5 +16,8 @@
 
 # Create the CLM filters for RH-like minions
 - features/build_validation/core/srv_prepare_rh_like_clm_filters.feature
+
+# Add paygo connections
+- features/build_validation/paygo_testing/srv_paygo_connections.feature
 
 ## Core features END ###

@@ -1,0 +1,2 @@
+- when cancel an action which has prerequisites, return hints to
+  get the first action id which can be canceled (bsc#1216988)

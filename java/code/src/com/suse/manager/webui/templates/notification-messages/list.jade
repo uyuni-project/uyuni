@@ -7,8 +7,6 @@ script(src='/javascript/momentjs/moment-with-langs.min.js?cb=#{webBuildtimestamp
 script(type='text/javascript').
     window.csrfToken = "#{csrf_token}";
 
-+userPreferences
-
 script(type='text/javascript').
     spaImportReactPage('notifications/notification-messages')
         .then(function(module) { module.renderer('notification-messages') });
