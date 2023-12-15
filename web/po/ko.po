@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-12-04 10:41+0100\n"
+"POT-Creation-Date: 2023-12-15 14:18+0100\n"
 "PO-Revision-Date: 2023-10-30 05:24+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web-4-3/ko/"
@@ -191,11 +191,11 @@ msgstr "취소"
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:132
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:134
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:92
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:66
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:38
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:116
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:271
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:309
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:65
+#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:37
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:115
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:270
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:308
 msgid "Delete"
 msgstr "삭제"
 
@@ -233,7 +233,7 @@ msgid "This field is used as a 'key' identifier in the resulting pillar data."
 msgstr "이 필드는 결과 열 데이터에서 '키' 식별자로 사용됩니다."
 
 #: ../html/src/components/formulas/FormulaComponentGenerator.tsx:155
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:55
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:54
 msgid "Reset"
 msgstr "재설정"
 
@@ -475,8 +475,8 @@ msgstr "구성 채널: {name}"
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:125
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:127
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:84
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:231
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:121
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:229
+#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:119
 msgid "Edit"
 msgstr "편집"
 
@@ -797,7 +797,7 @@ msgstr ""
 #: ../html/src/manager/minion/packages/package-states.tsx:224
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:81
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:770
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:127
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:125
 msgid "System"
 msgstr "시스템"
 
@@ -894,7 +894,7 @@ msgid "Organizations"
 msgstr "조직"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:367
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:50
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:49
 msgid "Restart"
 msgstr "다시 시작"
 
@@ -1116,7 +1116,7 @@ msgstr "SUSE Customer Center에서 제품 카탈로그 새로 고침"
 #: ../html/src/manager/images/image-stores.tsx:141
 #: ../html/src/manager/images/image-view.tsx:375
 #: ../html/src/manager/notifications/notification-messages.tsx:459
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:242
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:241
 msgid "Refresh"
 msgstr "새로 고침"
 
@@ -1401,7 +1401,7 @@ msgstr " 초"
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:280
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:140
 #: ../html/src/manager/systems/virtual-list.tsx:59
-#: ../html/src/manager/virtualization/ListTab.tsx:237
+#: ../html/src/manager/virtualization/ListTab.tsx:235
 msgid "Filter by name"
 msgstr "이름을 기준으로 필터링"
 
@@ -1505,11 +1505,11 @@ msgstr "SUSE 보안 CVE 링크"
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:83
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:78
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:129
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:71
+#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:69
 #: ../html/src/manager/virtualization/nets/network-properties.tsx:223
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:220
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:95
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:337
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:336
 #: ../html/src/manager/virtualization/pools/pool-properties.tsx:244
 msgid "Name"
 msgstr "이름"
@@ -1523,8 +1523,8 @@ msgstr "이름"
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:202
 #: ../html/src/manager/salt/keys/key-management.tsx:195
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:70
-#: ../html/src/manager/virtualization/ListTab.tsx:260
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:356
+#: ../html/src/manager/virtualization/ListTab.tsx:258
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:355
 msgid "Actions"
 msgstr "작업"
 
@@ -3404,8 +3404,8 @@ msgid "Building"
 msgstr "빌드하는 중"
 
 #: ../html/src/manager/images/image-view.tsx:511
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:232
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:300
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:231
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:299
 msgid "Unknown"
 msgstr "알 수 없음"
 
@@ -3428,7 +3428,7 @@ msgstr "(사용되지 않음)"
 
 #: ../html/src/manager/images/image-view.tsx:651
 #: ../html/src/manager/systems/virtual-list.tsx:90
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:143
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:141
 msgid "Updates"
 msgstr "업데이트"
 
@@ -4045,9 +4045,9 @@ msgstr "패키지 상태"
 #: ../html/src/manager/minion/packages/package-states.tsx:344
 #: ../html/src/manager/proxy/container-config.tsx:322
 #: ../html/src/manager/salt/keys/key-management.tsx:188
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:154
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:77
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:340
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:152
+#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:75
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:339
 msgid "State"
 msgstr "시/도"
 
@@ -5272,7 +5272,7 @@ msgid "system(s) to subscribe"
 msgstr "가입할 시스템"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:459
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:179
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:177
 msgid "(none)"
 msgstr "(없음)"
 
@@ -5405,7 +5405,7 @@ msgid "Virtual System"
 msgstr "가상 시스템"
 
 #: ../html/src/manager/systems/virtual-list.tsx:101
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:176
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:174
 msgid "Base Software Channel"
 msgstr "기본 소프트웨어 채널"
 
@@ -5524,11 +5524,11 @@ msgstr ""
 "KVM 또는 Xen도 실행 중이 아닙니다. 설치되어 있고 커널 모듈이 로드되었는지 확"
 "인하십시오."
 
-#: ../html/src/manager/virtualization/ListTab.tsx:162
+#: ../html/src/manager/virtualization/ListTab.tsx:161
 msgid "{name} selected"
 msgstr "{name} 선택됨"
 
-#: ../html/src/manager/virtualization/ListTab.tsx:242
+#: ../html/src/manager/virtualization/ListTab.tsx:240
 msgid "Action Status"
 msgstr "작업 상태"
 
@@ -5641,7 +5641,7 @@ msgid "Create Virtual Machine"
 msgstr "가상 머신 생성"
 
 #: ../html/src/manager/virtualization/guests/list/MigrateDialog.tsx:42
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:223
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:221
 msgid "Migrate"
 msgstr "마이그레이트"
 
@@ -5653,62 +5653,62 @@ msgstr "가상 게스트를 마이그레이션할 위치를 선택합니다."
 msgid "Target Host"
 msgstr "대상 호스트"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:34
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:33
 msgid "Start / Resume"
 msgstr "시작/다시 시작"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:41
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:31
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:258
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:40
+#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:30
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:257
 msgid "Stop"
 msgstr "중지"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:46
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:45
 msgid "Force off"
 msgstr "강제 종료"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:59
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:58
 msgid "Suspend"
 msgstr "일시 중지"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:79
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:78
 msgid "Synchronize Guests List"
 msgstr "게스트 목록 동기화"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:80
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:79
 msgid "Synchronize"
 msgstr "동기화"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:104
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:102
 msgid "Hosted Virtual Systems"
 msgstr "호스팅된 가상 시스템"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:105
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:103
 msgid ""
 "This is a list of virtual guests which are configured to run on this host."
 msgstr "이 호스트에서 실행하도록 구성된 가상 게스트 목록입니다."
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:120
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:118
 msgid "Guest"
 msgstr "게스트"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:130
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:128
 msgid "Unregistered System"
 msgstr "미등록 시스템"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:162
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:160
 msgid "Current Memory"
 msgstr "현재 메모리"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:169
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:167
 msgid "vCPUs"
 msgstr "vCPU"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:200
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:198
 msgid "paused"
 msgstr "일시 중지됨"
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:213
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:211
 msgid "Graphical Console"
 msgstr "그래픽 콘솔"
 
@@ -5793,39 +5793,39 @@ msgstr "거의 모든 호스트 리소스를 사용하는 단일 가상 머신"
 msgid "Create Virtual Network"
 msgstr "가상 네트워크 만들기"
 
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:24
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:113
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:250
+#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:23
+#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:111
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:249
 msgid "Start"
 msgstr "시작"
 
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:52
+#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:50
 msgid "Virtual Networks"
 msgstr "가상 네트워크"
 
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:53
+#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:51
 msgid ""
 "This is a list of virtual networks which are configured to run on this host."
 msgstr "이 호스트에서 실행하도록 구성된 가상 네트워크 목록입니다."
 
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:61
+#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:59
 msgid ""
 "The Salt version on this system does not support virtual network creating "
 "and editing"
 msgstr ""
 "이 시스템의 Salt 버전은 가상 네트워크 생성 및 편집을 지원하지 않습니다."
 
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:84
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:343
+#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:82
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:342
 msgid "Autostart"
 msgstr "자동 시작"
 
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:94
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:346
+#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:92
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:345
 msgid "Persistent"
 msgstr "영구"
 
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:103
+#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:101
 #: ../html/src/manager/virtualization/nets/network-properties.tsx:264
 msgid "Bridge"
 msgstr "브리지"
@@ -6164,50 +6164,50 @@ msgstr "서버에서 네트워크 장치를 가져올 수 없습니다. 다시 �
 msgid "Create Virtual Storage Pool"
 msgstr "가상 저장소 풀 생성"
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:117
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:116
 msgid "Virtual Storage Pool"
 msgstr "가상 저장소 풀"
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:117
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:116
 msgid "Virtual Storage Volume"
 msgstr "가상 저장소 볼륨"
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:143
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:142
 msgid "Delete the pool, including the contained volumes. "
 msgstr "포함된 볼륨을 포함하여 풀을 삭제하십시오. "
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:144
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:143
 msgid "Cannot be undone"
 msgstr "실행을 취소할 수 없음"
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:264
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:263
 msgid "Edit Pool"
 msgstr "풀 편집"
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:349
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:348
 msgid "Location"
 msgstr "위치"
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:352
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:351
 msgid "Usage"
 msgstr "사용"
 
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:364
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:365
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:366
 msgid "Create Pool"
 msgstr "풀 생성"
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:372
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:371
 msgid "Virtual Storage Pools and Volumes"
 msgstr "가상 저장소 풀 및 볼륨"
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:373
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:372
 msgid ""
 "This is the list of storage pools defined on this host containing virtual "
 "guests disks."
 msgstr "가상 게스트 디스크를 포함한 이 호스트에 정의된 저장소 풀의 목록입니다."
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:386
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:384
 msgid "Filter by pool or volume name"
 msgstr "풀 또는 볼륨 이름을 기준으로 필터링"
 
