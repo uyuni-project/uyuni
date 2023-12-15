@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Dec 15 12:42:01 CET 2023 - marina.latini@suse.com
+
+- version 4.3.23-1
+  * Revert adding unique index for rhnpackagechangelogdata table
+    (bsc#1218027)
+
+-------------------------------------------------------------------
 Mon Nov 20 11:54:38 CET 2023 - rosuna@suse.com
 
 - version 4.3.22-1
