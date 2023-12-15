@@ -647,12 +647,10 @@ CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION = {
     %w[
       sle-product-sles15-sp4-pool-x86_64
       sle-manager-tools15-pool-x86_64-sp4
-      sle-module-containers15-sp4-pool-x86_64
       sle-module-basesystem15-sp4-pool-x86_64
       sle-module-server-applications15-sp4-pool-x86_64
       sle-product-sles15-sp4-updates-x86_64
       sle-manager-tools15-updates-x86_64-sp4
-      sle-module-containers15-sp4-updates-x86_64
       sle-module-basesystem15-sp4-updates-x86_64
       sle-module-server-applications15-sp4-updates-x86_64
       sle15-sp4-installer-updates-x86_64
@@ -779,12 +777,10 @@ CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION = {
       sle-product-sles15-sp3-ltss-updates-x86_64
       sle-product-sles15-sp3-pool-x86_64
       sle-manager-tools15-pool-x86_64-sp3
-      sle-module-containers15-sp3-pool-x86_64
       sle-module-basesystem15-sp3-pool-x86_64
       sle-module-server-applications15-sp3-pool-x86_64
       sle-product-sles15-sp3-updates-x86_64
       sle-manager-tools15-updates-x86_64-sp3
-      sle-module-containers15-sp3-updates-x86_64
       sle-module-basesystem15-sp3-updates-x86_64
       sle-module-server-applications15-sp3-updates-x86_64
       sle15-sp3-installer-updates-x86_64
@@ -803,8 +799,6 @@ CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION = {
       sle-manager-tools15-updates-x86_64-sp4
       sle-module-basesystem15-sp4-pool-x86_64
       sle-module-basesystem15-sp4-updates-x86_64
-      sle-module-containers15-sp4-pool-x86_64
-      sle-module-containers15-sp4-updates-x86_64
       sle-module-desktop-applications15-sp4-pool-x86_64
       sle-module-desktop-applications15-sp4-updates-x86_64
       sle-module-devtools15-sp4-pool-x86_64
@@ -813,6 +807,8 @@ CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION = {
       sle-module-server-applications15-sp4-updates-x86_64
       sle-product-sles15-sp4-pool-x86_64
       sle-product-sles15-sp4-updates-x86_64
+      sle-module-containers15-sp4-pool-x86_64
+      sle-module-containers15-sp4-updates-x86_64
       sles15-sp4-uyuni-client-x86_64
     ],
   'sles15-sp5' =>
@@ -822,8 +818,6 @@ CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION = {
       sle-manager-tools15-updates-x86_64-sp5
       sle-module-basesystem15-sp5-pool-x86_64
       sle-module-basesystem15-sp5-updates-x86_64
-      sle-module-containers15-sp5-pool-x86_64
-      sle-module-containers15-sp5-updates-x86_64
       sle-module-desktop-applications15-sp5-pool-x86_64
       sle-module-desktop-applications15-sp5-updates-x86_64
       sle-module-devtools15-sp5-pool-x86_64
@@ -832,6 +826,8 @@ CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION = {
       sle-module-server-applications15-sp5-updates-x86_64
       sle-product-sles15-sp5-pool-x86_64
       sle-product-sles15-sp5-updates-x86_64
+      sle-module-containers15-sp5-pool-x86_64
+      sle-module-containers15-sp5-updates-x86_64
       sles15-sp5-uyuni-client-x86_64
     ],
   'res7' =>
