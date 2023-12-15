@@ -1,4 +1,17 @@
 -------------------------------------------------------------------
+Fri Dec 15 17:32:36 CET 2023 - rosuna@suse.com
+
+- version 4.4.10-1
+  * Configure reboot method for SUSE Linux Enterprise  Micro when
+    applying bootstrap state (bsc#1213981)
+  * Allow openSUSE Tumbleweed bootstrapping
+  * Move all file managed by RPM from /srv to /usr/share/susemanager
+  * Fix the evaluation of mgr_install_flavor_check salt state for
+    openSUSE
+  * Add Raspberry Pi OS 12 support
+  * Revert hardcoded symbolic link and renamed variable for clarity
+
+-------------------------------------------------------------------
 Wed Nov 01 19:46:00 CET 2023 - marina.latini@suse.com
 
 - version 4.4.9-1
