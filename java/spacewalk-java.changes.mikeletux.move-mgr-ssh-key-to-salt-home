@@ -1,0 +1,1 @@
+- Fix issue with salt ssh keys for salt ssh minions CVE-2023-32189 (bsc#1170848)
