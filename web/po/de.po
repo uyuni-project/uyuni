@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-12-04 10:41+0100\n"
+"POT-Creation-Date: 2023-12-15 14:18+0100\n"
 "PO-Revision-Date: 2022-01-11 14:51+0000\n"
 "Last-Translator: Michael Calmer <mc@suse.com>\n"
 "Language-Team: German <https://l10n.opensuse.org/projects/uyuni/web/de/>\n"
@@ -188,11 +188,11 @@ msgstr "Abbrechen"
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:132
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:134
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:92
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:66
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:38
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:116
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:271
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:309
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:65
+#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:37
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:115
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:270
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:308
 msgid "Delete"
 msgstr "Löschen"
 
@@ -227,7 +227,7 @@ msgid "This field is used as a 'key' identifier in the resulting pillar data."
 msgstr ""
 
 #: ../html/src/components/formulas/FormulaComponentGenerator.tsx:155
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:55
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:54
 msgid "Reset"
 msgstr "Zurücksetzen"
 
@@ -470,8 +470,8 @@ msgstr ""
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:125
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:127
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:84
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:231
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:121
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:229
+#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:119
 msgid "Edit"
 msgstr "Bearbeiten"
 
@@ -780,7 +780,7 @@ msgstr ""
 #: ../html/src/manager/minion/packages/package-states.tsx:224
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:81
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:770
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:127
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:125
 msgid "System"
 msgstr "System"
 
@@ -877,7 +877,7 @@ msgid "Organizations"
 msgstr "Organisationen"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:367
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:50
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:49
 msgid "Restart"
 msgstr "Neustart"
 
@@ -1100,7 +1100,7 @@ msgstr ""
 #: ../html/src/manager/images/image-stores.tsx:141
 #: ../html/src/manager/images/image-view.tsx:375
 #: ../html/src/manager/notifications/notification-messages.tsx:459
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:242
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:241
 msgid "Refresh"
 msgstr ""
 
@@ -1374,7 +1374,7 @@ msgstr ""
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:280
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:140
 #: ../html/src/manager/systems/virtual-list.tsx:59
-#: ../html/src/manager/virtualization/ListTab.tsx:237
+#: ../html/src/manager/virtualization/ListTab.tsx:235
 msgid "Filter by name"
 msgstr ""
 
@@ -1477,11 +1477,11 @@ msgstr ""
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:83
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:78
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:129
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:71
+#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:69
 #: ../html/src/manager/virtualization/nets/network-properties.tsx:223
 #: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:220
 #: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:95
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:337
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:336
 #: ../html/src/manager/virtualization/pools/pool-properties.tsx:244
 msgid "Name"
 msgstr ""
@@ -1495,8 +1495,8 @@ msgstr ""
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:202
 #: ../html/src/manager/salt/keys/key-management.tsx:195
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:70
-#: ../html/src/manager/virtualization/ListTab.tsx:260
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:356
+#: ../html/src/manager/virtualization/ListTab.tsx:258
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:355
 msgid "Actions"
 msgstr ""
 
@@ -3345,8 +3345,8 @@ msgid "Building"
 msgstr ""
 
 #: ../html/src/manager/images/image-view.tsx:511
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:232
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:300
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:231
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:299
 msgid "Unknown"
 msgstr ""
 
@@ -3369,7 +3369,7 @@ msgstr ""
 
 #: ../html/src/manager/images/image-view.tsx:651
 #: ../html/src/manager/systems/virtual-list.tsx:90
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:143
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:141
 msgid "Updates"
 msgstr ""
 
@@ -3966,9 +3966,9 @@ msgstr ""
 #: ../html/src/manager/minion/packages/package-states.tsx:344
 #: ../html/src/manager/proxy/container-config.tsx:322
 #: ../html/src/manager/salt/keys/key-management.tsx:188
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:154
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:77
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:340
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:152
+#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:75
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:339
 msgid "State"
 msgstr "Bundesland"
 
@@ -5167,7 +5167,7 @@ msgid "system(s) to subscribe"
 msgstr ""
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:459
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:179
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:177
 msgid "(none)"
 msgstr ""
 
@@ -5293,7 +5293,7 @@ msgid "Virtual System"
 msgstr "System"
 
 #: ../html/src/manager/systems/virtual-list.tsx:101
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:176
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:174
 msgid "Base Software Channel"
 msgstr ""
 
@@ -5410,12 +5410,12 @@ msgid ""
 "modules are loaded."
 msgstr ""
 
-#: ../html/src/manager/virtualization/ListTab.tsx:162
+#: ../html/src/manager/virtualization/ListTab.tsx:161
 #, fuzzy
 msgid "{name} selected"
 msgstr "({0} ausgewählt)"
 
-#: ../html/src/manager/virtualization/ListTab.tsx:242
+#: ../html/src/manager/virtualization/ListTab.tsx:240
 msgid "Action Status"
 msgstr ""
 
@@ -5528,7 +5528,7 @@ msgid "Create Virtual Machine"
 msgstr ""
 
 #: ../html/src/manager/virtualization/guests/list/MigrateDialog.tsx:42
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:223
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:221
 msgid "Migrate"
 msgstr ""
 
@@ -5540,62 +5540,62 @@ msgstr ""
 msgid "Target Host"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:34
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:33
 msgid "Start / Resume"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:41
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:31
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:258
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:40
+#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:30
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:257
 msgid "Stop"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:46
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:45
 msgid "Force off"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:59
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:58
 msgid "Suspend"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:79
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:78
 msgid "Synchronize Guests List"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:80
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:79
 msgid "Synchronize"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:104
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:102
 msgid "Hosted Virtual Systems"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:105
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:103
 msgid ""
 "This is a list of virtual guests which are configured to run on this host."
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:120
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:118
 msgid "Guest"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:130
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:128
 msgid "Unregistered System"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:162
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:160
 msgid "Current Memory"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:169
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:167
 msgid "vCPUs"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:200
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:198
 msgid "paused"
 msgstr ""
 
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:213
+#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:211
 msgid "Graphical Console"
 msgstr ""
 
@@ -5680,38 +5680,38 @@ msgstr ""
 msgid "Create Virtual Network"
 msgstr ""
 
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:24
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:113
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:250
+#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:23
+#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:111
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:249
 msgid "Start"
 msgstr ""
 
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:52
+#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:50
 msgid "Virtual Networks"
 msgstr ""
 
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:53
+#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:51
 msgid ""
 "This is a list of virtual networks which are configured to run on this host."
 msgstr ""
 
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:61
+#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:59
 msgid ""
 "The Salt version on this system does not support virtual network creating "
 "and editing"
 msgstr ""
 
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:84
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:343
+#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:82
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:342
 msgid "Autostart"
 msgstr ""
 
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:94
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:346
+#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:92
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:345
 msgid "Persistent"
 msgstr ""
 
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:103
+#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:101
 #: ../html/src/manager/virtualization/nets/network-properties.tsx:264
 msgid "Bridge"
 msgstr ""
@@ -6048,50 +6048,50 @@ msgstr ""
 msgid "Create Virtual Storage Pool"
 msgstr ""
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:117
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:116
 msgid "Virtual Storage Pool"
 msgstr ""
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:117
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:116
 msgid "Virtual Storage Volume"
 msgstr ""
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:143
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:142
 msgid "Delete the pool, including the contained volumes. "
 msgstr ""
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:144
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:143
 msgid "Cannot be undone"
 msgstr ""
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:264
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:263
 msgid "Edit Pool"
 msgstr ""
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:349
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:348
 msgid "Location"
 msgstr ""
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:352
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:351
 msgid "Usage"
 msgstr ""
 
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:364
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:365
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:366
 msgid "Create Pool"
 msgstr ""
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:372
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:371
 msgid "Virtual Storage Pools and Volumes"
 msgstr ""
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:373
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:372
 msgid ""
 "This is the list of storage pools defined on this host containing virtual "
 "guests disks."
 msgstr ""
 
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:386
+#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:384
 msgid "Filter by pool or volume name"
 msgstr ""
 
