@@ -193,7 +193,7 @@ public class CobblerSnippet implements Comparable<CobblerSnippet> {
     */
     public String getContents() {
         if (path.exists()) {
-            return FileUtils.readStringFromFile(path.getAbsolutePath());
+            return FileUtils.readStringFromFile(getPrefixFor(org), path.getAbsolutePath());
         }
         return null;
     }
@@ -212,8 +212,7 @@ public class CobblerSnippet implements Comparable<CobblerSnippet> {
         if (!path.exists()) {
             path.getParentFile().mkdirs();
         }
-        FileUtils.writeStringToFile(StringUtil.webToLinux(contents),
-                path.getAbsolutePath());
+        FileUtils.writeStringToFile(StringUtil.webToLinux(contents), getPrefixFor(org), path.getAbsolutePath());
     }
 
 
