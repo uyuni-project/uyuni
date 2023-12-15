@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-12-04 10:42+0100\n"
+"POT-Creation-Date: 2023-12-15 14:09+0100\n"
 "PO-Revision-Date: 2023-11-01 04:15+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
@@ -110,6 +110,11 @@ msgstr "以下に追加:"
 #: ../html/src/components/action-schedule.tsx:297
 msgid "Loading the scheduler..."
 msgstr "スケジューラを読み込んでいます..."
+
+#: ../html/src/components/combobox.tsx:96
+#, fuzzy
+msgid "Create {label}"
+msgstr "作成 "
 
 #: ../html/src/components/config-channels.tsx:38
 msgid "Configuration Channels"
@@ -278,12 +283,6 @@ msgstr "入力してください..."
 msgid "No flavor"
 msgstr "フレーバー無し"
 
-#: ../html/src/components/package/PackageListActionScheduler.tsx:82
-#: ../html/src/manager/state/highstate.tsx:64
-msgid ""
-"Action has been successfully added to the action chain <link>'{name}'</link>."
-msgstr "動作を動作チェーン <link>'{name}'</link>に追加しました 。"
-
 #: ../html/src/components/package/PackageListActionScheduler.tsx:89
 msgid "The action has been <link>scheduled</link>."
 msgstr "動作を<link>スケジュールしました</link>。"
@@ -298,7 +297,7 @@ msgstr "動作を実行できません。"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:180
 #: ../html/src/components/states-picker.tsx:329
-#: ../html/src/manager/admin/setup/products/products.tsx:1181
+#: ../html/src/manager/admin/setup/products/products.tsx:1144
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:187
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:16
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1130
@@ -335,7 +334,7 @@ msgstr "最初"
 
 #: ../html/src/components/pagination.tsx:28
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:155
-#: ../html/src/manager/admin/setup/products/products.tsx:457
+#: ../html/src/manager/admin/setup/products/products.tsx:448
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1096
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1127
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:670
@@ -344,7 +343,7 @@ msgstr "前へ"
 
 #: ../html/src/components/pagination.tsx:33
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:161
-#: ../html/src/manager/admin/setup/products/products.tsx:463
+#: ../html/src/manager/admin/setup/products/products.tsx:454
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1077
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1103
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:567
@@ -675,8 +674,10 @@ msgid "({selectedCount} selected)"
 msgstr "({selectedCount}を選択しました)"
 
 #: ../html/src/components/table/SearchPanel.tsx:64
-#: ../html/src/manager/admin/setup/products/products.tsx:384
+#: ../html/src/manager/admin/setup/products/products.tsx:375
 #: ../html/src/manager/systems/ssm/ssm-counter.tsx:34
+#: ../html/src/manager/visualization/hierarchy.tsx:307
+#: ../html/src/manager/visualization/hierarchy.tsx:322
 msgid "Clear"
 msgstr "消去"
 
@@ -1018,7 +1019,7 @@ msgid "Bastion SSH connection data"
 msgstr "要塞SSH接続データ"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:84
-#: ../html/src/manager/admin/setup/products/products.tsx:315
+#: ../html/src/manager/admin/setup/products/products.tsx:306
 msgid "Setup Wizard"
 msgstr "セットアップウィザード"
 
@@ -1056,7 +1057,7 @@ msgid "never"
 msgstr "なし"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:166
-#: ../html/src/manager/admin/setup/products/products.tsx:468
+#: ../html/src/manager/admin/setup/products/products.tsx:459
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:868
 msgid "of"
 msgstr "／"
@@ -1172,7 +1173,7 @@ msgstr "SUSE カスタマーセンターから製品カタログを更新"
 #: ../html/src/manager/images/image-profiles.tsx:151
 #: ../html/src/manager/images/image-stores.tsx:151
 #: ../html/src/manager/images/image-view.tsx:375
-#: ../html/src/manager/notifications/notification-messages.tsx:459
+#: ../html/src/manager/notifications/notification-messages.tsx:436
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:241
 msgid "Refresh"
 msgstr "更新"
@@ -1201,7 +1202,7 @@ msgstr "操作は成功しませんでした: サーバからの応答が空で�
 msgid "Details"
 msgstr "詳細"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:162
+#: ../html/src/manager/admin/setup/products/products.tsx:153
 msgid ""
 "No SUSE Manager Server Subscription available. Products requiring Client "
 "Tools Channel will not be shown."
@@ -1209,28 +1210,20 @@ msgstr ""
 "利用可能な SUSE Manager サーバサブスクリプションがありません。 Client Tools "
 "Channel を必要とする製品は表示されなくなります。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:209
+#: ../html/src/manager/admin/setup/products/products.tsx:200
 msgid "The product catalog refresh is running..."
 msgstr "製品カタログの更新を行なっています..."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:235
+#: ../html/src/manager/admin/setup/products/products.tsx:226
 msgid "The following product installations failed. Please check log files."
 msgstr ""
 "次の製品のインストールに失敗しました。 ログファイルを確認してください。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:280
+#: ../html/src/manager/admin/setup/products/products.tsx:271
 msgid "Selected channels were scheduled successfully for syncing."
 msgstr "選択されたチャンネルは同期のスケジュールに成功しました。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:289
-msgid ""
-"The following channel installations for '{product}' failed. Please check log "
-"files."
-msgstr ""
-"'{product}'の次のチャンネルのインストールに失敗しました。ログファイルを確認し"
-"てください。"
-
-#: ../html/src/manager/admin/setup/products/products.tsx:340
+#: ../html/src/manager/admin/setup/products/products.tsx:331
 msgid ""
 "A refresh of the product data is currently running in the background. Please "
 "try again later."
@@ -1238,28 +1231,28 @@ msgstr ""
 "製品データの更新処理が裏で動作しています。しばらくしてからやり直してくださ"
 "い。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:345
+#: ../html/src/manager/admin/setup/products/products.tsx:336
 msgid "The product catalog is still refreshing, please wait."
 msgstr "まだ製品カタログを更新しています。しばらくお待ちください。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:347
+#: ../html/src/manager/admin/setup/products/products.tsx:338
 msgid "Select some product first."
 msgstr "まずは製品を選択してください。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:356
-#: ../html/src/manager/admin/setup/products/products.tsx:364
+#: ../html/src/manager/admin/setup/products/products.tsx:347
+#: ../html/src/manager/admin/setup/products/products.tsx:355
 msgid "Add products"
 msgstr "製品の追加"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:383
+#: ../html/src/manager/admin/setup/products/products.tsx:374
 msgid "Clear products selection"
 msgstr "製品の選択解除"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:424
+#: ../html/src/manager/admin/setup/products/products.tsx:415
 msgid "Why aren't all products displayed in the list?"
 msgstr "なぜ一覧に全ての製品が表示されていないのですか？"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:427
+#: ../html/src/manager/admin/setup/products/products.tsx:418
 msgid ""
 "The products displayed on this list are directly linked to your Organization "
 "credentials (Mirror credentials) as well as your SUSE subscriptions."
@@ -1267,7 +1260,7 @@ msgstr ""
 "この一覧内の製品は、お使いの SUSE サブスクリプションと同様に、組織の認可情報 "
 "(ミラークレデンシャル) に直接結びついています。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:432
+#: ../html/src/manager/admin/setup/products/products.tsx:423
 msgid ""
 "If you believe there are products missing, make sure you have added the "
 "correct Organization credentials in the previous wizard step."
@@ -1275,7 +1268,7 @@ msgstr ""
 "存在すべき製品が存在していない場合は、前のウィザード手順で適切な組織の認可情"
 "報を追加していることをご確認ください。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:442
+#: ../html/src/manager/admin/setup/products/products.tsx:433
 msgid ""
 "This server is configured as an Inter-Server Synchronisation (ISS) slave. "
 "Products can only be managed on the ISS master."
@@ -1283,20 +1276,20 @@ msgstr ""
 "このサーバはサーバ間同期 (ISS) スレーブとして設定されています。製品は ISS マ"
 "スター上でのみ管理することができます。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:519
+#: ../html/src/manager/admin/setup/products/products.tsx:559
 msgid "Filter by architecture"
 msgstr "アーキテクチャでフィルタ"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:614
+#: ../html/src/manager/admin/setup/products/products.tsx:577
 msgid "Filter by product Description"
 msgstr "製品説明でフィルタ"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:690
+#: ../html/src/manager/admin/setup/products/products.tsx:653
 msgid "Product Description"
 msgstr "製品説明"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:696
-#: ../html/src/manager/admin/setup/products/products.tsx:1074
+#: ../html/src/manager/admin/setup/products/products.tsx:659
+#: ../html/src/manager/admin/setup/products/products.tsx:1037
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:159
 #: ../html/src/manager/images/image-view-packages.tsx:50
 #: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:32
@@ -1304,40 +1297,40 @@ msgstr "製品説明"
 msgid "Architecture"
 msgstr "アーキテクチャ"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:698
+#: ../html/src/manager/admin/setup/products/products.tsx:661
 msgid "Arch"
 msgstr "Arch"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:705
+#: ../html/src/manager/admin/setup/products/products.tsx:668
 #: ../html/src/manager/packages/list.tsx:158
 msgid "Channels"
 msgstr "チャンネル"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:876
+#: ../html/src/manager/admin/setup/products/products.tsx:839
 msgid " channels sync failed"
 msgstr " チャンネル同期に失敗しました"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:884
+#: ../html/src/manager/admin/setup/products/products.tsx:847
 msgid " channels sync in progress"
 msgstr " チャンネル同期を実行しています"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:892
+#: ../html/src/manager/admin/setup/products/products.tsx:855
 msgid " channels synced"
 msgstr " チャンネルを同期しました"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:917
+#: ../html/src/manager/admin/setup/products/products.tsx:880
 msgid "To enable this product, the parent product should be selected first"
 msgstr "この製品を有効化するには、先に親製品を選択しておく必要があります"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:918
+#: ../html/src/manager/admin/setup/products/products.tsx:881
 msgid "Select this product"
 msgstr "この製品を選択"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:930
+#: ../html/src/manager/admin/setup/products/products.tsx:893
 msgid "This product is mirrored."
 msgstr "この製品はミラーされています。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:959
+#: ../html/src/manager/admin/setup/products/products.tsx:922
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:71
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:144
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:492
@@ -1345,7 +1338,7 @@ msgstr "この製品はミラーされています。"
 msgid "recommended"
 msgstr "推奨"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:977
+#: ../html/src/manager/admin/setup/products/products.tsx:940
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/recommended-toggle.tsx:28
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:173
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:429
@@ -1353,55 +1346,55 @@ msgstr "推奨"
 msgid "include recommended"
 msgstr "推奨を含める"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1019
+#: ../html/src/manager/admin/setup/products/products.tsx:982
 msgid "SCC product catalog refresh in progress"
 msgstr "SCC 製品カタログの更新を実行しています"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1022
+#: ../html/src/manager/admin/setup/products/products.tsx:985
 msgid "Scheduling channels product resync"
 msgstr "チャンネル製品の再同期をスケジュールしています"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1025
+#: ../html/src/manager/admin/setup/products/products.tsx:988
 msgid "Channels product resync scheduled"
 msgstr "チャンネル製品の再同期をスケジュールしました"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1028
+#: ../html/src/manager/admin/setup/products/products.tsx:991
 msgid "Schedule channels product resync"
 msgstr "チャンネル製品の再同期をスケジュール"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1088
+#: ../html/src/manager/admin/setup/products/products.tsx:1051
 msgid "Show product's channels"
 msgstr "製品チャンネルの表示"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1154
+#: ../html/src/manager/admin/setup/products/products.tsx:1117
 msgid "Product Channels - "
 msgstr "製品チャンネル - "
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1159
+#: ../html/src/manager/admin/setup/products/products.tsx:1122
 msgid "Select the optional channels you wish to add and confirm."
 msgstr "追加したいオプションのチャンネルを選択して確認します。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1163
+#: ../html/src/manager/admin/setup/products/products.tsx:1126
 msgid "Mandatory Channels"
 msgstr "必須チャンネル"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1165
+#: ../html/src/manager/admin/setup/products/products.tsx:1128
 msgid "Optional Channels"
 msgstr "任意チャンネル"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1201
+#: ../html/src/manager/admin/setup/products/products.tsx:1164
 msgid "not synced"
 msgstr "同期されていません"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1204
+#: ../html/src/manager/admin/setup/products/products.tsx:1167
 msgid "sync in progress"
 msgstr "同期を行なっています"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1207
+#: ../html/src/manager/admin/setup/products/products.tsx:1170
 msgid "synced"
 msgstr "同期済み"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1210
+#: ../html/src/manager/admin/setup/products/products.tsx:1173
 msgid "sync failed"
 msgstr "同期が失敗しました"
 
@@ -1497,7 +1490,7 @@ msgstr "現時点では、サーバ内で動作しているタスクはありま
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:262
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:110
-#: ../html/src/manager/notifications/notification-messages.tsx:583
+#: ../html/src/manager/notifications/notification-messages.tsx:560
 msgid "Session expired, please reload the page to see up-to-date data."
 msgstr ""
 "セッションの期限が切れました。最新のデータを表示するには、ページを再読み込み"
@@ -1505,7 +1498,7 @@ msgstr ""
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:264
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:112
-#: ../html/src/manager/notifications/notification-messages.tsx:585
+#: ../html/src/manager/notifications/notification-messages.tsx:562
 #: ../html/src/utils/network.ts:103
 msgid "Server error, please check log files."
 msgstr "サーバエラーです。ログファイルをご確認ください。"
@@ -1734,23 +1727,29 @@ msgstr "サブスクリプションをまとめたことにより、ピンマッ
 msgid "Subscription IDs"
 msgstr "サブスクリプション ID"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:80
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:63
+msgid ""
+"Subscription with unsupported part number and no associated product has been "
+"ignored."
+msgstr ""
+
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:84
 msgid "Please review warning and information messages below."
 msgstr "下記の警告および情報メッセージをご確認ください。"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:89
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:93
 msgid "Message"
 msgstr "メッセージ"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:95
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:99
 msgid "Additional information"
 msgstr "追加情報"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:104
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:108
 msgid "No messages from the last match run."
 msgstr "直近のマッチ実行でのメッセージはありません。"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:109
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:113
 msgid "Messages"
 msgstr "メッセージ"
 
@@ -2739,7 +2738,7 @@ msgstr "子チャンネル無し"
 #: ../html/src/manager/images/image-view-patches.tsx:79
 #: ../html/src/manager/images/image-view.tsx:642
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:105
-#: ../html/src/manager/notifications/notification-messages.tsx:521
+#: ../html/src/manager/notifications/notification-messages.tsx:498
 #: ../html/src/manager/state/highstate-summary.tsx:73
 #: ../html/src/manager/virtualization/guests/GuestProperties.tsx:296
 msgid "Type"
@@ -3293,11 +3292,6 @@ msgstr "プロファイルの編集"
 msgid "Edit store"
 msgstr "ストアの編集"
 
-#: ../html/src/manager/images/image-view-overview.tsx:465
-#: ../html/src/manager/images/image-view.tsx:750
-msgid "Instance Details for '{name}'"
-msgstr "'{name}'に対するインスタンスの詳細"
-
 #: ../html/src/manager/images/image-view-overview.tsx:520
 #: ../html/src/manager/images/image-view-overview.tsx:521
 #: ../html/src/manager/images/image-view.tsx:484
@@ -3774,10 +3768,6 @@ msgstr "システムの検索"
 msgid "Current Schedule"
 msgstr "現在のスケジュール"
 
-#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:115
-msgid "Url '{url}' is invalid"
-msgstr "Url '{url}'が正しくありません"
-
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:135
 msgid "Calendar data"
 msgstr "カレンダーのデータ"
@@ -4157,7 +4147,7 @@ msgid "Applying the packages states has been "
 msgstr "パッケージ状態の適用を "
 
 #: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:22
-#: ../html/src/manager/notifications/notification-messages.tsx:527
+#: ../html/src/manager/notifications/notification-messages.tsx:504
 msgid "Summary"
 msgstr "概要"
 
@@ -4224,134 +4214,134 @@ msgstr "インストールされているPTFsの一覧表示/削除"
 msgid "Install PTF"
 msgstr "PTFのインストール"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:29
+#: ../html/src/manager/notifications/notification-messages.tsx:24
 msgid "Onboarding failed"
 msgstr "オンボーディングに失敗しました"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:33
+#: ../html/src/manager/notifications/notification-messages.tsx:28
 msgid "Channel sync failed"
 msgstr "チャンネル同期に失敗しました"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:37
+#: ../html/src/manager/notifications/notification-messages.tsx:32
 msgid "Channel sync finished"
 msgstr "チャンネル同期が完了しました"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:41
+#: ../html/src/manager/notifications/notification-messages.tsx:36
 msgid "Creating Bootstrap Repository failed"
 msgstr "ブートストラップリポジトリーの作成に失敗しました"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:45
+#: ../html/src/manager/notifications/notification-messages.tsx:40
 msgid "State apply failed"
 msgstr "状態の適用に失敗しました"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:49
+#: ../html/src/manager/notifications/notification-messages.tsx:44
 msgid "PAYG refresh authentication data failed"
 msgstr "PAYGの認証データの更新が失敗しました"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:53
+#: ../html/src/manager/notifications/notification-messages.tsx:48
 msgid "End of Life Period"
 msgstr "サポート期間の終了"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:57
+#: ../html/src/manager/notifications/notification-messages.tsx:52
 msgid "Subscription Warning"
 msgstr "サブスクライブに関する警告"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:61
+#: ../html/src/manager/notifications/notification-messages.tsx:56
 msgid "Update Notification"
 msgstr "更新通知"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:65
+#: ../html/src/manager/notifications/notification-messages.tsx:60
 #, fuzzy
 msgid "PAYG instance is not compliant"
 msgstr "インスタンスは古くなっています"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:156
-msgid "Filter by type"
-msgstr "タイプでフィルタ"
-
-#: ../html/src/manager/notifications/notification-messages.tsx:264
-#: ../html/src/manager/notifications/notification-messages.tsx:265
+#: ../html/src/manager/notifications/notification-messages.tsx:241
+#: ../html/src/manager/notifications/notification-messages.tsx:242
 msgid "Info"
 msgstr "情報"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:272
-#: ../html/src/manager/notifications/notification-messages.tsx:273
+#: ../html/src/manager/notifications/notification-messages.tsx:249
+#: ../html/src/manager/notifications/notification-messages.tsx:250
 msgid "Warning"
 msgstr "警告"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:280
-#: ../html/src/manager/notifications/notification-messages.tsx:281
+#: ../html/src/manager/notifications/notification-messages.tsx:257
+#: ../html/src/manager/notifications/notification-messages.tsx:258
 msgid "Error"
 msgstr "エラー"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:343
+#: ../html/src/manager/notifications/notification-messages.tsx:320
 msgid "show details"
 msgstr "詳細の表示"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:392
+#: ../html/src/manager/notifications/notification-messages.tsx:369
 msgid "Retry onboarding"
 msgstr "オンボーディングの再試行"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:402
+#: ../html/src/manager/notifications/notification-messages.tsx:379
 msgid "Retry repo sync"
 msgstr "リポジトリー同期の再試行"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:426
+#: ../html/src/manager/notifications/notification-messages.tsx:403
 msgid "Unread Messages"
 msgstr "未読メッセージ"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:431
+#: ../html/src/manager/notifications/notification-messages.tsx:408
 msgid "All Messages"
 msgstr "全てのメッセージ"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:463
-#: ../html/src/manager/notifications/notification-messages.tsx:464
+#: ../html/src/manager/notifications/notification-messages.tsx:421
+msgid "Filter by type"
+msgstr "タイプでフィルタ"
+
+#: ../html/src/manager/notifications/notification-messages.tsx:440
+#: ../html/src/manager/notifications/notification-messages.tsx:441
 msgid "Delete selected messages"
 msgstr "選択したメッセージの削除"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:471
-#: ../html/src/manager/notifications/notification-messages.tsx:472
+#: ../html/src/manager/notifications/notification-messages.tsx:448
+#: ../html/src/manager/notifications/notification-messages.tsx:449
 msgid "Mark selected as read"
 msgstr "選択したものを読み込み済みとしてマーク"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:489
-#: ../html/src/manager/notifications/notification-messages.tsx:571
+#: ../html/src/manager/notifications/notification-messages.tsx:466
+#: ../html/src/manager/notifications/notification-messages.tsx:548
 msgid "Notification Messages"
 msgstr "通知メッセージ"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:494
+#: ../html/src/manager/notifications/notification-messages.tsx:471
 msgid "The server has collected the following notification messages."
 msgstr "このサーバは下記のような通知メッセージを収集しました。"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:509
+#: ../html/src/manager/notifications/notification-messages.tsx:486
 msgid "Filter by summary"
 msgstr "概要でフィルタ"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:515
+#: ../html/src/manager/notifications/notification-messages.tsx:492
 msgid "Severity"
 msgstr "重大度"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:533
+#: ../html/src/manager/notifications/notification-messages.tsx:510
 msgid "Created"
 msgstr "作成日"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:538
+#: ../html/src/manager/notifications/notification-messages.tsx:515
 msgid "Action"
 msgstr "動作"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:544
+#: ../html/src/manager/notifications/notification-messages.tsx:521
 msgid "Read|Delete"
 msgstr "読み込み|削除"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:553
+#: ../html/src/manager/notifications/notification-messages.tsx:530
 msgid "Flag as Unread"
 msgstr "未読として設定"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:553
+#: ../html/src/manager/notifications/notification-messages.tsx:530
 msgid "Flag as Read"
 msgstr "読み込み済みとして設定"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:559
+#: ../html/src/manager/notifications/notification-messages.tsx:536
 msgid "Delete Notification"
 msgstr "通知の削除"
 
@@ -6622,83 +6612,98 @@ msgid "Add children to SSM"
 msgstr "SSM に子を追加"
 
 #: ../html/src/manager/visualization/hierarchy.tsx:65
-msgid "Filtering"
-msgstr "フィルタリング"
+msgid "There was an error fetching data from the server."
+msgstr "サーバからデータを取り出す際にエラーが発生しました。"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:74
-msgid "Partitioning"
-msgstr "パーティション設定"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:88
+#: ../html/src/manager/visualization/hierarchy.tsx:109
 msgid "Show systems with:"
 msgstr "下記のシステムを表示:"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:117
+#: ../html/src/manager/visualization/hierarchy.tsx:138
 msgid "security advisories"
 msgstr "セキュリティアドバイザリ"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:122
+#: ../html/src/manager/visualization/hierarchy.tsx:143
 msgid "bug fix advisories"
 msgstr "バグ修正アドバイザリ"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:125
+#: ../html/src/manager/visualization/hierarchy.tsx:146
 msgid "product enhancement advisories"
 msgstr "製品の機能強化アドバイザリ"
 
 #. System name filter
-#: ../html/src/manager/visualization/hierarchy.tsx:133
+#: ../html/src/manager/visualization/hierarchy.tsx:154
 msgid "Filter by system name"
 msgstr "システム名でフィルタ"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:133
+#: ../html/src/manager/visualization/hierarchy.tsx:154
 msgid "e.g., client.nue.sles"
 msgstr "例: client.nue.sles"
 
 #. Base channel filter
-#: ../html/src/manager/visualization/hierarchy.tsx:139
+#: ../html/src/manager/visualization/hierarchy.tsx:160
 msgid "Filter by system base channel"
 msgstr "システムのベースチャンネルでフィルタ"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:139
+#: ../html/src/manager/visualization/hierarchy.tsx:160
 msgid "e.g., SLE12"
 msgstr "例: SLE12"
 
-#. Installed products filter
-#: ../html/src/manager/visualization/hierarchy.tsx:145
+#: ../html/src/manager/visualization/hierarchy.tsx:170
 msgid "Filter by system installed products"
 msgstr "システムにインストールされている製品でフィルタ"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:145
+#: ../html/src/manager/visualization/hierarchy.tsx:171
 msgid "e.g., SLES"
 msgstr "例: SLES"
 
-#: ../html/src/manager/visualization/hierarchy.tsx:187
-msgid "Partition systems based on whether there are patches for them:"
-msgstr "パッチがあるかどうかに基づいてシステムのパーティションを設定する:"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:229
-msgid "There was an error fetching data from the server."
-msgstr "サーバからデータを取り出す際にエラーが発生しました。"
-
-#: ../html/src/manager/visualization/hierarchy.tsx:268
-msgid " filters"
+#: ../html/src/manager/visualization/hierarchy.tsx:274
+#, fuzzy
+msgid "Hide filters"
 msgstr " フィルタ"
 
-#: ../html/src/manager/visualization/ui/components.ts:38
+#: ../html/src/manager/visualization/hierarchy.tsx:274
+#, fuzzy
+msgid "Show filters"
+msgstr " フィルタ"
+
+#: ../html/src/manager/visualization/hierarchy.tsx:282
+msgid "Filtering"
+msgstr "フィルタリング"
+
+#: ../html/src/manager/visualization/hierarchy.tsx:288
+msgid "Partitioning"
+msgstr "パーティション設定"
+
+#: ../html/src/manager/visualization/hierarchy.tsx:295
 msgid "Partition systems by given check-in time:"
 msgstr "指定したチェックイン名でシステムのパーティションを設定する:"
 
-#: ../html/src/manager/visualization/ui/components.ts:145
+#: ../html/src/manager/visualization/hierarchy.tsx:304
+#: ../html/src/manager/visualization/hierarchy.tsx:319
+msgid "Apply"
+msgstr "適用"
+
+#: ../html/src/manager/visualization/hierarchy.tsx:312
+msgid "Partition systems based on whether there are patches for them:"
+msgstr "パッチがあるかどうかに基づいてシステムのパーティションを設定する:"
+
+#: ../html/src/manager/visualization/hierarchy.tsx:328
+msgid "Split into groups"
+msgstr "グループに分割"
+
+#: ../html/src/manager/visualization/hierarchy.tsx:335
 msgid "Add a grouping level"
 msgstr "グループレベルの追加"
 
-#: ../html/src/manager/visualization/ui/components.ts:183
+#: ../html/src/manager/visualization/hierarchy.tsx:345
 msgid "Select a system group"
 msgstr "システムグループの選択"
 
-#: ../html/src/manager/visualization/ui/components.ts:232
-msgid "Split into groups"
-msgstr "グループに分割"
+#: ../html/src/manager/visualization/hierarchy.tsx:367
+#, fuzzy
+msgid "Remove this level"
+msgstr "ファイルの削除"
 
 #: ../html/src/utils/network.ts:97
 msgid "Session expired, please reload the page."
@@ -6718,6 +6723,24 @@ msgstr "リソースが見つかりませんでした。"
 #: ../html/src/utils/network.ts:105
 msgid "HTTP Error code "
 msgstr "HTTP エラーコード "
+
+#~ msgid ""
+#~ "Action has been successfully added to the action chain <link>'{name}'</"
+#~ "link>."
+#~ msgstr "動作を動作チェーン <link>'{name}'</link>に追加しました 。"
+
+#~ msgid ""
+#~ "The following channel installations for '{product}' failed. Please check "
+#~ "log files."
+#~ msgstr ""
+#~ "'{product}'の次のチャンネルのインストールに失敗しました。ログファイルを確"
+#~ "認してください。"
+
+#~ msgid "Instance Details for '{name}'"
+#~ msgstr "'{name}'に対するインスタンスの詳細"
+
+#~ msgid "Url '{url}' is invalid"
+#~ msgstr "Url '{url}'が正しくありません"
 
 #~ msgid "Playbook '{name}'"
 #~ msgstr "playbook '{name}'"
@@ -7028,9 +7051,6 @@ msgstr "HTTP エラーコード "
 #~ msgstr ""
 #~ "インストール済みのSUSE Linuxバージョンに対応する提供されたチャンネル。既定"
 #~ "では、 "
-
-#~ msgid "Apply"
-#~ msgstr "適用"
 
 #~ msgid "Upcoming Maintenance Windows"
 #~ msgstr "将来のメンテナンスウィンドウ"
