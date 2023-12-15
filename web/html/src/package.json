@@ -103,8 +103,6 @@
     "react-toastify": "6.0.5",
     "react-virtuoso": "^2.5.1",
     "regenerator-runtime": "^0.13.7",
-    "select2": "3.4.5",
-    "select2-bootstrap-css": "1.4.6",
     "semver": "^7.3.8",
     "senna": "^2.7.8",
     "shelljs": "0.8.5",

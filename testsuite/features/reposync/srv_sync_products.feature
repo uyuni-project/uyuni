@@ -18,7 +18,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until I do not see "Loading" text
     And I enter "RHEL or SLES ES" as the filtered product description
     Then I should see a "RHEL or SLES ES or CentOS 8 Base" text
-    When I select "x86_64" in the dropdown list of the architecture filter
+    When I select "x86_64" from "product-arch-filter"
     Then I should see a "RHEL or SLES ES or CentOS 8 Base" text
 
 @scc_credentials
