@@ -1,4 +1,18 @@
 -------------------------------------------------------------------
+Fri Dec 15 17:28:06 CET 2023 - rosuna@suse.com
+
+- version 4.4.10-1
+  * Add bash completion for CLI tools
+  * Amazon Linux 2023 support
+  * Fix bootstrap repository definitions for openSUSE MicrOOS and
+    Tumbleweed
+  * Move all file managed by RPM from /srv to /usr/share/susemanager
+  * Add bootstrap repository definitions for Raspberry Pi OS 12
+  * Replace %{_datarootdir} with %{_datadir} for consistency
+  * Fix typo in repo name within server-migrator.sh script
+  * Fix Red Hat Enterprise Linux base channel name for bootstraping
+
+-------------------------------------------------------------------
 Wed Nov 01 20:05:26 CET 2023 - marina.latini@suse.com
 
 - version 4.4.9-1
