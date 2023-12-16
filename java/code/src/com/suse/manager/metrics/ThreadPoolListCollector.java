@@ -17,8 +17,10 @@ package com.suse.manager.metrics;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.stream.IntStream;
 
 import io.prometheus.client.Collector;
+import io.prometheus.client.GaugeMetricFamily;
 
 /**
  * Collector for a List of ThreadPool.
@@ -58,6 +60,10 @@ public class ThreadPoolListCollector extends Collector {
                 "Number of tasks ever completed",
                 this.pool.stream().map(ThreadPoolExecutor::getCompletedTaskCount).mapToLong(p -> p).sum(),
                 this.poolId));
+        GaugeMetricFamily family = new GaugeMetricFamily(poolId + "_" + "usage", "Queue usage", List.of("queue"));
+        IntStream.range(0, this.pool.size())
+                .forEach(i -> family.addMetric(List.of(String.format("%d", i)), this.pool.get(i).getActiveCount()));
+        out.add(family);
 
         return out;
     }
