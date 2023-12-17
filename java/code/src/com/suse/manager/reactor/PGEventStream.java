@@ -27,6 +27,7 @@ import com.redhat.rhn.domain.reactor.SaltEventFactory;
 import com.redhat.rhn.frontend.events.TransactionHelper;
 
 import com.suse.manager.metrics.PrometheusExporter;
+import com.suse.salt.netapi.datatypes.Event;
 import com.suse.salt.netapi.event.AbstractEventStream;
 import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.parser.JsonParser;
@@ -67,14 +68,14 @@ public class PGEventStream extends AbstractEventStream implements PGNotification
     private final PGConnection connection;
     private final List<ThreadPoolExecutor> executorServices = IntStream.range(0, THREAD_POOL_SIZE + 1).mapToObj(i ->
         new ThreadPoolExecutor(
-            1,
-            1,
-            0L,
-            TimeUnit.MILLISECONDS,
+                1,
+                1,
+                0L,
+                TimeUnit.MILLISECONDS,
                 new LinkedBlockingQueue<>(),
-            new BasicThreadFactory.Builder()
-                .namingPattern(i == 0 ? "salt-global-event-thread-%d" : String.format("salt-event-thread-%d", i))
-                .build()
+                new BasicThreadFactory.Builder()
+                    .namingPattern(i == 0 ? "salt-global-event-thread-%d" : String.format("salt-event-thread-%d", i))
+                    .build()
         )
     ).collect(Collectors.toList());
 
@@ -202,7 +203,9 @@ public class PGEventStream extends AbstractEventStream implements PGNotification
     }
 
     /**
-     * Reads one or more events from suseSaltEvent and notifies listeners (typically, {@link PGEventListener}).
+     * Reads one or more events from suseSaltEvent and notifies listeners
+     * (typically, {@link PGEventListener#notify(Event)}).
+     *
      * @param uncommittedEvents used to keep track of events being processed
      * @param queue the index of the thread processing the events
      */
