@@ -341,7 +341,7 @@ When(/^I refresh SCC$/) do
 end
 
 When(/^I execute mgr-sync refresh((?: with authentication)?)$/) do |authentication_required|
-  command = authentication_required.empty? ?  'mgr-sync refresh' : 'echo -e "admin\nadmin\n | mgr-sync refresh'
+  command = authentication_required.empty? ? 'mgr-sync refresh' : 'echo -e "admin\nadmin\n | mgr-sync refresh'
   $command_output, _code = get_target('server').run(command, check_errors: false)
 end
 
