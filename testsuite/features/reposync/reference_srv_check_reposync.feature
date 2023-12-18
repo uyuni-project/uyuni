@@ -35,6 +35,7 @@ Feature: Reposync works as expected
     And I wait until the channel "sle-module-server-applications15-sp4-updates-x86_64" has been synced
     And I wait until the channel "sle-module-desktop-applications15-sp4-updates-x86_64" has been synced
     And I wait until the channel "sle-module-devtools15-sp4-updates-x86_64" has been synced
+    And I wait until the channel "sle-module-containers15-sp4-pool-x86_64" has been synced
 
 @uyuni
   Scenario: Check reposync of openSUSE Leap 15.5 channels being finished
