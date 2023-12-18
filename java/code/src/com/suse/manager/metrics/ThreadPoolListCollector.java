@@ -20,7 +20,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.stream.IntStream;
 
 import io.prometheus.client.Collector;
-import io.prometheus.client.GaugeMetricFamily;
+import io.prometheus.client.CounterMetricFamily;
 
 /**
  * Collector for a List of ThreadPool.
@@ -60,9 +60,10 @@ public class ThreadPoolListCollector extends Collector {
                 "Number of tasks ever completed",
                 this.pool.stream().map(ThreadPoolExecutor::getCompletedTaskCount).mapToLong(p -> p).sum(),
                 this.poolId));
-        GaugeMetricFamily family = new GaugeMetricFamily(poolId + "_" + "usage", "Queue usage", List.of("queue"));
+        CounterMetricFamily family = new CounterMetricFamily(poolId + "_" + "task_usage", "Task queue usage",
+                List.of("queue"));
         IntStream.range(0, this.pool.size())
-                .forEach(i -> family.addMetric(List.of(String.format("%d", i)), this.pool.get(i).getActiveCount()));
+                .forEach(i -> family.addMetric(List.of(String.format("%d", i)), this.pool.get(i).getTaskCount()));
         out.add(family);
 
         return out;
