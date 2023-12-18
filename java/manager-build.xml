@@ -9,40 +9,40 @@
  https://github.com/uyuni-project/uyuni/wiki/Java-Development-Environment
 -->
 <project name="SUSE Manager" default="deploy" basedir=".">
-  <!-- User-defined properties -->
-  <property file="buildconf/manager-developer-build.properties" />
+    <!-- User-defined properties -->
+    <property file="buildconf/manager-developer-build.properties"/>
 
-  <!-- Upstream-defined properties -->
-  <import file="buildconf/build-props.xml" />
-  <property file="conf/rhn_java.conf"/>
+    <!-- Upstream-defined properties -->
+    <import file="buildconf/build-props.xml"/>
+    <property file="conf/rhn_java.conf"/>
 
-  <!-- Other properties -->
-  <property name="container.backend" value="" />
+    <!-- Other properties -->
+    <property name="container.backend" value=""/>
 
-  <property name="deploy.host" value="deployhost" />
-  <property name="deploy.port" value="22" />
-  <property name="deploy.dir" value="/usr/share/susemanager/www/tomcat/webapps/rhn" />
-  <property name="deploy.user" value="root" />
-  <property name="deploy.namespace" value="default"/>
+    <property name="deploy.host" value="deployhost"/>
+    <property name="deploy.port" value="22"/>
+    <property name="deploy.dir" value="/usr/share/susemanager/www/tomcat/webapps/rhn"/>
+    <property name="deploy.user" value="root"/>
+    <property name="deploy.namespace" value="default"/>
 
-  <property name="tests.includes" value="buildconf/manager-test-includes" />
-  <property name="tests.excludes" value="buildconf/manager-test-excludes" />
-  <property name="tests.results.dir" value="test-results"/>
-  <property name="tests.coverage.results.dir" value="test-results/coverage"/>
-  <property name="tests.coverage.destfile" value="test-results/coverage/jacoco.exec"/>
-  <property name="tests.configuration.path" value="${basedir}/buildconf/test" />
+    <property name="tests.includes" value="buildconf/manager-test-includes"/>
+    <property name="tests.excludes" value="buildconf/manager-test-excludes"/>
+    <property name="tests.results.dir" value="test-results"/>
+    <property name="tests.coverage.results.dir" value="test-results/coverage"/>
+    <property name="tests.coverage.destfile" value="test-results/coverage/jacoco.exec"/>
+    <property name="tests.configuration.path" value="${basedir}/buildconf/test"/>
 
-  <property name="branding.src.dir" value="${basedir}/../branding/java/code/src"/>
-  <property name="frontend.src.dir" value="${basedir}/../web/html/src"/>
-  <property name="frontend.dist.dir" value="${basedir}/../web/html/src/dist"/>
+    <property name="branding.src.dir" value="${basedir}/../branding/java/code/src"/>
+    <property name="frontend.src.dir" value="${basedir}/../web/html/src"/>
+    <property name="frontend.dist.dir" value="${basedir}/../web/html/src/dist"/>
 
-  <property name="ssh.socket.file" value="${user.home}/.ssh/manager-build-tunnel-${deploy.host}-${deploy.user}"/>
-  <property name="ssh.socket.option" value="-o ControlPath=${ssh.socket.file}"/>
-  <property name="ssh.command.args" value="${ssh.socket.option} -p ${deploy.port} ${deploy.user}@${deploy.host}"/>
-  <property name="rsync.arg.rsh" value="ssh ${ssh.socket.option} -p ${deploy.port}"/>
+    <property name="ssh.socket.file" value="${user.home}/.ssh/manager-build-tunnel-${deploy.host}-${deploy.user}"/>
+    <property name="ssh.socket.option" value="-o ControlPath=${ssh.socket.file}"/>
+    <property name="ssh.command.args" value="${ssh.socket.option} -p ${deploy.port} ${deploy.user}@${deploy.host}"/>
+    <property name="rsync.arg.rsh" value="ssh ${ssh.socket.option} -p ${deploy.port}"/>
 
-  <!-- Taskdefs -->
-  <taskdef name="ivy-retrieve" classname="org.apache.ivy.ant.IvyRetrieve"/>
+    <!-- Taskdefs -->
+    <taskdef name="ivy-retrieve" classname="org.apache.ivy.ant.IvyRetrieve"/>
 
   <!-- Paths -->
   <path id="libjars">
@@ -58,208 +58,210 @@
     <fileset file="${build.dir}/rhn.jar" />
   </path>
 
-  <!-- Tasks -->
-  <target name="clean" description="Cleans up all generated files">
-    <delete dir="${build.dir}" quiet="true">
-      <exclude name="classes/**/*" if="precompiled" />
-    </delete>
-    <delete dir="${test.results.dir}" />
-  </target>
+    <!-- Tasks -->
+    <target name="clean" description="Cleans up all generated files">
+        <delete dir="${build.dir}" quiet="true">
+            <exclude name="classes/**/*" if="precompiled"/>
+        </delete>
+        <delete dir="${test.results.dir}"/>
+    </target>
 
-  <target name="maybe-clean" unless="build.incremental.compile">
-    <antcall target="clean" />
-  </target>
+    <target name="maybe-clean" unless="build.incremental.compile">
+        <antcall target="clean"/>
+    </target>
 
-  <target name="obs-to-maven" description="Updates local maven repository with OBS jars">
-    <exec failonerror="true" executable="obs-to-maven">
-      <arg line="-d ${basedir}/buildconf/ivy/obs-maven-config.yaml ${basedir}/buildconf/ivy/repository" />
-    </exec>
-  </target>
+    <target name="obs-to-maven" description="Updates local maven repository with OBS jars">
+        <exec failonerror="true" executable="obs-to-maven">
+            <arg line="-d ${basedir}/buildconf/ivy/obs-maven-config.yaml ${basedir}/buildconf/ivy/repository"/>
+        </exec>
+    </target>
 
-  <target name="ivy" depends="obs-to-maven" description="Retrieves dependencies through ivy">
-    <ivy-retrieve sync="true" type="jar,bundle"/>
-  </target>
+    <target name="ivy" depends="obs-to-maven" description="Retrieves dependencies through ivy">
+        <ivy-retrieve sync="true" type="jar,bundle"/>
+    </target>
 
-  <target name="refresh-branding-jar" depends="maybe-clean" description="Compiles and builds the SUSE branding jar">
-    <mkdir dir="${build.dir}/java-branding" />
+    <target name="refresh-branding-jar" depends="maybe-clean" description="Compiles and builds the SUSE branding jar">
+        <mkdir dir="${build.dir}/java-branding"/>
 
-    <javac destdir="${build.dir}/java-branding"
-           source="17"
-           target="17"
-           includeantruntime="no"
-           nowarn="true"
-           srcdir="${branding.src.dir}" />
+        <javac destdir="${build.dir}/java-branding"
+               source="17"
+               target="17"
+               includeantruntime="no"
+               nowarn="true"
+               srcdir="${branding.src.dir}"/>
 
-    <copy toDir="${build.dir}/java-branding">
-      <fileset dir="${branding.src.dir}" excludes="**/*.java" />
-    </copy>
+        <copy toDir="${build.dir}/java-branding">
+            <fileset dir="${branding.src.dir}" excludes="**/*.java"/>
+        </copy>
 
-    <jar destfile="${lib.dir}/java-branding.jar" includes="">
-      <fileset dir="${build.dir}/java-branding" />
-    </jar>
-  </target>
+        <jar destfile="${lib.dir}/java-branding.jar" includes="">
+            <fileset dir="${build.dir}/java-branding"/>
+        </jar>
+    </target>
 
-  <target name="compile"
-          depends="maybe-clean"
-          unless="precompiled"
-          description="Compiles the main codebase"
-  >
-    <mkdir dir="${build.dir}/classes" />
-    <javac destdir="${build.dir}/classes"
-           optimize="off"
-           debug="on"
-           source="17"
-           target="17"
-           deprecation="${deprecation}"
-           nowarn="${nowarn}"
-           encoding="utf-8"
-           fork="yes"
-           memoryMaximumSize="512m"
-           includeAntRuntime="false"
-           classpathref="libjars"
+    <target name="compile"
+            depends="maybe-clean"
+            unless="precompiled"
+            description="Compiles the main codebase"
     >
-      <src>
-        <path location="code/src" />
-        <path location="code/internal/src" />
-      </src>
-      <compilerarg line="-parameters" description="Preserves method parameter names for HTTP API route discovery"/>
-    </javac>
+        <mkdir dir="${build.dir}/classes"/>
+        <javac destdir="${build.dir}/classes"
+               optimize="off"
+               debug="on"
+               source="17"
+               target="17"
+               deprecation="${deprecation}"
+               nowarn="${nowarn}"
+               encoding="utf-8"
+               fork="yes"
+               memoryMaximumSize="512m"
+               includeAntRuntime="false"
+               classpathref="libjars"
+        >
+            <src>
+                <path location="code/src"/>
+                <path location="code/internal/src"/>
+            </src>
+            <compilerarg line="-parameters"
+                         description="Preserves method parameter names for HTTP API route discovery"/>
+        </javac>
 
-    <copy toDir="${build.dir}/classes">
-      <fileset dir="${src.dir}/src">
-        <exclude name="**/*.java" />
-        <exclude name="**/package.html" />
-      </fileset>
-    </copy>
-  </target>
+        <copy toDir="${build.dir}/classes">
+            <fileset dir="${src.dir}/src">
+                <exclude name="**/*.java"/>
+                <exclude name="**/package.html"/>
+            </fileset>
+        </copy>
+    </target>
 
-  <target name="jar" depends="compile" description="Packs the main application jar">
-    <jar destfile="${build.dir}/rhn.jar">
-      <fileset dir="${build.dir}/classes">
-        <!-- internal is not for publication; tlds go in META-INF;  html files go as javadoc -->
-        <exclude name="**/internal/**" />
-        <exclude name="**/*.tld" />
-        <exclude name="**/*.html" />
-      </fileset>
-      <fileset dir="${build.dir}/classes">
-        <include name="**/StringResource_en_US.xml" />
-      </fileset>
-      <fileset dir="${src.dir}/webapp">
-        <include name="**/web.xml" />
-        <include name="**/struts-config.xml" />
-      </fileset>
-      <!-- Can't be flattened like in <copy>, alas -->
-      <metainf dir="${build.dir}/classes/com/redhat/rhn/frontend/taglibs">
-        <include name="*.tld" />
-      </metainf>
-    </jar>
-  </target>
+    <target name="jar" depends="compile" description="Packs the main application jar">
+        <jar destfile="${build.dir}/rhn.jar">
+            <fileset dir="${build.dir}/classes">
+                <!-- internal is not for publication; tlds go in META-INF;  html files go as javadoc -->
+                <exclude name="**/internal/**"/>
+                <exclude name="**/*.tld"/>
+                <exclude name="**/*.html"/>
+            </fileset>
+            <fileset dir="${build.dir}/classes">
+                <include name="**/StringResource_en_US.xml"/>
+            </fileset>
+            <fileset dir="${src.dir}/webapp">
+                <include name="**/web.xml"/>
+                <include name="**/struts-config.xml"/>
+            </fileset>
+            <!-- Can't be flattened like in <copy>, alas -->
+            <metainf dir="${build.dir}/classes/com/redhat/rhn/frontend/taglibs">
+                <include name="*.tld"/>
+            </metainf>
+        </jar>
+    </target>
 
-  <target name="webapp" depends="jar" description="Creates the Web application directory">
-    <copy todir="${build.dir}/webapp">
-      <fileset dir="${src.dir}/webapp">
-        <exclude name="help/**" />
-      </fileset>
-    </copy>
+    <target name="webapp" depends="jar" description="Creates the Web application directory">
+        <copy todir="${build.dir}/webapp">
+            <fileset dir="${src.dir}/webapp">
+                <exclude name="help/**"/>
+            </fileset>
+        </copy>
 
-    <mkdir dir="${build.dir}/webapp/META-INF" />
-    <copy file="conf/rhn-tomcat9.xml" tofile="${build.dir}/webapp/META-INF/context.xml" />
+        <mkdir dir="${build.dir}/webapp/META-INF"/>
+        <copy file="conf/rhn-tomcat9.xml" tofile="${build.dir}/webapp/META-INF/context.xml"/>
 
-    <copy todir="${build.dir}/webapp/WEB-INF/lib">
-      <fileset file="${build.dir}/rhn.jar" />
-      <fileset dir="${lib.dir}">
-        <include name="**/*.jar" />
-        <exclude name="**/tomcat*-el*" />
-        <exclude name="**/jasper*" />
-        <exclude name="**/tomcat*-jsp*" />
-        <exclude name="**/tomcat*-servlet*" />
-        <exclude name="**/jspapi*" />
-        <exclude name="**/websocket-api*" />
-        <exclude name="**/checkstyle*" />
-        <exclude name="**/jacocoant*" />
-      </fileset>
-    </copy>
-  </target>
+        <copy todir="${build.dir}/webapp/WEB-INF/lib">
+            <fileset file="${build.dir}/rhn.jar"/>
+            <fileset dir="${lib.dir}">
+                <include name="**/*.jar"/>
+                <exclude name="**/tomcat*-el*"/>
+                <exclude name="**/jasper*"/>
+                <exclude name="**/tomcat*-jsp*"/>
+                <exclude name="**/tomcat*-servlet*"/>
+                <exclude name="**/jspapi*"/>
+                <exclude name="**/websocket-api*"/>
+                <exclude name="**/checkstyle*"/>
+                <exclude name="**/jacocoant*"/>
+            </fileset>
+        </copy>
+    </target>
 
-  <target name="check-ssh-socket">
-    <available file="${ssh.socket.file}" property="ssh-socket.present"/>
-  </target>
+    <target name="check-ssh-socket">
+        <available file="${ssh.socket.file}" property="ssh-socket.present"/>
+    </target>
 
-  <target name="open-ssh-socket" depends="check-ssh-socket" unless="ssh-socket.present">
-    <exec executable="ssh">
-      <arg line="-M -f -N -C ${ssh.command.args}" />
-    </exec>
-  </target>
+    <target name="open-ssh-socket" depends="check-ssh-socket" unless="ssh-socket.present">
+        <exec executable="ssh">
+            <arg line="-M -f -N -C ${ssh.command.args}"/>
+        </exec>
+    </target>
 
-  <target name="deploy" depends="webapp, open-ssh-socket" description="Deploy a new copy of SUSE Manager">
-    <echo message="Copying files to remote host..." />
-    <exec failonerror="true" executable="rsync">
-      <arg line="-a --delete --rsh '${rsync.arg.rsh}' --exclude log4j2.xml ${build.dir}/webapp/ ${deploy.user}@${deploy.host}:${deploy.dir}/" />
-    </exec>
+    <target name="deploy" depends="webapp, open-ssh-socket" description="Deploy a new copy of SUSE Manager">
+        <echo message="Copying files to remote host..."/>
+        <exec failonerror="true" executable="rsync">
+            <arg line="-a --delete --rsh '${rsync.arg.rsh}' --exclude log4j2.xml ${build.dir}/webapp/ ${deploy.user}@${deploy.host}:${deploy.dir}/"/>
+        </exec>
 
-    <echo message="Linking the branding jar..." />
-    <exec failonerror="true" executable="ssh">
-      <arg line="${ssh.command.args} mv ${deploy.dir}/WEB-INF/lib/java-branding.jar /usr/share/rhn/lib"/>
-    </exec>
+        <echo message="Linking the branding jar..."/>
+        <exec failonerror="true" executable="ssh">
+            <arg line="${ssh.command.args} mv ${deploy.dir}/WEB-INF/lib/java-branding.jar /usr/share/rhn/lib"/>
+        </exec>
 
-    <exec failonerror="true" executable="ssh">
-      <arg line="${ssh.command.args} ln -sf /usr/share/rhn/lib/java-branding.jar ${deploy.dir}/WEB-INF/lib/java-branding.jar"/>
-    </exec>
+        <exec failonerror="true" executable="ssh">
+            <arg line="${ssh.command.args} ln -sf /usr/share/rhn/lib/java-branding.jar ${deploy.dir}/WEB-INF/lib/java-branding.jar"/>
+        </exec>
 
-    <echo message="Linking jars for Taskomatic..."/>
-    <exec failonerror="true" executable="ssh">
-      <arg line="${ssh.command.args} ln -sf ${deploy.dir}/WEB-INF/lib/*.jar /usr/share/spacewalk/taskomatic"/>
-    </exec>
-    <exec failonerror="true" executable="ssh">
-      <arg line="${ssh.command.args} mv ${deploy.dir}/WEB-INF/lib/rhn.jar /usr/share/rhn/lib"/>
-    </exec>
-    <exec failonerror="true" executable="ssh">
-      <arg line="${ssh.command.args} ln -sf /usr/share/rhn/lib/rhn.jar ${deploy.dir}/WEB-INF/lib"/>
-    </exec>
+        <echo message="Linking jars for Taskomatic..."/>
+        <exec failonerror="true" executable="ssh">
+            <arg line="${ssh.command.args} ln -sf ${deploy.dir}/WEB-INF/lib/*.jar /usr/share/spacewalk/taskomatic"/>
+        </exec>
+        <exec failonerror="true" executable="ssh">
+            <arg line="${ssh.command.args} mv ${deploy.dir}/WEB-INF/lib/rhn.jar /usr/share/rhn/lib"/>
+        </exec>
+        <exec failonerror="true" executable="ssh">
+            <arg line="${ssh.command.args} ln -sf /usr/share/rhn/lib/rhn.jar ${deploy.dir}/WEB-INF/lib"/>
+        </exec>
 
-  </target>
+    </target>
 
-  <target name="is-yarn-installed">
-    <exec failifexecutionfails="false" resultproperty="yarn.installed" executable="yarn">
-      <arg line="--version" />
-    </exec>
-  </target>
+    <target name="is-yarn-installed">
+        <exec failifexecutionfails="false" resultproperty="yarn.installed" executable="yarn">
+            <arg line="--version"/>
+        </exec>
+    </target>
 
-  <target name="warn-if-yarn-not-installed" depends="is-yarn-installed" unless="yarn.installed">
-    <fail>yarn is not in the PATH. Please install yarn first.</fail>
-  </target>
+    <target name="warn-if-yarn-not-installed" depends="is-yarn-installed" unless="yarn.installed">
+        <fail>yarn is not in the PATH. Please install yarn first.</fail>
+    </target>
 
-  <target name="build-js" depends="warn-if-yarn-not-installed" description="Build js files">
-    <echo message="Calling yarn build ..."/>
-    <exec failonerror="true" executable="yarn" dir="${frontend.src.dir}">
-      <arg line="build:novalidate"/>
-    </exec>
-  </target>
+    <target name="build-js" depends="warn-if-yarn-not-installed" description="Build js files">
+        <echo message="Calling yarn build ..."/>
+        <exec failonerror="true" executable="yarn" dir="${frontend.src.dir}">
+            <arg line="build:novalidate"/>
+        </exec>
+    </target>
 
-  <target name="deploy-static-resources" depends="open-ssh-socket,build-js" description="Deploy css/js/img/font files">
-    <condition property="spacewalk.upstream">
-      <not>
-        <available file="${basedir}/../susemanager" type="dir"/>
-      </not>
-    </condition>
-    <condition property="static.files.dir" value="/var/www/html" else="/usr/share/susemanager/www/htdocs">
-      <isset property="spacewalk.upstream"/>
-    </condition>
+    <target name="deploy-static-resources" depends="open-ssh-socket,build-js"
+            description="Deploy css/js/img/font files">
+        <condition property="spacewalk.upstream">
+            <not>
+                <available file="${basedir}/../susemanager" type="dir"/>
+            </not>
+        </condition>
+        <condition property="static.files.dir" value="/var/www/html" else="/usr/share/susemanager/www/htdocs">
+            <isset property="spacewalk.upstream"/>
+        </condition>
 
-    <echo message="Copying frontend files to remote host...${static.files.dir}"/>
-    <exec failonerror="true" executable="rsync">
-      <arg line="-a --rsh '${rsync.arg.rsh}' ${frontend.dist.dir}/ ${deploy.user}@${deploy.host}:${static.files.dir}/" />
-    </exec>
-  </target>
+        <echo message="Copying frontend files to remote host...${static.files.dir}"/>
+        <exec failonerror="true" executable="rsync">
+            <arg line="-a --rsh '${rsync.arg.rsh}' ${frontend.dist.dir}/ ${deploy.user}@${deploy.host}:${static.files.dir}/"/>
+        </exec>
+    </target>
 
-  <target name="deploy-salt-files" depends="open-ssh-socket" description="Deploy Salt files">
-    <condition property="spacewalk.upstream">
-      <not>
-        <available file="${basedir}/../susemanager" type="dir"/>
-      </not>
-    </condition>
-    <property name="salt.state.files.dir" value="/usr/share/susemanager/salt"/>
-    <property name="salt.reactor.files.dir" value="/usr/share/susemanager/reactor"/>
+    <target name="deploy-salt-files" depends="open-ssh-socket" description="Deploy Salt files">
+        <condition property="spacewalk.upstream">
+            <not>
+                <available file="${basedir}/../susemanager" type="dir"/>
+            </not>
+        </condition>
+        <property name="salt.state.files.dir" value="/usr/share/susemanager/salt"/>
+        <property name="salt.reactor.files.dir" value="/usr/share/susemanager/reactor"/>
 
     <echo message="Copying Salt sls files to remote host...${salt.state.files.dir}"/>
     <exec executable="rsync">
@@ -284,211 +286,217 @@
     </exec>
   </target>
 
-  <target name="restart-tomcat" depends="open-ssh-socket" description="Restart the tomcat process">
-    <echo message="Launching Tomcat restart..."/>
-    <exec executable="ssh">
-      <arg line="${ssh.command.args} nohup rctomcat restart > /dev/null 2>&amp;1 &amp;"/>
-    </exec>
-  </target>
+    <target name="restart-tomcat" depends="open-ssh-socket" description="Restart the tomcat process">
+        <echo message="Launching Tomcat restart..."/>
+        <exec executable="ssh">
+            <arg line="${ssh.command.args} nohup rctomcat restart > /dev/null 2>&amp;1 &amp;"/>
+        </exec>
+    </target>
 
-  <target name="restart-taskomatic" depends="open-ssh-socket" description="Restart the taskomatic process">
-    <echo message="Launching Taskomatic restart..."/>
-    <exec executable="ssh">
-      <arg line="${ssh.command.args}  nohup rctaskomatic restart > /dev/null 2>&amp;1 &amp;"/>
-    </exec>
-  </target>
+    <target name="restart-taskomatic" depends="open-ssh-socket" description="Restart the taskomatic process">
+        <echo message="Launching Taskomatic restart..."/>
+        <exec executable="ssh">
+            <arg line="${ssh.command.args}  nohup rctaskomatic restart > /dev/null 2>&amp;1 &amp;"/>
+        </exec>
+    </target>
 
-  <target name="deploy-restart" depends="deploy, restart-tomcat, restart-taskomatic" />
+    <target name="deploy-restart" depends="deploy, restart-tomcat, restart-taskomatic"/>
 
-  <!-- container related -->
-  <target name="is-mgrctl-installed" description="Checks if mgrctl is installed">
-    <exec failifexecutionfails="false" resultproperty="mgrctl.installed" executable="mgrctl">
-      <arg line="--version" />
-    </exec>
-  </target>
+    <!-- container related -->
+    <target name="is-mgrctl-installed" description="Checks if mgrctl is installed">
+        <exec failifexecutionfails="false" resultproperty="mgrctl.installed" executable="mgrctl">
+            <arg line="--version"/>
+        </exec>
+    </target>
 
-  <target name="warn-if-mgrctl-not-installed" depends="is-mgrctl-installed" unless="mgrctl.installed">
-    <fail>mgrctl is not in the PATH. Please install mgrctl first.</fail>
-  </target>
+    <target name="warn-if-mgrctl-not-installed" depends="is-mgrctl-installed" unless="mgrctl.installed">
+        <fail>mgrctl is not in the PATH. Please install mgrctl first.</fail>
+    </target>
 
-  <target name="deploy-container" depends="webapp, warn-if-mgrctl-not-installed" description="Deploy a new copy of SUSE Manager in a running container">
-    <echo message="Copying files to container..." />
+    <target name="deploy-container" depends="webapp, warn-if-mgrctl-not-installed"
+            description="Deploy a new copy of SUSE Manager in a running container">
+        <echo message="Copying files to container..."/>
 
-    <exec failonerror="true" executable="sh">
-      <arg line="-c 'tar c -C ${build.dir}/webapp -f - --exclude=log4j2.xml . | mgrctl exec -i -- tar xf - -C ${deploy.dir}'" />
-    </exec>
+        <exec failonerror="true" executable="sh">
+            <arg line="-c 'tar c -C ${build.dir}/webapp -f - --exclude=log4j2.xml . | mgrctl exec -i -- tar xf - -C ${deploy.dir}'"/>
+        </exec>
 
-    <echo message="Linking the branding jar..." />
-    <mgrctl argline="exec -- mv ${deploy.dir}/WEB-INF/lib/java-branding.jar /usr/share/rhn/lib" />
-    <mgrctl argline="exec -- ln -sf /usr/share/rhn/lib/java-branding.jar ${deploy.dir}/WEB-INF/lib/java-branding.jar" />
+        <echo message="Linking the branding jar..."/>
+        <mgrctl argline="exec -- mv ${deploy.dir}/WEB-INF/lib/java-branding.jar /usr/share/rhn/lib"/>
+        <mgrctl argline="exec -- ln -sf /usr/share/rhn/lib/java-branding.jar ${deploy.dir}/WEB-INF/lib/java-branding.jar"/>
 
-    <echo message="Linking jars for Taskomatic..." />
-    <mgrctl argline="exec -- ln -sf ${deploy.dir}/WEB-INF/lib/*.jar /usr/share/spacewalk/taskomatic" />
-    <mgrctl argline="exec -- mv ${deploy.dir}/WEB-INF/lib/rhn.jar /usr/share/rhn/lib" />
-    <mgrctl argline="exec -- ln -sf /usr/share/rhn/lib/rhn.jar ${deploy.dir}/WEB-INF/lib" />
+        <echo message="Linking jars for Taskomatic..."/>
+        <mgrctl argline="exec -- ln -sf ${deploy.dir}/WEB-INF/lib/*.jar /usr/share/spacewalk/taskomatic"/>
+        <mgrctl argline="exec -- mv ${deploy.dir}/WEB-INF/lib/rhn.jar /usr/share/rhn/lib"/>
+        <mgrctl argline="exec -- ln -sf /usr/share/rhn/lib/rhn.jar ${deploy.dir}/WEB-INF/lib"/>
 
-  </target>
-
-
-  <target name="deploy-static-resources-container" depends="build-js,warn-if-mgrctl-not-installed" description="Deploy css/js/img/font files in a running container">
-    <echo message="Copying frontend files to container... " />
-    <copy-to-container
-      source="${frontend.dist.dir}"
-      target="/usr/share/susemanager/www/htdocs"
-      failonerror="true"
-      backend="${container.backend}" />
-  </target>
-
-  <target name="deploy-salt-files-container" depends="warn-if-mgrctl-not-installed" description="Deploy Salt files in a running container">
-    <property name="salt.state.files.dir" value="/usr/share/susemanager/salt" />
-    <property name="salt.reactor.files.dir" value="/usr/share/susemanager/reactor" />
-
-    <echo message="Copying Salt sls files to remote host..." />
-    <copy-to-container
-      source="${basedir}/../susemanager-utils/susemanager-sls/salt/"
-      target="${salt.state.files.dir}"
-      backend="${container.backend}"
-    />
-
-    <echo message="Copying Salt grains, beacons, modules and pillars to remote host..." />
-    <copy-to-container
-      source="${basedir}/../susemanager-utils/susemanager-sls/src/grains/"
-      target="${salt.state.files.dir}/_grains/"
-      backend="${container.backend}" />
-    <copy-to-container
-      source="${basedir}/../susemanager-utils/susemanager-sls/src/beacons/"
-      target="${salt.state.files.dir}/_beacons/"
-      backend="${container.backend}" />
-    <copy-to-container
-      source="${basedir}/../susemanager-utils/susemanager-sls/src/modules/"
-      target="${salt.state.files.dir}/_modules/"
-      backend="${container.backend}" />
-    <copy-to-container
-      source="${basedir}/../susemanager-utils/susemanager-sls/modules/pillar/"
-      target="/usr/share/susemanager/modules/pillar/"
-      backend="${container.backend}" />
-
-    <echo message="Copying Salt reactor to remote host..." />
-    <copy-to-container
-      source="${basedir}/../susemanager-utils/susemanager-sls/reactor"
-      target="/usr/share/susemanager/modules/pillar/"
-      backend="${container.backend}" />
-  </target>
-
-  <target name="restart-tomcat-container" depends="warn-if-mgrctl-not-installed" description="Restarts the tomcat process in a running container">
-    <echo message="Launching Tomcat restart..." />
-    <mgrctl argline="exec rctomcat restart" />
-  </target>
-
-  <target name="restart-taskomatic-container" depends="warn-if-mgrctl-not-installed" description="Restarts the taskomatic process in a container">
-    <echo message="Launching Taskomatic restart..." />
-    <mgrctl argline="exec rctaskomatic restart" />
-  </target>
-
-  <target name="deploy-restart-container">
-    <antcall target="deploy-container" />
-    <antcall target="restart-tomcat-container" />
-    <antcall target="restart-taskomatic-container" />
-  </target>
+    </target>
 
 
-  <!-- wraps mgrctl command, executing the given argline -->
-  <macrodef name="mgrctl">
-    <attribute name="argline" />
-    <attribute name="failonerror" default="true" />
-    <attribute name="backend" default="" />
-    <sequential>
-      <condition property="backend.flag" value="--backend @{backend}" else="">
-        <not>
-          <equals arg1="@{backend}" arg2="" />
-        </not>
-      </condition>
-      <exec failonerror="@{failonerror}" executable="mgrctl">
-        <arg line="@{argline} ${backend.flag}" />
-      </exec>
-    </sequential>
-  </macrodef>
+    <target name="deploy-static-resources-container" depends="build-js,warn-if-mgrctl-not-installed"
+            description="Deploy css/js/img/font files in a running container">
+        <echo message="Copying frontend files to container... "/>
+        <copy-to-container
+                source="${frontend.dist.dir}"
+                target="/usr/share/susemanager/www/htdocs"
+                failonerror="true"
+                backend="${container.backend}"/>
+    </target>
 
-  <!-- copies the given source path to the given target path in the container -->
-  <macrodef name="copy-to-container">
-    <attribute name="source" />
-    <attribute name="target" />
-    <attribute name="failonerror" default="false" />
-    <attribute name="backend" default="" />
-    <sequential>
-      <condition property="backend.flag" value="--backend @{backend}" else="">
-        <not>
-          <equals arg1="@{backend}" arg2="" />
-        </not>
-      </condition>
+    <target name="deploy-salt-files-container" depends="warn-if-mgrctl-not-installed"
+            description="Deploy Salt files in a running container">
+        <property name="salt.state.files.dir" value="/usr/share/susemanager/salt"/>
+        <property name="salt.reactor.files.dir" value="/usr/share/susemanager/reactor"/>
 
-      <exec failonerror="@{failonerror}" executable="mgrctl">
-        <arg line="cp @{source} server:@{target} ${backend.flag}" />
-      </exec>
-    </sequential>
-  </macrodef>
+        <echo message="Copying Salt sls files to remote host..."/>
+        <copy-to-container
+                source="${basedir}/../susemanager-utils/susemanager-sls/salt/"
+                target="${salt.state.files.dir}"
+                backend="${container.backend}"
+        />
 
-  <!-- ./container related -->
+        <echo message="Copying Salt grains, beacons, modules and pillars to remote host..."/>
+        <copy-to-container
+                source="${basedir}/../susemanager-utils/susemanager-sls/src/grains/"
+                target="${salt.state.files.dir}/_grains/"
+                backend="${container.backend}"/>
+        <copy-to-container
+                source="${basedir}/../susemanager-utils/susemanager-sls/src/beacons/"
+                target="${salt.state.files.dir}/_beacons/"
+                backend="${container.backend}"/>
+        <copy-to-container
+                source="${basedir}/../susemanager-utils/susemanager-sls/src/modules/"
+                target="${salt.state.files.dir}/_modules/"
+                backend="${container.backend}"/>
+        <copy-to-container
+                source="${basedir}/../susemanager-utils/susemanager-sls/modules/pillar/"
+                target="/usr/share/susemanager/modules/pillar/"
+                backend="${container.backend}"/>
 
-  <target name="test-report" depends="test" description="Run unit tests and produce a report">
-    <junitreport todir="${tests.results.dir}">
-      <fileset dir="${tests.results.dir}">
-        <include name="TEST-*.xml"/>
-      </fileset>
-      <report format="frames" todir="${tests.results.dir}/html"/>
-    </junitreport>
-  </target>
+        <echo message="Copying Salt reactor to remote host..."/>
+        <copy-to-container
+                source="${basedir}/../susemanager-utils/susemanager-sls/reactor"
+                target="/usr/share/susemanager/modules/pillar/"
+                backend="${container.backend}"/>
+    </target>
 
-  <target
-      name="test"
-      description="Run unit tests"
-      depends="refresh-branding-jar, jar"
-      >
-    <mkdir dir="${tests.results.dir}" />
+    <target name="restart-tomcat-container" depends="warn-if-mgrctl-not-installed"
+            description="Restarts the tomcat process in a running container">
+        <echo message="Launching Tomcat restart..."/>
+        <mgrctl argline="exec rctomcat restart"/>
+    </target>
 
-    <loadfile property="tests.includes.text" srcFile="${tests.includes}"/>
-    <loadfile property="tests.excludes.text" srcFile="${tests.excludes}"/>
-    <echo message="Running tests including:" />
-    <echo message="${tests.includes.text}" />
-    <echo message="and excluding:" />
-    <echo message="${tests.excludes.text}" />
-    <taskdef resource="org/jacoco/ant/antlib.xml" classpath="${lib.dir}/nodeps-0.8.7.jar" />
-    <agent property="jacocoagent" destfile="${tests.coverage.destfile}"/>
+    <target name="restart-taskomatic-container" depends="warn-if-mgrctl-not-installed"
+            description="Restarts the taskomatic process in a container">
+        <echo message="Launching Taskomatic restart..."/>
+        <mgrctl argline="exec rctaskomatic restart"/>
+    </target>
 
-    <!-- Once all CI containers are using ant 1.10+ we can add the printSummary="true" parameter
-         Before it outputs useless over-verbose Junit5 summary for each test summary for each test summary for each test... -->
-    <junitlauncher>
-	    <classpath>
-            <fileset dir="/usr/share/java/junit5/">
-                <include name="**/junit-platform-*.jar" />
-                <include name="**/junit-jupiter-*.jar" />
+    <target name="deploy-restart-container">
+        <antcall target="deploy-container"/>
+        <antcall target="restart-tomcat-container"/>
+        <antcall target="restart-taskomatic-container"/>
+    </target>
+
+
+    <!-- wraps mgrctl command, executing the given argline -->
+    <macrodef name="mgrctl">
+        <attribute name="argline"/>
+        <attribute name="failonerror" default="true"/>
+        <attribute name="backend" default=""/>
+        <sequential>
+            <condition property="backend.flag" value="--backend @{backend}" else="">
+                <not>
+                    <equals arg1="@{backend}" arg2=""/>
+                </not>
+            </condition>
+            <exec failonerror="@{failonerror}" executable="mgrctl">
+                <arg line="@{argline} ${backend.flag}"/>
+            </exec>
+        </sequential>
+    </macrodef>
+
+    <!-- copies the given source path to the given target path in the container -->
+    <macrodef name="copy-to-container">
+        <attribute name="source"/>
+        <attribute name="target"/>
+        <attribute name="failonerror" default="false"/>
+        <attribute name="backend" default=""/>
+        <sequential>
+            <condition property="backend.flag" value="--backend @{backend}" else="">
+                <not>
+                    <equals arg1="@{backend}" arg2=""/>
+                </not>
+            </condition>
+
+            <exec failonerror="@{failonerror}" executable="mgrctl">
+                <arg line="cp @{source} server:@{target} ${backend.flag}"/>
+            </exec>
+        </sequential>
+    </macrodef>
+
+    <!-- ./container related -->
+
+    <target name="test-report" depends="test" description="Run unit tests and produce a report">
+        <junitreport todir="${tests.results.dir}">
+            <fileset dir="${tests.results.dir}">
+                <include name="TEST-*.xml"/>
             </fileset>
-        </classpath>
+            <report format="frames" todir="${tests.results.dir}/html"/>
+        </junitreport>
+    </target>
 
-        <classpath refid="managertestjars" />
+    <target
+            name="test"
+            description="Run unit tests"
+            depends="refresh-branding-jar, jar"
+    >
+        <mkdir dir="${tests.results.dir}"/>
 
-        <testclasses
-                outputdir="${tests.results.dir}"
-                failureProperty="junit_failed">
-            <fork>
-                <sysproperty key="rhn-home" value="." />
-                <sysproperty key="java.awt.headless" value="true" />
-                <sysproperty key="log4j.threshold" value="warn" />
-                <sysproperty key="rhn.config.dir" value="${tests.configuration.path}" />
-                <jvmarg value="-ea" />
-                <!-- <jvmarg value="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005" /> -->
-                <jvmarg value="${jacocoagent}"/>
-            </fork>
-            <zipfileset src="${build.dir}/rhn.jar" includesfile="${tests.includes}" excludesfile="${tests.excludes}" />
-            <listener type="legacy-brief" sendSysOut="true"/>
-            <listener type="legacy-xml" sendSysErr="true" sendSysOut="true"/>
-        </testclasses>
-    </junitlauncher>
-  </target>
+        <loadfile property="tests.includes.text" srcFile="${tests.includes}"/>
+        <loadfile property="tests.excludes.text" srcFile="${tests.excludes}"/>
+        <echo message="Running tests including:"/>
+        <echo message="${tests.includes.text}"/>
+        <echo message="and excluding:"/>
+        <echo message="${tests.excludes.text}"/>
+        <taskdef resource="org/jacoco/ant/antlib.xml" classpath="${lib.dir}/nodeps-0.8.7.jar"/>
+        <agent property="jacocoagent" destfile="${tests.coverage.destfile}"/>
 
-  <target name="test-pr" depends="test-report, test-coverage-report" description="Run unit tests for Pull Requests">
-    <fail if="junit_failed"/>
-  </target>
+        <!-- Once all CI containers are using ant 1.10+ we can add the printSummary="true" parameter
+             Before it outputs useless over-verbose Junit5 summary for each test summary for each test summary for each test... -->
+        <junitlauncher>
+            <classpath>
+                <fileset dir="/usr/share/java/junit5/">
+                    <include name="**/junit-platform-*.jar"/>
+                    <include name="**/junit-jupiter-*.jar"/>
+                </fileset>
+            </classpath>
+
+            <classpath refid="managertestjars"/>
+
+            <testclasses
+                    outputdir="${tests.results.dir}"
+                    failureProperty="junit_failed">
+                <fork>
+                    <sysproperty key="rhn-home" value="."/>
+                    <sysproperty key="java.awt.headless" value="true"/>
+                    <sysproperty key="log4j.threshold" value="warn"/>
+                    <sysproperty key="rhn.config.dir" value="${tests.configuration.path}"/>
+                    <jvmarg value="-ea"/>
+                    <!-- <jvmarg value="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005" /> -->
+                    <jvmarg value="${jacocoagent}"/>
+                </fork>
+                <zipfileset src="${build.dir}/rhn.jar" includesfile="${tests.includes}"
+                            excludesfile="${tests.excludes}"/>
+                <listener type="legacy-brief" sendSysOut="true"/>
+                <listener type="legacy-xml" sendSysErr="true" sendSysOut="true"/>
+            </testclasses>
+        </junitlauncher>
+    </target>
+
+    <target name="test-pr" depends="test-report, test-coverage-report" description="Run unit tests for Pull Requests">
+        <fail if="junit_failed"/>
+    </target>
 
   <target name="checkstyle" depends="compile" description="Runs the checkstyle tool on sources">
     <taskdef resource="com/puppycrawl/tools/checkstyle/ant/checkstyle-ant-task.properties" classpath="${lib.dir}/all-10.12.7.jar" />
@@ -510,126 +518,127 @@
     </checkstyle>
   </target>
 
-  <target name="test-coverage-report" depends="test" description="Generate the unit test coverage reports">
-    <taskdef resource="org/jacoco/ant/antlib.xml" classpathref="libjars" />
-    <report>
-      <executiondata>
-        <file file="${tests.coverage.destfile}"/>
-      </executiondata>
-      <structure name="Suse Manager">
-        <classfiles>
-          <fileset dir="${build.dir}/classes">
-            <exclude name="**/*Test*.class" />
-            <exclude name="**/test/*.class" />
-          </fileset>
-        </classfiles>
-        <sourcefiles encoding="UTF-8">
-          <fileset dir="code/src"/>
-        </sourcefiles>
-      </structure>
-      <html destdir="${tests.coverage.results.dir}/html"/>
-      <csv destfile="${tests.coverage.results.dir}/report.csv" />
-      <xml destfile="${tests.coverage.results.dir}/report.xml" />
-    </report>
-  </target>
+    <target name="test-coverage-report" depends="test" description="Generate the unit test coverage reports">
+        <taskdef resource="org/jacoco/ant/antlib.xml" classpathref="libjars"/>
+        <report>
+            <executiondata>
+                <file file="${tests.coverage.destfile}"/>
+            </executiondata>
+            <structure name="Suse Manager">
+                <classfiles>
+                    <fileset dir="${build.dir}/classes">
+                        <exclude name="**/*Test*.class"/>
+                        <exclude name="**/test/*.class"/>
+                    </fileset>
+                </classfiles>
+                <sourcefiles encoding="UTF-8">
+                    <fileset dir="code/src"/>
+                </sourcefiles>
+            </structure>
+            <html destdir="${tests.coverage.results.dir}/html"/>
+            <csv destfile="${tests.coverage.results.dir}/report.csv"/>
+            <xml destfile="${tests.coverage.results.dir}/report.xml"/>
+        </report>
+    </target>
 
-  <target name="apidoc-singlepage" description="Generate the api for jsps">
-    <property name="doclet.class" value="SinglePageDoclet" />
-    <property name="template.dir" value="singlepage" />
-    <property name="apidoc.output" value="${report.dir}/apidocs/${template.dir}/" />
-    <antcall target="apidoc" />
-  </target>
+    <target name="apidoc-singlepage" description="Generate the api for jsps">
+        <property name="doclet.class" value="SinglePageDoclet"/>
+        <property name="template.dir" value="singlepage"/>
+        <property name="apidoc.output" value="${report.dir}/apidocs/${template.dir}/"/>
+        <antcall target="apidoc"/>
+    </target>
 
-  <target name="apidoc-jsp" description="Generate the api for jsps">
-    <property name="doclet.class" value="JSPDoclet" />
-    <property name="template.dir" value="jsp" />
-    <property name="apidoc.output" value="${report.dir}/apidocs/${template.dir}/" />
-    <antcall target="apidoc" />
-  </target>
+    <target name="apidoc-jsp" description="Generate the api for jsps">
+        <property name="doclet.class" value="JSPDoclet"/>
+        <property name="template.dir" value="jsp"/>
+        <property name="apidoc.output" value="${report.dir}/apidocs/${template.dir}/"/>
+        <antcall target="apidoc"/>
+    </target>
 
-  <target name="apidoc-html" description="Generate the api for jsps">
-    <property name="doclet.class" value="HtmlDoclet" />
-    <property name="template.dir" value="html" />
-    <property name="apidoc.output" value="${report.dir}/apidocs/${template.dir}/" />
-    <antcall target="apidoc" />
-  </target>
+    <target name="apidoc-html" description="Generate the api for jsps">
+        <property name="doclet.class" value="HtmlDoclet"/>
+        <property name="template.dir" value="html"/>
+        <property name="apidoc.output" value="${report.dir}/apidocs/${template.dir}/"/>
+        <antcall target="apidoc"/>
+    </target>
 
-  <target name="apidoc-docbook" description="Generate docbook xml from the API">
-    <property name="doclet.class" value="DocBookDoclet" />
-    <property name="template.dir" value="docbook" />
-    <property name="apidoc.output" value="${report.dir}/apidocs/${template.dir}/" />
-    <antcall target="apidoc" />
-  </target>
+    <target name="apidoc-docbook" description="Generate docbook xml from the API">
+        <property name="doclet.class" value="DocBookDoclet"/>
+        <property name="template.dir" value="docbook"/>
+        <property name="apidoc.output" value="${report.dir}/apidocs/${template.dir}/"/>
+        <antcall target="apidoc"/>
+    </target>
 
-  <target name="apidoc-asciidoc" description="Generate asciidoc from the API">
-    <property name="doclet.class" value="AsciidocDoclet" />
-    <property name="template.dir" value="asciidoc" />
-    <property name="apidoc.output" value="${report.dir}/apidocs/${template.dir}/" />
-    <antcall target="apidoc" />
-    <delete dir="${report.dir}/apidocs/${template.dir}/handlers/" />
-  </target>
+    <target name="apidoc-asciidoc" description="Generate asciidoc from the API">
+        <property name="doclet.class" value="AsciidocDoclet"/>
+        <property name="template.dir" value="asciidoc"/>
+        <property name="apidoc.output" value="${report.dir}/apidocs/${template.dir}/"/>
+        <antcall target="apidoc"/>
+        <delete dir="${report.dir}/apidocs/${template.dir}/handlers/"/>
+    </target>
 
-  <target name="apidoc-validate" description="Validate the API documentation" depends="apidoc-docbook">
-      <exec executable="/usr/bin/xmllint" failonerror="true">
-          <arg value="--xinclude"/>
-          <arg value="--postvalid"/>
-          <arg value="${report.dir}/apidocs/docbook/book.xml"/>
-      </exec>
-      <echo message="${line.separator}The generated API documentation is valid."/>
-  </target>
+    <target name="apidoc-validate" description="Validate the API documentation" depends="apidoc-docbook">
+        <exec executable="/usr/bin/xmllint" failonerror="true">
+            <arg value="--xinclude"/>
+            <arg value="--postvalid"/>
+            <arg value="${report.dir}/apidocs/docbook/book.xml"/>
+        </exec>
+        <echo message="${line.separator}The generated API documentation is valid."/>
+    </target>
 
-  <target name="apidoc" description="Generate the api documentation" depends="compile">
-    <path id="javadocpath">
-      <pathelement location="build/classes" />
-      <path refid="libjars" />
-    </path>
+    <target name="apidoc" description="Generate the api documentation" depends="compile">
+        <path id="javadocpath">
+            <pathelement location="build/classes"/>
+            <path refid="libjars"/>
+        </path>
 
-    <move file="${build.dir}/classes/log4j2.xml" tofile="${build.dir}/classes/log4j2.xml.bak" />
+        <move file="${build.dir}/classes/log4j2.xml" tofile="${build.dir}/classes/log4j2.xml.bak"/>
 
-    <mkdir dir="${report.dir}/apidocs" />
-    <mkdir dir="${report.dir}/apidocs/${template.dir}/" />
-    <mkdir dir="${report.dir}/apidocs/${template.dir}/handlers/" />
-    <javadoc doclet="com.redhat.rhn.internal.doclet.${doclet.class}" docletpathref="javadocpath" classpathref="libjars" sourcepath="code/src"
-        additionalparam="-debug -d ${apidoc.output} -templates buildconf/apidoc/${template.dir} -product '${product.name}' -apiversion '${java.apiversion}'">
-      <fileset dir="code" >
-        <include name="**/src/com/redhat/rhn/frontend/xmlrpc/**/*Handler.java" />
-        <include name="**/src/com/redhat/rhn/frontend/xmlrpc/serializer/*Serializer.java" />
-        <include name="**/src/com/redhat/rhn/domain/config/xmlrpc/serializer/*Serializer.java" />
-        <include name="**/src/com/suse/manager/xmlrpc/**/*Handler.java" />
-        <include name="**/src/com/suse/manager/xmlrpc/serializer/*Serializer.java" />
-      </fileset>
-      <excludepackage name="**/*" />
-    </javadoc>
-    
-    <move file="${build.dir}/classes/log4j2.xml.bak" tofile="${build.dir}/classes/log4j2.xml" />
+        <mkdir dir="${report.dir}/apidocs"/>
+        <mkdir dir="${report.dir}/apidocs/${template.dir}/"/>
+        <mkdir dir="${report.dir}/apidocs/${template.dir}/handlers/"/>
+        <javadoc doclet="com.redhat.rhn.internal.doclet.${doclet.class}" docletpathref="javadocpath"
+                 classpathref="libjars" sourcepath="code/src"
+                 additionalparam="-debug -d ${apidoc.output} -templates buildconf/apidoc/${template.dir} -product '${product.name}' -apiversion '${java.apiversion}'">
+            <fileset dir="code">
+                <include name="**/src/com/redhat/rhn/frontend/xmlrpc/**/*Handler.java"/>
+                <include name="**/src/com/redhat/rhn/frontend/xmlrpc/serializer/*Serializer.java"/>
+                <include name="**/src/com/redhat/rhn/domain/config/xmlrpc/serializer/*Serializer.java"/>
+                <include name="**/src/com/suse/manager/xmlrpc/**/*Handler.java"/>
+                <include name="**/src/com/suse/manager/xmlrpc/serializer/*Serializer.java"/>
+            </fileset>
+            <excludepackage name="**/*"/>
+        </javadoc>
 
-  </target>
+        <move file="${build.dir}/classes/log4j2.xml.bak" tofile="${build.dir}/classes/log4j2.xml"/>
 
-  <target name="deploy-local" depends="webapp" description="Deploy a new copy of SUSE Manager">
-    <echo message="Copying files to local host..." />
-    <exec failonerror="true" executable="rsync">
-      <arg line="-a --delete --exclude log4j2.xml ${build.dir}/webapp/ ${deploy.dir}/" />
-    </exec>
+    </target>
 
-    <echo message="Linking the branding jar..." />
-    <exec failonerror="true" executable="mv">
-      <arg line="${deploy.dir}/WEB-INF/lib/java-branding.jar /usr/share/rhn/lib"/>
-    </exec>
+    <target name="deploy-local" depends="webapp" description="Deploy a new copy of SUSE Manager">
+        <echo message="Copying files to local host..."/>
+        <exec failonerror="true" executable="rsync">
+            <arg line="-a --delete --exclude log4j2.xml ${build.dir}/webapp/ ${deploy.dir}/"/>
+        </exec>
 
-    <exec failonerror="true" executable="ln">
-      <arg line="-sf /usr/share/rhn/lib/java-branding.jar ${deploy.dir}/WEB-INF/lib/java-branding.jar"/>
-    </exec>
+        <echo message="Linking the branding jar..."/>
+        <exec failonerror="true" executable="mv">
+            <arg line="${deploy.dir}/WEB-INF/lib/java-branding.jar /usr/share/rhn/lib"/>
+        </exec>
 
-    <echo message="Linking jars for Taskomatic..."/>
-    <exec failonerror="true" executable="ln">
-      <arg line="-sf ${deploy.dir}/WEB-INF/lib/*.jar /usr/share/spacewalk/taskomatic"/>
-    </exec>
-    <exec failonerror="true" executable="mv">
-      <arg line="${deploy.dir}/WEB-INF/lib/rhn.jar /usr/share/rhn/lib"/>
-    </exec>
-    <exec failonerror="true" executable="ln">
-      <arg line="-sf /usr/share/rhn/lib/rhn.jar ${deploy.dir}/WEB-INF/lib"/>
-    </exec>
+        <exec failonerror="true" executable="ln">
+            <arg line="-sf /usr/share/rhn/lib/java-branding.jar ${deploy.dir}/WEB-INF/lib/java-branding.jar"/>
+        </exec>
+
+        <echo message="Linking jars for Taskomatic..."/>
+        <exec failonerror="true" executable="ln">
+            <arg line="-sf ${deploy.dir}/WEB-INF/lib/*.jar /usr/share/spacewalk/taskomatic"/>
+        </exec>
+        <exec failonerror="true" executable="mv">
+            <arg line="${deploy.dir}/WEB-INF/lib/rhn.jar /usr/share/rhn/lib"/>
+        </exec>
+        <exec failonerror="true" executable="ln">
+            <arg line="-sf /usr/share/rhn/lib/rhn.jar ${deploy.dir}/WEB-INF/lib"/>
+        </exec>
 
   </target>
 
