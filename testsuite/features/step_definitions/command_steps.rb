@@ -340,8 +340,9 @@ When(/^I refresh SCC$/) do
   get_target('server').run('echo -e "admin\nadmin\n" | mgr-sync refresh', timeout: refresh_timeout)
 end
 
-When(/^I execute mgr-sync refresh$/) do
-  $command_output, _code = get_target('server').run('echo -e "admin\nadmin\n" | mgr-sync refresh', check_errors: false)
+When(/^I execute mgr-sync refresh((?: with authentification)?)$/) do |authentification_required|
+  command = authentification_required.empty? ?  'mgr-sync refresh' : 'echo -e "admin\nadmin\n | mgr-sync refresh'
+  $command_output, _code = get_target('server').run(command, check_errors: false)
 end
 
 # This function kills spacewalk-repo-sync processes for a particular OS product version.
