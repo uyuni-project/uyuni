@@ -700,6 +700,8 @@ CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION = {
       sle-module-desktop-applications15-sp4-updates-x86_64
       sle-module-devtools15-sp4-pool-x86_64
       sle-module-devtools15-sp4-updates-x86_64
+      sle-module-containers15-sp4-pool-x86_64
+      sle-module-containers15-sp4-updates-x86_64
     ],
   'almalinux9' =>
     %w[
@@ -828,6 +830,8 @@ CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION = {
       sle-module-desktop-applications15-sp3-updates-x86_64
       sle-module-devtools15-sp3-pool-x86_64
       sle-module-devtools15-sp3-updates-x86_64
+      sle-module-containers15-sp3-pool-x86_64
+      sle-module-containers15-sp3-updates-x86_64
       sles15-sp3-uyuni-client-x86_64
     ],
   'sles15-sp4' =>
@@ -1001,10 +1005,6 @@ CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION = {
       sle-product-suse-manager-proxy-4.3-updates-x86_64
       sle-module-suse-manager-proxy-4.3-pool-x86_64
       sle-module-suse-manager-proxy-4.3-updates-x86_64
-      sle-module-basesystem15-sp4-pool-x86_64-proxy-4.3
-      sle-module-basesystem15-sp4-updates-x86_64-proxy-4.3
-      sle-module-containers15-sp4-pool-x86_64-proxy-4.3
-      sle-module-containers15-sp4-updates-x86_64-proxy-4.3
     ],
   'suma-retail-branch-server-43' =>
     %w[
@@ -1012,12 +1012,6 @@ CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION = {
       sle-product-suse-manager-retail-branch-server-4.3-updates-x86_64
       sle-module-suse-manager-retail-branch-server-4.3-pool-x86_64
       sle-module-suse-manager-retail-branch-server-4.3-updates-x86_64
-      sle-module-basesystem15-sp4-pool-x86_64-smrbs-4.3
-      sle-module-basesystem15-sp4-updates-x86_64-smrbs-4.3
-      sle-module-server-applications15-sp4-pool-x86_64-smrbs-4.3
-      sle-module-server-applications15-sp4-updates-x86_64-smrbs-4.3
-      sle-module-suse-manager-proxy-4.3-pool-x86_64-smrbs
-      sle-module-suse-manager-proxy-4.3-updates-x86_64-smrbs
     ],
   'uyuni-proxy' =>
     %w[
