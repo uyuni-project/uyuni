@@ -21,7 +21,7 @@ Feature: Make sure using paygo instances give access to the related products
 
   @paygo_server
   Scenario: Check default products are available
-    When I execute mgr-sync refresh with authentification
+    When I execute mgr-sync refresh with authentication
     Then I should see the "server" paygo products
 
   @sle15sp5_paygo_minion
@@ -41,7 +41,7 @@ Feature: Make sure using paygo instances give access to the related products
 
   @sle15sp5_paygo_minion
   Scenario: Check sle15sp5 products are available
-    When I execute mgr-sync refresh with authentification
+    When I execute mgr-sync refresh with authentication
     Then I should see the "sle15sp5_paygo_minion" paygo products
 
   @sle12sp5_paygo_minion
@@ -61,7 +61,7 @@ Feature: Make sure using paygo instances give access to the related products
 
   @sle12sp5_paygo_minion
   Scenario: Check sle12sp5 products are available
-    When I execute mgr-sync refresh with authentification
+    When I execute mgr-sync refresh with authentication
     Then I should see the "sle12sp5_paygo_minion" paygo products
 
   @sleforsap15sp5_paygo_minion
@@ -81,5 +81,5 @@ Feature: Make sure using paygo instances give access to the related products
 
   @sleforsap15sp5_paygo_minion
   Scenario: Check sleforsap15sp5 products are available
-    When I execute mgr-sync refresh with authentification
+    When I execute mgr-sync refresh with authentication
     Then I should see the "sleforsap15sp5_paygo_minion" paygo products
