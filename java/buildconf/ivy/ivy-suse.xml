@@ -44,9 +44,9 @@
         <dependency org="suse" name="httpcore" rev="4.4.13" />
         <dependency org="suse" name="httpcore-nio" rev="4.4.13" />
         <dependency org="suse" name="ical4j" rev="3.0.18" />
-        <dependency org="suse" name="jackson-annotations" rev="2.13.0" />
-        <dependency org="suse" name="jackson-core" rev="2.13.0" />
-        <dependency org="suse" name="jackson-databind" rev="2.13.4.2" />
+        <dependency org="suse" name="jackson-annotations" rev="2.15.2" />
+        <dependency org="suse" name="jackson-core" rev="2.15.2" />
+        <dependency org="suse" name="jackson-databind" rev="2.15.2" />
         <dependency org="suse" name="jade4j" rev="1.2.7" />
         <dependency org="suse" name="jakarta-persistence-api" rev="2.2.2" />
         <dependency org="suse" name="java-saml" rev="2.4.0" />
