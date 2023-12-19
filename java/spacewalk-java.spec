@@ -284,6 +284,7 @@ Summary:        Configuration files for Spacewalk Java
 Group:          Applications/Internet
 Requires(post): %{apache2}
 Requires(post): tomcat
+Requires(post): salt-master
 Obsoletes:      rhn-java-config < 5.3.0
 Obsoletes:      rhn-java-config-sat < 5.3.0
 Provides:       rhn-java-config = %{version}-%{release}
@@ -734,6 +735,18 @@ if [ ! -e /var/log/rhn/gatherer.log ]; then
 fi
 chown tomcat:%{apache_group} /var/log/rhn/gatherer.log
 
+if [ ! -d /var/lib/salt/.ssh ]; then
+    mkdir -p /var/lib/salt/.ssh
+    chown %{salt_user_group}:%{salt_user_group} -R /var/lib/salt/.ssh
+    chmod 700 /var/lib/salt/.ssh
+fi
+
+if [ -e /srv/susemanager/salt/salt_ssh/mgr_ssh_id ]; then
+    mv /srv/susemanager/salt/salt_ssh/mgr_ssh_id /var/lib/salt/.ssh/mgr_ssh_id
+    cp /srv/susemanager/salt/salt_ssh/mgr_ssh_id.pub /var/lib/salt/.ssh/mgr_ssh_id.pub
+    chown %{salt_user_group}:%{salt_user_group} /var/lib/salt/.ssh/mgr_ssh_id.pub
+fi
+
 %files
 %defattr(-,root,root)
 %dir %{_localstatedir}/lib/spacewalk
@@ -763,6 +776,7 @@ chown tomcat:%{apache_group} /var/log/rhn/gatherer.log
 %{serverdir}/tomcat/webapps/rhn/WEB-INF/nav
 %{serverdir}/tomcat/webapps/rhn/WEB-INF/pages
 %{serverdir}/tomcat/webapps/rhn/WEB-INF/*.xml
+
 
 # all jars in WEB-INF/lib/
 %{serverdir}/tomcat/webapps/rhn/WEB-INF/lib
