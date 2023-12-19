@@ -1,0 +1,1 @@
+- Remove grub2-x86_64-efi package from server container image

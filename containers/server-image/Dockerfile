@@ -16,12 +16,13 @@ RUN echo "rpm.install.excludedocs = yes" >>/etc/zypp/zypp.conf
 
 # Main packages
 RUN zypper ref && zypper --non-interactive up
+
+# TODO Add grub2-x86_64-efi package once it is available for all architectures
 RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses --force-resolution \
     ${PRODUCT_PATTERN_PREFIX}_server \
     ${PRODUCT_PATTERN_PREFIX}_retail \
     spacewalk-utils-extras \
     shim \
-    grub2-x86_64-efi \
     ed \
     susemanager-tftpsync \
     golang-github-prometheus-node_exporter \
