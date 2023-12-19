@@ -922,22 +922,12 @@ When(/^I check the first row in the list$/) do
   end
 end
 
-When(/^I check "([^"]*)" in the list$/) do |text|
-  raise 'The text to check can\'t be empty' if text.empty?
-
-  top_level_xpath_query = "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{text}')]]//input[@type='checkbox']"
-  row = find(:xpath, top_level_xpath_query, match: :first)
-  raise ScriptError, "xpath: #{top_level_xpath_query} not found" if row.nil?
-
-  row.set(true)
-end
-
-When(/^I uncheck "([^"]*)" in the list$/) do |text|
+When(/^I (check|uncheck) "([^"]*)" in the list$/) do |check_option, text|
   top_level_xpath_query = "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{text}')]]//input[@type='checkbox']"
   row = find(:xpath, top_level_xpath_query, match: :first)
   raise "xpath: #{top_level_xpath_query} not found" if row.nil?
 
-  row.set(false)
+  row.set(check_option == 'check')
 end
 
 #

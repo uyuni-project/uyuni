@@ -135,28 +135,26 @@ Given(/^I am logged into the API$/) do
   raise 'Failed to login to the API' unless response.code == 200
 end
 
-$package_amount = nil
-
-When(/^I check the amount of packages in channel "([^"]*)"$/) do |channel_label|
-  channels = $api_test.channel.list_all_channels
-  if channels.key?(channel_label)
-    package_amount = channels[channel_label]['packages']
-    puts "Package amount for 'test-strict': #{package_amount}"
+When(/^I store the amount of packages in channel "([^"]*)"$/) do |channel_label|
+  add_context('channels', $api_test.channel.list_all_channels)
+  if get_context('channels').key?(channel_label)
+    add_context('package_amount', get_context('channels')[channel_label]['packages'])
+    puts "Package amount for 'test-strict': #{get_context('package_amount')}"
   else
     puts "#{channel_label} channel not found."
   end
 end
 
 Then(/^The amount of packages in channel "([^"]*)" should be the same as before$/) do |channel_label|
-  channels = $api_test.channel.list_all_channels
-  if channels.key?(channel_label) && ($package_amount != channels[channel_label]['packages'])
+  add_context('channels', $api_test.channel.list_all_channels)
+  if get_context('channels').key?(channel_label) && (get_context('package_amount') != get_context('channels')[channel_label]['packages'])
     raise 'Package counts do not match'
   end
 end
 
 Then(/^The amount of packages in channel "([^"]*)" should be fewer than before$/) do |channel_label|
-  channels = $api_test.channel.list_all_channels
-  if channels.key?(channel_label) && channels[channel_label]['packages'] >= $package_amount
+  add_context('channels', $api_test.channel.list_all_channels)
+  if get_context('channels').key?(channel_label) && get_context('channels')[channel_label]['packages'] >= $package_amount
     raise 'Package count is not fewer than before'
   end
 end
