@@ -29,10 +29,13 @@ import com.redhat.rhn.taskomatic.domain.TaskoSchedule;
 import org.apache.commons.collections.MapUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.quartz.DateBuilder;
 import org.quartz.JobBuilder;
 import org.quartz.JobDataMap;
+import org.quartz.JobExecutionContext;
 import org.quartz.SchedulerException;
 import org.quartz.Trigger;
+import org.quartz.TriggerBuilder;
 import org.quartz.TriggerKey;
 import org.quartz.impl.jdbcjobstore.StdJDBCConstants;
 
@@ -177,6 +180,44 @@ public class TaskoQuartzHelper {
         Date date = SchedulerKernel.getScheduler().scheduleJob(jobDetail.build(), trigger);
         log.info("Job {} rescheduled with trigger {}", schedule.getJobLabel(), trigger.getKey());
         return date;
+    }
+
+    /**
+     * Reschedules a Job that is currently being executed based on the provided execution context.
+     * This method is used to retry a Job after a specified interval.
+     * @param context    the context of the current execution of the Job
+     * @param retryCount the current number of retries for this Job
+     * @param interval   the interval in seconds for triggering the Job again
+     * @throws SchedulerException if there is an issue with the scheduler while rescheduling the Job
+     */
+    public static void rescheduleJob(JobExecutionContext context, int retryCount, int interval)
+            throws SchedulerException {
+        Trigger previousJobTrigger = context.getTrigger();
+
+        JobDataMap newJobData = previousJobTrigger.getJobDataMap();
+        newJobData.put("retryCount", retryCount + 1);
+        String newName = retryTriggerName(previousJobTrigger.getKey().getName(), retryCount);
+
+        Trigger newTrigger = TriggerBuilder
+                .newTrigger()
+                .withIdentity(newName, previousJobTrigger.getKey().getGroup())
+                .forJob(previousJobTrigger.getJobKey())
+                .usingJobData(newJobData)
+                .startAt(DateBuilder.futureDate(interval, DateBuilder.IntervalUnit.SECOND))
+                .build();
+        context.getScheduler().scheduleJob(newTrigger);
+    }
+
+    /**
+     * Generates a new trigger name based on the current trigger name and retry count.
+     *
+     * @param currentName the current trigger name
+     * @param retryCount  the number of retries for this trigger
+     * @return a new trigger name modified based on the retry count
+     */
+    public static String retryTriggerName(String currentName, int retryCount) {
+        String baseTriggerName = currentName.split("-retry")[0];
+        return baseTriggerName + "-retry-" + retryCount;
     }
 
     /**
