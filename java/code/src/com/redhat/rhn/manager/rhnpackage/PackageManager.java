@@ -92,7 +92,7 @@ public class PackageManager extends BaseManager {
 
     private static final String[]
         CLEANUP_QUERIES = {"requires", "provides", "conflicts", "obsoletes",
-            "recommends", "suggests", "supplements", "enhances",
+            "recommends", "suggests", "supplements", "enhances", "predepends", "breaks",
             "channels", "files", "caps", "changelogs"};
 
     /**

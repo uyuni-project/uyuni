@@ -337,6 +337,22 @@ ORDER BY UPPER(C.name)
   </query>
 </write-mode>
 
+<write-mode name="cleanup_package_predepends">
+    <query params="pid">
+        DELETE from
+        rhnPackagePreDepends
+        where package_id = :pid
+    </query>
+</write-mode>
+
+<write-mode name="cleanup_package_breaks">
+    <query params="pid">
+        DELETE from
+        rhnPackageBreaks
+        where package_id = :pid
+    </query>
+</write-mode>
+
 <write-mode name="cleanup_package_caps">
   <query params="pid">
 DELETE FROM
