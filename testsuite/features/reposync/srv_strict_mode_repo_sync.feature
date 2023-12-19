@@ -2,9 +2,9 @@
 # Licensed under the terms of the MIT license.
 
 Feature: Strict Mode for Channel Synchronization
-  In order to control strict mode synchronization
+  In order to properly manage channel synchronisation
   As an admin user
-  I want to be able to toggle strict mode synchronization via the UI and command line
+  I want to be able to decide if deleted packages from upstream repos are dropped or kept
 
 Scenario: Create Test-strict-channel
   Given I am authorized for the "Admin" section
@@ -27,7 +27,6 @@ Scenario: Prepare repos for strict test
     And I click on "Create Repository"
     Then I should see a "Repository created successfully" text
 
-@rrichardson-test
 Scenario: Testing strict mode
     Given I am authorized for the "Admin" section
     And I follow the left menu "Software > Manage > Channels"
@@ -38,7 +37,7 @@ Scenario: Testing strict mode
     And I follow "Sync" in the "content area"
     And I click on "Sync Now"	
     And I wait at most 60 seconds until I do not see "Repository sync is running." text, refreshing the page
-    And I check the amount of packages in channel "test-strict-channel"
+    And I store the amount of packages in channel "test-strict-channel"
     And I follow "Add / Remove"
     And I uncheck "fake-rpm-repo" in the list
     And I check "fake-rpm-repo-modified" in the list
@@ -48,7 +47,6 @@ Scenario: Testing strict mode
     And I click on "Sync Now"	
     And I wait at most 60 seconds until I do not see "Repository sync is running." text, refreshing the page
     Then The amount of packages in channel "Test-Strict-Channel" should be the same as before
-    
     And I uncheck "no-strict"
     And I click on "Sync Now"	
     And I wait at most 60 seconds until I do not see "Repository sync is running." text, refreshing the page

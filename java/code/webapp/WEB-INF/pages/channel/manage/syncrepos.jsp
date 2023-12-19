@@ -126,7 +126,7 @@
                 </button>
             </div>
         </c:if>
-    
+
         <c:if test='${not scheduleEditable}'>
             <div class="panel panel-default">
                 <div class="panel-heading">
