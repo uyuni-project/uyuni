@@ -26,36 +26,38 @@ except AttributeError:
 
 def ustr(obj):
     # converts object to unicode like object
-    if PY3: # python3
+    if PY3:  # python3
         if isinstance(obj, str):
             return obj
         else:
-            return str(obj, 'utf8', errors='ignore')
-    else: # python2
+            return str(obj, "utf8", errors="ignore")
+    else:  # python2
         if isinstance(obj, unicode):
             return obj
-        return unicode(obj, 'utf8', 'ignore')
+        return unicode(obj, "utf8", "ignore")
+
 
 def bstr(obj):
     # converts object to bytes like object
-    if PY3: # python3
+    if PY3:  # python3
         if isinstance(obj, bytes):
             return obj
         else:
-            return bytes(obj, 'utf8', errors='ignore')
-    else: # python2
+            return bytes(obj, "utf8", errors="ignore")
+    else:  # python2
         if isinstance(obj, str):
             return obj
-        return str(obj.encode('utf8', 'ignore'))
+        return str(obj.encode("utf8", "ignore"))
+
 
 def sstr(obj):
     # converts object to string
-    if PY3: # python3
+    if PY3:  # python3
         if isinstance(obj, str):
             return obj
         else:
-            return str(obj, 'utf8', errors='ignore')
-    else: # python2
+            return str(obj, "utf8", errors="ignore")
+    else:  # python2
         if isinstance(obj, str):
             return obj
-        return str(obj.encode('utf8', 'ignore'))
+        return str(obj.encode("utf8", "ignore"))

@@ -27,7 +27,6 @@ from spacewalk.common.rhnLog import log_error
 
 
 class SearchNotify:
-
     def __init__(self, host="127.0.0.1", port="2828"):
         self.addr = "http://%s:%s" % (host, port)
 
@@ -37,10 +36,14 @@ class SearchNotify:
             result = client.admin.updateIndex(indexName)
         except Exception:
             e = sys.exc_info()[1]
-            log_error("Failed to notify search service located at %s to update %s indexes"
-                      % (self.addr, indexName), e)
+            log_error(
+                "Failed to notify search service located at %s to update %s indexes"
+                % (self.addr, indexName),
+                e,
+            )
             return False
         return result
+
 
 if __name__ == "__main__":
     search = SearchNotify()

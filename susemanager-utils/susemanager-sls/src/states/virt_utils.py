@@ -7,6 +7,7 @@ import os
 import re
 
 from salt.exceptions import CommandExecutionError
+
 try:
     import libvirt
 except ImportError:
@@ -170,10 +171,10 @@ def cluster_vm_removed(name, primitive, definition_path):
     Delete a VM managed by a cluster
     """
     ret = {
-        'name': name,
-        'changes': {},
-        'result': False,
-        'comment': '',
+        "name": name,
+        "changes": {},
+        "result": False,
+        "comment": "",
     }
     persistent = False
     active = False
@@ -188,30 +189,32 @@ def cluster_vm_removed(name, primitive, definition_path):
 
     # Ensure we still have the VM defined after it is stopped
     if not persistent:
-        __salt__['virt.define_xml_path'](definition_path)
+        __salt__["virt.define_xml_path"](definition_path)
 
     # Ask the cluster to stop the resource
     if active:
         try:
-            __salt__['cmd.run']('crm resource stop ' + primitive, raise_err=True, python_shell=False)
+            __salt__["cmd.run"](
+                "crm resource stop " + primitive, raise_err=True, python_shell=False
+            )
         except CommandExecutionError:
-            ret['comment'] = 'Failed to stop cluster resource ' + primitive
+            ret["comment"] = "Failed to stop cluster resource " + primitive
             return ret
 
     # Delete the VM
-    if not __salt__['virt.purge'](name):
-        ret['comment'] = 'Failed to remove the virtual machine and its files'
+    if not __salt__["virt.purge"](name):
+        ret["comment"] = "Failed to remove the virtual machine and its files"
         return ret
 
     # Remove the cluster resource
     try:
-        __salt__['cmd.run']('crm configure delete ' + primitive, python_shell=False)
+        __salt__["cmd.run"]("crm configure delete " + primitive, python_shell=False)
     except CommandExecutionError:
-        ret['comment'] = 'Failed to remove cluster resource ' + primitive
+        ret["comment"] = "Failed to remove cluster resource " + primitive
         return ret
 
     os.remove(definition_path)
 
-    ret['changes'] = {"removed": name}
-    ret['result'] = True
+    ret["changes"] = {"removed": name}
+    ret["result"] = True
     return ret

@@ -19,8 +19,8 @@
 import sys
 import time
 
-class StringBuffer:
 
+class StringBuffer:
     def __init__(self, stream):
         self.stream = stream
         self.buffer_size = 65536
@@ -31,8 +31,8 @@ class StringBuffer:
         if len(self.buffer) < self.buffer_size:
             return
         # The buffer is full, send it
-        self.stream.write(self.buffer[:self.buffer_size])
-        self.buffer = self.buffer[self.buffer_size:]
+        self.stream.write(self.buffer[: self.buffer_size])
+        self.buffer = self.buffer[self.buffer_size :]
 
     def flush(self):
         if self.buffer:
@@ -46,10 +46,10 @@ class StringBuffer:
         self.close()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     sb = StringBuffer(sys.stdout)
     sb.buffer_size = 10
 
     while 1:
-        sb.write('a')
-        time.sleep(.2)
+        sb.write("a")
+        time.sleep(0.2)

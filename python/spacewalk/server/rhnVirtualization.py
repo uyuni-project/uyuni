@@ -45,61 +45,63 @@ class ListenerEvent:
 
 
 class ClientStateType:
-    NOSTATE = 'nostate'
-    RUNNING = 'running'
-    BLOCKED = 'blocked'
-    PAUSED = 'paused'
-    SHUTDOWN = 'shutdown'
-    SHUTOFF = 'shutoff'
-    CRASHED = 'crashed'
+    NOSTATE = "nostate"
+    RUNNING = "running"
+    BLOCKED = "blocked"
+    PAUSED = "paused"
+    SHUTDOWN = "shutdown"
+    SHUTOFF = "shutoff"
+    CRASHED = "crashed"
 
 
 class ServerStateType:
-    UNKNOWN = 'unknown'
-    STOPPED = 'stopped'
-    RUNNING = 'running'
-    CRASHED = 'crashed'
-    PAUSED = 'paused'
+    UNKNOWN = "unknown"
+    STOPPED = "stopped"
+    RUNNING = "running"
+    CRASHED = "crashed"
+    PAUSED = "paused"
 
 
 class VirtualizationType:
-    PARA = 'para_virtualized'
-    FULLY = 'fully_virtualized'
-    QEMU = 'qemu'
-    HYPERV = 'hyperv'
-    VMWARE = 'vmware'
-    VIRTAGE = 'virtage'
-    VBOX = 'virtualbox'
-    VPC ='virtualpc'
+    PARA = "para_virtualized"
+    FULLY = "fully_virtualized"
+    QEMU = "qemu"
+    HYPERV = "hyperv"
+    VMWARE = "vmware"
+    VIRTAGE = "virtage"
+    VBOX = "virtualbox"
+    VPC = "virtualpc"
+
 
 class IdentityType:
-    HOST = 'host'
-    GUEST = 'guest'
+    HOST = "host"
+    GUEST = "guest"
 
 
 class EventType:
-    EXISTS = 'exists'
-    REMOVED = 'removed'
-    CRAWL_BEGAN = 'crawl_began'
-    CRAWL_ENDED = 'crawl_ended'
+    EXISTS = "exists"
+    REMOVED = "removed"
+    CRAWL_BEGAN = "crawl_began"
+    CRAWL_ENDED = "crawl_ended"
 
 
 class TargetType:
-    SYSTEM = 'system'
-    DOMAIN = 'domain'
-    LOG_MSG = 'log_message'
+    SYSTEM = "system"
+    DOMAIN = "domain"
+    LOG_MSG = "log_message"
 
 
 class PropertyType:
-    NAME = 'name'
-    UUID = 'uuid'
-    TYPE = 'virt_type'
-    MEMORY = 'memory_size'
-    VCPUS = 'vcpus'
-    STATE = 'state'
-    IDENTITY = 'identity'
-    ID = 'id'
-    MESSAGE = 'message'
+    NAME = "name"
+    UUID = "uuid"
+    TYPE = "virt_type"
+    MEMORY = "memory_size"
+    VCPUS = "vcpus"
+    STATE = "state"
+    IDENTITY = "identity"
+    ID = "id"
+    MESSAGE = "message"
+
 
 CLIENT_SERVER_STATE_MAP = {
     ClientStateType.NOSTATE: ServerStateType.RUNNING,
@@ -108,7 +110,7 @@ CLIENT_SERVER_STATE_MAP = {
     ClientStateType.PAUSED: ServerStateType.PAUSED,
     ClientStateType.SHUTDOWN: ServerStateType.STOPPED,
     ClientStateType.SHUTOFF: ServerStateType.STOPPED,
-    ClientStateType.CRASHED: ServerStateType.CRASHED
+    ClientStateType.CRASHED: ServerStateType.CRASHED,
 }
 
 ###############################################################################
@@ -119,6 +121,7 @@ CLIENT_SERVER_STATE_MAP = {
 class VirtualizationEventError(Exception):
     pass
 
+
 ###############################################################################
 # Listener Interface
 ###############################################################################
@@ -126,7 +129,8 @@ class VirtualizationEventError(Exception):
 
 class Listeners:
 
-    """ Abusing python to get a singleton behavior. """
+    """Abusing python to get a singleton behavior."""
+
     listeners = []
 
 
@@ -146,32 +150,36 @@ def add_listener(listener):
 # VirtualizationEventHandler Class
 ###############################################################################
 
+
 ##
 # This class handles virtualization events.
 #
 class VirtualizationEventHandler:
-
     ##
     # This map defines how to route each event to the appropriate handler.
     #
     HANDLERS = {
-        (EventType.EXISTS,      TargetType.SYSTEM): '_handle_system_exists',
-        (EventType.EXISTS,      TargetType.DOMAIN): '_handle_domain_exists',
-        (EventType.REMOVED,     TargetType.DOMAIN): '_handle_domain_removed',
-        (EventType.CRAWL_BEGAN, TargetType.SYSTEM): '_handle_system_crawl_began',
-        (EventType.CRAWL_ENDED, TargetType.SYSTEM): '_handle_system_crawl_ended',
-        (EventType.EXISTS,      TargetType.LOG_MSG): '_handle_log_msg_exists'
+        (EventType.EXISTS, TargetType.SYSTEM): "_handle_system_exists",
+        (EventType.EXISTS, TargetType.DOMAIN): "_handle_domain_exists",
+        (EventType.REMOVED, TargetType.DOMAIN): "_handle_domain_removed",
+        (EventType.CRAWL_BEGAN, TargetType.SYSTEM): "_handle_system_crawl_began",
+        (EventType.CRAWL_ENDED, TargetType.SYSTEM): "_handle_system_crawl_ended",
+        (EventType.EXISTS, TargetType.LOG_MSG): "_handle_log_msg_exists",
     }
 
     ##
     # This map defines the absolute required properties for each event type.
     #
     REQUIRED_PROPERTIES = {
-        (EventType.EXISTS, TargetType.SYSTEM): (PropertyType.IDENTITY,
-                                                PropertyType.UUID, ),
-        (EventType.EXISTS, TargetType.DOMAIN): (PropertyType.UUID, ),
-        (EventType.EXISTS, TargetType.LOG_MSG): (PropertyType.MESSAGE,
-                                                 PropertyType.ID, )
+        (EventType.EXISTS, TargetType.SYSTEM): (
+            PropertyType.IDENTITY,
+            PropertyType.UUID,
+        ),
+        (EventType.EXISTS, TargetType.DOMAIN): (PropertyType.UUID,),
+        (EventType.EXISTS, TargetType.LOG_MSG): (
+            PropertyType.MESSAGE,
+            PropertyType.ID,
+        ),
     }
 
     ###########################################################################
@@ -182,15 +190,17 @@ class VirtualizationEventHandler:
         pass
 
     def handle(self, system_id, notification):
-
         log_debug(5, "Handling notification:", system_id, notification)
 
         # First, validate that the notification is in the correct format.  If it
         # is not, we'll bail out.
         if len(notification) != 4:
             raise VirtualizationEventError(
-                "Received invalid notification length:", notification,
-                "; len=", len(notification))
+                "Received invalid notification length:",
+                notification,
+                "; len=",
+                len(notification),
+            )
 
         # Now we are ready to field the notification.  Begin by parsing it.
         (timestamp, action, target, properties) = notification
@@ -203,8 +213,10 @@ class VirtualizationEventHandler:
             handler = getattr(self, self.HANDLERS[event])
         except KeyError:
             ke = sys.exc_info()[1]
-            raise_with_tb(VirtualizationEventError(
-                "Don't know how to handle virt event:", event), sys.exc_info()[2])
+            raise_with_tb(
+                VirtualizationEventError("Don't know how to handle virt event:", event),
+                sys.exc_info()[2],
+            )
 
         # Ensure that the event has any required properties before calling the
         # handler.
@@ -215,7 +227,8 @@ class VirtualizationEventHandler:
                     raise VirtualizationEventError(
                         "Event does not have required property:",
                         required_property,
-                        event)
+                        event,
+                    )
 
         # Some properties need to be preprocessed before we can actually
         # handle the notification.
@@ -245,9 +258,9 @@ class VirtualizationEventHandler:
         else:
             self.__db_update_system(identity, system_id, uuid, row)
 
-            self.__notify_listeners(ListenerEvent.GUEST_REGISTERED,
-                                    row['host_system_id'],
-                                    system_id)
+            self.__notify_listeners(
+                ListenerEvent.GUEST_REGISTERED, row["host_system_id"], system_id
+            )
 
     def _handle_domain_exists(self, system_id, timestamp, properties):
         uuid = properties[PropertyType.UUID]
@@ -257,27 +270,25 @@ class VirtualizationEventHandler:
             self.__db_insert_domain(system_id, uuid, properties)
 
             # We've noticed a new guest; send a notification down the pipeline.
-            self.__notify_listeners(ListenerEvent.GUEST_DISCOVERED,
-                                    system_id,
-                                    uuid)
+            self.__notify_listeners(ListenerEvent.GUEST_DISCOVERED, system_id, uuid)
         else:
             self.__db_update_domain(system_id, uuid, properties, row)
 
             # We'll attempt to detect migration by checking if the host system
             # ID has changed.
-            if 'host_system_id' in row and \
-                    row['host_system_id'] != system_id:
-
-                self.__notify_listeners(ListenerEvent.GUEST_MIGRATED,
-                                        row['host_system_id'],
-                                        system_id,
-                                        row['virtual_system_id'],
-                                        uuid)
+            if "host_system_id" in row and row["host_system_id"] != system_id:
+                self.__notify_listeners(
+                    ListenerEvent.GUEST_MIGRATED,
+                    row["host_system_id"],
+                    system_id,
+                    row["virtual_system_id"],
+                    uuid,
+                )
 
     def _handle_domain_removed(self, system_id, timestamp, properties):
-        """ Handle a domain removal.  Since we are dealing with virtual domains, we
-            can't really tell whether physical removal took place, so we'll just mark
-            the domain as 'stopped'.
+        """Handle a domain removal.  Since we are dealing with virtual domains, we
+        can't really tell whether physical removal took place, so we'll just mark
+        the domain as 'stopped'.
         """
         uuid = properties[PropertyType.UUID]
 
@@ -306,8 +317,8 @@ class VirtualizationEventHandler:
     ###########################################################################
 
     def __db_get_system(self, identity, system_id, uuid):
-        """ This returns a row from the database that represents a virtual system.
-            If no system could be found, None is returned.
+        """This returns a row from the database that represents a virtual system.
+        If no system could be found, None is returned.
         """
 
         condition = None
@@ -340,8 +351,7 @@ class VirtualizationEventHandler:
                 )
             """
         else:
-            raise VirtualizationEventError(
-                "Unknown identity:", identity)
+            raise VirtualizationEventError("Unknown identity:", identity)
 
         select_sql = """
             SELECT
@@ -354,7 +364,9 @@ class VirtualizationEventHandler:
                 rhnVirtualInstance vi
             WHERE
                 %s
-        """ % (condition)
+        """ % (
+            condition
+        )
         query = rhnSQL.prepare(select_sql)
         query.execute(system_id=system_id, uuid=uuid)
 
@@ -363,7 +375,7 @@ class VirtualizationEventHandler:
         return row
 
     def __db_insert_system(self, identity, system_id, uuid, virt_type):
-        """ Inserts a new system into the database. """
+        """Inserts a new system into the database."""
 
         # If this system is a host, it's sysid goes into the host_system_id
         # column.  Otherwise, it's sysid goes into the virtual_system_id
@@ -397,23 +409,22 @@ class VirtualizationEventHandler:
             if row:
                 # We found a host for this guest, we'll save the value
                 # to use when we create the row in rhnVirtualInstance.
-                host_id = row['host_system_id']
+                host_id = row["host_system_id"]
             else:
                 # We didn't find a host, this guest will just end up with
                 # no host, and consuming physical entitlements.
                 pass
 
         else:
-            raise VirtualizationEventError(
-                "Unknown identity:", identity)
+            raise VirtualizationEventError("Unknown identity:", identity)
 
         get_id_sql = "SELECT sequence_nextval('rhn_vi_id_seq') as id FROM dual"
         query = rhnSQL.prepare(get_id_sql)
         query.execute()
         row = query.fetchone_dict() or {}
 
-        if not row or 'id' not in row:
-            raise VirtualizationEventError('unable to get virt instance id')
+        if not row or "id" not in row:
+            raise VirtualizationEventError("unable to get virt instance id")
 
         insert_sql = """
             INSERT INTO rhnVirtualInstance
@@ -422,10 +433,7 @@ class VirtualizationEventHandler:
                 (:id, :host_id, :guest_id, :uuid, 1)
         """
         query = rhnSQL.prepare(insert_sql)
-        query.execute(id=row['id'],
-                      host_id=host_id,
-                      guest_id=guest_id,
-                      uuid=uuid)
+        query.execute(id=row["id"], host_id=host_id, guest_id=guest_id, uuid=uuid)
 
         # Initialize a dummy info record for this system.
         insert_sql = """
@@ -445,16 +453,14 @@ class VirtualizationEventHandler:
                  ))
         """
         query = rhnSQL.prepare(insert_sql)
-        query.execute(id=row['id'],
-                      state=ServerStateType.UNKNOWN,
-                      virt_type=virt_type)
+        query.execute(id=row["id"], state=ServerStateType.UNKNOWN, virt_type=virt_type)
 
     def __db_update_system(self, identity, system_id, uuid, existing_row):
-        """ Updates a system in the database. """
+        """Updates a system in the database."""
 
         new_values_array = []
         bindings = {}
-        if not existing_row.get('confirmed'):
+        if not existing_row.get("confirmed"):
             new_values_array.append("confirmed=1")
 
         # Some guests may have been unregistered before, and therefore did not
@@ -463,25 +469,27 @@ class VirtualizationEventHandler:
         # virtual_system_id column in the DB to reflect that this guest is now
         # registered.
         if identity == IdentityType.GUEST:
-            if existing_row['virtual_system_id'] != system_id:
+            if existing_row["virtual_system_id"] != system_id:
                 new_values_array.append("virtual_system_id=:sysid")
-                bindings['sysid'] = system_id
+                bindings["sysid"] = system_id
                 # note, at this point, it's still possible to have
                 # an entry in rhnVirtualInstance for this uuid w/out
                 # a virtual_system_id; it'd be for a different org
-            if existing_row['uuid'] != uuid:
+            if existing_row["uuid"] != uuid:
                 new_values_array.append("uuid=:uuid")
-                bindings['uuid'] = uuid
+                bindings["uuid"] = uuid
 
         # Only touch the database if something changed.
         if new_values_array:
-            new_values = ', '.join(new_values_array)
+            new_values = ", ".join(new_values_array)
 
-            bindings['row_id'] = existing_row['id']
+            bindings["row_id"] = existing_row["id"]
 
             update_sql = """
                 UPDATE rhnVirtualInstance SET %s WHERE id=:row_id
-            """ % (new_values)
+            """ % (
+                new_values
+            )
             query = rhnSQL.prepare(update_sql)
             query.execute(**bindings)
 
@@ -520,8 +528,8 @@ class VirtualizationEventHandler:
         return row
 
     def __db_insert_domain(self, host_id, uuid, properties):
-        """ To create a new domain, we must modify both the rhnVirtualInstance
-            and the rhnVirtualInstanceInfo tables.
+        """To create a new domain, we must modify both the rhnVirtualInstance
+        and the rhnVirtualInstanceInfo tables.
         """
         # We'll do rhnVirtualInstance first.
         get_id_sql = "SELECT sequence_nextval('rhn_vi_id_seq') as id FROM dual"
@@ -529,9 +537,9 @@ class VirtualizationEventHandler:
         query.execute()
         row = query.fetchone_dict() or {}
 
-        if not row or 'id' not in row:
-            raise VirtualizationEventError('unable to get virt instance id')
-        id = row['id']
+        if not row or "id" not in row:
+            raise VirtualizationEventError("unable to get virt instance id")
+        id = row["id"]
 
         # Do we have a system with a machine id matching the uuid?
         get_system_id_sql = """
@@ -544,7 +552,7 @@ class VirtualizationEventHandler:
         query.execute(uuid=uuid)
         row = query.fetchone_dict() or {}
 
-        guest_id = row['id'] if row and 'id' in row else None 
+        guest_id = row["id"] if row and "id" in row else None
 
         insert_sql = """
             INSERT INTO rhnVirtualInstance
@@ -586,15 +594,16 @@ class VirtualizationEventHandler:
         state = properties[PropertyType.STATE]
 
         query = rhnSQL.prepare(insert_sql)
-        query.execute(id=id,
-                      name=name,
-                      vcpus=vcpus,
-                      memory=memory,
-                      virt_type=virt_type,
-                      state=state)
+        query.execute(
+            id=id,
+            name=name,
+            vcpus=vcpus,
+            memory=memory,
+            virt_type=virt_type,
+            state=state,
+        )
 
     def __db_update_domain(self, host_id, uuid, properties, existing_row):
-
         # First, update the rhnVirtualInstance table.  If a guest domain was
         # registered but its host was not, it is possible that the
         # rhnVirtualInstance table's host_system_id column is null.  We'll
@@ -603,22 +612,24 @@ class VirtualizationEventHandler:
         new_values_array = []
         bindings = {}
 
-        if not existing_row.get('confirmed'):
-            new_values_array.append('confirmed=1')
+        if not existing_row.get("confirmed"):
+            new_values_array.append("confirmed=1")
 
-        if existing_row['host_system_id'] != host_id:
-            new_values_array.append('host_system_id=:host_id')
-            bindings['host_id'] = host_id
+        if existing_row["host_system_id"] != host_id:
+            new_values_array.append("host_system_id=:host_id")
+            bindings["host_id"] = host_id
 
         # Only touch the database if something changed.
         if new_values_array:
-            new_values = ', '.join(new_values_array)
+            new_values = ", ".join(new_values_array)
 
-            bindings['row_id'] = existing_row['rvi_id']
+            bindings["row_id"] = existing_row["rvi_id"]
 
             update_sql = """
                 UPDATE rhnVirtualInstance SET %s WHERE id=:row_id
-            """ % (new_values)
+            """ % (
+                new_values
+            )
             query = rhnSQL.prepare(update_sql)
 
             try:
@@ -633,50 +644,66 @@ class VirtualizationEventHandler:
         new_values_array = []
         bindings = {}
 
-        if PropertyType.NAME in properties and \
-           existing_row['name'] != properties[PropertyType.NAME]:
-            new_values_array.append('name=:name')
-            bindings['name'] = properties[PropertyType.NAME]
+        if (
+            PropertyType.NAME in properties
+            and existing_row["name"] != properties[PropertyType.NAME]
+        ):
+            new_values_array.append("name=:name")
+            bindings["name"] = properties[PropertyType.NAME]
 
-        if PropertyType.VCPUS in properties and \
-           existing_row['vcpus'] != properties[PropertyType.VCPUS]:
-            new_values_array.append('vcpus=:vcpus')
-            bindings['vcpus'] = properties[PropertyType.VCPUS]
+        if (
+            PropertyType.VCPUS in properties
+            and existing_row["vcpus"] != properties[PropertyType.VCPUS]
+        ):
+            new_values_array.append("vcpus=:vcpus")
+            bindings["vcpus"] = properties[PropertyType.VCPUS]
 
-        if PropertyType.MEMORY in properties and \
-           existing_row['memory_size'] != properties[PropertyType.MEMORY]:
-            new_values_array.append('memory_size=:memory')
-            bindings['memory'] = properties[PropertyType.MEMORY]
+        if (
+            PropertyType.MEMORY in properties
+            and existing_row["memory_size"] != properties[PropertyType.MEMORY]
+        ):
+            new_values_array.append("memory_size=:memory")
+            bindings["memory"] = properties[PropertyType.MEMORY]
 
-        if PropertyType.TYPE in properties and \
-           existing_row['instance_type'] != properties[PropertyType.TYPE]:
-            new_values_array.append("""
+        if (
+            PropertyType.TYPE in properties
+            and existing_row["instance_type"] != properties[PropertyType.TYPE]
+        ):
+            new_values_array.append(
+                """
                 instance_type = (
                     select rvit.id
                     from rhnVirtualInstanceType rvit
                     where rvit.label = :virt_type)
-            """)
-            bindings['virt_type'] = properties[PropertyType.TYPE]
+            """
+            )
+            bindings["virt_type"] = properties[PropertyType.TYPE]
 
-        if PropertyType.STATE in properties and \
-           existing_row['state'] != properties[PropertyType.STATE]:
-            new_values_array.append("""
+        if (
+            PropertyType.STATE in properties
+            and existing_row["state"] != properties[PropertyType.STATE]
+        ):
+            new_values_array.append(
+                """
                 state = (
                     SELECT rvis.id
                     FROM rhnVirtualInstanceState rvis
                     WHERE rvis.label = :state)
-            """)
-            bindings['state'] = properties[PropertyType.STATE]
+            """
+            )
+            bindings["state"] = properties[PropertyType.STATE]
 
         # Only touch the database if something changed.
         if new_values_array:
-            new_values = ', '.join(new_values_array)
+            new_values = ", ".join(new_values_array)
 
-            bindings['row_id'] = existing_row['instance_id']
+            bindings["row_id"] = existing_row["instance_id"]
 
             update_sql = """
                 UPDATE rhnVirtualInstanceInfo SET %s WHERE instance_id=:row_id
-            """ % (new_values)
+            """ % (
+                new_values
+            )
             query = rhnSQL.prepare(update_sql)
             query.execute(**bindings)
 
@@ -699,8 +726,8 @@ class VirtualizationEventHandler:
         query.execute(sysid=system_id)
 
     def __remove_unconfirmed_domains(self, system_id):
-        """ Mark the unconfirmed entries in the RVII table as stopped, since it
-            appears they are no longer running.
+        """Mark the unconfirmed entries in the RVII table as stopped, since it
+        appears they are no longer running.
         """
 
         update_sql = """
@@ -734,12 +761,13 @@ class VirtualizationEventHandler:
                 (sequence_nextval('rhn_viil_id_seq'), :log_message, :kickstart_session_id)
         """
         query = rhnSQL.prepare(insert_sql)
-        query.execute(log_message=log_message,
-                      kickstart_session_id=kickstart_session_id)
+        query.execute(
+            log_message=log_message, kickstart_session_id=kickstart_session_id
+        )
 
     def __convert_properties(self, properties):
-        """ This function normalizes and converts the values of some properties to
-            format consumable by the server.
+        """This function normalizes and converts the values of some properties to
+        format consumable by the server.
         """
         # Attempt to normalize the UUID.
         if PropertyType.UUID in properties:
@@ -778,32 +806,33 @@ class VirtualizationEventHandler:
         for listener in Listeners.listeners:
             listener._notify(*args)
 
+
 ###############################################################################
 # Module level functions
 ###############################################################################
 
 
 def _notify_guest(server_id, uuid, virt_type):
-    """ Notifies the virtualization backend that there is a guest with a
-        specific
-        uuid and type, then associates it with the provided system id.
+    """Notifies the virtualization backend that there is a guest with a
+    specific
+    uuid and type, then associates it with the provided system id.
 
-        New for RHEL 5.
+    New for RHEL 5.
 
-        Args are:
-         * system_id   - a string representation of the system's system id.
-         * uuid        - a string representation of the system's uuid.
-         * virt_type   - a string representation of the system's virt type
+    Args are:
+     * system_id   - a string representation of the system's system id.
+     * uuid        - a string representation of the system's uuid.
+     * virt_type   - a string representation of the system's virt type
 
-         No return value.
+     No return value.
     """
     identity = IdentityType.GUEST
     event = EventType.EXISTS
     target = TargetType.SYSTEM
     properties = {
-        PropertyType.IDENTITY:   identity,
-        PropertyType.UUID:   uuid,
-        PropertyType.TYPE:   virt_type,
+        PropertyType.IDENTITY: identity,
+        PropertyType.UUID: uuid,
+        PropertyType.TYPE: virt_type,
     }
 
     virt_action = _make_virt_action(event, target, properties)
@@ -811,7 +840,7 @@ def _notify_guest(server_id, uuid, virt_type):
 
 
 def _virt_notify(server_id, actions):
-        # Instantiate the event handler.
+    # Instantiate the event handler.
     handler = VirtualizationEventHandler()
 
     # Handle each of the actions, in turn.
@@ -825,7 +854,8 @@ def _virt_notify(server_id, actions):
             log_error(
                 "An error occurred while handling a virtualization event:",
                 vee,
-                "Ignoring event...")
+                "Ignoring event...",
+            )
 
     # rhnSQL.commit()
     return 0
@@ -853,7 +883,7 @@ def _make_virt_action(event, target, properties):
 
 
 def is_host_uuid(uuid):
-    uuid = eval('0x%s' % uuid)
+    uuid = eval("0x%s" % uuid)
     return LongType(uuid) == 0
 
 
@@ -861,8 +891,7 @@ def is_host_uuid(uuid):
 # Testing
 ###############################################################################
 
-if __name__ == '__main__':
-
+if __name__ == "__main__":
     rhnSQL.initDB()
 
     host_sysid = 1000010001
@@ -871,84 +900,95 @@ if __name__ == '__main__':
 
     # Create some fake actions.
 
-    host_exists = (int(time.time()),
-                   EventType.EXISTS,
-                   TargetType.SYSTEM,
-                   {PropertyType.UUID: None,
-                    PropertyType.IDENTITY: IdentityType.HOST})
+    host_exists = (
+        int(time.time()),
+        EventType.EXISTS,
+        TargetType.SYSTEM,
+        {PropertyType.UUID: None, PropertyType.IDENTITY: IdentityType.HOST},
+    )
 
-    guest_exists = (int(time.time()),
-                    EventType.EXISTS,
-                    TargetType.SYSTEM,
-                    {PropertyType.UUID: '2e2e2e2e2e2e2e2e',
-                     PropertyType.IDENTITY: IdentityType.GUEST})
+    guest_exists = (
+        int(time.time()),
+        EventType.EXISTS,
+        TargetType.SYSTEM,
+        {
+            PropertyType.UUID: "2e2e2e2e2e2e2e2e",
+            PropertyType.IDENTITY: IdentityType.GUEST,
+        },
+    )
 
-    crawl_began = (int(time.time()),
-                   EventType.CRAWL_BEGAN,
-                   TargetType.SYSTEM,
-                   {})
+    crawl_began = (int(time.time()), EventType.CRAWL_BEGAN, TargetType.SYSTEM, {})
 
-    dom0_exists = (int(time.time()),
-                   EventType.EXISTS,
-                   TargetType.DOMAIN,
-                   {PropertyType.UUID: None,
-                    PropertyType.NAME: 'DOM0_TEST',
-                    PropertyType.TYPE: VirtualizationType.PARA,
-                    PropertyType.STATE: ClientStateType.RUNNING,
-                    PropertyType.VCPUS: 5,
-                    PropertyType.MEMORY: 1111111})
+    dom0_exists = (
+        int(time.time()),
+        EventType.EXISTS,
+        TargetType.DOMAIN,
+        {
+            PropertyType.UUID: None,
+            PropertyType.NAME: "DOM0_TEST",
+            PropertyType.TYPE: VirtualizationType.PARA,
+            PropertyType.STATE: ClientStateType.RUNNING,
+            PropertyType.VCPUS: 5,
+            PropertyType.MEMORY: 1111111,
+        },
+    )
 
-    domU1_exists = (int(time.time()),
-                    EventType.EXISTS,
-                    TargetType.DOMAIN,
-                    {PropertyType.UUID: '1f1f1f1f1f1f1f1f',
-                     PropertyType.NAME: 'DOMU1_TEST',
-                     PropertyType.TYPE: VirtualizationType.PARA,
-                     PropertyType.STATE: ClientStateType.BLOCKED,
-                     PropertyType.VCPUS: 1,
-                     PropertyType.MEMORY: 22222})
+    domU1_exists = (
+        int(time.time()),
+        EventType.EXISTS,
+        TargetType.DOMAIN,
+        {
+            PropertyType.UUID: "1f1f1f1f1f1f1f1f",
+            PropertyType.NAME: "DOMU1_TEST",
+            PropertyType.TYPE: VirtualizationType.PARA,
+            PropertyType.STATE: ClientStateType.BLOCKED,
+            PropertyType.VCPUS: 1,
+            PropertyType.MEMORY: 22222,
+        },
+    )
 
-    domU2_exists = (int(time.time()),
-                    EventType.EXISTS,
-                    TargetType.DOMAIN,
-                    {PropertyType.UUID: '2e2e2e2e2e2e2e2e',
-                     PropertyType.NAME: 'DOMU2_TEST',
-                     PropertyType.TYPE: VirtualizationType.PARA,
-                     PropertyType.STATE: ClientStateType.PAUSED,
-                     PropertyType.VCPUS: 2,
-                     PropertyType.MEMORY: 44444})
+    domU2_exists = (
+        int(time.time()),
+        EventType.EXISTS,
+        TargetType.DOMAIN,
+        {
+            PropertyType.UUID: "2e2e2e2e2e2e2e2e",
+            PropertyType.NAME: "DOMU2_TEST",
+            PropertyType.TYPE: VirtualizationType.PARA,
+            PropertyType.STATE: ClientStateType.PAUSED,
+            PropertyType.VCPUS: 2,
+            PropertyType.MEMORY: 44444,
+        },
+    )
 
-    crawl_ended = (int(time.time()),
-                   EventType.CRAWL_ENDED,
-                   TargetType.SYSTEM,
-                   {})
+    crawl_ended = (int(time.time()), EventType.CRAWL_ENDED, TargetType.SYSTEM, {})
 
     # Host reg'd, guest reg'd, crawl.
 
-    handler.handle(host_sysid,  host_exists)
+    handler.handle(host_sysid, host_exists)
     handler.handle(guest_sysid, guest_exists)
     handler.handle(guest_sysid, crawl_began)
     handler.handle(guest_sysid, crawl_ended)
-    handler.handle(host_sysid,  crawl_began)
-    handler.handle(host_sysid,  dom0_exists)
-    handler.handle(host_sysid,  domU1_exists)
-    handler.handle(host_sysid,  domU2_exists)
-    handler.handle(host_sysid,  crawl_ended)
+    handler.handle(host_sysid, crawl_began)
+    handler.handle(host_sysid, dom0_exists)
+    handler.handle(host_sysid, domU1_exists)
+    handler.handle(host_sysid, domU2_exists)
+    handler.handle(host_sysid, crawl_ended)
     # rhnSQL.commit()
 
     # Clear out the database for this sysid.
-    handler.handle(host_sysid,  crawl_began)
-    handler.handle(host_sysid,  crawl_ended)
+    handler.handle(host_sysid, crawl_began)
+    handler.handle(host_sysid, crawl_ended)
     # rhnSQL.commit()
 
     # Host reg'd, crawl, guest reg'd.
 
-    handler.handle(host_sysid,  host_exists)
-    handler.handle(host_sysid,  crawl_began)
-    handler.handle(host_sysid,  dom0_exists)
-    handler.handle(host_sysid,  domU1_exists)
-    handler.handle(host_sysid,  domU2_exists)
-    handler.handle(host_sysid,  crawl_ended)
+    handler.handle(host_sysid, host_exists)
+    handler.handle(host_sysid, crawl_began)
+    handler.handle(host_sysid, dom0_exists)
+    handler.handle(host_sysid, domU1_exists)
+    handler.handle(host_sysid, domU2_exists)
+    handler.handle(host_sysid, crawl_ended)
     handler.handle(guest_sysid, guest_exists)
     handler.handle(guest_sysid, crawl_began)
     handler.handle(guest_sysid, crawl_ended)
@@ -956,12 +996,16 @@ if __name__ == '__main__':
 
     # Now do some dynamic updates.
 
-    domU2_changed = (int(time.time()),
-                     EventType.EXISTS,
-                     TargetType.DOMAIN,
-                     {PropertyType.UUID: '2e2e2e2e2e2e2e2e',
-                      PropertyType.NAME: 'CHANGED_DOMU2_TEST',
-                      PropertyType.STATE: ClientStateType.RUNNING})
+    domU2_changed = (
+        int(time.time()),
+        EventType.EXISTS,
+        TargetType.DOMAIN,
+        {
+            PropertyType.UUID: "2e2e2e2e2e2e2e2e",
+            PropertyType.NAME: "CHANGED_DOMU2_TEST",
+            PropertyType.STATE: ClientStateType.RUNNING,
+        },
+    )
 
     handler.handle(host_sysid, domU2_changed)
     # rhnSQL.commit()
@@ -972,8 +1016,8 @@ if __name__ == '__main__':
 # VirtualizationListener Class
 ###############################################################################
 
-class VirtualizationListener:
 
+class VirtualizationListener:
     def __init__(self):
         pass
 
@@ -1012,7 +1056,6 @@ class VirtualizationListener:
 
 
 class EntitlementVirtualizationListener(VirtualizationListener):
-
     def guest_registered(self, host_sid, guest_sid):
         # dropped code which entitle the guest to all entitlements of the host
         # this does not make sense when host and guest can have different

@@ -37,16 +37,16 @@ class BaseTemplatedDocument:
         pass
 
     def set_delims(self, start_delim=None, end_delim=None):
-        if '%' in (start_delim, end_delim):
+        if "%" in (start_delim, end_delim):
             raise ValueError("Cannot use `%' as a delimiter")
         if self.start_delim is None and start_delim is None:
-            start_delim = '{{'
+            start_delim = "{{"
         if self.start_delim is None or start_delim is not None:
             self.start_delim = start_delim
         # if start_delim is None and self.start_denim is set, don't overwrite
 
         if self.end_delim is None and end_delim is None:
-            end_delim = '{{'
+            end_delim = "{{"
         if self.end_delim is None or end_delim is not None:
             self.end_delim = end_delim
 
@@ -68,7 +68,9 @@ class BaseTemplatedDocument:
         self.regex = re.compile(escaped_start_delim + r"(.*?)" + escaped_end_delim)
         self.compiled_regexes[regex_key] = self.regex
 
-        self.compiled_regexes[self.start_delim] = re.compile("(%s)" % escaped_start_delim)
+        self.compiled_regexes[self.start_delim] = re.compile(
+            "(%s)" % escaped_start_delim
+        )
         self.compiled_regexes[self.end_delim] = re.compile("(%s)" % escaped_end_delim)
 
     def repl_func(self, match_object):
@@ -102,24 +104,24 @@ class TemplatedDocument(BaseTemplatedDocument):
             # XXX raise exceptions
             return (None, None, None)
         dict = mo.groupdict()
-        fname = dict.get('fname')
-        defval = dict.get('defval')
+        fname = dict.get("fname")
+        defval = dict.get("defval")
 
         fname = self.strip(fname)
         defval = self.unquote(defval)
         params = None
 
-        if fname[-1] == ')':
+        if fname[-1] == ")":
             # Params are present
-            i = fname.rfind('(')
+            i = fname.rfind("(")
             if i < 0:
                 raise ValueError("Missing (")
 
-            params = fname[i + 1:-1]
+            params = fname[i + 1 : -1]
             fname = fname[:i].strip()
 
             # Parse the params
-            params = list(map(self.unquote, [_f for _f in params.split(',') if _f]))
+            params = list(map(self.unquote, [_f for _f in params.split(",") if _f]))
 
         # Validate the function name
         if not self.funcname_regex.match(fname):
@@ -130,7 +132,7 @@ class TemplatedDocument(BaseTemplatedDocument):
     def null_call(self, fname, params, defval):
         val = fname
         if params:
-            val = "%s(%s)" % (val, ', '.join(params))
+            val = "%s(%s)" % (val, ", ".join(params))
         if defval is not None:
             val = "%s = %s" % (val, defval)
         return "%s %s %s" % (self.start_delim, val, self.end_delim)
@@ -150,7 +152,7 @@ class TemplatedDocument(BaseTemplatedDocument):
         if result is None:
             if defval:
                 return defval
-            return ''
+            return ""
 
         return str(result)
 
@@ -160,7 +162,7 @@ class TemplatedDocument(BaseTemplatedDocument):
         raise InvalidFunctionError(fname)
 
     def test(self):
-        escaped = self.regex.sub(self.repl_func, 'abc @@ aa @@ def')
+        escaped = self.regex.sub(self.repl_func, "abc @@ aa @@ def")
         print(escaped)
 
     def strip(self, s):

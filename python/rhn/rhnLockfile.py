@@ -20,9 +20,12 @@ from errno import EWOULDBLOCK, EEXIST
 from rhn.stringutils import bstr
 import fcntl
 
+
 class LockfileLockedException(Exception):
     """thrown ONLY when pid file is locked."""
+
     pass
+
 
 class Lockfile:
 
@@ -41,8 +44,8 @@ class Lockfile:
 
         # cleanup the path and assign it.
         self.lockfile = os.path.abspath(
-                          os.path.expanduser(
-                            os.path.expandvars(lockfile)))
+            os.path.expanduser(os.path.expandvars(lockfile))
+        )
 
         self.pid = pid
         if not self.pid:
@@ -55,7 +58,7 @@ class Lockfile:
                 os.makedirs(dirname)
             except OSError:
                 e = sys.exc_info()[1]
-                if hasattr(e, 'errno') and e.errno == EEXIST:
+                if hasattr(e, "errno") and e.errno == EEXIST:
                     # race condition... dirname exists now.
                     pass
                 else:
@@ -63,25 +66,28 @@ class Lockfile:
 
         # open the file -- non-destructive read-write, unless it needs
         # to be created XXX: potential race condition upon create?
-        self.f = os.open(self.lockfile, os.O_RDWR|os.O_CREAT|os.O_SYNC)
+        self.f = os.open(self.lockfile, os.O_RDWR | os.O_CREAT | os.O_SYNC)
         self.acquire()
 
     def acquire(self):
         """acquire the lock; else raise LockfileLockedException."""
 
         try:
-            fcntl.flock(self.f, fcntl.LOCK_EX|fcntl.LOCK_NB)
+            fcntl.flock(self.f, fcntl.LOCK_EX | fcntl.LOCK_NB)
         except IOError:
             if sys.exc_info()[1].errno == EWOULDBLOCK:
                 raise LockfileLockedException(
-                  "cannot acquire lock on %s." % self.lockfile, None, sys.exc_info()[2])
+                    "cannot acquire lock on %s." % self.lockfile,
+                    None,
+                    sys.exc_info()[2],
+                )
             else:
                 raise
         # unlock upon exit
         fcntl.fcntl(self.f, fcntl.F_SETFD, 1)
         # truncate and write the pid
         os.ftruncate(self.f, 0)
-        os.write(self.f, bstr(str(self.pid) + '\n'))
+        os.write(self.f, bstr(str(self.pid) + "\n"))
 
     def release(self):
         # Remove the lock file
@@ -94,7 +100,7 @@ def main():
     """test code"""
 
     try:
-        L = Lockfile('./test.pid')
+        L = Lockfile("./test.pid")
     except LockfileLockedException:
         sys.stderr.write("%s\n" % sys.exc_info()[1])
         sys.exit(-1)
@@ -102,11 +108,12 @@ def main():
         print("lock acquired ")
         print("...sleeping for 10 seconds")
         import time
+
         time.sleep(10)
         L.release()
         print("lock released ")
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     # test code
     sys.exit(main() or 0)
-

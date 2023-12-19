@@ -6,13 +6,13 @@ from salt.exceptions import CommandExecutionError
 from salt.states import file
 
 
-__virtualname__ = 'mgrutils'
+__virtualname__ = "mgrutils"
 
 
 def __virtual__():
-    '''
+    """
     This module is always enabled while 'file.managed' is available.
-    '''
+    """
     file.__salt__ = __salt__
     file.__opts__ = __opts__
     file.__pillar__ = __pillar__
@@ -33,7 +33,7 @@ def cmd_dump(name, cmd):
         "comment": "",
     }
     try:
-        cmd_out = __salt__['cmd.run'](cmd, raise_err=True, python_shell=False)
+        cmd_out = __salt__["cmd.run"](cmd, raise_err=True, python_shell=False)
     except CommandExecutionError:
         ret["result"] = False
         ret["comment"] = "Failed to run command {}".format(cmd)
@@ -42,4 +42,3 @@ def cmd_dump(name, cmd):
     file_ret = __states__["file.managed"](name, contents=cmd_out)
     file_ret["name"] = name
     return file_ret
-

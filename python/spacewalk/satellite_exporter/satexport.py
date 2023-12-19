@@ -16,6 +16,7 @@
 
 import time
 import sys
+
 try:
     #  python 2
     import xmlrpclib
@@ -40,7 +41,6 @@ from spacewalk.satellite_tools import constants
 
 
 class BaseApacheServer:
-
     def __init__(self):
         # Init log to stderr
         initLOG()
@@ -72,11 +72,12 @@ class BaseApacheServer:
             # Fetch global message being sent to clients if applicable.
             msg = open(CFG.MESSAGE_TO_ALL).read()
             log_debug(3, "Sending message to all clients: %s" % msg)
-            return self._send_xmlrpc(req, rhnFault(-1,
-                                                   _("IMPORTANT MESSAGE FOLLOWS:\n%s") % msg, explain=0))
+            return self._send_xmlrpc(
+                req, rhnFault(-1, _("IMPORTANT MESSAGE FOLLOWS:\n%s") % msg, explain=0)
+            )
 
         rhnSQL.initDB()
-        self.server = options['SERVER']
+        self.server = options["SERVER"]
 
         self.server_classes = rhnImport.load("satellite_exporter/handlers")
 
@@ -136,9 +137,9 @@ class BaseApacheServer:
         if isinstance(data, rhnFault):
             data = data.getxml()
         else:
-            data = (data, )
+            data = (data,)
         ret = xmlrpclib.dumps(data, methodresponse=1)
-        req.headers_out['Content-Length'] = str(len(ret))
+        req.headers_out["Content-Length"] = str(len(ret))
         req.send_http_header()
         req.write(ret)
         return apache.OK
@@ -151,7 +152,6 @@ class BaseApacheServer:
 
 
 class ApacheServer(BaseApacheServer):
-
     def __init__(self):
         BaseApacheServer.__init__(self)
 
@@ -201,8 +201,8 @@ class ApacheServer(BaseApacheServer):
     def get_function(self, method_name, req):
         iss_slave_condition = self.auth_system(req)
         # Get the module name
-        idx = method_name.rfind('.')
-        module_name, function_name = method_name[:idx], method_name[idx + 1:]
+        idx = method_name.rfind(".")
+        module_name, function_name = method_name[:idx], method_name[idx + 1 :]
         log_debug(5, module_name, function_name)
 
         handler_classes = self.server_classes[self.server]
@@ -214,43 +214,48 @@ class ApacheServer(BaseApacheServer):
         f = mod.get_function(function_name)
         if f is None:
             raise FunctionRetrievalError(
-                "Module %s: function %s not found" %
-                (module_name, function_name))
+                "Module %s: function %s not found" % (module_name, function_name)
+            )
         return f
 
     def auth_system(self, req):
         if CFG.DISABLE_ISS:
-            raise rhnFault(2005, _('ISS is disabled on this server.'))
+            raise rhnFault(2005, _("ISS is disabled on this server."))
 
         remote_hostname = req.get_remote_host(apache.REMOTE_DOUBLE_REV)
-        row = rhnSQL.fetchone_dict("""
+        row = rhnSQL.fetchone_dict(
+            """
         select id, allow_all_orgs
           from rhnISSSlave
          where slave = :hostname
            and enabled = 'Y'
-        """, hostname=idn_puny_to_unicode(remote_hostname))
+        """,
+            hostname=idn_puny_to_unicode(remote_hostname),
+        )
         if not row:
-            raise rhnFault(2004,
-                           _('Server "%s" is not enabled for ISS.')
-                           % remote_hostname)
+            raise rhnFault(
+                2004, _('Server "%s" is not enabled for ISS.') % remote_hostname
+            )
         iss_slave_condition = "select id from web_customer"
-        if not(row['allow_all_orgs'] == 'Y'):
-            iss_slave_condition = "select rhnISSSlaveOrgs.org_id from rhnISSSlaveOrgs where slave_id = %d" % row['id']
+        if not (row["allow_all_orgs"] == "Y"):
+            iss_slave_condition = (
+                "select rhnISSSlaveOrgs.org_id from rhnISSSlaveOrgs where slave_id = %d"
+                % row["id"]
+            )
         return iss_slave_condition
 
     @staticmethod
     def _validate_version(req):
         server_version = constants.PROTOCOL_VERSION
-        vstr = 'X-RHN-Satellite-XML-Dump-Version'
+        vstr = "X-RHN-Satellite-XML-Dump-Version"
         if vstr not in req.headers_in:
             raise rhnFault(3010, "Missing version string")
         client_version = req.headers_in[vstr]
 
         # set the client version  through rhnFlags to access later
-        rhnFlags.set('X-RHN-Satellite-XML-Dump-Version', client_version)
+        rhnFlags.set("X-RHN-Satellite-XML-Dump-Version", client_version)
 
-        log_debug(1, "Server version", server_version, "Client version",
-                  client_version)
+        log_debug(1, "Server version", server_version, "Client version", client_version)
 
         client_ver_arr = str(client_version).split(".")
         server_ver_arr = str(server_version).split(".")
@@ -267,19 +272,27 @@ class ApacheServer(BaseApacheServer):
             client_major = int(client_major)
             client_minor = int(client_minor)
         except ValueError:
-            raise_with_tb(rhnFault(3011, "Invalid version string %s" % client_version), sys.exc_info()[2])
+            raise_with_tb(
+                rhnFault(3011, "Invalid version string %s" % client_version),
+                sys.exc_info()[2],
+            )
 
         try:
             server_major = int(server_major)
             server_minor = int(server_minor)
         except ValueError:
-            raise_with_tb(rhnException("Invalid server version string %s"
-                                       % server_version), sys.exc_info()[2])
+            raise_with_tb(
+                rhnException("Invalid server version string %s" % server_version),
+                sys.exc_info()[2],
+            )
 
         if client_major != server_major:
-            raise rhnFault(3012, "Client version %s does not match"
-                           " server version %s" % (client_version, server_version),
-                           explain=0)
+            raise rhnFault(
+                3012,
+                "Client version %s does not match"
+                " server version %s" % (client_version, server_version),
+                explain=0,
+            )
 
 
 class FunctionRetrievalError(Exception):

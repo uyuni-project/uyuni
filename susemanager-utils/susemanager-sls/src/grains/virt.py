@@ -44,12 +44,16 @@ def features():
 
     libvirt_version = -1
     try:
-        version_out = subprocess.Popen(["libvirtd", "-V"], stdout=subprocess.PIPE).communicate()[0]
-        matcher = re.search(b'(\d+)\.(\d+)\.(\d+)', version_out)
+        version_out = subprocess.Popen(
+            ["libvirtd", "-V"], stdout=subprocess.PIPE
+        ).communicate()[0]
+        matcher = re.search(b"(\d+)\.(\d+)\.(\d+)", version_out)
         if matcher:
             libvirt_version = 0
             for idx in range(len(matcher.groups())):
-                libvirt_version += int(matcher.group(idx + 1)) * 1000 ** (len(matcher.groups()) - idx - 1)
+                libvirt_version += int(matcher.group(idx + 1)) * 1000 ** (
+                    len(matcher.groups()) - idx - 1
+                )
     except OSError:
         log.error("libvirtd is not installed or is not in the PATH")
 

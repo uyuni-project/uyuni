@@ -19,14 +19,16 @@ from spacewalk.common.rhnLog import log_debug
 from spacewalk.server import rhnSQL
 
 # the "exposed" functions
-__rhnexport__ = ['run']
+__rhnexport__ = ["run"]
 
-_query_action_script = rhnSQL.Statement("""
+_query_action_script = rhnSQL.Statement(
+    """
     select script, username, groupname, timeout,
            TO_CHAR(current_timestamp, 'YYYY-MM-DD HH24:MI:SS') as now
       from rhnActionScript
      where action_id = :action_id
-""")
+"""
+)
 
 
 def run(server_id, action_id, dry_run=0):
@@ -40,11 +42,11 @@ def run(server_id, action_id, dry_run=0):
     info = h.fetchone_dict() or []
 
     if info:
-        data['username'] = info['username']
-        data['groupname'] = info['groupname']
-        data['timeout'] = info['timeout'] or ''
-        data['script'] = rhnSQL._fix_encoding(rhnSQL.read_lob(info['script']) or '')
+        data["username"] = info["username"]
+        data["groupname"] = info["groupname"]
+        data["timeout"] = info["timeout"] or ""
+        data["script"] = rhnSQL._fix_encoding(rhnSQL.read_lob(info["script"]) or "")
         # used to make the resulting times make some sense in the db
-        data['now'] = info['now']
+        data["now"] = info["now"]
 
     return action_id, data

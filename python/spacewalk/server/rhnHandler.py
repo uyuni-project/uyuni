@@ -26,7 +26,6 @@ from spacewalk.server import rhnServer
 
 
 class rhnHandler(RPC_Base):
-
     def __init__(self):
         RPC_Base.__init__(self)
         # extra class members we handle
@@ -58,8 +57,7 @@ class rhnHandler(RPC_Base):
         server = rhnServer.get(system_id, load_user=self.load_user)
         if not server:
             # Invalid server certificate.
-            raise rhnFault(9, _(
-                "Please run rhn_register as root on this client"))
+            raise rhnFault(9, _("Please run rhn_register as root on this client"))
         self.server_id = server.getid()
         self.server = server
         # update the latest checkin time
@@ -71,9 +69,11 @@ class rhnHandler(RPC_Base):
             entitlements = server.check_entitlement()
             if not entitlements:  # we require entitlement for this functionality
                 log_error("Server Not Entitled", self.server_id)
-                raise rhnFault(31, _(
-                    'Service not enabled for system profile: "%s"')
-                    % server.server["name"])
+                raise rhnFault(
+                    31,
+                    _('Service not enabled for system profile: "%s"')
+                    % server.server["name"],
+                )
 
         # Kind of poking where we shouldn't, but what the hell
         if self.load_user and self.user is not None:

@@ -34,16 +34,16 @@ from spacewalk.susemanager.mgr_sync.cli import get_options
 from spacewalk.susemanager.mgr_sync.mgr_sync import MgrSync
 from spacewalk.susemanager.mgr_sync import logger
 
-class CredentialOperationsTest(unittest.TestCase):
 
+class CredentialOperationsTest(unittest.TestCase):
     def setUp(self):
         self.mgr_sync = MgrSync()
         self.mgr_sync.conn = MagicMock()
         self.mgr_sync.log = self.mgr_sync.__init__logger = MagicMock(
-            return_value=logger.Logger(3, "tmp.log"))
+            return_value=logger.Logger(3, "tmp.log")
+        )
         self.fake_auth_token = "fake_token"
-        self.mgr_sync.auth.token = MagicMock(
-            return_value=self.fake_auth_token)
+        self.mgr_sync.auth.token = MagicMock(return_value=self.fake_auth_token)
         self.mgr_sync.config.write = MagicMock()
         self.mgr_sync.conn.sync.master.hasMaster = MagicMock(return_value=False)
 
@@ -52,7 +52,7 @@ class CredentialOperationsTest(unittest.TestCase):
             os.unlink("tmp.log")
 
     def test_list_credentials_no_credentials(self):
-        """ Test listing credentials with none present """
+        """Test listing credentials with none present"""
         options = get_options("list credentials".split())
         stubbed_xmlrpm_call = MagicMock(return_value=[])
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
@@ -62,16 +62,15 @@ class CredentialOperationsTest(unittest.TestCase):
         self.assertEqual(recorder.stdout, ["No credentials found"])
 
         stubbed_xmlrpm_call.assert_called_once_with(
-            self.mgr_sync.conn.sync.content,
-            "listCredentials",
-            self.fake_auth_token)
+            self.mgr_sync.conn.sync.content, "listCredentials", self.fake_auth_token
+        )
 
     def test_list_credentials(self):
-        """ Test listing credentials """
+        """Test listing credentials"""
         options = get_options("list credentials".split())
         stubbed_xmlrpm_call = MagicMock(
-            return_value=read_data_from_fixture(
-                'list_credentials.data'))
+            return_value=read_data_from_fixture("list_credentials.data")
+        )
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
         with ConsoleRecorder() as recorder:
             self.mgr_sync.run(options)
@@ -82,14 +81,14 @@ bar"""
         self.assertEqual(expected_output.split("\n"), recorder.stdout)
 
         stubbed_xmlrpm_call.assert_called_once_with(
-            self.mgr_sync.conn.sync.content,
-            "listCredentials",
-            self.fake_auth_token)
+            self.mgr_sync.conn.sync.content, "listCredentials", self.fake_auth_token
+        )
 
     def test_list_credentials_interactive(self):
-        """ Test listing credentials when interactive mode is set """
+        """Test listing credentials when interactive mode is set"""
         stubbed_xmlrpm_call = MagicMock(
-            return_value=read_data_from_fixture("list_credentials.data"))
+            return_value=read_data_from_fixture("list_credentials.data")
+        )
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
         credentials = []
 
@@ -102,20 +101,20 @@ bar"""
         self.assertEqual(expected_output.split("\n"), recorder.stdout)
 
         stubbed_xmlrpm_call.assert_called_once_with(
-            self.mgr_sync.conn.sync.content,
-            "listCredentials",
-            self.fake_auth_token)
+            self.mgr_sync.conn.sync.content, "listCredentials", self.fake_auth_token
+        )
 
     def test_add_credentials_interactive(self):
-        """ Test adding credentials interactively """
+        """Test adding credentials interactively"""
         options = get_options("add credentials".split())
         self.mgr_sync._fetch_credentials = MagicMock(
-            return_value=read_data_from_fixture("list_credentials.data"))
+            return_value=read_data_from_fixture("list_credentials.data")
+        )
 
         stubbed_xmlrpm_call = MagicMock()
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
 
-        with patch('spacewalk.susemanager.mgr_sync.mgr_sync.cli_ask') as mock:
+        with patch("spacewalk.susemanager.mgr_sync.mgr_sync.cli_ask") as mock:
             mock.side_effect = ["foobar", "foo", "foo"]
             with ConsoleRecorder() as recorder:
                 self.assertEqual(0, self.mgr_sync.run(options))
@@ -126,15 +125,17 @@ bar"""
             self.fake_auth_token,
             "foobar",
             "foo",
-            False)
+            False,
+        )
 
         self.assertEqual(recorder.stdout, ["Successfully added credentials."])
 
     def test_add_credentials_non_interactive(self):
-        """ Test adding credentials non-interactively """
+        """Test adding credentials non-interactively"""
         options = get_options("add credentials foobar foo".split())
         self.mgr_sync._fetch_credentials = MagicMock(
-            return_value=read_data_from_fixture("list_credentials.data"))
+            return_value=read_data_from_fixture("list_credentials.data")
+        )
 
         stubbed_xmlrpm_call = MagicMock()
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
@@ -148,18 +149,20 @@ bar"""
             self.fake_auth_token,
             "foobar",
             "foo",
-            False)
+            False,
+        )
 
     def test_delete_credentials_interactive(self):
-        """ Test deleting credentials interactively """
+        """Test deleting credentials interactively"""
         options = get_options("delete credentials".split())
         self.mgr_sync._fetch_credentials = MagicMock(
-            return_value=read_data_from_fixture("list_credentials.data"))
+            return_value=read_data_from_fixture("list_credentials.data")
+        )
 
         stubbed_xmlrpm_call = MagicMock()
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
 
-        with patch('spacewalk.susemanager.mgr_sync.mgr_sync.cli_ask') as mock:
+        with patch("spacewalk.susemanager.mgr_sync.mgr_sync.cli_ask") as mock:
             mock.side_effect = ["1", "y"]
             with ConsoleRecorder() as recorder:
                 self.assertEqual(0, self.mgr_sync.run(options))
@@ -168,15 +171,19 @@ bar"""
             self.mgr_sync.conn.sync.content,
             "deleteCredentials",
             self.fake_auth_token,
-            "foo")
+            "foo",
+        )
 
-        self.assertEqual([recorder.stdout[-1]], ["Successfully deleted credentials: foo"])
+        self.assertEqual(
+            [recorder.stdout[-1]], ["Successfully deleted credentials: foo"]
+        )
 
     def test_delete_credentials_non_interactive(self):
-        """ Test deleting credentials non-interactively """
+        """Test deleting credentials non-interactively"""
         options = get_options("delete credentials foo".split())
         self.mgr_sync._fetch_credentials = MagicMock(
-            return_value=read_data_from_fixture("list_credentials.data"))
+            return_value=read_data_from_fixture("list_credentials.data")
+        )
         stubbed_xmlrpm_call = MagicMock()
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
 
@@ -187,6 +194,7 @@ bar"""
             self.mgr_sync.conn.sync.content,
             "deleteCredentials",
             self.fake_auth_token,
-            "foo")
+            "foo",
+        )
 
         self.assertEqual(recorder.stdout, ["Successfully deleted credentials: foo"])

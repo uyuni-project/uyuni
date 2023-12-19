@@ -20,16 +20,21 @@ from spacewalk.common.rhnLog import log_debug
 from spacewalk.server.rhnServer import server_kickstart
 
 # the "exposed" functions
-__rhnexport__ = ['initiate', 'schedule_sync']
+__rhnexport__ = ["initiate", "schedule_sync"]
 
 
 def initiate(server_id, action_id, data={}):
     log_debug(3, action_id)
 
-    action_status = rhnFlags.get('action_status')
-    server_kickstart.update_kickstart_session(server_id, action_id,
-                                              action_status, kickstart_state='injected',
-                                              next_action_type='reboot.reboot')
+    action_status = rhnFlags.get("action_status")
+    server_kickstart.update_kickstart_session(
+        server_id,
+        action_id,
+        action_status,
+        kickstart_state="injected",
+        next_action_type="reboot.reboot",
+    )
+
 
 # This one will never be called
 

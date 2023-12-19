@@ -65,31 +65,33 @@ from urlgrabber.mirror import MirrorGroup
 
 
 # namespace prefix to parse patches.xml file
-PATCHES_XML = '{http://novell.com/package/metadata/suse/patches}'
-REPO_XML = '{http://linux.duke.edu/metadata/repo}'
-METALINK_XML = '{http://www.metalinker.org/}'
+PATCHES_XML = "{http://novell.com/package/metadata/suse/patches}"
+REPO_XML = "{http://linux.duke.edu/metadata/repo}"
+METALINK_XML = "{http://www.metalinker.org/}"
 
-CACHE_DIR = '/var/cache/rhn/reposync'
-SPACEWALK_LIB = '/var/lib/spacewalk'
-SPACEWALK_GPG_KEYRING = os.path.join(SPACEWALK_LIB, 'gpgdir/pubring.gpg')
-ZYPP_CACHE_PATH = 'var/cache/zypp'
-ZYPP_RAW_CACHE_PATH = os.path.join(ZYPP_CACHE_PATH, 'raw')
-ZYPP_SOLV_CACHE_PATH = os.path.join(ZYPP_CACHE_PATH, 'solv')
+CACHE_DIR = "/var/cache/rhn/reposync"
+SPACEWALK_LIB = "/var/lib/spacewalk"
+SPACEWALK_GPG_KEYRING = os.path.join(SPACEWALK_LIB, "gpgdir/pubring.gpg")
+ZYPP_CACHE_PATH = "var/cache/zypp"
+ZYPP_RAW_CACHE_PATH = os.path.join(ZYPP_CACHE_PATH, "raw")
+ZYPP_SOLV_CACHE_PATH = os.path.join(ZYPP_CACHE_PATH, "solv")
 REPOSYNC_ZYPPER_ROOT = os.path.join(SPACEWALK_LIB, "reposync/root")
-REPOSYNC_ZYPPER_RPMDB_PATH = os.path.join(REPOSYNC_ZYPPER_ROOT, 'var/lib/rpm')
-REPOSYNC_ZYPPER_CONF = '/etc/rhn/spacewalk-repo-sync/zypper.conf'
-REPOSYNC_EXTRA_HTTP_HEADERS_CONF = '/etc/rhn/spacewalk-repo-sync/extra_headers.conf'
+REPOSYNC_ZYPPER_RPMDB_PATH = os.path.join(REPOSYNC_ZYPPER_ROOT, "var/lib/rpm")
+REPOSYNC_ZYPPER_CONF = "/etc/rhn/spacewalk-repo-sync/zypper.conf"
+REPOSYNC_EXTRA_HTTP_HEADERS_CONF = "/etc/rhn/spacewalk-repo-sync/extra_headers.conf"
 
-RPM_PUBKEY_VERSION_RELEASE_RE = re.compile(r'^gpg-pubkey-([0-9a-fA-F]+)-([0-9a-fA-F]+)')
+RPM_PUBKEY_VERSION_RELEASE_RE = re.compile(r"^gpg-pubkey-([0-9a-fA-F]+)-([0-9a-fA-F]+)")
 
 # possible urlgrabber errno
 NO_MORE_MIRRORS_TO_TRY = 256
+
 
 class ZyppoSync:
     """
     This class prepares a environment for running Zypper inside a dedicated reposync root
 
     """
+
     def __init__(self, root=None):
         self._root = root
         if self._root is not None:
@@ -102,7 +104,11 @@ class ZyppoSync:
         :return: None
         """
         try:
-            for pth in [root, os.path.join(root, "etc/zypp/repos.d"), REPOSYNC_ZYPPER_ROOT]:
+            for pth in [
+                root,
+                os.path.join(root, "etc/zypp/repos.d"),
+                REPOSYNC_ZYPPER_ROOT,
+            ]:
                 if not os.path.exists(pth):
                     os.makedirs(pth)
         except Exception as exc:
@@ -129,16 +135,32 @@ class ZyppoSync:
             # Collect GPG keys from the Spacewalk GPG keyring
             # The '--export-options export-clean' is needed avoid exporting key signatures
             # which are not needed and can cause issues when importing into the RPMDB
-            os.system("gpg -q --batch --no-options --no-default-keyring --no-permission-warning --keyring {} --export --export-options export-clean -a > {}".format(SPACEWALK_GPG_KEYRING, f.name))
-            process = subprocess.Popen(['gpg', '--verbose', '--with-colons', f.name], stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
+            os.system(
+                "gpg -q --batch --no-options --no-default-keyring --no-permission-warning --keyring {} --export --export-options export-clean -a > {}".format(
+                    SPACEWALK_GPG_KEYRING, f.name
+                )
+            )
+            process = subprocess.Popen(
+                ["gpg", "--verbose", "--with-colons", f.name],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.DEVNULL,
+            )
             for line in process.stdout.readlines():
-               line_l = line.decode().split(":")
-               if line_l[0] == "sig" and "selfsig" in line_l[10]:
-                   spacewalk_gpg_keys.setdefault(line_l[4][8:].lower(), []).append(format(int(line_l[5]), 'x'))
-            log(3, "spacewalk keyIds: {}".format([k for k in sorted(spacewalk_gpg_keys)]))
+                line_l = line.decode().split(":")
+                if line_l[0] == "sig" and "selfsig" in line_l[10]:
+                    spacewalk_gpg_keys.setdefault(line_l[4][8:].lower(), []).append(
+                        format(int(line_l[5]), "x")
+                    )
+            log(
+                3,
+                "spacewalk keyIds: {}".format([k for k in sorted(spacewalk_gpg_keys)]),
+            )
 
             # Collect GPG keys from reposync Zypper RPM database
-            process = subprocess.Popen(['rpm', '-q', 'gpg-pubkey', '--dbpath', REPOSYNC_ZYPPER_RPMDB_PATH], stdout=subprocess.PIPE)
+            process = subprocess.Popen(
+                ["rpm", "-q", "gpg-pubkey", "--dbpath", REPOSYNC_ZYPPER_RPMDB_PATH],
+                stdout=subprocess.PIPE,
+            )
             for line in process.stdout.readlines():
                 match = RPM_PUBKEY_VERSION_RELEASE_RE.match(line.decode())
                 if match:
@@ -149,51 +171,87 @@ class ZyppoSync:
             for key in zypper_gpg_keys:
                 # If the GPG key id already exists, is that new key actually newer? We need to check the release
                 release_i = int(zypper_gpg_keys[key], 16)
-                if key in spacewalk_gpg_keys and any(int(i, 16) > release_i for i in spacewalk_gpg_keys[key]):
+                if key in spacewalk_gpg_keys and any(
+                    int(i, 16) > release_i for i in spacewalk_gpg_keys[key]
+                ):
                     # This GPG key has a newer release on the Spacewalk GPG keyring that on the reposync Zypper RPM database.
                     # We delete this key from the RPM database to allow importing the newer version.
-                    os.system("rpm --dbpath {} -e gpg-pubkey-{}-{}".format(REPOSYNC_ZYPPER_RPMDB_PATH, key, zypper_gpg_keys[key]))
-                    log(3, "new version available for gpg-pubkey-{}-{}".format(key, zypper_gpg_keys[key]))
+                    os.system(
+                        "rpm --dbpath {} -e gpg-pubkey-{}-{}".format(
+                            REPOSYNC_ZYPPER_RPMDB_PATH, key, zypper_gpg_keys[key]
+                        )
+                    )
+                    log(
+                        3,
+                        "new version available for gpg-pubkey-{}-{}".format(
+                            key, zypper_gpg_keys[key]
+                        ),
+                    )
 
             # Finally, once we deleted the existing old key releases from the Zypper RPM database
             # we proceed to import all keys from the Spacewalk GPG keyring. This will allow new GPG
             # keys release are upgraded in the Zypper keyring since rpmkeys does not handle the upgrade
             # properly
-            log(3, "rpmkeys -vv --dbpath {} --import {}".format(REPOSYNC_ZYPPER_RPMDB_PATH, f.name))
-            process = subprocess.Popen(["rpmkeys", "-vv", "--dbpath", REPOSYNC_ZYPPER_RPMDB_PATH, "--import", f.name], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            log(
+                3,
+                "rpmkeys -vv --dbpath {} --import {}".format(
+                    REPOSYNC_ZYPPER_RPMDB_PATH, f.name
+                ),
+            )
+            process = subprocess.Popen(
+                [
+                    "rpmkeys",
+                    "-vv",
+                    "--dbpath",
+                    REPOSYNC_ZYPPER_RPMDB_PATH,
+                    "--import",
+                    f.name,
+                ],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+            )
             try:
                 outs, errs = process.communicate(timeout=15)
                 if process.returncode is None or process.returncode > 0:
-                    log(0, "Failed to import keys into rpm database ({}): {}".format(process.returncode, outs.decode('utf-8')))
+                    log(
+                        0,
+                        "Failed to import keys into rpm database ({}): {}".format(
+                            process.returncode, outs.decode("utf-8")
+                        ),
+                    )
                 else:
-                    log(3, "CMD out: {}".format(outs.decode('utf-8')))
+                    log(3, "CMD out: {}".format(outs.decode("utf-8")))
             except TimeoutExpired:
                 process.kill()
                 log(0, "Timeout exceeded while importing keys to rpm database")
             keycont = f.read()
-            rhnLog.log_clean(5, keycont.decode('utf-8'))
+            rhnLog.log_clean(5, keycont.decode("utf-8"))
 
 
 class ZypperRepo:
     def __init__(self, root, url, org):
-       self.root = root
-       self.baseurl = [url]
-       self.basecachedir = os.path.join(CACHE_DIR, org)
-       with cfg_component('server.satellite') as CFG:
-           self.pkgdir = os.path.join(CFG.MOUNT_POINT, CFG.PREPENDED_DIR, org, 'stage')
-       self.urls = self.baseurl
-       # Make sure baseurl ends with / and urljoin will work correctly
-       if self.urls[0][-1] != '/':
-           self.urls[0] += '/'
-       # Make sure root paths are created
-       with cfg_component(component=None) as CFG:
-           if not os.path.isdir(self.root):
-               fileutils.makedirs(self.root, user=CFG.httpd_user, group=CFG.httpd_group)
-           if not os.path.isdir(self.pkgdir):
-               fileutils.makedirs(self.pkgdir, user=CFG.httpd_user, group=CFG.httpd_group)
-       self.is_configured = False
-       self.includepkgs = []
-       self.exclude = []
+        self.root = root
+        self.baseurl = [url]
+        self.basecachedir = os.path.join(CACHE_DIR, org)
+        with cfg_component("server.satellite") as CFG:
+            self.pkgdir = os.path.join(CFG.MOUNT_POINT, CFG.PREPENDED_DIR, org, "stage")
+        self.urls = self.baseurl
+        # Make sure baseurl ends with / and urljoin will work correctly
+        if self.urls[0][-1] != "/":
+            self.urls[0] += "/"
+        # Make sure root paths are created
+        with cfg_component(component=None) as CFG:
+            if not os.path.isdir(self.root):
+                fileutils.makedirs(
+                    self.root, user=CFG.httpd_user, group=CFG.httpd_group
+                )
+            if not os.path.isdir(self.pkgdir):
+                fileutils.makedirs(
+                    self.pkgdir, user=CFG.httpd_user, group=CFG.httpd_group
+                )
+        self.is_configured = False
+        self.includepkgs = []
+        self.exclude = []
 
 
 class RawSolvablePackage:
@@ -221,32 +279,35 @@ class RawSolvablePackage:
 
         :returns: tuple
         """
-        if evr in [None, '']:
-           return ('', '', '')
-        idx_epoch = evr.find(':')
-        epoch = evr[:idx_epoch] if idx_epoch != -1 else ''
-        idx_release = evr.find('-')
+        if evr in [None, ""]:
+            return ("", "", "")
+        idx_epoch = evr.find(":")
+        epoch = evr[:idx_epoch] if idx_epoch != -1 else ""
+        idx_release = evr.find("-")
         if idx_release != -1:
-            version = evr[idx_epoch + 1:idx_release]
-            release = evr[idx_release + 1:]
+            version = evr[idx_epoch + 1 : idx_release]
+            release = evr[idx_release + 1 :]
         else:
-            version = evr[idx_epoch + 1:]
-            release = ''
+            version = evr[idx_epoch + 1 :]
+            release = ""
         return epoch, version, release
 
 
 class RepoMDError(Exception):
-    """ An exception thrown when not RepoMD is found. """
+    """An exception thrown when not RepoMD is found."""
+
     pass
 
 
 class SolvFileNotFound(Exception):
-    """ An exception thrown when not Solv file is found. """
+    """An exception thrown when not Solv file is found."""
+
     pass
 
 
 class UpdateNoticeException(Exception):
-    """ An exception thrown for bad UpdateNotice data. """
+    """An exception thrown for bad UpdateNotice data."""
+
     pass
 
 
@@ -257,38 +318,39 @@ class UpdateNotice(object):
 
     A single update notice (for instance, a security fix).
     """
+
     def __init__(self, elem=None, repoid=None, vlogger=None):
         self._md = {
-            'from'             : '',
-            'type'             : '',
-            'title'            : '',
-            'release'          : '',
-            'status'           : '',
-            'version'          : '',
-            'pushcount'        : '',
-            'update_id'        : '',
-            'issued'           : '',
-            'updated'          : '',
-            'description'      : '',
-            'rights'           : '',
-            'severity'         : '',
-            'summary'          : '',
-            'solution'         : '',
-            'references'       : [],
-            'pkglist'          : [],
-            'reboot_suggested' : False,
-            'restart_suggested' : False
+            "from": "",
+            "type": "",
+            "title": "",
+            "release": "",
+            "status": "",
+            "version": "",
+            "pushcount": "",
+            "update_id": "",
+            "issued": "",
+            "updated": "",
+            "description": "",
+            "rights": "",
+            "severity": "",
+            "summary": "",
+            "solution": "",
+            "references": [],
+            "pkglist": [],
+            "reboot_suggested": False,
+            "restart_suggested": False,
         }
 
         if elem is not None:
             self._parse(elem)
 
     def __getitem__(self, item):
-        """ Allows scriptable metadata access (ie: un['update_id']). """
+        """Allows scriptable metadata access (ie: un['update_id'])."""
         if type(item) is int:
             return sorted(self._md)[item]
         ret = self._md.get(item)
-        if ret == '':
+        if ret == "":
             ret = None
         return ret
 
@@ -306,42 +368,42 @@ class UpdateNotice(object):
                 <!ATTLIST update version CDATA #REQUIRED>
                 <!ATTLIST update from CDATA #REQUIRED>
         """
-        if elem.tag == 'update':
-            for attrib in ('from', 'type', 'status', 'version'):
+        if elem.tag == "update":
+            for attrib in ("from", "type", "status", "version"):
                 self._md[attrib] = elem.attrib.get(attrib)
             if self._md["version"] is None:
                 self._md["version"] = "0"
             for child in elem:
-                if child.tag == 'id':
+                if child.tag == "id":
                     if not child.text:
                         raise UpdateNoticeException("No id element found")
-                    self._md['update_id'] = child.text
-                elif child.tag == 'pushcount':
-                    self._md['pushcount'] = child.text
-                elif child.tag == 'issued':
-                    self._md['issued'] = child.attrib.get('date')
-                elif child.tag == 'updated':
-                    self._md['updated'] = child.attrib.get('date')
-                elif child.tag == 'references':
+                    self._md["update_id"] = child.text
+                elif child.tag == "pushcount":
+                    self._md["pushcount"] = child.text
+                elif child.tag == "issued":
+                    self._md["issued"] = child.attrib.get("date")
+                elif child.tag == "updated":
+                    self._md["updated"] = child.attrib.get("date")
+                elif child.tag == "references":
                     self._parse_references(child)
-                elif child.tag == 'description':
-                    self._md['description'] = child.text
-                elif child.tag == 'rights':
-                    self._md['rights'] = child.text
-                elif child.tag == 'severity':
+                elif child.tag == "description":
+                    self._md["description"] = child.text
+                elif child.tag == "rights":
+                    self._md["rights"] = child.text
+                elif child.tag == "severity":
                     self._md[child.tag] = child.text
-                elif child.tag == 'summary':
-                    self._md['summary'] = child.text
-                elif child.tag == 'solution':
-                    self._md['solution'] = child.text
-                elif child.tag == 'pkglist':
+                elif child.tag == "summary":
+                    self._md["summary"] = child.text
+                elif child.tag == "solution":
+                    self._md["solution"] = child.text
+                elif child.tag == "pkglist":
                     self._parse_pkglist(child)
-                elif child.tag == 'title':
-                    self._md['title'] = child.text
-                elif child.tag == 'release':
-                    self._md['release'] = child.text
+                elif child.tag == "title":
+                    self._md["title"] = child.text
+                elif child.tag == "release":
+                    self._md["release"] = child.text
         else:
-            raise UpdateNoticeException('No update element found')
+            raise UpdateNoticeException("No update element found")
 
     def _parse_references(self, elem):
         """
@@ -354,13 +416,13 @@ class UpdateNotice(object):
                 <!ATTLIST reference title CDATA #IMPLIED>
         """
         for reference in elem:
-            if reference.tag == 'reference':
+            if reference.tag == "reference":
                 data = {}
-                for refattrib in ('id', 'href', 'type', 'title'):
+                for refattrib in ("id", "href", "type", "title"):
                     data[refattrib] = reference.attrib.get(refattrib)
-                self._md['references'].append(data)
+                self._md["references"].append(data)
             else:
-                raise UpdateNoticeException('No reference element found')
+                raise UpdateNoticeException("No reference element found")
 
     def _parse_pkglist(self, elem):
         """
@@ -372,15 +434,15 @@ class UpdateNotice(object):
             <!ELEMENT name (#PCDATA)>
         """
         for collection in elem:
-            data = { 'packages' : [] }
-            if 'short' in collection.attrib:
-                data['short'] = collection.attrib.get('short')
+            data = {"packages": []}
+            if "short" in collection.attrib:
+                data["short"] = collection.attrib.get("short")
             for item in collection:
-                if item.tag == 'name':
-                    data['name'] = item.text
-                elif item.tag == 'package':
-                    data['packages'].append(self._parse_package(item))
-            self._md['pkglist'].append(data)
+                if item.tag == "name":
+                    data["name"] = item.text
+                elif item.tag == "package":
+                    data["packages"].append(self._parse_package(item))
+            self._md["pkglist"].append(data)
 
     def _parse_package(self, elem):
         """
@@ -399,40 +461,52 @@ class UpdateNotice(object):
                 <!ATTLIST sum type (md5|sha1) "sha1">
         """
         package = {}
-        for pkgfield in ('arch', 'epoch', 'name', 'version', 'release', 'src'):
+        for pkgfield in ("arch", "epoch", "name", "version", "release", "src"):
             package[pkgfield] = elem.attrib.get(pkgfield)
 
         #  Bad epoch and arch data is the most common (missed) screwups.
         # Deal with bad epoch data.
-        if not package['epoch'] or package['epoch'][0] not in '0123456789':
-            package['epoch'] = None
+        if not package["epoch"] or package["epoch"][0] not in "0123456789":
+            package["epoch"] = None
 
         for child in elem:
-            if child.tag == 'filename':
-                package['filename'] = child.text
-            elif child.tag == 'sum':
-                package['sum'] = (child.attrib.get('type'), child.text)
-            elif child.tag == 'reboot_suggested':
-                self._md['reboot_suggested'] = True
-            elif child.tag == 'restart_suggested':
-                self._md['restart_suggested'] = True
+            if child.tag == "filename":
+                package["filename"] = child.text
+            elif child.tag == "sum":
+                package["sum"] = (child.attrib.get("type"), child.text)
+            elif child.tag == "reboot_suggested":
+                self._md["reboot_suggested"] = True
+            elif child.tag == "restart_suggested":
+                self._md["restart_suggested"] = True
         return package
 
 
 class ContentSource:
-    def __init__(self, url, name, insecure=False, interactive=True,
-                 yumsrc_conf=None, org="1", channel_label="",
-                 no_mirrors=False, ca_cert_file=None, client_cert_file=None,
-                 client_key_file=None, channel_arch="", http_headers={}):
+    def __init__(
+        self,
+        url,
+        name,
+        insecure=False,
+        interactive=True,
+        yumsrc_conf=None,
+        org="1",
+        channel_label="",
+        no_mirrors=False,
+        ca_cert_file=None,
+        client_cert_file=None,
+        client_key_file=None,
+        channel_arch="",
+        http_headers={},
+    ):
         """
         Plugin constructor.
         """
 
         # pylint: disable=W0613
         if urlsplit(url).scheme:
-          self.url = url
+            self.url = url
         else:
-          self.url = "file://%s" % url
+            self.url = "file://%s" % url
         self.name = name
         self.insecure = insecure
         self.interactive = interactive
@@ -465,20 +539,22 @@ class ContentSource:
                 section_name = self.name
             elif http_headers_cfg.has_section(channel_label):
                 section_name = channel_label
-            elif http_headers_cfg.has_section('main'):
-                section_name = 'main'
+            elif http_headers_cfg.has_section("main"):
+                section_name = "main"
 
             if section_name:
                 for hdr in http_headers_cfg[section_name]:
-                    self.http_headers[hdr] = http_headers_cfg.get(section_name, option=hdr)
+                    self.http_headers[hdr] = http_headers_cfg.get(
+                        section_name, option=hdr
+                    )
 
         # perform authentication if implemented
         self._authenticate(url)
 
         # Make sure baseurl ends with / and urljoin will work correctly
         self.urls = [url]
-        if self.urls[0][-1] != '/':
-            self.urls[0] += '/'
+        if self.urls[0][-1] != "/":
+            self.urls[0] += "/"
 
         # Replace non-valid characters from reponame (only alphanumeric chars allowed)
         self.reponame = "".join([x if x.isalnum() else "_" for x in self.name])
@@ -495,7 +571,7 @@ class ContentSource:
         self.gpgkey_autotrust = None
         self.groupsfile = None
 
-        with cfg_component('server.satellite') as CFG:
+        with cfg_component("server.satellite") as CFG:
             # configure network connection
             try:
                 # bytes per second
@@ -510,7 +586,7 @@ class ContentSource:
 
     def _load_proxy_settings(self, url):
         # read the proxy configuration in /etc/rhn/rhn.conf
-        with cfg_component('server.satellite') as CFG:
+        with cfg_component("server.satellite") as CFG:
             # Get the global HTTP Proxy settings from DB or per-repo
             # settings on /etc/rhn/spacewalk-repo-sync/zypper.conf
             if CFG.http_proxy:
@@ -525,34 +601,42 @@ class ContentSource:
                     section_name = self.name
                 elif zypper_cfg.has_section(channel_label):
                     section_name = channel_label
-                elif zypper_cfg.has_section('main'):
-                    section_name = 'main'
+                elif zypper_cfg.has_section("main"):
+                    section_name = "main"
 
                 if section_name:
-                    if zypper_cfg.has_option(section_name, option='proxy'):
-                        self.proxy_hostname = zypper_cfg.get(section_name, option='proxy')
+                    if zypper_cfg.has_option(section_name, option="proxy"):
+                        self.proxy_hostname = zypper_cfg.get(
+                            section_name, option="proxy"
+                        )
                         self.proxy_url = "http://%s" % self.proxy_hostname
 
-                    if zypper_cfg.has_option(section_name, 'proxy_username'):
-                        self.proxy_user = zypper_cfg.get(section_name, 'proxy_username')
+                    if zypper_cfg.has_option(section_name, "proxy_username"):
+                        self.proxy_user = zypper_cfg.get(section_name, "proxy_username")
 
-                    if zypper_cfg.has_option(section_name, 'proxy_password'):
-                        self.proxy_pass = zypper_cfg.get(section_name, 'proxy_password')
+                    if zypper_cfg.has_option(section_name, "proxy_password"):
+                        self.proxy_pass = zypper_cfg.get(section_name, "proxy_password")
 
     def _get_mirror_list(self, repo, url):
         returnlist = []
         content = []
-        if url.startswith('file:/'):
+        if url.startswith("file:/"):
             return returnlist
 
-        mirrorlist_path = os.path.join(repo.root, 'mirrorlist.txt')
+        mirrorlist_path = os.path.join(repo.root, "mirrorlist.txt")
         # If page not plaintext or xml, is not a valid mirrorlist or metalink,
         # so continue without it.
         proxies = get_proxies(self.proxy_url, self.proxy_user, self.proxy_pass)
         cert = (self.sslclientcert, self.sslclientkey)
         verify = self.sslcacert
         try:
-            webpage = requests.get(url, proxies=proxies, cert=cert, verify=verify, headers=self.http_headers)
+            webpage = requests.get(
+                url,
+                proxies=proxies,
+                cert=cert,
+                verify=verify,
+                headers=self.http_headers,
+            )
             # We want to check the page content-type usually, but
             # we have to wrap the next bit in a try-block for if the resource is
             # cached and returns a 304; cached page returns no content type
@@ -560,7 +644,11 @@ class ContentSource:
             try:
                 content_type = webpage.headers["Content-Type"]
                 # amazonlinux core channels content-type = binary/octet-stream
-                if "text/plain" not in content_type and "xml" not in content_type and "octet-stream" not in content_type:
+                if (
+                    "text/plain" not in content_type
+                    and "xml" not in content_type
+                    and "octet-stream" not in content_type
+                ):
                     # Not a valid mirrorlist or metalink; continue without it
                     return returnlist
             except KeyError:
@@ -601,55 +689,59 @@ class ContentSource:
             skipped = None
             for url in url_list:
                 # obvious bogons get ignored
-                if url in ['', None]:
+                if url in ["", None]:
                     continue
                 # Discard any urls containing some invalid characters
                 forbidden_characters = "<>^`{|}"
-                url_is_invalid = [x for x in forbidden_characters if(x in url)]
+                url_is_invalid = [x for x in forbidden_characters if (x in url)]
                 if url_is_invalid:
                     self.error_msg("Discarding invalid url: {}".format(url))
                     continue
                 try:
                     # This started throwing ValueErrors, BZ 666826
-                    (s,b,p,q,f,o) = urlparse(url)
-                    if p[-1] != '/':
-                        p = p + '/'
+                    (s, b, p, q, f, o) = urlparse(url)
+                    if p[-1] != "/":
+                        p = p + "/"
                 except (ValueError, IndexError, KeyError) as e:
-                    s = 'blah'
+                    s = "blah"
 
-                if s not in ['http', 'ftp', 'file', 'https']:
+                if s not in ["http", "ftp", "file", "https"]:
                     skipped = url
                     continue
                 else:
-                    goodurls.append(urlunparse((s,b,p,q,f,o)))
+                    goodurls.append(urlunparse((s, b, p, q, f, o)))
             return goodurls
 
         try:
-           with open(mirrorlist_path, 'r') as mirrorlist_file:
-               content = mirrorlist_file.readlines()
+            with open(mirrorlist_path, "r") as mirrorlist_file:
+                content = mirrorlist_file.readlines()
         except Exception as exc:
             self.error_msg("Could not read mirrorlist: {}".format(exc))
 
         try:
             # Try to read a metalink XML
             for files in etree.parse(mirrorlist_path).getroot():
-                file_elem = files.find(METALINK_XML+'file')
-                if file_elem.get('name') == 'repomd.xml':
-                    _urls = file_elem.find(METALINK_XML+'resources').findall(METALINK_XML+'url')
+                file_elem = files.find(METALINK_XML + "file")
+                if file_elem.get("name") == "repomd.xml":
+                    _urls = file_elem.find(METALINK_XML + "resources").findall(
+                        METALINK_XML + "url"
+                    )
                     for _url in _urls:
                         # The mirror urls in the metalink file are for repomd.xml so it
                         # gives a list of mirrors for that one file, but we want the list
                         # of mirror baseurls. Joy of reusing other people's stds. :)
                         if not _url.text.endswith("/repodata/repomd.xml"):
                             continue
-                        returnlist.append(_url.text[:-len("/repodata/repomd.xml")])
+                        returnlist.append(_url.text[: -len("/repodata/repomd.xml")])
         except Exception as exc:
             # If no metalink XML, we try to read a mirrorlist
             for line in content:
-                if re.match('^\s*\#.*', line) or re.match('^\s*$', line):
+                if re.match("^\s*\#.*", line) or re.match("^\s*$", line):
                     continue
-                mirror = re.sub('\n$', '', line) # no more trailing \n's
-                mirror = re.sub('\$(?:BASE)?ARCH', self.channel_arch, mirror, flags=re.IGNORECASE)
+                mirror = re.sub("\n$", "", line)  # no more trailing \n's
+                mirror = re.sub(
+                    "\$(?:BASE)?ARCH", self.channel_arch, mirror, flags=re.IGNORECASE
+                )
                 returnlist.append(mirror)
 
         returnlist = _replace_and_check_url(returnlist)
@@ -657,9 +749,9 @@ class ContentSource:
         returnlist = [self._prep_zypp_repo_url(url, False) for url in returnlist]
 
         try:
-           # Write the final mirrorlist that is going to be pass to Zypper
-           with open(mirrorlist_path, 'w') as mirrorlist_file:
-               mirrorlist_file.write(os.linesep.join(returnlist))
+            # Write the final mirrorlist that is going to be pass to Zypper
+            with open(mirrorlist_path, "w") as mirrorlist_file:
+                mirrorlist_file.write(os.linesep.join(returnlist))
         except Exception as exc:
             self.error_msg("Could not write the calculated mirrorlist: {}".format(exc))
         return returnlist
@@ -668,7 +760,7 @@ class ContentSource:
         """
         Setup repository and fetch metadata
         """
-        plugin_used = False;
+        plugin_used = False
         self.zypposync = ZyppoSync(root=repo.root)
         zypp_repo_url = self._prep_zypp_repo_url(self.url, uln_repo)
 
@@ -678,40 +770,59 @@ class ContentSource:
         repo.urls = repo.baseurl
 
         # Manually call Zypper
-        repo_cfg = '''[{reponame}]
+        repo_cfg = """[{reponame}]
 enabled=1
 autorefresh=0
 {repo_url}={url}
 gpgcheck={gpgcheck}
 repo_gpgcheck={gpgcheck}
 type=rpm-md
-'''
+"""
         if uln_repo:
-           _url = 'plugin:spacewalk-uln-resolver?url={}'.format(zypp_repo_url)
-           plugin_used = True
+            _url = "plugin:spacewalk-uln-resolver?url={}".format(zypp_repo_url)
+            plugin_used = True
         elif self.http_headers:
-           headers_location = os.path.join(repo.root, "etc/zypp/repos.d", str(self.channel_label or self.reponame) + ".headers")
-           with open(headers_location, "w") as repo_headers_file:
-               repo_headers_file.write(json.dumps(self.http_headers))
-           # RHUI mirror url works only as mirror and cannot be used to download content
-           # but zypp plugins do not work with "mirrorlist" keyword, only with baseurl.
-           # So let's take the first url from the mirrorlist if it exists and use it as baseurl
-           baseurl = mirrorlist[0] if mirrorlist else zypp_repo_url
-           _url = 'plugin:spacewalk-extra-http-headers?url={}&headers_file={}'.format(quote(baseurl), quote(headers_location))
-           plugin_used = True
+            headers_location = os.path.join(
+                repo.root,
+                "etc/zypp/repos.d",
+                str(self.channel_label or self.reponame) + ".headers",
+            )
+            with open(headers_location, "w") as repo_headers_file:
+                repo_headers_file.write(json.dumps(self.http_headers))
+            # RHUI mirror url works only as mirror and cannot be used to download content
+            # but zypp plugins do not work with "mirrorlist" keyword, only with baseurl.
+            # So let's take the first url from the mirrorlist if it exists and use it as baseurl
+            baseurl = mirrorlist[0] if mirrorlist else zypp_repo_url
+            _url = "plugin:spacewalk-extra-http-headers?url={}&headers_file={}".format(
+                quote(baseurl), quote(headers_location)
+            )
+            plugin_used = True
         else:
-           _url = zypp_repo_url if not mirrorlist else os.path.join(repo.root, 'mirrorlist.txt')
+            _url = (
+                zypp_repo_url
+                if not mirrorlist
+                else os.path.join(repo.root, "mirrorlist.txt")
+            )
 
-        with open(os.path.join(repo.root, "etc/zypp/repos.d", str(self.channel_label or self.reponame) + ".repo"), "w") as repo_conf_file:
-            _repo_url = 'baseurl'
+        with open(
+            os.path.join(
+                repo.root,
+                "etc/zypp/repos.d",
+                str(self.channel_label or self.reponame) + ".repo",
+            ),
+            "w",
+        ) as repo_conf_file:
+            _repo_url = "baseurl"
             if mirrorlist and not plugin_used:
                 _repo_url = "mirrorlist"
-            repo_conf_file.write(repo_cfg.format(
-                reponame=self.channel_label or self.reponame,
-                repo_url=_repo_url,
-                url=_url,
-                gpgcheck="0" if self.insecure else "1"
-            ))
+            repo_conf_file.write(
+                repo_cfg.format(
+                    reponame=self.channel_label or self.reponame,
+                    repo_url=_repo_url,
+                    url=_url,
+                    gpgcheck="0" if self.insecure else "1",
+                )
+            )
         zypper_cmd = "zypper"
         if not self.interactive:
             zypper_cmd = "{} -n".format(zypper_cmd)
@@ -721,14 +832,18 @@ type=rpm-md
             os.path.join(repo.root, "etc/zypp/repos.d/"),
             REPOSYNC_ZYPPER_RPMDB_PATH,
             os.path.join(repo.root, "var/cache/zypp/raw/"),
-            os.path.join(repo.root, "var/cache/zypp/solv/")
+            os.path.join(repo.root, "var/cache/zypp/solv/"),
         )
-        process = subprocess.run(zypper_cmd.split(' '), stderr=subprocess.PIPE)
+        process = subprocess.run(zypper_cmd.split(" "), stderr=subprocess.PIPE)
 
         if process.returncode:
             if process.stderr:
-                raise RepoMDError("Cannot access repository.\n{}".format(sstr(process.stderr)))
-            raise RepoMDError("Cannot access repository. Maybe repository GPG keys are not imported")
+                raise RepoMDError(
+                    "Cannot access repository.\n{}".format(sstr(process.stderr))
+                )
+            raise RepoMDError(
+                "Cannot access repository. Maybe repository GPG keys are not imported"
+            )
 
         repo.is_configured = True
 
@@ -747,11 +862,11 @@ type=rpm-md
         ret_url = None
         query_params = {}
         if self.proxy_hostname:
-            query_params['proxy'] = quote(self.proxy_hostname)
+            query_params["proxy"] = quote(self.proxy_hostname)
         if self.proxy_user:
-            query_params['proxyuser'] = quote(self.proxy_user)
+            query_params["proxyuser"] = quote(self.proxy_user)
         if self.proxy_pass:
-            query_params['proxypass'] = quote(self.proxy_pass)
+            query_params["proxypass"] = quote(self.proxy_pass)
         if self.sslcacert:
             # Since Zypper only accepts CAPATH, we need to split the certificates bundle
             # and run "c_rehash" on our custom CAPATH
@@ -759,13 +874,17 @@ type=rpm-md
             msg = "Preparing custom SSL CAPATH at {}".format(_ssl_capath)
             rhnLog.log_clean(0, msg)
             sys.stdout.write(str(msg) + "\n")
-            os.system("awk 'BEGIN {{c=0;}} /BEGIN CERT/{{c++}} {{ print > \"{0}/cert.\" c \".pem\"}}' < {1}".format(_ssl_capath, self.sslcacert))
+            os.system(
+                'awk \'BEGIN {{c=0;}} /BEGIN CERT/{{c++}} {{ print > "{0}/cert." c ".pem"}}\' < {1}'.format(
+                    _ssl_capath, self.sslcacert
+                )
+            )
             os.system("c_rehash {} 2&>1 /dev/null".format(_ssl_capath))
-            query_params['ssl_capath'] = _ssl_capath
+            query_params["ssl_capath"] = _ssl_capath
         if self.sslclientcert:
-            query_params['ssl_clientcert'] = self.sslclientcert
+            query_params["ssl_clientcert"] = self.sslclientcert
         if self.sslclientkey:
-            query_params['ssl_clientkey'] = self.sslclientkey
+            query_params["ssl_clientkey"] = self.sslclientkey
         # urlparse cannot handle uln urls, so we need to keep this check
         if uln_repo:
             new_query = unquote(urlencode(query_params, doseq=True))
@@ -773,10 +892,10 @@ type=rpm-md
         parsed_url = urlparse(url)
         netloc = parsed_url.netloc
         if parsed_url.username and parsed_url.password:
-            creds_cfg = '''
+            creds_cfg = """
 username={user}
 password={passwd}
-'''
+"""
             netloc = parsed_url.hostname
             if parsed_url.port:
                 netloc = "{0}:{1}".format(netloc, parsed_url.port)
@@ -785,22 +904,27 @@ password={passwd}
                 os.makedirs(cdir)
             cfile = os.path.join(cdir, str(self.channel_label or self.reponame))
             with open(cfile, "w") as creds_file:
-                creds_file.write(creds_cfg.format(user=parsed_url.username,
-                                                  passwd=parsed_url.password))
-                query_params['credentials'] = str(self.channel_label or self.reponame)
-            os.chmod(cfile, int('0600', 8))
+                creds_file.write(
+                    creds_cfg.format(
+                        user=parsed_url.username, passwd=parsed_url.password
+                    )
+                )
+                query_params["credentials"] = str(self.channel_label or self.reponame)
+            os.chmod(cfile, int("0600", 8))
         new_query = unquote(urlencode(query_params, doseq=True))
 
         existing_query = parsed_url.query
         combined_query = "&".join([q for q in [existing_query, new_query] if q])
-        return urlunparse((
-            parsed_url.scheme,
-            netloc,
-            parsed_url.path,
-            parsed_url.params,
-            combined_query,
-            parsed_url.fragment
-        ))
+        return urlunparse(
+            (
+                parsed_url.scheme,
+                netloc,
+                parsed_url.path,
+                parsed_url.params,
+                combined_query,
+                parsed_url.fragment,
+            )
+        )
 
     def _md_exists(self, tag):
         """
@@ -822,21 +946,27 @@ password={passwd}
             self.setup_repo(self.repo)
 
         _repodata_path = self._get_repodata_path()
-        repomd_path = os.path.join(_repodata_path, 'repomd.xml')
-        if tag == 'repomd':
+        repomd_path = os.path.join(_repodata_path, "repomd.xml")
+        if tag == "repomd":
             return repomd_path
 
         def get_location_from_xml_element(data_item):
             for sub_item in data_item:
                 if sub_item.tag.endswith("location"):
                     return sub_item.attrib.get("href")
-                    
+
         path = None
-        with open(repomd_path, 'rb') as repomd:
+        with open(repomd_path, "rb") as repomd:
             for _, elem in etree.iterparse(repomd):
-                if elem.tag.endswith("data") and elem.attrib.get("type").startswith(tag):
-                    path = os.path.join(self.repo.root, ZYPP_RAW_CACHE_PATH, self.channel_label or self.reponame,
-                            get_location_from_xml_element(elem))
+                if elem.tag.endswith("data") and elem.attrib.get("type").startswith(
+                    tag
+                ):
+                    path = os.path.join(
+                        self.repo.root,
+                        ZYPP_RAW_CACHE_PATH,
+                        self.channel_label or self.reponame,
+                        get_location_from_xml_element(elem),
+                    )
                     if os.path.exists(path):
                         break
         if not path or not os.path.exists(path):
@@ -851,7 +981,12 @@ password={passwd}
         """
         if not self.repo.is_configured:
             self.setup_repo(self.repo)
-        return os.path.join(self.repo.root, ZYPP_RAW_CACHE_PATH, self.channel_label or self.reponame, "repodata")
+        return os.path.join(
+            self.repo.root,
+            ZYPP_RAW_CACHE_PATH,
+            self.channel_label or self.reponame,
+            "repodata",
+        )
 
     def get_md_checksum_type(self):
         """
@@ -860,13 +995,13 @@ password={passwd}
 
         :returns: str
         """
-        if self._md_exists('repomd'):
-            repomd_path = self._retrieve_md_path('repomd')
+        if self._md_exists("repomd"):
+            repomd_path = self._retrieve_md_path("repomd")
             infile = fileutils.decompress_open(repomd_path)
             for repodata in etree.parse(infile).getroot():
-                if repodata.get('type') == 'primary':
-                    checksum_elem = repodata.find(REPO_XML+'checksum')
-                    return checksum_elem.get('type')
+                if repodata.get("type") == "primary":
+                    checksum_elem = repodata.find(REPO_XML + "checksum")
+                    return checksum_elem.get("type")
         return "sha1"
 
     def _get_solvable_packages(self):
@@ -879,14 +1014,23 @@ password={passwd}
         if not self.repo.is_configured:
             self.setup_repo(self.repo)
         self.solv_pool = solv.Pool()
-        self.solv_repo = self.solv_pool.add_repo(str(self.channel_label or self.reponame))
-        solv_path = os.path.join(self.repo.root, ZYPP_SOLV_CACHE_PATH, self.channel_label or self.reponame, 'solv')
-        if not os.path.isfile(solv_path) or not self.solv_repo.add_solv(solv.xfopen(str(solv_path)), 0):
+        self.solv_repo = self.solv_pool.add_repo(
+            str(self.channel_label or self.reponame)
+        )
+        solv_path = os.path.join(
+            self.repo.root,
+            ZYPP_SOLV_CACHE_PATH,
+            self.channel_label or self.reponame,
+            "solv",
+        )
+        if not os.path.isfile(solv_path) or not self.solv_repo.add_solv(
+            solv.xfopen(str(solv_path)), 0
+        ):
             raise SolvFileNotFound(solv_path)
         self.solv_pool.addfileprovides()
         self.solv_pool.createwhatprovides()
         # Solvables with ":" in name are not packages
-        return [pack for pack in self.solv_repo.solvables if ':' not in pack.name]
+        return [pack for pack in self.solv_repo.solvables if ":" not in pack.name]
 
     def _get_solvable_dependencies(self, solvables):
         """
@@ -930,9 +1074,9 @@ password={passwd}
         if not filters:
             # if there's no include/exclude filter on command line or in database
             for p in self.repo.includepkgs:
-                filters.append(('+', [p]))
+                filters.append(("+", [p]))
             for p in self.repo.exclude:
-                filters.append(('-', [p]))
+                filters.append(("-", [p]))
 
         if filters:
             pkglist = self._filter_packages(pkglist, filters)
@@ -953,9 +1097,9 @@ password={passwd}
 
     @staticmethod
     def _filter_packages(packages, filters, exclude_only=False):
-        """ implement include / exclude logic
-            filters are: [ ('+', includelist1), ('-', excludelist1),
-                           ('+', includelist2), ... ]
+        """implement include / exclude logic
+        filters are: [ ('+', includelist1), ('-', excludelist1),
+                       ('+', includelist2), ... ]
         """
         if filters is None:
             return
@@ -964,7 +1108,7 @@ password={passwd}
         excluded = []
         allmatched_include = []
         allmatched_exclude = []
-        if exclude_only or filters[0][0] == '-':
+        if exclude_only or filters[0][0] == "-":
             # first filter is exclude, start with full package list
             # and then exclude from it
             selected = packages
@@ -975,7 +1119,7 @@ password={passwd}
             sense, pkg_list = filter_item
             regex = fnmatch.translate(pkg_list[0])
             reobj = re.compile(regex)
-            if sense == '+':
+            if sense == "+":
                 if exclude_only:
                     continue
                 # include
@@ -986,7 +1130,7 @@ password={passwd}
                 for pkg in allmatched_include:
                     if pkg in excluded:
                         excluded.remove(pkg)
-            elif sense == '-':
+            elif sense == "-":
                 # exclude
                 for selected_pkg in selected:
                     if reobj.match(selected_pkg.name):
@@ -996,7 +1140,7 @@ password={passwd}
                 for pkg in allmatched_exclude:
                     if pkg in selected:
                         selected.remove(pkg)
-                excluded = (excluded + allmatched_exclude)
+                excluded = excluded + allmatched_exclude
             else:
                 raise IOError("Filters are malformed")
         return selected
@@ -1008,31 +1152,31 @@ password={passwd}
         :returns: list
         """
         susedata = []
-        if self._md_exists('susedata'):
-            data_path = self._retrieve_md_path('susedata')
+        if self._md_exists("susedata"):
+            data_path = self._retrieve_md_path("susedata")
             infile = fileutils.decompress_open(data_path)
             for package in etree.parse(infile).getroot():
                 d = {}
-                d['pkgid'] = package.get('pkgid')
-                d['name'] = package.get('name')
-                d['arch'] = package.get('arch')
-                d['keywords'] = []
+                d["pkgid"] = package.get("pkgid")
+                d["name"] = package.get("name")
+                d["arch"] = package.get("arch")
+                d["keywords"] = []
                 for child in package:
                     # we use "endswith" because sometimes it has a namespace
                     # and sometimes not :-(
-                    if child.tag.endswith('version'):
-                        d['version'] = child.get('ver')
-                        d['release'] = child.get('rel')
-                        d['epoch'] = child.get('epoch')
-                        if d['epoch'] == '0' or d['epoch'] == '':
-                            d['epoch'] = None
-                        if child.get('arch'):
-                            d['arch'] = child.get('arch')
+                    if child.tag.endswith("version"):
+                        d["version"] = child.get("ver")
+                        d["release"] = child.get("rel")
+                        d["epoch"] = child.get("epoch")
+                        if d["epoch"] == "0" or d["epoch"] == "":
+                            d["epoch"] = None
+                        if child.get("arch"):
+                            d["arch"] = child.get("arch")
 
-                    elif child.tag.endswith('keyword'):
-                        d['keywords'].append(child.text)
-                    elif child.tag == 'eula':
-                        d['eula'] = child.text
+                    elif child.tag.endswith("keyword"):
+                        d["keywords"].append(child.text)
+                    elif child.tag == "eula":
+                        d["eula"] = child.text
                 susedata.append(d)
         return susedata
 
@@ -1043,22 +1187,22 @@ password={passwd}
         :returns: list
         """
         products = []
-        if self._md_exists('products'):
-            data_path = self._retrieve_md_path('products')
+        if self._md_exists("products"):
+            data_path = self._retrieve_md_path("products")
             infile = fileutils.decompress_open(data_path)
             for product in etree.parse(infile).getroot():
                 p = {}
-                p['name'] = product.find('name').text
-                p['arch'] = product.find('arch').text
-                version = product.find('version')
-                p['version'] = version.get('ver')
-                p['release'] = version.get('rel')
-                p['epoch'] = version.get('epoch')
-                p['vendor'] = self._fix_encoding(product.find('vendor').text)
-                p['summary'] = self._fix_encoding(product.find('summary').text)
-                p['description'] = self._fix_encoding(product.find('description').text)
-                if p['epoch'] == '0':
-                    p['epoch'] = None
+                p["name"] = product.find("name").text
+                p["arch"] = product.find("arch").text
+                version = product.find("version")
+                p["version"] = version.get("ver")
+                p["release"] = version.get("rel")
+                p["epoch"] = version.get("epoch")
+                p["vendor"] = self._fix_encoding(product.find("vendor").text)
+                p["summary"] = self._fix_encoding(product.find("summary").text)
+                p["description"] = self._fix_encoding(product.find("description").text)
+                if p["epoch"] == "0":
+                    p["epoch"] = None
                 products.append(p)
         return products
 
@@ -1068,39 +1212,42 @@ password={passwd}
 
         :returns: list
         """
-        if self._md_exists('updateinfo'):
+        if self._md_exists("updateinfo"):
             notices = {}
-            updates_path = self._retrieve_md_path('updateinfo')
+            updates_path = self._retrieve_md_path("updateinfo")
             infile = fileutils.decompress_open(updates_path)
             for _event, elem in etree.iterparse(infile):
-                if elem.tag == 'update':
+                if elem.tag == "update":
                     un = UpdateNotice(elem)
-                    key = un['update_id']
-                    key = "%s-%s" % (un['update_id'], un['version'])
+                    key = un["update_id"]
+                    key = "%s-%s" % (un["update_id"], un["version"])
                     if key not in notices:
                         notices[key] = un
-            return ('updateinfo', notices.values())
-        elif self._md_exists('patches'):
-            patches_path = self._retrieve_md_path('patches')
+            return ("updateinfo", notices.values())
+        elif self._md_exists("patches"):
+            patches_path = self._retrieve_md_path("patches")
             infile = fileutils.decompress_open(patches_path)
             notices = []
             for patch in etree.parse(infile).getroot():
-                checksum_elem = patch.find(PATCHES_XML+'checksum')
-                location_elem = patch.find(PATCHES_XML+'location')
-                relative = location_elem.get('href')
-                checksum_type = checksum_elem.get('type')
+                checksum_elem = patch.find(PATCHES_XML + "checksum")
+                location_elem = patch.find(PATCHES_XML + "location")
+                relative = location_elem.get("href")
+                checksum_type = checksum_elem.get("type")
                 checksum = checksum_elem.text
-                filename = os.path.join(self._get_repodata_path(), os.path.basename(relative))
+                filename = os.path.join(
+                    self._get_repodata_path(), os.path.basename(relative)
+                )
                 try:
                     notices.append(etree.parse(filename).getroot())
                 except SyntaxError as e:
-                    self.error_msg("Could not parse %s. "
-                                   "The file is not a valid XML document. %s" %
-                                   (filename, e.msg))
+                    self.error_msg(
+                        "Could not parse %s. "
+                        "The file is not a valid XML document. %s" % (filename, e.msg)
+                    )
                     continue
-            return ('patches', notices)
+            return ("patches", notices)
         else:
-            return ('', [])
+            return ("", [])
 
     def get_groups(self):
         """
@@ -1110,8 +1257,8 @@ password={passwd}
         """
         # groups -> /var/cache/rhn/reposync/1/CentOS_7_os_x86_64/bc140c8149fc43a5248fccff0daeef38182e49f6fe75d9b46db1206dc25a6c1c-c7-x86_64-comps.xml.gz
         groups = None
-        if self._md_exists('group'):
-            groups = self._retrieve_md_path('group')
+        if self._md_exists("group"):
+            groups = self._retrieve_md_path("group")
         return groups
 
     def get_modules(self):
@@ -1121,8 +1268,8 @@ password={passwd}
         :returns: str
         """
         modules = None
-        if self._md_exists('modules'):
-            modules = self._retrieve_md_path('modules')
+        if self._md_exists("modules"):
+            modules = self._retrieve_md_path("modules")
         return modules
 
     def get_mediaproducts(self):
@@ -1131,7 +1278,7 @@ password={passwd}
 
         :returns: str
         """
-        url = 'media.1/products'
+        url = "media.1/products"
         media_products_path = os.path.join(self._get_repodata_path(), url)
         grabber = urlgrabber.grabber.URLGrabber()
         mirror_group = MirrorGroup(grabber, self.repo.urls)
@@ -1168,7 +1315,9 @@ password={passwd}
 
         :returns: list
         """
-        rawpkglist = [RawSolvablePackage(solvable) for solvable in self._get_solvable_packages()]
+        rawpkglist = [
+            RawSolvablePackage(solvable) for solvable in self._get_solvable_packages()
+        ]
         return self._apply_filters(rawpkglist, filters)
 
     def list_packages(self, filters, latest):
@@ -1178,7 +1327,7 @@ password={passwd}
         :returns: list
         """
         pkglist = self._get_solvable_packages()
-        pkglist.sort(key = cmp_to_key(self._sort_packages))
+        pkglist.sort(key=cmp_to_key(self._sort_packages))
         self.num_packages = len(pkglist)
         pkglist = self._apply_filters(pkglist, filters)
 
@@ -1186,9 +1335,11 @@ password={passwd}
             latest_pkgs = {}
             new_pkgs = []
             for pkg in pkglist:
-               ident = '{}.{}'.format(pkg.name, pkg.arch)
-               if ident not in latest_pkgs.keys() or LooseVersion(str(pkg.evr)) > LooseVersion(str(latest_pkgs[ident].evr)):
-                  latest_pkgs[ident] = pkg
+                ident = "{}.{}".format(pkg.name, pkg.arch)
+                if ident not in latest_pkgs.keys() or LooseVersion(
+                    str(pkg.evr)
+                ) > LooseVersion(str(latest_pkgs[ident].evr)):
+                    latest_pkgs[ident] = pkg
             pkglist = list(latest_pkgs.values())
 
         to_return = []
@@ -1252,6 +1403,7 @@ password={passwd}
 
         :returns: list
         """
+
         def get_location(data_item):
             for sub_item in data_item:
                 if sub_item.tag.endswith("location"):
@@ -1262,26 +1414,26 @@ password={passwd}
                 if sub_item.tag.endswith("checksum"):
                     return sub_item.attrib.get("type"), sub_item.text
 
-        if self._md_exists('repomd'):
-            repomd_path = self._retrieve_md_path('repomd')
+        if self._md_exists("repomd"):
+            repomd_path = self._retrieve_md_path("repomd")
         else:
             raise RepoMDError(self._get_repodata_path())
-        repomd = open(repomd_path, 'rb')
+        repomd = open(repomd_path, "rb")
         files = {}
         for _event, elem in etree.iterparse(repomd):
             if elem.tag.endswith("data"):
                 if elem.attrib.get("type") == "primary_db":
-                    files['primary'] = (get_location(elem), get_checksum(elem))
-                elif elem.attrib.get("type") == "primary" and 'primary' not in files:
-                    files['primary'] = (get_location(elem), get_checksum(elem))
+                    files["primary"] = (get_location(elem), get_checksum(elem))
+                elif elem.attrib.get("type") == "primary" and "primary" not in files:
+                    files["primary"] = (get_location(elem), get_checksum(elem))
                 elif elem.attrib.get("type") == "updateinfo":
-                    files['updateinfo'] = (get_location(elem), get_checksum(elem))
+                    files["updateinfo"] = (get_location(elem), get_checksum(elem))
                 elif elem.attrib.get("type") == "group_gz":
-                    files['group'] = (get_location(elem), get_checksum(elem))
-                elif elem.attrib.get("type") == "group" and 'group' not in files:
-                    files['group'] = (get_location(elem), get_checksum(elem))
+                    files["group"] = (get_location(elem), get_checksum(elem))
+                elif elem.attrib.get("type") == "group" and "group" not in files:
+                    files["group"] = (get_location(elem), get_checksum(elem))
                 elif elem.attrib.get("type") == "modules":
-                    files['modules'] = (get_location(elem), get_checksum(elem))
+                    files["modules"] = (get_location(elem), get_checksum(elem))
         repomd.close()
         return list(files.values())
 
@@ -1291,40 +1443,51 @@ password={passwd}
 
         :returns: bool
         """
-        if self._md_exists('repomd'):
-            repomd_old_path = self._retrieve_md_path('repomd')
+        if self._md_exists("repomd"):
+            repomd_old_path = self._retrieve_md_path("repomd")
             repomd_new_path = os.path.join(self._get_repodata_path(), "repomd.xml.new")
             # Newer file not available? Don't do anything. It should be downloaded before this.
             if not os.path.isfile(repomd_new_path):
                 return True
-            return checksum.getFileChecksum('sha256', filename=repomd_old_path) == checksum.getFileChecksum('sha256', filename=repomd_new_path)
+            return checksum.getFileChecksum(
+                "sha256", filename=repomd_old_path
+            ) == checksum.getFileChecksum("sha256", filename=repomd_new_path)
         else:
             return False
 
     # Get download parameters for threaded downloader
-    def set_download_parameters(self, params, relative_path, target_file=None, checksum_type=None,
-                                checksum_value=None, bytes_range=None):
+    def set_download_parameters(
+        self,
+        params,
+        relative_path,
+        target_file=None,
+        checksum_type=None,
+        checksum_value=None,
+        bytes_range=None,
+    ):
         # Create directories if needed
         if target_file is not None:
             target_dir = os.path.dirname(target_file)
             if not os.path.exists(target_dir):
-                os.makedirs(target_dir, int('0755', 8))
+                os.makedirs(target_dir, int("0755", 8))
 
-        params['urls'] = self.repo.urls
-        params['relative_path'] = relative_path
-        params['authtoken'] = self.authtoken
-        params['target_file'] = target_file
-        params['ssl_ca_cert'] = self.sslcacert
-        params['ssl_client_cert'] = self.sslclientcert
-        params['ssl_client_key'] = self.sslclientkey
-        params['checksum_type'] = checksum_type
-        params['checksum'] = checksum_value
-        params['bytes_range'] = bytes_range
-        params['http_headers'] = tuple(self.http_headers.items())
+        params["urls"] = self.repo.urls
+        params["relative_path"] = relative_path
+        params["authtoken"] = self.authtoken
+        params["target_file"] = target_file
+        params["ssl_ca_cert"] = self.sslcacert
+        params["ssl_client_cert"] = self.sslclientcert
+        params["ssl_client_key"] = self.sslclientkey
+        params["checksum_type"] = checksum_type
+        params["checksum"] = checksum_value
+        params["bytes_range"] = bytes_range
+        params["http_headers"] = tuple(self.http_headers.items())
         params["timeout"] = self.timeout
         params["minrate"] = self.minrate
-        params['proxies'] = get_proxies(self.proxy_url, self.proxy_user, self.proxy_pass)
-        with cfg_component('server.satellite') as CFG:
+        params["proxies"] = get_proxies(
+            self.proxy_url, self.proxy_user, self.proxy_pass
+        )
+        with cfg_component("server.satellite") as CFG:
             params["urlgrabber_logspec"] = CFG.get("urlgrabber_logspec")
 
     def get_file(self, path, local_base=None):
@@ -1338,13 +1501,15 @@ password={passwd}
                     target_file = os.path.join(local_base, path)
                     target_dir = os.path.dirname(target_file)
                     if not os.path.exists(target_dir):
-                        os.makedirs(target_dir, int('0755', 8))
-                    temp_file = target_file + '..download'
+                        os.makedirs(target_dir, int("0755", 8))
+                    temp_file = target_file + "..download"
                     if os.path.exists(temp_file):
                         os.unlink(temp_file)
                     urlgrabber_opts = {}
                     self.set_download_parameters(urlgrabber_opts, path, temp_file)
-                    downloaded = mirror_group.urlgrab(path, temp_file, **urlgrabber_opts)
+                    downloaded = mirror_group.urlgrab(
+                        path, temp_file, **urlgrabber_opts
+                    )
                     os.rename(downloaded, target_file)
                     return target_file
                 else:

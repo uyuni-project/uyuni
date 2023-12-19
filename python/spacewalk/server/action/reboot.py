@@ -19,7 +19,7 @@
 from spacewalk.common.rhnLog import log_debug
 
 # the "exposed" functions
-__rhnexport__ = ['reboot']
+__rhnexport__ = ["reboot"]
 
 
 def reboot(serverId, actionId, dry_run=0):

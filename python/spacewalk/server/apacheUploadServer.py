@@ -28,7 +28,6 @@ from spacewalk.server import rhnImport
 
 
 class UploadHandler:
-
     def __init__(self):
         self.servers = {}
         self.server = None
@@ -44,37 +43,40 @@ class UploadHandler:
             return apache.OK
         initCFG(options["RHNComponentType"])
         initLOG(CFG.LOG_FILE, CFG.DEBUG)
-        if req.method == 'GET':
+        if req.method == "GET":
             # This is the ping method
             return apache.OK
-        self.servers = rhnImport.load("upload_server/handlers",
-                                      interface_signature='upload_class')
-        if 'SERVER' not in options:
+        self.servers = rhnImport.load(
+            "upload_server/handlers", interface_signature="upload_class"
+        )
+        if "SERVER" not in options:
             log_error("SERVER not set in the apache config files!")
             return apache.HTTP_INTERNAL_SERVER_ERROR
-        server_name = options['SERVER']
+        server_name = options["SERVER"]
         if server_name not in self.servers:
-            log_error("Unable to load server %s from available servers %s" %
-                      (server_name, self.servers))
+            log_error(
+                "Unable to load server %s from available servers %s"
+                % (server_name, self.servers)
+            )
             return apache.HTTP_INTERNAL_SERVER_ERROR
         server_class = self.servers[server_name]
         self.server = server_class(req)
         return self._wrapper(req, "headerParserHandler")
 
     def handler(self, req):
-        if req.method == 'GET':
+        if req.method == "GET":
             # This is the ping method
             log_debug(1, "GET method received, returning")
-            req.headers_out['Content-Length'] = '0'
+            req.headers_out["Content-Length"] = "0"
             # pkilambi:check for new version of rhnpush to differentiate
             # new sats from old satellites.
-            req.headers_out['X-RHN-Check-Package-Exists'] = '1'
+            req.headers_out["X-RHN-Check-Package-Exists"] = "1"
             req.send_http_header()
             return apache.OK
         return self._wrapper(req, "handler")
 
     def cleanupHandler(self, req):
-        if req.method == 'GET':
+        if req.method == "GET":
             # This is the ping method
             return apache.OK
         retval = self._wrapper(req, "cleanupHandler")
@@ -84,17 +86,16 @@ class UploadHandler:
         return retval
 
     def logHandler(self, req):
-        if req.method == 'GET':
+        if req.method == "GET":
             # This is the ping method
             return apache.OK
         retval = self._wrapper(req, "logHandler")
         return retval
 
     def _wrapper(self, req, function_name):
-        #log_debug(1, "_wrapper", req, function_name)
+        # log_debug(1, "_wrapper", req, function_name)
         if not hasattr(self.server, function_name):
-            log_error("%s doesn't have a %s function" %
-                      (self.server, function_name))
+            log_error("%s doesn't have a %s function" % (self.server, function_name))
             return apache.HTTP_NOT_FOUND
         function = getattr(self.server, function_name)
         try:
@@ -102,7 +103,7 @@ class UploadHandler:
             ret = function(req)
         except rhnFault:
             e = sys.exc_info()[1]
-            log_debug(4, "rhnFault caught: %s" % (e, ))
+            log_debug(4, "rhnFault caught: %s" % (e,))
             error_string = self._exception_to_text(e)
             error_code = e.code
             self._error_to_headers(req.err_headers_out, error_code, error_string)
@@ -110,13 +111,14 @@ class UploadHandler:
             if not ret:
                 ret = apache.HTTP_INTERNAL_SERVER_ERROR
             req.status = ret
-            log_debug(4, "_wrapper %s exited with apache code %s" %
-                      (function_name, ret))
+            log_debug(
+                4, "_wrapper %s exited with apache code %s" % (function_name, ret)
+            )
         except rhnSession.ExpiredSessionError:
             e = sys.exc_info()[1]
             # if session expires we catch here and return a forbidden
             # abd make it re-authenticate
-            log_debug(4, "Expire Session Error Caught: %s" % (e, ))
+            log_debug(4, "Expire Session Error Caught: %s" % (e,))
             return 403
         except:
             Traceback("server.apacheUploadServer._wrapper", req=req)
@@ -128,10 +130,11 @@ class UploadHandler:
     def _error_to_headers(self, headers, error_code, error_string):
         error_string = error_string.strip()
         import base64
+
         error_string = base64.encodestring(error_string.encode()).decode().strip()
-        for line in error_string.split('\n'):
-            headers.add(self.server.error_header_prefix + '-String', line.strip())
-        headers[self.server.error_header_prefix + '-Code'] = str(error_code)
+        for line in error_string.split("\n"):
+            headers.add(self.server.error_header_prefix + "-String", line.strip())
+        headers[self.server.error_header_prefix + "-Code"] = str(error_code)
 
     def _exception_to_text(self, exception):
         return """\
@@ -139,8 +142,12 @@ Error Message:
     %s
 Error Class Code: %s
 Error Class Info: %s
-""" % (exception.text.strip(), exception.code,
-            exception.arrayText.rstrip())
+""" % (
+            exception.text.strip(),
+            exception.code,
+            exception.arrayText.rstrip(),
+        )
+
 
 # Instantiate external entry points:
 apache_server = UploadHandler()

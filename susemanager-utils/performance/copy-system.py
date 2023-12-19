@@ -77,9 +77,7 @@ def clone_rhnserver(cursor, id, clone_name):
     return new_id
 
 
-def do_clone_using_id(
-    cursor, table, columns, key, old, new, converter=None
-):
+def do_clone_using_id(cursor, table, columns, key, old, new, converter=None):
     columns_str = ", ".join(columns)
     cursor.execute(
         """
@@ -92,7 +90,6 @@ def do_clone_using_id(
         (old,),
     )
     for row in cursor.fetchall():
-
         # Convert the row values if needed
         if converter:
             (columns, row) = converter(row)
@@ -132,15 +129,26 @@ def clone_susechannelaccesstoken(cursor, id, new_id, secret_key):
     columns = ["token", "created", "expiration", "valid"]
 
     def row_converter(row):
-        token = jwt.decode(row[0], secret_key, algorithms=["HS256"], options={"verify_signature": False})
+        token = jwt.decode(
+            row[0],
+            secret_key,
+            algorithms=["HS256"],
+            options={"verify_signature": False},
+        )
         created = datetime.now(tz=timezone.utc)
         exp = created + timedelta(days=365)
-        token['iat'] = created
-        token['nbf'] = created
-        token['exp'] = exp
-        token['jti'] = base64.b64encode(os.urandom(16)).decode("ascii")
+        token["iat"] = created
+        token["nbf"] = created
+        token["exp"] = exp
+        token["jti"] = base64.b64encode(os.urandom(16)).decode("ascii")
         token_id = get_sequence_next_value(cursor, "suse_chan_access_token_id_seq")
-        new_row = [jwt.encode(token, secret_key, algorithm="HS256"), created, exp, "Y", token_id]
+        new_row = [
+            jwt.encode(token, secret_key, algorithm="HS256"),
+            created,
+            exp,
+            "Y",
+            token_id,
+        ]
         return (columns + ["id"], new_row)
 
     do_clone_using_id(
@@ -180,7 +188,10 @@ def clone_rhncpu(cursor, id, new_id):
     ]
 
     def converter(row):
-        return (["id"] + columns, [get_sequence_next_value(cursor, "rhn_cpu_id_seq")] + list(row))
+        return (
+            ["id"] + columns,
+            [get_sequence_next_value(cursor, "rhn_cpu_id_seq")] + list(row),
+        )
 
     do_clone_using_id(
         cursor, "rhncpu", columns, "server_id", id, new_id, converter=converter
@@ -203,7 +214,10 @@ def clone_rhndevice(cursor, id, new_id):
     ]
 
     def converter(row):
-        return (["id"] + columns, [get_sequence_next_value(cursor, "rhn_hw_dev_id_seq")] + list(row))
+        return (
+            ["id"] + columns,
+            [get_sequence_next_value(cursor, "rhn_hw_dev_id_seq")] + list(row),
+        )
 
     do_clone_using_id(
         cursor, "rhndevice", columns, "server_id", id, new_id, converter=converter
@@ -214,7 +228,10 @@ def clone_susesaltpillar(cursor, id, new_id):
     columns = ["category", "pillar"]
 
     def converter(row):
-        return (["id"] + columns, [get_sequence_next_value(cursor, "suse_salt_pillar_id_seq")] + list(row))
+        return (
+            ["id"] + columns,
+            [get_sequence_next_value(cursor, "suse_salt_pillar_id_seq")] + list(row),
+        )
 
     do_clone_using_id(
         cursor,
@@ -231,7 +248,10 @@ def clone_rhnram(cursor, id, new_id):
     columns = ["ram", "swap"]
 
     def converter(row):
-        return (["id"] + columns, [get_sequence_next_value(cursor, "rhn_ram_id_seq")] + list(row))
+        return (
+            ["id"] + columns,
+            [get_sequence_next_value(cursor, "rhn_ram_id_seq")] + list(row),
+        )
 
     do_clone_using_id(
         cursor, "rhnram", columns, "server_id", id, new_id, converter=converter
@@ -251,7 +271,10 @@ def clone_rhnserverdmi(cursor, id, new_id):
     ]
 
     def converter(row):
-        return (["id"] + columns, [get_sequence_next_value(cursor, "rhn_server_dmi_id_seq")] + list(row))
+        return (
+            ["id"] + columns,
+            [get_sequence_next_value(cursor, "rhn_server_dmi_id_seq")] + list(row),
+        )
 
     do_clone_using_id(
         cursor,
@@ -268,7 +291,10 @@ def clone_rhnserverfqdn(cursor, id, new_id):
     columns = ["name", "is_primary"]
 
     def converter(row):
-        return (["id"] + columns, [get_sequence_next_value(cursor, "rhn_serverfqdn_id_seq")] + list(row))
+        return (
+            ["id"] + columns,
+            [get_sequence_next_value(cursor, "rhn_serverfqdn_id_seq")] + list(row),
+        )
 
     do_clone_using_id(
         cursor,
@@ -285,7 +311,10 @@ def clone_rhnserverhistory(cursor, id, new_id):
     columns = ["summary", "details"]
 
     def converter(row):
-        return (["id"] + columns, [get_sequence_next_value(cursor, "rhn_event_id_seq")] + list(row))
+        return (
+            ["id"] + columns,
+            [get_sequence_next_value(cursor, "rhn_event_id_seq")] + list(row),
+        )
 
     do_clone_using_id(
         cursor,
@@ -307,7 +336,10 @@ def clone_rhnservernetinterface(cursor, id, new_id):
     columns = ["name", "hw_addr", "module", "is_primary"]
 
     def converter(row):
-        return (["id"] + columns, [get_sequence_next_value(cursor, "rhn_srv_net_iface_id_seq")] + list(row))
+        return (
+            ["id"] + columns,
+            [get_sequence_next_value(cursor, "rhn_srv_net_iface_id_seq")] + list(row),
+        )
 
     do_clone_using_id(
         cursor,
@@ -337,7 +369,7 @@ def clone_rhnvirtualinstance(cursor, name, clone_name, id, new_id):
     columns = ["name", "instance_type", "memory_size", "vcpus", "state"]
     for row in cursor.fetchall():
         (instance_id, host_id, virtual_id, uuid, confirmed) = row
-        new_instance_id = get_sequence_next_value(cursor,  "rhn_vi_id_seq")
+        new_instance_id = get_sequence_next_value(cursor, "rhn_vi_id_seq")
         host_id = host_id if host_id != id else new_id
         virtual_id = virtual_id if virtual_id != id else new_id
 
@@ -356,7 +388,16 @@ def clone_rhnvirtualinstance(cursor, name, clone_name, id, new_id):
             if new_row[0] == name:
                 new_row[0] = clone_name
             return (columns, new_row)
-        do_clone_using_id(cursor, "rhnvirtualinstanceinfo", columns, "instance_id", instance_id, new_instance_id, converter)
+
+        do_clone_using_id(
+            cursor,
+            "rhnvirtualinstanceinfo",
+            columns,
+            "instance_id",
+            instance_id,
+            new_instance_id,
+            converter,
+        )
 
 
 def clone_suseserverstaterevision(cursor, new_id):

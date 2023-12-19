@@ -5,11 +5,12 @@
 
 
 import sys
-sys.path.append('..')
+
+sys.path.append("..")
 from rhn.transports import Output
 from rhn.connections import HTTPConnection
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     conn = HTTPConnection("localhost", 5555)
     o = Output(connection=conn)
 
@@ -21,4 +22,3 @@ if __name__ == '__main__':
     o.process(data)
 
     headers, fd = o.send_http("fake.example.com")
-

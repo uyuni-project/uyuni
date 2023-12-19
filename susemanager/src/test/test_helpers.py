@@ -36,7 +36,6 @@ from .helper import FakeStdin
 
 
 class HelpersTest(unittest.TestCase):
-
     def test_cli_ask_without_validator(self):
         message = "how are you"
         response = "I'm fine"
@@ -85,4 +84,3 @@ class HelpersTest(unittest.TestCase):
             value = cli_ask(message, validator=validator)
             self.assertEqual(response, value)
             self.assertEqual(4, mocked_input.call_count)
-

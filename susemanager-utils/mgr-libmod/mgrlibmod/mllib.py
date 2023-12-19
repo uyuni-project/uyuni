@@ -16,10 +16,12 @@ import gi  # type: ignore
 gi.require_version("Modulemd", "2.0")
 from gi.repository import Modulemd  # type: ignore
 
+
 class MLLibmodProc:
     """
     Libmod process.
     """
+
     def __init__(self, metadata: List[str]):
         """
         __init__
@@ -46,11 +48,11 @@ class MLLibmodProc:
             return binascii.hexlify(metafile.read(2)) == b"1f8b"  # Almost reliable :-)
 
     def get_stream_contexts(self, stream: mltypes.MLStreamType) -> List:
-        '''
+        """
         get_stream_contexts -- get all the alternative contexts for a module stream
 
         :param stream: the specified module stream
-        '''
+        """
         if self._mod_index is None:
             self.index_modules()
 
@@ -60,8 +62,9 @@ class MLLibmodProc:
         contexts: List = []
         module = self._mod_index.get_module(stream.name)
         if module:
-            stream_name = stream.stream if stream.stream \
-                    else self.get_default_stream(stream.name)
+            stream_name = (
+                stream.stream if stream.stream else self.get_default_stream(stream.name)
+            )
             for ctx in module.get_all_streams():
                 if ctx.get_stream_name() == stream_name:
                     contexts.append(ctx)
@@ -91,7 +94,9 @@ class MLLibmodProc:
         module = self._mod_index.get_module(name)
 
         if not module:
-            raise mlerrcode.MlModuleNotFound("Module {} not found".format(name)).set_data("streams", [mltypes.MLStreamType(name, "").to_obj()])
+            raise mlerrcode.MlModuleNotFound(
+                "Module {} not found".format(name)
+            ).set_data("streams", [mltypes.MLStreamType(name, "").to_obj()])
 
         defaults = module.get_defaults()
         if defaults:
@@ -167,7 +172,9 @@ class MLLibmodProc:
                     api_provides["apis"].add(rpm)
                     if not artifact.endswith(".src"):
                         api_provides["packages"].add(artifact)
-            api_provides["selected"].add(self._get_stream_object(stream.get_module_name(), stream))
+            api_provides["selected"].add(
+                self._get_stream_object(stream.get_module_name(), stream)
+            )
 
         return api_provides
 
@@ -199,13 +206,15 @@ class MLLibmodAPI:
         self.repodata = mltypes.MLInputType(repodata)
         for modulepath in self.repodata.get_paths():
             if not os.path.exists(modulepath):
-                raise mlerrcode.MlGeneralException("File {} not found".format(modulepath))
+                raise mlerrcode.MlGeneralException(
+                    "File {} not found".format(modulepath)
+                )
 
         self._proc = MLLibmodProc(self.repodata.get_paths())
 
         return self
 
-    def to_json(self, pretty:bool = False) -> str:
+    def to_json(self, pretty: bool = False) -> str:
         """
         to_json -- render the last set processed result by 'run' method into the JSON string.
 
@@ -234,7 +243,9 @@ class MLLibmodAPI:
         for s1 in streams:
             for s2 in streams:
                 if s1.name == s2.name and s1.stream != s2.stream:
-                    raise mlerrcode.MlConflictingStreams("Conflicting streams").set_data("streams", [s1.to_obj(), s2.to_obj()])
+                    raise mlerrcode.MlConflictingStreams(
+                        "Conflicting streams"
+                    ).set_data("streams", [s1.to_obj(), s2.to_obj()])
 
     def _resolve_stream_dependencies(self) -> List[Modulemd.ModuleStreamV2]:
         """
@@ -243,13 +254,17 @@ class MLLibmodAPI:
         :return: List of stream objects
         :rtype: List
         """
-        input_streams = self._proc.get_streams_with_defaults(self.repodata.get_streams())
+        input_streams = self._proc.get_streams_with_defaults(
+            self.repodata.get_streams()
+        )
         self._validate_input_streams(input_streams)
 
         resolver = mlresolver.DependencyResolver(self._proc)
         solutions = resolver.resolve(input_streams)
         if not solutions:
-            raise mlerrcode.MlDependencyResolutionError("Dependencies cannot be resolved")
+            raise mlerrcode.MlDependencyResolutionError(
+                "Dependencies cannot be resolved"
+            )
 
         # Return the solution with highest score (most selections with default streams)
         solutions.sort(key=lambda s: s[1], reverse=True)
@@ -264,9 +279,7 @@ class MLLibmodAPI:
         :return: list of strings
         :rtype: List[str]
         """
-        modules: Dict = {
-            "modules": {}
-        }
+        modules: Dict = {"modules": {}}
         self._proc.index_modules()
         mobj: Dict = {}
         for m_name in self._proc._mod_index.get_module_names():
@@ -274,7 +287,9 @@ class MLLibmodAPI:
             d_mod = mod.get_defaults()
             mobj[m_name] = {
                 "default": d_mod.get_default_stream() if d_mod else None,
-                "streams": list(set([s.get_stream_name() for s in mod.get_all_streams()]))
+                "streams": list(
+                    set([s.get_stream_name() for s in mod.get_all_streams()])
+                ),
             }
 
         modules["modules"] = mobj
@@ -305,4 +320,3 @@ class MLLibmodAPI:
         self._proc.index_modules()
         selected_streams = self._resolve_stream_dependencies()
         return self._proc.get_api_provides(selected_streams)
-

@@ -21,10 +21,14 @@ except AttributeError:
     PY3 = False
 
 if PY3:
+
     def raise_with_tb(e):
         raise e
+
 else:
-    exec("""
+    exec(
+        """
 def raise_with_tb(e):
     raise e, None, sys.exc_info()[2]
-""")
+"""
+    )

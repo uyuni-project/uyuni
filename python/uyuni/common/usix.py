@@ -67,6 +67,7 @@ else:
 # raise exception with traceback
 # pylint: disable=W0122
 if PY3:
+
     def raise_with_tb(value, tb=None):
         """
         Re-raise an exception with the traceback.
@@ -78,14 +79,17 @@ if PY3:
         finally:
             value = None
             tb = None
+
 else:
-    exec("""
+    exec(
+        """
 def raise_with_tb(value, tb=None):
     try:
         raise value, None, tb
     finally:
         tb = None
-""")
+"""
+    )
 
 
 # code from original 'six' module
@@ -93,9 +97,12 @@ def raise_with_tb(value, tb=None):
 try:
     advance_iterator = next
 except NameError:
+
     def advance_iterator(it):
         """
         Iterator invocation.
         """
         return it.next()
+
+
 next = advance_iterator  # pylint: disable=W0622

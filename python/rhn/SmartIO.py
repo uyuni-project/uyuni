@@ -10,10 +10,12 @@ This module implements the SmartIO class
 """
 
 import os
-try: # python2
+
+try:  # python2
     from cStringIO import StringIO
-except ImportError: # python3
+except ImportError:  # python3
     from io import BytesIO as StringIO
+
 
 class SmartIO:
     """
@@ -24,6 +26,7 @@ class SmartIO:
     to the (initially) StrintIO object does not exceed a certain threshold; if
     it does, it switches the storage to a temporary disk file
     """
+
     def __init__(self, max_mem_size=16384, force_mem=0):
         self._max_mem_size = max_mem_size
         self._io = StringIO()
@@ -57,11 +60,12 @@ class SmartIO:
     def __getattr__(self, name):
         return getattr(self._io, name)
 
+
 # Creates a temporary file and passes back its file descriptor
 def _tempfile():
     import tempfile
-    (fd, fname) = tempfile.mkstemp(prefix="_rhn_transports-%d-" \
-                                   % os.getpid())
+
+    (fd, fname) = tempfile.mkstemp(prefix="_rhn_transports-%d-" % os.getpid())
     # tempfile, unlink it
     os.unlink(fname)
     return os.fdopen(fd, "wb+")

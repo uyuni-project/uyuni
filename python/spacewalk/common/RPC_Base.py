@@ -17,7 +17,6 @@
 
 
 class RPC_Base:
-
     def __init__(self):
         self.functions = []
 

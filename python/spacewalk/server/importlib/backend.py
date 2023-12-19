@@ -28,40 +28,54 @@ from spacewalk.common.rhnException import rhnFault
 from spacewalk.common.rhnLog import log_debug
 from spacewalk.satellite_tools import syncLib
 from spacewalk.server import rhnSQL, rhnChannel, taskomatic
-from .importLib import Diff, Package, IncompletePackage, Erratum, \
-    AlreadyUploadedError, InvalidPackageError, TransactionError, \
-    SourcePackage
-from .backendLib import TableCollection, sanitizeValue, TableDelete, \
-    TableUpdate, TableLookup, addHash, TableInsert
+from .importLib import (
+    Diff,
+    Package,
+    IncompletePackage,
+    Erratum,
+    AlreadyUploadedError,
+    InvalidPackageError,
+    TransactionError,
+    SourcePackage,
+)
+from .backendLib import (
+    TableCollection,
+    sanitizeValue,
+    TableDelete,
+    TableUpdate,
+    TableLookup,
+    addHash,
+    TableInsert,
+)
 
 
 sequences = {
-    'rhnPackageCapability': 'rhn_pkg_capability_id_seq',
-    'rhnPackage': 'rhn_package_id_seq',
-    'rhnSourceRPM': 'rhn_sourcerpm_id_seq',
-    'rhnPackageGroup': 'rhn_package_group_id_seq',
-    'rhnErrata': 'rhn_errata_id_seq',
-    'rhnChannel': 'rhn_channel_id_seq',
-    'rhnChannelProduct': 'rhn_channelprod_id_seq',
-    'rhnPackageSource': 'rhn_package_source_id_seq',
-    'rhnChannelFamily': 'rhn_channel_family_id_seq',
-    'rhnCVE': 'rhn_cve_id_seq',
-    'rhnChannelArch': 'rhn_channel_arch_id_seq',
-    'rhnPackageArch': 'rhn_package_arch_id_seq',
-    'rhnServerArch': 'rhn_server_arch_id_seq',
-    'rhnCPUArch': 'rhn_cpu_arch_id_seq',
-    'rhnErrataFile': 'rhn_erratafile_id_seq',
-    'rhnKickstartableTree': 'rhn_kstree_id_seq',
-    'rhnArchType': 'rhn_archtype_id_seq',
-    'rhnPackageChangeLogRec': 'rhn_pkg_cl_id_seq',
-    'rhnPackageChangeLogData': 'rhn_pkg_cld_id_seq',
-    'rhnContentSource': 'rhn_chan_content_src_id_seq',
-    'suseProductFile': 'suse_prod_file_id_seq',
-    'suseMdKeyword': 'suse_mdkeyword_id_seq',
-    'suseEula': 'suse_eula_id_seq',
-    'suseProducts': 'suse_products_id_seq',
-    'suseSCCRepository': 'suse_sccrepository_id_seq',
-    'suseProductSCCRepository': 'suse_prdrepo_id_seq'
+    "rhnPackageCapability": "rhn_pkg_capability_id_seq",
+    "rhnPackage": "rhn_package_id_seq",
+    "rhnSourceRPM": "rhn_sourcerpm_id_seq",
+    "rhnPackageGroup": "rhn_package_group_id_seq",
+    "rhnErrata": "rhn_errata_id_seq",
+    "rhnChannel": "rhn_channel_id_seq",
+    "rhnChannelProduct": "rhn_channelprod_id_seq",
+    "rhnPackageSource": "rhn_package_source_id_seq",
+    "rhnChannelFamily": "rhn_channel_family_id_seq",
+    "rhnCVE": "rhn_cve_id_seq",
+    "rhnChannelArch": "rhn_channel_arch_id_seq",
+    "rhnPackageArch": "rhn_package_arch_id_seq",
+    "rhnServerArch": "rhn_server_arch_id_seq",
+    "rhnCPUArch": "rhn_cpu_arch_id_seq",
+    "rhnErrataFile": "rhn_erratafile_id_seq",
+    "rhnKickstartableTree": "rhn_kstree_id_seq",
+    "rhnArchType": "rhn_archtype_id_seq",
+    "rhnPackageChangeLogRec": "rhn_pkg_cl_id_seq",
+    "rhnPackageChangeLogData": "rhn_pkg_cld_id_seq",
+    "rhnContentSource": "rhn_chan_content_src_id_seq",
+    "suseProductFile": "suse_prod_file_id_seq",
+    "suseMdKeyword": "suse_mdkeyword_id_seq",
+    "suseEula": "suse_eula_id_seq",
+    "suseProducts": "suse_products_id_seq",
+    "suseSCCRepository": "suse_sccrepository_id_seq",
+    "suseProductSCCRepository": "suse_prdrepo_id_seq",
 }
 
 
@@ -89,11 +103,11 @@ class Backend:
         return self
 
     def setDateFormat(self, format):
-        sth = self.dbmodule.prepare("alter session set nls_date_format ='%s'"
-                                    % format)
+        sth = self.dbmodule.prepare("alter session set nls_date_format ='%s'" % format)
         sth.execute()
-        sth = self.dbmodule.prepare("alter session set nls_timestamp_format ='%s'"
-                                    % format)
+        sth = self.dbmodule.prepare(
+            "alter session set nls_timestamp_format ='%s'" % format
+        )
         sth.execute()
 
     def processCapabilities(self, capabilityHash):
@@ -119,8 +133,13 @@ class Backend:
                   ORDER BY ordering
                 ON CONFLICT DO NOTHING
         """
-        sorted_capabilities = sorted(capabilityHash.keys(), key=lambda k:(k[0], k[1] or ''))
-        wanted = [(i, key[0], None if key[1] == '' else key[1]) for i, key in enumerate(sorted_capabilities)]
+        sorted_capabilities = sorted(
+            capabilityHash.keys(), key=lambda k: (k[0], k[1] or "")
+        )
+        wanted = [
+            (i, key[0], None if key[1] == "" else key[1])
+            for i, key in enumerate(sorted_capabilities)
+        ]
         h = self.dbmodule.prepare(sql)
         h.execute_values(sql, wanted, fetch=False)
 
@@ -139,10 +158,13 @@ class Backend:
         capabilities = h.execute_values(sql, wanted)
 
         for capability in capabilities:
-            capabilityHash[(capability[0], capability[1] or '')] = capability[2]
+            capabilityHash[(capability[0], capability[1] or "")] = capability[2]
 
     def processChangeLog(self, changelogHash):
-        if CFG.has_key('package_import_skip_changelog') and CFG.package_import_skip_changelog:
+        if (
+            CFG.has_key("package_import_skip_changelog")
+            and CFG.package_import_skip_changelog
+        ):
             return
 
         if not changelogHash:
@@ -167,7 +189,10 @@ class Backend:
                 ORDER BY ordering
               ON CONFLICT DO NOTHING
         """
-        values = [(i, key[0], datetime.strptime(key[1], '%Y-%m-%d %H:%M:%S'), key[2]) for i, key in enumerate(sorted(changelogHash.keys()))]
+        values = [
+            (i, key[0], datetime.strptime(key[1], "%Y-%m-%d %H:%M:%S"), key[2])
+            for i, key in enumerate(sorted(changelogHash.keys()))
+        ]
         h = self.dbmodule.prepare(sql)
         h.execute_values(sql, values, fetch=False)
 
@@ -186,8 +211,9 @@ class Backend:
         changelogs = h.execute_values(sql, values)
 
         for changelog in changelogs:
-            changelogHash[(changelog[0], changelog[1].strftime('%Y-%m-%d %H:%M:%S'), changelog[2])] = changelog[3]
-
+            changelogHash[
+                (changelog[0], changelog[1].strftime("%Y-%m-%d %H:%M:%S"), changelog[2])
+            ] = changelog[3]
 
     def processSuseProductFiles(self, prodfileHash):
         sql = """
@@ -202,32 +228,49 @@ class Backend:
         """
         h = self.dbmodule.prepare(sql)
         toinsert = [[], [], [], [], [], [], []]
-        for name, evr_id, package_arch_id, vendor, summary, description in list(prodfileHash.keys()):
+        for name, evr_id, package_arch_id, vendor, summary, description in list(
+            prodfileHash.keys()
+        ):
             val = {}
-            _buildExternalValue(val, { 'name'        : name,
-                                       'evr_id'      : evr_id,
-                                       'package_arch_id' : package_arch_id,
-                                       'vendor'      : vendor,
-                                       'summary'     : summary,
-                                       'description' : description
-                                      }, self.tables['suseProductFile'])
-            h.execute(name=val['name'], evr_id=val['evr_id'], package_arch_id=val['package_arch_id'],
-                      vendor=val['vendor'], summary=val['summary'], description=val['description'])
+            _buildExternalValue(
+                val,
+                {
+                    "name": name,
+                    "evr_id": evr_id,
+                    "package_arch_id": package_arch_id,
+                    "vendor": vendor,
+                    "summary": summary,
+                    "description": description,
+                },
+                self.tables["suseProductFile"],
+            )
+            h.execute(
+                name=val["name"],
+                evr_id=val["evr_id"],
+                package_arch_id=val["package_arch_id"],
+                vendor=val["vendor"],
+                summary=val["summary"],
+                description=val["description"],
+            )
             row = h.fetchone_dict()
             if row:
-                prodfileHash[(name, evr_id, package_arch_id, vendor, summary, description)] = row['id']
+                prodfileHash[
+                    (name, evr_id, package_arch_id, vendor, summary, description)
+                ] = row["id"]
                 continue
 
-            id = self.sequences['suseProductFile'].next()
-            prodfileHash[(name, evr_id, package_arch_id, vendor, summary, description)] = id
+            id = self.sequences["suseProductFile"].next()
+            prodfileHash[
+                (name, evr_id, package_arch_id, vendor, summary, description)
+            ] = id
 
             toinsert[0].append(id)
-            toinsert[1].append(val['name'])
-            toinsert[2].append(val['evr_id'])
-            toinsert[3].append(val['package_arch_id'])
-            toinsert[4].append(val['vendor'])
-            toinsert[5].append(val['summary'])
-            toinsert[6].append(val['description'])
+            toinsert[1].append(val["name"])
+            toinsert[2].append(val["evr_id"])
+            toinsert[3].append(val["package_arch_id"])
+            toinsert[4].append(val["vendor"])
+            toinsert[5].append(val["summary"])
+            toinsert[6].append(val["description"])
 
         if not toinsert[0]:
             # Nothing to do
@@ -237,8 +280,15 @@ class Backend:
             INSERT INTO suseProductFile (id, name, evr_id, package_arch_id, vendor, summary, description)
             VALUES (:id, :name, :evr_id, :package_arch_id, :vendor, :summary, :description)"""
         h = self.dbmodule.prepare(sql)
-        h.executemany(id=toinsert[0], name=toinsert[1], evr_id=toinsert[2], package_arch_id=toinsert[3],
-                      vendor=toinsert[4], summary=toinsert[5], description=toinsert[6])
+        h.executemany(
+            id=toinsert[0],
+            name=toinsert[1],
+            evr_id=toinsert[2],
+            package_arch_id=toinsert[3],
+            vendor=toinsert[4],
+            summary=toinsert[5],
+            description=toinsert[6],
+        )
 
     def processSuseEulas(self, eulaHash):
         query_lookup = """
@@ -251,22 +301,22 @@ class Backend:
         query_insert = """
             INSERT INTO suseEula (id, text, checksum)
             VALUES (:id, :text, :checksum)"""
-        h_insert = self.dbmodule.prepare(query_insert, blob_map={ 'text' : 'text' })
+        h_insert = self.dbmodule.prepare(query_insert, blob_map={"text": "text"})
 
         for text, checksum in list(eulaHash.keys()):
             val = {}
-            _buildExternalValue(val, { 'text'     : text,
-                                       'checksum' : checksum
-                                     }, self.tables['suseEula'])
-            h_lookup.execute(checksum=val['checksum'])
+            _buildExternalValue(
+                val, {"text": text, "checksum": checksum}, self.tables["suseEula"]
+            )
+            h_lookup.execute(checksum=val["checksum"])
             row = h_lookup.fetchone_dict()
             if row:
-                eulaHash[(text, checksum)] = row['id']
+                eulaHash[(text, checksum)] = row["id"]
                 continue
 
-            id = self.sequences['suseEula'].next()
+            id = self.sequences["suseEula"].next()
             eulaHash[(text, checksum)] = id
-            h_insert.execute(id=id, text=str(val['text']), checksum=val['checksum'])
+            h_insert.execute(id=id, text=str(val["text"]), checksum=val["checksum"])
 
     def processCVEs(self, cveHash):
         # First figure out which CVE's are already inserted
@@ -279,11 +329,11 @@ class Backend:
             row = h.fetchone_dict()
 
             if row:
-                cveHash[cve_name] = row['id']
+                cveHash[cve_name] = row["id"]
                 continue
 
             # Generate an id
-            id = self.sequences['rhnCVE'].next()
+            id = self.sequences["rhnCVE"].next()
 
             cveHash[cve_name] = id
 
@@ -343,7 +393,7 @@ class Backend:
             row = h.fetchone_dict()
             if not row:
                 break
-            hash[row['label']] = row['id']
+            hash[row["label"]] = row["id"]
         return hash
 
     def __lookupArches(self, archHash, table):
@@ -356,22 +406,23 @@ class Backend:
             h.execute(name=str(k))
             row = h.fetchone_dict()
             if row:
-                archHash[k] = row['id']
+                archHash[k] = row["id"]
             # Else, it's an unsupported architecture
 
     def lookupChannelArches(self, archHash):
-        return self.__lookupArches(archHash, 'rhnChannelArch')
+        return self.__lookupArches(archHash, "rhnChannelArch")
 
     def lookupPackageArches(self, archHash):
-        return self.__lookupArches(archHash, 'rhnPackageArch')
+        return self.__lookupArches(archHash, "rhnPackageArch")
 
     def lookupServerArches(self, archHash):
-        return self.__lookupArches(archHash, 'rhnServerArch')
+        return self.__lookupArches(archHash, "rhnServerArch")
 
     def lookupArchTypes(self, arch_types_hash):
         h = self.dbmodule.prepare(
-            "select id, name from rhnArchType where label = :label")
-        seq = self.sequences['rhnArchType']
+            "select id, name from rhnArchType where label = :label"
+        )
+        seq = self.sequences["rhnArchType"]
         updates = [[], []]
         inserts = [[], [], []]
         results = {}
@@ -385,40 +436,46 @@ class Backend:
                 inserts[2].append(name)
                 results[label] = next_id
                 continue
-            aid = row['id']
+            aid = row["id"]
             results[label] = aid
-            if name == row['name']:
+            if name == row["name"]:
                 # Nothing to do
                 continue
             updates[0].append(aid)
             updates[1].append(name)
         if inserts[0]:
-            h = self.dbmodule.prepare("""
+            h = self.dbmodule.prepare(
+                """
                     insert into rhnArchType (id, label, name)
                     values (:id, :label, :name)
-            """)
+            """
+            )
             h.executemany(id=inserts[0], label=inserts[1], name=inserts[2])
         if updates[0]:
-            h = self.dbmodule.prepare("""
+            h = self.dbmodule.prepare(
+                """
                     update rhnArchType
                        set name = :name
                      where id = :id
-            """)
+            """
+            )
             h.executemany(id=updates[0], name=updates[1])
 
         # Finally, update the hash
         arch_types_hash.update(results)
 
     def lookupPackageArchType(self, pkg_arch_id):
-        h = self.dbmodule.prepare("""
+        h = self.dbmodule.prepare(
+            """
                 select at.label
                   from rhnPackageArch pa
                   join rhnArchType at on pa.arch_type_id = at.id
-                 where pa.id = :pkg_arch_id""")
+                 where pa.id = :pkg_arch_id"""
+        )
         h.execute(pkg_arch_id=pkg_arch_id)
         row = h.fetchone_dict()
         if row:
-            return row['label']
+            return row["label"]
         return None
 
     def _lookupOrg(self):
@@ -429,7 +486,7 @@ class Backend:
         rows = h.fetchall_dict()
         if not rows:
             raise ValueError("No user is created")
-        return rows[0]['id']
+        return rows[0]["id"]
 
     def lookupOrg(self, org_name=None):
         if not org_name:
@@ -441,7 +498,7 @@ class Backend:
         row = h.fetchone_dict()
         if not row:
             return None
-        return row['id']
+        return row["id"]
 
     def lookupMaster(self, master_label):
         # Returns the master record (if it exists)
@@ -464,8 +521,8 @@ class Backend:
         insert = [[], [], []]
         for org in orgs:
             insert[0].append(master)
-            insert[1].append(org['id'])
-            insert[2].append(org['name'])
+            insert[1].append(org["id"])
+            insert[2].append(org["name"])
         sql = """
             insert into rhnISSMasterOrgs
                    (id, master_id, master_org_id, master_org_name)
@@ -490,15 +547,15 @@ class Backend:
         rows = h.fetchall_dict()
         ret = {}
         for row in rows:
-            ret[row['name']] = row['id']
+            ret[row["name"]] = row["id"]
         return ret
 
     def updateMasterOrgs(self, master_orgs):
         # Update the master org to local org mapping
         insert = [[], []]
         for org in master_orgs:
-            insert[0].append(org['master_id'])
-            insert[1].append(org['local_id'])
+            insert[0].append(org["master_id"])
+            insert[1].append(org["local_id"])
         sql = """
             update rhnISSMasterOrgs
                set local_org_id=:local
@@ -516,9 +573,9 @@ class Backend:
         ret = {}
         if rows:
             for row in rows:
-                if row['org_id'] not in list(ret.keys()):
-                    ret[row['org_id']] = []
-                ret[row['org_id']].append(row['org_trust_id'])
+                if row["org_id"] not in list(ret.keys()):
+                    ret[row["org_id"]] = []
+                ret[row["org_id"]].append(row["org_trust_id"])
         return ret
 
     def clearOrgTrusts(self, org_id):
@@ -536,8 +593,8 @@ class Backend:
         # Create org trusts
         insert = [[], []]
         for trust in trusts:
-            insert[0].append(trust['org_id'])
-            insert[1].append(trust['trust'])
+            insert[0].append(trust["org_id"])
+            insert[1].append(trust["trust"])
         sql = """
             insert into rhnTrustedOrgs (org_id, org_trust_id)
             values (:id, :trust)
@@ -556,25 +613,28 @@ class Backend:
         h = self.dbmodule.prepare(sql)
         h.execute(master_label=master_label)
         rows = h.fetchall_dict()
-        maps = {'master-name-to-master-id': {},
-                'master-id-to-local-id': {}}
+        maps = {"master-name-to-master-id": {}, "master-id-to-local-id": {}}
         if not rows:
             return maps
         mn_to_mi = {}  # master org name to master org id map
         mi_to_li = {}  # master org id to local org id map
         for org in rows:
-            if ('master_org_id' in list(org.keys())
-                    and 'master_org_name' in list(org.keys())
-                    and org['master_org_id']
-                    and org['master_org_name']):
-                mn_to_mi[org['master_org_name']] = org['master_org_id']
-            if ('master_org_id' in list(org.keys())
-                    and 'local_org_id' in list(org.keys())
-                    and org['master_org_id']
-                    and org['local_org_id']):
-                mi_to_li[org['master_org_id']] = org['local_org_id']
-        maps['master-name-to-master-id'] = mn_to_mi
-        maps['master-id-to-local-id'] = mi_to_li
+            if (
+                "master_org_id" in list(org.keys())
+                and "master_org_name" in list(org.keys())
+                and org["master_org_id"]
+                and org["master_org_name"]
+            ):
+                mn_to_mi[org["master_org_name"]] = org["master_org_id"]
+            if (
+                "master_org_id" in list(org.keys())
+                and "local_org_id" in list(org.keys())
+                and org["master_org_id"]
+                and org["local_org_id"]
+            ):
+                mi_to_li[org["master_org_id"]] = org["local_org_id"]
+        maps["master-name-to-master-id"] = mn_to_mi
+        maps["master-id-to-local-id"] = mi_to_li
         return maps
 
     def lookupChannels(self, hash):
@@ -604,7 +664,7 @@ class Backend:
                 row = h.fetchone_dict()
                 if not row:
                     break
-                dict[row['package_arch_id']] = None
+                dict[row["package_arch_id"]] = None
             channelArchHash[channel_arch_id] = dict
 
     def lookupServerGroupTypes(self, entries_hash):
@@ -620,7 +680,7 @@ class Backend:
             if not row:
                 # server group not found
                 continue
-            entries_hash[sgt] = row['id']
+            entries_hash[sgt] = row["id"]
 
     def lookupPackageNames(self, nameHash):
         if not nameHash:
@@ -629,7 +689,7 @@ class Backend:
         h = self.dbmodule.prepare(sql)
         for k in sorted(nameHash.keys()):
             h.execute(name=k)
-            nameHash[k] = h.fetchone_dict()['id']
+            nameHash[k] = h.fetchone_dict()["id"]
 
     def lookupErratum(self, erratum):
         if not erratum:
@@ -641,7 +701,7 @@ class Backend:
              where advisory_name = :advisory_name
         """
         h = self.dbmodule.prepare(sql)
-        h.execute(advisory_name=erratum['advisory_name'])
+        h.execute(advisory_name=erratum["advisory_name"])
         return h.fetchone_dict()
 
     def lookupErrataSeverityId(self, erratum):
@@ -660,13 +720,13 @@ class Backend:
 
         h = self.dbmodule.prepare(sql)
 
-        if 'security_impact' in erratum and erratum['security_impact']:
-            #concatenate the severity to reflect the db
-            #bz-204374: rhnErrataSeverity tbl has lower case severity values,
-            #so we convert severity in errata hash to lower case to lookup.
-            severity_label = 'errata.sev.label.' + erratum['security_impact'].lower()
-        elif 'severity' in erratum and erratum['severity']:
-            severity_label = erratum['severity']
+        if "security_impact" in erratum and erratum["security_impact"]:
+            # concatenate the severity to reflect the db
+            # bz-204374: rhnErrataSeverity tbl has lower case severity values,
+            # so we convert severity in errata hash to lower case to lookup.
+            severity_label = "errata.sev.label." + erratum["security_impact"].lower()
+        elif "severity" in erratum and erratum["severity"]:
+            severity_label = erratum["severity"]
         else:
             return None
 
@@ -677,21 +737,21 @@ class Backend:
             log_debug(2, "Invalid severity: %s. Returning None." % severity_label)
             return None
 
-        return row['id']
+        return row["id"]
 
     def lookupEVRs(self, evrHash, ptype):
         sql = "select LOOKUP_EVR(:epoch, :version, :release, :ptype) id from dual"
         h = self.dbmodule.prepare(sql)
         for evr in sorted(evrHash.keys(), key=lambda k: (str(k[0] or 0), k[1], k[2])):
             epoch, version, release = evr
-            if epoch == '' or epoch is None:
+            if epoch == "" or epoch is None:
                 epoch = None
             else:
                 epoch = str(epoch)
             h.execute(epoch=epoch, version=version, release=release, ptype=ptype)
             row = h.fetchone_dict()
             if row:
-                evrHash[evr] = row['id']
+                evrHash[evr] = row["id"]
 
     def lookupChecksums(self, checksumHash):
         if not checksumHash:
@@ -716,15 +776,18 @@ class Backend:
                 ORDER BY ordering
               ON CONFLICT DO NOTHING
         """
-        sorted_checksums = sorted(checksumHash.keys(), key=lambda k:(k[0], k[1] or ''))
-        values = [(i, key[0], key[1]) for i, key in enumerate(sorted_checksums) if key[1] != '']
+        sorted_checksums = sorted(checksumHash.keys(), key=lambda k: (k[0], k[1] or ""))
+        values = [
+            (i, key[0], key[1])
+            for i, key in enumerate(sorted_checksums)
+            if key[1] != ""
+        ]
 
         if not values:
             return
 
         h = self.dbmodule.prepare(sql)
         r = h.execute_values(sql, values, fetch=False)
-
 
         sql = """
         WITH wanted (ordering, checksum_type, checksum) AS (
@@ -752,7 +815,7 @@ class Backend:
             h.execute(label=l)
             row = h.fetchone_dict()
             if row:
-                checksumTypeHash[l] = row['id']
+                checksumTypeHash[l] = row["id"]
 
     def lookupPackageNEVRAs(self, nevraHash):
         sql = "select LOOKUP_PACKAGE_NEVRA(:name, :evr, :arch) id from dual"
@@ -760,11 +823,11 @@ class Backend:
         for nevra in nevraHash:
             name, evr, arch = nevra
             if arch is None:
-                arch = ''
+                arch = ""
             h.execute(name=name, evr=evr, arch=arch)
             row = h.fetchone_dict()
             if row:
-                nevraHash[nevra] = row['id']
+                nevraHash[nevra] = row["id"]
 
     def lookupPackagesByNEVRA(self, nevraHash):
         sql = """
@@ -780,10 +843,11 @@ class Backend:
             h.execute(name=name, evr=evr, arch=arch)
             row = h.fetchone_dict()
             if row:
-                nevraHash[nevra] = row['id']
+                nevraHash[nevra] = row["id"]
 
     def lookupPackageKeyId(self, header):
-        lookup_keyid_sql = rhnSQL.prepare("""
+        lookup_keyid_sql = rhnSQL.prepare(
+            """
            select pk.id
              from rhnPackagekey pk,
                   rhnPackageKeyType pkt,
@@ -791,40 +855,43 @@ class Backend:
             where pk.key_id = :key_id
               and pk.key_type_id = pkt.id
               and pk.provider_id = pp.id
-        """)
+        """
+        )
         sigkeys = rhn_rpm.RPM_Header(header).signatures
         key_id = None  # _key_ids(sigkeys)[0]
         for sig in sigkeys:
-            if sig['signature_type'] == 'gpg':
-                key_id = sig['key_id']
+            if sig["signature_type"] == "gpg":
+                key_id = sig["key_id"]
 
         lookup_keyid_sql.execute(key_id=key_id)
         keyid = lookup_keyid_sql.fetchall_dict()
 
-        return keyid[0]['id']
+        return keyid[0]["id"]
 
     def lookupSourceRPMs(self, hash):
-        self.__processHash('lookup_source_name', hash)
+        self.__processHash("lookup_source_name", hash)
 
     def lookupPackageGroups(self, hash):
-        self.__processHash('lookup_package_group', hash)
+        self.__processHash("lookup_package_group", hash)
 
     def lookupPackages(self, packages, checksums, ignore_missing=0):
         # If nevra is enabled use checksum as primary key
         self.validate_pks()
         for package in packages:
             if not isinstance(package, IncompletePackage):
-                raise TypeError("Expected an IncompletePackage instance, found %s" %
-                                str(type(package)))
+                raise TypeError(
+                    "Expected an IncompletePackage instance, found %s"
+                    % str(type(package))
+                )
         for package in packages:
             # here we need to figure out which checksum we have in the database
             not_found = None
-            for type, chksum in list(package['checksums'].items()):
-                package['checksum_type'] = type
-                package['checksum'] = chksum
-                package['checksum_id'] = checksums[(type, chksum)]
+            for type, chksum in list(package["checksums"].items()):
+                package["checksum_type"] = type
+                package["checksum"] = chksum
+                package["checksum_id"] = checksums[(type, chksum)]
                 try:
-                    self.__lookupObjectCollection([package], 'rhnPackage')
+                    self.__lookupObjectCollection([package], "rhnPackage")
                     not_found = None
                     break
                 except InvalidPackageError:
@@ -843,19 +910,19 @@ class Backend:
             h.execute(label=k)
             row = h.fetchone_dict()
             if row:
-                hash[k] = row['id']
+                hash[k] = row["id"]
             # Else, it's an unsupported channel
 
     def lookup_kstree_types(self, hash):
-        return self._lookup_in_table('rhnKSTreeType', 'rhn_kstree_type_seq',
-                                     hash)
+        return self._lookup_in_table("rhnKSTreeType", "rhn_kstree_type_seq", hash)
 
     def lookup_ks_install_types(self, hash):
-        return self._lookup_in_table('rhnKSInstallType',
-                                     'rhn_ksinstalltype_id_seq', hash)
+        return self._lookup_in_table(
+            "rhnKSInstallType", "rhn_ksinstalltype_id_seq", hash
+        )
 
     def _lookup_in_table(self, table_name, sequence_name, hash):
-        t = self.dbmodule.Table(table_name, 'label')
+        t = self.dbmodule.Table(table_name, "label")
         seq = self.dbmodule.Sequence(sequence_name)
         to_insert = []
         to_update = []
@@ -867,9 +934,9 @@ class Backend:
                 result[label] = row_id
                 to_insert.append((label, name, row_id))
                 continue
-            row_id = row['id']
+            row_id = row["id"]
             result[label] = row_id
-            if row['name'] != name:
+            if row["name"] != name:
                 to_update.append((label, name))
                 continue
             # Entry found in the table - nothing more to do
@@ -909,70 +976,76 @@ class Backend:
         return hash
 
     def processChannelArches(self, arches):
-        self.__processObjectCollection(arches, 'rhnChannelArch',
-                                       uploadForce=4, ignoreUploaded=1, severityLimit=4)
+        self.__processObjectCollection(
+            arches, "rhnChannelArch", uploadForce=4, ignoreUploaded=1, severityLimit=4
+        )
 
     def processPackageArches(self, arches):
-        self.__processObjectCollection(arches, 'rhnPackageArch',
-                                       uploadForce=4, ignoreUploaded=1, severityLimit=4)
+        self.__processObjectCollection(
+            arches, "rhnPackageArch", uploadForce=4, ignoreUploaded=1, severityLimit=4
+        )
 
     def processServerArches(self, arches):
-        self.__processObjectCollection(arches, 'rhnServerArch',
-                                       uploadForce=4, ignoreUploaded=1, severityLimit=4)
+        self.__processObjectCollection(
+            arches, "rhnServerArch", uploadForce=4, ignoreUploaded=1, severityLimit=4
+        )
 
     def processCPUArches(self, arches):
-        self.__processObjectCollection(arches, 'rhnCPUArch',
-                                       uploadForce=4, ignoreUploaded=1, severityLimit=4)
+        self.__processObjectCollection(
+            arches, "rhnCPUArch", uploadForce=4, ignoreUploaded=1, severityLimit=4
+        )
 
     def processMasterOrgs(self, orgs):
-        self.__processObjectCollection(orgs, 'rhnISSMasterOrgs',
-                                       uploadForce=4, ignoreUploaded=1, severityLimit=4)
+        self.__processObjectCollection(
+            orgs, "rhnISSMasterOrgs", uploadForce=4, ignoreUploaded=1, severityLimit=4
+        )
 
     def processOrgs(self, orgs):
-        self.__processObjectCollection(orgs, 'web_customer',
-                                       uploadForce=4, ignoreUploaded=1, severityLimit=4)
+        self.__processObjectCollection(
+            orgs, "web_customer", uploadForce=4, ignoreUploaded=1, severityLimit=4
+        )
 
     def processServerPackageArchCompatMap(self, entries):
-        self.__populateTable('rhnServerPackageArchCompat', entries,
-                             delete_extra=1)
+        self.__populateTable("rhnServerPackageArchCompat", entries, delete_extra=1)
 
     def processServerChannelArchCompatMap(self, entries):
-        self.__populateTable('rhnServerChannelArchCompat', entries,
-                             delete_extra=1)
+        self.__populateTable("rhnServerChannelArchCompat", entries, delete_extra=1)
 
     def processChannelPackageArchCompatMap(self, entries):
-        self.__populateTable('rhnChannelPackageArchCompat', entries,
-                             delete_extra=1)
+        self.__populateTable("rhnChannelPackageArchCompat", entries, delete_extra=1)
 
     def processServerGroupServerArchCompatMap(self, entries):
-        self.__populateTable('rhnServerServerGroupArchCompat', entries,
-                             delete_extra=1)
+        self.__populateTable("rhnServerServerGroupArchCompat", entries, delete_extra=1)
 
-    def processPackages(self, packages, uploadForce=0, ignoreUploaded=0,
-                        forceVerify=0, transactional=0):
+    def processPackages(
+        self, packages, uploadForce=0, ignoreUploaded=0, forceVerify=0, transactional=0
+    ):
         # Insert/update the packages
         self.validate_pks()
 
         childTables = {
-            'rhnPackageProvides':   'package_id',
-            'rhnPackageRequires':   'package_id',
-            'rhnPackageConflicts':  'package_id',
-            'rhnPackageObsoletes':  'package_id',
-            'rhnPackageRecommends': 'package_id',
-            'rhnPackageSuggests':   'package_id',
-            'rhnPackageSupplements': 'package_id',
-            'rhnPackageEnhances': 'package_id',
-            'rhnPackageBreaks':     'package_id',
-            'rhnPackagePredepends': 'package_id',
-            'rhnPackageFile':       'package_id',
-            'rhnPackageChangeLogRec':  'package_id',
-            'susePackageProductFile':  'package_id',
-            'susePackageEula':         'package_id',
-            'rhnPackageExtraTag':     'package_id',
+            "rhnPackageProvides": "package_id",
+            "rhnPackageRequires": "package_id",
+            "rhnPackageConflicts": "package_id",
+            "rhnPackageObsoletes": "package_id",
+            "rhnPackageRecommends": "package_id",
+            "rhnPackageSuggests": "package_id",
+            "rhnPackageSupplements": "package_id",
+            "rhnPackageEnhances": "package_id",
+            "rhnPackageBreaks": "package_id",
+            "rhnPackagePredepends": "package_id",
+            "rhnPackageFile": "package_id",
+            "rhnPackageChangeLogRec": "package_id",
+            "susePackageProductFile": "package_id",
+            "susePackageEula": "package_id",
+            "rhnPackageExtraTag": "package_id",
         }
 
-        if CFG.has_key('package_import_skip_changelog') and CFG.package_import_skip_changelog:
-            del childTables['rhnPackageChangeLogRec']
+        if (
+            CFG.has_key("package_import_skip_changelog")
+            and CFG.package_import_skip_changelog
+        ):
+            del childTables["rhnPackageChangeLogRec"]
 
         for package in packages:
             if not isinstance(package, Package):
@@ -982,52 +1055,75 @@ class Backend:
 
             # older sat packages wont have these fields
             # avoid Null insertions
-            if package['header_start'] is None:
-                package['header_start'] = -1
-                package['header_end'] = -1
+            if package["header_start"] is None:
+                package["header_start"] = -1
+                package["header_end"] = -1
 
             try:
-                self.__processObjectCollection__([package, ], 'rhnPackage', tableList,
-                                             uploadForce=uploadForce, forceVerify=forceVerify,
-                                             ignoreUploaded=ignoreUploaded, severityLimit=1,
-                                             transactional=transactional)
+                self.__processObjectCollection__(
+                    [
+                        package,
+                    ],
+                    "rhnPackage",
+                    tableList,
+                    uploadForce=uploadForce,
+                    forceVerify=forceVerify,
+                    ignoreUploaded=ignoreUploaded,
+                    severityLimit=1,
+                    transactional=transactional,
+                )
             except Exception as e:
-                syncLib.log(0, "Error during processing package %s-%s-%s:%s.%s.\n%s" %
-                            (package['name'], package['version'], package['release'], package['epoch'], package['arch'],
-                             str(e)))
+                syncLib.log(
+                    0,
+                    "Error during processing package %s-%s-%s:%s.%s.\n%s"
+                    % (
+                        package["name"],
+                        package["version"],
+                        package["release"],
+                        package["epoch"],
+                        package["arch"],
+                        str(e),
+                    ),
+                )
                 raise
 
     def processErrata(self, errata):
         # Insert/update the packages
 
         childTables = [
-            'rhnChannelErrata',
-            'rhnErrataBugList',
-            'rhnErrataFile',
-            'rhnErrataKeyword',
-            'rhnErrataPackage',
-            'rhnErrataCVE',
+            "rhnChannelErrata",
+            "rhnErrataBugList",
+            "rhnErrataFile",
+            "rhnErrataKeyword",
+            "rhnErrataPackage",
+            "rhnErrataCVE",
         ]
 
         for erratum in errata:
             if not isinstance(erratum, Erratum):
                 raise TypeError("Expected an Erratum instance")
 
-        return self.__processObjectCollection(errata, 'rhnErrata', childTables,
-                                              'errata_id', uploadForce=4, ignoreUploaded=1, forceVerify=1,
-                                              transactional=1)
+        return self.__processObjectCollection(
+            errata,
+            "rhnErrata",
+            childTables,
+            "errata_id",
+            uploadForce=4,
+            ignoreUploaded=1,
+            forceVerify=1,
+            transactional=1,
+        )
 
     def update_channels_affected_by_errata(self, dml):
-
         # identify errata that were affected
         affected_errata_ids = {}
-        for op_type in ['insert', 'update', 'delete']:
+        for op_type in ["insert", "update", "delete"]:
             op_values = getattr(dml, op_type)
             for table_name, values_hash in list(op_values.items()):
-                if table_name == 'rhnErrata':
-                    field = 'id'
-                elif 'errata_id' in values_hash:
-                    field = 'errata_id'
+                if table_name == "rhnErrata":
+                    field = "id"
+                elif "errata_id" in values_hash:
+                    field = "errata_id"
 
                 # Now we know in which field to look for changes
                 for erratum_id in values_hash[field]:
@@ -1035,45 +1131,56 @@ class Backend:
 
         # Get affected channels
         affected_channel_ids = {}
-        h = self.dbmodule.prepare("""
+        h = self.dbmodule.prepare(
+            """
             select channel_id
               from rhnChannelErrata
              where errata_id = :errata_id
-        """)
+        """
+        )
         for errata_id in list(affected_errata_ids.keys()):
             h.execute(errata_id=errata_id)
 
             channel_ids = h.fetchall_dict() or []
-            channel_ids = [x['channel_id'] for x in channel_ids]
+            channel_ids = [x["channel_id"] for x in channel_ids]
             for channel_id in channel_ids:
                 affected_channel_ids[channel_id] = errata_id
 
         # Now update the channels
-        update_channel = self.dbmodule.Procedure('rhn_channel.update_channel')
+        update_channel = self.dbmodule.Procedure("rhn_channel.update_channel")
         invalidate_ss = 0
 
         for channel_id in list(affected_channel_ids.keys()):
             update_channel(channel_id, invalidate_ss)
-            h = self.dbmodule.prepare("""
+            h = self.dbmodule.prepare(
+                """
                 select advisory from rhnErrata where id = :errata_id
-            """)
+            """
+            )
             h.execute(errata_id=affected_channel_ids[channel_id])
             advisory = h.fetchone()[0]
 
             channel = rhnChannel.Channel()
             channel.load_by_id(channel_id)
-            taskomatic.add_to_repodata_queue(channel.get_label(), "errata",
-                                             advisory)
+            taskomatic.add_to_repodata_queue(channel.get_label(), "errata", advisory)
 
     def processKickstartTrees(self, ks_trees):
         childTables = [
-            'rhnKSTreeFile',
+            "rhnKSTreeFile",
             #'rhnKSTreeType',
             #'rhnKSInstallType',
         ]
-        self.__processObjectCollection(ks_trees, 'rhnKickstartableTree',
-                                       childTables, 'kstree_id', uploadForce=4, forceVerify=1,
-                                       ignoreUploaded=1, severityLimit=1, transactional=1)
+        self.__processObjectCollection(
+            ks_trees,
+            "rhnKickstartableTree",
+            childTables,
+            "kstree_id",
+            uploadForce=4,
+            forceVerify=1,
+            ignoreUploaded=1,
+            severityLimit=1,
+            transactional=1,
+        )
 
     def queue_errata(self, errata, timeout=0):
         # timeout is the numer of seconds we want the execution to be delayed
@@ -1090,22 +1197,25 @@ class Backend:
                     # New or modified in some way, queue it
                     # XXX we may not want to do this for trivial changes,
                     # but not sure what trivial is
-                    for cid in erratum['channels']:
-                        errata_channel_ids.append(
-                            (erratum.id, cid['channel_id']))
+                    for cid in erratum["channels"]:
+                        errata_channel_ids.append((erratum.id, cid["channel_id"]))
 
         if not errata_channel_ids:
             # Nothing to do
             return
 
-        hdel = self.dbmodule.prepare("""
+        hdel = self.dbmodule.prepare(
+            """
             delete from rhnErrataQueue where errata_id = :errata_id
-        """)
+        """
+        )
 
-        h = self.dbmodule.prepare("""
+        h = self.dbmodule.prepare(
+            """
             insert into rhnErrataQueue (errata_id, channel_id, next_action)
             values (:errata_id, :channel_id, current_timestamp + numtodsinterval(:timeout, 'second'))
-        """)
+        """
+        )
         errata_ids = [x[0] for x in errata_channel_ids]
         channel_ids = [x[1] for x in errata_channel_ids]
         timeouts = [timeout] * len(errata_ids)
@@ -1114,12 +1224,20 @@ class Backend:
 
     def processChannels(self, channels, base_channels):
         childTables = [
-            'rhnChannelFamilyMembers', 'rhnReleaseChannelMap',
+            "rhnChannelFamilyMembers",
+            "rhnReleaseChannelMap",
         ]
         if base_channels:
-            childTables.append('rhnDistChannelMap')
-        self.__processObjectCollection(channels, 'rhnChannel', childTables,
-                                       'channel_id', uploadForce=4, ignoreUploaded=1, forceVerify=1)
+            childTables.append("rhnDistChannelMap")
+        self.__processObjectCollection(
+            channels,
+            "rhnChannel",
+            childTables,
+            "channel_id",
+            uploadForce=4,
+            ignoreUploaded=1,
+            forceVerify=1,
+        )
 
     def orgTrustExists(self, org_id, trust_id):
         sql = """
@@ -1147,8 +1265,8 @@ class Backend:
         # Create channel trusts
         insert = [[], []]
         for trust in channel_trusts:
-            insert[0].append(trust['channel-label'])
-            insert[1].append(trust['org-id'])
+            insert[0].append(trust["channel-label"])
+            insert[1].append(trust["org-id"])
         sql = """
             insert into rhnChannelTrust (channel_id, org_trust_id)
             values ((select id from rhnChannel where label = :label),
@@ -1159,30 +1277,38 @@ class Backend:
 
     def processChannelFamilies(self, channels):
         childTables = []
-        self.__processObjectCollection(channels, 'rhnChannelFamily',
-                                       childTables, 'channel_family_id', uploadForce=4, ignoreUploaded=1,
-                                       forceVerify=1)
+        self.__processObjectCollection(
+            channels,
+            "rhnChannelFamily",
+            childTables,
+            "channel_family_id",
+            uploadForce=4,
+            ignoreUploaded=1,
+            forceVerify=1,
+        )
 
     def processChannelFamilyMembers(self, channel_families):
         # Channel families now contain channel memberships too
-        h_lookup_cfid = self.dbmodule.prepare("""
+        h_lookup_cfid = self.dbmodule.prepare(
+            """
             select channel_family_id
               from rhnChannelFamilyMembers
              where channel_id = :channel_id
-        """)
+        """
+        )
         cf_ids = []
         c_ids = []
         for cf in channel_families:
-            if 'private-channel-family' in cf['label']:
+            if "private-channel-family" in cf["label"]:
                 # Its a private channel family and channel family members
                 # will be different from server as this is most likely ISS
                 # sync. Don't compare and delete custom channel families.
                 continue
-            for cid in cf['channel_ids']:
+            for cid in cf["channel_ids"]:
                 # Look up channel families for this channel
                 h_lookup_cfid.execute(channel_id=cid)
                 row = h_lookup_cfid.fetchone_dict()
-                if row and row['channel_family_id'] == cf.id:
+                if row and row["channel_family_id"] == cf.id:
                     # Nothing to do here, we already have this mapping
                     continue
                 # need to delete this entry and add the one for the new
@@ -1193,14 +1319,18 @@ class Backend:
             # We're done
             return
 
-        hdel = self.dbmodule.prepare("""
+        hdel = self.dbmodule.prepare(
+            """
             delete from rhnChannelFamilyMembers
              where channel_id = :channel_id
-        """)
-        hins = self.dbmodule.prepare("""
+        """
+        )
+        hins = self.dbmodule.prepare(
+            """
             insert into rhnChannelFamilyMembers (channel_id, channel_family_id)
             values (:channel_id, :channel_family_id)
-        """)
+        """
+        )
         hdel.executemany(channel_id=c_ids)
         hins.executemany(channel_family_id=cf_ids, channel_id=c_ids)
 
@@ -1208,24 +1338,34 @@ class Backend:
         # Since this is not evaluated in rhn_entitlements anymore,
         # make channel families without org globally visible
 
-        cf_ids = [cf.id for cf in channel_families if 'private-channel-family' not in cf['label']]
+        cf_ids = [
+            cf.id
+            for cf in channel_families
+            if "private-channel-family" not in cf["label"]
+        ]
 
-        h_public_sel = self.dbmodule.prepare("""
+        h_public_sel = self.dbmodule.prepare(
+            """
             select channel_family_id from rhnPublicChannelFamily
-        """)
+        """
+        )
         h_public_sel.execute()
-        
-        public_cf_in_db = [x['channel_family_id'] for x in h_public_sel.fetchall_dict() or []]
+
+        public_cf_in_db = [
+            x["channel_family_id"] for x in h_public_sel.fetchall_dict() or []
+        ]
         public_cf_to_insert = [x for x in cf_ids if x not in public_cf_in_db]
 
-        h_public_ins = self.dbmodule.prepare("""
+        h_public_ins = self.dbmodule.prepare(
+            """
             insert into rhnPublicChannelFamily (channel_family_id)
             values (:channel_family_id)
-        """)
+        """
+        )
         h_public_ins.executemany(channel_family_id=public_cf_to_insert)
 
     def processDistChannelMap(self, dcms):
-        dcmTable = self.tables['rhnDistChannelMap']
+        dcmTable = self.tables["rhnDistChannelMap"]
         lookup = TableLookup(dcmTable, self.dbmodule)
         dmlobj = DML([dcmTable.name], self.tables)
 
@@ -1245,60 +1385,69 @@ class Backend:
         self.__doDML(dmlobj)
 
     def processChannelProduct(self, channel):
-        """ Associate product with channel """
+        """Associate product with channel"""
 
-        channel['channel_product'] = channel['product_name']
-        channel['channel_product_version'] = channel['product_version']
-        channel['channel_product_beta'] = channel['product_beta']
-        channel['channel_product_id'] = self.lookupChannelProduct(channel)
+        channel["channel_product"] = channel["product_name"]
+        channel["channel_product_version"] = channel["product_version"]
+        channel["channel_product_beta"] = channel["product_beta"]
+        channel["channel_product_id"] = self.lookupChannelProduct(channel)
 
-        if not channel['channel_product_id']:
+        if not channel["channel_product_id"]:
             # If no channel product dont update
             return
-        statement = self.dbmodule.prepare("""
+        statement = self.dbmodule.prepare(
+            """
             UPDATE rhnChannel
                SET channel_product_id = :channel_product_id
              WHERE id = :id
                AND (channel_product_id is NULL
                 OR channel_product_id <> :channel_product_id)
-        """)
+        """
+        )
 
-        statement.execute(id=channel.id,
-                          channel_product_id=channel['channel_product_id'])
+        statement.execute(
+            id=channel.id, channel_product_id=channel["channel_product_id"]
+        )
 
     def processChannelContentSources(self, channel):
-        """ Associate content sources with channel """
+        """Associate content sources with channel"""
 
         # Which content sources are assigned to this channel
-        select_sql = self.dbmodule.prepare("""
+        select_sql = self.dbmodule.prepare(
+            """
             select source_id from rhnChannelContentSource
             where channel_id = :channel_id
-        """)
+        """
+        )
 
         select_sql.execute(channel_id=channel.id)
-        sources_in_db = [x['source_id'] for x in select_sql.fetchall_dict() or []]
+        sources_in_db = [x["source_id"] for x in select_sql.fetchall_dict() or []]
 
         # Which content sources should be assigned to this channel
         sources_needed = []
-        if 'content-sources' in channel and channel['content-sources']:
-            for source in channel['content-sources']:
-                sources_needed.append(self.lookupContentSource(source['label']))
+        if "content-sources" in channel and channel["content-sources"]:
+            for source in channel["content-sources"]:
+                sources_needed.append(self.lookupContentSource(source["label"]))
 
         # What to delete and insert
         sources_to_delete = [x for x in sources_in_db if x not in sources_needed]
         sources_to_insert = [x for x in sources_needed if x not in sources_in_db]
 
-        delete_sql = self.dbmodule.prepare("""
+        delete_sql = self.dbmodule.prepare(
+            """
             delete from rhnChannelContentSource
             where source_id = :source_id
             and channel_id = :channel_id
-        """)
+        """
+        )
 
-        insert_sql = self.dbmodule.prepare("""
+        insert_sql = self.dbmodule.prepare(
+            """
            insert into rhnChannelContentSource
            (source_id, channel_id)
            values (:source_id, :channel_id)
-        """)
+        """
+        )
 
         for source_id in sources_to_delete:
             delete_sql.execute(source_id=source_id, channel_id=channel.id)
@@ -1307,132 +1456,169 @@ class Backend:
             insert_sql.execute(source_id=source_id, channel_id=channel.id)
 
     def processProductNames(self, batch):
-        """ Check if ProductName for channel in batch is already in DB.
-            If not add it there.
+        """Check if ProductName for channel in batch is already in DB.
+        If not add it there.
         """
-        statement = self.dbmodule.prepare("""
+        statement = self.dbmodule.prepare(
+            """
             insert into rhnProductName
                  (id, label, name)
               values (sequence_nextval('rhn_productname_id_seq'),
                       :product_label, :product_name)
-        """)
+        """
+        )
 
         for channel in batch:
-            if not self.lookupProductNames(channel['label']):
-                statement.execute(product_label=channel['label'],
-                                  product_name=channel['name'])
+            if not self.lookupProductNames(channel["label"]):
+                statement.execute(
+                    product_label=channel["label"], product_name=channel["name"]
+                )
 
     def processContentSources(self, batch):
-        """ Insert content source into DB """
+        """Insert content source into DB"""
 
-        childTables = ['rhnContentSourceSsl']
-        self.__processObjectCollection(batch, 'rhnContentSource',
-                                       childTables, 'content_source_id', uploadForce=4, ignoreUploaded=1,
-                                       forceVerify=1)
+        childTables = ["rhnContentSourceSsl"]
+        self.__processObjectCollection(
+            batch,
+            "rhnContentSource",
+            childTables,
+            "content_source_id",
+            uploadForce=4,
+            ignoreUploaded=1,
+            forceVerify=1,
+        )
 
     def lookupContentSource(self, label):
-        """ Get id for given content source """
+        """Get id for given content source"""
 
-        sql = self.dbmodule.prepare("""
+        sql = self.dbmodule.prepare(
+            """
             select id from rhnContentSource where label = :label and org_id is null
-        """)
+        """
+        )
 
         sql.execute(label=label)
 
         content_source = sql.fetchone_dict()
 
         if content_source:
-            return content_source['id']
+            return content_source["id"]
 
         return
 
     def lookupContentSourceType(self, label):
-        """ Get id for given content type label """
+        """Get id for given content type label"""
 
-        sql = self.dbmodule.prepare("""
+        sql = self.dbmodule.prepare(
+            """
             select id from rhnContentSourceType where label = :label
-        """)
+        """
+        )
 
         sql.execute(label=label)
 
         source_type = sql.fetchone_dict()
 
         if source_type:
-            return source_type['id']
+            return source_type["id"]
 
         return
 
     def lookupProductNames(self, label):
-        """ For given label of product return its id.
-                 If product do not exist return None
+        """For given label of product return its id.
+        If product do not exist return None
         """
-        statement = self.dbmodule.prepare("""
+        statement = self.dbmodule.prepare(
+            """
             SELECT id
               FROM rhnProductName
              WHERE label = :label
-        """)
+        """
+        )
 
         statement.execute(label=label)
 
         product = statement.fetchone_dict()
 
         if product:
-            return product['id']
+            return product["id"]
 
         return
 
     def processSupportInformation(self, batch):
         """Check if SupportInformation is already in DB.
-           If not, add it
+        If not, add it
         """
-        insert_support_info = self.dbmodule.prepare("""
+        insert_support_info = self.dbmodule.prepare(
+            """
             INSERT INTO suseMdData (channel_id, package_id, keyword_id)
             VALUES (:channel_id, :package_id, :keyword_id)
-        """)
-        delete_support_info = self.dbmodule.prepare("""
+        """
+        )
+        delete_support_info = self.dbmodule.prepare(
+            """
             DELETE FROM suseMdData
             WHERE channel_id = :channel_id
               AND package_id = :package_id
               AND keyword_id = :keyword_id
-        """)
-        _query_keywords = self.dbmodule.prepare("""
+        """
+        )
+        _query_keywords = self.dbmodule.prepare(
+            """
             SELECT channel_id, package_id, keyword_id
               FROM suseMdData
-        """)
+        """
+        )
         _query_keywords.execute()
-        existing_data = ["%s-%s-%s" % (x['channel_id'], x['package_id'], x['keyword_id']) for x in _query_keywords.fetchall_dict() or []]
+        existing_data = [
+            "%s-%s-%s" % (x["channel_id"], x["package_id"], x["keyword_id"])
+            for x in _query_keywords.fetchall_dict() or []
+        ]
         toinsert = [[], [], []]
         todelete = [[], [], []]
         for item in batch:
-            ident = "%s-%s-%s" % (item['channel_id'], item['package_id'], item['keyword_id'])
+            ident = "%s-%s-%s" % (
+                item["channel_id"],
+                item["package_id"],
+                item["keyword_id"],
+            )
             if ident in existing_data:
                 existing_data.remove(ident)
                 continue
-            toinsert[0].append(int(item['channel_id']))
-            toinsert[1].append(int(item['package_id']))
-            toinsert[2].append(int(item['keyword_id']))
+            toinsert[0].append(int(item["channel_id"]))
+            toinsert[1].append(int(item["package_id"]))
+            toinsert[2].append(int(item["keyword_id"]))
         for ident in existing_data:
-            cid, pid, kid = ident.split('-')
+            cid, pid, kid = ident.split("-")
             todelete[0].append(int(cid))
             todelete[1].append(int(pid))
             todelete[2].append(int(kid))
         if todelete[0]:
-            delete_support_info.executemany(channel_id=todelete[0], package_id=todelete[1], keyword_id=todelete[2])
+            delete_support_info.executemany(
+                channel_id=todelete[0], package_id=todelete[1], keyword_id=todelete[2]
+            )
         if toinsert[0]:
-            insert_support_info.executemany(channel_id=toinsert[0], package_id=toinsert[1], keyword_id=toinsert[2])
+            insert_support_info.executemany(
+                channel_id=toinsert[0], package_id=toinsert[1], keyword_id=toinsert[2]
+            )
 
     def processSuseProducts(self, batch):
         """Check if SUSE Product is already in DB.
-           If yes, update it, if not add it.
+        If yes, update it, if not add it.
         """
-        insert_product = self.dbmodule.prepare("""
+        insert_product = self.dbmodule.prepare(
+            """
             INSERT INTO suseProducts (id, name, version, friendly_name, arch_type_id, release, product_id, free, base, release_stage, channel_family_id)
             VALUES (:pid, :name, :version, :friendly_name, :arch_type_id, :release, :product_id, :free, :base, :release_stage, :channel_family_id)
-            """)
-        delete_product = self.dbmodule.prepare("""
+            """
+        )
+        delete_product = self.dbmodule.prepare(
+            """
             DELETE FROM suseProducts WHERE product_id = :product_id
-            """)
-        update_product = self.dbmodule.prepare("""
+            """
+        )
+        update_product = self.dbmodule.prepare(
+            """
             UPDATE suseProducts
                SET name = :name,
                    version = :version,
@@ -1444,96 +1630,125 @@ class Backend:
                    release_stage = :release_stage,
                    channel_family_id = :channel_family_id
              WHERE product_id = :product_id
-             """)
-        _query_product = self.dbmodule.prepare("""
+             """
+        )
+        _query_product = self.dbmodule.prepare(
+            """
             SELECT product_id FROM suseProducts
-            """)
+            """
+        )
         _query_product.execute()
-        existing_data = ["%s" % (x['product_id']) for x in _query_product.fetchall_dict() or []]
+        existing_data = [
+            "%s" % (x["product_id"]) for x in _query_product.fetchall_dict() or []
+        ]
         toinsert = [[], [], [], [], [], [], [], [], [], [], []]
         todelete = [[]]
         toupdate = [[], [], [], [], [], [], [], [], [], []]
         for item in batch:
-            if not item['channel_family_id']:
+            if not item["channel_family_id"]:
                 continue
-            ident = "%s" % (item['product_id'])
+            ident = "%s" % (item["product_id"])
             if ident in existing_data:
                 existing_data.remove(ident)
-                toupdate[0].append(item['name'])
-                toupdate[1].append(item['version'])
-                toupdate[2].append(item['friendly_name'])
-                toupdate[3].append(item['arch_type_id'])
-                toupdate[4].append(item['release'])
-                toupdate[5].append(item['free'])
-                toupdate[6].append(item['base'])
-                toupdate[7].append(item['release_stage'])
-                toupdate[8].append(int(item['channel_family_id']))
-                toupdate[9].append(int(item['product_id']))
+                toupdate[0].append(item["name"])
+                toupdate[1].append(item["version"])
+                toupdate[2].append(item["friendly_name"])
+                toupdate[3].append(item["arch_type_id"])
+                toupdate[4].append(item["release"])
+                toupdate[5].append(item["free"])
+                toupdate[6].append(item["base"])
+                toupdate[7].append(item["release_stage"])
+                toupdate[8].append(int(item["channel_family_id"]))
+                toupdate[9].append(int(item["product_id"]))
                 continue
-            toinsert[0].append(self.sequences['suseProducts'].next())
-            toinsert[1].append(item['name'])
-            toinsert[2].append(item['version'])
-            toinsert[3].append(item['friendly_name'])
-            toinsert[4].append(item['arch_type_id'])
-            toinsert[5].append(item['release'])
-            toinsert[6].append(item['free'])
-            toinsert[7].append(item['base'])
-            toinsert[8].append(item['release_stage'])
-            toinsert[9].append(int(item['channel_family_id']))
-            toinsert[10].append(int(item['product_id']))
+            toinsert[0].append(self.sequences["suseProducts"].next())
+            toinsert[1].append(item["name"])
+            toinsert[2].append(item["version"])
+            toinsert[3].append(item["friendly_name"])
+            toinsert[4].append(item["arch_type_id"])
+            toinsert[5].append(item["release"])
+            toinsert[6].append(item["free"])
+            toinsert[7].append(item["base"])
+            toinsert[8].append(item["release_stage"])
+            toinsert[9].append(int(item["channel_family_id"]))
+            toinsert[10].append(int(item["product_id"]))
         for ident in existing_data:
             todelete[0].append(int(ident))
         if todelete[0]:
             delete_product.executemany(product_id=todelete[0])
         if toinsert[0]:
-            insert_product.executemany(pid=toinsert[0], name=toinsert[1], version=toinsert[2],
-                                       friendly_name=toinsert[3], arch_type_id=toinsert[4],
-                                       release=toinsert[5], free=toinsert[6], base=toinsert[7],
-                                       release_stage=toinsert[8], channel_family_id=toinsert[9],
-                                       product_id=toinsert[10])
+            insert_product.executemany(
+                pid=toinsert[0],
+                name=toinsert[1],
+                version=toinsert[2],
+                friendly_name=toinsert[3],
+                arch_type_id=toinsert[4],
+                release=toinsert[5],
+                free=toinsert[6],
+                base=toinsert[7],
+                release_stage=toinsert[8],
+                channel_family_id=toinsert[9],
+                product_id=toinsert[10],
+            )
         if toupdate[0]:
-            update_product.executemany(name=toupdate[0], version=toupdate[1],
-                                       friendly_name=toupdate[2], arch_type_id=toupdate[3],
-                                       release=toupdate[4], free=toupdate[5], base=toupdate[6],
-                                       release_stage=toupdate[7], channel_family_id=toupdate[8],
-                                       product_id=toupdate[9])
+            update_product.executemany(
+                name=toupdate[0],
+                version=toupdate[1],
+                friendly_name=toupdate[2],
+                arch_type_id=toupdate[3],
+                release=toupdate[4],
+                free=toupdate[5],
+                base=toupdate[6],
+                release_stage=toupdate[7],
+                channel_family_id=toupdate[8],
+                product_id=toupdate[9],
+            )
 
     def processSuseProductChannels(self, batch):
         """Check if the SUSE ProductChannel is already in DB.
-           If yes, update it, if not add it. We get only "mandatory" product channels
-           This is jut to update this flag.
+        If yes, update it, if not add it. We get only "mandatory" product channels
+        This is jut to update this flag.
         """
-        insert_pc = self.dbmodule.prepare("""
+        insert_pc = self.dbmodule.prepare(
+            """
             INSERT INTO suseProductChannel
                    (id, product_id, channel_id, mandatory)
             VALUES (sequence_nextval('suse_product_channel_id_seq'), :pid, :cid, 'Y')
-            """)
-        update_pc = self.dbmodule.prepare("""
+            """
+        )
+        update_pc = self.dbmodule.prepare(
+            """
             UPDATE suseProductChannel
                SET mandatory = :mand
              WHERE product_id = :pid
                AND channel_id = :cid
-             """)
-        _query_pc = self.dbmodule.prepare("""
+             """
+        )
+        _query_pc = self.dbmodule.prepare(
+            """
             SELECT product_id, channel_id FROM suseProductChannel
-            """)
+            """
+        )
         _query_pc.execute()
-        existing_data = ["%s-%s" % (x['product_id'], x['channel_id']) for x in _query_pc.fetchall_dict() or []]
+        existing_data = [
+            "%s-%s" % (x["product_id"], x["channel_id"])
+            for x in _query_pc.fetchall_dict() or []
+        ]
         toinsert = [[], []]
         toupdate = [[], [], []]
         for item in batch:
-            ident = "%s-%s" % (item['product_id'], item['channel_id'])
+            ident = "%s-%s" % (item["product_id"], item["channel_id"])
             if ident in existing_data:
                 existing_data.remove(ident)
-                toupdate[0].append('Y')
-                toupdate[1].append(item['product_id'])
-                toupdate[2].append(item['channel_id'])
+                toupdate[0].append("Y")
+                toupdate[1].append(item["product_id"])
+                toupdate[2].append(item["channel_id"])
                 continue
-            toinsert[0].append(item['product_id'])
-            toinsert[1].append(item['channel_id'])
+            toinsert[0].append(item["product_id"])
+            toinsert[1].append(item["channel_id"])
         for ident in existing_data:
-            pid, cid = ident.split('-', 1)
-            toupdate[0].append('N')
+            pid, cid = ident.split("-", 1)
+            toupdate[0].append("N")
             toupdate[1].append(int(pid))
             toupdate[2].append(int(cid))
         if toinsert[0]:
@@ -1543,34 +1758,43 @@ class Backend:
 
     def processSuseUpgradePaths(self, batch):
         """Check if the SUSE Upgrade Paths are already in DB.
-           If not add it.
+        If not add it.
         """
-        insert_up = self.dbmodule.prepare("""
+        insert_up = self.dbmodule.prepare(
+            """
             INSERT INTO suseUpgradePath
                    (from_pdid, to_pdid)
             VALUES (:from_pdid, :to_pdid)
-            """)
-        delete_up = self.dbmodule.prepare("""
+            """
+        )
+        delete_up = self.dbmodule.prepare(
+            """
             DELETE FROM suseUpgradePath
              WHERE from_pdid = :from_pdid
                AND to_pdid = :to_pdid
-            """)
-        _query_up = self.dbmodule.prepare("""
+            """
+        )
+        _query_up = self.dbmodule.prepare(
+            """
             SELECT from_pdid, to_pdid FROM suseUpgradePath
-            """)
+            """
+        )
         _query_up.execute()
-        existing_data = ["%s-%s" % (x['from_pdid'], x['to_pdid']) for x in _query_up.fetchall_dict() or []]
+        existing_data = [
+            "%s-%s" % (x["from_pdid"], x["to_pdid"])
+            for x in _query_up.fetchall_dict() or []
+        ]
         toinsert = [[], []]
         todelete = [[], []]
         for item in batch:
-            ident = "%s-%s" % (item['from_pdid'], item['to_pdid'])
+            ident = "%s-%s" % (item["from_pdid"], item["to_pdid"])
             if ident in existing_data:
                 existing_data.remove(ident)
                 continue
-            toinsert[0].append(item['from_pdid'])
-            toinsert[1].append(item['to_pdid'])
+            toinsert[0].append(item["from_pdid"])
+            toinsert[1].append(item["to_pdid"])
         for ident in existing_data:
-            fpdid, tpdid = ident.split('-', 1)
+            fpdid, tpdid = ident.split("-", 1)
             todelete[0].append(int(fpdid))
             todelete[1].append(int(tpdid))
         if todelete[0]:
@@ -1580,77 +1804,109 @@ class Backend:
 
     def processSuseProductExtensions(self, batch):
         """Check if the SUSE Extensions are already in DB.
-           If not add it.
+        If not add it.
         """
-        insert_pe = self.dbmodule.prepare("""
+        insert_pe = self.dbmodule.prepare(
+            """
             INSERT INTO suseProductExtension
                    (base_pdid, root_pdid, ext_pdid, recommended)
             VALUES (:product_id, :root_id, :ext_id, :recommended)
-            """)
-        delete_pe = self.dbmodule.prepare("""
+            """
+        )
+        delete_pe = self.dbmodule.prepare(
+            """
             DELETE FROM suseProductExtension
              WHERE base_pdid = :product_id
                AND root_pdid = :root_id
                AND ext_pdid = :ext_id
-            """)
-        update_pe = self.dbmodule.prepare("""
+            """
+        )
+        update_pe = self.dbmodule.prepare(
+            """
             UPDATE suseProductExtension
                SET recommended = :recommended
              WHERE base_pdid = :product_id
                AND root_pdid = :root_id
                AND ext_pdid = :ext_id
-        """)
-        _query_pe = self.dbmodule.prepare("""
+        """
+        )
+        _query_pe = self.dbmodule.prepare(
+            """
             SELECT base_pdid, root_pdid, ext_pdid FROM suseProductExtension
-            """)
+            """
+        )
         _query_pe.execute()
-        existing_data = ["%s-%s-%s" % (x['base_pdid'], x['root_pdid'], x['ext_pdid']) for x in _query_pe.fetchall_dict() or []]
+        existing_data = [
+            "%s-%s-%s" % (x["base_pdid"], x["root_pdid"], x["ext_pdid"])
+            for x in _query_pe.fetchall_dict() or []
+        ]
         toinsert = [[], [], [], []]
         todelete = [[], [], []]
         toupdate = [[], [], [], []]
         for item in batch:
-            ident = "%s-%s-%s" % (item['product_pdid'], item['root_pdid'], item['ext_pdid'])
+            ident = "%s-%s-%s" % (
+                item["product_pdid"],
+                item["root_pdid"],
+                item["ext_pdid"],
+            )
             if ident in existing_data:
                 existing_data.remove(ident)
-                toupdate[0].append(item['recommended'])
-                toupdate[1].append(item['product_pdid'])
-                toupdate[2].append(item['root_pdid'])
-                toupdate[3].append(item['ext_pdid'])
+                toupdate[0].append(item["recommended"])
+                toupdate[1].append(item["product_pdid"])
+                toupdate[2].append(item["root_pdid"])
+                toupdate[3].append(item["ext_pdid"])
                 continue
-            toinsert[0].append(item['product_pdid'])
-            toinsert[1].append(item['root_pdid'])
-            toinsert[2].append(item['ext_pdid'])
-            toinsert[3].append(item['recommended'])
+            toinsert[0].append(item["product_pdid"])
+            toinsert[1].append(item["root_pdid"])
+            toinsert[2].append(item["ext_pdid"])
+            toinsert[3].append(item["recommended"])
         for ident in existing_data:
-            product_id, root_id, ext_id = ident.split('-', 2)
+            product_id, root_id, ext_id = ident.split("-", 2)
             todelete[0].append(int(product_id))
             todelete[1].append(int(root_id))
             todelete[2].append(int(ext_id))
         if todelete[0]:
-            delete_pe.executemany(product_id=todelete[0], root_id=todelete[1], ext_id=todelete[2])
+            delete_pe.executemany(
+                product_id=todelete[0], root_id=todelete[1], ext_id=todelete[2]
+            )
         if toinsert[0]:
-            insert_pe.executemany(product_id=toinsert[0], root_id=toinsert[1], ext_id=toinsert[2], recommended=toinsert[3])
+            insert_pe.executemany(
+                product_id=toinsert[0],
+                root_id=toinsert[1],
+                ext_id=toinsert[2],
+                recommended=toinsert[3],
+            )
         if toupdate[0]:
-            update_pe.executemany(product_id=toupdate[1], root_id=toupdate[2], ext_id=toupdate[3], recommended=toupdate[0])
+            update_pe.executemany(
+                product_id=toupdate[1],
+                root_id=toupdate[2],
+                ext_id=toupdate[3],
+                recommended=toupdate[0],
+            )
 
     def processSuseProductRepositories(self, batch):
         """Check if the SUSE Product Repositories are already in DB.
-           If not add it.
+        If not add it.
         """
-        insert_pr = self.dbmodule.prepare("""
+        insert_pr = self.dbmodule.prepare(
+            """
             INSERT INTO suseProductSCCRepository
                    (id, product_id, root_product_id, repo_id, channel_label, parent_channel_label,
                     channel_name, mandatory, update_tag)
             VALUES (:id, :product_id, :root_id, :repo_id, :channel_label, :parent_channel_label,
                     :channel_name, :mandatory, :update_tag)
-            """)
-        delete_pr = self.dbmodule.prepare("""
+            """
+        )
+        delete_pr = self.dbmodule.prepare(
+            """
             DELETE FROM suseProductSCCRepository
              WHERE product_id = :product_id
                AND root_product_id = :root_id
                AND repo_id = :repo_id
-            """)
-        update_pr = self.dbmodule.prepare("""
+            """
+        )
+        update_pr = self.dbmodule.prepare(
+            """
             UPDATE suseProductSCCRepository
                SET channel_label = :channel_label,
                    parent_channel_label = :parent_channel_label,
@@ -1660,69 +1916,103 @@ class Backend:
              WHERE product_id = :product_id
                AND root_product_id = :root_id
                AND repo_id = :repo_id
-        """)
-        _query_pr = self.dbmodule.prepare("""
+        """
+        )
+        _query_pr = self.dbmodule.prepare(
+            """
             SELECT product_id, root_product_id, repo_id FROM suseProductSCCRepository
-            """)
+            """
+        )
         _query_pr.execute()
-        existing_data = ["%s-%s-%s" % (x['product_id'], x['root_product_id'], x['repo_id']) for x in _query_pr.fetchall_dict() or []]
+        existing_data = [
+            "%s-%s-%s" % (x["product_id"], x["root_product_id"], x["repo_id"])
+            for x in _query_pr.fetchall_dict() or []
+        ]
         toinsert = [[], [], [], [], [], [], [], [], []]
         todelete = [[], [], []]
         toupdate = [[], [], [], [], [], [], [], []]
         for item in batch:
-            ident = "%s-%s-%s" % (item['product_pdid'], item['root_pdid'], item['repo_pdid'])
+            ident = "%s-%s-%s" % (
+                item["product_pdid"],
+                item["root_pdid"],
+                item["repo_pdid"],
+            )
             if ident in existing_data:
                 existing_data.remove(ident)
-                toupdate[0].append(item['channel_label'])
-                toupdate[1].append(item['parent_channel_label'])
-                toupdate[2].append(item['channel_name'])
-                toupdate[3].append(item['mandatory'])
-                toupdate[4].append(item['update_tag'])
-                toupdate[5].append(int(item['product_pdid']))
-                toupdate[6].append(int(item['root_pdid']))
-                toupdate[7].append(int(item['repo_pdid']))
+                toupdate[0].append(item["channel_label"])
+                toupdate[1].append(item["parent_channel_label"])
+                toupdate[2].append(item["channel_name"])
+                toupdate[3].append(item["mandatory"])
+                toupdate[4].append(item["update_tag"])
+                toupdate[5].append(int(item["product_pdid"]))
+                toupdate[6].append(int(item["root_pdid"]))
+                toupdate[7].append(int(item["repo_pdid"]))
                 continue
-            toinsert[0].append(self.sequences['suseProductSCCRepository'].next())
-            toinsert[1].append(int(item['product_pdid']))
-            toinsert[2].append(int(item['root_pdid']))
-            toinsert[3].append(int(item['repo_pdid']))
-            toinsert[4].append(item['channel_label'])
-            toinsert[5].append(item['parent_channel_label'])
-            toinsert[6].append(item['channel_name'])
-            toinsert[7].append(item['mandatory'])
-            toinsert[8].append(item['update_tag'])
+            toinsert[0].append(self.sequences["suseProductSCCRepository"].next())
+            toinsert[1].append(int(item["product_pdid"]))
+            toinsert[2].append(int(item["root_pdid"]))
+            toinsert[3].append(int(item["repo_pdid"]))
+            toinsert[4].append(item["channel_label"])
+            toinsert[5].append(item["parent_channel_label"])
+            toinsert[6].append(item["channel_name"])
+            toinsert[7].append(item["mandatory"])
+            toinsert[8].append(item["update_tag"])
         for ident in existing_data:
-            product_id, rootid, repo_id = ident.split('-', 2)
+            product_id, rootid, repo_id = ident.split("-", 2)
             todelete[0].append(int(product_id))
             todelete[1].append(int(rootid))
             todelete[2].append(int(repo_id))
         if todelete[0]:
-            delete_pr.executemany(product_id=todelete[0], root_id=todelete[1], repo_id=todelete[2])
+            delete_pr.executemany(
+                product_id=todelete[0], root_id=todelete[1], repo_id=todelete[2]
+            )
         if toinsert[0]:
-            insert_pr.executemany(id=toinsert[0], product_id=toinsert[1], root_id=toinsert[2], repo_id=toinsert[3],
-                                  channel_label=toinsert[4], parent_channel_label=toinsert[5],
-                                  channel_name=toinsert[6], mandatory=toinsert[7], update_tag=toinsert[8])
+            insert_pr.executemany(
+                id=toinsert[0],
+                product_id=toinsert[1],
+                root_id=toinsert[2],
+                repo_id=toinsert[3],
+                channel_label=toinsert[4],
+                parent_channel_label=toinsert[5],
+                channel_name=toinsert[6],
+                mandatory=toinsert[7],
+                update_tag=toinsert[8],
+            )
         if toupdate[0]:
-            update_pr.executemany(product_id=toupdate[5], root_id=toupdate[6], repo_id=toupdate[7],
-                                  channel_label=toupdate[0], parent_channel_label=toupdate[1],
-                                  channel_name=toupdate[2], mandatory=toupdate[3], update_tag=toupdate[4])
+            update_pr.executemany(
+                product_id=toupdate[5],
+                root_id=toupdate[6],
+                repo_id=toupdate[7],
+                channel_label=toupdate[0],
+                parent_channel_label=toupdate[1],
+                channel_name=toupdate[2],
+                mandatory=toupdate[3],
+                update_tag=toupdate[4],
+            )
 
     def processSCCRepositories(self, batch):
         """Check if SCC Repository is already in DB.
-           If yes, update it, if not add it.
+        If yes, update it, if not add it.
         """
         # suseSCCRepositoryAuth should be empty in ISS case
-        self.dbmodule.prepare("""
+        self.dbmodule.prepare(
+            """
             DELETE FROM suseSCCRepositoryAuth
-        """).execute()
-        insert_repo = self.dbmodule.prepare("""
+        """
+        ).execute()
+        insert_repo = self.dbmodule.prepare(
+            """
             INSERT INTO suseSCCRepository (id, scc_id, autorefresh, name, distro_target, description, url, signed, installer_updates)
             VALUES (:rid, :sccid, :autorefresh, :name, :target, :description, :url, :signed, :installer_updates)
-            """)
-        delete_repo = self.dbmodule.prepare("""
+            """
+        )
+        delete_repo = self.dbmodule.prepare(
+            """
             DELETE FROM suseSCCRepository WHERE scc_id = :sccid
-            """)
-        update_repo = self.dbmodule.prepare("""
+            """
+        )
+        update_repo = self.dbmodule.prepare(
+            """
             UPDATE suseSCCRepository
                SET name = :name,
                    autorefresh = :autorefresh,
@@ -1732,80 +2022,108 @@ class Backend:
                    signed = :signed,
                    installer_updates = :installer_updates
              WHERE scc_id = :sccid
-             """)
-        _query_repo = self.dbmodule.prepare("""
+             """
+        )
+        _query_repo = self.dbmodule.prepare(
+            """
             SELECT scc_id FROM suseSCCRepository
-            """)
+            """
+        )
         _query_repo.execute()
-        existing_data = ["%s" % (x['scc_id']) for x in _query_repo.fetchall_dict() or []]
+        existing_data = [
+            "%s" % (x["scc_id"]) for x in _query_repo.fetchall_dict() or []
+        ]
         toinsert = [[], [], [], [], [], [], [], [], []]
         todelete = [[]]
         toupdate = [[], [], [], [], [], [], [], []]
         for item in batch:
-            ident = "%s" % item['sccid']
+            ident = "%s" % item["sccid"]
             if ident in existing_data:
                 existing_data.remove(ident)
-                toupdate[0].append(item['name'])
-                toupdate[1].append(item['autorefresh'])
-                toupdate[2].append(item['distro_target'])
-                toupdate[3].append(item['description'])
-                toupdate[4].append(item['url'])
-                toupdate[5].append(item['signed'])
-                toupdate[6].append(item['installer_updates'])
-                toupdate[7].append(item['sccid'])
+                toupdate[0].append(item["name"])
+                toupdate[1].append(item["autorefresh"])
+                toupdate[2].append(item["distro_target"])
+                toupdate[3].append(item["description"])
+                toupdate[4].append(item["url"])
+                toupdate[5].append(item["signed"])
+                toupdate[6].append(item["installer_updates"])
+                toupdate[7].append(item["sccid"])
                 continue
-            toinsert[0].append(self.sequences['suseSCCRepository'].next())
-            toinsert[1].append(item['sccid'])
-            toinsert[2].append(item['autorefresh'])
-            toinsert[3].append(item['name'])
-            toinsert[4].append(item['distro_target'])
-            toinsert[5].append(item['description'])
-            toinsert[6].append(item['url'])
-            toinsert[7].append(item['signed'])
-            toinsert[8].append(item['installer_updates'])
+            toinsert[0].append(self.sequences["suseSCCRepository"].next())
+            toinsert[1].append(item["sccid"])
+            toinsert[2].append(item["autorefresh"])
+            toinsert[3].append(item["name"])
+            toinsert[4].append(item["distro_target"])
+            toinsert[5].append(item["description"])
+            toinsert[6].append(item["url"])
+            toinsert[7].append(item["signed"])
+            toinsert[8].append(item["installer_updates"])
         for ident in existing_data:
             todelete[0].append(int(ident))
         if todelete[0]:
             delete_repo.executemany(sccid=todelete[0])
         if toinsert[0]:
-            insert_repo.executemany(rid=toinsert[0], sccid=toinsert[1], autorefresh=toinsert[2],
-                                    name=toinsert[3], target=toinsert[4], description=toinsert[5],
-                                    url=toinsert[6], signed=toinsert[7], installer_updates=toinsert[8])
+            insert_repo.executemany(
+                rid=toinsert[0],
+                sccid=toinsert[1],
+                autorefresh=toinsert[2],
+                name=toinsert[3],
+                target=toinsert[4],
+                description=toinsert[5],
+                url=toinsert[6],
+                signed=toinsert[7],
+                installer_updates=toinsert[8],
+            )
         if toupdate[0]:
-            update_repo.executemany(name=toupdate[0], autorefresh=toupdate[1], target=toupdate[2],
-                                    description=toupdate[3], url=toupdate[4], signed=toupdate[5],
-                                    installer_updates=toupdate[6], sccid=toupdate[7])
+            update_repo.executemany(
+                name=toupdate[0],
+                autorefresh=toupdate[1],
+                target=toupdate[2],
+                description=toupdate[3],
+                url=toupdate[4],
+                signed=toupdate[5],
+                installer_updates=toupdate[6],
+                sccid=toupdate[7],
+            )
 
     def processClonedChannels(self, batch):
         """Check if cloned channel info is already in DB.
-           If not add it.
+        If not add it.
         """
-        insert_cc = self.dbmodule.prepare("""
+        insert_cc = self.dbmodule.prepare(
+            """
             INSERT INTO rhnChannelCloned
                    (original_id, id)
             VALUES (:orig_id, :id)
-            """)
-        delete_cc = self.dbmodule.prepare("""
+            """
+        )
+        delete_cc = self.dbmodule.prepare(
+            """
             DELETE FROM rhnChannelCloned
              WHERE original_id = :orig_id
                AND id = :id
-            """)
-        _query_cc = self.dbmodule.prepare("""
+            """
+        )
+        _query_cc = self.dbmodule.prepare(
+            """
             SELECT original_id orig_id, id FROM rhnChannelCloned
-            """)
+            """
+        )
         _query_cc.execute()
-        existing_data = ["%s-%s" % (x['orig_id'], x['id']) for x in _query_cc.fetchall_dict() or []]
+        existing_data = [
+            "%s-%s" % (x["orig_id"], x["id"]) for x in _query_cc.fetchall_dict() or []
+        ]
         toinsert = [[], []]
         todelete = [[], []]
         for item in batch:
-            ident = "%s-%s" % (item['orig_id'], item['id'])
+            ident = "%s-%s" % (item["orig_id"], item["id"])
             if ident in existing_data:
                 existing_data.remove(ident)
                 continue
-            toinsert[0].append(item['orig_id'])
-            toinsert[1].append(item['id'])
+            toinsert[0].append(item["orig_id"])
+            toinsert[1].append(item["id"])
         for ident in existing_data:
-            fpdid, tpdid = ident.split('-', 1)
+            fpdid, tpdid = ident.split("-", 1)
             todelete[0].append(int(fpdid))
             todelete[1].append(int(tpdid))
         if todelete[0]:
@@ -1815,37 +2133,44 @@ class Backend:
 
     def processSuseSubscriptions(self, batch):
         """Check if the Subscriptions are already in DB.
-           If yes, update it, if not add it.
+        If yes, update it, if not add it.
         """
-        insert_pcf = self.dbmodule.prepare("""
+        insert_pcf = self.dbmodule.prepare(
+            """
             INSERT INTO rhnPrivateChannelFamily
                    (channel_family_id, org_id)
             VALUES (:cfid, :org_id)
-            """)
-        _query_pcf = self.dbmodule.prepare("""
+            """
+        )
+        _query_pcf = self.dbmodule.prepare(
+            """
             SELECT channel_family_id, org_id FROM rhnPrivateChannelFamily
-            """)
+            """
+        )
         _query_pcf.execute()
-        existing_data = ["%s-%s" % (x['channel_family_id'], x['org_id']) for x in _query_pcf.fetchall_dict() or []]
+        existing_data = [
+            "%s-%s" % (x["channel_family_id"], x["org_id"])
+            for x in _query_pcf.fetchall_dict() or []
+        ]
         toinsert = [[], []]
         for item in batch:
-            ident = "%s-%s" % (item['channel_family_id'], item['org_id'])
+            ident = "%s-%s" % (item["channel_family_id"], item["org_id"])
             if ident in existing_data:
                 existing_data.remove(ident)
                 continue
-            if item['channel_family_id']:
-                toinsert[0].append(item['channel_family_id'])
-                toinsert[1].append(item['org_id'])
+            if item["channel_family_id"]:
+                toinsert[0].append(item["channel_family_id"])
+                toinsert[1].append(item["org_id"])
         if toinsert[0]:
-            insert_pcf.executemany(cfid=toinsert[0],
-                                   org_id=toinsert[1])
-
+            insert_pcf.executemany(cfid=toinsert[0], org_id=toinsert[1])
 
     def lookupPackageIdFromPackage(self, package):
         if not isinstance(package, IncompletePackage):
-            raise TypeError("Expected an IncompletePackage instance, found %s" % \
-                            str(type(package)))
-        statement = self.dbmodule.prepare("""
+            raise TypeError(
+                "Expected an IncompletePackage instance, found %s" % str(type(package))
+            )
+        statement = self.dbmodule.prepare(
+            """
             SELECT p.id
               FROM rhnPackage p
               JOIN rhnPackageName pn ON p.name_id = pn.id
@@ -1861,73 +2186,85 @@ class Backend:
                AND pa.label = :arch
                AND cv.checksum = :checksum
                AND cv.checksum_type = :checksum_type
-        """)
+        """
+        )
 
-        for type, chksum  in list(package['checksums'].items()):
-            if not package['epoch']:
-                package['epoch'] = None
-            statement.execute(name=package['name'],
-                              epoch=package['epoch'],
-                              version=package['version'],
-                              release=package['release'],
-                              arch=package['arch'],
-                              checksum=chksum,
-                              checksum_type=type)
+        for type, chksum in list(package["checksums"].items()):
+            if not package["epoch"]:
+                package["epoch"] = None
+            statement.execute(
+                name=package["name"],
+                epoch=package["epoch"],
+                version=package["version"],
+                release=package["release"],
+                arch=package["arch"],
+                checksum=chksum,
+                checksum_type=type,
+            )
             pkgid = statement.fetchone_dict() or None
             if pkgid:
-                package.id = pkgid['id']
+                package.id = pkgid["id"]
                 return
 
     def lookupSuseProductIdByProductId(self, pid):
-        _query = self.dbmodule.prepare("""
+        _query = self.dbmodule.prepare(
+            """
             SELECT id FROM suseProducts WHERE product_id = :pid
-        """)
+        """
+        )
         _query.execute(pid=pid)
         res = _query.fetchone_dict()
         if res:
-            return res['id']
+            return res["id"]
         return None
 
     def lookupRepoIdBySCCRepoId(self, rid):
-        _query = self.dbmodule.prepare("""
+        _query = self.dbmodule.prepare(
+            """
             SELECT id FROM suseSCCRepository WHERE scc_id = :rid
-        """)
+        """
+        )
         _query.execute(rid=rid)
         res = _query.fetchone_dict()
         if res:
-            return res['id']
+            return res["id"]
         return None
 
     def lookupKeyword(self, keyword):
-        statement = self.dbmodule.prepare("""
+        statement = self.dbmodule.prepare(
+            """
             SELECT id
               FROM suseMdKeyword
              WHERE label = :label
-        """)
+        """
+        )
         statement.execute(label=keyword)
         kid = statement.fetchone_dict()
 
         if kid:
-            return kid['id']
-        kid = self.sequences['suseMdKeyword'].next()
-        statement = self.dbmodule.prepare("""
+            return kid["id"]
+        kid = self.sequences["suseMdKeyword"].next()
+        statement = self.dbmodule.prepare(
+            """
             INSERT INTO suseMdKeyword (id, label)
             VALUES (:kid, :label)
-        """)
-        statement.execute(kid=kid,label=keyword)
+        """
+        )
+        statement.execute(kid=kid, label=keyword)
         return kid
-
 
     # bug #528227
     def lookupChannelOrg(self, label):
         """For given label of channel return its org_id.
-           If channel with given label does not exist or is NULL, return None.
+        If channel with given label does not exist or is NULL, return None.
         """
-        statement = self.dbmodule.prepare("""
+        statement = self.dbmodule.prepare(
+            """
             SELECT org_id
               FROM rhnChannel
              WHERE label = :label
-        """)
+        """
+        )
 
         statement.execute(label=label)
         org_id = statement.fetchone_dict()
@@ -1938,46 +2275,54 @@ class Backend:
         return
 
     def lookupChannelProduct(self, channel):
-        statement = self.dbmodule.prepare("""
+        statement = self.dbmodule.prepare(
+            """
             SELECT id
               FROM rhnChannelProduct
              WHERE product = :product
                AND version = :version
                AND beta = :beta
-        """)
+        """
+        )
 
-        statement.execute(product=channel['channel_product'],
-                          version=channel['channel_product_version'],
-                          beta=channel['channel_product_beta'])
+        statement.execute(
+            product=channel["channel_product"],
+            version=channel["channel_product_version"],
+            beta=channel["channel_product_beta"],
+        )
 
         product = statement.fetchone_dict()
 
         if product:
-            return product['id']
+            return product["id"]
 
         return self.createChannelProduct(channel)
 
     def createChannelProduct(self, channel):
-        id = self.sequences['rhnChannelProduct'].next()
+        id = self.sequences["rhnChannelProduct"].next()
 
-        statement = self.dbmodule.prepare("""
+        statement = self.dbmodule.prepare(
+            """
             INSERT
               INTO rhnChannelProduct
                    (id, product, version, beta)
             VALUES (:id, :product, :version, :beta)
-        """)
+        """
+        )
 
-        statement.execute(id=id,
-                          product=channel['channel_product'],
-                          version=channel['channel_product_version'],
-                          beta=channel['channel_product_beta'])
+        statement.execute(
+            id=id,
+            product=channel["channel_product"],
+            version=channel["channel_product_version"],
+            beta=channel["channel_product_beta"],
+        )
 
         return id
 
     def subscribeToChannels(self, packages, strict=0):
         hash = {
-            'package_id': [],
-            'channel_id': [],
+            "package_id": [],
+            "channel_id": [],
         }
         # Keep a list of packages for a channel too, so we can easily compare
         # what's extra, if strict is 1
@@ -2001,9 +2346,9 @@ class Backend:
                 row = statement.fetchone_dict()
                 if not row:
                     break
-                channels[row['channel_id']] = None
+                channels[row["channel_id"]] = None
 
-            for channelId in list(package['channels'].keys()):
+            for channelId in list(package["channels"].keys()):
                 # Build the channel-package list
                 if channelId in channel_packages:
                     cp = channel_packages[channelId]
@@ -2015,8 +2360,8 @@ class Backend:
                     # Already subscribed
                     continue
                 dict = {
-                    'package_id': package.id,
-                    'channel_id': channelId,
+                    "package_id": package.id,
+                    "channel_id": channelId,
                 }
                 if channelId not in affected_channels:
                     modified_packages = ([], [])
@@ -2029,8 +2374,8 @@ class Backend:
 
         # Packages we'd have to delete
         extra_cp = {
-            'package_id': [],
-            'channel_id': [],
+            "package_id": [],
+            "channel_id": [],
         }
         if strict:
             # if strict remove the extra packages from the DB
@@ -2059,11 +2404,11 @@ class Backend:
                 row = statement.fetchone_dict()
                 if not row:
                     break
-                package_id = row['package_id']
+                package_id = row["package_id"]
                 if package_id not in pid_hash:
                     # Have to remove it
-                    extra_cp['package_id'].append(package_id)
-                    extra_cp['channel_id'].append(channel_id)
+                    extra_cp["package_id"].append(package_id)
+                    extra_cp["channel_id"].append(channel_id)
                     # And mark this channel as being affected
                     if channel_id not in affected_channels:
                         modified_packages = ([], [])
@@ -2073,17 +2418,21 @@ class Backend:
                     # Package was deletef from this channel
                     modified_packages[1].append(package_id)
 
-        self.__doDeleteTable('rhnChannelPackage', extra_cp)
-        self.__doInsertTable('rhnChannelPackage', hash)
+        self.__doDeleteTable("rhnChannelPackage", extra_cp)
+        self.__doInsertTable("rhnChannelPackage", hash)
         # This function returns the channels that were affected
         return affected_channels
 
     def update_newest_package_cache(self, caller, affected_channels, name_ids=[]):
         # affected_channels is a hash keyed on the channel id, and with a
         # tuple (added_package_list, deleted_package_list) as values
-        refresh_newest_package = self.dbmodule.Procedure('rhn_channel.refresh_newest_package')
-        update_channel = self.dbmodule.Procedure('rhn_channel.update_channel')
-        for channel_id, (added_packages_list, deleted_packages_list) in list(affected_channels.items()):
+        refresh_newest_package = self.dbmodule.Procedure(
+            "rhn_channel.refresh_newest_package"
+        )
+        update_channel = self.dbmodule.Procedure("rhn_channel.update_channel")
+        for channel_id, (added_packages_list, deleted_packages_list) in list(
+            affected_channels.items()
+        ):
             try:
                 if name_ids:
                     for id in name_ids:
@@ -2099,8 +2448,9 @@ class Backend:
                 invalidate_ss = 0
             update_channel(channel_id, invalidate_ss)
 
-    def processSourcePackages(self, packages, uploadForce=0, ignoreUploaded=0,
-                              forceVerify=0, transactional=0):
+    def processSourcePackages(
+        self, packages, uploadForce=0, ignoreUploaded=0, forceVerify=0, transactional=0
+    ):
         # Insert/update the packages
 
         childTables = []
@@ -2111,10 +2461,17 @@ class Backend:
 
         # Process the packages
 
-        self.__processObjectCollection(packages, 'rhnPackageSource', childTables,
-                                       'package_id', uploadForce=uploadForce, forceVerify=forceVerify,
-                                       ignoreUploaded=ignoreUploaded, severityLimit=1,
-                                       transactional=transactional)
+        self.__processObjectCollection(
+            packages,
+            "rhnPackageSource",
+            childTables,
+            "package_id",
+            uploadForce=uploadForce,
+            forceVerify=forceVerify,
+            ignoreUploaded=ignoreUploaded,
+            severityLimit=1,
+            transactional=transactional,
+        )
 
     def commit(self):
         self.dbmodule.commit()
@@ -2138,11 +2495,13 @@ class Backend:
         queryTempl = "select * from %s where %s = :id"
         for childTableName in childTables:
             childTableLookups[childTableName] = self.dbmodule.prepare(
-                queryTempl % (childTableName, childTables[childTableName]))
+                queryTempl % (childTableName, childTables[childTableName])
+            )
         return childTableLookups
 
-    def __processObjectCollection(self, objColl, parentTable, childTables=[],
-                                  colname=None, **kwargs):
+    def __processObjectCollection(
+        self, objColl, parentTable, childTables=[], colname=None, **kwargs
+    ):
         # Returns the DML object that was processed
         # This helps identify what the changes were
 
@@ -2155,10 +2514,13 @@ class Backend:
         for tbl in childTables:
             childDict[tbl] = colname
 
-        return self.__processObjectCollection__(objColl, parentTable, childDict, **kwargs)
+        return self.__processObjectCollection__(
+            objColl, parentTable, childDict, **kwargs
+        )
 
-    def __processObjectCollection__(self, objColl, parentTable, childTables={},
-                                    **kwargs):
+    def __processObjectCollection__(
+        self, objColl, parentTable, childTables={}, **kwargs
+    ):
         # Returns the DML object that was processed
         # This helps identify what the changes were
 
@@ -2172,16 +2534,16 @@ class Backend:
         # on the database
         kwparams = {
             # The 'upload force'
-            'uploadForce': 0,
+            "uploadForce": 0,
             # Raises exceptions when the object is already uploaded
-            'ignoreUploaded': 0,
+            "ignoreUploaded": 0,
             # Forces a full object verification - including the child tables
-            'forceVerify': 0,
+            "forceVerify": 0,
             # When the severity is below this limit, the object is not
             # updated
-            'severityLimit': 0,
+            "severityLimit": 0,
             # All-or-nothing
-            'transactional': 0,
+            "transactional": 0,
         }
 
         for k, v in list(kwargs.items()):
@@ -2191,11 +2553,11 @@ class Backend:
                 # Leave the default values in case of a None
                 kwparams[k] = v
 
-        uploadForce = kwparams['uploadForce']
-        ignoreUploaded = kwparams['ignoreUploaded']
-        severityLimit = kwparams['severityLimit']
-        transactional = kwparams['transactional']
-        forceVerify = kwparams['forceVerify']
+        uploadForce = kwparams["uploadForce"]
+        ignoreUploaded = kwparams["ignoreUploaded"]
+        severityLimit = kwparams["severityLimit"]
+        transactional = kwparams["transactional"]
+        forceVerify = kwparams["forceVerify"]
 
         # All the tables affected
         tables = [parentTable] + list(childTables.keys())
@@ -2240,7 +2602,7 @@ class Backend:
                 # Object does not exist
                 id = self.sequences[parentTable].next()
                 object.id = id
-                extObject = {'id': id}
+                extObject = {"id": id}
                 _buildExternalValue(extObject, object, parentTableObj)
                 addHash(dml.insert[parentTable], extObject)
 
@@ -2252,7 +2614,11 @@ class Backend:
                     if entry_list is None:
                         continue
                     seq_col = tbl.sequenceColumn
-                    new_ids = self.sequences[tbl.name].next_many(len(entry_list)) if seq_col else []
+                    new_ids = (
+                        self.sequences[tbl.name].next_many(len(entry_list))
+                        if seq_col
+                        else []
+                    )
                     for i, entry in enumerate(entry_list):
                         extObject = {childTables[tname]: id}
                         if seq_col:
@@ -2278,14 +2644,14 @@ class Backend:
                 raise AlreadyUploadedError(object, "Already uploaded")
 
             # XXX package id set here!!!!!!!!!!
-            object.id = row['id']
+            object.id = row["id"]
             # And save the object and the row for later processing
-            uploadedObjects[row['id']] = [object, row]
+            uploadedObjects[row["id"]] = [object, row]
 
         # Deal with already-uploaded objects
         for objid, (object, row) in list(uploadedObjects.items()):
             # Build the external value
-            extObject = {'id': row['id']}
+            extObject = {"id": row["id"]}
             _buildExternalValue(extObject, object, parentTableObj)
             # Build the DB value
             row = _buildDatabaseValue(row, ptFields)
@@ -2300,8 +2666,9 @@ class Backend:
                     # not enough karma either
                     continue
 
-            localDML = self.__processUploaded(objid, object, childTables,
-                                              childTableLookups)
+            localDML = self.__processUploaded(
+                objid, object, childTables, childTableLookups
+            )
 
             if uploadForce < object.diff.level:
                 # Not enough karma
@@ -2315,7 +2682,7 @@ class Backend:
 
             if diffval:
                 # Different parent object
-                localDML['update'][parentTable] = [extObject]
+                localDML["update"][parentTable] = [extObject]
 
             # And transfer the local DML to the global one
             for k, tablehash in list(localDML.items()):
@@ -2331,19 +2698,20 @@ class Backend:
     def __processUploaded(self, objid, object, childTables, childTableLookups):
         # Store the DML operations locally
         localDML = {
-            'insert': {},
-            'update': {},
-            'delete': {},
+            "insert": {},
+            "update": {},
+            "delete": {},
         }
 
         # Grab the rest of the information
-        childTablesInfo = self.__getChildTablesInfo(objid, list(childTables.keys()),
-                                                    childTableLookups)
+        childTablesInfo = self.__getChildTablesInfo(
+            objid, list(childTables.keys()), childTableLookups
+        )
 
         # Start computing deltas
         for childTableName in childTables:
             # Init the local hashes
-            for k in ['insert', 'update', 'delete']:
+            for k in ["insert", "update", "delete"]:
                 localDML[k][childTableName] = []
 
             dbside = childTablesInfo[childTableName]
@@ -2391,7 +2759,7 @@ class Backend:
                     # XXX change to a default value
                     object.diff.setLevel(4)
 
-                    localDML['insert'][childTableName].append(val)
+                    localDML["insert"][childTableName].append(val)
                     continue
 
                 # Already exists in the DB
@@ -2402,15 +2770,16 @@ class Backend:
                     sc = childTableObj.sequenceColumn
                     val[sc] = ent[sc] = dbval[sc]
                 # check for updates
-                diffval = computeDiff(val, dbval, childSeverityHash,
-                                      object.diff, parentattr)
+                diffval = computeDiff(
+                    val, dbval, childSeverityHash, object.diff, parentattr
+                )
                 if not diffval:
                     # Same value
                     del dbside[key]
                     continue
 
                 # Different value; have to update the entry
-                localDML['update'][childTableName].append(val)
+                localDML["update"][childTableName].append(val)
                 del dbside[key]
 
             # Anything else should be deleted
@@ -2423,7 +2792,7 @@ class Backend:
                 # XXX change to a default value
                 object.diff.setLevel(4)
 
-                localDML['delete'][childTableName].append(hash)
+                localDML["delete"][childTableName].append(hash)
                 object.diff.append((parentattr, None, val))
 
         return localDML
@@ -2510,8 +2879,10 @@ class Backend:
                     object.ignored = 1
                     continue
                 # Invalid
-                raise InvalidPackageError(object, "Could not find object %s in table %s" % (object, tableName))
-            object.id = row['id']
+                raise InvalidPackageError(
+                    object, "Could not find object %s in table %s" % (object, tableName)
+                )
+            object.id = row["id"]
 
     def __getChildTablesInfo(self, id, tables, queries):
         # Returns a hash with the information about package id from tables
@@ -2602,7 +2973,8 @@ class Backend:
         query = "select %s from %s where %s = :%s" % (
             ", ".join(all_fields),
             table_name,
-            first_uq_col, first_uq_col,
+            first_uq_col,
+            first_uq_col,
         )
         h = self.dbmodule.prepare(query)
         updates = []
@@ -2632,13 +3004,17 @@ class Backend:
                 updates.append(entry)
 
         inserts = []
-        list(map(inserts.extend, [list(x.values()) for x in list(uq_col_values.values())]))
+        list(
+            map(
+                inserts.extend, [list(x.values()) for x in list(uq_col_values.values())]
+            )
+        )
 
         if deletes:
             params = transpose(deletes, uq_fields)
             query = "delete from %s where %s" % (
                 table_name,
-                ' and '.join(["%s = :%s" % (x, x) for x in uq_fields]),
+                " and ".join(["%s = :%s" % (x, x) for x in uq_fields]),
             )
             h = self.dbmodule.prepare(query)
             h.executemany(**params)
@@ -2646,8 +3022,8 @@ class Backend:
             params = transpose(inserts, all_fields)
             query = "insert into %s (%s) values (%s)" % (
                 table_name,
-                ', '.join(all_fields),
-                ', '.join([":" + x for x in all_fields]),
+                ", ".join(all_fields),
+                ", ".join([":" + x for x in all_fields]),
             )
             h = self.dbmodule.prepare(query)
             h.executemany(**params)
@@ -2655,19 +3031,20 @@ class Backend:
             params = transpose(updates, all_fields)
             query = "update % set %s where %s" % (
                 table_name,
-                ', '.join(["%s = :s" + (x, x) for x in fields]),
-                ' and '.join(["%s = :%s" % (x, x) for x in uq_fields]),
+                ", ".join(["%s = :s" + (x, x) for x in fields]),
+                " and ".join(["%s = :%s" % (x, x) for x in uq_fields]),
             )
             h = self.dbmodule.prepare(query)
             h.executemany(**params)
 
     def validate_pks(self):
         # If nevra is enabled use checksum as primary key
-        tbs = self.tables['rhnPackage']
+        tbs = self.tables["rhnPackage"]
         if not CFG.ENABLE_NVREA:
             # remove checksum from a primary key if nevra is disabled.
-            if 'checksum_id' in tbs.pk:
-                tbs.pk.remove('checksum_id')
+            if "checksum_id" in tbs.pk:
+                tbs.pk.remove("checksum_id")
+
 
 # Returns a tuple for the hash's values
 
@@ -2696,13 +3073,12 @@ def hash2tuple(hash, fields):
 
 
 class DML:
-
     def __init__(self, tables, tableHash):
         self.update = {}
         self.delete = {}
         self.insert = {}
         self.tables = tables
-        for k in ('insert', 'update', 'delete'):
+        for k in ("insert", "update", "delete"):
             dmlhash = {}
             setattr(self, k, dmlhash)
             for tname in tables:
@@ -2739,7 +3115,7 @@ def _buildExternalValue(dict, entry, tableObj):
 def computeDiff(hash1, hash2, diffHash, diffobj, prefix=None):
     # Compare if the key-values of hash1 are a subset of hash2's
     difference = 0
-    ignore_keys = ['last_modified']
+    ignore_keys = ["last_modified"]
 
     for k, v in list(hash1.items()):
         if k in ignore_keys:
@@ -2750,7 +3126,7 @@ def computeDiff(hash1, hash2, diffHash, diffobj, prefix=None):
         if hash2[k] == v:
             # Same values
             continue
-        if k == 'installed_size' and v is not None and hash2[k] is None:
+        if k == "installed_size" and v is not None and hash2[k] is None:
             # Skip installed_size which might not have been populated
             continue
         if k in diffHash:
@@ -2762,7 +3138,7 @@ def computeDiff(hash1, hash2, diffHash, diffobj, prefix=None):
             diffval = diffobj.level + 1
 
         if prefix:
-            diffkey = prefix + '::' + k
+            diffkey = prefix + "::" + k
         else:
             diffkey = k
 

@@ -20,11 +20,7 @@ from TestServer import TestServer
 
 
 def make_nvre_dict(epoch, version, release):
-    return {
-        'epoch':   epoch,
-        'version':   version,
-        'release':   release
-    }
+    return {"epoch": epoch, "version": version, "release": release}
 
 
 class SolveDependenciesTestCase(unittest.TestCase):
@@ -36,16 +32,18 @@ class SolveDependenciesTestCase(unittest.TestCase):
     # are all available in self.directory.
 
     def setUp(self):
-        self.directory = '/home/devel/wregglej/testrpms'
-        self.filename = 'libcaps.so'
-        self.arch = 'i386'
+        self.directory = "/home/devel/wregglej/testrpms"
+        self.filename = "libcaps.so"
+        self.arch = "i386"
         self.myserver = TestServer()
         self.serv_id = self.myserver.getServerId()
         self.myserver.upload_packages(self.directory)
         self.up2date = self.myserver.getUp2date()
         self.sysid = self.myserver.getSystemId()
         self.sd2 = self.up2date.solveDependencies_v2  # returns arch info
-        self.sd4 = self.up2date.solveDependencies_v4  # returns arch info, has better filtering
+        self.sd4 = (
+            self.up2date.solveDependencies_v4
+        )  # returns arch info, has better filtering
 
     def tearDown(self):
         rhnSQL.rollback()
@@ -60,19 +58,19 @@ class SolveDependenciesTestCase(unittest.TestCase):
 
     def testArchTypeSd2(self):
         ret = self.sd2(self.sysid, [self.filename])
-        assert type(ret[self.filename][0][4]) == type('a')
+        assert type(ret[self.filename][0][4]) == type("a")
 
     def testArchTypeSd4(self):
         ret = self.sd4(self.sysid, [self.filename])
-        assert type(ret[self.filename][0][4]) == type('a')
+        assert type(ret[self.filename][0][4]) == type("a")
 
     def testArchValueSd2(self):
         ret = self.sd2(self.sysid, [self.filename])
-        assert ret[self.filename][0][4] == 'i386'
+        assert ret[self.filename][0][4] == "i386"
 
     def testArchValueSd4(self):
         ret = self.sd4(self.sysid, [self.filename])
-        assert ret[self.filename][0][4] == 'i386'
+        assert ret[self.filename][0][4] == "i386"
 
     def testAllTrueSd4(self):
         ret = self.sd4(self.sysid, [self.filename], all=1)
@@ -81,6 +79,7 @@ class SolveDependenciesTestCase(unittest.TestCase):
     def testAllFalseSd4(self):
         ret = self.sd4(self.sysid, [self.filename], all=0)
         assert len(ret[self.filename]) == 1
+
 
 if __name__ == "__main__":
     unittest.main()

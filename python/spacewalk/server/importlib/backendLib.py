@@ -41,6 +41,7 @@ def localtime(timestamp):
 def _format_time(time_tuple):
     return time.strftime("%Y-%m-%d %H:%M:%S", time_tuple)
 
+
 # Database datatypes
 
 
@@ -53,7 +54,6 @@ class DBint(DBtype):
 
 
 class DBstring(DBtype):
-
     def __init__(self, limit):
         self.limit = limit
 
@@ -69,20 +69,21 @@ class DBdate(DBtype):
 class DBdateTime(DBtype):
     pass
 
+
 # Database objects
 
 
 class Table:
     # A list of supported keywords
     keywords = {
-        'fields': DictType,
-        'pk': ListType,
-        'attribute': str,
-        'map': DictType,
-        'nullable': ListType,  # Will become a hash eventually
-        'severityHash': DictType,
-        'defaultSeverity': IntType,
-        'sequenceColumn': str,
+        "fields": DictType,
+        "pk": ListType,
+        "attribute": str,
+        "map": DictType,
+        "nullable": ListType,  # Will become a hash eventually
+        "severityHash": DictType,
+        "defaultSeverity": IntType,
+        "sequenceColumn": str,
     }
 
     def __init__(self, name, **kwargs):
@@ -110,8 +111,7 @@ class Table:
         for k, v in list(kwargs.items()):
             datatype = self.keywords[k]
             if not isinstance(v, datatype):
-                raise TypeError("%s expected to be %s; got %s" % (
-                    k, datatype, type(v)))
+                raise TypeError("%s expected to be %s; got %s" % (k, datatype, type(v)))
             setattr(self, k, v)
 
         # Fix nullable
@@ -120,8 +120,9 @@ class Table:
         if nullable:
             for field in nullable:
                 if field not in self.fields:
-                    raise TypeError("Unknown nullable field %s in table %s" % (
-                        field, name))
+                    raise TypeError(
+                        "Unknown nullable field %s in table %s" % (field, name)
+                    )
                 self.nullable[field] = None
 
         # Now analyze pk
@@ -130,8 +131,13 @@ class Table:
                 raise TypeError("Unknown primary key field %s" % field)
 
     def __str__(self):
-        return "Instance of class %s.%s: PK: %s, Fields: %s" % (self.__class__.__module__,
-                                                                self.__class__.__name__, self.pk, self.fields)
+        return "Instance of class %s.%s: PK: %s, Fields: %s" % (
+            self.__class__.__module__,
+            self.__class__.__name__,
+            self.pk,
+            self.fields,
+        )
+
     __repr__ = __str__
 
     def isNullable(self, field):
@@ -159,21 +165,21 @@ class Table:
                 self.severityHash[field] = self.defaultSeverity
         return self.severityHash
 
+
 # A collection of tables
 
 
 class TableCollection(UserDict):
-
     def __init__(self, *list):
         UserDict.__init__(self)
         # Verify if the list's items are the right format
         for table in list:
             if not isinstance(table, Table):
-                raise TypeError("Expected a Table instance; got %s" %
-                                type(table))
+                raise TypeError("Expected a Table instance; got %s" % type(table))
         # Now initialize the collection
         for table in list:
             self.__setitem__(table.name, table)
+
 
 # Lookup class
 # The problem stems from the different way we're supposed to build a query if
@@ -181,7 +187,6 @@ class TableCollection(UserDict):
 
 
 class BaseTableLookup:
-
     def __init__(self, table, dbmodule):
         # Generates a bunch of queries that look up data based on the primary
         # keys of this table
@@ -213,7 +218,7 @@ class BaseTableLookup:
         # Now put the queries in self.sqlqueries, keyed on the list of 0/1
         for i in range(len(keys)):
             key = tuple(keys[i])
-            query = ' and '.join(queries[i])
+            query = " and ".join(queries[i])
             self.whereclauses[key] = query
 
     def _selectQueryKey(self, value):
@@ -222,7 +227,7 @@ class BaseTableLookup:
         hash = {}
         key = []
         for col in self.pks:
-            if self.table.isNullable(col) and value[col] in [None, '']:
+            if self.table.isNullable(col) and value[col] in [None, ""]:
                 key.append(1)
             else:
                 key.append(0)
@@ -252,7 +257,6 @@ class BaseTableLookup:
 
 
 class TableLookup(BaseTableLookup):
-
     def __init__(self, table, dbmodule):
         BaseTableLookup.__init__(self, table, dbmodule)
         self.queryTemplate = "select * from %s where %s"
@@ -262,7 +266,6 @@ class TableLookup(BaseTableLookup):
 
 
 class TableUpdate(BaseTableLookup):
-
     def __init__(self, table, dbmodule):
         BaseTableLookup.__init__(self, table, dbmodule)
         self.queryTemplate = "update %s set %s where %s"
@@ -279,7 +282,7 @@ class TableUpdate(BaseTableLookup):
                 self.blob_fields.append(field)
             else:
                 self.otherfields.append(field)
-        self.updateclause = ', '.join(["%s = :%s" % (x, x) for x in self.otherfields])
+        self.updateclause = ", ".join(["%s = :%s" % (x, x) for x in self.otherfields])
         # key
         self.firstkey = None
         for pk in self.pks:
@@ -289,8 +292,11 @@ class TableUpdate(BaseTableLookup):
                 break
 
     def _buildQuery(self, key):
-        return self.queryTemplate % (self.table.name, self.updateclause,
-                                     self.whereclauses[key])
+        return self.queryTemplate % (
+            self.table.name,
+            self.updateclause,
+            self.whereclauses[key],
+        )
 
     def _split_blob_values(self, values, blob_only=0):
         # Splits values that have to be inserted
@@ -359,8 +365,11 @@ class TableUpdate(BaseTableLookup):
         template = "select %s from %s where %s for update"
         blob_fields_string = ", ".join(self.blob_fields)
         for key, val in list(blobValuesHash.items()):
-            statement = template % (blob_fields_string, self.table.name,
-                                    self.whereclauses[key])
+            statement = template % (
+                blob_fields_string,
+                self.table.name,
+                self.whereclauses[key],
+            )
             h = self.dbmodule.prepare(statement)
             for lookup_hash, blob_hash in val:
                 h.execute(**lookup_hash)
@@ -384,12 +393,12 @@ class TableUpdate(BaseTableLookup):
                 if row is not None:
                     # XXX This should not happen, the primary key was not
                     # unique
-                    raise ValueError("Primary key not unique",
-                                     self.table.name, lookup_hash)
+                    raise ValueError(
+                        "Primary key not unique", self.table.name, lookup_hash
+                    )
 
 
 class TableDelete(TableLookup):
-
     def __init__(self, table, dbmodule):
         TableLookup.__init__(self, table, dbmodule)
         self.queryTemplate = "delete from %s where %s"
@@ -427,7 +436,6 @@ class TableDelete(TableLookup):
 
 
 class TableInsert(TableUpdate):
-
     def __init__(self, table, dbmodule):
         TableUpdate.__init__(self, table, dbmodule)
         self.queryTemplate = "insert into %s (%s) values %%s"
@@ -435,7 +443,7 @@ class TableInsert(TableUpdate):
         self.insert_fields = self.pks + self.otherfields + self.blob_fields
 
     def _buildQuery(self, key):
-        q = self.queryTemplate % (self.table.name, ', '.join(self.insert_fields))
+        q = self.queryTemplate % (self.table.name, ", ".join(self.insert_fields))
         return q
 
     def query(self, values):
@@ -450,24 +458,27 @@ class TableInsert(TableUpdate):
         statement = self._getCachedQuery(None, blob_map=blob_map)
         l = len(values[self.insert_fields[0]])
         value_list = [[values[f][i] for f in self.insert_fields] for i in range(l)]
-        statement.execute_values(self._buildQuery(None), value_list, fetch=False, page_size=10_000)
+        statement.execute_values(
+            self._buildQuery(None), value_list, fetch=False, page_size=10_000
+        )
+
 
 def sanitizeValue(value, datatype):
     if isinstance(datatype, DBstring):
-        if value is None or value == '':
-            return None         # we really want to preserve Nones
+        if value is None or value == "":
+            return None  # we really want to preserve Nones
             # and not depend on Oracle converting
             # empty strings to NULLs -- PostgreSQL
             # does not do this
         if len(value) > datatype.limit:
-            value = value[:datatype.limit]
+            value = value[: datatype.limit]
             # ignore incomplete characters created after truncating
         return value
     if isinstance(datatype, DBblob):
         if value is None:
-            value = ''
+            value = ""
         return str(value)
-    if value in [None, '']:
+    if value in [None, ""]:
         return None
     if isinstance(datatype, DBdateTime):
         s = str(value)

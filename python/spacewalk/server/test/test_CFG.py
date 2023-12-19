@@ -14,6 +14,6 @@
 #
 from spacewalk.common.rhnConfig import initCFG, CFG
 
-initCFG('server.config-management-tool')
+initCFG("server.config-management-tool")
 
 print((CFG.config_delim_start))

@@ -15,6 +15,7 @@
 
 import os
 import gzip
+
 try:
     #  python 2
     import cStringIO
@@ -22,12 +23,13 @@ except ImportError:
     #  python3
     import io as cStringIO
 import tempfile
+
 try:
     #  python 2
     import xmlrpclib
 except ImportError:
     #  python3
-    import xmlrpc.client as xmlrpclib # pylint: disable=F0401
+    import xmlrpc.client as xmlrpclib  # pylint: disable=F0401
 import struct
 import sys
 from uyuni.common import fileutils
@@ -41,7 +43,7 @@ from uyuni.common.rhn_pkg import A_Package, InvalidPackageError
 # bare-except and broad-except
 # pylint: disable=W0702,W0703
 
-MPM_CHECKSUM_TYPE = 'md5'       # FIXME: this should be a configuration option
+MPM_CHECKSUM_TYPE = "md5"  # FIXME: this should be a configuration option
 
 
 def labelCompare(l1, l2):
@@ -58,8 +60,8 @@ def get_package_header(filename=None, file_obj=None, fd=None):
 
 
 def load(filename=None, file_obj=None, fd=None):
-    """ Loads an MPM and returns its header and its payload """
-    if (filename is None and file_obj is None and fd is None):
+    """Loads an MPM and returns its header and its payload"""
+    if filename is None and file_obj is None and fd is None:
         raise ValueError("No parameters passed")
 
     if filename is not None:
@@ -118,13 +120,12 @@ def load_rpm(stream):
 
 
 class MPM_Header:
-
     "Wrapper class for an mpm header - we need to store a flag is_source"
 
     def __init__(self, hdr):
         self.hdr = hdr
-        self.is_source = hdr.get('is_source')
-        self.packaging = 'mpm'
+        self.is_source = hdr.get("is_source")
+        self.packaging = "mpm"
         self.signatures = []
 
     def __getitem__(self, name):
@@ -154,21 +155,22 @@ class MPM_Header:
     def unload():
         return None
 
+
 MPM_HEADER_COMPRESSED_GZIP = 1
 MPM_PAYLOAD_COMPRESSED_GZIP = 1
 
 
 class MPM_Package(A_Package):
     # pylint: disable=R0902
-    _lead_format = '!16sB3s4L92s'
-    _magic = 'mpmpackage012345'
+    _lead_format = "!16sB3s4L92s"
+    _magic = "mpmpackage012345"
 
     def __init__(self, input_stream=None):
         A_Package.__init__(self, input_stream)
         self.header_flags = MPM_HEADER_COMPRESSED_GZIP
         self.header_size = 0
         self.payload_flags = 0
-        assert(len(self._magic) == 16)
+        assert len(self._magic) == 16
         self._buffer_size = 16384
         self.file_size = 0
 
@@ -252,8 +254,16 @@ class MPM_Package(A_Package):
 
         # pylint: disable=E0012,W1401
         # now we know header and payload size so rewind back and write lead
-        lead_arr = (self._magic, 1, "\0" * 3, self.header_flags,
-                    self.payload_flags, self.header_size, self.payload_size, '\0' * 92)
+        lead_arr = (
+            self._magic,
+            1,
+            "\0" * 3,
+            self.header_flags,
+            self.payload_flags,
+            self.header_size,
+            self.payload_size,
+            "\0" * 92,
+        )
         # lead
         lead = struct.pack(self._lead_format, *lead_arr)
         output_stream.seek(0, 0)
@@ -261,8 +271,8 @@ class MPM_Package(A_Package):
         output_stream.seek(0, 2)
 
     def _encode_header(self, stream):
-        assert(self.header is not None)
-        data = xmlrpclib.dumps((_replace_null(self.header), ))
+        assert self.header is not None
+        data = xmlrpclib.dumps((_replace_null(self.header),))
         start = stream.tell()
         if self.header_flags & MPM_HEADER_COMPRESSED_GZIP:
             f = gzip.GzipFile(None, "wb", 9, stream)
@@ -274,7 +284,7 @@ class MPM_Package(A_Package):
         self.header_size = stream.tell() - start
 
     def _encode_payload(self, stream, c_hash=None):
-        assert(self.payload_stream is not None)
+        assert self.payload_stream is not None
         if stream:
             start = stream.tell()
         if stream and self.payload_flags & MPM_PAYLOAD_COMPRESSED_GZIP:
@@ -297,12 +307,12 @@ class MPM_Package(A_Package):
 
 def _replace_null(obj):
     if obj is None:
-        return ''
+        return ""
     if isinstance(obj, ListType):
         return list(map(_replace_null, obj))
     if isinstance(obj, TupleType):
         return tuple(_replace_null(list(obj)))
-    if hasattr(obj, 'items'):
+    if hasattr(obj, "items"):
         obj_dict = {}
         for k, v in list(obj.items()):
             obj_dict[_replace_null(k)] = _replace_null(v)

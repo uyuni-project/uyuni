@@ -22,14 +22,15 @@ class RequestedChannels:
     """Bookkeeping of the state of various channels
     Argument to constructor is the list of requested channels
     """
+
     # Simplify the getters/setters/resetters
     __lists = [
-        '_requested_imported',  # requested and previously imported
-        '_requested_new',  # requested and NOT previously imported
-        '_requested_channels',  # Union of the above two
-        '_not_requested',  # not requested but available channels
-        '_end_of_service',  # requested, once available, but no longer supported
-        '_typos',  # requested, but probably a typo
+        "_requested_imported",  # requested and previously imported
+        "_requested_new",  # requested and NOT previously imported
+        "_requested_channels",  # Union of the above two
+        "_not_requested",  # not requested but available channels
+        "_end_of_service",  # requested, once available, but no longer supported
+        "_typos",  # requested, but probably a typo
     ]
 
     def __init__(self, requested=()):
@@ -66,14 +67,14 @@ class RequestedChannels:
         return self
 
     def _add(self, name, channel):
-        if name not in ['_available', '_imported']:
-            raise AttributeError('add' + name)
+        if name not in ["_available", "_imported"]:
+            raise AttributeError("add" + name)
         getattr(self, name)[channel] = None
         return self
 
     def _set(self, name, channel_list):
-        if name not in ['_available', '_imported']:
-            raise AttributeError('set' + name)
+        if name not in ["_available", "_imported"]:
+            raise AttributeError("set" + name)
         assert isinstance(channel_list, usix.ListType)
         h = getattr(self, name)
         h.clear()
@@ -145,13 +146,13 @@ class RequestedChannels:
         return self
 
     def __getattr__(self, name):
-        if name.startswith('add'):
+        if name.startswith("add"):
             return Method(name[3:], self._add)
-        if name.startswith('get'):
+        if name.startswith("get"):
             return Method(name[3:], self._get)
-        if name.startswith('set'):
+        if name.startswith("set"):
             return Method(name[3:], self._set)
-        if name.startswith('reset'):
+        if name.startswith("reset"):
             return Method(name[5:], self._reset)
         raise AttributeError(name)
 
@@ -166,18 +167,18 @@ class Method:
     def __call__(self, *args, **kwargs):
         return self._func(self._name, *args, **kwargs)
 
+
 # Test functions
 
 
 def _verify_expectations(c, expectations):
     for k, expected in list(expectations.items()):
-        method_name = 'get' + k
+        method_name = "get" + k
         val = getattr(c, method_name)()
         if val == expected:
             print(("ok: %s = %s" % (method_name, expected)))
         else:
-            print(("FAILED: %s: expected %s, got %s" % (method_name, expected,
-                                                       val)))
+            print(("FAILED: %s: expected %s, got %s" % (method_name, expected, val)))
 
 
 def test1(requested, available, imported, expectations):
@@ -205,21 +206,22 @@ def test2(requested, available, imported, expectations):
 
 
 def test():
-    requested = ['a', 'b', 'c', 'd']
-    available = ['a', 'd', 'e', 'f']
-    imported = ['d', 'e', 'h']
+    requested = ["a", "b", "c", "d"]
+    available = ["a", "d", "e", "f"]
+    imported = ["d", "e", "h"]
     expectations = {
-        '_requested_imported': ['d'],
-        '_requested_new': ['a'],
-        '_not_requested': ['e', 'f'],
-        '_end_of_service': ['h'],
-        '_typos': ['b', 'c'],
-        '_requested_channels': ['a', 'd'],
+        "_requested_imported": ["d"],
+        "_requested_new": ["a"],
+        "_not_requested": ["e", "f"],
+        "_end_of_service": ["h"],
+        "_typos": ["b", "c"],
+        "_requested_channels": ["a", "d"],
     }
     print("Running test1")
     test1(requested, available, imported, expectations)
     print("Running test2")
     test2(requested, available, imported, expectations)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     test()

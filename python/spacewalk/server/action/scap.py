@@ -17,7 +17,7 @@ from spacewalk.common.rhnLog import log_debug
 from spacewalk.server import rhnSQL
 from spacewalk.server.rhnLib import InvalidAction
 
-__rhnexport__ = ['xccdf_eval']
+__rhnexport__ = ["xccdf_eval"]
 
 
 def xccdf_eval(server_id, action_id, dry_run=0):
@@ -30,14 +30,18 @@ def xccdf_eval(server_id, action_id, dry_run=0):
     h.execute(action_id=action_id)
     d = h.fetchone_dict()
     if not d:
-        raise InvalidAction("scap.xccdf_eval: Unknown action id "
-                            "%s for server %s" % (action_id, server_id))
-    return ({
-        'path': d['path'],
-        'id': action_id,
-        'file_size': _scap_file_limit(server_id),
-        'params': rhnSQL._fix_encoding(rhnSQL.read_lob(d['parameters']) or '')
-    },)
+        raise InvalidAction(
+            "scap.xccdf_eval: Unknown action id "
+            "%s for server %s" % (action_id, server_id)
+        )
+    return (
+        {
+            "path": d["path"],
+            "id": action_id,
+            "file_size": _scap_file_limit(server_id),
+            "params": rhnSQL._fix_encoding(rhnSQL.read_lob(d["parameters"]) or ""),
+        },
+    )
 
 
 def _scap_file_limit(server_id):
@@ -50,6 +54,6 @@ def _scap_file_limit(server_id):
     h = rhnSQL.prepare(statement)
     h.execute(server_id=server_id)
     d = h.fetchone_dict()
-    if not d or d['enabled'] != 'Y':
+    if not d or d["enabled"] != "Y":
         return 0
-    return d['limit']
+    return d["limit"]

@@ -12,7 +12,10 @@ try:
 except ImportError as ex:
     ulnauth = None
 
-pytestmark = pytest.mark.skipif(ulnauth is None, reason="'ulnauth' failed to be imported")
+pytestmark = pytest.mark.skipif(
+    ulnauth is None, reason="'ulnauth' failed to be imported"
+)
+
 
 @pytest.fixture
 def uln_auth_instance():
@@ -27,12 +30,15 @@ def cfg_parser():
     """
     Get cfgparser dummy class
     """
+
     class CfgParser(dict):
         cfg = {}
+
         def read(self, path):
             self["main"] = self.cfg
 
     return CfgParser
+
 
 def test_get_hostname_uln(uln_auth_instance):
     """
@@ -42,21 +48,24 @@ def test_get_hostname_uln(uln_auth_instance):
         uln_auth_instance.get_hostname("foo://something/else")
     assert "URL must start with 'uln://'" in str(exc)
 
+
 def test_get_hostname_default(uln_auth_instance):
     """
     Test ULN uri inserts a default hostname, if not specified.
     """
-    hostname, path  = uln_auth_instance.get_hostname("uln:///suse")
+    hostname, path = uln_auth_instance.get_hostname("uln:///suse")
     assert hostname == "https://{}".format(ulnauth.ULNAuth.ULN_DEFAULT_HOST)
     assert path == "suse"
+
 
 def test_get_hostname_custom(uln_auth_instance):
     """
     Test ULN uri inserts a custom hostname, if specified.
     """
-    hostname, path  = uln_auth_instance.get_hostname("uln://scc.suse.de/suse")
+    hostname, path = uln_auth_instance.get_hostname("uln://scc.suse.de/suse")
     assert hostname == "https://scc.suse.de"
     assert path == "suse"
+
 
 @patch("os.path.exists", MagicMock(return_value=False))
 @patch("os.access", MagicMock(return_value=False))
@@ -68,15 +77,6 @@ def test_get_credentials_not_found(uln_auth_instance):
         uln_auth_instance.get_credentials()
     assert "'/etc/rhn/spacewalk-repo-sync/uln.conf' does not exists" in str(exc)
 
-@patch("os.path.exists", MagicMock(return_value=True))
-@patch("os.access", MagicMock(return_value=False))
-def test_get_credentials_access_denied(uln_auth_instance):
-    """
-    Test credentials ULN configuration readable.
-    """
-    with pytest.raises(ulnauth.RhnSyncException) as exc:
-        uln_auth_instance.get_credentials()
-    assert "Permission denied to '/etc/rhn/spacewalk-repo-sync/uln.conf'" in str(exc)
 
 @patch("os.path.exists", MagicMock(return_value=True))
 @patch("os.access", MagicMock(return_value=False))
@@ -87,6 +87,18 @@ def test_get_credentials_access_denied(uln_auth_instance):
     with pytest.raises(ulnauth.RhnSyncException) as exc:
         uln_auth_instance.get_credentials()
     assert "Permission denied to '/etc/rhn/spacewalk-repo-sync/uln.conf'" in str(exc)
+
+
+@patch("os.path.exists", MagicMock(return_value=True))
+@patch("os.access", MagicMock(return_value=False))
+def test_get_credentials_access_denied(uln_auth_instance):
+    """
+    Test credentials ULN configuration readable.
+    """
+    with pytest.raises(ulnauth.RhnSyncException) as exc:
+        uln_auth_instance.get_credentials()
+    assert "Permission denied to '/etc/rhn/spacewalk-repo-sync/uln.conf'" in str(exc)
+
 
 @patch("os.path.exists", MagicMock(return_value=True))
 @patch("os.access", MagicMock(return_value=True))
@@ -100,6 +112,7 @@ def test_get_credentials_credentials(uln_auth_instance, cfg_parser):
         assert username == "Darth Vader"
         assert password == "f1ndE4rth"
 
+
 @patch("os.path.exists", MagicMock(return_value=True))
 @patch("os.access", MagicMock(return_value=True))
 def test_get_credentials_credentials_not_found(uln_auth_instance, cfg_parser):
@@ -110,6 +123,7 @@ def test_get_credentials_credentials_not_found(uln_auth_instance, cfg_parser):
         with pytest.raises(AssertionError) as exc:
             uln_auth_instance.get_credentials()
         assert "Credentials were not found in the configuration" in str(exc)
+
 
 @patch("os.path.exists", MagicMock(return_value=True))
 @patch("os.access", MagicMock(return_value=True))
@@ -130,7 +144,11 @@ def test_get_credentials_not_all_credentials_found(uln_auth_instance, cfg_parser
             uln_auth_instance.get_credentials()
         assert "Credentials were not found in the configuration" in str(exc)
 
-@patch("ulnauth.get_proxy", MagicMock(return_value=("https://my_http_proxy", "user", "password")))
+
+@patch(
+    "ulnauth.get_proxy",
+    MagicMock(return_value=("https://my_http_proxy", "user", "password")),
+)
 def test_auth_uln(uln_auth_instance):
     """
     Authenticate ULN, getting its token.
@@ -140,7 +158,9 @@ def test_auth_uln(uln_auth_instance):
         """
         Dummy server list mock.
         """
-        def server(self): pass
+
+        def server(self):
+            pass
 
     server_list_instance = ServerList()
     server_list = MagicMock(return_value=server_list_instance)
@@ -149,16 +169,35 @@ def test_auth_uln(uln_auth_instance):
     retry_server_instance.auth.login = MagicMock(return_value="12345")
     retry_server = MagicMock(return_value=retry_server_instance)
     uri = "uln:///suse"
-    with patch("ulnauth.ServerList", server_list) as srv_lst, patch("ulnauth.RetryServer", retry_server) as rtr_srv:
-        uln_auth_instance.get_credentials = MagicMock(return_value=("uln_user", "uln_password",))
+    with patch("ulnauth.ServerList", server_list) as srv_lst, patch(
+        "ulnauth.RetryServer", retry_server
+    ) as rtr_srv:
+        uln_auth_instance.get_credentials = MagicMock(
+            return_value=(
+                "uln_user",
+                "uln_password",
+            )
+        )
         token = uln_auth_instance.authenticate(uri)
-        assert server_list.call_args_list[0][0] == (['https://linux-update.oracle.com/rpc/api'],)
+        assert server_list.call_args_list[0][0] == (
+            ["https://linux-update.oracle.com/rpc/api"],
+        )
         rs_call = retry_server.call_args_list[0][1]
-        for p_name, p_val in {'refreshCallback': None, 'username': 'user',
-                      'proxy': 'https://my_http_proxy', 'password': 'password', 'timeout': 5}.items():
+        for p_name, p_val in {
+            "refreshCallback": None,
+            "username": "user",
+            "proxy": "https://my_http_proxy",
+            "password": "password",
+            "timeout": 5,
+        }.items():
             assert p_name in rs_call
             assert rs_call[p_name] == p_val
 
-        assert retry_server_instance.addServerList.call_args_list[0][0] == (server_list_instance,)
+        assert retry_server_instance.addServerList.call_args_list[0][0] == (
+            server_list_instance,
+        )
         assert token == "12345"
-        assert retry_server_instance.auth.login.call_args_list[0][0] == ("uln_user", "uln_password")
+        assert retry_server_instance.auth.login.call_args_list[0][0] == (
+            "uln_user",
+            "uln_password",
+        )

@@ -24,7 +24,7 @@ class Loader:
     # Class that saves the state of imported objects
     _imports = {}
 
-    def load(self, dir, interface_signature='rpcClasses'):
+    def load(self, dir, interface_signature="rpcClasses"):
         # The key we use for caching
         root_dir = "/usr/share/rhn"
         key = (dir, root_dir, interface_signature)
@@ -38,7 +38,7 @@ class Loader:
         if root_dir is not None and root_dir not in sys.path:
             sys.path.append(root_dir)
 
-        fromcomps = dir.split('/')
+        fromcomps = dir.split("/")
         _imports = {}
 
         # Keep track of the modules we've already tried to load, to avoid loading
@@ -46,25 +46,28 @@ class Loader:
         modules = []
         # Load each module (that is not internal - i.e. doesn't start with _)
         for module in os.listdir(dirname):
-            log_debug(5, "Attempting to load module %s from %s %s" % (
-                module, '.'.join(fromcomps), dirname))
-            if module[0] in ('_', '.'):
+            log_debug(
+                5,
+                "Attempting to load module %s from %s %s"
+                % (module, ".".join(fromcomps), dirname),
+            )
+            if module[0] in ("_", "."):
                 # We consider it 'internal' and we don't load it
                 log_debug(6, "Ignoring module %s" % module)
                 continue
 
             # Importing files or directories with . in them is broken, so keep
             # only the first part
-            module = module.split('.', 1)[0]
+            module = module.split(".", 1)[0]
             if module in modules:
-                log_debug(6, "Already tried to load Module %s" % (module, ))
+                log_debug(6, "Already tried to load Module %s" % (module,))
                 continue
 
             # Add it to the list, so we don't load it again
             modules.append(module)
 
             # We use fromclause to build the full module path
-            fromclause = '.'.join(fromcomps + [module])
+            fromclause = ".".join(fromcomps + [module])
 
             # Try to import the module
             try:
@@ -72,14 +75,14 @@ class Loader:
             except ImportError:
                 e = sys.exc_info()[1]
                 log_error("Error importing %s: %s" % (module, e))
-                log_debug(6, "Details: sys.path: %s" % (sys.path, ))
+                log_debug(6, "Details: sys.path: %s" % (sys.path,))
                 continue
 
             if not hasattr(m, interface_signature):
                 # The module does not support our API
-                log_error("Module %s doesn't support our API" % (module, ))
+                log_error("Module %s doesn't support our API" % (module,))
                 continue
-            log_debug(5, "Module %s loaded" % (module, ))
+            log_debug(5, "Module %s loaded" % (module,))
 
             _imports[module] = getattr(m, interface_signature)
 
@@ -87,7 +90,7 @@ class Loader:
         return _imports
 
 
-def load(dir, root_dir=None, interface_signature='rpcClasses'):
+def load(dir, root_dir=None, interface_signature="rpcClasses"):
     """
     Load modules (handlers) beneath the handlers/ tree.
 

@@ -16,7 +16,7 @@
 
 from spacewalk.common.rhnLog import log_debug
 
-__rhnexport__ = ['configure']
+__rhnexport__ = ["configure"]
 
 # the "exposed" functions
 

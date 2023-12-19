@@ -28,6 +28,7 @@ with cfg_component(component=None) as CFG:
     PRODUCT_NAME = CFG.PRODUCT_NAME
     FALLBACK_TRACEBACK_MAIL = CFG.TRACEBACK_MAIL
 
+
 class HeadersRecipients(NamedTuple):
     headers: dict
     to_addresses: Union[tuple, list]

@@ -83,7 +83,9 @@ def dns_fqdns():
         # Create a ThreadPoolExecutor to process the underlying calls
         # to resolve DNS FQDNs in parallel.
         with ThreadPoolExecutor(max_workers=8) as executor:
-            results = dict((executor.submit(_lookup_dns_fqdn, ip), ip) for ip in addresses)
+            results = dict(
+                (executor.submit(_lookup_dns_fqdn, ip), ip) for ip in addresses
+            )
             for item in as_completed(results):
                 item = item.result()
                 if item:

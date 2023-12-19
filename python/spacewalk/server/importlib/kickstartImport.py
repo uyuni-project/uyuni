@@ -20,7 +20,6 @@ from .importLib import KickstartableTree, Import
 
 
 class KickstartableTreeImport(Import):
-
     def __init__(self, batch, backend):
         Import.__init__(self, batch, backend)
 
@@ -37,19 +36,19 @@ class KickstartableTreeImport(Import):
             if not isinstance(ent, KickstartableTree):
                 raise TypeError("Expected a KickstartableTree instance")
 
-            channel_label = ent['channel']
+            channel_label = ent["channel"]
             self.channels[channel_label] = None
 
             # If the ks type and install type are missing, populate them
-            kstree_type_label = ent['kstree_type_label']
-            kstree_type_name = ent['kstree_type_name']
+            kstree_type_label = ent["kstree_type_label"]
+            kstree_type_name = ent["kstree_type_name"]
             self.kstree_types[kstree_type_label] = kstree_type_name
 
-            ks_install_label = ent['install_type_label']
-            ks_install_name = ent['install_type_name']
+            ks_install_label = ent["install_type_label"]
+            ks_install_name = ent["install_type_name"]
             self.ks_install_types[ks_install_label] = ks_install_name
-            for f in ent['files']:
-                checksumTuple = (f['checksum_type'], f['checksum'])
+            for f in ent["files"]:
+                checksumTuple = (f["checksum_type"], f["checksum"])
                 if checksumTuple not in self.checksums:
                     self.checksums[checksumTuple] = None
 
@@ -62,18 +61,18 @@ class KickstartableTreeImport(Import):
         for ent in self.batch:
             if ent.ignored:
                 continue
-            channel_label = ent['channel']
+            channel_label = ent["channel"]
             channel = self.channels[channel_label]
             if channel is None:
                 raise Exception("Channel %s not imported" % channel_label)
-            ent['channel_id'] = channel['id']
+            ent["channel_id"] = channel["id"]
             # Now fix the other ids
-            kstree_type_label = ent['kstree_type_label']
-            ks_install_label = ent['install_type_label']
-            ent['kstree_type'] = self.kstree_types[kstree_type_label]
-            ent['install_type'] = self.ks_install_types[ks_install_label]
-            for f in ent['files']:
-                f['checksum_id'] = self.checksums[(f['checksum_type'], f['checksum'])]
+            kstree_type_label = ent["kstree_type_label"]
+            ks_install_label = ent["install_type_label"]
+            ent["kstree_type"] = self.kstree_types[kstree_type_label]
+            ent["install_type"] = self.ks_install_types[ks_install_label]
+            for f in ent["files"]:
+                f["checksum_id"] = self.checksums[(f["checksum_type"], f["checksum"])]
 
     def submit(self):
         self.backend.processKickstartTrees(self.batch)

@@ -20,9 +20,13 @@ class TestSCRepo:
         :param shell:
         :return:
         """
-        shell.client.channel.software.listUserRepos = MagicMock(return_value=[
-            {"label": "v-repo-one"}, {"label": "z-repo-two"}, {"label": "a-repo-three"}
-        ])
+        shell.client.channel.software.listUserRepos = MagicMock(
+            return_value=[
+                {"label": "v-repo-one"},
+                {"label": "z-repo-two"},
+                {"label": "a-repo-three"},
+            ]
+        )
         mprint = MagicMock()
         with patch("spacecmd.repo.print", mprint):
             out = spacecmd.repo.do_repo_list(shell, "", doreturn=False)
@@ -31,7 +35,7 @@ class TestSCRepo:
         assert mprint.called
         assert out is None
 
-        assert_expect(mprint.call_args_list, 'a-repo-three\nv-repo-one\nz-repo-two')
+        assert_expect(mprint.call_args_list, "a-repo-three\nv-repo-one\nz-repo-two")
 
     def test_repo_list_ret_data(self, shell):
         """
@@ -40,9 +44,13 @@ class TestSCRepo:
         :param shell:
         :return:
         """
-        shell.client.channel.software.listUserRepos = MagicMock(return_value=[
-            {"label": "v-repo-one"}, {"label": "z-repo-two"}, {"label": "a-repo-three"}
-        ])
+        shell.client.channel.software.listUserRepos = MagicMock(
+            return_value=[
+                {"label": "v-repo-one"},
+                {"label": "z-repo-two"},
+                {"label": "a-repo-three"},
+            ]
+        )
         mprint = MagicMock()
         with patch("spacecmd.repo.print", mprint):
             out = spacecmd.repo.do_repo_list(shell, "", doreturn=True)
@@ -89,8 +97,9 @@ class TestSCRepo:
         assert out is 1
         assert mprint.called
 
-        assert_expect(mprint.call_args_list,
-                      "No repositories found for 'non-existing-repo' query")
+        assert_expect(
+            mprint.call_args_list, "No repositories found for 'non-existing-repo' query"
+        )
 
     def test_repo_details_repo_data(self, shell):
         """
@@ -99,17 +108,23 @@ class TestSCRepo:
         :param shell:
         :return:
         """
-        shell.client.channel.software.getRepoDetails = MagicMock(side_effect=[
-            {
-                "label": "some-repository", "sourceUrl": "http://somehost/somerepo",
-                "type": "yum"
-            },
-            {
-                "label": "some-other-repository", "sourceUrl": "file:///tmp/someotherrepo",
-                "type": "zypper", "sslCaDesc": "Ca Descr", "sslCertDesc": "Cert descr",
-                "sslKeyDesc": "Key descr"
-            },
-        ])
+        shell.client.channel.software.getRepoDetails = MagicMock(
+            side_effect=[
+                {
+                    "label": "some-repository",
+                    "sourceUrl": "http://somehost/somerepo",
+                    "type": "yum",
+                },
+                {
+                    "label": "some-other-repository",
+                    "sourceUrl": "file:///tmp/someotherrepo",
+                    "type": "zypper",
+                    "sslCaDesc": "Ca Descr",
+                    "sslCertDesc": "Cert descr",
+                    "sslKeyDesc": "Key descr",
+                },
+            ]
+        )
         shell.do_repo_list = MagicMock(return_value=["some-repo", "some-other-repo"])
         shell.help_repo_details = MagicMock()
         mprint = MagicMock()
@@ -122,19 +137,19 @@ class TestSCRepo:
         assert mprint.called
 
         exp = [
-            'Repository Label:                  some-repository',
-            'Repository URL:                    http://somehost/somerepo',
-            'Repository Type:                   yum',
-            'Repository SSL Ca Certificate:     None',
-            'Repository SSL Client Certificate: None',
-            'Repository SSL Client Key:         None',
-            '----------',
-            'Repository Label:                  some-other-repository',
-            'Repository URL:                    file:///tmp/someotherrepo',
-            'Repository Type:                   zypper',
-            'Repository SSL Ca Certificate:     Ca Descr',
-            'Repository SSL Client Certificate: Cert descr',
-            'Repository SSL Client Key:         Key descr'
+            "Repository Label:                  some-repository",
+            "Repository URL:                    http://somehost/somerepo",
+            "Repository Type:                   yum",
+            "Repository SSL Ca Certificate:     None",
+            "Repository SSL Client Certificate: None",
+            "Repository SSL Client Key:         None",
+            "----------",
+            "Repository Label:                  some-other-repository",
+            "Repository URL:                    file:///tmp/someotherrepo",
+            "Repository Type:                   zypper",
+            "Repository SSL Ca Certificate:     Ca Descr",
+            "Repository SSL Client Certificate: Cert descr",
+            "Repository SSL Client Key:         Key descr",
         ]
         assert_list_args_expect(mprint.call_args_list, exp)
 
@@ -186,10 +201,12 @@ class TestSCRepo:
         :return:
         """
         shell.help_repo_listfilters = MagicMock()
-        shell.client.channel.software.listRepoFilters = MagicMock(return_value=[
-            {"flag": "+", "filter": "stuff"},
-            {"flag": "-", "filter": "other"},
-        ])
+        shell.client.channel.software.listRepoFilters = MagicMock(
+            return_value=[
+                {"flag": "+", "filter": "stuff"},
+                {"flag": "-", "filter": "other"},
+            ]
+        )
         mprint = MagicMock()
 
         with patch("spacecmd.repo.print", mprint):
@@ -200,7 +217,7 @@ class TestSCRepo:
         assert shell.client.channel.software.listRepoFilters.called
         assert mprint.called
 
-        assert_list_args_expect(mprint.call_args_list, ['+stuff', '-other'])
+        assert_list_args_expect(mprint.call_args_list, ["+stuff", "-other"])
 
     def test_repo_addfilters_noargs(self, shell):
         """
@@ -252,8 +269,9 @@ class TestSCRepo:
         mprint = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.repo.print", mprint) as prn, \
-                patch("spacecmd.repo.logging", logger) as lgr:
+        with patch("spacecmd.repo.print", mprint) as prn, patch(
+            "spacecmd.repo.logging", logger
+        ) as lgr:
             out = spacecmd.repo.do_repo_addfilters(shell, "some-repo foo bar")
 
         assert out is 1
@@ -262,7 +280,7 @@ class TestSCRepo:
         assert not shell.client.channel.software.addRepoFilter.called
         assert logger.error.called
 
-        assert_expect(logger.error.call_args_list, 'Each filter must start with + or -')
+        assert_expect(logger.error.call_args_list, "Each filter must start with + or -")
 
     def test_repo_addfilters_argcheck_add_filter(self, shell):
         """
@@ -276,8 +294,9 @@ class TestSCRepo:
         mprint = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.repo.print", mprint) as prn, \
-                patch("spacecmd.repo.logging", logger) as lgr:
+        with patch("spacecmd.repo.print", mprint) as prn, patch(
+            "spacecmd.repo.logging", logger
+        ) as lgr:
             out = spacecmd.repo.do_repo_addfilters(shell, "some-repo +emacs")
 
         assert out is 0
@@ -300,8 +319,9 @@ class TestSCRepo:
             mprint = MagicMock()
             logger = MagicMock()
 
-            with patch("spacecmd.repo.print", mprint) as prn, \
-                    patch("spacecmd.repo.logging", logger) as lgr:
+            with patch("spacecmd.repo.print", mprint) as prn, patch(
+                "spacecmd.repo.logging", logger
+            ) as lgr:
                 out = spacecmd.repo.do_repo_removefilters(shell, arg)
 
             assert out is 1
@@ -322,8 +342,9 @@ class TestSCRepo:
         mprint = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.repo.print", mprint) as prn, \
-                patch("spacecmd.repo.logging", logger) as lgr:
+        with patch("spacecmd.repo.print", mprint) as prn, patch(
+            "spacecmd.repo.logging", logger
+        ) as lgr:
             out = spacecmd.repo.do_repo_removefilters(shell, "repo foo bar")
 
         assert out is 1
@@ -332,7 +353,7 @@ class TestSCRepo:
         assert not shell.help_repo_removefilters.called
         assert logger.error.called
 
-        assert_expect(logger.error.call_args_list, 'Each filter must start with + or -')
+        assert_expect(logger.error.call_args_list, "Each filter must start with + or -")
 
     def test_repo_removefilters_remove(self, shell):
         """
@@ -346,8 +367,9 @@ class TestSCRepo:
         mprint = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.repo.print", mprint) as prn, \
-                patch("spacecmd.repo.logging", logger) as lgr:
+        with patch("spacecmd.repo.print", mprint) as prn, patch(
+            "spacecmd.repo.logging", logger
+        ) as lgr:
             out = spacecmd.repo.do_repo_removefilters(shell, "repo +emacs -vim")
 
         assert out is 0
@@ -357,9 +379,13 @@ class TestSCRepo:
         assert shell.client.channel.software.removeRepoFilter.called
         assert shell.client.channel.software.removeRepoFilter.call_count == 2
 
-        assert_args_expect(shell.client.channel.software.removeRepoFilter.call_args_list,
-                           [((shell.session, 'repo', {'filter': 'emacs', 'flag': '+'}), {}),
-                            ((shell.session, 'repo', {'filter': 'vim', 'flag': '-'}), {})])
+        assert_args_expect(
+            shell.client.channel.software.removeRepoFilter.call_args_list,
+            [
+                ((shell.session, "repo", {"filter": "emacs", "flag": "+"}), {}),
+                ((shell.session, "repo", {"filter": "vim", "flag": "-"}), {}),
+            ],
+        )
 
     def test_repo_setfilters_noargs(self, shell):
         """
@@ -374,8 +400,9 @@ class TestSCRepo:
             mprint = MagicMock()
             logger = MagicMock()
 
-            with patch("spacecmd.repo.print", mprint) as prn, \
-                    patch("spacecmd.repo.logging", logger) as lgr:
+            with patch("spacecmd.repo.print", mprint) as prn, patch(
+                "spacecmd.repo.logging", logger
+            ) as lgr:
                 out = spacecmd.repo.do_repo_setfilters(shell, arg)
 
             assert out is 1
@@ -396,8 +423,9 @@ class TestSCRepo:
         mprint = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.repo.print", mprint) as prn, \
-                patch("spacecmd.repo.logging", logger) as lgr:
+        with patch("spacecmd.repo.print", mprint) as prn, patch(
+            "spacecmd.repo.logging", logger
+        ) as lgr:
             out = spacecmd.repo.do_repo_setfilters(shell, "repo foo bar")
 
         assert out is 1
@@ -420,8 +448,9 @@ class TestSCRepo:
         mprint = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.repo.print", mprint) as prn, \
-                patch("spacecmd.repo.logging", logger) as lgr:
+        with patch("spacecmd.repo.print", mprint) as prn, patch(
+            "spacecmd.repo.logging", logger
+        ) as lgr:
             out = spacecmd.repo.do_repo_setfilters(shell, "repo +emacs -vim")
 
         assert out is 0
@@ -431,10 +460,22 @@ class TestSCRepo:
         assert shell.client.channel.software.setRepoFilters.call_count == 1
         assert shell.client.channel.software.setRepoFilters.called
 
-        assert_args_expect(shell.client.channel.software.setRepoFilters.call_args_list,
-                           [((shell.session, 'repo',
-                              [{'filter': 'emacs', 'flag': '+'},
-                               {'filter': 'vim', 'flag': '-'}]), {})])
+        assert_args_expect(
+            shell.client.channel.software.setRepoFilters.call_args_list,
+            [
+                (
+                    (
+                        shell.session,
+                        "repo",
+                        [
+                            {"filter": "emacs", "flag": "+"},
+                            {"filter": "vim", "flag": "-"},
+                        ],
+                    ),
+                    {},
+                )
+            ],
+        )
 
     def test_repo_clearfilters_noargs(self, shell):
         """
@@ -448,8 +489,9 @@ class TestSCRepo:
         mprint = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.repo.print", mprint) as prn, \
-                patch("spacecmd.repo.logging", logger) as lgr:
+        with patch("spacecmd.repo.print", mprint) as prn, patch(
+            "spacecmd.repo.logging", logger
+        ) as lgr:
             out = spacecmd.repo.do_repo_clearfilters(shell, "")
 
         assert out is 1
@@ -471,8 +513,9 @@ class TestSCRepo:
         mprint = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.repo.print", mprint) as prn, \
-                patch("spacecmd.repo.logging", logger) as lgr:
+        with patch("spacecmd.repo.print", mprint) as prn, patch(
+            "spacecmd.repo.logging", logger
+        ) as lgr:
             out = spacecmd.repo.do_repo_clearfilters(shell, "repo --yes")
 
         assert out is 0
@@ -494,8 +537,9 @@ class TestSCRepo:
         mprint = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.repo.print", mprint) as prn, \
-                patch("spacecmd.repo.logging", logger) as lgr:
+        with patch("spacecmd.repo.print", mprint) as prn, patch(
+            "spacecmd.repo.logging", logger
+        ) as lgr:
             out = spacecmd.repo.do_repo_clearfilters(shell, "repo")
 
         assert out is 0
@@ -517,8 +561,9 @@ class TestSCRepo:
         mprint = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.repo.print", mprint) as prn, \
-                patch("spacecmd.repo.logging", logger) as lgr:
+        with patch("spacecmd.repo.print", mprint) as prn, patch(
+            "spacecmd.repo.logging", logger
+        ) as lgr:
             out = spacecmd.repo.do_repo_delete(shell, "")
 
         assert out is 1
@@ -540,8 +585,9 @@ class TestSCRepo:
         mprint = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.repo.print", mprint) as prn, \
-                patch("spacecmd.repo.logging", logger) as lgr:
+        with patch("spacecmd.repo.print", mprint) as prn, patch(
+            "spacecmd.repo.logging", logger
+        ) as lgr:
             out = spacecmd.repo.do_repo_rename(shell, "")
 
         assert out is 1
@@ -564,8 +610,9 @@ class TestSCRepo:
             mprint = MagicMock()
             logger = MagicMock()
 
-            with patch("spacecmd.repo.print", mprint) as prn, \
-                    patch("spacecmd.repo.logging", logger) as lgr:
+            with patch("spacecmd.repo.print", mprint) as prn, patch(
+                "spacecmd.repo.logging", logger
+            ) as lgr:
                 out = spacecmd.repo.do_repo_updateurl(shell, "")
 
             assert out is 1
@@ -588,9 +635,9 @@ class TestSCRepo:
         logger = MagicMock()
         prompter = MagicMock(side_effect=["name", "ca", "cert", "key"])
 
-        with patch("spacecmd.repo.print", mprint) as prn, \
-                patch("spacecmd.repo.prompt_user", prompter) as prn, \
-                patch("spacecmd.repo.logging", logger) as lgr:
+        with patch("spacecmd.repo.print", mprint) as prn, patch(
+            "spacecmd.repo.prompt_user", prompter
+        ) as prn, patch("spacecmd.repo.logging", logger) as lgr:
             out = spacecmd.repo.do_repo_updatessl(shell, "")
 
         assert out is 0
@@ -598,8 +645,10 @@ class TestSCRepo:
         assert not logger.error.called
         assert shell.client.channel.software.updateRepoSsl.called
 
-        assert_args_expect(shell.client.channel.software.updateRepoSsl.call_args_list,
-                           [((shell.session, "name", "ca", "cert", "key"), {})])
+        assert_args_expect(
+            shell.client.channel.software.updateRepoSsl.call_args_list,
+            [((shell.session, "name", "ca", "cert", "key"), {})],
+        )
 
     def test_repo_updatessl_non_interactive(self, shell):
         """
@@ -615,18 +664,22 @@ class TestSCRepo:
         logger = MagicMock()
         prompter = MagicMock(return_value="")
 
-        with patch("spacecmd.repo.print", mprint) as prn, \
-                patch("spacecmd.repo.prompt_user", prompter) as prn, \
-                patch("spacecmd.repo.logging", logger) as lgr:
-            out = spacecmd.repo.do_repo_updatessl(shell, "--name name --ca ca --cert cert --key key")
+        with patch("spacecmd.repo.print", mprint) as prn, patch(
+            "spacecmd.repo.prompt_user", prompter
+        ) as prn, patch("spacecmd.repo.logging", logger) as lgr:
+            out = spacecmd.repo.do_repo_updatessl(
+                shell, "--name name --ca ca --cert cert --key key"
+            )
 
         assert out is 0
         assert not mprint.called
         assert not logger.error.called
         assert shell.client.channel.software.updateRepoSsl.called
 
-        assert_args_expect(shell.client.channel.software.updateRepoSsl.call_args_list,
-                           [((shell.session, "name", "ca", "cert", "key"), {})])
+        assert_args_expect(
+            shell.client.channel.software.updateRepoSsl.call_args_list,
+            [((shell.session, "name", "ca", "cert", "key"), {})],
+        )
 
     def test_repo_updatessl_missing_name(self, shell):
         """
@@ -642,10 +695,12 @@ class TestSCRepo:
         logger = MagicMock()
         prompter = MagicMock(return_value="")
 
-        with patch("spacecmd.repo.print", mprint) as prn, \
-                patch("spacecmd.repo.prompt_user", prompter) as prn, \
-                patch("spacecmd.repo.logging", logger) as lgr:
-            out = spacecmd.repo.do_repo_updatessl(shell, "--ca ca --cert cert --key key")
+        with patch("spacecmd.repo.print", mprint) as prn, patch(
+            "spacecmd.repo.prompt_user", prompter
+        ) as prn, patch("spacecmd.repo.logging", logger) as lgr:
+            out = spacecmd.repo.do_repo_updatessl(
+                shell, "--ca ca --cert cert --key key"
+            )
 
         assert out is 1
         assert not mprint.called
@@ -664,12 +719,13 @@ class TestSCRepo:
         shell.client.channel.software.createRepo = MagicMock()
         mprint = MagicMock()
         logger = MagicMock()
-        prompter = MagicMock(side_effect=["name", "http://something", "type",
-                                          "ca", "cert", "key"])
+        prompter = MagicMock(
+            side_effect=["name", "http://something", "type", "ca", "cert", "key"]
+        )
 
-        with patch("spacecmd.repo.print", mprint) as prn, \
-                patch("spacecmd.repo.prompt_user", prompter) as prn, \
-                patch("spacecmd.repo.logging", logger) as lgr:
+        with patch("spacecmd.repo.print", mprint) as prn, patch(
+            "spacecmd.repo.prompt_user", prompter
+        ) as prn, patch("spacecmd.repo.logging", logger) as lgr:
             out = spacecmd.repo.do_repo_create(shell, "")
 
         assert out is 0
@@ -677,8 +733,23 @@ class TestSCRepo:
         assert shell.client.channel.software.createRepo.called
         assert not logger.error.called
 
-        assert_args_expect(shell.client.channel.software.createRepo.call_args_list,
-                           [((shell.session, 'name', 'type', 'http://something', 'ca', 'cert', 'key'), {})])
+        assert_args_expect(
+            shell.client.channel.software.createRepo.call_args_list,
+            [
+                (
+                    (
+                        shell.session,
+                        "name",
+                        "type",
+                        "http://something",
+                        "ca",
+                        "cert",
+                        "key",
+                    ),
+                    {},
+                )
+            ],
+        )
 
     def test_repo_create_non_interactive(self, shell):
         """
@@ -692,19 +763,36 @@ class TestSCRepo:
         logger = MagicMock()
         prompter = MagicMock(return_value="")
 
-        with patch("spacecmd.repo.print", mprint) as prn, \
-                patch("spacecmd.repo.prompt_user", prompter) as prn, \
-                patch("spacecmd.repo.logging", logger) as lgr:
-            out = spacecmd.repo.do_repo_create(shell,
-                                               "--n name --t type -u http://something "
-                                               "--ca ca --cert cert --key key")
+        with patch("spacecmd.repo.print", mprint) as prn, patch(
+            "spacecmd.repo.prompt_user", prompter
+        ) as prn, patch("spacecmd.repo.logging", logger) as lgr:
+            out = spacecmd.repo.do_repo_create(
+                shell,
+                "--n name --t type -u http://something "
+                "--ca ca --cert cert --key key",
+            )
 
         assert out is 0
         assert not mprint.called
         assert shell.client.channel.software.createRepo.called
         assert not logger.error.called
-        assert_args_expect(shell.client.channel.software.createRepo.call_args_list,
-                           [((shell.session, 'name', 'type', 'http://something', 'ca', 'cert', 'key'), {})])
+        assert_args_expect(
+            shell.client.channel.software.createRepo.call_args_list,
+            [
+                (
+                    (
+                        shell.session,
+                        "name",
+                        "type",
+                        "http://something",
+                        "ca",
+                        "cert",
+                        "key",
+                    ),
+                    {},
+                )
+            ],
+        )
 
     def test_repo_create_non_interactive_name_required(self, shell):
         """
@@ -718,12 +806,12 @@ class TestSCRepo:
         logger = MagicMock()
         prompter = MagicMock(return_value="")
 
-        with patch("spacecmd.repo.print", mprint) as prn, \
-                patch("spacecmd.repo.prompt_user", prompter) as prn, \
-                patch("spacecmd.repo.logging", logger) as lgr:
-            out = spacecmd.repo.do_repo_create(shell,
-                                               "--t type -u http://something "
-                                               "--ca ca --cert cert --key key")
+        with patch("spacecmd.repo.print", mprint) as prn, patch(
+            "spacecmd.repo.prompt_user", prompter
+        ) as prn, patch("spacecmd.repo.logging", logger) as lgr:
+            out = spacecmd.repo.do_repo_create(
+                shell, "--t type -u http://something " "--ca ca --cert cert --key key"
+            )
 
         assert out is 1
         assert not mprint.called
@@ -744,12 +832,12 @@ class TestSCRepo:
         logger = MagicMock()
         prompter = MagicMock(return_value="")
 
-        with patch("spacecmd.repo.print", mprint) as prn, \
-                patch("spacecmd.repo.prompt_user", prompter) as prn, \
-                patch("spacecmd.repo.logging", logger) as lgr:
-            out = spacecmd.repo.do_repo_create(shell,
-                                               "-n name -t type "
-                                               "--ca ca --cert cert --key key")
+        with patch("spacecmd.repo.print", mprint) as prn, patch(
+            "spacecmd.repo.prompt_user", prompter
+        ) as prn, patch("spacecmd.repo.logging", logger) as lgr:
+            out = spacecmd.repo.do_repo_create(
+                shell, "-n name -t type " "--ca ca --cert cert --key key"
+            )
 
         assert out is 1
         assert not mprint.called
@@ -770,17 +858,32 @@ class TestSCRepo:
         logger = MagicMock()
         prompter = MagicMock(return_value="")
 
-        with patch("spacecmd.repo.print", mprint) as prn, \
-                patch("spacecmd.repo.prompt_user", prompter) as prn, \
-                patch("spacecmd.repo.logging", logger) as lgr:
-            out = spacecmd.repo.do_repo_create(shell,
-                                               "-n name -u http://something "
-                                               "--ca ca --cert cert --key key")
+        with patch("spacecmd.repo.print", mprint) as prn, patch(
+            "spacecmd.repo.prompt_user", prompter
+        ) as prn, patch("spacecmd.repo.logging", logger) as lgr:
+            out = spacecmd.repo.do_repo_create(
+                shell, "-n name -u http://something " "--ca ca --cert cert --key key"
+            )
 
         assert out is 0
         assert not mprint.called
         assert not logger.error.called
         assert shell.client.channel.software.createRepo.called
 
-        assert_args_expect(shell.client.channel.software.createRepo.call_args_list,
-                           [((shell.session, 'name', 'yum', 'http://something', 'ca', 'cert', 'key'), {})])
+        assert_args_expect(
+            shell.client.channel.software.createRepo.call_args_list,
+            [
+                (
+                    (
+                        shell.session,
+                        "name",
+                        "yum",
+                        "http://something",
+                        "ca",
+                        "cert",
+                        "key",
+                    ),
+                    {},
+                )
+            ],
+        )

@@ -14,6 +14,7 @@
 #
 import TestServer
 import server.app.packages
+
 try:
     #  python 2
     import SimpleXMLRPCServer
@@ -23,7 +24,6 @@ except ImportError:
 
 
 class TestRhnpush(TestServer.TestServer):
-
     def __init__(self):
         TestServer.TestServer.__init__(self)
         self._init_app()
@@ -34,13 +34,14 @@ class TestRhnpush(TestServer.TestServer):
     def getApp(self):
         return self.app
 
+
 if __name__ == "__main__":
     server = TestRhnpush()
     app = server.getApp()
     print((app.test_login(server.getUsername(), server.getPassword())))
-    print((app.listChannel(['wregglej-test'], "wregglej", "bm8gv5z2")))
-    print((app.listChannelSource(['wregglej-test'], "wregglej", "bm8gv5z2")))
-    server = SimpleXMLRPCServer.SimpleXMLRPCServer(addr=('', 16000))
+    print((app.listChannel(["wregglej-test"], "wregglej", "bm8gv5z2")))
+    print((app.listChannelSource(["wregglej-test"], "wregglej", "bm8gv5z2")))
+    server = SimpleXMLRPCServer.SimpleXMLRPCServer(addr=("", 16000))
     for func in app.functions:
         print(func)
         server.register_function(getattr(app, func), name="app.%s" % (func))

@@ -16,7 +16,8 @@ from spacewalk.common.rhnException import rhnFault
 from spacewalk.server.rhnLib import ShadowAction
 
 # the "exposed" functions
-__rhnexport__ = ['subscribe']
+__rhnexport__ = ["subscribe"]
+
 
 def subscribe(serverId, actionId, dry_run=0):
     log_debug(3)

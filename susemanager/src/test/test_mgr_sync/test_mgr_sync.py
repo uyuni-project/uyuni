@@ -37,7 +37,6 @@ from spacewalk.susemanager.mgr_sync import logger
 
 
 class MgrSyncTest(unittest.TestCase):
-
     def setUp(self):
         self.mgr_sync = MgrSync()
         self.mgr_sync.conn = MagicMock()
@@ -51,7 +50,8 @@ class MgrSyncTest(unittest.TestCase):
 
         self.mgr_sync.config.write = MagicMock()
         self.mgr_sync.__init__logger = MagicMock(
-            return_value=logger.Logger(3, "tmp.log"))
+            return_value=logger.Logger(3, "tmp.log")
+        )
         self.mgr_sync.conn.sync.master.hasMaster = MagicMock(return_value=False)
 
     def tearDown(self):
@@ -64,21 +64,23 @@ class MgrSyncTest(unittest.TestCase):
         self.assertTrue(os.path.isfile("tmp.log"))
 
     def test_should_handle_max_number_of_authentication_failures(self):
-
         def raise_maximum_number_of_authentication_failures(options):
             raise MaximumNumberOfAuthenticationFailures
+
         self.mgr_sync._process_user_request = MagicMock()
-        self.mgr_sync._process_user_request.side_effect = raise_maximum_number_of_authentication_failures
+        self.mgr_sync._process_user_request.side_effect = (
+            raise_maximum_number_of_authentication_failures
+        )
 
         options = get_options("list channels".split())
         with ConsoleRecorder() as recorder:
             self.assertEqual(1, self.mgr_sync.run(options))
-        self.assertEqual(['mgr-sync: Authentication failure'], recorder.stderr)
+        self.assertEqual(["mgr-sync: Authentication failure"], recorder.stderr)
 
     def test_should_always_write_the_session_token_to_the_local_configuration(self):
         self.mgr_sync.config.token = "old token"
-        self.mgr_sync.auth.user = 'admin'
-        self.mgr_sync.auth.password = 'test'
+        self.mgr_sync.auth.user = "admin"
+        self.mgr_sync.auth.password = "test"
         self.mgr_sync._execute_xmlrpc_method = MagicMock(return_value=[])
 
         options = get_options("list channels".split())
@@ -87,4 +89,3 @@ class MgrSyncTest(unittest.TestCase):
         self.assertEqual(self.fake_auth_token, self.mgr_sync.config.token)
 
         self.mgr_sync.config.write.assert_called_once_with()
-

@@ -51,10 +51,10 @@ class DiskSource:
     def _loadFile(self, filename):
         # Look for a gzip file first
         if self.allow_compressed_files:
-            if filename[-3:] == '.gz' and os.path.exists(filename):
+            if filename[-3:] == ".gz" and os.path.exists(filename):
                 return gzip.open(filename, "rb")
 
-            if os.path.exists(filename + '.gz'):
+            if os.path.exists(filename + ".gz"):
                 return gzip.open(filename + ".gz", "rb")
 
         if os.path.exists(filename):
@@ -74,8 +74,8 @@ class DiskSource:
 
 
 class ArchesDiskSource(DiskSource):
-    subdir = 'arches'
-    filename = 'arches.xml'
+    subdir = "arches"
+    filename = "arches.xml"
 
     def _getFile(self, create=0):
         dirname = self._getDir(create)
@@ -89,7 +89,7 @@ class ArchesExtraDiskSource(ArchesDiskSource):
 
 
 class ProductnamesDiskSource(DiskSource):
-    subdir = 'product_names'
+    subdir = "product_names"
 
     def _getFile(self, create=0):
         dirname = self._getDir(create)
@@ -99,7 +99,7 @@ class ProductnamesDiskSource(DiskSource):
 
 
 class ChannelFamilyDiskSource(DiskSource):
-    subdir = 'channel_families'
+    subdir = "channel_families"
 
     def _getFile(self, create=0):
         dirname = self._getDir(create)
@@ -109,7 +109,7 @@ class ChannelFamilyDiskSource(DiskSource):
 
 
 class OrgsDiskSource(DiskSource):
-    subdir = 'orgs'
+    subdir = "orgs"
 
     def _getFile(self, create=0):
         dirname = self._getDir(create)
@@ -119,7 +119,7 @@ class OrgsDiskSource(DiskSource):
 
 
 class ChannelDiskSource(DiskSource):
-    subdir = 'channels'
+    subdir = "channels"
 
     def __init__(self, mountPoint):
         DiskSource.__init__(self, mountPoint)
@@ -148,14 +148,12 @@ class ChannelDiskSource(DiskSource):
 
 
 class ChannelCompsDiskSource(ChannelDiskSource):
-
     @staticmethod
     def _file_name():
         return "comps.xml"
 
 
 class ChannelModulesDiskSource(ChannelDiskSource):
-
     @staticmethod
     def _file_name():
         return "modules.yaml"
@@ -181,7 +179,7 @@ class ShortPackageDiskSource(DiskSource):
         f = self._getFile()
         # Restore the old id
         self.id = old_id
-        if os.path.exists(f + '.gz') or os.path.exists(f):
+        if os.path.exists(f + ".gz") or os.path.exists(f):
             return 1
         return 0
 
@@ -228,7 +226,7 @@ class BinaryRPMDiskSource(ShortPackageDiskSource):
 
     def __init__(self, mountPoint):
         ShortPackageDiskSource.__init__(self, mountPoint)
-        self._file_suffix = '.rpm'
+        self._file_suffix = ".rpm"
 
 
 class SourceRPMDiskSource(BinaryRPMDiskSource):
@@ -249,7 +247,7 @@ class KickstartDataDiskSource(DiskSource):
         dirname = self._getDir(create)
         if create and not os.path.isdir(dirname):
             createPath(dirname)
-        return os.path.join(dirname, self.id) + '.xml'
+        return os.path.join(dirname, self.id) + ".xml"
 
 
 class KickstartFileDiskSource(KickstartDataDiskSource):
@@ -265,8 +263,7 @@ class KickstartFileDiskSource(KickstartDataDiskSource):
         self.relative_path = relative_path
 
     def _getFile(self, create=0):
-        path = os.path.join(self._getDir(create), self.id,
-                            self.relative_path)
+        path = os.path.join(self._getDir(create), self.id, self.relative_path)
         dirname = os.path.dirname(path)
         if create and not os.path.isdir(dirname):
             createPath(dirname)
@@ -274,7 +271,6 @@ class KickstartFileDiskSource(KickstartDataDiskSource):
 
 
 class MetadataDiskSource:
-
     def __init__(self, mountpoint):
         self.mountpoint = mountpoint
 
@@ -358,8 +354,9 @@ class MetadataDiskSource:
     def getClonedChannelsXmlStream(self):
         return ClonedChannelsDiskSource(self.mountpoint).load()
 
+
 class SupportInformationDiskSource(DiskSource):
-    subdir = 'support_info'
+    subdir = "support_info"
 
     def _getFile(self, create=0):
         dirname = self._getDir(create)
@@ -367,8 +364,9 @@ class SupportInformationDiskSource(DiskSource):
             createPath(dirname)
         return "%s/support_info.xml" % dirname
 
+
 class SuseProductsDiskSource(DiskSource):
-    subdir = 'suse_products'
+    subdir = "suse_products"
 
     def _getFile(self, create=0):
         dirname = self._getDir(create)
@@ -376,8 +374,9 @@ class SuseProductsDiskSource(DiskSource):
             createPath(dirname)
         return "%s/suse_products.xml" % dirname
 
+
 class SuseProductChannelsDiskSource(DiskSource):
-    subdir = 'suse_products'
+    subdir = "suse_products"
 
     def _getFile(self, create=0):
         dirname = self._getDir(create)
@@ -385,8 +384,9 @@ class SuseProductChannelsDiskSource(DiskSource):
             createPath(dirname)
         return "%s/suse_product_channels.xml" % dirname
 
+
 class SuseUpgradePathsDiskSource(DiskSource):
-    subdir = 'suse_products'
+    subdir = "suse_products"
 
     def _getFile(self, create=0):
         dirname = self._getDir(create)
@@ -394,8 +394,9 @@ class SuseUpgradePathsDiskSource(DiskSource):
             createPath(dirname)
         return "%s/suse_upgrade_paths.xml" % dirname
 
+
 class SuseProductExtensionsDiskSource(DiskSource):
-    subdir = 'suse_product_extensions'
+    subdir = "suse_product_extensions"
 
     def _getFile(self, create=0):
         dirname = self._getDir(create)
@@ -403,8 +404,9 @@ class SuseProductExtensionsDiskSource(DiskSource):
             createPath(dirname)
         return "%s/suse_product_extensions.xml" % dirname
 
+
 class SuseProductRepositoriesDiskSource(DiskSource):
-    subdir = 'suse_product_repositories'
+    subdir = "suse_product_repositories"
 
     def _getFile(self, create=0):
         dirname = self._getDir(create)
@@ -412,8 +414,9 @@ class SuseProductRepositoriesDiskSource(DiskSource):
             createPath(dirname)
         return "%s/suse_product_repositories.xml" % dirname
 
+
 class SCCRepositoriesDiskSource(DiskSource):
-    subdir = 'scc_repositories'
+    subdir = "scc_repositories"
 
     def _getFile(self, create=0):
         dirname = self._getDir(create)
@@ -421,8 +424,9 @@ class SCCRepositoriesDiskSource(DiskSource):
             createPath(dirname)
         return "%s/scc_repositories.xml" % dirname
 
+
 class SuseSubscriptionsDiskSource(DiskSource):
-    subdir = 'suse_products'
+    subdir = "suse_products"
 
     def _getFile(self, create=0):
         dirname = self._getDir(create)
@@ -430,8 +434,9 @@ class SuseSubscriptionsDiskSource(DiskSource):
             createPath(dirname)
         return "%s/suse_subscriptions.xml" % dirname
 
+
 class ClonedChannelsDiskSource(DiskSource):
-    subdir = 'suse_products'
+    subdir = "suse_products"
 
     def _getFile(self, create=0):
         dirname = self._getDir(create)
@@ -439,7 +444,8 @@ class ClonedChannelsDiskSource(DiskSource):
             createPath(dirname)
         return "%s/cloned_channels.xml" % dirname
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     # TEST CODE
     s = ChannelDiskSource("/tmp")
     print((s.list()))

@@ -22,9 +22,9 @@ from spacewalk.server import rhnSQL
 from spacewalk.common.rhnConfig import initCFG
 from spacewalk.common.rhnTB import Traceback
 
-initCFG('server.xmlrpc')
+initCFG("server.xmlrpc")
 
 try:
     rhnSQL.initDB("rhnuser/rhnuser@webde")
 except:
-    Traceback('test_censored_db_password', mail=1)
+    Traceback("test_censored_db_password", mail=1)

@@ -16,6 +16,7 @@
 import sys
 import getpass
 import io
+
 try:
     #  python 2
     import xmlrpclib
@@ -26,8 +27,8 @@ except ImportError:
 
 def getUsernamePassword(cmdlineUsername, cmdlinePassword):
     """
-     Returns a username and password (either by returning the ones passed as
-     args, or the user's input
+    Returns a username and password (either by returning the ones passed as
+    args, or the user's input
     """
     if cmdlineUsername and cmdlinePassword:
         return cmdlineUsername, cmdlinePassword
@@ -65,7 +66,7 @@ def getUsernamePassword(cmdlineUsername, cmdlinePassword):
 
 def xmlrpc_login(client, username, password, verbose=0):
     """
-     Authenticate Session call
+    Authenticate Session call
     """
     if verbose:
         print("...logging in to server...")
@@ -82,7 +83,7 @@ def xmlrpc_login(client, username, password, verbose=0):
 
 def xmlrpc_logout(client, session_key, verbose=0):
     """
-     End Authentication call
+    End Authentication call
     """
     if verbose:
         print("...logging out of server...")

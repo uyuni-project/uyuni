@@ -18,6 +18,7 @@
 import os
 import json
 import sys
+
 try:
     import unittest2 as unittest
 except ImportError:
@@ -28,8 +29,11 @@ try:
 except ImportError:
     from mock import MagicMock
 
-from spacewalk.susemanager.mgr_sync.channel import parse_channels, \
-    find_channel_by_label, Channel
+from spacewalk.susemanager.mgr_sync.channel import (
+    parse_channels,
+    find_channel_by_label,
+    Channel,
+)
 from spacewalk.susemanager.mgr_sync.mgr_sync import MgrSync
 from spacewalk.susemanager.mgr_sync import logger
 
@@ -38,11 +42,11 @@ from helper import read_data_from_fixture, path_to_fixture
 
 
 class ChannelTest(unittest.TestCase):
-
     def setUp(self):
         self.mgr_sync = MgrSync()
         self.mgr_sync.log = self.mgr_sync.__init__logger = MagicMock(
-            return_value=logger.Logger(3, "tmp.log"))
+            return_value=logger.Logger(3, "tmp.log")
+        )
 
     def tearDown(self):
         if os.path.exists("tmp.log"):
@@ -56,32 +60,28 @@ class ChannelTest(unittest.TestCase):
             expected_hierarchy = json.load(file)
 
         channels = parse_channels(
-            read_data_from_fixture("list_channels.data"),
-            self.mgr_sync.log)
+            read_data_from_fixture("list_channels.data"), self.mgr_sync.log
+        )
 
-        self.assertEqual(sorted(channels.keys()),
-                         sorted(expected_hierarchy.keys()))
+        self.assertEqual(sorted(channels.keys()), sorted(expected_hierarchy.keys()))
         for label, bc in list(channels.items()):
             self.assertEqual(label, bc.label)
-            self.assertEqual(
-                bc.status,
-                expected_channels[bc.label])
+            self.assertEqual(bc.status, expected_channels[bc.label])
 
             if bc.children and bc.status == Channel.Status.INSTALLED:
                 children = sorted([c.label for c in bc.children])
-                self.assertEqual(children,
-                                 sorted(expected_hierarchy[bc.label]))
+                self.assertEqual(children, sorted(expected_hierarchy[bc.label]))
             else:
                 self.assertEqual(0, len(expected_hierarchy[bc.label]))
 
     def test_find_channel_by_label(self):
         channels = parse_channels(
-            read_data_from_fixture("list_channels.data"), self.mgr_sync.log)
+            read_data_from_fixture("list_channels.data"), self.mgr_sync.log
+        )
 
-        for label in ['rhel-x86_64-es-4',
-                      'sles11-sp2-updates-i586']:
+        for label in ["rhel-x86_64-es-4", "sles11-sp2-updates-i586"]:
             bc = find_channel_by_label(label, channels, self.mgr_sync.log)
             self.assertIsNotNone(bc)
             self.assertEqual(label, bc.label)
 
-        self.assertIsNone(find_channel_by_label('foobar', channels, self.mgr_sync.log))
+        self.assertIsNone(find_channel_by_label("foobar", channels, self.mgr_sync.log))

@@ -23,14 +23,17 @@ from spacewalk.server import rhnSQL, rhnCapability
 from spacewalk.server.rhnLib import InvalidAction
 
 # the "exposed" functions
-__rhnexport__ = ['update',
-                 'remove',
-                 'refresh_list',
-                 'runTransaction',
-                 'verify',
-                 'setLocks']
+__rhnexport__ = [
+    "update",
+    "remove",
+    "refresh_list",
+    "runTransaction",
+    "verify",
+    "setLocks",
+]
 
-_query_action_verify_packages = rhnSQL.Statement("""
+_query_action_verify_packages = rhnSQL.Statement(
+    """
   select distinct
            pn.name as name,
            pe.version as version,
@@ -45,7 +48,8 @@ _query_action_verify_packages = rhnSQL.Statement("""
      where ap.action_id = :actionid
        and ap.evr_id = pe.id
        and ap.name_id = pn.id
-""")
+"""
+)
 
 
 def verify(serverId, actionId, dry_run=0):
@@ -55,18 +59,20 @@ def verify(serverId, actionId, dry_run=0):
     tmppackages = h.fetchall_dict()
 
     if not tmppackages:
-        raise InvalidAction("invalid action %s for server %s" %
-                            (actionId, serverId))
+        raise InvalidAction("invalid action %s for server %s" % (actionId, serverId))
 
     packages = []
 
     for package in tmppackages:
-
-        packages.append([package['name'],
-                         package['version'],
-                         package['release'],
-                         package['epoch'] or '',
-                         package['arch'] or ''])
+        packages.append(
+            [
+                package["name"],
+                package["version"],
+                package["release"],
+                package["epoch"] or "",
+                package["arch"] or "",
+            ]
+        )
     log_debug(4, packages)
     return packages
 
@@ -77,33 +83,41 @@ def handle_action(serverId, actionId, packagesIn, dry_run=0):
     client_caps = rhnCapability.get_client_capabilities()
     log_debug(3, "Client Capabilities", client_caps)
     multiarch = 0
-    if client_caps and 'packages.update' in client_caps:
-        cap_info = client_caps['packages.update']
-        if int(cap_info['version']) > 1:
+    if client_caps and "packages.update" in client_caps:
+        cap_info = client_caps["packages.update"]
+        if int(cap_info["version"]) > 1:
             multiarch = 1
     if not packagesIn:
-        raise InvalidAction("Packages scheduled in action %s for server %s could not be found." %
-                            (actionId, serverId))
+        raise InvalidAction(
+            "Packages scheduled in action %s for server %s could not be found."
+            % (actionId, serverId)
+        )
 
-    retracted = {p['name'] for p in packagesIn if 'retracted' in p and p['retracted']}
+    retracted = {p["name"] for p in packagesIn if "retracted" in p and p["retracted"]}
     if retracted:
         # Do not install retracted packages
-        raise InvalidAction("packages.update: Action contains retracted packages %s" % retracted)
+        raise InvalidAction(
+            "packages.update: Action contains retracted packages %s" % retracted
+        )
 
     packages = []
     for package in packagesIn:
         # Fix the epoch
-        if package['epoch'] is None:
-            package['epoch'] = ""
-        pkg_arch = ''
+        if package["epoch"] is None:
+            package["epoch"] = ""
+        pkg_arch = ""
         if multiarch:
-            pkg_arch = package['arch'] or ''
+            pkg_arch = package["arch"] or ""
 
-        packages.append([package['name'],
-                         package['version'] or '',
-                         package['release'] or '',
-                         package['epoch'],
-                         pkg_arch])
+        packages.append(
+            [
+                package["name"],
+                package["version"] or "",
+                package["release"] or "",
+                package["epoch"],
+                pkg_arch,
+            ]
+        )
 
     log_debug(4, packages)
     return packages
@@ -122,7 +136,9 @@ def update(serverId, actionId, dry_run=0):
     tmppackages = h.fetchall_dict()
     return handle_action(serverId, actionId, tmppackages, dry_run)
 
-_query_action_setLocks = rhnSQL.Statement("""
+
+_query_action_setLocks = rhnSQL.Statement(
+    """
   SELECT DISTINCT
     pn.name AS name,
     pe.version AS version,
@@ -144,36 +160,44 @@ _query_action_setLocks = rhnSQL.Statement("""
       ap.name_id   = pn.id AND
       lp.server_id = :serverid AND
       (lp.pending IS NULL OR lp.pending = 'L')
-""")
+"""
+)
+
+
 def setLocks(serverId, actionId, dry_run=0):
     log_debug(3, serverId, actionId, dry_run)
 
     client_caps = rhnCapability.get_client_capabilities()
-    log_debug(3,"Client Capabilities", client_caps)
+    log_debug(3, "Client Capabilities", client_caps)
     multiarch = 0
-    if not client_caps or 'packages.setLocks' not in client_caps:
+    if not client_caps or "packages.setLocks" not in client_caps:
         raise InvalidAction("Client is not capable of locking packages.")
 
     h = rhnSQL.prepare(_query_action_setLocks)
-    h.execute(actionid=actionId,serverid=serverId)
+    h.execute(actionid=actionId, serverid=serverId)
     tmppackages = h.fetchall_dict() or {}
 
     packages = []
 
     for package in tmppackages:
-        packages.append([package['name'],
-                         package['version'],
-                         package['release'],
-                         package['epoch'] or '',
-                         package['arch'] or ''])
+        packages.append(
+            [
+                package["name"],
+                package["version"],
+                package["release"],
+                package["epoch"] or "",
+                package["arch"] or "",
+            ]
+        )
     log_debug(4, packages)
     return packages
 
-def refresh_list(serverId, actionId, dry_run=0):
-    """ Call the equivalent of up2date -p.
 
-        I.e. update the list of a client's installed packages known by
-        Red Hat's DB.
+def refresh_list(serverId, actionId, dry_run=0):
+    """Call the equivalent of up2date -p.
+
+    I.e. update the list of a client's installed packages known by
+    Red Hat's DB.
     """
     log_debug(3)
     return None
@@ -183,21 +207,26 @@ def runTransaction(server_id, action_id, dry_run=0):
     log_debug(3, server_id, action_id, dry_run)
 
     # Fetch package_delta_id
-    h = rhnSQL.prepare("""
+    h = rhnSQL.prepare(
+        """
         select package_delta_id
         from rhnActionPackageDelta
         where action_id = :action_id
-    """)
+    """
+    )
     h.execute(action_id=action_id)
     row = h.fetchone_dict()
     if row is None:
-        raise InvalidAction("invalid packages.runTransaction action %s for server %s" %
-                            (action_id, server_id))
+        raise InvalidAction(
+            "invalid packages.runTransaction action %s for server %s"
+            % (action_id, server_id)
+        )
 
-    package_delta_id = row['package_delta_id']
+    package_delta_id = row["package_delta_id"]
 
     # Fetch packages
-    h = rhnSQL.prepare("""
+    h = rhnSQL.prepare(
+        """
         select tro.label as operation, pn.name, pe.version, pe.release, pe.epoch,
                pa.label as package_arch
           from rhnPackageDeltaElement pde,
@@ -211,7 +240,8 @@ def runTransaction(server_id, action_id, dry_run=0):
            and rp.name_id = pn.id
            and rp.evr_id = pe.id
         order by tro.label, pn.name
-    """)
+    """
+    )
     h.execute(package_delta_id=package_delta_id)
 
     result = []
@@ -220,33 +250,31 @@ def runTransaction(server_id, action_id, dry_run=0):
         if not row:
             break
 
-        operation = row['operation']
+        operation = row["operation"]
 
         # Need to map the operations into codes the client/rpm understands
-        if operation == 'insert':
-            operation = 'i'
-        elif operation == 'delete':
-            operation = 'e'
-        elif operation == 'upgrade':
-            operation = 'u'
+        if operation == "insert":
+            operation = "i"
+        elif operation == "delete":
+            operation = "e"
+        elif operation == "upgrade":
+            operation = "u"
         else:
             # Unsupported
             continue
 
         # Fix null epochs
-        epoch = row['epoch']
+        epoch = row["epoch"]
         if epoch is None:
-            epoch = ''
+            epoch = ""
 
-        name, version, release = row['name'], row['version'], row['release']
+        name, version, release = row["name"], row["version"], row["release"]
         # The package arch can be null now because of the outer join
-        package_arch = row['package_arch'] or ""
+        package_arch = row["package_arch"] or ""
 
-        result.append([
-            [name, version, release, epoch, package_arch],
-            operation
-        ])
-    return {'packages': result}
+        result.append([[name, version, release, epoch, package_arch], operation])
+    return {"packages": result}
+
 
 # SQL statements -- used by update()
 _packageStatement_update = """

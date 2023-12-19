@@ -29,7 +29,7 @@ from uyuni.common import usix
 
 
 def ociDict(names=None, row=None):
-    """ Create a dictionary from a row description and its values. """
+    """Create a dictionary from a row description and its values."""
     data = {}
     if not names:
         raise AttributeError("Class initialization requires a description hash")
@@ -42,7 +42,7 @@ def ociDict(names=None, row=None):
 
 
 def __oci_name_value(names, value):
-    """ Extract the name, value pair needed by ociDict function. """
+    """Extract the name, value pair needed by ociDict function."""
     # the format of the names is
     name, dbitype, dsize, dbsize, prec, scale, nullok = names
     name = name.lower()
@@ -56,16 +56,14 @@ class SQLError(Exception):
 
 # other Schema Errors
 class SQLSchemaError(SQLError):
-
     def __init__(self, errno, errmsg, *args):
         self.errno = errno
-        (self.errmsg, errmsg) = errmsg.split('\n', 1)
+        (self.errmsg, errmsg) = errmsg.split("\n", 1)
         SQLError.__init__(self, self.errno, self.errmsg, errmsg, *args)
 
 
 # SQL connect error
 class SQLConnectError(SQLError):
-
     def __init__(self, db, errno, errmsg, *args):
         self.db = db
         self.errno = errno
@@ -75,7 +73,6 @@ class SQLConnectError(SQLError):
 
 # Cannot prepare statement
 class SQLStatementPrepareError(SQLError):
-
     def __init__(self, db, errmsg, *args):
         self.db = db
         self.errmsg = errmsg
@@ -88,7 +85,7 @@ class ModifiedRowError(SQLError):
 
 class Cursor:
 
-    """ A class to implement generic SQL Cursor operations. """
+    """A class to implement generic SQL Cursor operations."""
 
     # The cursor cache is a hash of:
     #   id(dbh) as keys
@@ -137,8 +134,7 @@ class Cursor:
         self.sql = sql
         self._real_cursor = self._prepare(force=force)
 
-    def update_blob(self, table_name, column_name, where_clause,
-                    data, **kwargs):
+    def update_blob(self, table_name, column_name, where_clause, data, **kwargs):
         """
         Abstraction for the update of a blob column which can vary wildly
         between different database implementations.
@@ -146,7 +142,7 @@ class Cursor:
         raise NotImplementedError()
 
     def execute(self, *p, **kw):
-        """ Execute a single query. """
+        """Execute a single query."""
         return self._execute_wrapper(self._execute, *p, **kw)
 
     def executemany(self, *p, **kw):
@@ -163,7 +159,9 @@ class Cursor:
         Execute a query with a potentially-long VALUEs list. This method will split the query up in page_size
         chunks. Use a %s placeholder where the VALUE list goes.
         """
-        return self._execute_wrapper(self._execute_values, sql, argslist, template, page_size, fetch)
+        return self._execute_wrapper(
+            self._execute_values, sql, argslist, template, page_size, fetch
+        )
 
     def _execute_wrapper(self, function, *p, **kw):
         """
@@ -188,7 +186,7 @@ class Cursor:
         raise NotImplementedError()
 
     def _execute_(self, args, kwargs):
-        """ Database specific execution of the query. """
+        """Database specific execution of the query."""
         raise NotImplementedError()
 
     # DATA RETRIEVAL
@@ -262,6 +260,7 @@ class Database:
 
     Inherited from by the backend specific classes for Oracle, PostgreSQL, etc.
     """
+
     _procedure_class = Procedure
     TimestampFromTicks = None
 
@@ -269,21 +268,21 @@ class Database:
         pass
 
     def connect(self, reconnect=1):
-        """ Opens a connection to the database. """
+        """Opens a connection to the database."""
         raise NotImplementedError()
 
     def check_connection(self):
-        """ Check that this connection is still valid. """
+        """Check that this connection is still valid."""
         # Delegates to sub-classes as this is usually done with a DB specific
         # query:
         raise NotImplementedError()
 
     def prepare(self, sql, force=0):
-        """ Prepare an SQL statement. """
+        """Prepare an SQL statement."""
         raise NotImplementedError()
 
     def commit(self):
-        """ Commit changes """
+        """Commit changes"""
         raise NotImplementedError()
 
     def procedure(self, name):
@@ -336,8 +335,9 @@ class Database:
         "Reads a lob's contents"
         return None
 
-    def is_connected_to(self, backend, host, port, username, password,
-                        database, sslmode):
+    def is_connected_to(
+        self, backend, host, port, username, password, database, sslmode
+    ):
         """
         Check if this database matches the given connection parameters.
         """
@@ -356,13 +356,15 @@ class Database:
 # is available upon import, we can automatically check for the statements'
 # correctness
 class Statement:
-
     def __init__(self, statement):
         self.statement = statement
 
     def __repr__(self):
         return "<%s instance at %s; statement=%s" % (
-            self.__class__, id(self), self.statement)
+            self.__class__,
+            id(self),
+            self.statement,
+        )
 
     def __str__(self):
         return self.statement

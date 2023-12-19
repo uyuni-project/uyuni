@@ -31,11 +31,11 @@ class XMLWriter:
     # stuff above ASCII 32 and UTF-8 alphanumeric chars in any language)
     _re = re.compile("(&|<|>|'|\"|[^\x09\x0a\x0d\x20-\xFF\w])")
     _escaped_chars = {
-        '&': '&amp;',
-        '<': '&lt;',
-        '>': '&gt;',
-        '"': '&quot;',
-        "'": '&apos;',
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&apos;",
     }
 
     def __init__(self, stream=sys.stdout, skip_xml_decl=0):
@@ -46,13 +46,11 @@ class XMLWriter:
 
     def open_tag(self, name, attributes=None, namespace=None):
         "Opens a tag with the specified attributes"
-        return self._open_tag(None, name, attributes=attributes,
-                              namespace=namespace)
+        return self._open_tag(None, name, attributes=attributes, namespace=namespace)
 
     def empty_tag(self, name, attributes=None, namespace=None):
         "Writes an empty tag with the specified attributes"
-        return self._open_tag(1, name, attributes=attributes,
-                              namespace=namespace)
+        return self._open_tag(1, name, attributes=attributes, namespace=namespace)
 
     # Now the function that does most of the work for open_tag and empty_tag
     def _open_tag(self, empty, name, attributes=None, namespace=None):
@@ -87,8 +85,7 @@ class XMLWriter:
             name = "%s:%s" % (namespace, name)
 
         if self.tag_stack[-1] != name:
-            raise Exception("Could not close tag %s if not opened before" \
-                % name)
+            raise Exception("Could not close tag %s if not opened before" % name)
         self.tag_stack.pop()
 
         self.stream.write("</")
@@ -117,21 +114,27 @@ class XMLWriter:
         if c in self._escaped_chars:
             return self._escaped_chars[c]
         # return "&#%d;" % ord(c)
-        return '?'
+        return "?"
 
     def flush(self):
         self.stream.flush()
 
-if __name__ == '__main__':
-    weirdtag = chr(248) + 'gootag'
+
+if __name__ == "__main__":
+    weirdtag = chr(248) + "gootag"
     writer = XMLWriter()
     writer.open_tag(weirdtag)
     writer.open_tag("message")
-    writer.open_tag("text", attributes={'from': 'Trond Eivind Glomsrød', 'to': "Bernhard Rosenkr)Bänzer"})
-    writer.data("String with \"quotes\", 'apostroph', Trond Eivind Glomsrød\n  and Bernhard Rosenkr)Bänzer")
+    writer.open_tag(
+        "text",
+        attributes={"from": "Trond Eivind Glomsrød", "to": "Bernhard Rosenkr)Bänzer"},
+    )
+    writer.data(
+        "String with \"quotes\", 'apostroph', Trond Eivind Glomsrød\n  and Bernhard Rosenkr)Bänzer"
+    )
     r = re.compile("(&|<|>|'|\"|[^\x09\x0a\x0d\x20-\xFF])")
     writer.close_tag("text")
     writer.close_tag("message")
-    writer.empty_tag("yahoo", attributes={'abc': 1})
+    writer.empty_tag("yahoo", attributes={"abc": 1})
     writer.close_tag(weirdtag)
     print("")

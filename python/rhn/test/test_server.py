@@ -6,11 +6,11 @@ import unittest
 from rhn.rpclib import Server
 from rhn.rpclib import MalformedURIError
 
+
 class ServerTest(unittest.TestCase):
+    #    def setUp(self):
 
-#    def setUp(self):
-
-#    def tearDown(self):
+    #    def tearDown(self):
 
     def testGoodURIWithHTTP(self):
         try:

@@ -36,6 +36,5 @@ from argparse import ArgumentParser
 
 
 class SpacecmdArgumentParser(ArgumentParser):
-
     def error(self, message):
         raise Exception(message)

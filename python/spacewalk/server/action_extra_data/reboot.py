@@ -19,13 +19,17 @@ from spacewalk.common.rhnLog import log_debug
 from spacewalk.server.rhnServer import server_kickstart
 
 # the "exposed" functions
-__rhnexport__ = ['reboot']
+__rhnexport__ = ["reboot"]
 
 
 def reboot(server_id, action_id, data={}):
     log_debug(3, action_id)
 
-    action_status = rhnFlags.get('action_status')
-    server_kickstart.update_kickstart_session(server_id, action_id,
-                                              action_status, kickstart_state='restarted',
-                                              next_action_type=None)
+    action_status = rhnFlags.get("action_status")
+    server_kickstart.update_kickstart_session(
+        server_id,
+        action_id,
+        action_status,
+        kickstart_state="restarted",
+        next_action_type=None,
+    )

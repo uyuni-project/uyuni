@@ -19,7 +19,7 @@ __all__ = []
 from . import auth
 
 rpcClasses = {
-    'authentication':   auth.Authentication,
+    "authentication": auth.Authentication,
 }
 
 getHandler = None

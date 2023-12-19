@@ -56,7 +56,10 @@ class CertCheckError(Exception):
     pass
 
 
-FilesContent = namedtuple("FilesContent", ["root_ca", "server_cert", "server_key", "intermediate_cas"])
+FilesContent = namedtuple(
+    "FilesContent", ["root_ca", "server_cert", "server_key", "intermediate_cas"]
+)
+
 
 def log_error(msg):
     frame = traceback.extract_stack()[-2]
@@ -104,7 +107,9 @@ def processCommandline():
     return options
 
 
-def checkOptions(root_ca_file, server_cert_file, server_key_file, intermediate_ca_files):
+def checkOptions(
+    root_ca_file, server_cert_file, server_key_file, intermediate_ca_files
+):
     if not root_ca_file:
         log_error("Root CA is required")
         sys.exit(1)
@@ -116,18 +121,14 @@ def checkOptions(root_ca_file, server_cert_file, server_key_file, intermediate_c
         log_error("Server Certificate is required")
         sys.exit(1)
     if not os.path.exists(server_cert_file):
-        log_error(
-            "Server Certificate: file not found {}".format(server_cert_file)
-        )
+        log_error("Server Certificate: file not found {}".format(server_cert_file))
         sys.exit(1)
 
     if not server_key_file:
         log_error("Server Private Key is required")
         sys.exit(1)
     if not os.path.exists(server_key_file):
-        log_error(
-            "Server Private Key: file not found {}".format(server_key_file)
-        )
+        log_error("Server Private Key: file not found {}".format(server_key_file))
         sys.exit(1)
 
     for ica in intermediate_ca_files:
@@ -136,7 +137,9 @@ def checkOptions(root_ca_file, server_cert_file, server_key_file, intermediate_c
             sys.exit(1)
 
 
-def readAllFiles(root_ca_file, server_cert_file, server_key_file, intermediate_ca_files):
+def readAllFiles(
+    root_ca_file, server_cert_file, server_key_file, intermediate_ca_files
+):
     allFiles = [root_ca_file, server_cert_file, server_key_file]
     allFiles.extend(intermediate_ca_files)
 
@@ -145,8 +148,12 @@ def readAllFiles(root_ca_file, server_cert_file, server_key_file, intermediate_c
         with open(input_file, "r") as f:
             contents.append(f.read())
 
-    return FilesContent(root_ca=contents[0], server_cert=contents[1],
-            server_key=contents[2], intermediate_cas=contents[3:])
+    return FilesContent(
+        root_ca=contents[0],
+        server_cert=contents[1],
+        server_key=contents[2],
+        intermediate_cas=contents[3:],
+    )
 
 
 def prepareData(root_ca_content, server_cert_content, intermediate_ca_content):
@@ -232,7 +239,8 @@ def getCertData(cert):
             "-issuer",
             "-issuer_hash",
             "-modulus",
-            "-ext", "subjectKeyIdentifier,authorityKeyIdentifier"
+            "-ext",
+            "subjectKeyIdentifier,authorityKeyIdentifier",
         ],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
@@ -304,7 +312,7 @@ def getPrivateKey(key):
         ["openssl", "pkey", "-passin", "pass:invalid", "-text", "-noout"],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
-        input=key.encode("utf-8")
+        input=key.encode("utf-8"),
     )
 
     if out.returncode:
@@ -376,7 +384,9 @@ def checkCompleteCAChain(server_cert_content, certData):
         keyId = certData[ihash]["subjectKeyIdentifier"]
         if not (keyId and issuerKeyId and keyId == issuerKeyId):
             raise CertCheckError(
-                "Incomplete CA Chain. Key Identifiers do not match. Unable to find issuer of '{}'".format(subject)
+                "Incomplete CA Chain. Key Identifiers do not match. Unable to find issuer of '{}'".format(
+                    subject
+                )
             )
         if not certData[ihash]["isca"]:
             raise CertCheckError("CA missing basic constraints extension")
@@ -456,8 +466,9 @@ def deployApache(apache_cert_content, server_key_content):
     # exists on server and proxy
     os.system("/usr/bin/spacewalk-setup-httpd")
     log(
-"""After changing the server certificate please execute:
-$> spacewalk-service stop """)
+        """After changing the server certificate please execute:
+$> spacewalk-service stop """
+    )
 
 
 def deployPg(server_key_content):
@@ -474,6 +485,7 @@ def deployPg(server_key_content):
 
         log("""$> systemctl restart postgresql.service """)
 
+
 def deployCAInDB(certData):
     if not os.path.exists("/usr/bin/rhn-ssl-dbstore"):
         # not a Uyuni Server - skip deploying into DB
@@ -488,7 +500,11 @@ def deployCAInDB(certData):
                 input=ca["content"].encode("utf-8"),
             )
             if out.returncode:
-                log_error("Failed to upload CA Certificate to DB: {}".format(out.stderr.decode("utf-8")))
+                log_error(
+                    "Failed to upload CA Certificate to DB: {}".format(
+                        out.stderr.decode("utf-8")
+                    )
+                )
                 raise OSError("Failed to upload CA Certificate to DB")
             break
 
@@ -512,13 +528,14 @@ def deployCAUyuni(certData):
     time.sleep(3)
     os.system("/usr/share/rhn/certs/update-ca-cert-trust.sh")
     log(
-"""$> spacewalk-service start
+        """$> spacewalk-service start
 
 As the CA certificate has been changed, please deploy the CA to all registered clients.
-On salt-managed clients, you can do this by applying the highstate.""")
+On salt-managed clients, you can do this by applying the highstate."""
+    )
 
 
-def checks(server_key_content,server_cert_content, certData):
+def checks(server_key_content, server_cert_content, certData):
     """
     Perform different checks on the input data
     """
@@ -530,7 +547,9 @@ def checks(server_key_content,server_cert_content, certData):
     checkCompleteCAChain(server_cert_content, certData)
 
 
-def getContainersSetup(root_ca_content, intermediate_ca_content, server_cert_content, server_key_content):
+def getContainersSetup(
+    root_ca_content, intermediate_ca_content, server_cert_content, server_key_content
+):
     if not root_ca_content:
         raise CertCheckError("Root CA is required")
     if not server_cert_content:
@@ -539,10 +558,9 @@ def getContainersSetup(root_ca_content, intermediate_ca_content, server_cert_con
         raise CertCheckError("Server Private Key is required")
 
     certData = prepareData(
-            root_ca_content,
-            server_cert_content,
-            intermediate_ca_content)
-    checks(server_key_content,server_cert_content, certData)
+        root_ca_content, server_cert_content, intermediate_ca_content
+    )
+    checks(server_key_content, server_cert_content, certData)
     apache_cert_content = generateApacheCert(server_cert_content, certData)
     if not apache_cert_content:
         raise CertCheckError("Failed to generate certificates")
@@ -553,7 +571,12 @@ def _main():
     """main routine"""
 
     options = processCommandline()
-    checkOptions(options.root_ca_file, options.server_cert_file, options.server_key_file, options.intermediate_ca_file)
+    checkOptions(
+        options.root_ca_file,
+        options.server_cert_file,
+        options.server_key_file,
+        options.intermediate_ca_file,
+    )
 
     files_content = readAllFiles(
         options.root_ca_file,
@@ -562,13 +585,17 @@ def _main():
         options.intermediate_ca_file,
     )
     if options.check_only:
-        getContainersSetup(files_content.root_ca, files_content.intermediate_cas, files_content.server_cert, files_content.server_key)
+        getContainersSetup(
+            files_content.root_ca,
+            files_content.intermediate_cas,
+            files_content.server_cert,
+            files_content.server_key,
+        )
         sys.exit(0)
 
     certData = prepareData(
-            files_content.root_ca,
-            files_content.server_cert,
-            files_content.intermediate_cas)
+        files_content.root_ca, files_content.server_cert, files_content.intermediate_cas
+    )
     checks(files_content.server_key, files_content.server_cert, certData)
     apache_cert_content = generateApacheCert(files_content.server_cert, certData)
     if not apache_cert_content:

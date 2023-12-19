@@ -30,4 +30,4 @@ def check_password(username, password, service):
         else:
             return 1
     except:
-        raise_with_tb(rhnException('Internal PAM error'), sys.exc_info()[2])
+        raise_with_tb(rhnException("Internal PAM error"), sys.exc_info()[2])

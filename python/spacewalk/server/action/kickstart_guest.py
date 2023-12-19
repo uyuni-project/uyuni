@@ -17,17 +17,20 @@ from uyuni.common.usix import raise_with_tb
 from spacewalk.common.rhnLog import log_debug
 from spacewalk.server import rhnSQL
 from spacewalk.server.rhnLib import InvalidAction, ShadowAction
-from spacewalk.server.action.utils import SubscribedChannel, \
-    ChannelPackage, \
-    PackageInstallScheduler, \
-    NoActionInfo, \
-    PackageNotFound
+from spacewalk.server.action.utils import (
+    SubscribedChannel,
+    ChannelPackage,
+    PackageInstallScheduler,
+    NoActionInfo,
+    PackageNotFound,
+)
 from spacewalk.server.rhnChannel import subscribe_to_tools_channel
 
 
-__rhnexport__ = ['initiate', 'schedule_virt_guest_pkg_install', 'add_tools_channel']
+__rhnexport__ = ["initiate", "schedule_virt_guest_pkg_install", "add_tools_channel"]
 
-_query_initiate_guest = rhnSQL.Statement("""
+_query_initiate_guest = rhnSQL.Statement(
+    """
  select  ksd.label as profile_name, akg.kickstart_host, kvt.label as virt_type,
        akg.mem_kb, akg.vcpus, akg.disk_path, akg.virt_bridge, akg.cobbler_system_name,
        akg.disk_gb, akg.append_string,
@@ -39,13 +42,14 @@ _query_initiate_guest = rhnSQL.Statement("""
        and ksess.id = akg.ks_session_id
        and ksdef.kickstart_id = ksd.id
        and ksdef.virtualization_type = kvt.id
-""")
+"""
+)
 
 
 def schedule_virt_guest_pkg_install(server_id, action_id, dry_run=0):
     """
-        ShadowAction that schedules a package installation action for the
-        rhn-virtualization-guest package.
+    ShadowAction that schedules a package installation action for the
+    rhn-virtualization-guest package.
     """
     log_debug(3)
 
@@ -62,8 +66,10 @@ def schedule_virt_guest_pkg_install(server_id, action_id, dry_run=0):
         raise InvalidAction("Could not find the rhn-virtualization-guest package.")
 
     try:
-        install_scheduler = PackageInstallScheduler(server_id, action_id, rhn_v12n_package)
-        if (not dry_run):
+        install_scheduler = PackageInstallScheduler(
+            server_id, action_id, rhn_v12n_package
+        )
+        if not dry_run:
             install_scheduler.schedule_package_install()
         else:
             log_debug(4, "dry run requested")
@@ -90,29 +96,40 @@ def initiate(server_id, action_id, dry_run=0):
     if not row:
         raise InvalidAction("Kickstart action without an associated kickstart")
 
-    kickstart_host = row['kickstart_host']
-    virt_type = row['virt_type']
-    name = row['guest_name']
+    kickstart_host = row["kickstart_host"]
+    virt_type = row["virt_type"]
+    name = row["guest_name"]
     boot_image = "spacewalk-koan"
-    append_string = row['append_string']
-    vcpus = row['vcpus']
-    disk_gb = row['disk_gb']
-    mem_kb = row['mem_kb']
-    ks_session_id = row['ks_session_id']
-    virt_bridge = row['virt_bridge']
-    disk_path = row['disk_path']
-    cobbler_system_name = row['cobbler_system_name']
+    append_string = row["append_string"]
+    vcpus = row["vcpus"]
+    disk_gb = row["disk_gb"]
+    mem_kb = row["mem_kb"]
+    ks_session_id = row["ks_session_id"]
+    virt_bridge = row["virt_bridge"]
+    disk_path = row["disk_path"]
+    cobbler_system_name = row["cobbler_system_name"]
 
     if not boot_image:
         raise InvalidAction("Boot image missing")
 
-    return (kickstart_host, cobbler_system_name, virt_type, ks_session_id, name,
-            mem_kb, vcpus, disk_gb, virt_bridge, disk_path, append_string)
+    return (
+        kickstart_host,
+        cobbler_system_name,
+        virt_type,
+        ks_session_id,
+        name,
+        mem_kb,
+        vcpus,
+        disk_gb,
+        virt_bridge,
+        disk_path,
+        append_string,
+    )
 
 
 def add_tools_channel(server_id, action_id, dry_run=0):
     log_debug(3)
-    if (not dry_run):
+    if not dry_run:
         subscribe_to_tools_channel(server_id)
     else:
         log_debug(4, "dry run requested")

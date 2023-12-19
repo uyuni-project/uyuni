@@ -69,5 +69,6 @@ def list_tables(dbh):
     h.execute("select table_name from user_tables")
     return [x[0].upper() for x in h.fetchall()]
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     sys.exit(main() or 0)

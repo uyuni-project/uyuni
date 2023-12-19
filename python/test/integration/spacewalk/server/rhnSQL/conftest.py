@@ -17,16 +17,27 @@ import pytest
 
 from spacewalk.server import rhnSQL
 
+
 @pytest.fixture(autouse=True, scope="module")
 def pgsql_db():
-    PG_HOST = 'localhost'
-    PG_USER = 'spacewalk'
-    PG_PASSWORD = 'spacewalk'
-    PG_DATABASE = 'susemanager' 
+    PG_HOST = "localhost"
+    PG_USER = "spacewalk"
+    PG_PASSWORD = "spacewalk"
+    PG_DATABASE = "susemanager"
 
-    rhnSQL.initDB(backend="postgresql", host=PG_HOST, username=PG_USER,
-                  password=PG_PASSWORD, database=PG_DATABASE)
+    rhnSQL.initDB(
+        backend="postgresql",
+        host=PG_HOST,
+        username=PG_USER,
+        password=PG_PASSWORD,
+        database=PG_DATABASE,
+    )
 
     # Re-initialize to test re-use of connections:
-    rhnSQL.initDB(backend="postgresql", host=PG_HOST, username=PG_USER,
-                  password=PG_PASSWORD, database=PG_DATABASE)
+    rhnSQL.initDB(
+        backend="postgresql",
+        host=PG_HOST,
+        username=PG_USER,
+        password=PG_PASSWORD,
+        database=PG_DATABASE,
+    )

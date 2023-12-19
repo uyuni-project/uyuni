@@ -15,7 +15,7 @@ from spacewalk.server import rhnSQL
 from spacewalk.server.rhnLib import InvalidAction
 
 # the "exposed" functions
-__rhnexport__ = ['deploy']
+__rhnexport__ = ["deploy"]
 
 # returns the values for deploying a virtual machine with an image
 #
@@ -35,18 +35,31 @@ def deploy(serverId, actionId, dry_run=0):
     row = h.fetchone_dict()
     if not row:
         # No image for this action
-        raise InvalidAction("image.deploy: No image found for action id "
-                            "%s and server %s" % (actionId, serverId))
+        raise InvalidAction(
+            "image.deploy: No image found for action id "
+            "%s and server %s" % (actionId, serverId)
+        )
 
-    for key in ['download_url', 'proxy_server', 'proxy_user', 'proxy_pass', 'bridge_device']:
+    for key in [
+        "download_url",
+        "proxy_server",
+        "proxy_user",
+        "proxy_pass",
+        "bridge_device",
+    ]:
         if row[key] is None:
             row[key] = ""
 
     params = {
-        "downloadURL": row['download_url'],
-        "proxySettings": {"proxyURL": row['proxy_server'], "proxyUser": row['proxy_user'], "proxyPass": row['proxy_pass']},
-        "memKB": row['mem_kb'],
-        "vCPUs": row['vcpus'],
+        "downloadURL": row["download_url"],
+        "proxySettings": {
+            "proxyURL": row["proxy_server"],
+            "proxyUser": row["proxy_user"],
+            "proxyPass": row["proxy_pass"],
+        },
+        "memKB": row["mem_kb"],
+        "vCPUs": row["vcpus"],
         "domainName": "",
-        "virtBridge": row['bridge_device']}
-    return (params)
+        "virtBridge": row["bridge_device"],
+    }
+    return params

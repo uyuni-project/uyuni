@@ -55,4 +55,5 @@ class BINARY(DatabaseDataType):
 class LONG_BINARY(DatabaseDataType):
     type_name = "LONG_BINARY"
 
+
 # XXX More data types to be added as we find need for them

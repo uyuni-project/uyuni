@@ -21,10 +21,16 @@ class ProgressBar:
 
     """A simplete progress bar class. See example in main below."""
 
-    def __init__(self, prompt='working: ', endTag=' - done',
-                 finalSize=100.0, finalBarLength=10,
-                 barChar='#', stream=sys.stdout, redrawYN=1):
-
+    def __init__(
+        self,
+        prompt="working: ",
+        endTag=" - done",
+        finalSize=100.0,
+        finalBarLength=10,
+        barChar="#",
+        stream=sys.stdout,
+        redrawYN=1,
+    ):
         # disabling redrawing of the hash marks. Too many people are
         # complaining.
         redrawYN = 0
@@ -48,23 +54,25 @@ class ProgressBar:
         self.barLengthPrinted = 0
 
     def printAll(self, contextYN=0):
-        """ Prints/reprints the prompt and current level of hashmarks.
+        """Prints/reprints the prompt and current level of hashmarks.
         Eg:             ____________________
             Processing: ###########
         NOTE: The underscores only occur if you turn on contextYN.
         """
         if contextYN:
-            self.stream.write('%s%s\n' % (' ' * len(self.prompt), '_' * self.finalBarLength))
+            self.stream.write(
+                "%s%s\n" % (" " * len(self.prompt), "_" * self.finalBarLength)
+            )
         toPrint = self.prompt + self.barChar * self.barLength
         if self.redrawYN:
             # self.stream.write('\b'*len(toPrint))
             # backup
-            self.stream.write('\b' * 80)  # nuke whole line (80 good 'nuf?)
+            self.stream.write("\b" * 80)  # nuke whole line (80 good 'nuf?)
             completeBar = len(self.prompt + self.endTag) + self.finalBarLength
             # erase
-            self.stream.write(completeBar * ' ')
+            self.stream.write(completeBar * " ")
             # backup again
-            self.stream.write(completeBar * '\b')
+            self.stream.write(completeBar * "\b")
         self.stream.write(toPrint)
         self.stream.flush()
         self.barLengthPrinted = self.barLength
@@ -80,10 +88,10 @@ class ProgressBar:
 
     def printComplete(self):
         """Completes the bar reguardless of current object status (and then
-           updates the object's status to complete)."""
+        updates the object's status to complete)."""
         self.complete()
         self.printIncrement()
-        self.stream.write(self.endTag + '\n')
+        self.stream.write(self.endTag + "\n")
         self.stream.flush()
 
     def update(self, newSize):
@@ -107,13 +115,13 @@ class ProgressBar:
         self.update(self.finalSize)
 
 
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     print("An example:")
     bar_length = 40
     items = 200
-    pb = ProgressBar('standby: ', ' - all done!', items, bar_length, 'o')
+    pb = ProgressBar("standby: ", " - all done!", items, bar_length, "o")
     pb.printAll(1)
     for i in range(items):
         # pb.update(i)
@@ -122,4 +130,4 @@ if __name__ == '__main__':
         pb.printIncrement()
     pb.printComplete()
 
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------

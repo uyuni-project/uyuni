@@ -32,8 +32,8 @@ def main():
         print("No module specified")
         return 0
 
-    if '.' not in sys.path:
-        sys.path.append('.')
+    if "." not in sys.path:
+        sys.path.append(".")
 
     g = globals()
 
@@ -48,7 +48,7 @@ def main():
             print(("Unable to import module %s: %s" % (module_name, e)))
             continue
 
-        comps = pmn.split('.')
+        comps = pmn.split(".")
         for c in comps[1:]:
             m = getattr(m, c)
 
@@ -61,11 +61,12 @@ def main():
 
 
 def proper_module_name(module_name):
-    suffix = '.py'
+    suffix = ".py"
     if module_name.endswith(suffix):
-        module_name = module_name[:-len(suffix)]
+        module_name = module_name[: -len(suffix)]
 
-    return os.path.normpath(module_name).replace('/', '.')
+    return os.path.normpath(module_name).replace("/", ".")
+
 
 _objs_seen = {}
 
@@ -85,5 +86,6 @@ def get_class_instances(obj, class_obj):
             result.extend(get_class_instances(v, class_obj))
     return result
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     sys.exit(main() or 0)

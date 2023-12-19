@@ -29,7 +29,7 @@ from .server_token import fetch_token, fetch_org_token
 
 
 def get(system_id, load_user=1):
-    """ retrieve the server with matching certificate from the database """
+    """retrieve the server with matching certificate from the database"""
     log_debug(3, "load_user = %s" % load_user)
     # This has to be a string
     if not isinstance(system_id, (StringType, UnicodeType)):
@@ -52,7 +52,7 @@ def get(system_id, load_user=1):
 
 
 def search(server_id, username=None):
-    """ search for a server in the database and return the Server object """
+    """search for a server in the database and return the Server object"""
     log_debug(3, server_id, username)
     s = Server(None)
     if not s.reload(server_id) == 0:

@@ -18,22 +18,24 @@
 #
 
 
-try: # python2
+try:  # python2
     from UserDict import UserDict
     from types import StringType
-except ImportError: # python3
+except ImportError:  # python3
     from collections import UserDict
+
     StringType = str
     from functools import reduce
 
+
 # A dictionary with case insensitive keys
 class UserDictCase(UserDict):
-    def __init__(self, data = None):
+    def __init__(self, data=None):
         self.kcase = {}
         UserDict.__init__(self, data)
 
     def __lower_string(self, key):
-        """ Return the lower() of key if it is a string. """
+        """Return the lower() of key if it is a string."""
         if isinstance(key, StringType):
             return key.lower()
         else:
@@ -76,8 +78,11 @@ class UserDictCase(UserDict):
 
     # return this data as a real hash
     def get_hash(self):
-        return reduce(lambda a, t, hc=self.kcase:
-                      a.update({ hc[t[0]] : t[1]}) or a, self.data.items(), {})
+        return reduce(
+            lambda a, t, hc=self.kcase: a.update({hc[t[0]]: t[1]}) or a,
+            self.data.items(),
+            {},
+        )
 
     # return the data for marshalling
     def __getstate__(self):
@@ -92,7 +97,7 @@ class UserDictCase(UserDict):
         return self.get_hash()
 
     def update(self, dict):
-        for (k, v) in dict.items():
+        for k, v in dict.items():
             self[k] = v
 
     # Expose an iterator. This would normally fail if there is no iter()

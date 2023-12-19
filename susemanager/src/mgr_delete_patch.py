@@ -18,7 +18,7 @@ from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.server import rhnSQL
 from spacewalk.susemanager import errata_helper
 
-DEFAULT_LOG_LOCATION = '/var/log/rhn/'
+DEFAULT_LOG_LOCATION = "/var/log/rhn/"
 
 # pylint: disable=invalid-name
 
@@ -27,10 +27,11 @@ try:
 except NameError:
     pass
 
+
 class Cleaner(object):  # pylint: disable=too-few-public-methods
     def __init__(self, debug):
         self.debug = debug
-        rhnLog.initLOG(DEFAULT_LOG_LOCATION + 'mgr-delete-patch.log', self.debug)
+        rhnLog.initLOG(DEFAULT_LOG_LOCATION + "mgr-delete-patch.log", self.debug)
 
         try:
             rhnSQL.initDB()
@@ -39,7 +40,7 @@ class Cleaner(object):  # pylint: disable=too-few-public-methods
             raise Exception("Could not connect to the database. %s" % e)
 
     def remove(self, errata):
-        """ Remove an errata and all its clones """
+        """Remove an errata and all its clones"""
 
         clones = []
         errata_to_remove = {}
@@ -58,10 +59,16 @@ class Cleaner(object):  # pylint: disable=too-few-public-methods
             clones = errata_helper.findErrataClones(parent_errata_id)
 
             _printLog("{0} is a clone of {1}".format(errata, parent_advisory))
-            print("The tool is going to remove '{0}' and all its clones:".format(parent_advisory))
+            print(
+                "The tool is going to remove '{0}' and all its clones:".format(
+                    parent_advisory
+                )
+            )
         else:
             clones = errata_helper.findErrataClones(errata_id)
-            print("The tool is going to remove '{0}' and all its clones:".format(errata))
+            print(
+                "The tool is going to remove '{0}' and all its clones:".format(errata)
+            )
 
         for _id in clones:
             clone_advisory = errata_helper.getAdvisory(_id)
@@ -69,13 +76,13 @@ class Cleaner(object):  # pylint: disable=too-few-public-methods
             print("  -", clone_advisory)
 
         reply = None
-        while not reply in ('y', 'n'):
+        while not reply in ("y", "n"):
             reply = input("Do you want to continue? (Y/n) ")
             if not reply:
                 reply = "y"
             reply = reply.lower()
-        if reply == 'n':
-            _printLog('User decided to quit.')
+        if reply == "n":
+            _printLog("User decided to quit.")
             sys.exit(0)
 
         if parent_errata_id:
@@ -91,12 +98,14 @@ class Cleaner(object):  # pylint: disable=too-few-public-methods
 
     @staticmethod
     def __remove_errata(errata_id, advisory):
-        """ Remove an errata. """
+        """Remove an errata."""
 
         channel_ids = errata_helper.channelsWithErrata(errata_id)
 
         for channel_id in channel_ids:
-            _printLog("Removing '{0}' patch from channel '{1}'".format(advisory, channel_id))
+            _printLog(
+                "Removing '{0}' patch from channel '{1}'".format(advisory, channel_id)
+            )
 
             # delete errata from channel
             errata_helper.deleteChannelErrata(errata_id, channel_id)
@@ -117,16 +126,19 @@ class Cleaner(object):  # pylint: disable=too-few-public-methods
         Search the channel using the given label.
         Returns None if the channel is not found, otherwise returns the ID of the channel.
         """
-        h = rhnSQL.prepare("""
+        h = rhnSQL.prepare(
+            """
             SELECT id
               FROM rhnChannel
              WHERE label = :channel
-        """)
+        """
+        )
         h.execute(channel=channel)
         res = h.fetchone_dict() or None
         if res:
-            return res['id']
+            return res["id"]
         return None
+
 
 def _printLog(msg):
     log_debug(0, msg)

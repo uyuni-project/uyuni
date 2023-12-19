@@ -7,7 +7,6 @@
 # Author: Mihai Ibanescu <misa@redhat.com>
 
 
-
 import base64
 import encodings.idna
 import socket
@@ -16,18 +15,21 @@ from rhn.stringutils import bstr, ustr, sstr
 from rhn import SSL
 from rhn import nonblocking
 
-try: # python2
+try:  # python2
     import httplib
+
     # Import into the local namespace some httplib-related names
     from httplib import _CS_REQ_SENT, _CS_IDLE, ResponseNotReady
 
     import xmlrpclib
-except ImportError: # python3
+except ImportError:  # python3
     import http.client as httplib
+
     # Import into the local namespace some httplib-related names
     from http.client import _CS_REQ_SENT, _CS_IDLE, ResponseNotReady
 
     import xmlrpc.client as xmlrpclib
+
 
 class HTTPResponse(httplib.HTTPResponse):
     def set_callback(self, rs, ws, ex, user_data, callback):
@@ -35,11 +37,12 @@ class HTTPResponse(httplib.HTTPResponse):
             self.fp = nonblocking.NonBlockingFile(self.fp)
         self.fp.set_callback(rs, ws, ex, user_data, callback)
 
+
 class HTTPConnection(httplib.HTTPConnection):
     response_class = HTTPResponse
 
     def __init__(self, host, port=None, timeout=SSL.DEFAULT_TIMEOUT):
-        if python_version() >= '2.6.1':
+        if python_version() >= "2.6.1":
             httplib.HTTPConnection.__init__(self, host, port, timeout=timeout)
         else:
             httplib.HTTPConnection.__init__(self, host, port)
@@ -97,8 +100,13 @@ class HTTPConnection(httplib.HTTPConnection):
 
         # The only modification compared to the stock HTTPConnection
         if self._cb_callback:
-            response.set_callback(self._cb_rs, self._cb_ws, self._cb_ex,
-                self._cb_user_data, self._cb_callback)
+            response.set_callback(
+                self._cb_rs,
+                self._cb_ws,
+                self._cb_ex,
+                self._cb_user_data,
+                self._cb_callback,
+            )
 
         response.begin()
         assert response.will_close != httplib._UNKNOWN
@@ -119,14 +127,21 @@ class HTTPConnection(httplib.HTTPConnection):
 
 
 class HTTPProxyConnection(HTTPConnection):
-    def __init__(self, proxy, host, port=None, username=None, password=None,
-            timeout=SSL.DEFAULT_TIMEOUT):
+    def __init__(
+        self,
+        proxy,
+        host,
+        port=None,
+        username=None,
+        password=None,
+        timeout=SSL.DEFAULT_TIMEOUT,
+    ):
         # The connection goes through the proxy
         HTTPConnection.__init__(self, proxy, timeout=timeout)
         # save the proxy values
         self.__proxy, self.__proxy_port = self.host, self.port
         # self.host and self.port will point to the real host
-        if hasattr(self, '_get_hostport'):
+        if hasattr(self, "_get_hostport"):
             self.host, self.port = self._get_hostport(host, port)
         else:
             self._set_hostport(host, port)
@@ -138,13 +153,13 @@ class HTTPProxyConnection(HTTPConnection):
 
     def connect(self):
         # We are actually connecting to the proxy
-        if hasattr(self, '_get_hostport'):
+        if hasattr(self, "_get_hostport"):
             self.host, self.port = self._get_hostport(self.__proxy, self.__proxy_port)
         else:
             self._set_hostport(self.__proxy, self.__proxy_port)
         HTTPConnection.connect(self)
         # Restore the real host and port
-        if hasattr(self, '_get_hostport'):
+        if hasattr(self, "_get_hostport"):
             self.host, self.port = self._get_hostport(self._host, self._port)
         else:
             self._set_hostport(self._host, self._port)
@@ -153,7 +168,7 @@ class HTTPProxyConnection(HTTPConnection):
         # The URL has to include the real host
         hostname = self._host
         if self._port != self.default_port:
-            hostname = hostname + ':' + str(self._port)
+            hostname = hostname + ":" + str(self._port)
         newurl = "http://%s%s" % (hostname, url)
         # Piggyback on the parent class
         HTTPConnection.putrequest(self, method, newurl, skip_host=skip_host)
@@ -171,20 +186,23 @@ class HTTPProxyConnection(HTTPConnection):
     def _set_hostport(self, host, port):
         (self.host, self.port) = self._get_hostport(host, port)
 
+
 class HTTPSConnection(HTTPConnection):
     response_class = HTTPResponse
     default_port = httplib.HTTPSConnection.default_port
 
-    def __init__(self, host, port=None, trusted_certs=None,
-            timeout=SSL.DEFAULT_TIMEOUT):
+    def __init__(
+        self, host, port=None, trusted_certs=None, timeout=SSL.DEFAULT_TIMEOUT
+    ):
         HTTPConnection.__init__(self, host, port, timeout=timeout)
         trusted_certs = trusted_certs or []
         self.trusted_certs = trusted_certs
 
     def connect(self):
         "Connect to a host on a given (SSL) port"
-        results = socket.getaddrinfo(self.host, self.port,
-            socket.AF_UNSPEC, socket.SOCK_STREAM)
+        results = socket.getaddrinfo(
+            self.host, self.port, socket.AF_UNSPEC, socket.SOCK_STREAM
+        )
 
         for r in results:
             af, socktype, proto, canonname, sa = r
@@ -209,18 +227,29 @@ class HTTPSConnection(HTTPConnection):
         self.sock = SSL.SSLSocket(sock, self.trusted_certs)
         self.sock.init_ssl(self.host)
 
+
 class HTTPSProxyResponse(HTTPResponse):
     def begin(self):
         HTTPResponse.begin(self)
         self.will_close = 0
 
+
 class HTTPSProxyConnection(HTTPProxyConnection):
     default_port = HTTPSConnection.default_port
 
-    def __init__(self, proxy, host, port=None, username=None, password=None,
-            trusted_certs=None, timeout=SSL.DEFAULT_TIMEOUT):
-        HTTPProxyConnection.__init__(self, proxy, host, port, username,
-                password, timeout=timeout)
+    def __init__(
+        self,
+        proxy,
+        host,
+        port=None,
+        username=None,
+        password=None,
+        trusted_certs=None,
+        timeout=SSL.DEFAULT_TIMEOUT,
+    ):
+        HTTPProxyConnection.__init__(
+            self, proxy, host, port, username, password, timeout=timeout
+        )
         trusted_certs = trusted_certs or []
         self.trusted_certs = trusted_certs
 
@@ -247,8 +276,9 @@ class HTTPSProxyConnection(HTTPProxyConnection):
         if response.status != 200:
             # Close the connection manually
             self.close()
-            raise xmlrpclib.ProtocolError(host,
-                response.status, response.reason, response.msg)
+            raise xmlrpclib.ProtocolError(
+                host, response.status, response.reason, response.msg
+            )
         self.sock = SSL.SSLSocket(self.sock, self.trusted_certs)
         self.sock.init_ssl(self.host)
 
@@ -260,21 +290,23 @@ class HTTPSProxyConnection(HTTPProxyConnection):
         # Add a User-Agent header
         self.putheader("User-Agent", self._user_agent)
 
+
 def idn_puny_to_unicode(hostname):
-    """ Convert Internationalized domain name from Punycode (RFC3492) to Unicode """
+    """Convert Internationalized domain name from Punycode (RFC3492) to Unicode"""
     if hostname is None:
         return None
     else:
         hostname = bstr(hostname)
-        return hostname.decode('idna')
+        return hostname.decode("idna")
+
 
 def idn_ascii_to_puny(hostname):
-    """ Convert domain name to Punycode (RFC3492). Hostname can be instance of string or Unicode """
+    """Convert domain name to Punycode (RFC3492). Hostname can be instance of string or Unicode"""
     if hostname is None:
         return None
     else:
         hostname = ustr(hostname)
-        return ustr(hostname.encode('idna'))
+        return ustr(hostname.encode("idna"))
 
 
 idn_pune_to_unicode = idn_puny_to_unicode

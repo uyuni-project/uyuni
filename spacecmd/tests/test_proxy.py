@@ -20,7 +20,6 @@ import pytest
     ],
 )
 def test_proxy_container_config_invokes_help_when_needed(shell, args, calls_help):
-
     m_open = mock_open()
     with patch("spacecmd.proxy.read_file", return_value=""), patch(
         "spacecmd.proxy.open", m_open
@@ -45,7 +44,6 @@ def test_proxy_container_config_invokes_help_when_needed(shell, args, calls_help
 def test_proxy_container_config_generate_cert_invokes_help_when_needed(
     shell, args, calls_help
 ):
-
     m_open = mock_open()
     with patch("spacecmd.proxy.read_file", return_value=""), patch(
         "spacecmd.proxy.open", m_open

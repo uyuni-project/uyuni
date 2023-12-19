@@ -32,28 +32,25 @@ try:
 except ImportError:
     from mock import MagicMock, call, patch
 
-sys.path.insert(
-    0,
-    os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-)
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from spacewalk.susemanager.authenticator import Authenticator, MaximumNumberOfAuthenticationFailures
+from spacewalk.susemanager.authenticator import (
+    Authenticator,
+    MaximumNumberOfAuthenticationFailures,
+)
 
 
 class AuthenticatorTest(unittest.TestCase):
-
     def setUp(self):
         self.mock_connection = MagicMock()
 
     def test_do_not_ask_credentials_if_cached_token_is_available(self):
         expected = "test token"
         auth = Authenticator(
-            connection=self.mock_connection,
-            user=None,
-            password=None,
-            token=expected)
+            connection=self.mock_connection, user=None, password=None, token=expected
+        )
 
-        with patch('spacewalk.susemanager.authenticator.cli_ask') as mock:
+        with patch("spacewalk.susemanager.authenticator.cli_ask") as mock:
             self.assertEqual(expected, auth.token())
             self.assertEqual(0, mock.call_count)
 
@@ -64,22 +61,21 @@ class AuthenticatorTest(unittest.TestCase):
         expected_password = "test password"
         expected_token = "test token"
         auth = Authenticator(
-            connection=self.mock_connection,
-            user=None,
-            password=None,
-            token=None)
+            connection=self.mock_connection, user=None, password=None, token=None
+        )
         auth.connection.auth.login = MagicMock(return_value=expected_token)
 
         auth._get_credentials_interactive = MagicMock()
         interactive_credentials = [[expected_user, expected_password]]
-        auth._get_credentials_interactive.side_effect = lambda: _set_username_and_password(
-            auth, interactive_credentials)
+        auth._get_credentials_interactive.side_effect = (
+            lambda: _set_username_and_password(auth, interactive_credentials)
+        )
 
         self.assertEqual(expected_token, auth.token())
         self.assertEqual(1, auth._get_credentials_interactive.call_count)
         auth.connection.auth.login.assert_called_once_with(
-            expected_user,
-            expected_password)
+            expected_user, expected_password
+        )
 
     def test_use_cached_credentials_first(self):
         expected_user = "test user"
@@ -90,7 +86,8 @@ class AuthenticatorTest(unittest.TestCase):
             connection=self.mock_connection,
             user=expected_user,
             password=expected_password,
-            token=None)
+            token=None,
+        )
         auth.connection.auth.login = MagicMock(return_value=expected_token)
 
         auth._get_credentials_interactive = MagicMock()
@@ -98,35 +95,38 @@ class AuthenticatorTest(unittest.TestCase):
         self.assertEqual(expected_token, auth.token())
         self.assertEqual(0, auth._get_credentials_interactive.call_count)
         auth.connection.auth.login.assert_called_once_with(
-            expected_user,
-            expected_password)
+            expected_user, expected_password
+        )
 
     def test_ask_credentials_when_cached_credentials_are_not_working(self):
         cached_credentials = ["cached_username", "cached_password"]
-        interactive_credentials = [
-            ["interactive_username", "interactive_password"]
-        ]
+        interactive_credentials = [["interactive_username", "interactive_password"]]
         expected_token = "test token"
         exception = xmlrpc_client.Fault(
-            2950,
-            "Either the password or username is incorrect")
+            2950, "Either the password or username is incorrect"
+        )
         login_mocked_return_values = [
-            exception,      # raised by the cached credentials
-            expected_token  # 1st pair of interactive credentials works fine
+            exception,  # raised by the cached credentials
+            expected_token,  # 1st pair of interactive credentials works fine
         ]
 
         auth = Authenticator(
             connection=self.mock_connection,
             user=cached_credentials[0],
             password=cached_credentials[1],
-            token=None)
+            token=None,
+        )
 
-        auth.connection.auth.login.side_effect = lambda username, password: _side_effect_return_from_list(
-            login_mocked_return_values)
+        auth.connection.auth.login.side_effect = (
+            lambda username, password: _side_effect_return_from_list(
+                login_mocked_return_values
+            )
+        )
 
         auth._get_credentials_interactive = MagicMock()
-        auth._get_credentials_interactive.side_effect = lambda: _set_username_and_password(
-            auth, interactive_credentials)
+        auth._get_credentials_interactive.side_effect = (
+            lambda: _set_username_and_password(auth, interactive_credentials)
+        )
 
         self.assertEqual(expected_token, auth.token())
         self.assertEqual(1, auth._get_credentials_interactive.call_count)
@@ -137,35 +137,42 @@ class AuthenticatorTest(unittest.TestCase):
         auth.connection.auth.assert_has_calls(expected_login_calls)
         self.assertEqual(2, auth.connection.auth.login.call_count)
 
-    def test_use_cached_credentials_and_then_keep_asking_credentials_if_they_are_wrong(self):
+    def test_use_cached_credentials_and_then_keep_asking_credentials_if_they_are_wrong(
+        self,
+    ):
         interactive_credentials = [
             ["interactive_username1", "interactive_password1"],
             ["interactive_username2", "interactive_password2"],
-            ["interactive_username3", "interactive_password3"]
+            ["interactive_username3", "interactive_password3"],
         ]
         cached_credentials = ["cached_username", "cached_password"]
         expected_token = "test token"
         exception = xmlrpc_client.Fault(
-            2950,
-            "Either the password or username is incorrect")
+            2950, "Either the password or username is incorrect"
+        )
         login_mocked_return_values = [
-            exception,      # raised by the cached credentials
-            exception,      # raised by the 1st pair of interactive credentials
-            exception,      # raised by the 2nd pair of interactive credentials
-            expected_token  # 3rd pair of interactive credentials works fine
+            exception,  # raised by the cached credentials
+            exception,  # raised by the 1st pair of interactive credentials
+            exception,  # raised by the 2nd pair of interactive credentials
+            expected_token,  # 3rd pair of interactive credentials works fine
         ]
 
         auth = Authenticator(
             connection=self.mock_connection,
             user=cached_credentials[0],
             password=cached_credentials[1],
-            token=None)
-        auth.connection.auth.login.side_effect = lambda username, password: _side_effect_return_from_list(
-            login_mocked_return_values)
+            token=None,
+        )
+        auth.connection.auth.login.side_effect = (
+            lambda username, password: _side_effect_return_from_list(
+                login_mocked_return_values
+            )
+        )
 
         auth._get_credentials_interactive = MagicMock()
-        auth._get_credentials_interactive.side_effect = lambda: _set_username_and_password(
-            auth, interactive_credentials)
+        auth._get_credentials_interactive.side_effect = (
+            lambda: _set_username_and_password(auth, interactive_credentials)
+        )
 
         self.assertEqual(expected_token, auth.token())
 
@@ -181,30 +188,32 @@ class AuthenticatorTest(unittest.TestCase):
         interactive_credentials = [
             ["interactive_username1", "interactive_password1"],
             ["interactive_username2", "interactive_password2"],
-            ["interactive_username3", "interactive_password3"]
+            ["interactive_username3", "interactive_password3"],
         ]
         expected_token = "test token"
         exception = xmlrpc_client.Fault(
-            2950,
-            "Either the password or username is incorrect")
+            2950, "Either the password or username is incorrect"
+        )
         login_mocked_return_values = [
-            exception,      # raised by the 1st pair of interactive credentials
-            exception,      # raised by the 2nd pair of interactive credentials
-            expected_token  # 3rd pair of interactive credentials works fine
+            exception,  # raised by the 1st pair of interactive credentials
+            exception,  # raised by the 2nd pair of interactive credentials
+            expected_token,  # 3rd pair of interactive credentials works fine
         ]
 
         # Note well: there are no cached credentials
         auth = Authenticator(
-            connection=self.mock_connection,
-            user=None,
-            password=None,
-            token=None)
-        auth.connection.auth.login.side_effect = lambda username, password: _side_effect_return_from_list(
-            login_mocked_return_values)
+            connection=self.mock_connection, user=None, password=None, token=None
+        )
+        auth.connection.auth.login.side_effect = (
+            lambda username, password: _side_effect_return_from_list(
+                login_mocked_return_values
+            )
+        )
 
         auth._get_credentials_interactive = MagicMock()
-        auth._get_credentials_interactive.side_effect = lambda: _set_username_and_password(
-            auth, interactive_credentials)
+        auth._get_credentials_interactive.side_effect = (
+            lambda: _set_username_and_password(auth, interactive_credentials)
+        )
 
         self.assertEqual(expected_token, auth.token())
 
@@ -216,40 +225,48 @@ class AuthenticatorTest(unittest.TestCase):
         auth.connection.auth.assert_has_calls(expected_login_calls)
         self.assertEqual(3, auth.connection.auth.login.call_count)
 
-    def test_should_raise_an_exception_after_the_user_provides_wrong_credentials_three_times_in_a_row(self):
+    def test_should_raise_an_exception_after_the_user_provides_wrong_credentials_three_times_in_a_row(
+        self,
+    ):
         interactive_credentials = [
             ["interactive_username1", "interactive_password1"],
             ["interactive_username2", "interactive_password2"],
-            ["interactive_username3", "interactive_password3"]
+            ["interactive_username3", "interactive_password3"],
         ]
         cached_credentials = ["cached_username", "cached_password"]
         exception = xmlrpc_client.Fault(
-            2950,
-            "Either the password or username is incorrect")
+            2950, "Either the password or username is incorrect"
+        )
         login_mocked_return_values = [
             exception,  # raised by the cached credentials
             exception,  # raised by the 1st pair of interactive credentials
             exception,  # raised by the 2nd pair of interactive credentials
-            exception   # raised by the 3rd pair of interactive credentials
+            exception,  # raised by the 3rd pair of interactive credentials
         ]
 
         auth = Authenticator(
             connection=self.mock_connection,
             user=cached_credentials[0],
             password=cached_credentials[1],
-            token=None)
-        auth.connection.auth.login.side_effect = lambda username, password: _side_effect_return_from_list(
-            login_mocked_return_values)
+            token=None,
+        )
+        auth.connection.auth.login.side_effect = (
+            lambda username, password: _side_effect_return_from_list(
+                login_mocked_return_values
+            )
+        )
 
         auth._get_credentials_interactive = MagicMock()
-        auth._get_credentials_interactive.side_effect = lambda: _set_username_and_password(
-            auth, interactive_credentials)
+        auth._get_credentials_interactive.side_effect = (
+            lambda: _set_username_and_password(auth, interactive_credentials)
+        )
 
         with self.assertRaises(MaximumNumberOfAuthenticationFailures):
             auth.token()
         self.assertEqual(
             Authenticator.MAX_NUM_OF_CREDENTIAL_FAILURES_ALLOWED,
-            auth._get_credentials_interactive.call_count)
+            auth._get_credentials_interactive.call_count,
+        )
 
         expected_login_calls = []
         for c in [cached_credentials] + interactive_credentials:
@@ -271,4 +288,3 @@ def _set_username_and_password(auth, credentials):
     pair = credentials.pop(0)
     auth.user = pair[0]
     auth.password = pair[1]
-

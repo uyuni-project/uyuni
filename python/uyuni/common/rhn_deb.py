@@ -30,18 +30,17 @@ from uyuni.common.rhn_pkg import A_Package, InvalidPackageError
 # bare-except and broad-except
 # pylint: disable=W0702,W0703
 
-DEB_CHECKSUM_TYPE = 'sha256'       # FIXME: this should be a configuration option
+DEB_CHECKSUM_TYPE = "sha256"  # FIXME: this should be a configuration option
 
 
 class deb_Header:
-
-    # this is a workaround for issue in python-debian 
+    # this is a workaround for issue in python-debian
     # https://www.mail-archive.com/pkg-python-debian-maint@alioth-lists.debian.net/msg00598.html
     # after the issue is fixed, remove this function
     def get_file(self, control, fname):
-        if fname.startswith('./'):
+        if fname.startswith("./"):
             fname = fname[2:]
-        elif fname.startswith('/'):
+        elif fname.startswith("/"):
             fname = fname[1:]
 
         try:
@@ -57,7 +56,7 @@ class deb_Header:
     "Wrapper class for an deb header - we need to store a flag is_source"
 
     def __init__(self, stream):
-        self.packaging = 'deb'
+        self.packaging = "deb"
         self.signatures = []
         self.is_source = 0
         self.deb = None
@@ -73,47 +72,48 @@ class deb_Header:
             try:
                 debcontrol = self.deb.debcontrol()
             except debfile.DebError:
-                # this is a workaround for issue in python-debian 
+                # this is a workaround for issue in python-debian
                 # https://www.mail-archive.com/pkg-python-debian-maint@alioth-lists.debian.net/msg00598.html
-                debcontrol = Deb822(self.get_file(self.deb.control, 'control'))
-
+                debcontrol = Deb822(self.get_file(self.deb.control, "control"))
 
             self.hdr = {
-                'name': debcontrol.get_as_string('Package'),
-                'arch': debcontrol.get_as_string('Architecture') + '-deb',
-                'summary': debcontrol.get_as_string('Description').splitlines()[0],
-                'epoch':   '',
-                'version': 0,
-                'release': 0,
-                'description': debcontrol.get_as_string('Description'),
+                "name": debcontrol.get_as_string("Package"),
+                "arch": debcontrol.get_as_string("Architecture") + "-deb",
+                "summary": debcontrol.get_as_string("Description").splitlines()[0],
+                "epoch": "",
+                "version": 0,
+                "release": 0,
+                "description": debcontrol.get_as_string("Description"),
             }
-            for hdr_k, deb_k in [('requires', 'Depends'),
-                                 ('provides', 'Provides'),
-                                 ('conflicts', 'Conflicts'),
-                                 ('obsoletes', 'Replaces'),
-                                 ('recommends', 'Recommends'),
-                                 ('suggests', 'Suggests'),
-                                 ('breaks', 'Breaks'),
-                                 ('predepends', 'Pre-Depends'),
-                                 ('payload_size', 'Installed-Size'),
-                                 ('maintainer', 'Maintainer')]:
+            for hdr_k, deb_k in [
+                ("requires", "Depends"),
+                ("provides", "Provides"),
+                ("conflicts", "Conflicts"),
+                ("obsoletes", "Replaces"),
+                ("recommends", "Recommends"),
+                ("suggests", "Suggests"),
+                ("breaks", "Breaks"),
+                ("predepends", "Pre-Depends"),
+                ("payload_size", "Installed-Size"),
+                ("maintainer", "Maintainer"),
+            ]:
                 if deb_k in debcontrol:
                     self.hdr[hdr_k] = debcontrol.get_as_string(deb_k)
             for k in list(debcontrol.keys()):
                 if k not in self.hdr:
                     self.hdr[k] = debcontrol.get_as_string(k)
 
-            version = debcontrol.get_as_string('Version')
-            if version.find(':') != -1:
-                self.hdr['epoch'], version = version.split(':')
-                self.hdr['version'] = version
-            if version.find('-') != -1:
-                version_tmpArr = version.split('-')
-                self.hdr['version'] = '-'.join(version_tmpArr[:-1])
-                self.hdr['release'] = version_tmpArr[-1]
+            version = debcontrol.get_as_string("Version")
+            if version.find(":") != -1:
+                self.hdr["epoch"], version = version.split(":")
+                self.hdr["version"] = version
+            if version.find("-") != -1:
+                version_tmpArr = version.split("-")
+                self.hdr["version"] = "-".join(version_tmpArr[:-1])
+                self.hdr["release"] = version_tmpArr[-1]
             else:
-                self.hdr['version'] = version
-                self.hdr['release'] = 'X'
+                self.hdr["version"] = version
+                self.hdr["release"] = "X"
         except Exception:
             e = sys.exc_info()[1]
             raise_with_tb(InvalidPackageError(e), sys.exc_info()[2])
@@ -143,7 +143,6 @@ class deb_Header:
 
 
 class DEB_Package(A_Package):
-
     def __init__(self, input_stream=None):
         A_Package.__init__(self, input_stream)
         self.header_data = tempfile.NamedTemporaryFile()

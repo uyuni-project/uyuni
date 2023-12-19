@@ -19,10 +19,13 @@ try:
     import hashlib
     import inspect
 
-    hashlib_has_usedforsecurity = 'usedforsecurity' in inspect.getargspec(hashlib.new)[0]
+    hashlib_has_usedforsecurity = (
+        "usedforsecurity" in inspect.getargspec(hashlib.new)[0]
+    )
 except ImportError:
     import md5
     import sha
+
     # pylint: disable=F0401
     # pylint can't find Crypto.Hash here, but it is present on older systems.
     from Crypto.Hash import SHA256 as sha256
@@ -30,30 +33,36 @@ except ImportError:
     hashlib_has_usedforsecurity = False
 
     class hashlib(object):
-
         @staticmethod
         def new(checksum):
-            if checksum == 'md5':
+            if checksum == "md5":
                 return md5.new()
-            elif checksum == 'sha1':
+            elif checksum == "sha1":
                 return sha.new()
-            elif checksum == 'sha256':
+            elif checksum == "sha256":
                 return sha256.new()
             else:
                 raise ValueError("Incompatible checksum type")
 
+
 def getHashlibInstance(hash_type, used_for_security):
-    """Get an instance of a hashlib object.
-    """
+    """Get an instance of a hashlib object."""
     if hashlib_has_usedforsecurity:
         return hashlib.new(hash_type, usedforsecurity=used_for_security)
     else:
         return hashlib.new(hash_type)
 
 
-def getFileChecksum(hashtype, filename=None, fd=None, file_obj=None, buffer_size=None, used_for_security=False):
-    """ Compute a file's checksum
-        Used by rotateFile()
+def getFileChecksum(
+    hashtype,
+    filename=None,
+    fd=None,
+    file_obj=None,
+    buffer_size=None,
+    used_for_security=False,
+):
+    """Compute a file's checksum
+    Used by rotateFile()
     """
 
     # python's md5 lib sucks
@@ -61,8 +70,8 @@ def getFileChecksum(hashtype, filename=None, fd=None, file_obj=None, buffer_size
     if buffer_size is None:
         buffer_size = 65536
 
-    if hashtype == 'sha':
-        hashtype = 'sha1'
+    if hashtype == "sha":
+        hashtype = "sha1"
 
     if filename is None and fd is None and file_obj is None:
         raise ValueError("no file specified")
@@ -95,7 +104,7 @@ def getFileChecksum(hashtype, filename=None, fd=None, file_obj=None, buffer_size
 
 
 def getStringChecksum(hashtype, s):
-    """ compute checksum of an arbitrary string """
+    """compute checksum of an arbitrary string"""
     h = getHashlibInstance(hashtype, False)
     h.update(s)
     return h.hexdigest()

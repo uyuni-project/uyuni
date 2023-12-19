@@ -7,6 +7,7 @@ import os
 import re
 
 from salt.exceptions import CommandExecutionError
+
 try:
     import libvirt
 except ImportError:
@@ -24,7 +25,10 @@ def __virtual__():
     if not __grains__.get("is_mgr_server"):
         return (False, "Minion is not a mgr server")
     if "postgres.user_exists" not in __salt__:
-        return (False, "Unable to load postgres module.  Make sure `postgres.bins_dir` is set.")
+        return (
+            False,
+            "Unable to load postgres module.  Make sure `postgres.bins_dir` is set.",
+        )
     return __virtualname__
 
 
@@ -47,18 +51,26 @@ def present(name, password):
         return ret
 
     try:
-        cmd = ['uyuni-setup-reportdb-user', '--non-interactive', '--dbuser', name, '--dbpassword', password]
+        cmd = [
+            "uyuni-setup-reportdb-user",
+            "--non-interactive",
+            "--dbuser",
+            name,
+            "--dbpassword",
+            password,
+        ]
         if __salt__["postgres.user_exists"](name):
-            cmd.append('--modify')
+            cmd.append("--modify")
         else:
-            cmd.append('--add')
+            cmd.append("--add")
 
         result = __salt__["cmd.run_all"](cmd)
 
         if result["retcode"] != 0:
             ret["result"] = False
             ret["comment"] = "Failed to set the user. {}".format(
-                result["stderr"] or result["stdout"])
+                result["stderr"] or result["stdout"]
+            )
             return ret
 
         ret["comment"] = "User {} with password set".format(name)
@@ -99,13 +111,22 @@ def absent(name, password):
                 ret["comment"] = "no change needed"
             return ret
 
-        cmd = ['uyuni-setup-reportdb-user', '--non-interactive', '--dbuser', name, '--dbpassword', password, '--delete']
+        cmd = [
+            "uyuni-setup-reportdb-user",
+            "--non-interactive",
+            "--dbuser",
+            name,
+            "--dbpassword",
+            password,
+            "--delete",
+        ]
         result = __salt__["cmd.run_all"](cmd)
 
         if result["retcode"] != 0:
             ret["result"] = False
             ret["comment"] = "Failed to delete the user. {}".format(
-                result["stderr"] or result["stdout"])
+                result["stderr"] or result["stdout"]
+            )
             return ret
 
         ret["comment"] = "User {} deleted".format(name)
@@ -116,4 +137,3 @@ def absent(name, password):
         ret["comment"] = str(err)
 
     return ret
-

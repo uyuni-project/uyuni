@@ -17,9 +17,7 @@ __virtualname__ = "pkgset"
 
 SALT_CONFIG_DIR = os.environ.get("SALT_CONFIG_DIR", "/etc/salt")
 
-__opts__ = salt.config.minion_config(
-    os.path.join(SALT_CONFIG_DIR, "minion")
-)
+__opts__ = salt.config.minion_config(os.path.join(SALT_CONFIG_DIR, "minion"))
 
 CACHE = salt.cache.Cache(__opts__)
 

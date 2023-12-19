@@ -23,7 +23,6 @@ from . import sql_base
 # A class to handle sequences
 # XXX: this is still Oracle specific, but it shouldn't be
 class Sequence:
-
     def __init__(self, db, seq):
         if not seq or not isinstance(seq, str):
             raise rhnException("First argument needs to be a sequence name", seq)
@@ -39,10 +38,13 @@ class Sequence:
         ret = cursor.fetchone_dict()
         if ret is None:  # how the hell can this happen?
             return ret
-        return int(ret['id'])
+        return int(ret["id"])
 
     def next_many(self, n):
-        sql = "SELECT sequence_nextval('%s') FROM generate_series(1, %s)" % (self.__seq, n)
+        sql = "SELECT sequence_nextval('%s') FROM generate_series(1, %s)" % (
+            self.__seq,
+            n,
+        )
         cursor = self.__db.prepare(sql)
         cursor.execute()
         result = cursor.fetchall()

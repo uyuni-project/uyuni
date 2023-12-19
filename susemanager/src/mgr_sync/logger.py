@@ -16,6 +16,7 @@
 from spacewalk.common import rhnLog
 from spacewalk.common.rhnLog import log_debug
 
+
 class Logger(object):
     """
     Log mgr-sync activity.

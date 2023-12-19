@@ -46,18 +46,23 @@ class Item:
             setattr(self, storage_name, attr)
 
     def __repr__(self):
-        return "<%s; %s>" % (self.pretty_name,
-                             ', '.join(
-                                 ['%s="%s"' % (x, getattr(self, x)) for x in list(self.attributes.values())]
-                             ))
+        return "<%s; %s>" % (
+            self.pretty_name,
+            ", ".join(
+                [
+                    '%s="%s"' % (x, getattr(self, x))
+                    for x in list(self.attributes.values())
+                ]
+            ),
+        )
 
 
 class ChannelFamily(Item):
     # pylint: disable=R0903
 
     pretty_name = "channel family"
-    attribute_name = 'channel_families'
-    attributes = {'family': 'name', 'quantity': 'quantity', 'flex': 'flex'}
+    attribute_name = "channel_families"
+    attributes = {"family": "name", "quantity": "quantity", "flex": "flex"}
 
 
 class Slots:
@@ -81,32 +86,34 @@ class Slots:
 
 
 class ManagementSlots(Slots):
-    _db_label = 'enterprise_entitled'
-    _slot_name = 'enterprise'
+    _db_label = "enterprise_entitled"
+    _slot_name = "enterprise"
 
 
 class ProvisioningSlots(Slots):
-    _db_label = 'provisioning_entitled'
-    _slot_name = 'provisioning'
+    _db_label = "provisioning_entitled"
+    _slot_name = "provisioning"
+
 
 # Slots for virt entitlements support
 
 
 class VirtualizationSlots(Slots):
-    _db_label = 'virtualization_host'
-    _slot_name = 'virtualization'
+    _db_label = "virtualization_host"
+    _slot_name = "virtualization"
 
 
 class VirtualizationPlatformSlots(Slots):
-    _db_label = 'virtualization_host_platform'
-    _slot_name = 'virtualization_platform'
+    _db_label = "virtualization_host_platform"
+    _slot_name = "virtualization_platform"
+
 
 # NonLinux slots are gone - misa 20050527
 
 
 class MonitoringSlots(Slots):
-    _db_label = 'monitoring_entitled'
-    _slot_name = 'monitoring'
+    _db_label = "monitoring_entitled"
+    _slot_name = "monitoring"
 
 
 class SatelliteCert:
@@ -118,16 +125,25 @@ class SatelliteCert:
     print c.owner
     """
 
-    fields_scalar = ['product', 'owner', 'issued', 'expires', 'slots',
-                     'provisioning-slots', 'nonlinux-slots',
-                     'monitoring-slots', 'virtualization_host',
-                     'virtualization_host_platform', 'satellite-version',
-                     'generation', ]
-    fields_list = {'channel-families': ChannelFamily}
+    fields_scalar = [
+        "product",
+        "owner",
+        "issued",
+        "expires",
+        "slots",
+        "provisioning-slots",
+        "nonlinux-slots",
+        "monitoring-slots",
+        "virtualization_host",
+        "virtualization_host_platform",
+        "satellite-version",
+        "generation",
+    ]
+    fields_list = {"channel-families": ChannelFamily}
 
     # datesFormat_cert = '%a %b %d %H:%M:%S %Y' ## OLD CERT FORMAT
-    datesFormat_cert = '%Y-%m-%d %H:%M:%S'
-    datesFormat_db = '%Y-%m-%d %H:%M:%S'
+    datesFormat_cert = "%Y-%m-%d %H:%M:%S"
+    datesFormat_db = "%Y-%m-%d %H:%M:%S"
 
     def __init__(self):
         for f in self.fields_scalar:
@@ -162,7 +178,7 @@ class SatelliteCert:
             if child.nodeType != child.ELEMENT_NODE:
                 # Probably white space
                 continue
-            if child.nodeName == 'rhn-cert-field':
+            if child.nodeName == "rhn-cert-field":
                 field_name = child.getAttribute("name")
                 if not field_name:
                     # XXX Bogus
@@ -177,7 +193,7 @@ class SatelliteCert:
                     val = self.fields_list[field_name](child)
                     l = getattr(self, val.attribute_name)
                     l.append(val)
-            elif child.nodeName == 'rhn-cert-signature':
+            elif child.nodeName == "rhn-cert-signature":
                 self.signature = get_text(child)
         # Python's docs say: When you are finished with a DOM, you should
         # clean it up. This is necessary because some versions of Python do
@@ -188,11 +204,14 @@ class SatelliteCert:
         dom_element.unlink()
 
     _slot_maps = {
-        'management': ('slots', ManagementSlots),
-        'provisioning': ('provisioning-slots', ProvisioningSlots),
-        'monitoring': ('monitoring-slots', MonitoringSlots),
-        'virtualization': ('virtualization_host', VirtualizationSlots),
-        'virtualization_platform': ('virtualization_host_platform', VirtualizationPlatformSlots)
+        "management": ("slots", ManagementSlots),
+        "provisioning": ("provisioning-slots", ProvisioningSlots),
+        "monitoring": ("monitoring-slots", MonitoringSlots),
+        "virtualization": ("virtualization_host", VirtualizationSlots),
+        "virtualization_platform": (
+            "virtualization_host_platform",
+            VirtualizationPlatformSlots,
+        ),
     }
 
     def get_slots(self, slot_type):

@@ -16,20 +16,25 @@ from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.server import rhnSQL
 from spacewalk.server.rhnChannel import subscribe_channels, unsubscribe_channels
 
-__rhnexport__ = ['upgrade']
+__rhnexport__ = ["upgrade"]
 
-_query_dup_data = rhnSQL.Statement("""
+_query_dup_data = rhnSQL.Statement(
+    """
     SELECT id, dry_run
       FROM rhnActionDup
      WHERE action_id = :action_id
-""")
+"""
+)
 
-_query_channel_changes = rhnSQL.Statement("""
+_query_channel_changes = rhnSQL.Statement(
+    """
     SELECT c.id, c.label, c.parent_channel, adc.task
       FROM rhnActionDupChannel adc
       JOIN rhnChannel c ON adc.channel_id = c.id
      WHERE adc.action_dup_id = :action_dup_id
-""")
+"""
+)
+
 
 def upgrade(serverId, actionId, data={}):
     log_debug(3)
@@ -41,8 +46,8 @@ def upgrade(serverId, actionId, data={}):
         log_error("Unable to find action data")
         return
 
-    if row['dry_run'] == 'Y':
-        _restore_channels(serverId, row['id'])
+    if row["dry_run"] == "Y":
+        _restore_channels(serverId, row["id"])
 
 
 def _restore_channels(serverId, action_dup_id):
@@ -59,8 +64,8 @@ def _restore_channels(serverId, action_dup_id):
     # we need to rollback the changes from action
     # therefore unsubscribe task 'S' and
     # subscribe task 'U'
-    to_unsubscribe = [x for x in channel_changes if x['task'] == 'S']
-    to_subscribe = [x for x in channel_changes if x['task'] == 'U']
+    to_unsubscribe = [x for x in channel_changes if x["task"] == "S"]
+    to_subscribe = [x for x in channel_changes if x["task"] == "U"]
 
     try:
         unsubscribe_channels(serverId, to_unsubscribe)

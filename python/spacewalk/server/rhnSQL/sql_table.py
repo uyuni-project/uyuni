@@ -27,7 +27,6 @@ from . import sql_lib
 
 # A class to handle row updates transparently
 class RowData(UserDictCase):
-
     def __init__(self, dict, db, sql, rowid, cache=None):
         UserDictCase.__init__(self, dict)
         if not isinstance(db, sql_base.Database):
@@ -61,15 +60,15 @@ class RowData(UserDictCase):
 #
 # Some day we'll figure out how to reduce confusion...
 class Table:
-
     def __init__(self, db, table, hashid, cache=False):
         if not table or not isinstance(table, str):
-            raise rhnException("First argument needs to be a table name",
-                               table)
+            raise rhnException("First argument needs to be a table name", table)
         self.__table = table
         if not hashid or not isinstance(hashid, str):
-            raise rhnException("Second argument needs to be the name of the unique index column",
-                               hashid)
+            raise rhnException(
+                "Second argument needs to be the name of the unique index column",
+                hashid,
+            )
         self.__hashid = hashid
         if not isinstance(db, sql_base.Database):
             raise rhnException("Argument db is not a database instance", db)
@@ -93,6 +92,7 @@ class Table:
             if self.__cache is not None:
                 self.__cache[row[self.__hashid]] = row
             return self.__setitem__(None, row)
+
         if isinstance(rows, dict) or isinstance(rows, UserDictCase):
             return insert_row(rows)
         if isinstance(rows, list):
@@ -105,8 +105,9 @@ class Table:
     # valuies of the hash provided (kind of a complex select)
     def select(self, row):
         if not isinstance(row, dict) and not isinstance(row, UserDictCase):
-            raise rhnException("Expecting hash argument. %s is invalid" % type(row),
-                               row)
+            raise rhnException(
+                "Expecting hash argument. %s is invalid" % type(row), row
+            )
         if row == {}:
             raise rhnException("The hash argument is empty", row)
         keys = list(row.keys())
@@ -114,7 +115,7 @@ class Table:
         keys.sort()
         args = []
         for col in keys:
-            if row[col] in (None, ''):
+            if row[col] in (None, ""):
                 clause = "%s is null" % col
             else:
                 clause = "%s = :%s" % (col, col)
@@ -134,14 +135,18 @@ class Table:
     # print it out
     def __repr__(self):
         return "<%s> instance for table `%s' keyed on `%s'" % (
-            self.__class__, self.__table, self.__hashid)
+            self.__class__,
+            self.__table,
+            self.__hashid,
+        )
 
     # make this table look like a dictionary
     def __getitem__(self, key):
         if self.__cache and key in self.__cache:
             return self.__cache[key]
-        h = self.__db.prepare("select * from %s where %s = :p1" % (
-            self.__table, self.__hashid))
+        h = self.__db.prepare(
+            "select * from %s where %s = :p1" % (self.__table, self.__hashid)
+        )
         h.execute(p1=key)
         ret = h.fetchone_dict()
         if ret is None:
@@ -161,7 +166,9 @@ class Table:
         if self.__cache and key in self.__cache:
             del self.__cache[key]
         sql = "update %s set %%s = :new_val where %s = :row_id" % (
-            self.__table, self.__hashid)
+            self.__table,
+            self.__hashid,
+        )
         return RowData(ret, self.__db, sql, key, self.__cache)
 
     # database insertion, dictionary style (pass in the hash with the
@@ -206,8 +213,9 @@ class Table:
 
     # delete an entry by the key
     def __delitem__(self, key):
-        h = self.__db.prepare("delete from %s where %s = :p1" % (
-            self.__table, self.__hashid))
+        h = self.__db.prepare(
+            "delete from %s where %s = :p1" % (self.__table, self.__hashid)
+        )
         h.execute(p1=key)
         try:
             del self.__cache[key]
@@ -217,8 +225,9 @@ class Table:
 
     # get all keys
     def keys(self):
-        h = self.__db.prepare("select %s as NAME from %s" % (
-            self.__hashid, self.__table))
+        h = self.__db.prepare(
+            "select %s as NAME from %s" % (self.__hashid, self.__table)
+        )
         h.execute()
         data = h.fetchall_dict()
         if data is None:
@@ -230,11 +239,14 @@ class Table:
     # smaller value
     def has_key(self, key):
         if self.__cache is not None:
-            h = self.__db.prepare("select * from %s where %s = :p1" %
-                                  (self.__table, self.__hashid))
+            h = self.__db.prepare(
+                "select * from %s where %s = :p1" % (self.__table, self.__hashid)
+            )
         else:
-            h = self.__db.prepare("select %s from %s where %s = :p1" %
-                                  (self.__hashid, self.__table, self.__hashid))
+            h = self.__db.prepare(
+                "select %s from %s where %s = :p1"
+                % (self.__hashid, self.__table, self.__hashid)
+            )
         h.execute(p1=key)
         row = h.fetchone_dict()
         if not row:

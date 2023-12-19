@@ -27,6 +27,7 @@ class MLAnyType(ABC):
     """
     Base MLType mix-in.
     """
+
     def __init__(self, data: str):
         """
         Constructor
@@ -63,6 +64,7 @@ class MLPackageType(MLAnyType):
     """
     Package type input.
     """
+
     def __init__(self):
         """
         Constructor
@@ -94,15 +96,16 @@ class MLStreamType:
     """
     Stream type
     """
+
     def __init__(self, name: str, streamname: str):
         self.__name: str = name
         self.__stream: str = streamname
         self.__exc = Exception("This is a read-only property")
 
     def __repr__(self) -> str:
-        return "<{} ({}/{}) at {}>".format(self.__class__.__name__,
-                                           self.__name, self.__stream,
-                                           hex(id(self)))
+        return "<{} ({}/{}) at {}>".format(
+            self.__class__.__name__, self.__name, self.__stream, hex(id(self))
+        )
 
     @property
     def name(self) -> str:
@@ -121,13 +124,14 @@ class MLStreamType:
         raise self.__exc
 
     def to_obj(self) -> Dict:
-        return {"name": self.__name, "stream":self.__stream}
+        return {"name": self.__name, "stream": self.__stream}
 
 
 class MLInputType(MLAnyType):
     """
     Input type.
     """
+
     def to_obj(self) -> Dict:
         return cast(Dict, self._obj)
 
@@ -153,11 +157,15 @@ class MLInputType(MLAnyType):
         """
         obj = self.to_obj()
         if "paths" not in obj:
-            raise mlerrcode.MlRequestError("No paths has been found in the input request")
+            raise mlerrcode.MlRequestError(
+                "No paths has been found in the input request"
+            )
 
         paths: List[str] = obj.get("paths", [])
         if not bool(paths):
-            raise mlerrcode.MlRequestError("Paths should not be empty. At least one path is required")
+            raise mlerrcode.MlRequestError(
+                "Paths should not be empty. At least one path is required"
+            )
 
         return paths
 
@@ -176,8 +184,12 @@ class MLInputType(MLAnyType):
 
         for str_kw in obj["streams"]:
             if "name" not in str_kw:
-                raise mlerrcode.MlRequestError("No 'name' attribute in the stream parameter {}".format(str_kw))
-            out.append(MLStreamType(name=str_kw["name"], streamname=str_kw.get("stream") or ""))
+                raise mlerrcode.MlRequestError(
+                    "No 'name' attribute in the stream parameter {}".format(str_kw)
+                )
+            out.append(
+                MLStreamType(name=str_kw["name"], streamname=str_kw.get("stream") or "")
+            )
 
         return out
 
@@ -186,6 +198,7 @@ class MLErrorType(MLAnyType):
     """
     Error response
     """
+
     def __init__(self, exc: Exception = None):
         """
         Constructor.

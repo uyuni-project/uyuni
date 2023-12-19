@@ -22,5 +22,5 @@ rhnLog.initLOG(level=4)
 dir = "spacewalk/server/handlers"
 
 for i in range(2):
-    for iface in ['rpcClasses', 'getHandler']:
+    for iface in ["rpcClasses", "getHandler"]:
         m = rhnImport.load(dir, interface_signature=iface)

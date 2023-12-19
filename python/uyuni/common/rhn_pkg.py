@@ -17,10 +17,11 @@ import os
 from rhn.stringutils import bstr
 from uyuni.common import checksum
 
+
 def get_package_header(filename=None, file_obj=None, fd=None):
     # pylint: disable=E1103
     if filename is not None:
-        stream = open(filename, mode='rb')
+        stream = open(filename, mode="rb")
         need_close = True
     elif file_obj is not None:
         stream = file_obj
@@ -28,12 +29,12 @@ def get_package_header(filename=None, file_obj=None, fd=None):
         stream = os.fdopen(os.dup(fd), "r")
         need_close = True
 
-    if stream.name.endswith('.deb'):
-        packaging = 'deb'
-    elif stream.name.endswith('.rpm'):
-        packaging = 'rpm'
+    if stream.name.endswith(".deb"):
+        packaging = "deb"
+    elif stream.name.endswith(".rpm"):
+        packaging = "rpm"
     else:
-        packaging = 'mpm'
+        packaging = "mpm"
 
     a_pkg = package_from_stream(stream, packaging)
     a_pkg.read_header()
@@ -43,14 +44,17 @@ def get_package_header(filename=None, file_obj=None, fd=None):
 
 
 def package_from_stream(stream, packaging):
-    if packaging == 'deb':
+    if packaging == "deb":
         from uyuni.common import rhn_deb
+
         a_pkg = rhn_deb.DEB_Package(stream)
-    elif packaging == 'rpm':
+    elif packaging == "rpm":
         from uyuni.common import rhn_rpm
+
         a_pkg = rhn_rpm.RPM_Package(stream)
-    elif packaging == 'mpm':
+    elif packaging == "mpm":
         from uyuni.common import rhn_mpm
+
         a_pkg = rhn_mpm.MPM_Package(stream)
     else:
         a_pkg = None
@@ -58,22 +62,24 @@ def package_from_stream(stream, packaging):
 
 
 def package_from_filename(filename):
-    if filename.endswith('.deb'):
-        packaging = 'deb'
-    elif filename.endswith('.rpm') or filename.endswith('.hdr'):
-        packaging = 'rpm'
+    if filename.endswith(".deb"):
+        packaging = "deb"
+    elif filename.endswith(".rpm") or filename.endswith(".hdr"):
+        packaging = "rpm"
     else:
-        packaging = 'mpm'
-    stream = open(filename, mode='rb')
+        packaging = "mpm"
+    stream = open(filename, mode="rb")
     return package_from_stream(stream, packaging)
 
+
 BUFFER_SIZE = 8388608
-DEFAULT_CHECKSUM_TYPE = 'md5'
+DEFAULT_CHECKSUM_TYPE = "md5"
 
 
 class A_Package:
 
     """virtual class that implements shared methods for RPM/MPM/DEB package object"""
+
     # pylint: disable=R0902
 
     def __init__(self, input_stream=None):
@@ -133,7 +139,7 @@ class A_Package:
 
     @staticmethod
     def _read_bytes(stream, amt):
-        ret = bstr('')
+        ret = bstr("")
         while amt:
             buf = stream.read(min(amt, BUFFER_SIZE))
             if not buf:

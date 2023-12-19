@@ -19,7 +19,7 @@ import time
 from spacewalk.server import rhnSQL
 
 print((os.getpid()))
-rhnSQL.initDB('rhnuser/rhnuser@webdev')
+rhnSQL.initDB("rhnuser/rhnuser@webdev")
 
 h = rhnSQL.prepare("select 1 from dual")
 
@@ -34,6 +34,5 @@ while i < 10000:
         vmsize = l[10][10:-1]
         vmrss = l[12][10:-1]
         f.close()
-        write("%d %.3f vsz: %s rss: %s \n" % (i, time.time() - start, vmsize,
-                                              vmrss))
+        write("%d %.3f vsz: %s rss: %s \n" % (i, time.time() - start, vmsize, vmrss))
     i = i + 1

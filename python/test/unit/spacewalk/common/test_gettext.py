@@ -65,88 +65,88 @@ class Tests(unittest.TestCase):
 
     def test_en_1(self):
         "Tests plain English messages"
-        lang = 'en'
+        lang = "en"
         s = "Good day"
         target = s
         self._test(lang, s, target)
 
     def test_en_2(self):
         "Tests plain English messages"
-        lang = 'en'
+        lang = "en"
         s = "How do you do?"
         target = s
         self._test(lang, s, target)
 
     def test_en_3(self):
         "Tests plain English messages"
-        lang = 'en'
+        lang = "en"
         s = "What should I do now?"
         target = s
         self._test(lang, s, target)
 
     def test_en_missing_1(self):
         "Tests plain English messages that are not in the translation files"
-        lang = 'en'
+        lang = "en"
         s = "This string doesn't exist in the translation"
         target = s
         self._test(lang, s, target)
 
     def test_ro_1(self):
         "Tests plain English messages translated to Romanian"
-        lang = 'ro'
+        lang = "ro"
         s = "Good day"
         target = "Buna ziua"
         self._test(lang, s, target)
 
     def test_ro_2(self):
         "Tests plain English messages translated to Romanian"
-        lang = 'ro'
+        lang = "ro"
         s = "How do you do?"
         target = "Ce mai faceti?"
         self._test(lang, s, target)
 
     def test_ro_3(self):
         "Tests plain English messages translated to Romanian"
-        lang = 'ro'
+        lang = "ro"
         s = "What should I do now?"
         target = "Ce sa fac acum?"
         self._test(lang, s, target)
 
     def test_ro_missing_1(self):
         "Tests plain English messages that are not in the translation files (ro)"
-        lang = 'ro'
+        lang = "ro"
         s = "This string doesn't exist in the translation"
         target = s
         self._test(lang, s, target)
 
     def test_go_1(self):
         "Tests plain English messages translated in the mythical go language"
-        lang = 'en'
+        lang = "en"
         s = "Good day"
         target = s
         self._test(lang, s, target)
 
     def test_go_2(self):
         "Tests plain English messages translated in the mythical go language"
-        lang = 'en'
+        lang = "en"
         s = "How do you do?"
         target = s
         self._test(lang, s, target)
 
     def test_go_3(self):
         "Tests plain English messages translated in the mythical go language"
-        lang = 'en'
+        lang = "en"
         s = "What should I do now?"
         target = s
         self._test(lang, s, target)
 
     def test_go_missing_1(self):
         "Tests plain English messages that are not in the translation files (go)"
-        lang = 'en'
+        lang = "en"
         s = "This string doesn't exist in the translation"
         target = s
         self._test(lang, s, target)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     sys.exit(unittest.main() or 0)

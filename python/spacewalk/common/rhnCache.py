@@ -18,6 +18,7 @@
 
 import os
 import gzip
+
 try:
     #  python 2
     import cPickle
@@ -43,9 +44,8 @@ def cleanupPath(path):
     """take ~taw/../some/path/$MOUNT_POINT/blah and make it sensible."""
     if path is None:
         return None
-    return os.path.normpath(
-        os.path.expanduser(
-            os.path.expandvars(path)))
+    return os.path.normpath(os.path.expanduser(os.path.expandvars(path)))
+
 
 # build a filename for storing the key - eventually this is going to get
 # more compelx as we observe issues
@@ -64,6 +64,7 @@ def _unlock(fd):
         # its usually more forgiving.
         fcntl.flock(fd, fcntl.LOCK_UN)
 
+
 # The following functions expose this module as a dictionary
 
 
@@ -76,8 +77,16 @@ def get(name, modified=None, raw=None, compressed=None, missing_is_null=1):
     return cache.get(name, modified)
 
 
-def set(name, value, modified=None, raw=None, compressed=None,
-        user='root', group='root', mode=int('0755', 8)):
+def set(
+    name,
+    value,
+    modified=None,
+    raw=None,
+    compressed=None,
+    user="root",
+    group="root",
+    mode=int("0755", 8),
+):
     # pylint: disable=W0622
     cache = __get_cache(raw, compressed)
 
@@ -109,10 +118,10 @@ class UnreadableFileError(Exception):
 
 
 def _safe_create(fname, user, group, mode):
-    """ This function returns a file descriptor for the open file fname
-        If the file is already there, it is truncated
-        otherwise, all the directories up to it are created and the file is created
-        as well.
+    """This function returns a file descriptor for the open file fname
+    If the file is already there, it is truncated
+    otherwise, all the directories up to it are created and the file is created
+    as well.
     """
 
     # There can be race conditions between the moment we check for the file
@@ -133,7 +142,7 @@ def _safe_create(fname, user, group, mode):
         dirname = os.path.dirname(fname)
         if not os.path.isdir(dirname):
             try:
-                #os.makedirs(dirname, 0755)
+                # os.makedirs(dirname, 0755)
                 makedirs(dirname, mode, user, group)
             except OSError:
                 e = sys.exc_info()[1]
@@ -155,7 +164,7 @@ def _safe_create(fname, user, group, mode):
         # file does not exist, attempt to create it
         # we pass most of the exceptions through
         try:
-            fd = os.open(fname, os.O_WRONLY | os.O_CREAT | os.O_EXCL, int('0644', 8))
+            fd = os.open(fname, os.O_WRONLY | os.O_CREAT | os.O_EXCL, int("0644", 8))
         except OSError:
             e = sys.exc_info()[1]
             # The file may be already there
@@ -175,9 +184,9 @@ def _safe_create(fname, user, group, mode):
 
 
 class LockedFile(object):
-
-    def __init__(self, name, modified=None, user='root', group='root',
-                 mode=int('0755', 8)):
+    def __init__(
+        self, name, modified=None, user="root", group="root", mode=int("0755", 8)
+    ):
         if modified:
             self.modified = timestamp(modified)
         else:
@@ -207,7 +216,6 @@ class LockedFile(object):
 
 
 class ReadLockedFile(LockedFile):
-
     def get_fd(self, name, _user, _group, _mode):
         if not os.access(self.fname, os.R_OK):
             raise KeyError(name)
@@ -227,17 +235,18 @@ class ReadLockedFile(LockedFile):
 
 
 class WriteLockedFile(LockedFile):
-
     def get_fd(self, name, user, group, mode):
         try:
             fd = _safe_create(self.fname, user, group, mode)
         except UnreadableFileError:
-            raise_with_tb(OSError("cache entry exists, but is not accessible: %s" % \
-                name), sys.exc_info()[2])
+            raise_with_tb(
+                OSError("cache entry exists, but is not accessible: %s" % name),
+                sys.exc_info()[2],
+            )
 
         # now we have the fd open, lock it
         fcntl.lockf(fd, fcntl.LOCK_EX)
-        return os.fdopen(fd, 'wb')
+        return os.fdopen(fd, "wb")
 
     def close_fd(self):
         # Set the file's mtime if necessary
@@ -247,7 +256,6 @@ class WriteLockedFile(LockedFile):
 
 
 class Cache:
-
     def __init__(self):
         pass
 
@@ -258,19 +266,19 @@ class Cache:
         fd.close()
 
         if sys.version_info[0] >= 3 and isinstance(s, bytes):
-
             try:
-               s = s.decode('utf8')
+                s = s.decode("utf8")
             except:
-               s = s.decode('latin-1')
+                s = s.decode("latin-1")
         return s
 
-    def set(self, name, value, modified=None, user='root', group='root',
-            mode=int('0755', 8)):
+    def set(
+        self, name, value, modified=None, user="root", group="root", mode=int("0755", 8)
+    ):
         fd = self.set_file(name, modified, user, group, mode)
 
         if sys.version_info[0] >= 3 and isinstance(value, str):
-            value = value.encode('utf8')
+            value = value.encode("utf8")
 
         fd.write(value)
         fd.close()
@@ -305,15 +313,14 @@ class Cache:
         return fd
 
     @staticmethod
-    def set_file(name, modified=None, user='root', group='root',
-                 mode=int('0755', 8)):
+    def set_file(name, modified=None, user="root", group="root", mode=int("0755", 8)):
         fd = WriteLockedFile(name, modified, user, group, mode)
         return fd
 
 
 class ClosingZipFile(object):
 
-    """ Like a GzipFile, but close closes both files. """
+    """Like a GzipFile, but close closes both files."""
 
     def __init__(self, mode, io):
         self.zipfile = gzip.GzipFile(None, mode, 5, io)
@@ -328,7 +335,6 @@ class ClosingZipFile(object):
 
 
 class CompressedCache:
-
     def __init__(self, cache):
         self.cache = cache
 
@@ -345,8 +351,9 @@ class CompressedCache:
 
         return value
 
-    def set(self, name, value, modified=None, user='root', group='root',
-            mode=int('0755', 8)):
+    def set(
+        self, name, value, modified=None, user="root", group="root", mode=int("0755", 8)
+    ):
         # Since most of the data is kept in memory anyway, don't bother to
         # write it to a temp file at this point
         f = self.set_file(name, modified, user, group, mode)
@@ -361,18 +368,18 @@ class CompressedCache:
 
     def get_file(self, name, modified=None):
         compressed_file = self.cache.get_file(name, modified)
-        return ClosingZipFile('rb', compressed_file)
+        return ClosingZipFile("rb", compressed_file)
 
-    def set_file(self, name, modified=None, user='root', group='root',
-                 mode=int('0755', 8)):
+    def set_file(
+        self, name, modified=None, user="root", group="root", mode=int("0755", 8)
+    ):
         io = self.cache.set_file(name, modified, user, group, mode)
 
-        f = ClosingZipFile('wb', io)
+        f = ClosingZipFile("wb", io)
         return f
 
 
 class ObjectCache:
-
     def __init__(self, cache):
         self.cache = cache
 
@@ -381,13 +388,14 @@ class ObjectCache:
 
         try:
             if sys.version_info[0] >= 3 and isinstance(pickled, str):
-                 pickled = pickled.encode('latin-1')
+                pickled = pickled.encode("latin-1")
             return cPickle.loads(pickled)
         except cPickle.UnpicklingError:
             raise_with_tb(KeyError(name), sys.exc_info()[2])
 
-    def set(self, name, value, modified=None, user='root', group='root',
-            mode=int('0755', 8)):
+    def set(
+        self, name, value, modified=None, user="root", group="root", mode=int("0755", 8)
+    ):
         pickled = cPickle.dumps(value, -1)
         self.cache.set(name, pickled, modified, user, group, mode)
 
@@ -404,7 +412,7 @@ class ObjectCache:
 
 class NullCache:
 
-    """ A cache that returns None rather than raises a KeyError. """
+    """A cache that returns None rather than raises a KeyError."""
 
     def __init__(self, cache):
         self.cache = cache
@@ -415,8 +423,9 @@ class NullCache:
         except KeyError:
             return None
 
-    def set(self, name, value, modified=None, user='root', group='root',
-            mode=int('0755', 8)):
+    def set(
+        self, name, value, modified=None, user="root", group="root", mode=int("0755", 8)
+    ):
         self.cache.set(name, value, modified, user, group, mode)
 
     def has_key(self, name, modified=None):
@@ -431,6 +440,7 @@ class NullCache:
         except KeyError:
             return None
 
-    def set_file(self, name, modified=None, user='root', group='root',
-                 mode=int('0755', 8)):
+    def set_file(
+        self, name, modified=None, user="root", group="root", mode=int("0755", 8)
+    ):
         return self.cache.set_file(name, modified, user, group, mode)

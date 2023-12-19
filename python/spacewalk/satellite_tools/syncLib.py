@@ -53,6 +53,7 @@ def dumpEMAIL_LOG():
 class RhnSyncException(Exception):
 
     """General exception handler for all sync activity."""
+
     pass
 
 
@@ -60,7 +61,9 @@ class ReprocessingNeeded(Exception):
 
     """Exception raised when a contition has been hit that would require a new
     run of the sync process"""
+
     pass
+
 
 # logging functions:
 # log levels rule of thumb:
@@ -91,14 +94,14 @@ def _prepLogMsg(msg, cleanYN=0, notimeYN=0, shortYN=0):
     if not cleanYN:
         if shortYN:
             if notimeYN:
-                msg = '%s %s' % (' ' * len(_timeString2()), msg)
+                msg = "%s %s" % (" " * len(_timeString2()), msg)
             else:
-                msg = '%s %s' % (_timeString2(), msg)
+                msg = "%s %s" % (_timeString2(), msg)
         else:
             if notimeYN:
-                msg = '%s %s' % (' ' * len(_timeString1()), msg)
+                msg = "%s %s" % (" " * len(_timeString1()), msg)
             else:
-                msg = '%s %s' % (_timeString1(), msg)
+                msg = "%s %s" % (_timeString1(), msg)
     return msg
 
 
@@ -115,7 +118,7 @@ def log2disk(level, msg, cleanYN=0, notimeYN=0):
             raise
         except Exception:  # pylint: disable=E0012, W0703
             e = sys.exc_info()[1]
-            sys.stderr.write('ERROR: upon attempt to write to log file: %s' % e)
+            sys.stderr.write("ERROR: upon attempt to write to log file: %s" % e)
 
 
 def log2stream(level, msg, cleanYN, notimeYN, stream):
@@ -127,13 +130,13 @@ def log2stream(level, msg, cleanYN, notimeYN, stream):
     with cfg_component(component=None) as CFG:
         if CFG.DEBUG >= level:
             for m in msg:
-                stream.write(_prepLogMsg(m, cleanYN, notimeYN, shortYN=1) + '\n')
+                stream.write(_prepLogMsg(m, cleanYN, notimeYN, shortYN=1) + "\n")
             stream.flush()
 
 
 def log2email(level, msg, cleanYN=0, notimeYN=0):
-    """ Log to the email log.
-        Arguments: see def _prepLogMsg(...) above.
+    """Log to the email log.
+    Arguments: see def _prepLogMsg(...) above.
     """
     if EMAIL_LOG is not None:
         log2stream(level, msg, cleanYN, notimeYN, EMAIL_LOG)
@@ -188,7 +191,6 @@ class FileCreationError(Exception):
 
 
 class FileManip:
-
     "Generic file manipulation class"
 
     def __init__(self, relative_path, timestamp, file_size):
@@ -220,20 +222,25 @@ class FileManip:
             # pkilambi: As the metadata download does'nt check for unfetched rpms
             # abort the sync when it runs out of disc space
             sys.exit(-1)
-            #raise FileCreationError(msg)
+            # raise FileCreationError(msg)
         if freespace < 5000 * 1024:  # arbitrary
             msg = messages.not_enough_diskspace % (freespace / 1024)
             log(-1, msg, stream=sys.stderr)
             # pkilambi: As the metadata download does'nt check for unfetched rpms
             # abort the sync when it runs out of disc space
             sys.exit(-1)
-            #raise FileCreationError(msg)
+            # raise FileCreationError(msg)
 
-        fout = open(self.full_path, 'wb')
+        fout = open(self.full_path, "wb")
         # setting file permissions; NOTE: rhnpush uses apache to write to disk,
         # hence the 6 setting.
         with cfg_component(component=None) as CFG:
-            setPermsPath(self.full_path, user=CFG.httpd_user, group=CFG.httpd_group, chmod=int('0644', 8))
+            setPermsPath(
+                self.full_path,
+                user=CFG.httpd_user,
+                group=CFG.httpd_group,
+                chmod=int("0644", 8),
+            )
         size = 0
         try:
             while 1:
@@ -259,7 +266,10 @@ class FileManip:
         if self.file_size is not None and self.file_size != l_file_size:
             # Something bad happened
             msg = "Error: file %s has wrong size. Expected %s bytes, got %s bytes" % (
-                self.full_path, self.file_size, l_file_size)
+                self.full_path,
+                self.file_size,
+                l_file_size,
+            )
             log(-1, msg, stream=sys.stderr)
             # Try not to leave garbage around
             try:
@@ -282,10 +292,15 @@ class RpmManip(FileManip):
     """
 
     def __init__(self, pdict, path):
-        FileManip.__init__(self, relative_path=path,
-                           timestamp=pdict['last_modified'], file_size=pdict['package_size'])
+        FileManip.__init__(
+            self,
+            relative_path=path,
+            timestamp=pdict["last_modified"],
+            file_size=pdict["package_size"],
+        )
         self.pdict = pdict
 
     def nvrea(self):
-        return tuple([self.pdict[x] for x in
-                      ['name', 'version', 'release', 'epoch', 'arch']])
+        return tuple(
+            [self.pdict[x] for x in ["name", "version", "release", "epoch", "arch"]]
+        )

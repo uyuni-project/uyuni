@@ -22,38 +22,43 @@ from stat import ST_SIZE
 from optparse import Option, OptionParser
 from spacewalk.common.rhnConfig import PRODUCT_NAME
 
-MOUNT_POINT = '/tmp'
+MOUNT_POINT = "/tmp"
 IMAGE_SIZE = "630M"
 DVD_IMAGE_SIZE = "4380M"
 
 
 def main(arglist):
     optionsTable = [
-        Option('-m', '--mountpoint',    action='store',
-               help="mount point"),
-        Option('-s', '--size',          action='store',
-               help="image size (eg. 630M)"),
-        Option('-p', '--file-prefix',   action='store',
-               help='Filename prefix'),
-        Option('-o', '--output',        action='store',
-               help='output directory'),
-        Option('-v', '--version',       action='store',
-               help='version string'),
-        Option('-r', '--release',       action='store',
-               help='release string'),
-        Option('--copy-iso-dir',        action='store',
-               help='directory to copy the isos to after they have been generated.'),
-        Option('-t', '--type',          action='store',
-               help='the type of iso being generated.\
-                  this flag is optional, but can be set to spanning, non-spanning, or base.'),
+        Option("-m", "--mountpoint", action="store", help="mount point"),
+        Option("-s", "--size", action="store", help="image size (eg. 630M)"),
+        Option("-p", "--file-prefix", action="store", help="Filename prefix"),
+        Option("-o", "--output", action="store", help="output directory"),
+        Option("-v", "--version", action="store", help="version string"),
+        Option("-r", "--release", action="store", help="release string"),
+        Option(
+            "--copy-iso-dir",
+            action="store",
+            help="directory to copy the isos to after they have been generated.",
+        ),
+        Option(
+            "-t",
+            "--type",
+            action="store",
+            help="the type of iso being generated.\
+                  this flag is optional, but can be set to spanning, non-spanning, or base.",
+        ),
     ]
     parser = OptionParser(option_list=optionsTable)
     options, _args = parser.parse_args(arglist)
 
     # Check to see if mkisofs is installed
-    if not os.path.exists('/usr/bin/mkisofs'):
-        print(("ERROR:: mkisofs is not Installed. Cannot Proceed iso build. " \
-              + "Please install mkisofs and rerun this command."))
+    if not os.path.exists("/usr/bin/mkisofs"):
+        print(
+            (
+                "ERROR:: mkisofs is not Installed. Cannot Proceed iso build. "
+                + "Please install mkisofs and rerun this command."
+            )
+        )
         return
 
     mountPoint = options.mountpoint or MOUNT_POINT
@@ -71,7 +76,7 @@ def main(arglist):
         options.version = time.strftime("%Y%m%d", time.gmtime(time.time()))
 
     if options.release is None:
-        options.release = '0'
+        options.release = "0"
 
     if options.output is None:
         options.output = "/tmp/satellite-isos"
@@ -109,31 +114,38 @@ def main(arglist):
     cdcount = len(cds)
 
     # Create an empty temp file
-    fd, empty_file_path = tempfile.mkstemp(dir='/tmp', prefix='empty.file-')
+    fd, empty_file_path = tempfile.mkstemp(dir="/tmp", prefix="empty.file-")
     os.close(fd)
 
     # command-line template
-    mkisofsTemplate = "mkisofs -r -J -D -file-mode 0444 -new-dir-mode 0555 -dir-mode 0555 " \
+    mkisofsTemplate = (
+        "mkisofs -r -J -D -file-mode 0444 -new-dir-mode 0555 -dir-mode 0555 "
         + "-graft-points %s -o %s /DISK_%s_OF_%s=%s"
+    )
     for i in range(cdcount):
         print(("---------- %s/%s" % (i + 1, cdcount)))
 
         # if options.type is None:
-        filename = "%s/%s-%s.%s-%02d.iso" % (options.output, file_prefix,
-                                             options.version, options.release, i + 1)
+        filename = "%s/%s-%s.%s-%02d.iso" % (
+            options.output,
+            file_prefix,
+            options.version,
+            options.release,
+            i + 1,
+        )
         # else:
         #    filename = "%s/%s-%s-%s.%s-%02d.iso" % (options.output, file_prefix,
         #        options.type, options.version, options.release, i+1)
 
         # Create a temp file to store the path specs
-        pathfiles_fd, pathfiles = tempfile.mkstemp(dir='/tmp', prefix='geniso-')
+        pathfiles_fd, pathfiles = tempfile.mkstemp(dir="/tmp", prefix="geniso-")
 
         # Command-line options; the keys are supposed to start with a dash
         opts = {
-            'preparer': PRODUCT_NAME,
-            'publisher': PRODUCT_NAME,
-            'volid': "SM_%s/%s" % (i + 1, cdcount),
-            'path-list': pathfiles,
+            "preparer": PRODUCT_NAME,
+            "publisher": PRODUCT_NAME,
+            "volid": "SM_%s/%s" % (i + 1, cdcount),
+            "path-list": pathfiles,
         }
         opts = ['-%s "%s"' % x for x in list(opts.items())]
 
@@ -149,8 +161,13 @@ def main(arglist):
             grafts.append("%s/=%s" % (relpath, f))
 
         # Generate the command line
-        cmd = mkisofsTemplate % (' '.join(opts), filename, i + 1, cdcount,
-                                 empty_file_path)
+        cmd = mkisofsTemplate % (
+            " ".join(opts),
+            filename,
+            i + 1,
+            cdcount,
+            empty_file_path,
+        )
 
         # Write the path specs in pathfiles
         for graft in grafts:
@@ -164,7 +181,9 @@ def main(arglist):
         print((fd.read()))
 
         if options.copy_iso_dir is not None:
-            copy_iso_path = os.path.join(options.copy_iso_dir, os.path.basename(os.path.dirname(filename)))
+            copy_iso_path = os.path.join(
+                options.copy_iso_dir, os.path.basename(os.path.dirname(filename))
+            )
             if not os.path.exists(copy_iso_path):
                 os.mkdir(copy_iso_path)
             fd = os.popen("mv %s %s" % (filename, copy_iso_path), "r")
@@ -187,7 +206,7 @@ def sizeStrToInt(s):
 
     s = str(s)
     # Strip the dashes in front - we don't want the number to be negative
-    while s and s[0] == '-':
+    while s and s[0] == "-":
         s = s[1:]
 
     try:
@@ -196,9 +215,9 @@ def sizeStrToInt(s):
         # not an int
         pass
 
-    if s[-1] in ('k', 'K', 'm', 'M'):
+    if s[-1] in ("k", "K", "m", "M"):
         # Specified a multiplier
-        if s[-1].lower() == 'k':
+        if s[-1].lower() == "k":
             mult = 1024
         else:
             mult = 1024 * 1024
@@ -210,6 +229,7 @@ def sizeStrToInt(s):
 
     # Don't know how to interpret it
     return 0
+
 
 # The visitfunc argument for os.path.walk
 
@@ -225,6 +245,7 @@ def __visitfunc(arg, dirname, names):
         # Append the filename and size to the list
         arg.append((filename, sz))
 
+
 # Given a directory name, returns the paths of all the files from that
 # directory, together with the file size
 
@@ -235,5 +256,5 @@ def findFiles(start):
     return a
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main(sys.argv)

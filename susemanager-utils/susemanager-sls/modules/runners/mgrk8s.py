@@ -4,10 +4,11 @@ import logging
 log = logging.getLogger(__name__)
 
 try:
-    from kubernetes import client, config # pylint: disable=import-self
+    from kubernetes import client, config  # pylint: disable=import-self
     from kubernetes.config import new_client_from_config
     from kubernetes.client.rest import ApiException
     from urllib3.exceptions import HTTPError
+
     IS_VALID = True
 except ImportError as ex:
     IS_VALID = False
@@ -18,7 +19,7 @@ def __virtual__():
 
 
 def get_all_containers(kubeconfig=None, context=None):
-    '''
+    """
     Retrieve information about all containers running in a Kubernetes cluster.
 
     :param kubeconfig: path to kubeconfig file
@@ -35,12 +36,12 @@ def get_all_containers(kubeconfig=None, context=None):
                     "pod_namespace": "pod-namespace"
                 }
        }
-    '''
+    """
     if not kubeconfig:
-        raise SaltInvocationError('kubeconfig is mandatory')
+        raise SaltInvocationError("kubeconfig is mandatory")
 
     if not context:
-        raise SaltInvocationError('context is mandatory')
+        raise SaltInvocationError("context is mandatory")
 
     api_client = new_client_from_config(kubeconfig, context)
     api = client.CoreV1Api(api_client)
@@ -50,12 +51,12 @@ def get_all_containers(kubeconfig=None, context=None):
         if pod.status.container_statuses is not None:
             for container in pod.status.container_statuses:
                 res_cont = dict()
-                res_cont['container_id'] = container.container_id
-                res_cont['image'] = container.image
-                res_cont['image_id'] = container.image_id
-                res_cont['pod_name'] = pod.metadata.name
-                res_cont['pod_namespace'] = pod.metadata.namespace
-                output['containers'].append(res_cont)
+                res_cont["container_id"] = container.container_id
+                res_cont["image"] = container.image
+                res_cont["image_id"] = container.image_id
+                res_cont["pod_name"] = pod.metadata.name
+                res_cont["pod_namespace"] = pod.metadata.namespace
+                output["containers"].append(res_cont)
         else:
             log.error("Failed to parse pod container statuses")
 

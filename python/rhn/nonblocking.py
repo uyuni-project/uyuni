@@ -6,6 +6,7 @@ import select
 import fcntl
 import os
 
+
 class NonBlockingFile:
     def __init__(self, fd):
         # Keep a copy of the file descriptor
@@ -18,8 +19,7 @@ class NonBlockingFile:
         self.user_data = None
         self.callback = None
 
-    def set_callback(self, read_fd_set, write_fd_set, exc_fd_set,
-            user_data, callback):
+    def set_callback(self, read_fd_set, write_fd_set, exc_fd_set, user_data, callback):
         self.read_fd_set = read_fd_set
         # Make the objects non-blocking
         for f in self.read_fd_set:
@@ -58,11 +58,13 @@ class NonBlockingFile:
     def __getattr__(self, name):
         return getattr(self.fd, name)
 
+
 def callback(r, w, e, user_data):
     print("Callback called", r, w, e)
     print(r[0].read())
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     import socket
 
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

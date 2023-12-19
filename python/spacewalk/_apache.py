@@ -36,6 +36,7 @@ def parse_qs(*_args):
 def parse_qsl(*_args):
     pass
 
+
 status = None
 table = None
 config_tree = None
