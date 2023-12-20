@@ -126,7 +126,7 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
 
         Server h1 = ServerTestUtils.createTestSystem();
         h1.setName("host1.example.com");
-        h1.setCpu(createCPU(h1, 8L));
+        h1.setCpu(createCPU(h1, 8L, 1 , 1));
 
         Set<InstalledProduct> installedProducts = new HashSet<>();
         InstalledProduct instPrd = createInstalledProduct("SLES", "12.1", "0", "x86_64", true);
@@ -134,8 +134,10 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
         instPrd = createInstalledProduct("sle-ha", "12.1", "0", "x86_64", false);
         installedProducts.add(instPrd);
 
+        InstalledProduct instPrdMicro = createInstalledProduct("SLE-Micro", "5.4", "0", "x86_64", true);
+
         Server g1 = ServerTestUtils.createTestSystem();
-        g1.setCpu(createCPU(g1, 2L));
+        g1.setCpu(createCPU(g1, 2L, 1, 1));
         g1.setName("guest1.example.com");
         g1.setInstalledProducts(installedProducts);
         String uuid1 = TestUtils.randomString();
@@ -145,7 +147,7 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
 
         Server g2 = ServerTestUtils.createTestSystem();
         g2.setName("guest2.example.com");
-        g2.setCpu(createCPU(g2, 4L));
+        g2.setCpu(createCPU(g2, 4L, 1 , 1));
         g2.setInstalledProducts(installedProducts);
         String uuid2 = TestUtils.randomString();
 
@@ -154,10 +156,30 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
 
         Server g3 = ServerTestUtils.createTestSystem();
         g3.setName("guest3.example.com");
-        g3.setCpu(createCPU(g3, 4L));
+        g3.setCpu(createCPU(g3, 4L, 1 , 1));
         g3.setInstalledProducts(installedProducts);
         g3.setPayg(true);
-        String uuid3 = TestUtils.randomString();
+
+        Server m1 = ServerTestUtils.createTestSystem();
+        m1.setName("sle-micro1.example.com");
+        m1.setInstalledProducts(Set.of(instPrdMicro));
+        m1.setCpu(createCPU(m1, 2L, 8, 2));
+
+        Server m2hyp = ServerTestUtils.createTestSystem();
+        m2hyp.setName("sle-micro2.example.com");
+        m2hyp.setInstalledProducts(Set.of(instPrdMicro));
+        m2hyp.setCpu(createCPU(m2hyp, 2L, 8, 2));
+
+        Server g4 = ServerTestUtils.createTestSystem();
+        g4.setName("guest4.example.com");
+        g4.setCpu(createCPU(g4, 4L, 1 , 1));
+        g4.setInstalledProducts(Set.of(instPrdMicro));
+        String uuid4 = TestUtils.randomString();
+
+        VirtualInstance refGuest4 = createVirtualInstance(m2hyp, g4, uuid4);
+        m2hyp.addGuest(refGuest4);
+
+        HibernateFactory.getSession().flush();
 
         // tell MatcherJsonIO to include self system in the JSON output, which would happen
         // if the running SUMA is an ISS Master
@@ -199,6 +221,31 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
         assertEquals("SUSE Manager Server system", sumaItself.getName());
         assertTrue(sumaItself.getPhysical());
         assertTrue(sumaItself.getProductIds().contains(1899L));
+
+        // SLE-Micro System
+        SystemJson resultM1 = findSystem(m1.getId(), result);
+        assertNotNull(resultM1);
+        assertEquals(32L, resultM1.getCpus().longValue());
+        assertEquals("sle-micro1.example.com", resultM1.getName());
+        assertTrue(resultM1.getPhysical());
+        assertTrue(resultM1.getProductIds().contains(2574L));
+
+        // SLE-Micro System Hypervisor
+        SystemJson resultM2 = findSystem(m2hyp.getId(), result);
+        assertNotNull(resultM2);
+        assertEquals(2L, resultM2.getCpus().longValue());
+        assertEquals("sle-micro2.example.com", resultM2.getName());
+        assertTrue(resultM2.getPhysical());
+        assertTrue(resultM2.getProductIds().contains(2574L));
+
+        SystemJson resultG4 = findSystem(g4.getId(), result);
+        assertNotNull(resultG4);
+        assertEquals("guest4.example.com", resultG4.getName());
+        // SLE-Micro + Mgm Single
+        assertEquals(2, resultG4.getProductIds().size());
+        assertTrue(resultG4.getProductIds().contains(2574L));
+        assertFalse(resultG4.getPhysical());
+        assertEquals(4L, resultG4.getCpus().longValue());
     }
 
     @Test
@@ -561,7 +608,7 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
 
             Server h1 = ServerTestUtils.createTestSystem();
             h1.setName("host1.example.com");
-            h1.setCpu(createCPU(h1, 8L));
+            h1.setCpu(createCPU(h1, 8L, 1, 1));
             ServerFactory.save(h1);
 
             Set<InstalledProduct> installedProducts = new HashSet<>();
@@ -609,9 +656,21 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
         return virtualInstance;
     }
 
-    private CPU createCPU(Server s, Long sockets) {
+    private CPU createCPU(Server s, long sockets, long cores, long threads) {
+        if (threads < 1) {
+            threads = 1;
+        }
+        if (cores < 1) {
+            cores = 1;
+        }
+        if (sockets < 1) {
+            sockets = 1;
+        }
         CPU cpu = new CPU();
         cpu.setNrsocket(sockets);
+        cpu.setNrCore(cores);
+        cpu.setNrThread(threads);
+        cpu.setNrCPU(sockets * cores * threads);
         cpu.setServer(s);
         cpu.setArch(ServerFactory.lookupCPUArchByName("x86_64"));
         return cpu;
