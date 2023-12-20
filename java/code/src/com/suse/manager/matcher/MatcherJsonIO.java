@@ -158,12 +158,24 @@ public class MatcherJsonIO {
      * about systems on this Server
      */
     public List<SystemJson> getJsonSystems(boolean includeSelf, String arch, boolean selfMonitoringEnabled) {
+        Set<String> vCoreCountedChannelFamilies = of("MICROOS-ARM64", "MICROOS-X86", "MICROOS-Z", "MICROOS-PPC")
+                .flatMap(cf -> of("", "-ALPHA", "-BETA").map(s -> cf + s))
+                .collect(Collectors.toSet());
+
         Stream<SystemJson> systems = ServerFactory.list(true, true).stream()
             .map(system -> {
                 Long cpus = system.getCpu() == null ? null : system.getCpu().getNrsocket();
                 Set<String> entitlements = system.getEntitlementLabels();
                 boolean virtualHost = entitlements.contains(EntitlementManager.VIRTUALIZATION_ENTITLED) ||
                         !system.getGuests().isEmpty();
+                boolean countVCores = !virtualHost && system.getInstalledProductSet()
+                        .map(s -> s.getBaseProduct().getChannelFamily()).stream()
+                        .anyMatch(cf -> vCoreCountedChannelFamilies.contains(cf.getLabel()));
+                if (countVCores) {
+                    // HACK: better would be to introduce a field in SystemJson and adapt subscription-matcher
+                    // For now it is not worth the effort
+                    cpus = system.getCpu() == null ? null : system.getCpu().getNrCPU();
+                }
                 Set<Long> productIds = productIdsForServer(system, entitlements).collect(toSet());
                 return new SystemJson(
                     system.getId(),
