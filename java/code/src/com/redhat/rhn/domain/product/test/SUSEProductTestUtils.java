@@ -295,6 +295,7 @@ public class SUSEProductTestUtils extends HibernateFactory {
      *
      * SLES12 SP1 x86_64
      * SLE-HA12 SP1 x86_64
+     * SLE-Micro 5.4 x86_64
      */
     public static void createVendorSUSEProducts() {
         ChannelFamily cfsles = ChannelFamilyFactory.lookupByLabel("7261", null);
@@ -311,6 +312,14 @@ public class SUSEProductTestUtils extends HibernateFactory {
             cfha.setLabel("SLE-HAE-X86");
             cfha.setName("SUSE Linux Enterprise High Availability Extension (x86)");
             TestUtils.saveAndFlush(cfha);
+        }
+
+        ChannelFamily cfslem = ChannelFamilyFactory.lookupByLabel("MICROOS-X86", null);
+        if (cfslem == null) {
+            cfslem = new ChannelFamily();
+            cfslem.setLabel("MICROOS-X86");
+            cfslem.setName("SUSE Linux Enterprise Micro X86");
+            TestUtils.saveAndFlush(cfslem);
         }
 
         SUSEProduct product = new SUSEProduct();
@@ -386,6 +395,17 @@ public class SUSEProductTestUtils extends HibernateFactory {
         product.setProductId(1340);
         //product.setChannelFamily(cfsles);
         product.setBase(false);
+        product.setReleaseStage(ReleaseStage.released);
+        TestUtils.saveAndFlush(product);
+
+        product = new SUSEProduct();
+        product.setName("sle-micro");
+        product.setVersion("5.4");
+        product.setFriendlyName("SUSE Linux Enterprise Micro 5.4 x86_64");
+        product.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
+        product.setProductId(2574);
+        product.setChannelFamily(cfslem);
+        product.setBase(true);
         product.setReleaseStage(ReleaseStage.released);
         TestUtils.saveAndFlush(product);
 
