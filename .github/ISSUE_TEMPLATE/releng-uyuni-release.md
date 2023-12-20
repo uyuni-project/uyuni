@@ -21,6 +21,7 @@ Add more tasks if needed.
 - [ ] Ask the Doc Squad to submit an update of the doc package to [systemsmanagement:Uyuni:Master](https://build.opensuse.org/project/show/systemsmanagement:Uyuni:Master), a PR for the main documention and ReportDB documentation at the [documentation repository, gh-pages branch](https://github.com/uyuni-project/uyuni-docs/tree/gh-pages) and a PR for the [documentation API repository, gh-pages branch](https://github.com/uyuni-project/uyuni-docs-api/tree/gh-pages).
 - [ ] Confirm that the documentation is ready.
 - [ ] [Lock](https://github.com/uyuni-project/uyuni/settings/branch_protection_rules/2243617) the `master` branch (check the checkbox for `Restrict who can push to matching branches`)
+- [ ] [Lock](https://github.com/uyuni-project/uyuni-tools/settings/branch_protection_rules/37702039) the `main` branch for the uyuni-tools as well (check the checkbox for `Restrict who can push to matching branches`)
 - [ ] Send an email to galaxy-devel@suse.de informing that the branch `master` is locked, and adjust the topic on the slack [#team-susemanager](https://app.slack.com/client/T02863RC2AC/C02D78LLS04) channel
 - [ ] After the branch freeze, ask [Orion](https://suse.slack.com/archives/C02DDMY6R0R) to prepare the PR for the code translations from `master-weblate` to `master`. If nobody from Orion is available, ask @parlt91. They will add us as reviewers.
 - [ ] Merge the PR for the translations with the option `Merge pull request`
@@ -51,4 +52,5 @@ Add more tasks if needed.
 - [ ] Create a git tag or a branch (in both cases `Uyuni-XXXX.YY`), and push it
 - [ ] Announce: mailing lists, twitter and Gitter (update the topic for the `users` channel)
 - [ ] [Unlock](https://github.com/uyuni-project/uyuni/settings/branch_protection_rules/2243617) the `master` branch (uncheck the checkbox for `Restrict who can push to matching branches`)
+- [ ] [Unlock](https://github.com/uyuni-project/uyuni-tools/settings/branch_protection_rules/37702039) the `main` branch (uncheck the checkbox for `Restrict who can push to matching branches`)
 - [ ] Send an email to galaxy-devel@suse.de informing that the branch `master` is unlocked, and adjust the topic on the slack [#team-susemanager](https://app.slack.com/client/T02863RC2AC/C02D78LLS04) channel
