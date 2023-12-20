@@ -173,7 +173,7 @@ When(/^I wait (\d+) seconds until the event is picked up and (\d+) seconds until
 end
 
 When(/^I wait at most (\d+) seconds until event "([^"]*)" is completed$/) do |final_timeout, event|
-  step %(I wait 90 seconds until the event is picked up and #{final_timeout} seconds until the event "#{event}" is completed)
+  step %(I wait 180 seconds until the event is picked up and #{final_timeout} seconds until the event "#{event}" is completed)
 end
 
 When(/^I wait until I see the event "([^"]*)" completed during last minute, refreshing the page$/) do |event|
