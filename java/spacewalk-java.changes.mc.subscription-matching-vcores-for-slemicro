@@ -1,0 +1,3 @@
+- provide total number of CPUs for SLE Micro systems to subscription matcher
+  when it is not used as hypervisor to match vCore subscriptions correctly
+  (bsc#1218074)

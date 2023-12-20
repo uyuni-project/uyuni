@@ -15,6 +15,8 @@
 
 package com.suse.manager.matcher;
 
+import static java.util.stream.Stream.of;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.matcher.MatcherRunData;
@@ -171,6 +173,10 @@ public class MatcherJsonIO {
      */
     public List<SystemJson> getJsonSystems(String arch, boolean includeSelf, boolean selfMonitoringEnabled,
                                            boolean needsEntitlements) {
+        Set<String> vCoreCountedChannelFamilies = of("MICROOS-ARM64", "MICROOS-X86", "MICROOS-Z", "MICROOS-PPC")
+                .flatMap(cf -> of("", "-ALPHA", "-BETA").map(s -> cf + s))
+                .collect(Collectors.toSet());
+
         Stream<SystemJson> systems = ServerFactory.list(true, true).stream()
             .map(system -> {
                 Long cpus = system.getCpu() == null ? null : system.getCpu().getNrsocket();
@@ -179,6 +185,14 @@ public class MatcherJsonIO {
                         !system.getGuests().isEmpty();
                 Set<Long> productIds = productIdsForServer(system, needsEntitlements, entitlements)
                     .collect(Collectors.toSet());
+                boolean countVCores = !virtualHost && system.getInstalledProductSet()
+                        .map(s -> s.getBaseProduct().getChannelFamily()).stream()
+                        .anyMatch(cf -> vCoreCountedChannelFamilies.contains(cf.getLabel()));
+                if (countVCores) {
+                    // HACK: better would be to introduce a field in SystemJson and adapt subscription-matcher
+                    // For now it is not worth the effort
+                    cpus = system.getCpu() == null ? null : system.getCpu().getNrCPU();
+                }
                 return new SystemJson(
                     system.getId(),
                     system.getName(),
