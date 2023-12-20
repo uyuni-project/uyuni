@@ -17,6 +17,10 @@ images:
 ##
 pullPolicy: "Always"
 
+## ingress defines the ingress that is used in the cluster.
+## It can be either "nginx", "traefik" or any other value.
+ingress: "traefik"
+
 persistentVolume:
     ## uyuni proxy overall Persistent Volume access modes
     ## Must match those of existing PV or dynamic provisioner
