@@ -21,6 +21,7 @@ import java.util.stream.IntStream;
 
 import io.prometheus.client.Collector;
 import io.prometheus.client.CounterMetricFamily;
+import io.prometheus.client.GaugeMetricFamily;
 
 /**
  * Collector for a List of ThreadPool.
@@ -44,27 +45,29 @@ public class ThreadPoolListCollector extends Collector {
     public List<MetricFamilySamples> collect() {
         List<MetricFamilySamples> out = new ArrayList<>();
 
-        out.add(CustomCollectorUtils.counterFor("thread_pool_threads",
-                "Threads total count",
-                this.pool.stream().map(ThreadPoolExecutor::getPoolSize).mapToInt(p -> p).sum(),
-                this.poolId));
-        out.add(CustomCollectorUtils.gaugeFor("thread_pool_threads_active",
-                "Active threads count",
-                this.pool.stream().map(ThreadPoolExecutor::getActiveCount).mapToInt(p -> p).sum(),
-                this.poolId));
-        out.add(CustomCollectorUtils.counterFor("thread_pool_task_count",
-                "Number of tasks ever submitted",
-                this.pool.stream().map(ThreadPoolExecutor::getTaskCount).mapToLong(p -> p).sum(),
-                this.poolId));
-        out.add(CustomCollectorUtils.counterFor("thread_pool_completed_task_count",
-                "Number of tasks ever completed",
-                this.pool.stream().map(ThreadPoolExecutor::getCompletedTaskCount).mapToLong(p -> p).sum(),
-                this.poolId));
-        CounterMetricFamily family = new CounterMetricFamily(poolId + "_" + "task_usage", "Task queue usage",
-                List.of("queue"));
-        IntStream.range(0, this.pool.size())
-                .forEach(i -> family.addMetric(List.of(String.format("%d", i)), this.pool.get(i).getTaskCount()));
-        out.add(family);
+        GaugeMetricFamily poolThreads = new GaugeMetricFamily(poolId + "_" + "thread_pool_size",
+                "Number of threads in the pool", List.of("queue"));
+        IntStream.range(0, this.pool.size()).forEach(i -> poolThreads.addMetric(List.of(String.format("%d", i)),
+                this.pool.get(i).getPoolSize()));
+        out.add(poolThreads);
+
+        GaugeMetricFamily activeThreads = new GaugeMetricFamily(poolId + "_" + "thread_pool_active_threads",
+                "Number of active threads", List.of("queue"));
+        IntStream.range(0, this.pool.size()).forEach(i -> activeThreads.addMetric(List.of(String.format("%d", i)),
+                this.pool.get(i).getActiveCount()));
+        out.add(activeThreads);
+
+        CounterMetricFamily tasks = new CounterMetricFamily(poolId + "_" + "thread_pool_tasks_total",
+                "Tasks count", List.of("queue"));
+        IntStream.range(0, this.pool.size()).forEach(i -> tasks.addMetric(List.of(String.format("%d", i)),
+                this.pool.get(i).getTaskCount()));
+        out.add(tasks);
+
+        CounterMetricFamily completed = new CounterMetricFamily(poolId + "_" + "thread_pool_completed_tasks_total",
+                "Completed tasks count", List.of("queue"));
+        IntStream.range(0, this.pool.size()).forEach(i -> completed.addMetric(List.of(String.format("%d", i)),
+                this.pool.get(i).getCompletedTaskCount()));
+        out.add(completed);
 
         return out;
     }
