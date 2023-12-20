@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring,invalid-name
 # Cert-related functions
 #   - RHN certificate
 #   - SSL CA certificate
@@ -96,7 +96,7 @@ def lookup_cert(description, org_id):
     return row
 
 
-def _checkCertMatch_rhnCryptoKey(cert, description, org_id, deleteRowYN=0, verbosity=0):
+def _checkCertMatch_rhnCryptoKey(cert, description, org_id, deleteRowYN=0, verbosity=0):  #  pylint: disable=invalid-name,invalid-name
     """is there an CA SSL certificate already in the database?
     If yes:
         return ID:
@@ -111,11 +111,11 @@ def _checkCertMatch_rhnCryptoKey(cert, description, org_id, deleteRowYN=0, verbo
     row = lookup_cert(description, org_id)
     rhn_cryptokey_id = -1
     if row:
-        if cert == rhnSQL._fix_encoding(rhnSQL.read_lob(row["key"])):
+        if cert == rhnSQL._fix_encoding(rhnSQL.read_lob(row["key"])):  #  pylint: disable=protected-access
             # match found, nothing to do
             if verbosity:
                 print(
-                    "Nothing to do: certificate to be pushed matches certificate in database."
+                    "Nothing to do: certificate to be pushed matches certificate in database."  #  pylint: disable=line-too-long
                 )
             return
         # there can only be one (bugzilla: 120297)
@@ -131,7 +131,7 @@ def _checkCertMatch_rhnCryptoKey(cert, description, org_id, deleteRowYN=0, verbo
     return rhn_cryptokey_id
 
 
-def _insertPrep_rhnCryptoKey(rhn_cryptokey_id, description, org_id):
+def _insertPrep_rhnCryptoKey(rhn_cryptokey_id, description, org_id):  #  pylint: disable=invalid-name
     """inserts a row given that a cert is not already in the database
     lob rewrite occurs later during update.
     Used ONLY by: store_rhnCryptoKey(...)
@@ -150,7 +150,7 @@ def _insertPrep_rhnCryptoKey(rhn_cryptokey_id, description, org_id):
     return rhn_cryptokey_id
 
 
-def _lobUpdate_rhnCryptoKey(rhn_cryptokey_id, cert):
+def _lobUpdate_rhnCryptoKey(rhn_cryptokey_id, cert):  #  pylint: disable=invalid-name
     """writes/updates the cert as a lob"""
 
     # Use our update blob wrapper to accomodate differences between Oracle
@@ -174,7 +174,7 @@ def _lobUpdate_rhnCryptoKey(rhn_cryptokey_id, cert):
         )
 
 
-def store_CaCert(description, caCert, verbosity=0):
+def store_CaCert(description, caCert, verbosity=0):  #  pylint: disable=invalid-name,invalid-name
     org_ids = get_all_orgs()
     org_ids.append({"id": None})
     if " CERTIFICATE-----" in caCert:
@@ -191,7 +191,7 @@ def store_CaCert(description, caCert, verbosity=0):
         store_rhnCryptoKey(description, cert, org_id, verbosity)
 
 
-def store_rhnCryptoKey(description, cert, org_id, verbosity=0):
+def store_rhnCryptoKey(description, cert, org_id, verbosity=0):  #  pylint: disable=invalid-name
     """stores cert in rhnCryptoKey
     uses:
         _checkCertMatch_rhnCryptoKey
@@ -217,12 +217,12 @@ def store_rhnCryptoKey(description, cert, org_id, verbosity=0):
         rhnSQL.commit()
     except rhnSQL.sql_base.SQLError:
         raise_with_tb(
-            CaCertInsertionError("...the traceback: %s" % fetchTraceback()),
+            CaCertInsertionError("...the traceback: %s" % fetchTraceback()),  #  pylint: disable=consider-using-f-string
             sys.exc_info()[2],
         )
 
 
-def delete_rhnCryptoKey_null_org(description_prefix):
+def delete_rhnCryptoKey_null_org(description_prefix):  #  pylint: disable=invalid-name
     h = rhnSQL.prepare(_queryDeleteCryptoCertInfoNullOrg)
     h.execute(description_prefix=description_prefix)
 
@@ -271,7 +271,7 @@ _queryInsertCryptoCertInfo = rhnSQL.Statement(
 )
 
 
-def _test_store_rhnCryptoKey(caCert):
+def _test_store_rhnCryptoKey(caCert):  #  pylint: disable=invalid-name,invalid-name
     description = "RHN-ORG-TRUSTED-SSL-CERT"
     store_CaCert(description, caCert)
 

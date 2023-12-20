@@ -57,7 +57,7 @@ else:
 # Common limits
 
 if PY3:
-    MaxInt = sys.maxsize
+    MaxInt = sys.maxsize  #  pylint: disable=invalid-name
 else:
     MaxInt = sys.maxint
 

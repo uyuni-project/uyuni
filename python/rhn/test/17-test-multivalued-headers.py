@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python  #  pylint: disable=missing-module-docstring,invalid-name
 #
 #
 #
@@ -7,8 +7,8 @@
 import sys
 
 sys.path.append("..")
-from rhn.transports import Output
-from rhn.connections import HTTPConnection
+from rhn.transports import Output  #  pylint: disable=wrong-import-position
+from rhn.connections import HTTPConnection  #  pylint: disable=wrong-import-position
 
 if __name__ == "__main__":
     conn = HTTPConnection("localhost", 5555)

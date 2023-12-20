@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -31,7 +31,7 @@ _query_action_script = rhnSQL.Statement(
 )
 
 
-def run(server_id, action_id, dry_run=0):
+def run(server_id, action_id, dry_run=0):  #  pylint: disable=unused-argument
     log_debug(3, dry_run)
 
     data = {}
@@ -45,7 +45,7 @@ def run(server_id, action_id, dry_run=0):
         data["username"] = info["username"]
         data["groupname"] = info["groupname"]
         data["timeout"] = info["timeout"] or ""
-        data["script"] = rhnSQL._fix_encoding(rhnSQL.read_lob(info["script"]) or "")
+        data["script"] = rhnSQL._fix_encoding(rhnSQL.read_lob(info["script"]) or "")  #  pylint: disable=protected-access
         # used to make the resulting times make some sense in the db
         data["now"] = info["now"]
 

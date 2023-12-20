@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python  #  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #
@@ -126,17 +126,17 @@ class FailedFileDependencyException(Exception):
     """missing a file needed for this step"""
 
 
-def dependencyCheck(filename):
+def dependencyCheck(filename):  #  pylint: disable=invalid-name
     if not os.path.exists(filename):
         raise FailedFileDependencyException(filename)
 
 
-def pathJoin(path, filename):
+def pathJoin(path, filename):  #  pylint: disable=invalid-name
     filename = os.path.basename(filename)
     return os.path.join(path, filename)
 
 
-def legacyTreeFixup(d):
+def legacyTreeFixup(d):  #  pylint: disable=invalid-name
     """move old server.* files to and "unknown" machinename directory
     Most of this is RHN Satellite 2.* and 3.* changes. Near the end
     we get to 3.6 changes.
@@ -144,7 +144,7 @@ def legacyTreeFixup(d):
 
     topdir = cleanupAbsPath(d["--dir"])
 
-    oldTree = "/etc/sysconfig/rhn/ssl"
+    oldTree = "/etc/sysconfig/rhn/ssl"  #  pylint: disable=invalid-name
     if topdir != oldTree and os.path.exists(oldTree):
         sys.stderr.write(
             """\
@@ -166,9 +166,9 @@ WARNING: %s
 
     unknown = os.path.join(topdir, "unknown")
     server_rpm_name = os.path.basename(d.get("--server-rpm", ""))
-    serverKeyPairDir = None
+    serverKeyPairDir = None  #  pylint: disable=invalid-name
     if "--set-hostname" in d:
-        serverKeyPairDir = os.path.join(d["--dir"], getMachineName(d["--set-hostname"]))
+        serverKeyPairDir = os.path.join(d["--dir"], getMachineName(d["--set-hostname"]))  #  pylint: disable=invalid-name
 
     while os.path.exists(unknown):
         # to avoid clashing with a possible "unknown" machinename
@@ -176,7 +176,7 @@ WARNING: %s
 
     old_server_splat = os.path.join(topdir, "server.")
 
-    moveMessage = ""
+    moveMessage = ""  #  pylint: disable=invalid-name
     for ext in ("key", "csr", "crt"):
         if os.path.exists(old_server_splat + ext):
             gendir(unknown)
@@ -193,8 +193,8 @@ WARNING: %s
             # if files and verbosity:
             if moved:
                 s = "server." + ext + "*"
-                moveMessage = moveMessage + (
-                    "  <BUILD_DIR>/%s --> <BUILD_DIR>/%s/%s\n"
+                moveMessage = moveMessage + (  #  pylint: disable=invalid-name
+                    "  <BUILD_DIR>/%s --> <BUILD_DIR>/%s/%s\n"  #  pylint: disable=consider-using-f-string
                     % (s, os.path.basename(unknown), s)
                 )
 
@@ -203,22 +203,22 @@ WARNING: %s
     # machine name directory.
     for name in [LEGACY_SERVER_RPM_NAME1, LEGACY_SERVER_RPM_NAME2]:
         old_server_rpms = glob.glob(os.path.join(topdir, name + "-*-*.*.rpm"))
-        movedYN = 0
+        movedYN = 0  #  pylint: disable=invalid-name
         for old_rpm in old_server_rpms:
-            targetDir = unknown
+            targetDir = unknown  #  pylint: disable=invalid-name
             old_hdr = get_package_header(old_rpm)
             if old_hdr and old_hdr["name"] == server_rpm_name and serverKeyPairDir:
-                targetDir = serverKeyPairDir
+                targetDir = serverKeyPairDir  #  pylint: disable=invalid-name
             gendir(targetDir)
             # move the files to the targetDir directory
             new_rpm = os.path.join(targetDir, os.path.basename(old_rpm))
             if not os.path.exists(new_rpm):
                 shutil.copy2(old_rpm, new_rpm)
                 os.unlink(old_rpm)
-                movedYN = 1
+                movedYN = 1  #  pylint: disable=invalid-name
         if movedYN:
             s = name + "-*-*.{noarch,src}.rpm"
-            moveMessage = (
+            moveMessage = (  #  pylint: disable=invalid-name
                 moveMessage
                 + """\
   <BUILD_DIR>/%s
@@ -228,34 +228,34 @@ WARNING: %s
 
     # I move the first 100 .pem files I find
     # if there is more than that... oh well
-    movedYN = 0
+    movedYN = 0  #  pylint: disable=invalid-name
     for i in range(100):
         serial = fixSerial(hex(i))
-        oldPemPath = os.path.join(topdir, serial + ".pem")
-        newPemPath = os.path.join(unknown, serial + ".pem")
+        oldPemPath = os.path.join(topdir, serial + ".pem")  #  pylint: disable=invalid-name
+        newPemPath = os.path.join(unknown, serial + ".pem")  #  pylint: disable=invalid-name
         if os.path.exists(oldPemPath) and not os.path.exists(newPemPath):
             gendir(unknown)
             shutil.copy2(oldPemPath, newPemPath)
             os.unlink(oldPemPath)
-            movedYN = 1
+            movedYN = 1  #  pylint: disable=invalid-name
     if movedYN:
-        moveMessage = moveMessage + (
-            "  <BUILD_DIR>/HEX*.pem --> <BUILD_DIR>/%s/HEX*.pem\n"
+        moveMessage = moveMessage + (  #  pylint: disable=invalid-name
+            "  <BUILD_DIR>/HEX*.pem --> <BUILD_DIR>/%s/HEX*.pem\n"  #  pylint: disable=consider-using-f-string
             % os.path.basename(unknown)
         )
 
     if moveMessage:
-        sys.stdout.write("\nLegacy tree structured file(s) moved:\n%s" % moveMessage)
+        sys.stdout.write("\nLegacy tree structured file(s) moved:\n%s" % moveMessage)  #  pylint: disable=consider-using-f-string
 
     # move rhn-org-httpd-ssl-MACHINENAME-VERSION.*.rpm files to the
     # MACHINENAME directory! (an RHN 3.6.0 change)
-    rootFilename = pathJoin(topdir, "rhn-org-httpd-ssl-key-pair-")
+    rootFilename = pathJoin(topdir, "rhn-org-httpd-ssl-key-pair-")  #  pylint: disable=invalid-name
     filenames = glob.glob(rootFilename + "*")
     for filename in filenames:
         # note: assuming version-rel is of that form.
         machinename = filename[len(rootFilename) :]
         machinename = "-".join(machinename.split("-")[:-2])
-        serverKeySetDir = pathJoin(topdir, machinename)
+        serverKeySetDir = pathJoin(topdir, machinename)  #  pylint: disable=invalid-name
         gendir(serverKeySetDir)
         fileto = pathJoin(serverKeySetDir, filename)
         if os.path.exists(fileto):
@@ -272,32 +272,32 @@ Moved (legacy tree cleanup):
         )
 
 
-_workDirObj = None
+_workDirObj = None  #  pylint: disable=invalid-name
 
 
-def _getWorkDir():
+def _getWorkDir():  #  pylint: disable=invalid-name
     global _workDirObj
     if not _workDirObj:
         _workDirObj = TempDir()
     return _workDirObj.getdir()
 
 
-def getCAPassword(options, confirmYN=1):
-    global DEFS
+def getCAPassword(options, confirmYN=1):  #  pylint: disable=invalid-name,invalid-name
+    global DEFS  #  pylint: disable=global-variable-not-assigned
     while not options.password:
-        pw = _pw = None
+        pw = _pw = None  #  pylint: disable=invalid-name
         if options.password_file:
             if os.path.isfile(options.password_file):
-                with open(options.password_file, "r") as fd:
-                    pw = _pw = fd.read().strip()
+                with open(options.password_file, "r") as fd:  #  pylint: disable=unspecified-encoding
+                    pw = _pw = fd.read().strip()  #  pylint: disable=invalid-name
             else:
-                print("No such file '{}'".format(options.password_file))
+                print("No such file '{}'".format(options.password_file))  #  pylint: disable=consider-using-f-string
 
         while not pw:
             pw = getpass.getpass("CA password: ")
         if confirmYN:
             while not _pw:
-                _pw = getpass.getpass("CA password confirmation: ")
+                _pw = getpass.getpass("CA password confirmation: ")  #  pylint: disable=invalid-name
             if pw != _pw:
                 print("Passwords do not match.\n")
                 pw = None
@@ -305,7 +305,7 @@ def getCAPassword(options, confirmYN=1):
     return options.password
 
 
-def genPrivateCaKey(password, d, verbosity=0, forceYN=0):
+def genPrivateCaKey(password, d, verbosity=0, forceYN=0):  #  pylint: disable=invalid-name,invalid-name
     """private CA key generation"""
 
     gendir(d["--dir"])
@@ -323,18 +323,18 @@ ERROR: a CA private key already exists:
         sys.exit(errnoGeneralError)
 
     args = (
-        "/usr/bin/openssl genpkey -pass pass:%s %s -out %s -algorithm rsa -pkeyopt rsa_keygen_bits:4096"
+        "/usr/bin/openssl genpkey -pass pass:%s %s -out %s -algorithm rsa -pkeyopt rsa_keygen_bits:4096"  #  pylint: disable=line-too-long,consider-using-f-string
         % ("%s", CRYPTO, repr(cleanupAbsPath(ca_key)))
     )
 
     if verbosity >= 0:
-        print("Generating private CA key: %s" % ca_key)
+        print("Generating private CA key: %s" % ca_key)  #  pylint: disable=consider-using-f-string
         if verbosity > 1:
             print("Commandline:", args % "PASSWORD")
     try:
         rotated = rotateFile(filepath=ca_key, verbosity=verbosity)
         if verbosity >= 0 and rotated:
-            print("Rotated: %s --> %s" % (d["--ca-key"], os.path.basename(rotated)))
+            print("Rotated: %s --> %s" % (d["--ca-key"], os.path.basename(rotated)))  #  pylint: disable=consider-using-f-string
     except ValueError:
         pass
 
@@ -350,7 +350,7 @@ ERROR: a CA private key already exists:
     err_stream.close()
     if ret:
         raise GenPrivateCaKeyException(
-            "Certificate Authority private SSL "
+            "Certificate Authority private SSL "  #  pylint: disable=consider-using-f-string
             "key generation failed:\n%s\n%s" % (out, err)
         )
     if verbosity > 2:
@@ -363,7 +363,7 @@ ERROR: a CA private key already exists:
     os.chmod(ca_key, int("0600", 8))
 
 
-def genPublicCaCert_dependencies(password, d, forceYN=0):
+def genPublicCaCert_dependencies(password, d, forceYN=0):  #  pylint: disable=invalid-name,invalid-name
     """public CA certificate (client-side) generation"""
 
     gendir(d["--dir"])
@@ -388,10 +388,10 @@ ERROR: a CA public certificate already exists:
         sys.exit(errnoGeneralError)
 
 
-def genCaConf(d, verbosity=0):
+def genCaConf(d, verbosity=0):  #  pylint: disable=invalid-name
     """generate the openssl ca config"""
     ca_openssl_cnf = os.path.join(d["--dir"], CA_OPENSSL_CNF_NAME)
-    configFile = ConfigFile(ca_openssl_cnf)
+    configFile = ConfigFile(ca_openssl_cnf)  #  pylint: disable=invalid-name
     data = copy.deepcopy(d)
     if "--set-hostname" in data:
         del data["--set-hostname"]
@@ -399,7 +399,7 @@ def genCaConf(d, verbosity=0):
     return configFile
 
 
-def genPublicCaCert(password, d, verbosity=0, forceYN=0):
+def genPublicCaCert(password, d, verbosity=0, forceYN=0):  #  pylint: disable=invalid-name,invalid-name
     """public CA certificate (client-side) generation"""
 
     ca_key = os.path.join(d["--dir"], os.path.basename(d["--ca-key"]))
@@ -408,9 +408,9 @@ def genPublicCaCert(password, d, verbosity=0, forceYN=0):
 
     genPublicCaCert_dependencies(password, d, forceYN)
 
-    configFile = genCaConf(d, verbosity)
+    configFile = genCaConf(d, verbosity)  #  pylint: disable=invalid-name
     args = (
-        "/usr/bin/openssl req -passin pass:%s -text -config %s "
+        "/usr/bin/openssl req -passin pass:%s -text -config %s "  #  pylint: disable=consider-using-f-string
         "-new -x509 -days %s -%s -key %s -out %s"
         % (
             "%s",
@@ -423,7 +423,7 @@ def genPublicCaCert(password, d, verbosity=0, forceYN=0):
     )
 
     if verbosity >= 0:
-        print("\nGenerating public CA certificate: %s" % ca_cert)
+        print("\nGenerating public CA certificate: %s" % ca_cert)  #  pylint: disable=consider-using-f-string
         print("Using distinguishing variables:")
         for k in (
             "--set-country",
@@ -434,14 +434,14 @@ def genPublicCaCert(password, d, verbosity=0, forceYN=0):
             "--set-common-name",
             "--set-email",
         ):
-            print('    %s%s = "%s"' % (k, " " * (18 - len(k)), d[k]))
+            print('    %s%s = "%s"' % (k, " " * (18 - len(k)), d[k]))  #  pylint: disable=consider-using-f-string
         if verbosity > 1:
             print("Commandline:", args % "PASSWORD")
 
     try:
         rotated = rotateFile(filepath=ca_cert, verbosity=verbosity)
         if verbosity >= 0 and rotated:
-            print("Rotated: %s --> %s" % (d["--ca-cert"], os.path.basename(rotated)))
+            print("Rotated: %s --> %s" % (d["--ca-cert"], os.path.basename(rotated)))  #  pylint: disable=consider-using-f-string
     except ValueError:
         pass
 
@@ -457,7 +457,7 @@ def genPublicCaCert(password, d, verbosity=0, forceYN=0):
     err_stream.close()
     if ret:
         raise GenPublicCaCertException(
-            "Certificate Authority public "
+            "Certificate Authority public "  #  pylint: disable=consider-using-f-string
             "SSL certificate generation failed:\n%s\n"
             "%s" % (out, err)
         )
@@ -469,7 +469,7 @@ def genPublicCaCert(password, d, verbosity=0, forceYN=0):
 
     latest_txt = os.path.join(d["--dir"], "latest.txt")
     fo = open(latest_txt, "wb")
-    fo.write(bstr("%s\n" % ca_cert_name))
+    fo.write(bstr("%s\n" % ca_cert_name))  #  pylint: disable=consider-using-f-string
     fo.close()
 
     # permissions:
@@ -477,26 +477,26 @@ def genPublicCaCert(password, d, verbosity=0, forceYN=0):
     os.chmod(latest_txt, int("0644", 8))
 
 
-def genServerKey(d, verbosity=0):
+def genServerKey(d, verbosity=0):  #  pylint: disable=invalid-name
     """private server key generation"""
 
-    serverKeyPairDir = os.path.join(d["--dir"], getMachineName(d["--set-hostname"]))
+    serverKeyPairDir = os.path.join(d["--dir"], getMachineName(d["--set-hostname"]))  #  pylint: disable=invalid-name
     gendir(serverKeyPairDir)
 
     server_key = os.path.join(serverKeyPairDir, os.path.basename(d["--server-key"]))
 
-    args = "/usr/bin/openssl genrsa -out %s 4096" % (repr(cleanupAbsPath(server_key)))
+    args = "/usr/bin/openssl genrsa -out %s 4096" % (repr(cleanupAbsPath(server_key)))  #  pylint: disable=consider-using-f-string
 
     # generate the server key
     if verbosity >= 0:
-        print("\nGenerating the web server's SSL private key: %s" % server_key)
+        print("\nGenerating the web server's SSL private key: %s" % server_key)  #  pylint: disable=consider-using-f-string
         if verbosity > 1:
             print("Commandline:", args)
 
     try:
         rotated = rotateFile(filepath=server_key, verbosity=verbosity)
         if verbosity >= 0 and rotated:
-            print("Rotated: %s --> %s" % (d["--server-key"], os.path.basename(rotated)))
+            print("Rotated: %s --> %s" % (d["--server-key"], os.path.basename(rotated)))  #  pylint: disable=consider-using-f-string
     except ValueError:
         pass
 
@@ -512,7 +512,7 @@ def genServerKey(d, verbosity=0):
     err_stream.close()
     if ret:
         raise GenServerKeyException(
-            "web server's SSL key generation failed:\n%s\n%s" % (out, err)
+            "web server's SSL key generation failed:\n%s\n%s" % (out, err)  #  pylint: disable=consider-using-f-string
         )
     if verbosity > 2:
         if out:
@@ -524,20 +524,20 @@ def genServerKey(d, verbosity=0):
     os.chmod(server_key, int("0600", 8))
 
 
-def genServerCertReq_dependencies(d):
+def genServerCertReq_dependencies(d):  #  pylint: disable=invalid-name
     """private server cert request generation"""
 
-    serverKeyPairDir = os.path.join(d["--dir"], getMachineName(d["--set-hostname"]))
+    serverKeyPairDir = os.path.join(d["--dir"], getMachineName(d["--set-hostname"]))  #  pylint: disable=invalid-name
     gendir(serverKeyPairDir)
 
     server_key = os.path.join(serverKeyPairDir, os.path.basename(d["--server-key"]))
     dependencyCheck(server_key)
 
 
-def genServerCertReq(d, verbosity=0):
+def genServerCertReq(d, verbosity=0):  #  pylint: disable=invalid-name
     """private server cert request generation"""
 
-    serverKeyPairDir = os.path.join(d["--dir"], getMachineName(d["--set-hostname"]))
+    serverKeyPairDir = os.path.join(d["--dir"], getMachineName(d["--set-hostname"]))  #  pylint: disable=invalid-name
     server_key = os.path.join(serverKeyPairDir, os.path.basename(d["--server-key"]))
     server_cert_req = os.path.join(
         serverKeyPairDir, os.path.basename(d["--server-cert-req"])
@@ -548,13 +548,13 @@ def genServerCertReq(d, verbosity=0):
 
     # XXX: hmm.. should private_key, etc. be set for this before the write?
     #      either that you pull the key/certs from the files all together?
-    configFile = ConfigFile(server_openssl_cnf)
+    configFile = ConfigFile(server_openssl_cnf)  #  pylint: disable=invalid-name
     if "--set-common-name" in d:
         del d["--set-common-name"]
     configFile.save(d, caYN=0, verbosity=verbosity)
 
     ## generate the server cert request
-    args = "/usr/bin/openssl req -%s -text -config %s -new -key %s -out %s " % (
+    args = "/usr/bin/openssl req -%s -text -config %s -new -key %s -out %s " % (  #  pylint: disable=consider-using-f-string
         MD,
         repr(cleanupAbsPath(configFile.filename)),
         repr(cleanupAbsPath(server_key)),
@@ -562,7 +562,7 @@ def genServerCertReq(d, verbosity=0):
     )
 
     if verbosity >= 0:
-        print("\nGenerating web server's SSL certificate request: %s" % server_cert_req)
+        print("\nGenerating web server's SSL certificate request: %s" % server_cert_req)  #  pylint: disable=consider-using-f-string
         print("Using distinguished names:")
         for k in (
             "--set-country",
@@ -573,7 +573,7 @@ def genServerCertReq(d, verbosity=0):
             "--set-hostname",
             "--set-email",
         ):
-            print('    %s%s = "%s"' % (k, " " * (18 - len(k)), d[k]))
+            print('    %s%s = "%s"' % (k, " " * (18 - len(k)), d[k]))  #  pylint: disable=consider-using-f-string
         if verbosity > 1:
             print("Commandline:", args)
 
@@ -581,7 +581,7 @@ def genServerCertReq(d, verbosity=0):
         rotated = rotateFile(filepath=server_cert_req, verbosity=verbosity)
         if verbosity >= 0 and rotated:
             print(
-                "Rotated: %s --> %s"
+                "Rotated: %s --> %s"  #  pylint: disable=consider-using-f-string
                 % (d["--server-cert-req"], os.path.basename(rotated))
             )
     except ValueError:
@@ -599,7 +599,7 @@ def genServerCertReq(d, verbosity=0):
     err_stream.close()
     if ret:
         raise GenServerCertReqException(
-            "web server's SSL certificate request generation "
+            "web server's SSL certificate request generation "  #  pylint: disable=consider-using-f-string
             "failed:\n%s\n%s" % (out, err)
         )
     if verbosity > 2:
@@ -612,14 +612,14 @@ def genServerCertReq(d, verbosity=0):
     os.chmod(server_cert_req, int("0600", 8))
 
 
-def genServerCert_dependencies(password, d, verbosity=0):
+def genServerCert_dependencies(password, d, verbosity=0):  #  pylint: disable=invalid-name
     """server cert generation and signing dependency check"""
 
     if password is None:
         sys.stderr.write("ERROR: a CA password must be supplied.\n")
         sys.exit(errnoGeneralError)
 
-    serverKeyPairDir = os.path.join(d["--dir"], getMachineName(d["--set-hostname"]))
+    serverKeyPairDir = os.path.join(d["--dir"], getMachineName(d["--set-hostname"]))  #  pylint: disable=invalid-name
     gendir(serverKeyPairDir)
 
     ca_key = os.path.join(d["--dir"], os.path.basename(d["--ca-key"]))
@@ -639,10 +639,10 @@ def genServerCert_dependencies(password, d, verbosity=0):
     dependencyCheck(server_cert_req)
 
 
-def genServerCert(password, d, verbosity=0):
+def genServerCert(password, d, verbosity=0):  #  pylint: disable=invalid-name
     """server cert generation and signing"""
 
-    serverKeyPairDir = os.path.join(d["--dir"], getMachineName(d["--set-hostname"]))
+    serverKeyPairDir = os.path.join(d["--dir"], getMachineName(d["--set-hostname"]))  #  pylint: disable=invalid-name
 
     genServerCert_dependencies(password, d, verbosity)
 
@@ -660,7 +660,7 @@ def genServerCert(password, d, verbosity=0):
 
     try:
         os.unlink(index_txt)
-    except:
+    except:  #  pylint: disable=bare-except
         pass
 
     # figure out the serial file and truncate the index.txt file.
@@ -668,11 +668,11 @@ def genServerCert(password, d, verbosity=0):
 
     # need to insure the directory declared in the ca_openssl.cnf
     # file is current:
-    configFile = ConfigFile(ca_openssl_cnf)
+    configFile = ConfigFile(ca_openssl_cnf)  #  pylint: disable=invalid-name
     configFile.updateDir()
 
     args = (
-        "/usr/bin/openssl ca -extensions req_server_x509_extensions -passin pass:%s -outdir ./ -config %s "
+        "/usr/bin/openssl ca -extensions req_server_x509_extensions -passin pass:%s -outdir ./ -config %s "  #  pylint: disable=line-too-long,consider-using-f-string
         "-in %s -batch -cert %s -keyfile %s -startdate %s -days %s "
         "-md %s -out %s"
         % (
@@ -690,7 +690,7 @@ def genServerCert(password, d, verbosity=0):
 
     if verbosity >= 0:
         print(
-            "\nGenerating/signing web server's SSL certificate: %s" % d["--server-cert"]
+            "\nGenerating/signing web server's SSL certificate: %s" % d["--server-cert"]  #  pylint: disable=consider-using-f-string
         )
         if verbosity > 1:
             print("Commandline:", args % "PASSWORD")
@@ -698,7 +698,7 @@ def genServerCert(password, d, verbosity=0):
         rotated = rotateFile(filepath=server_cert, verbosity=verbosity)
         if verbosity >= 0 and rotated:
             print(
-                "Rotated: %s --> %s" % (d["--server-cert"], os.path.basename(rotated))
+                "Rotated: %s --> %s" % (d["--server-cert"], os.path.basename(rotated))  #  pylint: disable=consider-using-f-string
             )
     except ValueError:
         pass
@@ -723,7 +723,7 @@ def genServerCert(password, d, verbosity=0):
             )
             != -1
             and err.find(
-                "error:06065064:digital envelope routines:EVP_DecryptFinal:bad decrypt:evp_enc.c"
+                "error:06065064:digital envelope routines:EVP_DecryptFinal:bad decrypt:evp_enc.c"  #  pylint: disable=line-too-long
             )
             != -1
         ):
@@ -733,7 +733,7 @@ def genServerCert(password, d, verbosity=0):
             )
         else:
             raise GenServerCertException(
-                "web server's SSL certificate generation/signing "
+                "web server's SSL certificate generation/signing "  #  pylint: disable=consider-using-f-string
                 "failed:\n%s\n%s" % (out, err)
             )
 
@@ -747,20 +747,20 @@ def genServerCert(password, d, verbosity=0):
     os.chmod(server_cert, int("0644", 8))
 
     # cleanup duplicate XX.pem file:
-    pemFilename = os.path.basename(ser.upper() + ".pem")
+    pemFilename = os.path.basename(ser.upper() + ".pem")  #  pylint: disable=invalid-name
     if pemFilename != server_cert and os.path.exists(pemFilename):
         os.unlink(pemFilename)
 
     # cleanup the old index.txt file
     try:
         os.unlink(index_txt + ".old")
-    except:
+    except:  #  pylint: disable=bare-except
         pass
 
     # cleanup the old serial file
     try:
         os.unlink(serial + ".old")
-    except:
+    except:  #  pylint: disable=bare-except
         pass
 
 
@@ -769,7 +769,7 @@ def gen_jabberd_cert(d):
     generate the jabberd ssl cert from the server cert and key
     """
 
-    serverKeyPairDir = os.path.join(d["--dir"], getMachineName(d["--set-hostname"]))
+    serverKeyPairDir = os.path.join(d["--dir"], getMachineName(d["--set-hostname"]))  #  pylint: disable=invalid-name
     server_key = os.path.join(serverKeyPairDir, d["--server-key"])
     server_cert = os.path.join(serverKeyPairDir, d["--server-cert"])
 
@@ -792,21 +792,21 @@ def gen_jabberd_cert(d):
     return
 
 
-def _disableRpmMacros():
+def _disableRpmMacros():  #  pylint: disable=invalid-name
     mac = cleanupAbsPath("~/.rpmmacros")
-    macTmp = cleanupAbsPath("~/RENAME_ME_BACK_PLEASE-lksjdflajsd.rpmmacros")
+    macTmp = cleanupAbsPath("~/RENAME_ME_BACK_PLEASE-lksjdflajsd.rpmmacros")  #  pylint: disable=invalid-name
     if os.path.exists(mac):
         os.rename(mac, macTmp)
 
 
-def _reenableRpmMacros():
+def _reenableRpmMacros():  #  pylint: disable=invalid-name
     mac = cleanupAbsPath("~/.rpmmacros")
-    macTmp = cleanupAbsPath("~/RENAME_ME_BACK_PLEASE-lksjdflajsd.rpmmacros")
+    macTmp = cleanupAbsPath("~/RENAME_ME_BACK_PLEASE-lksjdflajsd.rpmmacros")  #  pylint: disable=invalid-name
     if os.path.exists(macTmp):
         os.rename(macTmp, mac)
 
 
-def genCaRpm_dependencies(d):
+def genCaRpm_dependencies(d):  #  pylint: disable=invalid-name
     """generates ssl cert RPM."""
 
     gendir(d["--dir"])
@@ -815,7 +815,7 @@ def genCaRpm_dependencies(d):
     dependencyCheck(ca_cert)
 
 
-def genCaRpm(d, verbosity=0):
+def genCaRpm(d, verbosity=0):  #  pylint: disable=invalid-name
     """generates ssl cert RPM."""
 
     ca_cert_name = os.path.basename(d["--ca-cert"])
@@ -831,7 +831,7 @@ def genCaRpm(d, verbosity=0):
     hdr = getInstalledHeader(ca_cert_rpm)
 
     # find RPMs in the directory
-    filenames = glob.glob("%s-*.noarch.rpm" % ca_cert_rpm)
+    filenames = glob.glob("%s-*.noarch.rpm" % ca_cert_rpm)  #  pylint: disable=consider-using-f-string
     if filenames:
         filename = sortRPMs(filenames)[-1]
         h = get_package_header(filename)
@@ -842,7 +842,7 @@ def genCaRpm(d, verbosity=0):
             if comp > 0:
                 hdr = h
 
-    epo, ver, rel = None, "1.0", "0"
+    epo, ver, rel = None, "1.0", "0"  #  pylint: disable=unused-variable
     if hdr is not None:
         epo, ver, rel = hdr["epoch"], hdr["version"], hdr["release"]
 
@@ -855,7 +855,7 @@ def genCaRpm(d, verbosity=0):
 
     # build the CA certificate RPM
     args = (
-        os.path.join(CERT_PATH, "gen-rpm.sh") + " "
+        os.path.join(CERT_PATH, "gen-rpm.sh") + " "  #  pylint: disable=consider-using-f-string
         "--name %s --version %s --release %s --packager %s --vendor %s "
         "--group 'RHN/Security' --summary %s --description %s "
         "--post %s --postun %s "
@@ -874,7 +874,7 @@ def genCaRpm(d, verbosity=0):
             repr(cleanupAbsPath(ca_cert)),
         )
     )
-    clientRpmName = "%s-%s-%s" % (ca_cert_rpm, ver, rel)
+    clientRpmName = "%s-%s-%s" % (ca_cert_rpm, ver, rel)  #  pylint: disable=invalid-name,consider-using-f-string
     if verbosity >= 0:
         print(
             """
@@ -902,23 +902,23 @@ Generating CA public certificate RPM:
     err = err_stream.read()
     err_stream.close()
 
-    if ret or not os.path.exists("%s.noarch.rpm" % clientRpmName):
+    if ret or not os.path.exists("%s.noarch.rpm" % clientRpmName):  #  pylint: disable=consider-using-f-string
         raise GenCaCertRpmException(
-            "CA public SSL certificate RPM generation " "failed:\n%s\n%s" % (out, err)
+            "CA public SSL certificate RPM generation " "failed:\n%s\n%s" % (out, err)  #  pylint: disable=consider-using-f-string
         )
     if verbosity > 2:
         if out:
             print("STDOUT:", out)
         if err:
             print("STDERR:", err)
-    os.chmod("%s.noarch.rpm" % clientRpmName, int("0644", 8))
+    os.chmod("%s.noarch.rpm" % clientRpmName, int("0644", 8))  #  pylint: disable=consider-using-f-string
 
     # write-out latest.txt information
     latest_txt = os.path.join(d["--dir"], "latest.txt")
     fo = open(latest_txt, "wb")
-    fo.write(bstr("%s\n" % ca_cert_name))
-    fo.write(bstr("%s.noarch.rpm\n" % os.path.basename(clientRpmName)))
-    fo.write(bstr("%s.src.rpm\n" % os.path.basename(clientRpmName)))
+    fo.write(bstr("%s\n" % ca_cert_name))  #  pylint: disable=consider-using-f-string
+    fo.write(bstr("%s.noarch.rpm\n" % os.path.basename(clientRpmName)))  #  pylint: disable=consider-using-f-string
+    fo.write(bstr("%s.src.rpm\n" % os.path.basename(clientRpmName)))  #  pylint: disable=consider-using-f-string
     fo.close()
     os.chmod(latest_txt, int("0644", 8))
 
@@ -932,15 +932,15 @@ Make the public CA certificate publically available:
     Proxy."""
         )
 
-    return "%s.noarch.rpm" % clientRpmName
+    return "%s.noarch.rpm" % clientRpmName  #  pylint: disable=consider-using-f-string
 
 
-def genProxyServerTarball_dependencies(d):
+def genProxyServerTarball_dependencies(d):  #  pylint: disable=invalid-name
     """dependency check for the step that generates the SUSE Manager Proxy's
     tar archive containing its SSL key set + CA certificate.
     """
 
-    serverKeySetDir = os.path.join(d["--dir"], getMachineName(d["--set-hostname"]))
+    serverKeySetDir = os.path.join(d["--dir"], getMachineName(d["--set-hostname"]))  #  pylint: disable=invalid-name
     gendir(serverKeySetDir)
 
     ca_cert = pathJoin(d["--dir"], d["--ca-cert"])
@@ -954,15 +954,15 @@ def genProxyServerTarball_dependencies(d):
     dependencyCheck(jabberd_ssl_cert)
 
 
-def getTarballFilename(d, version="1.0", release="1"):
+def getTarballFilename(d, version="1.0", release="1"):  #  pylint: disable=invalid-name
     """figure out the current and next tar archive filename
     returns current, next (current can be None)
     """
 
-    serverKeySetDir = pathJoin(d["--dir"], getMachineName(d["--set-hostname"]))
+    serverKeySetDir = pathJoin(d["--dir"], getMachineName(d["--set-hostname"]))  #  pylint: disable=invalid-name
     server_tar_name = pathJoin(serverKeySetDir, d["--server-tar"])
 
-    filenames = glob.glob("%s-%s-*.tar" % (server_tar_name, version))
+    filenames = glob.glob("%s-%s-*.tar" % (server_tar_name, version))  #  pylint: disable=consider-using-f-string
     filenames.sort()  # tested to be reliable
 
     versions = list(map(lambda x, n=len(server_tar_name): x[n + 1 : -4], filenames))
@@ -972,11 +972,11 @@ def getTarballFilename(d, version="1.0", release="1"):
     if filenames:
         current = filenames[-1]
 
-    next = "%s-%s-1.tar" % (server_tar_name, version)
+    next = "%s-%s-1.tar" % (server_tar_name, version)  #  pylint: disable=redefined-builtin,consider-using-f-string
     if current:
         v = versions[-1].split("-")
         v[-1] = str(int(v[-1]) + 1)
-        next = "%s-%s.tar" % (server_tar_name, "-".join(v))
+        next = "%s-%s.tar" % (server_tar_name, "-".join(v))  #  pylint: disable=consider-using-f-string
         current = os.path.basename(current)
 
     # incoming release (usually coming from RPM version) is factored in
@@ -984,21 +984,21 @@ def getTarballFilename(d, version="1.0", release="1"):
     v = next[len(server_tar_name) + 1 : -4]
     v = v.split("-")
     v[-1] = str(max(int(v[-1]), int(release)))
-    next = "%s-%s.tar" % (server_tar_name, "-".join(v))
+    next = "%s-%s.tar" % (server_tar_name, "-".join(v))  #  pylint: disable=consider-using-f-string
     next = os.path.basename(next)
 
     return current, next
 
 
-def genProxyServerTarball(d, version="1.0", release="1", verbosity=0):
+def genProxyServerTarball(d, version="1.0", release="1", verbosity=0):  #  pylint: disable=invalid-name
     """generates the Spacewalk Proxy Server's tar archive containing its
     SSL key set + CA certificate
     """
 
     genProxyServerTarball_dependencies(d)
 
-    tarballFilepath = getTarballFilename(d, version, release)[1]
-    tarballFilepath = pathJoin(d["--dir"], tarballFilepath)
+    tarballFilepath = getTarballFilename(d, version, release)[1]  #  pylint: disable=invalid-name
+    tarballFilepath = pathJoin(d["--dir"], tarballFilepath)  #  pylint: disable=invalid-name
 
     machinename = getMachineName(d["--set-hostname"])
 
@@ -1010,8 +1010,8 @@ def genProxyServerTarball(d, version="1.0", release="1", verbosity=0):
         repr(os.path.join(machinename, d["--jabberd-ssl-cert"])),
     ]
 
-    serverKeySetDir = pathJoin(d["--dir"], machinename)
-    tarballFilepath2 = pathJoin(serverKeySetDir, tarballFilepath)
+    serverKeySetDir = pathJoin(d["--dir"], machinename)  #  pylint: disable=invalid-name
+    tarballFilepath2 = pathJoin(serverKeySetDir, tarballFilepath)  #  pylint: disable=invalid-name
 
     if verbosity >= 0:
         print(
@@ -1033,12 +1033,12 @@ Generating the web server's SSL key set and CA SSL public certificate archive:
         tar_args.append(repr(server_cert_req))
     else:
         sys.stderr.write(
-            "WARNING: Not bundling %s to server tarball (file "
+            "WARNING: Not bundling %s to server tarball (file "  #  pylint: disable=consider-using-f-string
             "not found)." % repr(server_cert_req)
         )
 
     # build the server tarball
-    args = ("/bin/tar -cvf %s " % " ".join(tar_args)).strip()
+    args = ("/bin/tar -cvf %s " % " ".join(tar_args)).strip()  #  pylint: disable=consider-using-f-string
 
     try:
         if verbosity > 1:
@@ -1055,7 +1055,7 @@ Generating the web server's SSL key set and CA SSL public certificate archive:
 
     if ret or not os.path.exists(tarballFilepath):
         raise GenServerTarException(
-            "CA SSL public certificate & web server's SSL key set tar archive\n"
+            "CA SSL public certificate & web server's SSL key set tar archive\n"  #  pylint: disable=consider-using-f-string
             "generation failed:\n%s\n%s" % (out, err)
         )
     if verbosity > 2:
@@ -1083,10 +1083,10 @@ Moved to final home:
     return tarballFilepath2
 
 
-def genServerRpm_dependencies(d):
+def genServerRpm_dependencies(d):  #  pylint: disable=invalid-name
     """generates server's SSL key set RPM - dependencies check"""
 
-    serverKeyPairDir = os.path.join(d["--dir"], getMachineName(d["--set-hostname"]))
+    serverKeyPairDir = os.path.join(d["--dir"], getMachineName(d["--set-hostname"]))  #  pylint: disable=invalid-name
     gendir(serverKeyPairDir)
 
     server_key_name = os.path.basename(d["--server-key"])
@@ -1096,10 +1096,10 @@ def genServerRpm_dependencies(d):
     server_cert = os.path.join(serverKeyPairDir, server_cert_name)
 
     server_cert_req_name = os.path.basename(d["--server-cert-req"])
-    server_cert_req = os.path.join(serverKeyPairDir, server_cert_req_name)
+    server_cert_req = os.path.join(serverKeyPairDir, server_cert_req_name)  #  pylint: disable=unused-variable
 
     jabberd_ssl_cert_name = os.path.basename(d["--jabberd-ssl-cert"])
-    jabberd_ssl_cert = os.path.join(serverKeyPairDir, jabberd_ssl_cert_name)
+    jabberd_ssl_cert = os.path.join(serverKeyPairDir, jabberd_ssl_cert_name)  #  pylint: disable=unused-variable
 
     dependencyCheck(server_key)
     dependencyCheck(server_cert)
@@ -1107,10 +1107,10 @@ def genServerRpm_dependencies(d):
     gen_jabberd_cert(d)
 
 
-def genServerRpm(d, verbosity=0):
+def genServerRpm(d, verbosity=0):  #  pylint: disable=invalid-name
     """generates server's SSL key set RPM"""
 
-    serverKeyPairDir = os.path.join(d["--dir"], getMachineName(d["--set-hostname"]))
+    serverKeyPairDir = os.path.join(d["--dir"], getMachineName(d["--set-hostname"]))  #  pylint: disable=invalid-name
 
     server_key_name = os.path.basename(d["--server-key"])
     server_key = os.path.join(serverKeyPairDir, server_key_name)
@@ -1134,7 +1134,7 @@ def genServerRpm(d, verbosity=0):
     if verbosity >= 0:
         sys.stderr.write("\n...working...\n")
     # check for old installed RPM.
-    oldHdr = getInstalledHeader(LEGACY_SERVER_RPM_NAME1)
+    oldHdr = getInstalledHeader(LEGACY_SERVER_RPM_NAME1)  #  pylint: disable=invalid-name
     if oldHdr and LEGACY_SERVER_RPM_NAME1 != server_rpm_name:
         sys.stderr.write(
             """
@@ -1146,7 +1146,7 @@ def genServerRpm(d, verbosity=0):
         )
 
     if not oldHdr:
-        oldHdr = getInstalledHeader(LEGACY_SERVER_RPM_NAME2)
+        oldHdr = getInstalledHeader(LEGACY_SERVER_RPM_NAME2)  #  pylint: disable=invalid-name
         if oldHdr and LEGACY_SERVER_RPM_NAME2 != server_rpm_name:
             sys.stderr.write(
                 """
@@ -1162,7 +1162,7 @@ def genServerRpm(d, verbosity=0):
     hdr = getInstalledHeader(server_rpm_name)
 
     # find RPMs in the directory as well.
-    filenames = glob.glob("%s-*.noarch.rpm" % server_rpm)
+    filenames = glob.glob("%s-*.noarch.rpm" % server_rpm)  #  pylint: disable=consider-using-f-string
     if filenames:
         filename = sortRPMs(filenames)[-1]
         h = get_package_header(filename)
@@ -1173,7 +1173,7 @@ def genServerRpm(d, verbosity=0):
             if comp > 0:
                 hdr = h
 
-    epo, ver, rel = None, "1.0", "0"
+    epo, ver, rel = None, "1.0", "0"  #  pylint: disable=unused-variable
     if hdr is not None:
         epo, ver, rel = hdr["epoch"], hdr["version"], hdr["release"]
 
@@ -1198,7 +1198,7 @@ server with this hostname: %s
         try:
             pwd.getpwnam(juser_attempt)
             jabberd_user = juser_attempt
-        except:
+        except:  #  pylint: disable=bare-except
             # user doesn't exist, try the next
             pass
     if jabberd_user is None:
@@ -1209,7 +1209,7 @@ server with this hostname: %s
 
     jabberd_cert_string = ""
     if jabberd_user is not None:
-        jabberd_cert_string = "/etc/pki/spacewalk/jabberd/server.pem:0600,%s,%s=%s" % (
+        jabberd_cert_string = "/etc/pki/spacewalk/jabberd/server.pem:0600,%s,%s=%s" % (  #  pylint: disable=consider-using-f-string
             jabberd_user,
             jabberd_user,
             repr(cleanupAbsPath(jabberd_ssl_cert)),
@@ -1217,7 +1217,7 @@ server with this hostname: %s
 
     ## build the server RPM
     args = (
-        os.path.join(CERT_PATH, "gen-rpm.sh") + " "
+        os.path.join(CERT_PATH, "gen-rpm.sh") + " "  #  pylint: disable=consider-using-f-string
         "--name %s --version %s --release %s --packager %s --vendor %s "
         "--group 'RHN/Security' --summary %s --description %s --postun %s "
         "/etc/httpd/conf/ssl.key/server.key:0600=%s "
@@ -1240,14 +1240,14 @@ server with this hostname: %s
 
     abs_server_cert_req = cleanupAbsPath(server_cert_req)
     if os.path.exists(abs_server_cert_req):
-        args += "/etc/httpd/conf/ssl.csr/server.csr=%s" % repr(abs_server_cert_req)
+        args += "/etc/httpd/conf/ssl.csr/server.csr=%s" % repr(abs_server_cert_req)  #  pylint: disable=consider-using-f-string
     else:
         sys.stderr.write(
-            "WARNING: Not bundling %s to server RPM "
+            "WARNING: Not bundling %s to server RPM "  #  pylint: disable=consider-using-f-string
             "(file not found)." % repr(server_cert_req)
         )
 
-    serverRpmName = "%s-%s-%s" % (server_rpm, ver, rel)
+    serverRpmName = "%s-%s-%s" % (server_rpm, ver, rel)  #  pylint: disable=invalid-name,consider-using-f-string
 
     if verbosity >= 0:
         print(
@@ -1263,7 +1263,7 @@ Generating web server's SSL key pair/set RPM:
     if verbosity >= 4:
         print("Current working directory:", os.getcwd())
         print("Writing postun_scriptlet:", postun_scriptlet)
-    open(postun_scriptlet, "w").write(POST_UNINSTALL_SCRIPT)
+    open(postun_scriptlet, "w").write(POST_UNINSTALL_SCRIPT)  #  pylint: disable=unspecified-encoding
 
     _disableRpmMacros()
     cwd = chdir(serverKeyPairDir)
@@ -1279,9 +1279,9 @@ Generating web server's SSL key pair/set RPM:
     err = err_stream.read()
     err_stream.close()
 
-    if ret or not os.path.exists("%s.noarch.rpm" % serverRpmName):
+    if ret or not os.path.exists("%s.noarch.rpm" % serverRpmName):  #  pylint: disable=consider-using-f-string
         raise GenServerRpmException(
-            "web server's SSL key set RPM generation " "failed:\n%s\n%s" % (out, err)
+            "web server's SSL key set RPM generation " "failed:\n%s\n%s" % (out, err)  #  pylint: disable=consider-using-f-string
         )
     if verbosity > 2:
         if out:
@@ -1289,19 +1289,19 @@ Generating web server's SSL key pair/set RPM:
         if err:
             print("STDERR:", err)
 
-    os.chmod("%s.noarch.rpm" % serverRpmName, int("0600", 8))
+    os.chmod("%s.noarch.rpm" % serverRpmName, int("0600", 8))  #  pylint: disable=consider-using-f-string
 
     # generic the tarball necessary for Spacewalk Proxy against hosted installations
-    tarballFilepath = genProxyServerTarball(
+    tarballFilepath = genProxyServerTarball(  #  pylint: disable=invalid-name
         d, version=ver, release=rel, verbosity=verbosity
     )
 
     # write-out latest.txt information
     latest_txt = os.path.join(serverKeyPairDir, "latest.txt")
     fo = open(latest_txt, "wb")
-    fo.write(bstr("%s.noarch.rpm\n" % os.path.basename(serverRpmName)))
-    fo.write(bstr("%s.src.rpm\n" % os.path.basename(serverRpmName)))
-    fo.write(bstr("%s\n" % os.path.basename(tarballFilepath)))
+    fo.write(bstr("%s.noarch.rpm\n" % os.path.basename(serverRpmName)))  #  pylint: disable=consider-using-f-string
+    fo.write(bstr("%s.src.rpm\n" % os.path.basename(serverRpmName)))  #  pylint: disable=consider-using-f-string
+    fo.write(bstr("%s\n" % os.path.basename(tarballFilepath)))  #  pylint: disable=consider-using-f-string
     fo.close()
     os.chmod(latest_txt, int("0600", 8))
 
@@ -1316,12 +1316,12 @@ Deploy the server's SSL key pair/set RPM:
             % repr(d["--set-hostname"])
         )
 
-    return "%s.noarch.rpm" % serverRpmName
+    return "%s.noarch.rpm" % serverRpmName  #  pylint: disable=consider-using-f-string
 
 
 # Helper function
 def _copy_file_to_fd(filename, fd):
-    f = open(filename)
+    f = open(filename)  #  pylint: disable=unspecified-encoding
     buffer_size = 16384
     count = 0
     while 1:
@@ -1333,7 +1333,7 @@ def _copy_file_to_fd(filename, fd):
     return count
 
 
-def genServer_dependencies(password, d):
+def genServer_dependencies(password, d):  #  pylint: disable=invalid-name
     """deps for the general --gen-server command.
     I.e., generation of server.{key,csr,crt}.
     """
@@ -1351,18 +1351,18 @@ def genServer_dependencies(password, d):
         sys.exit(errnoGeneralError)
 
 
-def checkCaKey(password, d, verbosity=0):
+def checkCaKey(password, d, verbosity=0):  #  pylint: disable=invalid-name
     """check CA key's password"""
 
     ca_key = os.path.join(d["--dir"], os.path.basename(d["--ca-key"]))
 
-    args = "/usr/bin/openssl rsa -in %s -check -passin pass:%s" % (
+    args = "/usr/bin/openssl rsa -in %s -check -passin pass:%s" % (  #  pylint: disable=consider-using-f-string
         repr(cleanupAbsPath(cleanupAbsPath(ca_key))),
         "%s",
     )
 
     if verbosity >= 0:
-        print("\nChecking private CA key's password: %s" % ca_key)
+        print("\nChecking private CA key's password: %s" % ca_key)  #  pylint: disable=consider-using-f-string
     if verbosity > 1:
         print("Commandline:", args % "PASSWORD")
 
@@ -1374,24 +1374,24 @@ def checkCaKey(password, d, verbosity=0):
     err_stream.close()
     if ret:
         raise GenPrivateCaKeyException(
-            "Certificate Authority private "
+            "Certificate Authority private "  #  pylint: disable=consider-using-f-string
             "key's password does not match or "
             "key broken:\n%s\n"
             "%s" % (out, err)
         )
 
 
-def checkCaCert(d, verbosity=0):
+def checkCaCert(d, verbosity=0):  #  pylint: disable=invalid-name
     """check CA key's password"""
 
     ca_cert = os.path.join(d["--dir"], os.path.basename(d["--ca-cert"]))
 
-    args = "/usr/bin/openssl x509 -in %s -noout" % (
+    args = "/usr/bin/openssl x509 -in %s -noout" % (  #  pylint: disable=consider-using-f-string
         repr(cleanupAbsPath(cleanupAbsPath(ca_cert)))
     )
 
     if verbosity >= 0:
-        print("\nChecking CA cert's validity: %s" % ca_cert)
+        print("\nChecking CA cert's validity: %s" % ca_cert)  #  pylint: disable=consider-using-f-string
     if verbosity > 1:
         print("Commandline:", args)
 
@@ -1403,7 +1403,7 @@ def checkCaCert(d, verbosity=0):
     err_stream.close()
     if ret:
         raise GenPrivateCaKeyException(
-            "Certificate Authority certificate "
+            "Certificate Authority certificate "  #  pylint: disable=consider-using-f-string
             "does not exist or is broken:\n%s\n"
             "%s" % (out, err)
         )
@@ -1412,7 +1412,7 @@ def checkCaCert(d, verbosity=0):
 def _copy_ca_file(d, f):
     if not os.path.isfile(f):
         raise GenCaCertRpmException(
-            "CA public SSL certificate RPM generation " "failed: file %s not found." % f
+            "CA public SSL certificate RPM generation " "failed: file %s not found." % f  #  pylint: disable=consider-using-f-string
         )
 
     gendir(d["--dir"])
@@ -1424,11 +1424,11 @@ def _copy_ca_file(d, f):
 def _copy_server_ssl_key(d, key_file):
     if not os.path.isfile(key_file):
         raise GenServerRpmException(
-            "web server's SSL key set RPM generation "
+            "web server's SSL key set RPM generation "  #  pylint: disable=consider-using-f-string
             "failed: file %s not found." % key_file
         )
 
-    serverKeyPairDir = os.path.join(d["--dir"], getMachineName(d["--set-hostname"]))
+    serverKeyPairDir = os.path.join(d["--dir"], getMachineName(d["--set-hostname"]))  #  pylint: disable=invalid-name
     gendir(serverKeyPairDir)
 
     server_key_name = os.path.basename(d["--server-key"])
@@ -1440,11 +1440,11 @@ def _copy_server_ssl_key(d, key_file):
 def _copy_server_ssl_cert(d, cert_file):
     if not os.path.isfile(cert_file):
         raise GenServerRpmException(
-            "web server's SSL key set RPM generation "
+            "web server's SSL key set RPM generation "  #  pylint: disable=consider-using-f-string
             "failed: file %s not found." % cert_file
         )
 
-    serverKeyPairDir = os.path.join(d["--dir"], getMachineName(d["--set-hostname"]))
+    serverKeyPairDir = os.path.join(d["--dir"], getMachineName(d["--set-hostname"]))  #  pylint: disable=invalid-name
     gendir(serverKeyPairDir)
 
     server_cert_name = os.path.basename(d["--server-cert"])
@@ -1544,8 +1544,8 @@ def main():
     100  general SUSE Manager SSL tool error
     """
 
-    def writeError(e):
-        sys.stderr.write("\nERROR: %s\n" % e)
+    def writeError(e):  #  pylint: disable=invalid-name
+        sys.stderr.write("\nERROR: %s\n" % e)  #  pylint: disable=consider-using-f-string
 
     ret = 0
     try:

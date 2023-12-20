@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring,invalid-name
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -18,7 +18,7 @@ import sys
 import fcntl
 from errno import EWOULDBLOCK, EEXIST
 from rhn.stringutils import bstr
-import fcntl
+import fcntl  #  pylint: disable=reimported,ungrouped-imports
 
 
 class LockfileLockedException(Exception):
@@ -76,8 +76,8 @@ class Lockfile:
             fcntl.flock(self.f, fcntl.LOCK_EX | fcntl.LOCK_NB)
         except IOError:
             if sys.exc_info()[1].errno == EWOULDBLOCK:
-                raise LockfileLockedException(
-                    "cannot acquire lock on %s." % self.lockfile,
+                raise LockfileLockedException(  #  pylint: disable=raise-missing-from
+                    "cannot acquire lock on %s." % self.lockfile,  #  pylint: disable=consider-using-f-string
                     None,
                     sys.exc_info()[2],
                 )
@@ -100,14 +100,14 @@ def main():
     """test code"""
 
     try:
-        L = Lockfile("./test.pid")
+        L = Lockfile("./test.pid")  #  pylint: disable=invalid-name
     except LockfileLockedException:
-        sys.stderr.write("%s\n" % sys.exc_info()[1])
+        sys.stderr.write("%s\n" % sys.exc_info()[1])  #  pylint: disable=consider-using-f-string
         sys.exit(-1)
     else:
         print("lock acquired ")
         print("...sleeping for 10 seconds")
-        import time
+        import time  #  pylint: disable=import-outside-toplevel
 
         time.sleep(10)
         L.release()

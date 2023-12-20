@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Licensed under the GNU General Public License Version 3
 #
 # This program is free software; you can redistribute it and/or modify
@@ -95,19 +95,19 @@ def do_softwarechannel_list(self, args, doreturn=False):
         if options.verbose:
             for l in labels:
                 details = self.client.channel.software.getDetails(self.session, l)
-                print("%s : %s" % (l, details["summary"]))
+                print("%s : %s" % (l, details["summary"]))  #  pylint: disable=consider-using-f-string
                 if options.tree:
                     for c in self.list_child_channels(parent=l):
                         cdetails = self.client.channel.software.getDetails(
                             self.session, c
                         )
-                        print(" |-%s : %s" % (c, cdetails["summary"]))
+                        print(" |-%s : %s" % (c, cdetails["summary"]))  #  pylint: disable=consider-using-f-string
         else:
             for l in labels:
-                print("%s" % l)
+                print("%s" % l)  #  pylint: disable=consider-using-f-string
                 if options.tree:
                     for c in self.list_child_channels(parent=l):
-                        print(" |-%s" % c)
+                        print(" |-%s" % c)  #  pylint: disable=consider-using-f-string
 
     return None
 
@@ -152,10 +152,10 @@ def do_softwarechannel_listmanageablechannels(self, args, doreturn=False):
         if options.verbose:
             for l in labels:
                 details = self.client.channel.software.getDetails(self.session, l)
-                print("%s : %s" % (l, details["summary"]))
+                print("%s : %s" % (l, details["summary"]))  #  pylint: disable=consider-using-f-string
         else:
             for l in labels:
-                print("%s" % l)
+                print("%s" % l)  #  pylint: disable=consider-using-f-string
 
     return None
 
@@ -186,7 +186,7 @@ def do_softwarechannel_listbasechannels(self, args):
         if options.verbose:
             for c in sorted(channels):
                 details = self.client.channel.software.getDetails(self.session, c)
-                print("%s : %s" % (c, details["summary"]))
+                print("%s : %s" % (c, details["summary"]))  #  pylint: disable=consider-using-f-string
         else:
             print("\n".join(sorted(channels)))
 
@@ -225,7 +225,7 @@ def do_softwarechannel_listchildchannels(self, args):
         if options.verbose:
             for c in channels:
                 details = self.client.channel.software.getDetails(self.session, c)
-                print("%s : %s" % (c, details["summary"]))
+                print("%s : %s" % (c, details["summary"]))  #  pylint: disable=consider-using-f-string
         else:
             print("\n".join(channels))
 
@@ -246,7 +246,7 @@ def complete_softwarechannel_listsystems(self, text, line, beg, end):
 
 
 def do_softwarechannel_listsystems(self, args, doreturn=False):
-    args, _options = parse_command_arguments(args, get_argument_parser())
+    args, _options = parse_command_arguments(args, get_argument_parser())  #  pylint: disable=unused-variable
 
     if len(args) != 1:
         self.help_softwarechannel_listsystems()
@@ -373,7 +373,7 @@ def filter_latest_packages(pkglist):
 def help_softwarechannel_listlatestpackages(self):
     print(
         _(
-            "softwarechannel_listlatestpackages: List the newest version of all packages in a channel"
+            "softwarechannel_listlatestpackages: List the newest version of all packages in a channel"  #  pylint: disable=line-too-long
         )
     )
     print(_("usage: softwarechannel_listlatestpackages CHANNEL"))
@@ -509,7 +509,7 @@ def do_softwarechannel_setdetails(self, args):
                 _N("Setting same name for more than " + "one channel will fail")
             )
             return 1
-        logging.debug('checking other channels for name "%s"' % new_details.get("name"))
+        logging.debug('checking other channels for name "%s"' % new_details.get("name"))  #  pylint: disable=consider-using-f-string
         for c in self.list_base_channels() + self.list_child_channels():
             cd = self.client.channel.software.getDetails(self.session, c)
             if cd.get("name") == new_details.get("name"):
@@ -553,7 +553,7 @@ def do_softwarechannel_setdetails(self, args):
     logging.debug(new_details)
     num_changed = 0
     for channel in channels:
-        logging.debug("getting ID for channel %s" % channel)
+        logging.debug("getting ID for channel %s" % channel)  #  pylint: disable=consider-using-f-string
         try:
             details = self.client.channel.software.getDetails(self.session, channel)
         except xmlrpclib.Fault as e:
@@ -561,7 +561,7 @@ def do_softwarechannel_setdetails(self, args):
             logging.error(e)
             return 1
         channel_id = details.get("id")
-        logging.debug("setting details for channel %s (%d)" % (channel, channel_id))
+        logging.debug("setting details for channel %s (%d)" % (channel, channel_id))  #  pylint: disable=consider-using-f-string
         try:
             self.client.channel.software.setDetails(
                 self.session, channel_id, new_details
@@ -591,7 +591,7 @@ def complete_softwarechannel_details(self, text, line, beg, end):
 def do_softwarechannel_details(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if not args:
         self.help_softwarechannel_details()
@@ -667,7 +667,7 @@ def help_softwarechannel_listerrata(self):
     print(_("                            software channel"))
     print(
         _(
-            "usage: softwarechannel_listerrata <CHANNEL ...> [from=yyyymmdd [to=yyyymmdd]]"
+            "usage: softwarechannel_listerrata <CHANNEL ...> [from=yyyymmdd [to=yyyymmdd]]"  #  pylint: disable=line-too-long
         )
     )
 
@@ -679,7 +679,7 @@ def complete_softwarechannel_listerrata(self, text, line, beg, end):
 def do_softwarechannel_listerrata(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if not args:
         self.help_softwarechannel_listerrata()
@@ -749,9 +749,9 @@ def do_softwarechannel_listarches(self, args):
 
     for arch in sorted(arches):
         if options.verbose:
-            print("%s (%s)" % (arch["label"], arch["name"]))
+            print("%s (%s)" % (arch["label"], arch["name"]))  #  pylint: disable=consider-using-f-string
         else:
-            print("%s" % arch["label"])
+            print("%s" % arch["label"])  #  pylint: disable=consider-using-f-string
 
     return 0
 
@@ -771,7 +771,7 @@ def complete_softwarechannel_delete(self, text, line, beg, end):
 def do_softwarechannel_delete(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if not args:
         self.help_softwarechannel_delete()
@@ -1049,7 +1049,7 @@ def do_softwarechannel_create(self, args):
             options.label,
             options.name,
             options.summary,
-            "channel-%s" % options.arch,
+            "channel-%s" % options.arch,  #  pylint: disable=consider-using-f-string
             options.parent_channel,
             options.checksum,
             gpgData,
@@ -1324,17 +1324,17 @@ def do_softwarechannel_clonetree(
         self.help_softwarechannel_clonetree()
         return 1
     logging.debug(
-        "--child mode specified, finding children of %s\n" % options.source_channel
+        "--child mode specified, finding children of %s\n" % options.source_channel  #  pylint: disable=consider-using-f-string
     )
     children = self.list_child_channels(parent=options.source_channel)
-    logging.debug("Found children %s\n" % children)
+    logging.debug("Found children %s\n" % children)  #  pylint: disable=consider-using-f-string
     for c in children:
         channels.append(c)
 
-    logging.debug("channels=%s" % channels)
+    logging.debug("channels=%s" % channels)  #  pylint: disable=consider-using-f-string
     parent_channel = None
     for ch in channels:
-        logging.debug("Cloning %s" % ch)
+        logging.debug("Cloning %s" % ch)  #  pylint: disable=consider-using-f-string
         label = None
         name = None
         if options.regex:
@@ -1413,16 +1413,16 @@ def clone_channel(self, channel, options, details):
 def copy_gpg_values_from_source(details, srcdetails):
     if srcdetails["gpg_key_url"]:
         details["gpg_key_url"] = srcdetails["gpg_key_url"]
-        logging.debug("copying gpg_key_url=%s" % srcdetails["gpg_key_url"])
+        logging.debug("copying gpg_key_url=%s" % srcdetails["gpg_key_url"])  #  pylint: disable=consider-using-f-string
     if srcdetails["gpg_key_id"]:
         details["gpg_key_id"] = srcdetails["gpg_key_id"]
-        logging.debug("copying gpg_key_id=%s" % srcdetails["gpg_key_id"])
+        logging.debug("copying gpg_key_id=%s" % srcdetails["gpg_key_id"])  #  pylint: disable=consider-using-f-string
     if srcdetails["gpg_key_fp"]:
         details["gpg_key_fp"] = srcdetails["gpg_key_fp"]
-        logging.debug("copying gpg_key_fp=%s" % srcdetails["gpg_key_fp"])
+        logging.debug("copying gpg_key_fp=%s" % srcdetails["gpg_key_fp"])  #  pylint: disable=consider-using-f-string
     if srcdetails["gpg_check"]:
         details["gpg_check"] = str(srcdetails["gpg_check"])
-        logging.debug("copying gpg_check=%s" % srcdetails["gpg_check"])
+        logging.debug("copying gpg_check=%s" % srcdetails["gpg_check"])  #  pylint: disable=consider-using-f-string
 
 
 ####################
@@ -1438,7 +1438,7 @@ def do_regx_replacement(self, channel, options):
     findstr = options.regex.split("/")[1]
     replacestr = options.regex.split("/")[2]
     logging.debug(
-        "--regex selected with %s, replacing %s with %s"
+        "--regex selected with %s, replacing %s with %s"  #  pylint: disable=consider-using-f-string
         % (options.regex, findstr, replacestr)
     )
     srcdetails = self.client.channel.software.getDetails(self.session, channel)
@@ -1446,7 +1446,7 @@ def do_regx_replacement(self, channel, options):
     newvalues["name"] = re.sub(findstr, replacestr, srcdetails["name"])
     newvalues["label"] = re.sub(findstr, replacestr, channel)
     logging.debug(
-        "regex mode : %s %s %s"
+        "regex mode : %s %s %s"  #  pylint: disable=consider-using-f-string
         % (options.source_channel, newvalues["name"], newvalues["label"])
     )
 
@@ -1475,7 +1475,7 @@ def complete_softwarechannel_addpackages(self, text, line, beg, end):
 def do_softwarechannel_addpackages(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if len(args) < 2:
         self.help_softwarechannel_addpackages()
@@ -1518,7 +1518,7 @@ def do_softwarechannel_addpackages(self, args):
 def help_softwarechannel_mergepackages(self):
     print(
         _(
-            "softwarechannel_mergepackages: Merge packages from one software channel into another"
+            "softwarechannel_mergepackages: Merge packages from one software channel into another"  #  pylint: disable=line-too-long
         )
     )
     print(_("usage: softwarechannel_mergepackages SOURCE_CHANNEL TARGET_CHANNEL"))
@@ -1568,7 +1568,7 @@ def complete_softwarechannel_removeerrata(self, text, line, beg, end):
 def do_softwarechannel_removeerrata(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if not args:
         self.help_softwarechannel_removeerrata()
@@ -1594,7 +1594,7 @@ def do_softwarechannel_removeerrata(self, args):
     # to the channel afterwards
     package_ids = []
     for erratum in errata:
-        logging.debug("Retrieving packages for patch %s" % erratum)
+        logging.debug("Retrieving packages for patch %s" % erratum)  #  pylint: disable=consider-using-f-string
 
         # get the packages affected by this errata
         packages = self.client.errata.listPackages(self.session, erratum)
@@ -1676,7 +1676,7 @@ def complete_softwarechannel_removepackages(self, text, line, beg, end):
 def do_softwarechannel_removepackages(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if not args:
         self.help_softwarechannel_removepackages()
@@ -1727,7 +1727,7 @@ def help_softwarechannel_adderratabydate(self):
     )
     print(
         _(
-            "usage: softwarechannel_adderratabydate [options] SOURCE DEST BEGINDATE ENDDATE"
+            "usage: softwarechannel_adderratabydate [options] SOURCE DEST BEGINDATE ENDDATE"  #  pylint: disable=line-too-long
         )
     )
     print(_("Date format : YYYYMMDD"))
@@ -1797,7 +1797,7 @@ def do_softwarechannel_adderratabydate(self, args):
         # call adderrata with the list of errata from the date range
         # this clones the errata and adds it to the channel
         return self.do_softwarechannel_adderrata(
-            "%s %s %s"
+            "%s %s %s"  #  pylint: disable=consider-using-f-string
             % (
                 source_channel,
                 dest_channel,
@@ -1834,7 +1834,7 @@ def complete_softwarechannel_listerratabydate(self, text, line, beg, end):
 def do_softwarechannel_listerratabydate(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if len(args) != 3:
         self.help_softwarechannel_listerratabydate()
@@ -1855,7 +1855,7 @@ def do_softwarechannel_listerratabydate(self, args):
         return 1
 
     # get the errata that are in the given date range
-    logging.debug("Retrieving list of errata from channel %s" % channel)
+    logging.debug("Retrieving list of errata from channel %s" % channel)  #  pylint: disable=consider-using-f-string
     errata = self.client.channel.software.listErrata(
         self.session, channel, parse_time_input(begin_date), parse_time_input(end_date)
     )
@@ -1929,23 +1929,23 @@ def do_softwarechannel_adderrata(self, args):
     errata = filter_results(
         [e.get("advisory_name") for e in source_errata], errata_wanted
     )
-    logging.debug("errata = %s" % errata)
+    logging.debug("errata = %s" % errata)  #  pylint: disable=consider-using-f-string
     if options.skip:
         # We just match the NNNN:MMMM of the XXXX-NNNN:MMMM as the
         # source errata will be RH[BES]A and the DEST errata will be CLA
         dest_errata_suffix = [x.get("advisory_name").split("-")[1] for x in dest_errata]
-        logging.debug("dest_errata_suffix = %s" % dest_errata_suffix)
+        logging.debug("dest_errata_suffix = %s" % dest_errata_suffix)  #  pylint: disable=consider-using-f-string
         toremove = []
         for e in errata:
             if e.split("-")[1] in dest_errata_suffix:
                 logging.debug(
-                    "Skipping errata %s as it seems to be in %s" % (e, dest_channel)
+                    "Skipping errata %s as it seems to be in %s" % (e, dest_channel)  #  pylint: disable=consider-using-f-string
                 )
                 toremove.append(e)
         for e in toremove:
-            logging.debug("Removing %s from errata to be added" % e)
+            logging.debug("Removing %s from errata to be added" % e)  #  pylint: disable=consider-using-f-string
             errata.remove(e)
-        logging.debug("skip-mode : reduced errata = %s" % errata)
+        logging.debug("skip-mode : reduced errata = %s" % errata)  #  pylint: disable=consider-using-f-string
 
     # keep the details for our matching errata so we can use them later
     errata_details = []
@@ -1958,7 +1958,7 @@ def do_softwarechannel_adderrata(self, args):
         # to the channel afterwards
         package_ids = []
         for erratum in errata:
-            logging.debug("Retrieving packages for patch %s" % erratum)
+            logging.debug("Retrieving packages for patch %s" % erratum)  #  pylint: disable=consider-using-f-string
 
             # get the packages affected by this errata
             packages = self.client.errata.listPackages(self.session, erratum)
@@ -1993,7 +1993,7 @@ def do_softwarechannel_adderrata(self, args):
     # clone each erratum individually because the process is slow and it can
     # lead to timeouts on the server
     for erratum in errata:
-        logging.debug("Cloning %s" % erratum)
+        logging.debug("Cloning %s" % erratum)  #  pylint: disable=consider-using-f-string
         if self.check_api_version("10.11"):
             # This call is poorly documented, but it stops errata.clone
             # pushing EL6 packages into EL5 channels when the errata
@@ -2034,7 +2034,7 @@ def complete_softwarechannel_getorgaccess(self, text, line, beg, end):
 def do_softwarechannel_getorgaccess(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     # If no args are passed, we dump the org access for all channels
     if not args:
@@ -2046,14 +2046,14 @@ def do_softwarechannel_getorgaccess(self, args):
         )
 
     for channel in channels:
-        logging.debug("Getting org-access for channel %s" % channel)
+        logging.debug("Getting org-access for channel %s" % channel)  #  pylint: disable=consider-using-f-string
         sharing = self.client.channel.access.getOrgSharing(self.session, channel)
-        print("%s : %s" % (channel, sharing))
+        print("%s : %s" % (channel, sharing))  #  pylint: disable=consider-using-f-string
         if sharing == "protected":
             # for protected channels list each organization's access status
             channel_orgs = self.client.channel.org.list(self.session, channel)
             for org in channel_orgs:
-                print("\t%s : %s" % (org["org_name"], org["access_enabled"]))
+                print("\t%s : %s" % (org["org_name"], org["access_enabled"]))  #  pylint: disable=consider-using-f-string
 
     return 0
 
@@ -2148,7 +2148,7 @@ def do_softwarechannel_setorgaccess(self, args, options=None):
 def help_softwarechannel_getorgaccesstree(self):
     print(
         _(
-            "softwarechannel_getorgaccesstree: Get the org-access for a software base channel and its children"
+            "softwarechannel_getorgaccesstree: Get the org-access for a software base channel and its children"  #  pylint: disable=line-too-long
         )
     )
     print(_("usage: softwarechannel_getorgaccesstree [CHANNEL]"))
@@ -2161,7 +2161,7 @@ def complete_softwarechannel_getorgaccesstree(self, text, line, beg, end):
 def do_softwarechannel_getorgaccesstree(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     # If no args are passed, we dump the org access for all base channels
     if not args:
@@ -2189,7 +2189,7 @@ def do_softwarechannel_getorgaccesstree(self, args):
 def help_softwarechannel_setorgaccesstree(self):
     print(
         _(
-            "softwarechannel_setorgaccesstree: set the org-access for a software base channel and its children"
+            "softwarechannel_setorgaccesstree: set the org-access for a software base channel and its children"  #  pylint: disable=line-too-long
         )
     )
     print(
@@ -2290,7 +2290,7 @@ def do_softwarechannel_regenerateyumcache(self, args):
     channels = filter_results(self.do_softwarechannel_list("", True), args)
 
     for channel in channels:
-        logging.debug("Regenerating YUM cache for %s" % channel)
+        logging.debug("Regenerating YUM cache for %s" % channel)  #  pylint: disable=consider-using-f-string
         self.client.channel.software.regenerateYumCache(
             self.session, channel, _options.force
         )
@@ -2352,7 +2352,7 @@ def complete_softwarechannel_diff(self, text, line, beg, end):
 def do_softwarechannel_diff(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if len(args) != 1 and len(args) != 2:
         self.help_softwarechannel_diff()
@@ -2387,7 +2387,7 @@ def dump_softwarechannel_errata(self, name):
     result = []
     for erratum in errata:
         result.append(
-            "%s %s"
+            "%s %s"  #  pylint: disable=consider-using-f-string
             % (
                 erratum.get("advisory_name").ljust(14),
                 wrap(erratum.get("advisory_synopsis"), 50)[0],
@@ -2419,7 +2419,7 @@ def complete_softwarechannel_errata_diff(self, text, line, beg, end):
 def do_softwarechannel_errata_diff(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if len(args) != 1 and len(args) != 2:
         self.help_softwarechannel_errata_diff()
@@ -2481,7 +2481,7 @@ def do_softwarechannel_sync(self, args, deleteFromTarget=True):
     (args, options) = parse_command_arguments(args, arg_parser)
 
     if len(args) != 1 and len(args) != 2:
-        self.help_softwarechannel_sync() if deleteFromTarget else self.help_softwarechannel_mergepackages()  # pylint: disable=expression-not-assigned
+        self.help_softwarechannel_sync() if deleteFromTarget else self.help_softwarechannel_mergepackages()  # pylint: disable=expression-not-assigned,line-too-long
         return 1
 
     source_channel = args[0]
@@ -2632,7 +2632,7 @@ def complete_softwarechannel_errata_sync(self, text, line, beg, end):
 def do_softwarechannel_errata_sync(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if len(args) != 1 and len(args) != 2:
         self.help_softwarechannel_errata_sync()
@@ -2754,12 +2754,12 @@ def help_softwarechannel_errata_merge(self):
     print("")
     print(
         _(
-            "usage:   softwarechannel_errata_merge SOURCE_CHANNEL TARGET_CHANNEL [FROM_DATE] [TO_DATE]"
+            "usage:   softwarechannel_errata_merge SOURCE_CHANNEL TARGET_CHANNEL [FROM_DATE] [TO_DATE]"  #  pylint: disable=line-too-long
         )
     )
     print(
         _(
-            "example: softwarechannel_errata_merge OldSoftChannel NewSoftChannel 2018-01-01"
+            "example: softwarechannel_errata_merge OldSoftChannel NewSoftChannel 2018-01-01"  #  pylint: disable=line-too-long
         )
     )
     print(_("note:    Providing only FROM_DATE will merge all errata since that date."))
@@ -2784,7 +2784,7 @@ def do_softwarechannel_errata_merge(
 ):  # pylint: disable=too-many-return-statements
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     FROM_DATE = datetime.strptime("1970-01-01", "%Y-%m-%d")
     TO_DATE = datetime.now() + timedelta(1)  # tomorrow
@@ -2836,7 +2836,7 @@ def do_softwarechannel_errata_merge(
             erratum["issue_date"].split(" ")[0], "%Y-%m-%d"
         )
 
-        if not (FROM_DATE <= erratum_date <= TO_DATE):
+        if not (FROM_DATE <= erratum_date <= TO_DATE):  #  pylint: disable=superfluous-parens
             source_errata.remove(erratum)
 
     target_errata = self.client.channel.software.listErrata(
@@ -2943,7 +2943,7 @@ def do_softwarechannel_syncrepos(self, args):
     channels = filter_results(self.do_softwarechannel_list("", True), args)
 
     for channel in channels:
-        logging.debug("Syncing repos for %s" % channel)
+        logging.debug("Syncing repos for %s" % channel)  #  pylint: disable=consider-using-f-string
         self.client.channel.software.syncRepo(self.session, channel, params)
 
     return 0
@@ -2965,12 +2965,12 @@ def help_softwarechannel_setsyncschedule(self):
     print("")
     print(
         _(
-            "The schedule is specified in Quartz CronTrigger format without enclosing quotes."
+            "The schedule is specified in Quartz CronTrigger format without enclosing quotes."  #  pylint: disable=line-too-long
         )
     )
     print(
         _(
-            "For example, to set a schedule of every day at 1am, <SCHEDULE> would be 0 0 1 * * ?"
+            "For example, to set a schedule of every day at 1am, <SCHEDULE> would be 0 0 1 * * ?"  #  pylint: disable=line-too-long
         )
     )
     print(_("If <SCHEDULE> is left empty, it will be disabled."))
@@ -2990,7 +2990,7 @@ def do_softwarechannel_setsyncschedule(self, args):
     )
     arg_parser.add_argument("-l", "--latest", action="store_true", default=False)
 
-    # Set glob = false, otherwise this will generate a com.redhat.rhn.taskomatic.InvalidParamException: Cron trigger.
+    # Set glob = false, otherwise this will generate a com.redhat.rhn.taskomatic.InvalidParamException: Cron trigger.  #  pylint: disable=line-too-long
     (args, options) = parse_command_arguments(args, arg_parser, glob=False)
 
     params = dict(
@@ -3027,7 +3027,7 @@ def complete_softwarechannel_removesyncschedule(self, text, line, beg, end):
 def do_softwarechannel_removesyncschedule(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if not len(args) == 1:
         self.help_softwarechannel_removesyncschedule()
@@ -3046,7 +3046,7 @@ def do_softwarechannel_removesyncschedule(self, args):
 def help_softwarechannel_listsyncschedule(self):
     print(
         _(
-            "softwarechannel_listsyncschedule: List sync schedules for all software channels"
+            "softwarechannel_listsyncschedule: List sync schedules for all software channels"  #  pylint: disable=line-too-long
         )
     )
     print(_("usage:"))
@@ -3104,7 +3104,7 @@ def complete_softwarechannel_addrepo(self, text, line, beg, end):
 def do_softwarechannel_addrepo(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if len(args) < 2:
         self.help_softwarechannel_addrepo()
@@ -3146,7 +3146,7 @@ def complete_softwarechannel_removerepo(self, text, line, beg, end):
 def do_softwarechannel_removerepo(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if len(args) < 2:
         self.help_softwarechannel_removerepo()
@@ -3175,7 +3175,7 @@ def complete_softwarechannel_listrepos(self, text, line, beg, end):
 def do_softwarechannel_listrepos(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if not args:
         self.help_softwarechannel_listrepos()
@@ -3216,7 +3216,7 @@ def do_softwarechannel_mirrorpackages(self, args):
         self.help_softwarechannel_mirrorpackages()
         return 1
     channel = args[0]
-    if not (options.latest):
+    if not (options.latest):  #  pylint: disable=superfluous-parens
         packages = self.client.channel.software.listAllPackages(self.session, channel)
     else:
         packages = self.client.channel.software.listLatestPackages(
@@ -3237,7 +3237,7 @@ def do_softwarechannel_mirrorpackages(self, args):
             except ContentTooShortError:
                 logging.error(
                     _(
-                        "Received package %s from channel %s is broken. Content is too short"
+                        "Received package %s from channel %s is broken. Content is too short"  #  pylint: disable=line-too-long
                     ),
                     package_file,
                     channel,

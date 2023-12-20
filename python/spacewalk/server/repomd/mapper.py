@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2018 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -23,7 +23,7 @@ import time
 from spacewalk.common import rhnCache
 from spacewalk.common.rhnConfig import CFG
 from uyuni.common.usix import UnicodeType
-from spacewalk.server import rhnSQL
+from spacewalk.server import rhnSQL  #  pylint: disable=ungrouped-imports
 
 from . import domain
 
@@ -453,7 +453,7 @@ class SqlPackageMapper:
             release = pkg[2]
             arch = pkg[4]
 
-            return "%s-%s-%s.%s.rpm" % (name, version, release, arch)
+            return "%s-%s-%s.%s.rpm" % (name, version, release, arch)  #  pylint: disable=consider-using-f-string
 
     def _fill_package_details(self, package):
         """Load the packages basic details (summary, description, etc)."""
@@ -539,7 +539,7 @@ class SqlPackageMapper:
             elif item[0] == "predepends":
                 package.predepends.append(dep)
             else:
-                assert False, "Unknown PRCO type: %s" % item[0]
+                assert False, "Unknown PRCO type: %s" % item[0]  #  pylint: disable=consider-using-f-string
 
     #    @staticmethod
     def __get_relation(sense):
@@ -559,11 +559,11 @@ class SqlPackageMapper:
         elif sense == 12:
             relation = "GE"
         else:
-            assert False, "Unknown relation sense: %s" % sense
+            assert False, "Unknown relation sense: %s" % sense  #  pylint: disable=consider-using-f-string
 
         return relation
 
-    __get_relation = staticmethod(__get_relation)
+    __get_relation = staticmethod(__get_relation)  #  pylint: disable=invalid-name
 
     def _fill_package_filelist(self, package):
         """Load the package's list of files."""
@@ -633,7 +633,7 @@ class CachedErratumMapper:
         return erratum
 
 
-class SqlErratumMapper:
+class SqlErratumMapper:  #  pylint: disable=missing-class-docstring
     def __init__(self, package_mapper):
         self.package_mapper = package_mapper
 
@@ -766,7 +766,7 @@ class SqlErratumMapper:
             erratum.package_ids.append(pkg[0])
 
 
-class SqlRepoMDMapper:
+class SqlRepoMDMapper:  #  pylint: disable=missing-class-docstring
     def __init__(self):
         self.repomd_sql = rhnSQL.prepare(
             """

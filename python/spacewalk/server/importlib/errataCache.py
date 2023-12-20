@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring,invalid-name
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -27,7 +27,7 @@ def schedule_errata_cache_update(channels):
         """
         insert into rhnTaskQueue
        (id, org_id, task_name, task_data, priority, earliest)
-       select nextval('rhn_task_queue_id_seq'), coalesce(c.org_id, 1), 'update_errata_cache_by_channel', c.id, 0, current_timestamp
+       select nextval('rhn_task_queue_id_seq'), coalesce(c.org_id, 1), 'update_errata_cache_by_channel', c.id, 0, current_timestamp  #  pylint: disable=line-too-long
        from rhnChannel c
        where c.label = :label
     """

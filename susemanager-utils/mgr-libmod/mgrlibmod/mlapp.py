@@ -1,7 +1,7 @@
 """
 CLI app
 """
-from mgrlibmod import mllib, mltypes, mlerrcode
+from mgrlibmod import mllib, mltypes, mlerrcode  #  pylint: disable=unused-import
 from typing import List
 import argparse
 import os
@@ -96,7 +96,7 @@ To get the full list of supported functions, call "-l" option:
                 .run()
                 .to_json(pretty=opts.pretty)
             )
-        except Exception as exc:
+        except Exception as exc:  #  pylint: disable=broad-exception-caught
             print(mltypes.MLErrorType(exc).to_json(pretty=opts.pretty))
             if opts.verbose:  # Local debugging
                 raise exc

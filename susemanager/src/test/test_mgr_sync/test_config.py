@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python  #  pylint: disable=missing-module-docstring
 # -*- coding: utf-8 -*-
 #
 # Copyright (C) 2014 Novell, Inc.
@@ -82,16 +82,16 @@ class ConfigTest(unittest.TestCase):
         uri=None,
         token=None,
     ):
-        with open(filename, "w") as file:
+        with open(filename, "w") as file:  #  pylint: disable=unspecified-encoding
             if user:
-                file.write("{0} = {1}\n".format(Config.USER, user))
+                file.write("{0} = {1}\n".format(Config.USER, user))  #  pylint: disable=consider-using-f-string
             if password:
-                file.write("{0} = {1}\n".format(Config.PASSWORD, password))
+                file.write("{0} = {1}\n".format(Config.PASSWORD, password))  #  pylint: disable=consider-using-f-string
             if host:
-                file.write("{0} = {1}\n".format(Config.HOST, host))
+                file.write("{0} = {1}\n".format(Config.HOST, host))  #  pylint: disable=consider-using-f-string
             if port:
-                file.write("{0} = {1}\n".format(Config.PORT, port))
+                file.write("{0} = {1}\n".format(Config.PORT, port))  #  pylint: disable=consider-using-f-string
             if uri:
-                file.write("{0} = {1}\n".format(Config.URI, uri))
+                file.write("{0} = {1}\n".format(Config.URI, uri))  #  pylint: disable=consider-using-f-string
             if token:
-                file.write("{0} = {1}\n".format(Config.TOKEN, token))
+                file.write("{0} = {1}\n".format(Config.TOKEN, token))  #  pylint: disable=consider-using-f-string

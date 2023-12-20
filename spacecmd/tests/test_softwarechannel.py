@@ -5,12 +5,12 @@ Test software channel module.
 
 from mock import Mock, MagicMock, patch
 import spacecmd.softwarechannel
-from helpers import shell, assert_expect, assert_list_args_expect
+from helpers import shell, assert_expect, assert_list_args_expect  #  pylint: disable=unused-import
 import pytest
 import rpm
 
 
-def test_softwarechannel_list_doreturn_nolabels(shell):
+def test_softwarechannel_list_doreturn_nolabels(shell):  #  pylint: disable=redefined-outer-name
     """
     Test do_softwarechannel_list no labels, return data.
 
@@ -29,7 +29,7 @@ def test_softwarechannel_list_doreturn_nolabels(shell):
     assert not shell.list_base_channels.called
 
 
-def test_softwarechannel_list_noreturn_nolabels(shell):
+def test_softwarechannel_list_noreturn_nolabels(shell):  #  pylint: disable=redefined-outer-name
     """
     Test do_softwarechannel_list no labels, no return data.
 
@@ -49,7 +49,7 @@ def test_softwarechannel_list_noreturn_nolabels(shell):
     assert not shell.list_base_channels.called
 
 
-def test_softwarechannel_list_noreturn_labels_std(shell):
+def test_softwarechannel_list_noreturn_labels_std(shell):  #  pylint: disable=redefined-outer-name
     """
     Test do_softwarechannel_list with label, no return data, standard output.
 
@@ -82,7 +82,7 @@ def test_softwarechannel_list_noreturn_labels_std(shell):
     )
 
 
-def test_softwarechannel_list_noreturn_labels_verbose(shell):
+def test_softwarechannel_list_noreturn_labels_verbose(shell):  #  pylint: disable=redefined-outer-name
     """
     Test do_softwarechannel_list with label, no return data, verbose output.
 
@@ -117,7 +117,7 @@ def test_softwarechannel_list_noreturn_labels_verbose(shell):
     assert_expect(mprint.call_args_list, "test_channel : Summary of test_channel")
 
 
-def test_softwarechannel_list_noreturn_labels_verbose_tree(shell):
+def test_softwarechannel_list_noreturn_labels_verbose_tree(shell):  #  pylint: disable=redefined-outer-name
     """
     Test do_softwarechannel_list with label, no return data, verbose output with tree.
 
@@ -160,7 +160,7 @@ def test_softwarechannel_list_noreturn_labels_verbose_tree(shell):
     )
 
 
-def test_softwarechannel_listmanageablechannels_noarg(shell):
+def test_softwarechannel_listmanageablechannels_noarg(shell):  #  pylint: disable=redefined-outer-name
     """
     Test do_softwarechannel_listmanageablechannels without arguments.
 
@@ -189,7 +189,7 @@ def test_softwarechannel_listmanageablechannels_noarg(shell):
     )
 
 
-def test_softwarechannel_listmanageablechannels_default_verbose(shell):
+def test_softwarechannel_listmanageablechannels_default_verbose(shell):  #  pylint: disable=redefined-outer-name
     """
     Test do_softwarechannel_listmanageablechannels with verbose arg (all).
 
@@ -233,7 +233,7 @@ def test_softwarechannel_listmanageablechannels_default_verbose(shell):
     )
 
 
-def test_softwarechannel_listmanageablechannels_data_sparse(shell):
+def test_softwarechannel_listmanageablechannels_data_sparse(shell):  #  pylint: disable=redefined-outer-name
     """
     Test do_softwarechannel_listmanageablechannels data out, short.
 
@@ -260,7 +260,7 @@ def test_softwarechannel_listmanageablechannels_data_sparse(shell):
     assert out == ["a_channel", "x_channel", "z_channel"]
 
 
-def test_softwarechannel_listmanageablechannels_data_verbose(shell):
+def test_softwarechannel_listmanageablechannels_data_verbose(shell):  #  pylint: disable=redefined-outer-name
     """
     Test do_softwarechannel_listmanageablechannels with verbose arg (all).
 
@@ -296,7 +296,7 @@ def test_softwarechannel_listmanageablechannels_data_verbose(shell):
     assert out == ["a_channel", "b_channel", "x_channel", "z_channel"]
 
 
-def test_listchildchannels(shell):
+def test_listchildchannels(shell):  #  pylint: disable=redefined-outer-name
     """
     Test do_softwarechannel_listchildchannels noargs.
 
@@ -322,7 +322,7 @@ def test_listchildchannels(shell):
     )
 
 
-def test_listchildchannels_verbose(shell):
+def test_listchildchannels_verbose(shell):  #  pylint: disable=redefined-outer-name
     """
     Test do_softwarechannel_listchildchannels verbose.
 
@@ -363,7 +363,7 @@ def test_listchildchannels_verbose(shell):
     )
 
 
-def test_listsystems_noargs(shell):
+def test_listsystems_noargs(shell):  #  pylint: disable=redefined-outer-name
     """
     Test do_softwarechannel_listsystems no args.
 
@@ -380,7 +380,7 @@ def test_listsystems_noargs(shell):
     assert shell.help_softwarechannel_listsystems.called
 
 
-def test_listsystems_noargs_channel_no_data(shell):
+def test_listsystems_noargs_channel_no_data(shell):  #  pylint: disable=redefined-outer-name
     """
     Test do_softwarechannel_listsystems one channel, no data.
 
@@ -411,7 +411,7 @@ def test_listsystems_noargs_channel_no_data(shell):
     )
 
 
-def test_listsystems_noargs_channel_data_return(shell):
+def test_listsystems_noargs_channel_data_return(shell):  #  pylint: disable=redefined-outer-name
     """
     Test do_softwarechannel_listsystems one channel, data return.
 
@@ -438,7 +438,7 @@ def test_listsystems_noargs_channel_data_return(shell):
     assert out == ["one.acme.lan", "third.zoo.lan", "two.acme.lan", "zetta.acme.lan"]
 
 
-def test_listpackages_noargs_nodata(shell):
+def test_listpackages_noargs_nodata(shell):  #  pylint: disable=redefined-outer-name
     """
     Test do_softwarechannel_listpackages no args. No data return.
 
@@ -454,7 +454,7 @@ def test_listpackages_noargs_nodata(shell):
     assert shell.help_softwarechannel_listpackages.called
 
 
-def test_listpackages_too_much_args_nodata(shell):
+def test_listpackages_too_much_args_nodata(shell):  #  pylint: disable=redefined-outer-name
     """
     Test do_softwarechannel_listpackages with too much much arguments.
 
@@ -472,7 +472,7 @@ def test_listpackages_too_much_args_nodata(shell):
     assert shell.help_softwarechannel_listpackages.called
 
 
-def test_listpackages_one_channel_no_data(shell):
+def test_listpackages_one_channel_no_data(shell):  #  pylint: disable=redefined-outer-name
     """
     Test do_softwarechannel_listpackages with one channel. No data return.
 
@@ -519,7 +519,7 @@ def test_listpackages_one_channel_no_data(shell):
     )
 
 
-def test_listpackages_one_channel_with_data(shell):
+def test_listpackages_one_channel_with_data(shell):  #  pylint: disable=redefined-outer-name
     """
     Test do_softwarechannel_listpackages with one channel. With data return.
 
@@ -567,7 +567,7 @@ def test_listpackages_one_channel_with_data(shell):
     ]
 
 
-def test_listallpackages_noargs_nodata(shell):
+def test_listallpackages_noargs_nodata(shell):  #  pylint: disable=redefined-outer-name
     """
     Test do_softwarechannel_listallpackages no args. No data return.
 
@@ -583,7 +583,7 @@ def test_listallpackages_noargs_nodata(shell):
     assert shell.help_softwarechannel_listallpackages.called
 
 
-def test_listallpackages_too_much_args_nodata(shell):
+def test_listallpackages_too_much_args_nodata(shell):  #  pylint: disable=redefined-outer-name
     """
     Test do_softwarechannel_listallpackages with too much much arguments.
 
@@ -601,7 +601,7 @@ def test_listallpackages_too_much_args_nodata(shell):
     assert shell.help_softwarechannel_listallpackages.called
 
 
-def test_listallpackages_one_channel_no_data(shell):
+def test_listallpackages_one_channel_no_data(shell):  #  pylint: disable=redefined-outer-name
     """
     Test do_softwarechannel_listallpackages with one channel. No data return.
 
@@ -648,7 +648,7 @@ def test_listallpackages_one_channel_no_data(shell):
     )
 
 
-def test_listallpackages_one_channel_with_data(shell):
+def test_listallpackages_one_channel_with_data(shell):  #  pylint: disable=redefined-outer-name
     """
     Test do_softwarechannel_listallpackages with one channel. With data return.
 
@@ -753,7 +753,7 @@ def test_filter_latest_packages():
     assert res["epoch"] == ""
 
 
-def test_listlatestpackages_noargs_nodata(shell):
+def test_listlatestpackages_noargs_nodata(shell):  #  pylint: disable=redefined-outer-name
     """
     Test do_softwarechannel_listlatestpackages without args. No data return.
 
@@ -768,9 +768,9 @@ def test_listlatestpackages_noargs_nodata(shell):
     assert shell.help_softwarechannel_listlatestpackages.called
 
 
-def test_listlatestpackages_wrongargs_nodata(shell):
+def test_listlatestpackages_wrongargs_nodata(shell):  #  pylint: disable=redefined-outer-name
     """
-    Test do_softwarechannel_listlatestpackages with wrong amount of args. No data return.
+    Test do_softwarechannel_listlatestpackages with wrong amount of args. No data return.  #  pylint: disable=line-too-long
 
     :return:
     """
@@ -785,7 +785,7 @@ def test_listlatestpackages_wrongargs_nodata(shell):
     assert shell.help_softwarechannel_listlatestpackages.called
 
 
-def test_listlatestpackages_channel_packages(shell):
+def test_listlatestpackages_channel_packages(shell):  #  pylint: disable=redefined-outer-name
     """
     Test do_softwarechannel_listlatestpackages with channel supplied.
 
@@ -832,7 +832,7 @@ def test_listlatestpackages_channel_packages(shell):
     )
 
 
-def test_listlatestpackages_channel_packages_as_data(shell):
+def test_listlatestpackages_channel_packages_as_data(shell):  #  pylint: disable=redefined-outer-name
     """
     Test do_softwarechannel_listlatestpackages with channel supplied. Return as data.
 
@@ -880,7 +880,7 @@ def test_listlatestpackages_channel_packages_as_data(shell):
     ]
 
 
-def test_softwarechannel_diff(shell):
+def test_softwarechannel_diff(shell):  #  pylint: disable=redefined-outer-name
     """
     Test that do_softwarechannel_diff function prints correct output
     :param shell: SpacewalkShell
@@ -910,7 +910,7 @@ def test_softwarechannel_diff(shell):
     )
 
 
-def test_softwarechannel_errata_diff(shell):
+def test_softwarechannel_errata_diff(shell):  #  pylint: disable=redefined-outer-name
     """
     Test that do_softwarechannel_errata_diff function prints correct output
     :param shell: SpacewalkShell

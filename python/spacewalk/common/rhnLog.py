@@ -1,4 +1,4 @@
-# rhnLog.py                                            - Logging functions.
+# rhnLog.py                                            - Logging functions. pylint: disable=missing-module-docstring,invalid-name
 # ------------------------------------------------------------------------------
 # This module contains the necessary functions for producing log messages to
 # stderr, stdout or a specified filename. Used by all server-side code.
@@ -60,7 +60,7 @@ def log_time():
     hours, secs = divmod(abs(tz_offset), 3600)
     mins = secs / 60
 
-    tz_offset_string = " %s%02d:%02d" % (sign, hours, mins)
+    tz_offset_string = " %s%02d:%02d" % (sign, hours, mins)  #  pylint: disable=consider-using-f-string
     t = time.strftime("%Y/%m/%d %H:%M:%S", time.localtime(time.time()))
     return t + tz_offset_string
 
@@ -78,7 +78,7 @@ def set_close_on_exec(fd):
 # Init the log
 
 
-def initLOG(log_file="stderr", level=0, component=""):
+def initLOG(log_file="stderr", level=0, component=""):  #  pylint: disable=invalid-name
     global LOG
 
     # check if it already setup
@@ -101,14 +101,14 @@ def initLOG(log_file="stderr", level=0, component=""):
         and not os.path.exists(os.path.dirname(log_file))
     ):
         log_stderr(
-            "{} WARNING: log path not found; attempting to create {}".format(
+            "{} WARNING: log path not found; attempting to create {}".format(  #  pylint: disable=consider-using-f-string
                 component, log_path
             ),
             sys.exc_info()[:2],
         )
 
         # fetch uid, gid so we can do a "chown ..."
-        with cfg_component(component=None) as CFG:
+        with cfg_component(component=None) as CFG:  #  pylint: disable=invalid-name
             apache_uid, apache_gid = getUidGid(
                 CFG.get("httpd_user", "wwwrun"), CFG.get("httpd_group", "www")
             )
@@ -118,7 +118,7 @@ def initLOG(log_file="stderr", level=0, component=""):
             os.chown(log_path, apache_uid, apache_gid)
         except:
             log_stderr(
-                "{} ERROR: unable to create log file path {}".format(
+                "{} ERROR: unable to create log file path {}".format(  #  pylint: disable=consider-using-f-string
                     component, log_path
                 ),
                 sys.exc_info()[:2],
@@ -146,7 +146,7 @@ def log_debug(level, *args):
 def log_stderr(*args):
     pid = os.getpid()
     for arg in args:
-        sys.stderr.write("SUSE Manager %s %s: %s\n" % (pid, log_time(), arg))
+        sys.stderr.write("SUSE Manager %s %s: %s\n" % (pid, log_time(), arg))  #  pylint: disable=consider-using-f-string
     sys.stderr.flush()
 
 
@@ -182,7 +182,7 @@ def log_setreq(req):
 # The base log class
 
 
-class rhnLog:
+class rhnLog:  #  pylint: disable=missing-class-docstring,invalid-name
     def __init__(self, log_file, level, component):
         self.level = level
         self.component = component
@@ -195,17 +195,17 @@ class rhnLog:
             self.log_info = ""
             return
 
-        newfileYN = 0
+        newfileYN = 0  #  pylint: disable=invalid-name
         if not os.path.exists(self.file):
-            newfileYN = 1  # just used for the chown/chmod
+            newfileYN = 1  # just used for the chown/chmod  #  pylint: disable=invalid-name
 
         # else, open it as a real file, with locking and stuff
         try:
             # try to open it in line buffered mode
-            self.fd = open(self.file, "a", 1)
+            self.fd = open(self.file, "a", 1)  #  pylint: disable=unspecified-encoding
             set_close_on_exec(self.fd)
             if newfileYN:
-                with cfg_component(component=None) as CFG:
+                with cfg_component(component=None) as CFG:  #  pylint: disable=invalid-name
                     apache_uid, apache_gid = getUidGid(
                         CFG.get("httpd_user", "wwwrun"), CFG.get("httpd_group", "www")
                     )
@@ -213,7 +213,7 @@ class rhnLog:
                 os.chmod(self.file, int("0660", 8))
         except:
             log_stderr(
-                "ERROR LOG FILE: Couldn't open log file %s" % self.file,
+                "ERROR LOG FILE: Couldn't open log file %s" % self.file,  #  pylint: disable=consider-using-f-string
                 sys.exc_info()[:2],
             )
             self.file = "stderr"
@@ -222,17 +222,17 @@ class rhnLog:
             self.real = 1
 
     # Main logging method.
-    def logMessage(self, *args):
-        tbStack = traceback.extract_stack()
+    def logMessage(self, *args):  #  pylint: disable=invalid-name
+        tbStack = traceback.extract_stack()  #  pylint: disable=invalid-name
         callid = len(tbStack) - 3
         module = ""
         try:  # So one can debug from the commandline.
             module = tbStack[callid][0]
             arr = module.split("/")
             if len(arr) > 1:
-                lastDir = arr[-2] + "/"
+                lastDir = arr[-2] + "/"  #  pylint: disable=invalid-name
             else:
-                lastDir = ""
+                lastDir = ""  #  pylint: disable=invalid-name
             filename = arr[-1]
             filename = filename[: filename.rindex(".")]
             module = lastDir + filename
@@ -240,36 +240,36 @@ class rhnLog:
         except:
             module = ""
 
-        msg = "%s%s.%s" % (self.log_info, module, tbStack[callid][2])
+        msg = "%s%s.%s" % (self.log_info, module, tbStack[callid][2])  #  pylint: disable=consider-using-f-string
         if args:
-            msg = "%s%s" % (msg, repr(args))
+            msg = "%s%s" % (msg, repr(args))  #  pylint: disable=consider-using-f-string
         if self.component:
-            msg = "%s %s" % (self.component, msg)
+            msg = "%s %s" % (self.component, msg)  #  pylint: disable=consider-using-f-string
         self.writeMessage(msg)
 
     # send a message to the log file w/some extra data (time stamp, etc).
-    def writeMessage(self, msg):
+    def writeMessage(self, msg):  #  pylint: disable=invalid-name
         if self.real:
-            msg = "%s %d %s" % (log_time(), self.pid, msg)
+            msg = "%s %d %s" % (log_time(), self.pid, msg)  #  pylint: disable=consider-using-f-string
         else:
-            msg = "%s %s" % (log_time(), msg)
+            msg = "%s %s" % (log_time(), msg)  #  pylint: disable=consider-using-f-string
         self.writeToLog(msg)
 
     # send a message to the log file.
-    def writeToLog(self, msg):
+    def writeToLog(self, msg):  #  pylint: disable=invalid-name
         # this is for debugging in case of errors
         # fd = self.fd # no-op, but useful for dumping the current data
-        self.fd.write("%s\n" % msg)
+        self.fd.write("%s\n" % msg)  #  pylint: disable=consider-using-f-string
 
     # Reinitialize req info if req has changed.
     def set_req(self, req=None):
-        remoteAddr = "0.0.0.0"
+        remoteAddr = "0.0.0.0"  #  pylint: disable=invalid-name
         if req:
             if "X-Forwarded-For" in req.headers_in:
-                remoteAddr = req.headers_in["X-Forwarded-For"]
+                remoteAddr = req.headers_in["X-Forwarded-For"]  #  pylint: disable=invalid-name
             else:
-                remoteAddr = req.connection.remote_ip
-        self.log_info = "%s: " % (remoteAddr,)
+                remoteAddr = req.connection.remote_ip  #  pylint: disable=invalid-name
+        self.log_info = "%s: " % (remoteAddr,)  #  pylint: disable=consider-using-f-string
 
     # shutdown the log
     def __del__(self):

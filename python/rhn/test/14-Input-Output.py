@@ -22,7 +22,7 @@ REFERENCE_XML = {
 REFERENCE_BLOB = "a1b2c3d4e5" * 100
 
 def test_xmlrpc(transfer, encoding):
-    print "\n---> XML Testing transfer=%s, encoding=%s" % (transfer, encoding)
+    print "\n---> XML Testing transfer=%s, encoding=%s" % (transfer, encoding)  #  pylint: disable=syntax-error
     data = xmlrpclib.dumps((REFERENCE_XML, ), methodresponse=1)
     o = transports.Output(transfer=transfer, encoding=encoding)
     o.set_header('Content-Type', 'text/xml')

@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -22,7 +22,7 @@ from . import sql_base
 
 # A class to handle sequences
 # XXX: this is still Oracle specific, but it shouldn't be
-class Sequence:
+class Sequence:  #  pylint: disable=missing-class-docstring
     def __init__(self, db, seq):
         if not seq or not isinstance(seq, str):
             raise rhnException("First argument needs to be a sequence name", seq)
@@ -32,7 +32,7 @@ class Sequence:
         self.__db = db
 
     def next(self):
-        sql = "select sequence_nextval('%s') as ID from dual" % self.__seq
+        sql = "select sequence_nextval('%s') as ID from dual" % self.__seq  #  pylint: disable=consider-using-f-string
         cursor = self.__db.prepare(sql)
         cursor.execute()
         ret = cursor.fetchone_dict()
@@ -41,7 +41,7 @@ class Sequence:
         return int(ret["id"])
 
     def next_many(self, n):
-        sql = "SELECT sequence_nextval('%s') FROM generate_series(1, %s)" % (
+        sql = "SELECT sequence_nextval('%s') FROM generate_series(1, %s)" % (  #  pylint: disable=consider-using-f-string
             self.__seq,
             n,
         )

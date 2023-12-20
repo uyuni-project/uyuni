@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2009--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -15,7 +15,7 @@
 
 import os
 import sys
-from optparse import Option, OptionParser
+from optparse import Option, OptionParser  #  pylint: disable=deprecated-module
 
 from spacewalk.common import rhnTB
 from spacewalk.server import rhnSQL
@@ -25,14 +25,14 @@ from . import satCerts
 DEFAULT_TRUSTED_CERT = "RHN-ORG-TRUSTED-SSL-CERT"
 
 
-def processCommandline():
+def processCommandline():  #  pylint: disable=invalid-name
     options = [
         Option(
             "--ca-cert",
             action="store",
             default=DEFAULT_TRUSTED_CERT,
             type="string",
-            help="public CA certificate, default is %s. If the value is '-' the CA is read from STDIN"
+            help="public CA certificate, default is %s. If the value is '-' the CA is read from STDIN"  #  pylint: disable=line-too-long,consider-using-f-string
             % DEFAULT_TRUSTED_CERT,
         ),
         Option(
@@ -40,7 +40,7 @@ def processCommandline():
             action="store",
             default="RHN-ORG-TRUSTED-SSL-CERT",
             type="string",
-            help="FOR TESTING ONLY - alternative database label for this CA certificate, "
+            help="FOR TESTING ONLY - alternative database label for this CA certificate, "  #  pylint: disable=line-too-long
             + 'default is "RHN-ORG-TRUSTED-SSL-CERT"',
         ),
         Option(
@@ -56,7 +56,7 @@ def processCommandline():
     # we take no extra commandline arguments that are not linked to an option
     if args:
         msg = (
-            "ERROR: these arguments make no sense in this context (try "
+            "ERROR: these arguments make no sense in this context (try "  #  pylint: disable=consider-using-f-string
             "--help): %s\n" % repr(args)
         )
         raise ValueError(msg)
@@ -65,7 +65,7 @@ def processCommandline():
         values.ca_cert = sys.stdin.read().strip()
     elif not os.path.exists(values.ca_cert):
         sys.stderr.write(
-            "ERROR: can't find CA certificate at this location: "
+            "ERROR: can't find CA certificate at this location: "  #  pylint: disable=consider-using-f-string
             "%s\n" % values.ca_cert
         )
         sys.exit(10)
@@ -84,7 +84,7 @@ ERROR: there was a problem trying to initialize the database:
         sys.exit(11)
 
     if values.verbose:
-        print(("Public CA SSL certificate:  %s" % values.ca_cert))
+        print(("Public CA SSL certificate:  %s" % values.ca_cert))  #  pylint: disable=consider-using-f-string
 
     return values
 
@@ -101,14 +101,14 @@ def main():
 
     values = processCommandline()
 
-    def writeError(e):
-        sys.stderr.write("\nERROR: %s\n" % e)
+    def writeError(e):  #  pylint: disable=invalid-name
+        sys.stderr.write("\nERROR: %s\n" % e)  #  pylint: disable=consider-using-f-string
 
     try:
         satCerts.store_CaCert(values.label, values.ca_cert, verbosity=values.verbose)
     except satCerts.CaCertInsertionError:
         writeError(
-            "Cannot insert certificate into DB!\n\n%s\n" % rhnTB.fetchTraceback()
+            "Cannot insert certificate into DB!\n\n%s\n" % rhnTB.fetchTraceback()  #  pylint: disable=consider-using-f-string
         )
         sys.exit(13)
     return 0

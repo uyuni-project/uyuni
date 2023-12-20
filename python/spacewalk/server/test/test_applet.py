@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -17,7 +17,7 @@ from rhn import rpclib
 # server = "xmlrpc.rhn.redhat.com"
 server = "coyote.devel.redhat.com"
 
-s = rpclib.Server("http://%s/APPLET" % server)
+s = rpclib.Server("http://%s/APPLET" % server)  #  pylint: disable=consider-using-f-string
 
 # print s.applet.poll_status()
 print((s.applet.poll_packages("2.1AS", "i386")))

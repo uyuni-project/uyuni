@@ -11,11 +11,11 @@ import os
 import re
 import time
 import salt.utils
-from salt.exceptions import CommandExecutionError
+from salt.exceptions import CommandExecutionError  #  pylint: disable=unused-import
 
 try:
     from salt.utils.path import which_bin as _which_bin
-except:
+except:  #  pylint: disable=bare-except
     from salt.utils import which_bin as _which_bin
 
 
@@ -30,11 +30,11 @@ __virtualname__ = "sumautil"
 SYSFS_NET_PATH = "/sys/class/net"
 
 
-def __virtual__():
+def __virtual__():  #  pylint: disable=invalid-name
     """
     Only run on Linux systems
     """
-    return __grains__["kernel"] == "Linux" and __virtualname__ or False
+    return __grains__["kernel"] == "Linux" and __virtualname__ or False  #  pylint: disable=undefined-variable
 
 
 def cat(path):
@@ -47,7 +47,7 @@ def cat(path):
 
         salt '*' sumautil.cat /tmp/file
     """
-    cmd = "cat %s" % path
+    cmd = "cat %s" % path  #  pylint: disable=consider-using-f-string
     result = __salt__["cmd.run_all"](cmd, output_loglevel="quiet")
 
     if result["retcode"] != 0:
@@ -68,24 +68,24 @@ def primary_ips():
         salt '*' sumautil.primary_ip
     """
 
-    get_master_ip = lambda family, host: socket.getaddrinfo(host, 0, family)[0][-1][0]
+    get_master_ip = lambda family, host: socket.getaddrinfo(host, 0, family)[0][-1][0]  #  pylint: disable=unnecessary-lambda-assignment
 
-    master = __opts__.get("master", "")
-    log.debug("Using master: {0}".format(str(master)))
+    master = __opts__.get("master", "")  #  pylint: disable=undefined-variable
+    log.debug("Using master: {0}".format(str(master)))  #  pylint: disable=logging-format-interpolation,consider-using-f-string
 
     ret = dict()
     for sock_family, sock_descr in list(
         {socket.AF_INET: "IPv4", socket.AF_INET6: "IPv6"}.items()
     ):
         try:
-            ret["{0}".format(sock_descr)] = __salt__["network.get_route"](
+            ret["{0}".format(sock_descr)] = __salt__["network.get_route"](  #  pylint: disable=consider-using-f-string
                 get_master_ip(sock_family, master)
             )
             log.debug(
-                "network.get_route({0}): ".format(ret["{0} source".format(sock_descr)])
+                "network.get_route({0}): ".format(ret["{0} source".format(sock_descr)])  #  pylint: disable=logging-format-interpolation,consider-using-f-string,consider-using-f-string
             )
-        except Exception as err:
-            log.debug("{0} is not available? {1}".format(sock_descr, err))
+        except Exception as err:  #  pylint: disable=broad-exception-caught
+            log.debug("{0} is not available? {1}".format(sock_descr, err))  #  pylint: disable=logging-format-interpolation,consider-using-f-string
 
     return ret
 
@@ -127,7 +127,7 @@ def get_net_modules():
             drivers[devdir] = get_net_module(devdir)
         except OSError as devdir:
             log.warning(
-                "An error occurred getting net driver for {0}".format(devdir),
+                "An error occurred getting net driver for {0}".format(devdir),  #  pylint: disable=logging-format-interpolation,consider-using-f-string
                 exc_info=True,
             )
 
@@ -165,19 +165,19 @@ def _klp():
     if klp is not None:
         try:
             # loop until patching is finished
-            for i in range(10):
+            for i in range(10):  #  pylint: disable=unused-variable
                 stat = __salt__["cmd.run_all"](
-                    "{0} status".format(klp), output_loglevel="quiet"
+                    "{0} status".format(klp), output_loglevel="quiet"  #  pylint: disable=consider-using-f-string
                 )
-                log.debug("klp status: {0}".format(stat["stdout"]))
+                log.debug("klp status: {0}".format(stat["stdout"]))  #  pylint: disable=logging-format-interpolation,consider-using-f-string
                 if stat["stdout"].strip().splitlines()[0] == "ready":
                     break
                 time.sleep(1)
             re_active = re.compile(r"^\s+active:\s*(\d+)$")
             ret = __salt__["cmd.run_all"](
-                "{0} -v patches".format(klp), output_loglevel="quiet"
+                "{0} -v patches".format(klp), output_loglevel="quiet"  #  pylint: disable=consider-using-f-string
             )
-            log.debug("klp patches: {0}".format(ret["stdout"]))
+            log.debug("klp patches: {0}".format(ret["stdout"]))  #  pylint: disable=logging-format-interpolation,consider-using-f-string
             if ret["retcode"] == 0:
                 for line in ret["stdout"].strip().splitlines():
                     if line.startswith("#"):
@@ -187,8 +187,8 @@ def _klp():
                     if match_active and int(match_active.group(1)) > 0:
                         return {"mgr_kernel_live_version": patchname}
                     elif line.startswith("kgraft") or line.startswith("livepatch"):
-                        # kgr patches have prefix 'kgraft', whereas klp patches start with 'livepatch'
+                        # kgr patches have prefix 'kgraft', whereas klp patches start with 'livepatch'  #  pylint: disable=line-too-long
                         patchname = line.strip()
 
-        except Exception as error:
-            log.error("klp: {0}".format(str(error)))
+        except Exception as error:  #  pylint: disable=broad-exception-caught
+            log.error("klp: {0}".format(str(error)))  #  pylint: disable=logging-format-interpolation,consider-using-f-string

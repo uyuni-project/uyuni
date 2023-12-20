@@ -2,7 +2,7 @@
 """
 Test suite for spacecmd.api
 """
-from mock import MagicMock, patch, mock_open
+from mock import MagicMock, patch, mock_open  #  pylint: disable=unused-import
 from spacecmd import api
 import helpers
 import datetime
@@ -33,16 +33,16 @@ class TestSCAPI:
 
         log = MagicMock()
         out = helpers.FileHandleMock()
-        with patch("spacecmd.api.open", out, create=True) as mop, patch(
+        with patch("spacecmd.api.open", out, create=True) as mop, patch(  #  pylint: disable=unused-variable
             "spacecmd.api.logging", log
         ) as mlog:
             api.do_api(shell, "call -o /tmp/spacecmd.log")
 
         assert not mlog.warning.called
         assert out.get_content() == '[\n  "one",\n  "two",\n  "three"\n]'
-        assert out.get_init_kwargs() == {}
+        assert out.get_init_kwargs() == {}  #  pylint: disable=use-implicit-booleaness-not-comparison
         assert out.get_init_args() == ("/tmp/spacecmd.log", "w")
-        assert out._closed
+        assert out._closed  #  pylint: disable=protected-access
 
     def test_args_format(self):
         """
@@ -55,16 +55,16 @@ class TestSCAPI:
 
         log = MagicMock()
         out = helpers.FileHandleMock()
-        with patch("spacecmd.api.open", out, create=True) as mop, patch(
+        with patch("spacecmd.api.open", out, create=True) as mop, patch(  #  pylint: disable=unused-variable
             "spacecmd.api.logging", log
         ) as mlog:
             api.do_api(shell, "call -o /tmp/spacecmd.log -F '>>> %s'")
 
         assert not mlog.warning.called
         assert out.get_content() == ">>> one\n>>> two\n>>> three\n"
-        assert out.get_init_kwargs() == {}
+        assert out.get_init_kwargs() == {}  #  pylint: disable=use-implicit-booleaness-not-comparison
         assert out.get_init_args() == ("/tmp/spacecmd.log", "w")
-        assert out._closed
+        assert out._closed  #  pylint: disable=protected-access
 
     def test_args_args(self):
         """
@@ -78,9 +78,9 @@ class TestSCAPI:
 
         log = MagicMock()
         out = helpers.FileHandleMock()
-        with patch("spacecmd.api.open", out, create=True) as mop, patch(
+        with patch("spacecmd.api.open", out, create=True) as mop, patch(  #  pylint: disable=unused-variable
             "spacecmd.api.logging", log
-        ) as mlog:
+        ) as mlog:  #  pylint: disable=unused-variable
             api.do_api(shell, "call -A first,second,123 -o /tmp/spacecmd.log")
         assert shell.client.call.called
         assert shell.client.call.call_args_list[0][0] == (
@@ -89,7 +89,7 @@ class TestSCAPI:
             "second",
             123,
         )
-        assert out._closed
+        assert out._closed  #  pylint: disable=protected-access
 
     def test_args_datetime(self):
         """
@@ -103,9 +103,9 @@ class TestSCAPI:
 
         log = MagicMock()
         out = helpers.FileHandleMock()
-        with patch("spacecmd.api.open", out, create=True) as mop, patch(
+        with patch("spacecmd.api.open", out, create=True) as mop, patch(  #  pylint: disable=unused-variable
             "spacecmd.api.logging", log
-        ) as mlog:
+        ) as mlog:  #  pylint: disable=unused-variable
             api.do_api(shell, "call -A first,second,2022-05-05 -o /tmp/spacecmd.log")
         assert shell.client.call.called
         assert shell.client.call.call_args_list[0][0] == (
@@ -114,7 +114,7 @@ class TestSCAPI:
             "second",
             datetime.datetime(2022, 5, 5, 0, 0),
         )
-        assert out._closed
+        assert out._closed  #  pylint: disable=protected-access
 
     def test_args_json(self):
         """
@@ -128,9 +128,9 @@ class TestSCAPI:
 
         log = MagicMock()
         out = helpers.FileHandleMock()
-        with patch("spacecmd.api.open", out, create=True) as mop, patch(
+        with patch("spacecmd.api.open", out, create=True) as mop, patch(  #  pylint: disable=unused-variable
             "spacecmd.api.logging", log
-        ) as mlog:
+        ) as mlog:  #  pylint: disable=unused-variable
             api.do_api(
                 shell,
                 'call -A \'["first","second","2022-05-05",4]\' -o /tmp/spacecmd.log',
@@ -143,4 +143,4 @@ class TestSCAPI:
             datetime.datetime(2022, 5, 5, 0, 0),
             4,
         )
-        assert out._closed
+        assert out._closed  #  pylint: disable=protected-access

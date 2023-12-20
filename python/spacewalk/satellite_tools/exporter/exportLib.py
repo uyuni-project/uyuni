@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring,invalid-name
 # Copyright (c) 2008--2018 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -21,7 +21,7 @@ from spacewalk.common.rhnLog import log_debug
 from spacewalk.server import rhnSQL
 
 
-class ArrayIterator:
+class ArrayIterator:  #  pylint: disable=missing-class-docstring
     def __init__(self, arr):
         self._arr = arr
         if self._arr:
@@ -43,7 +43,7 @@ class ArrayIterator:
         return self._arr[i]
 
 
-class BaseDumper:
+class BaseDumper:  #  pylint: disable=missing-class-docstring
     # tag_name has to be set in subclasses
 
     def __init__(self, writer, data_iterator=None):
@@ -56,7 +56,7 @@ class BaseDumper:
     def timer(debug_level, message, function, *args, **kwargs):
         start = time.time()
         result = function(*args, **kwargs)
-        log_debug(debug_level, message, "timing: %.3f" % (time.time() - start))
+        log_debug(debug_level, message, "timing: %.3f" % (time.time() - start))  #  pylint: disable=consider-using-f-string
         return result
 
     def set_attributes(self):
@@ -67,7 +67,7 @@ class BaseDumper:
 
     def dump(self):
         if not hasattr(self, "tag_name"):
-            raise Exception("Programmer error: subclass did not set tag_name")
+            raise Exception("Programmer error: subclass did not set tag_name")  #  pylint: disable=broad-exception-raised
         tag_name = getattr(self, "tag_name")
         self._attributes = self.set_attributes() or {}
         self._iterator = self.timer(5, "set_iterator", self.set_iterator)
@@ -118,7 +118,7 @@ class EmptyDumper(BaseDumper):
         self._writer.empty_tag(self.tag_name, attributes=self.attributes)
 
 
-class SimpleDumper(BaseDumper):
+class SimpleDumper(BaseDumper):  #  pylint: disable=missing-class-docstring
     def __init__(self, writer, tag_name, value, max_value_bytes=None):
         self.tag_name = tag_name
         self._value = value
@@ -175,7 +175,7 @@ class BaseSubelementDumper(BaseDumper):
 ####
 
 
-class ExportTypeDumper(BaseDumper):
+class ExportTypeDumper(BaseDumper):  #  pylint: disable=missing-class-docstring
     def __init__(self, writer, start_date=None, end_date=None):
         if start_date:
             self.type = "incremental"
@@ -202,7 +202,7 @@ class ExportTypeDumper(BaseDumper):
             self._writer.close_tag("export-end-date")
 
 
-class SatelliteDumper(BaseDumper):
+class SatelliteDumper(BaseDumper):  #  pylint: disable=missing-class-docstring
     tag_name = "rhn-satellite"
 
     def __init__(self, writer, *dumpers):
@@ -232,7 +232,7 @@ class _OrgTrustDumper(BaseDumper):
         c.dump()
 
 
-class _OrgDumper(BaseDumper):
+class _OrgDumper(BaseDumper):  #  pylint: disable=missing-class-docstring
     tag_name = "rhn-org"
 
     def __init__(self, writer, org):
@@ -282,7 +282,7 @@ class ChannelTrustedOrgsDumper(BaseDumper):
         d.dump()
 
 
-class _ChannelDumper(BaseRowDumper):
+class _ChannelDumper(BaseRowDumper):  #  pylint: disable=missing-class-docstring
     tag_name = "rhn-channel"
 
     def __init__(
@@ -303,15 +303,15 @@ class _ChannelDumper(BaseRowDumper):
     def set_attributes(self):
         channel_id = self._row["id"]
 
-        packages = ["rhn-package-%s" % x for x in self._get_package_ids()]
+        packages = ["rhn-package-%s" % x for x in self._get_package_ids()]  #  pylint: disable=consider-using-f-string
         # XXX channel-errata is deprecated and should go away in dump version
         # 3 or higher - we now dump that information in its own subelement
         # rhn-channel-errata
-        errata = ["rhn-erratum-%s" % x for x in self._get_errata_ids()]
+        errata = ["rhn-erratum-%s" % x for x in self._get_errata_ids()]  #  pylint: disable=consider-using-f-string
         ks_trees = self._get_kickstartable_trees()
 
         return {
-            "channel-id": "rhn-channel-%s" % channel_id,
+            "channel-id": "rhn-channel-%s" % channel_id,  #  pylint: disable=consider-using-f-string
             "label": self._row["label"],
             "org_id": self._row["org_id"] or "",
             "channel-arch": self._row["channel_arch"],
@@ -703,7 +703,7 @@ class ChannelsDumper(BaseSubelementDumper):
         self._channels = channels
 
 
-class ChannelDumper(_ChannelDumper):
+class ChannelDumper(_ChannelDumper):  #  pylint: disable=missing-class-docstring
     # pylint: disable=W0231,W0233
     def __init__(self, writer, row):
         BaseRowDumper.__init__(self, writer, row)
@@ -719,7 +719,7 @@ class ChannelDumper(_ChannelDumper):
     # """)
 
     def set_iterator(self):
-        arrayiterator = _ChannelDumper.set_iterator()
+        arrayiterator = _ChannelDumper.set_iterator()  #  pylint: disable=no-value-for-parameter
         arr = arrayiterator.get_array()
         mappings = [
             ("rhn-channel-receiving-updates", "receiving_updates"),
@@ -760,7 +760,7 @@ class _ChannelSourcePackageDumper(BaseRowDumper):
 
     def set_attributes(self):
         return {
-            "id": "rhn-source-package-%s" % self._row["id"],
+            "id": "rhn-source-package-%s" % self._row["id"],  #  pylint: disable=consider-using-f-string
             "source-rpm": self._row["source_rpm"],
             "last-modified": _dbtime2timestamp(self._row["last_modified"]),
         }
@@ -778,7 +778,7 @@ class _ChannelErratumDumper(BaseRowDumper):
 
     def set_attributes(self):
         return {
-            "id": "rhn-erratum-%s" % self._row["id"],
+            "id": "rhn-erratum-%s" % self._row["id"],  #  pylint: disable=consider-using-f-string
             "advisory-name": self._row["advisory_name"],
             "last-modified": _dbtime2timestamp(self._row["last_modified"]),
         }
@@ -813,12 +813,12 @@ class _SupportInfoDumper(BaseRowDumper):
     def set_attributes(self):
         return {
             "channel": self._row["channel_label"],
-            "pkgid": "rhn-package-%s" % self._row["package_id"],
+            "pkgid": "rhn-package-%s" % self._row["package_id"],  #  pylint: disable=consider-using-f-string
             "keyword": self._row["keyword"],
         }
 
 
-class SupportInfoDumper(BaseQueryDumper):
+class SupportInfoDumper(BaseQueryDumper):  #  pylint: disable=missing-class-docstring
     tag_name = "suse-data"
     iterator_query = """
         select c.label channel_label,
@@ -830,8 +830,8 @@ class SupportInfoDumper(BaseQueryDumper):
           join suseMdKeyword k on d.keyword_id = k.id
     """
 
-    def __init__(self, writer, data_iterator=None):
-        BaseDumper.__init__(self, writer, data_iterator=data_iterator)
+    def __init__(self, writer, data_iterator=None):  #  pylint: disable=super-init-not-called
+        BaseDumper.__init__(self, writer, data_iterator=data_iterator)  #  pylint: disable=non-parent-init-called
 
     def dump_subelement(self, data):
         cf = _SupportInfoDumper(self._writer, data)
@@ -856,7 +856,7 @@ class _SuseProductDumper(BaseRowDumper):
         }
 
 
-class SuseProductDumper(BaseQueryDumper):
+class SuseProductDumper(BaseQueryDumper):  #  pylint: disable=missing-class-docstring
     tag_name = "suse-products"
     iterator_query = """
     SELECT p.name, p.version, p.friendly_name,
@@ -867,8 +867,8 @@ class SuseProductDumper(BaseQueryDumper):
  LEFT JOIN rhnChannelFamily cf ON p.channel_family_id = cf.id
     """
 
-    def __init__(self, writer, data_iterator=None):
-        BaseDumper.__init__(self, writer, data_iterator=data_iterator)
+    def __init__(self, writer, data_iterator=None):  #  pylint: disable=super-init-not-called
+        BaseDumper.__init__(self, writer, data_iterator=data_iterator)  #  pylint: disable=non-parent-init-called
 
     def dump_subelement(self, data):
         cf = _SuseProductDumper(self._writer, data)
@@ -886,7 +886,7 @@ class _SuseProductChannelDumper(BaseRowDumper):
         }
 
 
-class SuseProductChannelDumper(BaseQueryDumper):
+class SuseProductChannelDumper(BaseQueryDumper):  #  pylint: disable=missing-class-docstring
     tag_name = "suse-product-channels"
     iterator_query = """
     SELECT p.product_id AS pdid,
@@ -902,8 +902,8 @@ class SuseProductChannelDumper(BaseQueryDumper):
                       AND c.label = pr.channel_label)
     """
 
-    def __init__(self, writer, data_iterator=None):
-        BaseDumper.__init__(self, writer, data_iterator=data_iterator)
+    def __init__(self, writer, data_iterator=None):  #  pylint: disable=super-init-not-called
+        BaseDumper.__init__(self, writer, data_iterator=data_iterator)  #  pylint: disable=non-parent-init-called
 
     def dump_subelement(self, data):
         cf = _SuseProductChannelDumper(self._writer, data)
@@ -920,7 +920,7 @@ class _SuseUpgradePathDumper(BaseRowDumper):
         }
 
 
-class SuseUpgradePathDumper(BaseQueryDumper):
+class SuseUpgradePathDumper(BaseQueryDumper):  #  pylint: disable=missing-class-docstring
     tag_name = "suse-upgrade-paths"
     iterator_query = """
     SELECT p1.product_id AS fromid,
@@ -930,8 +930,8 @@ class SuseUpgradePathDumper(BaseQueryDumper):
       JOIN suseProducts p2 ON up.to_pdid = p2.id
     """
 
-    def __init__(self, writer, data_iterator=None):
-        BaseDumper.__init__(self, writer, data_iterator=data_iterator)
+    def __init__(self, writer, data_iterator=None):  #  pylint: disable=super-init-not-called
+        BaseDumper.__init__(self, writer, data_iterator=data_iterator)  #  pylint: disable=non-parent-init-called
 
     def dump_subelement(self, data):
         cf = _SuseUpgradePathDumper(self._writer, data)
@@ -950,7 +950,7 @@ class _SuseProductExtensionDumper(BaseRowDumper):
         }
 
 
-class SuseProductExtensionDumper(BaseQueryDumper):
+class SuseProductExtensionDumper(BaseQueryDumper):  #  pylint: disable=missing-class-docstring
     tag_name = "suse-product-extensions"
     iterator_query = """
     SELECT p1.product_id AS pdid,
@@ -963,8 +963,8 @@ class SuseProductExtensionDumper(BaseQueryDumper):
       JOIN suseProducts p3 ON e.ext_pdid = p3.id
     """
 
-    def __init__(self, writer, data_iterator=None):
-        BaseDumper.__init__(self, writer, data_iterator=data_iterator)
+    def __init__(self, writer, data_iterator=None):  #  pylint: disable=super-init-not-called
+        BaseDumper.__init__(self, writer, data_iterator=data_iterator)  #  pylint: disable=non-parent-init-called
 
     def dump_subelement(self, data):
         cf = _SuseProductExtensionDumper(self._writer, data)
@@ -987,7 +987,7 @@ class _SuseProductRepositoryDumper(BaseRowDumper):
         }
 
 
-class SuseProductRepositoryDumper(BaseQueryDumper):
+class SuseProductRepositoryDumper(BaseQueryDumper):  #  pylint: disable=missing-class-docstring
     tag_name = "suse-product-repositories"
     iterator_query = """
     SELECT p1.product_id AS pdid,
@@ -1004,8 +1004,8 @@ class SuseProductRepositoryDumper(BaseQueryDumper):
       JOIN suseSCCRepository r ON pr.repo_id = r.id
     """
 
-    def __init__(self, writer, data_iterator=None):
-        BaseDumper.__init__(self, writer, data_iterator=data_iterator)
+    def __init__(self, writer, data_iterator=None):  #  pylint: disable=super-init-not-called
+        BaseDumper.__init__(self, writer, data_iterator=data_iterator)  #  pylint: disable=non-parent-init-called
 
     def dump_subelement(self, data):
         cf = _SuseProductRepositoryDumper(self._writer, data)
@@ -1028,7 +1028,7 @@ class _SCCRepositoryDumper(BaseRowDumper):
         }
 
 
-class SCCRepositoryDumper(BaseQueryDumper):
+class SCCRepositoryDumper(BaseQueryDumper):  #  pylint: disable=missing-class-docstring
     tag_name = "scc-repositories"
     iterator_query = """
     SELECT scc_id AS sccid,
@@ -1037,8 +1037,8 @@ class SCCRepositoryDumper(BaseQueryDumper):
       FROM suseSCCRepository
     """
 
-    def __init__(self, writer, data_iterator=None):
-        BaseDumper.__init__(self, writer, data_iterator=data_iterator)
+    def __init__(self, writer, data_iterator=None):  #  pylint: disable=super-init-not-called
+        BaseDumper.__init__(self, writer, data_iterator=data_iterator)  #  pylint: disable=non-parent-init-called
 
     def dump_subelement(self, data):
         cf = _SCCRepositoryDumper(self._writer, data)
@@ -1056,7 +1056,7 @@ class _SuseSubscriptionDumper(BaseRowDumper):
         }
 
 
-class SuseSubscriptionDumper(BaseQueryDumper):
+class SuseSubscriptionDumper(BaseQueryDumper):  #  pylint: disable=missing-class-docstring
     tag_name = "suse-subscriptions"
     iterator_query = """
         SELECT cf.label, 0 AS max_members, 0 AS system_entitlement
@@ -1070,8 +1070,8 @@ class SuseSubscriptionDumper(BaseQueryDumper):
          WHERE org_id = 1
     """
 
-    def __init__(self, writer, data_iterator=None):
-        BaseDumper.__init__(self, writer, data_iterator=data_iterator)
+    def __init__(self, writer, data_iterator=None):  #  pylint: disable=super-init-not-called
+        BaseDumper.__init__(self, writer, data_iterator=data_iterator)  #  pylint: disable=non-parent-init-called
 
     def dump_subelement(self, data):
         cf = _SuseSubscriptionDumper(self._writer, data)
@@ -1088,7 +1088,7 @@ class _ClonedChannelsDumper(BaseRowDumper):
         }
 
 
-class ClonedChannelsDumper(BaseQueryDumper):
+class ClonedChannelsDumper(BaseQueryDumper):  #  pylint: disable=missing-class-docstring
     tag_name = "cloned-channels"
     iterator_query = """
         SELECT c1.label orig,
@@ -1098,15 +1098,15 @@ class ClonedChannelsDumper(BaseQueryDumper):
           JOIN rhnChannel c2 ON c2.id = cc.id
     """
 
-    def __init__(self, writer, data_iterator=None):
-        BaseDumper.__init__(self, writer, data_iterator=data_iterator)
+    def __init__(self, writer, data_iterator=None):  #  pylint: disable=super-init-not-called
+        BaseDumper.__init__(self, writer, data_iterator=data_iterator)  #  pylint: disable=non-parent-init-called
 
     def dump_subelement(self, data):
         cf = _ClonedChannelsDumper(self._writer, data)
         cf.dump()
 
 
-class ChannelFamiliesDumper(BaseQueryDumper):
+class ChannelFamiliesDumper(BaseQueryDumper):  #  pylint: disable=missing-class-docstring
     tag_name = "rhn-channel-families"
     iterator_query = "select cf.* from rhnChannelFamily"
 
@@ -1127,7 +1127,7 @@ class ChannelFamiliesDumper(BaseQueryDumper):
         cf.dump()
 
 
-class _ChannelFamilyDumper(BaseRowDumper):
+class _ChannelFamilyDumper(BaseRowDumper):  #  pylint: disable=missing-class-docstring
     tag_name = "rhn-channel-family"
 
     def __init__(self, writer, row, ignore_subelements=0, null_max_members=1):
@@ -1167,7 +1167,7 @@ class _ChannelFamilyDumper(BaseRowDumper):
         channels = [x["label"] for x in h.fetchall_dict() or []]
 
         attributes = {
-            "id": "rhn-channel-family-%s" % channel_family_id,
+            "id": "rhn-channel-family-%s" % channel_family_id,  #  pylint: disable=consider-using-f-string
             "label": self._row["label"],
             "channel-labels": " ".join(channels),
         }
@@ -1185,7 +1185,7 @@ class _ChannelFamilyDumper(BaseRowDumper):
 ##
 
 
-class _PackageDumper(BaseRowDumper):
+class _PackageDumper(BaseRowDumper):  #  pylint: disable=missing-class-docstring
     tag_name = "rhn-package"
 
     def set_attributes(self):
@@ -1205,7 +1205,7 @@ class _PackageDumper(BaseRowDumper):
             "compat",
         ]
         attr_dict = {
-            "id": "rhn-package-%s" % self._row["id"],
+            "id": "rhn-package-%s" % self._row["id"],  #  pylint: disable=consider-using-f-string
             "org_id": self._row["org_id"] or "",
             "epoch": self._row["epoch"] or "",
             "cookie": self._row["cookie"] or "",
@@ -1397,12 +1397,12 @@ class PackagesDumper(BaseSubelementDumper, BaseQueryDumper):
 ##
 
 
-class ShortPackageEntryDumper(BaseChecksumRowDumper):
+class ShortPackageEntryDumper(BaseChecksumRowDumper):  #  pylint: disable=missing-class-docstring
     tag_name = "rhn-package-short"
 
     def set_attributes(self):
         attr = {
-            "id": "rhn-package-%s" % self._row["id"],
+            "id": "rhn-package-%s" % self._row["id"],  #  pylint: disable=consider-using-f-string
             "name": self._row["name"],
             "version": self._row["version"],
             "release": self._row["release"],
@@ -1429,7 +1429,7 @@ class ShortPackagesDumper(BaseSubelementDumper, BaseQueryDumper):
 ##
 
 
-class SourcePackagesDumper(BaseQueryDumper):
+class SourcePackagesDumper(BaseQueryDumper):  #  pylint: disable=missing-class-docstring
     tag_name = "rhn-source-packages"
 
     def dump_subelement(self, data):
@@ -1451,7 +1451,7 @@ class SourcePackagesDumper(BaseQueryDumper):
         ]
         for attr in attrs:
             attributes[attr.replace("_", "-")] = data[attr]
-        attributes["id"] = "rhn-source-package-%s" % data["id"]
+        attributes["id"] = "rhn-source-package-%s" % data["id"]  #  pylint: disable=consider-using-f-string
         attributes["build-time"] = _dbtime2timestamp(data["build_time"])
         attributes["last-modified"] = _dbtime2timestamp(data["last_modified"])
         d = EmptyDumper(self._writer, "rhn-source-package", attributes=attributes)
@@ -1461,7 +1461,7 @@ class SourcePackagesDumper(BaseQueryDumper):
 ##
 
 
-class _ChecksumDumper(BaseDumper):
+class _ChecksumDumper(BaseDumper):  #  pylint: disable=missing-class-docstring
     tag_name = "checksums"
 
     def dump_subelement(self, data):
@@ -1479,7 +1479,7 @@ class _ChecksumDumper(BaseDumper):
 ##
 
 
-class _ChangelogEntryDumper(BaseRowDumper):
+class _ChangelogEntryDumper(BaseRowDumper):  #  pylint: disable=missing-class-docstring
     tag_name = "rhn-package-changelog-entry"
 
     def set_iterator(self):
@@ -1508,7 +1508,7 @@ class _ChangelogDumper(BaseSubelementDumper):
 
 
 ##
-class _SuseProductEntryDumper(BaseRowDumper):
+class _SuseProductEntryDumper(BaseRowDumper):  #  pylint: disable=missing-class-docstring
     tag_name = "suse-product-file-entry"
 
     def set_iterator(self):
@@ -1574,7 +1574,7 @@ class _PkgExtraTagDumper(BaseSubelementDumper):
 
 
 ##
-class _DependencyDumper(BaseDumper):
+class _DependencyDumper(BaseDumper):  #  pylint: disable=missing-class-docstring
     def __init__(self, writer, data_iterator, container_name, entry_name):
         self.tag_name = container_name
         self.entry_name = entry_name
@@ -1596,7 +1596,7 @@ class _DependencyDumper(BaseDumper):
 # Files
 
 
-class _PackageFilesDumper(BaseDumper):
+class _PackageFilesDumper(BaseDumper):  #  pylint: disable=missing-class-docstring
     tag_name = "rhn-package-files"
 
     def dump_subelement(self, data):
@@ -1616,7 +1616,7 @@ class _PackageFilesDumper(BaseDumper):
 # Errata
 
 
-class _ErratumDumper(BaseRowDumper):
+class _ErratumDumper(BaseRowDumper):  #  pylint: disable=missing-class-docstring
     tag_name = "rhn-erratum"
 
     def set_attributes(self):
@@ -1639,7 +1639,7 @@ class _ErratumDumper(BaseRowDumper):
         """
         )
         h.execute(errata_id=self._row["id"])
-        packages = ["rhn-package-%s" % x["package_id"] for x in h.fetchall_dict() or []]
+        packages = ["rhn-package-%s" % x["package_id"] for x in h.fetchall_dict() or []]  #  pylint: disable=consider-using-f-string
 
         h = rhnSQL.prepare(
             """
@@ -1653,7 +1653,7 @@ class _ErratumDumper(BaseRowDumper):
         cves = [x["cve"] for x in h.fetchall_dict() or []]
 
         return {
-            "id": "rhn-erratum-%s" % self._row["id"],
+            "id": "rhn-erratum-%s" % self._row["id"],  #  pylint: disable=consider-using-f-string
             "org_id": self._row["org_id"] or "",
             "advisory": self._row["advisory"],
             "channels": " ".join(channels),
@@ -1795,7 +1795,7 @@ class _ErratumBuglistDumper(BaseSubelementDumper):
     subelement_dumper_class = _ErratumBugDumper
 
 
-class _ErratumFileEntryDumper(BaseChecksumRowDumper):
+class _ErratumFileEntryDumper(BaseChecksumRowDumper):  #  pylint: disable=missing-class-docstring
     tag_name = "rhn-erratum-file"
 
     def set_attributes(self):
@@ -1824,11 +1824,11 @@ class _ErratumFileEntryDumper(BaseChecksumRowDumper):
         if self._row["type"] == "RPM":
             package_id = self._row["package_id"]
             if package_id is not None:
-                attributes["package"] = "rhn-package-%s" % package_id
+                attributes["package"] = "rhn-package-%s" % package_id  #  pylint: disable=consider-using-f-string
         elif self._row["type"] == "SRPM":
             package_id = self._row["source_package_id"]
             if package_id is not None:
-                attributes["source-package"] = "rhn-package-source-%s" % package_id
+                attributes["source-package"] = "rhn-package-source-%s" % package_id  #  pylint: disable=consider-using-f-string
         return attributes
 
 
@@ -1840,7 +1840,7 @@ class _ErratumFilesDumper(BaseSubelementDumper):
 # Arches
 
 
-class BaseArchesDumper(BaseDumper):
+class BaseArchesDumper(BaseDumper):  #  pylint: disable=missing-class-docstring
     table_name = "foo"
     subelement_tag = "foo"
 
@@ -1857,14 +1857,14 @@ class BaseArchesDumper(BaseDumper):
 
     def dump_subelement(self, data):
         attributes = {
-            "id": "%s-id-%s" % (self.subelement_tag, data["id"]),
+            "id": "%s-id-%s" % (self.subelement_tag, data["id"]),  #  pylint: disable=consider-using-f-string
             "label": data["label"],
             "name": data["name"],
         }
         EmptyDumper(self._writer, self.subelement_tag, attributes).dump()
 
 
-class RestrictedArchesDumper(BaseArchesDumper):
+class RestrictedArchesDumper(BaseArchesDumper):  #  pylint: disable=missing-class-docstring
     def __init__(self, writer, data_iterator=None, rpm_arch_type_only=0):
         BaseArchesDumper.__init__(self, writer=writer, data_iterator=data_iterator)
         self.rpm_arch_type_only = rpm_arch_type_only
@@ -1887,7 +1887,7 @@ class RestrictedArchesDumper(BaseArchesDumper):
 
     def dump_subelement(self, data):
         attributes = {
-            "id": "%s-id-%s" % (self.subelement_tag, data["id"]),
+            "id": "%s-id-%s" % (self.subelement_tag, data["id"]),  #  pylint: disable=consider-using-f-string
             "label": data["label"],
             "name": data["name"],
             "arch-type-label": data["arch_type_label"],
@@ -1920,7 +1920,7 @@ class CPUArchesDumper(BaseArchesDumper):
     table_name = "rhnCPUArch"
 
 
-class RestrictedArchCompatDumper(BaseArchesDumper):
+class RestrictedArchCompatDumper(BaseArchesDumper):  #  pylint: disable=missing-class-docstring
     _query_rpm_arch_type_only = ""
     _query_arch_type_all = ""
     _subelement_tag = ""
@@ -1953,7 +1953,7 @@ class RestrictedArchCompatDumper(BaseArchesDumper):
         EmptyDumper(self._writer, self._subelement_tag, data).dump()
 
 
-class ServerPackageArchCompatDumper(RestrictedArchCompatDumper):
+class ServerPackageArchCompatDumper(RestrictedArchCompatDumper):  #  pylint: disable=missing-class-docstring
     tag_name = "rhn-server-package-arch-compatibility-map"
     _subelement_tag = "rhn-server-package-arch-compat"
 
@@ -1990,7 +1990,7 @@ class ServerPackageArchCompatDumper(RestrictedArchCompatDumper):
     )
 
 
-class ServerChannelArchCompatDumper(RestrictedArchCompatDumper):
+class ServerChannelArchCompatDumper(RestrictedArchCompatDumper):  #  pylint: disable=missing-class-docstring
     tag_name = "rhn-server-channel-arch-compatibility-map"
     _subelement_tag = "rhn-server-channel-arch-compat"
 
@@ -2025,7 +2025,7 @@ class ServerChannelArchCompatDumper(RestrictedArchCompatDumper):
     )
 
 
-class ChannelPackageArchCompatDumper(RestrictedArchCompatDumper):
+class ChannelPackageArchCompatDumper(RestrictedArchCompatDumper):  #  pylint: disable=missing-class-docstring
     tag_name = "rhn-channel-package-arch-compatibility-map"
     _subelement_tag = "rhn-channel-package-arch-compat"
 
@@ -2060,7 +2060,7 @@ class ChannelPackageArchCompatDumper(RestrictedArchCompatDumper):
     )
 
 
-class ServerGroupTypeServerArchCompatDumper(RestrictedArchCompatDumper):
+class ServerGroupTypeServerArchCompatDumper(RestrictedArchCompatDumper):  #  pylint: disable=missing-class-docstring
     tag_name = "rhn-server-group-server-arch-compatibility-map"
     _subelement_tag = "rhn-server-group-server-arch-compat"
 
@@ -2101,7 +2101,7 @@ class BlacklistObsoletesDumper(BaseDumper):
         self._writer.empty_tag(self.tag_name)
 
 
-class _KickstartableTreeDumper(BaseRowDumper):
+class _KickstartableTreeDumper(BaseRowDumper):  #  pylint: disable=missing-class-docstring
     tag_name = "rhn-kickstartable-tree"
 
     def set_attributes(self):
@@ -2129,7 +2129,7 @@ class _KickstartableTreeDumper(BaseRowDumper):
         return ArrayIterator([_KickstartFilesDumper(self._writer, h)])
 
 
-class KickstartableTreesDumper(BaseSubelementDumper, BaseQueryDumper):
+class KickstartableTreesDumper(BaseSubelementDumper, BaseQueryDumper):  #  pylint: disable=missing-class-docstring
     tag_name = "rhn-kickstartable-trees"
     subelement_dumper_class = _KickstartableTreeDumper
     iterator_query = """

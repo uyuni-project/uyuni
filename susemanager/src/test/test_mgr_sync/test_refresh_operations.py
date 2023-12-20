@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*- pylint: disable=missing-module-docstring
 #
 # Copyright (C) 2014 Novell, Inc.
 #   This library is free software; you can redistribute it and/or modify
@@ -23,15 +23,15 @@ import os.path
 import sys
 
 try:
-    from unittest.mock import MagicMock, call, patch
+    from unittest.mock import MagicMock, call, patch  #  pylint: disable=unused-import
 except ImportError:
     from mock import MagicMock, call, patch
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-from helper import ConsoleRecorder, read_data_from_fixture
+from helper import ConsoleRecorder, read_data_from_fixture  #  pylint: disable=wrong-import-position
 
-from spacewalk.susemanager.mgr_sync.cli import get_options
-from spacewalk.susemanager.mgr_sync.mgr_sync import MgrSync
+from spacewalk.susemanager.mgr_sync.cli import get_options  #  pylint: disable=wrong-import-position
+from spacewalk.susemanager.mgr_sync.mgr_sync import MgrSync  #  pylint: disable=wrong-import-position
 
 
 class RefreshOperationsTest(unittest.TestCase):
@@ -46,11 +46,11 @@ class RefreshOperationsTest(unittest.TestCase):
     def test_refresh_from_mirror(self):
         """Test the refresh action"""
         mirror_url = "http://smt.suse.de"
-        options = get_options("refresh --from-mirror {0}".format(mirror_url).split())
+        options = get_options("refresh --from-mirror {0}".format(mirror_url).split())  #  pylint: disable=consider-using-f-string
         stubbed_xmlrpm_call = MagicMock(return_value=True)
-        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
+        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call  #  pylint: disable=protected-access
         stubbed_reposync = MagicMock()
-        self.mgr_sync._schedule_channel_reposync = stubbed_reposync
+        self.mgr_sync._schedule_channel_reposync = stubbed_reposync  #  pylint: disable=protected-access
         with ConsoleRecorder() as recorder:
             self.mgr_sync.run(options)
 
@@ -62,23 +62,23 @@ Refreshing Subscriptions                       [DONE]"""
         self.assertEqual(expected_output.split("\n"), recorder.stdout)
 
         expected_calls = [
-            call._execute_xmlrpc_method(
+            call._execute_xmlrpc_method(  #  pylint: disable=protected-access
                 self.mgr_sync.conn.sync.content,
                 "synchronizeChannelFamilies",
                 self.fake_auth_token,
             ),
-            call._execute_xmlrpc_method(
+            call._execute_xmlrpc_method(  #  pylint: disable=protected-access
                 self.mgr_sync.conn.sync.content,
                 "synchronizeProducts",
                 self.fake_auth_token,
             ),
-            call._execute_xmlrpc_method(
+            call._execute_xmlrpc_method(  #  pylint: disable=protected-access
                 self.mgr_sync.conn.sync.content,
                 "synchronizeRepositories",
                 self.fake_auth_token,
                 mirror_url,
             ),
-            call._execute_xmlrpc_method(
+            call._execute_xmlrpc_method(  #  pylint: disable=protected-access
                 self.mgr_sync.conn.sync.content,
                 "synchronizeSubscriptions",
                 self.fake_auth_token,
@@ -92,9 +92,9 @@ Refreshing Subscriptions                       [DONE]"""
 
         options = get_options("refresh".split())
         stubbed_xmlrpm_call = MagicMock(return_value=True)
-        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
+        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call  #  pylint: disable=protected-access
         stubbed_reposync = MagicMock()
-        self.mgr_sync._schedule_channel_reposync = stubbed_reposync
+        self.mgr_sync._schedule_channel_reposync = stubbed_reposync  #  pylint: disable=protected-access
         with ConsoleRecorder() as recorder:
             self.mgr_sync.run(options)
 
@@ -106,23 +106,23 @@ Refreshing Subscriptions                       [DONE]"""
         self.assertEqual(expected_output.split("\n"), recorder.stdout)
 
         expected_calls = [
-            call._execute_xmlrpc_method(
+            call._execute_xmlrpc_method(  #  pylint: disable=protected-access
                 self.mgr_sync.conn.sync.content,
                 "synchronizeChannelFamilies",
                 self.fake_auth_token,
             ),
-            call._execute_xmlrpc_method(
+            call._execute_xmlrpc_method(  #  pylint: disable=protected-access
                 self.mgr_sync.conn.sync.content,
                 "synchronizeProducts",
                 self.fake_auth_token,
             ),
-            call._execute_xmlrpc_method(
+            call._execute_xmlrpc_method(  #  pylint: disable=protected-access
                 self.mgr_sync.conn.sync.content,
                 "synchronizeRepositories",
                 self.fake_auth_token,
                 "",
             ),
-            call._execute_xmlrpc_method(
+            call._execute_xmlrpc_method(  #  pylint: disable=protected-access
                 self.mgr_sync.conn.sync.content,
                 "synchronizeSubscriptions",
                 self.fake_auth_token,
@@ -138,7 +138,7 @@ Refreshing Subscriptions                       [DONE]"""
         stubbed_xmlrpm_call = MagicMock(
             return_value=read_data_from_fixture("list_channels_simplified.data")
         )
-        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
+        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call  #  pylint: disable=protected-access
         with ConsoleRecorder() as recorder:
             self.mgr_sync.run(options)
 
@@ -155,31 +155,31 @@ Scheduling reposync for following channels:
         self.assertEqual(expected_output.split("\n"), recorder.stdout)
 
         expected_calls = [
-            call._execute_xmlrpc_method(
+            call._execute_xmlrpc_method(  #  pylint: disable=protected-access
                 self.mgr_sync.conn.sync.content,
                 "synchronizeChannelFamilies",
                 self.fake_auth_token,
             ),
-            call._execute_xmlrpc_method(
+            call._execute_xmlrpc_method(  #  pylint: disable=protected-access
                 self.mgr_sync.conn.sync.content,
                 "synchronizeProducts",
                 self.fake_auth_token,
             ),
-            call._execute_xmlrpc_method(
+            call._execute_xmlrpc_method(  #  pylint: disable=protected-access
                 self.mgr_sync.conn.sync.content,
                 "synchronizeRepositories",
                 self.fake_auth_token,
                 "",
             ),
-            call._execute_xmlrpc_method(
+            call._execute_xmlrpc_method(  #  pylint: disable=protected-access
                 self.mgr_sync.conn.sync.content,
                 "synchronizeSubscriptions",
                 self.fake_auth_token,
             ),
-            call._execute_xmlrpc_method(
+            call._execute_xmlrpc_method(  #  pylint: disable=protected-access
                 self.mgr_sync.conn.sync.content, "listChannels", self.fake_auth_token
             ),
-            call._execute_xmlrpc_method(
+            call._execute_xmlrpc_method(  #  pylint: disable=protected-access
                 self.mgr_sync.conn.channel.software,
                 "syncRepo",
                 self.fake_auth_token,
@@ -195,11 +195,11 @@ Scheduling reposync for following channels:
 
         options = get_options("refresh --schedule".split())
         mock_execute_xmlrpc = MagicMock()
-        self.mgr_sync._execute_xmlrpc_method = mock_execute_xmlrpc
+        self.mgr_sync._execute_xmlrpc_method = mock_execute_xmlrpc  #  pylint: disable=protected-access
         mock_reposync = MagicMock()
-        self.mgr_sync._schedule_channel_reposync = mock_reposync
+        self.mgr_sync._schedule_channel_reposync = mock_reposync  #  pylint: disable=protected-access
         mock_schedule_taskomatic_refresh = MagicMock()
-        self.mgr_sync._schedule_taskomatic_refresh = mock_schedule_taskomatic_refresh
+        self.mgr_sync._schedule_taskomatic_refresh = mock_schedule_taskomatic_refresh  #  pylint: disable=protected-access
 
         with ConsoleRecorder() as recorder:
             self.assertEqual(0, self.mgr_sync.run(options))
@@ -217,9 +217,9 @@ Scheduling reposync for following channels:
 
         options = get_options("refresh --refresh-channels".split())
         stubbed_xmlrpm_call = MagicMock(side_effect=Exception("Boom baby!"))
-        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
+        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call  #  pylint: disable=protected-access
         mock_reposync = MagicMock()
-        self.mgr_sync._schedule_channel_reposync = mock_reposync
+        self.mgr_sync._schedule_channel_reposync = mock_reposync  #  pylint: disable=protected-access
 
         with ConsoleRecorder() as recorder:
             self.assertEqual(1, self.mgr_sync.run(options))

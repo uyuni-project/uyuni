@@ -18,7 +18,7 @@ __salt__ = {
 log = logging.getLogger(__name__)
 
 
-def __virtual__():
+def __virtual__():  #  pylint: disable=invalid-name
     """
     Only works if /usr/bin/read_values is accessible
     """

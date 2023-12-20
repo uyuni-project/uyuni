@@ -1,11 +1,11 @@
-import sys
+import sys  #  pylint: disable=missing-module-docstring,unused-import
 
 from unittest.mock import MagicMock, patch
 from . import mockery
 
 mockery.setup_environment()
 
-from ..modules import mgrnet
+from ..modules import mgrnet  #  pylint: disable=wrong-import-position
 
 
 mgrnet.__salt__ = {}
@@ -50,7 +50,7 @@ def test_mgrnet_dns_fqdns():
         "fd12:abcd:1234:1::1": "ipv6hostabcd.example.org",
     }
 
-    def _cmd_run_host_nslookup(cmd, ignore_retcode=False):
+    def _cmd_run_host_nslookup(cmd, ignore_retcode=False):  #  pylint: disable=unused-argument
         """
         This function is emulating the output of 'host' or 'nslookup'
         """
@@ -60,20 +60,20 @@ def test_mgrnet_dns_fqdns():
         rc = 0
         if ":" in ip:
             # the conversion is not very accurate here, but it's enough for testing
-            ptr = "{}.ip6.arpa".format(".".join(reversed([*ip.replace(":", "")])))
+            ptr = "{}.ip6.arpa".format(".".join(reversed([*ip.replace(":", "")])))  #  pylint: disable=consider-using-f-string
         else:
-            ptr = "{}.in-addr.arpa".format(".".join(reversed(ip.split())))
+            ptr = "{}.in-addr.arpa".format(".".join(reversed(ip.split())))  #  pylint: disable=consider-using-f-string
         if cmd == "host":
             if ip in names:
-                out = "{} domain name pointer {}.\n".format(ptr, names[ip])
+                out = "{} domain name pointer {}.\n".format(ptr, names[ip])  #  pylint: disable=consider-using-f-string
             else:
-                out = "Host {}. not found: 3(NXDOMAIN)\n".format(ptr)
+                out = "Host {}. not found: 3(NXDOMAIN)\n".format(ptr)  #  pylint: disable=consider-using-f-string
                 rc = 1
         else:
             if ip in names:
-                out = "{}\tname = {}.\n".format(ptr, names[ip])
+                out = "{}\tname = {}.\n".format(ptr, names[ip])  #  pylint: disable=consider-using-f-string
             else:
-                out = "** server can't find {}: NXDOMAIN\n".format(ptr)
+                out = "** server can't find {}: NXDOMAIN\n".format(ptr)  #  pylint: disable=consider-using-f-string
                 rc = 1
         return {"retcode": rc, "stdout": out}
 

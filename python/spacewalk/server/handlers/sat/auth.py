@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -53,7 +53,7 @@ class Authentication(rhnHandler):
             )
         return self.remote_hostname
 
-    def check(self, system_id_ignored):
+    def check(self, system_id_ignored):  #  pylint: disable=unused-argument
         """xmlrpc authentication."""
         log_debug(3)
 
@@ -71,7 +71,7 @@ class Authentication(rhnHandler):
         return 1
 
     # Log in routine.
-    def login(self, system_id, extra_data={}):
+    def login(self, system_id, extra_data={}):  #  pylint: disable=dangerous-default-value,unused-argument,unused-argument
         """Return a dictionary of session token/channel information.
         Also sets this information in the headers.
         """
@@ -82,13 +82,13 @@ class Authentication(rhnHandler):
         # log the entry
         log_debug(1, self.remote_hostname)
 
-        rhnServerTime = str(time.time())
-        expireOffset = str(CFG.SATELLITE_AUTH_TIMEOUT)
+        rhnServerTime = str(time.time())  #  pylint: disable=invalid-name
+        expireOffset = str(CFG.SATELLITE_AUTH_TIMEOUT)  #  pylint: disable=invalid-name
         signature = rhnLib.computeSignature(
             CFG.SECRET_KEY, self.remote_hostname, rhnServerTime, expireOffset
         )
 
-        loginDict = {
+        loginDict = {  #  pylint: disable=invalid-name
             "X-RHN-Server-Hostname": self.remote_hostname,
             "X-RHN-Auth": signature,
             "X-RHN-Auth-Server-Time": rhnServerTime,

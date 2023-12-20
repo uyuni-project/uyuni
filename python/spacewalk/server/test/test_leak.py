@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -29,10 +29,10 @@ i = 0
 while i < 10000:
     h.execute()
     if i % 100 == 0:
-        f = open("/proc/self/status")
+        f = open("/proc/self/status")  #  pylint: disable=unspecified-encoding
         l = f.readlines()
         vmsize = l[10][10:-1]
         vmrss = l[12][10:-1]
         f.close()
-        write("%d %.3f vsz: %s rss: %s \n" % (i, time.time() - start, vmsize, vmrss))
+        write("%d %.3f vsz: %s rss: %s \n" % (i, time.time() - start, vmsize, vmrss))  #  pylint: disable=consider-using-f-string
     i = i + 1

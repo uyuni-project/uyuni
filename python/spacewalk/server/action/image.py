@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*- pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2011 SUSE LLC
 #
@@ -23,7 +23,7 @@ __rhnexport__ = ["deploy"]
 #
 
 
-def deploy(serverId, actionId, dry_run=0):
+def deploy(serverId, actionId, dry_run=0):  #  pylint: disable=invalid-name,invalid-name,unused-argument
     log_debug(3)
     statement = """
         select aid.mem_kb, aid.vcpus, aid.bridge_device,aid.download_url,
@@ -36,7 +36,7 @@ def deploy(serverId, actionId, dry_run=0):
     if not row:
         # No image for this action
         raise InvalidAction(
-            "image.deploy: No image found for action id "
+            "image.deploy: No image found for action id "  #  pylint: disable=consider-using-f-string
             "%s and server %s" % (actionId, serverId)
         )
 

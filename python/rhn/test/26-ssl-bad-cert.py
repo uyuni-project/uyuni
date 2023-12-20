@@ -16,7 +16,7 @@ def main():
 
     try:
         run_test(server_name, server_port, ca_cert)
-    except SSL.SSL.Error, e:
+    except SSL.SSL.Error, e:  #  pylint: disable=syntax-error
         if e[0][0][2] == 'certificate verify failed':
             print "test PASSES"
             return 0

@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2010--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -33,7 +33,7 @@ from uyuni.common.rhn_pkg import A_Package, InvalidPackageError
 DEB_CHECKSUM_TYPE = "sha256"  # FIXME: this should be a configuration option
 
 
-class deb_Header:
+class deb_Header:  #  pylint: disable=missing-class-docstring,invalid-name
     # this is a workaround for issue in python-debian
     # https://www.mail-archive.com/pkg-python-debian-maint@alioth-lists.debian.net/msg00598.html
     # after the issue is fixed, remove this function
@@ -46,14 +46,14 @@ class deb_Header:
         try:
             fobj = control.tgz().extractfile(fname)
         except KeyError:
-            raise debfile.DebError("control.tar.* not found inside package")
+            raise debfile.DebError("control.tar.* not found inside package")  #  pylint: disable=raise-missing-from
 
         if fobj is None:
             raise debfile.DebError("control.tar.* not found inside package")
 
         return fobj
 
-    "Wrapper class for an deb header - we need to store a flag is_source"
+    "Wrapper class for an deb header - we need to store a flag is_source"  #  pylint: disable=pointless-string-statement
 
     def __init__(self, stream):
         self.packaging = "deb"
@@ -108,7 +108,7 @@ class deb_Header:
                 self.hdr["epoch"], version = version.split(":")
                 self.hdr["version"] = version
             if version.find("-") != -1:
-                version_tmpArr = version.split("-")
+                version_tmpArr = version.split("-")  #  pylint: disable=invalid-name
                 self.hdr["version"] = "-".join(version_tmpArr[:-1])
                 self.hdr["release"] = version_tmpArr[-1]
             else:
@@ -142,7 +142,7 @@ class deb_Header:
         return len(self.hdr)
 
 
-class DEB_Package(A_Package):
+class DEB_Package(A_Package):  #  pylint: disable=missing-class-docstring,invalid-name
     def __init__(self, input_stream=None):
         A_Package.__init__(self, input_stream)
         self.header_data = tempfile.NamedTemporaryFile()

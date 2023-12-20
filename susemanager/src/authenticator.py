@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*- pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2014 SUSE
 #
@@ -100,7 +100,7 @@ class Authenticator(object):
                         #   new credentials but they didn't work.
                         #   The credential prompt has been shown
                         #   MAX_NUM_OF_CREDENTIAL_FAILURES_ALLOWED times.
-                        raise MaximumNumberOfAuthenticationFailures
+                        raise MaximumNumberOfAuthenticationFailures  #  pylint: disable=raise-missing-from
                     return self.token()
                 else:
                     raise ex

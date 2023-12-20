@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python  #  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #
@@ -22,7 +22,7 @@ import unittest
 from spacewalk.common import rhnTranslate
 
 
-class Tests(unittest.TestCase):
+class Tests(unittest.TestCase):  #  pylint: disable=missing-class-docstring
     # pylint: disable=R0904
 
     @staticmethod
@@ -59,9 +59,9 @@ class Tests(unittest.TestCase):
         if hasattr(sys, "version_info"):
             # On python 1.5.2 we don't really get an idea what the language
             # is, so it's ok to check for the first component
-            self.assertFalse(langs[0] == lang, "Language is %s" % langs[0])
+            self.assertFalse(langs[0] == lang, "Language is %s" % langs[0])  #  pylint: disable=consider-using-f-string
         else:
-            self.assertTrue(langs[0] == lang, "Language is %s" % langs[0])
+            self.assertTrue(langs[0] == lang, "Language is %s" % langs[0])  #  pylint: disable=consider-using-f-string
 
     def test_en_1(self):
         "Tests plain English messages"

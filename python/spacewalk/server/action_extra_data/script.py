@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -55,7 +55,7 @@ values (
 )
 
 
-def run(server_id, action_id, data={}):
+def run(server_id, action_id, data={}):  #  pylint: disable=dangerous-default-value
     log_debug(3)
 
     # clear any previously received output

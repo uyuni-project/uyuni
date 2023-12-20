@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*- pylint: disable=missing-module-docstring
 #
 # Copyright (C) 2014 Novell, Inc.
 #   This library is free software; you can redistribute it and/or modify
@@ -23,17 +23,17 @@ import os.path
 import sys
 
 try:
-    from unittest.mock import MagicMock, call, patch
+    from unittest.mock import MagicMock, call, patch  #  pylint: disable=unused-import,unused-import
 except ImportError:
     from mock import MagicMock, call, patch
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-from helper import ConsoleRecorder, read_data_from_fixture
+from helper import ConsoleRecorder, read_data_from_fixture  #  pylint: disable=wrong-import-position,unused-import
 
-from spacewalk.susemanager.authenticator import MaximumNumberOfAuthenticationFailures
-from spacewalk.susemanager.mgr_sync.cli import get_options
-from spacewalk.susemanager.mgr_sync.mgr_sync import MgrSync
-from spacewalk.susemanager.mgr_sync import logger
+from spacewalk.susemanager.authenticator import MaximumNumberOfAuthenticationFailures  #  pylint: disable=wrong-import-position
+from spacewalk.susemanager.mgr_sync.cli import get_options  #  pylint: disable=wrong-import-position
+from spacewalk.susemanager.mgr_sync.mgr_sync import MgrSync  #  pylint: disable=wrong-import-position
+from spacewalk.susemanager.mgr_sync import logger  #  pylint: disable=wrong-import-position
 
 
 class MgrSyncTest(unittest.TestCase):
@@ -49,7 +49,7 @@ class MgrSyncTest(unittest.TestCase):
         self.mgr_sync.auth.connection = mock_connection
 
         self.mgr_sync.config.write = MagicMock()
-        self.mgr_sync.__init__logger = MagicMock(
+        self.mgr_sync.__init__logger = MagicMock(  #  pylint: disable=protected-access
             return_value=logger.Logger(3, "tmp.log")
         )
         self.mgr_sync.conn.sync.master.hasMaster = MagicMock(return_value=False)
@@ -67,8 +67,8 @@ class MgrSyncTest(unittest.TestCase):
         def raise_maximum_number_of_authentication_failures(options):
             raise MaximumNumberOfAuthenticationFailures
 
-        self.mgr_sync._process_user_request = MagicMock()
-        self.mgr_sync._process_user_request.side_effect = (
+        self.mgr_sync._process_user_request = MagicMock()  #  pylint: disable=protected-access
+        self.mgr_sync._process_user_request.side_effect = (  #  pylint: disable=protected-access
             raise_maximum_number_of_authentication_failures
         )
 
@@ -81,7 +81,7 @@ class MgrSyncTest(unittest.TestCase):
         self.mgr_sync.config.token = "old token"
         self.mgr_sync.auth.user = "admin"
         self.mgr_sync.auth.password = "test"
-        self.mgr_sync._execute_xmlrpc_method = MagicMock(return_value=[])
+        self.mgr_sync._execute_xmlrpc_method = MagicMock(return_value=[])  #  pylint: disable=protected-access
 
         options = get_options("list channels".split())
         with ConsoleRecorder():

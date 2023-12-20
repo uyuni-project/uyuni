@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -21,5 +21,5 @@ __rhnexport__ = ["configure"]
 # the "exposed" functions
 
 
-def configure(serverId, actionId, data={}):
+def configure(serverId, actionId, data={}):  #  pylint: disable=invalid-name,invalid-name,dangerous-default-value,unused-argument,unused-argument,unused-argument
     log_debug(3)

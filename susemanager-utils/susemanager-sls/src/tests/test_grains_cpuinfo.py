@@ -9,7 +9,7 @@ from . import mockery
 
 mockery.setup_environment()
 
-from ..grains import cpuinfo
+from ..grains import cpuinfo  #  pylint: disable=wrong-import-position
 
 
 def test_total_num_cpus():
@@ -41,7 +41,7 @@ def test_total_num_cpus():
     with patch("os.path.exists", MagicMock(return_value=True)):
         with patch("os.listdir", MagicMock(return_value=os_listdir)):
             cpus = cpuinfo.total_num_cpus()
-            assert type(cpus) == dict
+            assert type(cpus) == dict  #  pylint: disable=unidiomatic-typecheck
             assert "total_num_cpus" in cpus
             assert cpus["total_num_cpus"] == 4
 
@@ -59,8 +59,8 @@ def test_cpusockets_dmidecode_count_sockets():
         cpuinfo.__salt__,
         {"cmd.run_all": MagicMock(return_value={"retcode": 0, "stdout": sample})},
     ):
-        out = cpuinfo._dmidecode_count_sockets([])
-        assert type(out) == dict
+        out = cpuinfo._dmidecode_count_sockets([])  #  pylint: disable=protected-access
+        assert type(out) == dict  #  pylint: disable=unidiomatic-typecheck
         assert "cpusockets" in out
         assert out["cpusockets"] == 1
 
@@ -72,7 +72,7 @@ def test_cpusockets_cpuinfo_count_sockets():
     :return:
     """
     cpuinfo.log = MagicMock()
-    # cpuinfo parser is not applicable for non-Intel architectures, so should return nothing.
+    # cpuinfo parser is not applicable for non-Intel architectures, so should return nothing.  #  pylint: disable=line-too-long
     for sample_name in ["cpuinfo.s390.sample", "cpuinfo.ppc64le.sample"]:
         with patch("os.access", MagicMock(return_value=True)):
             with patch.object(
@@ -81,7 +81,7 @@ def test_cpusockets_cpuinfo_count_sockets():
                 mock_open(read_data=mockery.get_test_data(sample_name)),
                 create=True,
             ):
-                assert cpuinfo._cpuinfo_count_sockets([]) is None
+                assert cpuinfo._cpuinfo_count_sockets([]) is None  #  pylint: disable=protected-access
 
     with patch("os.access", MagicMock(return_value=True)):
         with patch.object(
@@ -90,8 +90,8 @@ def test_cpusockets_cpuinfo_count_sockets():
             mock_open(read_data=mockery.get_test_data("cpuinfo.sample")),
             create=True,
         ):
-            out = cpuinfo._cpuinfo_count_sockets([])
-            assert type(out) == dict
+            out = cpuinfo._cpuinfo_count_sockets([])  #  pylint: disable=protected-access
+            assert type(out) == dict  #  pylint: disable=unidiomatic-typecheck
             assert "cpusockets" in out
             assert out["cpusockets"] == 1
 
@@ -103,7 +103,7 @@ def test_cpusockets_lscpu_count_sockets(arch):
 
     :return:
     """
-    fn_smpl = "lscpu.{}.sample".format(arch)
+    fn_smpl = "lscpu.{}.sample".format(arch)  #  pylint: disable=consider-using-f-string
     cpuinfo.log = MagicMock()
     with patch.dict(
         cpuinfo.__salt__,
@@ -113,8 +113,8 @@ def test_cpusockets_lscpu_count_sockets(arch):
             )
         },
     ):
-        out = cpuinfo._lscpu_count_sockets([])
-        assert type(out) == dict
+        out = cpuinfo._lscpu_count_sockets([])  #  pylint: disable=protected-access
+        assert type(out) == dict  #  pylint: disable=unidiomatic-typecheck
         assert "cpusockets" in out
         assert out["cpusockets"] == 1
 
@@ -127,12 +127,12 @@ def test_cpusockets_cpu_data(arch):
     :return:
     """
     cpuinfo.log = MagicMock()
-    sample_data = mockery.get_test_data("lscpu-json.{}.sample".format(arch))
+    sample_data = mockery.get_test_data("lscpu-json.{}.sample".format(arch))  #  pylint: disable=consider-using-f-string
     with patch.dict(
         cpuinfo.__salt__,
         {"cmd.run_all": MagicMock(return_value={"retcode": 0, "stdout": sample_data})},
     ):
         out = cpuinfo.cpu_data()
-        assert type(out) == dict
-        expected = json.loads(mockery.get_test_data("lscpu-json.{}.out".format(arch)))
+        assert type(out) == dict  #  pylint: disable=unidiomatic-typecheck
+        expected = json.loads(mockery.get_test_data("lscpu-json.{}.out".format(arch)))  #  pylint: disable=consider-using-f-string
         assert out == expected

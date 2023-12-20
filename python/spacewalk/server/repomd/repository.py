@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2018 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -45,13 +45,13 @@ from spacewalk.server import rhnChannel
 CHUNK_SIZE = 1048576
 
 comps_mapping = {
-    "rhel-x86_64-client-5": "rhn/kickstart/ks-rhel-x86_64-client-5/Client/repodata/comps-rhel5-client-core.xml",
-    "rhel-x86_64-client-vt-5": "rhn/kickstart/ks-rhel-x86_64-client-5/VT/repodata/comps-rhel5-vt.xml",
-    "rhel-x86_64-client-workstation-5": "rhn/kickstart/ks-rhel-x86_64-client-5/Workstation/repodata/comps-rhel5-client-workstation.xml",
-    "rhel-x86_64-server-5": "rhn/kickstart/ks-rhel-x86_64-server-5/Server/repodata/comps-rhel5-server-core.xml",
-    "rhel-x86_64-server-vt-5": "rhn/kickstart/ks-rhel-x86_64-server-5/VT/repodata/comps-rhel5-vt.xml",
-    "rhel-x86_64-server-cluster-5": "rhn/kickstart/ks-rhel-x86_64-server-5/Cluster/repodata/comps-rhel5-cluster.xml",
-    "rhel-x86_64-server-cluster-storage-5": "rhn/kickstart/ks-rhel-x86_64-server-5/ClusterStorage/repodata/comps-rhel5-cluster-st.xml",
+    "rhel-x86_64-client-5": "rhn/kickstart/ks-rhel-x86_64-client-5/Client/repodata/comps-rhel5-client-core.xml",  #  pylint: disable=line-too-long
+    "rhel-x86_64-client-vt-5": "rhn/kickstart/ks-rhel-x86_64-client-5/VT/repodata/comps-rhel5-vt.xml",  #  pylint: disable=line-too-long
+    "rhel-x86_64-client-workstation-5": "rhn/kickstart/ks-rhel-x86_64-client-5/Workstation/repodata/comps-rhel5-client-workstation.xml",  #  pylint: disable=line-too-long
+    "rhel-x86_64-server-5": "rhn/kickstart/ks-rhel-x86_64-server-5/Server/repodata/comps-rhel5-server-core.xml",  #  pylint: disable=line-too-long
+    "rhel-x86_64-server-vt-5": "rhn/kickstart/ks-rhel-x86_64-server-5/VT/repodata/comps-rhel5-vt.xml",  #  pylint: disable=line-too-long
+    "rhel-x86_64-server-cluster-5": "rhn/kickstart/ks-rhel-x86_64-server-5/Cluster/repodata/comps-rhel5-cluster.xml",  #  pylint: disable=line-too-long
+    "rhel-x86_64-server-cluster-storage-5": "rhn/kickstart/ks-rhel-x86_64-server-5/ClusterStorage/repodata/comps-rhel5-cluster-st.xml",  #  pylint: disable=line-too-long
 }
 for k in list(comps_mapping.keys()):
     for arch in ("i386", "ia64", "s390x", "ppc"):
@@ -132,7 +132,7 @@ class Repository(object):
         return ret
 
     def get_cache_entry_name(self, cache_prefix):
-        return "%s-%s" % (cache_prefix, self.channel_id)
+        return "%s-%s" % (cache_prefix, self.channel_id)  #  pylint: disable=consider-using-f-string
 
     def get_cache_file(self, cache_prefix):
         cache_entry = self.get_cache_entry_name(cache_prefix)
@@ -180,13 +180,13 @@ class Repository(object):
             if self.channel.cloned_from_id is not None:
                 log_debug(
                     1,
-                    "No comps/modules and no comps_mapping for [%s] cloned from [%s] trying to get comps from the original one."
+                    "No comps/modules and no comps_mapping for [%s] cloned from [%s] trying to get comps from the original one."  #  pylint: disable=line-too-long,consider-using-f-string
                     % (self.channel.id, self.channel.cloned_from_id),
                 )
                 cloned_from_channel = rhnChannel.Channel().load_by_id(
                     self.channel.cloned_from_id
                 )
-                cloned_from_channel_label = cloned_from_channel._row["label"]
+                cloned_from_channel_label = cloned_from_channel._row["label"]  #  pylint: disable=protected-access
                 func = getattr(
                     Repository(rhnChannel.channel_info(cloned_from_channel_label)),
                     func_name,
@@ -201,7 +201,7 @@ class Repository(object):
         return self.get_repomd_file(self.channel.modules, "get_modules_file")
 
     def generate_files(self, views):
-        for view in views:
+        for view in views:  #  pylint: disable=redefined-outer-name
             view.write_start()
 
         for package in self.channel.packages:
@@ -304,7 +304,7 @@ class CachedRepository:
         fallback_method is the method to call if the cached data doesn't exist
         or isn't new enough.
         """
-        cache_entry = "%s-%s" % (cache_prefix, self.channel_id)
+        cache_entry = "%s-%s" % (cache_prefix, self.channel_id)  #  pylint: disable=consider-using-f-string
         ret = self.cache.get_file(cache_entry, self.last_modified)
         if ret:
             log_debug(4, "Scored cache hit", self.channel_id)
@@ -314,7 +314,7 @@ class CachedRepository:
 
             shutil.copyfileobj(ret, cache_file)
 
-            ret.close
+            ret.close  #  pylint: disable=pointless-statement
             cache_file.close()
             ret = self.cache.get_file(cache_entry, self.last_modified)
         return ret
@@ -341,7 +341,7 @@ class MetadataRepository:
     def get_repomd_file(self):
         """Return uncompressed repomd.xml file"""
 
-        cache_entry = "%s-%s" % (self.repomd_prefix, self.channel_id)
+        cache_entry = "%s-%s" % (self.repomd_prefix, self.channel_id)  #  pylint: disable=consider-using-f-string
         ret = self.cache.get_file(cache_entry, self.last_modified)
 
         if not ret:
@@ -401,7 +401,7 @@ class MetadataRepository:
             if comps_file:
                 comps = self.__compute_open_checksum(timestamp, comps_file)
             if modules_file:
-                modules = self.__compute_checksums(timestamp, modules_file)
+                modules = self.__compute_checksums(timestamp, modules_file)  #  pylint: disable=no-value-for-parameter
 
             ret = self.cache.set_file(cache_entry, self.last_modified)
             repomd_view = view.RepoView(

@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2013 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -27,7 +27,7 @@ class ParseException(Exception):
 
 
 # Generic class to represent items (like channel families)
-class Item:
+class Item:  #  pylint: disable=missing-class-docstring
     # pylint: disable=R0903
 
     # Name to be displayed by repr()
@@ -46,11 +46,11 @@ class Item:
             setattr(self, storage_name, attr)
 
     def __repr__(self):
-        return "<%s; %s>" % (
+        return "<%s; %s>" % (  #  pylint: disable=consider-using-f-string
             self.pretty_name,
             ", ".join(
                 [
-                    '%s="%s"' % (x, getattr(self, x))
+                    '%s="%s"' % (x, getattr(self, x))  #  pylint: disable=consider-using-f-string
                     for x in list(self.attributes.values())
                 ]
             ),
@@ -65,7 +65,7 @@ class ChannelFamily(Item):
     attributes = {"family": "name", "quantity": "quantity", "flex": "flex"}
 
 
-class Slots:
+class Slots:  #  pylint: disable=missing-class-docstring
     _db_label = None
     _slot_name = None
 
@@ -121,7 +121,7 @@ class SatelliteCert:
     """Satellite certificate class
     Usage:
     c = SatelliteCert()
-    c.load('<rhn-cert><rhn-cert-field name="owner">John Doe</rhn-cert-field></rhn-cert>')
+    c.load('<rhn-cert><rhn-cert-field name="owner">John Doe</rhn-cert-field></rhn-cert>')  #  pylint: disable=line-too-long
     print c.owner
     """
 
@@ -142,8 +142,8 @@ class SatelliteCert:
     fields_list = {"channel-families": ChannelFamily}
 
     # datesFormat_cert = '%a %b %d %H:%M:%S %Y' ## OLD CERT FORMAT
-    datesFormat_cert = "%Y-%m-%d %H:%M:%S"
-    datesFormat_db = "%Y-%m-%d %H:%M:%S"
+    datesFormat_cert = "%Y-%m-%d %H:%M:%S"  #  pylint: disable=invalid-name
+    datesFormat_db = "%Y-%m-%d %H:%M:%S"  #  pylint: disable=invalid-name
 
     def __init__(self):
         for f in self.fields_scalar:
@@ -158,7 +158,7 @@ class SatelliteCert:
         try:
             self._load(s)
         except SAXParseException:
-            raise ParseException(None, sys.exc_info()[2])
+            raise ParseException(None, sys.exc_info()[2])  #  pylint: disable=raise-missing-from
         # Now represent the slots in a more meaningful way
         self._slots.clear()
         for slot_name, (slot_attr, factory) in list(self._slot_maps.items()):
@@ -225,7 +225,7 @@ class SatelliteCert:
     def lookup_slot_by_db_label(self, db_label):
         # Given a string like 'sw_mgr_entitled', returns a string 'management'
         for label, (_, slot_class) in list(self._slot_maps.items()):
-            if slot_class._db_label == db_label:
+            if slot_class._db_label == db_label:  #  pylint: disable=protected-access
                 return label
         return None
 

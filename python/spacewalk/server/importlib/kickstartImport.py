@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring,invalid-name
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -19,7 +19,7 @@
 from .importLib import KickstartableTree, Import
 
 
-class KickstartableTreeImport(Import):
+class KickstartableTreeImport(Import):  #  pylint: disable=missing-class-docstring
     def __init__(self, batch, backend):
         Import.__init__(self, batch, backend)
 
@@ -48,7 +48,7 @@ class KickstartableTreeImport(Import):
             ks_install_name = ent["install_type_name"]
             self.ks_install_types[ks_install_label] = ks_install_name
             for f in ent["files"]:
-                checksumTuple = (f["checksum_type"], f["checksum"])
+                checksumTuple = (f["checksum_type"], f["checksum"])  #  pylint: disable=invalid-name
                 if checksumTuple not in self.checksums:
                     self.checksums[checksumTuple] = None
 
@@ -64,7 +64,7 @@ class KickstartableTreeImport(Import):
             channel_label = ent["channel"]
             channel = self.channels[channel_label]
             if channel is None:
-                raise Exception("Channel %s not imported" % channel_label)
+                raise Exception("Channel %s not imported" % channel_label)  #  pylint: disable=broad-exception-raised,consider-using-f-string
             ent["channel_id"] = channel["id"]
             # Now fix the other ids
             kstree_type_label = ent["kstree_type_label"]

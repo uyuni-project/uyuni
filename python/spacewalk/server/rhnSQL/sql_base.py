@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -28,7 +28,7 @@ from . import sql_types
 from uyuni.common import usix
 
 
-def ociDict(names=None, row=None):
+def ociDict(names=None, row=None):  #  pylint: disable=invalid-name
     """Create a dictionary from a row description and its values."""
     data = {}
     if not names:
@@ -41,10 +41,10 @@ def ociDict(names=None, row=None):
     return data
 
 
-def __oci_name_value(names, value):
+def __oci_name_value(names, value):  #  pylint: disable=invalid-name
     """Extract the name, value pair needed by ociDict function."""
     # the format of the names is
-    name, dbitype, dsize, dbsize, prec, scale, nullok = names
+    name, dbitype, dsize, dbsize, prec, scale, nullok = names  #  pylint: disable=unused-variable,unused-variable,unused-variable,unused-variable,unused-variable,unused-variable
     name = name.lower()
     return name, value
 
@@ -114,7 +114,7 @@ class Cursor:
     def _prepare(self, force=None):
         if self.sql:
             # Check the cache
-            _h = self._cursor_cache[self._dbh_id]
+            _h = self._cursor_cache[self._dbh_id]  #  pylint: disable=invalid-name
             if not force and self.sql in _h:
                 return _h[self.sql]
         cursor = self._prepare_sql()
@@ -130,7 +130,7 @@ class Cursor:
         does not support an explicit prepare before execution.
         """
         if sql is None:
-            raise Exception("XXX Unable to prepare None")
+            raise Exception("XXX Unable to prepare None")  #  pylint: disable=broad-exception-raised
         self.sql = sql
         self._real_cursor = self._prepare(force=force)
 
@@ -156,7 +156,7 @@ class Cursor:
 
     def execute_values(self, sql, argslist, template=None, page_size=1000, fetch=True):
         """
-        Execute a query with a potentially-long VALUEs list. This method will split the query up in page_size
+        Execute a query with a potentially-long VALUEs list. This method will split the query up in page_size  #  pylint: disable=line-too-long
         chunks. Use a %s placeholder where the VALUE list goes.
         """
         return self._execute_wrapper(
@@ -222,7 +222,7 @@ class Cursor:
             d = ociDict(self.description, x)
             if len(d) > 0:
                 ret.append(d)
-        if ret == []:
+        if ret == []:  #  pylint: disable=use-implicit-booleaness-not-comparison
             return None
         return ret
 
@@ -262,7 +262,7 @@ class Database:
     """
 
     _procedure_class = Procedure
-    TimestampFromTicks = None
+    TimestampFromTicks = None  #  pylint: disable=invalid-name
 
     def __init__(self):
         pass
@@ -292,7 +292,7 @@ class Database:
         in. see cx_Oracle's Cursor.callproc for more details"""
         return self._procedure_class(name, None)
 
-        return self._procedure_class(name, None)
+        return self._procedure_class(name, None)  #  pylint: disable=unreachable
 
     def function(self, name, ret_type):
         """
@@ -331,7 +331,7 @@ class Database:
         "Fix environment variables (to be redefined in subclasses)"
         pass
 
-    def _read_lob(self, lob):
+    def _read_lob(self, lob):  #  pylint: disable=unused-argument
         "Reads a lob's contents"
         return None
 
@@ -343,11 +343,11 @@ class Database:
         """
         raise NotImplementedError()
 
-    def Date(self, year, month, day):
+    def Date(self, year, month, day):  #  pylint: disable=invalid-name
         "Returns a Date object"
         raise NotImplementedError()
 
-    def DateFromTicks(self, ticks):
+    def DateFromTicks(self, ticks):  #  pylint: disable=invalid-name
         "Returns a Date object"
         raise NotImplementedError()
 
@@ -355,12 +355,12 @@ class Database:
 # Class that we use just as a markup for queries/statements; if the statement
 # is available upon import, we can automatically check for the statements'
 # correctness
-class Statement:
+class Statement:  #  pylint: disable=missing-class-docstring
     def __init__(self, statement):
         self.statement = statement
 
     def __repr__(self):
-        return "<%s instance at %s; statement=%s" % (
+        return "<%s instance at %s; statement=%s" % (  #  pylint: disable=consider-using-f-string
             self.__class__,
             id(self),
             self.statement,

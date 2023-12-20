@@ -27,11 +27,11 @@ PKGSET_COOKIES = (
 )
 
 
-def __virtual__():
+def __virtual__():  #  pylint: disable=invalid-name
     return __virtualname__
 
 
-def validate(config):
+def validate(config):  #  pylint: disable=unused-argument
     """
     The absence of this function could cause noisy logging,
     when logging level set to DEBUG or TRACE.
@@ -40,7 +40,7 @@ def validate(config):
     return True, "There is nothing to validate"
 
 
-def beacon(config):
+def beacon(config):  #  pylint: disable=unused-argument
     """
     Watch the cookie file from package manager plugin.
     If its content changes, fire an event to the Master.
@@ -59,24 +59,24 @@ def beacon(config):
     for cookie_path in PKGSET_COOKIES:
         if not os.path.exists(cookie_path):
             continue
-        with open(cookie_path) as ck_file:
+        with open(cookie_path) as ck_file:  #  pylint: disable=unspecified-encoding
             ck_data = ck_file.read().strip()
-            if __virtualname__ not in __context__:
-                # After a minion restart, when this is running for first time, there is nothing in context yet
-                # So, if there is any data in the cache, we put it in the context, if not we put the new data.
+            if __virtualname__ not in __context__:  #  pylint: disable=undefined-variable
+                # After a minion restart, when this is running for first time, there is nothing in context yet  #  pylint: disable=line-too-long
+                # So, if there is any data in the cache, we put it in the context, if not we put the new data.  #  pylint: disable=line-too-long
                 # and update the data in the cache.
                 cache_data = CACHE.fetch("beacon/pkgset", "cookie").get("data", None)
                 if cache_data:
-                    __context__[__virtualname__] = cache_data
+                    __context__[__virtualname__] = cache_data  #  pylint: disable=undefined-variable
                 else:
-                    __context__[__virtualname__] = ck_data
+                    __context__[__virtualname__] = ck_data  #  pylint: disable=undefined-variable
                     CACHE.store("beacon/pkgset", "cookie", {"data": ck_data})
-            if __context__[__virtualname__] != ck_data:
+            if __context__[__virtualname__] != ck_data:  #  pylint: disable=undefined-variable
                 # Now it's time to fire beacon event only if the new data is not yet
                 # inside the context (meaning not proceesed), and then stop iterating
                 ret.append({"tag": "changed"})
                 CACHE.store("beacon/pkgset", "cookie", {"data": ck_data})
-                __context__[__virtualname__] = ck_data
+                __context__[__virtualname__] = ck_data  #  pylint: disable=undefined-variable
                 break
 
     return ret

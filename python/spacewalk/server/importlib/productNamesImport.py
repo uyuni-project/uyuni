@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring,invalid-name
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -18,7 +18,7 @@
 from .importLib import Import
 
 
-class ProductNamesImport(Import):
+class ProductNamesImport(Import):  #  pylint: disable=missing-class-docstring
     def __init__(self, batch, backend):
         Import.__init__(self, batch, backend)
 

@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Connection objects
 #
 # Copyright (c) 2002--2016 Red Hat, Inc.
@@ -8,7 +8,7 @@
 
 
 import base64
-import encodings.idna
+import encodings.idna  #  pylint: disable=unused-import
 import socket
 from platform import python_version
 from rhn.stringutils import bstr, ustr, sstr
@@ -38,7 +38,7 @@ class HTTPResponse(httplib.HTTPResponse):
         self.fp.set_callback(rs, ws, ex, user_data, callback)
 
 
-class HTTPConnection(httplib.HTTPConnection):
+class HTTPConnection(httplib.HTTPConnection):  #  pylint: disable=missing-class-docstring
     response_class = HTTPResponse
 
     def __init__(self, host, port=None, timeout=SSL.DEFAULT_TIMEOUT):
@@ -109,7 +109,7 @@ class HTTPConnection(httplib.HTTPConnection):
             )
 
         response.begin()
-        assert response.will_close != httplib._UNKNOWN
+        assert response.will_close != httplib._UNKNOWN  #  pylint: disable=protected-access
         self.__state = _CS_IDLE
 
         if response.will_close:
@@ -126,7 +126,7 @@ class HTTPConnection(httplib.HTTPConnection):
         self.sock.settimeout(self.timeout)
 
 
-class HTTPProxyConnection(HTTPConnection):
+class HTTPProxyConnection(HTTPConnection):  #  pylint: disable=missing-class-docstring
     def __init__(
         self,
         proxy,
@@ -169,7 +169,7 @@ class HTTPProxyConnection(HTTPConnection):
         hostname = self._host
         if self._port != self.default_port:
             hostname = hostname + ":" + str(self._port)
-        newurl = "http://%s%s" % (hostname, url)
+        newurl = "http://%s%s" % (hostname, url)  #  pylint: disable=consider-using-f-string
         # Piggyback on the parent class
         HTTPConnection.putrequest(self, method, newurl, skip_host=skip_host)
         # Add proxy-specific headers
@@ -179,15 +179,15 @@ class HTTPProxyConnection(HTTPConnection):
         if not self.__username:
             return
         # Authenticated proxy
-        userpass = "%s:%s" % (self.__username, self.__password)
+        userpass = "%s:%s" % (self.__username, self.__password)  #  pylint: disable=consider-using-f-string
         enc_userpass = base64.encodestring(bstr(userpass)).replace(bstr("\n"), bstr(""))
-        self.putheader("Proxy-Authorization", "Basic %s" % sstr(enc_userpass))
+        self.putheader("Proxy-Authorization", "Basic %s" % sstr(enc_userpass))  #  pylint: disable=consider-using-f-string
 
     def _set_hostport(self, host, port):
         (self.host, self.port) = self._get_hostport(host, port)
 
 
-class HTTPSConnection(HTTPConnection):
+class HTTPSConnection(HTTPConnection):  #  pylint: disable=missing-class-docstring
     response_class = HTTPResponse
     default_port = httplib.HTTPSConnection.default_port
 
@@ -205,7 +205,7 @@ class HTTPSConnection(HTTPConnection):
         )
 
         for r in results:
-            af, socktype, proto, canonname, sa = r
+            af, socktype, proto, canonname, sa = r  #  pylint: disable=unused-variable,unused-variable
             try:
                 sock = socket.socket(af, socktype, proto)
             except socket.error:
@@ -234,7 +234,7 @@ class HTTPSProxyResponse(HTTPResponse):
         self.will_close = 0
 
 
-class HTTPSProxyConnection(HTTPProxyConnection):
+class HTTPSProxyConnection(HTTPProxyConnection):  #  pylint: disable=missing-class-docstring
     default_port = HTTPSConnection.default_port
 
     def __init__(
@@ -257,7 +257,7 @@ class HTTPSProxyConnection(HTTPProxyConnection):
         # Set the connection with the proxy
         HTTPProxyConnection.connect(self)
         # Use the stock HTTPConnection putrequest
-        host = "%s:%s" % (self._host, self._port)
+        host = "%s:%s" % (self._host, self._port)  #  pylint: disable=consider-using-f-string
         HTTPConnection.putrequest(self, "CONNECT", host)
         # Add proxy-specific stuff
         self._add_proxy_headers()

@@ -4,7 +4,7 @@ Test suite for spacecmd.repo module
 """
 
 from unittest.mock import MagicMock, patch
-from helpers import shell, assert_expect, assert_list_args_expect, assert_args_expect
+from helpers import shell, assert_expect, assert_list_args_expect, assert_args_expect  #  pylint: disable=unused-import
 import spacecmd.repo
 
 
@@ -13,7 +13,7 @@ class TestSCRepo:
     Test suite for "repo" module.
     """
 
-    def test_repo_list_noret(self, shell):
+    def test_repo_list_noret(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_repo_list with no data return.
 
@@ -37,7 +37,7 @@ class TestSCRepo:
 
         assert_expect(mprint.call_args_list, "a-repo-three\nv-repo-one\nz-repo-two")
 
-    def test_repo_list_ret_data(self, shell):
+    def test_repo_list_ret_data(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_repo_list with data return.
 
@@ -61,7 +61,7 @@ class TestSCRepo:
         assert len(out) == 3
         assert out == ["v-repo-one", "z-repo-two", "a-repo-three"]
 
-    def test_repo_details_noarg(self, shell):
+    def test_repo_details_noarg(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_repo_details with no arguments passed.
 
@@ -78,7 +78,7 @@ class TestSCRepo:
         assert not shell.client.channel.software.getRepoDetails.called
         assert shell.help_repo_details.called
 
-    def test_repo_details_no_repos_found(self, shell):
+    def test_repo_details_no_repos_found(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_repo_details no repos found.
 
@@ -101,7 +101,7 @@ class TestSCRepo:
             mprint.call_args_list, "No repositories found for 'non-existing-repo' query"
         )
 
-    def test_repo_details_repo_data(self, shell):
+    def test_repo_details_repo_data(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_repo_details for repo data.
 
@@ -153,7 +153,7 @@ class TestSCRepo:
         ]
         assert_list_args_expect(mprint.call_args_list, exp)
 
-    def test_repo_listfilters_noargs(self, shell):
+    def test_repo_listfilters_noargs(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_repo_listfilters without arguments
 
@@ -172,7 +172,7 @@ class TestSCRepo:
         assert not shell.client.channel.software.listRepoFilters.called
         assert shell.help_repo_listfilters.called
 
-    def test_repo_listfilters_not_found(self, shell):
+    def test_repo_listfilters_not_found(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_repo_listfilters no filters found.
 
@@ -193,7 +193,7 @@ class TestSCRepo:
 
         assert_expect(mprint.call_args_list, "No filters found")
 
-    def test_repo_listfilters_stdout(self, shell):
+    def test_repo_listfilters_stdout(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_repo_listfilters stdout check
 
@@ -219,7 +219,7 @@ class TestSCRepo:
 
         assert_list_args_expect(mprint.call_args_list, ["+stuff", "-other"])
 
-    def test_repo_addfilters_noargs(self, shell):
+    def test_repo_addfilters_noargs(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_repo_addfilters no arguments.
 
@@ -238,7 +238,7 @@ class TestSCRepo:
         assert not shell.client.channel.software.addRepoFilter.called
         assert shell.help_repo_addfilters.called
 
-    def test_repo_addfilters_argcheck_repo_only(self, shell):
+    def test_repo_addfilters_argcheck_repo_only(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_repo_addfilters check arguments: repo only
 
@@ -257,7 +257,7 @@ class TestSCRepo:
         assert not shell.client.channel.software.addRepoFilter.called
         assert shell.help_repo_addfilters.called
 
-    def test_repo_addfilters_argcheck_wrong_filter(self, shell):
+    def test_repo_addfilters_argcheck_wrong_filter(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_repo_addfilters check arguments: wrong filter syntax
 
@@ -269,9 +269,9 @@ class TestSCRepo:
         mprint = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.repo.print", mprint) as prn, patch(
+        with patch("spacecmd.repo.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.repo.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             out = spacecmd.repo.do_repo_addfilters(shell, "some-repo foo bar")
 
         assert out is 1
@@ -282,7 +282,7 @@ class TestSCRepo:
 
         assert_expect(logger.error.call_args_list, "Each filter must start with + or -")
 
-    def test_repo_addfilters_argcheck_add_filter(self, shell):
+    def test_repo_addfilters_argcheck_add_filter(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_repo_addfilters add filter
 
@@ -294,9 +294,9 @@ class TestSCRepo:
         mprint = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.repo.print", mprint) as prn, patch(
+        with patch("spacecmd.repo.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.repo.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             out = spacecmd.repo.do_repo_addfilters(shell, "some-repo +emacs")
 
         assert out is 0
@@ -305,7 +305,7 @@ class TestSCRepo:
         assert not logger.error.called
         assert shell.client.channel.software.addRepoFilter.called
 
-    def test_repo_removefilters_insufficient_args(self, shell):
+    def test_repo_removefilters_insufficient_args(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_repo_removefilters without sufficient arguments.
 
@@ -319,9 +319,9 @@ class TestSCRepo:
             mprint = MagicMock()
             logger = MagicMock()
 
-            with patch("spacecmd.repo.print", mprint) as prn, patch(
+            with patch("spacecmd.repo.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
                 "spacecmd.repo.logging", logger
-            ) as lgr:
+            ) as lgr:  #  pylint: disable=unused-variable
                 out = spacecmd.repo.do_repo_removefilters(shell, arg)
 
             assert out is 1
@@ -330,7 +330,7 @@ class TestSCRepo:
             assert not logger.error.called
             assert shell.help_repo_removefilters.called
 
-    def test_repo_removefilters_wrong_syntax(self, shell):
+    def test_repo_removefilters_wrong_syntax(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_repo_removefilters using wrong syntax.
 
@@ -342,9 +342,9 @@ class TestSCRepo:
         mprint = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.repo.print", mprint) as prn, patch(
+        with patch("spacecmd.repo.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.repo.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             out = spacecmd.repo.do_repo_removefilters(shell, "repo foo bar")
 
         assert out is 1
@@ -355,7 +355,7 @@ class TestSCRepo:
 
         assert_expect(logger.error.call_args_list, "Each filter must start with + or -")
 
-    def test_repo_removefilters_remove(self, shell):
+    def test_repo_removefilters_remove(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_repo_removefilters remove.
 
@@ -367,9 +367,9 @@ class TestSCRepo:
         mprint = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.repo.print", mprint) as prn, patch(
+        with patch("spacecmd.repo.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.repo.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             out = spacecmd.repo.do_repo_removefilters(shell, "repo +emacs -vim")
 
         assert out is 0
@@ -387,7 +387,7 @@ class TestSCRepo:
             ],
         )
 
-    def test_repo_setfilters_noargs(self, shell):
+    def test_repo_setfilters_noargs(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_repo_setfilters no args.
 
@@ -400,9 +400,9 @@ class TestSCRepo:
             mprint = MagicMock()
             logger = MagicMock()
 
-            with patch("spacecmd.repo.print", mprint) as prn, patch(
+            with patch("spacecmd.repo.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
                 "spacecmd.repo.logging", logger
-            ) as lgr:
+            ) as lgr:  #  pylint: disable=unused-variable
                 out = spacecmd.repo.do_repo_setfilters(shell, arg)
 
             assert out is 1
@@ -411,7 +411,7 @@ class TestSCRepo:
             assert not shell.client.channel.software.setRepoFilters.called
             assert shell.help_repo_setfilters.called
 
-    def test_repo_setfilters_wrong_filters_syntax(self, shell):
+    def test_repo_setfilters_wrong_filters_syntax(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_repo_setfilters with wrong filters syntax
 
@@ -423,9 +423,9 @@ class TestSCRepo:
         mprint = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.repo.print", mprint) as prn, patch(
+        with patch("spacecmd.repo.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.repo.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             out = spacecmd.repo.do_repo_setfilters(shell, "repo foo bar")
 
         assert out is 1
@@ -436,7 +436,7 @@ class TestSCRepo:
 
         assert_expect(logger.error.call_args_list, "Each filter must start with + or -")
 
-    def test_repo_setfilters(self, shell):
+    def test_repo_setfilters(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_repo_setfilters with wrong filters syntax
 
@@ -448,9 +448,9 @@ class TestSCRepo:
         mprint = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.repo.print", mprint) as prn, patch(
+        with patch("spacecmd.repo.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.repo.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             out = spacecmd.repo.do_repo_setfilters(shell, "repo +emacs -vim")
 
         assert out is 0
@@ -477,7 +477,7 @@ class TestSCRepo:
             ],
         )
 
-    def test_repo_clearfilters_noargs(self, shell):
+    def test_repo_clearfilters_noargs(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_repo_clearfilters with no arguments.
 
@@ -489,9 +489,9 @@ class TestSCRepo:
         mprint = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.repo.print", mprint) as prn, patch(
+        with patch("spacecmd.repo.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.repo.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             out = spacecmd.repo.do_repo_clearfilters(shell, "")
 
         assert out is 1
@@ -500,7 +500,7 @@ class TestSCRepo:
         assert not shell.client.channel.software.clearRepoFilters.called
         assert shell.help_repo_clearfilters.called
 
-    def test_repo_clearfilters_not_interactive(self, shell):
+    def test_repo_clearfilters_not_interactive(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_repo_clearfilters not interactive.
 
@@ -513,9 +513,9 @@ class TestSCRepo:
         mprint = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.repo.print", mprint) as prn, patch(
+        with patch("spacecmd.repo.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.repo.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             out = spacecmd.repo.do_repo_clearfilters(shell, "repo --yes")
 
         assert out is 0
@@ -524,7 +524,7 @@ class TestSCRepo:
         assert not logger.error.called
         assert shell.client.channel.software.clearRepoFilters.called
 
-    def test_repo_clearfilters_interactive(self, shell):
+    def test_repo_clearfilters_interactive(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_repo_clearfilters interactive.
 
@@ -537,9 +537,9 @@ class TestSCRepo:
         mprint = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.repo.print", mprint) as prn, patch(
+        with patch("spacecmd.repo.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.repo.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             out = spacecmd.repo.do_repo_clearfilters(shell, "repo")
 
         assert out is 0
@@ -548,7 +548,7 @@ class TestSCRepo:
         assert not logger.error.called
         assert shell.client.channel.software.clearRepoFilters.called
 
-    def test_repo_delete_noargs(self, shell):
+    def test_repo_delete_noargs(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_repo_delete no arguments.
 
@@ -561,9 +561,9 @@ class TestSCRepo:
         mprint = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.repo.print", mprint) as prn, patch(
+        with patch("spacecmd.repo.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.repo.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             out = spacecmd.repo.do_repo_delete(shell, "")
 
         assert out is 1
@@ -572,7 +572,7 @@ class TestSCRepo:
         assert not shell.client.channel.software.removeRepo.called
         assert shell.help_repo_delete.called
 
-    def test_repo_rename_noargs(self, shell):
+    def test_repo_rename_noargs(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_repo_rename no arguments.
 
@@ -585,9 +585,9 @@ class TestSCRepo:
         mprint = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.repo.print", mprint) as prn, patch(
+        with patch("spacecmd.repo.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.repo.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             out = spacecmd.repo.do_repo_rename(shell, "")
 
         assert out is 1
@@ -596,23 +596,23 @@ class TestSCRepo:
         assert not shell.client.channel.software.getRepoDetails.called
         assert shell.help_repo_rename.called
 
-    def test_repo_updateurl_noargs(self, shell):
+    def test_repo_updateurl_noargs(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_repo_updateurl no arguments.
 
         :param shell:
         :return:
         """
-        for arg in ["", "repo", "http://foo", "http://bar"]:
+        for arg in ["", "repo", "http://foo", "http://bar"]:  #  pylint: disable=unused-variable
             shell.help_repo_updateurl = MagicMock()
             shell.client.channel.software.updateRepUrl = MagicMock()
             shell.do_repo_list = MagicMock()
             mprint = MagicMock()
             logger = MagicMock()
 
-            with patch("spacecmd.repo.print", mprint) as prn, patch(
+            with patch("spacecmd.repo.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
                 "spacecmd.repo.logging", logger
-            ) as lgr:
+            ) as lgr:  #  pylint: disable=unused-variable
                 out = spacecmd.repo.do_repo_updateurl(shell, "")
 
             assert out is 1
@@ -621,7 +621,7 @@ class TestSCRepo:
             assert not shell.client.channel.software.updateRepUrl.called
             assert shell.help_repo_updateurl.called
 
-    def test_repo_updatessl_interactive(self, shell):
+    def test_repo_updatessl_interactive(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_repo_updatessl interactive.
 
@@ -635,9 +635,9 @@ class TestSCRepo:
         logger = MagicMock()
         prompter = MagicMock(side_effect=["name", "ca", "cert", "key"])
 
-        with patch("spacecmd.repo.print", mprint) as prn, patch(
+        with patch("spacecmd.repo.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.repo.prompt_user", prompter
-        ) as prn, patch("spacecmd.repo.logging", logger) as lgr:
+        ) as prn, patch("spacecmd.repo.logging", logger) as lgr:  #  pylint: disable=unused-variable
             out = spacecmd.repo.do_repo_updatessl(shell, "")
 
         assert out is 0
@@ -650,7 +650,7 @@ class TestSCRepo:
             [((shell.session, "name", "ca", "cert", "key"), {})],
         )
 
-    def test_repo_updatessl_non_interactive(self, shell):
+    def test_repo_updatessl_non_interactive(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_repo_updatessl non-interactive.
 
@@ -664,9 +664,9 @@ class TestSCRepo:
         logger = MagicMock()
         prompter = MagicMock(return_value="")
 
-        with patch("spacecmd.repo.print", mprint) as prn, patch(
+        with patch("spacecmd.repo.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.repo.prompt_user", prompter
-        ) as prn, patch("spacecmd.repo.logging", logger) as lgr:
+        ) as prn, patch("spacecmd.repo.logging", logger) as lgr:  #  pylint: disable=unused-variable
             out = spacecmd.repo.do_repo_updatessl(
                 shell, "--name name --ca ca --cert cert --key key"
             )
@@ -681,7 +681,7 @@ class TestSCRepo:
             [((shell.session, "name", "ca", "cert", "key"), {})],
         )
 
-    def test_repo_updatessl_missing_name(self, shell):
+    def test_repo_updatessl_missing_name(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_repo_updatessl non-interactive.
 
@@ -695,9 +695,9 @@ class TestSCRepo:
         logger = MagicMock()
         prompter = MagicMock(return_value="")
 
-        with patch("spacecmd.repo.print", mprint) as prn, patch(
+        with patch("spacecmd.repo.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.repo.prompt_user", prompter
-        ) as prn, patch("spacecmd.repo.logging", logger) as lgr:
+        ) as prn, patch("spacecmd.repo.logging", logger) as lgr:  #  pylint: disable=unused-variable
             out = spacecmd.repo.do_repo_updatessl(
                 shell, "--ca ca --cert cert --key key"
             )
@@ -709,7 +709,7 @@ class TestSCRepo:
 
         assert_expect(logger.error.call_args_list, "A name is required")
 
-    def test_repo_create_interactive(self, shell):
+    def test_repo_create_interactive(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_repo_create interactive.
 
@@ -723,9 +723,9 @@ class TestSCRepo:
             side_effect=["name", "http://something", "type", "ca", "cert", "key"]
         )
 
-        with patch("spacecmd.repo.print", mprint) as prn, patch(
+        with patch("spacecmd.repo.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.repo.prompt_user", prompter
-        ) as prn, patch("spacecmd.repo.logging", logger) as lgr:
+        ) as prn, patch("spacecmd.repo.logging", logger) as lgr:  #  pylint: disable=unused-variable
             out = spacecmd.repo.do_repo_create(shell, "")
 
         assert out is 0
@@ -751,7 +751,7 @@ class TestSCRepo:
             ],
         )
 
-    def test_repo_create_non_interactive(self, shell):
+    def test_repo_create_non_interactive(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_repo_create non-interactive.
 
@@ -763,9 +763,9 @@ class TestSCRepo:
         logger = MagicMock()
         prompter = MagicMock(return_value="")
 
-        with patch("spacecmd.repo.print", mprint) as prn, patch(
+        with patch("spacecmd.repo.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.repo.prompt_user", prompter
-        ) as prn, patch("spacecmd.repo.logging", logger) as lgr:
+        ) as prn, patch("spacecmd.repo.logging", logger) as lgr:  #  pylint: disable=unused-variable
             out = spacecmd.repo.do_repo_create(
                 shell,
                 "--n name --t type -u http://something "
@@ -794,7 +794,7 @@ class TestSCRepo:
             ],
         )
 
-    def test_repo_create_non_interactive_name_required(self, shell):
+    def test_repo_create_non_interactive_name_required(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_repo_create non-interactive, name is missing
 
@@ -806,9 +806,9 @@ class TestSCRepo:
         logger = MagicMock()
         prompter = MagicMock(return_value="")
 
-        with patch("spacecmd.repo.print", mprint) as prn, patch(
+        with patch("spacecmd.repo.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.repo.prompt_user", prompter
-        ) as prn, patch("spacecmd.repo.logging", logger) as lgr:
+        ) as prn, patch("spacecmd.repo.logging", logger) as lgr:  #  pylint: disable=unused-variable
             out = spacecmd.repo.do_repo_create(
                 shell, "--t type -u http://something " "--ca ca --cert cert --key key"
             )
@@ -820,7 +820,7 @@ class TestSCRepo:
 
         assert_expect(logger.error.call_args_list, "A name is required")
 
-    def test_repo_create_non_interactive_url_required(self, shell):
+    def test_repo_create_non_interactive_url_required(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_repo_create non-interactive, URL is missing
 
@@ -832,9 +832,9 @@ class TestSCRepo:
         logger = MagicMock()
         prompter = MagicMock(return_value="")
 
-        with patch("spacecmd.repo.print", mprint) as prn, patch(
+        with patch("spacecmd.repo.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.repo.prompt_user", prompter
-        ) as prn, patch("spacecmd.repo.logging", logger) as lgr:
+        ) as prn, patch("spacecmd.repo.logging", logger) as lgr:  #  pylint: disable=unused-variable
             out = spacecmd.repo.do_repo_create(
                 shell, "-n name -t type " "--ca ca --cert cert --key key"
             )
@@ -846,7 +846,7 @@ class TestSCRepo:
 
         assert_expect(logger.error.call_args_list, "A URL is required")
 
-    def test_repo_create_non_interactive_type_required(self, shell):
+    def test_repo_create_non_interactive_type_required(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_repo_create non-interactive, type is missing
 
@@ -858,9 +858,9 @@ class TestSCRepo:
         logger = MagicMock()
         prompter = MagicMock(return_value="")
 
-        with patch("spacecmd.repo.print", mprint) as prn, patch(
+        with patch("spacecmd.repo.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.repo.prompt_user", prompter
-        ) as prn, patch("spacecmd.repo.logging", logger) as lgr:
+        ) as prn, patch("spacecmd.repo.logging", logger) as lgr:  #  pylint: disable=unused-variable
             out = spacecmd.repo.do_repo_create(
                 shell, "-n name -u http://something " "--ca ca --cert cert --key key"
             )

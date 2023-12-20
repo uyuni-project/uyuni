@@ -82,11 +82,11 @@ DEFAULT_COMMIT_INTERVAL = 1
 DEFAULT_COMMIT_BURST = 100
 
 
-def __virtual__():
+def __virtual__():  #  pylint: disable=invalid-name
     return HAS_PSYCOPG2
 
 
-class Responder:
+class Responder:  #  pylint: disable=missing-class-docstring
     def __init__(self, event_bus, config):
         self.config = config
         self.config.setdefault("commit_interval", DEFAULT_COMMIT_INTERVAL)
@@ -103,11 +103,11 @@ class Responder:
     def _connect_to_database(self):
         db_config = self.config.get("postgres_db")
         if "port" in db_config:
-            conn_string = "dbname='{dbname}' user='{user}' host='{host}' port='{port}' password='{password}'".format(
+            conn_string = "dbname='{dbname}' user='{user}' host='{host}' port='{port}' password='{password}'".format(  #  pylint: disable=line-too-long,consider-using-f-string
                 **db_config
             )
         else:
-            conn_string = "dbname='{dbname}' user='{user}' host='{host}' password='{password}'".format(
+            conn_string = "dbname='{dbname}' user='{user}' host='{host}' password='{password}'".format(  #  pylint: disable=line-too-long,consider-using-f-string
                 **db_config
             )
         log.debug("%s: connecting to database", __name__)
@@ -160,16 +160,16 @@ class Responder:
             log.debug("%s: Adding event to queue %d -> %s", __name__, queue, tag)
             try:
                 self.cursor.execute(
-                    "INSERT INTO suseSaltEvent (minion_id, data, queue) VALUES (%s, %s, %s);",
+                    "INSERT INTO suseSaltEvent (minion_id, data, queue) VALUES (%s, %s, %s);",  #  pylint: disable=line-too-long
                     (data.get("id"), json.dumps({"tag": tag, "data": data}), queue),
                 )
                 self.counters[queue] += 1
                 self.attempt_commit()
-            except Exception as err:
+            except Exception as err:  #  pylint: disable=broad-exception-caught
                 log.error("%s: %s", __name__, err)
                 try:
                     self.connection.commit()
-                except Exception as err2:
+                except Exception as err2:  #  pylint: disable=broad-exception-caught
                     log.error("%s: Error commiting: %s", __name__, err2)
                     self.connection.close()
             finally:
@@ -233,7 +233,7 @@ class Responder:
         if self.tokens > 0 and sum(self.counters) > 0:
             log.debug("%s: commit", __name__)
             self.cursor.execute(
-                "NOTIFY {}, '{}';".format(
+                "NOTIFY {}, '{}';".format(  #  pylint: disable=consider-using-f-string
                     self.config["postgres_db"]["notify_channel"],
                     ",".join([str(counter) for counter in self.counters]),
                 )
@@ -252,7 +252,7 @@ def start(**config):
     io_loop = salt.ext.tornado.ioloop.IOLoop(make_current=False)
     io_loop.make_current()
     event_bus = salt.utils.event.get_master_event(
-        __opts__, __opts__["sock_dir"], listen=True, io_loop=io_loop
+        __opts__, __opts__["sock_dir"], listen=True, io_loop=io_loop  #  pylint: disable=undefined-variable,undefined-variable
     )
     responder = Responder(event_bus, config)
     event_bus.set_event_handler(responder.add_event_to_queue)

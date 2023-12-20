@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*- pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #
@@ -44,7 +44,7 @@ class ServerWrapper(Packages, Hardware, History, SuseData):
         SuseData.__init__(self)
 
     def __repr__(self):
-        return "<%s instance>" % (self.__class__,)
+        return "<%s instance>" % (self.__class__,)  #  pylint: disable=consider-using-f-string
 
     def set_value(self, name, value):
         """update a value in self.server"""

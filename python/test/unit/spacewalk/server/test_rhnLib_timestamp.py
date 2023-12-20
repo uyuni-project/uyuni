@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python  #  pylint: disable=missing-module-docstring,invalid-name
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -24,7 +24,7 @@ import unittest
 from uyuni.common import rhnLib
 
 
-class Tests(unittest.TestCase):
+class Tests(unittest.TestCase):  #  pylint: disable=missing-class-docstring
     def _test_timestamp_1(self):
         # Start with some timestamp, and verify that
         # timestamp(strftime(t)) is # t
@@ -34,7 +34,7 @@ class Tests(unittest.TestCase):
             is_eq, t1, tstr, t2 = self._test(t)
             # self.assertEqual(t, t2, "%s %s %s %s" % (t, t2, ttuple, tstr))
             if not is_eq:
-                print(("%s %s %s" % (t1, t2, tstr)))
+                print(("%s %s %s" % (t1, t2, tstr)))  #  pylint: disable=consider-using-f-string
             t = t + increment
 
     def _str(self, t):
@@ -60,18 +60,18 @@ class Tests(unittest.TestCase):
             tlist[2] = tlist[2] - (1 + tlist[6]) % 7
             t = int(time.mktime(tlist))
 
-            is_eq, t1, tstr, t2 = self._test(t)
+            is_eq, t1, tstr, t2 = self._test(t)  #  pylint: disable=unused-variable
             if not is_eq:
-                print(("%s %s %s" % (t, t2, tstr)))
+                print(("%s %s %s" % (t, t2, tstr)))  #  pylint: disable=consider-using-f-string
 
     def test_timestamp_3(self):
         t = 57739297
-        # Set the UTC time zone to avoid test flakiness due to the local TZ having DST or not.
+        # Set the UTC time zone to avoid test flakiness due to the local TZ having DST or not.  #  pylint: disable=line-too-long
         os.environ["TZ"] = "UTC"
         time.tzset()
         dstshift = (time.localtime(t)[8] - time.daylight) * 3600
-        is_eq, t1, tstr, t2 = self._test(t, dstshift)
-        self.assertTrue(is_eq, "Failed: %s, %s" % (t1, t2))
+        is_eq, t1, tstr, t2 = self._test(t, dstshift)  #  pylint: disable=unused-variable
+        self.assertTrue(is_eq, "Failed: %s, %s" % (t1, t2))  #  pylint: disable=consider-using-f-string
 
     def _test_timestamp_4(self):
         return self.test_timestamp_3()

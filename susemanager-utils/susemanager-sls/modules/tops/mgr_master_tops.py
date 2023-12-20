@@ -39,7 +39,7 @@ MANAGER_BASE_TOP = [
 ]
 
 
-def __virtual__():
+def __virtual__():  #  pylint: disable=invalid-name
     """
     Ensure the module name.
     """

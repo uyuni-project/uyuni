@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring,invalid-name
 # Copyright (c) 2008--2012 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -28,11 +28,11 @@ class RhnSslToolException(Exception):
     """general exception class for the tool"""
 
 
-errnoGeneralError = 1
-errnoSuccess = 0
+errnoGeneralError = 1  #  pylint: disable=invalid-name
+errnoSuccess = 0  #  pylint: disable=invalid-name
 
 
-def fixSerial(serial):
+def fixSerial(serial):  #  pylint: disable=invalid-name
     """fixes a serial number this may be wrongly formatted"""
 
     if not serial:
@@ -56,7 +56,7 @@ def fixSerial(serial):
     return serial
 
 
-def incSerial(serial):
+def incSerial(serial):  #  pylint: disable=invalid-name
     """increment a serial hex number"""
 
     if not serial:
@@ -65,14 +65,14 @@ def incSerial(serial):
     if serial.find("0x") == -1:
         serial = "0x" + serial
 
-    serial = eval(serial) + 1
+    serial = eval(serial) + 1  #  pylint: disable=eval-used
     serial = hex(serial)
 
     serial = serial.split("x")[-1]
     return fixSerial(serial)
 
 
-def getMachineName(hostname):
+def getMachineName(hostname):  #  pylint: disable=invalid-name
     """xxx.yyy.zzz.com --> xxx.yyy
     yyy.zzz.com     --> yyy
     zzz.com         --> zzz.com
@@ -90,19 +90,19 @@ def getMachineName(hostname):
 #
 
 
-def secsTil18Jan2038():
+def secsTil18Jan2038():  #  pylint: disable=invalid-name
     """(int) secs til 1 day before the great 32-bit overflow
     We are making it 1 day just to be safe.
     """
     return 2147483647 - now() - DAY
 
 
-def daysTil18Jan2038():
+def daysTil18Jan2038():  #  pylint: disable=invalid-name
     "(float) days til 1 day before the great 32-bit overflow"
     return secs2days(secsTil18Jan2038())
 
 
-def yearsTil18Jan2038():
+def yearsTil18Jan2038():  #  pylint: disable=invalid-name
     "(float) approximate years til 1 day before the great 32-bit overflow"
     return secs2years(secsTil18Jan2038())
 
@@ -113,7 +113,7 @@ def gendir(directory):
         try:
             os.makedirs(directory, int("0700", 8))
         except OSError as e:
-            print("Error: %s" % (e,))
+            print("Error: %s" % (e,))  #  pylint: disable=consider-using-f-string
             sys.exit(1)
 
 

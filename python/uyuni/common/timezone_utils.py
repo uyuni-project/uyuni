@@ -29,8 +29,8 @@ def get_utc_offset():
         utc_offset = -time.altzone
     mins = divmod(utc_offset, 60)[0]
     hours, mins = divmod(mins, 60)
-    return "{0:+03d}:{1:02d}".format(hours, mins)
+    return "{0:+03d}:{1:02d}".format(hours, mins)  #  pylint: disable=consider-using-f-string
 
 
 if __name__ == "__main__":
-    print("UTC offset (allowing for DST if in effect): %s" % get_utc_offset())
+    print("UTC offset (allowing for DST if in effect): %s" % get_utc_offset())  #  pylint: disable=consider-using-f-string

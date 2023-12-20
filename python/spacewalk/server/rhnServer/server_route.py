@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -40,12 +40,12 @@ def store_client_route(server_id):
         """
     )
     h.execute(server_id=server_id)
-    oldRoute = h.fetchall_dict() or []
-    newRoute = []
+    oldRoute = h.fetchall_dict() or []  #  pylint: disable=invalid-name
+    newRoute = []  #  pylint: disable=invalid-name
 
     # construct oldRoute_ from oldRoute, to have the actual format described above
-    oldRouteTuples = []
-    for oldRouteDict in oldRoute:
+    oldRouteTuples = []  #  pylint: disable=invalid-name
+    for oldRouteDict in oldRoute:  #  pylint: disable=invalid-name
         oldRouteTuples.append(
             (str(oldRouteDict["proxy_server_id"]), oldRouteDict["hostname"])
         )
@@ -64,9 +64,9 @@ def store_client_route(server_id):
             if hostname is None:
                 log_debug(
                     3,
-                    "NOTE: Spacewalk Proxy v1.1 detected - route tracking is unsupported",
+                    "NOTE: Spacewalk Proxy v1.1 detected - route tracking is unsupported",  #  pylint: disable=line-too-long
                 )
-                newRoute = []
+                newRoute = []  #  pylint: disable=invalid-name
                 break
             newRoute.append((token[0], hostname))
 
@@ -79,7 +79,7 @@ def store_client_route(server_id):
 
     if oldRouteTuples:
         # blow away table rhnServerPath entries for server_id
-        log_debug(8, "blow away route-info for %s" % server_id)
+        log_debug(8, "blow away route-info for %s" % server_id)  #  pylint: disable=consider-using-f-string
         h = rhnSQL.prepare(
             """
             delete from rhnServerPath where server_id = :server_id
@@ -92,7 +92,7 @@ def store_client_route(server_id):
         rhnSQL.commit()
         return
 
-    log_debug(8, "adding route-info entries: %s - %s" % (server_id, newRoute))
+    log_debug(8, "adding route-info entries: %s - %s" % (server_id, newRoute))  #  pylint: disable=consider-using-f-string
 
     h = rhnSQL.prepare(
         """

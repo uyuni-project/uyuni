@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Licensed under the GNU General Public License Version 3
 #
 # This program is free software; you can redistribute it and/or modify
@@ -37,4 +37,4 @@ from argparse import ArgumentParser
 
 class SpacecmdArgumentParser(ArgumentParser):
     def error(self, message):
-        raise Exception(message)
+        raise Exception(message)  #  pylint: disable=broad-exception-raised

@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -16,7 +16,7 @@
 # -----------------------------------------------------------------------------
 
 
-country_to_iso = {
+country_to_iso = {  #  pylint: disable=duplicate-key
     "Afghanistan": "AF",
     "Albania": "AL",
     "Algeria": "DZ",

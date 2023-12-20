@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2010--2015 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,

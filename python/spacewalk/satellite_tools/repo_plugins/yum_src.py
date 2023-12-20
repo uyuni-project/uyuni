@@ -1,4 +1,4 @@
-# coding: utf-8
+# coding: utf-8 pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2018 Red Hat, Inc.
 # Copyright (c) 2010--2019 SUSE LINUX GmbH, Nuernberg, Germany.
@@ -21,14 +21,14 @@
 
 from __future__ import absolute_import, unicode_literals
 
-from shutil import rmtree, copytree
+from shutil import rmtree, copytree  #  pylint: disable=unused-import
 
 import configparser
 import fnmatch
-import glob
-import gzip
-import bz2
-import lzma
+import glob  #  pylint: disable=unused-import
+import gzip  #  pylint: disable=unused-import
+import bz2  #  pylint: disable=unused-import
+import lzma  #  pylint: disable=unused-import
 import os
 import re
 import requests
@@ -37,14 +37,14 @@ import subprocess
 import sys
 import tempfile
 import traceback
-import types
+import types  #  pylint: disable=unused-import
 import urlgrabber
 import json
 
 try:
     from urllib import urlencode, unquote, quote
     from urlparse import urlsplit, urlparse, urlunparse
-except:
+except:  #  pylint: disable=bare-except
     from urllib.parse import urlsplit, urlencode, urlparse, urlunparse, unquote, quote
 
 import xml.etree.ElementTree as etree
@@ -57,7 +57,7 @@ from spacewalk.common import rhnLog
 from spacewalk.satellite_tools.repo_plugins import ContentPackage, CACHE_DIR
 from spacewalk.satellite_tools.download import get_proxies
 from spacewalk.satellite_tools.syncLib import log
-from spacewalk.common.rhnConfig import CFG, initCFG
+from spacewalk.common.rhnConfig import CFG, initCFG  #  pylint: disable=unused-import,unused-import
 from spacewalk.common.suseLib import get_proxy, URL as suseLibURL
 from rhn.stringutils import sstr
 from urlgrabber.grabber import URLGrabError
@@ -88,7 +88,7 @@ NO_MORE_MIRRORS_TO_TRY = 256
 
 class ZyppoSync:
     """
-    This class prepares a environment for running Zypper inside a dedicated reposync root
+    This class prepares a environment for running Zypper inside a dedicated reposync root  #  pylint: disable=line-too-long
 
     """
 
@@ -112,31 +112,31 @@ class ZyppoSync:
                 if not os.path.exists(pth):
                     os.makedirs(pth)
         except Exception as exc:
-            msg = "Unable to initialise Zypper root for {}: {}".format(root, exc)
+            msg = "Unable to initialise Zypper root for {}: {}".format(root, exc)  #  pylint: disable=consider-using-f-string
             rhnLog.log_clean(0, msg)
             sys.stderr.write(str(msg) + "\n")
             raise
         try:
             # Synchronize new GPG keys that come from the Spacewalk GPG keyring
             self.__synchronize_gpg_keys()
-        except Exception as exc:
-            msg = "Unable to synchronize Spacewalk GPG keyring: {}".format(exc)
+        except Exception as exc:  #  pylint: disable=broad-exception-caught
+            msg = "Unable to synchronize Spacewalk GPG keyring: {}".format(exc)  #  pylint: disable=consider-using-f-string
             rhnLog.log_clean(0, msg)
             sys.stderr.write(str(msg) + "\n")
 
     def __synchronize_gpg_keys(self):
         """
-        This method does update the Zypper RPM database with new keys coming from the Spacewalk GPG keyring
+        This method does update the Zypper RPM database with new keys coming from the Spacewalk GPG keyring  #  pylint: disable=line-too-long
 
         """
         spacewalk_gpg_keys = {}
         zypper_gpg_keys = {}
         with tempfile.NamedTemporaryFile() as f:
             # Collect GPG keys from the Spacewalk GPG keyring
-            # The '--export-options export-clean' is needed avoid exporting key signatures
+            # The '--export-options export-clean' is needed avoid exporting key signatures  #  pylint: disable=line-too-long
             # which are not needed and can cause issues when importing into the RPMDB
             os.system(
-                "gpg -q --batch --no-options --no-default-keyring --no-permission-warning --keyring {} --export --export-options export-clean -a > {}".format(
+                "gpg -q --batch --no-options --no-default-keyring --no-permission-warning --keyring {} --export --export-options export-clean -a > {}".format(  #  pylint: disable=line-too-long,consider-using-f-string
                     SPACEWALK_GPG_KEYRING, f.name
                 )
             )
@@ -153,7 +153,7 @@ class ZyppoSync:
                     )
             log(
                 3,
-                "spacewalk keyIds: {}".format([k for k in sorted(spacewalk_gpg_keys)]),
+                "spacewalk keyIds: {}".format([k for k in sorted(spacewalk_gpg_keys)]),  #  pylint: disable=consider-using-f-string
             )
 
             # Collect GPG keys from reposync Zypper RPM database
@@ -165,36 +165,36 @@ class ZyppoSync:
                 match = RPM_PUBKEY_VERSION_RELEASE_RE.match(line.decode())
                 if match:
                     zypper_gpg_keys[match.groups()[0]] = match.groups()[1]
-            log(3, "zypper keyIds:    {}".format([k for k in sorted(zypper_gpg_keys)]))
+            log(3, "zypper keyIds:    {}".format([k for k in sorted(zypper_gpg_keys)]))  #  pylint: disable=consider-using-f-string
 
-            # Compare GPG keys and remove keys from reposync that are going to be imported with a newer release.
-            for key in zypper_gpg_keys:
-                # If the GPG key id already exists, is that new key actually newer? We need to check the release
+            # Compare GPG keys and remove keys from reposync that are going to be imported with a newer release.  #  pylint: disable=line-too-long
+            for key in zypper_gpg_keys:  #  pylint: disable=consider-using-dict-items
+                # If the GPG key id already exists, is that new key actually newer? We need to check the release  #  pylint: disable=line-too-long
                 release_i = int(zypper_gpg_keys[key], 16)
                 if key in spacewalk_gpg_keys and any(
                     int(i, 16) > release_i for i in spacewalk_gpg_keys[key]
                 ):
-                    # This GPG key has a newer release on the Spacewalk GPG keyring that on the reposync Zypper RPM database.
-                    # We delete this key from the RPM database to allow importing the newer version.
+                    # This GPG key has a newer release on the Spacewalk GPG keyring that on the reposync Zypper RPM database.  #  pylint: disable=line-too-long
+                    # We delete this key from the RPM database to allow importing the newer version.  #  pylint: disable=line-too-long
                     os.system(
-                        "rpm --dbpath {} -e gpg-pubkey-{}-{}".format(
+                        "rpm --dbpath {} -e gpg-pubkey-{}-{}".format(  #  pylint: disable=consider-using-f-string
                             REPOSYNC_ZYPPER_RPMDB_PATH, key, zypper_gpg_keys[key]
                         )
                     )
                     log(
                         3,
-                        "new version available for gpg-pubkey-{}-{}".format(
+                        "new version available for gpg-pubkey-{}-{}".format(  #  pylint: disable=consider-using-f-string
                             key, zypper_gpg_keys[key]
                         ),
                     )
 
-            # Finally, once we deleted the existing old key releases from the Zypper RPM database
-            # we proceed to import all keys from the Spacewalk GPG keyring. This will allow new GPG
-            # keys release are upgraded in the Zypper keyring since rpmkeys does not handle the upgrade
+            # Finally, once we deleted the existing old key releases from the Zypper RPM database  #  pylint: disable=line-too-long
+            # we proceed to import all keys from the Spacewalk GPG keyring. This will allow new GPG  #  pylint: disable=line-too-long
+            # keys release are upgraded in the Zypper keyring since rpmkeys does not handle the upgrade  #  pylint: disable=line-too-long
             # properly
             log(
                 3,
-                "rpmkeys -vv --dbpath {} --import {}".format(
+                "rpmkeys -vv --dbpath {} --import {}".format(  #  pylint: disable=consider-using-f-string
                     REPOSYNC_ZYPPER_RPMDB_PATH, f.name
                 ),
             )
@@ -211,36 +211,36 @@ class ZyppoSync:
                 stderr=subprocess.STDOUT,
             )
             try:
-                outs, errs = process.communicate(timeout=15)
+                outs, errs = process.communicate(timeout=15)  #  pylint: disable=unused-variable
                 if process.returncode is None or process.returncode > 0:
                     log(
                         0,
-                        "Failed to import keys into rpm database ({}): {}".format(
+                        "Failed to import keys into rpm database ({}): {}".format(  #  pylint: disable=consider-using-f-string
                             process.returncode, outs.decode("utf-8")
                         ),
                     )
                 else:
-                    log(3, "CMD out: {}".format(outs.decode("utf-8")))
-            except TimeoutExpired:
+                    log(3, "CMD out: {}".format(outs.decode("utf-8")))  #  pylint: disable=consider-using-f-string
+            except TimeoutExpired:  #  pylint: disable=undefined-variable
                 process.kill()
                 log(0, "Timeout exceeded while importing keys to rpm database")
             keycont = f.read()
             rhnLog.log_clean(5, keycont.decode("utf-8"))
 
 
-class ZypperRepo:
+class ZypperRepo:  #  pylint: disable=missing-class-docstring
     def __init__(self, root, url, org):
         self.root = root
         self.baseurl = [url]
         self.basecachedir = os.path.join(CACHE_DIR, org)
-        with cfg_component("server.satellite") as CFG:
+        with cfg_component("server.satellite") as CFG:  #  pylint: disable=redefined-outer-name,invalid-name
             self.pkgdir = os.path.join(CFG.MOUNT_POINT, CFG.PREPENDED_DIR, org, "stage")
         self.urls = self.baseurl
         # Make sure baseurl ends with / and urljoin will work correctly
         if self.urls[0][-1] != "/":
             self.urls[0] += "/"
         # Make sure root paths are created
-        with cfg_component(component=None) as CFG:
+        with cfg_component(component=None) as CFG:  #  pylint: disable=invalid-name
             if not os.path.isdir(self.root):
                 fileutils.makedirs(
                     self.root, user=CFG.httpd_user, group=CFG.httpd_group
@@ -254,7 +254,7 @@ class ZypperRepo:
         self.exclude = []
 
 
-class RawSolvablePackage:
+class RawSolvablePackage:  #  pylint: disable=missing-class-docstring
     def __init__(self, solvable):
         self.name = solvable.name
         self.raw_name = str(solvable)
@@ -267,7 +267,7 @@ class RawSolvablePackage:
         self.relativepath = solvable.lookup_location()[0]
 
     def __repr__(self):
-        return "RawSolvablePackage({})".format(self.raw_name)
+        return "RawSolvablePackage({})".format(self.raw_name)  #  pylint: disable=consider-using-f-string
 
     @staticmethod
     def _parse_solvable_evr(evr):
@@ -319,7 +319,7 @@ class UpdateNotice(object):
     A single update notice (for instance, a security fix).
     """
 
-    def __init__(self, elem=None, repoid=None, vlogger=None):
+    def __init__(self, elem=None, repoid=None, vlogger=None):  #  pylint: disable=unused-argument,unused-argument
         self._md = {
             "from": "",
             "type": "",
@@ -347,7 +347,7 @@ class UpdateNotice(object):
 
     def __getitem__(self, item):
         """Allows scriptable metadata access (ie: un['update_id'])."""
-        if type(item) is int:
+        if type(item) is int:  #  pylint: disable=unidiomatic-typecheck
             return sorted(self._md)[item]
         ret = self._md.get(item)
         if ret == "":
@@ -481,8 +481,8 @@ class UpdateNotice(object):
         return package
 
 
-class ContentSource:
-    def __init__(
+class ContentSource:  #  pylint: disable=missing-class-docstring
+    def __init__(  #  pylint: disable=dangerous-default-value
         self,
         url,
         name,
@@ -506,7 +506,7 @@ class ContentSource:
         if urlsplit(url).scheme:
             self.url = url
         else:
-            self.url = "file://%s" % url
+            self.url = "file://%s" % url  #  pylint: disable=consider-using-f-string
         self.name = name
         self.insecure = insecure
         self.interactive = interactive
@@ -522,17 +522,17 @@ class ContentSource:
         self.http_headers = http_headers
 
         # keep authtokens for mirroring
-        (_scheme, _netloc, _path, query, _fragid) = urlsplit(url)
+        (_scheme, _netloc, _path, query, _fragid) = urlsplit(url)  #  pylint: disable=invalid-name,invalid-name,invalid-name,invalid-name,unused-variable,unused-variable,unused-variable,unused-variable
         if query:
             self.authtoken = query
 
         # load proxy configuration based on the url
         self._load_proxy_settings(self.url)
 
-        # Get extra HTTP headers configuration from /etc/rhn/spacewalk-repo-sync/extra_headers.conf
+        # Get extra HTTP headers configuration from /etc/rhn/spacewalk-repo-sync/extra_headers.conf  #  pylint: disable=line-too-long
         if os.path.isfile(REPOSYNC_EXTRA_HTTP_HEADERS_CONF):
             http_headers_cfg = configparser.ConfigParser()
-            http_headers_cfg.read_file(open(REPOSYNC_EXTRA_HTTP_HEADERS_CONF))
+            http_headers_cfg.read_file(open(REPOSYNC_EXTRA_HTTP_HEADERS_CONF))  #  pylint: disable=unspecified-encoding
             section_name = None
 
             if http_headers_cfg.has_section(self.name):
@@ -571,7 +571,7 @@ class ContentSource:
         self.gpgkey_autotrust = None
         self.groupsfile = None
 
-        with cfg_component("server.satellite") as CFG:
+        with cfg_component("server.satellite") as CFG:  #  pylint: disable=redefined-outer-name,invalid-name
             # configure network connection
             try:
                 # bytes per second
@@ -586,7 +586,7 @@ class ContentSource:
 
     def _load_proxy_settings(self, url):
         # read the proxy configuration in /etc/rhn/rhn.conf
-        with cfg_component("server.satellite") as CFG:
+        with cfg_component("server.satellite") as CFG:  #  pylint: disable=redefined-outer-name,invalid-name
             # Get the global HTTP Proxy settings from DB or per-repo
             # settings on /etc/rhn/spacewalk-repo-sync/zypper.conf
             if CFG.http_proxy:
@@ -594,13 +594,13 @@ class ContentSource:
                 self.proxy_hostname = self.proxy_url
             elif os.path.isfile(REPOSYNC_ZYPPER_CONF):
                 zypper_cfg = configparser.ConfigParser()
-                zypper_cfg.read_file(open(REPOSYNC_ZYPPER_CONF))
+                zypper_cfg.read_file(open(REPOSYNC_ZYPPER_CONF))  #  pylint: disable=unspecified-encoding
                 section_name = None
 
                 if zypper_cfg.has_section(self.name):
                     section_name = self.name
-                elif zypper_cfg.has_section(channel_label):
-                    section_name = channel_label
+                elif zypper_cfg.has_section(channel_label):  #  pylint: disable=undefined-variable
+                    section_name = channel_label  #  pylint: disable=undefined-variable
                 elif zypper_cfg.has_section("main"):
                     section_name = "main"
 
@@ -609,7 +609,7 @@ class ContentSource:
                         self.proxy_hostname = zypper_cfg.get(
                             section_name, option="proxy"
                         )
-                        self.proxy_url = "http://%s" % self.proxy_hostname
+                        self.proxy_url = "http://%s" % self.proxy_hostname  #  pylint: disable=consider-using-f-string
 
                     if zypper_cfg.has_option(section_name, "proxy_username"):
                         self.proxy_user = zypper_cfg.get(section_name, "proxy_username")
@@ -655,7 +655,7 @@ class ContentSource:
                 # This will then go straight to the next try block.
                 log(1, "No content-type header. Treating as valid.")
         except requests.exceptions.RequestException as exc:
-            self.error_msg("ERROR: Failed to reach repo url: {} - {}".format(url, exc))
+            self.error_msg("ERROR: Failed to reach repo url: {} - {}".format(url, exc))  #  pylint: disable=consider-using-f-string
             return returnlist
 
         try:
@@ -665,19 +665,19 @@ class ContentSource:
         except URLGrabError as exc:
             repl_url = suseLibURL(url).getURL(stripPw=True)
             if not hasattr(exc, "code") and exc.errno != 2:
-                msg = "ERROR: Mirror list download failed: %s - %s" % (
+                msg = "ERROR: Mirror list download failed: %s - %s" % (  #  pylint: disable=consider-using-f-string
                     url,
                     exc.strerror,
                 )
                 msg = msg.replace(url, repl_url)
                 log(0, msg)
             if rhnLog.LOG and rhnLog.LOG.level >= 1:
-                msg = "ERROR[%s/%s]: Mirror list download failed: %s - %s%s" % (
+                msg = "ERROR[%s/%s]: Mirror list download failed: %s - %s%s" % (  #  pylint: disable=consider-using-f-string
                     exc.errno,
                     exc.code if hasattr(exc, "code") else "-",
                     url,
                     exc.strerror,
-                    ": %s" % (traceback.format_exc()) if rhnLog.LOG.level >= 2 else "",
+                    ": %s" % (traceback.format_exc()) if rhnLog.LOG.level >= 2 else "",  #  pylint: disable=consider-using-f-string
                 )
                 msg = msg.replace(url, repl_url)
                 log(0, msg)
@@ -686,23 +686,23 @@ class ContentSource:
 
         def _replace_and_check_url(url_list):
             goodurls = []
-            skipped = None
+            skipped = None  #  pylint: disable=unused-variable
             for url in url_list:
                 # obvious bogons get ignored
                 if url in ["", None]:
                     continue
                 # Discard any urls containing some invalid characters
                 forbidden_characters = "<>^`{|}"
-                url_is_invalid = [x for x in forbidden_characters if (x in url)]
+                url_is_invalid = [x for x in forbidden_characters if (x in url)]  #  pylint: disable=superfluous-parens
                 if url_is_invalid:
-                    self.error_msg("Discarding invalid url: {}".format(url))
+                    self.error_msg("Discarding invalid url: {}".format(url))  #  pylint: disable=consider-using-f-string
                     continue
                 try:
                     # This started throwing ValueErrors, BZ 666826
                     (s, b, p, q, f, o) = urlparse(url)
                     if p[-1] != "/":
                         p = p + "/"
-                except (ValueError, IndexError, KeyError) as e:
+                except (ValueError, IndexError, KeyError) as e:  #  pylint: disable=unused-variable
                     s = "blah"
 
                 if s not in ["http", "ftp", "file", "https"]:
@@ -713,34 +713,34 @@ class ContentSource:
             return goodurls
 
         try:
-            with open(mirrorlist_path, "r") as mirrorlist_file:
+            with open(mirrorlist_path, "r") as mirrorlist_file:  #  pylint: disable=unspecified-encoding
                 content = mirrorlist_file.readlines()
-        except Exception as exc:
-            self.error_msg("Could not read mirrorlist: {}".format(exc))
+        except Exception as exc:  #  pylint: disable=broad-exception-caught
+            self.error_msg("Could not read mirrorlist: {}".format(exc))  #  pylint: disable=consider-using-f-string
 
         try:
             # Try to read a metalink XML
             for files in etree.parse(mirrorlist_path).getroot():
                 file_elem = files.find(METALINK_XML + "file")
                 if file_elem.get("name") == "repomd.xml":
-                    _urls = file_elem.find(METALINK_XML + "resources").findall(
+                    _urls = file_elem.find(METALINK_XML + "resources").findall(  #  pylint: disable=invalid-name
                         METALINK_XML + "url"
                     )
-                    for _url in _urls:
+                    for _url in _urls:  #  pylint: disable=invalid-name
                         # The mirror urls in the metalink file are for repomd.xml so it
-                        # gives a list of mirrors for that one file, but we want the list
+                        # gives a list of mirrors for that one file, but we want the list  #  pylint: disable=line-too-long
                         # of mirror baseurls. Joy of reusing other people's stds. :)
                         if not _url.text.endswith("/repodata/repomd.xml"):
                             continue
                         returnlist.append(_url.text[: -len("/repodata/repomd.xml")])
-        except Exception as exc:
+        except Exception as exc:  #  pylint: disable=broad-exception-caught
             # If no metalink XML, we try to read a mirrorlist
             for line in content:
-                if re.match("^\s*\#.*", line) or re.match("^\s*$", line):
+                if re.match("^\s*\#.*", line) or re.match("^\s*$", line):  #  pylint: disable=anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string
                     continue
                 mirror = re.sub("\n$", "", line)  # no more trailing \n's
                 mirror = re.sub(
-                    "\$(?:BASE)?ARCH", self.channel_arch, mirror, flags=re.IGNORECASE
+                    "\$(?:BASE)?ARCH", self.channel_arch, mirror, flags=re.IGNORECASE  #  pylint: disable=anomalous-backslash-in-string
                 )
                 returnlist.append(mirror)
 
@@ -750,10 +750,10 @@ class ContentSource:
 
         try:
             # Write the final mirrorlist that is going to be pass to Zypper
-            with open(mirrorlist_path, "w") as mirrorlist_file:
+            with open(mirrorlist_path, "w") as mirrorlist_file:  #  pylint: disable=unspecified-encoding
                 mirrorlist_file.write(os.linesep.join(returnlist))
-        except Exception as exc:
-            self.error_msg("Could not write the calculated mirrorlist: {}".format(exc))
+        except Exception as exc:  #  pylint: disable=broad-exception-caught
+            self.error_msg("Could not write the calculated mirrorlist: {}".format(exc))  #  pylint: disable=consider-using-f-string
         return returnlist
 
     def setup_repo(self, repo, uln_repo=False):
@@ -779,7 +779,7 @@ repo_gpgcheck={gpgcheck}
 type=rpm-md
 """
         if uln_repo:
-            _url = "plugin:spacewalk-uln-resolver?url={}".format(zypp_repo_url)
+            _url = "plugin:spacewalk-uln-resolver?url={}".format(zypp_repo_url)  #  pylint: disable=invalid-name,consider-using-f-string
             plugin_used = True
         elif self.http_headers:
             headers_location = os.path.join(
@@ -787,24 +787,24 @@ type=rpm-md
                 "etc/zypp/repos.d",
                 str(self.channel_label or self.reponame) + ".headers",
             )
-            with open(headers_location, "w") as repo_headers_file:
+            with open(headers_location, "w") as repo_headers_file:  #  pylint: disable=unspecified-encoding
                 repo_headers_file.write(json.dumps(self.http_headers))
-            # RHUI mirror url works only as mirror and cannot be used to download content
+            # RHUI mirror url works only as mirror and cannot be used to download content  #  pylint: disable=line-too-long
             # but zypp plugins do not work with "mirrorlist" keyword, only with baseurl.
-            # So let's take the first url from the mirrorlist if it exists and use it as baseurl
+            # So let's take the first url from the mirrorlist if it exists and use it as baseurl  #  pylint: disable=line-too-long
             baseurl = mirrorlist[0] if mirrorlist else zypp_repo_url
-            _url = "plugin:spacewalk-extra-http-headers?url={}&headers_file={}".format(
+            _url = "plugin:spacewalk-extra-http-headers?url={}&headers_file={}".format(  #  pylint: disable=invalid-name,consider-using-f-string
                 quote(baseurl), quote(headers_location)
             )
             plugin_used = True
         else:
-            _url = (
+            _url = (  #  pylint: disable=invalid-name
                 zypp_repo_url
                 if not mirrorlist
                 else os.path.join(repo.root, "mirrorlist.txt")
             )
 
-        with open(
+        with open(  #  pylint: disable=unspecified-encoding
             os.path.join(
                 repo.root,
                 "etc/zypp/repos.d",
@@ -812,9 +812,9 @@ type=rpm-md
             ),
             "w",
         ) as repo_conf_file:
-            _repo_url = "baseurl"
+            _repo_url = "baseurl"  #  pylint: disable=invalid-name
             if mirrorlist and not plugin_used:
-                _repo_url = "mirrorlist"
+                _repo_url = "mirrorlist"  #  pylint: disable=invalid-name
             repo_conf_file.write(
                 repo_cfg.format(
                     reponame=self.channel_label or self.reponame,
@@ -825,8 +825,8 @@ type=rpm-md
             )
         zypper_cmd = "zypper"
         if not self.interactive:
-            zypper_cmd = "{} -n".format(zypper_cmd)
-        zypper_cmd = "{} --root {} --reposd-dir {} --cache-dir {} --raw-cache-dir {} --solv-cache-dir {} ref".format(
+            zypper_cmd = "{} -n".format(zypper_cmd)  #  pylint: disable=consider-using-f-string
+        zypper_cmd = "{} --root {} --reposd-dir {} --cache-dir {} --raw-cache-dir {} --solv-cache-dir {} ref".format(  #  pylint: disable=line-too-long,consider-using-f-string
             zypper_cmd,
             REPOSYNC_ZYPPER_ROOT,
             os.path.join(repo.root, "etc/zypp/repos.d/"),
@@ -834,12 +834,12 @@ type=rpm-md
             os.path.join(repo.root, "var/cache/zypp/raw/"),
             os.path.join(repo.root, "var/cache/zypp/solv/"),
         )
-        process = subprocess.run(zypper_cmd.split(" "), stderr=subprocess.PIPE)
+        process = subprocess.run(zypper_cmd.split(" "), stderr=subprocess.PIPE)  #  pylint: disable=subprocess-run-check
 
         if process.returncode:
             if process.stderr:
                 raise RepoMDError(
-                    "Cannot access repository.\n{}".format(sstr(process.stderr))
+                    "Cannot access repository.\n{}".format(sstr(process.stderr))  #  pylint: disable=consider-using-f-string
                 )
             raise RepoMDError(
                 "Cannot access repository. Maybe repository GPG keys are not imported"
@@ -859,7 +859,7 @@ type=rpm-md
 
         :returns: str
         """
-        ret_url = None
+        ret_url = None  #  pylint: disable=unused-variable
         query_params = {}
         if self.proxy_hostname:
             query_params["proxy"] = quote(self.proxy_hostname)
@@ -870,16 +870,16 @@ type=rpm-md
         if self.sslcacert:
             # Since Zypper only accepts CAPATH, we need to split the certificates bundle
             # and run "c_rehash" on our custom CAPATH
-            _ssl_capath = os.path.dirname(self.sslcacert)
-            msg = "Preparing custom SSL CAPATH at {}".format(_ssl_capath)
+            _ssl_capath = os.path.dirname(self.sslcacert)  #  pylint: disable=invalid-name
+            msg = "Preparing custom SSL CAPATH at {}".format(_ssl_capath)  #  pylint: disable=consider-using-f-string
             rhnLog.log_clean(0, msg)
             sys.stdout.write(str(msg) + "\n")
             os.system(
-                'awk \'BEGIN {{c=0;}} /BEGIN CERT/{{c++}} {{ print > "{0}/cert." c ".pem"}}\' < {1}'.format(
+                'awk \'BEGIN {{c=0;}} /BEGIN CERT/{{c++}} {{ print > "{0}/cert." c ".pem"}}\' < {1}'.format(  #  pylint: disable=line-too-long,consider-using-f-string
                     _ssl_capath, self.sslcacert
                 )
             )
-            os.system("c_rehash {} 2&>1 /dev/null".format(_ssl_capath))
+            os.system("c_rehash {} 2&>1 /dev/null".format(_ssl_capath))  #  pylint: disable=consider-using-f-string
             query_params["ssl_capath"] = _ssl_capath
         if self.sslclientcert:
             query_params["ssl_clientcert"] = self.sslclientcert
@@ -888,7 +888,7 @@ type=rpm-md
         # urlparse cannot handle uln urls, so we need to keep this check
         if uln_repo:
             new_query = unquote(urlencode(query_params, doseq=True))
-            return "{0}&{1}".format(url, new_query)
+            return "{0}&{1}".format(url, new_query)  #  pylint: disable=consider-using-f-string
         parsed_url = urlparse(url)
         netloc = parsed_url.netloc
         if parsed_url.username and parsed_url.password:
@@ -898,12 +898,12 @@ password={passwd}
 """
             netloc = parsed_url.hostname
             if parsed_url.port:
-                netloc = "{0}:{1}".format(netloc, parsed_url.port)
+                netloc = "{0}:{1}".format(netloc, parsed_url.port)  #  pylint: disable=consider-using-f-string
             cdir = os.path.join(REPOSYNC_ZYPPER_ROOT, "etc/zypp/credentials.d")
             if not os.path.exists(cdir):
                 os.makedirs(cdir)
             cfile = os.path.join(cdir, str(self.channel_label or self.reponame))
-            with open(cfile, "w") as creds_file:
+            with open(cfile, "w") as creds_file:  #  pylint: disable=unspecified-encoding
                 creds_file.write(
                     creds_cfg.format(
                         user=parsed_url.username, passwd=parsed_url.password
@@ -945,7 +945,7 @@ password={passwd}
         if not self.repo.is_configured:
             self.setup_repo(self.repo)
 
-        _repodata_path = self._get_repodata_path()
+        _repodata_path = self._get_repodata_path()  #  pylint: disable=invalid-name
         repomd_path = os.path.join(_repodata_path, "repomd.xml")
         if tag == "repomd":
             return repomd_path
@@ -1034,13 +1034,13 @@ password={passwd}
 
     def _get_solvable_dependencies(self, solvables):
         """
-        Return a list containing all passed solvables and all its calculated dependencies.
+        Return a list containing all passed solvables and all its calculated dependencies.  #  pylint: disable=line-too-long
 
-        For each solvable we explore the "SOLVABLE_REQUIRES" to add any new solvable where "SOLVABLE_PROVIDES"
-        is matching the requirement. All the new solvables that are added will be again processed in order to get
+        For each solvable we explore the "SOLVABLE_REQUIRES" to add any new solvable where "SOLVABLE_PROVIDES"  #  pylint: disable=line-too-long
+        is matching the requirement. All the new solvables that are added will be again processed in order to get  #  pylint: disable=line-too-long
         a new level of dependencies.
 
-        The exploration of dependencies is done when all the solvables are been processed and no new solvables are added
+        The exploration of dependencies is done when all the solvables are been processed and no new solvables are added  #  pylint: disable=line-too-long
 
         :returns: list
         """
@@ -1057,11 +1057,11 @@ password={passwd}
             for sol in next_solvables:
                 # Do not explore dependencies from solvables that are already proceesed
                 if sol not in known_solvables:
-                    # This solvable has not been proceesed yet. We need to calculate its dependencies
+                    # This solvable has not been proceesed yet. We need to calculate its dependencies  #  pylint: disable=line-too-long
                     known_solvables.add(sol)
                     new_deps = True
                     # Adding solvables that provide the dependencies
-                    for _req in sol.lookup_deparray(keyname=solv.SOLVABLE_REQUIRES):
+                    for _req in sol.lookup_deparray(keyname=solv.SOLVABLE_REQUIRES):  #  pylint: disable=invalid-name
                         next_solvables.extend(self.solv_pool.whatprovides(_req))
         return list(known_solvables)
 
@@ -1216,11 +1216,11 @@ password={passwd}
             notices = {}
             updates_path = self._retrieve_md_path("updateinfo")
             infile = fileutils.decompress_open(updates_path)
-            for _event, elem in etree.iterparse(infile):
+            for _event, elem in etree.iterparse(infile):  #  pylint: disable=invalid-name,unused-variable
                 if elem.tag == "update":
                     un = UpdateNotice(elem)
                     key = un["update_id"]
-                    key = "%s-%s" % (un["update_id"], un["version"])
+                    key = "%s-%s" % (un["update_id"], un["version"])  #  pylint: disable=consider-using-f-string
                     if key not in notices:
                         notices[key] = un
             return ("updateinfo", notices.values())
@@ -1232,8 +1232,8 @@ password={passwd}
                 checksum_elem = patch.find(PATCHES_XML + "checksum")
                 location_elem = patch.find(PATCHES_XML + "location")
                 relative = location_elem.get("href")
-                checksum_type = checksum_elem.get("type")
-                checksum = checksum_elem.text
+                checksum_type = checksum_elem.get("type")  #  pylint: disable=unused-variable
+                checksum = checksum_elem.text  #  pylint: disable=redefined-outer-name,unused-variable
                 filename = os.path.join(
                     self._get_repodata_path(), os.path.basename(relative)
                 )
@@ -1241,7 +1241,7 @@ password={passwd}
                     notices.append(etree.parse(filename).getroot())
                 except SyntaxError as e:
                     self.error_msg(
-                        "Could not parse %s. "
+                        "Could not parse %s. "  #  pylint: disable=consider-using-f-string
                         "The file is not a valid XML document. %s" % (filename, e.msg)
                     )
                     continue
@@ -1255,7 +1255,7 @@ password={passwd}
 
         :returns: str
         """
-        # groups -> /var/cache/rhn/reposync/1/CentOS_7_os_x86_64/bc140c8149fc43a5248fccff0daeef38182e49f6fe75d9b46db1206dc25a6c1c-c7-x86_64-comps.xml.gz
+        # groups -> /var/cache/rhn/reposync/1/CentOS_7_os_x86_64/bc140c8149fc43a5248fccff0daeef38182e49f6fe75d9b46db1206dc25a6c1c-c7-x86_64-comps.xml.gz  #  pylint: disable=line-too-long
         groups = None
         if self._md_exists("group"):
             groups = self._retrieve_md_path("group")
@@ -1289,19 +1289,19 @@ password={passwd}
         except URLGrabError as exc:
             repl_url = suseLibURL(url).getURL(stripPw=True)
             if not hasattr(exc, "code") and exc.errno != NO_MORE_MIRRORS_TO_TRY:
-                msg = "ERROR: Media product file download failed: %s - %s" % (
+                msg = "ERROR: Media product file download failed: %s - %s" % (  #  pylint: disable=consider-using-f-string
                     url,
                     exc.strerror,
                 )
                 msg = msg.replace(url, repl_url)
                 log(0, msg)
             if rhnLog.LOG and rhnLog.LOG.level >= 1:
-                msg = "ERROR[%s/%s]: Media product file download failed: %s - %s%s" % (
+                msg = "ERROR[%s/%s]: Media product file download failed: %s - %s%s" % (  #  pylint: disable=consider-using-f-string
                     exc.errno,
                     exc.code if hasattr(exc, "code") else "-",
                     url,
                     exc.strerror,
-                    ": %s" % (traceback.format_exc()) if rhnLog.LOG.level >= 2 else "",
+                    ": %s" % (traceback.format_exc()) if rhnLog.LOG.level >= 2 else "",  #  pylint: disable=consider-using-f-string
                 )
                 msg = msg.replace(url, repl_url)
                 log(0, msg)
@@ -1333,10 +1333,10 @@ password={passwd}
 
         if latest:
             latest_pkgs = {}
-            new_pkgs = []
+            new_pkgs = []  #  pylint: disable=unused-variable
             for pkg in pkglist:
-                ident = "{}.{}".format(pkg.name, pkg.arch)
-                if ident not in latest_pkgs.keys() or LooseVersion(
+                ident = "{}.{}".format(pkg.name, pkg.arch)  #  pylint: disable=consider-using-f-string
+                if ident not in latest_pkgs.keys() or LooseVersion(  #  pylint: disable=consider-iterating-dictionary
                     str(pkg.evr)
                 ) > LooseVersion(str(latest_pkgs[ident].evr)):
                     latest_pkgs[ident] = pkg
@@ -1345,7 +1345,7 @@ password={passwd}
         to_return = []
         for pack in pkglist:
             new_pack = ContentPackage()
-            epoch, version, release = RawSolvablePackage._parse_solvable_evr(pack.evr)
+            epoch, version, release = RawSolvablePackage._parse_solvable_evr(pack.evr)  #  pylint: disable=protected-access
             try:
                 new_pack.setNVREA(pack.name, version, release, epoch, pack.arch)
             except ValueError as e:
@@ -1353,7 +1353,7 @@ password={passwd}
                 log(0, e)
                 continue
             new_pack.unique_id = RawSolvablePackage(pack)
-            checksum = pack.lookup_checksum(solv.SOLVABLE_CHECKSUM)
+            checksum = pack.lookup_checksum(solv.SOLVABLE_CHECKSUM)  #  pylint: disable=redefined-outer-name
             new_pack.checksum_type = checksum.typestr()
             new_pack.checksum = checksum.hex()
             to_return.append(new_pack)
@@ -1392,12 +1392,12 @@ password={passwd}
         Example output:
         [
             (
-                'repodata/bc140c8149fc43a5248fccff0daeef38182e49f6fe75d9b46db1206dc25a6c1c-c7-x86_64-comps.xml.gz',
-                ('sha256', 'bc140c8149fc43a5248fccff0daeef38182e49f6fe75d9b46db1206dc25a6c1c')
+                'repodata/bc140c8149fc43a5248fccff0daeef38182e49f6fe75d9b46db1206dc25a6c1c-c7-x86_64-comps.xml.gz',  #  pylint: disable=line-too-long
+                ('sha256', 'bc140c8149fc43a5248fccff0daeef38182e49f6fe75d9b46db1206dc25a6c1c')  #  pylint: disable=line-too-long
             ),
             (
-                'repodata/6614b3605d961a4aaec45d74ac4e5e713e517debb3ee454a1c91097955780697-primary.sqlite.bz2',
-                ('sha256', '6614b3605d961a4aaec45d74ac4e5e713e517debb3ee454a1c91097955780697')
+                'repodata/6614b3605d961a4aaec45d74ac4e5e713e517debb3ee454a1c91097955780697-primary.sqlite.bz2',  #  pylint: disable=line-too-long
+                ('sha256', '6614b3605d961a4aaec45d74ac4e5e713e517debb3ee454a1c91097955780697')  #  pylint: disable=line-too-long
             )
         ]
 
@@ -1420,7 +1420,7 @@ password={passwd}
             raise RepoMDError(self._get_repodata_path())
         repomd = open(repomd_path, "rb")
         files = {}
-        for _event, elem in etree.iterparse(repomd):
+        for _event, elem in etree.iterparse(repomd):  #  pylint: disable=invalid-name,unused-variable
             if elem.tag.endswith("data"):
                 if elem.attrib.get("type") == "primary_db":
                     files["primary"] = (get_location(elem), get_checksum(elem))
@@ -1446,7 +1446,7 @@ password={passwd}
         if self._md_exists("repomd"):
             repomd_old_path = self._retrieve_md_path("repomd")
             repomd_new_path = os.path.join(self._get_repodata_path(), "repomd.xml.new")
-            # Newer file not available? Don't do anything. It should be downloaded before this.
+            # Newer file not available? Don't do anything. It should be downloaded before this.  #  pylint: disable=line-too-long
             if not os.path.isfile(repomd_new_path):
                 return True
             return checksum.getFileChecksum(
@@ -1487,7 +1487,7 @@ password={passwd}
         params["proxies"] = get_proxies(
             self.proxy_url, self.proxy_user, self.proxy_pass
         )
-        with cfg_component("server.satellite") as CFG:
+        with cfg_component("server.satellite") as CFG:  #  pylint: disable=redefined-outer-name,invalid-name
             params["urlgrabber_logspec"] = CFG.get("urlgrabber_logspec")
 
     def get_file(self, path, local_base=None):

@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*- pylint: disable=missing-module-docstring,invalid-name
 #
 # Copyright (c) 2008--2017 Red Hat, Inc.
 #
@@ -54,7 +54,7 @@ class BaseChannelDeniedError(Exception):
 
 
 class ChannelException(Exception):
-    def __init__(self, channel_id=None, *args, **kwargs):
+    def __init__(self, channel_id=None, *args, **kwargs):  #  pylint: disable=keyword-arg-before-vararg
         Exception.__init__(self, *args, **kwargs)
         self.channel_id = channel_id
         self.channel = None
@@ -88,7 +88,7 @@ class InvalidChannel(Exception):
     pass
 
 
-class BaseDatabaseObject:
+class BaseDatabaseObject:  #  pylint: disable=missing-class-docstring
     def __init__(self):
         self._row = None
 
@@ -123,33 +123,33 @@ class BaseDatabaseObject:
             raise_with_tb(ModifiedError(self._row["id"]), sys.exc_info()[2])
 
 
-class BaseChannelObject(BaseDatabaseObject):
+class BaseChannelObject(BaseDatabaseObject):  #  pylint: disable=missing-class-docstring
     _table_name = None
     _sequence_name = None
     _generic_fields = []
 
     def load_by_label(self, label):
-        self.__init__()
+        self.__init__()  #  pylint: disable=unnecessary-dunder-call
         self._row = rhnSQL.Row(self._table_name, "label")
         self._row.load(label)
         return self
 
     def load_by_id(self, obj_id):
-        self.__init__()
+        self.__init__()  #  pylint: disable=unnecessary-dunder-call
         self._row = rhnSQL.Row(self._table_name, "id")
         self._row.load(obj_id)
         return self
 
-    def load_from_dict(self, dict):
+    def load_from_dict(self, dict):  #  pylint: disable=redefined-builtin
         # Re-init
-        self.__init__()
+        self.__init__()  #  pylint: disable=unnecessary-dunder-call
         for f in self._generic_fields:
             method = getattr(self, "set_" + f)
             method(dict.get(f))
         self._load_rest(dict)
         return self
 
-    def _load_rest(self, dict):
+    def _load_rest(self, dict):  #  pylint: disable=redefined-builtin
         pass
 
     def exists(self):
@@ -214,7 +214,7 @@ class BaseChannelObject(BaseDatabaseObject):
 # Channel creation
 
 
-class Channel(BaseChannelObject):
+class Channel(BaseChannelObject):  #  pylint: disable=missing-class-docstring
     _table_name = "rhnChannel"
     _sequence_name = "rhn_channel_id_seq"
     _generic_fields = [
@@ -245,13 +245,13 @@ class Channel(BaseChannelObject):
         self._load_dists()
         return self
 
-    def load_by_id(self, label):
+    def load_by_id(self, label):  #  pylint: disable=arguments-renamed
         BaseChannelObject.load_by_id(self, label)
         self._load_channel_families()
         self._load_dists()
         return self
 
-    def _load_rest(self, dict):
+    def _load_rest(self, dict):  #  pylint: disable=redefined-builtin
         dists = dict.get("dists")
         if not dists:
             return
@@ -391,7 +391,7 @@ class Channel(BaseChannelObject):
         date_obj = self._row["end_of_life"]
         if date_obj is None:
             return None
-        return "%s-%02d-%02d %02d:%02d:%02d" % (
+        return "%s-%02d-%02d %02d:%02d:%02d" % (  #  pylint: disable=consider-using-f-string
             date_obj.year,
             date_obj.month,
             date_obj.day,
@@ -605,16 +605,16 @@ def list_channels(pattern=None):
 # makes sure there are no None values in dictionaries, etc.
 
 
-def __stringify(object):
+def __stringify(object):  #  pylint: disable=invalid-name,redefined-builtin
     if object is None:
         return ""
-    if type(object) == type([]):
+    if type(object) == type([]):  #  pylint: disable=unidiomatic-typecheck
         return list(map(__stringify, object))
     # We need to know __stringify converts immutable types into immutable
     # types
-    if type(object) == type(()):
+    if type(object) == type(()):  #  pylint: disable=unidiomatic-typecheck
         return tuple(map(__stringify, object))
-    if type(object) == type({}):
+    if type(object) == type({}):  #  pylint: disable=unidiomatic-typecheck
         ret = {}
         for k, v in list(object.items()):
             ret[__stringify(k)] = __stringify(v)
@@ -698,7 +698,7 @@ def channels_for_server(server_id):
     log_debug(3, server_id)
     try:
         server_id = int(server_id)
-    except:
+    except:  #  pylint: disable=bare-except
         raise_with_tb(rhnFault(8, server_id), sys.exc_info()[2])  # Invalid rhnServer.id
     # XXX: need to return unsubsubcribed channels and a way to indicate
     #        they arent already subscribed
@@ -745,12 +745,12 @@ def channels_for_server(server_id):
     return __stringify(channels)
 
 
-def getSubscribedChannels(server_id):
+def getSubscribedChannels(server_id):  #  pylint: disable=invalid-name
     """
     Format the response from channels_for_server in the way that the
     handlers expect.
     """
-    channelList = channels_for_server(server_id)
+    channelList = channels_for_server(server_id)  #  pylint: disable=invalid-name
     channels = []
     for each in channelList:
         if "last_modified" not in each:
@@ -776,7 +776,7 @@ def getSubscribedChannels(server_id):
     return channels
 
 
-def isCustomChannel(channel_id):
+def isCustomChannel(channel_id):  #  pylint: disable=invalid-name
     """
     Input:      channel_id  (from DB Table rhnChannel.id)
     Returns:    True if this is a custom channel
@@ -928,7 +928,7 @@ def get_channel_for_release_arch(release, server_arch, org_id=None):
     log_debug(3, release, server_arch)
 
     server_arch = rhnLib.normalize_server_arch(str(server_arch))
-    log_debug(3, "normalized arch as %s" % server_arch)
+    log_debug(3, "normalized arch as %s" % server_arch)  #  pylint: disable=consider-using-f-string
 
     if org_id is None:
         query = """
@@ -993,7 +993,7 @@ def get_channel_for_release_arch(release, server_arch, org_id=None):
         # No channles for this guy
         log_debug(3, "No channles for this guy")
         return None
-    log_debug(3, "row is %s" % str(row))
+    log_debug(3, "row is %s" % str(row))  #  pylint: disable=consider-using-f-string
     return row
 
 
@@ -1700,8 +1700,8 @@ def _list_packages(channel, cache_prefix, function):
     # try the caching thing first
     c_info = channel_info(channel)
     if not c_info:  # unknown channel
-        raise rhnFault(40, "could not find any data on channel '%s'" % channel)
-    cache_entry = "%s-%s" % (cache_prefix, channel)
+        raise rhnFault(40, "could not find any data on channel '%s'" % channel)  #  pylint: disable=consider-using-f-string
+    cache_entry = "%s-%s" % (cache_prefix, channel)  #  pylint: disable=consider-using-f-string
     ret = rhnCache.get(cache_entry, c_info["last_modified"])
     if ret:  # we scored a cache hit
         log_debug(4, "Scored cache hit", channel)
@@ -1725,7 +1725,7 @@ def _list_packages(channel, cache_prefix, function):
     return ret
 
 
-def getChannelInfoForKickstart(kickstart):
+def getChannelInfoForKickstart(kickstart):  #  pylint: disable=invalid-name
     query = """
     select c.label,
            to_char(c.last_modified, 'YYYYMMDDHH24MISS') last_modified
@@ -1739,7 +1739,7 @@ def getChannelInfoForKickstart(kickstart):
     return h.fetchone_dict()
 
 
-def getChannelInfoForKickstartOrg(kickstart, org_id):
+def getChannelInfoForKickstartOrg(kickstart, org_id):  #  pylint: disable=invalid-name
     query = """
     select c.label,
            to_char(c.last_modified, 'YYYYMMDDHH24MISS') last_modified
@@ -1754,11 +1754,11 @@ def getChannelInfoForKickstartOrg(kickstart, org_id):
     return h.fetchone_dict()
 
 
-def getChannelInfoForKickstartSession(session):
+def getChannelInfoForKickstartSession(session):  #  pylint: disable=invalid-name
     # decode the session string
     try:
         session_id = int(session.split("x")[0].split(":")[0])
-    except Exception:
+    except Exception:  #  pylint: disable=broad-exception-caught
         return None, None
 
     query = """
@@ -1776,7 +1776,7 @@ def getChannelInfoForKickstartSession(session):
     return h.fetchone_dict()
 
 
-def getChildChannelInfoForKickstart(kickstart, child):
+def getChildChannelInfoForKickstart(kickstart, child):  #  pylint: disable=invalid-name
     query = """
     select c.label,
            to_char(c.last_modified, 'YYYYMMDDHH24MISS') last_modified
@@ -1794,7 +1794,7 @@ def getChildChannelInfoForKickstart(kickstart, child):
     return h.fetchone_dict()
 
 
-def getChannelInfoForTinyUrl(tinyurl):
+def getChannelInfoForTinyUrl(tinyurl):  #  pylint: disable=invalid-name
     query = """
     select tu.url
       from rhnTinyUrl tu
@@ -1815,8 +1815,8 @@ def list_obsoletes(channel):
     # try the caching thing first
     c_info = channel_info(channel)
     if not c_info:  # unknown channel
-        raise rhnFault(40, "could not find any data on channel '%s'" % channel)
-    cache_entry = "list_obsoletes-%s" % channel
+        raise rhnFault(40, "could not find any data on channel '%s'" % channel)  #  pylint: disable=consider-using-f-string
+    cache_entry = "list_obsoletes-%s" % channel  #  pylint: disable=consider-using-f-string
     ret = rhnCache.get(cache_entry, c_info["last_modified"])
     if ret:  # we scored a cache hit
         log_debug(4, "Scored cache hit", channel)
@@ -1857,7 +1857,7 @@ def list_obsoletes(channel):
     )
     h.execute(channel=str(channel))
     # Store stuff in a dictionary to makes things simpler
-    hash = {}
+    hash = {}  #  pylint: disable=redefined-builtin
     while 1:
         row = h.fetchone_dict()
         if not row:
@@ -1882,7 +1882,7 @@ def list_obsoletes(channel):
     return result
 
 
-def __auth_user(server_id, username, password):
+def __auth_user(server_id, username, password):  #  pylint: disable=invalid-name
     """Auth if user can add/remove channel from given server"""
     log_debug(3, server_id, username)
     # check the username and password for compliance
@@ -1908,7 +1908,7 @@ def __auth_user(server_id, username, password):
 # small wrapper around a PL/SQL function
 def subscribe_sql(server_id, channel_id, commit=1):
     log_debug(3, server_id, channel_id, commit)
-    subscribe_channel = rhnSQL.Procedure("rhn_channel.subscribe_server")
+    subscribe_channel = rhnSQL.Procedure("rhn_channel.subscribe_server")  #  pylint: disable=redefined-outer-name
     try:
         # don't run the EC yet
         subscribe_channel(server_id, channel_id, 0)
@@ -1916,11 +1916,11 @@ def subscribe_sql(server_id, channel_id, commit=1):
         e = sys.exc_info()[1]
         if e.errno == 20102:  # channel_server_one_base
             log_error(
-                "Channel subscribe failed, "
+                "Channel subscribe failed, "  #  pylint: disable=consider-using-f-string
                 "%s already subscribed to %s (?)" % (server_id, channel_id)
             )
             raise_with_tb(
-                rhnFault(38, "Server already subscribed to %s" % channel_id),
+                rhnFault(38, "Server already subscribed to %s" % channel_id),  #  pylint: disable=consider-using-f-string
                 sys.exc_info()[2],
             )
         # If we got here, it's an unknown error; ISE (for now)
@@ -1975,23 +1975,23 @@ def subscribe_channel(server_id, channel, username, password):
     h.execute(channel=str(channel))
     channel_details = h.fetchone_dict()
     if not channel_details:
-        log_error("Channel %s does not exist?" % channel)
-        raise rhnFault(40, "Channel %s does not exist?" % channel)
+        log_error("Channel %s does not exist?" % channel)  #  pylint: disable=consider-using-f-string
+        raise rhnFault(40, "Channel %s does not exist?" % channel)  #  pylint: disable=consider-using-f-string
 
     # get server's parent channel
     h = rhnSQL.prepare(_query_server_parent_channel)
     h.execute(sid=server_id)
     server_parent_channel = h.fetchone_dict()
 
-    # Can't add more than one parent or child of parent channel to which server isn't subscibed
+    # Can't add more than one parent or child of parent channel to which server isn't subscibed  #  pylint: disable=line-too-long
     if not channel_details["parent_channel"] and server_parent_channel:
         log_error(
-            "Cannot add parent channel %s. Server already subscribed to parent channel %s."
+            "Cannot add parent channel %s. Server already subscribed to parent channel %s."  #  pylint: disable=line-too-long,consider-using-f-string
             % (channel, server_parent_channel["label"])
         )
         raise rhnFault(
             32,
-            "Cannot add parent channel %s. Server already subscribed to parent channel %s."
+            "Cannot add parent channel %s. Server already subscribed to parent channel %s."  #  pylint: disable=line-too-long,consider-using-f-string
             % (channel, server_parent_channel["label"]),
         )
     else:
@@ -1999,9 +1999,9 @@ def subscribe_channel(server_id, channel, username, password):
             server_parent_channel
             and server_parent_channel["id"] != channel_details["parent_channel"]
         ):
-            log_error("Server is not subscribed to parent of channel %s." % channel)
+            log_error("Server is not subscribed to parent of channel %s." % channel)  #  pylint: disable=consider-using-f-string
             raise rhnFault(
-                32, "Server is not subscribed to parent of channel %s." % channel
+                32, "Server is not subscribed to parent of channel %s." % channel  #  pylint: disable=consider-using-f-string
             )
 
     # check specific channel subscription permissions
@@ -2020,7 +2020,7 @@ def subscribe_channel(server_id, channel, username, password):
 # server_id, org_id, release, arch, user_id. Sometimes we only pass the
 # server_id, and later down the road we have to message "no channel for
 # release foo, arch bar", but we don't know the release and arch anymore
-class LiteServer:
+class LiteServer:  #  pylint: disable=missing-class-docstring
     _attributes = ["id", "org_id", "release", "arch", "suse_products"]
 
     def __init__(self, **kwargs):
@@ -2048,10 +2048,10 @@ class LiteServer:
             self.suse_products = suse_products
 
     def __repr__(self):
-        dict = {}
+        dict = {}  #  pylint: disable=redefined-builtin
         for attr in self._attributes:
             dict[attr] = getattr(self, attr)
-        return "<%s instance at %s: attributes=%s>" % (
+        return "<%s instance at %s: attributes=%s>" % (  #  pylint: disable=consider-using-f-string
             self.__class__.__name__,
             id(self),
             dict,
@@ -2059,7 +2059,7 @@ class LiteServer:
 
 
 def guess_suse_channels_for_server(
-    server, org_id=None, user_id=None, raise_exceptions=0
+    server, org_id=None, user_id=None, raise_exceptions=0  #  pylint: disable=unused-argument
 ):
     log_debug(3, server)
     suse_products = server.get_suse_products()
@@ -2076,7 +2076,7 @@ def guess_suse_channels_for_server(
         return None
 
     all_products = []
-    rootProductId = suseLib.findProduct(baseproduct)
+    rootProductId = suseLib.findProduct(baseproduct)  #  pylint: disable=invalid-name
     exts = suseLib.findAllExtensionProductsOf(rootProductId, rootProductId)
     while len(exts) > 0:
         all_products = all_products + exts
@@ -2129,9 +2129,9 @@ def guess_channels_for_server(server, user_id=None, none_ok=0, raise_exceptions=
         h.execute(server_id=server.id)
         ret = h.fetchone_dict()
         if not ret:
-            log_error("Could not get the release/arch " "for server %s" % server.id)
+            log_error("Could not get the release/arch " "for server %s" % server.id)  #  pylint: disable=consider-using-f-string
             raise rhnFault(
-                8, "Could not find the release/arch " "for server %s" % server.id
+                8, "Could not find the release/arch " "for server %s" % server.id  #  pylint: disable=consider-using-f-string
             )
         if server.org_id is None:
             server.org_id = ret["org_id"]
@@ -2182,7 +2182,7 @@ def guess_channels_for_server(server, user_id=None, none_ok=0, raise_exceptions=
         if none_ok:
             return []
 
-        raise raise_with_tb(
+        raise raise_with_tb(  #  pylint: disable=raise-missing-from,raising-bad-type
             rhnFault(
                 71,
                 _("Insufficient subscription permissions for release (%s, %s")
@@ -2219,12 +2219,12 @@ def subscribe_server_channels(server, user_id=None, none_ok=0):
 
 def unsubscribe_sql(server_id, channel_id, commit=1):
     log_debug(3, server_id, channel_id, commit)
-    unsubscribe_channel = rhnSQL.Procedure("rhn_channel.unsubscribe_server")
+    unsubscribe_channel = rhnSQL.Procedure("rhn_channel.unsubscribe_server")  #  pylint: disable=redefined-outer-name
     try:
         # don't run the EC yet
         unsubscribe_channel(server_id, channel_id, 0)
     except rhnSQL.SQLError:
-        log_error("Channel unsubscribe from %s failed for %s" % (channel_id, server_id))
+        log_error("Channel unsubscribe from %s failed for %s" % (channel_id, server_id))  #  pylint: disable=consider-using-f-string
         return 0
     if commit:
         rhnSQL.commit()
@@ -2249,15 +2249,15 @@ def unsubscribe_channel(server_id, channel, username, password):
     ret = h.fetchone_dict()
     if not ret:
         log_error(
-            "Asked to unsubscribe server %s from non-existent channel %s"
+            "Asked to unsubscribe server %s from non-existent channel %s"  #  pylint: disable=consider-using-f-string
             % (server_id, channel)
         )
-        raise rhnFault(40, "The specified channel '%s' does not exist." % channel)
+        raise rhnFault(40, "The specified channel '%s' does not exist." % channel)  #  pylint: disable=consider-using-f-string
     if not ret["parent_channel"]:
-        log_error("Cannot unsubscribe %s from base channel %s" % (server_id, channel))
+        log_error("Cannot unsubscribe %s from base channel %s" % (server_id, channel))  #  pylint: disable=consider-using-f-string
         raise rhnFault(
             72,
-            "You can not unsubscribe %s from base channel %s." % (server_id, channel),
+            "You can not unsubscribe %s from base channel %s." % (server_id, channel),  #  pylint: disable=consider-using-f-string
         )
 
     # check specific channel subscription permissions
@@ -2302,7 +2302,7 @@ def unsubscribe_all_channels(server_id):
             rhnSQL.rollback("unsub_all_channels")
             raise rhnFault(
                 36,
-                "Could not unsubscribe server %s "
+                "Could not unsubscribe server %s "  #  pylint: disable=consider-using-f-string
                 "from existing channels" % (server_id,),
             )
     # finished unsubscribing
@@ -2332,7 +2332,7 @@ def unsubscribe_channels(server_id, channels):
             rhnSQL.rollback("unsub_channels")
             raise rhnFault(
                 36,
-                "Could not unsubscribe server %s "
+                "Could not unsubscribe server %s "  #  pylint: disable=consider-using-f-string
                 "from channel %s" % (server_id, channel["label"]),
             )
 
@@ -2409,7 +2409,7 @@ def system_reg_message(server):
         )
 
     # System does have a base channel; check entitlements
-    from rhnServer import (
+    from rhnServer import (  #  pylint: disable=import-outside-toplevel
         server_lib,
     )  # having this on top, cause TB due circular imports
 
@@ -2425,7 +2425,7 @@ def system_reg_message(server):
             # Default to www
             hostname = "rhn.redhat.com"
         params = {
-            "entitlement_url": "https://%s"
+            "entitlement_url": "https://%s"  #  pylint: disable=consider-using-f-string
             "/rhn/systems/details/Edit.do?sid=%s" % (hostname, server_id)
         }
         return -1, no_entitlement_title, no_entitlement_message % params
@@ -2434,12 +2434,12 @@ def system_reg_message(server):
 
 def subscribe_to_tools_channel(server_id):
     """
-    Subscribes server_id to the RHN Tools channel associated with its base channel, if one exists.
+    Subscribes server_id to the RHN Tools channel associated with its base channel, if one exists.  #  pylint: disable=line-too-long
     """
     base_channel_dict = get_base_channel(server_id, none_ok=1)
 
     if base_channel_dict is None:
-        raise NoBaseChannelError("Server %s has no base channel." % str(server_id))
+        raise NoBaseChannelError("Server %s has no base channel." % str(server_id))  #  pylint: disable=consider-using-f-string
 
     lookup_child_channels = rhnSQL.Statement(
         """
@@ -2455,7 +2455,7 @@ def subscribe_to_tools_channel(server_id):
 
     if child_channels is None:
         raise NoChildChannels(
-            "Base channel id %s has no child channels associated with it."
+            "Base channel id %s has no child channels associated with it."  #  pylint: disable=consider-using-f-string
             % base_channel_dict["id"]
         )
 
@@ -2467,7 +2467,7 @@ def subscribe_to_tools_channel(server_id):
 
     if tools_channel is None:
         raise NoToolsChannel(
-            "Base channel id %s does not have a Tools channel as a child channel."
+            "Base channel id %s does not have a Tools channel as a child channel."  #  pylint: disable=consider-using-f-string
             % base_channel_dict["id"]
         )
     else:

@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring,invalid-name
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -35,7 +35,7 @@ class ExpiredSessionError(Exception):
     pass
 
 
-class Session:
+class Session:  #  pylint: disable=missing-class-docstring
     def __init__(self, session_id=None):
         self.session_id = session_id
         self.expires = None
@@ -53,7 +53,7 @@ class Session:
         # Reads the four secrets from the config file
         return list(
             map(
-                lambda x, cfg=CFG: getattr(cfg, "session_secret_%s" % x),
+                lambda x, cfg=CFG: getattr(cfg, "session_secret_%s" % x),  #  pylint: disable=consider-using-f-string
                 list(range(1, 5)),
             )
         )
@@ -61,9 +61,9 @@ class Session:
     def get_secrets(self):
         # Validates the secrets from the config file
         secrets = self._get_secrets()
-        if len(secrets) != len([_f for _f in secrets if _f]):
+        if len(secrets) != len([_f for _f in secrets if _f]):  #  pylint: disable=invalid-name
             # the list of secrets has unset items
-            raise Exception("Secrets not set in the config file")
+            raise Exception("Secrets not set in the config file")  #  pylint: disable=broad-exception-raised
         return secrets
 
     def digest(self):
@@ -80,7 +80,7 @@ class Session:
         return ctx.hexdigest()
 
     def get_session(self):
-        return "%sx%s" % (self.session_id, self.digest())
+        return "%sx%s" % (self.session_id, self.digest())  #  pylint: disable=consider-using-f-string
 
     def web_user_id(self, uid=None):
         if uid:

@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -21,21 +21,21 @@
 # Or ask gafton.
 #
 
-import string
+import string  #  pylint: disable=unused-import
 
 
 def build_sql_insert(table, hash_name, items):
     """This statement builds a sql statement for an insert
     of 'items' into "table" indexed by "hash_name"
     """
-    sql = "insert into %s ( %s, %s ) values ( :p0, %s )" % (
+    sql = "insert into %s ( %s, %s ) values ( :p0, %s )" % (  #  pylint: disable=consider-using-f-string
         table,
         hash_name,
         ", ".join([a[0] for a in items]),
-        ", ".join([":p_%s" % a[0] for a in items]),
+        ", ".join([":p_%s" % a[0] for a in items]),  #  pylint: disable=consider-using-f-string
     )
     pdict = {"p0": None}  # This must be reset after we return from this call
-    list(map(pdict.update, [{"p_%s" % a[0]: a[1]} for a in items]))
+    list(map(pdict.update, [{"p_%s" % a[0]: a[1]} for a in items]))  #  pylint: disable=consider-using-f-string
     return sql, pdict
 
 
@@ -43,11 +43,11 @@ def build_sql_update(table, hash_name, items):
     """This statement builds a sql statement for an update
     of 'items' into "table" indexed by "hash_name"
     """
-    sql = "update %s set %s where %s = :p0" % (
+    sql = "update %s set %s where %s = :p0" % (  #  pylint: disable=consider-using-f-string
         table,
-        ", ".join(["%s = :p_%s" % (a, a) for a in [a[0] for a in items]]),
+        ", ".join(["%s = :p_%s" % (a, a) for a in [a[0] for a in items]]),  #  pylint: disable=consider-using-f-string
         hash_name,
     )
     pdict = {"p0": None}  # This must be reset after we return from this call
-    list(map(pdict.update, [{"p_%s" % a[0]: a[1]} for a in items]))
+    list(map(pdict.update, [{"p_%s" % a[0]: a[1]} for a in items]))  #  pylint: disable=consider-using-f-string
     return sql, pdict

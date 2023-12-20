@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -19,12 +19,12 @@ import cx_Oracle
 
 def main():
     if len(sys.argv) != 2:
-        sys.stdout.write("Usage: %s <connectstring>\n" % sys.argv[0])
+        sys.stdout.write("Usage: %s <connectstring>\n" % sys.argv[0])  #  pylint: disable=consider-using-f-string
         return 1
     dbh = cx_Oracle.connect(sys.argv[1])
 
-    table_name = "test_%d" % os.getpid()
-    if 1:
+    table_name = "test_%d" % os.getpid()  #  pylint: disable=consider-using-f-string
+    if 1:  #  pylint: disable=using-constant-test
         test2(dbh, table_name)
     else:
         test1(dbh, table_name)
@@ -34,33 +34,33 @@ def main():
 def test1(dbh, table_name):
     tn = table_name.upper()
     create_table(dbh, table_name)
-    assert tn in list_tables(dbh), "Table %s not created" % table_name
+    assert tn in list_tables(dbh), "Table %s not created" % table_name  #  pylint: disable=consider-using-f-string
     drop_table(dbh, table_name)
-    assert tn not in list_tables(dbh), "Table %s not dropped" % table_name
+    assert tn not in list_tables(dbh), "Table %s not dropped" % table_name  #  pylint: disable=consider-using-f-string
 
 
 def test2(dbh, table_name):
     tn = table_name.upper()
     h1 = create_table(dbh, table_name)
-    assert tn in list_tables(dbh), "Table %s not created" % table_name
+    assert tn in list_tables(dbh), "Table %s not created" % table_name  #  pylint: disable=consider-using-f-string
     h2 = drop_table(dbh, table_name)
-    assert tn not in list_tables(dbh), "Table %s not dropped" % table_name
+    assert tn not in list_tables(dbh), "Table %s not dropped" % table_name  #  pylint: disable=consider-using-f-string
 
     h1.execute(None)
-    assert tn in list_tables(dbh), "Table %s not created" % table_name
+    assert tn in list_tables(dbh), "Table %s not created" % table_name  #  pylint: disable=consider-using-f-string
     h2.execute(None)
-    assert tn not in list_tables(dbh), "Table %s not dropped" % table_name
+    assert tn not in list_tables(dbh), "Table %s not dropped" % table_name  #  pylint: disable=consider-using-f-string
 
 
 def create_table(dbh, table_name):
     h = dbh.cursor()
-    h.execute("create table %s (id int)" % table_name)
+    h.execute("create table %s (id int)" % table_name)  #  pylint: disable=consider-using-f-string
     return h
 
 
 def drop_table(dbh, table_name):
     h = dbh.cursor()
-    h.execute("drop table %s" % table_name)
+    h.execute("drop table %s" % table_name)  #  pylint: disable=consider-using-f-string
     return h
 
 

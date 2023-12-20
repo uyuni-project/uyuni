@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -17,9 +17,9 @@ from rhn import rpclib
 # server = "xmlrpc.rhn.redhat.com"
 server = "coyote.devel.redhat.com"
 
-s = rpclib.Server("http://%s/APPLET" % server)
+s = rpclib.Server("http://%s/APPLET" % server)  #  pylint: disable=consider-using-f-string
 
-dict = s.applet.poll_packages("2.1AS", "i386")
+dict = s.applet.poll_packages("2.1AS", "i386")  #  pylint: disable=redefined-builtin
 pkg_count = len(dict["contents"])
-print(("Available packages: %d" % pkg_count))
+print(("Available packages: %d" % pkg_count))  #  pylint: disable=consider-using-f-string
 assert pkg_count > 0, "No packages available for 2.1AS"

@@ -66,7 +66,7 @@ def authenticate():
     while not connected:
         try:
             connected = True;
-            print s.test.method()
+            print s.test.method()  #  pylint: disable=syntax-error
         except socket.error, e:
             # nobody is listenning, try to authenticate again
             connected = False;

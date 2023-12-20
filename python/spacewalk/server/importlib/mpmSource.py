@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring,invalid-name
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -20,8 +20,8 @@ from . import headerSource
 from . import debPackage
 
 
-class mpmBinaryPackage(headerSource.rpmBinaryPackage):
-    tagMap = headerSource.rpmBinaryPackage.tagMap.copy()
+class mpmBinaryPackage(headerSource.rpmBinaryPackage):  #  pylint: disable=missing-class-docstring,invalid-name
+    tagMap = headerSource.rpmBinaryPackage.tagMap.copy()  #  pylint: disable=invalid-name
 
     # Remove already-mapped tags
     _already_mapped = [
@@ -36,7 +36,7 @@ class mpmBinaryPackage(headerSource.rpmBinaryPackage):
         if t in tagMap:
             del tagMap[t]
 
-    def populate(
+    def populate(  #  pylint: disable=dangerous-default-value
         self, header, size, checksum_type, checksum, path=None, org_id=None, channels=[]
     ):
         # call to base class method
@@ -78,8 +78,8 @@ class mpmBinaryPackage(headerSource.rpmBinaryPackage):
             unique_deps = []
             l = []
             for dinfo in header.get(k, []):
-                hash = dinfo
-                if not len(hash["name"]):
+                hash = dinfo  #  pylint: disable=redefined-builtin
+                if not len(hash["name"]):  #  pylint: disable=use-implicit-booleaness-not-len
                     continue
                 dep_nv = (hash["name"], hash["version"], hash["flags"])
                 if dep_nv not in unique_deps:
@@ -103,7 +103,7 @@ class mpmBinaryPackage(headerSource.rpmBinaryPackage):
 # top-level package object creation --------------------------------------
 
 
-def create_package(
+def create_package(  #  pylint: disable=dangerous-default-value
     header,
     size,
     checksum_type,

@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring,invalid-name
 # Copyright (c) 2008--2013 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -19,11 +19,11 @@
 ## FIXME: the logic here is *WAY* too complicated. Need to simplify -taw
 
 ## language imports
-import os
+import os  #  pylint: disable=unused-import
 import sys
 
 ## utitily imports
-from optparse import Option, OptionParser, make_option
+from optparse import Option, OptionParser, make_option  #  pylint: disable=deprecated-module
 
 ## local imports
 from .sslToolLib import (
@@ -43,177 +43,177 @@ from .sslToolConfig import DEFS, getOption, reInitDEFS
 #
 
 
-def _getOptionsTree(defs):
+def _getOptionsTree(defs):  #  pylint: disable=invalid-name
     """passing in the defaults dictionary (which is not static)
     build the options tree dependent on whats on the commandline
     """
 
-    _optCAKeyPassword = make_option(
+    _optCAKeyPassword = make_option(  #  pylint: disable=invalid-name
         "-p", "--password", action="store", type="string", help="CA password"
     )
-    _optCAKeyPasswordFile = make_option(
+    _optCAKeyPasswordFile = make_option(  #  pylint: disable=invalid-name
         "--password-file",
         action="store",
         type="string",
         help="file containing the CA password",
     )
-    _optCaKey = make_option(
+    _optCaKey = make_option(  #  pylint: disable=invalid-name
         "--ca-key",
         action="store",
         type="string",
-        help="CA private key filename (default: %s)" % defs["--ca-key"],
+        help="CA private key filename (default: %s)" % defs["--ca-key"],  #  pylint: disable=consider-using-f-string
     )
-    _optCaCert = make_option(
+    _optCaCert = make_option(  #  pylint: disable=invalid-name
         "--ca-cert",
         action="store",
         type="string",
-        help="CA certificate filename (default: %s)" % defs["--ca-cert"],
+        help="CA certificate filename (default: %s)" % defs["--ca-cert"],  #  pylint: disable=consider-using-f-string
     )
 
-    # _optServerKeyPassword = make_option('-p', '--password', action='store', type="string", help='password to generate the web server's SSL private key')
-    _optCertExp = make_option(
+    # _optServerKeyPassword = make_option('-p', '--password', action='store', type="string", help='password to generate the web server's SSL private key')  #  pylint: disable=line-too-long
+    _optCertExp = make_option(  #  pylint: disable=invalid-name
         "--cert-expiration",
         action="store",
         type="int",
-        help="expiration of certificate (default: %s days)"
+        help="expiration of certificate (default: %s days)"  #  pylint: disable=consider-using-f-string
         % (int(defs["--cert-expiration"])),
     )
 
-    _optServerKey = make_option(
+    _optServerKey = make_option(  #  pylint: disable=invalid-name
         "--server-key",
         action="store",
         type="string",
-        help="the web server's SSL private key filename (default: %s)"
+        help="the web server's SSL private key filename (default: %s)"  #  pylint: disable=consider-using-f-string
         % defs["--server-key"],
     )
-    _optServerCertReq = make_option(
+    _optServerCertReq = make_option(  #  pylint: disable=invalid-name
         "--server-cert-req",
         action="store",
         type="string",
-        help="location of the web server's SSL certificate request filename (default: %s)"
+        help="location of the web server's SSL certificate request filename (default: %s)"  #  pylint: disable=line-too-long,consider-using-f-string
         % defs["--server-cert-req"],
     )
-    _optServerCert = make_option(
+    _optServerCert = make_option(  #  pylint: disable=invalid-name
         "--server-cert",
         action="store",
         type="string",
-        help="the web server SSL certificate filename (default: %s)"
+        help="the web server SSL certificate filename (default: %s)"  #  pylint: disable=consider-using-f-string
         % defs["--server-cert"],
     )
 
-    _optCaForce = make_option(
+    _optCaForce = make_option(  #  pylint: disable=invalid-name
         "-f",
         "--force",
         action="store_true",
         help="forcibly create a new CA SSL private key and/or public certificate",
     )
 
-    _optCaKeyOnly = make_option(
+    _optCaKeyOnly = make_option(  #  pylint: disable=invalid-name
         "--key-only",
         action="store_true",
-        help='(rarely used) only generate a CA SSL private key. Review "--gen-ca --key-only --help" for more information.',
+        help='(rarely used) only generate a CA SSL private key. Review "--gen-ca --key-only --help" for more information.',  #  pylint: disable=line-too-long
     )
-    _optCaCertOnly = make_option(
+    _optCaCertOnly = make_option(  #  pylint: disable=invalid-name
         "--cert-only",
         action="store_true",
-        help='(rarely used) only generate a CA SSL public certificate. Review "--gen-ca --cert-only --help" for more information.',
+        help='(rarely used) only generate a CA SSL public certificate. Review "--gen-ca --cert-only --help" for more information.',  #  pylint: disable=line-too-long
     )
 
-    _optServerKeyOnly = make_option(
+    _optServerKeyOnly = make_option(  #  pylint: disable=invalid-name
         "--key-only",
         action="store_true",
         help="""(rarely used) only generate the web server's SSL private key. Review "--gen-server --key-only --help" for more information.""",
     )
-    _optServerCertReqOnly = make_option(
+    _optServerCertReqOnly = make_option(  #  pylint: disable=invalid-name
         "--cert-req-only",
         action="store_true",
         help="""(rarely used) only generate the web server's SSL certificate request. Review "--gen-server --cert-req-only --help" for more information.""",
     )
-    _optServerCertOnly = make_option(
+    _optServerCertOnly = make_option(  #  pylint: disable=invalid-name
         "--cert-only",
         action="store_true",
         help="""(rarely used) only generate the web server's SSL certificate. Review "--gen-server --cert-only --help" for more information.""",
     )
 
-    _optCaCertRpm = make_option(
+    _optCaCertRpm = make_option(  #  pylint: disable=invalid-name
         "--ca-cert-rpm",
         action="store",
         type="string",
-        help="(rarely changed) RPM name that houses the CA SSL public certificate (the base filename, not filename-version-release.noarch.rpm).",
+        help="(rarely changed) RPM name that houses the CA SSL public certificate (the base filename, not filename-version-release.noarch.rpm).",  #  pylint: disable=line-too-long
     )
-    _optServerRpm = make_option(
+    _optServerRpm = make_option(  #  pylint: disable=invalid-name
         "--server-rpm",
         action="store",
         type="string",
-        help="(rarely changed) RPM name that houses the web server's SSL key set (the base filename, not filename-version-release.noarch.rpm).",
+        help="(rarely changed) RPM name that houses the web server's SSL key set (the base filename, not filename-version-release.noarch.rpm).",  #  pylint: disable=line-too-long
     )
-    _optServerTar = make_option(
+    _optServerTar = make_option(  #  pylint: disable=invalid-name
         "--server-tar",
         action="store",
         type="string",
-        help="(rarely changed) name of tar archive of the web server's SSL key set and CA SSL public certificate that is used solely by the hosted SUSE Manager Proxy installation routines (the base filename, not filename-version-release.tar).",
+        help="(rarely changed) name of tar archive of the web server's SSL key set and CA SSL public certificate that is used solely by the hosted SUSE Manager Proxy installation routines (the base filename, not filename-version-release.tar).",  #  pylint: disable=line-too-long
     )
 
-    _optRpmPackager = make_option(
+    _optRpmPackager = make_option(  #  pylint: disable=invalid-name
         "--rpm-packager",
         action="store",
         type="string",
-        help='(rarely used) packager of the generated RPM, such as "RHN Admin <rhn-admin@example.com>".',
+        help='(rarely used) packager of the generated RPM, such as "RHN Admin <rhn-admin@example.com>".',  #  pylint: disable=line-too-long
     )
-    _optRpmVender = make_option(
+    _optRpmVender = make_option(  #  pylint: disable=invalid-name
         "--rpm-vendor",
         action="store",
         type="string",
-        help='(rarely used) vendor of the generated RPM, such as "IS/IT Example Corp.".',
+        help='(rarely used) vendor of the generated RPM, such as "IS/IT Example Corp.".',  #  pylint: disable=line-too-long
     )
 
-    _optRpmOnly = make_option(
+    _optRpmOnly = make_option(  #  pylint: disable=invalid-name
         "--rpm-only",
         action="store_true",
-        help='(rarely used) only generate a deployable RPM. (and tar archive if used during the --gen-server step) Review "<baseoption> --rpm-only --help" for more information.',
+        help='(rarely used) only generate a deployable RPM. (and tar archive if used during the --gen-server step) Review "<baseoption> --rpm-only --help" for more information.',  #  pylint: disable=line-too-long
     )
-    _optNoRpm = make_option(
+    _optNoRpm = make_option(  #  pylint: disable=invalid-name
         "--no-rpm",
         action="store_true",
         help="(rarely used) do everything *except* generate an RPM.",
     )
-    _optFromCaCert = make_option(
+    _optFromCaCert = make_option(  #  pylint: disable=invalid-name
         "--from-ca-cert",
         action="store",
         type="string",
-        help="(for usage with --gen-ca and --rpm-only) Use a custom CA certificate from the given file. Note this doesn't affect the output CA certificate filename (for this use --ca-cert option).",
+        help="(for usage with --gen-ca and --rpm-only) Use a custom CA certificate from the given file. Note this doesn't affect the output CA certificate filename (for this use --ca-cert option).",  #  pylint: disable=line-too-long
     )
-    _optFromServerKey = make_option(
+    _optFromServerKey = make_option(  #  pylint: disable=invalid-name
         "--from-server-key",
         action="store",
         type="string",
-        help="(for usage with --gen-server and --rpm-only) Use a server private SSL key from the given file. Note this doesn't affect the output server key filename (for this use --server-key option).",
+        help="(for usage with --gen-server and --rpm-only) Use a server private SSL key from the given file. Note this doesn't affect the output server key filename (for this use --server-key option).",  #  pylint: disable=line-too-long
     )
-    _optFromServerCert = make_option(
+    _optFromServerCert = make_option(  #  pylint: disable=invalid-name
         "--from-server-cert",
         action="store",
         type="string",
-        help="(for usage with --gen-server and --rpm-only) Use server public SSL certificate from the given file. Note this doesn't affect the output server certificate filename (for this use --server-cert option).",
+        help="(for usage with --gen-server and --rpm-only) Use server public SSL certificate from the given file. Note this doesn't affect the output server certificate filename (for this use --server-cert option).",  #  pylint: disable=line-too-long
     )
 
-    _optSetHostname = make_option(
+    _optSetHostname = make_option(  #  pylint: disable=invalid-name
         "--set-hostname",
         action="store",
         type="string",
-        help="hostname of the web server you are installing the key set on (default: %s)"
+        help="hostname of the web server you are installing the key set on (default: %s)"  #  pylint: disable=line-too-long,consider-using-f-string
         % repr(defs["--set-hostname"]),
     )
 
-    _optSetCname = make_option(
+    _optSetCname = make_option(  #  pylint: disable=invalid-name
         "--set-cname",
         action="append",
         type="string",
         help="cname alias of the web server, can be specified multiple times",
     )
 
-    _buildRpmOptions = [_optRpmPackager, _optRpmVender, _optRpmOnly]
+    _buildRpmOptions = [_optRpmPackager, _optRpmVender, _optRpmOnly]  #  pylint: disable=invalid-name
 
-    _genOptions = [
+    _genOptions = [  #  pylint: disable=invalid-name
         make_option(
             "-v",
             "--verbose",
@@ -224,65 +224,65 @@ def _getOptionsTree(defs):
             "-d",
             "--dir",
             action="store",
-            help="build directory (default: %s)" % defs["--dir"],
+            help="build directory (default: %s)" % defs["--dir"],  #  pylint: disable=consider-using-f-string
         ),
         make_option("-q", "--quiet", action="store_true", help="be quiet. No output."),
     ]
 
-    _genConfOptions = [
+    _genConfOptions = [  #  pylint: disable=invalid-name
         make_option(
             "--set-country",
             action="store",
             type="string",
-            help="2 letter country code (default: %s)" % repr(defs["--set-country"]),
+            help="2 letter country code (default: %s)" % repr(defs["--set-country"]),  #  pylint: disable=consider-using-f-string
         ),
         make_option(
             "--set-state",
             action="store",
             type="string",
-            help="state or province (default: %s)" % repr(defs["--set-state"]),
+            help="state or province (default: %s)" % repr(defs["--set-state"]),  #  pylint: disable=consider-using-f-string
         ),
         make_option(
             "--set-city",
             action="store",
             type="string",
-            help="city or locality (default: %s)" % repr(defs["--set-city"]),
+            help="city or locality (default: %s)" % repr(defs["--set-city"]),  #  pylint: disable=consider-using-f-string
         ),
         make_option(
             "--set-org",
             action="store",
             type="string",
-            help='organization or company name, such as "Red Hat Inc." (default: %s)'
+            help='organization or company name, such as "Red Hat Inc." (default: %s)'  #  pylint: disable=consider-using-f-string
             % repr(defs["--set-org"]),
         ),
         make_option(
             "--set-org-unit",
             action="store",
             type="string",
-            help='organizational unit, such as "RHN" (default: %s)'
+            help='organizational unit, such as "RHN" (default: %s)'  #  pylint: disable=consider-using-f-string
             % repr(defs["--set-org-unit"]),
         ),
         make_option(
             "--set-email",
             action="store",
             type="string",
-            help="email address (default: %s)" % repr(defs["--set-email"]),
+            help="email address (default: %s)" % repr(defs["--set-email"]),  #  pylint: disable=consider-using-f-string
         ),
     ]
 
-    _caConfOptions = [
+    _caConfOptions = [  #  pylint: disable=invalid-name
         make_option(
             "--set-common-name",
             action="store",
             type="string",
-            help="common name (default: %s)" % repr(defs["--set-common-name"]),
+            help="common name (default: %s)" % repr(defs["--set-common-name"]),  #  pylint: disable=consider-using-f-string
         ),
     ] + _genConfOptions
 
-    _serverConfOptions = [_optSetHostname, _optSetCname] + _genConfOptions
+    _serverConfOptions = [_optSetHostname, _optSetCname] + _genConfOptions  #  pylint: disable=invalid-name
 
     # CA generation options
-    _caOptions = [
+    _caOptions = [  #  pylint: disable=invalid-name
         _optCaForce,
         _optCAKeyPassword,
         _optCAKeyPasswordFile,
@@ -290,7 +290,7 @@ def _getOptionsTree(defs):
     ]
 
     # CA cert generation options
-    _caCertOptions = [
+    _caCertOptions = [  #  pylint: disable=invalid-name
         _optCaForce,
         _optCAKeyPassword,
         _optCAKeyPasswordFile,
@@ -300,20 +300,20 @@ def _getOptionsTree(defs):
     ] + _caConfOptions
 
     # server key generation options
-    _serverKeyOptions = [
+    _serverKeyOptions = [  #  pylint: disable=invalid-name
         # _optServerKeyPassword,
         _optServerKey,
     ]
 
     # server cert req generation options
-    _serverCertReqOptions = [
+    _serverCertReqOptions = [  #  pylint: disable=invalid-name
         # _optServerKeyPassword,
         _optServerKey,
         _optServerCertReq,
     ]
 
     # server cert generation options
-    _serverCertOptions = [
+    _serverCertOptions = [  #  pylint: disable=invalid-name
         _optCAKeyPassword,
         _optCAKeyPasswordFile,
         _optCaCert,
@@ -324,7 +324,7 @@ def _getOptionsTree(defs):
             action="store",
             type="string",
             default=defs["--startdate"],
-            help="start date for the web server's SSL certificate validity (format: YYMMDDHHMMSSZ - where Z is a letter; default is 1 week ago: %s)"
+            help="start date for the web server's SSL certificate validity (format: YYMMDDHHMMSSZ - where Z is a letter; default is 1 week ago: %s)"  #  pylint: disable=line-too-long,consider-using-f-string
             % defs["--startdate"],
         ),
         _optServerCert,
@@ -332,35 +332,35 @@ def _getOptionsTree(defs):
     ]
 
     # SSL key check options
-    _checkOptions = [_optCAKeyPassword, _optCAKeyPasswordFile]
+    _checkOptions = [_optCAKeyPassword, _optCAKeyPasswordFile]  #  pylint: disable=invalid-name
 
     # SSL cert check options
     # = nothing
 
     # the base options
-    _optGenCa = make_option(
+    _optGenCa = make_option(  #  pylint: disable=invalid-name
         "--gen-ca",
         action="store_true",
-        help='generate a Certificate Authority (CA) key pair and public RPM. Review "--gen-ca --help" for more information.',
+        help='generate a Certificate Authority (CA) key pair and public RPM. Review "--gen-ca --help" for more information.',  #  pylint: disable=line-too-long
     )
-    _optGenServer = make_option(
+    _optGenServer = make_option(  #  pylint: disable=invalid-name
         "--gen-server",
         action="store_true",
         help="""generate the web server's SSL key set, RPM and tar archive. Review "--gen-server --help" for more information.""",
     )
-    _optCheckKey = make_option(
+    _optCheckKey = make_option(  #  pylint: disable=invalid-name
         "--check-key",
         action="store_true",
         help="""Check SSL CA private key's validity and password. Review "--check-key --help" for more information.""",
     )
-    _optCheckCert = make_option(
+    _optCheckCert = make_option(  #  pylint: disable=invalid-name
         "--check-cert",
         action="store_true",
         help="""Check SSL CA cert's validity. Review "--check-cert --help" for more information.""",
     )
 
     # CA build option tree set possibilities
-    _caSet = (
+    _caSet = (  #  pylint: disable=invalid-name
         [_optGenCa]
         + _caOptions
         + _caCertOptions
@@ -369,11 +369,11 @@ def _getOptionsTree(defs):
         + _buildRpmOptions
         + [_optCaCertRpm, _optNoRpm]
     )
-    _caKeyOnlySet = [_optGenCa] + _caOptions + _genOptions + [_optCaKeyOnly]
-    _caCertOnlySet = (
+    _caKeyOnlySet = [_optGenCa] + _caOptions + _genOptions + [_optCaKeyOnly]  #  pylint: disable=invalid-name
+    _caCertOnlySet = (  #  pylint: disable=invalid-name
         [_optGenCa] + _caOptions + _caCertOptions + _genOptions + [_optCaCertOnly]
     )
-    _caRpmOnlySet = (
+    _caRpmOnlySet = (  #  pylint: disable=invalid-name
         [_optGenCa, _optCaKey, _optCaCert]
         + _buildRpmOptions
         + [_optFromCaCert]
@@ -382,7 +382,7 @@ def _getOptionsTree(defs):
     )
 
     # server build option tree set possibilities
-    _serverSet = (
+    _serverSet = (  #  pylint: disable=invalid-name
         [_optGenServer]
         + _serverKeyOptions
         + _serverCertReqOptions
@@ -393,10 +393,10 @@ def _getOptionsTree(defs):
         + _buildRpmOptions
         + [_optServerRpm, _optServerTar, _optNoRpm]
     )
-    _serverKeyOnlySet = (
+    _serverKeyOnlySet = (  #  pylint: disable=invalid-name
         [_optGenServer] + _serverKeyOptions + _genOptions + [_optServerKeyOnly]
     )
-    _serverCertReqOnlySet = (
+    _serverCertReqOnlySet = (  #  pylint: disable=invalid-name
         [_optGenServer]
         + _serverKeyOptions
         + _serverCertReqOptions
@@ -404,10 +404,10 @@ def _getOptionsTree(defs):
         + _genOptions
         + [_optServerCertReqOnly]
     )
-    _serverCertOnlySet = (
+    _serverCertOnlySet = (  #  pylint: disable=invalid-name
         [_optGenServer] + _serverCertOptions + _genOptions + [_optServerCertOnly]
     )
-    _serverRpmOnlySet = (
+    _serverRpmOnlySet = (  #  pylint: disable=invalid-name
         [
             _optGenServer,
             _optServerKey,
@@ -423,12 +423,12 @@ def _getOptionsTree(defs):
     )
 
     # CA key check set possibilities
-    _checkKeySet = [_optCheckKey] + _checkOptions + _genOptions
+    _checkKeySet = [_optCheckKey] + _checkOptions + _genOptions  #  pylint: disable=invalid-name
 
     # CA cert check set possibilities
-    _checkCertSet = [_optCheckCert] + _genOptions
+    _checkCertSet = [_optCheckCert] + _genOptions  #  pylint: disable=invalid-name
 
-    optionsTree = {
+    optionsTree = {  #  pylint: disable=invalid-name
         "--gen-ca": _caSet,
         "--gen-server": _serverSet,
         "--check-key": _checkKeySet,
@@ -436,8 +436,8 @@ def _getOptionsTree(defs):
     }
 
     # quick check about the --*-only options
-    _onlyOpts = ["--key-only", "--cert-req-only", "--cert-only", "--rpm-only"]
-    _onlyIntersection = setIntersection(sys.argv, _onlyOpts)
+    _onlyOpts = ["--key-only", "--cert-req-only", "--cert-only", "--rpm-only"]  #  pylint: disable=invalid-name
+    _onlyIntersection = setIntersection(sys.argv, _onlyOpts)  #  pylint: disable=invalid-name
     if len(_onlyIntersection) > 1:
         sys.stderr.write(
             """\
@@ -446,7 +446,7 @@ ERROR: cannot use these options in combination:
             % repr(_onlyIntersection)
         )
         sys.exit(errnoGeneralError)
-    _onlyIntersection = setIntersection(sys.argv, ["--rpm-only", "--no-rpm"])
+    _onlyIntersection = setIntersection(sys.argv, ["--rpm-only", "--no-rpm"])  #  pylint: disable=invalid-name
     if len(_onlyIntersection) > 1:
         sys.stderr.write(
             """\
@@ -468,7 +468,7 @@ ERROR: cannot use these options in combination:
         optionsTree["--gen-ca"] = _caRpmOnlySet
         optionsTree["--gen-server"] = _serverRpmOnlySet
 
-    baseOptions = [_optGenCa, _optGenServer, _optCheckKey, _optCheckCert]
+    baseOptions = [_optGenCa, _optGenServer, _optCheckKey, _optCheckCert]  #  pylint: disable=invalid-name
     return optionsTree, baseOptions
 
 
@@ -491,7 +491,7 @@ def unique(s):
     return l
 
 
-def setIntersection(*sets):
+def setIntersection(*sets):  #  pylint: disable=invalid-name
     """return the intersection of 0 or more sequences.
     a teeny bit recursive.
     """
@@ -500,8 +500,8 @@ def setIntersection(*sets):
     if n <= 1:
         return unique(sets[0])
 
-    setA = unique(sets[0])
-    setB = setIntersection(*sets[1:])
+    setA = unique(sets[0])  #  pylint: disable=invalid-name
+    setB = setIntersection(*sets[1:])  #  pylint: disable=invalid-name
 
     inter = []
     for item in setA:
@@ -511,7 +511,7 @@ def setIntersection(*sets):
 
 
 ## custom usage text
-_progName = "mgr-ssl-tool"
+_progName = "mgr-ssl-tool"  #  pylint: disable=invalid-name
 BASE_USAGE = """\
 %s [options]
 
@@ -543,20 +543,20 @@ for sample usage.\
 )
 
 
-def _getOptionList(defs):
+def _getOptionList(defs):  #  pylint: disable=invalid-name
     """stitch together the commandline given rules set in optionsTree
     and the grouping logic.
     """
 
-    optionsTree, baseOptions = _getOptionsTree(defs)
-    optionsList = []
+    optionsTree, baseOptions = _getOptionsTree(defs)  #  pylint: disable=invalid-name,invalid-name
+    optionsList = []  #  pylint: disable=invalid-name
     usage = OTHER_USAGE
 
-    argIntersection = setIntersection(sys.argv, list(optionsTree.keys()))
+    argIntersection = setIntersection(sys.argv, list(optionsTree.keys()))  #  pylint: disable=invalid-name
 
     if len(argIntersection) == 1:
-        optionsList = optionsTree[argIntersection[0]]
-        optionsList = unique(optionsList)
+        optionsList = optionsTree[argIntersection[0]]  #  pylint: disable=invalid-name
+        optionsList = unique(optionsList)  #  pylint: disable=invalid-name
 
     elif len(argIntersection) > 1:
         # disallow multiple base options on the same commandline
@@ -572,7 +572,7 @@ ERROR: cannot use these options in combination:
     else:
         # if *no* base options on he commandline, clear on the list
         # and tag on a --help
-        optionsList = baseOptions
+        optionsList = baseOptions  #  pylint: disable=invalid-name
         usage = BASE_USAGE
         if "--help" not in sys.argv:
             sys.argv.append("--help")
@@ -580,7 +580,7 @@ ERROR: cannot use these options in combination:
     return optionsList, usage
 
 
-def optionParse():
+def optionParse():  #  pylint: disable=invalid-name
     """We parse in 3 steps:
     (1) parse options
     (2) set the defaults based on any options we override on the commandline
@@ -613,9 +613,9 @@ def optionParse():
     ##
     # print 'XXX STEP1'
 
-    optionList, usage = _getOptionList(DEFS)
+    optionList, usage = _getOptionList(DEFS)  #  pylint: disable=invalid-name
 
-    optionListNoHelp = optionList[:]
+    optionListNoHelp = optionList[:]  #  pylint: disable=invalid-name
     fake_help = Option("-h", "--help", action="count", help="")
     optionListNoHelp.append(fake_help)
     options, args = OptionParser(
@@ -642,13 +642,13 @@ def optionParse():
         # DEFS should be mapped with new values now... let's reparse the options.
         # The correct help text should be presented and all defaults
         # should be mapped as expected.
-        optionList, usage = _getOptionList(DEFS)
+        optionList, usage = _getOptionList(DEFS)  #  pylint: disable=invalid-name
         options, args = OptionParser(option_list=optionList, usage=usage).parse_args()
 
     # we take no extra commandline arguments that are not linked to an option
     if args:
         sys.stderr.write(
-            "\nERROR: these arguments make no sense in this "
+            "\nERROR: these arguments make no sense in this "  #  pylint: disable=consider-using-f-string
             "context (try --help): %s\n" % repr(args)
         )
         sys.exit(errnoGeneralError)
@@ -668,10 +668,10 @@ class InvalidCountryCodeException(RhnSslToolException):
     "invalid country code. Probably != 2 characters in length."
 
 
-def processCommandline():
+def processCommandline():  #  pylint: disable=invalid-name
     options = optionParse()
 
-    _maxDays = daysTil18Jan2038()
+    _maxDays = daysTil18Jan2038()  #  pylint: disable=invalid-name
 
     cert_expiration = getOption(options, "cert_expiration")
     if cert_expiration:
@@ -681,7 +681,7 @@ def processCommandline():
             )
         if cert_expiration > _maxDays:
             raise CertExpTooLongException(
-                "certificate expiration cannot exceed %s days "
+                "certificate expiration cannot exceed %s days "  #  pylint: disable=consider-using-f-string
                 "(~%.2f years)\n" % (int(_maxDays), yearsTil18Jan2038())
             )
 

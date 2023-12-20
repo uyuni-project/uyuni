@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -135,7 +135,7 @@ class ChannelPackage:
     def _get_package_info(self):
         """
         "Private" function that retrieves info about the package.
-        Populates self.package_info, self.id, self.version, self.release, and self.epoch.
+        Populates self.package_info, self.id, self.version, self.release, and self.epoch.  #  pylint: disable=line-too-long
         """
         # Get info on the package we want to install.
         possible_packages = find_package_with_arch(self.server_id, [self.package_name])
@@ -143,7 +143,7 @@ class ChannelPackage:
         # There's a possibility, however slight, that more than one package
         # may be returned by find_by_packages. If that's the case, we only
         # want the info about package_name.
-        package_info = None
+        package_info = None  #  pylint: disable=unused-variable
         if self.package_name in possible_packages:
             for package in possible_packages[self.package_name]:
                 if package[self.name_index] == self.package_name:
@@ -163,9 +163,9 @@ class ChannelPackage:
         package_id = self.get_id()
 
         if not package_id:
-            raise PackageNotFound("ID for package %s was not found." % self.get_name())
+            raise PackageNotFound("ID for package %s was not found." % self.get_name())  #  pylint: disable=consider-using-f-string
 
-        _package_info_query = rhnSQL.Statement(
+        _package_info_query = rhnSQL.Statement(  #  pylint: disable=invalid-name
             """
             select
                     p.name_id name_id,
@@ -183,7 +183,7 @@ class ChannelPackage:
 
         if not package_info_results:
             raise PackageNotFound(
-                "Name, EVR, and Arch info not found for %s" % self.get_name()
+                "Name, EVR, and Arch info not found for %s" % self.get_name()  #  pylint: disable=consider-using-f-string
             )
 
         self.name_id = package_info_results["name_id"]
@@ -309,13 +309,13 @@ class PackageInstallScheduler:
         row = h.fetchone_dict()
         if not row:
             raise NoActionInfo(
-                "Couldn't find org_id or scheduler for action %s." % str(action_id)
+                "Couldn't find org_id or scheduler for action %s." % str(action_id)  #  pylint: disable=consider-using-f-string
             )
         return (row["org_id"], row["scheduler"])
 
     def schedule_package_install(self):
         """
-        Public function that schedules self.package for installation during the next rhn_check.
+        Public function that schedules self.package for installation during the next rhn_check.  #  pylint: disable=line-too-long
         """
         org_id, scheduler = self._get_action_info(self.this_action_id)
 

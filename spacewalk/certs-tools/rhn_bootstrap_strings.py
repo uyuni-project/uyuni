@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2018 Red Hat, Inc.
 # Copyright (c) 2016--2021 SUSE LLC.
 #
@@ -239,13 +239,13 @@ fi
 """
 
 
-def getHeader(productName, options, orgCACert, pubname, apachePubDirectory):
+def getHeader(productName, options, orgCACert, pubname, apachePubDirectory):  #  pylint: disable=invalid-name,invalid-name,invalid-name,invalid-name
     # 11/22/16 options.gpg_key is now a comma-separated list of path.
     # Removing paths from options.gpg_key
     org_gpg_key = ",".join(
         [os.path.basename(gpg_key) for gpg_key in options.gpg_key.split(",")]
     )
-    with cfg_component("web") as CFG:
+    with cfg_component("web") as CFG:  #  pylint: disable=invalid-name
         version = CFG.version
         if isUyuni():
             version = CFG.uyuni
@@ -282,25 +282,25 @@ FORCE_VENV_SALT_MINION={force_venv}
     )
 
 
-def getRegistrationStackSh():
+def getRegistrationStackSh():  #  pylint: disable=invalid-name
     """
     Determines which packages and repositories needs to be
     installed in order to register this system against SUMa server.
     """
-    PKG_NAME = ["salt", "salt-minion"]
-    PKG_NAME_YUM = ["salt", "salt-minion"]
-    PKG_NAME_VENV = ["venv-salt-minion"]
+    PKG_NAME = ["salt", "salt-minion"]  #  pylint: disable=invalid-name
+    PKG_NAME_YUM = ["salt", "salt-minion"]  #  pylint: disable=invalid-name
+    PKG_NAME_VENV = ["venv-salt-minion"]  #  pylint: disable=invalid-name
 
-    PKG_NAME_UPDATE = list(PKG_NAME)
+    PKG_NAME_UPDATE = list(PKG_NAME)  #  pylint: disable=invalid-name
     PKG_NAME_UPDATE.extend(["zypper", "openssl"])
 
-    PKG_NAME_VENV_UPDATE = list(PKG_NAME_VENV)
+    PKG_NAME_VENV_UPDATE = list(PKG_NAME_VENV)  #  pylint: disable=invalid-name
     PKG_NAME_VENV_UPDATE.extend(["zypper", "openssl"])
 
-    PKG_NAME_UPDATE_YUM = list(PKG_NAME_YUM)
+    PKG_NAME_UPDATE_YUM = list(PKG_NAME_YUM)  #  pylint: disable=invalid-name
     PKG_NAME_UPDATE_YUM.extend(["yum", "openssl"])
 
-    PKG_NAME_VENV_UPDATE_YUM = list(PKG_NAME_VENV)
+    PKG_NAME_VENV_UPDATE_YUM = list(PKG_NAME_VENV)  #  pylint: disable=invalid-name
     PKG_NAME_VENV_UPDATE_YUM.extend(["yum", "openssl"])
 
     TEST_VENV_FUNC = """
@@ -772,7 +772,7 @@ remove_bootstrap_repo
     )
 
 
-def getGPGKeyImportSh():
+def getGPGKeyImportSh():  #  pylint: disable=invalid-name
     return """\
 echo
 echo "PREPARE GPG KEYS AND CORPORATE PUBLIC CA CERT"
@@ -798,7 +798,7 @@ fi
 """
 
 
-def getCorpCACertSh():
+def getCorpCACertSh():  #  pylint: disable=invalid-name
     return """\
 echo
     if [ "$INSTALLER" == "apt" ]; then
@@ -890,7 +890,7 @@ echo
 """
 
 
-def getRegistrationSaltSh(productName):
+def getRegistrationSaltSh(productName):  #  pylint: disable=invalid-name,invalid-name
     return """\
 echo
 echo "REGISTRATION"
@@ -1017,7 +1017,7 @@ echo "-bootstrap complete-"
     )
 
 
-def removeTLSCertificate():
+def removeTLSCertificate():  #  pylint: disable=invalid-name
     """
     This method adds bash instructions to the bootstrap script to correctly
     remove TLS certificate used to install salt packages to bootstrap the

@@ -1,4 +1,4 @@
-# Retrieve action method name given queued action information.
+# Retrieve action method name given queued action information. pylint: disable=missing-module-docstring,invalid-name
 #
 # Client code for Update Agent
 #
@@ -24,7 +24,7 @@ import string
 import os
 import sys
 from uyuni.common.usix import ClassType, raise_with_tb
-from distutils.sysconfig import get_python_lib
+from distutils.sysconfig import get_python_lib  #  pylint: disable=deprecated-module
 
 
 class GetMethodException(Exception):
@@ -34,18 +34,18 @@ class GetMethodException(Exception):
     pass
 
 
-def sanity(methodNameComps):
+def sanity(methodNameComps):  #  pylint: disable=invalid-name
     """Verifies if all the components have proper names."""
     # Allowed characters in each string
     alpha = string.ascii_lowercase + string.ascii_uppercase
-    allowedChars = alpha + string.digits + "_"
+    allowedChars = alpha + string.digits + "_"  #  pylint: disable=invalid-name
     for comp in methodNameComps:
-        if not len(comp):
+        if not len(comp):  #  pylint: disable=use-implicit-booleaness-not-len
             raise GetMethodException("Empty method component")
         for c in comp:
             if c not in allowedChars:
                 raise GetMethodException(
-                    "Invalid character '%s' in the method name" % c
+                    "Invalid character '%s' in the method name" % c  #  pylint: disable=consider-using-f-string
                 )
         # Can only begin with a letter
         if comp[0] not in alpha:
@@ -54,38 +54,38 @@ def sanity(methodNameComps):
             )
 
 
-def getMethod(methodName, baseClass):
+def getMethod(methodName, baseClass):  #  pylint: disable=invalid-name,invalid-name,invalid-name
     """Retreive method given methodName, path to base of tree, and class/module
     route/label.
     """
     # First split the method name
-    methodNameComps = ["spacewalk"] + baseClass.split(".") + methodName.split(".")
+    methodNameComps = ["spacewalk"] + baseClass.split(".") + methodName.split(".")  #  pylint: disable=invalid-name
     # Sanity checks
     sanity(methodNameComps)
     # Build the path to the file
     path = get_python_lib()
     for index in range(len(methodNameComps)):
         comp = methodNameComps[index]
-        path = "%s/%s" % (path, comp)
+        path = "%s/%s" % (path, comp)  #  pylint: disable=consider-using-f-string
         # If this is a directory, fine...
         if os.path.isdir(path):
             # Okay, go on
             continue
         # Try to load this as a file
         for extension in ["py", "pyc", "pyo"]:
-            if os.path.isfile("%s.%s" % (path, extension)):
+            if os.path.isfile("%s.%s" % (path, extension)):  #  pylint: disable=consider-using-f-string
                 # Yes, this is a file
                 break
         else:
             # No dir and no file. Die
-            raise GetMethodException("Action %s could not be found" % methodName)
+            raise GetMethodException("Action %s could not be found" % methodName)  #  pylint: disable=consider-using-f-string
         break
     else:
         # Only directories. This can't happen
         raise GetMethodException("Very wrong")
 
     # The position of the file
-    fIndex = index + 1
+    fIndex = index + 1  #  pylint: disable=invalid-name
     # Now build the module name
     modulename = ".".join(methodNameComps[:fIndex])
     # And try to import it
@@ -93,11 +93,11 @@ def getMethod(methodName, baseClass):
         actions = __import__(modulename)
     except ImportError:
         raise_with_tb(
-            GetMethodException("Could not import module %s" % modulename),
+            GetMethodException("Could not import module %s" % modulename),  #  pylint: disable=consider-using-f-string
             sys.exc_info()[2],
         )
 
-    className = actions
+    className = actions  #  pylint: disable=invalid-name
     # Iterate through the list of components and try to load that specific
     # module/method
     for index in range(1, len(methodNameComps)):
@@ -107,28 +107,28 @@ def getMethod(methodName, baseClass):
             if not hasattr(className, comp):
                 # Hmmm... Not there
                 raise GetMethodException(
-                    "Class %s has no attribute %s"
+                    "Class %s has no attribute %s"  #  pylint: disable=consider-using-f-string
                     % (".".join(methodNameComps[:index]), comp)
                 )
-            className = getattr(className, comp)
+            className = getattr(className, comp)  #  pylint: disable=invalid-name
             # print type(className)
             continue
         # A file or method
         # We look for the special __rhnexport__ array
         if not hasattr(className, "__rhnexport__"):
             raise GetMethodException(
-                "Class %s is not valid" % ".".join(methodNameComps[:index])
+                "Class %s is not valid" % ".".join(methodNameComps[:index])  #  pylint: disable=consider-using-f-string
             )
         export = getattr(className, "__rhnexport__")
         if comp not in export:
             raise GetMethodException(
-                "Class %s does not export '%s'"
+                "Class %s does not export '%s'"  #  pylint: disable=consider-using-f-string
                 % (".".join(methodNameComps[:index]), comp)
             )
-        className = getattr(className, comp)
-        if type(className) is ClassType:
+        className = getattr(className, comp)  #  pylint: disable=invalid-name
+        if type(className) is ClassType:  #  pylint: disable=unidiomatic-typecheck
             # Try to instantiate it
-            className = className()
+            className = className()  #  pylint: disable=invalid-name
         # print type(className)
 
     return className
@@ -149,12 +149,12 @@ if __name__ == "__main__":
     ]
 
     for m in methods:
-        print(("----Running method %s: " % m))
+        print(("----Running method %s: " % m))  #  pylint: disable=consider-using-f-string
         try:
             method = getMethod(m, "Actions")
         except GetMethodException:
             e = sys.exc_info()[1]
-            print(("Error getting the method %s: %s" % (m, e.args)))
+            print(("Error getting the method %s: %s" % (m, e.args)))  #  pylint: disable=consider-using-f-string
         else:
             method()
 # -----------------------------------------------------------------------------

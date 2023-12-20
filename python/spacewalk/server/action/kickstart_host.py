@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -16,7 +16,7 @@
 import sys
 from spacewalk.common.rhnLog import log_debug
 from uyuni.common.usix import raise_with_tb
-from spacewalk.server.rhnLib import InvalidAction, ShadowAction
+from spacewalk.server.rhnLib import InvalidAction, ShadowAction  #  pylint: disable=ungrouped-imports
 from spacewalk.server.action.utils import (
     SubscribedChannel,
     ChannelPackage,
@@ -29,7 +29,7 @@ from spacewalk.server.rhnChannel import subscribe_to_tools_channel
 __rhnexport__ = ["schedule_virt_host_pkg_install", "add_tools_channel"]
 
 
-def add_tools_channel(server_id, action_id, dry_run=0):
+def add_tools_channel(server_id, action_id, dry_run=0):  #  pylint: disable=unused-argument
     if not dry_run:
         subscribe_to_tools_channel(server_id)
     else:
@@ -81,7 +81,7 @@ def schedule_virt_host_pkg_install(server_id, action_id, dry_run=0):
     except PackageNotFound:
         pnf = sys.exc_info()[1]
         raise_with_tb(InvalidAction(str(pnf)), sys.exc_info()[2])
-    except Exception:
+    except Exception:  #  pylint: disable=broad-exception-caught
         e = sys.exc_info()[1]
         raise_with_tb(InvalidAction(str(e)), sys.exc_info()[2])
 

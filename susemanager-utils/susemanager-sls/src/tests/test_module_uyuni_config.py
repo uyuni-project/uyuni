@@ -8,10 +8,10 @@ from . import mockery
 
 mockery.setup_environment()
 
-import sys
+import sys  #  pylint: disable=wrong-import-position,unused-import
 
-from ..modules import uyuni_config
-from ..modules.uyuni_config import (
+from ..modules import uyuni_config  #  pylint: disable=wrong-import-position
+from ..modules.uyuni_config import (  #  pylint: disable=wrong-import-position,unused-import
     RPCClient,
     UyuniChannelsException,
     UyuniUsersException,
@@ -27,7 +27,7 @@ class TestRPCClient:
 
     @patch("src.modules.uyuni_config.ssl", MagicMock())
     @patch("src.modules.uyuni_config.xmlrpc", MagicMock())
-    def setup_method(self, method):
+    def setup_method(self, method):  #  pylint: disable=unused-argument
         """
         Setup state per test.
 
@@ -40,7 +40,7 @@ class TestRPCClient:
         self.rpc_client.conn.auth.login = MagicMock(return_value="My_token")
         self.rpc_client.conn = MagicMock()
 
-    def teardown_method(self, method):
+    def teardown_method(self, method):  #  pylint: disable=unused-argument
         """
         Tear-down state per test.
 
@@ -80,8 +80,8 @@ class TestRPCClient:
 
         rpc_client = RPCClient(user="user")
         assert rpc_client.get_user() == "admin_user"
-        assert rpc_client._user == "admin_user"
-        assert rpc_client._password == "password_user"
+        assert rpc_client._user == "admin_user"  #  pylint: disable=protected-access
+        assert rpc_client._password == "password_user"  #  pylint: disable=protected-access
         assert rpc_client.token is None
 
     def test_get_token(self):

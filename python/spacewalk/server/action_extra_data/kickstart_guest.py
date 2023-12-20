@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -40,11 +40,11 @@ def _action(action_name, server_id, action_id, success_state, success_type):
     )
 
 
-def schedule_virt_guest_pkg_install(server_id, action_id, data={}):
+def schedule_virt_guest_pkg_install(server_id, action_id, data={}):  #  pylint: disable=dangerous-default-value,unused-argument
     _action("schedule_virt_guest_pkg_install", server_id, action_id, "complete", None)
 
 
-def add_tools_channel(server_id, action_id, data={}):
+def add_tools_channel(server_id, action_id, data={}):  #  pylint: disable=dangerous-default-value,unused-argument
     _action(
         "add_tools_channel",
         server_id,
@@ -54,7 +54,7 @@ def add_tools_channel(server_id, action_id, data={}):
     )
 
 
-def initiate(server_id, action_id, data={}):
+def initiate(server_id, action_id, data={}):  #  pylint: disable=dangerous-default-value,unused-argument
     _action(
         "initiate",
         server_id,

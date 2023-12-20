@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python  #  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2013 Red Hat, Inc.
 #
@@ -26,5 +26,5 @@ initCFG("server.xmlrpc")
 
 try:
     rhnSQL.initDB("rhnuser/rhnuser@webde")
-except:
+except:  #  pylint: disable=bare-except
     Traceback("test_censored_db_password", mail=1)

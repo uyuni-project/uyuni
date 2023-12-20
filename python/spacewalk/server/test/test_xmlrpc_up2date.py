@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python  #  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #
@@ -23,7 +23,7 @@ def make_nvre_dict(epoch, version, release):
     return {"epoch": epoch, "version": version, "release": release}
 
 
-class SolveDependenciesTestCase(unittest.TestCase):
+class SolveDependenciesTestCase(unittest.TestCase):  #  pylint: disable=missing-class-docstring
     # this class assumes that:
     # mozilla-1.3.1-0.dag.rhel3.i386.rpm
     # mozilla-1.5-2.rhfc1.dag.i386.rpm
@@ -58,11 +58,11 @@ class SolveDependenciesTestCase(unittest.TestCase):
 
     def testArchTypeSd2(self):
         ret = self.sd2(self.sysid, [self.filename])
-        assert type(ret[self.filename][0][4]) == type("a")
+        assert type(ret[self.filename][0][4]) == type("a")  #  pylint: disable=unidiomatic-typecheck
 
     def testArchTypeSd4(self):
         ret = self.sd4(self.sysid, [self.filename])
-        assert type(ret[self.filename][0][4]) == type("a")
+        assert type(ret[self.filename][0][4]) == type("a")  #  pylint: disable=unidiomatic-typecheck
 
     def testArchValueSd2(self):
         ret = self.sd2(self.sysid, [self.filename])

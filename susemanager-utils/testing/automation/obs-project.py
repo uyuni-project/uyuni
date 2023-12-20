@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python3  #  pylint: disable=missing-module-docstring,invalid-name
 import argparse
 import os
 import sys
@@ -19,7 +19,7 @@ def run_osc_api(api_call, api, config_file, data="", method="GET"):
     """
     params = [
         "osc",
-        "--config={}".format(config_file),
+        "--config={}".format(config_file),  #  pylint: disable=consider-using-f-string
         "-A",
         api,
         "api",
@@ -30,12 +30,12 @@ def run_osc_api(api_call, api, config_file, data="", method="GET"):
     if data != "":
         params.append("-d")
         params.append(data)
-    sp_result = subprocess.run(params, stdout=subprocess.PIPE)
+    sp_result = subprocess.run(params, stdout=subprocess.PIPE)  #  pylint: disable=subprocess-run-check
     data = sp_result.stdout
     return ET.fromstring(data)
 
 
-def add(args):
+def add(args):  #  pylint: disable=redefined-outer-name
     api = args.api
     project = args.project
     pr_project = args.prproject
@@ -47,40 +47,40 @@ def add(args):
     config_file = args.configfile
 
     if not os.path.exists(config_file):
-        print("ERROR: config file {} not found".format(config_file))
+        print("ERROR: config file {} not found".format(config_file))  #  pylint: disable=consider-using-f-string
         sys.exit(-1)
 
     print("DEBUG: getting api version for debugging purposes")
     root = run_osc_api("/about", api, config_file)
     revision = root.find("revision").text
-    print("DEBUG: API version: {}".format(revision))
+    print("DEBUG: API version: {}".format(revision))  #  pylint: disable=consider-using-f-string
 
-    print("DEBUG: getting meta data from {}".format(project))
-    root = run_osc_api("/source/{}/_meta".format(project), api, config_file)
+    print("DEBUG: getting meta data from {}".format(project))  #  pylint: disable=consider-using-f-string
+    root = run_osc_api("/source/{}/_meta".format(project), api, config_file)  #  pylint: disable=consider-using-f-string
     result = root.find("title").text
-    print("DEBUG: found metadata for project with title {}".format(result))
+    print("DEBUG: found metadata for project with title {}".format(result))  #  pylint: disable=consider-using-f-string
 
-    print("DEBUG: adapting project meta for new project {}".format(pr_project))
+    print("DEBUG: adapting project meta for new project {}".format(pr_project))  #  pylint: disable=consider-using-f-string
     root.set("name", pr_project)
     new_title = "Build for Pull Request #" + pull_number
-    print("DEBUG: setting title to {}".format(new_title))
+    print("DEBUG: setting title to {}".format(new_title))  #  pylint: disable=consider-using-f-string
     root.find("title").text = new_title
 
     if maintainer != "":
-        print("DEBUG: Adding user {} as the only maintainer".format(maintainer))
+        print("DEBUG: Adding user {} as the only maintainer".format(maintainer))  #  pylint: disable=consider-using-f-string
         for user in root.findall("person"):
             root.remove(user)
         for group in root.findall("group"):
             root.remove(group)
         new_person = ET.fromstring(
-            '<person userid="{}" role="maintainer"/>'.format(maintainer)
+            '<person userid="{}" role="maintainer"/>'.format(maintainer)  #  pylint: disable=consider-using-f-string
         )
         root.append(new_person)
 
     if disable_publish:
         print("DEBUG: disabling publishing")
         publish_node = root.find("publish")
-        if publish_node != None:
+        if publish_node != None:  #  pylint: disable=singleton-comparison
             root.remove(publish_node)
         node = ET.fromstring("<publish><disable/></publish>")
         root.append(node)
@@ -90,7 +90,7 @@ def add(args):
     print("DEBUG: adapting list of repositories")
     for repo in root.findall("repository"):
         if not re.match(target_repo, repo.get("name")):
-            print("DEBUG: skipping {} repo".format(repo.get("name")))
+            print("DEBUG: skipping {} repo".format(repo.get("name")))  #  pylint: disable=consider-using-f-string
             root.remove(repo)
             continue
         for child in repo.findall("path"):
@@ -102,29 +102,29 @@ def add(args):
         for child in repo.findall("releasetarget"):
             repo.remove(child)
         print(
-            "DEBUG: Adding setting repository {} to use path {}".format(
+            "DEBUG: Adding setting repository {} to use path {}".format(  #  pylint: disable=consider-using-f-string
                 repo.get("name"), project
             )
         )
         new_path = ET.fromstring(
-            '<path project="{}" repository="{}" />'.format(project, repo.get("name"))
+            '<path project="{}" repository="{}" />'.format(project, repo.get("name"))  #  pylint: disable=consider-using-f-string
         )
         repo.append(new_path)
 
-    print("DEBUG: creating new project: {}".format(pr_project))
+    print("DEBUG: creating new project: {}".format(pr_project))  #  pylint: disable=consider-using-f-string
     data = ET.tostring(root)
-    print("DEBUG: data: {}".format(data))
+    print("DEBUG: data: {}".format(data))  #  pylint: disable=consider-using-f-string
     root = run_osc_api(
-        "/source/{}/_meta".format(pr_project), api, config_file, data=data, method="PUT"
+        "/source/{}/_meta".format(pr_project), api, config_file, data=data, method="PUT"  #  pylint: disable=consider-using-f-string
     )
-    print("DEBUG: result: {}".format(root.get("code")))
+    print("DEBUG: result: {}".format(root.get("code")))  #  pylint: disable=consider-using-f-string
 
 
-def print_usage(args):
+def print_usage(args):  #  pylint: disable=redefined-outer-name,unused-argument
     print("Use -h for help")
 
 
-def remove(args):
+def remove(args):  #  pylint: disable=redefined-outer-name
     api = args.api
     pr_project = args.prproject
     pull_number = args.pullnumber
@@ -133,15 +133,15 @@ def remove(args):
     interactive = not args.noninteractive
 
     if not os.path.exists(config_file):
-        print("ERROR: config file {} not found".format(config_file))
+        print("ERROR: config file {} not found".format(config_file))  #  pylint: disable=consider-using-f-string
         sys.exit(-1)
 
     print("DEBUG: getting api version for debugging purposes")
     root = run_osc_api("/about", api, config_file)
     revision = root.find("revision").text
-    print("DEBUG: API version: {}".format(revision))
+    print("DEBUG: API version: {}".format(revision))  #  pylint: disable=consider-using-f-string
 
-    print("DEBUG: removing project {}".format(pr_project))
+    print("DEBUG: removing project {}".format(pr_project))  #  pylint: disable=consider-using-f-string
     answer = ""
     if interactive:
         while answer != "y" and answer != "n":
@@ -150,9 +150,9 @@ def remove(args):
             print("OK. Maybe another day. Bye!")
             sys.exit(-1)
     root = run_osc_api(
-        "/source/{}".format(pr_project), api, config_file, method="DELETE"
+        "/source/{}".format(pr_project), api, config_file, method="DELETE"  #  pylint: disable=consider-using-f-string
     )
-    print("DEBUG: result: {}".format(root.get("code")))
+    print("DEBUG: result: {}".format(root.get("code")))  #  pylint: disable=consider-using-f-string
 
 
 parser = argparse.ArgumentParser(
@@ -170,7 +170,7 @@ parser.add_argument(
 )
 parser.add_argument(
     "--prproject",
-    help="Parent project for Pull Requests, defaults to systemsmanagement:Uyuni:Master:PR",
+    help="Parent project for Pull Requests, defaults to systemsmanagement:Uyuni:Master:PR",  #  pylint: disable=line-too-long
     default="systemsmanagement:Uyuni:Master:PR",
 )
 parser.set_defaults(func=print_usage)
@@ -179,7 +179,7 @@ subparser = parser.add_subparsers()
 parser_add = subparser.add_parser("add", help="add project")
 parser_add.add_argument(
     "--project",
-    help='Project from which to "branch" from, defaults to systemsmanagement:Uyuni:Master',
+    help='Project from which to "branch" from, defaults to systemsmanagement:Uyuni:Master',  #  pylint: disable=line-too-long
     default="systemsmanagement:Uyuni:Master",
 )
 parser_add.add_argument(

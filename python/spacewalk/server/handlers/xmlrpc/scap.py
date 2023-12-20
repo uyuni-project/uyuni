@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2013--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -27,7 +27,7 @@ from spacewalk.server.rhnHandler import rhnHandler
 from spacewalk.server.rhnLib import get_action_path, get_actionfile_path
 
 
-class Scap(rhnHandler):
+class Scap(rhnHandler):  #  pylint: disable=missing-class-docstring
     def __init__(self):
         rhnHandler.__init__(self)
         self.functions.append("upload_result")
@@ -42,9 +42,9 @@ class Scap(rhnHandler):
                 log_debug(
                     1,
                     self.server_id,
-                    "The scap file data is invalid or incomplete: %s" % scap_file,
+                    "The scap file data is invalid or incomplete: %s" % scap_file,  #  pylint: disable=consider-using-f-string
                 )
-                raise rhnFault(5101, "Missing or invalid key: %s" % k)
+                raise rhnFault(5101, "Missing or invalid key: %s" % k)  #  pylint: disable=consider-using-f-string
 
         return self._store_file(action_id, scap_file)
 
@@ -67,7 +67,7 @@ class Scap(rhnHandler):
             log_debug(
                 1,
                 self.server_id,
-                "Invalid content encoding: %s" % scap_file["content-encoding"],
+                "Invalid content encoding: %s" % scap_file["content-encoding"],  #  pylint: disable=consider-using-f-string
             )
             raise rhnFault(5104)
 
@@ -79,7 +79,7 @@ class Scap(rhnHandler):
         absolute_file = os.path.join(absolute_dir, scap_file["filename"])
 
         if not os.path.exists(absolute_dir):
-            log_debug(1, self.server_id, "Creating action directory: %s" % absolute_dir)
+            log_debug(1, self.server_id, "Creating action directory: %s" % absolute_dir)  #  pylint: disable=consider-using-f-string
             os.makedirs(absolute_dir)
             mode = stat.S_IRWXU | stat.S_IRWXG | stat.S_IROTH | stat.S_IXOTH
             subdirs = r_dir.split("/")
@@ -97,8 +97,8 @@ class Scap(rhnHandler):
                         os.chown(subdir, -1, www_gid)
                     except OSError:
                         pass
-        log_debug(1, self.server_id, "Creating file: %s" % absolute_file)
-        f = open(absolute_file, "w+")
+        log_debug(1, self.server_id, "Creating file: %s" % absolute_file)  #  pylint: disable=consider-using-f-string
+        f = open(absolute_file, "w+")  #  pylint: disable=unspecified-encoding
         f.write(filecontent)
         return {
             "result": True,

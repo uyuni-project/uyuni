@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Licensed under the GNU General Public License Version 3
 #
 # This program is free software; you can redistribute it and/or modify
@@ -45,7 +45,7 @@ def help_custominfo_createkey(self):
 def do_custominfo_createkey(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=invalid-name,unused-variable
 
     if args:
         key = args[0]
@@ -82,7 +82,7 @@ def complete_custominfo_deletekey(self, text, line, beg, end):
 def do_custominfo_deletekey(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=invalid-name,unused-variable
 
     if not args:
         self.help_custominfo_deletekey()
@@ -90,7 +90,7 @@ def do_custominfo_deletekey(self, args):
 
     # allow globbing of custominfo key names
     keys = filter_results(self.do_custominfo_listkeys("", True), args)
-    logging.debug("customkey_deletekey called with args %s, keys=%s" % (args, keys))
+    logging.debug("customkey_deletekey called with args %s, keys=%s" % (args, keys))  #  pylint: disable=consider-using-f-string
 
     if not keys:
         logging.error(_N("No keys matched argument %s") % args)
@@ -143,7 +143,7 @@ def complete_custominfo_details(self, text, line, beg, end):
 def do_custominfo_details(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=invalid-name,unused-variable
 
     if not args:
         self.help_custominfo_details()
@@ -152,7 +152,7 @@ def do_custominfo_details(self, args):
     # allow globbing of custominfo key names
     keys = filter_results(self.do_custominfo_listkeys("", True), args)
     logging.debug(
-        "customkey_details called with args: '{}', keys: '{}'.".format(
+        "customkey_details called with args: '{}', keys: '{}'.".format(  #  pylint: disable=consider-using-f-string
             ", ".join(args), ", ".join(keys)
         )
     )
@@ -194,7 +194,7 @@ def help_custominfo_updatekey(self):
 def do_custominfo_updatekey(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=invalid-name,unused-variable
 
     if args:
         key = args[0]

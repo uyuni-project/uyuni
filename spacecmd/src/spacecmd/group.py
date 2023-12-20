@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Licensed under the GNU General Public License Version 3
 #
 # This program is free software; you can redistribute it and/or modify
@@ -73,7 +73,7 @@ def complete_group_addsystems(self, text, line, beg, end):
 def do_group_addsystems(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if not args:
         self.help_group_addsystems()
@@ -129,7 +129,7 @@ def complete_group_removesystems(self, text, line, beg, end):
 def do_group_removesystems(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if not args:
         self.help_group_removesystems()
@@ -180,7 +180,7 @@ def help_group_create(self):
 def do_group_create(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if args:
         name = args[0]
@@ -212,7 +212,7 @@ def complete_group_delete(self, text, line, beg, end):
 def do_group_delete(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if not args:
         self.help_group_delete()
@@ -256,7 +256,7 @@ def complete_group_backup(self, text, line, beg, end):
 def do_group_backup(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if not args:
         self.help_group_backup()
@@ -348,14 +348,14 @@ def do_group_restore(self, args):
         return 1
 
     inputdir = os.path.abspath(inputdir)
-    logging.debug("Input Directory: %s" % (inputdir))
+    logging.debug("Input Directory: %s" % (inputdir))  #  pylint: disable=consider-using-f-string
 
     # make a list of file items in the input dir
     if os.path.isdir(inputdir):
         d_content = os.listdir(inputdir)
         for d_item in d_content:
             if os.path.isfile(inputdir + "/" + d_item):
-                logging.debug("Found file %s" % inputdir + "/" + d_item)
+                logging.debug("Found file %s" % inputdir + "/" + d_item)  #  pylint: disable=consider-using-f-string
                 files[d_item] = inputdir + "/" + d_item
     else:
         logging.error(
@@ -392,12 +392,12 @@ def do_group_restore(self, args):
             "formulas": formula_data,
         }
 
-    for groupname in files:
+    for groupname in files:  #  pylint: disable=consider-using-dict-items
         backup = json_read_from_file(files[groupname])
         if backup is None:
             # assume old backup, not in json format. Read complete file as string
             logging.info(_("Assuming group to be in old plain text format"))
-            with open(files[groupname], "r") as fh:
+            with open(files[groupname], "r") as fh:  #  pylint: disable=unspecified-encoding
                 details = fh.read()
             backup = {"description": details.rstrip("\n"), "formulas": {}}
 
@@ -407,13 +407,13 @@ def do_group_restore(self, args):
             if current[groupname] == backup:
                 logging.error(_N("Group %s already restored") % groupname)
             else:
-                logging.debug("Already have %s but the data have changed" % groupname)
+                logging.debug("Already have %s but the data have changed" % groupname)  #  pylint: disable=consider-using-f-string
 
                 if is_interactive(options):
                     if current[groupname]["description"] != backup["description"]:
                         print(_("Changing description from:"))
                         print(
-                            '\n"%s"\nto\n"%s"\n'
+                            '\n"%s"\nto\n"%s"\n'  #  pylint: disable=consider-using-f-string
                             % (current[groupname]["description"], backup["description"])
                         )
                         userinput = prompt_user(_("Continue [y/N]:"))
@@ -503,7 +503,7 @@ def complete_group_listsystems(self, text, line, beg, end):
 def do_group_listsystems(self, args, doreturn=False):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if len(args) != 1:
         self.help_group_listsystems()
@@ -541,7 +541,7 @@ def complete_group_details(self, text, line, beg, end):
 def do_group_details(self, args, short=False):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if not args:
         self.help_group_details()
@@ -584,7 +584,7 @@ def do_group_details(self, args, short=False):
 def help_group_listconfigchannels(self):
     print(
         _(
-            "group_listconfigchannels: List configuration channels assigned to a system group"
+            "group_listconfigchannels: List configuration channels assigned to a system group"  #  pylint: disable=line-too-long
         )
     )
     print(_("usage: group_listconfigchannels GROUP"))
@@ -601,7 +601,7 @@ def do_group_listconfigchannels(self, args):
 
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if not args:
         self.help_group_listconfigchannels()

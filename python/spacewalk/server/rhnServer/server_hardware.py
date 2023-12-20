@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -17,7 +17,7 @@
 # items - load, reload, instanciate and save
 #
 
-import socket
+import socket  #  pylint: disable=unused-import
 import sys
 import time
 import uuid
@@ -25,10 +25,10 @@ import uuid
 from rhn.UserDictCase import UserDictCase
 from uyuni.common.usix import raise_with_tb
 from spacewalk.common.rhnLog import log_debug, log_error
-from spacewalk.common.rhnConfig import CFG, isUyuni
+from spacewalk.common.rhnConfig import CFG, isUyuni  #  pylint: disable=unused-import,unused-import
 from spacewalk.common.rhnException import rhnFault
 from spacewalk.common.rhnTB import Traceback
-from spacewalk.common import rhnMail
+from spacewalk.common import rhnMail  #  pylint: disable=unused-import
 from spacewalk.common import rhnFlags
 from spacewalk.server import rhnSQL, rhnVirtualization, rhnUser
 
@@ -36,7 +36,7 @@ from spacewalk.server import rhnSQL, rhnVirtualization, rhnUser
 from spacewalk.server.rhnServer import server_class
 
 
-def kudzu_mapping(dict=None):
+def kudzu_mapping(dict=None):  #  pylint: disable=redefined-builtin
     """this is a class we use to get the mapping for a kudzu entry"""
     # This is the generic mapping we need
     mapping = {
@@ -45,7 +45,7 @@ def kudzu_mapping(dict=None):
     # error handling if we get passed weird stuff.
     if not dict:
         return mapping
-    if not type(dict) == type({}) and not isinstance(dict, UserDictCase):
+    if not type(dict) == type({}) and not isinstance(dict, UserDictCase):  #  pylint: disable=unidiomatic-typecheck
         return mapping
     hw_bus = dict.get("bus")
     # we need to have a bus type to be able to continue
@@ -175,7 +175,7 @@ def cleanse_ip_addr(ip_addr):
     # Make sure it's a string
     ip_addr = str(ip_addr)
     # If the ipaddr is empty, jus return empty str
-    if not len(ip_addr):
+    if not len(ip_addr):  #  pylint: disable=use-implicit-booleaness-not-len
         return ""
     arr = ip_addr.split(".")
     # lstrip will remove all leading zeros; if multiple zeros are present, it
@@ -274,7 +274,7 @@ class Device(GenericDevice):
     valid fields in the table Looks complicated but it isn't -- gafton
     """
 
-    def __init__(self, fields, dict=None, mapping=None):
+    def __init__(self, fields, dict=None, mapping=None):  #  pylint: disable=redefined-builtin
         GenericDevice.__init__(self)
         x = {}
         for k in fields:
@@ -283,9 +283,9 @@ class Device(GenericDevice):
         if not dict:
             return
         # make sure we get a UserDictCase to work with
-        if type(dict) == type({}):
+        if type(dict) == type({}):  #  pylint: disable=unidiomatic-typecheck
             dict = UserDictCase(dict)
-        if mapping is None or type(mapping) == type({}):
+        if mapping is None or type(mapping) == type({}):  #  pylint: disable=unidiomatic-typecheck
             mapping = UserDictCase(mapping)
         if not isinstance(dict, UserDictCase) or not isinstance(mapping, UserDictCase):
             log_error("Argument passed is not a dictionary", dict, mapping)
@@ -302,27 +302,27 @@ class Device(GenericDevice):
                 if mapping[k] is not None:
                     self.data[mapping[k]] = dict[k]
             else:
-                log_error("Unknown HW key =`%s'" % k, dict.dict(), mapping.dict())
+                log_error("Unknown HW key =`%s'" % k, dict.dict(), mapping.dict())  #  pylint: disable=consider-using-f-string
                 # The try-except is added just so that we can send e-mails
                 try:
-                    raise KeyError("Don't know how to parse key `%s''" % k, dict.dict())
-                except:
+                    raise KeyError("Don't know how to parse key `%s''" % k, dict.dict())  #  pylint: disable=consider-using-f-string
+                except:  #  pylint: disable=bare-except
                     Traceback(mail=1)
                     # Ignore this key
                     continue
         # clean up this data
         try:
             for k in list(self.data.keys()):
-                if type(self.data[k]) == type("") and len(self.data[k]):
+                if type(self.data[k]) == type("") and len(self.data[k]):  #  pylint: disable=unidiomatic-typecheck
                     self.data[k] = self.data[k].strip()
-                    if not len(self.data[k]):
+                    if not len(self.data[k]):  #  pylint: disable=use-implicit-booleaness-not-len
                         continue
                     if self.data[k][0] == '"' and self.data[k][-1] == '"':
                         self.data[k] = self.data[k][1:-1]
         except IndexError:
             raise_with_tb(
                 IndexError(
-                    "Can not process data = %s, key = %s" % (repr(self.data), k)
+                    "Can not process data = %s, key = %s" % (repr(self.data), k)  #  pylint: disable=consider-using-f-string
                 ),
                 sys.exc_info()[2],
             )
@@ -334,7 +334,7 @@ class HardwareDevice(Device):
 
     table = "rhnDevice"
 
-    def __init__(self, dict=None):
+    def __init__(self, dict=None):  #  pylint: disable=redefined-builtin
         fields = [
             "class",
             "bus",
@@ -362,7 +362,7 @@ class CPUDevice(Device):
 
     table = "rhnCPU"
 
-    def __init__(self, dict=None):
+    def __init__(self, dict=None):  #  pylint: disable=redefined-builtin
         fields = [
             "cpu_arch_id",
             "architecture",
@@ -408,20 +408,20 @@ class CPUDevice(Device):
             return  # all fine, we have the arch
         # if we don't have an architecture, guess it
         if not self.data.has_key("architecture"):
-            log_error("hash does not have a platform member: %s" % dict)
+            log_error("hash does not have a platform member: %s" % dict)  #  pylint: disable=consider-using-f-string
             raise AttributeError("Expected a hash value for member `platform'")
         # now extract the arch field, which has to come out of rhnCpuArch
         arch = self.data["architecture"]
         row = rhnSQL.Table("rhnCpuArch", "label")[arch]
         if row is None or not row.has_key("id"):
-            log_error("Can not find arch %s in rhnCpuArch" % arch)
-            raise AttributeError("Invalid architecture for CPU: `%s'" % arch)
+            log_error("Can not find arch %s in rhnCpuArch" % arch)  #  pylint: disable=consider-using-f-string
+            raise AttributeError("Invalid architecture for CPU: `%s'" % arch)  #  pylint: disable=consider-using-f-string
         self.data["cpu_arch_id"] = row["id"]
         del self.data["architecture"]
         if self.data.has_key("nrcpu"):  # make sure this is a number
             try:
                 self.data["nrcpu"] = int(self.data["nrcpu"])
-            except:
+            except:  #  pylint: disable=bare-except
                 self.data["nrcpu"] = 1
             if self.data["nrcpu"] == 0:
                 self.data["nrcpu"] = 1
@@ -429,13 +429,13 @@ class CPUDevice(Device):
             self.data["nrcore"] = self.data["nrcpu"]
 
 
-class NetIfaceInformation(Device):
+class NetIfaceInformation(Device):  #  pylint: disable=missing-class-docstring
     key_mapping = {
         "hwaddr": "hw_addr",
         "module": "module",
     }
 
-    def __init__(self, dict=None):
+    def __init__(self, dict=None):  #  pylint: disable=super-init-not-called,redefined-builtin
         log_debug(4, dict)
         self.ifaces = {}
         self.db_ifaces = []
@@ -448,7 +448,7 @@ class NetIfaceInformation(Device):
                 # Ignore it
                 continue
             if not isinstance(info, type({})):
-                raise rhnFault(53, "Unexpected format for interface %s" % name)
+                raise rhnFault(53, "Unexpected format for interface %s" % name)  #  pylint: disable=consider-using-f-string
             vdict = {}
             for key, mapping in list(self.key_mapping.items()):
                 # Look at the mapping first; if not found, look for the key
@@ -457,7 +457,7 @@ class NetIfaceInformation(Device):
                 else:
                     k = key
                 if k not in info:
-                    raise rhnFault(53, "Unable to find required field %s" % key)
+                    raise rhnFault(53, "Unable to find required field %s" % key)  #  pylint: disable=consider-using-f-string
                 val = info[k]
                 vdict[mapping] = val
             if "ipaddr" in info and info["ipaddr"]:
@@ -475,7 +475,7 @@ class NetIfaceInformation(Device):
             self.ifaces[name] = vdict
 
     def __str__(self):
-        return "<%s Class at %d: %s>\n" % (
+        return "<%s Class at %d: %s>\n" % (  #  pylint: disable=consider-using-f-string
             self.__class__.__name__,
             id(self),
             {
@@ -486,7 +486,7 @@ class NetIfaceInformation(Device):
 
     __repr__ = __str__
 
-    def save(self, server_id):
+    def save(self, server_id):  #  pylint: disable=arguments-renamed
         log_debug(4, self.ifaces)
         self.reload(server_id)
         log_debug(4, "Interfaces in DB", self.db_ifaces)
@@ -551,7 +551,7 @@ class NetIfaceInformation(Device):
     def get_server_id(self, server_id, name):
         """retrieve id for given server_id and name"""
         h = rhnSQL.prepare(
-            "select id from rhnServerNetInterface where server_id=:server_id and name=:name"
+            "select id from rhnServerNetInterface where server_id=:server_id and name=:name"  #  pylint: disable=line-too-long
         )
         h.execute(server_id=server_id, name=name)
         row = h.fetchone_dict()
@@ -576,7 +576,7 @@ class NetIfaceInformation(Device):
             where %s"""
 
         columns = ["server_id", "name"]
-        wheres = ["%s = :%s" % (x, x) for x in columns]
+        wheres = ["%s = :%s" % (x, x) for x in columns]  #  pylint: disable=consider-using-f-string
         h = rhnSQL.prepare(q % " and ".join(wheres))
         _dml(h, params)
 
@@ -587,18 +587,18 @@ class NetIfaceInformation(Device):
         self._null_columns(params, self._autonull)
 
         wheres = ["server_id", "name"]
-        wheres = ["%s = :%s" % (x, x) for x in wheres]
+        wheres = ["%s = :%s" % (x, x) for x in wheres]  #  pylint: disable=consider-using-f-string
         wheres = " and ".join(wheres)
 
         updates = list(self.key_mapping.values())
         updates.sort()
-        updates = ["%s = :%s" % (x, x) for x in updates]
+        updates = ["%s = :%s" % (x, x) for x in updates]  #  pylint: disable=consider-using-f-string
         updates = ", ".join(updates)
 
         h = rhnSQL.prepare(q % (updates, wheres))
         _dml(h, params)
 
-    def reload(self, server_id):
+    def reload(self, server_id):  #  pylint: disable=arguments-renamed
         h = rhnSQL.prepare(
             """
             select *
@@ -634,16 +634,16 @@ class FQDNInformation(Device):
 
     table = "rhnServerFQDN"
 
-    def __init__(self, dict=None):
+    def __init__(self, dict=None):  #  pylint: disable=redefined-builtin
         fields = ["name"]
-        unique = ["name"]
+        unique = ["name"]  #  pylint: disable=unused-variable
         mapping = {"class": None}
         Device.__init__(self, fields, dict, mapping)
         self._autonull = "name"
         self.sequence = "rhn_serverfqdn_id_seq"
 
 
-class NetIfaceAddress(Device):
+class NetIfaceAddress(Device):  #  pylint: disable=missing-class-docstring
     key_mapping = {
         "netmask": "netmask",
         "address": "address",
@@ -651,7 +651,7 @@ class NetIfaceAddress(Device):
     unique = ["address"]  # to be overriden by child
     table = "rhnServerNetAddress"  # to be overriden by child
 
-    def __init__(self, list_ifaces=None):
+    def __init__(self, list_ifaces=None):  #  pylint: disable=super-init-not-called
         log_debug(4, list_ifaces)
         self.ifaces = {}
         self.db_ifaces = []
@@ -662,7 +662,7 @@ class NetIfaceAddress(Device):
             return
         for info in list_ifaces:
             if not isinstance(info, type({})):
-                raise rhnFault(53, "Unexpected format for interface %s" % info)
+                raise rhnFault(53, "Unexpected format for interface %s" % info)  #  pylint: disable=consider-using-f-string
             vdict = {}
             for key, mapping in list(self.key_mapping.items()):
                 # Look at the mapping first; if not found, look for the key
@@ -671,7 +671,7 @@ class NetIfaceAddress(Device):
                 else:
                     k = key
                 if k not in info:
-                    raise rhnFault(53, "Unable to find required field %s" % (key))
+                    raise rhnFault(53, "Unable to find required field %s" % (key))  #  pylint: disable=consider-using-f-string
                 val = info[k]
                 if mapping in ["ip_addr", "netmask", "broadcast", "address"]:
                     # bugzilla: 129840 kudzu (rhpl) will sometimes pad octets
@@ -681,7 +681,7 @@ class NetIfaceAddress(Device):
             self.ifaces[vdict["address"]] = vdict
 
     def __str__(self):
-        return "<%s Class at %d: %s>\n" % (
+        return "<%s Class at %d: %s>\n" % (  #  pylint: disable=consider-using-f-string
             self.__class__.__name__,
             id(self),
             {
@@ -696,7 +696,7 @@ class NetIfaceAddress(Device):
         """to be overriden by child"""
         return val
 
-    def save(self, interface_id):
+    def save(self, interface_id):  #  pylint: disable=arguments-renamed
         log_debug(4, self.ifaces)
         self.reload(interface_id)
         log_debug(4, "Net addresses in DB", self.db_ifaces)
@@ -716,7 +716,7 @@ class NetIfaceAddress(Device):
                 continue
             uploaded_iface = ifaces[address]
             del ifaces[address]
-            # FIXME this is inefficient for IPv4 as it row is present it will be always update
+            # FIXME this is inefficient for IPv4 as it row is present it will be always update  #  pylint: disable=line-too-long
             if _hash_eq(uploaded_iface, iface):
                 # Same value
                 continue
@@ -724,7 +724,7 @@ class NetIfaceAddress(Device):
             updates.append(uploaded_iface)
 
         # Everything else in self.ifaces has to be inserted
-        for name, iface in list(ifaces.items()):
+        for name, iface in list(ifaces.items()):  #  pylint: disable=unused-variable
             iface["address"] = iface["address"]
             iface["interface_id"] = interface_id
             inserts.append(iface)
@@ -753,7 +753,7 @@ class NetIfaceAddress(Device):
             where %s"""
 
         columns = self.unique
-        wheres = ["%s = :%s" % (x, x) for x in columns]
+        wheres = ["%s = :%s" % (x, x) for x in columns]  #  pylint: disable=consider-using-f-string
         h = rhnSQL.prepare(q % (self.table, " and ".join(wheres)))
         _dml(h, params)
 
@@ -764,18 +764,18 @@ class NetIfaceAddress(Device):
         self._null_columns(params, self._autonull)
 
         wheres = self.unique
-        wheres = ["%s = :%s" % (x, x) for x in wheres]
+        wheres = ["%s = :%s" % (x, x) for x in wheres]  #  pylint: disable=consider-using-f-string
         wheres = " and ".join(wheres)
 
         updates = list(self.key_mapping.values())
         updates.sort()
-        updates = ["%s = :%s" % (x, x) for x in updates]
+        updates = ["%s = :%s" % (x, x) for x in updates]  #  pylint: disable=consider-using-f-string
         updates = ", ".join(updates)
 
         h = rhnSQL.prepare(q % (self.table, updates, wheres))
         _dml(h, params)
 
-    def reload(self, interface_id):
+    def reload(self, interface_id):  #  pylint: disable=arguments-renamed
         h = rhnSQL.prepare(
             """
             select *
@@ -881,7 +881,7 @@ class MemoryInformation(Device):
 
     table = "rhnRAM"
 
-    def __init__(self, dict=None):
+    def __init__(self, dict=None):  #  pylint: disable=redefined-builtin
         fields = ["ram", "swap"]
         mapping = {"class": None}
         Device.__init__(self, fields, dict, mapping)
@@ -906,7 +906,7 @@ class DMIInformation(Device):
 
     table = "rhnServerDMI"
 
-    def __init__(self, dict=None):
+    def __init__(self, dict=None):  #  pylint: disable=redefined-builtin
         fields = [
             "vendor",
             "system",
@@ -947,7 +947,7 @@ class InstallInformation(Device):
 
     table = "rhnServerInstallInfo"
 
-    def __init__(self, dict=None):
+    def __init__(self, dict=None):  #  pylint: disable=redefined-builtin
         fields = ["install_method", "iso_status", "mediasum"]
         mapping = {
             "class": None,
@@ -959,7 +959,7 @@ class InstallInformation(Device):
         self.sequence = "rhn_server_install_info_id_seq"
 
 
-class SystemInformation:
+class SystemInformation:  #  pylint: disable=missing-class-docstring
     def __init__(self, hw=None, guest=None):
         log_debug(4, hw, guest)
         if not hw or "identifier" not in hw or not guest:
@@ -1095,7 +1095,7 @@ class SystemInformation:
         q_insert.execute(viid=viid, virt_type="fully_virtualized")
 
 
-class MachineInformation:
+class MachineInformation:  #  pylint: disable=missing-class-docstring
     def __init__(self, sysid, name=None, data=None):
         machine_id = data.get("machine_id") if data and "machine_id" in data else None
         if not name:
@@ -1112,7 +1112,7 @@ class MachineInformation:
             )
             s_update.execute(machine_id=machine_id, server_id=sysid)
         else:
-            # this indicate a forced re-registration and we need to remove the old rhnServer
+            # this indicate a forced re-registration and we need to remove the old rhnServer  #  pylint: disable=line-too-long
             log_debug(
                 0,
                 "Found duplicate server. Re-registration expected. Deleting existing: ",
@@ -1122,7 +1122,7 @@ class MachineInformation:
             try:
                 delete_server(existing_srv_id)
             except rhnSQL.SQLError:
-                log_error("Error deleting server: %s" % existing_srv_id)
+                log_error("Error deleting server: %s" % existing_srv_id)  #  pylint: disable=consider-using-f-string
 
     def __check_if_machine_id_exists(self, machine_id):
         if machine_id:
@@ -1153,10 +1153,10 @@ class Hardware:
         log_debug(4, hardware)
         if not hardware:
             return -1
-        if type(hardware) == type({}):
+        if type(hardware) == type({}):  #  pylint: disable=unidiomatic-typecheck
             hardware = UserDictCase(hardware)
         if not isinstance(hardware, UserDictCase):
-            log_error("argument type is not  hash: %s" % hardware)
+            log_error("argument type is not  hash: %s" % hardware)  #  pylint: disable=consider-using-f-string
             raise TypeError("This function requires a hash as an argument")
         # validation is important
         hw_class = hardware.get("class")
@@ -1212,14 +1212,14 @@ class Hardware:
             MachineInformation(self.server["id"], self.server["name"], hardware)
             return 0
         else:
-            log_error("UNKNOWN CLASS TYPE `%s'" % hw_class)
+            log_error("UNKNOWN CLASS TYPE `%s'" % hw_class)  #  pylint: disable=consider-using-f-string
             # Same trick: try-except and raise the exception so that Traceback
             # can send the e-mail
             try:
                 raise KeyError(
-                    "Unknown class type `%s' for hardware '%s'" % (hw_class, hardware)
+                    "Unknown class type `%s' for hardware '%s'" % (hw_class, hardware)  #  pylint: disable=consider-using-f-string
                 )
-            except:
+            except:  #  pylint: disable=bare-except
                 Traceback(mail=1)
                 return
 
@@ -1227,9 +1227,9 @@ class Hardware:
         new_dev = class_type(hardware)
 
         if class_type in self.__hardware:
-            _l = self.__hardware[class_type]
+            _l = self.__hardware[class_type]  #  pylint: disable=invalid-name
         else:
-            _l = self.__hardware[class_type] = []
+            _l = self.__hardware[class_type] = []  #  pylint: disable=invalid-name
         _l.append(new_dev)
         self.__changed = 1
         return 0
@@ -1240,7 +1240,7 @@ class Hardware:
         if not self.__loaded:
             self.reload_hardware_byid(sysid)
         hardware = self.__hardware
-        if hardware == {}:
+        if hardware == {}:  #  pylint: disable=use-implicit-booleaness-not-comparison
             # nothing to delete
             return 0
         self.__changed = 1
@@ -1266,25 +1266,25 @@ class Hardware:
 
     def save_hardware_byid(self, sysid):
         """Save the hardware list"""
-        log_debug(3, sysid, "changed = %s" % self.__changed)
+        log_debug(3, sysid, "changed = %s" % self.__changed)  #  pylint: disable=consider-using-f-string
         hardware = self.__hardware
-        if hardware == {}:  # nothing loaded
+        if hardware == {}:  # nothing loaded  #  pylint: disable=use-implicit-booleaness-not-comparison
             return 0
         if not self.__changed:
             return 0
-        for device_type, hw_list in list(hardware.items()):
+        for device_type, hw_list in list(hardware.items()):  #  pylint: disable=unused-variable
             for hw in hw_list:
                 hw.save(sysid)
         self.__changed = 0
         return 0
 
-    def __load_from_db(self, DevClass, sysid):
+    def __load_from_db(self, DevClass, sysid):  #  pylint: disable=invalid-name
         """Load a certain hardware class from the database"""
         if DevClass not in self.__hardware:
             self.__hardware[DevClass] = []
 
         h = rhnSQL.prepare(
-            "select id from %s where server_id = :sysid" % DevClass.table
+            "select id from %s where server_id = :sysid" % DevClass.table  #  pylint: disable=consider-using-f-string
         )
         h.execute(sysid=sysid)
         rows = h.fetchall_dict() or []

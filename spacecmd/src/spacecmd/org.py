@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Licensed under the GNU General Public License Version 3
 #
 # This program is free software; you can redistribute it and/or modify
@@ -213,7 +213,7 @@ def complete_org_delete(self, text, line, beg, end):
 def do_org_delete(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if len(args) != 1:
         self.help_org_delete()
@@ -247,7 +247,7 @@ def complete_org_rename(self, text, line, beg, end):
 def do_org_rename(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if len(args) != 2:
         self.help_org_rename()
@@ -280,7 +280,7 @@ def complete_org_addtrust(self, text, line, beg, end):
 def do_org_addtrust(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if len(args) != 2:
         self.help_org_addtrust()
@@ -318,7 +318,7 @@ def complete_org_removetrust(self, text, line, beg, end):
 def do_org_removetrust(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if len(args) != 2:
         self.help_org_removetrust()
@@ -366,7 +366,7 @@ def complete_org_trustdetails(self, text, line, beg, end):
 def do_org_trustdetails(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if not args:
         self.help_org_trustdetails()
@@ -440,7 +440,7 @@ def complete_org_listtrusts(self, text, line, beg, end):
 def do_org_listtrusts(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if not args:
         self.help_org_listtrusts()
@@ -476,7 +476,7 @@ def complete_org_listusers(self, text, line, beg, end):
 def do_org_listusers(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if not args:
         self.help_org_listusers()
@@ -508,7 +508,7 @@ def complete_org_details(self, text, line, beg, end):
 def do_org_details(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if not args:
         self.help_org_details()

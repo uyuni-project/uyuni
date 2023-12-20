@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # This module contains all the RPC-related functions the RHN code uses
 #
 # Copyright (c) 2016 Red Hat, Inc.
@@ -32,9 +32,9 @@ def ustr(obj):
         else:
             return str(obj, "utf8", errors="ignore")
     else:  # python2
-        if isinstance(obj, unicode):
+        if isinstance(obj, unicode):  #  pylint: disable=undefined-variable
             return obj
-        return unicode(obj, "utf8", "ignore")
+        return unicode(obj, "utf8", "ignore")  #  pylint: disable=undefined-variable
 
 
 def bstr(obj):

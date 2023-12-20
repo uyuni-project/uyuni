@@ -1,4 +1,4 @@
-import json
+import json  #  pylint: disable=missing-module-docstring,unused-import
 import logging
 import salt.modules.cmdmod
 import salt.utils
@@ -30,7 +30,7 @@ def _lscpu_count_sockets(feedback):
         try:
             log.debug("Trying lscpu to get CPU socket count")
             ret = __salt__["cmd.run_all"](
-                "{0} -p".format(lscpu), output_loglevel="quiet"
+                "{0} -p".format(lscpu), output_loglevel="quiet"  #  pylint: disable=consider-using-f-string
             )
             if ret["retcode"] == 0:
                 max_socket_index = -1
@@ -42,8 +42,8 @@ def _lscpu_count_sockets(feedback):
                         max_socket_index = socket_index
                 if max_socket_index > -1:
                     return {"cpusockets": (1 + max_socket_index)}
-        except Exception as error:
-            feedback.append("lscpu: {0}".format(str(error)))
+        except Exception as error:  #  pylint: disable=broad-exception-caught
+            feedback.append("lscpu: {0}".format(str(error)))  #  pylint: disable=consider-using-f-string
             log.debug(str(error))
 
 
@@ -57,7 +57,7 @@ def _cpuinfo_count_sockets(feedback):
     if os.access("/proc/cpuinfo", os.R_OK):
         try:
             log.debug("Trying /proc/cpuinfo to get CPU socket count")
-            with open("/proc/cpuinfo") as handle:
+            with open("/proc/cpuinfo") as handle:  #  pylint: disable=unspecified-encoding
                 for line in handle.readlines():
                     if line.strip().startswith("physical id"):
                         comps = line.split(":")
@@ -66,9 +66,9 @@ def _cpuinfo_count_sockets(feedback):
                         physids.add(comps[1].strip())
             if physids:
                 return {"cpusockets": len(physids)}
-        except Exception as error:
+        except Exception as error:  #  pylint: disable=broad-exception-caught
             log.debug(str(error))
-            feedback.append("/proc/cpuinfo: {0}".format(str(error)))
+            feedback.append("/proc/cpuinfo: {0}".format(str(error)))  #  pylint: disable=consider-using-f-string
         else:
             feedback.append("/proc/cpuinfo: format is not applicable")
 
@@ -84,7 +84,7 @@ def _dmidecode_count_sockets(feedback):
         try:
             log.debug("Trying dmidecode to get CPU socket count")
             ret = __salt__["cmd.run_all"](
-                "{0} -t processor".format(dmidecode), output_loglevel="quiet"
+                "{0} -t processor".format(dmidecode), output_loglevel="quiet"  #  pylint: disable=consider-using-f-string
             )
             if ret["retcode"] == 0:
                 count = 0
@@ -93,9 +93,9 @@ def _dmidecode_count_sockets(feedback):
                         count += 1
                 if count:
                     return {"cpusockets": count}
-        except Exception as error:
+        except Exception as error:  #  pylint: disable=broad-exception-caught
             log.debug(str(error))
-            feedback.append("dmidecode: {0}".format(str(error)))
+            feedback.append("dmidecode: {0}".format(str(error)))  #  pylint: disable=consider-using-f-string
     else:
         feedback.append("dmidecode: executable not found")
 
@@ -112,7 +112,7 @@ def cpusockets():
     )
     if not grains:
         log.warning(
-            "Could not determine CPU socket count: {0}".format(" ".join(feedback))
+            "Could not determine CPU socket count: {0}".format(" ".join(feedback))  #  pylint: disable=logging-format-interpolation,consider-using-f-string
         )
 
     return grains
@@ -122,7 +122,7 @@ def total_num_cpus():
     """returns the total number of CPU in system.
     /proc/cpuinfo shows the number of active CPUs
     On s390x this can be different from the number of present CPUs in a system
-    See IBM redbook: "Using z/VM for Test and Development Environments: A Roundup" chapter 3.5
+    See IBM redbook: "Using z/VM for Test and Development Environments: A Roundup" chapter 3.5  #  pylint: disable=line-too-long
     """
     re_cpu = re.compile(r"^cpu[0-9]+$")
     sysdev = "/sys/devices/system/cpu/"
@@ -146,7 +146,7 @@ def cpu_data():
         try:
             log.debug("Trying lscpu to get CPU data")
             ret = __salt__["cmd.run_all"](
-                "{0}".format(lscpu), env={"LC_ALL": "C"}, output_loglevel="quiet"
+                "{0}".format(lscpu), env={"LC_ALL": "C"}, output_loglevel="quiet"  #  pylint: disable=consider-using-f-string
             )
             if ret["retcode"] == 0:
                 lines = ret["stdout"].splitlines()
@@ -170,4 +170,4 @@ def cpu_data():
             else:
                 log.warning("lscpu does not support -J option")
         except (CommandExecutionError, ValueError) as error:
-            log.warning("lscpu: {0}".format(str(error)))
+            log.warning("lscpu: {0}".format(str(error)))  #  pylint: disable=logging-format-interpolation,consider-using-f-string

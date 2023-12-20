@@ -1,15 +1,15 @@
-from mgrlibmod import mltypes, mlerrcode
+from mgrlibmod import mltypes, mlerrcode  #  pylint: disable=missing-module-docstring
 
 RESERVED_STREAMS = ["platform"]
 
 
 class StreamIndexer:
     """
-    Utility class to maintain a hash map k -> list(v) of module stream objects where each 'k' is a
-    specific module stream and each 'v' is a specific version of the respective module stream.
+    Utility class to maintain a hash map k -> list(v) of module stream objects where each 'k' is a  #  pylint: disable=line-too-long
+    specific module stream and each 'v' is a specific version of the respective module stream.  #  pylint: disable=line-too-long
 
-    The resolution algoritm runs on whole lists so all versions of a stream is treated as a group.
-    If any two versions of a stream have different runtime dependencies, they will be treated
+    The resolution algoritm runs on whole lists so all versions of a stream is treated as a group.  #  pylint: disable=line-too-long
+    If any two versions of a stream have different runtime dependencies, they will be treated  #  pylint: disable=line-too-long
     as different streams and hashed into separate lists.
     """
 
@@ -17,7 +17,7 @@ class StreamIndexer:
         """
         add - add a stream to the map
 
-        The stream is appended as another version to the list with the key matching the name,
+        The stream is appended as another version to the list with the key matching the name,  #  pylint: disable=line-too-long
         stream and runtime dependencies. If no fit is found, a new key is created.
 
         :param stream: the context object to add
@@ -37,7 +37,7 @@ class StreamIndexer:
 
         The key matching the specified group is removed from the map
 
-        :param group: a list of streams with a common hash value (same name, stream and dependencies)
+        :param group: a list of streams with a common hash value (same name, stream and dependencies)  #  pylint: disable=line-too-long
         :param stream_map: the stream hash map
         """
         stream1 = group[0]
@@ -51,10 +51,10 @@ class StreamIndexer:
         """
         add_group - adds a stream group to the map
 
-        If a key with the same hash exists, the group will be appended to the list. Otherwise, a new
+        If a key with the same hash exists, the group will be appended to the list. Otherwise, a new  #  pylint: disable=line-too-long
         key is created.
 
-        :param group: a list of streams with a common hash value (same name, stream and dependencies)
+        :param group: a list of streams with a common hash value (same name, stream and dependencies)  #  pylint: disable=line-too-long
         :param stream_map: the stream hash map
         """
         stream1 = group[0]
@@ -67,7 +67,7 @@ class StreamIndexer:
 
     def get_dep_streams(self, ctx):
         """
-        get_dep_streams - get the first-level dependencies as (name, stream) tuples for a specified stream context
+        get_dep_streams - get the first-level dependencies as (name, stream) tuples for a specified stream context  #  pylint: disable=line-too-long
         """
         deps = ctx.get_dependencies()
         if not deps:
@@ -84,7 +84,7 @@ class StreamIndexer:
         for module_name in dep_mods:
             try:
                 stream_name = deps.get_runtime_streams(module_name)[0]
-            except:
+            except:  #  pylint: disable=bare-except
                 # No stream specificed. Any stream will do
                 stream_name = None
             module_streams.append((module_name, stream_name))
@@ -93,7 +93,7 @@ class StreamIndexer:
 
     def _eq(self, ctx1, ctx2):
         """
-        _eq - checks if two contexts have the same module name, stream name and runtime dependencies
+        _eq - checks if two contexts have the same module name, stream name and runtime dependencies  #  pylint: disable=line-too-long
 
         Used for hashing.
         """
@@ -110,7 +110,7 @@ class StreamIndexer:
 
     def _get_contexts_for_stream(self, ctx, stream_map):
         """
-        _get_contexts_for_stream - get a list of contexts that belong to the same stream as the specified context
+        _get_contexts_for_stream - get a list of contexts that belong to the same stream as the specified context  #  pylint: disable=line-too-long
         """
         return [s for s in stream_map if self._is_same_stream(s[0], ctx)]
 
@@ -135,7 +135,7 @@ class DependencyResolver:
         """
         __init__ - initialize the resolver with an MLLibmodProc instance
 
-        :param proc: the MLLibmodProc instance to use for module index related operations
+        :param proc: the MLLibmodProc instance to use for module index related operations  #  pylint: disable=line-too-long
         """
         self._proc = proc
         self._indexer = StreamIndexer()
@@ -144,13 +144,13 @@ class DependencyResolver:
         """
         resolve - resolve dependencies for the requested streams
 
-        The algorithm traverses the dependency tree recursively using backtracking to collect multiple solutions.
+        The algorithm traverses the dependency tree recursively using backtracking to collect multiple solutions.  #  pylint: disable=line-too-long
 
         :param streams: the requested streams
         :return:
-            A list of solution-score pairs that satisfy all the dependency requirements for the requested streams
+            A list of solution-score pairs that satisfy all the dependency requirements for the requested streams  #  pylint: disable=line-too-long
 
-            Each solution is a list of selected stream contexts for the requested streams and their dependencies.
+            Each solution is a list of selected stream contexts for the requested streams and their dependencies.  #  pylint: disable=line-too-long
             The score indicates the number of selected default streams in the solution.
         """
         self._streams = streams
@@ -181,8 +181,8 @@ class DependencyResolver:
         """
         _preselect - select all the streams that doesn't have multiple contexts
 
-        The method modifies the lists in place, moving elements from 'candidates' into 'selected'.
-        The streams that have multiple contexts will remain in 'candidates' for backtracking later.
+        The method modifies the lists in place, moving elements from 'candidates' into 'selected'.  #  pylint: disable=line-too-long
+        The streams that have multiple contexts will remain in 'candidates' for backtracking later.  #  pylint: disable=line-too-long
 
         :param selected: the map of selected elements
         :param candidates: the remaining candidate pool map
@@ -198,7 +198,7 @@ class DependencyResolver:
         while stack:
             s = stack.pop()
 
-            if len(self._indexer._get_contexts_for_stream(s[0], ctx_pool)) == 1:
+            if len(self._indexer._get_contexts_for_stream(s[0], ctx_pool)) == 1:  #  pylint: disable=protected-access
                 # There is only a single context for this stream so we'll pick it
                 if s not in selected:
                     self._indexer.add_group(s, selected)
@@ -255,7 +255,7 @@ class DependencyResolver:
 
     def _get_solution(self, selection):
         """
-        _get_solution - get a solution-score pair where score indicates the number of default streams in the solution
+        _get_solution - get a solution-score pair where score indicates the number of default streams in the solution  #  pylint: disable=line-too-long
         """
         num_defaults = 0
         for ctx in selection:
@@ -280,7 +280,7 @@ class DependencyResolver:
 
     def _are_deps_selected(self, stream, selection):
         """
-        _are_deps_selected - check if all the dependencies of a stream are in a selection list
+        _are_deps_selected - check if all the dependencies of a stream are in a selection list  #  pylint: disable=line-too-long
         """
         dep_mods = self._indexer.get_dep_streams(stream)
         for module, stream in dep_mods:
@@ -310,7 +310,7 @@ class DependencyResolver:
 
     def _get_deps(self, ctx):
         """
-        _get_deps - get the list of contexts of the first-level dependencies for a specified stream context
+        _get_deps - get the list of contexts of the first-level dependencies for a specified stream context  #  pylint: disable=line-too-long
 
         :param ctx: a context object
         """
@@ -329,7 +329,7 @@ class DependencyResolver:
         :param selected: the list of already selected stream contexts
         :param candidates: the potential stream candidates to select from
         """
-        # Select all the candidates that have no alternative contexts to reduce needed recursions
+        # Select all the candidates that have no alternative contexts to reduce needed recursions  #  pylint: disable=line-too-long
         self._preselect(selected, candidates)
 
         # Validate the current selection
@@ -344,7 +344,7 @@ class DependencyResolver:
             return
 
         # Get all alternative contexts for the first candidate
-        contexts = self._indexer._get_contexts_for_stream(candidates[0][0], candidates)
+        contexts = self._indexer._get_contexts_for_stream(candidates[0][0], candidates)  #  pylint: disable=protected-access
 
         # Loop through alternatives
         for c in contexts:

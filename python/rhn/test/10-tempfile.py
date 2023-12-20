@@ -28,7 +28,7 @@ def openedFiles():
 if __name__ == '__main__':
     global pid
     pid = str(os.getpid());
-    print "PID: ", pid;
+    print "PID: ", pid;  #  pylint: disable=syntax-error
 
     failed = False;
 

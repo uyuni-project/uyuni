@@ -17,7 +17,7 @@ def _simple_parse_rhn_conf(cfile):
     if not os.path.exists(cfile):
         return result
 
-    with open(cfile, "r") as config:
+    with open(cfile, "r") as config:  #  pylint: disable=unspecified-encoding
         for line in config.readlines():
             line = line.strip()
             if not line or line[0] == "#":

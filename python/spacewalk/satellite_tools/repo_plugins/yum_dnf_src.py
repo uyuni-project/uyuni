@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2020 Red Hat, Inc.
 # Copyright (c) 2010--2011 SUSE LINUX Products GmbH, Nuernberg, Germany.
 # Copyright (c) 2020--2021  Stefan Bluhm, Germany.
@@ -28,18 +28,18 @@ from libdnf.conf import ConfigParser
 from dnf.exceptions import Error, RepoError
 from uyuni.common import checksum, fileutils
 from uyuni.common.context_managers import cfg_component
-from spacewalk.common.suseLib import get_proxy
-from spacewalk.satellite_tools.download import get_proxies
+from spacewalk.common.suseLib import get_proxy  #  pylint: disable=unused-import
+from spacewalk.satellite_tools.download import get_proxies  #  pylint: disable=unused-import
 from spacewalk.satellite_tools.repo_plugins import CACHE_DIR, ContentPackage
 from spacewalk.satellite_tools.repo_plugins.yum_src import (
     ContentSource as zypper_ContentSource,
 )
-from spacewalk.satellite_tools.repo_plugins.yum_src import (
+from spacewalk.satellite_tools.repo_plugins.yum_src import (  #  pylint: disable=unused-import,unused-import
     RepoMDError,
     UpdateNotice,
     UpdateNoticeException,
 )
-from urllib.parse import urlparse, urlsplit, urlunparse
+from urllib.parse import urlparse, urlsplit, urlunparse  #  pylint: disable=unused-import,unused-import
 
 
 YUMSRC_CONF = "/etc/rhn/spacewalk-repo-sync/yum.conf"
@@ -52,13 +52,13 @@ log = logging.getLogger(__name__)
 class RawSolvablePackage:
     """Represents a hawkey package in RawSolvablePackage format required by reposync.. #:api"""
 
-    def __init__(self, hawkey):
+    def __init__(self, hawkey):  #  pylint: disable=redefined-outer-name
         self.name = hawkey.name
         self.epoch = hawkey.epoch
         self.version = hawkey.version
         self.release = hawkey.release
         self.arch = hawkey.arch
-        # Unclear if checksum info is used and if it is the correct format. Probably no to both.
+        # Unclear if checksum info is used and if it is the correct format. Probably no to both.  #  pylint: disable=line-too-long
         self.checksum_type, self.checksum = hawkey.chksum
         self.packagesize = hawkey.downloadsize
         self.relativepath = hawkey.location
@@ -68,14 +68,14 @@ class RawSolvablePackage:
         )
 
     def __repr__(self):
-        return "RawSolvablePackage({})".format(self.raw_name)
+        return "RawSolvablePackage({})".format(self.raw_name)  #  pylint: disable=consider-using-f-string
 
     def __str__(self):
-        return f"RawSolvablePackage: name = {self.name}, raw_name = {self.raw_name}, epoch = {self.epoch}, version = {self.version}, release = {self.release}, arch = {self.arch}, checksum_type = {self.checksum_type}, checksum = {self.checksum}, packagesize = {self.packagesize}, relativepath = {self.relativepath}"
+        return f"RawSolvablePackage: name = {self.name}, raw_name = {self.raw_name}, epoch = {self.epoch}, version = {self.version}, release = {self.release}, arch = {self.arch}, checksum_type = {self.checksum_type}, checksum = {self.checksum}, packagesize = {self.packagesize}, relativepath = {self.relativepath}"  #  pylint: disable=line-too-long
 
 
-class ContentSource(zypper_ContentSource):
-    def __init__(
+class ContentSource(zypper_ContentSource):  #  pylint: disable=missing-class-docstring
+    def __init__(  #  pylint: disable=super-init-not-called
         self,
         url,
         name,
@@ -100,7 +100,7 @@ class ContentSource(zypper_ContentSource):
         if urlsplit(url).scheme:
             self.url = url
         else:
-            self.url = "file://%s" % url
+            self.url = "file://%s" % url  #  pylint: disable=consider-using-f-string
         self.name = name
         self.insecure = insecure
         self.interactive = interactive
@@ -128,9 +128,9 @@ class ContentSource(zypper_ContentSource):
 
         # read the proxy configuration
         # /etc/rhn/rhn.conf has more priority than yum.conf
-        with cfg_component("server.satellite") as CFG:
+        with cfg_component("server.satellite") as CFG:  #  pylint: disable=invalid-name
             # keep authtokens for mirroring
-            (_scheme, _netloc, _path, query, _fragid) = urlsplit(url)
+            (_scheme, _netloc, _path, query, _fragid) = urlsplit(url)  #  pylint: disable=invalid-name,invalid-name,invalid-name,invalid-name,unused-variable,unused-variable,unused-variable,unused-variable
             if query:
                 self.authtoken = query
 
@@ -140,7 +140,7 @@ class ContentSource(zypper_ContentSource):
             # perform authentication if implemented
             self._authenticate(url)
 
-            # Check for settings in yum configuration files (for custom repos/channels only)
+            # Check for settings in yum configuration files (for custom repos/channels only)  #  pylint: disable=line-too-long
             if org:
                 repos = self.dnfbase.repos
             else:
@@ -149,7 +149,7 @@ class ContentSource(zypper_ContentSource):
                 repo = repos[name]
             elif repos and channel_label in repos:
                 repo = repos[channel_label]
-                # In case we are using Repo object based on channel config, override it's id to name of the repo
+                # In case we are using Repo object based on channel config, override it's id to name of the repo  #  pylint: disable=line-too-long
                 # To not create channel directories in cache directory
                 repo.id = name
             else:
@@ -200,10 +200,10 @@ class ContentSource(zypper_ContentSource):
         repo.metadata_expire = 0
         repo.mirrorlist = self.url
         repo.baseurl = [self.url]
-        with cfg_component("server.satellite") as CFG:
+        with cfg_component("server.satellite") as CFG:  #  pylint: disable=invalid-name
             pkgdir = os.path.join(CFG.MOUNT_POINT, CFG.PREPENDED_DIR, self.org, "stage")
         if not os.path.isdir(pkgdir):
-            with cfg_component("server.satellite") as CFG:
+            with cfg_component("server.satellite") as CFG:  #  pylint: disable=invalid-name
                 fileutils.makedirs(pkgdir, user=CFG.httpd_user, group=CFG.httpd_group)
         repo.pkgdir = pkgdir
         repo.sslcacert = ca_cert_file
@@ -231,22 +231,22 @@ class ContentSource(zypper_ContentSource):
         try:
             self.dnfbase.repos[self.repoid].load()
             # Repo config loaded successfully.
-            # Verify whether the supplied mirror list is working as intended. Otherwise don't use mirror lists.
+            # Verify whether the supplied mirror list is working as intended. Otherwise don't use mirror lists.  #  pylint: disable=line-too-long
             try:
                 if not self.clean_urls(
-                    self.dnfbase.repos[self.repoid]._repo.getMirrors()
+                    self.dnfbase.repos[self.repoid]._repo.getMirrors()  #  pylint: disable=protected-access
                 ):
                     no_mirrors = True
                     # Reload repo just in case.
                     repo.mirrorlist = ""
                     self.dnfbase.repos[self.repoid].load()
-            except:
+            except:  #  pylint: disable=bare-except
                 no_mirrors = True
                 # Reload repo just in case.
                 repo.mirrorlist = ""
                 self.dnfbase.repos[self.repoid].load()
         except RepoError as exc:
-            raise RepoMDError(exc)
+            raise RepoMDError(exc)  #  pylint: disable=raise-missing-from
 
         # Do not try to expand baseurl to other mirrors
         if no_mirrors:
@@ -256,13 +256,13 @@ class ContentSource(zypper_ContentSource):
                 self.dnfbase.repos[self.repoid].urls[0] += "/"
         else:
             self.dnfbase.repos[self.repoid].urls = self.clean_urls(
-                self.dnfbase.repos[self.repoid]._repo.getMirrors()
+                self.dnfbase.repos[self.repoid]._repo.getMirrors()  #  pylint: disable=protected-access
             )  # pylint: disable=W0212
             self.dnfbase.repos[self.repoid].urls = [
                 url for url in self.dnfbase.repos[self.repoid].urls if "?" not in url
             ]
         self.dnfbase.repos[self.repoid].basecachedir = os.path.join(CACHE_DIR, self.org)
-        repoXML = type("", (), {})()
+        repoXML = type("", (), {})()  #  pylint: disable=invalid-name
         repoXML.repoData = {}
         self.dnfbase.repos[self.repoid].repoXML = repoXML
 
@@ -400,7 +400,7 @@ class ContentSource(zypper_ContentSource):
                             ["@" + grp.name for grp in found.groups_iter()]
                         )
                     elif found and comps_type == "group":
-                        # Replace with package list, simplified to not evaluate if packages are default, optional etc.
+                        # Replace with package list, simplified to not evaluate if packages are default, optional etc.  #  pylint: disable=line-too-long
                         for package in found.packages:
                             new_pkg_list.append(str(package.name))
                     else:
@@ -433,7 +433,7 @@ class ContentSource(zypper_ContentSource):
         return filters
 
     @staticmethod
-    def __parsePackages(pkgSack, pkgs):
+    def __parsePackages(pkgSack, pkgs):  #  pylint: disable=invalid-name,invalid-name
         """
         Substitute for yum's parsePackages.
         The function parses a list of package names and returns their Hawkey
@@ -458,7 +458,7 @@ class ContentSource(zypper_ContentSource):
         result = a.filter(pkg=result).latest().run()
         return result
 
-    def _filter_packages(self, packages, filters):
+    def _filter_packages(self, packages, filters):  #  pylint: disable=arguments-renamed,arguments-renamed,arguments-renamed
         """implement include / exclude logic
         filters are: [ ('+', includelist1), ('-', excludelist1),
                        ('+', includelist2), ... ]
@@ -478,7 +478,7 @@ class ContentSource(zypper_ContentSource):
         sack = self.dnfbase.sack
         for filter_item in filters:
             sense, pkg_list = filter_item
-            convertFilterToPackagelist = self.__parsePackages(sack, pkg_list)
+            convertFilterToPackagelist = self.__parsePackages(sack, pkg_list)  #  pylint: disable=invalid-name
             if sense == "+":
                 # include
                 matched = list()
@@ -516,11 +516,11 @@ class ContentSource(zypper_ContentSource):
                 excluded = excluded + allmatched
                 excluded = list(dict.fromkeys(excluded))  # Filter out duplicates
             else:
-                raise Error("Invalid filter sense: '%s'" % sense)
+                raise Error("Invalid filter sense: '%s'" % sense)  #  pylint: disable=consider-using-f-string
         return selected
 
     @staticmethod
-    def __findDeps(pkgSack, pkgs):
+    def __findDeps(pkgSack, pkgs):  #  pylint: disable=invalid-name,invalid-name
         #
         #        Input: Sack, list of packages
         #        Output: List of packages
@@ -547,7 +547,7 @@ class ContentSource(zypper_ContentSource):
         while resolved_deps:
             next_level_deps = []
             for deps in resolved_deps.values():
-                for _dep, dep_packages in deps.items():
+                for _dep, dep_packages in deps.items():  #  pylint: disable=invalid-name
                     if _dep not in known_deps:
                         next_level_deps.extend(dep_packages)
                         packages.extend(dep_packages)
@@ -570,7 +570,7 @@ class ContentSource(zypper_ContentSource):
         return data
 
     @staticmethod
-    def verify_pkg(_fo, pkg, _fail):
+    def verify_pkg(_fo, pkg, _fail):  #  pylint: disable=invalid-name,invalid-name
         return pkg.verifyLocalPkg()
 
     def get_md_checksum_type(self):
@@ -644,7 +644,7 @@ class ContentSource(zypper_ContentSource):
         repomd_new_path = os.path.join(
             self.repo.basecachedir, self.name, "repomd.xml.new"
         )
-        # Newer file not available? Don't do anything. It should be downloaded before this.
+        # Newer file not available? Don't do anything. It should be downloaded before this.  #  pylint: disable=line-too-long
         if not os.path.isfile(repomd_new_path):
             return True
         return checksum.getFileChecksum(
@@ -681,9 +681,9 @@ class ContentSource(zypper_ContentSource):
             raise RepoMDError(repomd_path)
         repomd = open(repomd_path, "rb")
         files = {}
-        for _event, elem in etree.iterparse(repomd):
+        for _event, elem in etree.iterparse(repomd):  #  pylint: disable=invalid-name,unused-variable
             if elem.tag.endswith("data"):
-                repoData = type("", (), {})()
+                repoData = type("", (), {})()  #  pylint: disable=invalid-name
                 if elem.attrib.get("type") == "primary_db":
                     files["primary"] = (get_location(elem), get_checksum(elem))
                     repoData.timestamp = get_timestamp(elem)

@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Licensed under the GNU General Public License Version 3
 #
 # This program is free software; you can redistribute it and/or modify
@@ -44,7 +44,7 @@ except AttributeError:
 def help_scap_listxccdfscans(self):
     print(
         _(
-            "scap_listxccdfscans: Return a list of finished OpenSCAP scans for given systems"
+            "scap_listxccdfscans: Return a list of finished OpenSCAP scans for given systems"  #  pylint: disable=line-too-long
         )
     )
     print(_("usage: scap_listxccdfscans <SYSTEMS>"))
@@ -57,7 +57,7 @@ def complete_system_scap_listxccdfscans(self, text, line, beg, end):
 def do_scap_listxccdfscans(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if not args:
         self.help_scap_listxccdfscans()
@@ -105,7 +105,7 @@ def do_scap_listxccdfscans(self, args):
 def help_scap_getxccdfscanruleresults(self):
     print(
         _(
-            "scap_getxccdfscanruleresults: Return a full list of RuleResults for given OpenSCAP XCCDF scan"
+            "scap_getxccdfscanruleresults: Return a full list of RuleResults for given OpenSCAP XCCDF scan"  #  pylint: disable=line-too-long
         )
     )
     print(_("usage: scap_getxccdfscanruleresults <XID>"))
@@ -114,7 +114,7 @@ def help_scap_getxccdfscanruleresults(self):
 def do_scap_getxccdfscanruleresults(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if not args:
         self.help_scap_getxccdfscanruleresults()
@@ -156,7 +156,7 @@ def help_scap_getxccdfscandetails(self):
 def do_scap_getxccdfscandetails(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if not args:
         self.help_scap_getxccdfscandetails()
@@ -231,7 +231,7 @@ def help_scap_schedulexccdfscan(self):
 def do_scap_schedulexccdfscan(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if len(args) < 3:
         self.help_scap_schedulexccdfscan()

@@ -6,7 +6,7 @@ Test suite for group module of spacecmd
 import datetime
 import os
 from unittest.mock import MagicMock, patch, mock_open, call, ANY
-from helpers import shell, assert_expect, assert_list_args_expect, assert_args_expect
+from helpers import shell, assert_expect, assert_list_args_expect, assert_args_expect  #  pylint: disable=unused-import
 import spacecmd.group
 from xmlrpc import client as xmlrpclib
 
@@ -16,7 +16,7 @@ class TestSCGroup:
     Test suite for "group" module.
     """
 
-    def test_group_addsystems_noargs(self, shell):
+    def test_group_addsystems_noargs(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_group_addsystems without arguments.
 
@@ -31,9 +31,9 @@ class TestSCGroup:
         shell.ssm.keys = MagicMock()
         mprint = MagicMock()
         logger = MagicMock()
-        with patch("spacecmd.group.print", mprint) as prn, patch(
+        with patch("spacecmd.group.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.group.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.group.do_group_addsystems(shell, "")
 
         assert not shell.get_system_id.called
@@ -44,7 +44,7 @@ class TestSCGroup:
         assert not logger.error.called
         assert shell.help_group_addsystems.called
 
-    def test_group_addsystems_ssm_no_systems(self, shell):
+    def test_group_addsystems_ssm_no_systems(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_group_addsystems with SSM argument, without systems.
 
@@ -58,9 +58,9 @@ class TestSCGroup:
         shell.ssm.keys = MagicMock(return_value=[])
         mprint = MagicMock()
         logger = MagicMock()
-        with patch("spacecmd.group.print", mprint) as prn, patch(
+        with patch("spacecmd.group.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.group.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.group.do_group_addsystems(shell, "groupname ssm")
 
         assert not shell.get_system_id.called
@@ -71,9 +71,9 @@ class TestSCGroup:
         assert not shell.help_group_addsystems.called
         assert shell.ssm.keys.called
 
-    def test_group_addsystems_expand_no_systems(self, shell):
+    def test_group_addsystems_expand_no_systems(self, shell):  #  pylint: disable=redefined-outer-name
         """
-        Test do_group_addsystems with API call to find systems, without success getting one.
+        Test do_group_addsystems with API call to find systems, without success getting one.  #  pylint: disable=line-too-long
 
         :param shell:
         :return:
@@ -85,9 +85,9 @@ class TestSCGroup:
         shell.ssm.keys = MagicMock()
         mprint = MagicMock()
         logger = MagicMock()
-        with patch("spacecmd.group.print", mprint) as prn, patch(
+        with patch("spacecmd.group.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.group.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.group.do_group_addsystems(shell, "groupname something*")
 
         assert not shell.get_system_id.called
@@ -98,7 +98,7 @@ class TestSCGroup:
         assert not shell.ssm.keys.called
         assert shell.expand_systems.called
 
-    def test_group_addsystems(self, shell):
+    def test_group_addsystems(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_group_addsystems with API call to find systems.
 
@@ -112,9 +112,9 @@ class TestSCGroup:
         shell.ssm.keys = MagicMock()
         mprint = MagicMock()
         logger = MagicMock()
-        with patch("spacecmd.group.print", mprint) as prn, patch(
+        with patch("spacecmd.group.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.group.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.group.do_group_addsystems(shell, "groupname something*")
 
         assert not mprint.called
@@ -130,7 +130,7 @@ class TestSCGroup:
             [((shell.session, "groupname", ["1000010000", "1000010001"], True), {})],
         )
 
-    def test_group_removesystems_noargs(self, shell):
+    def test_group_removesystems_noargs(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_group_removesystems without arguments.
 
@@ -146,9 +146,9 @@ class TestSCGroup:
         shell.user_confirm = MagicMock()
         mprint = MagicMock()
         logger = MagicMock()
-        with patch("spacecmd.group.print", mprint) as prn, patch(
+        with patch("spacecmd.group.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.group.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.group.do_group_removesystems(shell, "")
 
         assert not shell.get_system_id.called
@@ -160,7 +160,7 @@ class TestSCGroup:
         assert not logger.error.called
         assert shell.help_group_removesystems.called
 
-    def test_group_removesystems_ssm_nosys(self, shell):
+    def test_group_removesystems_ssm_nosys(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_group_removesystems with SSM and without found systems.
 
@@ -176,9 +176,9 @@ class TestSCGroup:
         shell.user_confirm = MagicMock()
         mprint = MagicMock()
         logger = MagicMock()
-        with patch("spacecmd.group.print", mprint) as prn, patch(
+        with patch("spacecmd.group.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.group.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.group.do_group_removesystems(shell, "somegroup ssm")
 
         assert not shell.get_system_id.called
@@ -192,7 +192,7 @@ class TestSCGroup:
 
         assert_expect(mprint.call_args_list, "No systems found")
 
-    def test_group_removesystems_nossm_nosys(self, shell):
+    def test_group_removesystems_nossm_nosys(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_group_removesystems with filters and without found systems.
 
@@ -208,9 +208,9 @@ class TestSCGroup:
         shell.user_confirm = MagicMock()
         mprint = MagicMock()
         logger = MagicMock()
-        with patch("spacecmd.group.print", mprint) as prn, patch(
+        with patch("spacecmd.group.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.group.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.group.do_group_removesystems(shell, "somegroup somesystem")
 
         assert not shell.get_system_id.called
@@ -224,7 +224,7 @@ class TestSCGroup:
 
         assert_expect(mprint.call_args_list, "No systems found")
 
-    def test_group_removesystems_nossm_sys(self, shell):
+    def test_group_removesystems_nossm_sys(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_group_removesystems with filters and found systems.
 
@@ -240,9 +240,9 @@ class TestSCGroup:
         shell.user_confirm = MagicMock(return_value=True)
         mprint = MagicMock()
         logger = MagicMock()
-        with patch("spacecmd.group.print", mprint) as prn, patch(
+        with patch("spacecmd.group.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.group.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.group.do_group_removesystems(shell, "somegroup somesystem")
 
         assert not logger.error.called
@@ -262,7 +262,7 @@ class TestSCGroup:
             mprint.call_args_list, ["Systems", "-------", "one\ntwo"]
         )
 
-    def test_group_create_noarg(self, shell):
+    def test_group_create_noarg(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_group_create without no arguments (fall-back to the interactive mode).
 
@@ -284,7 +284,7 @@ class TestSCGroup:
             [((shell.session, "Jeff", msg), {})],
         )
 
-    def test_group_create_name_only(self, shell):
+    def test_group_create_name_only(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_group_create with name argument (half-fall back to interactive).
 
@@ -306,7 +306,7 @@ class TestSCGroup:
             [((shell.session, "Jeff", msg), {})],
         )
 
-    def test_group_create_descr_only(self, shell):
+    def test_group_create_descr_only(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_group_create with all arguments.
 
@@ -318,7 +318,7 @@ class TestSCGroup:
         prompter = MagicMock(return_value=msg)
 
         with patch("spacecmd.group.prompt_user", prompter):
-            spacecmd.group.do_group_create(shell, "Jeff {}".format(msg))
+            spacecmd.group.do_group_create(shell, "Jeff {}".format(msg))  #  pylint: disable=consider-using-f-string
 
         assert not prompter.called
         assert shell.client.systemgroup.create.called
@@ -328,7 +328,7 @@ class TestSCGroup:
             [((shell.session, "Jeff", msg), {})],
         )
 
-    def test_group_delete_noarg(self, shell):
+    def test_group_delete_noarg(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_group_delete without no arguments
 
@@ -345,7 +345,7 @@ class TestSCGroup:
         assert not shell.user_confirm.called
         assert shell.help_group_delete.called
 
-    def test_group_delete_no_confirm(self, shell):
+    def test_group_delete_no_confirm(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_group_delete no confirmation
 
@@ -362,7 +362,7 @@ class TestSCGroup:
         assert not shell.help_group_delete.called
         assert shell.user_confirm.called
 
-    def test_group_delete(self, shell):
+    def test_group_delete(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_group_delete with confirmation
 
@@ -384,14 +384,14 @@ class TestSCGroup:
             [((shell.session, "grouptwo"), {})],
             [((shell.session, "groupthree"), {})],
         ]
-        for call in shell.client.systemgroup.delete.call_args_list:
+        for call in shell.client.systemgroup.delete.call_args_list:  #  pylint: disable=redefined-outer-name
             assert_args_expect([call], next(iter(groups)))
             groups.pop(0)
         assert not groups
 
     @patch("spacecmd.group.os.path.isdir", MagicMock(return_value=True))
     @patch("spacecmd.group.os.makedirs", MagicMock())
-    def test_group_backup_noarg(self, shell):
+    def test_group_backup_noarg(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_group_backup without no arguments
 
@@ -403,9 +403,9 @@ class TestSCGroup:
         shell.client.systemgroup.getDetails = MagicMock()
         mprint = MagicMock()
         logger = MagicMock()
-        with patch("spacecmd.group.print", mprint) as prn, patch(
+        with patch("spacecmd.group.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.group.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.group.do_group_backup(shell, "")
 
         assert not shell.do_group_list.called
@@ -416,7 +416,7 @@ class TestSCGroup:
 
     @patch("spacecmd.group.os.path.isdir", MagicMock(return_value=True))
     @patch("spacecmd.group.os.makedirs", MagicMock())
-    def test_group_backup_all_group_list(self, shell):
+    def test_group_backup_all_group_list(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_group_backup with all groups lookup
 
@@ -445,7 +445,7 @@ class TestSCGroup:
         shell.client.formula.getGroupFormulaData = MagicMock(
             return_value={
                 "pxe": {
-                    "default_kernel_parameters": "panic=60 ramdisk_size=710000 ramdisk_blocksize=4096 vga=0x317 splash=silent kiwidebug=0",
+                    "default_kernel_parameters": "panic=60 ramdisk_size=710000 ramdisk_blocksize=4096 vga=0x317 splash=silent kiwidebug=0",  #  pylint: disable=line-too-long
                     "initrd_name": "initrd",
                     "kernel_name": "linux",
                     "pxe_root_directory": "/srv/saltboot",
@@ -456,16 +456,16 @@ class TestSCGroup:
         logger = MagicMock()
         dumper = MagicMock()
 
-        _datetime = MagicMock()
+        _datetime = MagicMock()  #  pylint: disable=invalid-name
         _datetime.now = MagicMock(return_value=datetime.datetime(2019, 1, 1))
 
-        with patch("spacecmd.group.print", mprint) as prn, patch(
+        with patch("spacecmd.group.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.group.logging", logger
-        ) as lgr, patch("spacecmd.group.os.path.expanduser", exp_user) as exu, patch(
+        ) as lgr, patch("spacecmd.group.os.path.expanduser", exp_user) as exu, patch(  #  pylint: disable=unused-variable,unused-variable
             "spacecmd.group.json_dump_to_file", dumper
-        ) as opr, patch(
+        ) as opr, patch(  #  pylint: disable=unused-variable
             "spacecmd.group.datetime", _datetime
-        ) as dtm:
+        ) as dtm:  #  pylint: disable=unused-variable
             spacecmd.group.do_group_backup(shell, "ALL")
 
         assert not logger.called
@@ -495,7 +495,7 @@ class TestSCGroup:
                     "formulas": {
                         "pxe": {
                             "pxe": {
-                                "default_kernel_parameters": "panic=60 ramdisk_size=710000 ramdisk_blocksize=4096 vga=0x317 splash=silent kiwidebug=0",
+                                "default_kernel_parameters": "panic=60 ramdisk_size=710000 ramdisk_blocksize=4096 vga=0x317 splash=silent kiwidebug=0",  #  pylint: disable=line-too-long
                                 "initrd_name": "initrd",
                                 "kernel_name": "linux",
                                 "pxe_root_directory": "/srv/saltboot",
@@ -510,9 +510,9 @@ class TestSCGroup:
 
     @patch("spacecmd.group.os.path.isdir", MagicMock(return_value=False))
     @patch("spacecmd.group.os.makedirs", MagicMock(side_effect=OSError))
-    def test_group_backup_all_group_list_makedirs_failure_handling(self, shell):
+    def test_group_backup_all_group_list_makedirs_failure_handling(self, shell):  #  pylint: disable=redefined-outer-name
         """
-        Test do_group_backup with all groups lookup, making directories failure handling.
+        Test do_group_backup with all groups lookup, making directories failure handling.  #  pylint: disable=line-too-long
 
         :param shell:
         :return:
@@ -538,18 +538,18 @@ class TestSCGroup:
         mprint = MagicMock()
         logger = MagicMock()
         opener = MagicMock()
-        _open = MagicMock(return_value=opener)
+        _open = MagicMock(return_value=opener)  #  pylint: disable=invalid-name
 
-        _datetime = MagicMock()
+        _datetime = MagicMock()  #  pylint: disable=invalid-name
         _datetime.now = MagicMock(return_value=datetime.datetime(2019, 1, 1))
 
-        with patch("spacecmd.group.print", mprint) as prn, patch(
+        with patch("spacecmd.group.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.group.logging", logger
-        ) as lgr, patch("spacecmd.group.os.path.expanduser", exp_user) as exu, patch(
+        ) as lgr, patch("spacecmd.group.os.path.expanduser", exp_user) as exu, patch(  #  pylint: disable=unused-variable,unused-variable
             "spacecmd.group.open", _open
-        ) as opr, patch(
+        ) as opr, patch(  #  pylint: disable=unused-variable
             "spacecmd.group.datetime", _datetime
-        ) as dtm:
+        ) as dtm:  #  pylint: disable=unused-variable
             spacecmd.group.do_group_backup(shell, "ALL")
 
         assert not shell.help_group_backup.called
@@ -575,7 +575,7 @@ class TestSCGroup:
 
     @patch("spacecmd.group.os.path.isdir", MagicMock(return_value=False))
     @patch("spacecmd.group.os.makedirs", MagicMock(side_effect=OSError))
-    def test_group_backup_all_group_list_custom_destination(self, shell):
+    def test_group_backup_all_group_list_custom_destination(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_group_backup with all groups lookup, custom destination, handling error.
 
@@ -603,18 +603,18 @@ class TestSCGroup:
         mprint = MagicMock()
         logger = MagicMock()
         opener = MagicMock()
-        _open = MagicMock(return_value=opener)
+        _open = MagicMock(return_value=opener)  #  pylint: disable=invalid-name
 
-        _datetime = MagicMock()
+        _datetime = MagicMock()  #  pylint: disable=invalid-name
         _datetime.now = MagicMock(return_value=datetime.datetime(2019, 1, 1, 15, 0, 0))
 
-        with patch("spacecmd.group.print", mprint) as prn, patch(
+        with patch("spacecmd.group.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.group.logging", logger
-        ) as lgr, patch("spacecmd.group.os.path.expanduser", exp_user) as exu, patch(
+        ) as lgr, patch("spacecmd.group.os.path.expanduser", exp_user) as exu, patch(  #  pylint: disable=unused-variable,unused-variable
             "spacecmd.group.open", _open
-        ) as opr, patch(
+        ) as opr, patch(  #  pylint: disable=unused-variable
             "spacecmd.group.datetime", _datetime
-        ) as dtm:
+        ) as dtm:  #  pylint: disable=unused-variable
             spacecmd.group.do_group_backup(shell, "ALL /dev/null/%Y-%m-%T")
 
         assert not shell.help_group_backup.called
@@ -641,7 +641,7 @@ class TestSCGroup:
     @patch("spacecmd.group.os.path.abspath", MagicMock(return_value="/opt/backup"))
     @patch("spacecmd.group.os.listdir", MagicMock(return_value=[]))
     @patch("spacecmd.group.os.path.isdir", MagicMock(return_value=False))
-    def test_group_restore_noargs(self, shell):
+    def test_group_restore_noargs(self, shell):  #  pylint: disable=redefined-outer-name
         """
         test do_group_restore with no arguments.
 
@@ -656,9 +656,9 @@ class TestSCGroup:
         logger = MagicMock()
         mprint = MagicMock()
 
-        with patch("spacecmd.group.print", mprint) as prn, patch(
+        with patch("spacecmd.group.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.group.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.group.do_group_restore(shell, "")
 
         assert not shell.do_group_list.called
@@ -674,7 +674,7 @@ class TestSCGroup:
     @patch("spacecmd.group.os.listdir", MagicMock(return_value=[]))
     @patch("spacecmd.group.os.path.isdir", MagicMock(return_value=False))
     @patch("spacecmd.group.os.path.exists", MagicMock(return_value=False))
-    def test_group_restore_catch_not_existing_path(self, shell):
+    def test_group_restore_catch_not_existing_path(self, shell):  #  pylint: disable=redefined-outer-name
         """
         test do_group_restore catch path that does not exists
 
@@ -699,9 +699,9 @@ class TestSCGroup:
         logger = MagicMock()
         mprint = MagicMock()
 
-        with patch("spacecmd.group.print", mprint) as prn, patch(
+        with patch("spacecmd.group.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.group.logging", logger
-        ) as lgr, patch("spacecmd.group.os.path.abspath", _abspath) as abp:
+        ) as lgr, patch("spacecmd.group.os.path.abspath", _abspath) as abp:  #  pylint: disable=unused-variable,unused-variable
             spacecmd.group.do_group_restore(shell, "ALL")
 
         assert not shell.do_group_list.called
@@ -723,7 +723,7 @@ class TestSCGroup:
     @patch("spacecmd.group.os.listdir", MagicMock(return_value=[]))
     @patch("spacecmd.group.os.path.isdir", MagicMock(return_value=True))
     @patch("spacecmd.group.os.path.exists", MagicMock(return_value=True))
-    def test_group_restore_catch_empty_directory(self, shell):
+    def test_group_restore_catch_empty_directory(self, shell):  #  pylint: disable=redefined-outer-name
         """
         test do_group_restore catch empty directory.
 
@@ -748,9 +748,9 @@ class TestSCGroup:
         logger = MagicMock()
         mprint = MagicMock()
 
-        with patch("spacecmd.group.print", mprint) as prn, patch(
+        with patch("spacecmd.group.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.group.logging", logger
-        ) as lgr, patch("spacecmd.group.os.path.abspath", _abspath) as abp:
+        ) as lgr, patch("spacecmd.group.os.path.abspath", _abspath) as abp:  #  pylint: disable=unused-variable,unused-variable
             spacecmd.group.do_group_restore(shell, "ALL")
 
         assert not shell.do_group_list.called
@@ -773,7 +773,7 @@ class TestSCGroup:
     @patch("spacecmd.group.os.path.isdir", MagicMock(return_value=True))
     @patch("spacecmd.group.os.path.isfile", MagicMock(return_value=True))
     @patch("spacecmd.group.os.path.exists", MagicMock(return_value=True))
-    def test_group_restore_catch_missing_groups(self, shell):
+    def test_group_restore_catch_missing_groups(self, shell):  #  pylint: disable=redefined-outer-name
         """
         test do_group_restore catch missing groups
 
@@ -798,13 +798,13 @@ class TestSCGroup:
         logger = MagicMock()
         mprint = MagicMock()
         opener = MagicMock()
-        _open = MagicMock(return_value=opener)
+        _open = MagicMock(return_value=opener)  #  pylint: disable=invalid-name
 
-        with patch("spacecmd.group.print", mprint) as prn, patch(
+        with patch("spacecmd.group.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.group.logging", logger
-        ) as lgr, patch("spacecmd.group.open", _open) as opn, patch(
+        ) as lgr, patch("spacecmd.group.open", _open) as opn, patch(  #  pylint: disable=unused-variable,unused-variable
             "spacecmd.group.os.path.abspath", _abspath
-        ) as abp:
+        ) as abp:  #  pylint: disable=unused-variable
             spacecmd.group.do_group_restore(shell, "/opt/backup group-a group-b")
 
         assert not shell.do_group_list.called
@@ -829,7 +829,7 @@ class TestSCGroup:
     @patch("spacecmd.group.os.path.isdir", MagicMock(return_value=True))
     @patch("spacecmd.group.os.path.isfile", MagicMock(return_value=True))
     @patch("spacecmd.group.os.path.exists", MagicMock(return_value=True))
-    def test_group_restore_catch_indempotent_recovery(self, shell):
+    def test_group_restore_catch_indempotent_recovery(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_group_restore indempotent recovery
 
@@ -859,7 +859,7 @@ class TestSCGroup:
             side_effect=[
                 {
                     "pxe": {
-                        "default_kernel_parameters": "panic=60 ramdisk_size=710000 ramdisk_blocksize=4096 vga=0x317 splash=silent kiwidebug=0",
+                        "default_kernel_parameters": "panic=60 ramdisk_size=710000 ramdisk_blocksize=4096 vga=0x317 splash=silent kiwidebug=0",  #  pylint: disable=line-too-long
                         "initrd_name": "initrd",
                         "kernel_name": "linux",
                         "pxe_root_directory": "/srv/saltboot",
@@ -877,7 +877,7 @@ class TestSCGroup:
                 "formulas": {
                     "pxe": {
                         "pxe": {
-                            "default_kernel_parameters": "panic=60 ramdisk_size=710000 ramdisk_blocksize=4096 vga=0x317 splash=silent kiwidebug=0",
+                            "default_kernel_parameters": "panic=60 ramdisk_size=710000 ramdisk_blocksize=4096 vga=0x317 splash=silent kiwidebug=0",  #  pylint: disable=line-too-long
                             "initrd_name": "initrd",
                             "kernel_name": "linux",
                             "pxe_root_directory": "/srv/saltboot",
@@ -887,11 +887,11 @@ class TestSCGroup:
             }
         )
 
-        with patch("spacecmd.group.print", mprint) as prn, patch(
+        with patch("spacecmd.group.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.group.logging", logger
-        ) as lgr, patch("spacecmd.group.json_read_from_file", json) as opr, patch(
+        ) as lgr, patch("spacecmd.group.json_read_from_file", json) as opr, patch(  #  pylint: disable=unused-variable,unused-variable
             "spacecmd.group.os.path.abspath", _abspath
-        ) as abp:
+        ) as abp:  #  pylint: disable=unused-variable
             spacecmd.group.do_group_restore(shell, "/opt/backup group-a")
 
         assert not shell.client.systemgroup.update.called
@@ -912,7 +912,7 @@ class TestSCGroup:
     @patch("spacecmd.group.os.path.isdir", MagicMock(return_value=True))
     @patch("spacecmd.group.os.path.isfile", MagicMock(return_value=True))
     @patch("spacecmd.group.os.path.exists", MagicMock(return_value=True))
-    def test_group_restore_catch_existing_group_description_changed(self, shell):
+    def test_group_restore_catch_existing_group_description_changed(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_group_restore indempotent recovery
 
@@ -946,11 +946,11 @@ class TestSCGroup:
             return_value={"description": "Group A description", "formulas": {}}
         )
 
-        with patch("spacecmd.group.print", mprint) as prn, patch(
+        with patch("spacecmd.group.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.group.logging", logger
-        ) as lgr, patch("spacecmd.group.json_read_from_file", json) as opr, patch(
+        ) as lgr, patch("spacecmd.group.json_read_from_file", json) as opr, patch(  #  pylint: disable=unused-variable,unused-variable
             "spacecmd.group.os.path.abspath", _abspath
-        ) as abp:
+        ) as abp:  #  pylint: disable=unused-variable
             spacecmd.group.do_group_restore(shell, "/opt/backup group-a")
 
         assert not shell.client.systemgroup.create.called
@@ -971,7 +971,7 @@ class TestSCGroup:
     @patch("spacecmd.group.os.path.isdir", MagicMock(return_value=True))
     @patch("spacecmd.group.os.path.isfile", MagicMock(return_value=True))
     @patch("spacecmd.group.os.path.exists", MagicMock(return_value=True))
-    def test_group_restore_catch_existing_formulas_changed(self, shell):
+    def test_group_restore_catch_existing_formulas_changed(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_group_restore indempotent recovery
 
@@ -1001,7 +1001,7 @@ class TestSCGroup:
             side_effect=[
                 {
                     "pxe": {
-                        "default_kernel_parameters": "panic=60 ramdisk_size=710000 ramdisk_blocksize=4096 vga=0x317 splash=silent kiwidebug=0",
+                        "default_kernel_parameters": "panic=60 ramdisk_size=710000 ramdisk_blocksize=4096 vga=0x317 splash=silent kiwidebug=0",  #  pylint: disable=line-too-long
                         "initrd_name": "initrd",
                         "kernel_name": "linux",
                         "pxe_root_directory": "/srv/saltboot",
@@ -1030,11 +1030,11 @@ class TestSCGroup:
             }
         )
 
-        with patch("spacecmd.group.print", mprint) as prn, patch(
+        with patch("spacecmd.group.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.group.logging", logger
-        ) as lgr, patch("spacecmd.group.json_read_from_file", json) as opr, patch(
+        ) as lgr, patch("spacecmd.group.json_read_from_file", json) as opr, patch(  #  pylint: disable=unused-variable,unused-variable
             "spacecmd.group.os.path.abspath", _abspath
-        ) as abp:
+        ) as abp:  #  pylint: disable=unused-variable
             spacecmd.group.do_group_restore(shell, "/opt/backup group-a")
 
         assert not shell.client.systemgroup.create.called
@@ -1068,7 +1068,7 @@ class TestSCGroup:
     @patch("spacecmd.group.os.path.isdir", MagicMock(return_value=True))
     @patch("spacecmd.group.os.path.isfile", MagicMock(return_value=True))
     @patch("spacecmd.group.os.path.exists", MagicMock(return_value=True))
-    def test_group_restore_accept_old_format_description_changed(self, shell):
+    def test_group_restore_accept_old_format_description_changed(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_group_restore indempotent recovery
 
@@ -1101,13 +1101,13 @@ class TestSCGroup:
         json = MagicMock(return_value=None)
         opener = mock_open(read_data="Group A description newer")
 
-        with patch("spacecmd.group.print", mprint) as prn, patch(
+        with patch("spacecmd.group.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.group.logging", logger
-        ) as lgr, patch("spacecmd.group.json_read_from_file", json) as opr, patch(
+        ) as lgr, patch("spacecmd.group.json_read_from_file", json) as opr, patch(  #  pylint: disable=unused-variable,unused-variable
             "spacecmd.group.open", opener
-        ) as opn, patch(
+        ) as opn, patch(  #  pylint: disable=unused-variable
             "spacecmd.group.os.path.abspath", _abspath
-        ) as abp:
+        ) as abp:  #  pylint: disable=unused-variable
             spacecmd.group.do_group_restore(shell, "/opt/backup group-a")
 
         assert not shell.client.systemgroup.create.called
@@ -1128,7 +1128,7 @@ class TestSCGroup:
             ],
         )
 
-    def test_group_list_data(self, shell):
+    def test_group_list_data(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_group_list with data return.
 
@@ -1147,7 +1147,7 @@ class TestSCGroup:
         assert len(out) == 2
         assert out == ["group-a", "group-b"]
 
-    def test_group_list_no_data(self, shell):
+    def test_group_list_no_data(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_group_list with no data return.
 
@@ -1167,7 +1167,7 @@ class TestSCGroup:
 
         assert_expect(mprint.call_args_list, "group-a\ngroup-b")
 
-    def test_group_listsystems_noargs(self, shell):
+    def test_group_listsystems_noargs(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_group_listsystems with no arguments passed.
 
@@ -1179,9 +1179,9 @@ class TestSCGroup:
         mprint = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.group.print", mprint) as prt, patch(
+        with patch("spacecmd.group.print", mprint) as prt, patch(  #  pylint: disable=unused-variable
             "spacecmd.group.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             out = spacecmd.group.do_group_listsystems(shell, "", doreturn=True)
 
         assert not shell.client.systemgroup.listSystems.called
@@ -1190,7 +1190,7 @@ class TestSCGroup:
         assert out is None
         assert shell.help_group_listsystems.called
 
-    def test_group_listsystems_with_data(self, shell):
+    def test_group_listsystems_with_data(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_group_listsystems with data return.
 
@@ -1209,9 +1209,9 @@ class TestSCGroup:
         mprint = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.group.print", mprint) as prt, patch(
+        with patch("spacecmd.group.print", mprint) as prt, patch(  #  pylint: disable=unused-variable
             "spacecmd.group.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             out = spacecmd.group.do_group_listsystems(shell, "group-a", doreturn=True)
 
         assert not shell.help_group_listsystems.called
@@ -1221,7 +1221,7 @@ class TestSCGroup:
         assert out is not None
         assert out == ["system-d", "system-c", "system-b", "system-a"]
 
-    def test_group_listsystems_nodata(self, shell):
+    def test_group_listsystems_nodata(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_group_listsystems without data return, but STDOUT.
 
@@ -1240,9 +1240,9 @@ class TestSCGroup:
         mprint = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.group.print", mprint) as prt, patch(
+        with patch("spacecmd.group.print", mprint) as prt, patch(  #  pylint: disable=unused-variable
             "spacecmd.group.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             out = spacecmd.group.do_group_listsystems(shell, "group-a", doreturn=False)
 
         assert not shell.help_group_listsystems.called
@@ -1252,7 +1252,7 @@ class TestSCGroup:
         assert mprint.called
         assert_expect(mprint.call_args_list, "system-a\nsystem-b\nsystem-c\nsystem-d")
 
-    def test_group_listsystems_too_much_parameters(self, shell):
+    def test_group_listsystems_too_much_parameters(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_group_listsystems with too much groups specified.
 
@@ -1264,9 +1264,9 @@ class TestSCGroup:
         mprint = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.group.print", mprint) as prt, patch(
+        with patch("spacecmd.group.print", mprint) as prt, patch(  #  pylint: disable=unused-variable
             "spacecmd.group.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             out = spacecmd.group.do_group_listsystems(
                 shell, "group-a group-b", doreturn=True
             )
@@ -1277,7 +1277,7 @@ class TestSCGroup:
         assert not mprint.called
         assert shell.help_group_listsystems.called
 
-    def test_group_details_noargs(self, shell):
+    def test_group_details_noargs(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_group_details with no arguments.
 
@@ -1290,9 +1290,9 @@ class TestSCGroup:
 
         mprint = MagicMock()
         logger = MagicMock()
-        with patch("spacecmd.group.print", mprint) as prt, patch(
+        with patch("spacecmd.group.print", mprint) as prt, patch(  #  pylint: disable=unused-variable
             "spacecmd.group.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.group.do_group_details(shell, "")
 
         assert not logger.warning.called
@@ -1301,7 +1301,7 @@ class TestSCGroup:
         assert not mprint.called
         assert shell.help_group_details.called
 
-    def test_group_details_no_valid_group(self, shell):
+    def test_group_details_no_valid_group(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_group_details with no arguments.
 
@@ -1316,9 +1316,9 @@ class TestSCGroup:
 
         mprint = MagicMock()
         logger = MagicMock()
-        with patch("spacecmd.group.print", mprint) as prt, patch(
+        with patch("spacecmd.group.print", mprint) as prt, patch(  #  pylint: disable=unused-variable
             "spacecmd.group.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.group.do_group_details(shell, "cucumber-group")
 
         assert not shell.client.systemgroup.listSystems.called
@@ -1331,7 +1331,7 @@ class TestSCGroup:
             logger.warning.call_args_list, 'The group "cucumber-group" is invalid'
         )
 
-    def test_group_details_short_report(self, shell):
+    def test_group_details_short_report(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_group_details short report.
 
@@ -1371,9 +1371,9 @@ class TestSCGroup:
 
         mprint = MagicMock()
         logger = MagicMock()
-        with patch("spacecmd.group.print", mprint) as prt, patch(
+        with patch("spacecmd.group.print", mprint) as prt, patch(  #  pylint: disable=unused-variable
             "spacecmd.group.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.group.do_group_details(
                 shell, "group-a group-b group-c", short=True
             )
@@ -1404,7 +1404,7 @@ class TestSCGroup:
             ],
         )
 
-    def test_group_details_long_report(self, shell):
+    def test_group_details_long_report(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_group_details long report.
 
@@ -1444,9 +1444,9 @@ class TestSCGroup:
 
         mprint = MagicMock()
         logger = MagicMock()
-        with patch("spacecmd.group.print", mprint) as prt, patch(
+        with patch("spacecmd.group.print", mprint) as prt, patch(  #  pylint: disable=unused-variable
             "spacecmd.group.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.group.do_group_details(shell, "group-a group-b group-c")
 
         assert not shell.help_group_details.called

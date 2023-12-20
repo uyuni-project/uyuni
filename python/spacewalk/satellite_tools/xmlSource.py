@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring,invalid-name
 # Decoding data from XML streams
 #
 # Copyright (c) 2008--2018 Red Hat, Inc.
@@ -85,7 +85,7 @@ class FatalParseException(SAXParseException, Exception):
 # XML Node
 
 
-class Node:
+class Node:  #  pylint: disable=missing-class-docstring
     def __init__(self, name, attributes=None, subelements=None):
         self.name = name
         if attributes is None:
@@ -95,11 +95,11 @@ class Node:
         self.attributes = attributes
         self.subelements = subelements
 
-    def addSubelement(self, e):
+    def addSubelement(self, e):  #  pylint: disable=invalid-name
         self.subelements.append(e)
 
     def __repr__(self):
-        return "[<Node element: name=%s>]" % self.name
+        return "[<Node element: name=%s>]" % self.name  #  pylint: disable=consider-using-f-string
 
 
 # Base class we use as a SAX parsing handler
@@ -112,13 +112,13 @@ class BaseDispatchHandler(ContentHandler, ErrorHandler):
     element defines what this collection contains
     """
 
-    rootElement = None  # non-static
-    __stream = None
+    rootElement = None  # non-static  #  pylint: disable=invalid-name
+    __stream = None  #  pylint: disable=invalid-name
     container_dispatch = {}
 
     def __init__(self):
         super(ContentHandler, self).__init__()
-        self.rootAttributes = None
+        self.rootAttributes = None  #  pylint: disable=invalid-name
         self.__parser = make_parser()
         # Init the parser's handlers
         self.restoreParser()
@@ -129,12 +129,12 @@ class BaseDispatchHandler(ContentHandler, ErrorHandler):
         for container in list(self.container_dispatch.values()):
             container.reset()
 
-    def restoreParser(self):
+    def restoreParser(self):  #  pylint: disable=invalid-name
         # Restore the parser's handlers to self
         self.__parser.setContentHandler(self)
         self.__parser.setErrorHandler(self)
 
-    def setStream(self, stream):
+    def setStream(self, stream):  #  pylint: disable=invalid-name
         self.__stream = stream
 
     # Starts processing the data from the XML stream
@@ -144,7 +144,7 @@ class BaseDispatchHandler(ContentHandler, ErrorHandler):
             self.setStream(stream)
         try:
             self.__parser.parse(self.__stream)
-        except (KeyboardInterrupt, SystemExit):
+        except (KeyboardInterrupt, SystemExit):  #  pylint: disable=try-except-raise
             raise
         except Exception:  # pylint: disable=E0012, W0703
             Traceback(ostream=sys.stderr, with_locals=1)
@@ -155,7 +155,7 @@ class BaseDispatchHandler(ContentHandler, ErrorHandler):
     def reset(self):
         self.close()
         # Re-init
-        self.__init__()
+        self.__init__()  #  pylint: disable=unnecessary-dunder-call
 
     def close(self):
         # WARNING: better call this function when you're done, or you'll end
@@ -167,17 +167,17 @@ class BaseDispatchHandler(ContentHandler, ErrorHandler):
         if self.__container:
             try:
                 self.__container.batch = []
-            except (KeyboardInterrupt, SystemExit):
+            except (KeyboardInterrupt, SystemExit):  #  pylint: disable=try-except-raise
                 raise
             except Exception:
                 e = sys.exc_info()[1]
-                log_debug(-1, "ERROR (odd) upon container.batch=[] cleanup: %s" % e)
+                log_debug(-1, "ERROR (odd) upon container.batch=[] cleanup: %s" % e)  #  pylint: disable=consider-using-f-string
                 raise
 
     # Interface with containers
     def set_container(self, obj):
         if not hasattr(obj, "container_name"):
-            raise Exception("%s not a container type" % type(obj))
+            raise Exception("%s not a container type" % type(obj))  #  pylint: disable=broad-exception-raised,consider-using-f-string
 
         # reset the container (to clean up garbage from previous parses)
         obj.reset()
@@ -209,8 +209,8 @@ class BaseDispatchHandler(ContentHandler, ErrorHandler):
         if self.rootAttributes is None:
             # First time around
             if self.rootElement != name:
-                raise Exception(
-                    "Mismatching elements; root='%s', "
+                raise Exception(  #  pylint: disable=broad-exception-raised
+                    "Mismatching elements; root='%s', "  #  pylint: disable=consider-using-f-string
                     "received='%s'" % (self.rootElement, name)
                 )
             self.rootAttributes = utf8_attrs
@@ -247,7 +247,7 @@ class BaseDispatchHandler(ContentHandler, ErrorHandler):
         """Handle a recoverable error."""
         log_debug(
             -1,
-            "ERROR (RECOVERABLE): parse error encountered - line: %s, col: %s, msg: %s"
+            "ERROR (RECOVERABLE): parse error encountered - line: %s, col: %s, msg: %s"  #  pylint: disable=consider-using-f-string
             % (exception.getLineNumber(), exception.getColumnNumber(), exception._msg),
         )
         raise RecoverableParseException(exception._msg, exception, exception._locator)
@@ -256,7 +256,7 @@ class BaseDispatchHandler(ContentHandler, ErrorHandler):
         """Handle a non-recoverable error."""
         log_debug(
             -1,
-            "ERROR (FATAL): parse error encountered - line: %s, col: %s, msg: %s"
+            "ERROR (FATAL): parse error encountered - line: %s, col: %s, msg: %s"  #  pylint: disable=consider-using-f-string
             % (exception.getLineNumber(), exception.getColumnNumber(), exception._msg),
         )
         raise FatalParseException(exception._msg, exception, exception._locator)
@@ -265,7 +265,7 @@ class BaseDispatchHandler(ContentHandler, ErrorHandler):
         """Handle a warning."""
         log_debug(
             -1,
-            "ERROR (WARNING): parse error encountered - line: %s, col: %s, msg: %s"
+            "ERROR (WARNING): parse error encountered - line: %s, col: %s, msg: %s"  #  pylint: disable=consider-using-f-string
             % (exception.getLineNumber(), exception.getColumnNumber(), exception._msg),
         )
 
@@ -277,8 +277,8 @@ class BaseDispatchHandler(ContentHandler, ErrorHandler):
 # Particular case: a satellite handler
 
 
-class SatelliteDispatchHandler(BaseDispatchHandler):
-    rootElement = "rhn-satellite"
+class SatelliteDispatchHandler(BaseDispatchHandler):  #  pylint: disable=missing-class-docstring
+    rootElement = "rhn-satellite"  #  pylint: disable=invalid-name
     # this is the oldest version of channel dump we support
     version = "3.0"
 
@@ -307,7 +307,7 @@ class SatelliteDispatchHandler(BaseDispatchHandler):
             raise IncompatibleVersionError(
                 version,
                 self.version,
-                "Incompatible stream version %s; code supports %s"
+                "Incompatible stream version %s; code supports %s"  #  pylint: disable=consider-using-f-string
                 % (version, self.version),
             )
 
@@ -315,10 +315,10 @@ class SatelliteDispatchHandler(BaseDispatchHandler):
 # Element handler
 
 
-class BaseItem:
+class BaseItem:  #  pylint: disable=missing-class-docstring
     item_name = None
     item_class = object
-    tagMap = {}
+    tagMap = {}  #  pylint: disable=invalid-name
 
     def __init__(self):
         pass
@@ -331,7 +331,7 @@ class BaseItem:
         self.populateFromElements(item, elements)
         return item
 
-    def populateFromAttributes(self, obj, sourceDict):
+    def populateFromAttributes(self, obj, sourceDict):  #  pylint: disable=invalid-name,invalid-name
         # Populates dict with items from sourceDict
         for key, value in list(sourceDict.items()):
             if key not in self.tagMap:
@@ -345,7 +345,7 @@ class BaseItem:
             # Finally, update the key
             obj[key] = _normalizeAttribute(obj.attributeTypes.get(key), value)
 
-    def populateFromElements(self, obj, elements):
+    def populateFromElements(self, obj, elements):  #  pylint: disable=invalid-name
         # Populates obj with `elements' as subelements
         keys = list(obj.keys())
         keys_len = len(keys)
@@ -356,7 +356,7 @@ class BaseItem:
                         # White space around an element - skip
                         continue
                     # Ambiguity: don't know which attribute to initialize
-                    raise Exception("Ambiguity %s" % keys)
+                    raise Exception("Ambiguity %s" % keys)  #  pylint: disable=broad-exception-raised,consider-using-f-string
                 # Init the only attribute we know of
                 obj[keys[0]] = element
                 continue
@@ -405,11 +405,11 @@ def _dict_to_utf8(d):
 __itemDispatcher = {}
 
 
-def addItem(classobj):
+def addItem(classobj):  #  pylint: disable=invalid-name
     __itemDispatcher[classobj.item_name] = classobj
 
 
-def _createItem(element):
+def _createItem(element):  #  pylint: disable=invalid-name
     # Creates an Item object from the specified element
     if element.name not in __itemDispatcher:
         # No item processor
@@ -494,7 +494,7 @@ addItem(ServerGroupServerArchCompatItem)
 class ChannelFamilyItem(BaseItem):
     item_name = "rhn-channel-family"
     item_class = importLib.ChannelFamily
-    tagMap = {
+    tagMap = {  #  pylint: disable=invalid-name
         "id": "channel-family-id",
         # max_members is no longer populated from the xml dump, but from the
         # satellite cert
@@ -507,10 +507,10 @@ class ChannelFamilyItem(BaseItem):
 addItem(ChannelFamilyItem)
 
 
-class ChannelItem(BaseItem):
+class ChannelItem(BaseItem):  #  pylint: disable=missing-class-docstring
     item_name = "rhn-channel"
     item_class = importLib.Channel
-    tagMap = {
+    tagMap = {  #  pylint: disable=invalid-name
         "channel-id": "string_channel_id",
         "org-id": "org_id",
         "rhn-channel-parent-channel": "parent_channel",
@@ -579,7 +579,7 @@ addItem(ChannelItem)
 class ChannelTrustItem(BaseItem):
     item_name = "rhn-channel-trusted-org"
     item_class = importLib.ChannelTrust
-    tagMap = {
+    tagMap = {  #  pylint: disable=invalid-name
         "org-id": "org_trust_id",
     }
 
@@ -590,7 +590,7 @@ addItem(ChannelTrustItem)
 class OrgTrustItem(BaseItem):
     item_name = "rhn-org-trust"
     item_class = importLib.OrgTrust
-    tagMap = {
+    tagMap = {  #  pylint: disable=invalid-name
         "org-id": "org_id",
     }
 
@@ -601,7 +601,7 @@ addItem(OrgTrustItem)
 class OrgItem(BaseItem):
     item_name = "rhn-org"
     item_class = importLib.Org
-    tagMap = {
+    tagMap = {  #  pylint: disable=invalid-name
         "id": "id",
         "name": "name",
         "rhn-org-trusts": "org_trust_ids",
@@ -611,7 +611,7 @@ class OrgItem(BaseItem):
 addItem(OrgItem)
 
 
-class BaseChecksummedItem(BaseItem):
+class BaseChecksummedItem(BaseItem):  #  pylint: disable=missing-class-docstring
     def populate(self, attributes, elements):
         item = BaseItem.populate(self, attributes, elements)
         item["checksums"] = {}
@@ -638,7 +638,7 @@ addItem(BaseChecksummedItem)
 class IncompletePackageItem(BaseChecksummedItem):
     item_name = "rhn-package-short"
     item_class = importLib.IncompletePackage
-    tagMap = {
+    tagMap = {  #  pylint: disable=invalid-name
         "id": "package_id",
         "package-size": "package_size",
         "last-modified": "last_modified",
@@ -654,7 +654,7 @@ addItem(IncompletePackageItem)
 class ChecksumItem(BaseItem):
     item_name = "checksum"
     item_class = importLib.Checksum
-    tagMap = {
+    tagMap = {  #  pylint: disable=invalid-name
         "checksum-type": "type",
         "checksum-value": "value",
     }
@@ -663,10 +663,10 @@ class ChecksumItem(BaseItem):
 addItem(ChecksumItem)
 
 
-class PackageItem(IncompletePackageItem):
+class PackageItem(IncompletePackageItem):  #  pylint: disable=missing-class-docstring
     item_name = "rhn-package"
     item_class = importLib.Package
-    tagMap = {
+    tagMap = {  #  pylint: disable=invalid-name
         # Stuff coming through as attributes
         "package-group": "package_group",
         "rpm-version": "rpm_version",
@@ -714,7 +714,7 @@ class PackageItem(IncompletePackageItem):
         # find out "primary" checksum
         # let's use the best we have
         # pylint: disable=bad-option-value,unsubscriptable-object,unsupported-assignment-operation
-        # have_filedigests = len([1 for i in item['requires'] if i['name'] == 'rpmlib(FileDigests)'])
+        # have_filedigests = len([1 for i in item['requires'] if i['name'] == 'rpmlib(FileDigests)'])  #  pylint: disable=line-too-long
         # if not have_filedigests:
         #    item['checksum_type'] = 'md5'
         #    item['checksum'] = item['checksums']['md5']
@@ -727,7 +727,7 @@ addItem(PackageItem)
 class IncompleteSourcePackageItem(BaseItem):
     item_name = "source-package"
     item_class = importLib.IncompleteSourcePackage
-    tagMap = {
+    tagMap = {  #  pylint: disable=invalid-name
         "last-modified": "last_modified",
         "source-rpm": "source_rpm",
     }
@@ -739,7 +739,7 @@ addItem(IncompleteSourcePackageItem)
 class SourcePackageItem(BaseItem):
     item_name = "rhn-source-package"
     item_class = importLib.SourcePackage
-    tagMap = {
+    tagMap = {  #  pylint: disable=invalid-name
         "id": "package_id",
         "source-rpm": "source_rpm",
         "package-group": "package_group",
@@ -758,7 +758,7 @@ addItem(SourcePackageItem)
 class ChangelogItem(BaseItem):
     item_name = "rhn-package-changelog-entry"
     item_class = importLib.ChangeLog
-    tagMap = {
+    tagMap = {  #  pylint: disable=invalid-name
         "rhn-package-changelog-entry-name": "name",
         "rhn-package-changelog-entry-text": "text",
         "rhn-package-changelog-entry-time": "time",
@@ -771,7 +771,7 @@ addItem(ChangelogItem)
 class ProductFileItem(BaseItem):
     item_name = "suse-product-file-entry"
     item_class = importLib.ProductFile
-    tagMap = {
+    tagMap = {  #  pylint: disable=invalid-name
         "suse-product-file-entry-name": "name",
         "suse-product-file-entry-epoch": "epoch",
         "suse-product-file-entry-version": "version",
@@ -789,7 +789,7 @@ addItem(ProductFileItem)
 class EulaItem(BaseItem):
     item_name = "suse-eula-entry"
     item_class = importLib.Eula
-    tagMap = {
+    tagMap = {  #  pylint: disable=invalid-name
         "suse-eula-entry-text": "text",
         "suse-eula-entry-checksum": "checksum",
     }
@@ -801,7 +801,7 @@ addItem(EulaItem)
 class ExtraTagItem(BaseItem):
     item_name = "pkg-extratag-entry"
     item_class = importLib.ExtraTag
-    tagMap = {
+    tagMap = {  #  pylint: disable=invalid-name
         "pkg-extratag-entry-name": "name",
         "pkg-extratag-entry-value": "value",
     }
@@ -815,7 +815,7 @@ class DependencyItem(BaseItem):
     """virtual class - common settings for dependency items"""
 
     item_class = importLib.Dependency
-    tagMap = {
+    tagMap = {  #  pylint: disable=invalid-name
         "sense": "flags",
     }
 
@@ -876,10 +876,10 @@ class EnhancesItem(DependencyItem):
 addItem(EnhancesItem)
 
 
-class FileItem(BaseChecksummedItem):
+class FileItem(BaseChecksummedItem):  #  pylint: disable=missing-class-docstring
     item_name = "rhn-package-file"
     item_class = importLib.File
-    tagMap = {
+    tagMap = {  #  pylint: disable=invalid-name
         "checksum-type": "checksum_type",
     }
 
@@ -897,7 +897,7 @@ addItem(FileItem)
 class DistItem(BaseItem):
     item_name = "rhn-dist"
     item_class = importLib.DistChannelMap
-    tagMap = {
+    tagMap = {  #  pylint: disable=invalid-name
         "channel-arch": "channel_arch",
     }
 
@@ -916,7 +916,7 @@ addItem(SupportInfoItem)
 class SuseProductItem(BaseItem):
     item_name = "suse-product"
     item_class = importLib.SuseProduct
-    tagMap = {
+    tagMap = {  #  pylint: disable=invalid-name
         "product-id": "product_id",
         "friendly-name": "friendly_name",
         "release-stage": "release_stage",
@@ -930,7 +930,7 @@ addItem(SuseProductItem)
 class SuseProductChannelItem(BaseItem):
     item_name = "suse-product-channel"
     item_class = importLib.SuseProductChannel
-    tagMap = {
+    tagMap = {  #  pylint: disable=invalid-name
         "product-id": "product_id",
         "channel-label": "channel_label",
         "parent-channel-label": "parent_channel_label",
@@ -943,7 +943,7 @@ addItem(SuseProductChannelItem)
 class SuseUpgradePathItem(BaseItem):
     item_name = "suse-upgrade-path"
     item_class = importLib.SuseUpgradePath
-    tagMap = {
+    tagMap = {  #  pylint: disable=invalid-name
         "from-product-id": "from_product_id",
         "to-product-id": "to_product_id",
     }
@@ -955,7 +955,7 @@ addItem(SuseUpgradePathItem)
 class SuseProductExtensionItem(BaseItem):
     item_name = "suse-product-extension"
     item_class = importLib.SuseProductExtension
-    tagMap = {
+    tagMap = {  #  pylint: disable=invalid-name
         "product-id": "product_id",
         "root-product-id": "root_id",
         "ext-product-id": "ext_id",
@@ -969,7 +969,7 @@ addItem(SuseProductExtensionItem)
 class SuseProductRepositoryItem(BaseItem):
     item_name = "suse-product-repository"
     item_class = importLib.SuseProductRepository
-    tagMap = {
+    tagMap = {  #  pylint: disable=invalid-name
         "product-id": "product_id",
         "root-product-id": "rootid",
         "repository-id": "repo_id",
@@ -987,7 +987,7 @@ addItem(SuseProductRepositoryItem)
 class SCCRepositoryItem(BaseItem):
     item_name = "scc-repository"
     item_class = importLib.SCCRepository
-    tagMap = {
+    tagMap = {  #  pylint: disable=invalid-name
         "scc-id": "sccid",
         "autorefresh": "autorefresh",
         "name": "name",
@@ -1005,7 +1005,7 @@ addItem(SCCRepositoryItem)
 class SuseSubscriptionItem(BaseItem):
     item_name = "suse-subscription"
     item_class = importLib.SuseSubscription
-    tagMap = {
+    tagMap = {  #  pylint: disable=invalid-name
         "sub-label": "label",
         "sub-max-members": "max_members",
         "sub-system-ent": "system_entitlement",
@@ -1018,7 +1018,7 @@ addItem(SuseSubscriptionItem)
 class ClonedChannelItem(BaseItem):
     item_name = "cloned-channel"
     item_class = importLib.ClonedChannel
-    tagMap = {"orig": "orig", "clone": "clone"}
+    tagMap = {"orig": "orig", "clone": "clone"}  #  pylint: disable=invalid-name
 
 
 addItem(ClonedChannelItem)
@@ -1027,7 +1027,7 @@ addItem(ClonedChannelItem)
 class ChannelErratumItem(BaseItem):
     item_name = "erratum"
     item_class = importLib.ChannelErratum
-    tagMap = {
+    tagMap = {  #  pylint: disable=invalid-name
         "last-modified": "last_modified",
         "advisory-name": "advisory_name",
     }
@@ -1039,7 +1039,7 @@ addItem(ChannelErratumItem)
 class ReleaseItem(BaseItem):
     item_name = "rhn-release"
     item_class = importLib.ReleaseChannelMap
-    tagMap = {"channel-arch": "channel_arch"}
+    tagMap = {"channel-arch": "channel_arch"}  #  pylint: disable=invalid-name
 
 
 addItem(ReleaseItem)
@@ -1048,7 +1048,7 @@ addItem(ReleaseItem)
 class BugItem(BaseItem):
     item_name = "rhn-erratum-bug"
     item_class = importLib.Bug
-    tagMap = {
+    tagMap = {  #  pylint: disable=invalid-name
         "rhn-erratum-bug-id": "bug_id",
         "rhn-erratum-bug-summary": "summary",
         "rhn-erratum-bug-href": "href",
@@ -1061,7 +1061,7 @@ addItem(BugItem)
 class KeywordItem(BaseItem):
     item_name = "rhn-erratum-keyword"
     item_class = importLib.Keyword
-    tagMap = {}
+    tagMap = {}  #  pylint: disable=invalid-name
 
 
 addItem(KeywordItem)
@@ -1070,7 +1070,7 @@ addItem(KeywordItem)
 class ErratumItem(BaseItem):
     item_name = "rhn-erratum"
     item_class = importLib.Erratum
-    tagMap = {
+    tagMap = {  #  pylint: disable=invalid-name
         "id": "erratum_id",
         "org-id": "org_id",
         "rhn-erratum-advisory-name": "advisory_name",
@@ -1114,7 +1114,7 @@ addItem(ErrorItem)
 class ErrataFileItem(BaseChecksummedItem):
     item_name = "rhn-erratum-file"
     item_class = importLib.ErrataFile
-    tagMap = {
+    tagMap = {  #  pylint: disable=invalid-name
         "type": "file_type",
         "channels": "channel_list",
         # Specific to XML
@@ -1138,7 +1138,7 @@ addItem(ProductNamesItem)
 class KickstartableTreeItem(BaseItem):
     item_name = "rhn-kickstartable-tree"
     item_class = importLib.KickstartableTree
-    tagMap = {
+    tagMap = {  #  pylint: disable=invalid-name
         "rhn-kickstart-files": "files",
         "base-path": "base_path",
         "boot-image": "boot_image",
@@ -1156,7 +1156,7 @@ addItem(KickstartableTreeItem)
 class KickstartFileItem(BaseChecksummedItem):
     item_name = "rhn-kickstart-file"
     item_class = importLib.KickstartFile
-    tagMap = {
+    tagMap = {  #  pylint: disable=invalid-name
         "relative-path": "relative_path",
         "file-size": "file_size",
         "last-modified": "last_modified",
@@ -1171,15 +1171,15 @@ addItem(KickstartFileItem)
 #
 
 
-class ContainerHandler:
+class ContainerHandler:  #  pylint: disable=missing-class-docstring
     container_name = None
 
     def __init__(self):
         # The tag stack; each item is an array [element, attributes]
-        self.tagStack = []
+        self.tagStack = []  #  pylint: disable=invalid-name
         # The object stack; each item is an array
         # [element, attributes, content]
-        self.objStack = []
+        self.objStack = []  #  pylint: disable=invalid-name
         # Collects the elements in a batch
         self.batch = []
 
@@ -1187,16 +1187,16 @@ class ContainerHandler:
         # Make sure the batch is preserved
         batch = self.batch
         # Re-init the object: cleans up the stacks and such
-        self.__init__()
+        self.__init__()  #  pylint: disable=unnecessary-dunder-call
         # And restore the batch
         self.batch = batch
 
-    def startElement(self, element, attrs):
+    def startElement(self, element, attrs):  #  pylint: disable=invalid-name
         # log_debug(6, element) --duplicate logging.
         if not self.tagStack and element != self.container_name:
             # Strange; this element is called to parse stuff when it's not
             # supposed to
-            raise Exception("This object should not have been used")
+            raise Exception("This object should not have been used")  #  pylint: disable=broad-exception-raised
         self.tagStack.append(Node(element, attrs))
         self.objStack.append([])
 
@@ -1206,13 +1206,13 @@ class ContainerHandler:
             # Nothing to do
             return
         # If the thing in front is a string, append to it
-        lastObj = self.objStack[-1]
+        lastObj = self.objStack[-1]  #  pylint: disable=invalid-name
         if lastObj and _is_string(lastObj[-1]):
-            lastObj[-1] = "%s%s" % (lastObj[-1], data)
+            lastObj[-1] = "%s%s" % (lastObj[-1], data)  #  pylint: disable=consider-using-f-string
         else:
             lastObj.append(data)
 
-    def endElement(self, element):
+    def endElement(self, element):  #  pylint: disable=invalid-name
         # log_debug(6, element) --duplicate logging.
         tagobj = self.tagStack[-1]
         # Remove the previous tag
@@ -1221,7 +1221,7 @@ class ContainerHandler:
         name = tagobj.name
         if name != element:
             raise ParseException(
-                "incorrect XML data: closing tag %s, opening tag %s" % (element, name)
+                "incorrect XML data: closing tag %s, opening tag %s" % (element, name)  #  pylint: disable=consider-using-f-string
             )
         # Append the content of the object to the tag object
         for obj in self.objStack[-1]:
@@ -1242,13 +1242,13 @@ class ContainerHandler:
             # Finished parsing an item; let the parent know
             self.endItemCallback()
 
-    def getLastItem(self):
+    def getLastItem(self):  #  pylint: disable=invalid-name
         return self.objStack[-1][-1]
 
-    def clearLastItem(self):
+    def clearLastItem(self):  #  pylint: disable=invalid-name
         del self.objStack[-1][-1]
 
-    def endItemCallback(self):
+    def endItemCallback(self):  #  pylint: disable=invalid-name
         # Grab the latest object we've parsed
         obj = self.getLastItem()
         # And remove it since we don't need it
@@ -1262,22 +1262,22 @@ class ContainerHandler:
 
         if "error" in item:
             # Special case errors
-            log_debug(0, 'XML parser error: found "rhn-error" item: %s' % item["error"])
+            log_debug(0, 'XML parser error: found "rhn-error" item: %s' % item["error"])  #  pylint: disable=consider-using-f-string
             raise ParseException(item["error"])
 
         self.postprocessItem(item)
         # Add it to the items list
         self.batch.append(item)
 
-    def endContainerCallback(self):
+    def endContainerCallback(self):  #  pylint: disable=invalid-name
         pass
 
-    def postprocessItem(self, item):
+    def postprocessItem(self, item):  #  pylint: disable=invalid-name
         # Do nothing
         pass
 
 
-def _normalizeSubelements(objtype, subelements):
+def _normalizeSubelements(objtype, subelements):  #  pylint: disable=invalid-name
     # pylint: disable=R0911
     # Deal with simple cases first
     if objtype is None:
@@ -1294,15 +1294,15 @@ def _normalizeSubelements(objtype, subelements):
 
     # We do have subelements
     # Extract all the non-string subelements
-    _s = []
-    _strings_only = 1
+    _s = []  #  pylint: disable=invalid-name
+    _strings_only = 1  #  pylint: disable=invalid-name
     for subel in subelements:
         if _is_string(subel) and not subel.strip():
             # Ignore it for now
             continue
         _s.append(subel)
         if not _is_string(subel):
-            _strings_only = 0
+            _strings_only = 0  #  pylint: disable=invalid-name
 
     if _strings_only:
         # Multiple strings - contactenate into one
@@ -1313,14 +1313,14 @@ def _normalizeSubelements(objtype, subelements):
 
     if not isinstance(objtype, usix.ListType):
         if len(subelements) > 1:
-            raise Exception("Expected a scalar, got back a list")
+            raise Exception("Expected a scalar, got back a list")  #  pylint: disable=broad-exception-raised
         subelement = subelements[0]
         # NULL?
         if isinstance(subelement, Node):
             if subelement.name == "rhn-null":
                 return None
-            raise Exception(
-                "Expected a scalar, got back an element '%s'" % subelement.name
+            raise Exception(  #  pylint: disable=broad-exception-raised
+                "Expected a scalar, got back an element '%s'" % subelement.name  #  pylint: disable=consider-using-f-string
             )
 
         if objtype is usix.StringType:
@@ -1334,10 +1334,10 @@ def _normalizeSubelements(objtype, subelements):
 
         if objtype is importLib.DateType:
             return _normalizeDateType(subelement)
-        raise Exception("Unhandled type %s for subelement %s" % (objtype, subelement))
+        raise Exception("Unhandled type %s for subelement %s" % (objtype, subelement))  #  pylint: disable=broad-exception-raised,consider-using-f-string
 
     # Expecting a list of things
-    expectedType = objtype[0]
+    expectedType = objtype[0]  #  pylint: disable=invalid-name
     if expectedType is usix.StringType:
         # List of strings
         return list(map(_stringify, subelements))
@@ -1357,15 +1357,15 @@ def _normalizeSubelements(objtype, subelements):
             # Item processor not found
             continue
         if not isinstance(item, expectedType):
-            raise Exception(
-                "Expected type %s, got back %s %s" % (expectedType, type(item), item)
+            raise Exception(  #  pylint: disable=broad-exception-raised
+                "Expected type %s, got back %s %s" % (expectedType, type(item), item)  #  pylint: disable=consider-using-f-string
             )
         result.append(item)
 
     return result
 
 
-def _normalizeAttribute(objtype, attribute):
+def _normalizeAttribute(objtype, attribute):  #  pylint: disable=invalid-name
     # Deal with simple cases first
     if (objtype is None) or (objtype is usix.StringType):
         # (Don't know how to handle it) or (Expecting a scalar)
@@ -1382,10 +1382,10 @@ def _normalizeAttribute(objtype, attribute):
         # List type - split stuff
         return attribute.split()
     else:
-        raise Exception("Unhandled attribute data type %s" % objtype)
+        raise Exception("Unhandled attribute data type %s" % objtype)  #  pylint: disable=broad-exception-raised,consider-using-f-string
 
 
-def _normalizeDateType(value):
+def _normalizeDateType(value):  #  pylint: disable=invalid-name
     try:
         value = int(value)
     except ValueError:

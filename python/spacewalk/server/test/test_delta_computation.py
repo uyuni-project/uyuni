@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -58,9 +58,9 @@ i, r = server_packages.package_delta(list1, list2)
 print(("Install set:  ", i))
 print(("Remove set:   ", r))
 
-assert i == [aalib1, kernel3, unzip1, unzip2], "Invalid install set %s" % i
+assert i == [aalib1, kernel3, unzip1, unzip2], "Invalid install set %s" % i  #  pylint: disable=consider-using-f-string
 assert r == [aalib2, abiword1, abiword2, kernel1, kernel2, quota], (
-    "Invalid remove set %s" % r
+    "Invalid remove set %s" % r  #  pylint: disable=consider-using-f-string
 )
 
 print("All assertions passed")

@@ -7,9 +7,9 @@ NOTE: This module is quite rarely used within Uyuni/SLE,
       and then deleting them.
 """
 import copy
-import os
+import os  #  pylint: disable=unused-import
 from unittest.mock import MagicMock, patch
-from helpers import shell, assert_expect, assert_list_args_expect, assert_args_expect
+from helpers import shell, assert_expect, assert_list_args_expect, assert_args_expect  #  pylint: disable=unused-import
 import spacecmd.kickstart
 
 
@@ -18,7 +18,7 @@ class TestSCKickStart:
     Test kickstart.
     """
 
-    def test_kickstart_clone_interactive_no_profiles(self, shell):
+    def test_kickstart_clone_interactive_no_profiles(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_kickstart_clone interactive. No profiles found.
 
@@ -27,9 +27,9 @@ class TestSCKickStart:
         """
         mprint = MagicMock()
         logger = MagicMock()
-        with patch("spacecmd.kickstart.print", mprint) as prt, patch(
+        with patch("spacecmd.kickstart.print", mprint) as prt, patch(  #  pylint: disable=unused-variable
             "spacecmd.kickstart.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.kickstart.do_kickstart_clone(shell, "")
 
         assert not mprint.called
@@ -37,7 +37,7 @@ class TestSCKickStart:
         assert logger.error.called
         assert_expect(logger.error.call_args_list, "No kickstart profiles available")
 
-    def test_kickstart_clone_interactive_wrong_profile_entered(self, shell):
+    def test_kickstart_clone_interactive_wrong_profile_entered(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_kickstart_clone interactive. Wrong profile has been entered.
 
@@ -50,9 +50,9 @@ class TestSCKickStart:
         shell.do_kickstart_list = MagicMock(
             return_value=["default_kickstart_profile", "some_other_profile"]
         )
-        with patch("spacecmd.kickstart.print", mprint) as prt, patch(
+        with patch("spacecmd.kickstart.print", mprint) as prt, patch(  #  pylint: disable=unused-variable
             "spacecmd.kickstart.logging", logger
-        ) as lgr, patch("spacecmd.kickstart.prompt_user", prompter) as pmt:
+        ) as lgr, patch("spacecmd.kickstart.prompt_user", prompter) as pmt:  #  pylint: disable=unused-variable,unused-variable
             spacecmd.kickstart.do_kickstart_clone(shell, "")
 
         assert not shell.client.kickstart.cloneProfile.called
@@ -82,7 +82,7 @@ class TestSCKickStart:
             ],
         )
 
-    def test_kickstart_clone_arg_wrong_profile_entered(self, shell):
+    def test_kickstart_clone_arg_wrong_profile_entered(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_kickstart_clone with args. Wrong profile has been entered.
 
@@ -95,9 +95,9 @@ class TestSCKickStart:
         shell.do_kickstart_list = MagicMock(
             return_value=["default_kickstart_profile", "some_other_profile"]
         )
-        with patch("spacecmd.kickstart.print", mprint) as prt, patch(
+        with patch("spacecmd.kickstart.print", mprint) as prt, patch(  #  pylint: disable=unused-variable
             "spacecmd.kickstart.logging", logger
-        ) as lgr, patch("spacecmd.kickstart.prompt_user", prompter) as pmt:
+        ) as lgr, patch("spacecmd.kickstart.prompt_user", prompter) as pmt:  #  pylint: disable=unused-variable,unused-variable
             spacecmd.kickstart.do_kickstart_clone(
                 shell, "-n posix_compliance_problem -c POSIX"
             )
@@ -112,7 +112,7 @@ class TestSCKickStart:
             "Kickstart profile you've entered was not found",
         )
 
-    def test_kickstart_clone_arg_no_name_entered(self, shell):
+    def test_kickstart_clone_arg_no_name_entered(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_kickstart_clone with args. No kickstart profile name entered.
 
@@ -125,9 +125,9 @@ class TestSCKickStart:
         shell.do_kickstart_list = MagicMock(
             return_value=["default_kickstart_profile", "some_other_profile"]
         )
-        with patch("spacecmd.kickstart.print", mprint) as prt, patch(
+        with patch("spacecmd.kickstart.print", mprint) as prt, patch(  #  pylint: disable=unused-variable
             "spacecmd.kickstart.logging", logger
-        ) as lgr, patch("spacecmd.kickstart.prompt_user", prompter) as pmt:
+        ) as lgr, patch("spacecmd.kickstart.prompt_user", prompter) as pmt:  #  pylint: disable=unused-variable,unused-variable
             spacecmd.kickstart.do_kickstart_clone(shell, "-c POSIX")
 
         assert not prompter.called
@@ -136,7 +136,7 @@ class TestSCKickStart:
         assert logger.error.called
         assert_expect(logger.error.call_args_list, "The Kickstart name is required")
 
-    def test_kickstart_clone_arg_no_target_entered(self, shell):
+    def test_kickstart_clone_arg_no_target_entered(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_kickstart_clone with args. No kickstart target profile name entered.
 
@@ -149,9 +149,9 @@ class TestSCKickStart:
         shell.do_kickstart_list = MagicMock(
             return_value=["default_kickstart_profile", "some_other_profile"]
         )
-        with patch("spacecmd.kickstart.print", mprint) as prt, patch(
+        with patch("spacecmd.kickstart.print", mprint) as prt, patch(  #  pylint: disable=unused-variable
             "spacecmd.kickstart.logging", logger
-        ) as lgr, patch("spacecmd.kickstart.prompt_user", prompter) as pmt:
+        ) as lgr, patch("spacecmd.kickstart.prompt_user", prompter) as pmt:  #  pylint: disable=unused-variable,unused-variable
             spacecmd.kickstart.do_kickstart_clone(shell, "-n whatever_profile")
 
         assert not prompter.called
@@ -162,7 +162,7 @@ class TestSCKickStart:
             logger.error.call_args_list, "The Kickstart clone name is required"
         )
 
-    def test_kickstart_clone_args(self, shell):
+    def test_kickstart_clone_args(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_kickstart_clone with args.
 
@@ -176,11 +176,11 @@ class TestSCKickStart:
             return_value=["default_kickstart_profile", "some_other_profile"]
         )
         name, clone = "default_kickstart_profile", "new_default_profile"
-        with patch("spacecmd.kickstart.print", mprint) as prt, patch(
+        with patch("spacecmd.kickstart.print", mprint) as prt, patch(  #  pylint: disable=unused-variable
             "spacecmd.kickstart.logging", logger
-        ) as lgr, patch("spacecmd.kickstart.prompt_user", prompter) as pmt:
+        ) as lgr, patch("spacecmd.kickstart.prompt_user", prompter) as pmt:  #  pylint: disable=unused-variable,unused-variable
             spacecmd.kickstart.do_kickstart_clone(
-                shell, "-n {} -c {}".format(name, clone)
+                shell, "-n {} -c {}".format(name, clone)  #  pylint: disable=consider-using-f-string
             )
 
         assert not prompter.called
@@ -193,7 +193,7 @@ class TestSCKickStart:
             [((shell.session, name, clone), {})],
         )
 
-    def test_kickstart_listscripts_noarg(self, shell):
+    def test_kickstart_listscripts_noarg(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_kickstart_listscripts without arguments.
 
@@ -202,17 +202,17 @@ class TestSCKickStart:
         """
         mprint = MagicMock()
         logger = MagicMock()
-        with patch("spacecmd.kickstart.print", mprint) as prt, patch(
+        with patch("spacecmd.kickstart.print", mprint) as prt, patch(  #  pylint: disable=unused-variable
             "spacecmd.kickstart.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.kickstart.do_kickstart_listscripts(shell, "")
 
         assert not shell.client.kickstart.profile.listScripts.called
         assert shell.help_kickstart_listscripts.called
 
-    def test_kickstart_listscripts_no_scripts(self, shell):
+    def test_kickstart_listscripts_no_scripts(self, shell):  #  pylint: disable=redefined-outer-name
         """
-        Test do_kickstart_listscripts list scripts for the specified profile. No scripts attached.
+        Test do_kickstart_listscripts list scripts for the specified profile. No scripts attached.  #  pylint: disable=line-too-long
 
         :param shell:
         :return:
@@ -220,9 +220,9 @@ class TestSCKickStart:
         mprint = MagicMock()
         logger = MagicMock()
         shell.client.kickstart.profile.listScripts = MagicMock(return_value=[])
-        with patch("spacecmd.kickstart.print", mprint) as prt, patch(
+        with patch("spacecmd.kickstart.print", mprint) as prt, patch(  #  pylint: disable=unused-variable
             "spacecmd.kickstart.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.kickstart.do_kickstart_listscripts(shell, "some_profile")
 
         assert not shell.help_kickstart_listscripts.called
@@ -234,7 +234,7 @@ class TestSCKickStart:
             [(("No scripts has been found for profile '%s'", "some_profile"), {})],
         )
 
-    def test_kickstart_listscripts_scripts_found(self, shell):
+    def test_kickstart_listscripts_scripts_found(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_kickstart_listscripts list scripts for the specified profile.
 
@@ -265,9 +265,9 @@ echo 'some more hello'
                 },
             ]
         )
-        with patch("spacecmd.kickstart.print", mprint) as prt, patch(
+        with patch("spacecmd.kickstart.print", mprint) as prt, patch(  #  pylint: disable=unused-variable
             "spacecmd.kickstart.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.kickstart.do_kickstart_listscripts(shell, "some_profile")
 
         assert not shell.help_kickstart_listscripts.called
@@ -298,7 +298,7 @@ echo 'some more hello'
             ],
         )
 
-    def test_kickstart_list_nodata(self, shell):
+    def test_kickstart_list_nodata(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_kickstart_list. Return no data, print to STDOUT.
 
@@ -314,9 +314,9 @@ echo 'some more hello'
                 {"name": "some_profile_kickstart"},
             ]
         )
-        with patch("spacecmd.kickstart.print", mprint) as prt, patch(
+        with patch("spacecmd.kickstart.print", mprint) as prt, patch(  #  pylint: disable=unused-variable
             "spacecmd.kickstart.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             out = spacecmd.kickstart.do_kickstart_list(shell, "", doreturn=False)
 
         assert not logger.error.called
@@ -327,9 +327,9 @@ echo 'some more hello'
             "default_kickstart\nsome_profile_kickstart\nwhatever_kickstart",
         )
 
-    def test_kickstart_list_nodata_noprofiles(self, shell):
+    def test_kickstart_list_nodata_noprofiles(self, shell):  #  pylint: disable=redefined-outer-name
         """
-        Test do_kickstart_list. Return no data, print to STDOUT. No profiles has been found.
+        Test do_kickstart_list. Return no data, print to STDOUT. No profiles has been found.  #  pylint: disable=line-too-long
 
         :param shell:
         :return:
@@ -337,9 +337,9 @@ echo 'some more hello'
         mprint = MagicMock()
         logger = MagicMock()
         shell.client.kickstart.listKickstarts = MagicMock(return_value=[])
-        with patch("spacecmd.kickstart.print", mprint) as prt, patch(
+        with patch("spacecmd.kickstart.print", mprint) as prt, patch(  #  pylint: disable=unused-variable
             "spacecmd.kickstart.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             out = spacecmd.kickstart.do_kickstart_list(shell, "", doreturn=False)
 
         assert not mprint.called
@@ -347,7 +347,7 @@ echo 'some more hello'
         assert out is None
         assert_expect(logger.error.call_args_list, "No kickstart profiles available")
 
-    def test_kickstart_list_data(self, shell):
+    def test_kickstart_list_data(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_kickstart_list. Return data, no printing to STDOUT.
 
@@ -363,9 +363,9 @@ echo 'some more hello'
                 {"name": "some_profile_kickstart"},
             ]
         )
-        with patch("spacecmd.kickstart.print", mprint) as prt, patch(
+        with patch("spacecmd.kickstart.print", mprint) as prt, patch(  #  pylint: disable=unused-variable
             "spacecmd.kickstart.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             out = spacecmd.kickstart.do_kickstart_list(shell, "", doreturn=True)
 
         assert not mprint.called
@@ -378,7 +378,7 @@ echo 'some more hello'
             "whatever_kickstart",
         ]
 
-    def test_kickstart_list_data_no_profiles(self, shell):
+    def test_kickstart_list_data_no_profiles(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_kickstart_list. Return data, no printing to STDOUT. No profiles found.
 
@@ -388,9 +388,9 @@ echo 'some more hello'
         mprint = MagicMock()
         logger = MagicMock()
         shell.client.kickstart.listKickstarts = MagicMock(return_value=[])
-        with patch("spacecmd.kickstart.print", mprint) as prt, patch(
+        with patch("spacecmd.kickstart.print", mprint) as prt, patch(  #  pylint: disable=unused-variable
             "spacecmd.kickstart.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             out = spacecmd.kickstart.do_kickstart_list(shell, "", doreturn=True)
 
         assert not mprint.called
@@ -398,7 +398,7 @@ echo 'some more hello'
         assert out is not None
         assert out == []
 
-    def test_kickstart_delete_noargs(self, shell):
+    def test_kickstart_delete_noargs(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_kickstart_delete without arguments.
 
@@ -406,7 +406,7 @@ echo 'some more hello'
         :return:
         """
         logger = MagicMock()
-        with patch("spacecmd.kickstart.logging", logger) as lgr:
+        with patch("spacecmd.kickstart.logging", logger) as lgr:  #  pylint: disable=unused-variable
             spacecmd.kickstart.do_kickstart_delete(shell, "")
 
         assert not logger.error.called
@@ -415,7 +415,7 @@ echo 'some more hello'
         assert not shell.client.kickstart.deleteProfile.called
         assert shell.help_kickstart_delete.called
 
-    def test_kickstart_delete_invalid_profile(self, shell):
+    def test_kickstart_delete_invalid_profile(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_kickstart_delete invalid profile (not found).
 
@@ -426,7 +426,7 @@ echo 'some more hello'
             return_value=["first_profile", "second_profile", "third_profile"]
         )
         logger = MagicMock()
-        with patch("spacecmd.kickstart.logging", logger) as lgr:
+        with patch("spacecmd.kickstart.logging", logger) as lgr:  #  pylint: disable=unused-variable
             spacecmd.kickstart.do_kickstart_delete(shell, "fourth_profile")
 
         assert not shell.client.kickstart.deleteProfile.called
@@ -442,7 +442,7 @@ echo 'some more hello'
         assert_expect(logger.debug.call_args_list, "Got labels to delete of []")
         assert_args_expect(shell.do_kickstart_list.call_args_list, [(("", True), {})])
 
-    def test_kickstart_delete_some_invalid_profile(self, shell):
+    def test_kickstart_delete_some_invalid_profile(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_kickstart_delete invalid profile (not found).
 
@@ -453,7 +453,7 @@ echo 'some more hello'
             return_value=["first_profile", "second_profile", "third_profile"]
         )
         logger = MagicMock()
-        with patch("spacecmd.kickstart.logging", logger) as lgr:
+        with patch("spacecmd.kickstart.logging", logger) as lgr:  #  pylint: disable=unused-variable
             spacecmd.kickstart.do_kickstart_delete(
                 shell, "fourth_profile zero_profile first_profile second_profile"
             )
@@ -481,9 +481,9 @@ echo 'some more hello'
             ],
         )
 
-    def test_kickstart_delete_profile_all_yes(self, shell):
+    def test_kickstart_delete_profile_all_yes(self, shell):  #  pylint: disable=redefined-outer-name
         """
-        Test do_kickstart_delete profile, yes=true. This should not cause interactive prompt.
+        Test do_kickstart_delete profile, yes=true. This should not cause interactive prompt.  #  pylint: disable=line-too-long
 
         :param shell:
         :return:
@@ -493,7 +493,7 @@ echo 'some more hello'
             return_value=["first_profile", "second_profile", "third_profile"]
         )
         logger = MagicMock()
-        with patch("spacecmd.kickstart.logging", logger) as lgr:
+        with patch("spacecmd.kickstart.logging", logger) as lgr:  #  pylint: disable=unused-variable
             spacecmd.kickstart.do_kickstart_delete(
                 shell, "first_profile second_profile"
             )
@@ -513,9 +513,9 @@ echo 'some more hello'
             ],
         )
 
-    def test_kickstart_delete_profile_interactive(self, shell):
+    def test_kickstart_delete_profile_interactive(self, shell):  #  pylint: disable=redefined-outer-name
         """
-        Test do_kickstart_delete profile, yes=false. Should start interactive confirmation prompt.
+        Test do_kickstart_delete profile, yes=false. Should start interactive confirmation prompt.  #  pylint: disable=line-too-long
 
         :param shell:
         :return:
@@ -526,7 +526,7 @@ echo 'some more hello'
             return_value=["first_profile", "second_profile", "third_profile"]
         )
         logger = MagicMock()
-        with patch("spacecmd.kickstart.logging", logger) as lgr:
+        with patch("spacecmd.kickstart.logging", logger) as lgr:  #  pylint: disable=unused-variable
             spacecmd.kickstart.do_kickstart_delete(
                 shell, "first_profile second_profile"
             )
@@ -546,7 +546,7 @@ echo 'some more hello'
             ],
         )
 
-    def test_kickstart_listcryptokeys_noargs(self, shell):
+    def test_kickstart_listcryptokeys_noargs(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_kickstart_listcryptokeys no args.
 
@@ -554,7 +554,7 @@ echo 'some more hello'
         :return:
         """
         mprint = MagicMock()
-        with patch("spacecmd.kickstart.print", mprint) as prt:
+        with patch("spacecmd.kickstart.print", mprint) as prt:  #  pylint: disable=unused-variable
             data = spacecmd.kickstart.do_kickstart_listcryptokeys(shell, "")
 
         assert not shell.kickstart.profile.system.listKeys.called
@@ -562,7 +562,7 @@ echo 'some more hello'
         assert data is None
         assert shell.help_kickstart_listcryptokeys.called
 
-    def test_kickstart_listcryptokeys_cryptokeys_to_stdout(self, shell):
+    def test_kickstart_listcryptokeys_cryptokeys_to_stdout(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_kickstart_listcryptokeys cryptokeys to stdout.
 
@@ -579,7 +579,7 @@ echo 'some more hello'
             ]
         )
         mprint = MagicMock()
-        with patch("spacecmd.kickstart.print", mprint) as prt:
+        with patch("spacecmd.kickstart.print", mprint) as prt:  #  pylint: disable=unused-variable
             data = spacecmd.kickstart.do_kickstart_listcryptokeys(shell, "some_profile")
 
         assert not shell.help_kickstart_listcryptokeys.called
@@ -589,7 +589,7 @@ echo 'some more hello'
 
         assert_expect(mprint.call_args_list, "a_key\nb_key\nc_key\nx_key\nz_key")
 
-    def test_kickstart_listcryptokeys_cryptokeys_as_data(self, shell):
+    def test_kickstart_listcryptokeys_cryptokeys_as_data(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_kickstart_listcryptokeys cryptokeys as data.
 
@@ -606,7 +606,7 @@ echo 'some more hello'
             ]
         )
         mprint = MagicMock()
-        with patch("spacecmd.kickstart.print", mprint) as prt:
+        with patch("spacecmd.kickstart.print", mprint) as prt:  #  pylint: disable=unused-variable
             data = spacecmd.kickstart.do_kickstart_listcryptokeys(
                 shell, "some_profile", doreturn=True
             )
@@ -617,7 +617,7 @@ echo 'some more hello'
         assert data == ["a_key", "b_key", "c_key", "x_key", "z_key"]
         assert shell.client.kickstart.profile.system.listKeys.called
 
-    def test_kickstart_listcryptokeys_no_cryptokeys(self, shell):
+    def test_kickstart_listcryptokeys_no_cryptokeys(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_kickstart_listcryptokeys no cryptokeys.
 
@@ -627,9 +627,9 @@ echo 'some more hello'
         shell.client.kickstart.profile.system.listKeys = MagicMock(return_value=[])
         mprint = MagicMock()
         logger = MagicMock()
-        with patch("spacecmd.kickstart.print", mprint) as prt, patch(
+        with patch("spacecmd.kickstart.print", mprint) as prt, patch(  #  pylint: disable=unused-variable
             "spacecmd.kickstart.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             data = spacecmd.kickstart.do_kickstart_listcryptokeys(
                 shell, "some_profile", doreturn=False
             )
@@ -642,7 +642,7 @@ echo 'some more hello'
 
         assert_expect(logger.error.call_args_list, "No crypto keys has been found")
 
-    def test_kickstart_addcryptokeys_noarg(self, shell):
+    def test_kickstart_addcryptokeys_noarg(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_kickstart_addcryptokeys no arguments
 
@@ -653,7 +653,7 @@ echo 'some more hello'
         assert not shell.client.kickstart.profile.system.addKeys.called
         assert shell.help_kickstart_addcryptokeys.called
 
-    def test_kickstart_addcryptokeys(self, shell):
+    def test_kickstart_addcryptokeys(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_kickstart_addcryptokeys
 
@@ -669,7 +669,7 @@ echo 'some more hello'
             [((shell.session, "my_profile", ["key1", "key2"]), {})],
         )
 
-    def test_kickstart_removecryptokeys_noargs(self, shell):
+    def test_kickstart_removecryptokeys_noargs(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_kickstart_removecryptokeys with no args.
 
@@ -680,7 +680,7 @@ echo 'some more hello'
         assert not shell.client.kickstart.profile.system.removeKeys.called
         assert shell.help_kickstart_removecryptokeys.called
 
-    def test_kickstart_removecryptokeys_wrongargs(self, shell):
+    def test_kickstart_removecryptokeys_wrongargs(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_kickstart_removecryptokeys with wrong args
 
@@ -691,7 +691,7 @@ echo 'some more hello'
         assert not shell.client.kickstart.profile.system.removeKeys.called
         assert shell.help_kickstart_removecryptokeys.called
 
-    def test_kickstart_removecryptokeys(self, shell):
+    def test_kickstart_removecryptokeys(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_kickstart_removecryptokeys standard call.
 
@@ -702,7 +702,7 @@ echo 'some more hello'
         assert not shell.help_kickstart_removecryptokeys.called
         assert shell.client.kickstart.profile.system.removeKeys.called
 
-    def test_kickstart_listactivationkeys_noarg(self, shell):
+    def test_kickstart_listactivationkeys_noarg(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_kickstart_listactivationkeys with no arguments.
 
@@ -710,7 +710,7 @@ echo 'some more hello'
         :return:
         """
         mprint = MagicMock()
-        with patch("spacecmd.kickstart.print", mprint) as prt:
+        with patch("spacecmd.kickstart.print", mprint) as prt:  #  pylint: disable=unused-variable
             out = spacecmd.kickstart.do_kickstart_listactivationkeys(shell, "")
 
         assert out is None
@@ -718,7 +718,7 @@ echo 'some more hello'
         assert not shell.client.kickstart.profile.keys.getActivationKeys.called
         assert shell.help_kickstart_listactivationkeys.called
 
-    def test_kickstart_listactivationkeys_nokey_data(self, shell):
+    def test_kickstart_listactivationkeys_nokey_data(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_kickstart_listactivationkeys with no key data in them.
 
@@ -729,13 +729,13 @@ echo 'some more hello'
         shell.client.kickstart.profile.keys.getActivationKeys = MagicMock(
             return_value=[{}, {}, {}, {}]
         )
-        with patch("spacecmd.kickstart.print", mprint) as prt:
+        with patch("spacecmd.kickstart.print", mprint) as prt:  #  pylint: disable=unused-variable
             out = spacecmd.kickstart.do_kickstart_listactivationkeys(shell, "")
 
         assert out is None
         assert not mprint.called
 
-    def test_kickstart_listactivationkeys_nodata_sorted(self, shell):
+    def test_kickstart_listactivationkeys_nodata_sorted(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_kickstart_listactivationkeys with no key data in them.
 
@@ -751,14 +751,14 @@ echo 'some more hello'
                 {"key": "andthree"},
             ]
         )
-        with patch("spacecmd.kickstart.print", mprint) as prt:
+        with patch("spacecmd.kickstart.print", mprint) as prt:  #  pylint: disable=unused-variable
             out = spacecmd.kickstart.do_kickstart_listactivationkeys(shell, "profile")
 
         assert out is None
         assert mprint.called
         assert_expect(mprint.call_args_list, "andthree\none\ntwo\nzettakey")
 
-    def test_kickstart_listactivationkeys_data_sorted(self, shell):
+    def test_kickstart_listactivationkeys_data_sorted(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_kickstart_listactivationkeys with no key data in them.
 
@@ -774,7 +774,7 @@ echo 'some more hello'
                 {"key": "andthree"},
             ]
         )
-        with patch("spacecmd.kickstart.print", mprint) as prt:
+        with patch("spacecmd.kickstart.print", mprint) as prt:  #  pylint: disable=unused-variable
             out = spacecmd.kickstart.do_kickstart_listactivationkeys(
                 shell, "profile", doreturn=True
             )
@@ -784,7 +784,7 @@ echo 'some more hello'
         assert len(out) == 4
         assert out == ["andthree", "one", "two", "zettakey"]
 
-    def test_kickstart_addactivationkeys_noarg(self, shell):
+    def test_kickstart_addactivationkeys_noarg(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_kickstart_addactivationkeys add activation keys.
 
@@ -795,9 +795,9 @@ echo 'some more hello'
         assert not shell.client.kickstart.profile.keys.addActivationKey.called
         assert shell.help_kickstart_addactivationkeys.called
 
-    def test_kickstart_addactivationkeys_wrong_args(self, shell):
+    def test_kickstart_addactivationkeys_wrong_args(self, shell):  #  pylint: disable=redefined-outer-name
         """
-        Test do_kickstart_addactivationkeys add activation keys with wrong amount of args.
+        Test do_kickstart_addactivationkeys add activation keys with wrong amount of args.  #  pylint: disable=line-too-long
 
         :param shell:
         :return:
@@ -806,7 +806,7 @@ echo 'some more hello'
         assert not shell.client.kickstart.profile.keys.addActivationKey.called
         assert shell.help_kickstart_addactivationkeys.called
 
-    def test_kickstart_addactivationkeys(self, shell):
+    def test_kickstart_addactivationkeys(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_kickstart_addactivationkeys
 
@@ -817,7 +817,7 @@ echo 'some more hello'
         assert not shell.help_kickstart_addactivationkeys.called
         assert shell.client.kickstart.profile.keys.addActivationKey.called
 
-    def test_kickstart_removeactivationkeys_noargs_nointeractive(self, shell):
+    def test_kickstart_removeactivationkeys_noargs_nointeractive(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_kickstart_removeactivationkeys no args, no interactive.
 
@@ -830,7 +830,7 @@ echo 'some more hello'
         assert not shell.user_confirm.called
         assert shell.help_kickstart_removeactivationkeys.called
 
-    def test_kickstart_removeactivationkeys_noargs_wrongargs_nointeractive(self, shell):
+    def test_kickstart_removeactivationkeys_noargs_wrongargs_nointeractive(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_kickstart_removeactivationkeys wrong args, no interactive.
 
@@ -843,7 +843,7 @@ echo 'some more hello'
         assert not shell.user_confirm.called
         assert shell.help_kickstart_removeactivationkeys.called
 
-    def test_kickstart_removeactivationkeys_nointeractive(self, shell):
+    def test_kickstart_removeactivationkeys_nointeractive(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_kickstart_removeactivationkeys wrong args, no interactive.
 
@@ -858,7 +858,7 @@ echo 'some more hello'
         assert shell.client.kickstart.profile.keys.removeActivationKey.called
         assert shell.user_confirm.called
 
-    def test_kickstart_removeactivationkeys_interactive_abort(self, shell):
+    def test_kickstart_removeactivationkeys_interactive_abort(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_kickstart_removeactivationkeys wrong args, interactive, abort.
 
@@ -873,7 +873,7 @@ echo 'some more hello'
         assert not shell.client.kickstart.profile.keys.removeActivationKey.called
         assert shell.user_confirm.called
 
-    def test_kickstart_removeactivationkeys_interactive_accept(self, shell):
+    def test_kickstart_removeactivationkeys_interactive_accept(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_kickstart_removeactivationkeys wrong args, interactive, accept.
 
@@ -888,7 +888,7 @@ echo 'some more hello'
         assert shell.client.kickstart.profile.keys.removeActivationKey.called
         assert shell.user_confirm.called
 
-    def test_kickstart_removeactivationkeys_noninteractive_abort(self, shell):
+    def test_kickstart_removeactivationkeys_noninteractive_abort(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_kickstart_removeactivationkeys wrong args, non interactive, abort.
 
@@ -903,7 +903,7 @@ echo 'some more hello'
         assert not shell.client.kickstart.profile.keys.removeActivationKey.called
         assert shell.user_confirm.called
 
-    def test_kickstart_removeactivationkeys_noninteractive_accept(self, shell):
+    def test_kickstart_removeactivationkeys_noninteractive_accept(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_kickstart_removeactivationkeys wrong args, non interactive, accept.
 
@@ -918,7 +918,7 @@ echo 'some more hello'
         assert not shell.user_confirm.called
         assert shell.client.kickstart.profile.keys.removeActivationKey.called
 
-    def test_export_kickstart_getdetails_sort_all_lists(self, shell):
+    def test_export_kickstart_getdetails_sort_all_lists(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test export_kickstart_getdetails for sorting list of dicts
 
@@ -949,7 +949,7 @@ echo 'some more hello'
         )
         assert details["advanced_opts"] == expected
 
-    def test_help_kickstart_importjson(self, shell):
+    def test_help_kickstart_importjson(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_kickstart_importjson showing proper help if no arguments
 

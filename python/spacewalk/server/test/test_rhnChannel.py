@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring,invalid-name
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -25,7 +25,7 @@ def test_server_search(use_key=0):
     else:
         user = "mibanescu-plain"
     u = rhnUser.search(user)
-    s = rhnServer.Server(u, arch="athlon")
+    s = rhnServer.Server(u, arch="athlon")  #  pylint: disable=redefined-outer-name
     s.server["release"] = "2.1AS"
     s.server["name"] = "test 1"
     if use_key:
@@ -38,7 +38,7 @@ if __name__ == "__main__":
     initCFG("server.xmlrpc")
     rhnSQL.initDB("rhnuser/rhnuser@webdev")
 
-    if 1:
+    if 1:  #  pylint: disable=using-constant-test
         test_server_search(use_key=1)
         sys.exit(1)
 
@@ -67,7 +67,7 @@ if __name__ == "__main__":
         )
     )
     # mibanescu-2
-    #    print rhnChannel.channels_for_release_arch('9', 'i386-redhat-linux', user_id=2012148)
+    #    print rhnChannel.channels_for_release_arch('9', 'i386-redhat-linux', user_id=2012148)  #  pylint: disable=line-too-long
     # mibanescu-plain
     print(
         (
@@ -78,13 +78,13 @@ if __name__ == "__main__":
     )
     sys.exit(1)
 
-    channel = "redhat-linux-i386-7.1"
+    channel = "redhat-linux-i386-7.1"  #  pylint: disable=unreachable
 
     start = time.time()
     ret = rhnChannel.list_packages(channel)
     print(
         (
-            "Took %.2f seconds to list %d packages in %s"
+            "Took %.2f seconds to list %d packages in %s"  #  pylint: disable=consider-using-f-string
             % (time.time() - start, len(ret), channel)
         )
     )
@@ -94,7 +94,7 @@ if __name__ == "__main__":
     ret = rhnChannel.list_obsoletes(channel)
     print(
         (
-            "Took %.2f seconds to list %d obsoletes in %s"
+            "Took %.2f seconds to list %d obsoletes in %s"  #  pylint: disable=consider-using-f-string
             % (time.time() - start, len(ret), channel)
         )
     )

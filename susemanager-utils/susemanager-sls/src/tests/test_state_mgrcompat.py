@@ -10,7 +10,7 @@ from . import mockery
 
 mockery.setup_environment()
 
-from ..states import mgrcompat
+from ..states import mgrcompat  #  pylint: disable=wrong-import-position
 
 TAILORED_MODULE_RUN_KWARGS = {
     "service.running": [{"text": "superseded", "name": "salt-minion"}, {"foo": "bar"}]

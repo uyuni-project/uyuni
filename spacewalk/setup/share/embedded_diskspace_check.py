@@ -43,7 +43,7 @@ def _abspath(path):
     return path
 
 
-def _firstDir(path):
+def _firstDir(path):  #  pylint: disable=invalid-name
     """takes a path and walks backwards until it finds an existing directory.
     Follows symlinks.
     FIXME: need to test against NFS directory.
@@ -63,10 +63,10 @@ def _mountpoint(path):
 
     path = _firstDir(path)
     st_dev = os.stat(path)[stat.ST_DEV]
-    _next = os.path.dirname(path)
+    _next = os.path.dirname(path)  #  pylint: disable=invalid-name
     while os.stat(_next)[stat.ST_DEV] == st_dev and path != "/":
         path = _next
-        _next = os.path.dirname(path)
+        _next = os.path.dirname(path)  #  pylint: disable=invalid-name
     return path
 
 
@@ -105,7 +105,7 @@ def paths2freespace(paths):
     return pathsd
 
 
-def getNeeds(needsDict=None):  # pylint: disable=redefined-outer-name
+def getNeeds(needsDict=None):  # pylint: disable=redefined-outer-name,invalid-name,invalid-name
     """returns two dictionaries of fulfilled and unfilled space per
     mountpoint:
 
@@ -125,16 +125,16 @@ def getNeeds(needsDict=None):  # pylint: disable=redefined-outer-name
     """
 
     needsDict = needsDict or DEFAULT_NEEDS
-    mp2pMap = paths2mountpoints(list(needsDict.keys()))[1]
-    mp2fsMap = paths2freespace(list(mp2pMap.keys()))
+    mp2pMap = paths2mountpoints(list(needsDict.keys()))[1]  #  pylint: disable=invalid-name
+    mp2fsMap = paths2freespace(list(mp2pMap.keys()))  #  pylint: disable=invalid-name
 
     unfulfilled = {}
     fulfilled = {}
 
     for mountpoint, paths in mp2pMap.items():
-        totalNeeds = 0
+        totalNeeds = 0  #  pylint: disable=invalid-name
         for path in paths:
-            totalNeeds = totalNeeds + needsDict[path]
+            totalNeeds = totalNeeds + needsDict[path]  #  pylint: disable=invalid-name
         freespace = mp2fsMap[mountpoint]
         if freespace < totalNeeds:
             unfulfilled[mountpoint] = (paths, totalNeeds, freespace)
@@ -144,18 +144,18 @@ def getNeeds(needsDict=None):  # pylint: disable=redefined-outer-name
     return unfulfilled, fulfilled
 
 
-def _humanReadable(n):
+def _humanReadable(n):  #  pylint: disable=invalid-name
     s = repr(n)
     if n >= 2**10:
-        s = "%.1fK" % (n / (2**10))
+        s = "%.1fK" % (n / (2**10))  #  pylint: disable=consider-using-f-string
     if n >= 2**20:
-        s = "%.1fM" % (n / (2**20))
+        s = "%.1fM" % (n / (2**20))  #  pylint: disable=consider-using-f-string
     if n >= 2**30:
-        s = "%.1fG" % (n / (2**30))
+        s = "%.1fG" % (n / (2**30))  #  pylint: disable=consider-using-f-string
     return s
 
 
-def check(needsDict=None):  # pylint: disable=redefined-outer-name
+def check(needsDict=None):  # pylint: disable=redefined-outer-name,invalid-name
     """determine failed needs if any given needsDict.
     needsDict is by default DEFAULT_NEEDS (see top of module)
     """
@@ -168,9 +168,9 @@ def check(needsDict=None):  # pylint: disable=redefined-outer-name
             "ERROR: diskspace does not meet minimum system " "requirements:\n"
         )
         items = unfulfilled.items()
-        lenItems = len(items)
+        lenItems = len(items)  #  pylint: disable=invalid-name
         for mountpoint, data in items:
-            paths, totalNeeds, freespace = data
+            paths, totalNeeds, freespace = data  #  pylint: disable=invalid-name
             msg = """\
            Mountpoint: %s
            Relevant paths serviced by mountpoint: %s
@@ -185,7 +185,7 @@ def check(needsDict=None):  # pylint: disable=redefined-outer-name
                 _humanReadable(freespace),
             )
             sys.stderr.write(msg)
-            lenItems = lenItems - 1
+            lenItems = lenItems - 1  #  pylint: disable=invalid-name
             if lenItems:
                 sys.stderr.write("\n")
 

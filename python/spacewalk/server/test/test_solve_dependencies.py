@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python  #  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -24,7 +24,7 @@ def make_nvre_dict(epoch, version, release):
     return {"epoch": epoch, "version": version, "release": release}
 
 
-class SolveDependenciesTestCase(unittest.TestCase):
+class SolveDependenciesTestCase(unittest.TestCase):  #  pylint: disable=missing-class-docstring
     # this class assumes that:
     # mozilla-1.3.1-0.dag.rhel3.i386.rpm
     # mozilla-1.5-2.rhfc1.dag.i386.rpm
@@ -48,20 +48,20 @@ class SolveDependenciesTestCase(unittest.TestCase):
         rhnSQL.rollback()
 
     def testReturnType(self):
-        assert type(self.solve_deps_arch(self.serv_id, [], 2)) == type({})
+        assert type(self.solve_deps_arch(self.serv_id, [], 2)) == type({})  #  pylint: disable=unidiomatic-typecheck
 
     def testKeyType(self):
-        assert type(
+        assert type(  #  pylint: disable=unidiomatic-typecheck
             list(self.solve_deps_arch(self.serv_id, [self.filename], 2).keys())[0]
         ) == type("a")
 
     def testValueType(self):
-        assert type(
+        assert type(  #  pylint: disable=unidiomatic-typecheck
             self.solve_deps_arch(self.serv_id, [self.filename], 2)[self.filename]
         ) == type([])
 
     def testNestedValueType(self):
-        assert type(
+        assert type(  #  pylint: disable=unidiomatic-typecheck
             self.solve_deps_arch(self.serv_id, [self.filename], 2)[self.filename][0]
         ) == type([])
 
@@ -82,27 +82,27 @@ class SolveDependenciesTestCase(unittest.TestCase):
         )
 
     def testNestedValueType0(self):
-        assert type(
+        assert type(  #  pylint: disable=unidiomatic-typecheck
             self.solve_deps_arch(self.serv_id, [self.filename], 2)[self.filename][0][0]
         ) == type("a")
 
     def testNestedValueType1(self):
-        assert type(
+        assert type(  #  pylint: disable=unidiomatic-typecheck
             self.solve_deps_arch(self.serv_id, [self.filename], 2)[self.filename][0][1]
         ) == type("a")
 
     def testNestedValueType2(self):
-        assert type(
+        assert type(  #  pylint: disable=unidiomatic-typecheck
             self.solve_deps_arch(self.serv_id, [self.filename], 2)[self.filename][0][2]
         ) == type("a")
 
     def testNestedValueType3(self):
-        assert type(
+        assert type(  #  pylint: disable=unidiomatic-typecheck
             self.solve_deps_arch(self.serv_id, [self.filename], 2)[self.filename][0][3]
         ) == type("a")
 
     def testNestedValueType4(self):
-        assert type(
+        assert type(  #  pylint: disable=unidiomatic-typecheck
             self.solve_deps_arch(self.serv_id, [self.filename], 2)[self.filename][0][4]
         ) == type("a")
 
@@ -113,22 +113,22 @@ class SolveDependenciesTestCase(unittest.TestCase):
         )
 
     def testReturnTypeLimit(self):
-        assert type(self.solve_deps_with_limits(self.serv_id, [], 2)) == type({})
+        assert type(self.solve_deps_with_limits(self.serv_id, [], 2)) == type({})  #  pylint: disable=unidiomatic-typecheck
 
     def testKeyTypeLimit(self):
-        assert type(
+        assert type(  #  pylint: disable=unidiomatic-typecheck
             list(self.solve_deps_with_limits(self.serv_id, [self.filename], 2).keys())[
                 0
             ]
         ) == type("a")
 
     def testValueTypeLimit(self):
-        assert type(
+        assert type(  #  pylint: disable=unidiomatic-typecheck
             self.solve_deps_with_limits(self.serv_id, [self.filename], 2)[self.filename]
         ) == type([])
 
     def testNestedValueTypeLimit(self):
-        assert type(
+        assert type(  #  pylint: disable=unidiomatic-typecheck
             self.solve_deps_with_limits(self.serv_id, [self.filename], 2)[
                 self.filename
             ][0]
@@ -155,35 +155,35 @@ class SolveDependenciesTestCase(unittest.TestCase):
         )
 
     def testNestedValueTypeLimit0(self):
-        assert type(
+        assert type(  #  pylint: disable=unidiomatic-typecheck
             self.solve_deps_with_limits(self.serv_id, [self.filename], 2)[
                 self.filename
             ][0][0]
         ) == type("a")
 
     def testNestedValueTypeLimit1(self):
-        assert type(
+        assert type(  #  pylint: disable=unidiomatic-typecheck
             self.solve_deps_with_limits(self.serv_id, [self.filename], 2)[
                 self.filename
             ][0][1]
         ) == type("a")
 
     def testNestedValueTypeLimit2(self):
-        assert type(
+        assert type(  #  pylint: disable=unidiomatic-typecheck
             self.solve_deps_with_limits(self.serv_id, [self.filename], 2)[
                 self.filename
             ][0][2]
         ) == type("a")
 
     def testNestedValueTypeLimit3(self):
-        assert type(
+        assert type(  #  pylint: disable=unidiomatic-typecheck
             self.solve_deps_with_limits(self.serv_id, [self.filename], 2)[
                 self.filename
             ][0][3]
         ) == type("a")
 
     def testNestedValueTypeLimit4(self):
-        assert type(
+        assert type(  #  pylint: disable=unidiomatic-typecheck
             self.solve_deps_with_limits(self.serv_id, [self.filename], 2)[
                 self.filename
             ][0][4]

@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -22,5 +22,5 @@ __rhnexport__ = ["use_satellite"]
 # noop
 
 
-def use_satellite(server_id, action_id, data={}):
+def use_satellite(server_id, action_id, data={}):  #  pylint: disable=dangerous-default-value,unused-argument,unused-argument
     log_debug(3, action_id)

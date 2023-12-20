@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python  #  pylint: disable=missing-module-docstring
 # -*- coding: utf-8 -*-
 #
 # Copyright (C) 2014 Novell, Inc.
@@ -38,7 +38,7 @@ from spacewalk.susemanager.mgr_sync.mgr_sync import MgrSync
 from spacewalk.susemanager.mgr_sync import logger
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-from helper import read_data_from_fixture, path_to_fixture
+from helper import read_data_from_fixture, path_to_fixture  #  pylint: disable=wrong-import-position
 
 
 class ChannelTest(unittest.TestCase):
@@ -53,10 +53,10 @@ class ChannelTest(unittest.TestCase):
             os.unlink("tmp.log")
 
     def test_parse_channels(self):
-        with open(path_to_fixture("expected_channels.json"), "r") as file:
+        with open(path_to_fixture("expected_channels.json"), "r") as file:  #  pylint: disable=unspecified-encoding
             expected_channels = json.load(file)
 
-        with open(path_to_fixture("expected_hierarchy.json"), "r") as file:
+        with open(path_to_fixture("expected_hierarchy.json"), "r") as file:  #  pylint: disable=unspecified-encoding
             expected_hierarchy = json.load(file)
 
         channels = parse_channels(

@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -56,7 +56,7 @@ _query_mtime_upload_paths = rhnSQL.Statement(
 )
 
 
-def mtime_upload(server_id, action_id, dry_run=0):
+def mtime_upload(server_id, action_id, dry_run=0):  #  pylint: disable=unused-argument,unused-argument
     log_debug(3)
 
     data = {}
@@ -101,7 +101,7 @@ def mtime_upload(server_id, action_id, dry_run=0):
     return action_id, data
 
 
-def upload(server_id, action_id, dry_run=0):
+def upload(server_id, action_id, dry_run=0):  #  pylint: disable=unused-argument
     log_debug(3)
     h = rhnSQL.prepare(_query_upload_files)
     h.execute(action_id=action_id, server_id=server_id)
@@ -110,17 +110,17 @@ def upload(server_id, action_id, dry_run=0):
     return action_id, files
 
 
-def deploy(server_id, action_id, dry_run=0):
+def deploy(server_id, action_id, dry_run=0):  #  pylint: disable=unused-argument
     log_debug(3)
     return _get_files(server_id, action_id)
 
 
-def verify(server_id, action_id, dry_run=0):
+def verify(server_id, action_id, dry_run=0):  #  pylint: disable=unused-argument
     log_debug(3)
     return _get_files(server_id, action_id)
 
 
-def diff(server_id, action_id, dry_run=0):
+def diff(server_id, action_id, dry_run=0):  #  pylint: disable=unused-argument
     log_debug(3)
     return _get_files(server_id, action_id)
 
@@ -142,7 +142,7 @@ _query_get_files = rhnSQL.Statement(
                cft.label,
                ci.selinux_ctx,
            case
-                when cft.label='symlink' then (select path from rhnConfigFileName where id = ci.SYMLINK_TARGET_FILENAME_ID)
+                when cft.label='symlink' then (select path from rhnConfigFileName where id = ci.SYMLINK_TARGET_FILENAME_ID)  #  pylint: disable=line-too-long
                 else ''
             end as symlink
       from

@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring,invalid-name
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -24,8 +24,8 @@ import sys
 from uyuni.common.usix import raise_with_tb, LongType
 from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.server import rhnSQL
-from spacewalk.server.rhnServer import server_lib
-from spacewalk.server.rhnSQL import procedure
+from spacewalk.server.rhnServer import server_lib  #  pylint: disable=unused-import
+from spacewalk.server.rhnSQL import procedure  #  pylint: disable=unused-import
 
 ###############################################################################
 # Constants
@@ -139,7 +139,7 @@ def add_listener(listener):
     Allows other components of the server to listen for virtualization
     related events.
     """
-    log_debug(3, "Virt listener added: %s" % str(listener))
+    log_debug(3, "Virt listener added: %s" % str(listener))  #  pylint: disable=consider-using-f-string
 
     # Don't add the listener if it's already there.
     if not listener in Listeners.listeners:
@@ -154,7 +154,7 @@ def add_listener(listener):
 ##
 # This class handles virtualization events.
 #
-class VirtualizationEventHandler:
+class VirtualizationEventHandler:  #  pylint: disable=missing-class-docstring
     ##
     # This map defines how to route each event to the appropriate handler.
     #
@@ -208,11 +208,11 @@ class VirtualizationEventHandler:
         event = (action, target)
 
         # Fetch the appropriate handler.
-        handler = None
+        handler = None  #  pylint: disable=redefined-outer-name
         try:
             handler = getattr(self, self.HANDLERS[event])
         except KeyError:
-            ke = sys.exc_info()[1]
+            ke = sys.exc_info()[1]  #  pylint: disable=unused-variable
             raise_with_tb(
                 VirtualizationEventError("Don't know how to handle virt event:", event),
                 sys.exc_info()[2],
@@ -241,7 +241,7 @@ class VirtualizationEventHandler:
     # Protected Methods
     ###########################################################################
 
-    def _handle_system_exists(self, system_id, timestamp, properties):
+    def _handle_system_exists(self, system_id, timestamp, properties):  #  pylint: disable=unused-argument
         uuid = properties[PropertyType.UUID]
         identity = properties[PropertyType.IDENTITY]
         virt_type = None
@@ -262,7 +262,7 @@ class VirtualizationEventHandler:
                 ListenerEvent.GUEST_REGISTERED, row["host_system_id"], system_id
             )
 
-    def _handle_domain_exists(self, system_id, timestamp, properties):
+    def _handle_domain_exists(self, system_id, timestamp, properties):  #  pylint: disable=unused-argument
         uuid = properties[PropertyType.UUID]
 
         row = self.__db_get_domain(system_id, uuid)
@@ -285,7 +285,7 @@ class VirtualizationEventHandler:
                     uuid,
                 )
 
-    def _handle_domain_removed(self, system_id, timestamp, properties):
+    def _handle_domain_removed(self, system_id, timestamp, properties):  #  pylint: disable=unused-argument
         """Handle a domain removal.  Since we are dealing with virtual domains, we
         can't really tell whether physical removal took place, so we'll just mark
         the domain as 'stopped'.
@@ -299,14 +299,14 @@ class VirtualizationEventHandler:
         new_properties = {PropertyType.STATE: ServerStateType.STOPPED}
         self.__db_update_domain(system_id, uuid, new_properties, row)
 
-    def _handle_system_crawl_began(self, system_id, timestamp, properties):
+    def _handle_system_crawl_began(self, system_id, timestamp, properties):  #  pylint: disable=unused-argument,unused-argument
         self.__unconfirm_domains(system_id)
 
-    def _handle_system_crawl_ended(self, system_id, timestamp, properties):
+    def _handle_system_crawl_ended(self, system_id, timestamp, properties):  #  pylint: disable=unused-argument,unused-argument
         self.__remove_unconfirmed_domains(system_id)
         self.__confirm_domains(system_id)
 
-    def _handle_log_msg_exists(self, system_id, timestamp, properties):
+    def _handle_log_msg_exists(self, system_id, timestamp, properties):  #  pylint: disable=unused-argument,unused-argument
         kickstart_session_id = properties[PropertyType.ID]
         log_message = properties[PropertyType.MESSAGE]
 
@@ -539,7 +539,7 @@ class VirtualizationEventHandler:
 
         if not row or "id" not in row:
             raise VirtualizationEventError("unable to get virt instance id")
-        id = row["id"]
+        id = row["id"]  #  pylint: disable=redefined-builtin
 
         # Do we have a system with a machine id matching the uuid?
         get_system_id_sql = """
@@ -603,7 +603,7 @@ class VirtualizationEventHandler:
             state=state,
         )
 
-    def __db_update_domain(self, host_id, uuid, properties, existing_row):
+    def __db_update_domain(self, host_id, uuid, properties, existing_row):  #  pylint: disable=unused-argument
         # First, update the rhnVirtualInstance table.  If a guest domain was
         # registered but its host was not, it is possible that the
         # rhnVirtualInstance table's host_system_id column is null.  We'll
@@ -725,7 +725,7 @@ class VirtualizationEventHandler:
         query = rhnSQL.prepare(update_sql)
         query.execute(sysid=system_id)
 
-    def __remove_unconfirmed_domains(self, system_id):
+    def __remove_unconfirmed_domains(self, system_id):  #  pylint: disable=unused-argument
         """Mark the unconfirmed entries in the RVII table as stopped, since it
         appears they are no longer running.
         """
@@ -786,7 +786,7 @@ class VirtualizationEventHandler:
                     # when it comes from the client, so we'll convert it to a
                     # normal form.
                     # if UUID had leading 0, we must pad 0 again #429192
-                    properties[PropertyType.UUID] = "%032x" % uuid_as_number
+                    properties[PropertyType.UUID] = "%032x" % uuid_as_number  #  pylint: disable=consider-using-f-string
             else:
                 properties[PropertyType.UUID] = None
 
@@ -804,7 +804,7 @@ class VirtualizationEventHandler:
 
     def __notify_listeners(self, *args):
         for listener in Listeners.listeners:
-            listener._notify(*args)
+            listener._notify(*args)  #  pylint: disable=protected-access
 
 
 ###############################################################################
@@ -841,7 +841,7 @@ def _notify_guest(server_id, uuid, virt_type):
 
 def _virt_notify(server_id, actions):
     # Instantiate the event handler.
-    handler = VirtualizationEventHandler()
+    handler = VirtualizationEventHandler()  #  pylint: disable=redefined-outer-name
 
     # Handle each of the actions, in turn.
     for action in actions:
@@ -883,7 +883,7 @@ def _make_virt_action(event, target, properties):
 
 
 def is_host_uuid(uuid):
-    uuid = eval("0x%s" % uuid)
+    uuid = eval("0x%s" % uuid)  #  pylint: disable=eval-used,consider-using-f-string
     return LongType(uuid) == 0
 
 
@@ -1017,7 +1017,7 @@ if __name__ == "__main__":
 ###############################################################################
 
 
-class VirtualizationListener:
+class VirtualizationListener:  #  pylint: disable=missing-class-docstring
     def __init__(self):
         pass
 

@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring,invalid-name
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -28,21 +28,21 @@ from spacewalk.server.importlib.packageImport import packageImporter
 from spacewalk.server.importlib.errataCache import schedule_errata_cache_update
 
 
-def uploadPackages(info, source=0, force=0, caller=None):
+def uploadPackages(info, source=0, force=0, caller=None):  #  pylint: disable=invalid-name
     log_debug(4, source, force, caller)
     batch = Collection()
-    packageList = info.get("packages") or []
+    packageList = info.get("packages") or []  #  pylint: disable=invalid-name
     if not packageList:
-        raise Exception("Nothing to do")
+        raise Exception("Nothing to do")  #  pylint: disable=broad-exception-raised
 
     org_id = info.get("orgId")
     if org_id == "":
         org_id = None
 
     if source:
-        channelList = []
+        channelList = []  #  pylint: disable=invalid-name
     else:
-        channelList = info.get("channels") or []
+        channelList = info.get("channels") or []  #  pylint: disable=invalid-name
 
     for package in packageList:
         p = __processPackage(package, org_id, channelList, source)
@@ -78,7 +78,7 @@ def uploadPackages(info, source=0, force=0, caller=None):
     return _formatStatus(uploaded), _formatStatus(newpkgs)
 
 
-def __processPackage(package, org_id, channels, source):
+def __processPackage(package, org_id, channels, source):  #  pylint: disable=invalid-name
     log_debug(4, org_id, channels, source)
     if "md5sum" in package:  # for old rhnpush compatibility
         package["checksum_type"] = "md5"
@@ -93,7 +93,7 @@ def __processPackage(package, org_id, channels, source):
     header = rhn_rpm.headerLoad(package["header"].data)
     if not header:
         raise rhnFault(50)
-    packageSize = package["packageSize"]
+    packageSize = package["packageSize"]  #  pylint: disable=invalid-name
     relpath = package.get("relativePath")
 
     if "header_start" in package:
@@ -122,7 +122,7 @@ def __processPackage(package, org_id, channels, source):
     return p
 
 
-def _formatStatus(status):
+def _formatStatus(status):  #  pylint: disable=invalid-name
     objlist = []
     for pkg in status:
         name = pkg.name
@@ -134,7 +134,7 @@ def _formatStatus(status):
         version = pkg.evr[1]
         release = pkg.evr[2]
         arch = pkg.arch
-        hash = {}
+        hash = {}  #  pylint: disable=redefined-builtin
         ignored = pkg.ignored
         if ignored is None:
             ignored = 0
@@ -144,44 +144,44 @@ def _formatStatus(status):
     return objlist
 
 
-def _dump(object):
+def _dump(object):  #  pylint: disable=redefined-builtin
     if object is None:
         return ""
-    from uyuni.common.usix import IntType, StringType, FloatType
+    from uyuni.common.usix import IntType, StringType, FloatType  #  pylint: disable=import-outside-toplevel
 
     if type(object) in (IntType, StringType, FloatType):
         return object
-    from uyuni.common.usix import ListType
+    from uyuni.common.usix import ListType  #  pylint: disable=import-outside-toplevel
 
     if isinstance(object, ListType):
         return list(map(_dump, object))
-    from uyuni.common.usix import TupleType
+    from uyuni.common.usix import TupleType  #  pylint: disable=import-outside-toplevel
 
     if isinstance(object, TupleType):
         return tuple(map(_dump, object))
-    from uyuni.common.usix import DictType
+    from uyuni.common.usix import DictType  #  pylint: disable=import-outside-toplevel
 
     if isinstance(object, DictType):
-        dict = {}
+        dict = {}  #  pylint: disable=redefined-builtin
         for h, v in list(object.items()):
             dict[_dump(h)] = _dump(v)
         return dict
     return str(object)
 
 
-def listChannelsSource(channelList):
+def listChannelsSource(channelList):  #  pylint: disable=invalid-name,invalid-name
     return _listChannels(channelList, True, False)
 
 
-def listChannels(channelList):
+def listChannels(channelList):  #  pylint: disable=invalid-name,invalid-name
     return _listChannels(channelList, False, False)
 
 
-def listChannelsChecksum(channelList):
+def listChannelsChecksum(channelList):  #  pylint: disable=invalid-name,invalid-name
     return _listChannels(channelList, False, True)
 
 
-def _listChannels(channelList, is_source, include_checksums):
+def _listChannels(channelList, is_source, include_checksums):  #  pylint: disable=invalid-name,invalid-name
     # Lists the packages from these channels
     # Uniquify the channels
     channels = set(channelList)
@@ -193,12 +193,12 @@ def _listChannels(channelList, is_source, include_checksums):
             continue
 
         if is_source:
-            packageList = rhnChannel.list_packages_source(c_info["id"])
+            packageList = rhnChannel.list_packages_source(c_info["id"])  #  pylint: disable=invalid-name
         else:
             if include_checksums:
-                packageList = rhnChannel.list_packages_checksum_sql(c_info["id"])
+                packageList = rhnChannel.list_packages_checksum_sql(c_info["id"])  #  pylint: disable=invalid-name
             else:
-                packageList = rhnChannel.list_packages_sql(c_info["id"])
+                packageList = rhnChannel.list_packages_sql(c_info["id"])  #  pylint: disable=invalid-name
         for p in packageList:
             if is_source:
                 for pkg in range(len(p)):

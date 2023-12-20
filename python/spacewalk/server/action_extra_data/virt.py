@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -30,45 +30,45 @@ __rhnexport__ = [
 ]
 
 
-def _do_nothing(server_id, action_id):
+def _do_nothing(server_id, action_id):  #  pylint: disable=unused-argument
     log_debug(4, action_id)
     action_status = rhnFlags.get("action_status")
     log_debug(
-        4, "Action ID: %s, Action Status: %s" % (str(action_id), str(action_status))
+        4, "Action ID: %s, Action Status: %s" % (str(action_id), str(action_status))  #  pylint: disable=consider-using-f-string
     )
 
 
-def schedulePoller(server_id, action_id, data={}):
+def schedulePoller(server_id, action_id, data={}):  #  pylint: disable=invalid-name,dangerous-default-value,unused-argument
     _do_nothing(server_id, action_id)
 
 
-def reboot(server_id, action_id, data={}):
+def reboot(server_id, action_id, data={}):  #  pylint: disable=dangerous-default-value,unused-argument
     _do_nothing(server_id, action_id)
 
 
-def resume(server_id, action_id, data={}):
+def resume(server_id, action_id, data={}):  #  pylint: disable=dangerous-default-value,unused-argument
     _do_nothing(server_id, action_id)
 
 
-def start(server_id, action_id, data={}):
+def start(server_id, action_id, data={}):  #  pylint: disable=dangerous-default-value,unused-argument
     _do_nothing(server_id, action_id)
 
 
-def suspend(server_id, action_id, data={}):
+def suspend(server_id, action_id, data={}):  #  pylint: disable=dangerous-default-value,unused-argument
     _do_nothing(server_id, action_id)
 
 
-def shutdown(server_id, action_id, data={}):
+def shutdown(server_id, action_id, data={}):  #  pylint: disable=dangerous-default-value,unused-argument
     _do_nothing(server_id, action_id)
 
 
-def destroy(server_id, action_id, data={}):
+def destroy(server_id, action_id, data={}):  #  pylint: disable=dangerous-default-value,unused-argument
     _do_nothing(server_id, action_id)
 
 
-def setMemory(server_id, action_id, data={}):
+def setMemory(server_id, action_id, data={}):  #  pylint: disable=invalid-name,dangerous-default-value,unused-argument
     _do_nothing(server_id, action_id)
 
 
-def setVCPUs(server_id, action_id, data={}):
+def setVCPUs(server_id, action_id, data={}):  #  pylint: disable=invalid-name,dangerous-default-value,unused-argument
     _do_nothing(server_id, action_id)

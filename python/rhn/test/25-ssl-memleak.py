@@ -31,7 +31,7 @@ def main():
                     diff_count = diff_count + 1
             mem_usage = new_mem_usage
 
-            print "memory usage: %s %s %s" % mem_usage[1:4]
+            print "memory usage: %s %s %s" % mem_usage[1:4]  #  pylint: disable=syntax-error
 
     if diff_count > 4:
         # Failure

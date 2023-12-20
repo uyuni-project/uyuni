@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring,invalid-name
 # Common dumper stuff
 #
 # Copyright (c) 2008--2017 Red Hat, Inc.
@@ -30,7 +30,7 @@ from spacewalk.server.importlib import supportInformationImport, suseProductsImp
 
 
 class Backend:
-    __backend = None
+    __backend = None  #  pylint: disable=invalid-name
 
     def __init__(self):
         pass
@@ -53,7 +53,7 @@ def get_backend():
 # Functions for dumping packages
 
 
-def rpmsPath(obj_id, mountPoint, sources=0):
+def rpmsPath(obj_id, mountPoint, sources=0):  #  pylint: disable=invalid-name,invalid-name
     # returns the package path (for exporter/importer only)
     # not to be confused with where the package lands on the satellite itself.
     if not sources:
@@ -64,7 +64,7 @@ def rpmsPath(obj_id, mountPoint, sources=0):
 
 
 # pylint: disable=W0232
-class diskImportLibContainer:
+class diskImportLibContainer:  #  pylint: disable=invalid-name
 
     """virtual class - redefines endContainerCallback"""
 
@@ -75,13 +75,13 @@ class diskImportLibContainer:
 
     importer_class = object
 
-    def endContainerCallback(self):
+    def endContainerCallback(self):  #  pylint: disable=invalid-name
         importer = self.importer_class(self.batch, get_backend())
         importer.run()
         self.batch = []
 
 
-class OrgContainer(xmlSource.OrgContainer):
+class OrgContainer(xmlSource.OrgContainer):  #  pylint: disable=missing-class-docstring
     importer_class = orgImport.OrgImport
     master_label = None
     create_orgs = False

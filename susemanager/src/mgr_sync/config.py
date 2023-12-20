@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*- pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2014 SUSE
 #
@@ -69,7 +69,7 @@ class Config(object):
                 self._config.merge(ConfigObj(Config.RHNFILE))
             except SyntaxError as ex:
                 raise SyntaxError(
-                    "Error while parsing file {0}: {1}".format(Config.RHNFILE, ex)
+                    "Error while parsing file {0}: {1}".format(Config.RHNFILE, ex)  #  pylint: disable=consider-using-f-string
                 ) from ex
 
         # Read ~/.mgr-sync if any and override
@@ -78,7 +78,7 @@ class Config(object):
                 self._config.merge(ConfigObj(Config.DOTFILE))
             except SyntaxError as ex:
                 raise SyntaxError(
-                    "Error while parsing file{0}: {1}".format(Config.DOTFILE, ex)
+                    "Error while parsing file{0}: {1}".format(Config.DOTFILE, ex)  #  pylint: disable=consider-using-f-string
                 ) from ex
 
         # Remove unnesessary items

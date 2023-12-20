@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring,invalid-name
 # Copyright (c) 2010--2016 Red Hat, Inc.
 # Copyright (c) 2022 SUSE, LLC
 #
@@ -24,13 +24,13 @@ from spacewalk.server.importlib.importLib import Channel
 from spacewalk.server.importlib.backendLib import gmtime, localtime
 
 
-class debBinaryPackage(headerSource.rpmBinaryPackage):
-    def __init__(
+class debBinaryPackage(headerSource.rpmBinaryPackage):  #  pylint: disable=missing-class-docstring,invalid-name
+    def __init__(  #  pylint: disable=dangerous-default-value
         self, header, size, checksum_type, checksum, path=None, org_id=None, channels=[]
     ):
         headerSource.rpmBinaryPackage.__init__(self)
 
-        self.tagMap = headerSource.rpmBinaryPackage.tagMap.copy()
+        self.tagMap = headerSource.rpmBinaryPackage.tagMap.copy()  #  pylint: disable=invalid-name
 
         # Remove already-mapped tags
         self._already_mapped = [
@@ -80,7 +80,7 @@ class debBinaryPackage(headerSource.rpmBinaryPackage):
         vendor = self["vendor"]
         if vendor is None:
             self["vendor"] = "Debian"
-        payloadFormat = self["payload_format"]
+        payloadFormat = self["payload_format"]  #  pylint: disable=invalid-name
         if payloadFormat is None:
             self["payload_format"] = "ar"
         if self["payload_size"] is None:
@@ -148,7 +148,7 @@ class debBinaryPackage(headerSource.rpmBinaryPackage):
                                     if version.startswith("="):
                                         relation |= 8
                                     version = version[1:]
-                    hash = {"name": name, "version": version, "flags": relation}
+                    hash = {"name": name, "version": version, "flags": relation}  #  pylint: disable=redefined-builtin
                     finst = dclass()
                     finst.populate(hash)
                     l.append(finst)
@@ -166,7 +166,7 @@ class debBinaryPackage(headerSource.rpmBinaryPackage):
     def _populateChannels(self, channels):
         l = []
         for channel in channels:
-            dict = {"label": channel}
+            dict = {"label": channel}  #  pylint: disable=redefined-builtin
             obj = Channel()
             obj.populate(dict)
             l.append(obj)

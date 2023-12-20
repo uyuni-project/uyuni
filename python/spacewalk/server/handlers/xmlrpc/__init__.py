@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -36,4 +36,4 @@ rpcClasses = {
     "scap": scap.Scap,
 }
 
-getHandler = get_handler.GetHandler
+getHandler = get_handler.GetHandler  #  pylint: disable=invalid-name

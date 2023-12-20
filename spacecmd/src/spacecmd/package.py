@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Licensed under the GNU General Public License Version 3
 #
 # This program is free software; you can redistribute it and/or modify
@@ -58,7 +58,7 @@ def complete_package_details(self, text, line, beg, end):
 def do_package_details(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args.replace("\\", "\\\\"), arg_parser)
+    (args, _options) = parse_command_arguments(args.replace("\\", "\\\\"), arg_parser)  #  pylint: disable=unused-variable
 
     if not args:
         self.help_package_details()
@@ -94,23 +94,23 @@ def do_package_details(self, args):
                 self.session, package_id
             )
 
-            print(_("Name:      %s" % details.get("name")))
-            print(_("Version:   %s" % details.get("version")))
-            print(_("Release:   %s" % details.get("release")))
-            print(_("Epoch:     %s" % details.get("epoch")))
-            print(_("Arch:      %s" % details.get("arch_label")))
+            print(_("Name:      %s" % details.get("name")))  #  pylint: disable=consider-using-f-string
+            print(_("Version:   %s" % details.get("version")))  #  pylint: disable=consider-using-f-string
+            print(_("Release:   %s" % details.get("release")))  #  pylint: disable=consider-using-f-string
+            print(_("Epoch:     %s" % details.get("epoch")))  #  pylint: disable=consider-using-f-string
+            print(_("Arch:      %s" % details.get("arch_label")))  #  pylint: disable=consider-using-f-string
             print("")
-            print(_("File:      %s" % details.get("file")))
-            print(_("Path:      %s" % details.get("path")))
-            print(_("Size:      %s" % details.get("size")))
+            print(_("File:      %s" % details.get("file")))  #  pylint: disable=consider-using-f-string
+            print(_("Path:      %s" % details.get("path")))  #  pylint: disable=consider-using-f-string
+            print(_("Size:      %s" % details.get("size")))  #  pylint: disable=consider-using-f-string
             print(
                 _(
-                    "Retracted: %s"
+                    "Retracted: %s"  #  pylint: disable=consider-using-f-string
                     % (_("Yes") if details.get("part_of_retracted_patch") else _("No"))
                 )
             )
             print(
-                "%s%s"
+                "%s%s"  #  pylint: disable=consider-using-f-string
                 % (
                     (details.get("checksum_type").upper() + ":").ljust(11),
                     details.get("checksum"),
@@ -139,10 +139,10 @@ def help_package_search(
     command="package_search",
     description="Find packages that meet the given criteria",
 ):
-    print("%s: %s" % (command, description))
-    print(_("usage: %s NAME|QUERY" % command))
+    print("%s: %s" % (command, description))  #  pylint: disable=consider-using-f-string
+    print(_("usage: %s NAME|QUERY" % command))  #  pylint: disable=consider-using-f-string
     print("")
-    print(_("Example: %s kernel" % command))
+    print(_("Example: %s kernel" % command))  #  pylint: disable=consider-using-f-string
     print("")
     print(_("Advanced Search:"))
     print(
@@ -156,7 +156,7 @@ def do_package_search(self, args, doreturn=False):
         self.help_package_search()
         return None
 
-    _args, _options = parse_command_arguments(args, get_argument_parser())
+    _args, _options = parse_command_arguments(args, get_argument_parser())  #  pylint: disable=unused-variable
 
     fields = (
         "name:",
@@ -216,7 +216,7 @@ def complete_package_remove(self, text, line, beg, end):
 def do_package_remove(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args.replace("\\", "\\\\"), arg_parser)
+    (args, _options) = parse_command_arguments(args.replace("\\", "\\\\"), arg_parser)  #  pylint: disable=unused-variable
 
     if not args:
         self.help_package_remove()
@@ -321,7 +321,7 @@ def complete_package_listinstalledsystems(self, text, line, beg, end):
 def do_package_listinstalledsystems(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args.replace("\\", "\\\\"), arg_parser)
+    (args, _options) = parse_command_arguments(args.replace("\\", "\\\\"), arg_parser)  #  pylint: disable=unused-variable
 
     if not args:
         self.help_package_listinstalledsystems()
@@ -352,7 +352,7 @@ def do_package_listinstalledsystems(self, args):
         if systems:
             print(
                 "\n".join(
-                    sorted(["%s : %s" % (s.get("name"), s.get("id")) for s in systems])
+                    sorted(["%s : %s" % (s.get("name"), s.get("id")) for s in systems])  #  pylint: disable=consider-using-f-string
                 )
             )
 
@@ -375,7 +375,7 @@ def complete_package_listerrata(self, text, line, beg, end):
 def do_package_listerrata(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args.replace("\\", "\\\\"), arg_parser)
+    (args, _options) = parse_command_arguments(args.replace("\\", "\\\\"), arg_parser)  #  pylint: disable=unused-variable
 
     if not args:
         self.help_package_listerrata()
@@ -418,7 +418,7 @@ def help_package_listdependencies(self):
 def do_package_listdependencies(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args.replace("\\", "\\\\"), arg_parser)
+    (args, _options) = parse_command_arguments(args.replace("\\", "\\\\"), arg_parser)  #  pylint: disable=unused-variable
 
     if not args:
         self.help_package_listdependencies()

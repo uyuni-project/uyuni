@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -19,13 +19,13 @@
 import sys
 import difflib
 from spacewalk.common.rhnLog import log_debug
-from uyuni.common.usix import raise_with_tb, next
-from spacewalk.common.rhnException import rhnFault
+from uyuni.common.usix import raise_with_tb, next  #  pylint: disable=redefined-builtin
+from spacewalk.common.rhnException import rhnFault  #  pylint: disable=ungrouped-imports
 from spacewalk.server import rhnSQL, configFilesHandler
-from uyuni.common.fileutils import f_date, ostr_to_sym
+from uyuni.common.fileutils import f_date, ostr_to_sym  #  pylint: disable=ungrouped-imports
 
 
-class ConfigManagement(configFilesHandler.ConfigFilesHandler):
+class ConfigManagement(configFilesHandler.ConfigFilesHandler):  #  pylint: disable=missing-class-docstring
     def __init__(self):
         log_debug(3)
         configFilesHandler.ConfigFilesHandler.__init__(self)
@@ -62,11 +62,11 @@ class ConfigManagement(configFilesHandler.ConfigFilesHandler):
     """
     )
 
-    def _get_and_validate_session(self, dict):
+    def _get_and_validate_session(self, dict):  #  pylint: disable=redefined-builtin
         session = dict.get("session")
         self._validate_session(session)
 
-    def management_list_channels(self, dict):
+    def management_list_channels(self, dict):  #  pylint: disable=redefined-builtin
         log_debug(1)
         self._get_and_validate_session(dict)
         return [
@@ -86,7 +86,7 @@ class ConfigManagement(configFilesHandler.ConfigFilesHandler):
     """
     )
 
-    def management_create_channel(self, dict):
+    def management_create_channel(self, dict):  #  pylint: disable=redefined-builtin
         log_debug(1)
         self._get_and_validate_session(dict)
 
@@ -104,14 +104,14 @@ class ConfigManagement(configFilesHandler.ConfigFilesHandler):
         if row:
             raise rhnFault(
                 4010,
-                "Configuration channel %s already exists" % config_channel,
+                "Configuration channel %s already exists" % config_channel,  #  pylint: disable=consider-using-f-string
                 explain=0,
             )
 
         insert_call = rhnSQL.Function(
             "rhn_config.insert_channel", rhnSQL.types.NUMBER()
         )
-        config_channel_id = insert_call(
+        config_channel_id = insert_call(  #  pylint: disable=unused-variable
             self.org_id,
             "normal",
             config_channel_name,
@@ -131,7 +131,7 @@ class ConfigManagement(configFilesHandler.ConfigFilesHandler):
     """
     )
 
-    def management_remove_channel(self, dict):
+    def management_remove_channel(self, dict):  #  pylint: disable=redefined-builtin
         log_debug(1)
         self._get_and_validate_session(dict)
 
@@ -158,7 +158,7 @@ class ConfigManagement(configFilesHandler.ConfigFilesHandler):
                 raise_with_tb(
                     rhnFault(
                         4005,
-                        "Cannot remove non-empty channel %s" % config_channel,
+                        "Cannot remove non-empty channel %s" % config_channel,  #  pylint: disable=consider-using-f-string
                         explain=0,
                     ),
                     sys.exc_info()[2],
@@ -186,7 +186,7 @@ class ConfigManagement(configFilesHandler.ConfigFilesHandler):
     """
     )
 
-    def management_list_files(self, dict):
+    def management_list_files(self, dict):  #  pylint: disable=redefined-builtin
         log_debug(1)
         self._get_and_validate_session(dict)
 
@@ -210,11 +210,11 @@ class ConfigManagement(configFilesHandler.ConfigFilesHandler):
 
             retval.append(val)
         log_debug(4, "pre sort", retval)
-        retval.sort(lambda x, y: cmp(x["path"], y["path"]))
+        retval.sort(lambda x, y: cmp(x["path"], y["path"]))  #  pylint: disable=undefined-variable
         log_debug(4, "Return value", retval)
         return retval
 
-    def management_get_file(self, dict):
+    def management_get_file(self, dict):  #  pylint: disable=redefined-builtin
         log_debug(1)
         self._get_and_validate_session(dict)
 
@@ -227,7 +227,7 @@ class ConfigManagement(configFilesHandler.ConfigFilesHandler):
         if not row:
             raise rhnFault(
                 4011,
-                "File %s does not exist in channel %s" % (path, config_channel),
+                "File %s does not exist in channel %s" % (path, config_channel),  #  pylint: disable=consider-using-f-string
                 explain=0,
             )
 
@@ -248,7 +248,7 @@ class ConfigManagement(configFilesHandler.ConfigFilesHandler):
     """
     )
 
-    def management_list_file_revisions(self, dict):
+    def management_list_file_revisions(self, dict):  #  pylint: disable=redefined-builtin
         log_debug(1)
         self._get_and_validate_session(dict)
 
@@ -269,13 +269,13 @@ class ConfigManagement(configFilesHandler.ConfigFilesHandler):
         if not retval:
             raise rhnFault(
                 4011,
-                "File %s does not exist in channel %s" % (path, config_channel),
+                "File %s does not exist in channel %s" % (path, config_channel),  #  pylint: disable=consider-using-f-string
                 explain=0,
             )
 
         return retval
 
-    def management_has_file(self, dict):
+    def management_has_file(self, dict):  #  pylint: disable=redefined-builtin
         log_debug(1)
         self._get_and_validate_session(dict)
 
@@ -367,7 +367,7 @@ class ConfigManagement(configFilesHandler.ConfigFilesHandler):
     """
     )
 
-    def management_remove_file(self, dict):
+    def management_remove_file(self, dict):  #  pylint: disable=redefined-builtin
         log_debug(1)
         self._get_and_validate_session(dict)
 
@@ -384,7 +384,7 @@ class ConfigManagement(configFilesHandler.ConfigFilesHandler):
         if not row:
             raise rhnFault(
                 4011,
-                "File %s does not exist in channel %s" % (path, config_channel),
+                "File %s does not exist in channel %s" % (path, config_channel),  #  pylint: disable=consider-using-f-string
                 explain=0,
             )
 
@@ -405,7 +405,7 @@ class ConfigManagement(configFilesHandler.ConfigFilesHandler):
     """
     )
 
-    def management_disable_file(self, dict):
+    def management_disable_file(self, dict):  #  pylint: disable=redefined-builtin
         log_debug(1)
         self._get_and_validate_session(dict)
 
@@ -424,7 +424,7 @@ class ConfigManagement(configFilesHandler.ConfigFilesHandler):
         if not row or row["state_id"] == state_id_dead:
             raise rhnFault(
                 4011,
-                "File %s does not exist in channel %s" % (path, config_channel),
+                "File %s does not exist in channel %s" % (path, config_channel),  #  pylint: disable=consider-using-f-string
                 explain=0,
             )
 
@@ -436,7 +436,7 @@ class ConfigManagement(configFilesHandler.ConfigFilesHandler):
         rhnSQL.commit()
         return {}
 
-    def management_put_file(self, dict):
+    def management_put_file(self, dict):  #  pylint: disable=redefined-builtin
         log_debug(1)
         self._get_and_validate_session(dict)
 
@@ -444,27 +444,27 @@ class ConfigManagement(configFilesHandler.ConfigFilesHandler):
         row = self.lookup_org_config_channel_by_name(config_channel)
         conf_channel_id = row["id"]
 
-        file_path = dict.get("path")
+        file_path = dict.get("path")  #  pylint: disable=unused-variable
         result = self.push_file(conf_channel_id, dict)
 
         file_too_large = result.get("file_too_large")
         if file_too_large:
             raise rhnFault(
                 4003,
-                "File %s is too large (%s bytes)" % (dict["path"], dict["size"]),
+                "File %s is too large (%s bytes)" % (dict["path"], dict["size"]),  #  pylint: disable=consider-using-f-string
                 explain=0,
             )
 
         rhnSQL.commit()
         return {}
 
-    def management_get_delimiters(self, dict):
+    def management_get_delimiters(self, dict):  #  pylint: disable=redefined-builtin
         log_debug(1)
         self._get_and_validate_session(dict)
 
         return self._get_delimiters()
 
-    def management_get_maximum_file_size(self, dict={}):
+    def management_get_maximum_file_size(self, dict={}):  #  pylint: disable=dangerous-default-value,redefined-builtin
         log_debug(1)
         self._get_and_validate_session(dict)
 
@@ -507,7 +507,7 @@ class ConfigManagement(configFilesHandler.ConfigFilesHandler):
         )
         return (first_row, second_row)
 
-    def management_diff(self, dict):
+    def management_diff(self, dict):  #  pylint: disable=redefined-builtin
         log_debug(1)
         self._get_and_validate_session(dict)
 
@@ -519,7 +519,7 @@ class ConfigManagement(configFilesHandler.ConfigFilesHandler):
         for p in param_names:
             val = dict.get(p)
             if val is None:
-                raise rhnFault(4007, "No content sent for `%s'" % p)
+                raise rhnFault(4007, "No content sent for `%s'" % p)  #  pylint: disable=consider-using-f-string
 
         log_debug(4, "Params sent", dict)
         path = dict["path"]
@@ -537,7 +537,7 @@ class ConfigManagement(configFilesHandler.ConfigFilesHandler):
         if fsrc["label"] != fdst["label"]:
             raise rhnFault(
                 4017,
-                "Path %s  is a %s in channel %s while it is a %s in channel %s"
+                "Path %s  is a %s in channel %s while it is a %s in channel %s"  #  pylint: disable=consider-using-f-string
                 % (
                     path,
                     fsrc["label"],
@@ -555,8 +555,8 @@ class ConfigManagement(configFilesHandler.ConfigFilesHandler):
                 (first_row, second_row) = self.__header(
                     path, fsrc, config_channel_src, fdst, config_channel_dst
                 )
-                first_row += " target: %s" % fsrc["symlink"]
-                second_row += " target: %s" % fdst["symlink"]
+                first_row += " target: %s" % fsrc["symlink"]  #  pylint: disable=consider-using-f-string
+                second_row += " target: %s" % fdst["symlink"]  #  pylint: disable=consider-using-f-string
                 return first_row + "\n" + second_row + "\n"
             return ""
 
@@ -596,7 +596,7 @@ class ConfigManagement(configFilesHandler.ConfigFilesHandler):
         if revision and not revision.isdigit():
             raise rhnFault(
                 4016,
-                "Invalid revision number '%s' specified for path %s "
+                "Invalid revision number '%s' specified for path %s "  #  pylint: disable=consider-using-f-string
                 "in channel %s" % (revision, path, config_channel),
                 explain=0,
             )
@@ -605,14 +605,14 @@ class ConfigManagement(configFilesHandler.ConfigFilesHandler):
         if not f:
             raise rhnFault(
                 4011,
-                "File %s (revision %s) does not exist "
+                "File %s (revision %s) does not exist "  #  pylint: disable=consider-using-f-string
                 "in channel %s" % (path, revision, config_channel),
                 explain=0,
             )
         if f["label"] == "file" and f["is_binary"] == "Y":
             raise rhnFault(
                 4004,
-                "File %s (revision %s) seems to contain "
+                "File %s (revision %s) seems to contain "  #  pylint: disable=consider-using-f-string
                 "binary data" % (path, revision),
                 explain=0,
             )
@@ -624,7 +624,7 @@ class ConfigManagement(configFilesHandler.ConfigFilesHandler):
         # Empty files or directories may have NULL instead of lobs
         fc_lob = f.get("file_contents")
         if fc_lob:
-            f["file_content"] = rhnSQL._fix_encoding(
+            f["file_content"] = rhnSQL._fix_encoding(  #  pylint: disable=protected-access
                 rhnSQL.read_lob(fc_lob)
             ).splitlines()
         else:
@@ -651,7 +651,7 @@ class ConfigManagement(configFilesHandler.ConfigFilesHandler):
         if not row:
             raise rhnFault(
                 4009,
-                "Configuration channel %s does not exist" % config_channel,
+                "Configuration channel %s does not exist" % config_channel,  #  pylint: disable=consider-using-f-string
                 explain=0,
             )
         return row

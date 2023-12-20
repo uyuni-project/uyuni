@@ -3,16 +3,16 @@
 :codeauthor:    Pablo Suárez Hernández <psuarezhernandez@suse.de>
 """
 
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock, patch  #  pylint: disable=unused-import,unused-import
 from . import mockery
 
 mockery.setup_environment()
 
-import sys
+import sys  #  pylint: disable=wrong-import-position
 
 sys.path.append("../../modules/tops")
 
-import mgr_master_tops
+import mgr_master_tops  #  pylint: disable=wrong-import-position
 
 TEST_MANAGER_STATIC_TOP = {
     "base": [
@@ -62,4 +62,4 @@ def test_top_unknown_saltenv():
     Test if top function is returning None for unknown salt environments.
     """
     kwargs = {"opts": {"environment": "otherenv"}}
-    assert mgr_master_tops.top(**kwargs) == None
+    assert mgr_master_tops.top(**kwargs) == None  #  pylint: disable=singleton-comparison

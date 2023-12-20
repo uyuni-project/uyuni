@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2017 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -18,7 +18,7 @@
 
 import copy
 from datetime import datetime
-import string
+import string  #  pylint: disable=unused-import
 import sys
 
 from uyuni.common.usix import raise_with_tb
@@ -79,7 +79,7 @@ sequences = {
 }
 
 
-class Backend:
+class Backend:  #  pylint: disable=missing-class-docstring
     # This object is initialized by the specific subclasses (e.g.
     # OracleBackend)
     tables = TableCollection()
@@ -102,15 +102,15 @@ class Backend:
         # this method they already have a reference...
         return self
 
-    def setDateFormat(self, format):
-        sth = self.dbmodule.prepare("alter session set nls_date_format ='%s'" % format)
+    def setDateFormat(self, format):  #  pylint: disable=invalid-name,redefined-builtin
+        sth = self.dbmodule.prepare("alter session set nls_date_format ='%s'" % format)  #  pylint: disable=consider-using-f-string
         sth.execute()
         sth = self.dbmodule.prepare(
-            "alter session set nls_timestamp_format ='%s'" % format
+            "alter session set nls_timestamp_format ='%s'" % format  #  pylint: disable=consider-using-f-string
         )
         sth.execute()
 
-    def processCapabilities(self, capabilityHash):
+    def processCapabilities(self, capabilityHash):  #  pylint: disable=invalid-name,invalid-name
         if not capabilityHash:
             return
 
@@ -160,7 +160,7 @@ class Backend:
         for capability in capabilities:
             capabilityHash[(capability[0], capability[1] or "")] = capability[2]
 
-    def processChangeLog(self, changelogHash):
+    def processChangeLog(self, changelogHash):  #  pylint: disable=invalid-name,invalid-name
         if (
             CFG.has_key("package_import_skip_changelog")
             and CFG.package_import_skip_changelog
@@ -215,7 +215,7 @@ class Backend:
                 (changelog[0], changelog[1].strftime("%Y-%m-%d %H:%M:%S"), changelog[2])
             ] = changelog[3]
 
-    def processSuseProductFiles(self, prodfileHash):
+    def processSuseProductFiles(self, prodfileHash):  #  pylint: disable=invalid-name,invalid-name
         sql = """
             SELECT spf.id
               FROM suseProductFile spf
@@ -259,7 +259,7 @@ class Backend:
                 ] = row["id"]
                 continue
 
-            id = self.sequences["suseProductFile"].next()
+            id = self.sequences["suseProductFile"].next()  #  pylint: disable=redefined-builtin
             prodfileHash[
                 (name, evr_id, package_arch_id, vendor, summary, description)
             ] = id
@@ -290,7 +290,7 @@ class Backend:
             description=toinsert[6],
         )
 
-    def processSuseEulas(self, eulaHash):
+    def processSuseEulas(self, eulaHash):  #  pylint: disable=invalid-name,invalid-name
         query_lookup = """
             SELECT id
               FROM suseEula
@@ -314,11 +314,11 @@ class Backend:
                 eulaHash[(text, checksum)] = row["id"]
                 continue
 
-            id = self.sequences["suseEula"].next()
+            id = self.sequences["suseEula"].next()  #  pylint: disable=redefined-builtin
             eulaHash[(text, checksum)] = id
             h_insert.execute(id=id, text=str(val["text"]), checksum=val["checksum"])
 
-    def processCVEs(self, cveHash):
+    def processCVEs(self, cveHash):  #  pylint: disable=invalid-name,invalid-name
         # First figure out which CVE's are already inserted
         sql = "select id from rhnCVE where name = :name"
         h = self.dbmodule.prepare(sql)
@@ -333,7 +333,7 @@ class Backend:
                 continue
 
             # Generate an id
-            id = self.sequences["rhnCVE"].next()
+            id = self.sequences["rhnCVE"].next()  #  pylint: disable=redefined-builtin
 
             cveHash[cve_name] = id
 
@@ -348,7 +348,7 @@ class Backend:
         h = self.dbmodule.prepare(sql)
         h.executemany(id=toinsert[0], name=toinsert[1])
 
-    def processExtraTags(self, extraTags):
+    def processExtraTags(self, extraTags):  #  pylint: disable=invalid-name,invalid-name
         if not extraTags:
             return
         sql = """
@@ -370,7 +370,7 @@ class Backend:
         if not values:
             return
         h = self.dbmodule.prepare(sql)
-        r = h.execute_values(sql, values, fetch=False)
+        r = h.execute_values(sql, values, fetch=False)  #  pylint: disable=unused-variable
 
         sql = """
             WITH wanted (ordering, name) AS (
@@ -385,7 +385,7 @@ class Backend:
         for tag in tags:
             extraTags[tag[0]] = tag[1]
 
-    def lookupErrataFileTypes(self, hash):
+    def lookupErrataFileTypes(self, hash):  #  pylint: disable=invalid-name,redefined-builtin
         hash.clear()
         h = self.dbmodule.prepare("select id, label from rhnErrataFileType")
         h.execute()
@@ -396,11 +396,11 @@ class Backend:
             hash[row["label"]] = row["id"]
         return hash
 
-    def __lookupArches(self, archHash, table):
+    def __lookupArches(self, archHash, table):  #  pylint: disable=invalid-name,invalid-name
         if not archHash:
             return
 
-        sql = "select id from %s where label = :name" % table
+        sql = "select id from %s where label = :name" % table  #  pylint: disable=consider-using-f-string
         h = self.dbmodule.prepare(sql)
         for k in list(archHash.keys()):
             h.execute(name=str(k))
@@ -409,16 +409,16 @@ class Backend:
                 archHash[k] = row["id"]
             # Else, it's an unsupported architecture
 
-    def lookupChannelArches(self, archHash):
+    def lookupChannelArches(self, archHash):  #  pylint: disable=invalid-name,invalid-name
         return self.__lookupArches(archHash, "rhnChannelArch")
 
-    def lookupPackageArches(self, archHash):
+    def lookupPackageArches(self, archHash):  #  pylint: disable=invalid-name,invalid-name
         return self.__lookupArches(archHash, "rhnPackageArch")
 
-    def lookupServerArches(self, archHash):
+    def lookupServerArches(self, archHash):  #  pylint: disable=invalid-name,invalid-name
         return self.__lookupArches(archHash, "rhnServerArch")
 
-    def lookupArchTypes(self, arch_types_hash):
+    def lookupArchTypes(self, arch_types_hash):  #  pylint: disable=invalid-name
         h = self.dbmodule.prepare(
             "select id, name from rhnArchType where label = :label"
         )
@@ -464,7 +464,7 @@ class Backend:
         # Finally, update the hash
         arch_types_hash.update(results)
 
-    def lookupPackageArchType(self, pkg_arch_id):
+    def lookupPackageArchType(self, pkg_arch_id):  #  pylint: disable=invalid-name
         h = self.dbmodule.prepare(
             """
                 select at.label
@@ -478,7 +478,7 @@ class Backend:
             return row["label"]
         return None
 
-    def _lookupOrg(self):
+    def _lookupOrg(self):  #  pylint: disable=invalid-name
         # Returns the org id
         sql = "select min(id) as id from web_customer"
         h = self.dbmodule.prepare(sql)
@@ -488,7 +488,7 @@ class Backend:
             raise ValueError("No user is created")
         return rows[0]["id"]
 
-    def lookupOrg(self, org_name=None):
+    def lookupOrg(self, org_name=None):  #  pylint: disable=invalid-name
         if not org_name:
             return self._lookupOrg()
         # Returns id of the org if found, None otherwise
@@ -500,14 +500,14 @@ class Backend:
             return None
         return row["id"]
 
-    def lookupMaster(self, master_label):
+    def lookupMaster(self, master_label):  #  pylint: disable=invalid-name
         # Returns the master record (if it exists)
         sql = "select * from rhnISSMaster where label = :label"
         h = self.dbmodule.prepare(sql)
         h.execute(label=master_label)
         return h.fetchone_dict()
 
-    def createMaster(self, master_label):
+    def createMaster(self, master_label):  #  pylint: disable=invalid-name
         # Creates a master record with label master_label
         sql = """
             insert into rhnISSMaster (id, label)
@@ -516,7 +516,7 @@ class Backend:
         h = self.dbmodule.prepare(sql)
         h.execute(label=master_label)
 
-    def createMasterOrgs(self, master, orgs):
+    def createMasterOrgs(self, master, orgs):  #  pylint: disable=invalid-name
         # Create master org records
         insert = [[], [], []]
         for org in orgs:
@@ -533,7 +533,7 @@ class Backend:
         h = self.dbmodule.prepare(sql)
         h.executemany(label=insert[0], id=insert[1], name=insert[2])
 
-    def createOrgs(self, orgs):
+    def createOrgs(self, orgs):  #  pylint: disable=invalid-name
         # Create local org records
         sql = """
             insert into web_customer (id, name)
@@ -550,7 +550,7 @@ class Backend:
             ret[row["name"]] = row["id"]
         return ret
 
-    def updateMasterOrgs(self, master_orgs):
+    def updateMasterOrgs(self, master_orgs):  #  pylint: disable=invalid-name
         # Update the master org to local org mapping
         insert = [[], []]
         for org in master_orgs:
@@ -564,7 +564,7 @@ class Backend:
         h = self.dbmodule.prepare(sql)
         h.executemany(master=insert[0], local=insert[1])
 
-    def lookupOrgTrusts(self):
+    def lookupOrgTrusts(self):  #  pylint: disable=invalid-name
         # Return a hash of org trusts
         sql = "select org_id, org_trust_id from rhnTrustedOrgs"
         h = self.dbmodule.prepare(sql)
@@ -573,12 +573,12 @@ class Backend:
         ret = {}
         if rows:
             for row in rows:
-                if row["org_id"] not in list(ret.keys()):
+                if row["org_id"] not in list(ret.keys()):  #  pylint: disable=consider-iterating-dictionary
                     ret[row["org_id"]] = []
                 ret[row["org_id"]].append(row["org_trust_id"])
         return ret
 
-    def clearOrgTrusts(self, org_id):
+    def clearOrgTrusts(self, org_id):  #  pylint: disable=invalid-name
         # Delete all trusts involving this org; trusts are always
         # bi-directional
         sql = """
@@ -589,7 +589,7 @@ class Backend:
         h = self.dbmodule.prepare(sql)
         h.execute(org_id=org_id)
 
-    def createOrgTrusts(self, trusts):
+    def createOrgTrusts(self, trusts):  #  pylint: disable=invalid-name
         # Create org trusts
         insert = [[], []]
         for trust in trusts:
@@ -602,7 +602,7 @@ class Backend:
         h = self.dbmodule.prepare(sql)
         h.executemany(id=insert[0], trust=insert[1])
 
-    def lookupOrgMap(self, master_label):
+    def lookupOrgMap(self, master_label):  #  pylint: disable=invalid-name
         sql = """
             select imo.master_org_id, imo.master_org_name, imo.local_org_id
               from rhnISSMasterOrgs imo,
@@ -637,7 +637,7 @@ class Backend:
         maps["master-id-to-local-id"] = mi_to_li
         return maps
 
-    def lookupChannels(self, hash):
+    def lookupChannels(self, hash):  #  pylint: disable=invalid-name,redefined-builtin
         if not hash:
             return
         sql = "select id, channel_arch_id from rhnChannel where label = :label"
@@ -649,7 +649,7 @@ class Backend:
                 hash[k] = row
             # Else, it's an unsupported channel
 
-    def lookupChannelPackageArchCompat(self, channelArchHash):
+    def lookupChannelPackageArchCompat(self, channelArchHash):  #  pylint: disable=invalid-name,invalid-name
         # Return all the arches compatible with each key of archHash
         sql = """
             select package_arch_id
@@ -658,7 +658,7 @@ class Backend:
         """
         h = self.dbmodule.prepare(sql)
         for channel_arch_id in list(channelArchHash.keys()):
-            dict = {}
+            dict = {}  #  pylint: disable=redefined-builtin
             h.execute(channel_arch_id=channel_arch_id)
             while 1:
                 row = h.fetchone_dict()
@@ -667,7 +667,7 @@ class Backend:
                 dict[row["package_arch_id"]] = None
             channelArchHash[channel_arch_id] = dict
 
-    def lookupServerGroupTypes(self, entries_hash):
+    def lookupServerGroupTypes(self, entries_hash):  #  pylint: disable=invalid-name
         sql = """
             select id
               from rhnServerGroupType
@@ -682,7 +682,7 @@ class Backend:
                 continue
             entries_hash[sgt] = row["id"]
 
-    def lookupPackageNames(self, nameHash):
+    def lookupPackageNames(self, nameHash):  #  pylint: disable=invalid-name,invalid-name
         if not nameHash:
             return
         sql = "select LOOKUP_PACKAGE_NAME(:name) id from dual"
@@ -691,7 +691,7 @@ class Backend:
             h.execute(name=k)
             nameHash[k] = h.fetchone_dict()["id"]
 
-    def lookupErratum(self, erratum):
+    def lookupErratum(self, erratum):  #  pylint: disable=invalid-name
         if not erratum:
             return None
 
@@ -704,7 +704,7 @@ class Backend:
         h.execute(advisory_name=erratum["advisory_name"])
         return h.fetchone_dict()
 
-    def lookupErrataSeverityId(self, erratum):
+    def lookupErrataSeverityId(self, erratum):  #  pylint: disable=invalid-name
         """
         for the given severity type retuns the id
         associated in the rhnErratSeverity table.
@@ -734,12 +734,12 @@ class Backend:
         row = h.fetchone_dict()
 
         if not row:
-            log_debug(2, "Invalid severity: %s. Returning None." % severity_label)
+            log_debug(2, "Invalid severity: %s. Returning None." % severity_label)  #  pylint: disable=consider-using-f-string
             return None
 
         return row["id"]
 
-    def lookupEVRs(self, evrHash, ptype):
+    def lookupEVRs(self, evrHash, ptype):  #  pylint: disable=invalid-name,invalid-name
         sql = "select LOOKUP_EVR(:epoch, :version, :release, :ptype) id from dual"
         h = self.dbmodule.prepare(sql)
         for evr in sorted(evrHash.keys(), key=lambda k: (str(k[0] or 0), k[1], k[2])):
@@ -753,7 +753,7 @@ class Backend:
             if row:
                 evrHash[evr] = row["id"]
 
-    def lookupChecksums(self, checksumHash):
+    def lookupChecksums(self, checksumHash):  #  pylint: disable=invalid-name,invalid-name
         if not checksumHash:
             return
 
@@ -787,7 +787,7 @@ class Backend:
             return
 
         h = self.dbmodule.prepare(sql)
-        r = h.execute_values(sql, values, fetch=False)
+        r = h.execute_values(sql, values, fetch=False)  #  pylint: disable=unused-variable
 
         sql = """
         WITH wanted (ordering, checksum_type, checksum) AS (
@@ -806,7 +806,7 @@ class Backend:
         for checksum in checksums:
             checksumHash[(checksum[0], checksum[1])] = checksum[2]
 
-    def lookupChecksumTypes(self, checksumTypeHash):
+    def lookupChecksumTypes(self, checksumTypeHash):  #  pylint: disable=invalid-name,invalid-name
         if not checksumTypeHash:
             return
         sql = "select id from rhnChecksumType where label = :label"
@@ -817,7 +817,7 @@ class Backend:
             if row:
                 checksumTypeHash[l] = row["id"]
 
-    def lookupPackageNEVRAs(self, nevraHash):
+    def lookupPackageNEVRAs(self, nevraHash):  #  pylint: disable=invalid-name,invalid-name
         sql = "select LOOKUP_PACKAGE_NEVRA(:name, :evr, :arch) id from dual"
         h = self.dbmodule.prepare(sql)
         for nevra in nevraHash:
@@ -829,7 +829,7 @@ class Backend:
             if row:
                 nevraHash[nevra] = row["id"]
 
-    def lookupPackagesByNEVRA(self, nevraHash):
+    def lookupPackagesByNEVRA(self, nevraHash):  #  pylint: disable=invalid-name,invalid-name
         sql = """
               select id from rhnPackage
               where name_id = :name and
@@ -845,7 +845,7 @@ class Backend:
             if row:
                 nevraHash[nevra] = row["id"]
 
-    def lookupPackageKeyId(self, header):
+    def lookupPackageKeyId(self, header):  #  pylint: disable=invalid-name
         lookup_keyid_sql = rhnSQL.prepare(
             """
            select pk.id
@@ -868,25 +868,25 @@ class Backend:
 
         return keyid[0]["id"]
 
-    def lookupSourceRPMs(self, hash):
+    def lookupSourceRPMs(self, hash):  #  pylint: disable=invalid-name,redefined-builtin
         self.__processHash("lookup_source_name", hash)
 
-    def lookupPackageGroups(self, hash):
+    def lookupPackageGroups(self, hash):  #  pylint: disable=invalid-name,redefined-builtin
         self.__processHash("lookup_package_group", hash)
 
-    def lookupPackages(self, packages, checksums, ignore_missing=0):
+    def lookupPackages(self, packages, checksums, ignore_missing=0):  #  pylint: disable=invalid-name
         # If nevra is enabled use checksum as primary key
         self.validate_pks()
         for package in packages:
             if not isinstance(package, IncompletePackage):
                 raise TypeError(
-                    "Expected an IncompletePackage instance, found %s"
-                    % str(type(package))
+                    "Expected an IncompletePackage instance, found %s"  #  pylint: disable=consider-using-f-string
+                    % str(type(package))  #  pylint: disable=used-before-assignment
                 )
         for package in packages:
             # here we need to figure out which checksum we have in the database
             not_found = None
-            for type, chksum in list(package["checksums"].items()):
+            for type, chksum in list(package["checksums"].items()):  #  pylint: disable=redefined-builtin
                 package["checksum_type"] = type
                 package["checksum"] = chksum
                 package["checksum_id"] = checksums[(type, chksum)]
@@ -901,7 +901,7 @@ class Backend:
                 # package is not in database at all
                 raise_with_tb(not_found[0], not_found[1])
 
-    def lookupChannelFamilies(self, hash):
+    def lookupChannelFamilies(self, hash):  #  pylint: disable=invalid-name,redefined-builtin
         if not hash:
             return
         sql = "select id from rhnChannelFamily where label = :label"
@@ -913,15 +913,15 @@ class Backend:
                 hash[k] = row["id"]
             # Else, it's an unsupported channel
 
-    def lookup_kstree_types(self, hash):
+    def lookup_kstree_types(self, hash):  #  pylint: disable=redefined-builtin
         return self._lookup_in_table("rhnKSTreeType", "rhn_kstree_type_seq", hash)
 
-    def lookup_ks_install_types(self, hash):
+    def lookup_ks_install_types(self, hash):  #  pylint: disable=redefined-builtin
         return self._lookup_in_table(
             "rhnKSInstallType", "rhn_ksinstalltype_id_seq", hash
         )
 
-    def _lookup_in_table(self, table_name, sequence_name, hash):
+    def _lookup_in_table(self, table_name, sequence_name, hash):  #  pylint: disable=redefined-builtin
         t = self.dbmodule.Table(table_name, "label")
         seq = self.dbmodule.Sequence(sequence_name)
         to_insert = []
@@ -975,55 +975,55 @@ class Backend:
         hash.update(result)
         return hash
 
-    def processChannelArches(self, arches):
+    def processChannelArches(self, arches):  #  pylint: disable=invalid-name
         self.__processObjectCollection(
             arches, "rhnChannelArch", uploadForce=4, ignoreUploaded=1, severityLimit=4
         )
 
-    def processPackageArches(self, arches):
+    def processPackageArches(self, arches):  #  pylint: disable=invalid-name
         self.__processObjectCollection(
             arches, "rhnPackageArch", uploadForce=4, ignoreUploaded=1, severityLimit=4
         )
 
-    def processServerArches(self, arches):
+    def processServerArches(self, arches):  #  pylint: disable=invalid-name
         self.__processObjectCollection(
             arches, "rhnServerArch", uploadForce=4, ignoreUploaded=1, severityLimit=4
         )
 
-    def processCPUArches(self, arches):
+    def processCPUArches(self, arches):  #  pylint: disable=invalid-name
         self.__processObjectCollection(
             arches, "rhnCPUArch", uploadForce=4, ignoreUploaded=1, severityLimit=4
         )
 
-    def processMasterOrgs(self, orgs):
+    def processMasterOrgs(self, orgs):  #  pylint: disable=invalid-name
         self.__processObjectCollection(
             orgs, "rhnISSMasterOrgs", uploadForce=4, ignoreUploaded=1, severityLimit=4
         )
 
-    def processOrgs(self, orgs):
+    def processOrgs(self, orgs):  #  pylint: disable=invalid-name
         self.__processObjectCollection(
             orgs, "web_customer", uploadForce=4, ignoreUploaded=1, severityLimit=4
         )
 
-    def processServerPackageArchCompatMap(self, entries):
+    def processServerPackageArchCompatMap(self, entries):  #  pylint: disable=invalid-name
         self.__populateTable("rhnServerPackageArchCompat", entries, delete_extra=1)
 
-    def processServerChannelArchCompatMap(self, entries):
+    def processServerChannelArchCompatMap(self, entries):  #  pylint: disable=invalid-name
         self.__populateTable("rhnServerChannelArchCompat", entries, delete_extra=1)
 
-    def processChannelPackageArchCompatMap(self, entries):
+    def processChannelPackageArchCompatMap(self, entries):  #  pylint: disable=invalid-name
         self.__populateTable("rhnChannelPackageArchCompat", entries, delete_extra=1)
 
-    def processServerGroupServerArchCompatMap(self, entries):
+    def processServerGroupServerArchCompatMap(self, entries):  #  pylint: disable=invalid-name
         self.__populateTable("rhnServerServerGroupArchCompat", entries, delete_extra=1)
 
-    def processPackages(
-        self, packages, uploadForce=0, ignoreUploaded=0, forceVerify=0, transactional=0
+    def processPackages(  #  pylint: disable=invalid-name
+        self, packages, uploadForce=0, ignoreUploaded=0, forceVerify=0, transactional=0  #  pylint: disable=invalid-name,invalid-name,invalid-name
     ):
         # Insert/update the packages
         self.validate_pks()
 
-        childTables = {
+        childTables = {  #  pylint: disable=invalid-name
             "rhnPackageProvides": "package_id",
             "rhnPackageRequires": "package_id",
             "rhnPackageConflicts": "package_id",
@@ -1051,7 +1051,7 @@ class Backend:
             if not isinstance(package, Package):
                 raise TypeError("Expected a Package instance")
 
-            tableList = copy.deepcopy(childTables)
+            tableList = copy.deepcopy(childTables)  #  pylint: disable=invalid-name
 
             # older sat packages wont have these fields
             # avoid Null insertions
@@ -1075,7 +1075,7 @@ class Backend:
             except Exception as e:
                 syncLib.log(
                     0,
-                    "Error during processing package %s-%s-%s:%s.%s.\n%s"
+                    "Error during processing package %s-%s-%s:%s.%s.\n%s"  #  pylint: disable=consider-using-f-string
                     % (
                         package["name"],
                         package["version"],
@@ -1087,10 +1087,10 @@ class Backend:
                 )
                 raise
 
-    def processErrata(self, errata):
+    def processErrata(self, errata):  #  pylint: disable=invalid-name
         # Insert/update the packages
 
-        childTables = [
+        childTables = [  #  pylint: disable=invalid-name
             "rhnChannelErrata",
             "rhnErrataBugList",
             "rhnErrataFile",
@@ -1164,8 +1164,8 @@ class Backend:
             channel.load_by_id(channel_id)
             taskomatic.add_to_repodata_queue(channel.get_label(), "errata", advisory)
 
-    def processKickstartTrees(self, ks_trees):
-        childTables = [
+    def processKickstartTrees(self, ks_trees):  #  pylint: disable=invalid-name
+        childTables = [  #  pylint: disable=invalid-name
             "rhnKSTreeFile",
             #'rhnKSTreeType',
             #'rhnKSInstallType',
@@ -1213,7 +1213,7 @@ class Backend:
         h = self.dbmodule.prepare(
             """
             insert into rhnErrataQueue (errata_id, channel_id, next_action)
-            values (:errata_id, :channel_id, current_timestamp + numtodsinterval(:timeout, 'second'))
+            values (:errata_id, :channel_id, current_timestamp + numtodsinterval(:timeout, 'second'))  #  pylint: disable=line-too-long
         """
         )
         errata_ids = [x[0] for x in errata_channel_ids]
@@ -1222,8 +1222,8 @@ class Backend:
         hdel.executemany(errata_id=errata_ids)
         h.executemany(errata_id=errata_ids, channel_id=channel_ids, timeout=timeouts)
 
-    def processChannels(self, channels, base_channels):
-        childTables = [
+    def processChannels(self, channels, base_channels):  #  pylint: disable=invalid-name
+        childTables = [  #  pylint: disable=invalid-name
             "rhnChannelFamilyMembers",
             "rhnReleaseChannelMap",
         ]
@@ -1239,7 +1239,7 @@ class Backend:
             forceVerify=1,
         )
 
-    def orgTrustExists(self, org_id, trust_id):
+    def orgTrustExists(self, org_id, trust_id):  #  pylint: disable=invalid-name
         sql = """
         select *
           from rhnTrustedOrgs
@@ -1253,7 +1253,7 @@ class Backend:
             return True
         return False
 
-    def clearChannelTrusts(self, label):
+    def clearChannelTrusts(self, label):  #  pylint: disable=invalid-name
         sql = """
         delete from rhnChannelTrust where channel_id =
         (select id from rhnChannel where label = :label)
@@ -1261,7 +1261,7 @@ class Backend:
         h = self.dbmodule.prepare(sql)
         h.execute(label=label)
 
-    def processChannelTrusts(self, channel_trusts):
+    def processChannelTrusts(self, channel_trusts):  #  pylint: disable=invalid-name
         # Create channel trusts
         insert = [[], []]
         for trust in channel_trusts:
@@ -1275,8 +1275,8 @@ class Backend:
         h = self.dbmodule.prepare(sql)
         h.executemany(label=insert[0], org_id=insert[1])
 
-    def processChannelFamilies(self, channels):
-        childTables = []
+    def processChannelFamilies(self, channels):  #  pylint: disable=invalid-name
+        childTables = []  #  pylint: disable=invalid-name
         self.__processObjectCollection(
             channels,
             "rhnChannelFamily",
@@ -1287,7 +1287,7 @@ class Backend:
             forceVerify=1,
         )
 
-    def processChannelFamilyMembers(self, channel_families):
+    def processChannelFamilyMembers(self, channel_families):  #  pylint: disable=invalid-name
         # Channel families now contain channel memberships too
         h_lookup_cfid = self.dbmodule.prepare(
             """
@@ -1334,7 +1334,7 @@ class Backend:
         hdel.executemany(channel_id=c_ids)
         hins.executemany(channel_family_id=cf_ids, channel_id=c_ids)
 
-    def processChannelFamilyPermissions(self, channel_families):
+    def processChannelFamilyPermissions(self, channel_families):  #  pylint: disable=invalid-name
         # Since this is not evaluated in rhn_entitlements anymore,
         # make channel families without org globally visible
 
@@ -1364,8 +1364,8 @@ class Backend:
         )
         h_public_ins.executemany(channel_family_id=public_cf_to_insert)
 
-    def processDistChannelMap(self, dcms):
-        dcmTable = self.tables["rhnDistChannelMap"]
+    def processDistChannelMap(self, dcms):  #  pylint: disable=invalid-name
+        dcmTable = self.tables["rhnDistChannelMap"]  #  pylint: disable=invalid-name
         lookup = TableLookup(dcmTable, self.dbmodule)
         dmlobj = DML([dcmTable.name], self.tables)
 
@@ -1376,7 +1376,7 @@ class Backend:
             h = lookup.query(dcm)
             row = h.fetchone_dict()
             if not row:
-                extObject = {}
+                extObject = {}  #  pylint: disable=invalid-name
                 _buildExternalValue(extObject, dcm, dcmTable)
                 addHash(dmlobj.insert[dcmTable.name], extObject)
             # Since this table has all the columns in unique constraints, we
@@ -1384,7 +1384,7 @@ class Backend:
 
         self.__doDML(dmlobj)
 
-    def processChannelProduct(self, channel):
+    def processChannelProduct(self, channel):  #  pylint: disable=invalid-name
         """Associate product with channel"""
 
         channel["channel_product"] = channel["product_name"]
@@ -1409,7 +1409,7 @@ class Backend:
             id=channel.id, channel_product_id=channel["channel_product_id"]
         )
 
-    def processChannelContentSources(self, channel):
+    def processChannelContentSources(self, channel):  #  pylint: disable=invalid-name
         """Associate content sources with channel"""
 
         # Which content sources are assigned to this channel
@@ -1455,7 +1455,7 @@ class Backend:
         for source_id in sources_to_insert:
             insert_sql.execute(source_id=source_id, channel_id=channel.id)
 
-    def processProductNames(self, batch):
+    def processProductNames(self, batch):  #  pylint: disable=invalid-name
         """Check if ProductName for channel in batch is already in DB.
         If not add it there.
         """
@@ -1474,10 +1474,10 @@ class Backend:
                     product_label=channel["label"], product_name=channel["name"]
                 )
 
-    def processContentSources(self, batch):
+    def processContentSources(self, batch):  #  pylint: disable=invalid-name
         """Insert content source into DB"""
 
-        childTables = ["rhnContentSourceSsl"]
+        childTables = ["rhnContentSourceSsl"]  #  pylint: disable=invalid-name
         self.__processObjectCollection(
             batch,
             "rhnContentSource",
@@ -1488,7 +1488,7 @@ class Backend:
             forceVerify=1,
         )
 
-    def lookupContentSource(self, label):
+    def lookupContentSource(self, label):  #  pylint: disable=invalid-name
         """Get id for given content source"""
 
         sql = self.dbmodule.prepare(
@@ -1506,7 +1506,7 @@ class Backend:
 
         return
 
-    def lookupContentSourceType(self, label):
+    def lookupContentSourceType(self, label):  #  pylint: disable=invalid-name
         """Get id for given content type label"""
 
         sql = self.dbmodule.prepare(
@@ -1524,7 +1524,7 @@ class Backend:
 
         return
 
-    def lookupProductNames(self, label):
+    def lookupProductNames(self, label):  #  pylint: disable=invalid-name
         """For given label of product return its id.
         If product do not exist return None
         """
@@ -1545,7 +1545,7 @@ class Backend:
 
         return
 
-    def processSupportInformation(self, batch):
+    def processSupportInformation(self, batch):  #  pylint: disable=invalid-name
         """Check if SupportInformation is already in DB.
         If not, add it
         """
@@ -1563,7 +1563,7 @@ class Backend:
               AND keyword_id = :keyword_id
         """
         )
-        _query_keywords = self.dbmodule.prepare(
+        _query_keywords = self.dbmodule.prepare(  #  pylint: disable=invalid-name
             """
             SELECT channel_id, package_id, keyword_id
               FROM suseMdData
@@ -1571,13 +1571,13 @@ class Backend:
         )
         _query_keywords.execute()
         existing_data = [
-            "%s-%s-%s" % (x["channel_id"], x["package_id"], x["keyword_id"])
+            "%s-%s-%s" % (x["channel_id"], x["package_id"], x["keyword_id"])  #  pylint: disable=consider-using-f-string
             for x in _query_keywords.fetchall_dict() or []
         ]
         toinsert = [[], [], []]
         todelete = [[], [], []]
         for item in batch:
-            ident = "%s-%s-%s" % (
+            ident = "%s-%s-%s" % (  #  pylint: disable=consider-using-f-string
                 item["channel_id"],
                 item["package_id"],
                 item["keyword_id"],
@@ -1602,14 +1602,14 @@ class Backend:
                 channel_id=toinsert[0], package_id=toinsert[1], keyword_id=toinsert[2]
             )
 
-    def processSuseProducts(self, batch):
+    def processSuseProducts(self, batch):  #  pylint: disable=invalid-name
         """Check if SUSE Product is already in DB.
         If yes, update it, if not add it.
         """
         insert_product = self.dbmodule.prepare(
             """
-            INSERT INTO suseProducts (id, name, version, friendly_name, arch_type_id, release, product_id, free, base, release_stage, channel_family_id)
-            VALUES (:pid, :name, :version, :friendly_name, :arch_type_id, :release, :product_id, :free, :base, :release_stage, :channel_family_id)
+            INSERT INTO suseProducts (id, name, version, friendly_name, arch_type_id, release, product_id, free, base, release_stage, channel_family_id)  #  pylint: disable=line-too-long
+            VALUES (:pid, :name, :version, :friendly_name, :arch_type_id, :release, :product_id, :free, :base, :release_stage, :channel_family_id)  #  pylint: disable=line-too-long
             """
         )
         delete_product = self.dbmodule.prepare(
@@ -1632,14 +1632,14 @@ class Backend:
              WHERE product_id = :product_id
              """
         )
-        _query_product = self.dbmodule.prepare(
+        _query_product = self.dbmodule.prepare(  #  pylint: disable=invalid-name
             """
             SELECT product_id FROM suseProducts
             """
         )
         _query_product.execute()
         existing_data = [
-            "%s" % (x["product_id"]) for x in _query_product.fetchall_dict() or []
+            "%s" % (x["product_id"]) for x in _query_product.fetchall_dict() or []  #  pylint: disable=consider-using-f-string
         ]
         toinsert = [[], [], [], [], [], [], [], [], [], [], []]
         todelete = [[]]
@@ -1647,7 +1647,7 @@ class Backend:
         for item in batch:
             if not item["channel_family_id"]:
                 continue
-            ident = "%s" % (item["product_id"])
+            ident = "%s" % (item["product_id"])  #  pylint: disable=consider-using-f-string
             if ident in existing_data:
                 existing_data.remove(ident)
                 toupdate[0].append(item["name"])
@@ -1704,7 +1704,7 @@ class Backend:
                 product_id=toupdate[9],
             )
 
-    def processSuseProductChannels(self, batch):
+    def processSuseProductChannels(self, batch):  #  pylint: disable=invalid-name
         """Check if the SUSE ProductChannel is already in DB.
         If yes, update it, if not add it. We get only "mandatory" product channels
         This is jut to update this flag.
@@ -1724,20 +1724,20 @@ class Backend:
                AND channel_id = :cid
              """
         )
-        _query_pc = self.dbmodule.prepare(
+        _query_pc = self.dbmodule.prepare(  #  pylint: disable=invalid-name
             """
             SELECT product_id, channel_id FROM suseProductChannel
             """
         )
         _query_pc.execute()
         existing_data = [
-            "%s-%s" % (x["product_id"], x["channel_id"])
+            "%s-%s" % (x["product_id"], x["channel_id"])  #  pylint: disable=consider-using-f-string
             for x in _query_pc.fetchall_dict() or []
         ]
         toinsert = [[], []]
         toupdate = [[], [], []]
         for item in batch:
-            ident = "%s-%s" % (item["product_id"], item["channel_id"])
+            ident = "%s-%s" % (item["product_id"], item["channel_id"])  #  pylint: disable=consider-using-f-string
             if ident in existing_data:
                 existing_data.remove(ident)
                 toupdate[0].append("Y")
@@ -1756,7 +1756,7 @@ class Backend:
         if toupdate[0]:
             update_pc.executemany(mand=toupdate[0], pid=toupdate[1], cid=toupdate[2])
 
-    def processSuseUpgradePaths(self, batch):
+    def processSuseUpgradePaths(self, batch):  #  pylint: disable=invalid-name
         """Check if the SUSE Upgrade Paths are already in DB.
         If not add it.
         """
@@ -1774,20 +1774,20 @@ class Backend:
                AND to_pdid = :to_pdid
             """
         )
-        _query_up = self.dbmodule.prepare(
+        _query_up = self.dbmodule.prepare(  #  pylint: disable=invalid-name
             """
             SELECT from_pdid, to_pdid FROM suseUpgradePath
             """
         )
         _query_up.execute()
         existing_data = [
-            "%s-%s" % (x["from_pdid"], x["to_pdid"])
+            "%s-%s" % (x["from_pdid"], x["to_pdid"])  #  pylint: disable=consider-using-f-string
             for x in _query_up.fetchall_dict() or []
         ]
         toinsert = [[], []]
         todelete = [[], []]
         for item in batch:
-            ident = "%s-%s" % (item["from_pdid"], item["to_pdid"])
+            ident = "%s-%s" % (item["from_pdid"], item["to_pdid"])  #  pylint: disable=consider-using-f-string
             if ident in existing_data:
                 existing_data.remove(ident)
                 continue
@@ -1802,7 +1802,7 @@ class Backend:
         if toinsert[0]:
             insert_up.executemany(from_pdid=toinsert[0], to_pdid=toinsert[1])
 
-    def processSuseProductExtensions(self, batch):
+    def processSuseProductExtensions(self, batch):  #  pylint: disable=invalid-name
         """Check if the SUSE Extensions are already in DB.
         If not add it.
         """
@@ -1830,21 +1830,21 @@ class Backend:
                AND ext_pdid = :ext_id
         """
         )
-        _query_pe = self.dbmodule.prepare(
+        _query_pe = self.dbmodule.prepare(  #  pylint: disable=invalid-name
             """
             SELECT base_pdid, root_pdid, ext_pdid FROM suseProductExtension
             """
         )
         _query_pe.execute()
         existing_data = [
-            "%s-%s-%s" % (x["base_pdid"], x["root_pdid"], x["ext_pdid"])
+            "%s-%s-%s" % (x["base_pdid"], x["root_pdid"], x["ext_pdid"])  #  pylint: disable=consider-using-f-string
             for x in _query_pe.fetchall_dict() or []
         ]
         toinsert = [[], [], [], []]
         todelete = [[], [], []]
         toupdate = [[], [], [], []]
         for item in batch:
-            ident = "%s-%s-%s" % (
+            ident = "%s-%s-%s" % (  #  pylint: disable=consider-using-f-string
                 item["product_pdid"],
                 item["root_pdid"],
                 item["ext_pdid"],
@@ -1884,16 +1884,16 @@ class Backend:
                 recommended=toupdate[0],
             )
 
-    def processSuseProductRepositories(self, batch):
+    def processSuseProductRepositories(self, batch):  #  pylint: disable=invalid-name
         """Check if the SUSE Product Repositories are already in DB.
         If not add it.
         """
         insert_pr = self.dbmodule.prepare(
             """
             INSERT INTO suseProductSCCRepository
-                   (id, product_id, root_product_id, repo_id, channel_label, parent_channel_label,
+                   (id, product_id, root_product_id, repo_id, channel_label, parent_channel_label,  #  pylint: disable=line-too-long
                     channel_name, mandatory, update_tag)
-            VALUES (:id, :product_id, :root_id, :repo_id, :channel_label, :parent_channel_label,
+            VALUES (:id, :product_id, :root_id, :repo_id, :channel_label, :parent_channel_label,  #  pylint: disable=line-too-long
                     :channel_name, :mandatory, :update_tag)
             """
         )
@@ -1918,21 +1918,21 @@ class Backend:
                AND repo_id = :repo_id
         """
         )
-        _query_pr = self.dbmodule.prepare(
+        _query_pr = self.dbmodule.prepare(  #  pylint: disable=invalid-name
             """
             SELECT product_id, root_product_id, repo_id FROM suseProductSCCRepository
             """
         )
         _query_pr.execute()
         existing_data = [
-            "%s-%s-%s" % (x["product_id"], x["root_product_id"], x["repo_id"])
+            "%s-%s-%s" % (x["product_id"], x["root_product_id"], x["repo_id"])  #  pylint: disable=consider-using-f-string
             for x in _query_pr.fetchall_dict() or []
         ]
         toinsert = [[], [], [], [], [], [], [], [], []]
         todelete = [[], [], []]
         toupdate = [[], [], [], [], [], [], [], []]
         for item in batch:
-            ident = "%s-%s-%s" % (
+            ident = "%s-%s-%s" % (  #  pylint: disable=consider-using-f-string
                 item["product_pdid"],
                 item["root_pdid"],
                 item["repo_pdid"],
@@ -1990,7 +1990,7 @@ class Backend:
                 update_tag=toupdate[4],
             )
 
-    def processSCCRepositories(self, batch):
+    def processSCCRepositories(self, batch):  #  pylint: disable=invalid-name
         """Check if SCC Repository is already in DB.
         If yes, update it, if not add it.
         """
@@ -2002,8 +2002,8 @@ class Backend:
         ).execute()
         insert_repo = self.dbmodule.prepare(
             """
-            INSERT INTO suseSCCRepository (id, scc_id, autorefresh, name, distro_target, description, url, signed, installer_updates)
-            VALUES (:rid, :sccid, :autorefresh, :name, :target, :description, :url, :signed, :installer_updates)
+            INSERT INTO suseSCCRepository (id, scc_id, autorefresh, name, distro_target, description, url, signed, installer_updates)  #  pylint: disable=line-too-long
+            VALUES (:rid, :sccid, :autorefresh, :name, :target, :description, :url, :signed, :installer_updates)  #  pylint: disable=line-too-long
             """
         )
         delete_repo = self.dbmodule.prepare(
@@ -2024,20 +2024,20 @@ class Backend:
              WHERE scc_id = :sccid
              """
         )
-        _query_repo = self.dbmodule.prepare(
+        _query_repo = self.dbmodule.prepare(  #  pylint: disable=invalid-name
             """
             SELECT scc_id FROM suseSCCRepository
             """
         )
         _query_repo.execute()
         existing_data = [
-            "%s" % (x["scc_id"]) for x in _query_repo.fetchall_dict() or []
+            "%s" % (x["scc_id"]) for x in _query_repo.fetchall_dict() or []  #  pylint: disable=consider-using-f-string
         ]
         toinsert = [[], [], [], [], [], [], [], [], []]
         todelete = [[]]
         toupdate = [[], [], [], [], [], [], [], []]
         for item in batch:
-            ident = "%s" % item["sccid"]
+            ident = "%s" % item["sccid"]  #  pylint: disable=consider-using-f-string
             if ident in existing_data:
                 existing_data.remove(ident)
                 toupdate[0].append(item["name"])
@@ -2086,7 +2086,7 @@ class Backend:
                 sccid=toupdate[7],
             )
 
-    def processClonedChannels(self, batch):
+    def processClonedChannels(self, batch):  #  pylint: disable=invalid-name
         """Check if cloned channel info is already in DB.
         If not add it.
         """
@@ -2104,19 +2104,19 @@ class Backend:
                AND id = :id
             """
         )
-        _query_cc = self.dbmodule.prepare(
+        _query_cc = self.dbmodule.prepare(  #  pylint: disable=invalid-name
             """
             SELECT original_id orig_id, id FROM rhnChannelCloned
             """
         )
         _query_cc.execute()
         existing_data = [
-            "%s-%s" % (x["orig_id"], x["id"]) for x in _query_cc.fetchall_dict() or []
+            "%s-%s" % (x["orig_id"], x["id"]) for x in _query_cc.fetchall_dict() or []  #  pylint: disable=consider-using-f-string
         ]
         toinsert = [[], []]
         todelete = [[], []]
         for item in batch:
-            ident = "%s-%s" % (item["orig_id"], item["id"])
+            ident = "%s-%s" % (item["orig_id"], item["id"])  #  pylint: disable=consider-using-f-string
             if ident in existing_data:
                 existing_data.remove(ident)
                 continue
@@ -2131,7 +2131,7 @@ class Backend:
         if toinsert[0]:
             insert_cc.executemany(orig_id=toinsert[0], id=toinsert[1])
 
-    def processSuseSubscriptions(self, batch):
+    def processSuseSubscriptions(self, batch):  #  pylint: disable=invalid-name
         """Check if the Subscriptions are already in DB.
         If yes, update it, if not add it.
         """
@@ -2142,19 +2142,19 @@ class Backend:
             VALUES (:cfid, :org_id)
             """
         )
-        _query_pcf = self.dbmodule.prepare(
+        _query_pcf = self.dbmodule.prepare(  #  pylint: disable=invalid-name
             """
             SELECT channel_family_id, org_id FROM rhnPrivateChannelFamily
             """
         )
         _query_pcf.execute()
         existing_data = [
-            "%s-%s" % (x["channel_family_id"], x["org_id"])
+            "%s-%s" % (x["channel_family_id"], x["org_id"])  #  pylint: disable=consider-using-f-string
             for x in _query_pcf.fetchall_dict() or []
         ]
         toinsert = [[], []]
         for item in batch:
-            ident = "%s-%s" % (item["channel_family_id"], item["org_id"])
+            ident = "%s-%s" % (item["channel_family_id"], item["org_id"])  #  pylint: disable=consider-using-f-string
             if ident in existing_data:
                 existing_data.remove(ident)
                 continue
@@ -2164,10 +2164,10 @@ class Backend:
         if toinsert[0]:
             insert_pcf.executemany(cfid=toinsert[0], org_id=toinsert[1])
 
-    def lookupPackageIdFromPackage(self, package):
+    def lookupPackageIdFromPackage(self, package):  #  pylint: disable=invalid-name
         if not isinstance(package, IncompletePackage):
             raise TypeError(
-                "Expected an IncompletePackage instance, found %s" % str(type(package))
+                "Expected an IncompletePackage instance, found %s" % str(type(package))  #  pylint: disable=consider-using-f-string,used-before-assignment
             )
         statement = self.dbmodule.prepare(
             """
@@ -2189,7 +2189,7 @@ class Backend:
         """
         )
 
-        for type, chksum in list(package["checksums"].items()):
+        for type, chksum in list(package["checksums"].items()):  #  pylint: disable=redefined-builtin
             if not package["epoch"]:
                 package["epoch"] = None
             statement.execute(
@@ -2206,8 +2206,8 @@ class Backend:
                 package.id = pkgid["id"]
                 return
 
-    def lookupSuseProductIdByProductId(self, pid):
-        _query = self.dbmodule.prepare(
+    def lookupSuseProductIdByProductId(self, pid):  #  pylint: disable=invalid-name
+        _query = self.dbmodule.prepare(  #  pylint: disable=invalid-name
             """
             SELECT id FROM suseProducts WHERE product_id = :pid
         """
@@ -2218,8 +2218,8 @@ class Backend:
             return res["id"]
         return None
 
-    def lookupRepoIdBySCCRepoId(self, rid):
-        _query = self.dbmodule.prepare(
+    def lookupRepoIdBySCCRepoId(self, rid):  #  pylint: disable=invalid-name
+        _query = self.dbmodule.prepare(  #  pylint: disable=invalid-name
             """
             SELECT id FROM suseSCCRepository WHERE scc_id = :rid
         """
@@ -2230,7 +2230,7 @@ class Backend:
             return res["id"]
         return None
 
-    def lookupKeyword(self, keyword):
+    def lookupKeyword(self, keyword):  #  pylint: disable=invalid-name
         statement = self.dbmodule.prepare(
             """
             SELECT id
@@ -2254,7 +2254,7 @@ class Backend:
         return kid
 
     # bug #528227
-    def lookupChannelOrg(self, label):
+    def lookupChannelOrg(self, label):  #  pylint: disable=invalid-name
         """For given label of channel return its org_id.
         If channel with given label does not exist or is NULL, return None.
         """
@@ -2274,7 +2274,7 @@ class Backend:
 
         return
 
-    def lookupChannelProduct(self, channel):
+    def lookupChannelProduct(self, channel):  #  pylint: disable=invalid-name
         statement = self.dbmodule.prepare(
             """
             SELECT id
@@ -2298,8 +2298,8 @@ class Backend:
 
         return self.createChannelProduct(channel)
 
-    def createChannelProduct(self, channel):
-        id = self.sequences["rhnChannelProduct"].next()
+    def createChannelProduct(self, channel):  #  pylint: disable=invalid-name
+        id = self.sequences["rhnChannelProduct"].next()  #  pylint: disable=redefined-builtin
 
         statement = self.dbmodule.prepare(
             """
@@ -2319,8 +2319,8 @@ class Backend:
 
         return id
 
-    def subscribeToChannels(self, packages, strict=0):
-        hash = {
+    def subscribeToChannels(self, packages, strict=0):  #  pylint: disable=invalid-name
+        hash = {  #  pylint: disable=redefined-builtin
             "package_id": [],
             "channel_id": [],
         }
@@ -2348,7 +2348,7 @@ class Backend:
                     break
                 channels[row["channel_id"]] = None
 
-            for channelId in list(package["channels"].keys()):
+            for channelId in list(package["channels"].keys()):  #  pylint: disable=invalid-name
                 # Build the channel-package list
                 if channelId in channel_packages:
                     cp = channel_packages[channelId]
@@ -2359,7 +2359,7 @@ class Backend:
                 if channelId in channels:
                     # Already subscribed
                     continue
-                dict = {
+                dict = {  #  pylint: disable=redefined-builtin
                     "package_id": package.id,
                     "channel_id": channelId,
                 }
@@ -2423,19 +2423,19 @@ class Backend:
         # This function returns the channels that were affected
         return affected_channels
 
-    def update_newest_package_cache(self, caller, affected_channels, name_ids=[]):
+    def update_newest_package_cache(self, caller, affected_channels, name_ids=[]):  #  pylint: disable=dangerous-default-value
         # affected_channels is a hash keyed on the channel id, and with a
         # tuple (added_package_list, deleted_package_list) as values
         refresh_newest_package = self.dbmodule.Procedure(
             "rhn_channel.refresh_newest_package"
         )
         update_channel = self.dbmodule.Procedure("rhn_channel.update_channel")
-        for channel_id, (added_packages_list, deleted_packages_list) in list(
+        for channel_id, (added_packages_list, deleted_packages_list) in list(  #  pylint: disable=unused-variable
             affected_channels.items()
         ):
             try:
                 if name_ids:
-                    for id in name_ids:
+                    for id in name_ids:  #  pylint: disable=redefined-builtin
                         refresh_newest_package(channel_id, caller, id)
                 else:
                     refresh_newest_package(channel_id, caller, None)
@@ -2448,12 +2448,12 @@ class Backend:
                 invalidate_ss = 0
             update_channel(channel_id, invalidate_ss)
 
-    def processSourcePackages(
-        self, packages, uploadForce=0, ignoreUploaded=0, forceVerify=0, transactional=0
+    def processSourcePackages(  #  pylint: disable=invalid-name
+        self, packages, uploadForce=0, ignoreUploaded=0, forceVerify=0, transactional=0  #  pylint: disable=invalid-name,invalid-name,invalid-name
     ):
         # Insert/update the packages
 
-        childTables = []
+        childTables = []  #  pylint: disable=invalid-name
 
         for package in packages:
             if not isinstance(package, SourcePackage):
@@ -2479,7 +2479,7 @@ class Backend:
     def rollback(self):
         self.dbmodule.rollback()
 
-    def __processHash(self, lookup, hash):
+    def __processHash(self, lookup, hash):  #  pylint: disable=invalid-name,redefined-builtin
         if not hash:
             # Nothing to do
             return
@@ -2490,17 +2490,17 @@ class Backend:
             # saving id
             hash[k] = h.fetchone_dict().popitem()[1]
 
-    def __buildQueries(self, childTables):
-        childTableLookups = {}
-        queryTempl = "select * from %s where %s = :id"
-        for childTableName in childTables:
+    def __buildQueries(self, childTables):  #  pylint: disable=invalid-name,invalid-name
+        childTableLookups = {}  #  pylint: disable=invalid-name
+        queryTempl = "select * from %s where %s = :id"  #  pylint: disable=invalid-name
+        for childTableName in childTables:  #  pylint: disable=invalid-name
             childTableLookups[childTableName] = self.dbmodule.prepare(
                 queryTempl % (childTableName, childTables[childTableName])
             )
         return childTableLookups
 
-    def __processObjectCollection(
-        self, objColl, parentTable, childTables=[], colname=None, **kwargs
+    def __processObjectCollection(  #  pylint: disable=invalid-name,dangerous-default-value
+        self, objColl, parentTable, childTables=[], colname=None, **kwargs  #  pylint: disable=invalid-name,invalid-name,invalid-name
     ):
         # Returns the DML object that was processed
         # This helps identify what the changes were
@@ -2509,7 +2509,7 @@ class Backend:
         # new interface to keep me from having to change all the places in the
         # code that call this method, as there are 10 of them...
 
-        childDict = {}
+        childDict = {}  #  pylint: disable=invalid-name
 
         for tbl in childTables:
             childDict[tbl] = colname
@@ -2518,8 +2518,8 @@ class Backend:
             objColl, parentTable, childDict, **kwargs
         )
 
-    def __processObjectCollection__(
-        self, objColl, parentTable, childTables={}, **kwargs
+    def __processObjectCollection__(  #  pylint: disable=invalid-name,dangerous-default-value
+        self, objColl, parentTable, childTables={}, **kwargs  #  pylint: disable=invalid-name,invalid-name,invalid-name
     ):
         # Returns the DML object that was processed
         # This helps identify what the changes were
@@ -2548,16 +2548,16 @@ class Backend:
 
         for k, v in list(kwargs.items()):
             if k not in kwparams:
-                raise TypeError("Unknown keyword parameter %s" % k)
+                raise TypeError("Unknown keyword parameter %s" % k)  #  pylint: disable=consider-using-f-string
             if v is not None:
                 # Leave the default values in case of a None
                 kwparams[k] = v
 
-        uploadForce = kwparams["uploadForce"]
-        ignoreUploaded = kwparams["ignoreUploaded"]
-        severityLimit = kwparams["severityLimit"]
+        uploadForce = kwparams["uploadForce"]  #  pylint: disable=invalid-name
+        ignoreUploaded = kwparams["ignoreUploaded"]  #  pylint: disable=invalid-name
+        severityLimit = kwparams["severityLimit"]  #  pylint: disable=invalid-name
         transactional = kwparams["transactional"]
-        forceVerify = kwparams["forceVerify"]
+        forceVerify = kwparams["forceVerify"]  #  pylint: disable=invalid-name
 
         # All the tables affected
         tables = [parentTable] + list(childTables.keys())
@@ -2565,20 +2565,20 @@ class Backend:
         # Build the hash for the operations on the tables
         dml = DML(tables, self.tables)
         # Reverse hash: object id to object for already-uploaded objects
-        uploadedObjects = {}
+        uploadedObjects = {}  #  pylint: disable=invalid-name
         # Information related to the parent table
-        parentTableObj = self.tables[parentTable]
-        ptFields = parentTableObj.getFields()
-        severityHash = parentTableObj.getSeverityHash()
+        parentTableObj = self.tables[parentTable]  #  pylint: disable=invalid-name
+        ptFields = parentTableObj.getFields()  #  pylint: disable=invalid-name
+        severityHash = parentTableObj.getSeverityHash()  #  pylint: disable=invalid-name
 
         # A flag that indicates if something has to be modified beyond the
         # current severity limit
-        brokenTransaction = 0
+        brokenTransaction = 0  #  pylint: disable=invalid-name
 
         # Lookup object
         lookup = TableLookup(parentTableObj, self.dbmodule)
         # XXX
-        childTableLookups = self.__buildQueries(childTables)
+        childTableLookups = self.__buildQueries(childTables)  #  pylint: disable=invalid-name
         # For each valid object in the collection, look it up
         #   if it doesn't exist, insert all the associated information
         #   if it already exists:
@@ -2592,7 +2592,7 @@ class Backend:
         #       one if not explicitly specified). The "global" severity is the
         #       max of all severities.
         #   New objects will have a diff level of -1
-        for object in objColl:
+        for object in objColl:  #  pylint: disable=redefined-builtin
             if object.ignored:
                 # Skip it
                 continue
@@ -2600,9 +2600,9 @@ class Backend:
             row = h.fetchone_dict()
             if not row:
                 # Object does not exist
-                id = self.sequences[parentTable].next()
+                id = self.sequences[parentTable].next()  #  pylint: disable=redefined-builtin
                 object.id = id
-                extObject = {"id": id}
+                extObject = {"id": id}  #  pylint: disable=invalid-name
                 _buildExternalValue(extObject, object, parentTableObj)
                 addHash(dml.insert[parentTable], extObject)
 
@@ -2620,7 +2620,7 @@ class Backend:
                         else []
                     )
                     for i, entry in enumerate(entry_list):
-                        extObject = {childTables[tname]: id}
+                        extObject = {childTables[tname]: id}  #  pylint: disable=invalid-name
                         if seq_col:
                             # This table has to insert values in a sequenced
                             # column; since it's a child table and the entry
@@ -2651,7 +2651,7 @@ class Backend:
         # Deal with already-uploaded objects
         for objid, (object, row) in list(uploadedObjects.items()):
             # Build the external value
-            extObject = {"id": row["id"]}
+            extObject = {"id": row["id"]}  #  pylint: disable=invalid-name
             _buildExternalValue(extObject, object, parentTableObj)
             # Build the DB value
             row = _buildDatabaseValue(row, ptFields)
@@ -2666,7 +2666,7 @@ class Backend:
                     # not enough karma either
                     continue
 
-            localDML = self.__processUploaded(
+            localDML = self.__processUploaded(  #  pylint: disable=invalid-name
                 objid, object, childTables, childTableLookups
             )
 
@@ -2674,7 +2674,7 @@ class Backend:
                 # Not enough karma
                 if object.diff.level > severityLimit:
                     # Broken transaction - object is too different
-                    brokenTransaction = 1
+                    brokenTransaction = 1  #  pylint: disable=invalid-name
                 continue
 
             # Clean up the object diff since we pushed the package
@@ -2695,28 +2695,28 @@ class Backend:
             raise TransactionError("Error uploading package source batch")
         return self.__doDML(dml)
 
-    def __processUploaded(self, objid, object, childTables, childTableLookups):
+    def __processUploaded(self, objid, object, childTables, childTableLookups):  #  pylint: disable=invalid-name,invalid-name,invalid-name,redefined-builtin
         # Store the DML operations locally
-        localDML = {
+        localDML = {  #  pylint: disable=invalid-name
             "insert": {},
             "update": {},
             "delete": {},
         }
 
         # Grab the rest of the information
-        childTablesInfo = self.__getChildTablesInfo(
+        childTablesInfo = self.__getChildTablesInfo(  #  pylint: disable=invalid-name
             objid, list(childTables.keys()), childTableLookups
         )
 
         # Start computing deltas
-        for childTableName in childTables:
+        for childTableName in childTables:  #  pylint: disable=invalid-name
             # Init the local hashes
             for k in ["insert", "update", "delete"]:
                 localDML[k][childTableName] = []
 
             dbside = childTablesInfo[childTableName]
             # The child table object
-            childTableObj = self.tables[childTableName]
+            childTableObj = self.tables[childTableName]  #  pylint: disable=invalid-name
             # The name of the attribute in the parent object
             parentattr = childTableObj.getAttribute()
             # The list of entries associated with the attribute linked to
@@ -2724,7 +2724,7 @@ class Backend:
             entrylist = object[parentattr]
             fields = childTableObj.getFields()
             pks = childTableObj.getPK()
-            childSeverityHash = childTableObj.getSeverityHash()
+            childSeverityHash = childTableObj.getSeverityHash()  #  pylint: disable=invalid-name
             if entrylist is None:
                 continue
             for ent in entrylist:
@@ -2785,7 +2785,7 @@ class Backend:
             # Anything else should be deleted
             for key, val in list(dbside.items()):
                 # Send only the PKs
-                hash = {}
+                hash = {}  #  pylint: disable=redefined-builtin
                 for k in pks:
                     hash[k] = val[k]
 
@@ -2797,22 +2797,22 @@ class Backend:
 
         return localDML
 
-    def __doDML(self, dml):
+    def __doDML(self, dml):  #  pylint: disable=invalid-name
         self.__doDelete(dml.delete, dml.tables)
         self.__doUpdate(dml.update, dml.tables)
         self.__doInsert(dml.insert, dml.tables)
         return dml
 
-    def __doInsert(self, hash, tables):
+    def __doInsert(self, hash, tables):  #  pylint: disable=invalid-name,redefined-builtin
         for tname in tables:
-            dict = hash[tname]
+            dict = hash[tname]  #  pylint: disable=redefined-builtin
             try:
                 self.__doInsertTable(tname, dict)
             except rhnSQL.SQLError:
                 e = sys.exc_info()[1]
                 raise_with_tb(rhnFault(54, str(e[1]), explain=0), sys.exc_info()[2])
 
-    def __doInsertTable(self, table, hash):
+    def __doInsertTable(self, table, hash):  #  pylint: disable=invalid-name,redefined-builtin
         if not hash:
             return
         tab = self.tables[table]
@@ -2821,16 +2821,16 @@ class Backend:
             # Nothing to do
             return
 
-        insertObj = TableInsert(tab, self.dbmodule)
+        insertObj = TableInsert(tab, self.dbmodule)  #  pylint: disable=invalid-name
         insertObj.query(hash)
         return
 
-    def __doDelete(self, hash, tables):
+    def __doDelete(self, hash, tables):  #  pylint: disable=invalid-name,redefined-builtin
         for tname in tables:
-            dict = hash[tname]
+            dict = hash[tname]  #  pylint: disable=redefined-builtin
             self.__doDeleteTable(tname, dict)
 
-    def __doDeleteTable(self, tname, hash):
+    def __doDeleteTable(self, tname, hash):  #  pylint: disable=invalid-name,redefined-builtin
         if not hash:
             return
         tab = self.tables[tname]
@@ -2842,15 +2842,15 @@ class Backend:
         if not hash[k]:
             # Nothing to do
             return
-        deleteObj = TableDelete(tab, self.dbmodule)
+        deleteObj = TableDelete(tab, self.dbmodule)  #  pylint: disable=invalid-name
         deleteObj.query(hash)
 
-    def __doUpdate(self, hash, tables):
+    def __doUpdate(self, hash, tables):  #  pylint: disable=invalid-name,redefined-builtin
         for tname in tables:
-            dict = hash[tname]
+            dict = hash[tname]  #  pylint: disable=redefined-builtin
             self.__doUpdateTable(tname, dict)
 
-    def __doUpdateTable(self, tname, hash):
+    def __doUpdateTable(self, tname, hash):  #  pylint: disable=invalid-name,redefined-builtin
         if not hash:
             return
         tab = self.tables[tname]
@@ -2860,14 +2860,14 @@ class Backend:
         if not hash[k]:
             # Nothing to do
             return
-        updateObj = TableUpdate(tab, self.dbmodule)
+        updateObj = TableUpdate(tab, self.dbmodule)  #  pylint: disable=invalid-name
         updateObj.query(hash)
         return
 
-    def __lookupObjectCollection(self, objColl, tableName, ignore_missing=0):
+    def __lookupObjectCollection(self, objColl, tableName, ignore_missing=0):  #  pylint: disable=invalid-name,invalid-name,invalid-name
         # Looks the object up in tableName, and fills in its id
         lookup = TableLookup(self.tables[tableName], self.dbmodule)
-        for object in objColl:
+        for object in objColl:  #  pylint: disable=redefined-builtin
             if object.ignored:
                 # Skip it
                 continue
@@ -2880,11 +2880,11 @@ class Backend:
                     continue
                 # Invalid
                 raise InvalidPackageError(
-                    object, "Could not find object %s in table %s" % (object, tableName)
+                    object, "Could not find object %s in table %s" % (object, tableName)  #  pylint: disable=consider-using-f-string
                 )
             object.id = row["id"]
 
-    def __getChildTablesInfo(self, id, tables, queries):
+    def __getChildTablesInfo(self, id, tables, queries):  #  pylint: disable=invalid-name,redefined-builtin
         # Returns a hash with the information about package id from tables
         result = {}
         for tname in tables:
@@ -2892,7 +2892,7 @@ class Backend:
             fields = tableobj.getFields()
             q = queries[tname]
             q.execute(id=id)
-            hash = {}
+            hash = {}  #  pylint: disable=redefined-builtin
             while 1:
                 row = q.fetchone_dict()
                 if not row:
@@ -2914,7 +2914,7 @@ class Backend:
             result[tname] = hash
         return result
 
-    def __populateTable(self, table_name, data, delete_extra=1):
+    def __populateTable(self, table_name, data, delete_extra=1):  #  pylint: disable=invalid-name
         table = self.tables[table_name]
         fields = table.getFields()
         # Build a hash with the incoming data
@@ -2924,7 +2924,7 @@ class Backend:
             incoming[t] = entry
 
         # Build the query to dump the table's contents
-        h = self.dbmodule.prepare("select * from %s" % table.name)
+        h = self.dbmodule.prepare("select * from %s" % table.name)  #  pylint: disable=consider-using-f-string
         h.execute()
         deletes = {}
         inserts = {}
@@ -2960,7 +2960,7 @@ class Backend:
         for entry in data:
             for f in all_fields:
                 if f not in entry:
-                    raise Exception("Missing field %s" % f)
+                    raise Exception("Missing field %s" % f)  #  pylint: disable=broad-exception-raised,consider-using-f-string
             val = entry[first_uq_col]
             if val not in uq_col_values:
                 valhash = {}
@@ -2970,7 +2970,7 @@ class Backend:
             key = build_key(entry, uq_fields)
             valhash[key] = entry
 
-        query = "select %s from %s where %s = :%s" % (
+        query = "select %s from %s where %s = :%s" % (  #  pylint: disable=consider-using-f-string
             ", ".join(all_fields),
             table_name,
             first_uq_col,
@@ -3012,15 +3012,15 @@ class Backend:
 
         if deletes:
             params = transpose(deletes, uq_fields)
-            query = "delete from %s where %s" % (
+            query = "delete from %s where %s" % (  #  pylint: disable=consider-using-f-string
                 table_name,
-                " and ".join(["%s = :%s" % (x, x) for x in uq_fields]),
+                " and ".join(["%s = :%s" % (x, x) for x in uq_fields]),  #  pylint: disable=consider-using-f-string
             )
             h = self.dbmodule.prepare(query)
             h.executemany(**params)
         if inserts:
             params = transpose(inserts, all_fields)
-            query = "insert into %s (%s) values (%s)" % (
+            query = "insert into %s (%s) values (%s)" % (  #  pylint: disable=consider-using-f-string
                 table_name,
                 ", ".join(all_fields),
                 ", ".join([":" + x for x in all_fields]),
@@ -3029,10 +3029,10 @@ class Backend:
             h.executemany(**params)
         if updates:
             params = transpose(updates, all_fields)
-            query = "update % set %s where %s" % (
+            query = "update % set %s where %s" % (  #  pylint: disable=consider-using-f-string
                 table_name,
                 ", ".join(["%s = :s" + (x, x) for x in fields]),
-                " and ".join(["%s = :%s" % (x, x) for x in uq_fields]),
+                " and ".join(["%s = :%s" % (x, x) for x in uq_fields]),  #  pylint: disable=consider-using-f-string
             )
             h = self.dbmodule.prepare(query)
             h.executemany(**params)
@@ -3049,7 +3049,7 @@ class Backend:
 # Returns a tuple for the hash's values
 
 
-def build_key(hash, fields):
+def build_key(hash, fields):  #  pylint: disable=redefined-builtin
     return tuple(map(lambda x, h=hash: h[x], fields))
 
 
@@ -3063,7 +3063,7 @@ def transpose(arrhash, fields):
     return params
 
 
-def hash2tuple(hash, fields):
+def hash2tuple(hash, fields):  #  pylint: disable=redefined-builtin
     # Converts the hash into a tuple, with the fields ordered as presented in
     # the fields list
     result = []
@@ -3072,8 +3072,8 @@ def hash2tuple(hash, fields):
     return tuple(result)
 
 
-class DML:
-    def __init__(self, tables, tableHash):
+class DML:  #  pylint: disable=missing-class-docstring
+    def __init__(self, tables, tableHash):  #  pylint: disable=invalid-name
         self.update = {}
         self.delete = {}
         self.insert = {}
@@ -3082,22 +3082,22 @@ class DML:
             dmlhash = {}
             setattr(self, k, dmlhash)
             for tname in tables:
-                hash = {}
+                hash = {}  #  pylint: disable=redefined-builtin
                 for f in list(tableHash[tname].getFields().keys()):
                     hash[f] = []
                 dmlhash[tname] = hash
 
 
-def _buildDatabaseValue(row, fieldsHash):
+def _buildDatabaseValue(row, fieldsHash):  #  pylint: disable=invalid-name,invalid-name
     # Returns a dictionary containing the interesting values of the row,
     # sanitized
-    dict = {}
+    dict = {}  #  pylint: disable=redefined-builtin
     for f, datatype in list(fieldsHash.items()):
         dict[f] = sanitizeValue(row.get(f), datatype)
     return dict
 
 
-def _buildExternalValue(dict, entry, tableObj):
+def _buildExternalValue(dict, entry, tableObj):  #  pylint: disable=invalid-name,invalid-name,redefined-builtin
     # updates dict with values from entry
     # entry is a hash-like object (non-db)
     for f, datatype in list(tableObj.getFields().items()):
@@ -3112,7 +3112,7 @@ def _buildExternalValue(dict, entry, tableObj):
         dict[f] = sanitizeValue(entry[attr], datatype)
 
 
-def computeDiff(hash1, hash2, diffHash, diffobj, prefix=None):
+def computeDiff(hash1, hash2, diffHash, diffobj, prefix=None):  #  pylint: disable=invalid-name,invalid-name
     # Compare if the key-values of hash1 are a subset of hash2's
     difference = 0
     ignore_keys = ["last_modified"]

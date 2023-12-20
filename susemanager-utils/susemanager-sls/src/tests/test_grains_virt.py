@@ -1,10 +1,10 @@
-import pytest
-from unittest.mock import MagicMock, patch, Mock
+import pytest  #  pylint: disable=missing-module-docstring
+from unittest.mock import MagicMock, patch, Mock  #  pylint: disable=unused-import
 from . import mockery
 
 mockery.setup_environment()
 
-from ..grains import virt
+from ..grains import virt  #  pylint: disable=wrong-import-position
 
 
 @pytest.mark.parametrize("network", [True, False])
@@ -68,7 +68,7 @@ def test_features_efi(version, expected):
     """
     popen_mock = MagicMock()
     popen_mock.return_value.communicate.return_value = (
-        "libvirtd (libvirt) {}\n".format(version).encode(),
+        "libvirtd (libvirt) {}\n".format(version).encode(),  #  pylint: disable=consider-using-f-string
         None,
     )
 

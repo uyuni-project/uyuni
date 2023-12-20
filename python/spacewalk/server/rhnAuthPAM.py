@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring,invalid-name
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -25,9 +25,9 @@ def check_password(username, password, service):
     try:
         auth = pam.pam()
         if not auth.authenticate(username, password, service=service):
-            log_error("Password check failed (%s): %s" % (auth.code, auth.reason))
+            log_error("Password check failed (%s): %s" % (auth.code, auth.reason))  #  pylint: disable=consider-using-f-string
             return 0
         else:
             return 1
-    except:
+    except:  #  pylint: disable=bare-except
         raise_with_tb(rhnException("Internal PAM error"), sys.exc_info()[2])

@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*- pylint: disable=missing-module-docstring
 #
 # Copyright (C) 2014 Novell, Inc.
 #   This library is free software; you can redistribute it and/or modify
@@ -28,13 +28,13 @@ except ImportError:
     from mock import MagicMock, call, patch
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-from helper import ConsoleRecorder, read_data_from_fixture
+from helper import ConsoleRecorder, read_data_from_fixture  #  pylint: disable=wrong-import-position
 
-from spacewalk.susemanager.mgr_sync.cli import get_options
-from spacewalk.susemanager.mgr_sync.mgr_sync import MgrSync
-from spacewalk.susemanager.mgr_sync.channel import Channel
-from spacewalk.susemanager.mgr_sync.product import parse_products, Product
-from spacewalk.susemanager.mgr_sync import logger
+from spacewalk.susemanager.mgr_sync.cli import get_options  #  pylint: disable=wrong-import-position
+from spacewalk.susemanager.mgr_sync.mgr_sync import MgrSync  #  pylint: disable=wrong-import-position
+from spacewalk.susemanager.mgr_sync.channel import Channel  #  pylint: disable=wrong-import-position
+from spacewalk.susemanager.mgr_sync.product import parse_products, Product  #  pylint: disable=wrong-import-position
+from spacewalk.susemanager.mgr_sync import logger  #  pylint: disable=wrong-import-position
 
 
 class ProductOperationsTest(unittest.TestCase):
@@ -67,7 +67,7 @@ class ProductOperationsTest(unittest.TestCase):
     def test_list_emtpy_product(self):
         options = get_options("list product".split())
         stubbed_xmlrpm_call = MagicMock(return_value=[])
-        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
+        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call  #  pylint: disable=protected-access
         with ConsoleRecorder() as recorder:
             self.mgr_sync.run(options)
         self.assertEqual(recorder.stdout, ["No products found."])
@@ -79,7 +79,7 @@ class ProductOperationsTest(unittest.TestCase):
     def test_list_product(self):
         options = get_options("list product".split())
         stubbed_xmlrpm_call = MagicMock(return_value=[])
-        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
+        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call  #  pylint: disable=protected-access
         with ConsoleRecorder() as recorder:
             self.mgr_sync.run(options)
         self.assertEqual(recorder.stdout, ["No products found."])
@@ -95,7 +95,7 @@ class ProductOperationsTest(unittest.TestCase):
         stubbed_xmlrpm_call = MagicMock(
             return_value=read_data_from_fixture("list_products_simplified.data")
         )
-        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
+        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call  #  pylint: disable=protected-access
         with ConsoleRecorder() as recorder:
             self.mgr_sync.run(options)
 
@@ -176,7 +176,7 @@ Status:
         stubbed_xmlrpm_call = MagicMock(
             return_value=read_data_from_fixture("list_products_simplified.data")
         )
-        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
+        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call  #  pylint: disable=protected-access
         with ConsoleRecorder() as recorder:
             self.mgr_sync.run(options)
 
@@ -232,7 +232,7 @@ Status:
         stubbed_xmlrpm_call = MagicMock(
             return_value=read_data_from_fixture("list_products.data")
         )
-        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
+        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call  #  pylint: disable=protected-access
         with ConsoleRecorder() as recorder:
             self.mgr_sync.run(options)
 
@@ -255,14 +255,14 @@ Status:
             self.mgr_sync.conn.sync.content, "listProducts", self.fake_auth_token
         )
 
-    def test_list_products_with_filtering(self):
+    def test_list_products_with_filtering(self):  #  pylint: disable=function-redefined
         """Test listing products with filtering"""
 
         options = get_options("list product --filter proxy".split())
         stubbed_xmlrpm_call = MagicMock(
             return_value=read_data_from_fixture("list_products.data")
         )
-        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
+        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call  #  pylint: disable=protected-access
         with ConsoleRecorder() as recorder:
             self.mgr_sync.run(options)
 
@@ -285,14 +285,14 @@ Status:
             self.mgr_sync.conn.sync.content, "listProducts", self.fake_auth_token
         )
 
-    def test_list_products_with_filtering(self):
+    def test_list_products_with_filtering(self):  #  pylint: disable=function-redefined
         """Test listing products with filtering"""
 
         options = get_options("list product --filter proxy".split())
         stubbed_xmlrpm_call = MagicMock(
             return_value=read_data_from_fixture("list_products.data")
         )
-        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
+        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call  #  pylint: disable=protected-access
         with ConsoleRecorder() as recorder:
             self.mgr_sync.run(options)
 
@@ -324,7 +324,7 @@ Status:
         stubbed_xmlrpm_call = MagicMock(
             return_value=read_data_from_fixture("list_products.data")
         )
-        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
+        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call  #  pylint: disable=protected-access
         with ConsoleRecorder() as recorder:
             self.mgr_sync.run(options)
 
@@ -355,9 +355,9 @@ Status:
         stubbed_xmlrpm_call = MagicMock(
             return_value=read_data_from_fixture("list_products_simplified.data")
         )
-        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
+        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call  #  pylint: disable=protected-access
         with ConsoleRecorder() as recorder:
-            self.mgr_sync._list_products(filter=None, show_interactive_numbers=True)
+            self.mgr_sync._list_products(filter=None, show_interactive_numbers=True)  #  pylint: disable=protected-access
 
         expected_output = """Available Products:
 
@@ -410,16 +410,16 @@ Status:
             if p["friendly_name"] == "RES 4 x86_64" and p["arch"] == "x86_64"
         )
         options = get_options(
-            "add product --from-mirror {0}".format(mirror_url).split()
+            "add product --from-mirror {0}".format(mirror_url).split()  #  pylint: disable=consider-using-f-string
         )
         available_products = parse_products([res4], self.mgr_sync.log)
         chosen_product = available_products[0]
-        self.mgr_sync._fetch_remote_products = MagicMock(
+        self.mgr_sync._fetch_remote_products = MagicMock(  #  pylint: disable=protected-access
             return_value=available_products
         )
         stubbed_xmlrpm_call = MagicMock()
         stubbed_xmlrpm_call.side_effect = xmlrpc_product_sideeffect
-        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
+        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call  #  pylint: disable=protected-access
 
         with patch("spacewalk.susemanager.mgr_sync.mgr_sync.cli_ask") as mock:
             mock.return_value = str(available_products.index(chosen_product) + 1)
@@ -457,7 +457,7 @@ Product successfully added"""
         mandatory_channels = [c for c in chosen_product.channels if not c.optional]
         for channel in mandatory_channels:
             expected_xmlrpc_calls.append(
-                call._execute_xmlrpc_method(
+                call._execute_xmlrpc_method(  #  pylint: disable=protected-access
                     self.mgr_sync.conn.sync.content,
                     "addChannels",
                     self.fake_auth_token,
@@ -467,7 +467,7 @@ Product successfully added"""
             )
             expected_xmlrpc_calls.append(self._mock_iterator())
             expected_xmlrpc_calls.append(
-                call._execute_xmlrpc_method(
+                call._execute_xmlrpc_method(  #  pylint: disable=protected-access
                     self.mgr_sync.conn.channel.software,
                     "syncRepo",
                     self.fake_auth_token,
@@ -487,12 +487,12 @@ Product successfully added"""
         options = get_options("add product".split())
         available_products = parse_products([res4], self.mgr_sync.log)
         chosen_product = available_products[0]
-        self.mgr_sync._fetch_remote_products = MagicMock(
+        self.mgr_sync._fetch_remote_products = MagicMock(  #  pylint: disable=protected-access
             return_value=available_products
         )
         stubbed_xmlrpm_call = MagicMock()
         stubbed_xmlrpm_call.side_effect = xmlrpc_product_sideeffect
-        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
+        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call  #  pylint: disable=protected-access
 
         with patch("spacewalk.susemanager.mgr_sync.mgr_sync.cli_ask") as mock:
             mock.return_value = str(available_products.index(chosen_product) + 1)
@@ -592,18 +592,18 @@ Product successfully added"""
         options = get_options("add product".split())
         available_products = parse_products([sled], self.mgr_sync.log)
         chosen_product = available_products[0]
-        self.mgr_sync._fetch_remote_products = MagicMock(
+        self.mgr_sync._fetch_remote_products = MagicMock(  #  pylint: disable=protected-access
             return_value=available_products
         )
         # the installed status is verified against the remote fetched
         # channels
-        self.mgr_sync._fetch_remote_channels = MagicMock(
+        self.mgr_sync._fetch_remote_channels = MagicMock(  #  pylint: disable=protected-access
             return_value=dict((c.label, c) for c in chosen_product.channels)
         )
 
         stubbed_xmlrpm_call = MagicMock()
         stubbed_xmlrpm_call.side_effect = xmlrpc_sideeffect
-        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
+        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call  #  pylint: disable=protected-access
 
         with patch("spacewalk.susemanager.mgr_sync.mgr_sync.cli_ask") as mock:
             mock.return_value = str(available_products.index(chosen_product) + 1)
@@ -636,7 +636,7 @@ Product successfully added"""
         mandatory_channels = [c for c in chosen_product.channels if not c.optional]
         for channel in mandatory_channels:
             expected_xmlrpc_calls.append(
-                call._execute_xmlrpc_method(
+                call._execute_xmlrpc_method(  #  pylint: disable=protected-access
                     self.mgr_sync.conn.sync.content,
                     "addChannels",
                     self.fake_auth_token,
@@ -645,7 +645,7 @@ Product successfully added"""
                 )
             )
         expected_xmlrpc_calls.append(
-            call._execute_xmlrpc_method(
+            call._execute_xmlrpc_method(  #  pylint: disable=protected-access
                 self.mgr_sync.conn.channel.software,
                 "syncRepo",
                 self.fake_auth_token,
@@ -668,18 +668,18 @@ Product successfully added"""
         options = get_options("add product".split())
         available_products = parse_products([res4], self.mgr_sync.log)
         chosen_product = available_products[0]
-        self.mgr_sync._fetch_remote_products = MagicMock(
+        self.mgr_sync._fetch_remote_products = MagicMock(  #  pylint: disable=protected-access
             return_value=available_products
         )
         # the installed status is verified against the remote fetched
         # channels
-        self.mgr_sync._fetch_remote_channels = MagicMock(
+        self.mgr_sync._fetch_remote_channels = MagicMock(  #  pylint: disable=protected-access
             return_value=dict((c.label, c) for c in chosen_product.channels)
         )
 
         stubbed_xmlrpm_call = MagicMock()
         stubbed_xmlrpm_call.side_effect = xmlrpc_product_sideeffect
-        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
+        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call  #  pylint: disable=protected-access
 
         # set the base channel as already installed
         for channel in chosen_product.channels:
@@ -719,7 +719,7 @@ Product successfully added"""
         for channel in mandatory_channels:
             if channel is not channel_to_not_add:
                 expected_xmlrpc_calls.append(
-                    call._execute_xmlrpc_method(
+                    call._execute_xmlrpc_method(  #  pylint: disable=protected-access
                         self.mgr_sync.conn.sync.content,
                         "addChannels",
                         self.fake_auth_token,
@@ -728,7 +728,7 @@ Product successfully added"""
                     )
                 )
         expected_xmlrpc_calls.append(
-            call._execute_xmlrpc_method(
+            call._execute_xmlrpc_method(  #  pylint: disable=protected-access
                 self.mgr_sync.conn.channel.software,
                 "syncRepo",
                 self.fake_auth_token,
@@ -750,12 +750,12 @@ Product successfully added"""
         options = get_options("add product".split())
         available_products = parse_products([res4], self.mgr_sync.log)
         chosen_product = available_products[0]
-        self.mgr_sync._fetch_remote_products = MagicMock(
+        self.mgr_sync._fetch_remote_products = MagicMock(  #  pylint: disable=protected-access
             return_value=available_products
         )
         stubbed_xmlrpm_call = MagicMock()
         stubbed_xmlrpm_call.side_effect = xmlrpc_sideeffect
-        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
+        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call  #  pylint: disable=protected-access
 
         # set the 1st required channel as already installed
         chosen_product.status = Product.Status.UNAVAILABLE
@@ -793,11 +793,11 @@ All the available products have already been installed, nothing to do"""
         options = get_options("add product".split())
         available_products = parse_products([res4], self.mgr_sync.log)
         chosen_product = available_products[0]
-        self.mgr_sync._fetch_remote_products = MagicMock(
+        self.mgr_sync._fetch_remote_products = MagicMock(  #  pylint: disable=protected-access
             return_value=available_products
         )
         stubbed_xmlrpm_call = MagicMock()
-        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
+        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call  #  pylint: disable=protected-access
 
         # set the product as already installed
         chosen_product.status = Product.Status.INSTALLED
@@ -837,12 +837,12 @@ All the available products have already been installed, nothing to do"""
         options = get_options("add product".split())
         available_products = parse_products([res4], self.mgr_sync.log)
         chosen_product = available_products[0]
-        self.mgr_sync._fetch_remote_products = MagicMock(
+        self.mgr_sync._fetch_remote_products = MagicMock(  #  pylint: disable=protected-access
             return_value=available_products
         )
         stubbed_xmlrpm_call = MagicMock()
         stubbed_xmlrpm_call.side_effect = xmlrpc_product_sideeffect
-        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
+        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call  #  pylint: disable=protected-access
 
         # set the 1st required channel as optional and unavailable
         chosen_product.channels[0].optional = True
@@ -901,13 +901,13 @@ Product successfully added"""
         stubbed_xmlrpm_call.assert_has_calls(expected_xmlrpc_calls)
 
 
-def xmlrpc_sideeffect(*args, **kwargs):
+def xmlrpc_sideeffect(*args, **kwargs):  #  pylint: disable=unused-argument
     if args[1] == "addChannels":
         return [args[3]]
     return read_data_from_fixture("list_channels.data")
 
 
-def xmlrpc_product_sideeffect(*args, **kwargs):
+def xmlrpc_product_sideeffect(*args, **kwargs):  #  pylint: disable=unused-argument
     if args[1] == "addChannels":
         return [args[3]]
     return read_data_from_fixture("list_channels_simplified.data")

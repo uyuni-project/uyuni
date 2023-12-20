@@ -8,7 +8,7 @@ from . import mockery
 
 mockery.setup_environment()
 
-from ..states import product
+from ..states import product  #  pylint: disable=wrong-import-position
 
 # Mock globals
 product.log = MagicMock()
@@ -94,7 +94,7 @@ def test_get_missing_products():
     )
 
     with patch.dict(product.__salt__, {"pkg.search": pkg_search_mock}):
-        res = product._get_missing_products(False)
+        res = product._get_missing_products(False)  #  pylint: disable=protected-access
 
         # Expected pkg.search calls
         calls = [
@@ -135,7 +135,7 @@ def test_not_installed_provides():
     )
 
     with patch.dict(product.__salt__, {"pkg.search": pkg_search_mock}):
-        res = product._get_missing_products(False)
+        res = product._get_missing_products(False)  #  pylint: disable=protected-access
 
         # Expected pkg.search calls
         calls = [

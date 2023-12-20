@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -24,7 +24,7 @@ __rhnexport__ = [
 ]
 
 
-def get(server_id, action_id, data={}):
+def get(server_id, action_id, data={}):  #  pylint: disable=dangerous-default-value
     if not data:
         return
     log_debug(
@@ -36,7 +36,7 @@ def get(server_id, action_id, data={}):
     )
 
 
-def update(server_id, action_id, data={}):
+def update(server_id, action_id, data={}):  #  pylint: disable=dangerous-default-value
     if not data:
         return
     log_debug(

@@ -4,7 +4,7 @@ Test suite for spacecmd.package module.
 """
 
 from unittest.mock import MagicMock, patch
-from helpers import shell, assert_expect, assert_list_args_expect
+from helpers import shell, assert_expect, assert_list_args_expect  #  pylint: disable=unused-import
 import spacecmd.package
 
 
@@ -13,7 +13,7 @@ class TestSCPackage:
     Test suite for package module.
     """
 
-    def test_package_details_noargs(self, shell):
+    def test_package_details_noargs(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_package_details with no arguments call.
 
@@ -26,7 +26,7 @@ class TestSCPackage:
         shell.client.packages.listProvidingChannels = MagicMock()
         shell.client.system.listSystemsWithPackage = MagicMock()
         mprint = MagicMock()
-        with patch("spacecmd.report.print", mprint) as prn:
+        with patch("spacecmd.report.print", mprint) as prn:  #  pylint: disable=unused-variable
             spacecmd.package.do_package_details(shell, "")
 
         assert not shell.get_package_id.called
@@ -35,7 +35,7 @@ class TestSCPackage:
         assert not shell.client.system.listSystemsWithPackage.called
         assert shell.help_package_details.called
 
-    def test_package_details_package(self, shell):
+    def test_package_details_package(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_package_details with an argument of the package name.
 
@@ -145,9 +145,9 @@ class TestSCPackage:
         logger = MagicMock()
         mprint = MagicMock()
 
-        with patch("spacecmd.package.print", mprint) as prn, patch(
+        with patch("spacecmd.package.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.package.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.package.do_package_details(shell, "emacs")
 
         assert not shell.help_package_details.called
@@ -253,7 +253,7 @@ class TestSCPackage:
             exp.pop(0)
         assert not exp
 
-    def test_package_details_multiple_packages(self, shell):
+    def test_package_details_multiple_packages(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_package_details with two arguments of package names.
 
@@ -316,9 +316,9 @@ class TestSCPackage:
         logger = MagicMock()
         mprint = MagicMock()
 
-        with patch("spacecmd.package.print", mprint) as prn, patch(
+        with patch("spacecmd.package.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.package.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.package.do_package_details(shell, "emacs-data emacs-x11")
 
         assert not shell.help_package_details.called
@@ -380,7 +380,7 @@ class TestSCPackage:
             exp.pop(0)
         assert not exp
 
-    def test_package_search_noargs(self, shell):
+    def test_package_search_noargs(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_package_search without arguments.
         """
@@ -390,9 +390,9 @@ class TestSCPackage:
         logger = MagicMock()
         mprint = MagicMock()
 
-        with patch("spacecmd.package.print", mprint) as prn, patch(
+        with patch("spacecmd.package.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.package.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             out = spacecmd.package.do_package_search(shell, "", doreturn=False)
 
         assert out is None
@@ -400,7 +400,7 @@ class TestSCPackage:
         assert not shell.client.packages.search.advanced.called
         assert shell.help_package_search.called
 
-    def test_package_search(self, shell):
+    def test_package_search(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_package_search with arguments of standard fields
         """
@@ -421,9 +421,9 @@ class TestSCPackage:
         logger = MagicMock()
         mprint = MagicMock()
 
-        with patch("spacecmd.package.print", mprint) as prn, patch(
+        with patch("spacecmd.package.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.package.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             out = spacecmd.package.do_package_search(shell, "emacs*", doreturn=False)
 
         assert not shell.help_package_search.called
@@ -433,7 +433,7 @@ class TestSCPackage:
         assert mprint.called
         assert_expect(mprint.call_args_list, "emacs-melpa\nemacs-nox\nemacs-x11")
 
-    def test_package_search_multiple_packages(self, shell):
+    def test_package_search_multiple_packages(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_package_search with multiple arguments of standard fields
         """
@@ -454,9 +454,9 @@ class TestSCPackage:
         logger = MagicMock()
         mprint = MagicMock()
 
-        with patch("spacecmd.package.print", mprint) as prn, patch(
+        with patch("spacecmd.package.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.package.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             out = spacecmd.package.do_package_search(
                 shell, "emacs-melpa emacs-x11", doreturn=False
             )
@@ -468,7 +468,7 @@ class TestSCPackage:
         assert mprint.called
         assert_expect(mprint.call_args_list, "emacs-melpa\nemacs-x11")
 
-    def test_package_search_advanced(self, shell):
+    def test_package_search_advanced(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_package_search with arguments of advanced fields.
         """
@@ -516,9 +516,9 @@ class TestSCPackage:
         logger = MagicMock()
         mprint = MagicMock()
 
-        with patch("spacecmd.package.print", mprint) as prn, patch(
+        with patch("spacecmd.package.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.package.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             out = spacecmd.package.do_package_search(
                 shell, "name:emacs*", doreturn=False
             )
@@ -530,10 +530,10 @@ class TestSCPackage:
         assert mprint.called
         assert_expect(
             mprint.call_args_list,
-            "emacs-melpa-16.7-2.noarch\nemacs-nox-24.5.2-3.x86_64\nemacs-x11-24.5-1.x86_64",
+            "emacs-melpa-16.7-2.noarch\nemacs-nox-24.5.2-3.x86_64\nemacs-x11-24.5-1.x86_64",  #  pylint: disable=line-too-long
         )
 
-    def test_package_search_advanced_wrong_fields(self, shell):
+    def test_package_search_advanced_wrong_fields(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_package_search with arguments of advanced fields.
         """
@@ -544,9 +544,9 @@ class TestSCPackage:
         logger = MagicMock()
         mprint = MagicMock()
 
-        with patch("spacecmd.package.print", mprint) as prn, patch(
+        with patch("spacecmd.package.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.package.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             out = spacecmd.package.do_package_search(
                 shell, "millenium:emacs*", doreturn=False
             )
@@ -556,7 +556,7 @@ class TestSCPackage:
         assert out is None
         assert shell.help_package_search.called
 
-    def test_package_search_advanced_check_fields(self, shell):
+    def test_package_search_advanced_check_fields(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_package_search check advanced fields.
         """
@@ -576,11 +576,11 @@ class TestSCPackage:
             logger = MagicMock()
             mprint = MagicMock()
 
-            with patch("spacecmd.package.print", mprint) as prn, patch(
+            with patch("spacecmd.package.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
                 "spacecmd.package.logging", logger
-            ) as lgr:
+            ) as lgr:  #  pylint: disable=unused-variable
                 out = spacecmd.package.do_package_search(
-                    shell, "{}emacs*".format(field), doreturn=True
+                    shell, "{}emacs*".format(field), doreturn=True  #  pylint: disable=consider-using-f-string
                 )
 
             assert not shell.help_package_search.called
@@ -588,7 +588,7 @@ class TestSCPackage:
             assert shell.client.packages.search.advanced.called
             assert out is not None
 
-    def test_package_remove_noarg(self, shell):
+    def test_package_remove_noarg(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_package_remove with no arguments passed.
 
@@ -602,9 +602,9 @@ class TestSCPackage:
         shell.user_configm = MagicMock(return_value=True)
         mprint = MagicMock()
         logger = MagicMock()
-        with patch("spacecmd.package.print", mprint) as prn, patch(
+        with patch("spacecmd.package.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.package.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.package.do_package_remove(shell, "")
 
         assert not shell.get_package_names.called
@@ -614,7 +614,7 @@ class TestSCPackage:
         assert not shell.user_configm.called
         assert shell.help_package_remove.called
 
-    def test_package_remove_no_pkg_found(self, shell):
+    def test_package_remove_no_pkg_found(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_package_remove with no valid packages (packages not found).
 
@@ -628,9 +628,9 @@ class TestSCPackage:
         shell.user_configm = MagicMock(return_value=True)
         mprint = MagicMock()
         logger = MagicMock()
-        with patch("spacecmd.package.print", mprint) as prn, patch(
+        with patch("spacecmd.package.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.package.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.package.do_package_remove(shell, "i-do-not-exist")
 
         assert not shell.get_package_id.called
@@ -644,7 +644,7 @@ class TestSCPackage:
 
         assert_expect(mprint.call_args_list, "No packages found to remove")
 
-    def test_package_remove_specific_pkg_aborted(self, shell):
+    def test_package_remove_specific_pkg_aborted(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_package_remove with unconfirmed valid packages.
 
@@ -671,9 +671,9 @@ class TestSCPackage:
         shell.user_confirm = MagicMock(return_value=False)
         mprint = MagicMock()
         logger = MagicMock()
-        with patch("spacecmd.package.print", mprint) as prn, patch(
+        with patch("spacecmd.package.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.package.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.package.do_package_remove(shell, "vim* gvim pico")
 
         assert not shell.get_package_id.called
@@ -687,7 +687,7 @@ class TestSCPackage:
 
         assert mprint.call_args_list[-1][0][0] == "No packages has been removed"
 
-    def test_package_remove_specific_pkg_accepted(self, shell):
+    def test_package_remove_specific_pkg_accepted(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_package_remove with unconfirmed valid packages.
 
@@ -720,9 +720,9 @@ class TestSCPackage:
             shell.client.packages.removePackage,
         )
 
-        with patch("spacecmd.package.print", mprint) as prn, patch(
+        with patch("spacecmd.package.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.package.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.package.do_package_remove(shell, "vim* gvim pico")
 
         assert not shell.help_package_remove.called
@@ -745,7 +745,7 @@ class TestSCPackage:
         assert mocks_order.mock_calls[0][0] == "mprint"
         assert mocks_order.mock_calls[-1][0] == "removePackage"
 
-    def test_package_listorphans_noarg(self, shell):
+    def test_package_listorphans_noarg(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_package_listorphans without arguments.
 
@@ -780,7 +780,7 @@ class TestSCPackage:
             ]
         )
         mprint = MagicMock()
-        with patch("spacecmd.package.print", mprint) as prn:
+        with patch("spacecmd.package.print", mprint) as prn:  #  pylint: disable=unused-variable
             out = spacecmd.package.do_package_listorphans(shell, "", doreturn=False)
         assert out is None
         assert mprint.called
@@ -790,7 +790,7 @@ class TestSCPackage:
             "vim-0.1-42:5.x86_64\nvim-data-0.2-43.x86_64\nvim-plugins-1.17-16.x86_64",
         )
 
-    def test_package_listorphans_return(self, shell):
+    def test_package_listorphans_return(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_package_listorphans without arguments.
 
@@ -825,7 +825,7 @@ class TestSCPackage:
             ]
         )
         mprint = MagicMock()
-        with patch("spacecmd.package.print", mprint) as prn:
+        with patch("spacecmd.package.print", mprint) as prn:  #  pylint: disable=unused-variable
             out = spacecmd.package.do_package_listorphans(shell, "", doreturn=True)
         assert out is not None
         assert not mprint.called
@@ -836,7 +836,7 @@ class TestSCPackage:
             "vim-plugins-1.17-16.x86_64",
         ]
 
-    def test_package_removeorphans_noconfirm(self, shell):
+    def test_package_removeorphans_noconfirm(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_package_removeorphans without confirmation.
 
@@ -874,7 +874,7 @@ class TestSCPackage:
         shell.user_confirm = MagicMock(return_value=False)
         mprint = MagicMock()
 
-        with patch("spacecmd.package.print", mprint) as prn:
+        with patch("spacecmd.package.print", mprint) as prn:  #  pylint: disable=unused-variable
             out = spacecmd.package.do_package_removeorphans(shell, "")
 
         assert not shell.client.packages.removePackage.called
@@ -884,7 +884,7 @@ class TestSCPackage:
 
         assert mprint.call_args_list[-1][0][0] == "No packages were removed"
 
-    def test_package_removeorphans_confirm(self, shell):
+    def test_package_removeorphans_confirm(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_package_removeorphans with confirmation.
 
@@ -922,7 +922,7 @@ class TestSCPackage:
         shell.user_confirm = MagicMock(return_value=True)
         mprint = MagicMock()
 
-        with patch("spacecmd.package.print", mprint) as prn:
+        with patch("spacecmd.package.print", mprint) as prn:  #  pylint: disable=unused-variable
             out = spacecmd.package.do_package_removeorphans(shell, "")
 
         assert shell.client.packages.removePackage.called
@@ -941,7 +941,7 @@ class TestSCPackage:
             exp.pop(0)
         assert not exp
 
-    def test_package_listinstallsystems_noarg(self, shell):
+    def test_package_listinstallsystems_noarg(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_package_listinstallsystems without arguments.
 
@@ -956,9 +956,9 @@ class TestSCPackage:
 
         mprint = MagicMock()
         logger = MagicMock()
-        with patch("spacecmd.package.print", mprint) as prn, patch(
+        with patch("spacecmd.package.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.package.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.package.do_package_listinstalledsystems(shell, "")
 
         assert not shell.do_package_search.called
@@ -968,7 +968,7 @@ class TestSCPackage:
         assert not logger.warning.called
         assert shell.help_package_listinstalledsystems.called
 
-    def test_package_listinstallsystems_package_not_found(self, shell):
+    def test_package_listinstallsystems_package_not_found(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_package_listinstallsystems with not found package
 
@@ -983,9 +983,9 @@ class TestSCPackage:
 
         mprint = MagicMock()
         logger = MagicMock()
-        with patch("spacecmd.package.print", mprint) as prn, patch(
+        with patch("spacecmd.package.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.package.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.package.do_package_listinstalledsystems(shell, "darth-vader")
 
         assert not shell.get_package_id.called
@@ -997,7 +997,7 @@ class TestSCPackage:
 
         assert_expect(logger.warning.call_args_list, "No packages found")
 
-    def test_package_listinstallsystems_few_packages(self, shell):
+    def test_package_listinstallsystems_few_packages(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_package_listinstallsystems with few packages.
 
@@ -1058,9 +1058,9 @@ class TestSCPackage:
 
         mprint = MagicMock()
         logger = MagicMock()
-        with patch("spacecmd.package.print", mprint) as prn, patch(
+        with patch("spacecmd.package.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.package.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.package.do_package_listinstalledsystems(shell, "darth-vader")
 
         assert not shell.help_package_listinstalledsystems.called
@@ -1073,18 +1073,18 @@ class TestSCPackage:
         exp = [
             "emacs",
             "-----",
-            "bar.foo.com : 1000010001\nbar.foo.com : 1000010001\nfred.foo.com : 1000010002\n"
-            "web.foo.com : 1000010000\nweb.foo.com : 1000010000\nweb.foo.com : 1000010000",
+            "bar.foo.com : 1000010001\nbar.foo.com : 1000010001\nfred.foo.com : 1000010002\n"  #  pylint: disable=line-too-long
+            "web.foo.com : 1000010000\nweb.foo.com : 1000010000\nweb.foo.com : 1000010000",  #  pylint: disable=line-too-long
             "----------",
             "xemacs",
             "------",
-            "bar.foo.com : 1000010001\nbar.foo.com : 1000010001\nfred.foo.com : 1000010002\n"
-            "web.foo.com : 1000010000\nweb.foo.com : 1000010000\nweb.foo.com : 1000010000",
+            "bar.foo.com : 1000010001\nbar.foo.com : 1000010001\nfred.foo.com : 1000010002\n"  #  pylint: disable=line-too-long
+            "web.foo.com : 1000010000\nweb.foo.com : 1000010000\nweb.foo.com : 1000010000",  #  pylint: disable=line-too-long
             "----------",
             "spacemacs",
             "---------",
-            "bar.foo.com : 1000010001\nbar.foo.com : 1000010001\nfred.foo.com : 1000010002\n"
-            "web.foo.com : 1000010000\nweb.foo.com : 1000010000\nweb.foo.com : 1000010000",
+            "bar.foo.com : 1000010001\nbar.foo.com : 1000010001\nfred.foo.com : 1000010002\n"  #  pylint: disable=line-too-long
+            "web.foo.com : 1000010000\nweb.foo.com : 1000010000\nweb.foo.com : 1000010000",  #  pylint: disable=line-too-long
         ]
 
         for call in mprint.call_args_list:
@@ -1092,7 +1092,7 @@ class TestSCPackage:
             exp.pop(0)
         assert not exp
 
-    def test_package_listerrata_noargs(self, shell):
+    def test_package_listerrata_noargs(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_package_listerrata without args.
             :param shell:
@@ -1105,9 +1105,9 @@ class TestSCPackage:
 
         mprint = MagicMock()
         logger = MagicMock()
-        with patch("spacecmd.package.print", mprint) as prn, patch(
+        with patch("spacecmd.package.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.package.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.package.do_package_listerrata(shell, "")
 
         assert not shell.do_package_search.called
@@ -1115,7 +1115,7 @@ class TestSCPackage:
         assert not shell.get_package_id.called
         assert shell.help_package_listerrata.called
 
-    def test_package_listerrata_not_found_packages(self, shell):
+    def test_package_listerrata_not_found_packages(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_package_listerrata with invalid package names.
 
@@ -1129,9 +1129,9 @@ class TestSCPackage:
 
         mprint = MagicMock()
         logger = MagicMock()
-        with patch("spacecmd.package.print", mprint) as prn, patch(
+        with patch("spacecmd.package.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.package.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.package.do_package_listerrata(shell, "iron-man")
 
         assert not shell.help_package_listerrata.called
@@ -1142,7 +1142,7 @@ class TestSCPackage:
         assert shell.do_package_search.called
         assert_expect(logger.warning.call_args_list, "No packages found")
 
-    def test_package_listerrata_packages(self, shell):
+    def test_package_listerrata_packages(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_package_listerrata with a package names.
 
@@ -1171,9 +1171,9 @@ class TestSCPackage:
 
         mprint = MagicMock()
         logger = MagicMock()
-        with patch("spacecmd.package.print", mprint) as prn, patch(
+        with patch("spacecmd.package.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.package.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.package.do_package_listerrata(shell, "emacs")
 
         assert not logger.warning.called
@@ -1199,7 +1199,7 @@ class TestSCPackage:
 
         assert_list_args_expect(mprint.call_args_list, expectations)
 
-    def test_package_listerrata_multiple_packages(self, shell):
+    def test_package_listerrata_multiple_packages(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_package_listerrata with two package names.
 
@@ -1222,9 +1222,9 @@ class TestSCPackage:
 
         mprint = MagicMock()
         logger = MagicMock()
-        with patch("spacecmd.package.print", mprint) as prn, patch(
+        with patch("spacecmd.package.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.package.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.package.do_package_listerrata(shell, "xemacs emacs-nox")
 
         assert not logger.warning.called
@@ -1246,7 +1246,7 @@ class TestSCPackage:
 
         assert_list_args_expect(mprint.call_args_list, expectations)
 
-    def test_package_listdependencies_noargs(self, shell):
+    def test_package_listdependencies_noargs(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_packge_listdependencies without arguments.
             :param self:
@@ -1259,9 +1259,9 @@ class TestSCPackage:
 
         mprint = MagicMock()
         logger = MagicMock()
-        with patch("spacecmd.package.print", mprint) as prn, patch(
+        with patch("spacecmd.package.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.package.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.package.do_package_listdependencies(shell, "")
 
         assert not shell.do_package_search.called
@@ -1271,7 +1271,7 @@ class TestSCPackage:
         assert not logger.warning.called
         assert shell.help_package_listdependencies.called
 
-    def test_package_listdependencies_no_packages_found(self, shell):
+    def test_package_listdependencies_no_packages_found(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_packge_listdependencies no packages found.
             :param self:
@@ -1284,9 +1284,9 @@ class TestSCPackage:
 
         mprint = MagicMock()
         logger = MagicMock()
-        with patch("spacecmd.package.print", mprint) as prn, patch(
+        with patch("spacecmd.package.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.package.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.package.do_package_listdependencies(shell, "thor")
 
         assert not shell.get_package_id.called
@@ -1298,7 +1298,7 @@ class TestSCPackage:
 
         assert_expect(logger.warning.call_args_list, "No packages found")
 
-    def test_package_listdependencies_invalid_package(self, shell):
+    def test_package_listdependencies_invalid_package(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_packge_listdependencies with invalid packages
             :param self:
@@ -1311,9 +1311,9 @@ class TestSCPackage:
 
         mprint = MagicMock()
         logger = MagicMock()
-        with patch("spacecmd.package.print", mprint) as prn, patch(
+        with patch("spacecmd.package.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.package.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.package.do_package_listdependencies(shell, "bad-editor")
 
         assert not shell.client.packages.list_dependencies.called
@@ -1331,7 +1331,7 @@ class TestSCPackage:
         ]
         assert_list_args_expect(logger.warning.call_args_list, expectations)
 
-    def test_package_listdependencies_packages(self, shell):
+    def test_package_listdependencies_packages(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_package_listdependencies with packages
             :param self:
@@ -1400,9 +1400,9 @@ class TestSCPackage:
 
         mprint = MagicMock()
         logger = MagicMock()
-        with patch("spacecmd.package.print", mprint) as prn, patch(
+        with patch("spacecmd.package.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.package.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.package.do_package_listdependencies(shell, "emacs")
 
         assert not shell.help_package_listdependencies.called
@@ -1415,7 +1415,7 @@ class TestSCPackage:
         expectations = [
             "Package Name: emacs",
             "Dependency: libxml2.so.2 Type: requires Modifier: > 1.0",
-            "Dependency: mimehandler(application/x-shellscript) Type: provides Modifier: ",
+            "Dependency: mimehandler(application/x-shellscript) Type: provides Modifier: ",  #  pylint: disable=line-too-long
             "----------",
             "----------",
             "Package Name: xemacs",
@@ -1425,15 +1425,15 @@ class TestSCPackage:
             "----------",
             "Package Name: emacs-x11",
             "Dependency: libc.so.6 Type: requires Modifier: ",
-            "Dependency: rpmlib (CompressedFileNames) Type: requires Modifier: <= 3.0.4-1",
-            "Dependency: rpmlib (PayloadFilesHavePrefix) Type: requires Modifier: <= 4.0-1",
+            "Dependency: rpmlib (CompressedFileNames) Type: requires Modifier: <= 3.0.4-1",  #  pylint: disable=line-too-long
+            "Dependency: rpmlib (PayloadFilesHavePrefix) Type: requires Modifier: <= 4.0-1",  #  pylint: disable=line-too-long
             "Dependency: rpmlib (PayloadIsLzma) Type: requires Modifier: <= 4.4.6-1",
             "----------",
         ]
         assert_list_args_expect(mprint.call_args_list, expectations=expectations)
         assert_expect(logger.warning.call_args_list, "vim is not a valid package")
 
-    def test_package_listdependencies_multiple_packages(self, shell):
+    def test_package_listdependencies_multiple_packages(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_package_listdependencies with two packages
             :param self:
@@ -1509,9 +1509,9 @@ class TestSCPackage:
 
         mprint = MagicMock()
         logger = MagicMock()
-        with patch("spacecmd.package.print", mprint) as prn, patch(
+        with patch("spacecmd.package.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.package.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.package.do_package_listdependencies(shell, "emacs vim")
 
         assert not shell.help_package_listdependencies.called
@@ -1524,7 +1524,7 @@ class TestSCPackage:
         expectations = [
             "Package Name: emacs",
             "Dependency: libxml2.so.2 Type: requires Modifier: > 1.0",
-            "Dependency: mimehandler(application/x-shellscript) Type: provides Modifier: ",
+            "Dependency: mimehandler(application/x-shellscript) Type: provides Modifier: ",  #  pylint: disable=line-too-long
             "----------",
             "----------",
             "Package Name: xemacs",
@@ -1539,8 +1539,8 @@ class TestSCPackage:
             "----------",
             "Package Name: emacs-x11",
             "Dependency: libc.so.6 Type: requires Modifier: ",
-            "Dependency: rpmlib (CompressedFileNames) Type: requires Modifier: <= 3.0.4-1",
-            "Dependency: rpmlib (PayloadFilesHavePrefix) Type: requires Modifier: <= 4.0-1",
+            "Dependency: rpmlib (CompressedFileNames) Type: requires Modifier: <= 3.0.4-1",  #  pylint: disable=line-too-long
+            "Dependency: rpmlib (PayloadFilesHavePrefix) Type: requires Modifier: <= 4.0-1",  #  pylint: disable=line-too-long
             "Dependency: rpmlib (PayloadIsLzma) Type: requires Modifier: <= 4.4.6-1",
             "----------",
         ]

@@ -1,11 +1,11 @@
-from yum.plugins import TYPE_CORE
+from yum.plugins import TYPE_CORE  #  pylint: disable=missing-module-docstring
 from yum import config
 
 requires_api_version = "2.5"
 plugin_type = TYPE_CORE
 
 
-def config_hook(conduit):
+def config_hook(conduit):  #  pylint: disable=unused-argument
     config.RepoConf.susemanager_token = config.Option()
 
 

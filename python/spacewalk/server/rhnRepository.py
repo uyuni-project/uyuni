@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring,invalid-name
 # Copyright (c) 2008--2018 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -27,10 +27,10 @@ from spacewalk.common import rhnRepository, rhnFlags, rhnCache
 from spacewalk.common.rhnLog import log_debug
 from spacewalk.common.rhnConfig import CFG
 from spacewalk.common.rhnException import rhnFault, redirectException
-from uyuni.common.rhnLib import rfc822time, timestamp
+from uyuni.common.rhnLib import rfc822time, timestamp  #  pylint: disable=ungrouped-imports
 
 # local modules imports
-from spacewalk.server import rhnChannel, rhnPackage, taskomatic, rhnSQL
+from spacewalk.server import rhnChannel, rhnPackage, taskomatic, rhnSQL  #  pylint: disable=ungrouped-imports
 from .rhnServer import server_lib
 from .repomd import repository
 
@@ -77,14 +77,14 @@ class Repository(rhnRepository.Repository):
         rhnFlags.set("Download-Accelerator-Path", None)
         return ret
 
-    def listChannels(self):
+    def listChannels(self):  #  pylint: disable=invalid-name
         """Clients v2+
         returns a list of the channels the server is subscribed to, or
         could subscribe to.
         """
         return rhnChannel.channels_for_server(self.server_id)
 
-    def listPackages(self, version):
+    def listPackages(self, version):  #  pylint: disable=invalid-name
         """Clients v2+.
         Creates and/or serves up a cached copy of the package list for
         this channel.
@@ -99,12 +99,12 @@ class Repository(rhnRepository.Repository):
         packages = rhnChannel.list_packages(self.channelName)
 
         # transport options...
-        transportOptions = rhnFlags.get("outputTransportOptions")
+        transportOptions = rhnFlags.get("outputTransportOptions")  #  pylint: disable=invalid-name
         transportOptions["Last-Modified"] = rfc822time(timestamp(version))
         rhnFlags.set("compress_response", 1)
         return packages
 
-    def getObsoletes(self, version):
+    def getObsoletes(self, version):  #  pylint: disable=invalid-name
         """Returns a list of packages that obsolete other packages"""
         log_debug(3, self.channelName, version)
         # Check to see if the version they are requesting is the latest
@@ -116,12 +116,12 @@ class Repository(rhnRepository.Repository):
         obsoletes = rhnChannel.list_obsoletes(self.channelName)
 
         # Set the transport options
-        transportOptions = rhnFlags.get("outputTransportOptions")
+        transportOptions = rhnFlags.get("outputTransportOptions")  #  pylint: disable=invalid-name
         transportOptions["Last-Modified"] = rfc822time(timestamp(version))
         rhnFlags.set("compress_response", 1)
         return obsoletes
 
-    def getObsoletesBlacklist(self, version):
+    def getObsoletesBlacklist(self, version):  #  pylint: disable=invalid-name
         """Returns a list of packages that obsolete other packages
         XXX Obsoleted
         """
@@ -133,13 +133,13 @@ class Repository(rhnRepository.Repository):
         self.__check_channel(version)
 
         # Set the transport options
-        transportOptions = rhnFlags.get("outputTransportOptions")
+        transportOptions = rhnFlags.get("outputTransportOptions")  #  pylint: disable=invalid-name
         transportOptions["Last-Modified"] = rfc822time(timestamp(version))
         rhnFlags.set("compress_response", 1)
         # Return nothing
         return []
 
-    def listAllPackages(self, version):
+    def listAllPackages(self, version):  #  pylint: disable=invalid-name
         """Creates and/or serves up a cached copy of all the packages for
         this channel.
         """
@@ -153,12 +153,12 @@ class Repository(rhnRepository.Repository):
         packages = rhnChannel.list_all_packages(self.channelName)
 
         # transport options...
-        transportOptions = rhnFlags.get("outputTransportOptions")
+        transportOptions = rhnFlags.get("outputTransportOptions")  #  pylint: disable=invalid-name
         transportOptions["Last-Modified"] = rfc822time(timestamp(version))
         rhnFlags.set("compress_response", 1)
         return packages
 
-    def listAllPackagesChecksum(self, version):
+    def listAllPackagesChecksum(self, version):  #  pylint: disable=invalid-name
         """Creates and/or serves up a cached copy of all the packages for
         this channel, including checksum information.
         """
@@ -172,12 +172,12 @@ class Repository(rhnRepository.Repository):
         packages = rhnChannel.list_all_packages_checksum(self.channelName)
 
         # transport options...
-        transportOptions = rhnFlags.get("outputTransportOptions")
+        transportOptions = rhnFlags.get("outputTransportOptions")  #  pylint: disable=invalid-name
         transportOptions["Last-Modified"] = rfc822time(timestamp(version))
         rhnFlags.set("compress_response", 1)
         return packages
 
-    def listAllPackagesComplete(self, version):
+    def listAllPackagesComplete(self, version):  #  pylint: disable=invalid-name
         """Creates and/or serves up a cached copy of all the packages for
         this channel including requires, obsoletes, conflicts, etc.
         """
@@ -191,7 +191,7 @@ class Repository(rhnRepository.Repository):
         packages = rhnChannel.list_all_packages_complete(self.channelName)
 
         # transport options...
-        transportOptions = rhnFlags.get("outputTransportOptions")
+        transportOptions = rhnFlags.get("outputTransportOptions")  #  pylint: disable=invalid-name
         transportOptions["Last-Modified"] = rfc822time(timestamp(version))
         rhnFlags.set("compress_response", 1)
         return packages
@@ -221,7 +221,7 @@ class Repository(rhnRepository.Repository):
         elif file_name == "modules.yaml":
             output = repo.get_modules_file()
         else:
-            log_debug(2, "Unknown repomd file requested: %s" % file_name)
+            log_debug(2, "Unknown repomd file requested: %s" % file_name)  #  pylint: disable=consider-using-f-string
             raise rhnFault(6)
 
         output = rpclib.transports.File(output, name=file_name)
@@ -241,12 +241,12 @@ class Repository(rhnRepository.Repository):
             content_type = "text/plain"
         elif file_name.endswith(".yaml"):
             content_type = "text/yaml"
-        file_path = "%s/%s/%s" % (CFG.REPOMD_PATH_PREFIX, self.channelName, file_name)
+        file_path = "%s/%s/%s" % (CFG.REPOMD_PATH_PREFIX, self.channelName, file_name)  #  pylint: disable=consider-using-f-string
         if file_name in ["comps.xml", "modules.yaml"]:
             # without checksum in the filename, they are only available in the old style
             return self._repodata_python(file_name)
         elif not os.path.exists(os.path.join(CFG.REPOMD_CACHE_MOUNT_POINT, file_path)):
-            log_debug(2, "Unknown repomd file requested: %s" % file_name)
+            log_debug(2, "Unknown repomd file requested: %s" % file_name)  #  pylint: disable=consider-using-f-string
             raise rhnFault(6)
 
         rhnFlags.set("Content-Type", content_type)
@@ -279,7 +279,7 @@ class Repository(rhnRepository.Repository):
         except AttributeError:
             pass
 
-        log_debug(4, "Using taskomatic for repomd generation: %s" % use_taskomatic)
+        log_debug(4, "Using taskomatic for repomd generation: %s" % use_taskomatic)  #  pylint: disable=consider-using-f-string
 
         if use_taskomatic:
             return self._repodata_taskomatic(file_name)
@@ -292,7 +292,7 @@ class Repository(rhnRepository.Repository):
     # common/rhnRepository, and expects a definition for these functions to
     # know where to take stuff from
 
-    def getPackagePath(self, pkgFilename, redirect_capable=0):
+    def getPackagePath(self, pkgFilename, redirect_capable=0):  #  pylint: disable=arguments-renamed
         """Retrieves package path
         Overloads getPackagePath in common/rhnRepository.
         checks if redirect and hosted;
@@ -322,15 +322,15 @@ class Repository(rhnRepository.Repository):
             # Package cannot be served from the edge, we serve it ourselves
         return localpath
 
-    def _getFile(self, path):
+    def _getFile(self, path):  #  pylint: disable=arguments-renamed
         """
         overwrites the common/rhnRepository._getFile to check for redirect
         """
         if self.redirect_location:
             raise redirectException(self.redirect_location)
-        return rhnRepository.Repository._getFile(self, path)
+        return rhnRepository.Repository._getFile(self, path)  #  pylint: disable=protected-access
 
-    def getAllPackagePaths(self, pkgFilename):
+    def getAllPackagePaths(self, pkgFilename):  #  pylint: disable=invalid-name,invalid-name
         """
         retrives the package location if edge network location available
         and its local path.
@@ -340,7 +340,7 @@ class Repository(rhnRepository.Repository):
             self.server_id, pkgFilename, self.channelName
         )
 
-    def getSourcePackagePath(self, pkgFilename):
+    def getSourcePackagePath(self, pkgFilename):  #  pylint: disable=arguments-renamed
         """Retrieves package source path
         Overloads getSourcePackagePath in common/rhnRepository.
         """
@@ -377,33 +377,33 @@ class Repository(rhnRepository.Repository):
         """
         log_debug(3, filePath)
         if not CFG.CACHE_PACKAGE_HEADERS:
-            return rhnRepository.Repository._getHeaderFromFile(
+            return rhnRepository.Repository._getHeaderFromFile(  #  pylint: disable=protected-access
                 self, filePath, stat_info=stat_info
             )
         # Ignore stat_info for now - nobody sets it anyway
         stat_info = None
         try:
             stat_info = os.stat(filePath)
-        except:
+        except:  #  pylint: disable=bare-except
             raise_with_tb(
-                rhnFault(17, "Unable to read package %s" % os.path.basename(filePath)),
+                rhnFault(17, "Unable to read package %s" % os.path.basename(filePath)),  #  pylint: disable=consider-using-f-string
                 sys.exc_info()[2],
             )
-        lastModified = stat_info[stat.ST_MTIME]
+        lastModified = stat_info[stat.ST_MTIME]  #  pylint: disable=invalid-name
 
         # OK, file exists, check the cache
         cache_key = os.path.normpath("headers/" + filePath)
         header = rhnCache.get(cache_key, modified=lastModified, raw=1, compressed=1)
         if header:
             # We're good to go
-            log_debug(2, "Header cache HIT for %s" % filePath)
+            log_debug(2, "Header cache HIT for %s" % filePath)  #  pylint: disable=consider-using-f-string
             extra_headers = {
                 "X-RHN-Package-Header": os.path.basename(filePath),
             }
             self._set_last_modified(lastModified, extra_headers=extra_headers)
             return header
-        log_debug(3, "Header cache MISS for %s" % filePath)
-        header = rhnRepository.Repository._getHeaderFromFile(
+        log_debug(3, "Header cache MISS for %s" % filePath)  #  pylint: disable=consider-using-f-string
+        header = rhnRepository.Repository._getHeaderFromFile(  #  pylint: disable=protected-access
             self, filePath, stat_info=stat_info
         )
         if header:

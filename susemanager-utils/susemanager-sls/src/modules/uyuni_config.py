@@ -1,5 +1,5 @@
-# coding: utf-8
-from typing import Any, Dict, List, Optional, Union, Tuple
+# coding: utf-8 pylint: disable=missing-module-docstring
+from typing import Any, Dict, List, Optional, Union, Tuple  #  pylint: disable=unused-import
 import ssl
 import xmlrpc.client  # type: ignore
 import logging
@@ -56,7 +56,7 @@ class RPCClient:
             url, context=ctx, use_datetime=True, use_builtin_types=True
         )
         if user is None or password is None:
-            # if user or password not set, fallback to default user defined on pillar data
+            # if user or password not set, fallback to default user defined on pillar data  #  pylint: disable=line-too-long
             if "xmlrpc" in (__pillar__ or {}).get("uyuni", {}):
                 rpc_conf = (__pillar__ or {})["uyuni"]["xmlrpc"] or {}
                 self._user: str = rpc_conf.get("user", "")
@@ -103,7 +103,7 @@ class RPCClient:
             try:
                 log.debug("Calling RPC method %s", method)
                 return getattr(self.conn, method)(*((self.token,) + args))
-            except Exception as exc:
+            except Exception as exc:  #  pylint: disable=broad-exception-caught
                 if exc.faultCode != AUTHENTICATION_ERROR:
                     log.error("Unable to call RPC function: %s", str(exc))
                     raise exc
@@ -116,7 +116,7 @@ class RPCClient:
                     return getattr(self.conn, method)(
                         *((self.get_token(refresh=True),) + args)
                     )
-                except Exception as exc:
+                except Exception as exc:  #  pylint: disable=redefined-outer-name
                     log.error("Unable to call RPC function: %s", str(exc))
                     raise exc
 
@@ -143,7 +143,7 @@ class UyuniRemoteObject:
         if response:
             return dict(
                 [
-                    (k, "{0}".format(v)) if isinstance(v, datetime.datetime) else (k, v)
+                    (k, "{0}".format(v)) if isinstance(v, datetime.datetime) else (k, v)  #  pylint: disable=consider-using-f-string
                     for k, v in response.items()
                 ]
             )
@@ -320,7 +320,7 @@ class UyuniUser(UyuniRemoteObject):
 
         :param login: user id to look for
         :param server_group_names: system groups to add
-        :param set_default: True if the system groups should also be added to user's default list.
+        :param set_default: True if the system groups should also be added to user's default list.  #  pylint: disable=line-too-long
 
         :return: boolean, True indicates success
         """
@@ -337,8 +337,8 @@ class UyuniUser(UyuniRemoteObject):
         Remove system groups from a user's list of assigned system groups
 
         :param login: user id to look for
-        :param server_group_names: systems groups to remove from list of assigned system groups
-        :param set_default: True if the system groups should also be removed to user's default list.
+        :param server_group_names: systems groups to remove from list of assigned system groups  #  pylint: disable=line-too-long
+        :param set_default: True if the system groups should also be removed to user's default list.  #  pylint: disable=line-too-long
 
         :return: boolean, True indicates success
         """
@@ -352,7 +352,7 @@ class UyuniUser(UyuniRemoteObject):
         )
 
 
-class UyuniChannel(UyuniRemoteObject):
+class UyuniChannel(UyuniRemoteObject):  #  pylint: disable=missing-class-docstring
     def list_manageable_channels(self) -> List[Dict[str, Union[int, str]]]:
         """
         List all software channels that the user is entitled to manage.
@@ -370,11 +370,11 @@ class UyuniChannel(UyuniRemoteObject):
         return self.client("channel.listMyChannels")
 
 
-class UyuniChannelSoftware(UyuniRemoteObject):
+class UyuniChannelSoftware(UyuniRemoteObject):  #  pylint: disable=missing-class-docstring
     def set_user_manageable(self, channel_label: str, login: str, access: bool) -> int:
         """
         Set the manageable flag for a given channel and user.
-        If access is set to 'true', this method will give the user manage permissions to the channel.
+        If access is set to 'true', this method will give the user manage permissions to the channel.  #  pylint: disable=line-too-long
         Otherwise, that privilege is revoked.
 
         :param channel_label: label of the channel
@@ -394,7 +394,7 @@ class UyuniChannelSoftware(UyuniRemoteObject):
     ) -> int:
         """
         Set the subscribable flag for a given channel and user.
-        If value is set to 'true', this method will give the user subscribe permissions to the channel.
+        If value is set to 'true', this method will give the user subscribe permissions to the channel.  #  pylint: disable=line-too-long
         Otherwise, that privilege is revoked.
 
         :param channel_label: label of the channel
@@ -531,7 +531,7 @@ class UyuniOrg(UyuniRemoteObject):
         return self.client("org.updateName", org_id, name)
 
 
-class UyuniOrgTrust(UyuniRemoteObject):
+class UyuniOrgTrust(UyuniRemoteObject):  #  pylint: disable=missing-class-docstring
     def __init__(self, user: str = None, password: str = None):
         UyuniRemoteObject.__init__(self, user, password)
         self._org_manager = UyuniOrg(user, password)
@@ -664,7 +664,7 @@ class UyuniSystemgroup(UyuniRemoteObject):
         Get information about systems in a group.
 
         :param name: Group name
-        :param minimal: default True. Only return minimal information about systems, use False to get more details
+        :param minimal: default True. Only return minimal information about systems, use False to get more details  #  pylint: disable=line-too-long
 
         :return: List of system information
         """
@@ -677,7 +677,7 @@ class UyuniSystemgroup(UyuniRemoteObject):
             )
         )
 
-    def add_remove_systems(
+    def add_remove_systems(  #  pylint: disable=dangerous-default-value
         self, name: str, add_remove: bool, system_ids: List[int] = []
     ) -> int:
         """
@@ -694,14 +694,14 @@ class UyuniSystemgroup(UyuniRemoteObject):
         )
 
 
-class UyuniSystems(UyuniRemoteObject):
+class UyuniSystems(UyuniRemoteObject):  #  pylint: disable=missing-class-docstring
     def get_minion_id_map(self, refresh: bool = False) -> Dict[str, int]:
         """
-        Returns a map from minion ID to Uyuni system ID for all systems a user has access to
+        Returns a map from minion ID to Uyuni system ID for all systems a user has access to  #  pylint: disable=line-too-long
         This method caches results, in order to avoid multiple XMLRPC calls.
 
         :param refresh: Get new data from server, ignoring values in local context cache
-        :return: Map between minion ID and system ID of all system accessible by authenticated user
+        :return: Map between minion ID and system ID of all system accessible by authenticated user  #  pylint: disable=line-too-long
         """
         minions_token_key = "uyuni.minions_id_map_" + self.client.get_user()
         if (not minions_token_key in __context__) or refresh:
@@ -714,7 +714,7 @@ class UyuniActivationKey(UyuniRemoteObject):
     CRUD operations on Activation Keys.
     """
 
-    def get_details(self, id: str) -> Dict[str, Any]:
+    def get_details(self, id: str) -> Dict[str, Any]:  #  pylint: disable=redefined-builtin
         """
         Get details of an Uyuni Activation Key
 
@@ -724,7 +724,7 @@ class UyuniActivationKey(UyuniRemoteObject):
         """
         return self.client("activationkey.getDetails", id)
 
-    def delete(self, id: str) -> bool:
+    def delete(self, id: str) -> bool:  #  pylint: disable=redefined-builtin
         """
         Deletes an Uyuni Activation Key
 
@@ -734,7 +734,7 @@ class UyuniActivationKey(UyuniRemoteObject):
         """
         return self._convert_bool_response(self.client("activationkey.delete", id))
 
-    def create(
+    def create(  #  pylint: disable=dangerous-default-value
         self,
         key: str,
         description: str,
@@ -749,11 +749,11 @@ class UyuniActivationKey(UyuniRemoteObject):
         :param key: activation key name
         :param description: activation key description
         :param base_channel_label: base channel to be used
-        :param usage_limit: activation key usage limit. Default value is 0, which means unlimited usage
+        :param usage_limit: activation key usage limit. Default value is 0, which means unlimited usage  #  pylint: disable=line-too-long
         :param system_types: system types to be assigned.
-                             Can be one of: 'virtualization_host', 'container_build_host',
-                             'monitoring_entitled', 'osimage_build_host', 'virtualization_host'
-        :param universal_default: sets this activation key as organization universal default
+                             Can be one of: 'virtualization_host', 'container_build_host',  #  pylint: disable=line-too-long
+                             'monitoring_entitled', 'osimage_build_host', 'virtualization_host'  #  pylint: disable=line-too-long
+        :param universal_default: sets this activation key as organization universal default  #  pylint: disable=line-too-long
 
         :return: boolean, True indicates success
         """
@@ -784,9 +784,9 @@ class UyuniActivationKey(UyuniRemoteObject):
         :param key: activation key name
         :param description: activation key description
         :param base_channel_label: base channel to be used
-        :param contact_method: contact method to be used. Can be one of: 'default', 'ssh-push' or 'ssh-push-tunnel'
-        :param usage_limit: activation key usage limit. Default value is 0, which means unlimited usage
-        :param universal_default: sets this activation key as organization universal default
+        :param contact_method: contact method to be used. Can be one of: 'default', 'ssh-push' or 'ssh-push-tunnel'  #  pylint: disable=line-too-long
+        :param usage_limit: activation key usage limit. Default value is 0, which means unlimited usage  #  pylint: disable=line-too-long
+        :param universal_default: sets this activation key as organization universal default  #  pylint: disable=line-too-long
 
         :return: boolean, True indicates success
         """
@@ -860,7 +860,7 @@ class UyuniActivationKey(UyuniRemoteObject):
 
     def check_config_deployment(self, key: str) -> bool:
         """
-        Return the status of the 'configure_after_registration' flag for an Activation Key.
+        Return the status of the 'configure_after_registration' flag for an Activation Key.  #  pylint: disable=line-too-long
 
         :param key: activation key name
 
@@ -1007,7 +1007,7 @@ class UyuniChildMasterIntegration:
         Select minion IDs that matches the target expression.
 
         :param target: target expression to be applied
-        :param target_type: target type, one of the following: glob, grain, grain_pcre, pillar, pillar_pcre,
+        :param target_type: target type, one of the following: glob, grain, grain_pcre, pillar, pillar_pcre,  #  pylint: disable=line-too-long
                     pillar_exact, compound, compound_pillar_exact. Default: glob.
 
         :return: list of minions
@@ -1015,7 +1015,7 @@ class UyuniChildMasterIntegration:
         return self._minions.check_minions(expr=target, tgt_type=target_type)
 
 
-def __virtual__():
+def __virtual__():  #  pylint: disable=invalid-name
     """
     Provide Uyuni configuration state module.
 
@@ -1034,8 +1034,8 @@ def user_get_details(
     """
     Get details of an Uyuni user
     If password is provided as a parameter, then it will be used to authenticate
-    If no user credentials are provided, organization administrator credentials will be used
-    If no user credentials neither organization admin credentials are provided, credentials from pillar will be used
+    If no user credentials are provided, organization administrator credentials will be used  #  pylint: disable=line-too-long
+    If no user credentials neither organization admin credentials are provided, credentials from pillar will be used  #  pylint: disable=line-too-long
 
     :param login: user id to look for
     :param password: password for the user
@@ -1144,8 +1144,8 @@ def user_list_roles(login, password=None, org_admin_user=None, org_admin_passwor
     """
     Returns an Uyuni user roles.
     If password is provided as a parameter, then it will be used to authenticate
-    If no user credentials are provided, organization administrator credentials will be used
-    If no user credentials neither organization admin credentials are provided, credentials from pillar are used
+    If no user credentials are provided, organization administrator credentials will be used  #  pylint: disable=line-too-long
+    If no user credentials neither organization admin credentials are provided, credentials from pillar are used  #  pylint: disable=line-too-long
 
     :param login: user id to look for
     :param password: password for the user
@@ -1221,7 +1221,7 @@ def user_add_assigned_system_groups(
 
     :param login: user id to look for
     :param server_group_names: systems groups to add to list of assigned system groups
-    :param set_default: Should system groups also be added to user's list of default system groups.
+    :param set_default: Should system groups also be added to user's list of default system groups.  #  pylint: disable=line-too-long
     :param org_admin_user: organization admin username
     :param org_admin_password: organization admin password
 
@@ -1243,8 +1243,8 @@ def user_remove_assigned_system_groups(
     Remove system groups from a user's list of assigned system groups.
 
     :param login: user id to look for
-    :param server_group_names: systems groups to remove from list of assigned system groups
-    :param set_default: Should system groups also be added to user's list of default system groups.
+    :param server_group_names: systems groups to remove from list of assigned system groups  #  pylint: disable=line-too-long
+    :param set_default: Should system groups also be added to user's list of default system groups.  #  pylint: disable=line-too-long
     :param org_admin_user: organization admin username
     :param org_admin_password: organization admin password
 
@@ -1287,7 +1287,7 @@ def channel_software_set_user_manageable(
 ):
     """
     Set the manageable flag for a given channel and user.
-    If access is set to 'true', this method will give the user manage permissions to the channel.
+    If access is set to 'true', this method will give the user manage permissions to the channel.  #  pylint: disable=line-too-long
     Otherwise, that privilege is revoked.
 
     :param channel_label: label of the channel
@@ -1308,7 +1308,7 @@ def channel_software_set_user_subscribable(
 ):
     """
     Set the subscribable flag for a given channel and user.
-    If value is set to 'true', this method will give the user subscribe permissions to the channel.
+    If value is set to 'true', this method will give the user subscribe permissions to the channel.  #  pylint: disable=line-too-long
     Otherwise, that privilege is revoked.
 
     :param channel_label: label of the channel
@@ -1380,7 +1380,7 @@ def channel_software_is_globally_subscribable(
 def org_list_orgs(admin_user=None, admin_password=None):
     """
     List all organizations.
-    Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action
+    Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action  #  pylint: disable=line-too-long
 
     :param admin_user: uyuni admin user
     :param admin_password: uyuni admin password
@@ -1393,7 +1393,7 @@ def org_list_orgs(admin_user=None, admin_password=None):
 def org_get_details(name, admin_user=None, admin_password=None):
     """
     Get details of an organization.
-    Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action
+    Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action  #  pylint: disable=line-too-long
 
     :param name: organisation name
     :param admin_user: uyuni admin user
@@ -1407,7 +1407,7 @@ def org_get_details(name, admin_user=None, admin_password=None):
 def org_delete(name, admin_user=None, admin_password=None):
     """
     Delete an organization
-    Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action
+    Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action  #  pylint: disable=line-too-long
 
     :param name: organization name
     :param admin_user: uyuni admin user
@@ -1432,7 +1432,7 @@ def org_create(
 ):
     """
     Create an Uyuni organization
-    Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action
+    Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action  #  pylint: disable=line-too-long
 
     :param name: organization name
     :param org_admin_user: organization admin user
@@ -1462,7 +1462,7 @@ def org_create(
 def org_update_name(org_id, name, admin_user=None, admin_password=None):
     """
     update an Uyuni organization name
-    Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action
+    Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action  #  pylint: disable=line-too-long
 
     :param org_id: organization internal id
     :param name: new organization name
@@ -1489,7 +1489,7 @@ def org_trust_list_orgs(org_admin_user=None, org_admin_password=None):
 def org_trust_list_trusts(org_name, admin_user=None, admin_password=None):
     """
     List all trusts for one organization
-    Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action
+    Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action  #  pylint: disable=line-too-long
 
     :param org_name: Name of the organization to get the trusts
     :param admin_user: authentication user
@@ -1505,7 +1505,7 @@ def org_trust_add_trust_by_name(
 ):
     """
     Add an organization to the list of trusted organizations.
-    Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action
+    Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action  #  pylint: disable=line-too-long
 
     :param org_name: organization name
     :param org_trust: Trust organization name
@@ -1522,7 +1522,7 @@ def org_trust_add_trust_by_name(
 def org_trust_add_trust(org_id, org_trust_id, admin_user=None, admin_password=None):
     """
     Add an organization to the list of trusted organizations.
-    Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action
+    Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action  #  pylint: disable=line-too-long
 
     :param org_id: Organization id
     :param org_trust_id: Trust organization id
@@ -1539,7 +1539,7 @@ def org_trust_remove_trust_by_name(
 ):
     """
     Remove an organization from the list of trusted organizations.
-    Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action
+    Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action  #  pylint: disable=line-too-long
 
     :param org_name: organization name
     :param org_untrust: organization name to untrust
@@ -1558,7 +1558,7 @@ def org_trust_remove_trust(
 ):
     """
     Remove an organization from the list of trusted organizations.
-    Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action
+    Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action  #  pylint: disable=line-too-long
 
     :param org_id: orgnization id
     :param org_untrust_id: organizaton id to untrust
@@ -1651,7 +1651,7 @@ def systemgroup_list_systems(
     List systems in a system group
 
     :param name: Name of the system group.
-    :param minimal: default True. Only return minimal information about systems, use False to get more details
+    :param minimal: default True. Only return minimal information about systems, use False to get more details  #  pylint: disable=line-too-long
     :param org_admin_user: organization administrator username
     :param org_admin_password: organization administrator password
 
@@ -1662,7 +1662,7 @@ def systemgroup_list_systems(
     )
 
 
-def systemgroup_add_remove_systems(
+def systemgroup_add_remove_systems(  #  pylint: disable=dangerous-default-value
     name, add_remove, system_ids=[], org_admin_user=None, org_admin_password=None
 ):
     """
@@ -1683,10 +1683,10 @@ def systemgroup_add_remove_systems(
 
 def master_select_minions(target=None, target_type="glob"):
     """
-    Return list minions from the configured Salt Master on the same host which match the expression on the defined target
+    Return list minions from the configured Salt Master on the same host which match the expression on the defined target  #  pylint: disable=line-too-long
 
     :param target: target expression to filter minions
-    :param target_type: target type, one of the following: glob, grain, grain_pcre, pillar, pillar_pcre,
+    :param target_type: target type, one of the following: glob, grain, grain_pcre, pillar, pillar_pcre,  #  pylint: disable=line-too-long
                 pillar_exact, compound, compound_pillar_exact. Default: glob.
 
     :return: list of minion IDs
@@ -1704,7 +1704,7 @@ def systems_get_minion_id_map(username=None, password=None, refresh=False):
     :param password: password for user
     :param refresh: Get new data from server, ignoring values in local context cache
 
-    :return: Map between minion ID and system ID of all system accessible by authenticated user
+    :return: Map between minion ID and system ID of all system accessible by authenticated user  #  pylint: disable=line-too-long
     """
     return UyuniSystems(username, password).get_minion_id_map(refresh)
 
@@ -1712,7 +1712,7 @@ def systems_get_minion_id_map(username=None, password=None, refresh=False):
 # Activation Keys
 
 
-def activation_key_get_details(id, org_admin_user=None, org_admin_password=None):
+def activation_key_get_details(id, org_admin_user=None, org_admin_password=None):  #  pylint: disable=redefined-builtin
     """
     Get details of an Uyuni Activation Key
 
@@ -1725,7 +1725,7 @@ def activation_key_get_details(id, org_admin_user=None, org_admin_password=None)
     return UyuniActivationKey(org_admin_user, org_admin_password).get_details(id)
 
 
-def activation_key_delete(id, org_admin_user=None, org_admin_password=None):
+def activation_key_delete(id, org_admin_user=None, org_admin_password=None):  #  pylint: disable=redefined-builtin
     """
     Deletes an Uyuni Activation Key
 
@@ -1738,7 +1738,7 @@ def activation_key_delete(id, org_admin_user=None, org_admin_password=None):
     return UyuniActivationKey(org_admin_user, org_admin_password).delete(id)
 
 
-def activation_key_create(
+def activation_key_create(  #  pylint: disable=dangerous-default-value
     key,
     description,
     base_channel_label="",
@@ -1754,10 +1754,10 @@ def activation_key_create(
     :param key: activation key name
     :param description: activation key description
     :param base_channel_label: base channel to be used
-    :param usage_limit: activation key usage limit. Default value is 0, which means unlimited usage
+    :param usage_limit: activation key usage limit. Default value is 0, which means unlimited usage  #  pylint: disable=line-too-long
     :param system_types: system types to be assigned.
                          Can be one of: 'virtualization_host', 'container_build_host',
-                         'monitoring_entitled', 'osimage_build_host', 'virtualization_host'
+                         'monitoring_entitled', 'osimage_build_host', 'virtualization_host'  #  pylint: disable=line-too-long
     :param universal_default: sets this activation key as organization universal default
     :param org_admin_user: organization admin username
     :param org_admin_password: organization admin password
@@ -1790,8 +1790,8 @@ def activation_key_set_details(
     :param key: activation key name
     :param description: activation key description
     :param base_channel_label: base channel to be used
-    :param contact_method: contact method to be used. Can be one of: 'default', 'ssh-push' or 'ssh-push-tunnel'
-    :param usage_limit: activation key usage limit. Default value is 0, which means unlimited usage
+    :param contact_method: contact method to be used. Can be one of: 'default', 'ssh-push' or 'ssh-push-tunnel'  #  pylint: disable=line-too-long
+    :param usage_limit: activation key usage limit. Default value is 0, which means unlimited usage  #  pylint: disable=line-too-long
     :param universal_default: sets this activation key as organization universal default
     :param org_admin_user: organization admin username
     :param org_admin_password: organization admin password

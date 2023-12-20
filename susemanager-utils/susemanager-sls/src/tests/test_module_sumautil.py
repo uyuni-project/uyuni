@@ -2,14 +2,14 @@
 Author: mc@suse.com
 """
 
-import sys
+import sys  #  pylint: disable=unused-import
 
 from unittest.mock import MagicMock, patch
 from . import mockery
 
 mockery.setup_environment()
 
-from ..modules import sumautil
+from ..modules import sumautil  #  pylint: disable=wrong-import-position
 
 
 def test_livepatching_kernelliveversion():
@@ -32,7 +32,7 @@ def test_livepatching_kernelliveversion():
         )
         with patch.dict(sumautil.__salt__, {"cmd.run_all": mock}):
             out = sumautil.get_kernel_live_version()
-            assert type(out) == dict
+            assert type(out) == dict  #  pylint: disable=unidiomatic-typecheck
             assert "mgr_kernel_live_version" in out
             assert out["mgr_kernel_live_version"] == "kgraft_patch_1_2_2"
 
@@ -47,7 +47,7 @@ def test_livepatching_kernelliveversion():
         )
         with patch.dict(sumautil.__salt__, {"cmd.run_all": mock}):
             out = sumautil.get_kernel_live_version()
-            assert type(out) == dict
+            assert type(out) == dict  #  pylint: disable=unidiomatic-typecheck
             assert "mgr_kernel_live_version" in out
             assert out["mgr_kernel_live_version"] == "kgraft_patch_2_2_1"
 

@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2018 Red Hat, Inc.
 # Copyright (c) 2010--2011 SUSE Linux Products GmbH
 #
@@ -40,14 +40,14 @@ from rhn.stringutils import ustr
 from uyuni.common.usix import raise_with_tb
 
 from spacewalk.server import rhnPackage, rhnSQL, rhnChannel, suseEula
-from uyuni.common import fileutils
-from spacewalk.common import rhnLog, rhnMail, suseLib
+from uyuni.common import fileutils  #  pylint: disable=ungrouped-imports
+from spacewalk.common import rhnLog, rhnMail, suseLib  #  pylint: disable=ungrouped-imports
 from spacewalk.common.rhnTB import fetchTraceback
 from spacewalk.common import repo
-from uyuni.common.rhnLib import isSUSE, utc
+from uyuni.common.rhnLib import isSUSE, utc  #  pylint: disable=ungrouped-imports
 from uyuni.common.checksum import getFileChecksum
 from uyuni.common.context_managers import cfg_component
-from spacewalk.common.rhnException import rhnFault
+from spacewalk.common.rhnException import rhnFault  #  pylint: disable=ungrouped-imports
 from spacewalk.server.importlib import importLib, mpmSource, packageImport, errataCache
 from spacewalk.server.importlib.packageImport import ChannelPackageSubscription
 from spacewalk.server.importlib.backendOracle import SQLBackend
@@ -107,7 +107,7 @@ class ChannelException(Exception):
         self.value = value
 
     def __str__(self):
-        return "%s" % (self.value,)
+        return "%s" % (self.value,)  #  pylint: disable=consider-using-f-string
 
     def __unicode__(self):
         return self.value
@@ -128,8 +128,8 @@ def send_mail(sync_type="Repo"):
         headers = {
             "Subject": _("%s sync. report from %s") % (sync_type, host_label),
         }
-        with cfg_component("web") as CFG:
-            sndr = "root@%s" % host_label
+        with cfg_component("web") as CFG:  #  pylint: disable=invalid-name
+            sndr = "root@%s" % host_label  #  pylint: disable=consider-using-f-string
             if CFG.default_mail_from:
                 sndr = CFG.default_mail_from
             rhnMail.send(headers, body, sender=sndr)
@@ -147,7 +147,7 @@ class KSDirParser:
         return self.dir_content
 
 
-class KSDirHtmlParser(KSDirParser):
+class KSDirHtmlParser(KSDirParser):  #  pylint: disable=missing-class-docstring
     def __init__(self, plug, dir_name):
         KSDirParser.__init__(self)
 
@@ -176,7 +176,7 @@ class KSDirHtmlParser(KSDirParser):
                     self.dir_content.append({"name": s, "type": file_type})
 
 
-class KSDirLocalParser(KSDirParser):
+class KSDirLocalParser(KSDirParser):  #  pylint: disable=missing-class-docstring
     def __init__(self, base_dir, dir_name):
         KSDirParser.__init__(self)
         dir_path = os.path.join(base_dir, dir_name)
@@ -185,7 +185,7 @@ class KSDirLocalParser(KSDirParser):
                 dir_item_path = os.path.join(dir_path, dir_item)
                 if os.path.isdir(dir_item_path):
                     file_type = "DIR"
-                    dir_item = "%s/" % dir_item
+                    dir_item = "%s/" % dir_item  #  pylint: disable=consider-using-f-string
                 else:
                     file_type = "FILE"
                 if dir_item not in self.file_blacklist:
@@ -196,17 +196,17 @@ class TreeInfoError(Exception):
     pass
 
 
-class TreeInfoParser(object):
+class TreeInfoParser(object):  #  pylint: disable=missing-class-docstring
     def __init__(self, filename):
         self.parser = configparser.RawConfigParser()
         # do not lowercase
         self.parser.optionxform = str
-        fp = open(filename)
+        fp = open(filename)  #  pylint: disable=unspecified-encoding
         try:
             try:
                 self.parser.read_file(fp)
             except configparser.ParsingError:
-                raise TreeInfoError("Could not parse treeinfo file!")
+                raise TreeInfoError("Could not parse treeinfo file!")  #  pylint: disable=raise-missing-from
         finally:
             if fp is not None:
                 fp.close()
@@ -277,7 +277,7 @@ class TreeInfoParser(object):
             pass
 
     def save(self, file_name):
-        with open(file_name, "w") as fd:
+        with open(file_name, "w") as fd:  #  pylint: disable=unspecified-encoding
             self.parser.write(fd)
 
 
@@ -292,7 +292,7 @@ def set_filter_opt(option, opt_str, value, parser):
     )
 
 
-def getChannelRepo():
+def getChannelRepo():  #  pylint: disable=invalid-name
     rhnSQL.initDB()
     items = {}
     sql = """
@@ -317,7 +317,7 @@ def getChannelRepo():
     return items
 
 
-def getParentsChilds(b_only_custom=False):
+def getParentsChilds(b_only_custom=False):  #  pylint: disable=invalid-name
     rhnSQL.initDB()
 
     sql = """
@@ -347,13 +347,13 @@ def getParentsChilds(b_only_custom=False):
     return d_parents
 
 
-def getCustomChannels():
+def getCustomChannels():  #  pylint: disable=invalid-name
     # with SUSE we sync also Vendor channels with reposync
     # change parameter to False to get not only Custom Channels
     d_parents = getParentsChilds(False)
     l_custom_ch = []
 
-    for ch in d_parents:
+    for ch in d_parents:  #  pylint: disable=consider-using-dict-items
         l_custom_ch += [ch] + d_parents[ch]
 
     return l_custom_ch
@@ -383,7 +383,7 @@ def write_ssl_set_cache(ca_cert, client_cert, client_key):
                 org = str(org)
             ssldir = os.path.join(CACHE_DIR, ".ssl-certs", org)
             cert_file = os.path.join(
-                ssldir, "%s.pem" % re.sub(r"[^a-zA-Z0-9_-]", "_", name)
+                ssldir, "%s.pem" % re.sub(r"[^a-zA-Z0-9_-]", "_", name)  #  pylint: disable=consider-using-f-string
             )
             if not os.path.exists(cert_file):
                 create_dir_tree(ssldir)
@@ -437,7 +437,7 @@ def get_single_ssl_set(keys, check_dates=False):
     return None
 
 
-class RepoSync(object):
+class RepoSync(object):  #  pylint: disable=missing-class-docstring
     def __init__(
         self,
         channel_label,
@@ -488,19 +488,19 @@ class RepoSync(object):
         log_path = default_log_location + log_dir + "/" + log_filename
         if log_level is None:
             log_level = 0
-        with cfg_component("server.susemanager") as CFG:
+        with cfg_component("server.susemanager") as CFG:  #  pylint: disable=invalid-name
             CFG.set("DEBUG", log_level)
             rhnLog.initLOG(log_path, log_level)
             # os.fchown isn't in 2.4 :/
             os.system("chgrp " + CFG.httpd_group + " " + log_path)
 
-        log2disk(0, "Command: %s" % str(sys.argv))
+        log2disk(0, "Command: %s" % str(sys.argv))  #  pylint: disable=consider-using-f-string
         log2disk(0, "Sync of channel started.")
 
         self.channel_label = channel_label
         self.channel = self.load_channel()
         if not self.channel:
-            log(0, "Channel %s does not exist." % channel_label)
+            log(0, "Channel %s does not exist." % channel_label)  #  pylint: disable=consider-using-f-string
             sys.exit(1)
 
         if not self.channel["org_id"] or force_null_org_content:
@@ -557,7 +557,7 @@ class RepoSync(object):
             log2(
                 0,
                 0,
-                "Channel %s has no URL associated" % channel_label,
+                "Channel %s has no URL associated" % channel_label,  #  pylint: disable=consider-using-f-string
                 stream=sys.stderr,
             )
 
@@ -582,7 +582,7 @@ class RepoSync(object):
         for index, url in enumerate(self.urls):
             # Make list, add prefix, make tuple and save
             url = list(url)
-            url[1] = "%s%s" % (prefix, url[1])
+            url[1] = "%s%s" % (prefix, url[1])  #  pylint: disable=consider-using-f-string
             url = tuple(url)
             self.urls[index] = url
 
@@ -592,7 +592,7 @@ class RepoSync(object):
         sync_error = 0
         repo_checksum_type = "sha1"
         start_time = datetime.now()
-        with cfg_component("server.susemanager") as CFG:
+        with cfg_component("server.susemanager") as CFG:  #  pylint: disable=invalid-name
             mount_point = CFG.MOUNT_POINT
         for data in self.urls:
             data["source_url_auth"] = self.set_repo_credentials(data)
@@ -608,9 +608,9 @@ class RepoSync(object):
                 url = source_url["url"]
                 try:
                     if "://" not in url:
-                        raise Exception("Unknown protocol in repo URL: %s" % url)
+                        raise Exception("Unknown protocol in repo URL: %s" % url)  #  pylint: disable=broad-exception-raised,consider-using-f-string
 
-                    # If the repository uses a uln:// URL, switch to the ULN plugin, overriding the command-line
+                    # If the repository uses a uln:// URL, switch to the ULN plugin, overriding the command-line  #  pylint: disable=line-too-long
                     if url.startswith("uln://"):
                         repo_type = "uln"
 
@@ -682,7 +682,7 @@ class RepoSync(object):
                                 )
                             else:
                                 raise ValueError(
-                                    "No valid SSL certificates were found for repository."
+                                    "No valid SSL certificates were found for repository."  #  pylint: disable=line-too-long
                                 )
 
                     try:
@@ -700,10 +700,10 @@ class RepoSync(object):
                             http_headers=source_url["http_headers"],
                         )
                     except repo.GeneralRepoException as exc:
-                        log(0, "Plugin error: {}".format(exc))
+                        log(0, "Plugin error: {}".format(exc))  #  pylint: disable=consider-using-f-string
                         sync_error = -1
                     except Exception as exc:
-                        log(0, "Unhandled error occurred: {}".format(exc))
+                        log(0, "Unhandled error occurred: {}".format(exc))  #  pylint: disable=consider-using-f-string
                         raise
 
                     if self.show_packages_only:
@@ -743,35 +743,35 @@ class RepoSync(object):
                         self.import_susedata(plugin)
 
                 except rhnSQL.SQLError as e:
-                    log(0, "SQLError: %s" % e)
+                    log(0, "SQLError: %s" % e)  #  pylint: disable=consider-using-f-string
                     raise
                 except ChannelTimeoutException as e:
                     log(0, e)
                     self.sendErrorMail(str(e))
                     sync_error = -1
                 except ChannelException as e:
-                    log(0, "ChannelException: %s" % e)
-                    self.sendErrorMail("ChannelException: %s" % str(e))
+                    log(0, "ChannelException: %s" % e)  #  pylint: disable=consider-using-f-string
+                    self.sendErrorMail("ChannelException: %s" % str(e))  #  pylint: disable=consider-using-f-string
                     sync_error = -1
                 except yum_src.RepoMDError as e:
                     if "primary not available" in str(e):
-                        taskomatic.add_to_repodata_queue_for_channel_package_subscription(
+                        taskomatic.add_to_repodata_queue_for_channel_package_subscription(  #  pylint: disable=line-too-long
                             [self.channel_label], [], "server.app.yumreposync"
                         )
                         rhnSQL.commit()
-                        log(0, "Repository has no packages. (%s)" % e)
+                        log(0, "Repository has no packages. (%s)" % e)  #  pylint: disable=consider-using-f-string
                         sync_error = -1
                     else:
-                        log(0, "RepoMDError: %s" % e)
-                        self.sendErrorMail("RepoMDError: %s" % e)
+                        log(0, "RepoMDError: %s" % e)  #  pylint: disable=consider-using-f-string
+                        self.sendErrorMail("RepoMDError: %s" % e)  #  pylint: disable=consider-using-f-string
                         sync_error = -1
-                except:
-                    log(0, "Unexpected error: %s" % sys.exc_info()[0])
-                    log(0, "%s" % traceback.format_exc())
+                except:  #  pylint: disable=bare-except
+                    log(0, "Unexpected error: %s" % sys.exc_info()[0])  #  pylint: disable=consider-using-f-string
+                    log(0, "%s" % traceback.format_exc())  #  pylint: disable=consider-using-f-string
                     self.sendErrorMail(fetchTraceback())
                     sync_error = -1
 
-        # In strict mode unlink all packages from channel which are not synced from current repositories
+        # In strict mode unlink all packages from channel which are not synced from current repositories  #  pylint: disable=line-too-long
         if self.strict and sync_error == 0:
             if not self.no_packages:
                 channel_packages = (
@@ -820,7 +820,7 @@ class RepoSync(object):
             taskomatic.add_to_erratacache_queue(self.channel_label)
         self.update_date()
         rhnSQL.commit()
-        with cfg_component("server.susemanager") as CFG:
+        with cfg_component("server.susemanager") as CFG:  #  pylint: disable=invalid-name
             if CFG.AUTO_GENERATE_BOOTSTRAP_REPO and self.regenerate_bootstrap_repo:
                 log(0, "  Regenerating bootstrap repositories.")
                 subprocess.call(["/usr/sbin/mgr-create-bootstrap-repo", "--auto"])
@@ -832,7 +832,7 @@ class RepoSync(object):
         fileutils.createPath(
             os.path.join(mount_point, "rhn")
         )  # if the directory exists update ownership only
-        with cfg_component("server.susemanager") as CFG:
+        with cfg_component("server.susemanager") as CFG:  #  pylint: disable=invalid-name
             for root, dirs, files in os.walk(os.path.join(mount_point, "rhn")):
                 for d in dirs:
                     fileutils.setPermsPath(
@@ -859,7 +859,7 @@ class RepoSync(object):
 
     def update_servers(self):
         """
-        Update the server overview table for the systems subscribed to the synced channel
+        Update the server overview table for the systems subscribed to the synced channel  #  pylint: disable=line-too-long
         """
         server_ids = rhnSQL.fetchall_dict(
             """
@@ -872,7 +872,7 @@ class RepoSync(object):
         )
 
         if server_ids is not None:
-            log(0, "  Updating overview of {} systems".format(len(server_ids)))
+            log(0, "  Updating overview of {} systems".format(len(server_ids)))  #  pylint: disable=consider-using-f-string
             for row in server_ids:
                 taskomatic.add_to_system_overview_update_queue(row["id"])
             rhnSQL.commit()
@@ -911,7 +911,7 @@ class RepoSync(object):
             log2(
                 0,
                 0,
-                "Repository type %s is not supported. "
+                "Repository type %s is not supported. "  #  pylint: disable=consider-using-f-string
                 "Could not import "
                 "spacewalk.satellite_tools.repo_plugins.%s." % (repo_type, name),
                 stream=sys.stderr,
@@ -922,7 +922,7 @@ class RepoSync(object):
     def import_updates(self, plug):
         (notices_type, notices) = plug.get_updates()
         log(0, "")
-        log(0, "  Patches in repo: %s." % len(notices))
+        log(0, "  Patches in repo: %s." % len(notices))  #  pylint: disable=consider-using-f-string
         if notices:
             processed_updates_count = 0
             if notices_type == "updateinfo":
@@ -931,10 +931,10 @@ class RepoSync(object):
                 processed_updates_count = self.upload_patches(notices)
 
             if processed_updates_count:
-                # some errata could get retracted and this needs to be reflected in the newest package cache
+                # some errata could get retracted and this needs to be reflected in the newest package cache  #  pylint: disable=line-too-long
                 log(
                     3,
-                    "Updating channel newest cache for channel ID %s."
+                    "Updating channel newest cache for channel ID %s."  #  pylint: disable=consider-using-f-string
                     % self.channel["id"],
                 )
                 refresh_newest_package = rhnSQL.Procedure(
@@ -951,14 +951,14 @@ class RepoSync(object):
             tmp.flush()
             return getFileChecksum(hashtype, fd=tmp.fileno())
 
-    def copy_metadata_file(self, plug, filename, comps_type, relative_dir):
-        with cfg_component("server.susemanager") as CFG:
+    def copy_metadata_file(self, plug, filename, comps_type, relative_dir):  #  pylint: disable=unused-argument
+        with cfg_component("server.susemanager") as CFG:  #  pylint: disable=invalid-name
             mount_point = CFG.MOUNT_POINT
         old_checksum = None
         db_timestamp = datetime.fromtimestamp(0.0, utc)
         basename = os.path.basename(filename)
         log(0, "")
-        log(0, "  Importing %s file %s." % (comps_type, basename))
+        log(0, "  Importing %s file %s." % (comps_type, basename))  #  pylint: disable=consider-using-f-string
         relativedir = os.path.join(relative_dir, self.channel_label)
         absdir = os.path.join(mount_point, relativedir)
         if not os.path.exists(absdir):
@@ -969,7 +969,7 @@ class RepoSync(object):
         ):
             log(
                 0,
-                "  Renaming non-standard filename %s to %s."
+                "  Renaming non-standard filename %s to %s."  #  pylint: disable=consider-using-f-string
                 % (basename, "comps" + basename[basename.find(".") :]),
             )
             basename = "comps" + basename[basename.find(".") :]
@@ -979,7 +979,7 @@ class RepoSync(object):
             # decompress only for getting the checksum
             checksum = self._get_decompressed_file_checksum(filename, "sha256")
             basename = checksum + "-" + basename
-            log(0, "  Including the checksum in the modules file name: %s" % basename)
+            log(0, "  Including the checksum in the modules file name: %s" % basename)  #  pylint: disable=consider-using-f-string
 
         relativepath = os.path.join(relativedir, basename)
         abspath = os.path.join(absdir, basename)
@@ -1001,7 +1001,7 @@ class RepoSync(object):
                 old_checksum = getFileChecksum("sha256", comps_path)
 
         src = fileutils.decompress_open(filename)
-        dst = open(abspath, "w")
+        dst = open(abspath, "w")  #  pylint: disable=unspecified-encoding
         shutil.copyfileobj(src, dst)
         dst.close()
         src.close()
@@ -1009,12 +1009,12 @@ class RepoSync(object):
             self.regen = True
         log(
             0,
-            "*** NOTE: Importing {1} file for the channel '{0}'. Previous {1} will be discarded.".format(
+            "*** NOTE: Importing {1} file for the channel '{0}'. Previous {1} will be discarded.".format(  #  pylint: disable=line-too-long,consider-using-f-string
                 self.channel["label"], comps_type
             ),
         )
 
-        repoDataKey = "group" if comps_type == "comps" else comps_type
+        repoDataKey = "group" if comps_type == "comps" else comps_type  #  pylint: disable=invalid-name,unused-variable
         file_timestamp = os.path.getmtime(filename)
         last_modified = datetime.fromtimestamp(float(file_timestamp), utc)
 
@@ -1112,7 +1112,7 @@ class RepoSync(object):
         ):
             return None
 
-        log(0, "Add Patch %s" % patch_name)
+        log(0, "Add Patch %s" % patch_name)  #  pylint: disable=consider-using-f-string
 
         e = importLib.Erratum()
         e["errata_from"] = notice["from"]
@@ -1158,11 +1158,11 @@ class RepoSync(object):
         # One or more package references could not be found in the Database.
         # To not provide incomplete patches we skip this update
         if not e["packages"] and not npkgs:
-            log(2, "Advisory %s has empty package list." % e["advisory_name"])
+            log(2, "Advisory %s has empty package list." % e["advisory_name"])  #  pylint: disable=consider-using-f-string
         elif not e["packages"]:
             log(
                 2,
-                "Advisory %s skipped because of empty package list (filtered)."
+                "Advisory %s skipped because of empty package list (filtered)."  #  pylint: disable=consider-using-f-string
                 % e["advisory_name"],
             )
             return None
@@ -1177,7 +1177,7 @@ class RepoSync(object):
         batch = []
         processed_updates = 0
         backend = SQLBackend()
-        channel_advisory_names = self.list_errata()
+        channel_advisory_names = self.list_errata()  #  pylint: disable=unused-variable
         for notice in notices:
             notice = self.fix_notice(notice)
 
@@ -1198,13 +1198,13 @@ class RepoSync(object):
                     batch = []
                 processed_updates += 1
             except Exception:
-                e = "Skipped %s - %s" % (notice["update_id"], sys.exc_info()[1])
+                e = "Skipped %s - %s" % (notice["update_id"], sys.exc_info()[1])  #  pylint: disable=consider-using-f-string
                 log2(1, 1, e, stream=sys.stderr)
                 if self.fail:
                     raise
 
         if batch:
-            log(0, "    Syncing %s new patch(es) to channel." % len(batch))
+            log(0, "    Syncing %s new patch(es) to channel." % len(batch))  #  pylint: disable=consider-using-f-string
             importer = ErrataImport(batch, backend)
             importer.run()
             self.regen = True
@@ -1239,11 +1239,11 @@ class RepoSync(object):
         try:
             packages = plug.list_packages(filters, self.latest)
         except repo.GeneralRepoException as exc:
-            log(0, "Repository failure: {}".format(exc))
-        except Exception as exc:
+            log(0, "Repository failure: {}".format(exc))  #  pylint: disable=consider-using-f-string
+        except Exception as exc:  #  pylint: disable=broad-exception-caught
             log(
                 0,
-                "Unhandled failure occurred while listing repository packages: {}".format(
+                "Unhandled failure occurred while listing repository packages: {}".format(  #  pylint: disable=line-too-long,consider-using-f-string
                     exc
                 ),
             )
@@ -1251,13 +1251,13 @@ class RepoSync(object):
         to_disassociate = {}
         to_process = []
         num_passed = len(packages)
-        log(0, "Repo URL: %s" % suseLib.URL(url).getURL(stripPw=True))
-        log(0, "    Packages in repo:             %5d" % plug.num_packages)
+        log(0, "Repo URL: %s" % suseLib.URL(url).getURL(stripPw=True))  #  pylint: disable=consider-using-f-string
+        log(0, "    Packages in repo:             %5d" % plug.num_packages)  #  pylint: disable=consider-using-f-string
         if plug.num_excluded:
-            log(0, "    Packages passed filter rules: %5d" % num_passed)
+            log(0, "    Packages passed filter rules: %5d" % num_passed)  #  pylint: disable=consider-using-f-string
         channel_id = int(self.channel["id"])
 
-        with cfg_component("server.susemanager") as CFG:
+        with cfg_component("server.susemanager") as CFG:  #  pylint: disable=invalid-name
             mount_point = CFG.MOUNT_POINT
         for pack in packages:
             if pack.arch not in self.arches:
@@ -1266,8 +1266,8 @@ class RepoSync(object):
                 continue
             epoch = ""
             if pack.epoch and pack.epoch != "0":
-                epoch = "%s:" % pack.epoch
-            ident = "%s-%s%s-%s.%s" % (
+                epoch = "%s:" % pack.epoch  #  pylint: disable=consider-using-f-string
+            ident = "%s-%s%s-%s.%s" % (  #  pylint: disable=consider-using-f-string
                 pack.name,
                 epoch,
                 pack.version,
@@ -1297,7 +1297,7 @@ class RepoSync(object):
                 else:
                     pack.path = ""
 
-                # if the package exists, but under a different org_id we have to download it again
+                # if the package exists, but under a different org_id we have to download it again  #  pylint: disable=line-too-long
                 if self.metadata_only or self.match_package_checksum(pack, db_pack):
                     # package is already on disk or not required
                     to_download = False
@@ -1305,7 +1305,7 @@ class RepoSync(object):
                         # package is already in the channel
                         to_link = False
 
-                    # just pass data from DB, they will be used if there is no RPM available
+                    # just pass data from DB, they will be used if there is no RPM available  #  pylint: disable=line-too-long
                     pack.set_checksum(db_pack["checksum_type"], db_pack["checksum"])
                     pack.epoch = db_pack["epoch"]
 
@@ -1313,7 +1313,7 @@ class RepoSync(object):
 
                 elif db_pack["channel_id"] == channel_id:
                     # different package with SAME NVREA
-                    # disassociate from channel if it doesn't match package which will be downloaded
+                    # disassociate from channel if it doesn't match package which will be downloaded  #  pylint: disable=line-too-long
                     to_disassociate[
                         (db_pack["checksum_type"], db_pack["checksum"])
                     ] = True
@@ -1334,9 +1334,9 @@ class RepoSync(object):
         else:
             log(
                 0,
-                "    Packages already synced:      %5d" % (num_passed - num_to_process),
+                "    Packages already synced:      %5d" % (num_passed - num_to_process),  #  pylint: disable=consider-using-f-string
             )
-            log(0, "    Packages to sync:             %5d" % num_to_process)
+            log(0, "    Packages to sync:             %5d" % num_to_process)  #  pylint: disable=consider-using-f-string
 
         downloader = ThreadedDownloader()
         to_download_count = 0
@@ -1362,7 +1362,7 @@ class RepoSync(object):
                 downloader.add(params)
                 to_download_count += 1
         if num_to_process != 0:
-            log(0, "    New packages to download:     %5d" % to_download_count)
+            log(0, "    New packages to download:     %5d" % to_download_count)  #  pylint: disable=consider-using-f-string
             log2(0, 0, "  Downloading packages:")
         logger = TextLogger(None, to_download_count)
         downloader.set_log_obj(logger)
@@ -1452,7 +1452,7 @@ class RepoSync(object):
                 backend.commit()
                 del importer.batch
                 count += len(import_batch)
-                log(0, "    {} packages linked".format(count))
+                log(0, "    {} packages linked".format(count))  #  pylint: disable=consider-using-f-string
             self.regen = True
             self.regenerate_bootstrap_repo = True
         self._normalize_orphan_vendor_packages()
@@ -1460,21 +1460,21 @@ class RepoSync(object):
 
     def twisted_batch_indexes(self, total_size, batch_size):
         """Assume a list of total_size elements, and consider the following two possible divisions of its elements: per "batch" or per "chunk".
-        Batches are contiguous sub-lists of the original list with batch_size elements each (and there's batch_count=total_size/batch_size of them).
+        Batches are contiguous sub-lists of the original list with batch_size elements each (and there's batch_count=total_size/batch_size of them).  #  pylint: disable=line-too-long
         Example with total_size = 12 and batch_size = 3, thus batch_count = 4:
 
         List:    [ 0,   1,   2,   3,   4,   5,   6,   7,   8,   9,  10,  11 ]
         Batches: [[0,   1,   2], [3,   4,   5], [6,   7,   8], [9,  10,  11]]
 
-        Chunks are contiguous sub-lists as well, but have batch_count instead of batch_size elements each. Example:
+        Chunks are contiguous sub-lists as well, but have batch_count instead of batch_size elements each. Example:  #  pylint: disable=line-too-long
 
         Chunks:  [[0,   1,   2,   3], [4,   5,   6,   7], [8,   9,  10,  11]]
 
-        This function returns sub-lists of the same size of batches, each with elements sampled from every chunk. Example:
+        This function returns sub-lists of the same size of batches, each with elements sampled from every chunk. Example:  #  pylint: disable=line-too-long
 
         Twisted: [[0,   4,   8], [1,   5,   9], [2,   6,  10], [3,   7,  11]]
 
-        Intuitively, this rearranges elements across batches so that each batch contains a "sample" of elements from "all over" the original list -
+        Intuitively, this rearranges elements across batches so that each batch contains a "sample" of elements from "all over" the original list -  #  pylint: disable=line-too-long
         in particular, from every chunk.
         """
         # integer division rounded up
@@ -1489,7 +1489,7 @@ class RepoSync(object):
             for batch_index in range(0, batch_count)
         ]
 
-        # twist elements across batches. Specifically: the n-th element in a batch has to be picked from the n-th chunk
+        # twist elements across batches. Specifically: the n-th element in a batch has to be picked from the n-th chunk  #  pylint: disable=line-too-long
         twisted_batches = [
             [
                 self.twisted_index(batches[i][j], batch_count, batch_size)
@@ -1498,7 +1498,7 @@ class RepoSync(object):
             for i in range(0, batch_count)
         ]
 
-        # discard elements greater than total_size (those were created because we rounded up earlier)
+        # discard elements greater than total_size (those were created because we rounded up earlier)  #  pylint: disable=line-too-long
         return [
             [
                 twisted_batches[i][j]
@@ -1527,7 +1527,7 @@ class RepoSync(object):
         mpm_src_batch = importLib.Collection()
         affected_channels = []
         upload_caller = "server.app.uploadPackage"
-        with cfg_component("server.susemanager") as CFG:
+        with cfg_component("server.susemanager") as CFG:  #  pylint: disable=invalid-name
             mount_point = CFG.MOUNT_POINT
 
         to_download_count = sum(p[1] for p in to_process)
@@ -1536,7 +1536,7 @@ class RepoSync(object):
         all_packages = set()
 
         for index, what in enumerate(to_process):
-            pack, to_download, to_link = what
+            pack, to_download, to_link = what  #  pylint: disable=unused-variable
             if not to_download:
                 continue
             import_count += 1
@@ -1546,7 +1546,7 @@ class RepoSync(object):
             try:
                 # check if package was downloaded
                 if not os.path.exists(stage_path):
-                    raise Exception
+                    raise Exception  #  pylint: disable=broad-exception-raised
 
                 pack.load_checksum_from_header()
 
@@ -1577,7 +1577,7 @@ class RepoSync(object):
                     except OSError:
                         e = sys.exc_info()[1]
                         raise_with_tb(
-                            rhnFault(50, "Package upload failed: %s" % e),
+                            rhnFault(50, "Package upload failed: %s" % e),  #  pylint: disable=consider-using-f-string
                             sys.exc_info()[2],
                         )
                     except importLib.FileConflictError:
@@ -1606,7 +1606,7 @@ class RepoSync(object):
                     mpm_src_batch.append(pkg)
                 else:
                     mpm_bin_batch.append(pkg)
-                # we do not want to keep a whole 'a_pkg' object for every package in memory,
+                # we do not want to keep a whole 'a_pkg' object for every package in memory,  #  pylint: disable=line-too-long
                 # because we need only checksum. see BZ 1397417
                 pack.checksum = pack.a_pkg.checksum
                 pack.checksum_type = pack.a_pkg.checksum_type
@@ -1615,7 +1615,7 @@ class RepoSync(object):
 
                 all_packages.add((pack.checksum_type, pack.checksum))
 
-                # Downloaded pkg checksum matches with pkg already in channel, no need to disassociate from channel
+                # Downloaded pkg checksum matches with pkg already in channel, no need to disassociate from channel  #  pylint: disable=line-too-long
                 if (pack.checksum_type, pack.checksum) in to_disassociate:
                     to_disassociate[(pack.checksum_type, pack.checksum)] = False
                     # Set to_link to False, no need to link again
@@ -1689,7 +1689,7 @@ class RepoSync(object):
         rhnSQL.closeDB()
         log(
             0,
-            "  Package batch #{} of {} completed...".format(
+            "  Package batch #{} of {} completed...".format(  #  pylint: disable=consider-using-f-string
                 batch_index + 1, batch_count
             ),
         )
@@ -1715,19 +1715,19 @@ class RepoSync(object):
         packages = plug.raw_list_packages(filters)
 
         num_passed = len(packages)
-        log(0, "    Packages in repo:             %5d" % plug.num_packages)
+        log(0, "    Packages in repo:             %5d" % plug.num_packages)  #  pylint: disable=consider-using-f-string
         if plug.num_excluded:
-            log(0, "    Packages passed filter rules: %5d" % num_passed)
+            log(0, "    Packages passed filter rules: %5d" % num_passed)  #  pylint: disable=consider-using-f-string
 
         log(
             0,
-            "    Package marked with '+' will be downloaded next channel synchronization",
+            "    Package marked with '+' will be downloaded next channel synchronization",  #  pylint: disable=line-too-long
         )
         log(0, "    Package marked with '.' is already presented on filesystem")
 
         channel_id = int(self.channel["id"])
 
-        with cfg_component("server.susemanager") as CFG:
+        with cfg_component("server.susemanager") as CFG:  #  pylint: disable=invalid-name
             mount_point = CFG.MOUNT_POINT
 
         for pack in packages:
@@ -1743,7 +1743,7 @@ class RepoSync(object):
                     break
 
             pack_status = " + "  # need to be downloaded by default
-            pack_full_name = "%-60s\t" % (
+            pack_full_name = "%-60s\t" % (  #  pylint: disable=consider-using-f-string
                 pack.name
                 + "-"
                 + pack.version
@@ -1753,12 +1753,12 @@ class RepoSync(object):
                 + pack.arch
                 + ".rpm"
             )
-            pack_size = "%11d bytes\t" % pack.packagesize
+            pack_size = "%11d bytes\t" % pack.packagesize  #  pylint: disable=consider-using-f-string
 
             if pack.checksum_type == "sha512":
-                pack_hash_info = "%-140s" % (pack.checksum_type + " " + pack.checksum)
+                pack_hash_info = "%-140s" % (pack.checksum_type + " " + pack.checksum)  #  pylint: disable=consider-using-f-string
             else:
-                pack_hash_info = "%-80s " % (pack.checksum_type + " " + pack.checksum)
+                pack_hash_info = "%-80s " % (pack.checksum_type + " " + pack.checksum)  #  pylint: disable=consider-using-f-string
 
             # Package exists in DB
             if db_pack:
@@ -1795,7 +1795,7 @@ class RepoSync(object):
         if affected_row_count > 0:
             log(
                 0,
-                "Transferred {} orphaned vendor packages to the default organization".format(
+                "Transferred {} orphaned vendor packages to the default organization".format(  #  pylint: disable=line-too-long,consider-using-f-string
                     affected_row_count
                 ),
             )
@@ -1846,7 +1846,7 @@ class RepoSync(object):
     def disassociate_package(self, checksum_type, checksum):
         log(
             3,
-            "Disassociating package with checksum: %s (%s)" % (checksum, checksum_type),
+            "Disassociating package with checksum: %s (%s)" % (checksum, checksum_type),  #  pylint: disable=consider-using-f-string
         )
         h = rhnSQL.prepare(
             """
@@ -1868,7 +1868,7 @@ class RepoSync(object):
         )
 
     def disassociate_erratum(self, advisory_name):
-        log(3, "Disassociating erratum: %s" % advisory_name)
+        log(3, "Disassociating erratum: %s" % advisory_name)  #  pylint: disable=consider-using-f-string
         h = rhnSQL.prepare(
             """
                     delete from rhnChannelErrata ce
@@ -1903,7 +1903,7 @@ class RepoSync(object):
                 log(2, e)
         return ret.isoformat(" ")[
             :19
-        ]  # return 1st 19 letters of date, therefore preventing ORA-01830 caused by fractions of seconds
+        ]  # return 1st 19 letters of date, therefore preventing ORA-01830 caused by fractions of seconds  #  pylint: disable=line-too-long
 
     @staticmethod
     def fix_notice(notice):
@@ -1915,7 +1915,7 @@ class RepoSync(object):
         if RepoSync._is_old_suse_style(notice):
             # old suse style; we need to append the version to id
             # to get a seperate patch for every issue
-            notice["update_id"] = "%s-%s" % (notice["update_id"], notice["version"])
+            notice["update_id"] = "%s-%s" % (notice["update_id"], notice["version"])  #  pylint: disable=consider-using-f-string
         return notice
 
     def get_errata(self, update_id):
@@ -2006,7 +2006,7 @@ class RepoSync(object):
         if len(ks_tree_label) < 4:
             ks_tree_label += "_repo"
 
-        with cfg_component("server.susemanager") as CFG:
+        with cfg_component("server.susemanager") as CFG:  #  pylint: disable=invalid-name
             mount_point = CFG.MOUNT_POINT
 
         # construct ks_path and check we already have this KS tree synced
@@ -2018,7 +2018,7 @@ class RepoSync(object):
 
         if self.org_id:
             ks_path += str(self.org_id) + "/" + ks_tree_label
-            # Trees synced from external repositories are expected to have full path it database
+            # Trees synced from external repositories are expected to have full path it database  #  pylint: disable=line-too-long
             db_path = os.path.join(mount_point, ks_path)
             row = rhnSQL.fetchone_dict(
                 id_request + " and org_id = :org_id",
@@ -2076,7 +2076,7 @@ class RepoSync(object):
         if row:
             log(
                 0,
-                "    Kickstartable tree %s already synced. Updating content..."
+                "    Kickstartable tree %s already synced. Updating content..."  #  pylint: disable=consider-using-f-string
                 % ks_tree_label,
             )
             ks_id = row["id"]
@@ -2107,7 +2107,7 @@ class RepoSync(object):
 
             log(
                 0,
-                "    Added new kickstartable tree %s. Downloading content..."
+                "    Added new kickstartable tree %s. Downloading content..."  #  pylint: disable=consider-using-f-string
                 % ks_tree_label,
             )
 
@@ -2192,7 +2192,7 @@ class RepoSync(object):
                             to_download.add(repo_path)
 
         if to_download:
-            log(0, "    Downloading %d kickstart files." % len(to_download))
+            log(0, "    Downloading %d kickstart files." % len(to_download))  #  pylint: disable=consider-using-f-string
             progress_bar = ProgressBarLogger(
                 "              Downloading kickstarts:", len(to_download)
             )
@@ -2209,7 +2209,7 @@ class RepoSync(object):
             for item in to_download:
                 file_path = os.path.join(mount_point, ks_path, item)
                 if item in ["treeinfo", ".treeinfo"]:
-                    # Remove the appstream variant if possible as it will point to nowhere
+                    # Remove the appstream variant if possible as it will point to nowhere  #  pylint: disable=line-too-long
                     parser = TreeInfoParser(file_path)
                     parser.remove_broken_variants()
                     parser.save(file_path)
@@ -2281,7 +2281,7 @@ class RepoSync(object):
                 log2(
                     0,
                     0,
-                    "Could not figure out which credentials to use "
+                    "Could not figure out which credentials to use "  #  pylint: disable=consider-using-f-string
                     "for this URL: {0}".format(
                         url.getURL(stripPw=True), stream=sys.stderr
                     ),
@@ -2357,7 +2357,7 @@ class RepoSync(object):
                 existing_errata, version, self._to_db_date(notice.get("timestamp"))
             ):
                 continue
-            log(0, "Add Patch %s" % e["advisory"])
+            log(0, "Add Patch %s" % e["advisory"])  #  pylint: disable=consider-using-f-string
 
             # product name
             query = rhnSQL.prepare(
@@ -2434,7 +2434,7 @@ class RepoSync(object):
         if skipped_updates > 0:
             log(
                 0,
-                "%d patches skipped because of incomplete package list."
+                "%d patches skipped because of incomplete package list."  #  pylint: disable=consider-using-f-string
                 % skipped_updates,
             )
         if len(batch) > 0:
@@ -2462,7 +2462,7 @@ class RepoSync(object):
         olddate = datetime.strptime(existing_errata["update_date"], "%Y-%m-%d %H:%M:%S")
         if newdate > olddate:
             log(
-                2, "Patch need update: newer update date - %s > %s" % (newdate, olddate)
+                2, "Patch need update: newer update date - %s > %s" % (newdate, olddate)  #  pylint: disable=consider-using-f-string
             )
             return True
         for c in existing_errata["channels"]:
@@ -2504,7 +2504,7 @@ class RepoSync(object):
                 if "epoch" not in param_dict:
                     param_dict["epoch"] = ""
                 else:
-                    param_dict["epoch"] = "%s:" % param_dict["epoch"]
+                    param_dict["epoch"] = "%s:" % param_dict["epoch"]  #  pylint: disable=consider-using-f-string
                 if (
                     "%(name)s-%(epoch)s%(version)s-%(release)s.%(arch)s" % param_dict
                     not in self.available_packages
@@ -2564,7 +2564,7 @@ class RepoSync(object):
                 if "epoch" not in param_dict:
                     param_dict["epoch"] = ""
                 else:
-                    param_dict["epoch"] = "%s:" % param_dict["epoch"]
+                    param_dict["epoch"] = "%s:" % param_dict["epoch"]  #  pylint: disable=consider-using-f-string
                 if (
                     "%(name)s-%(epoch)s%(version)s-%(release)s.%(arch)s" % param_dict
                     not in self.available_packages
@@ -2593,7 +2593,7 @@ class RepoSync(object):
                 erratum_packages.append(ret)
         return erratum_packages
 
-    def import_products(self, repo):
+    def import_products(self, repo):  #  pylint: disable=redefined-outer-name
         products = repo.get_products()
         for product in products:
             query = rhnSQL.prepare(
@@ -2633,7 +2633,7 @@ class RepoSync(object):
                 h.execute(id=row["id"], **product)
 
             params = {
-                "product_cap": "product(%s)" % product["name"],
+                "product_cap": "product(%s)" % product["name"],  #  pylint: disable=consider-using-f-string
                 "cap_version": product["version"] + "-" + product["release"],
                 "channel_id": int(self.channel["id"]),
             }
@@ -2678,7 +2678,7 @@ class RepoSync(object):
                 h.execute(package_id=packrow["id"], product_id=row["id"])
                 self.regen = True
 
-    def import_susedata(self, repo):
+    def import_susedata(self, repo):  #  pylint: disable=redefined-outer-name
         kwcache = {}
         susedata = repo.get_susedata()
         for package in susedata:
@@ -2713,7 +2713,7 @@ class RepoSync(object):
             pkgid = int(row["id"])
             log(
                 4,
-                "import_susedata pkgid: %s channelId: %s"
+                "import_susedata pkgid: %s channelId: %s"  #  pylint: disable=consider-using-f-string
                 % (pkgid, int(self.channel["id"])),
             )
 
@@ -2730,12 +2730,12 @@ class RepoSync(object):
             ret = h.fetchall_dict() or {}
             pkgkws = {}
             for row in ret:
-                log(4, "DB keyword: %s kid: %s" % (row["label"], row["id"]))
+                log(4, "DB keyword: %s kid: %s" % (row["label"], row["id"]))  #  pylint: disable=consider-using-f-string
                 pkgkws[row["label"]] = False
                 kwcache[row["label"]] = row["id"]
 
             for keyword in package["keywords"]:
-                log(4, "Metadata keyword: %s" % keyword)
+                log(4, "Metadata keyword: %s" % keyword)  #  pylint: disable=consider-using-f-string
                 if keyword not in kwcache:
                     kw = rhnSQL.prepare(
                         """select LOOKUP_MD_KEYWORD(:label) id from dual"""
@@ -2749,7 +2749,7 @@ class RepoSync(object):
                 else:
                     log(
                         4,
-                        "Insert new keywordId: %s pkgId: %s channelId: %s"
+                        "Insert new keywordId: %s pkgId: %s channelId: %s"  #  pylint: disable=consider-using-f-string
                         % (kwcache[keyword], pkgid, int(self.channel["id"])),
                     )
                     kadd = rhnSQL.prepare(
@@ -2768,11 +2768,11 @@ class RepoSync(object):
                 rhnPackage.add_eula_to_package(package_id=pkgid, eula_id=eula_id)
 
             # delete all removed keywords
-            for label in pkgkws:
+            for label in pkgkws:  #  pylint: disable=consider-using-dict-items
                 if not pkgkws[label]:
                     log(
                         4,
-                        "Delete obsolete keywordId: %s pkgId: %s channelId: %s"
+                        "Delete obsolete keywordId: %s pkgId: %s channelId: %s"  #  pylint: disable=consider-using-f-string
                         % (kwcache[label], pkgid, int(self.channel["id"])),
                     )
                     kdel = rhnSQL.prepare(
@@ -2819,7 +2819,7 @@ class RepoSync(object):
 
         return patch_name
 
-    def _process_package(self, param_dict, advisory_name):
+    def _process_package(self, param_dict, advisory_name):  #  pylint: disable=unused-argument
         """Search for a package in the the database
 
         Search for the package specified by 'param_dict' to see if it is
@@ -2834,15 +2834,15 @@ class RepoSync(object):
         del param_dict["epoch"]
 
         if not pkgepoch or pkgepoch == "0":
-            epochStatement = "(pevr.epoch is NULL or pevr.epoch = '0')"
+            epochStatement = "(pevr.epoch is NULL or pevr.epoch = '0')"  #  pylint: disable=invalid-name
         else:
-            epochStatement = "pevr.epoch = :epoch"
+            epochStatement = "pevr.epoch = :epoch"  #  pylint: disable=invalid-name
             param_dict["epoch"] = pkgepoch
         if self.org_id:
             param_dict["org_id"] = self.org_id
-            orgidStatement = " = :org_id"
+            orgidStatement = " = :org_id"  #  pylint: disable=invalid-name
         else:
-            orgidStatement = " is NULL"
+            orgidStatement = " is NULL"  #  pylint: disable=invalid-name
 
         h = rhnSQL.prepare(
             """
@@ -2885,8 +2885,8 @@ class RepoSync(object):
         package["package_id"] = cs["id"]
         return package
 
-    def sendErrorMail(self, body):
-        with cfg_component("server.susemanager") as CFG:
+    def sendErrorMail(self, body):  #  pylint: disable=invalid-name
+        with cfg_component("server.susemanager") as CFG:  #  pylint: disable=invalid-name
             to = CFG.TRACEBACK_MAIL
         fr = to
         if isinstance(to, type([])):
@@ -2894,14 +2894,14 @@ class RepoSync(object):
             to = ", ".join([s.strip() for s in to])
 
         headers = {
-            "Subject": "SUSE Manager repository sync failed (%s)" % hostname,
-            "From": "%s <%s>" % (hostname, fr),
+            "Subject": "SUSE Manager repository sync failed (%s)" % hostname,  #  pylint: disable=consider-using-f-string
+            "From": "%s <%s>" % (hostname, fr),  #  pylint: disable=consider-using-f-string
             "To": to,
         }
-        extra = "Syncing Channel '%s' failed:\n\n" % self.channel_label
+        extra = "Syncing Channel '%s' failed:\n\n" % self.channel_label  #  pylint: disable=consider-using-f-string
         rhnMail.send(headers, extra + body)
 
-    def updateChannelChecksumType(self, repo_checksum_type):
+    def updateChannelChecksumType(self, repo_checksum_type):  #  pylint: disable=invalid-name
         """
         check, if the checksum_type of the channel matches the one of the repo
         if not, change the type of the channel
@@ -2953,7 +2953,7 @@ class RepoSync(object):
                               and cpac.package_arch_id = pa.id"""
         )
         h.execute(channel_id=channel_id)
-        with cfg_component("server.susemanager") as CFG:
+        with cfg_component("server.susemanager") as CFG:  #  pylint: disable=invalid-name
             arches = [
                 k["label"]
                 for k in h.fetchall_dict()
@@ -3005,19 +3005,19 @@ class RepoSync(object):
                 if not bz["id"].isdigit():
                     log(
                         2,
-                        "Bugzilla ID is wrong: {0}. Trying to parse ID from from URL".format(
+                        "Bugzilla ID is wrong: {0}. Trying to parse ID from from URL".format(  #  pylint: disable=line-too-long,consider-using-f-string
                             bz["id"]
                         ),
                     )
-                    bz_id_match = re.search("/show_bug.cgi\?id=(\d+)", bz["href"])
+                    bz_id_match = re.search("/show_bug.cgi\?id=(\d+)", bz["href"])  #  pylint: disable=anomalous-backslash-in-string,anomalous-backslash-in-string
                     if bz_id_match:
                         bz["id"] = bz_id_match.group(1)
-                        log(2, "Bugzilla ID found: {0}".format(bz["id"]))
+                        log(2, "Bugzilla ID found: {0}".format(bz["id"]))  #  pylint: disable=consider-using-f-string
                     else:
                         log2(
                             0,
                             0,
-                            "Unable to find Bugzilla ID for {0}. Omitting".format(
+                            "Unable to find Bugzilla ID for {0}. Omitting".format(  #  pylint: disable=consider-using-f-string
                                 bz["id"]
                             ),
                             stream=sys.stderr,
@@ -3028,7 +3028,7 @@ class RepoSync(object):
                     bug.populate(
                         {
                             "bug_id": bz["id"],
-                            "summary": bz["title"] or ("Bug %s" % bz["id"]),
+                            "summary": bz["title"] or ("Bug %s" % bz["id"]),  #  pylint: disable=consider-using-f-string
                             "href": bz["href"],
                         }
                     )
@@ -3081,15 +3081,15 @@ class RepoSync(object):
         N.B. We assume that all the bugs are Novell Bugzilla bugs.
 
         """
-        bug_numbers = set(re.findall("[\[\(]#(\d{6})[\]\)]", text))
+        bug_numbers = set(re.findall("[\[\(]#(\d{6})[\]\)]", text))  #  pylint: disable=anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string
         bugs = []
         for bug_number in bug_numbers:
             bug = importLib.Bug()
             bug.populate(
                 {
                     "bug_id": bug_number,
-                    "summary": "bug number %s" % bug_number,
-                    "href": "https://bugzilla.novell.com/show_bug.cgi?id=%s"
+                    "summary": "bug number %s" % bug_number,  #  pylint: disable=consider-using-f-string
+                    "href": "https://bugzilla.novell.com/show_bug.cgi?id=%s"  #  pylint: disable=consider-using-f-string
                     % bug_number,
                 }
             )
@@ -3107,7 +3107,7 @@ class RepoSync(object):
          We limit the length at 20 chars, because of the DB column size
         """
         cves = list()
-        cves.extend([cve[:20] for cve in set(re.findall("CVE-\d{4}-\d+", text))])
+        cves.extend([cve[:20] for cve in set(re.findall("CVE-\d{4}-\d+", text))])  #  pylint: disable=anomalous-backslash-in-string,anomalous-backslash-in-string
         return cves
 
     @staticmethod

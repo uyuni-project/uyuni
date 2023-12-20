@@ -34,18 +34,18 @@ class TestSCShell:
         Test shell delimieters are set without hyphens
         or colons during the tab completion.
         """
-        cfg_dir = "/tmp/shell/{}/conf".format(int(time.time()))
+        cfg_dir = "/tmp/shell/{}/conf".format(int(time.time()))  #  pylint: disable=consider-using-f-string
         m_logger = MagicMock()
 
         cpl_setter = MagicMock()
-        with patch("spacecmd.shell.logging", m_logger) as lgr, patch(
+        with patch("spacecmd.shell.logging", m_logger) as lgr, patch(  #  pylint: disable=unused-variable
             "spacecmd.shell.readline.set_completer_delims", cpl_setter
         ):
             options = MagicMock()
             options.nohistory = True
             shell = SpacewalkShell(options, cfg_dir, None)
 
-            assert shell.history_file == "{}/history".format(cfg_dir)
+            assert shell.history_file == "{}/history".format(cfg_dir)  #  pylint: disable=consider-using-f-string
             assert not m_logger.error.called
             assert cpl_setter.call_args[0][0] != readline.get_completer_delims()
             assert cpl_setter.call_args[0][0] == " \t\n`~!@#$%^&*()=+[{]}\\|;'\",<>?"
@@ -64,15 +64,15 @@ class TestSCShell:
         """
         Test shell no history file should capture IOError and log it.
         """
-        cfg_dir = "/tmp/shell/{}/conf".format(int(time.time()))
+        cfg_dir = "/tmp/shell/{}/conf".format(int(time.time()))  #  pylint: disable=consider-using-f-string
         m_logger = MagicMock()
-        cpl_setter = MagicMock()
+        cpl_setter = MagicMock()  #  pylint: disable=unused-variable
         with patch("spacecmd.shell.logging", m_logger):
             options = MagicMock()
             options.nohistory = False
             shell = SpacewalkShell(options, cfg_dir, None)
 
-            assert shell.history_file == "{}/history".format(cfg_dir)
+            assert shell.history_file == "{}/history".format(cfg_dir)  #  pylint: disable=consider-using-f-string
             assert not os.path.exists(shell.history_file)
             assert m_logger.error.call_args[0][0] == "Could not read history file"
 
@@ -105,7 +105,7 @@ class TestSCShell:
     )
     def test_shell_precmd_common_keywords(self):
         """
-        Test 'precmd' method of the shell on common keywords, e.g. login, logout, clear etc.
+        Test 'precmd' method of the shell on common keywords, e.g. login, logout, clear etc.  #  pylint: disable=line-too-long
         """
         options = MagicMock()
         options.nohistory = True

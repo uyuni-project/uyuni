@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring,invalid-name
 # Copyright (c) 2008--2018 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -33,9 +33,9 @@ from spacewalk.common.rhnConfig import CFG
 # local imports
 from spacewalk.satellite_tools.syncLib import log, log2, RhnSyncException
 
-from rhn import rpclib
+from rhn import rpclib  #  pylint: disable=reimported,ungrouped-imports
 
-from spacewalk.common.suseLib import get_proxy
+from spacewalk.common.suseLib import get_proxy  #  pylint: disable=ungrouped-imports
 from spacewalk.satellite_tools import connection
 
 
@@ -43,26 +43,26 @@ class BaseWireSource:
 
     """Base object for wire-commo to RHN for delivery of XML/RPMS."""
 
-    serverObj = None
+    serverObj = None  #  pylint: disable=invalid-name
     handler = ""
     url = ""
-    sslYN = 0
+    sslYN = 0  #  pylint: disable=invalid-name
     systemid = None
     server_handler = None
     xml_dump_version = None
 
-    def __init__(self, systemid, sslYN=0, xml_dump_version=None):
+    def __init__(self, systemid, sslYN=0, xml_dump_version=None):  #  pylint: disable=invalid-name
         if not BaseWireSource.systemid:
             BaseWireSource.systemid = systemid
         BaseWireSource.sslYN = sslYN
         BaseWireSource.xml_dump_version = xml_dump_version
 
-    def getServer(self, forcedYN=0):
+    def getServer(self, forcedYN=0):  #  pylint: disable=invalid-name,invalid-name
         if forcedYN:
             self.setServer(self.handler, self.url, forcedYN)
         return BaseWireSource.serverObj
 
-    def schemeAndUrl(self, url):
+    def schemeAndUrl(self, url):  #  pylint: disable=invalid-name
         """http[s]://BLAHBLAHBLAH/ACKACK --> http[s]://BLAHBLAHBLAH"""
 
         if not url:
@@ -76,7 +76,7 @@ class BaseWireSource:
             url = "http://" + hostname
         return url
 
-    def setServer(self, handler, url=None, forcedYN=0):
+    def setServer(self, handler, url=None, forcedYN=0):  #  pylint: disable=invalid-name,invalid-name
         """XMLRPC server object (ssl set in parameters).
         NOTE: url expected to be of the form: scheme://machine/HANDLER
         """
@@ -89,9 +89,9 @@ class BaseWireSource:
 
         self._set_connection_params(handler, url)
 
-        url = "%s%s" % (url, handler)  # url is properly set up now.
+        url = "%s%s" % (url, handler)  # url is properly set up now.  #  pylint: disable=consider-using-f-string
 
-        serverObj = self._set_connection(url)
+        serverObj = self._set_connection(url)  #  pylint: disable=invalid-name
         self._set_ssl_trusted_certs(serverObj)
         return serverObj
 
@@ -100,7 +100,7 @@ class BaseWireSource:
         BaseWireSource.handler = handler
         BaseWireSource.url = url
 
-    def _cached_connection_params(self, handler, url, forcedYN=0):
+    def _cached_connection_params(self, handler, url, forcedYN=0):  #  pylint: disable=invalid-name
         """Helper function; returns 0 if we have to reset the connection
         params, 1 if the cached values are ok"""
         if forcedYN:
@@ -113,7 +113,7 @@ class BaseWireSource:
         "Instantiates a connection object"
 
         proxy, puser, ppass = get_proxy(url)
-        serverObj = connection.StreamConnection(
+        serverObj = connection.StreamConnection(  #  pylint: disable=invalid-name
             url,
             proxy=proxy,
             username=puser,
@@ -124,19 +124,19 @@ class BaseWireSource:
         BaseWireSource.serverObj = serverObj
         return serverObj
 
-    def _set_ssl_trusted_certs(self, serverObj):
+    def _set_ssl_trusted_certs(self, serverObj):  #  pylint: disable=invalid-name
         if not self.sslYN:
             return None
 
         # Check certificate
-        caChain = CFG.CA_CHAIN
+        caChain = CFG.CA_CHAIN  #  pylint: disable=invalid-name
         if caChain:
             # require SSL CA file to be able to authenticate the SSL
             # connections.
             if not os.access(caChain, os.R_OK):
-                message = "ERROR: can not find SUSE Manager CA file: %s" % caChain
+                message = "ERROR: can not find SUSE Manager CA file: %s" % caChain  #  pylint: disable=consider-using-f-string
                 log(-1, message, stream=sys.stderr)
-                raise Exception(message)
+                raise Exception(message)  #  pylint: disable=broad-exception-raised
             # force the validation of the SSL cert
             serverObj.add_trusted_cert(caChain)
             return caChain
@@ -145,14 +145,14 @@ class BaseWireSource:
         log(1, message, stream=sys.stderr)
         return None
 
-    def _openSocketStream(self, method, params):
+    def _openSocketStream(self, method, params):  #  pylint: disable=invalid-name
         """Wraps the gzipstream.GzipStream instantiation in a test block so we
         can open normally if stream is not gzipped."""
 
         stream = None
-        retryYN = 0
+        retryYN = 0  #  pylint: disable=invalid-name
         wait = 0.33
-        lastErrorMsg = ""
+        lastErrorMsg = ""  #  pylint: disable=invalid-name
         cfg = config.initUp2dateConfig()
         for i in range(cfg["networkRetries"]):
             server = self.getServer(retryYN)
@@ -160,17 +160,17 @@ class BaseWireSource:
                 log2(
                     -1,
                     2,
-                    "ERROR: server unable to initialize, attempt %s" % i,
+                    "ERROR: server unable to initialize, attempt %s" % i,  #  pylint: disable=consider-using-f-string
                     stream=sys.stderr,
                 )
-                retryYN = 1
+                retryYN = 1  #  pylint: disable=invalid-name
                 time.sleep(wait)
                 continue
             func = getattr(server, method)
             try:
                 stream = func(*params)
                 if CFG.SYNC_TO_TEMP:
-                    import tempfile
+                    import tempfile  #  pylint: disable=import-outside-toplevel
 
                     cached = tempfile.NamedTemporaryFile()
                     stream.read_to_file(cached)
@@ -181,21 +181,21 @@ class BaseWireSource:
             except rpclib.xmlrpclib.ProtocolError:
                 e = sys.exc_info()[1]
                 p = tuple(["<the systemid>"] + list(params[1:]))
-                lastErrorMsg = "ERROR: server.%s%s: %s" % (method, p, e)
+                lastErrorMsg = "ERROR: server.%s%s: %s" % (method, p, e)  #  pylint: disable=invalid-name,consider-using-f-string
                 log2(-1, 2, lastErrorMsg, stream=sys.stderr)
-                retryYN = 1
+                retryYN = 1  #  pylint: disable=invalid-name
                 time.sleep(wait)
                 # do not reraise this exception!
             except (KeyboardInterrupt, SystemExit):
                 raise
             except rpclib.xmlrpclib.Fault:
                 e = sys.exc_info()[1]
-                lastErrorMsg = e.faultString
+                lastErrorMsg = e.faultString  #  pylint: disable=invalid-name
                 break
             except Exception:  # pylint: disable=E0012, W0703
                 e = sys.exc_info()[1]
                 p = tuple(["<the systemid>"] + list(params[1:]))
-                lastErrorMsg = "ERROR: server.%s%s: %s" % (method, p, e)
+                lastErrorMsg = "ERROR: server.%s%s: %s" % (method, p, e)  #  pylint: disable=invalid-name,consider-using-f-string
                 log2(-1, 2, lastErrorMsg, stream=sys.stderr)
                 break
                 # do not reraise this exception!
@@ -205,7 +205,7 @@ class BaseWireSource:
         # Should never be reached
         return stream
 
-    def setServerHandler(self, isIss=0):
+    def setServerHandler(self, isIss=0):  #  pylint: disable=invalid-name,invalid-name
         if isIss:
             self.server_handler = CFG.RHN_ISS_METADATA_HANDLER
         else:
@@ -223,38 +223,38 @@ class MetadataWireSource(BaseWireSource):
     def _prepare(self):
         self.setServer(self.server_handler)
 
-    def getArchesXmlStream(self):
+    def getArchesXmlStream(self):  #  pylint: disable=invalid-name
         """retrieve xml stream for arch data."""
         self._prepare()
         return self._openSocketStream("dump.arches", (self.systemid,))
 
-    def getArchesExtraXmlStream(self):
+    def getArchesExtraXmlStream(self):  #  pylint: disable=invalid-name
         "retrieve xml stream for the server group type arch compat"
         self._prepare()
         return self._openSocketStream("dump.arches_extra", (self.systemid,))
 
-    def getProductNamesXmlStream(self):
+    def getProductNamesXmlStream(self):  #  pylint: disable=invalid-name
         "retrieve xml stream for the product names data"
         self._prepare()
         return self._openSocketStream("dump.product_names", (self.systemid,))
 
-    def getChannelFamilyXmlStream(self):
+    def getChannelFamilyXmlStream(self):  #  pylint: disable=invalid-name
         """retrieve xml stream for channel family data."""
         self._prepare()
         return self._openSocketStream("dump.channel_families", (self.systemid,))
 
-    def getOrgsXmlStream(self):
+    def getOrgsXmlStream(self):  #  pylint: disable=invalid-name
         """retrieve xml stream for org data."""
         self._prepare()
         return self._openSocketStream("dump.orgs", (self.systemid,))
 
-    def getChannelXmlStream(self):
+    def getChannelXmlStream(self):  #  pylint: disable=invalid-name
         """retrieve xml stream for channel data given a
         list of channel labels."""
         self._prepare()
         return self._openSocketStream("dump.channels", (self.systemid, []))
 
-    def getShortPackageXmlStream(self, packageIds):
+    def getShortPackageXmlStream(self, packageIds):  #  pylint: disable=invalid-name,invalid-name
         """retrieve xml stream for short package data given
         a list of package ids."""
         self._prepare()
@@ -262,7 +262,7 @@ class MetadataWireSource(BaseWireSource):
             "dump.packages_short", (self.systemid, packageIds)
         )
 
-    def getChannelShortPackagesXmlStream(self, channel, last_modified):
+    def getChannelShortPackagesXmlStream(self, channel, last_modified):  #  pylint: disable=invalid-name
         """retrieve xml stream for short package data given a channel
         label and the last modified timestamp of the channel"""
         self._prepare()
@@ -270,13 +270,13 @@ class MetadataWireSource(BaseWireSource):
             "dump.channel_packages_short", (self.systemid, channel, last_modified)
         )
 
-    def getPackageXmlStream(self, packageIds):
+    def getPackageXmlStream(self, packageIds):  #  pylint: disable=invalid-name,invalid-name
         """retrieve xml stream for package data given a
         list of package ids."""
         self._prepare()
         return self._openSocketStream("dump.packages", (self.systemid, packageIds))
 
-    def getSourcePackageXmlStream(self, packageIds):
+    def getSourcePackageXmlStream(self, packageIds):  #  pylint: disable=invalid-name,invalid-name
         """retrieve xml stream for package data given a
         list of package ids."""
         self._prepare()
@@ -284,84 +284,84 @@ class MetadataWireSource(BaseWireSource):
             "dump.source_packages", (self.systemid, packageIds)
         )
 
-    def getErrataXmlStream(self, erratumIds):
+    def getErrataXmlStream(self, erratumIds):  #  pylint: disable=invalid-name,invalid-name
         """retrieve xml stream for erratum data given a list of erratum ids."""
         self._prepare()
         return self._openSocketStream("dump.errata", (self.systemid, erratumIds))
 
-    def getKickstartsXmlStream(self, ksLabels):
+    def getKickstartsXmlStream(self, ksLabels):  #  pylint: disable=invalid-name,invalid-name
         "retrieve xml stream for kickstart trees"
         self._prepare()
         return self._openSocketStream(
             "dump.kickstartable_trees", (self.systemid, ksLabels)
         )
 
-    def getComps(self, channel):
+    def getComps(self, channel):  #  pylint: disable=invalid-name
         return self._openSocketStream("dump.get_comps", (self.systemid, channel))
 
-    def getModules(self, channel):
+    def getModules(self, channel):  #  pylint: disable=invalid-name
         return self._openSocketStream("dump.get_modules", (self.systemid, channel))
 
-    def getRpm(self, nvrea, channel, checksum):
+    def getRpm(self, nvrea, channel, checksum):  #  pylint: disable=invalid-name
         release = nvrea[2]
         epoch = nvrea[3]
         if epoch:
-            release = "%s:%s" % (release, epoch)
-        package_name = "%s-%s-%s.%s.rpm" % (nvrea[0], nvrea[1], release, nvrea[4])
+            release = "%s:%s" % (release, epoch)  #  pylint: disable=consider-using-f-string
+        package_name = "%s-%s-%s.%s.rpm" % (nvrea[0], nvrea[1], release, nvrea[4])  #  pylint: disable=consider-using-f-string
         self._prepare()
         return self._openSocketStream(
             "dump.get_rpm", (self.systemid, package_name, channel, checksum)
         )
 
-    def getKickstartFile(self, ks_label, relative_path):
+    def getKickstartFile(self, ks_label, relative_path):  #  pylint: disable=invalid-name
         self._prepare()
         return self._openSocketStream(
             "dump.get_ks_file", (self.systemid, ks_label, relative_path)
         )
 
-    def getSupportInformationXmlStream(self):
+    def getSupportInformationXmlStream(self):  #  pylint: disable=invalid-name
         """retrieve xml stream for channel family data."""
         self._prepare()
         return self._openSocketStream("dump.support_information", (self.systemid,))
 
-    def getSuseProductsXmlStream(self):
+    def getSuseProductsXmlStream(self):  #  pylint: disable=invalid-name
         """retrieve xml stream for SUSE Products"""
         self._prepare()
         return self._openSocketStream("dump.suse_products", (self.systemid,))
 
-    def getSuseProductChannelsXmlStream(self):
+    def getSuseProductChannelsXmlStream(self):  #  pylint: disable=invalid-name
         """retrieve xml stream for SUSE Product Channels"""
         self._prepare()
         return self._openSocketStream("dump.suse_product_channels", (self.systemid,))
 
-    def getSuseUpgradePathsXmlStream(self):
+    def getSuseUpgradePathsXmlStream(self):  #  pylint: disable=invalid-name
         """retrieve xml stream for Upgrade Paths"""
         self._prepare()
         return self._openSocketStream("dump.suse_upgrade_paths", (self.systemid,))
 
-    def getSuseProductExtensionsXmlStream(self):
+    def getSuseProductExtensionsXmlStream(self):  #  pylint: disable=invalid-name
         """retrieve xml stream for SUSE Product Extensions"""
         self._prepare()
         return self._openSocketStream("dump.suse_product_extensions", (self.systemid,))
 
-    def getSuseProductRepositoriesXmlStream(self):
+    def getSuseProductRepositoriesXmlStream(self):  #  pylint: disable=invalid-name
         """retrieve xml stream for SUSE Product Repositories"""
         self._prepare()
         return self._openSocketStream(
             "dump.suse_product_repositories", (self.systemid,)
         )
 
-    def getSCCRepositoriesXmlStream(self):
+    def getSCCRepositoriesXmlStream(self):  #  pylint: disable=invalid-name
         """retrieve xml stream for SCC Repositories"""
         self._prepare()
         return self._openSocketStream("dump.scc_repositories", (self.systemid,))
 
-    def getSuseSubscriptionsXmlStream(self):
+    def getSuseSubscriptionsXmlStream(self):  #  pylint: disable=invalid-name
         """retrieve xml stream for Subscriptions"""
         self._prepare()
         return self._openSocketStream("dump.suse_subscriptions", (self.systemid,))
 
-    def getClonedChannelsXmlStream(self):
+    def getClonedChannelsXmlStream(self):  #  pylint: disable=invalid-name
         """retrieve xml stream for Cloned Channels"""
         self._prepare()
         return self._openSocketStream("dump.cloned_channels", (self.systemid,))
@@ -378,13 +378,13 @@ class XMLRPCWireSource(BaseWireSource):
             e = sys.exc_info()[1]
             log(
                 -1,
-                'ERROR: during "getattr(BaseWireSource.serverObj, %s)(*(%s))"'
+                'ERROR: during "getattr(BaseWireSource.serverObj, %s)(*(%s))"'  #  pylint: disable=consider-using-f-string
                 % (function, params),
             )
             raise
         except rpclib.xmlrpclib.ProtocolError:
             e = sys.exc_info()[1]
-            log2(-1, 2, "ERROR: ProtocolError: %s" % e, stream=sys.stderr)
+            log2(-1, 2, "ERROR: ProtocolError: %s" % e, stream=sys.stderr)  #  pylint: disable=consider-using-f-string
             raise
         return retval
 
@@ -393,20 +393,20 @@ class AuthWireSource(XMLRPCWireSource):
 
     """Simply authenticate this systemid as a satellite."""
 
-    def checkAuth(self):
+    def checkAuth(self):  #  pylint: disable=invalid-name
         self.setServer(CFG.RHN_XMLRPC_HANDLER)
-        authYN = None
+        authYN = None  #  pylint: disable=invalid-name
         log(2, "   +++ SUSE Manager Server synchronization tool checking in.")
         try:
-            authYN = self._xmlrpc("authentication.check", (self.systemid,))
-        except (rpclib.xmlrpclib.ProtocolError, rpclib.xmlrpclib.Fault):
+            authYN = self._xmlrpc("authentication.check", (self.systemid,))  #  pylint: disable=invalid-name
+        except (rpclib.xmlrpclib.ProtocolError, rpclib.xmlrpclib.Fault):  #  pylint: disable=try-except-raise
             raise
         if authYN:
             log(2, "   +++ Entitled SUSE Manager Server validated.", stream=sys.stderr)
         elif authYN is None:
             log(
                 -1,
-                "   --- An error occurred upon authentication of this SUSE Manager Server -- "
+                "   --- An error occurred upon authentication of this SUSE Manager Server -- "  #  pylint: disable=line-too-long,consider-using-f-string
                 "review the pertinent log file (%s) and/or submit a service request."
                 % CFG.LOG_FILE,
                 stream=sys.stderr,
@@ -426,7 +426,7 @@ class RPCGetWireSource(BaseWireSource):
 
     def __init__(self, systemid, sslYN, xml_dump_version):
         BaseWireSource.__init__(self, systemid, sslYN, xml_dump_version)
-        self.extinctErrorYN = 0
+        self.extinctErrorYN = 0  #  pylint: disable=invalid-name
 
     @staticmethod
     def _set_connection_params(handler, url):
@@ -461,7 +461,7 @@ class RPCGetWireSource(BaseWireSource):
 
     def _login(self):
         if not self.systemid:
-            raise Exception("systemid not set!")
+            raise Exception("systemid not set!")  #  pylint: disable=broad-exception-raised
 
         # Set the URL to the one for regular XML-RPC calls
         self.setServer(CFG.RHN_XMLRPC_HANDLER)
@@ -470,7 +470,7 @@ class RPCGetWireSource(BaseWireSource):
             login_token = self.getServer().authentication.login(self.systemid)
         except rpclib.xmlrpclib.ProtocolError:
             e = sys.exc_info()[1]
-            log2(-1, 2, "ERROR: ProtocolError: %s" % e, stream=sys.stderr)
+            log2(-1, 2, "ERROR: ProtocolError: %s" % e, stream=sys.stderr)  #  pylint: disable=consider-using-f-string
             raise
         return login_token
 
@@ -511,30 +511,30 @@ class RPCGetWireSource(BaseWireSource):
                     return None
                 log(
                     -1,
-                    "ERROR: http error code :%s; fault code: %s; %s"
+                    "ERROR: http error code :%s; fault code: %s; %s"  #  pylint: disable=consider-using-f-string
                     % (http_error_code, fault_code, fault_string),
                 )
                 # XXX
                 raise
             else:
                 return ret
-        raise Exception("Failed after multiple attempts!")
+        raise Exception("Failed after multiple attempts!")  #  pylint: disable=broad-exception-raised
 
-    def getPackageStream(self, channel, nvrea, checksum):
+    def getPackageStream(self, channel, nvrea, checksum):  #  pylint: disable=invalid-name
         release = nvrea[2]
         epoch = nvrea[3]
         if epoch:
-            release = "%s:%s" % (release, epoch)
-        package_name = "%s-%s-%s.%s.rpm" % (nvrea[0], nvrea[1], release, nvrea[4])
+            release = "%s:%s" % (release, epoch)  #  pylint: disable=consider-using-f-string
+        package_name = "%s-%s-%s.%s.rpm" % (nvrea[0], nvrea[1], release, nvrea[4])  #  pylint: disable=consider-using-f-string
         return self._rpc_call("getPackage", (channel, package_name, checksum))
 
-    def getKickstartFileStream(self, channel, ks_tree_label, relative_path):
+    def getKickstartFileStream(self, channel, ks_tree_label, relative_path):  #  pylint: disable=invalid-name
         return self._rpc_call(
             "getKickstartFile", (channel, ks_tree_label, relative_path)
         )
 
-    def getCompsFileStream(self, channel):
+    def getCompsFileStream(self, channel):  #  pylint: disable=invalid-name
         return self._rpc_call("repodata", (channel, "comps.xml"))
 
-    def getModulesFilesStram(self, channel):
+    def getModulesFilesStram(self, channel):  #  pylint: disable=invalid-name
         return self._rpc_call("repodata", (channel, "modules.yaml"))

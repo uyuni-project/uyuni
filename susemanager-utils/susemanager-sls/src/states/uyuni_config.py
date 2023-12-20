@@ -1,5 +1,5 @@
-import logging
-from typing import Optional, Dict, Any, List, Tuple
+import logging  #  pylint: disable=missing-module-docstring
+from typing import Optional, Dict, Any, List, Tuple  #  pylint: disable=unused-import
 from collections import Counter
 
 SERVER_GROUP_NOT_FOUND_ERROR = 2201
@@ -21,7 +21,7 @@ class StateResult:
         return StateResult.prepare_result(name, False, comment)
 
     @staticmethod
-    def prepare_result(
+    def prepare_result(  #  pylint: disable=dangerous-default-value
         name: str, result: Optional[bool], comment: str = None, changes: Dict = {}
     ):
         return {
@@ -32,9 +32,9 @@ class StateResult:
         }
 
 
-class UyuniUsers:
+class UyuniUsers:  #  pylint: disable=missing-class-docstring
     @staticmethod
-    def _update_user_roles(
+    def _update_user_roles(  #  pylint: disable=dangerous-default-value,dangerous-default-value
         name: str,
         current_roles: List[str] = [],
         new_roles: List[str] = [],
@@ -60,7 +60,7 @@ class UyuniUsers:
                 )
 
     @staticmethod
-    def _update_user_system_groups(
+    def _update_user_system_groups(  #  pylint: disable=dangerous-default-value,dangerous-default-value
         name: str,
         current_system_groups: List[str] = [],
         system_groups: List[str] = [],
@@ -130,7 +130,7 @@ class UyuniUsers:
                 __salt__["uyuni.user_get_details"](
                     user_changes.get("login"), user_changes.get("password")
                 )
-            except Exception as exc:
+            except Exception as exc:  #  pylint: disable=broad-exception-caught
                 # check if it's an authentication error. If yes, password have changed
                 if exc.faultCode == AUTHENTICATION_ERROR:
                     changes["password"] = {"new": "(hidden)", "old": "(hidden)"}
@@ -138,7 +138,7 @@ class UyuniUsers:
                     error = exc
         return changes, error
 
-    def manage(
+    def manage(  #  pylint: disable=dangerous-default-value,dangerous-default-value
         self,
         login: str,
         password: str,
@@ -188,9 +188,9 @@ class UyuniUsers:
             current_system_groups_names = [
                 s["name"] for s in (current_system_groups or [])
             ]
-        except Exception as exc:
+        except Exception as exc:  #  pylint: disable=broad-exception-caught
             if exc.faultCode == AUTHENTICATION_ERROR:
-                error_message = "Error while retrieving user information (admin credentials error) '{}': {}".format(
+                error_message = "Error while retrieving user information (admin credentials error) '{}': {}".format(  #  pylint: disable=line-too-long,consider-using-f-string
                     login, exc
                 )
                 log.warning(error_message)
@@ -218,18 +218,18 @@ class UyuniUsers:
 
         if error:
             return StateResult.state_error(
-                login, "Error computing changes for user '{}': {}".format(login, error)
+                login, "Error computing changes for user '{}': {}".format(login, error)  #  pylint: disable=consider-using-f-string
             )
         if not changes:
             return StateResult.prepare_result(
-                login, True, "{0} is already in the desired state".format(login)
+                login, True, "{0} is already in the desired state".format(login)  #  pylint: disable=consider-using-f-string
             )
         if not current_user:
             changes["login"] = {"new": login}
             changes["password"] = {"new": "(hidden)"}
         if __opts__["test"]:
             return StateResult.prepare_result(
-                login, None, "{0} would be modified".format(login), changes
+                login, None, "{0} would be modified".format(login), changes  #  pylint: disable=consider-using-f-string
             )
 
         try:
@@ -249,13 +249,13 @@ class UyuniUsers:
                 org_admin_user,
                 org_admin_password,
             )
-        except Exception as exc:
+        except Exception as exc:  #  pylint: disable=broad-exception-caught
             return StateResult.state_error(
-                login, "Error modifying user '{}': {}".format(login, exc)
+                login, "Error modifying user '{}': {}".format(login, exc)  #  pylint: disable=consider-using-f-string
             )
         else:
             return StateResult.prepare_result(
-                login, True, "{0} user successfully modified".format(login), changes
+                login, True, "{0} user successfully modified".format(login), changes  #  pylint: disable=consider-using-f-string
             )
 
     def delete(
@@ -279,12 +279,12 @@ class UyuniUsers:
         except Exception as exc:
             if exc.faultCode == NO_SUCH_USER_ERROR:
                 return StateResult.prepare_result(
-                    login, True, "{0} is already absent".format(login)
+                    login, True, "{0} is already absent".format(login)  #  pylint: disable=consider-using-f-string
                 )
             if exc.faultCode == AUTHENTICATION_ERROR:
                 return StateResult.state_error(
                     login,
-                    "Error deleting user (organization credentials error) '{}': {}".format(
+                    "Error deleting user (organization credentials error) '{}': {}".format(  #  pylint: disable=line-too-long,consider-using-f-string
                         login, exc
                     ),
                 )
@@ -298,7 +298,7 @@ class UyuniUsers:
             }
             if __opts__["test"]:
                 return StateResult.prepare_result(
-                    login, None, "{0} would be deleted".format(login), changes
+                    login, None, "{0} would be deleted".format(login), changes  #  pylint: disable=consider-using-f-string
                 )
 
             try:
@@ -308,15 +308,15 @@ class UyuniUsers:
                     org_admin_password=org_admin_password,
                 )
                 return StateResult.prepare_result(
-                    login, True, "User {} has been deleted".format(login), changes
+                    login, True, "User {} has been deleted".format(login), changes  #  pylint: disable=consider-using-f-string
                 )
-            except Exception as exc:
+            except Exception as exc:  #  pylint: disable=broad-exception-caught
                 return StateResult.state_error(
-                    login, "Error deleting user '{}': {}".format(login, exc)
+                    login, "Error deleting user '{}': {}".format(login, exc)  #  pylint: disable=consider-using-f-string
                 )
 
 
-class UyuniUserChannels:
+class UyuniUserChannels:  #  pylint: disable=missing-class-docstring
     @staticmethod
     def process_changes(
         current_managed_channels: Optional[List[str]],
@@ -366,7 +366,7 @@ class UyuniUserChannels:
             changes["subscribable_channels"] = subscribe_changes
         return changes
 
-    def manage(
+    def manage(  #  pylint: disable=dangerous-default-value,dangerous-default-value
         self,
         login: str,
         password: str,
@@ -394,10 +394,10 @@ class UyuniUserChannels:
             current_subscribe_channels = __salt__["uyuni.channel_list_my_channels"](
                 login, password
             )
-        except Exception as exc:
+        except Exception as exc:  #  pylint: disable=broad-exception-caught
             return StateResult.state_error(
                 login,
-                comment="Error retrieving information about user channels '{}': {}".format(
+                comment="Error retrieving information about user channels '{}': {}".format(  #  pylint: disable=line-too-long,consider-using-f-string
                     login, exc
                 ),
             )
@@ -430,11 +430,11 @@ class UyuniUserChannels:
             return StateResult.prepare_result(
                 login,
                 True,
-                "{0} channels are already in the desired state".format(login),
+                "{0} channels are already in the desired state".format(login),  #  pylint: disable=consider-using-f-string
             )
         if __opts__["test"]:
             return StateResult.prepare_result(
-                login, None, "{0} channels would be configured".format(login), changes
+                login, None, "{0} channels would be configured".format(login), changes  #  pylint: disable=consider-using-f-string
             )
 
         try:
@@ -447,16 +447,16 @@ class UyuniUserChannels:
                 __salt__["uyuni.channel_software_set_user_subscribable"](
                     channel, login, action, org_admin_user, org_admin_password
                 )
-        except Exception as exc:
+        except Exception as exc:  #  pylint: disable=broad-exception-caught
             return StateResult.state_error(
-                login, "Error changing channel assignments '{}': {}".format(login, exc)
+                login, "Error changing channel assignments '{}': {}".format(login, exc)  #  pylint: disable=consider-using-f-string
             )
         return StateResult.prepare_result(
             login, True, "Channel set to the desired state", changes
         )
 
 
-class UyuniGroups:
+class UyuniGroups:  #  pylint: disable=missing-class-docstring
     @staticmethod
     def _update_systems(
         name: str,
@@ -517,8 +517,8 @@ class UyuniGroups:
 
         :param name: group name
         :param description: group description
-        :param target: target expression used to filter which minions should be part of the group
-        :param target_type: target type, one of the following: glob, grain, grain_pcre, pillar, pillar_pcre,
+        :param target: target expression used to filter which minions should be part of the group  #  pylint: disable=line-too-long
+        :param target_type: target type, one of the following: glob, grain, grain_pcre, pillar, pillar_pcre,  #  pylint: disable=line-too-long
                 pillar_exact, compound, compound_pillar_exact. Default: glob.
         :param org_admin_user: organization administrator username
         :param org_admin_password: organization administrator password
@@ -538,11 +538,11 @@ class UyuniGroups:
                 org_admin_user=org_admin_user,
                 org_admin_password=org_admin_password,
             )
-        except Exception as exc:
+        except Exception as exc:  #  pylint: disable=broad-exception-caught
             if exc.faultCode != SERVER_GROUP_NOT_FOUND_ERROR:
                 return StateResult.state_error(
                     name,
-                    "Error retrieving information about system group '{}': {}".format(
+                    "Error retrieving information about system group '{}': {}".format(  #  pylint: disable=consider-using-f-string
                         name, exc
                     ),
                 )
@@ -568,7 +568,7 @@ class UyuniGroups:
 
         if not changes:
             return StateResult.prepare_result(
-                name, True, "{0} is already in the desired state".format(name)
+                name, True, "{0} is already in the desired state".format(name)  #  pylint: disable=consider-using-f-string
             )
 
         if not current_group:
@@ -576,7 +576,7 @@ class UyuniGroups:
 
         if __opts__["test"]:
             return StateResult.prepare_result(
-                name, None, "{0} would be updated".format(name), changes
+                name, None, "{0} would be updated".format(name), changes  #  pylint: disable=consider-using-f-string
             )
 
         try:
@@ -609,13 +609,13 @@ class UyuniGroups:
                     org_admin_user=org_admin_user,
                     org_admin_password=org_admin_password,
                 )
-        except Exception as exc:
+        except Exception as exc:  #  pylint: disable=broad-exception-caught
             return StateResult.state_error(
-                name, "Error updating group. '{}': {}".format(name, exc)
+                name, "Error updating group. '{}': {}".format(name, exc)  #  pylint: disable=consider-using-f-string
             )
         else:
             return StateResult.prepare_result(
-                name, True, "{0} successfully updated".format(name), changes
+                name, True, "{0} successfully updated".format(name), changes  #  pylint: disable=consider-using-f-string
             )
 
     def delete(
@@ -639,12 +639,12 @@ class UyuniGroups:
         except Exception as exc:
             if exc.faultCode == SERVER_GROUP_NOT_FOUND_ERROR:
                 return StateResult.prepare_result(
-                    name, True, "{0} is already absent".format(name)
+                    name, True, "{0} is already absent".format(name)  #  pylint: disable=consider-using-f-string
                 )
             if exc.faultCode == AUTHENTICATION_ERROR:
                 return StateResult.state_error(
                     name,
-                    "Error deleting group (organization admin credentials error) '{}': {}".format(
+                    "Error deleting group (organization admin credentials error) '{}': {}".format(  #  pylint: disable=line-too-long,consider-using-f-string
                         name, exc
                     ),
                 )
@@ -652,7 +652,7 @@ class UyuniGroups:
         else:
             if __opts__["test"]:
                 return StateResult.prepare_result(
-                    name, None, "{0} would be removed".format(name)
+                    name, None, "{0} would be removed".format(name)  #  pylint: disable=consider-using-f-string
                 )
             try:
                 __salt__["uyuni.systemgroup_delete"](
@@ -663,19 +663,19 @@ class UyuniGroups:
                 return StateResult.prepare_result(
                     name,
                     True,
-                    "Group {} has been deleted".format(name),
+                    "Group {} has been deleted".format(name),  #  pylint: disable=consider-using-f-string
                     {
                         "name": {"old": current_group.get("name")},
                         "description": {"old": current_group.get("description")},
                     },
                 )
-            except Exception as exc:
+            except Exception as exc:  #  pylint: disable=broad-exception-caught
                 return StateResult.state_error(
-                    name, "Error deleting group '{}': {}".format(name, exc)
+                    name, "Error deleting group '{}': {}".format(name, exc)  #  pylint: disable=consider-using-f-string
                 )
 
 
-class UyuniOrgs:
+class UyuniOrgs:  #  pylint: disable=missing-class-docstring
     @staticmethod
     def _compute_changes(
         user_changes: Dict[str, Any], current_user: Dict[str, Any]
@@ -702,7 +702,7 @@ class UyuniOrgs:
     ) -> Dict[str, Any]:
         """
         Create or update an Uyuni organization.
-        Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action
+        Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action  #  pylint: disable=line-too-long
 
         :param name: organization name
         :param org_admin_user: organization admin user
@@ -726,11 +726,11 @@ class UyuniOrgs:
                 org_admin_user=org_admin_user,
                 org_admin_password=org_admin_password,
             )
-        except Exception as exc:
+        except Exception as exc:  #  pylint: disable=broad-exception-caught
             if exc.faultCode != ORG_NOT_FOUND_ERROR:
                 return StateResult.state_error(
                     name,
-                    "Error retrieving information about organization '{}': {}".format(
+                    "Error retrieving information about organization '{}': {}".format(  #  pylint: disable=consider-using-f-string
                         name, exc
                     ),
                 )
@@ -753,11 +753,11 @@ class UyuniOrgs:
 
         if not changes:
             return StateResult.prepare_result(
-                name, True, "{0} is already in the desired state".format(name)
+                name, True, "{0} is already in the desired state".format(name)  #  pylint: disable=consider-using-f-string
             )
         if __opts__["test"]:
             return StateResult.prepare_result(
-                name, None, "{0} would be updated".format(name), changes
+                name, None, "{0} would be updated".format(name), changes  #  pylint: disable=consider-using-f-string
             )
 
         try:
@@ -776,19 +776,19 @@ class UyuniOrgs:
                     pam=pam,
                 )
 
-        except Exception as exc:
+        except Exception as exc:  #  pylint: disable=broad-exception-caught
             return StateResult.state_error(
-                name, "Error updating organization '{}': {}".format(name, exc)
+                name, "Error updating organization '{}': {}".format(name, exc)  #  pylint: disable=consider-using-f-string
             )
         else:
             return StateResult.prepare_result(
-                name, True, "{0} org successfully modified".format(name), changes
+                name, True, "{0} org successfully modified".format(name), changes  #  pylint: disable=consider-using-f-string
             )
 
     def delete(self, name: str, admin_user=None, admin_password=None) -> Dict[str, Any]:
         """
         Remove an Uyuni organization
-        Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action
+        Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action  #  pylint: disable=line-too-long
 
         :param name: Organization Name
         :param admin_user: administrator username
@@ -803,12 +803,12 @@ class UyuniOrgs:
         except Exception as exc:
             if exc.faultCode == ORG_NOT_FOUND_ERROR:
                 return StateResult.prepare_result(
-                    name, True, "{0} is already absent".format(name)
+                    name, True, "{0} is already absent".format(name)  #  pylint: disable=consider-using-f-string
                 )
             if exc.faultCode == AUTHENTICATION_ERROR:
                 return StateResult.state_error(
                     name,
-                    "Error deleting organization (admin credentials error) '{}': {}".format(
+                    "Error deleting organization (admin credentials error) '{}': {}".format(  #  pylint: disable=line-too-long,consider-using-f-string
                         name, exc
                     ),
                 )
@@ -816,7 +816,7 @@ class UyuniOrgs:
         else:
             if __opts__["test"]:
                 return StateResult.prepare_result(
-                    name, None, "{0} would be removed".format(name)
+                    name, None, "{0} would be removed".format(name)  #  pylint: disable=consider-using-f-string
                 )
             try:
                 __salt__["uyuni.org_delete"](
@@ -825,16 +825,16 @@ class UyuniOrgs:
                 return StateResult.prepare_result(
                     name,
                     True,
-                    "Org {} has been deleted".format(name),
+                    "Org {} has been deleted".format(name),  #  pylint: disable=consider-using-f-string
                     {"name": {"old": current_org.get("name")}},
                 )
-            except Exception as exc:
+            except Exception as exc:  #  pylint: disable=broad-exception-caught
                 return StateResult.state_error(
-                    name, "Error deleting Org '{}': {}".format(name, exc)
+                    name, "Error deleting Org '{}': {}".format(name, exc)  #  pylint: disable=consider-using-f-string
                 )
 
 
-class UyuniOrgsTrust:
+class UyuniOrgsTrust:  #  pylint: disable=missing-class-docstring
     def trust(
         self,
         name: str,
@@ -861,17 +861,17 @@ class UyuniOrgsTrust:
             current_org = __salt__["uyuni.org_get_details"](
                 org_name, admin_user=admin_user, admin_password=admin_password
             )
-        except Exception as exc:
+        except Exception as exc:  #  pylint: disable=broad-exception-caught
             return StateResult.state_error(
                 name,
-                "Error retrieving information about an organization trust'{}': {}".format(
+                "Error retrieving information about an organization trust'{}': {}".format(  #  pylint: disable=line-too-long,consider-using-f-string
                     org_name, exc
                 ),
             )
 
         trusts_to_add = []
         trusts_to_remove = []
-        for org_trust in current_org_trusts:
+        for org_trust in current_org_trusts:  #  pylint: disable=redefined-outer-name
             if org_trust.get("orgName") in (trusted_orgs or []) and not org_trust.get(
                 "trustEnabled"
             ):
@@ -883,7 +883,7 @@ class UyuniOrgsTrust:
 
         if not trusts_to_add and not trusts_to_remove:
             return StateResult.prepare_result(
-                name, True, "{0} is already in the desired state".format(org_name)
+                name, True, "{0} is already in the desired state".format(org_name)  #  pylint: disable=consider-using-f-string
             )
         if __opts__["test"]:
             changes = {}
@@ -892,7 +892,7 @@ class UyuniOrgsTrust:
             for org_remove in trusts_to_remove:
                 changes[org_remove.get("orgName")] = {"old": True, "new": None}
             return StateResult.prepare_result(
-                name, None, "{0} would be created".format(org_name), changes
+                name, None, "{0} would be created".format(org_name), changes  #  pylint: disable=consider-using-f-string
             )
 
         processed_changes = {}
@@ -916,22 +916,22 @@ class UyuniOrgsTrust:
                     "old": True,
                     "new": None,
                 }
-        except Exception as exc:
+        except Exception as exc:  #  pylint: disable=broad-exception-caught
             return StateResult.prepare_result(
                 name,
                 False,
-                "Error updating organization trusts '{}': {}".format(org_name, exc),
+                "Error updating organization trusts '{}': {}".format(org_name, exc),  #  pylint: disable=consider-using-f-string
                 processed_changes,
             )
         return StateResult.prepare_result(
             name,
             True,
-            "Org '{}' trusts successfully modified".format(org_name),
+            "Org '{}' trusts successfully modified".format(org_name),  #  pylint: disable=consider-using-f-string
             processed_changes,
         )
 
 
-class UyuniActivationKeys:
+class UyuniActivationKeys:  #  pylint: disable=missing-class-docstring
     @staticmethod
     def _normalize_list_packages(list_packages: [Any]):
         return [(f["name"], f.get("arch", None)) for f in (list_packages or [])]
@@ -987,7 +987,7 @@ class UyuniActivationKeys:
                     "old"
                 ] = current_configure_after_registration
 
-        # we don't want to sort configuration channels since the order matters in this case
+        # we don't want to sort configuration channels since the order matters in this case  #  pylint: disable=line-too-long
         if (current_config_channels or []) != (configuration_channels or []):
             changes["configuration_channels"] = {"new": configuration_channels}
             if current_config_channels:
@@ -1119,7 +1119,7 @@ class UyuniActivationKeys:
                 org_admin_password=org_admin_password,
             )
 
-    def manage(
+    def manage(  #  pylint: disable=dangerous-default-value,dangerous-default-value,dangerous-default-value,dangerous-default-value,dangerous-default-value
         self,
         name: str,
         description: str,
@@ -1143,16 +1143,16 @@ class UyuniActivationKeys:
         :param description: the Activation description
         :param base_channel: base channel to be used
         :param usage_limit: activation key usage limit
-        :param contact_method: contact method to be used. Can be one of: 'default', 'ssh-push' or 'ssh-push-tunnel'
+        :param contact_method: contact method to be used. Can be one of: 'default', 'ssh-push' or 'ssh-push-tunnel'  #  pylint: disable=line-too-long
         :param system_types: system types to be assigned.
-                             Can be one of: 'virtualization_host', 'container_build_host',
-                             'monitoring_entitled', 'osimage_build_host', 'virtualization_host'
-        :param universal_default: sets this activation key as organization universal default
+                             Can be one of: 'virtualization_host', 'container_build_host',  #  pylint: disable=line-too-long
+                             'monitoring_entitled', 'osimage_build_host', 'virtualization_host'  #  pylint: disable=line-too-long
+        :param universal_default: sets this activation key as organization universal default  #  pylint: disable=line-too-long
         :param child_channels: list of child channels to be assigned
         :param configuration_channels: list of configuration channels to be assigned
         :param packages: list of packages which will be installed
         :param server_groups: list of server groups to assign the activation key with
-        :param configure_after_registration: deploy configuration files to systems on registration
+        :param configure_after_registration: deploy configuration files to systems on registration  #  pylint: disable=line-too-long
         :param org_admin_user: organization administrator username
         :param org_admin_password: organization administrator password
 
@@ -1187,7 +1187,7 @@ class UyuniActivationKeys:
                 org_admin_user, org_admin_password
             )
 
-            key = "{}-{}".format(current_org_user["org_id"], name)
+            key = "{}-{}".format(current_org_user["org_id"], name)  #  pylint: disable=consider-using-f-string
             returned_ak = __salt__["uyuni.activation_key_get_details"](
                 key,
                 org_admin_user=org_admin_user,
@@ -1215,11 +1215,11 @@ class UyuniActivationKeys:
                 cc["label"] for cc in (config_channels_output or [])
             ]
 
-        except Exception as exc:
+        except Exception as exc:  #  pylint: disable=broad-exception-caught
             if exc.faultCode != ACTIVATION_KEY_NOT_FOUND_ERROR:
                 return StateResult.state_error(
                     key,
-                    "Error retrieving information about Activation Key '{}': {}".format(
+                    "Error retrieving information about Activation Key '{}': {}".format(  #  pylint: disable=consider-using-f-string
                         key, exc
                     ),
                 )
@@ -1250,11 +1250,11 @@ class UyuniActivationKeys:
 
         if not changes:
             return StateResult.prepare_result(
-                key, True, "{0} is already in the desired state".format(key)
+                key, True, "{0} is already in the desired state".format(key)  #  pylint: disable=consider-using-f-string
             )
         if __opts__["test"]:
             return StateResult.prepare_result(
-                key, None, "{0} would be updated".format(key), changes
+                key, None, "{0} would be updated".format(key), changes  #  pylint: disable=consider-using-f-string
             )
 
         try:
@@ -1355,15 +1355,15 @@ class UyuniActivationKeys:
                     org_admin_password=org_admin_password,
                 )
 
-        except Exception as exc:
+        except Exception as exc:  #  pylint: disable=broad-exception-caught
             return StateResult.state_error(
-                key, "Error updating activation key '{}': {}".format(key, exc)
+                key, "Error updating activation key '{}': {}".format(key, exc)  #  pylint: disable=consider-using-f-string
             )
         else:
             return StateResult.prepare_result(
                 key,
                 True,
-                "{0} activation key successfully modified".format(key),
+                "{0} activation key successfully modified".format(key),  #  pylint: disable=consider-using-f-string
                 changes,
             )
 
@@ -1383,8 +1383,8 @@ class UyuniActivationKeys:
             current_org_user = __salt__["uyuni.user_get_details"](
                 org_admin_user, org_admin_password
             )
-            key = "{}-{}".format(current_org_user["org_id"], name)
-            ak = __salt__["uyuni.activation_key_get_details"](
+            key = "{}-{}".format(current_org_user["org_id"], name)  #  pylint: disable=consider-using-f-string
+            ak = __salt__["uyuni.activation_key_get_details"](  #  pylint: disable=unused-variable
                 key,
                 org_admin_user=org_admin_user,
                 org_admin_password=org_admin_password,
@@ -1392,12 +1392,12 @@ class UyuniActivationKeys:
         except Exception as exc:
             if exc.faultCode == ACTIVATION_KEY_NOT_FOUND_ERROR:
                 return StateResult.prepare_result(
-                    name, True, "{0} is already absent".format(key)
+                    name, True, "{0} is already absent".format(key)  #  pylint: disable=consider-using-f-string
                 )
             if exc.faultCode == AUTHENTICATION_ERROR:
                 return StateResult.state_error(
                     name,
-                    "Error deleting Activation Key (organization credentials error) '{}': {}".format(
+                    "Error deleting Activation Key (organization credentials error) '{}': {}".format(  #  pylint: disable=line-too-long,consider-using-f-string
                         key, exc
                     ),
                 )
@@ -1408,7 +1408,7 @@ class UyuniActivationKeys:
             }
             if __opts__["test"]:
                 return StateResult.prepare_result(
-                    name, None, "{0} would be deleted".format(key), changes
+                    name, None, "{0} would be deleted".format(key), changes  #  pylint: disable=consider-using-f-string
                 )
 
             try:
@@ -1420,16 +1420,16 @@ class UyuniActivationKeys:
                 return StateResult.prepare_result(
                     name,
                     True,
-                    "Activation Key {} has been deleted".format(key),
+                    "Activation Key {} has been deleted".format(key),  #  pylint: disable=consider-using-f-string
                     changes,
                 )
-            except Exception as exc:
+            except Exception as exc:  #  pylint: disable=broad-exception-caught
                 return StateResult.state_error(
-                    name, "Error deleting Activation Key '{}': {}".format(key, exc)
+                    name, "Error deleting Activation Key '{}': {}".format(key, exc)  #  pylint: disable=consider-using-f-string
                 )
 
 
-def __virtual__():
+def __virtual__():  #  pylint: disable=invalid-name
     return __virtualname__
 
 
@@ -1475,7 +1475,7 @@ def user_present(
     )
 
 
-def user_channels(
+def user_channels(  #  pylint: disable=dangerous-default-value,dangerous-default-value
     name,
     password,
     manageable_channels=[],
@@ -1531,7 +1531,7 @@ def org_present(
 ):
     """
     Create or update an Uyuni organization
-    Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action
+    Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action  #  pylint: disable=line-too-long
 
     :param name: organization name
     :param org_admin_user: organization admin user
@@ -1561,7 +1561,7 @@ def org_present(
 def org_absent(name, admin_user=None, admin_password=None):
     """
     Ensure an Uyuni organization is not present
-    Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action
+    Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action  #  pylint: disable=line-too-long
 
     :param name: organization name
     :param admin_user: uyuni admin user
@@ -1600,8 +1600,8 @@ def group_present(
 
     :param name: group name
     :param description: group description
-    :param target: target expression used to filter which minions should be part of the group
-    :param target_type: target type, one of the following: glob, grain, grain_pcre, pillar, pillar_pcre,
+    :param target: target expression used to filter which minions should be part of the group  #  pylint: disable=line-too-long
+    :param target_type: target type, one of the following: glob, grain, grain_pcre, pillar, pillar_pcre,  #  pylint: disable=line-too-long
             pillar_exact, compound, compound_pillar_exact. Default: glob.
     :param org_admin_user: organization administrator username
     :param org_admin_password: organization administrator password
@@ -1639,7 +1639,7 @@ def activation_key_absent(name, org_admin_user=None, org_admin_password=None):
     return UyuniActivationKeys().delete(name, org_admin_user, org_admin_password)
 
 
-def activation_key_present(
+def activation_key_present(  #  pylint: disable=dangerous-default-value,dangerous-default-value,dangerous-default-value,dangerous-default-value,dangerous-default-value
     name,
     description,
     base_channel="",
@@ -1661,17 +1661,17 @@ def activation_key_present(
     :param name: the Activation Key name
     :param description: the Activation description
     :param base_channel: base channel to be used
-    :param usage_limit: activation key usage limit. Default value is 0, which means unlimited usage
-    :param contact_method: contact method to be used. Can be one of: 'default', 'ssh-push' or 'ssh-push-tunnel'
+    :param usage_limit: activation key usage limit. Default value is 0, which means unlimited usage  #  pylint: disable=line-too-long
+    :param contact_method: contact method to be used. Can be one of: 'default', 'ssh-push' or 'ssh-push-tunnel'  #  pylint: disable=line-too-long
     :param system_types: system types to be assigned.
                          Can be one of: 'virtualization_host', 'container_build_host',
-                         'monitoring_entitled', 'osimage_build_host', 'virtualization_host'
+                         'monitoring_entitled', 'osimage_build_host', 'virtualization_host'  #  pylint: disable=line-too-long
     :param universal_default: sets this activation key as organization universal default
     :param child_channels: list of child channels to be assigned
     :param configuration_channels: list of configuration channels to be assigned
     :param packages: list of packages which will be installed
     :param server_groups: list of server groups to assign the activation key with
-    :param configure_after_registration: deploy configuration files to systems on registration
+    :param configure_after_registration: deploy configuration files to systems on registration  #  pylint: disable=line-too-long
     :param org_admin_user: organization administrator username
     :param org_admin_password: organization administrator password
 

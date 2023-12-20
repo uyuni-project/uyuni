@@ -44,7 +44,7 @@ class makeAttempts(Thread):
         lp = gs.listPackages(c[0], c[1])
         p = lp[0]
         pn = "%s-%s-%s.%s.rpm" % (p[0], p[1], p[2], p[4])
-        print pn
+        print pn  #  pylint: disable=syntax-error
 
         i = 0
         while i < 100 and not self.term: # Make few attempts

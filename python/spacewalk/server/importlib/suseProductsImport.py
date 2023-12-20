@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring,invalid-name
 # Copyright (c) 2014 SUSE LLC
 #
 # This software is licensed to you under the GNU General Public License,
@@ -14,7 +14,7 @@ from .importLib import GenericPackageImport
 from spacewalk.satellite_tools import syncCache
 
 
-class SuseProductsImport(GenericPackageImport):
+class SuseProductsImport(GenericPackageImport):  #  pylint: disable=missing-class-docstring
     def __init__(self, batch, backend):
         GenericPackageImport.__init__(self, batch, backend)
         self._cache = syncCache.ShortPackageCache()
@@ -54,7 +54,7 @@ class SuseProductsImport(GenericPackageImport):
         self.backend.commit()
 
 
-class SuseProductChannelsImport(GenericPackageImport):
+class SuseProductChannelsImport(GenericPackageImport):  #  pylint: disable=missing-class-docstring
     def __init__(self, batch, backend):
         GenericPackageImport.__init__(self, batch, backend)
         self._cache = syncCache.ShortPackageCache()
@@ -90,7 +90,7 @@ class SuseProductChannelsImport(GenericPackageImport):
         self.backend.commit()
 
 
-class SuseUpgradePathsImport(GenericPackageImport):
+class SuseUpgradePathsImport(GenericPackageImport):  #  pylint: disable=missing-class-docstring
     def __init__(self, batch, backend):
         GenericPackageImport.__init__(self, batch, backend)
         self._cache = syncCache.ShortPackageCache()
@@ -123,7 +123,7 @@ class SuseUpgradePathsImport(GenericPackageImport):
         self.backend.commit()
 
 
-class SuseProductExtensionsImport(GenericPackageImport):
+class SuseProductExtensionsImport(GenericPackageImport):  #  pylint: disable=missing-class-docstring
     def __init__(self, batch, backend):
         GenericPackageImport.__init__(self, batch, backend)
         self._cache = syncCache.ShortPackageCache()
@@ -161,7 +161,7 @@ class SuseProductExtensionsImport(GenericPackageImport):
         self.backend.commit()
 
 
-class SuseProductRepositoriesImport(GenericPackageImport):
+class SuseProductRepositoriesImport(GenericPackageImport):  #  pylint: disable=missing-class-docstring
     def __init__(self, batch, backend):
         GenericPackageImport.__init__(self, batch, backend)
         self._cache = syncCache.ShortPackageCache()
@@ -200,7 +200,7 @@ class SuseProductRepositoriesImport(GenericPackageImport):
         self.backend.commit()
 
 
-class SCCRepositoriesImport(GenericPackageImport):
+class SCCRepositoriesImport(GenericPackageImport):  #  pylint: disable=missing-class-docstring
     def __init__(self, batch, backend):
         GenericPackageImport.__init__(self, batch, backend)
         self._cache = syncCache.ShortPackageCache()
@@ -222,7 +222,7 @@ class SCCRepositoriesImport(GenericPackageImport):
         self.backend.commit()
 
 
-class SuseSubscriptionsImport(GenericPackageImport):
+class SuseSubscriptionsImport(GenericPackageImport):  #  pylint: disable=missing-class-docstring
     def __init__(self, batch, backend):
         GenericPackageImport.__init__(self, batch, backend)
         self._cache = syncCache.ShortPackageCache()
@@ -247,14 +247,14 @@ class SuseSubscriptionsImport(GenericPackageImport):
         self.backend.commit()
 
 
-class ClonedChannelsImport(GenericPackageImport):
+class ClonedChannelsImport(GenericPackageImport):  #  pylint: disable=missing-class-docstring
     def __init__(self, batch, backend):
         GenericPackageImport.__init__(self, batch, backend)
         self._cache = syncCache.ShortPackageCache()
         self._data = []
 
     def preprocess(self):
-        pid_trans = {}
+        pid_trans = {}  #  pylint: disable=unused-variable
         for item in self.batch:
             channel = {}
             channel[item["orig"]] = None

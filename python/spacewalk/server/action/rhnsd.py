@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -32,7 +32,7 @@ _query_lookup_interval = rhnSQL.Statement(
 )
 
 
-def configure(serverId, actionId, dry_run=0):
+def configure(serverId, actionId, dry_run=0):  #  pylint: disable=invalid-name,invalid-name,unused-argument
     log_debug(3, dry_run)
     h = rhnSQL.prepare(_query_lookup_interval)
     h.execute(action_id=actionId)

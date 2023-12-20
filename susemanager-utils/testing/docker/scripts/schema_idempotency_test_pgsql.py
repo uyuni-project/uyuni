@@ -1,7 +1,7 @@
-#!/usr/bin/python3
+#!/usr/bin/python3  #  pylint: disable=missing-module-docstring
 import argparse
 import difflib
-import distutils.version as DV
+import distutils.version as DV  #  pylint: disable=deprecated-module
 import glob
 import json
 import os
@@ -14,13 +14,13 @@ import sys
 
 def get_all_files_from_pr(pr_file, schema_path):
     """Get added or modified files from a JSON with PR data"""
-    with open(pr_file, "r") as json_file:
+    with open(pr_file, "r") as json_file:  #  pylint: disable=unspecified-encoding
         files = json.loads(json_file.read())["files"]
         changed_files = []
         for file in files:
             filename = str(file["filename"])
             if not re.search(
-                r"^schema\/spacewalk\/upgrade\/susemanager-schema-\d+\.\d+[\d|.]*-to-susemanager-schema-\d+\.\d+[\d|.]*\/[^\/]+$",
+                r"^schema\/spacewalk\/upgrade\/susemanager-schema-\d+\.\d+[\d|.]*-to-susemanager-schema-\d+\.\d+[\d|.]*\/[^\/]+$",  #  pylint: disable=line-too-long
                 filename,
             ):
                 continue
@@ -28,8 +28,8 @@ def get_all_files_from_pr(pr_file, schema_path):
                 continue
             # Get namefile including the migration folder itself
             filename = "/".join(filename.rsplit("/", 2)[1:])
-            # Include all *.sql.* files produced by Makefile.schema (for Oracle and PostgreSQL)
-            for copy_file in glob.glob(r"%s/%s*" % (schema_path, filename)):
+            # Include all *.sql.* files produced by Makefile.schema (for Oracle and PostgreSQL)  #  pylint: disable=line-too-long
+            for copy_file in glob.glob(r"%s/%s*" % (schema_path, filename)):  #  pylint: disable=consider-using-f-string
                 changed_files.append(copy_file)
     return changed_files
 
@@ -39,7 +39,7 @@ def get_all_files_since(version, schema_path):
     files = []
     for element in sorted(os.listdir(schema_path)):
         element_ver = re.search(
-            r"^susemanager-schema-(\d+\.\d+[\d|.]*)-to-susemanager-schema-\d+\.\d+[\d|.]*$",
+            r"^susemanager-schema-(\d+\.\d+[\d|.]*)-to-susemanager-schema-\d+\.\d+[\d|.]*$",  #  pylint: disable=line-too-long
             element,
         )
         if not element_ver:
@@ -59,7 +59,7 @@ def find_latest_version(schema_path):
     latest_version = "0.0"
     for element in sorted(os.listdir(schema_path)):
         element_ver = re.search(
-            r"^susemanager-schema-\d+\.\d+[\d|.]*-to-susemanager-schema-(\d+\.\d+[\d|.]*)$",
+            r"^susemanager-schema-\d+\.\d+[\d|.]*-to-susemanager-schema-(\d+\.\d+[\d|.]*)$",  #  pylint: disable=line-too-long
             element,
         )
         if not element_ver:
@@ -82,27 +82,27 @@ def find_next_version(schema_path):
 def get_ordered_files(path, start, end, schema_path):
     n = list(path[start].keys())[0]
     res = []
-    d = "%s/%s-to-%s" % (schema_path, start, n)
+    d = "%s/%s-to-%s" % (schema_path, start, n)  #  pylint: disable=consider-using-f-string
     for f in sorted(os.listdir(d)):
-        res.append("%s/%s" % (d, f))
+        res.append("%s/%s" % (d, f))  #  pylint: disable=consider-using-f-string
     if n != end:
         res.extend(get_ordered_files(path, n, end, schema_path))
     return res
 
 
 def get_all_files(start, end, schema_path):
-    start_schema = "susemanager-schema-%s" % start
-    end_schema = "susemanager-schema-%s" % end
+    start_schema = "susemanager-schema-%s" % start  #  pylint: disable=consider-using-f-string
+    end_schema = "susemanager-schema-%s" % end  #  pylint: disable=consider-using-f-string
 
     upgrade_path = dict()
     queue = [end_schema]
     for t in queue:
-        lookup = glob.glob(schema_path + "/*-to-%s" % t)
+        lookup = glob.glob(schema_path + "/*-to-%s" % t)  #  pylint: disable=consider-using-f-string
         for x in lookup:
             x = x.replace(schema_path + "/", "")
-            x = x.replace("-to-%s" % t, "")
+            x = x.replace("-to-%s" % t, "")  #  pylint: disable=consider-using-f-string
             if x == start_schema:
-                print("found %s" % start_schema)
+                print("found %s" % start_schema)  #  pylint: disable=consider-using-f-string
             if x not in upgrade_path:
                 upgrade_path[x] = dict()
             if t not in upgrade_path:
@@ -110,7 +110,7 @@ def get_all_files(start, end, schema_path):
             upgrade_path[x][t] = upgrade_path[t]
             if x == start_schema:
                 break
-            queue.append(x)
+            queue.append(x)  #  pylint: disable=modified-iterating-list
 
     return get_ordered_files(upgrade_path, start_schema, end_schema, schema_path)
 
@@ -124,9 +124,9 @@ def create_fake_migration_path(schema_path, new_version, pr_file=None, version=N
         files = get_all_files_from_pr(pr_file, schema_path)
     last_version = find_latest_version(schema_path)
     if version:
-        print("Creating migration path with all scripts since %s" % version)
+        print("Creating migration path with all scripts since %s" % version)  #  pylint: disable=consider-using-f-string
         files = get_all_files(version, last_version, schema_path)
-    fake_path = schema_path + "/susemanager-schema-%s-to-susemanager-schema-%s/" % (
+    fake_path = schema_path + "/susemanager-schema-%s-to-susemanager-schema-%s/" % (  #  pylint: disable=consider-using-f-string
         last_version,
         new_version,
     )
@@ -136,16 +136,16 @@ def create_fake_migration_path(schema_path, new_version, pr_file=None, version=N
     for migration_file in files:
         pcom = migration_file.split("/")
         f = pcom.pop()
-        f = "%04d-%s" % (num, f)
+        f = "%04d-%s" % (num, f)  #  pylint: disable=consider-using-f-string
         fakedir = pcom.pop()
-        fakedir = "susemanager-schema-%s-to-susemanager-schema-%s" % (
+        fakedir = "susemanager-schema-%s-to-susemanager-schema-%s" % (  #  pylint: disable=consider-using-f-string
             last_version,
             new_version,
         )
         pcom.append(fakedir)
         pcom.append(f)
         dest_file = os.path.join("/", *pcom)
-        print("Copying %s to %s..." % (migration_file, dest_file))
+        print("Copying %s to %s..." % (migration_file, dest_file))  #  pylint: disable=consider-using-f-string
         shutil.copy(migration_file, dest_file)
         num += 1
 
@@ -155,10 +155,10 @@ def run_command(command):
     try:
         subprocess.check_call(command, shell=True)
         return True
-    except subprocess.CalledProcessError as error:
-        print("Return code was %s " % error.returncode)
+    except subprocess.CalledProcessError as error:  #  pylint: disable=redefined-outer-name
+        print("Return code was %s " % error.returncode)  #  pylint: disable=consider-using-f-string
         return False
-    except Exception:
+    except Exception:  #  pylint: disable=try-except-raise
         raise
 
 
@@ -166,13 +166,13 @@ def manage_postgresql(action):
     """Manage the postgresql service, currently start or stop"""
     actions = ["start", "stop"]
     if action not in actions:
-        raise "Invalid action for the PostgreSQL service"
+        raise "Invalid action for the PostgreSQL service"  #  pylint: disable=raising-bad-type
     if run_command(
-        "/usr/bin/su - postgres -c '/usr/lib/postgresql/bin/pg_ctl %s'" % action
+        "/usr/bin/su - postgres -c '/usr/lib/postgresql/bin/pg_ctl %s'" % action  #  pylint: disable=consider-using-f-string
     ):
-        print("PostgreSQL %sed" % action)
+        print("PostgreSQL %sed" % action)  #  pylint: disable=consider-using-f-string
     else:
-        raise RuntimeError("Could not %s PostgreSQL!" % action)
+        raise RuntimeError("Could not %s PostgreSQL!" % action)  #  pylint: disable=consider-using-f-string
 
 
 def dump_database(dump_name, excluded_tables=None):
@@ -180,21 +180,21 @@ def dump_database(dump_name, excluded_tables=None):
     if excluded_tables is None:
         excluded_tables = []
     db_name = None
-    with open(sys.path[0] + "/clear-db-answers-pgsql.txt") as file:
+    with open(sys.path[0] + "/clear-db-answers-pgsql.txt") as file:  #  pylint: disable=unspecified-encoding
         for line in file.read().splitlines():
             if line.split("=")[0] == "db-name":
                 db_name = line.split("=")[1]
-    command = "/usr/bin/su - postgres -c 'pg_dump --dbname=%s --file=%s" % (
+    command = "/usr/bin/su - postgres -c 'pg_dump --dbname=%s --file=%s" % (  #  pylint: disable=consider-using-f-string
         db_name,
         dump_name,
     )
     for excluded_table in excluded_tables:
-        command += " -T %s" % excluded_table
+        command += " -T %s" % excluded_table  #  pylint: disable=consider-using-f-string
     command += "'"
     if run_command(command):
-        print("%s dumped correctly to %s" % (db_name, dump_name))
+        print("%s dumped correctly to %s" % (db_name, dump_name))  #  pylint: disable=consider-using-f-string
     else:
-        raise RuntimeError("Could not dump %s!" % db_name)
+        raise RuntimeError("Could not dump %s!" % db_name)  #  pylint: disable=consider-using-f-string
 
 
 def run_upgrade(upgrade_script, new_version):
@@ -206,8 +206,8 @@ def run_upgrade(upgrade_script, new_version):
         "/manager/web/modules/pxt/",
         "/manager/schema/spacewalk/lib/",
     )
-    print("Upgrading to %s..." % new_version)
-    command = "export SUMA_TEST_SCHEMA_VERSION=%s; export PERLLIB=%s; %s -y" % (
+    print("Upgrading to %s..." % new_version)  #  pylint: disable=consider-using-f-string
+    command = "export SUMA_TEST_SCHEMA_VERSION=%s; export PERLLIB=%s; %s -y" % (  #  pylint: disable=consider-using-f-string
         new_version,
         ":".join(perl_libs),
         upgrade_script,
@@ -217,8 +217,8 @@ def run_upgrade(upgrade_script, new_version):
     else:
         for element in sorted(os.listdir(log_path)):
             if re.search(r"^schema-from-.*\.log$", element):
-                print("Content of file %s/%s" % (log_path, element))
-                with open(log_path + "/" + element) as file:
+                print("Content of file %s/%s" % (log_path, element))  #  pylint: disable=consider-using-f-string
+                with open(log_path + "/" + element) as file:  #  pylint: disable=unspecified-encoding
                     for line in file.read().splitlines():
                         print(line)
         raise RuntimeError(
@@ -230,7 +230,7 @@ def diff_dumps(initial_dump, migrated_dump):
     """Perform a diff of two database dumps"""
 
     def get_stripped_lines(file):
-        with open(file) as fd:
+        with open(file) as fd:  #  pylint: disable=unspecified-encoding
             return [
                 line.rstrip()
                 for line in re.sub("\t", "       ", fd.read()).splitlines()
@@ -244,14 +244,14 @@ def diff_dumps(initial_dump, migrated_dump):
 def argparser():
     """Parse arguments from the user"""
     parser = argparse.ArgumentParser(
-        description="Test idempotency of SQL scripts. This script assumes a script schema_migration_test_pgsql-*to*.sh ran before, and PostgreSQL is stopped"
+        description="Test idempotency of SQL scripts. This script assumes a script schema_migration_test_pgsql-*to*.sh ran before, and PostgreSQL is stopped"  #  pylint: disable=line-too-long
     )
     parser.add_argument(
         "-s",
         "--schema-path",
         action="store",
         dest="schema_path",
-        help="Path where the directories with the schema upgrades are (default: /etc/sysconfig/rhn/schema-upgrade",
+        help="Path where the directories with the schema upgrades are (default: /etc/sysconfig/rhn/schema-upgrade",  #  pylint: disable=line-too-long
         default="/etc/sysconfig/rhn/schema-upgrade",
     )
     parser.add_argument(
@@ -259,7 +259,7 @@ def argparser():
         "--from-pr",
         action="store",
         dest="pr_file",
-        help="Check files with changes from a PR by rerunning added or changed files. The value is the path to a JSON file with PR information generated by gitarro",
+        help="Check files with changes from a PR by rerunning added or changed files. The value is the path to a JSON file with PR information generated by gitarro",  #  pylint: disable=line-too-long
     )
     parser.add_argument(
         "-v",
@@ -273,24 +273,24 @@ def argparser():
         "--upgrade-script",
         action="store",
         dest="upgrade_script",
-        help="Path where the spacewalk-schema-upgrade script is (default: /manager/schema/spacewalk/spacewalk-schema-upgrade)",
+        help="Path where the spacewalk-schema-upgrade script is (default: /manager/schema/spacewalk/spacewalk-schema-upgrade)",  #  pylint: disable=line-too-long
         default="/manager/schema/spacewalk/spacewalk-schema-upgrade",
     )
     args = parser.parse_args()
     args.schema_path = args.schema_path.rstrip("/")
     if not os.path.isdir(args.schema_path):
-        raise RuntimeError("Directory %s does not exist" % args.schema_path)
+        raise RuntimeError("Directory %s does not exist" % args.schema_path)  #  pylint: disable=consider-using-f-string
     if args.pr_file is None and args.version is None:
         raise RuntimeError("One of --from-pr or --from-version must be specified")
     if args.pr_file and args.version:
         raise RuntimeError("Only one of --from-pr or --from-version must be specified")
     if args.pr_file and not os.path.isfile(args.pr_file):
-        raise RuntimeError("File %s does not exist" % args.pr_file)
+        raise RuntimeError("File %s does not exist" % args.pr_file)  #  pylint: disable=consider-using-f-string
     if not os.path.isfile(args.upgrade_script):
         raise RuntimeError(
-            "The file %s for the upgrade script does not exist" % args.upgrade_script
+            "The file %s for the upgrade script does not exist" % args.upgrade_script  #  pylint: disable=consider-using-f-string
         )
-    # Exclude tables and sequences that are not updated by the SQL scripts (version control)
+    # Exclude tables and sequences that are not updated by the SQL scripts (version control)  #  pylint: disable=line-too-long
     args.excluded_tables = [
         "pg_catalog.setval",
         "public.rhnpackageevr",
@@ -327,12 +327,12 @@ def main():
         sys.exit(0)
     if args.pr_file:
         raise RuntimeError(
-            "Dumps %s and %s are different! One or more scripts from the PR are not idempotent!"
+            "Dumps %s and %s are different! One or more scripts from the PR are not idempotent!"  #  pylint: disable=line-too-long,consider-using-f-string
             % (initial_dump, migrated_dump)
         )
     if args.version:
         raise RuntimeError(
-            "Dumps %s and %s are different! One or more of the scripts since %s are not idempotent!"
+            "Dumps %s and %s are different! One or more of the scripts since %s are not idempotent!"  #  pylint: disable=line-too-long,consider-using-f-string
             % (initial_dump, migrated_dump, args.version)
         )
 
@@ -341,8 +341,8 @@ if __name__ == "__main__":
     try:
         main()
     except RuntimeError as error:
-        print("ERROR: %s" % error)
+        print("ERROR: %s" % error)  #  pylint: disable=consider-using-f-string
         sys.exit(1)
     except Exception as error:
-        print("ERROR: %s" % error)
+        print("ERROR: %s" % error)  #  pylint: disable=consider-using-f-string
         raise

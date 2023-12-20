@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring,invalid-name
 # Copyright (c) 2008--2017 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -17,7 +17,7 @@
 #
 
 import re
-import crypt
+import crypt  #  pylint: disable=deprecated-module
 
 # Global Modules
 from rhn.UserDictCase import UserDictCase
@@ -107,10 +107,10 @@ class User:
             data = h.fetchone_dict()
             if not data:
                 # This should not happen
-                raise rhnException("No entry found for user %s" % self.contact["login"])
+                raise rhnException("No entry found for user %s" % self.contact["login"])  #  pylint: disable=consider-using-f-string
             if data["use_pam_authentication"] == "Y":
                 # use PAM
-                from . import rhnAuthPAM
+                from . import rhnAuthPAM  #  pylint: disable=import-outside-toplevel
 
                 return rhnAuthPAM.check_password(
                     self.contact["login"], password, CFG.pam_auth_service
@@ -170,14 +170,14 @@ class User:
         if not name:
             return -1
         name = name.lower()
-        if type(value) == type(""):
+        if type(value) == type(""):  #  pylint: disable=unidiomatic-typecheck
             value = value.strip()
         # We have to watch over carefully for different field names
         # being sent from rhn_register
         changed = 0
 
         # translation
-        if name in list(mapping.keys()):
+        if name in list(mapping.keys()):  #  pylint: disable=consider-iterating-dictionary
             name = mapping[name]
         # Some fields can not have null string values
         if name in [
@@ -220,7 +220,7 @@ class User:
                 self.info["prefix"] = valids[value]
                 changed = 1
             else:
-                log_error("Unknown prefix value `%s'. Assumed `Mr.' instead" % value)
+                log_error("Unknown prefix value `%s'. Assumed `Mr.' instead" % value)  #  pylint: disable=consider-using-f-string
                 self.info["prefix"] = "Mr."
                 changed = 1
 
@@ -252,7 +252,7 @@ class User:
             self.site[name] = value[:60]
             changed = 1
         if not changed:
-            log_error("SET_INFO: Unknown info `%s' = `%s'" % (name, value))
+            log_error("SET_INFO: Unknown info `%s' = `%s'" % (name, value))  #  pylint: disable=consider-using-f-string
         return 0
 
     def get_roles(self):
@@ -282,8 +282,8 @@ class User:
         if not self.customer.load(self.contact["org_id"]):
             raise rhnException(
                 "Could not find org record",
-                "user_id = %s" % user_id,
-                "org_id = %s" % self.contact["org_id"],
+                "user_id = %s" % user_id,  #  pylint: disable=consider-using-f-string
+                "org_id = %s" % self.contact["org_id"],  #  pylint: disable=consider-using-f-string
             )
         # These other ones are non fatal because we can create dummy records
         if not self.info.load(user_id):
@@ -358,7 +358,7 @@ def search(user):
     if not userid:  # no user found
         return None
     ret = User(user, "")
-    if not ret.reload(userid) == 0:
+    if not ret.reload(userid) == 0:  #  pylint: disable=unnecessary-negation
         # something horked during reloading entry from database
         # we can not realy say that the entry does not exist...
         raise rhnFault(10)
@@ -403,7 +403,7 @@ def reserve_user(username, password):
     return __reserve_user_db(username, password)
 
 
-def __reserve_user_db(user, password):
+def __reserve_user_db(user, password):  #  pylint: disable=invalid-name
     encrypted_password = CFG.encrypted_passwords
     log_debug(
         3, user, CFG.disallow_user_creation, encrypted_password, CFG.pam_auth_service
@@ -423,7 +423,7 @@ def __reserve_user_db(user, password):
         # contact exists, check password
         if data["use_pam_authentication"] == "Y" and CFG.pam_auth_service:
             # We use PAM for authentication
-            from . import rhnAuthPAM
+            from . import rhnAuthPAM  #  pylint: disable=import-outside-toplevel
 
             if rhnAuthPAM.check_password(user, password, CFG.pam_auth_service) > 0:
                 return 1
@@ -480,7 +480,7 @@ def new_user(username, password, email, org_id, org_password):
     return __new_user_db(username, password, email, org_id, org_password)
 
 
-def __new_user_db(username, password, email, org_id, org_password):
+def __new_user_db(username, password, email, org_id, org_password):  #  pylint: disable=invalid-name,unused-argument,unused-argument
     encrypted_password = CFG.encrypted_passwords
     log_debug(3, username, email, encrypted_password)
 
@@ -523,15 +523,15 @@ def __new_user_db(username, password, email, org_id, org_password):
     # Note that if the user is only reserved we don't do PAM authentication
     if data.get("use_pam_authentication") == "Y" and CFG.pam_auth_service:
         # Check the password with PAM
-        from . import rhnAuthPAM
+        from . import rhnAuthPAM  #  pylint: disable=import-outside-toplevel
 
         if rhnAuthPAM.check_password(username, password, CFG.pam_auth_service) <= 0:
             # Bad password
             raise rhnFault(2)
         # We don't care about the password anymore, replace it with something
-        import time
+        import time  #  pylint: disable=import-outside-toplevel
 
-        password = "pam:%.8f" % time.time()
+        password = "pam:%.8f" % time.time()  #  pylint: disable=consider-using-f-string
     else:
         # Regular authentication
         if check_password(password, data["password"]) == 0:
@@ -565,7 +565,7 @@ def check_user_password(username, password):
     # Invalid characters
     # ***NOTE*** Must coordinate with web and installer folks about any
     # changes to this set of characters!!!!
-    invalid_re = re.compile(".*[\s&+%'`\"=#]", re.I)
+    invalid_re = re.compile(".*[\s&+%'`\"=#]", re.I)  #  pylint: disable=anomalous-backslash-in-string
     tmp = invalid_re.match(username)
     if tmp is not None:
         pos = tmp.regs[0]
@@ -646,9 +646,9 @@ def encrypt_password(key, salt=None, method="SHA-256"):
 
     if not salt:
         # No salt supplied, generate it ourselves
-        import base64
-        import time
-        import os
+        import base64  #  pylint: disable=import-outside-toplevel
+        import time  #  pylint: disable=import-outside-toplevel
+        import os  #  pylint: disable=import-outside-toplevel
 
         # Get the first 15 digits after the decimal point from time.time(), and
         # add the pid too

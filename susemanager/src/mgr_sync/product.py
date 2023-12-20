@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*- pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2014 SUSE
 #
@@ -21,7 +21,7 @@ from spacewalk.susemanager.mgr_sync.channel import Channel
 
 
 @total_ordering
-class Product(object):
+class Product(object):  #  pylint: disable=missing-class-docstring
     class Status(str, Enum):  # pylint: disable=too-few-public-methods
         INSTALLED = "INSTALLED"
         AVAILABLE = "AVAILABLE"
@@ -44,8 +44,8 @@ class Product(object):
         return self.friendly_name == other.friendly_name
 
     def __lt__(self, other):
-        self_is_SUSE = self.friendly_name.startswith("SUSE")
-        other_is_SUSE = other.friendly_name.startswith("SUSE")
+        self_is_SUSE = self.friendly_name.startswith("SUSE")  #  pylint: disable=invalid-name
+        other_is_SUSE = other.friendly_name.startswith("SUSE")  #  pylint: disable=invalid-name
         if self_is_SUSE and not other_is_SUSE:
             return False
         if not self_is_SUSE and other_is_SUSE:
@@ -56,20 +56,20 @@ class Product(object):
     def short_status(self):
         # pylint: disable=E1101
         if self.status == Product.Status.AVAILABLE:
-            return "[ ]%s" % (self.recommended and " (R)" or "")
+            return "[ ]%s" % (self.recommended and " (R)" or "")  #  pylint: disable=consider-using-f-string
         else:
-            return "[%s]%s" % (
+            return "[%s]%s" % (  #  pylint: disable=consider-using-f-string
                 str(self.status.value)[0],
                 self.recommended and " (R)" or "",
             )
 
     def to_ascii_row(self):
-        return "{0} {1}".format(self.short_status, self.friendly_name)
+        return "{0} {1}".format(self.short_status, self.friendly_name)  #  pylint: disable=consider-using-f-string
 
     def to_stdout(
         self,
         indentation_level=0,
-        filter=None,
+        filter=None,  #  pylint: disable=redefined-builtin
         expand=False,  # pylint: disable=redefined-builtin
         interactive_data=None,
     ):
@@ -81,7 +81,7 @@ class Product(object):
                 prefix = "     " + prefix
             else:
                 counter = interactive_data["counter"]
-                prefix = "{0:03}) {1}".format(counter, prefix)
+                prefix = "{0:03}) {1}".format(counter, prefix)  #  pylint: disable=consider-using-f-string
                 interactive_data["num_prod"][counter] = self
                 interactive_data["counter"] += 1
 
@@ -130,7 +130,7 @@ def parse_products(data, log):
     for pdata in data:
         prd = Product(pdata)
         prd.isBase = True
-        log.debug("Found product '{0} {1}'".format(prd.friendly_name, prd.arch))
+        log.debug("Found product '{0} {1}'".format(prd.friendly_name, prd.arch))  #  pylint: disable=consider-using-f-string
         products.append(prd)
 
     products.sort()

@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring,invalid-name
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -31,7 +31,7 @@ class TestRhnpush(TestServer.TestServer):
     def _init_app(self):
         self.app = server.app.packages.Packages()
 
-    def getApp(self):
+    def getApp(self):  #  pylint: disable=invalid-name
         return self.app
 
 
@@ -44,5 +44,5 @@ if __name__ == "__main__":
     server = SimpleXMLRPCServer.SimpleXMLRPCServer(addr=("", 16000))
     for func in app.functions:
         print(func)
-        server.register_function(getattr(app, func), name="app.%s" % (func))
+        server.register_function(getattr(app, func), name="app.%s" % (func))  #  pylint: disable=consider-using-f-string
     server.serve_forever()

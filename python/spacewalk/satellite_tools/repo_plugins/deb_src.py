@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2016--2017 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -48,7 +48,7 @@ FORMAT_PRIORITY = [".xz", ".gz", ""]
 log = logging.getLogger(__name__)
 
 
-class DebPackage:
+class DebPackage:  #  pylint: disable=missing-class-docstring
     def __init__(self):
         self.name = None
         self.epoch = None
@@ -68,11 +68,11 @@ class DebPackage:
     def evr(self):
         evr = ""
         if self.epoch:
-            evr = evr + "{}:".format(self.epoch)
+            evr = evr + "{}:".format(self.epoch)  #  pylint: disable=consider-using-f-string
         if self.version:
-            evr = evr + "{}".format(self.version)
+            evr = evr + "{}".format(self.version)  #  pylint: disable=consider-using-f-string
         if self.release:
-            evr = evr + "-{}".format(self.release)
+            evr = evr + "-{}".format(self.release)  #  pylint: disable=consider-using-f-string
         return evr
 
     def is_populated(self):
@@ -93,7 +93,7 @@ class DebPackage:
         )
 
 
-class DebRepo:
+class DebRepo:  #  pylint: disable=missing-class-docstring
     # url example - http://ftp.debian.org/debian/dists/jessie/main/binary-amd64/
     def __init__(
         self,
@@ -129,9 +129,9 @@ class DebRepo:
             parsed_url = parsed_url._replace(query=urlparse.urlencode(new_query))
             base_url = urlparse.urlunparse(parsed_url)
             path_list = parsed_url.path.split("/")
-            log2(0, 0, "Base URL: {}".format(base_url))
-            log2(0, 0, "Suite: {}".format(suite))
-            log2(0, 0, "Component: {}".format(component))
+            log2(0, 0, "Base URL: {}".format(base_url))  #  pylint: disable=consider-using-f-string
+            log2(0, 0, "Suite: {}".format(suite))  #  pylint: disable=consider-using-f-string
+            log2(0, 0, "Component: {}".format(component))  #  pylint: disable=consider-using-f-string
             if "/" not in suite:
                 path_list.append("dists")
             path_list.extend(suite.split("/"))
@@ -163,8 +163,8 @@ class DebRepo:
                             else:
                                 arch = aspl[1]
                 if arch:
-                    log2(0, 0, "Channel architecture: {}".format(arch))
-                    path_list.append("binary-{}".format(arch))
+                    log2(0, 0, "Channel architecture: {}".format(arch))  #  pylint: disable=consider-using-f-string
+                    path_list.append("binary-{}".format(arch))  #  pylint: disable=consider-using-f-string
             while "" in path_list:
                 path_list.remove("")
             parsed_url = parsed_url._replace(path="/".join(path_list))
@@ -183,7 +183,7 @@ class DebRepo:
 
         self.basecachedir = cache_dir
         if not os.path.isdir(self.basecachedir):
-            with cfg_component(component=None) as CFG:
+            with cfg_component(component=None) as CFG:  #  pylint: disable=invalid-name
                 fileutils.makedirs(
                     self.basecachedir, user=CFG.httpd_user, group=CFG.httpd_group
                 )
@@ -348,7 +348,7 @@ class DebRepo:
         return to_return
 
 
-class ContentSource:
+class ContentSource:  #  pylint: disable=missing-class-docstring
     def __init__(
         self,
         url,
@@ -374,16 +374,16 @@ class ContentSource:
             self.org = "NULL"
 
         # read the proxy configuration in /etc/rhn/rhn.conf
-        with cfg_component("server.satellite") as CFG:
+        with cfg_component("server.satellite") as CFG:  #  pylint: disable=invalid-name
             self.proxy_addr, self.proxy_user, self.proxy_pass = get_proxy(self.url)
             self.authtoken = None
 
-            # Replace non-valid characters from reponame (only alphanumeric chars allowed)
+            # Replace non-valid characters from reponame (only alphanumeric chars allowed)  #  pylint: disable=line-too-long
             self.reponame = "".join([x if x.isalnum() else "_" for x in self.name])
             self.channel_label = channel_label
 
             # SUSE vendor repositories belongs to org = NULL
-            # The repository cache root will be "/var/cache/rhn/reposync/REPOSITORY_LABEL/"
+            # The repository cache root will be "/var/cache/rhn/reposync/REPOSITORY_LABEL/"  #  pylint: disable=line-too-long
             root = os.path.join(CACHE_DIR, str(org or "NULL"), self.reponame)
             self.repo = DebRepo(
                 url,
@@ -401,7 +401,7 @@ class ContentSource:
             self.num_excluded = 0
 
             # keep authtokens for mirroring
-            (_scheme, _netloc, _path, query, _fragid) = urlparse.urlsplit(url)
+            (_scheme, _netloc, _path, query, _fragid) = urlparse.urlsplit(url)  #  pylint: disable=invalid-name,invalid-name,invalid-name,invalid-name,unused-variable,unused-variable,unused-variable,unused-variable
             if query:
                 self.authtoken = query
 
@@ -440,8 +440,8 @@ class ContentSource:
         if latest:
             latest_pkgs = {}
             for pkg in pkglist:
-                ident = "{}.{}".format(pkg.name, pkg.arch)
-                if ident not in latest_pkgs.keys() or LooseVersion(
+                ident = "{}.{}".format(pkg.name, pkg.arch)  #  pylint: disable=consider-using-f-string
+                if ident not in latest_pkgs.keys() or LooseVersion(  #  pylint: disable=consider-iterating-dictionary
                     pkg.evr()
                 ) > LooseVersion(latest_pkgs[ident].evr()):
                     latest_pkgs[ident] = pkg
@@ -586,7 +586,7 @@ class ContentSource:
         params["proxies"] = get_proxies(
             self.repo.proxy, self.repo.proxy_username, self.repo.proxy_password
         )
-        with cfg_component("server.satellite") as CFG:
+        with cfg_component("server.satellite") as CFG:  #  pylint: disable=invalid-name
             params["urlgrabber_logspec"] = CFG.get("urlgrabber_logspec")
 
     @staticmethod
@@ -594,5 +594,5 @@ class ContentSource:
         # pylint: disable=W0613
         # Called from import_kickstarts, not working for deb repo
         log2(
-            0, 0, "Unable to download path %s from deb repo." % path, stream=sys.stderr
+            0, 0, "Unable to download path %s from deb repo." % path, stream=sys.stderr  #  pylint: disable=consider-using-f-string
         )

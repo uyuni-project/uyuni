@@ -1,14 +1,14 @@
 """
 Input types for the mgr-libmod
 """
-from typing import List, Tuple, Any, AnyStr, Union, Optional, Dict, Set, cast
-import collections
+from typing import List, Tuple, Any, AnyStr, Union, Optional, Dict, Set, cast  #  pylint: disable=unused-import,unused-import,unused-import,unused-import
+import collections  #  pylint: disable=unused-import
 import json
 from abc import ABC, abstractmethod
 from mgrlibmod import mlerrcode
 
 
-class MLSet(list):
+class MLSet(list):  #  pylint: disable=missing-class-docstring
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -65,7 +65,7 @@ class MLPackageType(MLAnyType):
     Package type input.
     """
 
-    def __init__(self):
+    def __init__(self):  #  pylint: disable=super-init-not-called
         """
         Constructor
         """
@@ -103,7 +103,7 @@ class MLStreamType:
         self.__exc = Exception("This is a read-only property")
 
     def __repr__(self) -> str:
-        return "<{} ({}/{}) at {}>".format(
+        return "<{} ({}/{}) at {}>".format(  #  pylint: disable=consider-using-f-string
             self.__class__.__name__, self.__name, self.__stream, hex(id(self))
         )
 
@@ -185,7 +185,7 @@ class MLInputType(MLAnyType):
         for str_kw in obj["streams"]:
             if "name" not in str_kw:
                 raise mlerrcode.MlRequestError(
-                    "No 'name' attribute in the stream parameter {}".format(str_kw)
+                    "No 'name' attribute in the stream parameter {}".format(str_kw)  #  pylint: disable=consider-using-f-string
                 )
             out.append(
                 MLStreamType(name=str_kw["name"], streamname=str_kw.get("stream") or "")
@@ -199,7 +199,7 @@ class MLErrorType(MLAnyType):
     Error response
     """
 
-    def __init__(self, exc: Exception = None):
+    def __init__(self, exc: Exception = None):  #  pylint: disable=super-init-not-called
         """
         Constructor.
         """

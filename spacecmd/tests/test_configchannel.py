@@ -5,7 +5,7 @@ Configchannel module unit tests.
 
 import os
 from unittest.mock import MagicMock, patch
-from helpers import shell, assert_expect, assert_list_args_expect, assert_args_expect
+from helpers import shell, assert_expect, assert_list_args_expect, assert_args_expect  #  pylint: disable=unused-import
 import spacecmd.configchannel
 
 
@@ -14,7 +14,7 @@ class TestSCConfigChannel:
     Test configuration channel.
     """
 
-    def test_configchannel_list_noret(self, shell):
+    def test_configchannel_list_noret(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test configuration channel list, no data return.
 
@@ -32,7 +32,7 @@ class TestSCConfigChannel:
             ]
         )
         mprint = MagicMock()
-        with patch("spacecmd.configchannel.print", mprint) as prt:
+        with patch("spacecmd.configchannel.print", mprint) as prt:  #  pylint: disable=unused-variable
             ret = spacecmd.configchannel.do_configchannel_list(
                 shell, "", doreturn=False
             )
@@ -47,7 +47,7 @@ class TestSCConfigChannel:
             "\nboese_channel\nother_channel\nze_channel",
         )
 
-    def test_configchannel_list_data(self, shell):
+    def test_configchannel_list_data(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test configuration channel list, return data.
 
@@ -65,7 +65,7 @@ class TestSCConfigChannel:
             ]
         )
         mprint = MagicMock()
-        with patch("spacecmd.configchannel.print", mprint) as prt:
+        with patch("spacecmd.configchannel.print", mprint) as prt:  #  pylint: disable=unused-variable
             ret = spacecmd.configchannel.do_configchannel_list(shell, "", doreturn=True)
 
         assert not mprint.called
@@ -80,7 +80,7 @@ class TestSCConfigChannel:
             "ze_channel",
         ]
 
-    def test_configchannel_listsystems_api_version_handling(self, shell):
+    def test_configchannel_listsystems_api_version_handling(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test configchannel listsystems function. Check version limitation.
 
@@ -90,16 +90,16 @@ class TestSCConfigChannel:
         shell.check_api_version = MagicMock(return_value=False)
         mprint = MagicMock()
         logger = MagicMock()
-        with patch("spacecmd.configchannel.print", mprint) as prt, patch(
+        with patch("spacecmd.configchannel.print", mprint) as prt, patch(  #  pylint: disable=unused-variable
             "spacecmd.configchannel.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.configchannel.do_configchannel_listsystems(shell, "")
 
         assert not mprint.called
         assert not shell.client.configchannel.listSubscribedSystems.called
         assert not shell.help_configchannel_listsystems.called
 
-    def test_configchannel_listsystems_api_noarg(self, shell):
+    def test_configchannel_listsystems_api_noarg(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test configchannel listsystems function. No arguments passed.
 
@@ -109,16 +109,16 @@ class TestSCConfigChannel:
         shell.check_api_version = MagicMock(return_value=True)
         mprint = MagicMock()
         logger = MagicMock()
-        with patch("spacecmd.configchannel.print", mprint) as prt, patch(
+        with patch("spacecmd.configchannel.print", mprint) as prt, patch(  #  pylint: disable=unused-variable
             "spacecmd.configchannel.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.configchannel.do_configchannel_listsystems(shell, "")
 
         assert not mprint.called
         assert not shell.client.configchannel.listSubscribedSystems.called
         assert shell.help_configchannel_listsystems.called
 
-    def test_configchannel_listsystems_api_sorted_output(self, shell):
+    def test_configchannel_listsystems_api_sorted_output(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test configchannel listsystems function. Output must be sorted.
 
@@ -141,9 +141,9 @@ class TestSCConfigChannel:
         shell.check_api_version = MagicMock(return_value=True)
         mprint = MagicMock()
         logger = MagicMock()
-        with patch("spacecmd.configchannel.print", mprint) as prt, patch(
+        with patch("spacecmd.configchannel.print", mprint) as prt, patch(  #  pylint: disable=unused-variable
             "spacecmd.configchannel.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.configchannel.do_configchannel_listsystems(shell, "some_channel")
 
         assert not shell.help_configchannel_listsystems.called
@@ -155,7 +155,7 @@ class TestSCConfigChannel:
             "\nquakearena\nsisteme\nsystem\nzitrix",
         )
 
-    def test_configchannel_listfiles_noarg(self, shell):
+    def test_configchannel_listfiles_noarg(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test configchannel_listfiles function. No args.
 
@@ -164,16 +164,16 @@ class TestSCConfigChannel:
         """
         mprint = MagicMock()
         logger = MagicMock()
-        with patch("spacecmd.configchannel.print", mprint) as prt, patch(
+        with patch("spacecmd.configchannel.print", mprint) as prt, patch(  #  pylint: disable=unused-variable
             "spacecmd.configchannel.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.configchannel.do_configchannel_listfiles(shell, "")
 
         assert not shell.client.configchannel.listFiles.called
         assert not mprint.called
         assert shell.help_configchannel_listfiles.called
 
-    def test_configchannel_listfiles_sorted_data(self, shell):
+    def test_configchannel_listfiles_sorted_data(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test configchannel_listfiles function. Data is sorted for STDOUT.
 
@@ -192,10 +192,10 @@ class TestSCConfigChannel:
                 {"path": "/etc/ssh.conf"},
             ]
         )
-        with patch("spacecmd.configchannel.print", mprint) as prt, patch(
+        with patch("spacecmd.configchannel.print", mprint) as prt, patch(  #  pylint: disable=unused-variable
             "spacecmd.configchannel.logging", logger
-        ) as lgr:
-            data = spacecmd.configchannel.do_configchannel_listfiles(
+        ) as lgr:  #  pylint: disable=unused-variable
+            data = spacecmd.configchannel.do_configchannel_listfiles(  #  pylint: disable=unused-variable
                 shell, "some_channel"
             )
 
@@ -208,7 +208,7 @@ class TestSCConfigChannel:
             "\n/tmp/somefile.txt\n/tmp/someother.txt\n/tmp/zypper.rpm",
         )
 
-    def test_configchannel_listfiles_sorted_data_out(self, shell):
+    def test_configchannel_listfiles_sorted_data_out(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test configchannel_listfiles function. Data is sorted as a type.
 
@@ -227,9 +227,9 @@ class TestSCConfigChannel:
                 {"path": "/etc/ssh.conf"},
             ]
         )
-        with patch("spacecmd.configchannel.print", mprint) as prt, patch(
+        with patch("spacecmd.configchannel.print", mprint) as prt, patch(  #  pylint: disable=unused-variable
             "spacecmd.configchannel.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             data = spacecmd.configchannel.do_configchannel_listfiles(
                 shell, "some_channel", doreturn=True
             )
@@ -247,7 +247,7 @@ class TestSCConfigChannel:
             "/tmp/zypper.rpm",
         ]
 
-    def test_configchannel_forcedeploy_noargs(self, shell):
+    def test_configchannel_forcedeploy_noargs(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test configchannel_forcedeploy function. No arguments.
 
@@ -257,9 +257,9 @@ class TestSCConfigChannel:
         mprint = MagicMock()
         logger = MagicMock()
         shell.user_confirm = MagicMock()
-        with patch("spacecmd.configchannel.print", mprint) as prt, patch(
+        with patch("spacecmd.configchannel.print", mprint) as prt, patch(  #  pylint: disable=unused-variable
             "spacecmd.configchannel.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.configchannel.do_configchannel_forcedeploy(shell, "")
 
         assert not mprint.called
@@ -271,7 +271,7 @@ class TestSCConfigChannel:
         assert not shell.client.configchannel.deployAllSystems.called
         assert shell.help_configchannel_forcedeploy.called
 
-    def test_configchannel_forcedeploy_too_much_args(self, shell):
+    def test_configchannel_forcedeploy_too_much_args(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test configchannel_forcedeploy function. Too much arguments.
 
@@ -281,9 +281,9 @@ class TestSCConfigChannel:
         mprint = MagicMock()
         logger = MagicMock()
         shell.user_confirm = MagicMock()
-        with patch("spacecmd.configchannel.print", mprint) as prt, patch(
+        with patch("spacecmd.configchannel.print", mprint) as prt, patch(  #  pylint: disable=unused-variable
             "spacecmd.configchannel.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.configchannel.do_configchannel_forcedeploy(
                 shell, "base_channel illegally_entered_channel"
             )
@@ -297,7 +297,7 @@ class TestSCConfigChannel:
         assert not shell.client.configchannel.deployAllSystems.called
         assert shell.help_configchannel_forcedeploy.called
 
-    def test_configchannel_forcedeploy_no_files(self, shell):
+    def test_configchannel_forcedeploy_no_files(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test configchannel_forcedeploy function. No files found (or incomplete data).
 
@@ -312,9 +312,9 @@ class TestSCConfigChannel:
         mprint = MagicMock()
         logger = MagicMock()
         shell.user_confirm = MagicMock()
-        with patch("spacecmd.configchannel.print", mprint) as prt, patch(
+        with patch("spacecmd.configchannel.print", mprint) as prt, patch(  #  pylint: disable=unused-variable
             "spacecmd.configchannel.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.configchannel.do_configchannel_forcedeploy(shell, "base_channel")
 
         assert not shell.help_configchannel_forcedeploy.called
@@ -327,7 +327,7 @@ class TestSCConfigChannel:
         assert mprint.called
         assert_expect(mprint.call_args_list, "No files within selected configchannel.")
 
-    def test_configchannel_forcedeploy_no_systems(self, shell):
+    def test_configchannel_forcedeploy_no_systems(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test configchannel_forcedeploy function. No subscribed systems.
 
@@ -344,9 +344,9 @@ class TestSCConfigChannel:
         mprint = MagicMock()
         logger = MagicMock()
         shell.user_confirm = MagicMock()
-        with patch("spacecmd.configchannel.print", mprint) as prt, patch(
+        with patch("spacecmd.configchannel.print", mprint) as prt, patch(  #  pylint: disable=unused-variable
             "spacecmd.configchannel.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.configchannel.do_configchannel_forcedeploy(shell, "base_channel")
 
         assert not shell.help_configchannel_forcedeploy.called
@@ -359,7 +359,7 @@ class TestSCConfigChannel:
         assert mprint.called
         assert_expect(mprint.call_args_list, "Channel has no subscribed Systems")
 
-    def test_configchannel_forcedeploy_deploy_output(self, shell):
+    def test_configchannel_forcedeploy_deploy_output(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test configchannel_forcedeploy function. Output test.
 
@@ -381,9 +381,9 @@ class TestSCConfigChannel:
         mprint = MagicMock()
         logger = MagicMock()
         shell.user_confirm = MagicMock()
-        with patch("spacecmd.configchannel.print", mprint) as prt, patch(
+        with patch("spacecmd.configchannel.print", mprint) as prt, patch(  #  pylint: disable=unused-variable
             "spacecmd.configchannel.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.configchannel.do_configchannel_forcedeploy(shell, "base_channel")
 
         assert not shell.help_configchannel_forcedeploy.called
@@ -404,7 +404,7 @@ class TestSCConfigChannel:
             "beigebox.acme.org\nbutterfly.acme.org",
         )
 
-    def test_configchannel_filedetails_no_args(self, shell):
+    def test_configchannel_filedetails_no_args(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test configchannel_filedetails function with no arguments.
 
@@ -414,9 +414,9 @@ class TestSCConfigChannel:
         mprint = MagicMock()
         logger = MagicMock()
         shell.user_confirm = MagicMock()
-        with patch("spacecmd.configchannel.print", mprint) as prt, patch(
+        with patch("spacecmd.configchannel.print", mprint) as prt, patch(  #  pylint: disable=unused-variable
             "spacecmd.configchannel.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.configchannel.do_configchannel_filedetails(shell, "")
 
         assert not shell.client.configchannel.lookupFileInfo.called
@@ -427,7 +427,7 @@ class TestSCConfigChannel:
         assert not logger.info.called
         assert shell.help_configchannel_filedetails.called
 
-    def test_configchannel_filedetails_wrong_amt_args(self, shell):
+    def test_configchannel_filedetails_wrong_amt_args(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test configchannel_filedetails function with wrong amount of arguments.
 
@@ -438,9 +438,9 @@ class TestSCConfigChannel:
             mprint = MagicMock()
             logger = MagicMock()
             shell.user_confirm = MagicMock()
-            with patch("spacecmd.configchannel.print", mprint) as prt, patch(
+            with patch("spacecmd.configchannel.print", mprint) as prt, patch(  #  pylint: disable=unused-variable
                 "spacecmd.configchannel.logging", logger
-            ) as lgr:
+            ) as lgr:  #  pylint: disable=unused-variable
                 spacecmd.configchannel.do_configchannel_filedetails(shell, args)
 
             assert not shell.client.configchannel.lookupFileInfo.called
@@ -451,7 +451,7 @@ class TestSCConfigChannel:
             assert not logger.info.called
             assert shell.help_configchannel_filedetails.called
 
-    def test_configchannel_filedetails_wrong_revision(self, shell):
+    def test_configchannel_filedetails_wrong_revision(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test configchannel_filedetails function with wrong amount of arguments.
 
@@ -461,9 +461,9 @@ class TestSCConfigChannel:
         mprint = MagicMock()
         logger = MagicMock()
         shell.user_confirm = MagicMock()
-        with patch("spacecmd.configchannel.print", mprint) as prt, patch(
+        with patch("spacecmd.configchannel.print", mprint) as prt, patch(  #  pylint: disable=unused-variable
             "spacecmd.configchannel.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.configchannel.do_configchannel_filedetails(
                 shell, "base_channel /tmp/file.txt kaboom"
             )
@@ -480,7 +480,7 @@ class TestSCConfigChannel:
             logger.error.call_args_list, [(("Invalid revision: %s", "kaboom"), {})]
         )
 
-    def test_configchannel_filedetails_invalid_files(self, shell):
+    def test_configchannel_filedetails_invalid_files(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test configchannel_filedetails function with invalid files.
 
@@ -496,9 +496,9 @@ class TestSCConfigChannel:
                 "/tmp/another-valid.file",
             ]
         )
-        with patch("spacecmd.configchannel.print", mprint) as prt, patch(
+        with patch("spacecmd.configchannel.print", mprint) as prt, patch(  #  pylint: disable=unused-variable
             "spacecmd.configchannel.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.configchannel.do_configchannel_filedetails(
                 shell, "base_channel /tmp/file.txt"
             )
@@ -511,7 +511,7 @@ class TestSCConfigChannel:
         assert shell.do_configchannel_listfiles.called
         assert logger.warning.called
 
-    def test_configchannel_filedetails_with_invalid_revision(self, shell):
+    def test_configchannel_filedetails_with_invalid_revision(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test configchannel_filedetails function with invalid revision
 
@@ -524,9 +524,9 @@ class TestSCConfigChannel:
         shell.do_configchannel_listfiles = MagicMock(
             return_value=["/tmp/valid.file", "/tmp/another-valid.file", "/tmp/file.txt"]
         )
-        with patch("spacecmd.configchannel.print", mprint) as prt, patch(
+        with patch("spacecmd.configchannel.print", mprint) as prt, patch(  #  pylint: disable=unused-variable
             "spacecmd.configchannel.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.configchannel.do_configchannel_filedetails(
                 shell, "base_channel /tmp/file.txt 0.3"
             )
@@ -543,7 +543,7 @@ class TestSCConfigChannel:
             logger.error.call_args_list, [(("Invalid revision: %s", "0.3"), {})]
         )
 
-    def test_configchannel_filedetails_with_correct_revision_na(self, shell):
+    def test_configchannel_filedetails_with_correct_revision_na(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test configchannel_filedetails function with correct revision, data N/A.
 
@@ -560,8 +560,8 @@ class TestSCConfigChannel:
         )
         with patch("spacecmd.configchannel.print") as mprint, patch(
             "spacecmd.configchannel.logging", logger
-        ) as lgr:
-            result = spacecmd.configchannel.do_configchannel_filedetails(
+        ) as lgr:  #  pylint: disable=unused-variable
+            result = spacecmd.configchannel.do_configchannel_filedetails(  #  pylint: disable=unused-variable
                 shell, "base_channel /tmp/file.txt 3"
             )
 
@@ -588,7 +588,7 @@ class TestSCConfigChannel:
             ],
         )
 
-    def test_configchannel_filedetails_with_correct_revision_data(self, shell):
+    def test_configchannel_filedetails_with_correct_revision_data(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test configchannel_filedetails function with correct revision, data available.
 
@@ -618,8 +618,8 @@ class TestSCConfigChannel:
         )
         with patch("spacecmd.configchannel.print") as mprint, patch(
             "spacecmd.configchannel.logging", logger
-        ) as lgr:
-            result = spacecmd.configchannel.do_configchannel_filedetails(
+        ) as lgr:  #  pylint: disable=unused-variable
+            result = spacecmd.configchannel.do_configchannel_filedetails(  #  pylint: disable=unused-variable
                 shell, "base_channel /tmp/file.txt 3"
             )
 
@@ -652,7 +652,7 @@ class TestSCConfigChannel:
             ],
         )
 
-    def test_configchannel_backup_noargs(self, shell):
+    def test_configchannel_backup_noargs(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test configchannel_backup function without args.
 
@@ -661,13 +661,13 @@ class TestSCConfigChannel:
         """
         mprint = MagicMock()
         logger = MagicMock()
-        _datetime = MagicMock()
-        _os = MagicMock()
+        _datetime = MagicMock()  #  pylint: disable=invalid-name
+        _os = MagicMock()  #  pylint: disable=invalid-name
         with patch("spacecmd.configchannel.open", create=True) as mopen, patch(
             "spacecmd.configchannel.os", _os
-        ) as mck_os, patch("spacecmd.configchannel.print", mprint) as mck_prt, patch(
+        ) as mck_os, patch("spacecmd.configchannel.print", mprint) as mck_prt, patch(  #  pylint: disable=unused-variable,unused-variable
             "spacecmd.configchannel.logging", mprint
-        ) as mck_lgr:
+        ) as mck_lgr:  #  pylint: disable=unused-variable
             mopen.return_value = MagicMock(spec=open)
             spacecmd.configchannel.do_configchannel_backup(shell, "")
 
@@ -681,7 +681,7 @@ class TestSCConfigChannel:
         assert not _datetime.called
         assert shell.help_configchannel_backup.called
 
-    def test_configchannel_backup_outputdir_failure(self, shell):
+    def test_configchannel_backup_outputdir_failure(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test configchannel_backup function with output directory failed to be created.
 
@@ -690,16 +690,16 @@ class TestSCConfigChannel:
         """
         mprint = MagicMock()
         logger = MagicMock()
-        _datetime = MagicMock()
-        _os = MagicMock()
+        _datetime = MagicMock()  #  pylint: disable=invalid-name
+        _os = MagicMock()  #  pylint: disable=invalid-name
         _os.path.expanduser = MagicMock(return_value="/dev/null/bofh")
         _os.path.isdir = MagicMock(return_value=False)
         _os.makedirs = MagicMock(side_effect=OSError("Fractal learning curve"))
         with patch("spacecmd.configchannel.open", create=True) as mopen, patch(
             "spacecmd.configchannel.os", _os
-        ) as mck_os, patch("spacecmd.configchannel.dir", mprint) as mck_prt, patch(
+        ) as mck_os, patch("spacecmd.configchannel.dir", mprint) as mck_prt, patch(  #  pylint: disable=unused-variable,unused-variable
             "spacecmd.configchannel.logging", logger
-        ) as mck_lgr:
+        ) as mck_lgr:  #  pylint: disable=unused-variable
             mopen.return_value = MagicMock(spec=open)
             spacecmd.configchannel.do_configchannel_backup(
                 shell, "base_channel /tmp/somewhere"
@@ -720,17 +720,17 @@ class TestSCConfigChannel:
             [(("Could not create output directory: %s", "Fractal learning curve"), {})],
         )
 
-    def test_configchannel_backup_outputdir_metainfo_failure(self, shell):
+    def test_configchannel_backup_outputdir_metainfo_failure(self, shell):  #  pylint: disable=redefined-outer-name
         """
-        Test configchannel_backup function with output directory, failed to create metainfo.
+        Test configchannel_backup function with output directory, failed to create metainfo.  #  pylint: disable=line-too-long
 
         :param shell:
         :return:
         """
         mprint = MagicMock()
         logger = MagicMock()
-        _datetime = MagicMock()
-        _os = MagicMock()
+        _datetime = MagicMock()  #  pylint: disable=invalid-name
+        _os = MagicMock()  #  pylint: disable=invalid-name
         _os.path.expanduser = MagicMock(return_value="/dev/null/bofh")
         _os.path.isdir = MagicMock(return_value=False)
         _os.path.join = os.path.join
@@ -738,11 +738,11 @@ class TestSCConfigChannel:
         with patch(
             "spacecmd.configchannel.open",
             MagicMock(side_effect=IOError("Bugs in the RAID")),
-        ) as mopen, patch("spacecmd.configchannel.os", _os) as mck_os, patch(
+        ) as mopen, patch("spacecmd.configchannel.os", _os) as mck_os, patch(  #  pylint: disable=unused-variable
             "spacecmd.configchannel.print", mprint
-        ) as mck_prt, patch(
+        ) as mck_prt, patch(  #  pylint: disable=unused-variable
             "spacecmd.configchannel.logging", logger
-        ) as mck_lgr:
+        ) as mck_lgr:  #  pylint: disable=unused-variable
             spacecmd.configchannel.do_configchannel_backup(
                 shell, "base_channel /tmp/somewhere"
             )
@@ -770,7 +770,7 @@ class TestSCConfigChannel:
             ],
         )
 
-    def test_configchannel_details_noargs(self, shell):
+    def test_configchannel_details_noargs(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test configchannel_details without directory.
 
@@ -780,9 +780,9 @@ class TestSCConfigChannel:
         mprint = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.configchannel.print", mprint) as prt, patch(
+        with patch("spacecmd.configchannel.print", mprint) as prt, patch(  #  pylint: disable=unused-variable
             "spacecmd.configchannel.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             out = spacecmd.configchannel.do_configchannel_details(shell, "")
 
         assert out is None
@@ -791,7 +791,7 @@ class TestSCConfigChannel:
         assert not shell.client.configchannel.listFiles.called
         assert shell.help_configchannel_details.called
 
-    def test_configchannel_details_channel(self, shell):
+    def test_configchannel_details_channel(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test configchannel_details.
 
@@ -816,9 +816,9 @@ class TestSCConfigChannel:
             ]
         )
 
-        with patch("spacecmd.configchannel.print", mprint) as prt, patch(
+        with patch("spacecmd.configchannel.print", mprint) as prt, patch(  #  pylint: disable=unused-variable
             "spacecmd.configchannel.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             out = spacecmd.configchannel.do_configchannel_details(shell, "base_channel")
 
         assert not mprint.called
@@ -840,7 +840,7 @@ class TestSCConfigChannel:
             "/dev/null/java.rpm",
         ]
 
-    def test_configchannel_create_noargs(self, shell):
+    def test_configchannel_create_noargs(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test configchannel_create, without arguments (turns into interactive).
 
@@ -855,7 +855,7 @@ class TestSCConfigChannel:
                 "normal",
             ]
         )
-        with patch("spacecmd.configchannel.prompt_user", puser) as pmt:
+        with patch("spacecmd.configchannel.prompt_user", puser) as pmt:  #  pylint: disable=unused-variable
             spacecmd.configchannel.do_configchannel_create(shell, "")
 
         assert puser.called
@@ -877,7 +877,7 @@ class TestSCConfigChannel:
             ],
         )
 
-    def test_configchannel_create_noargs_type_state(self, shell):
+    def test_configchannel_create_noargs_type_state(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test configchannel_create, interactive, testing "state" type.
 
@@ -892,7 +892,7 @@ class TestSCConfigChannel:
                 "state",
             ]
         )
-        with patch("spacecmd.configchannel.prompt_user", puser) as pmt:
+        with patch("spacecmd.configchannel.prompt_user", puser) as pmt:  #  pylint: disable=unused-variable
             spacecmd.configchannel.do_configchannel_create(shell, "")
 
         assert puser.called
@@ -914,7 +914,7 @@ class TestSCConfigChannel:
             ],
         )
 
-    def test_configchannel_create_noargs_wrong_type(self, shell):
+    def test_configchannel_create_noargs_wrong_type(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test configchannel_create, interactive, stop on wrong type
 
@@ -930,9 +930,9 @@ class TestSCConfigChannel:
                 "sausage",
             ]
         )
-        with patch("spacecmd.configchannel.prompt_user", puser) as pmt, patch(
+        with patch("spacecmd.configchannel.prompt_user", puser) as pmt, patch(  #  pylint: disable=unused-variable
             "spacecmd.configchannel.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.configchannel.do_configchannel_create(shell, "")
 
         assert not shell.client.configchannel.create.called
@@ -943,7 +943,7 @@ class TestSCConfigChannel:
             [(("Only [normal/state] values are acceptable for type",), {})],
         )
 
-    def test_configchannel_delete_noargs(self, shell):
+    def test_configchannel_delete_noargs(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Delete channel, no args.
 
@@ -953,9 +953,9 @@ class TestSCConfigChannel:
 
         logger = MagicMock()
         mprint = MagicMock()
-        with patch("spacecmd.configchannel.logging", logger) as lgr, patch(
+        with patch("spacecmd.configchannel.logging", logger) as lgr, patch(  #  pylint: disable=unused-variable
             "spacecmd.configchannel.print", mprint
-        ) as prt:
+        ) as prt:  #  pylint: disable=unused-variable
             spacecmd.configchannel.do_configchannel_delete(shell, "")
 
         assert not logger.error.called
@@ -965,7 +965,7 @@ class TestSCConfigChannel:
         assert not shell.do_configchannel_list.called
         assert shell.help_configchannel_delete.called
 
-    def test_configchannel_delete_wrong_channel(self, shell):
+    def test_configchannel_delete_wrong_channel(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Delete channel, missing channel
 
@@ -976,9 +976,9 @@ class TestSCConfigChannel:
         logger = MagicMock()
         mprint = MagicMock()
         shell.do_configchannel_list = MagicMock(return_value=["base_channel"])
-        with patch("spacecmd.configchannel.logging", logger) as lgr, patch(
+        with patch("spacecmd.configchannel.logging", logger) as lgr, patch(  #  pylint: disable=unused-variable
             "spacecmd.configchannel.print", mprint
-        ) as prt:
+        ) as prt:  #  pylint: disable=unused-variable
             spacecmd.configchannel.do_configchannel_delete(shell, "funny_channel")
 
         assert not mprint.called
@@ -992,7 +992,7 @@ class TestSCConfigChannel:
             [
                 (
                     (
-                        "configchannel_delete called with args ['funny_channel'], channels=[]",
+                        "configchannel_delete called with args ['funny_channel'], channels=[]",  #  pylint: disable=line-too-long
                     ),
                     {},
                 )
@@ -1003,7 +1003,7 @@ class TestSCConfigChannel:
             [(("No channels matched argument(s): funny_channel",), {})],
         )
 
-    def test_configchannel_delete(self, shell):
+    def test_configchannel_delete(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test configchannel_delete
 
@@ -1014,9 +1014,9 @@ class TestSCConfigChannel:
         logger = MagicMock()
         mprint = MagicMock()
         shell.do_configchannel_list = MagicMock(return_value=["base_channel"])
-        with patch("spacecmd.configchannel.logging", logger) as lgr, patch(
+        with patch("spacecmd.configchannel.logging", logger) as lgr, patch(  #  pylint: disable=unused-variable
             "spacecmd.configchannel.print", mprint
-        ) as prt:
+        ) as prt:  #  pylint: disable=unused-variable
             spacecmd.configchannel.do_configchannel_delete(shell, "base*")
 
         assert not shell.help_configchannel_delete.called
@@ -1030,7 +1030,7 @@ class TestSCConfigChannel:
             [
                 (
                     (
-                        "configchannel_delete called with args ['base.*'], channels=['base_channel']",
+                        "configchannel_delete called with args ['base.*'], channels=['base_channel']",  #  pylint: disable=line-too-long
                     ),
                     {},
                 )
@@ -1041,7 +1041,7 @@ class TestSCConfigChannel:
             [((shell.session, ["base_channel"]), {})],
         )
 
-    def test_configchannel_addfile_interactive_wrong_channels_abrt(self, shell):
+    def test_configchannel_addfile_interactive_wrong_channels_abrt(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test configchannel_addfile, interactive. Abort keep asking user about
         channels that cannot be obtained.
@@ -1052,9 +1052,9 @@ class TestSCConfigChannel:
         logger = MagicMock()
         mprint = MagicMock()
         prompter = MagicMock()
-        with patch("spacecmd.configchannel.logging", logger) as lgr, patch(
+        with patch("spacecmd.configchannel.logging", logger) as lgr, patch(  #  pylint: disable=unused-variable
             "spacecmd.configchannel.prompt_user", prompter
-        ) as pmt, patch("spacecmd.configchannel.print", mprint) as prt:
+        ) as pmt, patch("spacecmd.configchannel.print", mprint) as prt:  #  pylint: disable=unused-variable,unused-variable
             spacecmd.configchannel.do_configchannel_addfile(shell, "")
 
         assert not shell.client.configchannel.createOrUpdate.called
@@ -1089,7 +1089,7 @@ class TestSCConfigChannel:
             ],
         )
 
-    def test_configchannel_addfile_interactive_update_path(self, shell):
+    def test_configchannel_addfile_interactive_update_path(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test configchannel_addfile, interactive. Update path.
 
@@ -1106,9 +1106,9 @@ class TestSCConfigChannel:
         shell.do_configchannel_list = MagicMock(
             return_value=["cfg_channel", "another_cfg_channel", "perfect_cfg_channel"]
         )
-        with patch("spacecmd.configchannel.logging", logger) as lgr, patch(
+        with patch("spacecmd.configchannel.logging", logger) as lgr, patch(  #  pylint: disable=unused-variable
             "spacecmd.configchannel.prompt_user", prompter
-        ) as pmt, patch("spacecmd.configchannel.print", mprint) as prt:
+        ) as pmt, patch("spacecmd.configchannel.print", mprint) as prt:  #  pylint: disable=unused-variable,unused-variable
             spacecmd.configchannel.do_configchannel_addfile(shell, "")
 
         assert not shell.client.configchannel.createOrUpdateSymlink.called
@@ -1147,7 +1147,7 @@ class TestSCConfigChannel:
             ],
         )
 
-    def test_configchannel_addfile_interactive_update_symlink(self, shell):
+    def test_configchannel_addfile_interactive_update_symlink(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test configchannel_addfile, interactive. Update path.
 
@@ -1164,9 +1164,9 @@ class TestSCConfigChannel:
         shell.do_configchannel_list = MagicMock(
             return_value=["cfg_channel", "another_cfg_channel", "perfect_cfg_channel"]
         )
-        with patch("spacecmd.configchannel.logging", logger) as lgr, patch(
+        with patch("spacecmd.configchannel.logging", logger) as lgr, patch(  #  pylint: disable=unused-variable
             "spacecmd.configchannel.prompt_user", prompter
-        ) as pmt, patch("spacecmd.configchannel.print", mprint) as prt:
+        ) as pmt, patch("spacecmd.configchannel.print", mprint) as prt:  #  pylint: disable=unused-variable,unused-variable
             spacecmd.configchannel.do_configchannel_addfile(shell, "-s -c cfg_channel")
 
         assert not logger.warning.called
@@ -1195,7 +1195,7 @@ class TestSCConfigChannel:
             ],
         )
 
-    def test_configchannel_removefiles_noargs(self, shell):
+    def test_configchannel_removefiles_noargs(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_configchannel_removefiles no args.
 
@@ -1207,7 +1207,7 @@ class TestSCConfigChannel:
         assert not shell.client.configchannel.deleteFiles.called
         assert shell.help_configchannel_removefiles.called
 
-    def test_configchannel_removefiles_no_interactive(self, shell):
+    def test_configchannel_removefiles_no_interactive(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_configchannel_removefiles non interactive (options.yes = True)
 
@@ -1225,7 +1225,7 @@ class TestSCConfigChannel:
             [((shell.session, "somechannel", ["/tmp/deleteme"]), {})],
         )
 
-    def test_configchannel_removefiles_interactive(self, shell):
+    def test_configchannel_removefiles_interactive(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_configchannel_removefiles interactive (options.yes = False)
 
@@ -1245,7 +1245,7 @@ class TestSCConfigChannel:
             [((shell.session, "somechannel", ["/tmp/deleteme"]), {})],
         )
 
-    def test_configchannel_verifyfile_noargs(self, shell):
+    def test_configchannel_verifyfile_noargs(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_configchannel_verifyfile no args.
 
@@ -1253,7 +1253,7 @@ class TestSCConfigChannel:
         :return:
         """
         logger = MagicMock()
-        with patch("spacecmd.configchannel.logging", logger) as lgr:
+        with patch("spacecmd.configchannel.logging", logger) as lgr:  #  pylint: disable=unused-variable
             spacecmd.configchannel.do_configchannel_verifyfile(shell, "")
 
         assert not shell.client.configchannel.scheduleFileComparisons.called
@@ -1264,7 +1264,7 @@ class TestSCConfigChannel:
         assert not shell.get_system_id.called
         assert shell.help_configchannel_verifyfile.called
 
-    def test_configchannel_verifyfile_valid_args(self, shell):
+    def test_configchannel_verifyfile_valid_args(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_configchannel_verifyfile, args validation.
 
@@ -1273,7 +1273,7 @@ class TestSCConfigChannel:
         """
         for arg in ["base_channel", "base_channel /tmp/somefile"]:
             logger = MagicMock()
-            with patch("spacecmd.configchannel.logging", logger) as lgr:
+            with patch("spacecmd.configchannel.logging", logger) as lgr:  #  pylint: disable=unused-variable
                 spacecmd.configchannel.do_configchannel_verifyfile(shell, arg)
 
             assert not shell.client.configchannel.scheduleFileComparisons.called
@@ -1284,7 +1284,7 @@ class TestSCConfigChannel:
             assert not shell.get_system_id.called
             assert shell.help_configchannel_verifyfile.called
 
-    def test_configchannel_verifyfile_ssm_no_systems(self, shell):
+    def test_configchannel_verifyfile_ssm_no_systems(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_configchannel_verifyfile, SSM used. No systems has been found.
 
@@ -1293,7 +1293,7 @@ class TestSCConfigChannel:
         """
         logger = MagicMock()
         shell.ssm.keys = MagicMock(return_value={})
-        with patch("spacecmd.configchannel.logging", logger) as lgr:
+        with patch("spacecmd.configchannel.logging", logger) as lgr:  #  pylint: disable=unused-variable
             spacecmd.configchannel.do_configchannel_verifyfile(
                 shell, "base_channel /tmp/somefile ssm"
             )
@@ -1308,7 +1308,7 @@ class TestSCConfigChannel:
 
         assert_expect(logger.error.call_args_list, "No valid system selected")
 
-    def test_configchannel_verifyfile_ssm_no_valid_systems(self, shell):
+    def test_configchannel_verifyfile_ssm_no_valid_systems(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_configchannel_verifyfile, SSM used. No valid systems found (ID 0).
 
@@ -1318,7 +1318,7 @@ class TestSCConfigChannel:
         logger = MagicMock()
         shell.ssm.keys = MagicMock(return_value={"acme": {}, "beigebox": {}})
         shell.get_system_id = MagicMock(return_value=0)
-        with patch("spacecmd.configchannel.logging", logger) as lgr:
+        with patch("spacecmd.configchannel.logging", logger) as lgr:  #  pylint: disable=unused-variable
             spacecmd.configchannel.do_configchannel_verifyfile(
                 shell, "base_channel /tmp/somefile ssm"
             )
@@ -1333,9 +1333,9 @@ class TestSCConfigChannel:
 
         assert_expect(logger.error.call_args_list, "No valid system selected")
 
-    def test_configchannel_verifyfile_no_valid_systems(self, shell):
+    def test_configchannel_verifyfile_no_valid_systems(self, shell):  #  pylint: disable=redefined-outer-name
         """
-        Test do_configchannel_verifyfile, direct systems request. No valid systems found.
+        Test do_configchannel_verifyfile, direct systems request. No valid systems found.  #  pylint: disable=line-too-long
 
         :param shell:
         :return:
@@ -1343,7 +1343,7 @@ class TestSCConfigChannel:
         logger = MagicMock()
         shell.expand_systems = MagicMock(return_value={"acme": {}, "beigebox": {}})
         shell.get_system_id = MagicMock(return_value=0)
-        with patch("spacecmd.configchannel.logging", logger) as lgr:
+        with patch("spacecmd.configchannel.logging", logger) as lgr:  #  pylint: disable=unused-variable
             spacecmd.configchannel.do_configchannel_verifyfile(
                 shell, "base_channel /tmp/somefile acme box"
             )
@@ -1358,7 +1358,7 @@ class TestSCConfigChannel:
 
         assert_expect(logger.error.call_args_list, "No valid system selected")
 
-    def test_configchannel_verifyfile(self, shell):
+    def test_configchannel_verifyfile(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_configchannel_verifyfile, direct systems request. Systems found.
 
@@ -1369,7 +1369,7 @@ class TestSCConfigChannel:
         shell.expand_systems = MagicMock(return_value={"acme": {}, "beigebox": {}})
         shell.get_system_id = MagicMock(side_effect=[100100, 100200])
         shell.client.configchannel.scheduleFileComparisons = MagicMock(return_value=42)
-        with patch("spacecmd.configchannel.logging", logger) as lgr:
+        with patch("spacecmd.configchannel.logging", logger) as lgr:  #  pylint: disable=unused-variable
             spacecmd.configchannel.do_configchannel_verifyfile(
                 shell, "base_channel /tmp/somefile acme box"
             )
@@ -1384,7 +1384,7 @@ class TestSCConfigChannel:
 
         assert_args_expect(logger.info.call_args_list, [(("Action ID: 42",), {})])
 
-    def test_configchannel_export_noargs_new_file(self, shell):
+    def test_configchannel_export_noargs_new_file(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_configchannel_export no arguments.
 
@@ -1400,7 +1400,7 @@ class TestSCConfigChannel:
 
         with patch(
             "spacecmd.configchannel.json_dump_to_file", json_dumper
-        ) as jdmp, patch("spacecmd.configchannel.logging", logger) as lgr:
+        ) as jdmp, patch("spacecmd.configchannel.logging", logger) as lgr:  #  pylint: disable=unused-variable,unused-variable
             spacecmd.configchannel.do_configchannel_export(shell, "")
 
         assert not logger.error.called
@@ -1408,7 +1408,7 @@ class TestSCConfigChannel:
         assert logger.info.called
         assert json_dumper.called
 
-    def test_configchannel_export_noargs_new_file_dump_failed(self, shell):
+    def test_configchannel_export_noargs_new_file_dump_failed(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_configchannel_export no arguments.
 
@@ -1424,7 +1424,7 @@ class TestSCConfigChannel:
 
         with patch(
             "spacecmd.configchannel.json_dump_to_file", json_dumper
-        ) as jdmp, patch("spacecmd.configchannel.logging", logger) as lgr:
+        ) as jdmp, patch("spacecmd.configchannel.logging", logger) as lgr:  #  pylint: disable=unused-variable,unused-variable
             spacecmd.configchannel.do_configchannel_export(shell, "")
 
         assert logger.debug.called
@@ -1445,7 +1445,7 @@ class TestSCConfigChannel:
             ],
         )
 
-    def test_configchannel_import_noargs(self, shell):
+    def test_configchannel_import_noargs(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_configchannel_import no arguments.
 
@@ -1456,7 +1456,7 @@ class TestSCConfigChannel:
         json_reader = MagicMock()
         with patch(
             "spacecmd.configchannel.json_read_from_file", json_reader
-        ) as jrdr, patch("spacecmd.configchannel.logging", logger) as lgr:
+        ) as jrdr, patch("spacecmd.configchannel.logging", logger) as lgr:  #  pylint: disable=unused-variable,unused-variable
             spacecmd.configchannel.do_configchannel_import(shell, "")
 
         assert not logger.debug.called
@@ -1469,7 +1469,7 @@ class TestSCConfigChannel:
         "spacecmd.utils.open",
         MagicMock(side_effect=IOError("Bits self replicate too fast")),
     )
-    def test_configchannel_import_one_file_noexists_ioerror(self, shell):
+    def test_configchannel_import_one_file_noexists_ioerror(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_configchannel_import with one file that does not exists.
 
@@ -1477,9 +1477,9 @@ class TestSCConfigChannel:
         :return:
         """
         logger = MagicMock()
-        with patch("spacecmd.configchannel.logging", logger) as lgr, patch(
+        with patch("spacecmd.configchannel.logging", logger) as lgr, patch(  #  pylint: disable=unused-variable
             "spacecmd.utils.logging", logger
-        ) as ulgr:
+        ) as ulgr:  #  pylint: disable=unused-variable
             spacecmd.configchannel.do_configchannel_import(shell, "/tmp/somefile.txt")
 
         assert not shell.import_configchannel_fromdetails.called
@@ -1517,7 +1517,7 @@ class TestSCConfigChannel:
             side_effect=ValueError("All curly braces were replaced with parenthesis")
         ),
     )
-    def test_configchannel_import_one_file_parse_error(self, shell):
+    def test_configchannel_import_one_file_parse_error(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_configchannel_import with one file that cannot be parsed
 
@@ -1525,9 +1525,9 @@ class TestSCConfigChannel:
         :return:
         """
         logger = MagicMock()
-        with patch("spacecmd.configchannel.logging", logger) as lgr, patch(
+        with patch("spacecmd.configchannel.logging", logger) as lgr, patch(  #  pylint: disable=unused-variable
             "spacecmd.utils.logging", logger
-        ) as ulgr:
+        ) as ulgr:  #  pylint: disable=unused-variable
             spacecmd.configchannel.do_configchannel_import(shell, "/tmp/somefile.txt")
 
         assert not shell.import_configchannel_fromdetails.called
@@ -1563,7 +1563,7 @@ class TestSCConfigChannel:
         "spacecmd.utils.open",
         MagicMock(side_effect=Exception("Feature was not beta-tested")),
     )
-    def test_configchannel_import_one_file_general_error(self, shell):
+    def test_configchannel_import_one_file_general_error(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_configchannel_import with one file, general exception occurs
 
@@ -1571,9 +1571,9 @@ class TestSCConfigChannel:
         :return:
         """
         logger = MagicMock()
-        with patch("spacecmd.configchannel.logging", logger) as lgr, patch(
+        with patch("spacecmd.configchannel.logging", logger) as lgr, patch(  #  pylint: disable=unused-variable
             "spacecmd.utils.logging", logger
-        ) as ulgr:
+        ) as ulgr:  #  pylint: disable=unused-variable
             spacecmd.configchannel.do_configchannel_import(shell, "/tmp/somefile.txt")
 
         assert not shell.import_configchannel_fromdetails.called
@@ -1605,7 +1605,7 @@ class TestSCConfigChannel:
             ],
         )
 
-    def test_configchannel_sync_noargs(self, shell):
+    def test_configchannel_sync_noargs(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test configchannel_sync with no args.
 
@@ -1616,9 +1616,9 @@ class TestSCConfigChannel:
             mprint = MagicMock()
             logger = MagicMock()
 
-            with patch("spacecmd.configchannel.logging", logger) as lgr, patch(
+            with patch("spacecmd.configchannel.logging", logger) as lgr, patch(  #  pylint: disable=unused-variable
                 "spacecmd.configchannel.print", mprint
-            ) as prt:
+            ) as prt:  #  pylint: disable=unused-variable
                 spacecmd.configchannel.do_configchannel_sync(shell, arg)
             assert not mprint.called
             assert not logger.info.called
@@ -1634,7 +1634,7 @@ class TestSCConfigChannel:
             assert not shell.do_configchannel_removefiles.called
             assert shell.help_configchannel_sync.called
 
-    def test_configchannel_sync_check_configchannel_failure(self, shell):
+    def test_configchannel_sync_check_configchannel_failure(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test configchannel_sync check configchannel failure.
 
@@ -1645,9 +1645,9 @@ class TestSCConfigChannel:
         logger = MagicMock()
         shell.check_configchannel = MagicMock(return_value=False)
 
-        with patch("spacecmd.configchannel.logging", logger) as lgr, patch(
+        with patch("spacecmd.configchannel.logging", logger) as lgr, patch(  #  pylint: disable=unused-variable
             "spacecmd.configchannel.print", mprint
-        ) as prt:
+        ) as prt:  #  pylint: disable=unused-variable
             spacecmd.configchannel.do_configchannel_sync(shell, "lightning_channel")
         assert not mprint.called
         assert not logger.info.called
@@ -1663,7 +1663,7 @@ class TestSCConfigChannel:
         assert not shell.help_configchannel_sync.called
         assert shell.check_configchannel.called
 
-    def test_configchannel_sync_check_configchannel_nosync(self, shell):
+    def test_configchannel_sync_check_configchannel_nosync(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test configchannel_sync check configchannel, no sync.
 
@@ -1685,9 +1685,9 @@ class TestSCConfigChannel:
             ]
         )
 
-        with patch("spacecmd.configchannel.logging", logger) as lgr, patch(
+        with patch("spacecmd.configchannel.logging", logger) as lgr, patch(  #  pylint: disable=unused-variable
             "spacecmd.configchannel.print", mprint
-        ) as prt:
+        ) as prt:  #  pylint: disable=unused-variable
             spacecmd.configchannel.do_configchannel_sync(shell, "cfg_channel")
         assert not logger.debug.called
         assert not logger.warning.called
@@ -1715,13 +1715,13 @@ class TestSCConfigChannel:
                 "files only in target corresponding_channel",
                 "/etc/third.conf",
                 "",
-                "files that are in both channels will be overwritten in the target channel",
+                "files that are in both channels will be overwritten in the target channel",  #  pylint: disable=line-too-long
                 "files only in the source channel will be added to the target channel",
                 "files only in the target channel will be deleted",
             ],
         )
 
-    def test_configchannel_sync_check_configchannel_full_sync_files_only(self, shell):
+    def test_configchannel_sync_check_configchannel_full_sync_files_only(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test configchannel_sync check configchannel, with full sync, non interactive,
         files only.
@@ -1760,7 +1760,7 @@ class TestSCConfigChannel:
                 {
                     "type": "file",
                     "binary": False,
-                    "contents": b"Y\xeb\xde\xa6'$y\xd0\x8e\x04\xe2\xda\xb2\xd8^\x95\xa9\xe0\xb9\xa8\x1e\xa1\xf7!\xa2'\x1e",
+                    "contents": b"Y\xeb\xde\xa6'$y\xd0\x8e\x04\xe2\xda\xb2\xd8^\x95\xa9\xe0\xb9\xa8\x1e\xa1\xf7!\xa2'\x1e",  #  pylint: disable=line-too-long
                     "owner": "gr00t",
                     "group": "guardians",
                     "permissions_mode": 0o0644,
@@ -1772,9 +1772,9 @@ class TestSCConfigChannel:
             ]
         )
 
-        with patch("spacecmd.configchannel.logging", logger) as lgr, patch(
+        with patch("spacecmd.configchannel.logging", logger) as lgr, patch(  #  pylint: disable=unused-variable
             "spacecmd.configchannel.print", mprint
-        ) as prt:
+        ) as prt:  #  pylint: disable=unused-variable
             spacecmd.configchannel.do_configchannel_sync(shell, "cfg_channel")
 
         assert logger.debug.called
@@ -1843,7 +1843,7 @@ class TestSCConfigChannel:
         )
 
     def test_configchannel_sync_check_configchannel_full_sync_symlinks_only(
-        self, shell
+        self, shell  #  pylint: disable=redefined-outer-name
     ):
         """
         Test configchannel_sync check configchannel, with full sync, non interactive,
@@ -1883,9 +1883,9 @@ class TestSCConfigChannel:
             ]
         )
 
-        with patch("spacecmd.configchannel.logging", logger) as lgr, patch(
+        with patch("spacecmd.configchannel.logging", logger) as lgr, patch(  #  pylint: disable=unused-variable
             "spacecmd.configchannel.print", mprint
-        ) as prt:
+        ) as prt:  #  pylint: disable=unused-variable
             spacecmd.configchannel.do_configchannel_sync(shell, "cfg_channel")
 
         assert logger.debug.called
@@ -1945,7 +1945,7 @@ class TestSCConfigChannel:
             ],
         )
 
-    def test_configchannel_diff_args(self, shell):
+    def test_configchannel_diff_args(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_configchannel_diff on arguments call.
 
@@ -1954,7 +1954,7 @@ class TestSCConfigChannel:
         """
         for arg in ["", "one two three"]:
             differ = MagicMock()
-            with patch("spacecmd.configchannel.get_string_diff_dicts", differ) as dfr:
+            with patch("spacecmd.configchannel.get_string_diff_dicts", differ) as dfr:  #  pylint: disable=unused-variable
                 spacecmd.configchannel.do_configchannel_diff(shell, arg)
             assert not differ.called
             assert not shell.check_configchannel.called
@@ -1962,7 +1962,7 @@ class TestSCConfigChannel:
             assert not shell.dump_configchannel.called
             assert shell.help_configchannel_diff.called
 
-    def test_configchannel_clone_interactive_no_channels(self, shell):
+    def test_configchannel_clone_interactive_no_channels(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_configchannel_clone on interactive, no channels.
 
@@ -1972,9 +1972,9 @@ class TestSCConfigChannel:
         shell.do_configchannel_list = MagicMock(return_value=[])
         prompter = MagicMock(side_effect=["basic_config_channel", "bcc_channel"])
         logger = MagicMock()
-        with patch("spacecmd.configchannel.prompt_user", prompter) as pmt, patch(
+        with patch("spacecmd.configchannel.prompt_user", prompter) as pmt, patch(  #  pylint: disable=unused-variable
             "spacecmd.configchannel.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.configchannel.do_configchannel_clone(shell, "")
 
         assert not shell.help_configchannel_clone.called
@@ -1985,7 +1985,7 @@ class TestSCConfigChannel:
 
         assert_expect(logger.error.call_args_list, "No config channels found")
 
-    def test_configchannel_clone_interactive_no_channels_matches(self, shell):
+    def test_configchannel_clone_interactive_no_channels_matches(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_configchannel_clone on interactive, no channels matches.
 
@@ -1996,9 +1996,9 @@ class TestSCConfigChannel:
         prompter = MagicMock(side_effect=["basic_config_channel", "bcc_channel"])
         mprint = MagicMock()
         logger = MagicMock()
-        with patch("spacecmd.configchannel.prompt_user", prompter) as pmt, patch(
+        with patch("spacecmd.configchannel.prompt_user", prompter) as pmt, patch(  #  pylint: disable=unused-variable
             "spacecmd.configchannel.print", mprint
-        ) as prt, patch("spacecmd.configchannel.logging", logger) as lgr:
+        ) as prt, patch("spacecmd.configchannel.logging", logger) as lgr:  #  pylint: disable=unused-variable,unused-variable
             spacecmd.configchannel.do_configchannel_clone(shell, "")
 
         assert not shell.export_configchannel_getdetails.called

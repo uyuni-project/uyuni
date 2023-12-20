@@ -1,4 +1,4 @@
-# Copyright (c) 2016 Red Hat, Inc.
+# Copyright (c) 2016 Red Hat, Inc. pylint: disable=missing-module-docstring,invalid-name
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -22,7 +22,7 @@ except ImportError:
     import xmlrpclib
 import datetime
 from spacewalk.common.rhnConfig import CFG
-from spacewalk.common.rhnLog import log_debug, log_error
+from spacewalk.common.rhnLog import log_debug, log_error  #  pylint: disable=unused-import
 from spacewalk.satellite_tools.progress_bar import ProgressBar
 from spacewalk.server.rhnPackage import unlink_package_file
 from spacewalk.server import rhnSQL
@@ -44,7 +44,7 @@ class RemoteApi:
             self.password = password
             self.__login()
         except xmlrpclib.Fault as e:
-            raise UserError(e.faultString)
+            raise UserError(e.faultString)  #  pylint: disable=raise-missing-from
 
     def auth_check(self):
         """makes sure that more than an hour hasn't passed since we
@@ -78,12 +78,12 @@ class RemoteApi:
         self.client.channel.software.applyChannelState(self.auth_token, server_ids)
 
 
-def __applyChannelState(server_ids, username, password):
+def __applyChannelState(server_ids, username, password):  #  pylint: disable=invalid-name
     xmlrpc = RemoteApi("https://" + getfqdn() + "/rpc/api", username, password)
     return xmlrpc.apply_channel_state(server_ids)
 
 
-def __getMinionsByChannel(labels):
+def __getMinionsByChannel(labels):  #  pylint: disable=invalid-name
     sql = """
         SELECT DISTINCT  mi.server_id
              FROM rhnChannel c 
@@ -102,7 +102,7 @@ def __getMinionsByChannel(labels):
     return server_ids
 
 
-def __serverCheck(labels, unsubscribe):
+def __serverCheck(labels, unsubscribe):  #  pylint: disable=invalid-name
     sql = """
         select distinct S.org_id, S.id, S.name
         from rhnChannel c inner join
@@ -122,22 +122,22 @@ def __serverCheck(labels, unsubscribe):
         return __unsubscribeServers(labels)
 
     print(
-        "\nCurrently there are systems subscribed to one or more of the specified channels."
+        "\nCurrently there are systems subscribed to one or more of the specified channels."  #  pylint: disable=line-too-long
     )
     print(
-        "If you would like to automatically unsubscribe these systems, simply use the --unsubscribe flag.\n"
+        "If you would like to automatically unsubscribe these systems, simply use the --unsubscribe flag.\n"  #  pylint: disable=line-too-long
     )
     print("The following systems were found to be subscribed:")
 
-    print(("%-8s %-14s name" % ("org_id", "id")))
+    print(("%-8s %-14s name" % ("org_id", "id")))  #  pylint: disable=consider-using-f-string
     print(("-" * 32))
     for server in server_list:
-        print(("%-8s %-14s %s" % (server["org_id"], server["id"], server["name"])))
+        print(("%-8s %-14s %s" % (server["org_id"], server["id"], server["name"])))  #  pylint: disable=consider-using-f-string
 
     return len(server_list)
 
 
-def __unsubscribeServers(labels):
+def __unsubscribeServers(labels):  #  pylint: disable=invalid-name
     sql = """
         select distinct sc.server_id as server_id, C.id as channel_id, c.parent_channel, c.label
         from rhnChannel c inner join
@@ -163,7 +163,7 @@ def __unsubscribeServers(labels):
     channel_list = list(channel_counts.keys())
     channel_list.sort()
     for i in channel_list:
-        print(("%-40s %-8s" % (i, channel_counts[i])))
+        print(("%-40s %-8s" % (i, channel_counts[i])))  #  pylint: disable=consider-using-f-string
 
     pb = ProgressBar(
         prompt="Unsubscribing:    ",
@@ -183,7 +183,7 @@ def __unsubscribeServers(labels):
     rhnSQL.commit()
 
 
-def __kickstartCheck(labels):
+def __kickstartCheck(labels):  #  pylint: disable=invalid-name
     sql = """
         select K.org_id, K.label
         from rhnKSData K inner join
@@ -203,19 +203,19 @@ def __kickstartCheck(labels):
 
     print(
         (
-            "The following kickstarts are associated with one of the specified channels. "
+            "The following kickstarts are associated with one of the specified channels. "  #  pylint: disable=line-too-long
             + "Please remove these or change their associated base channel.\n"
         )
     )
-    print(("%-8s label" % "org_id"))
+    print(("%-8s label" % "org_id"))  #  pylint: disable=consider-using-f-string,consider-using-f-string
     print(("-" * 20))
     for kickstart in kickstart_list:
-        print(("%-8s %s" % (kickstart["org_id"], kickstart["label"])))
+        print(("%-8s %s" % (kickstart["org_id"], kickstart["label"])))  #  pylint: disable=consider-using-f-string
 
     return len(kickstart_list)
 
 
-def __listChannels():
+def __listChannels():  #  pylint: disable=invalid-name
     sql = """
         select c1.label, c2.label parent_channel
         from rhnChannel c1 left outer join rhnChannel c2 on c1.parent_channel = c2.id
@@ -240,7 +240,7 @@ def __listChannels():
     return labels, parents
 
 
-def __clonnedChannels(channelLabel):
+def __clonnedChannels(channelLabel):  #  pylint: disable=invalid-name,invalid-name
     sql = """
         select c2.label
         from rhnChannel c1 inner join rhnChannelCloned clone on c1.id=clone.original_id
@@ -272,7 +272,7 @@ def delete_outside_channels(org):
 
 
 def delete_channels(
-    channelLabels,
+    channelLabels,  #  pylint: disable=invalid-name
     force=0,
     justdb=0,
     skip_packages=0,
@@ -339,7 +339,7 @@ def delete_channels(
         row = clp.fetchone()
         if row:
             print(
-                "Channel belongs to a Content Lifecycle Project. Please use the web UI or API."
+                "Channel belongs to a Content Lifecycle Project. Please use the web UI or API."  #  pylint: disable=line-too-long
             )
             return
 
@@ -389,7 +389,7 @@ def delete_channels(
 
     query = "delete from %s where %s = :channel_id"
     for table, field in tables:
-        log_debug(3, "Processing table %s" % table)
+        log_debug(3, "Processing table %s" % table)  #  pylint: disable=consider-using-f-string
         h = rhnSQL.prepare(query % (table, field))
         h.executemany(channel_id=channel_ids)
 
@@ -400,12 +400,12 @@ def delete_channels(
             return
 
 
-def __rmtree_error(op, name, exc):
-    sys.stderr.write("Error calling %s for %s: %s\n" % (op.__name__, name, exc[1]))
+def __rmtree_error(op, name, exc):  #  pylint: disable=invalid-name
+    sys.stderr.write("Error calling %s for %s: %s\n" % (op.__name__, name, exc[1]))  #  pylint: disable=consider-using-f-string
     raise exc[1]
 
 
-def __deleteRepoData(labels):
+def __deleteRepoData(labels):  #  pylint: disable=invalid-name
     directory = "/var/cache/" + CFG.repomd_path_prefix
     for label in labels:
         if os.path.isdir(directory + "/" + label):
@@ -452,13 +452,13 @@ def list_packages_without_channels(org_id, sources=0):
     return [x["id"] for x in h.fetchall_dict() or []]
 
 
-def list_packages(channelLabels, sources=0, force=0):
+def list_packages(channelLabels, sources=0, force=0):  #  pylint: disable=invalid-name
     "List the source ids for the channels"
     if sources:
         packages = "srpms"
     else:
         packages = "rpms"
-    log_debug(3, "Listing %s" % packages)
+    log_debug(3, "Listing %s" % packages)  #  pylint: disable=consider-using-f-string
     if not channelLabels:
         return []
 
@@ -515,7 +515,7 @@ def _templ_srpms():
                 p.org_id = ps.org_id)"""
 
 
-def _delete_srpms(srcPackageIds):
+def _delete_srpms(srcPackageIds):  #  pylint: disable=invalid-name
     """Blow away rhnPackageSource and rhnFile entries."""
     if not srcPackageIds:
         return
@@ -530,11 +530,11 @@ def _delete_srpms(srcPackageIds):
     h.executemany(id=srcPackageIds)
 
 
-def _delete_rpms(packageIds):
+def _delete_rpms(packageIds):  #  pylint: disable=invalid-name
     if not packageIds:
         return
     group = 300
-    toDel = packageIds[:]
+    toDel = packageIds[:]  #  pylint: disable=invalid-name
     print("Deleting package metadata (" + str(len(toDel)) + "):")
     pb = ProgressBar(
         prompt="Removing:         ",
@@ -553,7 +553,7 @@ def _delete_rpms(packageIds):
     pb.printComplete()
 
 
-def _delete_rpm_group(packageIds):
+def _delete_rpm_group(packageIds):  #  pylint: disable=invalid-name
     references = [
         "rhnChannelPackage",
         "rhnErrataPackage",
@@ -572,11 +572,11 @@ def _delete_rpm_group(packageIds):
         "rhnServerNeededCache",
         "susePackageProductFile",
     ]
-    deleteStatement = "delete from %s where package_id = :package_id"
+    deleteStatement = "delete from %s where package_id = :package_id"  #  pylint: disable=invalid-name
     for table in references:
         h = rhnSQL.prepare(deleteStatement % table)
         h.executemany(package_id=packageIds)
-    deleteStatement = "delete from rhnPackage where id = :package_id"
+    deleteStatement = "delete from rhnPackage where id = :package_id"  #  pylint: disable=invalid-name
     h = rhnSQL.prepare(deleteStatement)
     h.executemany(package_id=packageIds)
     rhnSQL.commit()
@@ -586,7 +586,7 @@ def _delete_files(relpaths):
     for relpath in relpaths:
         path = os.path.join(CFG.MOUNT_POINT, relpath)
         if not os.path.exists(path):
-            log_debug(1, "Not removing %s: no such file" % path)
+            log_debug(1, "Not removing %s: no such file" % path)  #  pylint: disable=consider-using-f-string
             continue
         unlink_package_file(path)
 
@@ -595,7 +595,7 @@ def _bind_many(l):
     h = {}
     lr = []
     for i, item in enumerate(l):
-        key = "p_%s" % i
+        key = "p_%s" % i  #  pylint: disable=consider-using-f-string
         h[key] = item
         lr.append(":" + key)
     return h, lr
@@ -606,7 +606,7 @@ def _get_package_paths(package_ids, sources=0):
         table = "rhnPackageSource"
     else:
         table = "rhnPackage"
-    h = rhnSQL.prepare("select path from %s where id = :package_id" % table)
+    h = rhnSQL.prepare("select path from %s where id = :package_id" % table)  #  pylint: disable=consider-using-f-string
     pdict = {}
     for package_id in package_ids:
         h.execute(package_id=package_id)
@@ -644,7 +644,7 @@ def _delete_ks_files(channel_labels):
     for kickstart in kickstart_list:
         path = os.path.join(CFG.MOUNT_POINT, str(kickstart["base_path"]))
         if not os.path.exists(path):
-            log_debug(1, "Not removing %s: no such file" % path)
+            log_debug(1, "Not removing %s: no such file" % path)  #  pylint: disable=consider-using-f-string
             continue
         shutil.rmtree(path, onerror=__rmtree_error)
 

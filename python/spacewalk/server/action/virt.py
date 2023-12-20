@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -167,7 +167,7 @@ def _get_uuid(query_str, action_id):
 # Returns an empty tuple, since the virt.refresh action has no params.
 
 
-def refresh(server_id, action_id, dry_run=0):
+def refresh(server_id, action_id, dry_run=0):  #  pylint: disable=unused-argument
     log_debug(3, dry_run)
 
     prepared_query = rhnSQL.prepare(_query_refresh)
@@ -187,19 +187,19 @@ def refresh(server_id, action_id, dry_run=0):
 # Returns a uuid
 
 
-def action(action_name, query, server_id, action_id, dry_run=0):
+def action(action_name, query, server_id, action_id, dry_run=0):  #  pylint: disable=unused-argument
     log_debug(3, action_name, dry_run)
     try:
         uuid = _get_uuid(query, action_id)
     except NoRowFoundException:
         raise_with_tb(
-            InvalidAction("No %s actions found." % action_name.lower()),
+            InvalidAction("No %s actions found." % action_name.lower()),  #  pylint: disable=consider-using-f-string
             sys.exc_info()[2],
         )
     except NoUUIDException:
         raise_with_tb(
             InvalidAction(
-                "%s action %s has no uuid associated with it."
+                "%s action %s has no uuid associated with it."  #  pylint: disable=consider-using-f-string
                 % (action_name, str(action_id))
             ),
             sys.exc_info()[2],
@@ -207,34 +207,34 @@ def action(action_name, query, server_id, action_id, dry_run=0):
     return (uuid,)
 
 
-def start(server_id, action_id, dry_run=0):
+def start(server_id, action_id, dry_run=0):  #  pylint: disable=unused-argument
     return action("Start", _query_start, server_id, action_id, dry_run=0)
 
 
-def shutdown(server_id, action_id, dry_run=0):
+def shutdown(server_id, action_id, dry_run=0):  #  pylint: disable=unused-argument
     return action("Shutdown", _query_shutdown, server_id, action_id, dry_run=0)
 
 
-def suspend(server_id, action_id, dry_run=0):
+def suspend(server_id, action_id, dry_run=0):  #  pylint: disable=unused-argument
     return action("Suspend", _query_suspend, server_id, action_id, dry_run=0)
 
 
-def resume(server_id, action_id, dry_run=0):
+def resume(server_id, action_id, dry_run=0):  #  pylint: disable=unused-argument
     return action("Resume", _query_resume, server_id, action_id, dry_run=0)
 
 
-def reboot(server_id, action_id, dry_run=0):
+def reboot(server_id, action_id, dry_run=0):  #  pylint: disable=unused-argument
     return action("Reboot", _query_reboot, server_id, action_id, dry_run=0)
 
 
-def destroy(server_id, action_id, dry_run=0):
+def destroy(server_id, action_id, dry_run=0):  #  pylint: disable=unused-argument
     return action("Destroy", _query_destroy, server_id, action_id, dry_run=0)
 
 
 # Returns a uuid and the amount of memory to allocate to the domain.
 
 
-def setMemory(server_id, action_id, dry_run=0):
+def setMemory(server_id, action_id, dry_run=0):  #  pylint: disable=invalid-name,unused-argument
     log_debug(3, dry_run)
 
     prepared_query = rhnSQL.prepare(_query_setMemory)
@@ -245,10 +245,10 @@ def setMemory(server_id, action_id, dry_run=0):
         raise InvalidAction("No setMemory actions found.")
 
     if "uuid" not in row:
-        raise InvalidAction("Set Memory action %s has no uuid." % str(action_id))
+        raise InvalidAction("Set Memory action %s has no uuid." % str(action_id))  #  pylint: disable=consider-using-f-string
 
     if "memory" not in row:
-        raise InvalidAction("setMemory action %s has no memory set." % str(action_id))
+        raise InvalidAction("setMemory action %s has no memory set." % str(action_id))  #  pylint: disable=consider-using-f-string
 
     uuid = row["uuid"]
     memory = row["memory"]
@@ -259,7 +259,7 @@ def setMemory(server_id, action_id, dry_run=0):
 # Returns a uuid and the amount of VCPUs to allocate to the domain.
 
 
-def setVCPUs(server_id, action_id, dry_run=0):
+def setVCPUs(server_id, action_id, dry_run=0):  #  pylint: disable=invalid-name,unused-argument
     log_debug(3, dry_run)
 
     prepared_query = rhnSQL.prepare(_query_getVCPUs)
@@ -273,7 +273,7 @@ def setVCPUs(server_id, action_id, dry_run=0):
 
 
 # Returns the minute, hour, dom, month, and dow to call schedulePoller with.
-def schedulePoller(server_id, action_id, dry_run=0):
+def schedulePoller(server_id, action_id, dry_run=0):  #  pylint: disable=invalid-name,unused-argument
     log_debug(3, dry_run)
 
     prepared_query = rhnSQL.prepare(_query_schedulePoller)
@@ -285,29 +285,29 @@ def schedulePoller(server_id, action_id, dry_run=0):
 
     if "minute" not in row:
         raise InvalidAction(
-            "schedulePoller action %s has no minute associated with it."
+            "schedulePoller action %s has no minute associated with it."  #  pylint: disable=consider-using-f-string
             % str(action_id)
         )
 
     if "hour" not in row:
         raise InvalidAction(
-            "schedulePoller action %s has no hour associated with it." % str(action_id)
+            "schedulePoller action %s has no hour associated with it." % str(action_id)  #  pylint: disable=consider-using-f-string
         )
 
     if "dom" not in row:
         raise InvalidAction(
-            "schedulePoller action %s has no day of the month associated with it."
+            "schedulePoller action %s has no day of the month associated with it."  #  pylint: disable=consider-using-f-string
             % str(action_id)
         )
 
     if "month" not in row:
         raise InvalidAction(
-            "schedulePoller action %s has no month associated with it." % str(action_id)
+            "schedulePoller action %s has no month associated with it." % str(action_id)  #  pylint: disable=consider-using-f-string
         )
 
     if "dow" not in row:
         raise InvalidAction(
-            "schedulePoller action %s has no day of the week associated with it."
+            "schedulePoller action %s has no day of the week associated with it."  #  pylint: disable=consider-using-f-string
             % str(action_id)
         )
 

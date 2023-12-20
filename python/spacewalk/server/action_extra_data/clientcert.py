@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2014--2015 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -17,6 +17,6 @@ from spacewalk.common.rhnLog import log_debug
 __rhnexport__ = ["update_client_cert"]
 
 
-def update_client_cert(server_id, action_id, data={}):
+def update_client_cert(server_id, action_id, data={}):  #  pylint: disable=dangerous-default-value,unused-argument,unused-argument
     log_debug(3, action_id)
     return

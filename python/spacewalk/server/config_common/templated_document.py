@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -31,7 +31,7 @@ def var_interp_prep(server):
     return server
 
 
-class ServerTemplatedDocument(TemplatedDocument):
+class ServerTemplatedDocument(TemplatedDocument):  #  pylint: disable=missing-class-docstring
     def __init__(self, server, start_delim=None, end_delim=None):
         TemplatedDocument.__init__(self, start_delim=start_delim, end_delim=end_delim)
 
@@ -89,7 +89,7 @@ class ServerTemplatedDocument(TemplatedDocument):
     def custom_info(self, key):
         if self.server.custom_info is None:
             log_debug(4, "no custom info", self.server)
-            raise "didn't load custom info"
+            raise "didn't load custom info"  #  pylint: disable=raising-bad-type
 
         if key in self.server.custom_info:
             return self.server.custom_info[key]
@@ -170,7 +170,7 @@ class ServerTemplatedDocument(TemplatedDocument):
         """return attribute of given address
 
         address is list of interfaces
-        e.g.: [{'scope': 'universe', 'netmask': '64', 'address': '2620:52:0:2223:20c:29ff:fecb:d06e',
+        e.g.: [{'scope': 'universe', 'netmask': '64', 'address': '2620:52:0:2223:20c:29ff:fecb:d06e',  #  pylint: disable=line-too-long
         'interface_id': 127}, {'scope': 'link', 'netmask': '64', 'address':
         'fe80::20c:29ff:fecb:d06e', 'interface_id': 127}]
         scope is either 'link', 'universe' or 'host'
@@ -180,7 +180,7 @@ class ServerTemplatedDocument(TemplatedDocument):
         """
         if address is None:
             return None
-        ifaces = [i for i in address.db_ifaces if (i["scope"] == scope)]
+        ifaces = [i for i in address.db_ifaces if (i["scope"] == scope)]  #  pylint: disable=superfluous-parens
         if (order >= len(ifaces)) or (attr not in ifaces[order]):
             return None
         else:

@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -20,7 +20,7 @@ from spacewalk.common.rhnLog import log_debug
 __rhnexport__ = ["config", "listTransactions", "rollback"]
 
 
-def config(server_id, action_id, data={}):
+def config(server_id, action_id, data={}):  #  pylint: disable=dangerous-default-value
     if not data:
         return
     log_debug(
@@ -32,7 +32,7 @@ def config(server_id, action_id, data={}):
     )
 
 
-def listTransactions(server_id, action_id, data={}):
+def listTransactions(server_id, action_id, data={}):  #  pylint: disable=invalid-name,dangerous-default-value
     if not data:
         return
     log_debug(
@@ -45,7 +45,7 @@ def listTransactions(server_id, action_id, data={}):
     )
 
 
-def rollback(server_id, action_id, data={}):
+def rollback(server_id, action_id, data={}):  #  pylint: disable=dangerous-default-value
     if not data:
         return
     log_debug(

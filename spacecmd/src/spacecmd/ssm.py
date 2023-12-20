@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Licensed under the GNU General Public License Version 3
 #
 # This program is free software; you can redistribute it and/or modify
@@ -78,7 +78,7 @@ def complete_ssm_add(self, text, line, beg, end):
 def do_ssm_add(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if not args:
         self.help_ssm_add()
@@ -95,10 +95,10 @@ def do_ssm_add(self, args):
             logging.warning(_N("%s is already in the list") % system)
             continue
         self.ssm[system] = self.get_system_id(system)
-        logging.debug("Added %s" % system)
+        logging.debug("Added %s" % system)  #  pylint: disable=consider-using-f-string
 
     if self.ssm:
-        logging.debug("Systems Selected: %i" % len(self.ssm))
+        logging.debug("Systems Selected: %i" % len(self.ssm))  #  pylint: disable=consider-using-f-string
 
     # save the SSM for use between sessions
     save_cache(self.ssm_cache_file, self.ssm)
@@ -127,7 +127,7 @@ def complete_ssm_intersect(self, text, line, beg, end):
 def do_ssm_intersect(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if not args:
         self.help_ssm_intersect()
@@ -144,7 +144,7 @@ def do_ssm_intersect(self, args):
     tmp_ssm = {}
     for system in systems:
         if system in self.ssm:
-            logging.debug("%s is in both groups: leaving in SSM" % system)
+            logging.debug("%s is in both groups: leaving in SSM" % system)  #  pylint: disable=consider-using-f-string
             tmp_ssm[system] = self.ssm[system]
 
     # set self.ssm to tmp_ssm, which now holds the intersection
@@ -154,7 +154,7 @@ def do_ssm_intersect(self, args):
     save_cache(self.ssm_cache_file, self.ssm)
 
     if self.ssm:
-        logging.debug("Systems Selected: %i" % len(self.ssm))
+        logging.debug("Systems Selected: %i" % len(self.ssm))  #  pylint: disable=consider-using-f-string
 
     return 0
 
@@ -178,7 +178,7 @@ def complete_ssm_remove(self, text, line, beg, end):
 def do_ssm_remove(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if not args:
         self.help_ssm_remove()
@@ -193,10 +193,10 @@ def do_ssm_remove(self, args):
     for system in systems:
         # double-check for existance in case of duplicate names
         if system in self.ssm:
-            logging.debug("Removed %s" % system)
+            logging.debug("Removed %s" % system)  #  pylint: disable=consider-using-f-string
             del self.ssm[system]
 
-    logging.debug("Systems Selected: %i" % len(self.ssm))
+    logging.debug("Systems Selected: %i" % len(self.ssm))  #  pylint: disable=consider-using-f-string
 
     # save the SSM for use between sessions
     save_cache(self.ssm_cache_file, self.ssm)
@@ -219,7 +219,7 @@ def do_ssm_list(self, args):
 
     if systems:
         print("\n".join(systems))
-        logging.debug("Systems Selected: %i" % len(systems))
+        logging.debug("Systems Selected: %i" % len(systems))  #  pylint: disable=consider-using-f-string
         return 0
     else:
         return 1

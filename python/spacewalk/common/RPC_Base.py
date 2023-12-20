@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring,invalid-name
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -16,7 +16,7 @@
 # Base XML-RPC class handler
 
 
-class RPC_Base:
+class RPC_Base:  #  pylint: disable=invalid-name
     def __init__(self):
         self.functions = []
 

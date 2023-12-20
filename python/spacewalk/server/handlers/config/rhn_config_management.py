@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -23,7 +23,7 @@ from spacewalk.server import rhnSQL, configFilesHandler
 from spacewalk.server.rhnHandler import rhnHandler
 
 
-class ConfigManagement(configFilesHandler.ConfigFilesHandler):
+class ConfigManagement(configFilesHandler.ConfigFilesHandler):  #  pylint: disable=missing-class-docstring
     def __init__(self):
         log_debug(3)
         configFilesHandler.ConfigFilesHandler.__init__(self)
@@ -43,7 +43,7 @@ class ConfigManagement(configFilesHandler.ConfigFilesHandler):
         self.org_id = None
 
     # We need the org id too
-    def auth_system(self, systemid):
+    def auth_system(self, systemid):  #  pylint: disable=arguments-renamed
         rhnHandler.auth_system(self, systemid)
         self.org_id = self.server.server["org_id"]
 
@@ -97,7 +97,7 @@ class ConfigManagement(configFilesHandler.ConfigFilesHandler):
             )
             if not rowcount:
                 raise rhnFault(
-                    4009, "Unable to find config channel %s" % config_channel, explain=0
+                    4009, "Unable to find config channel %s" % config_channel, explain=0  #  pylint: disable=consider-using-f-string
                 )
             position = position + 1
 
@@ -211,7 +211,7 @@ class ConfigManagement(configFilesHandler.ConfigFilesHandler):
                cct.priority,
                ci.selinux_ctx,
            case
-                when cft.label='symlink' then (select path from rhnConfigFileName where id = ci.SYMLINK_TARGET_FILENAME_ID)
+                when cft.label='symlink' then (select path from rhnConfigFileName where id = ci.SYMLINK_TARGET_FILENAME_ID)  #  pylint: disable=line-too-long
                 else ''
             end as symlink
           from rhnConfigChannel cc,
@@ -341,13 +341,13 @@ class ConfigManagement(configFilesHandler.ConfigFilesHandler):
     )
 
     def _create_server_import_channel(self, server_id):
-        name = "server_import Config Channel for system %d" % server_id
+        name = "server_import Config Channel for system %d" % server_id  #  pylint: disable=consider-using-f-string
         description = "XXX"
 
         # server_import and local_override channels that
         # get created need to conform to this label formula:
         # {rhnConfigChannelType.label}-{sid}
-        label = "server_import-%d" % server_id
+        label = "server_import-%d" % server_id  #  pylint: disable=consider-using-f-string
 
         insert_call = rhnSQL.Function(
             "rhn_config.insert_channel", rhnSQL.types.NUMBER()

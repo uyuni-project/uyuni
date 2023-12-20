@@ -3,10 +3,10 @@
 Test suite for the SSM module commands.
 """
 
-from mock import MagicMock, patch, mock_open
+from mock import MagicMock, patch, mock_open  #  pylint: disable=unused-import
 from spacecmd import ssm
 from helpers import shell, assert_expect
-import pytest
+import pytest  #  pylint: disable=unused-import
 
 
 class TestSCSSM:
@@ -14,7 +14,7 @@ class TestSCSSM:
     Test for SSM module API.
     """
 
-    def test_ssm_add_noarg(self, shell):
+    def test_ssm_add_noarg(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_ssm_add no args.
 
@@ -28,16 +28,16 @@ class TestSCSSM:
 
         logger = MagicMock()
         save_cache = MagicMock()
-        with patch("spacecmd.ssm.logging", logger) as lgr, patch(
+        with patch("spacecmd.ssm.logging", logger) as lgr, patch(  #  pylint: disable=unused-variable
             "spacecmd.ssm.save_cache", save_cache
-        ) as svc:
+        ) as svc:  #  pylint: disable=unused-variable
             ssm.do_ssm_add(shell, "")
 
         assert not logger.warning.called
         assert not logger.debug.called
         assert shell.help_ssm_add.called
 
-    def test_ssm_add_system_not_found(self, shell):
+    def test_ssm_add_system_not_found(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_ssm_add a system that does not exists.
 
@@ -51,9 +51,9 @@ class TestSCSSM:
 
         logger = MagicMock()
         save_cache = MagicMock()
-        with patch("spacecmd.ssm.logging", logger) as lgr, patch(
+        with patch("spacecmd.ssm.logging", logger) as lgr, patch(  #  pylint: disable=unused-variable
             "spacecmd.ssm.save_cache", save_cache
-        ) as svc:
+        ) as svc:  #  pylint: disable=unused-variable
             ssm.do_ssm_add(shell, "example.com")
 
         assert logger.warning.called
@@ -62,7 +62,7 @@ class TestSCSSM:
 
         assert_expect(logger.warning.call_args_list, "No systems found")
 
-    def test_ssm_add_system_already_in_list(self, shell):
+    def test_ssm_add_system_already_in_list(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_ssm_add a system that already in the list.
 
@@ -78,9 +78,9 @@ class TestSCSSM:
 
         logger = MagicMock()
         save_cache = MagicMock()
-        with patch("spacecmd.ssm.logging", logger) as lgr, patch(
+        with patch("spacecmd.ssm.logging", logger) as lgr, patch(  #  pylint: disable=unused-variable
             "spacecmd.ssm.save_cache", save_cache
-        ) as svc:
+        ) as svc:  #  pylint: disable=unused-variable
             ssm.do_ssm_add(shell, "example.com")
 
         assert logger.warning.called
@@ -98,7 +98,7 @@ class TestSCSSM:
             assert not kw
             assert args == (shell.ssm_cache_file, shell.ssm)
 
-    def test_ssm_add_system_new(self, shell):
+    def test_ssm_add_system_new(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_ssm_add a new system.
 
@@ -114,9 +114,9 @@ class TestSCSSM:
 
         logger = MagicMock()
         save_cache = MagicMock()
-        with patch("spacecmd.ssm.logging", logger) as lgr, patch(
+        with patch("spacecmd.ssm.logging", logger) as lgr, patch(  #  pylint: disable=unused-variable
             "spacecmd.ssm.save_cache", save_cache
-        ) as svc:
+        ) as svc:  #  pylint: disable=unused-variable
             ssm.do_ssm_add(shell, "new.com")
 
         assert not logger.warning.called
@@ -134,7 +134,7 @@ class TestSCSSM:
             assert not kw
             assert args == (shell.ssm_cache_file, shell.ssm)
 
-    def test_ssm_intersect_noarg(self, shell):
+    def test_ssm_intersect_noarg(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_ssm_intersect without arguments.
 
@@ -148,9 +148,9 @@ class TestSCSSM:
 
         logger = MagicMock()
         save_cache = MagicMock()
-        with patch("spacecmd.ssm.logging", logger) as lgr, patch(
+        with patch("spacecmd.ssm.logging", logger) as lgr, patch(  #  pylint: disable=unused-variable
             "spacecmd.ssm.save_cache", save_cache
-        ) as svc:
+        ) as svc:  #  pylint: disable=unused-variable
             ssm.do_ssm_intersect(shell, "")
 
         assert shell.help_ssm_intersect.called
@@ -158,7 +158,7 @@ class TestSCSSM:
         assert not logger.debug.called
         assert not save_cache.called
 
-    def test_ssm_intersect_no_systems_found(self, shell):
+    def test_ssm_intersect_no_systems_found(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_ssm_intersect when no given systems found.
 
@@ -172,9 +172,9 @@ class TestSCSSM:
 
         logger = MagicMock()
         save_cache = MagicMock()
-        with patch("spacecmd.ssm.logging", logger) as lgr, patch(
+        with patch("spacecmd.ssm.logging", logger) as lgr, patch(  #  pylint: disable=unused-variable
             "spacecmd.ssm.save_cache", save_cache
-        ) as svc:
+        ) as svc:  #  pylint: disable=unused-variable
             ssm.do_ssm_intersect(shell, "unknown")
 
         assert not shell.help_ssm_intersect.called
@@ -184,7 +184,7 @@ class TestSCSSM:
 
         assert_expect(logger.warning.call_args_list, "No systems found")
 
-    def test_ssm_intersect(self, shell):
+    def test_ssm_intersect(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_ssm_intersect when no given systems found.
 
@@ -201,9 +201,9 @@ class TestSCSSM:
 
         logger = MagicMock()
         save_cache = MagicMock()
-        with patch("spacecmd.ssm.logging", logger) as lgr, patch(
+        with patch("spacecmd.ssm.logging", logger) as lgr, patch(  #  pylint: disable=unused-variable
             "spacecmd.ssm.save_cache", save_cache
-        ) as svc:
+        ) as svc:  #  pylint: disable=unused-variable
             ssm.do_ssm_intersect(shell, "existing.com")
 
         assert not shell.help_ssm_intersect.called
@@ -223,7 +223,7 @@ class TestSCSSM:
             assert not kw
             assert args == (shell.ssm_cache_file, shell.ssm)
 
-    def test_ssm_remove_noarg(self, shell):
+    def test_ssm_remove_noarg(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_ssm_remove without arguments.
 
@@ -237,9 +237,9 @@ class TestSCSSM:
 
         logger = MagicMock()
         save_cache = MagicMock()
-        with patch("spacecmd.ssm.logging", logger) as lgr, patch(
+        with patch("spacecmd.ssm.logging", logger) as lgr, patch(  #  pylint: disable=unused-variable
             "spacecmd.ssm.save_cache", save_cache
-        ) as svc:
+        ) as svc:  #  pylint: disable=unused-variable
             ssm.do_ssm_remove(shell, "")
 
         assert shell.help_ssm_remove.called
@@ -247,7 +247,7 @@ class TestSCSSM:
         assert not logger.debug.called
         assert not save_cache.called
 
-    def test_ssm_remove_no_systems_found(self, shell):
+    def test_ssm_remove_no_systems_found(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_ssm_remove without arguments.
 
@@ -261,9 +261,9 @@ class TestSCSSM:
 
         logger = MagicMock()
         save_cache = MagicMock()
-        with patch("spacecmd.ssm.logging", logger) as lgr, patch(
+        with patch("spacecmd.ssm.logging", logger) as lgr, patch(  #  pylint: disable=unused-variable
             "spacecmd.ssm.save_cache", save_cache
-        ) as svc:
+        ) as svc:  #  pylint: disable=unused-variable
             ssm.do_ssm_remove(shell, "unknown")
 
         assert not shell.help_ssm_remove.called
@@ -273,7 +273,7 @@ class TestSCSSM:
 
         assert_expect(logger.warning.call_args_list, "No systems found")
 
-    def test_ssm_remove(self, shell):
+    def test_ssm_remove(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_ssm_remove without arguments.
 
@@ -287,9 +287,9 @@ class TestSCSSM:
 
         logger = MagicMock()
         save_cache = MagicMock()
-        with patch("spacecmd.ssm.logging", logger) as lgr, patch(
+        with patch("spacecmd.ssm.logging", logger) as lgr, patch(  #  pylint: disable=unused-variable
             "spacecmd.ssm.save_cache", save_cache
-        ) as svc:
+        ) as svc:  #  pylint: disable=unused-variable
             ssm.do_ssm_remove(shell, "unknown")
 
         assert not shell.help_ssm_remove.called
@@ -321,9 +321,9 @@ class TestSCSSM:
             logger = MagicMock()
             mprint = MagicMock()
             save_cache = MagicMock()
-            with patch("spacecmd.ssm.logging", logger) as lgr, patch(
+            with patch("spacecmd.ssm.logging", logger) as lgr, patch(  #  pylint: disable=unused-variable
                 "spacecmd.ssm.save_cache", save_cache
-            ) as svc, patch("spacecmd.ssm.print", mprint) as prn:
+            ) as svc, patch("spacecmd.ssm.print", mprint) as prn:  #  pylint: disable=unused-variable,unused-variable
                 ssm.do_ssm_list(shell, args=args)
 
             assert len(shell.ssm) == 2
@@ -344,9 +344,9 @@ class TestSCSSM:
             logger = MagicMock()
             mprint = MagicMock()
             save_cache = MagicMock()
-            with patch("spacecmd.ssm.logging", logger) as lgr, patch(
+            with patch("spacecmd.ssm.logging", logger) as lgr, patch(  #  pylint: disable=unused-variable
                 "spacecmd.ssm.save_cache", save_cache
-            ) as svc, patch("spacecmd.ssm.print", mprint) as prn:
+            ) as svc, patch("spacecmd.ssm.print", mprint) as prn:  #  pylint: disable=unused-variable,unused-variable
                 ssm.do_ssm_clear(shell, args=args)
 
             assert not shell.ssm

@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2012--2015 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -22,7 +22,7 @@ from spacewalk.server import rhnSQL
 __rhnexport__ = ["xccdf_eval"]
 
 
-def xccdf_eval(server_id, action_id, data={}):
+def xccdf_eval(server_id, action_id, data={}):  #  pylint: disable=dangerous-default-value
     log_debug(3)
     h = rhnSQL.prepare(_query_clear_tresult)
     h.execute(server_id=server_id, action_id=action_id)
@@ -132,8 +132,8 @@ def _get_text(node):
     return "".join(rc)
 
 
-class _dummyDefaultProfile:
-    def getAttribute(self, name):
+class _dummyDefaultProfile:  #  pylint: disable=invalid-name
+    def getAttribute(self, name):  #  pylint: disable=invalid-name
         if name == "id":
             return "None"
         elif name == "title":

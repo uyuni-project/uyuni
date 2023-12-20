@@ -31,7 +31,7 @@ from spacewalk.satellite_tools.syncLib import RhnSyncException
 from spacewalk.satellite_tools.ulnauth import ULNAuth
 
 
-class ContentSource(yum_ContentSource):
+class ContentSource(yum_ContentSource):  #  pylint: disable=missing-class-docstring
     def __init__(
         self,
         url,
@@ -105,5 +105,5 @@ class ContentSource(yum_ContentSource):
             checksum_value=checksum_value,
             bytes_range=bytes_range,
         )
-        hostname, label = self._uln_auth.get_hostname(self.url)
+        hostname, label = self._uln_auth.get_hostname(self.url)  #  pylint: disable=unused-variable
         params["urls"] = [self._uln_auth.url + "/XMLRPC/GET-REQ/" + label]

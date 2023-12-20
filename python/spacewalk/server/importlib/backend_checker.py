@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python  #  pylint: disable=missing-module-docstring
 
 import sys
 from spacewalk.server import rhnSQL
@@ -34,6 +34,6 @@ for tn, tc in list(backend.tables.items()):
                 )
                 exitval = 1
             else:
-                print(("%s.%s = %d" % (tn, cn, row["data_length"])))
+                print(("%s.%s = %d" % (tn, cn, row["data_length"])))  #  pylint: disable=consider-using-f-string
 
 sys.exit(exitval)

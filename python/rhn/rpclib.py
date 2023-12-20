@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # This module contains all the RPC-related functions the RHN code uses
 #
 # Copyright (c) 2005--2018 Red Hat, Inc.
@@ -45,7 +45,7 @@ except ImportError:  # python3
     UnicodeType = str
     DictType = dict
     DictionaryType = dict
-    from urllib.parse import splittype, splithost
+    from urllib.parse import splittype, splithost  #  pylint: disable=ungrouped-imports
 
 # Redirection handling
 
@@ -57,7 +57,7 @@ def check_ipv6(n):
     try:
         socket.inet_pton(socket.AF_INET6, n)
         return True
-    except:
+    except:  #  pylint: disable=bare-except
         return False
 
 
@@ -84,7 +84,7 @@ def split_host(hoststring):
     # Now parse hostport
     if hostport[0] == "[":
         # IPv6 with port
-        host, port = re.split("(?<=\]):", hostport, 1)
+        host, port = re.split("(?<=\]):", hostport, 1)  #  pylint: disable=anomalous-backslash-in-string
         host = host.lstrip("[").rstrip("]")
     elif check_ipv6(hostport):
         # just IPv6
@@ -100,7 +100,7 @@ def split_host(hoststring):
 
 
 def get_proxy_info(proxy):
-    if proxy == None:
+    if proxy == None:  #  pylint: disable=singleton-comparison
         raise ValueError("Host string cannot be null")
 
     arr = proxy.split("://", 1)
@@ -157,8 +157,8 @@ class Server:
         proxy=None,
         username=None,
         password=None,
-        refreshCallback=None,
-        progressCallback=None,
+        refreshCallback=None,  #  pylint: disable=invalid-name
+        progressCallback=None,  #  pylint: disable=invalid-name
         timeout=None,
     ):
         # establish a "logical" server connection
@@ -166,11 +166,11 @@ class Server:
         #
         # First parse the proxy information if available
         #
-        if proxy != None:
+        if proxy != None:  #  pylint: disable=singleton-comparison
             (ph, pp, pu, pw) = get_proxy_info(proxy)
 
             if pp is not None:
-                proxy = "%s:%s" % (ph, pp)
+                proxy = "%s:%s" % (ph, pp)  #  pylint: disable=consider-using-f-string
             else:
                 proxy = ph
 
@@ -183,9 +183,9 @@ class Server:
                     password = pw
 
         self._uri = sstr(uri)
-        self._refreshCallback = None
-        self._progressCallback = None
-        self._bufferSize = None
+        self._refreshCallback = None  #  pylint: disable=invalid-name
+        self._progressCallback = None  #  pylint: disable=invalid-name
+        self._bufferSize = None  #  pylint: disable=invalid-name
         self._proxy = proxy
         self._username = username
         self._password = password
@@ -229,7 +229,7 @@ class Server:
         self._headers = UserDictCase()
 
     def default_transport(
-        self, type, proxy=None, username=None, password=None, timeout=None
+        self, type, proxy=None, username=None, password=None, timeout=None  #  pylint: disable=redefined-builtin
     ):
         if proxy:
             if type == "https":
@@ -261,15 +261,15 @@ class Server:
             return None
         return self._redirected
 
-    def set_refresh_callback(self, refreshCallback):
+    def set_refresh_callback(self, refreshCallback):  #  pylint: disable=invalid-name
         self._refreshCallback = refreshCallback
         self._transport.set_refresh_callback(refreshCallback)
 
-    def set_buffer_size(self, bufferSize):
+    def set_buffer_size(self, bufferSize):  #  pylint: disable=invalid-name
         self._bufferSize = bufferSize
         self._transport.set_buffer_size(bufferSize)
 
-    def set_progress_callback(self, progressCallback, bufferSize=16384):
+    def set_progress_callback(self, progressCallback, bufferSize=16384):  #  pylint: disable=invalid-name,invalid-name
         self._progressCallback = progressCallback
         self._transport.set_progress_callback(progressCallback, bufferSize)
 
@@ -340,7 +340,7 @@ class Server:
         according the value of self._uri.
         """
         # get the url
-        type, uri = splittype(self._uri)
+        type, uri = splittype(self._uri)  #  pylint: disable=redefined-builtin
         if type is None:
             raise MalformedURIError("missing protocol in uri")
         # with a real uri passed in, uri will now contain "//hostname..." so we
@@ -358,7 +358,7 @@ class Server:
         """Strip characters, which are not allowed according:
         http://www.w3.org/TR/2006/REC-xml-20060816/#charsets
         From spec:
-        Char ::= #x9 | #xA | #xD | [#x20-#xD7FF] | [#xE000-#xFFFD] | [#x10000-#x10FFFF]  /* any Unicode character, excluding the surrogate blocks, FFFE, and FFFF. */
+        Char ::= #x9 | #xA | #xD | [#x20-#xD7FF] | [#xE000-#xFFFD] | [#x10000-#x10FFFF]  /* any Unicode character, excluding the surrogate blocks, FFFE, and FFFF. */  #  pylint: disable=line-too-long
         """
         regexp = r"[\x00-\x09]|[\x0b-\x0c]|[\x0e-\x1f]"
         result = []
@@ -402,7 +402,7 @@ class Server:
 
             self._transport.add_header(
                 "X-Info",
-                "RPC Processor (C) Red Hat, Inc (version %s)" % self.rpc_version,
+                "RPC Processor (C) Red Hat, Inc (version %s)" % self.rpc_version,  #  pylint: disable=consider-using-f-string
             )
             # identify the capability set of this client to the server
             self._transport.set_header("X-Client-Version", 1)
@@ -450,15 +450,15 @@ class Server:
                 raise InvalidRedirectionError("Redirects not allowed")
 
             if self._verbose:
-                print("%s redirected to %s" % (self._uri, self._redirected))
+                print("%s redirected to %s" % (self._uri, self._redirected))  #  pylint: disable=consider-using-f-string
 
             typ, uri = splittype(self._redirected)
 
-            if typ != None:
+            if typ != None:  #  pylint: disable=singleton-comparison
                 typ = typ.lower()
             if typ not in ("http", "https"):
                 raise InvalidRedirectionError(
-                    "Redirected to unsupported protocol %s" % typ
+                    "Redirected to unsupported protocol %s" % typ  #  pylint: disable=consider-using-f-string
                 )
 
             #
@@ -486,7 +486,7 @@ class Server:
             self.set_buffer_size(self._bufferSize)
             self.setlang(self._lang)
 
-            if self._trusted_cert_files != [] and hasattr(
+            if self._trusted_cert_files != [] and hasattr(  #  pylint: disable=use-implicit-booleaness-not-comparison
                 self._transport, "add_trusted_cert"
             ):
                 for certfile in self._trusted_cert_files:
@@ -504,7 +504,7 @@ class Server:
         return response
 
     def __repr__(self):
-        return "<%s for %s%s>" % (self.__class__.__name__, self._host, self._handler)
+        return "<%s for %s%s>" % (self.__class__.__name__, self._host, self._handler)  #  pylint: disable=consider-using-f-string
 
     __str__ = __repr__
 
@@ -561,7 +561,7 @@ class Server:
             self._transport.setlang(lang)
 
     # Sets the CA chain to be used
-    def use_CA_chain(self, ca_chain=None):
+    def use_CA_chain(self, ca_chain=None):  #  pylint: disable=invalid-name
         raise NotImplementedError("This method is deprecated")
 
     def add_trusted_cert(self, certfile):
@@ -576,8 +576,8 @@ class Server:
 
 
 # RHN GET server
-class GETServer(Server):
-    def __init__(
+class GETServer(Server):  #  pylint: disable=missing-class-docstring
+    def __init__(  #  pylint: disable=dangerous-default-value
         self,
         uri,
         transport=None,
@@ -610,7 +610,7 @@ class GETServer(Server):
 
     def _req_body(self, params, methodname):
         if not params or len(params) < 1:
-            raise Exception("Required parameter channel not found")
+            raise Exception("Required parameter channel not found")  #  pylint: disable=broad-exception-raised
         # Strip the multiple / from the handler
         h_comps = list(filter(lambda x: x != "", self._orig_handler.split("/")))
         # Set the handler we are going to request
@@ -645,8 +645,8 @@ class GETServer(Server):
         return ""
 
     def _new_req_body(self):
-        type, tmpuri = splittype(self._redirected)
-        site, handler = splithost(tmpuri)
+        type, tmpuri = splittype(self._redirected)  #  pylint: disable=redefined-builtin,unused-variable
+        site, handler = splithost(tmpuri)  #  pylint: disable=unused-variable
         return handler
 
     def set_range(self, offset=None, amount=None):
@@ -655,8 +655,8 @@ class GETServer(Server):
                 offset = int(offset)
             except ValueError:
                 # Error
-                raise RangeError(
-                    "Invalid value `%s' for offset" % offset, None, sys.exc_info()[2]
+                raise RangeError(  #  pylint: disable=raise-missing-from
+                    "Invalid value `%s' for offset" % offset, None, sys.exc_info()[2]  #  pylint: disable=consider-using-f-string
                 )
 
         if amount is not None:
@@ -664,12 +664,12 @@ class GETServer(Server):
                 amount = int(amount)
             except ValueError:
                 # Error
-                raise RangeError(
-                    "Invalid value `%s' for amount" % amount, None, sys.exc_info()[2]
+                raise RangeError(  #  pylint: disable=raise-missing-from
+                    "Invalid value `%s' for amount" % amount, None, sys.exc_info()[2]  #  pylint: disable=consider-using-f-string
                 )
 
             if amount <= 0:
-                raise RangeError("Invalid value `%s' for amount" % amount)
+                raise RangeError("Invalid value `%s' for amount" % amount)  #  pylint: disable=consider-using-f-string
 
         self._amount = amount
         self._offset = offset
@@ -682,7 +682,7 @@ class GETServer(Server):
         return SlicingMethod(self._request, name)
 
     def default_transport(
-        self, type, proxy=None, username=None, password=None, timeout=None
+        self, type, proxy=None, username=None, password=None, timeout=None  #  pylint: disable=redefined-builtin
     ):
         ret = Server.default_transport(
             self,
@@ -704,8 +704,8 @@ class InvalidRedirectionError(Exception):
     pass
 
 
-def getHeaderValues(headers, name):
-    import mimetools
+def getHeaderValues(headers, name):  #  pylint: disable=invalid-name
+    import mimetools  #  pylint: disable=import-outside-toplevel
 
     if not isinstance(headers, mimetools.Message):
         if name in headers:
@@ -725,13 +725,13 @@ class _Method:
         self._name = name
 
     def __getattr__(self, name):
-        return _Method(self._send, "%s.%s" % (self._name, name))
+        return _Method(self._send, "%s.%s" % (self._name, name))  #  pylint: disable=consider-using-f-string
 
     def __call__(self, *args):
         return self._send(self._name, args)
 
     def __repr__(self):
-        return "<%s %s (%s)>" % (self.__class__.__name__, self._name, self._send)
+        return "<%s %s (%s)>" % (self.__class__.__name__, self._name, self._send)  #  pylint: disable=consider-using-f-string
 
     __str__ = __repr__
 
@@ -746,7 +746,7 @@ class SlicingMethod(_Method):
         self._offset = None
 
     def __getattr__(self, name):
-        return SlicingMethod(self._send, "%s.%s" % (self._name, name))
+        return SlicingMethod(self._send, "%s.%s" % (self._name, name))  #  pylint: disable=consider-using-f-string
 
     def __call__(self, *args, **kwargs):
         self._offset = kwargs.get("offset")
@@ -769,7 +769,7 @@ class SlicingMethod(_Method):
         return result
 
 
-def reportError(headers):
+def reportError(headers):  #  pylint: disable=invalid-name
     """Reports the error from the headers."""
     errcode = 0
     errmsg = ""
@@ -778,11 +778,11 @@ def reportError(headers):
         errcode = int(headers[s])
     s = "X-RHN-Fault-String"
     if s in headers:
-        _sList = getHeaderValues(headers, s)
+        _sList = getHeaderValues(headers, s)  #  pylint: disable=invalid-name
         if _sList:
-            _s = "".join(_sList)
-            import base64
+            _s = "".join(_sList)  #  pylint: disable=invalid-name
+            import base64  #  pylint: disable=import-outside-toplevel
 
-            errmsg = "%s" % base64.decodestring(_s)
+            errmsg = "%s" % base64.decodestring(_s)  #  pylint: disable=consider-using-f-string
 
     return errcode, errmsg

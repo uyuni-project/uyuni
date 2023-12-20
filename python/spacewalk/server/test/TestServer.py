@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python  #  pylint: disable=missing-module-docstring,invalid-name
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -22,24 +22,24 @@ import server.xmlrpc.up2date
 from misc_functions import create_activation_key
 import misc_functions
 
-# The Test Server class is a singleton. This allows us to avoid the long setup times between each test.
+# The Test Server class is a singleton. This allows us to avoid the long setup times between each test. pylint: disable=line-too-long
 
 
-class TestServer:
+class TestServer:  #  pylint: disable=missing-class-docstring
     # The actual implementation
-    class TestServerImplementation:
+    class TestServerImplementation:  #  pylint: disable=missing-class-docstring
         def __init__(self):
             # start_init = time.time()
 
             self.filesuploaded = False
 
-            self.options = rhnConfig.initCFG("server")
+            self.options = rhnConfig.initCFG("server")  #  pylint: disable=assignment-from-no-return
             print((self.options))
 
             mytime = time.time()
-            self.test_username = username or ("test_username_%.3f" % mytime)
-            self.test_password = password or ("test_password_%.3f" % mytime)
-            self.test_email = email or ("%s@test_domain.com" % self.test_username)
+            self.test_username = username or ("test_username_%.3f" % mytime)  #  pylint: disable=undefined-variable,consider-using-f-string
+            self.test_password = password or ("test_password_%.3f" % mytime)  #  pylint: disable=undefined-variable,consider-using-f-string
+            self.test_email = email or ("%s@test_domain.com" % self.test_username)  #  pylint: disable=undefined-variable,consider-using-f-string
             self.channel_arch = "unittestarch"
 
             self.roles = ["org_admin"]
@@ -102,22 +102,22 @@ class TestServer:
             rhnSQL.commit()
 
             # Associate the channel with the server
-            _insert_channel = "INSERT INTO rhnServerChannel( server_id, channel_id ) VALUES ( :server_id, :channel_id )"
+            _insert_channel = "INSERT INTO rhnServerChannel( server_id, channel_id ) VALUES ( :server_id, :channel_id )"  #  pylint: disable=line-too-long,invalid-name
             insert = rhnSQL.prepare(_insert_channel)
             insert.execute(
                 server_id=self.testserver.getid(), channel_id=self.channel.get_id()
             )
             rhnSQL.commit()
 
-        # instantiate an up2date object and make sure that entitlements aren't checked, which avoids some nastiness
-        # that isn't needed for testing purposes...yet. Also, make sure the the server_id of the Up2date object is set
+        # instantiate an up2date object and make sure that entitlements aren't checked, which avoids some nastiness  #  pylint: disable=line-too-long
+        # that isn't needed for testing purposes...yet. Also, make sure the the server_id of the Up2date object is set  #  pylint: disable=line-too-long
         # correctly. Violates encapsulation horribly.
         def _init_up2date(self):
             self.up2date = server.xmlrpc.up2date.Up2date()
             self.up2date.check_entitlement = 0
             self.up2date.server_id = self.testserver.getid()
 
-        def getUp2date(self):
+        def getUp2date(self):  #  pylint: disable=invalid-name
             return self.up2date
 
         # Uploads packages from directory.
@@ -150,26 +150,26 @@ class TestServer:
             # fin_upload = time.time()
             # print "Upload time: %s" % ( str( fin_upload - start_upload )
 
-        def getServerId(self):
+        def getServerId(self):  #  pylint: disable=invalid-name
             return self.testserver.getid()
 
-        def getUsername(self):
+        def getUsername(self):  #  pylint: disable=invalid-name
             return self.test_username
 
-        def getPassword(self):
+        def getPassword(self):  #  pylint: disable=invalid-name
             return self.test_password
 
-        def getChannel(self):
+        def getChannel(self):  #  pylint: disable=invalid-name
             return self.channel
 
-        def getChannelFamily(self):
+        def getChannelFamily(self):  #  pylint: disable=invalid-name
             return self.cf
 
-        def getSystemId(self):
+        def getSystemId(self):  #  pylint: disable=invalid-name
             return self.testserver.system_id()
 
     # Will contain the reference to a TestServerImplementation object
-    __instance = None
+    __instance = None  #  pylint: disable=invalid-name
 
     def __init__(self):
         if TestServer.__instance is None:
@@ -223,7 +223,7 @@ if __name__ == "__main__":
         delta_time=9999,
         org_id=myserver.org_id,
     )
-    fake_token = rhnServer.search_token(fake_key._token)
+    fake_token = rhnServer.search_token(fake_key._token)  #  pylint: disable=protected-access
 
     print((look_at_actions(myserver.getServerId())))
 

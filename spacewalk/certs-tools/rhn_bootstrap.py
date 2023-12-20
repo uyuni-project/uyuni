@@ -1,4 +1,4 @@
-#!/usr/bin/python -u
+#!/usr/bin/python -u  #  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2014 Red Hat, Inc.
 #
@@ -24,7 +24,7 @@
 from __future__ import print_function
 import os
 import sys
-import glob
+import glob  #  pylint: disable=unused-import
 import socket
 import shutil
 import operator
@@ -34,10 +34,10 @@ try:
 except ImportError:
     import urlparse
 
-from optparse import Option, OptionParser, SUPPRESS_HELP
+from optparse import Option, OptionParser, SUPPRESS_HELP  #  pylint: disable=deprecated-module,unused-import
 
 ## local imports
-from uyuni.common import rhn_rpm
+from uyuni.common import rhn_rpm  #  pylint: disable=unused-import
 from spacewalk.common.rhnConfig import CFG, initCFG
 from .rhn_bootstrap_strings import (
     getHeader,
@@ -48,12 +48,12 @@ from .rhn_bootstrap_strings import (
     removeTLSCertificate,
 )
 from .sslToolConfig import CA_CRT_NAME
-from uyuni.common.fileutils import rotateFile, cleanupAbsPath
+from uyuni.common.fileutils import rotateFile, cleanupAbsPath  #  pylint: disable=ungrouped-imports
 from uyuni.common.checksum import getFileChecksum
 
 try:
-    from spacewalk.common.rhnConfig import PRODUCT_NAME
-except:
+    from spacewalk.common.rhnConfig import PRODUCT_NAME  #  pylint: disable=ungrouped-imports
+except:  #  pylint: disable=bare-except
     PRODUCT_NAME = "SUSE Manager"
 
 ## GLOBALS
@@ -75,19 +75,19 @@ DEFAULT_SCRIPT = "bootstrap.sh"
 
 
 # exit codes
-errnoSuccess = 0
-errnoGeneral = 1
-errnoScriptNameClash = 10
-errnoBadScriptName = 11
-errnoExtraCommandLineArgs = 12
-errnoBadHttpProxyString = 13
-errnoBadPath = 14
-errnoNotFQDN = 15
-errnoCANotFound = 16
-errnoGPGNotFound = 17
+errnoSuccess = 0  #  pylint: disable=invalid-name
+errnoGeneral = 1  #  pylint: disable=invalid-name
+errnoScriptNameClash = 10  #  pylint: disable=invalid-name
+errnoBadScriptName = 11  #  pylint: disable=invalid-name
+errnoExtraCommandLineArgs = 12  #  pylint: disable=invalid-name
+errnoBadHttpProxyString = 13  #  pylint: disable=invalid-name
+errnoBadPath = 14  #  pylint: disable=invalid-name
+errnoNotFQDN = 15  #  pylint: disable=invalid-name
+errnoCANotFound = 16  #  pylint: disable=invalid-name
+errnoGPGNotFound = 17  #  pylint: disable=invalid-name
 
 
-def _parseConfigLine(line):
+def _parseConfigLine(line):  #  pylint: disable=invalid-name
     """parse a line from a config file. Format can be either "key=value\n"
        or "whatever text\n"
 
@@ -117,7 +117,7 @@ def _parseConfigLine(line):
     return tuple(kv)
 
 
-def readConfigFile(configFile):
+def readConfigFile(configFile):  #  pylint: disable=invalid-name,invalid-name
     "read in config file, return dictionary of key/value pairs"
 
     fin = open(configFile, "rb")
@@ -133,7 +133,7 @@ def readConfigFile(configFile):
 
 # should come out of common code when we move this code out of
 # rhns-certs-tools
-def parseUrl(url):
+def parseUrl(url):  #  pylint: disable=invalid-name
     """urlparse is more complicated than what we need.
 
     We make the assumption that the URL has real URL information.
@@ -167,23 +167,23 @@ def parseUrl(url):
     return tuple(parsed)
 
 
-def parseHttpProxyString(httpProxy):
+def parseHttpProxyString(httpProxy):  #  pylint: disable=invalid-name,invalid-name
     """parse HTTP proxy string and check for validity"""
 
     httpProxy = parseUrl(httpProxy)[1]
     tup = httpProxy.split(":")
     if len(tup) != 2:
-        sys.stderr.write("ERROR: invalid host:port (%s)\n" % httpProxy)
+        sys.stderr.write("ERROR: invalid host:port (%s)\n" % httpProxy)  #  pylint: disable=consider-using-f-string
         sys.exit(errnoBadHttpProxyString)
     try:
         int(tup[1])
     except ValueError:
-        sys.stderr.write("ERROR: invalid host:port (%s)\n" % httpProxy)
+        sys.stderr.write("ERROR: invalid host:port (%s)\n" % httpProxy)  #  pylint: disable=consider-using-f-string
         sys.exit(errnoBadHttpProxyString)
     return httpProxy
 
 
-def processCACertPath(options):
+def processCACertPath(options):  #  pylint: disable=invalid-name
     if options.ssl_cert:
         if options.ssl_cert[-4:] == ".rpm":
             sys.stderr.write(
@@ -198,8 +198,8 @@ def processCACertPath(options):
             options.ssl_cert = ""
 
 
-def getDefaultOptions():
-    _defopts = {
+def getDefaultOptions():  #  pylint: disable=invalid-name
+    _defopts = {  #  pylint: disable=invalid-name
         "activation-keys": "",
         "overrides": DEFAULT_OVERRIDES,
         "script": DEFAULT_SCRIPT,
@@ -224,22 +224,22 @@ def getDefaultOptions():
 defopts = getDefaultOptions()
 
 
-def getOptionsTable():
+def getOptionsTable():  #  pylint: disable=invalid-name
     """returns the command line options table"""
 
-    def getSetString(value):
+    def getSetString(value):  #  pylint: disable=invalid-name
         if value:
             return "SET"
         return "UNSET"
 
     # the options
-    bsOptions = [
+    bsOptions = [  #  pylint: disable=invalid-name
         Option(
             "--activation-keys",
             action="store",
             type="string",
             default=defopts["activation-keys"],
-            help="activation key as defined in the web UI - only 1 key is allowed now (currently: %s)"
+            help="activation key as defined in the web UI - only 1 key is allowed now (currently: %s)"  #  pylint: disable=line-too-long,consider-using-f-string
             % repr(defopts["activation-keys"]),
         ),
         Option(
@@ -247,7 +247,7 @@ def getOptionsTable():
             action="store",
             type="string",
             default=defopts["overrides"],
-            help="configuration overrides filename (currently: %s)"
+            help="configuration overrides filename (currently: %s)"  #  pylint: disable=consider-using-f-string
             % defopts["overrides"],
         ),
         Option(
@@ -255,14 +255,14 @@ def getOptionsTable():
             action="store",
             type="string",
             default=defopts["script"],
-            help="bootstrap script filename. (currently: %s)" % defopts["script"],
+            help="bootstrap script filename. (currently: %s)" % defopts["script"],  #  pylint: disable=consider-using-f-string
         ),
         Option(
             "--hostname",
             action="store",
             type="string",
             default=defopts["hostname"],
-            help="hostname (FQDN) to which clients connect (currently: %s)"
+            help="hostname (FQDN) to which clients connect (currently: %s)"  #  pylint: disable=consider-using-f-string
             % defopts["hostname"],
         ),
         Option(
@@ -270,14 +270,14 @@ def getOptionsTable():
             action="store",
             type="string",
             default=defopts["ssl-cert"],
-            help='path to corporate public SSL certificate - an RPM or a raw certificate. It will be copied to --pub-tree. A value of "" will force a search of --pub-tree.',
+            help='path to corporate public SSL certificate - an RPM or a raw certificate. It will be copied to --pub-tree. A value of "" will force a search of --pub-tree.',  #  pylint: disable=line-too-long
         ),
         Option(
             "--gpg-key",
             action="store",
             type="string",
             default=defopts["gpg-key"],
-            help="path to corporate public GPG key, if used. It will be copied to the location specified by the --pub-tree option. Format is GPG_KEY1,GPG_KEY2 (currently: %s)"
+            help="path to corporate public GPG key, if used. It will be copied to the location specified by the --pub-tree option. Format is GPG_KEY1,GPG_KEY2 (currently: %s)"  #  pylint: disable=line-too-long,consider-using-f-string
             % repr(defopts["gpg-key"]),
         ),
         Option(
@@ -285,7 +285,7 @@ def getOptionsTable():
             action="store",
             type="string",
             default=defopts["http-proxy"],
-            help='HTTP proxy setting for the clients - hostname:port. --http-proxy="" disables. (currently: %s)'
+            help='HTTP proxy setting for the clients - hostname:port. --http-proxy="" disables. (currently: %s)'  #  pylint: disable=line-too-long,consider-using-f-string
             % repr(defopts["http-proxy"]),
         ),
         Option(
@@ -293,7 +293,7 @@ def getOptionsTable():
             action="store",
             type="string",
             default=defopts["http-proxy-username"],
-            help='if using an authenticating HTTP proxy, specify a username. --http-proxy-username="" disables. (currently: %s)'
+            help='if using an authenticating HTTP proxy, specify a username. --http-proxy-username="" disables. (currently: %s)'  #  pylint: disable=line-too-long,consider-using-f-string
             % repr(defopts["http-proxy-username"]),
         ),
         Option(
@@ -301,25 +301,25 @@ def getOptionsTable():
             action="store",
             type="string",
             default=defopts["http-proxy-password"],
-            help="if using an authenticating HTTP proxy, specify a password. (currently: %s)"
+            help="if using an authenticating HTTP proxy, specify a password. (currently: %s)"  #  pylint: disable=line-too-long,consider-using-f-string
             % repr(defopts["http-proxy-password"]),
         ),
         Option(
             "--no-bundle",
             action="store_true",
-            help="boolean; avoid installing salt minion bundle (venv-salt-minion) instead of salt minion (currently %s)"
+            help="boolean; avoid installing salt minion bundle (venv-salt-minion) instead of salt minion (currently %s)"  #  pylint: disable=line-too-long,consider-using-f-string
             % getSetString(defopts["no-bundle"]),
         ),
         Option(
             "--force-bundle",
             action="store_true",
-            help="boolean; Force installing salt minion bundle (venv-salt-minion) instead of salt minion (currently %s)"
+            help="boolean; Force installing salt minion bundle (venv-salt-minion) instead of salt minion (currently %s)"  #  pylint: disable=line-too-long,consider-using-f-string
             % getSetString(defopts["force-bundle"]),
         ),
         Option(
             "--no-gpg",
             action="store_true",
-            help="(not recommended) boolean; turn off GPG checking by the clients (currently %s)"
+            help="(not recommended) boolean; turn off GPG checking by the clients (currently %s)"  #  pylint: disable=line-too-long,consider-using-f-string
             % getSetString(defopts["no-gpg"]),
         ),
         Option(
@@ -327,20 +327,20 @@ def getOptionsTable():
             action="store",
             type="string",
             default=defopts["pub-tree"],
-            help="(change not recommended) public directory tree where the CA SSL cert/cert-RPM will land as well as the bootstrap directory and scripts. (currently %s)"
+            help="(change not recommended) public directory tree where the CA SSL cert/cert-RPM will land as well as the bootstrap directory and scripts. (currently %s)"  #  pylint: disable=line-too-long,consider-using-f-string
             % defopts["pub-tree"],
         ),
         Option(
             "--force",
             action="store_true",
-            help="(not recommended) boolean; including this option forces bootstrap script generation despite warnings (currently %s)"
+            help="(not recommended) boolean; including this option forces bootstrap script generation despite warnings (currently %s)"  #  pylint: disable=line-too-long,consider-using-f-string
             % getSetString(defopts["force"]),
         ),
         Option(
             "-v",
             "--verbose",
             action="count",
-            help='be verbose - accumulable: -vvv means "be *really* verbose" (currently %s)'
+            help='be verbose - accumulable: -vvv means "be *really* verbose" (currently %s)'  #  pylint: disable=line-too-long,consider-using-f-string
             % defopts["verbose"],
         ),
     ]
@@ -348,10 +348,10 @@ def getOptionsTable():
     return bsOptions
 
 
-def parseCommandline():
+def parseCommandline():  #  pylint: disable=invalid-name
     "parse the commandline/options, sanity checking, et c."
 
-    _progName = "mgr-bootstrap"
+    _progName = "mgr-bootstrap"  #  pylint: disable=invalid-name
     _usage = """\
 %s [options]
 
@@ -364,19 +364,19 @@ Note: for mgr-bootstrap to work, certain files are expected to be
     )
 
     # preliminary parse (-h/--help is acted upon during final parse)
-    optionList = getOptionsTable()
+    optionList = getOptionsTable()  #  pylint: disable=invalid-name
 
-    optionListNoHelp = optionList[:]
+    optionListNoHelp = optionList[:]  #  pylint: disable=invalid-name
     fake_help = Option("-h", "--help", action="count", help="")
     optionListNoHelp.append(fake_help)
-    options, _args = OptionParser(
+    options, _args = OptionParser(  #  pylint: disable=invalid-name
         option_list=optionListNoHelp, add_help_option=0
     ).parse_args()
 
     # we take no extra commandline arguments that are not linked to an option
     if _args:
         sys.stderr.write(
-            "\nERROR: these arguments make no sense in this "
+            "\nERROR: these arguments make no sense in this "  #  pylint: disable=consider-using-f-string
             "context (try --help): %s\n" % repr(_args)
         )
         sys.exit(errnoExtraCommandLineArgs)
@@ -393,9 +393,9 @@ Note: for mgr-bootstrap to work, certain files are expected to be
         "http-proxy": options.http_proxy,
         "http-proxy-username": options.http_proxy_username,
         "http-proxy-password": options.http_proxy,
-        "no-bundle": not not options.no_bundle,
-        "force-bundle": not not options.force_bundle,
-        "no-gpg": not not options.no_gpg,
+        "no-bundle": not not options.no_bundle,  #  pylint: disable=unnecessary-negation
+        "force-bundle": not not options.force_bundle,  #  pylint: disable=unnecessary-negation
+        "no-gpg": not not options.no_gpg,  #  pylint: disable=unnecessary-negation
         "pub-tree": options.pub_tree,
         "force": options.force,
         "verbose": options.verbose or 0,
@@ -405,14 +405,14 @@ Note: for mgr-bootstrap to work, certain files are expected to be
     defopts["ssl-cert"] = options.ssl_cert
 
     # final parse after defaults have been remapped
-    options, _args = OptionParser(
+    options, _args = OptionParser(  #  pylint: disable=invalid-name
         option_list=getOptionsTable(), usage=_usage
     ).parse_args()
 
     return options
 
 
-def processCommandline():
+def processCommandline():  #  pylint: disable=invalid-name
     options = parseCommandline()
 
     if options.script[-3:] != ".sh":
@@ -434,9 +434,9 @@ ERROR: value of --script must end in '.sh':
         sys.stderr.write(
             "WARNING: it's *highly* suggested that --pub-tree is set to:\n"
         )
-        sys.stderr.write("           %s\n" % DEFAULT_APACHE_PUB_DIRECTORY)
+        sys.stderr.write("           %s\n" % DEFAULT_APACHE_PUB_DIRECTORY)  #  pylint: disable=consider-using-f-string
         sys.stderr.write("         It is currently set to:\n")
-        sys.stderr.write("           %s\n" % options.pub_tree)
+        sys.stderr.write("           %s\n" % options.pub_tree)  #  pylint: disable=consider-using-f-string
         if not options.force:
             sys.stderr.write("exiting\n")
             sys.exit(errnoBadPath)
@@ -452,7 +452,7 @@ ERROR: the value of --overrides and --script cannot be the same!
 
     if len(options.hostname.split(".")) < 3:
         msg = (
-            "WARNING: --hostname (%s) doesn't appear to be a FQDN.\n" % options.hostname
+            "WARNING: --hostname (%s) doesn't appear to be a FQDN.\n" % options.hostname  #  pylint: disable=consider-using-f-string
         )
         sys.stderr.write(msg)
         if not options.force:
@@ -468,7 +468,7 @@ ERROR: the value of --overrides and --script cannot be the same!
         for gpg_key in options.gpg_key.split(","):
             if not os.path.exists(gpg_key):
                 sys.stderr.write(
-                    "ERROR: corporate public GPG key file '{0}' not found\n".format(
+                    "ERROR: corporate public GPG key file '{0}' not found\n".format(  #  pylint: disable=consider-using-f-string
                         gpg_key
                     )
                 )
@@ -494,21 +494,21 @@ ERROR: the value of --overrides and --script cannot be the same!
     return options
 
 
-def copyFiles(options):
+def copyFiles(options):  #  pylint: disable=invalid-name
     """copies SSL cert and GPG key to --pub-tree if not in there already
     existence check should have already been done.
     """
 
-    pubDir = cleanupAbsPath(options.pub_tree or DEFAULT_APACHE_PUB_DIRECTORY)
+    pubDir = cleanupAbsPath(options.pub_tree or DEFAULT_APACHE_PUB_DIRECTORY)  #  pylint: disable=invalid-name
 
-    def copyFile(file0, file1):
+    def copyFile(file0, file1):  #  pylint: disable=invalid-name
         if not os.path.exists(os.path.dirname(file1)):
             sys.stderr.write(
-                "ERROR: directory does not exist:\n       %s\n" % os.path.dirname(file1)
+                "ERROR: directory does not exist:\n       %s\n" % os.path.dirname(file1)  #  pylint: disable=consider-using-f-string
             )
             sys.exit(errnoBadPath)
         if not os.path.exists(file0):
-            sys.stderr.write("ERROR: file does not exist:\n       %s\n" % file0)
+            sys.stderr.write("ERROR: file does not exist:\n       %s\n" % file0)  #  pylint: disable=consider-using-f-string
             sys.exit(errnoCANotFound)
         sys.stderr.write(
             """\
@@ -522,7 +522,7 @@ def copyFiles(options):
 
     # CA SSL cert
     if options.ssl_cert:
-        writeYN = 1
+        writeYN = 1  #  pylint: disable=invalid-name
         dest = os.path.join(pubDir, os.path.basename(options.ssl_cert))
         if os.path.dirname(options.ssl_cert) != pubDir:
             if os.path.isfile(dest) and getFileChecksum(
@@ -530,14 +530,14 @@ def copyFiles(options):
             ) != getFileChecksum("md5", dest):
                 rotateFile(dest, options.verbose)
             elif os.path.isfile(dest):
-                writeYN = 0
+                writeYN = 0  #  pylint: disable=invalid-name
             if writeYN:
                 copyFile(options.ssl_cert, dest)
 
     # corp GPG keys
     if not options.no_gpg and options.gpg_key:
         for gpg_key in options.gpg_key.split(","):
-            writeYN = 1
+            writeYN = 1  #  pylint: disable=invalid-name
             dest = os.path.join(pubDir, os.path.basename(gpg_key))
             if os.path.dirname(gpg_key) != pubDir:
                 if os.path.isfile(dest) and getFileChecksum(
@@ -545,19 +545,19 @@ def copyFiles(options):
                 ) != getFileChecksum("md5", dest):
                     rotateFile(dest, options.verbose)
                 elif os.path.isfile(dest):
-                    writeYN = 0
+                    writeYN = 0  #  pylint: disable=invalid-name
                 if writeYN:
                     copyFile(gpg_key, dest)
 
 
-def writeClientConfigOverrides(options):
+def writeClientConfigOverrides(options):  #  pylint: disable=invalid-name
     """write our "overrides" configuration file
     This generated file is a configuration mapping file that is used
     to map settings in up2date and rhn_register when run through a
     seperate script.
     """
 
-    up2dateConfMap = {
+    up2dateConfMap = {  #  pylint: disable=invalid-name
         # some are directly mapped, others are handled more delicately
         "http_proxy": "httpProxy",
         "http_proxy_username": "proxyUser",
@@ -567,10 +567,10 @@ def writeClientConfigOverrides(options):
         "no_gpg": "useGPG",
     }
 
-    _bootstrapDir = cleanupAbsPath(os.path.join(options.pub_tree, "bootstrap"))
+    _bootstrapDir = cleanupAbsPath(os.path.join(options.pub_tree, "bootstrap"))  #  pylint: disable=invalid-name
 
     if not os.path.exists(_bootstrapDir):
-        print("* creating '%s'" % _bootstrapDir)
+        print("* creating '%s'" % _bootstrapDir)  #  pylint: disable=consider-using-f-string
         os.makedirs(_bootstrapDir)  # permissions should be fine
 
     d = {}
@@ -600,15 +600,15 @@ def writeClientConfigOverrides(options):
     processCACertPath(options)
     if not options.ssl_cert:
         sys.stderr.write(
-            "WARNING: no SSL CA certificate found in %s\n" % options.pub_tree
+            "WARNING: no SSL CA certificate found in %s\n" % options.pub_tree  #  pylint: disable=consider-using-f-string
         )
-    _certname = os.path.basename(options.ssl_cert) or CA_CRT_NAME
-    _certdir = os.path.dirname(DEFAULT_CA_CERT_PATH)
+    _certname = os.path.basename(options.ssl_cert) or CA_CRT_NAME  #  pylint: disable=invalid-name
+    _certdir = os.path.dirname(DEFAULT_CA_CERT_PATH)  #  pylint: disable=invalid-name
     d[up2dateConfMap["ssl_cert"]] = os.path.join(_certdir, _certname)
     d[up2dateConfMap["no_gpg"]] = int(operator.truth(not options.no_gpg))
 
-    writeYN = 1
-    _overrides = cleanupAbsPath(os.path.join(_bootstrapDir, options.overrides))
+    writeYN = 1  #  pylint: disable=invalid-name
+    _overrides = cleanupAbsPath(os.path.join(_bootstrapDir, options.overrides))  #  pylint: disable=invalid-name
     if os.path.exists(_overrides):
         if readConfigFile(_overrides) != d:
             # only back it up if different
@@ -621,7 +621,7 @@ def writeClientConfigOverrides(options):
                 )
         else:
             # exactly the same... no need to write
-            writeYN = 0
+            writeYN = 0  #  pylint: disable=invalid-name
             print(
                 """\
 * client configuration overrides (old and new are identical; not written):
@@ -630,7 +630,7 @@ def writeClientConfigOverrides(options):
             )
 
     if writeYN:
-        fout = open(_overrides, "w")
+        fout = open(_overrides, "w")  #  pylint: disable=unspecified-encoding
         # header
         fout.write(
             """\
@@ -650,7 +650,7 @@ def writeClientConfigOverrides(options):
         keys.sort()
         for key in keys:
             if d[key] is not None:
-                fout.write("%s=%s\n" % (key, d[key]))
+                fout.write("%s=%s\n" % (key, d[key]))  #  pylint: disable=consider-using-f-string
         fout.close()
         print(
             """\
@@ -664,10 +664,10 @@ def writeClientConfigOverrides(options):
                 print(k + " " * (25 - len(k)) + repr(v))
 
 
-def generateBootstrapScript(options):
+def generateBootstrapScript(options):  #  pylint: disable=invalid-name
     "write, copy and place files into <DEFAULT_APACHE_PUB_DIRECTORY>/bootstrap/"
 
-    orgCACert = os.path.basename(options.ssl_cert or "")
+    orgCACert = os.path.basename(options.ssl_cert or "")  #  pylint: disable=invalid-name
 
     # write to <DEFAULT_APACHE_PUB_DIRECTORY>/bootstrap/<options.overrides>
     writeClientConfigOverrides(options)
@@ -675,7 +675,7 @@ def generateBootstrapScript(options):
     processCACertPath(options)
     pubname = os.path.basename(options.pub_tree)
 
-    newScript = []
+    newScript = []  #  pylint: disable=invalid-name
 
     # generate script
     # In processCommandline() we have turned all boolean values to 0 or 1
@@ -688,34 +688,34 @@ def generateBootstrapScript(options):
         )
     )
 
-    writeYN = 1
+    writeYN = 1  #  pylint: disable=invalid-name
 
     newScript.append(getGPGKeyImportSh())
     newScript.append(getCorpCACertSh())
 
-    # SLES: install packages required for registration on systems that do not have them installed
+    # SLES: install packages required for registration on systems that do not have them installed  #  pylint: disable=line-too-long
     newScript.append(getRegistrationStackSh())
 
     newScript.append(removeTLSCertificate())
     newScript.append(getRegistrationSaltSh(MY_PRODUCT_NAME))
 
-    _bootstrapDir = cleanupAbsPath(os.path.join(options.pub_tree, "bootstrap"))
-    _script = cleanupAbsPath(os.path.join(_bootstrapDir, options.script))
+    _bootstrapDir = cleanupAbsPath(os.path.join(options.pub_tree, "bootstrap"))  #  pylint: disable=invalid-name
+    _script = cleanupAbsPath(os.path.join(_bootstrapDir, options.script))  #  pylint: disable=invalid-name
 
-    newScript = "".join(newScript)
+    newScript = "".join(newScript)  #  pylint: disable=invalid-name
 
     if os.path.exists(_script):
-        oldScript = open(_script, "r").read()
+        oldScript = open(_script, "r").read()  #  pylint: disable=invalid-name,unspecified-encoding
         if oldScript == newScript:
-            writeYN = 0
+            writeYN = 0  #  pylint: disable=invalid-name
         elif os.path.exists(_script):
             backup = rotateFile(_script, depth=5, verbosity=options.verbose)
             if backup and options.verbose >= 0:
-                print("* rotating %s --> %s" % (_script, backup))
+                print("* rotating %s --> %s" % (_script, backup))  #  pylint: disable=consider-using-f-string
         del oldScript
 
     if writeYN:
-        fout = open(_script, "w")
+        fout = open(_script, "w")  #  pylint: disable=unspecified-encoding
         fout.write(newScript)
         fout.close()
         print(
@@ -738,7 +738,7 @@ def main():
 
     o options on commandline take precedence, but if option not set...
     o prepopulate the commandline options from already generated
-      <DEFAULT_APACHE_PUB_DIRECTORY>/bootstrap/client-config-overrides.txt if in existance.
+      <DEFAULT_APACHE_PUB_DIRECTORY>/bootstrap/client-config-overrides.txt if in existance.  #  pylint: disable=line-too-long
       FIXME: isn't done as of yet.
     o set defaults otherwise
     """

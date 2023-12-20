@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring,invalid-name
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -40,8 +40,8 @@ from spacewalk.common.rhnException import (
     redirectException,
 )  # to catch redirect exception
 from spacewalk.common.rhnTranslate import _
-from uyuni.common.rhnLib import setHeaderValue
-from spacewalk.common.rhnTB import Traceback
+from uyuni.common.rhnLib import setHeaderValue  #  pylint: disable=ungrouped-imports
+from spacewalk.common.rhnTB import Traceback  #  pylint: disable=ungrouped-imports
 
 # local modules
 from . import rhnRepository
@@ -71,7 +71,7 @@ class HandlerNotFoundError(Exception):
 # base class for requests
 
 
-class apacheRequest:
+class apacheRequest:  #  pylint: disable=missing-class-docstring,invalid-name
     def __init__(self, client_version, req):
         self.client = client_version
         self.req = req
@@ -102,7 +102,7 @@ class apacheRequest:
     # return a reference to a method name. The method in the base
     def method_ref(self, method):
         raise UnknownXML(
-            "Could not find reference definition" "for method '%s'" % method
+            "Could not find reference definition" "for method '%s'" % method  #  pylint: disable=consider-using-f-string
         )
 
     # call a function with parameters
@@ -118,8 +118,8 @@ class apacheRequest:
                 return self.response({"use_cached_copy": 1})
 
             # Fetch global message being sent to clients if applicable.
-            msg = open(CFG.MESSAGE_TO_ALL).read()
-            log_debug(3, "Sending message to all clients: %s" % msg)
+            msg = open(CFG.MESSAGE_TO_ALL).read()  #  pylint: disable=unspecified-encoding
+            log_debug(3, "Sending message to all clients: %s" % msg)  #  pylint: disable=consider-using-f-string
             # Send the message as a fault.
             response = xmlrpclib.Fault(-1, _("IMPORTANT MESSAGE FOLLOWS:\n%s") % msg)
             # and now send everything back
@@ -156,7 +156,7 @@ class apacheRequest:
             Traceback(
                 method,
                 self.req,
-                extra="Response sent back to the caller:\n%s\n"
+                extra="Response sent back to the caller:\n%s\n"  #  pylint: disable=consider-using-f-string
                 % (response.faultString,),
                 severity="notification",
             )
@@ -185,7 +185,7 @@ class apacheRequest:
                 Traceback(
                     method,
                     self.req,
-                    extra="SQL Error generated: %s" % e,
+                    extra="SQL Error generated: %s" % e,  #  pylint: disable=consider-using-f-string
                     severity="schema",
                 )
                 return apache.HTTP_INTERNAL_SERVER_ERROR
@@ -195,10 +195,10 @@ class apacheRequest:
             log_error("rhnSQL.SQLError caught", e)
             rhnSQL.rollback()
             Traceback(
-                method, self.req, extra="SQL Error generated: %s" % e, severity="schema"
+                method, self.req, extra="SQL Error generated: %s" % e, severity="schema"  #  pylint: disable=consider-using-f-string
             )
             return apache.HTTP_INTERNAL_SERVER_ERROR
-        except Exception:
+        except Exception:  #  pylint: disable=broad-exception-caught
             e = sys.exc_info()[1]
             log_error("Unhandled exception", e)
             rhnSQL.rollback()
@@ -298,7 +298,7 @@ class apacheRequest:
         )
         if xrepcon:
             fpath = rhnFlags.get("Download-Accelerator-Path")
-            log_debug(1, "Serving file %s" % fpath)
+            log_debug(1, "Serving file %s" % fpath)  #  pylint: disable=consider-using-f-string
             self.req.headers_out["X-Replace-Content"] = fpath
             # Only set a byte rate if xrepcon is active
             byte_rate = rhnFlags.get("QOS-Max-Bandwidth")
@@ -314,7 +314,7 @@ class apacheRequest:
             while read < response_size:
                 # We check the size here in case we're not asked for the entire file.
                 if read + CFG.BUFFER_SIZE > response_size:
-                    to_read = read + CFG.BUFFER_SIZE - response_size
+                    to_read = read + CFG.BUFFER_SIZE - response_size  #  pylint: disable=unused-variable
                 else:
                     to_read = CFG.BUFFER_SIZE
                 buf = response.read(CFG.BUFFER_SIZE)
@@ -389,15 +389,15 @@ class apacheRequest:
                 response = xmlrpclib.dumps(response, methodresponse=1)
             except TypeError:
                 e = sys.exc_info()[1]
-                log_debug(4, 'Error "%s" encoding response = %s' % (e, response))
+                log_debug(4, 'Error "%s" encoding response = %s' % (e, response))  #  pylint: disable=consider-using-f-string
                 Traceback(
                     "apacheHandler.response",
                     self.req,
-                    extra='Error "%s" encoding response = %s' % (e, response),
+                    extra='Error "%s" encoding response = %s' % (e, response),  #  pylint: disable=consider-using-f-string
                     severity="notification",
                 )
                 return apache.HTTP_INTERNAL_SERVER_ERROR
-            except Exception as exc:
+            except Exception as exc:  #  pylint: disable=broad-exception-caught,unused-variable
                 # Uncaught exception; signal the error
                 Traceback("apacheHandler.response", self.req, severity="unhandled")
                 return apache.HTTP_INTERNAL_SERVER_ERROR
@@ -415,12 +415,12 @@ class apacheRequest:
         if 5 <= CFG.DEBUG < 10:
             log_debug(
                 5,
-                "The response: %s[...SNIP (for sanity) SNIP...]%s"
+                "The response: %s[...SNIP (for sanity) SNIP...]%s"  #  pylint: disable=consider-using-f-string
                 % (response[:100], response[-100:]),
             )
         elif CFG.DEBUG >= 10:
             # if you absolutely must have that whole response in the log file
-            log_debug(10, "The response: %s" % response)
+            log_debug(10, "The response: %s" % response)  #  pylint: disable=consider-using-f-string
 
         # send the headers
         self.req.send_http_header()
@@ -446,7 +446,7 @@ class apacheRequest:
 # handles the POST requests
 
 
-class apachePOST(apacheRequest):
+class apachePOST(apacheRequest):  #  pylint: disable=missing-class-docstring,invalid-name
     # Decode the request. Returns a tuple of (params, methodName).
 
     def decode(self, data):
@@ -474,42 +474,42 @@ class apachePOST(apacheRequest):
             raise rhnFault(-1, "Ignoring call for a __str__ method", explain=0)
         if self.server is None:
             raise UnknownXML(
-                "Method `%s' is not bound to a server "
+                "Method `%s' is not bound to a server "  #  pylint: disable=consider-using-f-string
                 "(server = %s)" % (method, self.server)
             )
         classes = self.servers[self.server]
         if classes is None:
             raise UnknownXML(
-                "Server %s is not a valid XML-RPC receiver" % (self.server,)
+                "Server %s is not a valid XML-RPC receiver" % (self.server,)  #  pylint: disable=consider-using-f-string
             )
 
         try:
             classname, funcname = method.split(".", 1)
-        except:
+        except:  #  pylint: disable=bare-except
             raise_with_tb(
-                UnknownXML("method '%s' doesn't have a class and function" % (method,)),
+                UnknownXML("method '%s' doesn't have a class and function" % (method,)),  #  pylint: disable=consider-using-f-string
                 sys.exc_info()[2],
             )
         if not classname or not funcname:
             raise UnknownXML(method)
 
-        log_debug(4, "Class name: %s; function name: %s" % (classname, funcname))
+        log_debug(4, "Class name: %s; function name: %s" % (classname, funcname))  #  pylint: disable=consider-using-f-string
         c = classes.get(classname)
         if c is None:
             raise UnknownXML(
-                "class %s.%s is not defined (function = %s)"
+                "class %s.%s is not defined (function = %s)"  #  pylint: disable=consider-using-f-string
                 % (self.server, classname, funcname)
             )
 
         # Initialize the handlers object
-        serverHandlers = c()
+        serverHandlers = c()  #  pylint: disable=invalid-name
         # we need this for sat handler
         serverHandlers.remote_hostname = self.req.get_remote_host(
             apache.REMOTE_DOUBLE_REV
         )
         f = serverHandlers.get_function(funcname)
         if f is None:
-            raise UnknownXML("function: %s invalid" % (method,))
+            raise UnknownXML("function: %s invalid" % (method,))  #  pylint: disable=consider-using-f-string
         # Send the client this server's capabilities
         rhnCapability.set_server_capabilities()
         return f
@@ -527,7 +527,7 @@ class apachePOST(apacheRequest):
 
         # Read the data from the request
         # pylint: disable=E1103
-        _body = fd.read()
+        _body = fd.read()  #  pylint: disable=invalid-name
         fd.close()
 
         # In this case, we talk to a client (maybe through a proxy)
@@ -540,7 +540,7 @@ class apachePOST(apacheRequest):
         try:
             params, method = self.decode(_body)
         except xmlrpclib.ResponseError:
-            log_error("Got bad XML-RPC blob of len = %d" % len(_body))
+            log_error("Got bad XML-RPC blob of len = %d" % len(_body))  #  pylint: disable=consider-using-f-string
             return apache.HTTP_BAD_REQUEST
         else:
             if params is None:
@@ -549,7 +549,7 @@ class apachePOST(apacheRequest):
         return self.call_function(method, params)
 
 
-class apacheGET:
+class apacheGET:  #  pylint: disable=missing-class-docstring,invalid-name
     def __init__(self, client_version, req):
         # extract the server we're talking to and the root directory
         # from the request configuration options
@@ -576,7 +576,7 @@ class apacheGET:
         return getattr(self.handler, name)
 
 
-class GetHandler(apacheRequest):
+class GetHandler(apacheRequest):  #  pylint: disable=missing-class-docstring
     # we require our own init since we depend on a channel
 
     def __init__(self, client_version, req):
@@ -600,7 +600,7 @@ class GetHandler(apacheRequest):
         f = repository.get_function(meth)
         if f is None:
             raise UnknownXML(
-                "function '%s' invalid; path_info is %s" % (method, self.req.path_info)
+                "function '%s' invalid; path_info is %s" % (method, self.req.path_info)  #  pylint: disable=consider-using-f-string
             )
         return f
 
@@ -618,11 +618,11 @@ class GetHandler(apacheRequest):
             response = f.getxml()
             self.response(response)
             return apache.HTTP_NOT_FOUND
-        except Exception as exc:
-            e = sys.exc_info()[1]
+        except Exception as exc:  #  pylint: disable=broad-exception-caught,unused-variable
+            e = sys.exc_info()[1]  #  pylint: disable=unused-variable
             rhnSQL.rollback()
             # otherwise we do a full stop
-            Traceback(method, self.req, severity="unhandled")
+            Traceback(method, self.req, severity="unhandled")  #  pylint: disable=used-before-assignment
             return apache.HTTP_INTERNAL_SERVER_ERROR
         # make the actual function call and return the result
         return self.call_function(method, params)
@@ -634,7 +634,7 @@ class GetHandler(apacheRequest):
         array = self.req.path_info.split("/")
         if len(array) < 4:
             log_error("Invalid URI for GET request", self.req.path_info)
-            raise rhnFault(21, _("Invalid URI %s" % self.req.path_info))
+            raise rhnFault(21, _("Invalid URI %s" % self.req.path_info))  #  pylint: disable=consider-using-f-string
 
         self.channel, method = (array[2], array[3])
         if method == "getPackage":
@@ -648,7 +648,7 @@ class GetHandler(apacheRequest):
         log_debug(3)
         # pkilambi:if redirectException caught returns path(<str>)
         if isinstance(response, str):
-            method, params = self._get_method_params()
+            method, params = self._get_method_params()  #  pylint: disable=unused-variable
             if method == "getPackage":
                 return self.redirect(self.req, response)
 
@@ -663,7 +663,7 @@ class GetHandler(apacheRequest):
                 retcode = apache.HTTP_UNAUTHORIZED
 
             self.req.headers_out["X-RHN-Fault-Code"] = str(response.faultCode)
-            faultString = (
+            faultString = (  #  pylint: disable=invalid-name
                 base64.encodestring(response.faultString.encode()).decode().strip()
             )
             # Split the faultString into multiple lines
@@ -689,7 +689,7 @@ class GetHandler(apacheRequest):
             raise IOError("Cannot redirect after headers have already been sent.")
 
         # akamize the url with the new tokengen before sending the redirect response
-        import tokengen.Generator
+        import tokengen.Generator  #  pylint: disable=import-outside-toplevel
 
         arl = tokengen.Generator.generate_auth_url(url)
         req.headers_out["Location"] = arl

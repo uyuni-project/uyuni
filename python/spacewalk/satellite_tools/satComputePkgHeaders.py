@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring,invalid-name
 # Copyright (c) 2008--2017 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -18,7 +18,7 @@
 # when a script runs under it
 
 import sys
-from optparse import OptionParser, Option
+from optparse import OptionParser, Option  #  pylint: disable=deprecated-module
 
 from spacewalk.server import rhnSQL
 from uyuni.common import rhn_rpm
@@ -64,7 +64,7 @@ options_table = [
 ]
 
 
-class Runner:
+class Runner:  #  pylint: disable=missing-class-docstring
     def __init__(self):
         self.options = None
         self._channels_hash = None
@@ -73,7 +73,7 @@ class Runner:
     def main(self):
         parser = OptionParser(option_list=options_table)
 
-        (self.options, _args) = parser.parse_args()
+        (self.options, _args) = parser.parse_args()  #  pylint: disable=invalid-name,unused-variable
 
         rhnSQL.initDB()
 
@@ -200,16 +200,16 @@ class Runner:
         h = rhnSQL.prepare(self._query_add_package_header_values)
         for package_id, (path, header_start, header_end) in list(package_ids.items()):
             try:
-                p_file = file(self.options.prefix + "/" + path, "r")
+                p_file = file(self.options.prefix + "/" + path, "r")  #  pylint: disable=undefined-variable
             except IOError:
-                print(("Error opening file %s" % path))
+                print(("Error opening file %s" % path))  #  pylint: disable=consider-using-f-string
                 continue
 
             try:
                 (header_start, header_end) = rhn_rpm.get_header_byte_range(p_file)
             except InvalidPackageError:
                 e = sys.exc_info()[1]
-                print(("Error reading header size from file %s: %s" % (path, e)))
+                print(("Error reading header size from file %s: %s" % (path, e)))  #  pylint: disable=consider-using-f-string
 
             try:
                 h.execute(
@@ -222,7 +222,7 @@ class Runner:
 
     @staticmethod
     def _backup_packages(package_ids, backup_file):
-        f = open(backup_file, "w+")
+        f = open(backup_file, "w+")  #  pylint: disable=unspecified-encoding
 
         if not package_ids:
             return
@@ -230,7 +230,7 @@ class Runner:
         template = (
             "update rhnPackage set header_start=%s and header_end=%s where id = %s;\n"
         )
-        for package_id, (_path, header_start, header_end) in list(package_ids.items()):
+        for package_id, (_path, header_start, header_end) in list(package_ids.items()):  #  pylint: disable=invalid-name,unused-variable
             s = template % (header_start, header_end, package_id)
             f.write(s)
         f.write("commit;\n")

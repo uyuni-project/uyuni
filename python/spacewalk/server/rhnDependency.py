@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring,invalid-name
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -280,13 +280,13 @@ and p.package_arch_id = pa.id
 
 
 class SolveDependenciesError(Exception):
-    def __init__(self, deps=None, packages=None, *args, **kwargs):
+    def __init__(self, deps=None, packages=None, *args, **kwargs):  #  pylint: disable=keyword-arg-before-vararg
         Exception.__init__(self, *args, **kwargs)
         self.deps = deps
         self.packages = packages
 
 
-def __single_query_with_arch_and_id(server_id, deps, query):
+def __single_query_with_arch_and_id(server_id, deps, query):  #  pylint: disable=invalid-name
     """Run one of the queries and return the results along with the arch."""
     ret = {}
     h = rhnSQL.prepare(query)
@@ -312,11 +312,11 @@ def find_package_with_arch(server_id, deps):
 
 
 def solve_dependencies_with_limits(
-    server_id, deps, version, all=0, limit_operator=None, limit=None
+    server_id, deps, version, all=0, limit_operator=None, limit=None  #  pylint: disable=redefined-builtin
 ):
     """This version of solve_dependencies allows the caller to get all of the packages that solve a dependency and limit
-    the packages that are returned to those that match the criteria defined by limit_operator and limit. This version
-    of the function also returns the architecture label of the package[s] that get returned.
+    the packages that are returned to those that match the criteria defined by limit_operator and limit. This version  #  pylint: disable=line-too-long
+    of the function also returns the architecture label of the package[s] that get returned.  #  pylint: disable=line-too-long
 
     limit_operator can be any of: '<', '<=', '==', '>=', or '>'.
     limit is a a string of the format [epoch:]name-version-release
@@ -337,13 +337,13 @@ def solve_dependencies_with_limits(
     packages_all = {}
     package_list = []
 
-    # List of fields in a package. Corresponds to the keys for the dictionary that holds the package information.
+    # List of fields in a package. Corresponds to the keys for the dictionary that holds the package information.  #  pylint: disable=line-too-long
     nvre = ["name", "version", "release", "epoch", "arch"]
 
     # Make sure there are no duplicate dependencies.
     deplist = set(deps)
 
-    statement = "%s UNION ALL %s UNION ALL %s" % (
+    statement = "%s UNION ALL %s UNION ALL %s" % (  #  pylint: disable=consider-using-f-string
         __packages_all_sql,
         __provides_all_sql,
         __files_all_sql,
@@ -354,7 +354,7 @@ def solve_dependencies_with_limits(
     packages = {}
 
     for dep in deplist:
-        dict = {}
+        dict = {}  #  pylint: disable=redefined-builtin
 
         # Retrieve the package information from the database.
         h.execute(server_id=server_id, dep=dep)
@@ -381,13 +381,13 @@ def solve_dependencies_with_limits(
 
             try:
                 limit = rhnLib.make_evr(limit)
-            except:
+            except:  #  pylint: disable=try-except-raise
                 raise
 
             for package in package_list:
                 try:
                     keep = test_evr(package, limit_operator, limit)
-                except:
+                except:  #  pylint: disable=try-except-raise
                     raise
 
                 if keep:
@@ -408,11 +408,11 @@ def solve_dependencies_with_limits(
             name_key = entry[0]
 
             if all == 0:
-                # NOTE: Remember that the values in dict are tuples that look like (entry, preference).
-                # NOTE, Part Deux: the '<=' was a '<' originally. I changed it because if two packages
-                # with the same preference but different versions came through, the second package was being used.
-                # The changes I made above make it so that at this point the packages are sorted from highest nvre
-                # to lowest nvre. Selecting the second package was causing the earlier package to be
+                # NOTE: Remember that the values in dict are tuples that look like (entry, preference).  #  pylint: disable=line-too-long
+                # NOTE, Part Deux: the '<=' was a '<' originally. I changed it because if two packages  #  pylint: disable=line-too-long
+                # with the same preference but different versions came through, the second package was being used.  #  pylint: disable=line-too-long
+                # The changes I made above make it so that at this point the packages are sorted from highest nvre  #  pylint: disable=line-too-long
+                # to lowest nvre. Selecting the second package was causing the earlier package to be  #  pylint: disable=line-too-long
                 # returned, which is bad.
                 if name_key in dict and dict[name_key][1] <= p["preference"]:
                     # Already have it with a lower preference
@@ -437,7 +437,7 @@ def solve_dependencies_with_limits(
                         tup_keep.append(tup)
                 list_of_tuples = tup_keep
 
-            list_of_tuples.sort(lambda a, b: cmp(a[1], b[1]))
+            list_of_tuples.sort(lambda a, b: cmp(a[1], b[1]))  #  pylint: disable=undefined-variable
             packages[dep] = [x[0] for x in list_of_tuples]
 
     # v2 clients are done
@@ -447,7 +447,7 @@ def solve_dependencies_with_limits(
         return _v2packages_to_v1list(packages, deplist, all)
 
 
-def _v2packages_to_v1list(packages, deplist, all=0):
+def _v2packages_to_v1list(packages, deplist, all=0):  #  pylint: disable=redefined-builtin
     # v1 clients expect a list as a result
     result = []
     # Return the results in order (not that anyone would care)
@@ -470,9 +470,9 @@ def solve_dependencies_arch(server_id, deps, version):
     """Does the same thing as solve_dependencies, but also returns the architecture label with the package info.
     E.g.
     OUT:
-       Dictionary with key values being the filnames in deps and the values being a list of lists of package info.
-       Example :=  {'filename1'    :   [['name', 'version', 'release', 'epoch', 'architecture'],
-                                        ['name2', 'version2', 'release2', 'epoch2', 'architecture2']]}
+       Dictionary with key values being the filnames in deps and the values being a list of lists of package info.  #  pylint: disable=line-too-long
+       Example :=  {'filename1'    :   [['name', 'version', 'release', 'epoch', 'architecture'],  #  pylint: disable=line-too-long
+                                        ['name2', 'version2', 'release2', 'epoch2', 'architecture2']]}  #  pylint: disable=line-too-long
     """
     # list of the keys to the values in each row of the recordset.
     nvre = ["name", "version", "release", "epoch", "arch"]
@@ -487,7 +487,7 @@ def solve_dependencies(server_id, deps, version, nvre=None):
        version := version of the client
 
     OUT:
-       Dictionary with key values being the filnames in deps and the values being a list of lists of package info.
+       Dictionary with key values being the filnames in deps and the values being a list of lists of package info.  #  pylint: disable=line-too-long
        Example :=  {'filename1'    :   [['name', 'version', 'release', 'epoch'],
                                         ['name2', 'version2', 'release2', 'epoch2']]}
     """
@@ -503,7 +503,7 @@ def solve_dependencies(server_id, deps, version, nvre=None):
     #  - Lookup by provides
     #  - Lookup by file name
 
-    statement = "%s UNION ALL %s UNION ALL %s" % (
+    statement = "%s UNION ALL %s UNION ALL %s" % (  #  pylint: disable=consider-using-f-string
         __packages_sql,
         __provides_sql,
         __files_sql,
@@ -514,7 +514,7 @@ def solve_dependencies(server_id, deps, version, nvre=None):
     packages = {}
     # Iterate through the dependency problems
     for dep in deplist:
-        dict = {}
+        dict = {}  #  pylint: disable=redefined-builtin
         h.execute(server_id=server_id, dep=dep)
         rs = h.fetchall_dict() or []
         if not rs:  # test shortcut
@@ -544,7 +544,7 @@ def solve_dependencies(server_id, deps, version, nvre=None):
         return _v2packages_to_v1list(packages, deplist)
 
 
-def _avoid_compat_packages(dict):
+def _avoid_compat_packages(dict):  #  pylint: disable=redefined-builtin
     """attempt to avoid giving out the compat-* packages
     if there are other candidates
     """
@@ -562,7 +562,7 @@ def _avoid_compat_packages(dict):
         # otherwise there's nothing much we can do (no compats or only compats)
     # and now return these final results ordered by preferece
     l = list(dict.values())
-    l.sort(lambda a, b: cmp(a[1], b[1]))
+    l.sort(lambda a, b: cmp(a[1], b[1]))  #  pylint: disable=undefined-variable
     return [x[0] for x in l]
 
 

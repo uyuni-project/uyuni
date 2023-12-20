@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2023 SUSE LLC
 #
 # This software is licensed to you under the GNU General Public License,

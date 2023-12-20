@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -23,27 +23,27 @@ import sys
 if sys.version_info[0] == 3:
     from functools import reduce
 
-from spacewalk.common.rhnLog import log_debug, log_error
-from spacewalk.common.rhnException import rhnException
-from spacewalk.common.rhnConfig import CFG
+from spacewalk.common.rhnLog import log_debug, log_error  #  pylint: disable=wrong-import-position
+from spacewalk.common.rhnException import rhnException  #  pylint: disable=wrong-import-position
+from spacewalk.common.rhnConfig import CFG  #  pylint: disable=wrong-import-position
 
-from spacewalk.server import rhnSQL
-from rhn.stringutils import bstr
+from spacewalk.server import rhnSQL  #  pylint: disable=wrong-import-position
+from rhn.stringutils import bstr  #  pylint: disable=wrong-import-position
 
 # Do not import server.apacheAuth in this module, or the secret generation
 # script will traceback - since it would try to import rhnSecret which doesn't
 # exist
 
 
-class rhnSystemEntitlementException(rhnException):
+class rhnSystemEntitlementException(rhnException):  #  pylint: disable=invalid-name
     pass
 
 
-class rhnNoSystemEntitlementsException(rhnSystemEntitlementException):
+class rhnNoSystemEntitlementsException(rhnSystemEntitlementException):  #  pylint: disable=invalid-name
     pass
 
 
-def getServerID(server, fields=[]):
+def getServerID(server, fields=[]):  #  pylint: disable=invalid-name,dangerous-default-value
     """Given a textual digitalid (old style or new style) or simply an ID
     try to search in the database and return the numeric id (thus doing
     validation in case you pass a numeric ID already)
@@ -62,7 +62,7 @@ def getServerID(server, fields=[]):
     if not type(server) in [type(""), type(0)]:
         return None
 
-    if type(server) == type(0):
+    if type(server) == type(0):  #  pylint: disable=unidiomatic-typecheck
         search_id = server  # will search by number
     elif server[:7] == "SERVER-":  # old style certificate
         search_id = server
@@ -76,7 +76,7 @@ def getServerID(server, fields=[]):
         # this is string. if all are numbers, then try to convert to int
         if check_chars(server) == 0:
             # throughly invalid id, whet the heck do we do?
-            log_error("Invalid server ID passed in search: %s" % server)
+            log_error("Invalid server ID passed in search: %s" % server)  #  pylint: disable=consider-using-f-string
             return None
         # otherwise try as int
         try:
@@ -97,13 +97,13 @@ def getServerID(server, fields=[]):
         if k == "arch":
             archdb = ", rhnServerArch sa"
             archjoin = "and s.server_arch_id = sa.id"
-            xfields = "%s, a.label arch" % xfields
+            xfields = "%s, a.label arch" % xfields  #  pylint: disable=consider-using-f-string
             continue
-        xfields = "%s, s.%s" % (xfields, k)
+        xfields = "%s, s.%s" % (xfields, k)  #  pylint: disable=consider-using-f-string
     # ugliness is over
 
     # Now build the search
-    if type(search_id) == type(0):
+    if type(search_id) == type(0):  #  pylint: disable=unidiomatic-typecheck
         h = rhnSQL.prepare(
             """
         select s.id %s from rhnServer s %s
@@ -126,7 +126,7 @@ def getServerID(server, fields=[]):
     return row
 
 
-def getServerSecret(server):
+def getServerSecret(server):  #  pylint: disable=invalid-name
     """retrieve the server secret using the great getServerID function"""
     row = getServerID(server, ["secret"])
     if row is None:
@@ -139,7 +139,7 @@ def getServerSecret(server):
 ###############################
 
 
-def __create_server_group(group_label, org_id):
+def __create_server_group(group_label, org_id):  #  pylint: disable=invalid-name
     """create the initial server groups for a new server"""
     # Add this new server to the pending group
     h = rhnSQL.prepare(
@@ -172,7 +172,7 @@ def __create_server_group(group_label, org_id):
         if rownum == 0:
             # No rows were created, probably invalid label
             raise rhnException(
-                "Could not create new group for org=`%s'" % org_id, group_label
+                "Could not create new group for org=`%s'" % org_id, group_label  #  pylint: disable=consider-using-f-string
             )
     else:
         ret_id = data["id"]
@@ -193,7 +193,7 @@ def join_server_group(server_id, server_group_id):
     return ret
 
 
-def create_server_setup(server_id, org_id):
+def create_server_setup(server_id, org_id):  #  pylint: disable=unused-argument
     """This function inserts a row in rhnServerInfo."""
     # create the rhnServerInfo record
     h = rhnSQL.prepare(
@@ -224,11 +224,11 @@ def checkin(server_id, commit=1):
     return 1
 
 
-def set_qos(server_id):
+def set_qos(server_id):  #  pylint: disable=unused-argument
     pass
 
 
-def throttle(server):
+def throttle(server):  #  pylint: disable=unused-argument
     """throttle - limits access to free users if a throttle file exists
     NOTE: We don't throttle anybody. Just stub.
     """
@@ -243,7 +243,7 @@ def throttle(server):
     return
 
 
-def join_rhn(org_id):
+def join_rhn(org_id):  #  pylint: disable=unused-argument
     """Stub"""
     return
 
@@ -383,7 +383,7 @@ def generate_random_string(length=20):
     random_bytes = 16
     length = int(length)
     s = hashlib.new("sha1")
-    s.update(bstr("%.8f" % time.time()))
+    s.update(bstr("%.8f" % time.time()))  #  pylint: disable=consider-using-f-string
     s.update(bstr(str(os.getpid())))
     devrandom = open("/dev/urandom", mode="rb")
     result = []

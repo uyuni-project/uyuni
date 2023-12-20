@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2013 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -18,7 +18,7 @@
 
 
 # Data types
-class DatabaseDataType:
+class DatabaseDataType:  #  pylint: disable=missing-class-docstring
     type_name = None
 
     def __init__(self, value=None, size=None):
@@ -31,7 +31,7 @@ class DatabaseDataType:
     def set_value(self, value):
         self.value = value
 
-    def __str__(self):
+    def __str__(self):  #  pylint: disable=invalid-str-returned
         return self.type_name
 
 
@@ -52,7 +52,7 @@ class BINARY(DatabaseDataType):
     type_name = "BINARY"
 
 
-class LONG_BINARY(DatabaseDataType):
+class LONG_BINARY(DatabaseDataType):  #  pylint: disable=invalid-name
     type_name = "LONG_BINARY"
 
 

@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring,invalid-name
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -43,7 +43,7 @@ def get_package_path(server_id, pkg_spec, channel):
         pkg.insert(1, None)
     else:
         if "/" in pkg_spec:
-            org, checksum, pkg_spec = pkg_spec.split("/", 2)
+            org, checksum, pkg_spec = pkg_spec.split("/", 2)  #  pylint: disable=unused-variable
         pkg = parseRPMFilename(pkg_spec)
         if pkg is None:
             log_debug(4, "Error", "Requested weird package", pkg_spec)
@@ -114,7 +114,7 @@ def check_package_file(rel_path, logpkg, raisepkg):
     if rel_path is None:
         log_error("Package path null for package id", logpkg)
         raise rhnFault(17, _("Invalid RPM package %s requested") % raisepkg)
-    filePath = "%s/%s" % (CFG.MOUNT_POINT, rel_path)
+    filePath = "%s/%s" % (CFG.MOUNT_POINT, rel_path)  #  pylint: disable=invalid-name,consider-using-f-string
     if not os.access(filePath, os.R_OK):
         # Package not found on the filesystem
         log_error("Package not found", filePath)
@@ -127,7 +127,7 @@ def unlink_package_file(path):
     try:
         os.unlink(path)
     except OSError:
-        log_debug(1, "Error unlinking %s;" % path)
+        log_debug(1, "Error unlinking %s;" % path)  #  pylint: disable=consider-using-f-string
     dirname = os.path.dirname(path)
     base_dirs = (CFG.MOUNT_POINT + "/" + CFG.PREPENDED_DIR, CFG.MOUNT_POINT)
     while dirname not in base_dirs:
@@ -150,7 +150,7 @@ def get_all_package_paths(server_id, pkg_spec, channel):
     log_debug(3, server_id, pkg_spec, channel)
     remotepath = None
     # get the path and package
-    localpath, pkg_id = get_package_path(server_id, pkg_spec, channel)
+    localpath, pkg_id = get_package_path(server_id, pkg_spec, channel)  #  pylint: disable=unused-variable
 
     return remotepath, localpath
 
@@ -159,7 +159,7 @@ def get_all_package_paths(server_id, pkg_spec, channel):
 # Returns the path to a source rpm
 
 
-def get_source_package_path(server_id, pkgFilename, channel):
+def get_source_package_path(server_id, pkgFilename, channel):  #  pylint: disable=invalid-name
     log_debug(3, server_id, pkgFilename, channel)
     rs = __query_source_package_path_by_name(server_id, pkgFilename, channel)
     if rs is None:
@@ -179,7 +179,7 @@ def get_source_package_path(server_id, pkgFilename, channel):
 
 
 # 0 or 1: is this source in this channel?
-def package_source_in_channel(server_id, pkgFilename, channel):
+def package_source_in_channel(server_id, pkgFilename, channel):  #  pylint: disable=invalid-name
     log_debug(3, server_id, pkgFilename, channel)
     rs = __query_source_package_path_by_name(server_id, pkgFilename, channel)
     if rs is None:
@@ -188,7 +188,7 @@ def package_source_in_channel(server_id, pkgFilename, channel):
 
 
 # The query used both in get_source_package_path and package_source_in_channel
-def __query_source_package_path_by_name(server_id, pkgFilename, channel):
+def __query_source_package_path_by_name(server_id, pkgFilename, channel):  #  pylint: disable=invalid-name,invalid-name
     statement = """
     select
             unique ps.path
@@ -231,13 +231,13 @@ def get_info_for_package(pkg, channel_id, org_id):
     # yum repo has epoch="0" not only when epoch is "0" but also if it's NULL
     # in DB we cannot insert an empty string, so we check for NULL or '0'
     if pkg[3] == "0" or pkg[3] == "" or pkg[3] is None:
-        epochStatement = "(epoch is null or epoch = '0')"
+        epochStatement = "(epoch is null or epoch = '0')"  #  pylint: disable=invalid-name
     else:
-        epochStatement = "epoch = :epoch"
+        epochStatement = "epoch = :epoch"  #  pylint: disable=invalid-name
     if params["org_id"]:
-        orgStatement = "org_id = :org_id"
+        orgStatement = "org_id = :org_id"  #  pylint: disable=invalid-name
     else:
-        orgStatement = "org_id is null"
+        orgStatement = "org_id is null"  #  pylint: disable=invalid-name
 
     statement = """
     select p.path, cp.channel_id,
@@ -274,14 +274,14 @@ def get_info_for_package(pkg, channel_id, org_id):
     if not ret:
         return ret
     for i in ret:
-        if i["org_id"] == None:
+        if i["org_id"] == None:  #  pylint: disable=singleton-comparison
             i["org_id"] = ""
         else:
             i["org_id"] = str(i["org_id"])
     return ret
 
 
-def _none2emptyString(foo):
+def _none2emptyString(foo):  #  pylint: disable=invalid-name
     if foo is None:
         return ""
     return str(foo)

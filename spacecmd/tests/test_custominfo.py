@@ -2,9 +2,9 @@
 """
 Test suite for custominfo source
 """
-from mock import MagicMock, patch, mock_open
+from mock import MagicMock, patch, mock_open  #  pylint: disable=unused-import
 from spacecmd import custominfo
-from helpers import shell, exc2str
+from helpers import shell, exc2str  #  pylint: disable=unused-import
 import pytest
 
 
@@ -13,9 +13,9 @@ class TestSCCusomInfo:
     Test for custominfo API.
     """
 
-    def test_do_custominfo_createkey_no_keyname(self, shell):
+    def test_do_custominfo_createkey_no_keyname(self, shell):  #  pylint: disable=redefined-outer-name
         """
-        Test do_custominfo_createkey do not break on no key name provided, falling back to interactive mode.
+        Test do_custominfo_createkey do not break on no key name provided, falling back to interactive mode.  #  pylint: disable=line-too-long
         """
         shell.client.system.custominfo.createKey = MagicMock()
         prompter = MagicMock(side_effect=["", "", Exception("Empty key")])
@@ -26,9 +26,9 @@ class TestSCCusomInfo:
 
         assert "Empty key" in exc2str(exc)
 
-    def test_do_custominfo_createkey_no_descr(self, shell):
+    def test_do_custominfo_createkey_no_descr(self, shell):  #  pylint: disable=redefined-outer-name
         """
-        Test do_custominfo_createkey description gets the name of the key, if not provided.
+        Test do_custominfo_createkey description gets the name of the key, if not provided.  #  pylint: disable=line-too-long
         """
         shell.client.system.custominfo.createKey = MagicMock()
         prompter = MagicMock(side_effect=["keyname", ""])
@@ -45,9 +45,9 @@ class TestSCCusomInfo:
         assert shell.session == session
         assert keyname == descr
 
-    def test_do_custominfo_createkey_descr_interactive(self, shell):
+    def test_do_custominfo_createkey_descr_interactive(self, shell):  #  pylint: disable=redefined-outer-name
         """
-        Test do_custominfo_createkey description gets the name of the key from interactive prompt.
+        Test do_custominfo_createkey description gets the name of the key from interactive prompt.  #  pylint: disable=line-too-long
         """
         shell.client.system.custominfo.createKey = MagicMock()
         prompter = MagicMock(side_effect=["keyname", "keydescr"])
@@ -66,12 +66,12 @@ class TestSCCusomInfo:
         assert keyname == "keyname"
         assert descr == "keydescr"
 
-    def test_do_custominfo_createkey_descr_args(self, shell):
+    def test_do_custominfo_createkey_descr_args(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_custominfo_createkey description gets the name of the key from the args.
         """
         shell.client.system.custominfo.createKey = MagicMock()
-        prompter = MagicMock(side_effect=Exception("Kaboom"))
+        prompter = MagicMock(side_effect=Exception("Kaboom"))  #  pylint: disable=unused-variable
 
         custominfo.do_custominfo_createkey(shell, "keyname keydescr")
 
@@ -86,7 +86,7 @@ class TestSCCusomInfo:
         assert keyname == "keyname"
         assert descr == "keydescr"
 
-    def test_do_custominfo_deletekey_noargs(self, shell):
+    def test_do_custominfo_deletekey_noargs(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_custominfo_deletekey shows help on no args.
         """
@@ -104,7 +104,7 @@ class TestSCCusomInfo:
         assert errmsg in exc2str(exc)
 
     @patch("spacecmd.custominfo.print", MagicMock())
-    def test_do_custominfo_deletekey_args(self, shell):
+    def test_do_custominfo_deletekey_args(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_custominfo_deletekey calls deleteKey API function.
         """
@@ -127,9 +127,9 @@ class TestSCCusomInfo:
         assert len(keylist) == 1
         assert "this_key_stays" in keylist
 
-    def test_do_custominfo_listkeys_stdout(self, shell):
+    def test_do_custominfo_listkeys_stdout(self, shell):  #  pylint: disable=redefined-outer-name
         """
-        Test do_custominfo_listkeys calls lists all keys calling listAllKeys API function to STDOUT.
+        Test do_custominfo_listkeys calls lists all keys calling listAllKeys API function to STDOUT.  #  pylint: disable=line-too-long
         """
         keylist = [
             {"label": "some_key"},
@@ -144,9 +144,9 @@ class TestSCCusomInfo:
         assert ret is None
         assert mprint.called
 
-    def test_do_custominfo_listkeys_as_data(self, shell):
+    def test_do_custominfo_listkeys_as_data(self, shell):  #  pylint: disable=redefined-outer-name
         """
-        Test do_custominfo_listkeys calls lists all keys calling listAllKeys API function as data.
+        Test do_custominfo_listkeys calls lists all keys calling listAllKeys API function as data.  #  pylint: disable=line-too-long
         """
         keylist = [
             {"label": "some_key"},
@@ -163,7 +163,7 @@ class TestSCCusomInfo:
         for key in keylist:
             assert key["label"] in ret
 
-    def test_do_custominfo_details_noarg(self, shell):
+    def test_do_custominfo_details_noarg(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_custominfo_details shows help when no arguments has been passed.
         """
@@ -182,7 +182,7 @@ class TestSCCusomInfo:
         assert not logger.error.called
         assert not shell.client.system.custominfo.listAllKeys.called
 
-    def test_do_custominfo_details_no_key(self, shell):
+    def test_do_custominfo_details_no_key(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_custominfo_details shows error to the log if key name doesn't match.
         """
@@ -205,7 +205,7 @@ class TestSCCusomInfo:
             == "No keys matched argument 'keyname'."
         )
 
-    def test_do_custominfo_details_keydetails_notfound(self, shell):
+    def test_do_custominfo_details_keydetails_notfound(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_custominfo_details nothing happens if keydetails missing.
         """
@@ -221,7 +221,7 @@ class TestSCCusomInfo:
         assert shell.client.system.custominfo.listAllKeys.called
         assert not mprint.called
 
-    def test_do_custominfo_details_keydetails_na(self, shell):
+    def test_do_custominfo_details_keydetails_na(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_custominfo_details prints key details not available in format.
         """
@@ -257,7 +257,7 @@ class TestSCCusomInfo:
         for idx, call in enumerate(mprint.call_args_list):
             assert call[0][0] == expectations[idx]
 
-    def test_do_custominfo_details_keydetails(self, shell):
+    def test_do_custominfo_details_keydetails(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_custominfo_details prints key details not available in format.
         """
@@ -303,7 +303,7 @@ class TestSCCusomInfo:
         for idx, call in enumerate(mprint.call_args_list):
             assert call[0][0] == expectations[idx]
 
-    def test_custominfo_updatekey_noarg_name(self, shell):
+    def test_custominfo_updatekey_noarg_name(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_custominfo_updatekey with no arguments falls to the interactive prompt.
         """
@@ -315,7 +315,7 @@ class TestSCCusomInfo:
 
         assert "interactive mode" in exc2str(exc)
 
-    def test_custominfo_updatekey_noarg_descr(self, shell):
+    def test_custominfo_updatekey_noarg_descr(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_custominfo_updatekey with no arguments falls to the interactive prompt.
         """
@@ -329,7 +329,7 @@ class TestSCCusomInfo:
 
         assert "interactive mode for descr" in exc2str(exc)
 
-    def test_custominfo_updatekey_keyonly_arg(self, shell):
+    def test_custominfo_updatekey_keyonly_arg(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_custominfo_updatekey description is taken interactively.
         """
@@ -341,9 +341,9 @@ class TestSCCusomInfo:
 
         assert "interactive mode for descr" in exc2str(exc)
 
-    def test_custominfo_updatekey_all_args(self, shell):
+    def test_custominfo_updatekey_all_args(self, shell):  #  pylint: disable=redefined-outer-name
         """
-        Test do_custominfo_updatekey description is taken by arguments, interactive mode is not initiated.
+        Test do_custominfo_updatekey description is taken by arguments, interactive mode is not initiated.  #  pylint: disable=line-too-long
         """
         shell.client.system.custominfo.updateKey = MagicMock()
         prompt = MagicMock(side_effect=[Exception("interactive mode for descr")])

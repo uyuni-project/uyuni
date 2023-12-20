@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python  #  pylint: disable=missing-module-docstring,invalid-name
 #
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #
@@ -25,7 +25,7 @@ from uyuni.common import rhnLib
 TIMEZONE_SHIFT = time.timezone / 3600
 
 
-class Tests(unittest.TestCase):
+class Tests(unittest.TestCase):  #  pylint: disable=missing-class-docstring
     # pylint: disable=R0904
 
     ###########################################################################

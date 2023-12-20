@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*- pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2018 SUSE LLC
 #
@@ -10,16 +10,16 @@
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 #
 
-import sys
+import sys  #  pylint: disable=unused-import
 from spacewalk.common.rhnLog import log_debug
-from spacewalk.common.rhnException import rhnFault
+from spacewalk.common.rhnException import rhnFault  #  pylint: disable=unused-import
 from spacewalk.server.rhnLib import ShadowAction
 
 # the "exposed" functions
 __rhnexport__ = ["subscribe"]
 
 
-def subscribe(serverId, actionId, dry_run=0):
+def subscribe(serverId, actionId, dry_run=0):  #  pylint: disable=invalid-name,invalid-name,unused-argument,unused-argument,unused-argument
     log_debug(3)
 
     raise ShadowAction("subscribe channel requested - internal DB operation only")

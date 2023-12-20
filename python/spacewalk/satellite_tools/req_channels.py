@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2017 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -24,7 +24,7 @@ class RequestedChannels:
     """
 
     # Simplify the getters/setters/resetters
-    __lists = [
+    __lists = [  #  pylint: disable=invalid-name
         "_requested_imported",  # requested and previously imported
         "_requested_new",  # requested and NOT previously imported
         "_requested_channels",  # Union of the above two
@@ -52,7 +52,7 @@ class RequestedChannels:
         self._typos = []
 
         for l in self.__lists:
-            assert hasattr(self, l), "Class does not initialize %s" % l
+            assert hasattr(self, l), "Class does not initialize %s" % l  #  pylint: disable=consider-using-f-string
             assert isinstance(getattr(self, l), usix.ListType)
 
         # Initialize the requested channels
@@ -101,7 +101,7 @@ class RequestedChannels:
 
     def _print_values(self):
         for name in self.__lists:
-            print(("Contents of %s: %s" % (name, getattr(self, name))))
+            print(("Contents of %s: %s" % (name, getattr(self, name))))  #  pylint: disable=consider-using-f-string
         return self
 
     def compute(self):
@@ -176,9 +176,9 @@ def _verify_expectations(c, expectations):
         method_name = "get" + k
         val = getattr(c, method_name)()
         if val == expected:
-            print(("ok: %s = %s" % (method_name, expected)))
+            print(("ok: %s = %s" % (method_name, expected)))  #  pylint: disable=consider-using-f-string
         else:
-            print(("FAILED: %s: expected %s, got %s" % (method_name, expected, val)))
+            print(("FAILED: %s: expected %s, got %s" % (method_name, expected, val)))  #  pylint: disable=consider-using-f-string
 
 
 def test1(requested, available, imported, expectations):

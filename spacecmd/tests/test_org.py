@@ -4,7 +4,7 @@ Test suite for "org" plugin
 """
 
 from unittest.mock import MagicMock, patch
-from helpers import shell, assert_expect, assert_list_args_expect, assert_args_expect
+from helpers import shell, assert_expect, assert_list_args_expect, assert_args_expect  #  pylint: disable=unused-import
 import spacecmd.org
 
 
@@ -13,7 +13,7 @@ class TestSCOrg:
     Test suite for package module.
     """
 
-    def test_org_create_interactive_password_mistmatch(self, shell):
+    def test_org_create_interactive_password_mistmatch(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_org_create interactive, password mistmatch.
 
@@ -39,11 +39,11 @@ class TestSCOrg:
         mprint = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.org.print", mprint) as prn, patch(
+        with patch("spacecmd.org.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.org.prompt_user", prompt_user
-        ) as pmu, patch("spacecmd.org.getpass", mgetpass) as gtps, patch(
+        ) as pmu, patch("spacecmd.org.getpass", mgetpass) as gtps, patch(  #  pylint: disable=unused-variable,unused-variable
             "spacecmd.org.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.org.do_org_create(shell, "")
 
         assert not mprint.called
@@ -77,7 +77,7 @@ class TestSCOrg:
             ],
         )
 
-    def test_org_delete_noargs(self, shell):
+    def test_org_delete_noargs(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_org_delete without arguments.
 
@@ -94,7 +94,7 @@ class TestSCOrg:
         assert not shell.client.org.delete.called
         assert shell.help_org_delete.called
 
-    def test_org_delete_no_org_found(self, shell):
+    def test_org_delete_no_org_found(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_org_delete org not found (None).
 
@@ -107,9 +107,9 @@ class TestSCOrg:
 
         mprint = MagicMock()
         logger = MagicMock()
-        with patch("spacecmd.org.print", mprint) as prn, patch(
+        with patch("spacecmd.org.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.org.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.org.do_org_delete(shell, "ACME-Enterprises")
 
         assert not shell.client.org.delete.called
@@ -123,12 +123,12 @@ class TestSCOrg:
         )
         expectations = [("No organisation found for the name %s", "ACME-Enterprises")]
         for call in logger.warning.call_args_list:
-            args, kw = call
+            args, kw = call  #  pylint: disable=unused-variable
             assert args == next(iter(expectations))
             expectations.pop(0)
         assert not expectations
 
-    def test_org_delete_no_confirm(self, shell):
+    def test_org_delete_no_confirm(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_org_delete org not confirmed
 
@@ -142,9 +142,9 @@ class TestSCOrg:
 
         mprint = MagicMock()
         logger = MagicMock()
-        with patch("spacecmd.org.print", mprint) as prn, patch(
+        with patch("spacecmd.org.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.org.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.org.do_org_delete(shell, "ACME-Enterprises")
 
         assert not shell.client.org.delete.called
@@ -154,7 +154,7 @@ class TestSCOrg:
         assert shell.get_org_id.called
         assert shell.user_confirm.called
 
-    def test_org_delete_confirm(self, shell):
+    def test_org_delete_confirm(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_org_delete org confirmed
 
@@ -168,9 +168,9 @@ class TestSCOrg:
 
         mprint = MagicMock()
         logger = MagicMock()
-        with patch("spacecmd.org.print", mprint) as prn, patch(
+        with patch("spacecmd.org.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.org.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.org.do_org_delete(shell, "ACME-Enterprises")
 
         assert not shell.help_org_delete.called
@@ -180,7 +180,7 @@ class TestSCOrg:
         assert shell.user_confirm.called
         assert shell.client.org.delete.called
 
-    def test_org_rename_noargs(self, shell):
+    def test_org_rename_noargs(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_org_rename without arguments.
 
@@ -197,7 +197,7 @@ class TestSCOrg:
         assert not shell.client.org.updateName.called
         assert shell.help_org_rename.called
 
-    def test_org_rename_no_org_found(self, shell):
+    def test_org_rename_no_org_found(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_org_rename org not found (None).
 
@@ -210,9 +210,9 @@ class TestSCOrg:
 
         mprint = MagicMock()
         logger = MagicMock()
-        with patch("spacecmd.org.print", mprint) as prn, patch(
+        with patch("spacecmd.org.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.org.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.org.do_org_rename(shell, "ACME-Enterprises Big-Stuff")
 
         assert not shell.client.org.updateName.called
@@ -226,12 +226,12 @@ class TestSCOrg:
         )
         expectations = [("No organisation found for the name %s", "ACME-Enterprises")]
         for call in logger.warning.call_args_list:
-            args, kw = call
+            args, kw = call  #  pylint: disable=unused-variable
             assert args == next(iter(expectations))
             expectations.pop(0)
         assert not expectations
 
-    def test_org_rename(self, shell):
+    def test_org_rename(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_org_rename org
 
@@ -244,9 +244,9 @@ class TestSCOrg:
 
         mprint = MagicMock()
         logger = MagicMock()
-        with patch("spacecmd.org.print", mprint) as prn, patch(
+        with patch("spacecmd.org.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.org.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.org.do_org_rename(shell, "ACME-Enterprises Big-Stuff")
 
         assert not shell.help_org_delete.called
@@ -255,7 +255,7 @@ class TestSCOrg:
         assert shell.get_org_id.called
         assert shell.client.org.updateName.called
 
-    def test_org_addtrust_noarg(self, shell):
+    def test_org_addtrust_noarg(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_org_addtrust without arguments
 
@@ -268,16 +268,16 @@ class TestSCOrg:
 
         logger = MagicMock()
         mprint = MagicMock()
-        with patch("spacecmd.org.print", mprint) as prn, patch(
+        with patch("spacecmd.org.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.org.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.org.do_org_addtrust(shell, "")
 
         assert not shell.get_org_id.called
         assert not shell.client.org.trusts.addTrust.called
         assert shell.help_org_addtrust.called
 
-    def test_org_addtrust_no_src_org(self, shell):
+    def test_org_addtrust_no_src_org(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_org_addtrust, source org not found
 
@@ -290,9 +290,9 @@ class TestSCOrg:
 
         logger = MagicMock()
         mprint = MagicMock()
-        with patch("spacecmd.org.print", mprint) as prn, patch(
+        with patch("spacecmd.org.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.org.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.org.do_org_addtrust(shell, "trust me")
 
         assert not shell.client.org.trusts.addTrust.called
@@ -314,7 +314,7 @@ class TestSCOrg:
             ],
         )
 
-    def test_org_addtrust_no_dst_org(self, shell):
+    def test_org_addtrust_no_dst_org(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_org_addtrust, destination org not found
 
@@ -327,9 +327,9 @@ class TestSCOrg:
 
         logger = MagicMock()
         mprint = MagicMock()
-        with patch("spacecmd.org.print", mprint) as prn, patch(
+        with patch("spacecmd.org.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.org.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.org.do_org_addtrust(shell, "trust someone")
 
         assert not shell.client.org.trusts.addTrust.called
@@ -353,7 +353,7 @@ class TestSCOrg:
             ],
         )
 
-    def test_org_removetrust_noarg(self, shell):
+    def test_org_removetrust_noarg(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test for do_org_removetrust without arguments.
 
@@ -366,9 +366,9 @@ class TestSCOrg:
 
         logger = MagicMock()
         mprint = MagicMock()
-        with patch("spacecmd.org.print", mprint) as prn, patch(
+        with patch("spacecmd.org.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.org.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.org.do_org_removetrust(shell, "")
 
         assert not shell.client.org.trusts.removeTrust.called
@@ -377,7 +377,7 @@ class TestSCOrg:
         assert not mprint.called
         assert shell.help_org_removetrust.called
 
-    def test_org_removetrust_no_src(self, shell):
+    def test_org_removetrust_no_src(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test for do_org_removetrust source org not found.
 
@@ -390,9 +390,9 @@ class TestSCOrg:
 
         logger = MagicMock()
         mprint = MagicMock()
-        with patch("spacecmd.org.print", mprint) as prn, patch(
+        with patch("spacecmd.org.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.org.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.org.do_org_removetrust(shell, "trust bad-guys")
 
         assert not shell.client.org.trusts.removeTrust.called
@@ -407,7 +407,7 @@ class TestSCOrg:
             [(("No organisation found for the name %s", "trust"), {})],
         )
 
-    def test_org_removetrust_no_dst(self, shell):
+    def test_org_removetrust_no_dst(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test for do_org_removetrust destination org not found.
 
@@ -420,9 +420,9 @@ class TestSCOrg:
 
         logger = MagicMock()
         mprint = MagicMock()
-        with patch("spacecmd.org.print", mprint) as prn, patch(
+        with patch("spacecmd.org.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.org.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.org.do_org_removetrust(shell, "trust bad-guys")
 
         assert not shell.client.org.trusts.removeTrust.called
@@ -439,7 +439,7 @@ class TestSCOrg:
             [(("No trust organisation found for the name %s", "bad-guys"), {})],
         )
 
-    def test_org_trustdetails_noarg(self, shell):
+    def test_org_trustdetails_noarg(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test for do_org_trustdetails no arguments.
 
@@ -454,9 +454,9 @@ class TestSCOrg:
 
         logger = MagicMock()
         mprint = MagicMock()
-        with patch("spacecmd.org.print", mprint) as prn, patch(
+        with patch("spacecmd.org.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.org.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.org.do_org_trustdetails(shell, "")
 
         assert not shell.get_org_id.called
@@ -465,7 +465,7 @@ class TestSCOrg:
         assert not shell.client.org.trusts.listChannelsProvided.called
         assert shell.help_org_trustdetails.called
 
-    def test_org_trustdetails_no_org_found(self, shell):
+    def test_org_trustdetails_no_org_found(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test for do_org_trustdetails no org found.
 
@@ -480,9 +480,9 @@ class TestSCOrg:
 
         logger = MagicMock()
         mprint = MagicMock()
-        with patch("spacecmd.org.print", mprint) as prn, patch(
+        with patch("spacecmd.org.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.org.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.org.do_org_trustdetails(shell, "notfound")
 
         assert not shell.client.org.trusts.getDetails.called
@@ -501,7 +501,7 @@ class TestSCOrg:
             [(("No trusted organisation found for the name %s", "notfound"), {})],
         )
 
-    def test_org_trustdetails(self, shell):
+    def test_org_trustdetails(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_or_trustdetails
 
@@ -533,9 +533,9 @@ class TestSCOrg:
 
         logger = MagicMock()
         mprint = MagicMock()
-        with patch("spacecmd.org.print", mprint) as prn, patch(
+        with patch("spacecmd.org.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.org.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.org.do_org_trustdetails(shell, "myorg")
 
         assert not shell.help_org_trustdetails.called
@@ -563,7 +563,7 @@ class TestSCOrg:
 
         assert_list_args_expect(mprint.call_args_list, exp)
 
-    def test_org_list_noret(self, shell):
+    def test_org_list_noret(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_org_list no data return.
 
@@ -585,7 +585,7 @@ class TestSCOrg:
         assert mprint.called
         assert_expect(mprint.call_args_list, "other\nrh\nsuse")
 
-    def test_org_list_data_ret(self, shell):
+    def test_org_list_data_ret(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_org_list with data return.
 
@@ -607,7 +607,7 @@ class TestSCOrg:
         assert out == ["suse", "rh", "other"]
         assert not mprint.called
 
-    def test_org_listtrusts_noargs(self, shell):
+    def test_org_listtrusts_noargs(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_org_listtrusts without arguments.
 
@@ -620,16 +620,16 @@ class TestSCOrg:
 
         logger = MagicMock()
         mprint = MagicMock()
-        with patch("spacecmd.org.print", mprint) as prn, patch(
+        with patch("spacecmd.org.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.org.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.org.do_org_listtrusts(shell, "")
 
         assert not shell.get_org_id.called
         assert not shell.client.org.trusts.listTrusts.called
         assert shell.help_org_listtrusts.called
 
-    def test_org_listtrusts_no_org(self, shell):
+    def test_org_listtrusts_no_org(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_org_listtrusts org not found.
 
@@ -642,9 +642,9 @@ class TestSCOrg:
 
         logger = MagicMock()
         mprint = MagicMock()
-        with patch("spacecmd.org.print", mprint) as prn, patch(
+        with patch("spacecmd.org.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.org.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.org.do_org_listtrusts(shell, "notfound")
 
         assert not shell.client.org.trusts.listTrusts.called
@@ -659,7 +659,7 @@ class TestSCOrg:
             [(("No organisation found for the name %s", "notfound"), {})],
         )
 
-    def test_org_listtrusts_no_trusts(self, shell):
+    def test_org_listtrusts_no_trusts(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_org_listtrusts trust orgs were not found.
 
@@ -672,9 +672,9 @@ class TestSCOrg:
 
         logger = MagicMock()
         mprint = MagicMock()
-        with patch("spacecmd.org.print", mprint) as prn, patch(
+        with patch("spacecmd.org.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.org.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.org.do_org_listtrusts(shell, "notfound")
 
         assert not shell.help_org_listtrusts.called
@@ -688,7 +688,7 @@ class TestSCOrg:
             logger.warning.call_args_list, "No trust organisation has been found"
         )
 
-    def test_org_listtrusts(self, shell):
+    def test_org_listtrusts(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_org_listtrusts output.
 
@@ -708,9 +708,9 @@ class TestSCOrg:
 
         logger = MagicMock()
         mprint = MagicMock()
-        with patch("spacecmd.org.print", mprint) as prn, patch(
+        with patch("spacecmd.org.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.org.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.org.do_org_listtrusts(shell, "notfound")
 
         assert not logger.warning.called
@@ -721,7 +721,7 @@ class TestSCOrg:
 
         assert_list_args_expect(mprint.call_args_list, ["acme", "suse", "west"])
 
-    def test_org_listusers_noargs(self, shell):
+    def test_org_listusers_noargs(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_org_listusers without arguments.
 
@@ -733,9 +733,9 @@ class TestSCOrg:
         shell.get_org_id = MagicMock()
         logger = MagicMock()
         mprint = MagicMock()
-        with patch("spacecmd.org.print", mprint) as prn, patch(
+        with patch("spacecmd.org.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.org.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.org.do_org_listusers(shell, "")
 
         assert not shell.client.org.listUsers.called
@@ -744,7 +744,7 @@ class TestSCOrg:
         assert not logger.warning.called
         assert shell.help_org_listusers.called
 
-    def test_org_listusers_no_org(self, shell):
+    def test_org_listusers_no_org(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_org_listusers where org was not found.
 
@@ -756,9 +756,9 @@ class TestSCOrg:
         shell.get_org_id = MagicMock(return_value=None)
         logger = MagicMock()
         mprint = MagicMock()
-        with patch("spacecmd.org.print", mprint) as prn, patch(
+        with patch("spacecmd.org.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.org.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.org.do_org_listusers(shell, "foo")
 
         assert not shell.client.org.listUsers.called
@@ -772,7 +772,7 @@ class TestSCOrg:
             [(("No organisation found for the name %s", "foo"), {})],
         )
 
-    def test_org_listusers(self, shell):
+    def test_org_listusers(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_org_listusers output
 
@@ -786,9 +786,9 @@ class TestSCOrg:
         shell.get_org_id = MagicMock(return_value=1)
         logger = MagicMock()
         mprint = MagicMock()
-        with patch("spacecmd.org.print", mprint) as prn, patch(
+        with patch("spacecmd.org.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.org.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.org.do_org_listusers(shell, "suse")
 
         assert not shell.help_org_listusers.called
@@ -798,7 +798,7 @@ class TestSCOrg:
         assert mprint.called
         assert_expect(mprint.call_args_list, "gunnuhver\nolafur")
 
-    def test_org_details_noarg(self, shell):
+    def test_org_details_noarg(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_org_details without arguments.
 
@@ -810,9 +810,9 @@ class TestSCOrg:
 
         logger = MagicMock()
         mprint = MagicMock()
-        with patch("spacecmd.org.print", mprint) as prn, patch(
+        with patch("spacecmd.org.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.org.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.org.do_org_details(shell, "")
 
         assert not logger.warning.called
@@ -820,7 +820,7 @@ class TestSCOrg:
         assert not shell.client.org.getDetails.called
         assert shell.help_org_details.called
 
-    def test_org_details(self, shell):
+    def test_org_details(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_org_details output.
 
@@ -843,9 +843,9 @@ class TestSCOrg:
 
         logger = MagicMock()
         mprint = MagicMock()
-        with patch("spacecmd.org.print", mprint) as prn, patch(
+        with patch("spacecmd.org.print", mprint) as prn, patch(  #  pylint: disable=unused-variable
             "spacecmd.org.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.org.do_org_details(shell, "testorg")
 
         assert not logger.warning.called

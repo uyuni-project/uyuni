@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -39,9 +39,9 @@ from .server_lib import check_entitlement_by_machine_id
 def gen_secret():
     """Generate a secret"""
     seed = repr(time.time())
-    sum = hashlib.new("sha256", seed.encode())
+    sum = hashlib.new("sha256", seed.encode())  #  pylint: disable=redefined-builtin
     # feed some random numbers
-    for k in range(1, random.randint(5, 15)):
+    for k in range(1, random.randint(5, 15)):  #  pylint: disable=unused-variable
         sum.update(repr(random.random()).encode())
     sum.update(socket.gethostname().encode())
     ret = sum.hexdigest()
@@ -63,11 +63,11 @@ class Checksum:
 
     def feed(self, arg):
         # sys.stderr.write("arg = %s, type = %s\n" % (arg, type(arg)))
-        if type(arg) == type(()) or type(arg) == type([]):
+        if type(arg) == type(()) or type(arg) == type([]):  #  pylint: disable=unidiomatic-typecheck,unidiomatic-typecheck
             for s in arg:
                 self.sum.update(s.encode())
         else:
-            if type(arg) == type(0):
+            if type(arg) == type(0):  #  pylint: disable=unidiomatic-typecheck
                 arg = str(arg)
             self.sum.update(str(arg).encode())
 
@@ -82,7 +82,7 @@ class Certificate:
 
     """Main certificate class"""
 
-    CheckSumFields = [
+    CheckSumFields = [  #  pylint: disable=invalid-name
         "username",
         "os_release",
         "operating_system",
@@ -123,7 +123,7 @@ class Certificate:
     def __repr__(self):
         """string format"""
         return (
-            "<Certificate instance>: Attrs: %s, Fields: %s, Secret: %s, Checksum: %s"
+            "<Certificate instance>: Attrs: %s, Fields: %s, Secret: %s, Checksum: %s"  #  pylint: disable=consider-using-f-string
             % (self.attrs, self.__fields, self.__secret, self.__checksum)
         )
 
@@ -138,12 +138,12 @@ class Certificate:
             x = xmlrpclib.dumps((dump,))
         except TypeError:
             e = sys.exc_info()[1]
-            log_error("Could not marshall certificate for %s" % dump)
+            log_error("Could not marshall certificate for %s" % dump)  #  pylint: disable=consider-using-f-string
             e.args = e.args + (
                 dump,
             )  # Carry on the information for the exception reporting
             raise
-        return '<?xml version="1.0"?>\n%s' % x
+        return '<?xml version="1.0"?>\n%s' % x  #  pylint: disable=consider-using-f-string
 
     def compute_checksum(self, secret, algo="sha256"):
         """Update the checksum"""
@@ -170,25 +170,25 @@ class Certificate:
         # Now decode this certificate
         try:
             sysid, junk = xmlrpclib.loads(str(text_id))
-        except:
+        except:  #  pylint: disable=bare-except
             return -1
         else:
             s = sysid[0]
             del junk
         if "system_id" not in s or "fields" not in s:
-            log_error("Got certificate with missing entries: %s" % s)
+            log_error("Got certificate with missing entries: %s" % s)  #  pylint: disable=consider-using-f-string
             return -1
         # check the certificate some more
         for k in s["fields"]:
             if k not in s:
                 log_error(
-                    "Certificate lists unknown %s as a checksum field" % k,
-                    "cert data: %s" % s,
+                    "Certificate lists unknown %s as a checksum field" % k,  #  pylint: disable=consider-using-f-string
+                    "cert data: %s" % s,  #  pylint: disable=consider-using-f-string
                 )
                 return -1
 
         # clear out the state
-        self.__init__()
+        self.__init__()  #  pylint: disable=unnecessary-dunder-call
 
         # at this point we know the certificate is sane enough for the
         # following processing
@@ -214,9 +214,9 @@ class Certificate:
         if not csum == self.__checksum:
             # fail, current checksum does not match
             log_error(
-                "Checksum check failed: %s != %s" % (csum, self.__checksum),
-                "fields = %s" % str(self.__fields),
-                "attrs = %s" % str(self.attrs),
+                "Checksum check failed: %s != %s" % (csum, self.__checksum),  #  pylint: disable=consider-using-f-string
+                "fields = %s" % str(self.__fields),  #  pylint: disable=consider-using-f-string
+                "attrs = %s" % str(self.attrs),  #  pylint: disable=consider-using-f-string
             )
             return 0
         return 1
@@ -237,8 +237,8 @@ class Certificate:
                 raise rhnFault(
                     48,
                     """
-    This system is already registered as a Salt Minion. If you want to register it as a traditional client
-    please delete it first via the web UI or API and then register it using the traditional tools.
+    This system is already registered as a Salt Minion. If you want to register it as a traditional client  #  pylint: disable=line-too-long
+    please delete it first via the web UI or API and then register it using the traditional tools.  #  pylint: disable=line-too-long
                 """,
                 )
 
@@ -260,6 +260,6 @@ class Certificate:
         secret = getServerSecret(sid)
         if secret is None:
             # no secret, can't validate
-            log_debug(1, "Server id %s not found in database" % sid)
+            log_debug(1, "Server id %s not found in database" % sid)  #  pylint: disable=consider-using-f-string
             return 0
         return self.__validate_checksum(secret)

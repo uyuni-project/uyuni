@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring,invalid-name
 # Copyright (c) 2010--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -25,7 +25,7 @@ except ImportError:
     import http.client as httplib
 
 
-class WsgiRequest:
+class WsgiRequest:  #  pylint: disable=missing-class-docstring
     # pylint: disable=R0902
 
     def __init__(self, env, start_response):
@@ -100,11 +100,11 @@ class WsgiRequest:
         self.start_response(self.status, list(self.headers_out.items()))
         return
 
-    def get_remote_host(self, _rev=""):
+    def get_remote_host(self, _rev=""):  #  pylint: disable=invalid-name
         host = self.headers_in["REMOTE_ADDR"]
         try:
             host = socket.gethostbyaddr(host)[0]
-        except:
+        except:  #  pylint: disable=bare-except
             # pylint: disable=W0702
             pass
         return host

@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -29,4 +29,4 @@ data = {
     "token": "382c712e94b2505f6070f011e8ec1a7e",
 }
 
-open("/tmp/rereg-systemid", "w+").write(r.new_system(data))
+open("/tmp/rereg-systemid", "w+").write(r.new_system(data))  #  pylint: disable=unspecified-encoding

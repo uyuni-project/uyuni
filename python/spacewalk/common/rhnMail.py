@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring,invalid-name
 # Copyright (c) 2008--2016 Red Hat, Inc.
 # Copyright (c) 2022 SUSE, LLC
 #
@@ -34,7 +34,7 @@ class HeadersRecipients(NamedTuple):
     to_addresses: Union[tuple, list]
 
 
-def __check_headers(headers: dict = None) -> HeadersRecipients:
+def __check_headers(headers: dict = None) -> HeadersRecipients:  #  pylint: disable=invalid-name
     """Ensure that the headers have the minimum required fields."""
     if not isinstance(headers, dict):
         headers = {}

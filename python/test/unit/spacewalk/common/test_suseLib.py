@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*- pylint: disable=missing-module-docstring,invalid-name
 #
 # Copyright (c) 2012 SUSE LLC
 #
@@ -25,23 +25,23 @@ HTTPS_PROXY_CREDS = "https://user:password@my.proxy.com:1234"
 
 class SuseLibTest(unittest.TestCase):
     @classmethod
-    def setUpClass(self):
+    def setUpClass(self):  #  pylint: disable=bad-classmethod-argument
         self.initCFG = mock.patch("spacewalk.common.suseLib.initCFG")
         self.initCFG.start()
 
     @classmethod
-    def tearDownClass(self):
+    def tearDownClass(self):  #  pylint: disable=bad-classmethod-argument
         self.initCFG.stop()
 
     @mock.patch("spacewalk.common.suseLib.CFG")
     @mock.patch("builtins.open")
-    def test_get_proxy_from_yast(self, mocked_open, mocked_CFG):
+    def test_get_proxy_from_yast(self, mocked_open, mocked_CFG):  #  pylint: disable=invalid-name
         mocked_CFG.http_proxy = None
         mocked_CFG.http_proxy_username = None
         mocked_CFG.http_proxy_password = None
 
         mocked_file = mock.MagicMock()
-        mocked_file.read.return_value = ' --proxy "%s"\n --proxy-user "%s:%s"' % (
+        mocked_file.read.return_value = ' --proxy "%s"\n --proxy-user "%s:%s"' % (  #  pylint: disable=consider-using-f-string
             HTTPS_PROXY,
             PROXY_USER,
             PROXY_PASS,
@@ -54,13 +54,13 @@ class SuseLibTest(unittest.TestCase):
 
     @mock.patch("spacewalk.common.suseLib.CFG")
     @mock.patch("builtins.open")
-    def test_get_proxy_from_yast_no_creds(self, mocked_open, mocked_CFG):
+    def test_get_proxy_from_yast_no_creds(self, mocked_open, mocked_CFG):  #  pylint: disable=invalid-name
         mocked_CFG.http_proxy = None
         mocked_CFG.http_proxy_username = None
         mocked_CFG.http_proxy_password = None
 
         mocked_file = mock.MagicMock()
-        mocked_file.read.return_value = ' --proxy "%s"' % HTTPS_PROXY
+        mocked_file.read.return_value = ' --proxy "%s"' % HTTPS_PROXY  #  pylint: disable=consider-using-f-string
         mocked_file.close.return_value = True
 
         mocked_open.return_value = mocked_file
@@ -70,7 +70,7 @@ class SuseLibTest(unittest.TestCase):
     @mock.patch("spacewalk.common.suseLib.CFG")
     @mock.patch("spacewalk.common.suseLib.log_debug")
     @mock.patch("builtins.open")
-    def test_get_proxy_none(self, mocked_open, mocked_log_debug, mocked_CFG):
+    def test_get_proxy_none(self, mocked_open, mocked_log_debug, mocked_CFG):  #  pylint: disable=invalid-name
         mocked_CFG.http_proxy = None
         mocked_CFG.http_proxy_username = None
         mocked_CFG.http_proxy_password = None
@@ -93,7 +93,7 @@ class SuseLibTest(unittest.TestCase):
         self.assertEqual(2, mocked_log_debug.call_count)
 
     @mock.patch("spacewalk.common.suseLib.CFG")
-    def test_get_proxy_rhn_conf_no_creds(self, mocked_CFG):
+    def test_get_proxy_rhn_conf_no_creds(self, mocked_CFG):  #  pylint: disable=invalid-name
         mocked_CFG.http_proxy = PROXY_ADDR
         mocked_CFG.http_proxy_username = None
         mocked_CFG.http_proxy_password = None
@@ -101,7 +101,7 @@ class SuseLibTest(unittest.TestCase):
         self.assertEqual((HTTP_PROXY, None, None), suseLib.get_proxy())
 
     @mock.patch("spacewalk.common.suseLib.CFG")
-    def test_get_proxy_rhn_conf_creds(self, mocked_CFG):
+    def test_get_proxy_rhn_conf_creds(self, mocked_CFG):  #  pylint: disable=invalid-name
         mocked_CFG.http_proxy = PROXY_ADDR
         mocked_CFG.http_proxy_username = PROXY_USER
         mocked_CFG.http_proxy_password = PROXY_PASS
@@ -109,7 +109,7 @@ class SuseLibTest(unittest.TestCase):
         self.assertEqual((HTTP_PROXY, PROXY_USER, PROXY_PASS), suseLib.get_proxy())
 
     @mock.patch("spacewalk.common.suseLib.CFG")
-    def test_get_proxy_rhn_only_username(self, mocked_CFG):
+    def test_get_proxy_rhn_only_username(self, mocked_CFG):  #  pylint: disable=invalid-name
         mocked_CFG.http_proxy = PROXY_ADDR
         mocked_CFG.http_proxy_username = "user"
         mocked_CFG.http_proxy_password = None

@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -46,9 +46,9 @@ from uyuni.common.rhn_pkg import A_Package, InvalidPackageError
 MPM_CHECKSUM_TYPE = "md5"  # FIXME: this should be a configuration option
 
 
-def labelCompare(l1, l2):
+def labelCompare(l1, l2):  #  pylint: disable=invalid-name
     try:
-        from uyuni.common import rhn_rpm
+        from uyuni.common import rhn_rpm  #  pylint: disable=import-outside-toplevel
     except ImportError:
         # rhn_rpm not avalable; return a dummy comparison function
         return -1
@@ -65,7 +65,7 @@ def load(filename=None, file_obj=None, fd=None):
         raise ValueError("No parameters passed")
 
     if filename is not None:
-        f = open(filename)
+        f = open(filename)  #  pylint: disable=unspecified-encoding
     elif file_obj is not None:
         f = file_obj
     else:  # fd is not None
@@ -92,7 +92,7 @@ def load_rpm(stream):
     # Hmm, maybe an rpm
 
     try:
-        from uyuni.common import rhn_rpm
+        from uyuni.common import rhn_rpm  #  pylint: disable=import-outside-toplevel
     except ImportError:
         raise_with_tb(InvalidPackageError, sys.exc_info()[2])
 
@@ -119,7 +119,7 @@ def load_rpm(stream):
     return header, stream
 
 
-class MPM_Header:
+class MPM_Header:  #  pylint: disable=invalid-name
     "Wrapper class for an mpm header - we need to store a flag is_source"
 
     def __init__(self, hdr):
@@ -160,7 +160,7 @@ MPM_HEADER_COMPRESSED_GZIP = 1
 MPM_PAYLOAD_COMPRESSED_GZIP = 1
 
 
-class MPM_Package(A_Package):
+class MPM_Package(A_Package):  #  pylint: disable=missing-class-docstring,invalid-name
     # pylint: disable=R0902
     _lead_format = "!16sB3s4L92s"
     _magic = "mpmpackage012345"
@@ -205,7 +205,7 @@ class MPM_Package(A_Package):
 
     def load(self, input_stream):
         # Clean up
-        self.__init__()
+        self.__init__()  #  pylint: disable=unnecessary-dunder-call
         self.input_stream = input_stream
         # Read the header
         self.read_header()
@@ -226,8 +226,8 @@ class MPM_Package(A_Package):
             t.close()
 
         try:
-            params, _x = xmlrpclib.loads(header_data)
-        except:
+            params, _x = xmlrpclib.loads(header_data)  #  pylint: disable=invalid-name,unused-variable
+        except:  #  pylint: disable=try-except-raise
             # XXX
             raise
 
@@ -246,7 +246,7 @@ class MPM_Package(A_Package):
 
     def write(self, output_stream):
         if self.header is None:
-            raise Exception()
+            raise Exception()  #  pylint: disable=broad-exception-raised
 
         output_stream.seek(128, 0)
         self._encode_header(output_stream)

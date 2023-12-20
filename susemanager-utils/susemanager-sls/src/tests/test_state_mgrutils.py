@@ -8,7 +8,7 @@ from . import mockery
 
 mockery.setup_environment()
 
-from ..states import mgrutils
+from ..states import mgrutils  #  pylint: disable=wrong-import-position
 
 
 mgrutils.__opts__ = {"test": False}

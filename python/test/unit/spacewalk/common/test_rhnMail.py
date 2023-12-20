@@ -1,4 +1,4 @@
-import posix
+import posix  #  pylint: disable=missing-module-docstring,invalid-name
 import textwrap
 from contextlib import contextmanager
 from unittest.mock import MagicMock, call, patch

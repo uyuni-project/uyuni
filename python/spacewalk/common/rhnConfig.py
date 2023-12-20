@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring,invalid-name
 # Copyright (c) 2008--2017 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -26,7 +26,7 @@ from uyuni.common.usix import raise_with_tb
 # pylint: disable=W0702,W0703
 
 _CONFIG_ROOT = os.environ.get("RHN_CONFIG_PATH", "/etc/rhn")
-_CONFIG_FILE = "%s/rhn.conf" % _CONFIG_ROOT
+_CONFIG_FILE = "%s/rhn.conf" % _CONFIG_ROOT  #  pylint: disable=consider-using-f-string
 _CONFIG_DEFAULTS_ROOT = os.environ.get(
     "RHN_CONFIG_DEFAULTS_PATH", "/usr/share/rhn/config-defaults"
 )
@@ -36,7 +36,7 @@ def warn(*args):
     """
     Function used for debugging purposes
     """
-    sys.stderr.write("CONFIG PARSE WARNING: %s\n" % " ".join(map(str, args)))
+    sys.stderr.write("CONFIG PARSE WARNING: %s\n" % " ".join(map(str, args)))  #  pylint: disable=consider-using-f-string
 
 
 class ConfigParserError(Exception):
@@ -64,7 +64,7 @@ class RHNOptions:
         # Defaults for each option, keyed on tuples
         self.__defaults = {}
         # Parsed config file, keyed on tuples
-        self.__parsedConfig = {}
+        self.__parsedConfig = {}  #  pylint: disable=invalid-name
         # Dictionary used as a cache (to avoid looking up options all over the
         # place). Keyed on strings (component names)
         self.__configs = {}
@@ -88,18 +88,18 @@ class RHNOptions:
         self.setComponent(component)
         self.root = root
 
-    def setComponent(self, comp):
+    def setComponent(self, comp):  #  pylint: disable=invalid-name
         if not comp:
             comp = ()
         self.__component = comp
 
-    def getComponent(self):
+    def getComponent(self):  #  pylint: disable=invalid-name
         return self.__component
 
     def is_initialized(self):
         return (self.__component is not None) and self.__component in self.__configs
 
-    def modifiedYN(self):
+    def modifiedYN(self):  #  pylint: disable=invalid-name
         """returns last modified time diff if rhn.conf has changed."""
 
         if not os.path.exists(self.filename):
@@ -119,7 +119,7 @@ class RHNOptions:
         # indication that the file has changed.
         return lm - self.__timestamp
 
-    def updateLastModified(self, timeDiff=None):
+    def updateLastModified(self, timeDiff=None):  #  pylint: disable=invalid-name,invalid-name
         """update the last modified time of the rhn.conf file."""
         if timeDiff is None:
             timeDiff = self.modifiedYN()
@@ -132,7 +132,7 @@ class RHNOptions:
         """
         # Speed up the most common case
         if self.is_initialized():
-            timeDiff = self.modifiedYN()
+            timeDiff = self.modifiedYN()  #  pylint: disable=invalid-name
             if not timeDiff:
                 # Nothing to do: the config file did not change and we already
                 # have the config cached
@@ -154,7 +154,7 @@ class RHNOptions:
         # And now generate and cache the current component
         self.__merge()
 
-    def _parseDefaults(self, allCompsYN=0):
+    def _parseDefaults(self, allCompsYN=0):  #  pylint: disable=invalid-name,invalid-name
         """Parsing of the /usr/share/rhn/config-defaults/*.conf (or equivalent)
         Make sure we have all the needed default config files loaded
         We store the defaults in a dictionary, keyed on the component tuple
@@ -168,15 +168,15 @@ class RHNOptions:
                 # XXX: Should we do timestamp checking for this one too?
                 continue
             # Create the config file name
-            conffile = "%s/rhn.conf" % (_CONFIG_DEFAULTS_ROOT)
+            conffile = "%s/rhn.conf" % (_CONFIG_DEFAULTS_ROOT)  #  pylint: disable=consider-using-f-string
             if comp:
-                conffile = "%s/rhn_%s.conf" % (_CONFIG_DEFAULTS_ROOT, "_".join(comp))
+                conffile = "%s/rhn_%s.conf" % (_CONFIG_DEFAULTS_ROOT, "_".join(comp))  #  pylint: disable=consider-using-f-string
             # if the file is not there (or can't be read), skip
             if not os.access(conffile, os.R_OK):
                 warn("File not found or can't be read", conffile)
                 continue
             # store this default set of values
-            _dict = parse_file(conffile, single_key=1)
+            _dict = parse_file(conffile, single_key=1)  #  pylint: disable=invalid-name
             # the parsed file is keyed by component, but for a config
             # file containing only single keys we know the component
             # is going to be () and we need to override it with
@@ -219,7 +219,7 @@ class RHNOptions:
         for k, v in vals:
             if v is None:
                 v = ""
-            print(("%-20s = %s" % (k, v)))
+            print(("%-20s = %s" % (k, v)))  #  pylint: disable=consider-using-f-string
 
     # polymorphic methods
 
@@ -234,7 +234,7 @@ class RHNOptions:
                cfg = RHNOptions("proxy")
                print cfg.DEBUG ---> yields 5
         """
-        # Consider the special attributes not to be set: this causes issues with python3.8 at least
+        # Consider the special attributes not to be set: this causes issues with python3.8 at least  #  pylint: disable=line-too-long
         # when looking for __func__ and _is_coroutine in the unittest.mock.patch().
         if key.startswith("_"):
             raise AttributeError(key)
@@ -260,7 +260,7 @@ class RHNOptions:
         s = "Uninitialized"
         if self.__component and self.__component in self.__configs:
             s = str(self.__configs[self.__component])
-        return "<RHNOptions instance at %s: %s>" % (id(self), s)
+        return "<RHNOptions instance at %s: %s>" % (id(self), s)  #  pylint: disable=consider-using-f-string
 
     __repr__ = __str__
 
@@ -294,7 +294,7 @@ class RHNOptions:
             if comp not in self.__parsedConfig:
                 # No such entry in the config file
                 continue
-            for key, (values, _lineno_) in list(self.__parsedConfig[comp].items()):
+            for key, (values, _lineno_) in list(self.__parsedConfig[comp].items()):  #  pylint: disable=invalid-name,unused-variable
                 # we don't really want to force every item in the
                 # config file to have a default value first. If we do,
                 # uncomment this section
@@ -308,19 +308,19 @@ class RHNOptions:
 
     # protected/test methods
 
-    def getDefaults(self):
+    def getDefaults(self):  #  pylint: disable=invalid-name
         """returns the __defaults dict (dictionary of parsed defaults)."""
         self.__check()
         return self.__defaults
 
-    def _getParsedConfig(self):
+    def _getParsedConfig(self):  #  pylint: disable=invalid-name
         """returns the __parsedConfig dict (dictionary of parsed
         /etc/rhn/rhn.conf file).
         """
         self.__check()
         return self.__parsedConfig
 
-    def _getConfigs(self):
+    def _getConfigs(self):  #  pylint: disable=invalid-name
         """returns the __configs dict (dictionary of the merged options
         keyed by component.
         """
@@ -328,7 +328,7 @@ class RHNOptions:
         return self.__configs
 
     def showall(self):
-        from pprint import pprint
+        from pprint import pprint  #  pylint: disable=import-outside-toplevel
 
         print("__defaults: dictionary of parsed defaults.")
         pprint(self.__defaults)
@@ -360,14 +360,14 @@ def parse_line(line):
     Returns a tuple (keys, values), or (None, None) if we don't care
     about this line
     """
-    varSeparator = "."
-    optSeparator = ","
+    varSeparator = "."  #  pylint: disable=invalid-name
+    optSeparator = ","  #  pylint: disable=invalid-name
 
     def sanitize_value(key, val):
         """
         attempt to convert a string value to the proper type
         """
-        converTable = {
+        converTable = {  #  pylint: disable=invalid-name
             "proxy.http_proxy_username": str,
             "proxy.http_proxy_password": str,
             "server.satellite.http_proxy_username": str,
@@ -449,7 +449,7 @@ def parse_file(filename, single_key=0):
         except:
             raise_with_tb(
                 ConfigParserError(
-                    "Parse Error: <%s:%s>: '%s'" % (filename, lineno, line)
+                    "Parse Error: <%s:%s>: '%s'" % (filename, lineno, line)  #  pylint: disable=consider-using-f-string
                 ),
                 sys.exc_info()[2],
             )
@@ -480,7 +480,7 @@ def read_file(filename):
     reads a text config file and returns its lines in a list
     """
     try:
-        with open(filename, "r") as configfile:
+        with open(filename, "r") as configfile:  #  pylint: disable=unspecified-encoding
             return configfile.readlines()
     except (IOError, OSError):
         e = sys.exc_info()[1]
@@ -490,7 +490,7 @@ def read_file(filename):
         )
 
 
-def getAllComponents_tree(defaultDir=None):
+def getAllComponents_tree(defaultDir=None):  #  pylint: disable=invalid-name,invalid-name
     """Figure out all components and return them in a tree-like structure
 
     {'server', {'server.app':{},
@@ -505,8 +505,8 @@ def getAllComponents_tree(defaultDir=None):
 
     if defaultDir is None:
         defaultDir = _CONFIG_DEFAULTS_ROOT
-    comps = glob.glob("%s/*.conf" % defaultDir)
-    compTree = {}
+    comps = glob.glob("%s/*.conf" % defaultDir)  #  pylint: disable=consider-using-f-string
+    compTree = {}  #  pylint: disable=invalid-name
     for comp in comps:
         comp = os.path.basename(comp)
         comp = comp[: comp.find(".")]  # left of .conf
@@ -522,7 +522,7 @@ def getAllComponents_tree(defaultDir=None):
     return compTree
 
 
-def getAllComponents(defaultDir=None, compsTree=None):
+def getAllComponents(defaultDir=None, compsTree=None):  #  pylint: disable=invalid-name,invalid-name,invalid-name
     """recursively flattens the results of getAllComponents_tree returning
     a list of all components"""
 
@@ -535,7 +535,7 @@ def getAllComponents(defaultDir=None, compsTree=None):
     return l
 
 
-def getAllComponents_tuples(defaultDir=None):
+def getAllComponents_tuples(defaultDir=None):  #  pylint: disable=invalid-name,invalid-name
     """returns a list of ALL components in the tuple-ified format:
     E.g., [(), ('a',), ('a','b'), ('a','b','c'), ...]
     """
@@ -550,7 +550,7 @@ def getAllComponents_tuples(defaultDir=None):
 CFG = RHNOptions()
 
 
-def initCFG(component=None, root=None, filename=None):
+def initCFG(component=None, root=None, filename=None):  #  pylint: disable=invalid-name
     """
     Main entry point here
     """
@@ -562,13 +562,13 @@ def initCFG(component=None, root=None, filename=None):
 PRODUCT_NAME = "Uyuni"
 
 
-def isUyuni():
+def isUyuni():  #  pylint: disable=invalid-name
     return PRODUCT_NAME == "Uyuni"
 
 
-def runTest():
+def runTest():  #  pylint: disable=invalid-name
     print("Test script:")
-    import pprint
+    import pprint  #  pylint: disable=import-outside-toplevel
 
     print("Component tree of all installed components:")
     pprint.pprint(getAllComponents_tree())
@@ -590,7 +590,7 @@ def runTest():
         print((test_cfg.lkasjdfxxxxxxxxxxxxxx))
     except AttributeError:
         e = sys.exc_info()[1]
-        print(('Testing: "AttributeError: %s"' % e))
+        print(('Testing: "AttributeError: %s"' % e))  #  pylint: disable=consider-using-f-string
     print("")
     print("=============== the object's merged settings ======================")
     test_cfg.show()

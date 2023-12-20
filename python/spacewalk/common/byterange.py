@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2017 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -101,7 +101,7 @@ def get_content_range(start, end, total_length=None):
     if total_length is None:
         total_length = "*"
     end = end - 1
-    content_range = "bytes %d-%d/%s" % (start, end, total_length)
+    content_range = "bytes %d-%d/%s" % (start, end, total_length)  #  pylint: disable=consider-using-f-string
     return content_range
 
 

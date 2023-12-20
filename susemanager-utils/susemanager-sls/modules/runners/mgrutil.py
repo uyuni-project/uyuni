@@ -1,4 +1,4 @@
-from subprocess import Popen, PIPE
+from subprocess import Popen, PIPE  #  pylint: disable=missing-module-docstring
 import logging
 import stat
 import grp
@@ -34,8 +34,8 @@ def delete_rejected_key(minion):
 def ssh_keygen(path=None):
     """
     Generate SSH keys using the given path.
-    :param path: the path. If the None, the keys are generated in a temporary folder, returned, and removed.
-    :return: map containing retcode and stdout/stderr. Also contains key and public_key if no path was provided
+    :param path: the path. If the None, the keys are generated in a temporary folder, returned, and removed.  #  pylint: disable=line-too-long
+    :return: map containing retcode and stdout/stderr. Also contains key and public_key if no path was provided  #  pylint: disable=line-too-long
     """
     temp_dir = None
     with tempfile.TemporaryDirectory() as temp_dir:
@@ -48,9 +48,9 @@ def ssh_keygen(path=None):
             out_path = path
 
         if os.path.isfile(out_path) and result["retcode"] == 0:
-            with open(out_path, "r") as fd:
+            with open(out_path, "r") as fd:  #  pylint: disable=unspecified-encoding
                 result["key"] = fd.read()
-            with open(out_path + ".pub", "r") as fd:
+            with open(out_path + ".pub", "r") as fd:  #  pylint: disable=unspecified-encoding
                 result["public_key"] = fd.read()
 
     return result
@@ -66,7 +66,7 @@ def chain_ssh_cmd(
     outputfile=None,
 ):
     """
-    Chain ssh calls over one or more hops to run a command on the last host in the chain.
+    Chain ssh calls over one or more hops to run a command on the last host in the chain.  #  pylint: disable=line-too-long
     :param hosts:
     :param clientkey:
     :param proxykey:
@@ -81,22 +81,22 @@ def chain_ssh_cmd(
         host_port = hostname.split(":")
         key = clientkey if idx == 0 else proxykey
         opts = " ".join(
-            ["-o {}={}".format(opt, val) for opt, val in list(options.items())]
+            ["-o {}={}".format(opt, val) for opt, val in list(options.items())]  #  pylint: disable=consider-using-f-string
         )
-        ssh = "/usr/bin/ssh -p {} -i {} {} -o User={} {}".format(
+        ssh = "/usr/bin/ssh -p {} -i {} {} -o User={} {}".format(  #  pylint: disable=consider-using-f-string
             host_port[1] if len(host_port) > 1 else 22, key, opts, user, host_port[0]
         )
         cmd.extend(shlex.split(ssh))
     cmd.append(command)
     ret = _cmd(cmd)
     if outputfile:
-        with open(outputfile, "w") as out:
+        with open(outputfile, "w") as out:  #  pylint: disable=unspecified-encoding
             out.write(ret["stdout"])
     return ret
 
 
 def remove_ssh_known_host(user, hostname, port):
-    return __salt__["salt.cmd"]("ssh.rm_known_host", user, hostname, None, port)
+    return __salt__["salt.cmd"]("ssh.rm_known_host", user, hostname, None, port)  #  pylint: disable=undefined-variable
 
 
 def _cmd(cmd):
@@ -113,18 +113,18 @@ def move_minion_uploaded_files(
     minion=None, dirtomove=None, basepath=None, actionpath=None
 ):
     srcdir = os.path.join(
-        __opts__["cachedir"], "minions", minion, "files", dirtomove.lstrip("/")
+        __opts__["cachedir"], "minions", minion, "files", dirtomove.lstrip("/")  #  pylint: disable=undefined-variable
     )
     scapstorepath = os.path.join(basepath, actionpath)
     susemanager_gid = grp.getgrnam(GROUP_OWNER).gr_gid
     if not os.path.exists(scapstorepath):
-        log.debug("Creating action directory: {0}".format(scapstorepath))
+        log.debug("Creating action directory: {0}".format(scapstorepath))  #  pylint: disable=logging-format-interpolation,consider-using-f-string
         try:
             os.makedirs(scapstorepath)
-        except Exception as err:
-            log.error("Failed to create dir {0}".format(scapstorepath), exc_info=True)
+        except Exception as err:  #  pylint: disable=broad-exception-caught
+            log.error("Failed to create dir {0}".format(scapstorepath), exc_info=True)  #  pylint: disable=logging-format-interpolation,consider-using-f-string
             return {
-                False: "Salt failed to create dir {0}: {1}".format(
+                False: "Salt failed to create dir {0}: {1}".format(  #  pylint: disable=consider-using-f-string
                     scapstorepath, str(err)
                 )
             }
@@ -153,9 +153,9 @@ def move_minion_uploaded_files(
         # change group owner to susemanager
         for fl in os.listdir(scapstorepath):
             os.chown(os.path.join(scapstorepath, fl), -1, susemanager_gid)
-    except Exception as err:
+    except Exception as err:  #  pylint: disable=broad-exception-caught
         log.error(
-            "Salt failed to move {0} -> {1}".format(srcdir, scapstorepath),
+            "Salt failed to move {0} -> {1}".format(srcdir, scapstorepath),  #  pylint: disable=logging-format-interpolation,consider-using-f-string
             exc_info=True,
         )
         return {False: str(err)}
@@ -164,7 +164,7 @@ def move_minion_uploaded_files(
 
 def check_ssl_cert(root_ca, server_crt, server_key, intermediate_cas):
     """
-    Check that the provided certificates are valid and return the certificate and key to deploy.
+    Check that the provided certificates are valid and return the certificate and key to deploy.  #  pylint: disable=line-too-long
     """
     try:
         cert = certs.mgr_ssl_cert_setup.getContainersSetup(

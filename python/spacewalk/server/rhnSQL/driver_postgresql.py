@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2017 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -18,7 +18,7 @@
 #
 
 import sys
-import string
+import string  #  pylint: disable=unused-import
 import re
 import psycopg2
 import psycopg2.extras
@@ -28,14 +28,14 @@ import psycopg2.extras
 if not hasattr(psycopg2, "extensions"):
     import psycopg2.extensions
 
-from . import sql_base
-from rhn.UserDictCase import UserDictCase
-from spacewalk.server import rhnSQL
+from . import sql_base  #  pylint: disable=wrong-import-position
+from rhn.UserDictCase import UserDictCase  #  pylint: disable=wrong-import-position
+from spacewalk.server import rhnSQL  #  pylint: disable=wrong-import-position
 
-from uyuni.common.usix import BufferType, raise_with_tb
-from spacewalk.common.rhnLog import log_debug, log_error
-from spacewalk.common.rhnException import rhnException
-from .const import POSTGRESQL
+from uyuni.common.usix import BufferType, raise_with_tb  #  pylint: disable=wrong-import-position
+from spacewalk.common.rhnLog import log_debug, log_error  #  pylint: disable=wrong-import-position,ungrouped-imports
+from spacewalk.common.rhnException import rhnException  #  pylint: disable=wrong-import-position
+from .const import POSTGRESQL  #  pylint: disable=wrong-import-position
 
 
 def convert_named_query_params(query):
@@ -49,9 +49,9 @@ def convert_named_query_params(query):
 
     RETURNS: the new query with parameters replaced
     """
-    log_debug(6, "Converting query for PostgreSQL: %s" % query)
+    log_debug(6, "Converting query for PostgreSQL: %s" % query)  #  pylint: disable=consider-using-f-string
     new_query = re.sub(r"(\W):(\w+)", r"\1%(\2)s", query.replace("%", "%%"))
-    log_debug(6, "New query: %s" % new_query)
+    log_debug(6, "New query: %s" % new_query)  #  pylint: disable=consider-using-f-string
     return new_query
 
 
@@ -72,13 +72,13 @@ class Function(sql_base.Procedure):
         # Buildup a string for the positional arguments to the procedure:
         positional_args = ""
         i = 1
-        for arg in args:
+        for arg in args:  #  pylint: disable=unused-variable
             if len(positional_args) == 0:
                 positional_args = "%s"
             else:
                 positional_args = positional_args + ", %s"
             i += 1
-        query = "SELECT %s(%s)" % (self.name, positional_args)
+        query = "SELECT %s(%s)" % (self.name, positional_args)  #  pylint: disable=consider-using-f-string
 
         log_debug(2, query, args)
         try:
@@ -89,7 +89,7 @@ class Function(sql_base.Procedure):
             m = re.match("ERROR: +-([0-9]+)", e.pgerror)
             if m:
                 error_code = int(m.group(1))
-            raise sql_base.SQLSchemaError(error_code, e.pgerror, e)
+            raise sql_base.SQLSchemaError(error_code, e.pgerror, e)  #  pylint: disable=raise-missing-from
 
         if self.ret_type is None:
             return ret
@@ -113,18 +113,18 @@ class Procedure(Function):
         self.ret_type = None
 
     def __call__(self, *args):
-        result = Function.__call__(self, *args)
+        result = Function.__call__(self, *args)  #  pylint: disable=unused-variable
         # we do not expect any result (this is procedure)
         # if not (type(result) == 'tuple' and result[0] == ''):
-        # raise rhnSQL.SQLError("Unexpected result returned by procedure %s: %s" % (self.name, str(result)))
+        # raise rhnSQL.SQLError("Unexpected result returned by procedure %s: %s" % (self.name, str(result)))  #  pylint: disable=line-too-long
 
 
-def decimal2intfloat(dec, cursor):
+def decimal2intfloat(dec, cursor):  #  pylint: disable=unused-argument
     "Convert a Decimal to an int or a float with no loss of information."
-    "The dec is passed in as str (not Decimal) so we cannot check its type."
+    "The dec is passed in as str (not Decimal) so we cannot check its type."  #  pylint: disable=pointless-string-statement
     if dec is None:
         return None
-    "If we can convert to int without loss of information, return int, float otherwise."
+    "If we can convert to int without loss of information, return int, float otherwise."  #  pylint: disable=pointless-string-statement
     try:
         if float(dec) == float(int(dec)):
             return int(dec)
@@ -202,13 +202,13 @@ class Database(sql_base.Database):
 
             self.dbh = psycopg2.connect(
                 " ".join(
-                    "%s=%s" % (k, re.escape(str(v))) for k, v in list(dsndata.items())
+                    "%s=%s" % (k, re.escape(str(v))) for k, v in list(dsndata.items())  #  pylint: disable=consider-using-f-string
                 )
             )
 
             # convert all DECIMAL types to float (let Python to choose one)
-            DEC2INTFLOAT = psycopg2.extensions.new_type(
-                psycopg2._psycopg.DECIMAL.values, "DEC2INTFLOAT", decimal2intfloat
+            DEC2INTFLOAT = psycopg2.extensions.new_type(  #  pylint: disable=invalid-name
+                psycopg2._psycopg.DECIMAL.values, "DEC2INTFLOAT", decimal2intfloat  #  pylint: disable=protected-access
             )
             psycopg2.extensions.register_type(DEC2INTFLOAT)
         except psycopg2.Error:
@@ -251,10 +251,10 @@ class Database(sql_base.Database):
         try:
             c = self.prepare("select 1")
             c.execute()
-        except:  # try to reconnect, that one MUST WORK always
+        except:  # try to reconnect, that one MUST WORK always  #  pylint: disable=bare-except
             log_error(
-                "DATABASE CONNECTION TO '%s' LOST" % self.database,
-                "Exception information: %s" % sys.exc_info()[1],
+                "DATABASE CONNECTION TO '%s' LOST" % self.database,  #  pylint: disable=consider-using-f-string
+                "Exception information: %s" % sys.exc_info()[1],  #  pylint: disable=consider-using-f-string
             )
             self.connect()  # only allow one try
 
@@ -269,7 +269,7 @@ class Database(sql_base.Database):
     def transaction(self, name):
         if not name:
             raise rhnException("Can not set a transaction without a name", name)
-        c = self.prepare("savepoint %s" % name)
+        c = self.prepare("savepoint %s" % name)  #  pylint: disable=consider-using-f-string
         return c.execute()
 
     def commit(self):
@@ -278,7 +278,7 @@ class Database(sql_base.Database):
 
     def rollback(self, name=None):
         if name:
-            c = self.prepare("rollback to %s" % name)
+            c = self.prepare("rollback to %s" % name)  #  pylint: disable=consider-using-f-string
             return c.execute()
         else:
             return self.dbh.rollback()
@@ -319,7 +319,7 @@ class Cursor(sql_base.Cursor):
         return cursor
 
     def _execute_wrapper(self, function, *p, **kw):
-        params = ",".join(["%s: %s" % (key, value) for key, value in list(kw.items())])
+        params = ",".join(["%s: %s" % (key, value) for key, value in list(kw.items())])  #  pylint: disable=consider-using-f-string
         log_debug(5, 'Executing SQL: "%s" with bind params: {%s}' % (self.sql, params))
         if self.sql is None:
             raise rhnException("Cannot execute empty cursor")
@@ -338,14 +338,14 @@ class Cursor(sql_base.Cursor):
             m = re.match("ERROR: +-([0-9]+)", e.pgerror)
             if m:
                 error_code = int(m.group(1))
-            raise sql_base.SQLSchemaError(error_code, e.pgerror, e)
+            raise sql_base.SQLSchemaError(error_code, e.pgerror, e)  #  pylint: disable=raise-missing-from
         except psycopg2.ProgrammingError:
             e = sys.exc_info()[1]
-            raise sql_base.SQLStatementPrepareError(str(self.dbh), e.pgerror, self.sql)
+            raise sql_base.SQLStatementPrepareError(str(self.dbh), e.pgerror, self.sql)  #  pylint: disable=raise-missing-from
         except KeyError:
             e = sys.exc_info()[1]
-            raise sql_base.SQLError(
-                "Unable to bound the following variable(s): %s" % (" ".join(e.args))
+            raise sql_base.SQLError(  #  pylint: disable=raise-missing-from
+                "Unable to bound the following variable(s): %s" % (" ".join(e.args))  #  pylint: disable=consider-using-f-string
             )
         return retval
 
@@ -358,7 +358,7 @@ class Cursor(sql_base.Cursor):
             self._real_cursor.execute(self.sql, params)
         except psycopg2.OperationalError:
             e = sys.exc_info()[1]
-            raise sql_base.SQLError("Cannot execute SQL statement: %s" % str(e))
+            raise sql_base.SQLError("Cannot execute SQL statement: %s" % str(e))  #  pylint: disable=raise-missing-from,consider-using-f-string
 
         self.description = self._real_cursor.description
         return self._real_cursor.rowcount
@@ -403,7 +403,7 @@ class Cursor(sql_base.Cursor):
         needs to be done to insert text into one.
         """
         # NOTE: Injecting a :column_name parameter here
-        sql = "UPDATE %s SET %s = :%s %s" % (
+        sql = "UPDATE %s SET %s = :%s %s" % (  #  pylint: disable=consider-using-f-string
             table_name,
             column_name,
             column_name,

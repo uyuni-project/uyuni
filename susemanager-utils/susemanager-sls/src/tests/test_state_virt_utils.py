@@ -1,10 +1,10 @@
-from unittest.mock import MagicMock, patch, call
+from unittest.mock import MagicMock, patch, call  #  pylint: disable=missing-module-docstring
 from . import mockery
 
 mockery.setup_environment()
-import pytest
+import pytest  #  pylint: disable=wrong-import-position
 
-from ..states import virt_utils
+from ..states import virt_utils  #  pylint: disable=wrong-import-position
 
 # Mock globals
 virt_utils.log = MagicMock()
@@ -100,7 +100,7 @@ def test_network_missing():
             assert not ret["result"]
             start_mock.assert_not_called()
             assert ret["comment"] == "net5 network is not defined"
-            assert ret["changes"] == {}
+            assert ret["changes"] == {}  #  pylint: disable=use-implicit-booleaness-not-comparison
 
 
 @pytest.mark.parametrize("test", [False, True])
@@ -191,7 +191,7 @@ def test_pool_missing():
             assert not ret["result"]
             start_mock.assert_not_called()
             assert ret["comment"] == "pool5 pool is not defined"
-            assert ret["changes"] == {}
+            assert ret["changes"] == {}  #  pylint: disable=use-implicit-booleaness-not-comparison
 
 
 def test_vm_resources_running():

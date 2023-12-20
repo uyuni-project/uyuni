@@ -3,7 +3,7 @@
 Test spacecmd.misc
 """
 from unittest.mock import MagicMock, patch, mock_open
-from helpers import shell, assert_expect, assert_list_args_expect, assert_args_expect
+from helpers import shell, assert_expect, assert_list_args_expect, assert_args_expect  #  pylint: disable=unused-import,unused-import
 import spacecmd.misc
 from xmlrpc import client as xmlrpclib
 import datetime
@@ -14,7 +14,7 @@ class TestSCMisc:
     Test suite for misc methods/funtions.
     """
 
-    def test_clear_caches(self, shell):
+    def test_clear_caches(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test clear caches.
 
@@ -31,7 +31,7 @@ class TestSCMisc:
         assert shell.clear_package_cache.called
         assert shell.clear_errata_cache.called
 
-    def test_get_api_version(self, shell):
+    def test_get_api_version(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Get API version.
 
@@ -39,12 +39,12 @@ class TestSCMisc:
         :return:
         """
         mprint = MagicMock()
-        with patch("spacecmd.misc.print", mprint) as prt:
+        with patch("spacecmd.misc.print", mprint) as prt:  #  pylint: disable=unused-variable
             spacecmd.misc.do_get_serverversion(shell, "")
         assert mprint.called
         assert shell.client.api.systemVersion.called
 
-    def test_list_proxies(self, shell):
+    def test_list_proxies(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test proxy listing.
 
@@ -61,7 +61,7 @@ class TestSCMisc:
         assert_expect(mprint.call_args_list, "Print me")
         assert shell.client.proxy.listProxies.called
 
-    def test_get_session(self, shell):
+    def test_get_session(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test getting current user session.
 
@@ -70,16 +70,16 @@ class TestSCMisc:
         """
         mprint = MagicMock()
         logger = MagicMock()
-        with patch("spacecmd.misc.print", mprint) as prt, patch(
+        with patch("spacecmd.misc.print", mprint) as prt, patch(  #  pylint: disable=unused-variable
             "spacecmd.misc.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.misc.do_get_session(shell, "")
 
         assert not logger.error.called
         assert mprint.called
         assert_expect(mprint.call_args_list, shell.session)
 
-    def test_get_session_missing(self, shell):
+    def test_get_session_missing(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test handling missing current user session.
 
@@ -88,9 +88,9 @@ class TestSCMisc:
         """
         mprint = MagicMock()
         logger = MagicMock()
-        with patch("spacecmd.misc.print", mprint) as prt, patch(
+        with patch("spacecmd.misc.print", mprint) as prt, patch(  #  pylint: disable=unused-variable
             "spacecmd.misc.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             shell.session = None
             spacecmd.misc.do_get_session(shell, "")
 
@@ -100,7 +100,7 @@ class TestSCMisc:
 
     # No test for listing history, as it is just lister from the readline.
 
-    def test_do_toggle_confirmations(self, shell):
+    def test_do_toggle_confirmations(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test confirmation messages toggle
 
@@ -109,7 +109,7 @@ class TestSCMisc:
         """
         mprint = MagicMock()
         shell.options.yes = True
-        with patch("spacecmd.misc.print", mprint) as prt:
+        with patch("spacecmd.misc.print", mprint) as prt:  #  pylint: disable=unused-variable
             spacecmd.misc.do_toggle_confirmations(shell, "")
             spacecmd.misc.do_toggle_confirmations(shell, "")
 
@@ -121,7 +121,7 @@ class TestSCMisc:
             ],
         )
 
-    def test_login_already_logged_in(self, shell):
+    def test_login_already_logged_in(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test login (already logged in).
 
@@ -135,13 +135,13 @@ class TestSCMisc:
         mkd = MagicMock()
         shell.config = {}
         shell.conf_dir = "/tmp"
-        with patch("spacecmd.misc.print", mprint) as prt, patch(
+        with patch("spacecmd.misc.print", mprint) as prt, patch(  #  pylint: disable=unused-variable
             "spacecmd.misc.prompt_user", prompter
-        ) as pmt, patch("spacecmd.misc.getpass", gpass) as gtp, patch(
+        ) as pmt, patch("spacecmd.misc.getpass", gpass) as gtp, patch(  #  pylint: disable=unused-variable,unused-variable
             "spacecmd.misc.os.mkdir", mkd
-        ) as mkdr, patch(
+        ) as mkdr, patch(  #  pylint: disable=unused-variable
             "spacecmd.misc.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             out = spacecmd.misc.do_login(shell, "")
 
         assert not shell.load_config_section.called
@@ -160,7 +160,7 @@ class TestSCMisc:
 
         assert_expect(logger.warning.call_args_list, "You are already logged in")
 
-    def test_login_no_server_specified(self, shell):
+    def test_login_no_server_specified(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test login without specified server.
 
@@ -177,13 +177,13 @@ class TestSCMisc:
         shell.config = {}
         shell.conf_dir = "/tmp"
 
-        with patch("spacecmd.misc.print", mprint) as prt, patch(
+        with patch("spacecmd.misc.print", mprint) as prt, patch(  #  pylint: disable=unused-variable
             "spacecmd.misc.prompt_user", prompter
-        ) as pmt, patch("spacecmd.misc.getpass", gpass) as gtp, patch(
+        ) as pmt, patch("spacecmd.misc.getpass", gpass) as gtp, patch(  #  pylint: disable=unused-variable,unused-variable
             "spacecmd.misc.os.mkdir", mkd
-        ) as mkdr, patch(
+        ) as mkdr, patch(  #  pylint: disable=unused-variable
             "spacecmd.misc.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             out = spacecmd.misc.do_login(shell, "")
 
         assert not shell.load_config_section.called
@@ -202,7 +202,7 @@ class TestSCMisc:
 
         assert_expect(logger.warning.call_args_list, "No server specified")
 
-    def test_login_connection_error(self, shell):
+    def test_login_connection_error(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test handling connection error at login.
 
@@ -224,15 +224,15 @@ class TestSCMisc:
         shell.conf_dir = "/tmp"
         client.api.getVersion = MagicMock(side_effect=Exception("Insert coin"))
 
-        with patch("spacecmd.misc.print", mprint) as prt, patch(
+        with patch("spacecmd.misc.print", mprint) as prt, patch(  #  pylint: disable=unused-variable
             "spacecmd.misc.prompt_user", prompter
-        ) as pmt, patch("spacecmd.misc.getpass", gpass) as gtp, patch(
+        ) as pmt, patch("spacecmd.misc.getpass", gpass) as gtp, patch(  #  pylint: disable=unused-variable,unused-variable
             "spacecmd.misc.os.mkdir", mkd
-        ) as mkdr, patch(
+        ) as mkdr, patch(  #  pylint: disable=unused-variable
             "spacecmd.misc.xmlrpclib.Server", rpc_server
-        ) as rpcs, patch(
+        ) as rpcs, patch(  #  pylint: disable=unused-variable
             "spacecmd.misc.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             out = spacecmd.misc.do_login(shell, "")
 
         assert not logger.info.called
@@ -269,7 +269,7 @@ class TestSCMisc:
             ],
         )
 
-    def test_login_api_version_mismatch(self, shell):
+    def test_login_api_version_mismatch(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test handling API version mismatch error at login.
 
@@ -292,15 +292,15 @@ class TestSCMisc:
         shell.MINIMUM_API_VERSION = 10.8
         client.api.getVersion = MagicMock(return_value=1.5)
 
-        with patch("spacecmd.misc.print", mprint) as prt, patch(
+        with patch("spacecmd.misc.print", mprint) as prt, patch(  #  pylint: disable=unused-variable
             "spacecmd.misc.prompt_user", prompter
-        ) as pmt, patch("spacecmd.misc.getpass", gpass) as gtp, patch(
+        ) as pmt, patch("spacecmd.misc.getpass", gpass) as gtp, patch(  #  pylint: disable=unused-variable,unused-variable
             "spacecmd.misc.os.mkdir", mkd
-        ) as mkdr, patch(
+        ) as mkdr, patch(  #  pylint: disable=unused-variable
             "spacecmd.misc.xmlrpclib.Server", rpc_server
-        ) as rpcs, patch(
+        ) as rpcs, patch(  #  pylint: disable=unused-variable
             "spacecmd.misc.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             out = spacecmd.misc.do_login(shell, "")
 
         assert not logger.info.called
@@ -324,7 +324,7 @@ class TestSCMisc:
         )
 
     @patch("spacecmd.misc.os.path.isfile", MagicMock(return_value=True))
-    def test_login_reuse_cached_session(self, shell):
+    def test_login_reuse_cached_session(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test handling cached available session.
 
@@ -350,19 +350,19 @@ class TestSCMisc:
         client.api.getVersion = MagicMock(return_value=11.5)
         client.system.hasTraditionalSystems = MagicMock(return_value=False)
 
-        with patch("spacecmd.misc.print", mprint) as prt, patch(
+        with patch("spacecmd.misc.print", mprint) as prt, patch(  #  pylint: disable=unused-variable
             "spacecmd.misc.prompt_user", prompter
-        ) as pmt, patch("spacecmd.misc.getpass", gpass) as gtp, patch(
+        ) as pmt, patch("spacecmd.misc.getpass", gpass) as gtp, patch(  #  pylint: disable=unused-variable,unused-variable
             "spacecmd.misc.os.mkdir", mkd
-        ) as mkdr, patch(
+        ) as mkdr, patch(  #  pylint: disable=unused-variable
             "spacecmd.misc.xmlrpclib.Server", rpc_server
-        ) as rpcs, patch(
+        ) as rpcs, patch(  #  pylint: disable=unused-variable
             "spacecmd.misc.open",
             new_callable=mock_open,
             read_data="bofh:5adf5cc50929f71a899b81c2c2eb0979",
-        ) as fmk, patch(
+        ) as fmk, patch(  #  pylint: disable=unused-variable
             "spacecmd.misc.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             out = spacecmd.misc.do_login(shell, "")
 
         assert not client.auth.login.called
@@ -397,7 +397,7 @@ class TestSCMisc:
         )
 
     @patch("spacecmd.misc.os.path.isfile", MagicMock(return_value=False))
-    def test_login_no_cached_session_opt_pwd(self, shell):
+    def test_login_no_cached_session_opt_pwd(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test create new session, password from the options.
 
@@ -425,17 +425,17 @@ class TestSCMisc:
         client.auth.login = MagicMock(return_value="5adf5cc50929f71a899b81c2c2eb0979")
         client.system.hasTraditionalSystems = MagicMock(return_value=False)
 
-        with patch("spacecmd.misc.print", mprint) as prt, patch(
+        with patch("spacecmd.misc.print", mprint) as prt, patch(  #  pylint: disable=unused-variable
             "spacecmd.misc.prompt_user", prompter
-        ) as pmt, patch("spacecmd.misc.getpass", gpass) as gtp, patch(
+        ) as pmt, patch("spacecmd.misc.getpass", gpass) as gtp, patch(  #  pylint: disable=unused-variable,unused-variable
             "spacecmd.misc.os.mkdir", mkd
-        ) as mkdr, patch(
+        ) as mkdr, patch(  #  pylint: disable=unused-variable
             "spacecmd.misc.xmlrpclib.Server", rpc_server
-        ) as rpcs, patch(
+        ) as rpcs, patch(  #  pylint: disable=unused-variable
             "spacecmd.misc.open", file_writer
-        ) as fmk, patch(
+        ) as fmk, patch(  #  pylint: disable=unused-variable
             "spacecmd.misc.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             out = spacecmd.misc.do_login(shell, "")
 
         assert not gpass.called
@@ -474,7 +474,7 @@ class TestSCMisc:
         )
 
     @patch("spacecmd.misc.os.path.isfile", MagicMock(return_value=False))
-    def test_login_no_cached_session_cfg_pwd(self, shell):
+    def test_login_no_cached_session_cfg_pwd(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test create new session, password from the command line interface.
 
@@ -502,17 +502,17 @@ class TestSCMisc:
         client.auth.login = MagicMock(return_value="5adf5cc50929f71a899b81c2c2eb0979")
         client.system.hasTraditionalSystems = MagicMock(return_value=False)
 
-        with patch("spacecmd.misc.print", mprint) as prt, patch(
+        with patch("spacecmd.misc.print", mprint) as prt, patch(  #  pylint: disable=unused-variable
             "spacecmd.misc.prompt_user", prompter
-        ) as pmt, patch("spacecmd.misc.getpass", gpass) as gtp, patch(
+        ) as pmt, patch("spacecmd.misc.getpass", gpass) as gtp, patch(  #  pylint: disable=unused-variable,unused-variable
             "spacecmd.misc.os.mkdir", mkd
-        ) as mkdr, patch(
+        ) as mkdr, patch(  #  pylint: disable=unused-variable
             "spacecmd.misc.xmlrpclib.Server", rpc_server
-        ) as rpcs, patch(
+        ) as rpcs, patch(  #  pylint: disable=unused-variable
             "spacecmd.misc.open", file_writer
-        ) as fmk, patch(
+        ) as fmk, patch(  #  pylint: disable=unused-variable
             "spacecmd.misc.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             out = spacecmd.misc.do_login(shell, "")
 
         assert not mprint.called
@@ -551,7 +551,7 @@ class TestSCMisc:
         )
 
     @patch("spacecmd.misc.os.path.isfile", MagicMock(return_value=False))
-    def test_login_no_cached_session_cli_pwd(self, shell):
+    def test_login_no_cached_session_cli_pwd(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test create new session, password from the configuration.
 
@@ -579,17 +579,17 @@ class TestSCMisc:
         client.auth.login = MagicMock(return_value="5adf5cc50929f71a899b81c2c2eb0979")
         client.system.hasTraditionalSystems = MagicMock(return_value=False)
 
-        with patch("spacecmd.misc.print", mprint) as prt, patch(
+        with patch("spacecmd.misc.print", mprint) as prt, patch(  #  pylint: disable=unused-variable
             "spacecmd.misc.prompt_user", prompter
-        ) as pmt, patch("spacecmd.misc.getpass", gpass) as gtp, patch(
+        ) as pmt, patch("spacecmd.misc.getpass", gpass) as gtp, patch(  #  pylint: disable=unused-variable,unused-variable
             "spacecmd.misc.os.mkdir", mkd
-        ) as mkdr, patch(
+        ) as mkdr, patch(  #  pylint: disable=unused-variable
             "spacecmd.misc.xmlrpclib.Server", rpc_server
-        ) as rpcs, patch(
+        ) as rpcs, patch(  #  pylint: disable=unused-variable
             "spacecmd.misc.open", file_writer
-        ) as fmk, patch(
+        ) as fmk, patch(  #  pylint: disable=unused-variable
             "spacecmd.misc.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             out = spacecmd.misc.do_login(shell, "")
 
         assert not gpass.called
@@ -628,7 +628,7 @@ class TestSCMisc:
         )
 
     @patch("spacecmd.misc.os.path.isfile", MagicMock(return_value=False))
-    def test_login_no_cached_session_bad_credentials(self, shell):
+    def test_login_no_cached_session_bad_credentials(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test fail to create new session due to wrong credentials.
 
@@ -657,17 +657,17 @@ class TestSCMisc:
             side_effect=xmlrpclib.Fault(faultCode=42, faultString="Click harder")
         )
 
-        with patch("spacecmd.misc.print", mprint) as prt, patch(
+        with patch("spacecmd.misc.print", mprint) as prt, patch(  #  pylint: disable=unused-variable
             "spacecmd.misc.prompt_user", prompter
-        ) as pmt, patch("spacecmd.misc.getpass", gpass) as gtp, patch(
+        ) as pmt, patch("spacecmd.misc.getpass", gpass) as gtp, patch(  #  pylint: disable=unused-variable,unused-variable
             "spacecmd.misc.os.mkdir", mkd
-        ) as mkdr, patch(
+        ) as mkdr, patch(  #  pylint: disable=unused-variable
             "spacecmd.misc.xmlrpclib.Server", rpc_server
-        ) as rpcs, patch(
+        ) as rpcs, patch(  #  pylint: disable=unused-variable
             "spacecmd.misc.open", file_writer
-        ) as fmk, patch(
+        ) as fmk, patch(  #  pylint: disable=unused-variable
             "spacecmd.misc.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             out = spacecmd.misc.do_login(shell, "")
 
         assert not gpass.called
@@ -700,7 +700,7 @@ class TestSCMisc:
         )
 
     @patch("spacecmd.misc.os.path.isfile", MagicMock(return_value=False))
-    def test_login_handle_cache_write_error_mkdir(self, shell):
+    def test_login_handle_cache_write_error_mkdir(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test fail to save session due to directory permission denial
 
@@ -728,17 +728,17 @@ class TestSCMisc:
         client.auth.login = MagicMock(return_value="5adf5cc50929f71a899b81c2c2eb0979")
         client.system.hasTraditionalSystems = MagicMock(return_value=False)
 
-        with patch("spacecmd.misc.print", mprint) as prt, patch(
+        with patch("spacecmd.misc.print", mprint) as prt, patch(  #  pylint: disable=unused-variable
             "spacecmd.misc.prompt_user", prompter
-        ) as pmt, patch("spacecmd.misc.getpass", gpass) as gtp, patch(
+        ) as pmt, patch("spacecmd.misc.getpass", gpass) as gtp, patch(  #  pylint: disable=unused-variable,unused-variable
             "spacecmd.misc.os.mkdir", mkd
-        ) as mkdr, patch(
+        ) as mkdr, patch(  #  pylint: disable=unused-variable
             "spacecmd.misc.xmlrpclib.Server", rpc_server
-        ) as rpcs, patch(
+        ) as rpcs, patch(  #  pylint: disable=unused-variable
             "spacecmd.misc.open", file_writer
-        ) as fmk, patch(
+        ) as fmk, patch(  #  pylint: disable=unused-variable
             "spacecmd.misc.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             out = spacecmd.misc.do_login(shell, "")
 
         assert not mprint.called
@@ -780,7 +780,7 @@ class TestSCMisc:
             [(("Could not write session file: %s", "Intel inside"), {})],
         )
 
-    def test_logout(self, shell):
+    def test_logout(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test logout.
 
@@ -798,7 +798,7 @@ class TestSCMisc:
         assert shell.do_clear_caches.called
         assert_args_expect(shell.do_clear_caches.call_args_list, [(("",), {})])
 
-    def test_whoami_negative(self, shell):
+    def test_whoami_negative(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test whoami
 
@@ -815,7 +815,7 @@ class TestSCMisc:
         assert not mprint.called
         assert logger.warning.called
 
-    def test_whoami_positive(self, shell):
+    def test_whoami_positive(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test whoami
 
@@ -832,7 +832,7 @@ class TestSCMisc:
         assert mprint.called
         assert not logger.warning.called
 
-    def test_whoamitalkingto(self, shell):
+    def test_whoamitalkingto(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test to display what server is connected.
 
@@ -842,16 +842,16 @@ class TestSCMisc:
         shell.server = "no.mans.land"
         mprint = MagicMock()
         logger = MagicMock()
-        with patch("spacecmd.misc.print", mprint) as prt, patch(
+        with patch("spacecmd.misc.print", mprint) as prt, patch(  #  pylint: disable=unused-variable
             "spacecmd.misc.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.misc.do_whoamitalkingto(shell, "")
 
         assert not logger.warning.called
         assert mprint.called
         assert_args_expect(mprint.call_args_list, [((shell.server,), {})])
 
-    def test_whoamitalkingto_no_session(self, shell):
+    def test_whoamitalkingto_no_session(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test to display no server is connected yet.
 
@@ -861,16 +861,16 @@ class TestSCMisc:
         shell.server = None
         mprint = MagicMock()
         logger = MagicMock()
-        with patch("spacecmd.misc.print", mprint) as prt, patch(
+        with patch("spacecmd.misc.print", mprint) as prt, patch(  #  pylint: disable=unused-variable
             "spacecmd.misc.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.misc.do_whoamitalkingto(shell, "")
 
         assert not mprint.called
         assert logger.warning.called
         assert_args_expect(logger.warning.call_args_list, [(("Yourself",), {})])
 
-    def test_clear_errata_cache(self, shell):
+    def test_clear_errata_cache(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test errata cache cleared.
 
@@ -889,7 +889,7 @@ class TestSCMisc:
         assert shell.errata_cache_expire > tst
         assert shell.save_errata_cache.called
 
-    def test_get_sorted_errata_names(self, shell):
+    def test_get_sorted_errata_names(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test getting errata names.
 
@@ -907,7 +907,7 @@ class TestSCMisc:
             "cve-zzz",
         ]
 
-    def test_get_erratum_id(self, shell):
+    def test_get_erratum_id(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test to get erratum ID.
 
@@ -917,7 +917,7 @@ class TestSCMisc:
         shell.all_errata = {"cve-zzz": {"id": 3}}
         assert spacecmd.misc.get_erratum_id(shell, "cve-zzz") == 3
 
-    def test_get_erratum_name(self, shell):
+    def test_get_erratum_name(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test to get erratum name.
 
@@ -927,7 +927,7 @@ class TestSCMisc:
         shell.all_errata = {"cve-zzz": {"id": 3}}
         assert spacecmd.misc.get_erratum_name(shell, 3) == "cve-zzz"
 
-    def test_generate_errata_cache_no_expired(self, shell):
+    def test_generate_errata_cache_no_expired(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test generate errata cache (no expired, i.e. should not be generated).
 
@@ -942,7 +942,7 @@ class TestSCMisc:
         assert not shell.replace_line_buffer.called
         assert not shell.save_errata_cache.called
 
-    def test_generate_errata_cache_force(self, shell):
+    def test_generate_errata_cache_force(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test generate errata cache, forced
 
@@ -974,7 +974,7 @@ class TestSCMisc:
         )
 
         logger = MagicMock()
-        with patch("spacecmd.misc.logging", logger) as lgr:
+        with patch("spacecmd.misc.logging", logger) as lgr:  #  pylint: disable=unused-variable
             spacecmd.misc.generate_errata_cache(shell, force=True)
 
         assert logger.debug.called
@@ -1004,7 +1004,7 @@ class TestSCMisc:
             ],
         )
 
-    def test_clear_package_cache(self, shell):
+    def test_clear_package_cache(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test clear package cache.
 
@@ -1023,7 +1023,7 @@ class TestSCMisc:
         assert shell.package_cache_expire != tst
         assert shell.save_package_caches.called
 
-    def test_generate_package_cache_cache_not_expired(self, shell):
+    def test_generate_package_cache_cache_not_expired(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test generate package cache is not yet expired.
 
@@ -1041,9 +1041,9 @@ class TestSCMisc:
         shell.package_cache_expire = tst
         shell.PACKAGE_CACHE_TTL = 8000
 
-        with patch("spacecmd.misc.build_package_names", pkgbuild) as pkgb, patch(
+        with patch("spacecmd.misc.build_package_names", pkgbuild) as pkgb, patch(  #  pylint: disable=unused-variable
             "spacecmd.misc.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.misc.generate_package_cache(shell, force=False)
 
         assert not shell.client.channel.listSoftwareChannels.called
@@ -1054,7 +1054,7 @@ class TestSCMisc:
         assert not shell.save_package_caches.called
         assert shell.package_cache_expire == tst
 
-    def test_generate_package_cache_cache_not_expired_forced(self, shell):
+    def test_generate_package_cache_cache_not_expired_forced(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test generate package cache not expired, but forced to.
 
@@ -1073,9 +1073,9 @@ class TestSCMisc:
         shell.PACKAGE_CACHE_TTL = 8000
         shell.client.channel.listSoftwareChannels = MagicMock(return_value=[])
 
-        with patch("spacecmd.misc.build_package_names", pkgbuild) as pkgb, patch(
+        with patch("spacecmd.misc.build_package_names", pkgbuild) as pkgb, patch(  #  pylint: disable=unused-variable
             "spacecmd.misc.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.misc.generate_package_cache(shell, force=True)
 
         assert not shell.client.channel.software.listAllPackages.called
@@ -1087,7 +1087,7 @@ class TestSCMisc:
         assert shell.package_cache_expire != tst
         assert shell.package_cache_expire is not None
 
-    def test_generate_package_cache_verbose(self, shell):
+    def test_generate_package_cache_verbose(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test generate package cache verbose mode.
 
@@ -1106,9 +1106,9 @@ class TestSCMisc:
         shell.PACKAGE_CACHE_TTL = 8000
         shell.client.channel.listSoftwareChannels = MagicMock(return_value=[])
 
-        with patch("spacecmd.misc.build_package_names", pkgbuild) as pkgb, patch(
+        with patch("spacecmd.misc.build_package_names", pkgbuild) as pkgb, patch(  #  pylint: disable=unused-variable
             "spacecmd.misc.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.misc.generate_package_cache(shell, force=False)
 
         assert not logger.debug.called
@@ -1120,7 +1120,7 @@ class TestSCMisc:
         assert shell.package_cache_expire != tst
         assert shell.package_cache_expire is not None
 
-    def test_generate_package_cache_uqid(self, shell):
+    def test_generate_package_cache_uqid(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test generate package cache, unique IDs.
 
@@ -1155,7 +1155,7 @@ class TestSCMisc:
             ]
         )
 
-        with patch("spacecmd.misc.logging", logger) as lgr:
+        with patch("spacecmd.misc.logging", logger) as lgr:  #  pylint: disable=unused-variable
             spacecmd.misc.generate_package_cache(shell, force=False)
 
         assert logger.debug.called
@@ -1171,9 +1171,9 @@ class TestSCMisc:
             assert shell.all_packages[pkgname] == [pkgid]
             assert pkgid in shell.all_packages_by_id
             assert shell.all_packages_by_id[pkgid] == pkgname
-            assert pkgname.split("-")[0] in shell.all_packages_short
+            assert pkgname.split("-")[0] in shell.all_packages_short  #  pylint: disable=use-maxsplit-arg
 
-    def test_generate_package_cache_duplicate_ids(self, shell):
+    def test_generate_package_cache_duplicate_ids(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test generate package cache, handling duplicate IDs.
 
@@ -1209,7 +1209,7 @@ class TestSCMisc:
             ]
         )
 
-        with patch("spacecmd.misc.logging", logger) as lgr:
+        with patch("spacecmd.misc.logging", logger) as lgr:  #  pylint: disable=unused-variable
             spacecmd.misc.generate_package_cache(shell, force=False)
 
         assert logger.debug.called
@@ -1245,9 +1245,9 @@ class TestSCMisc:
             assert shell.all_packages[pkgname] == [pkgid]
             assert pkgid in shell.all_packages_by_id
             assert shell.all_packages_by_id[pkgid] == pkgname
-            assert pkgname.split("-")[0] in shell.all_packages_short
+            assert pkgname.split("-")[0] in shell.all_packages_short  #  pylint: disable=use-maxsplit-arg
 
-    def test_save_package_caches(self, shell):
+    def test_save_package_caches(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test saving package caches.
 
@@ -1267,7 +1267,7 @@ class TestSCMisc:
         tst = datetime.datetime(2019, 1, 1, 0, 0)
         shell.package_cache_expire = tst
 
-        with patch("spacecmd.misc.save_cache", savecache) as savc:
+        with patch("spacecmd.misc.save_cache", savecache) as savc:  #  pylint: disable=unused-variable
             spacecmd.misc.save_package_caches(shell)
 
         assert shell.package_cache_expire == tst
@@ -1280,7 +1280,7 @@ class TestSCMisc:
             ],
         )
 
-    def test_user_confirm_bool_positive(self, shell):
+    def test_user_confirm_bool_positive(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test interactive user confirmation UI. Boolean, positive.
 
@@ -1289,13 +1289,13 @@ class TestSCMisc:
         shell.options.yes = False
         for answer in ["yop", "yeah", "yes", "y", "Yes", "Yo"]:
             pmt = MagicMock(return_value=answer)
-            with patch("spacecmd.misc.prompt_user", pmt) as prompter:
+            with patch("spacecmd.misc.prompt_user", pmt) as prompter:  #  pylint: disable=unused-variable
                 out = spacecmd.misc.user_confirm(shell)
 
             assert isinstance(out, bool)
             assert out
 
-    def test_user_confirm_bool_negative(self, shell):
+    def test_user_confirm_bool_negative(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test interactive user confirmation UI. Boolean, negative.
 
@@ -1304,13 +1304,13 @@ class TestSCMisc:
         shell.options.yes = False
         for answer in ["whatever", "nope", "no", "n", "Nada", "go away"]:
             pmt = MagicMock(return_value=answer)
-            with patch("spacecmd.misc.prompt_user", pmt) as prompter:
+            with patch("spacecmd.misc.prompt_user", pmt) as prompter:  #  pylint: disable=unused-variable
                 out = spacecmd.misc.user_confirm(shell)
 
             assert isinstance(out, bool)
             assert not out
 
-    def test_user_confirm_int_positive(self, shell):
+    def test_user_confirm_int_positive(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test interactive user confirmation UI. Integer, positive.
 
@@ -1319,13 +1319,13 @@ class TestSCMisc:
         shell.options.yes = False
         for answer in ["yop", "yeah", "yes", "y", "Yes", "Yo"]:
             pmt = MagicMock(return_value=answer)
-            with patch("spacecmd.misc.prompt_user", pmt) as prompter:
+            with patch("spacecmd.misc.prompt_user", pmt) as prompter:  #  pylint: disable=unused-variable
                 out = spacecmd.misc.user_confirm(shell, integer=True)
 
             assert isinstance(out, int)
             assert out == 1
 
-    def test_user_confirm_int_negative(self, shell):
+    def test_user_confirm_int_negative(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test interactive user confirmation UI. Integer, negative.
 
@@ -1334,13 +1334,13 @@ class TestSCMisc:
         shell.options.yes = False
         for answer in ["whatever", "nope", "no", "n", "Nada", "go away"]:
             pmt = MagicMock(return_value=answer)
-            with patch("spacecmd.misc.prompt_user", pmt) as prompter:
+            with patch("spacecmd.misc.prompt_user", pmt) as prompter:  #  pylint: disable=unused-variable
                 out = spacecmd.misc.user_confirm(shell, integer=True)
 
             assert isinstance(out, int)
             assert out == 0
 
-    def test_check_api_version(self, shell):
+    def test_check_api_version(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test API version checker.
 
@@ -1355,7 +1355,7 @@ class TestSCMisc:
         for bigger in ["11", "10.6"]:
             assert not spacecmd.misc.check_api_version(shell, bigger)
 
-    def test_get_system_id_no_duplicates(self, shell):
+    def test_get_system_id_no_duplicates(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test getting system ID without duplicates (normal run).
 
@@ -1369,7 +1369,7 @@ class TestSCMisc:
         assert spacecmd.misc.get_system_id(shell, "100100") == 100100
         assert spacecmd.misc.get_system_id(shell, "100200") == 100200
 
-    def test_get_system_id_handle_duplicates(self, shell):
+    def test_get_system_id_handle_duplicates(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test getting system ID with duplicates.
 
@@ -1379,7 +1379,7 @@ class TestSCMisc:
         shell.all_systems = {100100: "douchebox", 100200: "sloppy", 100300: "douchebox"}
 
         logger = MagicMock()
-        with patch("spacecmd.misc.logging", logger) as lgr:
+        with patch("spacecmd.misc.logging", logger) as lgr:  #  pylint: disable=unused-variable
             assert spacecmd.misc.get_system_id(shell, "douchebox") == 0
 
         assert_args_expect(
@@ -1395,7 +1395,7 @@ class TestSCMisc:
 
         assert logger.warning.called
 
-    def test_get_package_name(self, shell):
+    def test_get_package_name(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Get package name.
 
@@ -1407,7 +1407,7 @@ class TestSCMisc:
         assert spacecmd.misc.get_package_name(shell, 43) is None
         assert shell.generate_package_cache.called
 
-    def test_generate_system_cache_not_expired(self, shell):
+    def test_generate_system_cache_not_expired(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test generating system cache before expiration point.
 
@@ -1421,7 +1421,7 @@ class TestSCMisc:
         shell.SYSTEM_CACHE_TTL = 8000
         sleeper = MagicMock()
 
-        with patch("spacecmd.misc.sleep", sleeper) as slp:
+        with patch("spacecmd.misc.sleep", sleeper) as slp:  #  pylint: disable=unused-variable
             spacecmd.misc.generate_system_cache(shell)
 
         assert not shell.client.system.listSystems.called
@@ -1429,7 +1429,7 @@ class TestSCMisc:
         assert not sleeper.called
         assert shell.system_cache_expire == tst
 
-    def test_generate_system_cache_not_expired_forced(self, shell):
+    def test_generate_system_cache_not_expired_forced(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test generating system cache before expiration point, forced.
 
@@ -1450,7 +1450,7 @@ class TestSCMisc:
         )
         sleeper = MagicMock()
 
-        with patch("spacecmd.misc.sleep", sleeper) as slp:
+        with patch("spacecmd.misc.sleep", sleeper) as slp:  #  pylint: disable=unused-variable
             spacecmd.misc.generate_system_cache(shell, force=True)
 
         assert not sleeper.called
@@ -1461,7 +1461,7 @@ class TestSCMisc:
         assert shell.replace_line_buffer.call_count == 2
         assert shell.save_system_cache.called
 
-    def test_generate_system_cache_expired(self, shell):
+    def test_generate_system_cache_expired(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test generating system cache after expiration point.
 
@@ -1482,7 +1482,7 @@ class TestSCMisc:
         )
         sleeper = MagicMock()
 
-        with patch("spacecmd.misc.sleep", sleeper) as slp:
+        with patch("spacecmd.misc.sleep", sleeper) as slp:  #  pylint: disable=unused-variable
             spacecmd.misc.generate_system_cache(shell, force=False)
 
         assert not sleeper.called

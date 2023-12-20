@@ -5,7 +5,7 @@ Test suite for "proxy"
 from spacecmd import proxy
 
 from unittest.mock import mock_open, patch
-from helpers import shell  # used by pytest
+from helpers import shell  # used by pytest  #  pylint: disable=unused-import
 import pytest
 
 
@@ -19,7 +19,7 @@ import pytest
         ("proxy.lab server.lab 1024 proxy@acme.org", True),
     ],
 )
-def test_proxy_container_config_invokes_help_when_needed(shell, args, calls_help):
+def test_proxy_container_config_invokes_help_when_needed(shell, args, calls_help):  #  pylint: disable=redefined-outer-name
     m_open = mock_open()
     with patch("spacecmd.proxy.read_file", return_value=""), patch(
         "spacecmd.proxy.open", m_open
@@ -42,7 +42,7 @@ def test_proxy_container_config_invokes_help_when_needed(shell, args, calls_help
     ],
 )
 def test_proxy_container_config_generate_cert_invokes_help_when_needed(
-    shell, args, calls_help
+    shell, args, calls_help  #  pylint: disable=redefined-outer-name
 ):
     m_open = mock_open()
     with patch("spacecmd.proxy.read_file", return_value=""), patch(

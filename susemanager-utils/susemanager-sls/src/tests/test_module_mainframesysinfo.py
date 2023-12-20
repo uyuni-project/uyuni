@@ -8,7 +8,7 @@ from . import mockery
 
 mockery.setup_environment()
 
-from ..modules import mainframesysinfo
+from ..modules import mainframesysinfo  #  pylint: disable=wrong-import-position
 
 
 def test_virtual():

@@ -1,4 +1,4 @@
-# Queue functions on the server side.
+# Queue functions on the server side. pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -24,7 +24,7 @@ except ImportError:
     #  python3
     import xmlrpc.client as xmlrpclib
 
-from uyuni.common.usix import IntType, TupleType, UnicodeType, raise_with_tb
+from uyuni.common.usix import IntType, TupleType, UnicodeType, raise_with_tb  #  pylint: disable=unused-import
 from rhn.stringutils import sstr
 
 # Global modules
@@ -63,10 +63,10 @@ class Queue(rhnHandler):
             },
         }
 
-    def __getV1(self, action):
+    def __getV1(self, action):  #  pylint: disable=invalid-name
         """Fetches old queued actions for the client version 1."""
         log_debug(3, self.server_id)
-        actionId = action["id"]
+        actionId = action["id"]  #  pylint: disable=invalid-name
         method = action["method"]
         if method == "packages.update":
             xml = self.__packageUpdate(actionId)
@@ -78,12 +78,12 @@ class Queue(rhnHandler):
             xml = xmlrpclib.dumps(("rpmlist",), methodname="client.refresh")
         else:  # Unrecognized, skip
             raise InvalidAction(
-                "Action method %s unsupported by " "Update Agent Client" % method
+                "Action method %s unsupported by " "Update Agent Client" % method  #  pylint: disable=consider-using-f-string
             )
         # all good
         return {"id": actionId, "version": 1, "action": xml}
 
-    def __getV2(self, action, dry_run=0):
+    def __getV2(self, action, dry_run=0):  #  pylint: disable=invalid-name
         """Fetches queued actions for the clients version 2+."""
         log_debug(3, self.server_id)
         # Get the root dir of this install
@@ -93,7 +93,7 @@ class Queue(rhnHandler):
             Traceback("queue.get V2")
             raise_with_tb(
                 EmptyAction(
-                    "Could not get a valid method for %s" % (action["method"],)
+                    "Could not get a valid method for %s" % (action["method"],)  #  pylint: disable=consider-using-f-string
                 ),
                 sys.exc_info()[2],
             )
@@ -220,7 +220,7 @@ class Queue(rhnHandler):
             if not row:
                 break
 
-            action_id, prereq_action_id = row["action_id"], row["prerequisite"]
+            action_id, prereq_action_id = row["action_id"], row["prerequisite"]  #  pylint: disable=unused-variable
 
             self._invalidate_child_actions(action_id)
 
@@ -255,7 +255,7 @@ class Queue(rhnHandler):
                        and sa.action_id = a.id
                        and a.action_type = at.id
                        and sa.status in (0, 1) -- Queued or picked up
-                       and a.earliest_action <= current_timestamp + numtodsinterval(:time_window * 3600, 'second')  -- Check earliest_action
+                       and a.earliest_action <= current_timestamp + numtodsinterval(:time_window * 3600, 'second')  -- Check earliest_action  #  pylint: disable=line-too-long
                        and at.label in ('packages.update', 'errata.update',
                             'packages.runTransaction', 'packages.fullUpdate')
                       order by a.earliest_action, a.prerequisite nulls first, a.id
@@ -265,7 +265,7 @@ class Queue(rhnHandler):
     def get_future_actions(self, system_id, time_window):
         """return actions which are scheduled within next /time_window/ hours"""
         self.auth_system(system_id)
-        log_debug(3, "Checking for future actions within %d hours" % time_window)
+        log_debug(3, "Checking for future actions within %d hours" % time_window)  #  pylint: disable=consider-using-f-string
         result = []
         if self._future_actions_enabled() and not self.__reboot_in_progress():
             h = rhnSQL.prepare(self._query_queue_future)
@@ -290,7 +290,7 @@ class Queue(rhnHandler):
                        and sa.action_id = a.id
                        and a.action_type = at.id
                        and sa.status in (0, 1) -- Queued or picked up
-                       and a.earliest_action <= current_timestamp -- Check earliest_action
+                       and a.earliest_action <= current_timestamp -- Check earliest_action  #  pylint: disable=line-too-long
                        and not exists (
                            select 1
                              from rhnServerAction sap
@@ -303,7 +303,7 @@ class Queue(rhnHandler):
     )
 
     # Probably we need to figure out if we really need to split these two.
-    def get(self, system_id, version=1, status={}):
+    def get(self, system_id, version=1, status={}):  #  pylint: disable=dangerous-default-value
         # Authenticate the system certificate
         if CFG.DISABLE_CHECKINS:
             self.update_checkin = 0
@@ -314,7 +314,7 @@ class Queue(rhnHandler):
             1,
             self.server_id,
             version,
-            "checkins %s" % ["disabled", "enabled"][self.update_checkin],
+            "checkins %s" % ["disabled", "enabled"][self.update_checkin],  #  pylint: disable=consider-using-f-string
         )
         if status:
             self.__update_status(status)
@@ -358,10 +358,10 @@ class Queue(rhnHandler):
                 ret = ""
                 break
             action_id = action["id"]
-            log_debug(4, "Checking action %s" % action_id)
+            log_debug(4, "Checking action %s" % action_id)  #  pylint: disable=consider-using-f-string
             # okay, now we have the action - process it.
             if action["remaining_tries"] < 1:
-                log_debug(4, "Action %s picked up too many times" % action_id)
+                log_debug(4, "Action %s picked up too many times" % action_id)  #  pylint: disable=consider-using-f-string
                 # We've run out of pickup attempts for this action...
                 self.__update_action(
                     action_id,
@@ -379,7 +379,7 @@ class Queue(rhnHandler):
                 # This action is locked
                 log_debug(
                     4,
-                    "server id %s locked for action id %s"
+                    "server id %s locked for action id %s"  #  pylint: disable=consider-using-f-string
                     % (self.server_id, action_id),
                 )
                 continue
@@ -437,7 +437,7 @@ class Queue(rhnHandler):
 
         return ret
 
-    def submit(self, system_id, action_id, result, message="", data={}):
+    def submit(self, system_id, action_id, result, message="", data={}):  #  pylint: disable=dangerous-default-value
         """Submit the results of a queue run.
         Maps old and new rhn_check behavior to new database status codes
 
@@ -460,7 +460,7 @@ class Queue(rhnHandler):
               2: Completed            2: executed
               3: Failed               3: completed
         """
-        if type(action_id) is not IntType:
+        if type(action_id) is not IntType:  #  pylint: disable=unidiomatic-typecheck
             # Convert it to int
             try:
                 action_id = int(action_id)
@@ -500,7 +500,7 @@ class Queue(rhnHandler):
         h.execute(server_id=self.server_id, action_id=action_id)
         row = h.fetchone_dict()
         if not row:
-            log_error("Server %s does not own action %s" % (self.server_id, action_id))
+            log_error("Server %s does not own action %s" % (self.server_id, action_id))  #  pylint: disable=consider-using-f-string
             raise rhnFault(
                 22,
                 _("Action %s does not belong to server %s")
@@ -511,10 +511,10 @@ class Queue(rhnHandler):
         trigger_snapshot = row["trigger_snapshot"] == "Y"
 
         if "missing_packages" in data:
-            missing_packages = "Missing-Packages: %s" % str(data["missing_packages"])
-            rmsg = "%s %s" % (message, missing_packages)
+            missing_packages = "Missing-Packages: %s" % str(data["missing_packages"])  #  pylint: disable=consider-using-f-string
+            rmsg = "%s %s" % (message, missing_packages)  #  pylint: disable=consider-using-f-string
         elif "koan" in data:
-            rmsg = "%s: %s" % (message, data["koan"])
+            rmsg = "%s: %s" % (message, data["koan"])  #  pylint: disable=consider-using-f-string
         else:
             rmsg = message
 
@@ -522,13 +522,13 @@ class Queue(rhnHandler):
         # Careful with this one, result can be a very complex thing
         # and this processing is required for compatibility with old
         # rhn_check clients
-        if type(rcode) == type({}):
+        if type(rcode) == type({}):  #  pylint: disable=unidiomatic-typecheck
             if "faultCode" in result:
                 rcode = result["faultCode"]
             if "faultString" in result:
                 rmsg = result["faultString"] + str(data)
-        if type(rcode) in [type({}), type(()), type([])] or type(rcode) is not IntType:
-            rmsg = "%s [%s]" % (message, rcode)
+        if type(rcode) in [type({}), type(()), type([])] or type(rcode) is not IntType:  #  pylint: disable=unidiomatic-typecheck
+            rmsg = "%s [%s]" % (message, rcode)  #  pylint: disable=consider-using-f-string
             rcode = -1
         # map to db codes.
         status = self.status_for_action_type_code(action_type, rcode)
@@ -542,7 +542,7 @@ class Queue(rhnHandler):
             return 0
         elif status == 2 and trigger_snapshot and self.__should_snapshot():
             # if action status is 'Completed', snapshot if allowed and if needed
-            self.server.take_snapshot("Scheduled action completion:  %s" % row["name"])
+            self.server.take_snapshot("Scheduled action completion:  %s" % row["name"])  #  pylint: disable=consider-using-f-string
 
         self.__update_action(action_id, status, rcode, rmsg)
 
@@ -559,7 +559,7 @@ class Queue(rhnHandler):
         rhnSQL.commit()
         return 0
 
-    def update_status(self, system_id, status={}):
+    def update_status(self, system_id, status={}):  #  pylint: disable=dangerous-default-value
         # Authenticate the system certificate
         self.auth_system(system_id)
         log_debug(1, self.server_id, status)
@@ -585,7 +585,7 @@ class Queue(rhnHandler):
             # Failed
             return 3
 
-        hash = self.action_type_completed_codes[action_type]
+        hash = self.action_type_completed_codes[action_type]  #  pylint: disable=redefined-builtin
         if rcode not in hash:
             # Failed
             return 3
@@ -593,7 +593,7 @@ class Queue(rhnHandler):
         # Completed
         return 2
 
-    def process_extra_data(self, server_id, action_id, data={}, action_type=None):
+    def process_extra_data(self, server_id, action_id, data={}, action_type=None):  #  pylint: disable=dangerous-default-value
         log_debug(4, server_id, action_id, action_type)
 
         if not action_type:
@@ -605,7 +605,7 @@ class Queue(rhnHandler):
         except getMethod.GetMethodException:
             Traceback("queue.get V2")
             raise_with_tb(
-                EmptyAction("Could not get a valid method for %s" % action_type),
+                EmptyAction("Could not get a valid method for %s" % action_type),  #  pylint: disable=consider-using-f-string
                 sys.exc_info()[2],
             )
         # Call the method
@@ -656,7 +656,7 @@ class Queue(rhnHandler):
             return True
         return False
 
-    def __update_action(self, action_id, status, resultCode=None, message=""):
+    def __update_action(self, action_id, status, resultCode=None, message=""):  #  pylint: disable=invalid-name
         """Update the status of an action."""
         log_debug(4, action_id, status, resultCode, message)
         rhnAction.update_server_action(
@@ -668,7 +668,7 @@ class Queue(rhnHandler):
         )
         return 0
 
-    def __errataUpdate(self, actionId):
+    def __errataUpdate(self, actionId):  #  pylint: disable=invalid-name,invalid-name
         """Old client errata retrieval."""
         log_debug(3, self.server_id, actionId)
         # get the names of the packages associated with each errata and
@@ -726,7 +726,7 @@ class Queue(rhnHandler):
         xml = xmlrpclib.dumps((packages,), methodname="client.update_packages")
         return xml
 
-    def __packageUpdate(self, actionId):
+    def __packageUpdate(self, actionId):  #  pylint: disable=invalid-name,invalid-name
         """Old client package retrieval."""
         log_debug(3, self.server_id, actionId)
         # The SQL query is a union of:

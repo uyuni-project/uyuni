@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Licensed under the GNU General Public License Version 3
 #
 # This program is free software; you can redistribute it and/or modify
@@ -78,7 +78,7 @@ def complete_repo_details(self, text, line, beg, end):
 def do_repo_details(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if not args:
         self.help_repo_details()
@@ -132,7 +132,7 @@ def complete_repo_listfilters(self, text, line, beg, end):
 def do_repo_listfilters(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if not args:
         self.help_repo_listfilters()
@@ -141,7 +141,7 @@ def do_repo_listfilters(self, args):
     filters = self.client.channel.software.listRepoFilters(self.session, args[0])
     if filters:
         for flt in filters:
-            print("%s%s" % (flt.get("flag"), flt.get("filter")))
+            print("%s%s" % (flt.get("flag"), flt.get("filter")))  #  pylint: disable=consider-using-f-string
     else:
         print(_("No filters found"))
         return 1
@@ -317,7 +317,7 @@ def complete_repo_delete(self, text, line, beg, end):
 def do_repo_delete(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if not args:
         self.help_repo_delete()
@@ -422,7 +422,7 @@ def complete_repo_rename(self, text, line, beg, end):
 def do_repo_rename(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if len(args) != 2:
         self.help_repo_rename()
@@ -460,7 +460,7 @@ def complete_repo_updateurl(self, text, line, beg, end):
 def do_repo_updateurl(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if len(args) != 2:
         self.help_repo_updateurl()

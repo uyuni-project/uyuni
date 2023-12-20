@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -22,7 +22,7 @@ from spacewalk.server.importlib import (
     errataImport,
     kickstartImport,
 )
-from uyuni.common.usix import raise_with_tb
+from uyuni.common.usix import raise_with_tb  #  pylint: disable=ungrouped-imports
 from . import diskImportLib
 from . import xmlSource
 from . import syncCache
@@ -33,7 +33,7 @@ DEFAULT_ORG = 1
 # Singleton-like
 
 
-class BaseCollection:
+class BaseCollection:  #  pylint: disable=missing-class-docstring
     _shared_state = {}
 
     def __init__(self):
@@ -54,7 +54,7 @@ class BaseCollection:
     def get_item_timestamp(self, item_id):
         "Returns this item's timestamp"
         if item_id not in self._items_hash:
-            raise KeyError("Item %s not found in collection" % item_id)
+            raise KeyError("Item %s not found in collection" % item_id)  #  pylint: disable=consider-using-f-string
         return self._items_hash[item_id]
 
     def get_item(self, item_id, timestamp):
@@ -83,13 +83,13 @@ class BaseCollection:
     def reset(self):
         """Reset the collection"""
         self._shared_state.clear()
-        self.__init__()
+        self.__init__()  #  pylint: disable=unnecessary-dunder-call
 
 
 # Singleton-like
 
 
-class ChannelCollection:
+class ChannelCollection:  #  pylint: disable=missing-class-docstring
     _shared_state = {}
 
     def __init__(self):
@@ -146,7 +146,7 @@ class ChannelCollection:
     def get_channel_timestamp(self, channel_label):
         """Returns the channel's timestamp"""
         if channel_label not in self._channels_hash:
-            raise KeyError("Channel %s could not be found" % channel_label)
+            raise KeyError("Channel %s could not be found" % channel_label)  #  pylint: disable=consider-using-f-string
         return self._channels_hash[channel_label]
 
     def get_parent_channel_labels(self):
@@ -159,26 +159,26 @@ class ChannelCollection:
         """Return a list of (channel label, channel timestamp) for this parent
         channel"""
         if channel_label not in self._parent_channels:
-            raise Exception("Channel %s is not a parent" % channel_label)
+            raise Exception("Channel %s is not a parent" % channel_label)  #  pylint: disable=broad-exception-raised,consider-using-f-string
         return self._parent_channels[channel_label]
 
     def reset(self):
         """Reset the collection"""
         self._shared_state.clear()
-        self.__init__()
+        self.__init__()  #  pylint: disable=unnecessary-dunder-call
 
 
 # pylint: disable=W0232
 
 
-class SyncHandlerContainer:
+class SyncHandlerContainer:  #  pylint: disable=missing-class-docstring
     collection = object
 
     # this class has no __init__ for the purpose
     # it's used in multiple inheritance mode and inherited classes should
     # use __init__ from the other base class
 
-    def endItemCallback(self):
+    def endItemCallback(self):  #  pylint: disable=invalid-name
         # reference to xmlSource superclass we redefines
         xml_superclass = self.__class__.__bases__[1]
         xml_superclass.endItemCallback(self)
@@ -189,7 +189,7 @@ class SyncHandlerContainer:
         c.add_item(self.batch[-1])
         del self.batch[:]
 
-    def endContainerCallback(self):
+    def endContainerCallback(self):  #  pylint: disable=invalid-name
         # Not much to do here...
         pass
 
@@ -219,10 +219,10 @@ def import_channels(channels, orgid=None, master=None):
         try:
             timestamp = collection.get_channel_timestamp(c)
         except KeyError:
-            raise_with_tb(Exception("Could not find channel %s" % c), sys.exc_info()[2])
+            raise_with_tb(Exception("Could not find channel %s" % c), sys.exc_info()[2])  #  pylint: disable=consider-using-f-string
         c_obj = collection.get_channel(c, timestamp)
         if c_obj is None:
-            raise Exception("Channel not found in cache: %s" % c)
+            raise Exception("Channel not found in cache: %s" % c)  #  pylint: disable=broad-exception-raised,consider-using-f-string
 
         # Check to see if we're asked to sync to an orgid,
         # make sure the org from the export is not null org,
@@ -263,7 +263,7 @@ def import_channels(channels, orgid=None, master=None):
             c_obj["trust_list"] = trusts
 
         syncLib.log(
-            6, "Syncing Channel %s to Org %s " % (c_obj["label"], c_obj["org_id"])
+            6, "Syncing Channel %s to Org %s " % (c_obj["label"], c_obj["org_id"])  #  pylint: disable=consider-using-f-string
         )
         batch.append(c_obj)
 
@@ -277,7 +277,7 @@ def import_channels(channels, orgid=None, master=None):
 # Singleton-like
 
 
-class ShortPackageCollection:
+class ShortPackageCollection:  #  pylint: disable=missing-class-docstring
     _shared_state = {}
 
     def __init__(self):
@@ -304,7 +304,7 @@ class ShortPackageCollection:
     def reset(self):
         """Reset the collection"""
         self._shared_state.clear()
-        self.__init__()
+        self.__init__()  #  pylint: disable=unnecessary-dunder-call
 
 
 class ShortPackageContainer(SyncHandlerContainer, xmlSource.IncompletePackageContainer):
@@ -352,7 +352,7 @@ def get_source_package_handler():
 # Singleton-like
 
 
-class ErrataCollection:
+class ErrataCollection:  #  pylint: disable=missing-class-docstring
     _shared_state = {}
 
     def __init__(self):
@@ -375,7 +375,7 @@ class ErrataCollection:
     def get_erratum_timestamp(self, erratum_id):
         """Returns the erratum's timestamp"""
         if erratum_id not in self._errata_hash:
-            raise KeyError("Erratum %s could not be found" % erratum_id)
+            raise KeyError("Erratum %s could not be found" % erratum_id)  #  pylint: disable=consider-using-f-string
         return self._errata_hash[erratum_id]
 
     def get_erratum(self, erratum_id, timestamp):
@@ -391,7 +391,7 @@ class ErrataCollection:
     def reset(self):
         """Reset the collection"""
         self._shared_state.clear()
-        self.__init__()
+        self.__init__()  #  pylint: disable=unnecessary-dunder-call
 
 
 class ErrataContainer(SyncHandlerContainer, xmlSource.ErrataContainer):
@@ -523,43 +523,43 @@ class ContainerHandler:
     def reset(self):
         self.handler.reset()
 
-    def getHandler(self):
+    def getHandler(self):  #  pylint: disable=invalid-name
         return self.handler
 
     # set arch containers:
-    def setServerArchContainer(self):
+    def setServerArchContainer(self):  #  pylint: disable=invalid-name
         self.handler.set_container(diskImportLib.ServerArchContainer())
 
-    def setPackageArchContainer(self):
+    def setPackageArchContainer(self):  #  pylint: disable=invalid-name
         self.handler.set_container(diskImportLib.PackageArchContainer())
 
-    def setChannelArchContainer(self):
+    def setChannelArchContainer(self):  #  pylint: disable=invalid-name
         self.handler.set_container(diskImportLib.ChannelArchContainer())
 
-    def setCPUArchContainer(self):
+    def setCPUArchContainer(self):  #  pylint: disable=invalid-name
         self.handler.set_container(diskImportLib.CPUArchContainer())
 
-    def setServerPackageArchContainer(self):
+    def setServerPackageArchContainer(self):  #  pylint: disable=invalid-name
         self.handler.set_container(diskImportLib.ServerPackageArchCompatContainer())
 
-    def setServerChannelArchContainer(self):
+    def setServerChannelArchContainer(self):  #  pylint: disable=invalid-name
         self.handler.set_container(diskImportLib.ServerChannelArchCompatContainer())
 
-    def setServerGroupServerArchContainer(self):
+    def setServerGroupServerArchContainer(self):  #  pylint: disable=invalid-name
         self.handler.set_container(diskImportLib.ServerGroupServerArchCompatContainer())
 
-    def setChannelPackageArchContainer(self):
+    def setChannelPackageArchContainer(self):  #  pylint: disable=invalid-name
         self.handler.set_container(ChannelPackageArchCompatContainer())
 
     # set all other containers:
 
-    def setChannelFamilyContainer(self):
+    def setChannelFamilyContainer(self):  #  pylint: disable=invalid-name
         self.handler.set_container(ChannelFamilyContainer())
 
-    def setProductNamesContainer(self):
+    def setProductNamesContainer(self):  #  pylint: disable=invalid-name
         self.handler.set_container(diskImportLib.ProductNamesContainer())
 
-    def setOrgContainer(self, master_label, create_orgs):
+    def setOrgContainer(self, master_label, create_orgs):  #  pylint: disable=invalid-name
         # pylint: disable=E1101,E1103
         self.handler.set_container(diskImportLib.OrgContainer())
         # pylint: disable=E1103
@@ -567,31 +567,31 @@ class ContainerHandler:
             master_label, create_orgs
         )
 
-    def setSupportInformationContainer(self):
+    def setSupportInformationContainer(self):  #  pylint: disable=invalid-name
         self.handler.set_container(diskImportLib.SupportInformationContainer())
 
-    def setSuseProductsContainer(self):
+    def setSuseProductsContainer(self):  #  pylint: disable=invalid-name
         self.handler.set_container(diskImportLib.SuseProductsContainer())
 
-    def setSuseProductChannelsContainer(self):
+    def setSuseProductChannelsContainer(self):  #  pylint: disable=invalid-name
         self.handler.set_container(diskImportLib.SuseProductChannelsContainer())
 
-    def setSuseUpgradePathsContainer(self):
+    def setSuseUpgradePathsContainer(self):  #  pylint: disable=invalid-name
         self.handler.set_container(diskImportLib.SuseUpgradePathsContainer())
 
-    def setSuseProductExtensionsContainer(self):
+    def setSuseProductExtensionsContainer(self):  #  pylint: disable=invalid-name
         self.handler.set_container(diskImportLib.SuseProductExtensionsContainer())
 
-    def setSuseProductRepositoriesContainer(self):
+    def setSuseProductRepositoriesContainer(self):  #  pylint: disable=invalid-name
         self.handler.set_container(diskImportLib.SuseProductRepositoriesContainer())
 
-    def setSCCRepositoriesContainer(self):
+    def setSCCRepositoriesContainer(self):  #  pylint: disable=invalid-name
         self.handler.set_container(diskImportLib.SCCRepositoriesContainer())
 
-    def setSuseSubscriptionsContainer(self):
+    def setSuseSubscriptionsContainer(self):  #  pylint: disable=invalid-name
         self.handler.set_container(diskImportLib.SuseSubscriptionsContainer())
 
-    def setClonedChannelsContainer(self):
+    def setClonedChannelsContainer(self):  #  pylint: disable=invalid-name
         self.handler.set_container(diskImportLib.ClonedChannelsContainer())
 
 
@@ -602,7 +602,7 @@ class ContainerHandler:
 #       this one is used simply to print out the arches.
 
 
-class ChannelPackageArchCompatContainer(
+class ChannelPackageArchCompatContainer(  #  pylint: disable=missing-class-docstring
     diskImportLib.ChannelPackageArchCompatContainer
 ):
     arches = {}
@@ -618,16 +618,16 @@ class ChannelPackageArchCompatContainer(
         arches.sort()
         if arches:
             for arch in arches:
-                syncLib.log(6, "   parsed arch: %s" % (arch))
+                syncLib.log(6, "   parsed arch: %s" % (arch))  #  pylint: disable=consider-using-f-string
         diskImportLib.ChannelPackageArchCompatContainer.endContainerCallback(self)
 
 
-class ChannelFamilyContainer(xmlSource.ChannelFamilyContainer):
+class ChannelFamilyContainer(xmlSource.ChannelFamilyContainer):  #  pylint: disable=missing-class-docstring
     def endItemCallback(self):
         xmlSource.ChannelFamilyContainer.endItemCallback(self)
         if not self.batch:
             return
-        syncLib.log(2, "   parsing family: %s" % (self.batch[-1]["name"]))
+        syncLib.log(2, "   parsing family: %s" % (self.batch[-1]["name"]))  #  pylint: disable=consider-using-f-string
 
     def endContainerCallback(self):
         batch = self.batch

@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring,invalid-name
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -31,7 +31,7 @@ from spacewalk.common.rhnLog import log_debug, log_error, log_setreq
 from spacewalk.common.rhnTranslate import cat
 
 
-class rhnApache:
+class rhnApache:  #  pylint: disable=invalid-name
 
     """Shared rhnApache class: rhnApache classes in proxy and server inherit
     this class.
@@ -46,15 +46,15 @@ class rhnApache:
     def __init__(self):
         self.lang = "C"
         self.domain = None
-        self.clientVersion = 0
-        self.proxyVersion = None
+        self.clientVersion = 0  #  pylint: disable=invalid-name
+        self.proxyVersion = None  #  pylint: disable=invalid-name
         self.start_time = 0
 
     ###
     # HANDLERS, in the order which they are called
     ###
 
-    def headerParserHandler(self, req):
+    def headerParserHandler(self, req):  #  pylint: disable=invalid-name
         """
         after a request has been received, first thing we do is to create the
         input object
@@ -106,17 +106,17 @@ class rhnApache:
 
     def _set_client_info(self, req):
         # Figure out the client version
-        clientVersionHeader = "X-RHN-Client-Version"
+        clientVersionHeader = "X-RHN-Client-Version"  #  pylint: disable=invalid-name
         if clientVersionHeader in req.headers_in:
             # Useful to have it as a separate variable, to see it in a
             # traceback report
-            clientVersion = req.headers_in[clientVersionHeader]
+            clientVersion = req.headers_in[clientVersionHeader]  #  pylint: disable=invalid-name
             self.clientVersion = int(clientVersion)
         # NOTE: x-client-version is really the cgiwrap xmlrpc API version
         #       NOT the RHN client version... but it works if nothing else
         #       does.
         elif "X-Client-Version" in req.headers_in:
-            clientVersion = req.headers_in["X-Client-Version"]
+            clientVersion = req.headers_in["X-Client-Version"]  #  pylint: disable=invalid-name
             self.clientVersion = int(clientVersion)
         else:
             self.clientVersion = 0
@@ -129,7 +129,7 @@ class rhnApache:
 
     def _set_proxy_info(self, req):
         """Spacewalk Proxy stuff."""
-        proxyVersion = "X-RHN-Proxy-Version"
+        proxyVersion = "X-RHN-Proxy-Version"  #  pylint: disable=invalid-name
         if proxyVersion in req.headers_in:
             self.proxyVersion = req.headers_in[proxyVersion]
         # Make sure the proxy version gets set in the headers.
@@ -151,7 +151,7 @@ class rhnApache:
         return apache.OK
 
     @staticmethod
-    def _set_other(_req):
+    def _set_other(_req):  #  pylint: disable=invalid-name
         return apache.OK
 
     def _init_request_processor(self, req):
@@ -194,7 +194,7 @@ class rhnApache:
         log_debug(4, "HEADERS", req.headers_in)
         return apache.OK
 
-    def cleanupHandler(self, _req):
+    def cleanupHandler(self, _req):  #  pylint: disable=invalid-name,invalid-name
         """
         clean up this session
         """
@@ -207,7 +207,7 @@ class rhnApache:
         return self._cleanup_request_processor()
 
     @staticmethod
-    def logHandler(_req):
+    def logHandler(_req):  #  pylint: disable=invalid-name,invalid-name
         """
         A dummy log function
         """
@@ -236,7 +236,7 @@ class rhnApache:
         return "; ".join(cat.getlangs())
 
     @staticmethod
-    def _setSessionToken(headers):
+    def _setSessionToken(headers):  #  pylint: disable=invalid-name
         """Pushes token into rhnFlags. If doesn't exist, returns None.
         Pull session token out of the headers and into rhnFlags.
         """
@@ -248,7 +248,7 @@ class rhnApache:
             # This has to be here, or else we blow-up.
             return None
         prefix = "x-rhn-auth"
-        tokenKeys = [
+        tokenKeys = [  #  pylint: disable=invalid-name
             x for x in list(headers.keys()) if x[: len(prefix)].lower() == prefix
         ]
         for k in tokenKeys:
@@ -264,5 +264,5 @@ def timer(last):
     """
     if not last:
         return 0
-    log_debug(2, "Request served in %.2f sec" % (time.time() - last,))
+    log_debug(2, "Request served in %.2f sec" % (time.time() - last,))  #  pylint: disable=consider-using-f-string
     return 0

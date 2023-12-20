@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*- pylint: disable=missing-module-docstring
 #
 # Copyright (C) 2014 Novell, Inc.
 #   This library is free software; you can redistribute it and/or modify
@@ -29,7 +29,7 @@ import os
 import sys
 
 
-class ConsoleRecorder(object):
+class ConsoleRecorder(object):  #  pylint: disable=missing-class-docstring
     def __enter__(self):
         self._stdout = sys.stdout
         self._stderr = sys.stderr
@@ -49,7 +49,7 @@ def fake_user_input(*args):
         yield ret_value
 
 
-class FakeStdin:
+class FakeStdin:  #  pylint: disable=missing-class-docstring
     def __init__(self, *fake_input):
         self.fake_input = fake_input
 
@@ -72,8 +72,8 @@ class FakeStdin:
 
 
 def read_data_from_fixture(filename):
-    with open(path_to_fixture(filename), "r") as file:
-        data = eval(file.read().replace("\r\n", ""))
+    with open(path_to_fixture(filename), "r") as file:  #  pylint: disable=unspecified-encoding
+        data = eval(file.read().replace("\r\n", ""))  #  pylint: disable=eval-used
         return data
 
 

@@ -1,8 +1,8 @@
-import sys
+import sys  #  pylint: disable=missing-module-docstring
 import os
 
 try:
-    from cStringIO import StringIO
+    from cStringIO import StringIO  #  pylint: disable=unused-import
 except ImportError:
     from io import StringIO
 from unittest.mock import MagicMock
@@ -36,4 +36,4 @@ def get_test_data(filename):
     :param filename:
     :return:
     """
-    return open(os.path.sep.join([os.path.abspath(""), "data", filename]), "r").read()
+    return open(os.path.sep.join([os.path.abspath(""), "data", filename]), "r").read()  #  pylint: disable=unspecified-encoding

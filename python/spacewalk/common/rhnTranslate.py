@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring,invalid-name
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -19,7 +19,7 @@ import gettext
 from uyuni.common.usix import StringType
 
 
-class RHN_Translations(gettext.GNUTranslations):
+class RHN_Translations(gettext.GNUTranslations):  #  pylint: disable=missing-class-docstring,invalid-name
     # Defining our own class, since we'd like to save the language we use
     # Determining the language is not very pretty - we parse the file name
     # which is supposed to be something like
@@ -30,7 +30,7 @@ class RHN_Translations(gettext.GNUTranslations):
         gettext.GNUTranslations.__init__(self, fp)
 
     def _parse(self, fp):
-        gettext.GNUTranslations._parse(self, fp)
+        gettext.GNUTranslations._parse(self, fp)  #  pylint: disable=protected-access
         filename = fp.name
         filename = os.path.normpath(filename)
         # Extract the language
@@ -38,7 +38,7 @@ class RHN_Translations(gettext.GNUTranslations):
 
     def getlangs(self):
         # Return all languages
-        # pkilambi:bug#158561,170819,170821: the gettext object in python 2.2.3 has no attribute
+        # pkilambi:bug#158561,170819,170821: the gettext object in python 2.2.3 has no attribute  #  pylint: disable=line-too-long
         # _fallback so add a check if __dict__ has key
         # if not self._fallback or not hasattr(self._fallback, 'getlangs'):
         if (
@@ -51,7 +51,7 @@ class RHN_Translations(gettext.GNUTranslations):
         return [self.lang] + self._fallback.getlangs()
 
 
-class i18n:
+class i18n:  #  pylint: disable=missing-class-docstring,invalid-name
     _default_langs = ["en", "en_US", "C"]
     # Wrapper class that allows us to change languages
 
@@ -81,7 +81,7 @@ class i18n:
         return self.cat.getlangs()
 
     def setlangs(self, langs):
-        if isinstance(langs, StringType) or type(langs) == str:
+        if isinstance(langs, StringType) or type(langs) == str:  #  pylint: disable=unidiomatic-typecheck
             langs = [langs]
         # Filter "C" - we will add it ourselves later anyway
         langs = [l for l in langs if l != "C"]

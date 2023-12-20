@@ -1,20 +1,20 @@
-from salt.exceptions import SaltInvocationError
+from salt.exceptions import SaltInvocationError  #  pylint: disable=missing-module-docstring
 import logging
 
 log = logging.getLogger(__name__)
 
 try:
-    from kubernetes import client, config  # pylint: disable=import-self
+    from kubernetes import client, config  # pylint: disable=import-self,unused-import
     from kubernetes.config import new_client_from_config
-    from kubernetes.client.rest import ApiException
-    from urllib3.exceptions import HTTPError
+    from kubernetes.client.rest import ApiException  #  pylint: disable=unused-import
+    from urllib3.exceptions import HTTPError  #  pylint: disable=unused-import
 
     IS_VALID = True
 except ImportError as ex:
     IS_VALID = False
 
 
-def __virtual__():
+def __virtual__():  #  pylint: disable=invalid-name
     return IS_VALID
 
 

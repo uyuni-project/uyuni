@@ -54,7 +54,7 @@ class MissingPackageError(Exception):
     pass
 
 
-class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):
+class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):  #  pylint: disable=missing-class-docstring
     # pylint: disable=E1101,W0102,W0613,R0902,R0904
 
     def __init__(self, req):
@@ -125,7 +125,7 @@ class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):
     def _send_headers(self, error=0, init_compressed_stream=1):
         log_debug(4, "is_closed", self._is_closed)
         if self._is_closed:
-            raise Exception("Trying to write to a closed connection")
+            raise Exception("Trying to write to a closed connection")  #  pylint: disable=broad-exception-raised
         if self._headers_sent:
             return
         self._headers_sent = 1
@@ -141,13 +141,13 @@ class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):
         self._raw_stream.send_http_header()
         # If need be, start gzipping
         if self.compress_level and init_compressed_stream:
-            log_debug(4, "Compressing with factor %s" % self.compress_level)
+            log_debug(4, "Compressing with factor %s" % self.compress_level)  #  pylint: disable=consider-using-f-string
             self._compressed_stream = gzip.GzipFile(
                 None, "wb", self.compress_level, self._raw_stream
             )
 
     def send(self, data):
-        log_debug(3, "Sending %d bytes" % len(data))
+        log_debug(3, "Sending %d bytes" % len(data))  #  pylint: disable=consider-using-f-string
         try:
             self._send_headers()
             if self._compressed_stream:
@@ -191,14 +191,14 @@ class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):
             return self
 
         self._channel_family_query = self._channel_family_query_template % (
-            ", ".join(["'%s'" % x for x in channel_labels]),
+            ", ".join(["'%s'" % x for x in channel_labels]),  #  pylint: disable=consider-using-f-string
             self.exportable_orgs,
         )
         return self
 
     def _get_channel_data(self, channels):
         writer = ContainerWriter()
-        d = ChannelsDumper(writer, params=list(channels.values()))
+        d = ChannelsDumper(writer, params=list(channels.values()))  #  pylint: disable=unexpected-keyword-arg
         d.dump()
         data = writer.get_data()
         # We don't care about <rhn-channels> here
@@ -207,7 +207,7 @@ class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):
 
     def _cleanse_channels(channels_dom):
         channels = {}
-        for dummy, attributes, child_elements in channels_dom:
+        for dummy, attributes, child_elements in channels_dom:  #  pylint: disable=unused-variable
             channel_label = attributes["label"]
             channels[channel_label] = channel_entry = {}
 
@@ -242,7 +242,7 @@ class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):
                 # Hmm. x[1] is the attributes hash; we fetch the id and we get
                 # rid of te prefix, then we run that through int()
                 objects = []
-                for dummy, ceattr, dummy in celem:
+                for dummy, ceattr, dummy in celem:  #  pylint: disable=redeclared-assigned-name
                     obj_id = ceattr["id"]
                     obj_id = int(obj_id[prefix_len:])
                     last_modified = localtime(ceattr["last-modified"])
@@ -304,7 +304,7 @@ class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):
         )
 
     def _packages(self, packages, prefix, dump_class, sources=0):
-        return dumper.XML_Dumper._packages(
+        return dumper.XML_Dumper._packages(  #  pylint: disable=protected-access
             self, packages, prefix, dump_class, sources, verify_packages=True
         )
 
@@ -504,14 +504,14 @@ class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):
         channel_comps_sth.execute(channel_label=channel, ctype_id=comps_type_id)
         row = channel_comps_sth.fetchone_dict()
         if not row:
-            raise rhnFault(3015, "No comps/modules file for channel [%s]" % channel)
+            raise rhnFault(3015, "No comps/modules file for channel [%s]" % channel)  #  pylint: disable=consider-using-f-string
         path = os.path.join(CFG.MOUNT_POINT, row["relative_filename"])
         if not os.path.exists(path):
             log_error(
-                "Missing comps/modules file [%s] for channel [%s]" % (path, channel)
+                "Missing comps/modules file [%s] for channel [%s]" % (path, channel)  #  pylint: disable=consider-using-f-string
             )
             raise rhnFault(
-                3016, "Unable to retrieve comps/modules file for channel [%s]" % channel
+                3016, "Unable to retrieve comps/modules file for channel [%s]" % channel  #  pylint: disable=consider-using-f-string
             )
         return self._send_stream(path)
 
@@ -529,14 +529,14 @@ class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):
         row = h.fetchone_dict()
         if not row:
             raise rhnFault(
-                3003, "No such file %s in tree %s" % (relative_path, ks_label)
+                3003, "No such file %s in tree %s" % (relative_path, ks_label)  #  pylint: disable=consider-using-f-string
             )
         path = os.path.join(CFG.MOUNT_POINT, row["base_path"], relative_path)
         if not os.path.exists(path):
-            log_error("Missing file for SUSE Manager dumper: %s" % path)
+            log_error("Missing file for SUSE Manager dumper: %s" % path)  #  pylint: disable=consider-using-f-string
             raise rhnFault(
                 3007,
-                "Unable to retrieve file %s in tree %s" % (relative_path, ks_label),
+                "Unable to retrieve file %s in tree %s" % (relative_path, ks_label),  #  pylint: disable=consider-using-f-string
             )
         return self._send_stream(path)
 
@@ -545,12 +545,12 @@ class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):
     # rhn-source-package-)
     def _send_package_stream(self, package, channel, checksum):
         log_debug(3, package, channel, checksum)
-        path, dummy = self.get_package_path_by_filename(package, channel, checksum)
+        path, dummy = self.get_package_path_by_filename(package, channel, checksum)  #  pylint: disable=unused-variable
 
         log_debug(3, "Package path", path)
         if not os.path.exists(path):
-            log_error("Missing package (SUSE Manager dumper): %s" % path)
-            raise rhnFault(3007, "Unable to retrieve package %s" % package)
+            log_error("Missing package (SUSE Manager dumper): %s" % path)  #  pylint: disable=consider-using-f-string
+            raise rhnFault(3007, "Unable to retrieve package %s" % package)  #  pylint: disable=consider-using-f-string
         return self._send_stream(path)
 
     # This query is similar to the one aove, except that we have already
@@ -576,10 +576,10 @@ class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):
     """
     )
 
-    def get_package_path_by_filename(self, fileName, channel, checksum):
+    def get_package_path_by_filename(self, fileName, channel, checksum):  #  pylint: disable=invalid-name
         log_debug(3, fileName, channel, checksum)
         fileName = str(fileName)
-        n, e, v, r, a = rhnLib.parseRPMFilename(fileName)
+        n, e, v, r, a = rhnLib.parseRPMFilename(fileName)  #  pylint: disable=unbalanced-tuple-unpacking
         package_type = fileName[-3:].lower()
 
         h = rhnSQL.prepare(self._query_get_package_path_by_nvra_and_checksum)
@@ -611,7 +611,7 @@ class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):
             )
         except MissingPackageError:
             e = sys.exc_info()[1]
-            filePath = e[0]
+            filePath = e[0]  #  pylint: disable=invalid-name
             log_error("Package not found", filePath)
             raise_with_tb(rhnFault(17, _("Package not found")), sys.exc_info()[2])
 
@@ -623,7 +623,7 @@ class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):
             e = sys.exc_info()[1]
             if e.errno == 2:
                 raise_with_tb(
-                    rhnFault(3007, "Missing file %s" % path), sys.exc_info()[2]
+                    rhnFault(3007, "Missing file %s" % path), sys.exc_info()[2]  #  pylint: disable=consider-using-f-string
                 )
             # Let it flow so we can find it later
             raise
@@ -670,7 +670,7 @@ class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):
         return 0
 
 
-class ContainerWriter:
+class ContainerWriter:  #  pylint: disable=missing-class-docstring
     # Same interface as an XML writer, but collects data in a hash instead
 
     def __init__(self):
@@ -740,8 +740,8 @@ def _get_path_from_cursor(h):
 
     if max_row["path"] is None:
         raise NullPathPackageError(max_row["id"])
-    filePath = "%s/%s" % (CFG.MOUNT_POINT, max_row["path"])
-    pkgId = max_row["id"]
+    filePath = "%s/%s" % (CFG.MOUNT_POINT, max_row["path"])  #  pylint: disable=invalid-name,consider-using-f-string
+    pkgId = max_row["id"]  #  pylint: disable=invalid-name
     if not os.access(filePath, os.R_OK):
         # Package not found on the filesystem
         raise MissingPackageError(filePath)

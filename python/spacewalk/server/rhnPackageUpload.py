@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring,invalid-name
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -22,9 +22,9 @@ from uyuni.common import rhn_mpm, rhn_deb, rhn_pkg
 from spacewalk.common.rhnLog import log_debug
 from spacewalk.common.rhnConfig import CFG
 from spacewalk.common.rhnException import rhnFault
-from uyuni.common.rhn_rpm import get_header_byte_range
+from uyuni.common.rhn_rpm import get_header_byte_range  #  pylint: disable=ungrouped-imports
 
-from spacewalk.server import rhnSQL
+from spacewalk.server import rhnSQL  #  pylint: disable=ungrouped-imports
 from spacewalk.server.importlib.backendOracle import SQLBackend
 from spacewalk.server.importlib import (
     importLib,
@@ -40,14 +40,14 @@ from spacewalk.server.rhnLib import (
 from spacewalk.server.rhnServer import server_packages
 
 
-def authenticate(username, password, channels=[], null_org=None, force=None):
+def authenticate(username, password, channels=[], null_org=None, force=None):  #  pylint: disable=dangerous-default-value
     log_debug(4, username, force)
     authobj = userAuth.UserAuth()
     authobj.auth(username, password)
     return _authenticate(authobj, channels, null_org, force)
 
 
-def authenticate_session(session_string, channels=[], null_org=None, force=None):
+def authenticate_session(session_string, channels=[], null_org=None, force=None):  #  pylint: disable=dangerous-default-value
     log_debug(4, session_string, force)
     authobj = userAuth.UserAuth()
     authobj.auth_session(session_string)
@@ -139,7 +139,7 @@ def relative_path_from_nevra_without_package_name(
     )
 
 
-def push_package(a_pkg, org_id=None, force=None, channels=[], relative_path=None):
+def push_package(a_pkg, org_id=None, force=None, channels=[], relative_path=None):  #  pylint: disable=dangerous-default-value
     """Uploads a package"""
 
     if relative_path:
@@ -156,11 +156,11 @@ def push_package(a_pkg, org_id=None, force=None, channels=[], relative_path=None
         except OSError:
             e = sys.exc_info()[1]
             raise_with_tb(
-                rhnFault(50, "Package upload failed: %s" % e), sys.exc_info()[2]
+                rhnFault(50, "Package upload failed: %s" % e), sys.exc_info()[2]  #  pylint: disable=consider-using-f-string
             )
         except importLib.FileConflictError:
             raise_with_tb(rhnFault(50, "File already exists"), sys.exc_info()[2])
-        except:
+        except:  #  pylint: disable=bare-except
             raise_with_tb(rhnFault(50, "File error"), sys.exc_info()[2])
 
         # Remove any pending scheduled file deletion for this package
@@ -334,7 +334,7 @@ def save_uploaded_package(
         if not (checksum_type == a_pkg.checksum_type and checksum == a_pkg.checksum):
             log_debug(
                 1,
-                "Mismatching checksums: expected %s:%s got %s:%s"
+                "Mismatching checksums: expected %s:%s got %s:%s"  #  pylint: disable=consider-using-f-string
                 % (checksum_type, checksum, a_pkg.checksum_type, a_pkg.checksum),
             )
             raise rhnFault(104, "Mismatching information")
@@ -348,14 +348,14 @@ def load_package(package_stream):
     if package_stream.name.endswith(".deb"):
         try:
             header, payload_stream = rhn_deb.load(filename=package_stream.name)
-        except:
+        except:  #  pylint: disable=bare-except
             raise_with_tb(
                 rhnFault(50, "Unable to load package", explain=0), sys.exc_info()[2]
             )
     else:
         try:
             header, payload_stream = rhn_mpm.load(file_obj=package_stream)
-        except:
+        except:  #  pylint: disable=bare-except
             raise_with_tb(
                 rhnFault(50, "Unable to load package", explain=0), sys.exc_info()[2]
             )

@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -21,7 +21,7 @@ from spacewalk.common.rhnLog import log_debug
 __rhnexport__ = ["deploy"]
 
 
-def deploy(server_id, action_id, data={}):
+def deploy(server_id, action_id, data={}):  #  pylint: disable=dangerous-default-value
     if not data:
         return
     log_debug(

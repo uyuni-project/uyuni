@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2018 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -32,7 +32,7 @@ except ImportError:
     #  python3
     import queue as Queue  # pylint: disable=F0401
 import threading
-from optparse import Option, OptionParser
+from optparse import Option, OptionParser  #  pylint: disable=deprecated-module
 import gettext
 from rhn.connections import idn_ascii_to_puny, idn_puny_to_unicode
 
@@ -46,14 +46,14 @@ from spacewalk.common import rhnMail
 from spacewalk.common.rhnLog import initLOG
 from spacewalk.common.rhnConfig import CFG, initCFG, PRODUCT_NAME
 from spacewalk.common.rhnTB import exitWithTraceback, fetchTraceback
-from uyuni.common.checksum import getFileChecksum
-from spacewalk.server import rhnSQL, taskomatic
+from uyuni.common.checksum import getFileChecksum  #  pylint: disable=ungrouped-imports
+from spacewalk.server import rhnSQL, taskomatic  #  pylint: disable=ungrouped-imports
 from spacewalk.server.rhnSQL import SQLError, SQLSchemaError, SQLConnectError
 from spacewalk.server.rhnLib import get_package_path
-from uyuni.common import fileutils
+from uyuni.common import fileutils  #  pylint: disable=ungrouped-imports
 
 # __rhn sync/import imports__
-from spacewalk.satellite_tools import xmlWireSource
+from spacewalk.satellite_tools import xmlWireSource  #  pylint: disable=ungrouped-imports
 from spacewalk.satellite_tools import xmlDiskSource
 from spacewalk.satellite_tools.progress_bar import ProgressBar
 from spacewalk.satellite_tools.xmlSource import FatalParseException, ParseException
@@ -96,7 +96,7 @@ OPTIONS = None
 # pylint: disable=W0212
 
 
-class Runner:
+class Runner:  #  pylint: disable=missing-class-docstring
     step_precedence = {
         "packages": ["download-packages"],
         "source-packages": ["download-source-packages"],
@@ -162,23 +162,23 @@ class Runner:
         self._actions = None
 
     # 5/24/05 wregglej - 156079 turn off a step's dependents in the step is turned off.
-    def _handle_step_dependents(self, actionDict, step):
+    def _handle_step_dependents(self, actionDict, step):  #  pylint: disable=invalid-name
         ad = actionDict
 
         if step in ad:
-            # if the step is turned off, then the steps that are dependent on it have to be turned
+            # if the step is turned off, then the steps that are dependent on it have to be turned  #  pylint: disable=line-too-long
             # off as well.
             if ad[step] == 0:
                 ad = self._turn_off_dependents(ad, step)
 
-        # if the step isn't in the actionDict, then it's dependent actions must be turned off.
+        # if the step isn't in the actionDict, then it's dependent actions must be turned off.  #  pylint: disable=line-too-long
         else:
             ad = self._turn_off_dependents(ad, step)
         return ad
 
-    # 5/24/05 wregglej - 156079 actually turns off the dependent steps, which are listed in the step_precedence
+    # 5/24/05 wregglej - 156079 actually turns off the dependent steps, which are listed in the step_precedence  #  pylint: disable=line-too-long
     # dictionary.
-    def _turn_off_dependents(self, actionDict, step):
+    def _turn_off_dependents(self, actionDict, step):  #  pylint: disable=invalid-name
         ad = actionDict
         for dependent in self.step_precedence[step]:
             if dependent in ad:
@@ -189,14 +189,14 @@ class Runner:
         """Main routine: commandline processing, etc..."""
 
         # let's time the whole process
-        timeStart = time.time()
+        timeStart = time.time()  #  pylint: disable=invalid-name
 
-        actionDict, channels = processCommandline()
+        actionDict, channels = processCommandline()  #  pylint: disable=invalid-name
 
-        # 5/24/05 wregglej - 156079 turn off an step's dependent steps if it's turned off.
-        # look at self.step_precedence for a listing of how the steps are dependent on each other.
+        # 5/24/05 wregglej - 156079 turn off an step's dependent steps if it's turned off.  #  pylint: disable=line-too-long
+        # look at self.step_precedence for a listing of how the steps are dependent on each other.  #  pylint: disable=line-too-long
         for st in self.step_hierarchy:
-            actionDict = self._handle_step_dependents(actionDict, st)
+            actionDict = self._handle_step_dependents(actionDict, st)  #  pylint: disable=invalid-name
         self._actions = actionDict
 
         # 5/26/05 wregglej - 156079 have to handle the list-channels special case.
@@ -247,19 +247,19 @@ class Runner:
                 ["", messages.syncer_error % e],
             )
             log(-1, "*** TRACEBACK: ")
-            import traceback
+            import traceback  #  pylint: disable=import-outside-toplevel
 
             log(-1, traceback.format_exc())
-            log(-1, "*** BASIC INFO:\n %s" % str(sys.exc_info()[:2]))
+            log(-1, "*** BASIC INFO:\n %s" % str(sys.exc_info()[:2]))  #  pylint: disable=consider-using-f-string
             sys.exit(10)
 
-        log(1, "   db:  %s/<password>@%s" % (CFG.DB_USER, CFG.DB_NAME))
+        log(1, "   db:  %s/<password>@%s" % (CFG.DB_USER, CFG.DB_NAME))  #  pylint: disable=consider-using-f-string
 
         selected = [action for action in list(actionDict) if actionDict[action]]
         log2(
             -1,
             3,
-            "Action list/commandline toggles: %s" % repr(selected),
+            "Action list/commandline toggles: %s" % repr(selected),  #  pylint: disable=consider-using-f-string
             stream=sys.stderr,
         )
 
@@ -269,11 +269,11 @@ class Runner:
             )
 
         if CFG.DB_BACKEND == "postgresql":
-            import psycopg2  # pylint: disable=F0401
+            import psycopg2  # pylint: disable=F0401,import-outside-toplevel
 
             exception = psycopg2.IntegrityError
 
-        for _try in range(2):
+        for _try in range(2):  #  pylint: disable=invalid-name,unused-variable
             try:
                 for step in self.step_hierarchy:
                     if not actionDict[step]:
@@ -302,16 +302,16 @@ class Runner:
                 msg = _(
                     "ERROR: Encountered IntegrityError: \n"
                     + str(e)
-                    + "\nconsider removing mgr-inter-sync cache at /var/cache/rhn/satsync/*"
+                    + "\nconsider removing mgr-inter-sync cache at /var/cache/rhn/satsync/*"  #  pylint: disable=line-too-long
                     + " and re-run mgr-inter-sync with same options.\n"
-                    + "If this error persits after removing cache, please contact SUSE support."
+                    + "If this error persits after removing cache, please contact SUSE support."  #  pylint: disable=line-too-long
                 )
                 log2stderr(-1, msg, cleanYN=1)
                 return 1
         else:
             log(1, _("Repeated failures"))
 
-        timeEnd = time.time()
+        timeEnd = time.time()  #  pylint: disable=invalid-name
         delta_str = self._get_elapsed_time(timeEnd - timeStart)
 
         log(
@@ -344,7 +344,7 @@ class Runner:
         secs = elapsed - mins * 60 - hours * 60 * 60
 
         delta_list = [[hours, _("hours")], [mins, _("minutes")], [secs, _("seconds")]]
-        delta_str = ", ".join(["%s %s" % (l[0], l[1]) for l in delta_list])
+        delta_str = ", ".join(["%s %s" % (l[0], l[1]) for l in delta_list])  #  pylint: disable=consider-using-f-string
         return delta_str
 
     def _run_syncer_step(self, function, step_name):
@@ -357,7 +357,7 @@ class Runner:
         ) as e:
             log(
                 -1,
-                self._xml_file_dir_error_message + "\n       Error message: %s\n" % e,
+                self._xml_file_dir_error_message + "\n       Error message: %s\n" % e,  #  pylint: disable=consider-using-f-string
             )
             return 1
         except (KeyboardInterrupt, SystemExit):
@@ -395,7 +395,7 @@ class Runner:
         except xmlDiskSource.MissingXmlDiskSourceFileError:
             msg = _(
                 "ERROR: The dump is missing package data, "
-                + "use --no-rpms to skip this step or fix the content to include package data."
+                + "use --no-rpms to skip this step or fix the content to include package data."  #  pylint: disable=line-too-long
             )
             log2disk(-1, msg)
             log2stderr(-1, msg, cleanYN=1)
@@ -408,7 +408,7 @@ class Runner:
         return self.syncer.download_source_package_metadata()
 
     def _step_rpms(self):
-        self._packages_report = self.syncer.download_rpms()
+        self._packages_report = self.syncer.download_rpms()  #  pylint: disable=assignment-from-no-return
         return None
 
     # def _step_srpms(self):
@@ -481,7 +481,7 @@ class Runner:
         self.syncer.import_cloned_channels()
 
 
-def sendMail(forceEmail=0):
+def sendMail(forceEmail=0):  #  pylint: disable=invalid-name,invalid-name
     """Send email summary"""
     if forceEmail or (OPTIONS is not None and OPTIONS.email):
         body = dumpEMAIL_LOG()
@@ -492,7 +492,7 @@ def sendMail(forceEmail=0):
                 "Subject": _("SUSE Manager Inter Server sync. report from %s")
                 % host_label,
             }
-            sndr = "root@%s" % host_label
+            sndr = "root@%s" % host_label  #  pylint: disable=consider-using-f-string
             if CFG.default_mail_from:
                 sndr = CFG.default_mail_from
             rhnMail.send(headers, body, sender=sndr)
@@ -508,16 +508,16 @@ class Syncer:
     NOTE: there should *ONLY* be one instance of this.
     """
 
-    def __init__(self, channels, listChannelsYN, check_rpms, forceAllErrata=False):
+    def __init__(self, channels, listChannelsYN, check_rpms, forceAllErrata=False):  #  pylint: disable=invalid-name,invalid-name
         """Base initialization. Most work done in self.initialize() which
         needs to be called soon after instantiation.
         """
 
         self._requested_channels = channels
         self.mountpoint = OPTIONS.mount_point
-        self.listChannelsYN = listChannelsYN
-        self.forceAllErrata = forceAllErrata
-        self._systemidPath = OPTIONS.systemid or _DEFAULT_SYSTEMID_PATH
+        self.listChannelsYN = listChannelsYN  #  pylint: disable=invalid-name
+        self.forceAllErrata = forceAllErrata  #  pylint: disable=invalid-name
+        self._systemidPath = OPTIONS.systemid or _DEFAULT_SYSTEMID_PATH  #  pylint: disable=invalid-name
         self._batch_size = OPTIONS.batch_size
         self.master_label = OPTIONS.master
         # self.create_orgs = OPTIONS.create_missing_orgs
@@ -529,10 +529,10 @@ class Syncer:
         self._channel_req = None
         self._channel_collection = sync_handlers.ChannelCollection()
 
-        self.containerHandler = sync_handlers.ContainerHandler(self.master_label)
+        self.containerHandler = sync_handlers.ContainerHandler(self.master_label)  #  pylint: disable=invalid-name
 
         # instantiated in self.initialize()
-        self.xmlDataServer = None
+        self.xmlDataServer = None  #  pylint: disable=invalid-name
         self.systemid = None
 
         self.reporegen = set()
@@ -571,7 +571,7 @@ class Syncer:
                 1,
                 [
                     _(PRODUCT_NAME + " - file-system synchronization"),
-                    "   mp:  %s" % self.mountpoint,
+                    "   mp:  %s" % self.mountpoint,  #  pylint: disable=consider-using-f-string
                 ],
             )
             self.xmlDataServer = xmlDiskSource.MetadataDiskSource(self.mountpoint)
@@ -589,9 +589,9 @@ class Syncer:
                 log(
                     -1,
                     _(
-                        "ERROR: Live content synchronizing with RHN Classic Hosted is no longer supported.\nPlease "
-                        "use the cdn-sync command instead unless you are attempting to sync from another {PRODUCT_NAME} "
-                        "via Inter-Server-Sync (ISS), or from local content on disk via Channel Dump ISOs."
+                        "ERROR: Live content synchronizing with RHN Classic Hosted is no longer supported.\nPlease "  #  pylint: disable=line-too-long
+                        "use the cdn-sync command instead unless you are attempting to sync from another {PRODUCT_NAME} "  #  pylint: disable=line-too-long
+                        "via Inter-Server-Sync (ISS), or from local content on disk via Channel Dump ISOs."  #  pylint: disable=line-too-long
                     ),
                     stream=sys.stderr,
                 ).format(PRODUCT_NAME=PRODUCT_NAME)
@@ -609,7 +609,7 @@ class Syncer:
             self.xmlDataServer.setServerHandler(isIss=is_iss)
 
             if not self.systemid:
-                # check and fetch systemid (NOTE: systemid kept in memory... may or may not
+                # check and fetch systemid (NOTE: systemid kept in memory... may or may not  #  pylint: disable=line-too-long
                 # be better to do it this way).
                 if os.path.exists(self._systemidPath) and os.access(
                     self._systemidPath, os.R_OK
@@ -619,7 +619,7 @@ class Syncer:
                     usix.raise_with_tb(
                         RhnSyncException(
                             _(
-                                "ERROR: this server must be registered with SUSE Manager."
+                                "ERROR: this server must be registered with SUSE Manager."  #  pylint: disable=line-too-long
                             )
                         ),
                         sys.exc_info()[2],
@@ -657,7 +657,7 @@ class Syncer:
         except KeyboardInterrupt:
             log(-1, _("*** SYSTEM INTERRUPT CALLED ***"), stream=sys.stderr)
             raise
-        except (
+        except (  #  pylint: disable=broad-exception-caught
             FatalParseException,
             ParseException,
             Exception,
@@ -691,7 +691,7 @@ class Syncer:
                 [
                     _("   Encountered some errors with %s data:") % step_name,
                     _("   ------- %s PARSE/IMPORT ERROR -------") % step_name,
-                    "   %s" % msg,
+                    "   %s" % msg,  #  pylint: disable=consider-using-f-string
                     _("   ---------------------------------------"),
                 ],
                 stream=sys.stderr,
@@ -700,14 +700,14 @@ class Syncer:
         self.containerHandler.reset()
         log(1, _("%s data complete") % step_name)
 
-    def processArches(self):
+    def processArches(self):  #  pylint: disable=invalid-name
         self._process_simple("getArchesXmlStream", "arches")
         self._process_simple("getArchesExtraXmlStream", "additional arches")
 
     def import_orgs(self):
         self._process_simple("getOrgsXmlStream", "orgs")
 
-    def processChannelFamilies(self):
+    def processChannelFamilies(self):  #  pylint: disable=invalid-name
         self._process_simple("getChannelFamilyXmlStream", "channel-families")
         # pylint: disable=W0703
         try:
@@ -716,7 +716,7 @@ class Syncer:
             pass
 
     def _write_repomd(
-        self, repomd_path, getRepomdFunc, repomdFileStreamFunc, label, timestamp
+        self, repomd_path, getRepomdFunc, repomdFileStreamFunc, label, timestamp  #  pylint: disable=invalid-name,invalid-name
     ):
         full_path = os.path.join(CFG.MOUNT_POINT, repomd_path)
         if not os.path.exists(full_path):
@@ -729,7 +729,7 @@ class Syncer:
             self.reporegen.add(label)
 
     def _process_comps(self, backend, label, timestamp):
-        comps_path = "rhn/comps/%s/comps-%s.xml" % (label, timestamp)
+        comps_path = "rhn/comps/%s/comps-%s.xml" % (label, timestamp)  #  pylint: disable=consider-using-f-string
         self._write_repomd(
             comps_path,
             self.xmlDataServer.getComps,
@@ -746,7 +746,7 @@ class Syncer:
         )
 
     def _process_modules(self, backend, label, timestamp):
-        modules_path = "rhn/modules/%s/modules-%s.yaml" % (label, timestamp)
+        modules_path = "rhn/modules/%s/modules-%s.yaml" % (label, timestamp)  #  pylint: disable=consider-using-f-string
         self._write_repomd(
             modules_path,
             self.xmlDataServer.getModules,
@@ -775,10 +775,10 @@ class Syncer:
         if self.mountpoint:
             for substream in stream:
                 h.process(substream)
-            doEOSYN = 0
+            doEOSYN = 0  #  pylint: disable=invalid-name
         else:
             h.process(stream)
-            doEOSYN = 1
+            doEOSYN = 1  #  pylint: disable=invalid-name
 
         h.close()
 
@@ -833,7 +833,7 @@ class Syncer:
                 ),
                 sys.exc_info()[2],
             )
-        except MissingParentChannelError:
+        except MissingParentChannelError:  #  pylint: disable=try-except-raise
             raise
 
         rhnSQL.commit()
@@ -841,7 +841,7 @@ class Syncer:
         log(1, _("Channel data complete"))
 
     @staticmethod
-    def _formatChannelExportType(channel):
+    def _formatChannelExportType(channel):  #  pylint: disable=invalid-name
         """returns pretty formated text with type of channel export"""
         if "export-type" not in channel or channel["export-type"] is None:
             return ""
@@ -866,7 +866,7 @@ class Syncer:
         else:
             return _("%10s") % export_type
 
-    def _printChannel(self, label, channel_object, log_format, is_imported):
+    def _printChannel(self, label, channel_object, log_format, is_imported):  #  pylint: disable=invalid-name
         assert channel_object is not None
         all_pkgs = channel_object["all-packages"] or channel_object["packages"]
         pkgs_count = len(all_pkgs)
@@ -885,7 +885,7 @@ class Syncer:
             ),
         )
 
-    def _printChannelTree(self, doEOSYN=1, doTyposYN=1):
+    def _printChannelTree(self, doEOSYN=1, doTyposYN=1):  #  pylint: disable=invalid-name,invalid-name,invalid-name
         "pretty prints a tree of channel information"
 
         log(1, _("   p = previously imported/synced channel"))
@@ -963,8 +963,8 @@ class Syncer:
         """
 
         # channels already imported, and all channels
-        importedChannels = _getImportedChannels()
-        availableChannels = self._channel_collection.get_channel_labels()
+        importedChannels = _getImportedChannels()  #  pylint: disable=invalid-name
+        availableChannels = self._channel_collection.get_channel_labels()  #  pylint: disable=invalid-name
         log(6, _("XXX: imported channels: %s") % importedChannels, 1)
         log(6, _("XXX:   cached channels: %s") % availableChannels, 1)
 
@@ -998,7 +998,7 @@ class Syncer:
                 _("ERROR: these channels either do not exist or " "are not available:"),
             )
             for chn in typos:
-                log(-1, "       %s" % chn)
+                log(-1, "       %s" % chn)  #  pylint: disable=consider-using-f-string
             log(
                 -1,
                 _("       (to see a list of channel labels: %s --list-channels)")
@@ -1011,7 +1011,7 @@ class Syncer:
     def _get_channel_timestamp(self, channel):
         try:
             timestamp = self._channel_collection.get_channel_timestamp(channel)
-        except KeyError:
+        except KeyError:  #  pylint: disable=try-except-raise
             # XXX Do something with this exception
             raise
         return timestamp
@@ -1038,7 +1038,7 @@ class Syncer:
             self._avail_channel_packages[chn] = avail_package_ids
             already_seen_ids.update(package_ids)
 
-    def processShortPackages(self):
+    def processShortPackages(self):  #  pylint: disable=invalid-name
         log(1, ["", "Retrieving short package metadata (used for indexing)"])
 
         # Compute the unique packages and populate self._channel_packages
@@ -1433,7 +1433,7 @@ class Syncer:
                 continue
             missing_sps[channel] = [
                 sp_id
-                for (sp_id, _timestamp) in sps
+                for (sp_id, _timestamp) in sps  #  pylint: disable=invalid-name
                 if not sp_collection.has_package(sp_id)
             ]
         return missing_sps
@@ -1454,7 +1454,7 @@ class Syncer:
         package_collection = sync_handlers.SourcePackageCollection()
         sql_params = ["package_id", "checksum", "checksum_type"]
         h = rhnSQL.prepare(self._query_compare_source_packages)
-        for pid, _timestamp in chunk:
+        for pid, _timestamp in chunk:  #  pylint: disable=invalid-name,unused-variable
             package = package_collection.get_package(pid)
             assert package is not None
 
@@ -1582,7 +1582,7 @@ class Syncer:
         path = os.path.join(base_path, relative_path)
         f = FileManip(path, timestamp=timestamp, file_size=file_size)
         # Retry a number of times, we may have network errors
-        for _try in range(cfg["networkRetries"]):
+        for _try in range(cfg["networkRetries"]):  #  pylint: disable=invalid-name,unused-variable
             stream = self._get_ks_file_stream(channel_label, label, relative_path)
             try:
                 f.write_file(stream)
@@ -1702,7 +1702,7 @@ class Syncer:
                 ksobj["org_id"] = OPTIONS.orgid or DEFAULT_ORG
             batch.append(ksobj)
 
-        _importer = sync_handlers.import_kickstarts(batch)
+        _importer = sync_handlers.import_kickstarts(batch)  #  pylint: disable=invalid-name,unused-variable
         log(1, messages.kickstart_imported % ks_count)
 
     def _compute_not_cached_errata(self):
@@ -1717,7 +1717,7 @@ class Syncer:
                 continue
             missing_errata[channel] = [
                 eid
-                for (eid, timestamp, _advisory_name) in errata
+                for (eid, timestamp, _advisory_name) in errata  #  pylint: disable=invalid-name
                 if not errata_collection.has_erratum(eid, timestamp)
                 or self.forceAllErrata
             ]
@@ -1784,7 +1784,7 @@ class Syncer:
                     last_modified = rhnLib.timestamp(last_modified)
                     advisory_name = erratum["advisory_name"]
                     if advisory_name in db_ce:
-                        _foo, db_last_modified = db_ce[advisory_name]
+                        _foo, db_last_modified = db_ce[advisory_name]  #  pylint: disable=invalid-name,unused-variable
                         if last_modified == db_last_modified:
                             # We already have this erratum
                             continue
@@ -1850,7 +1850,7 @@ class Syncer:
         log(1, _("Downloading patch data complete"))
 
     # __private methods__
-    def _processWithProgressBar(
+    def _processWithProgressBar(  #  pylint: disable=invalid-name
         self,
         batch,
         size,
@@ -1938,7 +1938,7 @@ class Syncer:
     def _link_channel_packages(self):
         log(1, ["", messages.link_channel_packages])
         short_package_collection = sync_handlers.ShortPackageCollection()
-        _package_collection = sync_handlers.PackageCollection()
+        _package_collection = sync_handlers.PackageCollection()  #  pylint: disable=invalid-name,unused-variable
         uq_packages = {}
         empty_channels = []
         for chn, package_ids in list(self._channel_packages_full.items()):
@@ -2015,7 +2015,7 @@ class Syncer:
                 != short_package_collection.get_package(pid)["last_modified"]
             ):
                 # not in the cache
-                raise Exception(
+                raise Exception(  #  pylint: disable=broad-exception-raised
                     _(
                         "Package Not Found in Cache, Clear the Cache to \
                                  Regenerate it."
@@ -2034,7 +2034,7 @@ class Syncer:
         for chn, errata in sorted_channels:
             log(2, _("Importing %s patches for channel %s.") % (len(errata), chn))
             batch = []
-            for eid, timestamp, _advisory_name in errata:
+            for eid, timestamp, _advisory_name in errata:  #  pylint: disable=invalid-name,unused-variable
                 erratum = errata_collection.get_erratum(eid, timestamp)
                 # bug 161144: it seems that incremental dumps can create an
                 # errata collection None
@@ -2133,7 +2133,7 @@ class Syncer:
         start_time = round(time.time())
 
         all_threads = []
-        for _thread in range(4):
+        for _thread in range(4):  #  pylint: disable=invalid-name,unused-variable
             t = ThreadDownload(
                 lock,
                 queue,
@@ -2146,13 +2146,13 @@ class Syncer:
                 sources,
                 channel,
             )
-            t.setDaemon(True)
+            t.setDaemon(True)  #  pylint: disable=deprecated-method
             t.start()
             all_threads.append(t)
 
         while [x for x in all_threads if x.isAlive()] and pkg_current < pkgs_total:
             try:
-                (rpmManip, package, is_done) = out_queue.get(False, 0.1)
+                (rpmManip, package, is_done) = out_queue.get(False, 0.1)  #  pylint: disable=invalid-name
             except Queue.Empty:
                 continue
             pkg_current = pkg_current + 1
@@ -2226,10 +2226,10 @@ class Syncer:
                 fuzzy = float(fuzzy) / base
             else:
                 break
-        int_len = len("%d" % fuzzy)
+        int_len = len("%d" % fuzzy)  #  pylint: disable=consider-using-f-string
         fract_len = 3 - int_len
         # pylint: disable=W0631
-        return "%*.*f %s" % (int_len, fract_len, fuzzy, unit)
+        return "%*.*f %s" % (int_len, fract_len, fuzzy, unit)  #  pylint: disable=consider-using-f-string
 
     def _get_package_stream(self, channel, package_id, nvrea, sources, checksum):
         """returns (filepath, stream), so in the case of a "wire source",
@@ -2238,7 +2238,7 @@ class Syncer:
 
         # Returns a package stream from disk
         if self.mountpoint:
-            rpmFile = rpmsPath(package_id, self.mountpoint, sources)
+            rpmFile = rpmsPath(package_id, self.mountpoint, sources)  #  pylint: disable=invalid-name
             try:
                 stream = open(rpmFile, "rb")
             except IOError:
@@ -2253,7 +2253,7 @@ class Syncer:
         if CFG.ISS_PARENT:
             stream = self.xmlDataServer.getRpm(nvrea, channel, checksum)
         else:
-            rpmServer = xmlWireSource.RPCGetWireSource(
+            rpmServer = xmlWireSource.RPCGetWireSource(  #  pylint: disable=invalid-name
                 self.systemid, True, self.xml_dump_version
             )
             stream = rpmServer.getPackageStream(channel, nvrea, checksum)
@@ -2301,7 +2301,7 @@ class Syncer:
         self._process_simple("getClonedChannelsXmlStream", "cloned_channels")
 
 
-class ThreadDownload(threading.Thread):
+class ThreadDownload(threading.Thread):  #  pylint: disable=missing-class-docstring
     def __init__(
         self,
         lock,
@@ -2367,14 +2367,14 @@ class ThreadDownload(threading.Thread):
                 continue
 
             cfg = config.initUp2dateConfig()
-            rpmManip = RpmManip(package, path)
+            rpmManip = RpmManip(package, path)  #  pylint: disable=invalid-name
             nvrea = rpmManip.nvrea()
 
             # Retry a number of times, we may have network errors
-            for _try in range(cfg["networkRetries"]):
+            for _try in range(cfg["networkRetries"]):  #  pylint: disable=invalid-name,unused-variable
                 self.lock.acquire()
                 try:
-                    rpmFile, stream = self.syncer._get_package_stream(
+                    rpmFile, stream = self.syncer._get_package_stream(  #  pylint: disable=invalid-name
                         self.channel, package_id, nvrea, self.sources, checksum
                     )
                 except:
@@ -2439,7 +2439,7 @@ class ThreadDownload(threading.Thread):
             self.out_queue.put((rpmManip, package, True))
 
 
-class StreamProducer:
+class StreamProducer:  #  pylint: disable=missing-class-docstring
     def __init__(self, handler, data_source_class, source_func):
         self.handler = handler
         self.is_disk_loader = data_source_class.is_disk_loader()
@@ -2468,7 +2468,7 @@ class StreamProducer:
             self.handler.process(stream)
 
 
-def _verifyPkgRepMountPoint():
+def _verifyPkgRepMountPoint():  #  pylint: disable=invalid-name
     """Checks the base package repository directory tree for
     existance and permissions.
 
@@ -2519,7 +2519,7 @@ def _validate_package_org(batch):
             pkg["org_id"] = DEFAULT_ORG
 
 
-def _getImportedChannels(withAdvisory=None):
+def _getImportedChannels(withAdvisory=None):  #  pylint: disable=invalid-name,invalid-name
     "Retrieves the channels already imported in the satellite's database"
 
     query = "select distinct c.label from rhnChannel c"
@@ -2551,7 +2551,7 @@ def _getImportedChannels(withAdvisory=None):
     return []
 
 
-def getDbIssParent():
+def getDbIssParent():  #  pylint: disable=invalid-name
     sql = "select label from rhnISSMaster where is_current_master = 'Y'"
     h = rhnSQL.prepare(sql)
     h.execute()
@@ -2561,7 +2561,7 @@ def getDbIssParent():
     return row["label"]
 
 
-def getDbCaChain(master):
+def getDbCaChain(master):  #  pylint: disable=invalid-name
     sql = "select ca_cert from rhnISSMaster where label = :label"
     h = rhnSQL.prepare(sql)
     h.execute(label=master)
@@ -2571,16 +2571,16 @@ def getDbCaChain(master):
     return row["ca_cert"]
 
 
-def processCommandline():
+def processCommandline():  #  pylint: disable=invalid-name
     "process the commandline, setting the OPTIONS object"
 
     log2disk(-1, _("Commandline: %s") % repr(sys.argv))
-    optionsTable = [
+    optionsTable = [  #  pylint: disable=invalid-name
         Option(
             "--batch-size",
             action="store",
             help=_(
-                "DEBUG ONLY: max. batch-size for XML/database-import processing (1..%s)."
+                "DEBUG ONLY: max. batch-size for XML/database-import processing (1..%s)."  #  pylint: disable=line-too-long
                 + '"man mgr-inter-sync" for more information.'
             )
             % SequenceServer.NEVER_MORE_THAN,
@@ -2613,7 +2613,7 @@ def processCommandline():
             "--debug-level",
             action="store",
             help=_(
-                "override debug level set in /etc/rhn/rhn.conf (which is currently set at %s)."
+                "override debug level set in /etc/rhn/rhn.conf (which is currently set at %s)."  #  pylint: disable=line-too-long
             )
             % CFG.DEBUG,
         ),
@@ -2745,7 +2745,7 @@ def processCommandline():
             ),
         ),
     ]
-    optionParser = OptionParser(option_list=optionsTable)
+    optionParser = OptionParser(option_list=optionsTable)  #  pylint: disable=invalid-name
     global OPTIONS
     OPTIONS, args = optionParser.parse_args()
 
@@ -2799,10 +2799,10 @@ def processCommandline():
 
     # check the validity of the debug level
     if OPTIONS.debug_level:
-        debugRange = 6
+        debugRange = 6  #  pylint: disable=invalid-name
         try:
-            debugLevel = int(OPTIONS.debug_level)
-            if not (0 <= debugLevel <= debugRange):
+            debugLevel = int(OPTIONS.debug_level)  #  pylint: disable=invalid-name
+            if not (0 <= debugLevel <= debugRange):  #  pylint: disable=superfluous-parens
                 usix.raise_with_tb(
                     RhnSyncException("exception will be caught"), sys.exc_info()[2]
                 )
@@ -2849,14 +2849,14 @@ def processCommandline():
             sys.exit(27)
 
     # the action dictionary used throughout
-    actionDict = {}
+    actionDict = {}  #  pylint: disable=invalid-name
 
     if OPTIONS.list_channels:
         if OPTIONS.step:
             log(
                 -1,
                 _(
-                    "WARNING: --list-channels option overrides any --step option. --step ignored."
+                    "WARNING: --list-channels option overrides any --step option. --step ignored."  #  pylint: disable=line-too-long
                 ),
             )
         OPTIONS.step = "channels"
@@ -2867,7 +2867,7 @@ def processCommandline():
     #
     # validate the --step option and set up the hierarchy of sync process steps.
     #
-    stepHierarchy = Runner.step_hierarchy
+    stepHierarchy = Runner.step_hierarchy  #  pylint: disable=invalid-name
     # if no step stated... we do all steps.
     if not OPTIONS.step:
         OPTIONS.step = stepHierarchy[-1]
@@ -2876,7 +2876,7 @@ def processCommandline():
         log2stderr(
             -1,
             _(
-                "ERROR: '%s' is not a valid step. See 'man mgr-inter-sync' for more detail."
+                "ERROR: '%s' is not a valid step. See 'man mgr-inter-sync' for more detail."  #  pylint: disable=line-too-long
             )
             % OPTIONS.step,
             1,
@@ -2913,7 +2913,7 @@ def processCommandline():
     if not channels:
         if actionDict["channels"] and not actionDict["list-channels"]:
             msg = _(
-                "ERROR: No channels currently imported; try mgr-inter-sync --list-channels; "
+                "ERROR: No channels currently imported; try mgr-inter-sync --list-channels; "  #  pylint: disable=line-too-long
                 + "then mgr-inter-sync -c chn0 -c chn1..."
             )
             log2disk(-1, msg)
@@ -2921,7 +2921,7 @@ def processCommandline():
             sys.exit(0)
 
     # add all the "other" actions specified.
-    otherActions = {
+    otherActions = {  #  pylint: disable=invalid-name
         "no_rpms": "no-rpms",
         # "no_srpms"           : 'no-srpms',
         "no_packages": "no-packages",
@@ -2931,7 +2931,7 @@ def processCommandline():
         "force_all_errata": "force-all-errata",
     }
 
-    for oa in otherActions:
+    for oa in otherActions:  #  pylint: disable=consider-using-dict-items
         if getattr(OPTIONS, oa):
             actionDict[otherActions[oa]] = 1
         else:
@@ -3009,7 +3009,7 @@ def processCommandline():
             _("  15 - SQL error during xml processing"),
             _("  16 - server.mount_point not set in the configuration file"),
             _(
-                "  17 - SQL error during retrieving the channels already imported in the SUSE Manager database"
+                "  17 - SQL error during retrieving the channels already imported in the SUSE Manager database"  #  pylint: disable=line-too-long
             ),
             _("  18 - Wrong db connection string in rhn.conf"),
             _("  19 - Bad arguments"),
@@ -3039,7 +3039,7 @@ def processCommandline():
     return actionDict, channels
 
 
-def formatDateTime(dtstring=None, dt=None):
+def formatDateTime(dtstring=None, dt=None):  #  pylint: disable=invalid-name
     """Format the date time using your locale settings. This assume that your setlocale has been alread called."""
     if not dt:
         dt = time.strptime(dtstring, "%Y%m%d%H%M%S")

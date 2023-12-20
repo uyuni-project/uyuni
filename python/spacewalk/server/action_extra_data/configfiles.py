@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -42,7 +42,7 @@ _query_mark_upload_files = rhnSQL.Statement(
 )
 
 
-def upload(server_id, action_id, data={}):
+def upload(server_id, action_id, data={}):  #  pylint: disable=dangerous-default-value
     log_debug(3)
 
     # First, unmark any file as being failed
@@ -86,7 +86,7 @@ def upload(server_id, action_id, data={}):
             )
             if not ret:
                 log_error(
-                    "Could not find file %s for server %s, action %s"
+                    "Could not find file %s for server %s, action %s"  #  pylint: disable=consider-using-f-string
                     % (path, server_id, action_id)
                 )
 
@@ -114,7 +114,7 @@ _query_create_action_config_filename = rhnSQL.Statement(
 )
 
 
-def mtime_upload(server_id, action_id, data={}):
+def mtime_upload(server_id, action_id, data={}):  #  pylint: disable=dangerous-default-value
     # at this point in time, no rhnActionConfigFileName entries exist, because
     # we didn't know them at schedule time...  go ahead and create them now, and then
     # just use the main upload to handle the updating of the state...
@@ -151,7 +151,7 @@ def mtime_upload(server_id, action_id, data={}):
     upload(server_id, action_id, data)
 
 
-def deploy(server_id, action_id, data={}):
+def deploy(server_id, action_id, data={}):  #  pylint: disable=dangerous-default-value,unused-argument
     log_debug(3)
 
     action_status = rhnFlags.get("action_status")
@@ -165,7 +165,7 @@ def deploy(server_id, action_id, data={}):
     return
 
 
-def diff(server_id, action_id, data={}):
+def diff(server_id, action_id, data={}):  #  pylint: disable=dangerous-default-value
     log_debug(3)
     if not data:
         # Nothing to do here
@@ -228,7 +228,7 @@ def _mark_missing_diff_files(server_id, action_id, missing_files):
     # First, fetch all of the files scheduled
     h = rhnSQL.prepare(_query_lookup_diff_files)
     h.execute(server_id=server_id, action_id=action_id)
-    hash = {}
+    hash = {}  #  pylint: disable=redefined-builtin
     while 1:
         row = h.fetchone_dict()
         if not row:
@@ -237,7 +237,7 @@ def _mark_missing_diff_files(server_id, action_id, missing_files):
         if path in hash:
             # This shouldn't really happen
             log_error(
-                "Duplicate path for diff "
+                "Duplicate path for diff "  #  pylint: disable=consider-using-f-string
                 "(scheduler did not resolve config files? %s, %s"
                 % (hash[path], action_config_revision_id)
             )
@@ -248,7 +248,7 @@ def _mark_missing_diff_files(server_id, action_id, missing_files):
     for path in missing_files:
         if path not in hash:
             log_error(
-                "Client reports missing a file "
+                "Client reports missing a file "  #  pylint: disable=consider-using-f-string
                 "that was not scheduled for diff? %s" % path
             )
             continue
@@ -271,13 +271,13 @@ def _mark_missing_diff_files(server_id, action_id, missing_files):
 
 def _process_diffs(server_id, action_id, diffs):
     _disable_old_diffs(server_id)
-    for file_path, diff in list(diffs.items()):
+    for file_path, diff in list(diffs.items()):  #  pylint: disable=redefined-outer-name
         action_config_revision_id = _lookup_action_revision_id(
             server_id, action_id, file_path
         )
         if action_config_revision_id is None:
             log_error(
-                "Missing config file for action id %s, server id %s, path %s"
+                "Missing config file for action id %s, server id %s, path %s"  #  pylint: disable=consider-using-f-string
                 % (server_id, action_id, file_path)
             )
             continue
@@ -315,7 +315,7 @@ _query_add_result_diff = rhnSQL.Statement(
 )
 
 
-def _add_result(action_config_revision_id, diff):
+def _add_result(action_config_revision_id, diff):  #  pylint: disable=redefined-outer-name
     log_debug(4, action_config_revision_id, diff)
 
     if diff:

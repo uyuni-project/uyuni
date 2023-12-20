@@ -2,19 +2,19 @@
 libmod operations
 """
 import os
-import sys
+import sys  #  pylint: disable=unused-import
 import gzip
 import json
 import argparse
 import binascii
 
-from typing import Any, Dict, List, Set, Optional
+from typing import Any, Dict, List, Set, Optional  #  pylint: disable=unused-import,unused-import,unused-import
 from mgrlibmod import mltypes, mlerrcode, mlresolver
 
 import gi  # type: ignore
 
 gi.require_version("Modulemd", "2.0")
-from gi.repository import Modulemd  # type: ignore
+from gi.repository import Modulemd  # type: ignore  #  pylint: disable=wrong-import-position
 
 
 class MLLibmodProc:
@@ -95,7 +95,7 @@ class MLLibmodProc:
 
         if not module:
             raise mlerrcode.MlModuleNotFound(
-                "Module {} not found".format(name)
+                "Module {} not found".format(name)  #  pylint: disable=consider-using-f-string
             ).set_data("streams", [mltypes.MLStreamType(name, "").to_obj()])
 
         defaults = module.get_defaults()
@@ -128,7 +128,7 @@ class MLLibmodProc:
             worel = woarch.rsplit("-", 1)[0]
             wover = worel.rsplit("-", 1)[0]
         except Exception as e:
-            raise mlerrcode.MlGeneralException("{}: {}".format(e, pkg_name))
+            raise mlerrcode.MlGeneralException("{}: {}".format(e, pkg_name))  #  pylint: disable=consider-using-f-string
 
         return wover
 
@@ -207,7 +207,7 @@ class MLLibmodAPI:
         for modulepath in self.repodata.get_paths():
             if not os.path.exists(modulepath):
                 raise mlerrcode.MlGeneralException(
-                    "File {} not found".format(modulepath)
+                    "File {} not found".format(modulepath)  #  pylint: disable=consider-using-f-string
                 )
 
         self._proc = MLLibmodProc(self.repodata.get_paths())
@@ -216,7 +216,7 @@ class MLLibmodAPI:
 
     def to_json(self, pretty: bool = False) -> str:
         """
-        to_json -- render the last set processed result by 'run' method into the JSON string.
+        to_json -- render the last set processed result by 'run' method into the JSON string.  #  pylint: disable=line-too-long
 
         :return: JSON string
         :rtype: str
@@ -235,7 +235,7 @@ class MLLibmodAPI:
         :return: MLLibmodAPI
         """
         fname = self.repodata.get_function()
-        self._result[fname] = getattr(self, "_function__{}".format(fname))()
+        self._result[fname] = getattr(self, "_function__{}".format(fname))()  #  pylint: disable=consider-using-f-string
 
         return self
 
@@ -249,7 +249,7 @@ class MLLibmodAPI:
 
     def _resolve_stream_dependencies(self) -> List[Modulemd.ModuleStreamV2]:
         """
-        _resolve_stream_dependencies -- select all the module dependencies preferring default streams
+        _resolve_stream_dependencies -- select all the module dependencies preferring default streams  #  pylint: disable=line-too-long
 
         :return: List of stream objects
         :rtype: List
@@ -282,8 +282,8 @@ class MLLibmodAPI:
         modules: Dict = {"modules": {}}
         self._proc.index_modules()
         mobj: Dict = {}
-        for m_name in self._proc._mod_index.get_module_names():
-            mod = self._proc._mod_index.get_module(m_name)
+        for m_name in self._proc._mod_index.get_module_names():  #  pylint: disable=protected-access
+            mod = self._proc._mod_index.get_module(m_name)  #  pylint: disable=protected-access
             d_mod = mod.get_defaults()
             mobj[m_name] = {
                 "default": d_mod.get_default_stream() if d_mod else None,
@@ -304,15 +304,15 @@ class MLLibmodAPI:
         """
         self._proc.index_modules()
         rpms: Dict[str, List[str]] = {"packages": []}
-        for name in self._proc._mod_index.get_module_names():
-            module = self._proc._mod_index.get_module(name)
+        for name in self._proc._mod_index.get_module_names():  #  pylint: disable=protected-access
+            module = self._proc._mod_index.get_module(name)  #  pylint: disable=protected-access
             for stream in module.get_all_streams():
                 rpms["packages"].extend(stream.get_rpm_artifacts())
         return rpms
 
     def _function__module_packages(self) -> Dict[str, List[str]]:
         """
-        _function__module_packages -- get all RPMs from selected streams as a map of package names to package strings.
+        _function__module_packages -- get all RPMs from selected streams as a map of package names to package strings.  #  pylint: disable=line-too-long
 
         :return: structure for module packages
         :rtype: Dict[str, List[str]]

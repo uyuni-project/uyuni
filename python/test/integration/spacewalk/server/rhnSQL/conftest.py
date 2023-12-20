@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2021 SUSE LLC.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -20,10 +20,10 @@ from spacewalk.server import rhnSQL
 
 @pytest.fixture(autouse=True, scope="module")
 def pgsql_db():
-    PG_HOST = "localhost"
-    PG_USER = "spacewalk"
-    PG_PASSWORD = "spacewalk"
-    PG_DATABASE = "susemanager"
+    PG_HOST = "localhost"  #  pylint: disable=invalid-name
+    PG_USER = "spacewalk"  #  pylint: disable=invalid-name
+    PG_PASSWORD = "spacewalk"  #  pylint: disable=invalid-name
+    PG_DATABASE = "susemanager"  #  pylint: disable=invalid-name
 
     rhnSQL.initDB(
         backend="postgresql",

@@ -1,13 +1,13 @@
-import pytest
+import pytest  #  pylint: disable=missing-module-docstring
 from unittest.mock import MagicMock, patch, call
 from . import mockery
-import pdb
+import pdb  #  pylint: disable=unused-import
 
 mockery.setup_environment()
 
-import sys
+import sys  #  pylint: disable=wrong-import-position,unused-import
 
-from ..states import uyuni_config
+from ..states import uyuni_config  #  pylint: disable=wrong-import-position
 
 # Mock globals
 uyuni_config.log = MagicMock()
@@ -15,7 +15,7 @@ uyuni_config.__salt__ = {}
 uyuni_config.__opts__ = {"test": False}
 
 
-class TestManageUser:
+class TestManageUser:  #  pylint: disable=missing-class-docstring
     def test_user_present_new_user_test(self):
         exc = Exception("user not found")
         exc.faultCode = 2951
@@ -311,7 +311,7 @@ class TestManageUser:
             assert result["result"] is False
             assert (
                 result["comment"]
-                == "Error deleting user (organization credentials error) 'username': Auth error"
+                == "Error deleting user (organization credentials error) 'username': Auth error"  #  pylint: disable=line-too-long
             )
             assert result["changes"] == {}
 
@@ -425,7 +425,7 @@ class TestManageUser:
             )
 
 
-class TestManageUserChannels:
+class TestManageUserChannels:  #  pylint: disable=missing-class-docstring
     def test_user_channels_org_admin(self):
         with patch.dict(
             uyuni_config.__salt__,
@@ -640,7 +640,7 @@ class TestManageUserChannels:
             )
 
 
-class TestManageGroups:
+class TestManageGroups:  #  pylint: disable=missing-class-docstring
     def test_group_present_new_group_test_no_systems(self):
         exc = Exception("Group not found")
         exc.faultCode = 2201
@@ -992,7 +992,7 @@ class TestManageGroups:
             )
 
 
-class TestManageOrgs:
+class TestManageOrgs:  #  pylint: disable=missing-class-docstring
     def test_org_present_new_org_test(self):
         exc = Exception("org not found")
         exc.faultCode = 2850
@@ -1247,7 +1247,7 @@ class TestManageOrgs:
             )
 
 
-class TestManageOrgsTrust:
+class TestManageOrgsTrust:  #  pylint: disable=missing-class-docstring
     def test_org_trust_test(self):
         with patch.dict(
             uyuni_config.__salt__,
@@ -1379,7 +1379,7 @@ class TestManageOrgsTrust:
             )
 
 
-class TestUyuniActivationKeys:
+class TestUyuniActivationKeys:  #  pylint: disable=missing-class-docstring
     MINIMAL_AK_PRESENT = {
         "name": "ak",
         "description": "ak description",

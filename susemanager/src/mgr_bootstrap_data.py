@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # DO NOT EDIT !!!
 #
 
@@ -8,7 +8,7 @@ DOCUMENT_ROOT = CFG.documentroot
 
 # package list format
 #
-# | alternative. Example: "a|b" when package "a" cannot be found try "b". First match wins.
+# | alternative. Example: "a|b" when package "a" cannot be found try "b". First match wins. pylint: disable=line-too-long
 #                One must be available.
 # * optional. Example: "a*" if "a" is available add it, otherwise ignore it
 
@@ -1239,7 +1239,7 @@ DATA = {
         "PKGLIST": ONLYSLE15 + PKGLIST15_SALT + PKGLIST15_X86_ARM,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/15/5/bootstrap/",
     },
-    # When adding new SLE15 Service packs, keep in mind the first PDID is for the BaseSystem product (not the base product)!
+    # When adding new SLE15 Service packs, keep in mind the first PDID is for the BaseSystem product (not the base product)!  #  pylint: disable=line-too-long
     "SUMA-43-PROXY-x86_64": {
         "PDID": [2299, 2384],
         "BETAPDID": [],

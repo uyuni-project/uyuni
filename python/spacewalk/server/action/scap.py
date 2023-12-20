@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2012--2015 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -20,7 +20,7 @@ from spacewalk.server.rhnLib import InvalidAction
 __rhnexport__ = ["xccdf_eval"]
 
 
-def xccdf_eval(server_id, action_id, dry_run=0):
+def xccdf_eval(server_id, action_id, dry_run=0):  #  pylint: disable=unused-argument
     log_debug(3)
     statement = """
         select path, parameters
@@ -31,7 +31,7 @@ def xccdf_eval(server_id, action_id, dry_run=0):
     d = h.fetchone_dict()
     if not d:
         raise InvalidAction(
-            "scap.xccdf_eval: Unknown action id "
+            "scap.xccdf_eval: Unknown action id "  #  pylint: disable=consider-using-f-string
             "%s for server %s" % (action_id, server_id)
         )
     return (
@@ -39,7 +39,7 @@ def xccdf_eval(server_id, action_id, dry_run=0):
             "path": d["path"],
             "id": action_id,
             "file_size": _scap_file_limit(server_id),
-            "params": rhnSQL._fix_encoding(rhnSQL.read_lob(d["parameters"]) or ""),
+            "params": rhnSQL._fix_encoding(rhnSQL.read_lob(d["parameters"]) or ""),  #  pylint: disable=protected-access
         },
     )
 

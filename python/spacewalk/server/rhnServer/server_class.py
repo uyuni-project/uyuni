@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -99,7 +99,7 @@ class Server(ServerWrapper):
         data = h.fetchone_dict()
         if not data:
             # Log it to disk, it may show interesting things
-            log_error("Attempt to create server with invalid arch `%s'" % arch)
+            log_error("Attempt to create server with invalid arch `%s'" % arch)  #  pylint: disable=consider-using-f-string
             raise rhnFault(24, _("Architecture `%s' is not supported") % arch)
         self.server["server_arch_id"] = data["id"]
         self.is_rpm_managed = data["is_rpm_managed"]
@@ -107,7 +107,7 @@ class Server(ServerWrapper):
     # set the default description...
     def default_description(self):
         self.server["description"] = (
-            "Initial Registration Parameters:\n"
+            "Initial Registration Parameters:\n"  #  pylint: disable=consider-using-f-string
             "OS: %s\n"
             "Release: %s\n"
             "CPU Arch: %s" % (self.server["os"], self.server["release"], self.archname)
@@ -118,7 +118,7 @@ class Server(ServerWrapper):
         # instead of %x
         # For the gory details,
         # http://mail.python.org/pipermail/python-dev/2005-February/051559.html
-        return "<Server Class at %d: %s>\n" % (
+        return "<Server Class at %d: %s>\n" % (  #  pylint: disable=consider-using-f-string
             id(self),
             {
                 "self.cert": self.cert,
@@ -183,7 +183,7 @@ class Server(ServerWrapper):
     def getid(self):
         if not self.server.has_key("id"):
             sysid = rhnSQL.Sequence("rhn_server_id_seq")()
-            self.server["digital_server_id"] = "ID-%09d" % sysid
+            self.server["digital_server_id"] = "ID-%09d" % sysid  #  pylint: disable=consider-using-f-string
             # we can't reset the id column, so we need to poke into
             # internals. kind of illegal, but it works...
             self.server.data["id"] = (sysid, 0)
@@ -207,7 +207,7 @@ class Server(ServerWrapper):
             old_base = None
         else:
             raise rhnException(
-                "Server %s subscribed to multiple base channels" % (self.server["id"],)
+                "Server %s subscribed to multiple base channels" % (self.server["id"],)  #  pylint: disable=consider-using-f-string
             )
 
         # bz 442355
@@ -229,7 +229,7 @@ class Server(ServerWrapper):
             your channel subscriptions will not be altered.
             """
             self.add_history(
-                "Updated system release from %s to %s" % (old_rel, new_rel), msg
+                "Updated system release from %s to %s" % (old_rel, new_rel), msg  #  pylint: disable=consider-using-f-string
             )
             self.save_history_byid(self.server["id"])
             return 1
@@ -251,7 +251,7 @@ class Server(ServerWrapper):
         if old_base and target_base and old_base["id"] == target_base["id"]:
             # Same base channel. Preserve the currently subscribed child
             # channels, just add the ones that are missing
-            hash = {}
+            hash = {}  #  pylint: disable=redefined-builtin
             for c in current_channels:
                 hash[c["id"]] = c
 
@@ -277,7 +277,7 @@ class Server(ServerWrapper):
         if not (channels_to_subscribe or channels_to_unsubscribe):
             # Nothing to do, just add the history entry
             self.add_history(
-                "Updated system release from %s to %s" % (old_rel, new_rel)
+                "Updated system release from %s to %s" % (old_rel, new_rel)  #  pylint: disable=consider-using-f-string
             )
             self.save_history_byid(self.server["id"])
             return 1
@@ -309,7 +309,7 @@ class Server(ServerWrapper):
                 % new_rel
             )
         self.add_history(
-            "Updated system release from %s to %s" % (old_rel, new_rel), msg
+            "Updated system release from %s to %s" % (old_rel, new_rel), msg  #  pylint: disable=consider-using-f-string
         )
         self.save_history_byid(self.server["id"])
         return 1
@@ -417,17 +417,17 @@ class Server(ServerWrapper):
         # now record that history nicely
         self.add_history(
             event_name,
-            "%s with token <strong>%s</strong><br />\n%s"
+            "%s with token <strong>%s</strong><br />\n%s"  #  pylint: disable=consider-using-f-string
             % (event_text, token_name, history),
         )
         self.save_history_byid(self.server["id"])
 
-        # 6/23/05 wregglej 157262, use get_kickstart session_id() to see if we're in the middle of a kickstart.
+        # 6/23/05 wregglej 157262, use get_kickstart session_id() to see if we're in the middle of a kickstart.  #  pylint: disable=line-too-long
         ks_id = tokens_obj.get_kickstart_session_id()
 
-        # 4/5/05 wregglej, Added for bugzilla: 149932. Actions need to be flushed on reregistration.
-        # 6/23/05 wregglej 157262, don't call flush_actions() if we're in the middle of a kickstart.
-        #   It would cause all of the remaining kickstart actions to get flushed, which is bad.
+        # 4/5/05 wregglej, Added for bugzilla: 149932. Actions need to be flushed on reregistration.  #  pylint: disable=line-too-long
+        # 6/23/05 wregglej 157262, don't call flush_actions() if we're in the middle of a kickstart.  #  pylint: disable=line-too-long
+        #   It would cause all of the remaining kickstart actions to get flushed, which is bad.  #  pylint: disable=line-too-long
         if is_rereg_token and ks_id is None:
             self.flush_actions()
 
@@ -556,7 +556,7 @@ class Server(ServerWrapper):
     def handle_virtual_guest(self):
         # Handle virtualization specific bits
         if self.virt_uuid and self.virt_type:
-            rhnVirtualization._notify_guest(
+            rhnVirtualization._notify_guest(  #  pylint: disable=protected-access
                 self.getid(), self.virt_uuid, self.virt_type
             )
 
@@ -600,7 +600,7 @@ class Server(ServerWrapper):
             # This can now throw exceptions which will be caught at a higher level
             if channel is not None:
                 channel_info = dict(rhnChannel.channel_info(channel))
-                log_debug(4, "eus channel id %s" % str(channel_info))
+                log_debug(4, "eus channel id %s" % str(channel_info))  #  pylint: disable=consider-using-f-string
                 rhnChannel.subscribe_sql(server_id, channel_info["id"])
             else:
                 rhnChannel.subscribe_server_channels(
@@ -654,14 +654,14 @@ class Server(ServerWrapper):
                 try:
                     search = SearchNotify()
                     search.notify()
-                except Exception:
+                except Exception:  #  pylint: disable=broad-exception-caught
                     e = sys.exc_info()[1]
                     log_error("Exception caught from SearchNotify.notify().", e)
         return 0
 
     # Reload the current configuration from database using a server id.
     def reload(self, server, reload_all=0):
-        log_debug(4, server, "reload_all = %d" % reload_all)
+        log_debug(4, server, "reload_all = %d" % reload_all)  #  pylint: disable=consider-using-f-string
 
         if not self.server.load(int(server)):
             log_error("Could not find server record for reload", server)
@@ -689,7 +689,7 @@ class Server(ServerWrapper):
 
         # XXX: Fix me
         if reload_all:
-            if not self.reload_packages_byid(self.server["id"]) == 0:
+            if not self.reload_packages_byid(self.server["id"]) == 0:  #  pylint: disable=unnecessary-negation
                 return -1
             if not self.reload_hardware_byid(self.server["id"]) == 0:
                 return -1
@@ -826,7 +826,7 @@ class Server(ServerWrapper):
             if not row:
                 break
             server_group_id = row["system_group_id"]
-            log_debug(5, "Subscribing server to group %s" % server_group_id)
+            log_debug(5, "Subscribing server to group %s" % server_group_id)  #  pylint: disable=consider-using-f-string
 
             server_lib.join_server_group(server_id, server_group_id)
 
@@ -851,7 +851,7 @@ class Server(ServerWrapper):
         if kickstart_session_id is None:
             log_debug(
                 4,
-                "No kickstart_session_id associated with token %s (%s)"
+                "No kickstart_session_id associated with token %s (%s)"  #  pylint: disable=consider-using-f-string
                 % (tokens_obj.get_names(), tokens_obj.tokens),
             )
 

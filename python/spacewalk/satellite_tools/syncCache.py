@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring,invalid-name
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -28,7 +28,7 @@ from uyuni.common.rhnLib import hash_object_id
 __all__ = []
 
 
-class BaseCache:
+class BaseCache:  #  pylint: disable=missing-class-docstring
     _compressed = 1
 
     def __init__(self):

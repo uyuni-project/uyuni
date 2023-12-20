@@ -1,4 +1,4 @@
-#
+# pylint: disable=invalid-name
 # Smart IO class
 #
 # Copyright (c) 2002--2016 Red Hat, Inc.
@@ -63,9 +63,9 @@ class SmartIO:
 
 # Creates a temporary file and passes back its file descriptor
 def _tempfile():
-    import tempfile
+    import tempfile  #  pylint: disable=import-outside-toplevel
 
-    (fd, fname) = tempfile.mkstemp(prefix="_rhn_transports-%d-" % os.getpid())
+    (fd, fname) = tempfile.mkstemp(prefix="_rhn_transports-%d-" % os.getpid())  #  pylint: disable=consider-using-f-string
     # tempfile, unlink it
     os.unlink(fname)
     return os.fdopen(fd, "wb+")

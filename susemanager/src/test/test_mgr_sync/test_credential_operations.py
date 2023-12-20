@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*- pylint: disable=missing-module-docstring
 #
 # Copyright (C) 2014 Novell, Inc.
 #   This library is free software; you can redistribute it and/or modify
@@ -23,16 +23,16 @@ import os.path
 import sys
 
 try:
-    from unittest.mock import MagicMock, call, patch
+    from unittest.mock import MagicMock, call, patch  #  pylint: disable=unused-import
 except ImportError:
     from mock import MagicMock, call, patch
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-from helper import ConsoleRecorder, read_data_from_fixture
+from helper import ConsoleRecorder, read_data_from_fixture  #  pylint: disable=wrong-import-position
 
-from spacewalk.susemanager.mgr_sync.cli import get_options
-from spacewalk.susemanager.mgr_sync.mgr_sync import MgrSync
-from spacewalk.susemanager.mgr_sync import logger
+from spacewalk.susemanager.mgr_sync.cli import get_options  #  pylint: disable=wrong-import-position
+from spacewalk.susemanager.mgr_sync.mgr_sync import MgrSync  #  pylint: disable=wrong-import-position
+from spacewalk.susemanager.mgr_sync import logger  #  pylint: disable=wrong-import-position
 
 
 class CredentialOperationsTest(unittest.TestCase):
@@ -55,7 +55,7 @@ class CredentialOperationsTest(unittest.TestCase):
         """Test listing credentials with none present"""
         options = get_options("list credentials".split())
         stubbed_xmlrpm_call = MagicMock(return_value=[])
-        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
+        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call  #  pylint: disable=protected-access
         with ConsoleRecorder() as recorder:
             self.mgr_sync.run(options)
 
@@ -71,7 +71,7 @@ class CredentialOperationsTest(unittest.TestCase):
         stubbed_xmlrpm_call = MagicMock(
             return_value=read_data_from_fixture("list_credentials.data")
         )
-        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
+        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call  #  pylint: disable=protected-access
         with ConsoleRecorder() as recorder:
             self.mgr_sync.run(options)
         expected_output = """Credentials:
@@ -89,11 +89,11 @@ bar"""
         stubbed_xmlrpm_call = MagicMock(
             return_value=read_data_from_fixture("list_credentials.data")
         )
-        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
-        credentials = []
+        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call  #  pylint: disable=protected-access
+        credentials = []  #  pylint: disable=unused-variable
 
         with ConsoleRecorder() as recorder:
-            credentials = self.mgr_sync._list_credentials(show_interactive_numbers=True)
+            credentials = self.mgr_sync._list_credentials(show_interactive_numbers=True)  #  pylint: disable=protected-access
         expected_output = """Credentials:
 01) foo (primary)
 02) bar"""
@@ -107,12 +107,12 @@ bar"""
     def test_add_credentials_interactive(self):
         """Test adding credentials interactively"""
         options = get_options("add credentials".split())
-        self.mgr_sync._fetch_credentials = MagicMock(
+        self.mgr_sync._fetch_credentials = MagicMock(  #  pylint: disable=protected-access
             return_value=read_data_from_fixture("list_credentials.data")
         )
 
         stubbed_xmlrpm_call = MagicMock()
-        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
+        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call  #  pylint: disable=protected-access
 
         with patch("spacewalk.susemanager.mgr_sync.mgr_sync.cli_ask") as mock:
             mock.side_effect = ["foobar", "foo", "foo"]
@@ -133,14 +133,14 @@ bar"""
     def test_add_credentials_non_interactive(self):
         """Test adding credentials non-interactively"""
         options = get_options("add credentials foobar foo".split())
-        self.mgr_sync._fetch_credentials = MagicMock(
+        self.mgr_sync._fetch_credentials = MagicMock(  #  pylint: disable=protected-access
             return_value=read_data_from_fixture("list_credentials.data")
         )
 
         stubbed_xmlrpm_call = MagicMock()
-        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
+        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call  #  pylint: disable=protected-access
 
-        with ConsoleRecorder() as recorder:
+        with ConsoleRecorder() as recorder:  #  pylint: disable=unused-variable
             self.assertEqual(0, self.mgr_sync.run(options))
 
         stubbed_xmlrpm_call.assert_called_once_with(
@@ -155,12 +155,12 @@ bar"""
     def test_delete_credentials_interactive(self):
         """Test deleting credentials interactively"""
         options = get_options("delete credentials".split())
-        self.mgr_sync._fetch_credentials = MagicMock(
+        self.mgr_sync._fetch_credentials = MagicMock(  #  pylint: disable=protected-access
             return_value=read_data_from_fixture("list_credentials.data")
         )
 
         stubbed_xmlrpm_call = MagicMock()
-        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
+        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call  #  pylint: disable=protected-access
 
         with patch("spacewalk.susemanager.mgr_sync.mgr_sync.cli_ask") as mock:
             mock.side_effect = ["1", "y"]
@@ -181,11 +181,11 @@ bar"""
     def test_delete_credentials_non_interactive(self):
         """Test deleting credentials non-interactively"""
         options = get_options("delete credentials foo".split())
-        self.mgr_sync._fetch_credentials = MagicMock(
+        self.mgr_sync._fetch_credentials = MagicMock(  #  pylint: disable=protected-access
             return_value=read_data_from_fixture("list_credentials.data")
         )
         stubbed_xmlrpm_call = MagicMock()
-        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
+        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call  #  pylint: disable=protected-access
 
         with ConsoleRecorder() as recorder:
             self.assertEqual(0, self.mgr_sync.run(options))

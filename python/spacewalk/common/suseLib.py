@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*- pylint: disable=missing-module-docstring,invalid-name
 #
 # Copyright (c) 2010, 2011, 2012 Novell
 #
@@ -47,10 +47,10 @@ class TransferException(Exception):
         self.value = value
 
     def __str__(self):
-        return "%s" % self.value
+        return "%s" % self.value  #  pylint: disable=consider-using-f-string
 
     def __unicode__(self):
-        return "%s" % str(self.value, "utf-8")
+        return "%s" % str(self.value, "utf-8")  #  pylint: disable=consider-using-f-string
 
 
 class URL(object):
@@ -88,7 +88,7 @@ class URL(object):
         p = self.paramsdict.get(key, default)
         if p:
             assert len(p) == 1, (
-                "The query parameter contains a list of "
+                "The query parameter contains a list of "  #  pylint: disable=consider-using-f-string
                 "arguments instead of a single element. "
                 "%s : %s" % (key, p)
             )
@@ -114,23 +114,23 @@ class URL(object):
         """
         self.__dict__["paramsdict"] = urlparse.parse_qs(self.query)
 
-    def getURL(self, stripPw=False):
+    def getURL(self, stripPw=False):  #  pylint: disable=invalid-name,invalid-name
         """Return the full url as a string"""
         netloc = ""
         path = self.path
         if self.username:
             netloc = self.username
         if self.password and not stripPw:
-            netloc = "%s:%s" % (netloc, self.password)
+            netloc = "%s:%s" % (netloc, self.password)  #  pylint: disable=consider-using-f-string
         elif self.password and stripPw:
-            netloc = "%s:%s" % (netloc, "<secret>")
+            netloc = "%s:%s" % (netloc, "<secret>")  #  pylint: disable=consider-using-f-string
         if self.host and netloc:
-            netloc = "%s@%s" % (netloc, self.host)
+            netloc = "%s@%s" % (netloc, self.host)  #  pylint: disable=consider-using-f-string
         elif self.host:
             netloc = self.host
 
         if self.port:
-            netloc = "%s:%s" % (netloc, self.port)
+            netloc = "%s:%s" % (netloc, self.port)  #  pylint: disable=consider-using-f-string
 
         # Default ULN channels URIs are like: uln:///ol7_x86_64_u8_base
         # If not netloc, we fix the path to avoid getting url:/ol7_x86_64_u8_base
@@ -147,25 +147,25 @@ class URL(object):
 
 def _curl_debug(mtype, text):
     if mtype == 0:
-        log_debug(4, "* %s" % text)
+        log_debug(4, "* %s" % text)  #  pylint: disable=consider-using-f-string
     elif mtype == 1:
         # HEADER_IN
-        log_debug(4, "< %s" % text)
+        log_debug(4, "< %s" % text)  #  pylint: disable=consider-using-f-string
     elif mtype == 2:
         # HEADER_OUT
-        log_debug(4, "> %s" % text)
+        log_debug(4, "> %s" % text)  #  pylint: disable=consider-using-f-string
     elif mtype == 3:
         # DATA_IN
-        log_debug(5, "D< %s" % text)
+        log_debug(5, "D< %s" % text)  #  pylint: disable=consider-using-f-string
     elif mtype == 4:
         # DATA_OUT
-        log_debug(5, "D> %s" % text)
+        log_debug(5, "D> %s" % text)  #  pylint: disable=consider-using-f-string
     else:
-        log_debug(6, "%s: %s" % (mtype, text))
+        log_debug(6, "%s: %s" % (mtype, text))  #  pylint: disable=consider-using-f-string
     return 0
 
 
-def send(url, sendData=None):
+def send(url, sendData=None):  #  pylint: disable=invalid-name
     """Connect to url and return the result as stringIO
 
     :arg url: the url where the request will be sent
@@ -188,7 +188,7 @@ def send(url, sendData=None):
     proxy_url, proxy_user, proxy_pass = get_proxy(url)
     if proxy_url:
         curl.setopt(pycurl.PROXY, proxy_url)
-    log_debug(2, "Connect to %s" % url)
+    log_debug(2, "Connect to %s" % url)  #  pylint: disable=consider-using-f-string
     if sendData is not None:
         curl.setopt(pycurl.POSTFIELDS, sendData)
         if (
@@ -216,18 +216,18 @@ def send(url, sendData=None):
             if e.args[0] == 56:  # Proxy requires authentication
                 log_debug(2, e.args[1])
                 if not (proxy_user and proxy_pass):
-                    raise TransferException(
-                        "Proxy requires authentication, "
+                    raise TransferException(  #  pylint: disable=raise-missing-from
+                        "Proxy requires authentication, "  #  pylint: disable=consider-using-f-string
                         "but reading credentials from "
                         "%s failed." % YAST_PROXY
                     )
-                curl.setopt(pycurl.PROXYUSERPWD, "%s:%s" % (proxy_user, proxy_pass))
+                curl.setopt(pycurl.PROXYUSERPWD, "%s:%s" % (proxy_user, proxy_pass))  #  pylint: disable=consider-using-f-string
             elif e.args[0] == 60:
                 log_error(
                     "Peer certificate could not be authenticated "
                     "with known CA certificates."
                 )
-                raise TransferException(
+                raise TransferException(  #  pylint: disable=raise-missing-from
                     "Peer certificate could not be "
                     "authenticated with known CA "
                     "certificates."
@@ -242,16 +242,16 @@ def send(url, sendData=None):
             break
         elif status in (301, 302):  # redirects
             url = curl.getinfo(pycurl.REDIRECT_URL)
-            log_debug(2, "Got redirect to %s" % url)
+            log_debug(2, "Got redirect to %s" % url)  #  pylint: disable=consider-using-f-string
             curl.setopt(pycurl.URL, url)
     else:
         log_error(
-            "Connecting to %s has failed after %s "
+            "Connecting to %s has failed after %s "  #  pylint: disable=consider-using-f-string
             "tries with HTTP error code %s."
             % (URL(url).getURL(stripPw=True), connect_retries, status)
         )
         raise TransferException(
-            "Connection failed after %s tries with "
+            "Connection failed after %s tries with "  #  pylint: disable=consider-using-f-string
             "HTTP error %s." % (connect_retries, status)
         )
 
@@ -280,7 +280,7 @@ def accessible(url):
     proxy_url, proxy_user, proxy_pass = get_proxy(url)
     if proxy_url:
         curl.setopt(pycurl.PROXY, proxy_url)
-    log_debug(2, "Connect to %s" % url)
+    log_debug(2, "Connect to %s" % url)  #  pylint: disable=consider-using-f-string
 
     # We implement our own redirection-following, because pycurl
     # 7.19 doesn't POST after it gets redirected. Ideally we'd be
@@ -297,12 +297,12 @@ def accessible(url):
             if e.args[0] == 56:  # Proxy requires authentication
                 log_debug(2, e.args[1])
                 if not (proxy_user and proxy_pass):
-                    raise TransferException(
-                        "Proxy requires authentication, "
+                    raise TransferException(  #  pylint: disable=raise-missing-from
+                        "Proxy requires authentication, "  #  pylint: disable=consider-using-f-string
                         "but reading credentials from "
                         "%s failed." % YAST_PROXY
                     )
-                curl.setopt(pycurl.PROXYUSERPWD, "%s:%s" % (proxy_user, proxy_pass))
+                curl.setopt(pycurl.PROXYUSERPWD, "%s:%s" % (proxy_user, proxy_pass))  #  pylint: disable=consider-using-f-string
             else:
                 break
 
@@ -312,7 +312,7 @@ def accessible(url):
             return True
         elif status in (301, 302):  # redirects
             url = curl.getinfo(pycurl.REDIRECT_URL)
-            log_debug(2, "Got redirect to %s" % url)
+            log_debug(2, "Got redirect to %s" % url)  #  pylint: disable=consider-using-f-string
             curl.setopt(pycurl.URL, url)
         elif status >= 400:
             break
@@ -342,7 +342,7 @@ def get_proxy(url=None):
     return (None, None, None)
 
 
-def findProduct(product):
+def findProduct(product):  #  pylint: disable=invalid-name
     q_version = ""
     q_release = ""
     q_arch = ""
@@ -350,7 +350,7 @@ def findProduct(product):
     product_lower = {}
     product_lower["name"] = product["name"].lower()
 
-    log_debug(2, "Search for product: %s" % product)
+    log_debug(2, "Search for product: %s" % product)  #  pylint: disable=consider-using-f-string
 
     if product.get("version"):
         q_version = "or sp.version = :version"
@@ -399,7 +399,7 @@ def findProduct(product):
     return product_id
 
 
-def findAllExtensionProductsOf(baseId, rootId):
+def findAllExtensionProductsOf(baseId, rootId):  #  pylint: disable=invalid-name,invalid-name,invalid-name
     vals = {"baseId": baseId, "rootID": rootId}
     h = rhnSQL.prepare(
         """
@@ -416,7 +416,7 @@ def findAllExtensionProductsOf(baseId, rootId):
     return rs or []
 
 
-def channelForProduct(product, parent_id=None, org_id=None, user_id=None):
+def channelForProduct(product, parent_id=None, org_id=None, user_id=None):  #  pylint: disable=invalid-name
     """Find mandatory Channels for a given product and ostarget.
 
     If parent_id is None, a base channel is requested.
@@ -471,9 +471,9 @@ def channelForProduct(product, parent_id=None, org_id=None, user_id=None):
             continue
 
         ret.append(channel)
-        log_debug(1, "Found channel %s with id %d" % (channel["label"], channel["id"]))
+        log_debug(1, "Found channel %s with id %d" % (channel["label"], channel["id"]))  #  pylint: disable=consider-using-f-string
 
-    if ret == []:
+    if ret == []:  #  pylint: disable=use-implicit-booleaness-not-comparison
         ret = None
     return ret
 
@@ -516,7 +516,7 @@ def get_mirror_credentials():
     n = 1
     while True:
         try:
-            creds.append((CFG["mirrcred_user_%s" % n], CFG["mirrcred_pass_%s" % n]))
+            creds.append((CFG["mirrcred_user_%s" % n], CFG["mirrcred_pass_%s" % n]))  #  pylint: disable=consider-using-f-string,consider-using-f-string
         except (KeyError, AttributeError):
             break
         n += 1
@@ -524,32 +524,32 @@ def get_mirror_credentials():
     return creds
 
 
-def isAllowedSlave(hostname):
+def isAllowedSlave(hostname):  #  pylint: disable=invalid-name
     rhnSQL.initDB()
     if not rhnSQL.fetchone_dict(
         "select 1 from rhnISSSlave where slave = :hostname and enabled = 'Y'",
         hostname=idn_puny_to_unicode(hostname),
     ):
-        log_error('Server "%s" is not enabled for ISS.' % hostname)
+        log_error('Server "%s" is not enabled for ISS.' % hostname)  #  pylint: disable=consider-using-f-string
         return False
     return True
 
 
-def hasISSSlaves():
+def hasISSSlaves():  #  pylint: disable=invalid-name
     rhnSQL.initDB()
     if rhnSQL.fetchone_dict("select 1 from rhnISSSlave where enabled = 'Y'"):
         return True
     return False
 
 
-def hasISSMaster():
+def hasISSMaster():  #  pylint: disable=invalid-name
     rhnSQL.initDB()
     if rhnSQL.fetchone_dict("select 1 from rhnISSMaster where is_current_master = 'Y'"):
         return True
     return False
 
 
-def getISSCurrentMaster():
+def getISSCurrentMaster():  #  pylint: disable=invalid-name
     rhnSQL.initDB()
     master = rhnSQL.fetchone_dict(
         "select label from rhnISSMaster where is_current_master = 'Y'"
@@ -594,7 +594,7 @@ def _get_proxy_from_yast():
     f = None
     try:
         try:
-            f = open(YAST_PROXY)
+            f = open(YAST_PROXY)  #  pylint: disable=unspecified-encoding
             contents = f.read()
         except IOError:
             log_debug(5, "Couldn't open " + YAST_PROXY)
@@ -626,7 +626,7 @@ def _get_proxy_from_rhn_conf():
     result = None
     if CFG.http_proxy:
         # CFG.http_proxy format is <hostname>[:<port>] in 1.7
-        url = "http://%s" % CFG.http_proxy
+        url = "http://%s" % CFG.http_proxy  #  pylint: disable=consider-using-f-string
         result = (url, CFG.http_proxy_username, CFG.http_proxy_password)
     initCFG(comp)
     log_debug(2, "Could not read proxy URL from rhn config.")
@@ -637,7 +637,7 @@ def _get_proxy_from_rhn_conf():
 # pylint: disable=R0911
 
 
-def _useProxyFor(url):
+def _useProxyFor(url):  #  pylint: disable=invalid-name
     """Return True if a proxy should be used for given url, otherwise False.
 
     This function uses server.satellite.no_proxy variable to check for

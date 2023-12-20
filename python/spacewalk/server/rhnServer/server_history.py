@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -23,7 +23,7 @@ MAX_SUMMARY = 128
 MAX_DETAILS = 4000
 
 
-class History:
+class History:  #  pylint: disable=missing-class-docstring
     def __init__(self):
         self.__h = []
 
@@ -36,7 +36,7 @@ class History:
             self.__h.append((summary[:MAX_SUMMARY], details[:MAX_DETAILS]))
 
     def save_history_byid(self, server_id):
-        log_debug(3, server_id, "%d history events" % len(self.__h))
+        log_debug(3, server_id, "%d history events" % len(self.__h))  #  pylint: disable=consider-using-f-string
         if not self.__h:
             return 0
         hist = rhnSQL.prepare(

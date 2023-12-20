@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -16,7 +16,7 @@ import unittest
 from spacewalk.server import rhnDependency
 
 
-class MakeEvrTestCase(unittest.TestCase):
+class MakeEvrTestCase(unittest.TestCase):  #  pylint: disable=missing-class-docstring
     def setUp(self):
         self.make_evr = rhnDependency.make_evr
 

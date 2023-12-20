@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -20,7 +20,7 @@ import sys
 import time
 
 
-class StringBuffer:
+class StringBuffer:  #  pylint: disable=missing-class-docstring
     def __init__(self, stream):
         self.stream = stream
         self.buffer_size = 65536

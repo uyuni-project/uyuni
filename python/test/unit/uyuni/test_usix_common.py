@@ -39,4 +39,4 @@ class TestUsixCommon:
         Test 'next' is defined.
         """
         assert hasattr(usix, "next")
-        assert type(usix.next) == types.BuiltinFunctionType
+        assert type(usix.next) == types.BuiltinFunctionType  #  pylint: disable=unidiomatic-typecheck

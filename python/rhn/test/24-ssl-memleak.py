@@ -35,7 +35,7 @@ def main():
                 mem_usage_VmSize_first = new_mem_usage[1]
             mem_usage = new_mem_usage
 
-            print "memory usage: %s %s %s" % mem_usage[1:4]
+            print "memory usage: %s %s %s" % mem_usage[1:4]  #  pylint: disable=syntax-error
 
     percent = float((mem_usage_VmSize_max - mem_usage_VmSize_first)) / (float(mem_usage_VmSize_first) / 100)
     if percent >= mem_usage_VmSize_allowed_percent:

@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python3  #  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2021 SUSE LLC
 #
@@ -38,7 +38,7 @@ def test_reposync_timeout_minrate_are_passed_to_curl():
     # only provide needed params with dummy data, the rest is "None"
     params = NoKeyErrorsDict({"http_headers": dict(), "urls": ["http://example.com"]})
 
-    CFG = Mock()
+    CFG = Mock()  #  pylint: disable=invalid-name
     CFG.REPOSYNC_TIMEOUT = 42
     CFG.REPOSYNC_MINRATE = 42
     CFG.REPOSYNC_DOWNLOAD_THREADS = 42  # Throws ValueError if not defined
@@ -72,7 +72,7 @@ def test_reposync_threaded_downloader_sets_failed_pkgs():
         }
     )
 
-    CFG = Mock()
+    CFG = Mock()  #  pylint: disable=invalid-name
     CFG.REPOSYNC_TIMEOUT = 1
     CFG.REPOSYNC_MINRATE = 1
     CFG.REPOSYNC_DOWNLOAD_THREADS = 1
@@ -101,7 +101,7 @@ def test_reposync_configured_http_proxy_passed_to_urlgrabber():
     )
     url = "https://download.opensuse.org"
 
-    CFG = Mock()
+    CFG = Mock()  #  pylint: disable=invalid-name
     CFG.http_proxy = http_proxy
     CFG.REPOSYNC_TIMEOUT = 42
     CFG.REPOSYNC_MINRATE = 42

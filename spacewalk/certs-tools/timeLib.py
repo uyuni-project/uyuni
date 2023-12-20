@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring,invalid-name
 # Copyright (c) 2008--2013 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -47,12 +47,12 @@ def now():
     return round(time())
 
 
-def secs2str(format, secs):
+def secs2str(format, secs):  #  pylint: disable=redefined-builtin
     assert type(secs) in (type(1), type(1.0))
     return strftime(format, gmtime(round(secs)))
 
 
-def str2secs(s, format):
+def str2secs(s, format):  #  pylint: disable=redefined-builtin
     return mktime(strptime(s, format)) - timezone
 
 
@@ -69,8 +69,8 @@ def secs2years(secs):
 
 
 def _test():
-    nowS = now()
-    F = "%b %d %H:%M:%S %Y"
+    nowS = now()  #  pylint: disable=invalid-name
+    F = "%b %d %H:%M:%S %Y"  #  pylint: disable=invalid-name
     print("Right now, in seconds (epoch): ", nowS)
     print("Right now, stringified:        ", secs2str(F, nowS))
 

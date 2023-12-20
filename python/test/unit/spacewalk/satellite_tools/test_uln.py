@@ -7,7 +7,7 @@ import pytest
 from unittest.mock import MagicMock, patch
 
 try:
-    sys.path.insert(0, __file__.split("/test/unit")[0])
+    sys.path.insert(0, __file__.split("/test/unit")[0])  #  pylint: disable=use-maxsplit-arg
     import ulnauth
 except ImportError as ex:
     ulnauth = None
@@ -34,13 +34,13 @@ def cfg_parser():
     class CfgParser(dict):
         cfg = {}
 
-        def read(self, path):
+        def read(self, path):  #  pylint: disable=unused-argument
             self["main"] = self.cfg
 
     return CfgParser
 
 
-def test_get_hostname_uln(uln_auth_instance):
+def test_get_hostname_uln(uln_auth_instance):  #  pylint: disable=redefined-outer-name
     """
     Test ULN uri raises an exception if protocol is not ULN.
     """
@@ -49,16 +49,16 @@ def test_get_hostname_uln(uln_auth_instance):
     assert "URL must start with 'uln://'" in str(exc)
 
 
-def test_get_hostname_default(uln_auth_instance):
+def test_get_hostname_default(uln_auth_instance):  #  pylint: disable=redefined-outer-name
     """
     Test ULN uri inserts a default hostname, if not specified.
     """
     hostname, path = uln_auth_instance.get_hostname("uln:///suse")
-    assert hostname == "https://{}".format(ulnauth.ULNAuth.ULN_DEFAULT_HOST)
+    assert hostname == "https://{}".format(ulnauth.ULNAuth.ULN_DEFAULT_HOST)  #  pylint: disable=consider-using-f-string
     assert path == "suse"
 
 
-def test_get_hostname_custom(uln_auth_instance):
+def test_get_hostname_custom(uln_auth_instance):  #  pylint: disable=redefined-outer-name
     """
     Test ULN uri inserts a custom hostname, if specified.
     """
@@ -69,7 +69,7 @@ def test_get_hostname_custom(uln_auth_instance):
 
 @patch("os.path.exists", MagicMock(return_value=False))
 @patch("os.access", MagicMock(return_value=False))
-def test_get_credentials_not_found(uln_auth_instance):
+def test_get_credentials_not_found(uln_auth_instance):  #  pylint: disable=redefined-outer-name
     """
     Test credentials ULN configuration exists.
     """
@@ -80,7 +80,7 @@ def test_get_credentials_not_found(uln_auth_instance):
 
 @patch("os.path.exists", MagicMock(return_value=True))
 @patch("os.access", MagicMock(return_value=False))
-def test_get_credentials_access_denied(uln_auth_instance):
+def test_get_credentials_access_denied(uln_auth_instance):  #  pylint: disable=redefined-outer-name
     """
     Test credentials ULN configuration readable.
     """
@@ -91,7 +91,7 @@ def test_get_credentials_access_denied(uln_auth_instance):
 
 @patch("os.path.exists", MagicMock(return_value=True))
 @patch("os.access", MagicMock(return_value=False))
-def test_get_credentials_access_denied(uln_auth_instance):
+def test_get_credentials_access_denied(uln_auth_instance):  #  pylint: disable=function-redefined,redefined-outer-name
     """
     Test credentials ULN configuration readable.
     """
@@ -102,7 +102,7 @@ def test_get_credentials_access_denied(uln_auth_instance):
 
 @patch("os.path.exists", MagicMock(return_value=True))
 @patch("os.access", MagicMock(return_value=True))
-def test_get_credentials_credentials(uln_auth_instance, cfg_parser):
+def test_get_credentials_credentials(uln_auth_instance, cfg_parser):  #  pylint: disable=redefined-outer-name,redefined-outer-name
     """
     Test credentials ULN
     """
@@ -115,7 +115,7 @@ def test_get_credentials_credentials(uln_auth_instance, cfg_parser):
 
 @patch("os.path.exists", MagicMock(return_value=True))
 @patch("os.access", MagicMock(return_value=True))
-def test_get_credentials_credentials_not_found(uln_auth_instance, cfg_parser):
+def test_get_credentials_credentials_not_found(uln_auth_instance, cfg_parser):  #  pylint: disable=redefined-outer-name,redefined-outer-name
     """
     Test credentials ULN was not found
     """
@@ -127,7 +127,7 @@ def test_get_credentials_credentials_not_found(uln_auth_instance, cfg_parser):
 
 @patch("os.path.exists", MagicMock(return_value=True))
 @patch("os.access", MagicMock(return_value=True))
-def test_get_credentials_not_all_credentials_found(uln_auth_instance, cfg_parser):
+def test_get_credentials_not_all_credentials_found(uln_auth_instance, cfg_parser):  #  pylint: disable=redefined-outer-name,redefined-outer-name
     """
     Test partial credentials ULN found
     """
@@ -149,7 +149,7 @@ def test_get_credentials_not_all_credentials_found(uln_auth_instance, cfg_parser
     "ulnauth.get_proxy",
     MagicMock(return_value=("https://my_http_proxy", "user", "password")),
 )
-def test_auth_uln(uln_auth_instance):
+def test_auth_uln(uln_auth_instance):  #  pylint: disable=redefined-outer-name
     """
     Authenticate ULN, getting its token.
     """
@@ -169,9 +169,9 @@ def test_auth_uln(uln_auth_instance):
     retry_server_instance.auth.login = MagicMock(return_value="12345")
     retry_server = MagicMock(return_value=retry_server_instance)
     uri = "uln:///suse"
-    with patch("ulnauth.ServerList", server_list) as srv_lst, patch(
+    with patch("ulnauth.ServerList", server_list) as srv_lst, patch(  #  pylint: disable=unused-variable
         "ulnauth.RetryServer", retry_server
-    ) as rtr_srv:
+    ) as rtr_srv:  #  pylint: disable=unused-variable
         uln_auth_instance.get_credentials = MagicMock(
             return_value=(
                 "uln_user",

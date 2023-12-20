@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -21,7 +21,7 @@ import re
 from spacewalk.common.rhnTranslate import _
 from spacewalk.common import rhnFlags
 from uyuni.common.rhnLib import parseRPMName
-from spacewalk.common.rhnLog import log_debug, log_error
+from spacewalk.common.rhnLog import log_debug, log_error  #  pylint: disable=ungrouped-imports
 from spacewalk.common.rhnException import rhnFault
 
 # server modules imports
@@ -42,7 +42,7 @@ class Errata(rhnHandler):
         self.functions.append("getErrataInfo")  # clients v2+
         self.functions.append("getErrataNamesById")
 
-    def GetByPackage(self, pkg, osRel):
+    def GetByPackage(self, pkg, osRel):  #  pylint: disable=invalid-name
         """Clients v1- Get errata for a package given "n-v-r" format
         IN:  pkg:   "n-v-r" (old client call)
                     or [n,v,r]
@@ -51,7 +51,7 @@ class Errata(rhnHandler):
              (ie, newer packages are available). We also limit the scope
              for a particular osRel.
         """
-        if type(pkg) == type(""):  # Old client support.
+        if type(pkg) == type(""):  # Old client support.  #  pylint: disable=unidiomatic-typecheck
             pkg = parseRPMName(pkg)
         log_debug(1, pkg, osRel)
         # Stuff the action in the headers:
@@ -59,8 +59,8 @@ class Errata(rhnHandler):
         transport["X-RHN-Action"] = "GetByPackage"
 
         # now look up the errata
-        if type(pkg[0]) != type(""):
-            log_error("Invalid package name: %s %s" % (type(pkg[0]), pkg[0]))
+        if type(pkg[0]) != type(""):  #  pylint: disable=unidiomatic-typecheck
+            log_error("Invalid package name: %s %s" % (type(pkg[0]), pkg[0]))  #  pylint: disable=consider-using-f-string
             raise rhnFault(30, _("Expected a package name, not: %s") % pkg[0])
         # bug#186996:adding synopsis field to advisory info
         # client side changes are needed to access this data.
@@ -104,7 +104,7 @@ class Errata(rhnHandler):
         h.execute(name=pkg[0], dist=str(osRel))
         return self._sanitize_result(h)
 
-    def getPackageErratum(self, system_id, pkg):
+    def getPackageErratum(self, system_id, pkg):  #  pylint: disable=invalid-name
         """Clients v2+ - Get errata for a package given [n,v,r,e,a,...] format
 
         Sing-along: You say erratum(sing), I say errata(pl)! :)
@@ -112,8 +112,8 @@ class Errata(rhnHandler):
         RET: a hash by errata that applies to this package
         """
         log_debug(5, system_id, pkg)
-        if type(pkg) != type([]) or len(pkg) < 7:
-            log_error("Got invalid package specification: %s" % str(pkg))
+        if type(pkg) != type([]) or len(pkg) < 7:  #  pylint: disable=unidiomatic-typecheck
+            log_error("Got invalid package specification: %s" % str(pkg))  #  pylint: disable=consider-using-f-string
             raise rhnFault(30, _("Expected a package, not: %s") % pkg)
         # Authenticate and decode server id.
         self.auth_system(system_id)
@@ -123,7 +123,7 @@ class Errata(rhnHandler):
         transport = rhnFlags.get("outputTransportOptions")
         transport["X-RHN-Action"] = "getPackageErratum"
 
-        name, ver, rel, epoch, arch, size, channel = pkg[:7]
+        name, ver, rel, epoch, arch, size, channel = pkg[:7]  #  pylint: disable=unused-variable,unused-variable,unused-variable
         if epoch in ["", "none", "None"]:
             epoch = None
 
@@ -148,7 +148,7 @@ class Errata(rhnHandler):
             rhnPackage p
         where
             p.name_id = LOOKUP_PACKAGE_NAME(:name)
-        and p.evr_id = LOOKUP_EVR(:epoch, :ver, :rel, (select at.label from rhnArchType at join rhnServerArch sa ON sa.arch_type_id = at.id join rhnServer s on s.server_arch_id = sa.id where s.id = :server_id))
+        and p.evr_id = LOOKUP_EVR(:epoch, :ver, :rel, (select at.label from rhnArchType at join rhnServerArch sa ON sa.arch_type_id = at.id join rhnServer s on s.server_arch_id = sa.id where s.id = :server_id))  #  pylint: disable=line-too-long
         -- map to a channel
         and p.id = cp.package_id
         -- map to an errata as well
@@ -167,7 +167,7 @@ class Errata(rhnHandler):
         )
         return self._sanitize_result(h)
 
-    def _sanitize_result(self, h):
+    def _sanitize_result(self, h):  #  pylint: disable=invalid-name
         ret = []
         # sanitize the results for display in the clients
         while 1:
@@ -182,7 +182,7 @@ class Errata(rhnHandler):
         return ret
 
     # I don't trust this errata_id business, but chip says "trust me"
-    def getErrataInfo(self, system_id, errata_id):
+    def getErrataInfo(self, system_id, errata_id):  #  pylint: disable=invalid-name
         log_debug(5, system_id, errata_id)
         # Authenticate the server certificate
         self.auth_system(system_id)
@@ -251,7 +251,7 @@ class Errata(rhnHandler):
                 )
         return ret
 
-    def getErrataNamesById(self, system_id, errata_ids):
+    def getErrataNamesById(self, system_id, errata_ids):  #  pylint: disable=invalid-name
         """Return a list of RhnErrata tuples of (id, advisory_name)
 
         IN: system_id - id of the system requesting this info (must be
@@ -289,9 +289,9 @@ class Errata(rhnHandler):
         for eid, name, update_tag in errata_list:
             if update_tag:
                 if regexp.match(name):
-                    name = name.replace("SUSE", "SUSE-%s" % update_tag, 1)
+                    name = name.replace("SUSE", "SUSE-%s" % update_tag, 1)  #  pylint: disable=consider-using-f-string
                 else:
-                    name = "%s-%s" % (update_tag, name)
+                    name = "%s-%s" % (update_tag, name)  #  pylint: disable=consider-using-f-string
             result.append((eid, name))
         log_debug(2, self.server_id, errata_ids, result)
         return result
@@ -310,8 +310,8 @@ def _bind_list(elems):
     bound_names = []
     bound_vars = {}
     for i, elem in enumerate(elems):
-        bound_vars["p_%s" % i] = elem
-        bound_names.append(":p_%s" % i)
+        bound_vars["p_%s" % i] = elem  #  pylint: disable=consider-using-f-string
+        bound_names.append(":p_%s" % i)  #  pylint: disable=consider-using-f-string
     sql_list = ", ".join(bound_names)
     return sql_list, bound_vars
 

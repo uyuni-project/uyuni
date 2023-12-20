@@ -1,4 +1,4 @@
-#
+# pylint: disable=invalid-name
 # Higher-level SSL objects used by rpclib
 #
 # Copyright (c) 2002--2017 Red Hat, Inc.
@@ -24,7 +24,7 @@ rhn.SSL builds an abstraction on top of the objects provided by pyOpenSSL
 """
 
 # SSL.crypto is provided to other modules
-from OpenSSL import crypto
+from OpenSSL import crypto  #  pylint: disable=unused-import
 import ssl as SSL
 import os
 
@@ -38,13 +38,13 @@ DEFAULT_TIMEOUT = 120
 if hasattr(socket, "sslerror"):
     socket_error = socket.sslerror
 else:
-    from ssl import socket_error
+    from ssl import socket_error  #  pylint: disable=unused-import
 
 try:
-    from ssl import CertificateError
+    from ssl import CertificateError  #  pylint: disable=unused-import
 except ImportError:
     # python 2.6
-    from backports.ssl_match_hostname import match_hostname, CertificateError
+    from backports.ssl_match_hostname import match_hostname, CertificateError  #  pylint: disable=unused-import
 
 
 class SSLSocket:
@@ -52,7 +52,7 @@ class SSLSocket:
     Class that wraps a pyOpenSSL Connection object, adding more methods
     """
 
-    def __init__(self, socket, trusted_certs=None):
+    def __init__(self, socket, trusted_certs=None):  #  pylint: disable=redefined-outer-name
         # SSL.Context object
         self._ctx = None
         # SSL.Connection object
@@ -83,7 +83,7 @@ class SSLSocket:
         object.
         """
         if not os.access(file, os.R_OK):
-            raise ValueError("Unable to read certificate file %s" % file)
+            raise ValueError("Unable to read certificate file %s" % file)  #  pylint: disable=consider-using-f-string
         self._trusted_certs.append(file.encode("utf-8"))
 
     def init_ssl(self, server_name=None):
@@ -105,7 +105,7 @@ class SSLSocket:
             self._sock, server_hostname=server_name
         )
 
-    def makefile(self, mode, bufsize=None):
+    def makefile(self, mode, bufsize=None):  #  pylint: disable=unused-argument
         """
         Returns self, since we are a file-like object already
         """
@@ -228,7 +228,7 @@ class SSLSocket:
         poller.register(self._sock, filter_type)
         res = poller.poll(self._sock.gettimeout() * 1000)
         if res == []:
-            raise TimeoutException("Connection timed out on %s" % caller_name)
+            raise TimeoutException("Connection timed out on %s" % caller_name)  #  pylint: disable=consider-using-f-string
 
     def write(self, data):
         """

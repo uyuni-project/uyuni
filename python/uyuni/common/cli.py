@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2012--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -25,7 +25,7 @@ except ImportError:
     import xmlrpc.client as xmlrpclib  # pylint: disable=F0401
 
 
-def getUsernamePassword(cmdlineUsername, cmdlinePassword):
+def getUsernamePassword(cmdlineUsername, cmdlinePassword):  #  pylint: disable=invalid-name,invalid-name,invalid-name
     """
     Returns a username and password (either by returning the ones passed as
     args, or the user's input
@@ -75,7 +75,7 @@ def xmlrpc_login(client, username, password, verbose=0):
         sessionkey = client.auth.login(username, password)
     except xmlrpclib.Fault:
         e = sys.exc_info()[1]
-        sys.stderr.write("Error: %s\n" % e.faultString)
+        sys.stderr.write("Error: %s\n" % e.faultString)  #  pylint: disable=consider-using-f-string
         sys.exit(-1)
 
     return sessionkey

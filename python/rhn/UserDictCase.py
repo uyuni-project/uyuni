@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring,invalid-name
 # Copyright (c) 2001--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -29,7 +29,7 @@ except ImportError:  # python3
 
 
 # A dictionary with case insensitive keys
-class UserDictCase(UserDict):
+class UserDictCase(UserDict):  #  pylint: disable=missing-class-docstring
     def __init__(self, data=None):
         self.kcase = {}
         UserDict.__init__(self, data)
@@ -78,7 +78,7 @@ class UserDictCase(UserDict):
 
     # return this data as a real hash
     def get_hash(self):
-        return reduce(
+        return reduce(  #  pylint: disable=used-before-assignment
             lambda a, t, hc=self.kcase: a.update({hc[t[0]]: t[1]}) or a,
             self.data.items(),
             {},
@@ -96,7 +96,7 @@ class UserDictCase(UserDict):
     def dict(self):
         return self.get_hash()
 
-    def update(self, dict):
+    def update(self, dict):  #  pylint: disable=redefined-builtin
         for k, v in dict.items():
             self[k] = v
 

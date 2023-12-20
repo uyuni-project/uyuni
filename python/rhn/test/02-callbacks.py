@@ -14,7 +14,7 @@ try:
     system_id_file = sys.argv[2]
 except:
     pass
-print "SERVER = %s" % SERVER
+print "SERVER = %s" % SERVER  #  pylint: disable=syntax-error
 print "system_id_file = %s" % system_id_file
 
 def refreshCallback(*args, **kwargs):

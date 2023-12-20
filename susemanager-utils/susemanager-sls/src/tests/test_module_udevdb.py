@@ -7,7 +7,7 @@ from . import mockery
 
 mockery.setup_environment()
 
-from ..modules import udevdb
+from ..modules import udevdb  #  pylint: disable=wrong-import-position
 
 
 def test_virtual():
@@ -102,7 +102,7 @@ def test_exportdb():
                 "SUBSYSTEM": "scsi",
                 "DEVTYPE": "scsi_device",
                 "DRIVER": "sd",
-                "DEVPATH": "/devices/pci0000:00/0000:00:01.1/ata1/host0/target0:0:0/0:0:0:0",
+                "DEVPATH": "/devices/pci0000:00/0000:00:01.1/ata1/host0/target0:0:0/0:0:0:0",  #  pylint: disable=line-too-long
             },
             "X-Mgr": {"SCSI_SYS_TYPE": "0"},
         },
@@ -120,7 +120,7 @@ def test_exportdb():
         },
     ):
         data = udevdb.exportdb()
-        assert data == [_f for _f in data if _f]
+        assert data == [_f for _f in data if _f]  #  pylint: disable=invalid-name
 
         for d_idx, d_section in enumerate(data):
             assert out[d_idx]["P"] == d_section["P"]

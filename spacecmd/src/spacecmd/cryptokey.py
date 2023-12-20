@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Licensed under the GNU General Public License Version 3
 #
 # This program is free software; you can redistribute it and/or modify
@@ -173,7 +173,7 @@ def complete_cryptokey_delete(self, text, line, beg, end):
 def do_cryptokey_delete(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=invalid-name,unused-variable
 
     if not args:
         self.help_cryptokey_delete()
@@ -181,7 +181,7 @@ def do_cryptokey_delete(self, args):
 
     # allow globbing of cryptokey names
     keys = filter_results(self.do_cryptokey_list("", True), args)
-    logging.debug("cryptokey_delete called with args %s, keys=%s" % (args, keys))
+    logging.debug("cryptokey_delete called with args %s, keys=%s" % (args, keys))  #  pylint: disable=consider-using-f-string
 
     if not keys:
         logging.error(_N("No keys matched argument %s") % args)
@@ -233,7 +233,7 @@ def complete_cryptokey_details(self, text, line, beg, end):
 def do_cryptokey_details(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=invalid-name,unused-variable
 
     if not args:
         self.help_cryptokey_details()
@@ -241,7 +241,7 @@ def do_cryptokey_details(self, args):
 
     # allow globbing of cryptokey names
     keys = filter_results(self.do_cryptokey_list("", True), args)
-    logging.debug("cryptokey_details called with args %s, keys=%s" % (args, keys))
+    logging.debug("cryptokey_details called with args %s, keys=%s" % (args, keys))  #  pylint: disable=consider-using-f-string
 
     if not keys:
         logging.error(_N("No keys matched argument %s") % args)

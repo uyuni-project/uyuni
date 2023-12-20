@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -19,7 +19,7 @@ import sys
 
 from spacewalk.common import rhnFlags
 from uyuni.common.usix import raise_with_tb
-from spacewalk.common.rhnLog import log_debug, log_error
+from spacewalk.common.rhnLog import log_debug, log_error  #  pylint: disable=ungrouped-imports
 from spacewalk.common.rhnException import rhnFault, rhnException
 from spacewalk.common.rhnTranslate import _
 from spacewalk.server import rhnSQL, rhnChannel, rhnAction
@@ -110,7 +110,7 @@ def token_channels(server, server_arch, tokens_obj):
             )
             ret.append("System registered without a base channel")
             ret.append(
-                "Unsupported release-architecture combination "
+                "Unsupported release-architecture combination "  #  pylint: disable=consider-using-f-string
                 "(%s, %s)" % (server["release"], server_arch)
             )
             return ret
@@ -123,7 +123,7 @@ def token_channels(server, server_arch, tokens_obj):
             # no base channel subscription at this point
             rhnChannel.subscribe_sql(server_id, bc["id"], commit=0)
             ret.append(
-                "Subscribed to base channel '%s' (%s)" % (bc["name"], bc["label"])
+                "Subscribed to base channel '%s' (%s)" % (bc["name"], bc["label"])  #  pylint: disable=consider-using-f-string
             )
             sbc = bc
 
@@ -138,7 +138,7 @@ def token_channels(server, server_arch, tokens_obj):
         # make sure this channel has the right parent
         if str(c["parent_channel"]) != str(sbc["id"]):
             ret.append(
-                "NOT subscribed to channel '%s' "
+                "NOT subscribed to channel '%s' "  #  pylint: disable=consider-using-f-string
                 "(not a child of '%s')" % (c["name"], sbc["name"])
             )
             continue
@@ -149,20 +149,20 @@ def token_channels(server, server_arch, tokens_obj):
             subscribe_channel(server_id, c["id"], 0, None)
             child = rhnChannel.Channel()
             child.load_by_id(c["id"])
-            child._load_channel_families()
-            cfamid = child._channel_families[0]
+            child._load_channel_families()  #  pylint: disable=protected-access
+            cfamid = child._channel_families[0]  #  pylint: disable=protected-access
             channel_family_ids.add(cfamid)
         except rhnSQL.SQLError:
-            e = sys.exc_info()[1]
+            e = sys.exc_info()[1]  #  pylint: disable=unused-variable
             log_error(
                 "Failed channel subscription", server_id, c["id"], c["label"], c["name"]
             )
-            ret.append("FAILED to subscribe to channel '%s'" % c["name"])
+            ret.append("FAILED to subscribe to channel '%s'" % c["name"])  #  pylint: disable=consider-using-f-string
         else:
-            ret.append("Subscribed to channel '%s'" % c["name"])
+            ret.append("Subscribed to channel '%s'" % c["name"])  #  pylint: disable=consider-using-f-string
 
-    log_debug(5, "cf ids: %s" % str(channel_family_ids))
-    log_debug(5, "Server org_id: %s" % str(server["org_id"]))
+    log_debug(5, "cf ids: %s" % str(channel_family_ids))  #  pylint: disable=consider-using-f-string
+    log_debug(5, "Server org_id: %s" % str(server["org_id"]))  #  pylint: disable=consider-using-f-string
 
     return ret
 
@@ -200,7 +200,7 @@ def token_server_groups(server_id, tokens_obj):
         try:
             join_server_group(server_id, server_group_id)
         except rhnSQL.SQLError:
-            e = sys.exc_info()[1]
+            e = sys.exc_info()[1]  #  pylint: disable=unused-variable
             log_error(
                 "Failed to add server to group", server_id, server_group_id, sg["name"]
             )
@@ -209,7 +209,7 @@ def token_server_groups(server_id, tokens_obj):
                 sys.exc_info()[2],
             )
         else:
-            ret.append("Subscribed to server group '%s'" % sg["name"])
+            ret.append("Subscribed to server group '%s'" % sg["name"])  #  pylint: disable=consider-using-f-string
     return ret
 
 
@@ -258,7 +258,7 @@ def token_packages(server_id, tokens_obj):
     action_id = rhnAction.schedule_server_packages_update_by_arch(
         server_id,
         package_arch_ids,
-        org_id=token["org_id"],
+        org_id=token["org_id"],  #  pylint: disable=undefined-loop-variable
         prerequisite=last_action_id,
         action_name="Activation Key Package Auto-Install",
     )
@@ -267,7 +267,7 @@ def token_packages(server_id, tokens_obj):
     rhnFlags.set("token_last_action_id", action_id)
 
     for p in list(package_names.values()):
-        ret.append("Scheduled for install:  '%s'" % p)
+        ret.append("Scheduled for install:  '%s'" % p)  #  pylint: disable=consider-using-f-string
 
     rhnSQL.commit()
 
@@ -304,7 +304,7 @@ _query_token_latest_revisions = rhnSQL.Statement(
 _query_add_revision_to_action = rhnSQL.Statement(
     """
     insert into rhnActionConfigRevision (id, action_id, server_id, config_revision_id)
-    values (sequence_nextval('rhn_actioncr_id_seq'), :action_id, :server_id, :config_revision_id)
+    values (sequence_nextval('rhn_actioncr_id_seq'), :action_id, :server_id, :config_revision_id)  #  pylint: disable=line-too-long
 """
 )
 
@@ -328,7 +328,7 @@ def deploy_configs_if_needed(server):
         if row["path"] not in revisions:
             revisions[row["path"]] = row["revision_id"]
 
-    if not len(revisions):
+    if not len(revisions):  #  pylint: disable=use-implicit-booleaness-not-len
         return None
 
     # Get the latest action scheduled for this token
@@ -431,7 +431,7 @@ def token_config_channels(server, tokens_obj):
     for token in tokens_obj.tokens:
         channels = _get_token_config_channels(token["token_id"])
         # Check every token used and if any of them are set to not deploy configs
-        # then we won't deploy configs for any config channels the system is subscribed to
+        # then we won't deploy configs for any config channels the system is subscribed to  #  pylint: disable=line-too-long
         deploy_configs = token["deploy_configs"]
         log_debug(
             2, "token_id: ", token["token_id"], " deploy_configs: ", deploy_configs
@@ -464,7 +464,7 @@ def token_config_channels(server, tokens_obj):
         )
 
         for channel in config_channels:
-            msg = "Subscribed to config channel %s" % channel["name"]
+            msg = "Subscribed to config channel %s" % channel["name"]  #  pylint: disable=consider-using-f-string
             log_debug(4, msg)
             ret.append(msg)
 
@@ -566,7 +566,7 @@ class ActivationTokens:
     is_rereg_token = 0
     forget_rereg_token = 0
 
-    def __init__(
+    def __init__(  #  pylint: disable=dangerous-default-value
         self,
         tokens,
         user_id=None,
@@ -701,7 +701,7 @@ class ActivationTokens:
                 )
                 raise_with_tb(rhnFault(90, str(e)), sys.exc_info()[2])
             else:
-                history["entitlement"] = "Entitled as a %s member" % entitlement[1]
+                history["entitlement"] = "Entitled as a %s member" % entitlement[1]  #  pylint: disable=consider-using-f-string
 
 
 class ReRegistrationToken(ActivationTokens):
@@ -723,7 +723,7 @@ class ReRegistrationActivationToken(ReRegistrationToken):
 
     forget_rereg_token = 1
 
-    def __init__(
+    def __init__(  #  pylint: disable=dangerous-default-value,dangerous-default-value
         self,
         tokens,
         user_id=None,
@@ -784,7 +784,7 @@ def _fetch_token_from_cursor(cursor):
             # saved
 
             # Double-check it's the same token
-            assert token_entry["token_id"] == row["token_id"], (
+            assert token_entry["token_id"] == row["token_id"], (  #  pylint: disable=unsubscriptable-object
                 "Query returned different tokens - missing unique constraint"
                 " on rhnActivationKey.token?"
             )
@@ -814,7 +814,7 @@ def _categorize_token_entitlements(
 
 
 def _validate_entitlements(
-    token_string, rereg_ents, base_entitlements, extra_entitlements, remove_entitlements
+    token_string, rereg_ents, base_entitlements, extra_entitlements, remove_entitlements  #  pylint: disable=unused-argument,unused-argument,unused-argument
 ):
     """
     Perform various checks on the final list of entitlements accumulated after
@@ -857,7 +857,7 @@ _query_token = rhnSQL.Statement(
            ak.ks_session_id kickstart_session_id,
            rt.deploy_configs,
            rt.contact_method_id
-    from rhnActivationKey ak, rhnRegToken rt, rhnRegTokenEntitlement rte, rhnServerGroupType sgt
+    from rhnActivationKey ak, rhnRegToken rt, rhnRegTokenEntitlement rte, rhnServerGroupType sgt  #  pylint: disable=line-too-long
     where ak.token = :token
       and ak.reg_token_id = rt.id
       and rt.disabled = 0
@@ -910,7 +910,7 @@ def fetch_token(token_string):
 
         if not token_entry:
             # Unable to find the token
-            log_error("Invalid token '%s'" % token)
+            log_error("Invalid token '%s'" % token)  #  pylint: disable=consider-using-f-string
             raise rhnFault(60, _("Could not find token '%s'") % token, explain=0)
 
         row = token_entry
@@ -932,7 +932,7 @@ def fetch_token(token_string):
         # assert(token_user_id is not None)
 
         if same_user_id and user_id is not None and user_id != token_user_id:
-            log_debug(4, "Different user ids: %s, %s" % (same_user_id, user_id))
+            log_debug(4, "Different user ids: %s, %s" % (same_user_id, user_id))  #  pylint: disable=consider-using-f-string
             # This token has a different user id than the rest
             same_user_id = 0
         else:
@@ -988,8 +988,8 @@ def fetch_token(token_string):
         entitlements_extra,
         entitlements_remove,
     )
-    log_debug(5, "entitlements_base = %s" % entitlements_base)
-    log_debug(5, "entitlements_extra = %s" % entitlements_extra)
+    log_debug(5, "entitlements_base = %s" % entitlements_base)  #  pylint: disable=consider-using-f-string
+    log_debug(5, "entitlements_extra = %s" % entitlements_extra)  #  pylint: disable=consider-using-f-string
 
     if ks_session_id_token:
         ks_session_id = ks_session_id_token["kickstart_session_id"]
@@ -1155,7 +1155,7 @@ def history_report(history):
     """build a mildly html-ized version of the history as a report"""
     # header information
     report = "Entitlement Information:\n"
-    report += "<ul><li>%s</li></ul>" % history["entitlement"]
+    report += "<ul><li>%s</li></ul>" % history["entitlement"]  #  pylint: disable=consider-using-f-string
     report += "\n"
     # print out channels
     report += history_subreport(
@@ -1198,10 +1198,10 @@ def history_subreport(history, key, title, emptymsg):
         subreport += "<ul>\n"
 
         for c in history[key]:
-            subreport += "<li>%s</li>\n" % c
+            subreport += "<li>%s</li>\n" % c  #  pylint: disable=consider-using-f-string
 
         if len(history[key]) == 0:
-            subreport += "<li>%s</li>\n" % emptymsg
+            subreport += "<li>%s</li>\n" % emptymsg  #  pylint: disable=consider-using-f-string
 
         subreport += "</ul>\n"
     return subreport

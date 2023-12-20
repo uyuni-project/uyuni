@@ -35,7 +35,7 @@ package_name = "%s-%s-%s.%s.rpm" % (pn, pv, pr, pa)
 fd = gs.getPackage(channel_name, package_name, offset=1023)
 #, amount=10)
 
-print gs.get_response_headers()
+print gs.get_response_headers()  #  pylint: disable=syntax-error
 print "Status", gs.get_response_status()
 print "Reason", gs.get_response_reason()
 h = gs.get_content_range()

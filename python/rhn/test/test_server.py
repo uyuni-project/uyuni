@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python  #  pylint: disable=missing-module-docstring
 #
 #
 
@@ -15,13 +15,13 @@ class ServerTest(unittest.TestCase):
     def testGoodURIWithHTTP(self):
         try:
             Server("http://localhost")
-        except:
+        except:  #  pylint: disable=bare-except
             assert False
 
     def testGoodURIWithHTTPS(self):
         try:
             Server("https://localhost")
-        except:
+        except:  #  pylint: disable=bare-except
             assert False
 
     def testURIMissingProtocol(self):

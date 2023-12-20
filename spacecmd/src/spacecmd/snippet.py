@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Licensed under the GNU General Public License Version 3
 #
 # This program is free software; you can redistribute it and/or modify
@@ -72,7 +72,7 @@ def complete_snippet_details(self, text, line, beg, end):
 def do_snippet_details(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if not args:
         self.help_snippet_details()
@@ -151,7 +151,7 @@ def do_snippet_create(self, args, update_name=""):
         ):
             options.file = prompt_user("File:")
         else:
-            (contents, _ignore) = editor(template=contents, delete=True)
+            (contents, _ignore) = editor(template=contents, delete=True)  #  pylint: disable=unused-variable
     else:
         if not options.name:
             logging.error(_N("A name is required for the snippet"))
@@ -193,7 +193,7 @@ def complete_snippet_update(self, text, line, beg, end):
 def do_snippet_update(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if not args:
         self.help_snippet_update()
@@ -217,7 +217,7 @@ def complete_snippet_delete(self, text, line, beg, end):
 def do_snippet_delete(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if not args:
         self.help_snippet_delete()

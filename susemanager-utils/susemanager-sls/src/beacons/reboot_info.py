@@ -7,11 +7,11 @@ fire an event to SUSE Manager indicating if a reboot is needed.
 __virtualname__ = "reboot_info"
 
 
-def __virtual__():
-    return __grains__.get("transactional", False)
+def __virtual__():  #  pylint: disable=invalid-name
+    return __grains__.get("transactional", False)  #  pylint: disable=undefined-variable
 
 
-def validate(config):
+def validate(config):  #  pylint: disable=unused-argument
     """
     The absence of this function could cause noisy logging,
     when logging level set to DEBUG or TRACE.
@@ -20,7 +20,7 @@ def validate(config):
     return True, "There is nothing to validate"
 
 
-def beacon(config):
+def beacon(config):  #  pylint: disable=unused-argument
     """
     Monitor pending transactions of transactional update
     to verify whether a reboot is required. When the reboot
@@ -36,10 +36,10 @@ def beacon(config):
 
     """
     ret = []
-    reboot_needed = __salt__["transactional_update.pending_transaction"]()
+    reboot_needed = __salt__["transactional_update.pending_transaction"]()  #  pylint: disable=undefined-variable
 
-    if __context__.get("reboot_needed") != reboot_needed:
+    if __context__.get("reboot_needed") != reboot_needed:  #  pylint: disable=undefined-variable
         ret.append({"reboot_needed": reboot_needed})
-        __context__["reboot_needed"] = reboot_needed
+        __context__["reboot_needed"] = reboot_needed  #  pylint: disable=undefined-variable
 
     return ret

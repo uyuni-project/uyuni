@@ -26,13 +26,13 @@ log = logging.getLogger(__name__)
 __virtualname__ = "virt_utils"
 
 
-def __virtual__():
+def __virtual__():  #  pylint: disable=invalid-name
     """
     Only if the virt module is loaded
     """
     return (
         __virtualname__
-        if "virt.vm_info" in __salt__
+        if "virt.vm_info" in __salt__  #  pylint: disable=undefined-variable
         else (False, "Module virt_utils: virt module can't be loaded")
     )
 
@@ -73,13 +73,13 @@ def vm_info(name=None):
     Provide additional virtual machine infos
     """
     try:
-        infos = __salt__["virt.vm_info"](name)
+        infos = __salt__["virt.vm_info"](name)  #  pylint: disable=undefined-variable
         all_vms = {}
         for vm_name in infos.keys():
             all_vms[vm_name] = {
                 "graphics_type": infos[vm_name].get("graphics", {}).get("type", None),
             }
-    except CommandExecutionError as err:
+    except CommandExecutionError as err:  #  pylint: disable=unused-variable
         all_vms = {}
 
     # Find out which VM is managed by a cluster
@@ -110,7 +110,7 @@ def vm_info(name=None):
                 continue
             desc = ElementTree.parse(path)
             name_node = desc.find("./name")
-            # Provide infos on VMs managed by the cluster running on this node or not running at all
+            # Provide infos on VMs managed by the cluster running on this node or not running at all  #  pylint: disable=line-too-long
             if (
                 name_node is not None
                 and name_node.text in all_vms
@@ -120,7 +120,7 @@ def vm_info(name=None):
                     all_vms[name_node.text] = {}
                 all_vms[name_node.text]["cluster_primitive"] = primitive.get("id")
                 all_vms[name_node.text]["definition_path"] = path
-                # Provide the UUID if possible since this will allow matching the VM with the DB record
+                # Provide the UUID if possible since this will allow matching the VM with the DB record  #  pylint: disable=line-too-long
                 uuid_node = desc.find("uuid")
                 if uuid_node is not None:
                     all_vms[name_node.text]["uuid"] = uuid_node.text
@@ -139,7 +139,7 @@ def vm_info(name=None):
                 if graphics_node is not None:
                     all_vms[name_node.text]["graphics_type"] = graphics_node.get("type")
 
-            # No need to parse more XML files if we already had the ones we're looking for
+            # No need to parse more XML files if we already had the ones we're looking for  #  pylint: disable=line-too-long
             if name is not None and name_node == name:
                 break
     except OSError as err:
@@ -175,7 +175,7 @@ def host_info():
         log.debug("Failed to get cluster configuration: %s", err)
 
     return {
-        "hypervisor": __salt__["virt.get_hypervisor"](),
+        "hypervisor": __salt__["virt.get_hypervisor"](),  #  pylint: disable=undefined-variable
         "cluster_other_nodes": cluster_nodes,
     }
 
@@ -204,8 +204,8 @@ def vm_definition(uuid):
         domain = cnx.lookupByUUIDString(uuid)
         name = domain.name()
         return {
-            "definition": __salt__["virt.get_xml"](name),
-            "info": __salt__["virt.vm_info"](name)[name],
+            "definition": __salt__["virt.get_xml"](name),  #  pylint: disable=undefined-variable
+            "info": __salt__["virt.vm_info"](name)[name],  #  pylint: disable=undefined-variable
         }
     except libvirt.libvirtError:
         # The VM is not defined in libvirt, may be it is defined in the cluster
@@ -221,7 +221,7 @@ def vm_definition(uuid):
                 if config_node is not None:
                     config_path = config_node.get("value")
                     if config_path is not None:
-                        with open(config_path, "r") as desc_fd:
+                        with open(config_path, "r") as desc_fd:  #  pylint: disable=unspecified-encoding
                             desc_content = desc_fd.read()
                         desc = ElementTree.fromstring(desc_content)
                         uuid_node = desc.find("./uuid")

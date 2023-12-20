@@ -9,9 +9,9 @@ import pytest
 import sys
 
 sys.path.append("../modules/pillar")
-import os
+import os  #  pylint: disable=wrong-import-position
 
-import suma_minion
+import suma_minion  #  pylint: disable=wrong-import-position
 
 
 suma_minion.__opts__ = {}
@@ -102,7 +102,7 @@ def test_reading_postgres_opts_in__get_cursor():
     with patch.object(suma_minion, "__opts__", test_opts), patch(
         "suma_minion.psycopg2.connect", pg_connect_mock
     ), patch.dict(suma_minion.__context__, {}):
-        suma_minion._get_cursor(cursor_callback)
+        suma_minion._get_cursor(cursor_callback)  #  pylint: disable=protected-access
         assert pg_connect_mock.call_args_list[0][1] == {
             "host": "test_host",
             "user": "test_user",
@@ -116,7 +116,7 @@ def test_reading_postgres_opts_in__get_cursor():
     with patch.object(suma_minion, "__opts__", {"__master_opts__": test_opts}), patch(
         "suma_minion.psycopg2.connect", pg_connect_mock
     ), patch.dict(suma_minion.__context__, {}):
-        suma_minion._get_cursor(cursor_callback)
+        suma_minion._get_cursor(cursor_callback)  #  pylint: disable=protected-access
         assert pg_connect_mock.call_args_list[0][1] == {
             "host": "test_host",
             "user": "test_user",
@@ -144,7 +144,7 @@ def test_using_context_in__get_cursor():
         "suma_minion.psycopg2.connect", pg_connect_mock
     ), patch.dict(suma_minion.__context__, {}):
         # Check if it creates new connection if it's not in the context
-        suma_minion._get_cursor(cursor_callback)
+        suma_minion._get_cursor(cursor_callback)  #  pylint: disable=protected-access
         assert pg_connect_mock.call_args_list[0][1] == {
             "host": "test_host",
             "user": "test_user",
@@ -156,7 +156,7 @@ def test_using_context_in__get_cursor():
         pg_connect_mock.reset_mock()
 
         # Check if it reuses the connection from the context
-        suma_minion._get_cursor(cursor_callback)
+        suma_minion._get_cursor(cursor_callback)  #  pylint: disable=protected-access
 
         pg_connect_mock.assert_not_called()
 
@@ -173,14 +173,14 @@ def test_using_context_in__get_cursor():
         suma_minion.__context__, {"suma_minion_cnx": pg_cnx_mock}
     ):
         # Check if it reuses the connection from the context
-        suma_minion._get_cursor(cursor_callback)
+        suma_minion._get_cursor(cursor_callback)  #  pylint: disable=protected-access
 
         pg_cnx_mock.cursor.assert_called_once()
 
         pg_connect_mock.assert_not_called()
 
         # Check if it tries to recoonect if the connection in the context is not alive
-        suma_minion._get_cursor(cursor_callback)
+        suma_minion._get_cursor(cursor_callback)  #  pylint: disable=protected-access
 
         assert pg_connect_mock.call_args_list[0][1] == {
             "host": "test_host",

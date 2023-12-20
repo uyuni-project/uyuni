@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python  #  pylint: disable=missing-module-docstring
 # -*- coding: utf-8 -*-
 #
 # Copyright (c) 2011 SUSE LLC
@@ -31,8 +31,8 @@ except ImportError:
 
 try:
     from urlparse import urlparse, urlunparse
-except:
-    from urllib.parse import urlparse, urlunparse
+except:  #  pylint: disable=bare-except
+    from urllib.parse import urlparse, urlunparse  #  pylint: disable=ungrouped-imports
 
 from collections import namedtuple
 
@@ -63,7 +63,7 @@ class YumSrcTest(unittest.TestCase):
         yum_src.get_proxy = Mock(return_value=(None, None, None))
 
         cs = yum_src.ContentSource("http://example.com/fake_path/", "test_repo", org="")
-        mockReturnPackages = MagicMock()
+        mockReturnPackages = MagicMock()  #  pylint: disable=invalid-name
         mockReturnPackages.returnPackages = MagicMock(name="returnPackages")
         mockReturnPackages.returnPackages.return_value = []
         cs.repo.is_configured = True
@@ -189,9 +189,9 @@ class YumSrcTest(unittest.TestCase):
                 </patches>
                 """
         )
-        cs._md_exists = Mock(side_effect=[False, True, True])
-        cs._retrieve_md_path = Mock(return_value="patches.xml")
-        open = Mock(return_value=patches_xml)
+        cs._md_exists = Mock(side_effect=[False, True, True])  #  pylint: disable=protected-access
+        cs._retrieve_md_path = Mock(return_value="patches.xml")  #  pylint: disable=protected-access
+        open = Mock(return_value=patches_xml)  #  pylint: disable=redefined-builtin,unused-variable
         os.path.join = Mock(side_effect=lambda *args: StringIO("<xml></xml>"))
 
         patches = cs.get_updates()
@@ -204,7 +204,7 @@ class YumSrcTest(unittest.TestCase):
     @patch("spacewalk.common.rhnLog", Mock())
     @patch("spacewalk.satellite_tools.repo_plugins.yum_src.fileutils.makedirs", Mock())
     def test_minrate_timeout_config(self):
-        CFG = Mock()
+        CFG = Mock()  #  pylint: disable=invalid-name
         CFG.REPOSYNC_TIMEOUT = 42
         CFG.REPOSYNC_MINRATE = 42
         CFG.REPOSYNC_DOWNLOAD_THREADS = 42  # Throws ValueError if not defined
@@ -249,7 +249,7 @@ class YumSrcTest(unittest.TestCase):
         subprocess_mock.returncode = 0
         subprocess_mock.stderr = False
 
-        MIRROR_LIST = [
+        MIRROR_LIST = [  #  pylint: disable=invalid-name
             "http://example/base/arch1/os/",
             "http://example/",
             "http://example.com/",
@@ -266,7 +266,7 @@ class YumSrcTest(unittest.TestCase):
             "spacewalk.satellite_tools.repo_plugins.yum_src.ZyppoSync._init_root",
             MagicMock(),
         ), patch(
-            "spacewalk.satellite_tools.repo_plugins.yum_src.ContentSource._get_mirror_list",
+            "spacewalk.satellite_tools.repo_plugins.yum_src.ContentSource._get_mirror_list",  #  pylint: disable=line-too-long
             MagicMock(return_value=MIRROR_LIST),
         ), patch.object(
             yum_src.ZyppoSync, "_ZyppoSync__synchronize_gpg_keys", MagicMock()
@@ -294,17 +294,17 @@ class YumSrcTest(unittest.TestCase):
         comps = cs.get_groups()
         self.assertTrue(
             comps.endswith(
-                "751019aa91884285a99d1a62a8c653a3ce41fb4e235f11077c3de52925e16ef7-comps-AppStream.x86_64.xml"
+                "751019aa91884285a99d1a62a8c653a3ce41fb4e235f11077c3de52925e16ef7-comps-AppStream.x86_64.xml"  #  pylint: disable=line-too-long
             ),
-            msg="Expected: ends with ...'{}' but got '{}'".format(
-                "751019aa91884285a99d1a62a8c653a3ce41fb4e235f11077c3de52925e16ef7-comps-AppStream.x86_64.xml",
+            msg="Expected: ends with ...'{}' but got '{}'".format(  #  pylint: disable=consider-using-f-string
+                "751019aa91884285a99d1a62a8c653a3ce41fb4e235f11077c3de52925e16ef7-comps-AppStream.x86_64.xml",  #  pylint: disable=line-too-long
                 comps,
             ),
         )
         modules = cs.get_modules()
         self.assertTrue(
             modules.endswith(
-                "2c3714db39642790c8a1922c6cae04e7b95af59b234af60f15778d5550e3a546-modules.yaml.gz"
+                "2c3714db39642790c8a1922c6cae04e7b95af59b234af60f15778d5550e3a546-modules.yaml.gz"  #  pylint: disable=line-too-long
             )
         )
 
@@ -337,7 +337,7 @@ class YumSrcTest(unittest.TestCase):
                 "spacewalk.satellite_tools.repo_plugins.yum_src.urlgrabber.urlgrab",
                 grabber_mock,
             ):
-                with open(fake_mirrorlist_file, "w") as fake_list:
+                with open(fake_mirrorlist_file, "w") as fake_list:  #  pylint: disable=unspecified-encoding
                     fake_list.writelines(
                         [
                             "http://host1/base/$basearch/os/\n",
@@ -345,7 +345,7 @@ class YumSrcTest(unittest.TestCase):
                             "http://host3/base/$ARCH/os/\n",
                         ]
                     )
-                mirrors = cs._get_mirror_list(self.repo, "https://fake/repo/url")
+                mirrors = cs._get_mirror_list(self.repo, "https://fake/repo/url")  #  pylint: disable=protected-access
                 self.assertEqual(
                     mirrors,
                     [
@@ -355,7 +355,7 @@ class YumSrcTest(unittest.TestCase):
                     ],
                 )
 
-        # If webpage is html format, and so not mirrorlist, check list of 'mirrors' is blank
+        # If webpage is html format, and so not mirrorlist, check list of 'mirrors' is blank  #  pylint: disable=line-too-long
         with patch(
             "spacewalk.satellite_tools.repo_plugins.yum_src.requests.get",
             nonmirror_request_mock,
@@ -364,7 +364,7 @@ class YumSrcTest(unittest.TestCase):
                 "spacewalk.satellite_tools.repo_plugins.yum_src.urlgrabber.urlgrab",
                 grabber_mock,
             ):
-                with open(fake_mirrorlist_file, "w") as fake_list:
+                with open(fake_mirrorlist_file, "w") as fake_list:  #  pylint: disable=unspecified-encoding
                     fake_list.writelines(
                         [
                             "http://host1/base/$basearch/os/\n",
@@ -372,7 +372,7 @@ class YumSrcTest(unittest.TestCase):
                             "http://host3/base/$ARCH/os/\n",
                         ]
                     )
-                mirrors = cs._get_mirror_list(self.repo, "https://fake/repo/url")
+                mirrors = cs._get_mirror_list(self.repo, "https://fake/repo/url")  #  pylint: disable=protected-access
                 self.assertEqual(mirrors, [])
 
         # If mirrorlist contains invalid repos, check they are discarded
@@ -384,7 +384,7 @@ class YumSrcTest(unittest.TestCase):
                 "spacewalk.satellite_tools.repo_plugins.yum_src.urlgrabber.urlgrab",
                 grabber_mock,
             ):
-                with open(fake_mirrorlist_file, "w") as fake_list:
+                with open(fake_mirrorlist_file, "w") as fake_list:  #  pylint: disable=unspecified-encoding
                     fake_list.writelines(
                         [
                             "http://host1/base/$basearch/os/\n",
@@ -394,7 +394,7 @@ class YumSrcTest(unittest.TestCase):
                             "http://host3/base/$ARCH/os/\n",
                         ]
                     )
-                mirrors = cs._get_mirror_list(self.repo, "https://fake/repo/url")
+                mirrors = cs._get_mirror_list(self.repo, "https://fake/repo/url")  #  pylint: disable=protected-access
                 self.assertEqual(
                     mirrors,
                     [
@@ -449,7 +449,7 @@ class YumSrcTest(unittest.TestCase):
             else:
                 separator = "?"
             expected_url_list.append(
-                "{}{}proxy={}&proxyuser={}&proxypass={}".format(
+                "{}{}proxy={}&proxyuser={}&proxypass={}".format(  #  pylint: disable=consider-using-f-string
                     url, separator, quote(proxy_url), proxy_user, proxy_pass
                 )
             )
@@ -465,7 +465,7 @@ class YumSrcTest(unittest.TestCase):
                 "spacewalk.satellite_tools.repo_plugins.yum_src.urlgrabber.urlgrab",
                 grabber_mock,
             ):
-                with open(fake_mirrorlist_file, "w") as fake_list:
+                with open(fake_mirrorlist_file, "w") as fake_list:  #  pylint: disable=unspecified-encoding
                     fake_list.writelines(
                         [
                             "http://example/base/arch1/os/\n",
@@ -474,7 +474,7 @@ class YumSrcTest(unittest.TestCase):
                             "https://example.org/repo/path/?token\n",
                         ]
                     )
-                mirrors = cs._get_mirror_list(self.repo, "https://fake/repo/url")
+                mirrors = cs._get_mirror_list(self.repo, "https://fake/repo/url")  #  pylint: disable=protected-access
 
                 self.assertEqual(mirrors, expected_url_list)
 
@@ -508,7 +508,7 @@ class YumSrcTest(unittest.TestCase):
             if parsed_url.username and parsed_url.password:
                 netloc = parsed_url.hostname
                 if parsed_url.port:
-                    netloc = "{1}:{2}".format(netloc, parsed_url.port)
+                    netloc = "{1}:{2}".format(netloc, parsed_url.port)  #  pylint: disable=consider-using-f-string
 
                 exp_url = urlunparse(
                     (
@@ -520,9 +520,9 @@ class YumSrcTest(unittest.TestCase):
                         parsed_url.fragment,
                     )
                 )
-                extra_query = "&credentials={}".format(cs.channel_label)
+                extra_query = "&credentials={}".format(cs.channel_label)  #  pylint: disable=consider-using-f-string
 
-            expected_url = "{}{}proxy={}&proxyuser={}&proxypass={}{}".format(
+            expected_url = "{}{}proxy={}&proxyuser={}&proxypass={}{}".format(  #  pylint: disable=consider-using-f-string
                 exp_url,
                 separator,
                 quote(proxy_url),
@@ -533,7 +533,7 @@ class YumSrcTest(unittest.TestCase):
             with patch("builtins.open", mock_open()), patch(
                 "spacewalk.satellite_tools.repo_plugins.yum_src.os.chmod", Mock()
             ):
-                comp_url = cs._prep_zypp_repo_url(url, is_uln)
+                comp_url = cs._prep_zypp_repo_url(url, is_uln)  #  pylint: disable=protected-access
 
                 assert expected_url == comp_url
 

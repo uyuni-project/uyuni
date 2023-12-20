@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2018 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -28,7 +28,7 @@ except ImportError:
     #  python3
     import urllib.parse as urlparse  # pylint: disable=F0401,E0611
     from queue import Queue, Empty
-    from urllib.parse import quote
+    from urllib.parse import quote  #  pylint: disable=ungrouped-imports
 import pycurl
 from urlgrabber.grabber import URLGrabberOptions, PyCurlFileObject, URLGrabError
 from uyuni.common.checksum import getFileChecksum
@@ -36,7 +36,7 @@ from uyuni.common.context_managers import cfg_component
 from spacewalk.satellite_tools.syncLib import log, log2
 
 
-class ProgressBarLogger:
+class ProgressBarLogger:  #  pylint: disable=missing-class-docstring
     def __init__(self, msg, total):
         self.msg = msg
         self.total = total
@@ -53,11 +53,11 @@ class ProgressBarLogger:
         if time.time() > int(self.last_log + 90):
             self.last_log = time.time()
             log(
-                0, "%s %s" % (round(100.00 * (self.status / float(self.total)), 2), "%")
+                0, "%s %s" % (round(100.00 * (self.status / float(self.total)), 2), "%")  #  pylint: disable=consider-using-f-string
             )
         self.lock.release()
 
-    # from here http://stackoverflow.com/questions/3173320/text-progress-bar-in-the-console
+    # from here http://stackoverflow.com/questions/3173320/text-progress-bar-in-the-console  #  pylint: disable=line-too-long
     # Print iterations progress
     @staticmethod
     def _print_progress_bar(
@@ -77,7 +77,7 @@ class ProgressBarLogger:
         percents = round(100.00 * (iteration / float(total)), decimals)
         bar_char = "#" * filled_length + "-" * (bar_length - filled_length)
         sys.stdout.write(
-            "\r%s |%s| %s%s %s" % (prefix, bar_char, percents, "%", suffix)
+            "\r%s |%s| %s%s %s" % (prefix, bar_char, percents, "%", suffix)  #  pylint: disable=consider-using-f-string
         )
         sys.stdout.flush()
         if iteration == total:
@@ -85,7 +85,7 @@ class ProgressBarLogger:
             sys.stdout.flush()
 
 
-class TextLogger:
+class TextLogger:  #  pylint: disable=missing-class-docstring
     def __init__(self, _, total):
         self.total = total
         self.status = 0
@@ -95,12 +95,12 @@ class TextLogger:
         self.lock.acquire()
         self.status += 1
         if success:
-            log(0, "    %d/%d : %s" % (self.status, self.total, str(param)))
+            log(0, "    %d/%d : %s" % (self.status, self.total, str(param)))  #  pylint: disable=consider-using-f-string
         else:
             log2(
                 0,
                 0,
-                "    %d/%d : %s (failed)" % (self.status, self.total, str(param)),
+                "    %d/%d : %s (failed)" % (self.status, self.total, str(param)),  #  pylint: disable=consider-using-f-string
                 stream=sys.stderr,
             )
         self.lock.release()
@@ -117,19 +117,19 @@ def get_proxies(proxy, user, password):
         if password:
             auth += ":" + quote(password)
         proto, rest = re.match(r"(\w+://)(.+)", proxy_string).groups()
-        proxy_string = "%s%s@%s" % (proto, auth, rest)
+        proxy_string = "%s%s@%s" % (proto, auth, rest)  #  pylint: disable=consider-using-f-string
     proxies = {"http": proxy_string, "https": proxy_string, "ftp": proxy_string}
     return proxies
 
 
-class PyCurlFileObjectThread(PyCurlFileObject):
+class PyCurlFileObjectThread(PyCurlFileObject):  #  pylint: disable=missing-class-docstring
     def __init__(self, url, filename, opts, curl_cache, parent):
         self.curl_cache = curl_cache
         self.parent = parent
         # Next 3 lines will not be required on having urlgrabber with proper fix
         # https://github.com/rpm-software-management/urlgrabber/pull/35
         (url, parts) = opts.urlparser.parse(url, opts)
-        (scheme, host, path, parm, query, frag) = parts
+        (scheme, host, path, parm, query, frag) = parts  #  pylint: disable=unused-variable,unused-variable,unused-variable,unused-variable,unused-variable
         opts.find_proxy(url, scheme)
         super().__init__(url, filename, opts)
 
@@ -141,7 +141,7 @@ class PyCurlFileObjectThread(PyCurlFileObject):
         return self.fo
 
     def _do_perform(self):
-        # WORKAROUND - BZ #1439758 - ensure first item in queue is performed alone to properly setup NSS
+        # WORKAROUND - BZ #1439758 - ensure first item in queue is performed alone to properly setup NSS  #  pylint: disable=line-too-long
         if not self.parent.first_in_queue_done:
             self.parent.first_in_queue_lock.acquire()
             # If some other thread was faster, no need to block anymore
@@ -159,7 +159,7 @@ class FailedDownloadError(Exception):
     pass
 
 
-class DownloadThread(Thread):
+class DownloadThread(Thread):  #  pylint: disable=missing-class-docstring
     def __init__(self, parent, queue):
         super().__init__()
         self.parent = parent
@@ -189,14 +189,14 @@ class DownloadThread(Thread):
         code = getattr(e, "code", None)
         if retry < (self.parent.retries - 1):
             # No codes at all or some specified codes
-            # 58, 77 - Couple of curl error codes observed in multithreading on RHEL 7 - probably a bug
+            # 58, 77 - Couple of curl error codes observed in multithreading on RHEL 7 - probably a bug  #  pylint: disable=line-too-long
             if (retrycode is None and code is None) or (
                 retrycode in opts.retrycodes or code in [58, 77]
             ):
                 log2(
                     0,
                     2,
-                    "WARNING: Download failed: %s - %s. Retrying..."
+                    "WARNING: Download failed: %s - %s. Retrying..."  #  pylint: disable=consider-using-f-string
                     % (url, sys.exc_info()[1]),
                     stream=sys.stderr,
                 )
@@ -207,7 +207,7 @@ class DownloadThread(Thread):
             log2(
                 0,
                 2,
-                "WARNING: Download failed: %s - %s. Trying next mirror..."
+                "WARNING: Download failed: %s - %s. Trying next mirror..."  #  pylint: disable=consider-using-f-string
                 % (url, sys.exc_info()[1]),
                 stream=sys.stderr,
             )
@@ -216,7 +216,7 @@ class DownloadThread(Thread):
         log2(
             0,
             1,
-            "ERROR: Download failed: %s - %s." % (url, sys.exc_info()[1]),
+            "ERROR: Download failed: %s - %s." % (url, sys.exc_info()[1]),  #  pylint: disable=consider-using-f-string
             stream=sys.stderr,
         )
         return False
@@ -237,7 +237,7 @@ class DownloadThread(Thread):
             ):
                 return True
 
-        # 14 => HTTPError (https://github.com/rpm-software-management/urlgrabber/blob/1e6d2debe79efdd1ba2f39913dc808723e51a7f7/urlgrabber/grabber.py#L757)
+        # 14 => HTTPError (https://github.com/rpm-software-management/urlgrabber/blob/1e6d2debe79efdd1ba2f39913dc808723e51a7f7/urlgrabber/grabber.py#L757)  #  pylint: disable=line-too-long
         retrycodes = URLGrabberOptions().retrycodes
         if 14 not in retrycodes:
             retrycodes.append(14)
@@ -288,7 +288,7 @@ class DownloadThread(Thread):
                         checksum=params["checksum"],
                     ):
                         raise FailedDownloadError(
-                            "Target file isn't valid. Checksum should be %s (%s)."
+                            "Target file isn't valid. Checksum should be %s (%s)."  #  pylint: disable=consider-using-f-string
                             % (params["checksum"], params["checksum_type"])
                         )
                     break
@@ -304,7 +304,7 @@ class DownloadThread(Thread):
                     if not self.__can_retry(retry, mirrors, opts, url, e):
                         return False
                     self.__next_mirror(mirrors)
-                # RHEL 6 urlgrabber raises KeyboardInterrupt for example when there is no space left
+                # RHEL 6 urlgrabber raises KeyboardInterrupt for example when there is no space left  #  pylint: disable=line-too-long
                 # but handle also other fatal exceptions
                 except (KeyboardInterrupt, Exception):  # pylint: disable=W0703
                     e = sys.exc_info()[1]
@@ -339,40 +339,40 @@ class DownloadThread(Thread):
         self.curl.close()
 
 
-class ThreadedDownloader:
+class ThreadedDownloader:  #  pylint: disable=missing-class-docstring
     def __init__(self, retries=3, log_obj=None, force=False):
         self.queues = {}
-        with cfg_component("server.satellite") as CFG:
+        with cfg_component("server.satellite") as CFG:  #  pylint: disable=invalid-name
             try:
                 self.threads = int(CFG.REPOSYNC_DOWNLOAD_THREADS)
             except ValueError:
-                raise ValueError(
-                    "Number of threads expected, found: '%s'"
+                raise ValueError(  #  pylint: disable=raise-missing-from
+                    "Number of threads expected, found: '%s'"  #  pylint: disable=consider-using-f-string
                     % CFG.REPOSYNC_DOWNLOAD_THREADS
                 )
             try:
                 self.timeout = int(CFG.REPOSYNC_TIMEOUT)
             except ValueError:
-                raise ValueError(
-                    "Timeout in seconds expected, found: '%s'" % CFG.REPOSYNC_TIMEOUT
+                raise ValueError(  #  pylint: disable=raise-missing-from
+                    "Timeout in seconds expected, found: '%s'" % CFG.REPOSYNC_TIMEOUT  #  pylint: disable=consider-using-f-string
                 )
             try:
                 self.minrate = int(CFG.REPOSYNC_MINRATE)
             except ValueError:
-                raise ValueError(
-                    "Minimal transfer rate in bytes pre second expected, found: '%s'"
+                raise ValueError(  #  pylint: disable=raise-missing-from
+                    "Minimal transfer rate in bytes pre second expected, found: '%s'"  #  pylint: disable=consider-using-f-string
                     % CFG.REPOSYNC_MINRATE
                 )
 
         if self.threads < 1:
-            raise ValueError("Invalid number of threads: %d" % self.threads)
+            raise ValueError("Invalid number of threads: %d" % self.threads)  #  pylint: disable=consider-using-f-string
 
         self.retries = retries
         self.log_obj = log_obj
         self.force = force
         self.lock = Lock()
         self.exception = None
-        # WORKAROUND - BZ #1439758 - ensure first item in queue is performed alone to properly setup NSS
+        # WORKAROUND - BZ #1439758 - ensure first item in queue is performed alone to properly setup NSS  #  pylint: disable=line-too-long
         self.first_in_queue_done = False
         self.first_in_queue_lock = Lock()
         self.failed_pkgs = set()
@@ -391,7 +391,7 @@ class ThreadedDownloader:
                 log2(
                     0,
                     0,
-                    "ERROR: Certificate file not found: %s" % certificate_file,
+                    "ERROR: Certificate file not found: %s" % certificate_file,  #  pylint: disable=consider-using-f-string
                     stream=sys.stderr,
                 )
                 return False
@@ -417,15 +417,15 @@ class ThreadedDownloader:
             size += queue.qsize()
         if size <= 0:
             return
-        log(1, "Downloading total %d files from %d queues." % (size, len(self.queues)))
+        log(1, "Downloading total %d files from %d queues." % (size, len(self.queues)))  #  pylint: disable=consider-using-f-string
 
         for index, queue in enumerate(self.queues.values()):
-            log(2, "Downloading %d files from queue #%d." % (queue.qsize(), index))
+            log(2, "Downloading %d files from queue #%d." % (queue.qsize(), index))  #  pylint: disable=consider-using-f-string
             self.first_in_queue_done = False
             started_threads = []
             for _ in range(self.threads):
                 thread = DownloadThread(self, queue)
-                thread.setDaemon(True)
+                thread.setDaemon(True)  #  pylint: disable=deprecated-method
                 thread.start()
                 started_threads.append(thread)
 

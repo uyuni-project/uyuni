@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring,invalid-name
 # Copyright (c) 2010--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -44,7 +44,7 @@ def handle(
     req.set_option("SERVER", server)
     req.set_option("RHNComponentType", component_type)
 
-    parseServ = get_handle(servertype, "HeaderParserHandler")
+    parseServ = get_handle(servertype, "HeaderParserHandler")  #  pylint: disable=invalid-name
     ret = parseServ(req)
 
     if len(req.output) > 0 or ret != 0:
@@ -52,7 +52,7 @@ def handle(
             req.send_http_header(status=ret)
         return req.output
 
-    appServ = get_handle(servertype, "Handler")
+    appServ = get_handle(servertype, "Handler")  #  pylint: disable=invalid-name
     ret = appServ(req)
 
     if not ret:
@@ -63,9 +63,9 @@ def handle(
 
     # exporter doesn't have a logHandler
     if servertype != "spacewalk.satellite_exporter.satexport":
-        logServ = get_handle(servertype, "LogHandler")
+        logServ = get_handle(servertype, "LogHandler")  #  pylint: disable=invalid-name
         logServ(req)
-    cleanServ = get_handle(servertype, "CleanupHandler")
+    cleanServ = get_handle(servertype, "CleanupHandler")  #  pylint: disable=invalid-name
     cleanServ(req)
 
     return req.output

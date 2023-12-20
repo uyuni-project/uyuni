@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Licensed under the GNU General Public License Version 3
 #
 # This program is free software; you can redistribute it and/or modify
@@ -56,7 +56,7 @@ class UnknownCallException(Exception):
         Exception.__init__(self)
 
 
-class SpacewalkShell(Cmd):
+class SpacewalkShell(Cmd):  #  pylint: disable=missing-class-docstring
     __module_list = [
         "activationkey",
         "configchannel",
@@ -86,7 +86,7 @@ class SpacewalkShell(Cmd):
 
     # a SyntaxError is thrown if we don't wrap this in an 'exec'
     for module in __module_list:
-        exec("from spacecmd.%s import *" % module)
+        exec("from spacecmd.%s import *" % module)  #  pylint: disable=consider-using-f-string
 
     # maximum length of history file
     HISTORY_LENGTH = 1024
@@ -98,7 +98,7 @@ class SpacewalkShell(Cmd):
     current_line = ""
 
     # do nothing on an empty line
-    emptyline = lambda self: None
+    emptyline = lambda self: None  #  pylint: disable=unnecessary-lambda-assignment
 
     def __init__(self, options, conf_dir, config_parser):
         Cmd.__init__(self)
@@ -191,7 +191,7 @@ class SpacewalkShell(Cmd):
 
         # print(the help message for a command if the user passed --help)
         if "--help" in parts or "-h" in parts:
-            return "help %s" % command
+            return "help %s" % command  #  pylint: disable=consider-using-f-string
 
         # should we look for an item in the history?
         if command[0] != "!" or len(command) < 2:
@@ -221,7 +221,7 @@ class SpacewalkShell(Cmd):
                 if line:
                     history_match = True
                 else:
-                    raise Exception
+                    raise Exception  #  pylint: disable=broad-exception-raised
             except IndexError:
                 pass
             except ValueError:
@@ -243,7 +243,7 @@ class SpacewalkShell(Cmd):
         if history_match:
             if parts[1:]:
                 for arg in parts[1:]:
-                    line += " '%s'" % arg
+                    line += " '%s'" % arg  #  pylint: disable=consider-using-f-string
 
             readline.add_history(line)
             print(line)
@@ -254,7 +254,7 @@ class SpacewalkShell(Cmd):
 
     # update the prompt with the SSM size
     # pylint: disable=arguments-differ
-    def postcmd(self, cmdresult, cmd):
+    def postcmd(self, cmdresult, cmd):  #  pylint: disable=arguments-renamed,arguments-renamed
         logging.debug("command=%s, return_value=%s", cmd, repr(cmdresult))
         self.prompt = re.sub("##", str(len(self.ssm)), self.prompt_template)
 

@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -16,7 +16,7 @@
 #
 #
 
-import string
+import string  #  pylint: disable=unused-import
 
 from rhn.UserDictCase import UserDictCase
 from spacewalk.common.rhnException import rhnException
@@ -26,8 +26,8 @@ from . import sql_lib
 
 
 # A class to handle row updates transparently
-class RowData(UserDictCase):
-    def __init__(self, dict, db, sql, rowid, cache=None):
+class RowData(UserDictCase):  #  pylint: disable=missing-class-docstring
+    def __init__(self, dict, db, sql, rowid, cache=None):  #  pylint: disable=redefined-builtin
         UserDictCase.__init__(self, dict)
         if not isinstance(db, sql_base.Database):
             raise TypeError("Second argument needs to be a database handle")
@@ -46,7 +46,7 @@ class RowData(UserDictCase):
         if self.__cache:  # maintain cache consistency
             try:
                 self.__cache[self.__rowid][key] = value
-            except:
+            except:  #  pylint: disable=bare-except
                 pass
 
 
@@ -59,7 +59,7 @@ class RowData(UserDictCase):
 # more efficient because it works as a hash of hashes, if you will...
 #
 # Some day we'll figure out how to reduce confusion...
-class Table:
+class Table:  #  pylint: disable=missing-class-docstring
     def __init__(self, db, table, hashid, cache=False):
         if not table or not isinstance(table, str):
             raise rhnException("First argument needs to be a table name", table)
@@ -91,7 +91,7 @@ class Table:
         def insert_row(row, self=self):
             if self.__cache is not None:
                 self.__cache[row[self.__hashid]] = row
-            return self.__setitem__(None, row)
+            return self.__setitem__(None, row)  #  pylint: disable=unnecessary-dunder-call
 
         if isinstance(rows, dict) or isinstance(rows, UserDictCase):
             return insert_row(rows)
@@ -99,14 +99,14 @@ class Table:
             for x in rows:
                 insert_row(x)
             return None
-        raise rhnException("Invalid data %s passed" % type(rows), rows)
+        raise rhnException("Invalid data %s passed" % type(rows), rows)  #  pylint: disable=consider-using-f-string
 
     # select from the whole table all the entries that match the
     # valuies of the hash provided (kind of a complex select)
     def select(self, row):
         if not isinstance(row, dict) and not isinstance(row, UserDictCase):
             raise rhnException(
-                "Expecting hash argument. %s is invalid" % type(row), row
+                "Expecting hash argument. %s is invalid" % type(row), row  #  pylint: disable=consider-using-f-string
             )
         if row == {}:
             raise rhnException("The hash argument is empty", row)
@@ -116,11 +116,11 @@ class Table:
         args = []
         for col in keys:
             if row[col] in (None, ""):
-                clause = "%s is null" % col
+                clause = "%s is null" % col  #  pylint: disable=consider-using-f-string
             else:
-                clause = "%s = :%s" % (col, col)
+                clause = "%s = :%s" % (col, col)  #  pylint: disable=consider-using-f-string
             args.append(clause)
-        sql = "select * from %s where " % self.__table
+        sql = "select * from %s where " % self.__table  #  pylint: disable=consider-using-f-string
         cursor = self.__db.prepare(sql + " and ".join(args))
         cursor.execute(**row)
         rows = cursor.fetchall_dict()
@@ -134,7 +134,7 @@ class Table:
 
     # print it out
     def __repr__(self):
-        return "<%s> instance for table `%s' keyed on `%s'" % (
+        return "<%s> instance for table `%s' keyed on `%s'" % (  #  pylint: disable=consider-using-f-string
             self.__class__,
             self.__table,
             self.__hashid,
@@ -145,7 +145,7 @@ class Table:
         if self.__cache and key in self.__cache:
             return self.__cache[key]
         h = self.__db.prepare(
-            "select * from %s where %s = :p1" % (self.__table, self.__hashid)
+            "select * from %s where %s = :p1" % (self.__table, self.__hashid)  #  pylint: disable=consider-using-f-string
         )
         h.execute(p1=key)
         ret = h.fetchone_dict()
@@ -162,10 +162,10 @@ class Table:
     # reference to a RowData instance that allows the returned hash to
     # be modified.
     def get(self, key):
-        ret = self.__getitem__(key)
+        ret = self.__getitem__(key)  #  pylint: disable=unnecessary-dunder-call
         if self.__cache and key in self.__cache:
             del self.__cache[key]
-        sql = "update %s set %%s = :new_val where %s = :row_id" % (
+        sql = "update %s set %%s = :new_val where %s = :row_id" % (  #  pylint: disable=consider-using-f-string
             self.__table,
             self.__hashid,
         )
@@ -185,7 +185,7 @@ class Table:
         if key is None:
             raise KeyError("Can not insert entry with NULL key")
         items = list(value.items())
-        if items == []:  # quick check for noop
+        if items == []:  # quick check for noop  #  pylint: disable=use-implicit-booleaness-not-comparison
             return
         sql = None
         if self.has_key(key):
@@ -199,12 +199,12 @@ class Table:
         try:
             value[self.__hashid] = key
             self.__cache[key] = value
-        except:
+        except:  #  pylint: disable=bare-except
             pass
 
     # length
     def __len__(self):
-        h = self.__db.prepare("select count(*) as ID from %s" % self.__table)
+        h = self.__db.prepare("select count(*) as ID from %s" % self.__table)  #  pylint: disable=consider-using-f-string
         h.execute()
         row = h.fetchone_dict()
         if row is None:
@@ -214,19 +214,19 @@ class Table:
     # delete an entry by the key
     def __delitem__(self, key):
         h = self.__db.prepare(
-            "delete from %s where %s = :p1" % (self.__table, self.__hashid)
+            "delete from %s where %s = :p1" % (self.__table, self.__hashid)  #  pylint: disable=consider-using-f-string
         )
         h.execute(p1=key)
         try:
             del self.__cache[key]
-        except:
+        except:  #  pylint: disable=bare-except
             pass
         return 0
 
     # get all keys
     def keys(self):
         h = self.__db.prepare(
-            "select %s as NAME from %s" % (self.__hashid, self.__table)
+            "select %s as NAME from %s" % (self.__hashid, self.__table)  #  pylint: disable=consider-using-f-string
         )
         h.execute()
         data = h.fetchall_dict()
@@ -240,11 +240,11 @@ class Table:
     def has_key(self, key):
         if self.__cache is not None:
             h = self.__db.prepare(
-                "select * from %s where %s = :p1" % (self.__table, self.__hashid)
+                "select * from %s where %s = :p1" % (self.__table, self.__hashid)  #  pylint: disable=consider-using-f-string
             )
         else:
             h = self.__db.prepare(
-                "select %s from %s where %s = :p1"
+                "select %s from %s where %s = :p1"  #  pylint: disable=consider-using-f-string
                 % (self.__hashid, self.__table, self.__hashid)
             )
         h.execute(p1=key)

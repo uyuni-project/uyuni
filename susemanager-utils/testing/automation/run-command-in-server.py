@@ -1,25 +1,25 @@
-#!/usr/bin/python3
+#!/usr/bin/python3  #  pylint: disable=missing-module-docstring,invalid-name
 import paramiko
 import sys
-from optparse import OptionParser
+from optparse import OptionParser  #  pylint: disable=deprecated-module
 
 
 def debug(msg):
     if options.verbose == "yes":
-        print("DEBUG [{}]: {}".format(sys.argv[0], msg))
+        print("DEBUG [{}]: {}".format(sys.argv[0], msg))  #  pylint: disable=consider-using-f-string
 
 
-def errors(errs):
+def errors(errs):  #  pylint: disable=redefined-outer-name
     if len(errs) == 0:
         return
     for e in errs:
-        print("ERROR [{}]: {}".format(sys.argv[0], e))
+        print("ERROR [{}]: {}".format(sys.argv[0], e))  #  pylint: disable=consider-using-f-string
     sys.exit(-1)
 
 
 def outputs(out):
     for o in out:
-        print("Output [{}]: {}".format(sys.argv[0], o))
+        print("Output [{}]: {}".format(sys.argv[0], o))  #  pylint: disable=consider-using-f-string
 
 
 parser = OptionParser(usage="usage: %prog [options] HOSTNAME")
@@ -46,7 +46,7 @@ parser.add_option(
 
 (options, args) = parser.parse_args()
 if len(args) != 1:
-    errors(["Usage: {} HOSTNAME".format(sys.argv[0])])
+    errors(["Usage: {} HOSTNAME".format(sys.argv[0])])  #  pylint: disable=consider-using-f-string
 
 hostname = args[0]
 
@@ -68,14 +68,14 @@ ssh = paramiko.SSHClient()
 if options.insecure:
     debug("setting auto add policy for unknown ssh keys")
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-debug("connecting to {}".format(hostname))
+debug("connecting to {}".format(hostname))  #  pylint: disable=consider-using-f-string
 ssh.connect(hostname, options.port, options.username, options.password)
-debug("running command {}".format(options.command))
+debug("running command {}".format(options.command))  #  pylint: disable=consider-using-f-string
 stdin, stdout, stderr = ssh.exec_command(options.command)
 errs = stderr.readlines()
 if len(errs) != 0:
     print(
-        "ERROR: There was an error connecting to {} and running {}".format(
+        "ERROR: There was an error connecting to {} and running {}".format(  #  pylint: disable=consider-using-f-string
             hostname, options.command
         )
     )

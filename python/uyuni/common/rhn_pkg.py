@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -45,15 +45,15 @@ def get_package_header(filename=None, file_obj=None, fd=None):
 
 def package_from_stream(stream, packaging):
     if packaging == "deb":
-        from uyuni.common import rhn_deb
+        from uyuni.common import rhn_deb  #  pylint: disable=import-outside-toplevel
 
         a_pkg = rhn_deb.DEB_Package(stream)
     elif packaging == "rpm":
-        from uyuni.common import rhn_rpm
+        from uyuni.common import rhn_rpm  #  pylint: disable=import-outside-toplevel
 
         a_pkg = rhn_rpm.RPM_Package(stream)
     elif packaging == "mpm":
-        from uyuni.common import rhn_mpm
+        from uyuni.common import rhn_mpm  #  pylint: disable=import-outside-toplevel
 
         a_pkg = rhn_mpm.MPM_Package(stream)
     else:
@@ -76,7 +76,7 @@ BUFFER_SIZE = 8388608
 DEFAULT_CHECKSUM_TYPE = "md5"
 
 
-class A_Package:
+class A_Package:  #  pylint: disable=invalid-name
 
     """virtual class that implements shared methods for RPM/MPM/DEB package object"""
 
@@ -118,7 +118,7 @@ class A_Package:
         """set ctype as checksum type. If ctype is None; reset to default"""
         if self.checksum_type == ctype:
             return
-        if ctype == None and DEFAULT_CHECKSUM_TYPE != self.checksum_type:
+        if ctype == None and DEFAULT_CHECKSUM_TYPE != self.checksum_type:  #  pylint: disable=singleton-comparison
             self.checksum_type = DEFAULT_CHECKSUM_TYPE
             self.payload_checksum()
         elif self.checksum_type != ctype:

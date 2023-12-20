@@ -34,7 +34,7 @@ import salt.utils.http as http
 
 # Internal metadata API information
 INTERNAL_API_IP = "169.254.169.254"
-HOST = "http://{0}/".format(INTERNAL_API_IP)
+HOST = "http://{0}/".format(INTERNAL_API_IP)  #  pylint: disable=consider-using-f-string
 
 INSTANCE_ID = None
 
@@ -46,7 +46,7 @@ GOOGLE_URL_PATH = "computeMetadata/v1/instance/"
 log = logging.getLogger(__name__)
 
 
-def __virtual__():
+def __virtual__():  #  pylint: disable=invalid-name
     global INSTANCE_ID
     log.debug("Checking if minion is running in the public cloud")
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -70,7 +70,7 @@ def __virtual__():
                     opts=opts,
                 )
             }
-        except:
+        except:  #  pylint: disable=bare-except
             ret = {data[0]: dict()}
         return ret
 
@@ -92,8 +92,8 @@ def __virtual__():
         results = pool.map(_do_api_request, api_check_dict)
         pool.close()
         pool.join()
-    except Exception as exc:
-        import traceback
+    except Exception as exc:  #  pylint: disable=broad-exception-caught
+        import traceback  #  pylint: disable=import-outside-toplevel
 
         log.error(traceback.format_exc())
         log.error(
@@ -151,18 +151,18 @@ def _is_valid_instance_id(id_str):
 
 
 def instance_id():
-    global INSTANCE_ID
+    global INSTANCE_ID  #  pylint: disable=global-variable-not-assigned
     ret = {}
     if _is_valid_instance_id(INSTANCE_ID):
         log.debug(
-            "This minion is running in the public cloud. Adding instance_id to grains: {}".format(
+            "This minion is running in the public cloud. Adding instance_id to grains: {}".format(  #  pylint: disable=line-too-long,logging-format-interpolation,consider-using-f-string
                 INSTANCE_ID
             )
         )
         ret["instance_id"] = INSTANCE_ID
     else:
         log.error(
-            "The obtained public cloud instance id doesn't seems correct: {}".format(
+            "The obtained public cloud instance id doesn't seems correct: {}".format(  #  pylint: disable=logging-format-interpolation,consider-using-f-string
                 INSTANCE_ID
             )
         )

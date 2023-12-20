@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python  #  pylint: disable=missing-module-docstring
 # -*- coding: utf-8 -*-
 #
 # Copyright (c) 2011 SUSE LLC
@@ -15,7 +15,7 @@
 # in this software or its documentation.
 
 import inspect
-import imp
+import imp  #  pylint: disable=deprecated-module
 import sys
 import unittest
 import json
@@ -132,7 +132,7 @@ class RepoSyncTest(unittest.TestCase):
         """Test generates empty metadata via taskomatic and quits"""
         # the channel shouldn't be found in the database
         _mock_rhnsql(self.reposync, False)
-        self.reposync.taskomatic.add_to_repodata_queue_for_channel_package_subscription = (
+        self.reposync.taskomatic.add_to_repodata_queue_for_channel_package_subscription = (  #  pylint: disable=line-too-long
             Mock()
         )
 
@@ -142,12 +142,12 @@ class RepoSyncTest(unittest.TestCase):
         self.assertRaises(SystemExit, self.reposync.RepoSync, "WrongLabel", RTYPE)
 
         self.assertTrue(
-            self.reposync.taskomatic.add_to_repodata_queue_for_channel_package_subscription.called
+            self.reposync.taskomatic.add_to_repodata_queue_for_channel_package_subscription.called  #  pylint: disable=line-too-long
         )
 
     def test_init_rhnlog(self):
         """Init rhnLog successfully"""
-        rs = _init_reposync(self.reposync, "Label", RTYPE)
+        rs = _init_reposync(self.reposync, "Label", RTYPE)  #  pylint: disable=unused-variable
 
         self.assertTrue(self.reposync.rhnLog.initLOG.called)
 
@@ -194,7 +194,7 @@ class RepoSyncTest(unittest.TestCase):
     @patch("uyuni.common.context_managers.initCFG", Mock())
     def test_sync_success_no_regen(self):
         rs = _init_reposync(self.reposync)
-        CFG = Mock()
+        CFG = Mock()  #  pylint: disable=invalid-name
         CFG.MOUNT_POINT = "/tmp"
         CFG.PREPENDED_DIR = ""
         CFG.AUTO_GENERATE_BOOTSTRAP_REPO = 1
@@ -230,14 +230,14 @@ class RepoSyncTest(unittest.TestCase):
         self.assertTrue(rs.update_date.called)
         # these aren't supposed to be called unless self.regen is True
         self.assertFalse(
-            self.reposync.taskomatic.add_to_repodata_queue_for_channel_package_subscription.called
+            self.reposync.taskomatic.add_to_repodata_queue_for_channel_package_subscription.called  #  pylint: disable=line-too-long
         )
         self.assertFalse(self.reposync.taskomatic.add_to_erratacache_queue.called)
 
     @patch("uyuni.common.context_managers.initCFG", Mock())
     def test_sync_success_regen(self):
         rs = _init_reposync(self.reposync)
-        CFG = Mock()
+        CFG = Mock()  #  pylint: disable=invalid-name
         CFG.MOUNT_POINT = "/tmp"
         CFG.PREPENDED_DIR = ""
         CFG.AUTO_GENERATE_BOOTSTRAP_REPO = 1
@@ -259,7 +259,7 @@ class RepoSyncTest(unittest.TestCase):
             rs.sync()
 
         self.assertEqual(
-            self.reposync.taskomatic.add_to_repodata_queue_for_channel_package_subscription.call_args,
+            self.reposync.taskomatic.add_to_repodata_queue_for_channel_package_subscription.call_args,  #  pylint: disable=line-too-long
             ((["Label"], [], "server.app.yumreposync"), {}),
         )
         self.assertEqual(
@@ -268,7 +268,7 @@ class RepoSyncTest(unittest.TestCase):
         )
 
     def _mock_cfg(self) -> Mock:
-        CFG = Mock()
+        CFG = Mock()  #  pylint: disable=invalid-name
         CFG.MOUNT_POINT = "/tmp"
         CFG.PREPENDED_DIR = ""
         CFG.AUTO_GENERATE_BOOTSTRAP_REPO = 1
@@ -305,7 +305,7 @@ class RepoSyncTest(unittest.TestCase):
     def test_import_packages_excludes_failed_pkgs(self, pool, downloader):
         """
         When downloader fails to download a subset of packages
-        Then the RepoSync.import_packages function should not process the failed packages
+        Then the RepoSync.import_packages function should not process the failed packages  #  pylint: disable=line-too-long
         """
         rs = _init_reposync(self.reposync)
         _mock_rhnsql(self.reposync, [None, []])
@@ -327,7 +327,7 @@ class RepoSyncTest(unittest.TestCase):
     @patch("uyuni.common.context_managers.initCFG", Mock())
     def test_sync_raises_channel_timeout(self):
         rs = self._create_mocked_reposync()
-        CFG = Mock()
+        CFG = Mock()  #  pylint: disable=invalid-name
         CFG.MOUNT_POINT = "/tmp"
         CFG.PREPENDED_DIR = ""
         CFG.AUTO_GENERATE_BOOTSTRAP_REPO = 1
@@ -337,7 +337,7 @@ class RepoSyncTest(unittest.TestCase):
         rs.sendErrorMail = Mock()
 
         with patch("uyuni.common.context_managers.CFG", CFG):
-            etime, ret = rs.sync()
+            etime, ret = rs.sync()  #  pylint: disable=unused-variable
             self.assertEqual(-1, ret)
         self.assertEqual(rs.sendErrorMail.call_args, (("anony-error",), {}))
         self.assertEqual(self.reposync.log.call_args[0][1], exception)
@@ -345,7 +345,7 @@ class RepoSyncTest(unittest.TestCase):
     @patch("uyuni.common.context_managers.initCFG", Mock())
     def test_sync_raises_unexpected_error(self):
         rs = self._create_mocked_reposync()
-        CFG = Mock()
+        CFG = Mock()  #  pylint: disable=invalid-name
         CFG.MOUNT_POINT = "/tmp"
         CFG.PREPENDED_DIR = ""
         CFG.AUTO_GENERATE_BOOTSTRAP_REPO = 1
@@ -353,12 +353,12 @@ class RepoSyncTest(unittest.TestCase):
         rs.load_plugin = Mock(return_value=Mock(side_effect=TypeError))
         rs.sendErrorMail = Mock()
         with patch("uyuni.common.context_managers.CFG", CFG):
-            etime, ret = rs.sync()
+            etime, ret = rs.sync()  #  pylint: disable=unused-variable
             self.assertEqual(-1, ret)
 
         error_string = self.reposync.log.call_args[0][1]
         assert error_string.startswith("Traceback") and "TypeError" in error_string, (
-            "The error string does not contain the keywords "
+            "The error string does not contain the keywords "  #  pylint: disable=consider-using-f-string
             "'Traceback' and 'TypeError':\n %s\n---end of assert" % error_string
         )
 
@@ -390,7 +390,7 @@ class RepoSyncTest(unittest.TestCase):
                 {"type": "godzilla", "this": "should be skipped"},
             ]
         }
-        bugs = self.reposync.RepoSync._update_bugs(notice)
+        bugs = self.reposync.RepoSync._update_bugs(notice)  #  pylint: disable=protected-access
 
         bug_values = [
             set(["12345", "title1", "href1"]),
@@ -401,7 +401,7 @@ class RepoSyncTest(unittest.TestCase):
         self.assertEqual(len(bugs), 3)
         for bug in bugs:
             self.assertCountEqual(list(bug.keys()), ["bug_id", "href", "summary"])
-            assert set(bug.values()) in bug_values, "Bug set(%s) not in %s" % (
+            assert set(bug.values()) in bug_values, "Bug set(%s) not in %s" % (  #  pylint: disable=consider-using-f-string
                 list(bug.values()),
                 bug_values,
             )
@@ -416,7 +416,7 @@ class RepoSyncTest(unittest.TestCase):
             ],
             "description": None,
         }
-        cves = self.reposync.RepoSync._update_cve(notice)
+        cves = self.reposync.RepoSync._update_cve(notice)  #  pylint: disable=protected-access
 
         self.assertCountEqual(cves, ["CVE-1234-5678", "CVE-1234-123456"])
 
@@ -428,9 +428,9 @@ class RepoSyncTest(unittest.TestCase):
                 {"type": "cve", "id": "CVE-1234-5678"},
                 {"type": "this should be skipped"},
             ],
-            "description": "This is a text with two CVE numbers CVE-1234-5678, CVE-1234-567901",
+            "description": "This is a text with two CVE numbers CVE-1234-5678, CVE-1234-567901",  #  pylint: disable=line-too-long
         }
-        cves = self.reposync.RepoSync._update_cve(notice)
+        cves = self.reposync.RepoSync._update_cve(notice)  #  pylint: disable=protected-access
 
         self.assertCountEqual(
             cves, ["CVE-1234-567901", "CVE-1234-5678", "CVE-1234-1234"]
@@ -441,14 +441,14 @@ class RepoSyncTest(unittest.TestCase):
 
         keyword = self.reposync.importLib.Keyword()
         keyword.populate({"keyword": "reboot_suggested"})
-        self.assertEqual(self.reposync.RepoSync._update_keywords(notice), [keyword])
+        self.assertEqual(self.reposync.RepoSync._update_keywords(notice), [keyword])  #  pylint: disable=protected-access
 
     def test_update_keywords_restart(self):
         notice = {"reboot_suggested": False, "restart_suggested": True}
 
         keyword = self.reposync.importLib.Keyword()
         keyword.populate({"keyword": "restart_suggested"})
-        self.assertEqual(self.reposync.RepoSync._update_keywords(notice), [keyword])
+        self.assertEqual(self.reposync.RepoSync._update_keywords(notice), [keyword])  #  pylint: disable=protected-access
 
     def test_update_keywords_restart_and_reboot(self):
         notice = {"reboot_suggested": True, "restart_suggested": True}
@@ -458,21 +458,21 @@ class RepoSyncTest(unittest.TestCase):
         keyword_reboot = self.reposync.importLib.Keyword()
         keyword_reboot.populate({"keyword": "reboot_suggested"})
         self.assertEqual(
-            self.reposync.RepoSync._update_keywords(notice),
+            self.reposync.RepoSync._update_keywords(notice),  #  pylint: disable=protected-access
             [keyword_reboot, keyword_restart],
         )
 
     def test_update_keywords_both_false(self):
         notice = {"reboot_suggested": False, "restart_suggested": False}
 
-        self.assertEqual(self.reposync.RepoSync._update_keywords(notice), [])
+        self.assertEqual(self.reposync.RepoSync._update_keywords(notice), [])  #  pylint: disable=protected-access
 
     @patch("uyuni.common.context_managers.initCFG", Mock())
     def test_send_error_mail(self):
         rs = self._create_mocked_reposync()
         self.reposync.rhnMail.send = Mock()
         self.reposync.hostname = "testhost"
-        CFG = Mock()
+        CFG = Mock()  #  pylint: disable=invalid-name
         CFG.TRACEBACK_MAIL = "recipient"
 
         with patch("uyuni.common.context_managers.CFG", CFG):
@@ -517,7 +517,7 @@ class RepoSyncTest(unittest.TestCase):
         checksum = {"epoch": None, "checksum_type": None, "checksum": None, "id": None}
 
         _mock_rhnsql(self.reposync, checksum)
-        processed = rs._updates_process_packages(packages, "a name", [])
+        processed = rs._updates_process_packages(packages, "a name", [])  #  pylint: disable=protected-access
         for p in processed:
             self.assertTrue(isinstance(p, self.reposync.importLib.IncompletePackage))
 
@@ -549,7 +549,7 @@ class RepoSyncTest(unittest.TestCase):
         }
 
         _mock_rhnsql(self.reposync, checksum)
-        processed = rs._updates_process_packages(packages, "patchy", [])
+        processed = rs._updates_process_packages(packages, "patchy", [])  #  pylint: disable=protected-access
 
         p1 = self.reposync.importLib.IncompletePackage()
         p1.populate(
@@ -612,7 +612,7 @@ class RepoSyncTest(unittest.TestCase):
         rs.available_packages[ident] = 1
 
         _mock_rhnsql(self.reposync, [])
-        self.assertEqual(rs._updates_process_packages(packages, "patchy", []), [])
+        self.assertEqual(rs._updates_process_packages(packages, "patchy", []), [])  #  pylint: disable=protected-access
         self.assertEqual(
             self.reposync.log.call_args[0][1],
             "The package n2-e2:v2-r2.arch2 "
@@ -637,7 +637,7 @@ class RepoSyncTest(unittest.TestCase):
         rs.available_packages[ident] = 1
 
         _mock_rhnsql(self.reposync, [])
-        self.assertEqual(rs._updates_process_packages(packages, "patchy", []), [])
+        self.assertEqual(rs._updates_process_packages(packages, "patchy", []), [])  #  pylint: disable=protected-access
         self.assertEqual(
             self.reposync.log.call_args[0][1],
             "The package n1-v1-r1.arch1 "
@@ -660,7 +660,7 @@ class RepoSyncTest(unittest.TestCase):
         ]
 
         _mock_rhnsql(self.reposync, [])
-        self.assertEqual(rs._updates_process_packages(packages, "patchy", []), [])
+        self.assertEqual(rs._updates_process_packages(packages, "patchy", []), [])  #  pylint: disable=protected-access
         self.assertEqual(self.reposync.log.call_args, None)
 
     # RedHat has errata with empty package list
@@ -713,7 +713,7 @@ class RepoSyncTest(unittest.TestCase):
         mocked_backend = Mock()
         self.reposync.SQLBackend = Mock(return_value=mocked_backend)
         rs = self._create_mocked_reposync()
-        rs._importer_run = Mock()
+        rs._importer_run = Mock()  #  pylint: disable=protected-access
         rs.channel_label = "Label1"
         rs.channel = {"id": "channel1", "org_id": 1}
 
@@ -815,28 +815,28 @@ class RepoSyncTest(unittest.TestCase):
             "version": "1111",
             "update_id": "sles-kernel-default",
         }
-        self.assertTrue(self.reposync.RepoSync._is_old_suse_style(notice))
+        self.assertTrue(self.reposync.RepoSync._is_old_suse_style(notice))  #  pylint: disable=protected-access
 
         notice = {
             "from": "maint-coord@suse.de",
             "version": "7",
             "update_id": "res5ct-kernel-default",
         }
-        self.assertTrue(self.reposync.RepoSync._is_old_suse_style(notice))
+        self.assertTrue(self.reposync.RepoSync._is_old_suse_style(notice))  #  pylint: disable=protected-access
 
         notice = {
             "from": "maint-coord@suse.de",
             "version": "1",
             "update_id": "sles-kernel-default",
         }
-        self.assertFalse(self.reposync.RepoSync._is_old_suse_style(notice))
+        self.assertFalse(self.reposync.RepoSync._is_old_suse_style(notice))  #  pylint: disable=protected-access
 
         notice = {
             "from": "maint-coord@suse.de",
             "version": "6",
             "update_id": "res5ct-kernel-default",
         }
-        self.assertFalse(self.reposync.RepoSync._is_old_suse_style(notice))
+        self.assertFalse(self.reposync.RepoSync._is_old_suse_style(notice))  #  pylint: disable=protected-access
 
     def test_to_db_date(self):
         """
@@ -853,26 +853,26 @@ class RepoSyncTest(unittest.TestCase):
         time.tzset()
         with patch("spacewalk.satellite_tools.reposync.datetime", DateTimeMock):
             self.assertEqual(
-                self.reposync.RepoSync._to_db_date("2015-01-02 01:02:03"),
+                self.reposync.RepoSync._to_db_date("2015-01-02 01:02:03"),  #  pylint: disable=protected-access
                 "2015-01-02 01:02:03",
             )
             self.assertEqual(
-                self.reposync.RepoSync._to_db_date("1420160523"), "2015-01-02 01:02:03"
+                self.reposync.RepoSync._to_db_date("1420160523"), "2015-01-02 01:02:03"  #  pylint: disable=protected-access
             )
             self.assertEqual(
-                self.reposync.RepoSync._to_db_date("2015-01-02"), "2015-01-02 00:00:00"
+                self.reposync.RepoSync._to_db_date("2015-01-02"), "2015-01-02 00:00:00"  #  pylint: disable=protected-access
             )
             self.assertEqual(
-                self.reposync.RepoSync._to_db_date("2015-09-02 13:39:49 UTC"),
+                self.reposync.RepoSync._to_db_date("2015-09-02 13:39:49 UTC"),  #  pylint: disable=protected-access
                 "2015-09-02 13:39:49",
             )
             self.assertEqual(
-                self.reposync.RepoSync._to_db_date("2015-01-02T02:02:03+0100"),
+                self.reposync.RepoSync._to_db_date("2015-01-02T02:02:03+0100"),  #  pylint: disable=protected-access
                 "2015-01-02 01:02:03",
             )
             self.assertRaises(
                 ValueError,
-                self.reposync.RepoSync._to_db_date,
+                self.reposync.RepoSync._to_db_date,  #  pylint: disable=protected-access
                 "2015-01-02T01:02:03+nonsense",
             )
 
@@ -918,12 +918,12 @@ class SyncTest(unittest.TestCase):
 
     @patch("uyuni.common.context_managers.initCFG", Mock())
     def test_pass_multiple_urls_params(self):
-        from spacewalk.satellite_tools.reposync import RepoSync
+        from spacewalk.satellite_tools.reposync import RepoSync  #  pylint: disable=import-outside-toplevel
 
         urls = ["http://some.url", "http://some-other.url"]
         repo_sync = RepoSync(channel_label="channel-label", repo_type=RTYPE, url=urls)
         repo_sync = _mock_sync(spacewalk.satellite_tools.reposync, repo_sync)
-        CFG = Mock()
+        CFG = Mock()  #  pylint: disable=invalid-name
         CFG.MOUNT_POINT = "/tmp"
         CFG.PREPENDED_DIR = ""
         CFG.AUTO_GENERATE_BOOTSTRAP_REPO = 1
@@ -932,8 +932,8 @@ class SyncTest(unittest.TestCase):
             repo_sync.sync()
 
     @patch("spacewalk.satellite_tools.reposync.RepoSync._url_with_repo_credentials")
-    def test_set_repo_credentials_with_multiple_urls(self, mocked_method):
-        from spacewalk.satellite_tools.reposync import RepoSync
+    def test_set_repo_credentials_with_multiple_urls(self, mocked_method):  #  pylint: disable=unused-argument
+        from spacewalk.satellite_tools.reposync import RepoSync  #  pylint: disable=import-outside-toplevel
 
         urls = ["http://some.url", "http://some-other.url"]
         data = {
@@ -946,17 +946,17 @@ class SyncTest(unittest.TestCase):
         repo_sync = RepoSync(channel_label="channel-label", repo_type=RTYPE, url=urls)
         repo_sync.set_repo_credentials(data)
         self.assertEqual(
-            repo_sync._url_with_repo_credentials.call_args_list,
+            repo_sync._url_with_repo_credentials.call_args_list,  #  pylint: disable=protected-access
             [call(urls[0]), call(urls[1])],
         )
 
     def test__url_with_repo_credentials(self):
-        import base64
-        from spacewalk.satellite_tools.reposync import RepoSync
+        import base64  #  pylint: disable=import-outside-toplevel
+        from spacewalk.satellite_tools.reposync import RepoSync  #  pylint: disable=import-outside-toplevel
 
         credentials_id = 777
         urls = [
-            "http://some.url?credentials=abc_%s" % credentials_id,
+            "http://some.url?credentials=abc_%s" % credentials_id,  #  pylint: disable=consider-using-f-string
             "http://some-other.url",
         ]
         repo_sync = RepoSync(channel_label="channel-label", repo_type=RTYPE, url=urls)
@@ -972,19 +972,19 @@ class SyncTest(unittest.TestCase):
         patcher = patch("spacewalk.satellite_tools.reposync.rhnSQL.prepare", **config)
         with patcher as mock_prepare:
             self.assertEqual(
-                repo_sync._url_with_repo_credentials(urls[0]),
+                repo_sync._url_with_repo_credentials(urls[0]),  #  pylint: disable=protected-access
                 {
-                    "url": "http://{0}:{1}@some.url".format(username, password),
+                    "url": "http://{0}:{1}@some.url".format(username, password),  #  pylint: disable=consider-using-f-string
                     "http_headers": {},
                 },
             )
             mock_prepare.assert_called_once_with(
-                "\n                SELECT c.username, c.password, c.extra_auth, ct.label type\n                  FROM suseCredentials c\n                  JOIN suseCredentialsType ct on c.type_id = ct.id\n                  WHERE c.id = :id\n            "
+                "\n                SELECT c.username, c.password, c.extra_auth, ct.label type\n                  FROM suseCredentials c\n                  JOIN suseCredentialsType ct on c.type_id = ct.id\n                  WHERE c.id = :id\n            "  #  pylint: disable=line-too-long
             )
             mock_prepare().execute.assert_called_once_with(id=credentials_id)
 
-    def test_rhnSQL_should_return_source_urls_as_list(self):
-        from spacewalk.satellite_tools.reposync import RepoSync
+    def test_rhnSQL_should_return_source_urls_as_list(self):  #  pylint: disable=invalid-name
+        from spacewalk.satellite_tools.reposync import RepoSync  #  pylint: disable=import-outside-toplevel
 
         url1 = "http://url.one"
         url2 = "http://url.two"
@@ -1009,7 +1009,7 @@ class SyncTest(unittest.TestCase):
                 ]
             },
         )
-        with patcher as mock_prepare:
+        with patcher as mock_prepare:  #  pylint: disable=unused-variable
             repo_sync = RepoSync(channel_label="channel-label", repo_type=RTYPE)
             self.assertEqual(
                 repo_sync.urls,
@@ -1123,11 +1123,11 @@ def test_channel_exceptions():
     """Test raising all the different exceptions when syncing"""
     # the only way to write a test generator with nose is if we put it
     # outside the class, so we have to repeat all the Mocks
-    repoSync = spacewalk.satellite_tools.reposync
+    repoSync = spacewalk.satellite_tools.reposync  #  pylint: disable=invalid-name
     repoSync.os = Mock()
     repoSync.rhnSQL.initDB = Mock()
     repoSync.rhnSQL.commit = Mock()
-    CFG = Mock()
+    CFG = Mock()  #  pylint: disable=invalid-name
     CFG.MOUNT_POINT = "/tmp"
     CFG.PREPENDED_DIR = ""
     CFG.AUTO_GENERATE_BOOTSTRAP_REPO = 1
@@ -1157,7 +1157,7 @@ def test_channel_exceptions():
     )
     rs = _create_mocked_reposync(repoSync)
     rs.sendErrorMail = Mock()
-    repoSync.RepoSync._format_sources = Mock()
+    repoSync.RepoSync._format_sources = Mock()  #  pylint: disable=protected-access
 
     for exc_class, exc_name in [
         (repoSync.ChannelException, "ChannelException"),
@@ -1167,7 +1167,7 @@ def test_channel_exceptions():
         with patch("uyuni.common.context_managers.CFG", CFG):
             _, ret = rs.sync()
             assert ret == -1
-        assert rs.sendErrorMail.call_args == (("%s: %s" % (exc_name, "error msg"),), {})
+        assert rs.sendErrorMail.call_args == (("%s: %s" % (exc_name, "error msg"),), {})  #  pylint: disable=consider-using-f-string
 
 
 def _init_reposync(reposync, label="Label", repo_type=RTYPE, **kwargs):
@@ -1277,7 +1277,7 @@ def _mock_rhnsql(module, return_values):
 
     """
 
-    def side_effect(*args):
+    def side_effect(*args):  #  pylint: disable=unused-argument
         # Raises or returns each of the values in return_values until exhausted
         # if return_values is not a list, the same value is returned ad infinitum
         if isinstance(return_values, list) and return_values:
@@ -1310,7 +1310,7 @@ def test_ksdirhtmlparser():
 <a href="..">..</a>
     """
 
-    EXPECTATIONS = [
+    EXPECTATIONS = [  #  pylint: disable=invalid-name
         {"name": "./item1", "type": "FILE"},
         {"name": "./item1/", "type": "DIR"},
         {"name": "./foobar/grub/grub.cfg", "type": "FILE"},

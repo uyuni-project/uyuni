@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Licensed under the GNU General Public License Version 3
 #
 # This program is free software; you can redistribute it and/or modify
@@ -19,8 +19,8 @@
 
 import getpass
 import gettext
-import logging
-from spacecmd.utils import *
+import logging  #  pylint: disable=unused-import
+from spacecmd.utils import *  #  pylint: disable=wildcard-import,unused-wildcard-import
 
 translation = gettext.translation("spacecmd", fallback=True)
 try:
@@ -29,10 +29,10 @@ except AttributeError:
     _ = translation.gettext
 
 
-def help_proxy_container_config(self):
+def help_proxy_container_config(self):  #  pylint: disable=unused-argument
     print(
         _(
-            "proxy_container_config: create a proxy system and return its configuration file"
+            "proxy_container_config: create a proxy system and return its configuration file"  #  pylint: disable=line-too-long
         )
     )
     print(
@@ -101,10 +101,10 @@ def do_proxy_container_config(self, args):
     print(options.output)
 
 
-def help_proxy_container_config_generate_cert(self):
+def help_proxy_container_config_generate_cert(self):  #  pylint: disable=unused-argument
     print(
         _(
-            "proxy_container_config_generate_cert: create a proxy system and return its configuration file"
+            "proxy_container_config_generate_cert: create a proxy system and return its configuration file"  #  pylint: disable=line-too-long
         )
     )
     print(
@@ -198,12 +198,12 @@ def do_proxy_container_config_generate_cert(self, args):
     print(options.output)
 
 
-def read_file(path):
+def read_file(path):  #  pylint: disable=function-redefined
     """
     utility function reading a file and returning its content.
     """
     if not path:
         return None
 
-    with open(path, "r") as fd:
+    with open(path, "r") as fd:  #  pylint: disable=unspecified-encoding
         return fd.read()

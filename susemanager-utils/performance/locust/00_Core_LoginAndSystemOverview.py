@@ -1,9 +1,9 @@
-#! /usr/bin/python
+#! /usr/bin/python  #  pylint: disable=missing-module-docstring,invalid-name
 
 from locust import HttpLocust, TaskSet, task
 import yaml
 
-with open("locust_config.yml", "r") as stream:
+with open("locust_config.yml", "r") as stream:  #  pylint: disable=unspecified-encoding
     try:
         LocustConf = yaml.load(stream)
     except yaml.YAMLError as exc:
@@ -14,7 +14,7 @@ username = LocustConf["username"]
 password = LocustConf["password"]
 
 
-class UserBehavior(TaskSet):
+class UserBehavior(TaskSet):  #  pylint: disable=missing-class-docstring
     def on_start(self):
         """on_start is called when a Locust start before any task is scheduled"""
         # don't verify ssl certs
@@ -36,6 +36,6 @@ class UserBehavior(TaskSet):
 class WebsiteUser(HttpLocust):
     task_set = UserBehavior
     host = server
-    # These are the minimum and maximum time respectively, in milliseconds, that a simulated user will wait between executing each task.
+    # These are the minimum and maximum time respectively, in milliseconds, that a simulated user will wait between executing each task.  #  pylint: disable=line-too-long
     min_wait = 5000
     max_wait = 9000

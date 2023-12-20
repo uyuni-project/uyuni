@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring,invalid-name
 # Copyright (c) 2008--2017 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -28,7 +28,7 @@ except ImportError:
 from uyuni.common import usix
 
 
-def setHeaderValue(mp_table, name, values):
+def setHeaderValue(mp_table, name, values):  #  pylint: disable=invalid-name
     """
     Function that correctly sets headers in an Apache-like table
     The values may be a string (which are set as for a dictionary),
@@ -91,11 +91,11 @@ def rfc822time(arg):
         tm_min,
         tm_sec,
         tm_wday,
-        _tm_yday_,
-        _tm_isdst_,
+        _tm_yday_,  #  pylint: disable=invalid-name,unused-variable
+        _tm_isdst_,  #  pylint: disable=invalid-name,unused-variable
     ) = time.gmtime(arg)
 
-    return "%s, %02d %s %04d %02d:%02d:%02d %s" % (
+    return "%s, %02d %s %04d %02d:%02d:%02d %s" % (  #  pylint: disable=consider-using-f-string
         rfc822_days[tm_wday],
         tm_mday,
         rfc822_mons[tm_mon - 1],
@@ -119,7 +119,7 @@ def timestamp(s):
     elif len(s) == 19:
         format_string = "%Y-%m-%d %H:%M:%S"
     else:
-        raise TypeError("String '%s' is not a YYYYMMDDHHMISS" % s)
+        raise TypeError("String '%s' is not a YYYYMMDDHHMISS" % s)  #  pylint: disable=consider-using-f-string
     # Get the current DST setting
     timeval = list(time.strptime(s, format_string))
     # No daylight information available
@@ -127,7 +127,7 @@ def timestamp(s):
     return time.mktime(tuple(timeval))
 
 
-def checkValue(val, *args):
+def checkValue(val, *args):  #  pylint: disable=invalid-name
     """A type/value checker
     Check value against the list of acceptable values / types
     """
@@ -144,7 +144,7 @@ def checkValue(val, *args):
     return 0
 
 
-def parseUrl(url):
+def parseUrl(url):  #  pylint: disable=invalid-name
     """urlparse is more complicated than what we need.
 
     We make the assumption that the URL has real URL information.
@@ -192,7 +192,7 @@ def hash_object_id(object_id, factor):
 re_rpmName = re.compile("^(.*)-([^-]*)-([^-]*)$")
 
 
-def parseRPMName(pkgName):
+def parseRPMName(pkgName):  #  pylint: disable=invalid-name,invalid-name
     """IN:  Package string in, n-n-n-v.v.v-r.r_r, format.
     OUT: Four strings (in a tuple): name, epoch, version, release.
     """
@@ -208,7 +208,7 @@ def parseRPMName(pkgName):
     return str(n), e, str(v), str(r)
 
 
-def parseDEBName(pkgName):
+def parseDEBName(pkgName):  #  pylint: disable=invalid-name,invalid-name
     """IN:  Package string in, n-n_v.v-v.v-r.r, format.
     OUT: Four strings (in a tuple): name, epoch, version, release.
     """
@@ -218,13 +218,13 @@ def parseDEBName(pkgName):
     n, version = pkgName.split("_")
     if version.find(":") != -1:
         e, version = version.split(":")
-    version_tmpArr = version.split("-")
+    version_tmpArr = version.split("-")  #  pylint: disable=invalid-name
     v = "-".join(version_tmpArr[:-1])
     r = version_tmpArr[-1]
     return str(n), e, str(v), str(r)
 
 
-def isSUSE():
+def isSUSE():  #  pylint: disable=invalid-name
     """Return true if this is a SUSE system, otherwise false"""
 
     if not os.path.exists("/etc/os-release"):
@@ -232,7 +232,7 @@ def isSUSE():
 
     cpe_name = ""
     try:
-        lines = open("/etc/os-release", "r").readlines()
+        lines = open("/etc/os-release", "r").readlines()  #  pylint: disable=unspecified-encoding
         for line in lines:
             # Skip empty and comment-only lines
             if re.match(r"[ \t]*(#|$)", line):

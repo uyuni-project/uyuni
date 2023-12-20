@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring,invalid-name
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -32,10 +32,10 @@ from . import sql_types
 
 types = sql_types
 
-from .const import POSTGRESQL, SUPPORTED_BACKENDS
+from .const import POSTGRESQL, SUPPORTED_BACKENDS  #  pylint: disable=wrong-import-position
 
 # expose exceptions
-from .sql_base import (
+from .sql_base import (  #  pylint: disable=wrong-import-position
     SQLError,
     SQLSchemaError,
     SQLConnectError,
@@ -49,15 +49,15 @@ from .sql_base import (
 # EVER be exposed to the calling applications.
 
 
-def __init__DB(backend, host, port, username, password, database, sslmode, sslrootcert):
+def __init__DB(backend, host, port, username, password, database, sslmode, sslrootcert):  #  pylint: disable=invalid-name
     """
     Establish and check the connection so we can wrap it and handle
     exceptions.
     """
     # __DB global object created here and pushed into the global namespace.
-    global __DB
+    global __DB  #  pylint: disable=global-variable-undefined
     try:
-        my_db = __DB
+        my_db = __DB  #  pylint: disable=used-before-assignment
     except NameError:  # __DB has not been set up
         db_class = dbi.get_database_class(backend=backend)
         __DB = db_class(host, port, username, password, database, sslmode, sslrootcert)
@@ -82,7 +82,7 @@ def __init__DB(backend, host, port, username, password, database, sslmode, sslro
     return 0
 
 
-def initDB(
+def initDB(  #  pylint: disable=invalid-name
     backend=None,
     host=None,
     port=None,
@@ -155,7 +155,7 @@ def initDB(
         except NameError:
             pass
         raise_with_tb(e, sys.exc_info()[2])
-    except:
+    except:  #  pylint: disable=try-except-raise
         raise
         # e_type, e_value = sys.exc_info()[:2]
         # raise rhnException("Could not initialize Oracle database connection",
@@ -166,8 +166,8 @@ def initDB(
 # close the database
 
 
-def closeDB(committing=True, closing=True):
-    global __DB
+def closeDB(committing=True, closing=True):  #  pylint: disable=invalid-name
+    global __DB  #  pylint: disable=global-variable-undefined
     try:
         my_db = __DB
     except NameError:
@@ -183,8 +183,8 @@ def closeDB(committing=True, closing=True):
 
 
 # common function for testing the connection state (ie, __DB defined
-def __test_DB():
-    global __DB
+def __test_DB():  #  pylint: disable=invalid-name
+    global __DB  #  pylint: disable=global-variable-not-assigned
     try:
         return __DB
     except NameError:
@@ -194,31 +194,31 @@ def __test_DB():
 # wrapper for a Procedure callable class
 
 
-def Procedure(name):
+def Procedure(name):  #  pylint: disable=invalid-name
     db = __test_DB()
     return db.procedure(name)
 
 
 # wrapper for a Procedure callable class
-def Function(name, ret_type):
+def Function(name, ret_type):  #  pylint: disable=invalid-name
     db = __test_DB()
     return db.function(name, ret_type)
 
 
 # Wrapper for the Sequence class
-def Sequence(seq):
+def Sequence(seq):  #  pylint: disable=invalid-name
     db = __test_DB()
     return sql_sequence.Sequence(db, seq)
 
 
 # Wrapper for the Row class
-def Row(table, hash_name, hash_value=None):
+def Row(table, hash_name, hash_value=None):  #  pylint: disable=invalid-name
     db = __test_DB()
     return sql_row.Row(db, table, hash_name, hash_value)
 
 
 # Wrapper for the Table class
-def Table(table, hash_name, local_cache=0):
+def Table(table, hash_name, local_cache=0):  #  pylint: disable=invalid-name
     db = __test_DB()
     return sql_table.Table(db, table, hash_name, local_cache)
 
@@ -272,17 +272,17 @@ def transaction(name):
     return db.transaction(name)
 
 
-def TimestampFromTicks(*args, **kwargs):
+def TimestampFromTicks(*args, **kwargs):  #  pylint: disable=invalid-name
     db = __test_DB()
     return db.TimestampFromTicks(*args, **kwargs)
 
 
-def DateFromTicks(*args, **kwargs):
+def DateFromTicks(*args, **kwargs):  #  pylint: disable=invalid-name
     db = __test_DB()
     return db.DateFromTicks(*args, **kwargs)
 
 
-def Date(*args, **kwargs):
+def Date(*args, **kwargs):  #  pylint: disable=invalid-name
     db = __test_DB()
     return db.Date(*args, **kwargs)
 
@@ -293,7 +293,7 @@ def _fix_encoding(text):
     elif isinstance(text, bytes):
         try:
             return text.decode("utf8")
-        except:
+        except:  #  pylint: disable=bare-except
             return text.decode("iso8859-1")
 
 
@@ -301,7 +301,7 @@ def read_lob(lob):
     if not lob:
         return None
     db = __test_DB()
-    return db._read_lob(lob)
+    return db._read_lob(lob)  #  pylint: disable=protected-access
 
 
 class _Callable(object):
@@ -310,7 +310,7 @@ class _Callable(object):
         self._implementor = None
 
     def __getattr__(self, name):
-        return self.__class__("%s.%s" % (self._name, name))
+        return self.__class__("%s.%s" % (self._name, name))  #  pylint: disable=consider-using-f-string
 
     def __call__(self, *args):
         proc = self._implementor.__call__(self._name)

@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring,invalid-name
 # Copyright (c) 2012 SUSE LLC
 #
 # This software is licensed to you under the GNU General Public License,
@@ -14,14 +14,14 @@ from .importLib import GenericPackageImport
 from spacewalk.satellite_tools import syncCache
 
 
-class SupportInformationImport(GenericPackageImport):
+class SupportInformationImport(GenericPackageImport):  #  pylint: disable=missing-class-docstring
     def __init__(self, batch, backend):
         GenericPackageImport.__init__(self, batch, backend)
         self._cache = syncCache.ShortPackageCache()
         self._data = []
 
     def preprocess(self):
-        channelLabels = {}
+        channelLabels = {}  #  pylint: disable=invalid-name
         keywords = {}
         for item in self.batch:
             if item["channel"] not in channelLabels:

@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring,invalid-name
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -39,7 +39,7 @@ def set_client_capabilities(capabilities):
         if not mo:
             # XXX Just ignoring it, for now
             continue
-        dict = mo.groupdict()
+        dict = mo.groupdict()  #  pylint: disable=redefined-builtin
         name = dict["name"].strip()
         version = dict["version"].strip()
         value = dict["value"].strip()
@@ -105,7 +105,7 @@ def update_client_capabilities(server_id):
         deletes["capability_name_id"].append(capability_name_id)
 
     # Everything else has to be inserted
-    for name, hash in list(caps.items()):
+    for name, hash in list(caps.items()):  #  pylint: disable=redefined-builtin
         inserts["server_id"].append(server_id)
         inserts["capability"].append(name)
         inserts["version"].append(hash["version"])
@@ -190,7 +190,7 @@ def _set_server_capabilities():
     }
     l = []
     for name, hashval in list(capabilities.items()):
-        l.append("%s(%s)=%s" % (name, hashval["version"], hashval["value"]))
+        l.append("%s(%s)=%s" % (name, hashval["version"], hashval["value"]))  #  pylint: disable=consider-using-f-string
 
     log_debug(4, "Setting capabilities", l)
     rhnFlags.get("outputTransportOptions")["X-RHN-Server-Capability"] = l

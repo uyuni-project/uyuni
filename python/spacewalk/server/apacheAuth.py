@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring,invalid-name
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -26,7 +26,7 @@ from spacewalk.common.rhnTranslate import _
 from .rhnLib import computeSignature
 
 
-def splitProxyAuthToken(token):
+def splitProxyAuthToken(token):  #  pylint: disable=invalid-name
     """given a token:hostname, split it into a token-list, hostname"""
 
     token = token.split(":")
@@ -40,7 +40,7 @@ def splitProxyAuthToken(token):
     return token, hostname
 
 
-def _verifyProxyAuthToken(auth_token):
+def _verifyProxyAuthToken(auth_token):  #  pylint: disable=invalid-name
     """verifies the validity of a proxy auth token
 
     NOTE: X-RHN-Proxy-Auth described in proxy/broker/rhnProxyAuth.py
@@ -49,12 +49,12 @@ def _verifyProxyAuthToken(auth_token):
     log_debug(4, auth_token)
     token, hostname = splitProxyAuthToken(auth_token)
     hostname = hostname.strip()
-    ipv4_regex = "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])$"
+    ipv4_regex = "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])$"  #  pylint: disable=line-too-long
     # This ipv6 regex was develeoped by Stephen Ryan at Dataware.
     # (http://forums.intermapper.com/viewtopic.php?t=452) It is licenced
     # under a Creative Commons Attribution-ShareAlike 3.0 Unported
     # License, so we are free to use it as long as we attribute it to him.
-    ipv6_regex = "^((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?$"
+    ipv6_regex = "^((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?$"  #  pylint: disable=line-too-long,anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string
     hostname_is_ip_address = re.match(ipv4_regex, hostname) or re.match(
         ipv6_regex, hostname
     )
@@ -62,8 +62,8 @@ def _verifyProxyAuthToken(auth_token):
     headers = rhnFlags.get("outputTransportOptions")
     if len(token) < 5:
         # Bad auth information; decline any action
-        log_debug(4, "incomplete proxy authentication token: %s" % auth_token)
-        headers["X-RHN-Proxy-Auth-Error"] = "%s:%s" % (
+        log_debug(4, "incomplete proxy authentication token: %s" % auth_token)  #  pylint: disable=consider-using-f-string
+        headers["X-RHN-Proxy-Auth-Error"] = "%s:%s" % (  #  pylint: disable=consider-using-f-string
             1003,
             _("incomplete proxy authentication token: %s") % auth_token,
         )
@@ -72,23 +72,23 @@ def _verifyProxyAuthToken(auth_token):
         raise rhnFault(1003)  # Invalid session key
 
     log_debug(
-        5, "proxy auth token: %s,  hostname: %s" % (repr(token), hostname or "n/a")
+        5, "proxy auth token: %s,  hostname: %s" % (repr(token), hostname or "n/a")  #  pylint: disable=consider-using-f-string
     )
 
-    proxyId, proxyUser, rhnServerTime, expireOffset, signature = token[:5]
+    proxyId, proxyUser, rhnServerTime, expireOffset, signature = token[:5]  #  pylint: disable=invalid-name,invalid-name,invalid-name,invalid-name
     computed = computeSignature(
         CFG.SECRET_KEY, proxyId, proxyUser, rhnServerTime, expireOffset
     )
 
     if computed != signature:
         log_error(
-            "Proxy signature failed: proxy id='%s', proxy user='%s'"
+            "Proxy signature failed: proxy id='%s', proxy user='%s'"  #  pylint: disable=consider-using-f-string
             % (proxyId, proxyUser)
         )
         log_debug(
-            4, "Sent proxy signature %s does not match ours %s." % (signature, computed)
+            4, "Sent proxy signature %s does not match ours %s." % (signature, computed)  #  pylint: disable=consider-using-f-string
         )
-        headers["X-RHN-Proxy-Auth-Error"] = "%s:%s" % (
+        headers["X-RHN-Proxy-Auth-Error"] = "%s:%s" % (  #  pylint: disable=consider-using-f-string
             1003,
             _("Sent proxy signature %s does not match ours %s.")
             % (signature, computed),
@@ -98,12 +98,12 @@ def _verifyProxyAuthToken(auth_token):
         raise rhnFault(1003)  # Invalid session key
 
     # Convert the expiration/time to floats:
-    rhnServerTime = float(rhnServerTime)
-    expireOffset = float(expireOffset)
+    rhnServerTime = float(rhnServerTime)  #  pylint: disable=invalid-name
+    expireOffset = float(expireOffset)  #  pylint: disable=invalid-name
 
     if rhnServerTime + expireOffset < time.time():
         log_debug(4, "Expired proxy authentication token")
-        headers["X-RHN-Proxy-Auth-Error"] = "%s:%s" % (1004, "Expired")
+        headers["X-RHN-Proxy-Auth-Error"] = "%s:%s" % (1004, "Expired")  #  pylint: disable=consider-using-f-string
         if not hostname_is_ip_address:
             headers["X-RHN-Proxy-Auth-Origin"] = hostname
         raise rhnFault(1004)  # Expired client authentication token
@@ -125,7 +125,7 @@ def auth_proxy():
     if not rhnFlags.test("X-RHN-Proxy-Auth"):
         # No auth information; decline any action
         log_debug(4, "declined proxy authentication")
-        headers["X-RHN-Proxy-Auth-Error"] = "%s:%s" % (
+        headers["X-RHN-Proxy-Auth-Error"] = "%s:%s" % (  #  pylint: disable=consider-using-f-string
             1003,
             _("declined proxy authentication"),
         )
@@ -179,11 +179,11 @@ def auth_client():
             )
             return 0
 
-    clientId = token["x-rhn-server-id"]
+    clientId = token["x-rhn-server-id"]  #  pylint: disable=invalid-name
     username = token["x-rhn-auth-user-id"]
     signature = token["x-rhn-auth"]
-    rhnServerTime = token["x-rhn-auth-server-time"]
-    expireOffset = token["x-rhn-auth-expire-offset"]
+    rhnServerTime = token["x-rhn-auth-server-time"]  #  pylint: disable=invalid-name
+    expireOffset = token["x-rhn-auth-expire-offset"]  #  pylint: disable=invalid-name
 
     computed = computeSignature(
         CFG.SECRET_KEY, clientId, username, rhnServerTime, expireOffset
@@ -191,13 +191,13 @@ def auth_client():
     if computed != signature:
         log_debug(
             4,
-            "Sent client signature %s does not match ours %s." % (signature, computed),
+            "Sent client signature %s does not match ours %s." % (signature, computed),  #  pylint: disable=consider-using-f-string
         )
         raise rhnFault(33, "Invalid client session key")
 
     # Convert the expiration/time to floats:
-    rhnServerTime = float(rhnServerTime)
-    expireOffset = float(expireOffset)
+    rhnServerTime = float(rhnServerTime)  #  pylint: disable=invalid-name
+    expireOffset = float(expireOffset)  #  pylint: disable=invalid-name
 
     if rhnServerTime + expireOffset < time.time():
         log_debug(4, "Expired client authentication token")

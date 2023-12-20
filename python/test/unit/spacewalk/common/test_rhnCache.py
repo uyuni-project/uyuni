@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python  #  pylint: disable=missing-module-docstring,invalid-name
 #
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #
@@ -20,7 +20,7 @@ import unittest
 from spacewalk.common import rhnCache
 
 
-class Tests(unittest.TestCase):
+class Tests(unittest.TestCase):  #  pylint: disable=missing-class-docstring
     # pylint: disable=R0904
     key = "unit-test/test"
     content = ""

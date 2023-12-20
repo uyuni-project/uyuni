@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring,invalid-name
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -27,12 +27,12 @@ from spacewalk.common.rhnTB import Traceback
 from spacewalk.server import rhnImport
 
 
-class UploadHandler:
+class UploadHandler:  #  pylint: disable=missing-class-docstring
     def __init__(self):
         self.servers = {}
         self.server = None
 
-    def headerParserHandler(self, req):
+    def headerParserHandler(self, req):  #  pylint: disable=invalid-name
         log_setreq(req)
         # init configuration options with proper component
         options = req.get_options()
@@ -55,7 +55,7 @@ class UploadHandler:
         server_name = options["SERVER"]
         if server_name not in self.servers:
             log_error(
-                "Unable to load server %s from available servers %s"
+                "Unable to load server %s from available servers %s"  #  pylint: disable=consider-using-f-string
                 % (server_name, self.servers)
             )
             return apache.HTTP_INTERNAL_SERVER_ERROR
@@ -75,7 +75,7 @@ class UploadHandler:
             return apache.OK
         return self._wrapper(req, "handler")
 
-    def cleanupHandler(self, req):
+    def cleanupHandler(self, req):  #  pylint: disable=invalid-name
         if req.method == "GET":
             # This is the ping method
             return apache.OK
@@ -85,7 +85,7 @@ class UploadHandler:
         self.server = None
         return retval
 
-    def logHandler(self, req):
+    def logHandler(self, req):  #  pylint: disable=invalid-name
         if req.method == "GET":
             # This is the ping method
             return apache.OK
@@ -95,7 +95,7 @@ class UploadHandler:
     def _wrapper(self, req, function_name):
         # log_debug(1, "_wrapper", req, function_name)
         if not hasattr(self.server, function_name):
-            log_error("%s doesn't have a %s function" % (self.server, function_name))
+            log_error("%s doesn't have a %s function" % (self.server, function_name))  #  pylint: disable=consider-using-f-string
             return apache.HTTP_NOT_FOUND
         function = getattr(self.server, function_name)
         try:
@@ -103,7 +103,7 @@ class UploadHandler:
             ret = function(req)
         except rhnFault:
             e = sys.exc_info()[1]
-            log_debug(4, "rhnFault caught: %s" % (e,))
+            log_debug(4, "rhnFault caught: %s" % (e,))  #  pylint: disable=consider-using-f-string
             error_string = self._exception_to_text(e)
             error_code = e.code
             self._error_to_headers(req.err_headers_out, error_code, error_string)
@@ -112,15 +112,15 @@ class UploadHandler:
                 ret = apache.HTTP_INTERNAL_SERVER_ERROR
             req.status = ret
             log_debug(
-                4, "_wrapper %s exited with apache code %s" % (function_name, ret)
+                4, "_wrapper %s exited with apache code %s" % (function_name, ret)  #  pylint: disable=consider-using-f-string
             )
         except rhnSession.ExpiredSessionError:
             e = sys.exc_info()[1]
             # if session expires we catch here and return a forbidden
             # abd make it re-authenticate
-            log_debug(4, "Expire Session Error Caught: %s" % (e,))
+            log_debug(4, "Expire Session Error Caught: %s" % (e,))  #  pylint: disable=consider-using-f-string
             return 403
-        except:
+        except:  #  pylint: disable=bare-except
             Traceback("server.apacheUploadServer._wrapper", req=req)
             log_error("Unhandled exception")
             return apache.HTTP_INTERNAL_SERVER_ERROR
@@ -129,7 +129,7 @@ class UploadHandler:
     # Adds an error code and error string to the headers passed in
     def _error_to_headers(self, headers, error_code, error_string):
         error_string = error_string.strip()
-        import base64
+        import base64  #  pylint: disable=import-outside-toplevel
 
         error_string = base64.encodestring(error_string.encode()).decode().strip()
         for line in error_string.split("\n"):

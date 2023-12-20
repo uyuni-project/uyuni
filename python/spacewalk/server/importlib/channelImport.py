@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring,invalid-name
 # Copyright (c) 2008--2017 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -25,8 +25,8 @@ from .importLib import (
 from spacewalk.satellite_tools.syncLib import log
 
 
-class ChannelImport(Import):
-    def __init__(self, batch, backend):
+class ChannelImport(Import):  #  pylint: disable=missing-class-docstring
+    def __init__(self, batch, backend):  #  pylint: disable=redefined-outer-name,redefined-outer-name
         Import.__init__(self, batch, backend)
         self.arches = {}
         self.families = {}
@@ -42,7 +42,7 @@ class ChannelImport(Import):
         for channel in self.batch:
             self.__processChannel(channel)
 
-    def __processChannel(self, channel):
+    def __processChannel(self, channel):  #  pylint: disable=invalid-name
         # Processes a package
         arch = channel["channel_arch"]
         if arch not in self.arches:
@@ -74,12 +74,12 @@ class ChannelImport(Import):
             if org_id and int(channel["org_id"]) != org_id["org_id"]:
                 log(
                     1,
-                    "WARNING: Channel %s is already present in orgid %s."
+                    "WARNING: Channel %s is already present in orgid %s."  #  pylint: disable=consider-using-f-string
                     % (channel["label"], org_id["org_id"]),
                 )
                 log(
                     1,
-                    "         Running synchronization will move the channel to orgid %s."
+                    "         Running synchronization will move the channel to orgid %s."  #  pylint: disable=line-too-long,consider-using-f-string
                     % channel["org_id"],
                 )
                 log(1, "")
@@ -92,14 +92,14 @@ class ChannelImport(Import):
         for channel in self.batch:
             self.__postprocessChannel(channel)
 
-    def __postprocessChannel(self, channel):
+    def __postprocessChannel(self, channel):  #  pylint: disable=invalid-name
         if channel.ignored:
             return
         arch = channel["channel_arch"]
         if self.arches[arch] is None:
             # Mark it as ignored
             channel.ignored = 1
-            raise InvalidArchError(arch, "Unsupported channel arch %s" % arch)
+            raise InvalidArchError(arch, "Unsupported channel arch %s" % arch)  #  pylint: disable=consider-using-f-string
         channel["channel_arch_id"] = self.arches[arch]
         if channel["checksum_type"]:
             channel["checksum_type_id"] = self.checksum_types[channel["checksum_type"]]
@@ -110,7 +110,7 @@ class ChannelImport(Import):
             channel["product_name_id"] = self.backend.lookupProductNames(
                 channel["product_name"]
             )
-        families = []
+        families = []  #  pylint: disable=redefined-outer-name
         for family in channel["families"]:
             # Link back the channel to families
             channel_family_id = self.families[family["label"]]
@@ -126,21 +126,21 @@ class ChannelImport(Import):
         # release
         self.__postprocessChannelMaps(channel, "release")
 
-    def __postprocessChannelMaps(self, channel, map):
+    def __postprocessChannelMaps(self, channel, map):  #  pylint: disable=invalid-name,redefined-builtin
         if map in channel and channel[map] is not None:
-            for dict in channel[map]:
+            for dict in channel[map]:  #  pylint: disable=redefined-builtin
                 arch = dict["channel_arch"]
                 if self.arches[arch] is None:
                     # Mark it as ignored
                     channel.ignored = 1
-                    raise InvalidArchError(arch, "Unsupported channel arch %s" % arch)
+                    raise InvalidArchError(arch, "Unsupported channel arch %s" % arch)  #  pylint: disable=consider-using-f-string
                 dict["channel_arch_id"] = self.arches[arch]
 
     def submit(self):
-        parentChannels = {}
+        parentChannels = {}  #  pylint: disable=invalid-name
         # Split the batch into null and non-null parent channels
-        nullParentBatch = []
-        nonNullParentBatch = []
+        nullParentBatch = []  #  pylint: disable=invalid-name
+        nonNullParentBatch = []  #  pylint: disable=invalid-name
         channel_trusts = []
         for channel in self.batch:
             if channel.ignored:
@@ -186,7 +186,7 @@ class ChannelImport(Import):
             parentChannels[label] = channel.id
 
         # Build an extra hash for the channels with unknown ids
-        unknownChannels = {}
+        unknownChannels = {}  #  pylint: disable=invalid-name
         for k, v in list(parentChannels.items()):
             if v is None:
                 unknownChannels[k] = None
@@ -195,7 +195,7 @@ class ChannelImport(Import):
         self.backend.lookupChannels(unknownChannels)
 
         # Copy the ids back into parentChannels, to make life easier
-        missingParents = []
+        missingParents = []  #  pylint: disable=invalid-name
         for k, v in list(unknownChannels.items()):
             if v is None:
                 missingParents.append(k)
@@ -204,7 +204,7 @@ class ChannelImport(Import):
         if missingParents:
             raise MissingParentChannelError(
                 missingParents,
-                "Invalid import, this parents need to be imported: %s"
+                "Invalid import, this parents need to be imported: %s"  #  pylint: disable=consider-using-f-string
                 % str(", ".join(missingParents)),
             )
 
@@ -246,18 +246,18 @@ class ChannelImport(Import):
             self.backend.commit()
 
 
-class ChannelFamilyImport(Import):
+class ChannelFamilyImport(Import):  #  pylint: disable=missing-class-docstring
     def preprocess(self):
         self.__filterCustomChannelFamilies()
         # We have to look up the channels for this channel family first
         self.channels = {}
-        for cf in self.batch:
+        for cf in self.batch:  #  pylint: disable=redefined-outer-name
             for c in cf["channels"]:
                 self.channels[c] = None
 
     def fix(self):
         self.backend.lookupChannels(self.channels)
-        for cf in self.batch:
+        for cf in self.batch:  #  pylint: disable=redefined-outer-name
             channel_ids = cf["channel_ids"] = []
             for c in cf["channels"]:
                 chash = self.channels[c]
@@ -277,19 +277,19 @@ class ChannelFamilyImport(Import):
             raise
         self.backend.commit()
 
-    def __filterCustomChannelFamilies(self):
+    def __filterCustomChannelFamilies(self):  #  pylint: disable=invalid-name
         """Filter out private channel families from ISS syncs. WebUI
         creates these for us at the org creation time.
         """
         new_batch = []
-        for cf in self.batch:
+        for cf in self.batch:  #  pylint: disable=redefined-outer-name
             if not cf["label"].startswith("private-channel-family"):
                 new_batch.append(cf)
         self.batch = new_batch
 
 
-class DistChannelMapImport(Import):
-    def __init__(self, batch, backend):
+class DistChannelMapImport(Import):  #  pylint: disable=missing-class-docstring
+    def __init__(self, batch, backend):  #  pylint: disable=redefined-outer-name,redefined-outer-name
         Import.__init__(self, batch, backend)
         self.arches = {}
         self.channels = {}
@@ -297,7 +297,7 @@ class DistChannelMapImport(Import):
     def preprocess(self):
         # Processes the batch to a form more suitable for database
         # operations
-        for dcm in self.batch:
+        for dcm in self.batch:  #  pylint: disable=redefined-outer-name
             self.arches[dcm["arch"]] = None
             self.channels[dcm["channel"]] = None
 
@@ -305,20 +305,20 @@ class DistChannelMapImport(Import):
         # Look up arches and channels
         self.backend.lookupChannelArches(self.arches)
         self.backend.lookupChannels(self.channels)
-        for dcm in self.batch:
+        for dcm in self.batch:  #  pylint: disable=redefined-outer-name
             arch = self.arches[dcm["arch"]]
             if arch is None:
                 # Invalid arch
                 dcm.ignored = 1
                 raise InvalidArchError(
-                    dcm["arch"], "Invalid dist_channel_map arch %s" % dcm["arch"]
+                    dcm["arch"], "Invalid dist_channel_map arch %s" % dcm["arch"]  #  pylint: disable=consider-using-f-string
                 )
             channel = self.channels[dcm["channel"]]
             if channel is None:
                 dcm.ignored = 1
                 raise InvalidChannelError(
                     dcm["channel"],
-                    "Invalid dist_channel_map channel %s" % dcm["channel"],
+                    "Invalid dist_channel_map channel %s" % dcm["channel"],  #  pylint: disable=consider-using-f-string
                 )
             dcm["arch"] = arch
             dcm["channel_id"] = channel["id"]
@@ -341,7 +341,7 @@ if __name__ == "__main__":
     from .importLib import Collection, ChannelFamily, DistChannelMap
 
     backend = OracleBackend()
-    if 1:
+    if 1:  #  pylint: disable=using-constant-test
         batch = Collection()
         dcms = [
             {
@@ -367,7 +367,7 @@ if __name__ == "__main__":
         dcmimp = DistChannelMapImport(batch, backend)
         dcmimp.run()
         sys.exit(0)
-    if 0:
+    if 0:  #  pylint: disable=using-constant-test
         batch = Collection()
         families = [
             {

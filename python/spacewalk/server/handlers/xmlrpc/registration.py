@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2017 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -23,8 +23,8 @@ from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.common.rhnConfig import CFG, PRODUCT_NAME
 from spacewalk.common.rhnException import rhnFault
 from spacewalk.common.rhnTranslate import _, cat
-from uyuni.common.rhnLib import checkValue
-from spacewalk.server.rhnLib import normalize_server_arch
+from uyuni.common.rhnLib import checkValue  #  pylint: disable=ungrouped-imports
+from spacewalk.server.rhnLib import normalize_server_arch  #  pylint: disable=ungrouped-imports
 from spacewalk.server.rhnServer import server_route, server_lib
 from spacewalk.server.rhnServer.server_certificate import Certificate
 from spacewalk.server.rhnHandler import rhnHandler
@@ -47,7 +47,7 @@ def hash_validate(data, *keylist):
         l = data[k]
         if l is None:
             return 0
-        if type(l) == type("") and len(l) == 0:
+        if type(l) == type("") and len(l) == 0:  #  pylint: disable=unidiomatic-typecheck
             return 0
     return 1
 
@@ -280,9 +280,9 @@ class Registration(rhnHandler):
 
         # log entry point
         if "token" in data:
-            log_item = "token = '%s'" % data["token"]
+            log_item = "token = '%s'" % data["token"]  #  pylint: disable=consider-using-f-string
         else:
-            log_item = "username = '%s'" % user.username
+            log_item = "username = '%s'" % user.username  #  pylint: disable=consider-using-f-string
 
         log_debug(1, log_item, release_version, architecture)
 
@@ -309,20 +309,20 @@ class Registration(rhnHandler):
             # Look the token up; if the token does not exist or is invalid,
             # stop right here (search_token raises the appropriate rhnFault)
             tokens_obj = rhnServer.search_token(token_string)
-            log_user_id = tokens_obj.get_user_id()
+            log_user_id = tokens_obj.get_user_id()  #  pylint: disable=unused-variable
         else:
             # user should not be null here
             log_user_id = user.getid()
             tokens_obj = rhnServer.search_org_token(user.contact["org_id"])
             log_debug(
                 3,
-                "universal_registration_token set as %s" % str(tokens_obj.get_tokens()),
+                "universal_registration_token set as %s" % str(tokens_obj.get_tokens()),  #  pylint: disable=consider-using-f-string
             )
             rhnFlags.set("universal_registration_token", tokens_obj)
 
         if "channel" in data and len(data["channel"]) > 0:
             channel = data["channel"]
-            log_debug(3, "requested EUS channel: %s" % str(channel))
+            log_debug(3, "requested EUS channel: %s" % str(channel))  #  pylint: disable=consider-using-f-string
         else:
             channel = None
 
@@ -410,9 +410,9 @@ class Registration(rhnHandler):
                     elif virt_type == "fully":
                         virt_type = rhnVirtualization.VirtualizationType.FULLY
                     else:
-                        raise Exception("Unknown virtualization type: %s" % virt_type)
+                        raise Exception("Unknown virtualization type: %s" % virt_type)  #  pylint: disable=broad-exception-raised,consider-using-f-string
                 else:
-                    raise Exception("Virtualization type not provided")
+                    raise Exception("Virtualization type not provided")  #  pylint: disable=broad-exception-raised
                 newserv.virt_uuid = virt_uuid
                 newserv.virt_type = virt_type
             else:
@@ -445,7 +445,7 @@ class Registration(rhnHandler):
             # bretm 02/19/2007 -- this shouldn't throw any of the following:
             #   BaseChannelDeniedError
             #   NoBaseChannelError
-            # since we have the token object, and underneath the hood, we have none_ok=have_token
+            # since we have the token object, and underneath the hood, we have none_ok=have_token  #  pylint: disable=line-too-long
 
             # BUT - it does. So catch them and throw. this will make rhnreg_ks
             # die out, but oh well. at least they don't end up registered, and
@@ -453,12 +453,12 @@ class Registration(rhnHandler):
             try:
                 # don't commit
                 newserv.save(0, channel)
-            except rhnChannel.NoBaseChannelError as channel_error:
+            except rhnChannel.NoBaseChannelError as channel_error:  #  pylint: disable=unused-variable
                 raise_with_tb(rhnFault(70), sys.exc_info()[2])
             except rhnChannel.BaseChannelDeniedError as channel_error:
                 raise_with_tb(rhnFault(71), sys.exc_info()[2])
             except server_lib.rhnSystemEntitlementException:
-                e = sys.exc_info()[1]
+                e = sys.exc_info()[1]  #  pylint: disable=unused-variable
                 raise_with_tb(rhnFault(90), sys.exc_info()[2])
 
             # Process any kickstart data associated with this server
@@ -471,7 +471,7 @@ class Registration(rhnHandler):
             newserv.use_token()
         else:
             # Some information
-            newserv.server["info"] = "rhn_register by %s" % log_item
+            newserv.server["info"] = "rhn_register by %s" % log_item  #  pylint: disable=consider-using-f-string
             log_debug(3, "rhn_register process_kickstart_info")
             newserv.process_kickstart_info()
 
@@ -496,7 +496,7 @@ class Registration(rhnHandler):
             raise_with_tb(rhnFault(71), sys.exc_info()[2])
         except server_lib.rhnSystemEntitlementException:
             e = sys.exc_info()[1]
-            # right now, don't differentiate between general ent issues & rhnNoSystemEntitlementsException
+            # right now, don't differentiate between general ent issues & rhnNoSystemEntitlementsException  #  pylint: disable=line-too-long
             raise_with_tb(rhnFault(90), sys.exc_info()[2])
 
         if CFG.SEND_EOL_MAIL and user and newserv.base_channel_is_eol():
@@ -626,13 +626,13 @@ class Registration(rhnHandler):
         # Get the server certificate file
         system_certificate = newserv.system_id()
 
-        log_debug(4, "Server id created as %s" % server_id)
+        log_debug(4, "Server id created as %s" % server_id)  #  pylint: disable=consider-using-f-string
 
         failures = []
         unknowns = []
 
         # Build our return values.
-        attempted_channels = []
+        attempted_channels = []  #  pylint: disable=unused-variable
         successful_channels = []
         failed_channels = []
 
@@ -643,7 +643,7 @@ class Registration(rhnHandler):
         # If we don't have any successful channels, we know the base channel
         # failed.
         if len(successful_channels) == 0:
-            log_debug(4, "System %s not subscribed to any channels" % server_id)
+            log_debug(4, "System %s not subscribed to any channels" % server_id)  #  pylint: disable=consider-using-f-string
 
             # Look up the base channel, and store it as a failure.
             try:
@@ -653,7 +653,7 @@ class Registration(rhnHandler):
                 failed_channels.append(base["label"])
             # We want to swallow exceptions here as we are just generating data
             # for the review screen in rhn_register.
-            except:
+            except:  #  pylint: disable=bare-except
                 pass
 
         # Store any of our child channel failures
@@ -781,7 +781,7 @@ class Registration(rhnHandler):
         # entitling' fault.
         raise rhnFault(602)
 
-    def __findAssetTag(self, vendor, hardware_info):
+    def __findAssetTag(self, vendor, hardware_info):  #  pylint: disable=invalid-name,unused-private-member
         """Given some hardware information, we try to find the asset tag or
         serial number.
 
@@ -790,7 +790,7 @@ class Registration(rhnHandler):
         """
 
         if vendor in self.vendor_tags:
-            asset_value = ""
+            asset_value = ""  #  pylint: disable=unused-variable
             key = self.vendor_tags[vendor]
             log_debug(5, "key: " + str(key))
             if key in hardware_info:
@@ -800,7 +800,7 @@ class Registration(rhnHandler):
         log_debug(5, "no tag found for vendor: " + str(vendor))
         return None
 
-    def __transform_vendor_to_const(self, vendor):
+    def __transform_vendor_to_const(self, vendor):  #  pylint: disable=unused-private-member
         if vendor in [None, "", "Not Available", "None", "N/A"]:
             return None
 
@@ -809,7 +809,7 @@ class Registration(rhnHandler):
         else:
             return None
 
-    def activate_hardware_info(self, username, password, hardware_info, other):
+    def activate_hardware_info(self, username, password, hardware_info, other):  #  pylint: disable=unused-argument
         """
         Given some hardware-based criteria per-vendor, try giving entitlements.
 
@@ -837,18 +837,18 @@ class Registration(rhnHandler):
 
     def attempt_eol_mailing(self, user, server):
         if not user:
-            raise Exception("user required to attempt eol mailing")
+            raise Exception("user required to attempt eol mailing")  #  pylint: disable=broad-exception-raised
 
         if "email" in user.info:
             log_debug(4, "sending eol mail...")
             body = EOL_EMAIL % {"server": server.server["name"]}
             headers = {}
-            headers["From"] = "SUSE Manager Server <dev-null@%s>" % os.uname()[1]
+            headers["From"] = "SUSE Manager Server <dev-null@%s>" % os.uname()[1]  #  pylint: disable=consider-using-f-string
             headers["To"] = user.info["email"]
             headers["Subject"] = "End of Life SUSE Manager Channel Subscription"
             rhnMail.send(headers, body)
 
-    def send_serial(self, system_id, number, vendor=None):
+    def send_serial(self, system_id, number, vendor=None):  #  pylint: disable=unused-argument
         """
         Receive a vendor serial number from the client and tag it to the server.
         """
@@ -871,14 +871,14 @@ class Registration(rhnHandler):
         # log the entry
         log_debug(1, server.getid(), newver, change_channel)
         if change_channel:
-            ret = server.change_base_channel(newver)
+            ret = server.change_base_channel(newver)  #  pylint: disable=unused-variable
             server.save()
         else:
             server.server["release"] = newver
             msg = """The SUSE Manager Update Agent has detected a
             change in the base version of the operating system running
             on your system"""
-            server.add_history("Updated system release to %s" % (newver), msg)
+            server.add_history("Updated system release to %s" % (newver), msg)  #  pylint: disable=consider-using-f-string
             server.save_history_byid(server.server["id"])
             server.save()
 
@@ -892,7 +892,7 @@ class Registration(rhnHandler):
         packages = self._normalize_packages(system_id, packages)
         server = self.auth_system(system_id)
         # log the entry
-        log_debug(1, server.getid(), "packages: %d" % len(packages))
+        log_debug(1, server.getid(), "packages: %d" % len(packages))  #  pylint: disable=consider-using-f-string
         check_products = False
         if len(server.get_packages()) == 0:
             check_products = True
@@ -912,7 +912,7 @@ class Registration(rhnHandler):
         packages = self._normalize_packages(system_id, packages)
         server = self.auth_system(system_id)
         # log the entry
-        log_debug(1, server.getid(), "packages: %d" % len(packages))
+        log_debug(1, server.getid(), "packages: %d" % len(packages))  #  pylint: disable=consider-using-f-string
         for package in packages:
             server.delete_package(package)
         # XXX: check return code
@@ -923,7 +923,7 @@ class Registration(rhnHandler):
         log_debug(5, system_id, packages)
         if CFG.DISABLE_PACKAGES:
             return 0
-        if type(packages) != type({}):
+        if type(packages) != type({}):  #  pylint: disable=unidiomatic-typecheck
             log_error("Invalid argument type", type(packages))
             raise rhnFault(21)
         added_packages = self._normalize_packages(
@@ -936,9 +936,9 @@ class Registration(rhnHandler):
         server = self.auth_system(system_id)
         # log the entry
         if added_packages is not None:
-            log_debug(1, self.server_id, "added: %d" % len(added_packages))
+            log_debug(1, self.server_id, "added: %d" % len(added_packages))  #  pylint: disable=consider-using-f-string
         if removed_packages is not None:
-            log_debug(1, self.server_id, "deleted: %d" % len(removed_packages))
+            log_debug(1, self.server_id, "deleted: %d" % len(removed_packages))  #  pylint: disable=consider-using-f-string
         # Update the capabilities list
         rhnCapability.update_client_capabilities(self.server_id)
         for package in added_packages or []:
@@ -961,7 +961,7 @@ class Registration(rhnHandler):
         server = self.auth_system(system_id)
         server_id = server.getid()
 
-        rhnVirtualization._virt_notify(server_id, actions)
+        rhnVirtualization._virt_notify(server_id, actions)  #  pylint: disable=protected-access
 
         rhnSQL.commit()
 
@@ -978,7 +978,7 @@ class Registration(rhnHandler):
 
         server = self.auth_system(system_id)
         # log the entry
-        log_debug(1, server.getid(), "packages: %d" % len(packages))
+        log_debug(1, server.getid(), "packages: %d" % len(packages))  #  pylint: disable=consider-using-f-string
         server.dispose_packages()
         for package in packages:
             server.add_package(package)
@@ -996,12 +996,12 @@ class Registration(rhnHandler):
         # we need to be paranoid about the format of the argument because
         # if we accept wrong input then we might end up disposing in error
         # of all packages registered here
-        if type(packages) != type([]):
+        if type(packages) != type([]):  #  pylint: disable=unidiomatic-typecheck
             log_error("Invalid argument type", type(packages))
             raise rhnFault(21)
 
         # Update the capabilities list
-        server = self.auth_system(system_id)
+        server = self.auth_system(system_id)  #  pylint: disable=unused-variable
         rhnCapability.update_client_capabilities(self.server_id)
 
         # old clients send packages as a list of arrays
@@ -1009,28 +1009,28 @@ class Registration(rhnHandler):
         # use a list of dicts
         client_caps = rhnCapability.get_client_capabilities()
         package_is_dict = 0
-        packagesV2 = []
+        packagesV2 = []  #  pylint: disable=invalid-name
         if client_caps and "packages.extended_profile" in client_caps:
             cap_info = client_caps["packages.extended_profile"]
             if cap_info and int(cap_info["version"]) >= 2:
                 package_is_dict = 1
-                packagesV2 = packages
+                packagesV2 = packages  #  pylint: disable=invalid-name
 
         for package in packages:
             if package_is_dict:
                 # extended_profile >= 2
-                if type(package) != type({}):
+                if type(package) != type({}):  #  pylint: disable=unidiomatic-typecheck
                     log_error(
                         "Invalid package spec for extended_profile >= 2",
                         type(package),
-                        "len = %d" % len(package),
+                        "len = %d" % len(package),  #  pylint: disable=consider-using-f-string
                     )
                     raise rhnFault(21)
             else:
                 # extended_profile < 2
-                if type(package) != type([]) or len(package) < 4:
+                if type(package) != type([]) or len(package) < 4:  #  pylint: disable=unidiomatic-typecheck
                     log_error(
-                        "Invalid package spec", type(package), "len = %d" % len(package)
+                        "Invalid package spec", type(package), "len = %d" % len(package)  #  pylint: disable=consider-using-f-string
                     )
                     raise rhnFault(21)
                 else:
@@ -1066,7 +1066,7 @@ class Registration(rhnHandler):
 
     def __add_hw_profile_no_auth(self, server, hwlist):
         """Insert a new profile for the server, but do not authenticate"""
-        log_debug(1, server.getid(), "items: %d" % len(hwlist))
+        log_debug(1, server.getid(), "items: %d" % len(hwlist))  #  pylint: disable=consider-using-f-string
         for hardware in hwlist[:]:
             if hardware["class"] == "NETINFO":
                 self.extract_and_save_netinfos(server, hardware)
@@ -1103,7 +1103,7 @@ class Registration(rhnHandler):
             raise rhnFault(
                 22,
                 _(
-                    "Unable to find a valid network interface, both ipaddr and ip6addr not found."
+                    "Unable to find a valid network interface, both ipaddr and ip6addr not found."  #  pylint: disable=line-too-long
                 ),
             )
 
@@ -1164,7 +1164,7 @@ class Registration(rhnHandler):
 
     def welcome_message(self, lang=None):
         """returns string of welcome message"""
-        log_debug(1, "lang: %s" % lang)
+        log_debug(1, "lang: %s" % lang)  #  pylint: disable=consider-using-f-string
         if lang:
             cat.setlangs(lang)
         msg = _("{PRODUCT_NAME} Welcome Message").format(PRODUCT_NAME=PRODUCT_NAME)
@@ -1174,7 +1174,7 @@ class Registration(rhnHandler):
 
     def privacy_statement(self, lang=None):
         """returns string of privacy statement"""
-        log_debug(1, "lang: %s" % lang)
+        log_debug(1, "lang: %s" % lang)  #  pylint: disable=consider-using-f-string
         if lang:
             cat.setlangs(lang)
         msg = _("Privacy Statement")
@@ -1182,7 +1182,7 @@ class Registration(rhnHandler):
         rhnFlags.set("compress_response", 1)
         return msg
 
-    def register_product(self, system_id, product, oeminfo={}):
+    def register_product(self, system_id, product, oeminfo={}):  #  pylint: disable=dangerous-default-value
         """register a product and record the data sent with the registration
 
         bretm:  hasn't registered a product or recorded anything since 2001, near
@@ -1195,7 +1195,7 @@ class Registration(rhnHandler):
         """
 
         log_debug(5, system_id, product, oeminfo)
-        if type(product) != type({}):
+        if type(product) != type({}):  #  pylint: disable=unidiomatic-typecheck
             log_error("Invalid argument type", type(product))
             raise rhnFault(21, _("Expected a dictionary as a product argument"))
         log_debug(4, product)
@@ -1205,7 +1205,7 @@ class Registration(rhnHandler):
         self.auth_system(system_id)
         return 0
 
-    def update_contact_info(self, username, password, info={}):
+    def update_contact_info(self, username, password, info={}):  #  pylint: disable=dangerous-default-value
         """this API call is no longer used"""
         log_debug(5, username, info)
         username, password = str(username), str(password)
@@ -1228,11 +1228,11 @@ class Registration(rhnHandler):
 
         return 0
 
-    def update_transactions(self, system_id, timestamp, transactions_hash):
+    def update_transactions(self, system_id, timestamp, transactions_hash):  #  pylint: disable=unused-argument,unused-argument
         """Updates the RPM transactions"""
         log_debug(1)
         # Authenticate
-        server = self.auth_system(system_id)
+        server = self.auth_system(system_id)  #  pylint: disable=unused-variable
         # No op as of 20030923
         return 0
 
@@ -1278,28 +1278,28 @@ class Registration(rhnHandler):
         text_title = CFG.REG_FINISH_MESSAGE_TITLE or ""
         text_file = CFG.REG_FINISH_MESSAGE_TEXT_FILE
         try:
-            text_message = open(text_file).read()
+            text_message = open(text_file).read()  #  pylint: disable=unspecified-encoding
         except IOError:
             e = sys.exc_info()[1]
             log_error(
-                "reg_fishish_message_return_code is set, but file "
+                "reg_fishish_message_return_code is set, but file "  #  pylint: disable=consider-using-f-string
                 "%s invalid: %s" % (text_file, e)
             )
             return (0, "", "")
         return (return_code, text_title, text_message)
 
-    def register_osad(self, system_id, args={}):
+    def register_osad(self, system_id, args={}):  #  pylint: disable=dangerous-default-value,unused-argument,unused-argument
         log_error("register_osad unsupported")
 
         return {}
 
-    def register_osad_jid(self, system_id, args={}):
+    def register_osad_jid(self, system_id, args={}):  #  pylint: disable=dangerous-default-value,unused-argument,unused-argument
         log_error("register_osad_jid unsupported")
 
         return {}
 
     def available_eus_channels(
-        self, username, password, arch, version, release, other=None
+        self, username, password, arch, version, release, other=None  #  pylint: disable=unused-argument
     ):
         """
         Given a server arch, redhat-release version, and redhat-release release
@@ -1340,7 +1340,7 @@ class Registration(rhnHandler):
             version, release, server_arch, org_id, user_id
         )
 
-        log_debug(4, "EUS Channels are: %s" % str(channels))
+        log_debug(4, "EUS Channels are: %s" % str(channels))  #  pylint: disable=consider-using-f-string
 
         default_channel = ""
         eus_channels = {}
@@ -1361,7 +1361,7 @@ class Registration(rhnHandler):
             "channels": eus_channels,
         }
 
-    def remaining_subscriptions(self, username, password, arch, release):
+    def remaining_subscriptions(self, username, password, arch, release):  #  pylint: disable=unused-argument,unused-argument,unused-argument,unused-argument
         """This is an obsoleted API call used in old RHEL5 clients to determine
         if they should show the "activate a subscription" page.
         """
@@ -1388,7 +1388,7 @@ class Registration(rhnHandler):
             server.save()
             return server.system_id()
 
-    def suse_update_products(self, system_id, guid, secret, target, products):
+    def suse_update_products(self, system_id, guid, secret, target, products):  #  pylint: disable=unused-argument
         log_debug(5, system_id, guid, target, products)
         server = self.auth_system(system_id)
         log_debug(1, server.getid())
@@ -1396,7 +1396,7 @@ class Registration(rhnHandler):
         return 0
 
 
-def _faultValueString(value, name):
+def _faultValueString(value, name):  #  pylint: disable=invalid-name
     return _("Invalid value '%s' for %s (%s)") % (str(value), str(name), type(value))
 
 

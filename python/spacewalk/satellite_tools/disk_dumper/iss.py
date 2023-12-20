@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2018 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -74,10 +74,10 @@ class ISSChannelPackageShortDiskSource:
         self.channelid = channel_name
         self.pathkey = "xml-channel-packages/rhn-channel-%d.data"
 
-    def setChannel(self, channel_id):
+    def setChannel(self, channel_id):  #  pylint: disable=invalid-name
         self.channelid = channel_id
 
-    def _getFile(self):
+    def _getFile(self):  #  pylint: disable=invalid-name
         return os.path.join(self.mp, self.pathkey % (self.channelid,))
 
 
@@ -117,7 +117,7 @@ class FileMapper:
             "suse_product_extensions": xmlDiskSource.SuseProductExtensionsDiskSource(
                 self.mp
             ),
-            "suse_product_repositories": xmlDiskSource.SuseProductRepositoriesDiskSource(
+            "suse_product_repositories": xmlDiskSource.SuseProductRepositoriesDiskSource(  #  pylint: disable=line-too-long
                 self.mp
             ),
             "scc_repositories": xmlDiskSource.SCCRepositoriesDiskSource(self.mp),
@@ -138,95 +138,95 @@ class FileMapper:
 
         return ofile
 
-    # The get*File methods will return the full path to the xml file that the dumps are placed in.
+    # The get*File methods will return the full path to the xml file that the dumps are placed in.  #  pylint: disable=line-too-long
     # pylint: disable=W0212
-    def getArchesFile(self):
+    def getArchesFile(self):  #  pylint: disable=invalid-name
         return self.setup_file(self.filemap["arches"]._getFile())
 
-    def getArchesExtraFile(self):
+    def getArchesExtraFile(self):  #  pylint: disable=invalid-name
         return self.setup_file(self.filemap["arches-extra"]._getFile())
 
-    def getBlacklistsFile(self):
+    def getBlacklistsFile(self):  #  pylint: disable=invalid-name
         return self.setup_file(self.filemap["blacklists"]._getFile())
 
-    def getOrgsFile(self):
+    def getOrgsFile(self):  #  pylint: disable=invalid-name
         return self.setup_file(self.filemap["orgs"]._getFile())
 
-    def getChannelFamiliesFile(self):
+    def getChannelFamiliesFile(self):  #  pylint: disable=invalid-name
         return self.setup_file(self.filemap["channelfamilies"]._getFile())
 
-    def getBinaryRPMFile(self):
+    def getBinaryRPMFile(self):  #  pylint: disable=invalid-name
         return self.setup_file(self.filemap["binary_rpms"]._getFile())
 
-    def getChannelsFile(self, channelname):
+    def getChannelsFile(self, channelname):  #  pylint: disable=invalid-name
         self.filemap["channels"].setChannel(channelname)
         return self.setup_file(self.filemap["channels"]._getFile())
 
-    def getChannelCompsFile(self, channelname):
+    def getChannelCompsFile(self, channelname):  #  pylint: disable=invalid-name
         self.filemap["comps"].setChannel(channelname)
         return self.setup_file(self.filemap["comps"]._getFile())
 
-    def getChannelModulesFile(self, channelname):
+    def getChannelModulesFile(self, channelname):  #  pylint: disable=invalid-name
         self.filemap["modules"].setChannel(channelname)
         return self.setup_file(self.filemap["modules"]._getFile())
 
-    def getChannelPackageShortFile(self, channel_id):
+    def getChannelPackageShortFile(self, channel_id):  #  pylint: disable=invalid-name
         self.filemap["channel-pkg-short"].setChannel(channel_id)
         return self.setup_file(self.filemap["channel-pkg-short"]._getFile())
 
-    def getPackagesFile(self, packageid):
+    def getPackagesFile(self, packageid):  #  pylint: disable=invalid-name
         self.filemap["packages"].setID(packageid)
         return self.setup_file(self.filemap["packages"]._getFile())
 
-    def getShortPackagesFile(self, packageid):
+    def getShortPackagesFile(self, packageid):  #  pylint: disable=invalid-name
         self.filemap["packages-short"].setID(packageid)
         return self.setup_file(self.filemap["packages-short"]._getFile())
 
-    def getSourcePackagesFile(self, sp_id):
+    def getSourcePackagesFile(self, sp_id):  #  pylint: disable=invalid-name
         self.filemap["sourcepackages"].setID(sp_id)
         return self.setup_file(self.filemap["sourcepackages"]._getFile())
 
-    def getErrataFile(self, errataid):
+    def getErrataFile(self, errataid):  #  pylint: disable=invalid-name
         self.filemap["errata"].setID(errataid)
         return self.setup_file(self.filemap["errata"]._getFile())
 
-    def getKickstartTreeFile(self, ks_id):
+    def getKickstartTreeFile(self, ks_id):  #  pylint: disable=invalid-name
         self.filemap["kickstart_trees"].setID(ks_id)
         return self.setup_file(self.filemap["kickstart_trees"]._getFile())
 
-    def getKickstartFileFile(self, ks_label, relative_path):
+    def getKickstartFileFile(self, ks_label, relative_path):  #  pylint: disable=invalid-name
         self.filemap["kickstart_files"].setID(ks_label)
         self.filemap["kickstart_files"].set_relative_path(relative_path)
         return self.setup_file(self.filemap["kickstart_files"]._getFile())
 
-    def getProductNamesFile(self):
+    def getProductNamesFile(self):  #  pylint: disable=invalid-name
         return self.setup_file(self.filemap["productnames"]._getFile())
 
-    def getSupportInformationFile(self):
+    def getSupportInformationFile(self):  #  pylint: disable=invalid-name
         return self.setup_file(self.filemap["supportinfo"]._getFile())
 
-    def getSuseProductsFile(self):
+    def getSuseProductsFile(self):  #  pylint: disable=invalid-name
         return self.setup_file(self.filemap["suse_products"]._getFile())
 
-    def getSuseProductChannelsFile(self):
+    def getSuseProductChannelsFile(self):  #  pylint: disable=invalid-name
         return self.setup_file(self.filemap["suse_product_channels"]._getFile())
 
-    def getSuseUpgradePathsFile(self):
+    def getSuseUpgradePathsFile(self):  #  pylint: disable=invalid-name
         return self.setup_file(self.filemap["suse_upgrade_paths"]._getFile())
 
-    def getSuseProductExtensionsFile(self):
+    def getSuseProductExtensionsFile(self):  #  pylint: disable=invalid-name
         return self.setup_file(self.filemap["suse_product_extensions"]._getFile())
 
-    def getSuseProductRepositoriesFile(self):
+    def getSuseProductRepositoriesFile(self):  #  pylint: disable=invalid-name
         return self.setup_file(self.filemap["suse_product_repositories"]._getFile())
 
-    def getSCCRepositoriesFile(self):
+    def getSCCRepositoriesFile(self):  #  pylint: disable=invalid-name
         return self.setup_file(self.filemap["scc_repositories"]._getFile())
 
-    def getSuseSubscriptionsFile(self):
+    def getSuseSubscriptionsFile(self):  #  pylint: disable=invalid-name
         return self.setup_file(self.filemap["suse_subscriptions"]._getFile())
 
-    def getClonedChannelsFile(self):
+    def getClonedChannelsFile(self):  #  pylint: disable=invalid-name
         return self.setup_file(self.filemap["cloned_channels"]._getFile())
 
 
@@ -276,7 +276,7 @@ class Dumper(dumper.XML_Dumper):
 
         # The queries here are a little weird. They grab just enough information
         # to satisfy the dumper objects, which will use the information to look up
-        # any additional information that they need. That's why they don't seem to grab all
+        # any additional information that they need. That's why they don't seem to grab all  #  pylint: disable=line-too-long
         # of the information that you'd think would be necessary to sync stuff.
         ####CHANNEL INFO###
         try:
@@ -310,21 +310,21 @@ class Dumper(dumper.XML_Dumper):
             self.channel_modules_query = rhnSQL.Statement(modules_query)
             channel_modules_sth = rhnSQL.prepare(self.channel_modules_query)
 
-            # self.channel_ids contains the list of dictionaries that hold the channel information
+            # self.channel_ids contains the list of dictionaries that hold the channel information  #  pylint: disable=line-too-long
             # The keys are 'channel_id', 'label', and 'last_modified'.
             self.channel_comps = {}
             self.channel_modules = {}
 
             self.set_exportable_orgs(org_ids)
 
-            # Channel_labels should be the list of channels passed into rhn-satellite-exporter by the user.
+            # Channel_labels should be the list of channels passed into rhn-satellite-exporter by the user.  #  pylint: disable=line-too-long
             log2stdout(1, "Gathering channel info...")
             for ids in channel_labels:
                 ch_data.execute(label=ids)
                 ch_info = ch_data.fetchall_dict()
 
                 if not ch_info:
-                    raise ISSError("Error: Channel %s not found." % ids, "")
+                    raise ISSError("Error: Channel %s not found." % ids, "")  #  pylint: disable=consider-using-f-string
 
                 self.channel_ids = self.channel_ids + ch_info
 
@@ -342,12 +342,12 @@ class Dumper(dumper.XML_Dumper):
                         "relative_filename"
                     ]
 
-            # For list of channel families, we want to also list those relevant for channels
+            # For list of channel families, we want to also list those relevant for channels  #  pylint: disable=line-too-long
             # that are already on disk, so that we do not lose those families with
-            # "incremental" dumps. So we will gather list of channel ids for channels already
+            # "incremental" dumps. So we will gather list of channel ids for channels already  #  pylint: disable=line-too-long
             # in dump.
             channel_labels_for_families = self.fm.filemap["channels"].list()
-            print(("Appending channels %s" % (channel_labels_for_families)))
+            print(("Appending channels %s" % (channel_labels_for_families)))  #  pylint: disable=consider-using-f-string
             for ids in channel_labels_for_families:
                 ch_data.execute(label=ids)
                 ch_info = ch_data.fetchall_dict()
@@ -365,7 +365,7 @@ class Dumper(dumper.XML_Dumper):
             Traceback(mail=0, ostream=tbout, with_locals=1)
             raise_with_tb(
                 ISSError(
-                    "%s caught while getting channel info." % e.__class__.__name__,
+                    "%s caught while getting channel info." % e.__class__.__name__,  #  pylint: disable=consider-using-f-string
                     tbout.getvalue(),
                 ),
                 sys.exc_info()[2],
@@ -422,7 +422,7 @@ class Dumper(dumper.XML_Dumper):
             self.brpm_query = rhnSQL.Statement(query)
             brpm_data = rhnSQL.prepare(self.brpm_query)
 
-            # self.brpms is a list of binary rpm info. It is a list of dictionaries, where each dictionary
+            # self.brpms is a list of binary rpm info. It is a list of dictionaries, where each dictionary  #  pylint: disable=line-too-long
             # has 'id' and 'path' as the keys.
             self.brpms = []
             log2stdout(1, "Gathering binary RPM info...")
@@ -435,7 +435,7 @@ class Dumper(dumper.XML_Dumper):
             Traceback(mail=0, ostream=tbout, with_locals=1)
             raise_with_tb(
                 ISSError(
-                    "%s caught while getting binary rpm info." % e.__class__.__name__,
+                    "%s caught while getting binary rpm info." % e.__class__.__name__,  #  pylint: disable=consider-using-f-string
                     tbout.getvalue(),
                 ),
                 sys.exc_info()[2],
@@ -495,11 +495,11 @@ class Dumper(dumper.XML_Dumper):
             self.package_query = rhnSQL.Statement(query)
             package_data = rhnSQL.prepare(self.package_query)
 
-            # self.pkg_info will be a list of dictionaries containing channel package information.
+            # self.pkg_info will be a list of dictionaries containing channel package information.  #  pylint: disable=line-too-long
             # The keys are 'package_id' and 'last_modified'.
             self.pkg_info = []
 
-            # This fills in the pkg_info list with channel package information from the channels in
+            # This fills in the pkg_info list with channel package information from the channels in  #  pylint: disable=line-too-long
             # self.channel_ids.
             log2stdout(1, "Gathering package info...")
             for channel_id in self.channel_ids:
@@ -516,7 +516,7 @@ class Dumper(dumper.XML_Dumper):
             Traceback(mail=0, ostream=tbout, with_locals=1)
             raise_with_tb(
                 ISSError(
-                    "%s caught while getting package info." % e.__class__.__name__,
+                    "%s caught while getting package info." % e.__class__.__name__,  #  pylint: disable=consider-using-f-string
                     tbout.getvalue(),
                 ),
                 sys.exc_info()[2],
@@ -569,8 +569,8 @@ class Dumper(dumper.XML_Dumper):
             source_package_data = rhnSQL.prepare(self.source_package_query)
             source_package_data.execute(**dates)
 
-            # self.src_pkg_info is a list of dictionaries containing the source package information.
-            # The keys for each dictionary are 'package_id', 'last_modified', and 'source_rpm_id'.
+            # self.src_pkg_info is a list of dictionaries containing the source package information.  #  pylint: disable=line-too-long
+            # The keys for each dictionary are 'package_id', 'last_modified', and 'source_rpm_id'.  #  pylint: disable=line-too-long
             self.src_pkg_info = source_package_data.fetchall_dict() or []
 
             # Again, don't bother placing None into the list.
@@ -583,7 +583,7 @@ class Dumper(dumper.XML_Dumper):
             Traceback(mail=0, ostream=tbout, with_locals=1)
             raise_with_tb(
                 ISSError(
-                    "%s caught while getting source package info."
+                    "%s caught while getting source package info."  #  pylint: disable=consider-using-f-string
                     % e.__class__.__name__,
                     tbout.getvalue(),
                 ),
@@ -614,7 +614,7 @@ class Dumper(dumper.XML_Dumper):
             self.errata_query = rhnSQL.Statement(query)
             errata_data = rhnSQL.prepare(self.errata_query)
 
-            # self.errata_info will be a list of dictionaries containing errata info for the channels
+            # self.errata_info will be a list of dictionaries containing errata info for the channels  #  pylint: disable=line-too-long
             # that the user listed. The keys are 'errata_id' and 'last_modified'.
             self.errata_info = []
             log2stdout(1, "Gathering errata info...")
@@ -630,7 +630,7 @@ class Dumper(dumper.XML_Dumper):
             Traceback(mail=0, ostream=tbout, with_locals=1)
             raise_with_tb(
                 ISSError(
-                    "%s caught while getting errata info." % e.__class__.__name__,
+                    "%s caught while getting errata info." % e.__class__.__name__,  #  pylint: disable=consider-using-f-string
                     tbout.getvalue(),
                 ),
                 sys.exc_info()[2],
@@ -673,7 +673,7 @@ class Dumper(dumper.XML_Dumper):
             Traceback(mail=0, ostream=tbout, with_locals=1)
             raise_with_tb(
                 ISSError(
-                    "%s caught while getting kickstart data info."
+                    "%s caught while getting kickstart data info."  #  pylint: disable=consider-using-f-string
                     % e.__class__.__name__,
                     tbout.getvalue(),
                 ),
@@ -723,7 +723,7 @@ class Dumper(dumper.XML_Dumper):
             Traceback(mail=0, ostream=tbout, with_locals=1)
             raise_with_tb(
                 ISSError(
-                    "%s caught while getting kickstart files info."
+                    "%s caught while getting kickstart files info."  #  pylint: disable=consider-using-f-string
                     % e.__class__.__name__,
                     tbout.getvalue(),
                 ),
@@ -736,21 +736,21 @@ class Dumper(dumper.XML_Dumper):
     def close(self):
         self.outstream.close()
 
-    # This is an addition that allows the caller to set the filename for the output stream.
+    # This is an addition that allows the caller to set the filename for the output stream.  #  pylint: disable=line-too-long
     def set_filename(self, filename):
         self.filename = filename
 
-    # This method overrides the parent class's version of this method. This version allows the output stream to
+    # This method overrides the parent class's version of this method. This version allows the output stream to  #  pylint: disable=line-too-long
     # be a file, which should have been set prior to this via the set_filename method.
-    # TODO: Add error-checking. Either give self.outstream a sane default or have it throw an error if it hasn't
+    # TODO: Add error-checking. Either give self.outstream a sane default or have it throw an error if it hasn't  #  pylint: disable=line-too-long
     #      been set yet.
     def _get_xml_writer(self):
-        self.outstream = open(self.filename, "w")
+        self.outstream = open(self.filename, "w")  #  pylint: disable=unspecified-encoding
         return xmlWriter.XMLWriter(stream=self.outstream)
 
     # The dump_* methods aren't really overrides because they don't preserve the method
     # signature, but they are meant as replacements for the methods defined in the base
-    # class that have the same name. They will set up the file for the dump, collect info
+    # class that have the same name. They will set up the file for the dump, collect info  #  pylint: disable=line-too-long
     # necessary for the dumps to take place, and then call the base class version of the
     # method to do the actual dumping.
     def _dump_simple(self, filename, dump_func, startmsg, endmsg, exceptmsg):
@@ -839,7 +839,7 @@ class Dumper(dumper.XML_Dumper):
                 CFG.MOUNT_POINT, repomds[channel["channel_id"]]
             )
             target_filename = get_file_func(channel["label"])
-            log2email(3, "Need to copy %s to %s" % (full_filename, target_filename))
+            log2email(3, "Need to copy %s to %s" % (full_filename, target_filename))  #  pylint: disable=consider-using-f-string
 
             if self.hardlinks:
                 os.link(full_filename, target_filename)
@@ -876,10 +876,10 @@ class Dumper(dumper.XML_Dumper):
                     self.whole_errata,
                 )
 
-                log2email(4, "Channel: %s" % channel["label"])
+                log2email(4, "Channel: %s" % channel["label"])  #  pylint: disable=consider-using-f-string
                 log2email(
                     5,
-                    "Channel exported to %s"
+                    "Channel exported to %s"  #  pylint: disable=consider-using-f-string
                     % self.fm.getChannelsFile(channel["label"]),
                 )
 
@@ -894,7 +894,7 @@ class Dumper(dumper.XML_Dumper):
                 pb.printIncrement()
             pb.printComplete()
             log2stderr(
-                3, "Number of channels exported: %s" % str(len(self.channel_ids))
+                3, "Number of channels exported: %s" % str(len(self.channel_ids))  #  pylint: disable=consider-using-f-string
             )
 
         except Exception:
@@ -903,7 +903,7 @@ class Dumper(dumper.XML_Dumper):
             Traceback(mail=0, ostream=tbout, with_locals=1)
             raise_with_tb(
                 ISSError(
-                    "%s caught in dump_channels." % e.__class__.__name__,
+                    "%s caught in dump_channels." % e.__class__.__name__,  #  pylint: disable=consider-using-f-string
                     tbout.getvalue(),
                 ),
                 sys.exc_info()[2],
@@ -933,7 +933,7 @@ class Dumper(dumper.XML_Dumper):
             Traceback(mail=0, ostream=tbout, with_locals=1)
             raise_with_tb(
                 ISSError(
-                    "%s caught in dump_channel_packages_short." % e.__class__.__name__,
+                    "%s caught in dump_channel_packages_short." % e.__class__.__name__,  #  pylint: disable=consider-using-f-string
                     tbout.getvalue(),
                 ),
                 sys.exc_info()[2],
@@ -956,15 +956,15 @@ class Dumper(dumper.XML_Dumper):
                 self.set_filename(self.fm.getPackagesFile(package_name))
                 dumper.XML_Dumper.dump_packages(self, [pkg_info])
 
-                log2email(4, "Package: %s" % package_name)
+                log2email(4, "Package: %s" % package_name)  #  pylint: disable=consider-using-f-string
                 log2email(
-                    5, "Package exported to %s" % self.fm.getPackagesFile(package_name)
+                    5, "Package exported to %s" % self.fm.getPackagesFile(package_name)  #  pylint: disable=consider-using-f-string
                 )
 
                 pb.addTo(1)
                 pb.printIncrement()
             pb.printComplete()
-            log2stdout(3, "Number of packages exported: %s" % str(len(self.pkg_info)))
+            log2stdout(3, "Number of packages exported: %s" % str(len(self.pkg_info)))  #  pylint: disable=consider-using-f-string
 
         except Exception:
             e = sys.exc_info()[1]
@@ -972,7 +972,7 @@ class Dumper(dumper.XML_Dumper):
             Traceback(mail=0, ostream=tbout, with_locals=1)
             raise_with_tb(
                 ISSError(
-                    "%s caught in dump_packages." % e.__class__.__name__,
+                    "%s caught in dump_packages." % e.__class__.__name__,  #  pylint: disable=consider-using-f-string
                     tbout.getvalue(),
                 ),
                 sys.exc_info()[2],
@@ -995,13 +995,13 @@ class Dumper(dumper.XML_Dumper):
                 self.set_filename(self.fm.getShortPackagesFile(package_name))
                 dumper.XML_Dumper.dump_packages_short(self, [pkg_info])
 
-                log2email(4, "Short Package: %s" % package_name)
-                log2email(5, "Short Package exported to %s" % package_name)
+                log2email(4, "Short Package: %s" % package_name)  #  pylint: disable=consider-using-f-string
+                log2email(5, "Short Package exported to %s" % package_name)  #  pylint: disable=consider-using-f-string
                 pb.addTo(1)
                 pb.printIncrement()
             pb.printComplete()
             log2stdout(
-                3, "Number of short packages exported: %s" % str(len(self.pkg_info))
+                3, "Number of short packages exported: %s" % str(len(self.pkg_info))  #  pylint: disable=consider-using-f-string
             )
 
         except Exception:
@@ -1010,7 +1010,7 @@ class Dumper(dumper.XML_Dumper):
             Traceback(mail=0, ostream=tbout, with_locals=1)
             raise_with_tb(
                 ISSError(
-                    "%s caught in dump_packages_short." % e.__class__.__name__,
+                    "%s caught in dump_packages_short." % e.__class__.__name__,  #  pylint: disable=consider-using-f-string
                     tbout.getvalue(),
                 ),
                 sys.exc_info()[2],
@@ -1033,7 +1033,7 @@ class Dumper(dumper.XML_Dumper):
             Traceback(mail=0, ostream=tbout, with_locals=1)
             raise_with_tb(
                 ISSError(
-                    "%s caught in dump_source_packages." % e.__class__.__name__,
+                    "%s caught in dump_source_packages." % e.__class__.__name__,  #  pylint: disable=consider-using-f-string
                     tbout.getvalue(),
                 ),
                 sys.exc_info()[2],
@@ -1056,15 +1056,15 @@ class Dumper(dumper.XML_Dumper):
                 self.set_filename(self.fm.getErrataFile(erratum_name))
                 dumper.XML_Dumper.dump_errata(self, [errata_info])
 
-                log2email(4, "Erratum: %s" % str(errata_info["advisory-name"]))
+                log2email(4, "Erratum: %s" % str(errata_info["advisory-name"]))  #  pylint: disable=consider-using-f-string
                 log2email(
-                    5, "Erratum exported to %s" % self.fm.getErrataFile(erratum_name)
+                    5, "Erratum exported to %s" % self.fm.getErrataFile(erratum_name)  #  pylint: disable=consider-using-f-string
                 )
 
                 pb.addTo(1)
                 pb.printIncrement()
             pb.printComplete()
-            log2stdout(3, "Number of errata exported: %s" % str(len(self.errata_info)))
+            log2stdout(3, "Number of errata exported: %s" % str(len(self.errata_info)))  #  pylint: disable=consider-using-f-string
 
         except Exception:
             e = sys.exc_info()[1]
@@ -1072,7 +1072,7 @@ class Dumper(dumper.XML_Dumper):
             Traceback(mail=0, ostream=tbout, with_locals=1)
             raise_with_tb(
                 ISSError(
-                    "%s caught in dump_errata." % e.__class__.__name__, tbout.getvalue()
+                    "%s caught in dump_errata." % e.__class__.__name__, tbout.getvalue()  #  pylint: disable=consider-using-f-string
                 ),
                 sys.exc_info()[2],
             )
@@ -1095,14 +1095,14 @@ class Dumper(dumper.XML_Dumper):
                 )  # , 'foo/bar'))
                 dumper.XML_Dumper.dump_kickstartable_trees(self, [kickstart_tree])
 
-                log2email(5, "KS Data: %s" % str(kickstart_tree["kickstart_label"]))
+                log2email(5, "KS Data: %s" % str(kickstart_tree["kickstart_label"]))  #  pylint: disable=consider-using-f-string
 
                 pb.addTo(1)
                 pb.printIncrement()
             pb.printComplete()
             log2stdout(
                 3,
-                "Amount of kickstart data exported: %s"
+                "Amount of kickstart data exported: %s"  #  pylint: disable=consider-using-f-string
                 % str(len(self.kickstart_trees)),
             )
 
@@ -1112,7 +1112,7 @@ class Dumper(dumper.XML_Dumper):
             Traceback(mail=0, ostream=tbout, with_locals=1)
             raise_with_tb(
                 ISSError(
-                    "%s caught in dump_kickstart_data." % e.__class__.__name__,
+                    "%s caught in dump_kickstart_data." % e.__class__.__name__,  #  pylint: disable=consider-using-f-string
                     tbout.getvalue(),
                 ),
                 sys.exc_info()[2],
@@ -1141,7 +1141,7 @@ class Dumper(dumper.XML_Dumper):
                 # Make sure the path actually exists
                 if not os.path.exists(path_to_files):
                     raise ISSError(
-                        "Missing kickstart file under mount-point: %s"
+                        "Missing kickstart file under mount-point: %s"  #  pylint: disable=consider-using-f-string
                         % (path_to_files,),
                         "",
                     )
@@ -1150,14 +1150,14 @@ class Dumper(dumper.XML_Dumper):
                 path_to_export_file = self.fm.getKickstartFileFile(
                     kickstart_file["label"], kickstart_file["relative-path"]
                 )
-                # os.path.join(self.mp, kickstart_file['base-path'], kickstart_file['relative-path'])
+                # os.path.join(self.mp, kickstart_file['base-path'], kickstart_file['relative-path'])  #  pylint: disable=line-too-long
                 if os.path.exists(path_to_export_file):
                     # already exists, skip ks file
                     continue
                 # Get the dirs to the file under the export directory.
                 dirs_to_file = os.path.split(path_to_export_file)[0]
 
-                # create the directory to the kickstart files under the export directory, if necessary.
+                # create the directory to the kickstart files under the export directory, if necessary.  #  pylint: disable=line-too-long
                 if not os.path.exists(dirs_to_file):
                     os.makedirs(dirs_to_file)
                 try:
@@ -1176,7 +1176,7 @@ class Dumper(dumper.XML_Dumper):
                     Traceback(mail=0, ostream=tbout, with_locals=1)
                     raise_with_tb(
                         ISSError(
-                            "Error: Error copying file: %s: %s"
+                            "Error: Error copying file: %s: %s"  #  pylint: disable=consider-using-f-string
                             % (path_to_files, e.__class__.__name__),
                             tbout.getvalue(),
                         ),
@@ -1185,7 +1185,7 @@ class Dumper(dumper.XML_Dumper):
 
                 log2email(
                     5,
-                    "Kickstart File: %s"
+                    "Kickstart File: %s"  #  pylint: disable=consider-using-f-string
                     % os.path.join(
                         kickstart_file["base-path"], kickstart_file["relative-path"]
                     ),
@@ -1197,7 +1197,7 @@ class Dumper(dumper.XML_Dumper):
             pb.printComplete()
             log2stdout(
                 3,
-                "Number of kickstart files exported: %s"
+                "Number of kickstart files exported: %s"  #  pylint: disable=consider-using-f-string
                 % str(len(self.kickstart_files)),
             )
         except ISSError:
@@ -1208,7 +1208,7 @@ class Dumper(dumper.XML_Dumper):
             Traceback(mail=0, ostream=tbout, with_locals=1)
             raise_with_tb(
                 ISSError(
-                    "%s caught in dump_kickstart_files." % e.__class__.__name__,
+                    "%s caught in dump_kickstart_files." % e.__class__.__name__,  #  pylint: disable=consider-using-f-string
                     tbout.getvalue(),
                 ),
                 sys.exc_info()[2],
@@ -1230,7 +1230,7 @@ class Dumper(dumper.XML_Dumper):
             for rpm in self.brpms:
                 # generate path to the rpms under the mount point
                 path_to_rpm = diskImportLib.rpmsPath(
-                    "rhn-package-%s" % str(rpm["id"]), self.mp
+                    "rhn-package-%s" % str(rpm["id"]), self.mp  #  pylint: disable=consider-using-f-string
                 )
 
                 # get the dirs to the rpm
@@ -1238,7 +1238,7 @@ class Dumper(dumper.XML_Dumper):
 
                 if not rpm["path"]:
                     raise ISSError(
-                        "Error: Missing RPM under the satellite mount point. (Package id: %s)"
+                        "Error: Missing RPM under the satellite mount point. (Package id: %s)"  #  pylint: disable=line-too-long,consider-using-f-string
                         % rpm["id"],
                         "",
                     )
@@ -1247,7 +1247,7 @@ class Dumper(dumper.XML_Dumper):
 
                 if not os.path.exists(satellite_path):
                     raise ISSError(
-                        "Error: Missing RPM under mount point: %s" % (satellite_path,),
+                        "Error: Missing RPM under mount point: %s" % (satellite_path,),  #  pylint: disable=consider-using-f-string
                         "",
                     )
 
@@ -1271,7 +1271,7 @@ class Dumper(dumper.XML_Dumper):
                     Traceback(mail=0, ostream=tbout, with_locals=1)
                     raise_with_tb(
                         ISSError(
-                            "Error: Error copying file %s: %s"
+                            "Error: Error copying file %s: %s"  #  pylint: disable=consider-using-f-string
                             % (
                                 os.path.join(CFG.MOUNT_POINT, rpm["path"]),
                                 e.__class__.__name__,
@@ -1280,13 +1280,13 @@ class Dumper(dumper.XML_Dumper):
                         ),
                         sys.exc_info()[2],
                     )
-                except OSError:
+                except OSError:  #  pylint: disable=duplicate-except
                     e = sys.exc_info()[1]
                     tbout = cStringIO.StringIO()
                     Traceback(mail=0, ostream=tbout, with_locals=1)
                     raise_with_tb(
                         ISSError(
-                            "Error: Could not make hard link %s: %s (different filesystems?)"
+                            "Error: Could not make hard link %s: %s (different filesystems?)"  #  pylint: disable=line-too-long,consider-using-f-string
                             % (
                                 os.path.join(CFG.MOUNT_POINT, rpm["path"]),
                                 e.__class__.__name__,
@@ -1296,12 +1296,12 @@ class Dumper(dumper.XML_Dumper):
                         sys.exc_info()[2],
                     )
 
-                log2email(5, "RPM: %s" % rpm["path"])
+                log2email(5, "RPM: %s" % rpm["path"])  #  pylint: disable=consider-using-f-string
 
                 pb.addTo(1)
                 pb.printIncrement()
             pb.printComplete()
-            log2stdout(3, "Number of RPMs exported: %s" % str(len(self.brpms)))
+            log2stdout(3, "Number of RPMs exported: %s" % str(len(self.brpms)))  #  pylint: disable=consider-using-f-string
         except ISSError:
             raise
 
@@ -1311,7 +1311,7 @@ class Dumper(dumper.XML_Dumper):
             Traceback(mail=0, ostream=tbout, with_locals=1)
             raise_with_tb(
                 ISSError(
-                    "%s caught in dump_rpms." % e.__class__.__name__, tbout.getvalue()
+                    "%s caught in dump_rpms." % e.__class__.__name__, tbout.getvalue()  #  pylint: disable=consider-using-f-string
                 ),
                 sys.exc_info()[2],
             )
@@ -1411,16 +1411,16 @@ def print_report():
 
 
 # Stolen and modified from satsync.py
-def sendMail():
+def sendMail():  #  pylint: disable=invalid-name
     # Send email summary
     body = dumpEMAIL_LOG()
     if body:
         print("+++ sending log as an email +++")
         headers = {
-            "Subject": "SUSE Manager Export report from %s" % os.uname()[1],
+            "Subject": "SUSE Manager Export report from %s" % os.uname()[1],  #  pylint: disable=consider-using-f-string
         }
         # sndr = CFG.get('traceback_mail', 'rhn-satellite')
-        sndr = "suse-manager@%s" % os.uname()[1]
+        sndr = "suse-manager@%s" % os.uname()[1]  #  pylint: disable=consider-using-f-string
         rhnMail.send(headers, body, sender=sndr)
     else:
         print("+++ email requested, but there is nothing to send +++")
@@ -1432,7 +1432,7 @@ def handle_error(message, traceback):
 
 
 # This class is a mess.
-class ExporterMain:
+class ExporterMain:  #  pylint: disable=missing-class-docstring
     def __init__(self):
         initCFG("server.iss")
 
@@ -1475,12 +1475,12 @@ class ExporterMain:
             self.print_orgs(self.list_orgs())
             sys.exit(0)
 
-        # From this point on everything should assume a list of channels, so it needs to be a list
+        # From this point on everything should assume a list of channels, so it needs to be a list  #  pylint: disable=line-too-long
         # even if there's only one entry.
         if self.options.all_channels:
             channel_dict = self.list_channels()
             self.options.channel = []
-            for pc in channel_dict:
+            for pc in channel_dict:  #  pylint: disable=consider-using-dict-items
                 self.options.channel.append(pc)
                 self.options.channel.extend(channel_dict[pc])
         elif self.options.channel:
@@ -1507,10 +1507,10 @@ class ExporterMain:
                 # User might have specified org name or org id, try both
                 if org in list(orgs.values()):  # ids
                     using_orgs.append(org)
-                elif org in list(orgs.keys()):  # names
+                elif org in list(orgs.keys()):  # names  #  pylint: disable=consider-iterating-dictionary
                     using_orgs.append(orgs[org])
                 else:
-                    sys.stdout.write("Org not found: %s\n" % org)
+                    sys.stdout.write("Org not found: %s\n" % org)  #  pylint: disable=consider-using-f-string
                     exit(0)
             self.options.org = using_orgs
         else:
@@ -1559,8 +1559,8 @@ class ExporterMain:
                 self.end_date = self.options.end_date.ljust(14, "0")
 
             self.start_date = self.options.start_date.ljust(14, "0")
-            print(("start date limit: %s" % self.start_date))
-            print(("end date limit: %s" % self.end_date))
+            print(("start date limit: %s" % self.start_date))  #  pylint: disable=consider-using-f-string
+            print(("end date limit: %s" % self.end_date))  #  pylint: disable=consider-using-f-string
         else:
             self.start_date = None
             self.end_date = None
@@ -1591,7 +1591,7 @@ class ExporterMain:
                     "channels": {"dump": self.dumper.dump_channels},
                     "packages": {"dump": self.dumper.dump_packages},
                     "short": {"dump": self.dumper.dump_packages_short},
-                    #'channel-pkg-short' :   {'dump': self.dumper.dump_channel_packages_short},
+                    #'channel-pkg-short' :   {'dump': self.dumper.dump_channel_packages_short},  #  pylint: disable=line-too-long
                     #'source-packages'   :   {'dump': self.dumper.dump_source_packages},
                     "errata": {"dump": self.dumper.dump_errata},
                     "kickstarts": {
@@ -1630,7 +1630,7 @@ class ExporterMain:
     def list_channels():
         """return all available channels
 
-        the returned format is dictionary containing base_label as keys and value is list
+        the returned format is dictionary containing base_label as keys and value is list  #  pylint: disable=line-too-long
         of labels of child channels
         """
         # The keys for channel_dict are the labels of the base channels.
@@ -1729,7 +1729,7 @@ class ExporterMain:
         if orgs:
             print("Orgs available for export:")
             for org in orgs:
-                print(("Id: %s, Name: '%s'" % (org["id"], org["name"])))
+                print(("Id: %s, Name: '%s'" % (org["id"], org["name"])))  #  pylint: disable=consider-using-f-string
         else:
             print("No Orgs available for listing.")
 
@@ -1741,9 +1741,9 @@ class ExporterMain:
                     continue
 
                 if not action in self.actionmap:
-                    # If we get here there's a programming error. It means that self.action_order
+                    # If we get here there's a programming error. It means that self.action_order  #  pylint: disable=line-too-long
                     # contains a action that isn't defined in self.actionmap.
-                    sys.stderr.write("List of actions doesn't have %s.\n" % (action,))
+                    sys.stderr.write("List of actions doesn't have %s.\n" % (action,))  #  pylint: disable=consider-using-f-string
                     continue
 
                 if isinstance(self.actionmap[action]["dump"], type([])):
@@ -1770,7 +1770,7 @@ class ExporterMain:
                 if not os.path.exists(os_data_dir):
                     continue
 
-                for fpath, _dirs, files in os.walk(os_data_dir):
+                for fpath, _dirs, files in os.walk(os_data_dir):  #  pylint: disable=invalid-name,unused-variable
                     for f in files:
                         if f.endswith(".xml") or f.endswith(".yaml"):
                             filepath = os.path.join(fpath, f)
@@ -1793,13 +1793,13 @@ class ExporterMain:
 
                 # Generate md5sum digest file for isos
                 if os.path.exists(iso_output):
-                    f = open(os.path.join(iso_output, "MD5SUM"), "w")
+                    f = open(os.path.join(iso_output, "MD5SUM"), "w")  #  pylint: disable=unspecified-encoding
                     for iso_file in os.listdir(iso_output):
                         if self.options.make_isos != "dvds" and iso_file != "MD5SUM":
                             md5_val = getFileChecksum(
                                 "md5", (os.path.join(iso_output, iso_file))
                             )
-                            md5str = "%s  %s\n" % (md5_val, iso_file)
+                            md5str = "%s  %s\n" % (md5_val, iso_file)  #  pylint: disable=consider-using-f-string
                             f.write(md5str)
                     f.close()
 
@@ -1814,7 +1814,7 @@ class ExporterMain:
 
         except ISSError:
             isserror = sys.exc_info()[1]
-            # I have the tb get generated in the functions that the the error occurred in to minimize
+            # I have the tb get generated in the functions that the the error occurred in to minimize  #  pylint: disable=line-too-long
             # the amount of extra crap that shows up in it.
             tb = isserror.tb
             msg = isserror.msg
@@ -1832,7 +1832,7 @@ class ExporterMain:
             # This should catch the vast majority of errors that aren't ISSErrors
             tbout = cStringIO.StringIO()
             Traceback(mail=0, ostream=tbout, with_locals=1)
-            msg = "Error: %s caught!" % e.__class__.__name__
+            msg = "Error: %s caught!" % e.__class__.__name__  #  pylint: disable=consider-using-f-string
             handle_error(msg, tbout.getvalue())
             if self.options.email:
                 sendMail()

@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring,invalid-name
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -26,7 +26,7 @@ from spacewalk.common.rhnTB import add_to_seclist
 from spacewalk.server import rhnSQL, rhnUser
 
 
-class UserAuth:
+class UserAuth:  #  pylint: disable=missing-class-docstring
     def __init__(self):
         self.org_id = None
         self.user_id = None
@@ -46,7 +46,7 @@ class UserAuth:
 
         log_debug(
             4,
-            "Groups: %s; org_id: %s; user_id: %s"
+            "Groups: %s; org_id: %s; user_id: %s"  #  pylint: disable=consider-using-f-string
             % (self.groups, self.org_id, self.user_id),
         )
 
@@ -66,18 +66,18 @@ class UserAuth:
 
         log_debug(
             4,
-            "Groups: %s; org_id: %s; user_id: %s"
+            "Groups: %s; org_id: %s; user_id: %s"  #  pylint: disable=consider-using-f-string
             % (self.groups, self.org_id, self.user_id),
         )
 
-    def isOrgAdmin(self):
+    def isOrgAdmin(self):  #  pylint: disable=invalid-name
         if "org_admin" in self.groups:
             log_debug(4, "Is org admin")
             return 1
         log_debug(4, "Is NOT org admin")
         return 0
 
-    def isChannelAdmin(self):
+    def isChannelAdmin(self):  #  pylint: disable=invalid-name
         if "org_admin" in self.groups:
             log_debug(4, "Is channel admin because isa org admin")
             return 1
@@ -87,7 +87,7 @@ class UserAuth:
         log_debug(4, "Is NOT channel admin")
         return 0
 
-    def authzOrg(self, info):
+    def authzOrg(self, info):  #  pylint: disable=invalid-name
         # This function is a lot more complicated than it should be; the
         # corner case is pushes without a channel; we have to deny regular
         # users the ability to push to their org.
@@ -127,7 +127,7 @@ class UserAuth:
         # take a hike.
         raise rhnFault(32, _("You are not allowed to perform administrative tasks"))
 
-    def authzChannels(self, channels):
+    def authzChannels(self, channels):  #  pylint: disable=invalid-name
         log_debug(4, channels)
         if not channels:
             return
@@ -159,15 +159,15 @@ class UserAuth:
                 )
 
             log_debug(
-                4, "User %s allowed to manage channel %s" % (self.user_id, channel)
+                4, "User %s allowed to manage channel %s" % (self.user_id, channel)  #  pylint: disable=consider-using-f-string
             )
 
         return None
 
 
-# wregglej 12/21/05 This should only be used when the user instance has already been reloaded from
+# wregglej 12/21/05 This should only be used when the user instance has already been reloaded from pylint: disable=line-too-long
 # a session.
-def getUserGroupsFromUserInstance(user_instance):
+def getUserGroupsFromUserInstance(user_instance):  #  pylint: disable=invalid-name
     log_debug(4, user_instance.getid())
     user = user_instance
 
@@ -201,7 +201,7 @@ def getUserGroupsFromUserInstance(user_instance):
     return groups, org_id, user_id
 
 
-def getUserGroups(login, password):
+def getUserGroups(login, password):  #  pylint: disable=invalid-name
     # Authenticates a user and returns the list of groups it belongs
     # to, and the org id
     add_to_seclist(password)
@@ -217,13 +217,13 @@ def getUserGroups(login, password):
         log_debug("user.check_password failed")
         raise rhnFault(2)
 
-    if rhnUser.is_user_disabled(username):
+    if rhnUser.is_user_disabled(username):  #  pylint: disable=undefined-variable
         msg = _(
             """
                %s Account has been deactivated on this server.
                Please contact your Org administrator for more help."""
         )
-        raise rhnFault(1, msg % username, explain=0)
+        raise rhnFault(1, msg % username, explain=0)  #  pylint: disable=undefined-variable
 
     return getUserGroupsFromUserInstance(user)
 

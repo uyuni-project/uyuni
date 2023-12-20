@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -53,12 +53,12 @@ from spacewalk.server.importlib.errataCache import schedule_errata_cache_update
 # versions of rhnpush can still talk to a newer satellite. This meant that I had to
 # add new versions of each XMLRPC call that did authentication by sessions rather than
 # username/password. I noticed that the only real difference between the two was the
-# authentication scheme that the functions used, so rather than copy-n-paste a bunch of code,
-# I separated the functionality from the authentication and just pass a authentication object
+# authentication scheme that the functions used, so rather than copy-n-paste a bunch of code, pylint: disable=line-too-long
+# I separated the functionality from the authentication and just pass a authentication object pylint: disable=line-too-long
 # to the function that actually does stuff.
 
 
-class Packages(RPC_Base):
+class Packages(RPC_Base):  #  pylint: disable=missing-class-docstring
     def __init__(self):
         log_debug(3)
         RPC_Base.__init__(self)
@@ -95,22 +95,22 @@ class Packages(RPC_Base):
     def no_op(self):
         """This is so the client can tell if the satellite supports session tokens or not.
 
-        This was used in rhnpush-5.5.26 and older. When there will be no such version of rhnpush in wild,
+        This was used in rhnpush-5.5.26 and older. When there will be no such version of rhnpush in wild,  #  pylint: disable=line-too-long
         then this function can be safely removed."""
         return 1
 
-    def uploadPackageInfo(self, username, password, info):
+    def uploadPackageInfo(self, username, password, info):  #  pylint: disable=invalid-name
         """Upload a collection of binary packages."""
         log_debug(5, username, info)
         authobj = auth(username, password)
         return self._uploadPackageInfo(authobj, info)
 
-    def uploadPackageInfoBySession(self, session_string, info):
+    def uploadPackageInfoBySession(self, session_string, info):  #  pylint: disable=invalid-name
         log_debug(5, session_string)
         authobj = auth_session(session_string)
         return self._uploadPackageInfo(authobj, info)
 
-    def _uploadPackageInfo(self, authobj, info):
+    def _uploadPackageInfo(self, authobj, info):  #  pylint: disable=invalid-name
         # Authorize the org id passed
         authobj.authzOrg(info)
         # Get the channels
@@ -122,18 +122,18 @@ class Packages(RPC_Base):
             force = info["force"]
         return uploadPackages(info, force=force, caller="server.app.uploadPackageInfo")
 
-    def uploadSourcePackageInfo(self, username, password, info):
+    def uploadSourcePackageInfo(self, username, password, info):  #  pylint: disable=invalid-name
         """Upload a collection of source packages."""
         log_debug(5, username, info)
         authobj = auth(username, password)
         return self._uploadSourcePackageInfo(authobj, info)
 
-    def uploadSourcePackageInfoBySession(self, session_string, info):
+    def uploadSourcePackageInfoBySession(self, session_string, info):  #  pylint: disable=invalid-name
         log_debug(5, session_string)
         authobj = auth_session(session_string)
         return self._uploadSourcePackageInfo(authobj, info)
 
-    def _uploadSourcePackageInfo(self, authobj, info):
+    def _uploadSourcePackageInfo(self, authobj, info):  #  pylint: disable=invalid-name
         # Authorize the org id passed
         authobj.authzOrg(info)
         force = 0
@@ -143,48 +143,48 @@ class Packages(RPC_Base):
             info, source=1, force=force, caller="server.app.uploadSourcePackageInfo"
         )
 
-    def listChannelSource(self, channelList, username, password):
+    def listChannelSource(self, channelList, username, password):  #  pylint: disable=invalid-name,invalid-name
         log_debug(5, channelList, username)
         authobj = auth(username, password)
         return self._listChannelSource(authobj, channelList)
 
-    def listChannelSourceBySession(self, channelList, session_string):
+    def listChannelSourceBySession(self, channelList, session_string):  #  pylint: disable=invalid-name,invalid-name
         log_debug(5, channelList, session_string)
         authobj = auth_session(session_string)
         return self._listChannelSource(authobj, channelList)
 
-    def _listChannelSource(self, authobj, channelList):
+    def _listChannelSource(self, authobj, channelList):  #  pylint: disable=invalid-name,invalid-name
         authobj.authzChannels(channelList)
         ret = listChannelsSource(channelList)
         return ret
 
-    def listChannel(self, channelList, username, password):
+    def listChannel(self, channelList, username, password):  #  pylint: disable=invalid-name,invalid-name
         """List packages of a specified channel."""
         log_debug(5, channelList, username)
         authobj = auth(username, password)
         return self._listChannel(authobj, channelList)
 
-    def listChannelBySession(self, channelList, session_string):
+    def listChannelBySession(self, channelList, session_string):  #  pylint: disable=invalid-name,invalid-name
         log_debug(5, channelList, session_string)
         authobj = auth_session(session_string)
         return self._listChannel(authobj, channelList)
 
-    def _listChannel(self, authobj, channelList):
+    def _listChannel(self, authobj, channelList):  #  pylint: disable=invalid-name,invalid-name
         authobj.authzChannels(channelList)
         return listChannels(channelList)
 
-    def listChannelChecksum(self, channelList, username, password):
+    def listChannelChecksum(self, channelList, username, password):  #  pylint: disable=invalid-name,invalid-name
         """List packages of a specified channel."""
         log_debug(5, channelList, username)
         authobj = auth(username, password)
         return self._listChannelChecksum(authobj, channelList)
 
-    def listChannelChecksumBySession(self, channelList, session_string):
+    def listChannelChecksumBySession(self, channelList, session_string):  #  pylint: disable=invalid-name,invalid-name
         log_debug(5, channelList, session_string)
         authobj = auth_session(session_string)
         return self._listChannelChecksum(authobj, channelList)
 
-    def _listChannelChecksum(self, authobj, channelList):
+    def _listChannelChecksum(self, authobj, channelList):  #  pylint: disable=invalid-name,invalid-name
         authobj.authzChannels(channelList)
         return listChannelsChecksum(channelList)
 
@@ -198,7 +198,7 @@ class Packages(RPC_Base):
         if not user or not user.check_password(password):
             raise rhnFault(2)
         if rhnUser.is_user_disabled(username):
-            msg = _(
+            msg = _(  #  pylint: disable=undefined-variable
                 """
                    %s Account has been deactivated on this server.
                    Please contact your Org administrator for more help."""
@@ -212,7 +212,7 @@ class Packages(RPC_Base):
     def check_session(self, session):
         """Checks a session string to make sure it is authentic expired."""
         try:
-            user = rhnUser.session_reload(session)
+            user = rhnUser.session_reload(session)  #  pylint: disable=unused-variable
         except (rhnSession.InvalidSessionError, rhnSession.ExpiredSessionError):
             return 0
         return 1
@@ -220,12 +220,12 @@ class Packages(RPC_Base):
     def test_login(self, username, password):
         log_debug(5, username)
         try:
-            authobj = auth(username, password)
-        except:
+            authobj = auth(username, password)  #  pylint: disable=unused-variable
+        except:  #  pylint: disable=bare-except
             return 0
         return 1
 
-    def test_new_login(self, username, password, session=None):
+    def test_new_login(self, username, password, session=None):  #  pylint: disable=unused-argument
         """rhnpush's --extended-test will call this function."""
         log_debug(5, "testing new login")
         return self.login(username, password)
@@ -236,18 +236,18 @@ class Packages(RPC_Base):
         return self.check_session(session)
 
     ###listMissingSourcePackages###
-    def listMissingSourcePackages(self, channelList, username, password):
+    def listMissingSourcePackages(self, channelList, username, password):  #  pylint: disable=invalid-name,invalid-name
         """List source packages for a list of channels."""
         log_debug(5, channelList, username)
         authobj = auth(username, password)
         return self._listMissingSourcePackages(authobj, channelList)
 
-    def listMissingSourcePackagesBySession(self, channelList, session_string):
+    def listMissingSourcePackagesBySession(self, channelList, session_string):  #  pylint: disable=invalid-name,invalid-name
         log_debug(5, channelList, session_string)
         authobj = auth_session(session_string)
         return self._listMissingSourcePackages(authobj, channelList)
 
-    def _listMissingSourcePackages(self, authobj, channelList):
+    def _listMissingSourcePackages(self, authobj, channelList):  #  pylint: disable=invalid-name,invalid-name
         authobj.authzChannels(channelList)
 
         h = rhnSQL.prepare(
@@ -281,22 +281,22 @@ class Packages(RPC_Base):
 
         return missing_packages
 
-    def channelPackageSubscription(self, username, password, info):
+    def channelPackageSubscription(self, username, password, info):  #  pylint: disable=invalid-name
         """Uploads an RPM package."""
         log_debug(3)
         authobj = auth(username, password)
         return self._channelPackageSubscription(authobj, info)
 
-    def channelPackageSubscriptionBySession(self, session_string, info):
+    def channelPackageSubscriptionBySession(self, session_string, info):  #  pylint: disable=invalid-name
         log_debug(3, info)
         authobj = auth_session(session_string)
         return self._channelPackageSubscription(authobj, info)
 
-    def _channelPackageSubscription(self, authobj, info):
+    def _channelPackageSubscription(self, authobj, info):  #  pylint: disable=invalid-name
         # Authorize the org id passed
         authobj.authzOrg(info)
 
-        packageList = info.get("packages") or []
+        packageList = info.get("packages") or []  #  pylint: disable=invalid-name
         if not packageList:
             log_debug(1, "No packages found; done")
             return 0
@@ -305,11 +305,11 @@ class Packages(RPC_Base):
             log_debug(1, "No channels found; done")
             return 0
 
-        channelList = info["channels"]
+        channelList = info["channels"]  #  pylint: disable=invalid-name
         authobj.authzChannels(channelList)
 
         # Have to turn the channel list into a list of Channel objects
-        channelList = [Channel().populate({"label": x}) for x in channelList]
+        channelList = [Channel().populate({"label": x}) for x in channelList]  #  pylint: disable=invalid-name
 
         # Since we're dealing with superusers, we allow them to change the org
         # id
@@ -323,7 +323,7 @@ class Packages(RPC_Base):
         for package in packageList:
             for k in package_keys:
                 if k not in package:
-                    raise Exception("Missing key %s" % k)
+                    raise Exception("Missing key %s" % k)  #  pylint: disable=broad-exception-raised,consider-using-f-string
                 if k == "epoch":
                     if package[k] is not None:
                         if package[k] == "":
@@ -336,7 +336,7 @@ class Packages(RPC_Base):
             if package["arch"] == "src" or package["arch"] == "nosrc":
                 # Source package - no reason to continue
                 continue
-            _checksum_sql_filter = ""
+            _checksum_sql_filter = ""  #  pylint: disable=invalid-name
             if "md5sum" in package:  # for old rhnpush compatibility
                 package["checksum_type"] = "md5"
                 package["checksum"] = package["md5sum"]
@@ -396,7 +396,7 @@ class Packages(RPC_Base):
 
         return 0
 
-    def getAnyChecksum(
+    def getAnyChecksum(  #  pylint: disable=invalid-name
         self, info, username=None, password=None, session=None, is_source=0
     ):
         """returns checksum info of available packages
@@ -434,10 +434,10 @@ class Packages(RPC_Base):
             ret = self._getPackageChecksum(org_id, pkg_infos)
         return ret
 
-    def getPackageChecksum(self, username, password, info):
+    def getPackageChecksum(self, username, password, info):  #  pylint: disable=invalid-name
         return self.getAnyChecksum(info, username=username, password=password)
 
-    def getPackageMD5sum(self, username, password, info):
+    def getPackageMD5sum(self, username, password, info):  #  pylint: disable=invalid-name
         """bug#177762 gives md5sum info of available packages.
         also does an existance check on the filesystem.
         """
@@ -447,10 +447,10 @@ class Packages(RPC_Base):
             self.getPackageChecksum(username, password, info)
         )
 
-    def getPackageChecksumBySession(self, session_string, info):
+    def getPackageChecksumBySession(self, session_string, info):  #  pylint: disable=invalid-name
         return self.getAnyChecksum(info, session=session_string)
 
-    def getPackageMD5sumBySession(self, session_string, info):
+    def getPackageMD5sumBySession(self, session_string, info):  #  pylint: disable=invalid-name
         log_debug(3)
         self._MD5sum2Checksum_info(info)
         return self._Checksum2MD5sum_list(
@@ -486,10 +486,10 @@ class Packages(RPC_Base):
           %s
     """
 
-    def _getPackageChecksum(self, org_id, pkg_infos):
+    def _getPackageChecksum(self, org_id, pkg_infos):  #  pylint: disable=invalid-name
         log_debug(3)
         row_list = {}
-        checksum_exists = 0
+        checksum_exists = 0  #  pylint: disable=unused-variable
         for pkg in list(pkg_infos.keys()):
             pkg_info = pkg_infos[pkg]
             pkg_epoch = pkg_info["epoch"]
@@ -510,7 +510,7 @@ class Packages(RPC_Base):
                 "orgid": org_id,
             }
 
-            _checksum_sql_filter = ""
+            _checksum_sql_filter = ""  #  pylint: disable=invalid-name
             if "checksum" in pkg_info and CFG.ENABLE_NVREA:
                 _checksum_sql_filter = """and c.checksum = :checksum
                                           and c.checksum_type = :checksum_type"""
@@ -532,7 +532,7 @@ class Packages(RPC_Base):
         if not row:
             ret = ""
         elif row.get("path"):
-            filePath = os.path.join(CFG.MOUNT_POINT, row["path"])
+            filePath = os.path.join(CFG.MOUNT_POINT, row["path"])  #  pylint: disable=invalid-name
             if os.access(filePath, os.R_OK):
                 if "checksum" in row:
                     ret = (row["checksum_type"], row["checksum"])
@@ -547,7 +547,7 @@ class Packages(RPC_Base):
             ret = ""
         return ret
 
-    def _MD5sum2Checksum_info(self, info):
+    def _MD5sum2Checksum_info(self, info):  #  pylint: disable=invalid-name
         log_debug(5)
         pkg_infos = info.get("packages")
         for pkg in list(pkg_infos.keys()):
@@ -556,41 +556,41 @@ class Packages(RPC_Base):
                 pkg_infos[pkg]["checksum"] = pkg_infos[pkg]["md5sum"]
                 del pkg_infos[pkg]["md5sum"]
 
-    def _Checksum2MD5sum_list(self, checksum_list):
+    def _Checksum2MD5sum_list(self, checksum_list):  #  pylint: disable=invalid-name
         log_debug(5)
         row_list = {}
         for k in list(checksum_list.keys()):
             if checksum_list[k] == "" or checksum_list[k] == "on-disk":
                 row_list[k] = checksum_list[k]
-            elif type(checksum_list[k]) == TupleType and checksum_list[k][0] == "md5":
+            elif type(checksum_list[k]) == TupleType and checksum_list[k][0] == "md5":  #  pylint: disable=unidiomatic-typecheck
                 row_list[k] = checksum_list[k][1]
             else:
                 row_list[k] = ""
         return row_list
 
-    def getSourcePackageChecksum(self, username, password, info):
+    def getSourcePackageChecksum(self, username, password, info):  #  pylint: disable=invalid-name
         return self.getAnyChecksum(
             info, username=username, password=password, is_source=1
         )
 
-    def getSourcePackageMD5sum(self, username, password, info):
+    def getSourcePackageMD5sum(self, username, password, info):  #  pylint: disable=invalid-name
         log_debug(3)
         self._MD5sum2Checksum_info(info)
         return self._Checksum2MD5sum_list(
             self.getSourcePackageChecksum(username, password, info)
         )
 
-    def getSourcePackageChecksumBySession(self, session_string, info):
+    def getSourcePackageChecksumBySession(self, session_string, info):  #  pylint: disable=invalid-name
         return self.getAnyChecksum(info, session=session_string, is_source=1)
 
-    def getSourcePackageMD5sumBySession(self, session_string, info):
+    def getSourcePackageMD5sumBySession(self, session_string, info):  #  pylint: disable=invalid-name
         log_debug(3)
         self._MD5sum2Checksum_info(info)
         return self._Checksum2MD5sum_list(
             self.getSourcePackageChecksumBySession(session_string, info)
         )
 
-    def _getSourcePackageChecksum(self, org_id, pkg_infos):
+    def _getSourcePackageChecksum(self, org_id, pkg_infos):  #  pylint: disable=invalid-name
         """Gives checksum info of available source packages.
         Also does an existance check on the filesystem.
         """

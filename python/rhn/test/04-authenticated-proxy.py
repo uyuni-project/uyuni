@@ -18,7 +18,7 @@ PROXY_PASSWORD = None
 system_id_file = '/etc/sysconfig/rhn/systemid'
 
 if len(sys.argv) < 3:
-    print "Non efficient cmd-line arguments! Provide at least server & proxy!"
+    print "Non efficient cmd-line arguments! Provide at least server & proxy!"  #  pylint: disable=syntax-error
     sys.exit(1);
 
 try:

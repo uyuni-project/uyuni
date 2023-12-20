@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -23,23 +23,23 @@ from spacewalk.server.rhnLib import InvalidAction
 __rhnexport__ = ["config", "listTransactions", "rollback"]
 
 
-def config(serverId, actionId, dry_run=0):
+def config(serverId, actionId, dry_run=0):  #  pylint: disable=invalid-name,invalid-name,unused-argument,unused-argument,unused-argument
     log_debug(3)
     # XXX Not working
     return 1
 
 
-def listTransactions(serverId, actionId, dry_run=0):
+def listTransactions(serverId, actionId, dry_run=0):  #  pylint: disable=invalid-name,invalid-name,invalid-name,unused-argument,unused-argument,unused-argument
     log_debug(3)
     return None
 
 
-def rollback(serverId, actionId, dry_run=0):
+def rollback(serverId, actionId, dry_run=0):  #  pylint: disable=invalid-name,invalid-name
     log_debug(3, dry_run)
     # since rhnActionTransactions table is gone, this call have to fail
     log_error(
-        "Invalid rollback.rollback action %s for server id %s" % (actionId, serverId)
+        "Invalid rollback.rollback action %s for server id %s" % (actionId, serverId)  #  pylint: disable=consider-using-f-string
     )
     raise InvalidAction(
-        "Invalid rollback.rollback action %s for server id %s" % (actionId, serverId)
+        "Invalid rollback.rollback action %s for server id %s" % (actionId, serverId)  #  pylint: disable=consider-using-f-string
     )

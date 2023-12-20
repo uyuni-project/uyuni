@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring,invalid-name
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -49,7 +49,7 @@ class Repository(RPC_Base):
     def __init__(self, channelName=None):
         log_debug(2, channelName)
         RPC_Base.__init__(self)
-        self.channelName = channelName
+        self.channelName = channelName  #  pylint: disable=invalid-name
         # Default visible functions.
         self.compress_headers = 1
         self.functions = [
@@ -69,7 +69,7 @@ class Repository(RPC_Base):
         self.channelName = None
         self.functions = None
 
-    def getPackagePath(self, pkgFilename, redirect=0):
+    def getPackagePath(self, pkgFilename, redirect=0):  #  pylint: disable=invalid-name,invalid-name
         """Returns the path to a package.
         OVERLOAD this in server and proxy rhnRepository.
         I.e.: they construct the path differently.
@@ -78,13 +78,13 @@ class Repository(RPC_Base):
         raise rhnException("This function should be overloaded.")
 
     @staticmethod
-    def getPackagePathNVRA(_nvra):
+    def getPackagePathNVRA(_nvra):  #  pylint: disable=invalid-name,invalid-name
         """OVERLOAD this in server and proxy rhnRepository.
         I.e.: they construct the path differently.
         """
         raise rhnException("This function should be overloaded.")
 
-    def getSourcePackagePath(self, _pkgFilename):
+    def getSourcePackagePath(self, _pkgFilename):  #  pylint: disable=invalid-name,invalid-name
         """Returns the path to a package.
         OVERLOAD this in server and proxy rhnRepository.
         I.e.: they construct the path differently.
@@ -92,7 +92,7 @@ class Repository(RPC_Base):
         # pylint: disable=R0201
         raise rhnException("This function should be overloaded.")
 
-    def getPackage(self, pkgFilename, *args):
+    def getPackage(self, pkgFilename, *args):  #  pylint: disable=invalid-name,invalid-name
         """Get rpm package."""
         log_debug(3, pkgFilename)
         if args:
@@ -100,35 +100,35 @@ class Repository(RPC_Base):
         else:
             pkg_spec = pkgFilename
 
-        redirectsSupported = 0
+        redirectsSupported = 0  #  pylint: disable=invalid-name
 
         # If we are talking to a proxy, determine whether it's a version that
         # supports redirects.
-        proxyVersionString = rhnFlags.get("x-rhn-proxy-version")
+        proxyVersionString = rhnFlags.get("x-rhn-proxy-version")  #  pylint: disable=invalid-name
         if proxyVersionString:
-            redirectsSupported = 1
+            redirectsSupported = 1  #  pylint: disable=invalid-name
         else:
             # Must be a client.  We'll determine the redirect capability via
             # the x-rhn-transport-capability header instead.
             transport_cap = rhnFlags.get("x-rhn-transport-capability")
             if transport_cap:
                 transport_cap_list = transport_cap.split("=")
-                redirectsSupported = (
+                redirectsSupported = (  #  pylint: disable=invalid-name
                     transport_cap_list[0] == "follow-redirects"
                     and int(transport_cap_list[1]) >= 2
                 )
 
         if redirectsSupported:
             log_debug(3, "Client supports redirects.")
-            filePath = self.getPackagePath(pkg_spec, 1)
+            filePath = self.getPackagePath(pkg_spec, 1)  #  pylint: disable=invalid-name
         else:
             # older clients just return the hosted url and download the package
-            filePath = self.getPackagePath(pkg_spec)
+            filePath = self.getPackagePath(pkg_spec)  #  pylint: disable=invalid-name
 
         return self._getFile(filePath)
 
     @staticmethod
-    def i18n(_translation, *_args):
+    def i18n(_translation, *_args):  #  pylint: disable=invalid-name
         """Translations files for Ubuntu. E.g. Translation-en_US.bz2
 
         We do not support it so just return 404. But do not fail with
@@ -155,7 +155,7 @@ class Repository(RPC_Base):
         raise rhnNotFound()
 
     @staticmethod
-    def media_1(filePath):
+    def media_1(filePath):  #  pylint: disable=invalid-name
         """SUSE File
 
         We do not support it so just return 404. But do not fail with
@@ -164,7 +164,7 @@ class Repository(RPC_Base):
         log_debug(3, filePath)
         raise rhnNotFound()
 
-    def getPackageSource(self, pkgFilename):
+    def getPackageSource(self, pkgFilename):  #  pylint: disable=invalid-name,invalid-name
         """Get srpm packrge."""
         log_debug(3, pkgFilename)
         # Sanity check:
@@ -173,10 +173,10 @@ class Repository(RPC_Base):
         if l[-2] != "nosrc":
             l[-2] = "src"
         pkgFilename = ".".join(l)
-        filePath = self.getSourcePackagePath(pkgFilename)
+        filePath = self.getSourcePackagePath(pkgFilename)  #  pylint: disable=invalid-name
         return self._getFile(filePath)
 
-    def getPackageHeader(self, pkgFilename):
+    def getPackageHeader(self, pkgFilename):  #  pylint: disable=invalid-name,invalid-name
         """Get rpm header.
         XXX: stock 8.0 clients could not compress headers, we need to either
         change the function name, or version the protocol
@@ -185,10 +185,10 @@ class Repository(RPC_Base):
         pkg = pkgFilename.split(".")
         # Basic sanity checks:
         if pkg[-1] not in ["hdr", "rpm"]:
-            raise rhnFault(21, "'%s' not a valid RPM header name" % pkgFilename)
+            raise rhnFault(21, "'%s' not a valid RPM header name" % pkgFilename)  #  pylint: disable=consider-using-f-string
 
         pkgFilename = ".".join(pkg[:-1]) + ".rpm"
-        filePath = self.getPackagePath(pkgFilename)
+        filePath = self.getPackagePath(pkgFilename)  #  pylint: disable=invalid-name
         data = self._getHeaderFromFile(filePath)
         # XXX: Interesting. Found that if returned just data, this
         #      function works fine. Investigate later.
@@ -201,7 +201,7 @@ class Repository(RPC_Base):
 
     # --- PRIVATE METHODS ---
 
-    def _getFile(self, filePath):
+    def _getFile(self, filePath):  #  pylint: disable=invalid-name,invalid-name
         """Returns xmlrpclib file object to any file given a path to it.
         IN:  filePath: path to any file.
         OUT: XMLed rpm or source rpm, or an xmlrpc file object.
@@ -210,11 +210,11 @@ class Repository(RPC_Base):
         features = self._fileFeatures(filePath)
         filePath = features["path"]
         length = features["length"]
-        lastModified = features["lastModified"]
+        lastModified = features["lastModified"]  #  pylint: disable=invalid-name
         self._set_last_modified(lastModified)
         return rpclib.transports.File(open(filePath, "rb"), length, name=filePath)
 
-    def _getHeaderFromFile(self, filePath, stat_info=None):
+    def _getHeaderFromFile(self, filePath, stat_info=None):  #  pylint: disable=invalid-name,invalid-name
         """Utility function to extract a header from an rpm.
         If stat_info was already passed, don't re-stat the file
         """
@@ -228,12 +228,12 @@ class Repository(RPC_Base):
             except:
                 usix.raise_with_tb(
                     rhnFault(
-                        17, "Unable to read package %s" % os.path.basename(filePath)
+                        17, "Unable to read package %s" % os.path.basename(filePath)  #  pylint: disable=consider-using-f-string
                     ),
                     sys.exc_info()[2],
                 )
 
-        lastModified = s[stat.ST_MTIME]
+        lastModified = s[stat.ST_MTIME]  #  pylint: disable=invalid-name
         del s  # XXX: not neccessary?
 
         # Get the package header from the file
@@ -242,17 +242,17 @@ class Repository(RPC_Base):
         h = rhn_rpm.get_package_header(fd=fd)
         os.close(fd)
         if h is None:
-            raise rhnFault(17, "Invalid RPM %s" % os.path.basename(filePath))
-        stringIO = cStringIO.StringIO()
+            raise rhnFault(17, "Invalid RPM %s" % os.path.basename(filePath))  #  pylint: disable=consider-using-f-string
+        stringIO = cStringIO.StringIO()  #  pylint: disable=invalid-name
         # Put the result in stringIO
         stringIO.write(h.unload())
         del h  # XXX: not neccessary?
 
-        pkgFilename = os.path.basename(filePath)
+        pkgFilename = os.path.basename(filePath)  #  pylint: disable=invalid-name
         pkg = pkgFilename.split(".")
         # Replace .rpm with .hdr
         pkg[-1] = "hdr"
-        pkgFilename = ".".join(pkg)
+        pkgFilename = ".".join(pkg)  #  pylint: disable=invalid-name
         extra_headers = {
             "X-RHN-Package-Header": pkgFilename,
         }
@@ -278,13 +278,13 @@ class Repository(RPC_Base):
         return transport
 
     @staticmethod
-    def _fileFeatures(filePath):
+    def _fileFeatures(filePath):  #  pylint: disable=invalid-name,invalid-name
         """From a filepath, construct a dictionary of file features."""
         # pylint: disable=W0702
         log_debug(3, filePath)
         if not filePath:
             raise rhnFault(
-                17, "While looking for file: `%s'" % os.path.basename(filePath)
+                17, "While looking for file: `%s'" % os.path.basename(filePath)  #  pylint: disable=consider-using-f-string
             )
         try:
             s = os.stat(filePath)
@@ -292,10 +292,10 @@ class Repository(RPC_Base):
             s = None
         if not s:
             l = 0
-            lastModified = 0
+            lastModified = 0  #  pylint: disable=invalid-name
         else:
             l = s[stat.ST_SIZE]
-            lastModified = s[stat.ST_MTIME]
+            lastModified = s[stat.ST_MTIME]  #  pylint: disable=invalid-name
         del s
 
         # Build the result hash

@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Licensed under the GNU General Public License Version 3
 #
 # This program is free software; you can redistribute it and/or modify
@@ -52,13 +52,13 @@ def print_schedule_summary(self, action_type, args):
 
     if args:
         begin_date = parse_time_input(args[0])
-        logging.debug("Begin Date: %s" % begin_date)
+        logging.debug("Begin Date: %s" % begin_date)  #  pylint: disable=consider-using-f-string
     else:
         begin_date = None
 
     if len(args) > 1:
         end_date = parse_time_input(args[1])
-        logging.debug("End Date:   %s" % end_date)
+        logging.debug("End Date:   %s" % end_date)  #  pylint: disable=consider-using-f-string
     else:
         end_date = None
 
@@ -102,7 +102,7 @@ def print_schedule_summary(self, action_type, args):
 
         if self.check_api_version("10.11"):
             print(
-                "%s  %s   %s  %s  %s    %s"
+                "%s  %s   %s  %s  %s    %s"  #  pylint: disable=consider-using-f-string
                 % (
                     str(action.get("id")).ljust(6),
                     action.get("earliest"),
@@ -127,7 +127,7 @@ def print_schedule_summary(self, action_type, args):
             )
 
             print(
-                "%s  %s   %s  %s  %s    %s"
+                "%s  %s   %s  %s  %s    %s"  #  pylint: disable=consider-using-f-string
                 % (
                     str(action.get("id")).ljust(6),
                     action.get("earliest"),
@@ -158,7 +158,7 @@ def complete_schedule_cancel(self, text, line, beg, end):
 def do_schedule_cancel(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if not args:
         self.help_schedule_cancel()
@@ -217,7 +217,7 @@ def complete_schedule_reschedule(self, text, line, beg, end):
 def do_schedule_reschedule(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if not args:
         self.help_schedule_reschedule()
@@ -268,7 +268,7 @@ def help_schedule_details(self):
 def do_schedule_details(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if not args:
         self.help_schedule_details()
@@ -340,7 +340,7 @@ def help_schedule_getoutput(self):
 def do_schedule_getoutput(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if not args:
         self.help_schedule_getoutput()
@@ -509,7 +509,7 @@ def do_schedule_deletearchived(self, args):
 
     if args:
         date_limit = parse_time_input(args[0])
-        logging.debug("Date limit: %s" % date_limit)
+        logging.debug("Date limit: %s" % date_limit)  #  pylint: disable=consider-using-f-string
     else:
         date_limit = None
 
@@ -519,7 +519,7 @@ def do_schedule_deletearchived(self, args):
     if date_limit:
         actions = [action for action in actions if action.get("earliest") < date_limit]
 
-    logging.debug("actions: {}".format(actions))
+    logging.debug("actions: {}".format(actions))  #  pylint: disable=consider-using-f-string
     if actions:
         if not _options.yes:
             user_answer = prompt_user(
@@ -550,7 +550,7 @@ def do_schedule_deletearchived(self, args):
                     if i + BATCH_SIZE <= len(action_ids)
                     else len(action_ids)
                 )
-                print("Deleted {} actions of {}".format(processed, len(action_ids)))
+                print("Deleted {} actions of {}".format(processed, len(action_ids)))  #  pylint: disable=consider-using-f-string
     else:
         print(_("No archived actions found."))
 
@@ -561,7 +561,7 @@ def do_schedule_deletearchived(self, args):
 def help_schedule_archivecompleted(self):
     print(
         _(
-            "schedule_archivecompleted: Archive all completed actions older than given date."
+            "schedule_archivecompleted: Archive all completed actions older than given date."  #  pylint: disable=line-too-long
         )
     )
     print(_("usage: schedule_archivecompleted [yyyymmdd] [options]"))
@@ -588,7 +588,7 @@ def do_schedule_archivecompleted(self, args):
 
     if args:
         date_limit = parse_time_input(args[0])
-        logging.debug("Date limit: %s" % date_limit)
+        logging.debug("Date limit: %s" % date_limit)  #  pylint: disable=consider-using-f-string
     else:
         date_limit = None
 
@@ -598,7 +598,7 @@ def do_schedule_archivecompleted(self, args):
     if date_limit:
         actions = [action for action in actions if action.get("earliest") < date_limit]
 
-    logging.debug("actions: {}".format(actions))
+    logging.debug("actions: {}".format(actions))  #  pylint: disable=consider-using-f-string
     if actions:
         if not _options.yes:
             user_answer = prompt_user(
@@ -629,6 +629,6 @@ def do_schedule_archivecompleted(self, args):
                     if i + BATCH_SIZE <= len(action_ids)
                     else len(action_ids)
                 )
-                print("Archived {} actions of {}".format(processed, len(action_ids)))
+                print("Archived {} actions of {}".format(processed, len(action_ids)))  #  pylint: disable=consider-using-f-string
     else:
         print(_("No completed actions found."))

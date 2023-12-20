@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring,invalid-name
 # Copyright (c) 2008--2017 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -30,7 +30,7 @@ except ImportError:
 from uyuni.common.usix import raise_with_tb
 from uyuni.common import rhnLib
 from spacewalk.common.rhnLog import log_time, log_clean
-from uyuni.common.context_managers import cfg_component
+from uyuni.common.context_managers import cfg_component  #  pylint: disable=ungrouped-imports
 from uyuni.common.fileutils import createPath, setPermsPath
 
 from . import messages
@@ -38,13 +38,13 @@ from . import messages
 EMAIL_LOG = None
 
 
-def initEMAIL_LOG(reinit=0):
+def initEMAIL_LOG(reinit=0):  #  pylint: disable=invalid-name
     global EMAIL_LOG
     if EMAIL_LOG is None or reinit:
         EMAIL_LOG = StringIO()
 
 
-def dumpEMAIL_LOG():
+def dumpEMAIL_LOG():  #  pylint: disable=invalid-name
     if EMAIL_LOG is not None:
         return EMAIL_LOG.getvalue()
     return None
@@ -74,17 +74,17 @@ class ReprocessingNeeded(Exception):
 ##  4+ - excessive
 
 
-def _timeString1():
+def _timeString1():  #  pylint: disable=invalid-name
     """time string as: "2002/11/18 12:56:34" """
     return log_time()
 
 
-def _timeString2():
+def _timeString2():  #  pylint: disable=invalid-name
     """time string as: "12:56:34" """
     return time.strftime("%H:%M:%S", time.localtime(time.time()))
 
 
-def _prepLogMsg(msg, cleanYN=0, notimeYN=0, shortYN=0):
+def _prepLogMsg(msg, cleanYN=0, notimeYN=0, shortYN=0):  #  pylint: disable=invalid-name,invalid-name,invalid-name,invalid-name
     """prepare formating of message for logging.
 
     cleanYN -  no extra info, period.
@@ -94,18 +94,18 @@ def _prepLogMsg(msg, cleanYN=0, notimeYN=0, shortYN=0):
     if not cleanYN:
         if shortYN:
             if notimeYN:
-                msg = "%s %s" % (" " * len(_timeString2()), msg)
+                msg = "%s %s" % (" " * len(_timeString2()), msg)  #  pylint: disable=consider-using-f-string
             else:
-                msg = "%s %s" % (_timeString2(), msg)
+                msg = "%s %s" % (_timeString2(), msg)  #  pylint: disable=consider-using-f-string
         else:
             if notimeYN:
-                msg = "%s %s" % (" " * len(_timeString1()), msg)
+                msg = "%s %s" % (" " * len(_timeString1()), msg)  #  pylint: disable=consider-using-f-string
             else:
-                msg = "%s %s" % (_timeString1(), msg)
+                msg = "%s %s" % (_timeString1(), msg)  #  pylint: disable=consider-using-f-string
     return msg
 
 
-def log2disk(level, msg, cleanYN=0, notimeYN=0):
+def log2disk(level, msg, cleanYN=0, notimeYN=0):  #  pylint: disable=invalid-name,invalid-name
     """Log to a log file.
     Arguments: see def _prepLogMsg(...) above.
     """
@@ -114,27 +114,27 @@ def log2disk(level, msg, cleanYN=0, notimeYN=0):
     for m in msg:
         try:
             log_clean(level=level, msg=_prepLogMsg(m, cleanYN, notimeYN))
-        except (KeyboardInterrupt, SystemExit):
+        except (KeyboardInterrupt, SystemExit):  #  pylint: disable=try-except-raise
             raise
         except Exception:  # pylint: disable=E0012, W0703
             e = sys.exc_info()[1]
-            sys.stderr.write("ERROR: upon attempt to write to log file: %s" % e)
+            sys.stderr.write("ERROR: upon attempt to write to log file: %s" % e)  #  pylint: disable=consider-using-f-string
 
 
-def log2stream(level, msg, cleanYN, notimeYN, stream):
+def log2stream(level, msg, cleanYN, notimeYN, stream):  #  pylint: disable=invalid-name,invalid-name
     """Log to a specified stream.
     Arguments: see def _prepLogMsg(...) above.
     """
     if not isinstance(msg, type([])):
         msg = [msg]
-    with cfg_component(component=None) as CFG:
+    with cfg_component(component=None) as CFG:  #  pylint: disable=invalid-name
         if CFG.DEBUG >= level:
             for m in msg:
                 stream.write(_prepLogMsg(m, cleanYN, notimeYN, shortYN=1) + "\n")
             stream.flush()
 
 
-def log2email(level, msg, cleanYN=0, notimeYN=0):
+def log2email(level, msg, cleanYN=0, notimeYN=0):  #  pylint: disable=invalid-name,invalid-name
     """Log to the email log.
     Arguments: see def _prepLogMsg(...) above.
     """
@@ -142,7 +142,7 @@ def log2email(level, msg, cleanYN=0, notimeYN=0):
         log2stream(level, msg, cleanYN, notimeYN, EMAIL_LOG)
 
 
-def log2background(level, msg, cleanYN=0, notimeYN=0):
+def log2background(level, msg, cleanYN=0, notimeYN=0):  #  pylint: disable=invalid-name,invalid-name
     """Log to email and disk
     Arguments: see def _prepLogMsg(...) above.
     """
@@ -150,7 +150,7 @@ def log2background(level, msg, cleanYN=0, notimeYN=0):
     log2disk(level, msg, cleanYN, notimeYN)
 
 
-def log2stderr(level, msg, cleanYN=0, notimeYN=0):
+def log2stderr(level, msg, cleanYN=0, notimeYN=0):  #  pylint: disable=invalid-name,invalid-name
     """Log to standard error
     Arguments: see def _prepLogMsg(...) above.
     """
@@ -158,7 +158,7 @@ def log2stderr(level, msg, cleanYN=0, notimeYN=0):
     log2stream(level, msg, cleanYN, notimeYN, sys.stderr)
 
 
-def log2stdout(level, msg, cleanYN=0, notimeYN=0):
+def log2stdout(level, msg, cleanYN=0, notimeYN=0):  #  pylint: disable=invalid-name,invalid-name
     """Log to standard out
     Arguments: see def _prepLogMsg(...) above.
     """
@@ -166,7 +166,7 @@ def log2stdout(level, msg, cleanYN=0, notimeYN=0):
     log2stream(level, msg, cleanYN, notimeYN, sys.stdout)
 
 
-def log2(levelDisk, levelStream, msg, cleanYN=0, notimeYN=0, stream=sys.stdout):
+def log2(levelDisk, levelStream, msg, cleanYN=0, notimeYN=0, stream=sys.stdout):  #  pylint: disable=invalid-name,invalid-name,invalid-name,invalid-name
     """Log to disk and some stream --- differing log levels.
     Arguments: see def _prepLogMsg(...) above.
     """
@@ -179,7 +179,7 @@ def log2(levelDisk, levelStream, msg, cleanYN=0, notimeYN=0, stream=sys.stdout):
         log2stream(levelStream, msg, cleanYN, notimeYN, stream=stream)
 
 
-def log(level, msg, cleanYN=0, notimeYN=0, stream=sys.stdout):
+def log(level, msg, cleanYN=0, notimeYN=0, stream=sys.stdout):  #  pylint: disable=invalid-name,invalid-name
     """Log to disk and some stream --- share same log level.
     Arguments: see def _prepLogMsg(...) above.
     """
@@ -197,7 +197,7 @@ class FileManip:
         self.relative_path = relative_path
         self.timestamp = rhnLib.timestamp(timestamp)
         self.file_size = file_size
-        with cfg_component(component=None) as CFG:
+        with cfg_component(component=None) as CFG:  #  pylint: disable=invalid-name
             self.full_path = os.path.join(CFG.MOUNT_POINT, self.relative_path)
             self.buffer_size = CFG.BUFFER_SIZE
 
@@ -234,7 +234,7 @@ class FileManip:
         fout = open(self.full_path, "wb")
         # setting file permissions; NOTE: rhnpush uses apache to write to disk,
         # hence the 6 setting.
-        with cfg_component(component=None) as CFG:
+        with cfg_component(component=None) as CFG:  #  pylint: disable=invalid-name
             setPermsPath(
                 self.full_path,
                 user=CFG.httpd_user,
@@ -252,7 +252,7 @@ class FileManip:
                 size = size + buf_len
         except IOError:
             e = sys.exc_info()[1]
-            msg = "IOError: %s" % e
+            msg = "IOError: %s" % e  #  pylint: disable=consider-using-f-string
             log(-1, msg, stream=sys.stderr)
             # Try not to leave garbage around
             try:
@@ -265,7 +265,7 @@ class FileManip:
 
         if self.file_size is not None and self.file_size != l_file_size:
             # Something bad happened
-            msg = "Error: file %s has wrong size. Expected %s bytes, got %s bytes" % (
+            msg = "Error: file %s has wrong size. Expected %s bytes, got %s bytes" % (  #  pylint: disable=consider-using-f-string
                 self.full_path,
                 self.file_size,
                 l_file_size,

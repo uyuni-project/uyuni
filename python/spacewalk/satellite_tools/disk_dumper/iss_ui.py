@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -13,24 +13,24 @@
 # in this software or its documentation.
 #
 
-from optparse import OptionParser, Option
+from optparse import OptionParser, Option  #  pylint: disable=deprecated-module
 from spacewalk.common.rhnConfig import PRODUCT_NAME
 
 # Not strictly necessary, but makes them easier to type
-option_parser = OptionParser
-option = Option
+option_parser = OptionParser  #  pylint: disable=invalid-name
+option = Option  #  pylint: disable=invalid-name
 
 # pylint: disable=R0903
 
 
-class UI:
+class UI:  #  pylint: disable=missing-class-docstring
     def __init__(self):
         self.optiontable = [
             option(
                 "-d",
                 "--dir",
                 action="store",
-                help="This is the directory that the information that you want to sync gets dumped in.",
+                help="This is the directory that the information that you want to sync gets dumped in.",  #  pylint: disable=line-too-long
             ),
             option(
                 "--hard-links",
@@ -48,7 +48,7 @@ class UI:
                 "--list-steps",
                 action="store_true",
                 default=0,
-                help="List all of the steps that rhn-satellite-exporter takes while exporting data."
+                help="List all of the steps that rhn-satellite-exporter takes while exporting data."  #  pylint: disable=line-too-long
                 + " These can be used as values for --step",
             ),
             option(
@@ -67,35 +67,35 @@ class UI:
             option(
                 "--start-date",
                 action="store",
-                help="The start date limit that the last modified dates are compared against. "
+                help="The start date limit that the last modified dates are compared against. "  #  pylint: disable=line-too-long
                 + "Should be in the format 'YYYYMMDDHH24MISS'.",
             ),
             option(
                 "--end-date",
                 action="store",
-                help="The end date limit that the last modified dates are compared against. "
+                help="The end date limit that the last modified dates are compared against. "  #  pylint: disable=line-too-long
                 + "Should be in the format 'YYYYMMDDHH24MISS'.",
             ),
             option(
                 "--use-rhn-date",
                 action="store_true",
-                help="Limit exported packages according to the date when they appeared at Red Hat Network.",
+                help="Limit exported packages according to the date when they appeared at Red Hat Network.",  #  pylint: disable=line-too-long
             ),
             option(
                 "--use-sync-date",
                 action="store_true",
-                help="Limit exported packages according to the date they where pulled into %s."
+                help="Limit exported packages according to the date they where pulled into %s."  #  pylint: disable=line-too-long,consider-using-f-string
                 % PRODUCT_NAME,
             ),
             option(
                 "--whole-errata",
                 action="store_true",
-                help="Always include package if it belongs to errata which is withing start/end-date range.",
+                help="Always include package if it belongs to errata which is withing start/end-date range.",  #  pylint: disable=line-too-long
             ),
             option(
                 "--make-isos",
                 action="store",
-                help="Create channel dump isos a directory called satellite-isos. Usage: --make-isos=cd or dvd",
+                help="Create channel dump isos a directory called satellite-isos. Usage: --make-isos=cd or dvd",  #  pylint: disable=line-too-long
             ),
             option(
                 "-p",
@@ -128,7 +128,7 @@ class UI:
             option(
                 "--debug-level",
                 action="store",
-                help="Set the debug level to this value. Overrides the value in rhn.conf.",
+                help="Set the debug level to this value. Overrides the value in rhn.conf.",  #  pylint: disable=line-too-long
             ),
             option(
                 "-v",

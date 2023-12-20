@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Licensed under the GNU General Public License Version 3
 #
 # This program is free software; you can redistribute it and/or modify
@@ -86,7 +86,7 @@ def do_configchannel_listsystems(self, args):
         return 1
 
     arg_parser = get_argument_parser()
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if not args:
         self.help_configchannel_listsystems()
@@ -122,7 +122,7 @@ def do_configchannel_listgroups(self, args):
         return 1
 
     arg_parser = get_argument_parser()
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if not args:
         self.help_configchannel_listgroups()
@@ -154,7 +154,7 @@ def complete_configchannel_listfiles(self, text, line, beg, end):
 def do_configchannel_listfiles(self, args, doreturn=False):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if not args:
         self.help_configchannel_listfiles()
@@ -194,7 +194,7 @@ def complete_configchannel_forcedeploy(self, text, line, beg, end):
 def do_configchannel_forcedeploy(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if not args or len(args) > 1:
         self.help_configchannel_forcedeploy()
@@ -250,7 +250,7 @@ def complete_configchannel_filedetails(self, text, line, beg, end):
 def do_configchannel_filedetails(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if not 4 > len(args) > 1:
         self.help_configchannel_filedetails()
@@ -344,7 +344,7 @@ def complete_configchannel_backup(self, text, line, beg, end):
 def do_configchannel_backup(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if len(args) < 1:
         self.help_configchannel_backup()
@@ -378,7 +378,7 @@ def do_configchannel_backup(self, args):
 
     fh_path = os.path.join(outputpath_base, ".metainfo")
     try:
-        fh = open(fh_path, "w")
+        fh = open(fh_path, "w")  #  pylint: disable=unspecified-encoding
     except IOError as exc:
         logging.error(_N('Could not create "%s" file: %s'), fh_path, str(exc))
         return 1
@@ -387,20 +387,20 @@ def do_configchannel_backup(self, args):
         dumpfile = outputpath_base + details.get("path")
         dumpdir = dumpfile
         print(_("Output Path:   %s") % dumpfile)
-        fh.write("[%s]\n" % details.get("path"))
-        fh.write("type = %s\n" % details.get("type"))
-        fh.write("revision = %s\n" % details.get("revision"))
-        fh.write("creation = %s\n" % details.get("creation"))
-        fh.write("modified = %s\n" % details.get("modified"))
+        fh.write("[%s]\n" % details.get("path"))  #  pylint: disable=consider-using-f-string
+        fh.write("type = %s\n" % details.get("type"))  #  pylint: disable=consider-using-f-string
+        fh.write("revision = %s\n" % details.get("revision"))  #  pylint: disable=consider-using-f-string
+        fh.write("creation = %s\n" % details.get("creation"))  #  pylint: disable=consider-using-f-string
+        fh.write("modified = %s\n" % details.get("modified"))  #  pylint: disable=consider-using-f-string
 
         if details.get("type") == "symlink":
-            fh.write("target_path = %s\n" % details.get("target_path"))
+            fh.write("target_path = %s\n" % details.get("target_path"))  #  pylint: disable=consider-using-f-string
         else:
-            fh.write("owner = %s\n" % details.get("owner"))
-            fh.write("group = %s\n" % details.get("group"))
-            fh.write("permissions_mode = %s\n" % details.get("permissions_mode"))
+            fh.write("owner = %s\n" % details.get("owner"))  #  pylint: disable=consider-using-f-string
+            fh.write("group = %s\n" % details.get("group"))  #  pylint: disable=consider-using-f-string
+            fh.write("permissions_mode = %s\n" % details.get("permissions_mode"))  #  pylint: disable=consider-using-f-string
 
-        fh.write("selinux_ctx = %s\n" % details.get("selinux_ctx"))
+        fh.write("selinux_ctx = %s\n" % details.get("selinux_ctx"))  #  pylint: disable=consider-using-f-string
 
         if details.get("type") == "file":
             dumpdir = os.path.dirname(dumpfile)
@@ -409,9 +409,9 @@ def do_configchannel_backup(self, args):
             os.makedirs(dumpdir)
 
         if details.get("type") == "file":
-            fh.write("sha256 = %s\n" % details.get("sha256"))
-            fh.write("binary = %s\n" % details.get("binary"))
-            of = open(dumpfile, "w")
+            fh.write("sha256 = %s\n" % details.get("sha256"))  #  pylint: disable=consider-using-f-string
+            fh.write("binary = %s\n" % details.get("binary"))  #  pylint: disable=consider-using-f-string
+            of = open(dumpfile, "w")  #  pylint: disable=unspecified-encoding
             of.write(details.get("contents") or "")
             of.close()
 
@@ -437,7 +437,7 @@ def complete_configchannel_details(self, text, line, beg, end):
 def do_configchannel_details(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if not args:
         self.help_configchannel_details()
@@ -548,7 +548,7 @@ def complete_configchannel_delete(self, text, line, beg, end):
 def do_configchannel_delete(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if not args:
         self.help_configchannel_delete()
@@ -557,7 +557,7 @@ def do_configchannel_delete(self, args):
     # allow globbing of configchannel names
     channels = filter_results(self.do_configchannel_list("", True), args)
     logging.debug(
-        "configchannel_delete called with args %s, channels=%s" % (args, channels)
+        "configchannel_delete called with args %s, channels=%s" % (args, channels)  #  pylint: disable=consider-using-f-string
     )
 
     if not channels:
@@ -679,7 +679,7 @@ def configfile_getinfo(self, args, options, file_info=None, interactive=False):
                     else:
                         template = ""
 
-                    (contents, _ignore) = editor(template=template, delete=True)
+                    (contents, _ignore) = editor(template=template, delete=True)  #  pylint: disable=unused-variable
     else:
         if not options.path:
             logging.error(_N("The path is required"))
@@ -871,7 +871,7 @@ def do_configchannel_addfile(self, args, update_path=""):
                 self.session, options.channel, [options.path]
             )
         except xmlrpclib.Fault:
-            logging.debug("No existing file information found for %s" % options.path)
+            logging.debug("No existing file information found for %s" % options.path)  #  pylint: disable=consider-using-f-string
             file_info = None
 
     file_info = self.configfile_getinfo(args, options, file_info, interactive)
@@ -996,7 +996,7 @@ def do_configchannel_updateinitsls(self, args, update_path=""):
                 template = contents
             else:
                 template = ""
-            (contents, _ignore) = editor(template=template, delete=True)
+            (contents, _ignore) = editor(template=template, delete=True)  #  pylint: disable=unused-variable
 
         revision_input = prompt_user(_("Revision [next]:"))
         if revision_input:
@@ -1079,7 +1079,7 @@ def complete_configchannel_removefiles(self, text, line, beg, end):
 def do_configchannel_removefiles(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if len(args) < 2:
         self.help_configchannel_removefiles()
@@ -1121,7 +1121,7 @@ def complete_configchannel_verifyfile(self, text, line, beg, end):
 def do_configchannel_verifyfile(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if len(args) < 3:
         self.help_configchannel_verifyfile()
@@ -1188,7 +1188,7 @@ def export_configchannel_getdetails(self, channel):
     # we can iterate over each file, then we just error on individual files
     # instead of failing to export anything at all...
     for p in paths:
-        logging.debug("Found file %s for %s" % (p, channel))
+        logging.debug("Found file %s for %s" % (p, channel))  #  pylint: disable=consider-using-f-string
         try:
             pinfo = self.client.configchannel.lookupFileInfo(self.session, channel, [p])
             if pinfo:
@@ -1313,7 +1313,7 @@ def do_configchannel_export(self, args):
             # If we are exporting exactly one cc, we default to ccname.json
             # otherwise, generic ccs.json name
             if len(ccs) == 1:
-                filename = "%s.json" % ccs[0]
+                filename = "%s.json" % ccs[0]  #  pylint: disable=consider-using-f-string
             else:
                 filename = "ccs.json"
 
@@ -1349,7 +1349,7 @@ def help_configchannel_import(self):
 def do_configchannel_import(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if not args:
         logging.error(_N("Error, no filename passed"))
@@ -1406,7 +1406,7 @@ def import_configchannel_fromdetails(self, ccdetails):
             ret = None
             if filedetails["type"] == "symlink":
                 del filedetails["type"]
-                logging.debug("Adding symlink %s" % filedetails)
+                logging.debug("Adding symlink %s" % filedetails)  #  pylint: disable=consider-using-f-string
                 ret = self.client.configchannel.createOrUpdateSymlink(
                     self.session, ccdetails["label"], path, filedetails
                 )
@@ -1451,7 +1451,7 @@ def import_configchannel_fromdetails(self, ccdetails):
                         filedetails["contents"] = filedetails["contents"].decode("utf8")
                         filedetails["contents_enc64"] = True
 
-                logging.debug("Creating %s %s" % (filedetails["type"], filedetails))
+                logging.debug("Creating %s %s" % (filedetails["type"], filedetails))  #  pylint: disable=consider-using-f-string
                 if "type" in filedetails:
                     del filedetails["type"]
 
@@ -1459,7 +1459,7 @@ def import_configchannel_fromdetails(self, ccdetails):
                     self.session, ccdetails["label"], path, isdir, filedetails
                 )
             if ret is not None:
-                logging.debug("Added file %s to %s" % (ret["path"], ccdetails["name"]))
+                logging.debug("Added file %s to %s" % (ret["path"], ccdetails["name"]))  #  pylint: disable=consider-using-f-string
             else:
                 logging.error(
                     _N("Error adding file %s to %s")
@@ -1543,7 +1543,7 @@ def do_configchannel_clone(self, args):
         logging.error(_N("No suitable channels to clone has been found."))
 
     for cc in ccs:
-        logging.debug("Cloning %s" % cc)
+        logging.debug("Cloning %s" % cc)  #  pylint: disable=consider-using-f-string
         ccdetails = self.export_configchannel_getdetails(cc)
 
         # If the -x/--regex option is passed, do a sed-style replacement over
@@ -1657,7 +1657,7 @@ def complete_configchannel_diff(self, text, line, beg, end):
 def do_configchannel_diff(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if not 1 <= len(args) < 3:
         self.help_configchannel_diff()
@@ -1713,7 +1713,7 @@ def complete_configchannel_sync(self, text, line, beg, end):
 def do_configchannel_sync(self, args, doreturn=False):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if not 1 <= len(args) < 3:
         self.help_configchannel_sync()
@@ -1763,7 +1763,7 @@ def do_configchannel_sync(self, args, doreturn=False):
     if both:
         print(
             _(
-                "files that are in both channels will be overwritten in the target channel"
+                "files that are in both channels will be overwritten in the target channel"  #  pylint: disable=line-too-long
             )
         )
     if source_only:
@@ -1833,7 +1833,7 @@ def do_configchannel_sync(self, args, doreturn=False):
 
     # removing all files from target channel that did not exist on source channel
     if target_only:
-        # self.do_configchannel_removefiles( target_channel + " " + "/.metainfo" + " ".join(target_only) )
+        # self.do_configchannel_removefiles( target_channel + " " + "/.metainfo" + " ".join(target_only) )  #  pylint: disable=line-too-long
         self.do_configchannel_removefiles(target_channel + " " + " ".join(target_only))
 
     return 0

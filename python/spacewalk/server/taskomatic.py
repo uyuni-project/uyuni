@@ -3,9 +3,9 @@ Module for taskomatic related functions (inserting into queues, etc)
 """
 
 try:
-    import xmlrpc.client as xmlrpclib
+    import xmlrpc.client as xmlrpclib  #  pylint: disable=unused-import
 except ImportError:
-    import xmlrpclib
+    import xmlrpclib  #  pylint: disable=unused-import
 from spacewalk.server import rhnSQL
 
 # see TaskoXmlRpcHandler.java for available methods
@@ -21,7 +21,7 @@ class RepodataQueueEntry(object):
         self.bypass_filters = bypass_filters
 
 
-class RepodataQueue(object):
+class RepodataQueue(object):  #  pylint: disable=missing-class-docstring
     def _boolean_as_char(boolean):
         if boolean:
             return "Y"

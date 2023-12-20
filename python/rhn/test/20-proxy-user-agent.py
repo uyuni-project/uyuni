@@ -14,7 +14,7 @@ try:
     SERVER = sys.argv[1];
     PROXY = sys.argv[2];
 except:
-    print "Non efficient cmd-line arguments! Provide at least server & proxy!"
+    print "Non efficient cmd-line arguments! Provide at least server & proxy!"  #  pylint: disable=syntax-error
     sys.exit(1);
 
 h = HTTPSProxyConnection(PROXY, SERVER)

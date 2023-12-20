@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -40,7 +40,7 @@ _query_copy_pkgs_from_shadow_action = rhnSQL.Statement(
 _query_copy_revs_from_shadow_action = rhnSQL.Statement(
     """
     insert into rhnActionConfigRevision (id, action_id, server_id, config_revision_id)
-    select sequence_nextval('rhn_actioncr_id_seq'), :new_action_id, server_id, config_revision_id
+    select sequence_nextval('rhn_actioncr_id_seq'), :new_action_id, server_id, config_revision_id  #  pylint: disable=line-too-long
       from rhnActionConfigRevision
      where action_id = :action_id
        and server_id = :server_id

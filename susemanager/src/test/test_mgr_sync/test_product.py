@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python  #  pylint: disable=missing-module-docstring
 # -*- coding: utf-8 -*-
 #
 # Copyright (C) 2014 Novell, Inc.
@@ -33,7 +33,7 @@ from spacewalk.susemanager.mgr_sync.mgr_sync import MgrSync
 from spacewalk.susemanager.mgr_sync import logger
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-from helper import read_data_from_fixture, ConsoleRecorder
+from helper import read_data_from_fixture, ConsoleRecorder  #  pylint: disable=wrong-import-position
 
 
 class ProductTest(unittest.TestCase):

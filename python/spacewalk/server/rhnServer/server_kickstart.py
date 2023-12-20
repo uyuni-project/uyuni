@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -47,7 +47,7 @@ def update_kickstart_session(
         ks_status = "failed"
         next_action_id = None
     else:
-        raise rhnException("Invalid action state %s" % action_status)
+        raise rhnException("Invalid action state %s" % action_status)  #  pylint: disable=consider-using-f-string
 
     update_ks_session_table(ks_session_id, ks_status, next_action_id, server_id)
     return ks_session_id
@@ -109,12 +109,12 @@ def delete_guests(server_id):
         if not row:
             break
         guest_id = row["virtual_system_id"]
-        log_debug(4, "Deleting guest server: %s" % guest_id)
+        log_debug(4, "Deleting guest server: %s" % guest_id)  #  pylint: disable=consider-using-f-string
         try:
             if guest_id is not None:
                 delete_server(guest_id)
         except rhnSQL.SQLError:
-            log_error("Error deleting server: %s" % guest_id)
+            log_error("Error deleting server: %s" % guest_id)  #  pylint: disable=consider-using-f-string
 
     # Finally delete all the virtual instances:
     log_debug(4, "Deleting all virtual instances for host")
@@ -126,7 +126,7 @@ def delete_guests(server_id):
         rhnSQL.commit()
     except rhnSQL.SQLError:
         e = sys.exc_info()[1]
-        log_error("Error committing transaction: %s" % e)
+        log_error("Error committing transaction: %s" % e)  #  pylint: disable=consider-using-f-string
         rhnSQL.rollback()
 
 
@@ -267,7 +267,7 @@ def schedule_kickstart_sync(server_id, kickstart_session_id):
 
 
 def _get_ks_virt_type(type_id):
-    _query_kickstart_virt_type = rhnSQL.Statement(
+    _query_kickstart_virt_type = rhnSQL.Statement(  #  pylint: disable=invalid-name
         """
         select  label
         from    rhnKickstartVirtualizationType kvt
@@ -283,7 +283,7 @@ def _get_ks_virt_type(type_id):
         kstype = "auto"
     else:
         kstype = row["label"]
-    log_debug(1, "KS_TYPE: %s" % kstype)
+    log_debug(1, "KS_TYPE: %s" % kstype)  #  pylint: disable=consider-using-f-string
     return kstype
 
 
@@ -332,9 +332,9 @@ def schedule_virt_pkg_install(server_id, kickstart_session_id):
     org_id = row["org_id"]
     scheduler = row["scheduler"]
     ks_type_id = row["virtualization_type"]
-    log_debug(1, "VIRTUALIZATION_TYPE: %s" % str(ks_type_id))
+    log_debug(1, "VIRTUALIZATION_TYPE: %s" % str(ks_type_id))  #  pylint: disable=consider-using-f-string
     ks_type = _get_ks_virt_type(ks_type_id)
-    log_debug(1, "VIRTUALZIATION_TYPE_LABEL: %s" % str(ks_type))
+    log_debug(1, "VIRTUALZIATION_TYPE_LABEL: %s" % str(ks_type))  #  pylint: disable=consider-using-f-string
 
     if ks_type == "para_host":
         log_debug(1, "SCHEDULING VIRT HOST PACKAGE INSTALL...")
@@ -477,7 +477,7 @@ def schedule_rhncfg_install(server_id, action_id, scheduler, server_profile=None
     if not packages:
         # No channels offer this capability
         log_debug(
-            3, server_id, action_id, "No channels to provide %s found" % capability
+            3, server_id, action_id, "No channels to provide %s found" % capability  #  pylint: disable=consider-using-f-string
         )
         # No new action needed here
         return action_id
@@ -649,7 +649,7 @@ def schedule_package_install(server_id, action_id, scheduler, packages):
     return new_action_id
 
 
-def __execute_many(cursor, array, col_names, **kwargs):
+def __execute_many(cursor, array, col_names, **kwargs):  #  pylint: disable=invalid-name
     """Execute the cursor, with arguments extracted from the array
     The array is converted into a hash having col_names as keys, and adds
     whatever kwarg was specified too.
@@ -738,7 +738,7 @@ def terminate_kickstart_sessions(server_id):
         history.append(
             (
                 "Kickstart session canceled",
-                "A kickstart session for this system was canceled because "
+                "A kickstart session for this system was canceled because "  #  pylint: disable=consider-using-f-string
                 "the system was re-registered with token <strong>%s</strong>"
                 % tokens_obj.get_names(),
             )
@@ -840,7 +840,7 @@ def get_kickstart_session_info(kickstart_session_id, server_id):
     row = h.fetchone_dict()
     if not row:
         raise rhnException(
-            "Could not fetch kickstart session id %s "
+            "Could not fetch kickstart session id %s "  #  pylint: disable=consider-using-f-string
             "for server %s" % (kickstart_session_id, server_id)
         )
 
@@ -866,12 +866,12 @@ _query_delete_server_profile = rhnSQL.Statement(
 )
 
 
-def cleanup_profile(server_id, action_id, ks_session_id, action_status):
+def cleanup_profile(server_id, action_id, ks_session_id, action_status):  #  pylint: disable=unused-argument,unused-argument
     if ks_session_id is None:
         log_debug(4, "No kickstart session")
         return
     if action_status != 2:
-        log_debug(4, "Action status: %s; nothing to do" % action_status)
+        log_debug(4, "Action status: %s; nothing to do" % action_status)  #  pylint: disable=consider-using-f-string
         return
 
     h = rhnSQL.prepare(_query_lookup_ks_server_profile)

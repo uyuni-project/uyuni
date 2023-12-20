@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -24,7 +24,7 @@ __rhnexport__ = ["update"]
 # returns a list of errata scheduled for this action
 
 
-def update(serverId, actionId, dry_run=0):
+def update(serverId, actionId, dry_run=0):  #  pylint: disable=invalid-name,invalid-name,unused-argument
     log_debug(3)
     statement = """
         select r1.errata_id, r2.allow_vendor_change, e.advisory_status
@@ -39,7 +39,7 @@ def update(serverId, actionId, dry_run=0):
     if not ret:
         # No errata for this action
         raise InvalidAction(
-            "errata.update: Unknown action id "
+            "errata.update: Unknown action id "  #  pylint: disable=consider-using-f-string
             "%s for server %s" % (actionId, serverId)
         )
 
@@ -47,7 +47,7 @@ def update(serverId, actionId, dry_run=0):
     if retracted:
         # Do not install retracted patches
         raise InvalidAction(
-            "errata.update: Action contains retracted errata %s" % retracted
+            "errata.update: Action contains retracted errata %s" % retracted  #  pylint: disable=consider-using-f-string
         )
     if ret[0]["allow_vendor_change"] is None or ret[0]["allow_vendor_change"] is False:
         return [x["errata_id"] for x in ret]

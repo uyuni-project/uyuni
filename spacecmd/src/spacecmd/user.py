@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Licensed under the GNU General Public License Version 3
 #
 # This program is free software; you can redistribute it and/or modify
@@ -155,7 +155,7 @@ def complete_user_delete(self, text, line, beg, end):
 def do_user_delete(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if len(args) != 1:
         self.help_user_delete()
@@ -185,7 +185,7 @@ def complete_user_disable(self, text, line, beg, end):
 def do_user_disable(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if len(args) != 1:
         self.help_user_disable()
@@ -213,7 +213,7 @@ def complete_user_enable(self, text, line, beg, end):
 def do_user_enable(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if len(args) != 1:
         self.help_user_enable()
@@ -289,7 +289,7 @@ def complete_user_addrole(self, text, line, beg, end):
 def do_user_addrole(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if len(args) != 2:
         self.help_user_addrole()
@@ -327,7 +327,7 @@ def complete_user_removerole(self, text, line, beg, end):
 def do_user_removerole(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if len(args) != 2:
         self.help_user_removerole()
@@ -356,7 +356,7 @@ def complete_user_details(self, text, line, beg, end):
 def do_user_details(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if not args:
         self.help_user_details()
@@ -378,7 +378,7 @@ def do_user_details(self, args):
         except xmlrpclib.Fault as exc:
             logging.warning(_N("%s is not a valid user") % user)
             logging.debug(
-                "Error '{}' while getting data about user '{}': {}".format(
+                "Error '{}' while getting data about user '{}': {}".format(  #  pylint: disable=consider-using-f-string
                     exc.faultCode, user, exc.faultString
                 )
             )
@@ -446,7 +446,7 @@ def complete_user_addgroup(self, text, line, beg, end):
 def do_user_addgroup(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if len(args) < 2:
         self.help_user_addgroup()
@@ -484,7 +484,7 @@ def complete_user_adddefaultgroup(self, text, line, beg, end):
 def do_user_adddefaultgroup(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if len(args) < 2:
         self.help_user_adddefaultgroup()
@@ -524,7 +524,7 @@ def complete_user_removegroup(self, text, line, beg, end):
 def do_user_removegroup(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if len(args) < 2:
         self.help_user_removegroup()
@@ -566,7 +566,7 @@ def complete_user_removedefaultgroup(self, text, line, beg, end):
 def do_user_removedefaultgroup(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if len(args) < 2:
         self.help_user_removedefaultgroup()
@@ -602,7 +602,7 @@ def complete_user_setfirstname(self, text, line, beg, end):
 def do_user_setfirstname(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if len(args) != 2:
         self.help_user_setfirstname()
@@ -638,7 +638,7 @@ def complete_user_setlastname(self, text, line, beg, end):
 def do_user_setlastname(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if len(args) != 2:
         self.help_user_setlastname()
@@ -674,7 +674,7 @@ def complete_user_setemail(self, text, line, beg, end):
 def do_user_setemail(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if len(args) != 2:
         self.help_user_setemail()
@@ -751,7 +751,7 @@ def complete_user_setpassword(self, text, line, beg, end):
 def do_user_setpassword(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if len(args) != 2:
         self.help_user_setpassword()

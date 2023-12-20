@@ -21,7 +21,7 @@ log = logging.getLogger(__name__)
 __virtualname__ = "mgrcompat"
 
 
-def __virtual__():
+def __virtual__():  #  pylint: disable=invalid-name
     """
     This module is always enabled while 'module.run' is available.
     """
@@ -30,12 +30,12 @@ def __virtual__():
 
 def _tailor_kwargs_to_new_syntax(name, **kwargs):
     nkwargs = {}
-    _opt_kwargs = None
+    _opt_kwargs = None  #  pylint: disable=invalid-name
     for k, v in kwargs.items():
         if k.startswith("m_"):
             nkwargs[k[2:]] = v
         elif k == "kwargs":
-            _opt_kwargs = kwargs[k]
+            _opt_kwargs = kwargs[k]  #  pylint: disable=invalid-name
         else:
             nkwargs[k] = v
     ret = {name: [OrderedDict(nkwargs)]}
@@ -55,24 +55,24 @@ def module_run(**kwargs):
     # We use classic "module.run" syntax by default.
     use_new_syntax = False
 
-    if 2016 < __grains__["saltversioninfo"][0] < 3005 and "module.run" in __opts__.get(
+    if 2016 < __grains__["saltversioninfo"][0] < 3005 and "module.run" in __opts__.get(  #  pylint: disable=undefined-variable,undefined-variable
         "use_superseded", []
     ):
-        # New syntax - explicitely enabled via 'use_superseded' configuration on 2018.3, 2019.2, 3000.x, 3002.x, 3003.x and 3004.x
+        # New syntax - explicitely enabled via 'use_superseded' configuration on 2018.3, 2019.2, 3000.x, 3002.x, 3003.x and 3004.x  #  pylint: disable=line-too-long
         use_new_syntax = True
 
     if use_new_syntax:
         log.debug(
-            "Minion is using the new syntax for 'module.run' state. Tailoring parameters."
+            "Minion is using the new syntax for 'module.run' state. Tailoring parameters."  #  pylint: disable=line-too-long
         )
-        log.debug("Old parameters: {}".format(kwargs))
+        log.debug("Old parameters: {}".format(kwargs))  #  pylint: disable=logging-format-interpolation,consider-using-f-string
         old_name = kwargs.pop("name")
         new_kwargs = _tailor_kwargs_to_new_syntax(old_name, **kwargs)
-        log.debug("New parameters for 'module.run' state: {}".format(new_kwargs))
+        log.debug("New parameters for 'module.run' state: {}".format(new_kwargs))  #  pylint: disable=logging-format-interpolation,consider-using-f-string
     else:
         new_kwargs = kwargs
 
-    ret = __states__["module.run"](**new_kwargs)
+    ret = __states__["module.run"](**new_kwargs)  #  pylint: disable=undefined-variable
     if use_new_syntax:
         if ret["changes"]:
             changes = ret["changes"].pop(old_name)

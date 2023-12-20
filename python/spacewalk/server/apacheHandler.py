@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring,invalid-name
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -34,11 +34,11 @@ from . import rhnCapability
 def timer(last):
     if not last:
         return 0
-    log_debug(2, "%.2f sec" % (time.time() - last,))
+    log_debug(2, "%.2f sec" % (time.time() - last,))  #  pylint: disable=consider-using-f-string
     return 0
 
 
-class apacheSession(rhnApache):
+class apacheSession(rhnApache):  #  pylint: disable=invalid-name
 
     """a class that extends rhnApache with several support functions used
     by the main handler class. This class deals with the processing of
@@ -48,7 +48,7 @@ class apacheSession(rhnApache):
     _lang_catalog = "server"
 
 
-class apacheHandler(apacheSession):
+class apacheHandler(apacheSession):  #  pylint: disable=invalid-name
 
     """main Apache XMLRPC point of entry for the server"""
 
@@ -95,7 +95,7 @@ class apacheHandler(apacheSession):
         client_cap_header = "X-RHN-Client-Capability"
         if client_cap_header in req.headers_in:
             client_caps = req.headers_in[client_cap_header]
-            client_caps = [_f.strip() for _f in client_caps.split(",") if _f.strip()]
+            client_caps = [_f.strip() for _f in client_caps.split(",") if _f.strip()]  #  pylint: disable=invalid-name
             rhnCapability.set_client_capabilities(client_caps)
 
         # Enabling the input header flags associated with the redirects/newer clients
@@ -118,7 +118,7 @@ class apacheHandler(apacheSession):
                 self._req_processor = apacheGET(self.clientVersion, req)
             except HandlerNotFoundError:
                 e = sys.exc_info()[1]
-                log_error("Unable to handle GET request for server %s" % (e.args[0],))
+                log_error("Unable to handle GET request for server %s" % (e.args[0],))  #  pylint: disable=consider-using-f-string
                 return apache.HTTP_METHOD_NOT_ALLOWED
             token = self._setSessionToken(req.headers_in)
             if token is None:
@@ -148,7 +148,7 @@ class apacheHandler(apacheSession):
             h = rhnSQL.prepare("select label, value from rhnTemplateString")
             h.execute()
 
-            templateStrings = {}
+            templateStrings = {}  #  pylint: disable=invalid-name
             while 1:
                 row = h.fetchone_dict()
                 if not row:
@@ -159,13 +159,13 @@ class apacheHandler(apacheSession):
             if templateStrings:
                 rhnFlags.set("templateOverrides", templateStrings)
 
-            log_debug(4, "template strings:  %s" % templateStrings)
+            log_debug(4, "template strings:  %s" % templateStrings)  #  pylint: disable=consider-using-f-string
 
         if not CFG.SECRET_KEY:
             # Secret key not defined, complain loudly
             try:
                 raise rhnException("Secret key not found!")
-            except:
+            except:  #  pylint: disable=bare-except
                 rhnTB.Traceback(mail=1, req=req, severity="schema")
                 req.status = 500
                 req.send_http_header()
@@ -199,14 +199,14 @@ class apacheHandler(apacheSession):
         try:
             ret = self._req_processor.process()
             rhnSQL.rollback()
-        except Exception as exc:
+        except Exception as exc:  #  pylint: disable=unused-variable
             if not CFG.SEND_MESSAGE_TO_ALL:
                 rhnSQL.rollback()
             raise
         log_debug(4, "Leave with return value", ret)
         return ret
 
-    def cleanupHandler(self, req):
+    def cleanupHandler(self, req):  #  pylint: disable=arguments-renamed
         """Clean up stuff before we close down the session when we are called
         from apacheServer.Cleanup()"""
         log_debug(2)
@@ -218,6 +218,6 @@ class apacheHandler(apacheSession):
             except OSError:
                 break
             else:
-                log_error("Reaped child process %d with status %d" % (pid, status))
+                log_error("Reaped child process %d with status %d" % (pid, status))  #  pylint: disable=consider-using-f-string
         ret = apacheSession.cleanupHandler(self, req)
         return ret

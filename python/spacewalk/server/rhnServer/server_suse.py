@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*- pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2010 SUSE LLC
 #
@@ -11,16 +11,16 @@
 #
 
 from spacewalk.common.rhnLog import log_debug, log_error
-from spacewalk.common.rhnException import rhnFault
-from spacewalk.common.rhnTB import Traceback
+from spacewalk.common.rhnException import rhnFault  #  pylint: disable=unused-import
+from spacewalk.common.rhnTB import Traceback  #  pylint: disable=unused-import
 from spacewalk.server import rhnSQL
 
 
-class SuseData:
+class SuseData:  #  pylint: disable=missing-class-docstring
     def __init__(self):
         log_debug(4, "SuseData initialized")
         # format:
-        # suse_products [{ 'name' = ..., 'version' = ..., 'release' = ..., 'arch' = ..., 'baseproduct' = ...},
+        # suse_products [{ 'name' = ..., 'version' = ..., 'release' = ..., 'arch' = ..., 'baseproduct' = ...},  #  pylint: disable=line-too-long
         #               ...]
         self.suse_products = []
 
@@ -147,7 +147,7 @@ class SuseData:
             if not d:
                 # should never happen
                 log_error(
-                    "Unable to create installed product item %s-%s-%s-%s"
+                    "Unable to create installed product item %s-%s-%s-%s"  #  pylint: disable=consider-using-f-string
                     % (
                         product["name"],
                         product["version"],

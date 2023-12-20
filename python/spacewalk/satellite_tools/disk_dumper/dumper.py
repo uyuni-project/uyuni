@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2018 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -38,7 +38,7 @@ from uyuni.common.context_managers import cfg_component
 from uyuni.common.usix import raise_with_tb, ListType
 
 
-class XML_Dumper:
+class XML_Dumper:  #  pylint: disable=missing-class-docstring,invalid-name
     def __init__(self):
         self.compress_level = 5
         self.llimit = None
@@ -348,15 +348,15 @@ class XML_Dumper:
         if filepath:
             key = filepath
         else:
-            key = "xml-channel-packages/rhn-channel-%d.data" % channel_id
+            key = "xml-channel-packages/rhn-channel-%d.data" % channel_id  #  pylint: disable=consider-using-f-string
         # Try to get everything off of the cache
         val = rhnCache.get(key, compressed=0, raw=1, modified=last_modified)
         if val is None:
             # Not generated yet
-            log_debug(4, "Cache MISS for %s (%s)" % (channel_label, channel_id))
+            log_debug(4, "Cache MISS for %s (%s)" % (channel_label, channel_id))  #  pylint: disable=consider-using-f-string
             stream = self._cache_channel_packages_short(channel_id, key, last_modified)
         else:
-            log_debug(4, "Cache HIT for %s (%s)" % (channel_label, channel_id))
+            log_debug(4, "Cache HIT for %s (%s)" % (channel_label, channel_id))  #  pylint: disable=consider-using-f-string
             temp_stream = tempfile.TemporaryFile()
             temp_stream.write(bytes(val, encoding="latin-1"))
             temp_stream.flush()
@@ -371,7 +371,7 @@ class XML_Dumper:
         if send_headers:
             self._send_headers(init_compressed_stream=0)
         if open_stream:
-            self._raw_stream = open(key, "w")
+            self._raw_stream = open(key, "w")  #  pylint: disable=unspecified-encoding
         while 1:
             buff = stream.read(buffer_size)
             if not buff:
@@ -495,7 +495,7 @@ class XML_Dumper:
                 row = h.fetchone_dict()
                 if not row:
                     # XXX Silently ignore it?
-                    raise rhnFault(3003, "No such package %s" % package)
+                    raise rhnFault(3003, "No such package %s" % package)  #  pylint: disable=consider-using-f-string
                 # Saving the row, it's handy later when we create the iterator
                 packages_hash[package_id] = row
         else:
@@ -522,7 +522,7 @@ class XML_Dumper:
                 row = h.fetchone_dict()
                 if not row:
                     # XXX Silently ignore it?
-                    raise rhnFault(3005, "No such erratum %s" % erratum)
+                    raise rhnFault(3005, "No such erratum %s" % erratum)  #  pylint: disable=consider-using-f-string
                 # Saving the row, it's handy later when we create the iterator
                 errata_hash[errata_id] = row
         else:
@@ -550,7 +550,7 @@ class XML_Dumper:
         if channel_labels:
             if not isinstance(channel_labels, ListType):
                 raise rhnFault(
-                    3000, "Expected list of channels, got %s" % type(channel_labels)
+                    3000, "Expected list of channels, got %s" % type(channel_labels)  #  pylint: disable=consider-using-f-string
                 )
 
         h = self.get_channels_statement()
@@ -575,7 +575,7 @@ class XML_Dumper:
             channels = {}
             for label in channel_labels:
                 if label not in all_channels_hash:
-                    raise rhnFault(3001, "Could not retrieve channel %s" % label)
+                    raise rhnFault(3001, "Could not retrieve channel %s" % label)  #  pylint: disable=consider-using-f-string
                 if not (
                     iss_slave_sha256_capable
                     or all_channels_hash[label]["checksum_type"] in [None, "sha1"]
@@ -583,8 +583,8 @@ class XML_Dumper:
                     raise rhnFault(
                         3001,
                         (
-                            "Channel %s has incompatible rpm checksum (%s). Please contact\n"
-                            + "SUSE support for information about upgrade to newer version\n"
+                            "Channel %s has incompatible rpm checksum (%s). Please contact\n"  #  pylint: disable=line-too-long
+                            + "SUSE support for information about upgrade to newer version\n"  #  pylint: disable=line-too-long
                             + "of SUSE Manager Server which supports it."
                         )
                         % (label, all_channels_hash[label]["checksum_type"]),
@@ -610,7 +610,7 @@ class XML_Dumper:
             if not isinstance(kickstart_labels, ListType):
                 raise rhnFault(
                     3000,
-                    "Expected list of kickstart labels, got %s"
+                    "Expected list of kickstart labels, got %s"  #  pylint: disable=consider-using-f-string
                     % type(kickstart_labels),
                 )
 
@@ -773,16 +773,16 @@ class CachedQueryIterator:
             val = self._cache_get(params)
             if val is not None:
                 # Entry is cached
-                log_debug(2, "Cache HIT for %s" % params)
+                log_debug(2, "Cache HIT for %s" % params)  #  pylint: disable=consider-using-f-string
                 return val
 
-            log_debug(4, "Cache MISS for %s" % params)
+            log_debug(4, "Cache MISS for %s" % params)  #  pylint: disable=consider-using-f-string
             start = time.time()
             self._execute(params)
             row = self._statement.fetchone_dict()
 
             if row:
-                log_debug(5, "Timer: %.2f" % (time.time() - start))
+                log_debug(5, "Timer: %.2f" % (time.time() - start))  #  pylint: disable=consider-using-f-string
                 return (params, row)
 
         # Dummy return
@@ -802,7 +802,7 @@ class CachedQueryIterator:
         self._params = None
 
 
-class CachedDumper(exportLib.BaseDumper):
+class CachedDumper(exportLib.BaseDumper):  #  pylint: disable=missing-class-docstring
     iterator_query = None
     item_id_key = "id"
     hash_factor = 1
@@ -834,7 +834,7 @@ class CachedDumper(exportLib.BaseDumper):
         log_debug(4, params)
         last_modified = self._get_last_modified(params)
         key = self._get_key(params)
-        with cfg_component(component=None) as CFG:
+        with cfg_component(component=None) as CFG:  #  pylint: disable=redefined-outer-name,invalid-name
             user = CFG.httpd_user
             group = CFG.httpd_group
         return rhnCache.set(
@@ -862,7 +862,7 @@ class CachedDumper(exportLib.BaseDumper):
         start = time.time()
         # call dump_subelement() from original (non-cached) class
         self.non_cached_class.dump_subelement(self, row)
-        log_debug(5, "Timer for _dump_subelement: %.2f" % (time.time() - start))
+        log_debug(5, "Timer for _dump_subelement: %.2f" % (time.time() - start))  #  pylint: disable=consider-using-f-string
 
         # Restore the old writer
         self.set_writer(ow)
@@ -870,7 +870,7 @@ class CachedDumper(exportLib.BaseDumper):
         self.cache_set(params, s.getvalue())
 
 
-class ChannelsDumper(exportLib.ChannelsDumper):
+class ChannelsDumper(exportLib.ChannelsDumper):  #  pylint: disable=missing-class-docstring
     _query_list_channels = rhnSQL.Statement(
         """
         select c.id, c.org_id,
@@ -924,7 +924,7 @@ class ChannelsDumper(exportLib.ChannelsDumper):
         return QueryIterator(statement=h, params=self._channels)
 
 
-class ChannelsDumperEx(CachedDumper, exportLib.ChannelsDumper):
+class ChannelsDumperEx(CachedDumper, exportLib.ChannelsDumper):  #  pylint: disable=missing-class-docstring
     iterator_query = rhnSQL.Statement(
         """
         select c.id, c.label, ca.label channel_arch, c.basedir, c.name,
@@ -949,10 +949,10 @@ class ChannelsDumperEx(CachedDumper, exportLib.ChannelsDumper):
 
     def _get_key(self, params):
         channel_id = params["channel_id"]
-        return "xml-channels/rhn-channel-%d.xml" % channel_id
+        return "xml-channels/rhn-channel-%d.xml" % channel_id  #  pylint: disable=consider-using-f-string
 
 
-class ShortPackagesDumper(CachedDumper, exportLib.ShortPackagesDumper):
+class ShortPackagesDumper(CachedDumper, exportLib.ShortPackagesDumper):  #  pylint: disable=missing-class-docstring
     iterator_query = rhnSQL.Statement(
         """
             select
@@ -981,7 +981,7 @@ class ShortPackagesDumper(CachedDumper, exportLib.ShortPackagesDumper):
     key_template = "xml-short-packages/%s/rhn-package-short-%s.xml"
 
 
-class PackagesDumper(CachedDumper, exportLib.PackagesDumper):
+class PackagesDumper(CachedDumper, exportLib.PackagesDumper):  #  pylint: disable=missing-class-docstring
     iterator_query = rhnSQL.Statement(
         """
             select
@@ -1030,7 +1030,7 @@ class PackagesDumper(CachedDumper, exportLib.PackagesDumper):
     key_template = "xml-packages/%s/rhn-package-%s.xml"
 
 
-class SourcePackagesDumper(CachedDumper, exportLib.SourcePackagesDumper):
+class SourcePackagesDumper(CachedDumper, exportLib.SourcePackagesDumper):  #  pylint: disable=missing-class-docstring
     iterator_query = rhnSQL.Statement(
         """
             select
@@ -1063,7 +1063,7 @@ class SourcePackagesDumper(CachedDumper, exportLib.SourcePackagesDumper):
     key_template = "xml-packages/%s/rhn-source-package-%s.xml"
 
 
-class ErrataDumper(exportLib.ErrataDumper):
+class ErrataDumper(exportLib.ErrataDumper):  #  pylint: disable=missing-class-docstring
     iterator_query = rhnSQL.Statement(
         """
             select
@@ -1097,7 +1097,7 @@ class ErrataDumper(exportLib.ErrataDumper):
         exportLib.ErrataDumper.__init__(self, writer, iterator)
 
 
-class KickstartableTreesDumper(CachedDumper, exportLib.KickstartableTreesDumper):
+class KickstartableTreesDumper(CachedDumper, exportLib.KickstartableTreesDumper):  #  pylint: disable=missing-class-docstring
     iterator_query = rhnSQL.Statement(
         """
         select kt.id,
@@ -1124,7 +1124,7 @@ class KickstartableTreesDumper(CachedDumper, exportLib.KickstartableTreesDumper)
 
     def _get_key(self, params):
         kickstart_label = params["kickstart_label"]
-        return "xml-kickstartable-tree/%s.xml" % kickstart_label
+        return "xml-kickstartable-tree/%s.xml" % kickstart_label  #  pylint: disable=consider-using-f-string
 
 
 class ClosedConnectionError(Exception):
@@ -1139,6 +1139,6 @@ class TeeStream:
         self.streams = streams
 
     def write(self, data):
-        log_debug(6, "Writing %s bytes" % len(data))
+        log_debug(6, "Writing %s bytes" % len(data))  #  pylint: disable=consider-using-f-string
         for stream in self.streams:
             stream.write(data)

@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring,invalid-name
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -71,7 +71,7 @@ def print_locals(fd=sys.stderr, tb=None):
     fd.write("\nLocal variables by frame\n")
     for frame in stack:
         fd.write(
-            f"Frame {frame.f_code.co_name} in {frame.f_code.co_filename} in line {frame.f_lineno}\n"
+            f"Frame {frame.f_code.co_name} in {frame.f_code.co_filename} in line {frame.f_lineno}\n"  #  pylint: disable=line-too-long
         )
         for key, value in frame.f_locals.items():
             fd.write(f"\t{key:>20} = ")
@@ -80,7 +80,7 @@ def print_locals(fd=sys.stderr, tb=None):
             # error we don't want.
             try:
                 s = str(value)
-            except Exception:
+            except Exception:  #  pylint: disable=broad-exception-caught
                 s = "<ERROR WHILE PRINTING VALUE>"
             if len(s) > 100 * 1024:
                 s = "<ERROR WHILE PRINTING VALUE: string representation too large>"
@@ -96,7 +96,7 @@ def print_req(req, fd=sys.stderr):
     fd.write("Request object information:\n")
     fd.write(f"URI: {req.unparsed_uri}\n")
     fd.write(
-        "Remote Host: {remote_host}\nServer Name: {server_hostname}:{server_port}\n".format(
+        "Remote Host: {remote_host}\nServer Name: {server_hostname}:{server_port}\n".format(  #  pylint: disable=line-too-long,consider-using-f-string
             remote_host=req.get_remote_host(),
             server_hostname=req.server.server_hostname,
             server_port=req.server.port,
@@ -196,7 +196,7 @@ def Traceback(
     return
 
 
-def fetchTraceback(method=None, req=None, extra=None, with_locals=0):
+def fetchTraceback(method=None, req=None, extra=None, with_locals=0):  #  pylint: disable=invalid-name
     """a cheat for snagging just the string value of a Traceback"""
     exc = StringIO()
     Traceback(
@@ -211,8 +211,8 @@ def fetchTraceback(method=None, req=None, extra=None, with_locals=0):
     return exc.getvalue()
 
 
-def exitWithTraceback(e, msg, exitnum, mail=0):
-    tbOut = StringIO()
+def exitWithTraceback(e, msg, exitnum, mail=0):  #  pylint: disable=invalid-name
+    tbOut = StringIO()  #  pylint: disable=invalid-name
     Traceback(mail, ostream=tbOut, with_locals=1)
     log_error(-1, _("ERROR: %s %s: %s") % (e.__class__.__name__, msg, e))
     log_error(-1, _("TRACEBACK: %s") % tbOut.getvalue())
@@ -252,7 +252,7 @@ def censor_string(strval):
     """Remove all instances of the strings in seclist.sec from strval"""
     censorlist = get_seclist()
     for c in censorlist:
-        # Censor it with a fixed length string. This way the length of the hidden string isn't revealed.
+        # Censor it with a fixed length string. This way the length of the hidden string isn't revealed.  #  pylint: disable=line-too-long
         strval = strval.replace(c, "<CENSORED!>")
     return strval
 

@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*- pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2012 SUSE LLC
 #
@@ -14,7 +14,7 @@ import sys
 from spacewalk.common.rhnLog import log_debug
 from spacewalk.common.rhnException import rhnFault
 from uyuni.common.usix import raise_with_tb
-from spacewalk.server import rhnSQL
+from spacewalk.server import rhnSQL  #  pylint: disable=ungrouped-imports
 from spacewalk.server.rhnChannel import subscribe_channels, unsubscribe_channels
 from spacewalk.server.rhnLib import InvalidAction, ShadowAction
 
@@ -58,7 +58,7 @@ _query_products = rhnSQL.Statement(
 # returns the values required to execute a dist upgrade
 # change also the channel subscription
 #
-def upgrade(serverId, actionId, dry_run=0):
+def upgrade(serverId, actionId, dry_run=0):  #  pylint: disable=invalid-name,invalid-name
     log_debug(3)
 
     if dry_run:
@@ -71,7 +71,7 @@ def upgrade(serverId, actionId, dry_run=0):
     if not row:
         # No dup for this action
         raise InvalidAction(
-            "distupgrade.upgrade: No action found for action id "
+            "distupgrade.upgrade: No action found for action id "  #  pylint: disable=consider-using-f-string
             "%s and server %s" % (actionId, serverId)
         )
 
@@ -125,7 +125,7 @@ def upgrade(serverId, actionId, dry_run=0):
             pass
         else:
             raise_with_tb(InvalidAction(str(f)), sys.exc_info()[2])
-    except Exception as e:
+    except Exception as e:  #  pylint: disable=broad-exception-caught
         raise_with_tb(InvalidAction(str(e)), sys.exc_info()[2])
 
     rhnSQL.commit()

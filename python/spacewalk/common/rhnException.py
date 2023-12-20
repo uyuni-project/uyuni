@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring,invalid-name
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -135,8 +135,8 @@ on this system."
     47: _("""Invalid RPM header"""),
     48: _(
         """
-    This system is already registered as a Salt Minion. If you want to register it as a traditional client
-    please delete it first via the web UI or API and then register it using the traditional tools.
+    This system is already registered as a Salt Minion. If you want to register it as a traditional client  #  pylint: disable=line-too-long
+    please delete it first via the web UI or API and then register it using the traditional tools.  #  pylint: disable=line-too-long
     """
     ),
     # For the uploading tools
@@ -270,7 +270,7 @@ on this system."
 }
 
 
-class rhnException(Exception):
+class rhnException(Exception):  #  pylint: disable=invalid-name
 
     """
     This is the generic exception class we raise in the code when we want to
@@ -289,12 +289,12 @@ class rhnException(Exception):
         s = StringIO()
         s.write("\nInternal code error. Information available:\n")
         for a in self.args:
-            s.write("  %s\n" % (a,))
+            s.write("  %s\n" % (a,))  #  pylint: disable=consider-using-f-string
 
         return s.getvalue()
 
 
-class redirectException(Exception):
+class redirectException(Exception):  #  pylint: disable=invalid-name
 
     """
     pkilambi:This is the exception class we raise when we decide to
@@ -324,7 +324,7 @@ Explain = _(
 )
 
 
-class rhnFault(Exception):
+class rhnFault(Exception):  #  pylint: disable=invalid-name
 
     """
     This is a data exception class that is raised when we detect bad data.
@@ -339,7 +339,7 @@ class rhnFault(Exception):
         self.code = err_code
         self.text = err_text
         self.explain = explain
-        self.arrayText = ""
+        self.arrayText = ""  #  pylint: disable=invalid-name
         if self.code and self.code in FaultArray:
             self.arrayText = FaultArray[self.code]
         Exception.__init__(self, self.code, self.text, self.arrayText)
@@ -348,12 +348,12 @@ class rhnFault(Exception):
         """
         String representation of this object.
         """
-        return "<rhnFault class (code = %s, text = '%s')>" % (self.code, self.text)
+        return "<rhnFault class (code = %s, text = '%s')>" % (self.code, self.text)  #  pylint: disable=consider-using-f-string
 
     def getxml(self):
         # see if there were any template strings loaded from the db,
         # {label:value}
-        templateOverrides = rhnFlags.get("templateOverrides")
+        templateOverrides = rhnFlags.get("templateOverrides")  #  pylint: disable=invalid-name
 
         # update the templateValues in the module
         if templateOverrides:
@@ -378,7 +378,7 @@ class rhnFault(Exception):
         return xmlrpclib.Fault(-self.code, s.getvalue())
 
 
-class rhnNotFound(Exception):
+class rhnNotFound(Exception):  #  pylint: disable=invalid-name
 
     """Raised when we want return 404 Not Found"""
 

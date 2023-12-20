@@ -4,7 +4,7 @@ Test suite for the errata module.
 """
 
 from unittest.mock import MagicMock, patch
-from helpers import shell, assert_expect, assert_list_args_expect, assert_args_expect
+from helpers import shell, assert_expect, assert_list_args_expect, assert_args_expect  #  pylint: disable=unused-import
 import spacecmd.errata
 from xmlrpc import client as xmlrpclib
 import zlib
@@ -15,7 +15,7 @@ class TestSCErrata:
     Test suite for "errata" module.
     """
 
-    def test_errata_list_nodata(self, shell):
+    def test_errata_list_nodata(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_errata_list return no data
 
@@ -26,14 +26,14 @@ class TestSCErrata:
         shell.all_errata = {"one": None, "two": None}
         mprint = MagicMock()
 
-        with patch("spacecmd.errata.print", mprint) as prt:
+        with patch("spacecmd.errata.print", mprint) as prt:  #  pylint: disable=unused-variable
             out = spacecmd.errata.do_errata_list(shell, "")
 
         assert out is None
         assert shell.generate_errata_cache.called
         assert_expect(mprint.call_args_list, "one\ntwo")
 
-    def test_errata_list_with_data(self, shell):
+    def test_errata_list_with_data(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_errata_list return data for further processing
 
@@ -44,7 +44,7 @@ class TestSCErrata:
         shell.all_errata = {"one": None, "two": None}
         mprint = MagicMock()
 
-        with patch("spacecmd.errata.print", mprint) as prt:
+        with patch("spacecmd.errata.print", mprint) as prt:  #  pylint: disable=unused-variable
             out = spacecmd.errata.do_errata_list(shell, "", doreturn=True)
 
         assert not mprint.called
@@ -52,7 +52,7 @@ class TestSCErrata:
         assert sorted(out) == ["one", "two"]
         assert shell.generate_errata_cache.called
 
-    def test_errata_listaffectedsystems_noargs(self, shell):
+    def test_errata_listaffectedsystems_noargs(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_errata_listaffectedsystems without an arguments.
 
@@ -65,7 +65,7 @@ class TestSCErrata:
         shell.client.errata.listAffectedSystems = MagicMock()
         mprint = MagicMock()
 
-        with patch("spacecmd.errata.print", mprint) as prt:
+        with patch("spacecmd.errata.print", mprint) as prt:  #  pylint: disable=unused-variable
             spacecmd.errata.do_errata_listaffectedsystems(shell, "")
 
         assert not shell.client.errata.listAffectedSystems.called
@@ -73,7 +73,7 @@ class TestSCErrata:
         assert not mprint.called
         assert shell.help_errata_listaffectedsystems.called
 
-    def test_errata_listaffectedsystems_by_errata_name(self, shell):
+    def test_errata_listaffectedsystems_by_errata_name(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_errata_listaffectedsystems with errata name.
 
@@ -99,7 +99,7 @@ class TestSCErrata:
         )
         mprint = MagicMock()
 
-        with patch("spacecmd.errata.print", mprint) as prt:
+        with patch("spacecmd.errata.print", mprint) as prt:  #  pylint: disable=unused-variable
             spacecmd.errata.do_errata_listaffectedsystems(shell, "foo")
 
         assert not shell.help_errata_listaffectedsystems.called
@@ -118,7 +118,7 @@ class TestSCErrata:
             ],
         )
 
-    def test_errata_listcves_noargs(self, shell):
+    def test_errata_listcves_noargs(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_errata_listcves without arguments.
 
@@ -130,7 +130,7 @@ class TestSCErrata:
         shell.expand_errata = MagicMock()
         mprint = MagicMock()
 
-        with patch("spacecmd.errata.print", mprint) as prt:
+        with patch("spacecmd.errata.print", mprint) as prt:  #  pylint: disable=unused-variable
             spacecmd.errata.do_errata_listcves(shell, "")
 
         assert not shell.client.errata.listCves.called
@@ -138,7 +138,7 @@ class TestSCErrata:
         assert not mprint.called
         assert shell.help_errata_listcves.called
 
-    def test_errata_listcves_not_found(self, shell):
+    def test_errata_listcves_not_found(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_errata_listcves not found.
 
@@ -150,7 +150,7 @@ class TestSCErrata:
         shell.expand_errata = MagicMock(return_value=[])
         mprint = MagicMock()
 
-        with patch("spacecmd.errata.print", mprint) as prt:
+        with patch("spacecmd.errata.print", mprint) as prt:  #  pylint: disable=unused-variable
             spacecmd.errata.do_errata_listcves(shell, "invalid")
 
         assert not shell.help_errata_listcves.called
@@ -159,7 +159,7 @@ class TestSCErrata:
         assert mprint.called
         assert_expect(mprint.call_args_list, "No errata has been found")
 
-    def test_errata_listcves_expanded(self, shell):
+    def test_errata_listcves_expanded(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_errata_listcves data print check.
 
@@ -176,7 +176,7 @@ class TestSCErrata:
         shell.expand_errata = MagicMock(return_value=["one", "two"])
         mprint = MagicMock()
 
-        with patch("spacecmd.errata.print", mprint) as prt:
+        with patch("spacecmd.errata.print", mprint) as prt:  #  pylint: disable=unused-variable
             spacecmd.errata.do_errata_listcves(shell, "CVE*")
 
         assert not shell.help_errata_listcves.called
@@ -195,7 +195,7 @@ class TestSCErrata:
             ],
         )
 
-    def test_errata_findbycve_noargs(self, shell):
+    def test_errata_findbycve_noargs(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_errata_findbycve without arguments.
 
@@ -206,14 +206,14 @@ class TestSCErrata:
         shell.client.errata.findByCve = MagicMock()
         mprint = MagicMock()
 
-        with patch("spacecmd.errata.print", mprint) as prt:
+        with patch("spacecmd.errata.print", mprint) as prt:  #  pylint: disable=unused-variable
             spacecmd.errata.do_errata_findbycve(shell, "")
 
         assert not shell.client.errata.findByCve.called
         assert not mprint.called
         assert shell.help_errata_findbycve.called
 
-    def test_errata_findbycve_cvelist(self, shell):
+    def test_errata_findbycve_cvelist(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_errata_findbycve with CVE list.
 
@@ -234,7 +234,7 @@ class TestSCErrata:
         )
         mprint = MagicMock()
 
-        with patch("spacecmd.errata.print", mprint) as prt:
+        with patch("spacecmd.errata.print", mprint) as prt:  #  pylint: disable=unused-variable
             spacecmd.errata.do_errata_findbycve(shell, "123 234 345")
 
         assert not shell.help_errata_findbycve.called
@@ -258,7 +258,7 @@ class TestSCErrata:
             ],
         )
 
-    def test_errata_details_noargs(self, shell):
+    def test_errata_details_noargs(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_errata_details without arguments.
 
@@ -274,7 +274,7 @@ class TestSCErrata:
         shell.expand_errata = MagicMock()
         mprint = MagicMock()
 
-        with patch("spacecmd.errata.print", mprint) as prt:
+        with patch("spacecmd.errata.print", mprint) as prt:  #  pylint: disable=unused-variable
             spacecmd.errata.do_errata_details(shell, "")
 
         assert not shell.client.errata.getDetails.called
@@ -286,7 +286,7 @@ class TestSCErrata:
         assert not mprint.called
         assert shell.help_errata_details.called
 
-    def test_errata_details_erratum_failure(self, shell):
+    def test_errata_details_erratum_failure(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_errata_details erratum failure.
 
@@ -305,9 +305,9 @@ class TestSCErrata:
         mprint = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.errata.print", mprint) as prt, patch(
+        with patch("spacecmd.errata.print", mprint) as prt, patch(  #  pylint: disable=unused-variable
             "spacecmd.errata.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.errata.do_errata_details(shell, "cve*")
 
         assert shell.client.errata.getDetails.called
@@ -327,7 +327,7 @@ class TestSCErrata:
             ],
         )
 
-    def test_errata_details_erratum_data(self, shell):
+    def test_errata_details_erratum_data(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_errata_details erratum data.
 
@@ -342,7 +342,7 @@ class TestSCErrata:
                     "type": "TYPE-1",
                     "issue_date": "DATE-1",
                     "topic": "The quick brown fox jumped over the lazy dog",
-                    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. "
+                    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. "  #  pylint: disable=line-too-long
                     "Morbi volutpat felis sem, nec condimentum magna facilisis sed. "
                     "Vestibulum id ultrices nisi, mattis laoreet turpis. "
                     "Vestibulum ante ipsum primis in faucibus orci luctus et ultrices "
@@ -350,11 +350,11 @@ class TestSCErrata:
                     "auctor aliquet leo porta. Integer ac justo arcu.",
                     "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. "
                     "Morbi volutpat felis sem, nec condimentum magna facilisis sed. "
-                    "Vestibulum id ultrices nisi, mattis laoreet turpis. Vestibulum ante "
+                    "Vestibulum id ultrices nisi, mattis laoreet turpis. Vestibulum ante "  #  pylint: disable=line-too-long
                     "ipsum primis in faucibus orci luctus et ultrices posuere cubilia "
-                    "Curae; Nam tincidunt quam quis tellus convallis, auctor aliquet leo porta. "
+                    "Curae; Nam tincidunt quam quis tellus convallis, auctor aliquet leo porta. "  #  pylint: disable=line-too-long
                     "Integer ac justo arcu.",
-                    "solution": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. "
+                    "solution": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. "  #  pylint: disable=line-too-long
                     "Morbi volutpat felis sem, nec condimentum magna facilisis sed. "
                     "Vestibulum id ultrices nisi, mattis laoreet turpis. "
                     "Vestibulum ante ipsum primis in faucibus orci luctus et ultrices "
@@ -367,14 +367,14 @@ class TestSCErrata:
                     "XF:weblogic-http-response-information(00000) "
                     "URL:http://www.iss.net/security_center/static/00000.php ",
                     "advisory_status": "retracted",
-                    "vendor_advisory": "https://www.test.com/support/update/update-up-123456-1",
+                    "vendor_advisory": "https://www.test.com/support/update/update-up-123456-1",  #  pylint: disable=line-too-long
                 },
                 {
                     "product": "PRODUCT-2",
                     "type": "TYPE-2",
                     "issue_date": "DATE-2",
                     "topic": "The quick brown fox jumped over the lazy dog",
-                    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. "
+                    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. "  #  pylint: disable=line-too-long
                     "Morbi volutpat felis sem, nec condimentum magna facilisis sed. "
                     "Vestibulum id ultrices nisi, mattis laoreet turpis. "
                     "Vestibulum ante ipsum primis in faucibus orci luctus et ultrices "
@@ -382,11 +382,11 @@ class TestSCErrata:
                     "auctor aliquet leo porta. Integer ac justo arcu.",
                     "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. "
                     "Morbi volutpat felis sem, nec condimentum magna facilisis sed. "
-                    "Vestibulum id ultrices nisi, mattis laoreet turpis. Vestibulum ante "
+                    "Vestibulum id ultrices nisi, mattis laoreet turpis. Vestibulum ante "  #  pylint: disable=line-too-long
                     "ipsum primis in faucibus orci luctus et ultrices posuere cubilia "
-                    "Curae; Nam tincidunt quam quis tellus convallis, auctor aliquet leo porta. "
+                    "Curae; Nam tincidunt quam quis tellus convallis, auctor aliquet leo porta. "  #  pylint: disable=line-too-long
                     "Integer ac justo arcu.",
-                    "solution": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. "
+                    "solution": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. "  #  pylint: disable=line-too-long
                     "Morbi volutpat felis sem, nec condimentum magna facilisis sed. "
                     "Vestibulum id ultrices nisi, mattis laoreet turpis. "
                     "Vestibulum ante ipsum primis in faucibus orci luctus et ultrices "
@@ -398,7 +398,7 @@ class TestSCErrata:
                     "URL:http://www.securityfocus.com/bid/1111 "
                     "XF:weblogic-http-response-information(11111) "
                     "URL:http://www.iss.net/security_center/static/11111.php ",
-                    "vendor_advisory": "https://www.test.com/support/update/update-up-123456-2",
+                    "vendor_advisory": "https://www.test.com/support/update/update-up-123456-2",  #  pylint: disable=line-too-long
                 },
             ]
         )
@@ -439,9 +439,9 @@ class TestSCErrata:
         mprint = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.errata.print", mprint) as prt, patch(
+        with patch("spacecmd.errata.print", mprint) as prt, patch(  #  pylint: disable=unused-variable
             "spacecmd.errata.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.errata.do_errata_details(shell, "cve*")
 
         assert not logger.warning.called
@@ -468,18 +468,18 @@ class TestSCErrata:
                 "",
                 "Description",
                 "-----------",
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi\nvolutpat felis sem, "
-                "nec condimentum magna facilisis sed. Vestibulum id\nultrices nisi, mattis laoreet "
-                "turpis. Vestibulum ante ipsum primis in\nfaucibus orci luctus et ultrices posuere "
-                "cubilia Curae; Nam tincidunt\nquam quis tellus convallis, auctor aliquet leo porta. "
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi\nvolutpat felis sem, "  #  pylint: disable=line-too-long
+                "nec condimentum magna facilisis sed. Vestibulum id\nultrices nisi, mattis laoreet "  #  pylint: disable=line-too-long
+                "turpis. Vestibulum ante ipsum primis in\nfaucibus orci luctus et ultrices posuere "  #  pylint: disable=line-too-long
+                "cubilia Curae; Nam tincidunt\nquam quis tellus convallis, auctor aliquet leo porta. "  #  pylint: disable=line-too-long
                 "Integer ac justo\narcu.",
                 "",
                 "Notes",
                 "-----",
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi\nvolutpat felis sem, "
-                "nec condimentum magna facilisis sed. Vestibulum id\nultrices nisi, mattis laoreet "
-                "turpis. Vestibulum ante ipsum primis in\nfaucibus orci luctus et ultrices posuere "
-                "cubilia Curae; Nam tincidunt\nquam quis tellus convallis, auctor aliquet leo porta. "
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi\nvolutpat felis sem, "  #  pylint: disable=line-too-long
+                "nec condimentum magna facilisis sed. Vestibulum id\nultrices nisi, mattis laoreet "  #  pylint: disable=line-too-long
+                "turpis. Vestibulum ante ipsum primis in\nfaucibus orci luctus et ultrices posuere "  #  pylint: disable=line-too-long
+                "cubilia Curae; Nam tincidunt\nquam quis tellus convallis, auctor aliquet leo porta. "  #  pylint: disable=line-too-long
                 "Integer ac justo\narcu.",
                 "",
                 "CVEs",
@@ -492,17 +492,17 @@ class TestSCErrata:
                 "",
                 "Solution",
                 "--------",
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi\nvolutpat felis sem, "
-                "nec condimentum magna facilisis sed. Vestibulum id\nultrices nisi, mattis laoreet "
-                "turpis. Vestibulum ante ipsum primis in\nfaucibus orci luctus et ultrices posuere "
-                "cubilia Curae; Nam tincidunt\nquam quis tellus convallis, auctor aliquet leo porta. "
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi\nvolutpat felis sem, "  #  pylint: disable=line-too-long
+                "nec condimentum magna facilisis sed. Vestibulum id\nultrices nisi, mattis laoreet "  #  pylint: disable=line-too-long
+                "turpis. Vestibulum ante ipsum primis in\nfaucibus orci luctus et ultrices posuere "  #  pylint: disable=line-too-long
+                "cubilia Curae; Nam tincidunt\nquam quis tellus convallis, auctor aliquet leo porta. "  #  pylint: disable=line-too-long
                 "Integer ac justo\narcu.",
                 "",
                 "References",
                 "----------",
                 "AAA:AAA00-00.00 URL:http://foo.test.com/pub/advisory/00 BID:0000\n"
                 "URL:http://www.securityfocus.com/bid/0000 XF:weblogic-http-response-\n"
-                "information(00000)\nURL:http://www.iss.net/security_center/static/00000.php",
+                "information(00000)\nURL:http://www.iss.net/security_center/static/00000.php",  #  pylint: disable=line-too-long
                 "",
                 "Affected Channels",
                 "-----------------",
@@ -528,18 +528,18 @@ class TestSCErrata:
                 "",
                 "Description",
                 "-----------",
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi\nvolutpat felis sem, "
-                "nec condimentum magna facilisis sed. Vestibulum id\nultrices nisi, mattis laoreet "
-                "turpis. Vestibulum ante ipsum primis in\nfaucibus orci luctus et ultrices posuere "
-                "cubilia Curae; Nam tincidunt\nquam quis tellus convallis, auctor aliquet leo porta. "
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi\nvolutpat felis sem, "  #  pylint: disable=line-too-long
+                "nec condimentum magna facilisis sed. Vestibulum id\nultrices nisi, mattis laoreet "  #  pylint: disable=line-too-long
+                "turpis. Vestibulum ante ipsum primis in\nfaucibus orci luctus et ultrices posuere "  #  pylint: disable=line-too-long
+                "cubilia Curae; Nam tincidunt\nquam quis tellus convallis, auctor aliquet leo porta. "  #  pylint: disable=line-too-long
                 "Integer ac justo\narcu.",
                 "",
                 "Notes",
                 "-----",
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi\nvolutpat felis sem, "
-                "nec condimentum magna facilisis sed. Vestibulum id\nultrices nisi, mattis laoreet "
-                "turpis. Vestibulum ante ipsum primis in\nfaucibus orci luctus et ultrices posuere "
-                "cubilia Curae; Nam tincidunt\nquam quis tellus convallis, auctor aliquet leo porta. "
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi\nvolutpat felis sem, "  #  pylint: disable=line-too-long
+                "nec condimentum magna facilisis sed. Vestibulum id\nultrices nisi, mattis laoreet "  #  pylint: disable=line-too-long
+                "turpis. Vestibulum ante ipsum primis in\nfaucibus orci luctus et ultrices posuere "  #  pylint: disable=line-too-long
+                "cubilia Curae; Nam tincidunt\nquam quis tellus convallis, auctor aliquet leo porta. "  #  pylint: disable=line-too-long
                 "Integer ac justo\narcu.",
                 "",
                 "CVEs",
@@ -552,17 +552,17 @@ class TestSCErrata:
                 "",
                 "Solution",
                 "--------",
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi\nvolutpat felis sem, "
-                "nec condimentum magna facilisis sed. Vestibulum id\nultrices nisi, mattis laoreet "
-                "turpis. Vestibulum ante ipsum primis in\nfaucibus orci luctus et ultrices posuere "
-                "cubilia Curae; Nam tincidunt\nquam quis tellus convallis, auctor aliquet leo porta. "
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi\nvolutpat felis sem, "  #  pylint: disable=line-too-long
+                "nec condimentum magna facilisis sed. Vestibulum id\nultrices nisi, mattis laoreet "  #  pylint: disable=line-too-long
+                "turpis. Vestibulum ante ipsum primis in\nfaucibus orci luctus et ultrices posuere "  #  pylint: disable=line-too-long
+                "cubilia Curae; Nam tincidunt\nquam quis tellus convallis, auctor aliquet leo porta. "  #  pylint: disable=line-too-long
                 "Integer ac justo\narcu.",
                 "",
                 "References",
                 "----------",
                 "AAA:AAA11-11.11 URL:http://foo.test.com/pub/advisory/11 BID:1111\n"
                 "URL:http://www.securityfocus.com/bid/1111 XF:weblogic-http-response-\n"
-                "information(11111)\nURL:http://www.iss.net/security_center/static/11111.php",
+                "information(11111)\nURL:http://www.iss.net/security_center/static/11111.php",  #  pylint: disable=line-too-long
                 "",
                 "Affected Channels",
                 "-----------------",
@@ -578,7 +578,7 @@ class TestSCErrata:
             ],
         )
 
-    def test_errata_details_erratum_none_data(self, shell):
+    def test_errata_details_erratum_none_data(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_errata_details erratum none data.
 
@@ -608,9 +608,9 @@ class TestSCErrata:
         mprint = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.errata.print", mprint) as prt, patch(
+        with patch("spacecmd.errata.print", mprint) as prt, patch(  #  pylint: disable=unused-variable
             "spacecmd.errata.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.errata.do_errata_details(shell, "cve*")
 
         assert not logger.warning.called
@@ -711,7 +711,7 @@ class TestSCErrata:
             ],
         )
 
-    def test_errata_delete_noargs(self, shell):
+    def test_errata_delete_noargs(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_errata_delete without arguments.
 
@@ -727,9 +727,9 @@ class TestSCErrata:
         mprint = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.errata.print", mprint) as prt, patch(
+        with patch("spacecmd.errata.print", mprint) as prt, patch(  #  pylint: disable=unused-variable
             "spacecmd.errata.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.errata.do_errata_delete(shell, "")
 
         assert not shell.expand_errata.called
@@ -742,7 +742,7 @@ class TestSCErrata:
         assert not logger.warning.called
         assert shell.help_errata_delete.called
 
-    def test_errata_delete_no_errata(self, shell):
+    def test_errata_delete_no_errata(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_errata_delete without errata.
 
@@ -758,9 +758,9 @@ class TestSCErrata:
         mprint = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.errata.print", mprint) as prt, patch(
+        with patch("spacecmd.errata.print", mprint) as prt, patch(  #  pylint: disable=unused-variable
             "spacecmd.errata.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.errata.do_errata_delete(shell, "CVE-X")
 
         assert not shell.user_confirm.called
@@ -775,7 +775,7 @@ class TestSCErrata:
 
         assert_expect(logger.warning.call_args_list, "No patches to delete")
 
-    def test_errata_delete_no_errata_non_interactive(self, shell):
+    def test_errata_delete_no_errata_non_interactive(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_errata_delete without errata (non-interactive mode).
 
@@ -797,9 +797,9 @@ class TestSCErrata:
         mprint = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.errata.print", mprint) as prt, patch(
+        with patch("spacecmd.errata.print", mprint) as prt, patch(  #  pylint: disable=unused-variable
             "spacecmd.errata.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.errata.do_errata_delete(shell, "CVE-X")
 
         assert not shell.help_errata_delete.called
@@ -842,7 +842,7 @@ class TestSCErrata:
             ],
         )
 
-    def test_errata_publish_noargs(self, shell):
+    def test_errata_publish_noargs(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_errata_publish without arguments.
 
@@ -856,9 +856,9 @@ class TestSCErrata:
         mprint = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.errata.print", mprint) as prt, patch(
+        with patch("spacecmd.errata.print", mprint) as prt, patch(  #  pylint: disable=unused-variable
             "spacecmd.errata.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.errata.do_errata_publish(shell, "")
 
         assert not shell.expand_errata.called
@@ -868,7 +868,7 @@ class TestSCErrata:
         assert not logger.warning.called
         assert shell.help_errata_publish.called
 
-    def test_errata_publish_no_errata(self, shell):
+    def test_errata_publish_no_errata(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_errata_publish no errata found.
 
@@ -882,9 +882,9 @@ class TestSCErrata:
         mprint = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.errata.print", mprint) as prt, patch(
+        with patch("spacecmd.errata.print", mprint) as prt, patch(  #  pylint: disable=unused-variable
             "spacecmd.errata.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.errata.do_errata_publish(shell, "CVE-1 base_channel")
 
         assert not shell.user_confirm.called
@@ -897,7 +897,7 @@ class TestSCErrata:
             logger.warning.call_args_list, ["No patches to publish"]
         )
 
-    def test_errata_publish_no_interactive(self, shell):
+    def test_errata_publish_no_interactive(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_errata_publish publish to channel without interactive mode
 
@@ -912,9 +912,9 @@ class TestSCErrata:
         mprint = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.errata.print", mprint) as prt, patch(
+        with patch("spacecmd.errata.print", mprint) as prt, patch(  #  pylint: disable=unused-variable
             "spacecmd.errata.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.errata.do_errata_publish(shell, "CVE-1 base_channel")
 
         assert not logger.warning.called
@@ -933,7 +933,7 @@ class TestSCErrata:
             ],
         )
 
-    def test_errata_search_noargs(self, shell):
+    def test_errata_search_noargs(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_errata_search without arguments.
 
@@ -948,9 +948,9 @@ class TestSCErrata:
         mprint = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.errata.print", mprint) as prt, patch(
+        with patch("spacecmd.errata.print", mprint) as prt, patch(  #  pylint: disable=unused-variable
             "spacecmd.errata.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.errata.do_errata_search(shell, "")
 
         assert not shell.expand_errata.called
@@ -960,7 +960,7 @@ class TestSCErrata:
         assert not logger.warning.called
         assert shell.help_errata_search.called
 
-    def test_errata_search_by_cve_no_data(self, shell):
+    def test_errata_search_by_cve_no_data(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_errata_search without arguments.
 
@@ -995,9 +995,9 @@ class TestSCErrata:
             """
             mp_out.append(erratum)
 
-        with patch("spacecmd.errata.print", mprint) as prt, patch(
+        with patch("spacecmd.errata.print", mprint) as prt, patch(  #  pylint: disable=unused-variable
             "spacecmd.errata.print_errata_summary", prn_err_summary
-        ) as pes, patch("spacecmd.errata.logging", logger) as lgr:
+        ) as pes, patch("spacecmd.errata.logging", logger) as lgr:  #  pylint: disable=unused-variable,unused-variable
             out = spacecmd.errata.do_errata_search(shell, "CVE-123-23456")
 
         assert not shell.expand_errata.called
@@ -1007,7 +1007,7 @@ class TestSCErrata:
         assert not shell.help_errata_search.called
         assert out is None
         assert shell.client.errata.findByCve.called
-        assert type(mp_out) == list
+        assert type(mp_out) == list  #  pylint: disable=unidiomatic-typecheck
         assert len(mp_out) == 1
         for key, value in {
             "date": None,
@@ -1018,7 +1018,7 @@ class TestSCErrata:
             assert key in mp_out[0]
             assert mp_out[0][key] == value
 
-    def test_errata_search_by_cve_with_data(self, shell):
+    def test_errata_search_by_cve_with_data(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_errata_search with data return
 
@@ -1043,9 +1043,9 @@ class TestSCErrata:
         logger = MagicMock()
         prn_err_summary = MagicMock()
 
-        with patch("spacecmd.errata.print", mprint) as prt, patch(
+        with patch("spacecmd.errata.print", mprint) as prt, patch(  #  pylint: disable=unused-variable
             "spacecmd.errata.print_errata_summary", prn_err_summary
-        ) as pes, patch("spacecmd.errata.logging", logger) as lgr:
+        ) as pes, patch("spacecmd.errata.logging", logger) as lgr:  #  pylint: disable=unused-variable,unused-variable
             out = spacecmd.errata.do_errata_search(
                 shell, "CVE-123-23456", doreturn=True
             )
@@ -1060,7 +1060,7 @@ class TestSCErrata:
         assert shell.client.errata.findByCve.called
         assert out == ["CVE-123"]
 
-    def test_errata_apply_noargs(self, shell):
+    def test_errata_apply_noargs(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_errata_apply without arguments.
 
@@ -1079,9 +1079,9 @@ class TestSCErrata:
         mprint = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.errata.print", mprint) as prt, patch(
+        with patch("spacecmd.errata.print", mprint) as prt, patch(  #  pylint: disable=unused-variable
             "spacecmd.errata.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.errata.do_errata_apply(shell, "")
 
         assert not shell.user_confirm.called
@@ -1095,7 +1095,7 @@ class TestSCErrata:
         assert not logger.warning.called
         assert shell.help_errata_apply.called
 
-    def test_errata_apply_non_interactive_no_errata(self, shell):
+    def test_errata_apply_non_interactive_no_errata(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_errata_apply non-interactive, no patches to apply.
 
@@ -1116,9 +1116,9 @@ class TestSCErrata:
         mprint = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.errata.print", mprint) as prt, patch(
+        with patch("spacecmd.errata.print", mprint) as prt, patch(  #  pylint: disable=unused-variable
             "spacecmd.errata.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.errata.do_errata_apply(shell, "foo -s 201901011030")
 
         assert not shell.help_errata_apply.called
@@ -1133,7 +1133,7 @@ class TestSCErrata:
 
         assert_expect(logger.warning.call_args_list, "No patches to apply")
 
-    def test_errata_apply_non_interactive_affects_no_system(self, shell):
+    def test_errata_apply_non_interactive_affects_no_system(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_errata_apply non-interactive, no systems affected.
 
@@ -1156,9 +1156,9 @@ class TestSCErrata:
         mprint = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.errata.print", mprint) as prt, patch(
+        with patch("spacecmd.errata.print", mprint) as prt, patch(  #  pylint: disable=unused-variable
             "spacecmd.errata.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.errata.do_errata_apply(shell, "cve* -s 201901011030")
 
         assert not shell.help_errata_apply.called
@@ -1183,7 +1183,7 @@ class TestSCErrata:
         )
         assert_expect(logger.warning.call_args_list, "No patches to apply")
 
-    def test_errata_apply_non_interactive_api_10_11(self, shell):
+    def test_errata_apply_non_interactive_api_10_11(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_errata_apply non-interactive, API 10.11 version.
 
@@ -1196,7 +1196,7 @@ class TestSCErrata:
         shell.get_system_id = (
             lambda data: zlib.adler32(data.encode("utf-8")) & 0xFFFFFFFF
         )
-        shell.get_erratum_name = lambda data: "CVE-{}-name".format(data)
+        shell.get_erratum_name = lambda data: "CVE-{}-name".format(data)  #  pylint: disable=unnecessary-lambda,consider-using-f-string
         shell.expand_errata = MagicMock(return_value=["CVE-1", "CVE-2"])
         shell.client.errata.listAffectedSystems = MagicMock(
             side_effect=[
@@ -1230,9 +1230,9 @@ class TestSCErrata:
         mprint = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.errata.print", mprint) as prt, patch(
+        with patch("spacecmd.errata.print", mprint) as prt, patch(  #  pylint: disable=unused-variable
             "spacecmd.errata.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.errata.do_errata_apply(shell, "cve* -s 201901011030")
 
         assert not shell.help_errata_apply.called
@@ -1274,7 +1274,7 @@ class TestSCErrata:
             ],
         )
 
-    def test_errata_apply_non_interactive_api_non1011_version(self, shell):
+    def test_errata_apply_non_interactive_api_non1011_version(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test do_errata_apply non-interactive, API non-10.11 version.
 
@@ -1287,7 +1287,7 @@ class TestSCErrata:
         shell.get_system_id = (
             lambda data: zlib.adler32(data.encode("utf-8")) & 0xFFFFFFFF
         )
-        shell.get_erratum_name = lambda data: "CVE-{}-name".format(data)
+        shell.get_erratum_name = lambda data: "CVE-{}-name".format(data)  #  pylint: disable=unnecessary-lambda,consider-using-f-string
         shell.expand_errata = MagicMock(return_value=["CVE-1", "CVE-2"])
         shell.client.errata.listAffectedSystems = MagicMock(
             side_effect=[
@@ -1321,9 +1321,9 @@ class TestSCErrata:
         mprint = MagicMock()
         logger = MagicMock()
 
-        with patch("spacecmd.errata.print", mprint) as prt, patch(
+        with patch("spacecmd.errata.print", mprint) as prt, patch(  #  pylint: disable=unused-variable
             "spacecmd.errata.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.errata.do_errata_apply(shell, "cve* -s 201901011030")
 
         assert not shell.help_errata_apply.called

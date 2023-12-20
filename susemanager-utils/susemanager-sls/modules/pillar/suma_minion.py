@@ -80,7 +80,7 @@ class EditGroupSubtype(Enum):
 log = logging.getLogger(__name__)
 
 
-def __virtual__():
+def __virtual__():  #  pylint: disable=invalid-name
     """
     Ensure the pillar module name.
     """
@@ -105,7 +105,7 @@ def _get_cursor(func):
             "db": "susemanager",
             "port": 5432,
         }
-        options.update(__opts__.get("__master_opts__", __opts__).get("postgres", {}))
+        options.update(__opts__.get("__master_opts__", __opts__).get("postgres", {}))  #  pylint: disable=undefined-variable,undefined-variable
         return psycopg2.connect(
             host=options["host"],
             user=options["user"],
@@ -114,15 +114,15 @@ def _get_cursor(func):
             port=options["port"],
         )
 
-    if "suma_minion_cnx" in __context__:
-        cnx = __context__["suma_minion_cnx"]
+    if "suma_minion_cnx" in __context__:  #  pylint: disable=undefined-variable
+        cnx = __context__["suma_minion_cnx"]  #  pylint: disable=undefined-variable
         log.debug("Reusing DB connection from the context")
     else:
         try:
             cnx = _connect_db()
             log.debug("Connected to the DB")
-            if not _is_salt_ssh(__opts__):
-                __context__["suma_minion_cnx"] = cnx
+            if not _is_salt_ssh(__opts__):  #  pylint: disable=undefined-variable
+                __context__["suma_minion_cnx"] = cnx  #  pylint: disable=undefined-variable
         except psycopg2.OperationalError as err:
             log.error("Error on getting database pillar: %s", err.args)
             return
@@ -133,10 +133,10 @@ def _get_cursor(func):
         try:
             cnx = _connect_db()
             log.debug("Reconnected to the DB")
-            if not _is_salt_ssh(__opts__):
-                __context__["suma_minion_cnx"] = cnx
+            if not _is_salt_ssh(__opts__):  #  pylint: disable=undefined-variable
+                __context__["suma_minion_cnx"] = cnx  #  pylint: disable=undefined-variable
             cursor = cnx.cursor()
-        except psycopg2.OperationalError as err:
+        except psycopg2.OperationalError as err:  #  pylint: disable=redefined-outer-name
             log.error("Error on getting database pillar: %s", err.args)
             return
     retry = 0
@@ -145,8 +145,8 @@ def _get_cursor(func):
             if retry:
                 cnx = _connect_db()
                 log.debug("Reconnected to the DB")
-                if not _is_salt_ssh(__opts__):
-                    __context__["suma_minion_cnx"] = cnx
+                if not _is_salt_ssh(__opts__):  #  pylint: disable=undefined-variable
+                    __context__["suma_minion_cnx"] = cnx  #  pylint: disable=undefined-variable
                 cursor = cnx.cursor()
 
             func(cursor)
@@ -161,16 +161,16 @@ def _get_cursor(func):
                     "Error on getting database pillar, trying again: %s", err.args
                 )
         finally:
-            if _is_salt_ssh(__opts__):
+            if _is_salt_ssh(__opts__):  #  pylint: disable=undefined-variable
                 cnx.close()
 
 
-def ext_pillar(minion_id, pillar, *args):
+def ext_pillar(minion_id, pillar, *args):  #  pylint: disable=unused-argument,unused-argument
     """
     Find SUMA-related pillars for the registered minions and return the data.
     """
 
-    log.debug('Getting pillar data for the minion "{0}"'.format(minion_id))
+    log.debug('Getting pillar data for the minion "{0}"'.format(minion_id))  #  pylint: disable=logging-format-interpolation,consider-using-f-string
     ret = {}
     group_formulas = {}
     system_formulas = {}
@@ -197,7 +197,7 @@ def ext_pillar(minion_id, pillar, *args):
             formula_pillars(system_formulas, group_formulas, ret),
             strategy="recurse",
         )
-    except Exception as error:
+    except Exception as error:  #  pylint: disable=broad-exception-caught
         log.error("Error accessing formula pillar data: %s", error)
 
     # Including images pillar
@@ -207,8 +207,8 @@ def ext_pillar(minion_id, pillar, *args):
             image_pillars(minion_id, ret.get("group_ids", []), ret.get("org_id", 1)),
             strategy="recurse",
         )
-    except Exception as error:
-        log.error("Error accessing image pillar data: {}".format(str(error)))
+    except Exception as error:  #  pylint: disable=broad-exception-caught
+        log.error("Error accessing image pillar data: {}".format(str(error)))  #  pylint: disable=logging-format-interpolation,consider-using-f-string
 
     return ret
 
@@ -317,12 +317,12 @@ def load_static_pillars(pillar):
         try:
             pillar.update(
                 yaml.load(
-                    open("{0}.yml".format(static_pillar_filename)).read(),
+                    open("{0}.yml".format(static_pillar_filename)).read(),  #  pylint: disable=unspecified-encoding,consider-using-f-string
                     Loader=yaml.FullLoader,
                 )
             )
-        except Exception as exc:
-            log.error('Error accessing "{0}": {1}'.format(static_pillar_filename, exc))
+        except Exception as exc:  #  pylint: disable=broad-exception-caught
+            log.error('Error accessing "{0}": {1}'.format(static_pillar_filename, exc))  #  pylint: disable=logging-format-interpolation,consider-using-f-string
     return pillar
 
 
@@ -374,9 +374,9 @@ def formula_pillars(system_formulas, group_formulas, all_pillar):
     return pillar
 
 
-def load_formula_pillar(system_data, group_data, formula_name, formula_metadata=None):
+def load_formula_pillar(system_data, group_data, formula_name, formula_metadata=None):  #  pylint: disable=unused-argument
     """
-    Load the data from a specific formula for a minion in a specific group, merge and return it.
+    Load the data from a specific formula for a minion in a specific group, merge and return it.  #  pylint: disable=line-too-long
     """
     layout_filename = os.path.join(
         MANAGER_FORMULAS_METADATA_STANDALONE_PATH, formula_name, "form.yml"
@@ -391,17 +391,17 @@ def load_formula_pillar(system_data, group_data, formula_name, formula_metadata=
             )
             if not os.path.isfile(layout_filename):
                 log.error(
-                    'Error loading data for formula "{formula}": No form.yml found'.format(
+                    'Error loading data for formula "{formula}": No form.yml found'.format(  #  pylint: disable=line-too-long,logging-format-interpolation,consider-using-f-string
                         formula=formula_name
                     )
                 )
                 return {}
 
     try:
-        layout = yaml.load(open(layout_filename).read(), Loader=yaml.FullLoader)
-    except Exception as error:
+        layout = yaml.load(open(layout_filename).read(), Loader=yaml.FullLoader)  #  pylint: disable=unspecified-encoding
+    except Exception as error:  #  pylint: disable=broad-exception-caught
         log.error(
-            'Error loading form.yml of formula "{formula}": {message}'.format(
+            'Error loading form.yml of formula "{formula}": {message}'.format(  #  pylint: disable=logging-format-interpolation,consider-using-f-string
                 formula=formula_name, message=str(error)
             )
         )
@@ -437,7 +437,7 @@ def merge_formula_data(layout, group_data, system_data, scope="system"):
                 system_data.get(element_name, {}),
                 element_scope,
             )
-        # edit-group is handled as primitive element - use either system_data or group data, no merging
+        # edit-group is handled as primitive element - use either system_data or group data, no merging  #  pylint: disable=line-too-long
         elif element_scope == "system":
             value = system_data.get(
                 element_name,
@@ -520,11 +520,11 @@ def get_edit_group_subtype(element):
     return None
 
 
-def image_pillars(minion_id, group_ids, org_id):
+def image_pillars(minion_id, group_ids, org_id):  #  pylint: disable=unused-argument
     """
     Load image pillars
 
-    Image pillars are automatically created after image build and are available to all minions
+    Image pillars are automatically created after image build and are available to all minions  #  pylint: disable=line-too-long
     """
     ret = {}
     group_dirs = []
@@ -536,15 +536,15 @@ def image_pillars(minion_id, group_ids, org_id):
         # read also pilars from top dir, for backward compatibility
         if os.path.isfile(pillar_path) and pillar.endswith(".sls"):
             try:
-                with open(pillar_path) as p:
+                with open(pillar_path) as p:  #  pylint: disable=unspecified-encoding
                     ret = salt.utils.dictupdate.merge(
                         ret,
                         yaml.load(p.read(), Loader=yaml.FullLoader),
                         strategy="recurse",
                     )
-            except Exception as error:
+            except Exception as error:  #  pylint: disable=broad-exception-caught
                 log.error(
-                    'Error loading data for image "{image}": {message}'.format(
+                    'Error loading data for image "{image}": {message}'.format(  #  pylint: disable=logging-format-interpolation,consider-using-f-string
                         image=pillar.path(), message=str(error)
                     )
                 )
@@ -560,15 +560,15 @@ def image_pillars(minion_id, group_ids, org_id):
             pillar_path = os.path.join(pillar_dir, pillar)
             if os.path.isfile(pillar_path) and pillar.endswith(".sls"):
                 try:
-                    with open(pillar_path) as p:
+                    with open(pillar_path) as p:  #  pylint: disable=unspecified-encoding
                         ret = salt.utils.dictupdate.merge(
                             ret,
                             yaml.load(p.read(), Loader=yaml.FullLoader),
                             strategy="recurse",
                         )
-                except Exception as error:
+                except Exception as error:  #  pylint: disable=broad-exception-caught
                     log.error(
-                        'Error loading data for image "{image}": {message}'.format(
+                        'Error loading data for image "{image}": {message}'.format(  #  pylint: disable=logging-format-interpolation,consider-using-f-string
                             image=pillar.path(), message=str(error)
                         )
                     )
@@ -599,16 +599,16 @@ def load_formula_metadata(formula_name):
 
     if not metadata_filename:
         log.error(
-            'Error loading metadata for formula "{formula}": No metadata.yml found'.format(
+            'Error loading metadata for formula "{formula}": No metadata.yml found'.format(  #  pylint: disable=line-too-long,logging-format-interpolation,consider-using-f-string
                 formula=formula_name
             )
         )
         return {}
     try:
-        metadata = yaml.load(open(metadata_filename).read(), Loader=yaml.FullLoader)
-    except Exception as error:
+        metadata = yaml.load(open(metadata_filename).read(), Loader=yaml.FullLoader)  #  pylint: disable=unspecified-encoding
+    except Exception as error:  #  pylint: disable=broad-exception-caught
         log.error(
-            'Error loading data for formula "{formula}": {message}'.format(
+            'Error loading data for formula "{formula}": {message}'.format(  #  pylint: disable=logging-format-interpolation,consider-using-f-string
                 formula=formula_name, message=str(error)
             )
         )

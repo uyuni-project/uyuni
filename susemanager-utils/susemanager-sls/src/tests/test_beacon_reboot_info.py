@@ -1,4 +1,4 @@
-from ..beacons import reboot_info
+from ..beacons import reboot_info  #  pylint: disable=missing-module-docstring
 
 
 def _pending_transaction_false():
@@ -40,7 +40,7 @@ def test_should_not_fire_event_when_already_fired():
     }
     reboot_info.__context__ = {"reboot_needed": True}
     ret = reboot_info.beacon({})
-    assert ret == []
+    assert ret == []  #  pylint: disable=use-implicit-booleaness-not-comparison
 
     """
     The __context__ already register that reboot is not required
@@ -50,7 +50,7 @@ def test_should_not_fire_event_when_already_fired():
     }
     reboot_info.__context__ = {"reboot_needed": False}
     ret = reboot_info.beacon({})
-    assert ret == []
+    assert ret == []  #  pylint: disable=use-implicit-booleaness-not-comparison
 
 
 def test_should_fire_event_when_reboot_status_changes():
@@ -65,7 +65,7 @@ def test_should_fire_event_when_reboot_status_changes():
     assert ret == [{"reboot_needed": False}]
 
     """
-    The __context__ register that reboot is not required but there is a pending transaction
+    The __context__ register that reboot is not required but there is a pending transaction  #  pylint: disable=line-too-long
   """
     reboot_info.__salt__ = {
         "transactional_update.pending_transaction": _pending_transaction_true

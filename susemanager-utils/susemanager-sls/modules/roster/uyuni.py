@@ -3,7 +3,7 @@ Read in the roster from Uyuni DB
 """
 from collections import namedtuple
 import hashlib
-import io
+import io  #  pylint: disable=unused-import
 import logging
 
 # Import Salt libs
@@ -44,11 +44,11 @@ SSH_USE_SALT_THIN = False
 SSL_PORT = 443
 
 
-def __virtual__():
+def __virtual__():  #  pylint: disable=invalid-name
     if not HAS_PSYCOPG2:
         return (False, "psycopg2 is not available")
 
-    if __opts__.get("postgres") is None or __opts__.get("uyuni_roster") is None:
+    if __opts__.get("postgres") is None or __opts__.get("uyuni_roster") is None:  #  pylint: disable=undefined-variable,undefined-variable
         return (False, "Uyuni is not installed or configured")
 
     return __virtualname__
@@ -79,12 +79,12 @@ class UyuniRoster:
         self.cobbler_host = uyuni_roster_config.get("host", COBBLER_HOST)
 
         if "port" in db_config:
-            self.db_connect_str = "dbname='{db}' user='{user}' host='{host}' port='{port}' password='{pass}'".format(
+            self.db_connect_str = "dbname='{db}' user='{user}' host='{host}' port='{port}' password='{pass}'".format(  #  pylint: disable=line-too-long,consider-using-f-string
                 **db_config
             )
         else:
             self.db_connect_str = (
-                "dbname='{db}' user='{user}' host='{host}' password='{pass}'".format(
+                "dbname='{db}' user='{user}' host='{host}' password='{pass}'".format(  #  pylint: disable=consider-using-f-string
                     **db_config
                 )
             )
@@ -99,7 +99,7 @@ class UyuniRoster:
         log.debug("salt_ssh_connect_timeout: %d", self.ssh_connect_timeout)
         log.debug("cobbler.host: %s", self.cobbler_host)
 
-        self.cache = salt.cache.Cache(__opts__)
+        self.cache = salt.cache.Cache(__opts__)  #  pylint: disable=undefined-variable
         cache_data = self.cache.fetch("roster/uyuni", "minions")
         if "minions" in cache_data and self.config_hash != cache_data.get(
             "config_hash"
@@ -118,8 +118,8 @@ class UyuniRoster:
             )
             log.trace("_init_db: done")
         except psycopg2.OperationalError as err:
-            log.warning(
-                "Unable to connect to the Uyuni DB: \n%sWill try to reconnect later."
+            log.warning(  #  pylint: disable=logging-not-lazy
+                "Unable to connect to the Uyuni DB: \n%sWill try to reconnect later."  #  pylint: disable=consider-using-f-string
                 % (err)
             )
 
@@ -132,7 +132,7 @@ class UyuniRoster:
             log.trace("_execute_query: ret %s", cur)
             return cur
         except psycopg2.OperationalError as err:
-            log.warning("Error during SQL prepare: %s" % (err))
+            log.warning("Error during SQL prepare: %s" % (err))  #  pylint: disable=logging-not-lazy,consider-using-f-string
             log.warning("Trying to reinit DB connection...")
             self._init_db()
             try:
@@ -156,12 +156,12 @@ class UyuniRoster:
         i = 0
         for proxy in proxies:
             proxy_command.append(
-                "/usr/bin/ssh -p {ssh_port} -i {ssh_key_path} -o StrictHostKeyChecking=no "
+                "/usr/bin/ssh -p {ssh_port} -i {ssh_key_path} -o StrictHostKeyChecking=no "  #  pylint: disable=line-too-long,consider-using-f-string
                 "-o User={ssh_push_user} {in_out_forward} {proxy_host}".format(
                     ssh_port=proxy.port or 22,
                     ssh_key_path=SSH_KEY_PATH if i == 0 else PROXY_SSH_PUSH_KEY,
                     ssh_push_user=PROXY_SSH_PUSH_USER,
-                    in_out_forward="-W {host}:{port}".format(
+                    in_out_forward="-W {host}:{port}".format(  #  pylint: disable=consider-using-f-string
                         host=minion_id, port=ssh_push_port
                     )
                     if not tunnel and i == len(proxies) - 1
@@ -182,17 +182,17 @@ class UyuniRoster:
                     proxy=proxies[len(proxies) - 1].hostname,
                     sslPort=SSL_PORT,
                     minion=minion_id,
-                    ownKey="{}{}".format(
-                        "/root" if user == "root" else "/home/{}".format(user),
+                    ownKey="{}{}".format(  #  pylint: disable=consider-using-f-string
+                        "/root" if user == "root" else "/home/{}".format(user),  #  pylint: disable=consider-using-f-string
                         "/.ssh/mgr_own_id",
                     ),
                     sshPort=ssh_push_port,
                 )
             )
 
-        return ["ProxyCommand='{}'".format(" ".join(proxy_command))]
+        return ["ProxyCommand='{}'".format(" ".join(proxy_command))]  #  pylint: disable=consider-using-f-string
 
-    def _get_ssh_minion(
+    def _get_ssh_minion(  #  pylint: disable=dangerous-default-value
         self, minion_id=None, proxies=[], tunnel=False, ssh_push_port=SSH_PUSH_PORT
     ):
         minion = {
@@ -229,7 +229,7 @@ class UyuniRoster:
         elif tunnel:
             minion.update(
                 {
-                    "remote_port_forwards": "%d:%s:%d"
+                    "remote_port_forwards": "%d:%s:%d"  #  pylint: disable=consider-using-f-string
                     % (self.ssh_push_port_https, self.cobbler_host, SSL_PORT)
                 }
             )
@@ -281,7 +281,7 @@ class UyuniRoster:
                     cache_fp = new_fp
         else:
             log.warning(
-                "Unable to reconnect to the Uyuni DB. Returning the cached data instead."
+                "Unable to reconnect to the Uyuni DB. Returning the cached data instead."  #  pylint: disable=line-too-long
             )
             return cache_data["minions"]
 
@@ -341,16 +341,16 @@ class UyuniRoster:
         return ret
 
 
-def targets(tgt, tgt_type="glob", **kwargs):
+def targets(tgt, tgt_type="glob", **kwargs):  #  pylint: disable=unused-argument
     """
     Return the targets from the Uyuni DB
     """
 
-    uyuni_roster = __context__.get("roster.uyuni")
+    uyuni_roster = __context__.get("roster.uyuni")  #  pylint: disable=undefined-variable
     if uyuni_roster is None:
         uyuni_roster = UyuniRoster(
-            __opts__.get("postgres"), __opts__.get("uyuni_roster")
+            __opts__.get("postgres"), __opts__.get("uyuni_roster")  #  pylint: disable=undefined-variable,undefined-variable
         )
-        __context__["roster.uyuni"] = uyuni_roster
+        __context__["roster.uyuni"] = uyuni_roster  #  pylint: disable=undefined-variable
 
-    return __utils__["roster_matcher.targets"](uyuni_roster.targets(), tgt, tgt_type)
+    return __utils__["roster_matcher.targets"](uyuni_roster.targets(), tgt, tgt_type)  #  pylint: disable=undefined-variable

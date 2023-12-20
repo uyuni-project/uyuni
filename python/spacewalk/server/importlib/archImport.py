@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring,invalid-name
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -58,7 +58,7 @@ class ServerArchImport(TypedArchImport):
     backend_method = "processServerArches"
 
 
-class BaseArchCompatImport(Import):
+class BaseArchCompatImport(Import):  #  pylint: disable=missing-class-docstring
     # Things that have to be overridden in subclasses
     arches1_lookup_method_name = ""
     arches2_lookup_method_name = ""
@@ -90,13 +90,13 @@ class BaseArchCompatImport(Import):
             arch1_name = entry[self.arches1_name]
             val = self.arches1.get(arch1_name)
             if not val:
-                raise ValueError("Unsupported arch %s" % arch1_name)
+                raise ValueError("Unsupported arch %s" % arch1_name)  #  pylint: disable=consider-using-f-string
             entry[self.arches1_field_name] = val
 
             arch2_name = entry[self.arches2_name]
             val = self.arches2.get(arch2_name)
             if not val:
-                raise ValueError("Unsupported arch %s" % arch2_name)
+                raise ValueError("Unsupported arch %s" % arch2_name)  #  pylint: disable=consider-using-f-string
             entry[self.arches2_field_name] = val
 
     def submit(self):
@@ -134,7 +134,7 @@ class ChannelPackageArchCompatImport(BaseArchCompatImport):
     submit_method_name = "processChannelPackageArchCompatMap"
 
 
-class ServerGroupServerArchCompatImport(BaseArchCompatImport):
+class ServerGroupServerArchCompatImport(BaseArchCompatImport):  #  pylint: disable=missing-class-docstring
     arches1_lookup_method_name = "lookupServerArches"
     arches2_lookup_method_name = "lookupServerGroupTypes"
     arches1_name = "server-arch"

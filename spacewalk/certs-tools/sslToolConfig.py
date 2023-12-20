@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring,invalid-name
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -34,7 +34,7 @@ from uyuni.common.fileutils import (
     rhn_popen,
     cleanupAbsPath,
 )
-from .sslToolLib import getMachineName, daysTil18Jan2038, incSerial, fixSerial
+from .sslToolLib import getMachineName, daysTil18Jan2038, incSerial, fixSerial  #  pylint: disable=unused-import
 from rhn.stringutils import sstr
 
 # defaults where we can see them (NOTE: directory is figured at write time)
@@ -63,7 +63,7 @@ MD = "sha384"
 CRYPTO = "-aes-256-cbc"
 
 
-def getOption(options, opt):
+def getOption(options, opt):  #  pylint: disable=invalid-name
     """fetch the value of an options object item
     without blowing up upon obvious errors
     """
@@ -77,7 +77,7 @@ def getOption(options, opt):
         return None
 
 
-def setOption(options, opt, value):
+def setOption(options, opt, value):  #  pylint: disable=invalid-name
     """set the value of an options object item
     without blowing up upon obvious errors
     """
@@ -87,7 +87,7 @@ def setOption(options, opt, value):
         options.__dict__[opt] = value
 
 
-def getStartDate_aWeekAgo():
+def getStartDate_aWeekAgo():  #  pylint: disable=invalid-name
     """for SSL cert/key generation, returns now, minus 1 week
     just in case weird time zone issues get in the way of a working
     cert/key.
@@ -144,20 +144,20 @@ _defsServer.update(
 DEFS = _defsServer
 
 
-def reInitDEFS(caYN=0):
-    global DEFS
+def reInitDEFS(caYN=0):  #  pylint: disable=invalid-name,invalid-name
+    global DEFS  #  pylint: disable=global-variable-not-assigned
     if caYN:
         DEFS.update(_defsCa)
     else:
         DEFS.update(_defsServer)
 
 
-def figureDEFS_dirs(options):
+def figureDEFS_dirs(options):  #  pylint: disable=invalid-name
     """figure out the directory defaults (after options being at least parsed
     once).
     """
 
-    global DEFS
+    global DEFS  #  pylint: disable=global-variable-not-assigned
     ## fix up the --dir setting
     DEFS["--dir"] = getOption(options, "dir") or DEFS["--dir"] or "."
     DEFS["--dir"] = cleanupNormPath(DEFS["--dir"], dotYN=1)
@@ -177,12 +177,12 @@ def figureDEFS_dirs(options):
     setOption(options, "set_hostname", DEFS["--set-hostname"])
 
 
-def figureDEFS_CA(options):
+def figureDEFS_CA(options):  #  pylint: disable=invalid-name
     """figure out the defaults (after options being at least parsed once) for
     the CA key-pair(set) variables.
     """
 
-    global DEFS
+    global DEFS  #  pylint: disable=global-variable-not-assigned
     if not getOption(options, "ca_key"):
         # the various default names for CA keys (a hierarchy)
         for possibility in (CA_KEY_NAME, "ca.key", "cakey.pem"):
@@ -220,7 +220,7 @@ def figureDEFS_CA(options):
         # nothing under 1 day or over # days til 18Jan2038
         if DEFS["--cert-expiration"] < 1:
             DEFS["--cert-expiration"] = 1
-        _maxdays = int(daysTil18Jan2038())  # already rounded
+        _maxdays = int(daysTil18Jan2038())  # already rounded  #  pylint: disable=invalid-name
         if DEFS["--cert-expiration"] > _maxdays:
             DEFS["--cert-expiration"] = _maxdays
 
@@ -231,12 +231,12 @@ def figureDEFS_CA(options):
     setOption(options, "ca_cert_rpm", DEFS["--ca-cert-rpm"])
 
 
-def figureDEFS_server(options):
+def figureDEFS_server(options):  #  pylint: disable=invalid-name
     """figure out the defaults (after options being at least parsed once) for
     the server key-pair(set) variables.
     """
 
-    global DEFS
+    global DEFS  #  pylint: disable=global-variable-not-assigned
     DEFS["--server-key"] = os.path.basename(
         getOption(options, "server_key") or DEFS["--server-key"] or "server.key"
     )
@@ -265,7 +265,7 @@ def figureDEFS_server(options):
         # nothing under 1 day or over # days til 18Jan2038
         if DEFS["--cert-expiration"] < 1:
             DEFS["--cert-expiration"] = 1
-        _maxdays = int(daysTil18Jan2038())  # already rounded
+        _maxdays = int(daysTil18Jan2038())  # already rounded  #  pylint: disable=invalid-name
         if DEFS["--cert-expiration"] > _maxdays:
             DEFS["--cert-expiration"] = _maxdays
 
@@ -278,20 +278,20 @@ def figureDEFS_server(options):
     setOption(options, "server_tar", DEFS["--server-tar"])
 
 
-def figureDEFS_distinguishing(options):
+def figureDEFS_distinguishing(options):  #  pylint: disable=invalid-name
     """figure out the defaults (after options being at least parsed once) for
     the distinguishing variables (C, ST, L, O, OU, CN, emailAddress)
     First from config file, then from commanline.
     """
 
-    global DEFS
+    global DEFS  #  pylint: disable=global-variable-not-assigned
     # if options:
     #    print 'XXX options.__dict__.keys()', options.__dict__.keys()
     # print 'XXX figureDEFS_distinguishing()'
 
     ## map the config file settings to the DEFS object
     conf = {}
-    caYN = "--gen-ca-cert" in sys.argv or "--gen-ca" in sys.argv
+    caYN = "--gen-ca-cert" in sys.argv or "--gen-ca" in sys.argv  #  pylint: disable=invalid-name
     if caYN:
         conf = ConfigFile(os.path.join(DEFS["--dir"], CA_OPENSSL_CNF_NAME)).parse()
     else:
@@ -459,7 +459,7 @@ def gen_req_alt_names(d, hostname):
         dnsname.extend(d["--set-cname"])
     for name in dnsname:
         i += 1
-        result += "DNS.%d = %s\n" % (i, name)
+        result += "DNS.%d = %s\n" % (i, name)  #  pylint: disable=consider-using-f-string
     return result
 
 
@@ -470,14 +470,14 @@ def gen_req_distinguished_name(d):
     keys = ("C", "ST", "L", "O", "OU", "CN", "emailAddress")
     for key in keys:
         if key in d and d[key].strip():
-            s = s + key + (24 - len(key)) * " " + "= %s\n" % d[key].strip()[:63]
+            s = s + key + (24 - len(key)) * " " + "= %s\n" % d[key].strip()[:63]  #  pylint: disable=consider-using-f-string
         else:
             s = s + "#" + key + (24 - len(key)) * " " + '= ""\n'
 
     return s
 
 
-def figureSerial(caCertFilename, serialFilename, indexFilename):
+def figureSerial(caCertFilename, serialFilename, indexFilename):  #  pylint: disable=invalid-name,invalid-name,invalid-name,invalid-name
     """for our purposes we allow the same serial number for server certs
     BUT WE DO NOT ALLOW server certs and CA certs to share the same
     serial number.
@@ -494,24 +494,24 @@ def figureSerial(caCertFilename, serialFilename, indexFilename):
     outstream.close()
     sslerrmsg = (
         "non-zero exitcode.\n"
-        "If you ran configure-proxy.sh, try copying again the certs from the SUSE Manager Server\n"
+        "If you ran configure-proxy.sh, try copying again the certs from the SUSE Manager Server\n"  #  pylint: disable=line-too-long
         f"exit-code: {ret}\n"
         f"error: {sstr(errstream.read())}\n"
     )
     errstream.close()
     assert not ret, sslerrmsg
-    caSerial = out.strip().split("=")
+    caSerial = out.strip().split("=")  #  pylint: disable=invalid-name
     assert len(caSerial) > 1
-    caSerial = caSerial[1]
-    caSerial = eval("0x" + caSerial)
+    caSerial = caSerial[1]  #  pylint: disable=invalid-name
+    caSerial = eval("0x" + caSerial)  #  pylint: disable=invalid-name,eval-used
 
     # initialize the serial value (starting at whatever is in
     # serialFilename or 1)
     serial = 1
     if os.path.exists(serialFilename):
-        serial = open(serialFilename, "r").read().strip()
+        serial = open(serialFilename, "r").read().strip()  #  pylint: disable=unspecified-encoding
         if serial:
-            serial = eval("0x" + serial)
+            serial = eval("0x" + serial)  #  pylint: disable=eval-used
         else:
             serial = 1
 
@@ -520,22 +520,22 @@ def figureSerial(caCertFilename, serialFilename, indexFilename):
     # as well.
     if serial <= caSerial:
         random.seed()
-        max_serial = eval("0x" + "F" * 40)
+        max_serial = eval("0x" + "F" * 40)  #  pylint: disable=eval-used
         serial = random.randrange(1, max_serial - caSerial / 2)
     serial = fixSerial(hex(serial))
 
     # create the serial file if it doesn't exist
     # write the digits to this file
-    open(serialFilename, "w").write(serial + "\n")
+    open(serialFilename, "w").write(serial + "\n")  #  pylint: disable=unspecified-encoding
     os.chmod(serialFilename, int("0600", 8))
 
     # truncate the index.txt file. Less likely to have unneccessary clashes.
-    open(indexFilename, "w")
+    open(indexFilename, "w")  #  pylint: disable=unspecified-encoding
     os.chmod(indexFilename, int("0600", 8))
     return serial
 
 
-class ConfigFile:
+class ConfigFile:  #  pylint: disable=missing-class-docstring
     def __init__(self, filename=None):
         self.filename = filename
         if self.filename is None:
@@ -557,8 +557,8 @@ class ConfigFile:
         d = {}
 
         try:
-            fo = open(self.filename, "r")
-        except:
+            fo = open(self.filename, "r")  #  pylint: disable=unspecified-encoding
+        except:  #  pylint: disable=bare-except
             return d
 
         line = fo.readline()
@@ -598,7 +598,7 @@ class ConfigFile:
 
         return d
 
-    def updateLegacy(self, newdir=None, verbosity=1):
+    def updateLegacy(self, newdir=None, verbosity=1):  #  pylint: disable=invalid-name
         """in slightly older formatted ca_openssl.cnf files, there
         was no dir setting seperate from the database and serial
         settings. This function fixes that setup.
@@ -607,31 +607,31 @@ class ConfigFile:
         """
 
         try:
-            fo = open(self.filename, "r")
-        except:
+            fo = open(self.filename, "r")  #  pylint: disable=unspecified-encoding
+        except:  #  pylint: disable=bare-except
             return
 
         if newdir is None:
             newdir = os.path.dirname(self.filename)
 
         newfile = ""
-        in_CA_defaultYN = 0
-        dirSetYN = 0
+        in_CA_defaultYN = 0  #  pylint: disable=invalid-name
+        dirSetYN = 0  #  pylint: disable=invalid-name
 
         line = fo.readline()
         while line:
-            cleanLine = line.strip()
+            cleanLine = line.strip()  #  pylint: disable=invalid-name
 
             # is this a label?
-            isLabelYN = 0
+            isLabelYN = 0  #  pylint: disable=invalid-name
             if cleanLine and (cleanLine[0], cleanLine[-1]) == ("[", "]"):
-                isLabelYN = 1
+                isLabelYN = 1  #  pylint: disable=invalid-name
 
             if cleanLine == "[ CA_default ]":
                 # we don't care much until we hit this label
-                in_CA_defaultYN = 1
+                in_CA_defaultYN = 1  #  pylint: disable=invalid-name
             elif isLabelYN:
-                in_CA_defaultYN = 0  # hit another label
+                in_CA_defaultYN = 0  # hit another label  #  pylint: disable=invalid-name
 
             if in_CA_defaultYN:
                 vector = line.split("=")
@@ -652,7 +652,7 @@ serial                  = $dir/serial
 """
                                 % newdir
                             )
-                            dirSetYN = 1
+                            dirSetYN = 1  #  pylint: disable=invalid-name
                         line = fo.readline()
                         continue
 
@@ -663,19 +663,19 @@ serial                  = $dir/serial
             rotated = rotateFile(filepath=self.filename, verbosity=verbosity)
             if verbosity >= 0 and rotated:
                 print(
-                    "Rotated: %s --> %s"
+                    "Rotated: %s --> %s"  #  pylint: disable=consider-using-f-string
                     % (os.path.basename(self.filename), os.path.basename(rotated))
                 )
         except ValueError:
             pass
-        fo = open(self.filename, "w")
+        fo = open(self.filename, "w")  #  pylint: disable=unspecified-encoding
         fo.write(newfile)
         fo.close()
         os.chmod(self.filename, int("0600", 8))
 
         return dirSetYN
 
-    def updateDir(self, newdir=None, verbosity=0):
+    def updateDir(self, newdir=None, verbosity=0):  #  pylint: disable=invalid-name
         """changes the CA configuration file's directory setting (if need be)
         in place. Touches nothing else.
         """
@@ -684,8 +684,8 @@ serial                  = $dir/serial
             return
 
         try:
-            fo = open(self.filename, "r")
-        except:
+            fo = open(self.filename, "r")  #  pylint: disable=unspecified-encoding
+        except:  #  pylint: disable=bare-except
             return
 
         olddir = ""
@@ -693,13 +693,13 @@ serial                  = $dir/serial
             newdir = os.path.dirname(self.filename)
 
         newfile = ""
-        hit_CA_defaultYN = 0
+        hit_CA_defaultYN = 0  #  pylint: disable=invalid-name
 
         line = fo.readline()
         while line:
             if line.strip() == "[ CA_default ]":
                 # we don't care much until we hit this label
-                hit_CA_defaultYN = 1
+                hit_CA_defaultYN = 1  #  pylint: disable=invalid-name
             if hit_CA_defaultYN:
                 vector = line.split("=")
                 if len(vector) == 2:
@@ -707,8 +707,8 @@ serial                  = $dir/serial
                     if key.strip() == "dir":
                         value = value.strip()
                         olddir = value
-                        line = "%s= %s\n" % (key, newdir)
-                        hit_CA_defaultYN = 0
+                        line = "%s= %s\n" % (key, newdir)  #  pylint: disable=consider-using-f-string
+                        hit_CA_defaultYN = 0  #  pylint: disable=invalid-name
                         if newdir == olddir:
                             # nothing to do
                             return
@@ -719,17 +719,17 @@ serial                  = $dir/serial
             rotated = rotateFile(filepath=self.filename, verbosity=verbosity)
             if verbosity >= 0 and rotated:
                 print(
-                    "Rotated: %s --> %s"
+                    "Rotated: %s --> %s"  #  pylint: disable=consider-using-f-string
                     % (os.path.basename(self.filename), os.path.basename(rotated))
                 )
         except ValueError:
             pass
-        fo = open(self.filename, "w")
+        fo = open(self.filename, "w")  #  pylint: disable=unspecified-encoding
         fo.write(newfile)
         fo.close()
         os.chmod(self.filename, int("0600", 8))
 
-    def save(self, d, caYN=0, verbosity=0):
+    def save(self, d, caYN=0, verbosity=0):  #  pylint: disable=invalid-name
         """d == commandline dictionary"""
 
         mapping = {
@@ -764,12 +764,12 @@ serial                  = $dir/serial
             rotated = rotateFile(filepath=self.filename, verbosity=verbosity)
             if verbosity >= 0 and rotated:
                 print(
-                    "Rotated: %s --> %s"
+                    "Rotated: %s --> %s"  #  pylint: disable=consider-using-f-string
                     % (os.path.basename(self.filename), os.path.basename(rotated))
                 )
         except ValueError:
             pass
-        fo = open(self.filename, "w")
+        fo = open(self.filename, "w")  #  pylint: disable=unspecified-encoding
         fo.write(openssl_cnf)
         fo.close()
         os.chmod(self.filename, int("0600", 8))
@@ -781,7 +781,7 @@ serial                  = $dir/serial
 ##
 
 POST_UNINSTALL_SCRIPT = """\
-if [ \$1 = 0 ]; then
+if [ \$1 = 0 ]; then  #  pylint: disable=anomalous-backslash-in-string
     # The following steps are copied from mod_ssl's postinstall scriptlet
     # Make sure the permissions are okay
     umask 077

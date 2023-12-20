@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2018 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -17,7 +17,7 @@ import re
 XML_ENCODING = '<?xml version="1.0" encoding="UTF-8"?>'
 
 
-class RepoView:
+class RepoView:  #  pylint: disable=missing-class-docstring
     def __init__(
         self,
         primary,
@@ -44,15 +44,15 @@ class RepoView:
 
     def _get_data(self, data_type, data_obj):
         output = []
-        output.append('  <data type="%s">' % (data_type))
-        output.append('    <location href="repodata/%s.xml.gz"/>' % (data_type))
+        output.append('  <data type="%s">' % (data_type))  #  pylint: disable=consider-using-f-string
+        output.append('    <location href="repodata/%s.xml.gz"/>' % (data_type))  #  pylint: disable=consider-using-f-string
         output.append(
-            '    <checksum type="%s">%s</checksum>'
+            '    <checksum type="%s">%s</checksum>'  #  pylint: disable=consider-using-f-string
             % (self.checksum_type, data_obj["gzip_checksum"])
         )
-        output.append("    <timestamp>%d</timestamp>" % (data_obj["timestamp"]))
+        output.append("    <timestamp>%d</timestamp>" % (data_obj["timestamp"]))  #  pylint: disable=consider-using-f-string
         output.append(
-            '    <open-checksum type="%s">%s</open-checksum>'
+            '    <open-checksum type="%s">%s</open-checksum>'  #  pylint: disable=consider-using-f-string
             % (self.checksum_type, data_obj["open_checksum"])
         )
         output.append("  </data>")
@@ -64,10 +64,10 @@ class RepoView:
             output.append('  <data type="group">')
             output.append('    <location href="repodata/comps.xml"/>')
             output.append(
-                '    <checksum type="%s">%s</checksum>'
+                '    <checksum type="%s">%s</checksum>'  #  pylint: disable=consider-using-f-string
                 % (self.checksum_type, self.groups["open_checksum"])
             )
-            output.append("    <timestamp>%d</timestamp>" % (self.groups["timestamp"]))
+            output.append("    <timestamp>%d</timestamp>" % (self.groups["timestamp"]))  #  pylint: disable=consider-using-f-string
             output.append("  </data>")
 
         return output
@@ -78,10 +78,10 @@ class RepoView:
             output.append('  <data type="group">')
             output.append('    <location href="repodata/modules.yaml"/>')
             output.append(
-                '    <checksum type="%s">%s</checksum>'
+                '    <checksum type="%s">%s</checksum>'  #  pylint: disable=consider-using-f-string
                 % (self.checksum_type, self.modules["open_checksum"])
             )
-            output.append("    <timestamp>%d</timestamp>" % (self.groups["timestamp"]))
+            output.append("    <timestamp>%d</timestamp>" % (self.groups["timestamp"]))  #  pylint: disable=consider-using-f-string
             output.append("  </data>")
 
         return output
@@ -100,7 +100,7 @@ class RepoView:
         self.fileobj.write("\n".join(output))
 
 
-class PrimaryView(object):
+class PrimaryView(object):  #  pylint: disable=missing-class-docstring
     def __init__(self, channel, fileobj):
         self.channel = channel
         self.fileobj = fileobj
@@ -115,72 +115,72 @@ class PrimaryView(object):
                     % (dep["name"], dep["flag"], dep["epoch"], dep["version"])
                 )
                 if dep["release"]:
-                    line += 'rel="%s" ' % dep["release"]
+                    line += 'rel="%s" ' % dep["release"]  #  pylint: disable=consider-using-f-string
                 line += "/>"
                 output.append(line)
             else:
                 output.append(
-                    '         <rpm:entry name="%s" />' % (text_filter(dep["name"]))
+                    '         <rpm:entry name="%s" />' % (text_filter(dep["name"]))  #  pylint: disable=consider-using-f-string
                 )
         return output
 
     def _get_files(self, files):
         output = []
-        filere = re.compile(".*bin\/.*|^\/etc\/.*|^\/usr\/lib\.sendmail$")
+        filere = re.compile(".*bin\/.*|^\/etc\/.*|^\/usr\/lib\.sendmail$")  #  pylint: disable=anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string
         for pkg_file in files:
             if filere.match(pkg_file):
-                output.append("      <file>%s</file>" % (text_filter(pkg_file)))
+                output.append("      <file>%s</file>" % (text_filter(pkg_file)))  #  pylint: disable=consider-using-f-string
         return output
 
     def _get_package(self, package):
         output = []
         output.append('  <package type="rpm">')
-        output.append("    <name>%s</name>" % (package.name))
-        output.append("    <arch>%s</arch>" % (package.arch))
+        output.append("    <name>%s</name>" % (package.name))  #  pylint: disable=consider-using-f-string
+        output.append("    <arch>%s</arch>" % (package.arch))  #  pylint: disable=consider-using-f-string
         output.append(
-            '    <version epoch="%s" ver="%s" rel="%s" />'
+            '    <version epoch="%s" ver="%s" rel="%s" />'  #  pylint: disable=consider-using-f-string
             % (package.epoch, package.version, package.release)
         )
         output.append(
-            '    <checksum type="%s" pkgid="YES">%s</checksum>'
+            '    <checksum type="%s" pkgid="YES">%s</checksum>'  #  pylint: disable=consider-using-f-string
             % (package.checksum_type, package.checksum)
         )
-        output.append("    <summary>%s</summary>" % (text_filter(package.summary)))
+        output.append("    <summary>%s</summary>" % (text_filter(package.summary)))  #  pylint: disable=consider-using-f-string
         output.append(
-            "    <description>%s</description>" % (text_filter(package.description))
+            "    <description>%s</description>" % (text_filter(package.description))  #  pylint: disable=consider-using-f-string
         )
         output.append("    <packager></packager>")
         output.append("    <url></url>")
         output.append(
-            '    <time file="%d" build="%d" />'
+            '    <time file="%d" build="%d" />'  #  pylint: disable=consider-using-f-string
             % (package.build_time, package.build_time)
         )
         output.append(
-            '    <size package="%d" installed="%d" '
+            '    <size package="%d" installed="%d" '  #  pylint: disable=consider-using-f-string
             'archive="%d" />'
             % (package.package_size, package.installed_size, package.payload_size)
         )
-        output.append('    <location href="getPackage/%s" />' % (package.filename))
+        output.append('    <location href="getPackage/%s" />' % (package.filename))  #  pylint: disable=consider-using-f-string
         output.append("    <format>")
         output.append(
-            "      <rpm:license>%s</rpm:license>" % (text_filter(package.copyright))
+            "      <rpm:license>%s</rpm:license>" % (text_filter(package.copyright))  #  pylint: disable=consider-using-f-string
         )
         output.append(
-            "      <rpm:vendor>%s</rpm:vendor>" % (text_filter(package.vendor))
+            "      <rpm:vendor>%s</rpm:vendor>" % (text_filter(package.vendor))  #  pylint: disable=consider-using-f-string
         )
         output.append(
-            "      <rpm:group>%s</rpm:group>" % (text_filter(package.package_group))
+            "      <rpm:group>%s</rpm:group>" % (text_filter(package.package_group))  #  pylint: disable=consider-using-f-string
         )
         output.append(
-            "      <rpm:buildhost>%s</rpm:buildhost>"
+            "      <rpm:buildhost>%s</rpm:buildhost>"  #  pylint: disable=consider-using-f-string
             % (text_filter(package.build_host))
         )
         output.append(
-            "      <rpm:sourcerpm>%s</rpm:sourcerpm>"
+            "      <rpm:sourcerpm>%s</rpm:sourcerpm>"  #  pylint: disable=consider-using-f-string
             % (text_filter(package.source_rpm))
         )
         output.append(
-            '      <rpm:header-range start="%d" end="%d" />'
+            '      <rpm:header-range start="%d" end="%d" />'  #  pylint: disable=consider-using-f-string
             % (package.header_start, package.header_end)
         )
 
@@ -229,7 +229,7 @@ class PrimaryView(object):
             + "\n"
             + '<metadata xmlns="http://linux.duke.edu/metadata/common" '
             + 'xmlns:rpm="http://linux.duke.edu/metadata/rpm" '
-            + 'packages="%d">' % self.channel.num_packages
+            + 'packages="%d">' % self.channel.num_packages  #  pylint: disable=consider-using-f-string
         )
 
         self.fileobj.write(output)
@@ -241,7 +241,7 @@ class PrimaryView(object):
         self.fileobj.write("</metadata>")
 
 
-class FilelistsView(object):
+class FilelistsView(object):  #  pylint: disable=missing-class-docstring
     def __init__(self, channel, fileobj):
         self.channel = channel
         self.fileobj = fileobj
@@ -249,16 +249,16 @@ class FilelistsView(object):
     def _get_package(self, package):
         output = []
         output.append(
-            '  <package pkgid="%s" name="%s" arch="%s">'
+            '  <package pkgid="%s" name="%s" arch="%s">'  #  pylint: disable=consider-using-f-string
             % (package.checksum, package.name, package.arch)
         )
         output.append(
-            '    <version epoch="%s" ver="%s" rel="%s" />'
+            '    <version epoch="%s" ver="%s" rel="%s" />'  #  pylint: disable=consider-using-f-string
             % (package.epoch, package.version, package.release)
         )
 
         for file_name in package.files:
-            output.append("    <file>%s</file>" % (text_filter(file_name)))
+            output.append("    <file>%s</file>" % (text_filter(file_name)))  #  pylint: disable=consider-using-f-string
         output.append("  </package>")
         return output
 
@@ -267,7 +267,7 @@ class FilelistsView(object):
             XML_ENCODING
             + "\n"
             + '<filelists xmlns="http://linux.duke.edu/metadata/filelists" '
-            + 'packages="%d">' % self.channel.num_packages
+            + 'packages="%d">' % self.channel.num_packages  #  pylint: disable=consider-using-f-string
         )
 
         self.fileobj.write(output)
@@ -279,7 +279,7 @@ class FilelistsView(object):
         self.fileobj.write("</filelists>")
 
 
-class OtherView(object):
+class OtherView(object):  #  pylint: disable=missing-class-docstring
     def __init__(self, channel, fileobj):
         self.channel = channel
         self.fileobj = fileobj
@@ -287,17 +287,17 @@ class OtherView(object):
     def _get_package(self, package):
         output = []
         output.append(
-            '  <package pkgid="%s" name="%s" arch="%s">'
+            '  <package pkgid="%s" name="%s" arch="%s">'  #  pylint: disable=consider-using-f-string
             % (package.checksum, package.name, package.arch)
         )
         output.append(
-            '    <version epoch="%s" ver="%s" rel="%s" />'
+            '    <version epoch="%s" ver="%s" rel="%s" />'  #  pylint: disable=consider-using-f-string
             % (package.epoch, package.version, package.release)
         )
 
         for changelog in package.changelog:
             output.append(
-                '    <changelog author="%s" date="%d">'
+                '    <changelog author="%s" date="%d">'  #  pylint: disable=consider-using-f-string
                 % (text_filter_attribute(changelog["author"]), changelog["date"])
             )
             output.append("      " + text_filter(changelog["text"]))
@@ -310,7 +310,7 @@ class OtherView(object):
             XML_ENCODING
             + "\n"
             + '<otherdata xmlns="http://linux.duke.edu/metadata/other" '
-            + 'packages="%d">' % self.channel.num_packages
+            + 'packages="%d">' % self.channel.num_packages  #  pylint: disable=consider-using-f-string
         )
 
         self.fileobj.write(output)
@@ -322,7 +322,7 @@ class OtherView(object):
         self.fileobj.write("</otherdata>")
 
 
-class UpdateinfoView(object):
+class UpdateinfoView(object):  #  pylint: disable=missing-class-docstring
     def __init__(self, channel, fileobj):
         self.channel = channel
         self.fileobj = fileobj
@@ -365,13 +365,13 @@ class UpdateinfoView(object):
 
         output.append("    <pkglist>")
         output.append(
-            '      <collection short="%s">' % text_filter_attribute(self.channel.label)
+            '      <collection short="%s">' % text_filter_attribute(self.channel.label)  #  pylint: disable=consider-using-f-string
         )
-        output.append("        <name>%s</name>" % text_filter(self.channel.name))
+        output.append("        <name>%s</name>" % text_filter(self.channel.name))  #  pylint: disable=consider-using-f-string
 
         for package in erratum.packages:
             output.append(
-                '          <package name="%s" version="%s" '
+                '          <package name="%s" version="%s" '  #  pylint: disable=consider-using-f-string
                 'release="%s" epoch="%s" arch="%s" src="%s">'
                 % (
                     package.name,
@@ -383,10 +383,10 @@ class UpdateinfoView(object):
                 )
             )
             output.append(
-                "            <filename>%s</filename>" % text_filter(package.filename)
+                "            <filename>%s</filename>" % text_filter(package.filename)  #  pylint: disable=consider-using-f-string
             )
             output.append(
-                '            <sum type="%s">%s</sum>'
+                '            <sum type="%s">%s</sum>'  #  pylint: disable=consider-using-f-string
                 % (package.checksum_type, package.checksum)
             )
             output.append("          </package>")
@@ -400,16 +400,16 @@ class UpdateinfoView(object):
 
         output.append(
             '  <update from="security@redhat.com" '
-            + 'status="final" type="%s" version="%s">'
+            + 'status="final" type="%s" version="%s">'  #  pylint: disable=consider-using-f-string
             % (erratum.advisory_type, erratum.version)
         )
-        output.append("    <id>%s</id>" % erratum.readable_id)
-        output.append("    <title>%s</title>" % text_filter(erratum.title))
-        output.append('    <issued date="%s"/>' % erratum.issued)
-        output.append('    <updated date="%s"/>' % erratum.updated)
+        output.append("    <id>%s</id>" % erratum.readable_id)  #  pylint: disable=consider-using-f-string
+        output.append("    <title>%s</title>" % text_filter(erratum.title))  #  pylint: disable=consider-using-f-string
+        output.append('    <issued date="%s"/>' % erratum.issued)  #  pylint: disable=consider-using-f-string
+        output.append('    <updated date="%s"/>' % erratum.updated)  #  pylint: disable=consider-using-f-string
         output.append(
             "    <description>%s</description>"
-            % text_filter("%s\n\n\%s" % (erratum.synopsis, erratum.description))
+            % text_filter("%s\n\n\%s" % (erratum.synopsis, erratum.description))  #  pylint: disable=anomalous-backslash-in-string,consider-using-f-string
         )
 
         output.extend(self._get_references(erratum))

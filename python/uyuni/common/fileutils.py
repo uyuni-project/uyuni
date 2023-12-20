@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -38,7 +38,7 @@ except ImportError:
     HAS_LZMA = False
 
 
-def cleanupAbsPath(path):
+def cleanupAbsPath(path):  #  pylint: disable=invalid-name
     """take ~taw/../some/path/$MOUNT_POINT/blah and make it sensible.
 
     Path returned is absolute.
@@ -51,7 +51,7 @@ def cleanupAbsPath(path):
     return os.path.abspath(os.path.expanduser(os.path.expandvars(path)))
 
 
-def cleanupNormPath(path, dotYN=0):
+def cleanupNormPath(path, dotYN=0):  #  pylint: disable=invalid-name,invalid-name
     """take ~taw/../some/path/$MOUNT_POINT/blah and make it sensible.
 
     Returned path may be relative.
@@ -69,7 +69,7 @@ def cleanupNormPath(path, dotYN=0):
     return path
 
 
-def rotateFile(filepath, depth=5, suffix=".", verbosity=0):
+def rotateFile(filepath, depth=5, suffix=".", verbosity=0):  #  pylint: disable=invalid-name
     """backup/rotate a file
     depth (-1==no limit) refers to num. of backups (rotations) to keep.
 
@@ -88,24 +88,24 @@ def rotateFile(filepath, depth=5, suffix=".", verbosity=0):
 
     # check argument sanity (should really be down outside of this function)
     if not filepath or not isinstance(filepath, type("")):
-        raise ValueError("filepath '%s' is not a valid arguement" % filepath)
+        raise ValueError("filepath '%s' is not a valid arguement" % filepath)  #  pylint: disable=consider-using-f-string
     if not isinstance(depth, type(0)) or depth < -1 or depth > MaxInt - 1 or depth == 0:
-        raise ValueError("depth must fall within range " "[-1, 1...%s]" % (MaxInt - 1))
+        raise ValueError("depth must fall within range " "[-1, 1...%s]" % (MaxInt - 1))  #  pylint: disable=consider-using-f-string
 
     # force verbosity to be a numeric value
     verbosity = verbosity or 0
     if not isinstance(verbosity, type(0)) or verbosity < -1 or verbosity > MaxInt - 1:
-        raise ValueError("invalid verbosity value: %s" % (verbosity))
+        raise ValueError("invalid verbosity value: %s" % (verbosity))  #  pylint: disable=consider-using-f-string
 
     filepath = cleanupAbsPath(filepath)
     if not os.path.isfile(filepath):
-        raise ValueError("filepath '%s' does not lead to a file" % filepath)
+        raise ValueError("filepath '%s' does not lead to a file" % filepath)  #  pylint: disable=consider-using-f-string
 
-    pathNSuffix = filepath + suffix
-    pathNSuffix1 = pathNSuffix + "1"
+    pathNSuffix = filepath + suffix  #  pylint: disable=invalid-name
+    pathNSuffix1 = pathNSuffix + "1"  #  pylint: disable=invalid-name
 
     if verbosity > 1:
-        sys.stderr.write("Working dir: %s\n" % os.path.dirname(pathNSuffix))
+        sys.stderr.write("Working dir: %s\n" % os.path.dirname(pathNSuffix))  #  pylint: disable=consider-using-f-string
 
     # is there anything to do? (existence, then size, then checksum)
     checksum_type = "sha1"
@@ -119,39 +119,39 @@ def rotateFile(filepath, depth=5, suffix=".", verbosity=0):
         # nothing to do
         if verbosity:
             sys.stderr.write(
-                "File '%s' is identical to its rotation. "
+                "File '%s' is identical to its rotation. "  #  pylint: disable=consider-using-f-string
                 "Nothing to do.\n" % os.path.basename(filepath)
             )
         return None
 
     # find last in series (of rotations):
     last = 0
-    while os.path.exists("%s%d" % (pathNSuffix, last + 1)):
+    while os.path.exists("%s%d" % (pathNSuffix, last + 1)):  #  pylint: disable=consider-using-f-string
         last = last + 1
 
     # percolate renames:
     for i in range(last, 0, -1):
-        os.rename("%s%d" % (pathNSuffix, i), "%s%d" % (pathNSuffix, i + 1))
+        os.rename("%s%d" % (pathNSuffix, i), "%s%d" % (pathNSuffix, i + 1))  #  pylint: disable=consider-using-f-string,consider-using-f-string
         if verbosity > 1:
             filename = os.path.basename(pathNSuffix)
             sys.stderr.write(
-                "Moving file: %s%d --> %s%d\n" % (filename, i, filename, i + 1)
+                "Moving file: %s%d --> %s%d\n" % (filename, i, filename, i + 1)  #  pylint: disable=consider-using-f-string
             )
 
     # blow away excess rotations:
     if depth != -1:
         last = last + 1
         for i in range(depth + 1, last + 1):
-            path = "%s%d" % (pathNSuffix, i)
+            path = "%s%d" % (pathNSuffix, i)  #  pylint: disable=consider-using-f-string
             os.unlink(path)
             if verbosity:
-                sys.stderr.write("Rotated out: '%s'\n" % (os.path.basename(path)))
+                sys.stderr.write("Rotated out: '%s'\n" % (os.path.basename(path)))  #  pylint: disable=consider-using-f-string
 
     # do the actual rotation
     shutil.copy2(filepath, pathNSuffix1)
     if os.path.exists(pathNSuffix1) and verbosity:
         sys.stderr.write(
-            "Backup made: '%s' --> '%s'\n"
+            "Backup made: '%s' --> '%s'\n"  #  pylint: disable=consider-using-f-string
             % (os.path.basename(filepath), os.path.basename(pathNSuffix1))
         )
 
@@ -159,7 +159,7 @@ def rotateFile(filepath, depth=5, suffix=".", verbosity=0):
     return pathNSuffix1
 
 
-def rhn_popen(cmd, progressCallback=None, bufferSize=16384, outputLog=None):
+def rhn_popen(cmd, progressCallback=None, bufferSize=16384, outputLog=None):  #  pylint: disable=invalid-name,invalid-name,invalid-name
     """popen-like function, that accepts execvp-style arguments too (i.e. an
     array of params, thus making shell escaping unnecessary)
 
@@ -209,7 +209,7 @@ def rhn_popen(cmd, progressCallback=None, bufferSize=16384, outputLog=None):
             else:
                 # Some signal sent to this process
                 if outputLog is not None:
-                    outputLog("rhn_popen: Signal %s received\n" % (-status))
+                    outputLog("rhn_popen: Signal %s received\n" % (-status))  #  pylint: disable=consider-using-f-string
                 exitcode = status
                 break
 
@@ -264,10 +264,10 @@ def makedirs(path, mode=int("0755", 8), user=None, group=None):
     uid, gid = getUidGid(user, group)
 
     if uid is None:
-        raise OSError("*** ERROR: user %s doesn't exist. Cannot create path." % user)
+        raise OSError("*** ERROR: user %s doesn't exist. Cannot create path." % user)  #  pylint: disable=consider-using-f-string
 
     if gid is None:
-        raise OSError("*** ERROR: group %s doesn't exist. Cannot create path." % group)
+        raise OSError("*** ERROR: group %s doesn't exist. Cannot create path." % group)  #  pylint: disable=consider-using-f-string
 
     while 1:
         if os.path.isdir(dirname):
@@ -294,10 +294,10 @@ def makedirs(path, mode=int("0755", 8), user=None, group=None):
             os.chown(dirname, uid, gid)
         except OSError:
             # Changing permissions failed; ignore the error
-            sys.stderr.write("Changing owner for %s failed\n" % dirname)
+            sys.stderr.write("Changing owner for %s failed\n" % dirname)  #  pylint: disable=consider-using-f-string
 
 
-def createPath(path, user=None, group=None, chmod=int("0755", 8)):
+def createPath(path, user=None, group=None, chmod=int("0755", 8)):  #  pylint: disable=invalid-name
     """advanced makedirs
 
     Will create the path if necessary.
@@ -306,7 +306,7 @@ def createPath(path, user=None, group=None, chmod=int("0755", 8)):
 
     Uses the above makedirs() function.
     """
-    with cfg_component(component=None) as CFG:
+    with cfg_component(component=None) as CFG:  #  pylint: disable=invalid-name
         if user is None:
             user = CFG.get("httpd_user", "wwwrun")
         if group is None:
@@ -317,7 +317,7 @@ def createPath(path, user=None, group=None, chmod=int("0755", 8)):
         makedirs(path, mode=chmod, user=user, group=group)
     elif not os.path.isdir(path):
         raise ValueError(
-            "ERROR: createPath('%s'): path doesn't lead to a directory" % str(path)
+            "ERROR: createPath('%s'): path doesn't lead to a directory" % str(path)  #  pylint: disable=consider-using-f-string
         )
     else:
         os.chmod(path, chmod)
@@ -326,18 +326,18 @@ def createPath(path, user=None, group=None, chmod=int("0755", 8)):
             os.chown(path, uid, gid)
         except OSError:
             # Changing permissions failed; ignore the error
-            sys.stderr.write("Changing owner for %s failed\n" % path)
+            sys.stderr.write("Changing owner for %s failed\n" % path)  #  pylint: disable=consider-using-f-string
 
 
-def setPermsPath(path, user=None, group="root", chmod=int("0750", 8)):
+def setPermsPath(path, user=None, group="root", chmod=int("0750", 8)):  #  pylint: disable=invalid-name
     """chown user.group and set permissions to chmod"""
     if user is None:
-        with cfg_component(component=None) as CFG:
+        with cfg_component(component=None) as CFG:  #  pylint: disable=invalid-name
             user = CFG.get("httpd_user", "wwwrun")
 
     if not os.path.exists(path):
         raise OSError(
-            "*** ERROR: Path doesn't exist (can't set permissions): %s" % path
+            "*** ERROR: Path doesn't exist (can't set permissions): %s" % path  #  pylint: disable=consider-using-f-string
         )
 
     # If non-root, don't bother to change owners
@@ -348,14 +348,14 @@ def setPermsPath(path, user=None, group="root", chmod=int("0750", 8)):
     uid = gc.getuid(user)
     if uid is None:
         raise OSError(
-            "*** ERROR: user '%s' doesn't exist. Cannot set permissions properly."
+            "*** ERROR: user '%s' doesn't exist. Cannot set permissions properly."  #  pylint: disable=consider-using-f-string
             % user
         )
 
     gid = gc.getgid(group)
     if gid is None:
         raise OSError(
-            "*** ERROR: group '%s' doesn't exist. Cannot set permissions properly."
+            "*** ERROR: group '%s' doesn't exist. Cannot set permissions properly."  #  pylint: disable=consider-using-f-string
             % group
         )
 
@@ -367,7 +367,7 @@ def setPermsPath(path, user=None, group="root", chmod=int("0750", 8)):
 
 class GecosCache:
     "Cache getpwnam() and getgrnam() calls"
-    __shared_data = {}
+    __shared_data = {}  #  pylint: disable=invalid-name
 
     def __init__(self):
         self.__dict__ = self.__shared_data
@@ -400,10 +400,10 @@ class GecosCache:
 
     def reset(self):
         self.__shared_data.clear()
-        self.__init__()
+        self.__init__()  #  pylint: disable=unnecessary-dunder-call
 
 
-def getUidGid(user=None, group=None):
+def getUidGid(user=None, group=None):  #  pylint: disable=invalid-name
     """Returns uid and gid of given user name and group name
 
     :param user: The name of the user
@@ -490,8 +490,8 @@ def ostr_to_sym(octstr, ftype):
 # requirement. If making changes make them there too.
 
 
-def f_date(dbiDate):
-    return "%04d-%02d-%02d %02d:%02d:%02d" % (
+def f_date(dbiDate):  #  pylint: disable=invalid-name
+    return "%04d-%02d-%02d %02d:%02d:%02d" % (  #  pylint: disable=consider-using-f-string
         dbiDate.year,
         dbiDate.month,
         dbiDate.day,
@@ -501,7 +501,7 @@ def f_date(dbiDate):
     )
 
 
-class payload:
+class payload:  #  pylint: disable=invalid-name
 
     """this class implements simple file like object usable for reading payload
     from rpm, mpm, etc.
@@ -509,7 +509,7 @@ class payload:
     """
 
     def __init__(self, filename, skip=0):
-        self.fileobj = open(filename, "r")
+        self.fileobj = open(filename, "r")  #  pylint: disable=unspecified-encoding
         self.skip = skip
         self.seek(0)
 
@@ -527,11 +527,11 @@ class payload:
         raise AttributeError("'Payload' object do not implement this method")
 
     @staticmethod
-    def write(_s):
+    def write(_s):  #  pylint: disable=invalid-name
         raise AttributeError("'Payload' object do not implement this method")
 
     @staticmethod
-    def writelines(_seq):
+    def writelines(_seq):  #  pylint: disable=invalid-name
         raise AttributeError("'Payload' object do not implement this method")
 
     def __getattr__(self, x):

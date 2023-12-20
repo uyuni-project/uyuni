@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Module that provides the client-side functionality for an XML importer
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
@@ -24,8 +24,8 @@ from spacewalk.satellite_tools import constants
 __version__ = "0.1"
 
 
-class Transport(rpclib.transports.Transport):
-    user_agent = "satellite-sync/%s" % __version__
+class Transport(rpclib.transports.Transport):  #  pylint: disable=missing-class-docstring
+    user_agent = "satellite-sync/%s" % __version__  #  pylint: disable=consider-using-f-string
 
     def __init__(self, timeout=None):
         if timeout:
@@ -72,7 +72,7 @@ class Transport(rpclib.transports.Transport):
             return f
 
         connection.close()
-        raise Exception("Unknown response type: " + content_type)
+        raise Exception("Unknown response type: " + content_type)  #  pylint: disable=broad-exception-raised
 
 
 class SafeTransport(rpclib.transports.SafeTransport, Transport):
@@ -97,7 +97,7 @@ class _Server(rpclib.Server):
         pass
 
 
-class StreamConnection(_Server):
+class StreamConnection(_Server):  #  pylint: disable=missing-class-docstring
     def __init__(
         self,
         uri,
@@ -194,7 +194,7 @@ class CompressedStream:
         return getattr(self.stream, name)
 
     def __repr__(self):
-        return "<_CompressedStream at %s>" % id(self)
+        return "<_CompressedStream at %s>" % id(self)  #  pylint: disable=consider-using-f-string
 
 
 if __name__ == "__main__":

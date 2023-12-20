@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring,invalid-name
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -14,12 +14,12 @@
 #
 
 # global module imports
-from spacewalk.common import apache
+from spacewalk.common import apache  #  pylint: disable=unused-import
 
 # common module imports
-from spacewalk.common.rhnConfig import CFG, initCFG
-from spacewalk.common.rhnTB import Traceback
-from spacewalk.common.rhnLog import initLOG, log_setreq
+from spacewalk.common.rhnConfig import CFG, initCFG  #  pylint: disable=unused-import,unused-import
+from spacewalk.common.rhnTB import Traceback  #  pylint: disable=unused-import
+from spacewalk.common.rhnLog import initLOG, log_setreq  #  pylint: disable=unused-import,unused-import
 
 from .apacheHandler import apacheHandler
 

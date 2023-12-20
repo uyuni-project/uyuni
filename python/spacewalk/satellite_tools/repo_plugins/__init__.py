@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2017 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -22,7 +22,7 @@ from spacewalk.server import rhnPackageUpload
 CACHE_DIR = "/var/cache/rhn/reposync/"
 
 
-class ContentPackage:
+class ContentPackage:  #  pylint: disable=missing-class-docstring
     def __init__(self):
         # map of checksums
         self.checksums = {}
@@ -47,26 +47,26 @@ class ContentPackage:
         self.a_pkg = None
 
     def __cmp__(self, other):
-        ret = cmp(self.name, other.name)
+        ret = cmp(self.name, other.name)  #  pylint: disable=undefined-variable
         if ret == 0:
-            rel_self = str(self.release).split(".")[0]
-            rel_other = str(other.release).split(".")[0]
+            rel_self = str(self.release).split(".")[0]  #  pylint: disable=use-maxsplit-arg
+            rel_other = str(other.release).split(".")[0]  #  pylint: disable=use-maxsplit-arg
             # pylint: disable=E1101
             ret = rpm.labelCompare(
                 (str(self.epoch), str(self.version), rel_self),
                 (str(other.epoch), str(other.version), rel_other),
             )
         if ret == 0:
-            ret = cmp(self.arch, other.arch)
+            ret = cmp(self.arch, other.arch)  #  pylint: disable=undefined-variable
         return ret
 
-    def getNRA(self):
+    def getNRA(self):  #  pylint: disable=invalid-name
         rel = re.match(".*?\\.(.*)", self.release)
         rel = rel.group(1)
         nra = str(self.name) + str(rel) + str(self.arch)
         return nra
 
-    def setNVREA(self, name, version, release, epoch, arch):
+    def setNVREA(self, name, version, release, epoch, arch):  #  pylint: disable=invalid-name
         if not all((name, version, release, arch)):
             raise ValueError(
                 (
@@ -80,7 +80,7 @@ class ContentPackage:
         self.arch = arch
         self.epoch = epoch
 
-    def getNVREA(self):
+    def getNVREA(self):  #  pylint: disable=invalid-name
         if self.epoch:
             return (
                 self.name
@@ -96,7 +96,7 @@ class ContentPackage:
         else:
             return self.name + "-" + self.version + "-" + self.release + "." + self.arch
 
-    def getNEVRA(self):
+    def getNEVRA(self):  #  pylint: disable=invalid-name
         if self.epoch is None:
             self.epoch = "0"
         return (
@@ -124,7 +124,7 @@ class ContentPackage:
         if self.checksum != self.a_pkg.checksum:
             raise rhnFault(
                 50,
-                "checksums did not match %s vs %s"
+                "checksums did not match %s vs %s"  #  pylint: disable=consider-using-f-string
                 % (self.checksum, self.a_pkg.checksum),
                 explain=0,
             )
@@ -136,7 +136,7 @@ class ContentPackage:
             )
         else:
             rel_package_path = None
-        _unused = rhnPackageUpload.push_package(
+        _unused = rhnPackageUpload.push_package(  #  pylint: disable=invalid-name,unused-variable
             self.a_pkg, force=False, relative_path=rel_package_path, org_id=org_id
         )
         return rel_package_path
@@ -152,4 +152,4 @@ class ContentPackage:
                 self.checksums[checksum_type_in] = checksum_in
 
     def __str__(self):
-        return f"ContentPackage: name = {self.name}, epoch = {self.epoch}, version = {self.version}, release = {self.release}, arch = {self.arch}, checksum_type = {self.checksum_type}, checksum = {self.checksum}, checksums = {self.checksums}, path = {self.path}, a_pkg = {self.a_pkg}, unique_id = <{self.unique_id}>"
+        return f"ContentPackage: name = {self.name}, epoch = {self.epoch}, version = {self.version}, release = {self.release}, arch = {self.arch}, checksum_type = {self.checksum_type}, checksum = {self.checksum}, checksums = {self.checksums}, path = {self.path}, a_pkg = {self.a_pkg}, unique_id = <{self.unique_id}>"  #  pylint: disable=line-too-long

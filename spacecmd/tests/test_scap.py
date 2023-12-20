@@ -4,8 +4,8 @@ Test suite for Scap commands at spacecmd.
 """
 
 from unittest.mock import MagicMock, patch
-from helpers import shell, assert_expect
-import pytest
+from helpers import shell, assert_expect  #  pylint: disable=unused-import
+import pytest  #  pylint: disable=unused-import
 import spacecmd.scap
 
 
@@ -14,7 +14,7 @@ class TestScap:
     Test suite for scap.
     """
 
-    def test_scap_listxccdfscans_noarg(self, shell):
+    def test_scap_listxccdfscans_noarg(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test calling scap listxccdfscans without arguments.
 
@@ -38,7 +38,7 @@ class TestScap:
         assert not shell.client.system.scap.listXccdfScans.called
         assert not mprint.called
 
-    def test_scap_listxccdfscans_ssm_arg(self, shell):
+    def test_scap_listxccdfscans_ssm_arg(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test calling scap listxccdfscans with ssm argument.
         No systems has been scanned.
@@ -64,7 +64,7 @@ class TestScap:
         assert not shell.client.system.scap.listXccdfScans.called
         assert not mprint.called
 
-    def test_scap_listxccdfscans_system_arg(self, shell):
+    def test_scap_listxccdfscans_system_arg(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test calling scap listxccdfscans with a system name argument.
 
@@ -134,7 +134,7 @@ class TestScap:
         ]
         assert_expect(mprint.call_args_list, *expectations)
 
-    def test_scap_getxccdfscanruleresults_noargs(self, shell):
+    def test_scap_getxccdfscanruleresults_noargs(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test getxccdfscanruleresults without args
 
@@ -151,7 +151,7 @@ class TestScap:
         assert not shell.client.system.scap.getXccdfScanRuleResults.called
         assert not mprint.called
 
-    def test_scap_getxccdfscanruleresults_xids_no_rules(self, shell):
+    def test_scap_getxccdfscanruleresults_xids_no_rules(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test getxccdfscanruleresults with XIDs but no rules
 
@@ -181,7 +181,7 @@ class TestScap:
         ]
         assert_expect(mprint.call_args_list, *expectations)
 
-    def test_scap_getxccdfscanruleresults_xids_with_rules(self, shell):
+    def test_scap_getxccdfscanruleresults_xids_with_rules(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test getxccdfscanruleresults with XIDs with rules
 
@@ -241,22 +241,22 @@ class TestScap:
         expectations = [
             "XID: 1",
             "",
-            "IDref: 001A Result: result placeholder - 1 Idents: (idents placeholder - 1)",
-            "IDref: 001B Result: result placeholder - 2 Idents: (idents placeholder - 2)",
+            "IDref: 001A Result: result placeholder - 1 Idents: (idents placeholder - 1)",  #  pylint: disable=line-too-long
+            "IDref: 001B Result: result placeholder - 2 Idents: (idents placeholder - 2)",  #  pylint: disable=line-too-long
             "---",
             "XID: 2",
             "",
-            "IDref: 002A Result: result placeholder - 1 Idents: (idents placeholder - 1)",
-            "IDref: 002B Result: result placeholder - 2 Idents: (idents placeholder - 2)",
+            "IDref: 002A Result: result placeholder - 1 Idents: (idents placeholder - 1)",  #  pylint: disable=line-too-long
+            "IDref: 002B Result: result placeholder - 2 Idents: (idents placeholder - 2)",  #  pylint: disable=line-too-long
             "---",
             "XID: 3",
             "",
-            "IDref: 003A Result: result placeholder - 1 Idents: (idents placeholder - 1)",
-            "IDref: 003B Result: result placeholder - 2 Idents: (idents placeholder - 2)",
+            "IDref: 003A Result: result placeholder - 1 Idents: (idents placeholder - 1)",  #  pylint: disable=line-too-long
+            "IDref: 003B Result: result placeholder - 2 Idents: (idents placeholder - 2)",  #  pylint: disable=line-too-long
         ]
         assert_expect(mprint.call_args_list, *expectations)
 
-    def test_scap_getxccdfscandetails_no_args(self, shell):
+    def test_scap_getxccdfscandetails_no_args(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test getxccdfscandetails with no args.
 
@@ -275,7 +275,7 @@ class TestScap:
         assert not shell.client.system.scap.getXccdfScanDetails.called
         assert not mprint.called
 
-    def test_scap_getxccdfscandetails_xids(self, shell):
+    def test_scap_getxccdfscandetails_xids(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test getxccdfscandetails with XID args.
 
@@ -404,7 +404,7 @@ class TestScap:
             assert arg == next(iter(expectations))
             expectations.pop(0)
 
-    def test_scap_schedulexccdfscan_no_args(self, shell):
+    def test_scap_schedulexccdfscan_no_args(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test for do_scap_schedulexccdfscan with no args.
 
@@ -429,7 +429,7 @@ class TestScap:
             assert not shell.client.system.scap.scheduleXccdfScan.called
             assert not mprint.called
 
-    def test_scap_schedulexccdfscan_ssm_arg(self, shell):
+    def test_scap_schedulexccdfscan_ssm_arg(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test for do_scap_schedulexccdfscan with SSM arg
 
@@ -452,7 +452,7 @@ class TestScap:
         assert not shell.get_system_id.called
         assert not shell.client.system.scap.scheduleXccdfScan.called
 
-    def test_scap_schedulexccdfscan_systems_arg(self, shell):
+    def test_scap_schedulexccdfscan_systems_arg(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test for do_scap_schedulexccdfscan with systems arg
 
@@ -477,7 +477,7 @@ class TestScap:
 
         assert_expect(shell.expand_systems.call_args_list, ["some.example.com"])
 
-    def test_scap_schedulexccdfscan_systems_arg_with_data(self, shell):
+    def test_scap_schedulexccdfscan_systems_arg_with_data(self, shell):  #  pylint: disable=redefined-outer-name
         """
         Test for do_scap_schedulexccdfscan with systems arg with data
 
@@ -501,7 +501,7 @@ class TestScap:
         assert shell.client.system.scap.scheduleXccdfScan.called
 
         for call in shell.client.system.scap.scheduleXccdfScan.call_args_list:
-            args, kw = call
+            args, kw = call  #  pylint: disable=unused-variable
             assert args == (
                 shell.session,
                 "1000010000",

@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring,invalid-name
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -31,9 +31,9 @@ from uyuni.common.usix import ListType, TupleType
 from spacewalk.common.rhnLog import log_debug
 
 
-class rpmPackage(IncompletePackage):
+class rpmPackage(IncompletePackage):  #  pylint: disable=missing-class-docstring,invalid-name
     # Various mappings
-    tagMap = {
+    tagMap = {  #  pylint: disable=invalid-name
         # Ignoring these tags
         "last_modified": None,
         # We set them differently
@@ -44,7 +44,7 @@ class rpmPackage(IncompletePackage):
         "sigchecksum_type": None,
     }
 
-    def populate(
+    def populate(  #  pylint: disable=dangerous-default-value
         self,
         header,
         size,
@@ -54,7 +54,7 @@ class rpmPackage(IncompletePackage):
         org_id=None,
         header_start=None,
         header_end=None,
-        channels=[],
+        channels=[],  #  pylint: disable=unused-argument
     ):
         # XXX is seems to me that this is the place that 'source_rpm' is getting
         # set
@@ -98,8 +98,8 @@ class rpmPackage(IncompletePackage):
             del self["sigmd5"]
 
         # Fix some of the information up
-        vendor = self["vendor"] or None
-        payloadFormat = self["payload_format"]
+        vendor = self["vendor"] or None  #  pylint: disable=unused-variable
+        payloadFormat = self["payload_format"]  #  pylint: disable=invalid-name
         if payloadFormat is None:
             self["payload_format"] = "cpio"
         if self["payload_size"] is None:
@@ -109,7 +109,7 @@ class rpmPackage(IncompletePackage):
 
         return self
 
-    def _populateExtraTags(self, header):
+    def _populateExtraTags(self, header):  #  pylint: disable=invalid-name
         """
         Populate extra tags. Currently only "modularitylabel".
         """
@@ -118,9 +118,9 @@ class rpmPackage(IncompletePackage):
             self["extra_tags"] = [{"name": "modularitylabel", "value": mlabel}]
 
 
-class rpmBinaryPackage(Package, rpmPackage):
+class rpmBinaryPackage(Package, rpmPackage):  #  pylint: disable=missing-class-docstring,invalid-name
     # Various mappings
-    tagMap = rpmPackage.tagMap.copy()
+    tagMap = rpmPackage.tagMap.copy()  #  pylint: disable=invalid-name
     tagMap.update(
         {
             "package_group": "group",
@@ -162,7 +162,7 @@ class rpmBinaryPackage(Package, rpmPackage):
         }
     )
 
-    def populate(
+    def populate(  #  pylint: disable=dangerous-default-value
         self,
         header,
         size,
@@ -201,10 +201,10 @@ class rpmBinaryPackage(Package, rpmPackage):
         # Channels
         self._populateChannels(channels)
 
-    def _populateFiles(self, header):
+    def _populateFiles(self, header):  #  pylint: disable=invalid-name
         self._populateTag(header, "files", rpmFile)
 
-    def _populateDependencyInformation(self, header):
+    def _populateDependencyInformation(self, header):  #  pylint: disable=invalid-name
         mapping = {
             "provides": rpmProvides,
             "requires": rpmRequires,
@@ -235,19 +235,19 @@ class rpmBinaryPackage(Package, rpmPackage):
         for k, v in list(new_weak_deps_mapping.items()):
             self._populateTag(header, k, v)
 
-    def _populateChangeLog(self, header):
+    def _populateChangeLog(self, header):  #  pylint: disable=invalid-name
         self._populateTag(header, "changelog", rpmChangeLog)
 
-    def _populateChannels(self, channels):
+    def _populateChannels(self, channels):  #  pylint: disable=invalid-name
         l = []
         for channel in channels:
-            dict = {"label": channel}
+            dict = {"label": channel}  #  pylint: disable=redefined-builtin
             obj = Channel()
             obj.populate(dict)
             l.append(obj)
         self["channels"] = l
 
-    def _populateTag(self, header, tag, Class):
+    def _populateTag(self, header, tag, Class):  #  pylint: disable=invalid-name,invalid-name
         """
         Populates a tag with a list of Class instances, getting the
         information from a header
@@ -270,13 +270,13 @@ class rpmBinaryPackage(Package, rpmPackage):
 
         unique_deps = []
         for i in range(itemcount):
-            hash = {}
+            hash = {}  #  pylint: disable=redefined-builtin
             for k, v in list(fix.items()):
                 # bugzilla 426963: fix for rpm v3 obsoletes header with
                 # empty version and flags values
-                if not len(v) and k == "version":
+                if not len(v) and k == "version":  #  pylint: disable=use-implicit-booleaness-not-len
                     hash[k] = ""
-                elif not len(v) and k in ("device", "flags"):
+                elif not len(v) and k in ("device", "flags"):  #  pylint: disable=use-implicit-booleaness-not-len
                     hash[k] = 0
                 else:
                     hash[k] = v[i]
@@ -311,7 +311,7 @@ class rpmBinaryPackage(Package, rpmPackage):
                 "breaks",
                 "predepends",
             ]:
-                if not len(hash["name"]):
+                if not len(hash["name"]):  #  pylint: disable=use-implicit-booleaness-not-len
                     continue
                 dep_nv = (hash["name"], hash["version"], hash["flags"])
 
@@ -329,8 +329,8 @@ class rpmBinaryPackage(Package, rpmPackage):
                 self[tag].append(obj)
 
 
-class rpmSourcePackage(SourcePackage, rpmPackage):
-    tagMap = rpmPackage.tagMap.copy()
+class rpmSourcePackage(SourcePackage, rpmPackage):  #  pylint: disable=missing-class-docstring,invalid-name
+    tagMap = rpmPackage.tagMap.copy()  #  pylint: disable=invalid-name
     tagMap.update(
         {
             "package_group": "group",
@@ -353,7 +353,7 @@ class rpmSourcePackage(SourcePackage, rpmPackage):
         }
     )
 
-    def populate(
+    def populate(  #  pylint: disable=dangerous-default-value
         self,
         header,
         size,
@@ -390,18 +390,18 @@ class rpmSourcePackage(SourcePackage, rpmPackage):
         # 5/13/05 wregglej - 154248 If 1051 is in the list of keys in the header,
         # the package is a nosrc package and needs to be saved as such.
         if 1051 in list(header.keys()):
-            self["source_rpm"] = "%s-%s-%s.nosrc.rpm" % tuple(nvr)
+            self["source_rpm"] = "%s-%s-%s.nosrc.rpm" % tuple(nvr)  #  pylint: disable=consider-using-f-string
         else:
-            self["source_rpm"] = "%s-%s-%s.src.rpm" % tuple(nvr)
+            self["source_rpm"] = "%s-%s-%s.src.rpm" % tuple(nvr)  #  pylint: disable=consider-using-f-string
 
         # Convert sigchecksum to ASCII
         self["sigchecksum_type"] = "md5"
-        self["sigchecksum"] = "".join(["%02x" % ord(x) for x in self["sigchecksum"]])
+        self["sigchecksum"] = "".join(["%02x" % ord(x) for x in self["sigchecksum"]])  #  pylint: disable=consider-using-f-string
 
 
-class rpmFile(File, ChangeLog):
+class rpmFile(File, ChangeLog):  #  pylint: disable=missing-class-docstring,invalid-name
     # Mapping from the attribute's names to rpm tags
-    tagMap = {
+    tagMap = {  #  pylint: disable=invalid-name
         "name": "filenames",
         "device": "filedevices",
         "inode": "fileinodes",
@@ -419,7 +419,7 @@ class rpmFile(File, ChangeLog):
         "lang": "filelangs",
     }
 
-    def populate(self, hash):
+    def populate(self, hash):  #  pylint: disable=redefined-builtin
         ChangeLog.populate(self, hash)
         # Fix the time
         tm = self["mtime"]
@@ -431,140 +431,140 @@ class rpmFile(File, ChangeLog):
             del self["filedigest"]
 
 
-class rpmProvides(Dependency):
+class rpmProvides(Dependency):  #  pylint: disable=invalid-name
     # More mappings
-    tagMap = {
+    tagMap = {  #  pylint: disable=invalid-name
         "name": "provides",
         "version": "provideversion",
         "flags": "provideflags",
     }
 
 
-class rpmRequires(Dependency):
+class rpmRequires(Dependency):  #  pylint: disable=invalid-name
     # More mappings
-    tagMap = {
+    tagMap = {  #  pylint: disable=invalid-name
         "name": "requirename",
         "version": "requireversion",
         "flags": "requireflags",
     }
 
 
-class rpmOldSuggests(Dependency):
+class rpmOldSuggests(Dependency):  #  pylint: disable=invalid-name
     # More mappings
-    tagMap = {
+    tagMap = {  #  pylint: disable=invalid-name
         "name": 1156,  # 'suggestsname',
         "version": 1157,  # 'suggestsversion',
         "flags": 1158,  # 'suggestsflags',
     }
 
 
-class rpmSuggests(Dependency):
+class rpmSuggests(Dependency):  #  pylint: disable=invalid-name
     # More mappings
-    tagMap = {
+    tagMap = {  #  pylint: disable=invalid-name
         "name": 5049,  #'suggestsname',
         "version": 5050,  #'suggestsversion',
         "flags": 5051,  #'suggestsflags',
     }
 
 
-class rpmOldRecommends(Dependency):
+class rpmOldRecommends(Dependency):  #  pylint: disable=invalid-name
     # More mappings
-    tagMap = {
+    tagMap = {  #  pylint: disable=invalid-name
         "name": 1156,  #'recommendsname',
         "version": 1157,  #'recommendsversion',
         "flags": 1158,  #'recommendsflags',
     }
 
 
-class rpmRecommends(Dependency):
+class rpmRecommends(Dependency):  #  pylint: disable=invalid-name
     # More mappings
-    tagMap = {
+    tagMap = {  #  pylint: disable=invalid-name
         "name": 5046,  #'recommendsname',
         "version": 5047,  #'recommendsversion',
         "flags": 5048,  #'recommendsflags',
     }
 
 
-class rpmOldSupplements(Dependency):
+class rpmOldSupplements(Dependency):  #  pylint: disable=invalid-name
     # More mappings
-    tagMap = {
+    tagMap = {  #  pylint: disable=invalid-name
         "name": 1159,  #'supplementsname',
         "version": 1160,  #'supplementsversion',
         "flags": 1161,  #'supplementsflags',
     }
 
 
-class rpmSupplements(Dependency):
+class rpmSupplements(Dependency):  #  pylint: disable=invalid-name
     # More mappings
-    tagMap = {
+    tagMap = {  #  pylint: disable=invalid-name
         "name": 5052,  #'supplementsname',
         "version": 5053,  #'supplementsversion',
         "flags": 5054,  #'supplementsflags',
     }
 
 
-class rpmOldEnhances(Dependency):
+class rpmOldEnhances(Dependency):  #  pylint: disable=invalid-name
     # More mappings
-    tagMap = {
+    tagMap = {  #  pylint: disable=invalid-name
         "name": 1159,  #'enhancesname',
         "version": 1160,  #'enhancesversion',
         "flags": 1161,  #'enhancesflags',
     }
 
 
-class rpmEnhances(Dependency):
+class rpmEnhances(Dependency):  #  pylint: disable=invalid-name
     # More mappings
-    tagMap = {
+    tagMap = {  #  pylint: disable=invalid-name
         "name": 5055,  #'enhancesname',
         "version": 5056,  #'enhancesversion',
         "flags": 5057,  #'enhancesflags',
     }
 
 
-class rpmConflicts(Dependency):
+class rpmConflicts(Dependency):  #  pylint: disable=invalid-name
     # More mappings
-    tagMap = {
+    tagMap = {  #  pylint: disable=invalid-name
         "name": "conflictname",
         "version": "conflictversion",
         "flags": "conflictflags",
     }
 
 
-class rpmObsoletes(Dependency):
+class rpmObsoletes(Dependency):  #  pylint: disable=invalid-name
     # More mappings
-    tagMap = {
+    tagMap = {  #  pylint: disable=invalid-name
         "name": "obsoletename",
         "version": "obsoleteversion",
         "flags": "obsoleteflags",
     }
 
 
-class rpmBreaks(Dependency):
+class rpmBreaks(Dependency):  #  pylint: disable=invalid-name
     # More mappings
-    tagMap = {
+    tagMap = {  #  pylint: disable=invalid-name
         "name": 1159,  # 'enhancesname'
         "version": 1160,  # 'enhancesversion'
         "flags": 1161,  # 'enhancesflags'
     }
 
 
-class rpmPredepends(Dependency):
+class rpmPredepends(Dependency):  #  pylint: disable=invalid-name
     # More mappings
-    tagMap = {
+    tagMap = {  #  pylint: disable=invalid-name
         "name": 1159,  # 'enhancesname'
         "version": 1160,  # 'enhancesversion'
         "flags": 1161,  # 'enhancesflags'
     }
 
 
-class rpmChangeLog(ChangeLog):
-    tagMap = {
+class rpmChangeLog(ChangeLog):  #  pylint: disable=missing-class-docstring,invalid-name
+    tagMap = {  #  pylint: disable=invalid-name
         "name": "changelogname",
         "text": "changelogtext",
         "time": "changelogtime",
     }
 
-    def populate(self, hash):
+    def populate(self, hash):  #  pylint: disable=redefined-builtin
         ChangeLog.populate(self, hash)
         # Fix the time
         tm = self["time"]
@@ -574,16 +574,16 @@ class rpmChangeLog(ChangeLog):
         # In changelog, data is either in UTF-8, or in any other
         # undetermined encoding. Assume ISO-Latin-1 if not UTF-8.
         for i in ("text", "name"):
-            if type(self[i]) == bytes:
+            if type(self[i]) == bytes:  #  pylint: disable=unidiomatic-typecheck
                 try:
                     self[i] = self[i].encode("utf-8")
-                except:
+                except:  #  pylint: disable=bare-except
                     self[i] = self[i].encode("iso-8859-1")
             # Filter out invalid UTF-8 from string.
             self[i] = self[i].encode("utf-8", errors="replace").decode("utf-8")
 
 
-def sanitizeList(l):
+def sanitizeList(l):  #  pylint: disable=invalid-name
     if l is None:
         return []
     if type(l) in (ListType, TupleType):
@@ -591,7 +591,7 @@ def sanitizeList(l):
     return [l]
 
 
-def createPackage(
+def createPackage(  #  pylint: disable=invalid-name
     header,
     size,
     checksum_type,

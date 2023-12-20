@@ -4,13 +4,13 @@ Oracle ULN (Unbreakable Linux Network) authentication library.
 """
 import os
 import configparser
-import urllib.parse
+import urllib.parse  #  pylint: disable=unused-import
 
 from spacewalk.common.suseLib import get_proxy
 from spacewalk.satellite_tools.syncLib import RhnSyncException
 from up2date_client.rpcServer import RetryServer, ServerList
 
-from spacewalk.common.rhnConfig import initCFG
+from spacewalk.common.rhnConfig import initCFG  #  pylint: disable=ungrouped-imports
 
 import logging
 
@@ -75,10 +75,10 @@ class ULNAuth:
         :returns: tuple of username and password
         """
         if not os.path.exists(self.ULN_CONF_PATH):
-            raise RhnSyncException("'{}' does not exists".format(self.ULN_CONF_PATH))
+            raise RhnSyncException("'{}' does not exists".format(self.ULN_CONF_PATH))  #  pylint: disable=consider-using-f-string
         elif not os.access(self.ULN_CONF_PATH, os.R_OK):
             raise RhnSyncException(
-                "Permission denied to '{}'".format(self.ULN_CONF_PATH)
+                "Permission denied to '{}'".format(self.ULN_CONF_PATH)  #  pylint: disable=consider-using-f-string
             )
 
         config = configparser.ConfigParser()
@@ -105,7 +105,7 @@ class ULNAuth:
         if self._uln_token is None:
             try:
                 usr, pwd = self.get_credentials()
-                self._uln_url, label = self.get_hostname(url)
+                self._uln_url, label = self.get_hostname(url)  #  pylint: disable=unused-variable
                 px_url, px_usr, px_pwd = get_proxy(self._uln_url)
                 server_list = ServerList([self._uln_url + "/rpc/api"])
                 retry_server = RetryServer(
@@ -118,12 +118,12 @@ class ULNAuth:
                 )
                 retry_server.addServerList(server_list)
                 self._uln_token = retry_server.auth.login(usr, pwd)
-            except Exception as exc:
+            except Exception as exc:  #  pylint: disable=broad-exception-caught
                 err_msg = exc
 
         if not self.token or err_msg:
             raise ULNTokenException(
-                "Authentication failure: token was not obtained. {}".format(err_msg)
+                "Authentication failure: token was not obtained. {}".format(err_msg)  #  pylint: disable=consider-using-f-string
             )
 
         return self.token

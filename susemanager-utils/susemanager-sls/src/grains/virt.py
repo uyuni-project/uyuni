@@ -18,7 +18,7 @@ from xml.etree import ElementTree
 log = logging.getLogger(__name__)
 
 
-def __virtual__():
+def __virtual__():  #  pylint: disable=invalid-name
     return salt.modules.virt.__virtual__() and _which_bin(["libvirtd"]) is not None
 
 
@@ -26,7 +26,7 @@ def features():
     """returns the features map of the virt module"""
     try:
         in_cluster = subprocess.check_call(["crm", "status"]) == 0
-    except Exception:
+    except Exception:  #  pylint: disable=broad-exception-caught
         in_cluster = False
 
     try:
@@ -39,7 +39,7 @@ def features():
         start_resources_ra = (
             ra_conf.find(".//parameter[@name='start_resources']") is not None
         )
-    except Exception:
+    except Exception:  #  pylint: disable=broad-exception-caught
         start_resources_ra = False
 
     libvirt_version = -1
@@ -47,7 +47,7 @@ def features():
         version_out = subprocess.Popen(
             ["libvirtd", "-V"], stdout=subprocess.PIPE
         ).communicate()[0]
-        matcher = re.search(b"(\d+)\.(\d+)\.(\d+)", version_out)
+        matcher = re.search(b"(\d+)\.(\d+)\.(\d+)", version_out)  #  pylint: disable=anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string
         if matcher:
             libvirt_version = 0
             for idx in range(len(matcher.groups())):
@@ -62,7 +62,7 @@ def features():
             "enhanced_network": "network_update" in salt.modules.virt.__dict__,
             "cluster": in_cluster,
             "resource_agent_start_resources": start_resources_ra,
-            # Libvirt has the firmware='efi' support since 5.2, but vital fixes came in 5.3 only
+            # Libvirt has the firmware='efi' support since 5.2, but vital fixes came in 5.3 only  #  pylint: disable=line-too-long
             "uefi_auto_loader": libvirt_version >= 5003000,
         },
     }

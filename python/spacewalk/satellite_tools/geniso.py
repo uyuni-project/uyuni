@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -19,7 +19,7 @@ import sys
 import tempfile
 import time
 from stat import ST_SIZE
-from optparse import Option, OptionParser
+from optparse import Option, OptionParser  #  pylint: disable=deprecated-module
 from spacewalk.common.rhnConfig import PRODUCT_NAME
 
 MOUNT_POINT = "/tmp"
@@ -28,7 +28,7 @@ DVD_IMAGE_SIZE = "4380M"
 
 
 def main(arglist):
-    optionsTable = [
+    optionsTable = [  #  pylint: disable=invalid-name
         Option("-m", "--mountpoint", action="store", help="mount point"),
         Option("-s", "--size", action="store", help="image size (eg. 630M)"),
         Option("-p", "--file-prefix", action="store", help="Filename prefix"),
@@ -45,11 +45,11 @@ def main(arglist):
             "--type",
             action="store",
             help="the type of iso being generated.\
-                  this flag is optional, but can be set to spanning, non-spanning, or base.",
+                  this flag is optional, but can be set to spanning, non-spanning, or base.",  #  pylint: disable=line-too-long
         ),
     ]
     parser = OptionParser(option_list=optionsTable)
-    options, _args = parser.parse_args(arglist)
+    options, _args = parser.parse_args(arglist)  #  pylint: disable=invalid-name,unused-variable
 
     # Check to see if mkisofs is installed
     if not os.path.exists("/usr/bin/mkisofs"):
@@ -61,15 +61,15 @@ def main(arglist):
         )
         return
 
-    mountPoint = options.mountpoint or MOUNT_POINT
+    mountPoint = options.mountpoint or MOUNT_POINT  #  pylint: disable=invalid-name
     if options.type == "dvd":
         print("Building  DVD Iso ...")
-        sizeStr = options.size or DVD_IMAGE_SIZE
+        sizeStr = options.size or DVD_IMAGE_SIZE  #  pylint: disable=invalid-name
     else:
-        sizeStr = options.size or IMAGE_SIZE
-    imageSize = sizeStrToInt(sizeStr)
+        sizeStr = options.size or IMAGE_SIZE  #  pylint: disable=invalid-name
+    imageSize = sizeStrToInt(sizeStr)  #  pylint: disable=invalid-name
     if imageSize == 0:
-        print(("Unknown size %s" % sizeStr))
+        print(("Unknown size %s" % sizeStr))  #  pylint: disable=consider-using-f-string
         return
 
     if options.version is None:
@@ -90,7 +90,7 @@ def main(arglist):
         os.unlink(os.path.join(options.output, f))
 
     # Normalize the directory name
-    mountPoint = os.path.normpath(mountPoint)
+    mountPoint = os.path.normpath(mountPoint)  #  pylint: disable=invalid-name
 
     # Generate the listings for each CD
     files = findFiles(mountPoint)
@@ -99,7 +99,7 @@ def main(arglist):
         cd = []
         sz = 0
         while files:
-            filePath, fileSize = files[0]
+            filePath, fileSize = files[0]  #  pylint: disable=invalid-name,invalid-name
             if sz + fileSize > imageSize:
                 # Overflow
                 break
@@ -118,15 +118,15 @@ def main(arglist):
     os.close(fd)
 
     # command-line template
-    mkisofsTemplate = (
+    mkisofsTemplate = (  #  pylint: disable=invalid-name
         "mkisofs -r -J -D -file-mode 0444 -new-dir-mode 0555 -dir-mode 0555 "
         + "-graft-points %s -o %s /DISK_%s_OF_%s=%s"
     )
     for i in range(cdcount):
-        print(("---------- %s/%s" % (i + 1, cdcount)))
+        print(("---------- %s/%s" % (i + 1, cdcount)))  #  pylint: disable=consider-using-f-string
 
         # if options.type is None:
-        filename = "%s/%s-%s.%s-%02d.iso" % (
+        filename = "%s/%s-%s.%s-%02d.iso" % (  #  pylint: disable=consider-using-f-string
             options.output,
             file_prefix,
             options.version,
@@ -144,10 +144,10 @@ def main(arglist):
         opts = {
             "preparer": PRODUCT_NAME,
             "publisher": PRODUCT_NAME,
-            "volid": "SM_%s/%s" % (i + 1, cdcount),
+            "volid": "SM_%s/%s" % (i + 1, cdcount),  #  pylint: disable=consider-using-f-string
             "path-list": pathfiles,
         }
-        opts = ['-%s "%s"' % x for x in list(opts.items())]
+        opts = ['-%s "%s"' % x for x in list(opts.items())]  #  pylint: disable=consider-using-f-string
 
         # Generate the file list that will go into the CD
         # See the man page for mkisofs to better understand how graft points
@@ -158,7 +158,7 @@ def main(arglist):
             relpath = os.path.relpath(f, mountPoint)
             # Append to the graft list: relative=real
             relpath = os.path.dirname(relpath)
-            grafts.append("%s/=%s" % (relpath, f))
+            grafts.append("%s/=%s" % (relpath, f))  #  pylint: disable=consider-using-f-string
 
         # Generate the command line
         cmd = mkisofsTemplate % (
@@ -175,7 +175,7 @@ def main(arglist):
             os.write(pathfiles_fd, "\n")
         os.close(pathfiles_fd)
 
-        print(("Creating %s" % filename))
+        print(("Creating %s" % filename))  #  pylint: disable=consider-using-f-string
         # And run it
         fd = os.popen(cmd, "r")
         print((fd.read()))
@@ -186,9 +186,9 @@ def main(arglist):
             )
             if not os.path.exists(copy_iso_path):
                 os.mkdir(copy_iso_path)
-            fd = os.popen("mv %s %s" % (filename, copy_iso_path), "r")
+            fd = os.popen("mv %s %s" % (filename, copy_iso_path), "r")  #  pylint: disable=consider-using-f-string
             print((fd.read()))
-            fd = os.popen("rm %s" % filename)
+            fd = os.popen("rm %s" % filename)  #  pylint: disable=consider-using-f-string
             print((fd.read()))
 
         # Remove the temp file
@@ -198,7 +198,7 @@ def main(arglist):
     os.unlink(empty_file_path)
 
 
-def sizeStrToInt(s):
+def sizeStrToInt(s):  #  pylint: disable=invalid-name
     # Converts s to an int
     if s is None or s == "":
         # Don't know how to interpret it
@@ -234,9 +234,9 @@ def sizeStrToInt(s):
 # The visitfunc argument for os.path.walk
 
 
-def __visitfunc(arg, dirname, names):
+def __visitfunc(arg, dirname, names):  #  pylint: disable=invalid-name
     for f in names:
-        filename = os.path.normpath("%s/%s" % (dirname, f))
+        filename = os.path.normpath("%s/%s" % (dirname, f))  #  pylint: disable=consider-using-f-string
         if os.path.isdir(filename):
             # walk will process it later
             continue
@@ -250,7 +250,7 @@ def __visitfunc(arg, dirname, names):
 # directory, together with the file size
 
 
-def findFiles(start):
+def findFiles(start):  #  pylint: disable=invalid-name
     a = []
     os.path.walk(start, __visitfunc, a)
     return a

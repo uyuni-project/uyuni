@@ -10,14 +10,14 @@ from unittest.mock import mock_open
 
 try:
     import gi
-    from gi.repository import Modulemd
+    from gi.repository import Modulemd  #  pylint: disable=unused-import
 except ImportError:
     gi = None
 
 
 @pytest.mark.skipif(gi is None, reason="libmodulemd Python bindings is missing")
 @pytest.mark.timeout(3)
-class TestLibmodProc:
+class TestLibmodProc:  #  pylint: disable=empty-docstring
     """ """
 
     def setup_method(self):
@@ -34,27 +34,27 @@ class TestLibmodProc:
 
         # Test module_packages output
         self.libmodapi.set_repodata(
-            open("tests/data/module_packages-1.json", "r").read()
+            open("tests/data/module_packages-1.json", "r").read()  #  pylint: disable=unspecified-encoding
         ).run()
-        result_dict = self.libmodapi._result
+        result_dict = self.libmodapi._result  #  pylint: disable=protected-access
         json_str = self.libmodapi.to_json()
 
         assert result_dict == json.loads(json_str)
 
         # Test list_modules output
         self.libmodapi.set_repodata(
-            open("tests/data/list_modules.json", "r").read()
+            open("tests/data/list_modules.json", "r").read()  #  pylint: disable=unspecified-encoding
         ).run()
-        result_dict = self.libmodapi._result
+        result_dict = self.libmodapi._result  #  pylint: disable=protected-access
         json_str = self.libmodapi.to_json()
 
         assert result_dict == json.loads(json_str)
 
         # Test list_packages output
         self.libmodapi.set_repodata(
-            open("tests/data/list_packages.json", "r").read()
+            open("tests/data/list_packages.json", "r").read()  #  pylint: disable=unspecified-encoding
         ).run()
-        result_dict = self.libmodapi._result
+        result_dict = self.libmodapi._result  #  pylint: disable=protected-access
         json_str = self.libmodapi.to_json()
 
         assert result_dict == json.loads(json_str)
@@ -65,13 +65,13 @@ class TestLibmodProc:
         """
         data = b"\x1f\x8b"
         with mock.patch("mgrlibmod.mllib.open", mock_open(read_data=data), create=True):
-            assert self.libmodproc._is_meta_compressed("dummy.gz")
+            assert self.libmodproc._is_meta_compressed("dummy.gz")  #  pylint: disable=protected-access
 
     def test_module_packages(self):
         self.libmodapi.set_repodata(
-            open("tests/data/module_packages-1.json", "r").read()
+            open("tests/data/module_packages-1.json", "r").read()  #  pylint: disable=unspecified-encoding
         ).run()
-        result = self.libmodapi._result["module_packages"]
+        result = self.libmodapi._result["module_packages"]  #  pylint: disable=protected-access
 
         # 'apis' and 'packages' fields should be filled
         assert ["perl-DBI"] == result["apis"]
@@ -88,9 +88,9 @@ class TestLibmodProc:
 
         # Explicitly specify the dependency for perl:5.26 (default)
         self.libmodapi.set_repodata(
-            open("tests/data/module_packages-2.json", "r").read()
+            open("tests/data/module_packages-2.json", "r").read()  #  pylint: disable=unspecified-encoding
         ).run()
-        result = self.libmodapi._result["module_packages"]
+        result = self.libmodapi._result["module_packages"]  #  pylint: disable=protected-access
 
         # Assert that the correct context is selected
         selected = next(s for s in result["selected"] if s["name"] == "perl-DBI")
@@ -103,9 +103,9 @@ class TestLibmodProc:
 
         # Explicitly specify the dependency for perl:5.24
         self.libmodapi.set_repodata(
-            open("tests/data/module_packages-3.json", "r").read()
+            open("tests/data/module_packages-3.json", "r").read()  #  pylint: disable=unspecified-encoding
         ).run()
-        result = self.libmodapi._result["module_packages"]
+        result = self.libmodapi._result["module_packages"]  #  pylint: disable=protected-access
 
         # Assert that the correct context is selected
         selected = next(s for s in result["selected"] if s["name"] == "perl-DBI")
@@ -121,9 +121,9 @@ class TestLibmodProc:
         Test enabling a module with multiple versions included
         """
         self.libmodapi.set_repodata(
-            open("tests/data/module_packages_rhel.json", "r").read()
+            open("tests/data/module_packages_rhel.json", "r").read()  #  pylint: disable=unspecified-encoding
         ).run()
-        result = self.libmodapi._result["module_packages"]
+        result = self.libmodapi._result["module_packages"]  #  pylint: disable=protected-access
 
         # Assert that the correct name, stream, version and contexts (NSVC) are selected
         expected = {
@@ -139,12 +139,12 @@ class TestLibmodProc:
 
     def test_self_dependencies(self):
         """
-        Test resolution with module streams that 'require' themselves (e.g. CentOS PowerTools)
+        Test resolution with module streams that 'require' themselves (e.g. CentOS PowerTools)  #  pylint: disable=line-too-long
         """
         self.libmodapi.set_repodata(
-            open("tests/data/module_packages_powertools.json", "r").read()
+            open("tests/data/module_packages_powertools.json", "r").read()  #  pylint: disable=unspecified-encoding
         ).run()
-        result = self.libmodapi._result["module_packages"]
+        result = self.libmodapi._result["module_packages"]  #  pylint: disable=protected-access
 
         selected = result["selected"]
         assert 1 == len(selected)
@@ -154,7 +154,7 @@ class TestLibmodProc:
     def test_conflicting_streams(self):
         try:
             self.libmodapi.set_repodata(
-                open("tests/data/conflicting_streams.json", "r").read()
+                open("tests/data/conflicting_streams.json", "r").read()  #  pylint: disable=unspecified-encoding
             ).run()
             pytest.fail("Must throw MlConflictingStreams exception")
         except MlConflictingStreams as e:
@@ -167,30 +167,30 @@ class TestLibmodProc:
 
     def test_all_modules(self):
         self.libmodapi.set_repodata(
-            open("tests/data/all_modules.json", "r").read()
+            open("tests/data/all_modules.json", "r").read()  #  pylint: disable=unspecified-encoding
         ).run()
-        result = self.libmodapi._result["module_packages"]
+        result = self.libmodapi._result["module_packages"]  #  pylint: disable=protected-access
 
         # Assert that all the modules are selected successfully
         assert 46 == len(result["selected"])
 
     def test_all_modules_rhel(self):
         """
-        Test enabling all modules in a RHEL repository that contains multiple versions of each module
+        Test enabling all modules in a RHEL repository that contains multiple versions of each module  #  pylint: disable=line-too-long
         """
         self.libmodapi.set_repodata(
-            open("tests/data/all_modules_rhel.json", "r").read()
+            open("tests/data/all_modules_rhel.json", "r").read()  #  pylint: disable=unspecified-encoding
         ).run()
-        result = self.libmodapi._result["module_packages"]
+        result = self.libmodapi._result["module_packages"]  #  pylint: disable=protected-access
 
         # Assert that all the modules & versions are selected successfully
         assert 189 == len(result["selected"])
 
     def test_default_stream(self):
         self.libmodapi.set_repodata(
-            open("tests/data/default_stream.json", "r").read()
+            open("tests/data/default_stream.json", "r").read()  #  pylint: disable=unspecified-encoding
         ).run()
-        result = self.libmodapi._result["module_packages"]
+        result = self.libmodapi._result["module_packages"]  #  pylint: disable=protected-access
 
         # Assert that the default stream is selected
         selected = next(s for s in result["selected"] if s["name"] == "perl")
@@ -198,9 +198,9 @@ class TestLibmodProc:
 
     def test_perl_dependencies(self):
         self.libmodapi.set_repodata(
-            open("tests/data/perl_dependencies.json", "r").read()
+            open("tests/data/perl_dependencies.json", "r").read()  #  pylint: disable=unspecified-encoding
         ).run()
-        result = self.libmodapi._result["module_packages"]
+        result = self.libmodapi._result["module_packages"]  #  pylint: disable=protected-access
 
         # Assert that the default Perl stream is selected
         selected = next(s for s in result["selected"] if s["name"] == "perl")
@@ -220,12 +220,12 @@ class TestLibmodProc:
 
     def test_perl_dependencies_rhel(self):
         """
-        Test perl modules in a RHEL repository that contains multiple versions of each module
+        Test perl modules in a RHEL repository that contains multiple versions of each module  #  pylint: disable=line-too-long
         """
         self.libmodapi.set_repodata(
-            open("tests/data/perl_dependencies_rhel.json", "r").read()
+            open("tests/data/perl_dependencies_rhel.json", "r").read()  #  pylint: disable=unspecified-encoding
         ).run()
-        result = self.libmodapi._result["module_packages"]
+        result = self.libmodapi._result["module_packages"]  #  pylint: disable=protected-access
 
         # Assert that the default Perl stream is selected
         selected = [s for s in result["selected"] if s["name"] == "perl"]
@@ -289,7 +289,7 @@ class TestLibmodProc:
     def test_not_found(self):
         try:
             self.libmodapi.set_repodata(
-                open("tests/data/not_found.json", "r").read()
+                open("tests/data/not_found.json", "r").read()  #  pylint: disable=unspecified-encoding
             ).run()
             pytest.fail("Must throw MlModuleNotFound exception")
         except MlModuleNotFound as e:
@@ -297,12 +297,12 @@ class TestLibmodProc:
             assert expected == e.data["streams"]
 
     def test_soft_dependencies(self):
-        # Some modules have dependencies to other modules without specifying any stream name
+        # Some modules have dependencies to other modules without specifying any stream name  #  pylint: disable=line-too-long
         # For example, 'perl-App-cpanminus' depends on any stream of 'perl-YAML'
         self.libmodapi.set_repodata(
-            open("tests/data/soft_dependencies.json", "r").read()
+            open("tests/data/soft_dependencies.json", "r").read()  #  pylint: disable=unspecified-encoding
         ).run()
-        result = self.libmodapi._result["module_packages"]
+        result = self.libmodapi._result["module_packages"]  #  pylint: disable=protected-access
 
         # Assert that 3 modules are selected (perl, perl-YAML, perl-App-cpanminus)
         assert 3 == len(result["selected"])
@@ -321,19 +321,19 @@ class TestLibmodProc:
 
     def test_list_modules(self):
         self.libmodapi.set_repodata(
-            open("tests/data/list_modules.json", "r").read()
+            open("tests/data/list_modules.json", "r").read()  #  pylint: disable=unspecified-encoding
         ).run()
-        result = self.libmodapi._result["list_modules"]
+        result = self.libmodapi._result["list_modules"]  #  pylint: disable=protected-access
 
         # Assert total number of modules
         assert 46 == len(result["modules"])
 
         # Assert that every entry has 'default' and 'streams' fields
-        for key, value in result["modules"].items():
+        for key, value in result["modules"].items():  #  pylint: disable=unused-variable
             assert "default" in value
             assert "streams" in value
             # Assert that streams is a list (serializable)
-            assert type(value["streams"]) is list
+            assert type(value["streams"]) is list  #  pylint: disable=unidiomatic-typecheck
             # Assert that there are no duplicates in stream names
             assert len(value["streams"]) == len(set(value["streams"]))
 
@@ -344,9 +344,9 @@ class TestLibmodProc:
 
     def test_list_packages(self):
         self.libmodapi.set_repodata(
-            open("tests/data/list_packages.json", "r").read()
+            open("tests/data/list_packages.json", "r").read()  #  pylint: disable=unspecified-encoding
         ).run()
-        result = self.libmodapi._result["list_packages"]["packages"]
+        result = self.libmodapi._result["list_packages"]["packages"]  #  pylint: disable=protected-access
 
         # Assert total number of packages
         assert 1742 == len(result)
@@ -363,14 +363,14 @@ class TestLibmodProc:
         }
 
         self.libmodapi.set_repodata(json.dumps(request)).run()
-        result = self.libmodapi._result["list_modules"]
+        result = self.libmodapi._result["list_modules"]  #  pylint: disable=protected-access
 
         assert 4 == len(result["modules"])
 
-        for key, value in result["modules"].items():
+        for key, value in result["modules"].items():  #  pylint: disable=unused-variable
             assert "streams" in value
             # LL9 doesn't define any defaults
-            assert value["default"] == None
+            assert value["default"] == None  #  pylint: disable=singleton-comparison
             assert len(value["streams"]) > 0
 
     def test_module_packages_liberty(self):
@@ -381,7 +381,7 @@ class TestLibmodProc:
         }
 
         self.libmodapi.set_repodata(json.dumps(request)).run()
-        result = self.libmodapi._result["module_packages"]
+        result = self.libmodapi._result["module_packages"]  #  pylint: disable=protected-access
 
         assert "selected" in result
         assert 2 == len(result["selected"])

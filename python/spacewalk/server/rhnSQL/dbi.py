@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2013 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -36,7 +36,7 @@ def get_database_module(backend=None):
     try:
         module = __import__(driver_dir, globals(), locals(), [driver_mod])
         module = getattr(module, driver_mod)
-    except ImportError:
+    except ImportError:  #  pylint: disable=try-except-raise
         raise
 
     return module

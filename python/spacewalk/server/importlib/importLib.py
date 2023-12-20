@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring,invalid-name
 # Copyright (c) 2008--2018 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -22,13 +22,13 @@ from uyuni.common.usix import IntType, StringType, InstanceType
 
 try:
     #  python 2
-    from UserDict import UserDict
+    from UserDict import UserDict  #  pylint: disable=unused-import
     from UserList import UserList
 except ImportError:
     #  python3
     from collections import UserList, UserDict
 
-from uyuni.common.checksum import getFileChecksum
+from uyuni.common.checksum import getFileChecksum  #  pylint: disable=ungrouped-imports
 from uyuni.common.fileutils import createPath
 from spacewalk.common.rhnConfig import CFG
 
@@ -49,12 +49,12 @@ class Item(dict):
     def __init__(self, attributes=None):
         dict.__init__(self, attributes)
 
-    def populate(self, hash):
+    def populate(self, hash):  #  pylint: disable=redefined-builtin
         self.update(hash)
         return self
 
     def __repr__(self):
-        return "[<%s instance; attributes=%s]" % (
+        return "[<%s instance; attributes=%s]" % (  #  pylint: disable=consider-using-f-string
             str(self.__class__),
             dict.__repr__(self),
         )
@@ -70,7 +70,7 @@ class BaseInformation(Item):
     Second level object. It may contain composite items as attributes
     """
 
-    def __init__(self, dict=None):
+    def __init__(self, dict=None):  #  pylint: disable=redefined-builtin
         Item.__init__(self, dict)
         # Initialize attributes
         for k in list(dict.keys()):
@@ -85,9 +85,9 @@ class BaseInformation(Item):
         # forced
         self.diff_result = None
 
-    def toDict(self):
-        dict = {
-            "ignored": not not self.ignored,
+    def toDict(self):  #  pylint: disable=invalid-name
+        dict = {  #  pylint: disable=redefined-builtin
+            "ignored": not not self.ignored,  #  pylint: disable=unnecessary-negation
             "diff": self.diff.toDict(),
         }
         return dict
@@ -97,7 +97,7 @@ class BaseInformation(Item):
 
 
 class Information(BaseInformation):
-    attributeTypes = {}
+    attributeTypes = {}  #  pylint: disable=invalid-name
 
     def __init__(self):
         BaseInformation.__init__(self, self.attributeTypes)
@@ -106,18 +106,18 @@ class Information(BaseInformation):
 # Function that validates the insertion of items in a Collection
 
 
-def validateInformation(obj):
+def validateInformation(obj):  #  pylint: disable=invalid-name
     if not isinstance(obj, BaseInformation):
         if isinstance(obj, InstanceType):
-            strtype = "instance of %s" % obj.__class__
+            strtype = "instance of %s" % obj.__class__  #  pylint: disable=consider-using-f-string
         else:
             strtype = str(type(obj))
-        raise TypeError("Expected an Information object; got %s" % strtype)
+        raise TypeError("Expected an Information object; got %s" % strtype)  #  pylint: disable=consider-using-f-string
 
 
 # A list with the needed functions to validate what gets put in it
-class Collection(UserList):
-    def __init__(self, list=None):
+class Collection(UserList):  #  pylint: disable=missing-class-docstring
+    def __init__(self, list=None):  #  pylint: disable=redefined-builtin
         if list:
             for obj in list:
                 validateInformation(obj)
@@ -158,13 +158,13 @@ class Collection(UserList):
         UserList.__radd__(self, other)
 
     def __repr__(self):
-        return "[<%s instance; items=%s]" % (str(self.__class__), str(self.data))
+        return "[<%s instance; items=%s]" % (str(self.__class__), str(self.data))  #  pylint: disable=consider-using-f-string
 
 
 # Import classes
 # XXX makes sense to put this in a different file
 class ChannelFamily(Information):
-    attributeTypes = {
+    attributeTypes = {  #  pylint: disable=invalid-name
         "name": StringType,
         "label": StringType,
         "product_url": StringType,
@@ -174,7 +174,7 @@ class ChannelFamily(Information):
 
 
 class DistChannelMap(Information):
-    attributeTypes = {
+    attributeTypes = {  #  pylint: disable=invalid-name
         "os": StringType,
         "release": StringType,
         "channel_arch": StringType,
@@ -184,7 +184,7 @@ class DistChannelMap(Information):
 
 
 class SupportInformation(Information):
-    attributeTypes = {
+    attributeTypes = {  #  pylint: disable=invalid-name
         "pkgid": StringType,
         "keyword": StringType,
         "channel": StringType,
@@ -192,7 +192,7 @@ class SupportInformation(Information):
 
 
 class SuseProduct(Information):
-    attributeTypes = {
+    attributeTypes = {  #  pylint: disable=invalid-name
         "name": StringType,
         "version": StringType,
         "friendly_name": StringType,
@@ -207,7 +207,7 @@ class SuseProduct(Information):
 
 
 class SuseProductChannel(Information):
-    attributeTypes = {
+    attributeTypes = {  #  pylint: disable=invalid-name
         "product_id": IntType,
         "channel_id": IntType,
         "mandatory": StringType,
@@ -215,14 +215,14 @@ class SuseProductChannel(Information):
 
 
 class SuseUpgradePath(Information):
-    attributeTypes = {
+    attributeTypes = {  #  pylint: disable=invalid-name
         "from_pdid": IntType,
         "to_pdid": IntType,
     }
 
 
 class SuseProductExtension(Information):
-    attributeTypes = {
+    attributeTypes = {  #  pylint: disable=invalid-name
         "product_id": IntType,
         "root_id": IntType,
         "ext_id": IntType,
@@ -231,7 +231,7 @@ class SuseProductExtension(Information):
 
 
 class SuseProductRepository(Information):
-    attributeTypes = {
+    attributeTypes = {  #  pylint: disable=invalid-name
         "product_id": IntType,
         "rootid": IntType,
         "repo_id": IntType,
@@ -244,7 +244,7 @@ class SuseProductRepository(Information):
 
 
 class SCCRepository(Information):
-    attributeTypes = {
+    attributeTypes = {  #  pylint: disable=invalid-name
         "sccid": IntType,
         "autorefresh": StringType,
         "name": StringType,
@@ -257,7 +257,7 @@ class SCCRepository(Information):
 
 
 class SuseSubscription(Information):
-    attributeTypes = {
+    attributeTypes = {  #  pylint: disable=invalid-name
         "max_members": IntType,  # Deprecated
         "org_id": IntType,
         "channel_family_id": IntType,
@@ -266,7 +266,7 @@ class SuseSubscription(Information):
 
 
 class ClonedChannel(Information):
-    attributeTypes = {
+    attributeTypes = {  #  pylint: disable=invalid-name
         "orig": StringType,
         "orig_id": IntType,
         "clone": StringType,
@@ -275,7 +275,7 @@ class ClonedChannel(Information):
 
 
 class ReleaseChannelMap(Information):
-    attributeTypes = {
+    attributeTypes = {  #  pylint: disable=invalid-name
         "product": StringType,
         "version": StringType,
         "release": StringType,
@@ -285,7 +285,7 @@ class ReleaseChannelMap(Information):
 
 
 class ChannelErratum(Information):
-    attributeTypes = {
+    attributeTypes = {  #  pylint: disable=invalid-name
         "id": StringType,
         "advisory_name": StringType,
         "last_modified": DateType,
@@ -293,7 +293,7 @@ class ChannelErratum(Information):
 
 
 class IncompleteSourcePackage(Information):
-    attributeTypes = {
+    attributeTypes = {  #  pylint: disable=invalid-name
         "id": StringType,
         "source_rpm": StringType,
         "last_modified": DateType,
@@ -301,13 +301,13 @@ class IncompleteSourcePackage(Information):
 
 
 class ChannelTrust(Information):
-    attributeTypes = {
+    attributeTypes = {  #  pylint: disable=invalid-name
         "org_trust_id": IntType,
     }
 
 
 class ContentSourceSsl(Information):
-    attributeTypes = {
+    attributeTypes = {  #  pylint: disable=invalid-name
         "ssl_ca_cert_id": IntType,
         "ssl_client_cert_id": IntType,
         "ssl_client_key_id": IntType,
@@ -315,7 +315,7 @@ class ContentSourceSsl(Information):
 
 
 class ContentSource(Information):
-    attributeTypes = {
+    attributeTypes = {  #  pylint: disable=invalid-name
         "label": StringType,
         "source_url": StringType,
         "type_id": IntType,
@@ -326,7 +326,7 @@ class ContentSource(Information):
 
 
 class Channel(Information):
-    attributeTypes = {
+    attributeTypes = {  #  pylint: disable=invalid-name
         "label": StringType,
         "org_id": IntType,
         "channel_arch": StringType,
@@ -369,21 +369,21 @@ class Channel(Information):
 
 
 class OrgTrust(Information):
-    attributeTypes = {
+    attributeTypes = {  #  pylint: disable=invalid-name
         "org_id": IntType,
     }
 
 
 class Org(Information):
-    attributeTypes = {
+    attributeTypes = {  #  pylint: disable=invalid-name
         "id": IntType,
         "name": StringType,
         "org_trust_ids": [OrgTrust],
     }
 
 
-class File(Item):
-    attributeTypes = {
+class File(Item):  #  pylint: disable=missing-class-docstring
+    attributeTypes = {  #  pylint: disable=invalid-name
         "name": StringType,
         "device": IntType,
         "inode": IntType,
@@ -406,7 +406,7 @@ class File(Item):
 
 
 class Dependency(Item):
-    attributeTypes = {
+    attributeTypes = {  #  pylint: disable=invalid-name
         "name": StringType,
         "version": StringType,
         "flags": IntType,
@@ -417,7 +417,7 @@ class Dependency(Item):
 
 
 class ChangeLog(Item):
-    attributeTypes = {
+    attributeTypes = {  #  pylint: disable=invalid-name
         "name": StringType,
         "text": StringType,
         "time": DateType,
@@ -428,7 +428,7 @@ class ChangeLog(Item):
 
 
 class Checksum(Item):
-    attributeTypes = {
+    attributeTypes = {  #  pylint: disable=invalid-name
         "type": StringType,
         "value": StringType,
     }
@@ -438,7 +438,7 @@ class Checksum(Item):
 
 
 class ProductFile(Information):
-    attributeTypes = {
+    attributeTypes = {  #  pylint: disable=invalid-name
         "name": StringType,
         "epoch": StringType,
         "version": StringType,
@@ -451,21 +451,21 @@ class ProductFile(Information):
 
 
 class Eula(Information):
-    attributeTypes = {
+    attributeTypes = {  #  pylint: disable=invalid-name
         "text": StringType,
         "checksum": StringType,
     }
 
 
 class ExtraTag(Information):
-    attributeTypes = {
+    attributeTypes = {  #  pylint: disable=invalid-name
         "name": StringType,
         "value": StringType,
     }
 
 
-class IncompletePackage(BaseInformation):
-    attributeTypes = {
+class IncompletePackage(BaseInformation):  #  pylint: disable=missing-class-docstring
+    attributeTypes = {  #  pylint: disable=invalid-name
         "package_id": StringType,  # RH db id
         "name": StringType,
         "epoch": StringType,
@@ -489,7 +489,7 @@ class IncompletePackage(BaseInformation):
         self.org_id = None
 
     def toDict(self):
-        dict = BaseInformation.toDict(self)
+        dict = BaseInformation.toDict(self)  #  pylint: disable=redefined-builtin
         evr = list(self.evr)
         if evr[0] is None:
             evr[0] = ""
@@ -505,7 +505,7 @@ class IncompletePackage(BaseInformation):
         return dict
 
     def short_str(self):
-        return "%s-%s-%s.%s.rpm" % (self.name, self.evr[1], self.evr[2], self.arch)
+        return "%s-%s-%s.%s.rpm" % (self.name, self.evr[1], self.evr[2], self.arch)  #  pylint: disable=consider-using-f-string,unsubscriptable-object,unsubscriptable-object
 
 
 class Package(IncompletePackage):
@@ -514,7 +514,7 @@ class Package(IncompletePackage):
     A package is a hash of attributes
     """
 
-    attributeTypes = {
+    attributeTypes = {  #  pylint: disable=invalid-name
         "description": StringType,
         "summary": StringType,
         "license": StringType,
@@ -566,8 +566,8 @@ class Package(IncompletePackage):
             self[k] = None
 
 
-class SourcePackage(IncompletePackage):
-    attributeTypes = {
+class SourcePackage(IncompletePackage):  #  pylint: disable=missing-class-docstring
+    attributeTypes = {  #  pylint: disable=invalid-name
         "package_group": StringType,
         "rpm_version": StringType,
         "source_rpm": StringType,
@@ -599,7 +599,7 @@ class SourcePackage(IncompletePackage):
 
 
 class Bug(Information):
-    attributeTypes = {
+    attributeTypes = {  #  pylint: disable=invalid-name
         "bug_id": StringType,
         "summary": StringType,
         "href": StringType,
@@ -607,7 +607,7 @@ class Bug(Information):
 
 
 class ErrataFile(Information):
-    attributeTypes = {
+    attributeTypes = {  #  pylint: disable=invalid-name
         "filename": StringType,
         "file_type": StringType,
         "channel_list": [StringType],
@@ -619,13 +619,13 @@ class ErrataFile(Information):
 
 
 class Keyword(Information):
-    attributeTypes = {
+    attributeTypes = {  #  pylint: disable=invalid-name
         "keyword": StringType,
     }
 
 
 class Erratum(Information):
-    attributeTypes = {
+    attributeTypes = {  #  pylint: disable=invalid-name
         "advisory": StringType,
         "advisory_name": StringType,
         "advisory_rel": IntType,
@@ -656,7 +656,7 @@ class Erratum(Information):
 
 
 class BaseArch(Information):
-    attributeTypes = {
+    attributeTypes = {  #  pylint: disable=invalid-name
         "label": StringType,
         "name": StringType,
     }
@@ -667,7 +667,7 @@ class CPUArch(BaseArch):
 
 
 class BaseTypedArch(BaseArch):
-    attributeTypes = BaseArch.attributeTypes.copy()
+    attributeTypes = BaseArch.attributeTypes.copy()  #  pylint: disable=invalid-name
     attributeTypes.update(
         {
             "arch-type-label": StringType,
@@ -689,7 +689,7 @@ class ChannelArch(BaseTypedArch):
 
 
 class ServerPackageArchCompat(Information):
-    attributeTypes = {
+    attributeTypes = {  #  pylint: disable=invalid-name
         "server-arch": StringType,
         "package-arch": StringType,
         "preference": IntType,
@@ -697,28 +697,28 @@ class ServerPackageArchCompat(Information):
 
 
 class ServerChannelArchCompat(Information):
-    attributeTypes = {
+    attributeTypes = {  #  pylint: disable=invalid-name
         "server-arch": StringType,
         "channel-arch": StringType,
     }
 
 
 class ChannelPackageArchCompat(Information):
-    attributeTypes = {
+    attributeTypes = {  #  pylint: disable=invalid-name
         "channel-arch": StringType,
         "package-arch": StringType,
     }
 
 
 class ServerGroupServerArchCompat(Information):
-    attributeTypes = {
+    attributeTypes = {  #  pylint: disable=invalid-name
         "server-arch": StringType,
         "server-group-type": StringType,
     }
 
 
 class KickstartFile(Information):
-    attributeTypes = {
+    attributeTypes = {  #  pylint: disable=invalid-name
         "relative_path": StringType,
         "last_modified": DateType,
         "file_size": IntType,
@@ -728,7 +728,7 @@ class KickstartFile(Information):
 
 
 class KickstartableTree(Information):
-    attributeTypes = {
+    attributeTypes = {  #  pylint: disable=invalid-name,duplicate-key,duplicate-key
         "label": StringType,
         "base_path": StringType,
         "channel": StringType,
@@ -744,7 +744,7 @@ class KickstartableTree(Information):
 
 
 class ProductName(Information):
-    attributeTypes = {
+    attributeTypes = {  #  pylint: disable=invalid-name
         "label": StringType,
         "name": StringType,
     }
@@ -752,35 +752,35 @@ class ProductName(Information):
 
 # Generic error object
 class Error(Information):
-    attributeTypes = {
+    attributeTypes = {  #  pylint: disable=invalid-name
         "error": StringType,
     }
 
 
 # Base import class
-class Import:
+class Import:  #  pylint: disable=missing-class-docstring
     def __init__(self, batch, backend):
         self.batch = batch
         self.backend = backend
         # Upload force
-        self.uploadForce = 1
+        self.uploadForce = 1  #  pylint: disable=invalid-name
         # Force object verification
-        self.forceVerify = 0
+        self.forceVerify = 0  #  pylint: disable=invalid-name
         # Ignore already-uploaded objects
-        self.ignoreUploaded = 0
+        self.ignoreUploaded = 0  #  pylint: disable=invalid-name
         # Transactional behaviour
         self.transactional = 0
 
-    def setUploadForce(self, value):
+    def setUploadForce(self, value):  #  pylint: disable=invalid-name
         self.uploadForce = value
 
-    def setForceVerify(self, value):
+    def setForceVerify(self, value):  #  pylint: disable=invalid-name
         self.forceVerify = value
 
-    def setIgnoreUploaded(self, value):
+    def setIgnoreUploaded(self, value):  #  pylint: disable=invalid-name
         self.ignoreUploaded = value
 
-    def setTransactional(self, value):
+    def setTransactional(self, value):  #  pylint: disable=invalid-name
         self.transactional = value
 
     # This is the generic API exposed by an importer
@@ -800,10 +800,10 @@ class Import:
 
     def cleanup(self):
         # Clean up the objects in the batch
-        for object in self.batch:
+        for object in self.batch:  #  pylint: disable=redefined-builtin
             self._cleanup_object(object)
 
-    def _cleanup_object(self, object):
+    def _cleanup_object(self, object):  #  pylint: disable=redefined-builtin
         object.clear()
 
     def status(self):
@@ -811,7 +811,7 @@ class Import:
         self.cleanup()
         return self.batch
 
-    def _processPackage(self, package):
+    def _processPackage(self, package):  #  pylint: disable=invalid-name
         # Build the helper data structures
         evr = []
         for f in ("epoch", "version", "release"):
@@ -829,12 +829,12 @@ class Import:
         elif isinstance(text, bytes):
             try:
                 return text.decode("utf8")
-            except:
+            except:  #  pylint: disable=bare-except
                 return text.decode("iso8859-1")
 
 
 # Any package processing import class
-class GenericPackageImport(Import):
+class GenericPackageImport(Import):  #  pylint: disable=missing-class-docstring
     def __init__(self, batch, backend):
         Import.__init__(self, batch, backend)
         # Packages have to be pre-processed
@@ -858,17 +858,17 @@ class GenericPackageImport(Import):
         if package.arch not in self.package_arches:
             self.package_arches[package.arch] = None
 
-        for type, chksum in list(package["checksums"].items()):
-            checksumTuple = (type, chksum)
-            if not checksumTuple in self.checksums:
+        for type, chksum in list(package["checksums"].items()):  #  pylint: disable=redefined-builtin
+            checksumTuple = (type, chksum)  #  pylint: disable=invalid-name
+            if not checksumTuple in self.checksums:  #  pylint: disable=unnecessary-negation
                 self.checksums[checksumTuple] = None
 
-    def _postprocessPackageNEVRA(self, package):
+    def _postprocessPackageNEVRA(self, package):  #  pylint: disable=invalid-name
         arch = self.package_arches[package.arch]
         if not arch:
             # Unsupported arch
             package.ignored = 1
-            raise InvalidArchError(package.arch, "Unknown arch %s" % package.arch)
+            raise InvalidArchError(package.arch, "Unknown arch %s" % package.arch)  #  pylint: disable=consider-using-f-string
 
         #        package['package_arch_id'] = arch
         #        package['name_id'] = self.names[package.name]
@@ -895,7 +895,7 @@ class ImportException(Exception):
 
 
 class AlreadyUploadedError(ImportException):
-    def __init__(self, object, *rest):
+    def __init__(self, object, *rest):  #  pylint: disable=redefined-builtin
         ImportException.__init__(self, rest)
         self.object = object
 
@@ -949,16 +949,16 @@ class TransactionError(ImportException):
 # Class that stores diff information
 
 
-class Diff(UserList):
+class Diff(UserList):  #  pylint: disable=missing-class-docstring
     def __init__(self):
         UserList.__init__(self)
         self.level = 0
 
-    def setLevel(self, level):
+    def setLevel(self, level):  #  pylint: disable=invalid-name
         if self.level < level:
             self.level = level
 
-    def toDict(self):
+    def toDict(self):  #  pylint: disable=invalid-name
         # Converts the object to a dictionary
         l = []
         for item in self:
@@ -970,7 +970,7 @@ class Diff(UserList):
 
 
 # Replaces all occurences of None with the empty string
-def removeNone(list):
+def removeNone(list):  #  pylint: disable=invalid-name,redefined-builtin
     return [(x is not None and x) or "" for x in list]
 
 
@@ -984,7 +984,7 @@ def move_package(filename, basedir, relpath, checksum_type, checksum, force=None
     The force flag prevents the exception from being raised, and copies the
     file even if the checksum has changed
     """
-    packagePath = basedir + "/" + relpath
+    packagePath = basedir + "/" + relpath  #  pylint: disable=invalid-name
     # Is the file there already?
     if os.path.isfile(packagePath):
         if force:
@@ -997,7 +997,7 @@ def move_package(filename, basedir, relpath, checksum_type, checksum, force=None
                 return
             raise FileConflictError(os.path.basename(packagePath))
 
-    dir = os.path.dirname(packagePath)
+    dir = os.path.dirname(packagePath)  #  pylint: disable=redefined-builtin
     # Create the directory where the file will reside
     if not os.path.exists(dir):
         createPath(dir)

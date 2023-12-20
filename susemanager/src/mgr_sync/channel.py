@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*- pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2014 SUSE
 #
@@ -16,7 +16,7 @@
 from enum import Enum
 
 
-class Channel(object):  # pylint: disable=too-many-instance-attributes
+class Channel(object):  # pylint: disable=too-many-instance-attributes,missing-class-docstring
     class Status(str, Enum):  # pylint: disable=too-few-public-methods
         INSTALLED = "INSTALLED"
         AVAILABLE = "AVAILABLE"
@@ -42,7 +42,7 @@ class Channel(object):  # pylint: disable=too-many-instance-attributes
         if self.status == Channel.Status.AVAILABLE:
             return "[ ]"
         else:
-            return "[%s]" % str(self.status[0])
+            return "[%s]" % str(self.status[0])  #  pylint: disable=consider-using-f-string
 
     def summary_or_url(self):
         return (self.summary + "").strip() or self.url or "N/A"
@@ -56,11 +56,11 @@ class Channel(object):  # pylint: disable=too-many-instance-attributes
 
     def to_ascii_row(self, compact=False):
         if not compact:
-            return "{0} {1} {2} [{3}]".format(
+            return "{0} {1} {2} [{3}]".format(  #  pylint: disable=consider-using-f-string
                 self.short_status, self.name, self.summary_or_url(), self.label
             )
         else:
-            return "{0} {1}".format(self.short_status, self.label)
+            return "{0} {1}".format(self.short_status, self.label)  #  pylint: disable=consider-using-f-string
 
 
 def parse_channels(data, log):
@@ -79,18 +79,18 @@ def parse_channels(data, log):
         entry for entry in data if entry["parent"] == "BASE"
     ]:  # pylint: disable=invalid-name
         base_channel = Channel(bc)
-        log.debug("Found base channel '{0}'".format(base_channel.name))
+        log.debug("Found base channel '{0}'".format(base_channel.name))  #  pylint: disable=consider-using-f-string
         channels[base_channel.label] = base_channel
 
     for entry in data:
         if entry["parent"] == "BASE":
             continue
         channel = Channel(entry)
-        log.debug("Found channel '{0}'".format(channel.name))
+        log.debug("Found channel '{0}'".format(channel.name))  #  pylint: disable=consider-using-f-string
         if channel.parent in channels:
             channels[channel.parent].add_child(channel)
         else:
-            log.debug("Base Channel '{0}' undefined".format(channel.parent))
+            log.debug("Base Channel '{0}' undefined".format(channel.parent))  #  pylint: disable=consider-using-f-string
 
     return channels
 
@@ -102,16 +102,16 @@ def find_channel_by_label(label, channels, log):
     :return: None if the channel is not found, a Channel instance otherwise
     """
 
-    log.info("Searching for channels with label '{0}'".format(label))
+    log.info("Searching for channels with label '{0}'".format(label))  #  pylint: disable=consider-using-f-string
 
     if label in list(channels.keys()):
-        log.debug("Found '{0}'".format(channels[label]))
+        log.debug("Found '{0}'".format(channels[label]))  #  pylint: disable=consider-using-f-string
         return channels[label]
 
     for bc in list(channels.values()):  # pylint: disable=invalid-name
         matches = [c for c in bc.children if c.label == label]
         if len(matches) == 1:
-            log.debug("Found '{0}'".format(matches[0]))
+            log.debug("Found '{0}'".format(matches[0]))  #  pylint: disable=consider-using-f-string
             return matches[0]
 
     return None

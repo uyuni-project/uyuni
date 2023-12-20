@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -79,7 +79,7 @@ def schedule_virt_guest_pkg_install(server_id, action_id, dry_run=0):
     except PackageNotFound:
         pnf = sys.exc_info()[1]
         raise_with_tb(InvalidAction(str(pnf)), sys.exc_info()[2])
-    except Exception:
+    except Exception:  #  pylint: disable=broad-exception-caught
         e = sys.exc_info()[1]
         raise_with_tb(InvalidAction(str(e)), sys.exc_info()[2])
 
@@ -87,7 +87,7 @@ def schedule_virt_guest_pkg_install(server_id, action_id, dry_run=0):
     raise ShadowAction("Scheduled installation of Virtualization Guest packages.")
 
 
-def initiate(server_id, action_id, dry_run=0):
+def initiate(server_id, action_id, dry_run=0):  #  pylint: disable=unused-argument,unused-argument
     log_debug(3)
     h = rhnSQL.prepare(_query_initiate_guest)
     h.execute(action_id=action_id)
@@ -127,7 +127,7 @@ def initiate(server_id, action_id, dry_run=0):
     )
 
 
-def add_tools_channel(server_id, action_id, dry_run=0):
+def add_tools_channel(server_id, action_id, dry_run=0):  #  pylint: disable=unused-argument
     log_debug(3)
     if not dry_run:
         subscribe_to_tools_channel(server_id)

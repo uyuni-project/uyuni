@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Licensed under the GNU General Public License Version 3
 #
 # This program is free software; you can redistribute it and/or modify
@@ -157,17 +157,17 @@ def do_errata_apply(self, args, errata_list=None, only_systems=None):
                     if system.get("name") not in to_apply_by_name[erratum]:
                         to_apply_by_name[erratum].append(system.get("name"))
         except xmlrpclib.Fault:
-            logging.debug("%s does not affect any systems" % erratum)
+            logging.debug("%s does not affect any systems" % erratum)  #  pylint: disable=consider-using-f-string
             continue
 
         # make a summary list to show the user
         if erratum in to_apply_by_name:
             summary.append(
-                "%s        %s"
+                "%s        %s"  #  pylint: disable=consider-using-f-string
                 % (erratum.ljust(15), str(len(to_apply_by_name[erratum])).rjust(3))
             )
         else:
-            logging.debug("%s does not affect any systems" % erratum)
+            logging.debug("%s does not affect any systems" % erratum)  #  pylint: disable=consider-using-f-string
 
     # get a unique list of all systems we need to touch
     for systemlist in to_apply_by_name.values():
@@ -272,7 +272,7 @@ def complete_errata_listaffectedsystems(self, text, line, beg, end):
 def do_errata_listaffectedsystems(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if not args:
         self.help_errata_listaffectedsystems()
@@ -291,7 +291,7 @@ def do_errata_listaffectedsystems(self, args):
                 print(self.SEPARATOR)
             add_separator = True
 
-            print("%s:" % erratum)
+            print("%s:" % erratum)  #  pylint: disable=consider-using-f-string
             print("\n".join(sorted([s.get("name") for s in systems])))
 
     return 0
@@ -312,7 +312,7 @@ def complete_errata_listcves(self, text, line, beg, end):
 def do_errata_listcves(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if not args:
         self.help_errata_listcves()
@@ -333,7 +333,7 @@ def do_errata_listcves(self, args):
                         print(self.SEPARATOR)
                     add_separator = True
 
-                    print("%s:" % erratum)
+                    print("%s:" % erratum)  #  pylint: disable=consider-using-f-string
 
                 print("\n".join(sorted(cves)))
         return 0
@@ -355,12 +355,12 @@ def complete_errata_findbycve(self, text, line, beg, end):
 
 
 def do_errata_findbycve(self, args):
-    cve_list, _options = parse_command_arguments(args, get_argument_parser())
+    cve_list, _options = parse_command_arguments(args, get_argument_parser())  #  pylint: disable=unused-variable
     if not cve_list:
         self.help_errata_findbycve()
         return 1
 
-    logging.debug("Got CVE list %s" % cve_list)
+    logging.debug("Got CVE list %s" % cve_list)  #  pylint: disable=consider-using-f-string
     add_separator = False
 
     # Then iterate over the requested CVEs and dump the errata which match
@@ -369,11 +369,11 @@ def do_errata_findbycve(self, args):
             print(self.SEPARATOR)
         add_separator = True
 
-        print("%s:" % c)
+        print("%s:" % c)  #  pylint: disable=consider-using-f-string
         errata = self.client.errata.findByCve(self.session, c)
         if errata:
             for e in errata:
-                print("%s" % e.get("advisory_name"))
+                print("%s" % e.get("advisory_name"))  #  pylint: disable=consider-using-f-string
 
     return 0
 
@@ -393,7 +393,7 @@ def complete_errata_details(self, text, line, beg, end):
 def do_errata_details(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if not args:
         self.help_errata_details()
@@ -490,7 +490,7 @@ def complete_errata_delete(self, text, line, beg, end):
 def do_errata_delete(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if not args:
         self.help_errata_delete()
@@ -509,7 +509,7 @@ def do_errata_delete(self, args):
     # tell the user how many channels each erratum affects
     for erratum in sorted(errata):
         channels = self.client.errata.applicableToChannels(self.session, erratum)
-        print("%s    %s" % (erratum.ljust(20), str(len(channels)).rjust(3)))
+        print("%s    %s" % (erratum.ljust(20), str(len(channels)).rjust(3)))  #  pylint: disable=consider-using-f-string
 
     if not self.options.yes and not self.user_confirm(_("Delete these patches [y/N]:")):
         return 1
@@ -546,7 +546,7 @@ def complete_errata_publish(self, text, line, beg, end):
 def do_errata_publish(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if len(args) < 2:
         self.help_errata_publish()
@@ -593,7 +593,7 @@ def complete_errata_search(self, text, line, beg, end):
 def do_errata_search(self, args, doreturn=False):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     if not args:
         self.help_errata_search()

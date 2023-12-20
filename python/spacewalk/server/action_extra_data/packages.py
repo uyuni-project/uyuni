@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -16,7 +16,7 @@
 
 import sys
 import re
-import sys
+import sys  #  pylint: disable=reimported,ungrouped-imports
 
 from uyuni.common.usix import ListType, IntType
 
@@ -57,7 +57,7 @@ insert into rhnServerActionVerifyResult (
 values (
       :server_id, :action_id,
       lookup_package_name(:package_name),
-      lookup_evr(:epoch || '', :version, :release, (select at.label from rhnArchType at join rhnPackageArch pa ON pa.arch_type_id = at.id where pa.id = lookup_package_arch(:arch))),
+      lookup_evr(:epoch || '', :version, :release, (select at.label from rhnArchType at join rhnPackageArch pa ON pa.arch_type_id = at.id where pa.id = lookup_package_arch(:arch))),  #  pylint: disable=line-too-long
       lookup_package_arch(:arch),
       lookup_package_capability(:filename),
       :attrib, :test_S, :test_M, :test_5,
@@ -81,7 +81,7 @@ values (
     :server_id,
     :action_id,
     lookup_package_name(:package_name),
-    lookup_evr(:epoch || '', :version, :release, (select at.label from rhnArchType at join rhnPackageArch pa ON pa.arch_type_id = at.id where pa.id = lookup_package_arch(:arch))),
+    lookup_evr(:epoch || '', :version, :release, (select at.label from rhnArchType at join rhnPackageArch pa ON pa.arch_type_id = at.id where pa.id = lookup_package_arch(:arch))),  #  pylint: disable=line-too-long
     lookup_package_arch(:arch),
     lookup_package_capability(:filename)
 )
@@ -105,7 +105,7 @@ _query_delete_verify_missing = rhnSQL.Statement(
 )
 
 
-def verify(server_id, action_id, data={}):
+def verify(server_id, action_id, data={}):  #  pylint: disable=dangerous-default-value
     log_debug(3, action_id)
 
     if (not data) or ("verify_info" not in data):
@@ -170,13 +170,13 @@ def verify(server_id, action_id, data={}):
             continue
 
         # We need to uniquify the file names within a package too
-        hash = {}
+        hash = {}  #  pylint: disable=redefined-builtin
         for response in responses:
             try:
-                dict = _parse_response_line(response, attrib_tests)
+                dict = _parse_response_line(response, attrib_tests)  #  pylint: disable=redefined-builtin
             except InvalidResponseLine:
                 log_error(
-                    "packages.verify: (%s, %s): invalid line %s"
+                    "packages.verify: (%s, %s): invalid line %s"  #  pylint: disable=consider-using-f-string
                     % (server_id, action_id, response)
                 )
                 continue
@@ -184,7 +184,7 @@ def verify(server_id, action_id, data={}):
             hash[dict["filename"]] = dict
 
         # Add the rest of the variables to the dictionaries
-        for filename, dict in list(hash.items()):
+        for filename, dict in list(hash.items()):  #  pylint: disable=unused-variable
             dict["server_id"] = server_id
             dict["action_id"] = action_id
 
@@ -250,7 +250,7 @@ _query_remove_locks = rhnSQL.Statement(
 )
 
 
-def setLocks(server_id, action_id, data={}):
+def setLocks(server_id, action_id, data={}):  #  pylint: disable=invalid-name,dangerous-default-value,unused-argument
     log_debug(3, action_id)
 
     h = rhnSQL.prepare(_query_set_locks)
@@ -286,7 +286,7 @@ def _parse_response_line(response, tests):
     # see #155952
     #
 
-    res_re = re.compile("^(?P<ts>[\S]+)\s+(?P<attr>[cdglr]?)\s* (?P<filename>[\S]+)$")
+    res_re = re.compile("^(?P<ts>[\S]+)\s+(?P<attr>[cdglr]?)\s* (?P<filename>[\S]+)$")  #  pylint: disable=anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string,anomalous-backslash-in-string
 
     m = res_re.match(response)
 
@@ -310,7 +310,7 @@ def _parse_response_line(response, tests):
     if not filename:
         raise InvalidResponseLine
 
-    dict = {
+    dict = {  #  pylint: disable=redefined-builtin
         "attrib": attr or None,  # convert empty attribute to None
         "filename": filename,
     }
@@ -331,11 +331,11 @@ def _parse_response_line(response, tests):
 
 def _hash_append(dst, src):
     # Append the values of src to dst
-    for k, list in list(dst.items()):
+    for k, list in list(dst.items()):  #  pylint: disable=redefined-builtin
         list.append(src[k])
 
 
-def update(server_id, action_id, data={}):
+def update(server_id, action_id, data={}):  #  pylint: disable=dangerous-default-value
     log_debug(3, server_id, action_id)
 
     action_status = rhnFlags.get("action_status")
@@ -347,14 +347,14 @@ def update(server_id, action_id, data={}):
     else:
         kickstart_state = "deployed"
 
-        # This is horrendous, but in order to fix it I would have to change almost all of the
+        # This is horrendous, but in order to fix it I would have to change almost all of the  #  pylint: disable=line-too-long
         # actions code, which we don't have time to do for the 500 beta. --wregglej
         try:
             ks_session_type = server_kickstart.get_kickstart_session_type(
                 server_id, action_id
             )
         except rhnException:
-            re = sys.exc_info()[1]
+            re = sys.exc_info()[1]  #  pylint: disable=redefined-outer-name,unused-variable
             ks_session_type = None
 
         if ks_session_type is None:
@@ -364,10 +364,10 @@ def update(server_id, action_id, data={}):
         else:
             next_action_type = "kickstart.initiate"
 
-    log_debug(4, "next_action_type: %s" % next_action_type)
+    log_debug(4, "next_action_type: %s" % next_action_type)  #  pylint: disable=consider-using-f-string
 
-    # More hideous hacked together code to get around our inflexible actions "framework".
-    # If next_action_type is "None", we're assuming that we're *not* in a kickstart session
+    # More hideous hacked together code to get around our inflexible actions "framework".  #  pylint: disable=line-too-long
+    # If next_action_type is "None", we're assuming that we're *not* in a kickstart session  #  pylint: disable=line-too-long
     # at this point, so we don't want to update a non-existant kickstart session.
     # I feel so dirty.  --wregglej
     if next_action_type != "None":
@@ -382,7 +382,7 @@ def update(server_id, action_id, data={}):
         _mark_dep_failures(server_id, action_id, data)
 
 
-def remove(server_id, action_id, data={}):
+def remove(server_id, action_id, data={}):  #  pylint: disable=dangerous-default-value
     log_debug(3, action_id, data.get("name"))
     _mark_dep_failures(server_id, action_id, data)
 
@@ -400,7 +400,7 @@ _query_insert_dep_failures = rhnSQL.Statement(
         flags, suggested, sense)
     values (
         :server_id, :action_id, LOOKUP_PACKAGE_NAME(:name),
-        LOOKUP_EVR(:epoch, :version, :release, (select at.label from rhnArchType at join rhnServerArch sa ON sa.arch_type_id = at.id join rhnServer s on s.server_arch_id = sa.id where s.id = :server_id)),
+        LOOKUP_EVR(:epoch, :version, :release, (select at.label from rhnArchType at join rhnServerArch sa ON sa.arch_type_id = at.id join rhnServer s on s.server_arch_id = sa.id where s.id = :server_id)),  #  pylint: disable=line-too-long
         LOOKUP_PACKAGE_CAPABILITY(:needs_name, :needs_version),
         :flags, LOOKUP_PACKAGE_NAME(:suggested, :ignore_null), :sense)
 """
@@ -419,7 +419,7 @@ def _mark_dep_failures(server_id, action_id, data):
     if not isinstance(failed_deps, ListType):
         # Not the right format
         log_error(
-            "action_extra_data.packages.remove: server %s, action %s: "
+            "action_extra_data.packages.remove: server %s, action %s: "  #  pylint: disable=consider-using-f-string
             "wrong type %s" % (server_id, action_id, type(failed_deps))
         )
         return
@@ -480,7 +480,7 @@ def _check_dep(server_id, action_id, failed_dep):
     if not isinstance(failed_dep, ListType):
         # Not the right format
         log_error(
-            "action_extra_data.packages.remove: server %s, action %s: "
+            "action_extra_data.packages.remove: server %s, action %s: "  #  pylint: disable=consider-using-f-string
             "failed dep type error: %s" % (server_id, action_id, type(failed_dep))
         )
         raise InvalidDep
@@ -488,7 +488,7 @@ def _check_dep(server_id, action_id, failed_dep):
     # This is boring, but somebody's got to do it
     if len(failed_dep) < 5:
         log_error(
-            "action_extra_data.packages.remove: server %s, action %s: "
+            "action_extra_data.packages.remove: server %s, action %s: "  #  pylint: disable=consider-using-f-string
             "failed dep: not enough entries: %s"
             % (server_id, action_id, len(failed_dep))
         )
@@ -498,7 +498,7 @@ def _check_dep(server_id, action_id, failed_dep):
 
     if not isinstance(pkg, ListType) or len(pkg) < 3:
         log_error(
-            "action_extra_data.packages.remove: server %s, action %s: "
+            "action_extra_data.packages.remove: server %s, action %s: "  #  pylint: disable=consider-using-f-string
             "failed dep: bad package spec %s (type %s, len %s)"
             % (server_id, action_id, pkg, type(pkg), len(pkg))
         )
@@ -507,7 +507,7 @@ def _check_dep(server_id, action_id, failed_dep):
 
     if not isinstance(needs_pkg, ListType) or len(needs_pkg) < 2:
         log_error(
-            "action_extra_data.packages.remove: server %s, action %s: "
+            "action_extra_data.packages.remove: server %s, action %s: "  #  pylint: disable=consider-using-f-string
             "failed dep: bad needs package spec %s (type %s, len %s)"
             % (server_id, action_id, needs_pkg, type(needs_pkg), len(needs_pkg))
         )
@@ -516,14 +516,14 @@ def _check_dep(server_id, action_id, failed_dep):
 
     if not isinstance(flags, IntType):
         log_error(
-            "action_extra_data.packages.remove: server %s, action %s: "
+            "action_extra_data.packages.remove: server %s, action %s: "  #  pylint: disable=consider-using-f-string
             "failed dep: bad flags type %s" % (server_id, action_id, type(flags))
         )
         raise InvalidDep
 
     if not isinstance(sense, IntType):
         log_error(
-            "action_extra_data.packages.remove: server %s, action %s: "
+            "action_extra_data.packages.remove: server %s, action %s: "  #  pylint: disable=consider-using-f-string
             "failed dep: bad sense type %s" % (server_id, action_id, type(sense))
         )
         raise InvalidDep
@@ -531,7 +531,7 @@ def _check_dep(server_id, action_id, failed_dep):
     return pkg, needs_pkg, flags, str(suggested), sense
 
 
-def refresh_list(server_id, action_id, data={}):
+def refresh_list(server_id, action_id, data={}):  #  pylint: disable=dangerous-default-value
     if not data:
         return
     log_debug(
@@ -544,7 +544,7 @@ def refresh_list(server_id, action_id, data={}):
     )
 
 
-def delta(server_id, action_id, data={}):
+def delta(server_id, action_id, data={}):  #  pylint: disable=dangerous-default-value
     if not data:
         return
     log_debug(
@@ -557,7 +557,7 @@ def delta(server_id, action_id, data={}):
     )
 
 
-def runTransaction(server_id, action_id, data={}):
+def runTransaction(server_id, action_id, data={}):  #  pylint: disable=invalid-name,dangerous-default-value
     log_debug(3, action_id)
 
     # If it's a kickstart-related transaction, mark the kickstart session as

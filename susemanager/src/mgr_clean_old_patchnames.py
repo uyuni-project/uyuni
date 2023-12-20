@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*- pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2011 Novell, Inc.
 #
@@ -25,7 +25,7 @@ from spacewalk.susemanager import errata_helper
 DEFAULT_LOG_LOCATION = "/var/log/rhn/"
 
 
-class Cleaner(object):  # pylint: disable=too-few-public-methods
+class Cleaner(object):  # pylint: disable=too-few-public-methods,missing-class-docstring
     def __init__(
         self, all=False, channel=None, debug=0
     ):  # pylint: disable=redefined-builtin
@@ -48,8 +48,8 @@ class Cleaner(object):  # pylint: disable=too-few-public-methods
         try:
             rhnSQL.initDB()
         except rhnSQL.SQLConnectError as e:
-            log_error("Could not connect to the database. %s" % e)
-            raise Exception("Could not connect to the database. %s" % e)
+            log_error("Could not connect to the database. %s" % e)  #  pylint: disable=consider-using-f-string
+            raise Exception("Could not connect to the database. %s" % e)  #  pylint: disable=raise-missing-from,broad-exception-raised,consider-using-f-string
 
     def run(self):
         channels = []
@@ -59,7 +59,7 @@ class Cleaner(object):  # pylint: disable=too-few-public-methods
             channels = [self.channel]
 
         for c in channels:
-            _printLog("Remove old patches in channel '%s'" % c)
+            _printLog("Remove old patches in channel '%s'" % c)  #  pylint: disable=consider-using-f-string
             # search errata which ends with channel-* in this channel
             h = rhnSQL.prepare(
                 """
@@ -79,19 +79,19 @@ class Cleaner(object):  # pylint: disable=too-few-public-methods
             patches = h.fetchall_dict() or []
             channel_id = None
             for patch in patches:
-                pattern = "-%s-%s-?[0-9]*$" % (
+                pattern = "-%s-%s-?[0-9]*$" % (  #  pylint: disable=consider-using-f-string
                     patch["advisory_rel"],
                     patch["channel_arch_label"],
                 )
                 if not re.search(pattern, patch["advisory"]):
-                    log_debug(2, "Found new style patch '%s'. Skip" % patch["advisory"])
+                    log_debug(2, "Found new style patch '%s'. Skip" % patch["advisory"])  #  pylint: disable=consider-using-f-string
                     # This is not an old style patch. Skip
                     continue
                 errata_id = patch["errata_id"]
                 channel_id = patch["channel_id"]
                 log_debug(
                     1,
-                    "Remove patch '%s(%d)' from channel '%s(%d)'"
+                    "Remove patch '%s(%d)' from channel '%s(%d)'"  #  pylint: disable=consider-using-f-string
                     % (patch["advisory"], errata_id, c, channel_id),
                 )
 
@@ -113,7 +113,7 @@ class Cleaner(object):  # pylint: disable=too-few-public-methods
             if channel_id:
                 # Update the errata/package cache for the servers
                 #        use procedure rhn_channel.update_needed_cache(channel_id)
-                log_debug(2, "Update Server Cache for channel '%s'" % c)
+                log_debug(2, "Update Server Cache for channel '%s'" % c)  #  pylint: disable=consider-using-f-string
                 rhnSQL.commit()
                 update_needed_cache = rhnSQL.Procedure(
                     "rhn_channel.update_needed_cache"
@@ -121,7 +121,7 @@ class Cleaner(object):  # pylint: disable=too-few-public-methods
                 update_needed_cache(channel_id)
                 rhnSQL.commit()
             else:
-                log_debug(1, "No old style patches found in '%s'" % c)
+                log_debug(1, "No old style patches found in '%s'" % c)  #  pylint: disable=consider-using-f-string
 
         _printLog("Finished")
 

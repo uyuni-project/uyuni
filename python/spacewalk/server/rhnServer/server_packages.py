@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2017 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -32,7 +32,7 @@ DELETED = 2
 UPDATED = 3
 
 
-class dbPackage:
+class dbPackage:  #  pylint: disable=invalid-name
 
     """A small class that helps us represent things about a
     database package. In this structure "real" means that we have an
@@ -40,7 +40,7 @@ class dbPackage:
     """
 
     def __init__(self, pdict, real=0, name_id=None, evr_id=None, package_arch_id=None):
-        if type(pdict) != DictType:
+        if type(pdict) != DictType:  #  pylint: disable=unidiomatic-typecheck
             return None
         if ("arch" not in pdict) or (pdict["arch"] is None):
             pdict["arch"] = ""
@@ -135,7 +135,7 @@ class dbPackage:
         return row["label"]
 
 
-class Packages:
+class Packages:  #  pylint: disable=missing-class-docstring
     def __init__(self):
         self.__p = {}
         # Have we loaded the packages or not?
@@ -210,7 +210,7 @@ class Packages:
             schedule,
             "Changed:",
             self.__changed,
-            "%d total packages" % len(self.__p),
+            "%d total packages" % len(self.__p),  #  pylint: disable=consider-using-f-string
         )
 
         if not self.__changed:
@@ -374,7 +374,7 @@ class Packages:
                 package_arch_id=t["package_arch_id"],
             )
             self.__p[p.nvrea] = p
-        log_debug(4, "Loaded %d packages for server %s" % (len(self.__p), sysid))
+        log_debug(4, "Loaded %d packages for server %s" % (len(self.__p), sysid))  #  pylint: disable=consider-using-f-string
         self.__loaded = 1
         self.__changed = 0
         return 0
@@ -386,7 +386,7 @@ class Packages:
         (
           select pn.name,
                  latest.name_id,
-                 lookup_evr((latest.evr).epoch, (latest.evr).version, (latest.evr).release, (latest.evr).type) AS evr_id,
+                 lookup_evr((latest.evr).epoch, (latest.evr).version, (latest.evr).release, (latest.evr).type) AS evr_id,  #  pylint: disable=line-too-long
                  latest.arch_label AS ARCH,
                  latest.arch_id
             from
@@ -415,12 +415,12 @@ class Packages:
                    FROM rhnServerPackage SP
                   WHERE SP.server_id = :server_id
                     AND SP.name_id = latest.name_id
-                    AND (SP.package_arch_id = latest.arch_id OR SP.package_arch_id IS NULL)
+                    AND (SP.package_arch_id = latest.arch_id OR SP.package_arch_id IS NULL)  #  pylint: disable=line-too-long
           )
           and NOT EXISTS (
                  select 1
                    FROM rhnServerPackage SP
-                   JOIN rhnPackage p_p ON SP.name_id = p_p.name_id and SP.evr_id = p_p.evr_id and SP.package_arch_id = p_p.package_arch_id
+                   JOIN rhnPackage p_p ON SP.name_id = p_p.name_id and SP.evr_id = p_p.evr_id and SP.package_arch_id = p_p.package_arch_id  #  pylint: disable=line-too-long
                    JOIN rhnPackageProvides p_pv on p_p.id = p_pv.package_id
                    JOIN rhnPackageCapability p_c on p_pv.capability_id = p_c.id
                   WHERE SP.server_id = :server_id
@@ -460,7 +460,7 @@ class Packages:
             action_name="Product Package Auto-Install",
         )
         for p in list(package_names.values()):
-            log_debug(1, "Scheduled for install:  '%s'" % p)
+            log_debug(1, "Scheduled for install:  '%s'" % p)  #  pylint: disable=consider-using-f-string
 
         rhnSQL.commit()
 
@@ -479,7 +479,7 @@ def update_errata_cache(server_id):
     update_needed_cache(server_id, 0)
 
 
-def processPackageKeyAssociations(header, checksum_type, checksum):
+def processPackageKeyAssociations(header, checksum_type, checksum):  #  pylint: disable=invalid-name
     provider_sql = rhnSQL.prepare(
         """
         insert into rhnPackageKeyAssociation
@@ -618,7 +618,7 @@ def _package_list_to_hash(package_list, package_registry):
     comparison algorigthm
     Side effect: Modifies second argument!
     """
-    hash = {}
+    hash = {}  #  pylint: disable=redefined-builtin
     for e in package_list:
         e = tuple(e)
         pn = e[0]
@@ -645,7 +645,7 @@ def _package_list_to_hash(package_list, package_registry):
     return hash
 
 
-def _add_to_hash(hash, key, value):
+def _add_to_hash(hash, key, value):  #  pylint: disable=redefined-builtin
     if key not in hash:
         hash[key] = {value: None}
     else:

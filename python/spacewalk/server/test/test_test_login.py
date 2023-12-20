@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -17,7 +17,7 @@ import TestServer
 import server.app.packages
 
 
-class TestLoginTestCase(unittest.TestCase):
+class TestLoginTestCase(unittest.TestCase):  #  pylint: disable=missing-class-docstring
     def setUp(self):
         self.myserver = TestServer.TestServer()
         self.packages = server.app.packages.Packages()
@@ -26,7 +26,7 @@ class TestLoginTestCase(unittest.TestCase):
         pass
 
     def testReturnType(self):
-        assert type(
+        assert type(  #  pylint: disable=unidiomatic-typecheck
             self.packages.test_login(
                 self.myserver.getUsername(), self.myserver.getPassword()
             )

@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -39,7 +39,7 @@ from spacewalk.server import rhnChannel, rhnSQL, rhnLib
 # functionality
 
 
-class Applet(rhnHandler):
+class Applet(rhnHandler):  #  pylint: disable=missing-class-docstring
     def __init__(self):
         rhnHandler.__init__(self)
         # Exposed Errata functions:
@@ -138,7 +138,7 @@ class Applet(rhnHandler):
         if not channel_list:
             log_debug(
                 8,
-                "No channels for release = '%s', arch = '%s', uuid = '%s'"
+                "No channels for release = '%s', arch = '%s', uuid = '%s'"  #  pylint: disable=consider-using-f-string
                 % (release, server_arch, uuid),
             )
             return {"last_modified": 0, "contents": []}
@@ -176,7 +176,7 @@ class Applet(rhnHandler):
         label_list = [str(a["id"]) for a in channel_list]
         label_list.sort()
         log_debug(4, "label_list", label_list)
-        cache_key = "applet-poll-%s" % "-".join(label_list)
+        cache_key = "applet-poll-%s" % "-".join(label_list)  #  pylint: disable=consider-using-f-string
 
         ret = rhnCache.get(cache_key, last_channel_changed_ts)
         if ret:  # we have a good entry with matching timestamp
@@ -197,8 +197,8 @@ class Applet(rhnHandler):
         qdict = {}
         for c in channel_list:
             v = c["id"]
-            k = "channel_%s" % v
-            qlist.append(":%s" % k)
+            k = "channel_%s" % v  #  pylint: disable=consider-using-f-string
+            qlist.append(":%s" % k)  #  pylint: disable=consider-using-f-string
             qdict[k] = v
         qlist = ", ".join(qlist)
 
@@ -258,13 +258,13 @@ class Applet(rhnHandler):
             for k in list(p.keys()):
                 if p[k] is None:
                     p[k] = ""
-            p["nevr"] = "%s-%s-%s:%s" % (
+            p["nevr"] = "%s-%s-%s:%s" % (  #  pylint: disable=consider-using-f-string
                 p["name"],
                 p["version"],
                 p["release"],
                 p["epoch"],
             )
-            p["nvr"] = "%s-%s-%s" % (p["name"], p["version"], p["release"])
+            p["nvr"] = "%s-%s-%s" % (p["name"], p["version"], p["release"])  #  pylint: disable=consider-using-f-string
 
             pkg_name = p["name"]
 
@@ -282,13 +282,13 @@ class Applet(rhnHandler):
 
                 log_debug(7, "comparing vres", s, n)
                 if rhn_rpm.nvre_compare(s, n) < 0:
-                    log_debug(7, "replacing %s with %s" % (pkg_name, p))
+                    log_debug(7, "replacing %s with %s" % (pkg_name, p))  #  pylint: disable=consider-using-f-string
                     contents[pkg_name] = p
                 else:
                     # already have a higher vre stored...
                     pass
             else:
-                log_debug(7, "initial store for %s" % pkg_name)
+                log_debug(7, "initial store for %s" % pkg_name)  #  pylint: disable=consider-using-f-string
                 contents[pkg_name] = p
 
         ret["contents"] = list(contents.values())

@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -15,7 +15,7 @@
 # a class used to handle a row of data in a particular table
 #
 
-import string
+import string  #  pylint: disable=unused-import
 
 from rhn.UserDictCase import UserDictCase
 from spacewalk.common.rhnException import rhnException
@@ -51,7 +51,7 @@ class Row(UserDictCase):
             self.load(hashval)
 
     def __repr__(self):
-        return "<%s instance at 0x%0x on (%s, %s, %s)>" % (
+        return "<%s instance at 0x%0x on (%s, %s, %s)>" % (  #  pylint: disable=consider-using-f-string
             self.__class__.__name__,
             abs(id(self)),
             self.table,
@@ -77,7 +77,7 @@ class Row(UserDictCase):
         x = name.lower()
         if x in self.data:
             return self.data[x][0]
-        raise KeyError("Key %s not found in the Row dictionary" % name)
+        raise KeyError("Key %s not found in the Row dictionary" % name)  #  pylint: disable=consider-using-f-string
 
     def get(self, name):
         x = name.lower()
@@ -99,11 +99,11 @@ class Row(UserDictCase):
 
     def load(self, hashval):
         """load an entry"""
-        return self.load_sql("%s = :hashval" % self.hashname, {"hashval": hashval})
+        return self.load_sql("%s = :hashval" % self.hashname, {"hashval": hashval})  #  pylint: disable=consider-using-f-string
 
-    def load_sql(self, sql, pdict={}):
+    def load_sql(self, sql, pdict={}):  #  pylint: disable=dangerous-default-value
         """load from a sql clause"""
-        h = self.db.prepare("select * from %s where %s" % (self.table, sql))
+        h = self.db.prepare("select * from %s where %s" % (self.table, sql))  #  pylint: disable=consider-using-f-string
         h.execute(**pdict)
         ret = h.fetchone_dict()
         self.data = {}
@@ -118,7 +118,7 @@ class Row(UserDictCase):
     def save(self, with_updates=1):
         """now save an entry"""
         if self.hashname not in self.data:
-            raise AttributeError("Table does not have a hash `%s' key" % self.hashname)
+            raise AttributeError("Table does not have a hash `%s' key" % self.hashname)  #  pylint: disable=consider-using-f-string
         # get a list of fields to be set
         items = [
             (a[0], a[1][0])

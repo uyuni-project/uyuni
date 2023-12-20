@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -26,7 +26,7 @@ if PY3:
         raise e
 
 else:
-    exec(
+    exec(  #  pylint: disable=exec-used
         """
 def raise_with_tb(e):
     raise e, None, sys.exc_info()[2]

@@ -22,7 +22,7 @@ __salt__ = {
 log = logging.getLogger(__name__)
 
 
-def __virtual__():
+def __virtual__():  #  pylint: disable=invalid-name
     """
     Only work when udevadm is installed.
     """
@@ -112,7 +112,7 @@ def add_scsi_info(dev):
     ):
         sysfs_path = dev["P"]
         scsi_type = __salt__["cmd.run_all"](
-            "cat /sys/{0}/type".format(sysfs_path), output_loglevel="quiet"
+            "cat /sys/{0}/type".format(sysfs_path), output_loglevel="quiet"  #  pylint: disable=consider-using-f-string
         )
 
         if scsi_type["retcode"] != 0:

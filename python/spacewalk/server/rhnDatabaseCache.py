@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring,invalid-name
 # Copyright (c) 2008--2010 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -31,7 +31,7 @@ from spacewalk.common import rhnCache
 from spacewalk.common.rhnLog import log_debug, log_error
 from uyuni.common.rhnLib import timestamp
 
-from spacewalk.server import rhnSQL
+from spacewalk.server import rhnSQL  #  pylint: disable=ungrouped-imports
 
 # XXX Although it would have been much easier to do it all in python, we want
 # this code to commit as soon as possible. Also, we cannot just commit
@@ -123,7 +123,7 @@ def get(name, modified=None, raw=None, compressed=None):
         data = v.read()
     except (ValueError, IOError, gzip.zlib.error) as e:
         # XXX poking at gzip.zlib may not be that well-advised
-        log_error("rhnDatabaseCache: gzip error for key %s: %s" % (name, e))
+        log_error("rhnDatabaseCache: gzip error for key %s: %s" % (name, e))  #  pylint: disable=consider-using-f-string
         # Ignore this entry in the database cache, it has invalid data
         return None
 
@@ -146,7 +146,7 @@ def delete(name):
 
 # We only set the database cache value
 # The local disk one will be cached when get() is called for the first time
-def set(name, value, modified=None, raw=None, compressed=None):
+def set(name, value, modified=None, raw=None, compressed=None):  #  pylint: disable=redefined-builtin
     if modified is not None:
         modified = timestamp(modified)
     if raw:
@@ -229,7 +229,7 @@ END;
     indices = list(range(chunks))
     start_pos = list(map(lambda x, cs=chunk_size: x * cs + 1, indices))
     sizes = [chunk_size] * (chunks - 1) + [
-        "length(rawtohex(arg_%s)) / 2" % (chunks - 1)
+        "length(rawtohex(arg_%s)) / 2" % (chunks - 1)  #  pylint: disable=consider-using-f-string
     ]
 
     query = plsql_template % (
@@ -256,7 +256,7 @@ END;
     for i in indices:
         start = i * chunk_size
         end = (i + 1) * chunk_size
-        params["val_%s" % i] = rhnSQL.types.LONG_BINARY(val[start:end])
+        params["val_%s" % i] = rhnSQL.types.LONG_BINARY(val[start:end])  #  pylint: disable=consider-using-f-string
 
     h = rhnSQL.prepare(query)
     tries = 3
@@ -276,7 +276,7 @@ END;
     else:
         # Kept raising Unique constraint violated - something else may be
         # wrong; re-raise the last exception
-        raise
+        raise  #  pylint: disable=misplaced-bare-raise
 
 
 def _fetch_cursor(key=None, modified=None):

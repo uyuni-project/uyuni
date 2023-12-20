@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring,invalid-name
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -28,7 +28,7 @@ from spacewalk.common.rhnException import rhnFault
 from .rhnMapping import check_package_arch
 
 
-def computeSignature(*fields):
+def computeSignature(*fields):  #  pylint: disable=invalid-name
     # Init the hash
     m = hmac.new(key=str(fields[0]).encode(), digestmod=hashlib.sha256)
     for i in fields[1:]:
@@ -41,7 +41,7 @@ def computeSignature(*fields):
 
 
 # 'n_n-n-v.v.v-r_r.r:e.ARCH.rpm' ---> [n,v,r,e,a]
-def parseRPMFilename(pkgFilename):
+def parseRPMFilename(pkgFilename):  #  pylint: disable=invalid-name,invalid-name
     """
     IN: Package Name: xxx-yyy-ver.ver.ver-rel.rel_rel:e.ARCH.rpm (string)
     Understood rules:
@@ -54,7 +54,7 @@ def parseRPMFilename(pkgFilename):
          XXX: Is epoch info above correct?
     OUT: [n,e,v,r, arch].
     """
-    if type(pkgFilename) != type(""):
+    if type(pkgFilename) != type(""):  #  pylint: disable=unidiomatic-typecheck
         raise rhnFault(21, str(pkgFilename))  # Invalid arg.
 
     pkgFilename = os.path.basename(pkgFilename)
@@ -67,13 +67,13 @@ def parseRPMFilename(pkgFilename):
 
     # 'rpm' at end?
     if dist not in ["rpm", "deb"]:
-        raise rhnFault(21, "neither an rpm nor a deb package name: %s" % pkgFilename)
+        raise rhnFault(21, "neither an rpm nor a deb package name: %s" % pkgFilename)  #  pylint: disable=consider-using-f-string
 
     # Valid architecture next?
     if check_package_arch(pkg[-2]) is None:
-        raise rhnFault(21, "Incompatible architecture found: %s" % pkg[-2])
+        raise rhnFault(21, "Incompatible architecture found: %s" % pkg[-2])  #  pylint: disable=consider-using-f-string
 
-    _arch = pkg[-2]
+    _arch = pkg[-2]  #  pylint: disable=invalid-name
 
     # Nuke that arch.rpm.
     pkg = ".".join(pkg[:-2])
@@ -136,14 +136,14 @@ def transpose_to_hash(arr, column_names):
     with named columns.
     """
     result = []
-    for c in column_names:
+    for c in column_names:  #  pylint: disable=unused-variable
         result.append([])
 
     colnum = len(column_names)
     for r in arr:
         if len(r) != colnum:
-            raise Exception(
-                "Mismatching number of columns: expected %s, got %s; %s"
+            raise Exception(  #  pylint: disable=broad-exception-raised
+                "Mismatching number of columns: expected %s, got %s; %s"  #  pylint: disable=consider-using-f-string
                 % (colnum, len(r), r)
             )
         for i in range(len(r)):
@@ -164,7 +164,7 @@ def get_package_path(
     prepend="",
     omit_epoch=None,
     package_type="rpm",
-    checksum_type=None,
+    checksum_type=None,  #  pylint: disable=unused-argument
     checksum=None,
 ):
     """Computes a package path, optionally prepending a prefix

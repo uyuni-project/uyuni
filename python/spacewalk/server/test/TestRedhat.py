@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring,invalid-name
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -21,10 +21,10 @@
 # to some directory on your local machine.
 #   Mine is set to wregglej, for instance.
 
-# Change the value of the mount_point (or add the mount_point option) in /etc/rhn/rhn_server.conf on you local machine.
+# Change the value of the mount_point (or add the mount_point option) in /etc/rhn/rhn_server.conf on you local machine. pylint: disable=line-too-long
 #   Mine is set to /home/devel, for instance.
 
-# Place some tarballs in a directory on you machine that is under the path formed by joining the mount_point value
+# Place some tarballs in a directory on you machine that is under the path formed by joining the mount_point value pylint: disable=line-too-long
 # with the download_files_prefix value.
 #   I put them in /home/devel/wregglej/testing/tarballs/t1.
 
@@ -41,7 +41,7 @@ except ImportError:
 from spacewalk.common import rhnConfig
 
 
-class TestRedhat(TestServer.TestServer):
+class TestRedhat(TestServer.TestServer):  #  pylint: disable=missing-class-docstring
     def __init__(self):
         TestServer.TestServer.__init__(self)
         rhnConfig.initCFG("server.redhat-xmlrpc")
@@ -50,13 +50,13 @@ class TestRedhat(TestServer.TestServer):
     def _init_xmlrpc(self):
         self.rpc = server.redhat_xmlrpc
 
-    def getXmlRpc(self):
+    def getXmlRpc(self):  #  pylint: disable=invalid-name
         return self.rpc
 
-    def getUsername(self):
+    def getUsername(self):  #  pylint: disable=invalid-name
         return "test-file-upload"
 
-    def getPassword(self):
+    def getPassword(self):  #  pylint: disable=invalid-name
         return "password"
 
 
@@ -105,6 +105,6 @@ if __name__ == "__main__":
     for func in rpc_downloads.functions:
         print(func)
         server.register_function(
-            getattr(rpc_downloads, func), name="downloads.%s" % (func)
+            getattr(rpc_downloads, func), name="downloads.%s" % (func)  #  pylint: disable=consider-using-f-string
         )
     server.serve_forever()

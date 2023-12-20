@@ -18,13 +18,13 @@ log = logging.getLogger(__name__)
 __virtualname__ = "virt_utils"
 
 
-def __virtual__():
+def __virtual__():  #  pylint: disable=invalid-name
     """
     Only if the virt module is loaded
     """
     return (
         __virtualname__
-        if "virt.vm_info" in __salt__
+        if "virt.vm_info" in __salt__  #  pylint: disable=undefined-variable
         else (False, "Module virt_utils: virt module can't be loaded")
     )
 
@@ -33,14 +33,14 @@ def _all_running(name, kind, names, is_running):
     ret = {
         "name": name,
         "changes": {},
-        "result": True if not __opts__["test"] else None,
+        "result": True if not __opts__["test"] else None,  #  pylint: disable=undefined-variable
         "comment": "",
     }
 
     stopped = []
     missing = []
     try:
-        info = __salt__["virt.{}_info".format(kind)]()
+        info = __salt__["virt.{}_info".format(kind)]()  #  pylint: disable=undefined-variable,consider-using-f-string
         for obj_name in names:
             obj_info = info.get(obj_name)
             if not obj_info:
@@ -52,26 +52,26 @@ def _all_running(name, kind, names, is_running):
 
         if missing:
             ret["result"] = False
-            ret["comment"] = "{} {}{} not defined".format(
+            ret["comment"] = "{} {}{} not defined".format(  #  pylint: disable=consider-using-f-string
                 ", ".join(missing), kind, "s are" if len(missing) > 1 else " is"
             )
             return ret
 
         if not stopped:
-            ret["comment"] = "all {}s are already running".format(kind)
+            ret["comment"] = "all {}s are already running".format(kind)  #  pylint: disable=consider-using-f-string
             return ret
 
         for obj_name in stopped:
-            if not __opts__["test"]:
-                __salt__["virt.{}_start".format(kind)](obj_name)
+            if not __opts__["test"]:  #  pylint: disable=undefined-variable
+                __salt__["virt.{}_start".format(kind)](obj_name)  #  pylint: disable=undefined-variable,consider-using-f-string
             change = "started"
             ret["changes"][obj_name] = change
 
-        ret["comment"] = "{} {}{} been started".format(
+        ret["comment"] = "{} {}{} been started".format(  #  pylint: disable=consider-using-f-string
             ", ".join(stopped), kind, "s have" if len(stopped) > 1 else " has"
         )
 
-    except Exception as err:
+    except Exception as err:  #  pylint: disable=broad-exception-caught
         ret["result"] = False
         ret["comment"] = str(err)
 
@@ -108,11 +108,11 @@ def pool_running(name, pools=None):
             # No need to refresh a pool that has just been started
             if pool_name in ret["changes"]:
                 continue
-            if not __opts__["test"]:
-                __salt__["virt.pool_refresh"](pool_name)
+            if not __opts__["test"]:  #  pylint: disable=undefined-variable
+                __salt__["virt.pool_refresh"](pool_name)  #  pylint: disable=undefined-variable
             ret["changes"][pool_name] = "refreshed"
 
-        except Exception as err:
+        except Exception as err:  #  pylint: disable=broad-exception-caught
             ret["result"] = False
             ret["comment"] = str(err)
 
@@ -121,19 +121,19 @@ def pool_running(name, pools=None):
 
 def vm_resources_running(name):
     """
-    :param name: name of the VM for which to ensure networks and storage pools are running
+    :param name: name of the VM for which to ensure networks and storage pools are running  #  pylint: disable=line-too-long
     """
     ret = {
         "name": name,
         "changes": {},
-        "result": True if not __opts__["test"] else None,
+        "result": True if not __opts__["test"] else None,  #  pylint: disable=undefined-variable
         "comment": "",
     }
     try:
-        infos = __salt__["virt.vm_info"](name)
+        infos = __salt__["virt.vm_info"](name)  #  pylint: disable=undefined-variable
         if not infos.get(name):
             ret["result"] = False
-            ret["comment"] = "Virtual machine {} does not exist".format(name)
+            ret["comment"] = "Virtual machine {} does not exist".format(name)  #  pylint: disable=consider-using-f-string
             return ret
 
         vm_infos = infos.get(name)
@@ -144,7 +144,7 @@ def vm_resources_running(name):
             for nic in vm_infos.get("nics", {}).values()
             if nic["type"] == "network"
         ]
-        net_ret = network_running(name="{}_nets".format(name), networks=networks)
+        net_ret = network_running(name="{}_nets".format(name), networks=networks)  #  pylint: disable=consider-using-f-string
 
         # Ensure all the pools are started
         pools = [
@@ -152,14 +152,14 @@ def vm_resources_running(name):
             for disk in vm_infos.get("disks", {}).values()
             if re.match("^[^/:]+/", disk["file"])
         ]
-        pool_ret = pool_running(name="{}_pools".format(name), pools=pools)
+        pool_ret = pool_running(name="{}_pools".format(name), pools=pools)  #  pylint: disable=consider-using-f-string
 
         failed = any([net_ret["result"] is False, pool_ret["result"] is False])
         ret["result"] = False if failed else net_ret["result"]
-        ret["comment"] = "{}, {}".format(net_ret["comment"], pool_ret["comment"])
+        ret["comment"] = "{}, {}".format(net_ret["comment"], pool_ret["comment"])  #  pylint: disable=consider-using-f-string
         ret["changes"] = {"networks": net_ret["changes"], "pools": pool_ret["changes"]}
 
-    except Exception as err:
+    except Exception as err:  #  pylint: disable=broad-exception-caught
         ret["result"] = False
         ret["comment"] = str(err)
 
@@ -189,12 +189,12 @@ def cluster_vm_removed(name, primitive, definition_path):
 
     # Ensure we still have the VM defined after it is stopped
     if not persistent:
-        __salt__["virt.define_xml_path"](definition_path)
+        __salt__["virt.define_xml_path"](definition_path)  #  pylint: disable=undefined-variable
 
     # Ask the cluster to stop the resource
     if active:
         try:
-            __salt__["cmd.run"](
+            __salt__["cmd.run"](  #  pylint: disable=undefined-variable
                 "crm resource stop " + primitive, raise_err=True, python_shell=False
             )
         except CommandExecutionError:
@@ -202,13 +202,13 @@ def cluster_vm_removed(name, primitive, definition_path):
             return ret
 
     # Delete the VM
-    if not __salt__["virt.purge"](name):
+    if not __salt__["virt.purge"](name):  #  pylint: disable=undefined-variable
         ret["comment"] = "Failed to remove the virtual machine and its files"
         return ret
 
     # Remove the cluster resource
     try:
-        __salt__["cmd.run"]("crm configure delete " + primitive, python_shell=False)
+        __salt__["cmd.run"]("crm configure delete " + primitive, python_shell=False)  #  pylint: disable=undefined-variable
     except CommandExecutionError:
         ret["comment"] = "Failed to remove cluster resource " + primitive
         return ret

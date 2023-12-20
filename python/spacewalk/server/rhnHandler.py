@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring,invalid-name
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -25,7 +25,7 @@ from spacewalk.server import rhnServer
 # extend the RPC_Base base class
 
 
-class rhnHandler(RPC_Base):
+class rhnHandler(RPC_Base):  #  pylint: disable=missing-class-docstring,invalid-name
     def __init__(self):
         RPC_Base.__init__(self)
         # extra class members we handle

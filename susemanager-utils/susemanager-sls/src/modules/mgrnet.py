@@ -11,18 +11,18 @@ import salt.utils.network
 
 try:
     from salt.utils.network import _get_interfaces
-except:
+except:  #  pylint: disable=bare-except
     from salt.grains.core import _get_interfaces
 
 try:
     from salt.utils.path import which as _which
-except:
+except:  #  pylint: disable=bare-except
     from salt.utils import which as _which
 
 log = logging.getLogger(__name__)
 
 
-def __virtual__():
+def __virtual__():  #  pylint: disable=invalid-name
     """
     Only works on POSIX-like systems having 'host' or 'nslookup' available
     """
@@ -39,9 +39,9 @@ def dns_fqdns():
     # Provides:
     # dns_fqdns
 
-    grains = {}
+    grains = {}  #  pylint: disable=unused-variable
     fqdns = set()
-    cmd_run_all_func = __salt__["cmd.run_all"]
+    cmd_run_all_func = __salt__["cmd.run_all"]  #  pylint: disable=undefined-variable
     if _which("host"):
         cmd = "host"
         cmd_ret_regex = re.compile(r".* domain name pointer (.*)\.$")
@@ -55,7 +55,7 @@ def dns_fqdns():
     def _lookup_dns_fqdn(ip):
         try:
             ret = cmd_run_all_func([cmd, ip], ignore_retcode=True)
-        except Exception as e:
+        except Exception as e:  #  pylint: disable=broad-exception-caught
             log.error("Error while trying to use '%s' to resolve '%s': %s", cmd, ip, e)
         if ret["retcode"] != 0:
             log.debug("Unable to resolve '%s' using '%s': %s", ip, cmd, ret)

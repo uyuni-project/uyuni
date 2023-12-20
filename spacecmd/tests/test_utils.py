@@ -4,7 +4,7 @@ Test spacecmd.utils
 """
 from unittest.mock import MagicMock, patch, mock_open
 import pytest
-from helpers import (
+from helpers import (  #  pylint: disable=unused-import
     shell,
     assert_expect,
     assert_list_args_expect,
@@ -12,7 +12,7 @@ from helpers import (
     exc2str,
 )
 import spacecmd.utils
-from xmlrpc import client as xmlrpclib
+from xmlrpc import client as xmlrpclib  #  pylint: disable=unused-import
 import os
 import tempfile
 import shutil
@@ -81,7 +81,7 @@ class TestSCUtilsCacheIntegration:
         :return:
         """
         logger = MagicMock()
-        with patch("spacecmd.utils.logging", logger) as lgr:
+        with patch("spacecmd.utils.logging", logger) as lgr:  #  pylint: disable=unused-variable
             spacecmd.utils.save_cache(
                 cachefile=self.cachefile, data=self.data, expire=self.expiration
             )
@@ -130,7 +130,7 @@ class TestSCUtilsCacheIntegration:
         out, expiration = spacecmd.utils.load_cache(self.cachefile)
 
         assert out == {}
-        assert expiration != self.expiration is not None
+        assert expiration != self.expiration is not None  #  pylint: disable=bad-chained-comparison
         assert not os.path.exists(self.cachefile)
 
 
@@ -166,7 +166,7 @@ class TestSCUtils:
         """
 
         arg_parser = spacecmd.utils.get_argument_parser()
-        args, opts = spacecmd.utils.parse_command_arguments(
+        args, opts = spacecmd.utils.parse_command_arguments(  #  pylint: disable=unused-variable
             "arg", argument_parser=arg_parser, glob=True
         )
         assert not spacecmd.utils.is_interactive(opts)
@@ -233,15 +233,15 @@ class TestSCUtils:
     )
     def test_editor_ioerror_handle(self):
         """
-        Test to handle IOError by an external editor when the temporary file cannot be written.
+        Test to handle IOError by an external editor when the temporary file cannot be written.  #  pylint: disable=line-too-long
 
         :return:
         """
         spawner = MagicMock()
         logger = MagicMock()
-        with patch("spacecmd.utils.os.spawnlp", spawner) as spw, patch(
+        with patch("spacecmd.utils.os.spawnlp", spawner) as spw, patch(  #  pylint: disable=unused-variable
             "spacecmd.utils.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.utils.editor("clock speed adjustments")
 
         assert logger.warning.called
@@ -267,9 +267,9 @@ class TestSCUtils:
         """
         spawner = MagicMock(return_value=42)
         logger = MagicMock()
-        with patch("spacecmd.utils.os.spawnlp", spawner) as spw, patch(
+        with patch("spacecmd.utils.os.spawnlp", spawner) as spw, patch(  #  pylint: disable=unused-variable
             "spacecmd.utils.logging", logger
-        ) as lgr:
+        ) as lgr:  #  pylint: disable=unused-variable
             spacecmd.utils.editor("clock speed adjustments")
 
         assert not logger.warning.called
@@ -308,9 +308,9 @@ class TestSCUtils:
         spawner = MagicMock(return_value=0)
         logger = MagicMock()
         remover = MagicMock()
-        with patch("spacecmd.utils.os.spawnlp", spawner) as spw, patch(
+        with patch("spacecmd.utils.os.spawnlp", spawner) as spw, patch(  #  pylint: disable=unused-variable
             "spacecmd.utils.logging", logger
-        ) as lgr, patch("spacecmd.utils.os.remove", remover) as rmr, patch(
+        ) as lgr, patch("spacecmd.utils.os.remove", remover) as rmr, patch(  #  pylint: disable=unused-variable,unused-variable
             "spacecmd.utils.open", new_callable=mock_open, read_data="contents data"
         ):
             out = spacecmd.utils.editor("clock speed adjustments", delete=True)
@@ -366,7 +366,7 @@ class TestSCUtils:
 
         dt = MagicMock()
         dt.now = MagicMock(return_value=datetime.datetime(2019, 5, 1, 10, 45))
-        with patch("spacecmd.utils.datetime", dt) as dtm:
+        with patch("spacecmd.utils.datetime", dt) as dtm:  #  pylint: disable=unused-variable
             out = spacecmd.utils.parse_time_input()
 
         assert bool(out)
@@ -521,12 +521,12 @@ class TestSCUtils:
             "advisory_synopsis": "Sometimes synopsis has a long text here. " * 5,
         }
         mprint = MagicMock()
-        with patch("spacecmd.utils.print", mprint) as prt:
+        with patch("spacecmd.utils.print", mprint) as prt:  #  pylint: disable=unused-variable
             spacecmd.utils.print_errata_summary(erratum=erratum)
 
         assert_expect(
             mprint.call_args_list,
-            "CVE-12345-678   Sometimes synopsis has a long text here.                      2019.01.15",
+            "CVE-12345-678   Sometimes synopsis has a long text here.                      2019.01.15",  #  pylint: disable=line-too-long
         )
 
     def test_print_errata_summary_no_date_no_issue_date_key(self):
@@ -540,12 +540,12 @@ class TestSCUtils:
             "advisory_synopsis": "Sometimes synopsis has a long text here. " * 5,
         }
         mprint = MagicMock()
-        with patch("spacecmd.utils.print", mprint) as prt:
+        with patch("spacecmd.utils.print", mprint) as prt:  #  pylint: disable=unused-variable
             spacecmd.utils.print_errata_summary(erratum=erratum)
 
         assert_expect(
             mprint.call_args_list,
-            "CVE-12345-678   Sometimes synopsis has a long text here.                           N/A",
+            "CVE-12345-678   Sometimes synopsis has a long text here.                           N/A",  #  pylint: disable=line-too-long
         )
 
     def test_print_errata_list_no_errata(self):
@@ -556,7 +556,7 @@ class TestSCUtils:
         """
         errata = []
         mprint = MagicMock()
-        with patch("spacecmd.utils.print", mprint) as prt:
+        with patch("spacecmd.utils.print", mprint) as prt:  #  pylint: disable=unused-variable
             spacecmd.utils.print_errata_list(errata=errata)
 
         assert not mprint.called
@@ -588,7 +588,7 @@ class TestSCUtils:
             },
         ]
         mprint = MagicMock()
-        with patch("spacecmd.utils.print", mprint) as prt:
+        with patch("spacecmd.utils.print", mprint) as prt:  #  pylint: disable=unused-variable
             spacecmd.utils.print_errata_list(errata=errata)
 
         assert mprint.called
@@ -639,14 +639,14 @@ class TestSCUtils:
         "spacecmd.utils.os.listdir",
         MagicMock(side_effect=[["Europe"], ["Berlin", "London"]]),
     )
-    def test_list_locales_no_data(self):
+    def test_list_locales_no_data(self):  #  pylint: disable=function-redefined
         """
         Test locale list when no data (no directory found).
 
         :return:
         """
         logger = MagicMock()
-        with patch("spacecmd.utils.logging", logger) as lgr:
+        with patch("spacecmd.utils.logging", logger) as lgr:  #  pylint: disable=unused-variable
             out = spacecmd.utils.list_locales()
 
         assert out == ["Europe/Berlin", "Europe/London"]
@@ -659,8 +659,8 @@ class TestSCUtils:
         """
         assert spacecmd.utils.parse_str("1234567", int) == 1234567
         assert spacecmd.utils.parse_str("1234567") == 1234567
-        assert spacecmd.utils.parse_str("True") == True
-        assert spacecmd.utils.parse_str("False") == False
+        assert spacecmd.utils.parse_str("True") == True  #  pylint: disable=singleton-comparison
+        assert spacecmd.utils.parse_str("False") == False  #  pylint: disable=singleton-comparison
         assert spacecmd.utils.parse_str("ABC1234567") == "ABC1234567"
         assert spacecmd.utils.parse_str('{"foo": "bar"}') == {"foo": "bar"}
         assert spacecmd.utils.parse_str('{"number": 123}') == {"number": 123}
@@ -706,9 +706,9 @@ class TestSCUtils:
 
         i, b, s, b2 = spacecmd.utils.parse_api_args("1234,True,abc1234,False")
         assert i == 1234
-        assert b == True
+        assert b == True  #  pylint: disable=singleton-comparison
         assert s == "abc1234"
-        assert b2 == False
+        assert b2 == False  #  pylint: disable=singleton-comparison
 
     def test_json_dump_to_file(self):
         """
@@ -721,9 +721,9 @@ class TestSCUtils:
         mprint = MagicMock()
         with patch(
             "spacecmd.utils.open", new_callable=mock_open, read_data="contents data"
-        ) as opn, patch("spacecmd.utils.logging", logger) as lgr, patch(
+        ) as opn, patch("spacecmd.utils.logging", logger) as lgr, patch(  #  pylint: disable=unused-variable,unused-variable
             "spacecmd.utils.print", mprint
-        ) as prt:
+        ) as prt:  #  pylint: disable=unused-variable
             out = spacecmd.utils.json_dump_to_file(None, filename=filename)
 
         assert out
@@ -741,7 +741,7 @@ class TestSCUtils:
         with patch(
             "spacecmd.utils.open",
             MagicMock(side_effect=IOError("write-only file system")),
-        ) as opn, patch("spacecmd.utils.logging", logger) as lgr:
+        ) as opn, patch("spacecmd.utils.logging", logger) as lgr:  #  pylint: disable=unused-variable,unused-variable
             out = spacecmd.utils.json_dump_to_file(None, filename=filename)
 
         assert not out
@@ -773,7 +773,7 @@ class TestSCUtils:
             "spacecmd.utils.open",
             new_callable=mock_open,
             read_data='{"foo": "bar", "int": 123}',
-        ) as opn, patch("spacecmd.utils.logging", logger) as lgr:
+        ) as opn, patch("spacecmd.utils.logging", logger) as lgr:  #  pylint: disable=unused-variable,unused-variable
             out = spacecmd.utils.json_read_from_file(filename=filename)
 
         assert not logger.error.called
@@ -792,7 +792,7 @@ class TestSCUtils:
         with patch(
             "spacecmd.utils.open",
             MagicMock(side_effect=IOError("Hard drive is sleeping")),
-        ) as opn, patch("spacecmd.utils.logging", logger) as lgr:
+        ) as opn, patch("spacecmd.utils.logging", logger) as lgr:  #  pylint: disable=unused-variable,unused-variable
             out = spacecmd.utils.json_read_from_file(filename=filename)
 
         assert logger.error.called
@@ -828,7 +828,7 @@ class TestSCUtils:
             "spacecmd.utils.open",
             new_callable=mock_open,
             read_data='{"foo": "bar", "int": 123}',
-        ) as opn, patch("spacecmd.utils.logging", logger) as lgr:
+        ) as opn, patch("spacecmd.utils.logging", logger) as lgr:  #  pylint: disable=unused-variable,unused-variable
             out = spacecmd.utils.json_read_from_file(filename=filename)
 
         assert logger.error.called
@@ -859,7 +859,7 @@ class TestSCUtils:
         with patch(
             "spacecmd.utils.open",
             MagicMock(side_effect=Exception("Admin went for lunch")),
-        ) as opn, patch("spacecmd.utils.logging", logger) as lgr:
+        ) as opn, patch("spacecmd.utils.logging", logger) as lgr:  #  pylint: disable=unused-variable,unused-variable
             out = spacecmd.utils.json_read_from_file(filename=filename)
 
         assert logger.error.called

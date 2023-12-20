@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -16,10 +16,10 @@ import unittest
 from TestServer import TestServer
 from spacewalk.server import xp, rhnSQL
 
-#   Tests the functionality of the listMissingSourcePackages function of the packages.py file
+#   Tests the functionality of the listMissingSourcePackages function of the packages.py file pylint: disable=line-too-long
 
 
-class ListMissingTestCase(unittest.TestCase):
+class ListMissingTestCase(unittest.TestCase):  #  pylint: disable=missing-class-docstring
     def setUp(self):
         self.directory = "/home/devel/wregglej/downloads/srcrpms"
         self.myserver = TestServer()
@@ -35,14 +35,14 @@ class ListMissingTestCase(unittest.TestCase):
         else:
             assert 0
 
-    def testlistMissingSourcePackages(self):
+    def testlistMissingSourcePackages(self):  #  pylint: disable=invalid-name
         channel = self.myserver.getChannel()
         package_list = self.packageobj.listMissingSourcePackages(
             [channel.get_label()],
             self.myserver.getUsername(),
             self.myserver.getPassword(),
         )
-        if type(package_list) == type([]):
+        if type(package_list) == type([]):  #  pylint: disable=unidiomatic-typecheck
             assert 1
         else:
             assert 0

@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring,invalid-name
 # Copyright (c) 2022 SUSE LLC
 #
 # This software is licensed to you under the GNU General Public License,
@@ -40,7 +40,7 @@ def find_or_create_eula(eula: str):
         h = rhnSQL.prepare(_query_create_eula_id)
         h.execute(checksum=checksum)
         ret = h.fetchone_dict()
-        id = None
+        id = None  #  pylint: disable=redefined-builtin
         if ret:
             id = ret["id"]
         else:
@@ -59,7 +59,7 @@ def find_or_create_eula(eula: str):
         return id
 
 
-def get_eula_by_id(id):
+def get_eula_by_id(id):  #  pylint: disable=redefined-builtin
     """Return the text of the EULA, None if the EULA is not found"""
     h = rhnSQL.prepare("SELECT text from suseEula WHERE id = :id")
     h.execute(id=id)

@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*- pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2011 Novell, Inc.
 #
@@ -28,7 +28,7 @@ except NameError:
     pass
 
 
-class Cleaner(object):  # pylint: disable=too-few-public-methods
+class Cleaner(object):  # pylint: disable=too-few-public-methods,missing-class-docstring
     def __init__(self, debug):
         self.debug = debug
         rhnLog.initLOG(DEFAULT_LOG_LOCATION + "mgr-delete-patch.log", self.debug)
@@ -36,8 +36,8 @@ class Cleaner(object):  # pylint: disable=too-few-public-methods
         try:
             rhnSQL.initDB()
         except rhnSQL.SQLConnectError as e:
-            log_error("Could not connect to the database. %s" % e)
-            raise Exception("Could not connect to the database. %s" % e)
+            log_error("Could not connect to the database. %s" % e)  #  pylint: disable=consider-using-f-string
+            raise Exception("Could not connect to the database. %s" % e)  #  pylint: disable=raise-missing-from,broad-exception-raised,consider-using-f-string
 
     def remove(self, errata):
         """Remove an errata and all its clones"""
@@ -47,10 +47,10 @@ class Cleaner(object):  # pylint: disable=too-few-public-methods
         errata_id = errata_helper.findErrataByAdvisory(errata)
 
         if not errata_id:
-            log_error("Cannot find patch with advisory {0}".format(errata))
+            log_error("Cannot find patch with advisory {0}".format(errata))  #  pylint: disable=consider-using-f-string
             return
         else:
-            log_debug(0, "Patch {0} found".format(errata))
+            log_debug(0, "Patch {0} found".format(errata))  #  pylint: disable=consider-using-f-string
 
         parent_errata_id = errata_helper.errataParent(errata_id)
         parent_advisory = None
@@ -58,16 +58,16 @@ class Cleaner(object):  # pylint: disable=too-few-public-methods
             parent_advisory = errata_helper.getAdvisory(parent_errata_id)
             clones = errata_helper.findErrataClones(parent_errata_id)
 
-            _printLog("{0} is a clone of {1}".format(errata, parent_advisory))
+            _printLog("{0} is a clone of {1}".format(errata, parent_advisory))  #  pylint: disable=consider-using-f-string
             print(
-                "The tool is going to remove '{0}' and all its clones:".format(
+                "The tool is going to remove '{0}' and all its clones:".format(  #  pylint: disable=consider-using-f-string
                     parent_advisory
                 )
             )
         else:
             clones = errata_helper.findErrataClones(errata_id)
             print(
-                "The tool is going to remove '{0}' and all its clones:".format(errata)
+                "The tool is going to remove '{0}' and all its clones:".format(errata)  #  pylint: disable=consider-using-f-string
             )
 
         for _id in clones:
@@ -90,7 +90,7 @@ class Cleaner(object):  # pylint: disable=too-few-public-methods
         else:
             errata_to_remove[errata_id] = errata
 
-        for _id in errata_to_remove:
+        for _id in errata_to_remove:  #  pylint: disable=consider-using-dict-items
             self.__remove_errata(_id, errata_to_remove[_id])
 
         rhnSQL.commit()
@@ -104,7 +104,7 @@ class Cleaner(object):  # pylint: disable=too-few-public-methods
 
         for channel_id in channel_ids:
             _printLog(
-                "Removing '{0}' patch from channel '{1}'".format(advisory, channel_id)
+                "Removing '{0}' patch from channel '{1}'".format(advisory, channel_id)  #  pylint: disable=consider-using-f-string
             )
 
             # delete errata from channel
@@ -112,7 +112,7 @@ class Cleaner(object):  # pylint: disable=too-few-public-methods
 
             # Update the errata/package cache for the servers
             # use procedure rhn_channel.update_needed_cache(channel_id)
-            log_debug(2, "Update Server Cache for channel '{0}'".format(channel_id))
+            log_debug(2, "Update Server Cache for channel '{0}'".format(channel_id))  #  pylint: disable=consider-using-f-string
             rhnSQL.commit()
             update_needed_cache = rhnSQL.Procedure("rhn_channel.update_needed_cache")
             update_needed_cache(channel_id)
@@ -121,10 +121,10 @@ class Cleaner(object):  # pylint: disable=too-few-public-methods
         errata_helper.deleteErrata(errata_id)
 
     @staticmethod
-    def __findChannel(channel):
+    def __findChannel(channel):  #  pylint: disable=unused-private-member
         """
         Search the channel using the given label.
-        Returns None if the channel is not found, otherwise returns the ID of the channel.
+        Returns None if the channel is not found, otherwise returns the ID of the channel.  #  pylint: disable=line-too-long
         """
         h = rhnSQL.prepare(
             """

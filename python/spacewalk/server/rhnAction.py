@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring,invalid-name
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -30,7 +30,7 @@ def schedule_action(
 
     at = rhnSQL.Table("rhnActionType", "label")
     if not at.has_key(action_type):
-        raise ValueError("Unknown action type %s" % action_type)
+        raise ValueError("Unknown action type %s" % action_type)  #  pylint: disable=consider-using-f-string
 
     params = {
         "action_id": action_id,
@@ -69,7 +69,7 @@ def schedule_server_action(
         h.execute(id=server_id)
         row = h.fetchone_dict()
         if not row:
-            raise ValueError("Invalid server id %s" % server_id)
+            raise ValueError("Invalid server id %s" % server_id)  #  pylint: disable=consider-using-f-string
         org_id = row["org_id"]
 
     action_id = schedule_action(

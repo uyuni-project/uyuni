@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2012 SUSE LLC
 #
 # This software is licensed to you under the GNU General Public License,
@@ -11,7 +11,7 @@
 #
 
 import sys
-from spacewalk.common import rhnFlags
+from spacewalk.common import rhnFlags  #  pylint: disable=unused-import
 from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.server import rhnSQL
 from spacewalk.server.rhnChannel import subscribe_channels, unsubscribe_channels
@@ -36,7 +36,7 @@ _query_channel_changes = rhnSQL.Statement(
 )
 
 
-def upgrade(serverId, actionId, data={}):
+def upgrade(serverId, actionId, data={}):  #  pylint: disable=invalid-name,invalid-name,dangerous-default-value,unused-argument
     log_debug(3)
 
     h = rhnSQL.prepare(_query_dup_data)
@@ -50,7 +50,7 @@ def upgrade(serverId, actionId, data={}):
         _restore_channels(serverId, row["id"])
 
 
-def _restore_channels(serverId, action_dup_id):
+def _restore_channels(serverId, action_dup_id):  #  pylint: disable=invalid-name
     log_debug(3)
     h = rhnSQL.prepare(_query_channel_changes)
     h.execute(action_dup_id=action_dup_id)
@@ -70,7 +70,7 @@ def _restore_channels(serverId, action_dup_id):
     try:
         unsubscribe_channels(serverId, to_unsubscribe)
         subscribe_channels(serverId, to_subscribe)
-    except Exception as e:
+    except Exception as e:  #  pylint: disable=broad-exception-caught
         log_error(str(e), sys.exc_info()[2])
 
     return

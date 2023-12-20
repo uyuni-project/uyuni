@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -22,4 +22,4 @@ rpcClasses = {
     "authentication": auth.Authentication,
 }
 
-getHandler = None
+getHandler = None  #  pylint: disable=invalid-name

@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python  #  pylint: disable=missing-module-docstring,invalid-name
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -22,13 +22,13 @@ _topdir = os.path.abspath(os.path.dirname(sys.argv[0]))
 if _topdir not in sys.path:
     sys.path.append(_topdir)
 
-from spacewalk.server import rhnSQL
+from spacewalk.server import rhnSQL  #  pylint: disable=wrong-import-position
 
 
 def main():
     rhnSQL.initDB()
 
-    if not args:
+    if not args:  #  pylint: disable=undefined-variable
         print("No module specified")
         return 0
 
@@ -37,15 +37,15 @@ def main():
 
     g = globals()
 
-    for module_name in args:
-        print(("Checking module %s" % module_name))
+    for module_name in args:  #  pylint: disable=undefined-variable
+        print(("Checking module %s" % module_name))  #  pylint: disable=consider-using-f-string
         pmn = proper_module_name(module_name)
         try:
             m = __import__(pmn)
             g[module_name] = m
         except ImportError:
             e = sys.exc_info()[1]
-            print(("Unable to import module %s: %s" % (module_name, e)))
+            print(("Unable to import module %s: %s" % (module_name, e)))  #  pylint: disable=consider-using-f-string
             continue
 
         comps = pmn.split(".")
@@ -57,7 +57,7 @@ def main():
                 rhnSQL.prepare(statement)
             except rhnSQL.SQLStatementPrepareError:
                 e = sys.exc_info()[1]
-                print(("Error: %s.%s: %s" % (mod.__name__, name, e)))
+                print(("Error: %s.%s: %s" % (mod.__name__, name, e)))  #  pylint: disable=consider-using-f-string
 
 
 def proper_module_name(module_name):

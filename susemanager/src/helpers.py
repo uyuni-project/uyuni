@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*- pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2014 SUSE
 #
@@ -56,7 +56,7 @@ def cli_ask(msg, password=False, validator=None):
     return value
 
 
-class TimeoutError(Exception):
+class TimeoutError(Exception):  #  pylint: disable=redefined-builtin
     pass
 
 

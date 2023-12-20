@@ -1,4 +1,4 @@
-import logging
+import logging  #  pylint: disable=missing-module-docstring
 import pytest
 import psycopg2
 import shlex
@@ -28,17 +28,17 @@ def postgres(request):
         )
 
     request.addfinalizer(finalizer)
-    outs, errs = proc.communicate(timeout=15)
+    outs, errs = proc.communicate(timeout=15)  #  pylint: disable=unused-variable,unused-variable
     yield proc
 
 
 @pytest.fixture(scope="session")
-def db_engine(postgres):
+def db_engine(postgres):  #  pylint: disable=redefined-outer-name,unused-argument
     return create_engine("postgresql://postgres@/test")
 
 
 @pytest.fixture
-def db_connection(db_engine):
+def db_connection(db_engine):  #  pylint: disable=redefined-outer-name
     if not database_exists(db_engine.url):
         create_database(db_engine.url)
     with psycopg2.connect(
@@ -53,7 +53,7 @@ def new_connection():
 
 
 @pytest.fixture
-def create_tables(db_connection):
+def create_tables(db_connection):  #  pylint: disable=redefined-outer-name
     sql = """CREATE TABLE suseSaltEvent (
         id SERIAL PRIMARY KEY,
         minion_id CHARACTER VARYING(256),
@@ -65,12 +65,12 @@ def create_tables(db_connection):
 
 
 def delete_table(conn, table):
-    conn.cursor().execute("DELETE FROM %s" % table)
+    conn.cursor().execute("DELETE FROM %s" % table)  #  pylint: disable=consider-using-f-string
     conn.commit()
 
 
 @pytest.fixture
-def responder(db_connection, create_tables):
+def responder(db_connection, create_tables):  #  pylint: disable=redefined-outer-name,redefined-outer-name,unused-argument
     with patch("mgr_events.psycopg2") as mock_psycopg2:
         mock_psycopg2.connect.return_value = db_connection
         return Responder(
@@ -88,23 +88,23 @@ def responder(db_connection, create_tables):
         )
 
 
-def test_connection_recovery_on_insert(db_connection, responder):
+def test_connection_recovery_on_insert(db_connection, responder):  #  pylint: disable=redefined-outer-name,redefined-outer-name
     disposable_connection = new_connection()
     responder.connection = disposable_connection
-    responder._insert("salt/minion/1/start", {"value": 1})
+    responder._insert("salt/minion/1/start", {"value": 1})  #  pylint: disable=protected-access
     responder.connection.close()
     with patch("mgr_events.psycopg2") as mock_psycopg2:
         mock_psycopg2.connect.return_value = db_connection
-        responder._insert("salt/minion/2/start", {"value": 2})
+        responder._insert("salt/minion/2/start", {"value": 2})  #  pylint: disable=protected-access
     responder.connection.commit()
     responder.cursor.execute("SELECT * FROM suseSaltEvent")
     resp = responder.cursor.fetchall()
     assert len(resp) == 2
 
 
-def test_connection_recovery_on_commit(db_connection, responder):
+def test_connection_recovery_on_commit(db_connection, responder):  #  pylint: disable=redefined-outer-name,redefined-outer-name
     responder.connection = new_connection()
-    responder._insert("salt/minion/1/start", {"value": 1})
+    responder._insert("salt/minion/1/start", {"value": 1})  #  pylint: disable=protected-access
     responder.connection.close()
     with patch("mgr_events.psycopg2") as mock_psycopg2:
         mock_psycopg2.connect.return_value = db_connection
@@ -115,7 +115,7 @@ def test_connection_recovery_on_commit(db_connection, responder):
     assert len(resp) == 1
 
 
-def test_insert_start_event(responder, db_connection):
+def test_insert_start_event(responder, db_connection):  #  pylint: disable=redefined-outer-name,redefined-outer-name,unused-argument
     responder.event_bus.unpack.return_value = ("salt/minion/12345/start", {"value": 1})
     responder.add_event_to_queue("")
     responder.cursor.execute("SELECT * FROM suseSaltEvent;")
@@ -124,7 +124,7 @@ def test_insert_start_event(responder, db_connection):
     assert responder.tokens == DEFAULT_COMMIT_BURST - 1
 
 
-def test_insert_job_return_event(responder):
+def test_insert_job_return_event(responder):  #  pylint: disable=redefined-outer-name
     responder.event_bus.unpack.return_value = ("salt/job/12345/ret/6789", {"value": 1})
     responder.add_event_to_queue("")
     responder.cursor.execute("SELECT * FROM suseSaltEvent;")
@@ -133,7 +133,7 @@ def test_insert_job_return_event(responder):
     assert responder.tokens == DEFAULT_COMMIT_BURST - 1
 
 
-def test_insert_batch_start_event(responder):
+def test_insert_batch_start_event(responder):  #  pylint: disable=redefined-outer-name
     responder.event_bus.unpack.return_value = ("salt/batch/12345/start", {"value": 1})
     responder.add_event_to_queue("")
     responder.cursor.execute("SELECT * FROM suseSaltEvent;")
@@ -142,7 +142,7 @@ def test_insert_batch_start_event(responder):
     assert responder.tokens == DEFAULT_COMMIT_BURST - 1
 
 
-def test_discard_batch_presence_ping_event(responder):
+def test_discard_batch_presence_ping_event(responder):  #  pylint: disable=redefined-outer-name
     responder.event_bus.unpack.return_value = (
         "salt/job/12345/ret/6789",
         {"value": 1, "fun": "test.ping", "metadata": {"batch-mode": True}},
@@ -153,7 +153,7 @@ def test_discard_batch_presence_ping_event(responder):
     assert len(resp) == 0
 
 
-def test_keep_presence_ping_event_without_batch(responder):
+def test_keep_presence_ping_event_without_batch(responder):  #  pylint: disable=redefined-outer-name
     responder.event_bus.unpack.return_value = (
         "salt/job/12345/ret/6789",
         {"value": 1, "fun": "test.ping", "id": "testminion"},
@@ -164,11 +164,11 @@ def test_keep_presence_ping_event_without_batch(responder):
     assert len(resp) == 1
 
 
-def test_commit_scheduled_on_init(responder):
+def test_commit_scheduled_on_init(responder):  #  pylint: disable=redefined-outer-name
     assert responder.event_bus.io_loop.call_later.call_count == 1
 
 
-def test_commit_empty_queue(responder):
+def test_commit_empty_queue(responder):  #  pylint: disable=redefined-outer-name
     responder.counters = [0, 0, 0, 0]
     with patch.object(responder, "event_bus", MagicMock()):
         with patch.object(responder, "connection") as mock_connection:
@@ -178,9 +178,9 @@ def test_commit_empty_queue(responder):
         assert responder.tokens == DEFAULT_COMMIT_BURST
 
 
-def test_postgres_notification(responder):
+def test_postgres_notification(responder):  #  pylint: disable=redefined-outer-name
     with patch.object(responder, "cursor"):
-        responder._insert("salt/minion/1/start", {"value": 1, "id": "testminion"})
+        responder._insert("salt/minion/1/start", {"value": 1, "id": "testminion"})  #  pylint: disable=protected-access
         assert responder.counters == [0, 0, 0, 0]
         assert responder.tokens == DEFAULT_COMMIT_BURST - 1
         assert responder.cursor.execute.mock_calls[-1:] == [
@@ -188,40 +188,40 @@ def test_postgres_notification(responder):
         ]
 
 
-def test_add_token(responder):
+def test_add_token(responder):  #  pylint: disable=redefined-outer-name
     responder.tokens = 0
     responder.add_token()
     assert responder.tokens == 1
 
 
-def test_add_token_max(responder):
+def test_add_token_max(responder):  #  pylint: disable=redefined-outer-name
     responder.add_token()
     assert responder.tokens == DEFAULT_COMMIT_BURST
 
 
-def test_commit_avoidance_without_tokens(responder):
+def test_commit_avoidance_without_tokens(responder):  #  pylint: disable=redefined-outer-name
     with patch.object(responder, "cursor"):
         with patch.object(responder, "connection") as mock_connection:
             mock_connection.closed = False
             mock_connection.encoding = "utf-8"
             responder.tokens = 0
-            responder._insert("salt/minion/1/start", {"id": "testminion", "value": 1})
+            responder._insert("salt/minion/1/start", {"id": "testminion", "value": 1})  #  pylint: disable=protected-access
             assert responder.counters == [0, 0, 1, 0]
             assert responder.tokens == 0
             assert responder.connection.commit.call_count == 0
             assert responder.cursor.execute.mock_calls == [
                 call(
-                    "INSERT INTO suseSaltEvent (minion_id, data, queue) VALUES (%s, %s, %s);",
+                    "INSERT INTO suseSaltEvent (minion_id, data, queue) VALUES (%s, %s, %s);",  #  pylint: disable=line-too-long
                     (
                         "testminion",
-                        '{"tag": "salt/minion/1/start", "data": {"id": "testminion", "value": 1}}',
+                        '{"tag": "salt/minion/1/start", "data": {"id": "testminion", "value": 1}}',  #  pylint: disable=line-too-long
                         2,
                     ),
                 )
             ]
 
 
-def test_postgres_connect(db_connection, responder):
+def test_postgres_connect(db_connection, responder):  #  pylint: disable=redefined-outer-name,redefined-outer-name
     disposable_connection = new_connection()
     disposable_connection.close()
     responder.connection = disposable_connection
@@ -237,10 +237,10 @@ def test_postgres_connect(db_connection, responder):
     mock_time.sleep.assert_called_once_with(5)
 
 
-def test_postgres_connect_with_port(responder):
+def test_postgres_connect_with_port(responder):  #  pylint: disable=redefined-outer-name
     responder.config["postgres_db"]["port"] = "1234"
     with patch("mgr_events.psycopg2") as mock_psycopg2:
-        responder._connect_to_database()
+        responder._connect_to_database()  #  pylint: disable=protected-access
         mock_psycopg2.connect.assert_called_once_with(
             "dbname='tests' user='postgres' host='localhost' port='1234' password=''"
         )

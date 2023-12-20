@@ -47,7 +47,7 @@ def mock_release_index(self):
     :param self:
     :return:
     """
-    self._flat = True
+    self._flat = True  #  pylint: disable=protected-access
 
 
 class TestCommonRepo:
@@ -181,7 +181,7 @@ class TestCommonRepo:
         """
         url = "http://mygreathost.com/ubuntu/dists/bionic/restricted/binary-amd64/"
         assert (
-            DpkgRepo._get_parent_url(url)
+            DpkgRepo._get_parent_url(url)  #  pylint: disable=protected-access
             == "http://mygreathost.com/ubuntu/dists/bionic/restricted/"
         )
 
@@ -193,23 +193,23 @@ class TestCommonRepo:
         """
         url = "http://mygreathost.com/ubuntu/dists/bionic/restricted/binary-amd64/"
         assert (
-            DpkgRepo._get_parent_url(url, depth=0)
+            DpkgRepo._get_parent_url(url, depth=0)  #  pylint: disable=protected-access
             == "http://mygreathost.com/ubuntu/dists/bionic/restricted/binary-amd64/"
         )
         assert (
-            DpkgRepo._get_parent_url(url, depth=2)
+            DpkgRepo._get_parent_url(url, depth=2)  #  pylint: disable=protected-access
             == "http://mygreathost.com/ubuntu/dists/bionic/"
         )
         assert (
-            DpkgRepo._get_parent_url(url, depth=3)
+            DpkgRepo._get_parent_url(url, depth=3)  #  pylint: disable=protected-access
             == "http://mygreathost.com/ubuntu/dists/"
         )
         assert (
-            DpkgRepo._get_parent_url(url, depth=4) == "http://mygreathost.com/ubuntu/"
+            DpkgRepo._get_parent_url(url, depth=4) == "http://mygreathost.com/ubuntu/"  #  pylint: disable=protected-access
         )
-        assert DpkgRepo._get_parent_url(url, depth=5) == "http://mygreathost.com/"
-        assert DpkgRepo._get_parent_url(url, depth=6) == "http://mygreathost.com/"
-        assert DpkgRepo._get_parent_url(url, depth=7) == "http://mygreathost.com/"
+        assert DpkgRepo._get_parent_url(url, depth=5) == "http://mygreathost.com/"  #  pylint: disable=protected-access
+        assert DpkgRepo._get_parent_url(url, depth=6) == "http://mygreathost.com/"  #  pylint: disable=protected-access
+        assert DpkgRepo._get_parent_url(url, depth=7) == "http://mygreathost.com/"  #  pylint: disable=protected-access
 
     @patch(
         "spacewalk.common.repo.requests.get",
@@ -283,7 +283,7 @@ class TestCommonRepo:
             assert repo.get_release_index()
         assert str(exc.value) == "HTTP error 204 occurred while connecting to the URL"
 
-    def test_has_valid_gpg_signature_call_InRelease(self):
+    def test_has_valid_gpg_signature_call_InRelease(self):  #  pylint: disable=invalid-name
         """
         Test _has_valid_gpg_signature call with an embedded GPG signature (InRelease).
 
@@ -301,7 +301,7 @@ class TestCommonRepo:
         mock_popen().returncode = 0
 
         with patch("spacewalk.common.repo.subprocess.Popen", mock_popen):
-            assert repo._has_valid_gpg_signature(response.url, response)
+            assert repo._has_valid_gpg_signature(response.url, response)  #  pylint: disable=protected-access
             mock_communicate.assert_called_once_with(b"dummy content", timeout=90)
 
     @patch("spacewalk.common.repo.tempfile.NamedTemporaryFile", MagicMock())
@@ -313,9 +313,9 @@ class TestCommonRepo:
             )
         ),
     )
-    def test_has_valid_gpg_signature_call_Release(self):
+    def test_has_valid_gpg_signature_call_Release(self):  #  pylint: disable=invalid-name
         """
-        Test _has_valid_gpg_signature call with a detached GPG signature (Release + Release.gpg).
+        Test _has_valid_gpg_signature call with a detached GPG signature (Release + Release.gpg).  #  pylint: disable=line-too-long
 
         :return:
         """
@@ -329,8 +329,8 @@ class TestCommonRepo:
         mock_popen().returncode = 0
 
         with patch("spacewalk.common.repo.subprocess.Popen", mock_popen):
-            assert repo._has_valid_gpg_signature(response.url, response)
-            mock_popen.assert_called_once
+            assert repo._has_valid_gpg_signature(response.url, response)  #  pylint: disable=protected-access
+            mock_popen.assert_called_once  #  pylint: disable=pointless-statement
             gpg_args = mock_popen.call_args[0][0]
             assert gpg_args[0] == "gpg"
             assert gpg_args[1] == "--verify"
@@ -354,7 +354,7 @@ class TestCommonRepo:
         mock_popen().returncode = 1
 
         with patch("spacewalk.common.repo.subprocess.Popen", mock_popen):
-            assert not repo._has_valid_gpg_signature(response.url, response)
+            assert not repo._has_valid_gpg_signature(response.url, response)  #  pylint: disable=protected-access
 
     def test_parse_release_index(self):
         """
@@ -375,7 +375,7 @@ ef73ea0cc071ad4a13fb52717f99b1951bb41bc2198d2307b30cc0edfb3aed03     999 one/Rel
 Some more irrelevant data
 """
         repo = DpkgRepo("http://dummy/url")
-        parsed = repo._parse_release_index(release)
+        parsed = repo._parse_release_index(release)  #  pylint: disable=protected-access
 
         assert len(parsed) == 2
         assert "one/Release.gz" in parsed
@@ -420,9 +420,9 @@ Some more irrelevant data
         data = b"\xd0\xbc\xd0\xb0\xd0\xba\xd0\xb0\xd1\x80\xd0\xbe\xd0\xbd\xd0\xb8"
         zdcmp = MagicMock(return_value=data)
         xdcmp = MagicMock(return_value=data)
-        with patch("spacewalk.common.repo.zlib.decompress", zdcmp) as m_zlib, patch(
+        with patch("spacewalk.common.repo.zlib.decompress", zdcmp) as m_zlib, patch(  #  pylint: disable=unused-variable
             "spacewalk.common.repo.lzma.decompress", xdcmp
-        ) as m_lzma:
+        ) as m_lzma:  #  pylint: disable=unused-variable
             out = DpkgRepo("http://dummy_url").decompress_pkg_index()
 
         assert not xdcmp.called
@@ -442,9 +442,9 @@ Some more irrelevant data
         data = b"\xd0\xbc\xd0\xb0\xd0\xba\xd0\xb0\xd1\x80\xd0\xbe\xd0\xbd\xd0\xb8"
         zdcmp = MagicMock(return_value=data)
         xdcmp = MagicMock(return_value=data)
-        with patch("spacewalk.common.repo.zlib.decompress", zdcmp) as m_zlib, patch(
+        with patch("spacewalk.common.repo.zlib.decompress", zdcmp) as m_zlib, patch(  #  pylint: disable=unused-variable
             "spacewalk.common.repo.lzma.decompress", xdcmp
-        ) as m_lzma:
+        ) as m_lzma:  #  pylint: disable=unused-variable
             out = DpkgRepo("http://dummy_url").decompress_pkg_index()
 
         assert not zdcmp.called
@@ -465,9 +465,9 @@ Some more irrelevant data
             side_effect=GeneralRepoException("Too many symlinks found in binary data")
         )
         xdcmp = MagicMock(side_effect=GeneralRepoException(""))
-        with patch("spacewalk.common.repo.zlib.decompress", zdcmp) as m_zlib, patch(
+        with patch("spacewalk.common.repo.zlib.decompress", zdcmp) as m_zlib, patch(  #  pylint: disable=unused-variable
             "spacewalk.common.repo.lzma.decompress", xdcmp
-        ) as m_lzma:
+        ) as m_lzma:  #  pylint: disable=unused-variable
             with pytest.raises(GeneralRepoException) as exc:
                 DpkgRepo("http://dummy_url").decompress_pkg_index()
 
@@ -494,9 +494,9 @@ Some more irrelevant data
         xdcmp = MagicMock(
             side_effect=GeneralRepoException("Software design limitation")
         )
-        with patch("spacewalk.common.repo.zlib.decompress", zdcmp) as m_zlib, patch(
+        with patch("spacewalk.common.repo.zlib.decompress", zdcmp) as m_zlib, patch(  #  pylint: disable=unused-variable
             "spacewalk.common.repo.lzma.decompress", xdcmp
-        ) as m_lzma:
+        ) as m_lzma:  #  pylint: disable=unused-variable
             with pytest.raises(GeneralRepoException) as exc:
                 DpkgRepo("http://dummy_url").decompress_pkg_index()
 
@@ -523,9 +523,9 @@ Some more irrelevant data
         xdcmp = MagicMock(
             side_effect=lzma.LZMAError("/dev/null is busy while upgrading")
         )
-        with patch("spacewalk.common.repo.zlib.decompress", zdcmp) as m_zlib, patch(
+        with patch("spacewalk.common.repo.zlib.decompress", zdcmp) as m_zlib, patch(  #  pylint: disable=unused-variable
             "spacewalk.common.repo.lzma.decompress", xdcmp
-        ) as m_lzma:
+        ) as m_lzma:  #  pylint: disable=unused-variable
             with pytest.raises(GeneralRepoException) as exc:
                 DpkgRepo("http://dummy_url").decompress_pkg_index()
 
@@ -545,9 +545,9 @@ Some more irrelevant data
         """
         zdcmp = MagicMock(side_effect=zlib.error("Firewall currently too hot"))
         xdcmp = MagicMock(side_effect=lzma.LZMAError(""))
-        with patch("spacewalk.common.repo.zlib.decompress", zdcmp) as m_zlib, patch(
+        with patch("spacewalk.common.repo.zlib.decompress", zdcmp) as m_zlib, patch(  #  pylint: disable=unused-variable
             "spacewalk.common.repo.lzma.decompress", xdcmp
-        ) as m_lzma:
+        ) as m_lzma:  #  pylint: disable=unused-variable
             with pytest.raises(GeneralRepoException) as exc:
                 DpkgRepo("http://dummy_url").decompress_pkg_index()
 
@@ -560,17 +560,17 @@ Some more irrelevant data
         Test append index files to the given url.
         :return:
         """
-        url = "https://domainname.ext/PATH/Updates/Distro/version/arch/update/?very_long_auth_token"
+        url = "https://domainname.ext/PATH/Updates/Distro/version/arch/update/?very_long_auth_token"  #  pylint: disable=line-too-long
         dpr = DpkgRepo(url)
 
         assert (
             dpr.append_index_file(DpkgRepo.PKG_GZ)
-            == "https://domainname.ext/PATH/Updates/Distro/version/arch/update/Packages.gz?very_long_auth_token"
+            == "https://domainname.ext/PATH/Updates/Distro/version/arch/update/Packages.gz?very_long_auth_token"  #  pylint: disable=line-too-long
         )
 
         assert (
             dpr.append_index_file(DpkgRepo.PKG_XZ)
-            == "https://domainname.ext/PATH/Updates/Distro/version/arch/update/Packages.xz?very_long_auth_token"
+            == "https://domainname.ext/PATH/Updates/Distro/version/arch/update/Packages.xz?very_long_auth_token"  #  pylint: disable=line-too-long
         )
 
     def test_append_index_file_to_url_no_difference(self):
@@ -578,15 +578,15 @@ Some more irrelevant data
         Test append index files to the given url, but no changes has to be applied
         :return:
         """
-        url = "https://domainname.ext/PATH/Updates/Distro/version/arch/update/Packages.gz?very_long_auth_token"
+        url = "https://domainname.ext/PATH/Updates/Distro/version/arch/update/Packages.gz?very_long_auth_token"  #  pylint: disable=line-too-long
         assert url == DpkgRepo(url).append_index_file(DpkgRepo.PKG_GZ)
 
     def test_append_index_file_to_url_exception(self):
         """
-        Test append index files to the given url, but exception happens due to unsupported URL
+        Test append index files to the given url, but exception happens due to unsupported URL  #  pylint: disable=line-too-long
         :return:
         """
-        url = "https://domainname.ext/PATH/Updates/Distro/version/arch/Packages.gz/update?very_long_auth_token"
+        url = "https://domainname.ext/PATH/Updates/Distro/version/arch/Packages.gz/update?very_long_auth_token"  #  pylint: disable=line-too-long
         with pytest.raises(GeneralRepoException) as exc:
             DpkgRepo(url).append_index_file(DpkgRepo.PKG_GZ)
 

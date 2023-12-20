@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring,invalid-name
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -32,8 +32,8 @@ from uyuni.common.usix import raise_with_tb
 from spacewalk.common import rhnFlags
 from spacewalk.common.rhnLog import log_debug
 from spacewalk.common.rhnConfig import CFG
-from uyuni.common.checksum import getStringChecksum
-from spacewalk.common.rhnException import rhnFault, rhnException
+from uyuni.common.checksum import getStringChecksum  #  pylint: disable=ungrouped-imports
+from spacewalk.common.rhnException import rhnFault, rhnException  #  pylint: disable=ungrouped-imports
 
 from spacewalk.server import rhnSQL, rhnUser, rhnCapability
 from spacewalk.server.rhnHandler import rhnHandler
@@ -95,7 +95,7 @@ class ConfigFilePathIncomplete(ConfigFileError):
 # Base handler class
 
 
-class ConfigFilesHandler(rhnHandler):
+class ConfigFilesHandler(rhnHandler):  #  pylint: disable=missing-class-docstring
     def __init__(self):
         log_debug(3)
         rhnHandler.__init__(self)
@@ -120,15 +120,15 @@ class ConfigFilesHandler(rhnHandler):
         return self._get_maximum_file_size()
 
     # Generic login function
-    def login(self, dict):
+    def login(self, dict):  #  pylint: disable=redefined-builtin
         log_debug(1)
         username = dict.get("username")
         password = dict.get("password")
         self.user = rhnUser.search(username)
-        if not self.user or not (self.user.check_password(password)):
+        if not self.user or not (self.user.check_password(password)):  #  pylint: disable=superfluous-parens
             raise rhnFault(2)
         if rhnUser.is_user_disabled(username):
-            msg = _(
+            msg = _(  #  pylint: disable=undefined-variable
                 """
                    %s Account has been deactivated on this server.
                    Please contact your Org administrator for more help."""
@@ -139,7 +139,7 @@ class ConfigFilesHandler(rhnHandler):
         session = self.user.create_session()
         return session.get_session()
 
-    def test_session(self, dict):
+    def test_session(self, dict):  #  pylint: disable=redefined-builtin
         log_debug(3)
 
         try:
@@ -195,7 +195,7 @@ class ConfigFilesHandler(rhnHandler):
 
         # Check for full path on the file
         path = file.get("path")
-        if not (path[0] == os.sep):
+        if not (path[0] == os.sep):  #  pylint: disable=superfluous-parens
             raise ConfigFilePathIncomplete(file)
 
         if "config_file_type_id" not in file:
@@ -259,7 +259,7 @@ class ConfigFilesHandler(rhnHandler):
             if e.errno == 20267:
                 # ORA-20267: (not_enough_quota) - Insufficient available quota
                 # for the specified action
-                raise ConfigFileExceedsQuota(file)
+                raise ConfigFileExceedsQuota(file)  #  pylint: disable=raise-missing-from
             raise
 
         return {}
@@ -273,7 +273,7 @@ class ConfigFilesHandler(rhnHandler):
             raise_with_tb(
                 rhnFault(
                     4015,
-                    "Full path of file '%s' must be specified" % e.file.get("path"),
+                    "Full path of file '%s' must be specified" % e.file.get("path"),  #  pylint: disable=consider-using-f-string
                     explain=0,
                 ),
                 sys.exc_info()[2],
@@ -283,7 +283,7 @@ class ConfigFilesHandler(rhnHandler):
             e = sys.exc_info()[1]
             raise_with_tb(
                 rhnFault(
-                    4013, "File %s already uploaded" % e.file.get("path"), explain=0
+                    4013, "File %s already uploaded" % e.file.get("path"), explain=0  #  pylint: disable=consider-using-f-string
                 ),
                 sys.exc_info()[2],
             )
@@ -292,7 +292,7 @@ class ConfigFilesHandler(rhnHandler):
             raise_with_tb(
                 rhnFault(
                     4012,
-                    "File %s uploaded with a different " "version" % e.file.get("path"),
+                    "File %s uploaded with a different " "version" % e.file.get("path"),  #  pylint: disable=consider-using-f-string
                     explain=0,
                 ),
                 sys.exc_info()[2],
@@ -302,7 +302,7 @@ class ConfigFilesHandler(rhnHandler):
             raise_with_tb(
                 rhnFault(
                     4008,
-                    "Delimiter not specified for file %s" % e.file.get("path"),
+                    "Delimiter not specified for file %s" % e.file.get("path"),  #  pylint: disable=consider-using-f-string
                     explain=0,
                 ),
                 sys.exc_info()[2],
@@ -311,7 +311,7 @@ class ConfigFilesHandler(rhnHandler):
             e = sys.exc_info()[1]
             raise_with_tb(
                 rhnFault(
-                    4007, "No content sent for file %s" % e.file.get("path"), explain=0
+                    4007, "No content sent for file %s" % e.file.get("path"), explain=0  #  pylint: disable=consider-using-f-string
                 ),
                 sys.exc_info()[2],
             )
@@ -320,7 +320,7 @@ class ConfigFilesHandler(rhnHandler):
             raise_with_tb(
                 rhnFault(
                     4014,
-                    "File size of %s exceeds free quota space" % e.file.get("path"),
+                    "File size of %s exceeds free quota space" % e.file.get("path"),  #  pylint: disable=consider-using-f-string
                     explain=0,
                 ),
                 sys.exc_info()[2],
@@ -330,7 +330,7 @@ class ConfigFilesHandler(rhnHandler):
             raise_with_tb(
                 rhnFault(
                     4003,
-                    "File size of %s larger than %s bytes"
+                    "File size of %s larger than %s bytes"  #  pylint: disable=consider-using-f-string
                     % (e.file.get("path"), self._get_maximum_file_size()),
                     explain=0,
                 ),
@@ -394,7 +394,7 @@ class ConfigFilesHandler(rhnHandler):
             # XXX Yes this is iterating over a string
             try:
                 file_contents.decode("UTF-8")
-            except Exception:
+            except Exception:  #  pylint: disable=broad-exception-caught
                 file["is_binary"] = "Y"
 
         h = rhnSQL.prepare(self._query_content_lookup)
@@ -402,7 +402,7 @@ class ConfigFilesHandler(rhnHandler):
         row = h.fetchone_dict()
 
         if row:
-            db_contents = rhnSQL._fix_encoding(rhnSQL.read_lob(row["contents"]) or "")
+            db_contents = rhnSQL._fix_encoding(rhnSQL.read_lob(row["contents"]) or "")  #  pylint: disable=protected-access
             if file_contents == db_contents:
                 # Same content
                 file["config_content_id"] = row["id"]
@@ -497,7 +497,7 @@ class ConfigFilesHandler(rhnHandler):
             if "config_file_type_id" not in file:
                 log_debug(
                     4,
-                    "Client does not support config directories, so set file_type_id to 1",
+                    "Client does not support config directories, so set file_type_id to 1",  #  pylint: disable=line-too-long
                 )
                 file["config_file_type_id"] = "1"
 
@@ -596,7 +596,7 @@ def format_file_results(row, server=None):
     if is_binary:
         contents = raw_contents
     else:
-        contents = rhnSQL._fix_encoding(raw_contents or "")
+        contents = rhnSQL._fix_encoding(raw_contents or "")  #  pylint: disable=protected-access
 
     if server and not is_binary and contents:
         interpolator = ServerTemplatedDocument(
@@ -613,7 +613,7 @@ def format_file_results(row, server=None):
         if client_caps and "configfiles.base64_enc" in client_caps:
             encoding = "base64"
             if is_binary:
-                contents = contents
+                contents = contents  #  pylint: disable=self-assigning-variable
             else:
                 contents = contents.encode()
             contents = base64.encodestring(contents).decode()

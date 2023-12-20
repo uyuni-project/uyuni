@@ -104,7 +104,7 @@ def test_get_cluster_filesystem_nocrm():
             popen_mock.return_value.communicate.side_effect = OSError(
                 "No such file or directory: 'crm'"
             )
-            assert virt_utils.get_cluster_filesystem("/srv/clusterfs/xml") == None
+            assert virt_utils.get_cluster_filesystem("/srv/clusterfs/xml") == None  #  pylint: disable=singleton-comparison
 
 
 @pytest.mark.parametrize("no_graphics", [True, False])
@@ -210,7 +210,7 @@ def test_host_info():
             assert info["cluster_other_nodes"] == ["demo-kvm2", "demo-kvm3"]
 
 
-def test_vm_definition(libvirt):
+def test_vm_definition(libvirt):  #  pylint: disable=redefined-outer-name
     """
     test the vm_definition() function with a regular VM
     """
@@ -242,7 +242,7 @@ def test_vm_definition(libvirt):
             assert actual["info"] == vm_info
 
 
-def test_vm_definition_cluster(libvirt):
+def test_vm_definition_cluster(libvirt):  #  pylint: disable=redefined-outer-name
     """
     test the vm_definition() function with a stopped VM defined on a cluster
     """

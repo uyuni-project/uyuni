@@ -1,4 +1,4 @@
-from distutils.core import setup
+from distutils.core import setup  #  pylint: disable=missing-module-docstring,deprecated-module
 
 setup(
     name="mgrlibmod",

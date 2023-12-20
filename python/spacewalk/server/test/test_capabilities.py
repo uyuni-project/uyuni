@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python  #  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -27,10 +27,10 @@ _basedir = os.path.abspath(_topdir + "/../..")
 if _basedir not in sys.path:
     sys.path.append(_basedir)
 
-import time
-from rhn import rpclib
-from spacewalk.server import rhnSQL, rhnServer, rhnCapability
-from spacewalk.common.rhnConfig import ConfigParserError
+import time  #  pylint: disable=wrong-import-position
+from rhn import rpclib  #  pylint: disable=wrong-import-position
+from spacewalk.server import rhnSQL, rhnServer, rhnCapability  #  pylint: disable=wrong-import-position,unused-import
+from spacewalk.common.rhnConfig import ConfigParserError  #  pylint: disable=wrong-import-position
 
 
 def main():
@@ -51,11 +51,11 @@ def main():
         print("Test skipped")
         return 0
 
-    uri = "http://%s/XMLRPC" % (server_name,)
+    uri = "http://%s/XMLRPC" % (server_name,)  #  pylint: disable=consider-using-f-string
     s = rpclib.Server(uri)
 
-    username = password = "test-username-%.3f" % time.time()
-    email = "misa+%s@redhat.com" % username
+    username = password = "test-username-%.3f" % time.time()  #  pylint: disable=consider-using-f-string
+    email = "misa+%s@redhat.com" % username  #  pylint: disable=consider-using-f-string
 
     s.registration.reserve_user(username, password)
     s.registration.new_user(username, password, email)
@@ -63,7 +63,7 @@ def main():
     data = {
         "os_release": "9",
         "architecture": "athlon-redhat-linux",
-        "profile_name": "Test profile for %s" % username,
+        "profile_name": "Test profile for %s" % username,  #  pylint: disable=consider-using-f-string
         "username": username,
         "password": password,
     }

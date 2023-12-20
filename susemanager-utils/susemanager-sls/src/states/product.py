@@ -14,16 +14,16 @@ log = logging.getLogger(__name__)
 __virtualname__ = "product"
 
 
-def __virtual__():
+def __virtual__():  #  pylint: disable=invalid-name
     """
     Only work on SUSE platforms with zypper
     """
-    if __grains__.get("os_family", "") != "Suse":
+    if __grains__.get("os_family", "") != "Suse":  #  pylint: disable=undefined-variable
         return (False, "Module product: non SUSE OS not supported")
 
     # Not all versions of SUSE use zypper, check that it is available
     try:
-        zypp_info = __salt__["pkg.info_installed"]("zypper")["zypper"]
+        zypp_info = __salt__["pkg.info_installed"]("zypper")["zypper"]  #  pylint: disable=undefined-variable
     except CommandExecutionError:
         return (False, "Module product: zypper package manager not found")
 
@@ -38,7 +38,7 @@ def _get_missing_products(refresh):
     products = []
     try:
         products = list(
-            __salt__["pkg.search"](
+            __salt__["pkg.search"](  #  pylint: disable=undefined-variable
                 "product()",
                 refresh=refresh,
                 match="exact",
@@ -59,7 +59,7 @@ def _get_missing_products(refresh):
     to_install = []
     for pkg in products:
         try:
-            res = list(__salt__["pkg.search"](pkg, match="exact", provides=True))
+            res = list(__salt__["pkg.search"](pkg, match="exact", provides=True))  #  pylint: disable=undefined-variable
 
             if pkg in res:
                 res.remove(pkg)
@@ -81,7 +81,7 @@ def _get_missing_products(refresh):
     return to_install
 
 
-def all_installed(name, refresh=False, **kwargs):
+def all_installed(name, refresh=False, **kwargs):  #  pylint: disable=unused-argument
     """
     Ensure that all the subscribed products are installed.
 
@@ -103,4 +103,4 @@ def all_installed(name, refresh=False, **kwargs):
         log.debug("All products are already installed. Nothing to do.")
         return ret
 
-    return __states__["pkg.installed"](name, pkgs=to_install, no_recommends=True)
+    return __states__["pkg.installed"](name, pkgs=to_install, no_recommends=True)  #  pylint: disable=undefined-variable

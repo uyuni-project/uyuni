@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*- pylint: disable=missing-module-docstring
 #
 # Copyright (C) 2014 Novell, Inc.
 #   This library is free software; you can redistribute it and/or modify
@@ -34,7 +34,7 @@ except ImportError:
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from spacewalk.susemanager.authenticator import (
+from spacewalk.susemanager.authenticator import (  #  pylint: disable=wrong-import-position
     Authenticator,
     MaximumNumberOfAuthenticationFailures,
 )
@@ -65,14 +65,14 @@ class AuthenticatorTest(unittest.TestCase):
         )
         auth.connection.auth.login = MagicMock(return_value=expected_token)
 
-        auth._get_credentials_interactive = MagicMock()
+        auth._get_credentials_interactive = MagicMock()  #  pylint: disable=protected-access
         interactive_credentials = [[expected_user, expected_password]]
-        auth._get_credentials_interactive.side_effect = (
+        auth._get_credentials_interactive.side_effect = (  #  pylint: disable=protected-access
             lambda: _set_username_and_password(auth, interactive_credentials)
         )
 
         self.assertEqual(expected_token, auth.token())
-        self.assertEqual(1, auth._get_credentials_interactive.call_count)
+        self.assertEqual(1, auth._get_credentials_interactive.call_count)  #  pylint: disable=protected-access
         auth.connection.auth.login.assert_called_once_with(
             expected_user, expected_password
         )
@@ -90,10 +90,10 @@ class AuthenticatorTest(unittest.TestCase):
         )
         auth.connection.auth.login = MagicMock(return_value=expected_token)
 
-        auth._get_credentials_interactive = MagicMock()
+        auth._get_credentials_interactive = MagicMock()  #  pylint: disable=protected-access
 
         self.assertEqual(expected_token, auth.token())
-        self.assertEqual(0, auth._get_credentials_interactive.call_count)
+        self.assertEqual(0, auth._get_credentials_interactive.call_count)  #  pylint: disable=protected-access
         auth.connection.auth.login.assert_called_once_with(
             expected_user, expected_password
         )
@@ -123,13 +123,13 @@ class AuthenticatorTest(unittest.TestCase):
             )
         )
 
-        auth._get_credentials_interactive = MagicMock()
-        auth._get_credentials_interactive.side_effect = (
+        auth._get_credentials_interactive = MagicMock()  #  pylint: disable=protected-access
+        auth._get_credentials_interactive.side_effect = (  #  pylint: disable=protected-access
             lambda: _set_username_and_password(auth, interactive_credentials)
         )
 
         self.assertEqual(expected_token, auth.token())
-        self.assertEqual(1, auth._get_credentials_interactive.call_count)
+        self.assertEqual(1, auth._get_credentials_interactive.call_count)  #  pylint: disable=protected-access
 
         expected_login_calls = []
         for c in [cached_credentials] + interactive_credentials:
@@ -169,14 +169,14 @@ class AuthenticatorTest(unittest.TestCase):
             )
         )
 
-        auth._get_credentials_interactive = MagicMock()
-        auth._get_credentials_interactive.side_effect = (
+        auth._get_credentials_interactive = MagicMock()  #  pylint: disable=protected-access
+        auth._get_credentials_interactive.side_effect = (  #  pylint: disable=protected-access
             lambda: _set_username_and_password(auth, interactive_credentials)
         )
 
         self.assertEqual(expected_token, auth.token())
 
-        self.assertEqual(3, auth._get_credentials_interactive.call_count)
+        self.assertEqual(3, auth._get_credentials_interactive.call_count)  #  pylint: disable=protected-access
 
         expected_login_calls = []
         for c in [cached_credentials] + interactive_credentials:
@@ -210,14 +210,14 @@ class AuthenticatorTest(unittest.TestCase):
             )
         )
 
-        auth._get_credentials_interactive = MagicMock()
-        auth._get_credentials_interactive.side_effect = (
+        auth._get_credentials_interactive = MagicMock()  #  pylint: disable=protected-access
+        auth._get_credentials_interactive.side_effect = (  #  pylint: disable=protected-access
             lambda: _set_username_and_password(auth, interactive_credentials)
         )
 
         self.assertEqual(expected_token, auth.token())
 
-        self.assertEqual(3, auth._get_credentials_interactive.call_count)
+        self.assertEqual(3, auth._get_credentials_interactive.call_count)  #  pylint: disable=protected-access
 
         expected_login_calls = []
         for c in interactive_credentials:
@@ -225,7 +225,7 @@ class AuthenticatorTest(unittest.TestCase):
         auth.connection.auth.assert_has_calls(expected_login_calls)
         self.assertEqual(3, auth.connection.auth.login.call_count)
 
-    def test_should_raise_an_exception_after_the_user_provides_wrong_credentials_three_times_in_a_row(
+    def test_should_raise_an_exception_after_the_user_provides_wrong_credentials_three_times_in_a_row(  #  pylint: disable=line-too-long
         self,
     ):
         interactive_credentials = [
@@ -256,8 +256,8 @@ class AuthenticatorTest(unittest.TestCase):
             )
         )
 
-        auth._get_credentials_interactive = MagicMock()
-        auth._get_credentials_interactive.side_effect = (
+        auth._get_credentials_interactive = MagicMock()  #  pylint: disable=protected-access
+        auth._get_credentials_interactive.side_effect = (  #  pylint: disable=protected-access
             lambda: _set_username_and_password(auth, interactive_credentials)
         )
 
@@ -265,7 +265,7 @@ class AuthenticatorTest(unittest.TestCase):
             auth.token()
         self.assertEqual(
             Authenticator.MAX_NUM_OF_CREDENTIAL_FAILURES_ALLOWED,
-            auth._get_credentials_interactive.call_count,
+            auth._get_credentials_interactive.call_count,  #  pylint: disable=protected-access
         )
 
         expected_login_calls = []
@@ -275,7 +275,7 @@ class AuthenticatorTest(unittest.TestCase):
         self.assertEqual(4, auth.connection.auth.login.call_count)
 
 
-def _side_effect_return_from_list(list):
+def _side_effect_return_from_list(list):  #  pylint: disable=redefined-builtin
     result = list.pop(0)
     if isinstance(result, Exception):
         raise result
@@ -284,7 +284,7 @@ def _side_effect_return_from_list(list):
 
 def _set_username_and_password(auth, credentials):
     if len(credentials) == 0:
-        raise Exception("No more credentials to use")
+        raise Exception("No more credentials to use")  #  pylint: disable=broad-exception-raised
     pair = credentials.pop(0)
     auth.user = pair[0]
     auth.password = pair[1]

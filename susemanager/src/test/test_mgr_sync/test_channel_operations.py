@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*- pylint: disable=missing-module-docstring
 #
 # Copyright (C) 2014 Novell, Inc.
 #   This library is free software; you can redistribute it and/or modify
@@ -28,17 +28,17 @@ except ImportError:
     from mock import MagicMock, call, patch
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-from helper import ConsoleRecorder, read_data_from_fixture
+from helper import ConsoleRecorder, read_data_from_fixture  #  pylint: disable=wrong-import-position
 
-from spacewalk.susemanager.mgr_sync.cli import get_options
-from spacewalk.susemanager.mgr_sync.channel import parse_channels, Channel
-from spacewalk.susemanager.mgr_sync.mgr_sync import MgrSync
-from spacewalk.susemanager.mgr_sync import logger
+from spacewalk.susemanager.mgr_sync.cli import get_options  #  pylint: disable=wrong-import-position
+from spacewalk.susemanager.mgr_sync.channel import parse_channels, Channel  #  pylint: disable=wrong-import-position
+from spacewalk.susemanager.mgr_sync.mgr_sync import MgrSync  #  pylint: disable=wrong-import-position
+from spacewalk.susemanager.mgr_sync import logger  #  pylint: disable=wrong-import-position
 
 
 class ChannelOperationsTest(unittest.TestCase):
     def setUp(self):
-        self.maxDiff = 100
+        self.maxDiff = 100  #  pylint: disable=invalid-name
         self.mgr_sync = MgrSync()
         self.mgr_sync.log = self.mgr_sync.__init__logger = MagicMock(
             return_value=logger.Logger(3, "tmp.log")
@@ -67,7 +67,7 @@ class ChannelOperationsTest(unittest.TestCase):
     def test_list_channels_no_channels(self):
         options = get_options("list channels".split())
         stubbed_xmlrpm_call = MagicMock(return_value=[])
-        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
+        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call  #  pylint: disable=protected-access
         with ConsoleRecorder() as recorder:
             self.mgr_sync.run(options)
         self.assertEqual(recorder.stdout, ["No channels found."])
@@ -82,7 +82,7 @@ class ChannelOperationsTest(unittest.TestCase):
         stubbed_xmlrpm_call = MagicMock(
             return_value=read_data_from_fixture("list_channels_simplified.data")
         )
-        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
+        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call  #  pylint: disable=protected-access
         with ConsoleRecorder() as recorder:
             self.mgr_sync.run(options)
         expected_output = """Available Channels:
@@ -111,7 +111,7 @@ Status:
         stubbed_xmlrpm_call = MagicMock(
             return_value=read_data_from_fixture("list_channels_simplified.data")
         )
-        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
+        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call  #  pylint: disable=protected-access
         with ConsoleRecorder() as recorder:
             self.mgr_sync.run(options)
         expected_output = """Available Channels:
@@ -140,7 +140,7 @@ Status:
         stubbed_xmlrpm_call = MagicMock(
             return_value=read_data_from_fixture("list_channels_simplified.data")
         )
-        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
+        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call  #  pylint: disable=protected-access
         with ConsoleRecorder() as recorder:
             self.mgr_sync.run(options)
         expected_output = """Available Channels (full):
@@ -172,7 +172,7 @@ Status:
         stubbed_xmlrpm_call = MagicMock(
             return_value=read_data_from_fixture("list_channels_simplified.data")
         )
-        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
+        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call  #  pylint: disable=protected-access
         with ConsoleRecorder() as recorder:
             self.mgr_sync.run(options)
         expected_output = """Available Channels:
@@ -202,7 +202,7 @@ Status:
         stubbed_xmlrpm_call = MagicMock(
             return_value=read_data_from_fixture("list_channels_simplified.data")
         )
-        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
+        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call  #  pylint: disable=protected-access
         with ConsoleRecorder() as recorder:
             self.mgr_sync.run(options)
         expected_output = """Available Channels:
@@ -227,10 +227,10 @@ Status:
         stubbed_xmlrpm_call = MagicMock(
             return_value=read_data_from_fixture("list_channels_simplified.data")
         )
-        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
+        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call  #  pylint: disable=protected-access
         available_channels = []
         with ConsoleRecorder() as recorder:
-            available_channels = self.mgr_sync._list_channels(
+            available_channels = self.mgr_sync._list_channels(  #  pylint: disable=protected-access
                 expand=False,
                 filter=None,
                 no_optionals=True,
@@ -267,10 +267,10 @@ Status:
         stubbed_xmlrpm_call = MagicMock(
             return_value=read_data_from_fixture("list_channels_simplified.data")
         )
-        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
+        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call  #  pylint: disable=protected-access
         available_channels = []
         with ConsoleRecorder() as recorder:
-            available_channels = self.mgr_sync._list_channels(
+            available_channels = self.mgr_sync._list_channels(  #  pylint: disable=protected-access
                 expand=False,
                 filter=None,
                 no_optionals=True,
@@ -304,23 +304,23 @@ Status:
         mirror_url = "http://smt.suse.de"
         channel = "rhel-i386-as-4"
         options = get_options(
-            "add channel {0} --from-mirror {1}".format(channel, mirror_url).split()
+            "add channel {0} --from-mirror {1}".format(channel, mirror_url).split()  #  pylint: disable=consider-using-f-string
         )
 
-        self.mgr_sync._fetch_remote_channels = MagicMock(
+        self.mgr_sync._fetch_remote_channels = MagicMock(  #  pylint: disable=protected-access
             return_value=parse_channels(
                 read_data_from_fixture("list_channels.data"), self.mgr_sync.log
             )
         )
 
         stubbed_xmlrpm_call = MagicMock()
-        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
+        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call  #  pylint: disable=protected-access
 
-        with ConsoleRecorder() as recorder:
+        with ConsoleRecorder() as recorder:  #  pylint: disable=unused-variable
             self.assertEqual(0, self.mgr_sync.run(options))
 
         expected_xmlrpc_calls = [
-            call._execute_xmlrpc_method(
+            call._execute_xmlrpc_method(  #  pylint: disable=protected-access
                 self.mgr_sync.conn.sync.content,
                 "addChannels",
                 self.fake_auth_token,
@@ -328,7 +328,7 @@ Status:
                 mirror_url,
             ),
             self._mock_iterator(),
-            call._execute_xmlrpc_method(
+            call._execute_xmlrpc_method(  #  pylint: disable=protected-access
                 self.mgr_sync.conn.channel.software,
                 "syncRepo",
                 self.fake_auth_token,
@@ -337,37 +337,37 @@ Status:
         ]
         stubbed_xmlrpm_call.assert_has_calls(expected_xmlrpc_calls)
 
-        expected_output = [
-            "Adding '{0}' channel".format(channel),
-            "Scheduling reposync for '{0}' channel".format(channel),
+        expected_output = [  #  pylint: disable=unused-variable
+            "Adding '{0}' channel".format(channel),  #  pylint: disable=consider-using-f-string
+            "Scheduling reposync for '{0}' channel".format(channel),  #  pylint: disable=consider-using-f-string
         ]
 
     def test_add_available_base_channel(self):
         """Test adding an available base channel"""
 
         channel = "rhel-i386-as-4"
-        options = get_options("add channel {0}".format(channel).split())
+        options = get_options("add channel {0}".format(channel).split())  #  pylint: disable=consider-using-f-string
 
-        self.mgr_sync._fetch_remote_channels = MagicMock(
+        self.mgr_sync._fetch_remote_channels = MagicMock(  #  pylint: disable=protected-access
             return_value=parse_channels(
                 read_data_from_fixture("list_channels.data"), self.mgr_sync.log
             )
         )
         stubbed_xmlrpm_call = MagicMock()
         stubbed_xmlrpm_call.side_effect = xmlrpc_sideeffect
-        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
+        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call  #  pylint: disable=protected-access
         with ConsoleRecorder() as recorder:
             self.assertEqual(0, self.mgr_sync.run(options))
 
         expected_xmlrpc_calls = [
-            call._execute_xmlrpc_method(
+            call._execute_xmlrpc_method(  #  pylint: disable=protected-access
                 self.mgr_sync.conn.sync.content,
                 "addChannels",
                 self.fake_auth_token,
                 channel,
                 "",
             ),
-            call._execute_xmlrpc_method(
+            call._execute_xmlrpc_method(  #  pylint: disable=protected-access
                 self.mgr_sync.conn.channel.software,
                 "syncRepo",
                 self.fake_auth_token,
@@ -377,9 +377,9 @@ Status:
         stubbed_xmlrpm_call.assert_has_calls(expected_xmlrpc_calls)
 
         expected_output = [
-            "Added '{0}' channel".format(channel),
+            "Added '{0}' channel".format(channel),  #  pylint: disable=consider-using-f-string
             "Scheduling reposync for following channels:",
-            "- {0}".format(channel),
+            "- {0}".format(channel),  #  pylint: disable=consider-using-f-string
         ]
         self.assertEqual(expected_output, recorder.stdout)
 
@@ -390,9 +390,9 @@ Status:
 
         base_channel = "rhel-i386-es-4"
         channel = "res4-es-i386"
-        options = get_options("add channel {0}".format(channel).split())
+        options = get_options("add channel {0}".format(channel).split())  #  pylint: disable=consider-using-f-string
 
-        self.mgr_sync._fetch_remote_channels = MagicMock(
+        self.mgr_sync._fetch_remote_channels = MagicMock(  #  pylint: disable=protected-access
             return_value=parse_channels(
                 read_data_from_fixture("list_channels.data"), self.mgr_sync.log
             )
@@ -400,32 +400,32 @@ Status:
 
         stubbed_xmlrpm_call = MagicMock()
         stubbed_xmlrpm_call.side_effect = xmlrpc_sideeffect
-        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
+        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call  #  pylint: disable=protected-access
 
         with ConsoleRecorder() as recorder:
             self.assertEqual(0, self.mgr_sync.run(options))
         expected_xmlrpc_calls = [
-            call._execute_xmlrpc_method(
+            call._execute_xmlrpc_method(  #  pylint: disable=protected-access
                 self.mgr_sync.conn.sync.content,
                 "addChannels",
                 self.fake_auth_token,
                 base_channel,
                 "",
             ),
-            call._execute_xmlrpc_method(
+            call._execute_xmlrpc_method(  #  pylint: disable=protected-access
                 self.mgr_sync.conn.channel.software,
                 "syncRepo",
                 self.fake_auth_token,
                 [base_channel],
             ),
-            call._execute_xmlrpc_method(
+            call._execute_xmlrpc_method(  #  pylint: disable=protected-access
                 self.mgr_sync.conn.sync.content,
                 "addChannels",
                 self.fake_auth_token,
                 channel,
                 "",
             ),
-            call._execute_xmlrpc_method(
+            call._execute_xmlrpc_method(  #  pylint: disable=protected-access
                 self.mgr_sync.conn.channel.software,
                 "syncRepo",
                 self.fake_auth_token,
@@ -450,22 +450,22 @@ Scheduling reposync for following channels:
         Should only trigger the reposync for the channel"""
 
         channel = "sles11-sp3-pool-x86_64"
-        options = get_options("add channel {0}".format(channel).split())
+        options = get_options("add channel {0}".format(channel).split())  #  pylint: disable=consider-using-f-string
 
-        self.mgr_sync._fetch_remote_channels = MagicMock(
+        self.mgr_sync._fetch_remote_channels = MagicMock(  #  pylint: disable=protected-access
             return_value=parse_channels(
                 read_data_from_fixture("list_channels.data"), self.mgr_sync.log
             )
         )
 
         stubbed_xmlrpm_call = MagicMock()
-        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
+        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call  #  pylint: disable=protected-access
 
         with ConsoleRecorder() as recorder:
             self.assertEqual(0, self.mgr_sync.run(options))
 
         expected_xmlrpc_calls = [
-            call._execute_xmlrpc_method(
+            call._execute_xmlrpc_method(  #  pylint: disable=protected-access
                 self.mgr_sync.conn.channel.software,
                 "syncRepo",
                 self.fake_auth_token,
@@ -475,9 +475,9 @@ Scheduling reposync for following channels:
         stubbed_xmlrpm_call.assert_has_calls(expected_xmlrpc_calls)
 
         expected_output = [
-            "Channel '{0}' has already been added".format(channel),
+            "Channel '{0}' has already been added".format(channel),  #  pylint: disable=consider-using-f-string
             "Scheduling reposync for following channels:",
-            "- {0}".format(channel),
+            "- {0}".format(channel),  #  pylint: disable=consider-using-f-string
         ]
         self.assertEqual(expected_output, recorder.stdout)
 
@@ -488,7 +488,7 @@ Scheduling reposync for following channels:
         an error code"""
 
         options = get_options("add channel sles11-sp3-vmware-pool-i586".split())
-        self.mgr_sync._fetch_remote_channels = MagicMock(
+        self.mgr_sync._fetch_remote_channels = MagicMock(  #  pylint: disable=protected-access
             return_value=parse_channels(
                 read_data_from_fixture("list_channels.data"), self.mgr_sync.log
             )
@@ -509,7 +509,7 @@ Scheduling reposync for following channels:
         an error code"""
 
         options = get_options("add channel sle10-sdk-sp4-pool-x86_64".split())
-        self.mgr_sync._fetch_remote_channels = MagicMock(
+        self.mgr_sync._fetch_remote_channels = MagicMock(  #  pylint: disable=protected-access
             return_value=parse_channels(
                 read_data_from_fixture("list_channels.data"), self.mgr_sync.log
             )
@@ -538,8 +538,8 @@ Scheduling reposync for following channels:
         parent.status = Channel.Status.UNAVAILABLE
         child = "res4-es-i386"
 
-        options = get_options("add channel {0}".format(child).split())
-        self.mgr_sync._fetch_remote_channels = MagicMock(return_value=channels)
+        options = get_options("add channel {0}".format(child).split())  #  pylint: disable=consider-using-f-string
+        self.mgr_sync._fetch_remote_channels = MagicMock(return_value=channels)  #  pylint: disable=protected-access
 
         with ConsoleRecorder() as recorder:
             self.assertEqual(1, self.mgr_sync.run(options))
@@ -553,10 +553,10 @@ Scheduling reposync for following channels:
         options = get_options("add channel".split())
         available_channels = ["ch1", "ch2"]
         chosen_channel = available_channels[0]
-        self.mgr_sync._list_channels = MagicMock(return_value=available_channels)
+        self.mgr_sync._list_channels = MagicMock(return_value=available_channels)  #  pylint: disable=protected-access
         stubbed_xmlrpm_call = MagicMock()
         stubbed_xmlrpm_call.side_effect = xmlrpc_sideeffect
-        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
+        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call  #  pylint: disable=protected-access
 
         with patch("spacewalk.susemanager.mgr_sync.mgr_sync.cli_ask") as mock:
             mock.return_value = str(available_channels.index(chosen_channel) + 1)
@@ -564,13 +564,13 @@ Scheduling reposync for following channels:
                 self.mgr_sync.run(options)
 
             expected_output = [
-                "Added '{0}' channel".format(chosen_channel),
+                "Added '{0}' channel".format(chosen_channel),  #  pylint: disable=consider-using-f-string
                 "Scheduling reposync for following channels:",
-                "- {0}".format(chosen_channel),
+                "- {0}".format(chosen_channel),  #  pylint: disable=consider-using-f-string
             ]
             self.assertEqual(expected_output, recorder.stdout)
 
-            self.mgr_sync._list_channels.assert_called_once_with(
+            self.mgr_sync._list_channels.assert_called_once_with(  #  pylint: disable=protected-access
                 expand=False,
                 filter=None,
                 no_optionals=False,
@@ -580,14 +580,14 @@ Scheduling reposync for following channels:
             )
 
             expected_xmlrpc_calls = [
-                call._execute_xmlrpc_method(
+                call._execute_xmlrpc_method(  #  pylint: disable=protected-access
                     self.mgr_sync.conn.sync.content,
                     "addChannels",
                     self.fake_auth_token,
                     chosen_channel,
                     "",
                 ),
-                call._execute_xmlrpc_method(
+                call._execute_xmlrpc_method(  #  pylint: disable=protected-access
                     self.mgr_sync.conn.channel.software,
                     "syncRepo",
                     self.fake_auth_token,
@@ -601,10 +601,10 @@ Scheduling reposync for following channels:
         options = get_options("add channel --no-optional".split())
         available_channels = ["ch1", "ch2"]
         chosen_channel = available_channels[0]
-        self.mgr_sync._list_channels = MagicMock(return_value=available_channels)
+        self.mgr_sync._list_channels = MagicMock(return_value=available_channels)  #  pylint: disable=protected-access
         stubbed_xmlrpm_call = MagicMock()
         stubbed_xmlrpm_call.side_effect = xmlrpc_sideeffect
-        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
+        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call  #  pylint: disable=protected-access
 
         with patch("spacewalk.susemanager.mgr_sync.mgr_sync.cli_ask") as mock:
             mock.return_value = str(available_channels.index(chosen_channel) + 1)
@@ -612,13 +612,13 @@ Scheduling reposync for following channels:
                 self.mgr_sync.run(options)
 
             expected_output = [
-                "Added '{0}' channel".format(chosen_channel),
+                "Added '{0}' channel".format(chosen_channel),  #  pylint: disable=consider-using-f-string
                 "Scheduling reposync for following channels:",
-                "- {0}".format(chosen_channel),
+                "- {0}".format(chosen_channel),  #  pylint: disable=consider-using-f-string
             ]
             self.assertEqual(expected_output, recorder.stdout)
 
-            self.mgr_sync._list_channels.assert_called_once_with(
+            self.mgr_sync._list_channels.assert_called_once_with(  #  pylint: disable=protected-access
                 expand=False,
                 filter=None,
                 no_optionals=True,
@@ -628,14 +628,14 @@ Scheduling reposync for following channels:
             )
 
             expected_xmlrpc_calls = [
-                call._execute_xmlrpc_method(
+                call._execute_xmlrpc_method(  #  pylint: disable=protected-access
                     self.mgr_sync.conn.sync.content,
                     "addChannels",
                     self.fake_auth_token,
                     chosen_channel,
                     "",
                 ),
-                call._execute_xmlrpc_method(
+                call._execute_xmlrpc_method(  #  pylint: disable=protected-access
                     self.mgr_sync.conn.channel.software,
                     "syncRepo",
                     self.fake_auth_token,
@@ -649,20 +649,20 @@ Scheduling reposync for following channels:
         options = get_options("add channel --no-sync".split())
         available_channels = ["ch1", "ch2"]
         chosen_channel = available_channels[0]
-        self.mgr_sync._list_channels = MagicMock(return_value=available_channels)
+        self.mgr_sync._list_channels = MagicMock(return_value=available_channels)  #  pylint: disable=protected-access
         stubbed_xmlrpm_call = MagicMock()
         stubbed_xmlrpm_call.side_effect = xmlrpc_sideeffect
-        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
+        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call  #  pylint: disable=protected-access
 
         with patch("spacewalk.susemanager.mgr_sync.mgr_sync.cli_ask") as mock:
             mock.return_value = str(available_channels.index(chosen_channel) + 1)
             with ConsoleRecorder() as recorder:
                 self.mgr_sync.run(options)
 
-            expected_output = ["Added '{0}' channel".format(chosen_channel)]
+            expected_output = ["Added '{0}' channel".format(chosen_channel)]  #  pylint: disable=consider-using-f-string
             self.assertEqual(expected_output, recorder.stdout)
 
-            self.mgr_sync._list_channels.assert_called_once_with(
+            self.mgr_sync._list_channels.assert_called_once_with(  #  pylint: disable=protected-access
                 expand=False,
                 filter=None,
                 no_optionals=False,
@@ -672,7 +672,7 @@ Scheduling reposync for following channels:
             )
 
             expected_xmlrpc_calls = [
-                call._execute_xmlrpc_method(
+                call._execute_xmlrpc_method(  #  pylint: disable=protected-access
                     self.mgr_sync.conn.sync.content,
                     "addChannels",
                     self.fake_auth_token,
@@ -687,11 +687,11 @@ Scheduling reposync for following channels:
         options = get_options("sync channels ".split())
         available_channels = ["sles10-sp4-pool-x86_64", "sle10-sdk-sp4-updates-x86_64"]
         chosen_channel = available_channels[0]
-        self.mgr_sync._list_channels = MagicMock(return_value=available_channels)
+        self.mgr_sync._list_channels = MagicMock(return_value=available_channels)  #  pylint: disable=protected-access
         stubbed_xmlrpm_call = MagicMock(
             return_value=read_data_from_fixture("list_channels_simplified.data")
         )
-        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
+        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call  #  pylint: disable=protected-access
 
         with patch("spacewalk.susemanager.mgr_sync.mgr_sync.cli_ask") as mock:
             mock.return_value = str(available_channels.index(chosen_channel) + 1)
@@ -700,11 +700,11 @@ Scheduling reposync for following channels:
 
             expected_output = [
                 "Scheduling reposync for following channels:",
-                "- {0}".format(chosen_channel),
+                "- {0}".format(chosen_channel),  #  pylint: disable=consider-using-f-string
             ]
             self.assertEqual(expected_output, recorder.stdout)
 
-            self.mgr_sync._list_channels.assert_called_once_with(
+            self.mgr_sync._list_channels.assert_called_once_with(  #  pylint: disable=protected-access
                 expand=False,
                 filter=None,
                 no_optionals=False,
@@ -714,7 +714,7 @@ Scheduling reposync for following channels:
             )
 
             expected_xmlrpc_calls = [
-                call._execute_xmlrpc_method(
+                call._execute_xmlrpc_method(  #  pylint: disable=protected-access
                     self.mgr_sync.conn.channel.software,
                     "syncRepo",
                     self.fake_auth_token,
@@ -728,11 +728,11 @@ Scheduling reposync for following channels:
         options = get_options("sync channels --with-children".split())
         available_channels = ["sles10-sp4-pool-x86_64", "sle10-sdk-sp4-updates-x86_64"]
         chosen_channel = available_channels[0]
-        self.mgr_sync._list_channels = MagicMock(return_value=available_channels)
+        self.mgr_sync._list_channels = MagicMock(return_value=available_channels)  #  pylint: disable=protected-access
         stubbed_xmlrpm_call = MagicMock(
             return_value=read_data_from_fixture("list_channels_simplified.data")
         )
-        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
+        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call  #  pylint: disable=protected-access
 
         with patch("spacewalk.susemanager.mgr_sync.mgr_sync.cli_ask") as mock:
             mock.return_value = str(available_channels.index(chosen_channel) + 1)
@@ -746,7 +746,7 @@ Scheduling reposync for following channels:
             ]
             self.assertEqual(expected_output, recorder.stdout)
 
-            self.mgr_sync._list_channels.assert_called_once_with(
+            self.mgr_sync._list_channels.assert_called_once_with(  #  pylint: disable=protected-access
                 expand=False,
                 filter=None,
                 no_optionals=False,
@@ -756,7 +756,7 @@ Scheduling reposync for following channels:
             )
 
             expected_xmlrpc_calls = [
-                call._execute_xmlrpc_method(
+                call._execute_xmlrpc_method(  #  pylint: disable=protected-access
                     self.mgr_sync.conn.channel.software,
                     "syncRepo",
                     self.fake_auth_token,
@@ -767,7 +767,7 @@ Scheduling reposync for following channels:
             stubbed_xmlrpm_call.assert_has_calls(expected_xmlrpc_calls)
 
 
-def xmlrpc_sideeffect(*args, **kwargs):
+def xmlrpc_sideeffect(*args, **kwargs):  #  pylint: disable=unused-argument
     if args[1] == "addChannels":
         return [args[3]]
     return read_data_from_fixture("list_channels.data")

@@ -2,16 +2,16 @@
 Author: mc@suse.com
 """
 
-import sys
+import sys  #  pylint: disable=unused-import
 import os
-import json
-import pytest
-from unittest.mock import MagicMock, patch, mock_open
+import json  #  pylint: disable=unused-import
+import pytest  #  pylint: disable=unused-import
+from unittest.mock import MagicMock, patch, mock_open  #  pylint: disable=unused-import,unused-import,unused-import
 from . import mockery
 
 mockery.setup_environment()
 
-from ..grains import mgr_server
+from ..grains import mgr_server  #  pylint: disable=wrong-import-position
 
 
 def test_server():
@@ -21,7 +21,7 @@ def test_server():
     )
 
     grains = mgr_server.server_grains()
-    assert type(grains) == dict
+    assert type(grains) == dict  #  pylint: disable=unidiomatic-typecheck
     assert "is_mgr_server" in grains
     assert "has_report_db" in grains
     assert "is_uyuni" in grains
@@ -40,7 +40,7 @@ def test_server_no_reportdb():
     )
 
     grains = mgr_server.server_grains()
-    assert type(grains) == dict
+    assert type(grains) == dict  #  pylint: disable=unidiomatic-typecheck
     assert "is_mgr_server" in grains
     assert "has_report_db" in grains
     assert "is_uyuni" in grains
@@ -53,7 +53,7 @@ def test_no_server():
     mgr_server.RHNCONF = "/etc/rhn/rhn.conf"
 
     grains = mgr_server.server_grains()
-    assert type(grains) == dict
+    assert type(grains) == dict  #  pylint: disable=unidiomatic-typecheck
     assert "is_mgr_server" in grains
     assert "has_report_db" not in grains
     assert "is_uyuni" not in grains

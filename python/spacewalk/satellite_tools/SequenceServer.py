@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring,invalid-name
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -59,25 +59,25 @@ class SequenceServer:
 
         self.seq = seq
         self.chunksize = int(min(max(len(seq) / divisor, neverlessthan), nevermorethan))
-        self.oneYN = 0
-        self.alwaysOneYN = 0
-        self.returnedChunksize = 0
+        self.oneYN = 0  #  pylint: disable=invalid-name
+        self.alwaysOneYN = 0  #  pylint: disable=invalid-name
+        self.returnedChunksize = 0  #  pylint: disable=invalid-name
         self.chunk = self.seq[: self.chunksize]
 
-    def getChunk(self):
+    def getChunk(self):  #  pylint: disable=invalid-name
         """fetch a chunk from the sequence.
         Does not refresh the chunk until you self.clearChunk()"""
 
         if not self.chunk:
             self.chunk = self.seq[: self.chunksize]
         if self.oneYN or self.alwaysOneYN:
-            _chunk = self.chunk[:1]
+            _chunk = self.chunk[:1]  #  pylint: disable=invalid-name
         else:
-            _chunk = self.chunk
+            _chunk = self.chunk  #  pylint: disable=invalid-name
         self.returnedChunksize = len(_chunk)
         return _chunk
 
-    def clearChunk(self):
+    def clearChunk(self):  #  pylint: disable=invalid-name
         """zero the self.chunk you were working with."""
 
         del self.chunk[: self.returnedChunksize]
@@ -85,5 +85,5 @@ class SequenceServer:
         if not self.chunk:
             self.oneYN = 0
 
-    def doneYN(self):
+    def doneYN(self):  #  pylint: disable=invalid-name
         return not self.seq

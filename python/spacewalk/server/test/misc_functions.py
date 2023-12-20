@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python  #  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -20,10 +20,10 @@ import os
 import sys
 import time
 from uyuni.common import usix
-import server.importlib.headerSource
-import server.importlib.packageImport
-import server.importlib.backendOracle
-import server.xmlrpc.up2date
+import server.importlib.headerSource  #  pylint: disable=unused-import
+import server.importlib.packageImport  #  pylint: disable=unused-import
+import server.importlib.backendOracle  #  pylint: disable=unused-import
+import server.xmlrpc.up2date  #  pylint: disable=unused-import
 from spacewalk.server import (
     rhnSQL,
     rhnChannel,
@@ -32,7 +32,7 @@ from spacewalk.server import (
     rhnServerGroup,
     rhnActivationKey,
 )
-from spacewalk.server.xmlrpc import registration
+from spacewalk.server.xmlrpc import registration  #  pylint: disable=unused-import
 
 
 def create_channel_family():
@@ -57,8 +57,8 @@ def create_channel(label, channel_family, org_id=None, channel_arch=None):
 
 def create_new_org():
     "Create a brand new org; return the new org id"
-    org_name = "unittest-org-%.3f" % time.time()
-    org_password = "unittest-password-%.3f" % time.time()
+    org_name = "unittest-org-%.3f" % time.time()  #  pylint: disable=consider-using-f-string
+    org_password = "unittest-password-%.3f" % time.time()  #  pylint: disable=consider-using-f-string
 
     org_id = rhnServerGroup.create_new_org(org_name, org_password)
     rhnSQL.commit()
@@ -113,8 +113,8 @@ def build_server_group_params(**kwargs):
     "Build params for server groups"
     params = {
         "org_id": "no such org",
-        "name": "unittest group name %.3f" % time.time(),
-        "description": "unittest group description %.3f" % time.time(),
+        "name": "unittest group name %.3f" % time.time(),  #  pylint: disable=consider-using-f-string
+        "description": "unittest group description %.3f" % time.time(),  #  pylint: disable=consider-using-f-string
     }
     params.update(kwargs)
     return params
@@ -128,9 +128,9 @@ def create_new_user(org_id=None, username=None, password=None, roles=None):
         org_id = lookup_org_id(org_id)
 
     if username is None:
-        username = "unittest-user-%.3f" % time.time()
+        username = "unittest-user-%.3f" % time.time()  #  pylint: disable=consider-using-f-string
     if password is None:
-        password = "unittest-password-%.3f" % time.time()
+        password = "unittest-password-%.3f" % time.time()  #  pylint: disable=consider-using-f-string
     if roles is None:
         roles = []
 
@@ -197,14 +197,14 @@ class InvalidRoleError(Exception):
 def listdir(directory):
     directory = os.path.abspath(os.path.normpath(directory))
     if not os.access(directory, os.R_OK | os.X_OK):
-        print(("Can't access %s." % (directory)))
+        print(("Can't access %s." % (directory)))  #  pylint: disable=consider-using-f-string
         sys.exit(1)
     if not os.path.isdir(directory):
-        print(("%s not valid." % (directory)))
+        print(("%s not valid." % (directory)))  #  pylint: disable=consider-using-f-string
         sys.exit(1)
-    packageList = []
+    packageList = []  #  pylint: disable=invalid-name
     for f in os.listdir(directory):
-        packageList.append("%s/%s" % (directory, f))
+        packageList.append("%s/%s" % (directory, f))  #  pylint: disable=consider-using-f-string
     return packageList
 
 
@@ -212,17 +212,17 @@ def listdir(directory):
 
 
 def new_channel_dict(**kwargs):
-    _counter = 0
+    _counter = 0  #  pylint: disable=invalid-name
 
     label = kwargs.get("label")
     if label is None:
-        label = "rhn-unittest-%.3f-%s" % (time.time(), _counter)
-        _counter = _counter + 1
+        label = "rhn-unittest-%.3f-%s" % (time.time(), _counter)  #  pylint: disable=consider-using-f-string
+        _counter = _counter + 1  #  pylint: disable=invalid-name
 
     release = kwargs.get("release") or "release-" + label
-    os = kwargs.get("os") or "Unittest Distro"
+    os = kwargs.get("os") or "Unittest Distro"  #  pylint: disable=redefined-outer-name
     if "org_id" in kwargs:
-        org_id = kwargs["org_id"]
+        org_id = kwargs["org_id"]  #  pylint: disable=unused-variable
     else:
         org_id = "rhn-noc"
 
@@ -251,12 +251,12 @@ def new_channel_dict(**kwargs):
 
 # stolen from backend/server/tests/unit-test/test_rhnChannel
 def new_channel_family_dict(**kwargs):
-    _counter = 0
+    _counter = 0  #  pylint: disable=invalid-name
 
     label = kwargs.get("label")
     if label is None:
-        label = "rhn-unittest-%.3f-%s" % (time.time(), _counter)
-        _counter = _counter + 1
+        label = "rhn-unittest-%.3f-%s" % (time.time(), _counter)  #  pylint: disable=consider-using-f-string
+        _counter = _counter + 1  #  pylint: disable=invalid-name
 
     product_url = kwargs.get("product_url") or "http://rhn.redhat.com"
 
@@ -296,7 +296,7 @@ class Counter:
 
 def build_sys_params_with_username(**kwargs):
     val = Counter().value()
-    rnd_string = "%s%s" % (int(time.time()), val)
+    rnd_string = "%s%s" % (int(time.time()), val)  #  pylint: disable=consider-using-f-string
 
     params = {
         "os_release": "9",
@@ -336,7 +336,7 @@ def create_activation_key(
 
     if groups is None:
         groups = []
-        for i in range(3):
+        for i in range(3):  #  pylint: disable=unused-variable
             params = build_server_group_params(org_id=org_id)
             sg = create_server_group(params)
             groups.append(sg.get_id())
@@ -348,7 +348,7 @@ def create_activation_key(
         entitlement_level = "enterprise_entitled"
 
     if note is None:
-        note = "Test activation key %d" % int(time.time())
+        note = "Test activation key %d" % int(time.time())  #  pylint: disable=consider-using-f-string
 
     a = rhnActivationKey.ActivationKey()
     a.set_user_id(user_id)

@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring,invalid-name
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # Authors: Pradeep Kilambi
@@ -20,16 +20,16 @@ import sys
 import os
 import shutil
 
-from optparse import Option, OptionParser
+from optparse import Option, OptionParser  #  pylint: disable=deprecated-module
 from spacewalk.common.rhnLog import initLOG, rhnLog
 from spacewalk.common.rhnConfig import CFG, initCFG
 from uyuni.common import rhn_rpm
-from spacewalk.server.rhnLib import parseRPMFilename, get_package_path
+from spacewalk.server.rhnLib import parseRPMFilename, get_package_path  #  pylint: disable=ungrouped-imports
 from spacewalk.server import rhnSQL, rhnPackageUpload
 from spacewalk.server.rhnServer import server_packages
 from spacewalk.satellite_tools.progress_bar import ProgressBar
-from uyuni.common.checksum import getFileChecksum
-from spacewalk.server.importlib import mpmSource
+from uyuni.common.checksum import getFileChecksum  #  pylint: disable=ungrouped-imports
+from spacewalk.server.importlib import mpmSource  #  pylint: disable=ungrouped-imports
 
 initCFG("server.satellite")
 initLOG(CFG.LOG_FILE, CFG.DEBUG)
@@ -71,7 +71,7 @@ def main():
 
     if args:
         for arg in args:
-            sys.stderr.write("Not a valid option ('%s'), try --help\n" % arg)
+            sys.stderr.write("Not a valid option ('%s'), try --help\n" % arg)  #  pylint: disable=consider-using-f-string
         sys.exit(-1)
 
     if options.verbose:
@@ -137,10 +137,10 @@ _update_pkg_path_query = """
 
 def process_package_data():
     if debug:
-        log = rhnLog("/var/log/rhn/update-packages.log", 5)
+        log = rhnLog("/var/log/rhn/update-packages.log", 5)  #  pylint: disable=no-value-for-parameter
 
-    _get_path_sql = rhnSQL.prepare(_get_path_query)
-    _update_package_path = rhnSQL.prepare(_update_pkg_path_query)
+    _get_path_sql = rhnSQL.prepare(_get_path_query)  #  pylint: disable=invalid-name
+    _update_package_path = rhnSQL.prepare(_update_pkg_path_query)  #  pylint: disable=invalid-name
 
     _get_path_sql.execute()
     paths = _get_path_sql.fetchall_dict()
@@ -149,7 +149,7 @@ def process_package_data():
         # Nothing to change
         return
     if verbose:
-        print(("Processing %s packages" % len(paths)))
+        print(("Processing %s packages" % len(paths)))  #  pylint: disable=consider-using-f-string
     pb = ProgressBar(
         prompt="standby: ",
         endTag=" - Complete!",
@@ -174,7 +174,7 @@ def process_package_data():
         except Exception:
             # probably not an rpm skip
             if debug:
-                log.writeMessage("Skipping: %s Not a valid rpm" % old_path_nvrea[-1])
+                log.writeMessage("Skipping: %s Not a valid rpm" % old_path_nvrea[-1])  #  pylint: disable=consider-using-f-string
             continue
         old_abs_path = os.path.join(CFG.MOUNT_POINT, path["path"])
 
@@ -201,18 +201,18 @@ def process_package_data():
                 new_ok_list.append(new_abs_path)
                 if debug:
                     log.writeMessage(
-                        "File %s already on final path %s"
+                        "File %s already on final path %s"  #  pylint: disable=consider-using-f-string
                         % (path["path"], new_abs_path)
                     )
                 old_abs_path = new_abs_path
             elif os.path.exists(bad_abs_path):
-                log.writeMessage("File %s found on %s" % (path["path"], bad_abs_path))
+                log.writeMessage("File %s found on %s" % (path["path"], bad_abs_path))  #  pylint: disable=consider-using-f-string
                 old_abs_path = bad_abs_path
             else:
                 skip_list.append(old_abs_path)
                 if debug:
                     log.writeMessage(
-                        "Missing path %s for package %d" % (old_abs_path, path["id"])
+                        "Missing path %s for package %d" % (old_abs_path, path["id"])  #  pylint: disable=consider-using-f-string
                     )
                 continue
 
@@ -221,7 +221,7 @@ def process_package_data():
             hdr = rhn_rpm.get_package_header(filename=old_abs_path)
         except Exception:
             e = sys.exc_info()[1]
-            msg = "Exception occurred when reading package header %s: %s" % (
+            msg = "Exception occurred when reading package header %s: %s" % (  #  pylint: disable=consider-using-f-string
                 old_abs_path,
                 str(e),
             )
@@ -236,7 +236,7 @@ def process_package_data():
             # relocate the package on the filer
             if debug:
                 log.writeMessage(
-                    "Relocating %s to %s on filer" % (old_abs_path, new_abs_path)
+                    "Relocating %s to %s on filer" % (old_abs_path, new_abs_path)  #  pylint: disable=consider-using-f-string
                 )
             if not os.path.isdir(new_abs_dir):
                 os.makedirs(new_abs_dir)
@@ -250,12 +250,12 @@ def process_package_data():
         _update_package_path.execute(the_id=path["id"], new_path=new_path)
         if debug:
             log.writeMessage(
-                "query Executed: update rhnPackage %d to %s" % (path["id"], new_path)
+                "query Executed: update rhnPackage %d to %s" % (path["id"], new_path)  #  pylint: disable=consider-using-f-string
             )
         # Process gpg key ids
         server_packages.processPackageKeyAssociations(hdr, checksum_type, checksum)
         if debug:
-            log.writeMessage("gpg key info updated from %s" % new_abs_path)
+            log.writeMessage("gpg key info updated from %s" % new_abs_path)  #  pylint: disable=consider-using-f-string
         i = i + 1
         # we need to break the transaction to smaller pieces
         if i % 1000 == 0:
@@ -265,16 +265,16 @@ def process_package_data():
     rhnSQL.commit()
     sys.stderr.write("Transaction Committed! \n")
     if verbose:
-        print((" Skipping %s packages, paths not found" % len(skip_list)))
+        print((" Skipping %s packages, paths not found" % len(skip_list)))  #  pylint: disable=consider-using-f-string
     if new_ok_list and verbose:
         print(
-            (" There were %s packages found in the correct location" % len(new_ok_list))
+            (" There were %s packages found in the correct location" % len(new_ok_list))  #  pylint: disable=consider-using-f-string
         )
     return
 
 
 def process_kickstart_trees():
-    for root, _dirs, files in os.walk(CFG.MOUNT_POINT + "/rhn/"):
+    for root, _dirs, files in os.walk(CFG.MOUNT_POINT + "/rhn/"):  #  pylint: disable=invalid-name,unused-variable
         for name in files:
             os.chmod(root + "/" + name, int("0644", 8))
 
@@ -335,9 +335,9 @@ end;
 
 def process_sha256_packages():
     if debug:
-        log = rhnLog("/var/log/rhn/update-packages.log", 5)
+        log = rhnLog("/var/log/rhn/update-packages.log", 5)  #  pylint: disable=no-value-for-parameter
 
-    _get_sha256_packages_sql = rhnSQL.prepare(_get_sha256_packages_query)
+    _get_sha256_packages_sql = rhnSQL.prepare(_get_sha256_packages_query)  #  pylint: disable=invalid-name
     _get_sha256_packages_sql.execute()
     packages = _get_sha256_packages_sql.fetchall_dict()
 
@@ -349,7 +349,7 @@ def process_sha256_packages():
         return
 
     if verbose:
-        print(("Processing %s SHA256 capable packages" % len(packages)))
+        print(("Processing %s SHA256 capable packages" % len(packages)))  #  pylint: disable=consider-using-f-string
 
     pb = ProgressBar(
         prompt="standby: ",
@@ -360,8 +360,8 @@ def process_sha256_packages():
     )
     pb.printAll(1)
 
-    _update_sha256_package_sql = rhnSQL.prepare(_update_sha256_package)
-    _update_package_files_sql = rhnSQL.prepare(_update_package_files)
+    _update_sha256_package_sql = rhnSQL.prepare(_update_sha256_package)  #  pylint: disable=invalid-name
+    _update_package_files_sql = rhnSQL.prepare(_update_package_files)  #  pylint: disable=invalid-name
 
     for package in packages:
         pb.addTo(1)
@@ -369,13 +369,13 @@ def process_sha256_packages():
 
         old_abs_path = os.path.join(CFG.MOUNT_POINT, package["path"])
         if debug and verbose:
-            log.writeMessage("Processing package: %s" % old_abs_path)
+            log.writeMessage("Processing package: %s" % old_abs_path)  #  pylint: disable=consider-using-f-string
         temp_file = open(old_abs_path, "rb")
         (
             header,
-            _payload_stream,
-            _header_start,
-            _header_end,
+            _payload_stream,  #  pylint: disable=invalid-name,unused-variable
+            _header_start,  #  pylint: disable=invalid-name,unused-variable
+            _header_end,  #  pylint: disable=invalid-name,unused-variable
         ) = rhnPackageUpload.load_package(temp_file)
         checksum_type = header.checksum_type()
         checksum = getFileChecksum(checksum_type, file_obj=temp_file)
@@ -393,7 +393,7 @@ def process_sha256_packages():
             if old_abs_path != new_abs_path:
                 if debug:
                     log.writeMessage(
-                        "Relocating %s to %s on filer" % (old_abs_path, new_abs_path)
+                        "Relocating %s to %s on filer" % (old_abs_path, new_abs_path)  #  pylint: disable=consider-using-f-string
                     )
 
                 new_abs_dir = os.path.dirname(new_abs_path)
@@ -404,13 +404,13 @@ def process_sha256_packages():
                 if not os.path.exists(new_abs_path):
                     os.link(old_abs_path, new_abs_path)
                 elif debug:
-                    log.writeMessage("File %s already exists" % new_abs_path)
+                    log.writeMessage("File %s already exists" % new_abs_path)  #  pylint: disable=consider-using-f-string
 
                 # Make the new path readable
                 os.chmod(new_abs_path, int("0644", 8))
         except OSError:
             e = sys.exc_info()[1]
-            message = "Error when relocating %s to %s on filer: %s" % (
+            message = "Error when relocating %s to %s on filer: %s" % (  #  pylint: disable=consider-using-f-string
                 old_abs_path,
                 new_abs_path,
                 str(e),
@@ -425,7 +425,7 @@ def process_sha256_packages():
             ctype=checksum_type, csum=checksum, path=new_path, id=package["id"]
         )
 
-        _select_checksum_type_id_sql = rhnSQL.prepare(_select_checksum_type_id)
+        _select_checksum_type_id_sql = rhnSQL.prepare(_select_checksum_type_id)  #  pylint: disable=invalid-name
         _select_checksum_type_id_sql.execute(ctype=checksum_type)
         checksum_type_id = _select_checksum_type_id_sql.fetchone()[0]
 
@@ -450,7 +450,7 @@ def process_sha256_packages():
                 os.removedirs(os.path.dirname(old_abs_path))
         except OSError:
             e = sys.exc_info()[1]
-            message = "Error when removing %s: %s" % (old_abs_path, str(e))
+            message = "Error when removing %s: %s" % (old_abs_path, str(e))  #  pylint: disable=consider-using-f-string
             print(message)
             if debug:
                 log.writeMessage(message)
@@ -546,14 +546,14 @@ def process_package_files():
     def package_name(pid):
         package_name_h.execute(pid=pid)
         r = package_name_h.fetchall_dict()[0]
-        return "%s-%s.%s" % (r["name"], r["vre"], r["arch"])
+        return "%s-%s.%s" % (r["name"], r["vre"], r["arch"])  #  pylint: disable=consider-using-f-string
 
     package_repodata_h = rhnSQL.prepare(package_repodata_delete)
 
     def delete_package_repodata(pid):
         package_repodata_h.execute(pid=pid)
 
-    log = rhnLog("/var/log/rhn/update-packages.log", 5)
+    log = rhnLog("/var/log/rhn/update-packages.log", 5)  #  pylint: disable=no-value-for-parameter
 
     package_query_h = rhnSQL.prepare(package_query)
     package_query_h.execute()
@@ -571,7 +571,7 @@ def process_package_files():
 
         if not os.path.exists(package_path):
             if debug:
-                log.writeMessage("Package path '%s' does not exist." % package_path)
+                log.writeMessage("Package path '%s' does not exist." % package_path)  #  pylint: disable=consider-using-f-string
             continue
 
         # pylint: disable=W0703
@@ -579,7 +579,7 @@ def process_package_files():
             hdr = rhn_rpm.get_package_header(filename=package_path)
         except Exception:
             e = sys.exc_info()[1]
-            message = "Error when reading package %s header: %s" % (package_path, e)
+            message = "Error when reading package %s header: %s" % (package_path, e)  #  pylint: disable=consider-using-f-string
             if debug:
                 log.writeMessage(message)
             continue
@@ -620,7 +620,7 @@ def process_package_files():
 
             if debug and pkg_updates:
                 log.writeMessage(
-                    "Package id: %s, name: %s, %s files inserted"
+                    "Package id: %s, name: %s, %s files inserted"  #  pylint: disable=consider-using-f-string
                     % (row["id"], package_name(row["id"]), pkg_updates)
                 )
         elif row["nonnullcsums"] == 0:
@@ -650,12 +650,12 @@ def process_package_files():
 
             if debug and pkg_updates:
                 log.writeMessage(
-                    "Package id: %s, name: %s, %s checksums updated"
+                    "Package id: %s, name: %s, %s checksums updated"  #  pylint: disable=consider-using-f-string
                     % (row["id"], package_name(row["id"]), pkg_updates)
                 )
 
         if pkg_updates:
-            log.writeMessage("Package id: %s, purging rhnPackageRepoData" % row["id"])
+            log.writeMessage("Package id: %s, purging rhnPackageRepoData" % row["id"])  #  pylint: disable=consider-using-f-string
             delete_package_repodata(row["id"])
 
         rhnSQL.commit()  # End of a package
@@ -700,7 +700,7 @@ def process_changelog():
     _update_changelog_data_text = """update rhnpackagechangelogdata set text = :text
                                            where id = :id"""
     if debug:
-        log = rhnLog("/var/log/rhn/update-packages.log", 5)
+        log = rhnLog("/var/log/rhn/update-packages.log", 5)  #  pylint: disable=no-value-for-parameter
 
     query_count = rhnSQL.prepare(_non_ascii_changelog_data_count)
     query_count.execute()
@@ -717,7 +717,7 @@ def process_changelog():
         return
 
     if verbose:
-        print(("Processing %s non-ASCII changelog entries" % nrows))
+        print(("Processing %s non-ASCII changelog entries" % nrows))  #  pylint: disable=consider-using-f-string
 
     pb = ProgressBar(
         prompt="standby: ",
@@ -746,7 +746,7 @@ def process_changelog():
         if name_fixed != name_u:
             if debug and verbose:
                 log.writeMessage(
-                    "Fixing record %s: name: '%s'" % (row["id"], row["name"])
+                    "Fixing record %s: name: '%s'" % (row["id"], row["name"])  #  pylint: disable=consider-using-f-string
                 )
             update_name.execute(id=row["id"], name=name_fixed)
 
@@ -757,7 +757,7 @@ def process_changelog():
         if text_fixed != text_u:
             if debug and verbose:
                 log.writeMessage(
-                    "Fixing record %s: text: '%s'" % (row["id"], row["text"])
+                    "Fixing record %s: text: '%s'" % (row["id"], row["text"])  #  pylint: disable=consider-using-f-string
                 )
             update_text.execute(id=row["id"], text=text_fixed)
 

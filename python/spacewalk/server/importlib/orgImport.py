@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring,invalid-name
 # Copyright (c) 2013--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -22,7 +22,7 @@ from .importLib import Import
 # http://stackoverflow.com/questions/1151658/python-hashable-dicts
 
 
-class hashabledict(dict):
+class hashabledict(dict):  #  pylint: disable=invalid-name
     def __key(self):
         return tuple((k, self[k]) for k in sorted(self))
 
@@ -30,10 +30,10 @@ class hashabledict(dict):
         return hash(self.__key())
 
     def __eq__(self, other):
-        return self.__key() == other.__key()
+        return self.__key() == other.__key()  #  pylint: disable=protected-access
 
 
-class OrgImport(Import):
+class OrgImport(Import):  #  pylint: disable=missing-class-docstring
     def __init__(self, batch, backend, master_label, create_orgs=False):
         Import.__init__(self, batch, backend)
         self.master_label = master_label

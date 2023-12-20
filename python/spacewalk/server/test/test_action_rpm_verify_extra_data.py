@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -15,16 +15,16 @@
 import sys
 
 if len(sys.argv) != 3:
-    print(("Usage: %s server_id action_id" % sys.argv[0]))
+    print(("Usage: %s server_id action_id" % sys.argv[0]))  #  pylint: disable=consider-using-f-string
     sys.exit(1)
 
 system_id = sys.argv[1]
 action_id = sys.argv[2]
 
-from spacewalk.common.rhnLog import initLOG
-from spacewalk.server import rhnSQL
+from spacewalk.common.rhnLog import initLOG  #  pylint: disable=wrong-import-position
+from spacewalk.server import rhnSQL  #  pylint: disable=wrong-import-position
 
-from spacewalk.server.action_extra_data import packages
+from spacewalk.server.action_extra_data import packages  #  pylint: disable=wrong-import-position
 
 initLOG("stderr", 4)
 rhnSQL.initDB("rhnuser/rhnuser@webdev")

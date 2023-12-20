@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring,invalid-name
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -17,7 +17,7 @@
 #
 
 import time
-import string
+import string  #  pylint: disable=unused-import
 
 try:
     #  python 2
@@ -25,7 +25,7 @@ try:
 except ImportError:
     #  python3
     from collections import UserDict
-from uyuni.common.usix import ListType, StringType, DictType, IntType, UnicodeType
+from uyuni.common.usix import ListType, StringType, DictType, IntType, UnicodeType  #  pylint: disable=unused-import,unused-import
 
 # A function that formats a UNIX timestamp to the session's format
 
@@ -73,7 +73,7 @@ class DBdateTime(DBtype):
 # Database objects
 
 
-class Table:
+class Table:  #  pylint: disable=missing-class-docstring
     # A list of supported keywords
     keywords = {
         "fields": DictType,
@@ -90,7 +90,7 @@ class Table:
         self.name = name
         for k in list(kwargs.keys()):
             if k not in self.keywords:
-                raise TypeError("Unknown keyword attribute '%s'" % k)
+                raise TypeError("Unknown keyword attribute '%s'" % k)  #  pylint: disable=consider-using-f-string
         # Initialize stuff
         # Fields
         self.fields = {}
@@ -103,15 +103,15 @@ class Table:
         # Nullable columns; will become a hash
         self.nullable = []
         # Compute the diff
-        self.severityHash = {}
-        self.defaultSeverity = 4
+        self.severityHash = {}  #  pylint: disable=invalid-name
+        self.defaultSeverity = 4  #  pylint: disable=invalid-name
         # Sequence column - a column that is populated off a sequence
-        self.sequenceColumn = None
+        self.sequenceColumn = None  #  pylint: disable=invalid-name
 
         for k, v in list(kwargs.items()):
             datatype = self.keywords[k]
             if not isinstance(v, datatype):
-                raise TypeError("%s expected to be %s; got %s" % (k, datatype, type(v)))
+                raise TypeError("%s expected to be %s; got %s" % (k, datatype, type(v)))  #  pylint: disable=consider-using-f-string
             setattr(self, k, v)
 
         # Fix nullable
@@ -121,17 +121,17 @@ class Table:
             for field in nullable:
                 if field not in self.fields:
                     raise TypeError(
-                        "Unknown nullable field %s in table %s" % (field, name)
+                        "Unknown nullable field %s in table %s" % (field, name)  #  pylint: disable=consider-using-f-string
                     )
                 self.nullable[field] = None
 
         # Now analyze pk
         for field in self.pk:
             if field not in self.fields:
-                raise TypeError("Unknown primary key field %s" % field)
+                raise TypeError("Unknown primary key field %s" % field)  #  pylint: disable=consider-using-f-string
 
     def __str__(self):
-        return "Instance of class %s.%s: PK: %s, Fields: %s" % (
+        return "Instance of class %s.%s: PK: %s, Fields: %s" % (  #  pylint: disable=consider-using-f-string
             self.__class__.__module__,
             self.__class__.__name__,
             self.pk,
@@ -140,26 +140,26 @@ class Table:
 
     __repr__ = __str__
 
-    def isNullable(self, field):
+    def isNullable(self, field):  #  pylint: disable=invalid-name
         if field not in self.fields:
-            raise TypeError("Unknown field %s" % field)
+            raise TypeError("Unknown field %s" % field)  #  pylint: disable=consider-using-f-string
         return field in self.nullable
 
-    def getPK(self):
+    def getPK(self):  #  pylint: disable=invalid-name
         return self.pk
 
-    def getFields(self):
+    def getFields(self):  #  pylint: disable=invalid-name
         return self.fields
 
-    def getAttribute(self):
+    def getAttribute(self):  #  pylint: disable=invalid-name
         return self.attribute
 
-    def getObjectAttribute(self, attribute):
+    def getObjectAttribute(self, attribute):  #  pylint: disable=invalid-name
         if attribute in self.map:
             return self.map[attribute]
         return attribute
 
-    def getSeverityHash(self):
+    def getSeverityHash(self):  #  pylint: disable=invalid-name
         for field in list(self.fields.keys()):
             if field not in self.severityHash:
                 self.severityHash[field] = self.defaultSeverity
@@ -170,12 +170,12 @@ class Table:
 
 
 class TableCollection(UserDict):
-    def __init__(self, *list):
+    def __init__(self, *list):  #  pylint: disable=redefined-builtin
         UserDict.__init__(self)
         # Verify if the list's items are the right format
         for table in list:
             if not isinstance(table, Table):
-                raise TypeError("Expected a Table instance; got %s" % type(table))
+                raise TypeError("Expected a Table instance; got %s" % type(table))  #  pylint: disable=consider-using-f-string
         # Now initialize the collection
         for table in list:
             self.__setitem__(table.name, table)
@@ -186,7 +186,7 @@ class TableCollection(UserDict):
 # the value is nullable
 
 
-class BaseTableLookup:
+class BaseTableLookup:  #  pylint: disable=missing-class-docstring
     def __init__(self, table, dbmodule):
         # Generates a bunch of queries that look up data based on the primary
         # keys of this table
@@ -197,7 +197,7 @@ class BaseTableLookup:
         self.queries = {}
         self._buildWhereClauses()
 
-    def _buildWhereClauses(self):
+    def _buildWhereClauses(self):  #  pylint: disable=invalid-name
         # Keys is a list of lists of 0/1, 0 if the column is not nullable
         keys = [[]]
         # The corresponding query arguments
@@ -209,10 +209,10 @@ class BaseTableLookup:
                 key = keys[i]
                 query = queries[i]
                 k.append(key + [0])
-                q.append(query + ["%s = :%s" % (col, col)])
+                q.append(query + ["%s = :%s" % (col, col)])  #  pylint: disable=consider-using-f-string
                 if self.table.isNullable(col):
                     k.append(key + [1])
-                    q.append(query + ["%s is null" % col])
+                    q.append(query + ["%s is null" % col])  #  pylint: disable=consider-using-f-string
             keys = k
             queries = q
         # Now put the queries in self.sqlqueries, keyed on the list of 0/1
@@ -221,10 +221,10 @@ class BaseTableLookup:
             query = " and ".join(queries[i])
             self.whereclauses[key] = query
 
-    def _selectQueryKey(self, value):
+    def _selectQueryKey(self, value):  #  pylint: disable=invalid-name
         # Determine which query should we use
         # Build the key first
-        hash = {}
+        hash = {}  #  pylint: disable=redefined-builtin
         key = []
         for col in self.pks:
             if self.table.isNullable(col) and value[col] in [None, ""]:
@@ -235,11 +235,11 @@ class BaseTableLookup:
         key = tuple(key)
         return key, hash
 
-    def _buildQuery(self, key):
+    def _buildQuery(self, key):  #  pylint: disable=invalid-name,unused-argument
         # Stub
         return None
 
-    def _getCachedQuery(self, key, blob_map=None):
+    def _getCachedQuery(self, key, blob_map=None):  #  pylint: disable=invalid-name
         if key in self.queries:
             # Serve it from the pool
             return self.queries[key]
@@ -259,16 +259,16 @@ class BaseTableLookup:
 class TableLookup(BaseTableLookup):
     def __init__(self, table, dbmodule):
         BaseTableLookup.__init__(self, table, dbmodule)
-        self.queryTemplate = "select * from %s where %s"
+        self.queryTemplate = "select * from %s where %s"  #  pylint: disable=invalid-name
 
     def _buildQuery(self, key):
         return self.queryTemplate % (self.table.name, self.whereclauses[key])
 
 
-class TableUpdate(BaseTableLookup):
+class TableUpdate(BaseTableLookup):  #  pylint: disable=missing-class-docstring
     def __init__(self, table, dbmodule):
         BaseTableLookup.__init__(self, table, dbmodule)
-        self.queryTemplate = "update %s set %s where %s"
+        self.queryTemplate = "update %s set %s where %s"  #  pylint: disable=invalid-name
         self.fields = list(self.table.getFields().keys())
         # Fields minus pks
         self.otherfields = []
@@ -282,7 +282,7 @@ class TableUpdate(BaseTableLookup):
                 self.blob_fields.append(field)
             else:
                 self.otherfields.append(field)
-        self.updateclause = ", ".join(["%s = :%s" % (x, x) for x in self.otherfields])
+        self.updateclause = ", ".join(["%s = :%s" % (x, x) for x in self.otherfields])  #  pylint: disable=consider-using-f-string
         # key
         self.firstkey = None
         for pk in self.pks:
@@ -301,13 +301,13 @@ class TableUpdate(BaseTableLookup):
     def _split_blob_values(self, values, blob_only=0):
         # Splits values that have to be inserted
         # Blobs will be in a separate hash
-        valuesHash = {}
+        valuesHash = {}  #  pylint: disable=invalid-name
         # blobValuesHash is a hash keyed on the primary key fields
         # should only have one element if the primary key has no nullable
         # fields
-        blobValuesHash = {}
+        blobValuesHash = {}  #  pylint: disable=invalid-name
         for key in list(self.whereclauses.keys()):
-            hash = {}
+            hash = {}  #  pylint: disable=redefined-builtin
             for i in range(len(key)):
                 pk = self.pks[i]
                 # Only add the PK if it's non-null
@@ -345,7 +345,7 @@ class TableUpdate(BaseTableLookup):
         return valuesHash, blobValuesHash
 
     def query(self, values):
-        valuesHash, blobValuesHash = self._split_blob_values(values, blob_only=0)
+        valuesHash, blobValuesHash = self._split_blob_values(values, blob_only=0)  #  pylint: disable=invalid-name,invalid-name
         # And now do the actual update for non-blobs
         if self.otherfields:
             for key, val in list(valuesHash.items()):
@@ -360,7 +360,7 @@ class TableUpdate(BaseTableLookup):
 
         self._update_blobs(blobValuesHash)
 
-    def _update_blobs(self, blobValuesHash):
+    def _update_blobs(self, blobValuesHash):  #  pylint: disable=invalid-name
         # Now update BLOB fields
         template = "select %s from %s where %s for update"
         blob_fields_string = ", ".join(self.blob_fields)
@@ -398,16 +398,16 @@ class TableUpdate(BaseTableLookup):
                     )
 
 
-class TableDelete(TableLookup):
+class TableDelete(TableLookup):  #  pylint: disable=missing-class-docstring
     def __init__(self, table, dbmodule):
         TableLookup.__init__(self, table, dbmodule)
         self.queryTemplate = "delete from %s where %s"
 
     def query(self, values):
         # Build the values hash
-        valuesHash = {}
+        valuesHash = {}  #  pylint: disable=invalid-name
         for key in list(self.whereclauses.keys()):
-            hash = {}
+            hash = {}  #  pylint: disable=redefined-builtin
             for i in range(len(key)):
                 pk = self.pks[i]
                 # Only add the PK if it's non-null
@@ -435,7 +435,7 @@ class TableDelete(TableLookup):
             statement.executemany(**val)
 
 
-class TableInsert(TableUpdate):
+class TableInsert(TableUpdate):  #  pylint: disable=missing-class-docstring
     def __init__(self, table, dbmodule):
         TableUpdate.__init__(self, table, dbmodule)
         self.queryTemplate = "insert into %s (%s) values %%s"
@@ -463,7 +463,7 @@ class TableInsert(TableUpdate):
         )
 
 
-def sanitizeValue(value, datatype):
+def sanitizeValue(value, datatype):  #  pylint: disable=invalid-name
     if isinstance(datatype, DBstring):
         if value is None or value == "":
             return None  # we really want to preserve Nones
@@ -493,7 +493,7 @@ def sanitizeValue(value, datatype):
     return value
 
 
-def addHash(hasharray, hash):
+def addHash(hasharray, hash):  #  pylint: disable=invalid-name,redefined-builtin
     # hasharray is a hash of arrays
     # add hash's values to hasharray
     for k, v in list(hash.items()):

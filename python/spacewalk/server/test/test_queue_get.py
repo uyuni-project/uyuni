@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -22,13 +22,13 @@ initCFG("server.xmlrpc")
 rhnSQL.initDB("rhnuser/rhnuser@webdev")
 
 q = queue.Queue()
-if 1:
-    systemid = open("../../test/backend/checks/systemid-farm06").read()
+if 1:  #  pylint: disable=using-constant-test
+    systemid = open("../../test/backend/checks/systemid-farm06").read()  #  pylint: disable=unspecified-encoding
     print((q.get(systemid, version=2)))
 else:
     q.server_id = 1003485791
 
-    q._invalidate_failed_prereq_actions()
+    q._invalidate_failed_prereq_actions()  #  pylint: disable=protected-access
 
 # rhnSQL.rollback()
 rhnSQL.commit()

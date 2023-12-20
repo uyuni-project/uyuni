@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2009--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -32,7 +32,7 @@ except ImportError:
 
     hashlib_has_usedforsecurity = False
 
-    class hashlib(object):
+    class hashlib(object):  #  pylint: disable=invalid-name
         @staticmethod
         def new(checksum):
             if checksum == "md5":
@@ -45,7 +45,7 @@ except ImportError:
                 raise ValueError("Incompatible checksum type")
 
 
-def getHashlibInstance(hash_type, used_for_security):
+def getHashlibInstance(hash_type, used_for_security):  #  pylint: disable=invalid-name
     """Get an instance of a hashlib object."""
     if hashlib_has_usedforsecurity:
         return hashlib.new(hash_type, usedforsecurity=used_for_security)
@@ -53,7 +53,7 @@ def getHashlibInstance(hash_type, used_for_security):
         return hashlib.new(hash_type)
 
 
-def getFileChecksum(
+def getFileChecksum(  #  pylint: disable=invalid-name
     hashtype,
     filename=None,
     fd=None,
@@ -103,7 +103,7 @@ def getFileChecksum(
     return m.hexdigest()
 
 
-def getStringChecksum(hashtype, s):
+def getStringChecksum(hashtype, s):  #  pylint: disable=invalid-name
     """compute checksum of an arbitrary string"""
     h = getHashlibInstance(hashtype, False)
     h.update(s)

@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring,invalid-name
 # Copyright (c) 2008--2017 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -18,7 +18,7 @@
 # FIXME: need more documentation
 #
 
-import sys
+import sys  #  pylint: disable=unused-import
 from .backend import Backend
 from .backendLib import DBint, DBstring, DBdateTime, Table, TableCollection, DBblob
 from spacewalk.server import rhnSQL
@@ -27,7 +27,7 @@ from spacewalk.common.rhnConfig import CFG
 from uyuni.common import timezone_utils
 
 
-class OracleBackend(Backend):
+class OracleBackend(Backend):  #  pylint: disable=missing-class-docstring
     tables = TableCollection(
         # NOTE: pk = primary keys
         #       attribute = attribute this table links back to
@@ -721,9 +721,9 @@ class OracleBackend(Backend):
     def __init__(self):
         Backend.__init__(self, rhnSQL)
 
-    def setSessionTimeZoneToLocalTimeZone(self):
+    def setSessionTimeZoneToLocalTimeZone(self):  #  pylint: disable=invalid-name
         sth = self.dbmodule.prepare(
-            "alter session set time_zone = '%s'" % timezone_utils.get_utc_offset()
+            "alter session set time_zone = '%s'" % timezone_utils.get_utc_offset()  #  pylint: disable=consider-using-f-string
         )
         sth.execute()
 
@@ -748,7 +748,7 @@ class PostgresqlBackend(OracleBackend):
 
     def setSessionTimeZoneToLocalTimeZone(self):
         sth = self.dbmodule.prepare(
-            "set session time zone '%s'" % timezone_utils.get_utc_offset()
+            "set session time zone '%s'" % timezone_utils.get_utc_offset()  #  pylint: disable=consider-using-f-string
         )
         sth.execute()
 

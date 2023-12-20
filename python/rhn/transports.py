@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Helper transport objects
 #
 # Copyright (c) 2002--2016 Red Hat, Inc.
@@ -39,10 +39,10 @@ class NotProcessed(Exception):
     pass
 
 
-class Transport(xmlrpclib.Transport):
-    user_agent = "rhn.rpclib.py/%s" % __version__
+class Transport(xmlrpclib.Transport):  #  pylint: disable=missing-class-docstring
+    user_agent = "rhn.rpclib.py/%s" % __version__  #  pylint: disable=consider-using-f-string
 
-    def __init__(
+    def __init__(  #  pylint: disable=super-init-not-called
         self,
         transfer=0,
         encoding=0,
@@ -59,9 +59,9 @@ class Transport(xmlrpclib.Transport):
         self.connection = None
         self.method = "POST"
         self._lang = None
-        self.refreshCallback = refreshCallback
-        self.progressCallback = progressCallback
-        self.bufferSize = 16384
+        self.refreshCallback = refreshCallback  #  pylint: disable=invalid-name
+        self.progressCallback = progressCallback  #  pylint: disable=invalid-name
+        self.bufferSize = 16384  #  pylint: disable=invalid-name
         self.headers_in = None
         self.response_status = None
         self.response_reason = None
@@ -70,18 +70,18 @@ class Transport(xmlrpclib.Transport):
         self.timeout = timeout
 
     # set the progress callback
-    def set_progress_callback(self, progressCallback, bufferSize=16384):
+    def set_progress_callback(self, progressCallback, bufferSize=16384):  #  pylint: disable=invalid-name,invalid-name
         self.progressCallback = progressCallback
         self.bufferSize = bufferSize
 
     # set the refresh callback
-    def set_refresh_callback(self, refreshCallback):
+    def set_refresh_callback(self, refreshCallback):  #  pylint: disable=invalid-name
         self.refreshCallback = refreshCallback
 
     # set the buffer size
     # The bigger this is, the faster the read is, but the more seldom is the
     # progress callback called
-    def set_buffer_size(self, bufferSize):
+    def set_buffer_size(self, bufferSize):  #  pylint: disable=invalid-name
         if bufferSize is None:
             # No buffer size specified; go with 16k
             bufferSize = 16384
@@ -91,7 +91,7 @@ class Transport(xmlrpclib.Transport):
     # set the request method
     def set_method(self, method):
         if method not in ("GET", "POST"):
-            raise IOError("Unknown request method %s" % method)
+            raise IOError("Unknown request method %s" % method)  #  pylint: disable=consider-using-f-string
         self.method = method
 
     # reset the transport options
@@ -141,7 +141,7 @@ class Transport(xmlrpclib.Transport):
 
     def get_connection(self, host):
         if self.verbose:
-            print("Connecting via http to %s" % (host,))
+            print("Connecting via http to %s" % (host,))  #  pylint: disable=consider-using-f-string
         if self.timeout:
             return connections.HTTPConnection(host, timeout=self.timeout)
         else:
@@ -156,7 +156,7 @@ class Transport(xmlrpclib.Transport):
         self.verbose = verbose
 
         # implement BASIC HTTP AUTHENTICATION
-        host, extra_headers, x509 = self.get_host_info(host)
+        host, extra_headers, x509 = self.get_host_info(host)  #  pylint: disable=unused-variable
         if not extra_headers:
             extra_headers = []
         # Establish the connection
@@ -189,7 +189,7 @@ class Transport(xmlrpclib.Transport):
         if self.verbose:
             print("Incoming headers:")
             for header, value in headers.items():
-                print("\t%s : %s" % (header, value))
+                print("\t%s : %s" % (header, value))  #  pylint: disable=consider-using-f-string
 
         if fd.status in (301, 302):
             self._redirected = headers["Location"]
@@ -267,7 +267,7 @@ class Transport(xmlrpclib.Transport):
         self._lang = lang
 
 
-class SafeTransport(Transport):
+class SafeTransport(Transport):  #  pylint: disable=missing-class-docstring
     def __init__(
         self,
         transfer=0,
@@ -292,15 +292,15 @@ class SafeTransport(Transport):
     def add_trusted_cert(self, certfile):
         if not os.access(certfile, os.R_OK):
             raise ValueError(
-                "SafeTransport: Certificate file %s is not accessible" % certfile
+                "SafeTransport: Certificate file %s is not accessible" % certfile  #  pylint: disable=consider-using-f-string
             )
         self.trusted_certs.append(certfile)
 
     def get_connection(self, host):
         # implement BASIC HTTP AUTHENTICATION
-        host, extra_headers, x509 = self.get_host_info(host)
+        host, extra_headers, x509 = self.get_host_info(host)  #  pylint: disable=unused-variable,unused-variable
         if self.verbose:
-            print("Connecting via https to %s" % (host,))
+            print("Connecting via https to %s" % (host,))  #  pylint: disable=consider-using-f-string
         if self.timeout:
             return connections.HTTPSConnection(
                 host, trusted_certs=self.trusted_certs, timeout=self.timeout
@@ -309,7 +309,7 @@ class SafeTransport(Transport):
             return connections.HTTPSConnection(host, trusted_certs=self.trusted_certs)
 
 
-class ProxyTransport(Transport):
+class ProxyTransport(Transport):  #  pylint: disable=missing-class-docstring
     def __init__(
         self,
         proxy,
@@ -336,7 +336,7 @@ class ProxyTransport(Transport):
     def get_connection(self, host):
         if self.verbose:
             print(
-                "Connecting via http to %s proxy %s, username %s, pass %s"
+                "Connecting via http to %s proxy %s, username %s, pass %s"  #  pylint: disable=consider-using-f-string
                 % (host, self._proxy, self._proxy_username, self._proxy_password)
             )
         if self.timeout:
@@ -356,7 +356,7 @@ class ProxyTransport(Transport):
             )
 
 
-class SafeProxyTransport(ProxyTransport):
+class SafeProxyTransport(ProxyTransport):  #  pylint: disable=missing-class-docstring
     def __init__(
         self,
         proxy,
@@ -387,14 +387,14 @@ class SafeProxyTransport(ProxyTransport):
     def add_trusted_cert(self, certfile):
         if not os.access(certfile, os.R_OK):
             raise ValueError(
-                "SafeProxyTransport:Certificate file %s is not accessible" % certfile
+                "SafeProxyTransport:Certificate file %s is not accessible" % certfile  #  pylint: disable=consider-using-f-string
             )
         self.trusted_certs.append(certfile)
 
     def get_connection(self, host):
         if self.verbose:
             print(
-                "Connecting via https to %s proxy %s, username %s, pass %s"
+                "Connecting via https to %s proxy %s, username %s, pass %s"  #  pylint: disable=consider-using-f-string
                 % (host, self._proxy, self._proxy_username, self._proxy_password)
             )
         if self.timeout:
@@ -441,9 +441,9 @@ class SafeProxyTransport(ProxyTransport):
 # ============================================================================
 # Input class to automate reading the posting from the network
 # Having to work with environment variables blows, though
-class Input:
+class Input:  #  pylint: disable=missing-class-docstring
     def __init__(
-        self, headers=None, progressCallback=None, bufferSize=1024, max_mem_size=16384
+        self, headers=None, progressCallback=None, bufferSize=1024, max_mem_size=16384  #  pylint: disable=invalid-name,invalid-name
     ):
         self.transfer = None
         self.encoding = None
@@ -451,8 +451,8 @@ class Input:
         self.length = 0
         self.lang = "C"
         self.name = ""
-        self.progressCallback = progressCallback
-        self.bufferSize = bufferSize
+        self.progressCallback = progressCallback  #  pylint: disable=invalid-name
+        self.bufferSize = bufferSize  #  pylint: disable=invalid-name
         self.max_mem_size = max_mem_size
 
         if not headers:
@@ -520,7 +520,7 @@ class Input:
         if not self.transfer or self.transfer == "binary":
             return
         elif self.transfer == "base64":
-            import base64
+            import base64  #  pylint: disable=import-outside-toplevel
 
             old_io = self.io
             old_io.seek(0, 0)
@@ -550,7 +550,7 @@ class Input:
             # all is fine.
             pass
         elif self.encoding in ("x-zlib", "deflate"):
-            import zlib
+            import zlib  #  pylint: disable=import-outside-toplevel
 
             obj = zlib.decompressobj()
             self.io.seek(0, 0)
@@ -560,7 +560,7 @@ class Input:
             self.io = SmartIO(max_mem_size=self.max_mem_size)
             self.io.write(data)
         elif self.encoding in ("x-gzip", "gzip"):
-            import gzip
+            import gzip  #  pylint: disable=import-outside-toplevel
 
             self.io.seek(0, 0)
             gz = gzip.GzipFile(mode="rb", compresslevel=COMPRESS_LEVEL, fileobj=self.io)
@@ -585,7 +585,7 @@ class Input:
 # Utility functions
 
 
-def _smart_total_read(fd, bufferSize=1024, max_mem_size=16384):
+def _smart_total_read(fd, bufferSize=1024, max_mem_size=16384):  #  pylint: disable=invalid-name
     """
     Tries to read data from the supplied stream, and puts the results into a
     StmartIO object. The data will be in memory or in a temporary file,
@@ -603,7 +603,7 @@ def _smart_total_read(fd, bufferSize=1024, max_mem_size=16384):
     return io
 
 
-def _smart_read(fd, amt, bufferSize=1024, progressCallback=None, max_mem_size=16384):
+def _smart_read(fd, amt, bufferSize=1024, progressCallback=None, max_mem_size=16384):  #  pylint: disable=invalid-name,invalid-name
     # Reads amt bytes from fd, or until the end of file, whichever
     # occurs first
     # The function will read in memory if the amout to be read is smaller than
@@ -616,13 +616,13 @@ def _smart_read(fd, amt, bufferSize=1024, progressCallback=None, max_mem_size=16
     # Inspired by Greg Stein's httplib.py (the standard in python 2.x)
     #
     # support for progress callbacks added
-    startTime = time.time()
-    lastTime = startTime
+    startTime = time.time()  #  pylint: disable=invalid-name
+    lastTime = startTime  #  pylint: disable=invalid-name
     buf = SmartIO(max_mem_size=max_mem_size)
 
     origsize = amt
     while amt > 0:
-        curTime = time.time()
+        curTime = time.time()  #  pylint: disable=invalid-name
         l = min(bufferSize, amt)
         chunk = fd.read(l)
         # read guarantees that len(chunk) <= l
@@ -641,9 +641,9 @@ def _smart_read(fd, amt, bufferSize=1024, progressCallback=None, max_mem_size=16
         #  we haven't updated it for more than a secord, or
         #  it's the last read (amt == 0)
         if curTime - lastTime >= 1 or amt == 0:
-            lastTime = curTime
+            lastTime = curTime  #  pylint: disable=invalid-name
             # use float() so that we force float division in the next step
-            bytesRead = float(origsize - amt)
+            bytesRead = float(origsize - amt)  #  pylint: disable=invalid-name
             # if amt == 0, on a fast machine it is possible to have
             # curTime - lastTime == 0, so add an epsilon to prevent a division
             # by zero
@@ -672,7 +672,7 @@ class InputStream:
         self.close = close
 
     def __repr__(self):
-        return "Input data is a stream of %d bytes for file %s.\n" % (
+        return "Input data is a stream of %d bytes for file %s.\n" % (  #  pylint: disable=consider-using-f-string
             self.length,
             self.name,
         )
@@ -680,7 +680,7 @@ class InputStream:
 
 # ============================================================================
 # Output class that will be used to build the temporary output string
-class BaseOutput:
+class BaseOutput:  #  pylint: disable=missing-class-docstring
     # DEFINES for instances use
     # Content-Encoding
     ENCODE_NONE = 0
@@ -710,7 +710,7 @@ class BaseOutput:
         # Assumes connection is an instance of HTTPConnection
         if connection:
             if not isinstance(connection, connections.HTTPConnection):
-                raise Exception("Expected an HTTPConnection type object")
+                raise Exception("Expected an HTTPConnection type object")  #  pylint: disable=broad-exception-raised
 
         self.method = method
 
@@ -762,7 +762,7 @@ class BaseOutput:
 
         # Content-Encoding header
         if self.encoding == self.ENCODE_GZIP:
-            import gzip
+            import gzip  #  pylint: disable=import-outside-toplevel
 
             encoding_name = self.encodings[self.ENCODE_GZIP][0]
             self.set_header("Content-Encoding", encoding_name)
@@ -776,7 +776,7 @@ class BaseOutput:
             self.data = f.getvalue()
             f.close()
         elif self.encoding == self.ENCODE_ZLIB:
-            import zlib
+            import zlib  #  pylint: disable=import-outside-toplevel
 
             encoding_name = self.encodings[self.ENCODE_ZLIB][0]
             self.set_header("Content-Encoding", encoding_name)
@@ -792,7 +792,7 @@ class BaseOutput:
             self.set_header("Content-Transfer-Encoding", transfer_name)
             self.set_header("Content-Type", "application/binary")
         elif self.transfer == self.TRANSFER_BASE64:
-            import base64
+            import base64  #  pylint: disable=import-outside-toplevel
 
             transfer_name = self.transfers[self.TRANSFER_BASE64]
             self.set_header("Content-Transfer-Encoding", transfer_name)
@@ -808,7 +808,7 @@ class BaseOutput:
         # other headers
         self.set_header(
             "X-Transport-Info",
-            "Extended Capabilities Transport (C) Red Hat, Inc (version %s)"
+            "Extended Capabilities Transport (C) Red Hat, Inc (version %s)"  #  pylint: disable=consider-using-f-string
             % rpc_version,
         )
         self.__processed = 1
@@ -826,10 +826,10 @@ class BaseOutput:
         self._host = host
 
         if self._connection is None:
-            raise Exception("No connection object found")
+            raise Exception("No connection object found")  #  pylint: disable=broad-exception-raised
         self._connection.connect()
         # wrap self data into binary object, otherwise HTTPConnection.request
-        # will encode it as ISO-8859-1 https://docs.python.org/3/library/http.client.html#httpconnection-objects
+        # will encode it as ISO-8859-1 https://docs.python.org/3/library/http.client.html#httpconnection-objects  #  pylint: disable=line-too-long
         self._connection.request(
             self.method, handler, body=bstr(self.data), headers=self.headers
         )
@@ -838,7 +838,7 @@ class BaseOutput:
 
         if not self.response_acceptable(response):
             raise xmlrpclib.ProtocolError(
-                "%s %s" % (self._host, handler),
+                "%s %s" % (self._host, handler),  #  pylint: disable=consider-using-f-string
                 response.status,
                 response.reason,
                 response.msg,
@@ -871,7 +871,7 @@ class BaseOutput:
             self._connection = None
 
 
-def lookupTransfer(transfer, strict=0):
+def lookupTransfer(transfer, strict=0):  #  pylint: disable=invalid-name
     """Given a string or numeric representation of a transfer, return the
     transfer code"""
     if transfer is None:
@@ -884,12 +884,12 @@ def lookupTransfer(transfer, strict=0):
             if Output.transfers[i] == transfer.lower():
                 return i
     if strict:
-        raise ValueError("Unsupported transfer %s" % transfer)
+        raise ValueError("Unsupported transfer %s" % transfer)  #  pylint: disable=consider-using-f-string
     # Return default
     return 0
 
 
-def lookupEncoding(encoding, strict=0):
+def lookupEncoding(encoding, strict=0):  #  pylint: disable=invalid-name
     """Given a string or numeric representation of an encoding, return the
     encoding code"""
     if encoding is None:
@@ -902,7 +902,7 @@ def lookupEncoding(encoding, strict=0):
             if encoding.lower() in Output.encodings[i]:
                 return i
     if strict:
-        raise ValueError("Unsupported encoding %s" % encoding)
+        raise ValueError("Unsupported encoding %s" % encoding)  #  pylint: disable=consider-using-f-string
     # Return default
     return 0
 
@@ -911,18 +911,18 @@ Output = BaseOutput
 
 
 # File object
-class File:
+class File:  #  pylint: disable=missing-class-docstring
     def __init__(
-        self, file_obj, length=0, name=None, progressCallback=None, bufferSize=16384
+        self, file_obj, length=0, name=None, progressCallback=None, bufferSize=16384  #  pylint: disable=invalid-name,invalid-name
     ):
         self.length = length
         self.file_obj = file_obj
         self.close = file_obj.close
-        self.bufferSize = bufferSize
+        self.bufferSize = bufferSize  #  pylint: disable=invalid-name
         self.name = ""
         if name:
             self.name = name[name.rfind("/") + 1 :]
-        self.progressCallback = progressCallback
+        self.progressCallback = progressCallback  #  pylint: disable=invalid-name
 
     def __len__(self):
         return self.length

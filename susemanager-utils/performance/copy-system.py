@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python3  #  pylint: disable=missing-module-docstring,invalid-name
 import base64
 from contextlib import contextmanager
 from datetime import datetime, timedelta, timezone
@@ -42,7 +42,7 @@ def get_sequence_next_value(cursor, name):
     return cursor.fetchone()[0]
 
 
-def clone_rhnserver(cursor, id, clone_name):
+def clone_rhnserver(cursor, id, clone_name):  #  pylint: disable=redefined-builtin
     new_id = get_sequence_next_value(cursor, "rhn_server_id_seq")
 
     machine_id = hashlib.md5(clone_name.encode("utf-8")).hexdigest()
@@ -108,7 +108,7 @@ def do_clone_using_id(cursor, table, columns, key, old, new, converter=None):
         )
 
 
-def clone_suseminioninfo(cursor, id, new_id, clone_name):
+def clone_suseminioninfo(cursor, id, new_id, clone_name):  #  pylint: disable=redefined-builtin
     columns = ["os_family", "kernel_live_version", "ssh_push_port"]
 
     def converter(row):
@@ -125,7 +125,7 @@ def clone_suseminioninfo(cursor, id, new_id, clone_name):
     )
 
 
-def clone_susechannelaccesstoken(cursor, id, new_id, secret_key):
+def clone_susechannelaccesstoken(cursor, id, new_id, secret_key):  #  pylint: disable=redefined-builtin
     columns = ["token", "created", "expiration", "valid"]
 
     def row_converter(row):
@@ -162,12 +162,12 @@ def clone_susechannelaccesstoken(cursor, id, new_id, secret_key):
     )
 
 
-def clone_rhnclientcapability(cursor, id, new_id):
+def clone_rhnclientcapability(cursor, id, new_id):  #  pylint: disable=redefined-builtin
     columns = ["capability_name_id", "version"]
     do_clone_using_id(cursor, "rhnclientcapability", columns, "server_id", id, new_id)
 
 
-def clone_rhncpu(cursor, id, new_id):
+def clone_rhncpu(cursor, id, new_id):  #  pylint: disable=redefined-builtin
     columns = [
         "cpu_arch_id",
         "bogomips",
@@ -198,7 +198,7 @@ def clone_rhncpu(cursor, id, new_id):
     )
 
 
-def clone_rhndevice(cursor, id, new_id):
+def clone_rhndevice(cursor, id, new_id):  #  pylint: disable=redefined-builtin
     columns = [
         "class",
         "bus",
@@ -224,7 +224,7 @@ def clone_rhndevice(cursor, id, new_id):
     )
 
 
-def clone_susesaltpillar(cursor, id, new_id):
+def clone_susesaltpillar(cursor, id, new_id):  #  pylint: disable=redefined-builtin
     columns = ["category", "pillar"]
 
     def converter(row):
@@ -244,7 +244,7 @@ def clone_susesaltpillar(cursor, id, new_id):
     )
 
 
-def clone_rhnram(cursor, id, new_id):
+def clone_rhnram(cursor, id, new_id):  #  pylint: disable=redefined-builtin
     columns = ["ram", "swap"]
 
     def converter(row):
@@ -258,7 +258,7 @@ def clone_rhnram(cursor, id, new_id):
     )
 
 
-def clone_rhnserverdmi(cursor, id, new_id):
+def clone_rhnserverdmi(cursor, id, new_id):  #  pylint: disable=redefined-builtin
     columns = [
         "vendor",
         "system",
@@ -287,7 +287,7 @@ def clone_rhnserverdmi(cursor, id, new_id):
     )
 
 
-def clone_rhnserverfqdn(cursor, id, new_id):
+def clone_rhnserverfqdn(cursor, id, new_id):  #  pylint: disable=redefined-builtin
     columns = ["name", "is_primary"]
 
     def converter(row):
@@ -307,7 +307,7 @@ def clone_rhnserverfqdn(cursor, id, new_id):
     )
 
 
-def clone_rhnserverhistory(cursor, id, new_id):
+def clone_rhnserverhistory(cursor, id, new_id):  #  pylint: disable=redefined-builtin
     columns = ["summary", "details"]
 
     def converter(row):
@@ -327,12 +327,12 @@ def clone_rhnserverhistory(cursor, id, new_id):
     )
 
 
-def clone_rhnserverneededcache(cursor, id, new_id):
+def clone_rhnserverneededcache(cursor, id, new_id):  #  pylint: disable=redefined-builtin
     columns = ["errata_id", "package_id", "channel_id"]
     do_clone_using_id(cursor, "rhnserverneededcache", columns, "server_id", id, new_id)
 
 
-def clone_rhnservernetinterface(cursor, id, new_id):
+def clone_rhnservernetinterface(cursor, id, new_id):  #  pylint: disable=redefined-builtin
     columns = ["name", "hw_addr", "module", "is_primary"]
 
     def converter(row):
@@ -352,12 +352,12 @@ def clone_rhnservernetinterface(cursor, id, new_id):
     )
 
 
-def clone_rhnserverpackage(cursor, id, new_id):
+def clone_rhnserverpackage(cursor, id, new_id):  #  pylint: disable=redefined-builtin
     columns = ["name_id", "evr_id", "package_arch_id", "installtime"]
     do_clone_using_id(cursor, "rhnserverpackage", columns, "server_id", id, new_id)
 
 
-def clone_rhnvirtualinstance(cursor, name, clone_name, id, new_id):
+def clone_rhnvirtualinstance(cursor, name, clone_name, id, new_id):  #  pylint: disable=redefined-builtin
     cursor.execute(
         """
         SELECT id, host_system_id, virtual_system_id, uuid, confirmed
@@ -404,12 +404,12 @@ def clone_suseserverstaterevision(cursor, new_id):
     rev_id = get_sequence_next_value(cursor, "suse_state_revision_id_seq")
     cursor.execute("INSERT INTO susestaterevision (id) VALUES (%s)", (rev_id,))
     cursor.execute(
-        "INSERT INTO suseserverstaterevision (server_id, state_revision_id) VALUES (%s, %s);",
+        "INSERT INTO suseserverstaterevision (server_id, state_revision_id) VALUES (%s, %s);",  #  pylint: disable=line-too-long
         (new_id, rev_id),
     )
 
 
-def clone(conn, id, name, clone_name, secret_key):
+def clone(conn, id, name, clone_name, secret_key):  #  pylint: disable=redefined-builtin
     """
     Create a single clone
     """
@@ -481,7 +481,7 @@ def clone(conn, id, name, clone_name, secret_key):
                 (new_id,),
             )
 
-        except Exception:
+        except Exception:  #  pylint: disable=broad-exception-caught
             console.print_exception()
             conn.rollback()
 
@@ -503,7 +503,7 @@ def copy(name, count):
                 for e in [line.split("#")[0].strip().split("=") for line in f]
                 if len(e) == 2
             }
-    except:
+    except:  #  pylint: disable=bare-except
         console.print("[bold red]This script needs to read the server rhn.conf")
         sys.exit(1)
 
@@ -524,10 +524,10 @@ def copy(name, count):
         with console.status("Creating clones...", spinner="clock"):
             number_size = len(str(count))
             for n in range(count):
-                clone_name = "{}-{}".format(name, str(n).zfill(number_size))
-                console.print("Creating {}".format(clone_name))
+                clone_name = "{}-{}".format(name, str(n).zfill(number_size))  #  pylint: disable=consider-using-f-string
+                console.print("Creating {}".format(clone_name))  #  pylint: disable=consider-using-f-string
                 clone(conn, system_id, name, clone_name, rhn_conf["server.secret_key"])
 
 
 if __name__ == "__main__":
-    copy()
+    copy()  #  pylint: disable=no-value-for-parameter,no-value-for-parameter

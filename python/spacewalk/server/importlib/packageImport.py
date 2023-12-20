@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring,invalid-name
 # Copyright (c) 2008--2018 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -34,7 +34,7 @@ from spacewalk.server import taskomatic
 from spacewalk.server.rhnServer import server_packages
 
 
-class ChannelPackageSubscription(GenericPackageImport):
+class ChannelPackageSubscription(GenericPackageImport):  #  pylint: disable=missing-class-docstring
     def __init__(self, batch, backend, caller=None, strict=0, repogen=True):
         # If strict, the set of packages that was passed in will be the only
         # one in the channels - everything else will be unlinked
@@ -56,13 +56,13 @@ class ChannelPackageSubscription(GenericPackageImport):
         # Processes the package batch to a form more suitable for database
         # operations
         for package in self.batch:
-            # if package object doesn't have multiple checksums (like satellite-sync objects)
+            # if package object doesn't have multiple checksums (like satellite-sync objects)  #  pylint: disable=line-too-long
             #   then let's fake it
             if "checksums" not in package:
                 package["checksums"] = {package["checksum_type"]: package["checksum"]}
             if not isinstance(package, IncompletePackage):
                 raise TypeError(
-                    "Expected an IncompletePackage instance, "
+                    "Expected an IncompletePackage instance, "  #  pylint: disable=consider-using-f-string
                     "got %s" % package.__class__.__name__
                 )
             self._processPackage(package)
@@ -73,12 +73,12 @@ class ChannelPackageSubscription(GenericPackageImport):
         self.backend.lookupChannels(self.channels)
         # Initialize self.channel_package_arch_compat
         self.channel_package_arch_compat = {}
-        for channel, channel_row in list(self.channels.items()):
+        for channel, channel_row in list(self.channels.items()):  #  pylint: disable=unused-variable
             if not channel_row:
                 # Unsupported channel
                 continue
             self.channel_package_arch_compat[channel_row["channel_arch_id"]] = None
-        for label, aid in self.package_arches.items():
+        for label, aid in self.package_arches.items():  #  pylint: disable=unused-variable
             self.package_type = self.backend.lookupPackageArchType(aid)
             if self.package_type:
                 break
@@ -131,7 +131,7 @@ class ChannelPackageSubscription(GenericPackageImport):
                 # Knowing the id of the referenced package
                 package.first_package = firstpackage
 
-    def _comparePackages(self, package1, package2):
+    def _comparePackages(self, package1, package2):  #  pylint: disable=invalid-name
         # XXX This should probably do a deep compare of the two packages
         pass
 
@@ -179,9 +179,9 @@ class ChannelPackageSubscription(GenericPackageImport):
 
         # Process channels
         channels = []
-        channelHash = {}
+        channelHash = {}  #  pylint: disable=invalid-name
         for channel in package["channels"]:
-            channelName = channel["label"]
+            channelName = channel["label"]  #  pylint: disable=invalid-name
             if channelName not in channelHash:
                 channels.append(channelName)
                 channelHash[channelName] = None
@@ -190,25 +190,25 @@ class ChannelPackageSubscription(GenericPackageImport):
         package.channels = channels
 
     # Copies the channels from one package to the other
-    def __copyChannels(self, sourcePackage, destPackage):
-        dpHash = destPackage["channels"]
-        for schannelName in sourcePackage.channels:
+    def __copyChannels(self, sourcePackage, destPackage):  #  pylint: disable=invalid-name,invalid-name,invalid-name
+        dpHash = destPackage["channels"]  #  pylint: disable=invalid-name
+        for schannelName in sourcePackage.channels:  #  pylint: disable=invalid-name
             # Check if the package is compatible with the channel
             channel = self.channels[schannelName]
             if not channel:
                 # Unknown channel
                 sourcePackage.ignored = 1
                 raise InvalidChannelError(
-                    channel, "Unsupported channel %s" % schannelName
+                    channel, "Unsupported channel %s" % schannelName  #  pylint: disable=consider-using-f-string
                 )
             # Check channel-package compatibility
             charch = channel["channel_arch_id"]
-            archCompat = self.channel_package_arch_compat[charch]
+            archCompat = self.channel_package_arch_compat[charch]  #  pylint: disable=invalid-name
             if not archCompat:
                 # Invalid architecture
                 sourcePackage.ignored = 1
                 raise InvalidArchError(
-                    charch, "Invalid channel architecture %s" % charch
+                    charch, "Invalid channel architecture %s" % charch  #  pylint: disable=consider-using-f-string
                 )
 
             # Now check if the source package's arch is compatible with the
@@ -218,7 +218,7 @@ class ChannelPackageSubscription(GenericPackageImport):
                 raise IncompatibleArchError(
                     sourcePackage.arch,
                     charch,
-                    "Package arch %s incompatible with channel %s"
+                    "Package arch %s incompatible with channel %s"  #  pylint: disable=consider-using-f-string
                     % (sourcePackage.arch, schannelName),
                 )
 
@@ -227,18 +227,18 @@ class ChannelPackageSubscription(GenericPackageImport):
         destPackage.channels = list(dpHash.values())
 
 
-class PackageImport(ChannelPackageSubscription):
+class PackageImport(ChannelPackageSubscription):  #  pylint: disable=missing-class-docstring
     def __init__(self, batch, backend, caller=None, update_last_modified=0):
         ChannelPackageSubscription.__init__(self, batch, backend, caller=caller)
         self.ignoreUploaded = 1
         self._update_last_modified = update_last_modified
         self.capabilities = {}
         self.groups = {}
-        self.sourceRPMs = {}
+        self.sourceRPMs = {}  #  pylint: disable=invalid-name
         self.changelog_data = {}
-        self.suseProdfile_data = {}
-        self.suseEula_data = {}
-        self.extraTags = {}
+        self.suseProdfile_data = {}  #  pylint: disable=invalid-name
+        self.suseEula_data = {}  #  pylint: disable=invalid-name
+        self.extraTags = {}  #  pylint: disable=invalid-name
 
     def _skip_tag(self, package, tag):
         # Allow all tags in case of DEB packages
@@ -255,7 +255,7 @@ class PackageImport(ChannelPackageSubscription):
         group = self._fix_encoding(package["package_group"]).strip()
         if group not in self.groups:
             self.groups[group] = None
-        sourceRPM = package["source_rpm"]
+        sourceRPM = package["source_rpm"]  #  pylint: disable=invalid-name
         if (sourceRPM is not None) and (sourceRPM not in self.sourceRPMs):
             self.sourceRPMs[sourceRPM] = None
         # Change copyright to license
@@ -273,7 +273,7 @@ class PackageImport(ChannelPackageSubscription):
             if (
                 self._skip_tag(package, tag)
                 or tag not in package
-                or type(package[tag]) != type([])
+                or type(package[tag]) != type([])  #  pylint: disable=unidiomatic-typecheck
             ):
                 # older spacewalk server do not export weak deps.
                 # and older RPM doesn't know about them either
@@ -293,13 +293,13 @@ class PackageImport(ChannelPackageSubscription):
             "breaks",
             "predepends",
         ):
-            depList = package[tag]
-            if type(depList) != type([]):
+            depList = package[tag]  #  pylint: disable=invalid-name
+            if type(depList) != type([]):  #  pylint: disable=unidiomatic-typecheck
                 sys.stderr.write(
-                    "!!! packageImport.PackageImport._processPackage: "
+                    "!!! packageImport.PackageImport._processPackage: "  #  pylint: disable=consider-using-f-string
                     "erronous depList for '%s', converting to []\n" % tag
                 )
-                depList = []
+                depList = []  #  pylint: disable=invalid-name
 
             for dep in depList:
                 nv = []
@@ -311,7 +311,7 @@ class PackageImport(ChannelPackageSubscription):
                 if nv not in self.capabilities:
                     self.capabilities[nv] = None
         # Process files too
-        fileList = package["files"]
+        fileList = package["files"]  #  pylint: disable=invalid-name
         for f in fileList:
             filename = self._fix_encoding(f["name"])
             nv = (filename, "")
@@ -320,7 +320,7 @@ class PackageImport(ChannelPackageSubscription):
             if nv not in self.capabilities:
                 self.capabilities[nv] = None
             f["checksum"] = self._fix_encoding(f["checksum"])
-            fchecksumTuple = (f["checksum_type"], f["checksum"])
+            fchecksumTuple = (f["checksum_type"], f["checksum"])  #  pylint: disable=invalid-name
             if fchecksumTuple not in self.checksums:
                 self.checksums[fchecksumTuple] = None
 
@@ -346,7 +346,7 @@ class PackageImport(ChannelPackageSubscription):
         package["summary"] = self._fix_encoding(package["summary"]).rstrip()
 
         if package["product_files"] is not None:
-            for prodFile in package["product_files"]:
+            for prodFile in package["product_files"]:  #  pylint: disable=invalid-name
                 evrtuple = (prodFile["epoch"], prodFile["version"], prodFile["release"])
                 evr = {evrtuple: None}
                 archhash = {prodFile["arch"]: None}
@@ -425,7 +425,7 @@ class PackageImport(ChannelPackageSubscription):
                     p.diff = None
                     # Leave p.diff_result in place
 
-    def subscribeToChannels(self):
+    def subscribeToChannels(self):  #  pylint: disable=invalid-name
         affected_channels = self.backend.subscribeToChannels(self.batch)
         # Fill the list of affected channels
         self.compute_affected_channels(affected_channels)
@@ -451,7 +451,7 @@ class PackageImport(ChannelPackageSubscription):
             # Only deal with packages
             self.__postprocessPackage(package)
 
-    def __postprocessPackage(self, package):
+    def __postprocessPackage(self, package):  #  pylint: disable=invalid-name
         """populate the columns foo_id with id numbers from appropriate hashes"""
         package["package_group"] = self.groups[
             self._fix_encoding(package["package_group"]).strip()
@@ -502,7 +502,7 @@ class PackageImport(ChannelPackageSubscription):
         if package["eulas"] is not None:
             for e in package["eulas"]:
                 e["eula_id"] = self.suseEula_data[(e["text"], e["checksum"])]
-        fileList = package["files"]
+        fileList = package["files"]  #  pylint: disable=invalid-name
         for f in fileList:
             f["checksum_id"] = self.checksums[(f["checksum_type"], f["checksum"])]
         if "extra_tags" in package and package["extra_tags"] is not None:
@@ -516,9 +516,9 @@ class PackageImport(ChannelPackageSubscription):
         ):
             return
         # XXX Handle this better
-        raise Exception("Different packages in the same batch")
+        raise Exception("Different packages in the same batch")  #  pylint: disable=broad-exception-raised
 
-    def _cleanup_object(self, object):
+    def _cleanup_object(self, object):  #  pylint: disable=redefined-builtin
         ChannelPackageSubscription._cleanup_object(self, object)
         if object.ignored:
             object.id = object.first_package.id
@@ -535,12 +535,12 @@ class PackageImport(ChannelPackageSubscription):
                     )
 
 
-class SourcePackageImport(Import):
-    def __init__(self, batch, backend, caller=None, update_last_modified=0):
+class SourcePackageImport(Import):  #  pylint: disable=missing-class-docstring
+    def __init__(self, batch, backend, caller=None, update_last_modified=0):  #  pylint: disable=unused-argument
         Import.__init__(self, batch, backend)
         self._update_last_modified = update_last_modified
         self.ignoreUploaded = 1
-        self.sourceRPMs = {}
+        self.sourceRPMs = {}  #  pylint: disable=invalid-name
         self.groups = {}
         self.checksums = {}
 
@@ -594,14 +594,14 @@ class SourcePackageImport(Import):
                     p.diff = None
                     # Leave p.diff_result in place
 
-    def _comparePackages(self, package1, package2):
+    def _comparePackages(self, package1, package2):  #  pylint: disable=invalid-name
         if (
             package1["checksum_type"] == package2["checksum_type"]
             and package1["checksum"] == package2["checksum"]
         ):
             return
         # XXX Handle this better
-        raise Exception("Different packages in the same batch")
+        raise Exception("Different packages in the same batch")  #  pylint: disable=broad-exception-raised
 
     def _processPackage(self, package):
         Import._processPackage(self, package)
@@ -611,17 +611,17 @@ class SourcePackageImport(Import):
         group = self._fix_encoding(package["package_group"]).strip()
         if group not in self.groups:
             self.groups[group] = None
-        sourceRPM = package["source_rpm"]
+        sourceRPM = package["source_rpm"]  #  pylint: disable=invalid-name
         if not sourceRPM:
             # Should not happen
-            raise Exception("Source RPM %s does not exist")
+            raise Exception("Source RPM %s does not exist")  #  pylint: disable=broad-exception-raised
         self.sourceRPMs[sourceRPM] = None
 
-        checksumTuple = (package["checksum_type"], package["checksum"])
+        checksumTuple = (package["checksum_type"], package["checksum"])  #  pylint: disable=invalid-name
         if checksumTuple not in self.checksums:
             self.checksums[checksumTuple] = None
 
-        sigchecksumTuple = (package["sigchecksum_type"], package["sigchecksum"])
+        sigchecksumTuple = (package["sigchecksum_type"], package["sigchecksum"])  #  pylint: disable=invalid-name
         if sigchecksumTuple not in self.checksums:
             self.checksums[sigchecksumTuple] = None
 
@@ -635,7 +635,7 @@ class SourcePackageImport(Import):
             # Only deal with packages
             self.__postprocessPackage(package)
 
-    def __postprocessPackage(self, package):
+    def __postprocessPackage(self, package):  #  pylint: disable=invalid-name
         # Set the ids
         package["package_group"] = self.groups[
             self._fix_encoding(package["package_group"]).strip()
@@ -648,13 +648,13 @@ class SourcePackageImport(Import):
             (package["sigchecksum_type"], package["sigchecksum"])
         ]
 
-    def _cleanup_object(self, object):
+    def _cleanup_object(self, object):  #  pylint: disable=redefined-builtin
         Import._cleanup_object(self, object)
         if object.ignored:
             object.id = object.first_package.id
 
 
-def packageImporter(batch, backend, source=0, caller=None):
+def packageImporter(batch, backend, source=0, caller=None):  #  pylint: disable=invalid-name
     if source:
         return SourcePackageImport(batch, backend, caller=caller)
     return PackageImport(batch, backend, caller=caller)

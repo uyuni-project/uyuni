@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -20,7 +20,7 @@ import time
 
 from spacewalk.server.rhnServer import server_lib
 from uyuni.common.usix import ListType, TupleType, StringType
-from spacewalk.common import rhnFlags
+from spacewalk.common import rhnFlags  #  pylint: disable=ungrouped-imports
 from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.common.rhnConfig import CFG
 from spacewalk.common.rhnException import rhnFault
@@ -69,7 +69,7 @@ class Up2date(rhnHandler):
         transport["X-RHN-Action"] = action
         return rhnHandler.auth_system(self, system_id)
 
-    def login(self, system_id, extra_data={}):
+    def login(self, system_id, extra_data={}):  #  pylint: disable=dangerous-default-value,unused-argument
         """Clients v2+
         Log in routine.
         Return a dictionary of session token/channel information.
@@ -79,7 +79,7 @@ class Up2date(rhnHandler):
         # Authenticate the system certificate. We need the user record
         # to generate the tokens
         self.load_user = 1
-        server = self.auth_system("login", system_id)
+        server = self.auth_system("login", system_id)  #  pylint: disable=unused-variable
         # log the entry
         log_debug(1, self.server_id)
         # Update the capabilities list
@@ -87,13 +87,13 @@ class Up2date(rhnHandler):
         # Fetch the channels this client is subscribed to
         channels = rhnChannel.getSubscribedChannels(self.server_id)
 
-        rhnServerTime = str(time.time())
-        expireOffset = str(CFG.CLIENT_AUTH_TIMEOUT)
+        rhnServerTime = str(time.time())  #  pylint: disable=invalid-name
+        expireOffset = str(CFG.CLIENT_AUTH_TIMEOUT)  #  pylint: disable=invalid-name
         signature = computeSignature(
             CFG.SECRET_KEY, self.server_id, self.user, rhnServerTime, expireOffset
         )
 
-        loginDict = {
+        loginDict = {  #  pylint: disable=invalid-name
             "X-RHN-Server-Id": self.server_id,
             "X-RHN-Auth-User-Id": self.user,
             "X-RHN-Auth": signature,
@@ -120,17 +120,17 @@ class Up2date(rhnHandler):
 
         return loginDict
 
-    def listChannels(self, system_id):
+    def listChannels(self, system_id):  #  pylint: disable=invalid-name
         """Clients v2+"""
         log_debug(5, system_id)
         # Authenticate the system certificate
         self.auth_system("listChannels", system_id)
         # log the entry
         log_debug(1, self.server_id)
-        channelList = rhnChannel.channels_for_server(self.server_id)
+        channelList = rhnChannel.channels_for_server(self.server_id)  #  pylint: disable=invalid-name
         return channelList
 
-    def subscribeChannels(self, system_id, channelNames, username, passwd):
+    def subscribeChannels(self, system_id, channelNames, username, passwd):  #  pylint: disable=invalid-name,invalid-name
         """Clients v2+"""
         add_to_seclist(passwd)
         log_debug(5, system_id, channelNames, username, passwd)
@@ -139,7 +139,7 @@ class Up2date(rhnHandler):
         # log the entry
         log_debug(1, self.server_id, channelNames)
         server_lib.snapshot_server(self.server_id, "Base Channel Updated")
-        for channelName in channelNames:
+        for channelName in channelNames:  #  pylint: disable=invalid-name
             if NONSUBSCRIBABLE_CHANNELS.search(channelName):
                 raise rhnFault(73, explain=False)
             else:
@@ -148,7 +148,7 @@ class Up2date(rhnHandler):
                 )
         return 0
 
-    def unsubscribeChannels(self, system_id, channelNames, username, passwd):
+    def unsubscribeChannels(self, system_id, channelNames, username, passwd):  #  pylint: disable=invalid-name,invalid-name
         """Clients v2+"""
         add_to_seclist(passwd)
         log_debug(3)
@@ -156,7 +156,7 @@ class Up2date(rhnHandler):
         self.auth_system("unsubscribeChannel", system_id)
         # log the entry
         log_debug(1, self.server_id, channelNames)
-        for channelName in channelNames:
+        for channelName in channelNames:  #  pylint: disable=invalid-name
             rhnChannel.unsubscribe_channel(
                 self.server_id, channelName, username, passwd
             )
@@ -172,7 +172,7 @@ class Up2date(rhnHandler):
         log_debug(4, system_id)
         return self.__solveDep(system_id, deps, action="solvedep", clientVersion=1)
 
-    def solveDependencies(self, system_id, deps):
+    def solveDependencies(self, system_id, deps):  #  pylint: disable=invalid-name
         """Clients v2+
         Solve dependencies for a given dependency problem list (newer version)
         IN:  a dependency problem list: [name, name, name, ...]
@@ -181,7 +181,7 @@ class Up2date(rhnHandler):
         log_debug(4, system_id)
         return self.__solveDep(system_id, deps, action="solvedep", clientVersion=2)
 
-    def solveDependencies_arch(self, system_id, deps):
+    def solveDependencies_arch(self, system_id, deps):  #  pylint: disable=invalid-name
         """Does the same thing as solve_dependencies, but also returns the architecture label with the
         package info.
         IN:  a dependency problem list: [name, name, name, ...]
@@ -190,12 +190,12 @@ class Up2date(rhnHandler):
         log_debug(4, system_id)
         return self.__solveDep_arch(system_id, deps, action="solvedep", clientVersion=2)
 
-    def solveDependencies_with_limits(
-        self, system_id, deps, all=0, limit_operator=None, limit=None
+    def solveDependencies_with_limits(  #  pylint: disable=invalid-name
+        self, system_id, deps, all=0, limit_operator=None, limit=None  #  pylint: disable=redefined-builtin
     ):
         """This version of solve_dependencies allows the caller to get all of the packages that solve a
-        dependency and limit the packages that are returned to those that match the criteria defined
-        by limit_operator and limit. This version of the function also returns the architecture label
+        dependency and limit the packages that are returned to those that match the criteria defined  #  pylint: disable=line-too-long
+        by limit_operator and limit. This version of the function also returns the architecture label  #  pylint: disable=line-too-long
         of the package[s] that get returned.
 
         limit_operator can be any of: '<', '<=', '==', '>=', or '>'.
@@ -230,18 +230,18 @@ class Up2date(rhnHandler):
 
     # --- PRIVATE METHODS ---
 
-    def __solveDep_prepare(self, system_id, deps, action, clientVersion):
+    def __solveDep_prepare(self, system_id, deps, action, clientVersion):  #  pylint: disable=invalid-name,invalid-name
         """Response for clients:
         version 1: list
         version 2: hash
         """
         log_debug(7, system_id, deps, action, clientVersion)
-        faultString = _("Invalid value %s (%s)")
+        faultString = _("Invalid value %s (%s)")  #  pylint: disable=invalid-name
         if type(deps) not in (ListType, TupleType):
             log_error("Invalid argument type", type(deps))
             raise rhnFault(30, faultString % (deps, type(deps)))
         for dep in deps:
-            if type(dep) is not StringType:
+            if type(dep) is not StringType:  #  pylint: disable=unidiomatic-typecheck
                 log_error("Invalid dependency member", type(dep))
                 raise rhnFault(30, faultString % (dep, type(dep)))
         # Ignore empty strings
@@ -250,11 +250,11 @@ class Up2date(rhnHandler):
         if not deps:
             return []
         # Authenticate the system certificate
-        server = self.auth_system(action, system_id)
-        log_debug(1, self.server_id, action, "items: %d" % len(deps))
+        server = self.auth_system(action, system_id)  #  pylint: disable=unused-variable
+        log_debug(1, self.server_id, action, "items: %d" % len(deps))  #  pylint: disable=consider-using-f-string
         return deps
 
-    def __solveDep(self, system_id, deps, action, clientVersion):
+    def __solveDep(self, system_id, deps, action, clientVersion):  #  pylint: disable=invalid-name,invalid-name
         """Response for clients:
         version 1: list
         version 2: hash
@@ -268,7 +268,7 @@ class Up2date(rhnHandler):
             )
         return result
 
-    def __solveDep_arch(self, system_id, deps, action, clientVersion):
+    def __solveDep_arch(self, system_id, deps, action, clientVersion):  #  pylint: disable=invalid-name,invalid-name
         """Response for clients:
         version 1: list
         version 2: hash
@@ -282,13 +282,13 @@ class Up2date(rhnHandler):
             )
         return result
 
-    def __solveDep_with_limits(
+    def __solveDep_with_limits(  #  pylint: disable=invalid-name
         self,
         system_id,
         deps,
         action,
-        clientVersion,
-        all=0,
+        clientVersion,  #  pylint: disable=invalid-name
+        all=0,  #  pylint: disable=redefined-builtin
         limit_operator=None,
         limit=None,
     ):
@@ -316,11 +316,11 @@ class Servers(rhnHandler):
         self.functions.append("get")
         self.functions.append("list")
 
-    def get(self, *junk):
+    def get(self, *junk):  #  pylint: disable=unused-argument
         """Older funtion that can be a noop."""
         return []
 
-    def list(self, systemid=None):
+    def list(self, systemid=None):  #  pylint: disable=unused-argument
         """Returns a list of available servers the client can connect to."""
         servers_list = [
             {

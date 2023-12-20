@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -45,7 +45,7 @@ _query_file_list_initiate = rhnSQL.Statement(
 )
 
 
-def initiate(server_id, action_id, dry_run=0):
+def initiate(server_id, action_id, dry_run=0):  #  pylint: disable=unused-argument,unused-argument
     log_debug(3)
     h = rhnSQL.prepare(_query_initiate)
     h.execute(action_id=action_id)

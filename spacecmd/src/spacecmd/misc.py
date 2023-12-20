@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Licensed under the GNU General Public License Version 3
 #
 # This program is free software; you can redistribute it and/or modify
@@ -230,7 +230,7 @@ def help_history(self):
 
 def do_history(self, args):
     for i in range(1, readline.get_current_history_length()):
-        print("%s  %s" % (str(i).rjust(4), readline.get_history_item(i)))
+        print("%s  %s" % (str(i).rjust(4), readline.get_history_item(i)))  #  pylint: disable=consider-using-f-string
     return 0
 
 
@@ -261,7 +261,7 @@ def help_login(self):
 def do_login(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args, arg_parser)  #  pylint: disable=unused-variable
 
     # logout before logging in again
     if self.session:
@@ -301,7 +301,7 @@ def do_login(self, args):
     else:
         proto = "https"
 
-    server_url = "%s://%s/rpc/api" % (proto, server)
+    server_url = "%s://%s/rpc/api" % (proto, server)  #  pylint: disable=consider-using-f-string
 
     # this will enable spewing out all client/server traffic
     verbose_xmlrpc = False
@@ -351,7 +351,7 @@ def do_login(self, args):
     # retrieve a cached session
     if os.path.isfile(session_file) and not self.options.password:
         try:
-            sessionfile = open(session_file, "r")
+            sessionfile = open(session_file, "r")  #  pylint: disable=unspecified-encoding
 
             # read the session (format = username:session)
             for line in sessionfile.readlines():
@@ -415,10 +415,10 @@ def do_login(self, args):
                 os.mkdir(conf_dir, int("0700", 8))
 
             # add the new cache to the file
-            line = "%s:%s\n" % (username, self.session)
+            line = "%s:%s\n" % (username, self.session)  #  pylint: disable=consider-using-f-string
 
             # write the new cache file out
-            sessionfile = open(session_file, "w")
+            sessionfile = open(session_file, "w")  #  pylint: disable=unspecified-encoding
             sessionfile.write(line)
             sessionfile.close()
         except IOError as exc:
@@ -519,17 +519,17 @@ def tab_complete_errata(self, text):
 def tab_complete_systems(self, text):
     if re.match("group:", text):
         # prepend 'group' to each item for tab completion
-        groups = ["group:%s" % g for g in self.do_group_list("", True)]
+        groups = ["group:%s" % g for g in self.do_group_list("", True)]  #  pylint: disable=consider-using-f-string
 
         return tab_completer(groups, text)
     if re.match("channel:", text):
         # prepend 'channel' to each item for tab completion
-        channels = ["channel:%s" % s for s in self.do_softwarechannel_list("", True)]
+        channels = ["channel:%s" % s for s in self.do_softwarechannel_list("", True)]  #  pylint: disable=consider-using-f-string
 
         return tab_completer(channels, text)
     if re.match("search:", text):
         # prepend 'search' to each item for tab completion
-        fields = ["search:%s:" % f for f in self.SYSTEM_SEARCH_FIELDS]
+        fields = ["search:%s:" % f for f in self.SYSTEM_SEARCH_FIELDS]  #  pylint: disable=consider-using-f-string
         return tab_completer(fields, text)
 
     options = self.get_system_names()
@@ -659,7 +659,7 @@ def generate_package_cache(self, force=False):
             # Alert in case of non-unique ID is detected.
             if i in self.all_packages_by_id:
                 logging.debug(  # pylint: disable=logging-not-lazy
-                    'Non-unique package id "%s" is detected. Taking "%s" '
+                    'Non-unique package id "%s" is detected. Taking "%s" '  #  pylint: disable=consider-using-f-string
                     'instead of "%s"' % (i, k, self.all_packages_by_id[i])
                 )
 
@@ -786,7 +786,7 @@ def load_caches(self, server, username):
     self.packages_short_cache_file = os.path.join(conf_dir, "packages_short")
 
     # load self.ssm from disk
-    (self.ssm, _ignore) = load_cache(self.ssm_cache_file)
+    (self.ssm, _ignore) = load_cache(self.ssm_cache_file)  #  pylint: disable=unused-variable
 
     # update the prompt now that we loaded the SSM
     self.postcmd(False, "")
@@ -825,7 +825,7 @@ def get_system_names_ids(self):
 
 # check for duplicate system names and return the system ID
 def get_system_id(self, name):
-    name = "%s" % name
+    name = "%s" % name  #  pylint: disable=consider-using-f-string
     self.generate_system_cache()
     systems = []
 
@@ -855,10 +855,10 @@ def get_system_id(self, name):
         logging.warning(_N("Please reference systems by ID or resolve the"))
         logging.warning(_N("underlying issue with 'system_delete' or 'system_rename'"))
 
-        id_list = "%s = " % name
+        id_list = "%s = " % name  #  pylint: disable=consider-using-f-string
 
         for system_id in sorted(systems):
-            id_list = id_list + "%i, " % system_id
+            id_list = id_list + "%i, " % system_id  #  pylint: disable=consider-using-f-string
 
         logging.warning("")
         logging.warning(id_list[:-2])
@@ -916,7 +916,7 @@ def expand_systems(self, args):
             systems.extend(self.ssm)
         elif re.match("group:", item):
             item = re.sub("group:", "", item)
-            members = self.do_group_listsystems("'%s'" % item, True)
+            members = self.do_group_listsystems("'%s'" % item, True)  #  pylint: disable=consider-using-f-string
 
             if members:
                 systems.extend([re.escape(m) for m in members])
@@ -947,7 +947,7 @@ def expand_systems(self, args):
 
     matches = filter_results(self.get_system_names(), systems)
 
-    return ["%s" % x for x in list(set(matches + system_ids))]
+    return ["%s" % x for x in list(set(matches + system_ids))]  #  pylint: disable=consider-using-f-string
 
 
 def list_base_channels(self):
@@ -1001,9 +1001,9 @@ def user_confirm(
         return True
 
     if nospacer:
-        answer = prompt_user("%s" % prompt)
+        answer = prompt_user("%s" % prompt)  #  pylint: disable=consider-using-f-string
     else:
-        answer = prompt_user("\n%s" % prompt)
+        answer = prompt_user("\n%s" % prompt)  #  pylint: disable=consider-using-f-string
 
     if re.match("y", answer, re.I):
         if integer:
@@ -1049,16 +1049,16 @@ def replace_line_buffer(self, msg=None):
 
     # don't print(a prompt if there wasn't one to begin with)
     if readline.get_line_buffer():
-        new_line = "%s%s" % (self.prompt, msg)
+        new_line = "%s%s" % (self.prompt, msg)  #  pylint: disable=consider-using-f-string
     else:
-        new_line = "%s" % msg
+        new_line = "%s" % msg  #  pylint: disable=consider-using-f-string
 
     # clear the current line
     self.stdout.write("\r".ljust(len(self.current_line) + 1))
     self.stdout.flush()
 
     # write the new line
-    self.stdout.write("\r%s" % new_line)
+    self.stdout.write("\r%s" % new_line)  #  pylint: disable=consider-using-f-string
     self.stdout.flush()
 
     # keep track of what is displayed so we can clear it later

@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -19,6 +19,6 @@ from spacewalk.common.rhnLog import log_debug
 __rhnexport__ = ["refresh_list"]
 
 
-def refresh_list(serverId, actionId, dry_run=0):
+def refresh_list(serverId, actionId, dry_run=0):  #  pylint: disable=invalid-name,invalid-name,unused-argument,unused-argument,unused-argument
     log_debug(3)
     return None

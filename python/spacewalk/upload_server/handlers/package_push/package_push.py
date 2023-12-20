@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Code that drops files on the filesystem (/PKG-UPLOAD)
 #
 #
@@ -30,7 +30,7 @@ from spacewalk.server.importlib.importLib import InvalidArchError
 from spacewalk.server import rhnPackageUpload, rhnSQL, basePackageUpload
 
 
-class PackagePush(basePackageUpload.BasePackageUpload):
+class PackagePush(basePackageUpload.BasePackageUpload):  #  pylint: disable=missing-class-docstring
     def __init__(self, req):
         basePackageUpload.BasePackageUpload.__init__(self, req)
         self.required_fields.extend(
@@ -54,7 +54,7 @@ class PackagePush(basePackageUpload.BasePackageUpload):
         # Optional headers
         maps = [["Null-Org", "null_org"], ["Packaging", "packaging"]]
         for hn, sn in maps:
-            header_name = "%s-%s" % (self.header_prefix, hn)
+            header_name = "%s-%s" % (self.header_prefix, hn)  #  pylint: disable=consider-using-f-string
             if header_name in req.headers_in:
                 setattr(self, sn, req.headers_in[header_name])
 
@@ -67,7 +67,7 @@ class PackagePush(basePackageUpload.BasePackageUpload):
 
             rhnFlags.set("apache-return-code", apache.HTTP_NOT_FOUND)
             try:
-                outage_message = open(CFG.MESSAGE_TO_ALL).read()
+                outage_message = open(CFG.MESSAGE_TO_ALL).read()  #  pylint: disable=unspecified-encoding
             except IOError:
                 log_error("Missing outage message file")
                 outage_message = "Outage mode"
@@ -146,7 +146,7 @@ class PackagePush(basePackageUpload.BasePackageUpload):
             e = sys.exc_info()[1]
             req.write(str(e))
             return apache.HTTP_NOT_ACCEPTABLE
-        except Exception:
+        except Exception:  #  pylint: disable=broad-exception-caught
             e = sys.exc_info()[1]
             req.write(str(e))
             return apache.HTTP_BAD_REQUEST

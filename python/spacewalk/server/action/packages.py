@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -52,14 +52,14 @@ _query_action_verify_packages = rhnSQL.Statement(
 )
 
 
-def verify(serverId, actionId, dry_run=0):
+def verify(serverId, actionId, dry_run=0):  #  pylint: disable=invalid-name,invalid-name
     log_debug(3, dry_run)
     h = rhnSQL.prepare(_query_action_verify_packages)
     h.execute(actionid=actionId)
     tmppackages = h.fetchall_dict()
 
     if not tmppackages:
-        raise InvalidAction("invalid action %s for server %s" % (actionId, serverId))
+        raise InvalidAction("invalid action %s for server %s" % (actionId, serverId))  #  pylint: disable=consider-using-f-string
 
     packages = []
 
@@ -77,7 +77,7 @@ def verify(serverId, actionId, dry_run=0):
     return packages
 
 
-def handle_action(serverId, actionId, packagesIn, dry_run=0):
+def handle_action(serverId, actionId, packagesIn, dry_run=0):  #  pylint: disable=invalid-name,invalid-name,invalid-name
     log_debug(3, serverId, actionId, dry_run)
 
     client_caps = rhnCapability.get_client_capabilities()
@@ -89,7 +89,7 @@ def handle_action(serverId, actionId, packagesIn, dry_run=0):
             multiarch = 1
     if not packagesIn:
         raise InvalidAction(
-            "Packages scheduled in action %s for server %s could not be found."
+            "Packages scheduled in action %s for server %s could not be found."  #  pylint: disable=consider-using-f-string
             % (actionId, serverId)
         )
 
@@ -97,7 +97,7 @@ def handle_action(serverId, actionId, packagesIn, dry_run=0):
     if retracted:
         # Do not install retracted packages
         raise InvalidAction(
-            "packages.update: Action contains retracted packages %s" % retracted
+            "packages.update: Action contains retracted packages %s" % retracted  #  pylint: disable=consider-using-f-string
         )
 
     packages = []
@@ -123,14 +123,14 @@ def handle_action(serverId, actionId, packagesIn, dry_run=0):
     return packages
 
 
-def remove(serverId, actionId, dry_run=0):
+def remove(serverId, actionId, dry_run=0):  #  pylint: disable=invalid-name,invalid-name
     h = rhnSQL.prepare(_packageStatement_remove)
     h.execute(serverid=serverId, actionid=actionId)
     tmppackages = h.fetchall_dict()
     return handle_action(serverId, actionId, tmppackages, dry_run)
 
 
-def update(serverId, actionId, dry_run=0):
+def update(serverId, actionId, dry_run=0):  #  pylint: disable=invalid-name,invalid-name
     h = rhnSQL.prepare(_packageStatement_update)
     h.execute(serverid=serverId, actionid=actionId)
     tmppackages = h.fetchall_dict()
@@ -164,12 +164,12 @@ _query_action_setLocks = rhnSQL.Statement(
 )
 
 
-def setLocks(serverId, actionId, dry_run=0):
+def setLocks(serverId, actionId, dry_run=0):  #  pylint: disable=invalid-name,invalid-name,invalid-name
     log_debug(3, serverId, actionId, dry_run)
 
     client_caps = rhnCapability.get_client_capabilities()
     log_debug(3, "Client Capabilities", client_caps)
-    multiarch = 0
+    multiarch = 0  #  pylint: disable=unused-variable
     if not client_caps or "packages.setLocks" not in client_caps:
         raise InvalidAction("Client is not capable of locking packages.")
 
@@ -193,7 +193,7 @@ def setLocks(serverId, actionId, dry_run=0):
     return packages
 
 
-def refresh_list(serverId, actionId, dry_run=0):
+def refresh_list(serverId, actionId, dry_run=0):  #  pylint: disable=invalid-name,invalid-name,unused-argument,unused-argument,unused-argument
     """Call the equivalent of up2date -p.
 
     I.e. update the list of a client's installed packages known by
@@ -203,7 +203,7 @@ def refresh_list(serverId, actionId, dry_run=0):
     return None
 
 
-def runTransaction(server_id, action_id, dry_run=0):
+def runTransaction(server_id, action_id, dry_run=0):  #  pylint: disable=invalid-name
     log_debug(3, server_id, action_id, dry_run)
 
     # Fetch package_delta_id
@@ -218,7 +218,7 @@ def runTransaction(server_id, action_id, dry_run=0):
     row = h.fetchone_dict()
     if row is None:
         raise InvalidAction(
-            "invalid packages.runTransaction action %s for server %s"
+            "invalid packages.runTransaction action %s for server %s"  #  pylint: disable=consider-using-f-string
             % (action_id, server_id)
         )
 

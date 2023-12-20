@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring,invalid-name
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -24,7 +24,7 @@ class TestProxy(TestServer.TestServer):
     def _init_redhat_xmlrpc_downloads(self):
         self.downloads = server.redhat_xmlrpc.downloads.Downloads()
 
-    def getDownloads(self):
+    def getDownloads(self):  #  pylint: disable=invalid-name
         return self.downloads
 
 

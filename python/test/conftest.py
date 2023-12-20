@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*- pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2021 SUSE LLC
 #
@@ -16,14 +16,14 @@ import tempfile
 import spacewalk
 
 
-def pytest_sessionstart(session):
+def pytest_sessionstart(session):  #  pylint: disable=unused-argument
     # Skip if we already have done it
     if "RHN_CONFIG_PATH" in os.environ:
         return
 
     tmp_path = tempfile.mkdtemp()
     # rhnConfig requires the /etc/rhn/rhn.conf even if empty at import time
-    with open(os.path.join(tmp_path, "rhn.conf"), "w"):
+    with open(os.path.join(tmp_path, "rhn.conf"), "w"):  #  pylint: disable=unspecified-encoding
         pass
 
     # rhnConfig requires the defaults config files at import time
@@ -39,6 +39,6 @@ def pytest_sessionstart(session):
     os.environ["RHN_CONFIG_DEFAULTS_PATH"] = defaults_path
 
 
-def pytest_sessionfinish(session, exitstatus):
+def pytest_sessionfinish(session, exitstatus):  #  pylint: disable=unused-argument,unused-argument
     if "RHN_CONFIG_PATH" in os.environ:
         shutil.rmtree(os.environ["RHN_CONFIG_PATH"])

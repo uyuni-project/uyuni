@@ -1,4 +1,4 @@
-from unittest.mock import MagicMock, call, patch
+from unittest.mock import MagicMock, call, patch  #  pylint: disable=missing-module-docstring,unused-import
 
 import json
 import pytest
@@ -7,7 +7,7 @@ import os
 
 os.environ["TESTING"] = "1"
 
-import billingdataservice
+import billingdataservice  #  pylint: disable=wrong-import-position
 
 
 @patch("billingdataservice.initCFG", MagicMock())
@@ -15,18 +15,18 @@ import billingdataservice
 @patch("billingdataservice.rhnSQL.Statement", MagicMock())
 @pytest.fixture
 def client():
-    testdata1 = [
+    testdata1 = [  #  pylint: disable=unused-variable
         {"usage_metric": "managed_systems", "count": "10"},
         {"usage_metric": "monitoring", "count": "5"},
     ]
-    client = billingdataservice.app.test_client()
+    client = billingdataservice.app.test_client()  #  pylint: disable=redefined-outer-name
     with patch(
         "billingdataservice.rhnSQL.fetchone_dict", MagicMock(side_effect=["123", None])
     ):
         yield client
 
 
-def test_index(client):
+def test_index(client):  #  pylint: disable=redefined-outer-name
     """Call index page."""
 
     rv = client.get("/")
@@ -36,7 +36,7 @@ def test_index(client):
     assert rv.status_code == 503
 
 
-def test_metering(client):
+def test_metering(client):  #  pylint: disable=redefined-outer-name
     """Call metering API"""
     mock_fetchall_dict = MagicMock(
         name="mock2",

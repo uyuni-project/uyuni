@@ -1,4 +1,4 @@
-# Copyright (c) 2008--2016 Red Hat, Inc.
+# Copyright (c) 2008--2016 Red Hat, Inc. pylint: disable=missing-module-docstring,invalid-name
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -40,7 +40,7 @@ from uyuni.common.fileutils import makedirs, setPermsPath
 CACHEDIR = "/var/cache/rhn"
 
 
-def cleanupPath(path):
+def cleanupPath(path):  #  pylint: disable=invalid-name
     """take ~taw/../some/path/$MOUNT_POINT/blah and make it sensible."""
     if path is None:
         return None
@@ -52,7 +52,7 @@ def cleanupPath(path):
 
 
 def _fname(name):
-    fname = "%s/%s" % (CACHEDIR, name)
+    fname = "%s/%s" % (CACHEDIR, name)  #  pylint: disable=consider-using-f-string
     return cleanupPath(fname)
 
 
@@ -103,7 +103,7 @@ def delete(name):
     cache.delete(name)
 
 
-def __get_cache(raw, compressed):
+def __get_cache(raw, compressed):  #  pylint: disable=invalid-name
     cache = Cache()
     if compressed:
         cache = CompressedCache(cache)
@@ -156,7 +156,7 @@ def _safe_create(fname, user, group, mode):
                         continue
                     # Pass exception through
                     raise
-            except:
+            except:  #  pylint: disable=try-except-raise
                 # Pass exception through
                 raise
         # If we got here, it means the directory exists
@@ -180,10 +180,10 @@ def _safe_create(fname, user, group, mode):
     # Ran out of tries; something is fishy
     # (if we manage to create or truncate the file, we've returned from the
     # function already)
-    raise RuntimeError("Attempt to create file %s failed" % fname)
+    raise RuntimeError("Attempt to create file %s failed" % fname)  #  pylint: disable=consider-using-f-string
 
 
-class LockedFile(object):
+class LockedFile(object):  #  pylint: disable=missing-class-docstring
     def __init__(
         self, name, modified=None, user="root", group="root", mode=int("0755", 8)
     ):
@@ -215,8 +215,8 @@ class LockedFile(object):
         return getattr(self.fd, x)
 
 
-class ReadLockedFile(LockedFile):
-    def get_fd(self, name, _user, _group, _mode):
+class ReadLockedFile(LockedFile):  #  pylint: disable=missing-class-docstring
+    def get_fd(self, name, _user, _group, _mode):  #  pylint: disable=arguments-renamed,arguments-renamed,arguments-renamed
         if not os.access(self.fname, os.R_OK):
             raise KeyError(name)
         fd = open(self.fname, "rb")
@@ -234,13 +234,13 @@ class ReadLockedFile(LockedFile):
         pass
 
 
-class WriteLockedFile(LockedFile):
+class WriteLockedFile(LockedFile):  #  pylint: disable=missing-class-docstring
     def get_fd(self, name, user, group, mode):
         try:
             fd = _safe_create(self.fname, user, group, mode)
         except UnreadableFileError:
             raise_with_tb(
-                OSError("cache entry exists, but is not accessible: %s" % name),
+                OSError("cache entry exists, but is not accessible: %s" % name),  #  pylint: disable=consider-using-f-string
                 sys.exc_info()[2],
             )
 
@@ -255,7 +255,7 @@ class WriteLockedFile(LockedFile):
             os.utime(self.fname, (self.modified, self.modified))
 
 
-class Cache:
+class Cache:  #  pylint: disable=missing-class-docstring
     def __init__(self):
         pass
 
@@ -268,7 +268,7 @@ class Cache:
         if sys.version_info[0] >= 3 and isinstance(s, bytes):
             try:
                 s = s.decode("utf8")
-            except:
+            except:  #  pylint: disable=bare-except
                 s = s.decode("latin-1")
         return s
 
@@ -301,10 +301,10 @@ class Cache:
         fname = _fname(name)
         # test for valid entry
         if not os.access(fname, os.R_OK):
-            raise KeyError("Invalid cache key for delete: %s" % name)
+            raise KeyError("Invalid cache key for delete: %s" % name)  #  pylint: disable=consider-using-f-string
         # now can we delete it?
         if not os.access(fname, os.W_OK):
-            raise OSError("Read-Only access for cache entry: %s" % name)
+            raise OSError("Read-Only access for cache entry: %s" % name)  #  pylint: disable=consider-using-f-string
         os.unlink(fname)
 
     @staticmethod
@@ -334,7 +334,7 @@ class ClosingZipFile(object):
         return getattr(self.zipfile, x)
 
 
-class CompressedCache:
+class CompressedCache:  #  pylint: disable=missing-class-docstring
     def __init__(self, cache):
         self.cache = cache
 
@@ -379,7 +379,7 @@ class CompressedCache:
         return f
 
 
-class ObjectCache:
+class ObjectCache:  #  pylint: disable=missing-class-docstring
     def __init__(self, cache):
         self.cache = cache
 

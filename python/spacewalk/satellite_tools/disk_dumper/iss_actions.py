@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2017 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -18,7 +18,7 @@ import sys
 from . import iss_ui
 
 
-class ActionDeps:
+class ActionDeps:  #  pylint: disable=missing-class-docstring
     def __init__(self, options):
         # self.step_precedence contains the dependencies among the export steps.
         self.step_precedence = {
@@ -82,13 +82,13 @@ class ActionDeps:
 
     # Contains the logic for the --step option
     def handle_step_option(self):
-        # If the user didn't use --step, set the last step to the end of self.step_hierarchy.
+        # If the user didn't use --step, set the last step to the end of self.step_hierarchy.  #  pylint: disable=line-too-long
         if not self.options.step:
             self.options.step = self.step_hierarchy[-1]
 
         # Make sure that the step entered by the user is actually a step.
         if self.options.step not in self.step_hierarchy:
-            sys.stderr.write("Error: '%s' is not a valid step.\n" % self.options.step)
+            sys.stderr.write("Error: '%s' is not a valid step.\n" % self.options.step)  #  pylint: disable=consider-using-f-string
             sys.exit(-1)
 
         # Turn on all of the steps up to the option set as self.options.step.
@@ -101,7 +101,7 @@ class ActionDeps:
         for step in self.step_hierarchy:
             self.action_dict[step] = step in self.action_dict
 
-    # Handles the logic for the --no-rpms, --no-packages, --no-errata, --no-kickstarts, and --list-channels.
+    # Handles the logic for the --no-rpms, --no-packages, --no-errata, --no-kickstarts, and --list-channels.  #  pylint: disable=line-too-long
     def handle_options(self):
         if self.options.list_steps:
             self.list_steps()
@@ -127,13 +127,13 @@ class ActionDeps:
             self.action_dict["arches"] = 0
             self.action_dict["channel-families"] = 1
 
-    # This method uses self.step_precendence to figure out if a step needs to be turned off.
+    # This method uses self.step_precendence to figure out if a step needs to be turned off.  #  pylint: disable=line-too-long
     def turn_off_dep_steps(self, step):
         for dependent in self.step_precedence[step]:
             if dependent in self.action_dict:
                 self.action_dict[dependent] = 0
 
-    # This method will call turn_off_dep_steps if the step is off or not present in self.action_dict.
+    # This method will call turn_off_dep_steps if the step is off or not present in self.action_dict.  #  pylint: disable=line-too-long
     def handle_step_dependents(self):
         for step in self.step_hierarchy:
             if step in self.action_dict:

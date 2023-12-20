@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -22,7 +22,7 @@ import sys
 from spacewalk.common.rhnLog import log_error
 
 
-class BaseTemplatedDocument:
+class BaseTemplatedDocument:  #  pylint: disable=missing-class-docstring
     compiled_regexes = {}
 
     def __init__(self, start_delim=None, end_delim=None):
@@ -69,9 +69,9 @@ class BaseTemplatedDocument:
         self.compiled_regexes[regex_key] = self.regex
 
         self.compiled_regexes[self.start_delim] = re.compile(
-            "(%s)" % escaped_start_delim
+            "(%s)" % escaped_start_delim  #  pylint: disable=consider-using-f-string
         )
-        self.compiled_regexes[self.end_delim] = re.compile("(%s)" % escaped_end_delim)
+        self.compiled_regexes[self.end_delim] = re.compile("(%s)" % escaped_end_delim)  #  pylint: disable=consider-using-f-string
 
     def repl_func(self, match_object):
         try:
@@ -81,16 +81,16 @@ class BaseTemplatedDocument:
             log_error("cfg variable interpolation error", e)
             return match_object.group()
 
-    def _repl_func(self, match_object):
+    def _repl_func(self, match_object):  #  pylint: disable=unused-argument
         return ""
 
     def interpolate(self, data):
         return self.regex.sub(self.repl_func, data)
 
 
-class TemplatedDocument(BaseTemplatedDocument):
+class TemplatedDocument(BaseTemplatedDocument):  #  pylint: disable=missing-class-docstring
     func_regex = re.compile("^(?P<fname>[^=]+)(=(?P<defval>.*))?$")
-    funcname_regex = re.compile("^[A-Za-z][\w._]*$")
+    funcname_regex = re.compile("^[A-Za-z][\w._]*$")  #  pylint: disable=anomalous-backslash-in-string
 
     def _repl_func(self, match_object):
         funcname = match_object.groups()[0]
@@ -103,7 +103,7 @@ class TemplatedDocument(BaseTemplatedDocument):
         if not mo:
             # XXX raise exceptions
             return (None, None, None)
-        dict = mo.groupdict()
+        dict = mo.groupdict()  #  pylint: disable=redefined-builtin
         fname = dict.get("fname")
         defval = dict.get("defval")
 
@@ -121,21 +121,21 @@ class TemplatedDocument(BaseTemplatedDocument):
             fname = fname[:i].strip()
 
             # Parse the params
-            params = list(map(self.unquote, [_f for _f in params.split(",") if _f]))
+            params = list(map(self.unquote, [_f for _f in params.split(",") if _f]))  #  pylint: disable=invalid-name
 
         # Validate the function name
         if not self.funcname_regex.match(fname):
-            raise ValueError("Invalid function name %s" % fname)
+            raise ValueError("Invalid function name %s" % fname)  #  pylint: disable=consider-using-f-string
 
         return fname, params, defval
 
     def null_call(self, fname, params, defval):
         val = fname
         if params:
-            val = "%s(%s)" % (val, ", ".join(params))
+            val = "%s(%s)" % (val, ", ".join(params))  #  pylint: disable=consider-using-f-string
         if defval is not None:
-            val = "%s = %s" % (val, defval)
-        return "%s %s %s" % (self.start_delim, val, self.end_delim)
+            val = "%s = %s" % (val, defval)  #  pylint: disable=consider-using-f-string
+        return "%s %s %s" % (self.start_delim, val, self.end_delim)  #  pylint: disable=consider-using-f-string
 
     def lookup_function(self, fname):
         return self.functions.get(fname)

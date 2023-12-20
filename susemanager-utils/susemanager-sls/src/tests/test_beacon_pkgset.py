@@ -27,12 +27,12 @@ def test_beacon():
 
     mock_content = MagicMock(
         **{
-            "return_value.__enter__.return_value.read.return_value.strip.return_value": "test"
+            "return_value.__enter__.return_value.read.return_value.strip.return_value": "test"  #  pylint: disable=line-too-long
         }
     )
 
     """
-    The __context__ has no pkgset data, the cache contains the same data as in the cookie.
+    The __context__ has no pkgset data, the cache contains the same data as in the cookie.  #  pylint: disable=line-too-long
     """
     with patch.object(pkgset, "open", mock_content), patch.object(
         pkgset, "__context__", {}
@@ -43,7 +43,7 @@ def test_beacon():
     ) as mock_cache_store:
         data = pkgset.beacon({})
         assert mock_context["pkgset"] == "test"
-        assert data == []
+        assert data == []  #  pylint: disable=use-implicit-booleaness-not-comparison
         mock_cache_store.assert_called_once()
 
     """
@@ -80,5 +80,5 @@ def test_beacon():
     ) as mock_context, patch.object(pkgset.CACHE, "store") as mock_cache_store:
         data = pkgset.beacon({})
         assert mock_context["pkgset"] == "test"
-        assert data == []
+        assert data == []  #  pylint: disable=use-implicit-booleaness-not-comparison
         mock_cache_store.assert_not_called()

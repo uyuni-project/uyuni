@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python  #  pylint: disable=missing-module-docstring
 # -*- coding: utf-8 -*-
 #
 # Copyright (C) 2014 Novell, Inc.
@@ -21,7 +21,7 @@ except ImportError:
     import unittest
 
 try:
-    from unittest import mock
+    from unittest import mock  #  pylint: disable=unused-import
 except ImportError:
     import mock
 
@@ -32,7 +32,7 @@ import sys
 from spacewalk.susemanager.helpers import cli_ask
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-from .helper import FakeStdin
+from .helper import FakeStdin  #  pylint: disable=wrong-import-position
 
 
 class HelpersTest(unittest.TestCase):
@@ -68,7 +68,7 @@ class HelpersTest(unittest.TestCase):
     def test_cli_ask_with_regexp_validator(self):
         message = "how old are you?"
         response = "18"
-        validator = "\d+"
+        validator = "\d+"  #  pylint: disable=anomalous-backslash-in-string
 
         with FakeStdin("young", response) as mocked_input:
             value = cli_ask(message, validator=validator)
@@ -78,7 +78,7 @@ class HelpersTest(unittest.TestCase):
     def test_cli_ask_with_custom_validator(self):
         message = "how old are you?"
         response = "10"
-        validator = lambda i: re.search("\d+", i) and int(i) in range(1, 19)
+        validator = lambda i: re.search("\d+", i) and int(i) in range(1, 19)  #  pylint: disable=anomalous-backslash-in-string,unnecessary-lambda-assignment
 
         with FakeStdin("young", "0", "40", "10") as mocked_input:
             value = cli_ask(message, validator=validator)

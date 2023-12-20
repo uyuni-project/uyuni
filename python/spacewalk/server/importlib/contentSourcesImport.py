@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring,invalid-name
 # Copyright (c) 2016--2017 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -18,14 +18,14 @@ from .importLib import Import, Channel
 from spacewalk.server.rhnChannel import channel_info
 
 
-class ContentSourcesImport(Import):
+class ContentSourcesImport(Import):  #  pylint: disable=missing-class-docstring
     def __init__(self, batch, backend):
         Import.__init__(self, batch, backend)
         self.channels_to_link = {}
 
     def preprocess(self):
         for content_source in self.batch:
-            # Link back content sources to channel objects to subscribe them to existing channels right after import
+            # Link back content sources to channel objects to subscribe them to existing channels right after import  #  pylint: disable=line-too-long
             if "channels" in content_source and content_source["channels"] is not None:
                 for channel_label in content_source["channels"]:
                     if channel_label not in self.channels_to_link:

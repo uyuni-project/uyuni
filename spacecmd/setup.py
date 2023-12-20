@@ -18,7 +18,7 @@ def get_version_changelog():
             break
 
     if changelog:
-        with open(changelog, "r") as hcl:
+        with open(changelog, "r") as hcl:  #  pylint: disable=unspecified-encoding
             for line in hcl.readlines():
                 if "version" in line:
                     version = line.split(" ")[-1]  # Typically version is the last one

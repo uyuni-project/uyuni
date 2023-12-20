@@ -115,7 +115,7 @@ class DpkgRepo:
                     exc_info=True,
                 )
                 raise GeneralRepoException(
-                    "URL has already {} mentioned in it.".format(index_file)
+                    "URL has already {} mentioned in it.".format(index_file)  #  pylint: disable=consider-using-f-string
                 )
             path = os.path.join(path.rstrip("/"), index_file)
 
@@ -146,7 +146,7 @@ class DpkgRepo:
                             break
                     except FileNotFoundError as ex:
                         logging.debug(
-                            "File not found: {}".format(
+                            "File not found: {}".format(  #  pylint: disable=logging-format-interpolation,consider-using-f-string
                                 packages_url.replace("file://", "")
                             ),
                             exc_info=True,
@@ -177,7 +177,7 @@ class DpkgRepo:
             logging.exception(
                 "Exception during decompression of pkg index", exc_info=True
             )
-            raise GeneralRepoException(exc)
+            raise GeneralRepoException(exc)  #  pylint: disable=raise-missing-from
         except Exception as exc:
             logging.exception(
                 "Unknown exception during decompression of \
@@ -185,7 +185,7 @@ class DpkgRepo:
                 exc_info=True,
             )
             raise GeneralRepoException(
-                "Unhandled exception occurred while decompressing {}: {}".format(
+                "Unhandled exception occurred while decompressing {}: {}".format(  #  pylint: disable=consider-using-f-string
                     fname, exc
                 )
             ) from exc
@@ -200,11 +200,11 @@ class DpkgRepo:
         :return: dictionary
         """
         # Length of hexadecimal representation for each checksum algorithm
-        LEN_MD5 = 128 // 4
-        LEN_SHA1 = 160 // 4
-        LEN_SHA256 = 256 // 4
-        LEN_SHA384 = 384 // 4
-        LEN_SHA512 = 512 // 4
+        LEN_MD5 = 128 // 4  #  pylint: disable=invalid-name
+        LEN_SHA1 = 160 // 4  #  pylint: disable=invalid-name
+        LEN_SHA256 = 256 // 4  #  pylint: disable=invalid-name
+        LEN_SHA384 = 384 // 4  #  pylint: disable=invalid-name
+        LEN_SHA512 = 512 // 4  #  pylint: disable=invalid-name
         Entry = namedtuple("Entry", "checksum, size, path")
         for line in release.split(os.linesep):
             try:
@@ -286,17 +286,17 @@ class DpkgRepo:
                         )
                     )
                     raise GeneralRepoException(
-                        "Signature file for GPG check could not be accessed: {}".format(
+                        "Signature file for GPG check could not be accessed: {}".format(  #  pylint: disable=consider-using-f-string
                             release_signature_file
                         )
                     )
             else:
                 logging.error(
-                    "No release file found: '{}'. Raising GeneralRepoException.".format(
+                    "No release file found: '{}'. Raising GeneralRepoException.".format(  #  pylint: disable=logging-format-interpolation,consider-using-f-string
                         uri
                     )
                 )
-                raise GeneralRepoException("No release file found: {}".format(uri))
+                raise GeneralRepoException("No release file found: {}".format(uri))  #  pylint: disable=consider-using-f-string
         else:
             # There is a response, so we are dealing with a URL.
             if parse.urlparse(response.url).path.endswith("InRelease"):
@@ -340,7 +340,7 @@ class DpkgRepo:
             return True
         else:
             logging.debug(
-                "GPG signature is invalid. gpg return code: {}".format(
+                "GPG signature is invalid. gpg return code: {}".format(  #  pylint: disable=logging-format-interpolation,consider-using-f-string
                     process.returncode
                 )
             )
@@ -365,7 +365,7 @@ class DpkgRepo:
     def _get_release_index_from_file(self) -> typing.Dict[str, "DpkgRepo.ReleaseEntry"]:
         # InRelease files take precedence per uyuni-rfc 00057-deb-repo-sync-gpg-check
         logging.debug(
-            "Fetching release file from local filesystem: {}".format(
+            "Fetching release file from local filesystem: {}".format(  #  pylint: disable=logging-format-interpolation,consider-using-f-string
                 self._url.replace("file://", "")
             )
         )
@@ -386,10 +386,10 @@ class DpkgRepo:
         # Repo format is not flat
         if not self.is_flat():
             if self.gpg_verify and not self._has_valid_gpg_signature(local_path):
-                logging.error("GPG verification failed: {}".format(release_file))
+                logging.error("GPG verification failed: {}".format(release_file))  #  pylint: disable=logging-format-interpolation,consider-using-f-string
                 logging.error("Raising GeneralRepoException!")
                 raise GeneralRepoException(
-                    "GPG verification failed: {}".format(release_file)
+                    "GPG verification failed: {}".format(release_file)  #  pylint: disable=consider-using-f-string
                 )
             try:
                 with open(release_file, "rb") as f:
@@ -403,7 +403,7 @@ class DpkgRepo:
                     exc_info=True,
                 )
                 raise GeneralRepoException(
-                    "IOError while accessing file: {}".format(release_file)
+                    "IOError while accessing file: {}".format(release_file)  #  pylint: disable=consider-using-f-string
                 ) from ex
 
         # Repo format is flat
@@ -420,7 +420,7 @@ class DpkgRepo:
                     )
                 )
                 raise GeneralRepoException(
-                    "No release file found in {}".format(
+                    "No release file found in {}".format(  #  pylint: disable=consider-using-f-string
                         self._get_parent_url(local_path, 0)
                     )
                 )
@@ -438,7 +438,7 @@ class DpkgRepo:
                             )
                         )
                         raise GeneralRepoException(
-                            "GPG verification failed: {}".format(release_file)
+                            "GPG verification failed: {}".format(release_file)  #  pylint: disable=consider-using-f-string
                         )
                     self._release = self._parse_release_index(release_file_content)
             except IOError as ex:
@@ -450,14 +450,14 @@ class DpkgRepo:
                     exc_info=True,
                 )
                 raise GeneralRepoException(
-                    "IOError while accessing file: {}".format(release_file)
+                    "IOError while accessing file: {}".format(release_file)  #  pylint: disable=consider-using-f-string
                 ) from ex
 
         return self._release
 
     def _get_release_index_from_http(self) -> typing.Dict[str, "DpkgRepo.ReleaseEntry"]:
         # InRelease files take precedence per uyuni-rfc 00057-deb-repo-sync-gpg-check
-        logging.debug("Fetching release file from local http: {}".format(self._url))
+        logging.debug("Fetching release file from local http: {}".format(self._url))  #  pylint: disable=logging-format-interpolation,consider-using-f-string
         resp = requests.get(
             self._get_parent_url(self._url, 2, "InRelease"), proxies=self.proxies
         )
@@ -479,7 +479,7 @@ class DpkgRepo:
                     )
                 )
                 raise GeneralRepoException(
-                    "HTTP error {} occurred while connecting to the URL".format(
+                    "HTTP error {} occurred while connecting to the URL".format(  #  pylint: disable=consider-using-f-string
                         resp.status_code
                     )
                 )
@@ -499,7 +499,7 @@ class DpkgRepo:
                     "Repo has no valid GPG signature. Raising GeneralRepoException."
                 )
                 raise GeneralRepoException(
-                    "GPG verification failed: {}".format(resp.url)
+                    "GPG verification failed: {}".format(resp.url)  #  pylint: disable=consider-using-f-string
                 )
 
             self._release = self._parse_release_index(resp.content.decode("utf-8"))
@@ -523,7 +523,7 @@ class DpkgRepo:
                             "Repo has no valid GPG signature. GeneralRepoException will be raised!"
                         )
                         raise GeneralRepoException(
-                            "GPG verification failed: {}".format(resp.url)
+                            "GPG verification failed: {}".format(resp.url)  #  pylint: disable=consider-using-f-string
                         )
                     self._release = self._parse_release_index(
                         resp.content.decode("utf-8")

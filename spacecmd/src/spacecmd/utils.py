@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring
 # Licensed under the GNU General Public License Version 3
 #
 # This program is free software; you can redistribute it and/or modify
@@ -73,7 +73,7 @@ except AttributeError:
 
 
 class CustomJsonEncoder(json.JSONEncoder):
-    def default(self, obj):  # pylint: disable=arguments-differ,method-hidden
+    def default(self, obj):  # pylint: disable=arguments-differ,method-hidden,arguments-renamed
         if isinstance(obj, xmlrpclib.DateTime):
             return datetime.fromtimestamp(time.mktime(obj.timetuple())).strftime(
                 "%F %T"
@@ -247,7 +247,7 @@ def editor(template="", delete=False):
     if os.path.isfile(file_name) and exit_code == 0:
         try:
             # read the session (format = username:session)
-            handle = open(file_name, "r")
+            handle = open(file_name, "r")  #  pylint: disable=unspecified-encoding
             contents = handle.read()
             handle.close()
 
@@ -277,11 +277,11 @@ def prompt_user(prompt, noblank=False, multiline=False):
                     # python 2 must call raw_input() because input()
                     # also evaluates the user input and that causes
                     # problems.
-                    userinput = raw_input("%s " % prompt)
+                    userinput = raw_input("%s " % prompt)  #  pylint: disable=consider-using-f-string
                 except NameError:
                     # python 3 replaced raw_input() with input()...
                     # it no longer evaulates the user input.
-                    userinput = input("%s " % prompt)
+                    userinput = input("%s " % prompt)  #  pylint: disable=consider-using-f-string
             if noblank:
                 if userinput != "":
                     break
@@ -317,7 +317,7 @@ def parse_time_input(userinput=""):
             # YYYYMMDD
             if not match.group(4) and not match.group(5):
                 timestamp = time.strptime(
-                    "%s%s%s" % (match.group(1), match.group(2), match.group(3)),
+                    "%s%s%s" % (match.group(1), match.group(2), match.group(3)),  #  pylint: disable=consider-using-f-string
                     date_format,
                 )
             # YYYYMMDDHH
@@ -325,7 +325,7 @@ def parse_time_input(userinput=""):
                 date_format += "%H"
 
                 timestamp = time.strptime(
-                    "%s%s%s%s"
+                    "%s%s%s%s"  #  pylint: disable=consider-using-f-string
                     % (match.group(1), match.group(2), match.group(3), match.group(4)),
                     date_format,
                 )
@@ -334,7 +334,7 @@ def parse_time_input(userinput=""):
                 date_format += "%H%M"
 
                 timestamp = time.strptime(
-                    "%s%s%s%s%s"
+                    "%s%s%s%s%s"  #  pylint: disable=consider-using-f-string
                     % (
                         match.group(1),
                         match.group(2),
@@ -349,7 +349,7 @@ def parse_time_input(userinput=""):
                 date_format += "%H%M%S"
 
                 timestamp = time.strptime(
-                    "%s%s%s%s%s%s"
+                    "%s%s%s%s%s%s"  #  pylint: disable=consider-using-f-string
                     % (
                         match.group(1),
                         match.group(2),
@@ -408,8 +408,8 @@ def latest_pkg(
             epoch_key (str): key to obtain the package epoch
 
         Returns:
-            pkg (dict): Returns pkg1 if the package passed as first parameter is newer than the package passed as second parameter.
-            Returns pkg2 in case it's the opposite. Finally, returns None if the two packages are the same version
+            pkg (dict): Returns pkg1 if the package passed as first parameter is newer than the package passed as second parameter.  #  pylint: disable=line-too-long
+            Returns pkg2 in case it's the opposite. Finally, returns None if the two packages are the same version  #  pylint: disable=line-too-long
     """
     # Sometimes empty epoch is a space, sometimes its an empty string, which
     # breaks the comparison, strip it here to fix
@@ -435,19 +435,19 @@ def build_package_names(packages):
 
     package_names = []
     for p in packages:
-        package = "%s-%s-%s" % (p.get("name"), p.get("version"), p.get("release"))
+        package = "%s-%s-%s" % (p.get("name"), p.get("version"), p.get("release"))  #  pylint: disable=consider-using-f-string
 
         epoch = p.get("epoch", "").strip()
         if epoch:
-            package += ":%s" % epoch
+            package += ":%s" % epoch  #  pylint: disable=consider-using-f-string
 
         if p.get("arch"):
             # system.listPackages uses AMD64 instead of x86_64
             arch = re.sub("amd64", "x86_64", p.get("arch", "").lower())
 
-            package += ".%s" % arch
+            package += ".%s" % arch  #  pylint: disable=consider-using-f-string
         elif p.get("arch_label", "").strip():
-            package += ".%s" % p.get("arch_label")
+            package += ".%s" % p.get("arch_label")  #  pylint: disable=consider-using-f-string
 
         package_names.append(package)
 
@@ -471,7 +471,7 @@ def print_errata_summary(erratum):
         erratum["date"] = date_parts[0]
 
     print(
-        "%s  %s  %s  %s"
+        "%s  %s  %s  %s"  #  pylint: disable=consider-using-f-string
         % (
             erratum.get("advisory_name").ljust(14),
             wrap(erratum.get("advisory_synopsis"), 49)[0].ljust(49),
@@ -534,7 +534,7 @@ def config_channel_order(all_channels=None, new_channels=None):
         print(_("Current Selections"))
         print("------------------")
         for i, new_channel in enumerate(new_channels, 1):
-            print("%i. %s" % (i, new_channel))
+            print("%i. %s" % (i, new_channel))  #  pylint: disable=consider-using-f-string
 
         print("")
         action = prompt_user("a[dd], r[emove], c[lear], d[one]:")
@@ -629,7 +629,7 @@ def read_file(filename):
 
         Returns:
     """
-    with open(filename, "r") as fhd:
+    with open(filename, "r") as fhd:  #  pylint: disable=unspecified-encoding
         return fhd.read()
 
 
@@ -649,7 +649,7 @@ def parse_str(s, type_to=None):
 
         Parameters:
             s (str): A string that will be parsed as the type type_to
-            type_to (func): An object representing the target type for the argument `str` to be parsed as.
+            type_to (func): An object representing the target type for the argument `str` to be parsed as.  #  pylint: disable=line-too-long
 
         Returns:
 
@@ -662,7 +662,7 @@ def parse_str(s, type_to=None):
             return int(s)
 
         if s in ("False", "True"):
-            return eval(s)
+            return eval(s)  #  pylint: disable=eval-used
 
         if re.match(r"{.*}", s):
             return json.loads(s)  # retry with json module
@@ -705,14 +705,14 @@ def parse_api_args(args, sep=","):
     >>> parse_api_args('abcXYZ012')
     ['abcXYZ012']
 
-    >>> assert parse_api_args('{"channelLabel": "foo-i386-5"}')[0]["channelLabel"] == "foo-i386-5"
+    >>> assert parse_api_args('{"channelLabel": "foo-i386-5"}')[0]["channelLabel"] == "foo-i386-5"  #  pylint: disable=line-too-long
 
     >>> (i, s, d) = parse_api_args('1234567,abcXYZ012,{"channelLabel": "foo-i386-5"}')
     >>> assert i == 1234567
     >>> assert s == "abcXYZ012"
     >>> assert d["channelLabel"] == "foo-i386-5"
 
-    >>> (i, s, d) = parse_api_args('[1234567,"abcXYZ012",{"channelLabel": "foo-i386-5"}]')
+    >>> (i, s, d) = parse_api_args('[1234567,"abcXYZ012",{"channelLabel": "foo-i386-5"}]')  #  pylint: disable=line-too-long
     >>> assert i == 1234567
     >>> assert s == "abcXYZ012"
     >>> assert d["channelLabel"] == "foo-i386-5"
@@ -760,7 +760,7 @@ def json_dump_to_file(obj, filename):
         logging.error(_N("Could not generate json data object!"))
     else:
         try:
-            with open(filename, "w") as fdh:
+            with open(filename, "w") as fdh:  #  pylint: disable=unspecified-encoding
                 fdh.write(json_data)
             out = True
         except IOError as exc:
@@ -774,7 +774,7 @@ def json_dump_to_file(obj, filename):
 def json_read_from_file(filename):
     data = None
     try:
-        with open(filename) as fhd:
+        with open(filename) as fhd:  #  pylint: disable=unspecified-encoding
             data = json.loads(fhd.read())
     except IOError as exc:
         logging.error(_N("Could not open file %s for reading: %s"), filename, str(exc))
@@ -788,9 +788,9 @@ def json_read_from_file(filename):
 
 def get_string_diff_dicts(string1, string2, sep="-"):
     """
-    compares two strings and determine, if one string can be transformed into the other by simple string replacements.
+    compares two strings and determine, if one string can be transformed into the other by simple string replacements.  #  pylint: disable=line-too-long
 
-    If these strings are closly related, it returns two dictonaries of regular expressions.
+    If these strings are closly related, it returns two dictonaries of regular expressions.  #  pylint: disable=line-too-long
 
     The first dictionary can be used to transform type 1 strings into type 2 strings.
     The second dictionary vice versa.
@@ -811,8 +811,8 @@ def get_string_diff_dicts(string1, string2, sep="-"):
             sep (str): The separator
 
         Returns:
-            A list of two dictonaries of regular expressions. The first dictionary can be used to transform
-            string1 into string2. The second dictionary can also be used  to transform string2 to string1.
+            A list of two dictonaries of regular expressions. The first dictionary can be used to transform  #  pylint: disable=line-too-long
+            string1 into string2. The second dictionary can also be used  to transform string2 to string1.  #  pylint: disable=line-too-long
     """
     replace1 = {}
     replace2 = {}
@@ -857,7 +857,7 @@ def get_normalized_text(text, replacedict=None, excludes=None):
     # are not really differences between two instances.
     # Therefore parts of the data will be modified before the diff:
     # - specific lines, starting with a defined keyword, will be excluded
-    # - specific character sequences will be replaced with the same text in both instances.
+    # - specific character sequences will be replaced with the same text in both instances.  #  pylint: disable=line-too-long
     # Example:
     # we want to compare two related activationkeys:
     # "1-rhel6-x86_64-dev" and "1-rhel6-x86_64-prd"

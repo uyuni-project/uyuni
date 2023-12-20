@@ -1,4 +1,4 @@
-#
+# pylint: disable=missing-module-docstring,invalid-name
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -21,12 +21,12 @@ from .importLib import GenericPackageImport
 from spacewalk.satellite_tools.syncLib import log
 
 
-class ErrataImport(GenericPackageImport):
+class ErrataImport(GenericPackageImport):  #  pylint: disable=missing-class-docstring
     def __init__(self, batch, backend, queue_timeout=600):
         GenericPackageImport.__init__(self, batch, backend)
         # A composite key of the name, evr, arch plus org_id
         self.packages = {}
-        self.ignoreMissing = 0
+        self.ignoreMissing = 0  #  pylint: disable=invalid-name
         self.cve = {}
         self.queue_timeout = queue_timeout
         self.file_types = {}
@@ -43,7 +43,7 @@ class ErrataImport(GenericPackageImport):
         for errata in self.batch:
             advisory = errata["advisory_name"]
             release = errata["advisory_rel"]
-            errata_hash["%s%s" % (advisory, release)] = errata
+            errata_hash["%s%s" % (advisory, release)] = errata  #  pylint: disable=consider-using-f-string
             if advisory in advisories:
                 if int(release) < int(advisories[advisory]):
                     # Seen a newer one already
@@ -52,28 +52,28 @@ class ErrataImport(GenericPackageImport):
                 else:
                     # if this release is higher
                     # we have to ignore the older one!
-                    errata_hash["%s%s" % (advisory, advisories[advisory])].ignored = 1
+                    errata_hash["%s%s" % (advisory, advisories[advisory])].ignored = 1  #  pylint: disable=consider-using-f-string
             advisories[advisory] = release
             self._preprocessErratum(errata)
             self._preprocessErratumCVE(errata)
             self._preprocessErratumFiles(errata)
             self._preprocessErratumFileChannels(errata)
 
-    def _preprocessErratum(self, errata):
+    def _preprocessErratum(self, errata):  #  pylint: disable=invalid-name
         # Process packages
         for package in errata["packages"]:
             self._processPackage(package)
 
         # Process channels
-        channelHash = {}
+        channelHash = {}  #  pylint: disable=invalid-name
         for channel in errata["channels"]:
-            channelName = channel["label"]
+            channelName = channel["label"]  #  pylint: disable=invalid-name
             channelHash[channelName] = channel
             self.channels[channelName] = None
         # Replace the channel list with the unique one
         errata["channels"] = list(channelHash.values())
 
-    def _preprocessErratumCVE(self, erratum):
+    def _preprocessErratumCVE(self, erratum):  #  pylint: disable=invalid-name
         # Build the CVE dictionary
         # FIXME: this if decision is here to deal with missing cve data.
         #        fix later.
@@ -82,9 +82,9 @@ class ErrataImport(GenericPackageImport):
         for cve in erratum["cve"]:
             self.cve[cve] = None
 
-    def _preprocessErratumFiles(self, erratum):
+    def _preprocessErratumFiles(self, erratum):  #  pylint: disable=invalid-name
         for f in erratum["files"] or []:
-            checksumTuple = (f["checksum_type"], f["checksum"])
+            checksumTuple = (f["checksum_type"], f["checksum"])  #  pylint: disable=invalid-name
             if checksumTuple not in self.checksums:
                 self.checksums[checksumTuple] = None
 
@@ -103,7 +103,7 @@ class ErrataImport(GenericPackageImport):
             #    # XXX misa: do something here
             #    pass
 
-    def _preprocessErratumFileChannels(self, erratum):
+    def _preprocessErratumFileChannels(self, erratum):  #  pylint: disable=invalid-name
         for f in erratum["files"] or []:
             for channel_name in f.get("channel_list") or []:
                 self.channels[channel_name] = None
@@ -116,9 +116,9 @@ class ErrataImport(GenericPackageImport):
             for ef in erratum["files"]:
                 eft = ef["file_type"]
                 if eft not in self.file_types:
-                    raise Exception("Unknown file type %s" % eft)
+                    raise Exception("Unknown file type %s" % eft)  #  pylint: disable=broad-exception-raised,consider-using-f-string
                 ef["type"] = self.file_types[eft]
-        for label, aid in self.package_arches.items():
+        for label, aid in self.package_arches.items():  #  pylint: disable=unused-variable
             self.package_type = self.backend.lookupPackageArchType(aid)
             if self.package_type:
                 break
@@ -154,10 +154,10 @@ class ErrataImport(GenericPackageImport):
         # remove erratas that have been ignored
         ignored_erratas = list([x for x in self.batch if x.ignored])
         if len(ignored_erratas) > 0:
-            log(0, "Ignoring %d old, superseded erratas" % len(ignored_erratas))
+            log(0, "Ignoring %d old, superseded erratas" % len(ignored_erratas))  #  pylint: disable=consider-using-f-string
             self.batch = list([x for x in self.batch if not x.ignored])
 
-    def _fixCVE(self):
+    def _fixCVE(self):  #  pylint: disable=invalid-name
         # Look up and insert the missing CVE's
         self.backend.processCVEs(self.cve)
         # Fix the CVE stuff
@@ -206,19 +206,19 @@ class ErrataImport(GenericPackageImport):
                             "channel_id": channel_id,
                         }
                     )
-        self.backend._do_diff(
+        self.backend._do_diff(  #  pylint: disable=protected-access
             rpm_files, "rhnErrataFilePackage", ["errata_file_id", "package_id"], []
         )
-        self.backend._do_diff(
+        self.backend._do_diff(  #  pylint: disable=protected-access
             srpm_files,
             "rhnErrataFilePackageSource",
             ["errata_file_id", "package_id"],
             [],
         )
-        self.backend._do_diff(
+        self.backend._do_diff(  #  pylint: disable=protected-access
             channel_files, "rhnErrataFileChannel", ["errata_file_id", "channel_id"], []
         )
-        self.backend._do_diff(
+        self.backend._do_diff(  #  pylint: disable=protected-access
             oval_files, "rhnErrataFile", ["errata_id", "filename"], []
         )
 
@@ -246,7 +246,7 @@ class ErrataImport(GenericPackageImport):
                     continue
                 # XXX Raising an exception here; it may be too harsh though
                 erratum.ignored = 1
-                raise Exception("XXX Invalid channel %s" % label)
+                raise Exception("XXX Invalid channel %s" % label)  #  pylint: disable=broad-exception-raised,consider-using-f-string
 
             channels[channel["id"]] = None
 
@@ -254,7 +254,7 @@ class ErrataImport(GenericPackageImport):
 
     def _fix_erratum_packages_lookup(self, erratum):
         # To make the packages unique
-        packageHash = {}
+        packageHash = {}  #  pylint: disable=invalid-name
         for package in erratum["packages"]:
             if package.ignored:
                 # Skip it
@@ -341,7 +341,7 @@ class ErrataImport(GenericPackageImport):
         appropriate fields in the db tables.
 
         """
-        import os
+        import os  #  pylint: disable=import-outside-toplevel
 
         if "oval_info" not in erratum:
             return
@@ -350,7 +350,7 @@ class ErrataImport(GenericPackageImport):
             if has_suffix(oval_file["filename"], ".xml"):
                 eft = oval_file["file_type"] = "OVAL"
                 if eft not in self.file_types:
-                    raise Exception("Unknown file type %s" % eft)
+                    raise Exception("Unknown file type %s" % eft)  #  pylint: disable=broad-exception-raised,consider-using-f-string
                 oval_file["type"] = self.file_types[eft]
 
             # XXX: stubs incase we need to associate them to channels/packages
@@ -362,7 +362,7 @@ class ErrataImport(GenericPackageImport):
                 # Don't bother to copy the package
                 raise rhnFault(
                     47,
-                    "Oval file %s not found on the server. " % oval_file["filename"],
+                    "Oval file %s not found on the server. " % oval_file["filename"],  #  pylint: disable=consider-using-f-string
                     explain=0,
                 )
 
