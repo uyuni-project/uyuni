@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.taskomatic;
 
+import com.redhat.rhn.common.util.StringUtil;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -58,12 +60,13 @@ public class TaskoXmlRpcInvoker implements ProtocolHandler {
 
         try {
             if (!uri.startsWith("/RPC2")) {
-                log.info(uri);
+                String url = StringUtil.htmlifyText(uri);
+
                 response.setCode(404);
-                response.setText(uri);
+                response.setText(url);
                 PrintStream out = response.getPrintStream();
                 out.println("<html><body><title>Page not found</title>");
-                out.println("<b>" + uri + " not found</b>");
+                out.println("<b>" + url + " not found</b>");
                 out.println("</body></html>");
                 response.set("Content-Type", "text/html");
                 out.flush();
