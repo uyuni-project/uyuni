@@ -37,14 +37,13 @@ import simple.http.Response;
  */
 public class TaskoXmlRpcInvoker implements ProtocolHandler {
 
-    private static Logger log = LogManager.getLogger(TaskoXmlRpcInvoker.class);
-    private XmlRpcServer server;
+    private static final Logger LOG = LogManager.getLogger(TaskoXmlRpcInvoker.class);
+    private final XmlRpcServer server;
 
     /**
      * Constructor
      *
-     * @param xmlrpcServer
-     *            handles actual XML-RPC calls
+     * @param xmlrpcServer handles actual XML-RPC calls
      */
     public TaskoXmlRpcInvoker(XmlRpcServer xmlrpcServer) {
         server = xmlrpcServer;
@@ -57,10 +56,11 @@ public class TaskoXmlRpcInvoker implements ProtocolHandler {
         String uri = request.getURI();
         InetAddress ip = request.getInetAddress();
 
-        try {
+        try (StringWriter writer = new StringWriter()) {
             if (!uri.startsWith("/RPC2")) {
                 String url = StringUtil.htmlifyText(uri);
 
+                LOG.info("Invalid request from {} to {}", ip, uri);
                 response.setCode(404);
                 response.setText(url);
                 PrintStream out = response.getPrintStream();
@@ -73,7 +73,6 @@ public class TaskoXmlRpcInvoker implements ProtocolHandler {
             }
             else {
                 InputStream in = request.getInputStream();
-                StringWriter writer = new StringWriter();
                 server.execute(in, writer);
                 OutputStream out = response.getOutputStream();
                 response.set("Content-Type", "text/xml");
@@ -84,19 +83,15 @@ public class TaskoXmlRpcInvoker implements ProtocolHandler {
             }
         }
         catch (IOException e) {
-            e.printStackTrace();
+            LOG.error("Failed request by {}", ip, e);
         }
         finally {
             try {
                 response.commit();
             }
             catch (IOException e) {
-                e.printStackTrace();
+                LOG.error(e);
             }
         }
-
-
-
     }
-
 }
