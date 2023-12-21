@@ -687,9 +687,9 @@ When(/^I wait until rhn-search is responding$/) do
   step 'I wait until "rhn-search" service is active on "server"'
   repeat_until_timeout(timeout: 60, message: 'rhn-search is not responding properly.') do
     log "Search by hostname: #{get_target('sle_minion').hostname}"
-    result = $api_test.system.search.hostname(get_target('sle_minion').hostname)
+    result = $api_test.system.search_by_name(get_target('sle_minion').hostname)
     log result
-    break if get_target('sle_minion').full_hostname.include? result.first['hostname']
+    break if get_target('sle_minion').full_hostname.include? result.first['name']
   rescue StandardError => e
     log "rhn-search still not responding.\nError message: #{e.message}"
     sleep 3
