@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Combobox } from "components/combobox";
 
@@ -14,6 +14,15 @@ type Props = {
 export const ActionChainPicker = (props: Props) => {
   const [selectedId, setSelectedId] = useState(props.actionChains[0]?.id || "");
 
+  useEffect(() => {
+    setInteropValue(selectedId);
+  }, []);
+
+  // This module needs to interface with legacy fields in schedule-options.jspf
+  const setInteropValue = (value: string) => {
+    document.getElementById("action-chain")?.setAttribute("value", value);
+  };
+
   return (
     <Combobox
       options={props.actionChains}
@@ -25,8 +34,7 @@ export const ActionChainPicker = (props: Props) => {
         return { id: cut, value: cut, label };
       }}
       onSelect={(item) => {
-        // This module needs to interface with legacy fields in schedule-options.jspf
-        document.getElementById("action-chain")?.setAttribute("value", item.id);
+        setInteropValue(item.id);
         setSelectedId(item.id);
       }}
       onFocus={() => {
