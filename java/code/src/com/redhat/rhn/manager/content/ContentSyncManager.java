@@ -260,10 +260,6 @@ public class ContentSyncManager {
         return upPaths;
     }
 
-
-
-
-    //TODO: cloudrmt nur für producte / product tree und bevorzugt nur für payg
     /**
      * There can be no network credentials, but still can read the local files
      * As well as we do need to read the file only once.
