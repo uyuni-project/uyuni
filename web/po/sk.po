@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-12-15 14:09+0100\n"
-"PO-Revision-Date: 2023-10-26 19:15+0000\n"
+"PO-Revision-Date: 2023-12-21 16:02+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -111,9 +111,8 @@ msgid "Loading the scheduler..."
 msgstr "Načítava sa plánovač..."
 
 #: ../html/src/components/combobox.tsx:96
-#, fuzzy
 msgid "Create {label}"
-msgstr "Vytvoriť "
+msgstr "Vytvoriť {label}"
 
 #: ../html/src/components/config-channels.tsx:38
 msgid "Configuration Channels"
@@ -6621,14 +6620,12 @@ msgid "e.g., SLES"
 msgstr "napr. SLES"
 
 #: ../html/src/manager/visualization/hierarchy.tsx:274
-#, fuzzy
 msgid "Hide filters"
-msgstr " filtre"
+msgstr "Skryť filtre"
 
 #: ../html/src/manager/visualization/hierarchy.tsx:274
-#, fuzzy
 msgid "Show filters"
-msgstr " filtre"
+msgstr "Zobraziť filtre"
 
 #: ../html/src/manager/visualization/hierarchy.tsx:282
 msgid "Filtering"

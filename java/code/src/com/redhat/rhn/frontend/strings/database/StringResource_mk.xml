@@ -462,7 +462,7 @@
       </trans-unit>
       <trans-unit id="RHN_ADMIN_EMAIL" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ administrator email</source>
-        <target/>
+        <target>@@PRODUCT_NAME@@ администраторски имејл</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/GeneralConfig.do</context>
         </context-group>
