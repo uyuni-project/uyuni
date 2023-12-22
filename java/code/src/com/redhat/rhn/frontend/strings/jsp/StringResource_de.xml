@@ -29406,6 +29406,13 @@ für einen angegebenen Channel aufgelistet wird.</target>
         </context-group>
       <target state="new"/>
   </trans-unit>
+      <trans-unit id="channel.manage.sync.nostrict.jsp" xml:space="preserve">
+        <source>Do not use strict mode</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/channels/manage/Sync.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
       </body>
   </file>
 </xliff>
