@@ -117,6 +117,47 @@ Then(/^it should be possible to reach the not authenticated registry$/) do
 end
 
 # Channels
+When(/^I prepare a channel clone for strict mode testing$/) do
+  get_target('server').run('cp -r /srv/www/htdocs/pub/TestRepoRpmUpdates /srv/www/htdocs/pub/TestRepoRpmUpdates_STRICT_TEST')
+  get_target('server').run('rm -rf /srv/www/htdocs/pub/TestRepoRpmUpdates_STRICT_TEST/repodata')
+  %w[i586 src x86_64].each do |folder|
+    get_target('server').run("rm -f /srv/www/htdocs/pub/TestRepoRpmUpdates_STRICT_TEST/#{folder}/rute-dummy-2.0-1.2.*.rpm")
+  end
+  get_target('server').run('createrepo_c /srv/www/htdocs/pub/TestRepoRpmUpdates_STRICT_TEST')
+  get_target('server').run('gzip -dc /srv/www/htdocs/pub/TestRepoRpmUpdates/repodata/*-updateinfo.xml.gz > /tmp/updateinfo.xml')
+  get_target('server').run('modifyrepo_c --verbose --mdtype updateinfo /tmp/updateinfo.xml /srv/www/htdocs/pub/TestRepoRpmUpdates_STRICT_TEST/repodata')
+end
+
+Given(/^I am logged into the API$/) do
+  server_node = get_target('server')
+  api_url = "https://#{server_node.public_ip}/rhn/manager/api/auth/login"
+  response = get_target('server').run("curl -H 'Content-Type: application/json' -d '{'login': 'admin', 'password': 'admin'}' -i #{api_url}")
+  raise 'Failed to login to the API' unless response.code == 200
+end
+
+When(/^I store the amount of packages in channel "([^"]*)"$/) do |channel_label|
+  add_context('channels', $api_test.channel.list_all_channels)
+  if get_context('channels').key?(channel_label)
+    add_context('package_amount', get_context('channels')[channel_label]['packages'])
+    puts "Package amount for 'test-strict': #{get_context('package_amount')}"
+  else
+    puts "#{channel_label} channel not found."
+  end
+end
+
+Then(/^The amount of packages in channel "([^"]*)" should be the same as before$/) do |channel_label|
+  add_context('channels', $api_test.channel.list_all_channels)
+  if get_context('channels').key?(channel_label) && (get_context('package_amount') != get_context('channels')[channel_label]['packages'])
+    raise 'Package counts do not match'
+  end
+end
+
+Then(/^The amount of packages in channel "([^"]*)" should be fewer than before$/) do |channel_label|
+  add_context('channels', $api_test.channel.list_all_channels)
+  if get_context('channels').key?(channel_label) && get_context('channels')[channel_label]['packages'] >= $package_amount
+    raise 'Package count is not fewer than before'
+  end
+end
 
 When(/^I delete these channels with spacewalk-remove-channel:$/) do |table|
   channels_cmd = 'spacewalk-remove-channel '
@@ -646,9 +687,9 @@ When(/^I wait until rhn-search is responding$/) do
   step 'I wait until "rhn-search" service is active on "server"'
   repeat_until_timeout(timeout: 60, message: 'rhn-search is not responding properly.') do
     log "Search by hostname: #{get_target('sle_minion').hostname}"
-    result = $api_test.system.search.hostname(get_target('sle_minion').hostname)
+    result = $api_test.system.search_by_name(get_target('sle_minion').hostname)
     log result
-    break if get_target('sle_minion').full_hostname.include? result.first['hostname']
+    break if get_target('sle_minion').full_hostname.include? result.first['name']
   rescue StandardError => e
     log "rhn-search still not responding.\nError message: #{e.message}"
     sleep 3

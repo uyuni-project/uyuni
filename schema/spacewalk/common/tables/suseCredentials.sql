@@ -15,27 +15,48 @@
 
 CREATE TABLE suseCredentials
 (
-    id       NUMERIC NOT NULL
-                 CONSTRAINT suse_credentials_pk PRIMARY KEY,
-    user_id  NUMERIC NULL
-                 CONSTRAINT suse_credentials_user_fk
-                 REFERENCES web_contact (id)
-                 ON DELETE CASCADE,
-    type_id  NUMERIC NOT NULL
-                 CONSTRAINT suse_credentials_type_fk
-                 REFERENCES suseCredentialsType (id),
-    url      VARCHAR(256),
-    username VARCHAR(64) NOT NULL,
-    password VARCHAR(4096) NOT NULL,
-    created  TIMESTAMPTZ DEFAULT (current_timestamp) NOT NULL,
-    modified TIMESTAMPTZ DEFAULT (current_timestamp) NOT NULL,
-    extra_auth bytea,
-    payg_ssh_data_id NUMERIC
-        CONSTRAINT suse_credentials_payg_ssh_data_id_fk
-            REFERENCES susePaygSshData (id)
+    id                  NUMERIC NOT NULL
+                            CONSTRAINT suse_credentials_pk PRIMARY KEY,
+    user_id             NUMERIC NULL
+                            CONSTRAINT suse_credentials_user_fk
+                            REFERENCES web_contact (id)
+                            ON DELETE CASCADE,
+    type                VARCHAR(128) DEFAULT ('scc') NOT NULL
+                             CONSTRAINT rhn_type_ck
+                             CHECK (type IN ('scc', 'vhm', 'registrycreds', 'cloudrmt', 'reportcreds', 'rhui')),
+    url                 VARCHAR(256),
+    username            VARCHAR(64),
+    password            VARCHAR(4096),
+    created             TIMESTAMPTZ DEFAULT (current_timestamp) NOT NULL,
+    modified            TIMESTAMPTZ DEFAULT (current_timestamp) NOT NULL,
+    extra_auth          bytea,
+    payg_ssh_data_id    NUMERIC
+                            CONSTRAINT suse_credentials_payg_ssh_data_id_fk REFERENCES susePaygSshData (id)
 );
 
 ALTER TABLE susecredentials
-    ADD CONSTRAINT suse_credentials_payg_ssh_data_id_uq unique (payg_ssh_data_id);
+    ADD CONSTRAINT suse_credentials_payg_ssh_data_id_uq UNIQUE (payg_ssh_data_id);
+
+ALTER TABLE susecredentials
+    ADD CONSTRAINT cred_type_check CHECK (
+        CASE type
+            WHEN 'scc' THEN
+                username is not null and username <> ''
+                    and password is not null and password <> ''
+            WHEN 'cloudrmt' THEN
+                username is not null and username <> ''
+                    and password is not null and password <> ''
+                    and url is not null and url <> ''
+            WHEN 'vhm' THEN
+                username is not null and username <> ''
+                    and password is not null and password <> ''
+            WHEN 'registrycreds' THEN
+                username is not null and username <> ''
+                    and password is not null and password <> ''
+            WHEN 'reportcreds' THEN
+                username is not null and username <> ''
+                    and password is not null and password <> ''
+        END
+    );
 
 CREATE SEQUENCE suse_credentials_id_seq;

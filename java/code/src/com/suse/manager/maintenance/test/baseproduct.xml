@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2023 SUSE LLC
+  ~
+  ~ This software is licensed to you under the GNU General Public License,
+  ~ version 2 (GPLv2). There is NO WARRANTY for this software, express or
+  ~ implied, including the implied warranties of MERCHANTABILITY or FITNESS
+  ~ FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+  ~ along with this software; if not, see
+  ~ http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+  ~
+  ~ Red Hat trademarks are not licensed under GPLv2. No permission is
+  ~ granted to use or replicate Red Hat trademarks that are incorporated
+  ~ in this software or its documentation.
+  -->
+
+<product schemeversion="0">
+  <vendor>SUSE</vendor>
+  <name>SUSE-Manager-Server</name>
+  <version>4.3</version>
+  <baseversion>4.3</baseversion>
+  <patchlevel>0</patchlevel>
+  <release>0</release>
+  <endoflife>2025-06-30</endoflife>
+  <arch>x86_64</arch>
+  <cpeid>cpe:/o:suse:suse-manager-server:4.3</cpeid>
+  <productline>manager</productline>
+  <codestream>
+    <name>SUSE Manager Server 4.3</name>
+    <endoflife>2025-06-30</endoflife>
+  </codestream>
+  <register>
+      <target>sle-15-x86_64</target>
+  </register>
+  <repositories>
+      <repository type="update" repoid="obsrepository://build.suse.de/SUSE:Updates:SLE-Product-SUSE-Manager-Server:4.3:x86_64/update" />
+      <repository type="update" repoid="obsrepository://build.suse.de/SUSE:Updates:SLE-Product-SUSE-Manager-Server:4.3:x86_64/update_debug" />
+      <repository type="update" repoid="obsrepository://build.suse.de/SUSE:Updates:SLE-INSTALLER:15-SP4:x86_64/update" />
+      <repository type="pool" repoid="obsproduct://build.suse.de/SUSE:Products:SLE-Product-SUSE-Manager-Server:4.3:x86_64/SUSE-Manager-Server/4.3/x86_64" />
+  </repositories>
+  <summary>SUSE Manager Server 4.3</summary>
+  <shortsummary>SUSE Manager Server 4.3</shortsummary>
+  <description>SUSE Manager lets you efficiently manage physical, virtual,
+and cloud-based Linux systems. It provides automated and cost-effective
+configuration and software management, asset management, and system
+provisioning.</description>
+  <linguas>
+    <language>cs</language>
+    <language>da</language>
+    <language>de</language>
+    <language>en</language>
+    <language>en_GB</language>
+    <language>en_US</language>
+    <language>es</language>
+    <language>fi</language>
+    <language>fr</language>
+    <language>hu</language>
+    <language>it</language>
+    <language>ja</language>
+    <language>nb</language>
+    <language>nl</language>
+    <language>pl</language>
+    <language>pt</language>
+    <language>pt_BR</language>
+    <language>ru</language>
+    <language>sv</language>
+    <language>zh</language>
+    <language>zh_CN</language>
+    <language>zh_TW</language>
+  </linguas>
+  <urls>
+    <url name="releasenotes">http://www.suse.com/releasenotes/x86_64/SUSE-MANAGER/4.3/release-notes-susemanager.rpm</url>
+  </urls>
+  <buildconfig>
+    <producttheme>SLES</producttheme>
+  </buildconfig>
+  <installconfig>
+    <defaultlang>en_US</defaultlang>
+    <releasepackage name="SUSE-Manager-Server-release" flag="EQ" version="4.3" release="150400.56.5.1"/>
+    <distribution>SUSE_SLE</distribution>
+  </installconfig>
+  <runtimeconfig/>
+  <productdependency relationship="provides" name="SUSE_SLE" baseversion="15" patchlevel="4" flag="EQ"/>
+  <productdependency relationship="provides" name="SUSE_SLE-SP4" baseversion="15" patchlevel="4" flag="EQ"/>
+</product>
+

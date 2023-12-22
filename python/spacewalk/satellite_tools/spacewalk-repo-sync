@@ -105,6 +105,7 @@ def main():
                       callback=reposync.set_filter_opt,
                       type='str', nargs=1, dest='filters', default=[],
                       help="Comma or space separated list of excluded packages or package groups.")
+    parser.add_option('', '--no-strict', action='store_true',help="do not unlink packages when deleted from repository", dest='no_strict')
     parser.add_option('', '--email', action="store_true", help="e-mail a report of what was synced/imported")
     parser.add_option('', '--traceback-mail', action="store",
                       help="alternative email address(es) for sync output (--email option)")
@@ -143,7 +144,7 @@ def main():
     rhnLog.initLOG(log_path, log_level)
     log2disk(0, "Command: %s" % str(sys.argv))
 
-    l_params=["no_errata", "sync_kickstart", "fail"]
+    l_params=["no_errata", "sync_kickstart", "fail", "no-strict"]
     d_chan_repo=reposync.getChannelRepo()
     l_ch_custom=reposync.getCustomChannels()
     d_parent_child=reposync.getParentsChilds()
@@ -256,6 +257,7 @@ def main():
                       repo_type=options.repo_type,
                       url=repo,
                       fail=options.fail,
+                      strict= not options.no_strict,
                       noninteractive=options.noninteractive,
                       filters=options.filters,
                       deep_verify=options.deep_verify,

@@ -7,7 +7,7 @@
       <rhn-tab-url>/rhn/systems/details/RebootSystem.do</rhn-tab-url>
     </rhn-tab>
     <rhn-tab name="Properties" url="/rhn/systems/details/Edit.do" />
-    <rhn-tab name="Remote Command" acl="system_feature(ftr_remote_command)">
+    <rhn-tab name="Remote Command" acl="system_feature(ftr_remote_command); not is(java.disable_remote_commands_from_ui)">
       <rhn-tab-url>/rhn/systems/details/SystemRemoteCommand.do</rhn-tab-url>
     </rhn-tab>
     <rhn-tab name="Connection" url="/rhn/systems/details/Connection.do" acl="org_has_proxies()"/>

@@ -17,7 +17,7 @@
 
 
 Name:           uyuni-setup-reportdb
-Version:        4.4.5
+Version:        4.4.6
 Release:        1
 Summary:        Tools to setup PostgreSQL database as reporting DB for Uyuni and SUSE Manager
 License:        GPL-2.0-only

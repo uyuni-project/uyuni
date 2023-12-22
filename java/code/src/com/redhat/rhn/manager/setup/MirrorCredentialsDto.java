@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.manager.setup;
 
+import com.redhat.rhn.domain.credentials.SCCCredentials;
 import com.redhat.rhn.frontend.dto.BaseDto;
 
 /**
@@ -99,6 +100,18 @@ public class MirrorCredentialsDto extends BaseDto {
      */
     public void setPrimary(boolean primaryIn) {
         this.primary = primaryIn;
+    }
+
+    /**
+     * Creates an instance based on the specified SCC credentials
+     * @param c the scc credentials
+     * @return an instance of the dto using the data from the credentials
+     */
+    public static MirrorCredentialsDto fromSCCCredentials(SCCCredentials c) {
+        MirrorCredentialsDto creds = new MirrorCredentialsDto(c.getUsername(), c.getPassword());
+        creds.setId(c.getId());
+        creds.setPrimary(c.isPrimary());
+        return creds;
     }
 
     /**

@@ -1,1 +1,0 @@
-- Fix filter ID comparison when attaching filters to a CLM project (bsc#1215949)

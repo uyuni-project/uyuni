@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Fri Dec 15 17:29:47 CET 2023 - rosuna@suse.com
+
+- version 4.4.2-1
+  * Fix missing folders in spec file
+  * Move all file managed by RPM from /srv to /usr/share/susemanager
+  * Replace /usr/share with macro %{_datadir}
+
+-------------------------------------------------------------------
 Wed Sep 28 11:02:38 CEST 2022 - jgonzalez@suse.com
 
 - version 4.4.1-1

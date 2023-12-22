@@ -89,9 +89,9 @@ LABEL org.opencontainers.image.description="All-in-one ${PRODUCT} server image"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="${VENDOR}"
 LABEL org.opencontainers.image.url="${URL}"
-LABEL org.opencontainers.image.version=4.4.1
+LABEL org.opencontainers.image.version=4.4.2
 LABEL org.openbuildservice.disturl="%DISTURL%"
-LABEL org.opensuse.reference="${REFERENCE_PREFIX}/server:4.4.1.%RELEASE%"
+LABEL org.opensuse.reference="${REFERENCE_PREFIX}/server:4.4.2.%RELEASE%"
 # endlabelprefix
 
 CMD ["/usr/lib/systemd/systemd"]

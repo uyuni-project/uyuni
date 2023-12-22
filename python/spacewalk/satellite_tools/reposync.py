@@ -412,7 +412,7 @@ class RepoSync(object):
 
     def __init__(self, channel_label, repo_type=None, url=None, fail=False,
                  filters=None, no_errata=False, sync_kickstart=False, latest=False,
-                 metadata_only=False, strict=0, excluded_urls=None, no_packages=False,
+                 metadata_only=False, strict=False, excluded_urls=None, no_packages=False,
                  log_dir="reposync", log_level=None, force_kickstart=False, force_all_errata=False,
                  check_ssl_dates=True, force_null_org_content=False, show_packages_only=False,
                  noninteractive=False, deep_verify=False):
@@ -1882,9 +1882,8 @@ class RepoSync(object):
                 sys.exit(1)
             # SCC - read credentials from DB
             h = rhnSQL.prepare("""
-                SELECT c.username, c.password, c.extra_auth, ct.label type
+                SELECT c.username, c.password, c.extra_auth, c.type
                   FROM suseCredentials c
-                  JOIN suseCredentialsType ct on c.type_id = ct.id
                   WHERE c.id = :id
             """)
             h.execute(id=creds_no)

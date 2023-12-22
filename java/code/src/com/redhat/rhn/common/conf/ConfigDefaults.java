@@ -16,6 +16,7 @@ package com.redhat.rhn.common.conf;
 
 import com.redhat.rhn.common.validator.HostPortValidator;
 import com.redhat.rhn.domain.kickstart.KickstartData;
+import com.redhat.rhn.manager.content.ContentSyncManager;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -62,6 +63,7 @@ public class ConfigDefaults {
     public static final String WEB_SMTP_USER = "java.smtp_user";
     public static final String WEB_SMTP_PASS = "java.smtp_pass";
     public static final String WEB_DISABLE_UPDATE_STATUS = "java.disable_update_status";
+    public static final String WEB_DISABLE_REMOTE_COMMANDS_FROM_UI = "java.disable_remote_commands_from_ui";
 
     public static final String ERRATA_CACHE_COMPUTE_THRESHOLD
     = "errata_cache_compute_threshold";
@@ -640,6 +642,13 @@ public class ConfigDefaults {
         return "http://" + cobblerServer + ":" + cobblerServerPort;
     }
 
+    public Optional<String> getOfflineMirrorDir() {
+        return Optional.ofNullable(Config.get().getString(ContentSyncManager.RESOURCE_PATH, null));
+    }
+
+    public boolean isOfflineMirrorSetup() {
+        return getOfflineMirrorDir().isPresent();
+    }
 
     /**
      * Get just the cobbler hostname

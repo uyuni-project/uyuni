@@ -1,1 +1,0 @@
-- Prevent losing Remote Command action result if returned JSON cannot be parsed

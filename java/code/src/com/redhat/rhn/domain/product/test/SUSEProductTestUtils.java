@@ -25,8 +25,8 @@ import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.channel.test.ChannelFamilyFactoryTest;
 import com.redhat.rhn.domain.channel.test.ChannelFamilyTest;
 import com.redhat.rhn.domain.common.ManagerInfoFactory;
-import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
+import com.redhat.rhn.domain.credentials.SCCCredentials;
 import com.redhat.rhn.domain.product.ReleaseStage;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductChannel;
@@ -39,6 +39,9 @@ import com.redhat.rhn.domain.scc.SCCRepositoryTokenAuth;
 import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.xmlrpc.sync.content.ContentSyncSource;
+import com.redhat.rhn.frontend.xmlrpc.sync.content.LocalDirContentSyncSource;
+import com.redhat.rhn.frontend.xmlrpc.sync.content.SCCContentSyncSource;
 import com.redhat.rhn.manager.content.ContentSyncException;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.manager.content.ProductTreeEntry;
@@ -62,6 +65,7 @@ import org.hibernate.Session;
 import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.file.Path;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -155,7 +159,7 @@ public class SUSEProductTestUtils extends HibernateFactory {
      */
     public static void populateRepository(SUSEProduct baseProduct, Channel baseChannel, SUSEProduct product,
                                     Channel channel, User user) {
-        Credentials sccc = SUSEProductTestUtils.createSCCCredentials("dummy", user);
+        SCCCredentials sccc = SUSEProductTestUtils.createSCCCredentials("dummy", user);
         SCCRepository repository = SUSEProductTestUtils.createSCCRepository();
         SUSEProductTestUtils.createSCCRepositoryTokenAuth(sccc, repository);
 
@@ -293,6 +297,7 @@ public class SUSEProductTestUtils extends HibernateFactory {
      *
      * SLES12 SP1 x86_64
      * SLE-HA12 SP1 x86_64
+     * SLE-Micro 5.4 x86_64
      */
     public static void createVendorSUSEProducts() {
         ChannelFamily cfsles = ChannelFamilyFactory.lookupByLabel("7261", null);
@@ -309,6 +314,14 @@ public class SUSEProductTestUtils extends HibernateFactory {
             cfha.setLabel("SLE-HAE-X86");
             cfha.setName("SUSE Linux Enterprise High Availability Extension (x86)");
             TestUtils.saveAndFlush(cfha);
+        }
+
+        ChannelFamily cfslem = ChannelFamilyFactory.lookupByLabel("MICROOS-X86", null);
+        if (cfslem == null) {
+            cfslem = new ChannelFamily();
+            cfslem.setLabel("MICROOS-X86");
+            cfslem.setName("SUSE Linux Enterprise Micro X86");
+            TestUtils.saveAndFlush(cfslem);
         }
 
         SUSEProduct product = new SUSEProduct();
@@ -383,6 +396,58 @@ public class SUSEProductTestUtils extends HibernateFactory {
         product.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
         product.setProductId(1340);
         //product.setChannelFamily(cfsles);
+        product.setBase(false);
+        product.setReleaseStage(ReleaseStage.released);
+        TestUtils.saveAndFlush(product);
+
+        product = new SUSEProduct();
+        product.setName("sle-micro");
+        product.setVersion("5.4");
+        product.setFriendlyName("SUSE Linux Enterprise Micro 5.4 x86_64");
+        product.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
+        product.setProductId(2574);
+        product.setChannelFamily(cfslem);
+        product.setBase(true);
+        product.setReleaseStage(ReleaseStage.released);
+        TestUtils.saveAndFlush(product);
+
+        ChannelFamily cfSlesSap = ChannelFamilyFactory.lookupByLabel("AiO", null);
+        if (cfSlesSap == null) {
+            cfSlesSap = new ChannelFamily();
+            cfSlesSap.setLabel("AiO");
+            cfSlesSap.setName("SUSE Linux Enterprise Server for SAP");
+            TestUtils.saveAndFlush(cfSlesSap);
+        }
+
+        product = new SUSEProduct();
+        product.setName("sles_sap");
+        product.setVersion("15.5");
+        product.setFriendlyName("SUSE Linux Enterprise Server for SAP Applications 15 SP5 x86_64");
+        product.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
+        product.setProductId(2467);
+        product.setChannelFamily(cfSlesSap);
+        product.setBase(true);
+        product.setReleaseStage(ReleaseStage.released);
+        TestUtils.saveAndFlush(product);
+
+        product = new SUSEProduct();
+        product.setName("sle-module-certifications");
+        product.setVersion("15.5");
+        product.setFriendlyName("Certifications Module 15 SP5 x86_64");
+        product.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
+        product.setProductId(2558);
+        product.setChannelFamily(cfsles);
+        product.setBase(false);
+        product.setReleaseStage(ReleaseStage.released);
+        TestUtils.saveAndFlush(product);
+
+        product = new SUSEProduct();
+        product.setName("sle-module-basesystem");
+        product.setVersion("15.5");
+        product.setFriendlyName("Basesystem Module 15 SP5 x86_64");
+        product.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
+        product.setProductId(2474);
+        product.setChannelFamily(cfsles);
         product.setBase(false);
         product.setReleaseStage(ReleaseStage.released);
         TestUtils.saveAndFlush(product);
@@ -510,7 +575,7 @@ public class SUSEProductTestUtils extends HibernateFactory {
                 return true;
             }
         };
-        Credentials credentials = null;
+        ContentSyncSource contentSyncSource = null;
         if (fromdir) {
             Config.get().setString(ContentSyncManager.RESOURCE_PATH, "sumatest");
             csm = new ContentSyncManager() {
@@ -520,14 +585,16 @@ public class SUSEProductTestUtils extends HibernateFactory {
                     return true;
                 }
             };
+
+            contentSyncSource = new LocalDirContentSyncSource(Path.of("sumatest"));
         }
         else {
-            credentials = CredentialsFactory.createSCCCredentials();
-            credentials.setPassword("dummy");
+            SCCCredentials credentials = CredentialsFactory.createSCCCredentials("dummy", "dummy");
             credentials.setUrl("dummy");
-            credentials.setUsername("dummy");
             credentials.setUser(admin);
             CredentialsFactory.storeCredentials(credentials);
+
+            contentSyncSource = new SCCContentSyncSource(credentials);
         }
 
         csm.updateChannelFamilies(channelFamilies);
@@ -535,7 +602,7 @@ public class SUSEProductTestUtils extends HibernateFactory {
         if (withRepos) {
             HibernateFactory.getSession().flush();
             HibernateFactory.getSession().clear();
-            csm.refreshRepositoriesAuthentication(repositories, credentials, null);
+            csm.refreshRepositoriesAuthentication(repositories, contentSyncSource, null);
         }
         ManagerInfoFactory.setLastMgrSyncRefresh();
     }
@@ -692,24 +759,21 @@ public class SUSEProductTestUtils extends HibernateFactory {
         return TestUtils.saveAndReload(bRepo);
     }
 
-    public static SCCRepositoryAuth createSCCRepositoryTokenAuth(Credentials c, SCCRepository r) {
+    public static SCCRepositoryAuth createSCCRepositoryTokenAuth(SCCCredentials c, SCCRepository r) {
         SCCRepositoryAuth auth = new SCCRepositoryTokenAuth(TestUtils.randomString().toLowerCase());
         auth.setRepo(r);
         auth.setCredentials(c);
         return TestUtils.saveAndReload(auth);
     }
 
-    public static Credentials createSCCCredentials(String name, User user) {
-        Credentials credentials = createSecondarySCCCredentials(name, user);
-        credentials.setUrl("dummy");
+    public static SCCCredentials createSCCCredentials(String name, User user) {
+        SCCCredentials credentials = createSecondarySCCCredentials(name, user);
         CredentialsFactory.storeCredentials(credentials);
         return credentials;
     }
 
-    public static Credentials createSecondarySCCCredentials(String name, User user) {
-        Credentials credentials = CredentialsFactory.createSCCCredentials();
-        credentials.setPassword(TestUtils.randomString());
-        credentials.setUsername(name);
+    public static SCCCredentials createSecondarySCCCredentials(String name, User user) {
+        SCCCredentials credentials = CredentialsFactory.createSCCCredentials(name, TestUtils.randomString());
         credentials.setUser(user);
         CredentialsFactory.storeCredentials(credentials);
         return credentials;

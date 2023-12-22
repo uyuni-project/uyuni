@@ -35,8 +35,8 @@ import com.redhat.rhn.domain.channel.ChannelProduct;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.channel.test.ChannelFamilyFactoryTest;
 import com.redhat.rhn.domain.common.ProvisionState;
-import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
+import com.redhat.rhn.domain.credentials.ReportDBCredentials;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
 import com.redhat.rhn.domain.org.CustomDataKey;
@@ -742,11 +742,13 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
             minionServer.setOsFamily("RedHat");
             minionServer.setMachineId(TestUtils.randomString());
 
+            ReportDBCredentials reportCredentials = CredentialsFactory.createReportCredentials("pythia", "secret");
+            CredentialsFactory.storeCredentials(reportCredentials);
+
             MgrServerInfo info = new MgrServerInfo();
             info.setVersion(PackageEvrFactory.lookupOrCreatePackageEvr(null, "2022.03", "0", s.getPackageType()));
             info.setReportDbName("reportdb");
-            info.setReportDbCredentials(CredentialsFactory.createCredentials(
-                    "pythia", "secret", Credentials.TYPE_REPORT_CREDS));
+            info.setReportDbCredentials(reportCredentials);
             info.setReportDbHost("localhost");
             info.setReportDbPort(5432);
             info.setServer(minionServer);

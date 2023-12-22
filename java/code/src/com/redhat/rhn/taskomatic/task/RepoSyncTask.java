@@ -64,7 +64,7 @@ public class RepoSyncTask extends RhnJavaJob {
         final JobDataMap jobDataMap = context.getJobDetail().getJobDataMap();
         final List<Long> channelIds = getChannelIds(jobDataMap);
 
-        List<String> lparams = List.of("no-errata", "latest", "sync-kickstart", "fail");
+        List<String> lparams = List.of("no-errata", "latest", "sync-kickstart", "fail", "no-strict");
         List<String> ltrue = List.of("true", "1");
         List<String> params = lparams.stream()
                 .filter(p -> ltrue.contains(jobDataMap.getOrDefault(p, "false").toString().toLowerCase().trim()))

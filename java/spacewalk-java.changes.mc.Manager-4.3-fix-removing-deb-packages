@@ -1,0 +1,1 @@
+- fix exception when removing a debian package (bsc#1216781)

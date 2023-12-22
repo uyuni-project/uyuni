@@ -16,7 +16,7 @@
 package com.redhat.rhn.domain.server.virtualhostmanager;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
-import com.redhat.rhn.domain.credentials.Credentials;
+import com.redhat.rhn.domain.credentials.VHMCredentials;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.Server;
 
@@ -36,7 +36,7 @@ public class VirtualHostManager extends BaseDomainHelper {
     private Org org;
     private String label;
     private String gathererModule;
-    private Credentials credentials;
+    private VHMCredentials credentials;
     private Set<VirtualHostManagerConfig> configs;
     private Set<Server> servers;
     private Set<VirtualHostManagerNodeInfo> nodes;
@@ -118,7 +118,7 @@ public class VirtualHostManager extends BaseDomainHelper {
      * Gets the credentials
      * @return credentials
      */
-    public Credentials getCredentials() {
+    public VHMCredentials getCredentials() {
         return credentials;
     }
 
@@ -126,7 +126,7 @@ public class VirtualHostManager extends BaseDomainHelper {
      * Sets the credentials
      * @param credentialsIn - the new credentials
      */
-    public void setCredentials(Credentials credentialsIn) {
+    public void setCredentials(VHMCredentials credentialsIn) {
         this.credentials = credentialsIn;
     }
 

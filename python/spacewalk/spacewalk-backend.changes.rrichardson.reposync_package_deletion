@@ -1,0 +1,1 @@
+- Implement new default behaviour for channel synchronisation, now automatically dropping packages which are deleted from the upstream repository (strict mode)

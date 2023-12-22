@@ -25,7 +25,7 @@ import com.redhat.rhn.domain.cloudpayg.CloudRmtHost;
 import com.redhat.rhn.domain.cloudpayg.CloudRmtHostFactory;
 import com.redhat.rhn.domain.cloudpayg.PaygSshData;
 import com.redhat.rhn.domain.cloudpayg.PaygSshDataFactory;
-import com.redhat.rhn.domain.credentials.Credentials;
+import com.redhat.rhn.domain.credentials.CloudRMTCredentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
 import com.redhat.rhn.domain.scc.SCCRepository;
@@ -391,10 +391,8 @@ public class AdminPaygHandlerTest extends BaseHandlerTestCase {
         cloudRmtHost.setIp("1.2.3.4");
         CloudRmtHostFactory.saveCloudRmtHost(cloudRmtHost);
 
-        Credentials credentials = CredentialsFactory.createCloudRmtCredentials();
+        CloudRMTCredentials credentials = CredentialsFactory.createCloudRmtCredentials("username", "password", "url");
         credentials.setPaygSshData(paygData);
-        credentials.setUsername("username");
-        credentials.setPassword("password");
         CredentialsFactory.storeCredentials(credentials);
 
         SCCRepository repo = createTestRepo(0L);
@@ -405,7 +403,7 @@ public class AdminPaygHandlerTest extends BaseHandlerTestCase {
         newAuth.setRepo(repo);
         SCCCachingFactory.saveRepositoryAuth(newAuth);
 
-        paygData.setCredentials(credentials);
+        credentials.setPaygSshData(paygData);
         paygData.setRmtHosts(cloudRmtHost);
         PaygSshDataFactory.savePaygSshData(paygData);
 

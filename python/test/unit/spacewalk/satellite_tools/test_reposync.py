@@ -843,7 +843,7 @@ class SyncTest(unittest.TestCase):
                 {"url": 'http://{0}:{1}@some.url'.format(username, password), "http_headers": {}}
             )
             mock_prepare.assert_called_once_with(
-                '\n                SELECT c.username, c.password, c.extra_auth, ct.label type\n                  FROM suseCredentials c\n                  JOIN suseCredentialsType ct on c.type_id = ct.id\n                  WHERE c.id = :id\n            ' 
+                '\n                SELECT c.username, c.password, c.extra_auth, c.type\n                  FROM suseCredentials c\n                  WHERE c.id = :id\n            '
             )
             mock_prepare().execute.assert_called_once_with(id=credentials_id)
 

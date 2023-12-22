@@ -16,8 +16,8 @@
 package com.redhat.rhn.testing;
 
 import com.redhat.rhn.domain.channel.Channel;
-import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
+import com.redhat.rhn.domain.credentials.RegistryCredentials;
 import com.redhat.rhn.domain.image.DockerfileProfile;
 import com.redhat.rhn.domain.image.ImageFile;
 import com.redhat.rhn.domain.image.ImageInfo;
@@ -301,9 +301,10 @@ public class ImageTestUtils {
      *
      * @return the credentials
      */
-    public static Credentials createCredentials() {
-        return CredentialsFactory.createCredentials("testuser", "testpass",
-                Credentials.TYPE_REGISTRY);
+    public static RegistryCredentials createCredentials() {
+        RegistryCredentials registryCredentials = CredentialsFactory.createRegistryCredentials("testuser", "testpass");
+        CredentialsFactory.storeCredentials(registryCredentials);
+        return registryCredentials;
     }
 
     /**
@@ -325,7 +326,7 @@ public class ImageTestUtils {
      * @param user  the user
      * @return the image store
      */
-    public static ImageStore createImageStore(String label, Credentials creds, User user) {
+    public static ImageStore createImageStore(String label, RegistryCredentials creds, User user) {
         return createImageStore(label, creds, user, ImageStoreFactory.TYPE_REGISTRY);
     }
 
@@ -350,7 +351,7 @@ public class ImageTestUtils {
      * @param type  the type
      * @return the image store
      */
-    public static ImageStore createImageStore(String label, Credentials creds, User user, ImageStoreType type) {
+    public static ImageStore createImageStore(String label, RegistryCredentials creds, User user, ImageStoreType type) {
         ImageStore store = new ImageStore();
         store.setLabel(label);
         store.setUri("my.store.uri");

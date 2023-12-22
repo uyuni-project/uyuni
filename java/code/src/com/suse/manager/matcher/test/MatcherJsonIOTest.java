@@ -15,6 +15,8 @@
 package com.suse.manager.matcher.test;
 
 import static java.util.Collections.singleton;
+import static org.hamcrest.CoreMatchers.any;
+import static org.jmock.AbstractExpectations.returnValue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -49,6 +51,7 @@ import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
+import com.suse.manager.maintenance.BaseProductManager;
 import com.suse.manager.matcher.MatcherJsonIO;
 import com.suse.manager.virtualization.test.TestVirtManager;
 import com.suse.manager.webui.services.iface.MonitoringManager;
@@ -62,7 +65,6 @@ import com.suse.matcher.json.SystemJson;
 import com.suse.matcher.json.VirtualizationGroupJson;
 import com.suse.scc.model.SCCSubscriptionJson;
 
-import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -72,6 +74,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -87,16 +90,19 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
 
     // SCC Product IDs:
     private static final long MGMT_SINGLE_PROD_ID = 1076L;
-    private static final long PROV_SINGLE_PROD_ID = 1097L;
     private static final long MGMT_UNLIMITED_VIRT_PROD_ID = 1078L;
     private static final long PROV_UNLIMITED_VIRT_PROD_ID = 1204L;
     private static final long MONITORING_SINGLE_PROD_ID = 1201L;
-    private static final long MONITORING_UNLIMITED_VIRT_PROD_ID = 1202L;
+    private static final long MONITORING_UNLIMITED_VIRT_PROD_ID = 1203L;
+    private static final long SUMA_X8664_PROD_ID = 2378L;
+    private static final long SUMA_S390_PROD_ID = 2377L;
+    private static final long SUMA_PPC64LE_PROD_ID = 2376L;
 
     private static final String AMD64_ARCH = "amd64";
     private static final String S390_ARCH = "s390";
     private static final String PPC64LE_ARCH = "ppc64le";
     private SystemEntitlementManager systemEntitlementManager;
+    private BaseProductManager baseProductManagerMock;
 
     @Override
     @BeforeEach
@@ -116,6 +122,21 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
                 new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
                 new SystemEntitler(saltApi, virtManager, monitoringManager, serverGroupManager)
         );
+
+        baseProductManagerMock = mock(BaseProductManager.class);
+
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ActionManager.setTaskomaticApi(taskomaticMock);
+
+        checking(builder -> {
+            builder.allowing(baseProductManagerMock).getName();
+            builder.will(returnValue("suse-manager-server"));
+
+            builder.allowing(baseProductManagerMock).getVersion();
+            builder.will(returnValue("4.3"));
+
+            builder.allowing(taskomaticMock).scheduleActionExecution(builder.with(any(Action.class)));
+        });
     }
 
     @Test
@@ -126,7 +147,7 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
 
         Server h1 = ServerTestUtils.createTestSystem();
         h1.setName("host1.example.com");
-        h1.setCpu(createCPU(h1, 8L));
+        h1.setCpu(createCPU(h1, 8L, 1 , 1));
 
         Set<InstalledProduct> installedProducts = new HashSet<>();
         InstalledProduct instPrd = createInstalledProduct("SLES", "12.1", "0", "x86_64", true);
@@ -134,8 +155,10 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
         instPrd = createInstalledProduct("sle-ha", "12.1", "0", "x86_64", false);
         installedProducts.add(instPrd);
 
+        InstalledProduct instPrdMicro = createInstalledProduct("SLE-Micro", "5.4", "0", "x86_64", true);
+
         Server g1 = ServerTestUtils.createTestSystem();
-        g1.setCpu(createCPU(g1, 2L));
+        g1.setCpu(createCPU(g1, 2L, 1, 1));
         g1.setName("guest1.example.com");
         g1.setInstalledProducts(installedProducts);
         String uuid1 = TestUtils.randomString();
@@ -145,7 +168,7 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
 
         Server g2 = ServerTestUtils.createTestSystem();
         g2.setName("guest2.example.com");
-        g2.setCpu(createCPU(g2, 4L));
+        g2.setCpu(createCPU(g2, 4L, 1 , 1));
         g2.setInstalledProducts(installedProducts);
         String uuid2 = TestUtils.randomString();
 
@@ -154,14 +177,34 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
 
         Server g3 = ServerTestUtils.createTestSystem();
         g3.setName("guest3.example.com");
-        g3.setCpu(createCPU(g3, 4L));
+        g3.setCpu(createCPU(g3, 4L, 1 , 1));
         g3.setInstalledProducts(installedProducts);
         g3.setPayg(true);
-        String uuid3 = TestUtils.randomString();
+
+        Server m1 = ServerTestUtils.createTestSystem();
+        m1.setName("sle-micro1.example.com");
+        m1.setInstalledProducts(Set.of(instPrdMicro));
+        m1.setCpu(createCPU(m1, 2L, 8, 2));
+
+        Server m2hyp = ServerTestUtils.createTestSystem();
+        m2hyp.setName("sle-micro2.example.com");
+        m2hyp.setInstalledProducts(Set.of(instPrdMicro));
+        m2hyp.setCpu(createCPU(m2hyp, 2L, 8, 2));
+
+        Server g4 = ServerTestUtils.createTestSystem();
+        g4.setName("guest4.example.com");
+        g4.setCpu(createCPU(g4, 4L, 1 , 1));
+        g4.setInstalledProducts(Set.of(instPrdMicro));
+        String uuid4 = TestUtils.randomString();
+
+        VirtualInstance refGuest4 = createVirtualInstance(m2hyp, g4, uuid4);
+        m2hyp.addGuest(refGuest4);
+
+        HibernateFactory.getSession().flush();
 
         // tell MatcherJsonIO to include self system in the JSON output, which would happen
         // if the running SUMA is an ISS Master
-        List<SystemJson> result = new MatcherJsonIO().getJsonSystems(true, AMD64_ARCH, false);
+        List<SystemJson> result = getMatcherJsonIO().getJsonSystems(AMD64_ARCH, true, false, true);
         assertNotNull(result);
 
         SystemJson resultH1 = findSystem(h1.getId(), result);
@@ -198,12 +241,37 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
         assertEquals(1L, sumaItself.getCpus().longValue());
         assertEquals("SUSE Manager Server system", sumaItself.getName());
         assertTrue(sumaItself.getPhysical());
-        assertTrue(sumaItself.getProductIds().contains(1899L));
+        assertTrue(sumaItself.getProductIds().contains(SUMA_X8664_PROD_ID));
+
+        // SLE-Micro System
+        SystemJson resultM1 = findSystem(m1.getId(), result);
+        assertNotNull(resultM1);
+        assertEquals(32L, resultM1.getCpus().longValue());
+        assertEquals("sle-micro1.example.com", resultM1.getName());
+        assertTrue(resultM1.getPhysical());
+        assertTrue(resultM1.getProductIds().contains(2574L));
+
+        // SLE-Micro System Hypervisor
+        SystemJson resultM2 = findSystem(m2hyp.getId(), result);
+        assertNotNull(resultM2);
+        assertEquals(2L, resultM2.getCpus().longValue());
+        assertEquals("sle-micro2.example.com", resultM2.getName());
+        assertTrue(resultM2.getPhysical());
+        assertTrue(resultM2.getProductIds().contains(2574L));
+
+        SystemJson resultG4 = findSystem(g4.getId(), result);
+        assertNotNull(resultG4);
+        assertEquals("guest4.example.com", resultG4.getName());
+        // SLE-Micro + Mgm Single
+        assertEquals(2, resultG4.getProductIds().size());
+        assertTrue(resultG4.getProductIds().contains(2574L));
+        assertFalse(resultG4.getPhysical());
+        assertEquals(4L, resultG4.getCpus().longValue());
     }
 
     @Test
     public void testSystemsToJsonIssSlave() {
-        List<SystemJson> result = new MatcherJsonIO().getJsonSystems(false, AMD64_ARCH, false);
+        List<SystemJson> result = getMatcherJsonIO().getJsonSystems(AMD64_ARCH, false, false, true);
         assertTrue(result.stream().noneMatch(
                 s -> s.getId().equals(MatcherJsonIO.SELF_SYSTEM_ID)));
     }
@@ -211,43 +279,148 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testSystemsToJsonMonitoringEnabled() {
         // x86_64
-        List<SystemJson> result = new MatcherJsonIO().getJsonSystems(false, AMD64_ARCH, true);
+        List<SystemJson> result = getMatcherJsonIO().getJsonSystems(AMD64_ARCH, false, true, true);
         SystemJson sumaItself = findSystem(MatcherJsonIO.SELF_SYSTEM_ID, result);
         assertEquals(1, sumaItself.getProductIds().size());
-        assertEquals(1201L, sumaItself.getProductIds().iterator().next().longValue());
+        assertEquals(MONITORING_SINGLE_PROD_ID, sumaItself.getProductIds().iterator().next().longValue());
 
         // s390
-        result = new MatcherJsonIO().getJsonSystems(false, S390_ARCH, true);
+        result = getMatcherJsonIO().getJsonSystems(S390_ARCH, false, true, true);
         sumaItself = findSystem(MatcherJsonIO.SELF_SYSTEM_ID, result);
         assertEquals(1, sumaItself.getProductIds().size());
-        assertEquals(1203L, sumaItself.getProductIds().iterator().next().longValue());
+        assertEquals(MONITORING_UNLIMITED_VIRT_PROD_ID, sumaItself.getProductIds().iterator().next().longValue());
 
         // ppc64le
-        result = new MatcherJsonIO().getJsonSystems(false, PPC64LE_ARCH, true);
+        result = getMatcherJsonIO().getJsonSystems(PPC64LE_ARCH, false, true, true);
         sumaItself = findSystem(MatcherJsonIO.SELF_SYSTEM_ID, result);
         assertEquals(1, sumaItself.getProductIds().size());
-        assertEquals(1201L, sumaItself.getProductIds().iterator().next().longValue());
+        assertEquals(MONITORING_SINGLE_PROD_ID, sumaItself.getProductIds().iterator().next().longValue());
     }
 
     @Test
     public void testSystemsToJsonIssMasterWithMonitoring() {
         // x86_64
-        List<SystemJson> result = new MatcherJsonIO().getJsonSystems(true, AMD64_ARCH, true);
+        List<SystemJson> result = getMatcherJsonIO().getJsonSystems(AMD64_ARCH, true, true, true);
         SystemJson sumaItself = findSystem(MatcherJsonIO.SELF_SYSTEM_ID, result);
         assertEquals(2, sumaItself.getProductIds().size());
-        assertEquals(new HashSet<>(Arrays.asList(1899L, 1201L)), sumaItself.getProductIds());
+        assertEquals(Set.of(SUMA_X8664_PROD_ID, MONITORING_SINGLE_PROD_ID), sumaItself.getProductIds());
 
         // s390
-        result = new MatcherJsonIO().getJsonSystems(true, S390_ARCH, true);
+        result = getMatcherJsonIO().getJsonSystems(S390_ARCH, true, true, true);
         sumaItself = findSystem(MatcherJsonIO.SELF_SYSTEM_ID, result);
         assertEquals(2, sumaItself.getProductIds().size());
-        assertEquals(new HashSet<>(Arrays.asList(1898L, 1203L)), sumaItself.getProductIds());
+        assertEquals(Set.of(SUMA_S390_PROD_ID, MONITORING_UNLIMITED_VIRT_PROD_ID), sumaItself.getProductIds());
 
         // ppc64le
-        result = new MatcherJsonIO().getJsonSystems(true, PPC64LE_ARCH, true);
+        result = getMatcherJsonIO().getJsonSystems(PPC64LE_ARCH, true, true, true);
         sumaItself = findSystem(MatcherJsonIO.SELF_SYSTEM_ID, result);
         assertEquals(2, sumaItself.getProductIds().size());
-        assertEquals(new HashSet<>(Arrays.asList(1897L, 1201L)), sumaItself.getProductIds());
+        assertEquals(Set.of(SUMA_PPC64LE_PROD_ID, MONITORING_SINGLE_PROD_ID), sumaItself.getProductIds());
+    }
+
+    @Test
+    public void testSystemsToJsonWithPayg() throws Exception {
+        SUSEProductTestUtils.clearAllProducts();
+        SUSEProductTestUtils.createVendorSUSEProducts();
+        SUSEProductTestUtils.createVendorEntitlementProducts();
+
+        Set<InstalledProduct> installedProducts = Set.of(createInstalledProduct("SLES", "15.1", "0", "x86_64", true));
+
+        Server h1 = ServerTestUtils.createTestSystem();
+        h1.setName("byos.example.com");
+        h1.setCpu(createCPU(h1, 8L, 1, 1));
+        h1.setPayg(false);
+        h1.setInstalledProducts(installedProducts);
+
+        Server h2 = ServerTestUtils.createTestSystem();
+        h2.setName("payg.example.com");
+        h2.setCpu(createCPU(h2, 8L, 1, 1));
+        h2.setPayg(true);
+        h2.setInstalledProducts(installedProducts);
+
+        // Test on PAYG SUMA
+        List<SystemJson> result = getMatcherJsonIO().getJsonSystems(AMD64_ARCH, false, false, false);
+        // No SUMA should be added for payg
+        assertTrue(result.stream().noneMatch(system -> MatcherJsonIO.SELF_SYSTEM_ID == system.getId()));
+
+        // System is not payg, we collect product id, but no management entitlement
+        SystemJson byosSystem = findSystem(h1.getId(), result);
+        assertEquals(Set.of(1326L), byosSystem.getProductIds());
+
+        // System is payg, no product nor entitlement needed
+        SystemJson paygSystem = findSystem(h2.getId(), result);
+        assertEquals(Collections.emptySet(), paygSystem.getProductIds());
+
+
+        // Test on BYOS SUMA
+        result = getMatcherJsonIO().getJsonSystems(AMD64_ARCH, true, true, true);
+        // SUMA must be added for byos
+        SystemJson sumaItself = findSystem(MatcherJsonIO.SELF_SYSTEM_ID, result);
+        assertEquals(2, sumaItself.getProductIds().size());
+        assertEquals(Set.of(SUMA_X8664_PROD_ID, MONITORING_SINGLE_PROD_ID), sumaItself.getProductIds());
+
+        // System is not payg, we need both the product id and the entitlement
+        byosSystem = findSystem(h1.getId(), result);
+        assertEquals(Set.of(1326L, MGMT_SINGLE_PROD_ID), byosSystem.getProductIds());
+
+        // System is payg, only the entitlement for suma is needed
+        paygSystem = findSystem(h2.getId(), result);
+        assertEquals(Set.of(MGMT_SINGLE_PROD_ID), paygSystem.getProductIds());
+    }
+
+    @Test
+    public void testServerPaygSlesSapShouldNotRequireAnEntitlement() throws Exception {
+        SUSEProductTestUtils.clearAllProducts();
+        SUSEProductTestUtils.createVendorSUSEProducts();
+        SUSEProductTestUtils.createVendorEntitlementProducts();
+
+        Set<InstalledProduct> sleSap = Set.of(createInstalledProduct("SLES_SAP", "15.5", "0", "x86_64", true));
+        Set<InstalledProduct> sles = Set.of(createInstalledProduct("SLES", "15.1", "0", "x86_64", true));
+
+        Server h1 = ServerTestUtils.createTestSystem();
+        h1.setName("byos-sles.example.com");
+        h1.setCpu(createCPU(h1, 8L, 1, 1));
+        h1.setPayg(false);
+        h1.setInstalledProducts(sles);
+
+        Server h2 = ServerTestUtils.createTestSystem();
+        h2.setName("payg-sles.example.com");
+        h2.setCpu(createCPU(h2, 8L, 1, 1));
+        h2.setPayg(true);
+        h2.setInstalledProducts(sles);
+
+        Server h3 = ServerTestUtils.createTestSystem();
+        h3.setName("byos-sles4sap.example.com");
+        h3.setCpu(createCPU(h3, 8L, 1, 1));
+        h3.setPayg(false);
+        h3.setInstalledProducts(sleSap);
+
+        Server h4 = ServerTestUtils.createTestSystem();
+        h4.setName("payg-sles4sap.example.com");
+        h4.setCpu(createCPU(h4, 8L, 1, 1));
+        h4.setPayg(true);
+        h4.setInstalledProducts(sleSap);
+
+        // Test on BYOS SUMA
+        List<SystemJson> result = getMatcherJsonIO().getJsonSystems(AMD64_ARCH, true, true, true);
+        SystemJson sumaItself = findSystem(MatcherJsonIO.SELF_SYSTEM_ID, result);
+        assertEquals(Set.of(SUMA_X8664_PROD_ID, MONITORING_SINGLE_PROD_ID), sumaItself.getProductIds());
+
+        // System is BYOS sles, we need both the product id and the entitlement
+        SystemJson byosSlesSystem = findSystem(h1.getId(), result);
+        assertEquals(Set.of(1326L, MGMT_SINGLE_PROD_ID), byosSlesSystem.getProductIds());
+
+        // System is PAYG SLES, only entitlement needed
+        SystemJson paygSlesSystem = findSystem(h2.getId(), result);
+        assertEquals(Set.of(MGMT_SINGLE_PROD_ID), paygSlesSystem.getProductIds());
+
+        // System is BYOS sles_sap, we need both the product id and the entitlement
+        SystemJson byosSlesSapSystem = findSystem(h3.getId(), result);
+        assertEquals(Set.of(2467L, MGMT_SINGLE_PROD_ID), byosSlesSapSystem.getProductIds());
+
+        // System is PAYG SLES, no product id and no entitlement
+        SystemJson paygSlesSapSystem = findSystem(h4.getId(), result);
+        assertEquals(Set.of(), paygSlesSapSystem.getProductIds());
     }
 
     @Test
@@ -255,7 +428,7 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
         SUSEProductTestUtils.clearAllProducts();
         SUSEProductTestUtils.createVendorSUSEProducts();
 
-        List<ProductJson> result = new MatcherJsonIO().getJsonProducts();
+        List<ProductJson> result = getMatcherJsonIO().getJsonProducts();
         assertNotNull(result);
 
         assertEquals("SUSE Linux Enterprise Server 12 SP1",
@@ -279,13 +452,6 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
         SUSEProductTestUtils.createVendorSUSEProducts();
         SUSEProductTestUtils.createVendorEntitlementProducts();
 
-        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
-        ActionManager.setTaskomaticApi(taskomaticMock);
-
-        context().checking(new Expectations() { {
-            allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
-        } });
-
         Server hostServer = ServerTestUtils.createVirtHostWithGuests(1, systemEntitlementManager);
         // let's set some base product to our systems (otherwise lifecycle subscriptions aren't reported)
         InstalledProduct instProd = createInstalledProduct("SLES", "12.1", "0", "x86_64", true);
@@ -294,8 +460,8 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
         Server guestServer = hostServer.getGuests().iterator().next().getGuestSystem();
         guestServer.setInstalledProducts(installedProducts);
 
-        MatcherJsonIO matcherInput = new MatcherJsonIO();
-        List<SystemJson> systems = matcherInput.getJsonSystems(false, AMD64_ARCH, false);
+        MatcherJsonIO matcherInput = getMatcherJsonIO();
+        List<SystemJson> systems = matcherInput.getJsonSystems(AMD64_ARCH, false, false, true);
         assertEquals(1, systems.stream().filter(s -> s.getId().equals(hostServer.getId())).count());
         assertEquals(1, systems.stream().filter(s -> s.getId().equals(guestServer.getId())).count());
         SystemJson host = findSystem(hostServer.getId(), systems);
@@ -321,13 +487,6 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
         SUSEProductTestUtils.createVendorSUSEProducts();
         SUSEProductTestUtils.createVendorEntitlementProducts();
 
-        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
-        ActionManager.setTaskomaticApi(taskomaticMock);
-
-        context().checking(new Expectations() { {
-            allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
-        } });
-
         Server hostServer = ServerTestUtils.createVirtHostWithGuests(user, 1, true, systemEntitlementManager);
         // monitoring is only compatible with certain architectures. make sure we use one of them:
         hostServer.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
@@ -340,9 +499,9 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
         guestServer.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
         guestServer.setInstalledProducts(installedProducts);
 
-        MatcherJsonIO matcherInput = new MatcherJsonIO();
+        MatcherJsonIO matcherInput = getMatcherJsonIO();
         boolean selfMonitoringEnabled = false;
-        List<SystemJson> systems = matcherInput.getJsonSystems(false, AMD64_ARCH, selfMonitoringEnabled);
+        List<SystemJson> systems = matcherInput.getJsonSystems(AMD64_ARCH, false, selfMonitoringEnabled, true);
         assertEquals(1, systems.stream().filter(s -> s.getId().equals(hostServer.getId())).count());
         assertEquals(1, systems.stream().filter(s -> s.getId().equals(guestServer.getId())).count());
         SystemJson host = findSystem(hostServer.getId(), systems);
@@ -359,7 +518,7 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
         entitleServerMonitoring(guestServer);
         HibernateFactory.getSession().clear();
 
-        systems = matcherInput.getJsonSystems(false, AMD64_ARCH, selfMonitoringEnabled);
+        systems = matcherInput.getJsonSystems(AMD64_ARCH, false, selfMonitoringEnabled, true);
         host = findSystem(hostServer.getId(), systems);
         guest = findSystem(guestServer.getId(), systems);
         assertTrue(host.getProductIds().contains(MONITORING_SINGLE_PROD_ID));
@@ -399,8 +558,8 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
         Server testSystem = ServerTestUtils.createTestSystem(user);
         testSystem.setInstalledProducts(installedProducts);
 
-        MatcherJsonIO matcherInput = new MatcherJsonIO();
-        SystemJson system = findSystem(testSystem.getId(), matcherInput.getJsonSystems(false, AMD64_ARCH, false));
+        MatcherJsonIO matcherInput = getMatcherJsonIO();
+        SystemJson system = findSystem(testSystem.getId(), matcherInput.getJsonSystems(AMD64_ARCH, false, false, true));
 
         assertFalse(system.getProductIds().contains(instPrd.getSUSEProduct().getProductId()));
     }
@@ -408,7 +567,7 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testSubscriptionsToJson() throws Exception {
         withSetupContentSyncManager(JARPATH, () -> {
-            List<SubscriptionJson> result = new MatcherJsonIO().getJsonSubscriptions();
+            List<SubscriptionJson> result = getMatcherJsonIO().getJsonSubscriptions();
 
             SubscriptionJson resultSubscription1 = result.stream()
                     .filter(rs -> rs.getId().equals(9998L))
@@ -435,7 +594,7 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testLifecycleProductsInSubscriptions() throws Exception {
         withSetupContentSyncManager("/com/redhat/rhn/manager/content/test/sccdata_lifecycle_products", () -> {
-            List<SubscriptionJson> subscriptions = new MatcherJsonIO().getJsonSubscriptions();
+            List<SubscriptionJson> subscriptions = getMatcherJsonIO().getJsonSubscriptions();
 
             assertEquals(4, subscriptions.size());
 
@@ -506,13 +665,6 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testVirtualHostManagersToJson() throws Exception {
-        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
-        ActionManager.setTaskomaticApi(taskomaticMock);
-
-        context().checking(new Expectations() { {
-            allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
-        } });
-
         Server virtualHost1 = ServerTestUtils.createVirtHostWithGuests(2, systemEntitlementManager);
         Server virtualHost2 = ServerTestUtils.createVirtHostWithGuest(systemEntitlementManager);
         VirtualHostManager vhm = VirtualHostManagerFactory.getInstance()
@@ -521,7 +673,7 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
         vhm.addServer(virtualHost2);
         VirtualHostManagerFactory.getInstance().save(vhm);
 
-        List<VirtualizationGroupJson> jsonVirtualizationGroups = new MatcherJsonIO()
+        List<VirtualizationGroupJson> jsonVirtualizationGroups = getMatcherJsonIO()
                 .getJsonVirtualizationGroups();
         assertEquals(1, jsonVirtualizationGroups.size());
 
@@ -538,6 +690,10 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
                 .map(Server::getId)
                 .collect(Collectors.toSet());
         assertTrue(virtualizationGroup.getVirtualGuestIds().containsAll(guestIds));
+    }
+
+    private MatcherJsonIO getMatcherJsonIO() {
+        return new MatcherJsonIO(baseProductManagerMock);
     }
 
     @Test
@@ -561,7 +717,7 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
 
             Server h1 = ServerTestUtils.createTestSystem();
             h1.setName("host1.example.com");
-            h1.setCpu(createCPU(h1, 8L));
+            h1.setCpu(createCPU(h1, 8L, 1, 1));
             ServerFactory.save(h1);
 
             Set<InstalledProduct> installedProducts = new HashSet<>();
@@ -582,7 +738,7 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
             TestUtils.saveAndFlush(pin);
             HibernateFactory.getSession().clear();
 
-            List<MatchJson> result = new MatcherJsonIO()
+            List<MatchJson> result = getMatcherJsonIO()
                     .getJsonMatches();
             Optional<MatchJson> resultPin = result.stream()
                 .filter(p -> p.getSystemId().equals(h1.getId()) &&
@@ -609,9 +765,21 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
         return virtualInstance;
     }
 
-    private CPU createCPU(Server s, Long sockets) {
+    private CPU createCPU(Server s, long sockets, long cores, long threads) {
+        if (threads < 1) {
+            threads = 1;
+        }
+        if (cores < 1) {
+            cores = 1;
+        }
+        if (sockets < 1) {
+            sockets = 1;
+        }
         CPU cpu = new CPU();
         cpu.setNrsocket(sockets);
+        cpu.setNrCore(cores);
+        cpu.setNrThread(threads);
+        cpu.setNrCPU(sockets * cores * threads);
         cpu.setServer(s);
         cpu.setArch(ServerFactory.lookupCPUArchByName("x86_64"));
         return cpu;

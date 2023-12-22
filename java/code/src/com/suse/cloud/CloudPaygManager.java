@@ -15,7 +15,6 @@
 package com.suse.cloud;
 
 import com.redhat.rhn.common.util.http.HttpClientAdapter;
-import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.manager.satellite.SystemCommandExecutor;
@@ -41,7 +40,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -221,17 +219,8 @@ public class CloudPaygManager {
     }
 
     private boolean detectHasSCCCredentials() {
-        List<Credentials> cl = CredentialsFactory.listSCCCredentials();
-        hasSCCCredentials = false;
-        if (cl.size() > 0) {
-            for (Credentials c : cl) {
-                if (mgr.isSCCCredentials(c)) {
-                    hasSCCCredentials = true;
-                    break;
-                }
-            }
-        }
-        return hasSCCCredentials;
+        return CredentialsFactory.listSCCCredentials().stream()
+                .anyMatch(c -> mgr.isSCCCredentials(c));
     }
 
     private boolean detectIsCompliant() {
