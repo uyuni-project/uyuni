@@ -54,3 +54,7 @@ Add more tasks if needed.
 - [ ] [Unlock](https://github.com/uyuni-project/uyuni/settings/branch_protection_rules/2243617) the `master` branch (uncheck the checkbox for `Restrict who can push to matching branches`)
 - [ ] [Unlock](https://github.com/uyuni-project/uyuni-tools/settings/branch_protection_rules/37702039) the `main` branch (uncheck the checkbox for `Restrict who can push to matching branches`)
 - [ ] Send an email to galaxy-devel@suse.de informing that the branch `master` is unlocked, and adjust the topic on the slack [#team-susemanager](https://app.slack.com/client/T02863RC2AC/C02D78LLS04) channel
+
+## 24h after the release
+- [ ] Update the [test container images](https://github.com/uyuni-project/uyuni/wiki/Build-test-container-images)
+> :information_source: We wait 24h release to give time to the opensuse mirrors to be in sync.
