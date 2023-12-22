@@ -1,1 +1,1 @@
-- Skip syncing packages with incorrect metadata
+- Skip syncing packages with incorrect metadata (bsc#1213738)

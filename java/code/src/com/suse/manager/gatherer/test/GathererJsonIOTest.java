@@ -21,8 +21,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.util.FileUtils;
-import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
+import com.redhat.rhn.domain.credentials.VHMCredentials;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerConfig;
 import com.redhat.rhn.testing.TestUtils;
@@ -83,9 +83,7 @@ public class GathererJsonIOTest  {
 
     @Test
     public void testVHMtoJson() throws Exception {
-        Credentials creds = CredentialsFactory.createVHMCredentials();
-        creds.setUsername("tux");
-        creds.setPassword("penguin");
+        VHMCredentials creds = CredentialsFactory.createVHMCredentials("tux", "penguin");
 
         Set<VirtualHostManagerConfig> config = new HashSet<>();
         VirtualHostManagerConfig vhmc = new VirtualHostManagerConfig();

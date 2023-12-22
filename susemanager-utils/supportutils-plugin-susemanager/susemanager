@@ -80,7 +80,7 @@ plugin_command "zypper --no-refresh lr -u"
 plugin_command "/usr/lib/susemanager/bin/susemanager-connection-check"
 plugin_command "salt-master --versions-report"
 
-plugin_command "echo \"select username scc_org from susecredentials sc join susecredentialstype sct on sct.id = sc.type_id where sct.label = 'scc';\" | spacewalk-sql --select-mode-direct -"
+plugin_command "echo \"select username scc_org from susecredentials sc where sc.type = 'scc';\" | spacewalk-sql --select-mode-direct -"
 
 plugin_command "echo \"Number of elements in table susesaltevent. If the next number is too high, please verify the large scale tuning guide property 'java.salt_event_thread_pool_size'.\""
 plugin_command "echo \"select count(*) from susesaltevent;\" | spacewalk-sql --select-mode-direct -"

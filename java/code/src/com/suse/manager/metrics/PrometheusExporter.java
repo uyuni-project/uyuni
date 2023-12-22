@@ -21,6 +21,7 @@ import org.apache.logging.log4j.Logger;
 import org.quartz.Scheduler;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.concurrent.ThreadPoolExecutor;
 
 import io.prometheus.client.exporter.HTTPServer;
@@ -61,6 +62,17 @@ public enum PrometheusExporter {
     public void registerThreadPool(ThreadPoolExecutor pool, String poolId) {
         if (ENABLED) {
             new ThreadPoolCollector(pool, poolId).register();
+        }
+    }
+
+    /**
+     * Registers a thread pool list for monitoring.
+     * @param pool a thread pool list
+     * @param poolId a unique ID for the pool
+     */
+    public void registerThreadPoolList(List<ThreadPoolExecutor> pool, String poolId) {
+        if (ENABLED) {
+            new ThreadPoolListCollector(pool, poolId).register();
         }
     }
 

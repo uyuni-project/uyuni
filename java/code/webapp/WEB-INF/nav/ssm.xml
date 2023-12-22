@@ -104,7 +104,7 @@
                 acl="all_systems_in_set_have_feature(ftr_package_refresh)"/>
         <rhn-tab name="ssm.misc.index.tabs.maintenanceschedule" url="/rhn/manager/systems/ssm/maintenance"/>
         <rhn-tab name="Remote Command" url="/rhn/systems/ssm/provisioning/RemoteCommand.do"
-                acl="all_systems_in_set_have_feature(ftr_remote_command)"/>
+                acl="all_systems_in_set_have_feature(ftr_remote_command); not is(java.disable_remote_commands_from_ui)"/>
         <rhn-tab name="ssm.misc.index.tabs.custom" url="/rhn/systems/ssm/misc/CustomValue.do"
                 acl="all_systems_in_set_have_feature(ftr_system_custom_values)"/>
         <rhn-tab name="ssm.misc.index.tabs.lockunlock" url="/rhn/systems/ssm/misc/LockUnlockSystem.do"

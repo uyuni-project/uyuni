@@ -16,7 +16,7 @@ package com.suse.scc.registration;
 
 import static java.util.Arrays.asList;
 
-import com.redhat.rhn.domain.credentials.Credentials;
+import com.redhat.rhn.domain.credentials.SCCCredentials;
 import com.redhat.rhn.domain.scc.SCCRegCacheItem;
 
 import com.suse.scc.client.SCCClient;
@@ -49,7 +49,7 @@ public class SCCSystemRegistration {
      * @param items             the items to register
      * @param primaryCredential the current primary organization credential
      */
-    public void register(SCCClient sccClient, List<SCCRegCacheItem> items, Credentials primaryCredential) {
+    public void register(SCCClient sccClient, List<SCCRegCacheItem> items, SCCCredentials primaryCredential) {
         SCCSystemRegistrationContext context = new SCCSystemRegistrationContext(sccClient, items, primaryCredential);
         for (SCCSystemRegistrationContextHandler handler : contextHandlerChain) {
             handler.handle(context);

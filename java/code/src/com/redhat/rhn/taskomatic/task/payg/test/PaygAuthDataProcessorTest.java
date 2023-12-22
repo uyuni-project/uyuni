@@ -16,13 +16,16 @@ package com.redhat.rhn.taskomatic.task.payg.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.cloudpayg.CloudRmtHost;
 import com.redhat.rhn.domain.cloudpayg.CloudRmtHostFactory;
 import com.redhat.rhn.domain.cloudpayg.PaygSshData;
 import com.redhat.rhn.domain.cloudpayg.PaygSshDataFactory;
-import com.redhat.rhn.domain.credentials.Credentials;
+import com.redhat.rhn.domain.credentials.BaseCredentials;
+import com.redhat.rhn.domain.credentials.CloudCredentials;
+import com.redhat.rhn.domain.credentials.CloudRMTCredentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
@@ -48,6 +51,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -85,16 +89,15 @@ public class PaygAuthDataProcessorTest extends BaseHandlerTestCase {
     @Test
     public void testFirstExecution() throws URISyntaxException {
         paygDataProcessor.processPaygInstanceData(paygData, paygInstanceInfo);
+        paygDataProcessor.processPaygInstanceData(paygData, paygInstanceInfo);
         assertExpectedData();
 
     }
 
     @Test
     public void testUpdateData() throws URISyntaxException {
-        Credentials cred = CredentialsFactory.createCredentials("u", "p", Credentials.TYPE_CLOUD_RMT);
-        cred.setUrl("//my_url");
+        CloudRMTCredentials cred = CredentialsFactory.createCloudRmtCredentials("user", "password", "//my_url");
         cred.setPaygSshData(paygData);
-        paygData.setCredentials(cred);
         CredentialsFactory.storeCredentials(cred);
 
         CloudRmtHost cloudRmt = CloudRmtHostFactory.createCloudRmtHost();
@@ -113,10 +116,8 @@ public class PaygAuthDataProcessorTest extends BaseHandlerTestCase {
 
     @Test
     public void testUpdateRepos() throws URISyntaxException {
-        Credentials cred = CredentialsFactory.createCredentials("u", "p", Credentials.TYPE_CLOUD_RMT);
-        cred.setUrl("//my_url");
+        CloudRMTCredentials cred = CredentialsFactory.createCloudRmtCredentials("user", "password", "//my_url");
         cred.setPaygSshData(paygData);
-        paygData.setCredentials(cred);
         CredentialsFactory.storeCredentials(cred);
         PaygSshDataFactory.savePaygSshData(paygData);
 
@@ -140,18 +141,22 @@ public class PaygAuthDataProcessorTest extends BaseHandlerTestCase {
 
         assertEquals(12, SCCCachingFactory.lookupRepositoryAuth().size());
         assertEquals(1, HibernateFactory.getSession()
-                .createQuery("SELECT a FROM Credentials a", Credentials.class).getResultList().size());
+                .createQuery("SELECT a FROM BaseCredentials a", BaseCredentials.class).getResultList().size());
         assertEquals(1, CloudRmtHostFactory.lookupCloudRmtHosts().size());
 
-        assertNotNull(paygData.getCredentials());
-        assertNotNull(paygData.getCredentials().getExtraAuthData());
-        Map<String, String> extraAuthData = GSON.fromJson(new String(paygData.getCredentials().getExtraAuthData()),
+        CloudCredentials cloudCredentials = paygData.getCredentials();
+        assertNotNull(cloudCredentials);
+        assertNotNull(cloudCredentials.getExtraAuthData());
+
+        Map<String, String> extraAuthData = GSON.fromJson(new String(cloudCredentials.getExtraAuthData()),
                 Map.class);
         assertEquals(extraAuthData.size(), 1);
         assertEquals(extraAuthData.get("X-Instance-Data"), "PGRvY3VtZW50PnsKICAiYWNjb3VudElkIiA6ICI2NDEwODAwN");
-        assertEquals(paygData.getCredentials().getUsername(), paygInstanceInfo.getBasicAuth().get("username"));
-        assertEquals(paygData.getCredentials().getPassword(), paygInstanceInfo.getBasicAuth().get("password"));
-        assertEquals(paygData.getCredentials().getUrl(),
+        Optional<CloudRMTCredentials> cloudRMTCredentials = cloudCredentials.castAs(CloudRMTCredentials.class);
+        assertTrue(cloudRMTCredentials.isPresent());
+        assertEquals(cloudRMTCredentials.get().getUsername(), paygInstanceInfo.getBasicAuth().get("username"));
+        assertEquals(cloudRMTCredentials.get().getPassword(), paygInstanceInfo.getBasicAuth().get("password"));
+        assertEquals(cloudRMTCredentials.get().getUrl(),
                 "https://" + paygInstanceInfo.getRmtHost().get("hostname") + "/repo");
 
         Set<String> repoNamesSet = SCCCachingFactory.lookupRepositoryAuthByCredential(paygData.getCredentials())
@@ -173,10 +178,11 @@ public class PaygAuthDataProcessorTest extends BaseHandlerTestCase {
         assertContains(repoNamesSet, "sle-module-basesystem-15.5-Updates");
         assertContains(repoNamesSet, "sle-module-basesystem-15.5-debuginfo");
 
-        assertNotNull(paygData.getRmtHosts());
-        assertEquals(paygInstanceInfo.getRmtHost().get("ip"), paygData.getRmtHosts().getIp());
-        assertEquals(paygInstanceInfo.getRmtHost().get("hostname"), paygData.getRmtHosts().getHost());
-        assertEquals(paygInstanceInfo.getRmtHost().get("server_ca"), paygData.getRmtHosts().getSslCert());
+        CloudRmtHost rmtHost = paygData.getRmtHosts();
+        assertNotNull(rmtHost);
+        assertEquals(paygInstanceInfo.getRmtHost().get("ip"), rmtHost.getIp());
+        assertEquals(paygInstanceInfo.getRmtHost().get("hostname"), rmtHost.getHost());
+        assertEquals(paygInstanceInfo.getRmtHost().get("server_ca"), rmtHost.getSslCert());
     }
 
     private void populateProducts() {

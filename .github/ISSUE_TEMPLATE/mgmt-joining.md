@@ -37,7 +37,10 @@ General template for new joiners of the SUSE Manager team.
 - [ ] Tell the user to subscribe to the following lists:
   - [ ] [Uyuni announce](https://lists.opensuse.org/archives/list/announce@lists.uyuni-project.org/) (mandatory)
   - [ ] [SUSE](https//mailman.suse.de), at the very least [devel](https://mailman.suse.de/mailman/listinfo/devel), [users](https://mailman.suse.de/mailman/listinfo/users), recommended subscribing to [research](https://mailman.suse.de/mailman/listinfo/research) and [results](https://mailman.suse.de/mailman/listinfo/results)
-  - [ ] [openSUSE](https://lists.opensuse.org) (whatever is interesting for the user)
+- [ ] Tell the user to have a look at the recommended lists, and subscribe if interested:
+  - [Linux Info](https://lists.suse.com/mailman/listinfo/linux) (strongly recommended for Release Engineers)
+  - Lists at [openSUSE](https://lists.opensuse.org) (whatever is interesting for the user, such as for example `buildservice`, `users`, `packaging` or `factory`)
+  - Lists at [suse.com](https://lists.suse.com/mailman/listinfo)  (whatever is interesting for the user, such as for example `sle-security-updates`, `sle-container-updates`, or `suma-updates`)
 - [ ] Slack
   - [ ] Update workflows (daily standup, meetings, etc.)
   - [ ] Add to user groups (`susemanager-engineers` and squad specific groups, open a ticket on https://sd.suse.com)

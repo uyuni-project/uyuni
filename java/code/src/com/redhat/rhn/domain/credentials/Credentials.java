@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 SUSE LLC
+ * Copyright (c) 2012--2023 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -15,239 +15,76 @@
 
 package com.redhat.rhn.domain.credentials;
 
-import com.redhat.rhn.domain.BaseDomainHelper;
-import com.redhat.rhn.domain.cloudpayg.PaygCredentialsProduct;
-import com.redhat.rhn.domain.cloudpayg.PaygSshData;
 import com.redhat.rhn.domain.user.User;
 
-import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-
+import java.util.Date;
 import java.util.Optional;
-import java.util.Set;
 
 /**
- * Credentials - Java representation of the table SUSECREDENTIALS.
- *
- * This table contains pairs of credentials used for communicating
- * with 3rd party systems, e.g. API usernames and keys.
+ * Common interface for all the credentials used and stored by Uyuni
  */
-public class Credentials extends BaseDomainHelper {
-
-    private static final String INVALIDATED_PASSWORD = new String(Base64.encodeBase64("invalidated".getBytes()));
-
-    // Available type labels
-    public static final String TYPE_SCC = "scc";
-    public static final String TYPE_VIRT_HOST_MANAGER = "vhm";
-    public static final String TYPE_REGISTRY = "registrycreds";
-    public static final String TYPE_CLOUD_RMT = "cloudrmt";
-    public static final String TYPE_REPORT_CREDS = "reportcreds";
-    public static final String TYPE_RHUI = "rhui";
-
-    private Long id;
-    private User user;
-    private CredentialsType type;
-    private String url;
-    private byte[] extraAuthData;
-    private String username;
-    private String encodedPassword;
-
-    private PaygSshData paygSshData;
-
-    private Set<PaygCredentialsProduct> paygProducts;
+public interface Credentials {
 
     /**
-     * Get the ID of this object.
+     * Retrieves the ID of this credentials object.
      * @return id
      */
-    public Long getId() {
-        return this.id;
-    }
+    Long getId();
 
     /**
-     * Set the ID of this object.
+     * Sets the ID of this credentials object.
      * @param idIn id
      */
-    public void setId(Long idIn) {
-        this.id = idIn;
-    }
+    void setId(Long idIn);
 
     /**
-     * Get the associated {@link User}.
-     * @return user
-     */
-    public User getUser() {
-        return this.user;
-    }
-
-    /**
-     * Set the associated {@link User}.
-     * @param userIn user
-     */
-    public void setUser(User userIn) {
-        this.user = userIn;
-    }
-
-    /**
-     * Return the type.
+     * Returns the type as defined by {@link CredentialsType}.
      * @return type
      */
-    public CredentialsType getType() {
-        return type;
-    }
+    CredentialsType getType();
 
     /**
-     * Set the type.
-     * @param typeIn type
+     * Retrieves the associated {@link User}.
+     * @return user
      */
-    public void setType(CredentialsType typeIn) {
-        this.type = typeIn;
-    }
+    User getUser();
 
     /**
-     * Return the URL.
-     * @return url
+     * Sets the associated {@link User}.
+     * @param userIn user
      */
-    public String getUrl() {
-        return url;
-    }
+    void setUser(User userIn);
 
     /**
-     * Set the url.
-     * @param urlIn url
+     * Retrieves the creation date for this credentials object.
+     * @return the creation date
      */
-    public void setUrl(String urlIn) {
-        this.url = urlIn;
-    }
+    Date getCreated();
 
     /**
-     * Return the username
-     * @return username
+     * Sets the creation date for this credentials object.
+     * @param createdIn the creation date
      */
-    public String getUsername() {
-        return username;
-    }
+    void setCreated(Date createdIn);
 
     /**
-     * Set the username.
-     * @param usernameIn username
+     * Retrieves the data when this credentials object was last modified
+     * @return the modification date
      */
-    public void setUsername(String usernameIn) {
-        this.username = usernameIn;
-    }
+    Date getModified();
 
     /**
-     * Return the encoded password.
-     * @return the password
+     * Sets the data when this credentials object was last modified
+     * @param modifiedIn the modification date
      */
-    public String getEncodedPassword() {
-        return encodedPassword;
-    }
-
-    /**
-     * Set the password.
-     * @param password the password to set
-     */
-    public void setEncodedPassword(String password) {
-        this.encodedPassword = password;
-    }
-
-    /**
-     * Return the decoded password.
-     * @return the password
-     */
-    public String getPassword() {
-        if (this.encodedPassword != null) {
-            return new String(Base64.decodeBase64(this.encodedPassword.getBytes()));
-        }
-        return this.encodedPassword;
-    }
-
-    /**
-     * Set the password after encoding it to Base64.
-     * @param password the password to set
-     */
-    public void setPassword(String password) {
-        if (password != null) {
-            this.encodedPassword = new String(Base64.encodeBase64(password.getBytes()));
-        }
-        else {
-            this.encodedPassword = null;
-        }
-    }
-
-    public byte[] getExtraAuthData() {
-        return extraAuthData;
-    }
-
-    public void setExtraAuthData(byte[] extraAuthDataIn) {
-        this.extraAuthData = extraAuthDataIn;
-    }
-
-    public PaygSshData getPaygSshData() {
-        return paygSshData;
-    }
-
-    public void setPaygSshData(PaygSshData paygSshDataIn) {
-        this.paygSshData = paygSshDataIn;
-    }
-
-    public Set<PaygCredentialsProduct> getPaygProducts() {
-        return paygProducts;
-    }
-
-    public void setPaygProducts(Set<PaygCredentialsProduct> paygProductsIn) {
-        this.paygProducts = paygProductsIn;
-    }
-
-    /**
-     * Credentials are considered as valid as soon as we have a user and a
-     * password.
-     *
-     * @return true if we have a user and a password, else false
-     */
-    public boolean isComplete() {
-        return !StringUtils.isEmpty(username) &&
-                !StringUtils.isEmpty(encodedPassword);
-    }
-
-    /**
-     * Check if these credentials are empty regarding username, password and
-     * url.
-     *
-     * @return true if we have a user and a password, else false
-     */
-    public boolean isEmpty() {
-        return StringUtils.isEmpty(username) &&
-                StringUtils.isEmpty(encodedPassword) &&
-                StringUtils.isEmpty(url);
-    }
-
-    /**
-     * Marks the current credential as invalid
-     */
-    public void invalidate() {
-        this.extraAuthData = "{}".getBytes();
-        this.encodedPassword = INVALIDATED_PASSWORD;
-    }
+    void setModified(Date modifiedIn);
 
     /**
      * Check if this credential is valid
      * @return true if valid
      */
-    public boolean isValid() {
-        return isComplete() && !INVALIDATED_PASSWORD.equals(encodedPassword);
-    }
-
-    /**
-     * @return if this credential is the current primary scc credential which
-     * is at the moment denoted by having the url field set.
-     */
-    public boolean isPrimarySCCCredential() {
-        return isTypeOf(TYPE_SCC) && url != null;
+    default boolean isValid() {
+        return true;
     }
 
     /**
@@ -255,51 +92,23 @@ public class Credentials extends BaseDomainHelper {
      * @param credentialType type to check for
      * @return true if the type match, otherwise false
      */
-    public boolean isTypeOf(String credentialType) {
-        return Optional.ofNullable(getType())
-                .map(CredentialsType::getLabel)
-                .filter(s -> s.equals(credentialType))
-                .isPresent();
+    default boolean isTypeOf(Class<? extends Credentials> credentialType) {
+        return credentialType.isInstance(this);
     }
 
     /**
-     * {@inheritDoc}
+     * Retrieves this credentials object constrained by the specified type
+     * @param credentialsClass the expected credentials class
+     * @return an optional containing the current instance converted to the given type, or empty if the types do not
+     * match
+     * @param <T> an implementation of {@link Credentials}
      */
-    @Override
-    public boolean equals(Object other) {
-        if (!(other instanceof Credentials)) {
-            return false;
+    default <T extends Credentials> Optional<T> castAs(Class<T> credentialsClass) {
+        if (this.isTypeOf(credentialsClass)) {
+            return Optional.of(credentialsClass.cast(this));
         }
-        Credentials otherCredentials = (Credentials) other;
-        return new EqualsBuilder()
-                .append(getType(), otherCredentials.getType())
-                .append(getUsername(), otherCredentials.getUsername())
-                .append(getPassword(), otherCredentials.getPassword())
-                .append(getUrl(), otherCredentials.getUrl())
-                .append(getExtraAuthData(), otherCredentials.getExtraAuthData())
-                .isEquals();
+
+        return Optional.empty();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder()
-            .append(getType())
-            .append(getUsername())
-            .append(getPassword())
-            .toHashCode();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this)
-            .append("id", getId())
-            .append("username", getUsername())
-            .toString();
-    }
 }
