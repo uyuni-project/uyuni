@@ -152,9 +152,6 @@ db-backend = $i
 EOF
 done
 install -d $RPM_BUILD_ROOT/%{_bindir}
-%if 0%{?rhel}
-ln -s /usr/pgsql-14/bin/initdb $RPM_BUILD_ROOT/%{_bindir}/initdb
-%endif
 
 %files common
 %{_sysconfdir}/*-release
@@ -168,8 +165,5 @@ ln -s /usr/pgsql-14/bin/initdb $RPM_BUILD_ROOT/%{_bindir}/initdb
 
 %files postgresql
 %{_datadir}/spacewalk/setup/defaults.d/postgresql-backend.conf
-%if 0%{?rhel}
-%{_bindir}/initdb
-%endif
 
 %changelog
