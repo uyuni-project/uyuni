@@ -1,3 +1,4 @@
 - Allow parameterisation of min/max PostgreSQL version for Enterprise Linux.
 - Adapt usage of postgresql_version_max to allow minor versions.
 - Remove creation of initdb symlink for Enterprise Linux to avoid package conflicts with PostgreSQL 15.
+- Replaced invalid use of Conflicts in spec file with Requires.

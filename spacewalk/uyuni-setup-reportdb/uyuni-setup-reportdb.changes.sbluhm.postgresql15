@@ -1,2 +1,3 @@
 - Allow parameterisation of min/max PostgreSQL version for Enterprise Linux.
 - Adapt usage of postgresql_version_max to allow minor versions.
+- Replaced invalid use of Conflicts in spec file with Requires.

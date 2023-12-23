@@ -114,14 +114,14 @@ Requires:       spacewalk-java-postgresql
 Requires:       perl(DBD::Pg)
 %if 0%{?suse_version}
 Requires:       postgresql-implementation >= %{postgresql_version_min}
+Requires:       postgresql-implementation <= %{postgresql_version_max}.9999
 Requires:       postgresql-contrib-implementation >= %{postgresql_version_min}
-Conflicts:      postgresql-implementation > %{postgresql_version_max}.9999
-Conflicts:      postgresql-contrib-implementation > %{postgresql_version_max}:.9999
+Requires:       postgresql-contrib-implementation <= %{postgresql_version_max}:.9999
 %else # not a supported SUSE version or alternative OS.
 Requires:       postgresql >= %{postgresql_version_min}
+Requires:       postgresql <= %{postgresql_version_max}.9999
 Requires:       postgresql-contrib >= %{postgresql_version_min}
-Conflicts:      postgresql > %{postgresql_version_max}.9999
-Conflicts:      postgresql-contrib > %{postgresql_version_max}.9999
+Requires:       postgresql-contrib <= %{postgresql_version_max}.9999
 %endif # if sle_Version
 
 %description postgresql

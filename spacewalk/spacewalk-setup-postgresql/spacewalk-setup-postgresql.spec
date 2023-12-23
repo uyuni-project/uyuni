@@ -32,14 +32,14 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 %if 0%{?suse_version}
 Requires:       postgresql-server-implementation >= %{postgresql_version_min}
+Requires:       postgresql-server-implementation <= %{postgresql_version_max}.9999
 Requires:       postgresql-contrib-implementation >= %{postgresql_version_min}
-Conflicts:      postgresql-server-implementation > %{postgresql_version_max}.9999
-Conflicts:      postgresql-contrib-implementation > %{postgresql_version_max}.9999
+Requires:       postgresql-contrib-implementation <= %{postgresql_version_max}.9999
 %else
 Requires:       postgresql-server >= %{postgresql_version_min}
+Requires:       postgresql-server <= %{postgresql_version_max}.9999
 Requires:       postgresql-contrib >= %{postgresql_version_min}
-Conflicts:      postgresql-server > %{postgresql_version_max}.9999
-Conflicts:      postgresql-contrib > %{postgresql_version_max}.9999
+Requires:       postgresql-contrib <= %{postgresql_version_max}.9999
 %endif
 Requires:       lsof
 
