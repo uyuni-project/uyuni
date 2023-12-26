@@ -939,7 +939,15 @@ password={passwd}
             pkglist = self._get_solvable_dependencies(pkglist)
 
             # Do not pull in dependencies if there're explicitly excluded
-            pkglist = self._filter_packages(pkglist, filters, True)
+            #
+            # bsc#1217874: If we use exclude_only here, when a filter uses
+            # both the include (+) and exclude (-) flags in combination,
+            # and there is an overlap between these flags, the exclude (-)
+            # filter takes precedence. For instance, with the filters
+            # "-* +any_package_name*", all packages are removed, failing to
+            # include the package explicitly declared in the + flag.
+            #
+            pkglist = self._filter_packages(pkglist, filters)
             self.num_excluded = self.num_packages - len(pkglist)
 
         return pkglist
