@@ -68,7 +68,7 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
             BASE=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/ci-test-server-all-in-one
-            VERSION=master
+            VERSION=um_master-upgrade_java_17
   build-and-push-ubuntu-minion-image:
     runs-on: ubuntu-latest
     permissions:
