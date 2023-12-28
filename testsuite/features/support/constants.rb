@@ -11,7 +11,6 @@ ENV_VAR_BY_HOST = {
                     'rhlike_minion' => 'RHLIKE_MINION',
                     'deblike_minion' => 'DEBLIKE_MINION',
                     'build_host' => 'BUILD_HOST',
-                    'salt_migration_minion' => 'MIN_NESTED',
                     # Build Validation environment
                     'sle12sp4_minion' => 'SLE12SP4_MINION',
                     'sle12sp4_ssh_minion' => 'SLE12SP4_SSHMINION',
@@ -69,7 +68,8 @@ ENV_VAR_BY_HOST = {
                     'opensuse155arm_minion' => 'OPENSUSE155ARM_MINION',
                     'opensuse155arm_ssh_minion' => 'OPENSUSE155ARM_SSHMINION',
                     'sle15sp3s390_minion' => 'SLE15SP3S390_MINION',
-                    'sle15sp3s390_ssh_minion' => 'SLE15SP3S390_SSHMINION'
+                    'sle15sp3s390_ssh_minion' => 'SLE15SP3S390_SSHMINION',
+                    'salt_migration_minion' => 'SALT_MIGRATION_MINION'
 }.freeze
 
 ADDRESSES = {
@@ -209,7 +209,8 @@ PACKAGE_BY_CLIENT = {
                       'opensuse155arm_minion' => 'bison',
                       'opensuse155arm_ssh_minion' => 'bison',
                       'sle15sp3s390_minion' => 'bison',
-                      'sle15sp3s390_ssh_minion' => 'bison'
+                      'sle15sp3s390_ssh_minion' => 'bison',
+                      'salt_migration_minion' => 'bison'
 }.freeze
 
 # The values can be found under Software -> Channel List -> Create Channel
