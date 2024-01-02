@@ -157,6 +157,14 @@ module CapybaraNodeElementExtension
   end
 end
 
+def get_client_type(name)
+  if name.include? '_client'
+    'traditional'
+  else
+    'salt'
+  end
+end
+
 def find_and_wait_click(*args, **options, &optional_filter_block)
   element = find(*args, options, &optional_filter_block)
   element.extend(CapybaraNodeElementExtension)
