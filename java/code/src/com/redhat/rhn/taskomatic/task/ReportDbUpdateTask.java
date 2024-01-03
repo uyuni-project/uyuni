@@ -126,8 +126,8 @@ public class ReportDbUpdateTask extends RhnJavaJob {
                 Map.of(SYSTEM_ID, 0, SYSTEM_GROUP_ID, 0));
             fillReportDbTable(rh.getSession(), SYSTEM_REPORT_QUERIES, "SystemErrata",
                 Map.of(SYSTEM_ID, 0, ERRATA_ID, 0));
-            fillReportDbTable(rh.getSession(), SYSTEM_REPORT_QUERIES, "SystemPackageInstalled",
-                Map.of(SYSTEM_ID, 0, NAME, ""));
+            fillReportDbTableById(rh.getSession(), SYSTEM_REPORT_QUERIES, "SystemPackageInstalled",
+                Map.of(NAME, ""));
             fillReportDbTableById(rh.getSession(), SYSTEM_REPORT_QUERIES, "SystemPackageUpdate",
                 Map.of(PACKAGE_ID, 0));
             fillReportDbTable(rh.getSession(), SYSTEM_REPORT_QUERIES, "SystemCustomInfo",
