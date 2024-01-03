@@ -91,18 +91,25 @@ rescue StandardError
 end
 
 def check_text_and_catch_request_timeout_popup?(text1, text2: nil, timeout: Capybara.default_max_wait_time)
-  start_time = Time.now
-  repeat_until_timeout(message: "'#{text1}' still not visible", timeout: DEFAULT_TIMEOUT) do
-    while Time.now - start_time <= timeout
-      return true if has_text?(text1, wait: 4)
-      return true if !text2.nil? && has_text?(text2, wait: 4)
-      next unless has_text?('Request has timed out', wait: 0)
-      log 'Request timeout found, performing reload'
-      click_button('reload the page')
-      start_time = Time.now
-      raise "Request timeout message still present after #{Capybara.default_max_wait_time} seconds." unless has_no_text?('Request has timed out')
+  if $catch_timeout_message
+    start_time = Time.now
+    repeat_until_timeout(message: "'#{text1}' still not visible", timeout: DEFAULT_TIMEOUT) do
+      while Time.now - start_time <= timeout
+        return true if has_text?(text1, wait: 4)
+        return true if !text2.nil? && has_text?(text2, wait: 4)
+
+        if has_text?('Request has timed out', wait: 0)
+          log 'Request timeout found, performing reload'
+          click_button('reload the page')
+          start_time = Time.now
+          raise "Request timeout message still present after #{Capybara.default_max_wait_time} seconds." unless has_no_text?('Request has timed out')
+        end
+      end
+      return false
     end
-    return false
+  else
+    has_text?(text1, wait: timeout)
+    has_text?(text2, wait: timeout) if text2
   end
 end
 

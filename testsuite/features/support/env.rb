@@ -61,6 +61,7 @@ $is_container_server = %w[k3s podman].include? ENV.fetch('CONTAINER_RUNTIME', ''
 $is_using_build_image = ENV.fetch('IS_USING_BUILD_IMAGE') { false }
 $is_using_paygo_server = (ENV.fetch('IS_USING_PAYGO_SERVER', 'False') == 'True')
 $is_using_scc_repositories = (ENV.fetch('IS_USING_SCC_REPOSITORIES', 'False') != 'False')
+$catch_timeout_message = (ENV.fetch('CATCH_TIMEOUT_MESSAGE', 'False') == 'True')
 
 # QAM and Build Validation pipelines will provide a json file including all custom (MI) repositories
 custom_repos_path = File.dirname(__FILE__) + '/../upload_files/' + 'custom_repositories.json'
