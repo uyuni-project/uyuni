@@ -9,8 +9,8 @@ on:
         required: true
         type: string
 env:
-  UYUNI_PROJECT: uyuni-project
-  UYUNI_VERSION: master
+  UYUNI_PROJECT: rjpmestre
+  UYUNI_VERSION: um_master-upgrade_java_17
   CUCUMBER_PUBLISH_TOKEN: ${{ secrets.CUCUMBER_PUBLISH_TOKEN }}
 jobs:
   paths-filter:
