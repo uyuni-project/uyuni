@@ -234,7 +234,7 @@ public class MigrationManagerTest extends BaseTestCaseWithUser {
         assertFalse(server.getHistory().isEmpty());
         boolean migrationRecorded = false;
         for (ServerHistoryEvent event : server.getHistory()) {
-            if (event.getSummary().equals("System migration") &&
+            if (event.getSummary().equals(String.format("System migration scheduled by %s", origOrgAdmin.getLogin())) &&
                 event.getDetails().contains("From organization: " + origOrg.getName()) &&
                 event.getDetails().contains("To organization: " + destOrg.getName()) &&
                 (event.getCreated() != null)) {
@@ -273,7 +273,7 @@ public class MigrationManagerTest extends BaseTestCaseWithUser {
         assertFalse(bootstrapServer.getHistory().isEmpty());
         boolean migrationRecorded = false;
         for (ServerHistoryEvent event : bootstrapServer.getHistory()) {
-            if (event.getSummary().equals("System migration") &&
+            if (event.getSummary().equals(String.format("System migration scheduled by %s", origOrgAdmin.getLogin())) &&
                 event.getDetails().contains("From organization: " + origOrg.getName()) &&
                 event.getDetails().contains("To organization: " + destOrg.getName()) &&
                 (event.getCreated() != null)) {
