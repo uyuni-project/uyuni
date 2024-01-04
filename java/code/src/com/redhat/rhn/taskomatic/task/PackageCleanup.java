@@ -19,11 +19,13 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
+import com.redhat.rhn.domain.org.OrgFactory;
 
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
 import java.io.File;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -75,10 +77,26 @@ public class PackageCleanup extends RhnJavaJob {
 
             // Reset the queue (table)
             resetQueue();
+
+            // Change org for orphan vendor packages that a user can delete them
+            changeOrgForOrphanVendorPackages();
         }
         catch (Exception e) {
             log.error(e.getMessage(), e);
             throw new JobExecutionException(e);
+        }
+    }
+
+    private void changeOrgForOrphanVendorPackages() {
+        LocalDateTime now = LocalDateTime.now();
+        if (now.getHour() == 21 && now.getMinute() >= 49) {
+            // should be executed only at 21:50 every day
+            WriteMode update = ModeFactory.getWriteMode(TaskConstants.MODE_NAME,
+                    TaskConstants.TASK_QUERY_PKGCLEANUP_ORPHAN_VENDOR_PKG_CHANGE_ORG);
+            int updates = update.executeUpdate(Map.of("org_id", OrgFactory.getSatelliteOrg().getId()));
+            if (updates > 0) {
+                log.info("{} orphan vendor packages ready to being removed", updates);
+            }
         }
     }
 
