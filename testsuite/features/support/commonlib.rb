@@ -113,8 +113,7 @@ def check_text_and_catch_request_timeout_popup?(text1, text2: nil, timeout: Capy
       return false
     end
   else
-    has_text?(text1, wait: timeout)
-    has_text?(text2, wait: timeout) if text2
+    return has_text?(text1, wait: timeout) || (!text2.nil? && has_text?(text2, wait: timeout))
   end
 end
 
