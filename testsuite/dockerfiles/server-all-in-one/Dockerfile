@@ -7,6 +7,7 @@ RUN zypper ar -G http://download.opensuse.org/update/leap/15.5/oss/ os_update_re
 RUN zypper ar -G http://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Stable/images/repo/Uyuni-Server-POOL-x86_64-Media1/ server_pool_repo
 RUN zypper ar -G http://download.opensuse.org/update/leap/15.5/sle/ sle_update_repo
 RUN zypper ar -G http://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Stable/images/repo/Testing-Overlay-POOL-x86_64-Media1/ testing_overlay_devel_repo
+RUN zypper ar -G http://download.opensuse.org/repositories/home:/RMestre:/branches:/systemsmanagement:/Uyuni:/Master/openSUSE_Leap_15.5/ uyuni_server_pool_repo_j17
 
 copy setup_env.sh /root/setup_env.sh
 
