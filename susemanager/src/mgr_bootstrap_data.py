@@ -915,7 +915,7 @@ DATA = {
         'PDID' : -34, 'PKGLIST' : PKGLIST15_SALT + PKGLIST15_X86_ARM,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/4/bootstrap/'
     },
-    'OES2023-SP4' : {
+    'OES23.4' : {
         'PDID' : -42, 'PKGLIST' : PKGLIST15_SALT + PKGLIST15_X86_ARM,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/sle/15/4/bootstrap/'
     },
