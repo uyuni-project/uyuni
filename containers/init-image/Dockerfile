@@ -27,6 +27,13 @@ CMD ["/usr/lib/systemd/systemd"]
 RUN mkdir -p /etc/systemd/system.conf.d/ && \
     printf "[Manager]\nLogColor=no" > \
         /etc/systemd/system.conf.d/01-nocolor.conf
+
+# disabled as recommended by postgresql until we need to run systemd in container
+# https://wiki.postgresql.org/wiki/Systemd
+RUN mkdir -p /etc/systemd/logind.conf.d/ && \
+    printf "[Login]\nRemoveIPC=no" > \
+        /etc/systemd/logind.conf.d/disable-removeipc.conf
+
 RUN systemctl disable getty@tty1.service
 
 ARG PRODUCT=Uyuni
