@@ -1,0 +1,1 @@
+- Change openeuler.sls to a symlink to redhat.sls
