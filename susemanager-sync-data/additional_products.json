@@ -358,7 +358,7 @@
                 "name" : "OES23.4-SLE-Module-Desktop-Applications15-SP4-Pool",
                 "distro_target" : "sle-15-x86_64",
                 "description" : "SLE-Module-Desktop-Applications15-SP4-Pool for sle-15-x86_64",
-                "enabled" : false,
+                "enabled" : true,
                 "autorefresh" : false,
                 "installer_updates" : false
             },
@@ -368,7 +368,7 @@
                 "name" : "OES23.4-SLE-Module-Desktop-Applications15-SP4-Updates",
                 "distro_target" : "sle-15-x86_64",
                 "description" : "SLE-Module-Desktop-Applications15-SP4-Updates for sle-15-x86_64",
-                "enabled" : false,
+                "enabled" : true,
                 "autorefresh" : true,
                 "installer_updates" : false
             },
