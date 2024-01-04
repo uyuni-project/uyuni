@@ -813,4 +813,15 @@ select sa.action_id, sa.server_id
   </query>
 </write-mode>
 
+<write-mode name="taskomatic_change_org_for_orphan_vendor_packages">
+  <query params="org_id">
+    UPDATE rhnPackage
+       SET org_id = :org_id
+     WHERE id IN (SELECT p.id
+                    FROM rhnPackage p
+               LEFT JOIN rhnChannelPackage cp ON p.id = cp.package_id
+                   WHERE p.org_id IS NULL and cp.channel_id IS NULL)
+  </query>
+</write-mode>
+
 </datasource_modes>
