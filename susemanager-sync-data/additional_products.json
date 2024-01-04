@@ -87,7 +87,7 @@
                 "url" : "https://nu.novell.com/repo/$RCE/OES23.4-Pool/sle-15-x86_64/",
                 "name" : "OES23.4-Pool",
                 "distro_target" : "sle-15-x86_64",
-                "description" : "Open Enterprise Server 2023.4",
+                "description" : "Open Enterprise Server 23.4",
                 "enabled" : true,
                 "autorefresh" : false,
                 "installer_updates" : false
@@ -97,7 +97,7 @@
                 "url" : "https://nu.novell.com/repo/$RCE/OES23.4-Updates/sle-15-x86_64/",
                 "name" : "OES23.4-Updates",
                 "distro_target" : "sle-15-x86_64",
-                "description" : "Open Enterprise Server 2023.4",
+                "description" : "Open Enterprise Server 23.4",
                 "enabled" : true,
                 "autorefresh" : true,
                 "installer_updates" : false
