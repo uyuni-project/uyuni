@@ -242,7 +242,6 @@ class RepoSyncTest(unittest.TestCase):
     @patch("spacewalk.satellite_tools.reposync.log2", Mock())
     @patch("spacewalk.satellite_tools.reposync.os", os)
     @patch("spacewalk.satellite_tools.reposync.log", Mock())
-    @patch("spacewalk.satellite_tools.reposync.RepoSync._normalize_orphan_vendor_packages", Mock())
     @patch("spacewalk.satellite_tools.reposync.ThreadedDownloader")
     @patch("spacewalk.satellite_tools.reposync.multiprocessing.Pool")
     def test_import_packages_excludes_failed_pkgs(self, pool, downloader):
