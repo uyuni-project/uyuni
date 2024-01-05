@@ -17,8 +17,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-12-15 14:09+0100\n"
-"PO-Revision-Date: 2023-12-21 16:02+0000\n"
+"POT-Creation-Date: 2024-01-05 16:12+0100\n"
+"PO-Revision-Date: 2023-12-29 19:02+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -28,11 +28,11 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 "X-Generator: Weblate 4.9.1\n"
 
-#: ../html/javascript/spacewalk-essentials.js:436
+#: ../html/javascript/spacewalk-essentials.js:438
 msgid "remaining"
 msgstr "zostávajúce"
 
-#: ../html/javascript/spacewalk-essentials.js:456
+#: ../html/javascript/spacewalk-essentials.js:458
 msgid ""
 "The browser Internet Explorer is not supported. Try using Firefox, Chrome or "
 "Edge"
@@ -672,7 +672,6 @@ msgstr "({selectedCount} vybraných)"
 
 #: ../html/src/components/table/SearchPanel.tsx:64
 #: ../html/src/manager/admin/setup/products/products.tsx:375
-#: ../html/src/manager/systems/ssm/ssm-counter.tsx:34
 #: ../html/src/manager/visualization/hierarchy.tsx:307
 #: ../html/src/manager/visualization/hierarchy.tsx:322
 msgid "Clear"
@@ -1126,7 +1125,7 @@ msgstr "Používateľ"
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:27
 #: ../html/src/manager/images/image-store-edit.tsx:180
 #: ../html/src/manager/login/susemanager/login.tsx:93
-#: ../html/src/manager/login/uyuni/login.tsx:91
+#: ../html/src/manager/login/uyuni/login.tsx:89
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:396
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:519
 #: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:38
@@ -2425,9 +2424,8 @@ msgid "NEVRA"
 msgstr "NEVRA"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:162
-#, fuzzy
 msgid "Build date"
-msgstr "Zostaviť obraz"
+msgstr "Dátum zostavenia"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:168
 msgid "Advisory Name"
@@ -3584,7 +3582,7 @@ msgid "Signing in ..."
 msgstr "Prihlasovanie ..."
 
 #: ../html/src/manager/login/susemanager/login.tsx:41
-#: ../html/src/manager/login/uyuni/login.tsx:41
+#: ../html/src/manager/login/uyuni/login.tsx:39
 msgid ""
 "Discover a new way of managing your servers, packages, patches and more via "
 "one interface."
@@ -3598,8 +3596,8 @@ msgstr "<link>Zistite viac</link> o {product}."
 
 #: ../html/src/manager/login/susemanager/login.tsx:81
 #: ../html/src/manager/login/susemanager/login.tsx:107
-#: ../html/src/manager/login/uyuni/login.tsx:53
-#: ../html/src/manager/login/uyuni/login.tsx:99
+#: ../html/src/manager/login/uyuni/login.tsx:51
+#: ../html/src/manager/login/uyuni/login.tsx:97
 msgid "Sign In"
 msgstr "Prihlásiť sa"
 
@@ -3621,11 +3619,11 @@ msgstr ""
 msgid "Are you sure you want to close this page while login is in progress?"
 msgstr "Naozaj chcete zavrieť túto stránku počas prihlasovania?"
 
-#: ../html/src/manager/login/uyuni/login.tsx:44
+#: ../html/src/manager/login/uyuni/login.tsx:42
 msgid "Learn more about"
 msgstr "Zistiť viac o"
 
-#: ../html/src/manager/login/uyuni/login.tsx:79
+#: ../html/src/manager/login/uyuni/login.tsx:77
 msgid "Login"
 msgstr "Prihlasovacie meno"
 
@@ -4244,9 +4242,8 @@ msgid "Update Notification"
 msgstr "Upozornenie na aktualizáciu"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:60
-#, fuzzy
 msgid "PAYG instance is not compliant"
-msgstr "Inštancia je zastaraná"
+msgstr "Inštancia PAYG nie je vyhovujúca"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:241
 #: ../html/src/manager/notifications/notification-messages.tsx:242
@@ -4903,26 +4900,24 @@ msgid "Filter menu"
 msgstr "Ponuka filtra"
 
 #: ../html/src/manager/shared/menu/menu.tsx:241
-#: ../html/src/manager/shared/menu/menu.tsx:244
-msgid "Uyuni homepage"
-msgstr "Domovská stránka Uyuni"
-
-#: ../html/src/manager/shared/menu/menu.tsx:242
 msgid "Uyuni"
 msgstr "Uyuni"
 
-#: ../html/src/manager/shared/menu/menu.tsx:251
-#: ../html/src/manager/shared/menu/menu.tsx:260
-msgid "SUSE Manager homepage"
-msgstr "Domovská stránka SUSE Manager"
+#: ../html/src/manager/shared/menu/menu.tsx:243
+msgid "Uyuni homepage"
+msgstr "Domovská stránka Uyuni"
 
-#: ../html/src/manager/shared/menu/menu.tsx:254
+#: ../html/src/manager/shared/menu/menu.tsx:252
 msgid "SUSE"
 msgstr "SUSE"
 
-#: ../html/src/manager/shared/menu/menu.tsx:256
+#: ../html/src/manager/shared/menu/menu.tsx:254
 msgid "Manager"
 msgstr "Manager"
+
+#: ../html/src/manager/shared/menu/menu.tsx:258
+msgid "SUSE Manager homepage"
+msgstr "Domovská stránka SUSE Manager"
 
 #: ../html/src/manager/state/display-highstate.tsx:9
 msgid "State Summary for {name}"
@@ -5361,8 +5356,9 @@ msgid "New Proxy"
 msgstr "Nový proxy"
 
 #: ../html/src/manager/systems/ssm/ssm-counter.tsx:25
-msgid "Manage"
-msgstr "Spravovať"
+#, fuzzy
+msgid "Manage selected system set"
+msgstr "Označiť vybrané ako prečítané"
 
 #: ../html/src/manager/systems/ssm/ssm-counter.tsx:31
 msgid "system selected"
@@ -5371,6 +5367,11 @@ msgstr "vybraný systém"
 #: ../html/src/manager/systems/ssm/ssm-counter.tsx:31
 msgid "systems selected"
 msgstr "vybrané systémy"
+
+#: ../html/src/manager/systems/ssm/ssm-counter.tsx:34
+#, fuzzy
+msgid "Clear selected system set"
+msgstr "Vymazať vybraté správy"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:32
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:24
@@ -6683,6 +6684,9 @@ msgstr "Zdroj sa nenašiel."
 #: ../html/src/utils/network.ts:105
 msgid "HTTP Error code "
 msgstr "Kód chyby HTTP "
+
+#~ msgid "Manage"
+#~ msgstr "Spravovať"
 
 #~ msgid ""
 #~ "Action has been successfully added to the action chain <link>'{name}'</"
