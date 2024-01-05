@@ -163,6 +163,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I use spacewalk-common-channel to add channel "sles15-sp4-devel-uyuni-client" with arch "x86_64"
 
 @sle15sp5_minion
+@salt_migration_minion
   Scenario: Add SUSE Linux Enterprise Server 15 SP5
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "Loading" text
@@ -191,6 +192,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 
 @uyuni
 @sle15sp5_minion
+@salt_migration_minion
   Scenario: Add SUSE Linux Enterprise Server 15 SP5 Uyuni Client tools
     When I use spacewalk-common-channel to add channel "sles15-sp5-devel-uyuni-client" with arch "x86_64"
 

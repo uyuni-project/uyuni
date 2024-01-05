@@ -13,7 +13,6 @@ ENV_VAR_BY_HOST = { 'localhost' => 'HOSTNAME',
                     'rhlike_client' => 'RHLIKE_MINION',
                     'deblike_minion' => 'DEBLIKE_MINION',
                     'build_host' => 'BUILD_HOST',
-                    'salt_migration_minion' => 'MIN_NESTED',
                     # Build Validation environment
                     'sleforsap15sp5_paygo_minion' => 'SLEFORSAP15SP5_PAYGO_MINION',
                     'sle12sp4_client' => 'SLE12SP4_CLIENT',
@@ -83,7 +82,8 @@ ENV_VAR_BY_HOST = { 'localhost' => 'HOSTNAME',
                     'opensuse155arm_minion' => 'OPENSUSE155ARM_MINION',
                     'opensuse155arm_ssh_minion' => 'OPENSUSE155ARM_SSHMINION',
                     'sle15sp3s390_minion' => 'SLE15SP3S390_MINION',
-                    'sle15sp3s390_ssh_minion' => 'SLE15SP3S390_SSHMINION' }.freeze
+                    'sle15sp3s390_ssh_minion' => 'SLE15SP3S390_SSHMINION',
+                    'salt_migration_minion' => 'SALT_MIGRATION_MINION' }.freeze
 
 ADDRESSES = { 'network'           => '0',
               'sle_client'        => '2',
@@ -230,7 +230,8 @@ PACKAGE_BY_CLIENT = { 'sle_client' => 'bison',
                       'opensuse155arm_minion' => 'bison',
                       'opensuse155arm_ssh_minion' => 'bison',
                       'sle15sp3s390_minion' => 'bison',
-                      'sle15sp3s390_ssh_minion' => 'bison' }.freeze
+                      'sle15sp3s390_ssh_minion' => 'bison',
+                      'salt_migration_minion' => 'bison' }.freeze
 
 # The values can be found under Software -> Channel List -> Create Channel
 # Then have a look at Parent Channel and find the desired name
