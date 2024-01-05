@@ -1,7 +1,7 @@
 #!/bin/bash
 
-export UYUNI_PROJECT=uyuni-project
-export UYUNI_VERSION=master
+export UYUNI_PROJECT=rjpmestre
+export UYUNI_VERSION=um_master-upgrade_java_17
 
 set -x
 set -e
@@ -12,16 +12,17 @@ set -e
 ./03_run_controller.sh
 ./04_setup_ssh_controller.sh
 ./05_install_gems_in_controller.sh
-./06_start_server.sh
-./07_manager_setup.sh
-./08_build_server_code.sh
-./09_run_sshminion.sh
-./10_setup_sshd.sh
-./11_run_core_tests.sh
-./12_run_salt_sle_minion.sh
-./13_run_salt_rhlike_minion.sh
-./14_run_salt_deblike_minion.sh
-./15_accept_all_keys.sh
-./16_run_init_clients_tests.sh
-./17_run_secondary_tests.sh
+./06_collect_and_tag_flaky_tests_in_controller.sh
+./07_start_server.sh
+./08_manager_setup.sh
+./09_build_server_code.sh
+./10_run_sshminion.sh
+./11_setup_sshd.sh
+./12_run_core_tests.sh
+./13_run_salt_sle_minion.sh
+./14_run_salt_rhlike_minion.sh
+./15_run_salt_deblike_minion.sh
+./16_accept_all_keys.sh
+./17_run_init_clients_tests.sh
+./18_run_secondary_tests.sh
 
