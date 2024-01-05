@@ -238,7 +238,6 @@ class Breadcrumb extends React.Component {
         key="home"
         cssClass="navbar-brand"
         url="/"
-        responsiveLabel={<i className="fa fa-home" title={t("Uyuni homepage")}></i>}
         label={<span>{t("Uyuni")}</span>}
         target=""
         title={t("Uyuni homepage")}
@@ -248,7 +247,6 @@ class Breadcrumb extends React.Component {
         key="home"
         cssClass="navbar-brand"
         url="/"
-        responsiveLabel={<i className="fa fa-home" title={t("SUSE Manager homepage")}></i>}
         label={
           <span>
             {t("SUSE")}

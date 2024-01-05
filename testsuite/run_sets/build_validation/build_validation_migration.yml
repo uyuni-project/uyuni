@@ -6,3 +6,10 @@
 - features/build_validation/migration/sle15sp3_ssh_minion.feature
 
 ## SP migration END ###
+
+
+## Salt migration BEGIN ###
+
+- features/build_validation/salt/min_salt_migration.feature
+
+## Salt migration END ###
