@@ -14,6 +14,9 @@ const LoginFooter = (props: Props) => (
   <footer className={styles.footer_wrapper}>
     <div className={styles.footer_fixed_bottom}>
       <div className="wrapper wrap">
+        <div>
+          <a href="/rhn/help/about.do">About</a>
+        </div>
         <div className="footer-copyright">
           <a href="/rhn/help/Copyright.do">Copyright Notice</a>{" "}
         </div>

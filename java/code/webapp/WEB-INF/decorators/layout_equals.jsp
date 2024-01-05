@@ -14,7 +14,7 @@
     <decorator:head />
   </head>
   <body onload="<decorator:getProperty property="body.onload" />">
-    <nav class="navbar navbar-default navbar-pf" role="navigation">
+    <nav class="navbar-pf navbar navbar-dark bg-dark" role="navigation">
       <jsp:include page="/WEB-INF/includes/header.jsp" />
     </nav>
     <div class="spacewalk-main-column-layout">
