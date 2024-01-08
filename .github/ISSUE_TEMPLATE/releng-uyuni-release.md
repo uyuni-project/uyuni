@@ -56,5 +56,5 @@ Add more tasks if needed.
 - [ ] Send an email to galaxy-devel@suse.de informing that the branch `master` is unlocked, and adjust the topic on the slack [#team-susemanager](https://app.slack.com/client/T02863RC2AC/C02D78LLS04) channel
 
 ## 24h after the release
-- [ ] Update the [test container images](https://github.com/uyuni-project/uyuni/wiki/Build-test-container-images)
+- [ ] (Task to be done by QE, most likely Jordi): Update the [test container images](https://github.com/uyuni-project/uyuni/wiki/Build-test-container-images)
 > :information_source: We wait 24h release to give time to the opensuse mirrors to be in sync.
