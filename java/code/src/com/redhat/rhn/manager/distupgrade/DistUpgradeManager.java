@@ -360,7 +360,7 @@ public class DistUpgradeManager extends BaseManager {
                     SUSEProduct base = combination.get(0);
                     if (!ContentSyncManager.isProductAvailable(base, base)) {
                         // No Product Channels means, no subscription to access the channels
-                        logger.debug("No SUSE Product Channels for {}. Skipping", base.getFriendlyName());
+                        logger.warn("No SUSE Product Channels for {}. Skipping", base.getFriendlyName());
                         continue;
                     }
                     if (combination.size() == 1) {
@@ -375,7 +375,7 @@ public class DistUpgradeManager extends BaseManager {
                             if (logger.isDebugEnabled()) {
                                 addonProducts.stream()
                                         .filter(ap -> !ContentSyncManager.isProductAvailable(ap, base))
-                                        .forEach(ap -> logger.debug("No SUSE Product Channels for {}. Skipping {}",
+                                        .forEach(ap -> logger.warn("No SUSE Product Channels for {}. Skipping {}",
                                                 ap.getFriendlyName(), base.getFriendlyName()));
                             }
                             continue;
