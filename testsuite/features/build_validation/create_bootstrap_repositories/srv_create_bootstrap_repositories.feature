@@ -1,4 +1,4 @@
-# Copyright (c) 2021-2023 SUSE LLC
+# Copyright (c) 2021-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Create bootstrap repositories
@@ -118,6 +118,6 @@ Feature: Create bootstrap repositories
   Scenario: Create the bootstrap repository for a OpenSUSE 15.5 ARM minion
     When I create the bootstrap repository for "opensuse155arm_minion" on the server
 
-@sle15sp3s390_minion
-  Scenario: Create the bootstrap repository for a SLES 15 SP3 s390x minion
-    When I create the bootstrap repository for "sle15sp3s390_minion" on the server
+@sle15sp5s390_minion
+  Scenario: Create the bootstrap repository for a SLES 15 SP5 s390x minion
+    When I create the bootstrap repository for "sle15sp5s390_minion" on the server
