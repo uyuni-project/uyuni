@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2023 SUSE LLC
+# Copyright (c) 2017-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Synchronize products in the products page of the Setup Wizard
@@ -25,6 +25,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @susemanager
   Scenario: View the channels list in the products page
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "SUSE Linux Enterprise Server for SAP Applications 15 x86_64" as the filtered product description
     And I click the channel list of product "SUSE Linux Enterprise Server for SAP Applications 15 x86_64"
@@ -38,6 +39,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
   Scenario: Synchronize SLES 15 SP4 product with recommended sub-products, including SUMA Client Tools
     Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "SUSE Linux Enterprise Server 15 SP4" as the filtered product description
     And I wait until I see "SUSE Linux Enterprise Server 15 SP4 x86_64" text
@@ -69,6 +71,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
   Scenario: Synchronize SLES 15 SP4 product with recommended sub-products for Retail feature
     Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "SUSE Linux Enterprise Server 15 SP4" as the filtered product description
     And I wait until I see "SUSE Linux Enterprise Server 15 SP4 x86_64" text
@@ -105,6 +108,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
   Scenario: Add SUSE Manager Proxy 4.3
     Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "SUSE Manager Proxy 4.3" as the filtered product description
     And I select "SUSE Manager Proxy 4.3 x86_64" as a product
@@ -119,6 +123,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
   Scenario: Add SUSE Manager Retail Branch Server
     Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "SUSE Manager Retail Branch Server 4.3" as the filtered product description
     And I select "SUSE Manager Retail Branch Server 4.3 x86_64" as a product
