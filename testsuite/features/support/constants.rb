@@ -1,4 +1,4 @@
-# Copyright (c) 2019-2023 SUSE LLC
+# Copyright (c) 2019-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 ENV_VAR_BY_HOST = {
@@ -67,8 +67,8 @@ ENV_VAR_BY_HOST = {
                     'opensuse154arm_ssh_minion' => 'OPENSUSE154ARM_SSHMINION',
                     'opensuse155arm_minion' => 'OPENSUSE155ARM_MINION',
                     'opensuse155arm_ssh_minion' => 'OPENSUSE155ARM_SSHMINION',
-                    'sle15sp3s390_minion' => 'SLE15SP3S390_MINION',
-                    'sle15sp3s390_ssh_minion' => 'SLE15SP3S390_SSHMINION',
+                    'sle15sp5s390_minion' => 'SLE15SP5S390_MINION',
+                    'sle15sp5s390_ssh_minion' => 'SLE15SP5S390_SSHMINION',
                     'salt_migration_minion' => 'SALT_MIGRATION_MINION'
 }.freeze
 
@@ -208,8 +208,8 @@ PACKAGE_BY_CLIENT = {
                       'opensuse154arm_ssh_minion' => 'bison',
                       'opensuse155arm_minion' => 'bison',
                       'opensuse155arm_ssh_minion' => 'bison',
-                      'sle15sp3s390_minion' => 'bison',
-                      'sle15sp3s390_ssh_minion' => 'bison',
+                      'sle15sp5s390_minion' => 'bison',
+                      'sle15sp5s390_ssh_minion' => 'bison',
                       'salt_migration_minion' => 'bison'
 }.freeze
 
@@ -287,8 +287,8 @@ BASE_CHANNEL_BY_CLIENT = {
                                 'opensuse154arm_ssh_minion' => 'openSUSE-Leap-15.4-Pool for aarch64',
                                 'opensuse155arm_minion' => 'openSUSE-Leap-15.5-Pool for aarch64',
                                 'opensuse155arm_ssh_minion' => 'openSUSE-Leap-15.5-Pool for aarch64',
-                                'sle15sp3s390_minion' => 'SLE-Product-SLES15-SP3-Pool for s390x',
-                                'sle15sp3s390_ssh_minion' => 'SLE-Product-SLES15-SP3-Pool for s390x'
+                                'sle15sp5s390_minion' => 'SLE-Product-SLES15-SP5-Pool for s390x',
+                                'sle15sp5s390_ssh_minion' => 'SLE-Product-SLES15-SP5-Pool for s390x'
                               },
                             'Uyuni' =>
                             {
@@ -356,8 +356,8 @@ BASE_CHANNEL_BY_CLIENT = {
                               'opensuse154arm_ssh_minion' => 'openSUSE Leap 15.4 (aarch64)',
                               'opensuse155arm_minion' => 'openSUSE Leap 15.5 (aarch64)',
                               'opensuse155arm_ssh_minion' => 'openSUSE Leap 15.5 (aarch64)',
-                              'sle15sp3s390_minion' => 'SLE-Product-SLES15-SP3-Pool for s390x',
-                              'sle15sp3s390_ssh_minion' => 'SLE-Product-SLES15-SP3-Pool for s390x'
+                              'sle15sp5s390_minion' => 'SLE-Product-SLES15-SP5-Pool for s390x',
+                              'sle15sp5s390_ssh_minion' => 'SLE-Product-SLES15-SP5-Pool for s390x'
                             },
                            'Fake' =>
                              {
@@ -635,8 +635,8 @@ PKGARCH_BY_CLIENT = {
                       'opensuse154arm_ssh_minion' => 'aarch64',
                       'opensuse155arm_minion' => 'aarch64',
                       'opensuse155arm_ssh_minion' => 'aarch64',
-                      'sle15sp3s390_minion' => 's390x',
-                      'sle15sp3s390_ssh_minion' => 's390x'
+                      'sle15sp5s390_minion' => 's390x',
+                      'sle15sp5s390_ssh_minion' => 's390x'
 }.freeze
 
 CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION = {
@@ -830,6 +830,16 @@ CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION = {
       sle-module-containers15-sp5-pool-x86_64
       sle-module-containers15-sp5-updates-x86_64
       sles15-sp5-uyuni-client-x86_64
+    ],
+  'sles15-sp5-s390x' =>
+    %w[
+      sle-manager-tools15-pool-s390x-sp5
+      sle-manager-tools15-updates-s390x-sp5
+      sle-module-basesystem15-sp5-pool-s390x
+      sle-module-basesystem15-sp5-updates-s390x
+      sles15-sp5-uyuni-client-s390x
+      sle-product-sles15-sp5-pool-s390x
+      sle-product-sles15-sp5-updates-s390x
     ],
   'res7' =>
     %w[
