@@ -1,4 +1,4 @@
-# Copyright 2017-2023 SUSE LLC
+# Copyright 2017-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Synchronize products in the products page of the Setup Wizard
@@ -12,6 +12,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @sle12sp4_minion
   Scenario: Add SUSE Linux Enterprise Server 12 SP4
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "SUSE Linux Enterprise Server 12 SP4" as the filtered product description
     And I select "SUSE Linux Enterprise Server 12 SP4 x86_64" as a product
@@ -31,6 +32,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @sle12sp5_minion
   Scenario: Add SUSE Linux Enterprise Server 12 SP5
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "SUSE Linux Enterprise Server 12 SP5" as the filtered product description
     And I select "SUSE Linux Enterprise Server 12 SP5 x86_64" as a product
@@ -47,6 +49,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @sle15sp1_minion
   Scenario: Add SUSE Linux Enterprise Server 15 SP1
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "SUSE Linux Enterprise Server 15 SP1" as the filtered product description
     And I select "SUSE Linux Enterprise Server 15 SP1 x86_64" as a product
@@ -66,6 +69,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @sle15sp2_minion
   Scenario: Add SUSE Linux Enterprise Server 15 SP2
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "SUSE Linux Enterprise Server 15 SP2" as the filtered product description
     And I select "SUSE Linux Enterprise Server 15 SP2 x86_64" as a product
@@ -97,6 +101,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @sle15sp3_minion
   Scenario: Add SUSE Linux Enterprise Server 15 SP3
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "SUSE Linux Enterprise Server 15 SP3" as the filtered product description
     And I select "SUSE Linux Enterprise Server 15 SP3 x86_64" as a product
@@ -129,6 +134,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @sle15sp4_minion
   Scenario: Add SUSE Linux Enterprise Server 15 SP4
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "SUSE Linux Enterprise Server 15 SP4" as the filtered product description
     And I select "SUSE Linux Enterprise Server 15 SP4 x86_64" as a product
@@ -160,6 +166,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @salt_migration_minion
   Scenario: Add SUSE Linux Enterprise Server 15 SP5
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "SUSE Linux Enterprise Server 15 SP5" as the filtered product description
     And I select "SUSE Linux Enterprise Server 15 SP5 x86_64" as a product
@@ -192,6 +199,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @slemicro51_minion
   Scenario: Add SUSE Linux Enterprise Micro 5.1
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "SUSE Linux Enterprise Micro 5.1" as the filtered product description
     And I select "SUSE Linux Enterprise Micro 5.1 x86_64" as a product
@@ -208,6 +216,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @slemicro51_minion
   Scenario: Add SUSE Linux Enterprise Micro 5.1
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "SUSE Linux Enterprise Micro 5.1" as the filtered product description
     And I select "SUSE Linux Enterprise Micro 5.1 x86_64" as a product
@@ -225,6 +234,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @slemicro52_minion
   Scenario: Add SUSE Linux Enterprise Micro 5.2
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "SUSE Linux Enterprise Micro 5.2" as the filtered product description
     And I select "SUSE Linux Enterprise Micro 5.2 x86_64" as a product
@@ -241,6 +251,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @slemicro52_minion
   Scenario: Add SUSE Linux Enterprise Micro 5.2
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "SUSE Linux Enterprise Micro 5.2" as the filtered product description
     And I select "SUSE Linux Enterprise Micro 5.2 x86_64" as a product
@@ -258,6 +269,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @slemicro53_minion
   Scenario: Add SUSE Linux Enterprise Micro 5.3
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "SUSE Linux Enterprise Micro 5.3" as the filtered product description
     And I select "SUSE Linux Enterprise Micro 5.3 x86_64" as a product
@@ -274,6 +286,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @slemicro53_minion
   Scenario: Add SUSE Linux Enterprise Micro 5.3
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "SUSE Linux Enterprise Micro 5.3" as the filtered product description
     And I select "SUSE Linux Enterprise Micro 5.3 x86_64" as a product
@@ -291,6 +304,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @slemicro54_minion
   Scenario: Add SUSE Linux Enterprise Micro 5.4
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "SUSE Linux Enterprise Micro 5.4" as the filtered product description
     And I select "SUSE Linux Enterprise Micro 5.4 x86_64" as a product
@@ -307,6 +321,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @slemicro54_minion
   Scenario: Add SUSE Linux Enterprise Micro 5.4
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "SUSE Linux Enterprise Micro 5.4" as the filtered product description
     And I select "SUSE Linux Enterprise Micro 5.4 x86_64" as a product
@@ -326,6 +341,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @slemicro55_minion
   Scenario: Add SUSE Linux Enterprise Micro 5.5
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "SUSE Linux Enterprise Micro 5.5" as the filtered product description
     And I select "SUSE Linux Enterprise Micro 5.5 x86_64" as a product
@@ -342,6 +358,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @slemicro55_minion
   Scenario: Add SUSE Linux Enterprise Micro 5.5
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "SUSE Linux Enterprise Micro 5.5" as the filtered product description
     And I select "SUSE Linux Enterprise Micro 5.5 x86_64" as a product
@@ -361,6 +378,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @opensuse154arm_minion
   Scenario: Add openSUSE 15.4 for ARM
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "openSUSE Leap 15.4 aarch64" as the filtered product description
     And I select "openSUSE Leap 15.4 aarch64" as a product
@@ -380,6 +398,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @opensuse155arm_minion
   Scenario: Add openSUSE 15.5 for ARM
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "openSUSE Leap 15.5 aarch64" as the filtered product description
     And I select "openSUSE Leap 15.5 aarch64" as a product
@@ -398,6 +417,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @sle15sp3s390_minion
   Scenario: Add SUSE Linux Enterprise Server 15 SP3 for s390x
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "SUSE Linux Enterprise Server 15 SP3" as the filtered product description
     And I select "SUSE Linux Enterprise Server 15 SP3 s390x" as a product
@@ -425,6 +445,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @alma9_minion
   Scenario: Add Alma Linux 9
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "AlmaLinux 9" as the filtered product description
     And I select "AlmaLinux 9 x86_64" as a product
@@ -443,6 +464,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @centos7_minion
   Scenario: Add SUSE Linux Enterprise Server with Expanded Support 7
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "SUSE Linux Enterprise Server with Expanded Support 7" as the filtered product description
     And I select "SUSE Linux Enterprise Server with Expanded Support 7" as a product
@@ -461,6 +483,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @liberty9_minion
   Scenario: Add Liberty Linux 9 Base product
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "RHEL and Liberty 9 Base" as the filtered product description
     And I select "RHEL and Liberty 9 Base" as a product
@@ -473,6 +496,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @liberty9_minion
   Scenario: Add Liberty Linux 9
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "RHEL and Liberty 9 Base" as the filtered product description
     And I select "RHEL and Liberty 9 Base" as a product
@@ -488,6 +512,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @oracle9_minion
   Scenario: Add Oracle Linux 9
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "Oracle Linux 9" as the filtered product description
     And I select "Oracle Linux 9 x86_64" as a product
@@ -505,6 +530,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @rhel9_minion
   Scenario: Add RHEL 9
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "RHEL and Liberty 9 Base" as the filtered product description
     And I select "RHEL and Liberty 9 Base" as a product
@@ -516,6 +542,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @rocky8_minion
   Scenario: Add SUSE Linux Enterprise Server with Expanded Support 8
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "RHEL or SLES ES or CentOS 8 Base" as the filtered product description
     And I select "RHEL or SLES ES or CentOS 8 Base" as a product
@@ -537,6 +564,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @rocky9_minion
   Scenario: Add Rocky Linux 9
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "Rocky Linux 9" as the filtered product description
     And I select "Rocky Linux 9 x86_64" as a product
@@ -548,6 +576,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @ubuntu2004_minion
   Scenario: Add Ubuntu 20.04
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "Ubuntu 20.04" as the filtered product description
     And I select "Ubuntu 20.04" as a product
@@ -566,6 +595,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @ubuntu2204_minion
   Scenario: Add Ubuntu 22.04
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "Ubuntu 22.04" as the filtered product description
     And I select "Ubuntu 22.04" as a product
@@ -584,6 +614,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @debian10_minion
   Scenario: Add Debian 10
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "Debian 10" as the filtered product description
     And I select "Debian 10" as a product
@@ -602,6 +633,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @debian11_minion
   Scenario: Add Debian 11
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "Debian 11" as the filtered product description
     And I select "Debian 11" as a product
@@ -619,6 +651,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @debian12_minion
   Scenario: Add Debian 12
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "Debian 12" as the filtered product description
     And I select "Debian 12" as a product
@@ -635,6 +668,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @proxy
   Scenario: Add SUSE Manager Proxy 4.3
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "SUSE Manager Proxy 4.3" as the filtered product description
     And I select "SUSE Manager Proxy 4.3 x86_64" as a product
@@ -660,6 +694,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @proxy
   Scenario: Add SUSE Manager Retail Branch Server 4.3
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "SUSE Manager Retail Branch Server 4.3" as the filtered product description
     And I select "SUSE Manager Retail Branch Server 4.3 x86_64" as a product
