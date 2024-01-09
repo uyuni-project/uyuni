@@ -728,6 +728,15 @@ CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION = {
       devel-debian-11-client-tools
       debian-11-amd64-uyuni-client
     ],
+  'debian-12' =>
+    %w[
+      debian-12-main-security-amd64
+      debian-12-main-updates-amd64
+      debian-12-pool-amd64
+      debian-12-suse-manager-tools-amd64
+      devel-debian-12-client-tools
+      debian-12-amd64-uyuni-client
+    ],
   'sll-9' =>
     %w[
       sll-9-updates-x86_64
@@ -898,9 +907,11 @@ CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION = {
       sle-manager-tools15-updates-s390x-sp5
       sle-module-basesystem15-sp5-pool-s390x
       sle-module-basesystem15-sp5-updates-s390x
-      sles15-sp5-uyuni-client-s390x
+      sle-module-server-applications15-sp5-pool-s390x
+      sle-module-server-applications15-sp5-updates-s390x
       sle-product-sles15-sp5-pool-s390x
       sle-product-sles15-sp5-updates-s390x
+      sles15-sp5-uyuni-client-s390x
     ],
   'res7' =>
     %w[
