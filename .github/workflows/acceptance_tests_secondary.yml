@@ -9,7 +9,7 @@ on:
       - '.github/workflows/acceptance_tests_common.yml'
       - '!java/*.changes*'
   schedule:
-    - cron: '0 */2 * * *'
+    - cron: '0 */12 * * *'
 jobs:
   test-uyuni:
     uses: ./.github/workflows/acceptance_tests_common.yml
