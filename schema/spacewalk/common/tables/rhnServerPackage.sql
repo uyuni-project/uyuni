@@ -38,9 +38,6 @@ CREATE UNIQUE INDEX rhn_sp_snep_uq
     
     ;
 
-CREATE INDEX rhn_server_package_nid_evrid_idx 
-    ON rhnServerPackage (name_id, evr_id);
-
 CREATE INDEX rhn_sp_sien_idx
     ON rhnServerPackage USING btree (server_id, installtime, evr_id, name_id);
 
