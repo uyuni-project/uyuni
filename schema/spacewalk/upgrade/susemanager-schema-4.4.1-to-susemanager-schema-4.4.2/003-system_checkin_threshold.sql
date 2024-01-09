@@ -4,7 +4,7 @@ WHERE NOT EXISTS (SELECT 1 FROM rhnConfiguration WHERE key = 'system_checkin_thr
 
 DO $$
   BEGIN
-    IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'rhnTaskQueue' AND column_name = 'id') THEN
+    IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'rhntaskqueue' AND column_name = 'id') THEN
         INSERT INTO rhnTaskQueue (id, org_id, task_name, task_data)
         SELECT NEXTVAL('rhn_task_queue_id_seq'), id, 'upgrade_satellite_system_threshold_conf', 0
         FROM web_customer
