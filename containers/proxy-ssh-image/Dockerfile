@@ -46,9 +46,9 @@ LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="${VENDOR}"
 LABEL org.opencontainers.image.url="${URL}"
 LABEL org.opencontainers.image.name=proxy-ssh-image
-LABEL org.opencontainers.image.version=4.4.3
+LABEL org.opencontainers.image.version=5.0.0
 LABEL org.openbuildservice.disturl="%DISTURL%"
-LABEL org.opensuse.reference="${REFERENCE_PREFIX}/proxy-ssh:4.4.3.%RELEASE%"
+LABEL org.opensuse.reference="${REFERENCE_PREFIX}/proxy-ssh:5.0.0.%RELEASE%"
 # endlabelprefix
 
 # SSH port
