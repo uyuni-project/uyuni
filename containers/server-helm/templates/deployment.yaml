@@ -54,6 +54,22 @@ spec:
         volumeMounts:
           - mountPath: /mnt
             name: var-cobbler
+      - name: init-var-salt
+        image: {{- include "deployment.container.image" (dict "name" "server" "global" .) | indent 1}}
+        imagePullPolicy: {{ .Values.pullPolicy }}
+        command:
+          - sh
+          - -x
+          - -c
+          - >
+            chown --reference=/var/lib/salt /mnt;
+            chmod --reference=/var/lib/salt /mnt;
+            if [ -z "$(ls -A /mnt)" ]; then
+              cp -a /var/lib/salt/. /mnt;
+            fi
+        volumeMounts:
+          - mountPath: /mnt
+            name: var-salt
       - name: init-var-pgsql
         image: {{- include "deployment.container.image" (dict "name" "server" "global" .) | indent 1}}
         imagePullPolicy: {{ .Values.pullPolicy }}
@@ -458,6 +474,8 @@ spec:
             name: cgroup
           - mountPath: /var/lib/cobbler
             name: var-cobbler
+          - mountPath: /var/lib/salt
+            name: var-salt
           - mountPath: /var/lib/pgsql
             name: var-pgsql
           - mountPath: /var/cache
@@ -550,6 +568,9 @@ spec:
       - name: var-cobbler
         persistentVolumeClaim:
           claimName: var-cobbler
+      - name: var-salt
+        persistentVolumeClaim:
+          claimName: var-salt
       - name: var-pgsql
         persistentVolumeClaim:
           claimName: var-pgsql
