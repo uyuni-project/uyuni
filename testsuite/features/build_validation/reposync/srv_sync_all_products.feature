@@ -6,11 +6,9 @@ Feature: Synchronize products in the products page of the Setup Wizard
   Scenario: Refresh SCC
     When I refresh SCC
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
-
 @sle12sp4_minion
   Scenario: Add SUSE Linux Enterprise Server 12 SP4
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
@@ -32,6 +30,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 
 @sle12sp5_minion
   Scenario: Add SUSE Linux Enterprise Server 12 SP5
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
@@ -50,6 +49,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 
 @sle15sp1_minion
   Scenario: Add SUSE Linux Enterprise Server 15 SP1
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
@@ -71,6 +71,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 
 @sle15sp2_minion
   Scenario: Add SUSE Linux Enterprise Server 15 SP2
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
@@ -104,6 +105,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 
 @sle15sp3_minion
   Scenario: Add SUSE Linux Enterprise Server 15 SP3
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
@@ -138,6 +140,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 
 @sle15sp4_minion
   Scenario: Add SUSE Linux Enterprise Server 15 SP4
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
@@ -173,6 +176,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @sle15sp5_minion
 @salt_migration_minion
   Scenario: Add SUSE Linux Enterprise Server 15 SP5
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
@@ -207,6 +211,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @susemanager
 @slemicro51_minion
   Scenario: Add SUSE Linux Enterprise Micro 5.1
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
@@ -224,6 +229,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @uyuni
 @slemicro51_minion
   Scenario: Add SUSE Linux Enterprise Micro 5.1
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
@@ -244,6 +250,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @susemanager
 @slemicro52_minion
   Scenario: Add SUSE Linux Enterprise Micro 5.2
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
@@ -261,6 +268,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @uyuni
 @slemicro52_minion
   Scenario: Add SUSE Linux Enterprise Micro 5.2
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
@@ -281,6 +289,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @susemanager
 @slemicro53_minion
   Scenario: Add SUSE Linux Enterprise Micro 5.3
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
@@ -298,6 +307,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @uyuni
 @slemicro53_minion
   Scenario: Add SUSE Linux Enterprise Micro 5.3
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
@@ -318,6 +328,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @susemanager
 @slemicro54_minion
   Scenario: Add SUSE Linux Enterprise Micro 5.4
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
@@ -335,6 +346,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @uyuni
 @slemicro54_minion
   Scenario: Add SUSE Linux Enterprise Micro 5.4
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
@@ -355,6 +367,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @susemanager
 @slemicro55_minion
   Scenario: Add SUSE Linux Enterprise Micro 5.5
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
@@ -372,6 +385,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @uyuni
 @slemicro55_minion
   Scenario: Add SUSE Linux Enterprise Micro 5.5
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
@@ -392,6 +406,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @susemanager
 @opensuse154arm_minion
   Scenario: Add openSUSE 15.4 for ARM
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
@@ -412,6 +427,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @susemanager
 @opensuse155arm_minion
   Scenario: Add openSUSE 15.5 for ARM
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
@@ -431,6 +447,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 
 @sle15sp5s390_minion
   Scenario: Add SUSE Linux Enterprise Server 15 SP5 for s390x
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
@@ -451,6 +468,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @susemanager
 @alma9_minion
   Scenario: Add Alma Linux 9
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
@@ -470,6 +488,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @susemanager
 @centos7_minion
   Scenario: Add SUSE Linux Enterprise Server with Expanded Support 7
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
@@ -489,6 +508,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @susemanager
 @liberty9_minion
   Scenario: Add Liberty Linux 9 Base product
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
@@ -502,6 +522,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @susemanager
 @liberty9_minion
   Scenario: Add Liberty Linux 9
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
@@ -518,6 +539,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @susemanager
 @oracle9_minion
   Scenario: Add Oracle Linux 9
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
@@ -536,6 +558,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 
 @rhel9_minion
   Scenario: Add RHEL 9
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
@@ -549,6 +572,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @susemanager
 @rocky8_minion
   Scenario: Add SUSE Linux Enterprise Server with Expanded Support 8
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
@@ -571,6 +595,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @susemanager
 @rocky9_minion
   Scenario: Add Rocky Linux 9
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
@@ -583,6 +608,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 
 @ubuntu2004_minion
   Scenario: Add Ubuntu 20.04
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
@@ -602,6 +628,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @susemanager
 @ubuntu2204_minion
   Scenario: Add Ubuntu 22.04
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
@@ -621,6 +648,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @susemanager
 @debian10_minion
   Scenario: Add Debian 10
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
@@ -640,6 +668,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @susemanager
 @debian11_minion
   Scenario: Add Debian 11
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
@@ -659,6 +688,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @susemanager
 @debian12_minion
   Scenario: Add Debian 12
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
@@ -678,6 +708,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @susemanager
 @proxy
   Scenario: Add SUSE Manager Proxy 4.3
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
@@ -708,6 +739,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @susemanager
 @proxy
   Scenario: Add SUSE Manager Retail Branch Server 4.3
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
@@ -724,6 +756,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until all synchronized channels for "suma-retail-branch-server-43" have finished
 
   Scenario: Detect product loading issues from the UI in Build Validation
+    Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
     Then I should not see a "Operation not successful" text
     And I should not see a warning sign
