@@ -1,7 +1,7 @@
 #
 # spec file for package susemanager-branding-oss
 #
-# Copyright (c) 2022 SUSE LLC
+# Copyright (c) 2024 SUSE LLC
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -21,8 +21,8 @@
 %global wwwdocroot %{wwwroot}/htdocs
 
 Name:           susemanager-branding-oss
-Version:        4.4.2
-Release:        1
+Version:        5.0.0
+Release:        0
 Summary:        SUSE Manager branding oss specific files
 License:        GPL-2.0-only
 Group:          Applications/System

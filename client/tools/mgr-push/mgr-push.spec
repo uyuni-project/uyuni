@@ -1,7 +1,7 @@
 #
 # spec file for package mgr-push
 #
-# Copyright (c) 2022 SUSE LLC
+# Copyright (c) 2024 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -38,8 +38,8 @@ Summary:        Package uploader for the Spacewalk
 License:        GPL-2.0-only
 Group:          Applications/System
 URL:            https://github.com/uyuni-project/uyuni
-Version:        4.4.6
-Release:        1
+Version:        5.0.0
+Release:        0
 Provides:       %{oldname} = %{oldversion}
 Obsoletes:      %{oldname} < %{oldversion}
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}-1.tar.gz

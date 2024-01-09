@@ -1,7 +1,7 @@
 #
 # spec file for package uyuni-reportdb-schema
 #
-# Copyright (c) 2022 SUSE LLC
+# Copyright (c) 2024 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -24,8 +24,8 @@ Summary:        Report DB SQL schema for Spacewalk server
 License:        GPL-2.0-only
 Group:          Applications/Internet
 
-Version:        4.4.6
-Release:        1
+Version:        5.0.0
+Release:        0
 Source0:        %{name}-%{version}.tar.gz
 Source1:        https://raw.githubusercontent.com/uyuni-project/uyuni/%{name}-%{version}-1/schema/reportdb/%{name}-rpmlintrc
 

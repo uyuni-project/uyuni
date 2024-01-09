@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-client-tools
 #
-# Copyright (c) 2022 SUSE LLC
+# Copyright (c) 2024 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -77,11 +77,11 @@ Group:          admin
 %else
 Group:          System Environment/Base
 %endif
-Version:        4.4.7
+Version:        5.0.0
 Source0:        %{name}-%{version}.tar.gz
 Source1:        https://raw.githubusercontent.com/uyuni-project/uyuni/%{name}-%{version}-1/client/rhel/%{name}/%{name}-rpmlintrc
 URL:            https://github.com/uyuni-project/uyuni
-Release:        1
+Release:        0
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 %if 0%{?fedora} || 0%{?rhel} || 0%{?suse_version} >= 1210 || 0%{?mageia} >= 6
 BuildArch:      noarch
