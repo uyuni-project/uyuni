@@ -30,6 +30,8 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.SystemManager;
 
+import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
+import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.webui.Languages;
 import com.suse.manager.webui.services.ThrottlingService;
 import com.suse.manager.webui.services.TooManyCallsException;
@@ -42,6 +44,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -64,7 +67,10 @@ import spark.template.jade.JadeTemplateEngine;
 public class SparkApplicationHelper {
 
     private static final String TEMPLATE_ROOT = "com/suse/manager/webui";
-    private static final Gson GSON = new GsonBuilder().create();
+    private static final Gson GSON = new GsonBuilder()
+            .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeISOAdapter())
+            .registerTypeAdapterFactory(new OptionalTypeAdapterFactory())
+            .create();
     private static final ThrottlingService THROTTLER = GlobalInstanceHolder.THROTTLING_SERVICE;
 
     /**
