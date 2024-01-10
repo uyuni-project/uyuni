@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Jan 10 18:59:24 CET 2024 - marina.latini@suse.com
+
+- version 5.0.1
+  * Add ingress and routes for traefik
+  * Bump version to 5.0.0
+
+-------------------------------------------------------------------
 Mon Dec 18 14:38:06 CET 2023 - rosuna@suse.com
 
 - version 4.4.4
