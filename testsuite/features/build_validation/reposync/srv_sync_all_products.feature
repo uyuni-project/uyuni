@@ -26,7 +26,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @sle12sp4_minion
   Scenario: Add SUSE Linux Enterprise Server 12 SP4 Uyuni Client tools
     When I use spacewalk-common-channel to add channel "sles12-sp4-uyuni-client-devel" with arch "x86_64"
-    And I wait until the channel "sles12-sp4-uyuni-client-devel" has been synced
+    And I wait until the channel "sles12-sp4-uyuni-client-devel-x86_64" has been synced
 
 @sle12sp5_minion
   Scenario: Add SUSE Linux Enterprise Server 12 SP5
@@ -45,7 +45,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @sle12sp5_minion
   Scenario: Add SUSE Linux Enterprise Server 12 SP5 Uyuni Client tools
     When I use spacewalk-common-channel to add channel "sles12-sp5-uyuni-client-devel" with arch "x86_64"
-    And I wait until the channel "sles12-sp5-uyuni-client-devel" has been synced
+    And I wait until the channel "sles12-sp5-uyuni-client-devel-x86_64" has been synced
 
 @sle15sp1_minion
   Scenario: Add SUSE Linux Enterprise Server 15 SP1
@@ -67,7 +67,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @sle15sp1_minion
   Scenario: Add SUSE Linux Enterprise Server 15 SP1 Uyuni Client tools
     When I use spacewalk-common-channel to add channel "sles15-sp1-devel-uyuni-client" with arch "x86_64"
-    And I wait until the channel "sles15-sp1-devel-uyuni-client" has been synced
+    And I wait until the channel "sles15-sp1-devel-uyuni-client-x86_64" has been synced
 
 @sle15sp2_minion
   Scenario: Add SUSE Linux Enterprise Server 15 SP2
@@ -101,7 +101,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @sle15sp2_minion
   Scenario: Add SUSE Linux Enterprise Server 15 SP2 Uyuni Client tools
     When I use spacewalk-common-channel to add channel "sles15-sp2-devel-uyuni-client" with arch "x86_64"
-    And I wait until the channel "sles15-sp2-devel-uyuni-client" has been synced
+    And I wait until the channel "sles15-sp2-devel-uyuni-client-x86_64" has been synced
 
 @sle15sp3_minion
   Scenario: Add SUSE Linux Enterprise Server 15 SP3
@@ -136,7 +136,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @sle15sp3_minion
   Scenario: Add SUSE Linux Enterprise Server 15 SP3 Uyuni Client tools
     When I use spacewalk-common-channel to add channel "sles15-sp3-devel-uyuni-client" with arch "x86_64"
-    And I wait until the channel "sles15-sp3-devel-uyuni-client" has been synced
+    And I wait until the channel "sles15-sp3-devel-uyuni-client-x86_64" has been synced
 
 @sle15sp4_minion
   Scenario: Add SUSE Linux Enterprise Server 15 SP4
@@ -171,7 +171,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @sle15sp4_minion
   Scenario: Add SUSE Linux Enterprise Server 15 SP4 Uyuni Client tools
     When I use spacewalk-common-channel to add channel "sles15-sp4-devel-uyuni-client" with arch "x86_64"
-    And I wait until the channel "sles15-sp4-devel-uyuni-client" has been synced
+    And I wait until the channel "sles15-sp4-devel-uyuni-client-x86_64" has been synced
 
 @sle15sp5_minion
 @salt_migration_minion
@@ -206,7 +206,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @salt_migration_minion
   Scenario: Add SUSE Linux Enterprise Server 15 SP5 Uyuni Client tools
     When I use spacewalk-common-channel to add channel "sles15-sp5-devel-uyuni-client" with arch "x86_64"
-    And I wait until the channel "sles15-sp5-devel-uyuni-client" has been synced
+    And I wait until the channel "sles15-sp5-devel-uyuni-client-x86_64" has been synced
 
 @susemanager
 @slemicro51_minion
@@ -245,7 +245,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @slemicro51_minion
   Scenario: Add SUSE Linux Enterprise Micro 5.1 Uyuni Client tools
     When I use spacewalk-common-channel to add channel "suse-microos-5.1-devel-uyuni-client" with arch "x86_64"
-    And I wait until the channel "suse-microos-5.1-devel-uyuni-client" has been synced
+    And I wait until the channel "suse-microos-5.1-devel-uyuni-client-x86_64" has been synced
 
 @susemanager
 @slemicro52_minion
@@ -284,7 +284,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @slemicro52_minion
   Scenario: Add SUSE Linux Enterprise Micro 5.2 Uyuni Client tools
     When I use spacewalk-common-channel to add channel "suse-microos-5.2-devel-uyuni-client" with arch "x86_64"
-    And I wait until the channel "suse-microos-5.2-devel-uyuni-client" has been synced
+    And I wait until the channel "suse-microos-5.2-devel-uyuni-client-x86_64" has been synced
 
 @susemanager
 @slemicro53_minion
@@ -323,7 +323,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @slemicro53_minion
   Scenario: Add SUSE Linux Enterprise Micro 5.3 Uyuni Client tools
     When I use spacewalk-common-channel to add channel "sle-micro-5.3-devel-uyuni-client" with arch "x86_64"
-    And I wait until the channel "sle-micro-5.3-devel-uyuni-client" has been synced
+    And I wait until the channel "sle-micro-5.3-devel-uyuni-client-x86_64" has been synced
 
 @susemanager
 @slemicro54_minion
@@ -362,7 +362,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @slemicro54_minion
   Scenario: Add SUSE Linux Enterprise Micro 5.4 Uyuni Client tools
     When I use spacewalk-common-channel to add channel "sle-micro-5.4-devel-uyuni-client" with arch "x86_64"
-    And I wait until the channel "sle-micro-5.4-devel-uyuni-client" has been synced
+    And I wait until the channel "sle-micro-5.4-devel-uyuni-client-x86_64" has been synced
 
 @susemanager
 @slemicro55_minion
@@ -401,7 +401,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @slemicro55_minion
   Scenario: Add SUSE Linux Enterprise Micro 5.5 Uyuni Client tools
     When I use spacewalk-common-channel to add channel "sle-micro-5.5-devel-uyuni-client" with arch "x86_64"
-    And I wait until the channel "sle-micro-5.5-devel-uyuni-client" has been synced
+    And I wait until the channel "sle-micro-5.5-devel-uyuni-client-x86_64" has been synced
 
 @susemanager
 @opensuse154arm_minion
@@ -463,7 +463,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @sle15sp5s390_minion
   Scenario: Add SUSE Linux Enterprise Server 15 SP5 for s390x Uyuni Client tools
     When I use spacewalk-common-channel to add channel "sles15-sp5-devel-uyuni-client" with arch "s390x"
-    And I wait until the channel "sles15-sp5-devel-uyuni-client" has been synced
+    And I wait until the channel "sles15-sp5-devel-uyuni-client-s390x" has been synced
 
 @susemanager
 @alma9_minion
