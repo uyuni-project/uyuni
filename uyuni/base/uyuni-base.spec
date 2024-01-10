@@ -1,7 +1,7 @@
 #
 # spec file for package uyuni-base
 #
-# Copyright (c) 2022 SUSE LLC
+# Copyright (c) 2024 SUSE LLC
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -34,8 +34,8 @@
 %endif
 
 Name:           uyuni-base
-Version:        4.4.2
-Release:        1
+Version:        5.0.0
+Release:        0
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        %{name}-%{version}.tar.gz
 Summary:        Uyuni Base Package

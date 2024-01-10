@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-web
 #
-# Copyright (c) 2022 SUSE LLC
+# Copyright (c) 2024 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -15,6 +15,7 @@
 
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
+
 
 %define shared_path %{_datadir}/susemanager
 %define shared_www_path %{shared_path}/www
@@ -33,8 +34,8 @@ Name:           spacewalk-web
 Summary:        Spacewalk Web site - Perl modules
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.4.13
-Release:        1
+Version:        5.0.0
+Release:        0
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}.tar.gz
 Source1:        node-modules.tar.gz
@@ -43,9 +44,9 @@ BuildArch:      noarch
 Requires(pre):  uyuni-base-common
 BuildRequires:  gettext
 BuildRequires:  make
-BuildRequires:  perl(ExtUtils::MakeMaker)
 BuildRequires:  spacewalk-backend
 BuildRequires:  uyuni-base-common
+BuildRequires:  perl(ExtUtils::MakeMaker)
 
 %if 0%{?suse_version}
 BuildRequires:  apache2
@@ -63,7 +64,7 @@ but it does generate a number of sub-packages.
 
 %package -n spacewalk-html
 Summary:        HTML document files for Spacewalk
-License:        (MPL-2.0 OR Apache-2.0) AND 0BSD AND BSD-3-Clause AND GPL-2.0-only AND ISC AND LGPL-3.0-or-later AND MIT AND MPL-2.0
+License:        0BSD AND (Apache-2.0 OR MPL-2.0) AND BSD-3-Clause AND GPL-2.0-only AND ISC AND LGPL-3.0-or-later AND MIT AND MPL-2.0
 Group:          Applications/Internet
 Requires:       httpd
 Requires:       spacewalk-branding

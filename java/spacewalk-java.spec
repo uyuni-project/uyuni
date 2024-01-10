@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-java
 #
-# Copyright (c) 2022 SUSE LLC
+# Copyright (c) 2024 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -61,8 +61,8 @@ Name:           spacewalk-java
 Summary:        Java web application files for Spacewalk
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.4.22
-Release:        1
+Version:        5.0.0
+Release:        0
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        %{name}-%{version}.tar.gz
 Source1:        https://raw.githubusercontent.com/uyuni-project/uyuni/%{name}-%{version}-1/java/%{name}-rpmlintrc
@@ -96,9 +96,10 @@ BuildRequires:  classmate
 BuildRequires:  concurrent
 BuildRequires:  dom4j
 BuildRequires:  dwr >= 3
+BuildRequires:  glassfish-activation-api
+BuildRequires:  glassfish-jaxb-api
 BuildRequires:  glassfish-jaxb-runtime
 BuildRequires:  glassfish-jaxb-txw2
-BuildRequires:  (google-gson >= 2.2.4 with google-gson < 2.10.0)
 BuildRequires:  hibernate-commons-annotations
 BuildRequires:  hibernate-types
 BuildRequires:  httpcomponents-asyncclient
@@ -148,8 +149,7 @@ BuildRequires:  uyuni-base-server
 BuildRequires:  woodstox
 BuildRequires:  xalan-j2
 BuildRequires:  xmlsec
-BuildRequires:  glassfish-activation-api
-BuildRequires:  glassfish-jaxb-api
+BuildRequires:  (google-gson >= 2.2.4 with google-gson < 2.10.0)
 BuildRequires:  mvn(org.apache.velocity:velocity-engine-core) >= 2.2
 BuildRequires:  mvn(org.hibernate:hibernate-c3p0)
 BuildRequires:  mvn(org.hibernate:hibernate-core)
@@ -188,7 +188,6 @@ Requires:       glassfish-activation-api
 Requires:       glassfish-jaxb-api
 Requires:       glassfish-jaxb-runtime
 Requires:       glassfish-jaxb-txw2
-Requires:       (google-gson >= 2.2.4 with google-gson < 2.10.0)
 Requires:       hibernate-commons-annotations
 Requires:       hibernate-types
 Requires:       httpcomponents-client
@@ -241,6 +240,7 @@ Requires:       xalan-j2 >= 2.6.0
 Requires:       xerces-j2
 Requires:       xmlsec
 Requires:       (/sbin/unix2_chkpwd or /usr/sbin/unix2_chkpwd)
+Requires:       (google-gson >= 2.2.4 with google-gson < 2.10.0)
 Requires:       mvn(org.apache.tomcat:tomcat-servlet-api) > 8
 Requires:       mvn(org.hibernate:hibernate-c3p0)
 Requires:       mvn(org.hibernate:hibernate-core)
@@ -785,7 +785,6 @@ chown tomcat:%{apache_group} /var/log/rhn/gatherer.log
 %else
 %attr(770,root,%{apache_group}) %dir %{_var}/log/rhn
 %endif
-
 
 %files lib
 %defattr(644,root,root,755)
