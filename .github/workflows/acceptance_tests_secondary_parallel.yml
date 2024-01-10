@@ -1,13 +1,10 @@
 name: acceptance-tests-secondary-parallel
 on:
   pull_request:
-    paths:
-      - 'java/**'
-      - 'web/html/src/**'
-      - 'testsuite/**'
-      - '.github/workflows/acceptance_tests_secondary_parallel.yml'
-      - '.github/workflows/acceptance_tests_common.yml'
-      - '!java/*.changes*'
+    types:
+      - opened
+      - reopened
+      - synchronize
   schedule:
     - cron: '0 */12 * * *'
 jobs:
