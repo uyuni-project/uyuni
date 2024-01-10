@@ -676,7 +676,8 @@ end
 
 Then(/^I wait until mgr-sync refresh is finished$/) do
   # mgr-sync refresh is a slow operation, we don't use the default timeout
-  cmd = 'spacecmd -u admin -p admin api sync.content.listProducts'
+  # limit the result to important lines to have at least 1 match in the output we get
+  cmd = 'spacecmd -u admin -p admin api sync.content.listProducts | grep SLES'
   repeat_until_timeout(timeout: 1800, message: '\'mgr-sync refresh\' did not finish') do
     result, code = get_target('server').run(cmd, check_errors: false)
     break if result.include? 'SLES'
