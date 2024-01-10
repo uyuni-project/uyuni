@@ -781,7 +781,6 @@ CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION = {
       sles12-sp4-updates-x86_64
       sle-manager-tools12-updates-x86_64-sp4
       sle-manager-tools12-pool-x86_64-sp4
-      sles12-sp4-uyuni-client-x86_64
     ],
   'sles12-sp5' =>
     %w[
@@ -790,7 +789,6 @@ CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION = {
       sles12-sp5-updates-x86_64
       sle-manager-tools12-updates-x86_64-sp5
       sle-manager-tools12-pool-x86_64-sp5
-      sles12-sp5-uyuni-client-x86_64
     ],
   'sles15-sp1' =>
     %w[
@@ -804,7 +802,6 @@ CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION = {
       sle-manager-tools15-updates-x86_64-sp1
       sle-manager-tools15-pool-x86_64-sp1
       sle15-sp1-installer-updates-x86_64
-      sles15-sp1-uyuni-client-x86_64
     ],
   'sles15-sp2' =>
     %w[
@@ -822,7 +819,6 @@ CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION = {
       sle-manager-tools15-updates-x86_64-sp2
       sle-manager-tools15-pool-x86_64-sp2
       sle15-sp2-installer-updates-x86_64
-      sles15-sp2-uyuni-client-x86_64
     ],
   'sles15-sp3' =>
     %w[
@@ -840,9 +836,6 @@ CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION = {
       sle-module-desktop-applications15-sp3-updates-x86_64
       sle-module-devtools15-sp3-pool-x86_64
       sle-module-devtools15-sp3-updates-x86_64
-      sle-module-containers15-sp3-pool-x86_64
-      sle-module-containers15-sp3-updates-x86_64
-      sles15-sp3-uyuni-client-x86_64
     ],
   'sles15-sp4' =>
     %w[
@@ -861,11 +854,9 @@ CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION = {
       sle-product-sles15-sp4-updates-x86_64
       sle-module-containers15-sp4-pool-x86_64
       sle-module-containers15-sp4-updates-x86_64
-      sles15-sp4-uyuni-client-x86_64
     ],
   'sles15-sp5' =>
     %w[
-      sle15-sp5-installer-updates-x86_64
       sle-manager-tools15-pool-x86_64-sp5
       sle-manager-tools15-updates-x86_64-sp5
       sle-module-basesystem15-sp5-pool-x86_64
@@ -878,9 +869,6 @@ CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION = {
       sle-module-server-applications15-sp5-updates-x86_64
       sle-product-sles15-sp5-pool-x86_64
       sle-product-sles15-sp5-updates-x86_64
-      sle-module-containers15-sp5-pool-x86_64
-      sle-module-containers15-sp5-updates-x86_64
-      sles15-sp5-uyuni-client-x86_64
     ],
   'slesforsap15-sp5' =>
     %w[
@@ -911,7 +899,6 @@ CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION = {
       sle-module-server-applications15-sp5-updates-s390x
       sle-product-sles15-sp5-pool-s390x
       sle-product-sles15-sp5-updates-s390x
-      sles15-sp5-uyuni-client-s390x
     ],
   'res7' =>
     %w[
@@ -962,7 +949,6 @@ CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION = {
       suse-microos-5.1-updates-x86_64
       sle-manager-tools-for-micro5-updates-x86_64-5.1
       sle-manager-tools-for-micro5-pool-x86_64-5.1
-      sle-micro-5.1-uyuni-client-x86_64
     ],
   'suse-microos-5.2' =>
     %w[
@@ -970,7 +956,6 @@ CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION = {
       suse-microos-5.2-updates-x86_64
       sle-manager-tools-for-micro5-updates-x86_64-5.2
       sle-manager-tools-for-micro5-pool-x86_64-5.2
-      suse-microos-5.2-uyuni-client-x86_64
     ],
   'sle-micro-5.3' =>
     %w[
@@ -978,7 +963,6 @@ CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION = {
       sle-micro-5.3-updates-x86_64
       sle-manager-tools-for-micro5-updates-x86_64-5.3
       sle-manager-tools-for-micro5-pool-x86_64-5.3
-      suse-microos-5.3-uyuni-client-x86_64
     ],
   'sle-micro-5.4' =>
     %w[
@@ -986,7 +970,6 @@ CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION = {
       sle-micro-5.4-updates-x86_64
       sle-manager-tools-for-micro5-updates-x86_64-5.4
       sle-manager-tools-for-micro5-pool-x86_64-5.4
-      sle-micro-5.4-uyuni-client-x86_64
     ],
   'sle-micro-5.5' =>
     %w[
@@ -994,7 +977,6 @@ CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION = {
       sle-micro-5.5-updates-x86_64
       sle-manager-tools-for-micro5-updates-x86_64-5.5
       sle-manager-tools-for-micro5-pool-x86_64-5.5
-      sle-micro-5.5-uyuni-client-x86_64
     ],
   'ubuntu-2004' =>
     %w[
