@@ -616,26 +616,26 @@ end
 # Test for a text in the whole page
 #
 Then(/^I should see a "([^"]*)" text$/) do |text|
-  raise ScriptError, "Text '#{text}' not found" unless check_text_and_catch_request_timeout_popup?(text)
+  raise ScriptError, "Text '#{text}' not found" unless check_text_and_catch_request_timeout_popup?(text, timeout: 2)
 end
 
 Then(/^I should see a "([^"]*)" text or "([^"]*)" text$/) do |text1, text2|
-  raise ScriptError, "Text '#{text1}' and '#{text2}' not found" unless check_text_and_catch_request_timeout_popup?(text1, text2: text2)
+  raise ScriptError, "Text '#{text1}' and '#{text2}' not found" unless check_text_and_catch_request_timeout_popup?(text1, text2: text2, timeout:2)
 end
 
 Then(/^I should see "([^"]*)" short hostname$/) do |host|
   system_name = get_system_name(host).partition('.').first
-  raise ScriptError, "Hostname #{system_name} is not present" unless check_text_and_catch_request_timeout_popup?(system_name)
+  raise ScriptError, "Hostname #{system_name} is not present" unless check_text_and_catch_request_timeout_popup?(system_name, timeout: 2)
 end
 
 Then(/^I should see "([^"]*)" hostname$/) do |host|
   system_name = get_system_name(host)
-  raise ScriptError, "Hostname #{system_name} is not present" unless check_text_and_catch_request_timeout_popup?(system_name)
+  raise ScriptError, "Hostname #{system_name} is not present" unless check_text_and_catch_request_timeout_popup?(system_name, timeout: 2)
 end
 
 Then(/^I should not see "([^"]*)" hostname$/) do |host|
   system_name = get_system_name(host)
-  raise ScriptError, "Hostname #{system_name} is present" if check_text_and_catch_request_timeout_popup?(system_name)
+  raise ScriptError, "Hostname #{system_name} is present" if check_text_and_catch_request_timeout_popup?(system_name, timeout: 2)
 end
 
 #
@@ -643,13 +643,13 @@ end
 #
 Then(/^I should see "([^"]*)" in the textarea$/) do |text|
   within('textarea') do
-    raise ScriptError, "Text '#{text}' not found" unless check_text_and_catch_request_timeout_popup?(text)
+    raise ScriptError, "Text '#{text}' not found" unless check_text_and_catch_request_timeout_popup?(text, timeout: 2)
   end
 end
 
 Then(/^I should see "([^"]*)" or "([^"]*)" in the textarea$/) do |text1, text2|
   within('textarea') do
-    raise ScriptError, "Text '#{text1}' and '#{text2}' not found" unless check_text_and_catch_request_timeout_popup?(text1, text2: text2)
+    raise ScriptError, "Text '#{text1}' and '#{text2}' not found" unless check_text_and_catch_request_timeout_popup?(text1, text2: text2, timeout: 2)
   end
 end
 
@@ -693,19 +693,19 @@ end
 
 Then(/^I should see a "([^"]*)" text in element "([^"]*)"$/) do |text, element|
   within(:xpath, "//div[@id=\"#{element}\" or @class=\"#{element}\"]") do
-    raise ScriptError, "Text '#{text}' not found in #{element}" unless check_text_and_catch_request_timeout_popup?(text)
+    raise ScriptError, "Text '#{text}' not found in #{element}" unless check_text_and_catch_request_timeout_popup?(text, timeout: 2)
   end
 end
 
 Then(/^I should not see a "([^"]*)" text in element "([^"]*)"$/) do |text, element|
   within(:xpath, "//div[@id=\"#{element}\" or @class=\"#{element}\"]") do
-    raise ScriptError, "Text '#{text}' found in #{element}" if check_text_and_catch_request_timeout_popup?(text)
+    raise ScriptError, "Text '#{text}' found in #{element}" if check_text_and_catch_request_timeout_popup?(text, timeout: 2)
   end
 end
 
 Then(/^I should see a "([^"]*)" or "([^"]*)" text in element "([^"]*)"$/) do |text1, text2, element|
   within(:xpath, "//div[@id=\"#{element}\" or @class=\"#{element}\"]") do
-    raise ScriptError, "Texts #{text1} and #{text2} not found in #{element}" unless check_text_and_catch_request_timeout_popup?(text1, text2: text2)
+    raise ScriptError, "Texts #{text1} and #{text2} not found in #{element}" unless check_text_and_catch_request_timeout_popup?(text1, text2: text2, timeout: 2)
   end
 end
 

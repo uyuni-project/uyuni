@@ -576,14 +576,14 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
-    And I enter "RHEL or SLES ES or CentOS 8 Base" as the filtered product description
-    And I select "RHEL or SLES ES or CentOS 8 Base" as a product
-    Then I should see the "RHEL or SLES ES or CentOS 8 Base" selected
-    When I open the sub-list of the product "RHEL or SLES ES or CentOS 8 Base"
+    And I enter "RHEL and Liberty 8 Base" as the filtered product description
+    And I select "RHEL and Liberty 8 Base" as a product
+    Then I should see the "RHEL and Liberty 8 Base" selected
+    When I open the sub-list of the product "RHEL and Liberty 8 Base"
     And I select "SUSE Linux Enterprise Server with Expanded Support 8" as a product
     Then I should see the "SUSE Linux Enterprise Server with Expanded Support 8" selected
     When I click the Add Product button
-    And I wait until I see "RHEL or SLES ES or CentOS 8 Base" product has been added
+    And I wait until I see "RHEL and Liberty 8 Base" product has been added
     And I wait until all synchronized channels for "res8" have finished
 
 @uyuni
