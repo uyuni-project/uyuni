@@ -323,7 +323,7 @@ EOF
     fi
 
     if ! exists_schema ; then
-        /usr/bin/spacewalk-sql --reportdb /etc/sysconfig/rhn/reportdb/main.sql
+        /usr/bin/spacewalk-sql --reportdb /usr/share/susemanager/db/reportdb/main.sql
     else
 	    /usr/bin/spacewalk-schema-upgrade --reportdb -y
     fi

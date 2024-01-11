@@ -168,11 +168,11 @@ it directly unless you really knows what are you doing.
 
 =item B<--source=SOURCE>
 
-Full path to main.sql file. Usually /etc/sysconfig/rhn/I<backend>/main.sql
+Full path to main.sql file. Usually /usr/share/susemanager/db/I<backend>/main.sql
 
 =item B<--target=TARGET>
 
-Full path to deploy.sql. Usually /etc/sysconfig/rhn/universe.deploy.sql
+Full path to deploy.sql. Usually /usr/share/susemanager/db/I<backend>/deploy.sql
 
 =item B<--tablespace-name=TABLESPACE>
 

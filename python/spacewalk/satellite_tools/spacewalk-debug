@@ -137,8 +137,6 @@ elif [ -d /etc/apache2 ]; then
 fi
 cp -fapRd /etc/rhn $DIR/conf/rhn
 cp -fapRd /etc/sysconfig/rhn $DIR/conf/rhn/sysconfig
-# exclude schema upgrade files, as they are packaged
-rm -r $DIR/conf/rhn/sysconfig/rhn/schema-upgrade
 
 # there might be backups of rhn.conf so clean them up as well (bsc#1146419)
 find $DIR/conf/rhn -name 'rhn.conf*' -exec sed -i 's/^server.susemanager.mirrcred_pass.*/server.susemanager.mirrcred_pass = <replaced_by_debug_tool>/' {} \;
