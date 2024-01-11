@@ -45,7 +45,7 @@ BuildRequires:  fdupes
 
 Requires:       susemanager-schema-utility
 
-%define rhnroot /etc/sysconfig/rhn/
+%define rhnroot /usr/share/susemanager/db/
 
 %define postgres %{rhnroot}/reportdb
 
@@ -70,6 +70,7 @@ install -m 0755 -d $RPM_BUILD_ROOT%{rhnroot}/reportdb-schema-upgrade
 
 %files
 %defattr(-,root,root)
+%dir /usr/share/susemanager
 %dir %{rhnroot}
 %{postgres}
 %{rhnroot}/reportdb-schema-upgrade
