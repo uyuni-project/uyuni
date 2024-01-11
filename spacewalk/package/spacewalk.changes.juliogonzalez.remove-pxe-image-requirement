@@ -1,0 +1,2 @@
+- Remove the requirement for pxe-default image on SUSE Linux Enterprise,
+  as it is not provided anymore for SUSE Manager 5.0
