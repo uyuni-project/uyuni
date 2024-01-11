@@ -619,6 +619,7 @@ Then(/^I should see a "([^"]*)" text$/) do |text|
   raise ScriptError, "Text '#{text}' not found" unless check_text_and_catch_request_timeout_popup?(text)
 end
 
+
 Then(/^I should see a "([^"]*)" text or "([^"]*)" text$/) do |text1, text2|
   raise ScriptError, "Text '#{text1}' and '#{text2}' not found" unless check_text_and_catch_request_timeout_popup?(text1, text2: text2)
 end
