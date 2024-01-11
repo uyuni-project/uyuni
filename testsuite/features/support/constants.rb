@@ -1069,7 +1069,7 @@ PAYGO_DEFAULT_PRODUCTS = {
       '[ ] Oracle Linux 9 aarch64',
       '[ ] Oracle Linux 9 x86_64',
       '[ ] RHEL and Liberty 9 Base',
-      '[ ] RHEL or SLES ES or CentOS 8 Base',
+      '[ ] RHEL and Liberty 8 Base',
       '[ ] RHEL7 Base x86_64',
       '[ ] Rocky Linux 8 aarch64',
       '[ ] Rocky Linux 8 x86_64',

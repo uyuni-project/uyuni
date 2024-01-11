@@ -17,9 +17,9 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "Loading" text
     And I enter "RHEL or SLES ES" as the filtered product description
-    Then I should see a "RHEL or SLES ES or CentOS 8 Base" text
+    Then I should see a "RHEL and Liberty 8 Base" text
     When I select "x86_64" in the dropdown list of the architecture filter
-    Then I should see a "RHEL or SLES ES or CentOS 8 Base" text
+    Then I should see a "RHEL and Liberty 8 Base" text
 
 @scc_credentials
 @susemanager
