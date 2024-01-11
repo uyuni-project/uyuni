@@ -1,0 +1,3 @@
+- Fix issue of non-installed package listed as errata package
+  update candidates (bsc#1212904)
+- Fix the use of page size preference in systems and packages lists (bsc#1217209)
