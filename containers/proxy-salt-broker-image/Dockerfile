@@ -43,8 +43,9 @@ LABEL org.opencontainers.image.url="${URL}"
 LABEL org.opencontainers.image.name=proxy-salt-broker-image
 LABEL org.opencontainers.image.version=4.3.10
 LABEL org.openbuildservice.disturl="%DISTURL%"
-LABEL org.opensuse.reference="${REFERENCE_PREFIX}/proxy-salt-broker:4.3.10.%RELEASE%"
+LABEL org.opensuse.reference="${REFERENCE_PREFIX}/proxy-salt-broker:${PRODUCT_VERSION}.%RELEASE%"
 # endlabelprefix
+LABEL org.uyuni.version="${PRODUCT_VERSION}"
 
 # Salt
 EXPOSE 4505/tcp
