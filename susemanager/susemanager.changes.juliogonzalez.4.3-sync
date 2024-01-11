@@ -1,0 +1,2 @@
+- Make python3-extras as dependency of python3-luibxml2 (optional, as SLES 15 does
+  not have it and it is only required on SP4 or greater) (bsc#1204437)
