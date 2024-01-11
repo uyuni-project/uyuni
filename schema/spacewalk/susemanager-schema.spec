@@ -50,7 +50,7 @@ Obsoletes:      rhn-satellite-schema <= 5.1.0
 BuildRequires:  fdupes
 %endif
 
-%define rhnroot /etc/sysconfig/rhn/
+%define rhnroot /usr/share/susemanager/db
 %define postgres %{rhnroot}/postgres
 %define spacewalk_folder Spacewalk
 %define schema_upgrade_folder %{spacewalk_folder}/SchemaUpgrade
@@ -129,11 +129,11 @@ systemctl try-restart uyuni-check-database.service ||:
 
 %files
 %defattr(-,root,root)
+%dir /usr/share/susemanager
 %dir %{rhnroot}
 %{postgres}
 %{rhnroot}/schema-upgrade
 %if 0%{?suse_version}
-%dir /usr/share/susemanager
 /usr/share/susemanager/update-messages.txt
 %ghost /var/adm/update-messages/%{name}-%{version}-%{release}
 %endif
