@@ -958,14 +958,14 @@ CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION = {
     ],
   'uyuni-proxy' =>
     %w[
-      opensuse_leap15_4
-      opensuse_leap15_4-non-oss
-      opensuse_leap15_4-non-oss-updates
-      opensuse_leap15_4-updates
-      opensuse_leap15_4-backports-updates
-      opensuse_leap15_4-sle-updates
+      opensuse_leap15_5
+      opensuse_leap15_5-non-oss
+      opensuse_leap15_5-non-oss-updates
+      opensuse_leap15_5-updates
+      opensuse_leap15_5-backports-updates
+      opensuse_leap15_5-sle-updates
       uyuni-proxy-devel-leap-x86_64
-      opensuse_leap15_4-uyuni-client-devel
+      opensuse_leap15_5-uyuni-client-devel
     ],
   'uyuni-retail-branch-server' =>
     %w[
