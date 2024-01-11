@@ -1,3 +1,0 @@
-- Move release files from spacewalk to spacewalk web, and add
-  the Mainteanance Update or Milestone version when the package
-  is built for SUSE Manager
