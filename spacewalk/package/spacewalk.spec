@@ -70,7 +70,7 @@ Requires:       spacewalk-backend-xmlrpc
 Requires:       spacewalk-certs-tools
 
 # Misc
-%if !0%{?opensuse}
+%if 0%{?opensuse}
 Requires:       pxe-default-image
 %endif
 Requires:       spacewalk-config
