@@ -17,7 +17,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
-    And I enter "RHEL or SLES ES" as the filtered product description
+    And I enter "RHEL and Liberty" as the filtered product description
     Then I should see a "RHEL and Liberty 8 Base" text
     When I select "x86_64" from "product-arch-filter"
     Then I should see a "RHEL and Liberty 8 Base" text
