@@ -34,8 +34,8 @@
 %endif
 
 Name:           uyuni-base
-Version:        5.0.0
-Release:        0
+Version:        5.0.1
+Release:        1
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        %{name}-%{version}.tar.gz
 Summary:        Uyuni Base Package
