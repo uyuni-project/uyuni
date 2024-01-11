@@ -755,6 +755,8 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until I see "SUSE Manager Retail Branch Server 4.3 x86_64" product has been added
     And I wait until all synchronized channels for "suma-retail-branch-server-43" have finished
 
+# There are no channels for Retail under Uyuni
+
   Scenario: Detect product loading issues from the UI in Build Validation
     Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
