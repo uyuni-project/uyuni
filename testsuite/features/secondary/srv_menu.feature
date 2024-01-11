@@ -164,7 +164,7 @@ Feature: Web UI - Main landing page menu, texts and links
 
   Scenario: Completeness of the side navigation bar and the content frame
     When I am on the Systems page
-    Then I should see a "System Overview" text in the content area
+    Then I should see a "Systems" text in the content area
     And I should see a "Overview" link in the left menu
     And I should see a "Systems" link in the left menu
     And I should see a "System Groups" link in the left menu
@@ -174,7 +174,7 @@ Feature: Web UI - Main landing page menu, texts and links
     And I should see a "Stored Profiles" link in the left menu
     And I should see a "Custom System Info" link in the left menu
     And I should see a "Autoinstallation" link in the left menu
-    And I should see a "View System Groups" link
+    And I should see a "System Groups" link
     And I should see a "Download CSV" link
     And I should see a Sign Out link
 
