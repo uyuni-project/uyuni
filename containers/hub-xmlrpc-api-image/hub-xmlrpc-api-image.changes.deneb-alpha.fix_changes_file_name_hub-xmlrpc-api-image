@@ -1,0 +1,2 @@
+- Rename hub-xmlrpc-api.changes to hub-xmlrpc-api-image.changes 
+  and match the source package name
