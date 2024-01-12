@@ -20,7 +20,7 @@ ARG REFERENCE_PREFIX="registry.opensuse.org/uyuni"
 
 # Build Service required labels
 # labelprefix=org.opensuse.uyuni.server-migration-14-16
-LABEL org.opencontainers.image.name=server-migration-image
+LABEL org.opencontainers.image.name=server-migration-14-16-image
 LABEL org.opencontainers.image.title="${PRODUCT} server migration container"
 LABEL org.opencontainers.image.description="${PRODUCT} server migration image"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
