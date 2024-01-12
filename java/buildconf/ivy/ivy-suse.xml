@@ -98,8 +98,7 @@
         <dependency org="suse" name="taglibs-standard-jstlel" rev="1.2.5" />
         <dependency org="suse" name="taglibs-standard-spec" rev="1.2.5" />
         <dependency org="suse" name="woodstox-core-asl" rev="4.4.2" />
-        <dependency org="suse" name="xalan-j2" rev="2.7.2" />
-        <dependency org="suse" name="xalan-j2-serializer" rev="2.7.2" />
+        <dependency org="suse" name="saxon10" rev="10.9" />
         <dependency org="suse" name="xerces-j2" rev="2.12.2" />
         <dependency org="suse" name="xmlsec" rev="2.0.7" />
         <dependency org="suse" name="glassfish-jaxb-api" rev="2.4.0" />
