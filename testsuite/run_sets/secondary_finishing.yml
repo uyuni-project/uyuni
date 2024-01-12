@@ -4,13 +4,10 @@
 # feature files in testsuite/docs/Guidelines.md in "Rules for features" chapter,
 # as well as guidelines about idempotency in "Idempotency" chapter.
 
+## Finishing Secondary features  BEGIN ##
 
-## Post run features BEGIN ##
+# this feature is destructive for other features, so it is better at the end
+- features/secondary/srv_rename_hostname.feature
+- features/finishing/srv_smdba.feature
 
-# IMMUTABLE ORDER
-
-# these features are needed for gathering log/debug info
-- features/finishing/srv_debug.feature
-- features/finishing/allcli_debug.feature
-
-## Post run features END ##
+## Finishing Secondary features END ##

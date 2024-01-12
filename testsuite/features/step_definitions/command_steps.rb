@@ -1,4 +1,4 @@
-# Copyright (c) 2014-2023 SUSE LLC.
+# Copyright (c) 2014-2024 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 ### This file contains the definitions for all steps concerning the execution of commands on a system.
@@ -412,7 +412,7 @@ When(/^I wait until the channel "([^"]*)" has been synced$/) do |channel|
   time_spent = 0
   checking_rate = 10
   begin
-    repeat_until_timeout(timeout: 7200, message: 'Channel not fully synced') do
+    repeat_until_timeout(timeout: 9000, message: 'Channel not fully synced') do
       break if channel_is_synced(channel)
       log "#{time_spent / 60.to_i} minutes waiting for '#{channel}' channel to be synchronized." if ((time_spent += checking_rate) % 60).zero?
       sleep checking_rate
@@ -676,7 +676,8 @@ end
 
 Then(/^I wait until mgr-sync refresh is finished$/) do
   # mgr-sync refresh is a slow operation, we don't use the default timeout
-  cmd = 'spacecmd -u admin -p admin api sync.content.listProducts'
+  # limit the result to important lines to have at least 1 match in the output we get
+  cmd = 'spacecmd -u admin -p admin api sync.content.listProducts | grep SLES'
   repeat_until_timeout(timeout: 1800, message: '\'mgr-sync refresh\' did not finish') do
     result, code = get_target('server').run(cmd, check_errors: false)
     break if result.include? 'SLES'

@@ -205,8 +205,8 @@ public class SUSEProductSet {
      * Return a flag to know if all channels are synced or not
      * @return true if all channels are synced
      */
-    public Boolean getIsEveryChannelSynced() {
-        return missingChannels == null || missingChannels.size() == 0;
+    public boolean getIsEveryChannelSynced() {
+        return missingChannels == null || missingChannels.isEmpty();
     }
 
     /**

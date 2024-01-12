@@ -83,5 +83,8 @@ CREATE INDEX rhn_package_nid_id_idx
     
     ;
 
+CREATE INDEX rhn_package_nid_evrid_idx
+    ON rhnPackage (name_id, evr_id);
+
 CREATE SEQUENCE rhn_package_id_seq;
 

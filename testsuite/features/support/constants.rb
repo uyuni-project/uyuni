@@ -1,4 +1,4 @@
-# Copyright (c) 2019-2023 SUSE LLC
+# Copyright (c) 2019-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 ENV_VAR_BY_HOST = { 'localhost' => 'HOSTNAME',
@@ -81,8 +81,8 @@ ENV_VAR_BY_HOST = { 'localhost' => 'HOSTNAME',
                     'opensuse154arm_ssh_minion' => 'OPENSUSE154ARM_SSHMINION',
                     'opensuse155arm_minion' => 'OPENSUSE155ARM_MINION',
                     'opensuse155arm_ssh_minion' => 'OPENSUSE155ARM_SSHMINION',
-                    'sle15sp3s390_minion' => 'SLE15SP3S390_MINION',
-                    'sle15sp3s390_ssh_minion' => 'SLE15SP3S390_SSHMINION',
+                    'sle15sp5s390_minion' => 'SLE15SP5S390_MINION',
+                    'sle15sp5s390_ssh_minion' => 'SLE15SP5S390_SSHMINION',
                     'salt_migration_minion' => 'SALT_MIGRATION_MINION' }.freeze
 
 ADDRESSES = { 'network'           => '0',
@@ -229,8 +229,8 @@ PACKAGE_BY_CLIENT = { 'sle_client' => 'bison',
                       'opensuse154arm_ssh_minion' => 'bison',
                       'opensuse155arm_minion' => 'bison',
                       'opensuse155arm_ssh_minion' => 'bison',
-                      'sle15sp3s390_minion' => 'bison',
-                      'sle15sp3s390_ssh_minion' => 'bison',
+                      'sle15sp5s390_minion' => 'bison',
+                      'sle15sp5s390_ssh_minion' => 'bison',
                       'salt_migration_minion' => 'bison' }.freeze
 
 # The values can be found under Software -> Channel List -> Create Channel
@@ -319,8 +319,8 @@ BASE_CHANNEL_BY_CLIENT = {
                               'opensuse154arm_ssh_minion' => 'openSUSE-Leap-15.4-Pool for aarch64',
                               'opensuse155arm_minion' => 'openSUSE-Leap-15.5-Pool for aarch64',
                               'opensuse155arm_ssh_minion' => 'openSUSE-Leap-15.5-Pool for aarch64',
-                              'sle15sp3s390_minion' => 'SLE-Product-SLES15-SP3-Pool for s390x',
-                              'sle15sp3s390_ssh_minion' => 'SLE-Product-SLES15-SP3-Pool for s390x'
+                              'sle15sp5s390_minion' => 'SLE-Product-SLES15-SP5-Pool for s390x',
+                              'sle15sp5s390_ssh_minion' => 'SLE-Product-SLES15-SP5-Pool for s390x'
                             },
                             'Uyuni' =>
                             {
@@ -391,8 +391,8 @@ BASE_CHANNEL_BY_CLIENT = {
                               'opensuse154arm_ssh_minion' => 'openSUSE Leap 15.4 (aarch64)',
                               'opensuse155arm_minion' => 'openSUSE Leap 15.5 (aarch64)',
                               'opensuse155arm_ssh_minion' => 'openSUSE Leap 15.5 (aarch64)',
-                              'sle15sp3s390_minion' => 'SLE-Product-SLES15-SP3-Pool for s390x',
-                              'sle15sp3s390_ssh_minion' => 'SLE-Product-SLES15-SP3-Pool for s390x'
+                              'sle15sp5s390_minion' => 'SLE-Product-SLES15-SP5-Pool for s390x',
+                              'sle15sp5s390_ssh_minion' => 'SLE-Product-SLES15-SP5-Pool for s390x'
                             },
                             'Fake' =>
                             {
@@ -678,8 +678,8 @@ PKGARCH_BY_CLIENT = { 'proxy' => 'x86_64',
                       'opensuse154arm_ssh_minion' => 'aarch64',
                       'opensuse155arm_minion' => 'aarch64',
                       'opensuse155arm_ssh_minion' => 'aarch64',
-                      'sle15sp3s390_minion' => 's390x',
-                      'sle15sp3s390_ssh_minion' => 's390x' }.freeze
+                      'sle15sp5s390_minion' => 's390x',
+                      'sle15sp5s390_ssh_minion' => 's390x' }.freeze
 
 CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION = {
   # WARNING:
@@ -728,6 +728,15 @@ CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION = {
       devel-debian-11-client-tools
       debian-11-amd64-uyuni-client
     ],
+  'debian-12' =>
+    %w[
+      debian-12-main-security-amd64
+      debian-12-main-updates-amd64
+      debian-12-pool-amd64
+      debian-12-suse-manager-tools-amd64
+      devel-debian-12-client-tools
+      debian-12-amd64-uyuni-client
+    ],
   'sll-9' =>
     %w[
       sll-9-updates-x86_64
@@ -772,7 +781,6 @@ CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION = {
       sles12-sp4-updates-x86_64
       sle-manager-tools12-updates-x86_64-sp4
       sle-manager-tools12-pool-x86_64-sp4
-      sles12-sp4-uyuni-client-x86_64
     ],
   'sles12-sp5' =>
     %w[
@@ -781,7 +789,6 @@ CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION = {
       sles12-sp5-updates-x86_64
       sle-manager-tools12-updates-x86_64-sp5
       sle-manager-tools12-pool-x86_64-sp5
-      sles12-sp5-uyuni-client-x86_64
     ],
   'sles15-sp1' =>
     %w[
@@ -795,7 +802,6 @@ CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION = {
       sle-manager-tools15-updates-x86_64-sp1
       sle-manager-tools15-pool-x86_64-sp1
       sle15-sp1-installer-updates-x86_64
-      sles15-sp1-uyuni-client-x86_64
     ],
   'sles15-sp2' =>
     %w[
@@ -813,7 +819,6 @@ CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION = {
       sle-manager-tools15-updates-x86_64-sp2
       sle-manager-tools15-pool-x86_64-sp2
       sle15-sp2-installer-updates-x86_64
-      sles15-sp2-uyuni-client-x86_64
     ],
   'sles15-sp3' =>
     %w[
@@ -831,9 +836,6 @@ CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION = {
       sle-module-desktop-applications15-sp3-updates-x86_64
       sle-module-devtools15-sp3-pool-x86_64
       sle-module-devtools15-sp3-updates-x86_64
-      sle-module-containers15-sp3-pool-x86_64
-      sle-module-containers15-sp3-updates-x86_64
-      sles15-sp3-uyuni-client-x86_64
     ],
   'sles15-sp4' =>
     %w[
@@ -852,11 +854,9 @@ CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION = {
       sle-product-sles15-sp4-updates-x86_64
       sle-module-containers15-sp4-pool-x86_64
       sle-module-containers15-sp4-updates-x86_64
-      sles15-sp4-uyuni-client-x86_64
     ],
   'sles15-sp5' =>
     %w[
-      sle15-sp5-installer-updates-x86_64
       sle-manager-tools15-pool-x86_64-sp5
       sle-manager-tools15-updates-x86_64-sp5
       sle-module-basesystem15-sp5-pool-x86_64
@@ -869,9 +869,6 @@ CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION = {
       sle-module-server-applications15-sp5-updates-x86_64
       sle-product-sles15-sp5-pool-x86_64
       sle-product-sles15-sp5-updates-x86_64
-      sle-module-containers15-sp5-pool-x86_64
-      sle-module-containers15-sp5-updates-x86_64
-      sles15-sp5-uyuni-client-x86_64
     ],
   'slesforsap15-sp5' =>
     %w[
@@ -891,6 +888,17 @@ CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION = {
       sle-product-ha15-sp5-updates-x86_64-sap
       sle-module-sap-applications15-sp5-pool-x86_64
       sle-module-sap-applications15-sp5-updates-x86_64
+    ],
+  'sles15-sp5-s390x' =>
+    %w[
+      sle-manager-tools15-pool-s390x-sp5
+      sle-manager-tools15-updates-s390x-sp5
+      sle-module-basesystem15-sp5-pool-s390x
+      sle-module-basesystem15-sp5-updates-s390x
+      sle-module-server-applications15-sp5-pool-s390x
+      sle-module-server-applications15-sp5-updates-s390x
+      sle-product-sles15-sp5-pool-s390x
+      sle-product-sles15-sp5-updates-s390x
     ],
   'res7' =>
     %w[
@@ -941,7 +949,6 @@ CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION = {
       suse-microos-5.1-updates-x86_64
       sle-manager-tools-for-micro5-updates-x86_64-5.1
       sle-manager-tools-for-micro5-pool-x86_64-5.1
-      sle-micro-5.1-uyuni-client-x86_64
     ],
   'suse-microos-5.2' =>
     %w[
@@ -949,7 +956,6 @@ CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION = {
       suse-microos-5.2-updates-x86_64
       sle-manager-tools-for-micro5-updates-x86_64-5.2
       sle-manager-tools-for-micro5-pool-x86_64-5.2
-      suse-microos-5.2-uyuni-client-x86_64
     ],
   'sle-micro-5.3' =>
     %w[
@@ -957,7 +963,6 @@ CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION = {
       sle-micro-5.3-updates-x86_64
       sle-manager-tools-for-micro5-updates-x86_64-5.3
       sle-manager-tools-for-micro5-pool-x86_64-5.3
-      suse-microos-5.3-uyuni-client-x86_64
     ],
   'sle-micro-5.4' =>
     %w[
@@ -965,7 +970,6 @@ CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION = {
       sle-micro-5.4-updates-x86_64
       sle-manager-tools-for-micro5-updates-x86_64-5.4
       sle-manager-tools-for-micro5-pool-x86_64-5.4
-      sle-micro-5.4-uyuni-client-x86_64
     ],
   'sle-micro-5.5' =>
     %w[
@@ -973,7 +977,6 @@ CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION = {
       sle-micro-5.5-updates-x86_64
       sle-manager-tools-for-micro5-updates-x86_64-5.5
       sle-manager-tools-for-micro5-pool-x86_64-5.5
-      sle-micro-5.5-uyuni-client-x86_64
     ],
   'ubuntu-2004' =>
     %w[
@@ -1016,22 +1019,16 @@ CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION = {
     ],
   'uyuni-proxy' =>
     %w[
-      opensuse_leap15_4
-      opensuse_leap15_4-non-oss
-      opensuse_leap15_4-non-oss-updates
-      opensuse_leap15_4-updates
-      opensuse_leap15_4-backports-updates
-      opensuse_leap15_4-sle-updates
+      opensuse_leap15_5
+      opensuse_leap15_5-non-oss
+      opensuse_leap15_5-non-oss-updates
+      opensuse_leap15_5-updates
+      opensuse_leap15_5-backports-updates
+      opensuse_leap15_5-sle-updates
       uyuni-proxy-devel-leap-x86_64
-      opensuse_leap15_4-uyuni-client-devel
-    ],
-  'uyuni-retail-branch-server' =>
-    %w[
-      sle-product-suse-manager-retail-branch-server-4.3-pool-x86_64
-      sle-product-suse-manager-retail-branch-server-4.3-updates-x86_64
-      sle-module-suse-manager-retail-branch-server-4.3-pool-x86_64
-      sle-module-suse-manager-retail-branch-server-4.3-updates-x86_64
+      opensuse_leap15_5-uyuni-client-devel
     ]
+  # There are no channels for Retail under Uyuni
 }.freeze
 
 PAYGO_DEFAULT_PRODUCTS = {
@@ -1066,7 +1063,7 @@ PAYGO_DEFAULT_PRODUCTS = {
       '[ ] Oracle Linux 9 aarch64',
       '[ ] Oracle Linux 9 x86_64',
       '[ ] RHEL and Liberty 9 Base',
-      '[ ] RHEL or SLES ES or CentOS 8 Base',
+      '[ ] RHEL and Liberty 8 Base',
       '[ ] RHEL7 Base x86_64',
       '[ ] Rocky Linux 8 aarch64',
       '[ ] Rocky Linux 8 x86_64',

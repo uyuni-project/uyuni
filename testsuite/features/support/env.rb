@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2023 SUSE LLC
+# Copyright (c) 2010-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 require 'English'
@@ -470,12 +470,12 @@ Before('@opensuse155arm_ssh_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['opensuse155arm_ssh_minion']
 end
 
-Before('@sle15sp3s390_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp3s390_minion']
+Before('@sle15sp5s390_minion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp5s390_minion']
 end
 
-Before('@sle15sp3s390_ssh_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp3s390_ssh_minion']
+Before('@sle15sp5s390_ssh_minion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp5s390_ssh_minion']
 end
 
 Before('@salt_migration_minion') do
