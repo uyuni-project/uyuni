@@ -91,6 +91,8 @@ They are delivered together with submissions and we must verify them before appr
     - [ ] slemicro53_ssh_minion
     - [ ] slemicro54_minion
     - [ ] slemicro54_ssh_minion
+    - [ ] slemicro55_minion
+    - [ ] slemicro55_ssh_minion
     - [ ] ubuntu2004_minion
     - [ ] ubuntu2004_ssh_minion
     - [ ] ubuntu2204_minion
