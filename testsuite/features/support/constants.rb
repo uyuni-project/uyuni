@@ -966,14 +966,8 @@ CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION = {
       opensuse_leap15_5-sle-updates
       uyuni-proxy-devel-leap-x86_64
       opensuse_leap15_5-uyuni-client-devel
-    ],
-  'uyuni-retail-branch-server' =>
-    %w[
-      sle-product-suse-manager-retail-branch-server-4.3-pool-x86_64
-      sle-product-suse-manager-retail-branch-server-4.3-updates-x86_64
-      sle-module-suse-manager-retail-branch-server-4.3-pool-x86_64
-      sle-module-suse-manager-retail-branch-server-4.3-updates-x86_64
     ]
+  # There are no channels for Retail under Uyuni
 }.freeze
 
 EMPTY_CHANNELS = %w[sle-module-suse-manager-retail-branch-server-4.3-updates-x86_64].freeze
