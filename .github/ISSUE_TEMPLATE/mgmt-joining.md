@@ -69,5 +69,6 @@ General template for new joiners of the SUSE Manager team.
   - [ ] Add to [galaxy-qa](https://mailman.suse.de/mailman/admin/galaxy-qa/members/add) mailing list
   - [ ] Add to [SUSE Manager QE Team](https://github.com/orgs/SUSE/teams/suse-manager-qe/members) on GitHub
   - [ ] Add to [Uyuni QE developer Team](https://github.com/orgs/uyuni-project/teams/qe) on GitHub
+  - [ ] Add to [QE Retrospective project](https://github.com/orgs/SUSE/projects/54) on GitHub
   - [ ] Add to [QE project board member list](https://github.com/orgs/SUSE/projects/32/views/1?pane=info) on GitHub
   - [ ] Add to the Google [SUMA QE Squad](https://groups.google.com/a/suse.com/g/suma-qe/members) group
