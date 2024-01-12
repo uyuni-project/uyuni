@@ -14,14 +14,16 @@ ARG REFERENCE_PREFIX="registry.opensuse.org/uyuni"
 
 # Build Service required labels
 # labelprefix=org.opensuse.uyuni.hub-xmlrpc-api
+LABEL org.opencontainers.image.name=hub-xmlrpc-api-image
 LABEL org.opencontainers.image.title="${PRODUCT} Hub XML-RPC API container"
 LABEL org.opencontainers.image.description="${PRODUCT} Hub XML-RPC API image"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="${VENDOR}"
 LABEL org.opencontainers.image.url="${URL}"
-LABEL org.opencontainers.image.version="5.0.0"
+LABEL org.opencontainers.image.version=5.0.0
 LABEL org.openbuildservice.disturl="%DISTURL%"
-LABEL org.opensuse.reference="${REFERENCE_PREFIX}/server:5.0.0.%RELEASE%"
+LABEL org.opensuse.reference="${REFERENCE_PREFIX}/hub-xmlrpc-api:${PRODUCT_VERSION}.%RELEASE%"
 # endlabelprefix
+LABEL org.uyuni.version="${PRODUCT_VERSION}"
 
 CMD ["/usr/bin/hub-xmlrpc-api"]

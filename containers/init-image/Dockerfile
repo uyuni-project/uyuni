@@ -52,7 +52,7 @@ LABEL org.opencontainers.image.vendor="${VENDOR}"
 LABEL org.opencontainers.image.url="${URL}"
 LABEL org.opencontainers.image.version=5.0.1
 LABEL org.openbuildservice.disturl="%DISTURL%"
-LABEL org.opensuse.reference="${REFERENCE_PREFIX}/init:5.0.1.%RELEASE%"
+LABEL org.opensuse.reference="${REFERENCE_PREFIX}/init:${PRODUCT_VERSION}.%RELEASE%"
 # endlabelprefix
 
 HEALTHCHECK --interval=5s --timeout=5s --retries=5 CMD ["/usr/bin/systemctl", "is-active", "multi-user.target"]
