@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Jan 12 11:49:05 CET 2024 - marina.latini@suse.com
+
+- version 5.0.2
+  * Use product version in reference label
+  * Fix the container version labels
+
+-------------------------------------------------------------------
 Wed Jan 10 18:56:28 CET 2024 - marina.latini@suse.com
 
 - version 5.0.1
