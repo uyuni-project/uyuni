@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-01-05 16:12+0100\n"
-"PO-Revision-Date: 2024-01-06 23:59+0000\n"
+"PO-Revision-Date: 2024-01-13 17:59+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -5358,9 +5358,8 @@ msgid "New Proxy"
 msgstr "Nový proxy"
 
 #: ../html/src/manager/systems/ssm/ssm-counter.tsx:25
-#, fuzzy
 msgid "Manage selected system set"
-msgstr "Označiť vybrané ako prečítané"
+msgstr "Spravovať vybranú systémovú sadu"
 
 #: ../html/src/manager/systems/ssm/ssm-counter.tsx:31
 msgid "system selected"
@@ -5371,9 +5370,8 @@ msgid "systems selected"
 msgstr "vybrané systémy"
 
 #: ../html/src/manager/systems/ssm/ssm-counter.tsx:34
-#, fuzzy
 msgid "Clear selected system set"
-msgstr "Vymazať vybraté správy"
+msgstr "Vymazať vybranú systémovú sadu"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:32
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:24
