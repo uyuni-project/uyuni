@@ -31,10 +31,9 @@ Source0:        %{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 %if 0%{?sle_version} && !0%{?is_opensuse}
-# SUSE Manager does not support aarch64 for the server
-ExcludeArch:    aarch64
 BuildRequires:  SUSE-Manager-Server-release
 %else
+# This package is not needed for Uyuni, so we do not build it
 ExcludeArch:    i586 x86_64 ppc64le s390x aarch64
 %endif
 Provides:       susemanager-branding = %{version}
