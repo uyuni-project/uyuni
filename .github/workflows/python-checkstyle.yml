@@ -29,6 +29,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+    
+    - id: files
+      uses: Ana06/get-changed-files@v2.2.0
+      with:
+        filter: '*.py'
     #  fetch-depth: 0
     # - uses: jitterbit/get-changed-files@v1
     #   id: changed_files
@@ -49,11 +54,7 @@ jobs:
     #     # echo "__w" && ls -la /__w/uyuni/uyuni
     #     git config --global --add safe.directory '*'
     #     cd /__w/uyuni/uyuni && git status || echo "git failed"
-    - name: Filter python files
-      id: filter
-      run: |
-        git config --global --add safe.directory '*'
-        echo "file_diff=$(git diff --name-only origin/master HEAD | grep \.py)" >> $GITHUB_OUTPUT
     - name: Print python files
       run: |
-        echo ${{ steps.filter.outputs.file_diff }}
+        echo ${{ steps.files.outputs.all }}
+        black --check --diff -t py36 ${{ steps.files.outputs.all }}
