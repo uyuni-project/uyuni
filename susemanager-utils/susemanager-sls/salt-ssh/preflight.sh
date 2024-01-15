@@ -14,10 +14,10 @@ if ! [ "${SH_NAME}" = "bash" ]; then
 fi
 
 REPO_HOST=$1
-if [[ $2 =~ "^[0-9]$" ]]; then
+if [[ $2 =~ ^[0-9]+$ ]]; then
    REPO_PORT=$2
 else
-   echo 'Error: $2 (REPO_PORT) must be an integer.' >2
+   echo 'Error: $2 (REPO_PORT) must be an integer.' >&2
    exit 254
 fi
 FAIL_ON_ERROR=1
@@ -217,7 +217,8 @@ if [[ $REPO_HOST == "localhost" ]] && command -v selinuxenabled && selinuxenable
     if ! selinux_policy_loaded; then
         echo "(portcon tcp ${REPO_PORT} (system_u object_r ssh_port_t ((s0)(s0))))" >$SELINUX_POLICY_FILENAME
         if ! semodule -i $SELINUX_POLICY_FILENAME; then
-			exit_with_message_code "Error: Failed to install SELinux policy." 7
+            exit_with_message_code "Error: Failed to install SELinux policy." 7
+        fi
     fi
 fi
 
