@@ -51,10 +51,10 @@ jobs:
     - name: Filter python files
       id: filter
       run: |
-        echo "added=echo ${{ steps.changed_files.outputs.added }} | grep .py" >> $GITHUB_OUTPUT
-        echo "renamed=echo ${{ steps.changed_files.outputs.renamed }} | grep .py" >> $GITHUB_OUTPUT
-        echo "modified=echo ${{ steps.changed_files.outputs.modified }} | grep .py" >> $GITHUB_OUTPUT
-        echo "added_modified=echo ${{ steps.changed_files.outputs.added_modified }} | grep .py" >> $GITHUB_OUTPUT
+        echo "added=`echo ${{ steps.changed_files.outputs.added }} | grep .py`" >> $GITHUB_OUTPUT
+        echo "renamed=`echo ${{ steps.changed_files.outputs.renamed }} | grep .py`" >> $GITHUB_OUTPUT
+        echo "modified=`echo ${{ steps.changed_files.outputs.modified }} | grep .py`" >> $GITHUB_OUTPUT
+        echo "added_modified=`echo ${{ steps.changed_files.outputs.added_modified }} | grep .py`" >> $GITHUB_OUTPUT
     - name: Print python files
       env:
         PY_FILES: ${{join(steps.filter.outputs.*, ' ')}}
