@@ -29,7 +29,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-      fetch-depth: 0
+    #  fetch-depth: 0
     # - uses: jitterbit/get-changed-files@v1
     #   id: changed_files
     #   continue-on-error: true
@@ -53,7 +53,7 @@ jobs:
       id: filter
       run: |
         git config --global --add safe.directory '*'
-        echo "file_diff=$(git diff --name-only master... | grep \.py)" >> $GITHUB_OUTPUT
+        echo "file_diff=$(git diff --name-only origin/master HEAD | grep \.py)" >> $GITHUB_OUTPUT
     - name: Print python files
       run: |
         echo ${{ steps.filter.outputs.file_diff }}
