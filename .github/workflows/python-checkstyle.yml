@@ -29,9 +29,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - uses: jitterbit/get-changed-files@v1
-      id: changed_files
-      continue-on-error: true
+    # - uses: jitterbit/get-changed-files@v1
+    #   id: changed_files
+    #   continue-on-error: true
 
     # - name: Test container dependencies
     #   run: |
@@ -51,12 +51,8 @@ jobs:
     - name: Filter python files
       id: filter
       run: |
-        echo "added=`echo ${{ steps.changed_files.outputs.added }} | grep .py`" >> $GITHUB_OUTPUT
-        echo "renamed=`echo ${{ steps.changed_files.outputs.renamed }} | grep .py`" >> $GITHUB_OUTPUT
-        echo "modified=`echo ${{ steps.changed_files.outputs.modified }} | grep .py`" >> $GITHUB_OUTPUT
-        echo "added_modified=`echo ${{ steps.changed_files.outputs.added_modified }} | grep .py`" >> $GITHUB_OUTPUT
+        git config --global --add safe.directory '*'
+        echo "file_diff=$(git diff --name-only master... | grep .py)" >> $GITHUB_OUTPUT
     - name: Print python files
-      env:
-        PY_FILES: ${{join(steps.filter.outputs.*, ' ')}}
       run: |
-        echo $PY_FILES
+        echo ${{ steps.filter.outputs.file_diff }}
