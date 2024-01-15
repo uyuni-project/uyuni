@@ -1,13 +1,17 @@
 @input-height: 35px;
 
-.form-control {
+.form-control,
+.form-control--react-select > div:first-of-type {
   color: @eos-bc-gray-1000;
   height: @input-height;
   max-width: 100%;
-  padding: 8px !important;
   border-radius: @border-radius-base !important;
-  border-color: @eos-bc-gray-700 !important;
+  border-color: @input-border-color !important;
   box-shadow: none !important;
+}
+
+.form-control {
+  padding: 8px !important;
 
   &:focus {
     border-color: @eos-bc-blue-500 !important;
@@ -21,7 +25,7 @@
     cursor: not-allowed;
 
     &:focus {
-      border-color: @eos-bc-gray-700 !important;
+      border-color: @input-border-color !important;
     }
   }
 
@@ -31,13 +35,21 @@
     cursor: default;
 
     &:focus {
-      border-color: @eos-bc-gray-700 !important;
+      border-color: @input-border-color !important;
     }
   }
 
   &::placeholder {
     color: @input-placeholder;
     opacity: 1;
+  }
+}
+
+// TODO: Bind this class to the react-select control once we upgrade react-select, see https://react-select.com/styles#the-classnames-prop
+.form-control--react-select > div:first-of-type {
+  &:hover {
+    border-color: @eos-bc-blue-500 !important;
+    outline: none !important;
   }
 }
 
@@ -48,5 +60,5 @@ select[size] {
 }
 
 .input-group-addon {
-  border-color: @eos-bc-gray-700 !important;
+  border-color: @input-border-color !important;
 }

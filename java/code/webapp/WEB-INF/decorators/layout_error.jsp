@@ -6,6 +6,7 @@
 <%@ taglib uri="http://rhn.redhat.com/rhn" prefix="rhn"%>
 <%@ page import="com.redhat.rhn.common.conf.Config"%>
 <%@ page import="com.redhat.rhn.common.conf.ConfigDefaults"%>
+<%@ page import="com.redhat.rhn.GlobalInstanceHolder" %>
 <%@ page contentType="text/html; charset=UTF-8"
 %><!DOCTYPE HTML>
 <html:html lang="true">
@@ -52,7 +53,8 @@
     <script src='/javascript/momentjs/moment-with-langs.min.js?cb=${cb_version}' type='text/javascript'></script>
     <decorator:head />
   </head>
-  <body onload="<decorator:getProperty property="body.onload" />">
+  <c:set var="webTheme" value="${GlobalInstanceHolder.USER_PREFERENCE_UTILS.getCurrentWebTheme(pageContext)}"/>
+  <body class="theme-${webTheme}" onload="<decorator:getProperty property="body.onload" />">
   <c:set var="custom_header" scope="page" value="${rhn:getConfig('java.custom_header')}" />
 
   <header class="navbar-pf navbar navbar-dark bg-dark">
