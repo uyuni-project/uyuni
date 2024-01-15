@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-01-12 14:39+0100\n"
-"PO-Revision-Date: 2023-11-01 04:15+0000\n"
+"PO-Revision-Date: 2024-01-15 15:59+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web-4-3/ja/"
 ">\n"
@@ -1688,7 +1688,7 @@ msgstr "サブスクリプション ID"
 msgid ""
 "Subscription with unsupported part number and no associated product has been "
 "ignored."
-msgstr ""
+msgstr "サポートされていないパーツ番号と関連製品がないサブスクリプションは無視されました。"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:84
 msgid "Please review warning and information messages below."
@@ -2380,9 +2380,8 @@ msgid "NEVRA"
 msgstr "NEVRA"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:162
-#, fuzzy
 msgid "Build date"
-msgstr "イメージの構築"
+msgstr "日付の構築"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:168
 msgid "Advisory Name"
@@ -4216,9 +4215,8 @@ msgid "Update Notification"
 msgstr "更新通知"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:65
-#, fuzzy
 msgid "PAYG instance is not compliant"
-msgstr "インスタンスは古くなっています"
+msgstr "PAYGインスタンスは準拠していません"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:156
 msgid "Filter by type"
