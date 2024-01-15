@@ -1,0 +1,48 @@
+name: Python checkstyle
+
+on:
+  # push:
+  #   branches:
+  #     - master
+  #   paths:
+  #     - 'java/**.java'
+  #     - 'java/**.xml'
+  #     - '.github/workflows/java-checkstyle.yml'
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+    # paths:
+    #   # We also trigger on non-java code changes since this triggers sonarcloud scanner after
+    #   - '**.py'
+    #   - 'web/html/src/**.ts'
+    #   - 'web/html/src/**.tsx'
+    #   - 'java/**.java'
+    #   - 'java/**.xml'
+    #   - '.github/workflows/java-checkstyle.yml'
+
+jobs:
+  checkstyle:
+    runs-on: ubuntu-latest
+    container: registry.opensuse.org/home/mczernek/containers/opensuse_factory_containerfile/uyuni-lint:latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    # - name: Test container dependencies
+    #   run: |
+    #     black --version
+    #     pylint --version
+    #     ls -l /github/
+    #     echo
+    #     echo $GITHUB_WORKSPACE
+    
+    - name: Test mounts
+      run: |
+        # echo ".workspace" && ls -l /home/runner/work/uyuni/uyuni || echo "not found"
+        # echo
+        # echo "__w" && ls -la /__w/uyuni/uyuni
+        pwd
+        git config --global --add safe.directory '*'
+        cd /__w/uyuni/uyuni && git status || echo "git failed"
