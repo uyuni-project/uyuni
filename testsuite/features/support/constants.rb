@@ -707,6 +707,7 @@ CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION = {
   'almalinux9' =>
     %w[
       almalinux9-appstream-x86_64
+      almalinux9-extras-x86_64
       almalinux9-x86_64
       almalinux9-uyuni-client-x86_64
     ],
@@ -758,12 +759,14 @@ CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION = {
   'rockylinux-8' =>
     %w[
       rockylinux-8-appstream-x86_64
+      rockylinux-8-extras-x86_64
       rockylinux-8-x86_64
       rockylinux8-uyuni-client-x86_64
     ],
   'rockylinux-9' =>
     %w[
       rockylinux-9-appstream-x86_64
+      rockylinux-9-extras-x86_64
       rockylinux-9-x86_64
       rockylinux9-uyuni-client-x86_64
     ],

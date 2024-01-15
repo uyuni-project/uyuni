@@ -631,7 +631,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @rocky8_minion
   Scenario: Add Rocky Linux 8
     When I use spacewalk-common-channel to add channel "rockylinux8 rockylinux8-appstream rockylinux8-extras rockylinux8-uyuni-client-devel" with arch "x86_64"
-    And I wait until all synchronized channels for "res8" have finished
+    And I wait until all synchronized channels for "rockylinux-8" have finished
 
 @susemanager
 @rocky9_minion
@@ -645,6 +645,12 @@ Feature: Synchronize products in the products page of the Setup Wizard
     Then I should see the "Rocky Linux 9 x86_64" selected
     When I click the Add Product button
     And I wait until I see "Rocky Linux 9 x86_64" product has been added
+    And I wait until all synchronized channels for "rockylinux-9" have finished
+
+@uyuni
+@rocky9_minion
+  Scenario: Add Rocky Linux 9
+    When I use spacewalk-common-channel to add channel "rockylinux9 rockylinux9-appstream rockylinux9-extras rockylinux9-uyuni-client-devel" with arch "x86_64"
     And I wait until all synchronized channels for "rockylinux-9" have finished
 
 @ubuntu2004_minion
