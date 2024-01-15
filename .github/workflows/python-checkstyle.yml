@@ -29,6 +29,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+    - uses: jitterbit/get-changed-files@v1
+      id: changed_files
 
     # - name: Test container dependencies
     #   run: |
@@ -38,11 +40,22 @@ jobs:
     #     echo
     #     echo $GITHUB_WORKSPACE
     
-    - name: Test mounts
+    # - name: Test mounts
+    #   run: |
+    #     # echo ".workspace" && ls -l /home/runner/work/uyuni/uyuni || echo "not found"
+    #     # echo
+    #     # echo "__w" && ls -la /__w/uyuni/uyuni
+    #     git config --global --add safe.directory '*'
+    #     cd /__w/uyuni/uyuni && git status || echo "git failed"
+    - name: Filter python files
+      id: filter
       run: |
-        # echo ".workspace" && ls -l /home/runner/work/uyuni/uyuni || echo "not found"
-        # echo
-        # echo "__w" && ls -la /__w/uyuni/uyuni
-        pwd
-        git config --global --add safe.directory '*'
-        cd /__w/uyuni/uyuni && git status || echo "git failed"
+        echo "added=echo ${{ steps.changed_files.outputs.added }} | grep .py" >> $GITHUB_OUTPUT
+        echo "renamed=echo ${{ steps.changed_files.outputs.renamed }} | grep .py" >> $GITHUB_OUTPUT
+        echo "modified=echo ${{ steps.changed_files.outputs.modified }} | grep .py" >> $GITHUB_OUTPUT
+        echo "added_modified=echo ${{ steps.changed_files.outputs.added_modified }} | grep .py" >> $GITHUB_OUTPUT
+    - name: Print python files
+      env:
+        PY_FILES: ${{join(steps.filter.outputs.*, ' ')}}
+      run: |
+        echo $PY_FILES
