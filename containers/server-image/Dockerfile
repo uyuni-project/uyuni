@@ -6,6 +6,9 @@ FROM $INIT_IMAGE
 
 ARG PRODUCT_PATTERN_PREFIX="patterns-uyuni"
 
+# Extra packages can be added via project configuration
+ARG EXTRAPACKAGES
+
 COPY timezone_alignment.sh /usr/bin
 
 # Copy timezone link update service
@@ -17,10 +20,10 @@ RUN echo "rpm.install.excludedocs = yes" >>/etc/zypp/zypp.conf
 # Main packages
 RUN zypper ref && zypper --non-interactive up
 RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses --force-resolution \
+    ${EXTRAPACKAGES} \
     ${PRODUCT_PATTERN_PREFIX}_server \
     ${PRODUCT_PATTERN_PREFIX}_retail \
     spacewalk-utils-extras \
-    shim \
     grub2-x86_64-efi \
     ed \
     susemanager-tftpsync \

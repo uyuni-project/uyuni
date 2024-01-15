@@ -1,0 +1,2 @@
+- Make shim an optional package as it is not available for all
+  architectures
