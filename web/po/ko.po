@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-01-05 16:12+0100\n"
-"PO-Revision-Date: 2024-01-15 07:59+0000\n"
+"PO-Revision-Date: 2024-01-16 03:59+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
 "Language: ko\n"
@@ -1714,7 +1714,6 @@ msgid "Subscription IDs"
 msgstr "구독 ID"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:63
-#, fuzzy
 msgid ""
 "Subscription with unsupported part number and no associated product has been "
 "ignored."
@@ -2398,7 +2397,6 @@ msgid "NEVRA"
 msgstr "NEVRA"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:162
-#, fuzzy
 msgid "Build date"
 msgstr "빌드 날짜"
 
@@ -4197,7 +4195,6 @@ msgid "Update Notification"
 msgstr "알림 업데이트"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:60
-#, fuzzy
 msgid "PAYG instance is not compliant"
 msgstr "PAYG 인스턴스가 호환되지 않음"
 
