@@ -77,7 +77,7 @@ install -p -m 644 %{modulename}.if \
   %{buildroot}%{_datadir}/selinux/devel/include/%{moduletype}/%{modulename}.if
 
 # Hardlink identical policy module packages together
-/usr/sbin/hardlink -cv %{buildroot}%{_datadir}/selinux
+hardlink -cv %{buildroot}%{_datadir}/selinux
 
 # Install spacewalk-selinux-enable which will be called in %posttrans
 install -d %{buildroot}%{_sbindir}
