@@ -61,8 +61,8 @@ Name:           spacewalk-java
 Summary:        Java web application files for Spacewalk
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        5.0.0
-Release:        0
+Version:        5.0.1
+Release:        1
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        %{name}-%{version}.tar.gz
 Source1:        https://raw.githubusercontent.com/uyuni-project/uyuni/%{name}-%{version}-1/java/%{name}-rpmlintrc

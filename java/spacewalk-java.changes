@@ -1,4 +1,35 @@
 -------------------------------------------------------------------
+Tue Jan 16 08:31:04 CET 2024 - jgonzalez@suse.com
+
+- version 5.0.1-1
+  * Update allowed postgres version
+  * Remove SUSE Manager proxy 4.2 product channel for PAYG instance (bsc#1215412)
+  * Add config option to disable remote commands from web UI (bsc#1217869)
+  * provide total number of CPUs for SLE Micro systems to subscription matcher
+    when it is not used as hypervisor to match vCore subscriptions correctly
+    (bsc#1218074)
+  * fix XSS in taskomatic XML RPC handler (bsc#1210911)
+  * Drop handling of legacy pillar and formula files
+  * Update shared page layouts
+  * Refactor Credentials to a proper class hierarchy
+  * Add user information to system organization transfer message (bsc#1216753)
+  * Fix issue of non-installed package listed as errata package
+    update candidates (bsc#1212904)
+  * Fix the use of page size preference in systems and packages lists (bsc#1217209)
+  * fix apidoc link from #top to $call.name (bsc#1213507)
+  * fix exception when removing a debian package (bsc#1216781)
+  * expose the monitoring data for the salt queue handling the salt results
+  * Add no-strict checkbox to channel sync page allowing to disable strict mode for package synchronisation
+  * Avoid blocking Taskomatic thread when waiting for queued action (bsc#1211560)
+  * Do not require entitlement for PAYG SLES for SAP (bsc#1217069)
+  * Use the base product file to show the correct SUSE Manager
+    product in the subscription matching results page
+  * Do not require entitlements if Uyuni or SUSE Manager is PAYG
+  * Exclude Uyuni and SUSE Manager if it's PAYG from subscription
+    matching
+  * improve logging for Product Migration (bsc#1218490)
+
+-------------------------------------------------------------------
 Fri Dec 15 17:10:30 CET 2023 - rosuna@suse.com
 
 - version 4.4.22-1
