@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jan 16 08:17:29 CET 2024 - jgonzalez@suse.com
+
+- version 5.0.1-1
+  * Build susemanager-branding-oss for aarch64 and SUSE Manager
+
+-------------------------------------------------------------------
 Fri Dec 15 17:29:47 CET 2023 - rosuna@suse.com
 
 - version 4.4.2-1
