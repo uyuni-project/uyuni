@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.common.hibernate;
 
+import com.redhat.rhn.domain.channel.ChannelSyncFlag;
 import com.redhat.rhn.domain.cloudpayg.CloudRmtHost;
 import com.redhat.rhn.domain.cloudpayg.PaygCredentialsProduct;
 import com.redhat.rhn.domain.cloudpayg.PaygSshData;
@@ -183,7 +184,8 @@ public class AnnotationRegistry {
         ReportDBCredentials.class,
         RHUICredentials.class,
         SCCCredentials.class,
-        VHMCredentials.class
+        VHMCredentials.class,
+        ChannelSyncFlag.class
     );
 
     /**

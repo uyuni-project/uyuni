@@ -61,6 +61,7 @@ rhnPublicChannelFamily             :: rhnChannelFamily
 rhnChannelPackage                  :: rhnChannel rhnPackage
 rhnChannelPackageArchCompat        :: rhnPackageArch rhnChannelArch
 rhnChannelPermission               :: rhnChannelPermissionRole rhnChannel web_contact
+rhnChannelSyncFlag                 :: rhnChannel
 rhnChannelTrust                    :: rhnChannel
 rhnChannelContentSource            :: rhnChannel rhnContentSourceType rhnContentSource
 rhnChecksum                        :: rhnChecksumType

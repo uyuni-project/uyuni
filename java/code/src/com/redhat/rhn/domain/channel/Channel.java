@@ -96,6 +96,7 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
     private boolean installerUpdates = false;
     private Set<ClonedChannel> clonedChannels = new HashSet<>();
     private Set<SUSEProductChannel> suseProductChannels = new HashSet<>();
+    private ChannelSyncFlag channelSyncFlag = new ChannelSyncFlag();
 
     /**
      * @param orgIn what org you want to know if it is globally subscribable in
@@ -1030,6 +1031,10 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
      */
     public Optional<ClonedChannel> asCloned() {
         return Optional.empty();
+    }
+
+    public ChannelSyncFlag getChannelSyncFlag() {
+        return this.channelSyncFlag;
     }
 }
 
