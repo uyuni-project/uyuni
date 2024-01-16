@@ -80,38 +80,39 @@
 
         <div class="checkbox">
             <label>
-                <input type="checkbox" name="no-strict" id="no-strict"/>
+                <input type="checkbox" name="no-strict" id="no-strict" <c:if test="${channel.channelSyncFlags.noStrict}">checked</c:if>/>
                 <bean:message key="channel.manage.sync.nostrict.jsp"/>
             </label>
         </div>
-
+        
         <div class="checkbox">
             <label>
-                <input type="checkbox" name="no-errata" id="no-errata"/>
+                <input type="checkbox" name="no-errata" id="no-errata" <c:if test="${channel.channelSyncFlags.noErrata}">checked</c:if>/>
                 <bean:message key="channel.manage.sync.noerrata.jsp"/>
             </label>
         </div>
-
+        
         <div class="checkbox">
             <label>
-                <input type="checkbox" name="latest" id="latest"/>
+                <input type="checkbox" name="latest" id="latest" <c:if test="${channel.channelSyncFlags.onlyLatest}">checked</c:if>/>
                 <bean:message key="channel.manage.sync.latestonly.jsp"/>
             </label>
         </div>
-
+        
         <div class="checkbox">
             <label>
-                <input type="checkbox" name="sync-kickstart" id="sync-kickstart"/>
+                <input type="checkbox" name="sync-kickstart" id="sync-kickstart" <c:if test="${channel.channelSyncFlags.createTree}">checked</c:if>/>
                 <bean:message key="channel.manage.sync.synckickstart.jsp"/>
             </label>
         </div>
-
+        
         <div class="checkbox">
-           <label>
-                <input type="checkbox" name="fail" id="fail"/>
+            <label>
+                <input type="checkbox" name="fail" id="fail" <c:if test="${channel.channelSyncFlags.quitOnError}">checked</c:if>/>
                 <bean:message key="channel.manage.sync.fail.jsp"/>
-           </label>
+            </label>
         </div>
+        
 
         <br/>
         <c:if test='${scheduleEditable}'>
