@@ -238,6 +238,20 @@ public class DownloadController {
         mountPointPath = Config.get().getString(ConfigDefaults.MOUNT_POINT);
     }
 
+    private void processToken(Request request, CloudPaygManager payg, String channelLabel, String filename) {
+        if (payg.isPaygInstance() || checkTokens) {
+            String token = getTokenFromRequest(request);
+            // payg token checks should always run if we are payg
+            if (payg.isPaygInstance()) {
+                validateMinionInPayg(token, cloudPaygManager);
+            }
+            // additional token checks can be disabled via config
+            if (checkTokens) {
+                validateToken(token, channelLabel, filename);
+            }
+        }
+    }
+
     /**
      * Toggles token checking (only for unit tests).
      *
@@ -269,12 +283,7 @@ public class DownloadController {
         }
         validatePaygCompliant(cloudPaygManager);
 
-        String token = getTokenFromRequest(request);
-        validateMinionInPayg(token, cloudPaygManager);
-
-        if (checkTokens) {
-            validateToken(token, channelLabel, filename);
-        }
+        processToken(request, cloudPaygManager, channelLabel, filename);
 
         if (!file.exists()) {
             // Check if a comps.xml/modules.yaml file is being requested and if we have it
@@ -307,12 +316,7 @@ public class DownloadController {
         String filename = request.params(":file");
         validatePaygCompliant(cloudPaygManager);
 
-        String token = getTokenFromRequest(request);
-        validateMinionInPayg(token, cloudPaygManager);
-
-        if (checkTokens) {
-            validateToken(token, channelLabel, filename);
-        }
+        processToken(request, cloudPaygManager, channelLabel, filename);
 
         if (filename.equals("products")) {
             File file = getMediaProductsFile(ChannelFactory.lookupByLabel(channelLabel));
@@ -417,12 +421,8 @@ public class DownloadController {
 
         String basename = FilenameUtils.getBaseName(path);
         validatePaygCompliant(cloudPaygManager);
-        String token = getTokenFromRequest(request);
-        validateMinionInPayg(token, cloudPaygManager);
 
-        if (checkTokens) {
-            validateToken(token, channel, basename);
-        }
+        processToken(request, cloudPaygManager, channel, basename);
 
         String mountPoint = Config.get().getString(ConfigDefaults.MOUNT_POINT);
         PkgInfo pkgInfo = parsePackageFileName(path);
