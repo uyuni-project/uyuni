@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Tue Jan 16 08:29:07 CET 2024 - jgonzalez@suse.com
+
+- version 5.0.1-1
+  * Make python3-extras as dependency of python3-luibxml2 (optional,
+    as SLES 15 does not have it and it is only required on SP4
+    or greater) (bsc#1204437)
+
+-------------------------------------------------------------------
 Fri Dec 15 17:28:06 CET 2023 - rosuna@suse.com
 
 - version 4.4.10-1
