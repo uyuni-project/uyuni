@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jan 16 17:59:37 CET 2024 - jgonzalez@suse.com
+
+- version 5.0.2-1
+  * Add missing migration paths to version 5.0.2
+
+-------------------------------------------------------------------
 Tue Jan 16 08:12:40 CET 2024 - jgonzalez@suse.com
 
 - version 5.0.1-1
