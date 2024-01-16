@@ -398,7 +398,7 @@ click the "Details" tab.
         </context-group>
         <target>{0}에 대한 일간 @@PRODUCT_NAME@@ 현황 보고서</target>
       </trans-unit>
-      <trans-unit approved="no" id="dailysummary.email.body" xml:space="preserve">
+      <trans-unit approved="yes" id="dailysummary.email.body" xml:space="preserve">
         <source>{7}
 This is the @@PRODUCT_NAME@@ Status Report for your account {0}, as of {1}.
 
@@ -432,7 +432,7 @@ Thank you for using @@PRODUCT_NAME@@.
              {6} = email account info from template db
           </context>
         </context-group>
-        <target state="needs-translation">{7}
+        <target state="final">{7}
 {1}일을 기준으로 {0} 계정의 @@PRODUCT_NAME@@ 현황 보고서입니다.
 
 다음 중 하나에 해당하는 경우 이 이메일이 전송됩니다.
@@ -575,12 +575,12 @@ Thank you for using @@PRODUCT_NAME@@.
           </context>
         </context-group>
       </trans-unit>
-      <trans-unit id="dailysummary.email.notpaygcompliant" xml:space="preserve">
+      <trans-unit id="dailysummary.email.notpaygcompliant" xml:space="preserve" approved="yes">
           <source>Warning: This @@PRODUCT_NAME@@ PAYG instance is not compliant and some of its functions are disabled.
 Please contact your administrator to amend the situation before continuing using the product.
           </source>
-        <target state="needs-translation">경고: 이 @@PRODUCT_NAME@@ PAYG 인스턴스는 호환되지 않으며 일부 기능이 비활성화되어 있습니다.
-제품을 계속 사용하려면 관리자에게 문의하여 이 문제를 수정하십시오..
+        <target state="final">경고: 이 @@PRODUCT_NAME@@ PAYG 인스턴스는 호환되지 않으며 일부 기능이 비활성화되어 있습니다.
+제품을 계속 사용하려면 관리자에게 문의하여 이 문제를 수정하십시오.
           </target>
       </trans-unit>
     </body>
