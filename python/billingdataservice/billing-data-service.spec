@@ -17,8 +17,8 @@
 
 
 Name:           billing-data-service
-Version:        5.0.0
-Release:        0
+Version:        5.0.1
+Release:        1
 Summary:        Server to request billing information
 License:        GPL-2.0-only
 Group:          System/Daemons
