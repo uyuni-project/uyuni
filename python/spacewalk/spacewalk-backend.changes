@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Tue Jan 16 08:26:58 CET 2024 - jgonzalez@suse.com
+
+- version 5.0.1-1
+  * Implement new default behaviour for channel synchronisation,
+    now automatically dropping packages which are deleted from the
+    upstream repository (strict mode)
+  * Use the new apache2-mod_wsgi package name
+  * Updated query to the new credentials structure
+
+-------------------------------------------------------------------
 Fri Dec 15 17:05:00 CET 2023 - rosuna@suse.com
 
 - version 4.4.13-1
