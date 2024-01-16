@@ -11458,7 +11458,7 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
       </trans-unit>
       <trans-unit id="notification.paygnotcompliantwarning.detail" xml:space="preserve" approved="yes">
         <source>This @@PRODUCT_NAME@@ PAYG instance is not compliant. Some @@PRODUCT_NAME@@ functions will be disabled. Please check with your system administrator.</source>
-        <target state="final">この @@PRODUCT_NAME@@ PAYGインスタンスは準拠していません。一部の@@PRODUCT_NAME@@機能は無効になります。システム管理者に確認してください。</target>
+        <target state="final">この @@PRODUCT_NAME@@ PAYGインスタンスは準拠していません。一部の @@PRODUCT_NAME@@ 機能は無効になります。システム管理者に確認してください。</target>
       </trans-unit>
     </body>
   </file>
