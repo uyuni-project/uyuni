@@ -42,8 +42,8 @@
 Summary:        Python libraries for the Spacewalk project
 License:        GPL-2.0-only
 Name:           rhnlib
-Version:        5.0.0
-Release:        0
+Version:        5.0.1
+Release:        1
 %if "%{_vendor}" == "debbuild"
 Group:          python
 Packager:       Uyuni Project <devel@lists.uyuni-project.org>
