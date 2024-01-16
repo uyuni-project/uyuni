@@ -582,7 +582,7 @@ Thank you for using @@PRODUCT_NAME@@.
           <source>Warning: This @@PRODUCT_NAME@@ PAYG instance is not compliant and some of its functions are disabled.
 Please contact your administrator to amend the situation before continuing using the product.
           </source>
-        <target state="final">警告: この@@PRODUCT_NAME@@ PAYGインスタンスは準拠していないため、一部の機能が無効になっています。
+        <target state="final">警告: この @@PRODUCT_NAME@@ PAYGインスタンスは準拠していないため、一部の機能が無効になっています。
 製品の使用を続ける前に、管理者に連絡して状況を修正してください。
           </target>
       </trans-unit>
