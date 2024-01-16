@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Tue Jan 16 08:32:17 CET 2024 - jgonzalez@suse.com
+
+- version 5.0.2-1
+  * Fix the use of page size preference in systems and packages
+    lists (bsc#1217209)
+  * Revert reordering of license tags for spacewalk-html
+
+-------------------------------------------------------------------
 Thu Jan 11 12:09:38 CET 2024 - marina.latini@suse.com
 
 - version 5.0.1-1
@@ -7,7 +15,6 @@ Thu Jan 11 12:09:38 CET 2024 - marina.latini@suse.com
   * Move release files from spacewalk to spacewalk web, and add
     the Mainteanance Update or Milestone version when the package
     is built for SUSE Manager
-  * Bump version to 5.0.0
   * Bump the WebUI version to 5.0.0 Alpha 1
 
 -------------------------------------------------------------------
