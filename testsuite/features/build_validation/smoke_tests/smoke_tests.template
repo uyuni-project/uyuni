@@ -35,7 +35,9 @@ Feature: Smoke tests for <client>
 @skip_for_debianlike
   Scenario: Install a patch on the <client>
     When I follow "Software" in the content area
+    And I wait until I see "Upgrade Packages" text
     And I follow "Patches" in the content area
+    When I wait until I see "Relevant Patches" text
     And I select "Non-Critical" from "type"
     And I click on "Show"
     When I check the first patch in the list
@@ -48,7 +50,9 @@ Feature: Smoke tests for <client>
 @skip_for_sle_micro_ssh_minion
   Scenario: Install a package on the <client>
     When I follow "Software" in the content area
+    And I wait until I see "Upgrade Packages" text
     And I follow "Install"
+    And I wait until I see "Installable Packages" text
     And I enter the package for "<client>" as the filtered package name
     And I click on the filter button
     And I check the package for "<client>" in the list
@@ -61,6 +65,7 @@ Feature: Smoke tests for <client>
 @skip_for_sle_micro_ssh_minion
   Scenario: Remove package from <client>
     When I follow "Software" in the content area
+    And I wait until I see "Upgrade Packages" text
     And I follow "List / Remove"
     And I enter the package for "<client>" as the filtered package name
     And I click on the filter button
@@ -87,20 +92,26 @@ Feature: Smoke tests for <client>
   Scenario: Check that Software package refresh works on a <client>
     Given I am on the Systems overview page of this "<client>"
     When I follow "Software" in the content area
+    And I wait until I see "Upgrade Packages" text
     And I click on "Update Package List"
     And I wait until event "Package List Refresh scheduled by admin" is completed
 
   Scenario: Check that Hardware Refresh button works on a <client>
     When I follow "Details" in the content area
+    And I wait until I see "System Status" text
     And I follow "Hardware"
+    And I wait until I see "Refresh Hardware List" text
     And I click on "Schedule Hardware Refresh"
     Then I should see a "You have successfully scheduled a hardware profile refresh" text
     And I wait until event "Hardware List Refresh scheduled by admin" is completed
 
   Scenario: Subscribe a <client> to the configuration channel
     When I follow "Configuration" in the content area
+    And I wait until I see "Configuration Overview" text
     And I follow "Manage Configuration Channels" in the content area
+    And I wait until I see "centrally-managed configuration" text
     And I follow first "Subscribe to Channels" in the content area
+    And I wait until I see "Select Channels for Subscription" text
     And I check "Mixed Channel" in the list
     And I click on "Continue"
     And I click on "Update Channel Rankings"
@@ -109,8 +120,11 @@ Feature: Smoke tests for <client>
 
   Scenario: Deploy the configuration file to <client>
     And I follow the left menu "Configuration > Channels"
+    And I wait until I see "Centrally Managed Configuration Channel" text
     And I follow "Mixed Channel"
+    And I wait until I see "Channel Properties" text
     And I follow "Deploy all configuration files to selected subscribed systems"
+    And I wait until I see "Select Systems for Deployment" text
     And I enter the hostname of "<client>" as the filtered system name
     And I click on the filter button
     And I check the "<client>" client
@@ -135,8 +149,11 @@ Feature: Smoke tests for <client>
 @skip_for_sle_micro
   # The client tools of SLE Micro (intentionally) do not contain spacecmd
   Scenario: Install spacecmd from the client tools on the <client>
+    Given I am on the Systems overview page of this "<client>"
     When I follow "Software" in the content area
+    And I wait until I see "Upgrade Packages" text
     And I follow "Install"
+    And I wait until I see "Installable Packages" text
     And I enter "spacecmd" as the filtered package name
     And I click on the filter button
     And I check "spacecmd" in the list

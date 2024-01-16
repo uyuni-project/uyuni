@@ -332,12 +332,12 @@ class GuestsConsole extends React.Component<Props, State> {
     const areaClassName = `display_area_${this.state.graphicsType}`;
     return (
       <>
-        <header className={`navbar-pf ${styles.navbar_pf_console}`}>
-          <div className={`navbar-header ${styles.navbar_header_console}`}>
+        <header className={`navbar-pf navbar navbar-dark bg-dark ${styles.navbar_pf_console}`}>
+          <div className={`navbar-header d-flex flex-row ${styles.navbar_header_console}`}>
             <i className="fa spacewalk-icon-virtual-guest" />
             {this.state.guestName}
           </div>
-          <ul className="nav navbar-nav navbar-utility">
+          <ul className="nav navbar-nav navbar-utility d-flex flex-row">
             <li>
               {this.state.graphicsType === "vnc" && (
                 <Button

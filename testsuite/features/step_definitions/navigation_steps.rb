@@ -582,7 +582,7 @@ end
 Then(/^I should be logged in$/) do
   xpath_query = '//a[@href=\'/rhn/Logout.do\']'
   # Check if the user is logged in, using the specified wait_time
-  raise ScriptError, 'User is not logged in' unless has_selector?(:xpath, xpath_query, wait: Capybara.default_max_wait_time * 2)
+  raise ScriptError, 'User is not logged in' unless has_selector?(:xpath, xpath_query, wait: Capybara.default_max_wait_time * 3)
 end
 
 Then(/^I am logged in$/) do

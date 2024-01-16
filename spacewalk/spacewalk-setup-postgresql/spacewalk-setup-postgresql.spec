@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-setup-postgresql
 #
-# Copyright (c) 2022 SUSE LLC
+# Copyright (c) 2024 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -21,8 +21,8 @@
 %{!?postgresql_version_max: %global postgresql_version_max 15}
 
 Name:           spacewalk-setup-postgresql
-Version:        4.4.3
-Release:        1
+Version:        5.0.0
+Release:        0
 Summary:        Tools to setup embedded PostgreSQL database for Spacewalk
 License:        GPL-2.0-only
 Group:          Applications/System

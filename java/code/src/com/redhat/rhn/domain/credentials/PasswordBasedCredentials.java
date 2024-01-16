@@ -33,7 +33,7 @@ public abstract class PasswordBasedCredentials extends BaseCredentials {
      * Return the decoded password.
      * @return the password
      */
-    @Column(name = "password")
+    @Transient
     public String getPassword() {
         if (this.encodedPassword != null) {
             return new String(Base64.decodeBase64(this.encodedPassword.getBytes()));
@@ -41,7 +41,7 @@ public abstract class PasswordBasedCredentials extends BaseCredentials {
         return null;
     }
 
-    @Transient
+    @Column(name = "password")
     protected String getEncodedPassword() {
         return this.encodedPassword;
     }

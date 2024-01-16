@@ -1,7 +1,7 @@
 #
 # spec file for package susemanager
 #
-# Copyright (c) 2022 SUSE LLC
+# Copyright (c) 2024 SUSE LLC
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -48,8 +48,8 @@
 %global debug_package %{nil}
 
 Name:           susemanager
-Version:        4.4.10
-Release:        1
+Version:        5.0.0
+Release:        0
 Summary:        SUSE Manager specific scripts
 License:        GPL-2.0-only
 Group:          Applications/System
@@ -166,8 +166,8 @@ This package contains SUSE Manager tools
 Summary:        Bash completion for SUSE Manager CLI tools
 Group:          Productivity/Other
 Supplements:    spacewalk-backend
-Supplements:    susemanager
 Supplements:    spacewalk-utils
+Supplements:    susemanager
 
 %description bash-completion
 Bash completion for SUSE Manager CLI tools

@@ -1,7 +1,7 @@
 #
 # spec file for package uyuni-setup-reportdb
 #
-# Copyright (c) 2022 SUSE LLC
+# Copyright (c) 2024 SUSE LLC
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -20,8 +20,8 @@
 %{!?postgresql_version_max: %global postgresql_version_max 15}
 
 Name:           uyuni-setup-reportdb
-Version:        4.4.6
-Release:        1
+Version:        5.0.0
+Release:        0
 Summary:        Tools to setup PostgreSQL database as reporting DB for Uyuni and SUSE Manager
 License:        GPL-2.0-only
 Group:          Applications/System

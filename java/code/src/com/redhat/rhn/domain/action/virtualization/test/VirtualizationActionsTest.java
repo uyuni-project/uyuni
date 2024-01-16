@@ -36,6 +36,7 @@ import com.redhat.rhn.domain.action.virtualization.VirtualizationSetVcpusGuestAc
 import com.redhat.rhn.domain.action.virtualization.VirtualizationShutdownGuestAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationStartGuestAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationSuspendGuestAction;
+import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
 import com.suse.manager.virtualization.GuestCreateDetails;
@@ -50,6 +51,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.TimeZone;
 import java.util.stream.Collectors;
 
 public class VirtualizationActionsTest extends BaseTestCaseWithUser {
@@ -159,6 +161,8 @@ public class VirtualizationActionsTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testCreateLookup() throws Exception {
+        Context.getCurrentContext().setTimezone(TimeZone.getDefault());
+
         VirtualizationCreateGuestAction a1 = (VirtualizationCreateGuestAction)ActionFactoryTest
                 .createAction(user, ActionFactory.TYPE_VIRTUALIZATION_CREATE);
         a1.setDetails(new GuestCreateDetails());

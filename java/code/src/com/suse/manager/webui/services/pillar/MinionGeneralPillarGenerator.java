@@ -15,9 +15,6 @@
 
 package com.suse.manager.webui.services.pillar;
 
-import static com.suse.manager.webui.services.SaltConstants.PILLAR_DATA_FILE_EXT;
-import static com.suse.manager.webui.services.SaltConstants.PILLAR_DATA_FILE_PREFIX;
-
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.AccessToken;
@@ -37,7 +34,7 @@ import java.util.Optional;
 /**
  * Class for generating minion pillar data containing general information of minions
  */
-public class MinionGeneralPillarGenerator implements MinionPillarGenerator {
+public class MinionGeneralPillarGenerator extends MinionPillarGeneratorBase {
 
     /** Logger */
     private static final Logger LOG = LogManager.getLogger(MinionGeneralPillarGenerator.class);
@@ -155,11 +152,6 @@ public class MinionGeneralPillarGenerator implements MinionPillarGenerator {
         // Flag to override dnf modularity failsafe mechanism (module_hotfixes)
         chanProps.put("cloned_nonmodular", chan.isCloned() && !chan.isModular());
         return chanProps;
-    }
-
-    @Override
-    public String getFilename(String minionId) {
-        return PILLAR_DATA_FILE_PREFIX + "_" + minionId + "." + PILLAR_DATA_FILE_EXT;
     }
 
     @Override

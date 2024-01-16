@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk
 #
-# Copyright (c) 2022 SUSE LLC
+# Copyright (c) 2024 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -21,8 +21,8 @@
 %{!?postgresql_version_max: %global postgresql_version_max 15}
 
 Name:           spacewalk
-Version:        4.4.5
-Release:        1
+Version:        5.0.0
+Release:        0
 Summary:        Spacewalk Systems Management Application
 License:        GPL-2.0-only
 Group:          Applications/Internet
@@ -73,7 +73,7 @@ Requires:       spacewalk-backend-xmlrpc
 Requires:       spacewalk-certs-tools
 
 # Misc
-%if !0%{?rhel}
+%if 0%{?opensuse}
 Requires:       pxe-default-image
 %endif
 Requires:       spacewalk-config
@@ -89,14 +89,14 @@ Requires:       susemanager-jsp_en
 
 # weakremover used on SUSE to get rid of orphan packages which are
 # unsupported and do not have a dependency anymore
-Provides:	weakremover(jabberd)
-Provides:	weakremover(jabberd-sqlite)
-Provides:	weakremover(jabberd-db)
-Provides:	weakremover(spacewalk-setup-jabberd)
-Provides:	weakremover(python3-jabberpy)
-Provides:	weakremover(mgr-osa-dispatcher)
-Provides:	weakremover(python3-mgr-osa-dispatcher)
-Provides:	weakremover(python3-mgr-osa-common)
+Provides:       weakremover(jabberd)
+Provides:       weakremover(jabberd-db)
+Provides:       weakremover(jabberd-sqlite)
+Provides:       weakremover(mgr-osa-dispatcher)
+Provides:       weakremover(python3-jabberpy)
+Provides:       weakremover(python3-mgr-osa-common)
+Provides:       weakremover(python3-mgr-osa-dispatcher)
+Provides:       weakremover(spacewalk-setup-jabberd)
 
 %description common
 Spacewalk is a systems management application that will
@@ -138,12 +138,6 @@ Version for PostgreSQL database backend.
 %install
 RDBMS="postgresql"
 install -d $RPM_BUILD_ROOT/%{_sysconfdir}
-SUMA_REL=$(echo %{version} | awk -F. '{print $1"."$2}')
-UYUNI_REL=$(grep -F 'web.version.uyuni' %{_datadir}/rhn/config-defaults/rhn_web.conf | sed 's/^.*= *\([[:digit:]\.]\+\) *$/\1/')
-echo "Uyuni release $UYUNI_REL" > $RPM_BUILD_ROOT/%{_sysconfdir}/uyuni-release
-if grep -F 'product_name' %{_datadir}/rhn/config-defaults/rhn.conf | grep 'SUSE Manager' >/dev/null; then
-  echo "SUSE Manager release $SUMA_REL ($UYUNI_REL)" > $RPM_BUILD_ROOT/%{_sysconfdir}/susemanager-release
-fi
 install -d $RPM_BUILD_ROOT/%{_datadir}/spacewalk/setup/defaults.d
 for i in ${RDBMS} ; do
     cat <<EOF >$RPM_BUILD_ROOT/%{_datadir}/spacewalk/setup/defaults.d/$i-backend.conf
@@ -154,7 +148,6 @@ done
 install -d $RPM_BUILD_ROOT/%{_bindir}
 
 %files common
-%{_sysconfdir}/*-release
 %{!?_licensedir:%global license %doc}
 %license LICENSE
 %if 0%{?suse_version}

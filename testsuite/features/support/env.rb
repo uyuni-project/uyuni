@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2023 SUSE LLC
+# Copyright (c) 2010-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 require 'English'
@@ -60,6 +60,7 @@ $is_container_provider = ENV['PROVIDER'].include? 'podman'
 $is_container_server = %w[k3s podman].include? ENV.fetch('CONTAINER_RUNTIME', '')
 $is_using_build_image = ENV.fetch('IS_USING_BUILD_IMAGE', false)
 $is_using_scc_repositories = (ENV.fetch('IS_USING_SCC_REPOSITORIES', 'False') != 'False')
+$catch_timeout_message = (ENV.fetch('CATCH_TIMEOUT_MESSAGE', 'False') == 'True')
 
 # QAM and Build Validation pipelines will provide a json file including all custom (MI) repositories
 custom_repos_path = "#{File.dirname(__FILE__)}/../upload_files/custom_repositories.json"
@@ -77,7 +78,7 @@ def capybara_register_driver
   Capybara.register_driver(:headless_chrome) do |app|
     client = Selenium::WebDriver::Remote::Http::Default.new
     # WORKAROUND failure at Scenario: Test IPMI functions: increase from 60 s to 180 s
-    client.read_timeout = 180
+    client.read_timeout = 240
     # Chrome driver options
     chrome_options = %w[no-sandbox disable-dev-shm-usage ignore-certificate-errors disable-gpu window-size=2048,2048 js-flags=--max_old_space_size=2048]
     chrome_options << 'headless' unless $debug_mode
@@ -402,12 +403,16 @@ Before('@opensuse155arm_ssh_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['opensuse155arm_ssh_minion']
 end
 
-Before('@sle15sp3s390_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp3s390_minion']
+Before('@sle15sp5s390_minion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp5s390_minion']
 end
 
-Before('@sle15sp3s390_ssh_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp3s390_ssh_minion']
+Before('@sle15sp5s390_ssh_minion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp5s390_ssh_minion']
+end
+
+Before('@salt_migration_minion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['salt_migration_minion']
 end
 
 Before('@slemicro') do |scenario|

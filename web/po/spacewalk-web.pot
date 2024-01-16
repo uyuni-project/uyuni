@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-12-15 14:09+0100\n"
+"POT-Creation-Date: 2024-01-05 16:12+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -27,11 +27,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../html/javascript/spacewalk-essentials.js:436
+#: ../html/javascript/spacewalk-essentials.js:438
 msgid "remaining"
 msgstr ""
 
-#: ../html/javascript/spacewalk-essentials.js:456
+#: ../html/javascript/spacewalk-essentials.js:458
 msgid ""
 "The browser Internet Explorer is not supported. Try using Firefox, Chrome or "
 "Edge"
@@ -653,7 +653,6 @@ msgstr ""
 
 #: ../html/src/components/table/SearchPanel.tsx:64
 #: ../html/src/manager/admin/setup/products/products.tsx:375
-#: ../html/src/manager/systems/ssm/ssm-counter.tsx:34
 #: ../html/src/manager/visualization/hierarchy.tsx:307
 #: ../html/src/manager/visualization/hierarchy.tsx:322
 msgid "Clear"
@@ -1089,7 +1088,7 @@ msgstr ""
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:27
 #: ../html/src/manager/images/image-store-edit.tsx:180
 #: ../html/src/manager/login/susemanager/login.tsx:93
-#: ../html/src/manager/login/uyuni/login.tsx:91
+#: ../html/src/manager/login/uyuni/login.tsx:89
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:396
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:519
 #: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:38
@@ -3458,7 +3457,7 @@ msgid "Signing in ..."
 msgstr ""
 
 #: ../html/src/manager/login/susemanager/login.tsx:41
-#: ../html/src/manager/login/uyuni/login.tsx:41
+#: ../html/src/manager/login/uyuni/login.tsx:39
 msgid ""
 "Discover a new way of managing your servers, packages, patches and more via "
 "one interface."
@@ -3470,8 +3469,8 @@ msgstr ""
 
 #: ../html/src/manager/login/susemanager/login.tsx:81
 #: ../html/src/manager/login/susemanager/login.tsx:107
-#: ../html/src/manager/login/uyuni/login.tsx:53
-#: ../html/src/manager/login/uyuni/login.tsx:99
+#: ../html/src/manager/login/uyuni/login.tsx:51
+#: ../html/src/manager/login/uyuni/login.tsx:97
 msgid "Sign In"
 msgstr ""
 
@@ -3491,11 +3490,11 @@ msgstr ""
 msgid "Are you sure you want to close this page while login is in progress?"
 msgstr ""
 
-#: ../html/src/manager/login/uyuni/login.tsx:44
+#: ../html/src/manager/login/uyuni/login.tsx:42
 msgid "Learn more about"
 msgstr ""
 
-#: ../html/src/manager/login/uyuni/login.tsx:79
+#: ../html/src/manager/login/uyuni/login.tsx:77
 msgid "Login"
 msgstr ""
 
@@ -4738,25 +4737,23 @@ msgid "Filter menu"
 msgstr ""
 
 #: ../html/src/manager/shared/menu/menu.tsx:241
-#: ../html/src/manager/shared/menu/menu.tsx:244
-msgid "Uyuni homepage"
-msgstr ""
-
-#: ../html/src/manager/shared/menu/menu.tsx:242
 msgid "Uyuni"
 msgstr ""
 
-#: ../html/src/manager/shared/menu/menu.tsx:251
-#: ../html/src/manager/shared/menu/menu.tsx:260
-msgid "SUSE Manager homepage"
+#: ../html/src/manager/shared/menu/menu.tsx:243
+msgid "Uyuni homepage"
 msgstr ""
 
-#: ../html/src/manager/shared/menu/menu.tsx:254
+#: ../html/src/manager/shared/menu/menu.tsx:252
 msgid "SUSE"
 msgstr ""
 
-#: ../html/src/manager/shared/menu/menu.tsx:256
+#: ../html/src/manager/shared/menu/menu.tsx:254
 msgid "Manager"
+msgstr ""
+
+#: ../html/src/manager/shared/menu/menu.tsx:258
+msgid "SUSE Manager homepage"
 msgstr ""
 
 #: ../html/src/manager/state/display-highstate.tsx:9
@@ -5175,7 +5172,7 @@ msgid "New Proxy"
 msgstr ""
 
 #: ../html/src/manager/systems/ssm/ssm-counter.tsx:25
-msgid "Manage"
+msgid "Manage selected system set"
 msgstr ""
 
 #: ../html/src/manager/systems/ssm/ssm-counter.tsx:31
@@ -5184,6 +5181,10 @@ msgstr ""
 
 #: ../html/src/manager/systems/ssm/ssm-counter.tsx:31
 msgid "systems selected"
+msgstr ""
+
+#: ../html/src/manager/systems/ssm/ssm-counter.tsx:34
+msgid "Clear selected system set"
 msgstr ""
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:32

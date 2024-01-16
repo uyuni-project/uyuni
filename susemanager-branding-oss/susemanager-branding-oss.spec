@@ -1,7 +1,7 @@
 #
 # spec file for package susemanager-branding-oss
 #
-# Copyright (c) 2022 SUSE LLC
+# Copyright (c) 2024 SUSE LLC
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -21,8 +21,8 @@
 %global wwwdocroot %{wwwroot}/htdocs
 
 Name:           susemanager-branding-oss
-Version:        4.4.2
-Release:        1
+Version:        5.0.0
+Release:        0
 Summary:        SUSE Manager branding oss specific files
 License:        GPL-2.0-only
 Group:          Applications/System
@@ -31,10 +31,9 @@ Source0:        %{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 %if 0%{?sle_version} && !0%{?is_opensuse}
-# SUSE Manager does not support aarch64 for the server
-ExcludeArch:    aarch64
 BuildRequires:  SUSE-Manager-Server-release
 %else
+# This package is not needed for Uyuni, so we do not build it
 ExcludeArch:    i586 x86_64 ppc64le s390x aarch64
 %endif
 Provides:       susemanager-branding = %{version}
