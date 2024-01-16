@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Tue Jan 16 08:28:35 CET 2024 - jgonzalez@suse.com
+
+- version 5.0.1-1
+  * improve PAYG instance detection (bsc#1217784)
+  * Remove includesls macro usage as not relevant anymore
+  * Change openeuler.sls to a symlink to redhat.sls
+  * Drop handling of legacy pillar and formula files
+  * Dynamically load an SELinux policy for "Push via SSH tunnel" for SELinux
+    enabled clients. This policy allows communication over a custom SSH port.
+
+-------------------------------------------------------------------
 Fri Dec 15 17:32:36 CET 2023 - rosuna@suse.com
 
 - version 4.4.10-1
