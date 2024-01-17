@@ -1,0 +1,2 @@
+- The license will not come from SUSE-Manager-Server release
+  as that package is installed at the host, not at the containers
