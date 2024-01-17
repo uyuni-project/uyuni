@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS suseOVALVulnerablePackage
 
 CREATE SEQUENCE IF NOT EXISTS suse_oval_vulnerable_pkg_id_seq;
 
-CREATE UNIQUE INDEX IF NOT EXISTS suse_oval_vulnerable_pkg_name_fix_version ON suseOVALVulnerablePackage(name, fix_version);
+CREATE INDEX IF NOT EXISTS suse_oval_vulnerable_pkg_name_idx ON suseOVALVulnerablePackage(name);
 
 CREATE TABLE IF NOT EXISTS suseOVALPlatformVulnerablePackage
 (
