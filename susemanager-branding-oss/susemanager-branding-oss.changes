@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Jan 17 19:36:21 CET 2024 - jgonzalez@suse.com
+
+- version 5.0.3-1
+  * The license will not come from SUSE-Manager-Server release
+    as that package is installed at the host, not at the containers
+
+-------------------------------------------------------------------
 Tue Jan 16 13:28:40 CET 2024 - jgonzalez@suse.com
 
 - version 5.0.2-1
