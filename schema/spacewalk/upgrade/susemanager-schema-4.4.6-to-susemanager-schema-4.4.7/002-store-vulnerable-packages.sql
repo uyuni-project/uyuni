@@ -1,3 +1,21 @@
+create or replace function
+    lookup_oval_platform(platform_cpe_in in varchar)
+    returns numeric
+as $$
+declare
+    platform_cpe_in_val     numeric;
+begin
+    if not exists(select c from suseOVALPlatform c where cpe = platform_cpe_in) then
+        insert into suseovalplatform(id, cpe)
+        values (nextval('suse_oval_platform_id_seq'), platform_cpe_in);
+    end if;
+
+    select id into platform_cpe_in_val FROM suseOVALPlatform WHERE cpe = platform_cpe_in;
+
+    return platform_cpe_in_val;
+end;
+$$ language plpgsql;
+
 CREATE OR REPLACE PROCEDURE
     insert_product_vulnerable_packages(package_name_in varchar,fix_version_in varchar,product_cpe_in varchar,cve_name_in varchar)
 AS
@@ -15,12 +33,7 @@ begin
 
     SELECT id INTO cve_id_val FROM rhncve WHERE name = cve_name_in;
 
-    IF NOT exists(SELECT c FROM suseOVALPlatform c WHERE cpe = product_cpe_in) THEN
-        INSERT INTO suseovalplatform(id, cpe)
-        VALUES (nextval('suse_oval_platform_id_seq'), product_cpe_in);
-    END IF;
-
-    SELECT id INTO product_cpe_id_val FROM suseOVALPlatform WHERE cpe = product_cpe_in;
+    product_cpe_id_val := lookup_oval_platform(product_cpe_in);
 
     IF NOT EXISTS(SELECT 1
                   FROM suseovalvulnerablepackage
