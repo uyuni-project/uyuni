@@ -24,4 +24,4 @@ CREATE TABLE suseOVALVulnerablePackage
 
 CREATE SEQUENCE suse_oval_vulnerable_pkg_id_seq;
 
-CREATE INDEX suse_oval_vulnerable_pkg_name_fix_version ON suseOVALVulnerablePackage(name, fix_version);
+CREATE INDEX suse_oval_vulnerable_pkg_name_idx ON suseOVALVulnerablePackage(name);
