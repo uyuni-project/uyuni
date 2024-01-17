@@ -2,7 +2,7 @@ CREATE TABLE IF NOT EXISTS suseOVALPlatform
 (
     id        NUMERIC NOT NULL
         CONSTRAINT suse_oval_platform_id_pk PRIMARY KEY,
-    cpe      VARCHAR
+    cpe      VARCHAR NOT NULL
 );
 
 CREATE SEQUENCE IF NOT EXISTS suse_oval_platform_id_seq;
