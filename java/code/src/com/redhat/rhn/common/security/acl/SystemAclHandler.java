@@ -19,6 +19,9 @@ import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
+import com.redhat.rhn.domain.product.SUSEProduct;
+import com.redhat.rhn.domain.product.SUSEProductFactory;
+import com.redhat.rhn.domain.product.SUSEProductSet;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
@@ -26,6 +29,7 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.manager.system.SystemManager;
 
+import com.suse.utils.Opt;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -34,6 +38,7 @@ import org.cobbler.SystemRecord;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * SystemAclHandler
@@ -185,6 +190,51 @@ public class SystemAclHandler extends BaseHandler {
             if (server != null) {
                 ret = server.hasEntitlement(EntitlementManager.SALT) &&
                     server.getContactMethod().getLabel().equals(params[0]);
+            }
+        }
+        return ret;
+    }
+
+    /**
+     * Checks if a system is Salt entitled and uses the given
+     * contact method.
+     * @param ctx Context Map to pass in
+     * @param params  Parameters to use
+     * @return true if system is minion and uses the contact method
+     */
+    public boolean aclSystemHasCorrespondingSapChannels(Map<String, Object> ctx, String[] params) {
+        Long sid = getAsLong(ctx.get("sid"));
+        boolean ret = false;
+        if (sid != null && sid == 1000010003l) {
+            User user = (User) ctx.get("user");
+            Server server = SystemManager.lookupByIdAndUser(sid, user);
+            if (server != null) {
+                Optional<SUSEProductSet> installedProducts = server.getInstalledProductSet();
+                if (installedProducts.isEmpty()) {
+                    // Installed products are 'unknown'
+                    log.debug("Installed products are 'unknown'");
+                }
+                installedProducts.ifPresent(pset -> {
+                    log.debug(pset.toString());
+                    if (pset.getBaseProduct() == null) {
+                        log.error("Server: {} has no base product installed. Check your servers installed products.",
+                                server.getId());
+                    }
+                });
+                List<SUSEProduct> baseProductsList = Opt.fold(installedProducts,
+                        () -> {
+                            log.warn("No products installed on this system");
+                            return null;
+                        },
+                        prd -> {
+                            SUSEProduct baseProduct = prd.getBaseProduct();
+                            if (baseProduct == null) {
+                                log.warn("No base product found");
+                                return null;
+                            }
+                            return SUSEProductFactory.findMatchingSAPProducts(baseProduct);
+                        });
+                ret = !baseProductsList.isEmpty();
             }
         }
         return ret;

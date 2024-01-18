@@ -1,4 +1,4 @@
-export default {
+    export default {
   "systems/activation-key/activation-key-channels": () => import("./activation-key/activation-key-channels.renderer"),
   "systems/bootstrap/bootstrap-minions": () => import("./bootstrap/bootstrap-minions"),
   "systems/proxy": () => import("./proxy.renderer"),
@@ -11,4 +11,5 @@ export default {
   "systems/list/virtual": () => import("./virtual-list.renderer"),
   "systems/list/all": () => import("./all-list.renderer"),
   "systems/details/mgr-server-info": () => import("./details/mgr-server-info.renderer"),
+  "systems/convert/to/sap": () => import("./convert-to-sap"),
 };

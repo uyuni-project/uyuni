@@ -20,7 +20,9 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.util.RpmVersionComparator;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
+import com.redhat.rhn.domain.cloudpayg.CloudRmtHost;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
@@ -50,6 +52,7 @@ import java.util.stream.Stream;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Subquery;
 
 /**
  * SUSEProductFactory - the class used to fetch and store
@@ -68,7 +71,7 @@ public class SUSEProductFactory extends HibernateFactory {
      * Insert or update a SUSEProduct.
      * @param product SUSE product to be inserted into the database.
      */
-    public static void save(SUSEProduct product) {
+    public static void  save(SUSEProduct product) {
         singleton.saveObject(product);
     }
 
@@ -514,6 +517,34 @@ public class SUSEProductFactory extends HibernateFactory {
         Criteria c = session.createCriteria(SUSEProduct.class);
         c.add(Restrictions.eq("productId", productId));
         return (SUSEProduct) c.uniqueResult();
+    }
+
+    /**
+     * Find matching {@link SUSEProduct} object of SLE for SAP against a given SLE product
+     * @param productId the product
+     * @return SUSE product for given productId
+     */
+    public static List<SUSEProduct> findMatchingSAPProducts(SUSEProduct baseProduct) {
+        CriteriaBuilder criteriaBuilder = getSession().getCriteriaBuilder();
+        CriteriaQuery<SUSEProduct> criteriaQuery = criteriaBuilder.createQuery(SUSEProduct.class);
+        Root<SUSEProduct> suseRoot = criteriaQuery.from(SUSEProduct.class);
+
+        // Creating the subquery
+        Subquery<Long> subquery = criteriaQuery.subquery(Long.class);
+        Root<ChannelFamily> rhnRoot = subquery.from(ChannelFamily.class);
+        subquery.select(rhnRoot.get("id"))
+                .where(criteriaBuilder.equal(rhnRoot.get("name"), "SUSE Linux Enterprise Server for SAP"));
+
+        // Adding conditions to the main query
+        criteriaQuery.where(
+                criteriaBuilder.equal(suseRoot.get("version"), baseProduct.getVersion()),
+                criteriaBuilder.equal(suseRoot.get("arch"), baseProduct.getArch()),
+                criteriaBuilder.like(suseRoot.get("name"), "%sap%"),
+                criteriaBuilder.equal(suseRoot.get("channelFamily"), subquery)
+        );
+
+        List<SUSEProduct> result = getSession().createQuery(criteriaQuery).getResultList();
+        return result;
     }
 
     /**

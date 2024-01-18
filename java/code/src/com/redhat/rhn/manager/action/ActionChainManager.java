@@ -747,7 +747,7 @@ public class ActionChainManager {
                                                               Date earliest,
                                                               ActionChain actionChain)
             throws TaskomaticApiException {
-        Set<Action> result = createActions(user, ActionFactory.TYPE_SUBSCRIBE_CHANNELS, "Subscribe channels",
+        Set<Action> result = createActions(user, ActionFactory.TYPE_SUBSCRIBE_CHANNELS, "Migrate to SLES for SAP",
                 earliest, actionChain, null, serverIds);
         for (Action action : result) {
             SubscribeChannelsActionDetails details = new SubscribeChannelsActionDetails();

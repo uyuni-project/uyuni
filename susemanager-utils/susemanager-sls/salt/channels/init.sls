@@ -2,7 +2,10 @@ include:
   - util.syncstates
   - certs
   - channels.gpg-keys
-
+mgr_sles_release_pkg_removed:
+  pkg.removed:
+    -   pkgs:
+        - sles-release
 {%- if not salt['pillar.get']('mgr_disable_local_repos', True) %}
 {# disable at least the SUSE-Manager-Bootstrap repo #}
 {% set repos_disabled = {'match_str': 'SUSE-Manager-Bootstrap', 'matching': true} %}
@@ -92,6 +95,7 @@ mgrchannels_repo:
     - mode: 644
     - require:
        - file: mgr_ca_cert
+       - file: mgr_sles_release_pkg_removed
 {%- if grains['os_family'] == 'RedHat' or grains['os_family'] == 'openEuler' %}
 {%- if is_dnf %}
        - file: mgrchannels_susemanagerplugin_dnf

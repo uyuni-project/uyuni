@@ -14,6 +14,7 @@
  */
 package com.suse.manager.webui.controllers;
 
+import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withDocsLocale;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withOrgAdmin;
@@ -21,9 +22,18 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserAndServer;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
 import static spark.Spark.get;
+import static spark.Spark.post;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.channel.ChannelArch;
+import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.channel.ClonedChannel;
 import com.redhat.rhn.domain.org.OrgFactory;
+import com.redhat.rhn.domain.product.SUSEProduct;
+import com.redhat.rhn.domain.product.SUSEProductFactory;
+import com.redhat.rhn.domain.product.SUSEProductSet;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
@@ -34,25 +44,42 @@ import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.server.ServerPath;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.EssentialChannelDto;
 import com.redhat.rhn.frontend.dto.ShortSystemInfo;
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
+import com.redhat.rhn.manager.action.ActionChainManager;
+import com.redhat.rhn.manager.channel.ChannelManager;
+import com.redhat.rhn.manager.distupgrade.DistUpgradeManager;
 import com.redhat.rhn.manager.ssm.SsmManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
 
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.suse.manager.utils.MinionServerUtils;
 import com.suse.manager.webui.utils.ViewHelper;
+import com.suse.manager.webui.utils.gson.ChannelsJson;
+import com.suse.manager.webui.utils.gson.ResultJson;
 import com.suse.manager.webui.utils.gson.SimpleMinionJson;
 import com.suse.utils.Json;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.Set;
+import java.util.SortedMap;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
+import com.suse.utils.Opt;
+import org.apache.http.HttpStatus;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
@@ -62,7 +89,7 @@ import spark.template.jade.JadeTemplateEngine;
  * Controller class providing backend code for the minions page.
  */
 public class MinionController {
-
+    private static final Logger LOG = LogManager.getLogger(MinionController.class);
     private MinionController() { }
 
     /**
@@ -107,6 +134,12 @@ public class MinionController {
         get("/manager/systems/details/proxy",
                 withCsrfToken(withDocsLocale(withUserAndServer(MinionController::proxy))),
                 jade);
+        get("/manager/systems/details/convert-to-sles-for-sap",
+                withCsrfToken(withDocsLocale(withUserAndServer(MinionController::convertToSlesForSAP))),
+                jade);
+        get("/manager/systems/details/convert-to-sles-for-sap-get-channels",
+                withUser(MinionController::convertToSlesForSAPGetChannels));
+        post("/manager/systems/details/convert-to-sles-for-sap-final", withUser(MinionController::convertToSlesForSAPFinal));
         get("/manager/multiorg/details/custom",
                 withCsrfToken(MinionController::orgCustomStates),
                 jade);
@@ -510,6 +543,274 @@ public class MinionController {
                 .map(p -> p.getId().getProxyServer().getId()).orElseGet(() -> 0L)));
 
         return new ModelAndView(data, "templates/minion/proxy.jade");
+    }
+
+    /**
+     * Handler for the Convert to SLES for SAP page
+     *
+     * @param request the request object
+     * @param response the response object
+     * @param user the current user
+     * @return the ModelAndView object to render the page
+     */
+    public static Object convertToSlesForSAPGetChannels(Request request, Response response, User user) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("entityType", "MINION");
+        Server server = ServerFactory.lookupByIdAndOrg(1000010003l, user.getOrg());
+        Optional<SUSEProductSet> installedProducts = server.getInstalledProductSet();
+        if (installedProducts.isEmpty()) {
+            // Installed products are 'unknown'
+            LOG.debug("Installed products are 'unknown'");
+        }
+        installedProducts.ifPresent(pset -> {
+            LOG.debug(pset.toString());
+            if (pset.getBaseProduct() == null) {
+                LOG.error("Server: {} has no base product installed. Check your servers installed products.",
+                        server.getId());
+            }
+        });
+        List<SUSEProduct> baseProductsList = Opt.fold(installedProducts,
+                () -> {
+                    LOG.warn("No products installed on this system");
+                    return null;
+                },
+                prd -> {
+                    SUSEProduct baseProduct = prd.getBaseProduct();
+                    if (baseProduct == null) {
+                        LOG.warn("No base product found");
+                        return null;
+                    }
+                    return SUSEProductFactory.findMatchingSAPProducts(baseProduct);
+                });
+        Channel baseChannel = DistUpgradeManager.getProductBaseChannel(
+                baseProductsList.get(0).getId(), server.getServerArch().getCompatibleChannelArch(), user);
+        List<Channel> children = baseChannel.getAccessibleChildrenFor(user);
+
+        Map<Long, Boolean> channelRecommendedFlags = ChannelManager.computeChannelRecommendedFlags(
+                baseChannel,
+                children.stream().filter(c -> c.isSubscribable(user.getOrg(), server)));
+
+        List<ChannelsJson.ChannelJson> jsonList = children.stream()
+                .filter(c -> c.isSubscribable(user.getOrg(), server))
+                .map(c -> new ChannelsJson.ChannelJson(c.getId(),
+                        c.getLabel(),
+                        c.getName(),
+                        c.isCustom(),
+                        c.isSubscribable(user.getOrg(), server),
+                        c.isCloned(),
+                        c.getChannelArch().getLabel(),
+                        channelRecommendedFlags.get(c.getId()),
+                        null))
+                .collect(Collectors.toList());
+        //return json(response, ResultJson.success(jsonList));
+        /*Map<Long, List<Long>> result = children.stream().collect(Collectors.toMap(
+                channelId -> channelId,
+                channelId -> {
+                    Stream<Channel> channels = Stream.empty();
+                    try {
+                        channels = SUSEProductFactory.findSyncedMandatoryChannels(
+                                ChannelFactory.lookupById(channelId.getId()).getLabel());
+                    }
+                    catch (NoSuchElementException e) {
+                        LOG.error("Fail to load mandatory channels for channel {}", channelId, e);
+                    }
+                    return channels.map(Channel::getId).collect(Collectors.toList());
+                }
+        ));*/
+       /* try {
+            Set<Action> sca = ActionChainManager.scheduleSubscribeChannelsAction(user,
+                    Collections.singleton(server.getId()),
+                    Optional.of(baseChannel),
+                    children,
+                    new Date(),
+                    null);
+
+        } catch (TaskomaticApiException e) {
+          e.printStackTrace();
+        }*/
+        return json(response, ResultJson.success(jsonList));
+    }
+
+    /**
+     * Handler for the Convert to SLES for SAP page
+     *
+     * @param request the request object
+     * @param response the response object
+     * @param user the current user
+     * @param server the current server
+     * @return the ModelAndView object to render the page
+     */
+    public static ModelAndView convertToSlesForSAP(Request request, Response response, User user, Server server) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("entityType", "MINION");
+
+        Optional<SUSEProductSet> installedProducts = server.getInstalledProductSet();
+        if (installedProducts.isEmpty()) {
+            // Installed products are 'unknown'
+            LOG.debug("Installed products are 'unknown'");
+        }
+        installedProducts.ifPresent(pset -> {
+            LOG.debug(pset.toString());
+            if (pset.getBaseProduct() == null) {
+                LOG.error("Server: {} has no base product installed. Check your servers installed products.",
+                        server.getId());
+            }
+        });
+        List<SUSEProduct> baseProductsList = Opt.fold(installedProducts,
+                () -> {
+                    LOG.warn("No products installed on this system");
+                    return null;
+                },
+                prd -> {
+                    SUSEProduct baseProduct = prd.getBaseProduct();
+                    if (baseProduct == null) {
+                        LOG.warn("No base product found");
+                        return null;
+                    }
+                    return SUSEProductFactory.findMatchingSAPProducts(baseProduct);
+                });
+        Channel baseChannel = DistUpgradeManager.getProductBaseChannel(
+                baseProductsList.get(0).getId(), server.getServerArch().getCompatibleChannelArch(), user);
+        List<Channel> children = baseChannel.getAccessibleChildrenFor(user);
+
+        Map<Long, Boolean> channelRecommendedFlags = ChannelManager.computeChannelRecommendedFlags(
+                baseChannel,
+                children.stream().filter(c -> c.isSubscribable(user.getOrg(), server)));
+
+        List<ChannelsJson.ChannelJson> jsonList = children.stream()
+                .filter(c -> c.isSubscribable(user.getOrg(), server))
+                .map(c -> new ChannelsJson.ChannelJson(c.getId(),
+                        c.getLabel(),
+                        c.getName(),
+                        c.isCustom(),
+                        c.isSubscribable(user.getOrg(), server),
+                        c.isCloned(),
+                        c.getChannelArch().getLabel(),
+                        channelRecommendedFlags.get(c.getId()),
+                        null))
+                .collect(Collectors.toList());
+        //return json(response, ResultJson.success(jsonList));
+        /*Map<Long, List<Long>> result = children.stream().collect(Collectors.toMap(
+                channelId -> channelId,
+                channelId -> {
+                    Stream<Channel> channels = Stream.empty();
+                    try {
+                        channels = SUSEProductFactory.findSyncedMandatoryChannels(
+                                ChannelFactory.lookupById(channelId.getId()).getLabel());
+                    }
+                    catch (NoSuchElementException e) {
+                        LOG.error("Fail to load mandatory channels for channel {}", channelId, e);
+                    }
+                    return channels.map(Channel::getId).collect(Collectors.toList());
+                }
+        ));*/
+       /* try {
+            Set<Action> sca = ActionChainManager.scheduleSubscribeChannelsAction(user,
+                    Collections.singleton(server.getId()),
+                    Optional.of(baseChannel),
+                    children,
+                    new Date(),
+                    null);
+
+        } catch (TaskomaticApiException e) {
+          e.printStackTrace();
+        }*/
+
+        data.put("childChannels", Json.GSON.toJson(jsonList));
+        data.put("currentProxy", Json.GSON.toJson(server.getFirstServerPath()
+                .map(p -> p.getId().getProxyServer().getId()).orElseGet(() -> 0L)));
+
+        return new ModelAndView(data, "templates/minion/convert-to-sap.jade");
+    }
+    /**
+     * Handler for the Convert to SLES for SAP page
+     *
+     * @param request the request object
+     * @param response the response object
+     * @param user the current user
+     * @return the ModelAndView object to render the page
+     */
+    public static String convertToSlesForSAPFinal(Request request, Response response, User user) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("entityType", "MINION");
+        Server server = ServerFactory.lookupByIdAndOrg(1000010003l, user.getOrg());
+        Optional<SUSEProductSet> installedProducts = server.getInstalledProductSet();
+        if (installedProducts.isEmpty()) {
+            // Installed products are 'unknown'
+            LOG.debug("Installed products are 'unknown'");
+        }
+        installedProducts.ifPresent(pset -> {
+            LOG.debug(pset.toString());
+            if (pset.getBaseProduct() == null) {
+                LOG.error("Server: {} has no base product installed. Check your servers installed products.",
+                        server.getId());
+            }
+        });
+        List<SUSEProduct> baseProductsList = Opt.fold(installedProducts,
+                () -> {
+                    LOG.warn("No products installed on this system");
+                    return null;
+                },
+                prd -> {
+                    SUSEProduct baseProduct = prd.getBaseProduct();
+                    if (baseProduct == null) {
+                        LOG.warn("No base product found");
+                        return null;
+                    }
+                    return SUSEProductFactory.findMatchingSAPProducts(baseProduct);
+                });
+        Channel baseChannel = DistUpgradeManager.getProductBaseChannel(
+                baseProductsList.get(0).getId(), server.getServerArch().getCompatibleChannelArch(), user);
+        List<Channel> children = baseChannel.getAccessibleChildrenFor(user);
+
+        Map<Long, Boolean> channelRecommendedFlags = ChannelManager.computeChannelRecommendedFlags(
+                baseChannel,
+                children.stream().filter(c -> c.isSubscribable(user.getOrg(), server)));
+
+        List<ChannelsJson.ChannelJson> jsonList = children.stream()
+                .filter(c -> c.isSubscribable(user.getOrg(), server))
+                .map(c -> new ChannelsJson.ChannelJson(c.getId(),
+                        c.getLabel(),
+                        c.getName(),
+                        c.isCustom(),
+                        c.isSubscribable(user.getOrg(), server),
+                        c.isCloned(),
+                        c.getChannelArch().getLabel(),
+                        channelRecommendedFlags.get(c.getId()),
+                        null))
+                .collect(Collectors.toList());
+        //return json(response, ResultJson.success(jsonList));
+        /*Map<Long, List<Long>> result = children.stream().collect(Collectors.toMap(
+                channelId -> channelId,
+                channelId -> {
+                    Stream<Channel> channels = Stream.empty();
+                    try {
+                        channels = SUSEProductFactory.findSyncedMandatoryChannels(
+                                ChannelFactory.lookupById(channelId.getId()).getLabel());
+                    }
+                    catch (NoSuchElementException e) {
+                        LOG.error("Fail to load mandatory channels for channel {}", channelId, e);
+                    }
+                    return channels.map(Channel::getId).collect(Collectors.toList());
+                }
+        ));*/
+        try {
+            Set<Action> sca = ActionChainManager.scheduleSubscribeChannelsAction(user,
+                    Collections.singleton(server.getId()),
+                    Optional.of(baseChannel),
+                    children,
+                    new Date(),
+                    null);
+
+        } catch (TaskomaticApiException e) {
+          e.printStackTrace();
+        }
+
+        data.put("childChannels", Json.GSON.toJson(jsonList));
+        data.put("currentProxy", Json.GSON.toJson(server.getFirstServerPath()
+                .map(p -> p.getId().getProxyServer().getId()).orElseGet(() -> 0L)));
+
+        return json(response, ResultJson.success());
     }
 
     /**

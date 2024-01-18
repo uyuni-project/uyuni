@@ -1,0 +1,14 @@
+include ./minion-header.jade
+
+#convert-to-sles-for-sap
+
+script(type="text/javascript").
+    window.csrfToken = "#{csrf_token}";
+    window.minions = [{id: #{server.id}, name: "#{server.name}"}];
+    window.proxies = !{proxies};
+    window.currentProxy = !{currentProxy};
+    window.childChannels = !{childChannels};
+
+script(type='text/javascript').
+    spaImportReactPage('systems/convert/to/sap')
+        .then(function(module) { module.renderer('convert-to-sap') });
