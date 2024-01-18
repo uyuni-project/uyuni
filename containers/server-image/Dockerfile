@@ -11,6 +11,8 @@ ARG EXTRAPACKAGES
 
 COPY timezone_alignment.sh /usr/bin
 
+COPY healthcheck.sh /usr/bin
+
 # Copy timezone link update service
 COPY timezone_alignment.service /usr/lib/systemd/system/
 
@@ -99,4 +101,4 @@ LABEL org.opensuse.reference="${REFERENCE_PREFIX}/server:${PRODUCT_VERSION}.%REL
 LABEL org.uyuni.version="${PRODUCT_VERSION}"
 
 CMD ["/usr/lib/systemd/systemd"]
-HEALTHCHECK --interval=5s --timeout=5s --retries=5 CMD ["/usr/bin/systemctl", "is-active", "multi-user.target"]
+HEALTHCHECK --interval=60s --timeout=120s --retries=5 --start-period=300s CMD ["/usr/bin/healthcheck.sh"]
