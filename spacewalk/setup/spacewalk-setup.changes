@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Jan 18 11:03:34 CET 2024 - jgonzalez@suse.com
+
+- version 5.0.2-1
+  * schema dir moved to /usr/share/susemanager/db
+
+-------------------------------------------------------------------
 Tue Jan 16 08:06:55 CET 2024 - jgonzalez@suse.com
 
 - version 5.0.1-1
