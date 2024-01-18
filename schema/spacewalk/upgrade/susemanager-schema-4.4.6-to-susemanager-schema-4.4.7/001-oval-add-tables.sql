@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS suseOVALPlatformVulnerablePackage
         REFERENCES suseOVALPlatform (id),
     cve_id               NUMERIC NOT NULL
         REFERENCES rhnCve (id),
-    vulnerable_pkg_id    NUMERIC
+    vulnerable_pkg_id    NUMERIC NOT NULL
         REFERENCES suseOVALVulnerablePackage (id),
     CONSTRAINT suse_oval_platform_vulnerable_pkg_id_pk PRIMARY KEY (platform_id, cve_id, vulnerable_pkg_id)
 );
