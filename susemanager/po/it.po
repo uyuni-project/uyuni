@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-04 15:35+0200\n"
+"POT-Creation-Date: 2024-01-18 12:06+0100\n"
 "PO-Revision-Date: 2020-12-19 21:26+0000\n"
 "Last-Translator: Marina Latini <marina.latini@suse.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/susemanager/"
@@ -220,7 +220,7 @@ msgstr ""
 #: ../yast/susemanager_reqs.rb:120 ../yast/susemanager_reqs.rb:147
 #: ../yast/susemanager_reqs.rb:165 ../yast/susemanager_reqs.rb:185
 #: ../yast/susemanager_reqs.rb:205 ../yast/susemanager_reqs.rb:245
-#: ../yast/susemanager_reqs.rb:261
+#: ../yast/susemanager_reqs.rb:268 ../yast/susemanager_reqs.rb:284
 msgid "Exit installation"
 msgstr ""
 
@@ -237,7 +237,8 @@ msgstr ""
 #: ../yast/susemanager_reqs.rb:92 ../yast/susemanager_reqs.rb:119
 #: ../yast/susemanager_reqs.rb:146 ../yast/susemanager_reqs.rb:164
 #: ../yast/susemanager_reqs.rb:184 ../yast/susemanager_reqs.rb:204
-#: ../yast/susemanager_reqs.rb:244 ../yast/susemanager_reqs.rb:260
+#: ../yast/susemanager_reqs.rb:244 ../yast/susemanager_reqs.rb:267
+#: ../yast/susemanager_reqs.rb:283
 msgid "Continue anyway"
 msgstr ""
 
@@ -269,7 +270,7 @@ msgid ""
 msgstr ""
 
 #: ../yast/susemanager_reqs.rb:178 ../yast/susemanager_reqs.rb:198
-#: ../yast/susemanager_reqs.rb:238
+#: ../yast/susemanager_reqs.rb:238 ../yast/susemanager_reqs.rb:261
 msgid "Illegal FQHN"
 msgstr ""
 
@@ -291,11 +292,17 @@ msgid ""
 "will not install correctly."
 msgstr ""
 
-#: ../yast/susemanager_reqs.rb:254
+#: ../yast/susemanager_reqs.rb:263
+msgid ""
+"The output of 'hostname -f' does not match the hostname from a reverse DNS "
+"lookup. The product will not install correctly."
+msgstr ""
+
+#: ../yast/susemanager_reqs.rb:277
 msgid "Illegal Hostname"
 msgstr ""
 
-#: ../yast/susemanager_reqs.rb:256
+#: ../yast/susemanager_reqs.rb:279
 msgid ""
 "Your hostname contains upper case characters. The product will not function "
 "correctly."
