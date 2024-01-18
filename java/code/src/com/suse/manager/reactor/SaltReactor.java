@@ -74,6 +74,7 @@ import com.suse.salt.netapi.event.MinionStartEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Date;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -303,7 +304,7 @@ public class SaltReactor {
      * @param beaconEvent beacon event
      * @return event handler runnable
      */
-    private Stream<EventMessage> eventToMessages(BeaconEvent beaconEvent) {
+    public Stream<EventMessage> eventToMessages(BeaconEvent beaconEvent) {
         if (beaconEvent.getBeacon().equals("pkgset") && beaconEvent.getAdditional().equals("changed")) {
             return of(
                     new RunnableEventMessage("ZypperEvent.PackageSetChanged",
@@ -321,7 +322,11 @@ public class SaltReactor {
         }
         else if (beaconEvent.getBeacon().equals("reboot_info")) {
             MinionServerFactory.findByMinionId(beaconEvent.getMinionId()).ifPresent(
-                m -> m.setRebootNeeded((Boolean) beaconEvent.getData().get("reboot_needed"))
+                m -> {
+                    Boolean rebootRequired = (Boolean) beaconEvent.getData().get("reboot_needed");
+                    Date rebootRequiredAfter = rebootRequired ? new Date() : null;
+                    m.setRebootRequiredAfter(rebootRequiredAfter);
+                }
             );
         }
         return empty();

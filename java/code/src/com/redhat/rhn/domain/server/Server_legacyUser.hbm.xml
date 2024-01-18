@@ -184,7 +184,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                          table="suseMinionInfo">
             <key column="server_id"/>
             <property name="minionId" column="minion_id" />
-            <property name="rebootNeeded" column="reboot_needed" type="yes_no" />
+            <property name="rebootRequiredAfter" column="reboot_required_after" type="timestamp" />
             <property name="osFamily" column="os_family"  type="string" length="32" />
             <property name="kernelLiveVersion" column="kernel_live_version"  type="string" length="255" />
             <property name="sshPushPort" column="ssh_push_port" access="field"/>
