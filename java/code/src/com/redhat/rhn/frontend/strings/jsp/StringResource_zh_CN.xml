@@ -29074,9 +29074,9 @@ given channel.</source>
         <source>Where do I find my Organization Credentials?</source>
         <target>在何处可以找到我的组织身份凭证？</target>
       </trans-unit>
-      <trans-unit id="mirror-credentials.jsp.info.p2" xml:space="preserve">
+      <trans-unit approved="yes" id="mirror-credentials.jsp.info.p2" xml:space="preserve">
         <source>You can find them in the &lt;a href="https://scc.suse.com/organizations" target="_blank"&gt;Customer Center&lt;/a&gt;.</source>
-        <target state="needs-adaptation">可以在 &lt;a href="https://scc.suse.com/organization" target="_blank"&gt;Customer Center&lt;/a&gt; 中找到。</target>
+        <target state="final">可以在 &lt;a href="https://scc.suse.com/organizations" target="_blank"&gt;Customer Center&lt;/a&gt; 中找到。</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.error.duplicate" xml:space="preserve">
         <source>Credentials with this username already exist</source>
