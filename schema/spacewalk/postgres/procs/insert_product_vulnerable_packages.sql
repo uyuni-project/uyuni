@@ -23,19 +23,9 @@ DECLARE
     vulnerable_pkg_id_val numeric;
 begin
 
-    IF NOT exists(SELECT cve FROM rhnCve cve WHERE cve.name = cve_name_in) THEN
-        INSERT INTO rhncve(id, name)
-        VALUES (nextval('rhn_cve_id_seq'), cve_name_in);
-    END IF;
+    cve_id_val := lookup_cve(cve_name_in);
 
-    SELECT id INTO cve_id_val FROM rhncve WHERE name = cve_name_in;
-
-    IF NOT exists(SELECT c FROM suseOVALPlatform c WHERE cpe = product_cpe_in) THEN
-        INSERT INTO suseovalplatform(id, cpe)
-        VALUES (nextval('suse_oval_platform_id_seq'), product_cpe_in);
-    END IF;
-
-    SELECT id INTO product_cpe_id_val FROM suseOVALPlatform WHERE cpe = product_cpe_in;
+    product_cpe_id_val := lookup_oval_platform(product_cpe_in);
 
     IF NOT EXISTS(SELECT 1
                   FROM suseovalvulnerablepackage

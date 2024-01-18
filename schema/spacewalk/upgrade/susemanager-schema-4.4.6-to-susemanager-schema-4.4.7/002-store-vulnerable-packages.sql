@@ -26,12 +26,7 @@ DECLARE
     vulnerable_pkg_id_val numeric;
 begin
 
-    IF NOT exists(SELECT cve FROM rhnCve cve WHERE cve.name = cve_name_in) THEN
-        INSERT INTO rhncve(id, name)
-        VALUES (nextval('rhn_cve_id_seq'), cve_name_in);
-    END IF;
-
-    SELECT id INTO cve_id_val FROM rhncve WHERE name = cve_name_in;
+    cve_id_val := lookup_cve(cve_name_in);
 
     product_cpe_id_val := lookup_oval_platform(product_cpe_in);
 
