@@ -57,7 +57,7 @@ public class SaltSSHController {
         File pubKey = new File(SaltSSHService.SSH_KEY_PATH + ".pub");
 
         Optional<MgrUtilRunner.SshKeygenResult> res = saltApi
-                .generateSSHKey(SaltSSHService.SSH_KEY_PATH);
+                .generateSSHKey(SaltSSHService.SSH_KEY_PATH, SaltSSHService.SUMA_SSH_PUB_KEY);
 
         res.ifPresentOrElse(result -> {
             if (!(result.getReturnCode() == 0 || result.getReturnCode() == -1)) {

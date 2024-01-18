@@ -129,6 +129,9 @@ py.test%{?rhel:-3}
 ! grep --include "*.sls" -r "module\.run" %{buildroot}/usr/share/susemanager/salt || exit 1
 
 %post
+# when uyuni roster module has changed, we need to remove the cache
+rm -f /var/cache/salt/master/roster/uyuni/minions.p
+
 # HACK! Create broken link when it will be replaces with the real file
 ln -sf %{wwwdocroot}/pub/RHN-ORG-TRUSTED-SSL-CERT \
    /usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT 2>&1 ||:

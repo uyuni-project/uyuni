@@ -1866,7 +1866,7 @@ end
 
 When(/^I check all certificates after renaming the server hostname$/) do
   # get server certificate serial to compare it with the other minions
-  command_server = "openssl x509 --noout --text -in /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT | grep -A1 'Serial' | grep -v 'Serial'"
+  command_server = "openssl x509 -noout -text -in /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT | grep -A1 'Serial' | grep -v 'Serial'"
   server_cert_serial, result_code = get_target('server').run(command_server)
   server_cert_serial.strip!
   log "Server certificate serial: #{server_cert_serial}"
@@ -1888,7 +1888,7 @@ When(/^I check all certificates after renaming the server hostname$/) do
                   end
     get_target(target).run("test -s #{certificate}", successcodes: [0], check_errors: true)
 
-    command_minion = "openssl x509 --noout --text -in #{certificate} | grep -A1 'Serial' | grep -v 'Serial'"
+    command_minion = "openssl x509 -noout -text -in #{certificate} | grep -A1 'Serial' | grep -v 'Serial'"
     minion_cert_serial, result_code = get_target(target).run(command_minion)
 
     raise "#{target}: Error getting server certificate serial!" unless result_code.zero?

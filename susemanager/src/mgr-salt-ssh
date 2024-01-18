@@ -12,7 +12,7 @@ from salt.scripts import salt_ssh
 from salt.utils.user import chugid
 
 
-SSH_KEY = "/srv/susemanager/salt/salt_ssh/mgr_ssh_id"
+SSH_KEY = "/var/lib/salt/.ssh/mgr_ssh_id"
 
 
 if __name__ == "__main__":

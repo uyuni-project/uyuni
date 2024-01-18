@@ -46,10 +46,13 @@ public class MinionGeneralPillarGenerator implements MinionPillarGenerator {
     public static final String CATEGORY = "general";
 
     private static final int PKGSET_INTERVAL = 5;
+    private static final Integer REBOOT_INFO_INTERVAL = 10;
 
     private static final Map<String, Object> PKGSET_BEACON_PROPS = new HashMap<>();
+    private static final Map<String, Object> REBOOT_INFO_BEACON_PROPS = new HashMap<>();
     static {
         PKGSET_BEACON_PROPS.put("interval", PKGSET_INTERVAL);
+        REBOOT_INFO_BEACON_PROPS.put("interval", REBOOT_INFO_INTERVAL);
     }
 
     /**
@@ -94,6 +97,7 @@ public class MinionGeneralPillarGenerator implements MinionPillarGenerator {
                 minion.getOsFamily().toLowerCase().equals("redhat") ||
                 minion.getOsFamily().toLowerCase().equals("debian")) {
             beaconConfig.put("pkgset", PKGSET_BEACON_PROPS);
+            beaconConfig.put("reboot_info", REBOOT_INFO_BEACON_PROPS);
         }
         if (!beaconConfig.isEmpty()) {
             pillar.add("beacons", beaconConfig);

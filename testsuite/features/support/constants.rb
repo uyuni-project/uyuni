@@ -292,9 +292,9 @@ BASE_CHANNEL_BY_CLIENT = {
                               'slemicro55_ssh_minion' => 'SLE-Micro-5.5-Pool for x86_64',
                               'alma9_minion' => 'almalinux9 for x86_64',
                               'alma9_ssh_minion' => 'almalinux9 for x86_64',
-                              'centos7_client' => 'RHEL x86_64 Server 7',
-                              'centos7_minion' => 'RHEL x86_64 Server 7',
-                              'centos7_ssh_minion' => 'RHEL x86_64 Server 7',
+                              'centos7_client' => 'SUSE Liberty Linux 7 x86_64',
+                              'centos7_minion' => 'SUSE Liberty Linux 7 x86_64',
+                              'centos7_ssh_minion' => 'SUSE Liberty Linux 7 x86_64',
                               'liberty9_minion' => 'EL9-Pool for x86_64',
                               'liberty9_ssh_minion' => 'EL9-Pool for x86_64',
                               'oracle9_minion' => 'oraclelinux9 for x86_64',
@@ -428,7 +428,7 @@ LABEL_BY_BASE_CHANNEL = {
                               'SLE-Micro-5.5-Pool for x86_64' => 'sle-micro-5.5-pool-x86_64',
                               'almalinux9 for x86_64' => 'no-appstream-alma-9-result-almalinux9-x86_64',
                               'Fake-Base-Channel-SUSE-like' => 'fake-base-channel-suse-like',
-                              'RHEL x86_64 Server 7' => 'rhel-x86_64-server-7',
+                              'SUSE Liberty Linux 7 x86_64' => 'rhel-x86_64-server-7',
                               'EL9-Pool for x86_64' => 'no-appstream-liberty-9-result-el9-pool-x86_64',
                               'oraclelinux9 for x86_64' => 'no-appstream-oracle-9-result-oraclelinux9-x86_64',
                               'RHEL8-Pool for x86_64' => 'no-appstream-8-result-rhel8-pool-x86_64',
@@ -495,7 +495,7 @@ CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = {
                                               'SLE-Micro-5.5-Pool for x86_64' => 'SLE-MICRO-5.5-x86_64',
                                               'almalinux9 for x86_64' => 'almalinux-9-x86_64',
                                               'Fake-Base-Channel-SUSE-like' => 'fake-base-channel-suse-like',
-                                              'RHEL x86_64 Server 7' => 'RES7-x86_64',
+                                              'SUSE Liberty Linux 7 x86_64' => 'res7-x86_64',
                                               'EL9-Pool for x86_64' => 'SUSE-LibertyLinux9-x86_64',
                                               'oraclelinux9 for x86_64' => 'oracle-9-x86_64',
                                               'RHEL8-Pool for x86_64' => 'SLE-ES8-x86_64',
@@ -564,7 +564,7 @@ PARENT_CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = {
                                                       'SLE-Micro-5.5-Pool for x86_64' => 'sle-micro-5.5-pool-x86_64',
                                                       'almalinux9 for x86_64' => nil,
                                                       'Fake-Base-Channel-SUSE-like' => nil,
-                                                      'RHEL x86_64 Server 7' => 'rhel-x86_64-server-7',
+                                                      'SUSE Liberty Linux 7 x86_64' => 'rhel-x86_64-server-7',
                                                       'EL9-Pool for x86_64' => 'el9-pool-x86_64',
                                                       'oraclelinux9 for x86_64' => nil,
                                                       'RHEL8-Pool for x86_64' => nil,
@@ -707,6 +707,7 @@ CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION = {
   'almalinux9' =>
     %w[
       almalinux9-appstream-x86_64
+      almalinux9-extras-x86_64
       almalinux9-x86_64
       almalinux9-uyuni-client-x86_64
     ],
@@ -758,12 +759,14 @@ CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION = {
   'rockylinux-8' =>
     %w[
       rockylinux-8-appstream-x86_64
+      rockylinux-8-extras-x86_64
       rockylinux-8-x86_64
       rockylinux8-uyuni-client-x86_64
     ],
   'rockylinux-9' =>
     %w[
       rockylinux-9-appstream-x86_64
+      rockylinux-9-extras-x86_64
       rockylinux-9-x86_64
       rockylinux9-uyuni-client-x86_64
     ],

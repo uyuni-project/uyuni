@@ -165,7 +165,8 @@ public class SystemEntitlementsSetupActionTest extends RhnMockStrutsTestCase {
     @Test
     public void testOSImageBuildHostType() throws Exception {
         context.checking(new Expectations() {{
-            allowing(saltServiceMock).generateSSHKey(with(equal(SaltSSHService.SSH_KEY_PATH)));
+            allowing(saltServiceMock).generateSSHKey(
+                    with(equal(SaltSSHService.SSH_KEY_PATH)), with(equal(SaltSSHService.SUMA_SSH_PUB_KEY)));
         }});
 
         Server server = MinionServerFactoryTest.createTestMinionServer(user);

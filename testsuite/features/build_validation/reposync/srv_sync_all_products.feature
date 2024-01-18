@@ -527,16 +527,16 @@ Feature: Synchronize products in the products page of the Setup Wizard
 
 @susemanager
 @centos7_minion
-  Scenario: Add SUSE Linux Enterprise Server with Expanded Support 7
+  Scenario: Add SUSE Liberty Linux 7
     Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
-    And I enter "SUSE Linux Enterprise Server with Expanded Support 7" as the filtered product description
-    And I select "SUSE Linux Enterprise Server with Expanded Support 7" as a product
-    Then I should see the "SUSE Linux Enterprise Server with Expanded Support 7" selected
+    And I enter "SUSE Liberty Linux 7" as the filtered product description
+    And I select "SUSE Liberty Linux 7 x86_64" as a product
+    Then I should see the "SUSE Liberty Linux 7 x86_64" selected
     When I click the Add Product button
-    And I wait until I see "SUSE Linux Enterprise Server with Expanded Support 7" product has been added
+    And I wait until I see "SUSE Liberty Linux 7 x86_64" product has been added
     And I wait until all synchronized channels for "res7" have finished
 
 @uyuni
@@ -631,7 +631,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @rocky8_minion
   Scenario: Add Rocky Linux 8
     When I use spacewalk-common-channel to add channel "rockylinux8 rockylinux8-appstream rockylinux8-extras rockylinux8-uyuni-client-devel" with arch "x86_64"
-    And I wait until all synchronized channels for "res8" have finished
+    And I wait until all synchronized channels for "rockylinux-8" have finished
 
 @susemanager
 @rocky9_minion
@@ -645,6 +645,12 @@ Feature: Synchronize products in the products page of the Setup Wizard
     Then I should see the "Rocky Linux 9 x86_64" selected
     When I click the Add Product button
     And I wait until I see "Rocky Linux 9 x86_64" product has been added
+    And I wait until all synchronized channels for "rockylinux-9" have finished
+
+@uyuni
+@rocky9_minion
+  Scenario: Add Rocky Linux 9
+    When I use spacewalk-common-channel to add channel "rockylinux9 rockylinux9-appstream rockylinux9-extras rockylinux9-uyuni-client-devel" with arch "x86_64"
     And I wait until all synchronized channels for "rockylinux-9" have finished
 
 @ubuntu2004_minion

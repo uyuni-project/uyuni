@@ -15,15 +15,15 @@
 
 CREATE TABLE suseMinionInfo
 (
-    server_id           NUMERIC NOT NULL
-                            CONSTRAINT suse_minion_info_sid_fk
-                                REFERENCES rhnServer (id)
-                                ON DELETE CASCADE,
-    minion_id           VARCHAR(256) NOT NULL,
-    os_family           VARCHAR(32),
-    kernel_live_version VARCHAR(255),
-    ssh_push_port       NUMERIC,
-    reboot_needed       CHAR(1),
+    server_id             NUMERIC NOT NULL
+                              CONSTRAINT suse_minion_info_sid_fk
+                                  REFERENCES rhnServer (id)
+                                  ON DELETE CASCADE,
+    minion_id             VARCHAR(256) NOT NULL,
+    os_family             VARCHAR(32),
+    kernel_live_version   VARCHAR(255),
+    ssh_push_port         NUMERIC,
+    reboot_required_after TIMESTAMPTZ,
     created   TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL,
     modified  TIMESTAMPTZ
