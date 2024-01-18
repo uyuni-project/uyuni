@@ -435,6 +435,22 @@ spec:
           - name: SSH_AUTH_SOCK
             value: /tmp/ssh_auth_sock
 {{- end }}
+        livenessProbe:
+          exec:
+            command:
+              - /usr/bin/healthcheck.sh
+          initialDelaySeconds: 30
+          periodSeconds: 60
+          timeoutSeconds: 120
+          failureThreshold: 5
+        readinessProbe:
+          exec:
+            command:
+              - /usr/bin/systemctl
+              - is-active
+              - multi-user.target
+          periodSeconds: 10
+          timeoutSeconds: 10
         volumeMounts:
           - mountPath: /run
             name: tmp
