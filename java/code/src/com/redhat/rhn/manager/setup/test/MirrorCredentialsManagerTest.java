@@ -16,11 +16,13 @@ package com.redhat.rhn.manager.setup.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.manager.content.ContentSyncException;
 import com.redhat.rhn.manager.setup.MirrorCredentialsDto;
 import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
+import com.redhat.rhn.manager.setup.MirrorCredentialsNotUniqueException;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
@@ -142,6 +144,16 @@ public class MirrorCredentialsManagerTest extends RhnMockStrutsTestCase {
         assertTrue(credsManager.findMirrorCredentials(creds2.getId()).isPrimary());
     }
 
+    @Test
+    public void throwsExceptionIfCredentialsWithSameUsernameAlreadyExists() {
+        MirrorCredentialsDto creds = storeTestCredentials();
+
+        Exception ex = assertThrows(MirrorCredentialsNotUniqueException.class,
+            () -> storeTestCredentials(creds.getUser(), creds.getPassword()));
+
+        assertEquals("Username already exists", ex.getMessage());
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -165,14 +177,25 @@ public class MirrorCredentialsManagerTest extends RhnMockStrutsTestCase {
     }
 
     /**
-     * Store test credentials for a given id.
-     *
-     * @param id the id of stored credentials
+     * Store test credentials.
+     * @return a DTO representing the created credentials
      */
     private MirrorCredentialsDto storeTestCredentials() throws ContentSyncException {
+        return storeTestCredentials("testuser-" + TestUtils.randomString(), "testpass-" + TestUtils.randomString());
+    }
+
+    /**
+     * Store test credentials for a given id.
+     *
+     * @param userIn the username
+     * @param passwordIn the password
+
+     * @return a DTO representing the created credentials
+     */
+    private MirrorCredentialsDto storeTestCredentials(String userIn, String passwordIn) throws ContentSyncException {
         MirrorCredentialsDto creds = new MirrorCredentialsDto();
-        creds.setUser("testuser-" + TestUtils.randomString());
-        creds.setPassword("testpass-" + TestUtils.randomString());
+        creds.setUser(userIn);
+        creds.setPassword(passwordIn);
         long dbId = credsManager.storeMirrorCredentials(creds, request);
         creds.setId(dbId);
         return creds;
