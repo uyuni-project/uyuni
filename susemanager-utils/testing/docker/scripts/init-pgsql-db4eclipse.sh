@@ -2,6 +2,13 @@
 
 set -e
 
+# Check if the schema package is using the new directory structure, otherwise the upgrade files are in the old
+# place and so we need a symlink to make the schema upgrade script able to pick them up
+if [ ! -d /usr/share/susemanager/db ]; then
+    mkdir -p /usr/share/susemanager
+    ln -s /etc/sysconfig/rhn /usr/share/susemanager/db
+fi
+
 cd /manager/susemanager-utils/testing/docker/scripts/
 
 # Move Postgres database to tmpfs to speed initialization and testing up
