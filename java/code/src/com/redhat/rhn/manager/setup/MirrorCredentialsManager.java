@@ -44,6 +44,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -133,7 +134,7 @@ public class MirrorCredentialsManager {
         // Check if the supplied user name already exists in stored credentials
         for (SCCCredentials existingCred : CredentialsFactory.listSCCCredentials()) {
             if (existingCred.getUsername().equals(creds.getUser()) &&
-                    (!creds.getId().equals(existingCred.getId()))) {
+                    (!Objects.equals(existingCred.getId(), creds.getId()))) {
                 throw new MirrorCredentialsNotUniqueException("Username already exists");
             }
         }
