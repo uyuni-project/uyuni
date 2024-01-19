@@ -35,6 +35,7 @@ import com.suse.scc.client.SCCConfig;
 import com.suse.scc.client.SCCWebClient;
 import com.suse.scc.model.SCCSubscriptionJson;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -60,19 +61,23 @@ public class MirrorCredentialsManager {
 
     private final CloudPaygManager cloudPaygManager;
 
+    private final ContentSyncManager contentSyncManager;
+
     /**
      * Default Constructor
      */
     public MirrorCredentialsManager() {
-        this(GlobalInstanceHolder.PAYG_MANAGER);
+        this(GlobalInstanceHolder.PAYG_MANAGER, new ContentSyncManager());
     }
 
     /**
      * Constructore
      * @param cloudPaygManagerIn the cloud manager
+     * @param contentSyncManagerIn the content sync manager
      */
-    public MirrorCredentialsManager(CloudPaygManager cloudPaygManagerIn) {
+    public MirrorCredentialsManager(CloudPaygManager cloudPaygManagerIn, ContentSyncManager contentSyncManagerIn) {
         cloudPaygManager = cloudPaygManagerIn;
+        contentSyncManager = contentSyncManagerIn;
     }
 
     /**
@@ -226,8 +231,7 @@ public class MirrorCredentialsManager {
         CredentialsFactory.removeCredentials(dbCreds);
 
         // Link orphan content sources
-        ContentSyncManager csm = new ContentSyncManager();
-        csm.linkAndRefreshContentSource(null);
+        contentSyncManager.linkAndRefreshContentSource(null);
 
         // update info about hasSCCCredentials
         cloudPaygManager.checkRefreshCache(true);
@@ -274,11 +278,12 @@ public class MirrorCredentialsManager {
                 log.debug("Downloading subscriptions for {}", creds.getUser());
             }
             try {
-                CredentialsFactory.lookupSCCCredentialsById(creds.getId()).ifPresent(credentials -> {
-                    List<SCCSubscriptionJson> subscriptions = new ContentSyncManager()
-                            .updateSubscriptions(new SCCContentSyncSource(credentials));
-                    SetupWizardSessionCache.storeSubscriptions(makeDtos(subscriptions), creds, request);
-                });
+                CredentialsFactory.lookupSCCCredentialsById(creds.getId())
+                    .ifPresent(credentials -> {
+                        SCCContentSyncSource source = new SCCContentSyncSource(credentials);
+                        List<SCCSubscriptionJson> subscriptions = contentSyncManager.updateSubscriptions(source);
+                        SetupWizardSessionCache.storeSubscriptions(makeDtos(subscriptions), creds, request);
+                    });
             }
             catch (ContentSyncException e) {
                 log.error("Error getting subscriptions for {}: {}", creds.getUser(), e.getMessage());
@@ -297,45 +302,44 @@ public class MirrorCredentialsManager {
      * @return list of subscription DTOs
      */
     private List<SubscriptionDto> makeDtos(List<SCCSubscriptionJson> subscriptions) {
-        if (subscriptions == null) {
-            return null;
-        }
-        Map<String, String> familyNameByLabel = ChannelFamilyFactory.getAllChannelFamilies()
-                .stream().collect(Collectors.toMap(ChannelFamily::getLabel, ChannelFamily::getName));
-        // Go through all of the given subscriptions
         List<SubscriptionDto> dtos = new ArrayList<>();
-        for (SCCSubscriptionJson s : subscriptions) {
-            // Skip all non-active
-            if (!s.getStatus().equals("ACTIVE")) {
-                continue;
-            }
-
-            // Determine subscription name from given product class
-            List<String> productClasses = s.getProductClasses();
-            if (productClasses.isEmpty()) {
-                log.warn("No product class for subscription: {}, skipping...", s.getName());
-                continue;
-            }
-            String subscriptionName = null;
-            for (String productClass : productClasses) {
-                String name = Optional.ofNullable(familyNameByLabel.get(productClass)).orElse(productClass);
-
-                // It is an OR relationship: append with OR
-                if (subscriptionName == null) {
-                    subscriptionName = name;
-                }
-                else {
-                    subscriptionName = subscriptionName + " OR " + name;
-                }
-            }
-
-            // We have a valid subscription, add it as DTO
-            SubscriptionDto dto = new SubscriptionDto();
-            dto.setName(subscriptionName);
-            dto.setStartDate(s.getStartsAt());
-            dto.setEndDate(s.getExpiresAt());
-            dtos.add(dto);
+        if (CollectionUtils.isEmpty(subscriptions)) {
+            return dtos;
         }
+
+        Map<String, String> familyNameByLabel = ChannelFamilyFactory.getAllChannelFamilies()
+            .stream().collect(Collectors.toMap(ChannelFamily::getLabel, ChannelFamily::getName));
+
+        subscriptions.stream()
+            // Only active subscriptions
+            .filter(s -> "ACTIVE".equals(s.getStatus()))
+            // Only subscription with at least one product class
+            .filter(s -> {
+                if (CollectionUtils.isEmpty(s.getProductClasses())) {
+                    log.warn("No product class for subscription: {}, skipping...", s.getName());
+                    return false;
+                }
+
+                return true;
+            })
+            // Convert the SCCSubscriptionJSON to a SubscriptionDTO
+            .map(s -> {
+                StringBuilder subscriptionNameBuilder = new StringBuilder();
+                for (String productClass : s.getProductClasses()) {
+                    String name = familyNameByLabel.getOrDefault(productClass, productClass);
+
+                    // It is an OR relationship: append with OR
+                    if (subscriptionNameBuilder.length() > 0) {
+                        subscriptionNameBuilder.append(" OR ");
+                    }
+
+                    subscriptionNameBuilder.append(name);
+                }
+
+                return new SubscriptionDto(subscriptionNameBuilder.toString(), s.getStartsAt(), s.getExpiresAt());
+            })
+            .forEach(dtos::add);
+
         return dtos;
     }
 }
