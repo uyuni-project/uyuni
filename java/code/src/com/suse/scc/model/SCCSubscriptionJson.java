@@ -49,6 +49,30 @@ public class SCCSubscriptionJson {
     private List<String> skus = new ArrayList<>();
 
     /**
+     * Default constructor
+     */
+    public SCCSubscriptionJson() {
+    }
+
+    /**
+     * Constructor used in unit tests.
+     *
+     * @param nameIn the name of the subscription
+     * @param statusIn the status
+     * @param startsAtIn the start instant in ISO-8601 format
+     * @param expiresAtIn the expiration instant in ISO-8601 format
+     * @param productClassesIn the list of product classes labels
+     */
+    public SCCSubscriptionJson(String nameIn, String statusIn, String startsAtIn, String expiresAtIn,
+                               List<String> productClassesIn) {
+        this.name = nameIn;
+        this.status = statusIn;
+        this.startsAt = startsAtIn;
+        this.expiresAt = expiresAtIn;
+        this.productClasses = productClassesIn;
+    }
+
+    /**
      * @return the id
      */
     public Long getId() {
