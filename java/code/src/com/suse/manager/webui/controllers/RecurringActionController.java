@@ -29,6 +29,8 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.RecurringEventPicker;
 import com.redhat.rhn.common.validator.ValidatorException;
+import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.recurringactions.RecurringAction;
 import com.redhat.rhn.domain.recurringactions.RecurringAction.TargetType;
@@ -39,11 +41,14 @@ import com.redhat.rhn.domain.recurringactions.type.RecurringHighstate;
 import com.redhat.rhn.domain.recurringactions.type.RecurringState;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.listview.PageControl;
+import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
 import com.redhat.rhn.manager.recurringactions.RecurringActionManager;
 import com.redhat.rhn.manager.recurringactions.StateConfigFactory;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.suse.manager.maintenance.MaintenanceManager;
 import com.suse.manager.utils.PagedSqlQueryBuilder;
 import com.suse.manager.webui.utils.PageControlHelper;
 import com.suse.manager.webui.utils.gson.PagedDataResultJson;
@@ -61,6 +66,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -101,6 +108,8 @@ public class RecurringActionController {
         get("/manager/api/recurringactions/:type/:id", asJson(withUser(RecurringActionController::listByEntity)));
         get("/manager/api/recurringactions/states", asJson(withUser(RecurringActionController::getStatesConfig)));
         post("/manager/api/recurringactions/save", asJson(withUser(RecurringActionController::save)));
+        post("/manager/api/recurringactions/custom/execute",
+                asJson(withUser(RecurringActionController::executeCustom)));
         delete("/manager/api/recurringactions/:id/delete", asJson(withUser(RecurringActionController::deleteSchedule)));
 
     }
@@ -279,6 +288,51 @@ public class RecurringActionController {
         catch (ValidatorException e) {
             errors.add(e.getMessage()); // we assume the messages are already localized
             Spark.halt(HttpStatus.SC_BAD_REQUEST, GSON.toJson(ResultJson.error(e.getMessage())));
+        }
+        catch (TaskomaticApiException e) {
+            LOG.error("Rolling back transaction because of Taskomatic exception", e);
+            HibernateFactory.rollbackTransaction();
+            String errMsg = LocalizationService.getInstance().getMessage("recurring_action.taskomatic_error");
+            Spark.halt(HttpStatus.SC_SERVICE_UNAVAILABLE, GSON.toJson(ResultJson.error(errMsg)));
+        }
+
+        return json(response, ResultJson.success());
+    }
+
+    /**
+     * Schedules a one-shot custom state execution
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return string containing the json response
+     */
+    public static String executeCustom(Request request, Response response, User user) {
+        RecurringActionScheduleJson json = GSON.fromJson(request.body(), RecurringActionScheduleJson.class);
+        RecurringAction action = createOrGetAction(user, json);
+        if (!action.getActionType().equals(RecurringActionType.ActionType.CUSTOMSTATE)) {
+            LOG.error("Invalid action type");
+            Spark.halt(HttpStatus.SC_BAD_REQUEST, GSON.toJson(ResultJson.error(
+                    LocalizationService.getInstance().getMessage("recurring_action_invalid_action_type"))));
+        }
+        mapJsonToAction(json, action);
+
+        List<Long> minionIds = new MaintenanceManager().systemIdsMaintenanceMode(action.computeMinions());
+        Set<RecurringStateConfig> configs = ((RecurringState) action.getRecurringActionType()).getStateConfig();
+        List<String> mods = configs.stream()
+                .sorted(Comparator.comparingLong(RecurringStateConfig::getPosition))
+                .map(RecurringStateConfig::getStateName)
+                .collect(Collectors.toList());
+        Action a = ActionManager.scheduleApplyStates(action.getCreator(),
+                minionIds, mods,
+                Optional.empty(),
+                new Date(),
+                Optional.of(((RecurringState) action.getRecurringActionType()).isTestMode()),
+                true);
+        ActionFactory.save(a);
+
+        try {
+            new TaskomaticApi().scheduleActionExecution(a);
         }
         catch (TaskomaticApiException e) {
             LOG.error("Rolling back transaction because of Taskomatic exception", e);
