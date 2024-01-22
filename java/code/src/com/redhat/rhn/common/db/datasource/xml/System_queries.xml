@@ -869,12 +869,35 @@ ORDER BY  UPPER(COALESCE(S.NAME, '(none)')), S.ID
       WHERE USP.user_id = :user_id
         AND S.org_id = :org_id
         AND ((CAST(:sid AS NUMERIC) IS NOT NULL AND S.id = :sid) OR (CAST(:sid AS NUMERIC) IS NULL))
-        AND EXISTS (
-          SELECT 1
-          FROM suseMinionInfo smi
-          WHERE smi.server_id = S.id
-          AND to_date('1970-01-01', 'YYYY-MM-DD')
-          + numtodsinterval(S.last_boot, 'second') &lt; smi.reboot_required_after at time zone 'UTC'
+        AND (
+            EXISTS (SELECT 1
+              FROM suseMinionInfo smi
+              WHERE smi.server_id = S.id
+              AND to_date('1970-01-01', 'YYYY-MM-DD')
+              + numtodsinterval(S.last_boot, 'second') &lt; smi.reboot_required_after at time zone 'UTC'
+            )
+            OR EXISTS (SELECT 1
+                        FROM rhnServerPackage SP
+                        JOIN rhnPackage P ON (P.evr_id = SP.evr_id AND P.name_id = SP.name_id)
+                        JOIN rhnErrataPackage EP ON EP.package_id = P.id
+                        JOIN rhnErrata E ON EP.errata_id = E.id
+                        JOIN rhnerratakeyword EK ON E.id = EK.errata_id
+                      WHERE SP.server_id = S.id
+                        AND EK.keyword = 'reboot_suggested'
+                        AND (to_date('1970-01-01', 'YYYY-MM-DD')
+                             + numtodsinterval(S.last_boot, 'second')) &lt; SP.installtime at time zone 'UTC'
+                   )
+                OR EXISTS
+                       (SELECT 1
+                        FROM rhnServerPackage SP
+                          JOIN rhnPackage P ON (P.evr_id = SP.evr_id AND P.name_id = SP.name_id)
+                          JOIN rhnPackageProvides PP ON P.id = PP.package_id
+                          JOIN rhnPackageCapability PC ON PP.capability_id = PC.id
+                        WHERE SP.server_id = S.id
+                          AND PC.name = 'installhint(reboot-needed)'
+                          AND (to_date('1970-01-01', 'YYYY-MM-DD')
+                               + numtodsinterval(S.last_boot, 'second')) &lt; SP.installtime at time zone 'UTC'
+                        )
         )
   </query>
   <elaborator name="system_overview" />
