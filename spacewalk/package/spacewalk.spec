@@ -116,7 +116,7 @@ Requires:       perl(DBD::Pg)
 Requires:       postgresql-implementation >= %{postgresql_version_min}
 Requires:       postgresql-implementation <= %{postgresql_version_max}.9999
 Requires:       postgresql-contrib-implementation >= %{postgresql_version_min}
-Requires:       postgresql-contrib-implementation <= %{postgresql_version_max}:.9999
+Requires:       postgresql-contrib-implementation <= %{postgresql_version_max}.9999
 %else # not a supported SUSE version or alternative OS.
 Requires:       postgresql >= %{postgresql_version_min}
 Requires:       postgresql <= %{postgresql_version_max}.9999
