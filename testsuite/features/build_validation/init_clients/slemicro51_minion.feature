@@ -7,6 +7,10 @@
 @slemicro51_minion
 Feature: Bootstrap a SLE Micro 5.1 Salt minion
 
+  Scenario: Clean up sumaform leftovers on a SLE Micro 5.1 minion
+    When I perform a full salt minion cleanup on "slemicro51_minion"
+    And I reboot the "slemicro51_minion" minion through the web UI
+
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
