@@ -502,6 +502,7 @@ end
 
 When(/^I perform a full salt minion cleanup on "([^"]*)"$/) do |host|
   node = get_target(host)
+
   if use_salt_bundle
     if slemicro_host?(host)
       node.run('transactional-update -n pkg rm venv-salt-minion', check_errors: false)
@@ -525,6 +526,9 @@ When(/^I perform a full salt minion cleanup on "([^"]*)"$/) do |host|
     end
     node.run('rm -Rf /root/salt /var/cache/salt/minion /var/run/salt /run/salt /var/log/salt /etc/salt /var/tmp/.root*', check_errors: false)
   end
+
+  node.run('reboot') if slemicro_host?(host)
+
   step %(I disable the repositories "tools_update_repo tools_pool_repo" on this "#{host}" without error control)
 end
 
