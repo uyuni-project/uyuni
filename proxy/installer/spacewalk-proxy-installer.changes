@@ -1,10 +1,4 @@
 -------------------------------------------------------------------
-Fri Jan 22 15:00:00 CET 2024 - jmozdzen@nde.ag
-
-- version 5.x.y
-  * refresh_pattern in squid.conf specifies (min and) max time in *minutes*, reducing to "5"
-
--------------------------------------------------------------------
 Tue Jan 16 08:24:38 CET 2024 - jgonzalez@suse.com
 
 - version 5.0.1-1
