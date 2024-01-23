@@ -107,7 +107,7 @@ public class CVEAuditManagerOVAL {
     }
 
     private static boolean isCVEIdentifierUnknown(String cveIdentifier) {
-        return !OVALCachingFactory.canAuditCVE(cveIdentifier);
+        return !OVALCachingFactory.canAuditCVE(cveIdentifier) && CVEAuditManager.isCVEIdentifierUnknown(cveIdentifier);
     }
 
     /**
