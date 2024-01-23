@@ -78,6 +78,8 @@ public class UpgradeCommand extends BaseTransactionCommand {
             UPGRADE_TASK_NAME + "refresh_custom_sls_files";
     public static final String REFRESH_VIRTHOST_PILLARS =
             UPGRADE_TASK_NAME + "virthost_pillar_refresh";
+    public static final String REFRESH_ALL_SYSTEMS_PILLARS =
+            UPGRADE_TASK_NAME + "all_systems_pillar_refresh";
     public static final String SYSTEM_THRESHOLD_FROM_CONFIG =
             UPGRADE_TASK_NAME + "system_threshold_conf";
 
@@ -151,6 +153,9 @@ public class UpgradeCommand extends BaseTransactionCommand {
                         break;
                     case SYSTEM_THRESHOLD_FROM_CONFIG:
                         convertSystemThresholdFromConfig();
+                        break;
+                    case REFRESH_ALL_SYSTEMS_PILLARS:
+                        refreshAllSystemsPillar();
                         break;
                     default:
                 }
@@ -356,6 +361,22 @@ public class UpgradeCommand extends BaseTransactionCommand {
         }
         catch (Exception e) {
             log.error("Error refreshing virtualization host pillar. Ignoring.", e);
+        }
+    }
+
+    /**
+     * Regenerate pillar data for every registered system.
+     */
+    private void refreshAllSystemsPillar() {
+        try {
+            List<MinionServer> hosts = MinionServerFactory.listMinions();
+            hosts.forEach(MinionPillarManager.INSTANCE::generatePillar);
+            List<String> minionIds = hosts.stream().map(MinionServer::getMinionId).collect(Collectors.toList());
+            GlobalInstanceHolder.SALT_API.refreshPillar(new MinionList(minionIds));
+            log.info("Refreshed hosts pillar");
+        }
+        catch (Exception e) {
+            log.error("Error refreshing hosts pillar. Ignoring.", e);
         }
     }
 

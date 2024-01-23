@@ -56,6 +56,9 @@ public class PkgProfileUpdateSlsResult {
     @SerializedName("mgrcompat_|-status_uptime_|-status.uptime_|-module_run")
     private Optional<StateApplyResult<Ret<Map<String, Object>>>> upTime = Optional.empty();
 
+    @SerializedName("mgrcompat_|-reboot_required_|-reboot_info.reboot_required_|-module_run")
+    private Optional<StateApplyResult<Ret<Map<String, Object>>>> rebootRequired = Optional.empty();
+
     @SerializedName("mgrcompat_|-kernel_live_version_|-sumautil.get_kernel_live_version_|-module_run")
     private Optional<StateApplyResult<Ret<KernelLiveVersionInfo>>> kernelLiveVersionInfo = Optional.empty();
 
@@ -101,6 +104,14 @@ public class PkgProfileUpdateSlsResult {
      */
     public Optional<StateApplyResult<Ret<Map<String, Object>>>> getUpTime() {
         return upTime;
+    }
+
+    /**
+     * Gets the reboot required indication
+     * @return optional of reboot required flag
+     */
+    public Optional<StateApplyResult<Ret<Map<String, Object>>>> getRebootRequired() {
+        return rebootRequired;
     }
 
     /**

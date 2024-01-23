@@ -76,6 +76,10 @@ COPY taskomatic_jmx.conf /usr/lib/systemd/system/taskomatic.service.d/jmx.conf
 
 RUN chmod -R 755 /usr/bin/timezone_alignment.sh
 
+# Set a warning message for interactive shells
+COPY motd /etc/motd
+RUN echo "cat /etc/motd" >/etc/sh.shrc.local
+
 RUN systemctl enable prometheus-node_exporter; \
     systemctl enable uyuni-setup; \
     systemctl enable timezone_alignment;
