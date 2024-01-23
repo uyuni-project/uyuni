@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Tue Jan 23 13:54:50 CET 2024 - rosuna@suse.com
+
+- version 4.3.26-1
+  * Fix decompressing and renaming bzip2 comps files in reposync
+  * Update query to the new credentials structure
+  * Remove normalize_orphan_vendor_packages and move it to taskomatic (bsc#1216781)
+  * Skip syncing packages with incorrect metadata (bsc#1213738)
+  * Update translation strings
+
+-------------------------------------------------------------------
 Mon Nov 20 11:24:46 CET 2023 - rosuna@suse.com
 
 - version 4.3.25-1
