@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Tue Jan 23 14:17:15 CET 2024 - rosuna@suse.com
+
+- version 4.3.15-1
+  * Update release status and repository description of OES 23.4 (bsc#1215514)
+  * Add new SUSE Liberty Linux 7 LTSS channel families
+  * Rename RHEL and Liberty 8 Base product to remove EOL CentOS 8 from the name
+
+-------------------------------------------------------------------
 Mon Nov 20 11:41:11 CET 2023 - rosuna@suse.com
 
 - version 4.3.14-1
