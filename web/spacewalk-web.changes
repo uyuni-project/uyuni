@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Tue Jan 23 14:10:42 CET 2024 - rosuna@suse.com
+
+- version 4.3.37-1
+  * Fix the use of page size preference in systems and packages lists (bsc#1217209)
+  * Fix issue displaying Ansible playbook name (bsc#1216657) 
+  * Add support for `PaygNotCompliantWarning` notification
+  * Bump web.version to 4.3.11
+
+-------------------------------------------------------------------
 Mon Nov 20 11:37:23 CET 2023 - rosuna@suse.com
 
 - version 4.3.36-1
