@@ -16,7 +16,7 @@
 package com.suse.oval.exceptions;
 
 /**
- * A runtime exception throne by {@link com.suse.oval.OvalParser} when it encounters errors while parsing an OVAL file
+ * A runtime exception thrown by {@link com.suse.oval.OvalParser} when it encounters errors while parsing an OVAL file.
  * */
 public class OvalParserException extends RuntimeException {
 
