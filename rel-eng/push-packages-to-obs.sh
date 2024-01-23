@@ -272,6 +272,10 @@ while read PKG_NAME; do
           sed "s/^ARG PRODUCT=.*$/ARG PRODUCT=\"SUSE Manager\"/" -i $SRPM_PKG_DIR/Dockerfile
           sed "s/^ARG URL=.*$/ARG URL=\"https:\/\/www.suse.com\/products\/suse-manager\/\"/" -i $SRPM_PKG_DIR/Dockerfile
           sed "s/^ARG REFERENCE_PREFIX=.*$/ARG REFERENCE_PREFIX=\"registry.suse.com\/suse\/manager\/${VERSION}\"/" -i $SRPM_PKG_DIR/Dockerfile
+          sed "/^# labelprefix=.*$/aLABEL com.suse.eula=\"sle-eula\"" -i ${SRPM_PKG_DIR}/Dockerfile
+          sed "/^# labelprefix=.*$/aLABEL com.suse.release-stage=\"released\"" -i ${SRPM_PKG_DIR}/Dockerfile
+          sed "/^# labelprefix=.*$/aLABEL com.suse.lifecycle-url=\"https://www.suse.com/lifecycle/\"" -i ${SRPM_PKG_DIR}/Dockerfile
+          sed "/^# labelprefix=.*$/aLABEL com.suse.supportlevel=\"l3\"" -i ${SRPM_PKG_DIR}/Dockerfile
           NAME="suse\/manager\/${VERSION}\/${NAME}"
       else
           NAME="uyuni\/${NAME}"
