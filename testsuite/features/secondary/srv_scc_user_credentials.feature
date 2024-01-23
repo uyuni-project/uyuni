@@ -44,7 +44,7 @@ Feature: SCC user credentials in the Setup Wizard
     And I enter "invalidpw" as "edit-password"
     And I click on "Save"
     Then I should see a "Credentials with this username already exist" text
-    And I click on "Cancel"
+    When I click on "Cancel"
     Then the credentials for "invalidname" should be invalid
 
 # TODO
@@ -56,7 +56,7 @@ Feature: SCC user credentials in the Setup Wizard
     And I ask to delete the credentials for "SCC user"
     And I click on "Delete" in "Are you sure you want to delete these credentials?" modal
     Then I wait until I do not see "SCC user" text
-    And I wait for the trash icon to appear for "invalidname"
+    When I wait for the trash icon to appear for "invalidname"
     And I ask to delete the credentials for "invalidname"
     And I click on "Delete" in "Are you sure you want to delete these credentials?" modal
     Then I wait until I do not see "invalidname" text
