@@ -101,7 +101,6 @@ When(/^I trigger cobbler system record$/) do
       And I am on the Systems overview page of this "sle_client"
       And I follow "Provisioning"
       And I click on "Create PXE installation configuration"
-      And I click on "Continue"
       And I wait until file "/srv/tftpboot/pxelinux.cfg/01-*" contains "ks=" on server
     )
   end
