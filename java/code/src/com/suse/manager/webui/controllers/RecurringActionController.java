@@ -48,13 +48,14 @@ import com.redhat.rhn.manager.recurringactions.StateConfigFactory;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
-import com.suse.manager.maintenance.MaintenanceManager;
+import com.suse.manager.maintenance.NotInMaintenanceModeException;
 import com.suse.manager.utils.PagedSqlQueryBuilder;
 import com.suse.manager.webui.utils.PageControlHelper;
 import com.suse.manager.webui.utils.gson.PagedDataResultJson;
 import com.suse.manager.webui.utils.gson.RecurringActionDetailsDto;
 import com.suse.manager.webui.utils.gson.RecurringActionScheduleJson;
 import com.suse.manager.webui.utils.gson.ResultJson;
+import com.suse.manager.webui.utils.gson.SimpleMinionJson;
 import com.suse.manager.webui.utils.gson.StateConfigJson;
 
 import com.google.gson.Gson;
@@ -104,6 +105,7 @@ public class RecurringActionController {
                 jade);
 
         get("/manager/api/recurringactions", asJson(withUser(RecurringActionController::listAll)));
+        get("/manager/api/recurringactions/targets/:type/:id", asJson(withUser(RecurringActionController::getTargets)));
         get("/manager/api/recurringactions/:id/details", asJson(withUser(RecurringActionController::getDetails)));
         get("/manager/api/recurringactions/:type/:id", asJson(withUser(RecurringActionController::listByEntity)));
         get("/manager/api/recurringactions/states", asJson(withUser(RecurringActionController::getStatesConfig)));
@@ -140,6 +142,38 @@ public class RecurringActionController {
         DataResult<RecurringActionScheduleJson> schedules =
                 RecurringActionManager.listAllRecurringActions(user, pc, PagedSqlQueryBuilder::parseFilterAsText);
         return json(response, new PagedDataResultJson<>(schedules, schedules.getTotalSize(), Collections.emptySet()));
+    }
+
+    /**
+     * Processes a GET request to get a list of all the members of an entity
+     *
+     * @param request the request object
+     * @param response the response object
+     * @param user the authorized user
+     * @return the result JSON object
+     */
+    public static String getTargets(Request request, Response response, User user) {
+        TargetType type = TargetType.valueOf(request.params("type"));
+        Long id = Long.parseLong(request.params("id"));
+
+        PageControlHelper pageHelper = new PageControlHelper(request, "name");
+        PageControl pc = pageHelper.getPageControl();
+        DataResult<SimpleMinionJson> members;
+
+        if ("id".equals(pageHelper.getFunction())) {
+            pc.setStart(1);
+            pc.setPageSize(0);
+
+            members = RecurringActionManager.listEntityMembers(
+                    type, id, user, pc, PagedSqlQueryBuilder::parseFilterAsText);
+            return json(response, members.stream()
+                    .map(SimpleMinionJson::getId)
+                    .collect(Collectors.toList()));
+        }
+
+        members = RecurringActionManager.listEntityMembers(
+                type, id, user, pc, PagedSqlQueryBuilder::parseFilterAsText);
+        return json(response, new PagedDataResultJson<>(members, members.getTotalSize(), Collections.emptySet()));
     }
 
     /**
@@ -309,29 +343,22 @@ public class RecurringActionController {
      */
     public static String executeCustom(Request request, Response response, User user) {
         RecurringActionScheduleJson json = GSON.fromJson(request.body(), RecurringActionScheduleJson.class);
-        RecurringAction action = createOrGetAction(user, json);
-        if (!action.getActionType().equals(RecurringActionType.ActionType.CUSTOMSTATE)) {
-            LOG.error("Invalid action type");
-            Spark.halt(HttpStatus.SC_BAD_REQUEST, GSON.toJson(ResultJson.error(
-                    LocalizationService.getInstance().getMessage("recurring_action_invalid_action_type"))));
-        }
-        mapJsonToAction(json, action);
+        Set<RecurringStateConfig> configs = getStateConfigFromJson(json.getDetails().getStates(), user);
+        List<Long> minionIds = json.getMemberIds();
 
-        List<Long> minionIds = new MaintenanceManager().systemIdsMaintenanceMode(action.computeMinions());
-        Set<RecurringStateConfig> configs = ((RecurringState) action.getRecurringActionType()).getStateConfig();
         List<String> mods = configs.stream()
                 .sorted(Comparator.comparingLong(RecurringStateConfig::getPosition))
                 .map(RecurringStateConfig::getStateName)
                 .collect(Collectors.toList());
-        Action a = ActionManager.scheduleApplyStates(action.getCreator(),
-                minionIds, mods,
-                Optional.empty(),
-                new Date(),
-                Optional.of(((RecurringState) action.getRecurringActionType()).isTestMode()),
-                true);
-        ActionFactory.save(a);
 
         try {
+            Action a = ActionManager.scheduleApplyStates(user,
+                    minionIds, mods,
+                    Optional.empty(),
+                    new Date(),
+                    Optional.of(json.getDetails().isTest()),
+                    true);
+            ActionFactory.save(a);
             new TaskomaticApi().scheduleActionExecution(a);
         }
         catch (TaskomaticApiException e) {
@@ -340,7 +367,10 @@ public class RecurringActionController {
             String errMsg = LocalizationService.getInstance().getMessage("recurring_action.taskomatic_error");
             Spark.halt(HttpStatus.SC_SERVICE_UNAVAILABLE, GSON.toJson(ResultJson.error(errMsg)));
         }
-
+        catch (NotInMaintenanceModeException e) {
+            String errMsg = LocalizationService.getInstance().getMessage("recurring_action.not_in_maint_mode");
+            Spark.halt(HttpStatus.SC_BAD_REQUEST, GSON.toJson(ResultJson.error(errMsg)));
+        }
         return json(response, ResultJson.success());
     }
 

@@ -4,7 +4,16 @@ import _partition from "lodash/partition";
 import _sortBy from "lodash/sortBy";
 import _unionBy from "lodash/unionBy";
 
+import { inferEntityParams } from "manager/recurring/recurring-actions-utils";
+
+import { pageSize } from "core/user-preferences";
+
+import { DangerDialog } from "components/dialog/DangerDialog";
 import { SectionToolbar } from "components/section-toolbar/section-toolbar";
+import { Column } from "components/table/Column";
+import { TableFilter } from "components/table/TableFilter";
+
+import { Utils } from "utils/functions";
 
 import Network from "../utils/network";
 import { AsyncButton } from "./buttons";
@@ -13,6 +22,7 @@ import { Messages, MessageType } from "./messages";
 import { Utils as MessagesUtils } from "./messages";
 import { RankingTable } from "./ranking-table";
 import { SaltStatePopup } from "./salt-state-popup";
+import { Table } from "./table/Table";
 
 function channelKey(channel) {
   return channel.label;
@@ -38,7 +48,7 @@ function channelIcon(channel) {
 type StatesPickerProps = {
   type?: string;
   matchUrl: (filter?: string) => any;
-  applyRequest?: () => any;
+  applyRequest?: (systems: any[]) => any;
   saveRequest: (channels: any[]) => any;
   messages?: (messages: MessageType[] | any) => any;
 };
@@ -78,14 +88,14 @@ class StatesPicker extends React.Component<StatesPickerProps, StatesPickerState>
     });
   };
 
-  applySaltState = () => {
+  applySaltState = (items) => {
     if (this.state.changed.size > 0) {
       const response = window.confirm(t("There are unsaved changes. Do you want to proceed?"));
       if (response === false) {
         return null;
       }
     }
-    return this.props.applyRequest?.();
+    return this.props.applyRequest?.(items);
   };
 
   onUpdateRanking = (channels) => {
@@ -342,14 +352,7 @@ class StatesPicker extends React.Component<StatesPickerProps, StatesPickerState>
         const assigned = currentAssignment.length > 0;
         buttons = [
           typeof this.props.applyRequest !== "undefined" && (
-            <AsyncButton
-              key="2"
-              id="apply-btn"
-              defaultType="btn-success"
-              disabled={!assigned}
-              action={this.applySaltState}
-              text={t("Execute States")}
-            />
+            <ExecuteStatesButton assigned={assigned} applySaltState={this.applySaltState} type={this.props.type} />
           ),
         ];
 
@@ -430,6 +433,114 @@ class StatesPicker extends React.Component<StatesPickerProps, StatesPickerState>
         </div>
       </span>
     );
+  }
+}
+
+type ExecuteStatesProps = {
+  assigned: boolean;
+  type: any;
+  applySaltState: (memberIds: any[]) => any;
+};
+
+class ExecuteStatesButton extends React.Component<ExecuteStatesProps> {
+  state = {
+    selected: [],
+    showPopup: false,
+  };
+
+  showPopup = () => {
+    if (inferEntityParams().includes("MINION")) {
+      window.minions && this.props.applySaltState(window.minions.map((m) => m.id));
+    } else {
+      this.setState({ showPopup: true });
+    }
+  };
+
+  onClose = () => {
+    this.setState({
+      showPopup: false,
+      selected: [],
+    });
+  };
+
+  onSelect = (items) => {
+    this.setState({ selected: items });
+  };
+
+  onConfirmExecute = () => {
+    if (this.state.selected && this.state.selected.length !== 0) {
+      this.setState({ selected: [] });
+      return this.props.applySaltState(this.state.selected);
+    }
+  };
+
+  render() {
+    const entityParams = inferEntityParams();
+
+    const contentPopup = [
+      <Messages
+        key="messages"
+        items={MessagesUtils.info(t("Select the systems to schedule for immediate state execution and confirm."))}
+      />,
+      <Table
+        selectable={(item) => item.hasOwnProperty("id")}
+        onSelect={this.onSelect}
+        selectedItems={this.state.selected}
+        initialSortColumnKey={"name"}
+        data={"/rhn/manager/api/recurringactions/targets/" + entityParams}
+        identifier={(item) => item.id}
+        initialItemsPerPage={pageSize}
+        emptyText={t("This table is empty")}
+        defaultSearchField={"name"}
+        searchField={<ExecuteStatesFilter />}
+      >
+        <Column
+          columnKey={"name"}
+          comparator={Utils.sortByText}
+          header={t("System Name")}
+          cell={(row) => {
+            return (
+              <a href={`/rhn/systems/details/Overview.do?sid=${row.id}`} className="js-spa">
+                {row.name}
+              </a>
+            );
+          }}
+        />
+      </Table>,
+    ];
+
+    return (
+      <>
+        <AsyncButton
+          key="2"
+          id="apply-btn"
+          defaultType="btn-success"
+          disabled={!this.props.assigned}
+          action={this.props.type === "state" ? this.showPopup : this.props.applySaltState}
+          text={t("Execute States")}
+        />
+        {this.state.showPopup ? (
+          <DangerDialog
+            id={"show-execute-states-popup"}
+            title={t("Select Sytems")}
+            isOpen={true}
+            onClose={this.onClose}
+            content={contentPopup}
+            submitText={t("Confirm")}
+            submitIcon="fa-check"
+            btnClass="btn-success"
+            onConfirmAsync={this.onConfirmExecute}
+          />
+        ) : null}
+      </>
+    );
+  }
+}
+
+class ExecuteStatesFilter extends React.Component {
+  render() {
+    const filterOptions = [{ value: "name", label: t("System Name") }];
+    return <TableFilter filterOptions={filterOptions} {...this.props} />;
   }
 }
 

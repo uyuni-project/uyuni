@@ -142,12 +142,10 @@ class RecurringActionsEdit extends React.Component<Props, State> {
     });
   };
 
-  onClickExecute = () => {
+  onClickExecute = (items) => {
     return this.executeCustom({
-      targetId: this.state.targetId,
-      targetType: this.state.targetType,
       details: this.state.details,
-      actionType: this.getActionTypeFromString(this.state.actionTypeDescription),
+      memberIds: items,
     });
   };
 

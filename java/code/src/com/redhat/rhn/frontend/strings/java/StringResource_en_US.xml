@@ -9288,6 +9288,9 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <trans-unit id="recurring_action.invalid_action_type" xml:space="preserve">
         <source>Recurring action has invalid type.</source>
       </trans-unit>
+      <trans-unit id="recurring_action.not_in_maint_mode" xml:space="preserve">
+        <source>One or more selected systems don't have a maintenance window assigned at the current time. Please limit your selection to systems that are in maintenance mode.</source>
+      </trans-unit>
       <trans-unit id="internal_state.certs" xml:space="preserve">
         <source>Install the server's SSL certificate and trust it on the target system</source>
       </trans-unit>
