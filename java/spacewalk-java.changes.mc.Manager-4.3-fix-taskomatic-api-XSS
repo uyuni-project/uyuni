@@ -1,1 +1,0 @@
-- fix XSS in taskomatic XML RPC handler (bsc#1210911)

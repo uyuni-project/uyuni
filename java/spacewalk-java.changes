@@ -1,4 +1,49 @@
 -------------------------------------------------------------------
+Tue Jan 23 13:58:58 CET 2024 - rosuna@suse.com
+
+- version 4.3.70-1
+  * Fix the use of page size preference in systems and packages lists (bsc#1217209)
+  * Fix issue with disabling token check not working (bsc#1218669)
+  * Enforce snakeyaml version requirement (bsc#1215166)
+  * Improve the performance of paginated queries when syncing the
+    reporting database (bsc#1211912, bsc#1213079)
+  * Do not require entitlement for PAYG SLES for SAP (bsc#1217069)
+  * Use the base product file to show the correct SUSE Manager
+    product in the subscription matching results page
+  * Do not require entitlements if SUSE Manager is PAYG
+  * Exclude SUSE Manager from subscription matching if it's PAYG
+  * Refactor Credentials to a proper class hierarchy
+  * Fix unit test about duplicated packages
+  * Prevent installation of packages with same name
+    in a single action (bsc#1214791)
+  * When canceling an action which has prerequisites, return hints to
+    get the first action id which can be canceled (bsc#1216988)
+  * Fix exception when removing a Debian package (bsc#1216781)
+  * Fix XSS in taskomatic XML RPC handler (bsc#1210911)
+  * Improve logging for Product Migration (bsc#1218490)
+  * Add only 1 IP for Cloud RMT Host in /etc/hosts
+  * Change org for orphan vendor packages that an admin can delete (bsc#1216781)
+  * Expose the monitoring data for the Salt queue handling the Salt results
+  * Provide total number of CPUs for SLE Micro systems to subscription matcher
+    when it is not used as hypervisor to match vCore subscriptions correctly
+    (bsc#1218074)
+  * Try to download compressed Ubuntu USN database
+  * Add user information to system organization transfer message (bsc#1216753)
+  * Fix issue with Salt ssh keys for Salt ssh minions CVE-2023-32189 (bsc#1170848)
+  * Add notification in daily email in addition to in SUSE Manager home page when
+    SUSE Manager PAYG is not compliant
+  * Fix apidoc link from #top to $call.name (bsc#1213507)
+  * Add config option to disable remote commands from web UI (bsc#1217869)
+  * Address high rating Sonar issues
+  * Refactor SCC registration flow
+  * Avoid blocking Taskomatic thread when waiting for queued action (bsc#1211560)
+  * Fix modify kickstart profile when using "Always newest tree" option (bsc#1215813)
+  * Configure reboot method for SLE Micro when applying bootstrap state (bsc#1213981)
+  * Handle not existing known_host file in permission check
+  * Fix handling of proxy ssh public keys
+  * Include reboot required indication for non-Suse distros
+
+-------------------------------------------------------------------
 Mon Nov 20 11:27:04 CET 2023 - rosuna@suse.com
 
 - version 4.3.69-1

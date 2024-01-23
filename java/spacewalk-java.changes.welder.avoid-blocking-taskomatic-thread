@@ -1,1 +1,0 @@
-- Avoid blocking Taskomatic thread when waiting for queued action (bsc#1211560)
