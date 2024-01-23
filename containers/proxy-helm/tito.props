@@ -1,2 +1,3 @@
 [buildconfig]
+builder = custom.ChartBuilder
 tagger = tito.tagger.SUSEContainerTagger

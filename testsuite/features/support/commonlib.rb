@@ -50,8 +50,8 @@ def product_version
 end
 
 def use_salt_bundle
-  # Use venv-salt-minion in Uyuni, or SUMA Head, 4.2 and 4.3
-  product == 'Uyuni' || %w[head 4.3 4.2].include?(product_version)
+  # Use venv-salt-minion in Uyuni, or SUMA Head, 5.0, 4.2 and 4.3
+  product == 'Uyuni' || %w[head 5.0 4.3 4.2].include?(product_version)
 end
 
 # WARN: It's working for /24 mask, but couldn't not work properly with others
