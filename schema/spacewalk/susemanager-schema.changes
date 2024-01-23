@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Tue Jan 23 14:15:01 CET 2024 - rosuna@suse.com
+
+- version 4.3.24-1
+  * Refactor susecredentials to support the new hierarchy
+  * Improve performance of System (bsc#1211254)
+  * Change schedule of system-profile-refresh to run on the 2nd Saturday
+    of a month to not collide with normal working times (bsc#1215769)
+
+-------------------------------------------------------------------
 Fri Dec 15 12:42:01 CET 2023 - marina.latini@suse.com
 
 - version 4.3.23-1
