@@ -632,4 +632,17 @@
     </exec>
 
   </target>
+
+  <target name="make-eclipse-project"
+          description="Configures this checkout as an eclipse project.">
+    <copy file="${rhn-home}/conf/eclipse/.project-template" tofile="${rhn-home}/.project" overwrite="false" />
+    <copy toDir="${rhn-home}" overwrite="false">
+      <fileset dir="${rhn-home}/conf/eclipse/">
+        <include name=".checkstyle" />
+        <include name=".classpath" />
+        <include name=".settings/*" />
+        <!-- include name=".externalToolBuilders/*" /-->
+      </fileset>
+    </copy>
+  </target>
 </project>
