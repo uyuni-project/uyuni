@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jan 23 14:09:46 CET 2024 - rosuna@suse.com
+
+- version 4.3.19-1
+  * Add SLE Micro 5.4 and 5.5 to spacewalk-commons-channels
+
+-------------------------------------------------------------------
 Mon Oct 09 18:33:41 CEST 2023 - marina.latini@suse.com
 
 - version 4.3.18-1
