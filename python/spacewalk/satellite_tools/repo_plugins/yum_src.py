@@ -785,8 +785,8 @@ password={passwd}
                 os.makedirs(cdir)
             cfile = os.path.join(cdir, str(self.channel_label or self.reponame))
             with open(cfile, "w") as creds_file:
-                creds_file.write(creds_cfg.format(user=parsed_url.username,
-                                                  passwd=parsed_url.password))
+                creds_file.write(creds_cfg.format(user=unquote(parsed_url.username),
+                                                  passwd=unquote(parsed_url.password)))
                 query_params['credentials'] = str(self.channel_label or self.reponame)
             os.chmod(cfile, int('0600', 8))
         new_query = unquote(urlencode(query_params, doseq=True))
