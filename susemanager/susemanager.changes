@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Tue Jan 23 14:12:43 CET 2024 - rosuna@suse.com
+
+- version 4.3.34-1
+  * Rename OES label to OES23.4 (bsc#1215514)
+  * Verify in Yast FQDN with name returned via DNS reverse lookup
+  * Fix issue with Salt ssh keys for Salt ssh minions CVE-2023-32189 (bsc#1170848)
+
+-------------------------------------------------------------------
 Mon Nov 20 11:38:49 CET 2023 - rosuna@suse.com
 
 - version 4.3.33-1
