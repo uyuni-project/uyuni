@@ -147,7 +147,7 @@ BuildRequires:  tomcat-lib >= 7
 BuildRequires:  tomcat-taglibs-standard
 BuildRequires:  uyuni-base-server
 BuildRequires:  woodstox
-BuildRequires:  xalan-j2
+BuildRequires:  saxon10
 BuildRequires:  xmlsec
 BuildRequires:  (google-gson >= 2.2.4 with google-gson < 2.10.0)
 BuildRequires:  mvn(org.apache.velocity:velocity-engine-core) >= 2.2
@@ -236,7 +236,7 @@ Requires:       system-lock-formula
 Requires:       tomcat-lib >= 7
 Requires:       tomcat-taglibs-standard
 Requires:       woodstox
-Requires:       xalan-j2 >= 2.6.0
+Requires:       saxon10
 Requires:       xerces-j2
 Requires:       xmlsec
 Requires:       (/sbin/unix2_chkpwd or /usr/sbin/unix2_chkpwd)
@@ -376,7 +376,7 @@ Requires:       spacewalk-java-lib = %{version}
 Requires:       statistics
 Requires:       susemanager-frontend-libs >= 2.1.5
 Requires:       tomcat-taglibs-standard
-Requires:       xalan-j2 >= 2.6.0
+Requires:       saxon10 
 Requires:       xerces-j2
 Requires:       (/sbin/unix2_chkpwd or /usr/sbin/unix2_chkpwd)
 Requires:       mvn(org.hibernate:hibernate-c3p0)
