@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jan 23 14:11:47 CET 2024 - rosuna@suse.com
+
+- version 4.3.10-1
+  * Update query to the new credentials structure
+
+-------------------------------------------------------------------
 Tue Aug 29 16:42:01 CEST 2023 - marina.latini@suse.com
 
 - version 4.3.9-1
