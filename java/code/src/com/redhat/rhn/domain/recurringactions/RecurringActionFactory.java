@@ -29,6 +29,7 @@ import com.redhat.rhn.frontend.listview.PageControl;
 
 import com.suse.manager.utils.PagedSqlQueryBuilder;
 import com.suse.manager.webui.utils.gson.RecurringActionScheduleJson;
+import com.suse.manager.webui.utils.gson.SimpleMinionJson;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -154,6 +155,42 @@ public class RecurringActionFactory extends HibernateFactory {
                 .from(from)
                 .where("ra.target_org in (:orgsIds)")
                 .run(params, pc, parser, RecurringActionScheduleJson.class);
+    }
+
+    /**
+     * List all members of a given server group
+     *
+     * @param id the server group id
+     * @param pc the page control
+     * @param parser the parser for filters when building query
+     * @return the list of {@link SimpleMinionJson}s
+     */
+    public static DataResult<SimpleMinionJson> listGroupMembers(Long id, PageControl pc, Function<Optional<PageControl>,
+            PagedSqlQueryBuilder.FilterWithValue> parser) {
+        Map<String, Object> params = Map.of("id", id);
+        return new PagedSqlQueryBuilder("s.id")
+                .select("s.id, s.name")
+                .from("rhnServer s join rhnServerGroupMembers sgm on s.id = sgm.server_id")
+                .where("sgm.server_group_id = :id")
+                .run(params, pc, parser, SimpleMinionJson.class);
+    }
+
+    /**
+     * List all members of a given organization
+     *
+     * @param id the id of the organization
+     * @param pc the page control
+     * @param parser the parser for filters when building query
+     * @return the list of {@link SimpleMinionJson}s
+     */
+    public static DataResult<SimpleMinionJson> listOrgMembers(Long id, PageControl pc, Function<Optional<PageControl>,
+            PagedSqlQueryBuilder.FilterWithValue> parser) {
+        Map<String, Object> params = Map.of("id", id);
+        return new PagedSqlQueryBuilder("s.id")
+                .select("s.id, s.name")
+                .from("rhnServer s")
+                .where("s.org_id = :id")
+                .run(params, pc, parser, SimpleMinionJson.class);
     }
 
     /**
