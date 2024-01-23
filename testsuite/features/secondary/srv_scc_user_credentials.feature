@@ -1,4 +1,4 @@
-# Copyright 2017-2021 SUSE LLC
+# Copyright 2017-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @skip_if_github_validation
@@ -30,6 +30,22 @@ Feature: SCC user credentials in the Setup Wizard
     And I view the subscription list for "SCC user"
     And I wait until I see "No subscriptions available" text
     And I click on "Close"
+    
+  Scenario: Enter duplicate SCC credentials
+    Given I am authorized for the "Admin" section
+    When I follow the left menu "Admin > Setup Wizard > Organization Credentials"
+    And I ask to add new credentials
+    And I enter "invalidname" as "edit-user"
+    And I enter "invalidpw" as "edit-password"
+    And I click on "Save"
+    Then the credentials for "invalidname" should be invalid
+    When I ask to add new credentials
+    And I enter "invalidname" as "edit-user"
+    And I enter "invalidpw" as "edit-password"
+    And I click on "Save"
+    Then I should see a "Credentials with this username already exist" text
+    When I click on "Cancel"
+    Then the credentials for "invalidname" should be invalid
 
 # TODO
 # A test to edit the credentials is missing
@@ -40,3 +56,7 @@ Feature: SCC user credentials in the Setup Wizard
     And I ask to delete the credentials for "SCC user"
     And I click on "Delete" in "Are you sure you want to delete these credentials?" modal
     Then I wait until I do not see "SCC user" text
+    When I wait for the trash icon to appear for "invalidname"
+    And I ask to delete the credentials for "invalidname"
+    And I click on "Delete" in "Are you sure you want to delete these credentials?" modal
+    Then I wait until I do not see "invalidname" text
