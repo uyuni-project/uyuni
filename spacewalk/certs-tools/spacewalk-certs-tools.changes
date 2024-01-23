@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Jan 23 13:57:03 CET 2024 - rosuna@suse.com
+
+- version 4.3.20-1
+  * Handle server keys in PKCS8 format in mgr-ssl-cert-setup (bsc#1218615)
+  * Include reboot info beacon in the bootstrap script for transactional systems (bsc#1217588)
+
+-------------------------------------------------------------------
 Tue Aug 29 16:37:49 CEST 2023 - marina.latini@suse.com
 
 - version 4.3.19-1

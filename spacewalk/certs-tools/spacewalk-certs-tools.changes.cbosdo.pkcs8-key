@@ -1,1 +1,0 @@
-- Handle server keys in PKCS8 format in mgr-ssl-cert-setup (bsc#1218615)
