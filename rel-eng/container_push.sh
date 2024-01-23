@@ -26,6 +26,11 @@ fi
 # to lowercase with ",," and replace spaces " " with "-"
 PRODUCT_VERSION=$(echo ${PRODUCT_VERSION,,} | sed -r 's/ /-/g')
 
+# Possible values: beta, sle-eula
+EULA=beta
+
+# Possible values: alpha, beta, released
+RELEASE_STAGE=beta
 
 if [ -f "${SRPM_PKG_DIR}/Dockerfile" ]; then
   NAME="${PKG_NAME%%-image}"
@@ -38,10 +43,8 @@ if [ -f "${SRPM_PKG_DIR}/Dockerfile" ]; then
     sed "/^# labelprefix=/s/org\.opensuse\.uyuni/com.suse.manager/" -i ${SRPM_PKG_DIR}/Dockerfile
     sed "s/^ARG VENDOR=.*$/ARG VENDOR=\"SUSE LLC\"/" -i ${SRPM_PKG_DIR}/Dockerfile
     sed "s/^ARG PRODUCT=.*$/ARG PRODUCT=\"SUSE Manager\"/" -i ${SRPM_PKG_DIR}/Dockerfile
-    sed "/^ARG REFERENCE_PREFIX=.*$/aARG EULA" -i ${SRPM_PKG_DIR}/Dockerfile
-    sed "/^ARG REFERENCE_PREFIX=.*$/aARG RELEASE_STAGE" -i ${SRPM_PKG_DIR}/Dockerfile
-    sed "/^# labelprefix=.*$/aLABEL com.suse.eula=\"\${EULA}\"" -i ${SRPM_PKG_DIR}/Dockerfile
-    sed "/^# labelprefix=.*$/aLABEL com.suse.release-stage=\"\${RELEASE_STAGE}\"" -i ${SRPM_PKG_DIR}/Dockerfile
+    sed "/^# labelprefix=.*$/aLABEL com.suse.eula=\"${EULA}\"" -i ${SRPM_PKG_DIR}/Dockerfile
+    sed "/^# labelprefix=.*$/aLABEL com.suse.release-stage=\"${RELEASE_STAGE}\"" -i ${SRPM_PKG_DIR}/Dockerfile
     sed "/^# labelprefix=.*$/aLABEL com.suse.lifecycle-url=\"https://www.suse.com/lifecycle/\"" -i ${SRPM_PKG_DIR}/Dockerfile
     sed "/^# labelprefix=.*$/aLABEL com.suse.supportlevel=\"l3\"" -i ${SRPM_PKG_DIR}/Dockerfile
     NAME="suse\/manager\/${VERSION}\/${NAME}"
