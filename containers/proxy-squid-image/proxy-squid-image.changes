@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jan 23 13:49:09 CET 2024 - rosuna@suse.com
+
+- version 4.3.11
+  * Use product version in reference label
+
+-------------------------------------------------------------------
 Mon Nov 20 12:13:44 CET 2023 - rosuna@suse.com
 
 - version 4.3.10
