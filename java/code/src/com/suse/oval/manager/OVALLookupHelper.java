@@ -22,6 +22,10 @@ import com.suse.oval.ovaltypes.TestType;
 
 import java.util.Optional;
 
+/**
+ * A cache for OVAL resources (objects, states and tests) to be able to efficiently look up OVAL resources
+ * by their id.
+ * */
 public class OVALLookupHelper {
     private final OvalStateManager stateManager;
     private final OvalTestManager testManager;
