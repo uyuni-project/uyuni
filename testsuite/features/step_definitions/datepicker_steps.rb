@@ -74,7 +74,7 @@ When(/^I schedule action to (\d+) minutes from now$/) do |minutes|
   action_datetime = (DateTime.now + (Rational(1, 1440) * minutes.to_i) + Rational(59, 86_400)).strftime('%Y-%m-%dT%H:%M')
   action_date, action_time = action_datetime.split('T')
 
-  date_input = find('input[data-testid="date-picker"]]')
+  date_input = find('input[data-testid="date-picker"]')
   date_input.click
   # TODO: Switch this over to .clear once we update Selenium
   date_input.send_keys [:control, 'a'], :backspace, action_date, :enter
