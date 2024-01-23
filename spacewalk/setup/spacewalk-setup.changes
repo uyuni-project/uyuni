@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Jan 23 14:08:56 CET 2024 - rosuna@suse.com
+
+- version 4.3.19-1
+  * Update query to the new credentials structure
+  * Fix setting SCC password during setup
+
+-------------------------------------------------------------------
 Tue Aug 29 16:31:04 CEST 2023 - marina.latini@suse.com
 
 - version 4.3.18-1
