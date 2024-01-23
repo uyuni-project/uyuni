@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Tue Jan 23 14:16:02 CET 2024 - rosuna@suse.com
+
+- version 4.3.38-1
+  * Improve PAYG instance detection (bsc#1217784)
+  * Fix issue with Salt ssh keys for Salt ssh minions CVE-2023-32189 (bsc#1170848)
+  * Configure reboot method for SLE Micro when applying bootstrap state (bsc#1213981)
+  * Include reboot required indication for non-Suse distros
+
+-------------------------------------------------------------------
 Mon Nov 20 11:39:39 CET 2023 - rosuna@suse.com
 
 - version 4.3.37-1
