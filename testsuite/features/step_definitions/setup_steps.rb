@@ -61,6 +61,12 @@ When(/^I wait for the trash icon to appear for "([^"]*)"$/) do |user|
   end
 end
 
+When(/^I ask to edit the credentials for "([^"]*)"$/) do |user|
+  within(:xpath, "//h3[contains(text(), '#{user}')]/../..") do
+    raise ScriptError, 'Click on pencil icon failed' unless find('i.fa-pencil').click
+  end
+end
+
 When(/^I ask to delete the credentials for "([^"]*)"$/) do |user|
   within(:xpath, "//h3[contains(text(), '#{user}')]/../..") do
     raise ScriptError, 'Click on trash icon failed' unless find('i.fa-trash-o').click
