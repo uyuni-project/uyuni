@@ -238,15 +238,15 @@ public class DownloadController {
         mountPointPath = Config.get().getString(ConfigDefaults.MOUNT_POINT);
     }
 
-    private void processToken(Request request, CloudPaygManager payg, String channelLabel, String filename) {
-        if (!payg.isPaygInstance() && !checkTokens) {
+    private void processToken(Request request, String channelLabel, String filename) {
+        if (!cloudPaygManager.isPaygInstance() && !checkTokens) {
             return;
         }
 
         String token = getTokenFromRequest(request);
         // payg token checks should always run if we are payg
-        if (payg.isPaygInstance()) {
-            validateMinionInPayg(token, cloudPaygManager);
+        if (cloudPaygManager.isPaygInstance()) {
+            validateMinionInPayg(token);
         }
         // additional token checks can be disabled via config
         if (checkTokens) {
@@ -283,9 +283,9 @@ public class DownloadController {
             halt(HttpStatus.SC_NOT_FOUND,
                     String.format("Key or signature file not provided: %s", filename));
         }
-        validatePaygCompliant(cloudPaygManager);
+        validatePaygCompliant();
 
-        processToken(request, cloudPaygManager, channelLabel, filename);
+        processToken(request, channelLabel, filename);
 
         if (!file.exists()) {
             // Check if a comps.xml/modules.yaml file is being requested and if we have it
@@ -316,9 +316,9 @@ public class DownloadController {
     public Object downloadMediaFiles(Request request, Response response) {
         String channelLabel = request.params(":channel");
         String filename = request.params(":file");
-        validatePaygCompliant(cloudPaygManager);
+        validatePaygCompliant();
 
-        processToken(request, cloudPaygManager, channelLabel, filename);
+        processToken(request, channelLabel, filename);
 
         if (filename.equals("products")) {
             File file = getMediaProductsFile(ChannelFactory.lookupByLabel(channelLabel));
@@ -421,9 +421,9 @@ public class DownloadController {
         }
 
         String basename = FilenameUtils.getBaseName(path);
-        validatePaygCompliant(cloudPaygManager);
+        validatePaygCompliant();
 
-        processToken(request, cloudPaygManager, channel, basename);
+        processToken(request, channel, basename);
 
         String mountPoint = Config.get().getString(ConfigDefaults.MOUNT_POINT);
         PkgInfo pkgInfo = parsePackageFileName(path);
@@ -614,10 +614,9 @@ public class DownloadController {
     /**
      * Validate if the server is PAYG any compliant.
      *
-     * @param mgr the Cloud PAYG Manager object
      */
-    private void validatePaygCompliant(CloudPaygManager mgr) {
-        if (!mgr.isCompliant()) {
+    private void validatePaygCompliant() {
+        if (!cloudPaygManager.isCompliant()) {
             LOG.info("Forbidden: SUSE Manager PAYG Server is not compliant");
             halt(HttpStatus.SC_FORBIDDEN, "Server is not compliant. Please check the logs");
         }
@@ -645,9 +644,8 @@ public class DownloadController {
      * validateMinionInPayg In SUMA payg instances, checks if the Minion that corresponds to the given token is BYOS
      * and if SCC credentials are added. In BYOS and no SCC credentials it halts, and it does nothing otherwise.
      * @param token the token used to retrieve the Minion from
-     * @param cloudPaygManager Payg manager used to do some checks
      */
-    public static void validateMinionInPayg(String token, CloudPaygManager cloudPaygManager) {
+    public void validateMinionInPayg(String token) {
         if (!cloudPaygManager.isPaygInstance()) {
             return;
         }
