@@ -1,5 +1,6 @@
+#  pylint: disable=missing-module-docstring,invalid-name
 # rhnLog.py                                            - Logging functions.
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 # This module contains the necessary functions for producing log messages to
 # stderr, stdout or a specified filename. Used by all server-side code.
 #
@@ -13,7 +14,7 @@
 # 4 - excessive stuff
 # 5 - really excessive stuff
 #
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 #
 # Copyright (c) 2008--2017 Red Hat, Inc.
 #
@@ -54,15 +55,17 @@ def log_time():
     # Unfortunately, -3601 / 3600 == 2
     # Also, tz_offset's sign is reverted: it is positive west of GMT
     if tz_offset < 0:
-        sign = '+'
+        sign = "+"
     else:
-        sign = '-'
+        sign = "-"
     hours, secs = divmod(abs(tz_offset), 3600)
     mins = secs / 60
 
+    # pylint: disable-next=consider-using-f-string
     tz_offset_string = " %s%02d:%02d" % (sign, hours, mins)
     t = time.strftime("%Y/%m/%d %H:%M:%S", time.localtime(time.time()))
     return t + tz_offset_string
+
 
 # function for setting the close-on-exec flag
 
@@ -70,6 +73,7 @@ def log_time():
 def set_close_on_exec(fd):
     s = fcntl.fcntl(fd, fcntl.F_GETFD)
     fcntl.fcntl(fd, fcntl.F_SETFD, s | fcntl.FD_CLOEXEC)
+
 
 # pylint: disable=W0702
 
@@ -93,27 +97,43 @@ def initLOG(log_file="stderr", level=0, component=""):
 
     # attempt to create the path to the log file if neccessary
     log_path = os.path.dirname(log_file)
-    if log_file not in ('stderr', 'stdout') \
-            and log_path and not os.path.exists(os.path.dirname(log_file)):
-        log_stderr("{} WARNING: log path not found; attempting to create {}".format(component, log_path), 
-                   sys.exc_info()[:2])
+    if (
+        log_file not in ("stderr", "stdout")
+        and log_path
+        and not os.path.exists(os.path.dirname(log_file))
+    ):
+        log_stderr(
+            # pylint: disable-next=consider-using-f-string
+            "{} WARNING: log path not found; attempting to create {}".format(
+                component, log_path
+            ),
+            sys.exc_info()[:2],
+        )
 
         # fetch uid, gid so we can do a "chown ..."
         with cfg_component(component=None) as CFG:
-            apache_uid, apache_gid = getUidGid(CFG.get('httpd_user', 'wwwrun'), CFG.get('httpd_group', 'www'))
+            apache_uid, apache_gid = getUidGid(
+                CFG.get("httpd_user", "wwwrun"), CFG.get("httpd_group", "www")
+            )
 
         try:
             os.makedirs(log_path)
             os.chown(log_path, apache_uid, apache_gid)
         except:
-            log_stderr("{} ERROR: unable to create log file path {}".format(component, log_path),
-                       sys.exc_info()[:2])
+            log_stderr(
+                # pylint: disable-next=consider-using-f-string
+                "{} ERROR: unable to create log file path {}".format(
+                    component, log_path
+                ),
+                sys.exc_info()[:2],
+            )
             return
 
     # At this point, LOG is None and log_file is not None
     # Get a new LOG
     LOG = rhnLog(log_file, level, component)
     return 0
+
 
 # Convenient macro-type debugging function
 
@@ -123,15 +143,17 @@ def log_debug(level, *args):
     if LOG and LOG.level >= level:
         LOG.logMessage(*args)
 
+
 # Dump some information to stderr.
 
 
 def log_stderr(*args):
     pid = os.getpid()
     for arg in args:
-        sys.stderr.write("SUSE Manager %s %s: %s\n" % (
-            pid, log_time(), arg))
+        # pylint: disable-next=consider-using-f-string
+        sys.stderr.write("SUSE Manager %s %s: %s\n" % (pid, log_time(), arg))
     sys.stderr.flush()
+
 
 # Convenient error logging function
 
@@ -144,12 +166,14 @@ def log_error(*args):
     # log to stderr too
     log_stderr(str(args))
 
+
 # Log a string with no extra info.
 
 
 def log_clean(level, msg):
     if LOG and LOG.level >= level:
         LOG.writeToLog(msg)
+
 
 # set the request object for the LOG so we don't have to expose the
 # LOG object externally
@@ -159,11 +183,12 @@ def log_setreq(req):
     if LOG:
         LOG.set_req(req)
 
+
 # The base log class
 
 
+# pylint: disable-next=missing-class-docstring
 class rhnLog:
-
     def __init__(self, log_file, level, component):
         self.level = level
         self.component = component
@@ -183,16 +208,22 @@ class rhnLog:
         # else, open it as a real file, with locking and stuff
         try:
             # try to open it in line buffered mode
+            # pylint: disable-next=unspecified-encoding
             self.fd = open(self.file, "a", 1)
             set_close_on_exec(self.fd)
             if newfileYN:
                 with cfg_component(component=None) as CFG:
-                    apache_uid, apache_gid = getUidGid(CFG.get('httpd_user', 'wwwrun'), CFG.get('httpd_group', 'www'))
+                    apache_uid, apache_gid = getUidGid(
+                        CFG.get("httpd_user", "wwwrun"), CFG.get("httpd_group", "www")
+                    )
                 os.chown(self.file, apache_uid, apache_gid)
-                os.chmod(self.file, int('0660', 8))
+                os.chmod(self.file, int("0660", 8))
         except:
-            log_stderr("ERROR LOG FILE: Couldn't open log file %s" % self.file,
-                       sys.exc_info()[:2])
+            log_stderr(
+                # pylint: disable-next=consider-using-f-string
+                "ERROR LOG FILE: Couldn't open log file %s" % self.file,
+                sys.exc_info()[:2],
+            )
             self.file = "stderr"
             self.fd = sys.stderr
         else:
@@ -202,33 +233,38 @@ class rhnLog:
     def logMessage(self, *args):
         tbStack = traceback.extract_stack()
         callid = len(tbStack) - 3
-        module = ''
-        try:    # So one can debug from the commandline.
+        module = ""
+        try:  # So one can debug from the commandline.
             module = tbStack[callid][0]
-            arr = module.split('/')
+            arr = module.split("/")
             if len(arr) > 1:
                 lastDir = arr[-2] + "/"
             else:
                 lastDir = ""
             filename = arr[-1]
-            filename = filename[:filename.rindex('.')]
+            filename = filename[: filename.rindex(".")]
             module = lastDir + filename
             del lastDir
         except:
-            module = ''
+            module = ""
 
+        # pylint: disable-next=consider-using-f-string
         msg = "%s%s.%s" % (self.log_info, module, tbStack[callid][2])
         if args:
+            # pylint: disable-next=consider-using-f-string
             msg = "%s%s" % (msg, repr(args))
         if self.component:
+            # pylint: disable-next=consider-using-f-string
             msg = "%s %s" % (self.component, msg)
         self.writeMessage(msg)
 
     # send a message to the log file w/some extra data (time stamp, etc).
     def writeMessage(self, msg):
         if self.real:
+            # pylint: disable-next=consider-using-f-string
             msg = "%s %d %s" % (log_time(), self.pid, msg)
         else:
+            # pylint: disable-next=consider-using-f-string
             msg = "%s %s" % (log_time(), msg)
         self.writeToLog(msg)
 
@@ -236,17 +272,19 @@ class rhnLog:
     def writeToLog(self, msg):
         # this is for debugging in case of errors
         # fd = self.fd # no-op, but useful for dumping the current data
+        # pylint: disable-next=consider-using-f-string
         self.fd.write("%s\n" % msg)
 
     # Reinitialize req info if req has changed.
     def set_req(self, req=None):
-        remoteAddr = '0.0.0.0'
+        remoteAddr = "0.0.0.0"
         if req:
             if "X-Forwarded-For" in req.headers_in:
                 remoteAddr = req.headers_in["X-Forwarded-For"]
             else:
                 remoteAddr = req.connection.remote_ip
-        self.log_info = "%s: " % (remoteAddr, )
+        # pylint: disable-next=consider-using-f-string
+        self.log_info = "%s: " % (remoteAddr,)
 
     # shutdown the log
     def __del__(self):
@@ -262,11 +300,12 @@ def _exit():
         del LOG
         LOG = None
 
+
 atexit.register(_exit)
 
 
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 if __name__ == "__main__":
     print("You can not run this module by itself")
     sys.exit(-1)
-#------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------

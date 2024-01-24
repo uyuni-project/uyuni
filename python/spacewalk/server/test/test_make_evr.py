@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #
@@ -16,36 +17,58 @@ import unittest
 from spacewalk.server import rhnDependency
 
 
+# pylint: disable-next=missing-class-docstring
 class MakeEvrTestCase(unittest.TestCase):
-
     def setUp(self):
         self.make_evr = rhnDependency.make_evr
 
     def testEvr1(self):
-        ret = self.make_evr('100:testcase1-0-0')
-        assert ret['epoch'] == '100' and ret['name'] == 'testcase1' and ret['version'] == '0' and ret['release'] == '0'
+        ret = self.make_evr("100:testcase1-0-0")
+        assert (
+            ret["epoch"] == "100"
+            and ret["name"] == "testcase1"
+            and ret["version"] == "0"
+            and ret["release"] == "0"
+        )
 
     def testEvr2(self):
-        ret = self.make_evr('testcase1-0-0:100')
-        assert ret['epoch'] == '100' and ret['name'] == 'testcase1' and ret['version'] == '0' and ret['release'] == '0'
+        ret = self.make_evr("testcase1-0-0:100")
+        assert (
+            ret["epoch"] == "100"
+            and ret["name"] == "testcase1"
+            and ret["version"] == "0"
+            and ret["release"] == "0"
+        )
 
     def testEvr3(self):
-        ret = self.make_evr('testcase1-0-0')
-        assert ret['epoch'] is None and ret['name'] == 'testcase1' and ret['version'] == '0' and ret['release'] == '0'
+        ret = self.make_evr("testcase1-0-0")
+        assert (
+            ret["epoch"] is None
+            and ret["name"] == "testcase1"
+            and ret["version"] == "0"
+            and ret["release"] == "0"
+        )
 
     def testEvr4(self):
-        ret = self.make_evr('100000000000000000:a.b.c.d.e.f.g.h.i.j.k.l-m.n.o.p.q.r.s.t.u.v-w.x.y.z')
-        assert ret['epoch'] == '100000000000000000' and\
-            ret['name'] == 'a.b.c.d.e.f.g.h.i.j.k.l' and\
-            ret['version'] == 'm.n.o.p.q.r.s.t.u.v' and\
-            ret['release'] == 'w.x.y.z'
+        ret = self.make_evr(
+            "100000000000000000:a.b.c.d.e.f.g.h.i.j.k.l-m.n.o.p.q.r.s.t.u.v-w.x.y.z"
+        )
+        assert (
+            ret["epoch"] == "100000000000000000"
+            and ret["name"] == "a.b.c.d.e.f.g.h.i.j.k.l"
+            and ret["version"] == "m.n.o.p.q.r.s.t.u.v"
+            and ret["release"] == "w.x.y.z"
+        )
 
     def testEvr5(self):
-        ret = self.make_evr('Bbbb.a111-cccC-qwerty:500')
-        assert ret['epoch'] == '500' and\
-            ret['name'] == 'Bbbb.a111' and\
-            ret['version'] == 'cccC' and\
-            ret['release'] == 'qwerty'
+        ret = self.make_evr("Bbbb.a111-cccC-qwerty:500")
+        assert (
+            ret["epoch"] == "500"
+            and ret["name"] == "Bbbb.a111"
+            and ret["version"] == "cccC"
+            and ret["release"] == "qwerty"
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

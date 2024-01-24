@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2018 Red Hat, Inc.
 #
@@ -20,6 +21,7 @@ import time
 import gzip
 import shutil
 import gettext
+
 try:
     #  python 2
     import cStringIO
@@ -36,12 +38,18 @@ from spacewalk.server import rhnSQL
 from spacewalk.server.rhnSQL import SQLError, SQLSchemaError, SQLConnectError
 from spacewalk.satellite_tools.exporter import xmlWriter
 from spacewalk.satellite_tools import xmlDiskSource, diskImportLib, progress_bar
-from spacewalk.satellite_tools.syncLib import initEMAIL_LOG, dumpEMAIL_LOG, log2email, log2stderr, log2stdout
+from spacewalk.satellite_tools.syncLib import (
+    initEMAIL_LOG,
+    dumpEMAIL_LOG,
+    log2email,
+    log2stderr,
+    log2stdout,
+)
 from .iss_ui import UI
 from .iss_actions import ActionDeps
 from . import iss_isos
 
-t = gettext.translation('spacewalk-backend-server', fallback=True)
+t = gettext.translation("spacewalk-backend-server", fallback=True)
 try:
     _ = t.ugettext
 except AttributeError:
@@ -50,8 +58,8 @@ except AttributeError:
 # bare-except and broad-except
 # pylint: disable=W0702,W0703
 
-class ISSError(Exception):
 
+class ISSError(Exception):
     def __init__(self, msg, tb):
         Exception.__init__(self)
         self.msg = msg
@@ -61,23 +69,25 @@ class ISSError(Exception):
 # xmlDiskSource doesn't have a class for short channel packages, so I added one here.
 # I named _getFile that way so it's similar to the stuff in xmlDiskSource.
 # I grabbed the value of pathkey from dump_channel_packages_short in dumper.py.
+# pylint: disable-next=missing-class-docstring
 class ISSChannelPackageShortDiskSource:
-
     def __init__(self, mount_point, channel_name=None):
         self.mp = mount_point
         self.channelid = channel_name
         self.pathkey = "xml-channel-packages/rhn-channel-%d.data"
 
+    # pylint: disable-next=invalid-name
     def setChannel(self, channel_id):
         self.channelid = channel_id
 
+    # pylint: disable-next=invalid-name
     def _getFile(self):
         return os.path.join(self.mp, self.pathkey % (self.channelid,))
 
 
 class FileMapper:
 
-    """ This class maps dumps to files. In other words, you give it
+    """This class maps dumps to files. In other words, you give it
     the type of dump you're doing and it gives you the file to
     write it to.
     """
@@ -85,36 +95,42 @@ class FileMapper:
     def __init__(self, mount_point):
         self.mp = mount_point
         self.filemap = {
-            'arches':   xmlDiskSource.ArchesDiskSource(self.mp),
-            'arches-extra':   xmlDiskSource.ArchesExtraDiskSource(self.mp),
-            'blacklists':   xmlDiskSource.BlacklistsDiskSource(self.mp),
-            'channelfamilies':   xmlDiskSource.ChannelFamilyDiskSource(self.mp),
-            'orgs':   xmlDiskSource.OrgsDiskSource(self.mp),
-            'channels':   xmlDiskSource.ChannelDiskSource(self.mp),
-            'channel-pkg-short':   ISSChannelPackageShortDiskSource(self.mp),
-            'packages-short':   xmlDiskSource.ShortPackageDiskSource(self.mp),
-            'packages':   xmlDiskSource.PackageDiskSource(self.mp),
-            'sourcepackages':   xmlDiskSource.SourcePackageDiskSource(self.mp),
-            'errata':   xmlDiskSource.ErrataDiskSource(self.mp),
-            'kickstart_trees':   xmlDiskSource.KickstartDataDiskSource(self.mp),
-            'kickstart_files':   xmlDiskSource.KickstartFileDiskSource(self.mp),
-            'binary_rpms':   xmlDiskSource.BinaryRPMDiskSource(self.mp),
-            'comps':   xmlDiskSource.ChannelCompsDiskSource(self.mp),
-            'modules':   xmlDiskSource.ChannelModulesDiskSource(self.mp),
-            'productnames': xmlDiskSource.ProductnamesDiskSource(self.mp),
-            'supportinfo': xmlDiskSource.SupportInformationDiskSource(self.mp),
-            'suse_products': xmlDiskSource.SuseProductsDiskSource(self.mp),
-            'suse_product_channels': xmlDiskSource.SuseProductChannelsDiskSource(self.mp),
-            'suse_upgrade_paths': xmlDiskSource.SuseUpgradePathsDiskSource(self.mp),
-            'suse_product_extensions': xmlDiskSource.SuseProductExtensionsDiskSource(self.mp),
-            'suse_product_repositories': xmlDiskSource.SuseProductRepositoriesDiskSource(self.mp),
-            'scc_repositories': xmlDiskSource.SCCRepositoriesDiskSource(self.mp),
-            'suse_subscriptions': xmlDiskSource.SuseSubscriptionsDiskSource(self.mp),
-            'cloned_channels': xmlDiskSource.ClonedChannelsDiskSource(self.mp),
+            "arches": xmlDiskSource.ArchesDiskSource(self.mp),
+            "arches-extra": xmlDiskSource.ArchesExtraDiskSource(self.mp),
+            "blacklists": xmlDiskSource.BlacklistsDiskSource(self.mp),
+            "channelfamilies": xmlDiskSource.ChannelFamilyDiskSource(self.mp),
+            "orgs": xmlDiskSource.OrgsDiskSource(self.mp),
+            "channels": xmlDiskSource.ChannelDiskSource(self.mp),
+            "channel-pkg-short": ISSChannelPackageShortDiskSource(self.mp),
+            "packages-short": xmlDiskSource.ShortPackageDiskSource(self.mp),
+            "packages": xmlDiskSource.PackageDiskSource(self.mp),
+            "sourcepackages": xmlDiskSource.SourcePackageDiskSource(self.mp),
+            "errata": xmlDiskSource.ErrataDiskSource(self.mp),
+            "kickstart_trees": xmlDiskSource.KickstartDataDiskSource(self.mp),
+            "kickstart_files": xmlDiskSource.KickstartFileDiskSource(self.mp),
+            "binary_rpms": xmlDiskSource.BinaryRPMDiskSource(self.mp),
+            "comps": xmlDiskSource.ChannelCompsDiskSource(self.mp),
+            "modules": xmlDiskSource.ChannelModulesDiskSource(self.mp),
+            "productnames": xmlDiskSource.ProductnamesDiskSource(self.mp),
+            "supportinfo": xmlDiskSource.SupportInformationDiskSource(self.mp),
+            "suse_products": xmlDiskSource.SuseProductsDiskSource(self.mp),
+            "suse_product_channels": xmlDiskSource.SuseProductChannelsDiskSource(
+                self.mp
+            ),
+            "suse_upgrade_paths": xmlDiskSource.SuseUpgradePathsDiskSource(self.mp),
+            "suse_product_extensions": xmlDiskSource.SuseProductExtensionsDiskSource(
+                self.mp
+            ),
+            "suse_product_repositories": xmlDiskSource.SuseProductRepositoriesDiskSource(
+                self.mp
+            ),
+            "scc_repositories": xmlDiskSource.SCCRepositoriesDiskSource(self.mp),
+            "suse_subscriptions": xmlDiskSource.SuseSubscriptionsDiskSource(self.mp),
+            "cloned_channels": xmlDiskSource.ClonedChannelsDiskSource(self.mp),
         }
 
-    #This will make sure that all of the directories leading up to the
-    #xml file actually exist.
+    # This will make sure that all of the directories leading up to the
+    # xml file actually exist.
     @staticmethod
     def setup_file(ofile):
         # Split the path. The filename is [1], and the directories are in [0].
@@ -128,110 +144,148 @@ class FileMapper:
 
     # The get*File methods will return the full path to the xml file that the dumps are placed in.
     # pylint: disable=W0212
+    # pylint: disable-next=invalid-name
     def getArchesFile(self):
-        return self.setup_file(self.filemap['arches']._getFile())
+        return self.setup_file(self.filemap["arches"]._getFile())
 
+    # pylint: disable-next=invalid-name
     def getArchesExtraFile(self):
-        return self.setup_file(self.filemap['arches-extra']._getFile())
+        return self.setup_file(self.filemap["arches-extra"]._getFile())
 
+    # pylint: disable-next=invalid-name
     def getBlacklistsFile(self):
-        return self.setup_file(self.filemap['blacklists']._getFile())
+        return self.setup_file(self.filemap["blacklists"]._getFile())
 
+    # pylint: disable-next=invalid-name
     def getOrgsFile(self):
-        return self.setup_file(self.filemap['orgs']._getFile())
+        return self.setup_file(self.filemap["orgs"]._getFile())
 
+    # pylint: disable-next=invalid-name
     def getChannelFamiliesFile(self):
-        return self.setup_file(self.filemap['channelfamilies']._getFile())
+        return self.setup_file(self.filemap["channelfamilies"]._getFile())
 
+    # pylint: disable-next=invalid-name
     def getBinaryRPMFile(self):
-        return self.setup_file(self.filemap['binary_rpms']._getFile())
+        return self.setup_file(self.filemap["binary_rpms"]._getFile())
 
+    # pylint: disable-next=invalid-name
     def getChannelsFile(self, channelname):
-        self.filemap['channels'].setChannel(channelname)
-        return self.setup_file(self.filemap['channels']._getFile())
+        self.filemap["channels"].setChannel(channelname)
+        return self.setup_file(self.filemap["channels"]._getFile())
 
+    # pylint: disable-next=invalid-name
     def getChannelCompsFile(self, channelname):
-        self.filemap['comps'].setChannel(channelname)
-        return self.setup_file(self.filemap['comps']._getFile())
+        self.filemap["comps"].setChannel(channelname)
+        return self.setup_file(self.filemap["comps"]._getFile())
 
+    # pylint: disable-next=invalid-name
     def getChannelModulesFile(self, channelname):
-        self.filemap['modules'].setChannel(channelname)
-        return self.setup_file(self.filemap['modules']._getFile())
+        self.filemap["modules"].setChannel(channelname)
+        return self.setup_file(self.filemap["modules"]._getFile())
 
+    # pylint: disable-next=invalid-name
     def getChannelPackageShortFile(self, channel_id):
-        self.filemap['channel-pkg-short'].setChannel(channel_id)
-        return self.setup_file(self.filemap['channel-pkg-short']._getFile())
+        self.filemap["channel-pkg-short"].setChannel(channel_id)
+        return self.setup_file(self.filemap["channel-pkg-short"]._getFile())
 
+    # pylint: disable-next=invalid-name
     def getPackagesFile(self, packageid):
-        self.filemap['packages'].setID(packageid)
-        return self.setup_file(self.filemap['packages']._getFile())
+        self.filemap["packages"].setID(packageid)
+        return self.setup_file(self.filemap["packages"]._getFile())
 
+    # pylint: disable-next=invalid-name
     def getShortPackagesFile(self, packageid):
-        self.filemap['packages-short'].setID(packageid)
-        return self.setup_file(self.filemap['packages-short']._getFile())
+        self.filemap["packages-short"].setID(packageid)
+        return self.setup_file(self.filemap["packages-short"]._getFile())
 
+    # pylint: disable-next=invalid-name
     def getSourcePackagesFile(self, sp_id):
-        self.filemap['sourcepackages'].setID(sp_id)
-        return self.setup_file(self.filemap['sourcepackages']._getFile())
+        self.filemap["sourcepackages"].setID(sp_id)
+        return self.setup_file(self.filemap["sourcepackages"]._getFile())
 
+    # pylint: disable-next=invalid-name
     def getErrataFile(self, errataid):
-        self.filemap['errata'].setID(errataid)
-        return self.setup_file(self.filemap['errata']._getFile())
+        self.filemap["errata"].setID(errataid)
+        return self.setup_file(self.filemap["errata"]._getFile())
 
+    # pylint: disable-next=invalid-name
     def getKickstartTreeFile(self, ks_id):
-        self.filemap['kickstart_trees'].setID(ks_id)
-        return self.setup_file(self.filemap['kickstart_trees']._getFile())
+        self.filemap["kickstart_trees"].setID(ks_id)
+        return self.setup_file(self.filemap["kickstart_trees"]._getFile())
 
+    # pylint: disable-next=invalid-name
     def getKickstartFileFile(self, ks_label, relative_path):
-        self.filemap['kickstart_files'].setID(ks_label)
-        self.filemap['kickstart_files'].set_relative_path(relative_path)
-        return self.setup_file(self.filemap['kickstart_files']._getFile())
+        self.filemap["kickstart_files"].setID(ks_label)
+        self.filemap["kickstart_files"].set_relative_path(relative_path)
+        return self.setup_file(self.filemap["kickstart_files"]._getFile())
 
+    # pylint: disable-next=invalid-name
     def getProductNamesFile(self):
-        return self.setup_file(self.filemap['productnames']._getFile())
+        return self.setup_file(self.filemap["productnames"]._getFile())
 
+    # pylint: disable-next=invalid-name
     def getSupportInformationFile(self):
-        return self.setup_file(self.filemap['supportinfo']._getFile())
+        return self.setup_file(self.filemap["supportinfo"]._getFile())
 
+    # pylint: disable-next=invalid-name
     def getSuseProductsFile(self):
-        return self.setup_file(self.filemap['suse_products']._getFile())
+        return self.setup_file(self.filemap["suse_products"]._getFile())
 
+    # pylint: disable-next=invalid-name
     def getSuseProductChannelsFile(self):
-        return self.setup_file(self.filemap['suse_product_channels']._getFile())
+        return self.setup_file(self.filemap["suse_product_channels"]._getFile())
 
+    # pylint: disable-next=invalid-name
     def getSuseUpgradePathsFile(self):
-        return self.setup_file(self.filemap['suse_upgrade_paths']._getFile())
+        return self.setup_file(self.filemap["suse_upgrade_paths"]._getFile())
 
+    # pylint: disable-next=invalid-name
     def getSuseProductExtensionsFile(self):
-        return self.setup_file(self.filemap['suse_product_extensions']._getFile())
+        return self.setup_file(self.filemap["suse_product_extensions"]._getFile())
 
+    # pylint: disable-next=invalid-name
     def getSuseProductRepositoriesFile(self):
-        return self.setup_file(self.filemap['suse_product_repositories']._getFile())
+        return self.setup_file(self.filemap["suse_product_repositories"]._getFile())
 
+    # pylint: disable-next=invalid-name
     def getSCCRepositoriesFile(self):
-        return self.setup_file(self.filemap['scc_repositories']._getFile())
+        return self.setup_file(self.filemap["scc_repositories"]._getFile())
 
+    # pylint: disable-next=invalid-name
     def getSuseSubscriptionsFile(self):
-        return self.setup_file(self.filemap['suse_subscriptions']._getFile())
+        return self.setup_file(self.filemap["suse_subscriptions"]._getFile())
 
+    # pylint: disable-next=invalid-name
     def getClonedChannelsFile(self):
-        return self.setup_file(self.filemap['cloned_channels']._getFile())
+        return self.setup_file(self.filemap["cloned_channels"]._getFile())
+
 
 class Dumper(dumper.XML_Dumper):
 
-    """ This class subclasses the XML_Dumper class. It overrides
-     the _get_xml_writer method and adds a set_stream method,
-     which will let it write to a file instead of over the wire.
+    """This class subclasses the XML_Dumper class. It overrides
+    the _get_xml_writer method and adds a set_stream method,
+    which will let it write to a file instead of over the wire.
     """
 
-    def __init__(self, outputdir, channel_labels, org_ids, hardlinks,
-                 start_date, end_date, use_rhn_date, whole_errata):
+    def __init__(
+        self,
+        outputdir,
+        channel_labels,
+        org_ids,
+        hardlinks,
+        start_date,
+        end_date,
+        use_rhn_date,
+        whole_errata,
+    ):
         dumper.XML_Dumper.__init__(self)
         self.fm = FileMapper(outputdir)
         self.mp = outputdir
         self.pb_label = "Exporting: "
         self.pb_length = 20  # progress bar length
-        self.pb_complete = " - Done!"  # string that's printed when progress bar is done.
+        self.pb_complete = (
+            " - Done!"  # string that's printed when progress bar is done.
+        )
         self.pb_char = "#"  # the string used as each unit in the progress bar.
         self.hardlinks = hardlinks
         self.filename = None
@@ -243,8 +297,10 @@ class Dumper(dumper.XML_Dumper):
         self.whole_errata = whole_errata
 
         if self.start_date:
-            dates = {'start_date': self.start_date,
-                     'end_date': self.end_date, }
+            dates = {
+                "start_date": self.start_date,
+                "end_date": self.end_date,
+            }
         else:
             dates = {}
 
@@ -298,31 +354,39 @@ class Dumper(dumper.XML_Dumper):
                 ch_info = ch_data.fetchall_dict()
 
                 if not ch_info:
+                    # pylint: disable-next=consider-using-f-string
                     raise ISSError("Error: Channel %s not found." % ids, "")
 
                 self.channel_ids = self.channel_ids + ch_info
 
-                channel_comps_sth.execute(channel_id=ch_info[0]['channel_id'])
+                channel_comps_sth.execute(channel_id=ch_info[0]["channel_id"])
                 comps_info = channel_comps_sth.fetchone_dict()
-                channel_modules_sth.execute(channel_id=ch_info[0]['channel_id'])
+                channel_modules_sth.execute(channel_id=ch_info[0]["channel_id"])
                 modules_info = channel_modules_sth.fetchone_dict()
 
                 if comps_info is not None:
-                    self.channel_comps[ch_info[0]['channel_id']] = comps_info['relative_filename']
+                    self.channel_comps[ch_info[0]["channel_id"]] = comps_info[
+                        "relative_filename"
+                    ]
                 if modules_info is not None:
-                    self.channel_modules[ch_info[0]['channel_id']] = modules_info['relative_filename']
+                    self.channel_modules[ch_info[0]["channel_id"]] = modules_info[
+                        "relative_filename"
+                    ]
 
             # For list of channel families, we want to also list those relevant for channels
             # that are already on disk, so that we do not lose those families with
             # "incremental" dumps. So we will gather list of channel ids for channels already
             # in dump.
-            channel_labels_for_families = self.fm.filemap['channels'].list()
+            channel_labels_for_families = self.fm.filemap["channels"].list()
+            # pylint: disable-next=consider-using-f-string
             print(("Appending channels %s" % (channel_labels_for_families)))
             for ids in channel_labels_for_families:
                 ch_data.execute(label=ids)
                 ch_info = ch_data.fetchall_dict()
                 if ch_info:
-                    self.channel_ids_for_families = self.channel_ids_for_families + ch_info
+                    self.channel_ids_for_families = (
+                        self.channel_ids_for_families + ch_info
+                    )
 
         except ISSError:
             # Don't want calls to sys.exit to show up as a "bad" error.
@@ -331,8 +395,14 @@ class Dumper(dumper.XML_Dumper):
             e = sys.exc_info()[1]
             tbout = cStringIO.StringIO()
             Traceback(mail=0, ostream=tbout, with_locals=1)
-            raise_with_tb(ISSError("%s caught while getting channel info." %
-                                   e.__class__.__name__, tbout.getvalue()), sys.exc_info()[2])
+            raise_with_tb(
+                ISSError(
+                    # pylint: disable-next=consider-using-f-string
+                    "%s caught while getting channel info." % e.__class__.__name__,
+                    tbout.getvalue(),
+                ),
+                sys.exc_info()[2],
+            )
 
         ###BINARY RPM INFO###
         try:
@@ -390,14 +460,20 @@ class Dumper(dumper.XML_Dumper):
             self.brpms = []
             log2stdout(1, "Gathering binary RPM info...")
             for ch in self.channel_ids:
-                brpm_data.execute(channel_id=ch['channel_id'], **dates)
+                brpm_data.execute(channel_id=ch["channel_id"], **dates)
                 self.brpms = self.brpms + (brpm_data.fetchall_dict() or [])
         except Exception:
             e = sys.exc_info()[1]
             tbout = cStringIO.StringIO()
             Traceback(mail=0, ostream=tbout, with_locals=1)
-            raise_with_tb(ISSError("%s caught while getting binary rpm info." %
-                                   e.__class__.__name__, tbout.getvalue()), sys.exc_info()[2])
+            raise_with_tb(
+                ISSError(
+                    # pylint: disable-next=consider-using-f-string
+                    "%s caught while getting binary rpm info." % e.__class__.__name__,
+                    tbout.getvalue(),
+                ),
+                sys.exc_info()[2],
+            )
 
         ###PACKAGE INFO###
         # This will grab channel package information for a given channel.
@@ -461,7 +537,7 @@ class Dumper(dumper.XML_Dumper):
             # self.channel_ids.
             log2stdout(1, "Gathering package info...")
             for channel_id in self.channel_ids:
-                package_data.execute(channel_id=channel_id['channel_id'], **dates)
+                package_data.execute(channel_id=channel_id["channel_id"], **dates)
                 a_package = package_data.fetchall_dict() or []
 
                 # Don't bother placing None into self.pkg_info.
@@ -472,8 +548,14 @@ class Dumper(dumper.XML_Dumper):
             e = sys.exc_info()[1]
             tbout = cStringIO.StringIO()
             Traceback(mail=0, ostream=tbout, with_locals=1)
-            raise_with_tb(ISSError("%s caught while getting package info." %
-                                   e.__class__.__name__, tbout.getvalue()), sys.exc_info()[2])
+            raise_with_tb(
+                ISSError(
+                    # pylint: disable-next=consider-using-f-string
+                    "%s caught while getting package info." % e.__class__.__name__,
+                    tbout.getvalue(),
+                ),
+                sys.exc_info()[2],
+            )
 
         ###SOURCE PACKAGE INFO###
         try:
@@ -534,8 +616,15 @@ class Dumper(dumper.XML_Dumper):
             e = sys.exc_info()[1]
             tbout = cStringIO.StringIO()
             Traceback(mail=0, ostream=tbout, with_locals=1)
-            raise_with_tb(ISSError("%s caught while getting source package info." %
-                                   e.__class__.__name__, tbout.getvalue()), sys.exc_info()[2])
+            raise_with_tb(
+                ISSError(
+                    # pylint: disable-next=consider-using-f-string
+                    "%s caught while getting source package info."
+                    % e.__class__.__name__,
+                    tbout.getvalue(),
+                ),
+                sys.exc_info()[2],
+            )
 
         ###ERRATA INFO###
         try:
@@ -566,7 +655,7 @@ class Dumper(dumper.XML_Dumper):
             self.errata_info = []
             log2stdout(1, "Gathering errata info...")
             for channel_id in self.channel_ids:
-                errata_data.execute(channel_id=channel_id['channel_id'], **dates)
+                errata_data.execute(channel_id=channel_id["channel_id"], **dates)
                 an_errata = errata_data.fetchall_dict() or []
                 if an_errata:
                     self.errata_info = self.errata_info + an_errata
@@ -575,8 +664,14 @@ class Dumper(dumper.XML_Dumper):
             e = sys.exc_info()[1]
             tbout = cStringIO.StringIO()
             Traceback(mail=0, ostream=tbout, with_locals=1)
-            raise_with_tb(ISSError("%s caught while getting errata info." %
-                                   e.__class__.__name__, tbout.getvalue()), sys.exc_info()[2])
+            raise_with_tb(
+                ISSError(
+                    # pylint: disable-next=consider-using-f-string
+                    "%s caught while getting errata info." % e.__class__.__name__,
+                    tbout.getvalue(),
+                ),
+                sys.exc_info()[2],
+            )
 
         ###KICKSTART DATA/TREES INFO###
         try:
@@ -604,8 +699,7 @@ class Dumper(dumper.XML_Dumper):
             self.kickstart_trees = []
             log2stdout(1, "Gathering kickstart data...")
             for channel_id in self.channel_ids:
-                kickstart_data.execute(channel_id=channel_id['channel_id'],
-                                       **dates)
+                kickstart_data.execute(channel_id=channel_id["channel_id"], **dates)
                 a_tree = kickstart_data.fetchall_dict() or []
                 if a_tree:
                     self.kickstart_trees = self.kickstart_trees + a_tree
@@ -614,8 +708,15 @@ class Dumper(dumper.XML_Dumper):
             e = sys.exc_info()[1]
             tbout = cStringIO.StringIO()
             Traceback(mail=0, ostream=tbout, with_locals=1)
-            raise_with_tb(ISSError("%s caught while getting kickstart data info." %
-                                   e.__class__.__name__, tbout.getvalue()), sys.exc_info()[2])
+            raise_with_tb(
+                ISSError(
+                    # pylint: disable-next=consider-using-f-string
+                    "%s caught while getting kickstart data info."
+                    % e.__class__.__name__,
+                    tbout.getvalue(),
+                ),
+                sys.exc_info()[2],
+            )
 
         ###KICKSTART FILES INFO###
         try:
@@ -649,7 +750,7 @@ class Dumper(dumper.XML_Dumper):
             self.kickstart_files = []
             log2stdout(1, "Gathering kickstart files info...")
             for kstree in self.kickstart_trees:
-                kickstart_files.execute(kstree_id=kstree['kstree_id'], **dates)
+                kickstart_files.execute(kstree_id=kstree["kstree_id"], **dates)
                 a_file = kickstart_files.fetchall_dict() or []
                 if a_file:
                     self.kickstart_files = self.kickstart_files + a_file
@@ -658,8 +759,15 @@ class Dumper(dumper.XML_Dumper):
             e = sys.exc_info()[1]
             tbout = cStringIO.StringIO()
             Traceback(mail=0, ostream=tbout, with_locals=1)
-            raise_with_tb(ISSError("%s caught while getting kickstart files info." %
-                                   e.__class__.__name__, tbout.getvalue()), sys.exc_info()[2])
+            raise_with_tb(
+                ISSError(
+                    # pylint: disable-next=consider-using-f-string
+                    "%s caught while getting kickstart files info."
+                    % e.__class__.__name__,
+                    tbout.getvalue(),
+                ),
+                sys.exc_info()[2],
+            )
 
     # The close method overrides the parent classes close method. This implementation
     # closes the self.outstream, which is an addition defined in this subclass.
@@ -676,6 +784,7 @@ class Dumper(dumper.XML_Dumper):
     # TODO: Add error-checking. Either give self.outstream a sane default or have it throw an error if it hasn't
     #      been set yet.
     def _get_xml_writer(self):
+        # pylint: disable-next=unspecified-encoding
         self.outstream = open(self.filename, "w")
         return xmlWriter.XMLWriter(stream=self.outstream)
 
@@ -688,11 +797,9 @@ class Dumper(dumper.XML_Dumper):
         try:
             print("\n")
             log2stdout(1, startmsg)
-            pb = progress_bar.ProgressBar(self.pb_label,
-                                          self.pb_complete,
-                                          1,
-                                          self.pb_length,
-                                          self.pb_char)
+            pb = progress_bar.ProgressBar(
+                self.pb_label, self.pb_complete, 1, self.pb_length, self.pb_char
+            )
             pb.printAll(1)
             self.set_filename(filename)
             dump_func(self)
@@ -706,54 +813,73 @@ class Dumper(dumper.XML_Dumper):
             e = sys.exc_info()[1]
             tbout = cStringIO.StringIO()
             Traceback(mail=0, ostream=tbout, with_locals=1)
-            raise_with_tb(ISSError(exceptmsg % e.__class__.__name__, tbout.getvalue()), sys.exc_info()[2])
+            raise_with_tb(
+                ISSError(exceptmsg % e.__class__.__name__, tbout.getvalue()),
+                sys.exc_info()[2],
+            )
 
     def dump_arches(self, rpm_arch_type_only=0):
-        self._dump_simple(self.fm.getArchesFile(), dumper.XML_Dumper.dump_arches,
-                          "Exporting arches...",
-                          "Arches exported to %s",
-                          "%s caught in dump_arches.")
+        self._dump_simple(
+            self.fm.getArchesFile(),
+            dumper.XML_Dumper.dump_arches,
+            "Exporting arches...",
+            "Arches exported to %s",
+            "%s caught in dump_arches.",
+        )
 
     # This dumps arches_extra
     def dump_server_group_type_server_arches(self, rpm_arch_type_only=0, virt_filter=0):
-        self._dump_simple(self.fm.getArchesExtraFile(),
-                          dumper.XML_Dumper.dump_server_group_type_server_arches,
-                          "Exporting arches extra...",
-                          "Arches Extra exported to %s",
-                          "%s caught in dump_server_group_type_server_arches.")
+        self._dump_simple(
+            self.fm.getArchesExtraFile(),
+            dumper.XML_Dumper.dump_server_group_type_server_arches,
+            "Exporting arches extra...",
+            "Arches Extra exported to %s",
+            "%s caught in dump_server_group_type_server_arches.",
+        )
 
     def dump_blacklist_obsoletes(self):
-        self._dump_simple(self.fm.getBlacklistsFile(),
-                          dumper.XML_Dumper.dump_blacklist_obsoletes,
-                          "Exporting blacklists...",
-                          "Blacklists exported to %s",
-                          "%s caught in dump_blacklist_obsoletes.")
+        self._dump_simple(
+            self.fm.getBlacklistsFile(),
+            dumper.XML_Dumper.dump_blacklist_obsoletes,
+            "Exporting blacklists...",
+            "Blacklists exported to %s",
+            "%s caught in dump_blacklist_obsoletes.",
+        )
 
     def dump_channel_families(self):
-        self._dump_simple(self.fm.getChannelFamiliesFile(),
-                          dumper.XML_Dumper.dump_channel_families,
-                          "Exporting channel families...",
-                          "Channel Families exported to %s",
-                          "%s caught in dump_channel_families.")
+        self._dump_simple(
+            self.fm.getChannelFamiliesFile(),
+            dumper.XML_Dumper.dump_channel_families,
+            "Exporting channel families...",
+            "Channel Families exported to %s",
+            "%s caught in dump_channel_families.",
+        )
 
     def dump_product_names(self):
-        self._dump_simple(self.fm.getProductNamesFile(),
-                          dumper.XML_Dumper.dump_product_names,
-                          "Exporting product names...",
-                          "Product names exported to %s",
-                          "%s caught in dump_product_names.")
+        self._dump_simple(
+            self.fm.getProductNamesFile(),
+            dumper.XML_Dumper.dump_product_names,
+            "Exporting product names...",
+            "Product names exported to %s",
+            "%s caught in dump_product_names.",
+        )
 
     def dump_orgs(self):
-        self._dump_simple(self.fm.getOrgsFile(),
-                          dumper.XML_Dumper.dump_orgs,
-                          "Exporting orgs...",
-                          "Orgs exported to %s",
-                          "%s caught in dump_orgs.")
+        self._dump_simple(
+            self.fm.getOrgsFile(),
+            dumper.XML_Dumper.dump_orgs,
+            "Exporting orgs...",
+            "Orgs exported to %s",
+            "%s caught in dump_orgs.",
+        )
 
     def copy_repomd(self, repomds, channel, get_file_func):
-        if channel['channel_id'] in repomds:
-            full_filename = os.path.join(CFG.MOUNT_POINT, repomds[channel['channel_id']])
-            target_filename = get_file_func(channel['label'])
+        if channel["channel_id"] in repomds:
+            full_filename = os.path.join(
+                CFG.MOUNT_POINT, repomds[channel["channel_id"]]
+            )
+            target_filename = get_file_func(channel["label"])
+            # pylint: disable-next=consider-using-f-string
             log2email(3, "Need to copy %s to %s" % (full_filename, target_filename))
 
             if self.hardlinks:
@@ -761,215 +887,338 @@ class Dumper(dumper.XML_Dumper):
             else:
                 shutil.copyfile(full_filename, target_filename)
 
-
-    def dump_channels(self, channel_labels=None, start_date=None, end_date=None,
-                      use_rhn_date=True, whole_errata=False):
+    def dump_channels(
+        self,
+        channel_labels=None,
+        start_date=None,
+        end_date=None,
+        use_rhn_date=True,
+        whole_errata=False,
+    ):
         try:
             print("\n")
             log2stdout(1, "Exporting channel info...")
-            pb = progress_bar.ProgressBar(self.pb_label,
-                                          self.pb_complete,
-                                          len(self.channel_ids),
-                                          self.pb_length,
-                                          self.pb_char)
+            pb = progress_bar.ProgressBar(
+                self.pb_label,
+                self.pb_complete,
+                len(self.channel_ids),
+                self.pb_length,
+                self.pb_char,
+            )
             pb.printAll(1)
             for channel in self.channel_ids:
-                self.set_filename(self.fm.getChannelsFile(channel['label']))
-                dumper.XML_Dumper.dump_channels(self, [channel],
-                                                self.start_date, self.end_date,
-                                                self.use_rhn_date, self.whole_errata)
+                self.set_filename(self.fm.getChannelsFile(channel["label"]))
+                dumper.XML_Dumper.dump_channels(
+                    self,
+                    [channel],
+                    self.start_date,
+                    self.end_date,
+                    self.use_rhn_date,
+                    self.whole_errata,
+                )
 
-                log2email(4, "Channel: %s" % channel['label'])
-                log2email(5, "Channel exported to %s" % self.fm.getChannelsFile(channel['label']))
+                # pylint: disable-next=consider-using-f-string
+                log2email(4, "Channel: %s" % channel["label"])
+                log2email(
+                    5,
+                    # pylint: disable-next=consider-using-f-string
+                    "Channel exported to %s"
+                    % self.fm.getChannelsFile(channel["label"]),
+                )
 
-                self.copy_repomd(self.channel_comps, channel, self.fm.getChannelCompsFile)
-                self.copy_repomd(self.channel_modules, channel, self.fm.getChannelModulesFile)
+                self.copy_repomd(
+                    self.channel_comps, channel, self.fm.getChannelCompsFile
+                )
+                self.copy_repomd(
+                    self.channel_modules, channel, self.fm.getChannelModulesFile
+                )
 
                 pb.addTo(1)
                 pb.printIncrement()
             pb.printComplete()
-            log2stderr(3, "Number of channels exported: %s" % str(len(self.channel_ids)))
+            log2stderr(
+                3,
+                # pylint: disable-next=consider-using-f-string
+                "Number of channels exported: %s" % str(len(self.channel_ids)),
+            )
 
         except Exception:
             e = sys.exc_info()[1]
             tbout = cStringIO.StringIO()
             Traceback(mail=0, ostream=tbout, with_locals=1)
-            raise_with_tb(ISSError("%s caught in dump_channels." % e.__class__.__name__,
-                                   tbout.getvalue()), sys.exc_info()[2])
+            raise_with_tb(
+                ISSError(
+                    # pylint: disable-next=consider-using-f-string
+                    "%s caught in dump_channels." % e.__class__.__name__,
+                    tbout.getvalue(),
+                ),
+                sys.exc_info()[2],
+            )
 
-    def dump_channel_packages_short(self, channel_label=None, last_modified=None, filepath=None,
-                                    validate_channels=False, send_headers=False,
-                                    open_stream=True):
+    def dump_channel_packages_short(
+        self,
+        channel_label=None,
+        last_modified=None,
+        filepath=None,
+        validate_channels=False,
+        send_headers=False,
+        open_stream=True,
+    ):
         try:
             print("\n")
             for ch_id in self.channel_ids:
-                filepath = self.fm.getChannelPackageShortFile(ch_id['channel_id'])
+                filepath = self.fm.getChannelPackageShortFile(ch_id["channel_id"])
                 self.set_filename(filepath)
-                dumper.XML_Dumper.dump_channel_packages_short(self, ch_id, ch_id['last_modified'], filepath)
+                dumper.XML_Dumper.dump_channel_packages_short(
+                    self, ch_id, ch_id["last_modified"], filepath
+                )
 
         except Exception:
             e = sys.exc_info()[1]
             tbout = cStringIO.StringIO()
             Traceback(mail=0, ostream=tbout, with_locals=1)
-            raise_with_tb(ISSError("%s caught in dump_channel_packages_short." %
-                                   e.__class__.__name__, tbout.getvalue()), sys.exc_info()[2])
+            raise_with_tb(
+                ISSError(
+                    # pylint: disable-next=consider-using-f-string
+                    "%s caught in dump_channel_packages_short." % e.__class__.__name__,
+                    tbout.getvalue(),
+                ),
+                sys.exc_info()[2],
+            )
 
     def dump_packages(self, packages=None):
         try:
             print("\n")
             log2stdout(1, "Exporting packages...")
-            pb = progress_bar.ProgressBar(self.pb_label,
-                                          self.pb_complete,
-                                          len(self.pkg_info),
-                                          self.pb_length,
-                                          self.pb_char)
+            pb = progress_bar.ProgressBar(
+                self.pb_label,
+                self.pb_complete,
+                len(self.pkg_info),
+                self.pb_length,
+                self.pb_char,
+            )
             pb.printAll(1)
             for pkg_info in self.pkg_info:
-                package_name = "rhn-package-" + str(pkg_info['package_id'])
+                package_name = "rhn-package-" + str(pkg_info["package_id"])
                 self.set_filename(self.fm.getPackagesFile(package_name))
                 dumper.XML_Dumper.dump_packages(self, [pkg_info])
 
+                # pylint: disable-next=consider-using-f-string
                 log2email(4, "Package: %s" % package_name)
-                log2email(5, "Package exported to %s" % self.fm.getPackagesFile(package_name))
+                log2email(
+                    5,
+                    # pylint: disable-next=consider-using-f-string
+                    "Package exported to %s" % self.fm.getPackagesFile(package_name),
+                )
 
                 pb.addTo(1)
                 pb.printIncrement()
             pb.printComplete()
+            # pylint: disable-next=consider-using-f-string
             log2stdout(3, "Number of packages exported: %s" % str(len(self.pkg_info)))
 
         except Exception:
             e = sys.exc_info()[1]
             tbout = cStringIO.StringIO()
             Traceback(mail=0, ostream=tbout, with_locals=1)
-            raise_with_tb(ISSError("%s caught in dump_packages." % e.__class__.__name__,
-                                   tbout.getvalue()), sys.exc_info()[2])
+            raise_with_tb(
+                ISSError(
+                    # pylint: disable-next=consider-using-f-string
+                    "%s caught in dump_packages." % e.__class__.__name__,
+                    tbout.getvalue(),
+                ),
+                sys.exc_info()[2],
+            )
 
     def dump_packages_short(self, packages=None):
         try:
             print("\n")
             log2stdout(1, "Exporting short packages...")
-            pb = progress_bar.ProgressBar(self.pb_label,
-                                          self.pb_complete,
-                                          len(self.pkg_info),
-                                          self.pb_length,
-                                          self.pb_char)
+            pb = progress_bar.ProgressBar(
+                self.pb_label,
+                self.pb_complete,
+                len(self.pkg_info),
+                self.pb_length,
+                self.pb_char,
+            )
             pb.printAll(1)
             for pkg_info in self.pkg_info:
-                package_name = "rhn-package-" + str(pkg_info['package_id'])
+                package_name = "rhn-package-" + str(pkg_info["package_id"])
                 self.set_filename(self.fm.getShortPackagesFile(package_name))
                 dumper.XML_Dumper.dump_packages_short(self, [pkg_info])
 
+                # pylint: disable-next=consider-using-f-string
                 log2email(4, "Short Package: %s" % package_name)
+                # pylint: disable-next=consider-using-f-string
                 log2email(5, "Short Package exported to %s" % package_name)
                 pb.addTo(1)
                 pb.printIncrement()
             pb.printComplete()
-            log2stdout(3, "Number of short packages exported: %s" % str(len(self.pkg_info)))
+            log2stdout(
+                3,
+                # pylint: disable-next=consider-using-f-string
+                "Number of short packages exported: %s" % str(len(self.pkg_info)),
+            )
 
         except Exception:
             e = sys.exc_info()[1]
             tbout = cStringIO.StringIO()
             Traceback(mail=0, ostream=tbout, with_locals=1)
-            raise_with_tb(ISSError("%s caught in dump_packages_short." %
-                                   e.__class__.__name__, tbout.getvalue()), sys.exc_info()[2])
+            raise_with_tb(
+                ISSError(
+                    # pylint: disable-next=consider-using-f-string
+                    "%s caught in dump_packages_short." % e.__class__.__name__,
+                    tbout.getvalue(),
+                ),
+                sys.exc_info()[2],
+            )
 
     def dump_source_packages(self, packages=None):
         try:
             print("\n")
             for pkg_info in self.src_pkg_info:
-                self.set_filename(self.fm.getSourcePackagesFile("rhn-source-package-" + str(pkg_info['package_id'])))
+                self.set_filename(
+                    self.fm.getSourcePackagesFile(
+                        "rhn-source-package-" + str(pkg_info["package_id"])
+                    )
+                )
                 dumper.XML_Dumper.dump_source_packages(self, [pkg_info])
 
         except Exception:
             e = sys.exc_info()[1]
             tbout = cStringIO.StringIO()
             Traceback(mail=0, ostream=tbout, with_locals=1)
-            raise_with_tb(ISSError("%s caught in dump_source_packages." %
-                                   e.__class__.__name__, tbout.getvalue()), sys.exc_info()[2])
+            raise_with_tb(
+                ISSError(
+                    # pylint: disable-next=consider-using-f-string
+                    "%s caught in dump_source_packages." % e.__class__.__name__,
+                    tbout.getvalue(),
+                ),
+                sys.exc_info()[2],
+            )
 
     def dump_errata(self, errata=None, verify_errata=False):
         try:
             print("\n")
             log2stdout(1, "Exporting errata...")
-            pb = progress_bar.ProgressBar(self.pb_label,
-                                          self.pb_complete,
-                                          len(self.errata_info),
-                                          self.pb_length,
-                                          self.pb_char)
+            pb = progress_bar.ProgressBar(
+                self.pb_label,
+                self.pb_complete,
+                len(self.errata_info),
+                self.pb_length,
+                self.pb_char,
+            )
             pb.printAll(1)
             for errata_info in self.errata_info:
-                erratum_name = "rhn-erratum-" + str(errata_info['errata_id'])
+                erratum_name = "rhn-erratum-" + str(errata_info["errata_id"])
                 self.set_filename(self.fm.getErrataFile(erratum_name))
                 dumper.XML_Dumper.dump_errata(self, [errata_info])
 
-                log2email(4, "Erratum: %s" % str(errata_info['advisory-name']))
-                log2email(5, "Erratum exported to %s" % self.fm.getErrataFile(erratum_name))
+                # pylint: disable-next=consider-using-f-string
+                log2email(4, "Erratum: %s" % str(errata_info["advisory-name"]))
+                log2email(
+                    5,
+                    # pylint: disable-next=consider-using-f-string
+                    "Erratum exported to %s" % self.fm.getErrataFile(erratum_name),
+                )
 
                 pb.addTo(1)
                 pb.printIncrement()
             pb.printComplete()
+            # pylint: disable-next=consider-using-f-string
             log2stdout(3, "Number of errata exported: %s" % str(len(self.errata_info)))
 
         except Exception:
             e = sys.exc_info()[1]
             tbout = cStringIO.StringIO()
             Traceback(mail=0, ostream=tbout, with_locals=1)
-            raise_with_tb(ISSError("%s caught in dump_errata." % e.__class__.__name__,
-                                   tbout.getvalue()), sys.exc_info()[2])
+            raise_with_tb(
+                ISSError(
+                    # pylint: disable-next=consider-using-f-string
+                    "%s caught in dump_errata." % e.__class__.__name__,
+                    tbout.getvalue(),
+                ),
+                sys.exc_info()[2],
+            )
 
     def dump_kickstart_data(self):
         try:
             print("\n")
             log2stdout(1, "Exporting kickstart data...")
-            pb = progress_bar.ProgressBar(self.pb_label,
-                                          self.pb_complete,
-                                          len(self.kickstart_trees),
-                                          self.pb_length,
-                                          self.pb_char)
+            pb = progress_bar.ProgressBar(
+                self.pb_label,
+                self.pb_complete,
+                len(self.kickstart_trees),
+                self.pb_length,
+                self.pb_char,
+            )
             pb.printAll(1)
             for kickstart_tree in self.kickstart_trees:
-                self.set_filename(self.fm.getKickstartTreeFile(kickstart_tree['kickstart_label']))  # , 'foo/bar'))
+                self.set_filename(
+                    self.fm.getKickstartTreeFile(kickstart_tree["kickstart_label"])
+                )  # , 'foo/bar'))
                 dumper.XML_Dumper.dump_kickstartable_trees(self, [kickstart_tree])
 
-                log2email(5, "KS Data: %s" % str(kickstart_tree['kickstart_label']))
+                # pylint: disable-next=consider-using-f-string
+                log2email(5, "KS Data: %s" % str(kickstart_tree["kickstart_label"]))
 
                 pb.addTo(1)
                 pb.printIncrement()
             pb.printComplete()
-            log2stdout(3, "Amount of kickstart data exported: %s" % str(len(self.kickstart_trees)))
+            log2stdout(
+                3,
+                # pylint: disable-next=consider-using-f-string
+                "Amount of kickstart data exported: %s"
+                % str(len(self.kickstart_trees)),
+            )
 
         except Exception:
             e = sys.exc_info()[1]
             tbout = cStringIO.StringIO()
             Traceback(mail=0, ostream=tbout, with_locals=1)
-            raise_with_tb(ISSError("%s caught in dump_kickstart_data." %
-                                   e.__class__.__name__, tbout.getvalue()), sys.exc_info()[2])
+            raise_with_tb(
+                ISSError(
+                    # pylint: disable-next=consider-using-f-string
+                    "%s caught in dump_kickstart_data." % e.__class__.__name__,
+                    tbout.getvalue(),
+                ),
+                sys.exc_info()[2],
+            )
 
     def dump_kickstart_files(self):
         try:
             print("\n")
             log2stdout(1, "Exporting kickstart files...")
-            pb = progress_bar.ProgressBar(self.pb_label,
-                                          self.pb_complete,
-                                          len(self.kickstart_files),
-                                          self.pb_length,
-                                          self.pb_char)
+            pb = progress_bar.ProgressBar(
+                self.pb_label,
+                self.pb_complete,
+                len(self.kickstart_files),
+                self.pb_length,
+                self.pb_char,
+            )
             pb.printAll(1)
             for kickstart_file in self.kickstart_files:
                 # get the path to the kickstart files under the satellite's mount point
-                path_to_files = os.path.join(CFG.MOUNT_POINT,
-                                             kickstart_file['base-path'],
-                                             kickstart_file['relative-path'])
+                path_to_files = os.path.join(
+                    CFG.MOUNT_POINT,
+                    kickstart_file["base-path"],
+                    kickstart_file["relative-path"],
+                )
 
                 # Make sure the path actually exists
                 if not os.path.exists(path_to_files):
-                    raise ISSError("Missing kickstart file under mount-point: %s" % (path_to_files,), "")
+                    raise ISSError(
+                        # pylint: disable-next=consider-using-f-string
+                        "Missing kickstart file under mount-point: %s"
+                        % (path_to_files,),
+                        "",
+                    )
 
                 # generate the path to the kickstart files under the export directory.
                 path_to_export_file = self.fm.getKickstartFileFile(
-                    kickstart_file['label'],
-                    kickstart_file['relative-path'])
-                #os.path.join(self.mp, kickstart_file['base-path'], kickstart_file['relative-path'])
+                    kickstart_file["label"], kickstart_file["relative-path"]
+                )
+                # os.path.join(self.mp, kickstart_file['base-path'], kickstart_file['relative-path'])
                 if os.path.exists(path_to_export_file):
                     # already exists, skip ks file
                     continue
@@ -993,53 +1242,90 @@ class Dumper(dumper.XML_Dumper):
                     e = sys.exc_info()[1]
                     tbout = cStringIO.StringIO()
                     Traceback(mail=0, ostream=tbout, with_locals=1)
-                    raise_with_tb(ISSError("Error: Error copying file: %s: %s" %
-                                           (path_to_files, e.__class__.__name__), tbout.getvalue()), sys.exc_info()[2])
+                    raise_with_tb(
+                        ISSError(
+                            # pylint: disable-next=consider-using-f-string
+                            "Error: Error copying file: %s: %s"
+                            % (path_to_files, e.__class__.__name__),
+                            tbout.getvalue(),
+                        ),
+                        sys.exc_info()[2],
+                    )
 
-                log2email(5, "Kickstart File: %s" %
-                          os.path.join(kickstart_file['base-path'],
-                                       kickstart_file['relative-path']))
+                log2email(
+                    5,
+                    # pylint: disable-next=consider-using-f-string
+                    "Kickstart File: %s"
+                    % os.path.join(
+                        kickstart_file["base-path"], kickstart_file["relative-path"]
+                    ),
+                )
 
                 pb.addTo(1)
                 pb.printIncrement()
 
             pb.printComplete()
-            log2stdout(3, "Number of kickstart files exported: %s" % str(len(self.kickstart_files)))
+            log2stdout(
+                3,
+                # pylint: disable-next=consider-using-f-string
+                "Number of kickstart files exported: %s"
+                % str(len(self.kickstart_files)),
+            )
         except ISSError:
             raise
         except Exception:
             e = sys.exc_info()[1]
             tbout = cStringIO.StringIO()
             Traceback(mail=0, ostream=tbout, with_locals=1)
-            raise_with_tb(ISSError("%s caught in dump_kickstart_files." %
-                                   e.__class__.__name__, tbout.getvalue()), sys.exc_info()[2])
+            raise_with_tb(
+                ISSError(
+                    # pylint: disable-next=consider-using-f-string
+                    "%s caught in dump_kickstart_files." % e.__class__.__name__,
+                    tbout.getvalue(),
+                ),
+                sys.exc_info()[2],
+            )
 
     # RPM and SRPM dumping code
     def dump_rpms(self):
         try:
             print("\n")
             log2stdout(1, "Exporting binary RPMs...")
-            pb = progress_bar.ProgressBar(self.pb_label,
-                                          self.pb_complete,
-                                          len(self.brpms),
-                                          self.pb_length,
-                                          self.pb_char)
+            pb = progress_bar.ProgressBar(
+                self.pb_label,
+                self.pb_complete,
+                len(self.brpms),
+                self.pb_length,
+                self.pb_char,
+            )
             pb.printAll(1)
             for rpm in self.brpms:
                 # generate path to the rpms under the mount point
-                path_to_rpm = diskImportLib.rpmsPath("rhn-package-%s" % str(rpm['id']), self.mp)
+                path_to_rpm = diskImportLib.rpmsPath(
+                    # pylint: disable-next=consider-using-f-string
+                    "rhn-package-%s" % str(rpm["id"]),
+                    self.mp,
+                )
 
                 # get the dirs to the rpm
                 dirs_to_rpm = os.path.split(path_to_rpm)[0]
 
-                if (not rpm['path']):
-                    raise ISSError("Error: Missing RPM under the satellite mount point. (Package id: %s)" %
-                                   rpm['id'], "")
+                if not rpm["path"]:
+                    raise ISSError(
+                        # pylint: disable-next=consider-using-f-string
+                        "Error: Missing RPM under the satellite mount point. (Package id: %s)"
+                        % rpm["id"],
+                        "",
+                    )
                 # get the path to the rpm from under the satellite's mountpoint
-                satellite_path = os.path.join(CFG.MOUNT_POINT, rpm['path'])
+                satellite_path = os.path.join(CFG.MOUNT_POINT, rpm["path"])
 
                 if not os.path.exists(satellite_path):
-                    raise ISSError("Error: Missing RPM under mount point: %s" % (satellite_path,), "")
+                    raise ISSError(
+                        # pylint: disable-next=consider-using-f-string
+                        "Error: Missing RPM under mount point: %s" % (satellite_path,),
+                        "",
+                    )
 
                 # create the directory for the rpm, if necessary.
                 if not os.path.exists(dirs_to_rpm):
@@ -1059,22 +1345,43 @@ class Dumper(dumper.XML_Dumper):
                     e = sys.exc_info()[1]
                     tbout = cStringIO.StringIO()
                     Traceback(mail=0, ostream=tbout, with_locals=1)
-                    raise_with_tb(ISSError("Error: Error copying file %s: %s" %
-                                           (os.path.join(CFG.MOUNT_POINT, rpm['path']), e.__class__.__name__),
-                                           tbout.getvalue()), sys.exc_info()[2])
+                    raise_with_tb(
+                        ISSError(
+                            # pylint: disable-next=consider-using-f-string
+                            "Error: Error copying file %s: %s"
+                            % (
+                                os.path.join(CFG.MOUNT_POINT, rpm["path"]),
+                                e.__class__.__name__,
+                            ),
+                            tbout.getvalue(),
+                        ),
+                        sys.exc_info()[2],
+                    )
+                # pylint: disable-next=duplicate-except
                 except OSError:
                     e = sys.exc_info()[1]
                     tbout = cStringIO.StringIO()
                     Traceback(mail=0, ostream=tbout, with_locals=1)
-                    raise_with_tb(ISSError("Error: Could not make hard link %s: %s (different filesystems?)" %
-                                           (os.path.join(CFG.MOUNT_POINT, rpm['path']), e.__class__.__name__),
-                                           tbout.getvalue()), sys.exc_info()[2])
+                    raise_with_tb(
+                        ISSError(
+                            # pylint: disable-next=consider-using-f-string
+                            "Error: Could not make hard link %s: %s (different filesystems?)"
+                            % (
+                                os.path.join(CFG.MOUNT_POINT, rpm["path"]),
+                                e.__class__.__name__,
+                            ),
+                            tbout.getvalue(),
+                        ),
+                        sys.exc_info()[2],
+                    )
 
-                log2email(5, "RPM: %s" % rpm['path'])
+                # pylint: disable-next=consider-using-f-string
+                log2email(5, "RPM: %s" % rpm["path"])
 
                 pb.addTo(1)
                 pb.printIncrement()
             pb.printComplete()
+            # pylint: disable-next=consider-using-f-string
             log2stdout(3, "Number of RPMs exported: %s" % str(len(self.brpms)))
         except ISSError:
             raise
@@ -1083,71 +1390,96 @@ class Dumper(dumper.XML_Dumper):
             e = sys.exc_info()[1]
             tbout = cStringIO.StringIO()
             Traceback(mail=0, ostream=tbout, with_locals=1)
-            raise_with_tb(ISSError("%s caught in dump_rpms." % e.__class__.__name__,
-                                   tbout.getvalue()), sys.exc_info()[2])
+            raise_with_tb(
+                ISSError(
+                    # pylint: disable-next=consider-using-f-string
+                    "%s caught in dump_rpms." % e.__class__.__name__,
+                    tbout.getvalue(),
+                ),
+                sys.exc_info()[2],
+            )
 
     def dump_support_information(self):
-        self._dump_simple(self.fm.getSupportInformationFile(),
-                          dumper.XML_Dumper.dump_support_information,
-                          "Exporting Support Information...",
-                          "Support Information exported to %s",
-                          "%s caught in dump_support_information.")
+        self._dump_simple(
+            self.fm.getSupportInformationFile(),
+            dumper.XML_Dumper.dump_support_information,
+            "Exporting Support Information...",
+            "Support Information exported to %s",
+            "%s caught in dump_support_information.",
+        )
 
     def dump_suse_products(self):
-        self._dump_simple(self.fm.getSuseProductsFile(),
-                          dumper.XML_Dumper.dump_suse_products,
-                          "Exporting SUSE Product Information...",
-                          "SUSE Product Information exported to %s",
-                          "%s caught in dump_suse_products.")
+        self._dump_simple(
+            self.fm.getSuseProductsFile(),
+            dumper.XML_Dumper.dump_suse_products,
+            "Exporting SUSE Product Information...",
+            "SUSE Product Information exported to %s",
+            "%s caught in dump_suse_products.",
+        )
 
     def dump_suse_product_channels(self):
-        self._dump_simple(self.fm.getSuseProductChannelsFile(),
-                          dumper.XML_Dumper.dump_suse_product_channels,
-                          "Exporting SUSE Product Channel Information...",
-                          "SUSE Product Channel Information exported to %s",
-                          "%s caught in dump_suse_product_channels.")
+        self._dump_simple(
+            self.fm.getSuseProductChannelsFile(),
+            dumper.XML_Dumper.dump_suse_product_channels,
+            "Exporting SUSE Product Channel Information...",
+            "SUSE Product Channel Information exported to %s",
+            "%s caught in dump_suse_product_channels.",
+        )
 
     def dump_suse_upgrade_paths(self):
-        self._dump_simple(self.fm.getSuseUpgradePathsFile(),
-                          dumper.XML_Dumper.dump_suse_upgrade_paths,
-                          "Exporting Upgrade Path Information...",
-                          "Upgrade Path Information exported to %s",
-                          "%s caught in dump_suse_upgrade_paths.")
+        self._dump_simple(
+            self.fm.getSuseUpgradePathsFile(),
+            dumper.XML_Dumper.dump_suse_upgrade_paths,
+            "Exporting Upgrade Path Information...",
+            "Upgrade Path Information exported to %s",
+            "%s caught in dump_suse_upgrade_paths.",
+        )
 
     def dump_suse_product_extensions(self):
-        self._dump_simple(self.fm.getSuseProductExtensionsFile(),
-                          dumper.XML_Dumper.dump_suse_product_extensions,
-                          "Exporting SUSE Product Extension Information...",
-                          "SUSE Product Extension Information exported to %s",
-                          "%s caught in dump_suse_product_extensions.")
+        self._dump_simple(
+            self.fm.getSuseProductExtensionsFile(),
+            dumper.XML_Dumper.dump_suse_product_extensions,
+            "Exporting SUSE Product Extension Information...",
+            "SUSE Product Extension Information exported to %s",
+            "%s caught in dump_suse_product_extensions.",
+        )
 
     def dump_suse_product_repositories(self):
-        self._dump_simple(self.fm.getSuseProductRepositoriesFile(),
-                          dumper.XML_Dumper.dump_suse_product_repositories,
-                          "Exporting SUSE Product Repository Information...",
-                          "SUSE Product Repository Information exported to %s",
-                          "%s caught in dump_suse_product_repositories.")
+        self._dump_simple(
+            self.fm.getSuseProductRepositoriesFile(),
+            dumper.XML_Dumper.dump_suse_product_repositories,
+            "Exporting SUSE Product Repository Information...",
+            "SUSE Product Repository Information exported to %s",
+            "%s caught in dump_suse_product_repositories.",
+        )
 
     def dump_scc_repositories(self):
-        self._dump_simple(self.fm.getSCCRepositoriesFile(),
-                          dumper.XML_Dumper.dump_scc_repositories,
-                          "Exporting Repository Information...",
-                          "Repository Information exported to %s",
-                          "%s caught in dump_scc_repositories.")
+        self._dump_simple(
+            self.fm.getSCCRepositoriesFile(),
+            dumper.XML_Dumper.dump_scc_repositories,
+            "Exporting Repository Information...",
+            "Repository Information exported to %s",
+            "%s caught in dump_scc_repositories.",
+        )
 
     def dump_suse_subscriptions(self):
-        self._dump_simple(self.fm.getSuseSubscriptionsFile(),
-                          dumper.XML_Dumper.dump_suse_subscriptions,
-                          "Exporting Subscription Information...",
-                          "Subscription Information exported to %s",
-                          "%s caught in dump_suse_subscriptions.")
+        self._dump_simple(
+            self.fm.getSuseSubscriptionsFile(),
+            dumper.XML_Dumper.dump_suse_subscriptions,
+            "Exporting Subscription Information...",
+            "Subscription Information exported to %s",
+            "%s caught in dump_suse_subscriptions.",
+        )
 
     def dump_cloned_channels(self):
-        self._dump_simple(self.fm.getClonedChannelsFile(),
-                          dumper.XML_Dumper.dump_cloned_channels,
-                          "Exporting Channel Clone Information...",
-                          "Channel clone information exported to %s",
-                          "%s caught in dump_cloned_channels.")
+        self._dump_simple(
+            self.fm.getClonedChannelsFile(),
+            dumper.XML_Dumper.dump_cloned_channels,
+            "Exporting Channel Clone Information...",
+            "Channel clone information exported to %s",
+            "%s caught in dump_cloned_channels.",
+        )
+
 
 def get_report():
     body = dumpEMAIL_LOG()
@@ -1162,16 +1494,20 @@ def print_report():
 
 
 # Stolen and modified from satsync.py
+# pylint: disable-next=invalid-name
 def sendMail():
     # Send email summary
     body = dumpEMAIL_LOG()
     if body:
         print("+++ sending log as an email +++")
         headers = {
-            'Subject' : 'SUSE Manager Export report from %s' % os.uname()[1],
+            # pylint: disable-next=consider-using-f-string
+            "Subject": "SUSE Manager Export report from %s"
+            % os.uname()[1],
         }
-        #sndr = CFG.get('traceback_mail', 'rhn-satellite')
-        sndr = 'suse-manager@%s' % os.uname()[1]
+        # sndr = CFG.get('traceback_mail', 'rhn-satellite')
+        # pylint: disable-next=consider-using-f-string
+        sndr = "suse-manager@%s" % os.uname()[1]
         rhnMail.send(headers, body, sender=sndr)
     else:
         print("+++ email requested, but there is nothing to send +++")
@@ -1183,10 +1519,10 @@ def handle_error(message, traceback):
 
 
 # This class is a mess.
+# pylint: disable-next=missing-class-docstring
 class ExporterMain:
-
     def __init__(self):
-        initCFG('server.iss')
+        initCFG("server.iss")
 
         # pylint: disable=E1101
         self.options = UI()
@@ -1207,12 +1543,12 @@ class ExporterMain:
         try:
             rhnSQL.initDB()
         except SQLConnectError:
-            print('SQLERROR: There was an error connecting to the Database.')
+            print("SQLERROR: There was an error connecting to the Database.")
             sys.exit(-1)
         except (SQLError, SQLSchemaError):
             e = sys.exc_info()[1]
             # An SQL error is fatal... crash and burn
-            exitWithTraceback(e, 'SQL ERROR during xml processing', -1)
+            exitWithTraceback(e, "SQL ERROR during xml processing", -1)
 
         # This was cribbed from satsync.py.
         if self.options.print_configuration:
@@ -1232,6 +1568,7 @@ class ExporterMain:
         if self.options.all_channels:
             channel_dict = self.list_channels()
             self.options.channel = []
+            # pylint: disable-next=consider-using-dict-items
             for pc in channel_dict:
                 self.options.channel.append(pc)
                 self.options.channel.extend(channel_dict[pc])
@@ -1247,21 +1584,23 @@ class ExporterMain:
             orgs = self.list_orgs()
             self.options.org = []
             for org in orgs:
-                self.options.org.append(org['id'])
+                self.options.org.append(org["id"])
         elif self.options.org:
             if not type(self.options.org, type([])):
                 self.options.org = [self.options.org]
             orgs = {}
             for org in self.list_orgs():
-                orgs[org['name']] = str(org['id'])
+                orgs[org["name"]] = str(org["id"])
             using_orgs = []
             for org in self.options.org:
                 # User might have specified org name or org id, try both
                 if org in list(orgs.values()):  # ids
                     using_orgs.append(org)
+                # pylint: disable-next=consider-iterating-dictionary
                 elif org in list(orgs.keys()):  # names
                     using_orgs.append(orgs[org])
                 else:
+                    # pylint: disable-next=consider-using-f-string
                     sys.stdout.write("Org not found: %s\n" % org)
                     exit(0)
             self.options.org = using_orgs
@@ -1279,7 +1618,9 @@ class ExporterMain:
             sys.exit(0)
 
         if self.options.use_sync_date and self.options.use_rhn_date:
-            sys.stderr.write("--use-rhn-date and --use-sync-date are mutually exclusive.\n")
+            sys.stderr.write(
+                "--use-rhn-date and --use-sync-date are mutually exclusive.\n"
+            )
             sys.exit(1)
         elif self.options.use_sync_date:
             self.options.use_rhn_date = False
@@ -1291,21 +1632,27 @@ class ExporterMain:
             sys.exit(1)
 
         if self.options.end_date and len(self.options.end_date) < 8:
-            sys.stdout.write(_("format of %s should be at least YYYYMMDD.\n") % '--end-date')
+            sys.stdout.write(
+                _("format of %s should be at least YYYYMMDD.\n") % "--end-date"
+            )
             sys.exit(1)
 
         if self.options.start_date and len(self.options.start_date) < 8:
-            sys.stdout.write(_("format of %s should be at least YYYYMMDD.\n") % '--start-date')
+            sys.stdout.write(
+                _("format of %s should be at least YYYYMMDD.\n") % "--start-date"
+            )
             sys.exit(1)
 
         if self.options.start_date:
             if self.options.end_date is None:
                 self.end_date = time.strftime("%Y%m%d%H%M%S")
             else:
-                self.end_date = self.options.end_date.ljust(14, '0')
+                self.end_date = self.options.end_date.ljust(14, "0")
 
-            self.start_date = self.options.start_date.ljust(14, '0')
+            self.start_date = self.options.start_date.ljust(14, "0")
+            # pylint: disable-next=consider-using-f-string
             print(("start date limit: %s" % self.start_date))
+            # pylint: disable-next=consider-using-f-string
             print(("end date limit: %s" % self.end_date))
         else:
             self.start_date = None
@@ -1317,39 +1664,53 @@ class ExporterMain:
         # verify mountpoint
         if os.access(self.outputdir, os.F_OK | os.R_OK | os.W_OK):
             if os.path.isdir(self.outputdir):
-                self.dumper = Dumper(self.outputdir,
-                                     self.options.channel,
-                                     self.options.org,
-                                     self.options.hard_links,
-                                     start_date=self.start_date,
-                                     end_date=self.end_date,
-                                     use_rhn_date=self.options.use_rhn_date,
-                                     whole_errata=self.options.whole_errata)
+                self.dumper = Dumper(
+                    self.outputdir,
+                    self.options.channel,
+                    self.options.org,
+                    self.options.hard_links,
+                    start_date=self.start_date,
+                    end_date=self.end_date,
+                    use_rhn_date=self.options.use_rhn_date,
+                    whole_errata=self.options.whole_errata,
+                )
                 self.actionmap = {
-                    'arches':   {'dump': self.dumper.dump_arches},
-                    'arches-extra':   {'dump': self.dumper.dump_server_group_type_server_arches},
-                    'blacklists':   {'dump': self.dumper.dump_blacklist_obsoletes},
-                    'channel-families':   {'dump': self.dumper.dump_channel_families},
-                    'channels':   {'dump': self.dumper.dump_channels},
-                    'packages':   {'dump': self.dumper.dump_packages},
-                    'short':   {'dump': self.dumper.dump_packages_short},
+                    "arches": {"dump": self.dumper.dump_arches},
+                    "arches-extra": {
+                        "dump": self.dumper.dump_server_group_type_server_arches
+                    },
+                    "blacklists": {"dump": self.dumper.dump_blacklist_obsoletes},
+                    "channel-families": {"dump": self.dumper.dump_channel_families},
+                    "channels": {"dump": self.dumper.dump_channels},
+                    "packages": {"dump": self.dumper.dump_packages},
+                    "short": {"dump": self.dumper.dump_packages_short},
                     #'channel-pkg-short' :   {'dump': self.dumper.dump_channel_packages_short},
                     #'source-packages'   :   {'dump': self.dumper.dump_source_packages},
-                    'errata':   {'dump': self.dumper.dump_errata},
-                    'kickstarts':   {'dump': [self.dumper.dump_kickstart_data,
-                                              self.dumper.dump_kickstart_files]},
-                    'rpms':   {'dump': self.dumper.dump_rpms},
-                    'orgs':   {'dump': self.dumper.dump_orgs},
-                    'productnames': {'dump': self.dumper.dump_product_names},
-                    'supportinfo':   {'dump': self.dumper.dump_support_information},
-                    'suse-products':   {'dump': self.dumper.dump_suse_products},
-                    'suse-product-channels':   {'dump': self.dumper.dump_suse_product_channels},
-                    'suse-upgrade-paths':   {'dump': self.dumper.dump_suse_upgrade_paths},
-                    'suse-product-extensions':   {'dump': self.dumper.dump_suse_product_extensions},
-                    'suse-product-repositories':   {'dump': self.dumper.dump_suse_product_repositories},
-                    'scc-repositories':   {'dump': self.dumper.dump_scc_repositories},
-                    'suse-subscriptions':   {'dump': self.dumper.dump_suse_subscriptions},
-                    'cloned-channels':   {'dump': self.dumper.dump_cloned_channels},
+                    "errata": {"dump": self.dumper.dump_errata},
+                    "kickstarts": {
+                        "dump": [
+                            self.dumper.dump_kickstart_data,
+                            self.dumper.dump_kickstart_files,
+                        ]
+                    },
+                    "rpms": {"dump": self.dumper.dump_rpms},
+                    "orgs": {"dump": self.dumper.dump_orgs},
+                    "productnames": {"dump": self.dumper.dump_product_names},
+                    "supportinfo": {"dump": self.dumper.dump_support_information},
+                    "suse-products": {"dump": self.dumper.dump_suse_products},
+                    "suse-product-channels": {
+                        "dump": self.dumper.dump_suse_product_channels
+                    },
+                    "suse-upgrade-paths": {"dump": self.dumper.dump_suse_upgrade_paths},
+                    "suse-product-extensions": {
+                        "dump": self.dumper.dump_suse_product_extensions
+                    },
+                    "suse-product-repositories": {
+                        "dump": self.dumper.dump_suse_product_repositories
+                    },
+                    "scc-repositories": {"dump": self.dumper.dump_scc_repositories},
+                    "suse-subscriptions": {"dump": self.dumper.dump_suse_subscriptions},
+                    "cloned-channels": {"dump": self.dumper.dump_cloned_channels},
                 }
             else:
                 print("The output directory is not a directory")
@@ -1360,10 +1721,10 @@ class ExporterMain:
 
     @staticmethod
     def list_channels():
-        """ return all available channels
+        """return all available channels
 
-            the returned format is dictionary containing base_label as keys and value is list
-            of labels of child channels
+        the returned format is dictionary containing base_label as keys and value is list
+        of labels of child channels
         """
         # The keys for channel_dict are the labels of the base channels.
         # The values associated with each key is a list of the labels of
@@ -1372,27 +1733,31 @@ class ExporterMain:
 
         # Grab some info on base channels. Base channels
         # have parent_channel set to null.
-        base_channel_query = rhnSQL.Statement("""
+        base_channel_query = rhnSQL.Statement(
+            """
             select  id, label
             from    rhnChannel
             where   parent_channel is null
-        """)
+        """
+        )
         base_channel_data = rhnSQL.prepare(base_channel_query)
         base_channel_data.execute()
         base_channels = base_channel_data.fetchall_dict()
 
         # Grab some info on child channels.
-        child_channel_query = rhnSQL.Statement("""
+        child_channel_query = rhnSQL.Statement(
+            """
             select  id, label, parent_channel
             from    rhnChannel
             where   parent_channel = :id
-        """)
+        """
+        )
         child_channel_data = rhnSQL.prepare(child_channel_query)
 
         if base_channels:
             for ch in base_channels:
-                base_label = ch['label']
-                base_id = ch['id']
+                base_label = ch["label"]
+                base_id = ch["id"]
 
                 # If the base channel isn't in channel_dict yet, create
                 # an empty list for it.
@@ -1409,14 +1774,14 @@ class ExporterMain:
                 # out.
                 if child_channels:
                     for child in child_channels:
-                        child_label = child['label']
+                        child_label = child["label"]
                         channel_dict[base_label].append(child_label)
         return channel_dict
 
     @staticmethod
     def print_list_channels(channel_dict):
-        """ channel_dict is dictionary containing base_label as keys and value is list
-            of labels of child channels
+        """channel_dict is dictionary containing base_label as keys and value is list
+        of labels of child channels
         """
         if channel_dict:
             # Print the legend.
@@ -1442,10 +1807,12 @@ class ExporterMain:
         """
         Return a list of all orgs.
         """
-        org_query = rhnSQL.Statement("""
+        org_query = rhnSQL.Statement(
+            """
             select  id, name
             from    web_customer
-        """)
+        """
+        )
         org_data = rhnSQL.prepare(org_query)
         org_data.execute()
         return org_data.fetchall_dict()
@@ -1455,7 +1822,8 @@ class ExporterMain:
         if orgs:
             print("Orgs available for export:")
             for org in orgs:
-                print(("Id: %s, Name: \'%s\'" % (org['id'], org['name'])))
+                # pylint: disable-next=consider-using-f-string
+                print(("Id: %s, Name: '%s'" % (org["id"], org["name"])))
         else:
             print("No Orgs available for listing.")
 
@@ -1469,33 +1837,35 @@ class ExporterMain:
                 if not action in self.actionmap:
                     # If we get here there's a programming error. It means that self.action_order
                     # contains a action that isn't defined in self.actionmap.
+                    # pylint: disable-next=consider-using-f-string
                     sys.stderr.write("List of actions doesn't have %s.\n" % (action,))
                     continue
 
-                if isinstance(self.actionmap[action]['dump'], type([])):
-                    for dmp in self.actionmap[action]['dump']:
+                if isinstance(self.actionmap[action]["dump"], type([])):
+                    for dmp in self.actionmap[action]["dump"]:
                         dmp()
                 else:
-                    self.actionmap[action]['dump']()
+                    self.actionmap[action]["dump"]()
 
                 # Now Compress the dump data
-                if action == 'rpms':
+                if action == "rpms":
                     continue
-                elif action == 'arches-extra':
-                    action = 'arches'
-                elif action == 'short':
-                    action = 'packages_short'
-                elif action == 'channel-families':
-                    action = 'channel_families'
-                elif action == 'kickstarts':
-                    action = 'kickstart_trees'
-                elif action == 'productnames':
-                    action = 'product_names'
+                elif action == "arches-extra":
+                    action = "arches"
+                elif action == "short":
+                    action = "packages_short"
+                elif action == "channel-families":
+                    action = "channel_families"
+                elif action == "kickstarts":
+                    action = "kickstart_trees"
+                elif action == "productnames":
+                    action = "product_names"
 
                 os_data_dir = os.path.join(self.outputdir, action)
                 if not os.path.exists(os_data_dir):
                     continue
 
+                # pylint: disable-next=invalid-name,unused-variable
                 for fpath, _dirs, files in os.walk(os_data_dir):
                     for f in files:
                         if f.endswith(".xml") or f.endswith(".yaml"):
@@ -1503,21 +1873,30 @@ class ExporterMain:
                             compress_file(filepath)
 
             if self.options.make_isos:
-                #iso_output = os.path.join(self.isos_dir, self.dump_dir)
+                # iso_output = os.path.join(self.isos_dir, self.dump_dir)
                 iso_output = self.isos_dir
                 if not os.path.exists(iso_output):
                     os.makedirs(iso_output)
 
-                iss_isos.create_isos(self.outputdir, iso_output,
-                                     "rhn-export", self.start_date, self.end_date,
-                                     iso_type=self.options.make_isos)
+                iss_isos.create_isos(
+                    self.outputdir,
+                    iso_output,
+                    "rhn-export",
+                    self.start_date,
+                    self.end_date,
+                    iso_type=self.options.make_isos,
+                )
 
                 # Generate md5sum digest file for isos
                 if os.path.exists(iso_output):
-                    f = open(os.path.join(iso_output, 'MD5SUM'), 'w')
+                    # pylint: disable-next=unspecified-encoding
+                    f = open(os.path.join(iso_output, "MD5SUM"), "w")
                     for iso_file in os.listdir(iso_output):
                         if self.options.make_isos != "dvds" and iso_file != "MD5SUM":
-                            md5_val = getFileChecksum('md5', (os.path.join(iso_output, iso_file)))
+                            md5_val = getFileChecksum(
+                                "md5", (os.path.join(iso_output, iso_file))
+                            )
+                            # pylint: disable-next=consider-using-f-string
                             md5str = "%s  %s\n" % (md5_val, iso_file)
                             f.write(md5str)
                     f.close()
@@ -1551,6 +1930,7 @@ class ExporterMain:
             # This should catch the vast majority of errors that aren't ISSErrors
             tbout = cStringIO.StringIO()
             Traceback(mail=0, ostream=tbout, with_locals=1)
+            # pylint: disable-next=consider-using-f-string
             msg = "Error: %s caught!" % e.__class__.__name__
             handle_error(msg, tbout.getvalue())
             if self.options.email:
@@ -1564,8 +1944,8 @@ def compress_file(f):
     """
     Gzip the given file and then remove the file.
     """
-    datafile = open(f, 'rb')
-    gzipper = gzip.GzipFile(f + '.gz', 'w', 9)
+    datafile = open(f, "rb")
+    gzipper = gzip.GzipFile(f + ".gz", "w", 9)
     gzipper.write(datafile.read())
     gzipper.flush()
     # close opened streams
@@ -1573,6 +1953,7 @@ def compress_file(f):
     datafile.close()
     # removed the old file
     os.unlink(f)
+
 
 if __name__ == "__main__":
     em = ExporterMain()

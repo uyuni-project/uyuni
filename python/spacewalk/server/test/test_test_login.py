@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #
@@ -17,8 +18,8 @@ import TestServer
 import server.app.packages
 
 
+# pylint: disable-next=missing-class-docstring
 class TestLoginTestCase(unittest.TestCase):
-
     def setUp(self):
         self.myserver = TestServer.TestServer()
         self.packages = server.app.packages.Packages()
@@ -27,13 +28,24 @@ class TestLoginTestCase(unittest.TestCase):
         pass
 
     def testReturnType(self):
-        assert type(self.packages.test_login(self.myserver.getUsername(), self.myserver.getPassword())) == type(1)
+        # pylint: disable-next=unidiomatic-typecheck
+        assert type(
+            self.packages.test_login(
+                self.myserver.getUsername(), self.myserver.getPassword()
+            )
+        ) == type(1)
 
     def testReturnValue(self):
-        assert self.packages.test_login(self.myserver.getUsername(), self.myserver.getPassword()) == 1
+        assert (
+            self.packages.test_login(
+                self.myserver.getUsername(), self.myserver.getPassword()
+            )
+            == 1
+        )
 
     def testReturnValue2(self):
         assert self.packages.test_login("afdafdsfasdf", "afdfadfa") == 0
+
 
 if __name__ == "__main__":
     unittest.main()

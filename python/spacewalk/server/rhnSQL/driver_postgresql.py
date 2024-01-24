@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2017 Red Hat, Inc.
 #
@@ -18,6 +19,8 @@
 #
 
 import sys
+
+# pylint: disable-next=unused-import
 import string
 import re
 import psycopg2
@@ -25,16 +28,28 @@ import psycopg2.extras
 
 # workaround for python-psycopg2 = 2.0.13 (RHEL6)
 # which does not import extensions by default
-if not hasattr(psycopg2, 'extensions'):
+if not hasattr(psycopg2, "extensions"):
     import psycopg2.extensions
 
+# pylint: disable-next=wrong-import-position
 from . import sql_base
+
+# pylint: disable-next=wrong-import-position
 from rhn.UserDictCase import UserDictCase
+
+# pylint: disable-next=wrong-import-position
 from spacewalk.server import rhnSQL
 
+# pylint: disable-next=wrong-import-position
 from uyuni.common.usix import BufferType, raise_with_tb
+
+# pylint: disable-next=wrong-import-position,ungrouped-imports
 from spacewalk.common.rhnLog import log_debug, log_error
+
+# pylint: disable-next=wrong-import-position
 from spacewalk.common.rhnException import rhnException
+
+# pylint: disable-next=wrong-import-position
 from .const import POSTGRESQL
 
 
@@ -49,8 +64,10 @@ def convert_named_query_params(query):
 
     RETURNS: the new query with parameters replaced
     """
+    # pylint: disable-next=consider-using-f-string
     log_debug(6, "Converting query for PostgreSQL: %s" % query)
-    new_query = re.sub(r'(\W):(\w+)', r'\1%(\2)s', query.replace('%', '%%'))
+    new_query = re.sub(r"(\W):(\w+)", r"\1%(\2)s", query.replace("%", "%%"))
+    # pylint: disable-next=consider-using-f-string
     log_debug(6, "New query: %s" % new_query)
     return new_query
 
@@ -72,12 +89,14 @@ class Function(sql_base.Procedure):
         # Buildup a string for the positional arguments to the procedure:
         positional_args = ""
         i = 1
+        # pylint: disable-next=unused-variable
         for arg in args:
             if len(positional_args) == 0:
                 positional_args = "%s"
             else:
                 positional_args = positional_args + ", %s"
             i += 1
+        # pylint: disable-next=consider-using-f-string
         query = "SELECT %s(%s)" % (self.name, positional_args)
 
         log_debug(2, query, args)
@@ -86,9 +105,10 @@ class Function(sql_base.Procedure):
         except psycopg2.Error:
             e = sys.exc_info()[1]
             error_code = 99999
-            m = re.match('ERROR: +-([0-9]+)', e.pgerror)
+            m = re.match("ERROR: +-([0-9]+)", e.pgerror)
             if m:
                 error_code = int(m.group(1))
+            # pylint: disable-next=raise-missing-from
             raise sql_base.SQLSchemaError(error_code, e.pgerror, e)
 
         if self.ret_type is None:
@@ -113,17 +133,21 @@ class Procedure(Function):
         self.ret_type = None
 
     def __call__(self, *args):
+        # pylint: disable-next=unused-variable
         result = Function.__call__(self, *args)
         # we do not expect any result (this is procedure)
         # if not (type(result) == 'tuple' and result[0] == ''):
-        #raise rhnSQL.SQLError("Unexpected result returned by procedure %s: %s" % (self.name, str(result)))
+        # raise rhnSQL.SQLError("Unexpected result returned by procedure %s: %s" % (self.name, str(result)))
 
 
+# pylint: disable-next=unused-argument
 def decimal2intfloat(dec, cursor):
     "Convert a Decimal to an int or a float with no loss of information."
+    # pylint: disable-next=pointless-string-statement
     "The dec is passed in as str (not Decimal) so we cannot check its type."
     if dec is None:
         return None
+    # pylint: disable-next=pointless-string-statement
     "If we can convert to int without loss of information, return int, float otherwise."
     try:
         if float(dec) == float(int(dec)):
@@ -135,11 +159,18 @@ def decimal2intfloat(dec, cursor):
 
 class Database(sql_base.Database):
 
-    """ Class for PostgreSQL database operations. """
+    """Class for PostgreSQL database operations."""
 
-    def __init__(self, host=None, port=None, username=None,
-                 password=None, database=None, sslmode=None, sslrootcert=None):
-
+    def __init__(
+        self,
+        host=None,
+        port=None,
+        username=None,
+        password=None,
+        database=None,
+        sslmode=None,
+        sslrootcert=None,
+    ):
         self.username = username
         self.password = password
         self.database = database
@@ -148,9 +179,11 @@ class Database(sql_base.Database):
 
         # Minimum requirements to connect to a PostgreSQL db:
         if not (self.username and self.database):
-            raise AttributeError("PostgreSQL requires at least a user and database name.")
+            raise AttributeError(
+                "PostgreSQL requires at least a user and database name."
+            )
 
-        if host is None or host == '' or host == 'localhost':
+        if host is None or host == "" or host == "localhost":
             self.host = None
             self.port = None
         else:
@@ -168,25 +201,45 @@ class Database(sql_base.Database):
     def connect(self, reconnect=1):
         try:
             dsndata = {
-                'dbname': self.database,
-                'user': self.username,
-                'password': self.password}
+                "dbname": self.database,
+                "user": self.username,
+                "password": self.password,
+            }
             if self.host is not None:
-                dsndata['host'] = self.host
-                dsndata['port'] = self.port
-            if self.sslmode is not None and self.sslmode == 'verify-full' and self.sslrootcert is not None:
-                dsndata['sslmode'] = self.sslmode
-                dsndata['sslrootcert'] = self.sslrootcert
+                dsndata["host"] = self.host
+                dsndata["port"] = self.port
+            if (
+                self.sslmode is not None
+                and self.sslmode == "verify-full"
+                and self.sslrootcert is not None
+            ):
+                dsndata["sslmode"] = self.sslmode
+                dsndata["sslrootcert"] = self.sslrootcert
             elif self.sslmode is not None:
-                raise AttributeError("Only sslmode=\"verify-full\" (or None) is supported.")
+                raise AttributeError(
+                    'Only sslmode="verify-full" (or None) is supported.'
+                )
             if self.sslmode is not None and self.sslrootcert is None:
-                raise AttributeError("Attribute sslrootcert needs to be set if sslmode is set.")
+                raise AttributeError(
+                    "Attribute sslrootcert needs to be set if sslmode is set."
+                )
 
-            self.dbh = psycopg2.connect(" ".join("%s=%s" % (k, re.escape(str(v))) for k, v in list(dsndata.items())))
+            self.dbh = psycopg2.connect(
+                " ".join(
+                    # pylint: disable-next=consider-using-f-string
+                    "%s=%s" % (k, re.escape(str(v)))
+                    for k, v in list(dsndata.items())
+                )
+            )
 
             # convert all DECIMAL types to float (let Python to choose one)
-            DEC2INTFLOAT = psycopg2.extensions.new_type(psycopg2._psycopg.DECIMAL.values,
-                                                        'DEC2INTFLOAT', decimal2intfloat)
+            # pylint: disable-next=invalid-name
+            DEC2INTFLOAT = psycopg2.extensions.new_type(
+                # pylint: disable-next=protected-access
+                psycopg2._psycopg.DECIMAL.values,
+                "DEC2INTFLOAT",
+                decimal2intfloat,
+            )
             psycopg2.extensions.register_type(DEC2INTFLOAT)
         except psycopg2.Error:
             e = sys.exc_info()[1]
@@ -195,29 +248,47 @@ class Database(sql_base.Database):
                 return self.connect(reconnect=reconnect - 1)
 
             # Failed reconnect, time to error out:
-            raise_with_tb(sql_base.SQLConnectError(
-                self.database, e.pgcode, e.pgerror,
-                "All attempts to connect to the database failed"), sys.exc_info()[2])
+            raise_with_tb(
+                sql_base.SQLConnectError(
+                    self.database,
+                    e.pgcode,
+                    e.pgerror,
+                    "All attempts to connect to the database failed",
+                ),
+                sys.exc_info()[2],
+            )
 
-    def is_connected_to(self, backend, host, port, username, password,
-                        database, sslmode, sslrootcert):
-        if host is None or host == '' or host == 'localhost':
+    def is_connected_to(
+        self, backend, host, port, username, password, database, sslmode, sslrootcert
+    ):
+        if host is None or host == "" or host == "localhost":
             host = None
             port = None
         if not port:
             port = -1
-        return (backend == POSTGRESQL) and (self.host == host) and \
-               (self.port == port) and (self.username == username) and \
-               (self.password == password) and (self.database == database) and \
-               (self.sslmode == sslmode) and (self.sslrootcert == sslrootcert)
+        return (
+            (backend == POSTGRESQL)
+            and (self.host == host)
+            and (self.port == port)
+            and (self.username == username)
+            and (self.password == password)
+            and (self.database == database)
+            and (self.sslmode == sslmode)
+            and (self.sslrootcert == sslrootcert)
+        )
 
     def check_connection(self):
         try:
             c = self.prepare("select 1")
             c.execute()
+        # pylint: disable-next=bare-except
         except:  # try to reconnect, that one MUST WORK always
-            log_error("DATABASE CONNECTION TO '%s' LOST" % self.database,
-                      "Exception information: %s" % sys.exc_info()[1])
+            log_error(
+                # pylint: disable-next=consider-using-f-string
+                "DATABASE CONNECTION TO '%s' LOST" % self.database,
+                # pylint: disable-next=consider-using-f-string
+                "Exception information: %s" % sys.exc_info()[1],
+            )
             self.connect()  # only allow one try
 
     def prepare(self, sql, force=0, blob_map=None):
@@ -231,6 +302,7 @@ class Database(sql_base.Database):
     def transaction(self, name):
         if not name:
             raise rhnException("Can not set a transaction without a name", name)
+        # pylint: disable-next=consider-using-f-string
         c = self.prepare("savepoint %s" % name)
         return c.execute()
 
@@ -240,6 +312,7 @@ class Database(sql_base.Database):
 
     def rollback(self, name=None):
         if name:
+            # pylint: disable-next=consider-using-f-string
             c = self.prepare("rollback to %s" % name)
             return c.execute()
         else:
@@ -263,10 +336,9 @@ class Database(sql_base.Database):
 
 class Cursor(sql_base.Cursor):
 
-    """ PostgreSQL specific wrapper over sql_base.Cursor. """
+    """PostgreSQL specific wrapper over sql_base.Cursor."""
 
     def __init__(self, dbh=None, sql=None, force=None, blob_map=None):
-
         sql_base.Cursor.__init__(self, dbh, sql, force)
         self.blob_map = blob_map
 
@@ -282,10 +354,9 @@ class Cursor(sql_base.Cursor):
         return cursor
 
     def _execute_wrapper(self, function, *p, **kw):
-        params = ','.join(["%s: %s" % (key, value) for key, value
-                           in list(kw.items())])
-        log_debug(5, "Executing SQL: \"%s\" with bind params: {%s}"
-                  % (self.sql, params))
+        # pylint: disable-next=consider-using-f-string
+        params = ",".join(["%s: %s" % (key, value) for key, value in list(kw.items())])
+        log_debug(5, 'Executing SQL: "%s" with bind params: {%s}' % (self.sql, params))
         if self.sql is None:
             raise rhnException("Cannot execute empty cursor")
         if self.blob_map:
@@ -300,17 +371,23 @@ class Cursor(sql_base.Cursor):
         except psycopg2.InternalError:
             e = sys.exc_info()[1]
             error_code = 99999
-            m = re.match('ERROR: +-([0-9]+)', e.pgerror)
+            m = re.match("ERROR: +-([0-9]+)", e.pgerror)
             if m:
                 error_code = int(m.group(1))
+            # pylint: disable-next=raise-missing-from
             raise sql_base.SQLSchemaError(error_code, e.pgerror, e)
         except psycopg2.ProgrammingError:
             e = sys.exc_info()[1]
+            # pylint: disable-next=raise-missing-from
             raise sql_base.SQLStatementPrepareError(str(self.dbh), e.pgerror, self.sql)
         except KeyError:
             e = sys.exc_info()[1]
-            raise sql_base.SQLError("Unable to bound the following variable(s): %s"
-                                    % (" ".join(e.args)))
+            # pylint: disable-next=raise-missing-from
+            raise sql_base.SQLError(
+                # pylint: disable-next=consider-using-f-string
+                "Unable to bound the following variable(s): %s"
+                % (" ".join(e.args))
+            )
         return retval
 
     def _execute_(self, args, kwargs):
@@ -322,6 +399,7 @@ class Cursor(sql_base.Cursor):
             self._real_cursor.execute(self.sql, params)
         except psycopg2.OperationalError:
             e = sys.exc_info()[1]
+            # pylint: disable-next=raise-missing-from,consider-using-f-string
             raise sql_base.SQLError("Cannot execute SQL statement: %s" % str(e))
 
         self.description = self._real_cursor.description
@@ -350,19 +428,30 @@ class Cursor(sql_base.Cursor):
         self.description = self._real_cursor.description
 
     def _execute_values(self, sql, argslist, template=None, page_size=1000, fetch=True):
-        results = psycopg2.extras.execute_values(self._real_cursor, sql, argslist, template=template, page_size=page_size, fetch=fetch)
+        results = psycopg2.extras.execute_values(
+            self._real_cursor,
+            sql,
+            argslist,
+            template=template,
+            page_size=page_size,
+            fetch=fetch,
+        )
         self.description = self._real_cursor.description
         return results
 
-    def update_blob(self, table_name, column_name, where_clause, data,
-                    **kwargs):
+    def update_blob(self, table_name, column_name, where_clause, data, **kwargs):
         """
         PostgreSQL uses bytea columns instead of blobs. Nothing special
         needs to be done to insert text into one.
         """
         # NOTE: Injecting a :column_name parameter here
-        sql = "UPDATE %s SET %s = :%s %s" % (table_name, column_name,
-                                             column_name, where_clause)
+        # pylint: disable-next=consider-using-f-string
+        sql = "UPDATE %s SET %s = :%s %s" % (
+            table_name,
+            column_name,
+            column_name,
+            where_clause,
+        )
         c = rhnSQL.prepare(sql)
         kwargs[column_name] = data
         c.execute(**kwargs)

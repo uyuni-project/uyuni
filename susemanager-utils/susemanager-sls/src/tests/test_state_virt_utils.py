@@ -1,9 +1,12 @@
+#  pylint: disable=missing-module-docstring
 from unittest.mock import MagicMock, patch, call
 from . import mockery
 
 mockery.setup_environment()
+# pylint: disable-next=wrong-import-position
 import pytest
 
+# pylint: disable-next=wrong-import-position
 from ..states import virt_utils
 
 # Mock globals
@@ -100,6 +103,7 @@ def test_network_missing():
             assert not ret["result"]
             start_mock.assert_not_called()
             assert ret["comment"] == "net5 network is not defined"
+            # pylint: disable-next=use-implicit-booleaness-not-comparison
             assert ret["changes"] == {}
 
 
@@ -191,6 +195,7 @@ def test_pool_missing():
             assert not ret["result"]
             start_mock.assert_not_called()
             assert ret["comment"] == "pool5 pool is not defined"
+            # pylint: disable-next=use-implicit-booleaness-not-comparison
             assert ret["changes"] == {}
 
 
@@ -203,16 +208,16 @@ def test_vm_resources_running():
         start_pool_mock = MagicMock(return_value=True)
         refresh_pool_mock = MagicMock(return_value=True)
         test_vm_info = {
-           "vm1": {
-               "nics": {
-                   "nic0": {"type": "network", "source": {"network": "net0"}},
-                   "nic1": {"type": "network", "source": {"network": "net3"}},
+            "vm1": {
+                "nics": {
+                    "nic0": {"type": "network", "source": {"network": "net0"}},
+                    "nic1": {"type": "network", "source": {"network": "net3"}},
                 },
-               "disks": {
-                   "disk0": {"file": "pool0/system"},
-                   "disk1": {"file": "pool2/data"},
-                   "disk2": {"file": "/foo/bar.qcow2"},
-               }
+                "disks": {
+                    "disk0": {"file": "pool0/system"},
+                    "disk1": {"file": "pool2/data"},
+                    "disk2": {"file": "/foo/bar.qcow2"},
+                },
             },
         }
         with patch.dict(
@@ -223,7 +228,7 @@ def test_vm_resources_running():
                 "virt.network_start": start_net_mock,
                 "virt.pool_start": start_pool_mock,
                 "virt.pool_refresh": refresh_pool_mock,
-                "virt.vm_info": MagicMock(return_value=test_vm_info)
+                "virt.vm_info": MagicMock(return_value=test_vm_info),
             },
         ):
             ret = virt_utils.vm_resources_running("vm1")

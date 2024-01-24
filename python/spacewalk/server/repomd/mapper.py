@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2018 Red Hat, Inc.
 #
@@ -23,6 +24,8 @@ import time
 from spacewalk.common import rhnCache
 from spacewalk.common.rhnConfig import CFG
 from uyuni.common.usix import UnicodeType
+
+# pylint: disable-next=ungrouped-imports
 from spacewalk.server import rhnSQL
 
 from . import domain
@@ -33,14 +36,15 @@ CACHE_PREFIX = "/var/cache/rhn/"
 
 class ChannelMapper:
 
-    """ Data Mapper for Channels to the RHN db. """
+    """Data Mapper for Channels to the RHN db."""
 
     def __init__(self, pkg_mapper, erratum_mapper, repomd_mapper):
         self.pkg_mapper = pkg_mapper
         self.erratum_mapper = erratum_mapper
         self.repomd_mapper = repomd_mapper
 
-        self.channel_details_sql = rhnSQL.prepare("""
+        self.channel_details_sql = rhnSQL.prepare(
+            """
         select
             c.label,
             c.name,
@@ -50,26 +54,32 @@ class ChannelMapper:
             rhnChecksumType ct
         where c.id = :channel_id
           and c.checksum_type_id = ct.id
-        """)
+        """
+        )
 
-        self.channel_sql = rhnSQL.prepare("""
+        self.channel_sql = rhnSQL.prepare(
+            """
         select
             package_id
         from
             rhnChannelPackage
         where
             channel_id = :channel_id
-        """)
+        """
+        )
 
-        self.last_modified_sql = rhnSQL.prepare("""
+        self.last_modified_sql = rhnSQL.prepare(
+            """
         select
             to_char(last_modified, 'YYYYMMDDHH24MISS') as last_modified
         from
             rhnChannel
         where id = :channel_id
-        """)
+        """
+        )
 
-        self.errata_id_sql = rhnSQL.prepare("""
+        self.errata_id_sql = rhnSQL.prepare(
+            """
         select
             e.id
         from
@@ -78,9 +88,11 @@ class ChannelMapper:
         where
             ce.channel_id = :channel_id
         and e.id = ce.errata_id
-        """)
+        """
+        )
 
-        self.comps_id_sql = rhnSQL.prepare("""
+        self.comps_id_sql = rhnSQL.prepare(
+            """
         select
             id
         from
@@ -89,9 +101,11 @@ class ChannelMapper:
             channel_id = :channel_id
             and comps_type_id = 1
         order by id desc
-        """)
+        """
+        )
 
-        self.modules_id_sql = rhnSQL.prepare("""
+        self.modules_id_sql = rhnSQL.prepare(
+            """
         select
             id
         from
@@ -100,24 +114,27 @@ class ChannelMapper:
             channel_id = :channel_id
             and comps_type_id = 2
         order by id desc
-        """)
+        """
+        )
 
-        self.cloned_from_id_sql = rhnSQL.prepare("""
+        self.cloned_from_id_sql = rhnSQL.prepare(
+            """
         select
             original_id id
         from
             rhnChannelCloned
         where
             id = :channel_id
-        """)
+        """
+        )
 
     def last_modified(self, channel_id):
-        """ Get the last_modified field for the provided channel_id. """
+        """Get the last_modified field for the provided channel_id."""
         self.last_modified_sql.execute(channel_id=channel_id)
         return self.last_modified_sql.fetchone()[0]
 
     def get_channel(self, channel_id):
-        """ Load the channel with id channel_id and its packages. """
+        """Load the channel with id channel_id and its packages."""
 
         self.channel_details_sql.execute(channel_id=channel_id)
         details = self.channel_details_sql.fetchone()
@@ -171,7 +188,7 @@ class ChannelMapper:
 
 class CachedPackageMapper:
 
-    """ Data Mapper for Packages to an on-disc cache. """
+    """Data Mapper for Packages to an on-disc cache."""
 
     def __init__(self, mapper):
         cache = rhnCache.Cache()
@@ -209,10 +226,11 @@ class CachedPackageMapper:
 
 class SqlPackageMapper:
 
-    """ Data Mapper for Packages to the RHN db. """
+    """Data Mapper for Packages to the RHN db."""
 
     def __init__(self):
-        self.details_sql = rhnSQL.prepare("""
+        self.details_sql = rhnSQL.prepare(
+            """
         select
             pn.name,
             pevr.version,
@@ -252,9 +270,11 @@ class SqlPackageMapper:
         and p.package_group = pg.id
         and p.source_rpm_id = sr.id
         and p.checksum_id = c.id
-        """)
+        """
+        )
 
-        self.filelist_sql = rhnSQL.prepare("""
+        self.filelist_sql = rhnSQL.prepare(
+            """
         select
             pc.name
         from
@@ -263,9 +283,11 @@ class SqlPackageMapper:
         where
             pf.package_id = :package_id
         and pf.capability_id = pc.id
-        """)
+        """
+        )
 
-        self.prco_sql = rhnSQL.prepare("""
+        self.prco_sql = rhnSQL.prepare(
+            """
         select
            'provides',
            pp.sense,
@@ -385,17 +407,21 @@ class SqlPackageMapper:
         where
            pdep.package_id = :package_id
            and pdep.capability_id = pc.id
-        """)
+        """
+        )
 
-        self.last_modified_sql = rhnSQL.prepare("""
+        self.last_modified_sql = rhnSQL.prepare(
+            """
         select
             to_char(last_modified, 'YYYYMMDDHH24MISS') as last_modified
         from
             rhnPackage
         where id = :package_id
-        """)
+        """
+        )
 
-        self.other_sql = rhnSQL.prepare("""
+        self.other_sql = rhnSQL.prepare(
+            """
         select
             name,
             text,
@@ -403,15 +429,16 @@ class SqlPackageMapper:
         from
             rhnPackageChangelog
         where package_id = :package_id
-        """)
+        """
+        )
 
     def last_modified(self, package_id):
-        """ Get the last_modified date on the package with id package_id. """
+        """Get the last_modified date on the package with id package_id."""
         self.last_modified_sql.execute(package_id=package_id)
         return self.last_modified_sql.fetchone()[0]
 
     def get_package(self, package_id):
-        """ Get the package with id package_id from the RHN db. """
+        """Get the package with id package_id from the RHN db."""
         package = domain.Package(package_id)
         self._fill_package_details(package)
         self._fill_package_prco(package)
@@ -429,10 +456,11 @@ class SqlPackageMapper:
             release = pkg[2]
             arch = pkg[4]
 
+            # pylint: disable-next=consider-using-f-string
             return "%s-%s-%s.%s.rpm" % (name, version, release, arch)
 
     def _fill_package_details(self, package):
-        """ Load the packages basic details (summary, description, etc). """
+        """Load the packages basic details (summary, description, etc)."""
         self.details_sql.execute(package_id=package.id)
         pkg = self.details_sql.fetchone()
 
@@ -463,7 +491,7 @@ class SqlPackageMapper:
         package.source_rpm = pkg[19]
 
     def _fill_package_prco(self, package):
-        """ Load the package's provides, requires, conflicts, obsoletes. """
+        """Load the package's provides, requires, conflicts, obsoletes."""
         self.prco_sql.execute(package_id=package.id)
         deps = self.prco_sql.fetchall() or []
 
@@ -476,18 +504,23 @@ class SqlPackageMapper:
                 sense = item[1] or 0
                 relation = SqlPackageMapper.__get_relation(sense)
 
-                vertup = version.split('-')
+                vertup = version.split("-")
                 if len(vertup) > 1:
                     version = vertup[0]
                     release = vertup[1]
 
-                vertup = version.split(':')
+                vertup = version.split(":")
                 if len(vertup) > 1:
                     epoch = vertup[0]
                     version = vertup[1]
 
-            dep = {'name': string_to_unicode(item[2]), 'flag': relation,
-                   'version': version, 'release': release, 'epoch': epoch}
+            dep = {
+                "name": string_to_unicode(item[2]),
+                "flag": relation,
+                "version": version,
+                "release": release,
+                "epoch": epoch,
+            }
 
             if item[0] == "provides":
                 package.provides.append(dep)
@@ -510,14 +543,15 @@ class SqlPackageMapper:
             elif item[0] == "predepends":
                 package.predepends.append(dep)
             else:
+                # pylint: disable-next=consider-using-f-string
                 assert False, "Unknown PRCO type: %s" % item[0]
 
-#    @staticmethod
+    #    @staticmethod
     def __get_relation(sense):
-        """ Convert the binary sense into a string. """
+        """Convert the binary sense into a string."""
 
         # Flip the bits for easy comparison
-        sense = sense & 0xf
+        sense = sense & 0xF
 
         if sense == 2:
             relation = "LT"
@@ -530,14 +564,16 @@ class SqlPackageMapper:
         elif sense == 12:
             relation = "GE"
         else:
+            # pylint: disable-next=consider-using-f-string
             assert False, "Unknown relation sense: %s" % sense
 
         return relation
 
+    # pylint: disable-next=invalid-name
     __get_relation = staticmethod(__get_relation)
 
     def _fill_package_filelist(self, package):
-        """ Load the package's list of files. """
+        """Load the package's list of files."""
         self.filelist_sql.execute(package_id=package.id)
         files = self.filelist_sql.fetchall() or []
 
@@ -545,23 +581,25 @@ class SqlPackageMapper:
             package.files.append(string_to_unicode(file_dict[0]))
 
     def _fill_package_other(self, package):
-        """ Load the package's changelog info. """
+        """Load the package's changelog info."""
 
         self.other_sql.execute(package_id=package.id)
         log_data = self.other_sql.fetchall() or []
 
         for data in log_data:
-
             date = oratimestamp_to_sinceepoch(data[2])
 
-            chglog = {'author': string_to_unicode(data[0]), 'date': date,
-                      'text': string_to_unicode(data[1])}
+            chglog = {
+                "author": string_to_unicode(data[0]),
+                "date": date,
+                "text": string_to_unicode(data[1]),
+            }
             package.changelog.append(chglog)
 
 
 class CachedErratumMapper:
 
-    """ Data Mapper for Errata to an on-disc cache. """
+    """Data Mapper for Errata to an on-disc cache."""
 
     def __init__(self, mapper, package_mapper):
         self.package_mapper = package_mapper
@@ -602,20 +640,23 @@ class CachedErratumMapper:
         return erratum
 
 
+# pylint: disable-next=missing-class-docstring
 class SqlErratumMapper:
-
     def __init__(self, package_mapper):
         self.package_mapper = package_mapper
 
-        self.last_modified_sql = rhnSQL.prepare("""
+        self.last_modified_sql = rhnSQL.prepare(
+            """
         select
             to_char(last_modified, 'YYYYMMDDHH24MISS') as last_modified
         from
             rhnErrata
         where id = :erratum_id
-        """)
+        """
+        )
 
-        self.erratum_details_sql = rhnSQL.prepare("""
+        self.erratum_details_sql = rhnSQL.prepare(
+            """
         select
             advisory,
             advisory_name,
@@ -629,9 +670,11 @@ class SqlErratumMapper:
             rhnErrata
         where
             id = :erratum_id
-       """)
+       """
+        )
 
-        self.erratum_cves_sql = rhnSQL.prepare("""
+        self.erratum_cves_sql = rhnSQL.prepare(
+            """
         select
             cve.name as cve_name
         from
@@ -640,9 +683,11 @@ class SqlErratumMapper:
         where
             ec.errata_id = :erratum_id
         and ec.cve_id = cve.id
-        """)
+        """
+        )
 
-        self.erratum_bzs_sql = rhnSQL.prepare("""
+        self.erratum_bzs_sql = rhnSQL.prepare(
+            """
         select
             bug_id,
             summary,
@@ -651,24 +696,27 @@ class SqlErratumMapper:
             rhnErrataBuglist
         where
             errata_id = :erratum_id
-        """)
+        """
+        )
 
-        self.erratum_packages_sql = rhnSQL.prepare("""
+        self.erratum_packages_sql = rhnSQL.prepare(
+            """
         select
             package_id
         from
             rhnErrataPackage
         where
             errata_id = :erratum_id
-        """)
+        """
+        )
 
     def last_modified(self, erratum_id):
-        """ Get the last_modified field for the provided erratum_id. """
+        """Get the last_modified field for the provided erratum_id."""
         self.last_modified_sql.execute(erratum_id=erratum_id)
         return self.last_modified_sql.fetchone()[0]
 
     def get_erratum(self, erratum_id):
-        """ Get the package with id package_id from the RHN db. """
+        """Get the package with id package_id from the RHN db."""
         erratum = domain.Erratum(erratum_id)
         self._fill_erratum_details(erratum)
 
@@ -687,14 +735,14 @@ class SqlErratumMapper:
         erratum.readable_id = ertm[0]
         erratum.title = ertm[1]
 
-        if ertm[2] == 'Security Advisory':
-            erratum.advisory_type = 'security'
-        elif ertm[2] == 'Bug Fix Advisory':
-            erratum.advisory_type = 'bugfix'
-        elif ertm[2] == 'Product Enhancement Advisory':
-            erratum.advisory_type = 'enhancement'
+        if ertm[2] == "Security Advisory":
+            erratum.advisory_type = "security"
+        elif ertm[2] == "Bug Fix Advisory":
+            erratum.advisory_type = "bugfix"
+        elif ertm[2] == "Product Enhancement Advisory":
+            erratum.advisory_type = "enhancement"
         else:
-            erratum.advisory_type = 'errata'
+            erratum.advisory_type = "errata"
 
         erratum.version = ertm[3]
         erratum.description = ertm[4]
@@ -726,17 +774,19 @@ class SqlErratumMapper:
             erratum.package_ids.append(pkg[0])
 
 
+# pylint: disable-next=missing-class-docstring
 class SqlRepoMDMapper:
-
     def __init__(self):
-        self.repomd_sql = rhnSQL.prepare("""
+        self.repomd_sql = rhnSQL.prepare(
+            """
         select
             relative_filename
         from
             rhnChannelComps
         where
             id = :repomd_id
-        """)
+        """
+        )
 
     def get_repomd(self, repomd_id):
         self.repomd_sql.execute(repomd_id=repomd_id)
@@ -746,7 +796,7 @@ class SqlRepoMDMapper:
 
 
 def get_channel_mapper():
-    """ Factory Method-ish function to load a Channel Mapper. """
+    """Factory Method-ish function to load a Channel Mapper."""
     package_mapper = get_package_mapper()
     erratum_mapper = get_erratum_mapper(package_mapper)
     repomd_mapper = SqlRepoMDMapper()
@@ -756,7 +806,7 @@ def get_channel_mapper():
 
 
 def get_package_mapper():
-    """ Factory Method-ish function to load a Package Mapper. """
+    """Factory Method-ish function to load a Package Mapper."""
     package_mapper = SqlPackageMapper()
     package_mapper = CachedPackageMapper(package_mapper)
 
@@ -764,7 +814,7 @@ def get_package_mapper():
 
 
 def get_erratum_mapper(package_mapper):
-    """ Factory Method-ish function to load an Erratum Mapper. """
+    """Factory Method-ish function to load an Erratum Mapper."""
     erratum_mapper = SqlErratumMapper(package_mapper)
     erratum_mapper = CachedErratumMapper(erratum_mapper, package_mapper)
 
@@ -772,27 +822,28 @@ def get_erratum_mapper(package_mapper):
 
 
 def oratimestamp_to_sinceepoch(ts):
-    return time.mktime((ts.year, ts.month, ts.day, ts.hour, ts.minute,
-                        ts.second, 0, 0, -1))
+    return time.mktime(
+        (ts.year, ts.month, ts.day, ts.hour, ts.minute, ts.second, 0, 0, -1)
+    )
 
 
 def string_to_unicode(text):
     if text is None:
-        return ''
+        return ""
     if isinstance(text, UnicodeType):
         return text
 
     # First try a bunch of encodings in strict mode
-    encodings = ['ascii', 'iso-8859-1', 'iso-8859-15', 'iso-8859-2']
+    encodings = ["ascii", "iso-8859-1", "iso-8859-15", "iso-8859-2"]
     for encoding in encodings:
         try:
             dec = text.decode(encoding)
-            enc = dec.encode('utf-8')
+            enc = dec.encode("utf-8")
             return enc
         except UnicodeError:
             continue
 
     # None of those worked, just do ascii with replace
-    dec = text.decode(encoding, 'replace')
-    enc = dec.encode('utf-8', 'replace')
+    dec = text.decode(encoding, "replace")
+    enc = dec.encode("utf-8", "replace")
     return enc

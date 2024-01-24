@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring,invalid-name
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -21,8 +22,8 @@ from .importLib import GenericPackageImport
 from spacewalk.satellite_tools.syncLib import log
 
 
+# pylint: disable-next=missing-class-docstring
 class ErrataImport(GenericPackageImport):
-
     def __init__(self, batch, backend, queue_timeout=600):
         GenericPackageImport.__init__(self, batch, backend)
         # A composite key of the name, evr, arch plus org_id
@@ -42,8 +43,9 @@ class ErrataImport(GenericPackageImport):
         errata_hash = {}
 
         for errata in self.batch:
-            advisory = errata['advisory_name']
-            release = errata['advisory_rel']
+            advisory = errata["advisory_name"]
+            release = errata["advisory_rel"]
+            # pylint: disable-next=consider-using-f-string
             errata_hash["%s%s" % (advisory, release)] = errata
             if advisory in advisories:
                 if int(release) < int(advisories[advisory]):
@@ -53,6 +55,7 @@ class ErrataImport(GenericPackageImport):
                 else:
                     # if this release is higher
                     # we have to ignore the older one!
+                    # pylint: disable-next=consider-using-f-string
                     errata_hash["%s%s" % (advisory, advisories[advisory])].ignored = 1
             advisories[advisory] = release
             self._preprocessErratum(errata)
@@ -62,35 +65,35 @@ class ErrataImport(GenericPackageImport):
 
     def _preprocessErratum(self, errata):
         # Process packages
-        for package in errata['packages']:
+        for package in errata["packages"]:
             self._processPackage(package)
 
         # Process channels
         channelHash = {}
-        for channel in errata['channels']:
-            channelName = channel['label']
+        for channel in errata["channels"]:
+            channelName = channel["label"]
             channelHash[channelName] = channel
             self.channels[channelName] = None
         # Replace the channel list with the unique one
-        errata['channels'] = list(channelHash.values())
+        errata["channels"] = list(channelHash.values())
 
     def _preprocessErratumCVE(self, erratum):
         # Build the CVE dictionary
         # FIXME: this if decision is here to deal with missing cve data.
         #        fix later.
-        if not erratum['cve']:
-            erratum['cve'] = []
-        for cve in erratum['cve']:
+        if not erratum["cve"]:
+            erratum["cve"] = []
+        for cve in erratum["cve"]:
             self.cve[cve] = None
 
     def _preprocessErratumFiles(self, erratum):
-        for f in (erratum['files'] or []):
-            checksumTuple = (f['checksum_type'], f['checksum'])
+        for f in erratum["files"] or []:
+            checksumTuple = (f["checksum_type"], f["checksum"])
             if checksumTuple not in self.checksums:
                 self.checksums[checksumTuple] = None
 
-            if f['file_type'] == 'RPM':
-                package = f.get('pkgobj')
+            if f["file_type"] == "RPM":
+                package = f.get("pkgobj")
                 if package:
                     self._processPackage(package)
                     nevrao = tuple(get_nevrao(package))
@@ -98,15 +101,15 @@ class ErrataImport(GenericPackageImport):
             # Oval errata files need to be removed from the import for now.
             # This is to make sure non-oval capable satellites won't be importing
             # the oval data from an oval-enabled dump.
-            elif f['file_type'] == 'OVAL':
-                erratum['files'].remove(f)
+            elif f["file_type"] == "OVAL":
+                erratum["files"].remove(f)
             # elif f['file_type'] == 'SRPM':
             #    # XXX misa: do something here
             #    pass
 
     def _preprocessErratumFileChannels(self, erratum):
-        for f in (erratum['files'] or []):
-            for channel_name in (f.get('channel_list') or []):
+        for f in erratum["files"] or []:
+            for channel_name in f.get("channel_list") or []:
                 self.channels[channel_name] = None
 
     def fix(self):
@@ -114,11 +117,13 @@ class ErrataImport(GenericPackageImport):
         self.backend.lookupChannels(self.channels)
         self.backend.lookupErrataFileTypes(self.file_types)
         for erratum in self.batch:
-            for ef in erratum['files']:
-                eft = ef['file_type']
+            for ef in erratum["files"]:
+                eft = ef["file_type"]
                 if eft not in self.file_types:
+                    # pylint: disable-next=broad-exception-raised,consider-using-f-string
                     raise Exception("Unknown file type %s" % eft)
-                ef['type'] = self.file_types[eft]
+                ef["type"] = self.file_types[eft]
+        # pylint: disable-next=unused-variable
         for label, aid in self.package_arches.items():
             self.package_type = self.backend.lookupPackageArchType(aid)
             if self.package_type:
@@ -142,7 +147,9 @@ class ErrataImport(GenericPackageImport):
             # fix oval info to populate the relevant dbtables
             self._fix_erratum_oval_info(erratum)
 
-        self.backend.lookupPackages(list(self.packages.values()), self.checksums, self.ignoreMissing)
+        self.backend.lookupPackages(
+            list(self.packages.values()), self.checksums, self.ignoreMissing
+        )
         for erratum in self.batch:
             if erratum.ignored:
                 # Skip it
@@ -153,6 +160,7 @@ class ErrataImport(GenericPackageImport):
         # remove erratas that have been ignored
         ignored_erratas = list([x for x in self.batch if x.ignored])
         if len(ignored_erratas) > 0:
+            # pylint: disable-next=consider-using-f-string
             log(0, "Ignoring %d old, superseded erratas" % len(ignored_erratas))
             self.batch = list([x for x in self.batch if not x.ignored])
 
@@ -164,12 +172,12 @@ class ErrataImport(GenericPackageImport):
             if erratum.ignored:
                 continue
             cves = []
-            for cve in erratum['cve']:
+            for cve in erratum["cve"]:
                 entry = {
-                    'cve_id': self.cve[cve],
+                    "cve_id": self.cve[cve],
                 }
                 cves.append(entry)
-            erratum['cve'] = cves
+            erratum["cve"] = cves
 
     def _fix_files(self):
         rpm_files = []
@@ -179,38 +187,51 @@ class ErrataImport(GenericPackageImport):
         for erratum in self.batch:
             if erratum.ignored:
                 continue
-            for file in erratum['files']:
-                file_type = file['file_type']
-                file_id = file['id']
-                package_id = file.get('package_id')
+            for file in erratum["files"]:
+                file_type = file["file_type"]
+                file_id = file["id"]
+                package_id = file.get("package_id")
                 if package_id is not None:
                     pkg = {
-                        'errata_file_id': file_id,
-                        'package_id': package_id,
+                        "errata_file_id": file_id,
+                        "package_id": package_id,
                     }
-                    if file_type == 'RPM':
+                    if file_type == "RPM":
                         rpm_files.append(pkg)
-                    elif file_type == 'SRPM':
+                    elif file_type == "SRPM":
                         srpm_files.append(pkg)
-                    elif file_type == 'OVAL':
+                    elif file_type == "OVAL":
                         pkg = {
-                            'errata_id': file_id,
-                            'filename': file['filename'],
+                            "errata_id": file_id,
+                            "filename": file["filename"],
                         }
                         oval_files.append(pkg)
-                for channel_id in file['channels']:
-                    channel_files.append({
-                        'errata_file_id': file_id,
-                        'channel_id': channel_id,
-                    })
-        self.backend._do_diff(rpm_files, 'rhnErrataFilePackage',
-                              ['errata_file_id', 'package_id'], [])
-        self.backend._do_diff(srpm_files, 'rhnErrataFilePackageSource',
-                              ['errata_file_id', 'package_id'], [])
-        self.backend._do_diff(channel_files, 'rhnErrataFileChannel',
-                              ['errata_file_id', 'channel_id'], [])
-        self.backend._do_diff(oval_files, 'rhnErrataFile',
-                              ['errata_id', 'filename'], [])
+                for channel_id in file["channels"]:
+                    channel_files.append(
+                        {
+                            "errata_file_id": file_id,
+                            "channel_id": channel_id,
+                        }
+                    )
+        # pylint: disable-next=protected-access
+        self.backend._do_diff(
+            rpm_files, "rhnErrataFilePackage", ["errata_file_id", "package_id"], []
+        )
+        # pylint: disable-next=protected-access
+        self.backend._do_diff(
+            srpm_files,
+            "rhnErrataFilePackageSource",
+            ["errata_file_id", "package_id"],
+            [],
+        )
+        # pylint: disable-next=protected-access
+        self.backend._do_diff(
+            channel_files, "rhnErrataFileChannel", ["errata_file_id", "channel_id"], []
+        )
+        # pylint: disable-next=protected-access
+        self.backend._do_diff(
+            oval_files, "rhnErrataFile", ["errata_id", "filename"], []
+        )
 
     def submit(self):
         try:
@@ -226,8 +247,8 @@ class ErrataImport(GenericPackageImport):
     def _fix_erratum_channels(self, erratum):
         # Fix the erratum's channels
         channels = {}
-        for ch in erratum['channels']:
-            label = ch['label']
+        for ch in erratum["channels"]:
+            label = ch["label"]
             channel = self.channels[label]
             if not channel:
                 # Invalid channel
@@ -236,16 +257,17 @@ class ErrataImport(GenericPackageImport):
                     continue
                 # XXX Raising an exception here; it may be too harsh though
                 erratum.ignored = 1
+                # pylint: disable-next=broad-exception-raised,consider-using-f-string
                 raise Exception("XXX Invalid channel %s" % label)
 
-            channels[channel['id']] = None
+            channels[channel["id"]] = None
 
-        erratum['channels'] = [{'channel_id': x} for x in list(channels.keys())]
+        erratum["channels"] = [{"channel_id": x} for x in list(channels.keys())]
 
     def _fix_erratum_packages_lookup(self, erratum):
         # To make the packages unique
         packageHash = {}
-        for package in erratum['packages']:
+        for package in erratum["packages"]:
             if package.ignored:
                 # Skip it
                 continue
@@ -260,19 +282,19 @@ class ErrataImport(GenericPackageImport):
                 package.ignored = 1
                 continue
 
-            package['nevrao'] = nevrao
+            package["nevrao"] = nevrao
 
             # And put this package both in the local and in the global hash
             packageHash[nevrao] = package
             self.packages[nevrao] = package
 
-        erratum['packages'] = packageHash
+        erratum["packages"] = packageHash
 
     def _fix_erratum_file_packages(self, erratum):
-        for ef in erratum['files']:
-            ef['checksum_id'] = self.checksums[(ef['checksum_type'], ef['checksum'])]
-            if ef['file_type'] == 'RPM':
-                package = ef.get('pkgobj')
+        for ef in erratum["files"]:
+            ef["checksum_id"] = self.checksums[(ef["checksum_type"], ef["checksum"])]
+            if ef["file_type"] == "RPM":
+                package = ef.get("pkgobj")
                 if not package:
                     continue
                 self._postprocessPackageNEVRA(package)
@@ -284,47 +306,46 @@ class ErrataImport(GenericPackageImport):
         # 'package in erratum['packages'].values()' here. But for (to me) unknown
         # reason it sometimes has package.id == None which makes whole import fail.
         # And self.packages[nevrao].id contains always right value.
-        for nevrao in list(erratum['packages'].keys()):
+        for nevrao in list(erratum["packages"].keys()):
             package = self.packages[nevrao]
             if package.ignored:
                 # Ignore this package
                 continue
-            pkgs.append({'package_id': package.id})
+            pkgs.append({"package_id": package.id})
 
-        erratum['packages'] = pkgs
+        erratum["packages"] = pkgs
 
-        for ef in (erratum['files'] or []):
-            if ef['file_type'] == 'RPM':
-                package = ef.get('pkgobj')
+        for ef in erratum["files"] or []:
+            if ef["file_type"] == "RPM":
+                package = ef.get("pkgobj")
                 if package:
-                    ef['package_id'] = package.id
+                    ef["package_id"] = package.id
 
     def _fix_erratum_file_channels(self, erratum):
-        for f in (erratum['files'] or []):
+        for f in erratum["files"] or []:
             channels = []
-            for c in (f.get('channel_list') or []):
+            for c in f.get("channel_list") or []:
                 if not self.channels[c]:
                     # Unsupported channel
                     # XXX misa: should we gripe loudly?
                     continue
-                channels.append(self.channels[c]['id'])
-            f['channels'] = channels
+                channels.append(self.channels[c]["id"])
+            f["channels"] = channels
 
     def _fix_erratum_severity(self, erratum):
-        """sets the severity-id to insert into rhnErrata
-        """
-	# Re-check for severity, it could be a RHBA or RHEA
-	# If RHBA/RHEA severity is irrelevant and posibly
-	# not included or it could not be hosted
+        """sets the severity-id to insert into rhnErrata"""
+        # Re-check for severity, it could be a RHBA or RHEA
+        # If RHBA/RHEA severity is irrelevant and posibly
+        # not included or it could not be hosted
         severity = None
 
-        if 'security_impact' in erratum:
-            severity = erratum['security_impact']
-        elif 'severity' in erratum:
-            severity = erratum['severity']
+        if "security_impact" in erratum:
+            severity = erratum["security_impact"]
+        elif "severity" in erratum:
+            severity = erratum["severity"]
 
         if severity:
-            erratum['severity_id'] = self.backend.lookupErrataSeverityId(erratum)
+            erratum["severity_id"] = self.backend.lookupErrataSeverityId(erratum)
 
     def _fix_erratum_oval_info(self, erratum):
         """
@@ -332,38 +353,56 @@ class ErrataImport(GenericPackageImport):
         appropriate fields in the db tables.
 
         """
+        # pylint: disable-next=import-outside-toplevel
         import os
 
-        if 'oval_info' not in erratum:
+        if "oval_info" not in erratum:
             return
 
-        for oval_file in erratum['oval_info']:
-            if has_suffix(oval_file['filename'], '.xml'):
-                eft = oval_file['file_type'] = 'OVAL'
+        for oval_file in erratum["oval_info"]:
+            if has_suffix(oval_file["filename"], ".xml"):
+                eft = oval_file["file_type"] = "OVAL"
                 if eft not in self.file_types:
+                    # pylint: disable-next=broad-exception-raised,consider-using-f-string
                     raise Exception("Unknown file type %s" % eft)
-                oval_file['type'] = self.file_types[eft]
+                oval_file["type"] = self.file_types[eft]
 
             # XXX: stubs incase we need to associate them to channels/packages
-            oval_file['channel_list'] = []
-            oval_file['channels'] = []
-            oval_file['package_id'] = None
+            oval_file["channel_list"] = []
+            oval_file["channels"] = []
+            oval_file["package_id"] = None
 
-            if not os.path.isfile(oval_file['filename']):
+            if not os.path.isfile(oval_file["filename"]):
                 # Don't bother to copy the package
-                raise rhnFault(47,
-                               "Oval file %s not found on the server. " % oval_file['filename'],
-                               explain=0)
+                raise rhnFault(
+                    47,
+                    # pylint: disable-next=consider-using-f-string
+                    "Oval file %s not found on the server. " % oval_file["filename"],
+                    explain=0,
+                )
 
             # add the oval info into the files field to get
             # populated into db
-            erratum['files'].append(oval_file)
+            erratum["files"].append(oval_file)
 
 
 def get_nevrao(package):
-    return list(map(lambda x, d=package: d[x],
-               ['name', 'epoch', 'version', 'release', 'arch', 'org_id', 'checksum_type', 'checksum']))
+    return list(
+        map(
+            lambda x, d=package: d[x],
+            [
+                "name",
+                "epoch",
+                "version",
+                "release",
+                "arch",
+                "org_id",
+                "checksum_type",
+                "checksum",
+            ],
+        )
+    )
 
 
 def has_suffix(s, suffix):
-    return s[-len(suffix):] == suffix
+    return s[-len(suffix) :] == suffix

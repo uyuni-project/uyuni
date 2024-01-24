@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -22,34 +23,42 @@ from spacewalk.server import rhnSQL, apacheAuth
 
 
 def store_client_route(server_id):
-    """ Stores the route the client took to get to hosted or the Satellite """
+    """Stores the route the client took to get to hosted or the Satellite"""
 
     log_debug(5, server_id)
 
     # get the old routing information for this server_id
     # oldRoute in this format: [(id0, hostname0),  (id1, hostname1),  ...]
     #                           closest to client, ..., closest to server
-    h = rhnSQL.prepare("""
+    h = rhnSQL.prepare(
+        """
         select position,
                proxy_server_id,
                hostname
           from rhnServerPath
          where server_id = :server_id
         order by position
-        """)
+        """
+    )
     h.execute(server_id=server_id)
+    # pylint: disable-next=invalid-name
     oldRoute = h.fetchall_dict() or []
+    # pylint: disable-next=invalid-name
     newRoute = []
 
     # construct oldRoute_ from oldRoute, to have the actual format described above
+    # pylint: disable-next=invalid-name
     oldRouteTuples = []
+    # pylint: disable-next=invalid-name
     for oldRouteDict in oldRoute:
-        oldRouteTuples.append((str(oldRouteDict['proxy_server_id']), oldRouteDict['hostname']))
+        oldRouteTuples.append(
+            (str(oldRouteDict["proxy_server_id"]), oldRouteDict["hostname"])
+        )
 
     # code block if there *is* routing info in the headers
     # NOTE: X-RHN-Proxy-Auth described in proxy/broker/rhnProxyAuth.py
-    if rhnFlags.test('X-RHN-Proxy-Auth'):
-        tokens = rhnFlags.get('X-RHN-Proxy-Auth').split(',')
+    if rhnFlags.test("X-RHN-Proxy-Auth"):
+        tokens = rhnFlags.get("X-RHN-Proxy-Auth").split(",")
         tokens = [token for token in tokens if token]
 
         log_debug(4, "route tokens", tokens)
@@ -58,7 +67,11 @@ def store_client_route(server_id):
         for token in tokens:
             token, hostname = apacheAuth.splitProxyAuthToken(token)
             if hostname is None:
-                log_debug(3, "NOTE: Spacewalk Proxy v1.1 detected - route tracking is unsupported")
+                log_debug(
+                    3,
+                    "NOTE: Spacewalk Proxy v1.1 detected - route tracking is unsupported",
+                )
+                # pylint: disable-next=invalid-name
                 newRoute = []
                 break
             newRoute.append((token[0], hostname))
@@ -72,10 +85,13 @@ def store_client_route(server_id):
 
     if oldRouteTuples:
         # blow away table rhnServerPath entries for server_id
-        log_debug(8, 'blow away route-info for %s' % server_id)
-        h = rhnSQL.prepare("""
+        # pylint: disable-next=consider-using-f-string
+        log_debug(8, "blow away route-info for %s" % server_id)
+        h = rhnSQL.prepare(
+            """
             delete from rhnServerPath where server_id = :server_id
-        """)
+        """
+        )
         h.execute(server_id=server_id)
 
     if not newRoute:
@@ -83,13 +99,16 @@ def store_client_route(server_id):
         rhnSQL.commit()
         return
 
-    log_debug(8, 'adding route-info entries: %s - %s' % (server_id, newRoute))
+    # pylint: disable-next=consider-using-f-string
+    log_debug(8, "adding route-info entries: %s - %s" % (server_id, newRoute))
 
-    h = rhnSQL.prepare("""
+    h = rhnSQL.prepare(
+        """
         insert into rhnServerPath
                (server_id, proxy_server_id, position, hostname)
         values (:server_id, :proxy_server_id, :position, :hostname)
-    """)
+    """
+    )
     server_ids = []
     proxy_ids = []
     proxy_hostnames = []
@@ -103,9 +122,12 @@ def store_client_route(server_id):
         positions.append(counter)
         counter = counter + 1
 
-    log_debug(5, server_ids, proxy_ids, positions,
-              proxy_hostnames)
-    h.executemany(server_id=server_ids, proxy_server_id=proxy_ids,
-                  position=positions, hostname=proxy_hostnames)
+    log_debug(5, server_ids, proxy_ids, positions, proxy_hostnames)
+    h.executemany(
+        server_id=server_ids,
+        proxy_server_id=proxy_ids,
+        position=positions,
+        hostname=proxy_hostnames,
+    )
 
     rhnSQL.commit()

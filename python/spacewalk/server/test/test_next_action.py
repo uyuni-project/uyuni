@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2013 Red Hat, Inc.
 #
@@ -16,9 +17,9 @@ from spacewalk.common import rhnFlags
 from spacewalk.server import rhnSQL
 from spacewalk.server.action_extra_data import packages, kickstart, reboot
 
-rhnSQL.initDB('rhnuser/rhnuser@webdev')
-rhnFlags.set('action_id', 11921273)
-rhnFlags.set('action_status', 2)
+rhnSQL.initDB("rhnuser/rhnuser@webdev")
+rhnFlags.set("action_id", 11921273)
+rhnFlags.set("action_status", 2)
 
 try:
     packages.update(1003485866, 11921273, {})

@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -20,17 +21,20 @@ from spacewalk.common.rhnLog import log_debug
 from spacewalk.server import rhnSQL
 
 # the "exposed" functions
-__rhnexport__ = ['run']
+__rhnexport__ = ["run"]
 
-_query_clear_output = rhnSQL.Statement("""
+_query_clear_output = rhnSQL.Statement(
+    """
 delete from rhnServerActionScriptResult
  where server_id = :server_id
    and action_script_id = (
      select id from rhnActionScript where action_id = :action_id
    )
-""")
+"""
+)
 
-_query_initial_store = rhnSQL.Statement("""
+_query_initial_store = rhnSQL.Statement(
+    """
 insert into rhnServerActionScriptResult (
     server_id,
     action_script_id,
@@ -48,9 +52,11 @@ values (
        TO_TIMESTAMP(:process_start, 'YYYY-MM-DD HH24:MI:SS'),
        TO_TIMESTAMP(:process_end, 'YYYY-MM-DD HH24:MI:SS'),
        :return_code)
-""")
+"""
+)
 
 
+# pylint: disable-next=dangerous-default-value
 def run(server_id, action_id, data={}):
     log_debug(3)
 
@@ -62,25 +68,26 @@ def run(server_id, action_id, data={}):
         log_debug(4, "No data sent by client")
         return
 
-    output = data.get('output')
+    output = data.get("output")
 
     # newer clients should always be setting
     # this flag and encoding the results,
     # otherwise xmlrpc isn't very happy on certain characters
-    if 'base64enc' in data:
+    if "base64enc" in data:
         output = base64.decodestring(output.encode()).decode()
 
-    return_code = data.get('return_code')
-    process_end = data.get('process_end')
-    process_start = data.get('process_start')
+    return_code = data.get("return_code")
+    process_end = data.get("process_end")
+    process_start = data.get("process_start")
 
     log_debug(4, "script output", output)
 
-    h = rhnSQL.prepare(_query_initial_store, blob_map={'output': 'output'})
-    h.execute(server_id=server_id,
-              action_id=action_id,
-              process_start=process_start,
-              process_end=process_end,
-              return_code=return_code,
-              output=output
-              )
+    h = rhnSQL.prepare(_query_initial_store, blob_map={"output": "output"})
+    h.execute(
+        server_id=server_id,
+        action_id=action_id,
+        process_start=process_start,
+        process_end=process_end,
+        return_code=return_code,
+        output=output,
+    )

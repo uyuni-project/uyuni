@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2018 Red Hat, Inc.
 #
@@ -19,7 +20,7 @@
 
 class Channel:
 
-    """ A pure data object representing an RHN Channel. """
+    """A pure data object representing an RHN Channel."""
 
     def __init__(self, channel_id):
         self.id = channel_id
@@ -38,7 +39,7 @@ class Channel:
 
 class Package:
 
-    """ A pure data object representing an RHN Package. """
+    """A pure data object representing an RHN Package."""
 
     def __init__(self, package_id):
         self.id = package_id
@@ -82,7 +83,7 @@ class Package:
 
 class Erratum:
 
-    """ An object representing a single update to a channel. """
+    """An object representing a single update to a channel."""
 
     def __init__(self, erratum_id):
         self.id = erratum_id
@@ -109,7 +110,6 @@ class Erratum:
 
 
 class RepoMD:
-
     def __init__(self, repomd_id, filename):
         self.id = repomd_id
         self.filename = filename

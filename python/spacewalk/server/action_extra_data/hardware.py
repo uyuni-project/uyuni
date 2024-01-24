@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #
@@ -16,11 +17,18 @@
 from spacewalk.common.rhnLog import log_debug
 
 # the "exposed" functions
-__rhnexport__ = ['refresh_list']
+__rhnexport__ = ["refresh_list"]
 
 
+# pylint: disable-next=dangerous-default-value
 def refresh_list(server_id, action_id, data={}):
     if not data:
         return
-    log_debug(2, "action_error.hardware.refresh_list: Should do something "
-              "useful with this data", server_id, action_id, data)
+    log_debug(
+        2,
+        "action_error.hardware.refresh_list: Should do something "
+        "useful with this data",
+        server_id,
+        action_id,
+        data,
+    )

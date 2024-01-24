@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2018 Red Hat, Inc.
 #
@@ -18,6 +19,7 @@ import sys
 import re
 import time
 from threading import Thread, Lock
+
 try:
     #  python 2
     import urlparse
@@ -25,8 +27,10 @@ try:
     from urllib import quote
 except ImportError:
     #  python3
-    import urllib.parse as urlparse # pylint: disable=F0401,E0611
+    import urllib.parse as urlparse  # pylint: disable=F0401,E0611
     from queue import Queue, Empty
+
+    # pylint: disable-next=ungrouped-imports
     from urllib.parse import quote
 import pycurl
 from urlgrabber.grabber import URLGrabberOptions, PyCurlFileObject, URLGrabError
@@ -35,6 +39,7 @@ from uyuni.common.context_managers import cfg_component
 from spacewalk.satellite_tools.syncLib import log, log2
 
 
+# pylint: disable-next=missing-class-docstring
 class ProgressBarLogger:
     def __init__(self, msg, total):
         self.msg = msg
@@ -46,16 +51,24 @@ class ProgressBarLogger:
     def log(self, *_):
         self.lock.acquire()
         self.status += 1
-        self._print_progress_bar(self.status, self.total, prefix=self.msg, bar_length=50)
+        self._print_progress_bar(
+            self.status, self.total, prefix=self.msg, bar_length=50
+        )
         if time.time() > int(self.last_log + 90):
             self.last_log = time.time()
-            log(0, '%s %s' % (round(100.00 * (self.status / float(self.total)), 2), '%'))
+            log(
+                0,
+                # pylint: disable-next=consider-using-f-string
+                "%s %s" % (round(100.00 * (self.status / float(self.total)), 2), "%"),
+            )
         self.lock.release()
 
     # from here http://stackoverflow.com/questions/3173320/text-progress-bar-in-the-console
     # Print iterations progress
     @staticmethod
-    def _print_progress_bar(iteration, total, prefix='', suffix='', decimals=2, bar_length=100):
+    def _print_progress_bar(
+        iteration, total, prefix="", suffix="", decimals=2, bar_length=100
+    ):
         """
         Call in a loop to create terminal progress bar
         @params:
@@ -68,14 +81,19 @@ class ProgressBarLogger:
         """
         filled_length = int(round(bar_length * iteration / float(total)))
         percents = round(100.00 * (iteration / float(total)), decimals)
-        bar_char = '#' * filled_length + '-' * (bar_length - filled_length)
-        sys.stdout.write('\r%s |%s| %s%s %s' % (prefix, bar_char, percents, '%', suffix))
+        bar_char = "#" * filled_length + "-" * (bar_length - filled_length)
+        sys.stdout.write(
+            # pylint: disable-next=consider-using-f-string
+            "\r%s |%s| %s%s %s"
+            % (prefix, bar_char, percents, "%", suffix)
+        )
         sys.stdout.flush()
         if iteration == total:
-            sys.stdout.write('\n')
+            sys.stdout.write("\n")
             sys.stdout.flush()
 
 
+# pylint: disable-next=missing-class-docstring
 class TextLogger:
     def __init__(self, _, total):
         self.total = total
@@ -86,9 +104,16 @@ class TextLogger:
         self.lock.acquire()
         self.status += 1
         if success:
+            # pylint: disable-next=consider-using-f-string
             log(0, "    %d/%d : %s" % (self.status, self.total, str(param)))
         else:
-            log2(0, 0, "    %d/%d : %s (failed)" % (self.status, self.total, str(param)), stream=sys.stderr)
+            log2(
+                0,
+                0,
+                # pylint: disable-next=consider-using-f-string
+                "    %d/%d : %s (failed)" % (self.status, self.total, str(param)),
+                stream=sys.stderr,
+            )
         self.lock.release()
 
 
@@ -101,13 +126,15 @@ def get_proxies(proxy, user, password):
     if user:
         auth = quote(user)
         if password:
-            auth += ':' + quote(password)
-        proto, rest = re.match(r'(\w+://)(.+)', proxy_string).groups()
+            auth += ":" + quote(password)
+        proto, rest = re.match(r"(\w+://)(.+)", proxy_string).groups()
+        # pylint: disable-next=consider-using-f-string
         proxy_string = "%s%s@%s" % (proto, auth, rest)
-    proxies = {'http': proxy_string, 'https': proxy_string, 'ftp': proxy_string}
+    proxies = {"http": proxy_string, "https": proxy_string, "ftp": proxy_string}
     return proxies
 
 
+# pylint: disable-next=missing-class-docstring
 class PyCurlFileObjectThread(PyCurlFileObject):
     def __init__(self, url, filename, opts, curl_cache, parent):
         self.curl_cache = curl_cache
@@ -115,6 +142,7 @@ class PyCurlFileObjectThread(PyCurlFileObject):
         # Next 3 lines will not be required on having urlgrabber with proper fix
         # https://github.com/rpm-software-management/urlgrabber/pull/35
         (url, parts) = opts.urlparser.parse(url, opts)
+        # pylint: disable-next=unused-variable
         (scheme, host, path, parm, query, frag) = parts
         opts.find_proxy(url, scheme)
         super().__init__(url, filename, opts)
@@ -145,6 +173,7 @@ class FailedDownloadError(Exception):
     pass
 
 
+# pylint: disable-next=missing-class-docstring
 class DownloadThread(Thread):
     def __init__(self, parent, queue):
         super().__init__()
@@ -156,7 +185,9 @@ class DownloadThread(Thread):
         self.failed_pkgs = set()
 
     @staticmethod
-    def __is_file_done(local_path=None, file_obj=None, checksum_type=None, checksum=None):
+    def __is_file_done(
+        local_path=None, file_obj=None, checksum_type=None, checksum=None
+    ):
         if checksum_type and checksum:
             if local_path and os.path.isfile(local_path):
                 return getFileChecksum(checksum_type, filename=local_path) == checksum
@@ -169,24 +200,43 @@ class DownloadThread(Thread):
         return False
 
     def __can_retry(self, retry, mirrors, opts, url, e):
-        retrycode = getattr(e, 'errno', None)
-        code = getattr(e, 'code', None)
+        retrycode = getattr(e, "errno", None)
+        code = getattr(e, "code", None)
         if retry < (self.parent.retries - 1):
             # No codes at all or some specified codes
             # 58, 77 - Couple of curl error codes observed in multithreading on RHEL 7 - probably a bug
-            if (retrycode is None and code is None) or (retrycode in opts.retrycodes or code in [58, 77]):
-                log2(0, 2, "WARNING: Download failed: %s - %s. Retrying..." % (url, sys.exc_info()[1]),
-                     stream=sys.stderr)
+            if (retrycode is None and code is None) or (
+                retrycode in opts.retrycodes or code in [58, 77]
+            ):
+                log2(
+                    0,
+                    2,
+                    # pylint: disable-next=consider-using-f-string
+                    "WARNING: Download failed: %s - %s. Retrying..."
+                    % (url, sys.exc_info()[1]),
+                    stream=sys.stderr,
+                )
                 return True
 
         # 14 - HTTP Error
         if retry < (mirrors - 1) and retrycode == 14:
-            log2(0, 2, "WARNING: Download failed: %s - %s. Trying next mirror..." % (url, sys.exc_info()[1]),
-                 stream=sys.stderr)
+            log2(
+                0,
+                2,
+                # pylint: disable-next=consider-using-f-string
+                "WARNING: Download failed: %s - %s. Trying next mirror..."
+                % (url, sys.exc_info()[1]),
+                stream=sys.stderr,
+            )
             return True
 
-        log2(0, 1, "ERROR: Download failed: %s - %s." % (url, sys.exc_info()[1]),
-             stream=sys.stderr)
+        log2(
+            0,
+            1,
+            # pylint: disable-next=consider-using-f-string
+            "ERROR: Download failed: %s - %s." % (url, sys.exc_info()[1]),
+            stream=sys.stderr,
+        )
         return False
 
     def __next_mirror(self, total):
@@ -198,8 +248,11 @@ class DownloadThread(Thread):
     def __fetch_url(self, params):
         # Skip existing file if exists and matches checksum
         if not self.parent.force:
-            if self.__is_file_done(local_path=params['target_file'], checksum_type=params['checksum_type'],
-                                   checksum=params['checksum']):
+            if self.__is_file_done(
+                local_path=params["target_file"],
+                checksum_type=params["checksum_type"],
+                checksum=params["checksum"],
+            ):
                 return True
 
         # 14 => HTTPError (https://github.com/rpm-software-management/urlgrabber/blob/1e6d2debe79efdd1ba2f39913dc808723e51a7f7/urlgrabber/grabber.py#L757)
@@ -222,34 +275,48 @@ class DownloadThread(Thread):
             retrycodes=retrycodes,
         )
 
-        mirrors = len(params['urls'])
+        mirrors = len(params["urls"])
         for retry in range(max(self.parent.retries, mirrors)):
             fo = None
-            url = urlparse.urljoin(params['urls'][self.mirror], params['relative_path'])
+            url = urlparse.urljoin(params["urls"][self.mirror], params["relative_path"])
             ## BEWARE: This hack is introduced in order to support SUSE SCC channels
             ## This also needs a patched urlgrabber AFAIK
-            if 'authtoken' in params and params['authtoken']:
-                (scheme, netloc, path, query, _) = urlparse.urlsplit(params['urls'][self.mirror])
-                url = urlparse.urlunsplit((
-                    scheme,
-                    netloc,
-                    urlparse.urljoin(path, params['relative_path']),
-                    query.rstrip('/'), ''))
+            if "authtoken" in params and params["authtoken"]:
+                (scheme, netloc, path, query, _) = urlparse.urlsplit(
+                    params["urls"][self.mirror]
+                )
+                url = urlparse.urlunsplit(
+                    (
+                        scheme,
+                        netloc,
+                        urlparse.urljoin(path, params["relative_path"]),
+                        query.rstrip("/"),
+                        "",
+                    )
+                )
             try:
                 try:
-                    fo = PyCurlFileObjectThread(url, params['target_file'], opts, self.curl, self.parent)
+                    fo = PyCurlFileObjectThread(
+                        url, params["target_file"], opts, self.curl, self.parent
+                    )
                     # Check target file
-                    if not self.__is_file_done(file_obj=fo, checksum_type=params['checksum_type'],
-                                               checksum=params['checksum']):
-                        raise FailedDownloadError("Target file isn't valid. Checksum should be %s (%s)."
-                                                  % (params['checksum'], params['checksum_type']))
+                    if not self.__is_file_done(
+                        file_obj=fo,
+                        checksum_type=params["checksum_type"],
+                        checksum=params["checksum"],
+                    ):
+                        raise FailedDownloadError(
+                            # pylint: disable-next=consider-using-f-string
+                            "Target file isn't valid. Checksum should be %s (%s)."
+                            % (params["checksum"], params["checksum_type"])
+                        )
                     break
                 except (FailedDownloadError, URLGrabError):
                     e = sys.exc_info()[1]
                     # urlgrabber-3.10.1-9 trows URLGrabError for both
                     # 'HTTP Error 404 - Not Found' and 'No space left on device', so
                     # workaround for this is check error message:
-                    if 'No space left on device' in str(e):
+                    if "No space left on device" in str(e):
                         self.parent.fail_download(e)
                         return False
 
@@ -266,8 +333,8 @@ class DownloadThread(Thread):
                 if fo:
                     fo.close()
                 # Delete failed download file
-                elif os.path.isfile(params['target_file']):
-                    os.unlink(params['target_file'])
+                elif os.path.isfile(params["target_file"]):
+                    os.unlink(params["target_file"])
 
         return True
 
@@ -281,39 +348,52 @@ class DownloadThread(Thread):
             success = self.__fetch_url(params)
             if self.parent.log_obj:
                 # log_obj must be thread-safe
-                self.parent.log_obj.log(success, os.path.basename(params['relative_path']))
+                self.parent.log_obj.log(
+                    success, os.path.basename(params["relative_path"])
+                )
             self.queue.task_done()
             if not success:
-                package = os.path.basename(params['target_file'])
+                package = os.path.basename(params["target_file"])
                 self.failed_pkgs.add(package)
         self.curl.close()
 
 
+# pylint: disable-next=missing-class-docstring
 class ThreadedDownloader:
     def __init__(self, retries=3, log_obj=None, force=False):
         self.queues = {}
+        # pylint: disable-next=invalid-name
         with cfg_component("server.satellite") as CFG:
             try:
                 self.threads = int(CFG.REPOSYNC_DOWNLOAD_THREADS)
             except ValueError:
+                # pylint: disable-next=raise-missing-from
                 raise ValueError(
-                    "Number of threads expected, found: '%s'" % CFG.REPOSYNC_DOWNLOAD_THREADS
+                    # pylint: disable-next=consider-using-f-string
+                    "Number of threads expected, found: '%s'"
+                    % CFG.REPOSYNC_DOWNLOAD_THREADS
                 )
             try:
                 self.timeout = int(CFG.REPOSYNC_TIMEOUT)
             except ValueError:
+                # pylint: disable-next=raise-missing-from
                 raise ValueError(
-                    "Timeout in seconds expected, found: '%s'" % CFG.REPOSYNC_TIMEOUT
+                    # pylint: disable-next=consider-using-f-string
+                    "Timeout in seconds expected, found: '%s'"
+                    % CFG.REPOSYNC_TIMEOUT
                 )
             try:
                 self.minrate = int(CFG.REPOSYNC_MINRATE)
             except ValueError:
+                # pylint: disable-next=raise-missing-from
                 raise ValueError(
+                    # pylint: disable-next=consider-using-f-string
                     "Minimal transfer rate in bytes pre second expected, found: '%s'"
                     % CFG.REPOSYNC_MINRATE
                 )
 
         if self.threads < 1:
+            # pylint: disable-next=consider-using-f-string
             raise ValueError("Invalid number of threads: %d" % self.threads)
 
         self.retries = retries
@@ -337,12 +417,22 @@ class ThreadedDownloader:
         ssl_ca_cert, ssl_cert, ssl_key = ssl_set
         for certificate_file in (ssl_ca_cert, ssl_cert, ssl_key):
             if certificate_file and not os.path.isfile(certificate_file):
-                log2(0, 0, "ERROR: Certificate file not found: %s" % certificate_file, stream=sys.stderr)
+                log2(
+                    0,
+                    0,
+                    # pylint: disable-next=consider-using-f-string
+                    "ERROR: Certificate file not found: %s" % certificate_file,
+                    stream=sys.stderr,
+                )
                 return False
         return True
 
     def add(self, params):
-        ssl_set = (params['ssl_ca_cert'], params['ssl_client_cert'], params['ssl_client_key'])
+        ssl_set = (
+            params["ssl_ca_cert"],
+            params["ssl_client_cert"],
+            params["ssl_client_key"],
+        )
         if self._validate(ssl_set):
             if ssl_set not in self.queues:
                 self.queues[ssl_set] = Queue()
@@ -357,14 +447,17 @@ class ThreadedDownloader:
             size += queue.qsize()
         if size <= 0:
             return
+        # pylint: disable-next=consider-using-f-string
         log(1, "Downloading total %d files from %d queues." % (size, len(self.queues)))
 
         for index, queue in enumerate(self.queues.values()):
+            # pylint: disable-next=consider-using-f-string
             log(2, "Downloading %d files from queue #%d." % (queue.qsize(), index))
             self.first_in_queue_done = False
             started_threads = []
             for _ in range(self.threads):
                 thread = DownloadThread(self, queue)
+                # pylint: disable-next=deprecated-method
                 thread.setDaemon(True)
                 thread.start()
                 started_threads.append(thread)

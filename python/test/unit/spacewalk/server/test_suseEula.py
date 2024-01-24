@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+#  pylint: disable=missing-module-docstring,invalid-name
 import hashlib
 from unittest.mock import MagicMock, call, patch
 

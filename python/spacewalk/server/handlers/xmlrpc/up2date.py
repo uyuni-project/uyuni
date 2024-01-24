@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -20,6 +21,8 @@ import time
 
 from spacewalk.server.rhnServer import server_lib
 from uyuni.common.usix import ListType, TupleType, StringType
+
+# pylint: disable-next=ungrouped-imports
 from spacewalk.common import rhnFlags
 from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.common.rhnConfig import CFG
@@ -32,20 +35,20 @@ from spacewalk.server import rhnChannel, rhnDependency, rhnCapability
 from spacewalk.server.rhnServer import server_route
 
 import re
+
 NONSUBSCRIBABLE_CHANNELS = re.compile("(rhn-proxy|rhn-satellite)")
 
 
 class Up2date(rhnHandler):
 
-    """ xml-rpc Server Functions that we will provide for the outside world.
-    """
+    """xml-rpc Server Functions that we will provide for the outside world."""
 
     def __init__(self):
-        """ Up2date Class Constructor
+        """Up2date Class Constructor
 
-           o Initializes inherited class.
-           o Appends the functions available to the outside world in the
-             rhnHandler list.
+        o Initializes inherited class.
+        o Appends the functions available to the outside world in the
+          rhnHandler list.
         """
         rhnHandler.__init__(self)
         # Function list inherited from rhnHandler
@@ -53,33 +56,35 @@ class Up2date(rhnHandler):
 
         # --- Clients v2+ ---
         # (getting headers, source and packages done with GETs now).
-        self.functions.append('login')
-        self.functions.append('listChannels')
-        self.functions.append('subscribeChannels')
-        self.functions.append('unsubscribeChannels')
-        self.functions.append('history')
-        self.functions.append('solvedep')
-        self.functions.append('solveDependencies')
-        self.functions.append('solveDependencies_arch')
-        self.functions.append('solveDependencies_with_limits')
+        self.functions.append("login")
+        self.functions.append("listChannels")
+        self.functions.append("subscribeChannels")
+        self.functions.append("unsubscribeChannels")
+        self.functions.append("history")
+        self.functions.append("solvedep")
+        self.functions.append("solveDependencies")
+        self.functions.append("solveDependencies_arch")
+        self.functions.append("solveDependencies_with_limits")
 
     def auth_system(self, action, system_id):
         # Stuff the action in the headers:
-        transport = rhnFlags.get('outputTransportOptions')
-        transport['X-RHN-Action'] = action
+        transport = rhnFlags.get("outputTransportOptions")
+        transport["X-RHN-Action"] = action
         return rhnHandler.auth_system(self, system_id)
 
+    # pylint: disable-next=dangerous-default-value,unused-argument
     def login(self, system_id, extra_data={}):
-        """ Clients v2+
-            Log in routine.
-            Return a dictionary of session token/channel information.
-            Also sets this information in the headers.
+        """Clients v2+
+        Log in routine.
+        Return a dictionary of session token/channel information.
+        Also sets this information in the headers.
         """
         log_debug(5, system_id)
         # Authenticate the system certificate. We need the user record
         # to generate the tokens
         self.load_user = 1
-        server = self.auth_system('login', system_id)
+        # pylint: disable-next=unused-variable
+        server = self.auth_system("login", system_id)
         # log the entry
         log_debug(1, self.server_id)
         # Update the capabilities list
@@ -87,32 +92,33 @@ class Up2date(rhnHandler):
         # Fetch the channels this client is subscribed to
         channels = rhnChannel.getSubscribedChannels(self.server_id)
 
+        # pylint: disable-next=invalid-name
         rhnServerTime = str(time.time())
+        # pylint: disable-next=invalid-name
         expireOffset = str(CFG.CLIENT_AUTH_TIMEOUT)
-        signature = computeSignature(CFG.SECRET_KEY,
-                                     self.server_id,
-                                     self.user,
-                                     rhnServerTime,
-                                     expireOffset)
+        signature = computeSignature(
+            CFG.SECRET_KEY, self.server_id, self.user, rhnServerTime, expireOffset
+        )
 
+        # pylint: disable-next=invalid-name
         loginDict = {
-            'X-RHN-Server-Id': self.server_id,
-            'X-RHN-Auth-User-Id': self.user,
-            'X-RHN-Auth': signature,
-            'X-RHN-Auth-Server-Time': rhnServerTime,
-            'X-RHN-Auth-Expire-Offset': expireOffset,
+            "X-RHN-Server-Id": self.server_id,
+            "X-RHN-Auth-User-Id": self.user,
+            "X-RHN-Auth": signature,
+            "X-RHN-Auth-Server-Time": rhnServerTime,
+            "X-RHN-Auth-Expire-Offset": expireOffset,
             # List of lists [[label,last_mod],...]:
-            'X-RHN-Auth-Channels': channels
+            "X-RHN-Auth-Channels": channels,
         }
 
         # Duplicate these values in the headers so that the proxy can
         # intercept and cache them without parseing the xmlrpc.
-        transport = rhnFlags.get('outputTransportOptions')
+        transport = rhnFlags.get("outputTransportOptions")
         for k, v in list(loginDict.items()):
             # Special case for channels
-            if k.lower() == 'X-RHN-Auth-Channels'.lower():
+            if k.lower() == "X-RHN-Auth-Channels".lower():
                 # Concatenate the channel information column-separated
-                transport[k] = [':'.join(x) for x in v]
+                transport[k] = [":".join(x) for x in v]
             else:
                 transport[k] = v
         log_debug(5, "loginDict", loginDict, transport)
@@ -122,99 +128,122 @@ class Up2date(rhnHandler):
 
         return loginDict
 
+    # pylint: disable-next=invalid-name
     def listChannels(self, system_id):
-        """ Clients v2+ """
+        """Clients v2+"""
         log_debug(5, system_id)
         # Authenticate the system certificate
-        self.auth_system('listChannels', system_id)
+        self.auth_system("listChannels", system_id)
         # log the entry
         log_debug(1, self.server_id)
+        # pylint: disable-next=invalid-name
         channelList = rhnChannel.channels_for_server(self.server_id)
         return channelList
 
+    # pylint: disable-next=invalid-name
     def subscribeChannels(self, system_id, channelNames, username, passwd):
-        """ Clients v2+ """
+        """Clients v2+"""
         add_to_seclist(passwd)
         log_debug(5, system_id, channelNames, username, passwd)
         # Authenticate the system certificate
-        self.auth_system('subscribeChannel', system_id)
+        self.auth_system("subscribeChannel", system_id)
         # log the entry
         log_debug(1, self.server_id, channelNames)
-        server_lib.snapshot_server(self.server_id, 'Base Channel Updated')
+        server_lib.snapshot_server(self.server_id, "Base Channel Updated")
+        # pylint: disable-next=invalid-name
         for channelName in channelNames:
             if NONSUBSCRIBABLE_CHANNELS.search(channelName):
                 raise rhnFault(73, explain=False)
             else:
-                rhnChannel.subscribe_channel(self.server_id, channelName,
-                                             username, passwd)
+                rhnChannel.subscribe_channel(
+                    self.server_id, channelName, username, passwd
+                )
         return 0
 
+    # pylint: disable-next=invalid-name
     def unsubscribeChannels(self, system_id, channelNames, username, passwd):
-        """ Clients v2+ """
+        """Clients v2+"""
         add_to_seclist(passwd)
         log_debug(3)
         # Authenticate the system certificate
-        self.auth_system('unsubscribeChannel', system_id)
+        self.auth_system("unsubscribeChannel", system_id)
         # log the entry
         log_debug(1, self.server_id, channelNames)
+        # pylint: disable-next=invalid-name
         for channelName in channelNames:
-            rhnChannel.unsubscribe_channel(self.server_id, channelName,
-                                           username, passwd)
+            rhnChannel.unsubscribe_channel(
+                self.server_id, channelName, username, passwd
+            )
         return 0
 
     def solvedep(self, system_id, deps):
-        """ Clients v1-
-            Solve dependencies for a given dependency problem list.
-            IN:  a dependency problem list: [name, name, name, ...]
-            RET: a package list: [[n,v,r,e],[n,v,r,e],...] That solves the
-                 dependencies.
+        """Clients v1-
+        Solve dependencies for a given dependency problem list.
+        IN:  a dependency problem list: [name, name, name, ...]
+        RET: a package list: [[n,v,r,e],[n,v,r,e],...] That solves the
+             dependencies.
         """
         log_debug(4, system_id)
-        return self.__solveDep(system_id, deps, action="solvedep",
-                               clientVersion=1)
+        return self.__solveDep(system_id, deps, action="solvedep", clientVersion=1)
 
+    # pylint: disable-next=invalid-name
     def solveDependencies(self, system_id, deps):
-        """ Clients v2+
-            Solve dependencies for a given dependency problem list (newer version)
-            IN:  a dependency problem list: [name, name, name, ...]
-            RET: a hash {name: [[n, v, r, e], [n, v, r, e], ...], ...}
+        """Clients v2+
+        Solve dependencies for a given dependency problem list (newer version)
+        IN:  a dependency problem list: [name, name, name, ...]
+        RET: a hash {name: [[n, v, r, e], [n, v, r, e], ...], ...}
         """
         log_debug(4, system_id)
-        return self.__solveDep(system_id, deps, action="solvedep",
-                               clientVersion=2)
+        return self.__solveDep(system_id, deps, action="solvedep", clientVersion=2)
 
+    # pylint: disable-next=invalid-name
     def solveDependencies_arch(self, system_id, deps):
-        """ Does the same thing as solve_dependencies, but also returns the architecture label with the
-            package info.
-            IN:  a dependency problem list: [name, name, name, ...]
-            RET: a hash {name: [[n, v, r, e, a], [n, v, r, e, a], ...], ...}
+        """Does the same thing as solve_dependencies, but also returns the architecture label with the
+        package info.
+        IN:  a dependency problem list: [name, name, name, ...]
+        RET: a hash {name: [[n, v, r, e, a], [n, v, r, e, a], ...], ...}
         """
         log_debug(4, system_id)
-        return self.__solveDep_arch(system_id, deps, action="solvedep",
-                                    clientVersion=2)
+        return self.__solveDep_arch(system_id, deps, action="solvedep", clientVersion=2)
 
-    def solveDependencies_with_limits(self, system_id, deps, all=0, limit_operator=None, limit=None):
-        """ This version of solve_dependencies allows the caller to get all of the packages that solve a
-            dependency and limit the packages that are returned to those that match the criteria defined
-            by limit_operator and limit. This version of the function also returns the architecture label
-            of the package[s] that get returned.
+    # pylint: disable-next=invalid-name
+    def solveDependencies_with_limits(
+        self,
+        system_id,
+        deps,
+        # pylint: disable-next=redefined-builtin
+        all=0,
+        limit_operator=None,
+        limit=None,
+    ):
+        """This version of solve_dependencies allows the caller to get all of the packages that solve a
+        dependency and limit the packages that are returned to those that match the criteria defined
+        by limit_operator and limit. This version of the function also returns the architecture label
+        of the package[s] that get returned.
 
-            limit_operator can be any of: '<', '<=', '==', '>=', or '>'.
-            limit is a a string of the format [epoch:]name-version-release
-            deps is a list of filenames that the packages that are returned must provide.
-            version is the version of the client that is calling the function.
+        limit_operator can be any of: '<', '<=', '==', '>=', or '>'.
+        limit is a a string of the format [epoch:]name-version-release
+        deps is a list of filenames that the packages that are returned must provide.
+        version is the version of the client that is calling the function.
         """
         log_debug(4, system_id)
-        return self.__solveDep_with_limits(system_id, deps, action="solvedep",
-                                           clientVersion=2, all=all, limit_operator=limit_operator, limit=limit)
+        return self.__solveDep_with_limits(
+            system_id,
+            deps,
+            action="solvedep",
+            clientVersion=2,
+            all=all,
+            limit_operator=limit_operator,
+            limit=limit,
+        )
 
     def history(self, system_id, summary, body=""):
-        """ Clients v2+
-            Add a history log for a performed action
+        """Clients v2+
+        Add a history log for a performed action
         """
         log_debug(5, system_id, summary, body)
         # Authenticate the system certificate
-        server = self.auth_system('history', system_id)
+        server = self.auth_system("history", system_id)
         # log the entry
         log_debug(1, self.server_id)
         # XXX: Probably this should be a non fatal error...
@@ -224,17 +253,20 @@ class Up2date(rhnHandler):
 
     # --- PRIVATE METHODS ---
 
+    # pylint: disable-next=invalid-name
     def __solveDep_prepare(self, system_id, deps, action, clientVersion):
-        """ Response for clients:
-                version 1: list
-                version 2: hash
+        """Response for clients:
+        version 1: list
+        version 2: hash
         """
         log_debug(7, system_id, deps, action, clientVersion)
+        # pylint: disable-next=invalid-name
         faultString = _("Invalid value %s (%s)")
         if type(deps) not in (ListType, TupleType):
             log_error("Invalid argument type", type(deps))
             raise rhnFault(30, faultString % (deps, type(deps)))
         for dep in deps:
+            # pylint: disable-next=unidiomatic-typecheck
             if type(dep) is not StringType:
                 log_error("Invalid dependency member", type(dep))
                 raise rhnFault(30, faultString % (dep, type(dep)))
@@ -244,72 +276,93 @@ class Up2date(rhnHandler):
         if not deps:
             return []
         # Authenticate the system certificate
+        # pylint: disable-next=unused-variable
         server = self.auth_system(action, system_id)
+        # pylint: disable-next=consider-using-f-string
         log_debug(1, self.server_id, action, "items: %d" % len(deps))
         return deps
 
+    # pylint: disable-next=invalid-name
     def __solveDep(self, system_id, deps, action, clientVersion):
-        """ Response for clients:
-                version 1: list
-                version 2: hash
+        """Response for clients:
+        version 1: list
+        version 2: hash
         """
         log_debug(5, system_id, deps, action, clientVersion)
         result = self.__solveDep_prepare(system_id, deps, action, clientVersion)
         if result:
             # Solve dependencies
-            result = rhnDependency.solve_dependencies(self.server_id,
-                                                      result, clientVersion)
+            result = rhnDependency.solve_dependencies(
+                self.server_id, result, clientVersion
+            )
         return result
 
+    # pylint: disable-next=invalid-name
     def __solveDep_arch(self, system_id, deps, action, clientVersion):
-        """ Response for clients:
-                version 1: list
-                version 2: hash
+        """Response for clients:
+        version 1: list
+        version 2: hash
         """
         log_debug(5, system_id, deps, action, clientVersion)
         result = self.__solveDep_prepare(system_id, deps, action, clientVersion)
         if result:
             # Solve dependencies
-            result = rhnDependency.solve_dependencies_arch(self.server_id,
-                                                           result, clientVersion)
+            result = rhnDependency.solve_dependencies_arch(
+                self.server_id, result, clientVersion
+            )
         return result
 
-    def __solveDep_with_limits(self, system_id, deps, action, clientVersion, all=0, limit_operator=None, limit=None):
-        """ Response for clients:
-                version 1: list
-                version 2: hash
+    # pylint: disable-next=invalid-name
+    def __solveDep_with_limits(
+        self,
+        system_id,
+        deps,
+        action,
+        # pylint: disable-next=invalid-name
+        clientVersion,
+        # pylint: disable-next=redefined-builtin
+        all=0,
+        limit_operator=None,
+        limit=None,
+    ):
+        """Response for clients:
+        version 1: list
+        version 2: hash
         """
         log_debug(5, system_id, deps, action, clientVersion)
         result = self.__solveDep_prepare(system_id, deps, action, clientVersion)
         if result:
             # Solve dependencies
-            result = rhnDependency.solve_dependencies_with_limits(self.server_id,
-                                                                  deps, clientVersion, all, limit_operator, limit)
+            result = rhnDependency.solve_dependencies_with_limits(
+                self.server_id, deps, clientVersion, all, limit_operator, limit
+            )
         return result
 
 
 class Servers(rhnHandler):
 
-    """ A class to handle the site selection... """
+    """A class to handle the site selection..."""
 
     def __init__(self):
-        """Servers Class Constructor. """
+        """Servers Class Constructor."""
         rhnHandler.__init__(self)
-        self.functions.append('get')
-        self.functions.append('list')
+        self.functions.append("get")
+        self.functions.append("list")
 
+    # pylint: disable-next=unused-argument
     def get(self, *junk):
-        """ Older funtion that can be a noop. """
+        """Older funtion that can be a noop."""
         return []
 
+    # pylint: disable-next=unused-argument
     def list(self, systemid=None):
-        """ Returns a list of available servers the client can connect to. """
+        """Returns a list of available servers the client can connect to."""
         servers_list = [
             {
-                'server':   'xmlrpc.rhn.redhat.com',
-                'handler':   '/XMLRPC',
-                'description':   'XML-RPC Server',
-                'location':   'United States',
+                "server": "xmlrpc.rhn.redhat.com",
+                "handler": "/XMLRPC",
+                "description": "XML-RPC Server",
+                "location": "United States",
             },
         ]
         return servers_list

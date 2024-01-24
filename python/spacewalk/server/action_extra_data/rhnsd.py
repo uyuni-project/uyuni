@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #
@@ -16,10 +17,11 @@
 
 from spacewalk.common.rhnLog import log_debug
 
-__rhnexport__ = ['configure']
+__rhnexport__ = ["configure"]
 
 # the "exposed" functions
 
 
+# pylint: disable-next=invalid-name,dangerous-default-value,unused-argument
 def configure(serverId, actionId, data={}):
     log_debug(3)

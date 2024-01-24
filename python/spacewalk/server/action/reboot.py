@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #
@@ -19,9 +20,10 @@
 from spacewalk.common.rhnLog import log_debug
 
 # the "exposed" functions
-__rhnexport__ = ['reboot']
+__rhnexport__ = ["reboot"]
 
 
+# pylint: disable-next=invalid-name,unused-argument
 def reboot(serverId, actionId, dry_run=0):
     log_debug(3)
     return None

@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring,unused-import
 import sys
 
 from unittest.mock import MagicMock, patch
@@ -5,6 +6,7 @@ from . import mockery
 
 mockery.setup_environment()
 
+# pylint: disable-next=wrong-import-position
 from ..modules import mgrnet
 
 
@@ -18,7 +20,9 @@ def test_mgrnet_virtual():
     """
 
     with patch.object(
-        mgrnet, "_which", MagicMock(side_effect=[True, False, True, False, False]),
+        mgrnet,
+        "_which",
+        MagicMock(side_effect=[True, False, True, False, False]),
     ):
         ret = mgrnet.__virtual__()
         assert ret is True
@@ -48,6 +52,7 @@ def test_mgrnet_dns_fqdns():
         "fd12:abcd:1234:1::1": "ipv6hostabcd.example.org",
     }
 
+    # pylint: disable-next=unused-argument
     def _cmd_run_host_nslookup(cmd, ignore_retcode=False):
         """
         This function is emulating the output of 'host' or 'nslookup'
@@ -58,19 +63,25 @@ def test_mgrnet_dns_fqdns():
         rc = 0
         if ":" in ip:
             # the conversion is not very accurate here, but it's enough for testing
+            # pylint: disable-next=consider-using-f-string
             ptr = "{}.ip6.arpa".format(".".join(reversed([*ip.replace(":", "")])))
         else:
+            # pylint: disable-next=consider-using-f-string
             ptr = "{}.in-addr.arpa".format(".".join(reversed(ip.split())))
         if cmd == "host":
             if ip in names:
+                # pylint: disable-next=consider-using-f-string
                 out = "{} domain name pointer {}.\n".format(ptr, names[ip])
             else:
+                # pylint: disable-next=consider-using-f-string
                 out = "Host {}. not found: 3(NXDOMAIN)\n".format(ptr)
                 rc = 1
         else:
             if ip in names:
+                # pylint: disable-next=consider-using-f-string
                 out = "{}\tname = {}.\n".format(ptr, names[ip])
             else:
+                # pylint: disable-next=consider-using-f-string
                 out = "** server can't find {}: NXDOMAIN\n".format(ptr)
                 rc = 1
         return {"retcode": rc, "stdout": out}
@@ -78,7 +89,9 @@ def test_mgrnet_dns_fqdns():
     with patch.dict(
         mgrnet.__salt__, {"cmd.run_all": _cmd_run_host_nslookup}
     ), patch.object(
-        mgrnet, "_which", MagicMock(side_effect=[True, False, True, False, False]),
+        mgrnet,
+        "_which",
+        MagicMock(side_effect=[True, False, True, False, False]),
     ), patch.object(
         mgrnet.salt.utils.network,
         "ip_addrs",

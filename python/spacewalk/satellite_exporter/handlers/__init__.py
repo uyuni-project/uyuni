@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 # Copyright (C) 2008--2013 Red Hat, Inc.
 # Init module for the handlers used by the XML exporter listeners
 #

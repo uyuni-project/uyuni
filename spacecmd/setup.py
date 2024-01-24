@@ -18,6 +18,7 @@ def get_version_changelog():
             break
 
     if changelog:
+        # pylint: disable-next=unspecified-encoding
         with open(changelog, "r") as hcl:
             for line in hcl.readlines():
                 if "version" in line:
@@ -25,11 +26,12 @@ def get_version_changelog():
                     break
     return version
 
+
 setup(
-    name='spacecmd',
+    name="spacecmd",
     version=get_version_changelog(),
     packages=find_packages(where="src"),
     package_dir={
         "": "src",
-    }
+    },
 )
