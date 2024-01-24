@@ -28,7 +28,7 @@ html(lang=window.preferredLocale.replace("_", "-"))
 
         include /templates/common.jade
 
-        body(class='#{webTheme}' == "uyuni" ? "login-page" : "")
+        body(class='#{webTheme}' == "uyuni" ? "theme-#{webTheme} login-page" : "theme-#{webTheme}")
             #login
 
         +csrfToken

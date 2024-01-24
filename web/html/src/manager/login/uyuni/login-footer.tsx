@@ -2,8 +2,6 @@ import * as React from "react";
 
 import { docsLocale } from "core/user-preferences";
 
-import styles from "./login.css";
-
 type Props = {
   productName: string;
   webVersion: string;
@@ -11,8 +9,8 @@ type Props = {
 };
 
 const LoginFooter = (props: Props) => (
-  <footer className={styles.footer_wrapper}>
-    <div className={styles.footer_fixed_bottom}>
+  <footer>
+    <div>
       <div className="wrapper wrap">
         <div>
           <a href="/rhn/help/about.do">About</a>
@@ -20,7 +18,7 @@ const LoginFooter = (props: Props) => (
         <div className="footer-copyright">
           <a href="/rhn/help/Copyright.do">Copyright Notice</a>{" "}
         </div>
-        <div className={`footer-release ${styles.footer_release_container}`}>
+        <div className={`footer-release`}>
           {`${props.productName} release `}
           <a href={`/docs/${docsLocale}/release-notes/release-notes-server.html`}>{props.webVersion}</a>
         </div>

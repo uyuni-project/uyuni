@@ -1,6 +1,5 @@
-/* SUSE Manager Login */
 body.login-page {
-  background: @blue-light;
+  background: @uyuni-blue-100;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -8,6 +7,12 @@ body.login-page {
   overflow: auto;
   margin-top: 0px;
   color: @gray-light;
+
+  #login {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
 }
 .login-page {
   .text-left;
@@ -20,6 +25,8 @@ body.login-page {
     margin-left: 10px;
   }
   .spacewalk-main-column-layout {
+    flex: 1 0 auto;
+
     section {
       padding: 3em 0;
       width: 100%;
@@ -30,17 +37,17 @@ body.login-page {
     color: @green;
   }
   h2 {
-    font-size: 32px
+    font-size: 32px;
   }
   .btn-dark {
     color: @green;
     border: 1px solid @green;
     display: inline-block;
     text-decoration: none;
-    padding: .4em 1em;
+    padding: 0.4em 1em;
     border-radius: 4px;
     font-size: 15px;
-    margin-left: 3em
+    margin-left: 3em;
   }
   .btn-dark:hover {
     border: 1px solid darken(@green, 10%);
@@ -50,22 +57,22 @@ body.login-page {
   }
   input {
     margin-bottom: 1em;
-    background: @blue;
+    background: @uyuni-blue-900;
     color: @gray-light;
     border: 0;
     -webkit-font-smoothing: antialiased;
-    box-shadow: 0px 1px 0px 0px @blue-light, 0px 1px 0px 0px @blue inset;
-    -moz-box-shadow: 0px 1px 0px 0px @blue-light, 0px 1px 0px 0px @blue inset;
-    -webkit-box-shadow: 0px 1px 0px 0px @blue-light, 0px 1px 0px 0px @blue inset;
+    box-shadow: 0px 1px 0px 0px @uyuni-blue-100, 0px 1px 0px 0px @uyuni-blue-900 inset;
+    -moz-box-shadow: 0px 1px 0px 0px @uyuni-blue-100, 0px 1px 0px 0px @uyuni-blue-900 inset;
+    -webkit-box-shadow: 0px 1px 0px 0px @uyuni-blue-100, 0px 1px 0px 0px @uyuni-blue-900 inset;
   }
   input:focus {
     color: @white;
   }
   hr {
-    background: @blue, 3%;
+    background: @uyuni-blue-900, 3%;
     height: 1px;
     border: 0;
-    border-bottom: 1px solid @blue-light;
+    border-bottom: 1px solid @uyuni-blue-100;
   }
   input[type="submit"] {
     background: @green;
@@ -84,10 +91,10 @@ body.login-page {
     text-decoration: underline;
   }
   a:hover {
-    color: @green-dark
+    color: @green-dark;
   }
   .small-text {
-    font-size: .8em;
+    font-size: 0.8em;
   }
   label {
     font-weight: normal;
@@ -100,17 +107,19 @@ body.login-page {
     }
   }
   .alert {
-    font-size: 14px
+    font-size: 14px;
   }
   footer {
     border-bottom: 16px solid @green;
     border-top-width: 0px;
-    background-color: @blue-light;
-    position: fixed;
+    background-color: @uyuni-blue-100;
+    position: static;
     padding-bottom: 1em;
     padding-left: 0;
     color: @gray;
+
     div.wrapper {
+      padding: 0 15px;
       background-size: auto 35px;
       min-height: 35px;
     }
@@ -136,11 +145,11 @@ body.login-page {
 .keep-header {
   .login-page {
     header {
-      height: auto!important;
+      height: auto !important;
       .navbar-utility {
-        float: right!important;
+        float: right !important;
         width: auto;
-        margin-top: 0px!important;
+        margin-top: 0px !important;
       }
     }
   }
