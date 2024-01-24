@@ -51,6 +51,7 @@ Add more tasks if needed (for example, asking Maintenace to change the channel d
 - [ ] Ping the Ion squad so they submit salt to `SLE15SP1`, `SLE15SP2`, `SLE15SP3`, `SLE15SP4` and `SLE15SP5` (not needed for MUs without salt/client tools)
 - [ ] Add the IDs (and notes, if any), to the JIRA ticket, and ping the Maintenance Team at [#discuss-susemamanager-maintenance](https://app.slack.com/client/T02863RC2AC/C02DEF2U0E5)
 - [ ] Once autobuild approves all MRs, create the `Manager-X.Y-MU.X.Y.Z` branch, push it and unlock `Manager-X.Y`
+- [ ] Send an email to galaxy-devel@suse.de informing that the branch `Manager-X.Y` is unlocked , and adjust the topic on the slack [#team-susemanager](https://app.slack.com/client/T02863RC2AC/C02D78LLS04) channel
 - [ ] Once the server/proxy submission is approved, [update the project](https://build.suse.de/project/show/Devel:Galaxy:Manager:MUTesting:4.3) that rebuilds the container images and the helm chart.
   - [ ] Unlock the project [Devel:Galaxy:Manager:MUTesting:4.3](https://build.suse.de/project/show/Devel:Galaxy:Manager:MUTesting:4.3) with `osc -A https://api.suse.de unlock -m "Project unlocked for updating the sources" Devel:Galaxy:Manager:MUTesting:4.3`
   - [ ] Update the sources with:
@@ -58,6 +59,5 @@ Add more tasks if needed (for example, asking Maintenace to change the channel d
   for source in `osc -A https://api.suse.de ls Devel:Galaxy:Manager:MUTesting:4.3`; do osc -A https://api.suse.de copypac Devel:Galaxy:Manager:4.3 `echo $source | cut -d '.' -f 1` Devel:Galaxy:Manager:MUTesting:4.3 $source; done
   ```
   - [ ] After the build is complete and everything is published, lock the project again with `osc -A https://api.suse.de lock -m "Project locked for testing" Devel:Galaxy:Manager:MUTesting:4.3`.
-- [ ] Send an email to galaxy-devel@suse.de informing that the branch `Manager-X.Y` is unlocked , and adjust the topic on the slack [#team-susemanager](https://app.slack.com/client/T02863RC2AC/C02D78LLS04) channel
 - [ ] Add links to the patchinfos on top of this issue, and send for the PO with a link to this issue, and the deadline for the SR for the release notes.
 - [ ] Submit the release notes
