@@ -239,16 +239,18 @@ public class DownloadController {
     }
 
     private void processToken(Request request, CloudPaygManager payg, String channelLabel, String filename) {
-        if (payg.isPaygInstance() || checkTokens) {
-            String token = getTokenFromRequest(request);
-            // payg token checks should always run if we are payg
-            if (payg.isPaygInstance()) {
-                validateMinionInPayg(token, cloudPaygManager);
-            }
-            // additional token checks can be disabled via config
-            if (checkTokens) {
-                validateToken(token, channelLabel, filename);
-            }
+        if (!payg.isPaygInstance() && !checkTokens) {
+            return;
+        }
+
+        String token = getTokenFromRequest(request);
+        // payg token checks should always run if we are payg
+        if (payg.isPaygInstance()) {
+            validateMinionInPayg(token, cloudPaygManager);
+        }
+        // additional token checks can be disabled via config
+        if (checkTokens) {
+            validateToken(token, channelLabel, filename);
         }
     }
 
