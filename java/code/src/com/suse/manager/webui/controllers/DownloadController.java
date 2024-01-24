@@ -540,11 +540,12 @@ public class DownloadController {
      * @return the last characters of the token
      */
     private static String sanitizeToken(String token) {
-        if (token != null) {
-            String tk = StringUtil.sanitizeLogInput(token);
-            return tk.substring(tk.length() - 20);
+        if (token == null) {
+            return null;
         }
-        return token;
+
+        String tk = StringUtil.sanitizeLogInput(token);
+        return tk.substring(tk.length() - 20);
     }
 
     /**
@@ -567,10 +568,9 @@ public class DownloadController {
         );
         try {
             JwtClaims claims = JWT_CONSUMER.processToClaims(token);
-
-            if (Opt.fold(Optional.ofNullable(claims.getExpirationTime()),
-                    () -> false,
-                    exp -> exp.isBefore(NumericDate.now()))) {
+            if (Optional.ofNullable(claims.getExpirationTime())
+                .map(exp -> exp.isBefore(NumericDate.now()))
+                .orElse(false)) {
                 LOG.info("Forbidden: Token expired");
                 halt(HttpStatus.SC_FORBIDDEN, "Token expired");
             }
