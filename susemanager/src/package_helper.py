@@ -1,4 +1,3 @@
-#  pylint: disable=missing-module-docstring
 # -*- coding: utf-8 -*-
 #
 # Copyright (c) 2014 Novell, Inc.
@@ -17,7 +16,6 @@ from spacewalk.server import rhnSQL
 from spacewalk.common.rhnConfig import CFG
 import os
 
-
 def delete_package(package_id):
     """
     Performs the following operations:
@@ -27,34 +25,29 @@ def delete_package(package_id):
     """
 
     # Remove the package from all the channels
-    h = rhnSQL.prepare(
-        """
+    h = rhnSQL.prepare("""
         DELETE FROM rhnChannelPackage
          WHERE package_id = :package_id
-    """
-    )
+    """)
     h.execute(package_id=package_id)
 
     # Retrieve rpm path
-    h = rhnSQL.prepare(
-        """
+    h = rhnSQL.prepare("""
         SELECT path FROM rhnPackage
          WHERE id = :package_id
-    """
-    )
+    """)
     h.execute(package_id=package_id)
     row = h.fetchone_dict()
 
-    if row["path"]:
-        rpm = os.path.join(CFG.mount_point, row["path"])
+    if row['path']:
+        rpm = os.path.join(CFG.mount_point, row['path'])
         if os.path.isfile(rpm):
             os.remove(rpm)
 
     # Finally remove the package from the database
-    h = rhnSQL.prepare(
-        """
+    h = rhnSQL.prepare("""
         DELETE FROM rhnPackage
          WHERE id = :package_id
-    """
-    )
+    """)
     h.execute(package_id=package_id)
+

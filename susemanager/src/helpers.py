@@ -1,4 +1,3 @@
-#  pylint: disable=missing-module-docstring
 # -*- coding: utf-8 -*-
 #
 # Copyright (c) 2014 SUSE
@@ -26,7 +25,6 @@ try:
 except NameError:
     pass
 
-
 def cli_ask(msg, password=False, validator=None):
     """
     Ask input from the console. Hide the echo, in case of password or
@@ -41,11 +39,11 @@ def cli_ask(msg, password=False, validator=None):
     msg += ": "
     value = None
     while True:
-        value = password and getpass.getpass(msg) or input(msg)
+        value = (password and getpass.getpass(msg) or input(msg))
         if not validator and value:
             break
         elif validator:
-            if hasattr(validator, "__call__"):
+            if hasattr(validator, '__call__'):
                 if validator(value):
                     break
             elif type(validator) in (tuple, list):
@@ -56,11 +54,8 @@ def cli_ask(msg, password=False, validator=None):
 
     return value
 
-
-# pylint: disable-next=redefined-builtin
 class TimeoutError(Exception):
     pass
-
 
 def timeout(seconds=10, error_message=os.strerror(errno.ETIME)):
     def decorator(func):

@@ -1,4 +1,3 @@
-#  pylint: disable=missing-module-docstring
 # -*- coding: utf-8 -*-
 #
 # Copyright (C) 2014 Novell, Inc.
@@ -30,8 +29,8 @@ import os
 import sys
 
 
-# pylint: disable-next=missing-class-docstring
 class ConsoleRecorder(object):
+
     def __enter__(self):
         self._stdout = sys.stdout
         self._stderr = sys.stderr
@@ -51,16 +50,15 @@ def fake_user_input(*args):
         yield ret_value
 
 
-# pylint: disable-next=missing-class-docstring
-class FakeStdin:
+class FakeStdin():
     def __init__(self, *fake_input):
         self.fake_input = fake_input
 
     def __enter__(self):
         if sys.version_info < (3,):
-            self.patcher = mock.patch("__builtin__.raw_input")
+            self.patcher = mock.patch('__builtin__.raw_input')
         else:
-            self.patcher = mock.patch("builtins.input")
+            self.patcher = mock.patch('builtins.input')
         self.mock = self.patcher.start()
         self.mock.side_effect = fake_user_input(*self.fake_input)
         return self.mock
@@ -75,14 +73,14 @@ class FakeStdin:
 
 
 def read_data_from_fixture(filename):
-    # pylint: disable-next=unspecified-encoding
-    with open(path_to_fixture(filename), "r") as file:
-        # pylint: disable-next=eval-used
+    with open(path_to_fixture(filename), 'r') as file:
         data = eval(file.read().replace("\r\n", ""))
         return data
 
 
 def path_to_fixture(filename):
-    return os.path.join(
-        os.path.dirname(os.path.realpath(__file__)), "fixtures", filename
-    )
+    return os.path.join(os.path.dirname(os.path.realpath(__file__)),
+                        "fixtures", filename)
+
+
+

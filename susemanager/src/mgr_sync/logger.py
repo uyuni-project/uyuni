@@ -1,4 +1,3 @@
-#  pylint: disable=missing-module-docstring
 # -*- coding: utf-8 -*-
 #
 # Copyright (c) 2014 SUSE
@@ -16,7 +15,6 @@
 
 from spacewalk.common import rhnLog
 from spacewalk.common.rhnLog import log_debug
-
 
 class Logger(object):
     """
