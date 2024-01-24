@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 # -*- coding: utf-8 -*-
 #
 # Copyright (c) 2014 SUSE
@@ -15,15 +16,16 @@
 
 from enum import Enum
 
-class Channel(object):  # pylint: disable=too-many-instance-attributes
 
+# pylint: disable-next=missing-class-docstring
+class Channel(object):  # pylint: disable=too-many-instance-attributes
     class Status(str, Enum):  # pylint: disable=too-few-public-methods
         INSTALLED = "INSTALLED"
         AVAILABLE = "AVAILABLE"
         UNAVAILABLE = "UNAVAILABLE"
 
     def __init__(self, data):
-        self.base_channel = data['parent'] == 'BASE'
+        self.base_channel = data["parent"] == "BASE"
         self.summary = data["summary"]
         self.label = data["label"]
         self.name = data["name"]
@@ -42,6 +44,7 @@ class Channel(object):  # pylint: disable=too-many-instance-attributes
         if self.status == Channel.Status.AVAILABLE:
             return "[ ]"
         else:
+            # pylint: disable-next=consider-using-f-string
             return "[%s]" % str(self.status[0])
 
     def summary_or_url(self):
@@ -56,12 +59,12 @@ class Channel(object):  # pylint: disable=too-many-instance-attributes
 
     def to_ascii_row(self, compact=False):
         if not compact:
+            # pylint: disable-next=consider-using-f-string
             return "{0} {1} {2} [{3}]".format(
-                self.short_status,
-                self.name,
-                self.summary_or_url(),
-                self.label)
+                self.short_status, self.name, self.summary_or_url(), self.label
+            )
         else:
+            # pylint: disable-next=consider-using-f-string
             return "{0} {1}".format(self.short_status, self.label)
 
 
@@ -77,40 +80,48 @@ def parse_channels(data, log):
 
     channels = {}
 
-    for bc in [entry for entry in data if entry['parent'] == 'BASE']:  # pylint: disable=invalid-name
+    for bc in [
+        entry for entry in data if entry["parent"] == "BASE"
+    ]:  # pylint: disable=invalid-name
         base_channel = Channel(bc)
+        # pylint: disable-next=consider-using-f-string
         log.debug("Found base channel '{0}'".format(base_channel.name))
         channels[base_channel.label] = base_channel
 
     for entry in data:
-        if entry['parent'] == 'BASE':
+        if entry["parent"] == "BASE":
             continue
         channel = Channel(entry)
+        # pylint: disable-next=consider-using-f-string
         log.debug("Found channel '{0}'".format(channel.name))
         if channel.parent in channels:
             channels[channel.parent].add_child(channel)
         else:
+            # pylint: disable-next=consider-using-f-string
             log.debug("Base Channel '{0}' undefined".format(channel.parent))
 
     return channels
 
 
 def find_channel_by_label(label, channels, log):
-    """ Looks for channel with label
+    """Looks for channel with label
     :param channels: a data structure returned by `parse_channels`
     :param label: the label to search
     :return: None if the channel is not found, a Channel instance otherwise
     """
 
+    # pylint: disable-next=consider-using-f-string
     log.info("Searching for channels with label '{0}'".format(label))
 
     if label in list(channels.keys()):
+        # pylint: disable-next=consider-using-f-string
         log.debug("Found '{0}'".format(channels[label]))
         return channels[label]
 
     for bc in list(channels.values()):  # pylint: disable=invalid-name
         matches = [c for c in bc.children if c.label == label]
         if len(matches) == 1:
+            # pylint: disable-next=consider-using-f-string
             log.debug("Found '{0}'".format(matches[0]))
             return matches[0]
 

@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2010--2015 Red Hat, Inc.
 #
@@ -18,6 +19,10 @@ from wsgi import wsgiHandler
 
 
 def application(environ, start_response):
-    return wsgiHandler.handle(environ, start_response,
-                              "non_auth_dumper", "server.iss",
-                              "spacewalk.satellite_exporter.satexport")
+    return wsgiHandler.handle(
+        environ,
+        start_response,
+        "non_auth_dumper",
+        "server.iss",
+        "spacewalk.satellite_exporter.satexport",
+    )

@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #
@@ -16,16 +17,32 @@
 from spacewalk.satellite_tools import geniso
 
 
-def create_isos(mountpoint, outdir, prefix, lower_limit=None, upper_limit=None, copy_iso_dir=None, iso_type=None):
-    opts = ["--mountpoint=%s" % mountpoint,
-            "--file-prefix=%s" % prefix,
-            "--output=%s" % outdir,
-            "--type=%s" % iso_type]
+def create_isos(
+    mountpoint,
+    outdir,
+    prefix,
+    lower_limit=None,
+    upper_limit=None,
+    copy_iso_dir=None,
+    iso_type=None,
+):
+    opts = [
+        # pylint: disable-next=consider-using-f-string
+        "--mountpoint=%s" % mountpoint,
+        # pylint: disable-next=consider-using-f-string
+        "--file-prefix=%s" % prefix,
+        # pylint: disable-next=consider-using-f-string
+        "--output=%s" % outdir,
+        # pylint: disable-next=consider-using-f-string
+        "--type=%s" % iso_type,
+    ]
 
     if lower_limit is not None:
+        # pylint: disable-next=consider-using-f-string
         opts.append("-v%s-%s" % (lower_limit, upper_limit))
 
     if copy_iso_dir is not None:
+        # pylint: disable-next=consider-using-f-string
         opts.append("--copy-iso-dir=%s" % copy_iso_dir)
 
     geniso.main(opts)

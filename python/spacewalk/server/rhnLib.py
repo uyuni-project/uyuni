@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring,invalid-name
 #
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #
@@ -33,7 +34,7 @@ def computeSignature(*fields):
     m = hmac.new(key=str(fields[0]).encode(), digestmod=hashlib.sha256)
     for i in fields[1:]:
         i = str(i).encode()
-        m.update(struct.pack('<Q', len(i)) + i)
+        m.update(struct.pack("<Q", len(i)) + i)
     # We are still expecting the signature to be a string, so we have to
     # decode the output of encodestring(). Otherwise bootstrapping just
     # stales.
@@ -54,29 +55,32 @@ def parseRPMFilename(pkgFilename):
          XXX: Is epoch info above correct?
     OUT: [n,e,v,r, arch].
     """
-    if type(pkgFilename) != type(''):
+    # pylint: disable-next=unidiomatic-typecheck
+    if type(pkgFilename) != type(""):
         raise rhnFault(21, str(pkgFilename))  # Invalid arg.
 
     pkgFilename = os.path.basename(pkgFilename)
 
     # Check that this is a package NAME (with arch.rpm) and strip
     # that crap off.
-    pkg = pkgFilename.split('.')
+    pkg = pkgFilename.split(".")
 
     dist = pkg[-1].lower()
 
     # 'rpm' at end?
-    if dist not in ['rpm', 'deb']:
-        raise rhnFault(21, 'neither an rpm nor a deb package name: %s' % pkgFilename)
+    if dist not in ["rpm", "deb"]:
+        # pylint: disable-next=consider-using-f-string
+        raise rhnFault(21, "neither an rpm nor a deb package name: %s" % pkgFilename)
 
     # Valid architecture next?
     if check_package_arch(pkg[-2]) is None:
-        raise rhnFault(21, 'Incompatible architecture found: %s' % pkg[-2])
+        # pylint: disable-next=consider-using-f-string
+        raise rhnFault(21, "Incompatible architecture found: %s" % pkg[-2])
 
     _arch = pkg[-2]
 
     # Nuke that arch.rpm.
-    pkg = '.'.join(pkg[:-2])
+    pkg = ".".join(pkg[:-2])
 
     if dist == "deb":
         ret = list(parseDEBName(pkg))
@@ -87,60 +91,68 @@ def parseRPMFilename(pkgFilename):
         ret.append(_arch)
     return ret
 
+
 # XXX TBD where to place this function - it has to be accessible from several
 # places
 
 
 def normalize_server_arch(arch):
-    log_debug(4, 'server arch', arch)
+    log_debug(4, "server arch", arch)
 
     if arch is None:
-        return ''
+        return ""
     arch = str(arch)
-    if '-' in arch:
+    if "-" in arch:
         # Already normalized
         return arch
 
     # Fix the arch if need be
-    suffix = '-redhat-linux'
+    suffix = "-redhat-linux"
     arch = arch + suffix
     return arch
 
 
 class InvalidAction(Exception):
 
-    """ An error class to signal when we can not handle an action """
+    """An error class to signal when we can not handle an action"""
+
     pass
 
 
 class EmptyAction(Exception):
 
-    """ An error class that signals that we encountered an internal error
-        trying to handle an action through no fault of the client
+    """An error class that signals that we encountered an internal error
+    trying to handle an action through no fault of the client
     """
+
     pass
 
 
 class ShadowAction(Exception):
 
-    """ An error class for actions that should not get to the client """
+    """An error class for actions that should not get to the client"""
+
     pass
 
 
 def transpose_to_hash(arr, column_names):
-    """ Handy function to transpose an array from row-based to column-based,
-        with named columns.
+    """Handy function to transpose an array from row-based to column-based,
+    with named columns.
     """
     result = []
+    # pylint: disable-next=unused-variable
     for c in column_names:
         result.append([])
 
     colnum = len(column_names)
     for r in arr:
         if len(r) != colnum:
+            # pylint: disable-next=broad-exception-raised
             raise Exception(
-                "Mismatching number of columns: expected %s, got %s; %s" % (
-                    colnum, len(r), r))
+                # pylint: disable-next=consider-using-f-string
+                "Mismatching number of columns: expected %s, got %s; %s"
+                % (colnum, len(r), r)
+            )
         for i in range(len(r)):
             result[i].append(r[i])
 
@@ -152,33 +164,53 @@ def transpose_to_hash(arr, column_names):
     return rh
 
 
-def get_package_path(nevra, org_id, source=0, prepend="", omit_epoch=None,
-                     package_type='rpm', checksum_type=None, checksum=None):
-    """ Computes a package path, optionally prepending a prefix
-        The path will look like
-        <prefix>/<org_id>/checksum[:3]/n/e:v-r/a/checksum/n-v-r.a.rpm if not omit_epoch
-        <prefix>/<org_id>/checksum[:3]/n/v-r/a/checksum/n-v-r.a.rpm if omit_epoch
+def get_package_path(
+    nevra,
+    org_id,
+    source=0,
+    prepend="",
+    omit_epoch=None,
+    package_type="rpm",
+    # pylint: disable-next=unused-argument
+    checksum_type=None,
+    checksum=None,
+):
+    """Computes a package path, optionally prepending a prefix
+    The path will look like
+    <prefix>/<org_id>/checksum[:3]/n/e:v-r/a/checksum/n-v-r.a.rpm if not omit_epoch
+    <prefix>/<org_id>/checksum[:3]/n/v-r/a/checksum/n-v-r.a.rpm if omit_epoch
     """
     name, epoch, version, release, pkgarch = nevra
 
     # dirarch and pkgarch are special-cased for source rpms
     if source:
-        dirarch = 'SRPMS'
+        dirarch = "SRPMS"
     else:
         dirarch = pkgarch
 
-    if org_id in ['', None]:
+    if org_id in ["", None]:
         org = "NULL"
     else:
         org = org_id
 
-    if not omit_epoch and epoch not in [None, '']:
-        version = str(epoch) + ':' + version
+    if not omit_epoch and epoch not in [None, ""]:
+        version = str(epoch) + ":" + version
     # normpath sanitizes the path (removing duplicated / and such)
-    template = os.path.normpath(prepend +
-                                "/%s/%s/%s/%s-%s/%s/%s/%s-%s-%s.%s.%s")
-    return template % (org, checksum[:3], name, version, release, dirarch, checksum,
-                       name, nevra[2], release, pkgarch, package_type)
+    template = os.path.normpath(prepend + "/%s/%s/%s/%s-%s/%s/%s/%s-%s-%s.%s.%s")
+    return template % (
+        org,
+        checksum[:3],
+        name,
+        version,
+        release,
+        dirarch,
+        checksum,
+        name,
+        nevra[2],
+        release,
+        pkgarch,
+        package_type,
+    )
 
 
 # bug #161989
@@ -187,16 +219,24 @@ def get_package_path(nevra, org_id, source=0, prepend="", omit_epoch=None,
 # (as in from get_package_path) but without the filename appended.
 # This enables us to append an arbitrary file name that is not restricted to the
 # form: name-version-release.arch.type
-def get_package_path_without_package_name(nevra, org_id, prepend="",
-                                          checksum_type=None, checksum=None):
+def get_package_path_without_package_name(
+    nevra, org_id, prepend="", checksum_type=None, checksum=None
+):
     """return a package path without the package name appended"""
-    return os.path.dirname(get_package_path(nevra, org_id, prepend=prepend,
-                                            checksum_type=checksum_type, checksum=checksum))
+    return os.path.dirname(
+        get_package_path(
+            nevra,
+            org_id,
+            prepend=prepend,
+            checksum_type=checksum_type,
+            checksum=checksum,
+        )
+    )
 
 
 class CallableObj:
 
-    """ Generic callable object """
+    """Generic callable object"""
 
     def __init__(self, name, func):
         self.func = func
@@ -207,8 +247,8 @@ class CallableObj:
 
 
 def make_evr(nvre, source=False):
-    """ IN: 'e:name-version-release' or 'name-version-release:e'
-        OUT: {'name':name, 'version':version, 'release':release, 'epoch':epoch }
+    """IN: 'e:name-version-release' or 'name-version-release:e'
+    OUT: {'name':name, 'version':version, 'release':release, 'epoch':epoch }
     """
     if ":" in nvre:
         nvr, epoch = nvre.rsplit(":", 1)
@@ -219,7 +259,9 @@ def make_evr(nvre, source=False):
 
     nvr_parts = nvr.rsplit("-", 2)
     if len(nvr_parts) != 3:
-        raise rhnFault(err_code=21, err_text="NVRE is missing name, version, or release.")
+        raise rhnFault(
+            err_code=21, err_text="NVRE is missing name, version, or release."
+        )
 
     result = dict(list(zip(["name", "version", "release"], nvr_parts)))
     result["epoch"] = epoch
@@ -232,13 +274,13 @@ def make_evr(nvre, source=False):
 
 def _is_secure_path(path):
     path = posixpath.normpath(path)
-    return not (path.startswith('/') or path.startswith('../'))
+    return not (path.startswith("/") or path.startswith("../"))
 
 
 def get_crash_path(org_id, system_id, crash):
     """For a given org_id, system_id and crash, return relative path to a crash directory."""
 
-    path = os.path.join('systems', org_id, system_id, 'crashes', crash)
+    path = os.path.join("systems", org_id, system_id, "crashes", crash)
 
     if _is_secure_path(path):
         return path
@@ -258,7 +300,9 @@ def get_crashfile_path(org_id, system_id, crash, filename):
 
 def get_action_path(org_id, system_id, action_id):
     """For a given org_id, system_id, and action_id, return relative path to a store directory."""
-    path = os.path.join('systems', str(org_id), str(system_id), 'actions', str(action_id))
+    path = os.path.join(
+        "systems", str(org_id), str(system_id), "actions", str(action_id)
+    )
     if _is_secure_path(path):
         return path
 

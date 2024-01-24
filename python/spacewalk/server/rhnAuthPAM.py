@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring,invalid-name
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -25,9 +26,11 @@ def check_password(username, password, service):
     try:
         auth = pam.pam()
         if not auth.authenticate(username, password, service=service):
+            # pylint: disable-next=consider-using-f-string
             log_error("Password check failed (%s): %s" % (auth.code, auth.reason))
             return 0
         else:
             return 1
+    # pylint: disable-next=bare-except
     except:
-        raise_with_tb(rhnException('Internal PAM error'), sys.exc_info()[2])
+        raise_with_tb(rhnException("Internal PAM error"), sys.exc_info()[2])

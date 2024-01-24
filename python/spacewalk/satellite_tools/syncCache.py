@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring,invalid-name
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -28,6 +29,7 @@ from uyuni.common.rhnLib import hash_object_id
 __all__ = []
 
 
+# pylint: disable-next=missing-class-docstring
 class BaseCache:
     _compressed = 1
 
@@ -39,14 +41,14 @@ class BaseCache:
     def cache_get(self, object_id, timestamp=None):
         # Get the key
         key = self._get_key(object_id)
-        return rhnCache.get(key, modified=timestamp, raw=0,
-                            compressed=self._compressed)
+        return rhnCache.get(key, modified=timestamp, raw=0, compressed=self._compressed)
 
     def cache_set(self, object_id, value, timestamp=None):
         # Get the key
         key = self._get_key(object_id)
-        return rhnCache.set(key, value, modified=timestamp, raw=0,
-                            compressed=self._compressed)
+        return rhnCache.set(
+            key, value, modified=timestamp, raw=0, compressed=self._compressed
+        )
 
     def cache_has_key(self, object_id, timestamp=None):
         # Get the key
@@ -58,7 +60,6 @@ class BaseCache:
 
 
 class ChannelCache(BaseCache):
-
     def _get_key(self, object_id):
         return os.path.join("satsync", "channels", str(object_id))
 
@@ -96,12 +97,12 @@ class KickstartableTreesCache(BaseCache):
     _subdir = "kickstartable-trees"
 
     def _get_key(self, object_id):
-        return os.path.normpath(os.path.join("satsync", self._subdir,
-                                             object_id))
+        return os.path.normpath(os.path.join("satsync", self._subdir, object_id))
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     initCFG("server.satellite")
     c = PackageCache()
-    pid = 'package-12345'
-    c.cache_set(pid, {'a': 1, 'b': 2})
+    pid = "package-12345"
+    c.cache_set(pid, {"a": 1, "b": 2})
     print((c.cache_get(pid)))

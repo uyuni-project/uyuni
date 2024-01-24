@@ -1,4 +1,6 @@
+#  pylint: disable=missing-module-docstring
 # coding: utf-8
+# pylint: disable-next=unused-import
 from typing import Any, Dict, List, Optional, Union, Tuple
 import ssl
 import xmlrpc.client  # type: ignore
@@ -35,7 +37,12 @@ class RPCClient:
     RPC Client
     """
 
-    def __init__(self, user: str = None, password: str = None, url: str = "http://localhost/rpc/api"):
+    def __init__(
+        self,
+        user: str = None,
+        password: str = None,
+        url: str = "http://localhost/rpc/api",
+    ):
         """
         XML-RPC client interface.
 
@@ -47,7 +54,9 @@ class RPCClient:
         ctx: ssl.SSLContext = ssl.create_default_context()
         ctx.check_hostname = False
         ctx.verify_mode = ssl.CERT_NONE
-        self.conn = xmlrpc.client.ServerProxy(url, context=ctx, use_datetime=True, use_builtin_types=True)
+        self.conn = xmlrpc.client.ServerProxy(
+            url, context=ctx, use_datetime=True, use_builtin_types=True
+        )
         if user is None or password is None:
             # if user or password not set, fallback to default user defined on pillar data
             if "xmlrpc" in (__pillar__ or {}).get("uyuni", {}):
@@ -55,7 +64,9 @@ class RPCClient:
                 self._user: str = rpc_conf.get("user", "")
                 self._password: str = rpc_conf.get("password", "")
             else:
-                raise UyuniUsersException("Unable to find Pillar configuration for Uyuni XML-RPC API")
+                raise UyuniUsersException(
+                    "Unable to find Pillar configuration for Uyuni XML-RPC API"
+                )
         else:
             self._user: str = user
             self._password: str = password
@@ -79,7 +90,9 @@ class RPCClient:
             try:
                 auth_token_key = "uyuni.auth_token_" + self._user
                 if (not auth_token_key in __context__) or refresh:
-                    __context__[auth_token_key] = self.conn.auth.login(self._user, self._password)
+                    __context__[auth_token_key] = self.conn.auth.login(
+                        self._user, self._password
+                    )
             except Exception as exc:
                 log.error("Unable to login to the Uyuni server: %s", exc)
                 raise exc
@@ -92,17 +105,22 @@ class RPCClient:
             try:
                 log.debug("Calling RPC method %s", method)
                 return getattr(self.conn, method)(*((self.token,) + args))
+            # pylint: disable-next=broad-exception-caught
             except Exception as exc:
                 if exc.faultCode != AUTHENTICATION_ERROR:
                     log.error("Unable to call RPC function: %s", str(exc))
                     raise exc
+                # pylint: disable-next=pointless-string-statement
                 """
                 Authentication error when using Token, it can have expired.
                 Call a second time with a new session token
                 """
                 log.warning("Fall back to the second try due to %s", str(exc))
                 try:
-                    return getattr(self.conn, method)(*((self.get_token(refresh=True),) + args))
+                    return getattr(self.conn, method)(
+                        *((self.get_token(refresh=True),) + args)
+                    )
+                # pylint: disable-next=redefined-outer-name
                 except Exception as exc:
                     log.error("Unable to call RPC function: %s", str(exc))
                     raise exc
@@ -130,6 +148,7 @@ class UyuniRemoteObject:
         if response:
             return dict(
                 [
+                    # pylint: disable-next=consider-using-f-string
                     (k, "{0}".format(v)) if isinstance(v, datetime.datetime) else (k, v)
                     for k, v in response.items()
                 ]
@@ -146,12 +165,15 @@ class UyuniRemoteObject:
         :return: List of new dictionaries with datetime objects converted to sting
         """
         if response:
-            return [UyuniRemoteObject._convert_datetime_str(value) for value in response]
+            return [
+                UyuniRemoteObject._convert_datetime_str(value) for value in response
+            ]
         return None
 
     @staticmethod
     def _convert_bool_response(response: int):
         return response == 1
+
 
 class UyuniUser(UyuniRemoteObject):
     """
@@ -176,8 +198,15 @@ class UyuniUser(UyuniRemoteObject):
         """
         return self.client("user.listUsers")
 
-    def create(self, login: str, password: str, email: str, first_name: str = "", last_name: str = "",
-               use_pam_auth: bool = False) -> bool:
+    def create(
+        self,
+        login: str,
+        password: str,
+        email: str,
+        first_name: str = "",
+        last_name: str = "",
+        use_pam_auth: bool = False,
+    ) -> bool:
         """
         Create an Uyuni user.
         User will be created in the same organization as the authenticated user.
@@ -191,10 +220,26 @@ class UyuniUser(UyuniRemoteObject):
 
         :return: boolean, True indicates success
         """
-        return self._convert_bool_response(self.client("user.create", login, password,
-                                                       first_name, last_name, email, int(use_pam_auth)))
+        return self._convert_bool_response(
+            self.client(
+                "user.create",
+                login,
+                password,
+                first_name,
+                last_name,
+                email,
+                int(use_pam_auth),
+            )
+        )
 
-    def set_details(self, login: str, password: str, email: str, first_name: str = "", last_name: str = "") -> bool:
+    def set_details(
+        self,
+        login: str,
+        password: str,
+        email: str,
+        first_name: str = "",
+        last_name: str = "",
+    ) -> bool:
         """
         Update an Uyuni user information.
 
@@ -206,12 +251,18 @@ class UyuniUser(UyuniRemoteObject):
 
         :return: boolean, True indicates success
         """
-        return self._convert_bool_response(self.client("user.setDetails", login, {
-            "password": password,
-            "first_name": first_name,
-            "last_name": last_name,
-            "email": email
-        }))
+        return self._convert_bool_response(
+            self.client(
+                "user.setDetails",
+                login,
+                {
+                    "password": password,
+                    "first_name": first_name,
+                    "last_name": last_name,
+                    "email": email,
+                },
+            )
+        )
 
     def delete(self, login: str) -> bool:
         """
@@ -255,7 +306,9 @@ class UyuniUser(UyuniRemoteObject):
         """
         return self._convert_bool_response(self.client("user.removeRole", login, role))
 
-    def list_assigned_system_groups(self, login: str) -> List[Dict[str, Union[int, str]]]:
+    def list_assigned_system_groups(
+        self, login: str
+    ) -> List[Dict[str, Union[int, str]]]:
         """
         Returns the system groups that a user can administer.
 
@@ -265,7 +318,9 @@ class UyuniUser(UyuniRemoteObject):
         """
         return self.client("user.listAssignedSystemGroups", login)
 
-    def add_assigned_system_groups(self, login: str, server_group_names: List[str], set_default: bool = False) -> int:
+    def add_assigned_system_groups(
+        self, login: str, server_group_names: List[str], set_default: bool = False
+    ) -> int:
         """
         Add system groups to a user's list of assigned system groups.
 
@@ -275,10 +330,15 @@ class UyuniUser(UyuniRemoteObject):
 
         :return: boolean, True indicates success
         """
-        return self._convert_bool_response(self.client("user.addAssignedSystemGroups",
-                                                       login, server_group_names, set_default))
+        return self._convert_bool_response(
+            self.client(
+                "user.addAssignedSystemGroups", login, server_group_names, set_default
+            )
+        )
 
-    def remove_assigned_system_groups(self, login: str, server_group_names: List[str], set_default: bool = False) -> int:
+    def remove_assigned_system_groups(
+        self, login: str, server_group_names: List[str], set_default: bool = False
+    ) -> int:
         """
         Remove system groups from a user's list of assigned system groups
 
@@ -288,10 +348,17 @@ class UyuniUser(UyuniRemoteObject):
 
         :return: boolean, True indicates success
         """
-        return self._convert_bool_response(self.client("user.removeAssignedSystemGroups",
-                                                       login, server_group_names, set_default))
+        return self._convert_bool_response(
+            self.client(
+                "user.removeAssignedSystemGroups",
+                login,
+                server_group_names,
+                set_default,
+            )
+        )
 
 
+# pylint: disable-next=missing-class-docstring
 class UyuniChannel(UyuniRemoteObject):
     def list_manageable_channels(self) -> List[Dict[str, Union[int, str]]]:
         """
@@ -310,6 +377,7 @@ class UyuniChannel(UyuniRemoteObject):
         return self.client("channel.listMyChannels")
 
 
+# pylint: disable-next=missing-class-docstring
 class UyuniChannelSoftware(UyuniRemoteObject):
     def set_user_manageable(self, channel_label: str, login: str, access: bool) -> int:
         """
@@ -323,10 +391,15 @@ class UyuniChannelSoftware(UyuniRemoteObject):
 
         :return: boolean, True indicates success
         """
-        return self._convert_bool_response(self.client("channel.software.setUserManageable",
-                                                       channel_label, login, access))
+        return self._convert_bool_response(
+            self.client(
+                "channel.software.setUserManageable", channel_label, login, access
+            )
+        )
 
-    def set_user_subscribable(self, channel_label: str, login: str, access: bool) -> int:
+    def set_user_subscribable(
+        self, channel_label: str, login: str, access: bool
+    ) -> int:
         """
         Set the subscribable flag for a given channel and user.
         If value is set to 'true', this method will give the user subscribe permissions to the channel.
@@ -338,8 +411,11 @@ class UyuniChannelSoftware(UyuniRemoteObject):
 
         :return: boolean, True indicates success
         """
-        return self._convert_bool_response(self.client("channel.software.setUserSubscribable",
-                                                       channel_label, login, access))
+        return self._convert_bool_response(
+            self.client(
+                "channel.software.setUserSubscribable", channel_label, login, access
+            )
+        )
 
     def is_user_manageable(self, channel_label: str, login: str) -> bool:
         """
@@ -350,7 +426,9 @@ class UyuniChannelSoftware(UyuniRemoteObject):
 
         :return: boolean which indicates if user can manage channel or not
         """
-        return self._convert_bool_response(self.client("channel.software.isUserManageable", channel_label, login))
+        return self._convert_bool_response(
+            self.client("channel.software.isUserManageable", channel_label, login)
+        )
 
     def is_user_subscribable(self, channel_label: str, login: str) -> bool:
         """
@@ -361,7 +439,9 @@ class UyuniChannelSoftware(UyuniRemoteObject):
 
         :return: boolean which indicates if user subscribe the channel or not
         """
-        return self._convert_bool_response(self.client("channel.software.isUserSubscribable", channel_label, login))
+        return self._convert_bool_response(
+            self.client("channel.software.isUserSubscribable", channel_label, login)
+        )
 
     def is_globally_subscribable(self, channel_label: str) -> bool:
         """
@@ -371,7 +451,9 @@ class UyuniChannelSoftware(UyuniRemoteObject):
 
         :return: boolean which indicates if channel is globally subscribable
         """
-        return self._convert_bool_response(self.client("channel.software.isGloballySubscribable", channel_label))
+        return self._convert_bool_response(
+            self.client("channel.software.isGloballySubscribable", channel_label)
+        )
 
 
 class UyuniOrg(UyuniRemoteObject):
@@ -397,9 +479,17 @@ class UyuniOrg(UyuniRemoteObject):
         """
         return self.client("org.getDetails", name)
 
-    def create(self, name: str, org_admin_user: str, org_admin_password: str,
-               first_name: str, last_name: str, email: str,
-               admin_prefix: str = "Mr.", pam: bool = False) -> Dict[str, Union[str, int, bool]]:
+    def create(
+        self,
+        name: str,
+        org_admin_user: str,
+        org_admin_password: str,
+        first_name: str,
+        last_name: str,
+        email: str,
+        admin_prefix: str = "Mr.",
+        pam: bool = False,
+    ) -> Dict[str, Union[str, int, bool]]:
         """
         Create a new Uyuni org.
 
@@ -414,8 +504,17 @@ class UyuniOrg(UyuniRemoteObject):
 
         :return: dictionary with org information
         """
-        return self.client("org.create", name, org_admin_user, org_admin_password, admin_prefix,
-                           first_name, last_name, email, pam)
+        return self.client(
+            "org.create",
+            name,
+            org_admin_user,
+            org_admin_password,
+            admin_prefix,
+            first_name,
+            last_name,
+            email,
+            pam,
+        )
 
     def delete(self, name: str) -> int:
         """
@@ -440,8 +539,8 @@ class UyuniOrg(UyuniRemoteObject):
         return self.client("org.updateName", org_id, name)
 
 
+# pylint: disable-next=missing-class-docstring
 class UyuniOrgTrust(UyuniRemoteObject):
-
     def __init__(self, user: str = None, password: str = None):
         UyuniRemoteObject.__init__(self, user, password)
         self._org_manager = UyuniOrg(user, password)
@@ -485,7 +584,9 @@ class UyuniOrgTrust(UyuniRemoteObject):
 
         :return: boolean, True indicates success
         """
-        return self._convert_bool_response(self.client("org.trusts.addTrust", org_id, org_trust_id))
+        return self._convert_bool_response(
+            self.client("org.trusts.addTrust", org_id, org_trust_id)
+        )
 
     def remove_trust_by_name(self, org_name: str, org_untrust: str) -> int:
         """
@@ -509,7 +610,9 @@ class UyuniOrgTrust(UyuniRemoteObject):
 
         :return: boolean, True indicates success
         """
-        return self._convert_bool_response(self.client("org.trusts.removeTrust", org_id, org_untrust_id))
+        return self._convert_bool_response(
+            self.client("org.trusts.removeTrust", org_id, org_untrust_id)
+        )
 
 
 class UyuniSystemgroup(UyuniRemoteObject):
@@ -575,9 +678,18 @@ class UyuniSystemgroup(UyuniRemoteObject):
         :return: List of system information
         """
         return self._convert_datetime_list(
-            self.client("systemgroup.listSystemsMinimal" if minimal else "systemgroup.listSystems", name))
+            self.client(
+                "systemgroup.listSystemsMinimal"
+                if minimal
+                else "systemgroup.listSystems",
+                name,
+            )
+        )
 
-    def add_remove_systems(self, name: str, add_remove: bool, system_ids: List[int] = []) -> int:
+    # pylint: disable-next=dangerous-default-value
+    def add_remove_systems(
+        self, name: str, add_remove: bool, system_ids: List[int] = []
+    ) -> int:
         """
         Add or remove systems from a system group
 
@@ -587,11 +699,13 @@ class UyuniSystemgroup(UyuniRemoteObject):
 
         :return: boolean, True indicates success
         """
-        return self._convert_bool_response(self.client("systemgroup.addOrRemoveSystems", name, system_ids, add_remove))
+        return self._convert_bool_response(
+            self.client("systemgroup.addOrRemoveSystems", name, system_ids, add_remove)
+        )
 
 
+# pylint: disable-next=missing-class-docstring
 class UyuniSystems(UyuniRemoteObject):
-
     def get_minion_id_map(self, refresh: bool = False) -> Dict[str, int]:
         """
         Returns a map from minion ID to Uyuni system ID for all systems a user has access to
@@ -611,6 +725,7 @@ class UyuniActivationKey(UyuniRemoteObject):
     CRUD operations on Activation Keys.
     """
 
+    # pylint: disable-next=redefined-builtin
     def get_details(self, id: str) -> Dict[str, Any]:
         """
         Get details of an Uyuni Activation Key
@@ -621,6 +736,7 @@ class UyuniActivationKey(UyuniRemoteObject):
         """
         return self.client("activationkey.getDetails", id)
 
+    # pylint: disable-next=redefined-builtin
     def delete(self, id: str) -> bool:
         """
         Deletes an Uyuni Activation Key
@@ -631,11 +747,16 @@ class UyuniActivationKey(UyuniRemoteObject):
         """
         return self._convert_bool_response(self.client("activationkey.delete", id))
 
-    def create(self, key: str, description: str,
-               base_channel_label: str = '',
-               usage_limit: int = 0,
-               system_types: List[int] = [],
-               universal_default: bool = False) -> bool:
+    # pylint: disable-next=dangerous-default-value
+    def create(
+        self,
+        key: str,
+        description: str,
+        base_channel_label: str = "",
+        usage_limit: int = 0,
+        system_types: List[int] = [],
+        universal_default: bool = False,
+    ) -> bool:
         """
         Creates an Uyuni Activation Key
 
@@ -650,15 +771,27 @@ class UyuniActivationKey(UyuniRemoteObject):
 
         :return: boolean, True indicates success
         """
-        return self._convert_bool_response(self.client("activationkey.create", key, description, base_channel_label,
-                                                        usage_limit, system_types, universal_default))
+        return self._convert_bool_response(
+            self.client(
+                "activationkey.create",
+                key,
+                description,
+                base_channel_label,
+                usage_limit,
+                system_types,
+                universal_default,
+            )
+        )
 
-    def set_details(self, key: str,
-                    description: str = None,
-                    contact_method: str = None,
-                    base_channel_label: str = None,
-                    usage_limit: int = None,
-                    universal_default: bool = False):
+    def set_details(
+        self,
+        key: str,
+        description: str = None,
+        contact_method: str = None,
+        base_channel_label: str = None,
+        usage_limit: int = None,
+        universal_default: bool = False,
+    ):
         """
         Updates an Uyuni Activation Key
 
@@ -671,19 +804,21 @@ class UyuniActivationKey(UyuniRemoteObject):
 
         :return: boolean, True indicates success
         """
-        data = {'universal_default': universal_default}
+        data = {"universal_default": universal_default}
         if description:
-            data['description'] = description
+            data["description"] = description
         if base_channel_label is not None:
-            data['base_channel_label'] = base_channel_label
+            data["base_channel_label"] = base_channel_label
         if contact_method:
-            data['contact_method'] = contact_method
+            data["contact_method"] = contact_method
 
         if usage_limit:
-            data['usage_limit'] = usage_limit
+            data["usage_limit"] = usage_limit
         else:
-            data['unlimited_usage_limit'] = True
-        return self._convert_bool_response(self.client("activationkey.setDetails", key, data))
+            data["unlimited_usage_limit"] = True
+        return self._convert_bool_response(
+            self.client("activationkey.setDetails", key, data)
+        )
 
     def add_entitlements(self, key: str, system_types: List[str]) -> bool:
         """
@@ -694,7 +829,9 @@ class UyuniActivationKey(UyuniRemoteObject):
 
         :return: boolean, True indicates success
         """
-        return self._convert_bool_response(self.client("activationkey.addEntitlements", key, system_types))
+        return self._convert_bool_response(
+            self.client("activationkey.addEntitlements", key, system_types)
+        )
 
     def remove_entitlements(self, key: str, system_types: List[str]) -> bool:
         """
@@ -705,7 +842,9 @@ class UyuniActivationKey(UyuniRemoteObject):
 
         :return: boolean, True indicates success
         """
-        return self._convert_bool_response(self.client("activationkey.removeEntitlements", key, system_types))
+        return self._convert_bool_response(
+            self.client("activationkey.removeEntitlements", key, system_types)
+        )
 
     def add_child_channels(self, key: str, child_channels: List[str]) -> bool:
         """
@@ -716,7 +855,9 @@ class UyuniActivationKey(UyuniRemoteObject):
 
         :return: boolean, True indicates success
         """
-        return self._convert_bool_response(self.client("activationkey.addChildChannels", key, child_channels))
+        return self._convert_bool_response(
+            self.client("activationkey.addChildChannels", key, child_channels)
+        )
 
     def remove_child_channels(self, key: str, child_channels: List[str]) -> bool:
         """
@@ -727,7 +868,9 @@ class UyuniActivationKey(UyuniRemoteObject):
 
         :return: boolean, True indicates success
         """
-        return self._convert_bool_response(self.client("activationkey.removeChildChannels", key, child_channels))
+        return self._convert_bool_response(
+            self.client("activationkey.removeChildChannels", key, child_channels)
+        )
 
     def check_config_deployment(self, key: str) -> bool:
         """
@@ -737,7 +880,9 @@ class UyuniActivationKey(UyuniRemoteObject):
 
         :return: boolean, true if enabled, false if disabled,
         """
-        return self._convert_bool_response(self.client("activationkey.checkConfigDeployment", key))
+        return self._convert_bool_response(
+            self.client("activationkey.checkConfigDeployment", key)
+        )
 
     def enable_config_deployment(self, key: str) -> bool:
         """
@@ -747,7 +892,9 @@ class UyuniActivationKey(UyuniRemoteObject):
 
         :return: boolean, True indicates success
         """
-        return self._convert_bool_response(self.client("activationkey.enableConfigDeployment", key))
+        return self._convert_bool_response(
+            self.client("activationkey.enableConfigDeployment", key)
+        )
 
     def disable_config_deployment(self, key: str) -> bool:
         """
@@ -757,7 +904,9 @@ class UyuniActivationKey(UyuniRemoteObject):
 
         :return: boolean, True indicates success
         """
-        return self._convert_bool_response(self.client("activationkey.disableConfigDeployment", key))
+        return self._convert_bool_response(
+            self.client("activationkey.disableConfigDeployment", key)
+        )
 
     def add_packages(self, key: str, packages: List[Any]) -> bool:
         """
@@ -768,7 +917,9 @@ class UyuniActivationKey(UyuniRemoteObject):
 
         :return: boolean, True indicates success
         """
-        return self._convert_bool_response(self.client("activationkey.addPackages", key, packages))
+        return self._convert_bool_response(
+            self.client("activationkey.addPackages", key, packages)
+        )
 
     def remove_packages(self, key: str, packages: List[Any]) -> bool:
         """
@@ -779,7 +930,9 @@ class UyuniActivationKey(UyuniRemoteObject):
 
         :return: boolean, True indicates success
         """
-        return self._convert_bool_response(self.client("activationkey.removePackages", key, packages))
+        return self._convert_bool_response(
+            self.client("activationkey.removePackages", key, packages)
+        )
 
     def add_server_groups(self, key: str, server_groups: List[int]) -> bool:
         """
@@ -790,7 +943,9 @@ class UyuniActivationKey(UyuniRemoteObject):
 
         :return: boolean, True indicates success
         """
-        return self._convert_bool_response(self.client("activationkey.addServerGroups", key, server_groups))
+        return self._convert_bool_response(
+            self.client("activationkey.addServerGroups", key, server_groups)
+        )
 
     def remove_server_groups(self, key: str, server_groups: List[int]) -> bool:
         """
@@ -801,19 +956,23 @@ class UyuniActivationKey(UyuniRemoteObject):
 
         :return: boolean, True indicates success
         """
-        return self._convert_bool_response(self.client("activationkey.removeServerGroups", key, server_groups))
+        return self._convert_bool_response(
+            self.client("activationkey.removeServerGroups", key, server_groups)
+        )
 
     def list_config_channels(self, key: str) -> List[Dict[str, Any]]:
         """
         List configuration channels associated to an activation key.
-    
+
         :param key: activation key name
 
         :return: List of configuration channels
         """
         return self.client("activationkey.listConfigChannels", key)
 
-    def set_config_channels(self, keys: List[str], config_channel_label: List[str]) -> bool:
+    def set_config_channels(
+        self, keys: List[str], config_channel_label: List[str]
+    ) -> bool:
         """
         Replace the existing set of configuration channels on the given activation keys.
         Channels are ranked by their order in the array.
@@ -823,7 +982,9 @@ class UyuniActivationKey(UyuniRemoteObject):
 
         :return: boolean, True indicates success
         """
-        return self._convert_bool_response(self.client("activationkey.setConfigChannels", keys, config_channel_label))
+        return self._convert_bool_response(
+            self.client("activationkey.setConfigChannels", keys, config_channel_label)
+        )
 
 
 class UyuniChildMasterIntegration:
@@ -831,6 +992,7 @@ class UyuniChildMasterIntegration:
     Integration with the Salt Master which is running
     on the same host as this current Minion.
     """
+
     DEFAULT_MASTER_CONFIG_PATH = "/etc/salt/master"
 
     def __init__(self):
@@ -843,14 +1005,18 @@ class UyuniChildMasterIntegration:
         :return: path to salt master configuration file
         """
         cfg_path = UyuniChildMasterIntegration.DEFAULT_MASTER_CONFIG_PATH
-        for path in __pillar__.get("uyuni", {}).get("masters", {}).get("configs", [cfg_path]):
+        for path in (
+            __pillar__.get("uyuni", {}).get("masters", {}).get("configs", [cfg_path])
+        ):
             if os.path.exists(path):
                 cfg_path = path
                 break
 
         return cfg_path
 
-    def select_minions(self, target: str, target_type: str = "glob") -> Dict[str, Union[List[str], bool]]:
+    def select_minions(
+        self, target: str, target_type: str = "glob"
+    ) -> Dict[str, Union[List[str], bool]]:
         """
         Select minion IDs that matches the target expression.
 
@@ -863,6 +1029,7 @@ class UyuniChildMasterIntegration:
         return self._minions.check_minions(expr=target, tgt_type=target_type)
 
 
+# pylint: disable-next=invalid-name
 def __virtual__():
     """
     Provide Uyuni configuration state module.
@@ -875,7 +1042,10 @@ def __virtual__():
 
 # Users
 
-def user_get_details(login, password=None, org_admin_user=None, org_admin_password=None):
+
+def user_get_details(
+    login, password=None, org_admin_user=None, org_admin_password=None
+):
     """
     Get details of an Uyuni user
     If password is provided as a parameter, then it will be used to authenticate
@@ -889,8 +1059,10 @@ def user_get_details(login, password=None, org_admin_user=None, org_admin_passwo
 
     :return: The user information
     """
-    return UyuniUser(org_admin_user if password is None else login,
-                     org_admin_password if password is None else password).get_details(login)
+    return UyuniUser(
+        org_admin_user if password is None else login,
+        org_admin_password if password is None else password,
+    ).get_details(login)
 
 
 def user_list_users(org_admin_user=None, org_admin_password=None):
@@ -905,8 +1077,16 @@ def user_list_users(org_admin_user=None, org_admin_password=None):
     return UyuniUser(org_admin_user, org_admin_password).list_users()
 
 
-def user_create(login, password, email, first_name, last_name, use_pam_auth=False,
-                org_admin_user=None, org_admin_password=None):
+def user_create(
+    login,
+    password,
+    email,
+    first_name,
+    last_name,
+    use_pam_auth=False,
+    org_admin_user=None,
+    org_admin_password=None,
+):
     """
     Create an Uyuni user.
 
@@ -921,13 +1101,25 @@ def user_create(login, password, email, first_name, last_name, use_pam_auth=Fals
 
     :return: boolean, True indicates success
     """
-    return UyuniUser(org_admin_user, org_admin_password).create(login=login, password=password, email=email,
-                                                                first_name=first_name, last_name=last_name,
-                                                                use_pam_auth=use_pam_auth)
+    return UyuniUser(org_admin_user, org_admin_password).create(
+        login=login,
+        password=password,
+        email=email,
+        first_name=first_name,
+        last_name=last_name,
+        use_pam_auth=use_pam_auth,
+    )
 
 
-def user_set_details(login, password, email, first_name=None, last_name=None,
-                     org_admin_user=None, org_admin_password=None):
+def user_set_details(
+    login,
+    password,
+    email,
+    first_name=None,
+    last_name=None,
+    org_admin_user=None,
+    org_admin_password=None,
+):
     """
     Update an Uyuni user.
 
@@ -941,8 +1133,13 @@ def user_set_details(login, password, email, first_name=None, last_name=None,
 
     :return: boolean, True indicates success
     """
-    return UyuniUser(org_admin_user, org_admin_password).set_details(login=login, password=password, email=email,
-                                                                     first_name=first_name, last_name=last_name)
+    return UyuniUser(org_admin_user, org_admin_password).set_details(
+        login=login,
+        password=password,
+        email=email,
+        first_name=first_name,
+        last_name=last_name,
+    )
 
 
 def user_delete(login, org_admin_user=None, org_admin_password=None):
@@ -972,8 +1169,10 @@ def user_list_roles(login, password=None, org_admin_user=None, org_admin_passwor
 
     :return: List of user roles assigned
     """
-    return UyuniUser(org_admin_user if password is None else login,
-                     org_admin_password if password is None else password).list_roles(login)
+    return UyuniUser(
+        org_admin_user if password is None else login,
+        org_admin_password if password is None else password,
+    ).list_roles(login)
 
 
 def user_add_role(login, role, org_admin_user=None, org_admin_password=None):
@@ -987,7 +1186,9 @@ def user_add_role(login, role, org_admin_user=None, org_admin_password=None):
 
     :return: boolean, True indicates success
     """
-    return UyuniUser(org_admin_user, org_admin_password).add_role(login=login, role=role)
+    return UyuniUser(org_admin_user, org_admin_password).add_role(
+        login=login, role=role
+    )
 
 
 def user_remove_role(login, role, org_admin_user=None, org_admin_password=None):
@@ -1001,10 +1202,14 @@ def user_remove_role(login, role, org_admin_user=None, org_admin_password=None):
 
     :return: boolean, True indicates success
     """
-    return UyuniUser(org_admin_user, org_admin_password).remove_role(login=login, role=role)
+    return UyuniUser(org_admin_user, org_admin_password).remove_role(
+        login=login, role=role
+    )
 
 
-def user_list_assigned_system_groups(login, org_admin_user=None, org_admin_password=None):
+def user_list_assigned_system_groups(
+    login, org_admin_user=None, org_admin_password=None
+):
     """
     Returns the system groups that a user can administer.
 
@@ -1014,12 +1219,18 @@ def user_list_assigned_system_groups(login, org_admin_user=None, org_admin_passw
 
     :return: List of system groups that a user can administer
     """
-    return UyuniUser(org_admin_user,
-                     org_admin_password).list_assigned_system_groups(login=login)
+    return UyuniUser(org_admin_user, org_admin_password).list_assigned_system_groups(
+        login=login
+    )
 
 
-def user_add_assigned_system_groups(login, server_group_names, set_default=False,
-                                    org_admin_user=None, org_admin_password=None):
+def user_add_assigned_system_groups(
+    login,
+    server_group_names,
+    set_default=False,
+    org_admin_user=None,
+    org_admin_password=None,
+):
     """
     Add system groups to user's list of assigned system groups.
 
@@ -1031,14 +1242,18 @@ def user_add_assigned_system_groups(login, server_group_names, set_default=False
 
     :return: boolean, True indicates success
     """
-    return UyuniUser(org_admin_user,
-                     org_admin_password).add_assigned_system_groups(login=login,
-                                                                    server_group_names=server_group_names,
-                                                                    set_default=set_default)
+    return UyuniUser(org_admin_user, org_admin_password).add_assigned_system_groups(
+        login=login, server_group_names=server_group_names, set_default=set_default
+    )
 
 
-def user_remove_assigned_system_groups(login, server_group_names, set_default=False,
-                                       org_admin_user=None, org_admin_password=None):
+def user_remove_assigned_system_groups(
+    login,
+    server_group_names,
+    set_default=False,
+    org_admin_user=None,
+    org_admin_password=None,
+):
     """
     Remove system groups from a user's list of assigned system groups.
 
@@ -1050,13 +1265,13 @@ def user_remove_assigned_system_groups(login, server_group_names, set_default=Fa
 
     :return: boolean, True indicates success
     """
-    return UyuniUser(org_admin_user,
-                     org_admin_password).remove_assigned_system_groups(login=login,
-                                                                       server_group_names=server_group_names,
-                                                                       set_default=set_default)
+    return UyuniUser(org_admin_user, org_admin_password).remove_assigned_system_groups(
+        login=login, server_group_names=server_group_names, set_default=set_default
+    )
 
 
 # Software channels
+
 
 def channel_list_manageable_channels(login, password):
     """
@@ -1082,8 +1297,9 @@ def channel_list_my_channels(login, password):
     return UyuniChannel(login, password).list_my_channels()
 
 
-def channel_software_set_user_manageable(channel_label, login, access,
-                                         org_admin_user=None, org_admin_password=None):
+def channel_software_set_user_manageable(
+    channel_label, login, access, org_admin_user=None, org_admin_password=None
+):
     """
     Set the manageable flag for a given channel and user.
     If access is set to 'true', this method will give the user manage permissions to the channel.
@@ -1097,11 +1313,14 @@ def channel_software_set_user_manageable(channel_label, login, access,
 
     :return: boolean, True indicates success
     """
-    return UyuniChannelSoftware(org_admin_user, org_admin_password).set_user_manageable(channel_label, login, access)
+    return UyuniChannelSoftware(org_admin_user, org_admin_password).set_user_manageable(
+        channel_label, login, access
+    )
 
 
-def channel_software_set_user_subscribable(channel_label, login, access,
-                                           org_admin_user=None, org_admin_password=None):
+def channel_software_set_user_subscribable(
+    channel_label, login, access, org_admin_user=None, org_admin_password=None
+):
     """
     Set the subscribable flag for a given channel and user.
     If value is set to 'true', this method will give the user subscribe permissions to the channel.
@@ -1115,10 +1334,14 @@ def channel_software_set_user_subscribable(channel_label, login, access,
 
     :return: boolean, True indicates success
     """
-    return UyuniChannelSoftware(org_admin_user, org_admin_password).set_user_subscribable(channel_label, login, access)
+    return UyuniChannelSoftware(
+        org_admin_user, org_admin_password
+    ).set_user_subscribable(channel_label, login, access)
 
 
-def channel_software_is_user_manageable(channel_label, login, org_admin_user=None, org_admin_password=None):
+def channel_software_is_user_manageable(
+    channel_label, login, org_admin_user=None, org_admin_password=None
+):
     """
     Returns whether the channel may be managed by the given user.
 
@@ -1129,10 +1352,14 @@ def channel_software_is_user_manageable(channel_label, login, org_admin_user=Non
 
     :return: boolean which indicates if user can manage channel or not
     """
-    return UyuniChannelSoftware(org_admin_user, org_admin_password).is_user_manageable(channel_label, login)
+    return UyuniChannelSoftware(org_admin_user, org_admin_password).is_user_manageable(
+        channel_label, login
+    )
 
 
-def channel_software_is_user_subscribable(channel_label, login, org_admin_user=None, org_admin_password=None):
+def channel_software_is_user_subscribable(
+    channel_label, login, org_admin_user=None, org_admin_password=None
+):
     """
     Returns whether the channel may be subscribed by the given user.
 
@@ -1143,10 +1370,14 @@ def channel_software_is_user_subscribable(channel_label, login, org_admin_user=N
 
     :return: boolean which indicates if user subscribe the channel or not
     """
-    return UyuniChannelSoftware(org_admin_user, org_admin_password).is_user_subscribable(channel_label, login)
+    return UyuniChannelSoftware(
+        org_admin_user, org_admin_password
+    ).is_user_subscribable(channel_label, login)
 
 
-def channel_software_is_globally_subscribable(channel_label, org_admin_user=None, org_admin_password=None):
+def channel_software_is_globally_subscribable(
+    channel_label, org_admin_user=None, org_admin_password=None
+):
     """
     Returns whether the channel is globally subscribable on the organization
 
@@ -1156,7 +1387,9 @@ def channel_software_is_globally_subscribable(channel_label, org_admin_user=None
 
     :return: boolean which indicates if channel is globally subscribable
     """
-    return UyuniChannelSoftware(org_admin_user, org_admin_password).is_globally_subscribable(channel_label)
+    return UyuniChannelSoftware(
+        org_admin_user, org_admin_password
+    ).is_globally_subscribable(channel_label)
 
 
 def org_list_orgs(admin_user=None, admin_password=None):
@@ -1200,8 +1433,18 @@ def org_delete(name, admin_user=None, admin_password=None):
     return UyuniOrg(admin_user, admin_password).delete(name)
 
 
-def org_create(name, org_admin_user, org_admin_password, first_name, last_name, email,
-               admin_prefix="Mr.", pam=False, admin_user=None, admin_password=None):
+def org_create(
+    name,
+    org_admin_user,
+    org_admin_password,
+    first_name,
+    last_name,
+    email,
+    admin_prefix="Mr.",
+    pam=False,
+    admin_user=None,
+    admin_password=None,
+):
     """
     Create an Uyuni organization
     Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action
@@ -1219,10 +1462,16 @@ def org_create(name, org_admin_user, org_admin_password, first_name, last_name, 
 
     :return: dictionary with org information
     """
-    return UyuniOrg(admin_user, admin_password).create(name=name, org_admin_user=org_admin_user,
-                                                       org_admin_password=org_admin_password,
-                                                       first_name=first_name, last_name=last_name, email=email,
-                                                       admin_prefix=admin_prefix, pam=pam)
+    return UyuniOrg(admin_user, admin_password).create(
+        name=name,
+        org_admin_user=org_admin_user,
+        org_admin_password=org_admin_password,
+        first_name=first_name,
+        last_name=last_name,
+        email=email,
+        admin_prefix=admin_prefix,
+        pam=pam,
+    )
 
 
 def org_update_name(org_id, name, admin_user=None, admin_password=None):
@@ -1266,7 +1515,9 @@ def org_trust_list_trusts(org_name, admin_user=None, admin_password=None):
     return UyuniOrgTrust(admin_user, admin_password).list_trusts(org_name)
 
 
-def org_trust_add_trust_by_name(org_name, org_trust, admin_user=None, admin_password=None):
+def org_trust_add_trust_by_name(
+    org_name, org_trust, admin_user=None, admin_password=None
+):
     """
     Add an organization to the list of trusted organizations.
     Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action
@@ -1278,7 +1529,9 @@ def org_trust_add_trust_by_name(org_name, org_trust, admin_user=None, admin_pass
 
     :return: boolean, True indicates success
     """
-    return UyuniOrgTrust(admin_user, admin_password).add_trust_by_name(org_name, org_trust)
+    return UyuniOrgTrust(admin_user, admin_password).add_trust_by_name(
+        org_name, org_trust
+    )
 
 
 def org_trust_add_trust(org_id, org_trust_id, admin_user=None, admin_password=None):
@@ -1296,7 +1549,9 @@ def org_trust_add_trust(org_id, org_trust_id, admin_user=None, admin_password=No
     return UyuniOrgTrust(admin_user, admin_password).add_trust(org_id, org_trust_id)
 
 
-def org_trust_remove_trust_by_name(org_name, org_untrust, admin_user=None, admin_password=None):
+def org_trust_remove_trust_by_name(
+    org_name, org_untrust, admin_user=None, admin_password=None
+):
     """
     Remove an organization from the list of trusted organizations.
     Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action
@@ -1308,10 +1563,14 @@ def org_trust_remove_trust_by_name(org_name, org_untrust, admin_user=None, admin
 
     :return: boolean, True indicates success
     """
-    return UyuniOrgTrust(admin_user, admin_password).remove_trust_by_name(org_name, org_untrust)
+    return UyuniOrgTrust(admin_user, admin_password).remove_trust_by_name(
+        org_name, org_untrust
+    )
 
 
-def org_trust_remove_trust(org_id, org_untrust_id, admin_user=None, admin_password=None):
+def org_trust_remove_trust(
+    org_id, org_untrust_id, admin_user=None, admin_password=None
+):
     """
     Remove an organization from the list of trusted organizations.
     Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action
@@ -1323,10 +1582,13 @@ def org_trust_remove_trust(org_id, org_untrust_id, admin_user=None, admin_passwo
 
     :return: boolean, True indicates success
     """
-    return UyuniOrgTrust(admin_user, admin_password).remove_trust(org_id, org_untrust_id)
+    return UyuniOrgTrust(admin_user, admin_password).remove_trust(
+        org_id, org_untrust_id
+    )
 
 
 # System Groups
+
 
 def systemgroup_create(name, descr, org_admin_user=None, org_admin_password=None):
     """
@@ -1339,7 +1601,9 @@ def systemgroup_create(name, descr, org_admin_user=None, org_admin_password=None
 
     :return: details of the system group
     """
-    return UyuniSystemgroup(org_admin_user, org_admin_password).create(name=name, description=descr)
+    return UyuniSystemgroup(org_admin_user, org_admin_password).create(
+        name=name, description=descr
+    )
 
 
 def systemgroup_list_all_groups(username, password):
@@ -1377,7 +1641,9 @@ def systemgroup_update(name, descr, org_admin_user=None, org_admin_password=None
 
     :return: details of the system group
     """
-    return UyuniSystemgroup(org_admin_user, org_admin_password).update(name=name, description=descr)
+    return UyuniSystemgroup(org_admin_user, org_admin_password).update(
+        name=name, description=descr
+    )
 
 
 def systemgroup_delete(name, org_admin_user=None, org_admin_password=None):
@@ -1393,7 +1659,9 @@ def systemgroup_delete(name, org_admin_user=None, org_admin_password=None):
     return UyuniSystemgroup(org_admin_user, org_admin_password).delete(name=name)
 
 
-def systemgroup_list_systems(name, minimal=True, org_admin_user=None, org_admin_password=None):
+def systemgroup_list_systems(
+    name, minimal=True, org_admin_user=None, org_admin_password=None
+):
     """
     List systems in a system group
 
@@ -1404,11 +1672,15 @@ def systemgroup_list_systems(name, minimal=True, org_admin_user=None, org_admin_
 
     :return: List of system information
     """
-    return UyuniSystemgroup(org_admin_user, org_admin_password).list_systems(name=name, minimal=minimal)
+    return UyuniSystemgroup(org_admin_user, org_admin_password).list_systems(
+        name=name, minimal=minimal
+    )
 
 
-def systemgroup_add_remove_systems(name, add_remove, system_ids=[],
-                                   org_admin_user=None, org_admin_password=None):
+# pylint: disable-next=dangerous-default-value
+def systemgroup_add_remove_systems(
+    name, add_remove, system_ids=[], org_admin_user=None, org_admin_password=None
+):
     """
     Update systems on a system group.
 
@@ -1420,8 +1692,9 @@ def systemgroup_add_remove_systems(name, add_remove, system_ids=[],
 
     :return: boolean, True indicates success
     """
-    return UyuniSystemgroup(org_admin_user, org_admin_password).add_remove_systems(name=name, add_remove=add_remove,
-                                                                                   system_ids=system_ids)
+    return UyuniSystemgroup(org_admin_user, org_admin_password).add_remove_systems(
+        name=name, add_remove=add_remove, system_ids=system_ids
+    )
 
 
 def master_select_minions(target=None, target_type="glob"):
@@ -1454,6 +1727,8 @@ def systems_get_minion_id_map(username=None, password=None, refresh=False):
 
 # Activation Keys
 
+
+# pylint: disable-next=redefined-builtin
 def activation_key_get_details(id, org_admin_user=None, org_admin_password=None):
     """
     Get details of an Uyuni Activation Key
@@ -1467,6 +1742,7 @@ def activation_key_get_details(id, org_admin_user=None, org_admin_password=None)
     return UyuniActivationKey(org_admin_user, org_admin_password).get_details(id)
 
 
+# pylint: disable-next=redefined-builtin
 def activation_key_delete(id, org_admin_user=None, org_admin_password=None):
     """
     Deletes an Uyuni Activation Key
@@ -1480,11 +1756,17 @@ def activation_key_delete(id, org_admin_user=None, org_admin_password=None):
     return UyuniActivationKey(org_admin_user, org_admin_password).delete(id)
 
 
-def activation_key_create(key, description,
-                          base_channel_label='',
-                          usage_limit=0,
-                          system_types=[], universal_default=False,
-                          org_admin_user=None, org_admin_password=None):
+# pylint: disable-next=dangerous-default-value
+def activation_key_create(
+    key,
+    description,
+    base_channel_label="",
+    usage_limit=0,
+    system_types=[],
+    universal_default=False,
+    org_admin_user=None,
+    org_admin_password=None,
+):
     """
     Creates an Uyuni Activation Key
 
@@ -1501,21 +1783,26 @@ def activation_key_create(key, description,
 
     :return: boolean, True indicates success
     """
-    return UyuniActivationKey(org_admin_user, org_admin_password).create(key,
-                                                                         description,
-                                                                         base_channel_label,
-                                                                         usage_limit,
-                                                                         system_types,
-                                                                         universal_default)
+    return UyuniActivationKey(org_admin_user, org_admin_password).create(
+        key,
+        description,
+        base_channel_label,
+        usage_limit,
+        system_types,
+        universal_default,
+    )
 
 
-def activation_key_set_details(key,
-                               description=None,
-                               contact_method=None,
-                               base_channel_label=None,
-                               usage_limit=None,
-                               universal_default=False,
-                               org_admin_user=None, org_admin_password=None):
+def activation_key_set_details(
+    key,
+    description=None,
+    contact_method=None,
+    base_channel_label=None,
+    usage_limit=None,
+    universal_default=False,
+    org_admin_user=None,
+    org_admin_password=None,
+):
     """
     Updates an Uyuni Activation Key
 
@@ -1530,15 +1817,19 @@ def activation_key_set_details(key,
 
     :return: boolean, True indicates success
     """
-    return UyuniActivationKey(org_admin_user, org_admin_password).set_details(key,
-                                                                              description=description,
-                                                                              contact_method=contact_method,
-                                                                              base_channel_label=base_channel_label,
-                                                                              usage_limit=usage_limit,
-                                                                              universal_default=universal_default)
+    return UyuniActivationKey(org_admin_user, org_admin_password).set_details(
+        key,
+        description=description,
+        contact_method=contact_method,
+        base_channel_label=base_channel_label,
+        usage_limit=usage_limit,
+        universal_default=universal_default,
+    )
 
 
-def activation_key_add_entitlements(key, system_types, org_admin_user=None, org_admin_password=None):
+def activation_key_add_entitlements(
+    key, system_types, org_admin_user=None, org_admin_password=None
+):
     """
     Add a list of entitlements to an activation key.
 
@@ -1549,10 +1840,14 @@ def activation_key_add_entitlements(key, system_types, org_admin_user=None, org_
 
     :return: boolean, True indicates success
     """
-    return UyuniActivationKey(org_admin_user, org_admin_password).add_entitlements(key, system_types)
+    return UyuniActivationKey(org_admin_user, org_admin_password).add_entitlements(
+        key, system_types
+    )
 
 
-def activation_key_remove_entitlements(key, system_types, org_admin_user=None, org_admin_password=None):
+def activation_key_remove_entitlements(
+    key, system_types, org_admin_user=None, org_admin_password=None
+):
     """
     Remove a list of entitlements from an activation key.
 
@@ -1563,10 +1858,14 @@ def activation_key_remove_entitlements(key, system_types, org_admin_user=None, o
 
     :return: boolean, True indicates success
     """
-    return UyuniActivationKey(org_admin_user, org_admin_password).remove_entitlements(key, system_types)
+    return UyuniActivationKey(org_admin_user, org_admin_password).remove_entitlements(
+        key, system_types
+    )
 
 
-def activation_key_add_child_channels(key, child_channels, org_admin_user=None, org_admin_password=None):
+def activation_key_add_child_channels(
+    key, child_channels, org_admin_user=None, org_admin_password=None
+):
     """
     Add child channels to an activation key.
 
@@ -1577,10 +1876,14 @@ def activation_key_add_child_channels(key, child_channels, org_admin_user=None, 
 
     :return: boolean, True indicates success
     """
-    return UyuniActivationKey(org_admin_user, org_admin_password).add_child_channels(key, child_channels)
+    return UyuniActivationKey(org_admin_user, org_admin_password).add_child_channels(
+        key, child_channels
+    )
 
 
-def activation_key_remove_child_channels(key, child_channels, org_admin_user=None, org_admin_password=None):
+def activation_key_remove_child_channels(
+    key, child_channels, org_admin_user=None, org_admin_password=None
+):
     """
     Remove child channels from an activation key.
 
@@ -1591,10 +1894,14 @@ def activation_key_remove_child_channels(key, child_channels, org_admin_user=Non
 
     :return: boolean, True indicates success
     """
-    return UyuniActivationKey(org_admin_user, org_admin_password).remove_child_channels(key, child_channels)
+    return UyuniActivationKey(org_admin_user, org_admin_password).remove_child_channels(
+        key, child_channels
+    )
 
 
-def activation_key_check_config_deployment(key, org_admin_user=None, org_admin_password=None):
+def activation_key_check_config_deployment(
+    key, org_admin_user=None, org_admin_password=None
+):
     """
     Return the status of the 'configure_after_registration' flag for an Activation Key.
 
@@ -1604,10 +1911,14 @@ def activation_key_check_config_deployment(key, org_admin_user=None, org_admin_p
 
     :return: boolean, true if enabled, false if disabled
     """
-    return UyuniActivationKey(org_admin_user, org_admin_password).check_config_deployment(key)
+    return UyuniActivationKey(
+        org_admin_user, org_admin_password
+    ).check_config_deployment(key)
 
 
-def activation_key_enable_config_deployment(key, org_admin_user=None, org_admin_password=None):
+def activation_key_enable_config_deployment(
+    key, org_admin_user=None, org_admin_password=None
+):
     """
     Enables the 'configure_after_registration' flag for an Activation Key.
 
@@ -1617,10 +1928,14 @@ def activation_key_enable_config_deployment(key, org_admin_user=None, org_admin_
 
     :return: boolean, True indicates success
     """
-    return UyuniActivationKey(org_admin_user, org_admin_password).enable_config_deployment(key)
+    return UyuniActivationKey(
+        org_admin_user, org_admin_password
+    ).enable_config_deployment(key)
 
 
-def activation_key_disable_config_deployment(key, org_admin_user=None, org_admin_password=None):
+def activation_key_disable_config_deployment(
+    key, org_admin_user=None, org_admin_password=None
+):
     """
     Disables the 'configure_after_registration' flag for an Activation Key.
 
@@ -1630,10 +1945,14 @@ def activation_key_disable_config_deployment(key, org_admin_user=None, org_admin
 
     :return: boolean, True indicates success
     """
-    return UyuniActivationKey(org_admin_user, org_admin_password).disable_config_deployment(key)
+    return UyuniActivationKey(
+        org_admin_user, org_admin_password
+    ).disable_config_deployment(key)
 
 
-def activation_key_add_packages(key, packages, org_admin_user=None, org_admin_password=None):
+def activation_key_add_packages(
+    key, packages, org_admin_user=None, org_admin_password=None
+):
     """
     Add a list of packages to an activation key.
 
@@ -1644,10 +1963,14 @@ def activation_key_add_packages(key, packages, org_admin_user=None, org_admin_pa
 
     :return: boolean, True indicates success
     """
-    return UyuniActivationKey(org_admin_user, org_admin_password).add_packages(key, packages)
+    return UyuniActivationKey(org_admin_user, org_admin_password).add_packages(
+        key, packages
+    )
 
 
-def activation_key_remove_packages(key, packages, org_admin_user=None, org_admin_password=None):
+def activation_key_remove_packages(
+    key, packages, org_admin_user=None, org_admin_password=None
+):
     """
     Remove a list of packages from an activation key.
 
@@ -1658,10 +1981,14 @@ def activation_key_remove_packages(key, packages, org_admin_user=None, org_admin
 
     :return: boolean, True indicates success
     """
-    return UyuniActivationKey(org_admin_user, org_admin_password).remove_packages(key, packages)
+    return UyuniActivationKey(org_admin_user, org_admin_password).remove_packages(
+        key, packages
+    )
 
 
-def activation_key_add_server_groups(key, server_groups, org_admin_user=None, org_admin_password=None):
+def activation_key_add_server_groups(
+    key, server_groups, org_admin_user=None, org_admin_password=None
+):
     """
     Add a list of server groups to an activation key.
 
@@ -1672,10 +1999,14 @@ def activation_key_add_server_groups(key, server_groups, org_admin_user=None, or
 
     :return: boolean, True indicates success
     """
-    return UyuniActivationKey(org_admin_user, org_admin_password).add_server_groups(key, server_groups)
+    return UyuniActivationKey(org_admin_user, org_admin_password).add_server_groups(
+        key, server_groups
+    )
 
 
-def activation_key_remove_server_groups(key, server_groups, org_admin_user=None, org_admin_password=None):
+def activation_key_remove_server_groups(
+    key, server_groups, org_admin_user=None, org_admin_password=None
+):
     """
     Remove a list of server groups from an activation key.
 
@@ -1686,10 +2017,14 @@ def activation_key_remove_server_groups(key, server_groups, org_admin_user=None,
 
     :return: boolean, True indicates success
     """
-    return UyuniActivationKey(org_admin_user, org_admin_password).remove_server_groups(key, server_groups)
+    return UyuniActivationKey(org_admin_user, org_admin_password).remove_server_groups(
+        key, server_groups
+    )
 
 
-def activation_key_list_config_channels(key, org_admin_user=None, org_admin_password=None):
+def activation_key_list_config_channels(
+    key, org_admin_user=None, org_admin_password=None
+):
     """
     List configuration channels associated to an activation key.
 
@@ -1699,11 +2034,14 @@ def activation_key_list_config_channels(key, org_admin_user=None, org_admin_pass
 
     :return: List of configuration channels
     """
-    return UyuniActivationKey(org_admin_user, org_admin_password).list_config_channels(key)
+    return UyuniActivationKey(org_admin_user, org_admin_password).list_config_channels(
+        key
+    )
 
 
-def activation_key_set_config_channels(keys, config_channel_label,
-                                       org_admin_user=None, org_admin_password=None):
+def activation_key_set_config_channels(
+    keys, config_channel_label, org_admin_user=None, org_admin_password=None
+):
     """
     Replace the existing set of configuration channels on the given activation keys.
     Channels are ranked by their order in the array.
@@ -1715,4 +2053,6 @@ def activation_key_set_config_channels(keys, config_channel_label,
 
     :return: boolean, True indicates success
     """
-    return UyuniActivationKey(org_admin_user, org_admin_password).set_config_channels(keys, config_channel_label)
+    return UyuniActivationKey(org_admin_user, org_admin_password).set_config_channels(
+        keys, config_channel_label
+    )

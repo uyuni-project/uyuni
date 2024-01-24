@@ -17,9 +17,7 @@ __virtualname__ = "pkgset"
 
 SALT_CONFIG_DIR = os.environ.get("SALT_CONFIG_DIR", "/etc/salt")
 
-__opts__ = salt.config.minion_config(
-    os.path.join(SALT_CONFIG_DIR, "minion")
-)
+__opts__ = salt.config.minion_config(os.path.join(SALT_CONFIG_DIR, "minion"))
 
 CACHE = salt.cache.Cache(__opts__)
 
@@ -29,10 +27,12 @@ PKGSET_COOKIES = (
 )
 
 
+# pylint: disable-next=invalid-name
 def __virtual__():
     return __virtualname__
 
 
+# pylint: disable-next=unused-argument
 def validate(config):
     """
     The absence of this function could cause noisy logging,
@@ -42,6 +42,7 @@ def validate(config):
     return True, "There is nothing to validate"
 
 
+# pylint: disable-next=unused-argument
 def beacon(config):
     """
     Watch the cookie file from package manager plugin.
@@ -61,23 +62,29 @@ def beacon(config):
     for cookie_path in PKGSET_COOKIES:
         if not os.path.exists(cookie_path):
             continue
+        # pylint: disable-next=unspecified-encoding
         with open(cookie_path) as ck_file:
             ck_data = ck_file.read().strip()
+            # pylint: disable-next=undefined-variable
             if __virtualname__ not in __context__:
                 # After a minion restart, when this is running for first time, there is nothing in context yet
                 # So, if there is any data in the cache, we put it in the context, if not we put the new data.
                 # and update the data in the cache.
                 cache_data = CACHE.fetch("beacon/pkgset", "cookie").get("data", None)
                 if cache_data:
+                    # pylint: disable-next=undefined-variable
                     __context__[__virtualname__] = cache_data
                 else:
+                    # pylint: disable-next=undefined-variable
                     __context__[__virtualname__] = ck_data
                     CACHE.store("beacon/pkgset", "cookie", {"data": ck_data})
+            # pylint: disable-next=undefined-variable
             if __context__[__virtualname__] != ck_data:
                 # Now it's time to fire beacon event only if the new data is not yet
                 # inside the context (meaning not proceesed), and then stop iterating
                 ret.append({"tag": "changed"})
                 CACHE.store("beacon/pkgset", "cookie", {"data": ck_data})
+                # pylint: disable-next=undefined-variable
                 __context__[__virtualname__] = ck_data
                 break
 

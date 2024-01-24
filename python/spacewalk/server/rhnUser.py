@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring,invalid-name
 #
 # Copyright (c) 2008--2017 Red Hat, Inc.
 #
@@ -17,6 +18,8 @@
 #
 
 import re
+
+# pylint: disable-next=deprecated-module
 import crypt
 
 # Global Modules
@@ -32,7 +35,7 @@ from . import rhnSession
 
 class User:
 
-    """ Main User class """
+    """Main User class"""
 
     def __init__(self, username, password):
         # compatibilty with the rest of the code
@@ -56,36 +59,34 @@ class User:
         self._session = None
 
     def __init_info(self):
-        """ init web_user_personal_info """
+        """init web_user_personal_info"""
         # web_user_personal_info
-        self.info = rhnSQL.Row("web_user_personal_info",
-                               "web_user_id")
-        self.info['first_names'] = "Valued"
-        self.info['last_name'] = "Customer"
-        self.info['prefix'] = "Mr."
+        self.info = rhnSQL.Row("web_user_personal_info", "web_user_id")
+        self.info["first_names"] = "Valued"
+        self.info["last_name"] = "Customer"
+        self.info["prefix"] = "Mr."
 
     def __init_perms(self):
-        """ init web_user_contact_permission """
+        """init web_user_contact_permission"""
         # web_user_contact_permission
-        self.perms = rhnSQL.Row("web_user_contact_permission",
-                                "web_user_id")
+        self.perms = rhnSQL.Row("web_user_contact_permission", "web_user_id")
         self.perms["email"] = "Y"
         self.perms["mail"] = "Y"
         self.perms["call"] = "Y"
         self.perms["fax"] = "Y"
 
     def __init_site(self):
-        """ init web_user_site_info """
+        """init web_user_site_info"""
         # web_user_site_info
         self.site = rhnSQL.Row("web_user_site_info", "id")
-        self.site['city'] = "."
-        self.site['address1'] = "."
-        self.site['country'] = "US"
-        self.site['type'] = "M"
-        self.site['notes'] = "Entry created by Spacewalk registration process"
+        self.site["city"] = "."
+        self.site["address1"] = "."
+        self.site["country"] = "US"
+        self.site["type"] = "M"
+        self.site["notes"] = "Entry created by Spacewalk registration process"
 
     def check_password(self, password, allow_read_only=False):
-        """ simple check for a password that might become more complex sometime """
+        """simple check for a password that might become more complex sometime"""
         if not allow_read_only and is_user_read_only(self.contact["login"]):
             raise rhnFault(702)
         good_pwd = str(self.contact["password"])
@@ -98,28 +99,37 @@ class User:
             # so I'll use a query for now
             # - misa
             #
-            h = rhnSQL.prepare("""
+            h = rhnSQL.prepare(
+                """
                 select ui.use_pam_authentication
                 from web_contact w, rhnUserInfo ui
                 where w.login_uc = UPPER(:login)
-                and w.id = ui.user_id""")
+                and w.id = ui.user_id"""
+            )
             h.execute(login=self.contact["login"])
             data = h.fetchone_dict()
             if not data:
                 # This should not happen
-                raise rhnException("No entry found for user %s" %
-                                   self.contact["login"])
-            if data['use_pam_authentication'] == 'Y':
+                # pylint: disable-next=consider-using-f-string
+                raise rhnException("No entry found for user %s" % self.contact["login"])
+            if data["use_pam_authentication"] == "Y":
                 # use PAM
+                # pylint: disable-next=import-outside-toplevel
                 from . import rhnAuthPAM
-                return rhnAuthPAM.check_password(self.contact["login"],
-                                                 password, CFG.pam_auth_service)
+
+                return rhnAuthPAM.check_password(
+                    self.contact["login"], password, CFG.pam_auth_service
+                )
         # If the entry in rhnUserInfo is 'N', perform regular authentication
         ret = check_password(password, good_pwd)
-        if ret and CFG.encrypted_passwords and self.contact['password'].find('$1$') == 0:
+        if (
+            ret
+            and CFG.encrypted_passwords
+            and self.contact["password"].find("$1$") == 0
+        ):
             # If successfully authenticated and the current password is
             # MD5 encoded, convert the password to SHA-256 and save it in the DB.
-            self.contact['password'] = encrypt_password(password)
+            self.contact["password"] = encrypt_password(password)
             self.contact.save()
             rhnSQL.commit()
         return ret
@@ -139,13 +149,13 @@ class User:
         return userid
 
     def set_contact_perm(self, name, value):
-        """ handling of contact permissions """
+        """handling of contact permissions"""
         if not name:
             return -1
         n = name.lower()
-        v = 'N'
+        v = "N"
         if value:
-            v = 'Y'
+            v = "Y"
         if n == "contact_phone":
             self.perms["call"] = v
         elif n == "contact_mail":
@@ -157,18 +167,15 @@ class User:
         return 0
 
     def set_info(self, name, value):
-        """ set a certain value for the userinfo field. This is BUTT ugly. """
+        """set a certain value for the userinfo field. This is BUTT ugly."""
         log_debug(3, name, value)
         # translation from what the client send us to real names of the fields
         # in the tables.
-        mapping = {
-            "first_name": "first_names",
-            "position": "title",
-            "title": "prefix"
-        }
+        mapping = {"first_name": "first_names", "position": "title", "title": "prefix"}
         if not name:
             return -1
         name = name.lower()
+        # pylint: disable-next=unidiomatic-typecheck
         if type(value) == type(""):
             value = value.strip()
         # We have to watch over carefully for different field names
@@ -176,17 +183,31 @@ class User:
         changed = 0
 
         # translation
+        # pylint: disable-next=consider-iterating-dictionary
         if name in list(mapping.keys()):
             name = mapping[name]
         # Some fields can not have null string values
-        if name in ["first_names", "last_name", "prefix",  # personal_info
-                    "address1", "city", "country"]:       # site_info
+        if name in [
+            "first_names",
+            "last_name",
+            "prefix",  # personal_info
+            "address1",
+            "city",
+            "country",
+        ]:  # site_info
             # we require something of it
             if len(str(value)) == 0:
                 return -1
         # fields in personal_info (and some in site)
-        if name in ["last_name", "first_names",
-                    "company", "phone", "fax", "email", "title"]:
+        if name in [
+            "last_name",
+            "first_names",
+            "company",
+            "phone",
+            "fax",
+            "email",
+            "title",
+        ]:
             self.info[name] = value[:128]
             changed = 1
         elif name == "prefix":
@@ -206,8 +227,8 @@ class User:
                 self.info["prefix"] = valids[value]
                 changed = 1
             else:
-                log_error("Unknown prefix value `%s'. Assumed `Mr.' instead"
-                          % value)
+                # pylint: disable-next=consider-using-f-string
+                log_error("Unknown prefix value `%s'. Assumed `Mr.' instead" % value)
                 self.info["prefix"] = "Mr."
                 changed = 1
 
@@ -215,9 +236,17 @@ class User:
         if name in ["phone", "fax", "zip"]:
             self.site[name] = value[:32]
             changed = 1
-        elif name in ["city",  "country", "alt_first_names", "alt_last_name",
-                      "address1", "address2", "email",
-                      "last_name", "first_names"]:
+        elif name in [
+            "city",
+            "country",
+            "alt_first_names",
+            "alt_last_name",
+            "address1",
+            "address2",
+            "email",
+            "last_name",
+            "first_names",
+        ]:
             if name == "last_name":
                 self.site["alt_last_name"] = value
                 changed = 1
@@ -231,13 +260,15 @@ class User:
             self.site[name] = value[:60]
             changed = 1
         if not changed:
+            # pylint: disable-next=consider-using-f-string
             log_error("SET_INFO: Unknown info `%s' = `%s'" % (name, value))
         return 0
 
     def get_roles(self):
         user_id = self.getid()
 
-        h = rhnSQL.prepare("""
+        h = rhnSQL.prepare(
+            """
             select ugt.label as role
               from rhnUserGroup ug,
                    rhnUserGroupType ugt,
@@ -245,32 +276,38 @@ class User:
              where ugm.user_id = :user_id
                and ugm.user_group_id = ug.id
                and ug.group_type = ugt.id
-        """)
+        """
+        )
         h.execute(user_id=user_id)
-        return [x['role'] for x in h.fetchall_dict() or []]
+        return [x["role"] for x in h.fetchall_dict() or []]
 
     def reload(self, user_id):
-        """ Reload the current data from the SQL database using the given id """
+        """Reload the current data from the SQL database using the given id"""
         log_debug(3, user_id)
 
         # If we can not load these we have a fatal condition
         if not self.contact.load(user_id):
             raise rhnException("Could not find contact record for id", user_id)
         if not self.customer.load(self.contact["org_id"]):
-            raise rhnException("Could not find org record",
-                               "user_id = %s" % user_id,
-                               "org_id = %s" % self.contact["org_id"])
+            raise rhnException(
+                "Could not find org record",
+                # pylint: disable-next=consider-using-f-string
+                "user_id = %s" % user_id,
+                # pylint: disable-next=consider-using-f-string
+                "org_id = %s" % self.contact["org_id"],
+            )
         # These other ones are non fatal because we can create dummy records
         if not self.info.load(user_id):
             self.__init_info()
         if not self.perms.load(user_id):
             self.__init_perms()
         # The site info is trickier, we need to find it first
-        if not self.site.load_sql("web_user_id = :userid and type = 'M'",
-                                  {"userid": user_id}):
+        if not self.site.load_sql(
+            "web_user_id = :userid and type = 'M'", {"userid": user_id}
+        ):
             self.__init_site()
         # Fix the username
-        self.username = self.contact['login']
+        self.username = self.contact["login"]
         return 0
 
     def create_session(self):
@@ -310,12 +347,14 @@ def session_reload(session_string):
 
 
 def get_user_id(username):
-    """ search for an userid """
+    """search for an userid"""
     username = str(username)
-    h = rhnSQL.prepare("""
+    h = rhnSQL.prepare(
+        """
     select w.id from web_contact w
     where w.login_uc = upper(:username)
-    """)
+    """
+    )
     h.execute(username=username)
     data = h.fetchone_dict()
     if data:
@@ -324,12 +363,13 @@ def get_user_id(username):
 
 
 def search(user):
-    """ search the database for a user """
+    """search the database for a user"""
     log_debug(3, user)
     userid = get_user_id(user)
     if not userid:  # no user found
         return None
     ret = User(user, "")
+    # pylint: disable-next=unnecessary-negation
     if not ret.reload(userid) == 0:
         # something horked during reloading entry from database
         # we can not realy say that the entry does not exist...
@@ -340,10 +380,12 @@ def search(user):
 def is_user_disabled(user):
     log_debug(3, user)
     username = str(user)
-    h = rhnSQL.prepare("""
+    h = rhnSQL.prepare(
+        """
     select 1 from rhnWebContactDisabled
     where login_uc = upper(:username)
-    """)
+    """
+    )
     h.execute(username=username)
     row = h.fetchone_dict()
     if row:
@@ -354,11 +396,13 @@ def is_user_disabled(user):
 def is_user_read_only(user):
     log_debug(3, user)
     username = str(user)
-    h = rhnSQL.prepare("""
+    h = rhnSQL.prepare(
+        """
     select 1 from web_contact
     where login_uc = upper(:username)
     and read_only = 'Y'
-    """)
+    """
+    )
     h.execute(username=username)
     row = h.fetchone_dict()
     if row:
@@ -367,32 +411,38 @@ def is_user_read_only(user):
 
 
 def reserve_user(username, password):
-    """ create a reservation record """
+    """create a reservation record"""
     return __reserve_user_db(username, password)
 
 
 def __reserve_user_db(user, password):
     encrypted_password = CFG.encrypted_passwords
-    log_debug(3, user, CFG.disallow_user_creation, encrypted_password, CFG.pam_auth_service)
+    log_debug(
+        3, user, CFG.disallow_user_creation, encrypted_password, CFG.pam_auth_service
+    )
     user = str(user)
-    h = rhnSQL.prepare("""
+    h = rhnSQL.prepare(
+        """
     select w.id, w.password, w.org_id, ui.use_pam_authentication
     from web_contact w, rhnUserInfo ui
     where w.login_uc = upper(:p1)
     and w.id = ui.user_id
-    """)
+    """
+    )
     h.execute(p1=user)
     data = h.fetchone_dict()
     if data and data["id"]:
         # contact exists, check password
-        if data['use_pam_authentication'] == 'Y' and CFG.pam_auth_service:
+        if data["use_pam_authentication"] == "Y" and CFG.pam_auth_service:
             # We use PAM for authentication
+            # pylint: disable-next=import-outside-toplevel
             from . import rhnAuthPAM
+
             if rhnAuthPAM.check_password(user, password, CFG.pam_auth_service) > 0:
                 return 1
             return -1
 
-        if check_password(password, data['password']) > 0:
+        if check_password(password, data["password"]) > 0:
             return 1
         return -1
 
@@ -402,10 +452,12 @@ def __reserve_user_db(user, password):
     user, password = check_user_password(user, password)
 
     # now check the reserved table
-    h = rhnSQL.prepare("""
+    h = rhnSQL.prepare(
+        """
     select r.login, r.password from rhnUserReserved r
     where r.login_uc = upper(:p1)
-    """)
+    """
+    )
     h.execute(p1=user)
     data = h.fetchone_dict()
     if data and data["login"]:
@@ -423,10 +475,12 @@ def __reserve_user_db(user, password):
         # Encrypt the password, let the function pick the salt
         password = encrypt_password(password)
 
-    h = rhnSQL.prepare("""
+    h = rhnSQL.prepare(
+        """
     insert into rhnUserReserved (login, password)
     values (:username, :password)
-    """)
+    """
+    )
     h.execute(username=user, password=password)
     rhnSQL.commit()
 
@@ -435,21 +489,24 @@ def __reserve_user_db(user, password):
 
 
 def new_user(username, password, email, org_id, org_password):
-    """ create a new user account """
+    """create a new user account"""
     return __new_user_db(username, password, email, org_id, org_password)
 
 
+# pylint: disable-next=unused-argument
 def __new_user_db(username, password, email, org_id, org_password):
     encrypted_password = CFG.encrypted_passwords
     log_debug(3, username, email, encrypted_password)
 
     # now search it in the database
-    h = rhnSQL.prepare("""
+    h = rhnSQL.prepare(
+        """
     select w.id, w.password, ui.use_pam_authentication
     from web_contact w, rhnUserInfo ui
     where w.login_uc = upper(:username)
     and w.id = ui.user_id
-    """)
+    """
+    )
     h.execute(username=username)
     data = h.fetchone_dict()
 
@@ -457,10 +514,12 @@ def __new_user_db(username, password, email, org_id, org_password):
 
     if not data:
         # the username is not there, check the reserved user table
-        h = rhnSQL.prepare("""
+        h = rhnSQL.prepare(
+            """
         select login, password from rhnUserReserved
         where login_uc = upper(:username)
-        """)
+        """
+        )
         h.execute(username=username)
         data = h.fetchone_dict()
         if not data:  # nope, not reserved either
@@ -476,15 +535,20 @@ def __new_user_db(username, password, email, org_id, org_password):
     # 'use_pam_authentication' and its value is 'Y', and we do have a PAM
     # service set in the config file.
     # Note that if the user is only reserved we don't do PAM authentication
-    if data.get('use_pam_authentication') == 'Y' and CFG.pam_auth_service:
+    if data.get("use_pam_authentication") == "Y" and CFG.pam_auth_service:
         # Check the password with PAM
+        # pylint: disable-next=import-outside-toplevel
         from . import rhnAuthPAM
+
         if rhnAuthPAM.check_password(username, password, CFG.pam_auth_service) <= 0:
             # Bad password
             raise rhnFault(2)
         # We don't care about the password anymore, replace it with something
+        # pylint: disable-next=import-outside-toplevel
         import time
-        password = 'pam:%.8f' % time.time()
+
+        # pylint: disable-next=consider-using-f-string
+        password = "pam:%.8f" % time.time()
     else:
         # Regular authentication
         if check_password(password, data["password"]) == 0:
@@ -498,7 +562,7 @@ def __new_user_db(username, password, email, org_id, org_password):
 
 
 def check_user_password(username, password):
-    """ Do some minimal checks on the data thrown our way. """
+    """Do some minimal checks on the data thrown our way."""
     # username is required
     if not username:
         raise rhnFault(11)
@@ -506,22 +570,28 @@ def check_user_password(username, password):
     if not password:
         raise rhnFault(12)
     if len(username) < CFG.MIN_USER_LEN:
-        raise rhnFault(13, _("username should be at least %d characters")
-                       % CFG.MIN_USER_LEN)
+        raise rhnFault(
+            13, _("username should be at least %d characters") % CFG.MIN_USER_LEN
+        )
     if len(username) > CFG.MAX_USER_LEN:
-        raise rhnFault(700, _("username should be less than %d characters")
-                       % CFG.MAX_USER_LEN)
-    username = username[:CFG.MAX_USER_LEN]
+        raise rhnFault(
+            700, _("username should be less than %d characters") % CFG.MAX_USER_LEN
+        )
+    username = username[: CFG.MAX_USER_LEN]
 
     # Invalid characters
     # ***NOTE*** Must coordinate with web and installer folks about any
     # changes to this set of characters!!!!
+    # pylint: disable-next=anomalous-backslash-in-string
     invalid_re = re.compile(".*[\s&+%'`\"=#]", re.I)
     tmp = invalid_re.match(username)
     if tmp is not None:
         pos = tmp.regs[0]
-        raise rhnFault(15, _("username = `%s', invalid character `%s'") % (
-            username, username[pos[1] - 1]))
+        raise rhnFault(
+            15,
+            _("username = `%s', invalid character `%s'")
+            % (username, username[pos[1] - 1]),
+        )
 
     # use new password validation method
     validate_new_password(password)
@@ -530,7 +600,7 @@ def check_user_password(username, password):
 
 
 def check_email(email):
-    """ Do some minimal checks on the e-mail address """
+    """Do some minimal checks on the e-mail address"""
     if email is not None:
         email = email.strip()
 
@@ -539,20 +609,21 @@ def check_email(email):
         return None
 
     if len(email) > CFG.MAX_EMAIL_LEN:
-        raise rhnFault(100, _("Please limit your e-mail address to %s chars") %
-                       CFG.MAX_EMAIL_LEN)
+        raise rhnFault(
+            100, _("Please limit your e-mail address to %s chars") % CFG.MAX_EMAIL_LEN
+        )
     # XXX More to come (check the format is indeed foo@bar.baz
     return email
 
 
 def check_password(key, pwd1):
-    """ Validates the given key against the current or old password
-        If encrypted_password is false, it compares key with pwd1.
-        If encrypted_password is true, it compares the encrypted key
-        with pwd1.
+    """Validates the given key against the current or old password
+    If encrypted_password is false, it compares key with pwd1.
+    If encrypted_password is true, it compares the encrypted key
+    with pwd1.
 
-        Historical note: we used to compare the passwords case-insensitive, and that
-        was working fine until we started to encrypt passwords. -- misa 20030530
+    Historical note: we used to compare the passwords case-insensitive, and that
+    was working fine until we started to encrypt passwords. -- misa 20030530
     """
     encrypted_password = CFG.encrypted_passwords
     log_debug(4, "Encrypted password:", encrypted_password)
@@ -570,45 +641,51 @@ def check_password(key, pwd1):
         return 0  # Invalid
 
     # Crypted passwords in the database
-    if pwd1.find("$5") == 0:    # SHA-256 encrypted password
-        if pwd1 == encrypt_password(key, pwd1, 'SHA-256'):
+    if pwd1.find("$5") == 0:  # SHA-256 encrypted password
+        if pwd1 == encrypt_password(key, pwd1, "SHA-256"):
             return 1
     elif pwd1.find("$1$") == 0:  # MD5 encrypted password
-        if pwd1 == encrypt_password(key, pwd1, 'MD5'):
+        if pwd1 == encrypt_password(key, pwd1, "MD5"):
             return 1
 
     log_debug(4, "Encrypted password doesn't match")
     return 0  # invalid
 
 
-def encrypt_password(key, salt=None, method='SHA-256'):
-    """ Encrypt the key
-        If no salt is supplied, generates one (md5-crypt salt)
+def encrypt_password(key, salt=None, method="SHA-256"):
+    """Encrypt the key
+    If no salt is supplied, generates one (md5-crypt salt)
     """
 
     pw_params = {
-        'MD5': [8, "$1$"],      # method: [salt length, prefix]
-        'SHA-256': [16, "$5$"],
+        "MD5": [8, "$1$"],  # method: [salt length, prefix]
+        "SHA-256": [16, "$5$"],
     }
 
     if not salt:
         # No salt supplied, generate it ourselves
+        # pylint: disable-next=import-outside-toplevel
         import base64
+
+        # pylint: disable-next=import-outside-toplevel
         import time
+
+        # pylint: disable-next=import-outside-toplevel
         import os
+
         # Get the first 15 digits after the decimal point from time.time(), and
         # add the pid too
         salt = (time.time() % 1) * 1e15 + os.getpid()
         # base64 it and keep only the first n chars
-        salt = base64.encodestring(str(salt).encode()).decode()[:pw_params[method][0]]
+        salt = base64.encodestring(str(salt).encode()).decode()[: pw_params[method][0]]
         # slap the magic in front of the salt
-        salt = pw_params[method][1] + salt + '$'
+        salt = pw_params[method][1] + salt + "$"
     salt = str(salt)
     return crypt.crypt(key, salt)
 
 
 def validate_new_password(password):
-    """ Perform all the checks required for new passwords """
+    """Perform all the checks required for new passwords"""
     log_debug(3, "Entered validate_new_password")
     #
     # We're copying the code because we don't want to
@@ -620,15 +697,16 @@ def validate_new_password(password):
     if not password:
         raise rhnFault(12)
     if len(password) < CFG.MIN_PASSWD_LEN:
-        raise rhnFault(14, _("password must be at least %d characters")
-                       % CFG.MIN_PASSWD_LEN)
+        raise rhnFault(
+            14, _("password must be at least %d characters") % CFG.MIN_PASSWD_LEN
+        )
     if len(password) > CFG.MAX_PASSWD_LEN:
-        raise rhnFault(701, _("Password must be shorter than %d characters")
-                       % CFG.MAX_PASSWD_LEN)
+        raise rhnFault(
+            701, _("Password must be shorter than %d characters") % CFG.MAX_PASSWD_LEN
+        )
 
-    password = password[:CFG.MAX_PASSWD_LEN]
-    invalid_re = re.compile(
-        r"[^ A-Za-z0-9`!@#$%^&*()-_=+[{\]}\\|;:'\",<.>/?~]")
+    password = password[: CFG.MAX_PASSWD_LEN]
+    invalid_re = re.compile(r"[^ A-Za-z0-9`!@#$%^&*()-_=+[{\]}\\|;:'\",<.>/?~]")
     asterisks_re = re.compile(r"^\**$")
 
     # make sure the password isn't all *'s
@@ -640,16 +718,17 @@ def validate_new_password(password):
     tmp = invalid_re.search(password)
     if tmp is not None:
         pos = tmp.regs[0]
-        raise rhnFault(15,
-                       _("password contains character `%s'") % password[pos[1] - 1])
+        raise rhnFault(15, _("password contains character `%s'") % password[pos[1] - 1])
 
 
 def validate_new_username(username):
-    """ Perform all the checks required for new usernames. """
+    """Perform all the checks required for new usernames."""
     log_debug(3)
     if len(username) < CFG.MIN_NEW_USER_LEN:
-        raise rhnFault(13, _("username should be at least %d characters long")
-                       % CFG.MIN_NEW_USER_LEN)
+        raise rhnFault(
+            13,
+            _("username should be at least %d characters long") % CFG.MIN_NEW_USER_LEN,
+        )
 
     disallowed_suffixes = CFG.DISALLOWED_SUFFIXES or []
     if not isinstance(disallowed_suffixes, type([])):
@@ -658,6 +737,5 @@ def validate_new_username(username):
     log_debug(4, "Disallowed suffixes", disallowed_suffixes)
 
     for suffix in disallowed_suffixes:
-        if username[-len(suffix):].upper() == suffix.upper():
-            raise rhnFault(106, _("Cannot register usernames ending with %s") %
-                           suffix)
+        if username[-len(suffix) :].upper() == suffix.upper():
+            raise rhnFault(106, _("Cannot register usernames ending with %s") % suffix)

@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2023 SUSE LLC
 #
@@ -18,24 +19,28 @@ from spacewalk.common.rhnConfig import initCFG
 # where maybe the environment variable WERKZEUG_RUN_MAIN does not
 # work anymore
 #
-#from flask import cli
-#cli.show_server_banner = lambda *_: None
+# from flask import cli
+# cli.show_server_banner = lambda *_: None
 
 app = Flask(__name__)
 
 if os.environ.get("TESTING", "0") != "1":
-    initCFG('server.susemanager')
+    initCFG("server.susemanager")
     rhnSQL.initDB()
+
 
 @app.route("/")
 def index():
-    result = rhnSQL.fetchone_dict(rhnSQL.Statement("select '1' || '2' || '3' as testing from dual"))
+    result = rhnSQL.fetchone_dict(
+        rhnSQL.Statement("select '1' || '2' || '3' as testing from dual")
+    )
     if result:
         return "online"
-    abort(503) #Service Unavailable
+    abort(503)  # Service Unavailable
 
 
-_query_metering_data = rhnSQL.Statement("""
+_query_metering_data = rhnSQL.Statement(
+    """
     SELECT r.dimension usage_metric, r.count
       FROM susePaygDimensionResult r
      WHERE r.computation_id = (SELECT c.id
@@ -43,11 +48,13 @@ _query_metering_data = rhnSQL.Statement("""
                                 WHERE c.success = true
                              ORDER BY c.timestamp DESC
                                 LIMIT 1)
-""")
+"""
+)
+
 
 @app.route("/metering")
 def metering():
     h = rhnSQL.prepare(_query_metering_data)
     h.execute()
     result = h.fetchall_dict() or []
-    return json.dumps({ "usage_metrics" : result})
+    return json.dumps({"usage_metrics": result})

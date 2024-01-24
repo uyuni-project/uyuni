@@ -1,4 +1,5 @@
 #!/usr/bin/python
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #
@@ -35,6 +36,7 @@ def parse_qs(*_args):
 
 def parse_qsl(*_args):
     pass
+
 
 status = None
 table = None

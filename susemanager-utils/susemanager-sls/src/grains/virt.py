@@ -18,6 +18,7 @@ from xml.etree import ElementTree
 log = logging.getLogger(__name__)
 
 
+# pylint: disable-next=invalid-name
 def __virtual__():
     return salt.modules.virt.__virtual__() and _which_bin(["libvirtd"]) is not None
 
@@ -26,6 +27,7 @@ def features():
     """returns the features map of the virt module"""
     try:
         in_cluster = subprocess.check_call(["crm", "status"]) == 0
+    # pylint: disable-next=broad-exception-caught
     except Exception:
         in_cluster = False
 
@@ -39,17 +41,23 @@ def features():
         start_resources_ra = (
             ra_conf.find(".//parameter[@name='start_resources']") is not None
         )
+    # pylint: disable-next=broad-exception-caught
     except Exception:
         start_resources_ra = False
 
     libvirt_version = -1
     try:
-        version_out = subprocess.Popen(["libvirtd", "-V"], stdout=subprocess.PIPE).communicate()[0]
-        matcher = re.search(b'(\d+)\.(\d+)\.(\d+)', version_out)
+        version_out = subprocess.Popen(
+            ["libvirtd", "-V"], stdout=subprocess.PIPE
+        ).communicate()[0]
+        # pylint: disable-next=anomalous-backslash-in-string
+        matcher = re.search(b"(\d+)\.(\d+)\.(\d+)", version_out)
         if matcher:
             libvirt_version = 0
             for idx in range(len(matcher.groups())):
-                libvirt_version += int(matcher.group(idx + 1)) * 1000 ** (len(matcher.groups()) - idx - 1)
+                libvirt_version += int(matcher.group(idx + 1)) * 1000 ** (
+                    len(matcher.groups()) - idx - 1
+                )
     except OSError:
         log.error("libvirtd is not installed or is not in the PATH")
 

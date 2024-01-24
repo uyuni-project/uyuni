@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring,invalid-name
 #
 # Copyright (c) 2008--2013 Red Hat, Inc.
 #
@@ -13,12 +14,20 @@
 # in this software or its documentation.
 #
 import spacewalk.server.rhnSQL as rhnSQL
-from spacewalk.server.rhnCapability import set_client_capabilities, update_client_capabilities
+from spacewalk.server.rhnCapability import (
+    set_client_capabilities,
+    update_client_capabilities,
+)
 
-if __name__ == '__main__':
-    rhnSQL.initDB('rhnuser/rhnuser@webdev')
+if __name__ == "__main__":
+    rhnSQL.initDB("rhnuser/rhnuser@webdev")
 
-    set_client_capabilities([
-        "caneatCheese(1)=1", "caneatMeat(22)=3", "a(3)=4", "b(3)=5",
-    ])
+    set_client_capabilities(
+        [
+            "caneatCheese(1)=1",
+            "caneatMeat(22)=3",
+            "a(3)=4",
+            "b(3)=5",
+        ]
+    )
     update_client_capabilities(1000102174)

@@ -14,8 +14,10 @@ import stat
 import argparse
 
 # these numbers are for *after* package installation.
-DEFAULT_NEEDS = {'/rhnsat':          12*(2**30),  # 12GB
-                 '/opt/apps/oracle': 0.5*(2**30)}  # 0.5GB additionally
+DEFAULT_NEEDS = {
+    "/rhnsat": 12 * (2**30),  # 12GB
+    "/opt/apps/oracle": 0.5 * (2**30),
+}  # 0.5GB additionally
 
 
 def _listify(seq):
@@ -25,7 +27,7 @@ def _listify(seq):
 
 
 def _unique(seq):
-    """ return a list that has unique members """
+    """return a list that has unique members"""
     seq = _listify(seq)
     useq = {}
     for elem in seq:
@@ -41,10 +43,11 @@ def _abspath(path):
     return path
 
 
+# pylint: disable-next=invalid-name
 def _firstDir(path):
-    """ takes a path and walks backwards until it finds an existing directory.
-        Follows symlinks.
-        FIXME: need to test against NFS directory.
+    """takes a path and walks backwards until it finds an existing directory.
+    Follows symlinks.
+    FIXME: need to test against NFS directory.
     """
 
     path = _abspath(path)
@@ -54,32 +57,34 @@ def _firstDir(path):
 
 
 def _mountpoint(path):
-    """ figures out the mountpoint of a directory (or what would be the
-        mountpoint if just about to create the directory).
-        FIXME: need to test against NFS directory.
+    """figures out the mountpoint of a directory (or what would be the
+    mountpoint if just about to create the directory).
+    FIXME: need to test against NFS directory.
     """
 
     path = _firstDir(path)
     st_dev = os.stat(path)[stat.ST_DEV]
+    # pylint: disable-next=invalid-name
     _next = os.path.dirname(path)
-    while os.stat(_next)[stat.ST_DEV] == st_dev and path != '/':
+    while os.stat(_next)[stat.ST_DEV] == st_dev and path != "/":
         path = _next
+        # pylint: disable-next=invalid-name
         _next = os.path.dirname(path)
     return path
 
 
 def paths2mountpoints(paths):
-    """ returns a tuple of two dictionaries - one indexed by path, one indexed
-        by mountpoint:
-        (
-            {path00: mpoint0?, path01: mpoint0?, ...},
-            {mpoint00: [path00, path01, ...],
-             mpoint02: [path05, path06, ...], ...},
-        )
+    """returns a tuple of two dictionaries - one indexed by path, one indexed
+    by mountpoint:
+    (
+        {path00: mpoint0?, path01: mpoint0?, ...},
+        {mpoint00: [path00, path01, ...],
+         mpoint02: [path05, path06, ...], ...},
+    )
     """
     paths = _unique(paths)
-    pathsd = {} # 1:1
-    mpointsd = {} # indexed on mpoints 1:N
+    pathsd = {}  # 1:1
+    mpointsd = {}  # indexed on mpoints 1:N
     for path in paths:
         mpoint = _mountpoint(path)
         pathsd[path] = mpoint
@@ -90,12 +95,12 @@ def paths2mountpoints(paths):
 
 
 def paths2freespace(paths):
-    """ returns a dictionary indexed by path:
-        {path00: freespace, path01: freespace, ...}
+    """returns a dictionary indexed by path:
+    {path00: freespace, path01: freespace, ...}
     """
 
     paths = _unique(paths)
-    pathsd = {} # 1:1
+    pathsd = {}  # 1:1
     for path in paths:
         vfs = os.statvfs(path)
         pathsd[path] = int(vfs.f_bavail) * vfs.f_bsize
@@ -103,35 +108,40 @@ def paths2freespace(paths):
     return pathsd
 
 
+# pylint: disable-next=invalid-name
 def getNeeds(needsDict=None):  # pylint: disable=redefined-outer-name
-    """ returns two dictionaries of fulfilled and unfilled space per
-        mountpoint:
+    """returns two dictionaries of fulfilled and unfilled space per
+    mountpoint:
 
-        unfullfilled = {
-            mountpoint00: (paths, needs, freespace),
-            mountpoint01: (paths, needs, freespace),
-            ...,
-        }
+    unfullfilled = {
+        mountpoint00: (paths, needs, freespace),
+        mountpoint01: (paths, needs, freespace),
+        ...,
+    }
 
-        fulfilled = {
-            mountpoint00: (paths, needs, freespace),
-            mountpoint01: (paths, needs, freespace),
-            ...,
-        }
+    fulfilled = {
+        mountpoint00: (paths, needs, freespace),
+        mountpoint01: (paths, needs, freespace),
+        ...,
+    }
 
-        needsDict is by default DEFAULT_NEEDS (see top of module)
+    needsDict is by default DEFAULT_NEEDS (see top of module)
     """
 
     needsDict = needsDict or DEFAULT_NEEDS
+    # pylint: disable-next=invalid-name
     mp2pMap = paths2mountpoints(list(needsDict.keys()))[1]
+    # pylint: disable-next=invalid-name
     mp2fsMap = paths2freespace(list(mp2pMap.keys()))
 
     unfulfilled = {}
     fulfilled = {}
 
     for mountpoint, paths in mp2pMap.items():
+        # pylint: disable-next=invalid-name
         totalNeeds = 0
         for path in paths:
+            # pylint: disable-next=invalid-name
             totalNeeds = totalNeeds + needsDict[path]
         freespace = mp2fsMap[mountpoint]
         if freespace < totalNeeds:
@@ -142,44 +152,59 @@ def getNeeds(needsDict=None):  # pylint: disable=redefined-outer-name
     return unfulfilled, fulfilled
 
 
+# pylint: disable-next=invalid-name
 def _humanReadable(n):
     s = repr(n)
     if n >= 2**10:
-        s = '%.1fK' % (n/(2**10))
+        # pylint: disable-next=consider-using-f-string
+        s = "%.1fK" % (n / (2**10))
     if n >= 2**20:
-        s = '%.1fM' % (n/(2**20))
+        # pylint: disable-next=consider-using-f-string
+        s = "%.1fM" % (n / (2**20))
     if n >= 2**30:
-        s = '%.1fG' % (n/(2**30))
+        # pylint: disable-next=consider-using-f-string
+        s = "%.1fG" % (n / (2**30))
     return s
 
 
+# pylint: disable-next=invalid-name
 def check(needsDict=None):  # pylint: disable=redefined-outer-name
-    """ determine failed needs if any given needsDict.
-        needsDict is by default DEFAULT_NEEDS (see top of module)
+    """determine failed needs if any given needsDict.
+    needsDict is by default DEFAULT_NEEDS (see top of module)
     """
 
     needsDict = needsDict or DEFAULT_NEEDS
 
     unfulfilled = getNeeds(needsDict)[0]
     if unfulfilled:
-        sys.stderr.write("ERROR: diskspace does not meet minimum system "
-                         "requirements:\n")
+        sys.stderr.write(
+            "ERROR: diskspace does not meet minimum system " "requirements:\n"
+        )
         items = unfulfilled.items()
+        # pylint: disable-next=invalid-name
         lenItems = len(items)
         for mountpoint, data in items:
+            # pylint: disable-next=invalid-name
             paths, totalNeeds, freespace = data
+            # pylint: disable-next=consider-using-f-string
             msg = """\
            Mountpoint: %s
            Relevant paths serviced by mountpoint: %s
            Disk space needed:    %s bytes (app. %s)
            Disk space available: %s bytes (app. %s)
-""" % (mountpoint, ", ".join(paths),
-       totalNeeds, _humanReadable(totalNeeds),
-       freespace, _humanReadable(freespace))
+""" % (
+                mountpoint,
+                ", ".join(paths),
+                totalNeeds,
+                _humanReadable(totalNeeds),
+                freespace,
+                _humanReadable(freespace),
+            )
             sys.stderr.write(msg)
+            # pylint: disable-next=invalid-name
             lenItems = lenItems - 1
             if lenItems:
-                sys.stderr.write('\n')
+                sys.stderr.write("\n")
 
     if unfulfilled:
         return 1
@@ -192,16 +217,21 @@ def main():
     Main app function.
     """
     prs = argparse.ArgumentParser(description="Check embedded disk space")
-    prs.add_argument('DEFAULT_NEEDS', nargs='+',
-                     help=('Set default map of failed needs: [directory] [size] ... '
-                           'Example: /var/lig/pgsql/data 12288'))
+    prs.add_argument(
+        "DEFAULT_NEEDS",
+        nargs="+",
+        help=(
+            "Set default map of failed needs: [directory] [size] ... "
+            "Example: /var/lig/pgsql/data 12288"
+        ),
+    )
     args = prs.parse_args()
 
     if not len(args.DEFAULT_NEEDS) % 2:
         needs_dict = {}
         for directory, size in zip(args.DEFAULT_NEEDS[0::2], args.DEFAULT_NEEDS[1::2]):
             try:
-                needs_dict[directory] = int(size) * 2 ** 20
+                needs_dict[directory] = int(size) * 2**20
             except ValueError as err:
                 prs.error(err)
         sys.exit(check(needs_dict) or 0)
@@ -210,7 +240,8 @@ def main():
 
 
 if __name__ == "__main__":
+    # pylint: disable-next=pointless-string-statement
     """
     Run main function if this script is called directly.
-    """      # pylint: disable=pointless-string-statement
+    """  # pylint: disable=pointless-string-statement
     main()

@@ -1,4 +1,5 @@
 #!/usr/bin/python
+#  pylint: disable=missing-module-docstring,invalid-name
 #
 # Copyright (c) 2008--2013 Red Hat, Inc.
 #
@@ -19,8 +20,9 @@ from spacewalk.server import rhnImport
 
 rhnLog.initLOG(level=4)
 
+# pylint: disable-next=redefined-builtin
 dir = "spacewalk/server/handlers"
 
 for i in range(2):
-    for iface in ['rpcClasses', 'getHandler']:
+    for iface in ["rpcClasses", "getHandler"]:
         m = rhnImport.load(dir, interface_signature=iface)

@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #
@@ -21,22 +22,27 @@ from spacewalk.common.rhnLog import log_debug
 from spacewalk.common.rhnException import rhnException
 
 # the "exposed" functions
-__rhnexport__ = ['configure']
+__rhnexport__ = ["configure"]
 
-_query_lookup_interval = rhnSQL.Statement("""
+_query_lookup_interval = rhnSQL.Statement(
+    """
     select interval, case when restart = 'Y' then 1 else 0 end as restart
       from rhnActionDaemonConfig
      where action_id = :action_id
-""")
+"""
+)
 
 
+# pylint: disable-next=invalid-name,unused-argument
 def configure(serverId, actionId, dry_run=0):
     log_debug(3, dry_run)
     h = rhnSQL.prepare(_query_lookup_interval)
     h.execute(action_id=actionId)
     row = h.fetchone_dict()
     if not row:
-        raise rhnException("rhnsd reconfig action scheduled, but no entries "
-                           "in rhnActionDaemonConfig found")
+        raise rhnException(
+            "rhnsd reconfig action scheduled, but no entries "
+            "in rhnActionDaemonConfig found"
+        )
     # Format: (interval, restart)
-    return (row['interval'], row['restart'])
+    return (row["interval"], row["restart"])

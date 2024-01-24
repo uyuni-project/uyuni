@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring,invalid-name
 #
 # Copyright (c) 2012 SUSE LLC
 #
@@ -13,6 +14,8 @@
 from .importLib import GenericPackageImport
 from spacewalk.satellite_tools import syncCache
 
+
+# pylint: disable-next=missing-class-docstring
 class SupportInformationImport(GenericPackageImport):
     def __init__(self, batch, backend):
         GenericPackageImport.__init__(self, batch, backend)
@@ -23,23 +26,25 @@ class SupportInformationImport(GenericPackageImport):
         channelLabels = {}
         keywords = {}
         for item in self.batch:
-            if item['channel'] not in channelLabels:
-                channelLabels[item['channel']] = None
+            if item["channel"] not in channelLabels:
+                channelLabels[item["channel"]] = None
                 self.backend.lookupChannels(channelLabels)
-            if item['keyword'] not in keywords:
-                keywords[item['keyword']] = self.backend.lookupKeyword(item['keyword'])
-            pkg = self._cache.cache_get(item['pkgid'])
+            if item["keyword"] not in keywords:
+                keywords[item["keyword"]] = self.backend.lookupKeyword(item["keyword"])
+            pkg = self._cache.cache_get(item["pkgid"])
             if not pkg:
                 continue
-            if not (channelLabels[item['channel']] and channelLabels[item['channel']]['id']):
+            if not (
+                channelLabels[item["channel"]] and channelLabels[item["channel"]]["id"]
+            ):
                 continue
             self.backend.lookupPackageIdFromPackage(pkg)
             if pkg.id is None:
                 continue
 
-            item['package_id'] = pkg.id
-            item['channel_id'] = channelLabels[item['channel']]['id']
-            item['keyword_id'] = keywords[item['keyword']]
+            item["package_id"] = pkg.id
+            item["channel_id"] = channelLabels[item["channel"]]["id"]
+            item["keyword_id"] = keywords[item["keyword"]]
             self._data.append(item)
 
     def fix(self):
@@ -52,4 +57,3 @@ class SupportInformationImport(GenericPackageImport):
             self.backend.rollback()
             raise
         self.backend.commit()
-

@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring,invalid-name
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -14,6 +15,6 @@
 #
 from spacewalk.common.rhnConfig import initCFG, CFG
 
-initCFG('server.config-management-tool')
+initCFG("server.config-management-tool")
 
 print((CFG.config_delim_start))

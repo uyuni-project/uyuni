@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring,invalid-name
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -17,7 +18,7 @@ from spacewalk.common.rhnConfig import initCFG
 from spacewalk.server import rhnSQL, rhnUser
 
 rhnSQL.initDB("rhnuser/rhnuser@webdev")
-initCFG('server.xmlrpc')
+initCFG("server.xmlrpc")
 
 u = rhnUser.search("mibanescu-channel-admin")
 session = u.create_session()

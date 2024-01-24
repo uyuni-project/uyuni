@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring,invalid-name
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -20,12 +21,13 @@ from spacewalk.common.rhnLog import log_debug
 from spacewalk.common.rhnException import rhnFault
 
 
+# pylint: disable-next=missing-class-docstring
 class BasePackageUpload:
-
+    # pylint: disable-next=unused-argument
     def __init__(self, req):
         self.header_prefix = "X-RHN-Upload"
-        self.error_header_prefix = 'X-RHN-Upload-Error'
-        self.prefix = 'rhn/repository'
+        self.error_header_prefix = "X-RHN-Upload-Error"
+        self.prefix = "rhn/repository"
         self.is_source = 0
         self.rel_package_path = None
         self.package_path = None
@@ -41,27 +43,35 @@ class BasePackageUpload:
         self.org_id = None
 
     def headerParserHandler(self, req):
-        """ This whole function is ugly as hell. The Auth field in the header used to be required, but now
-            it must have either the Auth field or the Auth-Session field.
+        """This whole function is ugly as hell. The Auth field in the header used to be required, but now
+        it must have either the Auth field or the Auth-Session field.
         """
         # Initialize the logging
         log_debug(3, "Method", req.method)
 
         # Header string. This is what the Auth-Session field will look like in the header.
+        # pylint: disable-next=consider-using-f-string
         session_header = "%s-%s" % (self.header_prefix, "Auth-Session")
 
         # legacy rhnpush sends File-MD5sum; translate it into File-Checksum
+        # pylint: disable-next=consider-using-f-string
         md5sum_header = "%s-%s" % (self.header_prefix, "File-MD5sum")
         if md5sum_header in req.headers_in:
-            req.headers_in["%s-%s" % (self.header_prefix, "File-Checksum-Type")] = 'md5'
-            req.headers_in["%s-%s" % (self.header_prefix, "File-Checksum")] = \
-                req.headers_in[md5sum_header]
+            # pylint: disable-next=consider-using-f-string
+            req.headers_in["%s-%s" % (self.header_prefix, "File-Checksum-Type")] = "md5"
+            req.headers_in[
+                # pylint: disable-next=consider-using-f-string
+                "%s-%s"
+                % (self.header_prefix, "File-Checksum")
+            ] = req.headers_in[md5sum_header]
 
         for f in self.required_fields:
+            # pylint: disable-next=consider-using-f-string
             hf = "%s-%s" % (self.header_prefix, f)
             if hf not in req.headers_in:
                 # If the current field is Auth and Auth-Session field isn't present, something is wrong.
                 if f == "Auth" and (session_header not in req.headers_in):
+                    # pylint: disable-next=consider-using-f-string
                     log_debug(4, "Required field %s missing" % f)
                     raise rhnFault(500, f)
 
@@ -72,6 +82,7 @@ class BasePackageUpload:
 
                 # The current field being looked for isn't the Auth field and it's missing, so something is wrong.
                 else:
+                    # pylint: disable-next=consider-using-f-string
                     log_debug(4, "Required field %s missing" % f)
                     raise rhnFault(500, f)
 
@@ -88,15 +99,17 @@ class BasePackageUpload:
         self.file_checksum_type = self.field_data["File-Checksum-Type"]
         self.file_checksum = self.field_data["File-Checksum"]
         # 4/18/05 wregglej. if 1051 is in the header's keys, then it's a nosrc package.
-        self.is_source = (self.package_arch == 'src' or self.package_arch == 'nosrc')
+        self.is_source = self.package_arch == "src" or self.package_arch == "nosrc"
         return apache.OK
 
     def handler(self, req):
         log_debug(3, "Method", req.method)
         return apache.OK
 
+    # pylint: disable-next=unused-argument
     def cleanupHandler(self, req):
         return apache.OK
 
+    # pylint: disable-next=unused-argument
     def logHandler(self, req):
         return apache.OK

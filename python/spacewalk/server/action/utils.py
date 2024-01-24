@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -28,22 +29,22 @@ class NoActionInfo(Exception):
 class SubscribedChannel:
 
     """
-        SubscribedChannel represents a channel to which the server is subscribed.
+    SubscribedChannel represents a channel to which the server is subscribed.
     """
 
     def __init__(self, server_id, channel_lookup_string):
         """
-            Constructor.
+        Constructor.
 
-            server_id is a string containing the unique number that the
-            database has assigned to the server.
+        server_id is a string containing the unique number that the
+        database has assigned to the server.
 
-            channel_lookup_string is a string that the _get_channel_info function
-            uses to look up the correct channel by channel label. It does NOT have
-            to be the entire channel label, but it does have to occur at the beginning
-            of the channel label. For instance "rhn-tools" would match any of the
-            rhn-tools channels because they all begin with "rhn-tools". It can also be
-            the entire channel label, of course.
+        channel_lookup_string is a string that the _get_channel_info function
+        uses to look up the correct channel by channel label. It does NOT have
+        to be the entire channel label, but it does have to occur at the beginning
+        of the channel label. For instance "rhn-tools" would match any of the
+        rhn-tools channels because they all begin with "rhn-tools". It can also be
+        the entire channel label, of course.
         """
         self.server_id = server_id
         self.found_channel = None
@@ -53,9 +54,9 @@ class SubscribedChannel:
 
     def _get_channel_info(self):
         """
-            Looks up the correct channel based on channel_lookup_string.
-            Populates the id, label, and a boolean that tells whether the
-            channel is found.
+        Looks up the correct channel based on channel_lookup_string.
+        Populates the id, label, and a boolean that tells whether the
+        channel is found.
         """
         subscribed_channels = channels_for_server(self.server_id)
 
@@ -64,16 +65,16 @@ class SubscribedChannel:
         # automagically.
         self.found_tools_channel = False
         for channel_info in subscribed_channels:
-            label_position = channel_info['label'].find(self.channel_lookup_string)
+            label_position = channel_info["label"].find(self.channel_lookup_string)
             if label_position > -1 and label_position == 0:
                 self.found_channel = True
-                self.channel_id = channel_info['id']
-                self.channel_label = channel_info['label']
+                self.channel_id = channel_info["id"]
+                self.channel_label = channel_info["label"]
 
     def is_subscribed_to_channel(self):
         """
-            Returns True if server_id is subscribed to the
-            channel, False otherwise
+        Returns True if server_id is subscribed to the
+        channel, False otherwise
         """
         if not self.found_channel:
             self._get_channel_info()
@@ -81,7 +82,7 @@ class SubscribedChannel:
 
     def get_channel_id(self):
         """
-            Returns the channel's unique id.
+        Returns the channel's unique id.
         """
         if not self.channel_id:
             self._get_channel_info()
@@ -89,7 +90,7 @@ class SubscribedChannel:
 
     def get_channel_label(self):
         """
-            Returns the channel's label.
+        Returns the channel's label.
         """
         if not self.channel_label:
             self._get_channel_info()
@@ -99,17 +100,17 @@ class SubscribedChannel:
 class ChannelPackage:
 
     """
-        Represents a package contained in a channel that the server is
-        subscribed to.
+    Represents a package contained in a channel that the server is
+    subscribed to.
     """
 
     def __init__(self, server_id, package_name):
         """
-            Constructor.
+        Constructor.
 
-            server_id is the unique value assigned to the server by the db.
-            package_name is a string containing the name of the package
-                to be looked up.
+        server_id is the unique value assigned to the server by the db.
+        package_name is a string containing the name of the package
+            to be looked up.
         """
         self.server_id = server_id
         self.package_name = package_name
@@ -134,8 +135,8 @@ class ChannelPackage:
 
     def _get_package_info(self):
         """
-            "Private" function that retrieves info about the package.
-            Populates self.package_info, self.id, self.version, self.release, and self.epoch.
+        "Private" function that retrieves info about the package.
+        Populates self.package_info, self.id, self.version, self.release, and self.epoch.
         """
         # Get info on the package we want to install.
         possible_packages = find_package_with_arch(self.server_id, [self.package_name])
@@ -143,6 +144,7 @@ class ChannelPackage:
         # There's a possibility, however slight, that more than one package
         # may be returned by find_by_packages. If that's the case, we only
         # want the info about package_name.
+        # pylint: disable-next=unused-variable
         package_info = None
         if self.package_name in possible_packages:
             for package in possible_packages[self.package_name]:
@@ -156,16 +158,19 @@ class ChannelPackage:
 
     def _get_package_field_ids(self):
         """
-            "Private" function that retrieves the database id's for the name, EVR, and
-            package architecture and sets self.name_id, self.evr_id, and self.arch_id to
-            their values.
+        "Private" function that retrieves the database id's for the name, EVR, and
+        package architecture and sets self.name_id, self.evr_id, and self.arch_id to
+        their values.
         """
         package_id = self.get_id()
 
         if not package_id:
+            # pylint: disable-next=consider-using-f-string
             raise PackageNotFound("ID for package %s was not found." % self.get_name())
 
-        _package_info_query = rhnSQL.Statement("""
+        # pylint: disable-next=invalid-name
+        _package_info_query = rhnSQL.Statement(
+            """
             select
                     p.name_id name_id,
                     p.evr_id evr_id,
@@ -174,22 +179,27 @@ class ChannelPackage:
                     rhnPackage p
             where
                     p.id = :package_id
-        """)
+        """
+        )
         prepared_query = rhnSQL.prepare(_package_info_query)
         prepared_query.execute(package_id=package_id)
         package_info_results = prepared_query.fetchone_dict()
 
         if not package_info_results:
-            raise PackageNotFound("Name, EVR, and Arch info not found for %s" % self.get_name())
+            raise PackageNotFound(
+                # pylint: disable-next=consider-using-f-string
+                "Name, EVR, and Arch info not found for %s"
+                % self.get_name()
+            )
 
-        self.name_id = package_info_results['name_id']
-        self.evr_id = package_info_results['evr_id']
-        self.arch_id = package_info_results['arch_id']
+        self.name_id = package_info_results["name_id"]
+        self.evr_id = package_info_results["evr_id"]
+        self.arch_id = package_info_results["arch_id"]
 
     def exists(self):
         """
-            Returns True if the package is available for the server according to the db,
-            False otherwise.
+        Returns True if the package is available for the server according to the db,
+        False otherwise.
         """
         if not self.package_info:
             self._get_package_info()
@@ -201,7 +211,7 @@ class ChannelPackage:
 
     def get_name_id(self):
         """
-            Returns the name_id of the package.
+        Returns the name_id of the package.
         """
         if not self.name_id:
             self._get_package_field_ids()
@@ -209,7 +219,7 @@ class ChannelPackage:
 
     def get_evr_id(self):
         """
-            Returns the evr_id of the package.
+        Returns the evr_id of the package.
         """
         if not self.evr_id:
             self._get_package_field_ids()
@@ -217,7 +227,7 @@ class ChannelPackage:
 
     def get_arch_id(self):
         """
-            Returns the arch_id of the package.
+        Returns the arch_id of the package.
         """
         if not self.arch_id:
             self._get_package_field_ids()
@@ -225,7 +235,7 @@ class ChannelPackage:
 
     def get_id(self):
         """
-            Returns the id of the package.
+        Returns the id of the package.
         """
         if not self.id:
             self._get_package_field_ids()
@@ -233,13 +243,13 @@ class ChannelPackage:
 
     def get_name(self):
         """
-            Returns the name of the package.
+        Returns the name of the package.
         """
         return self.package_name
 
     def get_version(self):
         """
-            Returns the version of the package.
+        Returns the version of the package.
         """
         if not self.version:
             self._get_package_info()
@@ -247,7 +257,7 @@ class ChannelPackage:
 
     def get_release(self):
         """
-            Returns the release of the package.
+        Returns the release of the package.
         """
         if not self.release:
             self._get_package_info()
@@ -255,7 +265,7 @@ class ChannelPackage:
 
     def get_epoch(self):
         """
-            Returns the epoch of the package.
+        Returns the epoch of the package.
         """
         if not self.epoch:
             self._get_package_info()
@@ -263,7 +273,7 @@ class ChannelPackage:
 
     def get_arch(self):
         """
-            Returns the arch of the package.
+        Returns the arch of the package.
         """
         if not self.arch:
             self._get_package_info()
@@ -273,17 +283,17 @@ class ChannelPackage:
 class PackageInstallScheduler:
 
     """
-        Class responsible for scheduling package installs. Can
-        only be used inside actions during a kickstart.
+    Class responsible for scheduling package installs. Can
+    only be used inside actions during a kickstart.
     """
 
     def __init__(self, server_id, this_action_id, package):
         """
-            Constructor.
+        Constructor.
 
-            server_id is the unique number assigned to the server by the database.
-            this_action_id is the unique number assigned to the current action.
-            package is an instance of ChannelPackage.
+        server_id is the unique number assigned to the server by the database.
+        this_action_id is the unique number assigned to the current action.
+        package is an instance of ChannelPackage.
         """
         self.server_id = server_id
         self.package = package
@@ -292,22 +302,28 @@ class PackageInstallScheduler:
 
     def _get_action_info(self, action_id):
         """
-            Private function that returns the org_id and scheduler for action_id.
+        Private function that returns the org_id and scheduler for action_id.
         """
-        h = rhnSQL.prepare("""
+        h = rhnSQL.prepare(
+            """
             select  org_id, scheduler
             from    rhnAction
             where   id = :id
-        """)
+        """
+        )
         h.execute(id=action_id)
         row = h.fetchone_dict()
         if not row:
-            raise NoActionInfo("Couldn't find org_id or scheduler for action %s." % str(action_id))
-        return (row['org_id'], row['scheduler'])
+            raise NoActionInfo(
+                # pylint: disable-next=consider-using-f-string
+                "Couldn't find org_id or scheduler for action %s."
+                % str(action_id)
+            )
+        return (row["org_id"], row["scheduler"])
 
     def schedule_package_install(self):
         """
-            Public function that schedules self.package for installation during the next rhn_check.
+        Public function that schedules self.package for installation during the next rhn_check.
         """
         org_id, scheduler = self._get_action_info(self.this_action_id)
 
@@ -317,20 +333,21 @@ class PackageInstallScheduler:
             action_name="Scheduling install of virtualization host packages.",
             delta_time=0,
             scheduler=scheduler,
-            org_id=org_id
+            org_id=org_id,
         )
 
         self._add_package_to_install_action(self.new_action_id)
 
     def _add_package_to_install_action(self, action_id):
         """
-            Private function that adds self.package to the rhnActionPackage table.
+        Private function that adds self.package to the rhnActionPackage table.
         """
         name_id = self.package.get_name_id()
         package_arch_id = self.package.get_arch_id()
         evr_id = self.package.get_evr_id()
 
-        insert_package_query = rhnSQL.Statement("""
+        insert_package_query = rhnSQL.Statement(
+            """
             insert into rhnActionPackage(id,
                                          action_id,
                                          parameter,
@@ -343,9 +360,12 @@ class PackageInstallScheduler:
                     :name_id,
                     :evr_id,
                     :package_arch_id)
-        """)
+        """
+        )
         prepared_query = rhnSQL.prepare(insert_package_query)
-        prepared_query.execute(action_id=str(action_id),
-                               name_id=str(name_id),
-                               evr_id=str(evr_id),
-                               package_arch_id=str(package_arch_id))
+        prepared_query.execute(
+            action_id=str(action_id),
+            name_id=str(name_id),
+            evr_id=str(evr_id),
+            package_arch_id=str(package_arch_id),
+        )

@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring,invalid-name
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -19,6 +20,7 @@ import sys
 import time
 import traceback
 import socket
+
 try:
     #  python 2
     from StringIO import StringIO
@@ -44,15 +46,15 @@ QUIET_MAIL = None
 
 
 def print_env(fd=sys.stderr):
-    """ Dump the environment. """
+    """Dump the environment."""
     fd.write(f"\nEnvironment for PID={os.getpid()} on exception:\n")
     for key, value in sorted(os.environ.items()):
         fd.write(f"{key} = {value}\n")
 
 
 def print_locals(fd=sys.stderr, tb=None):
-    """ Dump a listing of all local variables and their value for better debugging
-        chance.
+    """Dump a listing of all local variables and their value for better debugging
+    chance.
     """
     if tb is None:
         tb = sys.exc_info()[2]
@@ -69,7 +71,9 @@ def print_locals(fd=sys.stderr, tb=None):
         f = f.f_back
     fd.write("\nLocal variables by frame\n")
     for frame in stack:
-        fd.write(f"Frame {frame.f_code.co_name} in {frame.f_code.co_filename} in line {frame.f_lineno}\n")
+        fd.write(
+            f"Frame {frame.f_code.co_name} in {frame.f_code.co_filename} in line {frame.f_lineno}\n"
+        )
         for key, value in frame.f_locals.items():
             fd.write(f"\t{key:>20} = ")
             # We have to be careful not to cause a new error in our error
@@ -77,6 +81,7 @@ def print_locals(fd=sys.stderr, tb=None):
             # error we don't want.
             try:
                 s = str(value)
+            # pylint: disable-next=broad-exception-caught
             except Exception:
                 s = "<ERROR WHILE PRINTING VALUE>"
             if len(s) > 100 * 1024:
@@ -93,6 +98,7 @@ def print_req(req, fd=sys.stderr):
     fd.write("Request object information:\n")
     fd.write(f"URI: {req.unparsed_uri}\n")
     fd.write(
+        # pylint: disable-next=consider-using-f-string
         "Remote Host: {remote_host}\nServer Name: {server_hostname}:{server_port}\n".format(
             remote_host=req.get_remote_host(),
             server_hostname=req.server.server_hostname,
@@ -105,10 +111,17 @@ def print_req(req, fd=sys.stderr):
     return 0
 
 
-def Traceback(method=None, req=None, mail=1, ostream=sys.stderr,
-              extra=None, severity="notification", with_locals=0):
-    """ Reports an traceback error and optionally sends mail about it.
-        NOTE: extra = extra text information.
+def Traceback(
+    method=None,
+    req=None,
+    mail=1,
+    ostream=sys.stderr,
+    extra=None,
+    severity="notification",
+    with_locals=0,
+):
+    """Reports an traceback error and optionally sends mail about it.
+    NOTE: extra = extra text information.
     """
     # pylint: disable=C0103
 
@@ -164,16 +177,15 @@ def Traceback(method=None, req=None, mail=1, ostream=sys.stderr,
         from_ = to
         if isinstance(to, type([])):
             from_ = to[0].strip()
-            to = ', '.join([x.strip() for x in to])
+            to = ", ".join([x.strip() for x in to])
         headers = {
             "Subject": f"{PRODUCT_NAME} TRACEBACK from {unicode_hostname}",
             "From": f"{hostname} <{from_}>",
             "To": to,
             "X-RHN-Traceback-Severity": severity,
             "Content-Type": 'text/plain; charset="utf-8"',
-
         }
-        QUIET_MAIL = QUIET_MAIL - 1     # count it no matter what
+        QUIET_MAIL = QUIET_MAIL - 1  # count it no matter what
 
         outstring = exc.getvalue()
 
@@ -188,27 +200,34 @@ def Traceback(method=None, req=None, mail=1, ostream=sys.stderr,
 
 
 def fetchTraceback(method=None, req=None, extra=None, with_locals=0):
-    """ a cheat for snagging just the string value of a Traceback """
+    """a cheat for snagging just the string value of a Traceback"""
     exc = StringIO()
-    Traceback(method=method, req=req, mail=0, ostream=exc, extra=extra,
-              severity=None, with_locals=with_locals)
+    Traceback(
+        method=method,
+        req=req,
+        mail=0,
+        ostream=exc,
+        extra=extra,
+        severity=None,
+        with_locals=with_locals,
+    )
     return exc.getvalue()
 
 
 def exitWithTraceback(e, msg, exitnum, mail=0):
     tbOut = StringIO()
     Traceback(mail, ostream=tbOut, with_locals=1)
-    log_error(-1, _('ERROR: %s %s: %s') %
-              (e.__class__.__name__, msg, e))
-    log_error(-1, _('TRACEBACK: %s') % tbOut.getvalue())
+    log_error(-1, _("ERROR: %s %s: %s") % (e.__class__.__name__, msg, e))
+    log_error(-1, _("TRACEBACK: %s") % tbOut.getvalue())
     sys.exit(exitnum)
 
 
 class SecurityList:
 
-    """ The SecurityList is a list of strings that are censored out of a debug email.
-        Right now it's only used for censoring traceback emails.
+    """The SecurityList is a list of strings that are censored out of a debug email.
+    Right now it's only used for censoring traceback emails.
     """
+
     _flag_string = "security-list"
 
     def __init__(self):
@@ -228,12 +247,12 @@ class SecurityList:
 
 
 def get_seclist():
-    """ Returns the list of strings to be censored. """
+    """Returns the list of strings to be censored."""
     return SecurityList().sec
 
 
 def censor_string(strval):
-    """ Remove all instances of the strings in seclist.sec from strval """
+    """Remove all instances of the strings in seclist.sec from strval"""
     censorlist = get_seclist()
     for c in censorlist:
         # Censor it with a fixed length string. This way the length of the hidden string isn't revealed.
@@ -242,7 +261,7 @@ def censor_string(strval):
 
 
 def add_to_seclist(obj):
-    """ Adds a string to seclist.sec, but only if it's not already there. """
+    """Adds a string to seclist.sec, but only if it's not already there."""
     seclist = SecurityList()
     if not seclist.check(obj):
         seclist.add(obj)

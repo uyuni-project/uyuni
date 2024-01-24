@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring,invalid-name
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -18,6 +19,7 @@
 
 import base64
 import os
+
 try:
     #  python 2
     import xmlrpclib
@@ -31,13 +33,20 @@ from uyuni.common.usix import raise_with_tb
 from spacewalk.common import rhnFlags
 from spacewalk.common.rhnLog import log_debug
 from spacewalk.common.rhnConfig import CFG
+
+# pylint: disable-next=ungrouped-imports
 from uyuni.common.checksum import getStringChecksum
+
+# pylint: disable-next=ungrouped-imports
 from spacewalk.common.rhnException import rhnFault, rhnException
 
 from spacewalk.server import rhnSQL, rhnUser, rhnCapability
 from spacewalk.server.rhnHandler import rhnHandler
 
-from spacewalk.server.config_common.templated_document import ServerTemplatedDocument, var_interp_prep
+from spacewalk.server.config_common.templated_document import (
+    ServerTemplatedDocument,
+    var_interp_prep,
+)
 
 
 from . import rhnSession
@@ -46,13 +55,11 @@ from . import rhnSession
 
 
 class BaseConfigFileError(Exception):
-
     def __init__(self, args):
         Exception.__init__(self, *args)
 
 
 class ConfigFileError(BaseConfigFileError):
-
     def __init__(self, file, *args):
         BaseConfigFileError.__init__(self, args)
         self.file = file
@@ -89,18 +96,19 @@ class ConfigFileExceedsQuota(ConfigFileError):
 class ConfigFilePathIncomplete(ConfigFileError):
     pass
 
+
 # Base handler class
 
 
+# pylint: disable-next=missing-class-docstring
 class ConfigFilesHandler(rhnHandler):
-
     def __init__(self):
         log_debug(3)
         rhnHandler.__init__(self)
         self.functions = {
-            'rhn_login': 'login',
-            'test_session': 'test_session',
-            'max_upload_fsize': 'max_upload_file_size',
+            "rhn_login": "login",
+            "test_session": "test_session",
+            "max_upload_fsize": "max_upload_file_size",
         }
         self.org_id = None
 
@@ -110,7 +118,7 @@ class ConfigFilesHandler(rhnHandler):
             return None
 
         # Turn compression on by default
-        rhnFlags.set('compress_response', 1)
+        rhnFlags.set("compress_response", 1)
         return getattr(self, self.functions[function])
 
     # returns max filesize that will be uploaded
@@ -118,28 +126,34 @@ class ConfigFilesHandler(rhnHandler):
         return self._get_maximum_file_size()
 
     # Generic login function
+    # pylint: disable-next=redefined-builtin
     def login(self, dict):
         log_debug(1)
-        username = dict.get('username')
-        password = dict.get('password')
+        username = dict.get("username")
+        password = dict.get("password")
         self.user = rhnUser.search(username)
+        # pylint: disable-next=superfluous-parens
         if not self.user or not (self.user.check_password(password)):
             raise rhnFault(2)
         if rhnUser.is_user_disabled(username):
-            msg = _("""
+            # pylint: disable-next=undefined-variable
+            msg = _(
+                """
                    %s Account has been deactivated on this server.
-                   Please contact your Org administrator for more help.""")
+                   Please contact your Org administrator for more help."""
+            )
             raise rhnFault(1, msg % username, explain=0)
 
         # Good to go
         session = self.user.create_session()
         return session.get_session()
 
+    # pylint: disable-next=redefined-builtin
     def test_session(self, dict):
         log_debug(3)
 
         try:
-            self._validate_session(dict.get('session'))
+            self._validate_session(dict.get("session"))
         except (rhnSession.InvalidSessionError, rhnSession.ExpiredSessionError):
             return 0
 
@@ -148,8 +162,8 @@ class ConfigFilesHandler(rhnHandler):
     # Helper functions
     def _get_delimiters(self):
         return {
-            'delim_start': CFG.config_delim_start,
-            'delim_end': CFG.config_delim_end,
+            "delim_start": CFG.config_delim_start,
+            "delim_end": CFG.config_delim_end,
         }
 
     def _validate_session(self, session):
@@ -158,19 +172,20 @@ class ConfigFilesHandler(rhnHandler):
         # up...
         # --bretm
         self.user = rhnUser.session_reload(session)
-        self.org_id = self.user.contact['org_id']
+        self.org_id = self.user.contact["org_id"]
         self._check_user_role()
 
     def _check_user_role(self):
         pass
 
     def _is_file(self, file):
-        return str(file['config_file_type_id']) == '1'
+        return str(file["config_file_type_id"]) == "1"
 
     def _is_link(self, file):
-        return str(file['config_file_type_id']) == '3'
+        return str(file["config_file_type_id"]) == "3"
 
-    _query_current_selinux_lookup = rhnSQL.Statement("""
+    _query_current_selinux_lookup = rhnSQL.Statement(
+        """
        select ci.selinux_ctx from rhnConfigInfo ci, rhnConfigRevision cr, rhnConfigFile cf
        where ci.id = cr.config_info_id
          and cf.id = cr.config_file_id
@@ -180,7 +195,8 @@ class ConfigFilesHandler(rhnHandler):
            where mcf.id = mcr.config_file_id
              and mcf.config_file_name_id = cf.config_file_name_id
       )
-    """)
+    """
+    )
 
     def _push_file(self, config_channel_id, file):
         if not file:
@@ -188,56 +204,61 @@ class ConfigFilesHandler(rhnHandler):
             return {}
 
         # Check for full path on the file
-        path = file.get('path')
+        path = file.get("path")
+        # pylint: disable-next=superfluous-parens
         if not (path[0] == os.sep):
             raise ConfigFilePathIncomplete(file)
 
-        if 'config_file_type_id' not in file:
-            log_debug(4, "Client does not support config directories, so set file_type_id to 1")
-            file['config_file_type_id'] = '1'
+        if "config_file_type_id" not in file:
+            log_debug(
+                4,
+                "Client does not support config directories, so set file_type_id to 1",
+            )
+            file["config_file_type_id"] = "1"
         # Check if delimiters are present
-        if self._is_file(file) and \
-           not (file.get('delim_start') and file.get('delim_end')):
+        if self._is_file(file) and not (
+            file.get("delim_start") and file.get("delim_end")
+        ):
             # Need delimiters
             raise ConfigFileMissingDelimError(file)
 
-        if not (file.get('user') and file.get('group') and
-                file.get('mode') is not None) and not self._is_link(file):
+        if not (
+            file.get("user") and file.get("group") and file.get("mode") is not None
+        ) and not self._is_link(file):
             raise ConfigFileMissingInfoError(file)
 
         # Oracle doesn't like certain binding variables
-        file['username'] = file.get('user', '')
-        file['groupname'] = file.get('group', '')
-        file['file_mode'] = str(file.get('mode', ''))
+        file["username"] = file.get("user", "")
+        file["groupname"] = file.get("group", "")
+        file["file_mode"] = str(file.get("mode", ""))
         # if the selinux flag is not sent by the client it is set to the last file
         # revision (or to None (i.e. NULL) in case of first revision) - see the bug
         # 644985 - SELinux context cleared from RHEL4 rhncfg-client
-        file['selinux_ctx'] = file.get('selinux_ctx', None)
-        if not file['selinux_ctx']:
+        file["selinux_ctx"] = file.get("selinux_ctx", None)
+        if not file["selinux_ctx"]:
             # RHEL4 or RHEL5+ with disabled selinux - set from the last revision
             h = rhnSQL.prepare(self._query_current_selinux_lookup)
             h.execute(**file)
             row = h.fetchone_dict()
             if row:
-                file['selinux_ctx'] = row['selinux_ctx']
+                file["selinux_ctx"] = row["selinux_ctx"]
             else:
-                file['selinux_ctx'] = None
+                file["selinux_ctx"] = None
         result = {}
 
         try:
-
             if self._is_file(file):
                 self._push_contents(file)
             elif self._is_link(file):
-                file['symlink'] = file.get('symlink') or ''
+                file["symlink"] = file.get("symlink") or ""
         except ConfigFileTooLargeError:
-            result['file_too_large'] = 1
+            result["file_too_large"] = 1
 
-        t = rhnSQL.Table('rhnConfigFileState', 'label')
-        state_id_alive = t['alive']['id']
+        t = rhnSQL.Table("rhnConfigFileState", "label")
+        state_id_alive = t["alive"]["id"]
 
-        file['state_id'] = state_id_alive
-        file['config_channel_id'] = config_channel_id
+        file["state_id"] = state_id_alive
+        file["config_channel_id"] = config_channel_id
 
         try:
             self._push_config_file(file)
@@ -249,6 +270,7 @@ class ConfigFilesHandler(rhnHandler):
             if e.errno == 20267:
                 # ORA-20267: (not_enough_quota) - Insufficient available quota
                 # for the specified action
+                # pylint: disable-next=raise-missing-from
                 raise ConfigFileExceedsQuota(file)
             raise
 
@@ -260,127 +282,191 @@ class ConfigFilesHandler(rhnHandler):
             result = self._push_file(config_channel_id, file)
         except ConfigFilePathIncomplete:
             e = sys.exc_info()[1]
-            raise_with_tb(rhnFault(4015, "Full path of file '%s' must be specified" % e.file.get('path'),
-                          explain=0), sys.exc_info()[2])
+            raise_with_tb(
+                rhnFault(
+                    4015,
+                    # pylint: disable-next=consider-using-f-string
+                    "Full path of file '%s' must be specified" % e.file.get("path"),
+                    explain=0,
+                ),
+                sys.exc_info()[2],
+            )
 
         except ConfigFileExistsError:
             e = sys.exc_info()[1]
-            raise_with_tb(rhnFault(4013, "File %s already uploaded" % e.file.get('path'),
-                          explain=0), sys.exc_info()[2])
+            raise_with_tb(
+                rhnFault(
+                    4013,
+                    # pylint: disable-next=consider-using-f-string
+                    "File %s already uploaded" % e.file.get("path"),
+                    explain=0,
+                ),
+                sys.exc_info()[2],
+            )
         except ConfigFileVersionMismatchError:
             e = sys.exc_info()[1]
-            raise_with_tb(rhnFault(4012, "File %s uploaded with a different "
-                           "version" % e.file.get('path'), explain=0), sys.exc_info()[2])
+            raise_with_tb(
+                rhnFault(
+                    4012,
+                    # pylint: disable-next=consider-using-f-string
+                    "File %s uploaded with a different " "version" % e.file.get("path"),
+                    explain=0,
+                ),
+                sys.exc_info()[2],
+            )
         except ConfigFileMissingDelimError:
             e = sys.exc_info()[1]
-            raise_with_tb(rhnFault(4008, "Delimiter not specified for file %s" %
-                           e.file.get('path'), explain=0), sys.exc_info()[2])
+            raise_with_tb(
+                rhnFault(
+                    4008,
+                    # pylint: disable-next=consider-using-f-string
+                    "Delimiter not specified for file %s" % e.file.get("path"),
+                    explain=0,
+                ),
+                sys.exc_info()[2],
+            )
         except ConfigFileMissingContentError:
             e = sys.exc_info()[1]
-            raise_with_tb(rhnFault(4007, "No content sent for file %s" %
-                           e.file.get('path'), explain=0), sys.exc_info()[2])
+            raise_with_tb(
+                rhnFault(
+                    4007,
+                    # pylint: disable-next=consider-using-f-string
+                    "No content sent for file %s" % e.file.get("path"),
+                    explain=0,
+                ),
+                sys.exc_info()[2],
+            )
         except ConfigFileExceedsQuota:
             e = sys.exc_info()[1]
-            raise_with_tb(rhnFault(4014, "File size of %s exceeds free quota space" %
-                           e.file.get('path'), explain=0), sys.exc_info()[2])
+            raise_with_tb(
+                rhnFault(
+                    4014,
+                    # pylint: disable-next=consider-using-f-string
+                    "File size of %s exceeds free quota space" % e.file.get("path"),
+                    explain=0,
+                ),
+                sys.exc_info()[2],
+            )
         except ConfigFileTooLargeError:
             e = sys.exc_info()[1]
-            raise_with_tb(rhnFault(4003, "File size of %s larger than %s bytes" %
-                                         (e.file.get('path'), self._get_maximum_file_size()),
-                                   explain=0), sys.exc_info()[2])
+            raise_with_tb(
+                rhnFault(
+                    4003,
+                    # pylint: disable-next=consider-using-f-string
+                    "File size of %s larger than %s bytes"
+                    % (e.file.get("path"), self._get_maximum_file_size()),
+                    explain=0,
+                ),
+                sys.exc_info()[2],
+            )
 
         rhnSQL.commit()
         return result
 
-    _query_content_lookup = rhnSQL.Statement("""
+    _query_content_lookup = rhnSQL.Statement(
+        """
         select cc.id, cv.checksum_type, cv.checksum, file_size, contents, is_binary, delim_start, delim_end
           from rhnConfigContent cc, rhnChecksumView cv
          where cv.checksum = :checksum
            and cv.checksum_type = :checksum_type
            and file_size = :file_size
            and checksum_id = cv.id
-    """)
+    """
+    )
 
-    _query_insert_content = rhnSQL.Statement("""
+    _query_insert_content = rhnSQL.Statement(
+        """
         insert into rhnConfigContent
                (id, checksum_id, file_size, contents, is_binary, delim_start, delim_end)
         values (:config_content_id, lookup_checksum(:checksum_type, :checksum),
                 :file_size, :contents, :is_binary, :delim_start, :delim_end)
-    """)
+    """
+    )
 
     def _push_contents(self, file):
+        checksum_type = "sha256"  # FIXME: this should be configuration option
 
-        checksum_type = 'sha256'  # FIXME: this should be configuration option
+        file["file_size"] = 0
+        file["is_binary"] = "N"
 
-        file['file_size'] = 0
-        file['is_binary'] = 'N'
+        file_path = file.get("path")
+        file_contents = file.get("file_contents") or ""
 
-        file_path = file.get('path')
-        file_contents = file.get('file_contents') or ''
-
-        if 'enc64' in file and file_contents:
+        if "enc64" in file and file_contents:
             file_contents = base64.decodestring(file_contents.encode())
 
-        if 'config_file_type_id' not in file:
-            log_debug(4, "Client does not support config directories, so set file_type_id to 1")
-            file['config_file_type_id'] = '1'
+        if "config_file_type_id" not in file:
+            log_debug(
+                4,
+                "Client does not support config directories, so set file_type_id to 1",
+            )
+            file["config_file_type_id"] = "1"
 
-        file['checksum_type'] = checksum_type
-        file['checksum'] = getStringChecksum(checksum_type, file_contents or '')
+        file["checksum_type"] = checksum_type
+        file["checksum"] = getStringChecksum(checksum_type, file_contents or "")
 
         if file_contents:
-            file['file_size'] = len(file_contents)
+            file["file_size"] = len(file_contents)
 
-            if file['file_size'] > self._get_maximum_file_size():
-                raise ConfigFileTooLargeError(file_path, file['file_size'])
+            if file["file_size"] > self._get_maximum_file_size():
+                raise ConfigFileTooLargeError(file_path, file["file_size"])
 
             # Is the content binary data?
             # XXX We may need a heuristic; this is what the web site does, and we
             # have to be consistent
             # XXX Yes this is iterating over a string
             try:
-                file_contents.decode('UTF-8')
+                file_contents.decode("UTF-8")
+            # pylint: disable-next=broad-exception-caught
             except Exception:
-                file['is_binary'] = 'Y'
+                file["is_binary"] = "Y"
 
         h = rhnSQL.prepare(self._query_content_lookup)
         h.execute(**file)
         row = h.fetchone_dict()
 
         if row:
-            db_contents = rhnSQL._fix_encoding(rhnSQL.read_lob(row['contents']) or '')
+            # pylint: disable-next=protected-access
+            db_contents = rhnSQL._fix_encoding(rhnSQL.read_lob(row["contents"]) or "")
             if file_contents == db_contents:
                 # Same content
-                file['config_content_id'] = row['id']
+                file["config_content_id"] = row["id"]
                 log_debug(5, "same content")
                 return
 
         # We have to insert a new file now
-        content_seq = rhnSQL.Sequence('rhn_confcontent_id_seq')
+        content_seq = rhnSQL.Sequence("rhn_confcontent_id_seq")
         config_content_id = content_seq.next()
-        file['config_content_id'] = config_content_id
-        file['contents'] = file_contents
+        file["config_content_id"] = config_content_id
+        file["contents"] = file_contents
 
-        h = rhnSQL.prepare(self._query_insert_content,
-                           blob_map={'contents': 'contents'})
+        h = rhnSQL.prepare(
+            self._query_insert_content, blob_map={"contents": "contents"}
+        )
         h.execute(**file)
 
-    _query_lookup_symlink_config_info = rhnSQL.Statement("""
+    _query_lookup_symlink_config_info = rhnSQL.Statement(
+        """
         select lookup_config_info(null, null, null, :selinux_ctx, lookup_config_filename(:symlink)) id
           from dual
-    """)
+    """
+    )
 
-    _query_lookup_non_symlink_config_info = rhnSQL.Statement("""
+    _query_lookup_non_symlink_config_info = rhnSQL.Statement(
+        """
         select lookup_config_info(:username, :groupname, :file_mode, :selinux_ctx, null) id
           from dual
-    """)
+    """
+    )
 
-    _query_lookup_config_file = rhnSQL.Statement("""
+    _query_lookup_config_file = rhnSQL.Statement(
+        """
         select id
           from rhnConfigFile
          where config_channel_id = :config_channel_id
            and config_file_name_id = lookup_config_filename(:path)
-    """)
+    """
+    )
 
     def _push_config_file(self, file):
         config_info_query = self._query_lookup_non_symlink_config_info
@@ -394,8 +480,8 @@ class ConfigFilesHandler(rhnHandler):
         if not row:
             # Hmm
             raise rhnException("This query should always return a row")
-        config_info_id = row['id']
-        file['config_info_id'] = config_info_id
+        config_info_id = row["id"]
+        file["config_info_id"] = config_info_id
 
         # Look up the config file itself
         h = rhnSQL.prepare(self._query_lookup_config_file)
@@ -405,43 +491,47 @@ class ConfigFilesHandler(rhnHandler):
             # Yay we already have this file
             # Later down the road, we're going to update modified for this
             # table
-            file['config_file_id'] = row['id']
+            file["config_file_id"] = row["id"]
             return
 
         # Have to insert this config file, gotta use the api to keep quotas up2date...
-        insert_call = rhnSQL.Function("rhn_config.insert_file",
-                                      rhnSQL.types.NUMBER())
-        file['config_file_id'] = insert_call(file['config_channel_id'], file['path'])
+        insert_call = rhnSQL.Function("rhn_config.insert_file", rhnSQL.types.NUMBER())
+        file["config_file_id"] = insert_call(file["config_channel_id"], file["path"])
 
-    _query_lookup_revision = rhnSQL.Statement("""
+    _query_lookup_revision = rhnSQL.Statement(
+        """
         select id, revision, config_content_id, config_info_id,
                config_file_type_id
           from rhnConfigRevision
          where config_file_id = :config_file_id
          order by revision desc
-    """)
+    """
+    )
 
     def _push_revision(self, file):
         # Assume we don't have any revision for now
-        file['revision'] = 1
+        file["revision"] = 1
         h = rhnSQL.prepare(self._query_lookup_revision)
         h.execute(**file)
         row = h.fetchone_dict()
         if row:
             # Is it the same revision as this one?
 
-            fields = ['config_content_id', 'config_info_id', 'config_file_type_id']
+            fields = ["config_content_id", "config_info_id", "config_file_type_id"]
 
-            if 'config_file_type_id' not in file:
-                log_debug(4, "Client does not support config directories, so set file_type_id to 1")
-                file['config_file_type_id'] = '1'
+            if "config_file_type_id" not in file:
+                log_debug(
+                    4,
+                    "Client does not support config directories, so set file_type_id to 1",
+                )
+                file["config_file_type_id"] = "1"
 
             for f in fields:
                 if file.get(f) != row.get(f):
                     break
             else:  # for
                 # All fields are equal
-                file['config_revision_id'] = row['id']
+                file["config_revision_id"] = row["id"]
                 self._update_revision(file)
                 self._update_config_file(file)
                 return
@@ -449,52 +539,61 @@ class ConfigFilesHandler(rhnHandler):
             # A revision already exists, but it's different. Just update the
             # revision number
 
-            revision = row['revision'] + 1
-            file['revision'] = revision
+            revision = row["revision"] + 1
+            file["revision"] = revision
 
         # If we got here, we need a new revision
         self._insert_revision(file)
 
-        if self.user and hasattr(self.user, 'getid'):
+        if self.user and hasattr(self.user, "getid"):
             self._add_author(file, self.user)
         self._update_config_file(file)
 
-    _query_update_revision = rhnSQL.Statement("""
+    _query_update_revision = rhnSQL.Statement(
+        """
         update rhnConfigRevision
            set modified = current_timestamp
          where id = :config_revision_id
-    """)
+    """
+    )
 
     def _update_revision(self, file):
         h = rhnSQL.prepare(self._query_update_revision)
         h.execute(**file)
 
     def _insert_revision(self, file):
-        insert_call = rhnSQL.Function("rhn_config.insert_revision",
-                                      rhnSQL.types.NUMBER())
-        file['config_revision_id'] = insert_call(file['revision'],
-                                                 file['config_file_id'],
-                                                 file.get('config_content_id', None),
-                                                 file['config_info_id'],
-                                                 file['config_file_type_id'])
+        insert_call = rhnSQL.Function(
+            "rhn_config.insert_revision", rhnSQL.types.NUMBER()
+        )
+        file["config_revision_id"] = insert_call(
+            file["revision"],
+            file["config_file_id"],
+            file.get("config_content_id", None),
+            file["config_info_id"],
+            file["config_file_type_id"],
+        )
 
-    _query_update_revision_add_author = rhnSQL.Statement("""
+    _query_update_revision_add_author = rhnSQL.Statement(
+        """
         update rhnConfigRevision
             set changed_by_id = :user_id
         where id = :rev_id
-    """)
+    """
+    )
 
     def _add_author(self, file, author):
         h = rhnSQL.prepare(self._query_update_revision_add_author)
-        h.execute(user_id=author.getid(), rev_id=file['config_revision_id'])
+        h.execute(user_id=author.getid(), rev_id=file["config_revision_id"])
 
-    _query_update_config_file = rhnSQL.Statement("""
+    _query_update_config_file = rhnSQL.Statement(
+        """
         update rhnConfigFile
            set latest_config_revision_id = :config_revision_id,
                state_id = :state_id
          where config_channel_id = :config_channel_id
            and config_file_name_id = lookup_config_filename(:path)
-    """)
+    """
+    )
 
     def _update_config_file(self, file):
         h = rhnSQL.prepare(self._query_update_config_file)
@@ -511,62 +610,62 @@ class ConfigFilesHandler(rhnHandler):
         return CFG.maximum_config_file_size
 
     def new_config_channel_id(self):
-        return rhnSQL.Sequence('rhn_confchan_id_seq').next()
+        return rhnSQL.Sequence("rhn_confchan_id_seq").next()
 
 
 def format_file_results(row, server=None):
-    encoding = ''
-    checksum = row['checksum'] or ''
-    is_binary = row['is_binary'] == 'Y'
-    raw_contents = rhnSQL.read_lob(row['file_contents'])
+    encoding = ""
+    checksum = row["checksum"] or ""
+    is_binary = row["is_binary"] == "Y"
+    raw_contents = rhnSQL.read_lob(row["file_contents"])
     if is_binary:
         contents = raw_contents
     else:
-        contents = rhnSQL._fix_encoding(raw_contents or '')
+        # pylint: disable-next=protected-access
+        contents = rhnSQL._fix_encoding(raw_contents or "")
 
     if server and not is_binary and contents:
         interpolator = ServerTemplatedDocument(
-            server,
-            start_delim=row['delim_start'],
-            end_delim=row['delim_end']
+            server, start_delim=row["delim_start"], end_delim=row["delim_end"]
         )
         contents = interpolator.interpolate(contents)
-        if row['checksum_type']:
-            checksummer = hashlib.new(row['checksum_type'])
+        if row["checksum_type"]:
+            checksummer = hashlib.new(row["checksum_type"])
             checksummer.update(contents.encode())
             checksum = checksummer.hexdigest()
 
     if contents:
         client_caps = rhnCapability.get_client_capabilities()
-        if client_caps and 'configfiles.base64_enc' in client_caps:
-            encoding = 'base64'
+        if client_caps and "configfiles.base64_enc" in client_caps:
+            encoding = "base64"
             if is_binary:
+                # pylint: disable-next=self-assigning-variable
                 contents = contents
             else:
                 contents = contents.encode()
             contents = base64.encodestring(contents).decode()
-    if row.get('modified', False):
-        m_date = xmlrpclib.DateTime(str(row['modified']))
+    if row.get("modified", False):
+        m_date = xmlrpclib.DateTime(str(row["modified"]))
     else:
-        m_date = ''
+        m_date = ""
 
     return {
-        'path': row['path'],
-        'config_channel': row['config_channel'],
-        'file_contents': contents,
-        'symlink': row['symlink'] or '',
-        'checksum_type': row['checksum_type'] or '',
-        'checksum': checksum,
-        'verify_contents': True,
-        'delim_start': row['delim_start'] or '',
-        'delim_end': row['delim_end'] or '',
-        'revision': row['revision'] or '',
-        'username': row['username'] or '',
-        'groupname': row['groupname'] or '',
-        'filemode': row['filemode'] or '',
-        'encoding': encoding or '',
-        'filetype': row['label'],
-        'selinux_ctx': row['selinux_ctx'] or '',
-        'modified': m_date,
-        'is_binary': row['is_binary'] or '',
+        "path": row["path"],
+        "config_channel": row["config_channel"],
+        "file_contents": contents,
+        "symlink": row["symlink"] or "",
+        "checksum_type": row["checksum_type"] or "",
+        "checksum": checksum,
+        "verify_contents": True,
+        "delim_start": row["delim_start"] or "",
+        "delim_end": row["delim_end"] or "",
+        "revision": row["revision"] or "",
+        "username": row["username"] or "",
+        "groupname": row["groupname"] or "",
+        "filemode": row["filemode"] or "",
+        "encoding": encoding or "",
+        "filetype": row["label"],
+        "selinux_ctx": row["selinux_ctx"] or "",
+        "modified": m_date,
+        "is_binary": row["is_binary"] or "",
     }

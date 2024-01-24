@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring,invalid-name
 #
 # Copyright (c) 2008--2012 Red Hat, Inc.
 #
@@ -23,79 +24,94 @@ import shutil
 import tempfile
 from .timeLib import DAY, now, secs2days, secs2years
 
-class RhnSslToolException(Exception):
-    """ general exception class for the tool """
 
+class RhnSslToolException(Exception):
+    """general exception class for the tool"""
+
+
+# pylint: disable-next=invalid-name
 errnoGeneralError = 1
+# pylint: disable-next=invalid-name
 errnoSuccess = 0
 
 
+# pylint: disable-next=invalid-name
 def fixSerial(serial):
-    """ fixes a serial number this may be wrongly formatted """
+    """fixes a serial number this may be wrongly formatted"""
 
     if not serial:
-        serial = '00'
+        serial = "00"
 
-    if serial.find('0x') == -1:
-        serial = '0x'+serial
+    if serial.find("0x") == -1:
+        serial = "0x" + serial
 
     # strip the '0x' if present
-    serial = serial.split('x')[-1]
+    serial = serial.split("x")[-1]
 
     # the string might have a trailing L
-    serial = serial.replace('L', '')
+    serial = serial.replace("L", "")
 
     # make sure the padding is correct
     # if odd number of digits, pad with a 0
     # e.g., '100' --> '0100'
-    if len(serial)/2.0 != len(serial)//2:
-        serial = '0'+serial
+    if len(serial) / 2.0 != len(serial) // 2:
+        serial = "0" + serial
 
     return serial
 
 
+# pylint: disable-next=invalid-name
 def incSerial(serial):
-    """ increment a serial hex number """
+    """increment a serial hex number"""
 
     if not serial:
-        serial = '00'
+        serial = "00"
 
-    if serial.find('0x') == -1:
-        serial = '0x'+serial
+    if serial.find("0x") == -1:
+        serial = "0x" + serial
 
+    # pylint: disable-next=eval-used
     serial = eval(serial) + 1
     serial = hex(serial)
 
-    serial = serial.split('x')[-1]
+    serial = serial.split("x")[-1]
     return fixSerial(serial)
 
 
+# pylint: disable-next=invalid-name
 def getMachineName(hostname):
-    """ xxx.yyy.zzz.com --> xxx.yyy
-        yyy.zzz.com     --> yyy
-        zzz.com         --> zzz.com
-        xxx             --> xxx
-        *.yyy.zzz.com   --> _star_.yyy
+    """xxx.yyy.zzz.com --> xxx.yyy
+    yyy.zzz.com     --> yyy
+    zzz.com         --> zzz.com
+    xxx             --> xxx
+    *.yyy.zzz.com   --> _star_.yyy
     """
-    hn = hostname.replace('*', '_star_').split('.')
+    hn = hostname.replace("*", "_star_").split(".")
     if len(hn) < 3:
         return hostname
-    return '.'.join(hn[:-2])
+    return ".".join(hn[:-2])
+
 
 #
 # NOTE: the Unix epoch overflows at: 2038-01-19 03:14:07 (2^31 seconds)
 #
 
+
+# pylint: disable-next=invalid-name
 def secsTil18Jan2038():
-    """ (int) secs til 1 day before the great 32-bit overflow
-        We are making it 1 day just to be safe.
+    """(int) secs til 1 day before the great 32-bit overflow
+    We are making it 1 day just to be safe.
     """
     return 2147483647 - now() - DAY
 
+
+# pylint: disable-next=invalid-name
 def daysTil18Jan2038():
     "(float) days til 1 day before the great 32-bit overflow"
     return secs2days(secsTil18Jan2038())
 
+
+# pylint: disable-next=invalid-name
 def yearsTil18Jan2038():
     "(float) approximate years til 1 day before the great 32-bit overflow"
     return secs2years(secsTil18Jan2038())
@@ -105,10 +121,12 @@ def gendir(directory):
     "makedirs, but only if it doesn't exist first"
     if not os.path.exists(directory):
         try:
-            os.makedirs(directory, int('0700',8))
+            os.makedirs(directory, int("0700", 8))
         except OSError as e:
-            print("Error: %s" % (e, ))
+            # pylint: disable-next=consider-using-f-string
+            print("Error: %s" % (e,))
             sys.exit(1)
+
 
 def chdir(newdir):
     "chdir with the previous cwd as the return value"
@@ -119,32 +137,32 @@ def chdir(newdir):
 
 class TempDir:
 
-    """ temp directory class with a cleanup destructor and method """
+    """temp directory class with a cleanup destructor and method"""
 
-    _shutil = shutil # trying to hang onto shutil during garbage collection
+    _shutil = shutil  # trying to hang onto shutil during garbage collection
 
-    def __init__(self, suffix='-rhn-ssl-tool'):
+    def __init__(self, suffix="-rhn-ssl-tool"):
         "create a temporary directory in /tmp"
 
-        if suffix.find('/') != -1:
+        if suffix.find("/") != -1:
             raise ValueError("suffix cannot be a path, only a name")
 
         # add some quick and dirty randomness to the tempfilename
-        s = ''
+        s = ""
         while len(s) < 10:
             s = s + str(ord(os.urandom(1)))
-        self.path = tempfile.mkdtemp(suffix='-'+s+suffix)
+        self.path = tempfile.mkdtemp(suffix="-" + s + suffix)
 
     def getdir(self):
         return self.path
+
     getpath = getdir
 
     def __del__(self):
-        """ delete temporary directory when done with it """
+        """delete temporary directory when done with it"""
         self._shutil.rmtree(self.path)
 
     close = __del__
 
 
-#===============================================================================
-
+# ===============================================================================

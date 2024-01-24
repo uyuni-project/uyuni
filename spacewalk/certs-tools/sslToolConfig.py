@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring,invalid-name,anomalous-backslash-in-string
 #
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #
@@ -28,52 +29,62 @@ import random
 import socket
 
 ## local imports
-from uyuni.common.fileutils import cleanupNormPath, rotateFile, rhn_popen, cleanupAbsPath
+from uyuni.common.fileutils import (
+    cleanupNormPath,
+    rotateFile,
+    rhn_popen,
+    cleanupAbsPath,
+)
+
+# pylint: disable-next=unused-import
 from .sslToolLib import getMachineName, daysTil18Jan2038, incSerial, fixSerial
 from rhn.stringutils import sstr
 
 # defaults where we can see them (NOTE: directory is figured at write time)
-CERT_PATH = '/usr/share/rhn/certs/'
-BUILD_DIR = cleanupNormPath('./ssl-build', dotYN=1)
+CERT_PATH = "/usr/share/rhn/certs/"
+BUILD_DIR = cleanupNormPath("./ssl-build", dotYN=1)
 HOSTNAME = socket.getfqdn()
 MACHINENAME = getMachineName(HOSTNAME)
 
-CA_KEY_NAME = 'RHN-ORG-PRIVATE-SSL-KEY'
-CA_CRT_NAME = 'RHN-ORG-TRUSTED-SSL-CERT'
+CA_KEY_NAME = "RHN-ORG-PRIVATE-SSL-KEY"
+CA_CRT_NAME = "RHN-ORG-TRUSTED-SSL-CERT"
 CA_CRT_RPM_NAME = CA_CRT_NAME.lower()
 
-BASE_SERVER_RPM_NAME = 'rhn-org-httpd-ssl-key-pair'
-BASE_SERVER_TAR_NAME = 'rhn-org-httpd-ssl-archive'
+BASE_SERVER_RPM_NAME = "rhn-org-httpd-ssl-key-pair"
+BASE_SERVER_TAR_NAME = "rhn-org-httpd-ssl-archive"
 
-LEGACY_CA_KEY_NAME = 'ca.key'
-LEGACY_CA_CRT_NAME = 'RHNS-CORP-CA-CERT'
-LEGACY_SERVER_RPM_NAME1 = 'rhns-ssl-cert'
-LEGACY_SERVER_RPM_NAME2 = 'rhn-httpd-ssl-key-pair'
-LEGACY_CA_CERT_RPM_NAME = 'rhns-ca-cert'
+LEGACY_CA_KEY_NAME = "ca.key"
+LEGACY_CA_CRT_NAME = "RHNS-CORP-CA-CERT"
+LEGACY_SERVER_RPM_NAME1 = "rhns-ssl-cert"
+LEGACY_SERVER_RPM_NAME2 = "rhn-httpd-ssl-key-pair"
+LEGACY_CA_CERT_RPM_NAME = "rhns-ca-cert"
 
-CA_OPENSSL_CNF_NAME = 'rhn-ca-openssl.cnf'
-SERVER_OPENSSL_CNF_NAME = 'rhn-server-openssl.cnf'
+CA_OPENSSL_CNF_NAME = "rhn-ca-openssl.cnf"
+SERVER_OPENSSL_CNF_NAME = "rhn-server-openssl.cnf"
 
-MD = 'sha384'
-CRYPTO = '-aes-256-cbc'
+MD = "sha384"
+CRYPTO = "-aes-256-cbc"
 
 
+# pylint: disable-next=invalid-name
 def getOption(options, opt):
-    """ fetch the value of an options object item
-        without blowing up upon obvious errors
+    """fetch the value of an options object item
+    without blowing up upon obvious errors
     """
-    assert opt.find('-') == -1
+    assert opt.find("-") == -1
     if not options:
         return None
     if opt in options.__dict__:
-        #print 'XXX opt, options.__dict__[opt]', opt, options.__dict__[opt]
+        # print 'XXX opt, options.__dict__[opt]', opt, options.__dict__[opt]
         return options.__dict__[opt]
     else:
         return None
 
+
+# pylint: disable-next=invalid-name
 def setOption(options, opt, value):
-    """ set the value of an options object item
-        without blowing up upon obvious errors
+    """set the value of an options object item
+    without blowing up upon obvious errors
     """
     if not options:
         return
@@ -81,67 +92,67 @@ def setOption(options, opt, value):
         options.__dict__[opt] = value
 
 
+# pylint: disable-next=invalid-name
 def getStartDate_aWeekAgo():
-    """ for SSL cert/key generation, returns now, minus 1 week
-        just in case weird time zone issues get in the way of a working
-        cert/key.
+    """for SSL cert/key generation, returns now, minus 1 week
+    just in case weird time zone issues get in the way of a working
+    cert/key.
 
-        format: YYMMDDHHMMSSZ where Z is the capital letter Z
+    format: YYMMDDHHMMSSZ where Z is the capital letter Z
     """
-    aweek = 24*60*60*7
-    return time.strftime("%y%m%d%H%M%S", time.gmtime(time.time()-aweek)) + 'Z'
+    aweek = 24 * 60 * 60 * 7
+    return time.strftime("%y%m%d%H%M%S", time.gmtime(time.time() - aweek)) + "Z"
 
 
-_defs = \
-    {
-        '--dir'             : BUILD_DIR,
-        '--ca-key'          : 'RHN-ORG-PRIVATE-SSL-KEY',
-        '--ca-cert'         : 'RHN-ORG-TRUSTED-SSL-CERT',
-        '--cert-expiration' : int(daysTil18Jan2038()),
-        '--startdate'       : getStartDate_aWeekAgo(),
-
-        '--server-key'      : 'server.key',
-        '--server-cert-req' : 'server.csr',
-        '--server-cert'     : 'server.crt',
-
-        '--jabberd-ssl-cert': 'server.pem',
-
-        '--set-country'     : 'US',
-        '--set-common-name' : "",       # these two will never appear
-        '--set-hostname'    : HOSTNAME, # at the same time on the CLI
-
-        '--ca-cert-rpm'     : CA_CRT_RPM_NAME,
-        '--server-rpm'      : BASE_SERVER_RPM_NAME+'-'+MACHINENAME,
-        '--server-tar'      : BASE_SERVER_TAR_NAME+'-'+MACHINENAME,
-        '--rpm-packager'    : None,
-        '--rpm-vendor'      : None,
-    }
+_defs = {
+    "--dir": BUILD_DIR,
+    "--ca-key": "RHN-ORG-PRIVATE-SSL-KEY",
+    "--ca-cert": "RHN-ORG-TRUSTED-SSL-CERT",
+    "--cert-expiration": int(daysTil18Jan2038()),
+    "--startdate": getStartDate_aWeekAgo(),
+    "--server-key": "server.key",
+    "--server-cert-req": "server.csr",
+    "--server-cert": "server.crt",
+    "--jabberd-ssl-cert": "server.pem",
+    "--set-country": "US",
+    "--set-common-name": "",  # these two will never appear
+    "--set-hostname": HOSTNAME,  # at the same time on the CLI
+    "--ca-cert-rpm": CA_CRT_RPM_NAME,
+    "--server-rpm": BASE_SERVER_RPM_NAME + "-" + MACHINENAME,
+    "--server-tar": BASE_SERVER_TAR_NAME + "-" + MACHINENAME,
+    "--rpm-packager": None,
+    "--rpm-vendor": None,
+}
 
 _defsCa = copy.copy(_defs)
 _defsCa.update(
     {
-        '--set-state'       : '',
-        '--set-city'        : '',
-        '--set-org'         : '',
-        '--set-org-unit'    : '',
-        '--set-email'       : '',
-    })
+        "--set-state": "",
+        "--set-city": "",
+        "--set-org": "",
+        "--set-org-unit": "",
+        "--set-email": "",
+    }
+)
 
 
 _defsServer = copy.copy(_defs)
 _defsServer.update(
     {
-        '--set-state'       : 'North Carolina',
-        '--set-city'        : 'Raleigh',
-        '--set-org'         : 'Example Corp. Inc.',
-        '--set-org-unit'    : 'unit',
-        '--set-email'       : 'admin@example.com',
-    })
+        "--set-state": "North Carolina",
+        "--set-city": "Raleigh",
+        "--set-org": "Example Corp. Inc.",
+        "--set-org-unit": "unit",
+        "--set-email": "admin@example.com",
+    }
+)
 
 DEFS = _defsServer
 
 
+# pylint: disable-next=invalid-name
 def reInitDEFS(caYN=0):
+    # pylint: disable-next=global-variable-not-assigned
     global DEFS
     if caYN:
         DEFS.update(_defsCa)
@@ -149,185 +160,211 @@ def reInitDEFS(caYN=0):
         DEFS.update(_defsServer)
 
 
+# pylint: disable-next=invalid-name
 def figureDEFS_dirs(options):
-    """ figure out the directory defaults (after options being at least parsed
-        once).
+    """figure out the directory defaults (after options being at least parsed
+    once).
     """
 
+    # pylint: disable-next=global-variable-not-assigned
     global DEFS
     ## fix up the --dir setting
-    DEFS['--dir'] = getOption(options, 'dir') or DEFS['--dir'] or '.'
-    DEFS['--dir'] = cleanupNormPath(DEFS['--dir'], dotYN=1)
+    DEFS["--dir"] = getOption(options, "dir") or DEFS["--dir"] or "."
+    DEFS["--dir"] = cleanupNormPath(DEFS["--dir"], dotYN=1)
 
     ## fix up the --set-hostname and MACHINENAME settings
-    DEFS['--set-hostname'] = getOption(options, 'set_hostname') \
-                               or DEFS['--set-hostname'] \
-                               or socket.gethostname()
+    DEFS["--set-hostname"] = (
+        getOption(options, "set_hostname")
+        or DEFS["--set-hostname"]
+        or socket.gethostname()
+    )
 
     global MACHINENAME
-    MACHINENAME = getMachineName(DEFS['--set-hostname'])
+    MACHINENAME = getMachineName(DEFS["--set-hostname"])
 
     ## remap to options object
-    setOption(options, 'dir', DEFS['--dir'])
-    setOption(options, 'set_hostname', DEFS['--set-hostname'])
+    setOption(options, "dir", DEFS["--dir"])
+    setOption(options, "set_hostname", DEFS["--set-hostname"])
 
 
+# pylint: disable-next=invalid-name
 def figureDEFS_CA(options):
-    """ figure out the defaults (after options being at least parsed once) for
-        the CA key-pair(set) variables.
+    """figure out the defaults (after options being at least parsed once) for
+    the CA key-pair(set) variables.
     """
 
+    # pylint: disable-next=global-variable-not-assigned
     global DEFS
-    if not getOption(options, 'ca_key'):
+    if not getOption(options, "ca_key"):
         # the various default names for CA keys (a hierarchy)
-        for possibility in (CA_KEY_NAME, 'ca.key', 'cakey.pem'):
-            if os.path.exists(os.path.join(DEFS['--dir'], possibility)):
-                DEFS['--ca-key'] = possibility
+        for possibility in (CA_KEY_NAME, "ca.key", "cakey.pem"):
+            if os.path.exists(os.path.join(DEFS["--dir"], possibility)):
+                DEFS["--ca-key"] = possibility
                 break
 
-    DEFS['--ca-key'] = os.path.basename(getOption(options, 'ca_key') or DEFS['--ca-key'])
-    DEFS['--ca-cert'] = os.path.basename(getOption(options, 'ca_cert') or DEFS['--ca-cert'])
+    DEFS["--ca-key"] = os.path.basename(
+        getOption(options, "ca_key") or DEFS["--ca-key"]
+    )
+    DEFS["--ca-cert"] = os.path.basename(
+        getOption(options, "ca_cert") or DEFS["--ca-cert"]
+    )
 
     # the various default names for CA keys and certs
-    if not getOption(options, 'ca_cert'):
-        if DEFS['--ca-key'] == CA_KEY_NAME:
-            DEFS['--ca-cert'] = CA_CRT_NAME
-        elif DEFS['--ca-key'] == 'ca.key':
-            DEFS['--ca-cert'] = 'ca.crt'
-        elif DEFS['--ca-key'] == 'cakey.pem':
-            DEFS['--ca-cert'] = 'cacert.pem'
+    if not getOption(options, "ca_cert"):
+        if DEFS["--ca-key"] == CA_KEY_NAME:
+            DEFS["--ca-cert"] = CA_CRT_NAME
+        elif DEFS["--ca-key"] == "ca.key":
+            DEFS["--ca-cert"] = "ca.crt"
+        elif DEFS["--ca-key"] == "cakey.pem":
+            DEFS["--ca-cert"] = "cacert.pem"
         else:
-            DEFS['--ca-cert'] = 'ca.crt'
+            DEFS["--ca-cert"] = "ca.crt"
 
-    DEFS['--cert-expiration'] = getOption(options, 'cert_expiration') \
-                                  or int(daysTil18Jan2038())
-    DEFS['--ca-cert-rpm'] = getOption(options, 'ca_cert_rpm') \
-                              or CA_CRT_RPM_NAME
+    DEFS["--cert-expiration"] = getOption(options, "cert_expiration") or int(
+        daysTil18Jan2038()
+    )
+    DEFS["--ca-cert-rpm"] = getOption(options, "ca_cert_rpm") or CA_CRT_RPM_NAME
 
-    DEFS['--rpm-packager'] = getOption(options, 'rpm_packager')
-    DEFS['--rpm-vendor'] = getOption(options, 'rpm_vendor')
+    DEFS["--rpm-packager"] = getOption(options, "rpm_packager")
+    DEFS["--rpm-vendor"] = getOption(options, "rpm_vendor")
 
-    if '--cert-expiration' in DEFS:
+    if "--cert-expiration" in DEFS:
         # nothing under 1 day or over # days til 18Jan2038
-        if DEFS['--cert-expiration'] < 1:
-            DEFS['--cert-expiration'] = 1
-        _maxdays = int(daysTil18Jan2038()) # already rounded
-        if DEFS['--cert-expiration'] > _maxdays:
-            DEFS['--cert-expiration'] = _maxdays
+        if DEFS["--cert-expiration"] < 1:
+            DEFS["--cert-expiration"] = 1
+        # pylint: disable-next=invalid-name
+        _maxdays = int(daysTil18Jan2038())  # already rounded
+        if DEFS["--cert-expiration"] > _maxdays:
+            DEFS["--cert-expiration"] = _maxdays
 
     # remap to options object
-    setOption(options, 'ca_key', DEFS['--ca-key'])
-    setOption(options, 'ca_cert', DEFS['--ca-cert'])
-    setOption(options, 'cert_expiration', DEFS['--cert-expiration'])
-    setOption(options, 'ca_cert_rpm', DEFS['--ca-cert-rpm'])
+    setOption(options, "ca_key", DEFS["--ca-key"])
+    setOption(options, "ca_cert", DEFS["--ca-cert"])
+    setOption(options, "cert_expiration", DEFS["--cert-expiration"])
+    setOption(options, "ca_cert_rpm", DEFS["--ca-cert-rpm"])
 
 
+# pylint: disable-next=invalid-name
 def figureDEFS_server(options):
-    """ figure out the defaults (after options being at least parsed once) for
-        the server key-pair(set) variables.
+    """figure out the defaults (after options being at least parsed once) for
+    the server key-pair(set) variables.
     """
 
+    # pylint: disable-next=global-variable-not-assigned
     global DEFS
-    DEFS['--server-key'] = os.path.basename(getOption(options, 'server_key') \
-                             or DEFS['--server-key'] or 'server.key')
-    DEFS['--server-cert-req'] = \
-      os.path.basename(getOption(options, 'server_cert_req') \
-        or DEFS['--server-cert-req'] or 'server.csr')
-    DEFS['--server-cert'] = os.path.basename(getOption(options, 'server_cert')\
-                              or DEFS['--server-cert'] or 'server.crt')
-    DEFS['--cert-expiration'] = getOption(options, 'cert_expiration') \
-                                  or int(daysTil18Jan2038()) # already rounded
-    DEFS['--server-rpm'] = getOption(options, 'server_rpm') \
-                             or BASE_SERVER_RPM_NAME+'-'+MACHINENAME
-    DEFS['--server-tar'] = getOption(options, 'server_tar') \
-                             or BASE_SERVER_TAR_NAME+'-'+MACHINENAME
+    DEFS["--server-key"] = os.path.basename(
+        getOption(options, "server_key") or DEFS["--server-key"] or "server.key"
+    )
+    DEFS["--server-cert-req"] = os.path.basename(
+        getOption(options, "server_cert_req")
+        or DEFS["--server-cert-req"]
+        or "server.csr"
+    )
+    DEFS["--server-cert"] = os.path.basename(
+        getOption(options, "server_cert") or DEFS["--server-cert"] or "server.crt"
+    )
+    DEFS["--cert-expiration"] = getOption(options, "cert_expiration") or int(
+        daysTil18Jan2038()
+    )  # already rounded
+    DEFS["--server-rpm"] = (
+        getOption(options, "server_rpm") or BASE_SERVER_RPM_NAME + "-" + MACHINENAME
+    )
+    DEFS["--server-tar"] = (
+        getOption(options, "server_tar") or BASE_SERVER_TAR_NAME + "-" + MACHINENAME
+    )
 
-    DEFS['--rpm-packager'] = getOption(options, 'rpm_packager')
-    DEFS['--rpm-vendor'] = getOption(options, 'rpm_vendor')
+    DEFS["--rpm-packager"] = getOption(options, "rpm_packager")
+    DEFS["--rpm-vendor"] = getOption(options, "rpm_vendor")
 
-    if '--cert-expiration' in DEFS:
+    if "--cert-expiration" in DEFS:
         # nothing under 1 day or over # days til 18Jan2038
-        if DEFS['--cert-expiration'] < 1:
-            DEFS['--cert-expiration'] = 1
-        _maxdays = int(daysTil18Jan2038()) # already rounded
-        if DEFS['--cert-expiration'] > _maxdays:
-            DEFS['--cert-expiration'] = _maxdays
+        if DEFS["--cert-expiration"] < 1:
+            DEFS["--cert-expiration"] = 1
+        # pylint: disable-next=invalid-name
+        _maxdays = int(daysTil18Jan2038())  # already rounded
+        if DEFS["--cert-expiration"] > _maxdays:
+            DEFS["--cert-expiration"] = _maxdays
 
     # remap to options object
-    setOption(options, 'server_key', DEFS['--server-key'])
-    setOption(options, 'server_cert_req', DEFS['--server-cert-req'])
-    setOption(options, 'server_cert', DEFS['--server-cert'])
-    setOption(options, 'cert_expiration', DEFS['--cert-expiration'])
-    setOption(options, 'server_rpm', DEFS['--server-rpm'])
-    setOption(options, 'server_tar', DEFS['--server-tar'])
+    setOption(options, "server_key", DEFS["--server-key"])
+    setOption(options, "server_cert_req", DEFS["--server-cert-req"])
+    setOption(options, "server_cert", DEFS["--server-cert"])
+    setOption(options, "cert_expiration", DEFS["--cert-expiration"])
+    setOption(options, "server_rpm", DEFS["--server-rpm"])
+    setOption(options, "server_tar", DEFS["--server-tar"])
 
 
+# pylint: disable-next=invalid-name
 def figureDEFS_distinguishing(options):
-    """ figure out the defaults (after options being at least parsed once) for
-        the distinguishing variables (C, ST, L, O, OU, CN, emailAddress)
-        First from config file, then from commanline.
+    """figure out the defaults (after options being at least parsed once) for
+    the distinguishing variables (C, ST, L, O, OU, CN, emailAddress)
+    First from config file, then from commanline.
     """
 
+    # pylint: disable-next=global-variable-not-assigned
     global DEFS
-    #if options:
+    # if options:
     #    print 'XXX options.__dict__.keys()', options.__dict__.keys()
-    #print 'XXX figureDEFS_distinguishing()'
+    # print 'XXX figureDEFS_distinguishing()'
 
     ## map the config file settings to the DEFS object
     conf = {}
-    caYN = '--gen-ca-cert' in sys.argv or '--gen-ca' in sys.argv
+    # pylint: disable-next=invalid-name
+    caYN = "--gen-ca-cert" in sys.argv or "--gen-ca" in sys.argv
     if caYN:
-        conf = ConfigFile(os.path.join(DEFS['--dir'], CA_OPENSSL_CNF_NAME)).parse()
+        conf = ConfigFile(os.path.join(DEFS["--dir"], CA_OPENSSL_CNF_NAME)).parse()
     else:
-        conf = ConfigFile(os.path.join(DEFS['--dir'], MACHINENAME, SERVER_OPENSSL_CNF_NAME)).parse()
+        conf = ConfigFile(
+            os.path.join(DEFS["--dir"], MACHINENAME, SERVER_OPENSSL_CNF_NAME)
+        ).parse()
 
     mapping = {
-            'C'            : ('--set-country',),
-            'ST'           : ('--set-state',),
-            'L'            : ('--set-city',),
-            'O'            : ('--set-org',),
-            'OU'           : ('--set-org-unit',),
-            'CN'           : ('--set-common-name', '--set-hostname'),
-            #'CN'           : ('--set-common-name',),
-            'emailAddress' : ('--set-email',),
-              }
+        "C": ("--set-country",),
+        "ST": ("--set-state",),
+        "L": ("--set-city",),
+        "O": ("--set-org",),
+        "OU": ("--set-org-unit",),
+        "CN": ("--set-common-name", "--set-hostname"),
+        #'CN'           : ('--set-common-name',),
+        "emailAddress": ("--set-email",),
+    }
 
     # map config file settings to DEFS (see mapping dict above)
     for key in list(conf.keys()):
-        #print 'XXX KEY', key, repr(mapping[key])
+        # print 'XXX KEY', key, repr(mapping[key])
         for v in mapping[key]:
             DEFS[v] = conf[key]
-            #print 'XXX DEFS["%s"]' % v, '=', conf[key]
+            # print 'XXX DEFS["%s"]' % v, '=', conf[key]
 
     ## map commanline options to the DEFS object
-    if getOption(options, 'set_country') is not None:
-        DEFS['--set-country'] = getOption(options, 'set_country')
-    if getOption(options, 'set_state') is not None:
-        DEFS['--set-state'] = getOption(options, 'set_state')
-    if getOption(options, 'set_city') is not None:
-        DEFS['--set-city'] = getOption(options, 'set_city')
-    if getOption(options, 'set_org') is not None:
-        DEFS['--set-org'] = getOption(options, 'set_org')
-    if getOption(options, 'set_org_unit') is not None:
-        DEFS['--set-org-unit'] = getOption(options, 'set_org_unit')
-    if getOption(options, 'set_common_name') is not None:
-        DEFS['--set-common-name'] = getOption(options, 'set_common_name')
-    if getOption(options, 'set_hostname') is not None:
-        DEFS['--set-hostname'] = getOption(options, 'set_hostname')
-    if getOption(options, 'set_email') is not None:
-        DEFS['--set-email'] = getOption(options, 'set_email')
-    DEFS['--set-cname'] = getOption(options, 'set_cname') # this is list
+    if getOption(options, "set_country") is not None:
+        DEFS["--set-country"] = getOption(options, "set_country")
+    if getOption(options, "set_state") is not None:
+        DEFS["--set-state"] = getOption(options, "set_state")
+    if getOption(options, "set_city") is not None:
+        DEFS["--set-city"] = getOption(options, "set_city")
+    if getOption(options, "set_org") is not None:
+        DEFS["--set-org"] = getOption(options, "set_org")
+    if getOption(options, "set_org_unit") is not None:
+        DEFS["--set-org-unit"] = getOption(options, "set_org_unit")
+    if getOption(options, "set_common_name") is not None:
+        DEFS["--set-common-name"] = getOption(options, "set_common_name")
+    if getOption(options, "set_hostname") is not None:
+        DEFS["--set-hostname"] = getOption(options, "set_hostname")
+    if getOption(options, "set_email") is not None:
+        DEFS["--set-email"] = getOption(options, "set_email")
+    DEFS["--set-cname"] = getOption(options, "set_cname")  # this is list
 
     # remap to options object
-    setOption(options, 'set_country', DEFS['--set-country'])
-    setOption(options, 'set_state', DEFS['--set-state'])
-    setOption(options, 'set_city', DEFS['--set-city'])
-    setOption(options, 'set_org', DEFS['--set-org'])
-    setOption(options, 'set_org_unit', DEFS['--set-org-unit'])
-    setOption(options, 'set_common_name', DEFS['--set-common-name'])
-    #setOption(options, 'set_hostname', DEFS['--set-hostname'])
-    setOption(options, 'set_email', DEFS['--set-email'])
-    setOption(options, 'set_cname', DEFS['--set-cname'])
+    setOption(options, "set_country", DEFS["--set-country"])
+    setOption(options, "set_state", DEFS["--set-state"])
+    setOption(options, "set_city", DEFS["--set-city"])
+    setOption(options, "set_org", DEFS["--set-org"])
+    setOption(options, "set_org_unit", DEFS["--set-org-unit"])
+    setOption(options, "set_common_name", DEFS["--set-common-name"])
+    # setOption(options, 'set_hostname', DEFS['--set-hostname'])
+    setOption(options, "set_email", DEFS["--set-email"])
+    setOption(options, "set_cname", DEFS["--set-cname"])
 
 
 CONF_TEMPLATE_CA = """\
@@ -433,63 +470,75 @@ subjectAltName          = @alt_names
 
 
 def gen_req_alt_names(d, hostname):
-    """ generates the alt_names section of the *-openssl.cnf file """
+    """generates the alt_names section of the *-openssl.cnf file"""
     i = 0
-    result = ''
-    dnsname = [ hostname ]
-    if '--set-cname' in d and d['--set-cname']:
-        dnsname.extend(d['--set-cname'])
+    result = ""
+    dnsname = [hostname]
+    if "--set-cname" in d and d["--set-cname"]:
+        dnsname.extend(d["--set-cname"])
     for name in dnsname:
         i += 1
+        # pylint: disable-next=consider-using-f-string
         result += "DNS.%d = %s\n" % (i, name)
     return result
 
+
 def gen_req_distinguished_name(d):
-    """ generates the rhn_distinguished section of the *-openssl.cnf file """
+    """generates the rhn_distinguished section of the *-openssl.cnf file"""
 
     s = ""
-    keys = ('C', 'ST', 'L', 'O', 'OU', 'CN', 'emailAddress')
+    keys = ("C", "ST", "L", "O", "OU", "CN", "emailAddress")
     for key in keys:
         if key in d and d[key].strip():
-            s = s + key + (24-len(key))*' ' + '= %s\n' % d[key].strip()[:63]
+            # pylint: disable-next=consider-using-f-string
+            s = s + key + (24 - len(key)) * " " + "= %s\n" % d[key].strip()[:63]
         else:
-            s = s + '#' + key + (24-len(key))*' ' + '= ""\n'
+            s = s + "#" + key + (24 - len(key)) * " " + '= ""\n'
 
     return s
 
 
+# pylint: disable-next=invalid-name
 def figureSerial(caCertFilename, serialFilename, indexFilename):
-    """ for our purposes we allow the same serial number for server certs
-        BUT WE DO NOT ALLOW server certs and CA certs to share the same
-        serial number.
+    """for our purposes we allow the same serial number for server certs
+    BUT WE DO NOT ALLOW server certs and CA certs to share the same
+    serial number.
 
-        We blow away the index.txt file each time because we are less
-        concerned with matching serials/signatures between server.crt's.
+    We blow away the index.txt file each time because we are less
+    concerned with matching serials/signatures between server.crt's.
     """
 
     # what serial # is the ca cert using (we need to increment from that)
-    ret, outstream, errstream = rhn_popen(['/usr/bin/openssl', 'x509', '-noout',
-                                           '-serial', '-in', caCertFilename])
+    ret, outstream, errstream = rhn_popen(
+        ["/usr/bin/openssl", "x509", "-noout", "-serial", "-in", caCertFilename]
+    )
     out = sstr(outstream.read())
     outstream.close()
-    sslerrmsg = ("non-zero exitcode.\n"
-                "If you ran configure-proxy.sh, try copying again the certs from the SUSE Manager Server\n"
-                f"exit-code: {ret}\n"
-                f"error: {sstr(errstream.read())}\n")
+    sslerrmsg = (
+        "non-zero exitcode.\n"
+        "If you ran configure-proxy.sh, try copying again the certs from the SUSE Manager Server\n"
+        f"exit-code: {ret}\n"
+        f"error: {sstr(errstream.read())}\n"
+    )
     errstream.close()
     assert not ret, sslerrmsg
-    caSerial = out.strip().split('=')
+    # pylint: disable-next=invalid-name
+    caSerial = out.strip().split("=")
     assert len(caSerial) > 1
+    # pylint: disable-next=invalid-name
     caSerial = caSerial[1]
-    caSerial = eval('0x'+caSerial)
+    # pylint: disable-next=invalid-name,eval-used
+    caSerial = eval("0x" + caSerial)
 
     # initialize the serial value (starting at whatever is in
     # serialFilename or 1)
     serial = 1
     if os.path.exists(serialFilename):
-        serial = open(serialFilename, 'r').read().strip()
+        # pylint: disable-next=unspecified-encoding
+        serial = open(serialFilename, "r").read().strip()
         if serial:
-            serial = eval('0x'+serial)
+            # pylint: disable-next=eval-used
+            serial = eval("0x" + serial)
         else:
             serial = 1
 
@@ -498,70 +547,82 @@ def figureSerial(caCertFilename, serialFilename, indexFilename):
     # as well.
     if serial <= caSerial:
         random.seed()
+        # pylint: disable-next=eval-used
         max_serial = eval("0x" + "F" * 40)
         serial = random.randrange(1, max_serial - caSerial / 2)
     serial = fixSerial(hex(serial))
 
     # create the serial file if it doesn't exist
     # write the digits to this file
-    open(serialFilename, 'w').write(serial+'\n')
-    os.chmod(serialFilename, int('0600',8))
+    # pylint: disable-next=unspecified-encoding
+    open(serialFilename, "w").write(serial + "\n")
+    os.chmod(serialFilename, int("0600", 8))
 
     # truncate the index.txt file. Less likely to have unneccessary clashes.
-    open(indexFilename, 'w')
-    os.chmod(indexFilename, int('0600',8))
+    # pylint: disable-next=unspecified-encoding
+    open(indexFilename, "w")
+    os.chmod(indexFilename, int("0600", 8))
     return serial
 
 
+# pylint: disable-next=missing-class-docstring
 class ConfigFile:
     def __init__(self, filename=None):
         self.filename = filename
         if self.filename is None:
             self.filename = SERVER_OPENSSL_CNF_NAME
-            if os.path.exists(os.path.join(DEFS['--dir'], 'rhn_openssl.cnf')):
-                self.filename = os.path.join(DEFS['--dir'], "rhn_openssl.cnf")
-            elif os.path.exists(os.path.join(DEFS['--dir'], 'openssl.cnf')):
-                self.filename = os.path.join(DEFS['--dir'], "openssl.cnf")
+            if os.path.exists(os.path.join(DEFS["--dir"], "rhn_openssl.cnf")):
+                self.filename = os.path.join(DEFS["--dir"], "rhn_openssl.cnf")
+            elif os.path.exists(os.path.join(DEFS["--dir"], "openssl.cnf")):
+                self.filename = os.path.join(DEFS["--dir"], "openssl.cnf")
         self.filename = cleanupAbsPath(self.filename)
 
     def parse(self):
-        """ yank all the pertinent ssl data from a previously
-            generated openssl.cnf.
+        """yank all the pertinent ssl data from a previously
+        generated openssl.cnf.
 
-            NOTE: we get a limited sampling of info here. We have no concept
-            of the [ some heading ] divisions in the rhn_openssl.cnf file.
+        NOTE: we get a limited sampling of info here. We have no concept
+        of the [ some heading ] divisions in the rhn_openssl.cnf file.
         """
 
         d = {}
 
         try:
-            fo = open(self.filename, 'r')
+            # pylint: disable-next=unspecified-encoding
+            fo = open(self.filename, "r")
+        # pylint: disable-next=bare-except
         except:
             return d
 
         line = fo.readline()
         while line:
-            if line.strip() == '[ req_distinguished_name ]':
+            if line.strip() == "[ req_distinguished_name ]":
                 break
             line = fo.readline()
 
-        #genKeys = ['dir']
-        #caKeys = ['private_key', 'certificate',]
-        keys = ['C', 'ST', 'L', 'O', 'OU', 'CN',
-                'emailAddress',
-               ]
+        # genKeys = ['dir']
+        # caKeys = ['private_key', 'certificate',]
+        keys = [
+            "C",
+            "ST",
+            "L",
+            "O",
+            "OU",
+            "CN",
+            "emailAddress",
+        ]
         #       ] + caKeys + genKeys
 
         for s in fo.readlines():
             s = s.strip()
-            if len(s) > 2 and s[0]=='[' and s[-1]==']':
+            if len(s) > 2 and s[0] == "[" and s[-1] == "]":
                 break
             split = s.split()
             if not split or len(split) < 3:
                 continue
             if split[0] not in keys:
                 continue
-            split = s.split('=')
+            split = s.split("=")
             if len(split) != 2:
                 continue
             for i in range(len(split)):
@@ -570,16 +631,19 @@ class ConfigFile:
 
         return d
 
+    # pylint: disable-next=invalid-name
     def updateLegacy(self, newdir=None, verbosity=1):
-        """ in slightly older formatted ca_openssl.cnf files, there
-            was no dir setting seperate from the database and serial
-            settings. This function fixes that setup.
+        """in slightly older formatted ca_openssl.cnf files, there
+        was no dir setting seperate from the database and serial
+        settings. This function fixes that setup.
 
-            Most of the time this function short-circuits early.
+        Most of the time this function short-circuits early.
         """
 
         try:
-            fo = open(self.filename, 'r')
+            # pylint: disable-next=unspecified-encoding
+            fo = open(self.filename, "r")
+        # pylint: disable-next=bare-except
         except:
             return
 
@@ -587,40 +651,52 @@ class ConfigFile:
             newdir = os.path.dirname(self.filename)
 
         newfile = ""
+        # pylint: disable-next=invalid-name
         in_CA_defaultYN = 0
+        # pylint: disable-next=invalid-name
         dirSetYN = 0
 
         line = fo.readline()
         while line:
+            # pylint: disable-next=invalid-name
             cleanLine = line.strip()
 
             # is this a label?
+            # pylint: disable-next=invalid-name
             isLabelYN = 0
-            if cleanLine \
-              and (cleanLine[0], cleanLine[-1]) == ('[',']'):
+            if cleanLine and (cleanLine[0], cleanLine[-1]) == ("[", "]"):
+                # pylint: disable-next=invalid-name
                 isLabelYN = 1
 
-            if cleanLine == '[ CA_default ]':
+            if cleanLine == "[ CA_default ]":
                 # we don't care much until we hit this label
+                # pylint: disable-next=invalid-name
                 in_CA_defaultYN = 1
             elif isLabelYN:
-                in_CA_defaultYN = 0 # hit another label
+                # pylint: disable-next=invalid-name
+                in_CA_defaultYN = 0  # hit another label
 
             if in_CA_defaultYN:
-                vector = line.split('=')
+                vector = line.split("=")
                 if len(vector) == 2:
                     key = vector[0].strip()
-                    if key == 'dir':
+                    if key == "dir":
                         # we should be OK - short-circuit
                         return
-                    if key in ('database', 'serial'):
+                    if key in ("database", "serial"):
                         # we never hit a "dir" key
                         if not dirSetYN:
-                            newfile = newfile + """\
+                            newfile = (
+                                newfile
+                                # pylint: disable-next=consider-using-f-string
+                                + """\
 dir                     = %s
 database                = $dir/index.txt
 serial                  = $dir/serial
-""" % newdir
+"""
+                                % newdir
+                            )
+                            # pylint: disable-next=invalid-name
                             dirSetYN = 1
                         line = fo.readline()
                         continue
@@ -630,51 +706,62 @@ serial                  = $dir/serial
 
         try:
             rotated = rotateFile(filepath=self.filename, verbosity=verbosity)
-            if verbosity>=0 and rotated:
-                print("Rotated: %s --> %s" % (os.path.basename(self.filename),
-                                              os.path.basename(rotated)))
+            if verbosity >= 0 and rotated:
+                print(
+                    # pylint: disable-next=consider-using-f-string
+                    "Rotated: %s --> %s"
+                    % (os.path.basename(self.filename), os.path.basename(rotated))
+                )
         except ValueError:
             pass
-        fo = open(self.filename, 'w')
+        # pylint: disable-next=unspecified-encoding
+        fo = open(self.filename, "w")
         fo.write(newfile)
         fo.close()
-        os.chmod(self.filename, int('0600',8))
+        os.chmod(self.filename, int("0600", 8))
 
         return dirSetYN
 
+    # pylint: disable-next=invalid-name
     def updateDir(self, newdir=None, verbosity=0):
-        """ changes the CA configuration file's directory setting (if need be)
-            in place. Touches nothing else.
+        """changes the CA configuration file's directory setting (if need be)
+        in place. Touches nothing else.
         """
 
         if self.updateLegacy(newdir):
             return
 
         try:
-            fo = open(self.filename, 'r')
+            # pylint: disable-next=unspecified-encoding
+            fo = open(self.filename, "r")
+        # pylint: disable-next=bare-except
         except:
             return
 
-        olddir = ''
+        olddir = ""
         if newdir is None:
             newdir = os.path.dirname(self.filename)
 
         newfile = ""
+        # pylint: disable-next=invalid-name
         hit_CA_defaultYN = 0
 
         line = fo.readline()
         while line:
-            if line.strip() == '[ CA_default ]':
+            if line.strip() == "[ CA_default ]":
                 # we don't care much until we hit this label
+                # pylint: disable-next=invalid-name
                 hit_CA_defaultYN = 1
             if hit_CA_defaultYN:
-                vector = line.split('=')
+                vector = line.split("=")
                 if len(vector) == 2:
                     key, value = vector
-                    if key.strip() == 'dir':
+                    if key.strip() == "dir":
                         value = value.strip()
                         olddir = value
-                        line = '%s= %s\n' % (key, newdir)
+                        # pylint: disable-next=consider-using-f-string
+                        line = "%s= %s\n" % (key, newdir)
+                        # pylint: disable-next=invalid-name
                         hit_CA_defaultYN = 0
                         if newdir == olddir:
                             # nothing to do
@@ -684,56 +771,67 @@ serial                  = $dir/serial
 
         try:
             rotated = rotateFile(filepath=self.filename, verbosity=verbosity)
-            if verbosity>=0 and rotated:
-                print("Rotated: %s --> %s" % (os.path.basename(self.filename),
-                                              os.path.basename(rotated)))
+            if verbosity >= 0 and rotated:
+                print(
+                    # pylint: disable-next=consider-using-f-string
+                    "Rotated: %s --> %s"
+                    % (os.path.basename(self.filename), os.path.basename(rotated))
+                )
         except ValueError:
             pass
-        fo = open(self.filename, 'w')
+        # pylint: disable-next=unspecified-encoding
+        fo = open(self.filename, "w")
         fo.write(newfile)
         fo.close()
-        os.chmod(self.filename, int('0600',8))
+        os.chmod(self.filename, int("0600", 8))
 
+    # pylint: disable-next=invalid-name
     def save(self, d, caYN=0, verbosity=0):
-        """ d == commandline dictionary """
+        """d == commandline dictionary"""
 
         mapping = {
-                '--set-country'     : 'C',
-                '--set-state'       : 'ST',
-                '--set-city'        : 'L',
-                '--set-org'         : 'O',
-                '--set-org-unit'    : 'OU',
-                '--set-common-name' : 'CN', # these two will never occur at the
-                '--set-hostname'    : 'CN', # same time
-                '--set-email'       : 'emailAddress',
-                  }
+            "--set-country": "C",
+            "--set-state": "ST",
+            "--set-city": "L",
+            "--set-org": "O",
+            "--set-org-unit": "OU",
+            "--set-common-name": "CN",  # these two will never occur at the
+            "--set-hostname": "CN",  # same time
+            "--set-email": "emailAddress",
+        }
 
         rdn = {}
         for k in list(d.keys()):
             if k in mapping:
                 rdn[mapping[k]] = d[k].strip()
 
-        openssl_cnf = ''
+        openssl_cnf = ""
         if caYN:
             openssl_cnf = CONF_TEMPLATE_CA % (
-              os.path.dirname(self.filename)+'/',
-              gen_req_distinguished_name(rdn),
-              )
+                os.path.dirname(self.filename) + "/",
+                gen_req_distinguished_name(rdn),
+            )
         else:
-            openssl_cnf = CONF_TEMPLATE_SERVER \
-              % (gen_req_distinguished_name(rdn), gen_req_alt_names(d, rdn['CN']))
+            openssl_cnf = CONF_TEMPLATE_SERVER % (
+                gen_req_distinguished_name(rdn),
+                gen_req_alt_names(d, rdn["CN"]),
+            )
 
         try:
-            rotated = rotateFile(filepath=self.filename,verbosity=verbosity)
-            if verbosity>=0 and rotated:
-                print("Rotated: %s --> %s" % (os.path.basename(self.filename),
-                                              os.path.basename(rotated)))
+            rotated = rotateFile(filepath=self.filename, verbosity=verbosity)
+            if verbosity >= 0 and rotated:
+                print(
+                    # pylint: disable-next=consider-using-f-string
+                    "Rotated: %s --> %s"
+                    % (os.path.basename(self.filename), os.path.basename(rotated))
+                )
         except ValueError:
             pass
-        fo = open(self.filename, 'w')
+        # pylint: disable-next=unspecified-encoding
+        fo = open(self.filename, "w")
         fo.write(openssl_cnf)
         fo.close()
-        os.chmod(self.filename, int('0600',8))
+        os.chmod(self.filename, int("0600", 8))
         return openssl_cnf
 
 
@@ -768,10 +866,7 @@ fi
 """
 
 SERVER_RPM_SUMMARY = "Organizational server (httpd) SSL key-pair/key-set."
-CA_CERT_RPM_SUMMARY = ("Organizational public SSL CA certificate "
-                       "(client-side).")
+CA_CERT_RPM_SUMMARY = "Organizational public SSL CA certificate " "(client-side)."
 
 
-
-#===============================================================================
-
+# ===============================================================================

@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring,invalid-name
 #
 # Copyright (c) 2013--2016 Red Hat, Inc.
 #
@@ -23,7 +24,6 @@ from .importLib import Import
 
 
 class hashabledict(dict):
-
     def __key(self):
         return tuple((k, self[k]) for k in sorted(self))
 
@@ -31,11 +31,12 @@ class hashabledict(dict):
         return hash(self.__key())
 
     def __eq__(self, other):
+        # pylint: disable-next=protected-access
         return self.__key() == other.__key()
 
 
+# pylint: disable-next=missing-class-docstring
 class OrgImport(Import):
-
     def __init__(self, batch, backend, master_label, create_orgs=False):
         Import.__init__(self, batch, backend)
         self.master_label = master_label
@@ -44,8 +45,8 @@ class OrgImport(Import):
 
     def _create_maps(self):
         org_map = self.backend.lookupOrgMap(self.master_label)
-        self.mn_to_mi = org_map['master-name-to-master-id']
-        self.mi_to_li = org_map['master-id-to-local-id']
+        self.mn_to_mi = org_map["master-name-to-master-id"]
+        self.mi_to_li = org_map["master-id-to-local-id"]
 
     def submit(self):
         try:
@@ -57,11 +58,10 @@ class OrgImport(Import):
             # create master org record.
             missing_master_orgs = []
             for org in self.batch:
-                if org['name'] not in list(self.mn_to_mi.keys()):
+                if org["name"] not in list(self.mn_to_mi.keys()):
                     missing_master_orgs.append(org)
             if len(missing_master_orgs) > 0:
-                self.backend.createMasterOrgs(self.master_label,
-                                              missing_master_orgs)
+                self.backend.createMasterOrgs(self.master_label, missing_master_orgs)
 
             # Iff we are force-creating local orgs, create any orgs that are
             # not already mapped to local orgs. If a local org exists with
@@ -72,21 +72,26 @@ class OrgImport(Import):
                 orgs_to_link = []
                 update_master_orgs = []
                 for org in self.batch:
-                    if (org['id'] not in list(self.mi_to_li.keys())
-                            or not self.mi_to_li[org['id']]):
-                        local_id = self.backend.lookupOrg(org['name'])
+                    if (
+                        org["id"] not in list(self.mi_to_li.keys())
+                        or not self.mi_to_li[org["id"]]
+                    ):
+                        local_id = self.backend.lookupOrg(org["name"])
                         if local_id:
-                            orgs_to_link.append({
-                                'master_id': org['id'],
-                                'local_id': local_id})
+                            orgs_to_link.append(
+                                {"master_id": org["id"], "local_id": local_id}
+                            )
                         else:
-                            orgs_to_create.append(org['name'])
+                            orgs_to_create.append(org["name"])
                 if len(orgs_to_create) > 0:
                     new_org_map = self.backend.createOrgs(orgs_to_create)
                     for org in orgs_to_create:
-                        update_master_orgs.append({
-                            'master_id': self.mn_to_mi[org],
-                            'local_id': new_org_map[org]})
+                        update_master_orgs.append(
+                            {
+                                "master_id": self.mn_to_mi[org],
+                                "local_id": new_org_map[org],
+                            }
+                        )
                 update_master_orgs += orgs_to_link
                 if len(update_master_orgs) > 0:
                     self.backend.updateMasterOrgs(update_master_orgs)
@@ -100,20 +105,21 @@ class OrgImport(Import):
             # together
             trusts_to_create = set([])
             for org in self.batch:
-                for trust in org['org_trust_ids']:
-                    if (org['id'] in list(self.mi_to_li.keys())
-                            and trust['org_id'] in list(self.mi_to_li.keys())):
-                        my_org_id = self.mi_to_li[org['id']]
+                for trust in org["org_trust_ids"]:
+                    if org["id"] in list(self.mi_to_li.keys()) and trust[
+                        "org_id"
+                    ] in list(self.mi_to_li.keys()):
+                        my_org_id = self.mi_to_li[org["id"]]
                         self.backend.clearOrgTrusts(my_org_id)
-                        my_trust_id = self.mi_to_li[trust['org_id']]
-                        trusts_to_create.add(hashabledict({
-                            'org_id': my_org_id,
-                            'trust': my_trust_id}))
+                        my_trust_id = self.mi_to_li[trust["org_id"]]
+                        trusts_to_create.add(
+                            hashabledict({"org_id": my_org_id, "trust": my_trust_id})
+                        )
                         # org trusts are always bi-directional
                         # (even if we are not syncing the other org)
-                        trusts_to_create.add(hashabledict({
-                            'org_id': my_trust_id,
-                            'trust': my_org_id}))
+                        trusts_to_create.add(
+                            hashabledict({"org_id": my_trust_id, "trust": my_org_id})
+                        )
 
             if len(trusts_to_create) > 0:
                 self.backend.createOrgTrusts(trusts_to_create)
