@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -39,8 +40,8 @@ from spacewalk.server import rhnChannel, rhnSQL, rhnLib
 # functionality
 
 
+# pylint: disable-next=missing-class-docstring
 class Applet(rhnHandler):
-
     def __init__(self):
         rhnHandler.__init__(self)
         # Exposed Errata functions:
@@ -50,22 +51,26 @@ class Applet(rhnHandler):
         self.functions.append("tie_uuid")
         self.functions.append("has_base_channel")
 
-    _query_lookup_server = rhnSQL.Statement("""
+    _query_lookup_server = rhnSQL.Statement(
+        """
         select s.id
           from rhnServer s,
                rhnServerUuid su
          where su.uuid = :uuid
            and su.server_id = s.id
          order by modified desc
-    """)
-    _query_lookup_base_channel = rhnSQL.Statement("""
+    """
+    )
+    _query_lookup_base_channel = rhnSQL.Statement(
+        """
         select c.label
           from rhnChannel c,
                rhnServerChannel sc
          where sc.server_id = :server_id
            and sc.channel_id = c.id
            and c.parent_channel is null
-    """)
+    """
+    )
 
     def has_base_channel(self, uuid):
         log_debug(1, uuid)
@@ -74,10 +79,14 @@ class Applet(rhnHandler):
         h.execute(uuid=uuid)
         row = h.fetchone_dict()
         if not row:
-            raise rhnFault(140,
-                           _("Your system was not found in the {PRODUCT_NAME} database").format(PRODUCT_NAME=PRODUCT_NAME),
-                           explain=0)
-        server_id = row['id']
+            raise rhnFault(
+                140,
+                _("Your system was not found in the {PRODUCT_NAME} database").format(
+                    PRODUCT_NAME=PRODUCT_NAME
+                ),
+                explain=0,
+            )
+        server_id = row["id"]
 
         h = rhnSQL.prepare(self._query_lookup_base_channel)
         h.execute(server_id=server_id)
@@ -102,12 +111,10 @@ class Applet(rhnHandler):
 
     # return our sttaus - for now a dummy function
     def poll_status(self):
-        checkin_interval = (CFG.CHECKIN_INTERVAL +
-                            random.random() * CFG.CHECKIN_INTERVAL_MAX_OFFSET)
-        return {
-            'checkin_interval': int(checkin_interval),
-            'server_status': 'normal'
-        }
+        checkin_interval = (
+            CFG.CHECKIN_INTERVAL + random.random() * CFG.CHECKIN_INTERVAL_MAX_OFFSET
+        )
+        return {"checkin_interval": int(checkin_interval), "server_status": "normal"}
 
     # poll for latest packages for the RHN Applet
     def poll_packages(self, release, server_arch, timestamp=0, uuid=None):
@@ -127,14 +134,17 @@ class Applet(rhnHandler):
         # it's possible the tie between uuid and rhnServer.id wasn't yet
         # made, default to normal behavior
         if not channel_list:
-            channel_list = rhnChannel.get_channel_for_release_arch(release,
-                                                                   server_arch)
+            channel_list = rhnChannel.get_channel_for_release_arch(release, server_arch)
             channel_list = [channel_list]
         # bork if no channels returned
         if not channel_list:
-            log_debug(8, "No channels for release = '%s', arch = '%s', uuid = '%s'" % (
-                release, server_arch, uuid))
-            return {'last_modified': 0, 'contents': []}
+            log_debug(
+                8,
+                # pylint: disable-next=consider-using-f-string
+                "No channels for release = '%s', arch = '%s', uuid = '%s'"
+                % (release, server_arch, uuid),
+            )
+            return {"last_modified": 0, "contents": []}
 
         last_channel_changed_ts = max([a["last_modified"] for a in channel_list])
 
@@ -157,7 +167,7 @@ class Applet(rhnHandler):
             # different members in the dictinary depending on what
             # sort of data you get
             log_debug(3, "Client has current data")
-            return {'use_cached_copy': 1}
+            return {"use_cached_copy": 1}
 
         # we'll have to return something big - compress
         rhnFlags.set("compress_response", 1)
@@ -169,6 +179,7 @@ class Applet(rhnHandler):
         label_list = [str(a["id"]) for a in channel_list]
         label_list.sort()
         log_debug(4, "label_list", label_list)
+        # pylint: disable-next=consider-using-f-string
         cache_key = "applet-poll-%s" % "-".join(label_list)
 
         ret = rhnCache.get(cache_key, last_channel_changed_ts)
@@ -181,7 +192,7 @@ class Applet(rhnHandler):
         # nvre, name, version, release, epoch, errata_advisory,
         # errata_id, with the errata fields being empty strings if the
         # package isn't from an errata.
-        ret = {'last_modified': last_channel_changed_ts, 'contents': []}
+        ret = {"last_modified": last_channel_changed_ts, "contents": []}
 
         # we search for packages only in the allowed channels - build
         # the SQL helper string and dictionary to make the foo IN (
@@ -190,7 +201,9 @@ class Applet(rhnHandler):
         qdict = {}
         for c in channel_list:
             v = c["id"]
+            # pylint: disable-next=consider-using-f-string
             k = "channel_%s" % v
+            # pylint: disable-next=consider-using-f-string
             qlist.append(":%s" % k)
             qdict[k] = v
         qlist = ", ".join(qlist)
@@ -201,7 +214,9 @@ class Applet(rhnHandler):
         # rhnChannel, but there is no difference in speed because we
         # need to do more than one query; besides, we cache the hell
         # out of it
-        h = rhnSQL.prepare("""
+        h = rhnSQL.prepare(
+            # pylint: disable-next=consider-using-f-string
+            """
         select distinct
             pn.name,
             pe.version,
@@ -232,14 +247,16 @@ class Applet(rhnHandler):
             cnp.channel_id in ( %s )
         and cnp.name_id = pn.id
         and cnp.evr_id = pe.id
-        """ % (qlist, qlist))
+        """
+            % (qlist, qlist)
+        )
         h.execute(**qdict)
 
         plist = h.fetchall_dict()
 
         if not plist:
             # We've set XMLRPC-Encoded-Response above
-            ret = xmlrpclib.dumps((ret, ), methodresponse=1)
+            ret = xmlrpclib.dumps((ret,), methodresponse=1)
             return ret
 
         contents = {}
@@ -248,8 +265,14 @@ class Applet(rhnHandler):
             for k in list(p.keys()):
                 if p[k] is None:
                     p[k] = ""
+            # pylint: disable-next=consider-using-f-string
             p["nevr"] = "%s-%s-%s:%s" % (
-                p["name"], p["version"], p["release"], p["epoch"])
+                p["name"],
+                p["version"],
+                p["release"],
+                p["epoch"],
+            )
+            # pylint: disable-next=consider-using-f-string
             p["nvr"] = "%s-%s-%s" % (p["name"], p["version"], p["release"])
 
             pkg_name = p["name"]
@@ -257,24 +280,25 @@ class Applet(rhnHandler):
             if pkg_name in contents:
                 stored_pkg = contents[pkg_name]
 
-                s = [stored_pkg["name"],
-                     stored_pkg["version"],
-                     stored_pkg["release"],
-                     stored_pkg["epoch"]]
+                s = [
+                    stored_pkg["name"],
+                    stored_pkg["version"],
+                    stored_pkg["release"],
+                    stored_pkg["epoch"],
+                ]
 
-                n = [p["name"],
-                     p["version"],
-                     p["release"],
-                     p["epoch"]]
+                n = [p["name"], p["version"], p["release"], p["epoch"]]
 
                 log_debug(7, "comparing vres", s, n)
                 if rhn_rpm.nvre_compare(s, n) < 0:
+                    # pylint: disable-next=consider-using-f-string
                     log_debug(7, "replacing %s with %s" % (pkg_name, p))
                     contents[pkg_name] = p
                 else:
                     # already have a higher vre stored...
                     pass
             else:
+                # pylint: disable-next=consider-using-f-string
                 log_debug(7, "initial store for %s" % pkg_name)
                 contents[pkg_name] = p
 
@@ -282,7 +306,7 @@ class Applet(rhnHandler):
 
         # save it in the cache
         # We've set XMLRPC-Encoded-Response above
-        ret = xmlrpclib.dumps((ret, ), methodresponse=1)
+        ret = xmlrpclib.dumps((ret,), methodresponse=1)
         rhnCache.set(cache_key, ret, last_channel_changed_ts)
 
         return ret

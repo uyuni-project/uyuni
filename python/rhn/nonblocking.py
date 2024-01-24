@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 #
 #
@@ -6,6 +7,8 @@ import select
 import fcntl
 import os
 
+
+# pylint: disable-next=missing-class-docstring
 class NonBlockingFile:
     def __init__(self, fd):
         # Keep a copy of the file descriptor
@@ -18,10 +21,11 @@ class NonBlockingFile:
         self.user_data = None
         self.callback = None
 
-    def set_callback(self, read_fd_set, write_fd_set, exc_fd_set,
-            user_data, callback):
+    # pylint: disable-next=redefined-outer-name
+    def set_callback(self, read_fd_set, write_fd_set, exc_fd_set, user_data, callback):
         self.read_fd_set = read_fd_set
         # Make the objects non-blocking
+        # pylint: disable-next=redefined-outer-name
         for f in self.read_fd_set:
             fcntl.fcntl(f.fileno(), fcntl.F_SETFL, os.O_NDELAY)
 
@@ -58,11 +62,14 @@ class NonBlockingFile:
     def __getattr__(self, name):
         return getattr(self.fd, name)
 
+
+# pylint: disable-next=unused-argument
 def callback(r, w, e, user_data):
     print("Callback called", r, w, e)
     print(r[0].read())
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     import socket
 
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring,invalid-name
 import posix
 import textwrap
 from contextlib import contextmanager
@@ -32,14 +33,19 @@ def test_send():
     sendmail = MagicMock()
     smtp_spy.sendmail = sendmail
 
-    expected_body = textwrap.dedent(f"""\
+    expected_body = textwrap.dedent(
+        f"""\
     Subject: SUSE Manager System Mail From {dummy_uname.nodename}
     Content-Type: text/plain; charset=utf-8
     To: admin@example.com
 
     {passed_body}
-    """)
+    """
+    )
 
     with patch("spacewalk.common.rhnMail.smtplib.SMTP", smtp_context_mock):
         rhnMail.send(passed_headers, passed_body, passed_sender)
-        assert call(passed_sender, ["admin@example.com"], expected_body) in sendmail.mock_calls
+        assert (
+            call(passed_sender, ["admin@example.com"], expected_body)
+            in sendmail.mock_calls
+        )

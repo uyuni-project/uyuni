@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring,invalid-name
 #
 # Copyright (c) 2008--2017 Red Hat, Inc.
 #
@@ -17,12 +18,13 @@ import os
 import re
 import time
 from datetime import tzinfo, timedelta
+
 try:
     #  python 2
     import urlparse
 except ImportError:
     #  python3
-    import urllib.parse as urlparse # pylint: disable=F0401,E0611
+    import urllib.parse as urlparse  # pylint: disable=F0401,E0611
 
 from uyuni.common import usix
 
@@ -42,9 +44,21 @@ def setHeaderValue(mp_table, name, values):
         mp_table[name] = str(values)
 
 
-rfc822_days = ('Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun')
-rfc822_mons = ('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-               'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec')
+rfc822_days = ("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun")
+rfc822_mons = (
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+)
 
 
 def rfc822time(arg):
@@ -64,20 +78,37 @@ def rfc822time(arg):
            be translated to GMT in the return value.
     """
 
-
     if isinstance(arg, (usix.ListType, usix.TupleType)):
         # Convert to float.
         arg = time.mktime(tuple(arg))
 
     # Now, the arg must be a float.
 
-    (tm_year, tm_mon, tm_mday, tm_hour, tm_min,
-     tm_sec, tm_wday, _tm_yday_, _tm_isdst_) = time.gmtime(arg)
+    (
+        tm_year,
+        tm_mon,
+        tm_mday,
+        tm_hour,
+        tm_min,
+        tm_sec,
+        tm_wday,
+        # pylint: disable-next=unused-variable
+        _tm_yday_,
+        # pylint: disable-next=unused-variable
+        _tm_isdst_,
+    ) = time.gmtime(arg)
 
-    return \
-        "%s, %02d %s %04d %02d:%02d:%02d %s" % \
-        (rfc822_days[tm_wday], tm_mday, rfc822_mons[tm_mon - 1], tm_year,
-         tm_hour, tm_min, tm_sec, "GMT")
+    # pylint: disable-next=consider-using-f-string
+    return "%s, %02d %s %04d %02d:%02d:%02d %s" % (
+        rfc822_days[tm_wday],
+        tm_mday,
+        rfc822_mons[tm_mon - 1],
+        tm_year,
+        tm_hour,
+        tm_min,
+        tm_sec,
+        "GMT",
+    )
 
 
 def timestamp(s):
@@ -92,6 +123,7 @@ def timestamp(s):
     elif len(s) == 19:
         format_string = "%Y-%m-%d %H:%M:%S"
     else:
+        # pylint: disable-next=consider-using-f-string
         raise TypeError("String '%s' is not a YYYYMMDDHHMISS" % s)
     # Get the current DST setting
     timeval = list(time.strptime(s, format_string))
@@ -101,8 +133,8 @@ def timestamp(s):
 
 
 def checkValue(val, *args):
-    """ A type/value checker
-        Check value against the list of acceptable values / types
+    """A type/value checker
+    Check value against the list of acceptable values / types
     """
 
     for a in args:
@@ -118,35 +150,35 @@ def checkValue(val, *args):
 
 
 def parseUrl(url):
-    """ urlparse is more complicated than what we need.
+    """urlparse is more complicated than what we need.
 
-        We make the assumption that the URL has real URL information.
-        NOTE: http/https ONLY for right now.
+    We make the assumption that the URL has real URL information.
+    NOTE: http/https ONLY for right now.
 
-        The normal behavior of urlparse:
-            - if no {http[s],file}:// then the string is considered everything
-              that normally follows the URL, e.g. /XMLRPC
-            - if {http[s],file}:// exists, anything between that and the next /
-              is the URL.
+    The normal behavior of urlparse:
+        - if no {http[s],file}:// then the string is considered everything
+          that normally follows the URL, e.g. /XMLRPC
+        - if {http[s],file}:// exists, anything between that and the next /
+          is the URL.
 
-        The behavior of *this* function:
-            - if no {http[s],file}:// then the string is simply assumed to be a
-              URL without the {http[s],file}:// attached. The parsed info is
-              reparsed as one would think it would be:
+    The behavior of *this* function:
+        - if no {http[s],file}:// then the string is simply assumed to be a
+          URL without the {http[s],file}:// attached. The parsed info is
+          reparsed as one would think it would be:
 
-            - returns: (addressing scheme, network location, path,
-                        parameters, query, fragment identifier).
+        - returns: (addressing scheme, network location, path,
+                    parameters, query, fragment identifier).
 
-              NOTE: netloc (or network location) can be HOSTNAME:PORT
+          NOTE: netloc (or network location) can be HOSTNAME:PORT
     """
-    schemes = ('http', 'https')
+    schemes = ("http", "https")
     if url is None:
         return None
     parsed = list(urlparse.urlparse(url))
     if not parsed[0] or parsed[0] not in schemes:
-        url = 'https://' + url
+        url = "https://" + url
         parsed = list(urlparse.urlparse(url))
-        parsed[0] = ''
+        parsed[0] = ""
     return tuple(parsed)
 
 
@@ -155,10 +187,10 @@ def hash_object_id(object_id, factor):
     last few digits for the number. For instance, (812345, 3) should
     return 345"""
     # Grab the digits after -
-    num_id = object_id.split('-')[-1]
+    num_id = object_id.split("-")[-1]
     # get last 'factor' numbers
     num_id = num_id[-factor:]
-    return num_id.rjust(factor, '0')
+    return num_id.rjust(factor, "0")
 
 
 # reg exp for splitting rpm package names.
@@ -166,33 +198,33 @@ re_rpmName = re.compile("^(.*)-([^-]*)-([^-]*)$")
 
 
 def parseRPMName(pkgName):
-    """ IN:  Package string in, n-n-n-v.v.v-r.r_r, format.
-        OUT: Four strings (in a tuple): name, epoch, version, release.
+    """IN:  Package string in, n-n-n-v.v.v-r.r_r, format.
+    OUT: Four strings (in a tuple): name, epoch, version, release.
     """
     reg = re_rpmName.match(pkgName)
     if reg is None:
         return None, None, None, None
     n, v, r = reg.group(1, 2, 3)
     e = None
-    ind = r.find(':')
+    ind = r.find(":")
     if ind >= 0:  # epoch found
-        e = r[ind + 1:]
+        e = r[ind + 1 :]
         r = r[0:ind]
     return str(n), e, str(v), str(r)
 
 
 def parseDEBName(pkgName):
-    """ IN:  Package string in, n-n_v.v-v.v-r.r, format.
-        OUT: Four strings (in a tuple): name, epoch, version, release.
+    """IN:  Package string in, n-n_v.v-v.v-r.r, format.
+    OUT: Four strings (in a tuple): name, epoch, version, release.
     """
-    if pkgName.find('_') == -1:
+    if pkgName.find("_") == -1:
         return None, None, None, None
     e = None
-    n, version = pkgName.split('_')
-    if version.find(':') != -1:
-        e, version = version.split(':')
-    version_tmpArr = version.split('-')
-    v = '-'.join(version_tmpArr[:-1])
+    n, version = pkgName.split("_")
+    if version.find(":") != -1:
+        e, version = version.split(":")
+    version_tmpArr = version.split("-")
+    v = "-".join(version_tmpArr[:-1])
     r = version_tmpArr[-1]
     return str(n), e, str(v), str(r)
 
@@ -200,33 +232,35 @@ def parseDEBName(pkgName):
 def isSUSE():
     """Return true if this is a SUSE system, otherwise false"""
 
-    if not os.path.exists('/etc/os-release'):
+    if not os.path.exists("/etc/os-release"):
         return False
 
-    cpe_name = ''
+    cpe_name = ""
     try:
-        lines = open('/etc/os-release', 'r').readlines()
+        # pylint: disable-next=unspecified-encoding
+        lines = open("/etc/os-release", "r").readlines()
         for line in lines:
             # Skip empty and comment-only lines
-            if re.match(r'[ \t]*(#|$)', line):
+            if re.match(r"[ \t]*(#|$)", line):
                 continue
 
             # now split it into keys and values. We allow for max one
             # split/cut (the first one)
-            (key, val) = [c.strip() for c in line.split('=', 1)]
-            if key == 'CPE_NAME':
+            (key, val) = [c.strip() for c in line.split("=", 1)]
+            if key == "CPE_NAME":
                 cpe_name = val
                 break
     except (IOError, OSError):
         pass
 
-    if 'cpe:/o:opensuse:' in cpe_name or 'cpe:/o:suse:' in cpe_name:
+    if "cpe:/o:opensuse:" in cpe_name or "cpe:/o:suse:" in cpe_name:
         return True
     return False
 
 
 class UTC(tzinfo):
     """Used for creating offset-aware datetime objects in Python 2."""
+
     # pylint: disable=W0613
 
     def utcoffset(self, dt):
@@ -237,5 +271,6 @@ class UTC(tzinfo):
 
     def dst(self, dt):
         return timedelta(0)
+
 
 utc = UTC()

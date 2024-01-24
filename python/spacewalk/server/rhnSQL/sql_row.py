@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -15,6 +16,7 @@
 # a class used to handle a row of data in a particular table
 #
 
+# pylint: disable-next=unused-import
 import string
 
 from rhn.UserDictCase import UserDictCase
@@ -26,13 +28,13 @@ from . import sql_lib
 
 class Row(UserDictCase):
 
-    """ This class allows one to work with the columns of a particular row in a more
-        convenient manner (ie, using a disctionary interface). It allows for the row
-        data to be loaded and saved and is generally easier to use than the Table
-        class which is really designed for bulk updates and stuff like that.
+    """This class allows one to work with the columns of a particular row in a more
+    convenient manner (ie, using a disctionary interface). It allows for the row
+    data to be loaded and saved and is generally easier to use than the Table
+    class which is really designed for bulk updates and stuff like that.
 
-        The easiest way to separate what these things are for is to remember that
-        the Table class indexes by KEY, while the Row class indexes by column
+    The easiest way to separate what these things are for is to remember that
+    the Table class indexes by KEY, while the Row class indexes by column
     """
 
     def __init__(self, db, table, hashname, hashval=None):
@@ -51,13 +53,19 @@ class Row(UserDictCase):
             self.load(hashval)
 
     def __repr__(self):
+        # pylint: disable-next=consider-using-f-string
         return "<%s instance at 0x%0x on (%s, %s, %s)>" % (
-            self.__class__.__name__, abs(id(self)),
-            self.table, self.hashname, self.get(self.hashname))
+            self.__class__.__name__,
+            abs(id(self)),
+            self.table,
+            self.hashname,
+            self.get(self.hashname),
+        )
+
     __str__ = __repr__
 
     def __setitem__(self, name, value):
-        """ make it work like a dictionary """
+        """make it work like a dictionary"""
         x = name.lower()
         # forbid setting the value of the hash column because of the
         # ambiguity of the operation (is it a "save as new id" or
@@ -72,6 +80,7 @@ class Row(UserDictCase):
         x = name.lower()
         if x in self.data:
             return self.data[x][0]
+        # pylint: disable-next=consider-using-f-string
         raise KeyError("Key %s not found in the Row dictionary" % name)
 
     def get(self, name):
@@ -81,23 +90,26 @@ class Row(UserDictCase):
         return None
 
     def reset(self, val=0):
-        """ reset the changed status for these entries """
+        """reset the changed status for these entries"""
         for k, v in list(self.data.items()):
             # tuples do not support item assignement
             self.data[k] = (v[0], val)
 
     def create(self, hashval):
-        """ create it as a new entry """
+        """create it as a new entry"""
         self.data[self.hashname] = (hashval, 0)
         self.real = 0
         self.save()
 
     def load(self, hashval):
-        """ load an entry """
-        return self.load_sql("%s = :hashval" % self.hashname, {'hashval': hashval})
+        """load an entry"""
+        # pylint: disable-next=consider-using-f-string
+        return self.load_sql("%s = :hashval" % self.hashname, {"hashval": hashval})
 
+    # pylint: disable-next=dangerous-default-value
     def load_sql(self, sql, pdict={}):
-        """ load from a sql clause """
+        """load from a sql clause"""
+        # pylint: disable-next=consider-using-f-string
         h = self.db.prepare("select * from %s where %s" % (self.table, sql))
         h.execute(**pdict)
         ret = h.fetchone_dict()
@@ -111,11 +123,15 @@ class Row(UserDictCase):
         return 1
 
     def save(self, with_updates=1):
-        """ now save an entry """
+        """now save an entry"""
         if self.hashname not in self.data:
+            # pylint: disable-next=consider-using-f-string
             raise AttributeError("Table does not have a hash `%s' key" % self.hashname)
         # get a list of fields to be set
-        items = [(a[0], a[1][0]) for a in [b for b in list(self.data.items()) if b[1][1] == 1]]
+        items = [
+            (a[0], a[1][0])
+            for a in [b for b in list(self.data.items()) if b[1][1] == 1]
+        ]
         if not items:  # if there is nothing for us to do, avoid doing it.
             return
         # and now build the SQL statements

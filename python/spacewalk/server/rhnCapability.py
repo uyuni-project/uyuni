@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring,invalid-name
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -33,29 +34,29 @@ def set_client_capabilities(capabilities):
         return
 
     caps = {}
-    regexp = re.compile(
-        r"^(?P<name>[^(]*)\((?P<version>[^)]*)\)\s*=\s*(?P<value>.*)$")
+    regexp = re.compile(r"^(?P<name>[^(]*)\((?P<version>[^)]*)\)\s*=\s*(?P<value>.*)$")
     for cap in capabilities:
         mo = regexp.match(cap)
         if not mo:
             # XXX Just ignoring it, for now
             continue
+        # pylint: disable-next=redefined-builtin
         dict = mo.groupdict()
-        name = dict['name'].strip()
-        version = dict['version'].strip()
-        value = dict['value'].strip()
+        name = dict["name"].strip()
+        version = dict["version"].strip()
+        value = dict["value"].strip()
 
         caps[name] = {
-            'version': version,
-            'value': value,
+            "version": version,
+            "value": value,
         }
 
-    rhnFlags.set('client-capabilities', caps)
+    rhnFlags.set("client-capabilities", caps)
     log_debug(4, "Client capabilities", caps)
 
 
 def get_client_capabilities():
-    return rhnFlags.get('client-capabilities')
+    return rhnFlags.get("client-capabilities")
 
 
 def update_client_capabilities(server_id):
@@ -66,16 +67,18 @@ def update_client_capabilities(server_id):
 
     caps = caps.copy()
 
-    h = rhnSQL.prepare("""
+    h = rhnSQL.prepare(
+        """
         select cc.capability_name_id, ccn.name capability, cc.version
         from rhnClientCapability cc, rhnClientCapabilityName ccn
         where cc.server_id = :server_id
         and cc.capability_name_id = ccn.id
-    """)
+    """
+    )
 
-    updates = {'server_id': [], 'capability_name_id': [], 'version': []}
-    deletes = {'server_id': [], 'capability_name_id': []}
-    inserts = {'server_id': [], 'capability': [], 'version': []}
+    updates = {"server_id": [], "capability_name_id": [], "version": []}
+    deletes = {"server_id": [], "capability_name_id": []}
+    inserts = {"server_id": [], "capability": [], "version": []}
 
     h.execute(server_id=server_id)
     while 1:
@@ -83,59 +86,66 @@ def update_client_capabilities(server_id):
         if not row:
             break
 
-        name = row['capability']
-        version = row['version']
-        capability_name_id = row['capability_name_id']
+        name = row["capability"]
+        version = row["version"]
+        capability_name_id = row["capability_name_id"]
 
         if name in caps:
-            local_ver = caps[name]['version']
+            local_ver = caps[name]["version"]
             del caps[name]
             if local_ver == version:
                 # Nothing to do - same version
                 continue
 
-            updates['server_id'].append(server_id)
-            updates['capability_name_id'].append(capability_name_id)
-            updates['version'].append(local_ver)
+            updates["server_id"].append(server_id)
+            updates["capability_name_id"].append(capability_name_id)
+            updates["version"].append(local_ver)
             continue
 
         # Have to delete it
-        deletes['server_id'].append(server_id)
-        deletes['capability_name_id'].append(capability_name_id)
+        deletes["server_id"].append(server_id)
+        deletes["capability_name_id"].append(capability_name_id)
 
     # Everything else has to be inserted
+    # pylint: disable-next=redefined-builtin
     for name, hash in list(caps.items()):
-        inserts['server_id'].append(server_id)
-        inserts['capability'].append(name)
-        inserts['version'].append(hash['version'])
+        inserts["server_id"].append(server_id)
+        inserts["capability"].append(name)
+        inserts["version"].append(hash["version"])
 
     log_debug(5, "Deletes:", deletes)
     log_debug(5, "Updates:", updates)
     log_debug(5, "Inserts:", inserts)
 
-    if deletes['server_id']:
-        h = rhnSQL.prepare("""
+    if deletes["server_id"]:
+        h = rhnSQL.prepare(
+            """
             delete from rhnClientCapability
             where server_id = :server_id
             and capability_name_id = :capability_name_id
-        """)
+        """
+        )
         h.executemany(**deletes)
 
-    if updates['server_id']:
-        h = rhnSQL.prepare("""
+    if updates["server_id"]:
+        h = rhnSQL.prepare(
+            """
             update rhnClientCapability
             set version = :version
             where server_id = :server_id
             and capability_name_id = :capability_name_id
-        """)
+        """
+        )
         h.executemany(**updates)
 
-    if inserts['server_id']:
-        h = rhnSQL.prepare("""
+    if inserts["server_id"]:
+        h = rhnSQL.prepare(
+            """
             insert into rhnClientCapability
             (server_id, capability_name_id, version)
             values (:server_id, LOOKUP_CLIENT_CAPABILITY(:capability), :version)
-        """)
+        """
+        )
         h.executemany(**inserts)
 
     # Commit work. This can be dangerous if there is previously uncommited
@@ -158,32 +168,33 @@ def set_server_capabilities():
 def _set_server_capabilities():
     # XXX Will have to figure out how to define this
     capabilities = {
-        'registration.register_osad': {'version': 1, 'value': 1},
-        'registration.finish_message': {'version': 1, 'value': 1},
-        'registration.remaining_subscriptions': {'version': 1, 'value': 1},
-        'registration.update_contact_info': {'version': 1, 'value': 1},
-        'registration.delta_packages': {'version': 1, 'value': 1},
-        'registration.extended_update_support': {'version': 1, 'value': 1},
-        'registration.smbios': {'version': 1, 'value': 1},
-        'registration.update_systemid': {'version': 1, 'value': 1},
-        'applet.has_base_channel': {'version': 1, 'value': 1},
-        'xmlrpc.login.extra_data': {'version': 1, 'value': 1},
-        'rhncfg.content.base64_decode': {'version': 1, 'value': 1},
-        'rhncfg.filetype.directory': {'version': 1, 'value': 1},
-        'xmlrpc.packages.extended_profile': {'version': '1-2', 'value': 1},
-        'xmlrpc.packages.suse_products': {'version': 1, 'value': 1},
-        'xmlrpc.packages.checksums': {'version': 1, 'value': 1},
-        'xmlrpc.errata.patch_names': {'version': 1, 'value': 1},
-        'staging_content': {'version': 1, 'value': 1},
-        'ipv6': {'version': 1, 'value': 1},
-        'cpu_sockets': {'version': 1, 'value': 1},
-        'queue.update_status': {'version': 1, 'value': 1},
-        'mainframe_sysinfo': {'version': 1, 'value': 1},
-        'machine_info': {'version': 1, 'value': 1},
+        "registration.register_osad": {"version": 1, "value": 1},
+        "registration.finish_message": {"version": 1, "value": 1},
+        "registration.remaining_subscriptions": {"version": 1, "value": 1},
+        "registration.update_contact_info": {"version": 1, "value": 1},
+        "registration.delta_packages": {"version": 1, "value": 1},
+        "registration.extended_update_support": {"version": 1, "value": 1},
+        "registration.smbios": {"version": 1, "value": 1},
+        "registration.update_systemid": {"version": 1, "value": 1},
+        "applet.has_base_channel": {"version": 1, "value": 1},
+        "xmlrpc.login.extra_data": {"version": 1, "value": 1},
+        "rhncfg.content.base64_decode": {"version": 1, "value": 1},
+        "rhncfg.filetype.directory": {"version": 1, "value": 1},
+        "xmlrpc.packages.extended_profile": {"version": "1-2", "value": 1},
+        "xmlrpc.packages.suse_products": {"version": 1, "value": 1},
+        "xmlrpc.packages.checksums": {"version": 1, "value": 1},
+        "xmlrpc.errata.patch_names": {"version": 1, "value": 1},
+        "staging_content": {"version": 1, "value": 1},
+        "ipv6": {"version": 1, "value": 1},
+        "cpu_sockets": {"version": 1, "value": 1},
+        "queue.update_status": {"version": 1, "value": 1},
+        "mainframe_sysinfo": {"version": 1, "value": 1},
+        "machine_info": {"version": 1, "value": 1},
     }
     l = []
     for name, hashval in list(capabilities.items()):
-        l.append("%s(%s)=%s" % (name, hashval['version'], hashval['value']))
+        # pylint: disable-next=consider-using-f-string
+        l.append("%s(%s)=%s" % (name, hashval["version"], hashval["value"]))
 
     log_debug(4, "Setting capabilities", l)
-    rhnFlags.get("outputTransportOptions")['X-RHN-Server-Capability'] = l
+    rhnFlags.get("outputTransportOptions")["X-RHN-Server-Capability"] = l

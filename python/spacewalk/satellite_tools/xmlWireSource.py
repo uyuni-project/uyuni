@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring,invalid-name
 #
 # Copyright (c) 2008--2018 Red Hat, Inc.
 #
@@ -22,6 +23,7 @@ import time
 
 # rhn imports
 from rhn import rpclib
+
 sys.path.append("/usr/share/rhn")
 from up2date_client import config
 
@@ -32,18 +34,21 @@ from spacewalk.common.rhnConfig import CFG
 # local imports
 from spacewalk.satellite_tools.syncLib import log, log2, RhnSyncException
 
+# pylint: disable-next=reimported,ungrouped-imports
 from rhn import rpclib
 
+# pylint: disable-next=ungrouped-imports
 from spacewalk.common.suseLib import get_proxy
 from spacewalk.satellite_tools import connection
 
+
 class BaseWireSource:
 
-    """ Base object for wire-commo to RHN for delivery of XML/RPMS. """
+    """Base object for wire-commo to RHN for delivery of XML/RPMS."""
 
     serverObj = None
-    handler = ''
-    url = ''
+    handler = ""
+    url = ""
     sslYN = 0
     systemid = None
     server_handler = None
@@ -61,22 +66,22 @@ class BaseWireSource:
         return BaseWireSource.serverObj
 
     def schemeAndUrl(self, url):
-        """ http[s]://BLAHBLAHBLAH/ACKACK --> http[s]://BLAHBLAHBLAH """
+        """http[s]://BLAHBLAHBLAH/ACKACK --> http[s]://BLAHBLAHBLAH"""
 
         if not url:
             url = CFG.RHN_PARENT  # the default
         # just make the url complete.
-        hostname = rhnLib.parseUrl(url or '')[1]
-        hostname = hostname.split(':')[0]  # just in case
+        hostname = rhnLib.parseUrl(url or "")[1]
+        hostname = hostname.split(":")[0]  # just in case
         if self.sslYN:
-            url = 'https://' + hostname
+            url = "https://" + hostname
         else:
-            url = 'http://' + hostname
+            url = "http://" + hostname
         return url
 
     def setServer(self, handler, url=None, forcedYN=0):
-        """ XMLRPC server object (ssl set in parameters).
-            NOTE: url expected to be of the form: scheme://machine/HANDLER
+        """XMLRPC server object (ssl set in parameters).
+        NOTE: url expected to be of the form: scheme://machine/HANDLER
         """
 
         url = self.schemeAndUrl(url)
@@ -87,7 +92,8 @@ class BaseWireSource:
 
         self._set_connection_params(handler, url)
 
-        url = '%s%s' % (url, handler)  # url is properly set up now.
+        # pylint: disable-next=consider-using-f-string
+        url = "%s%s" % (url, handler)  # url is properly set up now.
 
         serverObj = self._set_connection(url)
         self._set_ssl_trusted_certs(serverObj)
@@ -111,9 +117,14 @@ class BaseWireSource:
         "Instantiates a connection object"
 
         proxy, puser, ppass = get_proxy(url)
-        serverObj = connection.StreamConnection(url, proxy=proxy,
-                                                username=puser, password=ppass,
-                                                xml_dump_version=self.xml_dump_version, timeout=CFG.timeout)
+        serverObj = connection.StreamConnection(
+            url,
+            proxy=proxy,
+            username=puser,
+            password=ppass,
+            xml_dump_version=self.xml_dump_version,
+            timeout=CFG.timeout,
+        )
         BaseWireSource.serverObj = serverObj
         return serverObj
 
@@ -127,30 +138,38 @@ class BaseWireSource:
             # require SSL CA file to be able to authenticate the SSL
             # connections.
             if not os.access(caChain, os.R_OK):
+                # pylint: disable-next=consider-using-f-string
                 message = "ERROR: can not find SUSE Manager CA file: %s" % caChain
                 log(-1, message, stream=sys.stderr)
+                # pylint: disable-next=broad-exception-raised
                 raise Exception(message)
             # force the validation of the SSL cert
             serverObj.add_trusted_cert(caChain)
             return caChain
 
-        message = '--- Warning: SSL connection made but no CA certificate used'
+        message = "--- Warning: SSL connection made but no CA certificate used"
         log(1, message, stream=sys.stderr)
         return None
 
     def _openSocketStream(self, method, params):
         """Wraps the gzipstream.GzipStream instantiation in a test block so we
-           can open normally if stream is not gzipped."""
+        can open normally if stream is not gzipped."""
 
         stream = None
         retryYN = 0
         wait = 0.33
-        lastErrorMsg = ''
+        lastErrorMsg = ""
         cfg = config.initUp2dateConfig()
-        for i in range(cfg['networkRetries']):
+        for i in range(cfg["networkRetries"]):
             server = self.getServer(retryYN)
             if server is None:
-                log2(-1, 2, 'ERROR: server unable to initialize, attempt %s' % i, stream=sys.stderr)
+                log2(
+                    -1,
+                    2,
+                    # pylint: disable-next=consider-using-f-string
+                    "ERROR: server unable to initialize, attempt %s" % i,
+                    stream=sys.stderr,
+                )
                 retryYN = 1
                 time.sleep(wait)
                 continue
@@ -158,7 +177,9 @@ class BaseWireSource:
             try:
                 stream = func(*params)
                 if CFG.SYNC_TO_TEMP:
+                    # pylint: disable-next=import-outside-toplevel
                     import tempfile
+
                     cached = tempfile.NamedTemporaryFile()
                     stream.read_to_file(cached)
                     cached.seek(0)
@@ -167,8 +188,9 @@ class BaseWireSource:
                     return stream
             except rpclib.xmlrpclib.ProtocolError:
                 e = sys.exc_info()[1]
-                p = tuple(['<the systemid>'] + list(params[1:]))
-                lastErrorMsg = 'ERROR: server.%s%s: %s' % (method, p, e)
+                p = tuple(["<the systemid>"] + list(params[1:]))
+                # pylint: disable-next=consider-using-f-string
+                lastErrorMsg = "ERROR: server.%s%s: %s" % (method, p, e)
                 log2(-1, 2, lastErrorMsg, stream=sys.stderr)
                 retryYN = 1
                 time.sleep(wait)
@@ -181,8 +203,9 @@ class BaseWireSource:
                 break
             except Exception:  # pylint: disable=E0012, W0703
                 e = sys.exc_info()[1]
-                p = tuple(['<the systemid>'] + list(params[1:]))
-                lastErrorMsg = 'ERROR: server.%s%s: %s' % (method, p, e)
+                p = tuple(["<the systemid>"] + list(params[1:]))
+                # pylint: disable-next=consider-using-f-string
+                lastErrorMsg = "ERROR: server.%s%s: %s" % (method, p, e)
                 log2(-1, 2, lastErrorMsg, stream=sys.stderr)
                 break
                 # do not reraise this exception!
@@ -245,14 +268,17 @@ class MetadataWireSource(BaseWireSource):
         """retrieve xml stream for short package data given
         a list of package ids."""
         self._prepare()
-        return self._openSocketStream("dump.packages_short", (self.systemid, packageIds))
+        return self._openSocketStream(
+            "dump.packages_short", (self.systemid, packageIds)
+        )
 
     def getChannelShortPackagesXmlStream(self, channel, last_modified):
         """retrieve xml stream for short package data given a channel
         label and the last modified timestamp of the channel"""
         self._prepare()
-        return self._openSocketStream("dump.channel_packages_short",
-                                      (self.systemid, channel, last_modified))
+        return self._openSocketStream(
+            "dump.channel_packages_short", (self.systemid, channel, last_modified)
+        )
 
     def getPackageXmlStream(self, packageIds):
         """retrieve xml stream for package data given a
@@ -264,7 +290,9 @@ class MetadataWireSource(BaseWireSource):
         """retrieve xml stream for package data given a
         list of package ids."""
         self._prepare()
-        return self._openSocketStream("dump.source_packages", (self.systemid, packageIds))
+        return self._openSocketStream(
+            "dump.source_packages", (self.systemid, packageIds)
+        )
 
     def getErrataXmlStream(self, erratumIds):
         """retrieve xml stream for erratum data given a list of erratum ids."""
@@ -274,33 +302,34 @@ class MetadataWireSource(BaseWireSource):
     def getKickstartsXmlStream(self, ksLabels):
         "retrieve xml stream for kickstart trees"
         self._prepare()
-        return self._openSocketStream("dump.kickstartable_trees",
-                                      (self.systemid, ksLabels))
+        return self._openSocketStream(
+            "dump.kickstartable_trees", (self.systemid, ksLabels)
+        )
 
     def getComps(self, channel):
-        return self._openSocketStream("dump.get_comps",
-                                      (self.systemid, channel))
+        return self._openSocketStream("dump.get_comps", (self.systemid, channel))
 
     def getModules(self, channel):
-        return self._openSocketStream("dump.get_modules",
-                                      (self.systemid, channel))
+        return self._openSocketStream("dump.get_modules", (self.systemid, channel))
 
     def getRpm(self, nvrea, channel, checksum):
         release = nvrea[2]
         epoch = nvrea[3]
         if epoch:
+            # pylint: disable-next=consider-using-f-string
             release = "%s:%s" % (release, epoch)
-        package_name = "%s-%s-%s.%s.rpm" % (nvrea[0], nvrea[1], release,
-                                            nvrea[4])
+        # pylint: disable-next=consider-using-f-string
+        package_name = "%s-%s-%s.%s.rpm" % (nvrea[0], nvrea[1], release, nvrea[4])
         self._prepare()
-        return self._openSocketStream("dump.get_rpm",
-                                      (self.systemid, package_name, channel, checksum))
+        return self._openSocketStream(
+            "dump.get_rpm", (self.systemid, package_name, channel, checksum)
+        )
 
     def getKickstartFile(self, ks_label, relative_path):
         self._prepare()
-        return self._openSocketStream("dump.get_ks_file",
-                                      (self.systemid, ks_label, relative_path))
-
+        return self._openSocketStream(
+            "dump.get_ks_file", (self.systemid, ks_label, relative_path)
+        )
 
     def getSupportInformationXmlStream(self):
         """retrieve xml stream for channel family data."""
@@ -330,7 +359,9 @@ class MetadataWireSource(BaseWireSource):
     def getSuseProductRepositoriesXmlStream(self):
         """retrieve xml stream for SUSE Product Repositories"""
         self._prepare()
-        return self._openSocketStream("dump.suse_product_repositories", (self.systemid,))
+        return self._openSocketStream(
+            "dump.suse_product_repositories", (self.systemid,)
+        )
 
     def getSCCRepositoriesXmlStream(self):
         """retrieve xml stream for SCC Repositories"""
@@ -347,8 +378,8 @@ class MetadataWireSource(BaseWireSource):
         self._prepare()
         return self._openSocketStream("dump.cloned_channels", (self.systemid,))
 
-class XMLRPCWireSource(BaseWireSource):
 
+class XMLRPCWireSource(BaseWireSource):
     "Base class for all the XMLRPC calls"
 
     @staticmethod
@@ -357,11 +388,17 @@ class XMLRPCWireSource(BaseWireSource):
             retval = getattr(BaseWireSource.serverObj, function)(*params)
         except TypeError:
             e = sys.exc_info()[1]
-            log(-1, 'ERROR: during "getattr(BaseWireSource.serverObj, %s)(*(%s))"' % (function, params))
+            log(
+                -1,
+                # pylint: disable-next=consider-using-f-string
+                'ERROR: during "getattr(BaseWireSource.serverObj, %s)(*(%s))"'
+                % (function, params),
+            )
             raise
         except rpclib.xmlrpclib.ProtocolError:
             e = sys.exc_info()[1]
-            log2(-1, 2, 'ERROR: ProtocolError: %s' % e, stream=sys.stderr)
+            # pylint: disable-next=consider-using-f-string
+            log2(-1, 2, "ERROR: ProtocolError: %s" % e, stream=sys.stderr)
             raise
         return retval
 
@@ -373,25 +410,31 @@ class AuthWireSource(XMLRPCWireSource):
     def checkAuth(self):
         self.setServer(CFG.RHN_XMLRPC_HANDLER)
         authYN = None
-        log(2, '   +++ SUSE Manager Server synchronization tool checking in.')
+        log(2, "   +++ SUSE Manager Server synchronization tool checking in.")
         try:
-            authYN = self._xmlrpc('authentication.check', (self.systemid,))
+            authYN = self._xmlrpc("authentication.check", (self.systemid,))
+        # pylint: disable-next=try-except-raise
         except (rpclib.xmlrpclib.ProtocolError, rpclib.xmlrpclib.Fault):
             raise
         if authYN:
-            log(2, '   +++ Entitled SUSE Manager Server validated.', stream=sys.stderr)
+            log(2, "   +++ Entitled SUSE Manager Server validated.", stream=sys.stderr)
         elif authYN is None:
-            log(-1, '   --- An error occurred upon authentication of this SUSE Manager Server -- '
-                    'review the pertinent log file (%s) and/or submit a service request.' % CFG.LOG_FILE,
-                stream=sys.stderr)
+            log(
+                -1,
+                # pylint: disable-next=consider-using-f-string
+                "   --- An error occurred upon authentication of this SUSE Manager Server -- "
+                "review the pertinent log file (%s) and/or submit a service request."
+                % CFG.LOG_FILE,
+                stream=sys.stderr,
+            )
             sys.exit(-1)
         elif authYN == 0:
-            log(-1, '   --- This server is not entitled.', stream=sys.stderr)
+            log(-1, "   --- This server is not entitled.", stream=sys.stderr)
             sys.exit(-1)
         return authYN
 
-class RPCGetWireSource(BaseWireSource):
 
+class RPCGetWireSource(BaseWireSource):
     "Class to retrieve various files via authenticated GET requests"
     get_server_obj = None
     login_token = None
@@ -419,9 +462,14 @@ class RPCGetWireSource(BaseWireSource):
         self._set_login_token(self._login())
         url = self.url + self.handler
         proxy, puser, ppass = get_proxy(url)
-        get_server_obj = connection.GETServer(url, proxy=proxy,
-                                              username=puser, password=ppass,
-                                              headers=self.login_token, timeout=CFG.timeout)
+        get_server_obj = connection.GETServer(
+            url,
+            proxy=proxy,
+            username=puser,
+            password=ppass,
+            headers=self.login_token,
+            timeout=CFG.timeout,
+        )
         # Add SSL trusted cert
         self._set_ssl_trusted_certs(get_server_obj)
         self._set_rpc_server(get_server_obj)
@@ -429,6 +477,7 @@ class RPCGetWireSource(BaseWireSource):
 
     def _login(self):
         if not self.systemid:
+            # pylint: disable-next=broad-exception-raised
             raise Exception("systemid not set!")
 
         # Set the URL to the one for regular XML-RPC calls
@@ -438,7 +487,8 @@ class RPCGetWireSource(BaseWireSource):
             login_token = self.getServer().authentication.login(self.systemid)
         except rpclib.xmlrpclib.ProtocolError:
             e = sys.exc_info()[1]
-            log2(-1, 2, 'ERROR: ProtocolError: %s' % e, stream=sys.stderr)
+            # pylint: disable-next=consider-using-f-string
+            log2(-1, 2, "ERROR: ProtocolError: %s" % e, stream=sys.stderr)
             raise
         return login_token
 
@@ -456,7 +506,7 @@ class RPCGetWireSource(BaseWireSource):
         fault_count = 0
         expired_token = 0
         cfg = config.initUp2dateConfig()
-        while fault_count - expired_token < cfg['networkRetries']:
+        while fault_count - expired_token < cfg["networkRetries"]:
             try:
                 ret = getattr(get_server_obj, function_name)(*params)
             except rpclib.xmlrpclib.ProtocolError:
@@ -477,29 +527,36 @@ class RPCGetWireSource(BaseWireSource):
                     # File not found
                     self.extinctErrorYN = 1
                     return None
-                log(-1, 'ERROR: http error code :%s; fault code: %s; %s' %
-                    (http_error_code, fault_code, fault_string))
+                log(
+                    -1,
+                    # pylint: disable-next=consider-using-f-string
+                    "ERROR: http error code :%s; fault code: %s; %s"
+                    % (http_error_code, fault_code, fault_string),
+                )
                 # XXX
                 raise
             else:
                 return ret
+        # pylint: disable-next=broad-exception-raised
         raise Exception("Failed after multiple attempts!")
 
     def getPackageStream(self, channel, nvrea, checksum):
         release = nvrea[2]
         epoch = nvrea[3]
         if epoch:
+            # pylint: disable-next=consider-using-f-string
             release = "%s:%s" % (release, epoch)
-        package_name = "%s-%s-%s.%s.rpm" % (nvrea[0], nvrea[1], release,
-                                            nvrea[4])
+        # pylint: disable-next=consider-using-f-string
+        package_name = "%s-%s-%s.%s.rpm" % (nvrea[0], nvrea[1], release, nvrea[4])
         return self._rpc_call("getPackage", (channel, package_name, checksum))
 
     def getKickstartFileStream(self, channel, ks_tree_label, relative_path):
-        return self._rpc_call("getKickstartFile", (channel, ks_tree_label,
-                                                   relative_path))
+        return self._rpc_call(
+            "getKickstartFile", (channel, ks_tree_label, relative_path)
+        )
 
     def getCompsFileStream(self, channel):
-        return self._rpc_call("repodata", (channel, 'comps.xml'))
+        return self._rpc_call("repodata", (channel, "comps.xml"))
 
     def getModulesFilesStram(self, channel):
-        return self._rpc_call("repodata", (channel, 'modules.yaml'))
+        return self._rpc_call("repodata", (channel, "modules.yaml"))

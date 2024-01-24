@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2016--2017 Red Hat, Inc.
 #
@@ -34,19 +35,21 @@ from spacewalk.server import rhnSQL
 from spacewalk.common import repo
 
 try:
-    #  python 2 
+    #  python 2
     from urllib import unquote
     import urlparse
 except ImportError:
     #  python3
-    import urllib.parse as urlparse # pylint: disable=F0401,E0611
+    import urllib.parse as urlparse  # pylint: disable=F0401,E0611
     from urllib.parse import unquote
 
 RETRIES = 10
 RETRY_DELAY = 1
-FORMAT_PRIORITY = ['.xz', '.gz', '']
+FORMAT_PRIORITY = [".xz", ".gz", ""]
 log = logging.getLogger(__name__)
 
+
+# pylint: disable-next=missing-class-docstring
 class DebPackage:
     def __init__(self):
         self.name = None
@@ -67,20 +70,35 @@ class DebPackage:
     def evr(self):
         evr = ""
         if self.epoch:
-           evr = evr + "{}:".format(self.epoch)
+            # pylint: disable-next=consider-using-f-string
+            evr = evr + "{}:".format(self.epoch)
         if self.version:
-           evr = evr + "{}".format(self.version)
+            # pylint: disable-next=consider-using-f-string
+            evr = evr + "{}".format(self.version)
         if self.release:
-           evr = evr + "-{}".format(self.release)
+            # pylint: disable-next=consider-using-f-string
+            evr = evr + "-{}".format(self.release)
         return evr
 
     def is_populated(self):
-        return all([attribute is not None for attribute in (self.name, self.epoch,
-                                                            self.version, self.release, self.arch,
-                                                            self.relativepath, self.checksum_type,
-                                                            self.checksum)])
+        return all(
+            [
+                attribute is not None
+                for attribute in (
+                    self.name,
+                    self.epoch,
+                    self.version,
+                    self.release,
+                    self.arch,
+                    self.relativepath,
+                    self.checksum_type,
+                    self.checksum,
+                )
+            ]
+        )
 
 
+# pylint: disable-next=missing-class-docstring
 class DebRepo:
     # url example - http://ftp.debian.org/debian/dists/jessie/main/binary-amd64/
     def __init__(
@@ -95,7 +113,7 @@ class DebRepo:
         channel_label=None,
     ):
         self.url = url
-        parts = url.rsplit('/dists/', 1)
+        parts = url.rsplit("/dists/", 1)
         self.base_url = [parts[0]]
 
         parsed_url = urlparse.urlparse(url)
@@ -117,8 +135,11 @@ class DebRepo:
             parsed_url = parsed_url._replace(query=urlparse.urlencode(new_query))
             base_url = urlparse.urlunparse(parsed_url)
             path_list = parsed_url.path.split("/")
+            # pylint: disable-next=consider-using-f-string
             log2(0, 0, "Base URL: {}".format(base_url))
+            # pylint: disable-next=consider-using-f-string
             log2(0, 0, "Suite: {}".format(suite))
+            # pylint: disable-next=consider-using-f-string
             log2(0, 0, "Component: {}".format(component))
             if "/" not in suite:
                 path_list.append("dists")
@@ -128,13 +149,15 @@ class DebRepo:
             if "/" not in suite:
                 if arch is None:
                     rhnSQL.initDB()
-                    h = rhnSQL.prepare("""
+                    h = rhnSQL.prepare(
+                        """
                                        SELECT ca.label AS arch_label
                                        FROM rhnChannel AS c
                                        LEFT JOIN rhnChannelArch AS ca
                                            ON c.channel_arch_id = ca.id
                                        WHERE c.label = :channel_label
-                                       """)
+                                       """
+                    )
                     h.execute(channel_label=channel_label)
                     row = h.fetchone_dict()
                     if row and "arch_label" in row:
@@ -149,7 +172,9 @@ class DebRepo:
                             else:
                                 arch = aspl[1]
                 if arch:
+                    # pylint: disable-next=consider-using-f-string
                     log2(0, 0, "Channel architecture: {}".format(arch))
+                    # pylint: disable-next=consider-using-f-string
                     path_list.append("binary-{}".format(arch))
             while "" in path_list:
                 path_list.remove("")
@@ -158,8 +183,8 @@ class DebRepo:
             self.base_url = [base_url]
 
         # Make sure baseurl ends with / and urljoin will work correctly
-        if self.base_url[0][-1] != '/':
-            self.base_url[0] += '/'
+        if self.base_url[0][-1] != "/":
+            self.base_url[0] += "/"
         self.urls = self.base_url
         self.sslclientcert = self.sslclientkey = self.sslcacert = None
         self.proxy = proxy_addr
@@ -169,8 +194,11 @@ class DebRepo:
 
         self.basecachedir = cache_dir
         if not os.path.isdir(self.basecachedir):
+            # pylint: disable-next=invalid-name
             with cfg_component(component=None) as CFG:
-                fileutils.makedirs(self.basecachedir, user=CFG.httpd_user, group=CFG.httpd_group)
+                fileutils.makedirs(
+                    self.basecachedir, user=CFG.httpd_user, group=CFG.httpd_group
+                )
         self.includepkgs = []
         self.exclude = []
         self.pkgdir = pkg_dir
@@ -182,7 +210,9 @@ class DebRepo:
 
         :return:
         """
-        if not repo.DpkgRepo(self.url, self._get_proxies(), self.gpg_verify).verify_packages_index():
+        if not repo.DpkgRepo(
+            self.url, self._get_proxies(), self.gpg_verify
+        ).verify_packages_index():
             raise repo.GeneralRepoException("Package index checksum failure")
 
     def _get_proxies(self):
@@ -191,36 +221,48 @@ class DebRepo:
         """
         if self.proxy:
             (_, netloc, _, _, _) = urlparse.urlsplit(self.proxy)
-            proxies = {
-                'http': 'http://' + netloc,
-                'https': 'http://' + netloc
-            }
+            proxies = {"http": "http://" + netloc, "https": "http://" + netloc}
             if self.proxy_username and self.proxy_password:
                 proxies = {
-                    'http': 'http://' + self.proxy_username + ":" + self.proxy_password + "@" + netloc,
-                    'https': 'http://' + self.proxy_username + ":" + self.proxy_password + "@" + netloc,
+                    "http": "http://"
+                    + self.proxy_username
+                    + ":"
+                    + self.proxy_password
+                    + "@"
+                    + netloc,
+                    "https": "http://"
+                    + self.proxy_username
+                    + ":"
+                    + self.proxy_password
+                    + "@"
+                    + netloc,
                 }
             return proxies
         else:
             return None
 
-
     def _download(self, url):
-        if url.startswith('file://'):
-            srcpath = unquote(url[len('file://'):])
+        if url.startswith("file://"):
+            srcpath = unquote(url[len("file://") :])
             if not os.path.exists(srcpath):
-                return ''
-            filename = self.basecachedir + '/' + os.path.basename(url)
+                return ""
+            filename = self.basecachedir + "/" + os.path.basename(url)
             copyfile(srcpath, filename)
             return filename
         for _ in range(0, RETRIES):
             try:
-                data = requests.get(url, proxies=self._get_proxies(), cert=(self.sslclientcert, self.sslclientkey),
-                                    verify=self.sslcacert)
+                data = requests.get(
+                    url,
+                    proxies=self._get_proxies(),
+                    cert=(self.sslclientcert, self.sslclientkey),
+                    verify=self.sslcacert,
+                )
                 if not data.ok:
-                    return ''
-                filename = os.path.join(self.basecachedir, os.path.basename(urlparse.urlparse(url).path))
-                fd = open(filename, 'wb')
+                    return ""
+                filename = os.path.join(
+                    self.basecachedir, os.path.basename(urlparse.urlparse(url).path)
+                )
+                fd = open(filename, "wb")
                 try:
                     for chunk in data.iter_content(chunk_size=1024):
                         fd.write(chunk)
@@ -232,7 +274,7 @@ class DebRepo:
                 print("ERROR: requests.exceptions.RequestException occurred:", exc)
                 time.sleep(RETRY_DELAY)
 
-        return ''
+        return ""
 
     def get_package_list(self):
         decompressed = None
@@ -241,12 +283,22 @@ class DebRepo:
 
         for extension in FORMAT_PRIORITY:
             scheme, netloc, path, query, fragid = urlparse.urlsplit(self.url)
-            url = urlparse.urlunsplit((scheme, netloc,
-                                       path + ('/' if not path.endswith('/') else '') + 'Packages' + extension, query, fragid))
+            url = urlparse.urlunsplit(
+                (
+                    scheme,
+                    netloc,
+                    path
+                    + ("/" if not path.endswith("/") else "")
+                    + "Packages"
+                    + extension,
+                    query,
+                    fragid,
+                )
+            )
             filename = self._download(url)
             if filename:
                 if query:
-                    newfilename = filename.split('?')[0]
+                    newfilename = filename.split("?")[0]
                     os.rename(filename, newfilename)
                     filename = newfilename
                 decompressed = fileutils.decompress_open(filename)
@@ -270,50 +322,62 @@ class DebRepo:
                 if pair[0] == "Package:":
                     package.name = pair[1]
                 elif pair[0] == "Architecture:":
-                    package.arch = pair[1] + '-deb'
+                    package.arch = pair[1] + "-deb"
                 elif pair[0] == "Version:":
-                    package['epoch'] = ''
+                    package["epoch"] = ""
                     version = pair[1]
-                    if version.find(':') != -1:
-                        package['epoch'], version = version.split(':')
-                    if version.find('-') != -1:
-                        tmp = version.split('-')
-                        package['version'] = '-'.join(tmp[:-1])
-                        package['release'] = tmp[-1]
+                    if version.find(":") != -1:
+                        package["epoch"], version = version.split(":")
+                    if version.find("-") != -1:
+                        tmp = version.split("-")
+                        package["version"] = "-".join(tmp[:-1])
+                        package["release"] = tmp[-1]
                     else:
-                        package['version'] = version
-                        package['release'] = 'X'
+                        package["version"] = version
+                        package["release"] = "X"
                 elif pair[0] == "Filename:":
                     package.relativepath = pair[1]
                 elif pair[0] == "SHA256:":
-                    checksums['sha256'] = pair[1]
+                    checksums["sha256"] = pair[1]
                 elif pair[0] == "SHA1:":
-                    checksums['sha1'] = pair[1]
+                    checksums["sha1"] = pair[1]
                 elif pair[0] == "MD5sum:":
-                    checksums['md5'] = pair[1]
+                    checksums["md5"] = pair[1]
 
             # Pick best available checksum
-            if 'sha256' in checksums:
-                package.checksum_type = 'sha256'
-                package.checksum = checksums['sha256']
-            elif 'sha1' in checksums:
-                package.checksum_type = 'sha1'
-                package.checksum = checksums['sha1']
-            elif 'md5' in checksums:
-                package.checksum_type = 'md5'
-                package.checksum = checksums['md5']
+            if "sha256" in checksums:
+                package.checksum_type = "sha256"
+                package.checksum = checksums["sha256"]
+            elif "sha1" in checksums:
+                package.checksum_type = "sha1"
+                package.checksum = checksums["sha1"]
+            elif "md5" in checksums:
+                package.checksum_type = "md5"
+                package.checksum = checksums["md5"]
 
             if package.is_populated():
                 to_return.append(package)
         return to_return
 
 
+# pylint: disable-next=missing-class-docstring
 class ContentSource:
-
-    def __init__(self, url, name, insecure=False, interactive=True, yumsrc_conf=None,
-                 org="1", channel_label="", no_mirrors=False, ca_cert_file=None,
-                 client_cert_file=None, client_key_file=None, channel_arch="",
-                 http_headers=None):
+    def __init__(
+        self,
+        url,
+        name,
+        insecure=False,
+        interactive=True,
+        yumsrc_conf=None,
+        org="1",
+        channel_label="",
+        no_mirrors=False,
+        ca_cert_file=None,
+        client_cert_file=None,
+        client_key_file=None,
+        channel_arch="",
+        http_headers=None,
+    ):
         # pylint: disable=W0613
         self.url = url
         self.name = name
@@ -323,7 +387,8 @@ class ContentSource:
             self.org = "NULL"
 
         # read the proxy configuration in /etc/rhn/rhn.conf
-        with cfg_component('server.satellite') as CFG:
+        # pylint: disable-next=invalid-name
+        with cfg_component("server.satellite") as CFG:
             self.proxy_addr, self.proxy_user, self.proxy_pass = get_proxy(self.url)
             self.authtoken = None
 
@@ -334,16 +399,23 @@ class ContentSource:
             # SUSE vendor repositories belongs to org = NULL
             # The repository cache root will be "/var/cache/rhn/reposync/REPOSITORY_LABEL/"
             root = os.path.join(CACHE_DIR, str(org or "NULL"), self.reponame)
-            self.repo = DebRepo(url, root,
-                                os.path.join(CFG.MOUNT_POINT, CFG.PREPENDED_DIR, self.org, 'stage'),
-                                self.proxy_addr, self.proxy_user, self.proxy_pass, gpg_verify=not(insecure),
-                                channel_label=channel_label)
+            self.repo = DebRepo(
+                url,
+                root,
+                os.path.join(CFG.MOUNT_POINT, CFG.PREPENDED_DIR, self.org, "stage"),
+                self.proxy_addr,
+                self.proxy_user,
+                self.proxy_pass,
+                gpg_verify=not (insecure),
+                channel_label=channel_label,
+            )
             self.repo.verify()
 
             self.num_packages = 0
             self.num_excluded = 0
 
             # keep authtokens for mirroring
+            # pylint: disable-next=invalid-name,unused-variable
             (_scheme, _netloc, _path, query, _fragid) = urlparse.urlsplit(url)
             if query:
                 self.authtoken = query
@@ -376,25 +448,29 @@ class ContentSource:
         return None
 
     def list_packages(self, filters, latest):
-        """ list packages"""
+        """list packages"""
 
         pkglist = self.repo.get_package_list()
         self.num_packages = len(pkglist)
         if latest:
             latest_pkgs = {}
             for pkg in pkglist:
-                ident = '{}.{}'.format(pkg.name, pkg.arch)
-                if ident not in latest_pkgs.keys() or LooseVersion(pkg.evr()) > LooseVersion(latest_pkgs[ident].evr()):
+                # pylint: disable-next=consider-using-f-string
+                ident = "{}.{}".format(pkg.name, pkg.arch)
+                # pylint: disable-next=consider-iterating-dictionary
+                if ident not in latest_pkgs.keys() or LooseVersion(
+                    pkg.evr()
+                ) > LooseVersion(latest_pkgs[ident].evr()):
                     latest_pkgs[ident] = pkg
             pkglist = list(latest_pkgs.values())
-        pkglist.sort(key = cmp_to_key(self._sort_packages))
+        pkglist.sort(key=cmp_to_key(self._sort_packages))
 
         if not filters:
             # if there's no include/exclude filter on command line or in database
             for p in self.repo.includepkgs:
-                filters.append(('+', [p]))
+                filters.append(("+", [p]))
             for p in self.repo.exclude:
-                filters.append(('-', [p]))
+                filters.append(("-", [p]))
 
         if filters:
             pkglist = self._filter_packages(pkglist, filters)
@@ -404,8 +480,9 @@ class ContentSource:
         for pack in pkglist:
             new_pack = ContentPackage()
             try:
-                new_pack.setNVREA(pack.name, pack.version, pack.release,
-                                pack.epoch, pack.arch)
+                new_pack.setNVREA(
+                    pack.name, pack.version, pack.release, pack.epoch, pack.arch
+                )
             except ValueError as e:
                 log(0, "WARNING: package contains incorrect metadata. SKIPPING!")
                 log(0, e)
@@ -428,9 +505,9 @@ class ContentSource:
 
     @staticmethod
     def _filter_packages(packages, filters):
-        """ implement include / exclude logic
-            filters are: [ ('+', includelist1), ('-', excludelist1),
-                           ('+', includelist2), ... ]
+        """implement include / exclude logic
+        filters are: [ ('+', includelist1), ('-', excludelist1),
+                       ('+', includelist2), ... ]
         """
         if filters is None:
             return
@@ -439,7 +516,7 @@ class ContentSource:
         excluded = []
         allmatched_include = []
         allmatched_exclude = []
-        if filters[0][0] == '-':
+        if filters[0][0] == "-":
             # first filter is exclude, start with full package list
             # and then exclude from it
             selected = packages
@@ -450,26 +527,26 @@ class ContentSource:
             sense, pkg_list = filter_item
             regex = fnmatch.translate(pkg_list[0])
             reobj = re.compile(regex)
-            if sense == '+':
+            if sense == "+":
                 # include
                 for excluded_pkg in excluded:
-                    if reobj.match(excluded_pkg['name']):
+                    if reobj.match(excluded_pkg["name"]):
                         allmatched_include.insert(0, excluded_pkg)
                         selected.insert(0, excluded_pkg)
                 for pkg in allmatched_include:
                     if pkg in excluded:
                         excluded.remove(pkg)
-            elif sense == '-':
+            elif sense == "-":
                 # exclude
                 for selected_pkg in selected:
-                    if reobj.match(selected_pkg['name']):
+                    if reobj.match(selected_pkg["name"]):
                         allmatched_exclude.insert(0, selected_pkg)
                         excluded.insert(0, selected_pkg)
 
                 for pkg in allmatched_exclude:
                     if pkg in selected:
                         selected.remove(pkg)
-                excluded = (excluded + allmatched_exclude)
+                excluded = excluded + allmatched_exclude
             else:
                 raise IOError("Filters are malformed")
         return selected
@@ -488,41 +565,56 @@ class ContentSource:
     @staticmethod
     def get_updates():
         # There isn't any update info in the repository
-        return '', []
+        return "", []
 
     @staticmethod
     def get_groups():
         pass
 
     # Get download parameters for threaded downloader
-    def set_download_parameters(self, params, relative_path, target_file, checksum_type=None,
-                                checksum_value=None, bytes_range=None):
+    def set_download_parameters(
+        self,
+        params,
+        relative_path,
+        target_file,
+        checksum_type=None,
+        checksum_value=None,
+        bytes_range=None,
+    ):
         # Create directories if needed
         target_dir = os.path.dirname(target_file)
         if not os.path.exists(target_dir):
-            os.makedirs(target_dir, int('0755', 8))
+            os.makedirs(target_dir, int("0755", 8))
 
-        params['authtoken'] = self.authtoken
-        params['urls'] = self.repo.urls
-        params['relative_path'] = relative_path
-        params['authtoken'] = self.authtoken
-        params['target_file'] = target_file
-        params['ssl_ca_cert'] = self.repo.sslcacert
-        params['ssl_client_cert'] = self.repo.sslclientcert
-        params['ssl_client_key'] = self.repo.sslclientkey
-        params['checksum_type'] = checksum_type
-        params['checksum'] = checksum_value
-        params['bytes_range'] = bytes_range
-        params['http_headers'] = tuple(self.repo.http_headers.items())
+        params["authtoken"] = self.authtoken
+        params["urls"] = self.repo.urls
+        params["relative_path"] = relative_path
+        params["authtoken"] = self.authtoken
+        params["target_file"] = target_file
+        params["ssl_ca_cert"] = self.repo.sslcacert
+        params["ssl_client_cert"] = self.repo.sslclientcert
+        params["ssl_client_key"] = self.repo.sslclientkey
+        params["checksum_type"] = checksum_type
+        params["checksum"] = checksum_value
+        params["bytes_range"] = bytes_range
+        params["http_headers"] = tuple(self.repo.http_headers.items())
         params["timeout"] = self.timeout
         params["minrate"] = self.minrate
-        params['proxies'] = get_proxies(self.repo.proxy, self.repo.proxy_username,
-                                        self.repo.proxy_password)
-        with cfg_component('server.satellite') as CFG:
+        params["proxies"] = get_proxies(
+            self.repo.proxy, self.repo.proxy_username, self.repo.proxy_password
+        )
+        # pylint: disable-next=invalid-name
+        with cfg_component("server.satellite") as CFG:
             params["urlgrabber_logspec"] = CFG.get("urlgrabber_logspec")
 
     @staticmethod
     def get_file(path, local_base=None):
         # pylint: disable=W0613
         # Called from import_kickstarts, not working for deb repo
-        log2(0, 0, "Unable to download path %s from deb repo." % path, stream=sys.stderr)
+        log2(
+            0,
+            0,
+            # pylint: disable-next=consider-using-f-string
+            "Unable to download path %s from deb repo." % path,
+            stream=sys.stderr,
+        )

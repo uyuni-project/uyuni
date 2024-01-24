@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -21,7 +22,7 @@ from spacewalk.common.rhnLog import log_debug
 
 from spacewalk.server.rhnServer.server_hardware import NetIfaceInformation
 
-RHN_PREFIX = 'rhn.system.'
+RHN_PREFIX = "rhn.system."
 
 
 def var_interp_prep(server):
@@ -31,8 +32,8 @@ def var_interp_prep(server):
     return server
 
 
+# pylint: disable-next=missing-class-docstring
 class ServerTemplatedDocument(TemplatedDocument):
-
     def __init__(self, server, start_delim=None, end_delim=None):
         TemplatedDocument.__init__(self, start_delim=start_delim, end_delim=end_delim)
 
@@ -44,22 +45,24 @@ class ServerTemplatedDocument(TemplatedDocument):
 
     def set_functions(self):
         self.functions.clear()
-        self.functions.update({
-            RHN_PREFIX + 'sid': self.sid,
-            RHN_PREFIX + 'profile_name': self.profile_name,
-            RHN_PREFIX + 'description': self.description,
-            RHN_PREFIX + 'hostname': self.hostname,
-            RHN_PREFIX + 'ip_address': self.ipaddr,
-            RHN_PREFIX + 'ip6_address': self.ip6addr,
-            RHN_PREFIX + 'custom_info': self.custom_info,
-            RHN_PREFIX + 'net_interface.ip_address': self.net_intf_ipaddr,
-            RHN_PREFIX + 'net_interface.netmask': self.net_intf_netmask,
-            RHN_PREFIX + 'net_interface.broadcast': self.net_intf_broadcast,
-            RHN_PREFIX + 'net_interface.hardware_address': self.net_intf_hwaddr,
-            RHN_PREFIX + 'net_interface.driver_module': self.net_intf_module,
-            RHN_PREFIX + 'net_interface.ip6_address': self.net_intf_ip6addr,
-            RHN_PREFIX + 'net_interface.ip6_netmask': self.net_intf_ip6netmask,
-        })
+        self.functions.update(
+            {
+                RHN_PREFIX + "sid": self.sid,
+                RHN_PREFIX + "profile_name": self.profile_name,
+                RHN_PREFIX + "description": self.description,
+                RHN_PREFIX + "hostname": self.hostname,
+                RHN_PREFIX + "ip_address": self.ipaddr,
+                RHN_PREFIX + "ip6_address": self.ip6addr,
+                RHN_PREFIX + "custom_info": self.custom_info,
+                RHN_PREFIX + "net_interface.ip_address": self.net_intf_ipaddr,
+                RHN_PREFIX + "net_interface.netmask": self.net_intf_netmask,
+                RHN_PREFIX + "net_interface.broadcast": self.net_intf_broadcast,
+                RHN_PREFIX + "net_interface.hardware_address": self.net_intf_hwaddr,
+                RHN_PREFIX + "net_interface.driver_module": self.net_intf_module,
+                RHN_PREFIX + "net_interface.ip6_address": self.net_intf_ip6addr,
+                RHN_PREFIX + "net_interface.ip6_netmask": self.net_intf_ip6netmask,
+            }
+        )
 
     #######################
     # HANDLER FUNCTIONS
@@ -68,26 +71,27 @@ class ServerTemplatedDocument(TemplatedDocument):
     # If None is returned, the default value will be used if provided
     # Otherwise, the empty string '' will be substituted
     def sid(self):
-        return self.server.server['id']
+        return self.server.server["id"]
 
     def profile_name(self):
-        return self.server.server['name']
+        return self.server.server["name"]
 
     def description(self):
-        return self.server.server['description']
+        return self.server.server["description"]
 
     def hostname(self):
-        return self.server.server['hostname']
+        return self.server.server["hostname"]
 
     def ipaddr(self):
-        return self.server.addr['ipaddr']
+        return self.server.addr["ipaddr"]
 
     def ip6addr(self):
-        return self.server.addr['ip6addr']
+        return self.server.addr["ip6addr"]
 
     def custom_info(self, key):
         if self.server.custom_info is None:
             log_debug(4, "no custom info", self.server)
+            # pylint: disable-next=raising-bad-type
             raise "didn't load custom info"
 
         if key in self.server.custom_info:
@@ -103,49 +107,49 @@ class ServerTemplatedDocument(TemplatedDocument):
             return None
 
         for iface in network_interfaces:
-            if iface['name'] == interface_name:
+            if iface["name"] == interface_name:
                 return iface
         return None
 
     def net_intf_ipaddr(self, interface_name):
-        ipv4 = self._get_interface_info_attr(interface_name, 'ipv4')
-        return self._get_interface_address_attr(ipv4, 'address')
+        ipv4 = self._get_interface_info_attr(interface_name, "ipv4")
+        return self._get_interface_address_attr(ipv4, "address")
 
     def net_intf_netmask(self, interface_name):
-        ipv4 = self._get_interface_info_attr(interface_name, 'ipv4')
-        return self._get_interface_address_attr(ipv4, 'netmask')
+        ipv4 = self._get_interface_info_attr(interface_name, "ipv4")
+        return self._get_interface_address_attr(ipv4, "netmask")
 
     def net_intf_broadcast(self, interface_name):
-        ipv4 = self._get_interface_info_attr(interface_name, 'ipv4')
-        return self._get_interface_address_attr(ipv4, 'broadcast')
+        ipv4 = self._get_interface_info_attr(interface_name, "ipv4")
+        return self._get_interface_address_attr(ipv4, "broadcast")
 
-    def net_intf_ip6addr(self, interface_name, scope='universe', order=0):
-        """ get IPv6 address
-
-        interface_name is name of interface, e.g. 'eth0'
-        scope is either 'link', 'universe' or 'host'
-        order is zero based index as there can be more than one IP address
-             for given scope and interface
-        """
-        ipv6 = self._get_interface_info_attr(interface_name, 'ipv6')
-        return self._get_interface_address6_attr(ipv6, scope, order, 'address')
-
-    def net_intf_ip6netmask(self, interface_name, scope='universe', order=0):
-        """ get IPv6 netmask
+    def net_intf_ip6addr(self, interface_name, scope="universe", order=0):
+        """get IPv6 address
 
         interface_name is name of interface, e.g. 'eth0'
         scope is either 'link', 'universe' or 'host'
         order is zero based index as there can be more than one IP address
              for given scope and interface
         """
-        ipv6 = self._get_interface_info_attr(interface_name, 'ipv6')
-        return self._get_interface_address6_attr(ipv6, scope, order, 'netmask')
+        ipv6 = self._get_interface_info_attr(interface_name, "ipv6")
+        return self._get_interface_address6_attr(ipv6, scope, order, "address")
+
+    def net_intf_ip6netmask(self, interface_name, scope="universe", order=0):
+        """get IPv6 netmask
+
+        interface_name is name of interface, e.g. 'eth0'
+        scope is either 'link', 'universe' or 'host'
+        order is zero based index as there can be more than one IP address
+             for given scope and interface
+        """
+        ipv6 = self._get_interface_info_attr(interface_name, "ipv6")
+        return self._get_interface_address6_attr(ipv6, scope, order, "netmask")
 
     def net_intf_hwaddr(self, interface_name):
-        return self._get_interface_info_attr(interface_name, 'hw_addr')
+        return self._get_interface_info_attr(interface_name, "hw_addr")
 
     def net_intf_module(self, interface_name):
-        return self._get_interface_info_attr(interface_name, 'module')
+        return self._get_interface_info_attr(interface_name, "module")
 
     def _get_interface_info_attr(self, interface_name, attr):
         iface = self._interface_info(interface_name)
@@ -156,13 +160,17 @@ class ServerTemplatedDocument(TemplatedDocument):
         return iface[attr]
 
     def _get_interface_address_attr(self, address, attr):
-        if (address is None) or (len(address.db_ifaces) == 0) or (attr not in address.db_ifaces[0]):
+        if (
+            (address is None)
+            or (len(address.db_ifaces) == 0)
+            or (attr not in address.db_ifaces[0])
+        ):
             return None
         else:
             return address.db_ifaces[0][attr]
 
     def _get_interface_address6_attr(self, address, scope, order, attr):
-        """ return attribute of given address
+        """return attribute of given address
 
         address is list of interfaces
         e.g.: [{'scope': 'universe', 'netmask': '64', 'address': '2620:52:0:2223:20c:29ff:fecb:d06e',
@@ -173,9 +181,10 @@ class ServerTemplatedDocument(TemplatedDocument):
              for given scope and interface
         attr is attribute, e.g "netmask"
         """
-        if (address is None):
+        if address is None:
             return None
-        ifaces = [i for i in address.db_ifaces if (i['scope'] == scope)]
+        # pylint: disable-next=superfluous-parens
+        ifaces = [i for i in address.db_ifaces if (i["scope"] == scope)]
         if (order >= len(ifaces)) or (attr not in ifaces[order]):
             return None
         else:

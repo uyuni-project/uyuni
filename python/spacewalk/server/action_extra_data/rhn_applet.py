@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #
@@ -17,10 +18,11 @@
 from spacewalk.common.rhnLog import log_debug
 
 # the "exposed" functions
-__rhnexport__ = ['use_satellite']
+__rhnexport__ = ["use_satellite"]
 
 # noop
 
 
+# pylint: disable-next=dangerous-default-value,unused-argument
 def use_satellite(server_id, action_id, data={}):
     log_debug(3, action_id)

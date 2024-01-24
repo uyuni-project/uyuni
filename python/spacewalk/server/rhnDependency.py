@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring,invalid-name
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -280,7 +281,7 @@ and p.package_arch_id = pa.id
 
 
 class SolveDependenciesError(Exception):
-
+    # pylint: disable-next=keyword-arg-before-vararg
     def __init__(self, deps=None, packages=None, *args, **kwargs):
         Exception.__init__(self, *args, **kwargs)
         self.deps = deps
@@ -288,7 +289,7 @@ class SolveDependenciesError(Exception):
 
 
 def __single_query_with_arch_and_id(server_id, deps, query):
-    """ Run one of the queries and return the results along with the arch. """
+    """Run one of the queries and return the results along with the arch."""
     ret = {}
     h = rhnSQL.prepare(query)
     for dep in deps:
@@ -296,6 +297,7 @@ def __single_query_with_arch_and_id(server_id, deps, query):
         data = h.fetchall() or []
         ret[dep] = [a[:6] for a in data]
     return ret
+
 
 #
 # Interfaces
@@ -306,46 +308,62 @@ def __single_query_with_arch_and_id(server_id, deps, query):
 
 def find_package_with_arch(server_id, deps):
     log_debug(4, server_id, deps)
-    return __single_query_with_arch_and_id(server_id, deps, __packages_with_arch_and_id_sql)
+    return __single_query_with_arch_and_id(
+        server_id, deps, __packages_with_arch_and_id_sql
+    )
 
 
-def solve_dependencies_with_limits(server_id, deps, version, all=0, limit_operator=None, limit=None):
-    """ This version of solve_dependencies allows the caller to get all of the packages that solve a dependency and limit
-        the packages that are returned to those that match the criteria defined by limit_operator and limit. This version
-        of the function also returns the architecture label of the package[s] that get returned.
+def solve_dependencies_with_limits(
+    server_id,
+    deps,
+    version,
+    # pylint: disable-next=redefined-builtin
+    all=0,
+    limit_operator=None,
+    limit=None,
+):
+    """This version of solve_dependencies allows the caller to get all of the packages that solve a dependency and limit
+    the packages that are returned to those that match the criteria defined by limit_operator and limit. This version
+    of the function also returns the architecture label of the package[s] that get returned.
 
-        limit_operator can be any of: '<', '<=', '==', '>=', or '>'.
-        limit is a a string of the format [epoch:]name-version-release
-        deps is a list of filenames that the packages that are returned must provide.
-        version is the version of the client that is calling the function.
+    limit_operator can be any of: '<', '<=', '==', '>=', or '>'.
+    limit is a a string of the format [epoch:]name-version-release
+    deps is a list of filenames that the packages that are returned must provide.
+    version is the version of the client that is calling the function.
 
-        Indexes for the tuple
-        entry_index = 0
-        preference_index = 1
+    Indexes for the tuple
+    entry_index = 0
+    preference_index = 1
 
-        Indexes for the list of package fields.
-        name_index = 0
-        version_index = 1
-        release_index = 2
-        epoch_index = 3
+    Indexes for the list of package fields.
+    name_index = 0
+    version_index = 1
+    release_index = 2
+    epoch_index = 3
     """
     # Containers used while the packages get categorized, sorted, and filtered.
     packages_all = {}
     package_list = []
 
     # List of fields in a package. Corresponds to the keys for the dictionary that holds the package information.
-    nvre = ['name', 'version', 'release', 'epoch', 'arch']
+    nvre = ["name", "version", "release", "epoch", "arch"]
 
     # Make sure there are no duplicate dependencies.
     deplist = set(deps)
 
-    statement = "%s UNION ALL %s UNION ALL %s" % (__packages_all_sql, __provides_all_sql, __files_all_sql)
+    # pylint: disable-next=consider-using-f-string
+    statement = "%s UNION ALL %s UNION ALL %s" % (
+        __packages_all_sql,
+        __provides_all_sql,
+        __files_all_sql,
+    )
     h = rhnSQL.prepare(statement)
 
     # prepare return value
     packages = {}
 
     for dep in deplist:
+        # pylint: disable-next=redefined-builtin
         dict = {}
 
         # Retrieve the package information from the database.
@@ -356,14 +374,13 @@ def solve_dependencies_with_limits(server_id, deps, version, all=0, limit_operat
 
         # Each package gets a list that may contain multiple versions of a package
         for record in rs:
-            if record['name'] in packages_all:
-                packages_all[record['name']].append(record)
+            if record["name"] in packages_all:
+                packages_all[record["name"]].append(record)
             else:
-                packages_all[record['name']] = [record]
+                packages_all[record["name"]] = [record]
 
         # sort all the package lists so the most recent version is first
         for pl in list(packages_all.keys()):
-
             packages_all[pl].sort(cmp_evr)
             package_list = package_list + packages_all[pl]
 
@@ -374,12 +391,14 @@ def solve_dependencies_with_limits(server_id, deps, version, all=0, limit_operat
 
             try:
                 limit = rhnLib.make_evr(limit)
+            # pylint: disable-next=try-except-raise
             except:
                 raise
 
             for package in package_list:
                 try:
-                    keep = test_evr(package, limit_operator,  limit)
+                    keep = test_evr(package, limit_operator, limit)
+                # pylint: disable-next=try-except-raise
                 except:
                     raise
 
@@ -390,8 +409,8 @@ def solve_dependencies_with_limits(server_id, deps, version, all=0, limit_operat
 
         list_of_tuples = []
         for p in package_list:
-            if p['epoch'] is None:
-                p['epoch'] = ""
+            if p["epoch"] is None:
+                p["epoch"] = ""
 
             entry = []
 
@@ -407,14 +426,14 @@ def solve_dependencies_with_limits(server_id, deps, version, all=0, limit_operat
                 # The changes I made above make it so that at this point the packages are sorted from highest nvre
                 # to lowest nvre. Selecting the second package was causing the earlier package to be
                 # returned, which is bad.
-                if name_key in dict and dict[name_key][1] <= p['preference']:
+                if name_key in dict and dict[name_key][1] <= p["preference"]:
                     # Already have it with a lower preference
                     continue
                 # The first time we see this package.
-                dict[name_key] = (entry, p['preference'])
+                dict[name_key] = (entry, p["preference"])
             else:
                 name_key = entry[0]
-                newtuple = (entry, p['preference'])
+                newtuple = (entry, p["preference"])
                 list_of_tuples.append(newtuple)
 
         if all == 0:
@@ -430,6 +449,7 @@ def solve_dependencies_with_limits(server_id, deps, version, all=0, limit_operat
                         tup_keep.append(tup)
                 list_of_tuples = tup_keep
 
+            # pylint: disable-next=undefined-variable
             list_of_tuples.sort(lambda a, b: cmp(a[1], b[1]))
             packages[dep] = [x[0] for x in list_of_tuples]
 
@@ -440,6 +460,7 @@ def solve_dependencies_with_limits(server_id, deps, version, all=0, limit_operat
         return _v2packages_to_v1list(packages, deplist, all)
 
 
+# pylint: disable-next=redefined-builtin
 def _v2packages_to_v1list(packages, deplist, all=0):
     # v1 clients expect a list as a result
     result = []
@@ -460,33 +481,33 @@ def _v2packages_to_v1list(packages, deplist, all=0):
 
 
 def solve_dependencies_arch(server_id, deps, version):
-    """ Does the same thing as solve_dependencies, but also returns the architecture label with the package info.
-        E.g.
-        OUT:
-           Dictionary with key values being the filnames in deps and the values being a list of lists of package info.
-           Example :=  {'filename1'    :   [['name', 'version', 'release', 'epoch', 'architecture'],
-                                            ['name2', 'version2', 'release2', 'epoch2', 'architecture2']]}
+    """Does the same thing as solve_dependencies, but also returns the architecture label with the package info.
+    E.g.
+    OUT:
+       Dictionary with key values being the filnames in deps and the values being a list of lists of package info.
+       Example :=  {'filename1'    :   [['name', 'version', 'release', 'epoch', 'architecture'],
+                                        ['name2', 'version2', 'release2', 'epoch2', 'architecture2']]}
     """
     # list of the keys to the values in each row of the recordset.
-    nvre = ['name', 'version', 'release', 'epoch', 'arch']
+    nvre = ["name", "version", "release", "epoch", "arch"]
     return solve_dependencies(server_id, deps, version, nvre)
 
 
 def solve_dependencies(server_id, deps, version, nvre=None):
-    """ The unchanged version of solve_dependencies.
-        IN:
-           server_id := id info of the server
-           deps := list of filenames that are needed by the caller
-           version := version of the client
+    """The unchanged version of solve_dependencies.
+    IN:
+       server_id := id info of the server
+       deps := list of filenames that are needed by the caller
+       version := version of the client
 
-        OUT:
-           Dictionary with key values being the filnames in deps and the values being a list of lists of package info.
-           Example :=  {'filename1'    :   [['name', 'version', 'release', 'epoch'],
-                                            ['name2', 'version2', 'release2', 'epoch2']]}
+    OUT:
+       Dictionary with key values being the filnames in deps and the values being a list of lists of package info.
+       Example :=  {'filename1'    :   [['name', 'version', 'release', 'epoch'],
+                                        ['name2', 'version2', 'release2', 'epoch2']]}
     """
     if not nvre:
         # list of the keys to the values in each row of the recordset.
-        nvre = ['name', 'version', 'release', 'epoch']
+        nvre = ["name", "version", "release", "epoch"]
 
     # first, uniquify deps
     deplist = set(deps)
@@ -496,14 +517,19 @@ def solve_dependencies(server_id, deps, version, nvre=None):
     #  - Lookup by provides
     #  - Lookup by file name
 
+    # pylint: disable-next=consider-using-f-string
     statement = "%s UNION ALL %s UNION ALL %s" % (
-        __packages_sql, __provides_sql, __files_sql)
+        __packages_sql,
+        __provides_sql,
+        __files_sql,
+    )
     h = rhnSQL.prepare(statement)
 
     # prepare return value
     packages = {}
     # Iterate through the dependency problems
     for dep in deplist:
+        # pylint: disable-next=redefined-builtin
         dict = {}
         h.execute(server_id=server_id, dep=dep)
         rs = h.fetchall_dict() or []
@@ -513,17 +539,17 @@ def solve_dependencies(server_id, deps, version, nvre=None):
             continue
 
         for p in rs:
-            if p['epoch'] is None:
-                p['epoch'] = ""
+            if p["epoch"] is None:
+                p["epoch"] = ""
             entry = []
             list(map(lambda f, e=entry, p=p: e.append(p[f]), nvre))
 
             name_key = entry[0]
-            if name_key in dict and dict[name_key][1] < p['preference']:
+            if name_key in dict and dict[name_key][1] < p["preference"]:
                 # Already have it with a lower preference
                 continue
             # The first time we see this package.
-            dict[name_key] = (entry, p['preference'])
+            dict[name_key] = (entry, p["preference"])
 
         packages[dep] = _avoid_compat_packages(dict)
 
@@ -534,84 +560,93 @@ def solve_dependencies(server_id, deps, version, nvre=None):
         return _v2packages_to_v1list(packages, deplist)
 
 
+# pylint: disable-next=redefined-builtin
 def _avoid_compat_packages(dict):
-    """ attempt to avoid giving out the compat-* packages
-        if there are other candidates
+    """attempt to avoid giving out the compat-* packages
+    if there are other candidates
     """
     if len(dict) > 1:
         matches = list(dict.keys())
         # check we have at least one non- "compat-*" package name
         compats = [a for a in matches if a[:7] == "compat-"]
         if len(compats) > 0 and len(compats) < len(matches):  # compats and other things
-            for p in compats:  # delete all references to a compat package for this dependency
+            for (
+                p
+            ) in (
+                compats
+            ):  # delete all references to a compat package for this dependency
                 del dict[p]
         # otherwise there's nothing much we can do (no compats or only compats)
     # and now return these final results ordered by preferece
     l = list(dict.values())
+    # pylint: disable-next=undefined-variable
     l.sort(lambda a, b: cmp(a[1], b[1]))
     return [x[0] for x in l]
 
 
 def cmp_evr(pkg1, pkg2):
-    """ Intended to be passed to a list object's sort().
-        In: {'epoch': 'value', 'version':'value', 'release':'value'}
+    """Intended to be passed to a list object's sort().
+    In: {'epoch': 'value', 'version':'value', 'release':'value'}
     """
-    pkg1_epoch = pkg1['epoch']
-    pkg1_version = pkg1['version']
-    pkg1_release = pkg1['release']
+    pkg1_epoch = pkg1["epoch"]
+    pkg1_version = pkg1["version"]
+    pkg1_release = pkg1["release"]
 
-    pkg2_epoch = pkg2['epoch']
-    pkg2_version = pkg2['version']
-    pkg2_release = pkg2['release']
+    pkg2_epoch = pkg2["epoch"]
+    pkg2_version = pkg2["version"]
+    pkg2_release = pkg2["release"]
 
     if pkg1_epoch is not None:
         pkg1_epoch = str(pkg1_epoch)
-    elif pkg1_epoch == '':
+    elif pkg1_epoch == "":
         pkg1_epoch = None
 
     if pkg2_epoch is not None:
         pkg2_epoch = str(pkg2_epoch)
-    elif pkg1_epoch == '':
+    elif pkg1_epoch == "":
         pkg1_epoch = None
 
-    return rpm.labelCompare((pkg1_epoch, pkg1_version, pkg1_release),
-                            (pkg2_epoch, pkg2_version, pkg2_release))
+    return rpm.labelCompare(
+        (pkg1_epoch, pkg1_version, pkg1_release),
+        (pkg2_epoch, pkg2_version, pkg2_release),
+    )
 
 
 def test_evr(evr, operator, limit):
-    """ Check to see if evr is within the limit.
-        IN: evr = { 'epoch' : value, 'version':value, 'release':value }
-            operator can be any of: '<', '<=', '==', '>=', '>'
-            limit = { 'epoch' : value, 'version':value, 'release':value }
-        OUT:
-           1 or 0
+    """Check to see if evr is within the limit.
+    IN: evr = { 'epoch' : value, 'version':value, 'release':value }
+        operator can be any of: '<', '<=', '==', '>=', '>'
+        limit = { 'epoch' : value, 'version':value, 'release':value }
+    OUT:
+       1 or 0
     """
-    good_operators = ['<', '<=', '==', '>=', '>']
+    good_operators = ["<", "<=", "==", ">=", ">"]
 
     if not operator in good_operators:
-        raise rhnFault(err_code=21,
-                       err_text="Bad operator passed into test_evr.")
+        raise rhnFault(err_code=21, err_text="Bad operator passed into test_evr.")
 
-    evr_epoch = evr['epoch']
-    evr_version = evr['version']
-    evr_release = evr['release']
+    evr_epoch = evr["epoch"]
+    evr_version = evr["version"]
+    evr_release = evr["release"]
 
-    limit_epoch = limit['epoch']
-    limit_version = limit['version']
-    limit_release = limit['release']
+    limit_epoch = limit["epoch"]
+    limit_version = limit["version"]
+    limit_release = limit["release"]
 
     if evr_epoch is not None:
         evr_epoch = str(evr_epoch)
-    elif evr_epoch == '':
+    elif evr_epoch == "":
         evr_epoch = None
 
     if limit_epoch is not None:
         limit_epoch = str(limit_epoch)
-    elif limit_epoch == '':
+    elif limit_epoch == "":
         limit_epoch = None
 
-    ret = rpm.labelCompare((evr_epoch, evr_version, evr_release),
-                           (limit_epoch, limit_version, limit_release))
+    ret = rpm.labelCompare(
+        (evr_epoch, evr_version, evr_release),
+        (limit_epoch, limit_version, limit_release),
+    )
 
     return check_against_operator(ret, operator)
 
@@ -633,6 +668,7 @@ def check_against_operator(ret, operator):
         if operator in (">", ">="):
             return 1
     return 0
+
 
 # DEVEL NOTES
 # This faster query for solvind dependencies that refer to package

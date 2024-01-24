@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring,invalid-name
 # -*- coding: utf-8 -*-
 #
 # Copyright (c) 2010, 2011, 2012 Novell
@@ -15,6 +16,7 @@ try:
     from io import StringIO
 except ImportError:
     import urlparse
+
     try:
         from cStringIO import StringIO
     except ImportError:
@@ -25,6 +27,7 @@ import pycurl
 
 from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.common.rhnConfig import initCFG, CFG, ConfigParserError
+
 try:
     from spacewalk.server import rhnSQL
 except ImportError:
@@ -45,15 +48,18 @@ class TransferException(Exception):
         self.value = value
 
     def __str__(self):
+        # pylint: disable-next=consider-using-f-string
         return "%s" % self.value
 
     def __unicode__(self):
-        return '%s' % str(self.value, "utf-8")
+        # pylint: disable-next=consider-using-f-string
+        return "%s" % str(self.value, "utf-8")
 
 
 class URL(object):
 
     """URL class that allows modifying the various attributes of a URL"""
+
     # pylint: disable=R0902
 
     def __init__(self, url, username=None, password=None):
@@ -84,9 +90,12 @@ class URL(object):
         # pylint: disable=E1101
         p = self.paramsdict.get(key, default)
         if p:
-            assert len(p) == 1, ("The query parameter contains a list of "
-                                 "arguments instead of a single element. "
-                                 "%s : %s" % (key, p))
+            assert len(p) == 1, (
+                # pylint: disable-next=consider-using-f-string
+                "The query parameter contains a list of "
+                "arguments instead of a single element. "
+                "%s : %s" % (key, p)
+            )
             p = p[0]
         return p
 
@@ -116,47 +125,56 @@ class URL(object):
         if self.username:
             netloc = self.username
         if self.password and not stripPw:
-            netloc = '%s:%s' % (netloc, self.password)
+            # pylint: disable-next=consider-using-f-string
+            netloc = "%s:%s" % (netloc, self.password)
         elif self.password and stripPw:
-            netloc = '%s:%s' % (netloc, '<secret>')
+            # pylint: disable-next=consider-using-f-string
+            netloc = "%s:%s" % (netloc, "<secret>")
         if self.host and netloc:
-            netloc = '%s@%s' % (netloc, self.host)
+            # pylint: disable-next=consider-using-f-string
+            netloc = "%s@%s" % (netloc, self.host)
         elif self.host:
             netloc = self.host
 
         if self.port:
-            netloc = '%s:%s' % (netloc, self.port)
+            # pylint: disable-next=consider-using-f-string
+            netloc = "%s:%s" % (netloc, self.port)
 
         # Default ULN channels URIs are like: uln:///ol7_x86_64_u8_base
         # If not netloc, we fix the path to avoid getting url:/ol7_x86_64_u8_base
         # as results from urlunsplit
-        if self.scheme == 'uln' and not netloc:
+        if self.scheme == "uln" and not netloc:
             path = "//" + self.path
 
         query = self.query
         if stripPw and query != "" and query.find("=") == -1:
             query = "<token>"
 
-        return urlparse.urlunsplit((self.scheme, netloc, path,
-                                    query, self.fragment))
+        return urlparse.urlunsplit((self.scheme, netloc, path, query, self.fragment))
 
 
 def _curl_debug(mtype, text):
     if mtype == 0:
+        # pylint: disable-next=consider-using-f-string
         log_debug(4, "* %s" % text)
     elif mtype == 1:
         # HEADER_IN
+        # pylint: disable-next=consider-using-f-string
         log_debug(4, "< %s" % text)
     elif mtype == 2:
         # HEADER_OUT
+        # pylint: disable-next=consider-using-f-string
         log_debug(4, "> %s" % text)
     elif mtype == 3:
         # DATA_IN
+        # pylint: disable-next=consider-using-f-string
         log_debug(5, "D< %s" % text)
     elif mtype == 4:
         # DATA_OUT
+        # pylint: disable-next=consider-using-f-string
         log_debug(5, "D> %s" % text)
     else:
+        # pylint: disable-next=consider-using-f-string
         log_debug(6, "%s: %s" % (mtype, text))
     return 0
 
@@ -173,7 +191,7 @@ def send(url, sendData=None):
     connect_retries = 10
     try_counter = connect_retries
     timeout = 120
-    if CFG.is_initialized() and CFG.has_key('TIMEOUT'):
+    if CFG.is_initialized() and CFG.has_key("TIMEOUT"):
         timeout = CFG.TIMEOUT
     curl = pycurl.Curl()
 
@@ -184,14 +202,17 @@ def send(url, sendData=None):
     proxy_url, proxy_user, proxy_pass = get_proxy(url)
     if proxy_url:
         curl.setopt(pycurl.PROXY, proxy_url)
+    # pylint: disable-next=consider-using-f-string
     log_debug(2, "Connect to %s" % url)
     if sendData is not None:
         curl.setopt(pycurl.POSTFIELDS, sendData)
-        if (CFG.is_initialized() and
-                CFG.has_key('DISABLE_EXPECT') and
-                CFG.DISABLE_EXPECT):
+        if (
+            CFG.is_initialized()
+            and CFG.has_key("DISABLE_EXPECT")
+            and CFG.DISABLE_EXPECT
+        ):
             # disable Expect header
-            curl.setopt(pycurl.HTTPHEADER, ['Expect:'])
+            curl.setopt(pycurl.HTTPHEADER, ["Expect:"])
 
     # We implement our own redirection-following, because pycurl
     # 7.19 doesn't POST after it gets redirected. Ideally we'd be
@@ -210,17 +231,26 @@ def send(url, sendData=None):
             if e.args[0] == 56:  # Proxy requires authentication
                 log_debug(2, e.args[1])
                 if not (proxy_user and proxy_pass):
-                    raise TransferException("Proxy requires authentication, "
-                                            "but reading credentials from "
-                                            "%s failed." % YAST_PROXY)
-                curl.setopt(pycurl.PROXYUSERPWD,
-                            "%s:%s" % (proxy_user, proxy_pass))
+                    # pylint: disable-next=raise-missing-from
+                    raise TransferException(
+                        # pylint: disable-next=consider-using-f-string
+                        "Proxy requires authentication, "
+                        "but reading credentials from "
+                        "%s failed." % YAST_PROXY
+                    )
+                # pylint: disable-next=consider-using-f-string
+                curl.setopt(pycurl.PROXYUSERPWD, "%s:%s" % (proxy_user, proxy_pass))
             elif e.args[0] == 60:
-                log_error("Peer certificate could not be authenticated "
-                          "with known CA certificates.")
-                raise TransferException("Peer certificate could not be "
-                                        "authenticated with known CA "
-                                        "certificates.")
+                log_error(
+                    "Peer certificate could not be authenticated "
+                    "with known CA certificates."
+                )
+                # pylint: disable-next=raise-missing-from
+                raise TransferException(
+                    "Peer certificate could not be "
+                    "authenticated with known CA "
+                    "certificates."
+                )
             else:
                 log_error(e.args[1])
                 raise
@@ -231,14 +261,21 @@ def send(url, sendData=None):
             break
         elif status in (301, 302):  # redirects
             url = curl.getinfo(pycurl.REDIRECT_URL)
+            # pylint: disable-next=consider-using-f-string
             log_debug(2, "Got redirect to %s" % url)
             curl.setopt(pycurl.URL, url)
     else:
-        log_error("Connecting to %s has failed after %s "
-                  "tries with HTTP error code %s." %
-                  (URL(url).getURL(stripPw=True), connect_retries, status))
-        raise TransferException("Connection failed after %s tries with "
-                                "HTTP error %s." % (connect_retries, status))
+        log_error(
+            # pylint: disable-next=consider-using-f-string
+            "Connecting to %s has failed after %s "
+            "tries with HTTP error code %s."
+            % (URL(url).getURL(stripPw=True), connect_retries, status)
+        )
+        raise TransferException(
+            # pylint: disable-next=consider-using-f-string
+            "Connection failed after %s tries with "
+            "HTTP error %s." % (connect_retries, status)
+        )
 
     # StringIO.write leaves the cursor at the end of the file
     response.seek(0)
@@ -254,7 +291,7 @@ def accessible(url):
 
     """
     timeout = 120
-    if CFG.is_initialized() and CFG.has_key('TIMEOUT'):
+    if CFG.is_initialized() and CFG.has_key("TIMEOUT"):
         timeout = CFG.TIMEOUT
     curl = pycurl.Curl()
 
@@ -265,6 +302,7 @@ def accessible(url):
     proxy_url, proxy_user, proxy_pass = get_proxy(url)
     if proxy_url:
         curl.setopt(pycurl.PROXY, proxy_url)
+    # pylint: disable-next=consider-using-f-string
     log_debug(2, "Connect to %s" % url)
 
     # We implement our own redirection-following, because pycurl
@@ -282,11 +320,15 @@ def accessible(url):
             if e.args[0] == 56:  # Proxy requires authentication
                 log_debug(2, e.args[1])
                 if not (proxy_user and proxy_pass):
-                    raise TransferException("Proxy requires authentication, "
-                                            "but reading credentials from "
-                                            "%s failed." % YAST_PROXY)
-                curl.setopt(pycurl.PROXYUSERPWD,
-                            "%s:%s" % (proxy_user, proxy_pass))
+                    # pylint: disable-next=raise-missing-from
+                    raise TransferException(
+                        # pylint: disable-next=consider-using-f-string
+                        "Proxy requires authentication, "
+                        "but reading credentials from "
+                        "%s failed." % YAST_PROXY
+                    )
+                # pylint: disable-next=consider-using-f-string
+                curl.setopt(pycurl.PROXYUSERPWD, "%s:%s" % (proxy_user, proxy_pass))
             else:
                 break
 
@@ -296,6 +338,7 @@ def accessible(url):
             return True
         elif status in (301, 302):  # redirects
             url = curl.getinfo(pycurl.REDIRECT_URL)
+            # pylint: disable-next=consider-using-f-string
             log_debug(2, "Got redirect to %s" % url)
             curl.setopt(pycurl.URL, url)
         elif status >= 400:
@@ -318,9 +361,9 @@ def get_proxy(url=None):
     2. .curlrc (--proxy, --proxy-user)
 
     """
-    proxyurl, username, password = (_get_proxy_from_rhn_conf() or
-                                    _get_proxy_from_yast() or
-                                    (None, None, None))
+    proxyurl, username, password = (
+        _get_proxy_from_rhn_conf() or _get_proxy_from_yast() or (None, None, None)
+    )
     if not url or (url and _useProxyFor(url)):
         return (proxyurl, username, password)
     return (None, None, None)
@@ -332,21 +375,24 @@ def findProduct(product):
     q_arch = ""
     product_id = None
     product_lower = {}
-    product_lower['name'] = product['name'].lower()
+    product_lower["name"] = product["name"].lower()
 
+    # pylint: disable-next=consider-using-f-string
     log_debug(2, "Search for product: %s" % product)
 
-    if product.get('version'):
+    if product.get("version"):
         q_version = "or sp.version = :version"
-        product_lower['version'] = product['version'].lower()
-    if product.get('release'):
+        product_lower["version"] = product["version"].lower()
+    if product.get("release"):
         q_release = "or sp.release = :release"
-        product_lower['release'] = product['release'].lower()
-    if product.get('arch'):
+        product_lower["release"] = product["release"].lower()
+    if product.get("arch"):
         q_arch = "or pat.label = :arch"
-        product_lower['arch'] = product['arch'].lower()
+        product_lower["arch"] = product["arch"].lower()
 
-    h = rhnSQL.prepare("""
+    h = rhnSQL.prepare(
+        # pylint: disable-next=consider-using-f-string
+        """
     SELECT sp.id, sp.name, sp.version, pat.label as arch, sp.release
        FROM suseProducts sp
        LEFT JOIN rhnPackageArch pat ON pat.id = sp.arch_type_id
@@ -355,7 +401,9 @@ def findProduct(product):
        AND (sp.release IS NULL %s)
        AND (sp.arch_type_id IS NULL %s)
     ORDER BY name, version, release, arch
-    """ % (q_version, q_release, q_arch))
+    """
+        % (q_version, q_release, q_arch)
+    )
     h.execute(**product_lower)
     rs = h.fetchall_dict()
 
@@ -363,26 +411,25 @@ def findProduct(product):
         log_debug(1, "No Product Found")
         return None
 
-    product_id = rs[0]['id']
+    product_id = rs[0]["id"]
 
     if len(rs) > 1:
         # more than one product matches.
         # search for an exact match or take the first
         for p in rs:
-            if (p['version'] == product['version'] and
-                    p['release'] == product['release'] and
-                    p['arch'] == product['arch']):
-                product_id = p['id']
+            if (
+                p["version"] == product["version"]
+                and p["release"] == product["release"]
+                and p["arch"] == product["arch"]
+            ):
+                product_id = p["id"]
                 break
 
     return product_id
 
 
 def findAllExtensionProductsOf(baseId, rootId):
-    vals = {
-        'baseId': baseId,
-        'rootID': rootId
-    }
+    vals = {"baseId": baseId, "rootID": rootId}
     h = rhnSQL.prepare(
         """
         SELECT distinct ext.id, ext.release, ext.version, pa.label arch, ext.name, ext.base baseproduct
@@ -397,8 +444,8 @@ def findAllExtensionProductsOf(baseId, rootId):
     rs = h.fetchall_dict()
     return rs or []
 
-def channelForProduct(product, parent_id=None, org_id=None,
-                      user_id=None):
+
+def channelForProduct(product, parent_id=None, org_id=None, user_id=None):
     """Find mandatory Channels for a given product and ostarget.
 
     If parent_id is None, a base channel is requested.
@@ -411,17 +458,15 @@ def channelForProduct(product, parent_id=None, org_id=None,
     if not product_id:
         return None
 
-    vals = {
-        'pid': product_id,
-        'org_id': org_id,
-        'user_id': user_id
-    }
+    vals = {"pid": product_id, "org_id": org_id, "user_id": user_id}
     parent_statement = " IS NULL "
     if parent_id:
         parent_statement = " = :parent_id "
-        vals['parent_id'] = parent_id
+        vals["parent_id"] = parent_id
 
-    h = rhnSQL.prepare("""
+    h = rhnSQL.prepare(
+        # pylint: disable-next=consider-using-f-string
+        """
         SELECT ca.label arch,
         c.id,
         c.parent_channel,
@@ -438,7 +483,9 @@ def channelForProduct(product, parent_id=None, org_id=None,
         JOIN rhnChannelArch ca ON c.channel_arch_id = ca.id
         WHERE spc.product_id = :pid
           AND spc.mandatory = 'Y'
-          AND c.parent_channel %s""" % parent_statement)
+          AND c.parent_channel %s"""
+        % parent_statement
+    )
     h.execute(**vals)
     rs = h.fetchall_dict()
     if not rs:
@@ -446,17 +493,18 @@ def channelForProduct(product, parent_id=None, org_id=None,
         return None
     ret = []
     for channel in rs:
-        subscribable = channel['subscribable']
-        del channel['subscribable']
+        subscribable = channel["subscribable"]
+        del channel["subscribable"]
 
         if not subscribable:
             # Not allowed to subscribe to this channel
             continue
 
         ret.append(channel)
-        log_debug(1, "Found channel %s with id %d" %
-                  (channel['label'], channel['id']))
+        # pylint: disable-next=consider-using-f-string
+        log_debug(1, "Found channel %s with id %d" % (channel["label"], channel["id"]))
 
+    # pylint: disable-next=use-implicit-booleaness-not-comparison
     if ret == []:
         ret = None
     return ret
@@ -488,9 +536,11 @@ def get_mirror_credentials():
     # the default values should at least always be there
     if not CFG["mirrcred_user"] or not CFG["mirrcred_pass"]:
         initCFG(comp)
-        raise ConfigParserError("Could not read default mirror credentials: "
-                                "server.susemanager.mirrcred_user, "
-                                "server.susemanager.mirrcred_pass.")
+        raise ConfigParserError(
+            "Could not read default mirror credentials: "
+            "server.susemanager.mirrcred_user, "
+            "server.susemanager.mirrcred_pass."
+        )
 
     creds.append((CFG["mirrcred_user"], CFG["mirrcred_pass"]))
 
@@ -498,8 +548,8 @@ def get_mirror_credentials():
     n = 1
     while True:
         try:
-            creds.append((CFG["mirrcred_user_%s" % n],
-                          CFG["mirrcred_pass_%s" % n]))
+            # pylint: disable-next=consider-using-f-string
+            creds.append((CFG["mirrcred_user_%s" % n], CFG["mirrcred_pass_%s" % n]))
         except (KeyError, AttributeError):
             break
         n += 1
@@ -509,8 +559,11 @@ def get_mirror_credentials():
 
 def isAllowedSlave(hostname):
     rhnSQL.initDB()
-    if not rhnSQL.fetchone_dict("select 1 from rhnISSSlave where slave = :hostname and enabled = 'Y'",
-                                hostname=idn_puny_to_unicode(hostname)):
+    if not rhnSQL.fetchone_dict(
+        "select 1 from rhnISSSlave where slave = :hostname and enabled = 'Y'",
+        hostname=idn_puny_to_unicode(hostname),
+    ):
+        # pylint: disable-next=consider-using-f-string
         log_error('Server "%s" is not enabled for ISS.' % hostname)
         return False
     return True
@@ -533,10 +586,11 @@ def hasISSMaster():
 def getISSCurrentMaster():
     rhnSQL.initDB()
     master = rhnSQL.fetchone_dict(
-        "select label from rhnISSMaster where is_current_master = 'Y'")
+        "select label from rhnISSMaster where is_current_master = 'Y'"
+    )
     if not master:
         return None
-    return master['label']
+    return master["label"]
 
 
 def _parse_curl_proxy_credentials(text):
@@ -547,8 +601,9 @@ def _parse_curl_proxy_credentials(text):
     """
     try:
         # pylint: disable=W1401
-        user_pass = re.search('^[\s-]+proxy-user\s*=?\s*"([^:]+:.+)"\s*$',
-                              text, re.M).group(1)
+        user_pass = re.search(
+            '^[\s-]+proxy-user\s*=?\s*"([^:]+:.+)"\s*$', text, re.M
+        ).group(1)
     except AttributeError:
         return (None, None)
 
@@ -558,8 +613,7 @@ def _parse_curl_proxy_credentials(text):
 def _parse_curl_proxy_url(text):
     try:
         # pylint: disable=W1401
-        return re.search('^[\s-]+proxy\s*=?\s*"(.+)"\s*$',
-                         text, re.M).group(1)
+        return re.search('^[\s-]+proxy\s*=?\s*"(.+)"\s*$', text, re.M).group(1)
     except AttributeError:
         return None
 
@@ -574,6 +628,7 @@ def _get_proxy_from_yast():
     f = None
     try:
         try:
+            # pylint: disable-next=unspecified-encoding
             f = open(YAST_PROXY)
             contents = f.read()
         except IOError:
@@ -606,11 +661,13 @@ def _get_proxy_from_rhn_conf():
     result = None
     if CFG.http_proxy:
         # CFG.http_proxy format is <hostname>[:<port>] in 1.7
-        url = 'http://%s' % CFG.http_proxy
+        # pylint: disable-next=consider-using-f-string
+        url = "http://%s" % CFG.http_proxy
         result = (url, CFG.http_proxy_username, CFG.http_proxy_password)
     initCFG(comp)
     log_debug(2, "Could not read proxy URL from rhn config.")
     return result
+
 
 # pylint complains because this method has too many return statements.
 # pylint: disable=R0911
@@ -632,7 +689,7 @@ def _useProxyFor(url):
     u = urlparse.urlsplit(url)
     # pylint can't see inside the SplitResult class
     # pylint: disable=E1103
-    if u.scheme == 'file' or not u.hostname:
+    if u.scheme == "file" or not u.hostname:
         return False
     hostname = u.hostname.lower()
     if hostname in ["localhost", "127.0.0.1", "::1"]:
@@ -640,7 +697,7 @@ def _useProxyFor(url):
     comp = CFG.getComponent()
     if not CFG.has_key("no_proxy"):
         initCFG("server.satellite")
-    if not CFG.has_key('no_proxy'):
+    if not CFG.has_key("no_proxy"):
         initCFG(comp)
         return True
     noproxy = CFG.no_proxy
@@ -648,7 +705,7 @@ def _useProxyFor(url):
     if not noproxy:
         return True
     if not isinstance(noproxy, list):
-        if noproxy == '*':
+        if noproxy == "*":
             # just an asterisk disables all.
             return False
         noproxy = [noproxy]
@@ -659,10 +716,11 @@ def _useProxyFor(url):
     # need '.foo.ba' to prevent 'foo.ba' from matching 'xfoo.ba'.
     for domain in noproxy:
         domain = domain.lower()
-        if domain[0] == '.':
+        if domain[0] == ".":
             domain = domain[1:]
-        if hostname.endswith(domain) and \
-            (len(hostname) == len(domain) or
-             hostname[len(hostname) - len(domain) - 1] == '.'):
+        if hostname.endswith(domain) and (
+            len(hostname) == len(domain)
+            or hostname[len(hostname) - len(domain) - 1] == "."
+        ):
             return False
     return True

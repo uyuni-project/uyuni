@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Module that provides the client-side functionality for an XML importer
 #
@@ -24,7 +25,9 @@ from spacewalk.satellite_tools import constants
 __version__ = "0.1"
 
 
+# pylint: disable-next=missing-class-docstring
 class Transport(rpclib.transports.Transport):
+    # pylint: disable-next=consider-using-f-string
     user_agent = "satellite-sync/%s" % __version__
 
     def __init__(self, timeout=None):
@@ -36,14 +39,14 @@ class Transport(rpclib.transports.Transport):
 
     def _process_response(self, fd, connection):
         # Content-Type defaults to txt/xml
-        content_type = self.headers_in.get('Content-Type', 'text/xml')
-        content_encoding = self.headers_in.get('Content-Encoding')
+        content_type = self.headers_in.get("Content-Type", "text/xml")
+        content_encoding = self.headers_in.get("Content-Encoding")
 
-        if content_encoding == 'gzip':
+        if content_encoding == "gzip":
             # Un-gzipit
             fd = CompressedStream(fd)
 
-        if content_type == 'text/xml':
+        if content_type == "text/xml":
             # XML-RPC error
             # Catch exceptions so we can properly close file descriptors
             try:
@@ -57,8 +60,11 @@ class Transport(rpclib.transports.Transport):
             return ret
 
         # XXX application/octet-stream should go away
-        if content_type in ('application/xml', 'application/octet-stream',
-                            'application/x-rpm'):
+        if content_type in (
+            "application/xml",
+            "application/octet-stream",
+            "application/x-rpm",
+        ):
             f = rpclib.transports.File(fd)
             # Explanation copied from the base class' method (rhn.transports):
             # Set the File's close method to the connection's
@@ -69,6 +75,7 @@ class Transport(rpclib.transports.Transport):
             return f
 
         connection.close()
+        # pylint: disable-next=broad-exception-raised
         raise Exception("Unknown response type: " + content_type)
 
 
@@ -94,39 +101,67 @@ class _Server(rpclib.Server):
         pass
 
 
+# pylint: disable-next=missing-class-docstring
 class StreamConnection(_Server):
-
-    def __init__(self, uri, proxy=None, username=None, password=None,
-                 refreshCallback=None, xml_dump_version=constants.PROTOCOL_VERSION,
-                 timeout=None):
-        _Server.__init__(self, uri, proxy=proxy, username=username,
-                         password=password, refreshCallback=refreshCallback, timeout=timeout)
+    def __init__(
+        self,
+        uri,
+        proxy=None,
+        username=None,
+        password=None,
+        refreshCallback=None,
+        xml_dump_version=constants.PROTOCOL_VERSION,
+        timeout=None,
+    ):
+        _Server.__init__(
+            self,
+            uri,
+            proxy=proxy,
+            username=username,
+            password=password,
+            refreshCallback=refreshCallback,
+            timeout=timeout,
+        )
         self.add_header("X-RHN-Satellite-XML-Dump-Version", xml_dump_version)
 
 
 class GETServer(rpclib.GETServer):
 
-    """ class rpclib.GETServer with overriden default transports classes """
+    """class rpclib.GETServer with overriden default transports classes"""
+
     _transport_class = Transport
     _transport_class_https = SafeTransport
     _transport_class_proxy = ProxyTransport
     _transport_class_https_proxy = SafeProxyTransport
 
-    def __init__(self, uri, transport=None, proxy=None, username=None,
-                 password=None, client_version=2, headers=None, refreshCallback=None,
-                 progressCallback=None, xml_dump_version=constants.PROTOCOL_VERSION,
-                 timeout=None):
+    def __init__(
+        self,
+        uri,
+        transport=None,
+        proxy=None,
+        username=None,
+        password=None,
+        client_version=2,
+        headers=None,
+        refreshCallback=None,
+        progressCallback=None,
+        xml_dump_version=constants.PROTOCOL_VERSION,
+        timeout=None,
+    ):
         if headers is None:
             headers = {}
-        rpclib.GETServer.__init__(self, uri,
-                                  transport=transport,
-                                  proxy=proxy,
-                                  username=username,
-                                  password=password,
-                                  client_version=client_version,
-                                  headers=headers,
-                                  refreshCallback=refreshCallback,
-                                  timeout=timeout)
+        rpclib.GETServer.__init__(
+            self,
+            uri,
+            transport=transport,
+            proxy=proxy,
+            username=username,
+            password=password,
+            client_version=client_version,
+            headers=headers,
+            refreshCallback=refreshCallback,
+            timeout=timeout,
+        )
         self.add_header("X-RHN-Satellite-XML-Dump-Version", xml_dump_version)
 
     def use_CA_chain(self, ca_chain=None):
@@ -143,6 +178,7 @@ class CompressedStream:
     def __init__(self, stream):
         def noop():
             pass
+
         self._real_stream = stream
         # TODO: Is this sill true, since gzipstream is no longer in use?
         # gzipstream tries to flush stuff; add a noop function
@@ -163,7 +199,9 @@ class CompressedStream:
         return getattr(self.stream, name)
 
     def __repr__(self):
+        # pylint: disable-next=consider-using-f-string
         return "<_CompressedStream at %s>" % id(self)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     pass

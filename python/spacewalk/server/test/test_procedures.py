@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -16,12 +17,12 @@
 
 from spacewalk.server import rhnSQL
 
-rhnSQL.initDB('rhnuser/rhnuser@phx')
+rhnSQL.initDB("rhnuser/rhnuser@phx")
 
 counter = 0
 while 1:
-    #p = rhnSQL.Procedure('rhn_entitlements.get_server_entitlement')
-    p = rhnSQL.Procedure('rhn_entitlements.upgrade_server')
+    # p = rhnSQL.Procedure('rhn_entitlements.get_server_entitlement')
+    p = rhnSQL.Procedure("rhn_entitlements.upgrade_server")
     ret = p(1000102174)
     print((counter, ret))
     counter = counter + 1

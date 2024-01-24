@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -19,11 +20,12 @@ from spacewalk.server import rhnSQL
 from spacewalk.server.rhnLib import InvalidAction
 
 # the "exposed" functions
-__rhnexport__ = ['update']
+__rhnexport__ = ["update"]
 
 # returns a list of errata scheduled for this action
 
 
+# pylint: disable-next=invalid-name,unused-argument
 def update(serverId, actionId, dry_run=0):
     log_debug(3)
     statement = """
@@ -38,17 +40,24 @@ def update(serverId, actionId, dry_run=0):
     ret = h.fetchall_dict()
     if not ret:
         # No errata for this action
-        raise InvalidAction("errata.update: Unknown action id "
-                            "%s for server %s" % (actionId, serverId))
+        raise InvalidAction(
+            # pylint: disable-next=consider-using-f-string
+            "errata.update: Unknown action id "
+            "%s for server %s" % (actionId, serverId)
+        )
 
-    retracted = [x['errata_id'] for x in ret if x['advisory_status'] == 'retracted']
+    retracted = [x["errata_id"] for x in ret if x["advisory_status"] == "retracted"]
     if retracted:
         # Do not install retracted patches
-        raise InvalidAction("errata.update: Action contains retracted errata %s" % retracted)
-    if ret[0]['allow_vendor_change'] is None or ret[0]['allow_vendor_change'] is False:
-        return [x['errata_id'] for x in ret]
+        raise InvalidAction(
+            # pylint: disable-next=consider-using-f-string
+            "errata.update: Action contains retracted errata %s"
+            % retracted
+        )
+    if ret[0]["allow_vendor_change"] is None or ret[0]["allow_vendor_change"] is False:
+        return [x["errata_id"] for x in ret]
 
     return {
-        "errata_ids" : [x['errata_id'] for x in ret],
-        "allow_vendor_change" : (ret[0]['allow_vendor_change'] == 'Y')
+        "errata_ids": [x["errata_id"] for x in ret],
+        "allow_vendor_change": (ret[0]["allow_vendor_change"] == "Y"),
     }

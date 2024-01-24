@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #
@@ -20,7 +21,8 @@ __all__ = []
 from . import rhn_config_management
 
 rpcClasses = {
-    'config': rhn_config_management.ConfigManagement,
+    "config": rhn_config_management.ConfigManagement,
 }
 
+# pylint: disable-next=invalid-name
 getHandler = None

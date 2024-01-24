@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #
@@ -19,35 +20,43 @@ from spacewalk.server.importlib.kickstartImport import KickstartableTreeImport
 from spacewalk.server.importlib.backendOracle import OracleBackend
 
 ks_trees = [
-    KickstartableTree().populate({
-        'channel': 'redhat-linux-i386-8.0',
-        'base_path': 'foo/bar/baz',
-        'label': 'redhat-linux-i386-8.0',
-        'boot_image': 'ks-rh',
-        'files': [
-            KickstartFile().populate({
-                'relative_path': 'foo/foo1',
-                'checksum_type': 'md5',
-                'checksum': 'axbycz',
-                'last_modified': '2003-10-11 12:13:14',
-                'file_size': 12345,
-            }),
-            KickstartFile().populate({
-                'relative_path': 'foo/foo4',
-                'checksum_type': 'md5',
-                'checksum': 'axbycz',
-                'last_modified': '2003-10-11 12:13:14',
-                'file_size': 123456,
-            }),
-            KickstartFile().populate({
-                'relative_path': 'foo/foo3',
-                'checksum_type': 'md5',
-                'checksum': 'axbycz',
-                'last_modified': '2003-10-11 12:13:14',
-                'file_size': 1234567,
-            }),
-        ],
-    }),
+    KickstartableTree().populate(
+        {
+            "channel": "redhat-linux-i386-8.0",
+            "base_path": "foo/bar/baz",
+            "label": "redhat-linux-i386-8.0",
+            "boot_image": "ks-rh",
+            "files": [
+                KickstartFile().populate(
+                    {
+                        "relative_path": "foo/foo1",
+                        "checksum_type": "md5",
+                        "checksum": "axbycz",
+                        "last_modified": "2003-10-11 12:13:14",
+                        "file_size": 12345,
+                    }
+                ),
+                KickstartFile().populate(
+                    {
+                        "relative_path": "foo/foo4",
+                        "checksum_type": "md5",
+                        "checksum": "axbycz",
+                        "last_modified": "2003-10-11 12:13:14",
+                        "file_size": 123456,
+                    }
+                ),
+                KickstartFile().populate(
+                    {
+                        "relative_path": "foo/foo3",
+                        "checksum_type": "md5",
+                        "checksum": "axbycz",
+                        "last_modified": "2003-10-11 12:13:14",
+                        "file_size": 1234567,
+                    }
+                ),
+            ],
+        }
+    ),
 ]
 
 rhnSQL.initDB()

@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring,invalid-name
 #
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #
@@ -14,14 +15,21 @@
 #
 
 # global module imports
+# pylint: disable-next=unused-import
 from spacewalk.common import apache
 
 # common module imports
+# pylint: disable-next=unused-import
 from spacewalk.common.rhnConfig import CFG, initCFG
+
+# pylint: disable-next=unused-import
 from spacewalk.common.rhnTB import Traceback
+
+# pylint: disable-next=unused-import
 from spacewalk.common.rhnLog import initLOG, log_setreq
 
 from .apacheHandler import apacheHandler
+
 apache_server = apacheHandler()
 HeaderParserHandler = apache_server.headerParserHandler
 Handler = apache_server.handler
@@ -30,7 +38,7 @@ LogHandler = apache_server.logHandler
 
 
 # Instantiate external entry points:
-#HeaderParserHandler = HandlerWrap("headerParserHandler", init=1)
-#Handler             = HandlerWrap("handler")
-#CleanupHandler      = HandlerWrap("cleanupHandler")
-#LogHandler          = HandlerWrap("logHandler")
+# HeaderParserHandler = HandlerWrap("headerParserHandler", init=1)
+# Handler             = HandlerWrap("handler")
+# CleanupHandler      = HandlerWrap("cleanupHandler")
+# LogHandler          = HandlerWrap("logHandler")

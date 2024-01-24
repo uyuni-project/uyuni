@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring,invalid-name
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -16,6 +17,7 @@
 
 import os
 import stat
+
 try:
     #  python 2
     import cStringIO
@@ -38,10 +40,11 @@ from spacewalk.common.RPC_Base import RPC_Base
 # bare-except and broad-except
 # pylint: disable=W0702,W0703
 
+
 class Repository(RPC_Base):
 
-    """ Shared repository class, inherited by both the proxy and server specific
-        Repository classes.
+    """Shared repository class, inherited by both the proxy and server specific
+    Repository classes.
     """
 
     def __init__(self, channelName=None):
@@ -51,13 +54,13 @@ class Repository(RPC_Base):
         # Default visible functions.
         self.compress_headers = 1
         self.functions = [
-            'getPackage',
-            'getPackageHeader',
-            'getPackageSource',
-            'i18n',
-            'content',
-            'installation_xml',
-            'media_1'
+            "getPackage",
+            "getPackageHeader",
+            "getPackageSource",
+            "i18n",
+            "content",
+            "installation_xml",
+            "media_1",
         ]
 
     def set_compress_headers(self, val):
@@ -69,8 +72,8 @@ class Repository(RPC_Base):
 
     def getPackagePath(self, pkgFilename, redirect=0):
         """Returns the path to a package.
-           OVERLOAD this in server and proxy rhnRepository.
-           I.e.: they construct the path differently.
+        OVERLOAD this in server and proxy rhnRepository.
+        I.e.: they construct the path differently.
         """
         # pylint: disable=R0201,W0613
         raise rhnException("This function should be overloaded.")
@@ -78,20 +81,20 @@ class Repository(RPC_Base):
     @staticmethod
     def getPackagePathNVRA(_nvra):
         """OVERLOAD this in server and proxy rhnRepository.
-           I.e.: they construct the path differently.
+        I.e.: they construct the path differently.
         """
         raise rhnException("This function should be overloaded.")
 
     def getSourcePackagePath(self, _pkgFilename):
         """Returns the path to a package.
-           OVERLOAD this in server and proxy rhnRepository.
-           I.e.: they construct the path differently.
+        OVERLOAD this in server and proxy rhnRepository.
+        I.e.: they construct the path differently.
         """
         # pylint: disable=R0201
         raise rhnException("This function should be overloaded.")
 
     def getPackage(self, pkgFilename, *args):
-        """ Get rpm package. """
+        """Get rpm package."""
         log_debug(3, pkgFilename)
         if args:
             pkg_spec = [pkgFilename] + list(args)
@@ -102,16 +105,19 @@ class Repository(RPC_Base):
 
         # If we are talking to a proxy, determine whether it's a version that
         # supports redirects.
-        proxyVersionString = rhnFlags.get('x-rhn-proxy-version')
+        proxyVersionString = rhnFlags.get("x-rhn-proxy-version")
         if proxyVersionString:
             redirectsSupported = 1
         else:
             # Must be a client.  We'll determine the redirect capability via
             # the x-rhn-transport-capability header instead.
-            transport_cap = rhnFlags.get('x-rhn-transport-capability')
+            transport_cap = rhnFlags.get("x-rhn-transport-capability")
             if transport_cap:
-                transport_cap_list = transport_cap.split('=')
-                redirectsSupported = transport_cap_list[0] == 'follow-redirects' and int(transport_cap_list[1]) >= 2
+                transport_cap_list = transport_cap.split("=")
+                redirectsSupported = (
+                    transport_cap_list[0] == "follow-redirects"
+                    and int(transport_cap_list[1]) >= 2
+                )
 
         if redirectsSupported:
             log_debug(3, "Client supports redirects.")
@@ -124,10 +130,10 @@ class Repository(RPC_Base):
 
     @staticmethod
     def i18n(_translation, *_args):
-        """ Translations files for Ubuntu. E.g. Translation-en_US.bz2
+        """Translations files for Ubuntu. E.g. Translation-en_US.bz2
 
-            We do not support it so just return 404. But do not fail with
-            traceback.
+        We do not support it so just return 404. But do not fail with
+        traceback.
         """
         raise rhnNotFound()
 
@@ -160,29 +166,30 @@ class Repository(RPC_Base):
         raise rhnNotFound()
 
     def getPackageSource(self, pkgFilename):
-        """ Get srpm packrge. """
+        """Get srpm packrge."""
         log_debug(3, pkgFilename)
         # Sanity check:
-        l = pkgFilename.split('.')
+        l = pkgFilename.split(".")
         # 6/23/05 wregglej 154248, Don't mangle the filename if it's a nosrc package.
         if l[-2] != "nosrc":
-            l[-2] = 'src'
-        pkgFilename = '.'.join(l)
+            l[-2] = "src"
+        pkgFilename = ".".join(l)
         filePath = self.getSourcePackagePath(pkgFilename)
         return self._getFile(filePath)
 
     def getPackageHeader(self, pkgFilename):
-        """ Get rpm header.
-            XXX: stock 8.0 clients could not compress headers, we need to either
-            change the function name, or version the protocol
+        """Get rpm header.
+        XXX: stock 8.0 clients could not compress headers, we need to either
+        change the function name, or version the protocol
         """
         log_debug(3, pkgFilename)
-        pkg = pkgFilename.split('.')
+        pkg = pkgFilename.split(".")
         # Basic sanity checks:
-        if pkg[-1] not in ["hdr", 'rpm']:
+        if pkg[-1] not in ["hdr", "rpm"]:
+            # pylint: disable-next=consider-using-f-string
             raise rhnFault(21, "'%s' not a valid RPM header name" % pkgFilename)
 
-        pkgFilename = ".".join(pkg[:-1]) + '.rpm'
+        pkgFilename = ".".join(pkg[:-1]) + ".rpm"
         filePath = self.getPackagePath(pkgFilename)
         data = self._getHeaderFromFile(filePath)
         # XXX: Interesting. Found that if returned just data, this
@@ -197,21 +204,21 @@ class Repository(RPC_Base):
     # --- PRIVATE METHODS ---
 
     def _getFile(self, filePath):
-        """ Returns xmlrpclib file object to any file given a path to it.
-            IN:  filePath: path to any file.
-            OUT: XMLed rpm or source rpm, or an xmlrpc file object.
+        """Returns xmlrpclib file object to any file given a path to it.
+        IN:  filePath: path to any file.
+        OUT: XMLed rpm or source rpm, or an xmlrpc file object.
         """
         log_debug(3, filePath)
         features = self._fileFeatures(filePath)
-        filePath = features['path']
-        length = features['length']
-        lastModified = features['lastModified']
+        filePath = features["path"]
+        length = features["length"]
+        lastModified = features["lastModified"]
         self._set_last_modified(lastModified)
         return rpclib.transports.File(open(filePath, "rb"), length, name=filePath)
 
     def _getHeaderFromFile(self, filePath, stat_info=None):
-        """ Utility function to extract a header from an rpm.
-            If stat_info was already passed, don't re-stat the file
+        """Utility function to extract a header from an rpm.
+        If stat_info was already passed, don't re-stat the file
         """
         log_debug(3, filePath)
         if stat_info:
@@ -221,8 +228,14 @@ class Repository(RPC_Base):
             try:
                 s = os.stat(filePath)
             except:
-                usix.raise_with_tb(rhnFault(17, "Unable to read package %s"
-                                            % os.path.basename(filePath)), sys.exc_info()[2])
+                usix.raise_with_tb(
+                    rhnFault(
+                        17,
+                        # pylint: disable-next=consider-using-f-string
+                        "Unable to read package %s" % os.path.basename(filePath),
+                    ),
+                    sys.exc_info()[2],
+                )
 
         lastModified = s[stat.ST_MTIME]
         del s  # XXX: not neccessary?
@@ -233,6 +246,7 @@ class Repository(RPC_Base):
         h = rhn_rpm.get_package_header(fd=fd)
         os.close(fd)
         if h is None:
+            # pylint: disable-next=consider-using-f-string
             raise rhnFault(17, "Invalid RPM %s" % os.path.basename(filePath))
         stringIO = cStringIO.StringIO()
         # Put the result in stringIO
@@ -240,12 +254,12 @@ class Repository(RPC_Base):
         del h  # XXX: not neccessary?
 
         pkgFilename = os.path.basename(filePath)
-        pkg = pkgFilename.split('.')
+        pkg = pkgFilename.split(".")
         # Replace .rpm with .hdr
         pkg[-1] = "hdr"
         pkgFilename = ".".join(pkg)
         extra_headers = {
-            'X-RHN-Package-Header': pkgFilename,
+            "X-RHN-Package-Header": pkgFilename,
         }
         self._set_last_modified(lastModified, extra_headers=extra_headers)
         rhnFlags.set("AlreadyEncoded", 1)
@@ -257,12 +271,12 @@ class Repository(RPC_Base):
         if not last_modified:
             return None
         # Set a field with the name of the header
-        transport = rhnFlags.get('outputTransportOptions')
+        transport = rhnFlags.get("outputTransportOptions")
         if last_modified:
             # Put the last-modified info too
             if isinstance(last_modified, (usix.IntType, usix.FloatType)):
                 last_modified = rfc822time(last_modified)
-            transport['Last-Modified'] = last_modified
+            transport["Last-Modified"] = last_modified
         if extra_headers:
             for k, v in list(extra_headers.items()):
                 transport[str(k)] = str(v)
@@ -270,12 +284,15 @@ class Repository(RPC_Base):
 
     @staticmethod
     def _fileFeatures(filePath):
-        """ From a filepath, construct a dictionary of file features. """
+        """From a filepath, construct a dictionary of file features."""
         # pylint: disable=W0702
         log_debug(3, filePath)
         if not filePath:
-            raise rhnFault(17, "While looking for file: `%s'"
-                           % os.path.basename(filePath))
+            raise rhnFault(
+                17,
+                # pylint: disable-next=consider-using-f-string
+                "While looking for file: `%s'" % os.path.basename(filePath),
+            )
         try:
             s = os.stat(filePath)
         except:
@@ -290,11 +307,11 @@ class Repository(RPC_Base):
 
         # Build the result hash
         result = {}
-        result['name'] = os.path.basename(filePath)
-        result['length'] = l
-        result['path'] = filePath
+        result["name"] = os.path.basename(filePath)
+        result["length"] = l
+        result["path"] = filePath
         if lastModified:
-            result['lastModified'] = rfc822time(lastModified)
+            result["lastModified"] = rfc822time(lastModified)
         else:
-            result['lastModified'] = None
+            result["lastModified"] = None
         return result

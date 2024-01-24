@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring,invalid-name
 #
 # Copyright (c) 2008--2013 Red Hat, Inc.
 #
@@ -14,4 +15,3 @@
 #
 #
 __all__ = []
-

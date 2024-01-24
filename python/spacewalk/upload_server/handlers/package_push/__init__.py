@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2013 Red Hat, Inc.
 #
@@ -20,4 +21,5 @@ __all__ = []
 
 from . import package_push
 
+# pylint: disable-next=invalid-name
 upload_class = package_push.PackagePush

@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #
@@ -16,9 +17,10 @@
 
 from spacewalk.common.rhnLog import log_debug
 
-__rhnexport__ = ['refresh_list']
+__rhnexport__ = ["refresh_list"]
 
 
+# pylint: disable-next=invalid-name,unused-argument
 def refresh_list(serverId, actionId, dry_run=0):
     log_debug(3)
     return None
