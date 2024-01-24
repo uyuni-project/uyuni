@@ -11,12 +11,10 @@ MLERR_DEPENDENCY_RESOLUTION_ERROR = 202
 MLERR_CONFLICTING_STREAMS = 203
 MLERR_REQUEST_ERROR = 301
 
-
 class MlException(Exception):
     """
     General exception carrier.
     """
-
     def __init__(self, *args):
         Exception.__init__(self, *args)
         self.data: Dict = {}
@@ -30,12 +28,10 @@ class MlException(Exception):
         self.data[key] = val
         return self
 
-
 class MlGeneralException(MlException):
     """
     General exception
     """
-
     code = MLERR_GENERAL_ERROR
 
 
@@ -43,7 +39,6 @@ class MlModuleNotFound(MlException):
     """
     Module was not found exception
     """
-
     code = MLERR_MODULE_NOT_FOUND
 
 
@@ -51,7 +46,6 @@ class MlDependencyResolutionError(MlException):
     """
     Dependency resolution error
     """
-
     code = MLERR_DEPENDENCY_RESOLUTION_ERROR
 
 
@@ -59,7 +53,6 @@ class MlConflictingStreams(MlException):
     """
     Conflicting streams exception
     """
-
     code = MLERR_CONFLICTING_STREAMS
 
 
@@ -67,5 +60,4 @@ class MlRequestError(MlException):
     """
     Wrong request definition
     """
-
     code = MLERR_REQUEST_ERROR
