@@ -913,7 +913,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testValidateMinionInPaygShortToken() {
-        CloudPaygManager cloudPaygManager = new CloudPaygManager() {
+        downloadController = new DownloadController(new CloudPaygManager() {
             @Override
             public boolean isPaygInstance() {
                 return true;
@@ -922,14 +922,14 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
             public boolean hasSCCCredentials() {
                 return false;
             }
-        };
+        });
 
         // Test case - Token passed is not a short-token (must fail)
         DownloadTokenBuilder tokenBuilderFail = new DownloadTokenBuilder(user.getOrg().getId());
         tokenBuilderFail.useServerSecret();
         tokenBuilderFail.setExpirationTimeMinutesInTheFuture(360);
         try {
-            DownloadController.validateMinionInPayg(tokenBuilderFail.getToken(), cloudPaygManager);
+            downloadController.validateMinionInPayg(tokenBuilderFail.getToken());
             fail("Long lived token shouldn't have been accepted");
         }
         catch (spark.HaltException e) {
@@ -945,7 +945,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         tokenBuilderPass.useServerSecret();
         tokenBuilderPass.setExpirationTimeMinutesInTheFuture(30);
         try {
-            DownloadController.validateMinionInPayg(tokenBuilderPass.getToken(), cloudPaygManager);
+            downloadController.validateMinionInPayg(tokenBuilderPass.getToken());
         }
         catch (spark.HaltException e) {
             fail("Short-lived token must've been accepted");
@@ -959,7 +959,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         tokenBuilderExpired.useServerSecret();
         tokenBuilderExpired.setExpirationTimeMinutesInTheFuture(-15);
         try {
-            DownloadController.validateMinionInPayg(tokenBuilderExpired.getToken(), cloudPaygManager);
+            downloadController.validateMinionInPayg(tokenBuilderExpired.getToken());
             fail("A token in the past must no be accepted");
         }
         catch (spark.HaltException e) {
