@@ -30,7 +30,7 @@ Feature: SCC user credentials in the Setup Wizard
     And I view the subscription list for "SCC user"
     And I wait until I see "No subscriptions available" text
     And I click on "Close"
-    
+
   Scenario: Enter duplicate SCC credentials
     Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Organization Credentials"
@@ -47,8 +47,18 @@ Feature: SCC user credentials in the Setup Wizard
     When I click on "Cancel"
     Then the credentials for "invalidname" should be invalid
 
-# TODO
-# A test to edit the credentials is missing
+  Scenario: Edit credentials
+    Given I am authorized for the "Admin" section
+    When I follow the left menu "Admin > Setup Wizard > Organization Credentials"
+    And I ask to edit the credentials for "invalidname"
+    And I enter "SCC user" as "edit-user"
+    And I enter "geekogeeko" as "edit-password"
+    And I click on "Save"
+    Then I should see a "Credentials with this username already exist" text
+    When I enter "invalidgeeko" as "edit-user"
+    And I click on "Save"
+    Then I should see a "invalidgeeko" text
+    And the credentials for "invalidgeeko" should be invalid
 
   Scenario: Cleanup: delete the new organization credentials
     When I follow the left menu "Admin > Setup Wizard > Organization Credentials"
@@ -56,7 +66,7 @@ Feature: SCC user credentials in the Setup Wizard
     And I ask to delete the credentials for "SCC user"
     And I click on "Delete" in "Are you sure you want to delete these credentials?" modal
     Then I wait until I do not see "SCC user" text
-    When I wait for the trash icon to appear for "invalidname"
-    And I ask to delete the credentials for "invalidname"
+    When I wait for the trash icon to appear for "invalidgeeko"
+    And I ask to delete the credentials for "invalidgeeko"
     And I click on "Delete" in "Are you sure you want to delete these credentials?" modal
-    Then I wait until I do not see "invalidname" text
+    Then I wait until I do not see "invalidgeeko" text
