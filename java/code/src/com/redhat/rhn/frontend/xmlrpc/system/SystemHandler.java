@@ -3486,15 +3486,16 @@ public class SystemHandler extends BaseHandler {
     }
 
     /**
-     * Returns a list of all errata that are relevant to the system.
+     * Returns a list of all errata that are relevant to a list of systems.
      *
      * @param loggedInUser The current user
      * @param sids The ids of the systems in question
-     * @return Returns an array of maps representing the errata that can be applied
-     * @throws FaultException A FaultException is thrown if the server corresponding to
-     * sid cannot be found.
+     * @return Returns an array of maps representing the errata that can be applied to
+     * each system
+     * @throws FaultException A FaultException is thrown if the server in the list
+     * cannot be found.
      *
-     * @apidoc.doc Returns a list of all errata that are relevant to the system.
+     * @apidoc.doc Returns a list of all errata that are relevant to a list of systems.
      * @apidoc.param #session_key()
      * @apidoc.param #array_single("int", "sids")
      * @apidoc.returntype
