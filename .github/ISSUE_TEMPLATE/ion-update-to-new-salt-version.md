@@ -20,6 +20,11 @@ assignees: ''
 
 ### TODO
 
+- [ ] Prepare branch for new version at "openSUSE/salt" repo, rebasing the Salt packages according to [documentation](https://github.com/openSUSE/salt/wiki/Workflow#upgrade-to-a-new-upstream-release)
+- [ ] Prepare branch for new version at "openSUSE/salt-packaging", with previous `release/YYYY.Y` branch as parent.
+- [ ] Adjust the spec file on "openSUSE/salt-packaging" with the new version + dependencies, and adjust patches.
+- [ ] Make sure the new Salt package is successfully building in your branch and package is usable.
+- [ ] Prepare the SRs to the different Salt projects at OBS.
 - [ ] Make sure new dependencies are included in the Salt projects in OBS, and also inside Salt Bundle projects (bundle:next / bundle:testing).
 - [ ] Make sure SR to Factory is created, together with any new dependency for Salt.
 - [ ] Make sure SUMA and Uyuni RelEngs are aware of the new dependencies so they can be added to IBS and also to the corresponding channel definitions.
