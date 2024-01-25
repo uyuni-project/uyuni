@@ -3132,10 +3132,11 @@ public class SystemHandler extends BaseHandler {
     }
 
     /**
-     * Get system IDs and last check in information for the given system name.
+     * Get system IDs and last check in information for the given list of system names.
      * @param loggedInUser The current user
      * @param names of the servers
-     * @return Integer Array containing system Ids with the given name
+     * @return Map Array containing maps with system Ids with the given name and the associated
+     * overview
      *
      * @apidoc.doc Get system IDs and last check in information for a given
      * list of system names.
