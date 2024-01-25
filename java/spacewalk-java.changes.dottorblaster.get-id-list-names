@@ -1,0 +1,1 @@
+- new API endpoint for getId, taking multiple server names as argument
