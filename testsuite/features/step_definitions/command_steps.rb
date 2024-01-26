@@ -422,11 +422,17 @@ end
 When(/^I wait until the channel "([^"]*)" has been synced$/) do |channel|
   time_spent = 0
   checking_rate = 10
+  if TIMEOUT_BY_CHANNEL_NAME[channel].nil?
+    log "Unknown timeout for channel #{channel}, assuming one hour"
+    timeout = 3600
+  else
+    timeout = TIMEOUT_BY_CHANNEL_NAME[channel]
+  end
   begin
-    repeat_until_timeout(timeout: 9000, message: 'Channel not fully synced') do
+    repeat_until_timeout(timeout: timeout, message: 'Channel not fully synced') do
       break if channel_is_synced(channel)
 
-      log "#{time_spent / 60.to_i} minutes waiting for '#{channel}' channel to be synchronized." if ((time_spent += checking_rate) % 60).zero?
+      log "#{time_spent / 60.to_i} minutes out of #{timeout / 60.to_i} waiting for '#{channel}' channel to be synchronized" if ((time_spent += checking_rate) % 60).zero?
       sleep checking_rate
     end
   rescue StandardError => e
