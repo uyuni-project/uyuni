@@ -12,8 +12,6 @@ ENV_VAR_BY_HOST = {
                     'deblike_minion' => 'DEBLIKE_MINION',
                     'build_host' => 'BUILD_HOST',
                     # Build Validation environment
-                    'sle12sp4_minion' => 'SLE12SP4_MINION',
-                    'sle12sp4_ssh_minion' => 'SLE12SP4_SSHMINION',
                     'sle12sp5_minion' => 'SLE12SP5_MINION',
                     'sle12sp5_ssh_minion' => 'SLE12SP5_SSHMINION',
                     'sle12sp5_buildhost' => 'SLE12SP5_BUILDHOST',
@@ -156,8 +154,6 @@ PACKAGE_BY_CLIENT = {
                       'rhlike_client' => 'autoconf',
                       'rhlike_minion' => 'autoconf',
                       'deblike_minion' => 'bison',
-                      'sle12sp4_minion' => 'bison',
-                      'sle12sp4_ssh_minion' => 'bison',
                       'sle12sp5_minion' => 'bison',
                       'sle12sp5_ssh_minion' => 'bison',
                       'sle15sp1_minion' => 'bison',
@@ -230,8 +226,6 @@ BASE_CHANNEL_BY_CLIENT = {
                                 'deblike_minion' => 'ubuntu-2004-amd64-main for amd64',
                                 'pxeboot_minion' => 'SLE-Product-SLES15-SP4-Pool for x86_64',
                                 'buildhost' => 'SLE-Product-SLES15-SP4-Pool for x86_64',
-                                'sle12sp4_minion' => 'SLES12-SP4-Pool for x86_64',
-                                'sle12sp4_ssh_minion' => 'SLES12-SP4-Pool for x86_64',
                                 'sle12sp5_minion' => 'SLES12-SP5-Pool for x86_64',
                                 'sle12sp5_ssh_minion' => 'SLES12-SP5-Pool for x86_64',
                                 'sle12sp5_buildhost' => 'SLES12-SP5-Pool for x86_64',
@@ -299,8 +293,6 @@ BASE_CHANNEL_BY_CLIENT = {
                               'deblike_minion' => 'Ubuntu 20.04 LTS AMD64 Base for Uyuni',
                               'pxeboot_minion' => 'SLE-Product-SLES15-SP4-Pool for x86_64',
                               'buildhost' => 'SLE-Product-SLES15-SP4-Pool for x86_64',
-                              'sle12sp4_minion' => 'SLES12-SP4-Pool for x86_64',
-                              'sle12sp4_ssh_minion' => 'SLES12-SP4-Pool for x86_64',
                               'sle12sp5_minion' => 'SLES12-SP5-Pool for x86_64',
                               'sle12sp5_ssh_minion' => 'SLES12-SP5-Pool for x86_64',
                               'sle12sp5_buildhost' => 'SLES12-SP5-Pool for x86_64',
@@ -378,7 +370,6 @@ LABEL_BY_BASE_CHANNEL = {
   'SUSE Manager' =>
                             {
                               'SLE-Product-SUSE-Manager-Proxy-4.3-Pool for x86_64' => 'sle-product-suse-manager-proxy-4.3-pool-x86_64',
-                              'SLES12-SP4-Pool for x86_64' => 'sles12-sp4-pool-x86_64',
                               'SLES12-SP5-Pool for x86_64' => 'sles12-sp5-pool-x86_64',
                               'SLE-Product-SLES15-SP1-Pool for x86_64' => 'sle-product-sles15-sp1-pool-x86_64',
                               'SLE-Product-SLES15-SP2-Pool for x86_64' => 'sle-product-sles15-sp2-pool-x86_64',
@@ -409,7 +400,6 @@ LABEL_BY_BASE_CHANNEL = {
                           {
                             'openSUSE Leap 15.4 (x86_64)' => 'opensuse_leap15_4-x86_64',
                             'openSUSE Leap 15.5 (x86_64)' => 'opensuse_leap15_5-x86_64',
-                            'SLES12-SP4-Pool for x86_64' => 'sles12-sp4-pool-x86_64',
                             'SLES12-SP5-Pool for x86_64' => 'sles12-sp5-pool-x86_64',
                             'SLE-Product-SLES15-SP1-Pool for x86_64' => 'sle-product-sles15-sp1-pool-x86_64',
                             'SLE-Product-SLES15-SP2-Pool for x86_64' => 'sle-product-sles15-sp2-pool-x86_64',
@@ -446,7 +436,6 @@ CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = {
   'SUSE Manager' =>
                                             {
                                               'SLE-Product-SUSE-Manager-Proxy-4.3-Pool for x86_64' => 'SUMA-43-PROXY-x86_64',
-                                              'SLES12-SP4-Pool for x86_64' => 'SLE-12-SP4-x86_64',
                                               'SLES12-SP5-Pool for x86_64' => 'SLE-12-SP5-x86_64',
                                               'SLE-Product-SLES15-SP1-Pool for x86_64' => 'SLE-15-SP1-x86_64',
                                               'SLE-Product-SLES15-SP2-Pool for x86_64' => 'SLE-15-SP2-x86_64',
@@ -477,7 +466,6 @@ CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = {
                                           {
                                             'openSUSE Leap 15.4 (x86_64)' => 'openSUSE-Leap-15.4-x86_64-uyuni',
                                             'openSUSE Leap 15.5 (x86_64)' => 'openSUSE-Leap-15.5-x86_64-uyuni',
-                                            'SLES12-SP4-Pool for x86_64' => 'SLE-12-SP4-x86_64',
                                             'SLES12-SP5-Pool for x86_64' => 'SLE-12-SP5-x86_64',
                                             'SLE-Product-SLES15-SP1-Pool for x86_64' => 'SLE-15-SP1-x86_64',
                                             'SLE-Product-SLES15-SP2-Pool for x86_64' => 'SLE-15-SP2-x86_64',
@@ -516,7 +504,6 @@ PARENT_CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = {
   'SUSE Manager' =>
                                                     {
                                                       'SLE-Product-SUSE-Manager-Proxy-4.3-Pool for x86_64' => 'sle-product-suse-manager-proxy-4.3-pool-x86_64',
-                                                      'SLES12-SP4-Pool for x86_64' => nil,
                                                       'SLES12-SP5-Pool for x86_64' => nil,
                                                       'SLE-Product-SLES15-SP1-Pool for x86_64' => 'sle-product-sles15-sp1-pool-x86_64',
                                                       'SLE-Product-SLES15-SP2-Pool for x86_64' => 'sle-product-sles15-sp2-pool-x86_64',
@@ -547,7 +534,6 @@ PARENT_CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = {
                                                   {
                                                     'openSUSE Leap 15.4 (x86_64)' => nil,
                                                     'openSUSE Leap 15.5 (x86_64)' => nil,
-                                                    'SLES12-SP4-Pool for x86_64' => nil,
                                                     'SLES12-SP5-Pool for x86_64' => nil,
                                                     'SLE-Product-SLES15-SP1-Pool for x86_64' => 'sle-product-sles15-sp1-pool-x86_64',
                                                     'SLE-Product-SLES15-SP2-Pool for x86_64' => 'sle-product-sles15-sp2-pool-x86_64',
@@ -582,8 +568,6 @@ PKGARCH_BY_CLIENT = {
                       'ssh_minion' => 'x86_64',
                       'rhlike_minion' => 'x86_64',
                       'deblike_minion' => 'amd64',
-                      'sle12sp4_minion' => 'x86_64',
-                      'sle12sp4_ssh_minion' => 'x86_64',
                       'sle12sp5_minion' => 'x86_64',
                       'sle12sp5_ssh_minion' => 'x86_64',
                       'sle15_ssh_minion' => 'x86_64',
@@ -733,15 +717,6 @@ CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION = {
       oraclelinux9-appstream-x86_64
       oraclelinux9-x86_64
       oraclelinux9-uyuni-client-x86_64
-    ],
-  'sles12-sp4' =>
-    %w[
-      sles12-sp4-installer-updates-x86_64
-      sles12-sp4-ltss-updates-x86_64
-      sles12-sp4-pool-x86_64
-      sles12-sp4-updates-x86_64
-      sle-manager-tools12-updates-x86_64-sp4
-      sle-manager-tools12-pool-x86_64-sp4
     ],
   'sles12-sp5' =>
     %w[
