@@ -1833,12 +1833,12 @@ end
 When(/^I run spacewalk-hostname-rename command on the server$/) do
   server_node = get_target('server')
   command = 'spacecmd --nossl -q api api.getVersion -u admin -p admin; ' \
-    "spacewalk-hostname-rename #{server_node.public_ip} " \
-    '--ssl-country=DE --ssl-state=Bayern --ssl-city=Nuremberg ' \
-    '--ssl-org=SUSE --ssl-orgunit=SUSE --ssl-email=galaxy-noise@suse.de ' \
-    '--ssl-ca-password=spacewalk'
+            "spacewalk-hostname-rename #{server_node.public_ip} " \
+            '--ssl-country=DE --ssl-state=Bayern --ssl-city=Nuremberg ' \
+            '--ssl-org=SUSE --ssl-orgunit=SUSE --ssl-email=galaxy-noise@suse.de ' \
+            '--ssl-ca-password=spacewalk --overwrite_report_db_host=y'
   out_spacewalk, result_code = server_node.run(command, check_errors: false)
-  log "#{out_spacewalk}"
+  log out_spacewalk.to_s
 
   server_node = get_target('server', refresh: true) # This will refresh the attributes of this node
 
