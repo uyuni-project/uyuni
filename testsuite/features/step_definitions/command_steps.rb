@@ -346,10 +346,10 @@ When(/^I execute mgr-sync refresh((?: with authentication)?)$/) do |authenticati
 end
 
 # This function kills spacewalk-repo-sync processes for a particular OS product version.
-# It waits for all the reposyncs in the whitelist to complete, and kills all others.
+# It waits for all the reposyncs in the allow-list to complete, and kills all others.
 When(/^I kill running spacewalk-repo-sync for "([^"]*)"$/) do |os_product_version|
-  next if CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION[os_product_version].nil?
-  channels_to_kill = sanitize_client_tools(CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION[os_product_version])
+  next if CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION[os_product_version].nil?
+  channels_to_kill = sanitize_client_tools(CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION[os_product_version])
   log "Killing channels:\n#{channels_to_kill}"
   time_spent = 0
   checking_rate = 10
@@ -364,7 +364,7 @@ When(/^I kill running spacewalk-repo-sync for "([^"]*)"$/) do |os_product_versio
     end
     channel = process.split(' ')[5].strip
     log "Repo-sync process for channel '#{channel}' running." if Time.now.sec % 5
-    next unless CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION[os_product_version].include? channel
+    next unless CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION[os_product_version].include? channel
     channels_to_kill.delete(channel)
     pid = process.split(' ')[0]
     get_target('server').run("kill #{pid}", check_errors: false)
@@ -430,7 +430,7 @@ When(/^I wait until all synchronized channels have finished$/) do
 end
 
 When(/^I wait until all synchronized channels for "([^"]*)" have finished$/) do |product_os_version|
-  channels_to_wait = sanitize_client_tools(CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION[product_os_version])
+  channels_to_wait = sanitize_client_tools(CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION[product_os_version])
   channels_to_wait.each do |channel|
     step %(I wait until the channel "#{channel}" has been synced)
   end
