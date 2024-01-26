@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2013 Red Hat, Inc.
 #
@@ -21,7 +22,7 @@
 from spacewalk.common.rhnLog import log_debug
 
 # the "exposed" functions
-__rhnexport__ = ['use_satellite']
+__rhnexport__ = ["use_satellite"]
 
 
 # tell the applet to copy up2date's configs,
@@ -29,6 +30,7 @@ __rhnexport__ = ['use_satellite']
 #
 # effectively, a noop serverside until the scheduled action
 # runs.
+# pylint: disable-next=invalid-name,unused-argument
 def use_satellite(serverId, actionId, dry_run=0):
     log_debug(3)
     return None

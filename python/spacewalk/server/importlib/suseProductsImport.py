@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring,invalid-name
 #
 # Copyright (c) 2014 SUSE LLC
 #
@@ -13,6 +14,8 @@
 from .importLib import GenericPackageImport
 from spacewalk.satellite_tools import syncCache
 
+
+# pylint: disable-next=missing-class-docstring
 class SuseProductsImport(GenericPackageImport):
     def __init__(self, batch, backend):
         GenericPackageImport.__init__(self, batch, backend)
@@ -23,20 +26,22 @@ class SuseProductsImport(GenericPackageImport):
         archs = {}
         families = {}
         for item in self.batch:
-            if item['arch'] not in archs:
-                archs[item['arch']] = None
+            if item["arch"] not in archs:
+                archs[item["arch"]] = None
                 self.backend.lookupPackageArches(archs)
-            item['arch_type_id'] = archs[item['arch']]
-            if item['release'] == 'None':
-                item['release'] = None
-            if item['version'] == 'None':
-                item['version'] = None
-            if item['channel_family_label'] not in families:
+            item["arch_type_id"] = archs[item["arch"]]
+            if item["release"] == "None":
+                item["release"] = None
+            if item["version"] == "None":
+                item["version"] = None
+            if item["channel_family_label"] not in families:
                 fam = {}
-                fam[item['channel_family_label']] = None
+                fam[item["channel_family_label"]] = None
                 self.backend.lookupChannelFamilies(fam)
-                families[item['channel_family_label']] = fam[item['channel_family_label']]
-            item['channel_family_id'] = families[item['channel_family_label']]
+                families[item["channel_family_label"]] = fam[
+                    item["channel_family_label"]
+                ]
+            item["channel_family_id"] = families[item["channel_family_label"]]
             self._data.append(item)
 
     def fix(self):
@@ -50,6 +55,8 @@ class SuseProductsImport(GenericPackageImport):
             raise
         self.backend.commit()
 
+
+# pylint: disable-next=missing-class-docstring
 class SuseProductChannelsImport(GenericPackageImport):
     def __init__(self, batch, backend):
         GenericPackageImport.__init__(self, batch, backend)
@@ -60,18 +67,18 @@ class SuseProductChannelsImport(GenericPackageImport):
         pid_trans = {}
         for item in self.batch:
             channel = {}
-            intpid = item['product_id']
+            intpid = item["product_id"]
             if intpid not in pid_trans:
                 pid_trans[intpid] = self.backend.lookupSuseProductIdByProductId(intpid)
-            item['product_id'] = pid_trans[intpid]
-            channel[item['channel_label']] = None
+            item["product_id"] = pid_trans[intpid]
+            channel[item["channel_label"]] = None
             self.backend.lookupChannels(channel)
-            if channel[item['channel_label']]:
-                item['channel_id'] = channel[item['channel_label']]['id']
+            if channel[item["channel_label"]]:
+                item["channel_id"] = channel[item["channel_label"]]["id"]
             else:
                 continue
-            if item['parent_channel_label'] == 'None':
-                item['parent_channel_label'] = None
+            if item["parent_channel_label"] == "None":
+                item["parent_channel_label"] = None
             self._data.append(item)
 
     def fix(self):
@@ -85,6 +92,8 @@ class SuseProductChannelsImport(GenericPackageImport):
             raise
         self.backend.commit()
 
+
+# pylint: disable-next=missing-class-docstring
 class SuseUpgradePathsImport(GenericPackageImport):
     def __init__(self, batch, backend):
         GenericPackageImport.__init__(self, batch, backend)
@@ -94,12 +103,16 @@ class SuseUpgradePathsImport(GenericPackageImport):
     def preprocess(self):
         pid_trans = {}
         for item in self.batch:
-            if item['from_product_id'] not in pid_trans:
-                pid_trans[item['from_product_id']] = self.backend.lookupSuseProductIdByProductId(item['from_product_id'])
-            item['from_pdid'] = pid_trans[item['from_product_id']]
-            if item['to_product_id'] not in pid_trans:
-                pid_trans[item['to_product_id']] = self.backend.lookupSuseProductIdByProductId(item['to_product_id'])
-            item['to_pdid'] = pid_trans[item['to_product_id']]
+            if item["from_product_id"] not in pid_trans:
+                pid_trans[
+                    item["from_product_id"]
+                ] = self.backend.lookupSuseProductIdByProductId(item["from_product_id"])
+            item["from_pdid"] = pid_trans[item["from_product_id"]]
+            if item["to_product_id"] not in pid_trans:
+                pid_trans[
+                    item["to_product_id"]
+                ] = self.backend.lookupSuseProductIdByProductId(item["to_product_id"])
+            item["to_pdid"] = pid_trans[item["to_product_id"]]
             self._data.append(item)
 
     def fix(self):
@@ -113,6 +126,8 @@ class SuseUpgradePathsImport(GenericPackageImport):
             raise
         self.backend.commit()
 
+
+# pylint: disable-next=missing-class-docstring
 class SuseProductExtensionsImport(GenericPackageImport):
     def __init__(self, batch, backend):
         GenericPackageImport.__init__(self, batch, backend)
@@ -122,15 +137,21 @@ class SuseProductExtensionsImport(GenericPackageImport):
     def preprocess(self):
         pid_trans = {}
         for item in self.batch:
-            if item['product_id'] not in pid_trans:
-                pid_trans[item['product_id']] = self.backend.lookupSuseProductIdByProductId(item['product_id'])
-            item['product_pdid'] = pid_trans[item['product_id']]
-            if item['root_id'] not in pid_trans:
-                pid_trans[item['root_id']] = self.backend.lookupSuseProductIdByProductId(item['root_id'])
-            item['root_pdid'] = pid_trans[item['root_id']]
-            if item['ext_id'] not in pid_trans:
-                pid_trans[item['ext_id']] = self.backend.lookupSuseProductIdByProductId(item['ext_id'])
-            item['ext_pdid'] = pid_trans[item['ext_id']]
+            if item["product_id"] not in pid_trans:
+                pid_trans[
+                    item["product_id"]
+                ] = self.backend.lookupSuseProductIdByProductId(item["product_id"])
+            item["product_pdid"] = pid_trans[item["product_id"]]
+            if item["root_id"] not in pid_trans:
+                pid_trans[
+                    item["root_id"]
+                ] = self.backend.lookupSuseProductIdByProductId(item["root_id"])
+            item["root_pdid"] = pid_trans[item["root_id"]]
+            if item["ext_id"] not in pid_trans:
+                pid_trans[item["ext_id"]] = self.backend.lookupSuseProductIdByProductId(
+                    item["ext_id"]
+                )
+            item["ext_pdid"] = pid_trans[item["ext_id"]]
             self._data.append(item)
 
     def fix(self):
@@ -144,6 +165,8 @@ class SuseProductExtensionsImport(GenericPackageImport):
             raise
         self.backend.commit()
 
+
+# pylint: disable-next=missing-class-docstring
 class SuseProductRepositoriesImport(GenericPackageImport):
     def __init__(self, batch, backend):
         GenericPackageImport.__init__(self, batch, backend)
@@ -154,15 +177,21 @@ class SuseProductRepositoriesImport(GenericPackageImport):
         pid_trans = {}
         rid_trans = {}
         for item in self.batch:
-            if item['product_id'] not in pid_trans:
-                pid_trans[item['product_id']] = self.backend.lookupSuseProductIdByProductId(item['product_id'])
-            item['product_pdid'] = pid_trans[item['product_id']]
-            if item['rootid'] not in pid_trans:
-                pid_trans[item['rootid']] = self.backend.lookupSuseProductIdByProductId(item['rootid'])
-            item['root_pdid'] = pid_trans[item['rootid']]
-            if item['repo_id'] not in rid_trans:
-                rid_trans[item['repo_id']] = self.backend.lookupRepoIdBySCCRepoId(item['repo_id'])
-            item['repo_pdid'] = rid_trans[item['repo_id']]
+            if item["product_id"] not in pid_trans:
+                pid_trans[
+                    item["product_id"]
+                ] = self.backend.lookupSuseProductIdByProductId(item["product_id"])
+            item["product_pdid"] = pid_trans[item["product_id"]]
+            if item["rootid"] not in pid_trans:
+                pid_trans[item["rootid"]] = self.backend.lookupSuseProductIdByProductId(
+                    item["rootid"]
+                )
+            item["root_pdid"] = pid_trans[item["rootid"]]
+            if item["repo_id"] not in rid_trans:
+                rid_trans[item["repo_id"]] = self.backend.lookupRepoIdBySCCRepoId(
+                    item["repo_id"]
+                )
+            item["repo_pdid"] = rid_trans[item["repo_id"]]
             self._data.append(item)
 
     def fix(self):
@@ -176,6 +205,8 @@ class SuseProductRepositoriesImport(GenericPackageImport):
             raise
         self.backend.commit()
 
+
+# pylint: disable-next=missing-class-docstring
 class SCCRepositoriesImport(GenericPackageImport):
     def __init__(self, batch, backend):
         GenericPackageImport.__init__(self, batch, backend)
@@ -197,6 +228,8 @@ class SCCRepositoriesImport(GenericPackageImport):
             raise
         self.backend.commit()
 
+
+# pylint: disable-next=missing-class-docstring
 class SuseSubscriptionsImport(GenericPackageImport):
     def __init__(self, batch, backend):
         GenericPackageImport.__init__(self, batch, backend)
@@ -205,12 +238,12 @@ class SuseSubscriptionsImport(GenericPackageImport):
 
     def preprocess(self):
         for item in self.batch:
-            item['org_id'] = 1
-            if item['system_entitlement'] == "0":
+            item["org_id"] = 1
+            if item["system_entitlement"] == "0":
                 families = {}
-                families[item['label']] = None
+                families[item["label"]] = None
                 self.backend.lookupChannelFamilies(families)
-                item['channel_family_id'] = families[item['label']]
+                item["channel_family_id"] = families[item["label"]]
                 self._sub_data.append(item)
 
     def submit(self):
@@ -221,6 +254,8 @@ class SuseSubscriptionsImport(GenericPackageImport):
             raise
         self.backend.commit()
 
+
+# pylint: disable-next=missing-class-docstring
 class ClonedChannelsImport(GenericPackageImport):
     def __init__(self, batch, backend):
         GenericPackageImport.__init__(self, batch, backend)
@@ -228,21 +263,22 @@ class ClonedChannelsImport(GenericPackageImport):
         self._data = []
 
     def preprocess(self):
+        # pylint: disable-next=unused-variable
         pid_trans = {}
         for item in self.batch:
             channel = {}
-            channel[item['orig']] = None
+            channel[item["orig"]] = None
             self.backend.lookupChannels(channel)
-            if channel[item['orig']]:
-                item['orig_id'] = channel[item['orig']]['id']
+            if channel[item["orig"]]:
+                item["orig_id"] = channel[item["orig"]]["id"]
             else:
                 # orig channel not synced - skip
                 continue
             channel = {}
-            channel[item['clone']] = None
+            channel[item["clone"]] = None
             self.backend.lookupChannels(channel)
-            if channel[item['clone']]:
-                item['id'] = channel[item['clone']]['id']
+            if channel[item["clone"]]:
+                item["id"] = channel[item["clone"]]["id"]
             else:
                 # channel not synced - skip
                 continue

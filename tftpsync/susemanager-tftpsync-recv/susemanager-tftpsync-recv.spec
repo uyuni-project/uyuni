@@ -1,7 +1,7 @@
 #
 # spec file for package susemanager-tftpsync-recv
 #
-# Copyright (c) 2022 SUSE LLC
+# Copyright (c) 2024 SUSE LLC
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -16,13 +16,8 @@
 #
 
 
-%if 0%{?suse_version} > 1320 || 0%{?rhel}
-# SLE15 builds on Python 3
-%global build_py3   1
-%endif
-
 Name:           susemanager-tftpsync-recv
-Version:        4.4.1
+Version:        5.0.1
 Release:        1
 Summary:        Reciever for SUSE Manager tftp sync
 License:        GPL-2.0-only
@@ -37,15 +32,10 @@ Requires(pre):  apache2
 Requires(pre):  httpd
 %endif
 Requires(pre):  tftp
-%if 0%{?build_py3}
 Requires:       python3
-Requires:       (apache2-mod_wsgi-python3 or python3-mod_wsgi)
-%else
-Requires:       apache2-mod_wsgi
-Requires:       python
-%endif
 Requires:       spacewalk-backend
 Requires:       spacewalk-proxy-common
+Requires:       (apache2-mod_wsgi or python3-mod_wsgi)
 Requires(pre):  coreutils
 BuildRequires:  uyuni-base-common
 Requires(pre):  uyuni-base-common

@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring,anomalous-backslash-in-string
 #
 # Copyright (c) 2008--2018 Red Hat, Inc.
 # Copyright (c) 2016--2021 SUSE LLC.
@@ -239,16 +240,22 @@ fi
 """
 
 
+# pylint: disable-next=invalid-name
 def getHeader(productName, options, orgCACert, pubname, apachePubDirectory):
     # 11/22/16 options.gpg_key is now a comma-separated list of path.
     # Removing paths from options.gpg_key
-    org_gpg_key = ",".join([os.path.basename(gpg_key) for gpg_key in options.gpg_key.split(",")])
-    with cfg_component('web') as CFG:
+    org_gpg_key = ",".join(
+        [os.path.basename(gpg_key) for gpg_key in options.gpg_key.split(",")]
+    )
+    # pylint: disable-next=invalid-name
+    with cfg_component("web") as CFG:
         version = CFG.version
         if isUyuni():
             version = CFG.uyuni
 
-    venv_section = """
+    venv_section = (
+        # pylint: disable-next=consider-using-f-string
+        """
 # Avoid installing venv-salt-minion instead salt-minion
 # even if it available in the bootstrap repo
 AVOID_VENV_SALT_MINION={avoid_venv}
@@ -257,44 +264,58 @@ AVOID_VENV_SALT_MINION={avoid_venv}
 # even if it is NOT available in the bootstrap repo
 FORCE_VENV_SALT_MINION={force_venv}
 """.format(
-    avoid_venv=1 if bool(options.no_bundle) else 0,
-    force_venv=1 if bool(options.force_bundle) else 0,
-) or ""
+            avoid_venv=1 if bool(options.no_bundle) else 0,
+            force_venv=1 if bool(options.force_bundle) else 0,
+        )
+        or ""
+    )
 
-    return _header.format(productName=productName,
-                          version=version,
-                          apachePubDirectory=apachePubDirectory,
-                          activation_keys=options.activation_keys,
-                          org_gpg_key=org_gpg_key,
-                          overrides=options.overrides,
-                          hostname=options.hostname,
-                          orgCACert=orgCACert,
-                          venv_section=venv_section,
-                          using_ssl=1,
-                          using_gpg=0 if bool(options.no_gpg) else 1,
-                          pubname=pubname)
+    return _header.format(
+        productName=productName,
+        version=version,
+        apachePubDirectory=apachePubDirectory,
+        activation_keys=options.activation_keys,
+        org_gpg_key=org_gpg_key,
+        overrides=options.overrides,
+        hostname=options.hostname,
+        orgCACert=orgCACert,
+        venv_section=venv_section,
+        using_ssl=1,
+        using_gpg=0 if bool(options.no_gpg) else 1,
+        pubname=pubname,
+    )
 
+
+# pylint: disable-next=invalid-name
 def getRegistrationStackSh():
     """
     Determines which packages and repositories needs to be
     installed in order to register this system against SUMa server.
     """
-    PKG_NAME = ['salt', 'salt-minion']
-    PKG_NAME_YUM = ['salt', 'salt-minion']
-    PKG_NAME_VENV = ['venv-salt-minion']
+    # pylint: disable-next=invalid-name
+    PKG_NAME = ["salt", "salt-minion"]
+    # pylint: disable-next=invalid-name
+    PKG_NAME_YUM = ["salt", "salt-minion"]
+    # pylint: disable-next=invalid-name
+    PKG_NAME_VENV = ["venv-salt-minion"]
 
+    # pylint: disable-next=invalid-name
     PKG_NAME_UPDATE = list(PKG_NAME)
-    PKG_NAME_UPDATE.extend(['zypper', 'openssl'])
+    PKG_NAME_UPDATE.extend(["zypper", "openssl"])
 
+    # pylint: disable-next=invalid-name
     PKG_NAME_VENV_UPDATE = list(PKG_NAME_VENV)
-    PKG_NAME_VENV_UPDATE.extend(['zypper', 'openssl'])
+    PKG_NAME_VENV_UPDATE.extend(["zypper", "openssl"])
 
+    # pylint: disable-next=invalid-name
     PKG_NAME_UPDATE_YUM = list(PKG_NAME_YUM)
-    PKG_NAME_UPDATE_YUM.extend(['yum', 'openssl'])
+    PKG_NAME_UPDATE_YUM.extend(["yum", "openssl"])
 
+    # pylint: disable-next=invalid-name
     PKG_NAME_VENV_UPDATE_YUM = list(PKG_NAME_VENV)
-    PKG_NAME_VENV_UPDATE_YUM.extend(['yum', 'openssl'])
+    PKG_NAME_VENV_UPDATE_YUM.extend(["yum", "openssl"])
 
+    # pylint: disable-next=invalid-name
     TEST_VENV_FUNC = """
 function test_venv_enabled() {
     if [ $FORCE_VENV_SALT_MINION -eq 1 ]; then
@@ -317,6 +338,7 @@ function test_venv_enabled() {
     fi
 }
 """
+    # pylint: disable-next=invalid-name
     TEST_VENV_CALL = """
     test_venv_enabled
 """
@@ -751,15 +773,20 @@ fi
 
 remove_bootstrap_repo
 
-""".format(PKG_NAME=' '.join(PKG_NAME), PKG_NAME_YUM=' '.join(PKG_NAME_YUM),
-           PKG_NAME_UPDATE=' '.join(PKG_NAME_UPDATE),
-           PKG_NAME_UPDATE_YUM=' '.join(PKG_NAME_UPDATE_YUM),
-           PKG_NAME_VENV=' '.join(PKG_NAME_VENV),
-           PKG_NAME_VENV_UPDATE=' '.join(PKG_NAME_VENV_UPDATE),
-           PKG_NAME_VENV_UPDATE_YUM=' '.join(PKG_NAME_VENV_UPDATE_YUM),
-           TEST_VENV_FUNC=TEST_VENV_FUNC, TEST_VENV_CALL=TEST_VENV_CALL)
+""".format(
+        PKG_NAME=" ".join(PKG_NAME),
+        PKG_NAME_YUM=" ".join(PKG_NAME_YUM),
+        PKG_NAME_UPDATE=" ".join(PKG_NAME_UPDATE),
+        PKG_NAME_UPDATE_YUM=" ".join(PKG_NAME_UPDATE_YUM),
+        PKG_NAME_VENV=" ".join(PKG_NAME_VENV),
+        PKG_NAME_VENV_UPDATE=" ".join(PKG_NAME_VENV_UPDATE),
+        PKG_NAME_VENV_UPDATE_YUM=" ".join(PKG_NAME_VENV_UPDATE_YUM),
+        TEST_VENV_FUNC=TEST_VENV_FUNC,
+        TEST_VENV_CALL=TEST_VENV_CALL,
+    )
 
 
+# pylint: disable-next=invalid-name
 def getGPGKeyImportSh():
     return """\
 echo
@@ -786,6 +813,7 @@ fi
 """
 
 
+# pylint: disable-next=invalid-name
 def getCorpCACertSh():
     return """\
 echo
@@ -877,7 +905,10 @@ echo
     updateCertificates
 """
 
+
+# pylint: disable-next=invalid-name
 def getRegistrationSaltSh(productName):
+    # pylint: disable-next=consider-using-f-string
     return """\
 echo
 echo "REGISTRATION"
@@ -999,9 +1030,12 @@ else
     /sbin/chkconfig --add $MINION_SERVICE
 fi
 echo "-bootstrap complete-"
-""".format(productName=productName)
+""".format(
+        productName=productName
+    )
 
 
+# pylint: disable-next=invalid-name
 def removeTLSCertificate():
     """
     This method adds bash instructions to the bootstrap script to correctly

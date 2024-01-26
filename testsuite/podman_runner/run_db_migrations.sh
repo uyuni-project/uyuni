@@ -11,11 +11,11 @@ fi
 
 if [[ "$1" == "susemanager-schema" ]];
 then
-    upgrade_dir="/etc/sysconfig/rhn/schema-upgrade/"
+    upgrade_dir="/usr/share/susemanager/db/schema-upgrade/"
     additional_params=""
 elif [[ "$1" == "uyuni-reportdb-schema" ]];
 then
-    upgrade_dir="/etc/sysconfig/rhn/reportdb-schema-upgrade/"
+    upgrade_dir="/usr/share/susemanager/db/reportdb-schema-upgrade/"
     additional_params="--reportdb"
 else
     echo "Unknown schema $1. Use either susemanager-schema or uyuni-reportdb-schema."

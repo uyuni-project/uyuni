@@ -14,7 +14,12 @@ if ! [ "${SH_NAME}" = "bash" ]; then
 fi
 
 REPO_HOST=$1
-REPO_PORT=$2
+if [[ $2 =~ ^[0-9]+$ ]]; then
+   REPO_PORT=$2
+else
+   echo 'Error: $2 (REPO_PORT) must be an integer.' >&2
+   exit 254
+fi
 FAIL_ON_ERROR=1
 if [ "$3" = "1" ]; then
     FAIL_ON_ERROR=0
@@ -199,6 +204,21 @@ elif [ "${INSTALLER}" = "apt" ]; then
         CLIENT_REPO_URL="${CLIENT_REPOS_ROOT}/${A_CLIENT_CODE_BASE}/${A_CLIENT_VARIANT_ID}/bootstrap"
     else
         CLIENT_REPO_URL="${CLIENT_REPOS_ROOT}/${A_CLIENT_CODE_BASE}/${A_CLIENT_CODE_MAJOR_VERSION}/${A_CLIENT_CODE_MINOR_VERSION}/bootstrap"
+    fi
+fi
+
+SELINUX_POLICY_FILENAME="salt_ssh_port_forwarding.cil"
+function selinux_policy_loaded {
+    semodule -l | grep -x $SELINUX_POLICY_FILENAME
+}
+
+# Our SSH tunnel uses a custom port and we must configure SELinux to account for it
+if [[ $REPO_HOST == "localhost" ]] && command -v selinuxenabled && selinuxenabled; then
+    if ! selinux_policy_loaded; then
+        echo "(portcon tcp ${REPO_PORT} (system_u object_r ssh_port_t ((s0)(s0))))" >$SELINUX_POLICY_FILENAME
+        if ! semodule -i $SELINUX_POLICY_FILENAME; then
+            exit_with_message_code "Error: Failed to install SELinux policy." 7
+        fi
     fi
 fi
 

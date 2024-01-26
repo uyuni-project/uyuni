@@ -5,6 +5,7 @@
 %><%@ taglib uri="http://www.opensymphony.com/sitemesh/decorator" prefix="decorator"
 %><%@ taglib uri="http://www.opensymphony.com/sitemesh/page" prefix="page"
 %><%@ taglib uri="http://rhn.redhat.com/rhn" prefix="rhn"
+%><%@ page import="com.redhat.rhn.GlobalInstanceHolder"
 %><%@ page contentType="text/html; charset=UTF-8"
 %><!DOCTYPE HTML>
 <html:html lang="true">
@@ -12,7 +13,9 @@
     <jsp:include page="layout_head.jsp" />
     <decorator:head />
   </head>
-  <body onload="<decorator:getProperty property="body.onload" />">
+  <c:set var="webTheme" value="${GlobalInstanceHolder.USER_PREFERENCE_UTILS.getCurrentWebTheme(pageContext)}"/>
+  <c:set var="isUpdatedPage" value="${GlobalInstanceHolder.VIEW_HELPER.isBootstrapReady(pageContext.request.requestURI)}"/>
+  <body class="theme-${webTheme} ${isUpdatedPage ? 'updated-theme' : 'old-theme'}" onload="<decorator:getProperty property="body.onload" />">
     <div class="senna-loading-bar"></div>
     <div id="menu-portal-target"></div>
     <header class="navbar-pf navbar navbar-dark bg-dark">

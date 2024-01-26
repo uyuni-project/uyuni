@@ -337,22 +337,29 @@
     </query>
 </mode>
 
-<mode name="SystemPackageInstalled" class="">
-    <query params="system_id, name, limit">
-          SELECT rhnServerPackage.server_id AS system_id
-                    , rhnPackageName.name
-                    , rhnPackageEvr.epoch
-                    , rhnPackageEvr.version
-                    , rhnPackageEvr.release
-                    , rhnPackageArch.label AS arch
-                    , rhnPackageEvr.type
-            FROM rhnServerPackage
-                    INNER JOIN rhnPackageName ON rhnServerPackage.name_id = rhnPackageName.id
-                    INNER JOIN rhnPackageEvr ON rhnServerPackage.evr_id = rhnPackageEvr.id
-                    INNER JOIN rhnPackageArch ON rhnServerPackage.package_arch_id = rhnPackageArch.id
-           WHERE (rhnServerPackage.server_id, rhnPackageName.name) &gt; (:system_id, :name)
-        ORDER BY system_id, name
-           FETCH FIRST :limit ROWS WITH TIES
+<mode name="SystemPackageInstalled_Ids" class="">
+    <query>
+        SELECT DISTINCT server_id AS id FROM rhnserverpackage
+    </query>
+</mode>
+
+<mode name="SystemPackageInstalled_byId" class="">
+    <query params="id, name, limit">
+        SELECT rhnServerPackage.server_id AS system_id
+             , rhnPackageName.name
+             , rhnPackageEvr.epoch
+             , rhnPackageEvr.version
+             , rhnPackageEvr.release
+             , rhnPackageArch.label AS arch
+             , rhnPackageEvr.type
+        FROM rhnServerPackage
+            INNER JOIN rhnPackageName ON rhnServerPackage.name_id = rhnPackageName.id
+            INNER JOIN rhnPackageEvr ON rhnServerPackage.evr_id = rhnPackageEvr.id
+            INNER JOIN rhnPackageArch ON rhnServerPackage.package_arch_id = rhnPackageArch.id
+        WHERE rhnServerPackage.server_id = :id
+          AND rhnPackageName.name &gt; :name
+        ORDER BY name
+            FETCH FIRST :limit ROWS WITH TIES
     </query>
 </mode>
 

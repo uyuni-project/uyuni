@@ -58,6 +58,16 @@ touch /var/lib/rhn/rhn-satellite-prep/etc/rhn/rhn.conf
 cp /root/rhn.conf /etc/rhn/rhn.conf
 smdba system-check autotuning --max_connections=50
 
+
+# we changed the schema dir, but we start with a schema which live still in the old location
+# provide a symlink to make the tooling work
+if [ -d /etc/sysconfig/rhn/postgres -a ! -e /usr/share/susemanager/db/postgres ]; then
+    mkdir -p /usr/share/susemanager/db
+    ln -s /etc/sysconfig/rhn/postgres /usr/share/susemanager/db/postgres
+    ln -s /etc/sysconfig/rhn/reportdb /usr/share/susemanager/db/reportdb
+fi
+
+
 # this command will fail with certificate error. This is ok, so ignore the error
 spacewalk-setup --skip-initial-configuration --skip-system-version-test --skip-selinux-test --skip-fqdn-test --skip-ssl-cert-generation --skip-ssl-vhost-setup --skip-services-check --clear-db --answer-file=clear-db-answers-pgsql.txt --external-postgresql --non-interactive ||:
 /manager/spacewalk/uyuni-setup-reportdb/bin/uyuni-setup-reportdb remove --db reportdb --user pythia ||:
@@ -69,7 +79,7 @@ spacewalk-setup --skip-initial-configuration --skip-system-version-test --skip-s
 RPMVERSION=`rpm -q --qf "%{version}\n" --specfile /manager/schema/reportdb/uyuni-reportdb-schema.spec | head -n 1`
 NEXTVERSION=`echo $RPMVERSION | awk '{ pre=post=$0; gsub("[0-9]+$","",pre); gsub(".*\\\\.","",post); print pre post+1; }'`
 
-if [ -d /etc/sysconfig/rhn/reportdb-schema-upgrade/uyuni-reportdb-schema-$RPMVERSION-to-uyuni-reportdb-schema-$NEXTVERSION ]; then
+if [ -d /usr/share/susemanager/db/reportdb-schema-upgrade/uyuni-reportdb-schema-$RPMVERSION-to-uyuni-reportdb-schema-$NEXTVERSION ]; then
     export SUMA_TEST_SCHEMA_VERSION=$NEXTVERSION
 
 else

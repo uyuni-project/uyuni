@@ -1,4 +1,17 @@
 -------------------------------------------------------------------
+Thu Jan 18 11:03:34 CET 2024 - jgonzalez@suse.com
+
+- version 5.0.2-1
+  * schema dir moved to /usr/share/susemanager/db
+
+-------------------------------------------------------------------
+Tue Jan 16 08:06:55 CET 2024 - jgonzalez@suse.com
+
+- version 5.0.1-1
+  * Updated query to the new credentials structure
+  * fix setting scc password during setup
+
+-------------------------------------------------------------------
 Fri Dec 15 17:22:42 CET 2023 - rosuna@suse.com
 
 - version 4.4.11-1

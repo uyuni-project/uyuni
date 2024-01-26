@@ -186,11 +186,11 @@ VALUES (sequence_nextval('rhn_tasko_schedule_id_seq'), 'update-reporting-hub-def
         (SELECT id FROM rhnTaskoBunch WHERE name='mgr-update-reporting-hub-bunch'),
         current_timestamp, '0 30 1 ? * *');
 
--- Once a month at the 15th at 5am
+-- Once a month at the 2nd Saturday at 5am
 
 INSERT INTO rhnTaskoSchedule (id, job_label, bunch_id, active_from, cron_expr)
 VALUES (sequence_nextval('rhn_tasko_schedule_id_seq'), 'system-profile-refresh-default',
         (SELECT id FROM rhnTaskoBunch WHERE name='system-profile-refresh-bunch'),
-        current_timestamp, '0 0 5 15 * ?');
+        current_timestamp, '0 0 5 ? * SAT#2');
 
 commit;

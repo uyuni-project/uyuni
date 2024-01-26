@@ -150,7 +150,6 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
     protected Path metadataDirOfficial;
     private SaltUtils saltUtils;
     private SaltServerActionService saltServerActionService;
-    protected Path formulaDataDir;
 
 
     @Override
@@ -172,9 +171,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         saltServerActionService = new SaltServerActionService(saltServiceMock, saltUtils,
                 new SaltKeyUtils(saltServiceMock));
         metadataDirOfficial = Files.createTempDirectory("meta");
-        formulaDataDir = Files.createTempDirectory("data");
         FormulaFactory.setMetadataDirOfficial(metadataDirOfficial.toString());
-        FormulaFactory.setDataDir(formulaDataDir.toString());
         Path systemLockDir = metadataDirOfficial.resolve("system-lock");
         Path systemLockFile = Paths.get(systemLockDir.toString(),  "form.yml");
         Files.createDirectories(systemLockDir);

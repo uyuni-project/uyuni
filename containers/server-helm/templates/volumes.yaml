@@ -25,6 +25,30 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
+  name: var-salt
+  namespace: "{{ .Release.Namespace }}"
+spec:
+{{- if .Values.storageClass }}
+{{- if (eq "-" .Values.storageClass) }}
+  storageClassName: ""
+{{- else }}
+  storageClassName: "{{ .Values.storageClass }}"
+{{- end }}
+{{- end }}
+  accessModes:
+{{ toYaml .Values.accessModes | indent 4 }}
+  resources:
+    requests:
+      storage: 10Mi
+{{- if .Values.matchPvByLabel }}
+  selector:
+    matchLabels:
+      data: var-salt
+{{- end }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
   name: var-pgsql
   namespace: "{{ .Release.Namespace }}"
 spec:
@@ -145,7 +169,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: srv-www-pub
+  name: srv-www
   namespace: "{{ .Release.Namespace }}"
 spec:
 {{- if .Values.storageClass }}
@@ -163,55 +187,7 @@ spec:
 {{- if .Values.matchPvByLabel }}
   selector:
     matchLabels:
-      data: srv-www-pub
-{{- end }}
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: srv-www-cobbler
-  namespace: "{{ .Release.Namespace }}"
-spec:
-{{- if .Values.storageClass }}
-{{- if (eq "-" .Values.storageClass) }}
-  storageClassName: ""
-{{- else }}
-  storageClassName: "{{ .Values.storageClass }}"
-{{- end }}
-{{- end }}
-  accessModes:
-{{ toYaml .Values.accessModes | indent 4 }}
-  resources:
-    requests:
-      storage: 100Mi
-{{- if .Values.matchPvByLabel }}
-  selector:
-    matchLabels:
-      data: srv-www-cobbler
-{{- end }}
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: srv-www-osimages
-  namespace: "{{ .Release.Namespace }}"
-spec:
-{{- if .Values.storageClass }}
-{{- if (eq "-" .Values.storageClass) }}
-  storageClassName: ""
-{{- else }}
-  storageClassName: "{{ .Values.storageClass }}"
-{{- end }}
-{{- end }}
-  accessModes:
-{{ toYaml .Values.accessModes | indent 4 }}
-  resources:
-    requests:
-      storage: 100Mi
-{{- if .Values.matchPvByLabel }}
-  selector:
-    matchLabels:
-      data: srv-www-osimages
+      data: srv-www
 {{- end }}
 ---
 apiVersion: v1

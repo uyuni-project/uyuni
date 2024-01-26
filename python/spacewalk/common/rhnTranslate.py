@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring,invalid-name
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -18,6 +19,8 @@ import gettext
 
 from uyuni.common.usix import StringType
 
+
+# pylint: disable-next=missing-class-docstring
 class RHN_Translations(gettext.GNUTranslations):
     # Defining our own class, since we'd like to save the language we use
     # Determining the language is not very pretty - we parse the file name
@@ -29,25 +32,31 @@ class RHN_Translations(gettext.GNUTranslations):
         gettext.GNUTranslations.__init__(self, fp)
 
     def _parse(self, fp):
+        # pylint: disable-next=protected-access
         gettext.GNUTranslations._parse(self, fp)
         filename = fp.name
         filename = os.path.normpath(filename)
         # Extract the language
-        self.lang = filename.split('/')[-3]
+        self.lang = filename.split("/")[-3]
 
     def getlangs(self):
         # Return all languages
         # pkilambi:bug#158561,170819,170821: the gettext object in python 2.2.3 has no attribute
-        #_fallback so add a check if __dict__ has key
+        # _fallback so add a check if __dict__ has key
         # if not self._fallback or not hasattr(self._fallback, 'getlangs'):
-        if "_fallback" not in self.__dict__ or not self._fallback or not hasattr(self._fallback, 'getlangs'):
-            return [self.lang, 'C']
+        if (
+            "_fallback" not in self.__dict__
+            or not self._fallback
+            or not hasattr(self._fallback, "getlangs")
+        ):
+            return [self.lang, "C"]
         # Recursive call
         return [self.lang] + self._fallback.getlangs()
 
 
+# pylint: disable-next=missing-class-docstring
 class i18n:
-    _default_langs = ['en', 'en_US', 'C']
+    _default_langs = ["en", "en_US", "C"]
     # Wrapper class that allows us to change languages
 
     def __init__(self, domain=None, localedir="/usr/share/locale"):
@@ -59,8 +68,13 @@ class i18n:
 
     def _set_catalog(self):
         # Set the catalog object
-        self.cat = gettext.Catalog(self.domain, localedir=self.localedir,
-                                   languages=self.langs, fallback=1, class_=RHN_Translations)
+        self.cat = gettext.Catalog(
+            self.domain,
+            localedir=self.localedir,
+            languages=self.langs,
+            fallback=1,
+            class_=RHN_Translations,
+        )
 
     def getlangs(self):
         # List of languages we support
@@ -71,10 +85,11 @@ class i18n:
         return self.cat.getlangs()
 
     def setlangs(self, langs):
+        # pylint: disable-next=unidiomatic-typecheck
         if isinstance(langs, StringType) or type(langs) == str:
             langs = [langs]
         # Filter "C" - we will add it ourselves later anyway
-        langs = [l for l in langs if l != 'C']
+        langs = [l for l in langs if l != "C"]
         langs.extend(self._default_langs)
         self.langs = langs
         self._set_catalog()

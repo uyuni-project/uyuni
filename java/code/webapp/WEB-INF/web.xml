@@ -66,12 +66,6 @@
   </filter>
 
   <filter>
-    <filter-name>RedirectFilter</filter-name>
-    <filter-class>com.redhat.rhn.frontend.servlets.AuthFilter</filter-class>
-    <async-supported>true</async-supported>
-  </filter>
-
-  <filter>
     <filter-name>AuthFilterSpark</filter-name>
     <filter-class>com.redhat.rhn.frontend.servlets.AuthFilter</filter-class>
     <async-supported>true</async-supported>
@@ -176,11 +170,6 @@
   </filter-mapping>
 
   <filter-mapping>
-    <filter-name>RedirectFilter</filter-name>
-    <url-pattern>/Redirect/*</url-pattern>
-  </filter-mapping>
-
-  <filter-mapping>
     <filter-name>SparkFilter</filter-name>
     <url-pattern>/manager/*</url-pattern>
     <url-pattern>/saltboot/*</url-pattern>
@@ -261,13 +250,6 @@
   </servlet>
 
   <servlet>
-        <servlet-name>RedirectServlet</servlet-name>
-        <display-name>Redirect Servlet</display-name>
-        <servlet-class>com.redhat.rhn.frontend.security.RedirectServlet</servlet-class>
-        <load-on-startup>1</load-on-startup>
-  </servlet>
-
-  <servlet>
         <servlet-name>jsp</servlet-name>
         <servlet-class>org.apache.jasper.servlet.JspServlet</servlet-class>
         <init-param>
@@ -322,11 +304,6 @@
   <servlet-mapping>
     <servlet-name>metrics</servlet-name>
     <url-pattern>/metrics</url-pattern>
-  </servlet-mapping>
-  
-  <servlet-mapping>
-        <servlet-name>RedirectServlet</servlet-name>
-        <url-pattern>/Redirect/*</url-pattern>
   </servlet-mapping>
 
   <mime-mapping>

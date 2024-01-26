@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -14,11 +15,12 @@
 #
 from rhn import rpclib
 
-#server = "xmlrpc.rhn.redhat.com"
+# server = "xmlrpc.rhn.redhat.com"
 server = "coyote.devel.redhat.com"
 
+# pylint: disable-next=consider-using-f-string
 s = rpclib.Server("http://%s/APPLET" % server)
 
 # print s.applet.poll_status()
-print((s.applet.poll_packages('2.1AS', 'i386')))
-print((s.applet.poll_packages('8.0', 'i386')))
+print((s.applet.poll_packages("2.1AS", "i386")))
+print((s.applet.poll_packages("8.0", "i386")))

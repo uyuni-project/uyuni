@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Licensed under the GNU General Public License Version 3
 #
@@ -36,6 +37,6 @@ from argparse import ArgumentParser
 
 
 class SpacecmdArgumentParser(ArgumentParser):
-
     def error(self, message):
+        # pylint: disable-next=broad-exception-raised
         raise Exception(message)

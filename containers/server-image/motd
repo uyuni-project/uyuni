@@ -1,0 +1,9 @@
+===============================================================================
+!
+! This shell operates within a container environment, meaning that not all
+! modifications will be permanently saved in volumes.
+!
+! Please exercise caution when making changes, as some alterations may not
+! persist beyond the current session.
+!
+===============================================================================

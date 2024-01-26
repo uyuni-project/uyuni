@@ -1,4 +1,4 @@
-# Copyright (c) 2014-2023 SUSE LLC.
+# Copyright (c) 2014-2024 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 ### This file contains the definitions for all steps concerning the execution of commands on a system.
@@ -13,7 +13,7 @@ require 'date'
 
 Then(/^"([^"]*)" should have a FQDN$/) do |host|
   node = get_target(host)
-  result, return_code = node.run('date +%s; hostname -f; date +%s', check_errors: false)
+  result, return_code = node.run_local('date +%s; hostname -f; date +%s', check_errors: false)
   lines = result.split("\n")
   initial_time = lines[0]
   result = lines[1]
@@ -423,7 +423,7 @@ When(/^I wait until the channel "([^"]*)" has been synced$/) do |channel|
   time_spent = 0
   checking_rate = 10
   begin
-    repeat_until_timeout(timeout: 7200, message: 'Channel not fully synced') do
+    repeat_until_timeout(timeout: 9000, message: 'Channel not fully synced') do
       break if channel_is_synced(channel)
 
       log "#{time_spent / 60.to_i} minutes waiting for '#{channel}' channel to be synchronized." if ((time_spent += checking_rate) % 60).zero?
@@ -518,6 +518,7 @@ When(/^I extract the log files from all our active nodes$/) do
   $node_by_host.each do |host, node|
     next if node.nil? || %w[salt_migration_minion localhost *-ctl].include?(host)
 
+    $stdout.puts "Host: #{host}"
     $stdout.puts "Node: #{node.full_hostname}"
     extract_logs_from_node(node)
   end
@@ -1585,7 +1586,7 @@ end
 
 When(/^I check all certificates after renaming the server hostname$/) do
   # get server certificate serial to compare it with the other minions
-  command_server = "openssl x509 --noout --text -in /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT | grep -A1 'Serial' | grep -v 'Serial'"
+  command_server = "openssl x509 -noout -text -in /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT | grep -A1 'Serial' | grep -v 'Serial'"
   server_cert_serial, result_code = get_target('server').run(command_server)
   server_cert_serial.strip!
   log "Server certificate serial: #{server_cert_serial}"
@@ -1610,7 +1611,7 @@ When(/^I check all certificates after renaming the server hostname$/) do
       end
     get_target(target).run("test -s #{certificate}", successcodes: [0], check_errors: true)
 
-    command_minion = "openssl x509 --noout --text -in #{certificate} | grep -A1 'Serial' | grep -v 'Serial'"
+    command_minion = "openssl x509 -noout -text -in #{certificate} | grep -A1 'Serial' | grep -v 'Serial'"
     minion_cert_serial, result_code = get_target(target).run(command_minion)
 
     raise ScriptError, "#{target}: Error getting server certificate serial!" unless result_code.zero?

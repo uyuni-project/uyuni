@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #
@@ -24,4 +25,5 @@ rpcClasses = {
     "applet": applet.Applet,
 }
 
+# pylint: disable-next=invalid-name
 getHandler = None

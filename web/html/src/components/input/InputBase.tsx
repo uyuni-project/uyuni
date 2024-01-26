@@ -301,7 +301,7 @@ export class InputBase<ValueType = string> extends React.Component<InputBaseProp
             setValue: this.setValue,
             onBlur: this.onBlur,
           })}
-          {hints && <div className="help-block">{hints}</div>}
+          {hints.length ? <div className="help-block">{hints}</div> : null}
         </div>
       </FormGroup>
     );

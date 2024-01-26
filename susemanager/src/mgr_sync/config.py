@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 # -*- coding: utf-8 -*-
 #
 # Copyright (c) 2014 SUSE
@@ -14,6 +15,8 @@
 # in this software or its documentation.
 
 import os
+
+# pylint: disable-next=unused-import
 import socket
 from configobj import ConfigObj
 
@@ -42,13 +45,13 @@ class Config(object):
     def __init__(self):
         # Default configuration, if not specified otherwise
         self._config = ConfigObj()
-        self._config[Config.USER] = ''
-        self._config[Config.PASSWORD] = ''
-        self._config[Config.HOST] = socket.getfqdn()
+        self._config[Config.USER] = ""
+        self._config[Config.PASSWORD] = ""
+        self._config[Config.HOST] = "localhost"
         self._config[Config.PORT] = 80
         self._config[Config.URI] = "/rpc/api"
-        self._config[Config.TOKEN] = ''
-        self._config[Config.DEBUG] = ''
+        self._config[Config.TOKEN] = ""
+        self._config[Config.DEBUG] = ""
         self._parse_config()
 
     def write(self):
@@ -68,14 +71,20 @@ class Config(object):
             try:
                 self._config.merge(ConfigObj(Config.RHNFILE))
             except SyntaxError as ex:
-                raise SyntaxError("Error while parsing file {0}: {1}".format(Config.RHNFILE, ex)) from ex
+                raise SyntaxError(
+                    # pylint: disable-next=consider-using-f-string
+                    "Error while parsing file {0}: {1}".format(Config.RHNFILE, ex)
+                ) from ex
 
         # Read ~/.mgr-sync if any and override
         if os.access(Config.DOTFILE, os.R_OK):
             try:
                 self._config.merge(ConfigObj(Config.DOTFILE))
             except SyntaxError as ex:
-                raise SyntaxError("Error while parsing file{0}: {1}".format(Config.DOTFILE, ex)) from ex
+                raise SyntaxError(
+                    # pylint: disable-next=consider-using-f-string
+                    "Error while parsing file{0}: {1}".format(Config.DOTFILE, ex)
+                ) from ex
 
         # Remove unnesessary items
         for key in list(self._config.keys()):

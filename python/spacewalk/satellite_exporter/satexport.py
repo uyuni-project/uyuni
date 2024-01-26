@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -16,6 +17,7 @@
 
 import time
 import sys
+
 try:
     #  python 2
     import xmlrpclib
@@ -28,6 +30,8 @@ from rhn.connections import idn_puny_to_unicode
 from spacewalk.common import apache
 
 from uyuni.common.usix import raise_with_tb
+
+# pylint: disable-next=ungrouped-imports
 from spacewalk.common import rhnFlags
 from spacewalk.common.rhnLog import log_debug, log_error, log_setreq, initLOG
 from spacewalk.common.rhnConfig import CFG, initCFG
@@ -39,14 +43,15 @@ from spacewalk.satellite_tools.disk_dumper.dumper import ClosedConnectionError
 from spacewalk.satellite_tools import constants
 
 
+# pylint: disable-next=missing-class-docstring
 class BaseApacheServer:
-
     def __init__(self):
         # Init log to stderr
         initLOG()
         self.start_time = 0
         self._cleanup()
 
+    # pylint: disable-next=invalid-name
     def headerParserHandler(self, req):
         # pylint: disable=W0201
         log_setreq(req)
@@ -70,13 +75,16 @@ class BaseApacheServer:
                 pass
 
             # Fetch global message being sent to clients if applicable.
+            # pylint: disable-next=unspecified-encoding
             msg = open(CFG.MESSAGE_TO_ALL).read()
+            # pylint: disable-next=consider-using-f-string
             log_debug(3, "Sending message to all clients: %s" % msg)
-            return self._send_xmlrpc(req, rhnFault(-1,
-                                                   _("IMPORTANT MESSAGE FOLLOWS:\n%s") % msg, explain=0))
+            return self._send_xmlrpc(
+                req, rhnFault(-1, _("IMPORTANT MESSAGE FOLLOWS:\n%s") % msg, explain=0)
+            )
 
         rhnSQL.initDB()
-        self.server = options['SERVER']
+        self.server = options["SERVER"]
 
         self.server_classes = rhnImport.load("satellite_exporter/handlers")
 
@@ -90,6 +98,7 @@ class BaseApacheServer:
     def handler(self, req):
         return self._wrapper(req, self._handler)
 
+    # pylint: disable-next=invalid-name
     def cleanupHandler(self, req):
         self._timer()
         retval = self._wrapper(req, self._cleanupHandler)
@@ -106,12 +115,15 @@ class BaseApacheServer:
 
     # Virtual functions
     # pylint: disable=R0201
+    # pylint: disable-next=invalid-name
     def _headerParserHandler(self, _req):
         return apache.OK
 
+    # pylint: disable-next=invalid-name
     def _handler(self, _req):
         return apache.OK
 
+    # pylint: disable-next=invalid-name
     def _cleanupHandler(self, _req):
         return apache.OK
 
@@ -136,9 +148,9 @@ class BaseApacheServer:
         if isinstance(data, rhnFault):
             data = data.getxml()
         else:
-            data = (data, )
+            data = (data,)
         ret = xmlrpclib.dumps(data, methodresponse=1)
-        req.headers_out['Content-Length'] = str(len(ret))
+        req.headers_out["Content-Length"] = str(len(ret))
         req.send_http_header()
         req.write(ret)
         return apache.OK
@@ -146,20 +158,23 @@ class BaseApacheServer:
     def _timer(self):
         if not self.start_time:
             return 0
+        # pylint: disable-next=consider-using-f-string
         log_debug(2, "%.2f sec" % (time.time() - self.start_time))
         return 0
 
 
+# pylint: disable-next=missing-class-docstring
 class ApacheServer(BaseApacheServer):
-
     def __init__(self):
         BaseApacheServer.__init__(self)
 
+    # pylint: disable-next=arguments-renamed
     def _headerParserHandler(self, req):
         log_debug(3, "Method", req.method)
         self._validate_version(req)
         return apache.OK
 
+    # pylint: disable-next=arguments-renamed
     def _handler(self, req):
         log_debug(3, "Method", req.method)
 
@@ -170,6 +185,7 @@ class ApacheServer(BaseApacheServer):
         # Decode the data
         try:
             params, methodname = xmlrpclib.loads(data)
+        # pylint: disable-next=try-except-raise
         except:
             raise
 
@@ -201,12 +217,13 @@ class ApacheServer(BaseApacheServer):
     def get_function(self, method_name, req):
         iss_slave_condition = self.auth_system(req)
         # Get the module name
-        idx = method_name.rfind('.')
-        module_name, function_name = method_name[:idx], method_name[idx + 1:]
+        idx = method_name.rfind(".")
+        module_name, function_name = method_name[:idx], method_name[idx + 1 :]
         log_debug(5, module_name, function_name)
 
         handler_classes = self.server_classes[self.server]
         if module_name not in handler_classes:
+            # pylint: disable-next=consider-using-f-string
             raise FunctionRetrievalError("Module %s not found" % module_name)
 
         mod = handler_classes[module_name](req)
@@ -214,43 +231,52 @@ class ApacheServer(BaseApacheServer):
         f = mod.get_function(function_name)
         if f is None:
             raise FunctionRetrievalError(
-                "Module %s: function %s not found" %
-                (module_name, function_name))
+                # pylint: disable-next=consider-using-f-string
+                "Module %s: function %s not found"
+                % (module_name, function_name)
+            )
         return f
 
     def auth_system(self, req):
         if CFG.DISABLE_ISS:
-            raise rhnFault(2005, _('ISS is disabled on this server.'))
+            raise rhnFault(2005, _("ISS is disabled on this server."))
 
         remote_hostname = req.get_remote_host(apache.REMOTE_DOUBLE_REV)
-        row = rhnSQL.fetchone_dict("""
+        row = rhnSQL.fetchone_dict(
+            """
         select id, allow_all_orgs
           from rhnISSSlave
          where slave = :hostname
            and enabled = 'Y'
-        """, hostname=idn_puny_to_unicode(remote_hostname))
+        """,
+            hostname=idn_puny_to_unicode(remote_hostname),
+        )
         if not row:
-            raise rhnFault(2004,
-                           _('Server "%s" is not enabled for ISS.')
-                           % remote_hostname)
+            raise rhnFault(
+                2004, _('Server "%s" is not enabled for ISS.') % remote_hostname
+            )
         iss_slave_condition = "select id from web_customer"
-        if not(row['allow_all_orgs'] == 'Y'):
-            iss_slave_condition = "select rhnISSSlaveOrgs.org_id from rhnISSSlaveOrgs where slave_id = %d" % row['id']
+        # pylint: disable-next=superfluous-parens
+        if not (row["allow_all_orgs"] == "Y"):
+            iss_slave_condition = (
+                # pylint: disable-next=consider-using-f-string
+                "select rhnISSSlaveOrgs.org_id from rhnISSSlaveOrgs where slave_id = %d"
+                % row["id"]
+            )
         return iss_slave_condition
 
     @staticmethod
     def _validate_version(req):
         server_version = constants.PROTOCOL_VERSION
-        vstr = 'X-RHN-Satellite-XML-Dump-Version'
+        vstr = "X-RHN-Satellite-XML-Dump-Version"
         if vstr not in req.headers_in:
             raise rhnFault(3010, "Missing version string")
         client_version = req.headers_in[vstr]
 
         # set the client version  through rhnFlags to access later
-        rhnFlags.set('X-RHN-Satellite-XML-Dump-Version', client_version)
+        rhnFlags.set("X-RHN-Satellite-XML-Dump-Version", client_version)
 
-        log_debug(1, "Server version", server_version, "Client version",
-                  client_version)
+        log_debug(1, "Server version", server_version, "Client version", client_version)
 
         client_ver_arr = str(client_version).split(".")
         server_ver_arr = str(server_version).split(".")
@@ -267,19 +293,30 @@ class ApacheServer(BaseApacheServer):
             client_major = int(client_major)
             client_minor = int(client_minor)
         except ValueError:
-            raise_with_tb(rhnFault(3011, "Invalid version string %s" % client_version), sys.exc_info()[2])
+            raise_with_tb(
+                # pylint: disable-next=consider-using-f-string
+                rhnFault(3011, "Invalid version string %s" % client_version),
+                sys.exc_info()[2],
+            )
 
         try:
             server_major = int(server_major)
             server_minor = int(server_minor)
         except ValueError:
-            raise_with_tb(rhnException("Invalid server version string %s"
-                                       % server_version), sys.exc_info()[2])
+            raise_with_tb(
+                # pylint: disable-next=consider-using-f-string
+                rhnException("Invalid server version string %s" % server_version),
+                sys.exc_info()[2],
+            )
 
         if client_major != server_major:
-            raise rhnFault(3012, "Client version %s does not match"
-                           " server version %s" % (client_version, server_version),
-                           explain=0)
+            raise rhnFault(
+                3012,
+                # pylint: disable-next=consider-using-f-string
+                "Client version %s does not match"
+                " server version %s" % (client_version, server_version),
+                explain=0,
+            )
 
 
 class FunctionRetrievalError(Exception):

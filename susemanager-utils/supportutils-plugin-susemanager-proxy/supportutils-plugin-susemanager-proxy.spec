@@ -1,7 +1,7 @@
 #
 # spec file for package supportutils-plugin-susemanager-proxy
 #
-# Copyright (c) 2022 SUSE LLC
+# Copyright (c) 2024 SUSE LLC
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -17,7 +17,7 @@
 
 
 Name:           supportutils-plugin-susemanager-proxy
-Version:        4.4.3
+Version:        5.0.1
 Release:        1
 Source:         %{name}-%{version}.tar.gz
 Summary:        Supportconfig Plugin for SUSE Manager Proxy

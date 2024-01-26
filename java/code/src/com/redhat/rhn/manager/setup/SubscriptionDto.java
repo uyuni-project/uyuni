@@ -30,6 +30,17 @@ public class SubscriptionDto {
      * Constructor.
      *
      * @param nameIn the name
+     * @param startDateIn the start date
+     * @param endDateIn the end date
+     */
+    public SubscriptionDto(String nameIn, Date startDateIn, Date endDateIn) {
+        this(nameIn, null, null, startDateIn, endDateIn);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param nameIn the name
      * @param productClassIn the product class
      * @param consumedIn consumed
      * @param startDateIn the start date

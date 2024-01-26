@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Jan 16 08:12:07 CET 2024 - jgonzalez@suse.com
+
+- version 5.0.1-1
+  * Fix conflicting NAME for SLES and SLES4SAP channels of uyuni tools
+    in spacewalk-common-channels
+
+-------------------------------------------------------------------
 Fri Dec 15 17:24:43 CET 2023 - rosuna@suse.com
 
 - version 4.4.11-1

@@ -400,18 +400,20 @@ class ProductsPageWrapper extends React.Component {
             />
             <hr />
             {this.state.selectedItems.length > 0 ? (
-              <div className="text-left">
-                <h4>Selected products</h4>
-                <ul>
-                  {this.state.selectedItems.map((i) => (
-                    <li key={i.identifier}>
-                      {i.label} [{i.arch}]
-                    </li>
-                  ))}
-                </ul>
-              </div>
+              <>
+                <div className="text-left">
+                  <h4>Selected products</h4>
+                  <ul>
+                    {this.state.selectedItems.map((i) => (
+                      <li key={i.identifier}>
+                        {i.label} [{i.arch}]
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <hr />
+              </>
             ) : null}
-            <hr />
             <h4>{t("Why aren't all products displayed in the list?")}</h4>
             <p>
               {t(

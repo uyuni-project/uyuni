@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -23,28 +24,31 @@ from spacewalk.server import rhnSQL, configFilesHandler
 from spacewalk.server.rhnHandler import rhnHandler
 
 
+# pylint: disable-next=missing-class-docstring
 class ConfigManagement(configFilesHandler.ConfigFilesHandler):
-
     def __init__(self):
         log_debug(3)
         configFilesHandler.ConfigFilesHandler.__init__(self)
-        self.functions.update({
-            'client.list_config_channels': 'client_list_channels',
-            # XXX1
-            'client.set_namespaces': 'client_set_namespaces',
-            'client.list_files': 'client_list_files',
-            'client.get_file': 'client_get_file',
-            'client.get_default_delimiters': 'client_get_delimiters',
-            'client.upload_file': 'client_upload_file',
-            'client.get_maximum_file_size': 'client_get_maximum_file_size',
-            'client.upload': 'client_upload_to_server_import',
-        })
+        self.functions.update(
+            {
+                "client.list_config_channels": "client_list_channels",
+                # XXX1
+                "client.set_namespaces": "client_set_namespaces",
+                "client.list_files": "client_list_files",
+                "client.get_file": "client_get_file",
+                "client.get_default_delimiters": "client_get_delimiters",
+                "client.upload_file": "client_upload_file",
+                "client.get_maximum_file_size": "client_get_maximum_file_size",
+                "client.upload": "client_upload_to_server_import",
+            }
+        )
         self.org_id = None
 
     # We need the org id too
+    # pylint: disable-next=arguments-renamed
     def auth_system(self, systemid):
         rhnHandler.auth_system(self, systemid)
-        self.org_id = self.server.server['org_id']
+        self.org_id = self.server.server["org_id"]
 
     def client_get_maximum_file_size(self, systemid):
         log_debug(1)
@@ -67,34 +71,47 @@ class ConfigManagement(configFilesHandler.ConfigFilesHandler):
         self.auth_system(systemid)
 
         server_id = self.server.getid()
-        org_id = self.server.server['org_id']
+        org_id = self.server.server["org_id"]
 
-        h = rhnSQL.prepare("""
+        h = rhnSQL.prepare(
+            """
             delete from rhnServerConfigChannel where server_id = :server_id
-        """)
+        """
+        )
         h.execute(server_id=server_id)
 
-        h = rhnSQL.prepare("""
+        h = rhnSQL.prepare(
+            """
             insert into rhnServerConfigChannel (server_id, config_channel_id, position)
             select :server_id, id, :position
               from rhnConfigChannel
              where name = :config_channel
                and org_id = :org_id
-        """)
+        """
+        )
 
         position = 0
         for config_channel in namespaces:
-            rowcount = h.execute(server_id=server_id, position=position,
-                                 config_channel=config_channel, org_id=org_id)
+            rowcount = h.execute(
+                server_id=server_id,
+                position=position,
+                config_channel=config_channel,
+                org_id=org_id,
+            )
             if not rowcount:
-                raise rhnFault(4009, "Unable to find config channel %s" %
-                               config_channel, explain=0)
+                raise rhnFault(
+                    4009,
+                    # pylint: disable-next=consider-using-f-string
+                    "Unable to find config channel %s" % config_channel,
+                    explain=0,
+                )
             position = position + 1
 
         rhnSQL.commit()
         return 0
 
-    _query_client_list_files = rhnSQL.Statement("""
+    _query_client_list_files = rhnSQL.Statement(
+        """
         select cfn.path, cr.config_file_type_id
           from rhnConfigChannelType cct,
                rhnConfigChannel cc,
@@ -113,10 +130,11 @@ class ConfigManagement(configFilesHandler.ConfigFilesHandler):
            and cfs.label = 'alive'
            and cf.config_file_name_id = cfn.id
            order by cfn.path
-    """)
+    """
+    )
 
     def client_list_files(self, systemid, config_channel=None):
-        """ Return array of files (its path), which we manage on that system. """
+        """Return array of files (its path), which we manage on that system."""
         log_debug(1)
         self.auth_system(systemid)
 
@@ -124,7 +142,7 @@ class ConfigManagement(configFilesHandler.ConfigFilesHandler):
             config_channels = [config_channel]
         else:
             config_channels = self._get_client_config_channels(self.server.getid())
-            config_channels = [x['label'] for x in config_channels]
+            config_channels = [x["label"] for x in config_channels]
 
         if not config_channels:
             # No config channels
@@ -145,35 +163,44 @@ class ConfigManagement(configFilesHandler.ConfigFilesHandler):
                 if not row:
                     break
 
-                path = row['path']
+                path = row["path"]
 
                 if not path in result_hash:
-                    result_hash[path] = (config_channel, path, row['config_file_type_id'])
+                    result_hash[path] = (
+                        config_channel,
+                        path,
+                        row["config_file_type_id"],
+                    )
 
                 if config_channel == str(self.server.getid()):
-                    result_hash[path] = (config_channel, path, row['config_file_type_id'])
+                    result_hash[path] = (
+                        config_channel,
+                        path,
+                        row["config_file_type_id"],
+                    )
 
         result = list(result_hash.values())
         # Sort by path first since that's what the web site does
-        result.sort(key=lambda x:x[1])
+        result.sort(key=lambda x: x[1])
         return result
 
     def client_get_file(self, systemid, filename):
-        """ Returns requested config file.
-            If file do not exist or system is not subscribed to, then we return.
-            {'missing' : 1}
-            Otherwise dictionary is returned. It should contains keys:
-            path, config_channel, file_contents, checksum_type, checksum, delim_start
-            delim_end, revision, username, groupname, filemode, encoding, filetype and
-            selinux_ctx.
-            See server/configFilesHandler.py:format_file_results
+        """Returns requested config file.
+        If file do not exist or system is not subscribed to, then we return.
+        {'missing' : 1}
+        Otherwise dictionary is returned. It should contains keys:
+        path, config_channel, file_contents, checksum_type, checksum, delim_start
+        delim_end, revision, username, groupname, filemode, encoding, filetype and
+        selinux_ctx.
+        See server/configFilesHandler.py:format_file_results
         """
         self.auth_system(systemid)
         server_id = self.server.getid()
 
         return self._client_get_file(server_id, filename)
 
-    _query_client_get_file = rhnSQL.Statement("""
+    _query_client_get_file = rhnSQL.Statement(
+        """
         select :path path,
                cc.label config_channel,
                c.contents file_contents,
@@ -218,7 +245,8 @@ class ConfigManagement(configFilesHandler.ConfigFilesHandler):
            and cr.config_file_type_id = cft.id
            and cct.id = cc.confchan_type_id
          order by cct.priority, scc.position
-    """)
+    """
+    )
 
     def _client_get_file(self, server_id, filename):
         h = rhnSQL.prepare(self._query_client_get_file)
@@ -227,11 +255,12 @@ class ConfigManagement(configFilesHandler.ConfigFilesHandler):
         row = h.fetchone_dict()
         if not row:
             # XXX Return something other than a dict?
-            return {'missing': 1}
+            return {"missing": 1}
 
         return self._format_file_results(row)
 
-    _query_client_config_channels = rhnSQL.Statement("""
+    _query_client_config_channels = rhnSQL.Statement(
+        """
         select cc.label,
                cc.name
           from rhnConfigChannelType cct,
@@ -242,14 +271,16 @@ class ConfigManagement(configFilesHandler.ConfigFilesHandler):
            and cc.confchan_type_id = cct.id
            and cct.label in ('normal', 'local_override')
          order by scc.position nulls last, cc.name desc
-    """)
+    """
+    )
 
     def _get_client_config_channels(self, server_id):
         h = rhnSQL.prepare(self._query_client_config_channels)
         h.execute(server_id=server_id)
         return h.fetchall_dict() or []
 
-    _query_client_upload_files = rhnSQL.Statement("""
+    _query_client_upload_files = rhnSQL.Statement(
+        """
         select acc.config_channel_id, ast.name action_status
           from rhnServerAction sa,
                rhnActionStatus ast,
@@ -259,7 +290,8 @@ class ConfigManagement(configFilesHandler.ConfigFilesHandler):
            and sa.server_id = :server_id
            and sa.action_id = :action_id
            and sa.status = ast.id
-    """)
+    """
+    )
 
     def client_upload_file(self, systemid, action_id, file):
         self.auth_system(systemid)
@@ -271,14 +303,15 @@ class ConfigManagement(configFilesHandler.ConfigFilesHandler):
         row = h.fetchone_dict()
         if not row:
             raise rhnFault(4002, "Action not available for this server")
-        if row['action_status'] != 'Picked Up':
+        if row["action_status"] != "Picked Up":
             raise rhnFault(4002, "Improper action for this server")
 
-        config_channel_id = row['config_channel_id']
+        config_channel_id = row["config_channel_id"]
 
         return self.push_file(config_channel_id, file)
 
-    _query_lookup_import_channel = rhnSQL.Statement("""
+    _query_lookup_import_channel = rhnSQL.Statement(
+        """
         select cc.id
           from rhnConfigChannelType cct,
                rhnConfigChannel cc,
@@ -287,7 +320,8 @@ class ConfigManagement(configFilesHandler.ConfigFilesHandler):
            and scc.config_channel_id = cc.id
            and cc.confchan_type_id = cct.id
            and cct.label = 'server_import'
-    """)
+    """
+    )
 
     # Almost identical to client_upload_files
     def client_upload_to_server_import(self, systemid, file):
@@ -300,35 +334,39 @@ class ConfigManagement(configFilesHandler.ConfigFilesHandler):
         if not row:
             config_channel_id = self._create_server_import_channel(self.server_id)
         else:
-            config_channel_id = row['id']
+            config_channel_id = row["id"]
 
         return self.push_file(config_channel_id, file)
 
-    _query_create_server_import_channel = rhnSQL.Statement("""
+    _query_create_server_import_channel = rhnSQL.Statement(
+        """
         insert into rhnServerConfigChannel
                (server_id, config_channel_id, position)
         values (:server_id, :config_channel_id, :position)
-    """)
+    """
+    )
 
     def _create_server_import_channel(self, server_id):
+        # pylint: disable-next=consider-using-f-string
         name = "server_import Config Channel for system %d" % server_id
         description = "XXX"
 
         # server_import and local_override channels that
         # get created need to conform to this label formula:
         # {rhnConfigChannelType.label}-{sid}
+        # pylint: disable-next=consider-using-f-string
         label = "server_import-%d" % server_id
 
-        insert_call = rhnSQL.Function('rhn_config.insert_channel',
-                                      rhnSQL.types.NUMBER())
-        config_channel_id = insert_call(self.org_id,
-                                        'server_import',
-                                        name,
-                                        label,
-                                        description)
+        insert_call = rhnSQL.Function(
+            "rhn_config.insert_channel", rhnSQL.types.NUMBER()
+        )
+        config_channel_id = insert_call(
+            self.org_id, "server_import", name, label, description
+        )
 
         h = rhnSQL.prepare(self._query_create_server_import_channel)
-        h.execute(server_id=server_id, config_channel_id=config_channel_id,
-                  position=None)
+        h.execute(
+            server_id=server_id, config_channel_id=config_channel_id, position=None
+        )
 
         return config_channel_id

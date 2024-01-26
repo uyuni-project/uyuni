@@ -15,9 +15,6 @@
 
 package com.suse.manager.webui.services.pillar;
 
-import static com.suse.manager.webui.services.SaltConstants.PILLAR_DATA_FILE_EXT;
-import static com.suse.manager.webui.services.SaltConstants.PILLAR_DATA_FILE_PREFIX;
-
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.AccessToken;
@@ -37,7 +34,7 @@ import java.util.Optional;
 /**
  * Class for generating minion pillar data containing general information of minions
  */
-public class MinionGeneralPillarGenerator implements MinionPillarGenerator {
+public class MinionGeneralPillarGenerator extends MinionPillarGeneratorBase {
 
     /** Logger */
     private static final Logger LOG = LogManager.getLogger(MinionGeneralPillarGenerator.class);
@@ -46,10 +43,14 @@ public class MinionGeneralPillarGenerator implements MinionPillarGenerator {
     public static final String CATEGORY = "general";
 
     private static final int PKGSET_INTERVAL = 5;
+    private static final Integer REBOOT_INFO_INTERVAL = 10;
 
     private static final Map<String, Object> PKGSET_BEACON_PROPS = new HashMap<>();
+    private static final Map<String, Object> REBOOT_INFO_BEACON_PROPS = new HashMap<>();
+
     static {
         PKGSET_BEACON_PROPS.put("interval", PKGSET_INTERVAL);
+        REBOOT_INFO_BEACON_PROPS.put("interval", REBOOT_INFO_INTERVAL);
     }
 
     /**
@@ -94,6 +95,7 @@ public class MinionGeneralPillarGenerator implements MinionPillarGenerator {
                 minion.getOsFamily().toLowerCase().equals("redhat") ||
                 minion.getOsFamily().toLowerCase().equals("debian")) {
             beaconConfig.put("pkgset", PKGSET_BEACON_PROPS);
+            beaconConfig.put("reboot_info", REBOOT_INFO_BEACON_PROPS);
         }
         if (!beaconConfig.isEmpty()) {
             pillar.add("beacons", beaconConfig);
@@ -155,11 +157,6 @@ public class MinionGeneralPillarGenerator implements MinionPillarGenerator {
         // Flag to override dnf modularity failsafe mechanism (module_hotfixes)
         chanProps.put("cloned_nonmodular", chan.isCloned() && !chan.isModular());
         return chanProps;
-    }
-
-    @Override
-    public String getFilename(String minionId) {
-        return PILLAR_DATA_FILE_PREFIX + "_" + minionId + "." + PILLAR_DATA_FILE_EXT;
     }
 
     @Override

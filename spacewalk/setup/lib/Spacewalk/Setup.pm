@@ -46,11 +46,11 @@ our $VERSION = '1.1';
 
 use constant SHARED_DIR => "/usr/share/spacewalk/setup";
 
-use constant POSTGRESQL_SCHEMA_FILE => File::Spec->catfile("/etc", "sysconfig",
-    'rhn', 'postgres', 'main.sql');
+use constant POSTGRESQL_SCHEMA_FILE => File::Spec->catfile("/usr", "share",
+    'susemanager', 'db', 'postgres', 'main.sql');
 
-use constant POSTGRESQL_DEPLOY_FILE => File::Spec->catfile("/etc", "sysconfig",
-    'rhn', 'postgres', 'deploy.sql');
+use constant POSTGRESQL_DEPLOY_FILE => File::Spec->catfile("/usr", "share",
+    'susemanager', 'db', 'postgres', 'deploy.sql');
 
 use constant DEFAULT_ANSWER_FILE_GLOB =>
   SHARED_DIR . '/defaults.d/*.conf';

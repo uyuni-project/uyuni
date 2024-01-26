@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2015 Red Hat, Inc.
 #
@@ -17,55 +18,70 @@ from spacewalk.common import rhnFlags
 from spacewalk.common.rhnLog import log_debug
 
 
-__rhnexport__ = ['schedulePoller',
-                 'reboot',
-                 'resume',
-                 'start',
-                 'suspend',
-                 'shutdown',
-                 'destroy',
-                 'setMemory',
-                 'setVCPUs'
-                 ]
+__rhnexport__ = [
+    "schedulePoller",
+    "reboot",
+    "resume",
+    "start",
+    "suspend",
+    "shutdown",
+    "destroy",
+    "setMemory",
+    "setVCPUs",
+]
 
 
+# pylint: disable-next=unused-argument
 def _do_nothing(server_id, action_id):
     log_debug(4, action_id)
-    action_status = rhnFlags.get('action_status')
-    log_debug(4, "Action ID: %s, Action Status: %s" % (str(action_id), str(action_status)))
+    action_status = rhnFlags.get("action_status")
+    log_debug(
+        4,
+        # pylint: disable-next=consider-using-f-string
+        "Action ID: %s, Action Status: %s" % (str(action_id), str(action_status)),
+    )
 
 
+# pylint: disable-next=invalid-name,dangerous-default-value,unused-argument
 def schedulePoller(server_id, action_id, data={}):
     _do_nothing(server_id, action_id)
 
 
+# pylint: disable-next=dangerous-default-value,unused-argument
 def reboot(server_id, action_id, data={}):
     _do_nothing(server_id, action_id)
 
 
+# pylint: disable-next=dangerous-default-value,unused-argument
 def resume(server_id, action_id, data={}):
     _do_nothing(server_id, action_id)
 
 
+# pylint: disable-next=dangerous-default-value,unused-argument
 def start(server_id, action_id, data={}):
     _do_nothing(server_id, action_id)
 
 
+# pylint: disable-next=dangerous-default-value,unused-argument
 def suspend(server_id, action_id, data={}):
     _do_nothing(server_id, action_id)
 
 
+# pylint: disable-next=dangerous-default-value,unused-argument
 def shutdown(server_id, action_id, data={}):
     _do_nothing(server_id, action_id)
 
 
+# pylint: disable-next=dangerous-default-value,unused-argument
 def destroy(server_id, action_id, data={}):
     _do_nothing(server_id, action_id)
 
 
+# pylint: disable-next=invalid-name,dangerous-default-value,unused-argument
 def setMemory(server_id, action_id, data={}):
     _do_nothing(server_id, action_id)
 
 
+# pylint: disable-next=invalid-name,dangerous-default-value,unused-argument
 def setVCPUs(server_id, action_id, data={}):
     _do_nothing(server_id, action_id)

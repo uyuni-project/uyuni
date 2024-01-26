@@ -1,7 +1,7 @@
 #
 # spec file for package susemanager-sls
 #
-# Copyright (c) 2022 SUSE LLC
+# Copyright (c) 2024 SUSE LLC
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -30,7 +30,7 @@
 %endif
 
 Name:           susemanager-sls
-Version:        4.4.10
+Version:        5.0.1
 Release:        1
 Summary:        Static Salt state files for SUSE Manager
 License:        Apache-2.0 AND LGPL-2.1-only

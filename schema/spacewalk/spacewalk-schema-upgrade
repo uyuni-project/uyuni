@@ -46,8 +46,8 @@ eval {
     die "Unable to import required module: $error";
 };
 
-my $SCHEMA_DIR = "/etc/sysconfig/rhn/" . $db_specific->DB_NAME;
-my $SCHEMA_UPGRADE_DIR = "/etc/sysconfig/rhn/" . $db_specific->UPGRADE_PREFIX . "-upgrade";
+my $SCHEMA_DIR = "/usr/share/susemanager/db/" . $db_specific->DB_NAME;
+my $SCHEMA_UPGRADE_DIR = "/usr/share/susemanager/db/" . $db_specific->UPGRADE_PREFIX . "-upgrade";
 my $SCHEMA_UPGRADE_LOGDIR = "/var/log/spacewalk/" . $db_specific->UPGRADE_PREFIX . "-upgrade";
 
 my %options;
@@ -595,8 +595,8 @@ command in your PATH.
 
 =over 5
 
-=item F</etc/sysconfig/rhn/schema-upgrade>,
-F</etc/sysconfig/rhn/schema-reportdb-upgrade>
+=item F</usr/share/susemanager/db/schema-upgrade>,
+F</usr/share/susemanager/db/schema-reportdb-upgrade>
 
 Directory containing directories with schema upgrade scripts (one directory for
 every major upgrade step).

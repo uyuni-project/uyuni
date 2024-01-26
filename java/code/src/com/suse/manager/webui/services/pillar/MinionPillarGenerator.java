@@ -33,14 +33,14 @@ public interface MinionPillarGenerator {
     Optional<Pillar> generatePillarData(MinionServer minion);
 
     /**
-     * Generates the filename of the file disk where the pillar data should be save
-     * @param minionId the minion Id
-     * @return the filename
-     */
-    String getFilename(String minionId);
-
-    /**
      * @return the pillar category for the generator
      */
     String getCategory();
+
+    /**
+     * Remove the pillar data from the given minion
+     * @param minion the minion server
+     */
+    void removePillar(MinionServer minion);
+
 }

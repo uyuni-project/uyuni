@@ -15,8 +15,6 @@
 package com.redhat.rhn.frontend.xmlrpc.system.test;
 
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannelFamily;
-import static com.suse.manager.webui.services.SaltConstants.PILLAR_DATA_FILE_EXT;
-import static com.suse.manager.webui.services.SaltConstants.PILLAR_DATA_FILE_PREFIX;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -190,8 +188,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -1262,13 +1258,6 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
         val = server.getCustomDataValue(testKey);
         assertNull(val);
-
-        Path filePath = tmpPillarRoot.resolve(
-                PILLAR_DATA_FILE_PREFIX + "_" +
-                server.getMinionId() + "_custom_info." +
-                PILLAR_DATA_FILE_EXT);
-
-        assertFalse(Files.exists(filePath));
 
         try {
             pillar = readCustomInfoPillar(server);

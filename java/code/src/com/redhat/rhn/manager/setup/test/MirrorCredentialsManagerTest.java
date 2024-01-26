@@ -16,18 +16,31 @@ package com.redhat.rhn.manager.setup.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.redhat.rhn.domain.channel.test.ChannelFamilyTest;
+import com.redhat.rhn.frontend.xmlrpc.sync.content.ContentSyncSource;
 import com.redhat.rhn.manager.content.ContentSyncException;
+import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.manager.setup.MirrorCredentialsDto;
 import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
+import com.redhat.rhn.manager.setup.MirrorCredentialsNotUniqueException;
+import com.redhat.rhn.manager.setup.SubscriptionDto;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 import com.redhat.rhn.testing.TestUtils;
+
+import com.suse.cloud.CloudPaygManager;
+import com.suse.scc.model.SCCSubscriptionJson;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -137,6 +150,73 @@ public class MirrorCredentialsManagerTest extends RhnMockStrutsTestCase {
         assertTrue(credsManager.findMirrorCredentials(creds2.getId()).isPrimary());
     }
 
+    @Test
+    public void throwsExceptionIfCredentialsWithSameUsernameAlreadyExists() {
+        MirrorCredentialsDto creds = storeTestCredentials();
+
+        Exception ex = assertThrows(MirrorCredentialsNotUniqueException.class,
+            () -> storeTestCredentials(creds.getUser(), creds.getPassword()));
+
+        assertEquals("Username already exists", ex.getMessage());
+    }
+
+    @Test
+    public void canRetrieveListOfSubscriptions() {
+        MirrorCredentialsDto creds = storeTestCredentials();
+
+        ChannelFamilyTest.ensureChannelFamilyExists(user, "MODULE", "SUSE Linux Enterprise Modules");
+        ChannelFamilyTest.ensureChannelFamilyExists(user, "SLE-M-T", "SUSE Manager Tools");
+        ChannelFamilyTest.ensureChannelFamilyExists(user, "SMS", "SUSE Manager Server");
+        ChannelFamilyTest.ensureChannelFamilyExists(user, "SMP", "SUSE Manager Proxy");
+
+        // Mock the content sync manager to return a known set of subscriptions
+        credsManager = new MirrorCredentialsManager(new CloudPaygManager(), new ContentSyncManager() {
+
+            @Override
+            public List<SCCSubscriptionJson> updateSubscriptions(ContentSyncSource source) throws ContentSyncException {
+                return List.of(
+                    new SCCSubscriptionJson("One", "ACTIVE", "2023-10-03T10:15:00.00Z", "2026-10-03T10:15:00.00Z",
+                        List.of("MODULE")
+                    ),
+                    new SCCSubscriptionJson("two", "EXPIRED", "2022-10-03T08:10:23.00Z", "2023-10-03T17:15:30.00Z",
+                        List.of("SLE-M-T")
+                    ),
+                    new SCCSubscriptionJson("three", "ACTIVE", "2023-06-20T00:00:00.00Z", "2025-06-20T00:00:00.00Z",
+                        List.of()
+                    ),
+                    new SCCSubscriptionJson("four", "ACTIVE", "2020-01-01T12:30:00.00Z", "2030-01-01T12:30:00.00Z",
+                        List.of("SMS", "SMP", "SMQ") // SMQ does not exist, code should use the label as is
+                    )
+                );
+            }
+        });
+
+        List<SubscriptionDto> subscriptions = credsManager.getSubscriptions(creds, request, true);
+
+        assertNotNull(subscriptions);
+        assertEquals(2, subscriptions.size()); // Only one and four should be included
+
+        assertEquals(subscriptions.get(0).getName(), "SUSE Linux Enterprise Modules");
+        assertEquals(
+            Date.from(LocalDateTime.of(2023, 10, 3, 10, 15, 0, 0).atOffset(ZoneOffset.UTC).toInstant()),
+            subscriptions.get(0).getStartDate()
+        );
+        assertEquals(
+            Date.from(LocalDateTime.of(2026, 10, 3, 10, 15, 0, 0).atOffset(ZoneOffset.UTC).toInstant()),
+            subscriptions.get(0).getEndDate()
+        );
+
+        assertEquals(subscriptions.get(1).getName(), "SUSE Manager Server OR SUSE Manager Proxy OR SMQ");
+        assertEquals(
+            Date.from(LocalDateTime.of(2020, 1, 1, 12, 30, 0, 0).atOffset(ZoneOffset.UTC).toInstant()),
+            subscriptions.get(1).getStartDate()
+        );
+        assertEquals(
+            Date.from(LocalDateTime.of(2030, 1, 1, 12, 30, 0, 0).atOffset(ZoneOffset.UTC).toInstant()),
+            subscriptions.get(1).getEndDate()
+        );
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -160,14 +240,25 @@ public class MirrorCredentialsManagerTest extends RhnMockStrutsTestCase {
     }
 
     /**
-     * Store test credentials for a given id.
-     *
-     * @param id the id of stored credentials
+     * Store test credentials.
+     * @return a DTO representing the created credentials
      */
     private MirrorCredentialsDto storeTestCredentials() throws ContentSyncException {
+        return storeTestCredentials("testuser-" + TestUtils.randomString(), "testpass-" + TestUtils.randomString());
+    }
+
+    /**
+     * Store test credentials for a given id.
+     *
+     * @param userIn the username
+     * @param passwordIn the password
+
+     * @return a DTO representing the created credentials
+     */
+    private MirrorCredentialsDto storeTestCredentials(String userIn, String passwordIn) throws ContentSyncException {
         MirrorCredentialsDto creds = new MirrorCredentialsDto();
-        creds.setUser("testuser-" + TestUtils.randomString());
-        creds.setPassword("testpass-" + TestUtils.randomString());
+        creds.setUser(userIn);
+        creds.setPassword(passwordIn);
         long dbId = credsManager.storeMirrorCredentials(creds, request);
         creds.setId(dbId);
         return creds;

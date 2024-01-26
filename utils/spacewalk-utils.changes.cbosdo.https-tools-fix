@@ -1,0 +1,2 @@
+- Use http for localhost and https for other FQDN: 
+  spacewalk-common-channels

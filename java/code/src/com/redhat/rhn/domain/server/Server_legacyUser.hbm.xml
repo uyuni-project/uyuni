@@ -184,14 +184,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                          table="suseMinionInfo">
             <key column="server_id"/>
             <property name="minionId" column="minion_id" />
-            <!--
-            We typically look at the packages installed on a system to identify whether a reboot is necessary.
-            This property initially only works for transactional systems, but the idea is that gradually the
-            other types of systems also provide this information directly to be stored here so we no longer rely
-            on package related inference to determine whether a reboot is necessary. Even because this
-            information does not always depend only on the packages.
-            -->
-            <property name="rebootNeeded" column="reboot_needed" type="yes_no" />
+            <property name="rebootRequiredAfter" column="reboot_required_after" type="timestamp" />
             <property name="osFamily" column="os_family"  type="string" length="32" />
             <property name="kernelLiveVersion" column="kernel_live_version"  type="string" length="255" />
             <property name="sshPushPort" column="ssh_push_port" access="field"/>
@@ -552,40 +545,34 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <return-scalar column="packageName" type="string"/>
         <return-scalar column="packageArch" type="string"/>
         <return-scalar column="packageVersion" type="string"/>
-        <![CDATA[select X.server_id as serverId, X.name as packageName, X.package_arch as packageArch,
-            case when (X.evr).epoch is null
-                then (X.evr).version || '-' || (X.evr).release
-                else (X.evr).epoch || ':' || (X.evr).version || '-' || (X.evr).release
-            end  as packageVersion
-            FROM ( select distinct sc.server_id, pn.name, max(pevr.evr) evr, pa.label as package_arch
-                 FROM rhnErrata e,
-                      rhnServerChannel sc,
-                      rhnChannelErrata ce,
-                      rhnErrataPackage ep,
-                      rhnServerPackage sp,
-                      rhnPackage p,
-                      rhnPackageArch pa,
-                      rhnPackageEVR pevr,
-                      rhnPackageEVR spevr,
-                      rhnPackageName pn,
-                      rhnChannelPackage pc
-                 WHERE e.id in (:errataIds) AND
-                      sc.server_id in (:serverIds) AND
-                      e.id = ce.errata_id AND
-                      sc.channel_id = ce.channel_id AND
-                      e.id = ep.errata_id AND
-                      ep.package_id = p.id AND
-                      p.name_id = sp.name_id AND
-                      p.evr_id = pevr.id AND
-                      sp.evr_id = spevr.id AND
-                      (pevr.evr).type = (spevr.evr).type AND
-                      pevr.evr > spevr.evr AND
-                      p.package_arch_id = sp.package_arch_id AND
-                      p.package_arch_id = pa.id AND
-                      p.name_id = pn.id AND
-                      pc.package_id = p.id AND
-                      pc.channel_id = sc.channel_id
-                 GROUP BY sc.server_id, pn.name, pa.label) X]]>
+        <![CDATA[
+            WITH NewPackageForServerErrata as (
+                 SELECT DISTINCT sc.server_id, pn.name, max(pevr.evr) evr, pa.label as package_arch
+                   FROM rhnErrata e
+                            INNER JOIN rhnErrataPackage ep ON e.id = ep.errata_id
+                            INNER JOIN rhnPackage p ON ep.package_id = p.id
+                            INNER JOIN rhnPackageEVR pevr ON p.evr_id = pevr.id
+                            INNER JOIN rhnPackageName pn ON p.name_id = pn.id
+                            INNER JOIN rhnPackageArch pa ON p.package_arch_id = pa.id
+
+                            INNER JOIN rhnChannelErrata ce ON e.id = ce.errata_id
+                            INNER JOIN rhnServerChannel sc ON (sc.channel_id = ce.channel_id AND sc.server_id in (:serverIds))
+                            INNER JOIN rhnChannelPackage pc ON (pc.channel_id = sc.channel_id AND pc.package_id = p.id)
+
+                            INNER JOIN rhnServerPackage sp ON (sp.server_id = sc.server_id AND p.name_id = sp.name_id AND p.package_arch_id = sp.package_arch_id)
+                            INNER JOIN rhnPackageEVR spevr ON (sp.evr_id = spevr.id AND (pevr.evr).type = (spevr.evr).type AND pevr.evr > spevr.evr)
+                          WHERE e.id in (:errataIds)
+                       GROUP BY sc.server_id, pn.name, pa.label
+            )
+            SELECT pse.server_id AS serverId
+                        , pse.name AS packageName
+                        , pse.package_arch AS packageArch
+                        , CASE WHEN (pse.evr).epoch IS NULL
+                            THEN (pse.evr).version || '-' || (pse.evr).release
+                            ELSE (pse.evr).epoch || ':' || (pse.evr).version || '-' || (pse.evr).release
+                        END AS packageVersion
+              FROM NewPackageForServerErrata pse
+        ]]>
     </sql-query>
 
     <sql-query name="Server.findServerInSSMByChannel">

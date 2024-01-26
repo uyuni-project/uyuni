@@ -8,7 +8,6 @@ import { Messages } from "components/messages";
 import { ThemeProps } from "../login";
 import { getFormMessages, getGlobalMessages } from "../messages";
 import useLoginApi from "../use-login-api";
-import styles from "./login.css";
 import LoginFooter from "./login-footer";
 
 const UyuniThemeLogin = (props: ThemeProps) => {
@@ -22,7 +21,7 @@ const UyuniThemeLogin = (props: ThemeProps) => {
   return (
     <React.Fragment>
       <header className="navbar-pf navbar navbar-dark bg-dark" role="presentation" />
-      <div className={`spacewalk-main-column-layout ${styles.fixed_content}`}>
+      <div className={`spacewalk-main-column-layout`}>
         <section id="spacewalk-content">
           <div className="wrap">
             <Messages

@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring,invalid-name
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -29,8 +30,9 @@ def check_package_arch(name):
         return None
     return name
 
-if __name__ == '__main__':
-    """Test code.
-    """
+
+if __name__ == "__main__":
+    # pylint: disable-next=pointless-string-statement
+    """Test code."""
     rhnSQL.initDB()
-    print((check_package_arch('i386')))
+    print((check_package_arch("i386")))

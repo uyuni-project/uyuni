@@ -50,8 +50,8 @@ def product_version
 end
 
 def use_salt_bundle
-  # Use venv-salt-minion in Uyuni, or SUMA Head, 4.2 and 4.3
-  product == 'Uyuni' || %w[head 4.3 4.2].include?(product_version)
+  # Use venv-salt-minion in Uyuni, or SUMA Head, 5.0, 4.2 and 4.3
+  product == 'Uyuni' || %w[head 5.0 4.3 4.2].include?(product_version)
 end
 
 # WARN: It's working for /24 mask, but couldn't not work properly with others
@@ -96,24 +96,23 @@ rescue StandardError => e
 end
 
 def check_text_and_catch_request_timeout_popup?(text1, text2: nil, timeout: Capybara.default_max_wait_time)
-  if $catch_timeout_message
-    start_time = Time.now
-    repeat_until_timeout(message: "'#{text1}' still not visible", timeout: DEFAULT_TIMEOUT) do
-      while Time.now - start_time <= timeout
-        return true if has_text?(text1, wait: 4)
-        return true if !text2.nil? && has_text?(text2, wait: 4)
+  return has_text?(text1, wait: timeout) || (!text2.nil? && has_text?(text2, wait: timeout)) unless $catch_timeout_message
 
-        if has_text?('Request has timed out', wait: 0)
-          log 'Request timeout found, performing reload'
-          click_button('reload the page')
-          start_time = Time.now
-          raise "Request timeout message still present after #{Capybara.default_max_wait_time} seconds." unless has_no_text?('Request has timed out')
-        end
-      end
-      return false
+  start_time = Time.now
+  repeat_until_timeout(message: "'#{text1}' still not visible", timeout: DEFAULT_TIMEOUT) do
+    while Time.now - start_time <= timeout
+      return true if has_text?(text1, wait: 4)
+      return true if !text2.nil? && has_text?(text2, wait: 4)
+
+      next unless has_text?('Request has timed out', wait: 0)
+
+      log 'Request timeout found, performing reload'
+      click_button('reload the page')
+      start_time = Time.now
+      raise "Request timeout message still present after #{Capybara.default_max_wait_time} seconds." unless has_no_text?('Request has timed out')
+
     end
-  else
-    return has_text?(text1, wait: timeout) || (!text2.nil? && has_text?(text2, wait: timeout))
+    return false
   end
 end
 

@@ -216,9 +216,10 @@ begin
                (SELECT 1
                 FROM suseMinionInfo smi
                 WHERE smi.server_id = S.id
-                AND smi.reboot_needed = 'Y'
+                AND to_date('1970-01-01', 'YYYY-MM-DD')
+                       + numtodsinterval(S.last_boot, 'second') < smi.reboot_required_after at time zone 'UTC'
                )
-        );
+    );
 
     SELECT TRUE into new_kickstarting
     FROM rhnKickstartSession KSS, rhnKickstartSessionState KSSS

@@ -355,7 +355,7 @@ public class DistUpgradeManager extends BaseManager {
                     SUSEProduct base = combination.get(0);
                     if (!ContentSyncManager.isProductAvailable(base, base)) {
                         // No Product Channels means, no subscription to access the channels
-                        logger.debug("No SUSE Product Channels for {}. Skipping", base.getFriendlyName());
+                        logger.warn("No SUSE Product Channels for {}. Skipping", base.getFriendlyName());
                         continue;
                     }
                     if (combination.size() == 1) {
@@ -370,7 +370,7 @@ public class DistUpgradeManager extends BaseManager {
                             if (logger.isDebugEnabled()) {
                                 addonProducts.stream()
                                         .filter(ap -> !ContentSyncManager.isProductAvailable(ap, base))
-                                        .forEach(ap -> logger.debug("No SUSE Product Channels for {}. Skipping {}",
+                                        .forEach(ap -> logger.warn("No SUSE Product Channels for {}. Skipping {}",
                                                 ap.getFriendlyName(), base.getFriendlyName()));
                             }
                             continue;
@@ -527,7 +527,7 @@ public class DistUpgradeManager extends BaseManager {
     public static Server performServerChecks(Long sid, User user) throws DistUpgradeException {
         Server server = SystemManager.lookupByIdAndUser(sid, user);
 
-        if (!server.asMinionServer().isPresent()) {
+        if (server.asMinionServer().isEmpty()) {
             // Check if server supports distribution upgrades
             boolean supported = DistUpgradeManager.isUpgradeSupported(server, user);
             if (!supported) {
@@ -543,7 +543,7 @@ public class DistUpgradeManager extends BaseManager {
         }
         else {
             Optional<MinionServer> minion = MinionServerFactory.lookupById(server.getId());
-            if (!minion.get().getOsFamily().equals("Suse")) {
+            if (minion.isEmpty() || !minion.get().getOsFamily().equals("Suse")) {
                 throw new DistUpgradeException("Dist upgrade only supported for SUSE systems");
             }
         }
@@ -748,15 +748,15 @@ public class DistUpgradeManager extends BaseManager {
 
         List<SUSEProductSet> migrationTargets = new LinkedList<>();
         for (SUSEProductSet t : allMigrationTargets) {
-            if (installedProducts.get().getAddonProducts().isEmpty()) {
+            if (installedProducts.isPresent() && installedProducts.get().getAddonProducts().isEmpty()) {
                 migrationTargets.add(t);
                 logger.debug("Found valid migration target: {}", t);
                 continue;
             }
-            List<SUSEProduct> missingAddonSuccessors = installedProducts.get().getAddonProducts()
-                .stream()
-                .filter(addon -> DistUpgradeManager.findMatch(addon, t.getAddonProducts()) == null)
-                .collect(Collectors.toList());
+            List<SUSEProduct> missingAddonSuccessors = installedProducts.orElse(new SUSEProductSet()).getAddonProducts()
+                    .stream()
+                    .filter(addon -> DistUpgradeManager.findMatch(addon, t.getAddonProducts()) == null)
+                    .collect(Collectors.toList());
 
             if (missingAddonSuccessors.isEmpty()) {
                 logger.debug("Found valid migration target: {}", t);

@@ -215,5 +215,8 @@ public class TaskConstants {
     public static final String TASK_QUERY_CHANNEL_PACKAGE_EXTRATAGS =
             "repomdgenerator_channel_package_extratags";
 
+    public static final String TASK_QUERY_PKGCLEANUP_ORPHAN_VENDOR_PKG_CHANGE_ORG =
+            "taskomatic_change_org_for_orphan_vendor_packages";
+
     private TaskConstants() { }
 }

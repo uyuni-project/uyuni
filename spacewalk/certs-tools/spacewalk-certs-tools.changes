@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jan 16 08:19:04 CET 2024 - jgonzalez@suse.com
+
+- version 5.0.1-1
+  * Bump version to 5.0.0
+
+-------------------------------------------------------------------
 Fri Dec 15 17:07:23 CET 2023 - rosuna@suse.com
 
 - version 4.4.9-1
@@ -16,7 +22,7 @@ Fri Dec 15 17:07:23 CET 2023 - rosuna@suse.com
 Wed Nov 01 20:43:30 CET 2023 - marina.latini@suse.com
 
 - version 4.4.8-1
-  * Handle server keys in PKCS8 format in mgr-ssl-cert-setup
+  * Handle server keys in PKCS8 format in mgr-ssl-cert-setup (bsc#1218615)
 
 -------------------------------------------------------------------
 Mon Sep 18 14:28:41 CEST 2023 - rosuna@suse.com

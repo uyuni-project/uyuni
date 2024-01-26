@@ -18,8 +18,8 @@ import requests
 
 # pylint:disable=W0612,W0212,C0301
 
-SPACEWALK_LIB = '/var/lib/spacewalk'
-SPACEWALK_GPG_HOMEDIR = os.path.join(SPACEWALK_LIB, 'gpgdir')
+SPACEWALK_LIB = "/var/lib/spacewalk"
+SPACEWALK_GPG_HOMEDIR = os.path.join(SPACEWALK_LIB, "gpgdir")
 
 
 class GeneralRepoException(Exception):
@@ -34,6 +34,7 @@ class DpkgRepo:
     The repositories in Debian world have several layouts,
     such as "flat", classic tree, PPA etc.
     """
+
     PKG_GZ = "Packages.gz"
     PKG_XZ = "Packages.xz"
     PKG_RW = "Packages"
@@ -42,10 +43,12 @@ class DpkgRepo:
         """
         Release file entry
         """
+
         class Checksum:  # pylint: disable=R0903
             """
             Checksums of the Release file
             """
+
             md5: str = ""
             sha1: str = ""
             sha256: str = ""
@@ -61,6 +64,7 @@ class DpkgRepo:
         """
         Parsed release container.
         """
+
         def __init__(self, repo: "DpkgRepo"):
             super().__init__()
             self.__repo = repo
@@ -73,14 +77,20 @@ class DpkgRepo:
             :return:
             """
             if not self.__repo.is_flat():
-                key = "/".join(parse.urlparse(self.__repo._url).path.strip("/").split("/")[-2:] + [key])
+                key = "/".join(
+                    parse.urlparse(self.__repo._url).path.strip("/").split("/")[-2:]
+                    + [key]
+                )
             return self[key]
 
     def __init__(self, url: str, proxies: dict = None, gpg_verify: bool = True):
         self._url = url
         self._flat_checked: typing.Optional[int] = None
         self._flat: bool = False
-        self._pkg_index: typing.Tuple[str, bytes] = ("", b"", )
+        self._pkg_index: typing.Tuple[str, bytes] = (
+            "",
+            b"",
+        )
         self._release = DpkgRepo.EntryDict(self)
         self.proxies = proxies
         self.gpg_verify = gpg_verify
@@ -97,12 +107,30 @@ class DpkgRepo:
         path = p_url.path
         if not path.endswith(index_file):
             if index_file in path:
-                logging.error("URL has already {} mentioned in it. Raising \
-                               GeneralRepoException!".format(index_file), exc_info=True)
-                raise GeneralRepoException("URL has already {} mentioned in it.".format(index_file))
+                logging.error(
+                    # pylint: disable-next=logging-format-interpolation,consider-using-f-string
+                    "URL has already {} mentioned in it. Raising \
+                               GeneralRepoException!".format(
+                        index_file
+                    ),
+                    exc_info=True,
+                )
+                raise GeneralRepoException(
+                    # pylint: disable-next=consider-using-f-string
+                    "URL has already {} mentioned in it.".format(index_file)
+                )
             path = os.path.join(path.rstrip("/"), index_file)
 
-        return parse.urlunparse((p_url.scheme, p_url.netloc, path, p_url.params, p_url.query, p_url.fragment,))
+        return parse.urlunparse(
+            (
+                p_url.scheme,
+                p_url.netloc,
+                path,
+                p_url.params,
+                p_url.query,
+                p_url.fragment,
+            )
+        )
 
     def get_pkg_index_raw(self) -> typing.Tuple[str, bytes]:
         """
@@ -120,8 +148,12 @@ class DpkgRepo:
                             break
                     except FileNotFoundError as ex:
                         logging.debug(
+                            # pylint: disable-next=logging-format-interpolation,consider-using-f-string
                             "File not found: {}".format(
-                                packages_url.replace("file://", "")), exc_info=True)
+                                packages_url.replace("file://", "")
+                            ),
+                            exc_info=True,
+                        )
                 else:
                     resp = requests.get(packages_url, proxies=self.proxies)
                     if resp.status_code == http.HTTPStatus.OK:
@@ -145,14 +177,23 @@ class DpkgRepo:
             elif fname == DpkgRepo.PKG_XZ:
                 cnt_data = lzma.decompress(cnt_data)
         except (zlib.error, lzma.LZMAError) as exc:
-            logging.exception("Exception during decompression of pkg index",
-                              exc_info=True)
+            logging.exception(
+                "Exception during decompression of pkg index", exc_info=True
+            )
+            # pylint: disable-next=raise-missing-from
             raise GeneralRepoException(exc)
         except Exception as exc:
-            logging.exception("Unknown exception during decompression of \
+            logging.exception(
+                "Unknown exception during decompression of \
                                pkg index. Raising GeneralRepoException",
-                              exc_info=True)
-            raise GeneralRepoException("Unhandled exception occurred while decompressing {}: {}".format(fname, exc)) from exc
+                exc_info=True,
+            )
+            raise GeneralRepoException(
+                # pylint: disable-next=consider-using-f-string
+                "Unhandled exception occurred while decompressing {}: {}".format(
+                    fname, exc
+                )
+            ) from exc
 
         return cnt_data.decode("utf-8")
 
@@ -164,10 +205,15 @@ class DpkgRepo:
         :return: dictionary
         """
         # Length of hexadecimal representation for each checksum algorithm
+        # pylint: disable-next=invalid-name
         LEN_MD5 = 128 // 4
+        # pylint: disable-next=invalid-name
         LEN_SHA1 = 160 // 4
+        # pylint: disable-next=invalid-name
         LEN_SHA256 = 256 // 4
+        # pylint: disable-next=invalid-name
         LEN_SHA384 = 384 // 4
+        # pylint: disable-next=invalid-name
         LEN_SHA512 = 512 // 4
         Entry = namedtuple("Entry", "checksum, size, path")
         for line in release.split(os.linesep):
@@ -175,7 +221,7 @@ class DpkgRepo:
                 entry = Entry._make(
                     filter(None, line.strip().replace("\t", " ").split(" "))
                 )
-                int(entry.checksum, 0x10) # assert entry.checksum is hexadecimal
+                int(entry.checksum, 0x10)  # assert entry.checksum is hexadecimal
                 rel_entry = DpkgRepo.ReleaseEntry(int(entry.size), entry.path)
             except (TypeError, ValueError):
                 continue
@@ -201,7 +247,6 @@ class DpkgRepo:
 
         return self._release
 
-
     def _has_valid_gpg_signature(self, uri: str, response=None) -> bool:
         """
         Validate GPG signature of Release file.
@@ -215,7 +260,13 @@ class DpkgRepo:
             if os.access(os.path.join(uri, "InRelease"), os.R_OK):
                 release_file = os.path.join(uri, "InRelease")
                 process = subprocess.Popen(
-                    ["gpg", "--verify", "--homedir", SPACEWALK_GPG_HOMEDIR, release_file],
+                    [
+                        "gpg",
+                        "--verify",
+                        "--homedir",
+                        SPACEWALK_GPG_HOMEDIR,
+                        release_file,
+                    ],
                     stdout=subprocess.DEVNULL,
                     stderr=subprocess.DEVNULL,
                 )
@@ -225,18 +276,40 @@ class DpkgRepo:
                 release_signature_file = os.path.join(uri, "Release.gpg")
                 if os.access(release_signature_file, os.R_OK):
                     process = subprocess.Popen(
-                        ["gpg", "--verify", "--homedir", SPACEWALK_GPG_HOMEDIR,
-                        release_signature_file, release_file],
+                        [
+                            "gpg",
+                            "--verify",
+                            "--homedir",
+                            SPACEWALK_GPG_HOMEDIR,
+                            release_signature_file,
+                            release_file,
+                        ],
                         stdout=subprocess.DEVNULL,
                         stderr=subprocess.DEVNULL,
                     )
                     out = process.wait(timeout=90)
                 else:
-                    logging.error("Signature file for GPG check could not be accessed: \
-                                   '{}. Raising GeneralRepoException.".format(release_signature_file))
-                    raise GeneralRepoException("Signature file for GPG check could not be accessed: {}".format(release_signature_file))
+                    logging.error(
+                        # pylint: disable-next=logging-format-interpolation,consider-using-f-string
+                        "Signature file for GPG check could not be accessed: \
+                                   '{}. Raising GeneralRepoException.".format(
+                            release_signature_file
+                        )
+                    )
+                    raise GeneralRepoException(
+                        # pylint: disable-next=consider-using-f-string
+                        "Signature file for GPG check could not be accessed: {}".format(
+                            release_signature_file
+                        )
+                    )
             else:
-                logging.error("No release file found: '{}'. Raising GeneralRepoException.".format(uri))
+                logging.error(
+                    # pylint: disable-next=logging-format-interpolation,consider-using-f-string
+                    "No release file found: '{}'. Raising GeneralRepoException.".format(
+                        uri
+                    )
+                )
+                # pylint: disable-next=consider-using-f-string
                 raise GeneralRepoException("No release file found: {}".format(uri))
         else:
             # There is a response, so we are dealing with a URL.
@@ -249,7 +322,10 @@ class DpkgRepo:
                 )
                 out = process.communicate(response.content, timeout=90)
             else:
-                signature_response = requests.get(self._get_parent_url(response.url, 1, "Release.gpg"), proxies=self.proxies)
+                signature_response = requests.get(
+                    self._get_parent_url(response.url, 1, "Release.gpg"),
+                    proxies=self.proxies,
+                )
                 if signature_response.status_code != http.HTTPStatus.OK:
                     return False
                 else:
@@ -260,8 +336,14 @@ class DpkgRepo:
                     temp_signature_file.write(signature_response.content)
                     temp_signature_file.seek(0)
                     process = subprocess.Popen(
-                        ["gpg", "--verify", "--homedir", SPACEWALK_GPG_HOMEDIR,
-                        temp_signature_file.name, temp_release_file.name],
+                        [
+                            "gpg",
+                            "--verify",
+                            "--homedir",
+                            SPACEWALK_GPG_HOMEDIR,
+                            temp_signature_file.name,
+                            temp_release_file.name,
+                        ],
                         stdout=subprocess.DEVNULL,
                         stderr=subprocess.DEVNULL,
                     )
@@ -271,9 +353,13 @@ class DpkgRepo:
             logging.debug("GPG signature is valid")
             return True
         else:
-            logging.debug("GPG signature is invalid. gpg return code: {}".format(process.returncode))
+            logging.debug(
+                # pylint: disable-next=logging-format-interpolation,consider-using-f-string
+                "GPG signature is invalid. gpg return code: {}".format(
+                    process.returncode
+                )
+            )
             return False
-
 
     def get_release_index(self) -> typing.Dict[str, "DpkgRepo.ReleaseEntry"]:
         """
@@ -291,10 +377,14 @@ class DpkgRepo:
         else:
             return self._get_release_index_from_http()
 
-
     def _get_release_index_from_file(self) -> typing.Dict[str, "DpkgRepo.ReleaseEntry"]:
         # InRelease files take precedence per uyuni-rfc 00057-deb-repo-sync-gpg-check
-        logging.debug("Fetching release file from local filesystem: {}".format(self._url.replace("file://", "")))
+        logging.debug(
+            # pylint: disable-next=logging-format-interpolation,consider-using-f-string
+            "Fetching release file from local filesystem: {}".format(
+                self._url.replace("file://", "")
+            )
+        )
         local_path = self._url.replace("file://", "")
         release_file = None
         if os.access(self._get_parent_url(local_path, 2, "InRelease"), os.R_OK):
@@ -312,16 +402,29 @@ class DpkgRepo:
         # Repo format is not flat
         if not self.is_flat():
             if self.gpg_verify and not self._has_valid_gpg_signature(local_path):
+                # pylint: disable-next=logging-format-interpolation,consider-using-f-string
                 logging.error("GPG verification failed: {}".format(release_file))
                 logging.error("Raising GeneralRepoException!")
-                raise GeneralRepoException("GPG verification failed: {}".format(release_file))
+                raise GeneralRepoException(
+                    # pylint: disable-next=consider-using-f-string
+                    "GPG verification failed: {}".format(release_file)
+                )
             try:
                 with open(release_file, "rb") as f:
                     self._release = self._parse_release_index(f.read().decode("utf-8"))
             except IOError as ex:
-                logging.exception("IOError while accessing file: '{}'. Raising \
-                                   GeneralRepoException!".format(release_file), exc_info=True)
-                raise GeneralRepoException("IOError while accessing file: {}".format(release_file)) from ex
+                logging.exception(
+                    # pylint: disable-next=logging-format-interpolation,consider-using-f-string
+                    "IOError while accessing file: '{}'. Raising \
+                                   GeneralRepoException!".format(
+                        release_file
+                    ),
+                    exc_info=True,
+                )
+                raise GeneralRepoException(
+                    # pylint: disable-next=consider-using-f-string
+                    "IOError while accessing file: {}".format(release_file)
+                ) from ex
 
         # Repo format is flat
         else:
@@ -330,31 +433,65 @@ class DpkgRepo:
             elif os.access(self._get_parent_url(local_path, 0, "Release"), os.R_OK):
                 release_file = self._get_parent_url(local_path, 0, "Release")
             else:
-                logging.error("No release file found in '{}'. Raising \
-                                   GeneralRepoException.".format(self._get_parent_url(local_path, 0)))
-                raise GeneralRepoException("No release file found in {}".format(self._get_parent_url(local_path, 0)))
+                logging.error(
+                    # pylint: disable-next=logging-format-interpolation,consider-using-f-string
+                    "No release file found in '{}'. Raising \
+                                   GeneralRepoException.".format(
+                        self._get_parent_url(local_path, 0)
+                    )
+                )
+                raise GeneralRepoException(
+                    # pylint: disable-next=consider-using-f-string
+                    "No release file found in {}".format(
+                        self._get_parent_url(local_path, 0)
+                    )
+                )
 
             try:
                 with open(release_file, "rb") as f:
                     release_file_content = f.read().decode("utf-8")
-                    if self.gpg_verify and not self._has_valid_gpg_signature(local_path):
-                        logging.error("GPG verification failed: '{}'. \
-                                           Raising GeneralRepoException.".format(release_file))
-                        raise GeneralRepoException("GPG verification failed: {}".format(release_file))
+                    if self.gpg_verify and not self._has_valid_gpg_signature(
+                        local_path
+                    ):
+                        logging.error(
+                            # pylint: disable-next=logging-format-interpolation,consider-using-f-string
+                            "GPG verification failed: '{}'. \
+                                           Raising GeneralRepoException.".format(
+                                release_file
+                            )
+                        )
+                        raise GeneralRepoException(
+                            # pylint: disable-next=consider-using-f-string
+                            "GPG verification failed: {}".format(release_file)
+                        )
                     self._release = self._parse_release_index(release_file_content)
             except IOError as ex:
-                logging.exception("IOError while accessing file: '{}'. Raising \
-                                   GeneralRepoException.".format(release_file), exc_info=True)
-                raise GeneralRepoException("IOError while accessing file: {}".format(release_file)) from ex
+                logging.exception(
+                    # pylint: disable-next=logging-format-interpolation,consider-using-f-string
+                    "IOError while accessing file: '{}'. Raising \
+                                   GeneralRepoException.".format(
+                        release_file
+                    ),
+                    exc_info=True,
+                )
+                raise GeneralRepoException(
+                    # pylint: disable-next=consider-using-f-string
+                    "IOError while accessing file: {}".format(release_file)
+                ) from ex
 
         return self._release
 
     def _get_release_index_from_http(self) -> typing.Dict[str, "DpkgRepo.ReleaseEntry"]:
         # InRelease files take precedence per uyuni-rfc 00057-deb-repo-sync-gpg-check
+        # pylint: disable-next=logging-format-interpolation,consider-using-f-string
         logging.debug("Fetching release file from local http: {}".format(self._url))
-        resp = requests.get(self._get_parent_url(self._url, 2, "InRelease"), proxies=self.proxies)
+        resp = requests.get(
+            self._get_parent_url(self._url, 2, "InRelease"), proxies=self.proxies
+        )
         if resp.status_code != http.HTTPStatus.OK:
-            resp = requests.get(self._get_parent_url(self._url, 2, "Release"), proxies=self.proxies)
+            resp = requests.get(
+                self._get_parent_url(self._url, 2, "Release"), proxies=self.proxies
+            )
 
         try:
             if resp.status_code not in [
@@ -362,31 +499,66 @@ class DpkgRepo:
                 http.HTTPStatus.OK,
                 http.HTTPStatus.FORBIDDEN,
             ]:
-                logging.error("Fetching release index failed with http status \
-                               '{}'. Raising GeneralRepoException.".format(resp.status_code))
+                logging.error(
+                    # pylint: disable-next=logging-format-interpolation,consider-using-f-string
+                    "Fetching release index failed with http status \
+                               '{}'. Raising GeneralRepoException.".format(
+                        resp.status_code
+                    )
+                )
                 raise GeneralRepoException(
-                    "HTTP error {} occurred while connecting to the URL".format(resp.status_code)
+                    # pylint: disable-next=consider-using-f-string
+                    "HTTP error {} occurred while connecting to the URL".format(
+                        resp.status_code
+                    )
                 )
 
-            self._flat = resp.status_code in [http.HTTPStatus.NOT_FOUND, http.HTTPStatus.FORBIDDEN]
+            self._flat = resp.status_code in [
+                http.HTTPStatus.NOT_FOUND,
+                http.HTTPStatus.FORBIDDEN,
+            ]
             self._flat_checked = 1
 
-            if not self.is_flat() and self.gpg_verify and not self._has_valid_gpg_signature(resp.url, resp):
-                logging.error("Repo has no valid GPG signature. Raising GeneralRepoException.")
-                raise GeneralRepoException("GPG verification failed: {}".format(resp.url))
+            if (
+                not self.is_flat()
+                and self.gpg_verify
+                and not self._has_valid_gpg_signature(resp.url, resp)
+            ):
+                logging.error(
+                    "Repo has no valid GPG signature. Raising GeneralRepoException."
+                )
+                raise GeneralRepoException(
+                    # pylint: disable-next=consider-using-f-string
+                    "GPG verification failed: {}".format(resp.url)
+                )
 
             self._release = self._parse_release_index(resp.content.decode("utf-8"))
 
             if not self._release and self.is_flat():
-                resp = requests.get(self._get_parent_url(self._url, 0, "InRelease"), proxies=self.proxies)
+                resp = requests.get(
+                    self._get_parent_url(self._url, 0, "InRelease"),
+                    proxies=self.proxies,
+                )
                 if resp.status_code != http.HTTPStatus.OK:
-                    resp = requests.get(self._get_parent_url(self._url, 0, "Release"), proxies=self.proxies)
+                    resp = requests.get(
+                        self._get_parent_url(self._url, 0, "Release"),
+                        proxies=self.proxies,
+                    )
 
                 if resp.status_code == http.HTTPStatus.OK:
-                    if self.gpg_verify and not self._has_valid_gpg_signature(resp.url, resp):
-                        logging.error("Repo has no valid GPG signature. GeneralRepoException will be raised!")
-                        raise GeneralRepoException("GPG verification failed: {}".format(resp.url))
-                    self._release = self._parse_release_index(resp.content.decode("utf-8"))
+                    if self.gpg_verify and not self._has_valid_gpg_signature(
+                        resp.url, resp
+                    ):
+                        logging.error(
+                            "Repo has no valid GPG signature. GeneralRepoException will be raised!"
+                        )
+                        raise GeneralRepoException(
+                            # pylint: disable-next=consider-using-f-string
+                            "GPG verification failed: {}".format(resp.url)
+                        )
+                    self._release = self._parse_release_index(
+                        resp.content.decode("utf-8")
+                    )
         finally:
             resp.close()
 
@@ -405,9 +577,16 @@ class DpkgRepo:
         if depth:
             p_path = p_path[:-depth]
 
-        return parse.urlunparse(parse.ParseResult(scheme=p_url.scheme, netloc=p_url.netloc,
-                                                  path="/".join(p_path + add_path.strip("/").split("/")) or "/",
-                                                  params=p_url.params, query=p_url.query, fragment=p_url.fragment))
+        return parse.urlunparse(
+            parse.ParseResult(
+                scheme=p_url.scheme,
+                netloc=p_url.netloc,
+                path="/".join(p_path + add_path.strip("/").split("/")) or "/",
+                params=p_url.params,
+                query=p_url.query,
+                fragment=p_url.fragment,
+            )
+        )
 
     def is_flat(self) -> bool:
         """
@@ -429,8 +608,11 @@ class DpkgRepo:
         name, data = self.get_pkg_index_raw()
 
         # If there are no packages in the repo, return True
-        if (name, data) == ("", b"",):
-           return True
+        if (name, data) == (
+            "",
+            b"",
+        ):
+            return True
 
         entry = self.get_release_index().get(name)
         if entry is None:

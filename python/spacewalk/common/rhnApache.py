@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring,invalid-name
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -33,13 +34,14 @@ from spacewalk.common.rhnTranslate import cat
 
 class rhnApache:
 
-    """ Shared rhnApache class: rhnApache classes in proxy and server inherit
-        this class.
+    """Shared rhnApache class: rhnApache classes in proxy and server inherit
+    this class.
 
-        Shared apache handler code: headerParserHandler,
-                                handler (defined in class that inherits this),
-                                cleanupHandler.
+    Shared apache handler code: headerParserHandler,
+                            handler (defined in class that inherits this),
+                            cleanupHandler.
     """
+
     _lang_catalog = "common"
 
     def __init__(self):
@@ -71,7 +73,7 @@ class rhnApache:
         # Clear the global flags.
         rhnFlags.reset()
         # Init the transport options.
-        rhnFlags.set('outputTransportOptions', UserDictCase())
+        rhnFlags.set("outputTransportOptions", UserDictCase())
         # Init the session token dictionary.
         rhnFlags.set("AUTH_SESSION_TOKEN", UserDictCase())
 
@@ -86,7 +88,7 @@ class rhnApache:
         # Check the protocol version
         if req.proto_num < 1001:
             # HTTP protocols prior to 1.1 close the connection
-            rhnFlags.get('outputTransportOptions')["Connection"] = "close"
+            rhnFlags.get("outputTransportOptions")["Connection"] = "close"
 
         ret = self._set_proxy_info(req)
         if ret != apache.OK:
@@ -105,7 +107,7 @@ class rhnApache:
 
     def _set_client_info(self, req):
         # Figure out the client version
-        clientVersionHeader = 'X-RHN-Client-Version'
+        clientVersionHeader = "X-RHN-Client-Version"
         if clientVersionHeader in req.headers_in:
             # Useful to have it as a separate variable, to see it in a
             # traceback report
@@ -114,33 +116,32 @@ class rhnApache:
         # NOTE: x-client-version is really the cgiwrap xmlrpc API version
         #       NOT the RHN client version... but it works if nothing else
         #       does.
-        elif 'X-Client-Version' in req.headers_in:
-            clientVersion = req.headers_in['X-Client-Version']
+        elif "X-Client-Version" in req.headers_in:
+            clientVersion = req.headers_in["X-Client-Version"]
             self.clientVersion = int(clientVersion)
         else:
             self.clientVersion = 0
 
         # Make sure the client version gets set in the headers.
-        rhnFlags.get('outputTransportOptions')[clientVersionHeader] = str(
-            self.clientVersion)
+        rhnFlags.get("outputTransportOptions")[clientVersionHeader] = str(
+            self.clientVersion
+        )
         return apache.OK
 
     def _set_proxy_info(self, req):
-        """ Spacewalk Proxy stuff. """
-        proxyVersion = 'X-RHN-Proxy-Version'
+        """Spacewalk Proxy stuff."""
+        proxyVersion = "X-RHN-Proxy-Version"
         if proxyVersion in req.headers_in:
             self.proxyVersion = req.headers_in[proxyVersion]
         # Make sure the proxy version gets set in the headers.
-        rhnFlags.get('outputTransportOptions')[proxyVersion] = str(
-            self.proxyVersion)
+        rhnFlags.get("outputTransportOptions")[proxyVersion] = str(self.proxyVersion)
         # Make sure the proxy auth-token gets set in global flags.
-        if 'X-RHN-Proxy-Auth' in req.headers_in:
-            rhnFlags.set('X-RHN-Proxy-Auth',
-                         req.headers_in['X-RHN-Proxy-Auth'])
+        if "X-RHN-Proxy-Auth" in req.headers_in:
+            rhnFlags.set("X-RHN-Proxy-Auth", req.headers_in["X-RHN-Proxy-Auth"])
         return apache.OK
 
     def _set_lang(self, req):
-        """ determine what language the client prefers """
+        """determine what language the client prefers"""
         if "Accept-Language" in req.headers_in:
             # RFC 2616 #3.10: case insensitive
             lang = req.headers_in["Accept-Language"].lower()
@@ -237,18 +238,20 @@ class rhnApache:
 
     @staticmethod
     def _setSessionToken(headers):
-        """ Pushes token into rhnFlags. If doesn't exist, returns None.
-            Pull session token out of the headers and into rhnFlags.
+        """Pushes token into rhnFlags. If doesn't exist, returns None.
+        Pull session token out of the headers and into rhnFlags.
         """
         log_debug(3)
         token = UserDictCase()
-        if 'X-RHN-Server-Id' in headers:
-            token['X-RHN-Server-Id'] = headers['X-RHN-Server-Id']
+        if "X-RHN-Server-Id" in headers:
+            token["X-RHN-Server-Id"] = headers["X-RHN-Server-Id"]
         else:
             # This has to be here, or else we blow-up.
             return None
         prefix = "x-rhn-auth"
-        tokenKeys = [x for x in list(headers.keys()) if x[:len(prefix)].lower() == prefix]
+        tokenKeys = [
+            x for x in list(headers.keys()) if x[: len(prefix)].lower() == prefix
+        ]
         for k in tokenKeys:
             token[k] = headers[k]
 
@@ -262,5 +265,6 @@ def timer(last):
     """
     if not last:
         return 0
-    log_debug(2, "Request served in %.2f sec" % (time.time() - last, ))
+    # pylint: disable-next=consider-using-f-string
+    log_debug(2, "Request served in %.2f sec" % (time.time() - last,))
     return 0

@@ -1,1 +1,0 @@
-- Set RemoveIPC=no for logind to stop removing IPC mechanisms by systemd

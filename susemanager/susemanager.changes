@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Tue Jan 16 08:29:07 CET 2024 - jgonzalez@suse.com
+
+- version 5.0.1-1
+  * Make python3-extras as dependency of python3-luibxml2 (optional,
+    as SLES 15 does not have it and it is only required on SP4
+    or greater) (bsc#1204437)
+
+-------------------------------------------------------------------
 Fri Dec 15 17:28:06 CET 2023 - rosuna@suse.com
 
 - version 4.4.10-1
@@ -91,7 +99,8 @@ Mon Jan 23 08:31:18 CET 2023 - jgonzalez@suse.com
   * fix bootstrap repo definition for SUSE Liberty Linux 9 and RHEL9
     (bsc#1207136)
   * fix tools channel detection on Uyuni
-  * add bootstrap repository definitions for SLE-Micro 5.1, 5.2 and 5.3
+  * add bootstrap repository definitions for SLE-Micro 5.1, 5.2 and
+    5.3 (bsc#1209557)
 
 -------------------------------------------------------------------
 Wed Dec 14 14:15:50 CET 2022 - jgonzalez@suse.com

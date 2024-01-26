@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2017 Red Hat, Inc.
 #
@@ -32,38 +33,43 @@ DELETED = 2
 UPDATED = 3
 
 
+# pylint: disable-next=invalid-name
 class dbPackage:
 
-    """ A small class that helps us represent things about a
-        database package. In this structure "real" means that we have an
-        entry in the database for it.
+    """A small class that helps us represent things about a
+    database package. In this structure "real" means that we have an
+    entry in the database for it.
     """
 
-    def __init__(self, pdict, real=0, name_id=None, evr_id=None,
-                 package_arch_id=None):
+    def __init__(self, pdict, real=0, name_id=None, evr_id=None, package_arch_id=None):
+        # pylint: disable-next=unidiomatic-typecheck
         if type(pdict) != DictType:
             return None
-        if ('arch' not in pdict) or (pdict['arch'] is None):
-            pdict['arch'] = ""
-        if str(pdict['epoch']).lower() == "(none)" or pdict['epoch'] == "" or pdict['epoch'] is None:
-            pdict['epoch'] = None
+        if ("arch" not in pdict) or (pdict["arch"] is None):
+            pdict["arch"] = ""
+        if (
+            str(pdict["epoch"]).lower() == "(none)"
+            or pdict["epoch"] == ""
+            or pdict["epoch"] is None
+        ):
+            pdict["epoch"] = None
         else:
-            pdict['epoch'] = str(pdict['epoch'])
-        for k in ('name', 'version', 'release', 'arch'):
+            pdict["epoch"] = str(pdict["epoch"])
+        for k in ("name", "version", "release", "arch"):
             if pdict[k] is None:
                 return None
-        self.n = str(pdict['name'])
-        self.v = str(pdict['version'])
-        self.r = str(pdict['release'])
-        self.e = pdict['epoch']
-        self.a = str(pdict['arch'])
-        if 'type' in pdict:
-            self.t = pdict['type']
+        self.n = str(pdict["name"])
+        self.v = str(pdict["version"])
+        self.r = str(pdict["release"])
+        self.e = pdict["epoch"]
+        self.a = str(pdict["arch"])
+        if "type" in pdict:
+            self.t = pdict["type"]
         else:
             self.t = self.get_package_type_by_arch(self.a)
 
-        if 'installtime' in pdict:
-            self.installtime = pdict['installtime']
+        if "installtime" in pdict:
+            self.installtime = pdict["installtime"]
         else:
             self.installtime = None
         # nvrea is a tuple; we can use tuple as dictionary keys since they are
@@ -98,27 +104,30 @@ class dbPackage:
 
     def __str__(self):
         return "server.rhnServer.dbPackage instance %s" % {
-            'n': self.n,
-            'v': self.v,
-            'r': self.r,
-            'e': self.e,
-            'a': self.a,
-            't': self.t,
-            'installtime': self.installtime,
-            'real': self.real,
-            'name_id': self.name_id,
-            'evr_id': self.evr_id,
-            'package_arch_id': self.package_arch_id,
-            'status': self.status,
+            "n": self.n,
+            "v": self.v,
+            "r": self.r,
+            "e": self.e,
+            "a": self.a,
+            "t": self.t,
+            "installtime": self.installtime,
+            "real": self.real,
+            "name_id": self.name_id,
+            "evr_id": self.evr_id,
+            "package_arch_id": self.package_arch_id,
+            "status": self.status,
         }
+
     __repr__ = __str__
 
-    _query_get_package_type_by_arch = rhnSQL.Statement("""
+    _query_get_package_type_by_arch = rhnSQL.Statement(
+        """
         select at.label
           from rhnArchType at
           join rhnPackageArch pa ON pa.arch_type_id = at.id
          where pa.id = lookup_package_arch(:arch)
-    """)
+    """
+    )
 
     def get_package_type_by_arch(self, arch):
         h = rhnSQL.prepare(self._query_get_package_type_by_arch)
@@ -126,12 +135,11 @@ class dbPackage:
         row = h.fetchone_dict()
         if not row:
             return None
-        return row['label']
+        return row["label"]
 
 
-
+# pylint: disable-next=missing-class-docstring
 class Packages:
-
     def __init__(self):
         self.__p = {}
         # Have we loaded the packages or not?
@@ -159,7 +167,7 @@ class Packages:
         return 0
 
     def delete_package(self, sysid, entry):
-        """ delete a package from the list """
+        """delete a package from the list"""
         log_debug(4, sysid, entry)
         p = dbPackage(entry)
         if p is None:
@@ -175,7 +183,7 @@ class Packages:
         return 0
 
     def dispose_packages(self, sysid):
-        """ delete all packages and get an empty package list """
+        """delete all packages and get an empty package list"""
         log_debug(4, sysid)
         if not self.__loaded:
             self.reload_packages_byid(sysid)
@@ -185,20 +193,30 @@ class Packages:
         return 0
 
     def get_packages(self):
-        """ produce a list of packages """
-        return [a.nvrea for a in [a for a in list(self.__p.values()) if a.status != DELETED]]
+        """produce a list of packages"""
+        return [
+            a.nvrea for a in [a for a in list(self.__p.values()) if a.status != DELETED]
+        ]
 
     def __expand_installtime(self, installtime):
-        """ Simulating the ternary operator, one liner is ugly """
+        """Simulating the ternary operator, one liner is ugly"""
         if installtime:
-            return time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(installtime))
+            return time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(installtime))
         else:
             return None
 
     def save_packages_byid(self, sysid, schedule=1):
-        """ save the package list """
-        log_debug(3, sysid, "Errata cache to run:", schedule,
-                  "Changed:", self.__changed, "%d total packages" % len(self.__p))
+        """save the package list"""
+        log_debug(
+            3,
+            sysid,
+            "Errata cache to run:",
+            schedule,
+            "Changed:",
+            self.__changed,
+            # pylint: disable-next=consider-using-f-string
+            "%d total packages" % len(self.__p),
+        )
 
         if not self.__changed:
             return 0
@@ -206,23 +224,31 @@ class Packages:
         commits = 0
 
         # get rid of the deleted packages
-        dlist = [a for a in list(self.__p.values()) if a.real and a.status in (DELETED, UPDATED)]
+        dlist = [
+            a
+            for a in list(self.__p.values())
+            if a.real and a.status in (DELETED, UPDATED)
+        ]
         if dlist:
             log_debug(4, sysid, len(dlist), "deleted packages")
-            h = rhnSQL.prepare("""
+            h = rhnSQL.prepare(
+                """
             delete from rhnServerPackage
             where server_id = :sysid
             and name_id = :name_id
             and evr_id = :evr_id
             and ((:package_arch_id is null and package_arch_id is null)
                 or package_arch_id = :package_arch_id)
-            """)
-            h.executemany(**{
-                'sysid': [sysid] * len(dlist),
-                'name_id': [a.name_id for a in dlist],
-                'evr_id': [a.evr_id for a in dlist],
-                'package_arch_id': [a.package_arch_id for a in dlist],
-            })
+            """
+            )
+            h.executemany(
+                **{
+                    "sysid": [sysid] * len(dlist),
+                    "name_id": [a.name_id for a in dlist],
+                    "evr_id": [a.evr_id for a in dlist],
+                    "package_arch_id": [a.package_arch_id for a in dlist],
+                }
+            )
             commits = commits + len(dlist)
             del dlist
 
@@ -230,29 +256,32 @@ class Packages:
         alist = [a for a in list(self.__p.values()) if a.status in (ADDED, UPDATED)]
         if alist:
             log_debug(4, sysid, len(alist), "added packages")
-            h = rhnSQL.prepare("""
+            h = rhnSQL.prepare(
+                """
             insert into rhnServerPackage
             (server_id, name_id, evr_id, package_arch_id, installtime)
             values (:sysid, LOOKUP_PACKAGE_NAME(:n), LOOKUP_EVR(:e, :v, :r, :t),
                 LOOKUP_PACKAGE_ARCH(:a), TO_TIMESTAMP(:instime, 'YYYY-MM-DD HH24:MI:SS')
             )
-            """)
+            """
+            )
             # some fields are not allowed to contain empty string (varchar)
 
             def lambdaae(a):
-                if a.e == '':
+                if a.e == "":
                     return None
                 else:
                     return a.e
+
             package_data = {
-                'sysid': [sysid] * len(alist),
-                'n': [a.n for a in alist],
-                'v': [a.v for a in alist],
-                'r': [a.r for a in alist],
-                'e': list(map(lambdaae, alist)),
-                'a': [a.a for a in alist],
-                't': [a.t for a in alist],
-                'instime': [self.__expand_installtime(a.installtime) for a in alist],
+                "sysid": [sysid] * len(alist),
+                "n": [a.n for a in alist],
+                "v": [a.v for a in alist],
+                "r": [a.r for a in alist],
+                "e": list(map(lambdaae, alist)),
+                "a": [a.a for a in alist],
+                "t": [a.t for a in alist],
+                "instime": [self.__expand_installtime(a.installtime) for a in alist],
             }
             try:
                 h.executemany(**package_data)
@@ -262,7 +291,9 @@ class Packages:
                 # LOOKUP_PACKAGE_ARCH failed
                 if e.errno == 20243:
                     log_debug(2, "Unknown package arch found", e)
-                    raise_with_tb(rhnFault(45, "Unknown package arch found"), sys.exc_info()[2])
+                    raise_with_tb(
+                        rhnFault(45, "Unknown package arch found"), sys.exc_info()[2]
+                    )
 
             commits = commits + len(alist)
             del alist
@@ -281,32 +312,35 @@ class Packages:
         self.__changed = 0
         return 0
 
-    _query_get_package_arches = rhnSQL.Statement("""
+    _query_get_package_arches = rhnSQL.Statement(
+        """
         select id, label
           from rhnPackageArch
-    """)
+    """
+    )
 
     def get_package_arches(self):
         # None gets automatically converted to empty string
-        package_arches_hash = {None: ''}
+        package_arches_hash = {None: ""}
         h = rhnSQL.prepare(self._query_get_package_arches)
         h.execute()
         while 1:
             row = h.fetchone_dict()
             if not row:
                 break
-            package_arches_hash[row['id']] = row['label']
+            package_arches_hash[row["id"]] = row["label"]
         return package_arches_hash
 
     def reload_packages_byid(self, sysid):
-        """ reload the packages list from the database """
+        """reload the packages list from the database"""
         log_debug(3, sysid)
         # First, get the package arches
         package_arches_hash = self.get_package_arches()
         # XXX we could achieve the same thing with an outer join but that's
         # more expensive
         # Now load packages
-        h = rhnSQL.prepare("""
+        h = rhnSQL.prepare(
+            """
         select
             rpn.name,
             rpe.version,
@@ -324,26 +358,35 @@ class Packages:
         where sp.server_id = :sysid
         and sp.name_id = rpn.id
         and sp.evr_id = rpe.id
-        """)
+        """
+        )
         h.execute(sysid=sysid)
         self.__p = {}
         while 1:
             t = h.fetchone_dict()
             if not t:
                 break
-            t['arch'] = package_arches_hash[t['package_arch_id']]
-            if 'installtime' in t and t['installtime'] is not None:
-                t['installtime'] = time.mktime(time.strptime(t['installtime'],
-                                                             "%Y-%m-%d %H:%M:%S"))
-            p = dbPackage(t, real=1, name_id=t['name_id'], evr_id=t['evr_id'],
-                          package_arch_id=t['package_arch_id'])
+            t["arch"] = package_arches_hash[t["package_arch_id"]]
+            if "installtime" in t and t["installtime"] is not None:
+                t["installtime"] = time.mktime(
+                    time.strptime(t["installtime"], "%Y-%m-%d %H:%M:%S")
+                )
+            p = dbPackage(
+                t,
+                real=1,
+                name_id=t["name_id"],
+                evr_id=t["evr_id"],
+                package_arch_id=t["package_arch_id"],
+            )
             self.__p[p.nvrea] = p
+        # pylint: disable-next=consider-using-f-string
         log_debug(4, "Loaded %d packages for server %s" % (len(self.__p), sysid))
         self.__loaded = 1
         self.__changed = 0
         return 0
 
-    _query_product_packages = rhnSQL.Statement("""
+    _query_product_packages = rhnSQL.Statement(
+        """
     select rp.name_id, rp.package_arch_id arch_id, X.name
       from
         (
@@ -393,33 +436,37 @@ class Packages:
         JOIN rhnPackage rp ON rp.name_id = X.name_id
              AND rp.evr_id = X.evr_id
              AND rp.package_arch_id = X.arch_id
-    """)
+    """
+    )
 
     def install_missing_product_packages(self):
-        '''
+        """
         Find missing products and schedule an action to install them
-        '''
+        """
         h = rhnSQL.prepare(self._query_product_packages)
         package_names = {}
-        h.execute(server_id=self.server['id'])
+        h.execute(server_id=self.server["id"])
         while True:
             row = h.fetchone_dict()
             if not row:
                 break
-            pn_id = row['name_id']
-            pa_id = row['arch_id']
-            package_names[(pn_id, pa_id)] = row['name']
+            pn_id = row["name_id"]
+            pa_id = row["arch_id"]
+            package_names[(pn_id, pa_id)] = row["name"]
 
         if not package_names:
             return None
 
         package_arch_ids = list(package_names.keys())
 
-        action_id = rhnAction.schedule_server_packages_update_by_arch(self.server['id'],
-                                                                      package_arch_ids,
-                                                                      org_id=self.server['org_id'],
-                                                                      action_name="Product Package Auto-Install")
+        action_id = rhnAction.schedule_server_packages_update_by_arch(
+            self.server["id"],
+            package_arch_ids,
+            org_id=self.server["org_id"],
+            action_name="Product Package Auto-Install",
+        )
         for p in list(package_names.values()):
+            # pylint: disable-next=consider-using-f-string
             log_debug(1, "Scheduled for install:  '%s'" % p)
 
         rhnSQL.commit()
@@ -428,58 +475,71 @@ class Packages:
 
 
 def update_errata_cache(server_id):
-    """ Queue an update the the server's errata cache. This queues for
-        Taskomatic instead of doing it in-line because updating many servers
-        at once was problematic and lead to unresponsive Satellite and
-        incorrectly reporting failed actions when they did not fail (see
-        bz 1119460).
+    """Queue an update the the server's errata cache. This queues for
+    Taskomatic instead of doing it in-line because updating many servers
+    at once was problematic and lead to unresponsive Satellite and
+    incorrectly reporting failed actions when they did not fail (see
+    bz 1119460).
     """
     log_debug(2, "Queueing the errata cache update", server_id)
     update_needed_cache = rhnSQL.Procedure("queue_server")
     update_needed_cache(server_id, 0)
 
 
+# pylint: disable-next=invalid-name
 def processPackageKeyAssociations(header, checksum_type, checksum):
-    provider_sql = rhnSQL.prepare("""
+    provider_sql = rhnSQL.prepare(
+        """
         insert into rhnPackageKeyAssociation
             (package_id, key_id) values
             (:package_id, :key_id)
-    """)
+    """
+    )
 
-    insert_keyid_sql = rhnSQL.prepare("""
+    insert_keyid_sql = rhnSQL.prepare(
+        """
         insert into rhnPackagekey
             (id, key_id, key_type_id) values
             (sequence_nextval('rhn_pkey_id_seq'), :key_id, :key_type_id)
             on conflict do nothing
-    """)
+    """
+    )
 
-    lookup_keyid_sql = rhnSQL.prepare("""
+    lookup_keyid_sql = rhnSQL.prepare(
+        """
        select pk.id
          from rhnPackagekey pk
         where pk.key_id = :key_id
-    """)
+    """
+    )
 
-    lookup_keytype_id = rhnSQL.prepare("""
+    lookup_keytype_id = rhnSQL.prepare(
+        """
        select id
          from rhnPackageKeyType
         where LABEL in ('gpg', 'pgp')
-    """)
+    """
+    )
 
-    lookup_pkgid_sql = rhnSQL.prepare("""
+    lookup_pkgid_sql = rhnSQL.prepare(
+        """
         select p.id
           from rhnPackage p,
                rhnChecksumView c
          where c.checksum = :csum
            and c.checksum_type = :ctype
            and p.checksum_id = c.id
-    """)
+    """
+    )
 
-    lookup_pkgkey_sql = rhnSQL.prepare("""
+    lookup_pkgkey_sql = rhnSQL.prepare(
+        """
         select 1
           from rhnPackageKeyAssociation
          where package_id = :package_id
            and key_id = :key_id
-    """)
+    """
+    )
 
     lookup_pkgid_sql.execute(ctype=checksum_type, csum=checksum)
     pkg_ids = lookup_pkgid_sql.fetchall_dict()
@@ -491,8 +551,8 @@ def processPackageKeyAssociations(header, checksum_type, checksum):
     sigkeys = header.signatures
     key_id = None  # _key_ids(sigkeys)[0]
     for sig in sigkeys:
-        if sig['signature_type'] in ['gpg', 'pgp']:
-            key_id = sig['key_id']
+        if sig["signature_type"] in ["gpg", "pgp"]:
+            key_id = sig["key_id"]
 
     if not key_id:
         # package is not signed, skip gpg key insertion
@@ -504,24 +564,23 @@ def processPackageKeyAssociations(header, checksum_type, checksum):
     if not keyid:
         lookup_keytype_id.execute()
         key_type_id = lookup_keytype_id.fetchone_dict()
-        insert_keyid_sql.execute(key_id=key_id, key_type_id=key_type_id['id'])
+        insert_keyid_sql.execute(key_id=key_id, key_type_id=key_type_id["id"])
         lookup_keyid_sql.execute(key_id=key_id)
         keyid = lookup_keyid_sql.fetchall_dict()
 
     for pkg_id in pkg_ids:
-        lookup_pkgkey_sql.execute(key_id=keyid[0]['id'],
-                                  package_id=pkg_id['id'])
+        lookup_pkgkey_sql.execute(key_id=keyid[0]["id"], package_id=pkg_id["id"])
         exists_check = lookup_pkgkey_sql.fetchall_dict()
 
         if not exists_check:
-            provider_sql.execute(key_id=keyid[0]['id'], package_id=pkg_id['id'])
+            provider_sql.execute(key_id=keyid[0]["id"], package_id=pkg_id["id"])
 
 
 def package_delta(list1, list2):
-    """ Compares list1 and list2 (each list is a tuple (n, v, r, e)
-        returns two lists
-        (install, remove)
-        XXX upgrades and downgrades are simulated by a removal and an install
+    """Compares list1 and list2 (each list is a tuple (n, v, r, e)
+    returns two lists
+    (install, remove)
+    XXX upgrades and downgrades are simulated by a removal and an install
     """
     # Package registry - canonical versions for all packages
     package_registry = {}
@@ -559,14 +618,15 @@ def package_delta(list1, list2):
 
 
 def _package_list_to_hash(package_list, package_registry):
-    """ Converts package_list into a hash keyed by name
-        package_registry contains the canonical version of the package
-        for instance, version 51 and 0051 are indentical, but that would break the
-        list comparison in Python. package_registry is storing representatives for
-        each equivalence class (where the equivalence relationship is rpm's version
-        comparison algorigthm
-        Side effect: Modifies second argument!
+    """Converts package_list into a hash keyed by name
+    package_registry contains the canonical version of the package
+    for instance, version 51 and 0051 are indentical, but that would break the
+    list comparison in Python. package_registry is storing representatives for
+    each equivalence class (where the equivalence relationship is rpm's version
+    comparison algorigthm
+    Side effect: Modifies second argument!
     """
+    # pylint: disable-next=redefined-builtin
     hash = {}
     for e in package_list:
         e = tuple(e)
@@ -594,6 +654,7 @@ def _package_list_to_hash(package_list, package_registry):
     return hash
 
 
+# pylint: disable-next=redefined-builtin
 def _add_to_hash(hash, key, value):
     if key not in hash:
         hash[key] = {value: None}

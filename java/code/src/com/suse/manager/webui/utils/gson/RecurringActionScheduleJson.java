@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.recurringactions.RecurringAction;
 import com.redhat.rhn.domain.recurringactions.type.RecurringActionType;
 import com.redhat.rhn.frontend.dto.BaseTupleDto;
 
+import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Tuple;
@@ -73,6 +74,9 @@ public class RecurringActionScheduleJson extends BaseTupleDto {
     /** Target ID */
     private Long targetId;
 
+    /** Ids of the entities members */
+    private List<Long> memberIds;
+
     /** Name of the schedule */
     private String scheduleName;
 
@@ -107,6 +111,15 @@ public class RecurringActionScheduleJson extends BaseTupleDto {
     @Override
     public Long getId() {
         return getRecurringActionId();
+    }
+
+    /**
+     * Gets the List of member ids
+     *
+     * @return the member ids
+     */
+    public List<Long> getMemberIds() {
+        return memberIds;
     }
 
     /**

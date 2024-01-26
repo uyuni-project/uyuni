@@ -3,6 +3,7 @@ set -xe
 
 src_dir=$(cd $(dirname "$0")/../.. && pwd -P)
 
+sudo -i podman exec uyuni-server-all-in-one-test bash -c "/testsuite/podman_runner/provide-db-schema.sh"
 sudo -i podman exec uyuni-server-all-in-one-test bash -c "/usr/lib/susemanager/bin/mgr-setup -l /var/log/susemanager_setup.log -s"
 sudo -i podman exec uyuni-server-all-in-one-test bash -c "/usr/bin/spacewalk-schema-upgrade -y"
 

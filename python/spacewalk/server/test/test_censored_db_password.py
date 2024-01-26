@@ -1,4 +1,5 @@
 #!/usr/bin/python
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2008--2013 Red Hat, Inc.
 #
@@ -22,9 +23,10 @@ from spacewalk.server import rhnSQL
 from spacewalk.common.rhnConfig import initCFG
 from spacewalk.common.rhnTB import Traceback
 
-initCFG('server.xmlrpc')
+initCFG("server.xmlrpc")
 
 try:
     rhnSQL.initDB("rhnuser/rhnuser@webde")
+# pylint: disable-next=bare-except
 except:
-    Traceback('test_censored_db_password', mail=1)
+    Traceback("test_censored_db_password", mail=1)

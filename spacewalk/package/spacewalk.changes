@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Tue Jan 16 08:23:48 CET 2024 - jgonzalez@suse.com
+
+- version 5.0.1-1
+  * Remove the requirement for pxe-default image on SUSE Linux Enterprise,
+    as it is not provided anymore for SUSE Manager 5.0
+  * Move release files from spacewalk to spacewalk web, and add
+    the Mainteanance Update or Milestone version when the package
+    is built for SUSE Manager
+
+-------------------------------------------------------------------
 Fri Dec 15 16:59:01 CET 2023 - rosuna@suse.com
 
 - version 4.4.5-1

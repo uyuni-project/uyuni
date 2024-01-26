@@ -1,4 +1,18 @@
 -------------------------------------------------------------------
+Mon Jan 15 15:31:05 CET 2024 - marina.latini@suse.com
+
+- version 5.0.2
+  * Make shim an optional package as it is not available for all
+    architectures
+
+-------------------------------------------------------------------
+Fri Jan 12 12:16:19 CET 2024 - marina.latini@suse.com
+
+- version 5.0.1
+  * Bump version to 5.0.0
+  * Use product version in reference label
+
+-------------------------------------------------------------------
 Mon Dec 18 14:31:38 CET 2023 - rosuna@suse.com
 
 - version 4.4.2

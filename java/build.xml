@@ -3,7 +3,7 @@
 <!--
   Spacewalk build file, please indent 2 spaces. NO TABS!
 -->
-<project name="RHN" default="all" basedir=".">
+<project name="RHN" basedir=".">
   <property file="${user.home}/.java/java.conf"/>
   <property file="conf/rhn_java.conf"/>
   <!-- External java.lib.dir property -->
@@ -22,17 +22,9 @@
   <import file="buildconf/build-props.xml" />
   <import file="buildconf/build-taskdefs.xml" />
   <import file="buildconf/build-utils.xml" />
-  <import file="buildconf/build-webapp.xml" />
-
-  <target name= "build-all" depends="clean, create-webapp-dir, all"/>
 
   <target name="prepare">
         <mkdir dir="${build.dir}/src"/>
-  </target>
-
-  <target name="boot-deps" unless="installbuild">
-    <mkdir dir="${boot.lib.dir}" />
-    <jpackage-deps jars="${boot.jar.dependencies}" dir="${boot.lib.dir}" />
   </target>
 
   <!-- only runs if we are missing a jpackage dir; speeds builds -->
@@ -52,14 +44,6 @@
     <echo message="Linking run jars"/>
     <link-jars ivyxml="${rhn-home}/ivy.xml" libdir="${lib.dir}"
                jars="${run.jar.dependencies}" dir="${run-external.lib.dir}"/>
-    </target>
-
-  <target name="missingstrings"
-          description="prints out a report with untranslated strings.">
-    <mkdir dir="${report.dir}" />
-    <exec executable="${basedir}/scripts/missingstrings.sh"
-          output="${report.dir}/missingstrings.txt"
-          dir="${rhn-home}/scripts" />
   </target>
 
   <!-- see if any of the jpackage managed dirs are missing -->
@@ -75,122 +59,22 @@
     </condition>
   </target>
 
-  <target name="coverage-report" depends="instrument" if="ccbuild">
-    <!-- This is really stupid, but jcoverage can't deal with having code
-         with different top-level directories, so we copy all code to a
-         single root dir.  :-(  -->
-    <mkdir dir="${build.dir}/src-copy" />
-    <copy toDir="${build.dir}/src-copy">
-      <fileset dir="code/src">
-        <include name="**/*.java" />
-        <exclude name="**/*Task.java" />
-      </fileset>
-    </copy>
-
-    <emma enabled="true">
-      <report sourcepath="${build.dir}/src-copy"
-              sort="+block,+name,+method,+class"
-              metrics="method:70,block:80,line:80,class:100">
-        <infileset dir="${rhn-home}" includes="*.em, *.ec" />
-        <!-- txt outfile="${report.dir}/emma.txt"
-             depth="package"
-             columns="class,method,block,line,name" / -->
-        <html outfile="${report.dir}/emma.html"
-              depth="method"
-              columns="name,class,method,block,line" />
-        <xml outfile="${report.dir}/emma.xml"
-             depth="method"
-             columns="name,class,method,block,line" />
-      </report>
-    </emma>
-
-    <delete dir="${build.dir}/src-copy" />
-  </target>
-
-  <target name="comment-ratio-report">
-    <mkdir dir="${report.dir}" />
-    <exec executable="/bin/sh" dir="${src.dir}"
-          output="${report.dir}/comment-ratio.txt" >
-      <arg value="${rhn-home}/scripts/slocc.sh" />
-      <arg value="-findopt" />
-      <arg value="-name *.java" />
-      <arg value="." />
-    </exec>
-  </target>
-
   <target name="init"
           depends="resolve,link-jars,set-default-config-dir">
     <tstamp />
-  </target>
-
-  <target name="all" depends="init,compile,pack"
-          description="Compile and pack - no code generation in this step" />
-
-  <target name="init-cc" depends="set-cc-config-dir,boot-deps">
-    <property name="ccbuild" value="true" />
   </target>
 
   <target name="init-install" depends="set-default-config-dir">
     <property name="installbuild" value="true" />
   </target>
 
-  <target name="cctarget"
-          depends="init-cc,all,coverage-report,comment-ratio-report,apidoc-jsp,jspcompile,javadoc"
-          description="Target called by cruisecontrol process">
-  </target>
-
   <target name="set-default-config-dir">
     <property name="rhn.config.dir" value="/etc/rhn" />
-  </target>
-
-  <target name="set-cc-config-dir">
-    <property name="rhn.config.dir"
-              value="${rhn-home}/buildconf/builder/config/satellite" />
-  </target>
-
-  <target name="run" description="runs a class with a main method" depends="compile">
-    <java fork="true"
-          classname="${classname}"
-          failonerror="true" >
-          <classpath>
-            <pathelement path="${build.dir}/classes" />
-            <path refid="alljars"/>
-          </classpath>
-    </java>
-  </target>
-
-  <target name="clean" description="Remove all build artifacts">
-    <delete dir="${build.dir}" quiet="true"/>
-    <delete>
-      <fileset dir="${rhn-home}" includes="junit*.properties" />
-    </delete>
-    <delete>
-      <fileset defaultexcludes="no" dir="${rhn-home}">
-        <include name="**/*~" />
-        <include name="velocity.log*" />
-        <include name="coverage.ec" />
-        <include name="coverage.em" />
-      </fileset>
-    </delete>
-  </target>
-
-  <target name="apidoc-singlepage" description="Generate the api for jsps" depends="init">
-    <property name="doclet.class" value="SinglePageDoclet" />
-    <property name="template.dir" value="singlepage" />
-    <property name="apidoc.output" value="${report.dir}/apidocs/${template.dir}/" />
-    <antcall target="apidoc" />
   </target>
 
   <target name="apidoc-jsp" description="Generate the api for jsps" depends="init">
     <property name="doclet.class" value="JSPDoclet" />
     <property name="template.dir" value="jsp" />
-    <property name="apidoc.output" value="${report.dir}/apidocs/${template.dir}/" />
-    <antcall target="apidoc" />
-  </target>
-
-  <target name="apidoc-html" description="Generate the api for jsps" depends="init">
-    <property name="doclet.class" value="HtmlDoclet" />
-    <property name="template.dir" value="html" />
     <property name="apidoc.output" value="${report.dir}/apidocs/${template.dir}/" />
     <antcall target="apidoc" />
   </target>
@@ -236,116 +120,12 @@
 
   </target>
 
-  <target name="javadoc" description="Generate the java-doc" depends="init">
-    <javadoc destdir="${report.dir}/javadoc" author="true" version="true"
-             use="true" failonerror="true" classpathref="buildjars"
-             stylesheetfile="${src.dir}/webapp/css/rhnjavadoc.css"
-             breakiterator="yes" useexternalfile="true" maxmemory="128m" >
-      <tag name="todo" scope="all" description="To do:" />
-      <tag name="apidoc.param" scope="methods" enabled="false"/>
-      <tag name="apidoc.returntype" scope="methods" enabled="false"/>
-      <tag name="apidoc.namespace" scope="types" enabled="false"/>
-      <tag name="apidoc.doc" scope="all" enabled="false"/>
-      <tag name="apidoc.serializer" scope="methods" enabled="false"/>
-      <fileset dir="code" >
-        <include name="**/src/**/*.java" />
-        <exclude name="**/test/**" />
-        <exclude name="**/testing/*TestUtils.java" />
-        <exclude name="**/testing/*Test.java" />
-        <exclude name="**/internal/**" />
-      </fileset>
-      <fileset dir="${build.dir}/src" >
-        <include name="**/*.java" />
-      </fileset>
-    </javadoc>
-    <echo message="javadoc finished."/>
-    <copy file="${src.dir}/webapp/img/inherit.gif"
-          tofile="${report.dir}/javadoc/resources/inherit.gif"
-          overwrite="yes" />
-  </target>
-
-  <target name="javadoc-deploy" description="Locally deploy javadocs"
-          depends="javadoc">
-    <delete quiet="true">
-      <fileset dir="${javadoc.deploydir}"
-               includes="**/*.html"
-               followsymlinks="false"/>
-    </delete>
-    <copy todir="${javadoc.deploydir}">
-      <fileset dir="${report.dir}/javadoc"
-               includes="**/*.html" />
-    </copy>
-  </target>
-
-  <!-- We may want to break this down so that we can specify directories or
-       classes to operate on.  But, hopefully our checkstyle report will
-       generally be clean, so we may be able to always check all classes. -->
-  <target name="checkstyle" depends="init,compile-main">
-    <mkdir dir="${report.dir}" />
-    <checkstyle config="buildconf/checkstyle.xml" failOnViolation="true" >
-      <property key="javadoc.method.scope" value="public" />
-      <property key="javadoc.type.scope" value="package" />
-      <property key="javadoc.var.scope" value="package" />
-      <property key="javadoc.lazy" value="${javadoc.lazy}" />
-      <property key="checkstyle.cache.file" value="${checkstyle.cache.src}" />
-      <fileset dir="code" >
-        <include name="**/src/**/*.java" />
-        <exclude name="**/test/*.java" />
-      </fileset>
-      <classpath>
-          <path refid="buildjars" />
-          <pathelement path="${build.dir}/classes" />
-      </classpath>
-      <formatter type="plain" />
-      <formatter type="xml" toFile="${report.dir}/checkstyle_report.xml" />
-    </checkstyle>
-    <checkstyle config="buildconf/checkstyle.xml" failOnViolation="true" >
-      <property key="javadoc.method.scope" value="nothing" />
-      <property key="javadoc.type.scope" value="nothing" />
-      <property key="javadoc.var.scope" value="nothing" />
-      <property key="javadoc.lazy" value="true" />
-      <property key="checkstyle.cache.file" value="${checkstyle.cache.test}" />
-      <fileset dir="code" >
-        <include name="**/test/*.java" />
-      </fileset>
-      <formatter type="plain" />
-      <formatter type="xml" toFile="${report.dir}/checkstyle_report_test.xml" />
-    </checkstyle>
-  </target>
-
   <target name="init-pack">
     <mkdir dir="${build.dir}/webapp" />
   </target>
 
   <target name="pack" depends="init,init-pack,pack-megajar,pack-testjar,pack-webapp"
           description="Create jars and copy descriptors" />
-
-  <target name="pack-all"
-          depends="init,init-pack,pack-megajar,pack-webapp"
-          description="Create jars and copy descriptors" />
-
-  <target name="instrument" depends="init-taskdefs" if="ccbuild">
-    <emma enabled="true">
-      <instr outdir="${build.instrument.dir}" merge="no"
-          instrpath="${build.dir}/classes" mode="fullcopy"
-          outfile="${rhn-home}/coverage.em" >
-        <filter excludes="*.internal.*" />
-        <filter excludes="*Mock*" />
-        <filter excludes="*Constants" />
-        <filter excludes="*Exception" />
-        <filter excludes="*.test.*" />
-        <filter excludes="com.redhat.common.*" />
-        <filter excludes="com.redhat.services.*" />
-        <filter excludes="com.redhat.rhn.testing.*" />
-      </instr>
-    </emma>
-
-    <copy toDir="${build.instrument.dir}/classes">
-      <fileset dir="${build.dir}/classes">
-        <include name="**/*.xml" />
-      </fileset>
-    </copy>
-  </target>
 
   <!-- Anything below this line should not generally be run from the command
 
@@ -356,17 +136,17 @@
           description="Compile source" />
 
   <target name="compile-internal" depends="link-jars"
-          description="Compile build helpers">
-    <mkdir dir="${build.dir}/classes" />
-    <javac destdir="${build.dir}/classes"
-           optimize="off"
-           debug="on"
-           deprecation="${deprecation}"
-           nowarn="${nowarn}"
-           srcdir="code/internal/src"
-           classpathref="buildjars"
-           includeantruntime="true" >
-    </javac>
+           description="Compile build helpers">
+     <mkdir dir="${build.dir}/classes" />
+     <javac destdir="${build.dir}/classes"
+            optimize="off"
+            debug="on"
+            deprecation="${deprecation}"
+            nowarn="${nowarn}"
+            srcdir="code/internal/src"
+            classpathref="buildjars"
+            includeantruntime="true" >
+     </javac>
   </target>
 
   <target name="compile-main" depends="link-jars,prepare"
@@ -656,26 +436,6 @@
         <filename name="tomcattomcat-servlet-3.1-api.jar"/>
       </fileset>
     </delete>
-  </target>
-
-  <target name="make-eclipse-project"
-          description="Configures this checkout as an eclipse project.">
-    <copy file="${rhn-home}/conf/eclipse/.project-template" tofile="${rhn-home}/.project" overwrite="false" />
-    <copy toDir="${rhn-home}" overwrite="false">
-      <fileset dir="${rhn-home}/conf/eclipse/">
-        <include name=".checkstyle" />
-        <include name=".classpath" />
-        <include name=".settings/*" />
-        <!-- include name=".externalToolBuilders/*" /-->
-      </fileset>
-    </copy>
-  </target>
-
-  <target name="wtf"
-          description="Use this target to help you diagnose development problems.">
-      <echo message="Hi, this task helps you get out your frustration when" />
-      <echo message="writing code.  Please feel free to bop your cubemate" />
-      <echo message="in the head for some comic relief." />
   </target>
 
   <target name="resolve" depends="resolve-local" />

@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 # -*- coding: utf-8 -*-
 #
 # Copyright (c) 2014 SUSE
@@ -16,24 +17,33 @@ from __future__ import print_function
 
 import re
 import sys
+
 try:
     import xmlrpc.client as xmlrpc_client
 except ImportError:
     import xmlrpclib as xmlrpc_client
 
-from spacewalk.susemanager.mgr_sync.channel import parse_channels, Channel, find_channel_by_label
+from spacewalk.susemanager.mgr_sync.channel import (
+    parse_channels,
+    Channel,
+    find_channel_by_label,
+)
 from spacewalk.susemanager.mgr_sync.product import parse_products, Product
 from spacewalk.susemanager.mgr_sync.config import Config
 from spacewalk.susemanager.mgr_sync import logger
-from spacewalk.susemanager.authenticator import Authenticator, MaximumNumberOfAuthenticationFailures
+from spacewalk.susemanager.authenticator import (
+    Authenticator,
+    MaximumNumberOfAuthenticationFailures,
+)
 from spacewalk.susemanager.helpers import cli_ask
 
 # see TaskoXmlRpcHandler.java for available methods
-TASKOMATIC_XMLRPC_URL = 'http://localhost:2829/RPC2'
+TASKOMATIC_XMLRPC_URL = "http://localhost:2829/RPC2"
 
 DEFAULT_LOG_LOCATION = "/var/log/rhn/mgr-sync.log"
 
 # pylint: disable=line-too-long,too-many-branches,too-many-locals,too-many-arguments,invalid-name,attribute-defined-outside-init,duplicate-code
+
 
 class MgrSync(object):  # pylint: disable=too-few-public-methods
     """
@@ -42,14 +52,23 @@ class MgrSync(object):  # pylint: disable=too-few-public-methods
 
     def __init__(self):
         self.config = Config()
-        url = "http://{0}:{1}{2}".format(self.config.host,
-                                         self.config.port,
-                                         self.config.uri)
+
+        # Use http on localhost by default to avoid hairpins when running in kubernetes
+        scheme = "http"
+        if self.config.host not in ["localhost", "127.0.0.1"]:
+            scheme = "https"
+            self.config.port = 443
+        # pylint: disable-next=consider-using-f-string
+        url = "{0}://{1}:{2}{3}".format(
+            scheme, self.config.host, self.config.port, self.config.uri
+        )
         self.conn = xmlrpc_client.ServerProxy(url)
-        self.auth = Authenticator(connection=self.conn,
-                                  user=self.config.user,
-                                  password=self.config.password,
-                                  token=self.config.token)
+        self.auth = Authenticator(
+            connection=self.conn,
+            user=self.config.user,
+            password=self.config.password,
+            token=self.config.token,
+        )
         self.quiet = False
 
     def __init__logger(self, debug_level, logfile=DEFAULT_LOG_LOCATION):
@@ -64,9 +83,10 @@ class MgrSync(object):  # pylint: disable=too-few-public-methods
         Returns an integer with the exit status of mgr-sync.
         """
         self.log = self.__init__logger(options.debug)
+        # pylint: disable-next=consider-using-f-string
         self.log.info("Executing mgr-sync {0}".format(options))
 
-        if self.conn.sync.master.hasMaster() and 'refresh' not in vars(options):
+        if self.conn.sync.master.hasMaster() and "refresh" not in vars(options):
             msg = """SUSE Manager is configured as slave server. Please use 'mgr-inter-sync' command.\n"""
             self.log.error(msg)
             sys.stderr.write(msg)
@@ -105,10 +125,18 @@ class MgrSync(object):  # pylint: disable=too-few-public-methods
             self.config.write()
 
         if options.store_credentials and self.auth.has_credentials():
-            print("Credentials have been saved to the {0} file.".format(
-                self.config.dotfile))
-            self.log.info("Credentials have been saved to the {0} file.".format(
-                self.config.dotfile))
+            print(
+                # pylint: disable-next=consider-using-f-string
+                "Credentials have been saved to the {0} file.".format(
+                    self.config.dotfile
+                )
+            )
+            self.log.info(
+                # pylint: disable-next=consider-using-f-string
+                "Credentials have been saved to the {0} file.".format(
+                    self.config.dotfile
+                )
+            )
 
         return exit_code
 
@@ -120,40 +148,49 @@ class MgrSync(object):  # pylint: disable=too-few-public-methods
         self.quiet = not options.verbose
         self.exit_with_error = False
 
-        if 'list_target' in vars(options):
-            if 'channel' in options.list_target:
+        if "list_target" in vars(options):
+            if "channel" in options.list_target:
                 self.log.info("Listing channels...")
-                self._list_channels(expand=options.expand,
-                                    filter=options.filter,
-                                    no_optionals=options.no_optionals,
-                                    compact=options.compact)
-            elif 'credentials' in options.list_target:
+                self._list_channels(
+                    expand=options.expand,
+                    filter=options.filter,
+                    no_optionals=options.no_optionals,
+                    compact=options.compact,
+                )
+            elif "credentials" in options.list_target:
                 self.log.info("Listing credentials...")
                 self._list_credentials()
-            elif 'product' in options.list_target:
+            elif "product" in options.list_target:
                 self.log.info("Listing products...")
-                self._list_products(expand=options.expand,
-                                    filter=options.filter)
-        elif 'add_target' in vars(options):
-            if 'channel' in options.add_target:
-                self._add_channels(channels=options.target,
-                                   mirror=options.mirror,
-                                   no_optionals=options.no_optionals,
-                                   no_sync=options.no_sync)
-            elif 'credentials' in options.add_target:
+                self._list_products(expand=options.expand, filter=options.filter)
+        elif "add_target" in vars(options):
+            if "channel" in options.add_target:
+                self._add_channels(
+                    channels=options.target,
+                    mirror=options.mirror,
+                    no_optionals=options.no_optionals,
+                    no_sync=options.no_sync,
+                )
+            elif "credentials" in options.add_target:
                 self._add_credentials(options.primary, options.target)
-            elif 'product' in options.add_target:
-                self._add_products(mirror="", no_recommends=options.no_recommends,
-                                   no_sync=options.no_sync)
-        elif 'sync_target' in vars(options):
-            self._sync_channels(channels=options.target, with_children=options.with_children)
-        elif 'refresh' in vars(options):
+            elif "product" in options.add_target:
+                self._add_products(
+                    mirror="",
+                    no_recommends=options.no_recommends,
+                    no_sync=options.no_sync,
+                )
+        elif "sync_target" in vars(options):
+            self._sync_channels(
+                channels=options.target, with_children=options.with_children
+            )
+        elif "refresh" in vars(options):
             self.exit_with_error = not self._refresh(
                 enable_reposync=options.refresh_channels,
                 mirror=options.mirror,
-                schedule=options.schedule)
-        elif 'delete_target' in vars(options):
-            if 'credentials' in options.delete_target:
+                schedule=options.schedule,
+            )
+        elif "delete_target" in vars(options):
+            if "credentials" in options.delete_target:
                 self._delete_credentials(options.target)
 
         if self.exit_with_error:
@@ -167,8 +204,16 @@ class MgrSync(object):  # pylint: disable=too-few-public-methods
     #                         #
     ###########################
 
-    def _list_channels(self, expand, filter, no_optionals,  # pylint: disable=redefined-builtin
-                       compact=False, show_interactive_numbers=False, only_installed=False):
+    def _list_channels(
+        self,
+        expand,
+        # pylint: disable-next=redefined-builtin
+        filter,
+        no_optionals,  # pylint: disable=redefined-builtin
+        compact=False,
+        show_interactive_numbers=False,
+        only_installed=False,
+    ):
         """
         List channels.
         """
@@ -186,6 +231,7 @@ class MgrSync(object):  # pylint: disable=too-few-public-methods
             print("No channels found.")
             return
 
+        # pylint: disable-next=consider-using-f-string
         print("Available Channels{0}:\n".format(expand and " (full)" or ""))
         print("\nStatus:")
         print("  - [I] - channel is installed")
@@ -211,23 +257,30 @@ class MgrSync(object):  # pylint: disable=too-few-public-methods
                     prefix = ""
                     if base_channel.status == Channel.Status.INSTALLED or expand:
                         output = child.to_ascii_row(compact)
-                        if (not filter or filter in output.lower()) and \
-                           (not no_optionals or not child.optional) and \
-                           child.status in show_status:
+                        if (
+                            (not filter or filter in output.lower())
+                            and (not no_optionals or not child.optional)
+                            and child.status in show_status
+                        ):
                             if child.status == number_status:
                                 if show_interactive_numbers:
+                                    # pylint: disable-next=consider-using-f-string
                                     prefix = "{0}) ".format(number_format)
                             elif show_interactive_numbers:
                                 prefix = "     "
 
-                            children_output.append(("    " + prefix + output, child.label))
+                            children_output.append(
+                                ("    " + prefix + output, child.label)
+                            )
 
-            if (not filter or filter in parent_output.lower() or children_output) and \
-               base_channel.status in show_status:
+            if (
+                not filter or filter in parent_output.lower() or children_output
+            ) and base_channel.status in show_status:
                 prefix = ""
 
                 if base_channel.status == number_status:
                     if show_interactive_numbers:
+                        # pylint: disable-next=consider-using-f-string
                         prefix = "{0}) ".format(number_format)
                 elif show_interactive_numbers:
                     prefix = "     "
@@ -246,13 +299,16 @@ class MgrSync(object):  # pylint: disable=too-few-public-methods
         return available_channels
 
     def _fetch_remote_channels(self):
-        """ Returns the list of channels as reported by the remote server """
+        """Returns the list of channels as reported by the remote server"""
         return parse_channels(
-            self._execute_xmlrpc_method(self.conn.sync.content,
-                                        "listChannels", self.auth.token()), self.log)
+            self._execute_xmlrpc_method(
+                self.conn.sync.content, "listChannels", self.auth.token()
+            ),
+            self.log,
+        )
 
     def _add_channels(self, channels, mirror="", no_optionals=False, no_sync=False):
-        """ Add a list of channels.
+        """Add a list of channels.
 
         If the channel list is empty the interactive mode is started.
         """
@@ -261,7 +317,9 @@ class MgrSync(object):  # pylint: disable=too-few-public-methods
         current_channels = list()
 
         if not channels:
-            channels = [self._select_channel_interactive_mode(no_optionals=no_optionals)]
+            channels = [
+                self._select_channel_interactive_mode(no_optionals=no_optionals)
+            ]
             enable_checks = False
 
         current_channels = self._fetch_remote_channels()
@@ -274,40 +332,64 @@ class MgrSync(object):  # pylint: disable=too-few-public-methods
                 if match:
                     if match.status == Channel.Status.INSTALLED:
                         add_channel = False
-                        self.log.info("Channel '{0}' has already been added".format(
-                            channel))
-                        print("Channel '{0}' has already been added".format(
-                            channel))
+                        self.log.info(
+                            # pylint: disable-next=consider-using-f-string
+                            "Channel '{0}' has already been added".format(channel)
+                        )
+                        # pylint: disable-next=consider-using-f-string
+                        print("Channel '{0}' has already been added".format(channel))
                     elif match.status == Channel.Status.UNAVAILABLE:
-                        self.log.error("Channel '{0}' is not available, skipping".format(
-                            channel))
-                        print("Channel '{0}' is not available, skipping".format(
-                            channel))
+                        self.log.error(
+                            # pylint: disable-next=consider-using-f-string
+                            "Channel '{0}' is not available, skipping".format(channel)
+                        )
+                        print(
+                            # pylint: disable-next=consider-using-f-string
+                            "Channel '{0}' is not available, skipping".format(channel)
+                        )
                         self.exit_with_error = True
                         continue
 
                     if not match.base_channel:
                         parent = current_channels[match.parent]
                         if parent.status == Channel.Status.UNAVAILABLE:
-                            self.log.error("Error, '{0}' depends on channel '{1}' which is not available".format(
-                                channel, parent.label))
+                            self.log.error(
+                                # pylint: disable-next=consider-using-f-string
+                                "Error, '{0}' depends on channel '{1}' which is not available".format(
+                                    channel, parent.label
+                                )
+                            )
+                            # pylint: disable-next=consider-using-f-string
                             self.log.error("'{0}' has not been added".format(channel))
                             sys.stderr.write(
+                                # pylint: disable-next=consider-using-f-string
                                 "Error, '{0}' depends on channel '{1}' which is not available\n".format(
-                                    channel, parent.label))
+                                    channel, parent.label
+                                )
+                            )
                             sys.stderr.write(
-                                "'{0}' has not been added\n".format(channel))
+                                # pylint: disable-next=consider-using-f-string
+                                "'{0}' has not been added\n".format(channel)
+                            )
                             self.exit_with_error = True
                             continue
                         if parent.status == Channel.Status.AVAILABLE:
-                            self.log.info("'{0}' depends on channel '{1}' which has not been added yet".format(
-                                channel, parent.label))
-                            self.log.info("Going to add '{0}'".format(
-                                parent.label))
-                            print("'{0}' depends on channel '{1}' which has not been added yet".format(
-                                channel, parent.label))
-                            print("Going to add '{0}'".format(
-                                parent.label))
+                            self.log.info(
+                                # pylint: disable-next=consider-using-f-string
+                                "'{0}' depends on channel '{1}' which has not been added yet".format(
+                                    channel, parent.label
+                                )
+                            )
+                            # pylint: disable-next=consider-using-f-string
+                            self.log.info("Going to add '{0}'".format(parent.label))
+                            print(
+                                # pylint: disable-next=consider-using-f-string
+                                "'{0}' depends on channel '{1}' which has not been added yet".format(
+                                    channel, parent.label
+                                )
+                            )
+                            # pylint: disable-next=consider-using-f-string
+                            print("Going to add '{0}'".format(parent.label))
                             self._add_channels([parent.label])
 
             if channel in channels_to_sync:
@@ -315,18 +397,22 @@ class MgrSync(object):  # pylint: disable=too-few-public-methods
                 continue
 
             if add_channel:
+                # pylint: disable-next=consider-using-f-string
                 self.log.debug("Adding channel '{0}'".format(channel))
-                added_channels = self._execute_xmlrpc_method(self.conn.sync.content,
-                                                             "addChannels",
-                                                             self.auth.token(),
-                                                             channel,
-                                                             mirror)
+                added_channels = self._execute_xmlrpc_method(
+                    self.conn.sync.content,
+                    "addChannels",
+                    self.auth.token(),
+                    channel,
+                    mirror,
+                )
                 # Flag added channels to not enable twice
                 for clabel in added_channels:
                     match = find_channel_by_label(clabel, current_channels, self.log)
                     if match:
                         match.status = Channel.Status.INSTALLED
                     if clabel not in channels_to_sync:
+                        # pylint: disable-next=consider-using-f-string
                         print("Added '{0}' channel".format(clabel))
                         channels_to_sync.append(clabel)
 
@@ -337,7 +423,7 @@ class MgrSync(object):  # pylint: disable=too-few-public-methods
             self._schedule_channel_reposync(channels_to_sync)
 
     def _schedule_channel_reposync(self, channels):
-        """ Schedules a reposync for a set of channels.
+        """Schedules a reposync for a set of channels.
 
         :param channels: the labels identifying the channels
         """
@@ -345,35 +431,55 @@ class MgrSync(object):  # pylint: disable=too-few-public-methods
             return
 
         try:
-            print("Scheduling reposync for following channels:\n- {0}".format("\n- ".join(channels)))
-            self.log.info("Scheduling reposync for '{0}'".format(
-                channels))
-            self._execute_xmlrpc_method(self.conn.channel.software,
-                                        "syncRepo",
-                                        self.auth.token(),
-                                        channels)
+            print(
+                "Scheduling reposync for following channels:\n- {0}".format(
+                    "\n- ".join(channels)
+                )
+            )
+            # pylint: disable-next=consider-using-f-string
+            self.log.info("Scheduling reposync for '{0}'".format(channels))
+            self._execute_xmlrpc_method(
+                self.conn.channel.software, "syncRepo", self.auth.token(), channels
+            )
         except xmlrpc_client.Fault as ex:
             if ex.faultCode == 2802:
-                self.log.error("Error, unable to schedule channel reposync: Taskomatic is not responding.")
-                sys.stderr.write("Error, unable to schedule channel reposync: Taskomatic is not responding.\n")
+                self.log.error(
+                    "Error, unable to schedule channel reposync: Taskomatic is not responding."
+                )
+                sys.stderr.write(
+                    "Error, unable to schedule channel reposync: Taskomatic is not responding.\n"
+                )
                 sys.exit(1)
 
-    def _select_channel_interactive_mode(self, no_optionals=False, only_installed=False):
+    def _select_channel_interactive_mode(
+        self, no_optionals=False, only_installed=False
+    ):
         """Show not installed channels prefixing a number, then reads
         user input and returns the label of the chosen channel
 
         """
         channels = self._list_channels(
-            expand=False, filter=None, compact=False,
-            no_optionals=no_optionals, show_interactive_numbers=True, only_installed=only_installed)
+            expand=False,
+            filter=None,
+            compact=False,
+            no_optionals=no_optionals,
+            show_interactive_numbers=True,
+            only_installed=only_installed,
+        )
 
         choice = cli_ask(
+            # pylint: disable-next=consider-using-f-string
             msg=("Enter channel number (1-{0})".format(len(channels))),
-            validator=[str(i) for i in list(range(1, len(channels)+1))])
+            validator=[str(i) for i in list(range(1, len(channels) + 1))],
+        )
 
-        self.log.info("Selecting channel '{0}' from choice '{1}'".format(
-            channels[int(choice)-1], choice))
-        return channels[int(choice)-1]
+        self.log.info(
+            # pylint: disable-next=consider-using-f-string
+            "Selecting channel '{0}' from choice '{1}'".format(
+                channels[int(choice) - 1], choice
+            )
+        )
+        return channels[int(choice) - 1]
 
     ############################
     #                          #
@@ -382,23 +488,28 @@ class MgrSync(object):  # pylint: disable=too-few-public-methods
     ############################
 
     def _fetch_remote_products(self):
-        """ Returns the list of products as reported by the remote server """
+        """Returns the list of products as reported by the remote server"""
         return parse_products(
-            self._execute_xmlrpc_method(self.conn.sync.content,
-                                        "listProducts", self.auth.token()), self.log)
+            self._execute_xmlrpc_method(
+                self.conn.sync.content, "listProducts", self.auth.token()
+            ),
+            self.log,
+        )
 
-    def _list_products(self, filter, expand=False,  # pylint: disable=redefined-builtin
-                       show_interactive_numbers=False):
+    def _list_products(
+        self,
+        # pylint: disable-next=redefined-builtin
+        filter,
+        expand=False,  # pylint: disable=redefined-builtin
+        show_interactive_numbers=False,
+    ):
         """
         List products
         """
 
         interactive_data = None
         if show_interactive_numbers:
-            interactive_data = {
-                'counter': 1,
-                'num_prod': {}
-            }
+            interactive_data = {"counter": 1, "num_prod": {}}
 
         if filter:
             filter = filter.lower()
@@ -419,15 +530,16 @@ class MgrSync(object):  # pylint: disable=too-few-public-methods
         print("  - [U] - product is unavailable\n")
 
         for product in products:
-            product.to_stdout(filter=filter,
-                              expand=expand,
-                              interactive_data=interactive_data)
+            product.to_stdout(
+                filter=filter, expand=expand, interactive_data=interactive_data
+            )
+            # pylint: disable-next=consider-using-f-string
             self.log.info("{0} {1}".format(product.friendly_name, product.arch))
 
         return interactive_data
 
     def _add_products(self, mirror="", no_recommends=False, no_sync=False):
-        """ Add a list of products.
+        """Add a list of products.
 
         If the products list is empty the interactive mode is started.
         """
@@ -437,18 +549,24 @@ class MgrSync(object):  # pylint: disable=too-few-public-methods
             return
 
         if product.status == Product.Status.INSTALLED:
-            self.log.info("Product '{0}' has already been added".format(
-                product.friendly_name))
-            print("Product '{0}' has already been added".format(
-                product.friendly_name))
+            self.log.info(
+                # pylint: disable-next=consider-using-f-string
+                "Product '{0}' has already been added".format(product.friendly_name)
+            )
+            # pylint: disable-next=consider-using-f-string
+            print("Product '{0}' has already been added".format(product.friendly_name))
             return
 
-        mandatory_channels = self._find_channels_for_product(product, no_recommends=no_recommends)
+        mandatory_channels = self._find_channels_for_product(
+            product, no_recommends=no_recommends
+        )
 
-        self.log.debug("Adding channels required by '{0}' product".format(
-            product.friendly_name))
-        print("Adding channels required by '{0}' product".format(
-            product.friendly_name))
+        self.log.debug(
+            # pylint: disable-next=consider-using-f-string
+            "Adding channels required by '{0}' product".format(product.friendly_name)
+        )
+        # pylint: disable-next=consider-using-f-string
+        print("Adding channels required by '{0}' product".format(product.friendly_name))
         self._add_channels(channels=mandatory_channels, mirror=mirror, no_sync=no_sync)
         self.log.info("Product successfully added")
         print("Product successfully added")
@@ -458,11 +576,16 @@ class MgrSync(object):  # pylint: disable=too-few-public-methods
         ret = []
         if not product:
             return ret
-        ret.extend([c.label for c in product.channels if not c.optional or c.installer_updates])
+        ret.extend(
+            [c.label for c in product.channels if not c.optional or c.installer_updates]
+        )
         if product.isBase:
             for extprd in product.extensions:
                 if extprd.recommended and not no_recommends:
-                    print("Adding recommended product '{0}'".format(extprd.friendly_name))
+                    print(
+                        # pylint: disable-next=consider-using-f-string
+                        "Adding recommended product '{0}'".format(extprd.friendly_name)
+                    )
                     ret.extend([c.label for c in extprd.channels if not c.optional])
         return ret
 
@@ -472,29 +595,42 @@ class MgrSync(object):  # pylint: disable=too-few-public-methods
 
         """
         interactive_data = self._list_products(
-            filter=None, expand=False, show_interactive_numbers=True)
+            filter=None, expand=False, show_interactive_numbers=True
+        )
 
-        if interactive_data is not None and 'num_prod' in interactive_data:
-            num_prod = interactive_data['num_prod']
+        if interactive_data is not None and "num_prod" in interactive_data:
+            num_prod = interactive_data["num_prod"]
             if num_prod:
                 choice = cli_ask(
+                    # pylint: disable-next=consider-using-f-string
                     msg=("Enter product number (1-{0})".format(len(num_prod.keys()))),
-                    validator=[str(i) for i in list(range(1, len(num_prod.keys()) + 1))])
+                    validator=[
+                        str(i) for i in list(range(1, len(num_prod.keys()) + 1))
+                    ],
+                )
 
-                self.log.info("Selecting product '{0} {1}' from choice '{2}'".format(
-                    num_prod[int(choice)].friendly_name, num_prod[int(choice)].arch,
-                    choice))
+                self.log.info(
+                    # pylint: disable-next=consider-using-f-string
+                    "Selecting product '{0} {1}' from choice '{2}'".format(
+                        num_prod[int(choice)].friendly_name,
+                        num_prod[int(choice)].arch,
+                        choice,
+                    )
+                )
                 return num_prod[int(choice)]
             else:
-                self.log.info("All the available products have already been "
-                              "installed, nothing to do")
-                print("All the available products have already been installed, "
-                      "nothing to do")
+                self.log.info(
+                    "All the available products have already been "
+                    "installed, nothing to do"
+                )
+                print(
+                    "All the available products have already been installed, "
+                    "nothing to do"
+                )
                 return None
         else:
             self.log.info("Have you run 'mgr-sync refresh'?")
             print("Have you run 'mgr-sync refresh'?")
-
 
     ##############################
     #                            #
@@ -503,9 +639,10 @@ class MgrSync(object):  # pylint: disable=too-few-public-methods
     ##############################
 
     def _fetch_credentials(self):
-        """ Returns the list of credentials as reported by the remote server """
-        return self._execute_xmlrpc_method(self.conn.sync.content,
-                                           "listCredentials", self.auth.token())
+        """Returns the list of credentials as reported by the remote server"""
+        return self._execute_xmlrpc_method(
+            self.conn.sync.content, "listCredentials", self.auth.token()
+        )
 
     def _list_credentials(self, show_interactive_numbers=False):
         """
@@ -517,12 +654,13 @@ class MgrSync(object):  # pylint: disable=too-few-public-methods
         if credentials:
             print("Credentials:")
             for credential in credentials:
-                msg = credential['user']
-                self.log.info(credential['user'])
+                msg = credential["user"]
+                self.log.info(credential["user"])
                 if show_interactive_numbers:
                     interactive_number += 1
+                    # pylint: disable-next=consider-using-f-string
                     msg = "{0:02}) {1}".format(interactive_number, msg)
-                if credential['isPrimary']:
+                if credential["isPrimary"]:
                     msg += " (primary)"
                 print(msg)
         else:
@@ -534,11 +672,9 @@ class MgrSync(object):  # pylint: disable=too-few-public-methods
         Add credentials to the SUSE Manager database.
         """
         if not credentials:
-            user = cli_ask(
-                msg=("User to add"))
-            pw = cli_ask(
-                msg=("Password to add"),
-                password=True)
+            # pylint: disable-next=superfluous-parens
+            user = cli_ask(msg=("User to add"))
+            pw = cli_ask(msg=("Password to add"), password=True)
             if not pw == cli_ask(msg=("Confirm password"), password=True):
                 self.log.error("Passwords do not match")
                 print("Passwords do not match")
@@ -549,17 +685,19 @@ class MgrSync(object):  # pylint: disable=too-few-public-methods
             pw = credentials[1]
 
         saved_users = self._fetch_credentials()
-        if any(user == saved_user['user'] for saved_user in saved_users):
+        if any(user == saved_user["user"] for saved_user in saved_users):
             self.log.error("Credentials already exist")
             print("Credentials already exist")
             self.exit_with_error = True
         else:
-            self._execute_xmlrpc_method(self.conn.sync.content,
-                                        "addCredentials",
-                                        self.auth.token(),
-                                        user,
-                                        pw,
-                                        primary)
+            self._execute_xmlrpc_method(
+                self.conn.sync.content,
+                "addCredentials",
+                self.auth.token(),
+                user,
+                pw,
+                primary,
+            )
             self.log.info("Successfully added credentials.")
             print("Successfully added credentials.")
 
@@ -577,21 +715,26 @@ class MgrSync(object):  # pylint: disable=too-few-public-methods
 
         saved_credentials = self._fetch_credentials()
         for user in credentials:
-            if any(user == saved_user['user'] for saved_user in  saved_credentials):
+            if any(user == saved_user["user"] for saved_user in saved_credentials):
                 if interactive:
                     confirm = cli_ask(
-                        msg=("Really delete credentials '{0}'? (y/n)".format(user)))
+                        # pylint: disable-next=consider-using-f-string
+                        msg=("Really delete credentials '{0}'? (y/n)".format(user))
+                    )
                     if not re.search("[yY]", confirm):
                         return
-                self._execute_xmlrpc_method(self.conn.sync.content,
-                                            "deleteCredentials",
-                                            self.auth.token(),
-                                            user)
+                self._execute_xmlrpc_method(
+                    self.conn.sync.content, "deleteCredentials", self.auth.token(), user
+                )
 
+                # pylint: disable-next=consider-using-f-string
                 self.log.info("Successfully deleted credentials: {0}".format(user))
+                # pylint: disable-next=consider-using-f-string
                 print("Successfully deleted credentials: {0}".format(user))
             else:
+                # pylint: disable-next=consider-using-f-string
                 self.log.error("Credentials not found in database: {0}".format(user))
+                # pylint: disable-next=consider-using-f-string
                 print("Credentials not found in database: {0}".format(user))
                 self.exit_with_error = True
 
@@ -604,12 +747,18 @@ class MgrSync(object):  # pylint: disable=too-few-public-methods
 
         self._list_credentials(True)
         number = cli_ask(
+            # pylint: disable-next=consider-using-f-string
             msg=("Enter credentials number (1-{0})".format(len(saved_credentials))),
-            validator=[str(i) for i in list(range(1, len(saved_credentials)+1))])
+            validator=[str(i) for i in list(range(1, len(saved_credentials) + 1))],
+        )
 
-        self.log.info("Selecting credentials '{0}' from choice '{1}'".format(
-            saved_credentials[int(number)-1]['user'], number))
-        return [saved_credentials[int(number)-1]['user']]
+        self.log.info(
+            # pylint: disable-next=consider-using-f-string
+            "Selecting credentials '{0}' from choice '{1}'".format(
+                saved_credentials[int(number) - 1]["user"], number
+            )
+        )
+        return [saved_credentials[int(number) - 1]["user"]]
 
     #################
     #               #
@@ -630,6 +779,7 @@ class MgrSync(object):  # pylint: disable=too-few-public-methods
 
         channels_to_sync = []
         for channel in channels:
+            # pylint: disable-next=unused-variable
             sync_channel = True
             match = find_channel_by_label(channel, current_channels, self.log)
             if match:
@@ -637,15 +787,19 @@ class MgrSync(object):  # pylint: disable=too-few-public-methods
                     channels_to_sync.append(channel)
                     if with_children:
                         for cld in match.children:
-                            if cld.status == Channel.Status.INSTALLED and \
-                               cld.label not in channels_to_sync:
+                            if (
+                                cld.status == Channel.Status.INSTALLED
+                                and cld.label not in channels_to_sync
+                            ):
                                 channels_to_sync.append(cld.label)
                 else:
                     sync_channel = False
-                    self.log.error("Channel '{0}' is not available, skipping".format(
-                        channel))
-                    print("Channel '{0}' is not available, skipping".format(
-                        channel))
+                    self.log.error(
+                        # pylint: disable-next=consider-using-f-string
+                        "Channel '{0}' is not available, skipping".format(channel)
+                    )
+                    # pylint: disable-next=consider-using-f-string
+                    print("Channel '{0}' is not available, skipping".format(channel))
                     self.exit_with_error = True
                     continue
 
@@ -665,14 +819,19 @@ class MgrSync(object):  # pylint: disable=too-few-public-methods
             ("SUSE repositories    ", "synchronizeRepositories"),
             ("Subscriptions        ", "synchronizeSubscriptions"),
         )
-        text_width = len("Refreshing ") + 8 + \
-                     len(sorted(actions, key=lambda t: t[0], reverse=True)[0])
+        text_width = (
+            len("Refreshing ")
+            + 8
+            + len(sorted(actions, key=lambda t: t[0], reverse=True)[0])
+        )
 
         if self.conn.sync.master.hasMaster() or schedule:
             try:
                 self._schedule_taskomatic_refresh(enable_reposync)
             except xmlrpc_client.Fault as e:
+                # pylint: disable-next=consider-using-f-string
                 self.log.error("Error scheduling refresh: {0}".format(e))
+                # pylint: disable-next=consider-using-f-string
                 sys.stderr.write("Error scheduling refresh: {0}\n".format(e))
                 return False
             self.log.info("Refresh successfully scheduled")
@@ -681,25 +840,32 @@ class MgrSync(object):  # pylint: disable=too-few-public-methods
             return True
 
         for operation, method in actions:
+            # pylint: disable-next=consider-using-f-string
             sys.stdout.write("Refreshing {0}".format(operation))
             sys.stdout.flush()
             try:
                 if method == "synchronizeRepositories":
                     # this is the only method which requires the mirror
                     # parameter
-                    self._execute_xmlrpc_method(self.conn.sync.content, method,
-                                                self.auth.token(), mirror)
+                    self._execute_xmlrpc_method(
+                        self.conn.sync.content, method, self.auth.token(), mirror
+                    )
                 else:
-                    self._execute_xmlrpc_method(self.conn.sync.content, method,
-                                                self.auth.token())
+                    self._execute_xmlrpc_method(
+                        self.conn.sync.content, method, self.auth.token()
+                    )
+                # pylint: disable-next=consider-using-f-string
                 self.log.info("Refreshing {0} succeeded".format(operation.rstrip()))
                 sys.stdout.write("[DONE]".rjust(text_width) + "\n")
                 sys.stdout.flush()
             except Exception as ex:  # pylint: disable=broad-except
+                # pylint: disable-next=consider-using-f-string
                 self.log.error("Refreshing {0} failed".format(operation.rstrip()))
+                # pylint: disable-next=consider-using-f-string
                 self.log.error("Error: {0}".format(ex))
                 sys.stdout.write("[FAIL]".rjust(text_width) + "\n")
                 sys.stdout.flush()
+                # pylint: disable-next=consider-using-f-string
                 sys.stderr.write("\tError: {0}\n\n".format(ex))
                 self.exit_with_error = True
                 return False
@@ -716,12 +882,15 @@ class MgrSync(object):  # pylint: disable=too-few-public-methods
                 if bc.status != Channel.Status.INSTALLED:
                     continue
 
+                # pylint: disable-next=consider-using-f-string
                 self.log.debug("Scheduling reposync for '{0}' channel".format(bc.label))
                 channels_to_sync.append(bc.label)
                 for child in bc.children:
                     if child.status == Channel.Status.INSTALLED:
-                        self.log.debug("Scheduling reposync for '{0}' channel".format(
-                            child.label))
+                        self.log.debug(
+                            # pylint: disable-next=consider-using-f-string
+                            "Scheduling reposync for '{0}' channel".format(child.label)
+                        )
                         channels_to_sync.append(child.label)
             self._schedule_channel_reposync(channels_to_sync)
         return True
@@ -729,11 +898,11 @@ class MgrSync(object):  # pylint: disable=too-few-public-methods
     def _schedule_taskomatic_refresh(self, enable_reposync):
         client = xmlrpc_client.Server(TASKOMATIC_XMLRPC_URL)
         params = {}
-        params['noRepoSync'] = not enable_reposync
+        params["noRepoSync"] = not enable_reposync
 
-        self.log.debug("Calling Taskomatic refresh with '{0}'".format(
-            params))
-        client.tasko.scheduleSingleSatBunchRun('mgr-sync-refresh-bunch', params)
+        # pylint: disable-next=consider-using-f-string
+        self.log.debug("Calling Taskomatic refresh with '{0}'".format(params))
+        client.tasko.scheduleSingleSatBunchRun("mgr-sync-refresh-bunch", params)
 
     def _execute_xmlrpc_method(self, endpoint, method, auth_token, *params, **opts):
         """
@@ -748,18 +917,28 @@ class MgrSync(object):  # pylint: disable=too-few-public-methods
         retry_on_session_failure = opts.get("retry_on_session_failure", True)
 
         try:
-            self.log.debug("Invoking remote method {0} with auth_token {1}".format(
-                method, auth_token))
+            self.log.debug(
+                # pylint: disable-next=consider-using-f-string
+                "Invoking remote method {0} with auth_token {1}".format(
+                    method, auth_token
+                )
+            )
             return getattr(endpoint, method)(auth_token, *params)
         except xmlrpc_client.Fault as ex:
             if retry_on_session_failure and self._check_session_fail(ex):
+                # pylint: disable-next=consider-using-f-string
                 self.log.info("Retrying after session failure: {0}".format(ex))
                 self.auth.discard_token()
                 auth_token = self.auth.token()
                 return self._execute_xmlrpc_method(
-                    endpoint, method, auth_token, *params,
-                    retry_on_session_failure=False)
+                    endpoint,
+                    method,
+                    auth_token,
+                    *params,
+                    retry_on_session_failure=False,
+                )
             else:
+                # pylint: disable-next=consider-using-f-string
                 self.log.error("Error: {0}".format(ex))
                 raise ex
 
@@ -770,10 +949,7 @@ class MgrSync(object):  # pylint: disable=too-few-public-methods
         """
 
         fault = str(exception).lower()
-        relevant_errors = (
-            'could not find session',
-            'session id.*is not valid'
-        )
+        relevant_errors = ("could not find session", "session id.*is not valid")
 
         for error_string in relevant_errors:
             if re.search(error_string, fault):

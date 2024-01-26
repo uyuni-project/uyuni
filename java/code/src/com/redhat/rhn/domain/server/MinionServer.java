@@ -24,6 +24,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -39,14 +40,7 @@ public class MinionServer extends Server implements SaltConfigurable {
     private Integer sshPushPort;
     private Set<AccessToken> accessTokens = new HashSet<>();
     private Set<Pillar> pillars = new HashSet<>();
-    /**
-       We typically look at the packages installed on a system to identify whether a reboot is necessary.
-       This property initially only works for transactional systems, but the idea is that gradually the
-       other types of systems also provide this information directly to be stored here so we no longer rely
-       on package related inference to determine whether a reboot is necessary. Even because this
-       information does not always depend only on the packages.
-    */
-    private Boolean rebootNeeded;
+    private Date rebootRequiredAfter;
 
     /**
      * Constructs a MinionServer instance.
@@ -325,11 +319,15 @@ public class MinionServer extends Server implements SaltConfigurable {
         return changed;
     }
 
-    public Boolean isRebootNeeded() {
-        return rebootNeeded;
+    public boolean isRebootNeeded() {
+        return getLastBoot() != null && rebootRequiredAfter != null && getLastBootAsDate().before(rebootRequiredAfter);
     }
 
-    public void setRebootNeeded(Boolean rebootNeededIn) {
-        this.rebootNeeded = rebootNeededIn;
+    public Date getRebootRequiredAfter() {
+        return rebootRequiredAfter;
+    }
+
+    public void setRebootRequiredAfter(Date rebootRequiredAfterIn) {
+        rebootRequiredAfter = rebootRequiredAfterIn;
     }
 }

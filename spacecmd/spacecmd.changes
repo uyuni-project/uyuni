@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jan 16 08:08:10 CET 2024 - jgonzalez@suse.com
+
+- version 5.0.1-1
+  * Use localhost without ssl when running on the server
+
+-------------------------------------------------------------------
 Fri Dec 15 16:57:45 CET 2023 - rosuna@suse.com
 
 - version 4.4.10-1

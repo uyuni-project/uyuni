@@ -1,70 +1,58 @@
+#  pylint: disable=missing-module-docstring
 from ..beacons import reboot_info
+import pytest
 
-def _pending_transaction_false():
-  return False
 
-def _pending_transaction_true():
-  return True
+def _reboot_not_required():
+    return {"reboot_required": False}
 
-def test_should_fire_event_when_context_is_empty():
-  """
-    The __context__ is empty and reboot is not required
-  """
-  reboot_info.__context__ = {}
-  reboot_info.__salt__ = {
-    "transactional_update.pending_transaction": _pending_transaction_false
-  }
-  ret = reboot_info.beacon({})
-  assert ret == [{ "reboot_needed": False }]
 
-  """
-    The __context__ is empty and reboot is required
-  """
-  reboot_info.__context__ = {}
-  reboot_info.__salt__ = {
-    "transactional_update.pending_transaction": _pending_transaction_true
-  }
-  ret = reboot_info.beacon({})
-  assert ret == [{ "reboot_needed": True }]
+def _reboot_required():
+    return {"reboot_required": True}
 
-def test_should_not_fire_event_when_already_fired():
-  """
-    The __context__ already register that reboot is required
-  """
-  reboot_info.__salt__ = {
-    "transactional_update.pending_transaction": _pending_transaction_true
-  }
-  reboot_info.__context__ = { "reboot_needed": True }
-  ret = reboot_info.beacon({})
-  assert ret == []
 
-  """
-    The __context__ already register that reboot is not required
-  """
-  reboot_info.__salt__ = {
-    "transactional_update.pending_transaction": _pending_transaction_false
-  }
-  reboot_info.__context__ = { "reboot_needed": False }
-  ret = reboot_info.beacon({})
-  assert ret == []
+context_reboot_required = {"reboot_needed": True}
+context_reboot_not_required = {"reboot_needed": False}
 
-def test_should_fire_event_when_reboot_status_changes():
-  """
-    The __context__ register that reboot is required but there is no pending transaction
-  """
-  reboot_info.__salt__ = {
-    "transactional_update.pending_transaction": _pending_transaction_false
-  }
-  reboot_info.__context__ = { "reboot_needed": True }
-  ret = reboot_info.beacon({})
-  assert ret == [{ "reboot_needed": False }]
 
-  """
-    The __context__ register that reboot is not required but there is a pending transaction
-  """
-  reboot_info.__salt__ = {
-    "transactional_update.pending_transaction": _pending_transaction_true
-  }
-  reboot_info.__context__ = { "reboot_needed": False }
-  ret = reboot_info.beacon({})
-  assert ret == [{ "reboot_needed": True }]
+@pytest.mark.parametrize(
+    "context, module_fn, fire_event",
+    [
+        (
+            # The __context__ is empty and reboot is not required, don't fire event.
+            {},
+            _reboot_not_required,
+            False,
+        ),
+        (
+            # The __context__ is empty and reboot is required, fire event.
+            {},
+            _reboot_required,
+            True,
+        ),
+        (
+            # The __context__ already register that reboot is required and it keeps, don't fire again.
+            context_reboot_required,
+            _reboot_required,
+            False,
+        ),
+        (
+            # The __context__ register that reboot is required and it changes, don't fire event.
+            context_reboot_required,
+            _reboot_not_required,
+            False,
+        ),
+        (
+            # The __context__ register that reboot isn't required but it changed, fire event.
+            context_reboot_not_required,
+            _reboot_required,
+            True,
+        ),
+    ],
+)
+def test_beacon(context, module_fn, fire_event):
+    reboot_info.__context__ = context
+    reboot_info.__salt__ = {"reboot_info.reboot_required": module_fn}
+    ret = reboot_info.beacon({})
+    expected_result = [{"reboot_needed": True}] if fire_event else []
+    assert ret == expected_result

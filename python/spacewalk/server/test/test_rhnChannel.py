@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring,invalid-name
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -23,50 +24,86 @@ def test_server_search(use_key=0):
     if use_key:
         user = None
     else:
-        user = 'mibanescu-plain'
+        user = "mibanescu-plain"
     u = rhnUser.search(user)
+    # pylint: disable-next=redefined-outer-name
     s = rhnServer.Server(u, arch="athlon")
     s.server["release"] = "2.1AS"
     s.server["name"] = "test 1"
     if use_key:
-        rhnFlags.set("registration_token", 'a02487cf77e72f86338f44212d23140d')
+        rhnFlags.set("registration_token", "a02487cf77e72f86338f44212d23140d")
     s.save()
     print((s.server["id"]))
 
 
 if __name__ == "__main__":
     initCFG("server.xmlrpc")
-    rhnSQL.initDB('rhnuser/rhnuser@webdev')
+    rhnSQL.initDB("rhnuser/rhnuser@webdev")
 
+    # pylint: disable-next=using-constant-test
     if 1:
         test_server_search(use_key=1)
         sys.exit(1)
 
-    print((rhnChannel.get_server_channel_mappings(1000102174, release='2.1AS')))
-    print((rhnChannel.get_server_channel_mappings(1000102174, release='2.1AS',
-                                                 user_id=2825619, none_ok=1)))
+    print((rhnChannel.get_server_channel_mappings(1000102174, release="2.1AS")))
+    print(
+        (
+            rhnChannel.get_server_channel_mappings(
+                1000102174, release="2.1AS", user_id=2825619, none_ok=1
+            )
+        )
+    )
 
-    print((rhnChannel.channels_for_release_arch('2.1AS', 'athlon-redhat-linux')))
-    print((rhnChannel.channels_for_release_arch('2.1AS', 'athlon-redhat-linux', user_id=575937)))
-    print((rhnChannel.channels_for_release_arch('2.1AS', 'XXXX-redhat-linux', user_id=575937)))
+    print((rhnChannel.channels_for_release_arch("2.1AS", "athlon-redhat-linux")))
+    print(
+        (
+            rhnChannel.channels_for_release_arch(
+                "2.1AS", "athlon-redhat-linux", user_id=575937
+            )
+        )
+    )
+    print(
+        (
+            rhnChannel.channels_for_release_arch(
+                "2.1AS", "XXXX-redhat-linux", user_id=575937
+            )
+        )
+    )
     # mibanescu-2
-#    print rhnChannel.channels_for_release_arch('9', 'i386-redhat-linux', user_id=2012148)
+    #    print rhnChannel.channels_for_release_arch('9', 'i386-redhat-linux', user_id=2012148)
     # mibanescu-plain
-    print((rhnChannel.channels_for_release_arch('2.1AS', 'athlon-redhat-linux', user_id=2825619)))
+    print(
+        (
+            rhnChannel.channels_for_release_arch(
+                "2.1AS", "athlon-redhat-linux", user_id=2825619
+            )
+        )
+    )
     sys.exit(1)
 
+    # pylint: disable-next=unreachable
     channel = "redhat-linux-i386-7.1"
 
     start = time.time()
     ret = rhnChannel.list_packages(channel)
-    print(("Took %.2f seconds to list %d packages in %s" % (
-        time.time() - start, len(ret), channel)))
+    print(
+        (
+            # pylint: disable-next=consider-using-f-string
+            "Took %.2f seconds to list %d packages in %s"
+            % (time.time() - start, len(ret), channel)
+        )
+    )
     # pprint.pprint(ret)
 
     start = time.time()
     ret = rhnChannel.list_obsoletes(channel)
-    print(("Took %.2f seconds to list %d obsoletes in %s" % (
-        time.time() - start, len(ret), channel)))
+    print(
+        (
+            # pylint: disable-next=consider-using-f-string
+            "Took %.2f seconds to list %d obsoletes in %s"
+            % (time.time() - start, len(ret), channel)
+        )
+    )
     # pprint.pprint(ret)
 
     server_id = 1002156837
@@ -74,6 +111,6 @@ if __name__ == "__main__":
 
     s = rhnServer.search(server_id)
     s.change_base_channel("2.1AS-foobar")
-    print([x['label'] for x in channels])
-    print([x['label'] for x in rhnChannel.channels_for_server(server_id)])
+    print([x["label"] for x in channels])
+    print([x["label"] for x in rhnChannel.channels_for_server(server_id)])
     rhnSQL.commit()
