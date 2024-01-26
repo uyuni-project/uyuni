@@ -358,18 +358,6 @@ Before('@sleforsap15sp5_paygo_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sleforsap15sp5_paygo_minion']
 end
 
-Before('@sle12sp4_client') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle12sp4_client']
-end
-
-Before('@sle12sp4_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle12sp4_minion']
-end
-
-Before('@sle12sp4_ssh_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle12sp4_ssh_minion']
-end
-
 Before('@sle12sp5_client') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle12sp5_client']
 end

@@ -37,27 +37,6 @@ Feature: Sanity checks
     And "proxy" should communicate with the server using public interface
     And the clock from "proxy" should be exact
 
-@sle12sp4_client
-  Scenario: The SLES 12 SP4 traditional client is healthy
-    Then "sle12sp4_client" should have a FQDN
-    And reverse resolution should work for "sle12sp4_client"
-    And "sle12sp4_client" should communicate with the server using public interface
-    And the clock from "sle12sp4_client" should be exact
-
-@sle12sp4_minion
-  Scenario: The SLES 12 SP4 minion is healthy
-    Then "sle12sp4_minion" should have a FQDN
-    And reverse resolution should work for "sle12sp4_minion"
-    And "sle12sp4_minion" should communicate with the server using public interface
-    And the clock from "sle12sp4_minion" should be exact
-
-@sle12sp4_ssh_minion
-  Scenario: The SLES 12 SP4 Salt SSH minion is healthy
-    Then "sle12sp4_minion" should have a FQDN
-    And reverse resolution should work for "sle12sp4_minion"
-    And "sle12sp4_minion" should communicate with the server using public interface
-    And the clock from "sle12sp4_minion" should be exact
-
 @sle12sp5_client
   Scenario: The SLES 12 SP5 traditional client is healthy
     Then "sle12sp5_client" should have a FQDN
