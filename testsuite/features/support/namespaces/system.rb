@@ -139,7 +139,7 @@ class NamespaceSystem
   end
 
   ##
-  # Creates a cobbler system record with the specified kickstart label
+  # Creates a Cobbler system record with the specified kickstart label
   #
   # Args:
   #   sid: The system id
