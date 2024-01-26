@@ -11381,6 +11381,10 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
           检测到自带订阅服务器：{0}。
         </target>
       </trans-unit>
-    </body>
+    <trans-unit id="recurring_action.not_in_maint_mode" xml:space="preserve">
+        <source>One or more selected systems don't have a maintenance window assigned at the current time. Please limit your selection to systems that are in maintenance mode.</source>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>
