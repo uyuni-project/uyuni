@@ -623,7 +623,7 @@ PKGARCH_BY_CLIENT = {
                       'sle15sp5s390_ssh_minion' => 's390x'
 }.freeze
 
-CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION = {
+CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
   # WARNING:
   # - beta channels were removed because they are not selected and not currently synced, add them again when we will use them
   # - sled channels for SUMA tools were removed as we are not currently synchronizing them
