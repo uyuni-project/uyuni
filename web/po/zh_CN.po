@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-05 16:12+0100\n"
+"POT-Creation-Date: 2024-01-26 09:35+0100\n"
 "PO-Revision-Date: 2024-01-15 07:59+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
@@ -274,6 +274,11 @@ msgstr "开始键入..."
 msgid "No flavor"
 msgstr "无风格"
 
+#: ../html/src/components/input/Select.tsx:255
+#, fuzzy
+msgid "No options"
+msgstr "Kiwi 选项"
+
 #: ../html/src/components/package/PackageListActionScheduler.tsx:89
 msgid "The action has been <link>scheduled</link>."
 msgstr "操作已<link>安排</link>。"
@@ -287,8 +292,9 @@ msgid "Unable to perform action."
 msgstr "无法执行操作。"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:180
-#: ../html/src/components/states-picker.tsx:329
-#: ../html/src/manager/admin/setup/products/products.tsx:1144
+#: ../html/src/components/states-picker.tsx:339
+#: ../html/src/components/states-picker.tsx:529
+#: ../html/src/manager/admin/setup/products/products.tsx:1146
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:187
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:16
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1130
@@ -297,7 +303,7 @@ msgid "Confirm"
 msgstr "确认"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:189
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:202
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:218
 msgid "Back to list"
 msgstr "返回列表"
 
@@ -325,7 +331,7 @@ msgstr "第一页"
 
 #: ../html/src/components/pagination.tsx:28
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:155
-#: ../html/src/manager/admin/setup/products/products.tsx:448
+#: ../html/src/manager/admin/setup/products/products.tsx:450
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1096
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1127
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:670
@@ -334,7 +340,7 @@ msgstr "上一页"
 
 #: ../html/src/components/pagination.tsx:33
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:161
-#: ../html/src/manager/admin/setup/products/products.tsx:454
+#: ../html/src/manager/admin/setup/products/products.tsx:456
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1077
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1103
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:567
@@ -426,20 +432,20 @@ msgstr "自定义 Quartz 格式："
 
 #: ../html/src/components/ranking-table.tsx:20
 #: ../html/src/components/salt-state-popup.tsx:11
-#: ../html/src/components/states-picker.tsx:25
+#: ../html/src/components/states-picker.tsx:35
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:23
 msgid "State Configuration Channel"
 msgstr "状态配置通道"
 
 #: ../html/src/components/ranking-table.tsx:23
-#: ../html/src/components/states-picker.tsx:28
+#: ../html/src/components/states-picker.tsx:38
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:26
 msgid "Internal State"
 msgstr "内部状态"
 
 #: ../html/src/components/ranking-table.tsx:27
 #: ../html/src/components/salt-state-popup.tsx:14
-#: ../html/src/components/states-picker.tsx:32
+#: ../html/src/components/states-picker.tsx:42
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:30
 msgid "Normal Configuration Channel"
 msgstr "常规配置通道"
@@ -477,27 +483,27 @@ msgstr "编辑"
 msgid "Edit Configuration Channel"
 msgstr "编辑配置通道"
 
-#: ../html/src/components/states-picker.tsx:83
+#: ../html/src/components/states-picker.tsx:93
 msgid "There are unsaved changes. Do you want to proceed?"
 msgstr "有更改未保存。您要继续吗？"
 
-#: ../html/src/components/states-picker.tsx:98
+#: ../html/src/components/states-picker.tsx:108
 msgid "State configuration must not be empty"
 msgstr "状态配置不能为空"
 
-#: ../html/src/components/states-picker.tsx:129
+#: ../html/src/components/states-picker.tsx:139
 msgid "State assignments have been saved."
 msgstr "已保存状态指派。"
 
-#: ../html/src/components/states-picker.tsx:133
+#: ../html/src/components/states-picker.tsx:143
 msgid "An error occurred on save."
 msgstr "保存时出错。"
 
-#: ../html/src/components/states-picker.tsx:268
+#: ../html/src/components/states-picker.tsx:278
 msgid "No states assigned. Use search to find and assign states."
 msgstr "未指派状态。请使用搜索来查找并指派状态。"
 
-#: ../html/src/components/states-picker.tsx:327
+#: ../html/src/components/states-picker.tsx:337
 #: ../html/src/manager/images/image-view.tsx:817
 #: ../html/src/manager/images/image-view.tsx:819
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:29
@@ -513,29 +519,25 @@ msgstr "未指派状态。请使用搜索来查找并指派状态。"
 msgid "Back"
 msgstr "上一步"
 
-#: ../html/src/components/states-picker.tsx:337
+#: ../html/src/components/states-picker.tsx:347
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:182
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:187
 msgid "Save Changes"
 msgstr "保存更改"
 
-#: ../html/src/components/states-picker.tsx:351
-msgid "Execute States"
-msgstr "执行状态"
-
-#: ../html/src/components/states-picker.tsx:359
+#: ../html/src/components/states-picker.tsx:362
 msgid "Reorder"
 msgstr "重新排序"
 
-#: ../html/src/components/states-picker.tsx:385
+#: ../html/src/components/states-picker.tsx:388
 msgid "Search in states"
 msgstr "在状态中搜索"
 
-#: ../html/src/components/states-picker.tsx:385
+#: ../html/src/components/states-picker.tsx:388
 msgid "Search in configuration channels"
 msgstr "在配置通道中搜索"
 
-#: ../html/src/components/states-picker.tsx:391
+#: ../html/src/components/states-picker.tsx:394
 #: ../html/src/manager/header/search/search.tsx:77
 #: ../html/src/manager/header/search/search.tsx:86
 #: ../html/src/manager/minion/packages/package-states.tsx:214
@@ -543,45 +545,45 @@ msgstr "在配置通道中搜索"
 msgid "Search"
 msgstr "搜索"
 
-#: ../html/src/components/states-picker.tsx:401
+#: ../html/src/components/states-picker.tsx:404
 msgid "Edit State Ranks"
 msgstr "编辑状态排名"
 
-#: ../html/src/components/states-picker.tsx:401
+#: ../html/src/components/states-picker.tsx:404
 msgid "Edit Channel Ranks"
 msgstr "编辑通道排名"
 
-#: ../html/src/components/states-picker.tsx:404
+#: ../html/src/components/states-picker.tsx:407
 msgid "Edit the ranking of the states by dragging them."
 msgstr "通过拖放来编辑状态的排名。"
 
-#: ../html/src/components/states-picker.tsx:405
+#: ../html/src/components/states-picker.tsx:408
 msgid "Edit the ranking of the configuration channels by dragging them."
 msgstr "通过拖放来编辑配置通道的排名。"
 
-#: ../html/src/components/states-picker.tsx:410
+#: ../html/src/components/states-picker.tsx:413
 msgid "There are no states assigned."
 msgstr "未指派任何状态。"
 
-#: ../html/src/components/states-picker.tsx:418
+#: ../html/src/components/states-picker.tsx:421
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:248
 msgid "State Name"
 msgstr "状态名称"
 
-#: ../html/src/components/states-picker.tsx:418
+#: ../html/src/components/states-picker.tsx:421
 msgid "Channel Name"
 msgstr "通道名称"
 
-#: ../html/src/components/states-picker.tsx:419
+#: ../html/src/components/states-picker.tsx:422
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:261
 msgid "State Label"
 msgstr "状态标签"
 
-#: ../html/src/components/states-picker.tsx:419
+#: ../html/src/components/states-picker.tsx:422
 msgid "Channel Label"
 msgstr "通道标签"
 
-#: ../html/src/components/states-picker.tsx:420
+#: ../html/src/components/states-picker.tsx:423
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:73
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:126
 #: ../html/src/manager/admin/payg-shared/info/payg-info-form.tsx:23
@@ -597,9 +599,35 @@ msgstr "通道标签"
 msgid "Description"
 msgstr "说明"
 
-#: ../html/src/components/states-picker.tsx:421
+#: ../html/src/components/states-picker.tsx:424
 msgid "Assign"
 msgstr "指派"
+
+#: ../html/src/components/states-picker.tsx:483
+#, fuzzy
+msgid ""
+"Select the systems to schedule for immediate state execution and confirm."
+msgstr "选择您要添加的可选通道并确认。"
+
+#: ../html/src/components/states-picker.tsx:493
+#, fuzzy
+msgid "This table is empty"
+msgstr "必须使用此通道"
+
+#: ../html/src/components/states-picker.tsx:500
+#: ../html/src/components/states-picker.tsx:542
+#, fuzzy
+msgid "System Name"
+msgstr "系统名称"
+
+#: ../html/src/components/states-picker.tsx:520
+msgid "Execute States"
+msgstr "执行状态"
+
+#: ../html/src/components/states-picker.tsx:525
+#, fuzzy
+msgid "Select Sytems"
+msgstr "选择接口"
 
 #: ../html/src/components/systems.tsx:21
 #, fuzzy
@@ -1029,7 +1057,7 @@ msgid "never"
 msgstr "从不"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:166
-#: ../html/src/manager/admin/setup/products/products.tsx:459
+#: ../html/src/manager/admin/setup/products/products.tsx:461
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:868
 msgid "of"
 msgstr "/"
@@ -1098,7 +1126,7 @@ msgstr "用户"
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:27
 #: ../html/src/manager/images/image-store-edit.tsx:180
 #: ../html/src/manager/login/susemanager/login.tsx:93
-#: ../html/src/manager/login/uyuni/login.tsx:89
+#: ../html/src/manager/login/uyuni/login.tsx:88
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:396
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:519
 #: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:38
@@ -1213,25 +1241,25 @@ msgstr "添加产品"
 msgid "Clear products selection"
 msgstr "清除产品选择"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:415
+#: ../html/src/manager/admin/setup/products/products.tsx:417
 msgid "Why aren't all products displayed in the list?"
 msgstr "列表中为何不显示所有产品？"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:418
+#: ../html/src/manager/admin/setup/products/products.tsx:420
 msgid ""
 "The products displayed on this list are directly linked to your Organization "
 "credentials (Mirror credentials) as well as your SUSE subscriptions."
 msgstr ""
 "此列表中显示的产品直接链接到您的组织身份凭证（镜像身份凭证）和 SUSE 订阅。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:423
+#: ../html/src/manager/admin/setup/products/products.tsx:425
 msgid ""
 "If you believe there are products missing, make sure you have added the "
 "correct Organization credentials in the previous wizard step."
 msgstr ""
 "如果您确信缺少了产品，请确保已在向导的上一步中添加了正确的组织身份凭证。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:433
+#: ../html/src/manager/admin/setup/products/products.tsx:435
 msgid ""
 "This server is configured as an Inter-Server Synchronisation (ISS) slave. "
 "Products can only be managed on the ISS master."
@@ -1239,20 +1267,20 @@ msgstr ""
 "此服务器已配置为服务器间同步 (ISS) 从属服务器。只能在 ISS 主服务器上管理产"
 "品。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:559
+#: ../html/src/manager/admin/setup/products/products.tsx:561
 msgid "Filter by architecture"
 msgstr "按体系结构过滤"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:577
+#: ../html/src/manager/admin/setup/products/products.tsx:579
 msgid "Filter by product Description"
 msgstr "按产品说明过滤"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:653
+#: ../html/src/manager/admin/setup/products/products.tsx:655
 msgid "Product Description"
 msgstr "产品说明"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:659
-#: ../html/src/manager/admin/setup/products/products.tsx:1037
+#: ../html/src/manager/admin/setup/products/products.tsx:661
+#: ../html/src/manager/admin/setup/products/products.tsx:1039
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:159
 #: ../html/src/manager/images/image-view-packages.tsx:50
 #: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:32
@@ -1260,40 +1288,40 @@ msgstr "产品说明"
 msgid "Architecture"
 msgstr "体系结构"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:661
+#: ../html/src/manager/admin/setup/products/products.tsx:663
 msgid "Arch"
 msgstr "体系结构"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:668
+#: ../html/src/manager/admin/setup/products/products.tsx:670
 #: ../html/src/manager/packages/list.tsx:158
 msgid "Channels"
 msgstr "通道"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:839
+#: ../html/src/manager/admin/setup/products/products.tsx:841
 msgid " channels sync failed"
 msgstr " 通道同步失败"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:847
+#: ../html/src/manager/admin/setup/products/products.tsx:849
 msgid " channels sync in progress"
 msgstr " 通道同步正在进行"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:855
+#: ../html/src/manager/admin/setup/products/products.tsx:857
 msgid " channels synced"
 msgstr " 通道已同步"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:880
+#: ../html/src/manager/admin/setup/products/products.tsx:882
 msgid "To enable this product, the parent product should be selected first"
 msgstr "要启用此产品，应先选择父产品"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:881
+#: ../html/src/manager/admin/setup/products/products.tsx:883
 msgid "Select this product"
 msgstr "选择此产品"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:893
+#: ../html/src/manager/admin/setup/products/products.tsx:895
 msgid "This product is mirrored."
 msgstr "已镜像此产品。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:922
+#: ../html/src/manager/admin/setup/products/products.tsx:924
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:71
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:144
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:492
@@ -1301,7 +1329,7 @@ msgstr "已镜像此产品。"
 msgid "recommended"
 msgstr "建议"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:940
+#: ../html/src/manager/admin/setup/products/products.tsx:942
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/recommended-toggle.tsx:28
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:173
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:429
@@ -1309,55 +1337,55 @@ msgstr "建议"
 msgid "include recommended"
 msgstr "包括建议项"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:982
+#: ../html/src/manager/admin/setup/products/products.tsx:984
 msgid "SCC product catalog refresh in progress"
 msgstr "SCC 产品目录刷新正在进行"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:985
+#: ../html/src/manager/admin/setup/products/products.tsx:987
 msgid "Scheduling channels product resync"
 msgstr "正在安排通道产品重新同步"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:988
+#: ../html/src/manager/admin/setup/products/products.tsx:990
 msgid "Channels product resync scheduled"
 msgstr "已安排通道产品重新同步"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:991
+#: ../html/src/manager/admin/setup/products/products.tsx:993
 msgid "Schedule channels product resync"
 msgstr "安排通道产品重新同步"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1051
+#: ../html/src/manager/admin/setup/products/products.tsx:1053
 msgid "Show product's channels"
 msgstr "显示产品的通道"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1117
+#: ../html/src/manager/admin/setup/products/products.tsx:1119
 msgid "Product Channels - "
 msgstr "产品通道 - "
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1122
+#: ../html/src/manager/admin/setup/products/products.tsx:1124
 msgid "Select the optional channels you wish to add and confirm."
 msgstr "选择您要添加的可选通道并确认。"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1126
+#: ../html/src/manager/admin/setup/products/products.tsx:1128
 msgid "Mandatory Channels"
 msgstr "必需通道"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1128
+#: ../html/src/manager/admin/setup/products/products.tsx:1130
 msgid "Optional Channels"
 msgstr "可选通道"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1164
+#: ../html/src/manager/admin/setup/products/products.tsx:1166
 msgid "not synced"
 msgstr "未同步"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1167
+#: ../html/src/manager/admin/setup/products/products.tsx:1169
 msgid "sync in progress"
 msgstr "同步正在进行"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1170
+#: ../html/src/manager/admin/setup/products/products.tsx:1172
 msgid "synced"
 msgstr "已同步"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1173
+#: ../html/src/manager/admin/setup/products/products.tsx:1175
 msgid "sync failed"
 msgstr "同步失败"
 
@@ -3484,7 +3512,7 @@ msgid "Signing in ..."
 msgstr "正在登录..."
 
 #: ../html/src/manager/login/susemanager/login.tsx:41
-#: ../html/src/manager/login/uyuni/login.tsx:39
+#: ../html/src/manager/login/uyuni/login.tsx:38
 msgid ""
 "Discover a new way of managing your servers, packages, patches and more via "
 "one interface."
@@ -3496,8 +3524,8 @@ msgstr "了解 {product} 的<link>详细信息</link>。"
 
 #: ../html/src/manager/login/susemanager/login.tsx:81
 #: ../html/src/manager/login/susemanager/login.tsx:107
-#: ../html/src/manager/login/uyuni/login.tsx:51
-#: ../html/src/manager/login/uyuni/login.tsx:97
+#: ../html/src/manager/login/uyuni/login.tsx:50
+#: ../html/src/manager/login/uyuni/login.tsx:96
 msgid "Sign In"
 msgstr "登录"
 
@@ -3517,11 +3545,11 @@ msgstr "此用户拥有只读 API 访问权限。WebUI 登录被拒绝。"
 msgid "Are you sure you want to close this page while login is in progress?"
 msgstr "登录正在进行，您确定要关闭此页面吗？"
 
-#: ../html/src/manager/login/uyuni/login.tsx:42
+#: ../html/src/manager/login/uyuni/login.tsx:41
 msgid "Learn more about"
 msgstr "了解详细信息"
 
-#: ../html/src/manager/login/uyuni/login.tsx:77
+#: ../html/src/manager/login/uyuni/login.tsx:76
 msgid "Login"
 msgstr "登录"
 
@@ -3691,7 +3719,7 @@ msgstr "请确认是否继续。"
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:60
 #: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:129
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:99
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:192
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:208
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-form.tsx:102
 #: ../html/src/manager/virtualization/nets/network-properties.tsx:443
 #: ../html/src/manager/virtualization/pools/pool-properties.tsx:566
@@ -3901,7 +3929,7 @@ msgid "Loading playbook contents.."
 msgstr "正在装载剧本内容..."
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:87
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:184
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:200
 #: ../html/src/manager/state/highstate.tsx:121
 msgid "Test mode"
 msgstr "测试模式"
@@ -4534,25 +4562,30 @@ msgstr "成功更新日程安排。"
 msgid "Schedule successfully created."
 msgstr "成功创建日程安排。"
 
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:192
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:90
+#, fuzzy
+msgid "Action scheduled on selected minions"
+msgstr "已安排"
+
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:208
 msgid "Update "
 msgstr "更新 "
 
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:192
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:208
 msgid "Create "
 msgstr "创建 "
 
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:210
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:226
 msgid "Schedule Recurring Action"
 msgstr "安排重复性操作"
 
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:219
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:235
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:196
 #: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:16
 msgid "Action Type"
 msgstr "操作类型"
 
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:244
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:260
 msgid "Configure states to execute"
 msgstr "配置要执行的状态"
 
