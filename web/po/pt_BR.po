@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-05 16:12+0100\n"
+"POT-Creation-Date: 2024-01-26 09:35+0100\n"
 "PO-Revision-Date: 2021-03-07 04:47+0000\n"
 "Last-Translator: Rodrigo Macedo <rmsolucoeseminformatic4@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://l10n.opensuse.org/projects/uyuni/"
@@ -290,6 +290,10 @@ msgstr "Comece a digitar..."
 msgid "No flavor"
 msgstr "Sem sabores"
 
+#: ../html/src/components/input/Select.tsx:255
+msgid "No options"
+msgstr ""
+
 #: ../html/src/components/package/PackageListActionScheduler.tsx:89
 #, fuzzy
 msgid "The action has been <link>scheduled</link>."
@@ -305,8 +309,9 @@ msgid "Unable to perform action."
 msgstr ""
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:180
-#: ../html/src/components/states-picker.tsx:329
-#: ../html/src/manager/admin/setup/products/products.tsx:1144
+#: ../html/src/components/states-picker.tsx:339
+#: ../html/src/components/states-picker.tsx:529
+#: ../html/src/manager/admin/setup/products/products.tsx:1146
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:187
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:16
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1130
@@ -315,7 +320,7 @@ msgid "Confirm"
 msgstr "Confirmar"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:189
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:202
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:218
 msgid "Back to list"
 msgstr ""
 
@@ -343,7 +348,7 @@ msgstr "Primeiro"
 
 #: ../html/src/components/pagination.tsx:28
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:155
-#: ../html/src/manager/admin/setup/products/products.tsx:448
+#: ../html/src/manager/admin/setup/products/products.tsx:450
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1096
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1127
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:670
@@ -352,7 +357,7 @@ msgstr ""
 
 #: ../html/src/components/pagination.tsx:33
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:161
-#: ../html/src/manager/admin/setup/products/products.tsx:454
+#: ../html/src/manager/admin/setup/products/products.tsx:456
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1077
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1103
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:567
@@ -448,20 +453,20 @@ msgstr "Formato de quartzo personalizado:"
 
 #: ../html/src/components/ranking-table.tsx:20
 #: ../html/src/components/salt-state-popup.tsx:11
-#: ../html/src/components/states-picker.tsx:25
+#: ../html/src/components/states-picker.tsx:35
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:23
 msgid "State Configuration Channel"
 msgstr "Canal de configuração de estado"
 
 #: ../html/src/components/ranking-table.tsx:23
-#: ../html/src/components/states-picker.tsx:28
+#: ../html/src/components/states-picker.tsx:38
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:26
 msgid "Internal State"
 msgstr ""
 
 #: ../html/src/components/ranking-table.tsx:27
 #: ../html/src/components/salt-state-popup.tsx:14
-#: ../html/src/components/states-picker.tsx:32
+#: ../html/src/components/states-picker.tsx:42
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:30
 msgid "Normal Configuration Channel"
 msgstr "Canal de configuração normal"
@@ -500,29 +505,29 @@ msgstr "Editar"
 msgid "Edit Configuration Channel"
 msgstr "Editar Canal de Configuração"
 
-#: ../html/src/components/states-picker.tsx:83
+#: ../html/src/components/states-picker.tsx:93
 msgid "There are unsaved changes. Do you want to proceed?"
 msgstr "Existem alterações não salvas. Você quer prosseguir?"
 
-#: ../html/src/components/states-picker.tsx:98
+#: ../html/src/components/states-picker.tsx:108
 #, fuzzy
 msgid "State configuration must not be empty"
 msgstr "Canal de configuração de estado"
 
-#: ../html/src/components/states-picker.tsx:129
+#: ../html/src/components/states-picker.tsx:139
 msgid "State assignments have been saved."
 msgstr "As atribuições de estado foram salvas."
 
-#: ../html/src/components/states-picker.tsx:133
+#: ../html/src/components/states-picker.tsx:143
 msgid "An error occurred on save."
 msgstr "Ocorreu um erro ao salvar."
 
-#: ../html/src/components/states-picker.tsx:268
+#: ../html/src/components/states-picker.tsx:278
 msgid "No states assigned. Use search to find and assign states."
 msgstr ""
 "Nenhum estado atribuído. Use a pesquisa para localizar e atribuir estados."
 
-#: ../html/src/components/states-picker.tsx:327
+#: ../html/src/components/states-picker.tsx:337
 #: ../html/src/manager/images/image-view.tsx:817
 #: ../html/src/manager/images/image-view.tsx:819
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:29
@@ -538,30 +543,26 @@ msgstr ""
 msgid "Back"
 msgstr "Voltar"
 
-#: ../html/src/components/states-picker.tsx:337
+#: ../html/src/components/states-picker.tsx:347
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:182
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:187
 msgid "Save Changes"
 msgstr "Salvar Mudanças"
 
-#: ../html/src/components/states-picker.tsx:351
-msgid "Execute States"
-msgstr ""
-
-#: ../html/src/components/states-picker.tsx:359
+#: ../html/src/components/states-picker.tsx:362
 msgid "Reorder"
 msgstr "Reordenar"
 
-#: ../html/src/components/states-picker.tsx:385
+#: ../html/src/components/states-picker.tsx:388
 #, fuzzy
 msgid "Search in states"
 msgstr "Buscar"
 
-#: ../html/src/components/states-picker.tsx:385
+#: ../html/src/components/states-picker.tsx:388
 msgid "Search in configuration channels"
 msgstr "Pesquisar canais de configuração"
 
-#: ../html/src/components/states-picker.tsx:391
+#: ../html/src/components/states-picker.tsx:394
 #: ../html/src/manager/header/search/search.tsx:77
 #: ../html/src/manager/header/search/search.tsx:86
 #: ../html/src/manager/minion/packages/package-states.tsx:214
@@ -569,50 +570,50 @@ msgstr "Pesquisar canais de configuração"
 msgid "Search"
 msgstr "Buscar"
 
-#: ../html/src/components/states-picker.tsx:401
+#: ../html/src/components/states-picker.tsx:404
 msgid "Edit State Ranks"
 msgstr ""
 
-#: ../html/src/components/states-picker.tsx:401
+#: ../html/src/components/states-picker.tsx:404
 #, fuzzy
 msgid "Edit Channel Ranks"
 msgstr "Nome do Canal"
 
-#: ../html/src/components/states-picker.tsx:404
+#: ../html/src/components/states-picker.tsx:407
 #, fuzzy
 msgid "Edit the ranking of the states by dragging them."
 msgstr "Edite a classificação dos canais de configuração arrastando-os."
 
-#: ../html/src/components/states-picker.tsx:405
+#: ../html/src/components/states-picker.tsx:408
 #, fuzzy
 msgid "Edit the ranking of the configuration channels by dragging them."
 msgstr "Edite a classificação dos canais de configuração arrastando-os."
 
-#: ../html/src/components/states-picker.tsx:410
+#: ../html/src/components/states-picker.tsx:413
 msgid "There are no states assigned."
 msgstr "Não há estados atribuídos."
 
-#: ../html/src/components/states-picker.tsx:418
+#: ../html/src/components/states-picker.tsx:421
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:248
 #, fuzzy
 msgid "State Name"
 msgstr "Sobrenome"
 
-#: ../html/src/components/states-picker.tsx:418
+#: ../html/src/components/states-picker.tsx:421
 msgid "Channel Name"
 msgstr "Nome do Canal"
 
-#: ../html/src/components/states-picker.tsx:419
+#: ../html/src/components/states-picker.tsx:422
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:261
 #, fuzzy
 msgid "State Label"
 msgstr "Canal de configuração de estado"
 
-#: ../html/src/components/states-picker.tsx:419
+#: ../html/src/components/states-picker.tsx:422
 msgid "Channel Label"
 msgstr "Referência do Canal"
 
-#: ../html/src/components/states-picker.tsx:420
+#: ../html/src/components/states-picker.tsx:423
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:73
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:126
 #: ../html/src/manager/admin/payg-shared/info/payg-info-form.tsx:23
@@ -628,9 +629,33 @@ msgstr "Referência do Canal"
 msgid "Description"
 msgstr ""
 
-#: ../html/src/components/states-picker.tsx:421
+#: ../html/src/components/states-picker.tsx:424
 msgid "Assign"
 msgstr "Assinar"
+
+#: ../html/src/components/states-picker.tsx:483
+msgid ""
+"Select the systems to schedule for immediate state execution and confirm."
+msgstr ""
+
+#: ../html/src/components/states-picker.tsx:493
+msgid "This table is empty"
+msgstr ""
+
+#: ../html/src/components/states-picker.tsx:500
+#: ../html/src/components/states-picker.tsx:542
+#, fuzzy
+msgid "System Name"
+msgstr "Sobrenome"
+
+#: ../html/src/components/states-picker.tsx:520
+msgid "Execute States"
+msgstr ""
+
+#: ../html/src/components/states-picker.tsx:525
+#, fuzzy
+msgid "Select Sytems"
+msgstr "Selecionar uma agenda"
 
 #: ../html/src/components/systems.tsx:21
 #, fuzzy
@@ -1061,7 +1086,7 @@ msgid "never"
 msgstr ""
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:166
-#: ../html/src/manager/admin/setup/products/products.tsx:459
+#: ../html/src/manager/admin/setup/products/products.tsx:461
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:868
 msgid "of"
 msgstr "de"
@@ -1133,7 +1158,7 @@ msgstr "Usuários"
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:27
 #: ../html/src/manager/images/image-store-edit.tsx:180
 #: ../html/src/manager/login/susemanager/login.tsx:93
-#: ../html/src/manager/login/uyuni/login.tsx:89
+#: ../html/src/manager/login/uyuni/login.tsx:88
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:396
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:519
 #: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:38
@@ -1249,42 +1274,42 @@ msgstr ""
 msgid "Clear products selection"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:415
+#: ../html/src/manager/admin/setup/products/products.tsx:417
 msgid "Why aren't all products displayed in the list?"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:418
+#: ../html/src/manager/admin/setup/products/products.tsx:420
 msgid ""
 "The products displayed on this list are directly linked to your Organization "
 "credentials (Mirror credentials) as well as your SUSE subscriptions."
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:423
+#: ../html/src/manager/admin/setup/products/products.tsx:425
 msgid ""
 "If you believe there are products missing, make sure you have added the "
 "correct Organization credentials in the previous wizard step."
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:433
+#: ../html/src/manager/admin/setup/products/products.tsx:435
 msgid ""
 "This server is configured as an Inter-Server Synchronisation (ISS) slave. "
 "Products can only be managed on the ISS master."
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:559
+#: ../html/src/manager/admin/setup/products/products.tsx:561
 msgid "Filter by architecture"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:577
+#: ../html/src/manager/admin/setup/products/products.tsx:579
 msgid "Filter by product Description"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:653
+#: ../html/src/manager/admin/setup/products/products.tsx:655
 msgid "Product Description"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:659
-#: ../html/src/manager/admin/setup/products/products.tsx:1037
+#: ../html/src/manager/admin/setup/products/products.tsx:661
+#: ../html/src/manager/admin/setup/products/products.tsx:1039
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:159
 #: ../html/src/manager/images/image-view-packages.tsx:50
 #: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:32
@@ -1292,40 +1317,40 @@ msgstr ""
 msgid "Architecture"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:661
+#: ../html/src/manager/admin/setup/products/products.tsx:663
 msgid "Arch"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:668
+#: ../html/src/manager/admin/setup/products/products.tsx:670
 #: ../html/src/manager/packages/list.tsx:158
 msgid "Channels"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:839
+#: ../html/src/manager/admin/setup/products/products.tsx:841
 msgid " channels sync failed"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:847
+#: ../html/src/manager/admin/setup/products/products.tsx:849
 msgid " channels sync in progress"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:855
+#: ../html/src/manager/admin/setup/products/products.tsx:857
 msgid " channels synced"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:880
+#: ../html/src/manager/admin/setup/products/products.tsx:882
 msgid "To enable this product, the parent product should be selected first"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:881
+#: ../html/src/manager/admin/setup/products/products.tsx:883
 msgid "Select this product"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:893
+#: ../html/src/manager/admin/setup/products/products.tsx:895
 msgid "This product is mirrored."
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:922
+#: ../html/src/manager/admin/setup/products/products.tsx:924
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:71
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:144
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:492
@@ -1333,7 +1358,7 @@ msgstr ""
 msgid "recommended"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:940
+#: ../html/src/manager/admin/setup/products/products.tsx:942
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/recommended-toggle.tsx:28
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:173
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:429
@@ -1341,55 +1366,55 @@ msgstr ""
 msgid "include recommended"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:982
+#: ../html/src/manager/admin/setup/products/products.tsx:984
 msgid "SCC product catalog refresh in progress"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:985
+#: ../html/src/manager/admin/setup/products/products.tsx:987
 msgid "Scheduling channels product resync"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:988
+#: ../html/src/manager/admin/setup/products/products.tsx:990
 msgid "Channels product resync scheduled"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:991
+#: ../html/src/manager/admin/setup/products/products.tsx:993
 msgid "Schedule channels product resync"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1051
+#: ../html/src/manager/admin/setup/products/products.tsx:1053
 msgid "Show product's channels"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1117
+#: ../html/src/manager/admin/setup/products/products.tsx:1119
 msgid "Product Channels - "
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1122
+#: ../html/src/manager/admin/setup/products/products.tsx:1124
 msgid "Select the optional channels you wish to add and confirm."
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1126
+#: ../html/src/manager/admin/setup/products/products.tsx:1128
 msgid "Mandatory Channels"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1128
+#: ../html/src/manager/admin/setup/products/products.tsx:1130
 msgid "Optional Channels"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1164
+#: ../html/src/manager/admin/setup/products/products.tsx:1166
 msgid "not synced"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1167
+#: ../html/src/manager/admin/setup/products/products.tsx:1169
 msgid "sync in progress"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1170
+#: ../html/src/manager/admin/setup/products/products.tsx:1172
 msgid "synced"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1173
+#: ../html/src/manager/admin/setup/products/products.tsx:1175
 msgid "sync failed"
 msgstr ""
 
@@ -3517,7 +3542,7 @@ msgid "Signing in ..."
 msgstr ""
 
 #: ../html/src/manager/login/susemanager/login.tsx:41
-#: ../html/src/manager/login/uyuni/login.tsx:39
+#: ../html/src/manager/login/uyuni/login.tsx:38
 msgid ""
 "Discover a new way of managing your servers, packages, patches and more via "
 "one interface."
@@ -3529,8 +3554,8 @@ msgstr ""
 
 #: ../html/src/manager/login/susemanager/login.tsx:81
 #: ../html/src/manager/login/susemanager/login.tsx:107
-#: ../html/src/manager/login/uyuni/login.tsx:51
-#: ../html/src/manager/login/uyuni/login.tsx:97
+#: ../html/src/manager/login/uyuni/login.tsx:50
+#: ../html/src/manager/login/uyuni/login.tsx:96
 msgid "Sign In"
 msgstr ""
 
@@ -3550,11 +3575,11 @@ msgstr ""
 msgid "Are you sure you want to close this page while login is in progress?"
 msgstr ""
 
-#: ../html/src/manager/login/uyuni/login.tsx:42
+#: ../html/src/manager/login/uyuni/login.tsx:41
 msgid "Learn more about"
 msgstr ""
 
-#: ../html/src/manager/login/uyuni/login.tsx:77
+#: ../html/src/manager/login/uyuni/login.tsx:76
 msgid "Login"
 msgstr "Acesso"
 
@@ -3730,7 +3755,7 @@ msgstr ""
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:60
 #: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:129
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:99
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:192
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:208
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-form.tsx:102
 #: ../html/src/manager/virtualization/nets/network-properties.tsx:443
 #: ../html/src/manager/virtualization/pools/pool-properties.tsx:566
@@ -3941,7 +3966,7 @@ msgid "Loading playbook contents.."
 msgstr ""
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:87
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:184
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:200
 #: ../html/src/manager/state/highstate.tsx:121
 msgid "Test mode"
 msgstr ""
@@ -4583,25 +4608,29 @@ msgstr ""
 msgid "Schedule successfully created."
 msgstr ""
 
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:192
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:90
+msgid "Action scheduled on selected minions"
+msgstr ""
+
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:208
 msgid "Update "
 msgstr ""
 
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:192
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:208
 msgid "Create "
 msgstr ""
 
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:210
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:226
 msgid "Schedule Recurring Action"
 msgstr ""
 
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:219
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:235
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:196
 #: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:16
 msgid "Action Type"
 msgstr ""
 
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:244
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:260
 msgid "Configure states to execute"
 msgstr ""
 
