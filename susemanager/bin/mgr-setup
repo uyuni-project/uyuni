@@ -1018,8 +1018,6 @@ if [ "$DO_SETUP" = "1" ]; then
 
     if [ -f $MANAGER_COMPLETE_HOOK ]; then
         $MANAGER_COMPLETE_HOOK
-    else
-        echo "You can access $PRODUCT_NAME via https://`hostname -f`" > /etc/motd
     fi
 fi
 wait_step
