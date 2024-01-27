@@ -1,6 +1,14 @@
 include:
   - channels
 
+{%- if grains['os_family'] == 'Suse' %}
+keep_system_up2date_updatestack:
+  pkg.uptodate:
+    - onlyif: 'zypper patch-check --updatestack-only; r=$?; test $r -eq 100 || test $r -eq 101'
+    - require:
+      - sls: channels
+{% else %}
+
 mgr_keep_system_up2date_updatestack:
   pkg.latest:
     - pkgs:
@@ -23,6 +31,7 @@ mgr_keep_system_up2date_updatestack:
 {%- endif %}
     - require:
       - sls: channels
+{%- endif %}
 
 mgr_keep_system_up2date_pkgs:
   pkg.uptodate:
@@ -31,6 +40,7 @@ mgr_keep_system_up2date_pkgs:
       - sls: channels
       - pkg: mgr_keep_system_up2date_updatestack
 
+{%- if salt['pillar.get']('mgr_reboot_if_needed', True) %}
 mgr_reboot_if_needed:
   cmd.run:
     - name: shutdown -r +5
@@ -46,4 +56,5 @@ mgr_reboot_if_needed:
       - test -e /boot/do_purge_kernels
 {%- else %}
     - onlyif: 'zypper ps -s; [ $? -eq 102 ]'
+{%- endif %}
 {%- endif %}
