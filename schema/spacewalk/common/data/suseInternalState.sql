@@ -40,3 +40,6 @@ INSERT INTO suseInternalState (id, name, label)
 
 INSERT INTO suseInternalState (id, name, label)
          VALUES (11, 'util.syncstates', 'Sync States');
+
+INSERT INTO suseInternalState (id, name, label)
+         VALUES (12, 'update-salt', 'Update Salt');
