@@ -2,11 +2,8 @@
 """
 Test suite for spacecmd.filepreservation
 """
-# pylint: disable-next=unused-import
 from unittest.mock import MagicMock, patch, mock_open
 import spacecmd.filepreservation
-
-# pylint: disable-next=unused-import
 from helpers import shell
 
 
@@ -14,8 +11,6 @@ class TestSCFilePreservation:
     """
     Test class for testing spacecmd file preservation.
     """
-
-    # pylint: disable-next=redefined-outer-name
     def test_do_filepreservation_list_noreturn(self, shell):
         """
         Test do_filepreservation_list return to the STDOUT
@@ -30,13 +25,10 @@ class TestSCFilePreservation:
 
         mprint = MagicMock()
         with patch("spacecmd.filepreservation.print", mprint):
-            ret = spacecmd.filepreservation.do_filepreservation_list(
-                shell, "", doreturn=False
-            )
+            ret = spacecmd.filepreservation.do_filepreservation_list(shell, "", doreturn=False)
         assert ret is None
         assert mprint.call_args_list[0][0][0] == "list_one\nlist_three\nlist_two"
 
-    # pylint: disable-next=redefined-outer-name
     def test_do_filepreservation_list_return(self, shell):
         """
         Test do_filepreservation_list return data.
@@ -51,13 +43,10 @@ class TestSCFilePreservation:
 
         mprint = MagicMock()
         with patch("spacecmd.filepreservation.print", mprint):
-            ret = spacecmd.filepreservation.do_filepreservation_list(
-                shell, "", doreturn=True
-            )
+            ret = spacecmd.filepreservation.do_filepreservation_list(shell, "", doreturn=True)
         assert not mprint.called
-        assert ret == ["list_one", "list_two", "list_three"]
+        assert ret == ['list_one', 'list_two', 'list_three']
 
-    # pylint: disable-next=redefined-outer-name
     def test_do_filepreservation_create_noargs_prompted_name(self, shell):
         """
         Test do_filepreservation_create no args passed so prompt appears.
@@ -66,36 +55,19 @@ class TestSCFilePreservation:
 
         mprint = MagicMock()
         prmt = MagicMock(side_effect=["prompted_name", "file_one", "file_two", ""])
-        # pylint: disable-next=unused-variable
-        with patch("spacecmd.filepreservation.prompt_user", prmt) as pmt, patch(
-            "spacecmd.filepreservation.print",
-            mprint
-            # pylint: disable-next=unused-variable
-        ) as mpt:
+        with patch("spacecmd.filepreservation.prompt_user", prmt) as pmt, \
+             patch("spacecmd.filepreservation.print", mprint) as mpt:
             spacecmd.filepreservation.do_filepreservation_create(shell, "")
 
         expectations = [
-            "File List",
-            "---------",
-            "",
-            "",
-            "File List",
-            "---------",
-            "file_one",
-            "",
-            "File List",
-            "---------",
-            "file_one\nfile_two",
-            "",
-            "",
-            "File List",
-            "---------",
-            "file_one\nfile_two",
+            'File List', '---------', '', '',
+            'File List', '---------', 'file_one', '',
+            'File List', '---------', 'file_one\nfile_two', '', '',
+            'File List', '---------', 'file_one\nfile_two'
         ]
         for idx, call in enumerate(mprint.call_args_list):
             assert call[0][0] == expectations[idx]
 
-    # pylint: disable-next=redefined-outer-name
     def test_do_filepreservation_delete_noargs(self, shell):
         """
         Test do_filepreservation_delete no args.
@@ -110,7 +82,6 @@ class TestSCFilePreservation:
         assert not shell.client.kickstart.filepreservation.delete.called
         assert not shell.user_confirm.called
 
-    # pylint: disable-next=redefined-outer-name
     def test_do_filepreservation_delete_args(self, shell):
         """
         Test do_filepreservation_delete key name passed.
@@ -125,14 +96,10 @@ class TestSCFilePreservation:
         assert shell.client.kickstart.filepreservation.delete.called
         assert shell.user_confirm.called
 
-        (
-            session,
-            keyname,
-        ) = shell.client.kickstart.filepreservation.delete.call_args_list[0][0]
+        session, keyname = shell.client.kickstart.filepreservation.delete.call_args_list[0][0]
         assert shell.session == session
         assert keyname == "some_key"
 
-    # pylint: disable-next=redefined-outer-name
     def test_do_filepreservation_details_noargs(self, shell):
         """
         Test do_filepreservation_details no args.
@@ -146,7 +113,6 @@ class TestSCFilePreservation:
         assert not shell.client.kickstart.filepreservation.details.called
 
     @patch("spacecmd.filepreservation.print", MagicMock())
-    # pylint: disable-next=redefined-outer-name
     def test_do_filepreservation_details_args(self, shell):
         """
         Test do_filepreservation_details key passed.
@@ -159,9 +125,6 @@ class TestSCFilePreservation:
         assert not shell.help_filepreservation_details.called
         assert shell.client.kickstart.filepreservation.getDetails.called
 
-        (
-            session,
-            keyname,
-        ) = shell.client.kickstart.filepreservation.getDetails.call_args_list[0][0]
+        session, keyname = shell.client.kickstart.filepreservation.getDetails.call_args_list[0][0]
         assert shell.session == session
         assert keyname == "somekey"

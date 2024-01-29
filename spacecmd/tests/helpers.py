@@ -13,7 +13,6 @@ class FileHandleMock(StringIO):
     """
     Filehandle mock
     """
-
     def __init__(self):
         self._init_params = None
         StringIO.__init__(self)
@@ -77,10 +76,7 @@ def assert_expect(calls, *expectations):
     expectations = list(expectations)
     for call in calls:
         expectation = next(iter(expectations))
-        # pylint: disable-next=consider-using-f-string
-        assert call[0][0] == expectation, "Expected '{}', got '{}'".format(
-            expectation, call[0][0]
-        )
+        assert call[0][0] == expectation, "Expected '{}', got '{}'".format(expectation, call[0][0])
         expectations.pop(0)
     assert not expectations
 
@@ -114,11 +110,8 @@ def assert_args_expect(calls, expectations):
     """
     for call in calls:
         args, kw = call
-        # pylint: disable-next=invalid-name
         _args, _kw = next(iter(expectations))
-        # pylint: disable-next=consider-using-f-string
         assert args == _args, "{} is not as expected {}".format(str(args), str(_args))
-        # pylint: disable-next=consider-using-f-string
         assert kw == _kw, "{} is not as expected {}".format(str(kw), str(_kw))
         expectations.pop(0)
     assert not expectations

@@ -4,8 +4,6 @@ Test suite for spacecmd.schedule module.
 """
 
 from unittest.mock import MagicMock, patch
-
-# pylint: disable-next=unused-import
 from helpers import shell, assert_expect, assert_list_args_expect, assert_args_expect
 import spacecmd.schedule
 from xmlrpc import client as xmlrpclib
@@ -16,9 +14,8 @@ class TestSCSchedule:
     Test suite for "schedule" module.
     """
 
-    @patch("spacecmd.utils.input", create=True, new=MagicMock(return_value="y"))
-    @patch("spacecmd.utils.raw_input", create=True, new=MagicMock(return_value="y"))
-    # pylint: disable-next=redefined-outer-name
+    @patch('spacecmd.utils.input', create=True, new=MagicMock(return_value='y'))
+    @patch('spacecmd.utils.raw_input', create=True, new=MagicMock(return_value='y'))
     def test_schedule_deletearchived_without_archived(self, shell):
         """
         Test do_schedule_deletearchived with no archived actions.
@@ -30,7 +27,6 @@ class TestSCSchedule:
         shell.help_schedule_deletearchived = MagicMock()
         shell.client.schedule.listAllArchivedActions = MagicMock(return_value=[])
         shell.client.schedule.deleteActions = MagicMock()
-        # pylint: disable-next=unused-variable
         logger = MagicMock()
 
         spacecmd.schedule.do_schedule_deletearchived(shell, "")
@@ -38,9 +34,8 @@ class TestSCSchedule:
         assert shell.client.schedule.listAllArchivedActions.called
         assert not shell.client.schedule.deleteActions.called
 
-    @patch("spacecmd.utils.input", create=True, new=MagicMock(return_value="y"))
-    @patch("spacecmd.utils.raw_input", create=True, new=MagicMock(return_value="y"))
-    # pylint: disable-next=redefined-outer-name
+    @patch('spacecmd.utils.input', create=True, new=MagicMock(return_value='y'))
+    @patch('spacecmd.utils.raw_input', create=True, new=MagicMock(return_value='y'))
     def test_schedule_deletearchived_with_archived(self, shell):
         """
         Test do_schedule_deletearchived with archived actions.
@@ -48,15 +43,12 @@ class TestSCSchedule:
         :param shell:
         :return:
         """
-        archived_dummy_actions = [{"id": 1}, {"id": 2}, {"id": 3}]
+        archived_dummy_actions = [{'id': 1}, {'id': 2}, {'id': 3}]
 
         shell.help_schedule_deletearchived = MagicMock()
         shell.client.schedule.listAllArchivedActions = MagicMock()
-        shell.client.schedule.listAllArchivedActions.side_effect = [
-            archived_dummy_actions
-        ] + [[]]
+        shell.client.schedule.listAllArchivedActions.side_effect = [archived_dummy_actions] + [[]]
         shell.client.schedule.deleteActions = MagicMock()
-        # pylint: disable-next=unused-variable
         logger = MagicMock()
 
         spacecmd.schedule.do_schedule_deletearchived(shell, "")
@@ -64,9 +56,8 @@ class TestSCSchedule:
         assert shell.client.schedule.deleteActions.call_count == 1
         assert shell.client.schedule.deleteActions.call_args[0][1] == [1, 2, 3]
 
-    @patch("spacecmd.utils.input", create=True, new=MagicMock(return_value="n"))
-    @patch("spacecmd.utils.raw_input", create=True, new=MagicMock(return_value="n"))
-    # pylint: disable-next=redefined-outer-name
+    @patch('spacecmd.utils.input', create=True, new=MagicMock(return_value='n'))
+    @patch('spacecmd.utils.raw_input', create=True, new=MagicMock(return_value='n'))
     def test_schedule_deletearchived_with_archived_but_user_answer_is_no(self, shell):
         """
         Test do_schedule_deletearchived with archived actions and the user answers with
@@ -75,24 +66,20 @@ class TestSCSchedule:
         :param shell:
         :return:
         """
-        archived_dummy_actions = [{"id": 1}, {"id": 2}, {"id": 3}]
+        archived_dummy_actions = [{'id': 1}, {'id': 2}, {'id': 3}]
 
         shell.help_schedule_deletearchived = MagicMock()
         shell.client.schedule.listAllArchivedActions = MagicMock()
-        shell.client.schedule.listAllArchivedActions.side_effect = [
-            archived_dummy_actions
-        ] + [[]]
+        shell.client.schedule.listAllArchivedActions.side_effect = [archived_dummy_actions] + [[]]
         shell.client.schedule.deleteActions = MagicMock()
-        # pylint: disable-next=unused-variable
         logger = MagicMock()
 
         spacecmd.schedule.do_schedule_deletearchived(shell, "")
 
         assert shell.client.schedule.deleteActions.call_count == 0
 
-    @patch("spacecmd.utils.input", create=True, new=MagicMock(return_value=""))
-    @patch("spacecmd.utils.raw_input", create=True, new=MagicMock(return_value=""))
-    # pylint: disable-next=redefined-outer-name
+    @patch('spacecmd.utils.input', create=True, new=MagicMock(return_value=''))
+    @patch('spacecmd.utils.raw_input', create=True, new=MagicMock(return_value=''))
     def test_schedule_deletearchived_with_archived_but_no_user_answer(self, shell):
         """
         Test do_schedule_deletearchived with archived actions, but the user gives no answer.
@@ -101,22 +88,18 @@ class TestSCSchedule:
         :param shell:
         :return:
         """
-        archived_dummy_actions = [{"id": 1}, {"id": 2}, {"id": 3}]
+        archived_dummy_actions = [{'id': 1}, {'id': 2}, {'id': 3}]
 
         shell.help_schedule_deletearchived = MagicMock()
         shell.client.schedule.listAllArchivedActions = MagicMock()
-        shell.client.schedule.listAllArchivedActions.side_effect = [
-            archived_dummy_actions
-        ] + [[]]
+        shell.client.schedule.listAllArchivedActions.side_effect = [archived_dummy_actions] + [[]]
         shell.client.schedule.deleteActions = MagicMock()
-        # pylint: disable-next=unused-variable
         logger = MagicMock()
 
         spacecmd.schedule.do_schedule_deletearchived(shell, "")
 
         assert shell.client.schedule.deleteActions.call_count == 0
 
-    # pylint: disable-next=redefined-outer-name
     def test_schedule_cancel_noargs(self, shell):
         """
         Test do_schedule_cancel without arguments.
@@ -132,12 +115,8 @@ class TestSCSchedule:
         mprint = MagicMock()
         logger = MagicMock()
 
-        # pylint: disable-next=unused-variable
-        with patch("spacecmd.schedule.print", mprint) as prt, patch(
-            "spacecmd.schedule.logging",
-            logger
-            # pylint: disable-next=unused-variable
-        ) as lgr:
+        with patch("spacecmd.schedule.print", mprint) as prt, \
+                patch("spacecmd.schedule.logging", logger) as lgr:
             spacecmd.schedule.do_schedule_cancel(shell, "")
 
         assert not shell.client.schedule.listInProgressActions.called
@@ -147,7 +126,6 @@ class TestSCSchedule:
         assert not logger.warning.called
         assert shell.help_schedule_cancel.called
 
-    # pylint: disable-next=redefined-outer-name
     def test_schedule_cancel_globbing(self, shell):
         """
         Test do_schedule_cancel with globbing.
@@ -163,12 +141,8 @@ class TestSCSchedule:
         mprint = MagicMock()
         logger = MagicMock()
 
-        # pylint: disable-next=unused-variable
-        with patch("spacecmd.schedule.print", mprint) as prt, patch(
-            "spacecmd.schedule.logging",
-            logger
-            # pylint: disable-next=unused-variable
-        ) as lgr:
+        with patch("spacecmd.schedule.print", mprint) as prt, \
+                patch("spacecmd.schedule.logging", logger) as lgr:
             spacecmd.schedule.do_schedule_cancel(shell, "*")
 
         assert not shell.client.schedule.listInProgressActions.called
@@ -179,9 +153,9 @@ class TestSCSchedule:
         assert shell.user_confirm.called
         assert logger.info.called
 
-        assert_expect(logger.info.call_args_list, "All pending actions left untouched")
+        assert_expect(logger.info.call_args_list,
+                      "All pending actions left untouched")
 
-    # pylint: disable-next=redefined-outer-name
     def test_schedule_cancel_invalid_action_id(self, shell):
         """
         Test do_schedule_cancel with invalid action ids.
@@ -197,12 +171,8 @@ class TestSCSchedule:
         mprint = MagicMock()
         logger = MagicMock()
 
-        # pylint: disable-next=unused-variable
-        with patch("spacecmd.schedule.print", mprint) as prt, patch(
-            "spacecmd.schedule.logging",
-            logger
-            # pylint: disable-next=unused-variable
-        ) as lgr:
+        with patch("spacecmd.schedule.print", mprint) as prt, \
+                patch("spacecmd.schedule.logging", logger) as lgr:
             spacecmd.schedule.do_schedule_cancel(shell, "1 two 3, and 4")
 
         assert not shell.help_schedule_cancel.called
@@ -213,26 +183,15 @@ class TestSCSchedule:
         assert logger.warning.called
         assert logger.info.called
 
-        assert_list_args_expect(
-            logger.warning.call_args_list,
-            [
-                '"two" is not a valid ID',
-                '"3," is not a valid ID',
-                '"and" is not a valid ID',
-            ],
-        )
-        assert_args_expect(
-            logger.info.call_args_list,
-            [
-                (("Canceled action: %i", 1), {}),
-                (("Canceled action: %i", 4), {}),
-                (("Failed action: %s", "two"), {}),
-                (("Failed action: %s", "3,"), {}),
-                (("Failed action: %s", "and"), {}),
-            ],
-        )
+        assert_list_args_expect(logger.warning.call_args_list,
+                                ['"two" is not a valid ID', '"3," is not a valid ID', '"and" is not a valid ID'])
+        assert_args_expect(logger.info.call_args_list,
+                           [(('Canceled action: %i', 1), {}),
+                            (('Canceled action: %i', 4), {}),
+                            (('Failed action: %s', 'two'), {}),
+                            (('Failed action: %s', '3,'), {}),
+                            (('Failed action: %s', 'and'), {})])
 
-    # pylint: disable-next=redefined-outer-name
     def test_schedule_reschedule_noargs(self, shell):
         """
         Test do_schedule_reschedule without arguments.
@@ -248,12 +207,8 @@ class TestSCSchedule:
         mprint = MagicMock()
         logger = MagicMock()
 
-        # pylint: disable-next=unused-variable
-        with patch("spacecmd.schedule.print", mprint) as prt, patch(
-            "spacecmd.schedule.logging",
-            logger
-            # pylint: disable-next=unused-variable
-        ) as lgr:
+        with patch("spacecmd.schedule.print", mprint) as prt, \
+                patch("spacecmd.schedule.logging", logger) as lgr:
             spacecmd.schedule.do_schedule_reschedule(shell, "")
 
         assert not shell.client.schedule.listInProgressActions.called
@@ -263,7 +218,6 @@ class TestSCSchedule:
         assert not logger.warning.called
         assert shell.help_schedule_reschedule.called
 
-    # pylint: disable-next=redefined-outer-name
     def test_schedule_reschedule_globbing(self, shell):
         """
         Test do_schedule_reschedule with globbing.
@@ -279,12 +233,8 @@ class TestSCSchedule:
         mprint = MagicMock()
         logger = MagicMock()
 
-        # pylint: disable-next=unused-variable
-        with patch("spacecmd.schedule.print", mprint) as prt, patch(
-            "spacecmd.schedule.logging",
-            logger
-            # pylint: disable-next=unused-variable
-        ) as lgr:
+        with patch("spacecmd.schedule.print", mprint) as prt, \
+                patch("spacecmd.schedule.logging", logger) as lgr:
             spacecmd.schedule.do_schedule_reschedule(shell, "*")
 
         assert not shell.client.schedule.rescheduleActions.called
@@ -294,7 +244,6 @@ class TestSCSchedule:
         assert shell.client.schedule.listFailedActions.called
         assert shell.user_confirm.called
 
-    # pylint: disable-next=redefined-outer-name
     def test_schedule_reschedule_failed_actions(self, shell):
         """
         Test do_schedule_reschedule with failed actions.
@@ -304,20 +253,16 @@ class TestSCSchedule:
         """
 
         shell.help_schedule_reschedule = MagicMock()
-        shell.client.schedule.listFailedActions = MagicMock(
-            return_value=[{"id": 1}, {"id": 2}, {"id": 3}, {"id": 4}]
-        )
+        shell.client.schedule.listFailedActions = MagicMock(return_value=[
+            {"id": 1}, {"id": 2}, {"id": 3}, {"id": 4}
+        ])
         shell.client.schedule.rescheduleActions = MagicMock()
         shell.user_confirm = MagicMock(return_value=False)
         mprint = MagicMock()
         logger = MagicMock()
 
-        # pylint: disable-next=unused-variable
-        with patch("spacecmd.schedule.print", mprint) as prt, patch(
-            "spacecmd.schedule.logging",
-            logger
-            # pylint: disable-next=unused-variable
-        ) as lgr:
+        with patch("spacecmd.schedule.print", mprint) as prt, \
+                patch("spacecmd.schedule.logging", logger) as lgr:
             spacecmd.schedule.do_schedule_reschedule(shell, "one 2 3, 5 and 4")
 
         assert not shell.help_schedule_reschedule.called
@@ -328,17 +273,12 @@ class TestSCSchedule:
         assert shell.client.schedule.listFailedActions.called
 
         assert_expect(mprint.call_args_list, "Rescheduled 2 action(s)")
-        assert_list_args_expect(
-            logger.warning.call_args_list,
-            [
-                '"one" is not a valid ID',
-                '"3," is not a valid ID',
-                '"5" is not a failed action',
-                '"and" is not a valid ID',
-            ],
-        )
+        assert_list_args_expect(logger.warning.call_args_list,
+                                ['"one" is not a valid ID',
+                                 '"3," is not a valid ID',
+                                 '"5" is not a failed action',
+                                 '"and" is not a valid ID'])
 
-    # pylint: disable-next=redefined-outer-name
     def test_schedule_reschedule_missing_actions(self, shell):
         """
         Test do_schedule_reschedule with missing actions.
@@ -348,20 +288,16 @@ class TestSCSchedule:
         """
 
         shell.help_schedule_reschedule = MagicMock()
-        shell.client.schedule.listFailedActions = MagicMock(
-            return_value=[{"id": 1}, {"id": 2}, {"id": 3}, {"id": 4}]
-        )
+        shell.client.schedule.listFailedActions = MagicMock(return_value=[
+            {"id": 1}, {"id": 2}, {"id": 3}, {"id": 4}
+        ])
         shell.client.schedule.rescheduleActions = MagicMock()
         shell.user_confirm = MagicMock(return_value=False)
         mprint = MagicMock()
         logger = MagicMock()
 
-        # pylint: disable-next=unused-variable
-        with patch("spacecmd.schedule.print", mprint) as prt, patch(
-            "spacecmd.schedule.logging",
-            logger
-            # pylint: disable-next=unused-variable
-        ) as lgr:
+        with patch("spacecmd.schedule.print", mprint) as prt, \
+                patch("spacecmd.schedule.logging", logger) as lgr:
             spacecmd.schedule.do_schedule_reschedule(shell, "one 5 and 6")
 
         assert not shell.client.schedule.rescheduleActions.called
@@ -370,18 +306,13 @@ class TestSCSchedule:
         assert not shell.user_confirm.called
         assert logger.warning.called
         assert shell.client.schedule.listFailedActions.called
-        assert_list_args_expect(
-            logger.warning.call_args_list,
-            [
-                '"one" is not a valid ID',
-                '"5" is not a failed action',
-                '"and" is not a valid ID',
-                '"6" is not a failed action',
-                "No failed actions to reschedule",
-            ],
-        )
+        assert_list_args_expect(logger.warning.call_args_list,
+                                ['"one" is not a valid ID',
+                                 '"5" is not a failed action',
+                                 '"and" is not a valid ID',
+                                 '"6" is not a failed action',
+                                 'No failed actions to reschedule'])
 
-    # pylint: disable-next=redefined-outer-name
     def test_schedule_details_noargs(self, shell):
         """
         Test do_schedule_details without arguments.
@@ -399,12 +330,8 @@ class TestSCSchedule:
         mprint = MagicMock()
         logger = MagicMock()
 
-        # pylint: disable-next=unused-variable
-        with patch("spacecmd.schedule.print", mprint) as prt, patch(
-            "spacecmd.schedule.logging",
-            logger
-            # pylint: disable-next=unused-variable
-        ) as lgr:
+        with patch("spacecmd.schedule.print", mprint) as prt, \
+                patch("spacecmd.schedule.logging", logger) as lgr:
             spacecmd.schedule.do_schedule_details(shell, "")
 
         assert not shell.client.schedule.listCompletedSystems.called
@@ -416,7 +343,6 @@ class TestSCSchedule:
         assert not logger.warning.called
         assert shell.help_schedule_details.called
 
-    # pylint: disable-next=redefined-outer-name
     def test_schedule_details_invalid_action_id(self, shell):
         """
         Test do_schedule_details with invalid action ID.
@@ -434,12 +360,8 @@ class TestSCSchedule:
         mprint = MagicMock()
         logger = MagicMock()
 
-        # pylint: disable-next=unused-variable
-        with patch("spacecmd.schedule.print", mprint) as prt, patch(
-            "spacecmd.schedule.logging",
-            logger
-            # pylint: disable-next=unused-variable
-        ) as lgr:
+        with patch("spacecmd.schedule.print", mprint) as prt, \
+                patch("spacecmd.schedule.logging", logger) as lgr:
             spacecmd.schedule.do_schedule_details(shell, "something")
 
         assert not shell.client.schedule.listCompletedSystems.called
@@ -451,9 +373,9 @@ class TestSCSchedule:
         assert logger.warning.called
         assert not shell.help_schedule_details.called
 
-        assert_expect(logger.warning.call_args_list, 'The ID "something" is invalid')
+        assert_expect(logger.warning.call_args_list,
+                      'The ID "something" is invalid')
 
-    # pylint: disable-next=redefined-outer-name
     def test_schedule_details_missing_action_id(self, shell):
         """
         Test do_schedule_details with the missing action ID.
@@ -464,21 +386,17 @@ class TestSCSchedule:
         shell.client.schedule.listCompletedSystems = MagicMock(return_value=[])
         shell.client.schedule.listFailedSystems = MagicMock(return_value=[])
         shell.client.schedule.listInProgressSystems = MagicMock(return_value=[])
-        shell.client.schedule.listAllActions = MagicMock(
-            return_value=[{"id": 1}, {"id": 2}, {"id": 3}]
-        )
+        shell.client.schedule.listAllActions = MagicMock(return_value=[
+            {"id": 1}, {"id": 2}, {"id": 3}
+        ])
 
         shell.help_schedule_details = MagicMock()
 
         mprint = MagicMock()
         logger = MagicMock()
 
-        # pylint: disable-next=unused-variable
-        with patch("spacecmd.schedule.print", mprint) as prt, patch(
-            "spacecmd.schedule.logging",
-            logger
-            # pylint: disable-next=unused-variable
-        ) as lgr:
+        with patch("spacecmd.schedule.print", mprint) as prt, \
+                patch("spacecmd.schedule.logging", logger) as lgr:
             spacecmd.schedule.do_schedule_details(shell, "42")
 
         assert not mprint.called
@@ -491,9 +409,9 @@ class TestSCSchedule:
         assert shell.client.schedule.listAllActions.called
         assert logger.error.called
 
-        assert_expect(logger.error.call_args_list, 'No action found with the ID "42"')
+        assert_expect(logger.error.call_args_list,
+                      'No action found with the ID "42"')
 
-    # pylint: disable-next=redefined-outer-name
     def test_schedule_details_report(self, shell):
         """
         Test do_schedule_details report layout
@@ -501,58 +419,34 @@ class TestSCSchedule:
         :param shell:
         :return:
         """
-        shell.client.schedule.listCompletedSystems = MagicMock(
-            return_value=[
-                {"server_name": "one"},
-                {"server_name": "two"},
-                {"server_name": "three"},
-            ]
-        )
-        shell.client.schedule.listFailedSystems = MagicMock(
-            return_value=[
-                {"server_name": "failed-machine"},
-            ]
-        )
-        shell.client.schedule.listInProgressSystems = MagicMock(
-            return_value=[
-                {"server_name": "four"},
-                {"server_name": "five"},
-            ]
-        )
-        shell.client.schedule.listAllActions = MagicMock(
-            return_value=[
-                {
-                    "id": 1,
-                    "name": "Reboot Coffee Machine",
-                    "scheduler": "qa-guy",
-                    "earliest": "2019-01-01",
-                },
-                {
-                    "id": 2,
-                    "name": "Upgrade Coffee Machine",
-                    "scheduler": "qa-guy",
-                    "earliest": "2019-01-01",
-                },
-                {
-                    "id": 3,
-                    "name": "Reinstall Coffee Machine Firmware",
-                    "scheduler": "qa-guy",
-                    "earliest": "2019-01-01",
-                },
-            ]
-        )
+        shell.client.schedule.listCompletedSystems = MagicMock(return_value=[
+            {"server_name": "one"},
+            {"server_name": "two"},
+            {"server_name": "three"},
+        ])
+        shell.client.schedule.listFailedSystems = MagicMock(return_value=[
+            {"server_name": "failed-machine"},
+        ])
+        shell.client.schedule.listInProgressSystems = MagicMock(return_value=[
+            {"server_name": "four"},
+            {"server_name": "five"},
+        ])
+        shell.client.schedule.listAllActions = MagicMock(return_value=[
+            {"id": 1, "name": "Reboot Coffee Machine",
+             "scheduler": "qa-guy", "earliest": "2019-01-01"},
+            {"id": 2, "name": "Upgrade Coffee Machine",
+             "scheduler": "qa-guy", "earliest": "2019-01-01"},
+            {"id": 3, "name": "Reinstall Coffee Machine Firmware",
+             "scheduler": "qa-guy", "earliest": "2019-01-01"},
+        ])
 
         shell.help_schedule_details = MagicMock()
 
         mprint = MagicMock()
         logger = MagicMock()
 
-        # pylint: disable-next=unused-variable
-        with patch("spacecmd.schedule.print", mprint) as prt, patch(
-            "spacecmd.schedule.logging",
-            logger
-            # pylint: disable-next=unused-variable
-        ) as lgr:
+        with patch("spacecmd.schedule.print", mprint) as prt, \
+                patch("spacecmd.schedule.logging", logger) as lgr:
             spacecmd.schedule.do_schedule_details(shell, "3")
 
         assert not logger.warning.called
@@ -565,36 +459,15 @@ class TestSCSchedule:
         assert shell.client.schedule.listAllActions.called
         assert mprint.called
 
-        assert_list_args_expect(
-            mprint.call_args_list,
-            [
-                "ID:        3",
-                "Action:    Reinstall Coffee Machine Firmware",
-                "User:      qa-guy",
-                "Date:      2019-01-01",
-                "",
-                "Completed:   3",
-                "Failed:      1",
-                "Pending:     2",
-                "",
-                "Completed Systems",
-                "-----------------",
-                "one",
-                "two",
-                "three",
-                "",
-                "Failed Systems",
-                "--------------",
-                "failed-machine",
-                "",
-                "Pending Systems",
-                "---------------",
-                "four",
-                "five",
-            ],
-        )
+        assert_list_args_expect(mprint.call_args_list,
+                                ['ID:        3', 'Action:    Reinstall Coffee Machine Firmware',
+                                 'User:      qa-guy', 'Date:      2019-01-01', '',
+                                 'Completed:   3', 'Failed:      1', 'Pending:     2', '',
+                                 'Completed Systems',
+                                 '-----------------', 'one', 'two', 'three', '',
+                                 'Failed Systems', '--------------', 'failed-machine', '',
+                                 'Pending Systems', '---------------', 'four', 'five'])
 
-    # pylint: disable-next=redefined-outer-name
     def test_schedule_getoutput_noargs(self, shell):
         """
         Test do_schedule_getoutput without arguments.
@@ -609,12 +482,8 @@ class TestSCSchedule:
         mprint = MagicMock()
         logger = MagicMock()
 
-        # pylint: disable-next=unused-variable
-        with patch("spacecmd.schedule.print", mprint) as prt, patch(
-            "spacecmd.schedule.logging",
-            logger
-            # pylint: disable-next=unused-variable
-        ) as lgr:
+        with patch("spacecmd.schedule.print", mprint) as prt, \
+                patch("spacecmd.schedule.logging", logger) as lgr:
             spacecmd.schedule.do_schedule_getoutput(shell, "")
 
         assert not shell.client.system.getScriptResults.called
@@ -623,7 +492,6 @@ class TestSCSchedule:
         assert not logger.warning.called
         assert shell.help_schedule_getoutput.called
 
-    # pylint: disable-next=redefined-outer-name
     def test_schedule_getoutput_invalid_action_id(self, shell):
         """
         Test do_schedule_getoutput with an invalid action ID.
@@ -638,12 +506,8 @@ class TestSCSchedule:
         mprint = MagicMock()
         logger = MagicMock()
 
-        # pylint: disable-next=unused-variable
-        with patch("spacecmd.schedule.print", mprint) as prt, patch(
-            "spacecmd.schedule.logging",
-            logger
-            # pylint: disable-next=unused-variable
-        ) as lgr:
+        with patch("spacecmd.schedule.print", mprint) as prt, \
+                patch("spacecmd.schedule.logging", logger) as lgr:
             spacecmd.schedule.do_schedule_getoutput(shell, "fortytwo")
 
         assert not shell.client.system.getScriptResults.called
@@ -654,11 +518,9 @@ class TestSCSchedule:
 
         assert logger.error.called
 
-        assert_expect(
-            logger.error.call_args_list, '"fortytwo" is not a valid action ID'
-        )
+        assert_expect(logger.error.call_args_list,
+                      '"fortytwo" is not a valid action ID')
 
-    # pylint: disable-next=redefined-outer-name
     def test_schedule_getoutput_no_script_results(self, shell):
         """
         Test do_schedule_getoutput with no script results (failed or None)
@@ -668,46 +530,28 @@ class TestSCSchedule:
         """
         shell.client.schedule.listCompletedSystems = MagicMock(
             return_value=[
-                {
-                    "server_name": "web.foo.com",
-                    "timestamp": "2019-01-01",
-                    "message": "Message from the web.foo.com",
-                },
-                {
-                    "server_name": "web1.foo.com",
-                    "timestamp": "2019-01-01",
-                    "message": "Message from the web1.foo.com as well",
-                },
-                {
-                    "server_name": "web2.foo.com",
-                    "timestamp": "2019-01-01",
-                    "message": "And some more message from web2.foo.com here",
-                },
+                {"server_name": "web.foo.com", "timestamp": "2019-01-01",
+                 "message": "Message from the web.foo.com"},
+                {"server_name": "web1.foo.com", "timestamp": "2019-01-01",
+                 "message": "Message from the web1.foo.com as well"},
+                {"server_name": "web2.foo.com", "timestamp": "2019-01-01",
+                 "message": "And some more message from web2.foo.com here"}
             ]
         )
         shell.client.schedule.listFailedSystems = MagicMock(
             return_value=[
-                {
-                    "server_name": "faulty.foo.com",
-                    "timestamp": "2019-01-01",
-                    "message": "Nothing good is happening on faulty.foo.com",
-                },
-            ]
-        )
+                {"server_name": "faulty.foo.com", "timestamp": "2019-01-01",
+                 "message": "Nothing good is happening on faulty.foo.com"},
+            ])
         shell.client.system.getScriptResults = MagicMock(
-            side_effect=xmlrpclib.Fault(faultCode=42, faultString="Happy NPE!")
-        )
+            side_effect=xmlrpclib.Fault(faultCode=42, faultString="Happy NPE!"))
         shell.help_schedule_getoutput = MagicMock()
 
         mprint = MagicMock()
         logger = MagicMock()
 
-        # pylint: disable-next=unused-variable
-        with patch("spacecmd.schedule.print", mprint) as prt, patch(
-            "spacecmd.schedule.logging",
-            logger
-            # pylint: disable-next=unused-variable
-        ) as lgr:
+        with patch("spacecmd.schedule.print", mprint) as prt, \
+                patch("spacecmd.schedule.logging", logger) as lgr:
             spacecmd.schedule.do_schedule_getoutput(shell, "42")
 
         assert not logger.warning.called
@@ -718,52 +562,22 @@ class TestSCSchedule:
         assert mprint.called
         assert logger.debug.called
 
-        assert_args_expect(
-            logger.debug.call_args_list,
-            [
-                (
-                    (
-                        "Exception occurrect while get script results: %s",
-                        "<Fault 42: 'Happy NPE!'>",
-                    ),
-                    {},
-                )
-            ],
-        )
-        assert_list_args_expect(
-            mprint.call_args_list,
-            [
-                "System:    web.foo.com",
-                "Completed: 2019-01-01",
-                "",
-                "Output",
-                "------",
-                "Message from the web.foo.com",
-                "----------",
-                "System:    web1.foo.com",
-                "Completed: 2019-01-01",
-                "",
-                "Output",
-                "------",
-                "Message from the web1.foo.com as well",
-                "----------",
-                "System:    web2.foo.com",
-                "Completed: 2019-01-01",
-                "",
-                "Output",
-                "------",
-                "And some more message from web2.foo.com here",
-                "----------",
-                "System:    faulty.foo.com",
-                "Completed: 2019-01-01",
-                "",
-                "Output",
-                "------",
-                "Nothing good is happening on faulty.foo.com",
-            ],
-        )
+        assert_args_expect(logger.debug.call_args_list,
+                           [(('Exception occurrect while get script results: %s',
+                              "<Fault 42: 'Happy NPE!'>"), {})])
+        assert_list_args_expect(mprint.call_args_list,
+                                ['System:    web.foo.com',
+                                 'Completed: 2019-01-01', '', 'Output', '------',
+                                 'Message from the web.foo.com', '----------', 'System:    web1.foo.com',
+                                 'Completed: 2019-01-01', '', 'Output', '------',
+                                 'Message from the web1.foo.com as well', '----------',
+                                 'System:    web2.foo.com',
+                                 'Completed: 2019-01-01', '', 'Output', '------',
+                                 'And some more message from web2.foo.com here',
+                                 '----------', 'System:    faulty.foo.com',
+                                 'Completed: 2019-01-01', '', 'Output', '------',
+                                 'Nothing good is happening on faulty.foo.com'])
 
-    # pylint: disable-next=redefined-outer-name
     def test_schedule_getoutput_no_any_results(self, shell):
         """
         Test do_schedule_getoutput with no any results available
@@ -774,19 +588,14 @@ class TestSCSchedule:
         shell.client.schedule.listCompletedSystems = MagicMock(return_value=[])
         shell.client.schedule.listFailedSystems = MagicMock(return_value=[])
         shell.client.system.getScriptResults = MagicMock(
-            side_effect=xmlrpclib.Fault(faultCode=42, faultString="Happy NPE!")
-        )
+            side_effect=xmlrpclib.Fault(faultCode=42, faultString="Happy NPE!"))
         shell.help_schedule_getoutput = MagicMock()
 
         mprint = MagicMock()
         logger = MagicMock()
 
-        # pylint: disable-next=unused-variable
-        with patch("spacecmd.schedule.print", mprint) as prt, patch(
-            "spacecmd.schedule.logging",
-            logger
-            # pylint: disable-next=unused-variable
-        ) as lgr:
+        with patch("spacecmd.schedule.print", mprint) as prt, \
+                patch("spacecmd.schedule.logging", logger) as lgr:
             spacecmd.schedule.do_schedule_getoutput(shell, "42")
 
         assert not logger.warning.called
@@ -798,21 +607,12 @@ class TestSCSchedule:
         assert logger.debug.called
         assert logger.error.called
 
-        assert_args_expect(
-            logger.debug.call_args_list,
-            [
-                (
-                    (
-                        "Exception occurrect while get script results: %s",
-                        "<Fault 42: 'Happy NPE!'>",
-                    ),
-                    {},
-                )
-            ],
-        )
-        assert_args_expect(logger.error.call_args_list, [(("No systems found",), {})])
+        assert_args_expect(logger.debug.call_args_list,
+                           [(('Exception occurrect while get script results: %s',
+                              "<Fault 42: 'Happy NPE!'>"), {})])
+        assert_args_expect(logger.error.call_args_list,
+                           [(("No systems found",), {})])
 
-    # pylint: disable-next=redefined-outer-name
     def test_schedule_getoutput_scripts(self, shell):
         """
         Test do_schedule_getoutput with scripts
@@ -823,42 +623,21 @@ class TestSCSchedule:
         shell.get_system_name = MagicMock(side_effect=["web.foo.com", "db.foo.com"])
         shell.client.schedule.listCompletedSystems = MagicMock(return_value=[])
         shell.client.schedule.listFailedSystems = MagicMock(return_value=[])
-        shell.client.system.getScriptResults = MagicMock(
-            return_value=[
-                {
-                    "serverId": 1000010000,
-                    "startDate": "2019-01-01",
-                    "stopDate": "2019-01-02",
-                    "returnCode": 42,
-                    "output": "Normal output",
-                },
-                {
-                    "startDate": "2019-02-01",
-                    "stopDate": "2019-02-02",
-                    "returnCode": 1,
-                    "output_enc64": True,
-                    "output": b"Tm93IHlvdSBzZWUgbWUh\n",
-                },
-                {
-                    "serverId": 1000010001,
-                    "startDate": "2019-01-11",
-                    "stopDate": "2019-01-22",
-                    "returnCode": 13,
-                    "output": None,
-                },
-            ]
-        )
+        shell.client.system.getScriptResults = MagicMock(return_value=[
+            {"serverId": 1000010000, "startDate": "2019-01-01", "stopDate": "2019-01-02", "returnCode": 42,
+             "output": "Normal output"},
+            {"startDate": "2019-02-01", "stopDate": "2019-02-02", "returnCode": 1,
+             "output_enc64": True, "output": b"Tm93IHlvdSBzZWUgbWUh\n"},
+            {"serverId": 1000010001, "startDate": "2019-01-11", "stopDate": "2019-01-22", "returnCode": 13,
+             "output": None}
+        ])
         shell.help_schedule_getoutput = MagicMock()
 
         mprint = MagicMock()
         logger = MagicMock()
 
-        # pylint: disable-next=unused-variable
-        with patch("spacecmd.schedule.print", mprint) as prt, patch(
-            "spacecmd.schedule.logging",
-            logger
-            # pylint: disable-next=unused-variable
-        ) as lgr:
+        with patch("spacecmd.schedule.print", mprint) as prt, \
+                patch("spacecmd.schedule.logging", logger) as lgr:
             spacecmd.schedule.do_schedule_getoutput(shell, "42")
 
         assert not logger.warning.called
@@ -870,34 +649,12 @@ class TestSCSchedule:
         assert mprint.called
         assert shell.client.system.getScriptResults.called
 
-        assert_list_args_expect(
-            mprint.call_args_list,
-            [
-                "System:      web.foo.com",
-                "Start Time:  2019-01-01",
-                "Stop Time:   2019-01-02",
-                "Return Code: 42",
-                "",
-                "Output",
-                "------",
-                "Normal output",
-                "----------",
-                "System:      UNKNOWN",
-                "Start Time:  2019-02-01",
-                "Stop Time:   2019-02-02",
-                "Return Code: 1",
-                "",
-                "Output",
-                "------",
-                "Now you see me!",
-                "----------",
-                "System:      db.foo.com",
-                "Start Time:  2019-01-11",
-                "Stop Time:   2019-01-22",
-                "Return Code: 13",
-                "",
-                "Output",
-                "------",
-                "N/A",
-            ],
-        )
+        assert_list_args_expect(mprint.call_args_list, ['System:      web.foo.com', 'Start Time:  2019-01-01',
+                                                        'Stop Time:   2019-01-02', 'Return Code: 42', '', 'Output',
+                                                        '------', 'Normal output', '----------', 'System:      UNKNOWN',
+                                                        'Start Time:  2019-02-01', 'Stop Time:   2019-02-02',
+                                                        'Return Code: 1', '',
+                                                        'Output', '------', 'Now you see me!', '----------',
+                                                        'System:      db.foo.com',
+                                                        'Start Time:  2019-01-11', 'Stop Time:   2019-01-22',
+                                                        'Return Code: 13', '', 'Output', '------', 'N/A'])

@@ -3,8 +3,6 @@
 Test spacecmd.misc
 """
 from unittest.mock import MagicMock, patch, mock_open
-
-# pylint: disable-next=unused-import
 from helpers import shell, assert_expect, assert_list_args_expect, assert_args_expect
 import spacecmd.misc
 from xmlrpc import client as xmlrpclib
@@ -15,8 +13,6 @@ class TestSCMisc:
     """
     Test suite for misc methods/funtions.
     """
-
-    # pylint: disable-next=redefined-outer-name
     def test_clear_caches(self, shell):
         """
         Test clear caches.
@@ -34,7 +30,6 @@ class TestSCMisc:
         assert shell.clear_package_cache.called
         assert shell.clear_errata_cache.called
 
-    # pylint: disable-next=redefined-outer-name
     def test_get_api_version(self, shell):
         """
         Get API version.
@@ -43,13 +38,11 @@ class TestSCMisc:
         :return:
         """
         mprint = MagicMock()
-        # pylint: disable-next=unused-variable
         with patch("spacecmd.misc.print", mprint) as prt:
             spacecmd.misc.do_get_serverversion(shell, "")
         assert mprint.called
         assert shell.client.api.systemVersion.called
 
-    # pylint: disable-next=redefined-outer-name
     def test_list_proxies(self, shell):
         """
         Test proxy listing.
@@ -67,7 +60,6 @@ class TestSCMisc:
         assert_expect(mprint.call_args_list, "Print me")
         assert shell.client.proxy.listProxies.called
 
-    # pylint: disable-next=redefined-outer-name
     def test_get_session(self, shell):
         """
         Test getting current user session.
@@ -77,19 +69,14 @@ class TestSCMisc:
         """
         mprint = MagicMock()
         logger = MagicMock()
-        # pylint: disable-next=unused-variable
-        with patch("spacecmd.misc.print", mprint) as prt, patch(
-            "spacecmd.misc.logging",
-            logger
-            # pylint: disable-next=unused-variable
-        ) as lgr:
+        with patch("spacecmd.misc.print", mprint) as prt, \
+            patch("spacecmd.misc.logging", logger) as lgr:
             spacecmd.misc.do_get_session(shell, "")
 
         assert not logger.error.called
         assert mprint.called
         assert_expect(mprint.call_args_list, shell.session)
 
-    # pylint: disable-next=redefined-outer-name
     def test_get_session_missing(self, shell):
         """
         Test handling missing current user session.
@@ -99,12 +86,8 @@ class TestSCMisc:
         """
         mprint = MagicMock()
         logger = MagicMock()
-        # pylint: disable-next=unused-variable
-        with patch("spacecmd.misc.print", mprint) as prt, patch(
-            "spacecmd.misc.logging",
-            logger
-            # pylint: disable-next=unused-variable
-        ) as lgr:
+        with patch("spacecmd.misc.print", mprint) as prt, \
+            patch("spacecmd.misc.logging", logger) as lgr:
             shell.session = None
             spacecmd.misc.do_get_session(shell, "")
 
@@ -114,7 +97,6 @@ class TestSCMisc:
 
     # No test for listing history, as it is just lister from the readline.
 
-    # pylint: disable-next=redefined-outer-name
     def test_do_toggle_confirmations(self, shell):
         """
         Test confirmation messages toggle
@@ -124,20 +106,14 @@ class TestSCMisc:
         """
         mprint = MagicMock()
         shell.options.yes = True
-        # pylint: disable-next=unused-variable
         with patch("spacecmd.misc.print", mprint) as prt:
             spacecmd.misc.do_toggle_confirmations(shell, "")
             spacecmd.misc.do_toggle_confirmations(shell, "")
 
-        assert_args_expect(
-            mprint.call_args_list,
-            [
-                (("Confirmation messages are", "enabled"), {}),
-                (("Confirmation messages are", "disabled"), {}),
-            ],
-        )
+        assert_args_expect(mprint.call_args_list,
+                           [(("Confirmation messages are", "enabled"), {}),
+                            (("Confirmation messages are", "disabled"), {})])
 
-    # pylint: disable-next=redefined-outer-name
     def test_login_already_logged_in(self, shell):
         """
         Test login (already logged in).
@@ -152,20 +128,11 @@ class TestSCMisc:
         mkd = MagicMock()
         shell.config = {}
         shell.conf_dir = "/tmp"
-        # pylint: disable-next=unused-variable
-        with patch("spacecmd.misc.print", mprint) as prt, patch(
-            "spacecmd.misc.prompt_user",
-            prompter
-            # pylint: disable-next=unused-variable
-        ) as pmt, patch("spacecmd.misc.getpass", gpass) as gtp, patch(
-            "spacecmd.misc.os.mkdir",
-            mkd
-            # pylint: disable-next=unused-variable
-        ) as mkdr, patch(
-            "spacecmd.misc.logging",
-            logger
-            # pylint: disable-next=unused-variable
-        ) as lgr:
+        with patch("spacecmd.misc.print", mprint) as prt, \
+            patch("spacecmd.misc.prompt_user", prompter) as pmt, \
+            patch("spacecmd.misc.getpass", gpass) as gtp, \
+            patch("spacecmd.misc.os.mkdir", mkd) as mkdr, \
+            patch("spacecmd.misc.logging", logger) as lgr:
             out = spacecmd.misc.do_login(shell, "")
 
         assert not shell.load_config_section.called
@@ -182,9 +149,9 @@ class TestSCMisc:
         assert out
         assert logger.warning.called
 
-        assert_expect(logger.warning.call_args_list, "You are already logged in")
+        assert_expect(logger.warning.call_args_list,
+                      "You are already logged in")
 
-    # pylint: disable-next=redefined-outer-name
     def test_login_no_server_specified(self, shell):
         """
         Test login without specified server.
@@ -202,20 +169,11 @@ class TestSCMisc:
         shell.config = {}
         shell.conf_dir = "/tmp"
 
-        # pylint: disable-next=unused-variable
-        with patch("spacecmd.misc.print", mprint) as prt, patch(
-            "spacecmd.misc.prompt_user",
-            prompter
-            # pylint: disable-next=unused-variable
-        ) as pmt, patch("spacecmd.misc.getpass", gpass) as gtp, patch(
-            "spacecmd.misc.os.mkdir",
-            mkd
-            # pylint: disable-next=unused-variable
-        ) as mkdr, patch(
-            "spacecmd.misc.logging",
-            logger
-            # pylint: disable-next=unused-variable
-        ) as lgr:
+        with patch("spacecmd.misc.print", mprint) as prt, \
+            patch("spacecmd.misc.prompt_user", prompter) as pmt, \
+            patch("spacecmd.misc.getpass", gpass) as gtp, \
+            patch("spacecmd.misc.os.mkdir", mkd) as mkdr, \
+            patch("spacecmd.misc.logging", logger) as lgr:
             out = spacecmd.misc.do_login(shell, "")
 
         assert not shell.load_config_section.called
@@ -232,9 +190,9 @@ class TestSCMisc:
         assert not out
         assert logger.warning.called
 
-        assert_expect(logger.warning.call_args_list, "No server specified")
+        assert_expect(logger.warning.call_args_list,
+                      "No server specified")
 
-    # pylint: disable-next=redefined-outer-name
     def test_login_connection_error(self, shell):
         """
         Test handling connection error at login.
@@ -257,24 +215,12 @@ class TestSCMisc:
         shell.conf_dir = "/tmp"
         client.api.getVersion = MagicMock(side_effect=Exception("Insert coin"))
 
-        # pylint: disable-next=unused-variable
-        with patch("spacecmd.misc.print", mprint) as prt, patch(
-            "spacecmd.misc.prompt_user",
-            prompter
-            # pylint: disable-next=unused-variable
-        ) as pmt, patch("spacecmd.misc.getpass", gpass) as gtp, patch(
-            "spacecmd.misc.os.mkdir",
-            mkd
-            # pylint: disable-next=unused-variable
-        ) as mkdr, patch(
-            "spacecmd.misc.xmlrpclib.Server",
-            rpc_server
-            # pylint: disable-next=unused-variable
-        ) as rpcs, patch(
-            "spacecmd.misc.logging",
-            logger
-            # pylint: disable-next=unused-variable
-        ) as lgr:
+        with patch("spacecmd.misc.print", mprint) as prt, \
+            patch("spacecmd.misc.prompt_user", prompter) as pmt, \
+            patch("spacecmd.misc.getpass", gpass) as gtp, \
+            patch("spacecmd.misc.os.mkdir", mkd) as mkdr, \
+            patch("spacecmd.misc.xmlrpclib.Server", rpc_server) as rpcs, \
+            patch("spacecmd.misc.logging", logger) as lgr:
             out = spacecmd.misc.do_login(shell, "")
 
         assert not logger.info.called
@@ -292,26 +238,13 @@ class TestSCMisc:
         assert logger.error.called
         assert shell.client is None
 
-        assert_args_expect(
-            logger.error.call_args_list,
-            [(("Failed to connect to %s", "https://no.mans.land/rpc/api"), {})],
-        )
-        assert_args_expect(
-            logger.debug.call_args_list,
-            [
-                (("Connecting to %s", "https://no.mans.land/rpc/api"), {}),
-                (
-                    (
-                        "Error while connecting to the server %s: %s",
-                        "https://no.mans.land/rpc/api",
-                        "Insert coin",
-                    ),
-                    {},
-                ),
-            ],
-        )
+        assert_args_expect(logger.error.call_args_list,
+                           [(('Failed to connect to %s', 'https://no.mans.land/rpc/api'), {})])
+        assert_args_expect(logger.debug.call_args_list,
+                           [(('Connecting to %s', 'https://no.mans.land/rpc/api'), {}),
+                            (('Error while connecting to the server %s: %s',
+                              'https://no.mans.land/rpc/api', 'Insert coin'), {})])
 
-    # pylint: disable-next=redefined-outer-name
     def test_login_api_version_mismatch(self, shell):
         """
         Test handling API version mismatch error at login.
@@ -335,24 +268,12 @@ class TestSCMisc:
         shell.MINIMUM_API_VERSION = 10.8
         client.api.getVersion = MagicMock(return_value=1.5)
 
-        # pylint: disable-next=unused-variable
-        with patch("spacecmd.misc.print", mprint) as prt, patch(
-            "spacecmd.misc.prompt_user",
-            prompter
-            # pylint: disable-next=unused-variable
-        ) as pmt, patch("spacecmd.misc.getpass", gpass) as gtp, patch(
-            "spacecmd.misc.os.mkdir",
-            mkd
-            # pylint: disable-next=unused-variable
-        ) as mkdr, patch(
-            "spacecmd.misc.xmlrpclib.Server",
-            rpc_server
-            # pylint: disable-next=unused-variable
-        ) as rpcs, patch(
-            "spacecmd.misc.logging",
-            logger
-            # pylint: disable-next=unused-variable
-        ) as lgr:
+        with patch("spacecmd.misc.print", mprint) as prt, \
+            patch("spacecmd.misc.prompt_user", prompter) as pmt, \
+            patch("spacecmd.misc.getpass", gpass) as gtp, \
+            patch("spacecmd.misc.os.mkdir", mkd) as mkdr, \
+            patch("spacecmd.misc.xmlrpclib.Server", rpc_server) as rpcs, \
+            patch("spacecmd.misc.logging", logger) as lgr:
             out = spacecmd.misc.do_login(shell, "")
 
         assert not logger.info.called
@@ -370,13 +291,10 @@ class TestSCMisc:
         assert logger.error.called
         assert shell.client is None
 
-        assert_args_expect(
-            logger.error.call_args_list,
-            [(("API (%s) is too old (>= %s required)", 1.5, 10.8), {})],
-        )
+        assert_args_expect(logger.error.call_args_list,
+                           [(('API (%s) is too old (>= %s required)', 1.5, 10.8), {})])
 
     @patch("spacecmd.misc.os.path.isfile", MagicMock(return_value=True))
-    # pylint: disable-next=redefined-outer-name
     def test_login_reuse_cached_session(self, shell):
         """
         Test handling cached available session.
@@ -403,29 +321,14 @@ class TestSCMisc:
         client.api.getVersion = MagicMock(return_value=11.5)
         client.system.hasTraditionalSystems = MagicMock(return_value=False)
 
-        # pylint: disable-next=unused-variable
-        with patch("spacecmd.misc.print", mprint) as prt, patch(
-            "spacecmd.misc.prompt_user",
-            prompter
-            # pylint: disable-next=unused-variable
-        ) as pmt, patch("spacecmd.misc.getpass", gpass) as gtp, patch(
-            "spacecmd.misc.os.mkdir",
-            mkd
-            # pylint: disable-next=unused-variable
-        ) as mkdr, patch(
-            "spacecmd.misc.xmlrpclib.Server",
-            rpc_server
-            # pylint: disable-next=unused-variable
-        ) as rpcs, patch(
-            "spacecmd.misc.open",
-            new_callable=mock_open,
-            read_data="bofh:5adf5cc50929f71a899b81c2c2eb0979",
-            # pylint: disable-next=unused-variable
-        ) as fmk, patch(
-            "spacecmd.misc.logging",
-            logger
-            # pylint: disable-next=unused-variable
-        ) as lgr:
+        with patch("spacecmd.misc.print", mprint) as prt, \
+            patch("spacecmd.misc.prompt_user", prompter) as pmt, \
+            patch("spacecmd.misc.getpass", gpass) as gtp, \
+            patch("spacecmd.misc.os.mkdir", mkd) as mkdr, \
+            patch("spacecmd.misc.xmlrpclib.Server", rpc_server) as rpcs, \
+            patch("spacecmd.misc.open", new_callable=mock_open,
+                  read_data="bofh:5adf5cc50929f71a899b81c2c2eb0979") as fmk, \
+            patch("spacecmd.misc.logging", logger) as lgr:
             out = spacecmd.misc.do_login(shell, "")
 
         assert not client.auth.login.called
@@ -446,21 +349,14 @@ class TestSCMisc:
         assert shell.server == "no.mans.land"
         assert out
 
-        assert_args_expect(
-            logger.info.call_args_list,
-            [(("Connected to %s as %s", "https://no.mans.land/rpc/api", "bofh"), {})],
-        )
-        assert_args_expect(
-            logger.debug.call_args_list,
-            [
-                (("Connecting to %s", "https://no.mans.land/rpc/api"), {}),
-                (("Server API Version = %s", 11.5), {}),
-                (("Using cached credentials from %s", "/tmp/no.mans.land/session"), {}),
-            ],
-        )
+        assert_args_expect(logger.info.call_args_list,
+                           [(('Connected to %s as %s', 'https://no.mans.land/rpc/api', 'bofh'), {})])
+        assert_args_expect(logger.debug.call_args_list,
+                           [(('Connecting to %s', 'https://no.mans.land/rpc/api'), {}),
+                            (('Server API Version = %s', 11.5), {}),
+                            (('Using cached credentials from %s', '/tmp/no.mans.land/session'), {})])
 
     @patch("spacecmd.misc.os.path.isfile", MagicMock(return_value=False))
-    # pylint: disable-next=redefined-outer-name
     def test_login_no_cached_session_opt_pwd(self, shell):
         """
         Test create new session, password from the options.
@@ -489,28 +385,13 @@ class TestSCMisc:
         client.auth.login = MagicMock(return_value="5adf5cc50929f71a899b81c2c2eb0979")
         client.system.hasTraditionalSystems = MagicMock(return_value=False)
 
-        # pylint: disable-next=unused-variable
-        with patch("spacecmd.misc.print", mprint) as prt, patch(
-            "spacecmd.misc.prompt_user",
-            prompter
-            # pylint: disable-next=unused-variable
-        ) as pmt, patch("spacecmd.misc.getpass", gpass) as gtp, patch(
-            "spacecmd.misc.os.mkdir",
-            mkd
-            # pylint: disable-next=unused-variable
-        ) as mkdr, patch(
-            "spacecmd.misc.xmlrpclib.Server",
-            rpc_server
-            # pylint: disable-next=unused-variable
-        ) as rpcs, patch(
-            "spacecmd.misc.open",
-            file_writer
-            # pylint: disable-next=unused-variable
-        ) as fmk, patch(
-            "spacecmd.misc.logging",
-            logger
-            # pylint: disable-next=unused-variable
-        ) as lgr:
+        with patch("spacecmd.misc.print", mprint) as prt, \
+            patch("spacecmd.misc.prompt_user", prompter) as pmt, \
+            patch("spacecmd.misc.getpass", gpass) as gtp, \
+            patch("spacecmd.misc.os.mkdir", mkd) as mkdr, \
+            patch("spacecmd.misc.xmlrpclib.Server", rpc_server) as rpcs, \
+            patch("spacecmd.misc.open", file_writer) as fmk, \
+            patch("spacecmd.misc.logging", logger) as lgr:
             out = spacecmd.misc.do_login(shell, "")
 
         assert not gpass.called
@@ -531,25 +412,19 @@ class TestSCMisc:
         assert out
         assert mkd.called
 
-        assert_args_expect(client.auth.login.call_args_list, [(("bofh", "foobar"), {})])
-        assert_args_expect(mkd.call_args_list, [(("/tmp/no.mans.land", 448), {})])
-        assert_args_expect(
-            shell.load_caches.call_args_list, [(("no.mans.land", "bofh"), {})]
-        )
-        assert_args_expect(
-            logger.debug.call_args_list,
-            [
-                (("Connecting to %s", "https://no.mans.land/rpc/api"), {}),
-                (("Server API Version = %s", 11.5), {}),
-            ],
-        )
-        assert_args_expect(
-            logger.info.call_args_list,
-            [(("Connected to %s as %s", "https://no.mans.land/rpc/api", "bofh"), {})],
-        )
+        assert_args_expect(client.auth.login.call_args_list,
+                           [(('bofh', "foobar"), {})])
+        assert_args_expect(mkd.call_args_list,
+                           [(('/tmp/no.mans.land', 448), {})])
+        assert_args_expect(shell.load_caches.call_args_list,
+                           [(('no.mans.land', 'bofh'), {})])
+        assert_args_expect(logger.debug.call_args_list,
+                           [(('Connecting to %s', 'https://no.mans.land/rpc/api'), {}),
+                            (('Server API Version = %s', 11.5), {})])
+        assert_args_expect(logger.info.call_args_list,
+                           [(('Connected to %s as %s', 'https://no.mans.land/rpc/api', 'bofh'), {})])
 
     @patch("spacecmd.misc.os.path.isfile", MagicMock(return_value=False))
-    # pylint: disable-next=redefined-outer-name
     def test_login_no_cached_session_cfg_pwd(self, shell):
         """
         Test create new session, password from the command line interface.
@@ -578,28 +453,13 @@ class TestSCMisc:
         client.auth.login = MagicMock(return_value="5adf5cc50929f71a899b81c2c2eb0979")
         client.system.hasTraditionalSystems = MagicMock(return_value=False)
 
-        # pylint: disable-next=unused-variable
-        with patch("spacecmd.misc.print", mprint) as prt, patch(
-            "spacecmd.misc.prompt_user",
-            prompter
-            # pylint: disable-next=unused-variable
-        ) as pmt, patch("spacecmd.misc.getpass", gpass) as gtp, patch(
-            "spacecmd.misc.os.mkdir",
-            mkd
-            # pylint: disable-next=unused-variable
-        ) as mkdr, patch(
-            "spacecmd.misc.xmlrpclib.Server",
-            rpc_server
-            # pylint: disable-next=unused-variable
-        ) as rpcs, patch(
-            "spacecmd.misc.open",
-            file_writer
-            # pylint: disable-next=unused-variable
-        ) as fmk, patch(
-            "spacecmd.misc.logging",
-            logger
-            # pylint: disable-next=unused-variable
-        ) as lgr:
+        with patch("spacecmd.misc.print", mprint) as prt, \
+            patch("spacecmd.misc.prompt_user", prompter) as pmt, \
+            patch("spacecmd.misc.getpass", gpass) as gtp, \
+            patch("spacecmd.misc.os.mkdir", mkd) as mkdr, \
+            patch("spacecmd.misc.xmlrpclib.Server", rpc_server) as rpcs, \
+            patch("spacecmd.misc.open", file_writer) as fmk, \
+            patch("spacecmd.misc.logging", logger) as lgr:
             out = spacecmd.misc.do_login(shell, "")
 
         assert not mprint.called
@@ -620,25 +480,19 @@ class TestSCMisc:
         assert out
         assert mkd.called
 
-        assert_args_expect(client.auth.login.call_args_list, [(("bofh", "foobar"), {})])
-        assert_args_expect(mkd.call_args_list, [(("/tmp/no.mans.land", 448), {})])
-        assert_args_expect(
-            shell.load_caches.call_args_list, [(("no.mans.land", "bofh"), {})]
-        )
-        assert_args_expect(
-            logger.debug.call_args_list,
-            [
-                (("Connecting to %s", "https://no.mans.land/rpc/api"), {}),
-                (("Server API Version = %s", 11.5), {}),
-            ],
-        )
-        assert_args_expect(
-            logger.info.call_args_list,
-            [(("Connected to %s as %s", "https://no.mans.land/rpc/api", "bofh"), {})],
-        )
+        assert_args_expect(client.auth.login.call_args_list,
+                           [(('bofh', "foobar"), {})])
+        assert_args_expect(mkd.call_args_list,
+                           [(('/tmp/no.mans.land', 448), {})])
+        assert_args_expect(shell.load_caches.call_args_list,
+                           [(('no.mans.land', 'bofh'), {})])
+        assert_args_expect(logger.debug.call_args_list,
+                           [(('Connecting to %s', 'https://no.mans.land/rpc/api'), {}),
+                            (('Server API Version = %s', 11.5), {})])
+        assert_args_expect(logger.info.call_args_list,
+                           [(('Connected to %s as %s', 'https://no.mans.land/rpc/api', 'bofh'), {})])
 
     @patch("spacecmd.misc.os.path.isfile", MagicMock(return_value=False))
-    # pylint: disable-next=redefined-outer-name
     def test_login_no_cached_session_cli_pwd(self, shell):
         """
         Test create new session, password from the configuration.
@@ -667,28 +521,13 @@ class TestSCMisc:
         client.auth.login = MagicMock(return_value="5adf5cc50929f71a899b81c2c2eb0979")
         client.system.hasTraditionalSystems = MagicMock(return_value=False)
 
-        # pylint: disable-next=unused-variable
-        with patch("spacecmd.misc.print", mprint) as prt, patch(
-            "spacecmd.misc.prompt_user",
-            prompter
-            # pylint: disable-next=unused-variable
-        ) as pmt, patch("spacecmd.misc.getpass", gpass) as gtp, patch(
-            "spacecmd.misc.os.mkdir",
-            mkd
-            # pylint: disable-next=unused-variable
-        ) as mkdr, patch(
-            "spacecmd.misc.xmlrpclib.Server",
-            rpc_server
-            # pylint: disable-next=unused-variable
-        ) as rpcs, patch(
-            "spacecmd.misc.open",
-            file_writer
-            # pylint: disable-next=unused-variable
-        ) as fmk, patch(
-            "spacecmd.misc.logging",
-            logger
-            # pylint: disable-next=unused-variable
-        ) as lgr:
+        with patch("spacecmd.misc.print", mprint) as prt, \
+            patch("spacecmd.misc.prompt_user", prompter) as pmt, \
+            patch("spacecmd.misc.getpass", gpass) as gtp, \
+            patch("spacecmd.misc.os.mkdir", mkd) as mkdr, \
+            patch("spacecmd.misc.xmlrpclib.Server", rpc_server) as rpcs, \
+            patch("spacecmd.misc.open", file_writer) as fmk, \
+            patch("spacecmd.misc.logging", logger) as lgr:
             out = spacecmd.misc.do_login(shell, "")
 
         assert not gpass.called
@@ -709,25 +548,19 @@ class TestSCMisc:
         assert out
         assert mkd.called
 
-        assert_args_expect(client.auth.login.call_args_list, [(("bofh", "foobar"), {})])
-        assert_args_expect(mkd.call_args_list, [(("/tmp/no.mans.land", 448), {})])
-        assert_args_expect(
-            shell.load_caches.call_args_list, [(("no.mans.land", "bofh"), {})]
-        )
-        assert_args_expect(
-            logger.debug.call_args_list,
-            [
-                (("Connecting to %s", "https://no.mans.land/rpc/api"), {}),
-                (("Server API Version = %s", 11.5), {}),
-            ],
-        )
-        assert_args_expect(
-            logger.info.call_args_list,
-            [(("Connected to %s as %s", "https://no.mans.land/rpc/api", "bofh"), {})],
-        )
+        assert_args_expect(client.auth.login.call_args_list,
+                           [(('bofh', "foobar"), {})])
+        assert_args_expect(mkd.call_args_list,
+                           [(('/tmp/no.mans.land', 448), {})])
+        assert_args_expect(shell.load_caches.call_args_list,
+                           [(('no.mans.land', 'bofh'), {})])
+        assert_args_expect(logger.debug.call_args_list,
+                           [(('Connecting to %s', 'https://no.mans.land/rpc/api'), {}),
+                            (('Server API Version = %s', 11.5), {})])
+        assert_args_expect(logger.info.call_args_list,
+                           [(('Connected to %s as %s', 'https://no.mans.land/rpc/api', 'bofh'), {})])
 
     @patch("spacecmd.misc.os.path.isfile", MagicMock(return_value=False))
-    # pylint: disable-next=redefined-outer-name
     def test_login_no_cached_session_bad_credentials(self, shell):
         """
         Test fail to create new session due to wrong credentials.
@@ -753,32 +586,15 @@ class TestSCMisc:
         shell.conf_dir = "/tmp"
         shell.MINIMUM_API_VERSION = 10.8
         client.api.getVersion = MagicMock(return_value=11.5)
-        client.auth.login = MagicMock(
-            side_effect=xmlrpclib.Fault(faultCode=42, faultString="Click harder")
-        )
+        client.auth.login = MagicMock(side_effect=xmlrpclib.Fault(faultCode=42, faultString="Click harder"))
 
-        # pylint: disable-next=unused-variable
-        with patch("spacecmd.misc.print", mprint) as prt, patch(
-            "spacecmd.misc.prompt_user",
-            prompter
-            # pylint: disable-next=unused-variable
-        ) as pmt, patch("spacecmd.misc.getpass", gpass) as gtp, patch(
-            "spacecmd.misc.os.mkdir",
-            mkd
-            # pylint: disable-next=unused-variable
-        ) as mkdr, patch(
-            "spacecmd.misc.xmlrpclib.Server",
-            rpc_server
-            # pylint: disable-next=unused-variable
-        ) as rpcs, patch(
-            "spacecmd.misc.open",
-            file_writer
-            # pylint: disable-next=unused-variable
-        ) as fmk, patch(
-            "spacecmd.misc.logging",
-            logger
-            # pylint: disable-next=unused-variable
-        ) as lgr:
+        with patch("spacecmd.misc.print", mprint) as prt, \
+            patch("spacecmd.misc.prompt_user", prompter) as pmt, \
+            patch("spacecmd.misc.getpass", gpass) as gtp, \
+            patch("spacecmd.misc.os.mkdir", mkd) as mkdr, \
+            patch("spacecmd.misc.xmlrpclib.Server", rpc_server) as rpcs, \
+            patch("spacecmd.misc.open", file_writer) as fmk, \
+            patch("spacecmd.misc.logging", logger) as lgr:
             out = spacecmd.misc.do_login(shell, "")
 
         assert not gpass.called
@@ -797,21 +613,16 @@ class TestSCMisc:
         assert not out
         assert not mkd.called
 
-        assert_args_expect(client.auth.login.call_args_list, [(("bofh", "foobar"), {})])
-        assert_args_expect(
-            logger.debug.call_args_list,
-            [
-                (("Connecting to %s", "https://no.mans.land/rpc/api"), {}),
-                (("Server API Version = %s", 11.5), {}),
-                (("Login error: %s (%s)", "Click harder", 42), {}),
-            ],
-        )
-        assert_args_expect(
-            logger.error.call_args_list, [(("Invalid credentials",), {})]
-        )
+        assert_args_expect(client.auth.login.call_args_list,
+                           [(('bofh', "foobar"), {})])
+        assert_args_expect(logger.debug.call_args_list,
+                           [(('Connecting to %s', 'https://no.mans.land/rpc/api'), {}),
+                            (('Server API Version = %s', 11.5), {}),
+                            (('Login error: %s (%s)', 'Click harder', 42), {})])
+        assert_args_expect(logger.error.call_args_list,
+                           [(('Invalid credentials', ), {})])
 
     @patch("spacecmd.misc.os.path.isfile", MagicMock(return_value=False))
-    # pylint: disable-next=redefined-outer-name
     def test_login_handle_cache_write_error_mkdir(self, shell):
         """
         Test fail to save session due to directory permission denial
@@ -840,28 +651,13 @@ class TestSCMisc:
         client.auth.login = MagicMock(return_value="5adf5cc50929f71a899b81c2c2eb0979")
         client.system.hasTraditionalSystems = MagicMock(return_value=False)
 
-        # pylint: disable-next=unused-variable
-        with patch("spacecmd.misc.print", mprint) as prt, patch(
-            "spacecmd.misc.prompt_user",
-            prompter
-            # pylint: disable-next=unused-variable
-        ) as pmt, patch("spacecmd.misc.getpass", gpass) as gtp, patch(
-            "spacecmd.misc.os.mkdir",
-            mkd
-            # pylint: disable-next=unused-variable
-        ) as mkdr, patch(
-            "spacecmd.misc.xmlrpclib.Server",
-            rpc_server
-            # pylint: disable-next=unused-variable
-        ) as rpcs, patch(
-            "spacecmd.misc.open",
-            file_writer
-            # pylint: disable-next=unused-variable
-        ) as fmk, patch(
-            "spacecmd.misc.logging",
-            logger
-            # pylint: disable-next=unused-variable
-        ) as lgr:
+        with patch("spacecmd.misc.print", mprint) as prt, \
+            patch("spacecmd.misc.prompt_user", prompter) as pmt, \
+            patch("spacecmd.misc.getpass", gpass) as gtp, \
+            patch("spacecmd.misc.os.mkdir", mkd) as mkdr, \
+            patch("spacecmd.misc.xmlrpclib.Server", rpc_server) as rpcs, \
+            patch("spacecmd.misc.open", file_writer) as fmk, \
+            patch("spacecmd.misc.logging", logger) as lgr:
             out = spacecmd.misc.do_login(shell, "")
 
         assert not mprint.called
@@ -882,28 +678,20 @@ class TestSCMisc:
         assert out
         assert mkd.called
 
-        assert_args_expect(client.auth.login.call_args_list, [(("bofh", "foobar"), {})])
-        assert_args_expect(mkd.call_args_list, [(("/tmp/no.mans.land", 448), {})])
-        assert_args_expect(
-            shell.load_caches.call_args_list, [(("no.mans.land", "bofh"), {})]
-        )
-        assert_args_expect(
-            logger.debug.call_args_list,
-            [
-                (("Connecting to %s", "https://no.mans.land/rpc/api"), {}),
-                (("Server API Version = %s", 11.5), {}),
-            ],
-        )
-        assert_args_expect(
-            logger.info.call_args_list,
-            [(("Connected to %s as %s", "https://no.mans.land/rpc/api", "bofh"), {})],
-        )
-        assert_args_expect(
-            logger.error.call_args_list,
-            [(("Could not write session file: %s", "Intel inside"), {})],
-        )
+        assert_args_expect(client.auth.login.call_args_list,
+                           [(('bofh', "foobar"), {})])
+        assert_args_expect(mkd.call_args_list,
+                           [(('/tmp/no.mans.land', 448), {})])
+        assert_args_expect(shell.load_caches.call_args_list,
+                           [(('no.mans.land', 'bofh'), {})])
+        assert_args_expect(logger.debug.call_args_list,
+                           [(('Connecting to %s', 'https://no.mans.land/rpc/api'), {}),
+                            (('Server API Version = %s', 11.5), {})])
+        assert_args_expect(logger.info.call_args_list,
+                           [(('Connected to %s as %s', 'https://no.mans.land/rpc/api', 'bofh'), {})])
+        assert_args_expect(logger.error.call_args_list,
+                           [(('Could not write session file: %s', 'Intel inside'), {})])
 
-    # pylint: disable-next=redefined-outer-name
     def test_logout(self, shell):
         """
         Test logout.
@@ -920,9 +708,8 @@ class TestSCMisc:
         assert not shell.current_user
         assert not shell.server
         assert shell.do_clear_caches.called
-        assert_args_expect(shell.do_clear_caches.call_args_list, [(("",), {})])
+        assert_args_expect(shell.do_clear_caches.call_args_list, [(("", ), {})])
 
-    # pylint: disable-next=redefined-outer-name
     def test_whoami_negative(self, shell):
         """
         Test whoami
@@ -932,15 +719,14 @@ class TestSCMisc:
         """
         mprint = MagicMock()
         logger = MagicMock()
-        with patch("spacecmd.misc.print", mprint), patch.object(
-            shell, "current_user", None
-        ), patch("spacecmd.misc.logging", logger):
+        with patch("spacecmd.misc.print", mprint), \
+            patch.object(shell, "current_user", None), \
+            patch("spacecmd.misc.logging", logger):
             spacecmd.misc.do_whoami(shell, "")
 
         assert not mprint.called
         assert logger.warning.called
 
-    # pylint: disable-next=redefined-outer-name
     def test_whoami_positive(self, shell):
         """
         Test whoami
@@ -950,15 +736,13 @@ class TestSCMisc:
         """
         mprint = MagicMock()
         logger = MagicMock()
-        with patch("spacecmd.misc.print", mprint), patch(
-            "spacecmd.misc.logging", logger
-        ):
+        with patch("spacecmd.misc.print", mprint), \
+                patch("spacecmd.misc.logging", logger):
             spacecmd.misc.do_whoami(shell, "")
 
         assert mprint.called
         assert not logger.warning.called
 
-    # pylint: disable-next=redefined-outer-name
     def test_whoamitalkingto(self, shell):
         """
         Test to display what server is connected.
@@ -969,19 +753,14 @@ class TestSCMisc:
         shell.server = "no.mans.land"
         mprint = MagicMock()
         logger = MagicMock()
-        # pylint: disable-next=unused-variable
-        with patch("spacecmd.misc.print", mprint) as prt, patch(
-            "spacecmd.misc.logging",
-            logger
-            # pylint: disable-next=unused-variable
-        ) as lgr:
+        with patch("spacecmd.misc.print", mprint) as prt, \
+            patch("spacecmd.misc.logging", logger) as lgr:
             spacecmd.misc.do_whoamitalkingto(shell, "")
 
         assert not logger.warning.called
         assert mprint.called
-        assert_args_expect(mprint.call_args_list, [((shell.server,), {})])
+        assert_args_expect(mprint.call_args_list, [((shell.server, ), {})])
 
-    # pylint: disable-next=redefined-outer-name
     def test_whoamitalkingto_no_session(self, shell):
         """
         Test to display no server is connected yet.
@@ -992,19 +771,14 @@ class TestSCMisc:
         shell.server = None
         mprint = MagicMock()
         logger = MagicMock()
-        # pylint: disable-next=unused-variable
-        with patch("spacecmd.misc.print", mprint) as prt, patch(
-            "spacecmd.misc.logging",
-            logger
-            # pylint: disable-next=unused-variable
-        ) as lgr:
+        with patch("spacecmd.misc.print", mprint) as prt, \
+            patch("spacecmd.misc.logging", logger) as lgr:
             spacecmd.misc.do_whoamitalkingto(shell, "")
 
         assert not mprint.called
         assert logger.warning.called
-        assert_args_expect(logger.warning.call_args_list, [(("Yourself",), {})])
+        assert_args_expect(logger.warning.call_args_list, [(("Yourself", ), {})])
 
-    # pylint: disable-next=redefined-outer-name
     def test_clear_errata_cache(self, shell):
         """
         Test errata cache cleared.
@@ -1024,7 +798,6 @@ class TestSCMisc:
         assert shell.errata_cache_expire > tst
         assert shell.save_errata_cache.called
 
-    # pylint: disable-next=redefined-outer-name
     def test_get_sorted_errata_names(self, shell):
         """
         Test getting errata names.
@@ -1032,18 +805,11 @@ class TestSCMisc:
         :param shell:
         :return:
         """
-        shell.all_errata = [
-            {"advisory_name": "cve-123"},
-            {"advisory_name": "cve-aaa"},
-            {"advisory_name": "cve-zzz"},
-        ]
-        assert spacecmd.misc.get_errata_names(shell) == [
-            "cve-123",
-            "cve-aaa",
-            "cve-zzz",
-        ]
+        shell.all_errata = [{"advisory_name": "cve-123"},
+                            {"advisory_name": "cve-aaa"},
+                            {"advisory_name": "cve-zzz"}]
+        assert spacecmd.misc.get_errata_names(shell) == ['cve-123', 'cve-aaa', 'cve-zzz']
 
-    # pylint: disable-next=redefined-outer-name
     def test_get_erratum_id(self, shell):
         """
         Test to get erratum ID.
@@ -1054,7 +820,6 @@ class TestSCMisc:
         shell.all_errata = {"cve-zzz": {"id": 3}}
         assert spacecmd.misc.get_erratum_id(shell, "cve-zzz") == 3
 
-    # pylint: disable-next=redefined-outer-name
     def test_get_erratum_name(self, shell):
         """
         Test to get erratum name.
@@ -1065,7 +830,6 @@ class TestSCMisc:
         shell.all_errata = {"cve-zzz": {"id": 3}}
         assert spacecmd.misc.get_erratum_name(shell, 3) == "cve-zzz"
 
-    # pylint: disable-next=redefined-outer-name
     def test_generate_errata_cache_no_expired(self, shell):
         """
         Test generate errata cache (no expired, i.e. should not be generated).
@@ -1081,7 +845,6 @@ class TestSCMisc:
         assert not shell.replace_line_buffer.called
         assert not shell.save_errata_cache.called
 
-    # pylint: disable-next=redefined-outer-name
     def test_generate_errata_cache_force(self, shell):
         """
         Test generate errata cache, forced
@@ -1092,29 +855,20 @@ class TestSCMisc:
         shell.all_errata = {}
         shell.options.quiet = False
         shell.errata_cache_expire = datetime.datetime(2099, 1, 1)
-        shell.client.channel.listSoftwareChannels = MagicMock(
-            return_value=[{"label": "locked_channel"}, {"label": "base_channel"}]
-        )
-        shell.client.channel.software.listErrata = MagicMock(
-            side_effect=[
-                xmlrpclib.Fault(
-                    faultCode=42,
-                    faultString="Sales staff sold a product we don't offer",
-                ),
-                [
-                    {
-                        "id": 123,
-                        "advisory_name": "cve-123",
-                        "advisory_type": "mockery",
-                        "date": "2019.1.1",
-                        "advisory_synopsis": "some text here",
-                    }
-                ],
-            ]
-        )
+        shell.client.channel.listSoftwareChannels = MagicMock(return_value=[
+            {"label": "locked_channel"}, {"label": "base_channel"}
+        ])
+        shell.client.channel.software.listErrata = MagicMock(side_effect=[
+            xmlrpclib.Fault(faultCode=42, faultString="Sales staff sold a product we don't offer"),
+            [{
+                "id": 123,
+                "advisory_name": "cve-123",
+                "advisory_type": "mockery", "date": "2019.1.1",
+                "advisory_synopsis": "some text here",
+            }]
+        ])
 
         logger = MagicMock()
-        # pylint: disable-next=unused-variable
         with patch("spacecmd.misc.logging", logger) as lgr:
             spacecmd.misc.generate_errata_cache(shell, force=True)
 
@@ -1130,22 +884,10 @@ class TestSCMisc:
         assert shell.all_errata["cve-123"]["advisory_synopsis"] == "some text here"
         assert shell.all_errata["cve-123"]["advisory_name"] == "cve-123"
         assert shell.all_errata["cve-123"]["date"] == "2019.1.1"
-        assert_args_expect(
-            logger.debug.call_args_list,
-            [
-                (
-                    (
-                        "No access to %s (%s): %s",
-                        "locked_channel",
-                        42,
-                        "Sales staff sold a product we don't offer",
-                    ),
-                    {},
-                )
-            ],
-        )
+        assert_args_expect(logger.debug.call_args_list,
+                           [(('No access to %s (%s): %s', 'locked_channel',
+                              42, "Sales staff sold a product we don't offer"), {})])
 
-    # pylint: disable-next=redefined-outer-name
     def test_clear_package_cache(self, shell):
         """
         Test clear package cache.
@@ -1165,7 +907,6 @@ class TestSCMisc:
         assert shell.package_cache_expire != tst
         assert shell.save_package_caches.called
 
-    # pylint: disable-next=redefined-outer-name
     def test_generate_package_cache_cache_not_expired(self, shell):
         """
         Test generate package cache is not yet expired.
@@ -1184,12 +925,8 @@ class TestSCMisc:
         shell.package_cache_expire = tst
         shell.PACKAGE_CACHE_TTL = 8000
 
-        # pylint: disable-next=unused-variable
-        with patch("spacecmd.misc.build_package_names", pkgbuild) as pkgb, patch(
-            "spacecmd.misc.logging",
-            logger
-            # pylint: disable-next=unused-variable
-        ) as lgr:
+        with patch("spacecmd.misc.build_package_names", pkgbuild) as pkgb, \
+                patch("spacecmd.misc.logging", logger) as lgr:
             spacecmd.misc.generate_package_cache(shell, force=False)
 
         assert not shell.client.channel.listSoftwareChannels.called
@@ -1200,7 +937,6 @@ class TestSCMisc:
         assert not shell.save_package_caches.called
         assert shell.package_cache_expire == tst
 
-    # pylint: disable-next=redefined-outer-name
     def test_generate_package_cache_cache_not_expired_forced(self, shell):
         """
         Test generate package cache not expired, but forced to.
@@ -1220,12 +956,8 @@ class TestSCMisc:
         shell.PACKAGE_CACHE_TTL = 8000
         shell.client.channel.listSoftwareChannels = MagicMock(return_value=[])
 
-        # pylint: disable-next=unused-variable
-        with patch("spacecmd.misc.build_package_names", pkgbuild) as pkgb, patch(
-            "spacecmd.misc.logging",
-            logger
-            # pylint: disable-next=unused-variable
-        ) as lgr:
+        with patch("spacecmd.misc.build_package_names", pkgbuild) as pkgb, \
+                patch("spacecmd.misc.logging", logger) as lgr:
             spacecmd.misc.generate_package_cache(shell, force=True)
 
         assert not shell.client.channel.software.listAllPackages.called
@@ -1237,7 +969,6 @@ class TestSCMisc:
         assert shell.package_cache_expire != tst
         assert shell.package_cache_expire is not None
 
-    # pylint: disable-next=redefined-outer-name
     def test_generate_package_cache_verbose(self, shell):
         """
         Test generate package cache verbose mode.
@@ -1257,12 +988,8 @@ class TestSCMisc:
         shell.PACKAGE_CACHE_TTL = 8000
         shell.client.channel.listSoftwareChannels = MagicMock(return_value=[])
 
-        # pylint: disable-next=unused-variable
-        with patch("spacecmd.misc.build_package_names", pkgbuild) as pkgb, patch(
-            "spacecmd.misc.logging",
-            logger
-            # pylint: disable-next=unused-variable
-        ) as lgr:
+        with patch("spacecmd.misc.build_package_names", pkgbuild) as pkgb, \
+                patch("spacecmd.misc.logging", logger) as lgr:
             spacecmd.misc.generate_package_cache(shell, force=False)
 
         assert not logger.debug.called
@@ -1274,7 +1001,6 @@ class TestSCMisc:
         assert shell.package_cache_expire != tst
         assert shell.package_cache_expire is not None
 
-    # pylint: disable-next=redefined-outer-name
     def test_generate_package_cache_uqid(self, shell):
         """
         Test generate package cache, unique IDs.
@@ -1297,10 +1023,8 @@ class TestSCMisc:
                     {"name": "emacs", "version": 42, "release": 3, "id": 42},
                     {"name": "gedit", "version": 1, "release": 2, "id": 69},
                 ],
-                xmlrpclib.Fault(
-                    faultString="Interrupt configuration interference error",
-                    faultCode=13,
-                ),
+                xmlrpclib.Fault(faultString="Interrupt configuration interference error",
+                                faultCode=13)
             ]
         )
         shell.client.channel.listSoftwareChannels = MagicMock(
@@ -1310,7 +1034,6 @@ class TestSCMisc:
             ]
         )
 
-        # pylint: disable-next=unused-variable
         with patch("spacecmd.misc.logging", logger) as lgr:
             spacecmd.misc.generate_package_cache(shell, force=False)
 
@@ -1327,10 +1050,8 @@ class TestSCMisc:
             assert shell.all_packages[pkgname] == [pkgid]
             assert pkgid in shell.all_packages_by_id
             assert shell.all_packages_by_id[pkgid] == pkgname
-            # pylint: disable-next=use-maxsplit-arg
             assert pkgname.split("-")[0] in shell.all_packages_short
 
-    # pylint: disable-next=redefined-outer-name
     def test_generate_package_cache_duplicate_ids(self, shell):
         """
         Test generate package cache, handling duplicate IDs.
@@ -1354,10 +1075,8 @@ class TestSCMisc:
                     {"name": "gedit", "version": 1, "release": 2, "id": 69},
                     {"name": "vim", "version": 1, "release": 2, "id": 69},
                 ],
-                xmlrpclib.Fault(
-                    faultString="Interrupt configuration interference error",
-                    faultCode=13,
-                ),
+                xmlrpclib.Fault(faultString="Interrupt configuration interference error",
+                                faultCode=13)
             ]
         )
         shell.client.channel.listSoftwareChannels = MagicMock(
@@ -1367,7 +1086,6 @@ class TestSCMisc:
             ]
         )
 
-        # pylint: disable-next=unused-variable
         with patch("spacecmd.misc.logging", logger) as lgr:
             spacecmd.misc.generate_package_cache(shell, force=False)
 
@@ -1379,35 +1097,18 @@ class TestSCMisc:
         assert shell.package_cache_expire != tst
         assert shell.package_cache_expire is not None
 
-        assert_args_expect(
-            logger.debug.call_args_list,
-            [
-                (
-                    (
-                        "No access to %s",
-                        "locked_channel",
-                    ),
-                    {},
-                ),
-                (
-                    (
-                        'Non-unique package id "69" is detected. '
-                        'Taking "vim-1-2" instead of "gedit-1-2"',
-                    ),
-                    {},
-                ),
-            ],
-        )
+        assert_args_expect(logger.debug.call_args_list,
+                           [(('No access to %s', 'locked_channel',), {}),
+                            (('Non-unique package id "69" is detected. '
+                              'Taking "vim-1-2" instead of "gedit-1-2"',), {})])
 
         for pkgname, pkgid in [("emacs-42-3", 42), ("vim-1-2", 69)]:
             assert pkgname in shell.all_packages
             assert shell.all_packages[pkgname] == [pkgid]
             assert pkgid in shell.all_packages_by_id
             assert shell.all_packages_by_id[pkgid] == pkgname
-            # pylint: disable-next=use-maxsplit-arg
             assert pkgname.split("-")[0] in shell.all_packages_short
 
-    # pylint: disable-next=redefined-outer-name
     def test_save_package_caches(self, shell):
         """
         Test saving package caches.
@@ -1428,21 +1129,17 @@ class TestSCMisc:
         tst = datetime.datetime(2019, 1, 1, 0, 0)
         shell.package_cache_expire = tst
 
-        # pylint: disable-next=unused-variable
         with patch("spacecmd.misc.save_cache", savecache) as savc:
             spacecmd.misc.save_package_caches(shell)
 
         assert shell.package_cache_expire == tst
-        assert_args_expect(
-            savecache.call_args_list,
-            [
-                (("/tmp/psc.f", {"emacs": ""}, tst), {}),
-                (("/tmp/plc.f", {"emacs-41-1": [42]}, tst), {}),
-                (("/tmp/bic.f", {42: "emacs-41-1"}, tst), {}),
-            ],
-        )
+        assert_args_expect(savecache.call_args_list,
+                           [
+                               (('/tmp/psc.f', {'emacs': ''}, tst), {}),
+                               (('/tmp/plc.f', {'emacs-41-1': [42]}, tst), {}),
+                               (('/tmp/bic.f', {42: 'emacs-41-1'}, tst), {}),
+                           ])
 
-    # pylint: disable-next=redefined-outer-name
     def test_user_confirm_bool_positive(self, shell):
         """
         Test interactive user confirmation UI. Boolean, positive.
@@ -1452,14 +1149,12 @@ class TestSCMisc:
         shell.options.yes = False
         for answer in ["yop", "yeah", "yes", "y", "Yes", "Yo"]:
             pmt = MagicMock(return_value=answer)
-            # pylint: disable-next=unused-variable
             with patch("spacecmd.misc.prompt_user", pmt) as prompter:
                 out = spacecmd.misc.user_confirm(shell)
 
             assert isinstance(out, bool)
             assert out
 
-    # pylint: disable-next=redefined-outer-name
     def test_user_confirm_bool_negative(self, shell):
         """
         Test interactive user confirmation UI. Boolean, negative.
@@ -1469,14 +1164,12 @@ class TestSCMisc:
         shell.options.yes = False
         for answer in ["whatever", "nope", "no", "n", "Nada", "go away"]:
             pmt = MagicMock(return_value=answer)
-            # pylint: disable-next=unused-variable
             with patch("spacecmd.misc.prompt_user", pmt) as prompter:
                 out = spacecmd.misc.user_confirm(shell)
 
             assert isinstance(out, bool)
             assert not out
 
-    # pylint: disable-next=redefined-outer-name
     def test_user_confirm_int_positive(self, shell):
         """
         Test interactive user confirmation UI. Integer, positive.
@@ -1486,14 +1179,12 @@ class TestSCMisc:
         shell.options.yes = False
         for answer in ["yop", "yeah", "yes", "y", "Yes", "Yo"]:
             pmt = MagicMock(return_value=answer)
-            # pylint: disable-next=unused-variable
             with patch("spacecmd.misc.prompt_user", pmt) as prompter:
                 out = spacecmd.misc.user_confirm(shell, integer=True)
 
             assert isinstance(out, int)
             assert out == 1
 
-    # pylint: disable-next=redefined-outer-name
     def test_user_confirm_int_negative(self, shell):
         """
         Test interactive user confirmation UI. Integer, negative.
@@ -1503,14 +1194,12 @@ class TestSCMisc:
         shell.options.yes = False
         for answer in ["whatever", "nope", "no", "n", "Nada", "go away"]:
             pmt = MagicMock(return_value=answer)
-            # pylint: disable-next=unused-variable
             with patch("spacecmd.misc.prompt_user", pmt) as prompter:
                 out = spacecmd.misc.user_confirm(shell, integer=True)
 
             assert isinstance(out, int)
             assert out == 0
 
-    # pylint: disable-next=redefined-outer-name
     def test_check_api_version(self, shell):
         """
         Test API version checker.
@@ -1526,7 +1215,6 @@ class TestSCMisc:
         for bigger in ["11", "10.6"]:
             assert not spacecmd.misc.check_api_version(shell, bigger)
 
-    # pylint: disable-next=redefined-outer-name
     def test_get_system_id_no_duplicates(self, shell):
         """
         Test getting system ID without duplicates (normal run).
@@ -1541,7 +1229,6 @@ class TestSCMisc:
         assert spacecmd.misc.get_system_id(shell, "100100") == 100100
         assert spacecmd.misc.get_system_id(shell, "100200") == 100200
 
-    # pylint: disable-next=redefined-outer-name
     def test_get_system_id_handle_duplicates(self, shell):
         """
         Test getting system ID with duplicates.
@@ -1549,27 +1236,22 @@ class TestSCMisc:
         :param shell:
         :return:
         """
-        shell.all_systems = {100100: "douchebox", 100200: "sloppy", 100300: "douchebox"}
+        shell.all_systems = {100100: "douchebox", 100200: "sloppy",
+                             100300: "douchebox"}
 
         logger = MagicMock()
-        # pylint: disable-next=unused-variable
         with patch("spacecmd.misc.logging", logger) as lgr:
             assert spacecmd.misc.get_system_id(shell, "douchebox") == 0
 
-        assert_args_expect(
-            logger.warning.call_args_list,
-            [
-                (("Duplicate system profile names found!",), {}),
-                (("Please reference systems by ID or resolve the",), {}),
-                (("underlying issue with 'system_delete' or 'system_rename'",), {}),
-                (("",), {}),
-                (("douchebox = 100100, 100300",), {}),
-            ],
-        )
+        assert_args_expect(logger.warning.call_args_list,
+                           [(('Duplicate system profile names found!',), {}),
+                            (('Please reference systems by ID or resolve the',), {}),
+                            (("underlying issue with 'system_delete' or 'system_rename'",), {}),
+                            (('',), {}),
+                            (('douchebox = 100100, 100300',), {})])
 
         assert logger.warning.called
 
-    # pylint: disable-next=redefined-outer-name
     def test_get_package_name(self, shell):
         """
         Get package name.
@@ -1582,7 +1264,6 @@ class TestSCMisc:
         assert spacecmd.misc.get_package_name(shell, 43) is None
         assert shell.generate_package_cache.called
 
-    # pylint: disable-next=redefined-outer-name
     def test_generate_system_cache_not_expired(self, shell):
         """
         Test generating system cache before expiration point.
@@ -1597,7 +1278,6 @@ class TestSCMisc:
         shell.SYSTEM_CACHE_TTL = 8000
         sleeper = MagicMock()
 
-        # pylint: disable-next=unused-variable
         with patch("spacecmd.misc.sleep", sleeper) as slp:
             spacecmd.misc.generate_system_cache(shell)
 
@@ -1606,7 +1286,6 @@ class TestSCMisc:
         assert not sleeper.called
         assert shell.system_cache_expire == tst
 
-    # pylint: disable-next=redefined-outer-name
     def test_generate_system_cache_not_expired_forced(self, shell):
         """
         Test generating system cache before expiration point, forced.
@@ -1619,16 +1298,13 @@ class TestSCMisc:
         shell.options.quiet = False
         shell.all_systems = {}
         shell.SYSTEM_CACHE_TTL = 8000
-        shell.client.system.listSystems = MagicMock(
-            return_value=[
-                {"id": 100100, "name": "douchebox"},
-                {"id": 100101, "name": "useless"},
-                {"id": 100102, "name": "slowlaris"},
-            ]
-        )
+        shell.client.system.listSystems = MagicMock(return_value=[
+            {"id": 100100, "name": "douchebox"},
+            {"id": 100101, "name": "useless"},
+            {"id": 100102, "name": "slowlaris"},
+        ])
         sleeper = MagicMock()
 
-        # pylint: disable-next=unused-variable
         with patch("spacecmd.misc.sleep", sleeper) as slp:
             spacecmd.misc.generate_system_cache(shell, force=True)
 
@@ -1640,7 +1316,6 @@ class TestSCMisc:
         assert shell.replace_line_buffer.call_count == 2
         assert shell.save_system_cache.called
 
-    # pylint: disable-next=redefined-outer-name
     def test_generate_system_cache_expired(self, shell):
         """
         Test generating system cache after expiration point.
@@ -1653,16 +1328,13 @@ class TestSCMisc:
         shell.options.quiet = False
         shell.all_systems = {}
         shell.SYSTEM_CACHE_TTL = 8000
-        shell.client.system.listSystems = MagicMock(
-            return_value=[
-                {"id": 100100, "name": "douchebox"},
-                {"id": 100101, "name": "useless"},
-                {"id": 100102, "name": "slowlaris"},
-            ]
-        )
+        shell.client.system.listSystems = MagicMock(return_value=[
+            {"id": 100100, "name": "douchebox"},
+            {"id": 100101, "name": "useless"},
+            {"id": 100102, "name": "slowlaris"},
+        ])
         sleeper = MagicMock()
 
-        # pylint: disable-next=unused-variable
         with patch("spacecmd.misc.sleep", sleeper) as slp:
             spacecmd.misc.generate_system_cache(shell, force=False)
 

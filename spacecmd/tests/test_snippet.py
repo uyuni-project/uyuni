@@ -2,14 +2,9 @@
 """
 Test suite for snippet source
 """
-# pylint: disable-next=unused-import
 from mock import MagicMock, patch, mock_open
 from spacecmd import snippet
-
-# pylint: disable-next=unused-import
 from helpers import shell, assert_expect
-
-# pylint: disable-next=unused-import
 import pytest
 
 
@@ -17,8 +12,6 @@ class TestSCSnippets:
     """
     Test for snippet API.
     """
-
-    # pylint: disable-next=redefined-outer-name
     def test_snippet_list_noarg(self, shell):
         """
         Test snippet list noargs
@@ -35,11 +28,8 @@ class TestSCSnippets:
             out = snippet.do_snippet_list(shell, "")
 
         assert out is None
-        assert mprint.call_args_list[0][0] == (
-            "snippet - 1\nsnippet - 2\nsnippet - 3",
-        )  # Sorted
+        assert mprint.call_args_list[0][0] == ('snippet - 1\nsnippet - 2\nsnippet - 3',)  # Sorted
 
-    # pylint: disable-next=redefined-outer-name
     def test_snippet_list_args(self, shell):
         """
         Test snippet list with the args
@@ -57,9 +47,8 @@ class TestSCSnippets:
             out = snippet.do_snippet_list(shell, "", doreturn=True)
 
         assert out is not None
-        assert out == ["snippet - 1", "snippet - 2", "snippet - 3"]  # Sorted
+        assert out == ['snippet - 1', 'snippet - 2', 'snippet - 3']  # Sorted
 
-    # pylint: disable-next=redefined-outer-name
     def test_snippet_details_noarg(self, shell):
         """
         Test snippet details no args
@@ -74,41 +63,20 @@ class TestSCSnippets:
 
         mprint = MagicMock()
         logger = MagicMock()
-        # pylint: disable-next=unused-variable
-        with patch("spacecmd.snippet.print", mprint) as mpr, patch(
-            "spacecmd.snippet.logging",
-            logger
-            # pylint: disable-next=unused-variable
-        ) as lgr:
+        with patch("spacecmd.snippet.print", mprint) as mpr, patch("spacecmd.snippet.logging", logger) as lgr:
             snippet.do_snippet_details(shell, "")
         assert not mprint.called
         assert not logger.warning.called
         assert shell.help_snippet_details.called
 
-    # pylint: disable-next=redefined-outer-name
     def test_snippet_details_args(self, shell):
         """
         Test snippet details with the args
         """
         snippets = [
-            {
-                "name": "snippet3",
-                "contents": "three",
-                "fragment": "3rd fragment",
-                "file": "/tmp/3",
-            },
-            {
-                "name": "snippet1",
-                "contents": "one",
-                "fragment": "1st fragment",
-                "file": "/tmp/1",
-            },
-            {
-                "name": "snippet2",
-                "contents": "two",
-                "fragment": "2nd fragment",
-                "file": "/tmp/2",
-            },
+            {"name": "snippet3", "contents": "three", "fragment": "3rd fragment", "file": "/tmp/3"},
+            {"name": "snippet1", "contents": "one", "fragment": "1st fragment", "file": "/tmp/1"},
+            {"name": "snippet2", "contents": "two", "fragment": "2nd fragment", "file": "/tmp/2"},
         ]
         shell.client.kickstart.snippet.listCustom = MagicMock(return_value=snippets)
         shell.SEPARATOR = "---"
@@ -116,12 +84,7 @@ class TestSCSnippets:
 
         mprint = MagicMock()
         logger = MagicMock()
-        # pylint: disable-next=unused-variable
-        with patch("spacecmd.snippet.print", mprint) as mpr, patch(
-            "spacecmd.snippet.logging",
-            logger
-            # pylint: disable-next=unused-variable
-        ) as lgr:
+        with patch("spacecmd.snippet.print", mprint) as mpr, patch("spacecmd.snippet.logging", logger) as lgr:
             snippet.do_snippet_details(shell, "snippet4 snippet5 snippet3 snippet1")
         assert not shell.help_snippet_details.called
         assert logger.warning.called
@@ -134,44 +97,21 @@ class TestSCSnippets:
         assert_expect(logger.warning.call_args_list, *calls)
 
         stdout_data = [
-            "Name:   snippet3",
-            "Macro:  3rd fragment",
-            "File:   /tmp/3",
-            "",
-            "three",
-            "---",
-            "Name:   snippet1",
-            "Macro:  1st fragment",
-            "File:   /tmp/1",
-            "",
-            "one",
+            'Name:   snippet3', 'Macro:  3rd fragment',
+            'File:   /tmp/3', '', 'three', '---',
+            'Name:   snippet1', 'Macro:  1st fragment',
+            'File:   /tmp/1', '', 'one',
         ]
         assert_expect(mprint.call_args_list, *stdout_data)
 
-    # pylint: disable-next=redefined-outer-name
     def test_snippet_create_no_args(self, shell):
         """
         Test create snippet with no arguments and no name update.
         """
         snippets = [
-            {
-                "name": "snippet3",
-                "contents": "three",
-                "fragment": "3rd fragment",
-                "file": "/tmp/3",
-            },
-            {
-                "name": "snippet1",
-                "contents": "one",
-                "fragment": "1st fragment",
-                "file": "/tmp/1",
-            },
-            {
-                "name": "snippet2",
-                "contents": "two",
-                "fragment": "2nd fragment",
-                "file": "/tmp/2",
-            },
+            {"name": "snippet3", "contents": "three", "fragment": "3rd fragment", "file": "/tmp/3"},
+            {"name": "snippet1", "contents": "one", "fragment": "1st fragment", "file": "/tmp/1"},
+            {"name": "snippet2", "contents": "two", "fragment": "2nd fragment", "file": "/tmp/2"},
         ]
 
         prompt_user = MagicMock(side_effect=["custom-snippet", "/tmp/cs.snip"])
@@ -184,20 +124,11 @@ class TestSCSnippets:
         shell.client.kickstart.snippet.createOrUpdate = MagicMock()
         shell.user_confirm = MagicMock(return_value=True)
 
-        # pylint: disable-next=unused-variable
-        with patch("spacecmd.snippet.logging", logger) as lgr, patch(
-            "spacecmd.snippet.prompt_user",
-            prompt_user
-            # pylint: disable-next=unused-variable
-        ) as prmt, patch("spacecmd.snippet.editor", editor) as edtr, patch(
-            "spacecmd.snippet.read_file",
-            read_file
-            # pylint: disable-next=unused-variable
-        ) as rfl, patch(
-            "spacecmd.snippet.print",
-            mprint
-            # pylint: disable-next=unused-variable
-        ) as prn:
+        with patch("spacecmd.snippet.logging", logger) as lgr, \
+             patch("spacecmd.snippet.prompt_user", prompt_user) as prmt, \
+             patch("spacecmd.snippet.editor", editor) as edtr, \
+             patch("spacecmd.snippet.read_file", read_file) as rfl, \
+             patch("spacecmd.snippet.print", mprint) as prn:
             snippet.do_snippet_create(shell, "")
 
         assert not logger.error.called
@@ -206,39 +137,16 @@ class TestSCSnippets:
         assert shell.client.kickstart.snippet.createOrUpdate.called
 
         assert_expect(prompt_user.call_args_list, "Name:", "File:")
-        assert_expect(
-            mprint.call_args_list,
-            "",
-            "Snippet: custom-snippet",
-            "Contents",
-            "--------",
-            "file content",
-        )
+        assert_expect(mprint.call_args_list, "", "Snippet: custom-snippet", "Contents", "--------", "file content")
 
-    # pylint: disable-next=redefined-outer-name
     def test_snippet_create_name_arg(self, shell):
         """
         Test create snippet with only name argument
         """
         snippets = [
-            {
-                "name": "snippet3",
-                "contents": "three",
-                "fragment": "3rd fragment",
-                "file": "/tmp/3",
-            },
-            {
-                "name": "snippet1",
-                "contents": "one",
-                "fragment": "1st fragment",
-                "file": "/tmp/1",
-            },
-            {
-                "name": "snippet2",
-                "contents": "two",
-                "fragment": "2nd fragment",
-                "file": "/tmp/2",
-            },
+            {"name": "snippet3", "contents": "three", "fragment": "3rd fragment", "file": "/tmp/3"},
+            {"name": "snippet1", "contents": "one", "fragment": "1st fragment", "file": "/tmp/1"},
+            {"name": "snippet2", "contents": "two", "fragment": "2nd fragment", "file": "/tmp/2"},
         ]
 
         prompt_user = MagicMock(side_effect=["custom-snippet", "/tmp/cs.snip"])
@@ -251,20 +159,11 @@ class TestSCSnippets:
         shell.client.kickstart.snippet.createOrUpdate = MagicMock()
         shell.user_confirm = MagicMock(return_value=True)
 
-        # pylint: disable-next=unused-variable
-        with patch("spacecmd.snippet.logging", logger) as lgr, patch(
-            "spacecmd.snippet.prompt_user",
-            prompt_user
-            # pylint: disable-next=unused-variable
-        ) as prmt, patch("spacecmd.snippet.editor", editor) as edtr, patch(
-            "spacecmd.snippet.read_file",
-            read_file
-            # pylint: disable-next=unused-variable
-        ) as rfl, patch(
-            "spacecmd.snippet.print",
-            mprint
-            # pylint: disable-next=unused-variable
-        ) as prn:
+        with patch("spacecmd.snippet.logging", logger) as lgr, \
+             patch("spacecmd.snippet.prompt_user", prompt_user) as prmt, \
+             patch("spacecmd.snippet.editor", editor) as edtr, \
+             patch("spacecmd.snippet.read_file", read_file) as rfl, \
+             patch("spacecmd.snippet.print", mprint) as prn:
             snippet.do_snippet_create(shell, "--name something")
 
         assert not shell.client.kickstart.snippet.listCustom.called
@@ -275,30 +174,14 @@ class TestSCSnippets:
         assert logger.error.called
         assert logger.error.call_args_list[0][0][0] == "A file is required"
 
-    # pylint: disable-next=redefined-outer-name
     def test_snippet_create_file_arg(self, shell):
         """
         Test create snippet with only file argument
         """
         snippets = [
-            {
-                "name": "snippet3",
-                "contents": "three",
-                "fragment": "3rd fragment",
-                "file": "/tmp/3",
-            },
-            {
-                "name": "snippet1",
-                "contents": "one",
-                "fragment": "1st fragment",
-                "file": "/tmp/1",
-            },
-            {
-                "name": "snippet2",
-                "contents": "two",
-                "fragment": "2nd fragment",
-                "file": "/tmp/2",
-            },
+            {"name": "snippet3", "contents": "three", "fragment": "3rd fragment", "file": "/tmp/3"},
+            {"name": "snippet1", "contents": "one", "fragment": "1st fragment", "file": "/tmp/1"},
+            {"name": "snippet2", "contents": "two", "fragment": "2nd fragment", "file": "/tmp/2"},
         ]
 
         prompt_user = MagicMock(side_effect=["custom-snippet", "/tmp/cs.snip"])
@@ -311,20 +194,11 @@ class TestSCSnippets:
         shell.client.kickstart.snippet.createOrUpdate = MagicMock()
         shell.user_confirm = MagicMock(return_value=True)
 
-        # pylint: disable-next=unused-variable
-        with patch("spacecmd.snippet.logging", logger) as lgr, patch(
-            "spacecmd.snippet.prompt_user",
-            prompt_user
-            # pylint: disable-next=unused-variable
-        ) as prmt, patch("spacecmd.snippet.editor", editor) as edtr, patch(
-            "spacecmd.snippet.read_file",
-            read_file
-            # pylint: disable-next=unused-variable
-        ) as rfl, patch(
-            "spacecmd.snippet.print",
-            mprint
-            # pylint: disable-next=unused-variable
-        ) as prn:
+        with patch("spacecmd.snippet.logging", logger) as lgr, \
+             patch("spacecmd.snippet.prompt_user", prompt_user) as prmt, \
+             patch("spacecmd.snippet.editor", editor) as edtr, \
+             patch("spacecmd.snippet.read_file", read_file) as rfl, \
+             patch("spacecmd.snippet.print", mprint) as prn:
             snippet.do_snippet_create(shell, "--file /path/to/somewhere.snip")
 
         assert not shell.client.kickstart.snippet.listCustom.called
@@ -333,34 +207,16 @@ class TestSCSnippets:
         assert not mprint.called
         assert not prompt_user.called
         assert logger.error.called
-        assert (
-            logger.error.call_args_list[0][0][0] == "A name is required for the snippet"
-        )
+        assert logger.error.call_args_list[0][0][0] == "A name is required for the snippet"
 
-    # pylint: disable-next=redefined-outer-name
     def test_snippet_create_args(self, shell):
         """
         Test create snippet with arguments.
         """
         snippets = [
-            {
-                "name": "snippet3",
-                "contents": "three",
-                "fragment": "3rd fragment",
-                "file": "/tmp/3",
-            },
-            {
-                "name": "snippet1",
-                "contents": "one",
-                "fragment": "1st fragment",
-                "file": "/tmp/1",
-            },
-            {
-                "name": "snippet2",
-                "contents": "two",
-                "fragment": "2nd fragment",
-                "file": "/tmp/2",
-            },
+            {"name": "snippet3", "contents": "three", "fragment": "3rd fragment", "file": "/tmp/3"},
+            {"name": "snippet1", "contents": "one", "fragment": "1st fragment", "file": "/tmp/1"},
+            {"name": "snippet2", "contents": "two", "fragment": "2nd fragment", "file": "/tmp/2"},
         ]
 
         prompt_user = MagicMock(side_effect=["custom-snippet", "/tmp/cs.snip"])
@@ -373,23 +229,12 @@ class TestSCSnippets:
         shell.client.kickstart.snippet.createOrUpdate = MagicMock()
         shell.user_confirm = MagicMock(return_value=True)
 
-        # pylint: disable-next=unused-variable
-        with patch("spacecmd.snippet.logging", logger) as lgr, patch(
-            "spacecmd.snippet.prompt_user",
-            prompt_user
-            # pylint: disable-next=unused-variable
-        ) as prmt, patch("spacecmd.snippet.editor", editor) as edtr, patch(
-            "spacecmd.snippet.read_file",
-            read_file
-            # pylint: disable-next=unused-variable
-        ) as rfl, patch(
-            "spacecmd.snippet.print",
-            mprint
-            # pylint: disable-next=unused-variable
-        ) as prn:
-            snippet.do_snippet_create(
-                shell, "--name foobar --file /path/to/somewhere.snip"
-            )
+        with patch("spacecmd.snippet.logging", logger) as lgr, \
+             patch("spacecmd.snippet.prompt_user", prompt_user) as prmt, \
+             patch("spacecmd.snippet.editor", editor) as edtr, \
+             patch("spacecmd.snippet.read_file", read_file) as rfl, \
+             patch("spacecmd.snippet.print", mprint) as prn:
+            snippet.do_snippet_create(shell, "--name foobar --file /path/to/somewhere.snip")
 
         assert not logger.error.called
         assert not shell.client.kickstart.snippet.listCustom.called
@@ -397,39 +242,16 @@ class TestSCSnippets:
         assert shell.client.kickstart.snippet.createOrUpdate.called
         assert shell.user_confirm.called
         assert mprint.called
-        assert_expect(
-            mprint.call_args_list,
-            "",
-            "Snippet: foobar",
-            "Contents",
-            "--------",
-            "file content",
-        )
+        assert_expect(mprint.call_args_list, "", "Snippet: foobar", "Contents", "--------", "file content")
 
-    # pylint: disable-next=redefined-outer-name
     def test_snippet_create_editor(self, shell):
         """
         Test create snippet using the editor.
         """
         snippets = [
-            {
-                "name": "snippet3",
-                "contents": "three",
-                "fragment": "3rd fragment",
-                "file": "/tmp/3",
-            },
-            {
-                "name": "snippet1",
-                "contents": "one",
-                "fragment": "1st fragment",
-                "file": "/tmp/1",
-            },
-            {
-                "name": "snippet2",
-                "contents": "two",
-                "fragment": "2nd fragment",
-                "file": "/tmp/2",
-            },
+            {"name": "snippet3", "contents": "three", "fragment": "3rd fragment", "file": "/tmp/3"},
+            {"name": "snippet1", "contents": "one", "fragment": "1st fragment", "file": "/tmp/1"},
+            {"name": "snippet2", "contents": "two", "fragment": "2nd fragment", "file": "/tmp/2"},
         ]
 
         prompt_user = MagicMock(side_effect=["custom-snippet", "/tmp/cs.snip"])
@@ -442,20 +264,11 @@ class TestSCSnippets:
         shell.client.kickstart.snippet.createOrUpdate = MagicMock()
         shell.user_confirm = MagicMock(side_effect=[False, True])
 
-        # pylint: disable-next=unused-variable
-        with patch("spacecmd.snippet.logging", logger) as lgr, patch(
-            "spacecmd.snippet.prompt_user",
-            prompt_user
-            # pylint: disable-next=unused-variable
-        ) as prmt, patch("spacecmd.snippet.editor", editor) as edtr, patch(
-            "spacecmd.snippet.read_file",
-            read_file
-            # pylint: disable-next=unused-variable
-        ) as rfl, patch(
-            "spacecmd.snippet.print",
-            mprint
-            # pylint: disable-next=unused-variable
-        ) as prn:
+        with patch("spacecmd.snippet.logging", logger) as lgr, \
+             patch("spacecmd.snippet.prompt_user", prompt_user) as prmt, \
+             patch("spacecmd.snippet.editor", editor) as edtr, \
+             patch("spacecmd.snippet.read_file", read_file) as rfl, \
+             patch("spacecmd.snippet.print", mprint) as prn:
             snippet.do_snippet_create(shell, "")
 
         assert not logger.error.called
@@ -465,16 +278,8 @@ class TestSCSnippets:
         assert shell.user_confirm.called
         assert mprint.called
         assert editor.called
-        assert_expect(
-            mprint.call_args_list,
-            "",
-            "Snippet: custom-snippet",
-            "Contents",
-            "--------",
-            "editor content",
-        )
+        assert_expect(mprint.call_args_list, "", "Snippet: custom-snippet", "Contents", "--------", "editor content")
 
-    # pylint: disable-next=redefined-outer-name
     def test_snippet_update_no_args(self, shell):
         """
         Test update snippet with no args
@@ -486,7 +291,6 @@ class TestSCSnippets:
         assert shell.help_snippet_update.called
         assert out is 1
 
-    # pylint: disable-next=redefined-outer-name
     def test_snippet_update_args(self, shell):
         """
         Test update snippet with args
@@ -501,11 +305,8 @@ class TestSCSnippets:
         assert shell.do_snippet_create.called
         assert not shell.do_snippet_create.call_args_list[0][0][0]
         assert "update_name" in shell.do_snippet_create.call_args_list[0][1]
-        assert (
-            shell.do_snippet_create.call_args_list[0][1]["update_name"] == "custom_name"
-        )
+        assert shell.do_snippet_create.call_args_list[0][1]["update_name"] == "custom_name"
 
-    # pylint: disable-next=redefined-outer-name
     def test_snippet_delete_no_args(self, shell):
         """
         Test delete snippet with no args
@@ -520,7 +321,6 @@ class TestSCSnippets:
         assert shell.help_snippet_delete.called
         assert out is 1
 
-    # pylint: disable-next=redefined-outer-name
     def test_snippet_delete_args(self, shell):
         """
         Test delete snippet with args (snippet name)
@@ -534,16 +334,9 @@ class TestSCSnippets:
         assert shell.client.kickstart.snippet.delete.called
         assert not shell.help_snippet_delete.called
         assert out is 0
-        assert (
-            shell.client.kickstart.snippet.delete.call_args_list[0][0][0]
-            == shell.session
-        )
-        assert (
-            shell.client.kickstart.snippet.delete.call_args_list[0][0][1]
-            == "some-snippet"
-        )
+        assert shell.client.kickstart.snippet.delete.call_args_list[0][0][0] == shell.session
+        assert shell.client.kickstart.snippet.delete.call_args_list[0][0][1] == "some-snippet"
 
-    # pylint: disable-next=redefined-outer-name
     def test_snippet_delete_args_no_confirm(self, shell):
         """
         Test delete snippet with args (snippet name), unconfirmed.
