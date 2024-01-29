@@ -14,7 +14,7 @@
  */
 package com.suse.manager.webui.controllers.contentmanagement.handlers;
 
-import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.result;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static java.util.stream.Collectors.toList;
 import static spark.Spark.get;
@@ -30,6 +30,8 @@ import com.redhat.rhn.manager.system.SystemManager;
 
 import com.suse.manager.model.products.Product;
 import com.suse.manager.webui.utils.gson.ResultJson;
+
+import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
@@ -112,7 +114,7 @@ public class LivePatchingApiController {
             Stream<Product> suseProducts = SUSEProductFactory.getLivePatchSupportedProducts()
                     .map(p -> new Product(p.getId(), p.getFriendlyName()));
 
-            return json(res, ResultJson.success(suseProducts.collect(toList())));
+            return result(res, ResultJson.success(suseProducts.collect(toList())), new TypeToken<>() { });
     }
 
     /**
@@ -129,7 +131,7 @@ public class LivePatchingApiController {
                 .map(System::new)
                 .collect(Collectors.toList());
 
-        return json(res, ResultJson.success(slesSystems));
+        return result(res, ResultJson.success(slesSystems), new TypeToken<>() { });
     }
 
     /**
@@ -159,7 +161,7 @@ public class LivePatchingApiController {
                         .sorted(Comparator.reverseOrder())
                         .map(KernelVersion::new);
 
-        return json(res, ResultJson.success(kernelsInProductTree.collect(toList())));
+        return result(res, ResultJson.success(kernelsInProductTree.collect(toList())), new TypeToken<>() { });
     }
 
     /**
@@ -193,6 +195,6 @@ public class LivePatchingApiController {
                         .sorted(Comparator.reverseOrder())
                         .map(KernelVersion::new);
 
-        return json(res, ResultJson.success(kernelsInSystem.collect(toList())));
+        return result(res, ResultJson.success(kernelsInSystem.collect(toList())), new TypeToken<>() { });
     }
 }

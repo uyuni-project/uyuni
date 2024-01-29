@@ -18,7 +18,11 @@ package com.suse.manager.webui.controllers;
 import static com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory.CONFIG_KUBECONFIG;
 import static com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory.CONFIG_PASS;
 import static com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory.CONFIG_USER;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.badRequest;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.internalServerError;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.notFound;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.result;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withOrgAdmin;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
@@ -39,6 +43,7 @@ import com.suse.manager.webui.utils.gson.ResultJson;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
@@ -138,8 +143,8 @@ public class VirtualHostManagerController {
     public static Object get(Request req, Response res, User user) {
         List<VirtualHostManager> vhms =
                 getFactory().listVirtualHostManagers(user.getOrg());
-        return json(res,
-                ResultJson.success(getJsonList(vhms)));
+        return result(res,
+                ResultJson.success(getJsonList(vhms)), new TypeToken<>() { });
     }
 
     /**
@@ -186,10 +191,10 @@ public class VirtualHostManagerController {
                 .filter(e -> module.toLowerCase().equals(e.getKey().toLowerCase()))
                 .map(Map.Entry::getValue)
                 .findFirst();
-        return json(response,
+        return result(response,
                 ResultJson.success(
                         gathererModule.map(GathererModule::getParameters)
-                                .orElse(Collections.emptyMap())));
+                                .orElse(Collections.emptyMap())), new TypeToken<>() { });
     }
 
     private static Map<String, GathererModule> getGathererModules() {
@@ -254,12 +259,12 @@ public class VirtualHostManagerController {
                             moduleName,
                             gathererModuleParams);
             getFactory().save(vhm);
-            return json(response,
-                    ResultJson.success());
+            return result(response,
+                    ResultJson.success(), new TypeToken<>() { });
         }
         else {
-            return json(response,
-                    ResultJson.error(errors));
+            return result(response,
+                    ResultJson.error(errors), new TypeToken<>() { });
         }
     }
 
@@ -339,30 +344,24 @@ public class VirtualHostManagerController {
                         .map(ctx -> ctx.get("name"))
                         .collect(Collectors.toList()));
                 json.put("currentContext", currentContext);
-                return json(response, ResultJson.success(json));
+                return result(response, ResultJson.success(json), new TypeToken<>() { });
             }
         }
         catch (IllegalArgumentException e) {
             LOG.error("Invalid kubeconfig content", e);
-            return json(response, HttpStatus.SC_BAD_REQUEST,
-                    ResultJson.error(
-                            "Invalid kubeconfig content: " + e.getMessage()));
+            return badRequest(response, "Invalid kubeconfig content: " + e.getMessage());
         }
         catch (ReaderException e) {
             LOG.error("Invalid kubeconfig file syntax", e);
-            return json(response, HttpStatus.SC_BAD_REQUEST,
-                    ResultJson.error(
-                            "Invalid kubeconfig file syntax: " + e.getMessage()));
+            return badRequest(response, "Invalid kubeconfig file syntax: " + e.getMessage());
         }
         catch (FileUploadException e) {
             LOG.error("Kubeconfig upload error", e);
-            return json(response, HttpStatus.SC_INTERNAL_SERVER_ERROR,
-                        ResultJson.error(e.getMessage()));
+            return internalServerError(response, e.getMessage());
         }
         catch (IOException e) {
             LOG.error("Error reading the kubeconfig file", e);
-            return json(response, HttpStatus.SC_INTERNAL_SERVER_ERROR,
-                    ResultJson.error("Error reading the kubeconfig file"));
+            return internalServerError(response, "Error reading the kubeconfig file");
         }
     }
 
@@ -406,36 +405,35 @@ public class VirtualHostManagerController {
         });
     }
 
-    private static String withVirtualHostManager(Request request,
+    private static <T> String withVirtualHostManager(Request request,
                                                  Response response,
                                                  User user,
-                                                 Function<VirtualHostManager, ResultJson>
+                                                 Function<VirtualHostManager, ResultJson<T>>
                                                          operation) {
         Long storeId;
         try {
             storeId = Long.parseLong(request.params("id"));
         }
         catch (NumberFormatException e) {
-            return json(response, HttpStatus.SC_BAD_REQUEST,
-                    ResultJson.error("Invalid id"));
+            return badRequest(response, "Invalid id");
         }
         try {
             VirtualHostManager vhm = getFactory().lookupByIdAndOrg(storeId, user.getOrg());
             if (vhm == null) {
-                return json(response, HttpStatus.SC_NOT_FOUND,
-                        ResultJson.error("Virtual Host Manager not found"));
+                return notFound(response, "Virtual Host Manager not found");
             }
-            ResultJson result = operation.apply(vhm);
+            ResultJson<T> result = operation.apply(vhm);
 
-            return json(response,
-                    result.isSuccess() ?
-                            HttpStatus.SC_OK : HttpStatus.SC_INTERNAL_SERVER_ERROR,
-                    result);
+            if (result.isSuccess()) {
+                return result(response, HttpStatus.SC_OK, result, new TypeToken<>() { });
+            }
+            else {
+                return result(response, HttpStatus.SC_INTERNAL_SERVER_ERROR, result, new TypeToken<>() { });
+            }
         }
         catch (IllegalArgumentException e) {
             LOG.error("Invalid parameter: ", e);
-            return json(response, HttpStatus.SC_BAD_REQUEST,
-                    ResultJson.error(e.getMessage()));
+            return badRequest(response, e.getMessage());
         }
     }
 
@@ -470,17 +468,15 @@ public class VirtualHostManagerController {
                             user.getOrg(),
                             context,
                             kubeconfigIn);
-                return json(response, ResultJson.success());
+                return result(response, ResultJson.success(), new TypeToken<>() { });
             }
         }
         catch (IllegalArgumentException e) {
-            return json(response, HttpStatus.SC_BAD_REQUEST,
-                    ResultJson.error(e.getMessage()));
+            return badRequest(response, e.getMessage());
         }
         catch (IOException | FileUploadException e) {
             LOG.error("Could not create Kuberentes Virt Host Mgr", e);
-            return json(response, HttpStatus.SC_INTERNAL_SERVER_ERROR,
-                    ResultJson.error(e.getMessage()));
+            return internalServerError(response, e.getMessage());
         }
     }
 
@@ -518,22 +514,19 @@ public class VirtualHostManagerController {
             VirtualHostManager vhm = getFactory().lookupByIdAndOrg(id, user.getOrg());
             VirtualHostManagerFactory.getInstance()
                     .updateKuberntesVirtualHostManager(vhm, label, context, kubeconfigIn);
-            return json(response, ResultJson.success());
+            return result(response, ResultJson.success(), new TypeToken<>() { });
         }
         catch (IllegalArgumentException e) {
             LOG.error("Error updating Kubernetes Virtual host manage", e);
-            return json(response, HttpStatus.SC_BAD_REQUEST,
-                    ResultJson.error(e.getMessage()));
+            return badRequest(response, e.getMessage());
         }
         catch (IOException | FileUploadException e) {
             LOG.error("Error updating Kubernetes Virtual host manage", e);
-            return json(response, HttpStatus.SC_INTERNAL_SERVER_ERROR,
-                    ResultJson.error(e.getMessage()));
+            return internalServerError(response, e.getMessage());
         }
         catch (NoResultException e) {
             LOG.error("Virtual host manager not found", e);
-            return json(response, HttpStatus.SC_NOT_FOUND,
-                    ResultJson.error("Virtual Host Manager not found"));
+            return notFound(response, "Virtual Host Manager not found");
         }
     }
 

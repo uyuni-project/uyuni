@@ -50,6 +50,10 @@ public class MethodCall {
         return method.invoke(obj, args);
     }
 
+    public Method getMethod() {
+        return method;
+    }
+
     private void ensureUserAccess() throws UserNotPermittedException {
         for (Object arg : args) {
             if (arg instanceof User) {

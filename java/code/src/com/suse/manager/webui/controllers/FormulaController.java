@@ -16,6 +16,7 @@ package com.suse.manager.webui.controllers;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.asJson;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.jsonNull;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withDocsLocale;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
@@ -170,7 +171,7 @@ public class FormulaController {
         }
 
         if (formulas.isEmpty()) {
-            return json(response, null);
+            return jsonNull(response);
         }
 
         Map<String, Object> map = new HashMap<>();
@@ -258,9 +259,9 @@ public class FormulaController {
         }
         Map<String, Object> metadata = FormulaFactory.getMetadata(formulaName);
         if (Boolean.TRUE.equals(metadata.get("pillar_only"))) {
-            return json(response, Collections.singletonList("pillar_only_formula_saved"));
+            return json(response, Collections.singletonList("pillar_only_formula_saved"), new TypeToken<>() { });
         }
-        return json(response, Collections.singletonList("formula_saved")); // Formula saved!
+        return json(response, Collections.singletonList("formula_saved"), new TypeToken<>() { }); // Formula saved!
     }
 
     /**
