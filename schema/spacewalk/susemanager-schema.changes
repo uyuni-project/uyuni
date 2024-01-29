@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Jan 29 12:00:55 CET 2024 - rosuna@suse.com
+
+- version 5.0.4-1
+  * Change schedule of system-profile-refresh to run on the 2nd Saturday
+    of the month to not collide with normal working times (bsc#1215769)
+
+-------------------------------------------------------------------
 Thu Jan 18 11:04:39 CET 2024 - jgonzalez@suse.com
 
 - version 5.0.3-1

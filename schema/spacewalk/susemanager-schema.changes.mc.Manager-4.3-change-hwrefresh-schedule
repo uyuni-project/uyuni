@@ -1,2 +1,0 @@
-- change schedule of system-profile-refresh to run on the 2nd saturday
-  of a month to not collide with normal working times (bsc#1215769)
