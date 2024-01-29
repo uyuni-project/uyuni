@@ -94,6 +94,10 @@ They are delivered together with submissions and we must verify them before appr
     - [ ] ubuntu2004_ssh_minion
     - [ ] ubuntu2204_minion
     - [ ] ubuntu2204_ssh_minion
+    - [ ] opensuse154arm_minion
+    - [ ] opensuse154arm_ssh_minion
+    - [ ] opensuse155arm_minion
+    - [ ] opensuse155arm_ssh_minion
   - [ ] Containerized proxy passed using the aggregate namespace [please set it up](https://confluence.suse.com/display/SUSEMANAGER/MI+process+for+Containerized+components#MIprocessforContainerizedcomponents-Finalcurrentsolution)
     Make sure to read the info and ask maint-coord to create the release requests
 
