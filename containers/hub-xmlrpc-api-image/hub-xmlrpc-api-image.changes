@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Jan 29 11:35:43 CET 2024 - rosuna@suse.com
+
+- version 5.0.2
+  * Change how the image is pushed to the build service
+
+-------------------------------------------------------------------
 Fri Jan 12 16:28:20 CET 2024 - marina.latini@suse.com
 
 - version 5.0.1
