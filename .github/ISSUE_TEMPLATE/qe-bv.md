@@ -98,6 +98,8 @@ They are delivered together with submissions and we must verify them before appr
     - [ ] opensuse154arm_ssh_minion
     - [ ] opensuse155arm_minion
     - [ ] opensuse155arm_ssh_minion
+    - [ ] sles15sp5s390_minion
+    - [ ] sles15sp5s390_ssh_minion
   - [ ] Containerized proxy passed using the aggregate namespace [please set it up](https://confluence.suse.com/display/SUSEMANAGER/MI+process+for+Containerized+components#MIprocessforContainerizedcomponents-Finalcurrentsolution)
     Make sure to read the info and ask maint-coord to create the release requests
 
