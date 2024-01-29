@@ -107,10 +107,7 @@ They are delivered together with submissions and we must verify them before appr
     Edit `/etc/sysconfig/uyuni-proxy-systemd-services` inside the Pod Proxy VM
     In the NAMESPACE, use this link exactly:
     http://registry.suse.de/devel/galaxy/manager/mutesting/4.3/containers/suse/manager/4.3/
-
     ```
-
-  - [ ] Monitoring tests (Grafana dashboards included)
   - [ ] Retail
     - [ ] SLES12 SP5
     - [ ] SLES15 SP4
