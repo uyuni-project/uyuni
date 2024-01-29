@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Mon Jan 29 11:44:50 CET 2024 - rosuna@suse.com
+
+- version 5.0.3
+  * Simplify publishing to Open Build Service
+  * Add dependencies for Salt's GitFS
+  * Add warning message for interactive shells
+  * Add healthcheck.sh script
+
+-------------------------------------------------------------------
 Mon Jan 15 15:31:05 CET 2024 - marina.latini@suse.com
 
 - version 5.0.2
