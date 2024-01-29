@@ -62,9 +62,6 @@ They are delivered together with submissions and we must verify them before appr
     - [ ] rocky8_ssh_minion
     - [ ] rocky9_minion
     - [ ] rocky9_ssh_minion
-    - [ ] sle12sp4_client
-    - [ ] sle12sp4_minion
-    - [ ] sle12sp4_ssh_minion
     - [ ] sle12sp5_client
     - [ ] sle12sp5_minion
     - [ ] sle12sp5_ssh_minion
