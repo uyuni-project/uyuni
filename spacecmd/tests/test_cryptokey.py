@@ -3,13 +3,9 @@
 Test suite for cryptokey.
 """
 from mock import MagicMock, patch
-
-# pylint: disable-next=unused-import
 import pytest
 from xmlrpc import client as xmlrpclib
 import spacecmd.cryptokey
-
-# pylint: disable-next=unused-import
 from helpers import shell, assert_expect
 
 
@@ -17,8 +13,6 @@ class TestSCCryptokey:
     """
     Test cryptokey API.
     """
-
-    # pylint: disable-next=redefined-outer-name
     def test_cryptokey_create_no_keytype(self, shell):
         """
         Test do_cryptokey_create without correct key type.
@@ -34,16 +28,10 @@ class TestSCCryptokey:
         editor = MagicMock()
         logger = MagicMock()
 
-        # pylint: disable-next=unused-variable
-        with patch("spacecmd.cryptokey.prompt_user", prompt_user) as pmu, patch(
-            "spacecmd.cryptokey.read_file",
-            read_file
-            # pylint: disable-next=unused-variable
-        ) as rfl, patch("spacecmd.cryptokey.editor", editor) as edt, patch(
-            "spacecmd.cryptokey.logging",
-            logger
-            # pylint: disable-next=unused-variable
-        ) as lgr:
+        with patch("spacecmd.cryptokey.prompt_user", prompt_user) as pmu, \
+            patch("spacecmd.cryptokey.read_file", read_file) as rfl, \
+            patch("spacecmd.cryptokey.editor", editor) as edt, \
+            patch("spacecmd.cryptokey.logging", logger) as lgr:
             spacecmd.cryptokey.do_cryptokey_create(shell, "")
 
         assert not shell.help_cryptokey_create.called
@@ -55,7 +43,6 @@ class TestSCCryptokey:
 
         assert_expect(logger.error.call_args_list, "Invalid key type")
 
-    # pylint: disable-next=redefined-outer-name
     def test_cryptokey_create_interactive_no_contents(self, shell):
         """
         Test do_cryptokey_create without arguments (interactive, no contents given).
@@ -71,16 +58,10 @@ class TestSCCryptokey:
         editor = MagicMock()
         logger = MagicMock()
 
-        # pylint: disable-next=unused-variable
-        with patch("spacecmd.cryptokey.prompt_user", prompt_user) as pmu, patch(
-            "spacecmd.cryptokey.read_file",
-            read_file
-            # pylint: disable-next=unused-variable
-        ) as rfl, patch("spacecmd.cryptokey.editor", editor) as edt, patch(
-            "spacecmd.cryptokey.logging",
-            logger
-            # pylint: disable-next=unused-variable
-        ) as lgr:
+        with patch("spacecmd.cryptokey.prompt_user", prompt_user) as pmu, \
+            patch("spacecmd.cryptokey.read_file", read_file) as rfl, \
+            patch("spacecmd.cryptokey.editor", editor) as edt, \
+            patch("spacecmd.cryptokey.logging", logger) as lgr:
             spacecmd.cryptokey.do_cryptokey_create(shell, "")
 
         assert not shell.help_cryptokey_create.called
@@ -92,7 +73,6 @@ class TestSCCryptokey:
 
         assert_expect(logger.error.call_args_list, "No contents of the file")
 
-    # pylint: disable-next=redefined-outer-name
     def test_cryptokey_create_interactive_wrong_key_type(self, shell):
         """
         Test do_cryptokey_create without arguments (interactive, wrong key type).
@@ -108,16 +88,10 @@ class TestSCCryptokey:
         editor = MagicMock()
         logger = MagicMock()
 
-        # pylint: disable-next=unused-variable
-        with patch("spacecmd.cryptokey.prompt_user", prompt_user) as pmu, patch(
-            "spacecmd.cryptokey.read_file",
-            read_file
-            # pylint: disable-next=unused-variable
-        ) as rfl, patch("spacecmd.cryptokey.editor", editor) as edt, patch(
-            "spacecmd.cryptokey.logging",
-            logger
-            # pylint: disable-next=unused-variable
-        ) as lgr:
+        with patch("spacecmd.cryptokey.prompt_user", prompt_user) as pmu, \
+            patch("spacecmd.cryptokey.read_file", read_file) as rfl, \
+            patch("spacecmd.cryptokey.editor", editor) as edt, \
+            patch("spacecmd.cryptokey.logging", logger) as lgr:
             spacecmd.cryptokey.do_cryptokey_create(shell, "")
 
         assert not shell.help_cryptokey_create.called
@@ -129,7 +103,6 @@ class TestSCCryptokey:
 
         assert_expect(logger.error.call_args_list, "Invalid key type")
 
-    # pylint: disable-next=invalid-name,redefined-outer-name
     def test_cryptokey_create_GPG_key(self, shell):
         """
         Test do_cryptokey_create with parameters, calling GPG key type.
@@ -145,19 +118,11 @@ class TestSCCryptokey:
         editor = MagicMock()
         logger = MagicMock()
 
-        # pylint: disable-next=unused-variable
-        with patch("spacecmd.cryptokey.prompt_user", prompt_user) as pmu, patch(
-            "spacecmd.cryptokey.read_file",
-            read_file
-            # pylint: disable-next=unused-variable
-        ) as rfl, patch("spacecmd.cryptokey.editor", editor) as edt, patch(
-            "spacecmd.cryptokey.logging",
-            logger
-            # pylint: disable-next=unused-variable
-        ) as lgr:
-            spacecmd.cryptokey.do_cryptokey_create(
-                shell, "-t g -d description -f /tmp/file.txt"
-            )
+        with patch("spacecmd.cryptokey.prompt_user", prompt_user) as pmu, \
+            patch("spacecmd.cryptokey.read_file", read_file) as rfl, \
+            patch("spacecmd.cryptokey.editor", editor) as edt, \
+            patch("spacecmd.cryptokey.logging", logger) as lgr:
+            spacecmd.cryptokey.do_cryptokey_create(shell, "-t g -d description -f /tmp/file.txt")
 
         assert not editor.called
         assert not shell.help_cryptokey_create.called
@@ -172,7 +137,6 @@ class TestSCCryptokey:
             assert args == (shell.session, "description", "GPG", "contents")
             assert not kw
 
-    # pylint: disable-next=invalid-name,redefined-outer-name
     def test_cryptokey_create_SSL_key(self, shell):
         """
         Test do_cryptokey_create with parameters, calling SSL key type.
@@ -188,19 +152,11 @@ class TestSCCryptokey:
         editor = MagicMock()
         logger = MagicMock()
 
-        # pylint: disable-next=unused-variable
-        with patch("spacecmd.cryptokey.prompt_user", prompt_user) as pmu, patch(
-            "spacecmd.cryptokey.read_file",
-            read_file
-            # pylint: disable-next=unused-variable
-        ) as rfl, patch("spacecmd.cryptokey.editor", editor) as edt, patch(
-            "spacecmd.cryptokey.logging",
-            logger
-            # pylint: disable-next=unused-variable
-        ) as lgr:
-            spacecmd.cryptokey.do_cryptokey_create(
-                shell, "-t s -d description -f /tmp/file.txt"
-            )
+        with patch("spacecmd.cryptokey.prompt_user", prompt_user) as pmu, \
+            patch("spacecmd.cryptokey.read_file", read_file) as rfl, \
+            patch("spacecmd.cryptokey.editor", editor) as edt, \
+            patch("spacecmd.cryptokey.logging", logger) as lgr:
+            spacecmd.cryptokey.do_cryptokey_create(shell, "-t s -d description -f /tmp/file.txt")
 
         assert not editor.called
         assert not shell.help_cryptokey_create.called
@@ -215,7 +171,6 @@ class TestSCCryptokey:
             assert args == (shell.session, "description", "SSL", "contents")
             assert not kw
 
-    # pylint: disable-next=redefined-outer-name
     def test_cryptokey_update_no_keytype(self, shell):
         """
         Test do_cryptokey_update without correct key type.
@@ -231,16 +186,10 @@ class TestSCCryptokey:
         editor = MagicMock()
         logger = MagicMock()
 
-        # pylint: disable-next=unused-variable
-        with patch("spacecmd.cryptokey.prompt_user", prompt_user) as pmu, patch(
-            "spacecmd.cryptokey.read_file",
-            read_file
-            # pylint: disable-next=unused-variable
-        ) as rfl, patch("spacecmd.cryptokey.editor", editor) as edt, patch(
-            "spacecmd.cryptokey.logging",
-            logger
-            # pylint: disable-next=unused-variable
-        ) as lgr:
+        with patch("spacecmd.cryptokey.prompt_user", prompt_user) as pmu, \
+            patch("spacecmd.cryptokey.read_file", read_file) as rfl, \
+            patch("spacecmd.cryptokey.editor", editor) as edt, \
+            patch("spacecmd.cryptokey.logging", logger) as lgr:
             spacecmd.cryptokey.do_cryptokey_update(shell, "")
 
         assert not shell.help_cryptokey_update.called
@@ -252,7 +201,6 @@ class TestSCCryptokey:
 
         assert_expect(logger.error.call_args_list, "Invalid key type")
 
-    # pylint: disable-next=redefined-outer-name
     def test_cryptokey_update_interactive_no_contents(self, shell):
         """
         Test do_cryptokey_update without arguments (interactive, no contents given).
@@ -268,16 +216,10 @@ class TestSCCryptokey:
         editor = MagicMock()
         logger = MagicMock()
 
-        # pylint: disable-next=unused-variable
-        with patch("spacecmd.cryptokey.prompt_user", prompt_user) as pmu, patch(
-            "spacecmd.cryptokey.read_file",
-            read_file
-            # pylint: disable-next=unused-variable
-        ) as rfl, patch("spacecmd.cryptokey.editor", editor) as edt, patch(
-            "spacecmd.cryptokey.logging",
-            logger
-            # pylint: disable-next=unused-variable
-        ) as lgr:
+        with patch("spacecmd.cryptokey.prompt_user", prompt_user) as pmu, \
+            patch("spacecmd.cryptokey.read_file", read_file) as rfl, \
+            patch("spacecmd.cryptokey.editor", editor) as edt, \
+            patch("spacecmd.cryptokey.logging", logger) as lgr:
             spacecmd.cryptokey.do_cryptokey_update(shell, "")
 
         assert not shell.help_cryptokey_update.called
@@ -289,7 +231,6 @@ class TestSCCryptokey:
 
         assert_expect(logger.error.call_args_list, "No contents of the file")
 
-    # pylint: disable-next=redefined-outer-name
     def test_cryptokey_update_interactive_wrong_key_type(self, shell):
         """
         Test do_cryptokey_update without arguments (interactive, wrong key type).
@@ -305,16 +246,10 @@ class TestSCCryptokey:
         editor = MagicMock()
         logger = MagicMock()
 
-        # pylint: disable-next=unused-variable
-        with patch("spacecmd.cryptokey.prompt_user", prompt_user) as pmu, patch(
-            "spacecmd.cryptokey.read_file",
-            read_file
-            # pylint: disable-next=unused-variable
-        ) as rfl, patch("spacecmd.cryptokey.editor", editor) as edt, patch(
-            "spacecmd.cryptokey.logging",
-            logger
-            # pylint: disable-next=unused-variable
-        ) as lgr:
+        with patch("spacecmd.cryptokey.prompt_user", prompt_user) as pmu, \
+            patch("spacecmd.cryptokey.read_file", read_file) as rfl, \
+            patch("spacecmd.cryptokey.editor", editor) as edt, \
+            patch("spacecmd.cryptokey.logging", logger) as lgr:
             spacecmd.cryptokey.do_cryptokey_update(shell, "")
 
         assert not shell.help_cryptokey_update.called
@@ -326,7 +261,6 @@ class TestSCCryptokey:
 
         assert_expect(logger.error.call_args_list, "Invalid key type")
 
-    # pylint: disable-next=invalid-name,redefined-outer-name
     def test_cryptokey_update_GPG_key(self, shell):
         """
         Test do_cryptokey_update with parameters, calling GPG key type.
@@ -342,19 +276,11 @@ class TestSCCryptokey:
         editor = MagicMock()
         logger = MagicMock()
 
-        # pylint: disable-next=unused-variable
-        with patch("spacecmd.cryptokey.prompt_user", prompt_user) as pmu, patch(
-            "spacecmd.cryptokey.read_file",
-            read_file
-            # pylint: disable-next=unused-variable
-        ) as rfl, patch("spacecmd.cryptokey.editor", editor) as edt, patch(
-            "spacecmd.cryptokey.logging",
-            logger
-            # pylint: disable-next=unused-variable
-        ) as lgr:
-            spacecmd.cryptokey.do_cryptokey_update(
-                shell, "-t g -d description -f /tmp/file.txt"
-            )
+        with patch("spacecmd.cryptokey.prompt_user", prompt_user) as pmu, \
+            patch("spacecmd.cryptokey.read_file", read_file) as rfl, \
+            patch("spacecmd.cryptokey.editor", editor) as edt, \
+            patch("spacecmd.cryptokey.logging", logger) as lgr:
+            spacecmd.cryptokey.do_cryptokey_update(shell, "-t g -d description -f /tmp/file.txt")
 
         assert not editor.called
         assert not shell.help_cryptokey_update.called
@@ -369,7 +295,6 @@ class TestSCCryptokey:
             assert args == (shell.session, "description", "GPG", "contents")
             assert not kw
 
-    # pylint: disable-next=invalid-name,redefined-outer-name
     def test_cryptokey_update_SSL_key(self, shell):
         """
         Test do_cryptokey_update with parameters, calling SSL key type.
@@ -385,19 +310,11 @@ class TestSCCryptokey:
         editor = MagicMock()
         logger = MagicMock()
 
-        # pylint: disable-next=unused-variable
-        with patch("spacecmd.cryptokey.prompt_user", prompt_user) as pmu, patch(
-            "spacecmd.cryptokey.read_file",
-            read_file
-            # pylint: disable-next=unused-variable
-        ) as rfl, patch("spacecmd.cryptokey.editor", editor) as edt, patch(
-            "spacecmd.cryptokey.logging",
-            logger
-            # pylint: disable-next=unused-variable
-        ) as lgr:
-            spacecmd.cryptokey.do_cryptokey_update(
-                shell, "-t s -d description -f /tmp/file.txt"
-            )
+        with patch("spacecmd.cryptokey.prompt_user", prompt_user) as pmu, \
+            patch("spacecmd.cryptokey.read_file", read_file) as rfl, \
+            patch("spacecmd.cryptokey.editor", editor) as edt, \
+            patch("spacecmd.cryptokey.logging", logger) as lgr:
+            spacecmd.cryptokey.do_cryptokey_update(shell, "-t s -d description -f /tmp/file.txt")
 
         assert not editor.called
         assert not shell.help_cryptokey_update.called
@@ -412,7 +329,6 @@ class TestSCCryptokey:
             assert args == (shell.session, "description", "SSL", "contents")
             assert not kw
 
-    # pylint: disable-next=redefined-outer-name
     def test_cryptokey_delete_noargs(self, shell):
         """
         Test do_cryptokey_delete without parameters, so help should be displayed.
@@ -426,12 +342,8 @@ class TestSCCryptokey:
         filter_results = MagicMock()
         logger = MagicMock()
 
-        # pylint: disable-next=unused-variable
-        with patch("spacecmd.cryptokey.logging", logger) as lgr, patch(
-            "spacecmd.cryptokey.filter_results",
-            filter_results
-            # pylint: disable-next=unused-variable
-        ) as frl:
+        with patch("spacecmd.cryptokey.logging", logger) as lgr, \
+            patch("spacecmd.cryptokey.filter_results", filter_results) as frl:
             spacecmd.cryptokey.do_cryptokey_delete(shell, "")
 
         assert not logger.error.called
@@ -441,7 +353,6 @@ class TestSCCryptokey:
         assert not shell.do_cryptokey_list.called
         assert shell.help_cryptokey_delete.called
 
-    # pylint: disable-next=redefined-outer-name
     def test_cryptokey_delete_no_exist(self, shell):
         """
         Test do_cryptokey_delete with non-existing key.
@@ -455,12 +366,8 @@ class TestSCCryptokey:
         logger = MagicMock()
         mprint = MagicMock()
 
-        # pylint: disable-next=unused-variable
-        with patch("spacecmd.cryptokey.logging", logger) as lgr, patch(
-            "spacecmd.cryptokey.print",
-            mprint
-            # pylint: disable-next=unused-variable
-        ) as prn:
+        with patch("spacecmd.cryptokey.logging", logger) as lgr, \
+            patch("spacecmd.cryptokey.print", mprint) as prn:
             spacecmd.cryptokey.do_cryptokey_delete(shell, "foo*")
 
         assert not shell.client.kickstart.keys.delete.called
@@ -471,7 +378,6 @@ class TestSCCryptokey:
 
         assert_expect(logger.error.call_args_list, "No keys matched argument ['foo.*']")
 
-    # pylint: disable-next=redefined-outer-name
     def test_cryptokey_delete_not_confirmed(self, shell):
         """
         Test do_cryptokey_delete with non-existing key.
@@ -485,12 +391,8 @@ class TestSCCryptokey:
         logger = MagicMock()
         mprint = MagicMock()
 
-        # pylint: disable-next=unused-variable
-        with patch("spacecmd.cryptokey.logging", logger) as lgr, patch(
-            "spacecmd.cryptokey.print",
-            mprint
-            # pylint: disable-next=unused-variable
-        ) as prn:
+        with patch("spacecmd.cryptokey.logging", logger) as lgr, \
+            patch("spacecmd.cryptokey.print", mprint) as prn:
             spacecmd.cryptokey.do_cryptokey_delete(shell, "t*")
 
         assert not shell.client.kickstart.keys.delete.called
@@ -499,9 +401,8 @@ class TestSCCryptokey:
         assert shell.user_confirm.called
         assert mprint.called
 
-        assert_expect(mprint.call_args_list, "three\ntwo")
+        assert_expect(mprint.call_args_list, 'three\ntwo')
 
-    # pylint: disable-next=redefined-outer-name
     def test_cryptokey_delete_confirmed_deleted(self, shell):
         """
         Test do_cryptokey_delete with non-existing key.
@@ -515,12 +416,8 @@ class TestSCCryptokey:
         logger = MagicMock()
         mprint = MagicMock()
 
-        # pylint: disable-next=unused-variable
-        with patch("spacecmd.cryptokey.logging", logger) as lgr, patch(
-            "spacecmd.cryptokey.print",
-            mprint
-            # pylint: disable-next=unused-variable
-        ) as prn:
+        with patch("spacecmd.cryptokey.logging", logger) as lgr, \
+            patch("spacecmd.cryptokey.print", mprint) as prn:
             spacecmd.cryptokey.do_cryptokey_delete(shell, "t*")
 
         assert not logger.error.called
@@ -529,16 +426,10 @@ class TestSCCryptokey:
         assert shell.user_confirm.called
         assert mprint.called
 
-        assert_expect(mprint.call_args_list, "three\ntwo")
+        assert_expect(mprint.call_args_list, 'three\ntwo')
         exp = [
-            (
-                shell.session,
-                "two",
-            ),
-            (
-                shell.session,
-                "three",
-            ),
+            (shell.session, "two",),
+            (shell.session, "three",),
         ]
 
         for call in shell.client.kickstart.keys.delete.call_args_list:
@@ -548,7 +439,6 @@ class TestSCCryptokey:
             exp.pop(0)
         assert not exp
 
-    # pylint: disable-next=redefined-outer-name
     def test_cryptokey_list_no_stdout(self, shell):
         """
         Test do_cryptokey_list no STDOUT.
@@ -563,16 +453,14 @@ class TestSCCryptokey:
             ]
         )
         mprint = MagicMock()
-        # pylint: disable-next=unused-variable
         with patch("spacecmd.cryptokey.print", mprint) as prn:
             out = spacecmd.cryptokey.do_cryptokey_list(shell, "", doreturn=True)
 
         assert not mprint.called
         assert bool(out)
         assert shell.client.kickstart.keys.listAllKeys.called
-        assert out == ["keydescr-1", "keydescr-2"]
+        assert out == ['keydescr-1', 'keydescr-2']
 
-    # pylint: disable-next=redefined-outer-name
     def test_cryptokey_list_stdout(self, shell):
         """
         Test do_cryptokey_list to STDOUT.
@@ -587,7 +475,6 @@ class TestSCCryptokey:
             ]
         )
         mprint = MagicMock()
-        # pylint: disable-next=unused-variable
         with patch("spacecmd.cryptokey.print", mprint) as prn:
             out = spacecmd.cryptokey.do_cryptokey_list(shell, "", doreturn=False)
 
@@ -597,7 +484,6 @@ class TestSCCryptokey:
 
         assert_expect(mprint.call_args_list, "keydescr-1\nkeydescr-2")
 
-    # pylint: disable-next=redefined-outer-name
     def test_cryptokey_details_noargs(self, shell):
         """
         Test do_cryptokey_details with no parameters.
@@ -611,12 +497,8 @@ class TestSCCryptokey:
         logger = MagicMock()
         mprint = MagicMock()
 
-        # pylint: disable-next=unused-variable
-        with patch("spacecmd.cryptokey.print", mprint) as mpt, patch(
-            "spacecmd.cryptokey.logging",
-            logger
-            # pylint: disable-next=unused-variable
-        ) as lgr:
+        with patch("spacecmd.cryptokey.print", mprint) as mpt, \
+            patch("spacecmd.cryptokey.logging", logger) as lgr:
             spacecmd.cryptokey.do_cryptokey_details(shell, "")
 
         assert not mprint.called
@@ -624,7 +506,6 @@ class TestSCCryptokey:
         assert not shell.do_cryptokey_list.called
         assert shell.help_cryptokey_details.called
 
-    # pylint: disable-next=redefined-outer-name
     def test_cryptokey_details_not_found(self, shell):
         """
         Test do_cryptokey_details key not found.
@@ -638,12 +519,8 @@ class TestSCCryptokey:
         logger = MagicMock()
         mprint = MagicMock()
 
-        # pylint: disable-next=unused-variable
-        with patch("spacecmd.cryptokey.print", mprint) as mpt, patch(
-            "spacecmd.cryptokey.logging",
-            logger
-            # pylint: disable-next=unused-variable
-        ) as lgr:
+        with patch("spacecmd.cryptokey.print", mprint) as mpt, \
+            patch("spacecmd.cryptokey.logging", logger) as lgr:
             spacecmd.cryptokey.do_cryptokey_details(shell, "somekey")
 
         assert not mprint.called
@@ -652,11 +529,8 @@ class TestSCCryptokey:
         assert shell.do_cryptokey_list.called
         assert logger.error.called
 
-        assert_expect(
-            logger.error.call_args_list, "No keys matched argument ['somekey']"
-        )
+        assert_expect(logger.error.call_args_list, "No keys matched argument ['somekey']")
 
-    # pylint: disable-next=redefined-outer-name
     def test_cryptokey_details_listing(self, shell):
         """
         Test do_cryptokey_details key listing
@@ -664,26 +538,18 @@ class TestSCCryptokey:
         :param shell:
         :return:
         """
-        shell.client.kickstart.keys.getDetails = MagicMock(
-            side_effect=[
-                {"description": "first descr", "type": "SSL", "content": "one data"},
-                {"description": "second descr", "type": "GPG", "content": "two data"},
-            ]
-        )
-        shell.do_cryptokey_list = MagicMock(
-            return_value=["key-one", "key-two", "three"]
-        )
+        shell.client.kickstart.keys.getDetails = MagicMock(side_effect=[
+            {"description": "first descr", "type": "SSL", "content": "one data"},
+            {"description": "second descr", "type": "GPG", "content": "two data"},
+        ])
+        shell.do_cryptokey_list = MagicMock(return_value=["key-one", "key-two", "three"])
         shell.SEPARATOR = "---"
         shell.help_cryptokey_details = MagicMock()
         logger = MagicMock()
         mprint = MagicMock()
 
-        # pylint: disable-next=unused-variable
-        with patch("spacecmd.cryptokey.print", mprint) as mpt, patch(
-            "spacecmd.cryptokey.logging",
-            logger
-            # pylint: disable-next=unused-variable
-        ) as lgr:
+        with patch("spacecmd.cryptokey.print", mprint) as mpt, \
+            patch("spacecmd.cryptokey.logging", logger) as lgr:
             spacecmd.cryptokey.do_cryptokey_details(shell, "key*")
 
         assert not shell.help_cryptokey_details.called
@@ -694,15 +560,10 @@ class TestSCCryptokey:
         assert shell.do_cryptokey_list.called
 
         exp = [
-            "Description: first descr",
-            "Type:        SSL",
-            "",
-            "one data",
-            "---",
-            "Description: second descr",
-            "Type:        GPG",
-            "",
-            "two data",
+            'Description: first descr',
+            'Type:        SSL', '', 'one data', '---',
+            'Description: second descr',
+            'Type:        GPG', '', 'two data',
         ]
 
         for call in mprint.call_args_list:
@@ -710,7 +571,6 @@ class TestSCCryptokey:
             exp.pop(0)
         assert not exp
 
-    # pylint: disable-next=redefined-outer-name
     def test_cryptokey_details_rpc_error(self, shell):
         """
         Test do_cryptokey_details captures xmlrpc failure.
@@ -726,12 +586,8 @@ class TestSCCryptokey:
         logger = MagicMock()
         mprint = MagicMock()
 
-        # pylint: disable-next=unused-variable
-        with patch("spacecmd.cryptokey.print", mprint) as mpt, patch(
-            "spacecmd.cryptokey.logging",
-            logger
-            # pylint: disable-next=unused-variable
-        ) as lgr:
+        with patch("spacecmd.cryptokey.print", mprint) as mpt, \
+            patch("spacecmd.cryptokey.logging", logger) as lgr:
             spacecmd.cryptokey.do_cryptokey_details(shell, "somekey")
 
         assert not mprint.called
@@ -741,6 +597,4 @@ class TestSCCryptokey:
         assert shell.do_cryptokey_list.called
         assert logger.warning.called
 
-        assert_expect(
-            logger.warning.call_args_list, "somekey is not a valid crypto key"
-        )
+        assert_expect(logger.warning.call_args_list, "somekey is not a valid crypto key")

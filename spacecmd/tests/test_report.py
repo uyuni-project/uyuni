@@ -3,11 +3,7 @@
 Tests for report.
 """
 from unittest.mock import MagicMock, patch
-
-# pylint: disable-next=unused-import
 import pytest
-
-# pylint: disable-next=unused-import
 from helpers import shell, assert_expect, exc2str
 import spacecmd.report
 
@@ -16,8 +12,6 @@ class TestSCReport:
     """
     Test suite for report.
     """
-
-    # pylint: disable-next=redefined-outer-name
     def test_report_inactivesystems_noargs(self, shell):
         """
         Test do_report_inactivesystems with no arguments.
@@ -29,18 +23,15 @@ class TestSCReport:
         shell.client.system.listInactiveSystems = MagicMock(return_value=[])
         mprint = MagicMock()
 
-        # pylint: disable-next=unused-variable
         with patch("spacecmd.report.print", mprint) as prn:
             spacecmd.report.do_report_inactivesystems(shell, "")
 
         assert not mprint.called
         assert shell.client.system.listInactiveSystems.called
 
-        assert_expect(
-            shell.client.system.listInactiveSystems.call_args_list, shell.session
-        )
+        assert_expect(shell.client.system.listInactiveSystems.call_args_list,
+                      shell.session)
 
-    # pylint: disable-next=redefined-outer-name
     def test_report_inactivesystems_systems(self, shell):
         """
         Test do_report_inactivesystems with no arguments, systems found.
@@ -48,37 +39,32 @@ class TestSCReport:
         :param shell:
         :return:
         """
-        shell.client.system.listInactiveSystems = MagicMock(
-            return_value=[
-                {"name": "system-1", "last_checkin": "2019.05.10", "id": 10001000},
-                {"name": "system-2", "last_checkin": "2019.05.11", "id": 10001001},
-                {"name": "system-3", "last_checkin": "2019.05.12", "id": 10001002},
-            ]
-        )
+        shell.client.system.listInactiveSystems = MagicMock(return_value=[
+            {"name": "system-1", "last_checkin": "2019.05.10", "id": 10001000},
+            {"name": "system-2", "last_checkin": "2019.05.11", "id": 10001001},
+            {"name": "system-3", "last_checkin": "2019.05.12", "id": 10001002},
+        ])
         mprint = MagicMock()
 
-        # pylint: disable-next=unused-variable
         with patch("spacecmd.report.print", mprint) as prn:
             spacecmd.report.do_report_inactivesystems(shell, "")
 
         assert mprint.called
         assert shell.client.system.listInactiveSystems.called
-        assert_expect(
-            shell.client.system.listInactiveSystems.call_args_list, shell.session
-        )
+        assert_expect(shell.client.system.listInactiveSystems.call_args_list,
+                      shell.session)
         exp = [
-            "System ID   System    Last Checkin",
-            "----------  --------  ------------",
-            "10001000  system-1  2019.05.10",
-            "10001001  system-2  2019.05.11",
-            "10001002  system-3  2019.05.12",
+            'System ID   System    Last Checkin',
+            '----------  --------  ------------',
+            '10001000  system-1  2019.05.10',
+            '10001001  system-2  2019.05.11',
+            '10001002  system-3  2019.05.12',
         ]
         for call in mprint.call_args_list:
             assert_expect([call], next(iter(exp)))
             exp.pop(0)
         assert not exp
 
-    # pylint: disable-next=redefined-outer-name
     def test_report_inactivesystems_wrong_args(self, shell):
         """
         Test do_report_inactivesystems with wrong days count, defaults to 7.
@@ -91,7 +77,6 @@ class TestSCReport:
             shell.client.system.listInactiveSystems = MagicMock(return_value=[])
             mprint = MagicMock()
 
-            # pylint: disable-next=unused-variable
             with patch("spacecmd.report.print", mprint) as prn:
                 spacecmd.report.do_report_inactivesystems(shell, m_arg)
 
@@ -103,7 +88,6 @@ class TestSCReport:
                 assert args == (shell.session, 7)
                 assert not kw
 
-    # pylint: disable-next=redefined-outer-name
     def test_report_inactivesystems_args(self, shell):
         """
         Test do_report_inactivesystems with days count.
@@ -115,7 +99,6 @@ class TestSCReport:
         shell.client.system.listInactiveSystems = MagicMock(return_value=[])
         mprint = MagicMock()
 
-        # pylint: disable-next=unused-variable
         with patch("spacecmd.report.print", mprint) as prn:
             spacecmd.report.do_report_inactivesystems(shell, "3")
 
@@ -127,7 +110,6 @@ class TestSCReport:
             assert args == (shell.session, 3)
             assert not kw
 
-    # pylint: disable-next=redefined-outer-name
     def test_report_outofdatesystems(self, shell):
         """
         Test do_report_outofdatesystems.
@@ -135,33 +117,29 @@ class TestSCReport:
         :param shell:
         :return:
         """
-        shell.client.system.listOutOfDateSystems = MagicMock(
-            return_value=[
-                {"name": "system-one", "outdated_pkg_count": 5},
-                {"name": "system-two", "outdated_pkg_count": 15},
-                {"name": "system-three", "outdated_pkg_count": 25},
-            ]
-        )
+        shell.client.system.listOutOfDateSystems = MagicMock(return_value=[
+            {"name": "system-one", "outdated_pkg_count": 5},
+            {"name": "system-two", "outdated_pkg_count": 15},
+            {"name": "system-three", "outdated_pkg_count": 25},
+        ])
         mprint = MagicMock()
-        # pylint: disable-next=unused-variable
         with patch("spacecmd.report.print", mprint) as prn:
             spacecmd.report.do_report_outofdatesystems(shell, "")
 
         assert mprint.called
 
         exp = [
-            "System        Packages",
-            "------------  --------",
-            "system-one           5",
-            "system-three        25",
-            "system-two          15",
+            'System        Packages',
+            '------------  --------',
+            'system-one           5',
+            'system-three        25',
+            'system-two          15'
         ]
         for call in mprint.call_args_list:
             assert_expect([call], next(iter(exp)))
             exp.pop(0)
         assert not exp
 
-    # pylint: disable-next=redefined-outer-name
     def test_report_ungroupedsystems(self, shell):
         """
         Test do_report_ungroupedsystems.
@@ -169,22 +147,18 @@ class TestSCReport:
         :param shell:
         :return:
         """
-        shell.client.system.listUngroupedSystems = MagicMock(
-            return_value=[
-                {"name": "system-one"},
-                {"name": "system-two"},
-                {"name": "system-three"},
-            ]
-        )
+        shell.client.system.listUngroupedSystems = MagicMock(return_value=[
+            {"name": "system-one"},
+            {"name": "system-two"},
+            {"name": "system-three"},
+        ])
         mprint = MagicMock()
-        # pylint: disable-next=unused-variable
         with patch("spacecmd.report.print", mprint) as prn:
             spacecmd.report.do_report_ungroupedsystems(shell, "")
 
         assert mprint.called
-        assert_expect(mprint.call_args_list, "system-one\nsystem-three\nsystem-two")
+        assert_expect(mprint.call_args_list, 'system-one\nsystem-three\nsystem-two')
 
-    # pylint: disable-next=redefined-outer-name
     def test_report_errata_noargs(self, shell):
         """
         Test do_report_errata with no arguments (request all errata).
@@ -195,19 +169,16 @@ class TestSCReport:
         shell.client.errata.listAffectedSystems = MagicMock()
         shell.expand_errata = MagicMock()
         mprint = MagicMock()
-        # pylint: disable-next=unused-variable
         with patch("spacecmd.report.print", mprint) as prn:
             spacecmd.report.do_report_errata(shell, "")
 
         assert not shell.client.errata.listAffectedSystems.called
         assert mprint.called
 
-        assert_expect(
-            mprint.call_args_list,
-            "All errata requested - this may take " "a few minutes, please be patient!",
-        )
+        assert_expect(mprint.call_args_list,
+                      'All errata requested - this may take '
+                      'a few minutes, please be patient!')
 
-    # pylint: disable-next=redefined-outer-name
     def test_report_errata_not_found(self, shell):
         """
         Test do_report_errata with not found errata.
@@ -219,19 +190,14 @@ class TestSCReport:
         shell.expand_errata = MagicMock(return_value=[])
         mprint = MagicMock()
         logger = MagicMock()
-        # pylint: disable-next=unused-variable
-        with patch("spacecmd.report.print", mprint) as prn, patch(
-            "spacecmd.report.logging",
-            logger
-            # pylint: disable-next=unused-variable
-        ) as lgr:
+        with patch("spacecmd.report.print", mprint) as prn, \
+            patch("spacecmd.report.logging", logger) as lgr:
             spacecmd.report.do_report_errata(shell, "whatever")
 
         assert not logger.debug.called
         assert mprint.called
         assert_expect(mprint.call_args_list, "No errata found for 'whatever'")
 
-    # pylint: disable-next=redefined-outer-name
     def test_report_errata(self, shell):
         """
         Test do_report_errata on data.
@@ -239,22 +205,18 @@ class TestSCReport:
         :param shell:
         :return:
         """
-        shell.client.errata.listAffectedSystems = MagicMock(
-            side_effect=[
-                ["system-a"],
-                ["system-a", "system-b"],
-                ["system-a", "system-b", "system-c"],
-            ]
-        )
-        shell.expand_errata = MagicMock(return_value=["vim", "apache", "java"])
+        shell.client.errata.listAffectedSystems = MagicMock(side_effect=[
+            ["system-a"],
+            ["system-a", "system-b"],
+            ["system-a", "system-b", "system-c"],
+        ])
+        shell.expand_errata = MagicMock(return_value=[
+            "vim", "apache", "java"
+        ])
         mprint = MagicMock()
         logger = MagicMock()
-        # pylint: disable-next=unused-variable
-        with patch("spacecmd.report.print", mprint) as prn, patch(
-            "spacecmd.report.logging",
-            logger
-            # pylint: disable-next=unused-variable
-        ) as lgr:
+        with patch("spacecmd.report.print", mprint) as prn, \
+            patch("spacecmd.report.logging", logger) as lgr:
             spacecmd.report.do_report_errata(shell, "ERRATA")
 
         assert logger.debug.called
@@ -262,18 +224,17 @@ class TestSCReport:
         assert mprint.called
 
         exp = [
-            "Errata  # Systems",
-            "------  ---------",
-            "apache          2",
-            "java            3",
-            "vim             1",
+            'Errata  # Systems',
+            '------  ---------',
+            'apache          2',
+            'java            3',
+            'vim             1'
         ]
         for call in mprint.call_args_list:
             assert_expect([call], next(iter(exp)))
             exp.pop(0)
         assert not exp
 
-    # pylint: disable-next=redefined-outer-name
     def test_report_ipaddresses_noargs(self, shell):
         """
         Test do_report_ipaddresses without args, no systems found.
@@ -288,7 +249,6 @@ class TestSCReport:
         shell.client.system.getNetwork = MagicMock()
         mprint = MagicMock()
 
-        # pylint: disable-next=unused-variable
         with patch("spacecmd.report.print", mprint) as prn:
             spacecmd.report.do_report_ipaddresses(shell, "")
 
@@ -298,7 +258,6 @@ class TestSCReport:
         assert not shell.client.system.getNetwork.called
         assert shell.get_system_names.called
 
-    # pylint: disable-next=redefined-outer-name
     def test_report_ipaddresses_noargs_systems(self, shell):
         """
         Test do_report_ipaddresses without args, some systems found.
@@ -308,30 +267,24 @@ class TestSCReport:
         """
         shell.ssm = MagicMock()
         shell.expand_systems = MagicMock()
-        shell.get_system_names = MagicMock(
-            return_value=[
-                "system-a",
-                "system-b",
-            ]
-        )
-        shell.get_system_id = MagicMock(
-            side_effect=[
-                1000010000,
-                1000010001,
-            ]
-        )
-        shell.client.system.getNetwork = MagicMock(
-            side_effect=[
-                {
-                    "hostname": "moebel.de",
-                    "ip": "2011:0ab8:45b1:0000:0000:9f3e:a370:7336",
-                },
-                {"hostname": "schrott.de", "ip": "123.234.10.4"},
-            ]
-        )
+        shell.get_system_names = MagicMock(return_value=[
+            "system-a", "system-b",
+        ])
+        shell.get_system_id = MagicMock(side_effect=[
+            1000010000, 1000010001,
+        ])
+        shell.client.system.getNetwork = MagicMock(side_effect=[
+            {
+                "hostname": "moebel.de",
+                "ip": "2011:0ab8:45b1:0000:0000:9f3e:a370:7336"
+            },
+            {
+                "hostname": "schrott.de",
+                "ip": "123.234.10.4"
+            },
+        ])
         mprint = MagicMock()
 
-        # pylint: disable-next=unused-variable
         with patch("spacecmd.report.print", mprint) as prn:
             spacecmd.report.do_report_ipaddresses(shell, "")
 
@@ -342,17 +295,16 @@ class TestSCReport:
         assert shell.get_system_names.called
 
         exp = [
-            "System    Hostname    IP",
-            "------    --------    --",
-            "system-a  moebel.de   2011:0ab8:45b1:0000:0000:9f3e:a370:7336",
-            "system-b  schrott.de  123.234.10.4",
+            'System    Hostname    IP',
+            '------    --------    --',
+            'system-a  moebel.de   2011:0ab8:45b1:0000:0000:9f3e:a370:7336',
+            'system-b  schrott.de  123.234.10.4',
         ]
         for call in mprint.call_args_list:
             assert_expect([call], next(iter(exp)))
             exp.pop(0)
         assert not exp
 
-    # pylint: disable-next=redefined-outer-name
     def test_report_ipaddresses_ssm_systems(self, shell):
         """
         Test do_report_ipaddresses systems from the ssm
@@ -363,24 +315,21 @@ class TestSCReport:
         shell.ssm = {"system-a": {}, "system-b": {}}
         shell.expand_systems = MagicMock(return_value=[])
         shell.get_system_names = MagicMock(return_value=[])
-        shell.get_system_id = MagicMock(
-            side_effect=[
-                1000010000,
-                1000010001,
-            ]
-        )
-        shell.client.system.getNetwork = MagicMock(
-            side_effect=[
-                {
-                    "hostname": "moebel.de",
-                    "ip": "2011:0ab8:45b1:0000:0000:9f3e:a370:7336",
-                },
-                {"hostname": "schrott.de", "ip": "123.234.10.4"},
-            ]
-        )
+        shell.get_system_id = MagicMock(side_effect=[
+            1000010000, 1000010001,
+        ])
+        shell.client.system.getNetwork = MagicMock(side_effect=[
+            {
+                "hostname": "moebel.de",
+                "ip": "2011:0ab8:45b1:0000:0000:9f3e:a370:7336"
+            },
+            {
+                "hostname": "schrott.de",
+                "ip": "123.234.10.4"
+            },
+        ])
         mprint = MagicMock()
 
-        # pylint: disable-next=unused-variable
         with patch("spacecmd.report.print", mprint) as prn:
             spacecmd.report.do_report_ipaddresses(shell, "ssm")
 
@@ -390,17 +339,16 @@ class TestSCReport:
         assert shell.client.system.getNetwork.called
 
         exp = [
-            "System    Hostname    IP",
-            "------    --------    --",
-            "system-a  moebel.de   2011:0ab8:45b1:0000:0000:9f3e:a370:7336",
-            "system-b  schrott.de  123.234.10.4",
+            'System    Hostname    IP',
+            '------    --------    --',
+            'system-a  moebel.de   2011:0ab8:45b1:0000:0000:9f3e:a370:7336',
+            'system-b  schrott.de  123.234.10.4',
         ]
         for call in mprint.call_args_list:
             assert_expect([call], next(iter(exp)))
             exp.pop(0)
         assert not exp
 
-    # pylint: disable-next=redefined-outer-name
     def test_report_ipaddresses_search_systems(self, shell):
         """
         Test do_report_ipaddresses systems searched
@@ -411,24 +359,21 @@ class TestSCReport:
         shell.ssm = {}
         shell.expand_systems = MagicMock(return_value=["system-a", "system-b"])
         shell.get_system_names = MagicMock(return_value=[])
-        shell.get_system_id = MagicMock(
-            side_effect=[
-                1000010000,
-                1000010001,
-            ]
-        )
-        shell.client.system.getNetwork = MagicMock(
-            side_effect=[
-                {
-                    "hostname": "moebel.de",
-                    "ip": "2011:0ab8:45b1:0000:0000:9f3e:a370:7336",
-                },
-                {"hostname": "schrott.de", "ip": "123.234.10.4"},
-            ]
-        )
+        shell.get_system_id = MagicMock(side_effect=[
+            1000010000, 1000010001,
+        ])
+        shell.client.system.getNetwork = MagicMock(side_effect=[
+            {
+                "hostname": "moebel.de",
+                "ip": "2011:0ab8:45b1:0000:0000:9f3e:a370:7336"
+            },
+            {
+                "hostname": "schrott.de",
+                "ip": "123.234.10.4"
+            },
+        ])
         mprint = MagicMock()
 
-        # pylint: disable-next=unused-variable
         with patch("spacecmd.report.print", mprint) as prn:
             spacecmd.report.do_report_ipaddresses(shell, "search:system-*")
 
@@ -438,17 +383,16 @@ class TestSCReport:
         assert shell.client.system.getNetwork.called
 
         exp = [
-            "System    Hostname    IP",
-            "------    --------    --",
-            "system-a  moebel.de   2011:0ab8:45b1:0000:0000:9f3e:a370:7336",
-            "system-b  schrott.de  123.234.10.4",
+            'System    Hostname    IP',
+            '------    --------    --',
+            'system-a  moebel.de   2011:0ab8:45b1:0000:0000:9f3e:a370:7336',
+            'system-b  schrott.de  123.234.10.4',
         ]
         for call in mprint.call_args_list:
             assert_expect([call], next(iter(exp)))
             exp.pop(0)
         assert not exp
 
-    # pylint: disable-next=redefined-outer-name
     def test_report_kernels_noargs(self, shell):
         """
         Test do_report_kernels with no arguments.
@@ -463,7 +407,6 @@ class TestSCReport:
         shell.client.system.getRunningKernel = MagicMock()
         mprint = MagicMock()
 
-        # pylint: disable-next=unused-variable
         with patch("spacecmd.report.print", mprint) as prn:
             spacecmd.report.do_report_kernels(shell, "")
 
@@ -473,7 +416,6 @@ class TestSCReport:
         assert not shell.client.system.getRunningKernel.called
         assert shell.get_system_names.called
 
-    # pylint: disable-next=redefined-outer-name
     def test_report_kernels_noargs_kernels(self, shell):
         """
         Test do_report_kernels with no arguments, kernels found.
@@ -483,24 +425,18 @@ class TestSCReport:
         """
         shell.ssm = MagicMock()
         shell.expand_systems = MagicMock()
-        shell.get_system_names = MagicMock(
-            return_value=[
-                "system-a",
-                "system-b",
-            ]
-        )
-        shell.get_system_id = MagicMock(
-            side_effect=[
-                1000010000,
-                1000010001,
-            ]
-        )
-        shell.client.system.getRunningKernel = MagicMock(
-            side_effect=["4.4.0-109-generic", "4.1.0-286-generic"]
-        )
+        shell.get_system_names = MagicMock(return_value=[
+            "system-a", "system-b",
+        ])
+        shell.get_system_id = MagicMock(side_effect=[
+            1000010000, 1000010001,
+        ])
+        shell.client.system.getRunningKernel = MagicMock(side_effect=[
+            "4.4.0-109-generic",
+            "4.1.0-286-generic"
+        ])
         mprint = MagicMock()
 
-        # pylint: disable-next=unused-variable
         with patch("spacecmd.report.print", mprint) as prn:
             spacecmd.report.do_report_kernels(shell, "")
 
@@ -512,17 +448,16 @@ class TestSCReport:
         assert mprint.called
 
         exp = [
-            "System    Kernel",
-            "------    ------",
-            "system-a  4.4.0-109-generic",
-            "system-b  4.1.0-286-generic",
+            'System    Kernel',
+            '------    ------',
+            'system-a  4.4.0-109-generic',
+            'system-b  4.1.0-286-generic'
         ]
         for call in mprint.call_args_list:
             assert_expect([call], next(iter(exp)))
             exp.pop(0)
         assert not exp
 
-    # pylint: disable-next=redefined-outer-name
     def test_report_kernels_ssm_kernels(self, shell):
         """
         Test do_report_kernels from system in the SSM.
@@ -533,18 +468,15 @@ class TestSCReport:
         shell.ssm = {"system-a": {}, "system-b": {}}
         shell.expand_systems = MagicMock()
         shell.get_system_names = MagicMock(return_value=[])
-        shell.get_system_id = MagicMock(
-            side_effect=[
-                1000010000,
-                1000010001,
-            ]
-        )
-        shell.client.system.getRunningKernel = MagicMock(
-            side_effect=["4.4.0-109-generic", "4.1.0-286-generic"]
-        )
+        shell.get_system_id = MagicMock(side_effect=[
+            1000010000, 1000010001,
+        ])
+        shell.client.system.getRunningKernel = MagicMock(side_effect=[
+            "4.4.0-109-generic",
+            "4.1.0-286-generic"
+        ])
         mprint = MagicMock()
 
-        # pylint: disable-next=unused-variable
         with patch("spacecmd.report.print", mprint) as prn:
             spacecmd.report.do_report_kernels(shell, "ssm")
 
@@ -555,17 +487,16 @@ class TestSCReport:
         assert mprint.called
 
         exp = [
-            "System    Kernel",
-            "------    ------",
-            "system-a  4.4.0-109-generic",
-            "system-b  4.1.0-286-generic",
+            'System    Kernel',
+            '------    ------',
+            'system-a  4.4.0-109-generic',
+            'system-b  4.1.0-286-generic'
         ]
         for call in mprint.call_args_list:
             assert_expect([call], next(iter(exp)))
             exp.pop(0)
         assert not exp
 
-    # pylint: disable-next=redefined-outer-name
     def test_report_kernels_search_kernels(self, shell):
         """
         Test do_report_kernels from system by search
@@ -576,18 +507,15 @@ class TestSCReport:
         shell.ssm = MagicMock()
         shell.expand_systems = MagicMock(return_value=["system-a", "system-b"])
         shell.get_system_names = MagicMock(return_value=[])
-        shell.get_system_id = MagicMock(
-            side_effect=[
-                1000010000,
-                1000010001,
-            ]
-        )
-        shell.client.system.getRunningKernel = MagicMock(
-            side_effect=["4.4.0-109-generic", "4.1.0-286-generic"]
-        )
+        shell.get_system_id = MagicMock(side_effect=[
+            1000010000, 1000010001,
+        ])
+        shell.client.system.getRunningKernel = MagicMock(side_effect=[
+            "4.4.0-109-generic",
+            "4.1.0-286-generic"
+        ])
         mprint = MagicMock()
 
-        # pylint: disable-next=unused-variable
         with patch("spacecmd.report.print", mprint) as prn:
             spacecmd.report.do_report_kernels(shell, "search:system-*")
 
@@ -599,17 +527,16 @@ class TestSCReport:
         assert mprint.called
 
         exp = [
-            "System    Kernel",
-            "------    ------",
-            "system-a  4.4.0-109-generic",
-            "system-b  4.1.0-286-generic",
+            'System    Kernel',
+            '------    ------',
+            'system-a  4.4.0-109-generic',
+            'system-b  4.1.0-286-generic'
         ]
         for call in mprint.call_args_list:
             assert_expect([call], next(iter(exp)))
             exp.pop(0)
         assert not exp
 
-    # pylint: disable-next=redefined-outer-name
     def test_report_duplicates_noapiver_10_11(self, shell):
         """
         Test do_report_duplicates, api version is not "10.11".
@@ -618,26 +545,23 @@ class TestSCReport:
         :return:
         """
         shell.check_api_version = MagicMock(return_value=False)
-        shell.get_system_names = MagicMock(
-            return_value=["system-a", "system-b", "system-a", "system-a"]
-        )
-        shell.client.system.searchByName = MagicMock(
-            side_effect=[
-                [
-                    {
-                        "id": 1000010000,
-                        "last_checkin": "Di 21. Mai 16:18:46 CEST 2019",
-                    },
-                ],
-            ]
-        )
+        shell.get_system_names = MagicMock(return_value=[
+            "system-a", "system-b", "system-a", "system-a"
+        ])
+        shell.client.system.searchByName = MagicMock(side_effect=[
+            [
+                {
+                    "id": 1000010000,
+                    "last_checkin": "Di 21. Mai 16:18:46 CEST 2019",
+                },
+            ],
+        ])
         shell.client.system.listDuplicatesByIp = MagicMock()
         shell.client.system.listDuplicatesByMac = MagicMock()
         shell.client.system.listDuplicatesByHostname = MagicMock()
         shell.SEPARATOR = "---"
         mprint = MagicMock()
 
-        # pylint: disable-next=unused-variable
         with patch("spacecmd.report.print", mprint) as prn:
             spacecmd.report.do_report_duplicates(shell, "")
 
@@ -646,17 +570,16 @@ class TestSCReport:
         assert mprint.called
 
         exp = [
-            "system-a:",
-            "System ID   Last Checkin",
-            "----------  -----------------",
-            "1000010000  Di 21. Mai 16:18:46 CEST 2019",
+            'system-a:',
+            'System ID   Last Checkin',
+            '----------  -----------------',
+            '1000010000  Di 21. Mai 16:18:46 CEST 2019'
         ]
         for call in mprint.call_args_list:
             assert_expect([call], next(iter(exp)))
             exp.pop(0)
         assert not exp
 
-    # pylint: disable-next=redefined-outer-name
     def test_report_duplicates_api_10_11(self, shell):
         """
         Test do_report_duplicates api version is "10.11".
@@ -665,74 +588,65 @@ class TestSCReport:
         :return:
         """
         shell.check_api_version = MagicMock(return_value=True)
-        shell.get_system_names = MagicMock(
-            return_value=["system-a", "system-b", "system-a", "system-a"]
-        )
-        shell.client.system.searchByName = MagicMock(
-            side_effect=[
-                [
+        shell.get_system_names = MagicMock(return_value=[
+            "system-a", "system-b", "system-a", "system-a"
+        ])
+        shell.client.system.searchByName = MagicMock(side_effect=[
+            [
+                {
+                    "id": 1000010000,
+                    "last_checkin": "Di 21. Mai 16:18:46 CEST 2019",
+                },
+            ],
+        ])
+        shell.client.system.listDuplicatesByIp = MagicMock(return_value=[
+            {
+                "ip": "10.4.1.12",
+                "systems": [
                     {
-                        "id": 1000010000,
+                        "systemId": 1000010000,
                         "last_checkin": "Di 21. Mai 16:18:46 CEST 2019",
                     },
+                    {
+                        "systemId": 1000010001,
+                        "last_checkin": "Di 21. Mai 14:23:16 CEST 2019",
+                    },
                 ],
-            ]
-        )
-        shell.client.system.listDuplicatesByIp = MagicMock(
-            return_value=[
-                {
-                    "ip": "10.4.1.12",
-                    "systems": [
-                        {
-                            "systemId": 1000010000,
-                            "last_checkin": "Di 21. Mai 16:18:46 CEST 2019",
-                        },
-                        {
-                            "systemId": 1000010001,
-                            "last_checkin": "Di 21. Mai 14:23:16 CEST 2019",
-                        },
-                    ],
-                },
-            ]
-        )
-        shell.client.system.listDuplicatesByMac = MagicMock(
-            return_value=[
-                {
-                    "mac": "68:f7:28:d0:d0:5b",
-                    "systems": [
-                        {
-                            "systemId": 1000010000,
-                            "last_checkin": "Di 21. Mai 16:18:46 CEST 2019",
-                        },
-                        {
-                            "systemId": 1000010001,
-                            "last_checkin": "Di 21. Mai 14:23:16 CEST 2019",
-                        },
-                    ],
-                },
-            ]
-        )
-        shell.client.system.listDuplicatesByHostname = MagicMock(
-            return_value=[
-                {
-                    "hostname": "dead-beef.de",
-                    "systems": [
-                        {
-                            "systemId": 1000010000,
-                            "last_checkin": "Di 21. Mai 16:18:46 CEST 2019",
-                        },
-                        {
-                            "systemId": 1000010001,
-                            "last_checkin": "Di 21. Mai 14:23:16 CEST 2019",
-                        },
-                    ],
-                },
-            ]
-        )
+            },
+        ])
+        shell.client.system.listDuplicatesByMac = MagicMock(return_value=[
+            {
+                "mac": "68:f7:28:d0:d0:5b",
+                "systems": [
+                    {
+                        "systemId": 1000010000,
+                        "last_checkin": "Di 21. Mai 16:18:46 CEST 2019",
+                    },
+                    {
+                        "systemId": 1000010001,
+                        "last_checkin": "Di 21. Mai 14:23:16 CEST 2019",
+                    },
+                ],
+            },
+        ])
+        shell.client.system.listDuplicatesByHostname = MagicMock(return_value=[
+            {
+                "hostname": "dead-beef.de",
+                "systems": [
+                    {
+                        "systemId": 1000010000,
+                        "last_checkin": "Di 21. Mai 16:18:46 CEST 2019",
+                    },
+                    {
+                        "systemId": 1000010001,
+                        "last_checkin": "Di 21. Mai 14:23:16 CEST 2019",
+                    },
+                ],
+            },
+        ])
         shell.SEPARATOR = "---"
         mprint = MagicMock()
 
-        # pylint: disable-next=unused-variable
         with patch("spacecmd.report.print", mprint) as prn:
             spacecmd.report.do_report_duplicates(shell, "")
 
@@ -741,28 +655,28 @@ class TestSCReport:
         assert mprint.called
 
         exp = [
-            "system-a:",
-            "System ID   Last Checkin",
-            "----------  -----------------",
-            "1000010000  Di 21. Mai 16:18:46 CEST 2019",
-            "---",
-            "10.4.1.12:",
-            "System ID   Last Checkin",
-            "----------  -----------------",
-            "1000010000  Di 21. Mai 16:18:46 CEST 2019",
-            "1000010001  Di 21. Mai 14:23:16 CEST 2019",
-            "---",
-            "68:F7:28:D0:D0:5B:",
-            "System ID   Last Checkin",
-            "----------  -----------------",
-            "1000010000  Di 21. Mai 16:18:46 CEST 2019",
-            "1000010001  Di 21. Mai 14:23:16 CEST 2019",
-            "---",
-            "dead-beef.de:",
-            "System ID   Last Checkin",
-            "----------  -----------------",
-            "1000010000  Di 21. Mai 16:18:46 CEST 2019",
-            "1000010001  Di 21. Mai 14:23:16 CEST 2019",
+            'system-a:',
+            'System ID   Last Checkin',
+            '----------  -----------------',
+            '1000010000  Di 21. Mai 16:18:46 CEST 2019',
+            '---',
+            '10.4.1.12:',
+            'System ID   Last Checkin',
+            '----------  -----------------',
+            '1000010000  Di 21. Mai 16:18:46 CEST 2019',
+            '1000010001  Di 21. Mai 14:23:16 CEST 2019',
+            '---',
+            '68:F7:28:D0:D0:5B:',
+            'System ID   Last Checkin',
+            '----------  -----------------',
+            '1000010000  Di 21. Mai 16:18:46 CEST 2019',
+            '1000010001  Di 21. Mai 14:23:16 CEST 2019',
+            '---',
+            'dead-beef.de:',
+            'System ID   Last Checkin',
+            '----------  -----------------',
+            '1000010000  Di 21. Mai 16:18:46 CEST 2019',
+            '1000010001  Di 21. Mai 14:23:16 CEST 2019'
         ]
         for call in mprint.call_args_list:
             assert_expect([call], next(iter(exp)))
