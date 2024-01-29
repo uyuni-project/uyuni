@@ -1,4 +1,21 @@
 -------------------------------------------------------------------
+Mon Jan 29 11:58:20 CET 2024 - rosuna@suse.com
+
+- version 5.0.3-1
+  * Update help text for the custom repo filter field (bsc#1217874)
+  * Reduce UI inconsistencies between the SUSE Manager and Uyuni themes
+  * Fix issue with disabling token check not working (bsc#1218669)
+  * Fix issue when checking for credential duplication (bsc#1218957)
+  * Handle not existing known_host file in permission check
+  * Change org for orphan vendor packages that an admin can delete (bsc#1216781)
+  * To prepare for the next SUSE Manager version, set product_tree tag to
+    Beta and change the config value to SUMA5.0
+  * Add one-shot action execution to recurring custom state create/edit
+  * Drop obsolete redirect mechanism (RedirectServlet)
+  * Include reboot required indication for non-Suse distros
+  * New API endpoint for getRelevantErrata, taking multiple servers as argument
+
+-------------------------------------------------------------------
 Thu Jan 18 11:06:32 CET 2024 - jgonzalez@suse.com
 
 - version 5.0.2-1
