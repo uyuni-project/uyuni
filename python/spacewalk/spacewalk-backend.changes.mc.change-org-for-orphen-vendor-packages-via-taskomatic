@@ -1,1 +1,0 @@
-- remove normalize_orphan_vendor_packages and move it to taskomatic (bsc#1216781)
