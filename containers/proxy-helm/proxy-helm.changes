@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Jan 29 11:37:49 CET 2024 - rosuna@suse.com
+
+- version 5.0.3
+  * Simplify publishing to Open Build Service
+
+-------------------------------------------------------------------
 Fri Jan 12 13:59:53 CET 2024 - marina.latini@suse.com
 
 - version 5.0.2
