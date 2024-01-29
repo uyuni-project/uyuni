@@ -8,7 +8,6 @@ env:
 
 jobs:
   build-and-push-server-all-in-one-dev-image:
-    needs: build-and-push-server-all-in-one-image
     runs-on: ubuntu-latest
     permissions:
       contents: read
