@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2023 SUSE LLC.
+# Copyright (c) 2013-2024 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 require 'tempfile'
@@ -432,13 +432,6 @@ def channel_is_synced(channel)
     log 'Debian-like channel synced, if Release and Packages files exist' if new_code.zero?
     new_code.zero?
   end
-end
-
-# This function deletes the client tools channels from a different product
-def sanitize_client_tools(channels)
-  channels.delete_if { |channel| channel.include? 'manager-tools' } if product == 'Uyuni'
-  channels.delete_if { |channel| channel.include? 'uyuni-client' } if product == 'SUSE Manager'
-  channels
 end
 
 # This function initializes the API client

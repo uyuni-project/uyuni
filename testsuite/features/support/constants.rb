@@ -623,329 +623,740 @@ PKGARCH_BY_CLIENT = {
                       'sle15sp5s390_ssh_minion' => 's390x'
 }.freeze
 
-CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION = {
+CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
   # WARNING:
   # - beta channels were removed because they are not selected and not currently synced, add them again when we will use them
   # - sled channels for SUMA tools were removed as we are not currently synchronizing them
   # - 'default' is required for auto-installation tests.
-  'default' =>
-    %w[
-      sle-product-sles15-sp4-pool-x86_64
-      sle-manager-tools15-pool-x86_64-sp4
-      sle-module-basesystem15-sp4-pool-x86_64
-      sle-module-server-applications15-sp4-pool-x86_64
-      sle-product-sles15-sp4-updates-x86_64
-      sle-manager-tools15-updates-x86_64-sp4
-      sle-module-basesystem15-sp4-updates-x86_64
-      sle-module-server-applications15-sp4-updates-x86_64
-      sle15-sp4-installer-updates-x86_64
-      sle-module-desktop-applications15-sp4-pool-x86_64
-      sle-module-desktop-applications15-sp4-updates-x86_64
-      sle-module-devtools15-sp4-pool-x86_64
-      sle-module-devtools15-sp4-updates-x86_64
-      sle-module-containers15-sp4-pool-x86_64
-      sle-module-containers15-sp4-updates-x86_64
-    ],
-  'almalinux9' =>
-    %w[
-      almalinux9-appstream-x86_64
-      almalinux9-extras-x86_64
-      almalinux9-x86_64
-      almalinux9-uyuni-client-x86_64
-    ],
-  'debian-10' =>
-    %w[
-      debian-10-main-security-amd64
-      debian-10-main-updates-amd64
-      debian-10-pool-amd64
-      debian-10-suse-manager-tools-amd64
-      devel-debian-10-client-tools
-      debian-10-amd64-uyuni-client
-    ],
-  'debian-11' =>
-    %w[
-      debian-11-main-security-amd64
-      debian-11-main-updates-amd64
-      debian-11-pool-amd64
-      debian-11-suse-manager-tools-amd64
-      devel-debian-11-client-tools
-      debian-11-amd64-uyuni-client
-    ],
-  'debian-12' =>
-    %w[
-      debian-12-main-security-amd64
-      debian-12-main-updates-amd64
-      debian-12-pool-amd64
-      debian-12-suse-manager-tools-amd64
-      devel-debian-12-client-tools
-      debian-12-amd64-uyuni-client
-    ],
-  'sll-9' =>
-    %w[
-      sll-9-updates-x86_64
-      sll-as-9-updates-x86_64
-      sll-cb-9-updates-x86_64
-    ],
-  'el9' =>
-    %w[
-      el9-manager-tools-pool-x86_64-alma
-      el9-manager-tools-pool-x86_64
-      el9-manager-tools-pool-x86_64-ol9
-      el9-manager-tools-pool-x86_64-rocky
-      el9-manager-tools-updates-x86_64-alma
-      el9-manager-tools-updates-x86_64
-      el9-manager-tools-updates-x86_64-ol9
-      el9-manager-tools-updates-x86_64-rocky
-      el9-pool-x86_64
-    ],
-  'rockylinux-8' =>
-    %w[
-      rockylinux-8-appstream-x86_64
-      rockylinux-8-extras-x86_64
-      rockylinux-8-x86_64
-      rockylinux8-uyuni-client-x86_64
-    ],
-  'rockylinux-9' =>
-    %w[
-      rockylinux-9-appstream-x86_64
-      rockylinux-9-extras-x86_64
-      rockylinux-9-x86_64
-      rockylinux9-uyuni-client-x86_64
-    ],
-  'oraclelinux9' =>
-    %w[
-      oraclelinux9-appstream-x86_64
-      oraclelinux9-x86_64
-      oraclelinux9-uyuni-client-x86_64
-    ],
-  'sles12-sp5' =>
-    %w[
-      sles12-sp5-installer-updates-x86_64
-      sles12-sp5-pool-x86_64
-      sles12-sp5-updates-x86_64
-      sle-manager-tools12-updates-x86_64-sp5
-      sle-manager-tools12-pool-x86_64-sp5
-    ],
-  'sles15-sp1' =>
-    %w[
-      sle-product-sles15-sp1-ltss-updates-x86_64
-      sle-product-sles15-sp1-pool-x86_64
-      sle-product-sles15-sp1-updates-x86_64
-      sle-module-server-applications15-sp1-pool-x86_64
-      sle-module-server-applications15-sp1-updates-x86_64
-      sle-module-basesystem15-sp1-pool-x86_64
-      sle-module-basesystem15-sp1-updates-x86_64
-      sle-manager-tools15-updates-x86_64-sp1
-      sle-manager-tools15-pool-x86_64-sp1
-      sle15-sp1-installer-updates-x86_64
-    ],
-  'sles15-sp2' =>
-    %w[
-      sle-product-sles15-sp2-ltss-updates-x86_64
-      sle-product-sles15-sp2-pool-x86_64
-      sle-product-sles15-sp2-updates-x86_64
-      sle-module-server-applications15-sp2-pool-x86_64
-      sle-module-server-applications15-sp2-updates-x86_64
-      sle-module-devtools15-sp2-pool-x86_64
-      sle-module-devtools15-sp2-updates-x86_64
-      sle-module-desktop-applications15-sp2-pool-x86_64
-      sle-module-desktop-applications15-sp2-updates-x86_64
-      sle-module-basesystem15-sp2-pool-x86_64
-      sle-module-basesystem15-sp2-updates-x86_64
-      sle-manager-tools15-updates-x86_64-sp2
-      sle-manager-tools15-pool-x86_64-sp2
-      sle15-sp2-installer-updates-x86_64
-    ],
-  'sles15-sp3' =>
-    %w[
-      sle-product-sles15-sp3-ltss-updates-x86_64
-      sle-product-sles15-sp3-pool-x86_64
-      sle-manager-tools15-pool-x86_64-sp3
-      sle-module-basesystem15-sp3-pool-x86_64
-      sle-module-server-applications15-sp3-pool-x86_64
-      sle-product-sles15-sp3-updates-x86_64
-      sle-manager-tools15-updates-x86_64-sp3
-      sle-module-basesystem15-sp3-updates-x86_64
-      sle-module-server-applications15-sp3-updates-x86_64
-      sle15-sp3-installer-updates-x86_64
-      sle-module-desktop-applications15-sp3-pool-x86_64
-      sle-module-desktop-applications15-sp3-updates-x86_64
-      sle-module-devtools15-sp3-pool-x86_64
-      sle-module-devtools15-sp3-updates-x86_64
-    ],
-  'sles15-sp4' =>
-    %w[
-      sle15-sp4-installer-updates-x86_64
-      sle-manager-tools15-pool-x86_64-sp4
-      sle-manager-tools15-updates-x86_64-sp4
-      sle-module-basesystem15-sp4-pool-x86_64
-      sle-module-basesystem15-sp4-updates-x86_64
-      sle-module-desktop-applications15-sp4-pool-x86_64
-      sle-module-desktop-applications15-sp4-updates-x86_64
-      sle-module-devtools15-sp4-pool-x86_64
-      sle-module-devtools15-sp4-updates-x86_64
-      sle-module-server-applications15-sp4-pool-x86_64
-      sle-module-server-applications15-sp4-updates-x86_64
-      sle-product-sles15-sp4-pool-x86_64
-      sle-product-sles15-sp4-updates-x86_64
-      sle-module-containers15-sp4-pool-x86_64
-      sle-module-containers15-sp4-updates-x86_64
-    ],
-  'sles15-sp5' =>
-    %w[
-      sle-manager-tools15-pool-x86_64-sp5
-      sle-manager-tools15-updates-x86_64-sp5
-      sle-module-basesystem15-sp5-pool-x86_64
-      sle-module-basesystem15-sp5-updates-x86_64
-      sle-module-desktop-applications15-sp5-pool-x86_64
-      sle-module-desktop-applications15-sp5-updates-x86_64
-      sle-module-devtools15-sp5-pool-x86_64
-      sle-module-devtools15-sp5-updates-x86_64
-      sle-module-server-applications15-sp5-pool-x86_64
-      sle-module-server-applications15-sp5-updates-x86_64
-      sle-product-sles15-sp5-pool-x86_64
-      sle-product-sles15-sp5-updates-x86_64
-    ],
-  'sles15-sp5-s390x' =>
-    %w[
-      sle-manager-tools15-pool-s390x-sp5
-      sle-manager-tools15-updates-s390x-sp5
-      sle-module-basesystem15-sp5-pool-s390x
-      sle-module-basesystem15-sp5-updates-s390x
-      sle-module-server-applications15-sp5-pool-s390x
-      sle-module-server-applications15-sp5-updates-s390x
-      sle-product-sles15-sp5-pool-s390x
-      sle-product-sles15-sp5-updates-s390x
-    ],
-  'res7' =>
-    %w[
-      rhel-x86_64-server-7
-      res7-suse-manager-tools-x86_64
-      res7-x86_64
-    ],
-  'res8' =>
-    %w[
-      rhel8-pool-x86_64
-      res-8-updates-x86_64
-      res-as-8-updates-x86_64
-      res-cb-8-updates-x86_64
-      res8-manager-tools-pool-x86_64
-      res8-manager-tools-updates-x86_64
-      sll8-uyuni-client-x86_64
-    ],
-  'leap15.5-x86_64' =>
-    %w[
-      opensuse_leap15_5-x86_64
-      opensuse_leap15_5-x86_64-non-oss
-      opensuse_leap15_5-x86_64-non-oss-updates
-      opensuse_leap15_5-x86_64-updates
-      opensuse_leap15_5-x86_64-backports-updates
-      opensuse_leap15_5-x86_64-sle-updates
-      opensuse_leap15_5-uyuni-client-x86_64
-    ],
-  'leap15.4-aarch64' =>
-    %w[
-      opensuse-backports-15.4-updates-aarch64
-      opensuse-leap-15.4-pool-aarch64
-      opensuse-leap-15.4-updates-aarch64
-      sle-manager-tools15-updates-aarch64-opensuse-15.4
-      sle-manager-tools15-pool-aarch64-opensuse-15.4
-    ],
-  'leap15.5-aarch64' =>
-    %w[
-      opensuse-backports-15.5-updates-aarch64
-      opensuse-leap-15.5-pool-aarch64
-      opensuse-leap-15.5-updates-aarch64
-      opensuse-sle-15.5-updates-aarch64
-      sle-manager-tools15-updates-aarch64-opensuse-15.5
-      sle-manager-tools15-pool-aarch64-opensuse-15.5
-    ],
-  'suse-microos-5.1' =>
-    %w[
-      suse-microos-5.1-pool-x86_64
-      suse-microos-5.1-updates-x86_64
-      sle-manager-tools-for-micro5-updates-x86_64-5.1
-      sle-manager-tools-for-micro5-pool-x86_64-5.1
-    ],
-  'suse-microos-5.2' =>
-    %w[
-      suse-microos-5.2-pool-x86_64
-      suse-microos-5.2-updates-x86_64
-      sle-manager-tools-for-micro5-updates-x86_64-5.2
-      sle-manager-tools-for-micro5-pool-x86_64-5.2
-    ],
-  'sle-micro-5.3' =>
-    %w[
-      sle-micro-5.3-pool-x86_64
-      sle-micro-5.3-updates-x86_64
-      sle-manager-tools-for-micro5-updates-x86_64-5.3
-      sle-manager-tools-for-micro5-pool-x86_64-5.3
-    ],
-  'sle-micro-5.4' =>
-    %w[
-      sle-micro-5.4-pool-x86_64
-      sle-micro-5.4-updates-x86_64
-      sle-manager-tools-for-micro5-updates-x86_64-5.4
-      sle-manager-tools-for-micro5-pool-x86_64-5.4
-    ],
-  'sle-micro-5.5' =>
-    %w[
-      sle-micro-5.5-pool-x86_64
-      sle-micro-5.5-updates-x86_64
-      sle-manager-tools-for-micro5-updates-x86_64-5.5
-      sle-manager-tools-for-micro5-pool-x86_64-5.5
-    ],
-  'ubuntu-2004' =>
-    %w[
-      ubuntu-2004-amd64-main-amd64
-      ubuntu-2004-amd64-main-security-amd64
-      ubuntu-2004-amd64-main-updates-amd64
-      ubuntu-20.04-suse-manager-tools-amd64
-    ],
-  'ubuntu-2204' =>
-    %w[
-      ubuntu-2204-amd64-main-amd64
-      ubuntu-2204-amd64-main-security-amd64
-      ubuntu-2204-amd64-main-updates-amd64
-      ubuntu-22.04-suse-manager-tools-amd64
-    ],
-  'fake' =>
-    %w[
-      fake-base-channel-suse-like
-      fake-child-channel-suse-like
-      fake-base-channel-i586
-      fake-child-channel-i586
-      test-base-channel-x86_64
-      test-child-channel-x86_64
-      fake-base-channel-debian-like
-      fake-base-channel-rh-like
-    ],
-  'suma-proxy-43' =>
-    %w[
-      sle-product-suse-manager-proxy-4.3-pool-x86_64
-      sle-product-suse-manager-proxy-4.3-updates-x86_64
-      sle-module-suse-manager-proxy-4.3-pool-x86_64
-      sle-module-suse-manager-proxy-4.3-updates-x86_64
-    ],
-  'suma-retail-branch-server-43' =>
-    %w[
-      sle-product-suse-manager-retail-branch-server-4.3-pool-x86_64
-      sle-product-suse-manager-retail-branch-server-4.3-updates-x86_64
-      sle-module-suse-manager-retail-branch-server-4.3-pool-x86_64
-      sle-module-suse-manager-retail-branch-server-4.3-updates-x86_64
-    ],
-  'uyuni-proxy' =>
-    %w[
-      opensuse_leap15_5
-      opensuse_leap15_5-non-oss
-      opensuse_leap15_5-non-oss-updates
-      opensuse_leap15_5-updates
-      opensuse_leap15_5-backports-updates
-      opensuse_leap15_5-sle-updates
-      uyuni-proxy-devel-leap-x86_64
-      opensuse_leap15_5-uyuni-client-devel
-    ]
-  # There are no channels for Retail under Uyuni
+  'SUSE Manager' => {
+    'default' => # CHECKED
+      %w[
+        sle-module-desktop-applications15-sp4-updates-x86_64
+        sle-module-desktop-applications15-sp4-pool-x86_64
+        sle-product-sles15-sp4-pool-x86_64
+        sle-product-sles15-sp4-updates-x86_64
+        sle15-sp4-installer-updates-x86_64
+        sle-module-basesystem15-sp4-updates-x86_64
+        sle-module-basesystem15-sp4-pool-x86_64
+        sle-module-server-applications15-sp4-pool-x86_64
+        sle-module-server-applications15-sp4-updates-x86_64
+        sle-manager-tools15-pool-x86_64-sp4
+        sle-manager-tools15-updates-x86_64-sp4
+        sle-module-devtools15-sp4-updates-x86_64
+        sle-module-devtools15-sp4-pool-x86_64
+        sle-module-containers15-sp4-pool-x86_64
+        sle-module-containers15-sp4-updates-x86_64
+      ],
+    'almalinux9' => # CHECKED
+      %w[
+        almalinux9-x86_64
+        almalinux9-appstream-x86_64
+      ],
+    'debian-10' => # CHECKED
+      %w[
+        debian-10-pool-amd64
+        debian-10-main-updates-amd64
+        debian-10-main-security-amd64
+        debian-10-suse-manager-tools-amd64
+      ],
+    'debian-11' => # CHECKED
+      %w[
+        debian-11-pool-amd64
+        debian-11-main-updates-amd64
+        debian-11-main-security-amd64
+        debian-11-suse-manager-tools-amd64
+      ],
+    'debian-12' => # CHECKED
+      %w[
+        debian-12-pool-amd64
+        debian-12-main-security-amd64
+        debian-12-main-updates-amd64
+        debian-12-suse-manager-tools-amd64
+      ],
+    'sll-9' => # CHECKED
+      %w[
+        sll-cb-9-updates-x86_64
+        sll-as-9-updates-x86_64
+        sll-9-updates-x86_64
+      ],
+    'el9' => # CHECKED
+      %w[
+        el9-manager-tools-updates-x86_64-alma
+        el9-manager-tools-pool-x86_64-alma
+        el9-pool-x86_64
+        el9-manager-tools-pool-x86_64
+        el9-manager-tools-updates-x86_64
+        el9-manager-tools-pool-x86_64-ol9
+        el9-manager-tools-updates-x86_64-ol9
+        el9-manager-tools-pool-x86_64-rocky
+        el9-manager-tools-updates-x86_64-rocky
+      ],
+    'rockylinux-8' =>
+      %w[
+        rockylinux-8-x86_64
+        rockylinux-8-appstream-x86_64
+      ],
+    'rockylinux-9' => # CHECKED
+      %w[
+        rockylinux-9-x86_64
+        rockylinux-9-appstream-x86_64
+      ],
+    'oraclelinux9' => # CHECKED
+      %w[
+        oraclelinux9-x86_64
+        oraclelinux9-appstream-x86_64
+      ],
+    'sles12-sp5' => # CHECKED
+      %w[
+        sles12-sp5-pool-x86_64
+        sle-manager-tools12-updates-x86_64-sp5
+        sles12-sp5-updates-x86_64
+        sle-manager-tools12-pool-x86_64-sp5
+        sles12-sp5-installer-updates-x86_64
+      ],
+    'sles15-sp1' => # CHECKED
+      %w[
+        sle-product-sles15-sp1-pool-x86_64
+        sle-product-sles15-sp1-updates-x86_64
+        sle15-sp1-installer-updates-x86_64
+        sle-module-basesystem15-sp1-pool-x86_64
+        sle-module-basesystem15-sp1-updates-x86_64
+        sle-manager-tools15-pool-x86_64-sp1
+        sle-manager-tools15-updates-x86_64-sp1
+        sle-module-server-applications15-sp1-pool-x86_64
+        sle-module-server-applications15-sp1-updates-x86_64
+        sle-product-sles15-sp1-ltss-updates-x86_64
+      ],
+    'sles15-sp2' => # CHECKED
+      %w[
+        sle-product-sles15-sp2-pool-x86_64
+        sle-product-sles15-sp2-updates-x86_64
+        sle15-sp2-installer-updates-x86_64
+        sle-module-basesystem15-sp2-pool-x86_64
+        sle-module-basesystem15-sp2-updates-x86_64
+        sle-manager-tools15-pool-x86_64-sp2
+        sle-manager-tools15-updates-x86_64-sp2
+        sle-module-server-applications15-sp2-pool-x86_64
+        sle-module-server-applications15-sp2-updates-x86_64
+        sle-product-sles15-sp2-ltss-updates-x86_64
+        sle-module-desktop-applications15-sp2-updates-x86_64
+        sle-module-desktop-applications15-sp2-pool-x86_64
+        sle-module-devtools15-sp2-pool-x86_64
+        sle-module-devtools15-sp2-updates-x86_64
+      ],
+    'sles15-sp3' => # CHECKED
+      %w[
+        sle-product-sles15-sp3-pool-x86_64
+        sle-product-sles15-sp3-updates-x86_64
+        sle15-sp3-installer-updates-x86_64
+        sle-module-basesystem15-sp3-updates-x86_64
+        sle-module-basesystem15-sp3-pool-x86_64
+        sle-manager-tools15-updates-x86_64-sp3
+        sle-manager-tools15-pool-x86_64-sp3
+        sle-module-server-applications15-sp3-updates-x86_64
+        sle-module-server-applications15-sp3-pool-x86_64
+        sle-product-sles15-sp3-ltss-updates-x86_64
+        sle-module-desktop-applications15-sp3-updates-x86_64
+        sle-module-desktop-applications15-sp3-pool-x86_64
+        sle-module-devtools15-sp3-pool-x86_64
+        sle-module-devtools15-sp3-updates-x86_64
+      ],
+    'sles15-sp4' => # CHECKED
+      %w[
+        sle-module-desktop-applications15-sp4-updates-x86_64
+        sle-module-desktop-applications15-sp4-pool-x86_64
+        sle-product-sles15-sp4-pool-x86_64
+        sle-product-sles15-sp4-updates-x86_64
+        sle15-sp4-installer-updates-x86_64
+        sle-module-basesystem15-sp4-updates-x86_64
+        sle-module-basesystem15-sp4-pool-x86_64
+        sle-module-server-applications15-sp4-pool-x86_64
+        sle-module-server-applications15-sp4-updates-x86_64
+        sle-manager-tools15-pool-x86_64-sp4
+        sle-manager-tools15-updates-x86_64-sp4
+        sle-module-devtools15-sp4-updates-x86_64
+        sle-module-devtools15-sp4-pool-x86_64
+        sle-module-containers15-sp4-pool-x86_64
+        sle-module-containers15-sp4-updates-x86_64
+      ],
+    'sles15-sp5' => # CHECKED
+      %w[
+        sle-product-sles15-sp5-pool-x86_64
+        sle-product-sles15-sp5-updates-x86_64
+        sle-module-basesystem15-sp5-pool-x86_64
+        sle-module-basesystem15-sp5-updates-x86_64
+        sle-module-python3-15-sp5-pool-x86_64
+        sle-module-python3-15-sp5-updates-x86_64
+        sle-manager-tools15-updates-x86_64-sp5
+        sle-manager-tools15-pool-x86_64-sp5
+        sle-module-server-applications15-sp5-pool-x86_64
+        sle-module-server-applications15-sp5-updates-x86_64
+        sle-module-desktop-applications15-sp5-updates-x86_64
+        sle-module-desktop-applications15-sp5-pool-x86_64
+        sle-module-devtools15-sp5-pool-x86_64
+        sle-module-devtools15-sp5-updates-x86_64
+      ],
+    'slesforsap15-sp5' =>
+      %w[
+        sle-manager-tools15-pool-x86_64-sap-sp5
+        sle-manager-tools15-updates-x86_64-sap-sp5
+        sle-module-basesystem15-sp5-pool-x86_64-sap
+        sle-module-basesystem15-sp5-updates-x86_64-sap
+        sle-module-desktop-applications15-sp5-pool-x86_64-sap
+        sle-module-desktop-applications15-sp5-updates-x86_64-sap
+        sle-module-devtools15-sp5-pool-x86_64-sap
+        sle-module-devtools15-sp5-updates-x86_64-sap
+        sle-module-server-applications15-sp5-pool-x86_64-sap
+        sle-module-server-applications15-sp5-updates-x86_64-sap
+        sle-product-sles_sap15-sp5-pool-x86_64
+        sle-product-sles_sap15-sp5-updates-x86_64
+        sle-product-ha15-sp5-pool-x86_64-sap
+        sle-product-ha15-sp5-updates-x86_64-sap
+        sle-module-sap-applications15-sp5-pool-x86_64
+        sle-module-sap-applications15-sp5-updates-x86_64
+      ],
+    'sles15-sp5-s390x' =>
+      %w[
+        sle-manager-tools15-pool-s390x-sp5
+        sle-manager-tools15-updates-s390x-sp5
+        sle-module-basesystem15-sp5-pool-s390x
+        sle-module-basesystem15-sp5-updates-s390x
+        sle-module-server-applications15-sp5-pool-s390x
+        sle-module-server-applications15-sp5-updates-s390x
+        sle-product-sles15-sp5-pool-s390x
+        sle-product-sles15-sp5-updates-s390x
+      ],
+    'res7' => # CHECKED
+      %w[
+        rhel-x86_64-server-7
+        res7-x86_64
+        res7-suse-manager-tools-x86_64
+      ],
+    'res8' =>
+      %w[
+        rhel8-pool-x86_64
+        res-8-updates-x86_64
+        res-as-8-updates-x86_64
+        res-cb-8-updates-x86_64
+        res8-manager-tools-pool-x86_64
+        res8-manager-tools-updates-x86_64
+      ],
+    'leap15.5-x86_64' =>
+      %w[
+        opensuse_leap15_5-x86_64
+        opensuse_leap15_5-x86_64-non-oss
+        opensuse_leap15_5-x86_64-non-oss-updates
+        opensuse_leap15_5-x86_64-updates
+        opensuse_leap15_5-x86_64-backports-updates
+        opensuse_leap15_5-x86_64-sle-updates
+      ],
+    'leap15.4-aarch64' =>
+      %w[
+        opensuse-backports-15.4-updates-aarch64
+        opensuse-leap-15.4-pool-aarch64
+        opensuse-leap-15.4-updates-aarch64
+        sle-manager-tools15-updates-aarch64-opensuse-15.4
+        sle-manager-tools15-pool-aarch64-opensuse-15.4
+      ],
+    'leap15.5-aarch64' =>
+      %w[
+        opensuse-backports-15.5-updates-aarch64
+        opensuse-leap-15.5-pool-aarch64
+        opensuse-leap-15.5-updates-aarch64
+        opensuse-sle-15.5-updates-aarch64
+        sle-manager-tools15-updates-aarch64-opensuse-15.5
+        sle-manager-tools15-pool-aarch64-opensuse-15.5
+      ],
+    'suse-microos-5.1' => # CHECKED
+      %w[
+        suse-microos-5.1-pool-x86_64
+        suse-microos-5.1-updates-x86_64
+        sle-manager-tools-for-micro5-updates-x86_64-5.1
+        sle-manager-tools-for-micro5-pool-x86_64-5.1
+      ],
+    'suse-microos-5.2' => # CHECKED
+      %w[
+        suse-microos-5.2-pool-x86_64
+        suse-microos-5.2-updates-x86_64
+        sle-manager-tools-for-micro5-pool-x86_64-5.2
+        sle-manager-tools-for-micro5-updates-x86_64-5.2
+      ],
+    'sle-micro-5.3' => # CHECKED
+      %w[
+        sle-micro-5.3-pool-x86_64
+        sle-micro-5.3-updates-x86_64
+        sle-manager-tools-for-micro5-pool-x86_64-5.3
+        sle-manager-tools-for-micro5-updates-x86_64-5.3
+      ],
+    'sle-micro-5.4' => # CHECKED
+      %w[
+        sle-micro-5.4-pool-x86_64
+        sle-micro-5.4-updates-x86_64
+        sle-manager-tools-for-micro5-updates-x86_64-5.4
+        sle-manager-tools-for-micro5-pool-x86_64-5.4
+      ],
+    'sle-micro-5.5' => # CHECKED
+      %w[
+        sle-micro-5.5-pool-x86_64
+        sle-micro-5.5-updates-x86_64
+        sle-manager-tools-for-micro5-pool-x86_64-5.5
+        sle-manager-tools-for-micro5-updates-x86_64-5.5
+      ],
+    'ubuntu-2004' => # CHECKED
+      %w[
+        ubuntu-2004-amd64-main-amd64
+        ubuntu-2004-amd64-main-security-amd64
+        ubuntu-2004-amd64-main-updates-amd64
+        ubuntu-20.04-suse-manager-tools-amd64
+      ],
+    'ubuntu-2204' => # CHECKED
+      %w[
+        ubuntu-2204-amd64-main-amd64
+        ubuntu-2204-amd64-main-updates-amd64
+        ubuntu-2204-amd64-main-security-amd64
+        ubuntu-22.04-suse-manager-tools-amd64
+      ],
+    'fake' =>
+      %w[
+        fake-base-channel-suse-like
+        fake-child-channel-suse-like
+        fake-base-channel-i586
+        fake-child-channel-i586
+        test-base-channel-x86_64
+        test-child-channel-x86_64
+        fake-base-channel-debian-like
+        fake-base-channel-rh-like
+      ],
+    'suma-proxy-43' =>
+      %w[
+        sle-product-suse-manager-proxy-4.3-pool-x86_64
+        sle-product-suse-manager-proxy-4.3-updates-x86_64
+        sle-module-suse-manager-proxy-4.3-pool-x86_64
+        sle-module-suse-manager-proxy-4.3-updates-x86_64
+      ],
+    'suma-retail-branch-server-43' =>
+      %w[
+        sle-product-suse-manager-retail-branch-server-4.3-pool-x86_64
+        sle-product-suse-manager-retail-branch-server-4.3-updates-x86_64
+        sle-module-suse-manager-retail-branch-server-4.3-pool-x86_64
+        sle-module-suse-manager-retail-branch-server-4.3-updates-x86_64
+      ]
+  },
+  'Uyuni' => {
+    'default' => # CHECKED
+      %w[
+        sle-product-sles15-sp4-pool-x86_64
+        sle-product-sles15-sp4-updates-x86_64
+        sle15-sp4-installer-updates-x86_64
+        sle-module-basesystem15-sp4-updates-x86_64
+        sle-module-basesystem15-sp4-pool-x86_64
+        sle-module-server-applications15-sp4-updates-x86_64
+        sle-module-server-applications15-sp4-pool-x86_64
+        sle-module-desktop-applications15-sp4-updates-x86_64
+        sle-module-desktop-applications15-sp4-pool-x86_64
+        sle-module-devtools15-sp4-pool-x86_64
+        sle-module-devtools15-sp4-updates-x86_64
+        sle-module-containers15-sp4-pool-x86_64
+        sle-module-containers15-sp4-updates-x86_64
+        sles15-sp4-uyuni-client-x86_64
+      ],
+    'almalinux9' =>
+      %w[
+        almalinux9-appstream-x86_64
+        almalinux9-extras-x86_64
+        almalinux9-x86_64
+        almalinux9-uyuni-client-x86_64
+      ],
+    'debian-10' =>
+      %w[
+        debian-10-main-security-amd64
+        debian-10-main-updates-amd64
+        debian-10-pool-amd64
+        devel-debian-10-client-tools
+        debian-10-amd64-uyuni-client
+      ],
+    'debian-11' =>
+      %w[
+        debian-11-main-security-amd64
+        debian-11-main-updates-amd64
+        debian-11-pool-amd64
+        devel-debian-11-client-tools
+        debian-11-amd64-uyuni-client
+      ],
+    'debian-12' =>
+      %w[
+        debian-12-main-security-amd64
+        debian-12-main-updates-amd64
+        debian-12-pool-amd64
+        devel-debian-12-client-tools
+        debian-12-amd64-uyuni-client
+      ],
+    'sll-9' =>
+      %w[
+        sll-9-updates-x86_64
+        sll-as-9-updates-x86_64
+        sll-cb-9-updates-x86_64
+      ],
+    'el9' =>
+      %w[
+        el9-pool-x86_64
+      ],
+    'rockylinux-8' =>
+      %w[
+        rockylinux-8-appstream-x86_64
+        rockylinux-8-extras-x86_64
+        rockylinux-8-x86_64
+        rockylinux8-uyuni-client-x86_64
+      ],
+    'rockylinux-9' =>
+      %w[
+        rockylinux-9-appstream-x86_64
+        rockylinux-9-extras-x86_64
+        rockylinux-9-x86_64
+        rockylinux9-uyuni-client-x86_64
+      ],
+    'oraclelinux9' =>
+      %w[
+        oraclelinux9-appstream-x86_64
+        oraclelinux9-x86_64
+        oraclelinux9-uyuni-client-x86_64
+      ],
+    'sles12-sp5' =>
+      %w[
+        sles12-sp5-installer-updates-x86_64
+        sles12-sp5-pool-x86_64
+        sles12-sp5-updates-x86_64
+      ],
+    'sles15-sp1' =>
+      %w[
+        sle-product-sles15-sp1-ltss-updates-x86_64
+        sle-product-sles15-sp1-pool-x86_64
+        sle-product-sles15-sp1-updates-x86_64
+        sle-module-server-applications15-sp1-pool-x86_64
+        sle-module-server-applications15-sp1-updates-x86_64
+        sle-module-basesystem15-sp1-pool-x86_64
+        sle-module-basesystem15-sp1-updates-x86_64
+        sle15-sp1-installer-updates-x86_64
+      ],
+    'sles15-sp2' =>
+      %w[
+        sle-product-sles15-sp2-ltss-updates-x86_64
+        sle-product-sles15-sp2-pool-x86_64
+        sle-product-sles15-sp2-updates-x86_64
+        sle-module-server-applications15-sp2-pool-x86_64
+        sle-module-server-applications15-sp2-updates-x86_64
+        sle-module-devtools15-sp2-pool-x86_64
+        sle-module-devtools15-sp2-updates-x86_64
+        sle-module-desktop-applications15-sp2-pool-x86_64
+        sle-module-desktop-applications15-sp2-updates-x86_64
+        sle-module-basesystem15-sp2-pool-x86_64
+        sle-module-basesystem15-sp2-updates-x86_64
+        sle15-sp2-installer-updates-x86_64
+      ],
+    'sles15-sp3' =>
+      %w[
+        sle-product-sles15-sp3-ltss-updates-x86_64
+        sle-product-sles15-sp3-pool-x86_64
+        sle-module-basesystem15-sp3-pool-x86_64
+        sle-module-server-applications15-sp3-pool-x86_64
+        sle-product-sles15-sp3-updates-x86_64
+        sle-module-basesystem15-sp3-updates-x86_64
+        sle-module-server-applications15-sp3-updates-x86_64
+        sle15-sp3-installer-updates-x86_64
+        sle-module-desktop-applications15-sp3-pool-x86_64
+        sle-module-desktop-applications15-sp3-updates-x86_64
+        sle-module-devtools15-sp3-pool-x86_64
+        sle-module-devtools15-sp3-updates-x86_64
+      ],
+    'sles15-sp4' =>
+      %w[
+        sle-product-sles15-sp4-pool-x86_64
+        sle-product-sles15-sp4-updates-x86_64
+        sle15-sp4-installer-updates-x86_64
+        sle-module-basesystem15-sp4-updates-x86_64
+        sle-module-basesystem15-sp4-pool-x86_64
+        sle-module-server-applications15-sp4-updates-x86_64
+        sle-module-server-applications15-sp4-pool-x86_64
+        sle-module-desktop-applications15-sp4-updates-x86_64
+        sle-module-desktop-applications15-sp4-pool-x86_64
+        sle-module-devtools15-sp4-pool-x86_64
+        sle-module-devtools15-sp4-updates-x86_64
+        sle-module-containers15-sp4-pool-x86_64
+        sle-module-containers15-sp4-updates-x86_64
+        sles15-sp4-uyuni-client-x86_64
+      ],
+    'sles15-sp5' =>
+      %w[
+        sle-module-basesystem15-sp5-pool-x86_64
+        sle-module-basesystem15-sp5-updates-x86_64
+        sle-module-desktop-applications15-sp5-pool-x86_64
+        sle-module-desktop-applications15-sp5-updates-x86_64
+        sle-module-devtools15-sp5-pool-x86_64
+        sle-module-devtools15-sp5-updates-x86_64
+        sle-module-server-applications15-sp5-pool-x86_64
+        sle-module-server-applications15-sp5-updates-x86_64
+        sle-product-sles15-sp5-pool-x86_64
+        sle-product-sles15-sp5-updates-x86_64
+      ],
+    'slesforsap15-sp5' =>
+      %w[
+        sle-module-basesystem15-sp5-pool-x86_64-sap
+        sle-module-basesystem15-sp5-updates-x86_64-sap
+        sle-module-desktop-applications15-sp5-pool-x86_64-sap
+        sle-module-desktop-applications15-sp5-updates-x86_64-sap
+        sle-module-devtools15-sp5-pool-x86_64-sap
+        sle-module-devtools15-sp5-updates-x86_64-sap
+        sle-module-server-applications15-sp5-pool-x86_64-sap
+        sle-module-server-applications15-sp5-updates-x86_64-sap
+        sle-product-sles_sap15-sp5-pool-x86_64
+        sle-product-sles_sap15-sp5-updates-x86_64
+        sle-product-ha15-sp5-pool-x86_64-sap
+        sle-product-ha15-sp5-updates-x86_64-sap
+        sle-module-sap-applications15-sp5-pool-x86_64
+        sle-module-sap-applications15-sp5-updates-x86_64
+      ],
+    'sles15-sp5-s390x' =>
+      %w[
+        sle-module-basesystem15-sp5-pool-s390x
+        sle-module-basesystem15-sp5-updates-s390x
+        sle-module-server-applications15-sp5-pool-s390x
+        sle-module-server-applications15-sp5-updates-s390x
+        sle-product-sles15-sp5-pool-s390x
+        sle-product-sles15-sp5-updates-s390x
+      ],
+    'res7' =>
+      %w[
+        rhel-x86_64-server-7
+        res7-x86_64
+      ],
+    'res8' =>
+      %w[
+        rhel8-pool-x86_64
+        res-8-updates-x86_64
+        res-as-8-updates-x86_64
+        res-cb-8-updates-x86_64
+        sll8-uyuni-client-x86_64
+      ],
+    'leap15.5-x86_64' =>
+      %w[
+        opensuse_leap15_5-x86_64
+        opensuse_leap15_5-x86_64-non-oss
+        opensuse_leap15_5-x86_64-non-oss-updates
+        opensuse_leap15_5-x86_64-updates
+        opensuse_leap15_5-x86_64-backports-updates
+        opensuse_leap15_5-x86_64-sle-updates
+        opensuse_leap15_5-uyuni-client-x86_64
+      ],
+    'leap15.4-aarch64' =>
+      %w[
+        opensuse-backports-15.4-updates-aarch64
+        opensuse-leap-15.4-pool-aarch64
+        opensuse-leap-15.4-updates-aarch64
+      ],
+    'leap15.5-aarch64' =>
+      %w[
+        opensuse-backports-15.5-updates-aarch64
+        opensuse-leap-15.5-pool-aarch64
+        opensuse-leap-15.5-updates-aarch64
+        opensuse-sle-15.5-updates-aarch64
+      ],
+    'suse-microos-5.1' =>
+      %w[
+        suse-microos-5.1-pool-x86_64
+        suse-microos-5.1-updates-x86_64
+      ],
+    'suse-microos-5.2' =>
+      %w[
+        suse-microos-5.2-pool-x86_64
+        suse-microos-5.2-updates-x86_64
+      ],
+    'sle-micro-5.3' =>
+      %w[
+        sle-micro-5.3-pool-x86_64
+        sle-micro-5.3-updates-x86_64
+      ],
+    'sle-micro-5.4' =>
+      %w[
+        sle-micro-5.4-pool-x86_64
+        sle-micro-5.4-updates-x86_64
+      ],
+    'sle-micro-5.5' =>
+      %w[
+        sle-micro-5.5-pool-x86_64
+        sle-micro-5.5-updates-x86_64
+      ],
+    'ubuntu-2004' =>
+      %w[
+        ubuntu-2004-amd64-main-amd64
+        ubuntu-2004-amd64-main-security-amd64
+        ubuntu-2004-amd64-main-updates-amd64
+      ],
+    'ubuntu-2204' =>
+      %w[
+        ubuntu-2204-amd64-main-amd64
+        ubuntu-2204-amd64-main-security-amd64
+        ubuntu-2204-amd64-main-updates-amd64
+      ],
+    'fake' =>
+      %w[
+        fake-base-channel-suse-like
+        fake-child-channel-suse-like
+        fake-base-channel-i586
+        fake-child-channel-i586
+        test-base-channel-x86_64
+        test-child-channel-x86_64
+        fake-base-channel-debian-like
+        fake-base-channel-rh-like
+      ],
+    'uyuni-proxy' => # CHECKED
+      %w[
+        opensuse_leap15_5-x86_64
+        opensuse_leap15_5-uyuni-client-x86_64
+        opensuse_leap15_5-x86_64-backports-updates
+        opensuse_leap15_5-x86_64-non-oss
+        opensuse_leap15_5-x86_64-non-oss-updates
+        opensuse_leap15_5-x86_64-sle-updates
+        opensuse_leap15_5-x86_64-updates
+        uyuni-proxy-devel-leap-x86_64
+      ]
+    # There are no channels for Retail under Uyuni
+  }
+}.freeze
+
+TIMEOUT_BY_CHANNEL_NAME = {
+  'almalinux9-appstream-x86_64' => 480,
+  'almalinux9-x86_64' => 120,
+  'debian-10-main-security-amd64' => 540,
+  'debian-10-main-updates-amd64' => 60,
+  'debian-10-pool-amd64' => 19_860,
+  'debian-10-suse-manager-tools-amd64' => 60,
+  'debian-11-main-security-amd64' => 240,
+  'debian-11-main-updates-amd64' => 60,
+  'debian-11-pool-amd64' => 22_920,
+  'debian-11-suse-manager-tools-amd64' => 60,
+  'debian-12-main-security-amd64' => 240,
+  'debian-12-main-updates-amd64' => 120,
+  'debian-12-pool-amd64' => 27_960,
+  'debian-12-suse-manager-tools-amd64' => 60,
+  'el9-manager-tools-pool-x86_64' => 60,
+  'el9-manager-tools-pool-x86_64-alma' => 60,
+  'el9-manager-tools-pool-x86_64-ol9' => 60,
+  'el9-manager-tools-pool-x86_64-rocky' => 60,
+  'el9-manager-tools-updates-x86_64' => 60,
+  'el9-manager-tools-updates-x86_64-alma' => 60,
+  'el9-manager-tools-updates-x86_64-ol9' => 60,
+  'el9-manager-tools-updates-x86_64-rocky' => 60,
+  'el9-pool-x86_64' => 60,
+  'oraclelinux9-appstream-x86_64' => 2100,
+  'oraclelinux9-x86_64' => 840,
+  'res7-suse-manager-tools-x86_64' => 300,
+  'res7-x86_64' => 21_000,
+  'rhel-x86_64-server-7' => 60,
+  'rockylinux-9-appstream-x86_64' => 480,
+  'rockylinux-9-x86_64' => 120,
+  'sle15-sp1-installer-updates-x86_64' => 60,
+  'sle15-sp2-installer-updates-x86_64' => 60,
+  'sle15-sp3-installer-updates-x86_64' => 60,
+  'sle15-sp4-installer-updates-x86_64' => 60,
+  'sle-manager-tools12-pool-x86_64-sp5' => 60,
+  'sle-manager-tools12-updates-x86_64-sp5' => 60,
+  'sle-manager-tools15-pool-x86_64-sp1' => 60,
+  'sle-manager-tools15-pool-x86_64-sp2' => 60,
+  'sle-manager-tools15-pool-x86_64-sp3' => 60,
+  'sle-manager-tools15-pool-x86_64-sp4' => 60,
+  'sle-manager-tools15-pool-x86_64-sp5' => 60,
+  'sle-manager-tools15-updates-x86_64-sp1' => 180,
+  'sle-manager-tools15-updates-x86_64-sp2' => 60,
+  'sle-manager-tools15-updates-x86_64-sp3' => 60,
+  'sle-manager-tools15-updates-x86_64-sp4' => 60,
+  'sle-manager-tools15-updates-x86_64-sp5' => 60,
+  'sle-manager-tools-for-micro5-pool-x86_64-5.1' => 60,
+  'sle-manager-tools-for-micro5-pool-x86_64-5.2' => 60,
+  'sle-manager-tools-for-micro5-pool-x86_64-5.3' => 60,
+  'sle-manager-tools-for-micro5-pool-x86_64-5.4' => 60,
+  'sle-manager-tools-for-micro5-pool-x86_64-5.5' => 60,
+  'sle-manager-tools-for-micro5-updates-x86_64-5.1' => 60,
+  'sle-manager-tools-for-micro5-updates-x86_64-5.2' => 60,
+  'sle-manager-tools-for-micro5-updates-x86_64-5.3' => 60,
+  'sle-manager-tools-for-micro5-updates-x86_64-5.4' => 60,
+  'sle-manager-tools-for-micro5-updates-x86_64-5.5' => 60,
+  'sle-micro-5.3-pool-x86_64' => 120,
+  'sle-micro-5.3-updates-x86_64' => 240,
+  'sle-micro-5.4-pool-x86_64' => 60,
+  'sle-micro-5.4-updates-x86_64' => 60,
+  'sle-micro-5.5-pool-x86_64' => 120,
+  'sle-micro-5.5-updates-x86_64' => 120,
+  'sle-module-basesystem15-sp1-pool-x86_64' => 180,
+  'sle-module-basesystem15-sp1-updates-x86_64' => 660,
+  'sle-module-basesystem15-sp2-pool-x86_64' => 180,
+  'sle-module-basesystem15-sp2-updates-x86_64' => 660,
+  'sle-module-basesystem15-sp3-pool-x86_64' => 240,
+  'sle-module-basesystem15-sp3-updates-x86_64' => 1020,
+  'sle-module-basesystem15-sp4-pool-x86_64' => 180,
+  'sle-module-basesystem15-sp4-updates-x86_64' => 900,
+  'sle-module-basesystem15-sp5-pool-x86_64' => 240,
+  'sle-module-basesystem15-sp5-updates-x86_64' => 540,
+  'sle-module-containers15-sp4-pool-x86_64' => 60,
+  'sle-module-containers15-sp4-updates-x86_64' => 60,
+  'sle-module-desktop-applications15-sp2-pool-x86_64' => 180,
+  'sle-module-desktop-applications15-sp2-updates-x86_64' => 180,
+  'sle-module-desktop-applications15-sp3-pool-x86_64' => 120,
+  'sle-module-desktop-applications15-sp3-updates-x86_64' => 60,
+  'sle-module-desktop-applications15-sp4-pool-x86_64' => 240,
+  'sle-module-desktop-applications15-sp4-updates-x86_64' => 120,
+  'sle-module-desktop-applications15-sp5-pool-x86_64' => 120,
+  'sle-module-desktop-applications15-sp5-updates-x86_64' => 60,
+  'sle-module-devtools15-sp2-pool-x86_64' => 120,
+  'sle-module-devtools15-sp2-updates-x86_64' => 420,
+  'sle-module-devtools15-sp3-pool-x86_64' => 120,
+  'sle-module-devtools15-sp3-updates-x86_64' => 600,
+  'sle-module-devtools15-sp4-pool-x86_64' => 120,
+  'sle-module-devtools15-sp4-updates-x86_64' => 600,
+  'sle-module-devtools15-sp5-pool-x86_64' => 120,
+  'sle-module-devtools15-sp5-updates-x86_64' => 300,
+  'sle-module-python3-15-sp5-pool-x86_64' => 60,
+  'sle-module-python3-15-sp5-updates-x86_64' => 60,
+  'sle-module-server-applications15-sp1-pool-x86_64' => 60,
+  'sle-module-server-applications15-sp1-updates-x86_64' => 120,
+  'sle-module-server-applications15-sp2-pool-x86_64' => 60,
+  'sle-module-server-applications15-sp2-updates-x86_64' => 120,
+  'sle-module-server-applications15-sp3-pool-x86_64' => 60,
+  'sle-module-server-applications15-sp3-updates-x86_64' => 120,
+  'sle-module-server-applications15-sp4-pool-x86_64' => 60,
+  'sle-module-server-applications15-sp4-updates-x86_64' => 120,
+  'sle-module-server-applications15-sp5-pool-x86_64' => 60,
+  'sle-module-server-applications15-sp5-updates-x86_64' => 60,
+  'sle-product-sles15-sp1-ltss-updates-x86_64' => 1500,
+  'sle-product-sles15-sp1-pool-x86_64' => 60,
+  'sle-product-sles15-sp1-updates-x86_64' => 60,
+  'sle-product-sles15-sp2-ltss-updates-x86_64' => 1200,
+  'sle-product-sles15-sp2-pool-x86_64' => 60,
+  'sle-product-sles15-sp2-updates-x86_64' => 60,
+  'sle-product-sles15-sp3-ltss-updates-x86_64' => 960,
+  'sle-product-sles15-sp3-pool-x86_64' => 60,
+  'sle-product-sles15-sp3-updates-x86_64' => 60,
+  'sle-product-sles15-sp4-pool-x86_64' => 60,
+  'sle-product-sles15-sp4-updates-x86_64' => 60,
+  'sle-product-sles15-sp5-pool-x86_64' => 60,
+  'sle-product-sles15-sp5-updates-x86_64' => 60,
+  'sles12-sp5-installer-updates-x86_64' => 60,
+  'sles12-sp5-pool-x86_64' => 180,
+  'sles12-sp5-updates-x86_64' => 2280,
+  'sll-9-updates-x86_64' => 720,
+  'sll-as-9-updates-x86_64' => 1620,
+  'sll-cb-9-updates-x86_64' => 2640,
+  'suse-microos-5.1-pool-x86_64' => 60,
+  'suse-microos-5.1-updates-x86_64' => 300,
+  'suse-microos-5.2-pool-x86_64' => 60,
+  'suse-microos-5.2-updates-x86_64' => 60,
+  'ubuntu-2004-amd64-main-amd64' => 480,
+  'ubuntu-2004-amd64-main-security-amd64' => 3480,
+  'ubuntu-2004-amd64-main-updates-amd64' => 660,
+  'ubuntu-20.04-suse-manager-tools-amd64' => 60,
+  'ubuntu-2204-amd64-main-amd64' => 780,
+  'ubuntu-2204-amd64-main-security-amd64' => 2760,
+  'ubuntu-2204-amd64-main-updates-amd64' => 180,
+  'ubuntu-22.04-suse-manager-tools-amd64' => 60
 }.freeze
 
 EMPTY_CHANNELS = %w[sle-module-suse-manager-retail-branch-server-4.3-updates-x86_64].freeze
