@@ -14,7 +14,7 @@
  */
 package com.suse.manager.webui.controllers;
 
-import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.result;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withDocsLocale;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
@@ -45,6 +45,7 @@ import com.suse.manager.webui.utils.gson.SimpleMinionJson;
 import com.suse.utils.Json;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.logging.log4j.LogManager;
@@ -191,7 +192,7 @@ public class AnsibleController {
                     .map(AnsiblePathJson::new)
                     .collect(Collectors.toList());
         }
-        return json(res, success(paths));
+        return result(res, success(paths), new TypeToken<>() { });
     }
 
     /**
@@ -207,7 +208,7 @@ public class AnsibleController {
         List<AnsiblePathJson> paths = AnsibleManager.listAnsiblePaths(minionServerId, user).stream()
                 .map(AnsiblePathJson::new)
                 .collect(Collectors.toList());
-        return json(res, success(paths));
+        return result(res, success(paths), new TypeToken<>() { });
     }
 
     /**
@@ -236,12 +237,13 @@ public class AnsibleController {
             }
         }
         catch (ValidatorException e) {
-            return json(res, error(
+            return result(res, error(
                     ValidationUtils.convertValidationErrors(e),
-                    ValidationUtils.convertFieldValidationErrors(e)));
+                    ValidationUtils.convertFieldValidationErrors(e)),
+                    new TypeToken<>() { });
         }
 
-        return json(res, success(Map.of("pathId", currentPath.getId())));
+        return result(res, success(Map.of("pathId", currentPath.getId())), new TypeToken<>() { });
     }
     /**
      * Delete an Ansible path
@@ -258,10 +260,10 @@ public class AnsibleController {
             AnsibleManager.removeAnsiblePath(ansiblePathId, user);
         }
         catch (LookupException e) {
-            return json(res, error(LOCAL.getMessage("ansible.entity_not_found")));
+            return result(res, error(LOCAL.getMessage("ansible.entity_not_found")), new TypeToken<>() { });
         }
 
-        return json(res, success());
+        return result(res, success(), new TypeToken<>() { });
     }
 
     /**
@@ -276,16 +278,16 @@ public class AnsibleController {
         try {
             AnsiblePlaybookIdJson params = GSON.fromJson(req.body(), AnsiblePlaybookIdJson.class);
             return getAnsibleManager().fetchPlaybookContents(params.getPathId(), params.getPlaybookRelPathStr(), user)
-                    .map(contents -> json(res, success(contents)))
-                    .orElseGet(() -> json(res,
-                            error(LOCAL.getMessage("ansible.control_node_not_responding"))));
+                    .map(contents -> result(res, success(contents), new TypeToken<>() { }))
+                    .orElseGet(() -> result(res,
+                            error(LOCAL.getMessage("ansible.control_node_not_responding")), new TypeToken<>() { }));
         }
         catch (IllegalStateException e) {
-            return json(res,
-                    error(LOCAL.getMessage("ansible.salt_error", e.getMessage())));
+            return result(res,
+                    error(LOCAL.getMessage("ansible.salt_error", e.getMessage())), new TypeToken<>() { });
         }
         catch (LookupException e) {
-            return json(res, error(LOCAL.getMessage("ansible.entity_not_found")));
+            return result(res, error(LOCAL.getMessage("ansible.entity_not_found")), new TypeToken<>() { });
         }
     }
 
@@ -310,14 +312,15 @@ public class AnsibleController {
                     params.getActionChainLabel(),
                     user);
 
-            return json(res, success(params.getActionChainLabel()
-                    .map(l -> ActionChainFactory.getActionChain(user, l).getId()).orElse(actionId)));
+            return result(res, success(params.getActionChainLabel()
+                    .map(l -> ActionChainFactory.getActionChain(user, l).getId()).orElse(actionId)),
+                    new TypeToken<>() { });
         }
         catch (LookupException e) {
-            return json(res, error(LOCAL.getMessage("ansible.entity_not_found")));
+            return result(res, error(LOCAL.getMessage("ansible.entity_not_found")), new TypeToken<>() { });
         }
         catch (TaskomaticApiException e) {
-            return json(res, error(LOCAL.getMessage("taskscheduler.down")));
+            return result(res, error(LOCAL.getMessage("taskscheduler.down")), new TypeToken<>() { });
         }
     }
 
@@ -359,17 +362,19 @@ public class AnsibleController {
                         data.put("knownSystems", registeredServers);
                         data.put("unknownSystems", unknownHostNames);
 
-                        return json(res, success(data));
+                        return result(res, success(data), new TypeToken<>() { });
                     })
-                    .orElseGet(() -> json(res,
-                            error(LOCAL.getMessage("ansible.control_node_not_responding"))));
+                    .orElseGet(() -> result(res,
+                            error(LOCAL.getMessage("ansible.control_node_not_responding")),
+                            new TypeToken<>() { }));
         }
         catch (IllegalStateException e) {
-            return json(res,
-                    error(LOCAL.getMessage("ansible.salt_error", e.getMessage())));
+            return result(res,
+                    error(LOCAL.getMessage("ansible.salt_error", e.getMessage())),
+                    new TypeToken<>() { });
         }
         catch (LookupException e) {
-            return json(res, error(LOCAL.getMessage("ansible.entity_not_found")));
+            return result(res, error(LOCAL.getMessage("ansible.entity_not_found")), new TypeToken<>() { });
         }
     }
 
@@ -409,16 +414,16 @@ public class AnsibleController {
 
         try {
             return getAnsibleManager().discoverPlaybooks(pathId, user)
-                    .map(playbook -> json(res, success(playbook)))
-                    .orElseGet(() -> json(res,
-                            error(LOCAL.getMessage("ansible.control_node_not_responding"))));
+                    .map(playbook -> result(res, success(playbook), new TypeToken<>() { }))
+                    .orElseGet(() -> result(res,
+                            error(LOCAL.getMessage("ansible.control_node_not_responding")), new TypeToken<>() { }));
         }
         catch (IllegalStateException e) {
-            return json(res,
-                    error(LOCAL.getMessage("ansible.salt_error", e.getMessage())));
+            return result(res,
+                    error(LOCAL.getMessage("ansible.salt_error", e.getMessage())), new TypeToken<>() { });
         }
         catch (LookupException e) {
-            return json(res, error(LOCAL.getMessage("ansible.entity_not_found")));
+            return result(res, error(LOCAL.getMessage("ansible.entity_not_found")), new TypeToken<>() { });
         }
     }
 

@@ -16,6 +16,7 @@ package com.suse.manager.webui.controllers;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.asJson;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.result;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withOrgAdmin;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserAndServer;
@@ -55,6 +56,7 @@ import com.suse.manager.webui.utils.MinionActionUtils;
 import com.suse.manager.webui.utils.PageControlHelper;
 import com.suse.manager.webui.utils.gson.BootstrapHostsJson;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
+import com.suse.manager.webui.utils.gson.ListKeysJson;
 import com.suse.manager.webui.utils.gson.PackageActionJson;
 import com.suse.manager.webui.utils.gson.PagedDataResultJson;
 import com.suse.manager.webui.utils.gson.ResultJson;
@@ -66,6 +68,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
 import com.google.gson.TypeAdapter;
+import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
@@ -159,7 +162,7 @@ public class MinionsAPI {
         Key.Fingerprints fingerprints = saltApi.getFingerprints();
 
         Map<String, Object> data = new TreeMap<>();
-        data.put("isOrgAdmin", user.hasRole(RoleFactory.ORG_ADMIN));
+        boolean isOrgAdmin = user.hasRole(RoleFactory.ORG_ADMIN);
 
         Set<String> minionIds = Stream.of(
                 fingerprints.getMinions(),
@@ -181,9 +184,8 @@ public class MinionsAPI {
         Predicate<String> isVisible = (minionId) ->
             visibleToUser.containsKey(minionId) || !serverIdMapping.containsKey(minionId);
 
-        data.put("minions", SaltMinionJson.fromFingerprints(
-                fingerprints, visibleToUser, isVisible));
-        return json(response, data);
+        var minions = SaltMinionJson.fromFingerprints(fingerprints, visibleToUser, isVisible);
+        return json(response, new ListKeysJson(isOrgAdmin, minions), new TypeToken<>() { });
     }
 
     /**
@@ -247,7 +249,7 @@ public class MinionsAPI {
         BootstrapHostsJson input = GSON.fromJson(request.body(), BootstrapHostsJson.class);
         BootstrapParameters params = regularMinionBootstrapper.createBootstrapParams(input);
         String defaultContactMethod = ContactMethodUtil.getRegularMinionDefault();
-        return json(response, regularMinionBootstrapper.bootstrap(params, user, defaultContactMethod).asMap());
+        return json(response, regularMinionBootstrapper.bootstrap(params, user, defaultContactMethod).asJson());
     }
 
 
@@ -268,7 +270,7 @@ public class MinionsAPI {
         BootstrapHostsJson input = GSON.fromJson(request.body(), BootstrapHostsJson.class);
         BootstrapParameters params = sshMinionBootstrapper.createBootstrapParams(input);
         String defaultContactMethod = ContactMethodUtil.getSSHMinionDefault();
-        return json(response, sshMinionBootstrapper.bootstrap(params, user, defaultContactMethod).asMap());
+        return json(response, sshMinionBootstrapper.bootstrap(params, user, defaultContactMethod).asJson());
     }
 
     private static class AuthMethodAdapter extends TypeAdapter<BootstrapHostsJson.AuthMethod> {
@@ -312,7 +314,7 @@ public class MinionsAPI {
                  throw new RuntimeException("No action in schedule result");
              }
              data.put("actions", actions);
-             return json(GSON, res, ResultJson.success(data));
+             return json(GSON, res, ResultJson.success(data), new TypeToken<>() { });
         }
         catch (Exception e) {
             LOG.error("Could not change proxy", e);
@@ -331,7 +333,7 @@ public class MinionsAPI {
      */
     private String allowedPtfActions(Request request, Response response, User user, Server server) {
         if (!server.doesOsSupportPtf()) {
-            return json(response, ResultJson.success(Collections.emptyList()));
+            return result(response, ResultJson.success(Collections.emptyList()), new TypeToken<>() { });
         }
 
         List<String> allowedActions = new ArrayList<>();
@@ -344,7 +346,7 @@ public class MinionsAPI {
             allowedActions.add(ActionFactory.TYPE_PACKAGES_UPDATE.getLabel());
         }
 
-        return json(response, ResultJson.success(allowedActions));
+        return result(response, ResultJson.success(allowedActions), new TypeToken<>() { });
     }
 
     /**
@@ -366,7 +368,7 @@ public class MinionsAPI {
         }
 
         Set<String> selectedItems = getSessionSet(request, server, SetLabels.PTF_LIST_REMOVE);
-        return json(response, new PagedDataResultJson<>(resultList, selectedItems));
+        return json(response, new PagedDataResultJson<>(resultList, selectedItems), new TypeToken<>() { });
     }
 
     /**
@@ -395,7 +397,7 @@ public class MinionsAPI {
         }
 
         Set<String> selectedItems = getSessionSet(request, server, SetLabels.PTF_INSTALL);
-        return json(response, new PagedDataResultJson<>(resultList, selectedItems));
+        return json(response, new PagedDataResultJson<>(resultList, selectedItems), new TypeToken<>() { });
     }
 
     /**
@@ -436,10 +438,10 @@ public class MinionsAPI {
         catch (TaskomaticApiException e) {
             LOG.error("Unable to schedule package remove action", e);
             return json(GSON, response, HttpStatus.SC_INTERNAL_SERVER_ERROR,
-                ResultJson.error("Unable to schedule action"));
+                ResultJson.error("Unable to schedule action"), new TypeToken<>() { });
         }
 
-        return json(GSON, response, result);
+        return json(GSON, response, result.longValue());
     }
 
     private static PageControl getPageControl(Request request) {

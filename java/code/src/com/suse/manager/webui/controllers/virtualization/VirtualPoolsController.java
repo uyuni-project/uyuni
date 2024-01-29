@@ -48,6 +48,7 @@ import com.suse.manager.webui.errors.NotFoundException;
 import com.suse.manager.webui.services.iface.VirtManager;
 
 import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 
 import org.apache.http.HttpStatus;
 
@@ -191,7 +192,7 @@ public class VirtualPoolsController extends AbstractVirtualizationController {
             return new VirtualStoragePoolInfoJson(entry.getKey(), entry.getValue(), volumes);
         }).collect(Collectors.toList());
 
-        return json(response, pools);
+        return json(response, pools, new TypeToken<>() { });
     }
 
     /**
@@ -211,7 +212,7 @@ public class VirtualPoolsController extends AbstractVirtualizationController {
             .orElseThrow(() -> Spark.halt(HttpStatus.SC_BAD_REQUEST,
                 "Failed to get virtual host storage pool capabilities"));
 
-        return json(response, caps);
+        return json(response, caps, new TypeToken<>() { });
     }
 
     /**
@@ -231,7 +232,7 @@ public class VirtualPoolsController extends AbstractVirtualizationController {
         PoolDefinition definition = virtManager.getPoolDefinition(minionId, poolName)
                 .orElseThrow(NotFoundException::new);
 
-        return json(response, definition);
+        return json(response, definition, new TypeToken<>() { });
     }
 
     /**

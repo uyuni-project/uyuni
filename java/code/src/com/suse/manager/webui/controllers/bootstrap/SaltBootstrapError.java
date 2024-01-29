@@ -14,8 +14,8 @@
  */
 package com.suse.manager.webui.controllers.bootstrap;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 
 /**
  * Bootstrapping error happened during the execution of a salt command.
@@ -54,15 +54,20 @@ public class SaltBootstrapError extends BootstrapError {
     }
 
     @Override
-    public Map<String, Object> asMap() {
-        Map<String, Object> resultMap = new HashMap<>();
+    public JsonObject asJson() {
+        JsonObject object = new JsonObject();
 
-        resultMap.put("message", getMessage());
-        resultMap.put("standardOutput", standardOutput);
-        resultMap.put("standardError", standardError);
-        resultMap.put("result", result);
-
-        return resultMap;
+        object.add("message", new JsonPrimitive(getMessage()));
+        if (standardOutput != null) {
+            object.add("standardOutput", new JsonPrimitive(standardOutput));
+        }
+        if (standardError != null) {
+            object.add("standardError", new JsonPrimitive(standardError));
+        }
+        if (result != null) {
+            object.add("result", new JsonPrimitive(result));
+        }
+        return object;
     }
 
     @Override
