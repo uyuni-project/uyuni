@@ -40,7 +40,7 @@ mgr_keep_system_up2date_pkgs:
       - sls: channels
       - pkg: mgr_keep_system_up2date_updatestack
 
-{%- if salt['pillar.get']('mgr_reboot_if_needed', True) %}
+{%- if salt['pillar.get']('mgr_reboot_if_needed', True) and salt['pillar.get']('custom_info:mgr_reboot_if_needed', 'true')|lower in ('true', '1', 'yes', 't') %}
 mgr_reboot_if_needed:
   cmd.run:
     - name: shutdown -r +5
