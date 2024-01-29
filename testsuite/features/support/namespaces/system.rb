@@ -125,7 +125,7 @@ class NamespaceSystem
   end
 
   ##
-  # Creates a system record on the SUMA server.
+  # Creates a Cobbler system record for a system that is not registered on the SUMA server.
   #
   # Args:
   #   name: The name of the system record.
@@ -136,6 +136,16 @@ class NamespaceSystem
   # is the IP address.  For example: #TODO
   def create_system_record(name, kslabel, koptions, comment, netdevices)
     @test.call('system.createSystemRecord', sessionKey: @test.token, systemName: name, ksLabel: kslabel, kOptions: koptions, comment: comment, netDevices: netdevices)
+  end
+
+  ##
+  # Creates a Cobbler system record with the specified kickstart label
+  #
+  # Args:
+  #   sid: The system id
+  #   kslabel: The kickstart label you want to use.
+  def create_system_record_with_sid(sid, kslabel)
+    @test.call('system.createSystemRecord', sessionKey: @test.token, sid: sid, ksLabel: kslabel)
   end
 
   ##
