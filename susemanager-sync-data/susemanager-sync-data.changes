@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Jan 29 11:55:08 CET 2024 - rosuna@suse.com
+
+- version 5.0.2-1
+  * Update repository description of Open Enterprise Server 23.4 (bsc#1215514)
+
+-------------------------------------------------------------------
 Tue Jan 16 08:06:26 CET 2024 - jgonzalez@suse.com
 
 - version 5.0.1-1
