@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2023 SUSE LLC.
+# Copyright (c) 2010-2024 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 ### This file contains the definitions for all steps concerning navigation through the Web UI
@@ -798,7 +798,8 @@ Then(/^I should see a "([^"]*)" button in "([^"]*)" form$/) do |arg1, arg2|
 end
 
 Then(/^I should not see a warning sign$/) do
-  raise 'Warning detected' unless page.has_no_xpath?('//*[contains(@class, \'fa fa-li fa-exclamation-triangle text-warning\')]')
+  raise 'Warning detected' unless page.has_no_xpath?('//*[contains(@class, \'fa-exclamation-triangle\')]')
+  raise 'Error detected' unless page.has_no_xpath?('//*[contains(@class, \'fa-exclamation-circle\')]')
 end
 
 Then(/^I select the "([^"]*)" repo$/) do |repo|

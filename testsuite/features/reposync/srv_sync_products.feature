@@ -144,7 +144,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
     Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
     Then I should not see a "Operation not successful" text
-    And I should not see a warning sign
+    And I should not see a warning nor an error sign
 
 @scc_credentials
   Scenario: Trigger a refresh of the products synched from SCC
