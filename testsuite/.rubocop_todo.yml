@@ -316,6 +316,10 @@ Metrics/ParameterLists:
 Metrics/PerceivedComplexity:
   Max: 15
 
+Style/InlineComment:
+  Exclude:
+    - 'features/support/constants.rb'
+
 # Offense count: 7
 Naming/AccessorMethodName:
   Exclude:
