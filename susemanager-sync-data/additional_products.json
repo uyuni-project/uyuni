@@ -59,7 +59,7 @@
     {
         "id" : -42,
         "name" : "Open Enterprise Server",
-        "identifier" : "Open_Enterprise_Server",
+        "identifier" : "OES",
         "former_identifier" : "",
         "version" : "23.4",
         "release_type" : null,
