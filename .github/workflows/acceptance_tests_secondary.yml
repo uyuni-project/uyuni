@@ -10,7 +10,11 @@ on:
 jobs:
   test-uyuni:
     uses: ./.github/workflows/acceptance_tests_common.yml
+    strategy:
+      fail-fast: false
+      matrix:
+        set: ['1', '2', '3', '4', '5']
     with:
-      secondary_tests: "18_run_secondary_tests.sh"
-      server_id: "secondary"
+      secondary_tests: "19_run_secondary_tests_subset.sh ${{ matrix.set }}"
+      server_id: "secondary_${{ matrix.set }}"
 
