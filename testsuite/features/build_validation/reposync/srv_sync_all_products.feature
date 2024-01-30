@@ -69,12 +69,6 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until I see "SUSE Linux Enterprise Server 15 SP2 x86_64" product has been added
     And I wait until all synchronized channels for "sles15-sp2" have finished
 
-@cloud
-@sle15sp2_minion
-  Scenario: Add SUSE Linux Enterprise Server 15 SP2 Public Cloud channels
-    When I add "sle-module-public-cloud15-sp2-pool-x86_64" channel
-    And I add "sle-module-public-cloud15-sp2-updates-x86_64" channel
-
 @uyuni
 @sle15sp2_minion
   Scenario: Add SUSE Linux Enterprise Server 15 SP2 Uyuni Client tools
@@ -103,12 +97,6 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
     And I wait until I see "SUSE Linux Enterprise Server 15 SP3 x86_64" product has been added
     And I wait until all synchronized channels for "sles15-sp3" have finished
-
-@cloud
-@sle15sp3_minion
-  Scenario: Add SUSE Linux Enterprise Server 15 SP3 Public Cloud channels
-    When I add "sle-module-public-cloud15-sp3-pool-x86_64" channel
-    And I add "sle-module-public-cloud15-sp3-updates-x86_64" channel
 
 @uyuni
 @sle15sp3_minion
