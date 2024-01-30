@@ -559,7 +559,7 @@ When(/^I create and modify the kickstart system "([^"]*)" with kickstart label "
   $api_test.system.create_system_record_with_sid(sid, kslabel)
   # this works only with a 2 column table where the key is in the left column
   variables = values.rows_hash
-  $api_test.system.set_variables(system_id, variables)
+  $api_test.system.set_variables(sid, variables)
 end
 
 When(/^I create a kickstart tree via the API$/) do
