@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2023 SUSE LLC.
+# Copyright (c) 2010-2024 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 ### This file contains all step definitions concerning general product funtionality
@@ -187,13 +187,7 @@ When(/^I wait until I see the event "([^"]*)" completed during last minute, refr
     rescue Capybara::ElementNotFound
       # ignored - pending actions cannot be found
     end
-    begin
-      accept_prompt do
-        execute_script 'window.location.reload()'
-      end
-    rescue Capybara::ModalNotFound
-      # ignored
-    end
+    refresh_page
   end
 end
 
