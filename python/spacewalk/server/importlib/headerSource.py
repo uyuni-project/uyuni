@@ -245,7 +245,7 @@ class rpmBinaryPackage(Package, rpmPackage):
                 elif not len(v) and k in ('device', 'flags'):
                     hash[k] = 0
                 # file size information is empty string when not available
-                elif not len(v) and k in ('file_size', 'file_size_long'):
+                elif not len(v) and k in ("file_size", "file_size_long"):
                     hash[k] = None
                 else:
                     hash[k] = v[i]
