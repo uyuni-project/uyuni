@@ -1,3 +1,9 @@
+"""
+Custom 'cpe' grain.
+
+This grain is tightly coupled to core grains and upstreamed in
+https://github.com/saltstack/salt/pull/65905.
+"""
 import re
 
 def get_cpe_grain(grains):
@@ -69,10 +75,10 @@ def _derive_cpe(grains):
     TODO: reference the OVAL code
     """
     os = grains.get('os')
-    os_release = grains.get('osrelease')
+    os_release = grains.get('osrelease', "")
     if os == 'Debian':
         return "cpe:/o:debian:debian_linux:" + os_release
     elif os == "Ubuntu":
         return "cpe:/o:canonical:ubuntu_linux:" + os_release
     else:
-        return None 
+        return None
