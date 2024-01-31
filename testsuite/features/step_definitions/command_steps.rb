@@ -1616,7 +1616,7 @@ Given(/^I have a user with admin access to the ReportDB$/) do
   users_and_permissions, return_code = get_target('server').run(reportdb_server_query('\\du'))
   raise 'Couldn\'t connect to the ReportDB on the server' unless return_code.zero?
   # extract only the line for the suma user
-  suma_user_permissions = users_and_permissions[/pythia_susemanager(.*)}/]
+  suma_user_permissions = users_and_permissions[/pythia_susemanager(.*)/]
   raise 'ReportDB admin user pythia_susemanager doesn\'t have the required permissions' unless
     ['Superuser', 'Create role', 'Create DB'].all? { |permission| suma_user_permissions.include? permission }
 end
