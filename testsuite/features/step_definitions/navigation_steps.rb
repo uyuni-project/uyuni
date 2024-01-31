@@ -59,13 +59,7 @@ When(/^I wait until I see "([^"]*)" (text|regex), refreshing the page$/) do |tex
   repeat_until_timeout(message: "Couldn't find text '#{text}'") do
     break if has_content?(text, wait: 3)
 
-    begin
-      accept_prompt do
-        execute_script 'window.location.reload()'
-      end
-    rescue Capybara::ModalNotFound
-      # ignored
-    end
+    refresh_page
   end
 end
 
@@ -75,13 +69,7 @@ When(/^I wait at most (\d+) seconds until I do not see "([^"]*)" text, refreshin
   repeat_until_timeout(message: "I still see text '#{text}'", timeout: seconds.to_i) do
     break if has_no_text?(text, wait: 3)
 
-    begin
-      accept_prompt do
-        execute_script 'window.location.reload()'
-      end
-    rescue Capybara::ModalNotFound
-      # ignored
-    end
+    refresh_page
   end
 end
 
@@ -106,13 +94,8 @@ When(/^I wait at most (\d+) seconds until the event is completed, refreshing the
       log "#{current} Still waiting for action to complete..."
       last = current
     end
-    begin
-      accept_prompt do
-        execute_script 'window.location.reload()'
-      end
-    rescue Capybara::ModalNotFound
-      # ignored
-    end
+
+    refresh_page
   end
 end
 
@@ -136,13 +119,7 @@ When(/^I wait until I do not see "([^"]*)" text, refreshing the page$/) do |text
   repeat_until_timeout(message: "Text '#{text}' is still visible") do
     break unless has_content?(text, wait: 3)
 
-    begin
-      accept_prompt do
-        execute_script 'window.location.reload()'
-      end
-    rescue Capybara::ModalNotFound
-      # ignored
-    end
+    refresh_page
   end
 end
 
@@ -157,13 +134,7 @@ Then(/^I wait until I see the (VNC|spice) graphical console$/) do |type|
 
     # If the connection failed try reloading since the VM may not have been ready
     if find(:xpath, '//*[contains(@class, "modal-title") and text() = "Failed to connect"]')
-      begin
-        accept_prompt do
-          execute_script 'window.location.reload()'
-        end
-      rescue Capybara::ModalNotFound
-        # ignored
-      end
+      refresh_page
     end
   end
 end
