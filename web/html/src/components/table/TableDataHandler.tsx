@@ -1,5 +1,7 @@
 import * as React from "react";
 
+import _isEqual from "lodash/isEqual";
+
 import { pageSize } from "core/user-preferences";
 
 import { Loading } from "components/utils";
@@ -21,6 +23,7 @@ type ChildrenArgsProps = {
   selectedItems: Array<any>;
   deletable?: boolean | ((row: any) => boolean);
   criteria?: string;
+  field?: string;
 };
 
 type Props = {
@@ -53,6 +56,12 @@ type Props = {
 
   /** the React Object that contains the filter search field */
   searchField?: React.ReactComponentElement<typeof SearchField>;
+
+  /** Default column to search on */
+  defaultSearchField?: string;
+
+  /** Initial search query */
+  initialSearch?: string;
 
   /** the initial number of how many row-per-page to show. If it's 0 table header and footer are hidden */
   initialItemsPerPage?: number;
@@ -101,6 +110,7 @@ type State = {
   itemsPerPage: number;
   totalItems: number;
   criteria?: string;
+  field?: string;
   sortColumnKey: string | null;
   sortDirection: number;
   loading: boolean;
@@ -121,7 +131,8 @@ export class TableDataHandler extends React.Component<Props, State> {
       currentPage: 1,
       itemsPerPage: this.props.initialItemsPerPage || pageSize,
       totalItems: 0,
-      criteria: undefined,
+      criteria: this.props.initialSearch,
+      field: this.props.defaultSearchField,
       sortColumnKey: this.props.initialSortColumnKey || null,
       sortDirection: this.props.initialSortDirection || 1,
       loading: false,
@@ -166,6 +177,7 @@ export class TableDataHandler extends React.Component<Props, State> {
       currPage,
       this.state.itemsPerPage,
       this.state.criteria,
+      this.state.field,
       this.state.sortColumnKey,
       this.state.sortDirection
     );
@@ -177,8 +189,11 @@ export class TableDataHandler extends React.Component<Props, State> {
     });
   }
 
-  updateData({ items, total }: PagedData) {
+  updateData({ items, total, selectedIds }: PagedData) {
     this.setState({ data: items, totalItems: total }, () => {
+      if (selectedIds != null) {
+        this.props.onSelect?.(selectedIds);
+      }
       const lastPage = this.getLastPage();
       if (this.state.currentPage > lastPage) {
         this.setState({ currentPage: lastPage });
@@ -191,7 +206,7 @@ export class TableDataHandler extends React.Component<Props, State> {
   }
 
   componentDidUpdate(prevProps: Props) {
-    if (this.props.data !== prevProps.data) {
+    if (!_isEqual(this.props.data, prevProps.data)) {
       this.setState({ provider: this.getProvider() }, () => this.getData());
     }
     if (this.props.loading !== prevProps.loading) {
@@ -221,6 +236,14 @@ export class TableDataHandler extends React.Component<Props, State> {
 
   onSearch = (criteria?: string): void => {
     this.setState({ currentPage: 1, criteria: criteria }, () => this.getData());
+  };
+
+  onSearchFieldChange = (field?: string): void => {
+    this.setState({ currentPage: 1, field: field }, () => {
+      if (this.state.criteria != null && this.state.criteria !== "") {
+        this.getData();
+      }
+    });
   };
 
   onItemsPerPageChange = (itemsPerPage: number): void => {
@@ -364,7 +387,9 @@ export class TableDataHandler extends React.Component<Props, State> {
                   toItem={toItem}
                   itemCount={itemCount}
                   criteria={this.state.criteria}
+                  field={this.state.field}
                   onSearch={this.onSearch}
+                  onSearchFieldChange={this.onSearchFieldChange}
                   onClear={handleSearchPanelClear}
                   onSelectAll={handleSearchPanelSelectAll}
                   selectedCount={selectedItems.length}
@@ -404,6 +429,7 @@ export class TableDataHandler extends React.Component<Props, State> {
                   selectedItems: selectedItems,
                   deletable: this.props.deletable,
                   criteria: this.state.criteria,
+                  field: this.state.field,
                 })}
               </div>
             </div>

@@ -72,6 +72,12 @@ type TableProps = {
   /** Other filter fields */
   additionalFilters?: Array<React.ReactNode>;
 
+  /** Default search field */
+  defaultSearchField?: string;
+
+  /** Initial search query */
+  initialSearch?: string;
+
   /** Title buttons to add next to the items per page selection */
   titleButtons?: Array<React.ReactNode>;
 };

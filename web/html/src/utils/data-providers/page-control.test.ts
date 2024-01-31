@@ -8,11 +8,11 @@ test("Page control initialization", () => {
   expect(pageControl.query).toBeUndefined();
   expect(pageControl.sort).toBeUndefined();
 
-  pageControl = new PageControl(1, 10, "mystring", "mycolumn");
+  pageControl = new PageControl(1, 10, "mystring", null, "mycolumn");
 
   expect(pageControl).toHaveProperty("query", "mystring");
   expect(pageControl).toHaveProperty("sort", { direction: 1, column: "mycolumn" });
 
-  pageControl = new PageControl(1, 10, "mystring", "mycolumn", -1);
+  pageControl = new PageControl(1, 10, "mystring", null, "mycolumn", -1);
   expect(pageControl).toHaveProperty("sort", { direction: -1, column: "mycolumn" });
 });
