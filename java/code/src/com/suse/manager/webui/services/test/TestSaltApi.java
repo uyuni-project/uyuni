@@ -304,4 +304,10 @@ public class TestSaltApi implements SaltApi {
                                          List<String> intermediateCAs) throws IllegalArgumentException {
         throw new UnsupportedOperationException();
     }
+
+    @Override
+    public List<String> selectMinions(String target, String targetType) {
+        throw new UnsupportedOperationException();
+    }
+
 }
