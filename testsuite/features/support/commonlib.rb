@@ -122,6 +122,14 @@ def format_detail(message, last_result, report_result)
   "#{formatted_message}#{formatted_result}"
 end
 
+def refresh_page
+  accept_prompt do
+    execute_script 'window.location.reload()'
+  end
+rescue Capybara::ModalNotFound
+  # ignored
+end
+
 def click_button_and_wait(locator = nil, **options)
   click_button(locator, options)
   begin
