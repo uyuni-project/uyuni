@@ -4,14 +4,16 @@ Custom 'cpe' grain.
 This grain is tightly coupled to core grains and upstreamed in
 https://github.com/saltstack/salt/pull/65905.
 """
+
 import re
+
 
 def get_cpe_grain(grains):
     ret = {"cpe": ""}
 
     os_release = _parse_os_release("/etc/os-release")
 
-    cpe = os_release.get('CPE_NAME')
+    cpe = os_release.get("CPE_NAME")
     if cpe:
         ret["cpe"] = cpe
     else:
@@ -20,6 +22,7 @@ def get_cpe_grain(grains):
             ret["cpe"] = derived_cpe
 
     return ret
+
 
 # Copy-pasted from https://github.com/saltstack/salt/blame/master/salt/grains/core.py
 def _parse_os_release(*os_release_files):
@@ -40,7 +43,7 @@ def _parse_os_release(*os_release_files):
     errno = None
     for filename in os_release_files:
         try:
-            with open(filename, 'r') as ifile:
+            with open(filename, "r", encoding="utf-8") as ifile:
                 regex = re.compile("^([\\w]+)=(?:'|\")?(.*?)(?:'|\")?$")
                 for line in ifile:
                     match = regex.match(line.strip())
@@ -54,9 +57,7 @@ def _parse_os_release(*os_release_files):
         except OSError as error:
             errno = error.errno
     else:
-        raise OSError(
-            errno, "Unable to read files {}".format(", ".join(os_release_files))
-        )
+        raise OSError(errno, f"Unable to read files {', '.join(os_release_files)}")
 
     return ret
 
@@ -65,18 +66,18 @@ def _derive_cpe(grains):
     """
     Try to derive the CPE of the system based on the collected core grains.
 
-    PS: This function is not guaranteed to derive the correct CPE as there could be a many 
+    PS: This function is not guaranteed to derive the correct CPE as there could be a many
     variances of the same OS that require different CPEs, for example, release and beta versions.
 
-    Currently the function exclusively derives CPEs for Debian and Ubuntu. 
-    These two operating systems are the primary focus, as they are intended to be supported by 
+    Currently the function exclusively derives CPEs for Debian and Ubuntu.
+    These two operating systems are the primary focus, as they are intended to be supported by
     the OVAL-based CVE auditing project, for which this modification is intended.
 
     TODO: reference the OVAL code
     """
-    os = grains.get('os')
-    os_release = grains.get('osrelease', "")
-    if os == 'Debian':
+    os = grains.get("os")
+    os_release = grains.get("osrelease", "")
+    if os == "Debian":
         return "cpe:/o:debian:debian_linux:" + os_release
     elif os == "Ubuntu":
         return "cpe:/o:canonical:ubuntu_linux:" + os_release
