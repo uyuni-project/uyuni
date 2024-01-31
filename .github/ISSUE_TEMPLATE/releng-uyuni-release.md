@@ -29,14 +29,15 @@ Add more tasks if needed.
 - [ ] Adjust the version number in `web/conf/rhn_web.conf` (`web.version.uyuni`)
 - [ ] Check if the migration paths exist for both the main database and report database, if they are needed (more at https://github.com/uyuni-project/uyuni/wiki/Releasing-Uyuni-versions)
 - [ ] Check if schema migration directories exist last SUSE Manager versions and Uyuni (more at https://github.com/uyuni-project/uyuni/wiki/Releasing-Uyuni-versions)
-- [ ] Tag everything with `tito` and push
+- [ ] Tag everything in uyuni-project/uyuni with `tito` and push
+- [ ] Additionally, tag everything in uyuni-project/uyuni-tools with `tito` and push. Please notice `tito-wrapper` will not work here, but so far it is only a single package to tag.
 - [ ] Check that the job [uyuni-Master-releng-2obs](https://ci.suse.de/view/Manager/view/Uyuni/job/uyuni-Master-releng-2obs/) job has packaged the whole tagging and submitted the changes from `master` branch into https://build.opensuse.org/project/show/systemsmanagement:Uyuni:Master (changes will propagate to the client tools for linked packages)
 - [ ] Run `rel-eng/uyuni-check-version` at the Git repository, to check what other packages need changes and adjust them.
 - [ ] Prepare the release notes PR, send it to be reviewed.
 - [ ] Merge the release notes PR, submit the release notes to [systemsmanagement:Uyuni:Master](https://build.opensuse.org/project/show/systemsmanagement:Uyuni:Master)
 - [ ] Prepare the PR for the [website repository, master branch](https://github.com/uyuni-project/uyuni-project.github.io), including announcement at the main page, updates to the stable page, news page, new doc folder (PDFs) with doc and release notes.
 - [ ] Prepare the email announcement and the twitter announcement, add them as comments to this card.
-- [ ] Prepare a new [snapshot](https://build.opensuse.org/project/show/systemsmanagement:Uyuni:Snapshots) as `systemsmanagement:Uyuni:Snapshots:YYYY.MM`. You can use [systemsmanagement:Uyuni:Snapshots:2021.09](https://build.opensuse.org/project/show/systemsmanagement:Uyuni:Snapshots:2021.09) as base, but make sure you adjust the meta configuration to match the version and the expect Leap version used as base OS.
+- [ ] Prepare a new [snapshot](https://build.opensuse.org/project/show/systemsmanagement:Uyuni:Snapshots) as `systemsmanagement:Uyuni:Snapshots:YYYY.MM`. You can use [systemsmanagement:Uyuni:Snapshots:2023.12](https://build.opensuse.org/project/show/systemsmanagement:Uyuni:Snapshots:2023.12) as base (even better if you use the snapshot for the previous release), but make sure you adjust the meta configuration to match the version and the expect Leap version used as base OS.
 - [ ] Modify the [meta configuration](https://build.opensuse.org/projects/systemsmanagement:Uyuni:Stable/meta) for `systemsmanagement:Uyuni:Stable`, so the promotion is done against the new Snapshot.
 
 # ToDo during release day
