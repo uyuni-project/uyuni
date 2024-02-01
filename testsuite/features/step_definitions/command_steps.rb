@@ -1318,7 +1318,7 @@ Given(/^I have a user with admin access to the ReportDB$/) do
   raise SystemCallError, 'Couldn\'t connect to the ReportDB on the server' unless return_code.zero?
 
   # extract only the line for the suma user
-  suma_user_permissions = users_and_permissions[/pythia_susemanager(.*)}/]
+  suma_user_permissions = users_and_permissions[/pythia_susemanager(.*)/]
   raise ScriptError, 'ReportDB admin user pythia_susemanager doesn\'t have the required permissions' unless
     ['Superuser', 'Create role', 'Create DB'].all? { |permission| suma_user_permissions.include? permission }
 end
