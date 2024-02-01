@@ -316,10 +316,6 @@ Metrics/ParameterLists:
 Metrics/PerceivedComplexity:
   Max: 15
 
-Style/InlineComment:
-  Exclude:
-    - 'features/support/constants.rb'
-
 # Offense count: 7
 Naming/AccessorMethodName:
   Exclude:
@@ -460,6 +456,7 @@ Style/InlineComment:
     - 'features/step_definitions/common_steps.rb'
     - 'features/step_definitions/lock_packages_on_client.rb'
     - 'features/support/commonlib.rb'
+    - 'features/support/constants.rb'
 
 # Offense count: 4
 # Configuration parameters: AllowedAddresses.
