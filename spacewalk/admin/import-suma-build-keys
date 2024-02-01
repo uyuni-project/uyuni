@@ -51,7 +51,7 @@ if [ -z "$TF" ]; then
 fi
 gpg -q --batch --no-options --no-default-keyring --no-permission-warning \
     --keyring ${SUSERING} --list-keys --with-fingerprint \
-    --with-colons | grep fpr | awk -F: '{printf("%s:6:\n", $10);}' > $TF
+    --with-colons | awk -F: '/fpr/ {printf("%s:6:\n", $10);}' > $TF
 c="$?"
 gpg -q --batch --no-default-keyring --no-permission-warning \
     --homedir ${PUBRINGDIR} --import-ownertrust < $TF
@@ -110,7 +110,7 @@ if [ -z "$TF" ]; then
 fi
 gpg -q --batch --no-options --no-default-keyring --no-permission-warning \
     --keyring ${CUSTRING} --list-keys --with-fingerprint \
-    --with-colons | grep fpr | awk -F: '{printf("%s:6:\n", $10);}' > $TF
+    --with-colons | awk -F: '/fpr/ {printf("%s:6:\n", $10);}' > $TF
 g="$?"
 gpg -q --batch --no-default-keyring --no-permission-warning \
     --homedir ${PUBRINGDIR} --import-ownertrust < $TF
