@@ -36,6 +36,8 @@ BuildArch:      noarch
 ExcludeArch:    i586 x86_64 ppc64le s390x aarch64
 %endif
 Provides:       susemanager-branding = %{version}
+BuildRequires:  skelcd-EULA-suse-manager-server-container
+Requires:       skelcd-EULA-suse-manager-server-container
 Conflicts:      oracle-server
 Conflicts:      otherproviders(susemanager-branding)
 
@@ -47,12 +49,10 @@ SUSE Manager oss flavors.
 %setup -q
 
 %build
-echo "dummy" > license.txt
-echo "<html><head><title>dummy</title></head><body>dummy</body></html>" > eula.html
-#cp /usr/share/licenses/product/SUSE-Manager-Server/license.txt license.txt
-#echo "<p>" > eula.html
-#cat license.txt | sed 's/^$/<\/p><p>/' >> eula.html
-#echo "</p>" >> eula.html
+cp /usr/share/licenses/product/SUSE-Manager-Server/license.txt license.txt
+echo "<p>" > eula.html
+cat license.txt | sed 's/^$/<\/p><p>/' >> eula.html
+echo "</p>" >> eula.html
 
 %install
 mkdir -p $RPM_BUILD_ROOT/%{wwwdocroot}/help/
