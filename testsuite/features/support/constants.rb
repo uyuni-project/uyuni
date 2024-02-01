@@ -641,6 +641,7 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         sle-module-devtools15-sp4-pool-x86_64
         sle-module-containers15-sp4-pool-x86_64
         sle-module-containers15-sp4-updates-x86_64
+        sle-product-sles15-sp4-ltss-updates-x86_64
       ],
     'almalinux9' => # CHECKED
       %w[
@@ -767,6 +768,7 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         sle-module-basesystem15-sp4-pool-x86_64
         sle-module-server-applications15-sp4-pool-x86_64
         sle-module-server-applications15-sp4-updates-x86_64
+        sle-product-sles15-sp4-ltss-updates-x86_64
         sle-manager-tools15-pool-x86_64-sp4
         sle-manager-tools15-updates-x86_64-sp4
         sle-module-devtools15-sp4-updates-x86_64
@@ -1074,6 +1076,7 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         sle-module-server-applications15-sp4-pool-x86_64
         sle-module-desktop-applications15-sp4-updates-x86_64
         sle-module-desktop-applications15-sp4-pool-x86_64
+        sle-product-sles15-sp4-ltss-updates-x86_64
         sle-module-devtools15-sp4-pool-x86_64
         sle-module-devtools15-sp4-updates-x86_64
         sle-module-containers15-sp4-pool-x86_64
@@ -1339,6 +1342,7 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sle-product-sles15-sp3-ltss-updates-x86_64' => 960,
   'sle-product-sles15-sp3-pool-x86_64' => 60,
   'sle-product-sles15-sp3-updates-x86_64' => 60,
+  'sle-product-sles15-sp4-ltss-updates-x86_64' => 960,
   'sle-product-sles15-sp4-pool-x86_64' => 60,
   'sle-product-sles15-sp4-updates-x86_64' => 60,
   'sle-product-sles15-sp5-pool-s390x' => 60,
