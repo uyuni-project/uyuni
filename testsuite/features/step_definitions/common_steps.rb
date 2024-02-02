@@ -482,31 +482,6 @@ When(/^I install the needed packages for highstate in build host$/) do
   get_target('build_host').run("zypper --non-interactive in #{packages}", timeout: 600)
 end
 
-Then(/^channel "([^"]*)" should be enabled on "([^"]*)"$/) do |channel, host|
-  node = get_target(host)
-  node.run("zypper lr -E | grep '#{channel}'")
-end
-
-Then(/^channel "([^"]*)" should not be enabled on "([^"]*)"$/) do |channel, host|
-  node = get_target(host)
-  _out, code = node.run("zypper lr -E | grep '#{channel}'", check_errors: false)
-  raise ScriptError, "'#{channel}' was not expected but was found." if code.to_i.zero?
-end
-
-Then(/^"(\d+)" channels should be enabled on "([^"]*)"$/) do |count, host|
-  node = get_target(host)
-  node.run('zypper lr -E | tail -n +5', verbose: true)
-  out, _code = node.run('zypper lr -E | tail -n +5 | wc -l')
-  raise ScriptError, "Expected #{count} channels enabled but found #{out}." unless count.to_i == out.to_i
-end
-
-Then(/^"(\d+)" channels with prefix "([^"]*)" should be enabled on "([^"]*)"$/) do |count, prefix, host|
-  node = get_target(host)
-  node.run("zypper lr -E | tail -n +5 | grep '#{prefix}'", verbose: true)
-  out, _code = node.run("zypper lr -E | tail -n +5 | grep '#{prefix}' | wc -l")
-  raise ScriptError, "Expected #{count} channels enabled but found #{out}." unless count.to_i == out.to_i
-end
-
 # metadata steps
 Then(/^I should have '([^']*)' in the patch metadata for "([^"]*)"$/) do |text, host|
   node = get_target(host)

@@ -160,7 +160,7 @@ class NamespaceChannelSoftware
   end
 
   ##
-  # Lists the labels of channels the system with the given system ID is subscribed to
+  # Lists the name of channels the system with the given system ID is subscribed to
   #
   # Args:
   #   system_id: The ID of the system.
