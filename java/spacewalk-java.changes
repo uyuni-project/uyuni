@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Feb 02 16:27:37 CET 2024 - rosuna@suse.com
+
+- version 4.3.71-1
+  * Generate server SSH key also when bootstrapping regular Minions (bsc#1219449)
+
+-------------------------------------------------------------------
 Tue Jan 23 13:58:58 CET 2024 - rosuna@suse.com
 
 - version 4.3.70-1

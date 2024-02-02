@@ -1,1 +1,0 @@
-- generate server ssh key also when bootstrapping regular minions (bsc#1219449)
