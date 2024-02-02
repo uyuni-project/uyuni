@@ -11313,7 +11313,7 @@ For a detailed analysis, please refer to the log files.
         <source>A new update for @@PRODUCT_NAME@@ is now available. For further details, please refer to the &lt;a href="{0}"&gt;release notes&lt;a&gt;.</source>
         <target state="final">@@PRODUCT_NAME@@의 새 업데이트를 이제 사용할 수 있습니다. 자세한 내용은 &lt;a href="{0}"&gt;릴리스 노트&lt;a&gt;를 참조하십시오.</target>
       </trans-unit>
-      <trans-unit id="message.payg.errorbyosnoscc" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="message.payg.errorbyosnoscc" xml:space="preserve">
         <source>
           @@PRODUCT_NAME@@ is not able to manage this instance since it is Bring-your-own-subscription and no SCC credentials are set.
           To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup/MirrorCredentials.do"&gt;here&lt;/a&gt;.
@@ -11323,7 +11323,7 @@ For a detailed analysis, please refer to the log files.
           이 문제를 수정하려면 SCC 자격 증명을 &lt;a href="/rhn/admin/setup/MirrorCredentials.do"&gt;여기&lt;/a&gt;에 추가하십시오.
         </target>
       </trans-unit>
-      <trans-unit id="message.payg.errornotcompliant" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="message.payg.errornotcompliant" xml:space="preserve">
         <source>
           This @@PRODUCT_NAME@@ PAYG is not compliant and some of its functions will be disabled. Please contact your administrator to
           amend the situation before continuing using the product.
@@ -11333,7 +11333,7 @@ For a detailed analysis, please refer to the log files.
           제품을 계속 사용하려면 관리자에게 문의하여 문제를 수정하십시오.
         </target>
       </trans-unit>
-      <trans-unit id="message.payg.errorbyosnosccssm" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="message.payg.errorbyosnosccssm" xml:space="preserve">
         <source>
 @@PRODUCT_NAME@@ is not able to manage these instances since there are one or more Bring-your-own-subscription and no SCC credentials are set.
 To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup/MirrorCredentials.do"&gt;here&lt;/a&gt; or select in SSM just Pay-as-you-go-instances.
@@ -11347,15 +11347,15 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         <source>Manages checkins and action chain resumes for SSH Push Clients</source>
         <target state="new"/>
       </trans-unit>
-      <trans-unit id="notification.paygnotcompliantwarning.summary" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="notification.paygnotcompliantwarning.summary" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ PAYG instance is not compliant.</source>
         <target state="final">@@PRODUCT_NAME@@ PAYG 인스턴스가 호환되지 않습니다.</target>
       </trans-unit>
-      <trans-unit id="notification.paygnotcompliantwarning.detail" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="notification.paygnotcompliantwarning.detail" xml:space="preserve">
         <source>This @@PRODUCT_NAME@@ PAYG instance is not compliant. Some @@PRODUCT_NAME@@ functions will be disabled. Please check with your system administrator.</source>
         <target state="final">이 @@PRODUCT_NAME@@ PAYG 인스턴스는 호환되지 않습니다. @@PRODUCT_NAME@@의 일부 기능이 비활성화됩니다. 시스템 관리자에게 문의하십시오.</target>
       </trans-unit>
-      <trans-unit id="task.action.rejection.notcompliantPaygByos" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="task.action.rejection.notcompliantPaygByos" xml:space="preserve">
         <source>
           The action you attempted could not be executed because @@PRODUCT_NAME@@ is PAYG, there are BYOS servers in the current action and currently no SCC credentials are set.
           To amend this situation, please set SCC credentials for this @@PRODUCT_NAME@@ instance and try again. You can also execute the action only on Pay-as-you-go instances.
@@ -11367,7 +11367,7 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
           BYO(Bring-your-own) 구독 서버 감지됨: {0}.
         </target>
       </trans-unit>
-      <trans-unit id="task.action.rejection.notcompliantPaygByosActionChain" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="task.action.rejection.notcompliantPaygByosActionChain" xml:space="preserve">
         <source>
           The action chain you attempted could not be executed because @@PRODUCT_NAME@@ is PAYG, there are BYOS servers in the current action chain and currently no SCC credentials are set.
           To amend this situation, please set SCC credentials for this @@PRODUCT_NAME@@ instance and try again. You can also execute the action chain only on Pay-as-you-go instances.
@@ -11381,6 +11381,10 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
       </trans-unit>
     <trans-unit id="recurring_action.not_in_maint_mode" xml:space="preserve">
         <source>One or more selected systems don't have a maintenance window assigned at the current time. Please limit your selection to systems that are in maintenance mode.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="internal_state.update-salt" xml:space="preserve">
+        <source>Perform a standalone Salt update</source>
       <target state="new"/>
   </trans-unit>
       </body>

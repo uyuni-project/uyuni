@@ -578,7 +578,7 @@ Thank you for using @@PRODUCT_NAME@@.
           </context>
         </context-group>
       </trans-unit>
-      <trans-unit id="dailysummary.email.notpaygcompliant" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="dailysummary.email.notpaygcompliant" xml:space="preserve">
           <source>Warning: This @@PRODUCT_NAME@@ PAYG instance is not compliant and some of its functions are disabled.
 Please contact your administrator to amend the situation before continuing using the product.
           </source>
