@@ -77,4 +77,4 @@ Feature: Assign child channel to a system
     Then I should see a "Changing the channels has been scheduled." text
     When I follow "scheduled" in the content area
     And I wait until I see "1 system successfully completed this action." text, refreshing the page
-    Then channel "SLE15-SP4-Installer-Updates for x86_64" should not be enabled on "sle_minion"
+    Then channel "SLE15-SP4-Installer-Updates for x86_64" should be disabled on "sle_minion"

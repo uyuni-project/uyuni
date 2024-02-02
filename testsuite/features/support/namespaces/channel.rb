@@ -138,7 +138,6 @@ class NamespaceChannelSoftware
     repos = @test.call('channel.software.listUserRepos', sessionKey: @test.token)
     repos.map { |key| key['label'] }
   end
-end
 
   ##
   # Lists the name of channels the system with the given system ID is subscribed to

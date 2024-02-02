@@ -221,6 +221,33 @@ Then(/^channel "([^"]*)" should not have attribute "([^"]*)"$/) do |label, attr|
   assert_equal(false, ret.key?(attr))
 end
 
+Then(/^channel "([^"]*)" should be (enabled|disabled) on "([^"]*)"$/) do |channel, state, host|
+  node = get_target(host)
+  system_id = get_system_id(node)
+
+  channels = $api_test.channel.software.list_system_channels(system_id)
+
+  assert_equal(state == 'enabled', channels.include?(channel))
+end
+
+Then(/^"(\d+)" channels should be enabled on "([^"]*)"$/) do |count, host|
+  node = get_target(host)
+  system_id = get_system_id(node)
+
+  channels = $api_test.channel.software.list_system_channels(system_id)
+
+  assert_equal(count, channels.size)
+end
+
+Then(/^"(\d+)" channels with prefix "([^"]*)" should be enabled on "([^"]*)"$/) do |count, prefix, host|
+  node = get_target(host)
+  system_id = get_system_id(node)
+
+  channels = $api_test.channel.software.list_system_channels(system_id)
+
+  assert_equal(count, channels.select { |channel| channel.start_with?(prefix) }.size)
+end
+
 ## activationkey namespace
 
 Then(/^I should get some activation keys$/) do

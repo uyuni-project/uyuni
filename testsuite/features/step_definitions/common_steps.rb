@@ -294,31 +294,6 @@ When(/^I refresh the metadata for "([^"]*)"$/) do |host|
   end
 end
 
-Then(/^channel "([^"]*)" should be enabled on "([^"]*)"$/) do |channel, host|
-  node = get_target(host)
-  node.run("zypper lr -E | grep '#{channel}'")
-end
-
-Then(/^channel "([^"]*)" should not be enabled on "([^"]*)"$/) do |channel, host|
-  node = get_target(host)
-  _out, code = node.run("zypper lr -E | grep '#{channel}'", check_errors: false)
-  raise "'#{channel}' was not expected but was found." if code.to_i.zero?
-end
-
-Then(/^"(\d+)" channels should be enabled on "([^"]*)"$/) do |count, host|
-  node = get_target(host)
-  node.run('zypper lr -E | tail -n +5', verbose: true)
-  out, _code = node.run('zypper lr -E | tail -n +5 | wc -l')
-  raise "Expected #{count} channels enabled but found #{out}." unless count.to_i == out.to_i
-end
-
-Then(/^"(\d+)" channels with prefix "([^"]*)" should be enabled on "([^"]*)"$/) do |count, prefix, host|
-  node = get_target(host)
-  node.run("zypper lr -E | tail -n +5 | grep '#{prefix}'", verbose: true)
-  out, _code = node.run("zypper lr -E | tail -n +5 | grep '#{prefix}' | wc -l")
-  raise "Expected #{count} channels enabled but found #{out}." unless count.to_i == out.to_i
-end
-
 # metadata steps
 # these steps currently work only for traditional clients
 Then(/^I should have '([^']*)' in the metadata for "([^"]*)"$/) do |text, host|
