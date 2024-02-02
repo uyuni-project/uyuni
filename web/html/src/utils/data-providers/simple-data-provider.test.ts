@@ -114,7 +114,7 @@ test("Test get with sorting", (done) => {
   };
   const filterFunc = (row, crit) => row.second.includes(crit);
   const provider = new SimpleDataProvider(Array.from(TEST_DATA), (o) => o.first, filterFunc, comparators);
-  const pageControl = new PageControl(1, 3, "an", "second", 1);
+  const pageControl = new PageControl(1, 3, "an", null, "second", 1);
 
   provider.get(
     (promise) =>

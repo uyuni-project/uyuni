@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2023 SUSE LLC.
+# Copyright (c) 2013-2024 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 require 'tempfile'
@@ -115,6 +115,14 @@ def format_detail(message, last_result, report_result)
   formatted_message = "#{': ' unless message.nil?}#{message}"
   formatted_result = "#{', last result was: ' unless last_result.nil?}#{last_result}" if report_result
   "#{formatted_message}#{formatted_result}"
+end
+
+def refresh_page
+  accept_prompt do
+    execute_script 'window.location.reload()'
+  end
+rescue Capybara::ModalNotFound
+  STDOUT.puts 'Ignoring Capybara ModalNotFound'
 end
 
 def click_button_and_wait(locator = nil, **options)
@@ -414,13 +422,6 @@ def channel_is_synced(channel)
     # Channel synced if Release and Packages files exist
     new_code.zero?
   end
-end
-
-# This function deletes the client tools channels from a different product
-def sanitize_client_tools(channels)
-  channels.delete_if { |channel| channel.include? 'manager-tools' } if product == 'Uyuni'
-  channels.delete_if { |channel| channel.include? 'uyuni-client' } if product == 'SUSE Manager'
-  channels
 end
 
 # This function initializes the API client

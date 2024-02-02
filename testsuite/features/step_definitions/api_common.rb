@@ -592,12 +592,16 @@ Then(/^"([^"]*)" should be present in the result$/) do |profile_name|
   assert($output.select { |p| p['name'] == profile_name }.count == 1)
 end
 
-When(/^I create and modify the kickstart system "([^"]*)" with hostname "([^"]*)" via XML-RPC$/) do |name, hostname, values|
-  system_id = $api_test.system.create_system_profile(name, 'hostname' => hostname)
-  STDOUT.puts "system_id: #{system_id}"
+When(/^I create and modify the kickstart system "([^"]*)" with kickstart label "([^"]*)" and hostname "([^"]*)" via XML-RPC$/) do |name, kslabel, hostname, values|
+  # even though it should not happen during a testsuite run, it is useful to know when debugging that
+  # this call will raise a SystemCallError if matching systems already exist, the Error message will include a list of the matchings system IDs
+  sid = $api_test.system.create_system_profile(name, 'hostname' => hostname)
+  $stdout.puts "system_id: #{sid}"
+
+  $api_test.system.create_system_record_with_sid(sid, kslabel)
   # this works only with a 2 column table where the key is in the left column
   variables = values.rows_hash
-  $api_test.system.set_variables(system_id, variables)
+  $api_test.system.set_variables(sid, variables)
 end
 
 When(/^I create a kickstart tree via the API$/) do

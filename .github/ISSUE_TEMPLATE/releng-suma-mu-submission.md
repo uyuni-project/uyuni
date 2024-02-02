@@ -50,7 +50,7 @@ Add more tasks if needed (for example, asking Maintenace to change the channel d
 - [ ] Prepare the submissions with `mu-massive-task` or `patch-creator`. For any new packages that will be added to the codestreams, fetch the groups what will maintain them (one per package) and document this at the release card.
 - [ ] Ping the Ion squad so they submit salt to `SLE15SP1`, `SLE15SP2`, `SLE15SP3`, `SLE15SP4` and `SLE15SP5` (not needed for MUs without salt/client tools)
 - [ ] Add the IDs (and notes, if any), to the JIRA ticket, and ping the Maintenance Team at [#discuss-susemamanager-maintenance](https://app.slack.com/client/T02863RC2AC/C02DEF2U0E5)
-- [ ] Once autobuild approves all MRs, create the `Manager-X.Y-MU.X.Y.Z` branch, push it and unlock `Manager-X.Y`
+- [ ] Once autobuild approves all MRs, create the `Manager-X.Y-MU-X.Y.Z` branch, push it and unlock `Manager-X.Y`
 - [ ] Send an email to galaxy-devel@suse.de informing that the branch `Manager-X.Y` is unlocked , and adjust the topic on the slack [#team-susemanager](https://app.slack.com/client/T02863RC2AC/C02D78LLS04) channel
 - [ ] Once the server/proxy submission is approved, [update the project](https://build.suse.de/project/show/Devel:Galaxy:Manager:MUTesting:4.3) that rebuilds the container images and the helm chart.
   - [ ] Unlock the project [Devel:Galaxy:Manager:MUTesting:4.3](https://build.suse.de/project/show/Devel:Galaxy:Manager:MUTesting:4.3) with `osc -A https://api.suse.de unlock -m "Project unlocked for updating the sources" Devel:Galaxy:Manager:MUTesting:4.3`

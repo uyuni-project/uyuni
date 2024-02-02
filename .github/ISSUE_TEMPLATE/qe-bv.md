@@ -62,9 +62,6 @@ They are delivered together with submissions and we must verify them before appr
     - [ ] rocky8_ssh_minion
     - [ ] rocky9_minion
     - [ ] rocky9_ssh_minion
-    - [ ] sle12sp4_client
-    - [ ] sle12sp4_minion
-    - [ ] sle12sp4_ssh_minion
     - [ ] sle12sp5_client
     - [ ] sle12sp5_minion
     - [ ] sle12sp5_ssh_minion
@@ -97,6 +94,12 @@ They are delivered together with submissions and we must verify them before appr
     - [ ] ubuntu2004_ssh_minion
     - [ ] ubuntu2204_minion
     - [ ] ubuntu2204_ssh_minion
+    - [ ] opensuse154arm_minion
+    - [ ] opensuse154arm_ssh_minion
+    - [ ] opensuse155arm_minion
+    - [ ] opensuse155arm_ssh_minion
+    - [ ] sles15sp5s390_minion
+    - [ ] sles15sp5s390_ssh_minion
   - [ ] Containerized proxy passed using the aggregate namespace [please set it up](https://confluence.suse.com/display/SUSEMANAGER/MI+process+for+Containerized+components#MIprocessforContainerizedcomponents-Finalcurrentsolution)
     Make sure to read the info and ask maint-coord to create the release requests
 
@@ -104,10 +107,7 @@ They are delivered together with submissions and we must verify them before appr
     Edit `/etc/sysconfig/uyuni-proxy-systemd-services` inside the Pod Proxy VM
     In the NAMESPACE, use this link exactly:
     http://registry.suse.de/devel/galaxy/manager/mutesting/4.3/containers/suse/manager/4.3/
-
     ```
-
-  - [ ] Monitoring tests (Grafana dashboards included)
   - [ ] Retail
     - [ ] SLES12 SP5
     - [ ] SLES15 SP4

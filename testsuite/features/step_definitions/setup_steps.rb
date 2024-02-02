@@ -1,4 +1,4 @@
-# Copyright (c) 2023 SUSE LLC.
+# Copyright (c) 2024 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 ### This file contains all steps concerning setting up a test environment.
@@ -57,6 +57,12 @@ When(/^I wait for the trash icon to appear for "([^"]*)"$/) do |user|
       break unless find('i.fa-trash-o')[:style].include? 'not-allowed'
       sleep 1
     end
+  end
+end
+
+When(/^I ask to edit the credentials for "([^"]*)"$/) do |user|
+  within(:xpath, "//h3[contains(text(), '#{user}')]/../..") do
+    raise 'Click on pencil icon failed' unless find('i.fa-pencil').click
   end
 end
 
@@ -397,13 +403,8 @@ When(/^I wait until radio button "([^"]*)" is checked, refreshing the page$/) do
   unless has_checked_field?(arg1)
     repeat_until_timeout(message: "Couldn't find checked radio button #{arg1}") do
       break if has_checked_field?(arg1)
-      begin
-        accept_prompt do
-          execute_script 'window.location.reload()'
-        end
-      rescue Capybara::ModalNotFound
-        # ignored
-      end
+
+      refresh_page
     end
   end
 end

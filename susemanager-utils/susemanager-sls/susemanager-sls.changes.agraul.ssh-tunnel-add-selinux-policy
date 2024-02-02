@@ -1,0 +1,2 @@
+- Dynamically load an SELinux policy for "Push via SSH tunnel" for SELinux
+  enabled clients. This policy allows communication over a custom SSH port.

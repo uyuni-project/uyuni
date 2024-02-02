@@ -1,0 +1,3 @@
+- improve updatestack update in uptodate state
+- add a standalone update-salt state
+- add pillar check to skip reboot_if_needed state

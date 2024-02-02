@@ -32,7 +32,7 @@ After:
 ## Links
 
 Issue(s): #
-Ports(s): # **add upstream PR, if any**
+Port(s): # **add upstream PR, if any**
 
 - [ ] **DONE**
 
