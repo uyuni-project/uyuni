@@ -122,7 +122,7 @@ def refresh_page
     execute_script 'window.location.reload()'
   end
 rescue Capybara::ModalNotFound
-  # ignored
+  STDOUT.puts 'Ignoring Capybara ModalNotFound'
 end
 
 def click_button_and_wait(locator = nil, **options)
