@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-18 12:06+0100\n"
+"POT-Creation-Date: 2024-02-02 15:21+0100\n"
 "PO-Revision-Date: 2021-10-15 12:11+0000\n"
 "Last-Translator: Ricardo Mateus <rmateus@suse.com>\n"
 "Language-Team: Portuguese <https://l10n.opensuse.org/projects/uyuni/web/pt/"
@@ -158,7 +158,7 @@ msgstr ""
 
 #: ../html/src/components/dialog/DeleteDialog.tsx:29
 #: ../html/src/components/panels/CreatorPanel.tsx:97
-#: ../html/src/components/table/Table.tsx:133
+#: ../html/src/components/table/Table.tsx:139
 #: ../html/src/manager/admin/payg/payg.tsx:73
 #: ../html/src/manager/admin/payg/payg.tsx:74
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:162
@@ -284,7 +284,8 @@ msgid "Unable to perform action."
 msgstr ""
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:180
-#: ../html/src/components/states-picker.tsx:329
+#: ../html/src/components/states-picker.tsx:339
+#: ../html/src/components/states-picker.tsx:529
 #: ../html/src/manager/admin/setup/products/products.tsx:1181
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:187
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:16
@@ -294,7 +295,7 @@ msgid "Confirm"
 msgstr ""
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:189
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:202
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:218
 msgid "Back to list"
 msgstr ""
 
@@ -383,7 +384,7 @@ msgstr ""
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:96
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:32
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:165
-#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:2
+#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:13
 msgid "Schedule Name"
 msgstr ""
 
@@ -423,26 +424,26 @@ msgstr ""
 
 #: ../html/src/components/ranking-table.tsx:20
 #: ../html/src/components/salt-state-popup.tsx:11
-#: ../html/src/components/states-picker.tsx:25
+#: ../html/src/components/states-picker.tsx:35
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:23
 msgid "State Configuration Channel"
 msgstr ""
 
 #: ../html/src/components/ranking-table.tsx:23
-#: ../html/src/components/states-picker.tsx:28
+#: ../html/src/components/states-picker.tsx:38
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:26
 msgid "Internal State"
 msgstr ""
 
 #: ../html/src/components/ranking-table.tsx:27
 #: ../html/src/components/salt-state-popup.tsx:14
-#: ../html/src/components/states-picker.tsx:32
+#: ../html/src/components/states-picker.tsx:42
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:30
 msgid "Normal Configuration Channel"
 msgstr ""
 
 #: ../html/src/components/ranking-table.tsx:44
-#: ../html/src/components/table/TableDataHandler.tsx:353
+#: ../html/src/components/table/TableDataHandler.tsx:376
 msgid "There are no entries to show."
 msgstr ""
 
@@ -474,27 +475,27 @@ msgstr ""
 msgid "Edit Configuration Channel"
 msgstr ""
 
-#: ../html/src/components/states-picker.tsx:83
+#: ../html/src/components/states-picker.tsx:93
 msgid "There are unsaved changes. Do you want to proceed?"
 msgstr ""
 
-#: ../html/src/components/states-picker.tsx:98
+#: ../html/src/components/states-picker.tsx:108
 msgid "State configuration must not be empty"
 msgstr ""
 
-#: ../html/src/components/states-picker.tsx:129
+#: ../html/src/components/states-picker.tsx:139
 msgid "State assignments have been saved."
 msgstr ""
 
-#: ../html/src/components/states-picker.tsx:133
+#: ../html/src/components/states-picker.tsx:143
 msgid "An error occurred on save."
 msgstr ""
 
-#: ../html/src/components/states-picker.tsx:268
+#: ../html/src/components/states-picker.tsx:278
 msgid "No states assigned. Use search to find and assign states."
 msgstr ""
 
-#: ../html/src/components/states-picker.tsx:327
+#: ../html/src/components/states-picker.tsx:337
 #: ../html/src/manager/images/image-view.tsx:817
 #: ../html/src/manager/images/image-view.tsx:819
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:29
@@ -510,29 +511,25 @@ msgstr ""
 msgid "Back"
 msgstr ""
 
-#: ../html/src/components/states-picker.tsx:337
+#: ../html/src/components/states-picker.tsx:347
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:182
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:187
 msgid "Save Changes"
 msgstr ""
 
-#: ../html/src/components/states-picker.tsx:351
-msgid "Execute States"
-msgstr ""
-
-#: ../html/src/components/states-picker.tsx:359
+#: ../html/src/components/states-picker.tsx:362
 msgid "Reorder"
 msgstr ""
 
-#: ../html/src/components/states-picker.tsx:385
+#: ../html/src/components/states-picker.tsx:388
 msgid "Search in states"
 msgstr ""
 
-#: ../html/src/components/states-picker.tsx:385
+#: ../html/src/components/states-picker.tsx:388
 msgid "Search in configuration channels"
 msgstr ""
 
-#: ../html/src/components/states-picker.tsx:391
+#: ../html/src/components/states-picker.tsx:394
 #: ../html/src/manager/header/search/search.tsx:77
 #: ../html/src/manager/header/search/search.tsx:86
 #: ../html/src/manager/minion/packages/package-states.tsx:214
@@ -540,47 +537,47 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
-#: ../html/src/components/states-picker.tsx:401
+#: ../html/src/components/states-picker.tsx:404
 msgid "Edit State Ranks"
 msgstr ""
 
-#: ../html/src/components/states-picker.tsx:401
+#: ../html/src/components/states-picker.tsx:404
 msgid "Edit Channel Ranks"
 msgstr ""
 
-#: ../html/src/components/states-picker.tsx:404
+#: ../html/src/components/states-picker.tsx:407
 msgid "Edit the ranking of the states by dragging them."
 msgstr ""
 
-#: ../html/src/components/states-picker.tsx:405
+#: ../html/src/components/states-picker.tsx:408
 msgid "Edit the ranking of the configuration channels by dragging them."
 msgstr ""
 
-#: ../html/src/components/states-picker.tsx:410
+#: ../html/src/components/states-picker.tsx:413
 msgid "There are no states assigned."
 msgstr ""
 
-#: ../html/src/components/states-picker.tsx:418
+#: ../html/src/components/states-picker.tsx:421
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:248
 #, fuzzy
 msgid "State Name"
 msgstr "Estado"
 
-#: ../html/src/components/states-picker.tsx:418
+#: ../html/src/components/states-picker.tsx:421
 msgid "Channel Name"
 msgstr ""
 
-#: ../html/src/components/states-picker.tsx:419
+#: ../html/src/components/states-picker.tsx:422
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:261
 #, fuzzy
 msgid "State Label"
 msgstr "Estado"
 
-#: ../html/src/components/states-picker.tsx:419
+#: ../html/src/components/states-picker.tsx:422
 msgid "Channel Label"
 msgstr ""
 
-#: ../html/src/components/states-picker.tsx:420
+#: ../html/src/components/states-picker.tsx:423
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:73
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:126
 #: ../html/src/manager/admin/payg-shared/info/payg-info-form.tsx:23
@@ -596,8 +593,31 @@ msgstr ""
 msgid "Description"
 msgstr ""
 
-#: ../html/src/components/states-picker.tsx:421
+#: ../html/src/components/states-picker.tsx:424
 msgid "Assign"
+msgstr ""
+
+#: ../html/src/components/states-picker.tsx:483
+msgid ""
+"Select the systems to schedule for immediate state execution and confirm."
+msgstr ""
+
+#: ../html/src/components/states-picker.tsx:493
+msgid "This table is empty"
+msgstr ""
+
+#: ../html/src/components/states-picker.tsx:500
+#: ../html/src/components/states-picker.tsx:542
+#, fuzzy
+msgid "System Name"
+msgstr "Estado"
+
+#: ../html/src/components/states-picker.tsx:520
+msgid "Execute States"
+msgstr ""
+
+#: ../html/src/components/states-picker.tsx:525
+msgid "Select Sytems"
 msgstr ""
 
 #: ../html/src/components/systems.tsx:50
@@ -609,24 +629,39 @@ msgstr ""
 msgid "System Locked"
 msgstr ""
 
-#: ../html/src/components/table/SearchPanel.tsx:46
+#: ../html/src/components/table/SearchField.tsx:49
+#: ../html/src/components/table/TableFilter.tsx:45
+msgid "Filter"
+msgstr ""
+
+#: ../html/src/components/table/SearchField.tsx:54
+#: ../html/src/components/table/TableFilter.tsx:49
+msgid "Select a filter"
+msgstr ""
+
+#: ../html/src/components/table/SearchPanel.tsx:57
 msgid "Items {from} - {to} of {total}"
 msgstr ""
 
-#: ../html/src/components/table/SearchPanel.tsx:51
+#: ../html/src/components/table/SearchPanel.tsx:62
 msgid "({selectedCount} selected)"
 msgstr ""
 
-#: ../html/src/components/table/SearchPanel.tsx:53
+#: ../html/src/components/table/SearchPanel.tsx:64
 #: ../html/src/manager/admin/setup/products/products.tsx:384
 msgid "Clear"
 msgstr ""
 
-#: ../html/src/components/table/SearchPanel.tsx:60
+#: ../html/src/components/table/SearchPanel.tsx:71
 msgid "Select All"
 msgstr ""
 
-#: ../html/src/components/table/TableDataHandler.tsx:384
+#: ../html/src/components/table/SelectSearchField.tsx:5
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:228
+msgid "All"
+msgstr ""
+
+#: ../html/src/components/table/TableDataHandler.tsx:409
 msgid "items per page"
 msgstr ""
 
@@ -2326,12 +2361,6 @@ msgstr ""
 msgid "Contains Package"
 msgstr ""
 
-#. Value options for filtering by Target Type in recurring actions list
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:228
-#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:10
-msgid "All"
-msgstr ""
-
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:246
 msgid "Fixes Package Name"
 msgstr ""
@@ -3635,7 +3664,7 @@ msgstr ""
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:60
 #: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:129
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:99
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:192
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:208
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-form.tsx:102
 #: ../html/src/manager/virtualization/nets/network-properties.tsx:443
 #: ../html/src/manager/virtualization/pools/pool-properties.tsx:566
@@ -3845,7 +3874,7 @@ msgid "Loading playbook contents.."
 msgstr ""
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:87
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:184
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:200
 #: ../html/src/manager/state/highstate.tsx:121
 msgid "Test mode"
 msgstr ""
@@ -4357,9 +4386,10 @@ msgstr ""
 msgid "City"
 msgstr ""
 
+#. Value options for filtering by Target Type in recurring actions list
 #: ../html/src/manager/proxy/container-config.tsx:324
 #: ../html/src/manager/recurring/recurring-actions-utils.tsx:8
-#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:11
+#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:2
 #: ../html/src/manager/state/highstate-summary.tsx:169
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:181
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:63
@@ -4475,25 +4505,29 @@ msgstr ""
 msgid "Schedule successfully created."
 msgstr ""
 
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:192
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:90
+msgid "Action scheduled on selected minions"
+msgstr ""
+
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:208
 msgid "Update "
 msgstr ""
 
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:192
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:208
 msgid "Create "
 msgstr ""
 
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:210
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:226
 msgid "Schedule Recurring Action"
 msgstr ""
 
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:219
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:235
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:196
-#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:5
+#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:16
 msgid "Action Type"
 msgstr ""
 
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:244
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:260
 msgid "Configure states to execute"
 msgstr ""
 
@@ -4516,22 +4550,22 @@ msgid "Frequency"
 msgstr ""
 
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:180
-#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:4
+#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:15
 msgid "Target Type"
 msgstr ""
 
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:188
-#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:3
+#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:14
 msgid "Target Name"
 msgstr ""
 
 #: ../html/src/manager/recurring/recurring-actions-utils.tsx:4
-#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:13
+#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:4
 msgid "Minion"
 msgstr ""
 
 #: ../html/src/manager/recurring/recurring-actions-utils.tsx:6
-#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:12
+#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:3
 msgid "Group"
 msgstr ""
 
@@ -4545,30 +4579,14 @@ msgid ""
 "scheduled time will be the server time."
 msgstr ""
 
-#: ../html/src/manager/recurring/search/recurring-actions-search-action-type-filter.tsx:16
-msgid "Select an Action Type"
-msgstr ""
-
-#: ../html/src/manager/recurring/search/recurring-actions-search-target-type-filter.tsx:18
-msgid "Select a Target Type"
-msgstr ""
-
 #. Value options for filtering by Action Type in recurring actions list
-#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:17
+#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:8
 #: ../html/src/manager/state/highstate.tsx:142
 msgid "Highstate"
 msgstr ""
 
-#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:18
+#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:9
 msgid "Custom State"
-msgstr ""
-
-#: ../html/src/manager/recurring/search/recurring-actions-search.tsx:43
-msgid "Filter"
-msgstr ""
-
-#: ../html/src/manager/recurring/search/recurring-actions-search.tsx:47
-msgid "Select a filter"
 msgstr ""
 
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:53
