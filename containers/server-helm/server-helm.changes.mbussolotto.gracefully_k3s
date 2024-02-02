@@ -1,0 +1,1 @@
+- Stop services and database in kubernetes gracefully
