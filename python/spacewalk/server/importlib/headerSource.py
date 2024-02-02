@@ -289,6 +289,9 @@ class rpmBinaryPackage(Package, rpmPackage):
                 # pylint: disable-next=use-implicit-booleaness-not-len
                 elif not len(v) and k in ("device", "flags"):
                     hash[k] = 0
+                # file size information is empty string when not available
+                elif not v and k in ("file_size", "file_size_long"):
+                    hash[k] = None
                 else:
                     hash[k] = v[i]
 
@@ -428,6 +431,7 @@ class rpmFile(File, ChangeLog):
         "groupname": "filegroupname",
         "rdev": "filerdevs",
         "file_size": "filesizes",
+        "file_size_long": "longfilesizes",
         "mtime": "filemtimes",
         "filedigest": "filemd5s",  # FILEMD5S is a pre-rpm4.6 name for FILEDIGESTS
         # we have to use it for compatibility reason
@@ -448,6 +452,9 @@ class rpmFile(File, ChangeLog):
         if isinstance(self["filedigest"], str):
             self["checksum"] = self["filedigest"]
             del self["filedigest"]
+        # Files with size higher than 4GB provides value as "file_size_long"
+        if self["file_size"] is None:
+            self["file_size"] = self["file_size_long"]
 
 
 class rpmProvides(Dependency):

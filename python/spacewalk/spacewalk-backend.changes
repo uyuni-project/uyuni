@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Mon Jan 29 11:56:53 CET 2024 - rosuna@suse.com
+
+- version 5.0.3-1
+  * Remove normalize_orphan_vendor_packages and move it to taskomatic (bsc#1216781)
+  * Unquote HTML-encoded credentials before synchronizing repositories (bsc#1217204)
+  * Apply Black and Pylint to enforce Python style
+
+-------------------------------------------------------------------
 Thu Jan 18 11:06:01 CET 2024 - jgonzalez@suse.com
 
 - version 5.0.2-1

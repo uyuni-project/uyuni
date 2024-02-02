@@ -1,0 +1,127 @@
+#! /bin/bash
+
+PUBRINGDIR="/var/lib/spacewalk/gpgdir"
+PUBRING="${PUBRINGDIR}/pubring.gpg"
+SUSERING="/usr/lib/susemanager/susemanager-build-keys.gpg"
+CUSTRING="/var/spacewalk/gpg/customer-build-keys.gpg"
+
+if [ ! -f ${PUBRING} ]; then
+    touch ${PUBRING}
+fi
+echo -n "importing SUSE Manager build key to rpm keyring... "
+TF=`mktemp /tmp/gpg.XXXXXX`
+if [ -z "$TF" ]; then
+  echo "import-suma-build-keys: cannot make temporary file. Fatal error."
+  exit 20
+fi
+if [ -z "$HOME" ]; then
+  HOME=/root
+  export HOME
+fi
+if [ ! -d "$HOME" ]; then
+  mkdir "$HOME"
+fi
+gpg -q --batch --no-options < /dev/null > /dev/null 2>&1 || true
+# no kidding... gpg won't initialize correctly without being called twice.
+gpg < /dev/null > /dev/null 2>&1 || true
+gpg < /dev/null > /dev/null 2>&1 || true
+
+gpg -q --batch --no-options --no-default-keyring --no-permission-warning \
+         --keyring ${SUSERING}    --export -a > $TF
+a="$?"
+gpg -q --batch --no-options --no-default-keyring --no-permission-warning \
+         --keyring ${PUBRING}   --import < $TF
+b="$?"
+rm -f "$TF"
+if [ "$a" = 0 -a "$b" = 0 ]; then
+    echo "done."
+else
+    echo "importing the key from the file ${SUSERING}"
+    echo "returned an error. This should not happen. It may not be possible"
+    echo "to properly verify the authenticity of rpm packages from SUSE sources."
+    exit -1
+fi
+
+# we need to trust them, otherwise the verify will fail
+echo -n "Trusting SUSE Manager build keys... "
+TF=`mktemp /tmp/gpg.XXXXXX`
+if [ -z "$TF" ]; then
+  echo "import-suma-build-keys: cannot make temporary file. Fatal error."
+  exit 20
+fi
+gpg -q --batch --no-options --no-default-keyring --no-permission-warning \
+    --keyring ${SUSERING} --list-keys --with-fingerprint \
+    --with-colons | awk -F: '/fpr/ {printf("%s:6:\n", $10);}' > $TF
+c="$?"
+gpg -q --batch --no-default-keyring --no-permission-warning \
+    --homedir ${PUBRINGDIR} --import-ownertrust < $TF
+d="$?"
+rm -f "$TF"
+if [ "$c" = 0 -a "$d" = 0 ]; then
+    echo "done."
+else
+    echo "trusting the key from the file ${SUSERING}"
+    echo "returned an error. This should not happen. It may not be possible"
+    echo "to properly sync repositories using spacewalk-repo-sync."
+    exit -1
+fi
+
+if [ ! -s ${CUSTRING} ]; then
+    echo "No customer keyring to import"
+    exit 0
+fi
+
+echo -n "importing Customers build key to rpm keyring... "
+TF=`mktemp /tmp/gpg.XXXXXX`
+if [ -z "$TF" ]; then
+  echo "import-suma-build-keys: cannot make temporary file. Fatal error."
+  exit 20
+fi
+if [ -z "$HOME" ]; then
+  HOME=/root
+  export HOME
+fi
+if [ ! -d "$HOME" ]; then
+  mkdir "$HOME"
+fi
+
+gpg -q --batch --no-options --no-default-keyring --no-permission-warning \
+         --keyring ${CUSTRING}    --export -a > $TF
+e="$?"
+gpg -q --batch --no-options --no-default-keyring --no-permission-warning \
+         --keyring ${PUBRING}   --import < $TF
+f="$?"
+rm -f "$TF"
+if [ "$e" = 0 -a "$f" = 0 ]; then
+    echo "done."
+else
+    echo "importing the key from the file ${CUSTRING}"
+    echo "returned an error. This should not happen. It may not be possible"
+    echo "to properly verify the authenticity of rpm packages from 3rd party sources."
+    exit -1
+fi
+
+# we need to trust them, otherwise the verify will fail
+echo -n "Trusting Customers build keys... "
+TF=`mktemp /tmp/gpg.XXXXXX`
+if [ -z "$TF" ]; then
+  echo "import-suma-build-keys: cannot make temporary file. Fatal error."
+  exit 20
+fi
+gpg -q --batch --no-options --no-default-keyring --no-permission-warning \
+    --keyring ${CUSTRING} --list-keys --with-fingerprint \
+    --with-colons | awk -F: '/fpr/ {printf("%s:6:\n", $10);}' > $TF
+g="$?"
+gpg -q --batch --no-default-keyring --no-permission-warning \
+    --homedir ${PUBRINGDIR} --import-ownertrust < $TF
+h="$?"
+rm -f "$TF"
+if [ "$g" = 0 -a "$h" = 0 ]; then
+    echo "done."
+else
+    echo "trusting the key from the file ${CUSTRING}"
+    echo "returned an error. This should not happen. It may not be possible"
+    echo "to properly sync repositories using spacewalk-repo-sync."
+    exit -1
+fi
+

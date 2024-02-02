@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Mon Jan 29 11:50:51 CET 2024 - rosuna@suse.com
+
+- version 5.0.3-1
+  * Reduce UI inconsistencies between the SUSE Manager and Uyuni themes
+  * Add one-shot action execution to recurring custom state create/edit
+  * Bump the WebUI version to 2024.01
+
+-------------------------------------------------------------------
 Tue Jan 16 08:32:17 CET 2024 - jgonzalez@suse.com
 
 - version 5.0.2-1

@@ -32,6 +32,10 @@ Style/IfUnlessModifier:
     - 'features/step_definitions/vm_steps.rb'
     - 'features/support/http_client.rb'
 
+Style/InlineComment:
+  Exclude:
+    - 'features/support/constants.rb'
+
 # Offense count: 7
 # Configuration parameters: AllowedMethods.
 # AllowedMethods: respond_to_missing?

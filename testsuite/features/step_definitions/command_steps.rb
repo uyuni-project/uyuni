@@ -89,7 +89,7 @@ Then(/^it should be possible to reach the build sources$/) do
     # TODO: move that internal resource to some other external location
     log 'Sanity check not implemented, move resource to external network first'
   else
-    url = 'http://download.suse.de/ibs/SUSE/Products/SLE-SERVER/12-SP4/x86_64/product/media.1/products.key'
+    url = 'http://download.suse.de/ibs/SUSE/Products/SLE-SERVER/12-SP5/x86_64/product/media.1/products.key'
     get_target('server').run("curl --insecure --location #{url} --output /dev/null")
   end
 end
@@ -357,9 +357,9 @@ end
 # This function kills spacewalk-repo-sync processes for a particular OS product version.
 # It waits for all the reposyncs in the allow-list to complete, and kills all others.
 When(/^I kill running spacewalk-repo-sync for "([^"]*)"$/) do |os_product_version|
-  next if CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION[os_product_version].nil?
+  next if CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION[product][os_product_version].nil?
 
-  channels_to_kill = sanitize_client_tools(CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION[os_product_version])
+  channels_to_kill = CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION[product][os_product_version]
   log "Killing channels:\n#{channels_to_kill}"
   time_spent = 0
   checking_rate = 10
@@ -374,7 +374,7 @@ When(/^I kill running spacewalk-repo-sync for "([^"]*)"$/) do |os_product_versio
     end
     channel = process.split[5].strip
     log "Repo-sync process for channel '#{channel}' running." if Time.now.sec % 5
-    next unless CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION[os_product_version].include? channel
+    next unless CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION[product][os_product_version].include? channel
 
     channels_to_kill.delete(channel)
     pid = process.split[0]
@@ -422,11 +422,17 @@ end
 When(/^I wait until the channel "([^"]*)" has been synced$/) do |channel|
   time_spent = 0
   checking_rate = 10
+  if TIMEOUT_BY_CHANNEL_NAME[channel].nil?
+    log "Unknown timeout for channel #{channel}, assuming one hour"
+    timeout = 3600
+  else
+    timeout = TIMEOUT_BY_CHANNEL_NAME[channel]
+  end
   begin
-    repeat_until_timeout(timeout: 9000, message: 'Channel not fully synced') do
+    repeat_until_timeout(timeout: timeout, message: 'Channel not fully synced') do
       break if channel_is_synced(channel)
 
-      log "#{time_spent / 60.to_i} minutes waiting for '#{channel}' channel to be synchronized." if ((time_spent += checking_rate) % 60).zero?
+      log "#{time_spent / 60.to_i} minutes out of #{timeout / 60.to_i} waiting for '#{channel}' channel to be synchronized" if ((time_spent += checking_rate) % 60).zero?
       sleep checking_rate
     end
   rescue StandardError => e
@@ -441,8 +447,8 @@ When(/^I wait until all synchronized channels have finished$/) do
   end
 end
 
-When(/^I wait until all synchronized channels for "([^"]*)" have finished$/) do |product_os_version|
-  channels_to_wait = sanitize_client_tools(CHANNEL_TO_SYNCH_BY_OS_PRODUCT_VERSION[product_os_version])
+When(/^I wait until all synchronized channels for "([^"]*)" have finished$/) do |os_product_version|
+  channels_to_wait = CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION[product][os_product_version]
   channels_to_wait.each do |channel|
     step %(I wait until the channel "#{channel}" has been synced)
   end
@@ -1312,7 +1318,7 @@ Given(/^I have a user with admin access to the ReportDB$/) do
   raise SystemCallError, 'Couldn\'t connect to the ReportDB on the server' unless return_code.zero?
 
   # extract only the line for the suma user
-  suma_user_permissions = users_and_permissions[/pythia_susemanager(.*)}/]
+  suma_user_permissions = users_and_permissions[/pythia_susemanager(.*)/]
   raise ScriptError, 'ReportDB admin user pythia_susemanager doesn\'t have the required permissions' unless
     ['Superuser', 'Create role', 'Create DB'].all? { |permission| suma_user_permissions.include? permission }
 end

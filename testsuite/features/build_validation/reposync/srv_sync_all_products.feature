@@ -6,28 +6,6 @@ Feature: Synchronize products in the products page of the Setup Wizard
   Scenario: Refresh SCC
     When I refresh SCC
 
-@sle12sp4_minion
-  Scenario: Add SUSE Linux Enterprise Server 12 SP4
-    Given I am authorized for the "Admin" section
-    When I follow the left menu "Admin > Setup Wizard > Products"
-    And I wait until I do not see "currently running" text
-    And I wait until I do not see "Loading" text
-    And I enter "SUSE Linux Enterprise Server 12 SP4" as the filtered product description
-    And I select "SUSE Linux Enterprise Server 12 SP4 x86_64" as a product
-    Then I should see the "SUSE Linux Enterprise Server 12 SP4 x86_64" selected
-    When I open the sub-list of the product "SUSE Linux Enterprise Server 12 SP4 x86_64"
-    And I select "SUSE Linux Enterprise Server LTSS 12 SP4 x86_64" as a product
-    Then I should see the "SUSE Linux Enterprise Server LTSS 12 SP4 x86_64" selected
-    When I click the Add Product button
-    And I wait until I see "SUSE Linux Enterprise Server 12 SP4 x86_64" product has been added
-    And I wait until all synchronized channels for "sles12-sp4" have finished
-
-@uyuni
-@sle12sp4_minion
-  Scenario: Add SUSE Linux Enterprise Server 12 SP4 Uyuni Client tools
-    When I use spacewalk-common-channel to add channel "sles12-sp4-uyuni-client-devel" with arch "x86_64"
-    And I wait until the channel "sles12-sp4-uyuni-client-devel-x86_64" has been synced
-
 @sle12sp5_minion
   Scenario: Add SUSE Linux Enterprise Server 12 SP5
     Given I am authorized for the "Admin" section
@@ -767,4 +745,4 @@ Feature: Synchronize products in the products page of the Setup Wizard
     Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
     Then I should not see a "Operation not successful" text
-    And I should not see a warning sign
+    And I should not see a warning nor an error sign

@@ -1,4 +1,3 @@
-#  pylint: disable=missing-module-docstring
 #
 # Licensed under the GNU General Public License Version 3
 #
@@ -33,53 +32,43 @@
 import gettext
 from spacecmd.utils import *
 
-translation = gettext.translation("spacecmd", fallback=True)
+translation = gettext.translation('spacecmd', fallback=True)
 try:
     _ = translation.ugettext
 except AttributeError:
     _ = translation.gettext
 
-
 def help_filepreservation_list(self):
-    print(_("filepreservation_list: List all file preservations"))
-    print(_("usage: filepreservation_list"))
+    print(_('filepreservation_list: List all file preservations'))
+    print(_('usage: filepreservation_list'))
 
 
 def do_filepreservation_list(self, args, doreturn=False):
-    lists = [
-        l.get("name")
-        for l in self.client.kickstart.filepreservation.listAllFilePreservations(
-            self.session
-        )
-    ]
+    lists = [l.get('name') for l in self.client.kickstart.filepreservation.listAllFilePreservations(self.session)]
 
     if not doreturn:
-        print("\n".join(sorted(lists)))
+        print('\n'.join(sorted(lists)))
         return None
 
     return lists
-
 
 ####################
 
 
 def help_filepreservation_create(self):
-    print(_("filepreservation_create: Create a file preservation list"))
-    print(_("usage: filepreservation_create [NAME] [FILE ...]"))
+    print(_('filepreservation_create: Create a file preservation list'))
+    print(_('usage: filepreservation_create [NAME] [FILE ...]'))
 
 
 def do_filepreservation_create(self, args):
-    # pylint: disable-next=undefined-variable
     arg_parser = get_argument_parser()
 
-    # pylint: disable-next=undefined-variable,unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if args:
         name = args[0]
     else:
-        # pylint: disable-next=undefined-variable
-        name = prompt_user(_("Name:"), noblank=True)
+        name = prompt_user(_('Name:'), noblank=True)
 
     if len(args) > 1:
         files = args[1:]
@@ -87,50 +76,47 @@ def do_filepreservation_create(self, args):
         files = []
 
         while True:
-            print(_("File List"))
-            print("---------")
-            print("\n".join(sorted(files)))
-            print("")
+            print(_('File List'))
+            print('---------')
+            print('\n'.join(sorted(files)))
+            print('')
 
-            # pylint: disable-next=undefined-variable
-            userinput = prompt_user(_("File [blank to finish]:"))
+            userinput = prompt_user(_('File [blank to finish]:'))
 
-            if userinput == "":
+            if userinput == '':
                 break
             if userinput not in files:
                 files.append(userinput)
 
-    print("")
-    print(_("File List"))
-    print("---------")
-    print("\n".join(sorted(files)))
+    print('')
+    print(_('File List'))
+    print('---------')
+    print('\n'.join(sorted(files)))
 
     if not self.user_confirm():
         return 1
 
-    self.client.kickstart.filepreservation.create(self.session, name, files)
+    self.client.kickstart.filepreservation.create(self.session,
+                                                  name,
+                                                  files)
 
     return 0
-
 
 ####################
 
 
 def help_filepreservation_delete(self):
-    print(_("filepreservation_delete: Delete a file preservation list"))
-    print(_("usage: filepreservation_delete NAME"))
+    print(_('filepreservation_delete: Delete a file preservation list'))
+    print(_('usage: filepreservation_delete NAME'))
 
 
 def complete_filepreservation_delete(self, text, line, beg, end):
-    # pylint: disable-next=undefined-variable
-    return tab_completer(self.do_filepreservation_list("", True), text)
+    return tab_completer(self.do_filepreservation_list('', True), text)
 
 
 def do_filepreservation_delete(self, args):
-    # pylint: disable-next=undefined-variable
     arg_parser = get_argument_parser()
 
-    # pylint: disable-next=undefined-variable,unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -139,37 +125,29 @@ def do_filepreservation_delete(self, args):
 
     name = args[0]
 
-    if not self.user_confirm(_("Delete this list [y/N]:")):
+    if not self.user_confirm(_('Delete this list [y/N]:')):
         return 1
 
     self.client.kickstart.filepreservation.delete(self.session, name)
 
     return 0
 
-
 ####################
 
 
 def help_filepreservation_details(self):
-    print(
-        _(
-            """filepreservation_details: Show the details of a file
-'preservation list"""
-        )
-    )
-    print(_("usage: filepreservation_details NAME"))
+    print(_('''filepreservation_details: Show the details of a file
+'preservation list'''))
+    print(_('usage: filepreservation_details NAME'))
 
 
 def complete_filepreservation_details(self, text, line, beg, end):
-    # pylint: disable-next=undefined-variable
-    return tab_completer(self.do_filepreservation_list("", True), text)
+    return tab_completer(self.do_filepreservation_list('', True), text)
 
 
 def do_filepreservation_details(self, args):
-    # pylint: disable-next=undefined-variable
     arg_parser = get_argument_parser()
 
-    # pylint: disable-next=undefined-variable,unused-variable
     (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
@@ -178,8 +156,10 @@ def do_filepreservation_details(self, args):
 
     name = args[0]
 
-    details = self.client.kickstart.filepreservation.getDetails(self.session, name)
+    details = \
+        self.client.kickstart.filepreservation.getDetails(self.session,
+                                                          name)
 
-    print("\n".join(sorted(details.get("file_names"))))
+    print('\n'.join(sorted(details.get('file_names'))))
 
     return 0

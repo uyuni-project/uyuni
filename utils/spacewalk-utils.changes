@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Jan 29 11:48:40 CET 2024 - rosuna@suse.com
+
+- version 5.0.2-1
+  * Use HTTP for localhost and HTTPS for other FQDN for spacewalk-common-channels
+
+-------------------------------------------------------------------
 Tue Jan 16 08:12:07 CET 2024 - jgonzalez@suse.com
 
 - version 5.0.1-1

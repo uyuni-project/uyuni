@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Mon Jan 29 11:53:23 CET 2024 - rosuna@suse.com
+
+- version 5.0.2-1
+  * Use HTTP for localhost and HTTPS for other FQDN
+  * Rename Open Enterprise Server label to OES23.4 (bsc#1215514)
+  * Apply Black and Pylint to enforce style rules
+
+-------------------------------------------------------------------
 Tue Jan 16 08:29:07 CET 2024 - jgonzalez@suse.com
 
 - version 5.0.1-1

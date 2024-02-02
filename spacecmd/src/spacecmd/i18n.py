@@ -1,4 +1,3 @@
-#  pylint: disable=missing-module-docstring
 #
 # Licensed under the GNU General Public License Version 3
 #
@@ -17,7 +16,6 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
 # Copyright (c) 2020 SUSE LLC
-
 
 def _N(message):
     return message
