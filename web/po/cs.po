@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-18 12:06+0100\n"
+"POT-Creation-Date: 2024-02-02 15:21+0100\n"
 "PO-Revision-Date: 2022-09-19 19:13+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/web-4-3/cs/>\n"
@@ -169,7 +169,7 @@ msgstr "Zrušit"
 
 #: ../html/src/components/dialog/DeleteDialog.tsx:29
 #: ../html/src/components/panels/CreatorPanel.tsx:97
-#: ../html/src/components/table/Table.tsx:133
+#: ../html/src/components/table/Table.tsx:139
 #: ../html/src/manager/admin/payg/payg.tsx:73
 #: ../html/src/manager/admin/payg/payg.tsx:74
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:162
@@ -303,7 +303,8 @@ msgid "Unable to perform action."
 msgstr ""
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:180
-#: ../html/src/components/states-picker.tsx:329
+#: ../html/src/components/states-picker.tsx:339
+#: ../html/src/components/states-picker.tsx:529
 #: ../html/src/manager/admin/setup/products/products.tsx:1181
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:187
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:16
@@ -313,7 +314,7 @@ msgid "Confirm"
 msgstr "Potvrdit"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:189
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:202
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:218
 msgid "Back to list"
 msgstr "Zpět na seznam"
 
@@ -404,7 +405,7 @@ msgstr "Sobota"
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:96
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:32
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:165
-#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:2
+#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:13
 msgid "Schedule Name"
 msgstr "Název plánu"
 
@@ -446,13 +447,13 @@ msgstr "Vlastní Quartz formát:"
 
 #: ../html/src/components/ranking-table.tsx:20
 #: ../html/src/components/salt-state-popup.tsx:11
-#: ../html/src/components/states-picker.tsx:25
+#: ../html/src/components/states-picker.tsx:35
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:23
 msgid "State Configuration Channel"
 msgstr "Kanál konfigurace stavu"
 
 #: ../html/src/components/ranking-table.tsx:23
-#: ../html/src/components/states-picker.tsx:28
+#: ../html/src/components/states-picker.tsx:38
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:26
 #, fuzzy
 msgid "Internal State"
@@ -460,13 +461,13 @@ msgstr "Interní stavy"
 
 #: ../html/src/components/ranking-table.tsx:27
 #: ../html/src/components/salt-state-popup.tsx:14
-#: ../html/src/components/states-picker.tsx:32
+#: ../html/src/components/states-picker.tsx:42
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:30
 msgid "Normal Configuration Channel"
 msgstr "Normální konfigurační kanál"
 
 #: ../html/src/components/ranking-table.tsx:44
-#: ../html/src/components/table/TableDataHandler.tsx:353
+#: ../html/src/components/table/TableDataHandler.tsx:376
 msgid "There are no entries to show."
 msgstr "Žádné položky k zobrazení."
 
@@ -499,28 +500,28 @@ msgstr "Upravit"
 msgid "Edit Configuration Channel"
 msgstr "Upravit konfigurační kanál"
 
-#: ../html/src/components/states-picker.tsx:83
+#: ../html/src/components/states-picker.tsx:93
 msgid "There are unsaved changes. Do you want to proceed?"
 msgstr "Máte neuložené změny. Chcete pokračovat?"
 
-#: ../html/src/components/states-picker.tsx:98
+#: ../html/src/components/states-picker.tsx:108
 #, fuzzy
 msgid "State configuration must not be empty"
 msgstr "Kanál konfigurace stavu"
 
-#: ../html/src/components/states-picker.tsx:129
+#: ../html/src/components/states-picker.tsx:139
 msgid "State assignments have been saved."
 msgstr "Přiřazení stavu byla uložena."
 
-#: ../html/src/components/states-picker.tsx:133
+#: ../html/src/components/states-picker.tsx:143
 msgid "An error occurred on save."
 msgstr "Při ukládání došlo k chybě."
 
-#: ../html/src/components/states-picker.tsx:268
+#: ../html/src/components/states-picker.tsx:278
 msgid "No states assigned. Use search to find and assign states."
 msgstr "Nebyly přiřazeny žádné stavy. Vyhledáváním najděte a přiřaďte stavy."
 
-#: ../html/src/components/states-picker.tsx:327
+#: ../html/src/components/states-picker.tsx:337
 #: ../html/src/manager/images/image-view.tsx:817
 #: ../html/src/manager/images/image-view.tsx:819
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:29
@@ -536,30 +537,26 @@ msgstr "Nebyly přiřazeny žádné stavy. Vyhledáváním najděte a přiřaďt
 msgid "Back"
 msgstr "Zpět"
 
-#: ../html/src/components/states-picker.tsx:337
+#: ../html/src/components/states-picker.tsx:347
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:182
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:187
 msgid "Save Changes"
 msgstr "Uložit změny"
 
-#: ../html/src/components/states-picker.tsx:351
-msgid "Execute States"
-msgstr "Výkonné stavy"
-
-#: ../html/src/components/states-picker.tsx:359
+#: ../html/src/components/states-picker.tsx:362
 msgid "Reorder"
 msgstr "Přeuspořádat"
 
-#: ../html/src/components/states-picker.tsx:385
+#: ../html/src/components/states-picker.tsx:388
 #, fuzzy
 msgid "Search in states"
 msgstr "Vyhledávat systémy"
 
-#: ../html/src/components/states-picker.tsx:385
+#: ../html/src/components/states-picker.tsx:388
 msgid "Search in configuration channels"
 msgstr "Hledat v konfiguračních kanálech"
 
-#: ../html/src/components/states-picker.tsx:391
+#: ../html/src/components/states-picker.tsx:394
 #: ../html/src/manager/header/search/search.tsx:77
 #: ../html/src/manager/header/search/search.tsx:86
 #: ../html/src/manager/minion/packages/package-states.tsx:214
@@ -567,51 +564,51 @@ msgstr "Hledat v konfiguračních kanálech"
 msgid "Search"
 msgstr "Vyhledávání"
 
-#: ../html/src/components/states-picker.tsx:401
+#: ../html/src/components/states-picker.tsx:404
 #, fuzzy
 msgid "Edit State Ranks"
 msgstr "Výkonné stavy"
 
-#: ../html/src/components/states-picker.tsx:401
+#: ../html/src/components/states-picker.tsx:404
 #, fuzzy
 msgid "Edit Channel Ranks"
 msgstr "Kanály SUSE"
 
-#: ../html/src/components/states-picker.tsx:404
+#: ../html/src/components/states-picker.tsx:407
 #, fuzzy
 msgid "Edit the ranking of the states by dragging them."
 msgstr "Přetažením upravte pořadí konfiguračních kanálů."
 
-#: ../html/src/components/states-picker.tsx:405
+#: ../html/src/components/states-picker.tsx:408
 #, fuzzy
 msgid "Edit the ranking of the configuration channels by dragging them."
 msgstr "Přetažením upravte pořadí konfiguračních kanálů."
 
-#: ../html/src/components/states-picker.tsx:410
+#: ../html/src/components/states-picker.tsx:413
 msgid "There are no states assigned."
 msgstr "Nejsou přiřazeny žádné stavy."
 
-#: ../html/src/components/states-picker.tsx:418
+#: ../html/src/components/states-picker.tsx:421
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:248
 #, fuzzy
 msgid "State Name"
 msgstr "Poslední jméno (příjmení)"
 
-#: ../html/src/components/states-picker.tsx:418
+#: ../html/src/components/states-picker.tsx:421
 msgid "Channel Name"
 msgstr "Název kanálu"
 
-#: ../html/src/components/states-picker.tsx:419
+#: ../html/src/components/states-picker.tsx:422
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:261
 #, fuzzy
 msgid "State Label"
 msgstr "Stavový kanál"
 
-#: ../html/src/components/states-picker.tsx:419
+#: ../html/src/components/states-picker.tsx:422
 msgid "Channel Label"
 msgstr "Označení kanálu"
 
-#: ../html/src/components/states-picker.tsx:420
+#: ../html/src/components/states-picker.tsx:423
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:73
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:126
 #: ../html/src/manager/admin/payg-shared/info/payg-info-form.tsx:23
@@ -627,9 +624,34 @@ msgstr "Označení kanálu"
 msgid "Description"
 msgstr "Popis"
 
-#: ../html/src/components/states-picker.tsx:421
+#: ../html/src/components/states-picker.tsx:424
 msgid "Assign"
 msgstr "Přiřadit"
+
+#: ../html/src/components/states-picker.tsx:483
+msgid ""
+"Select the systems to schedule for immediate state execution and confirm."
+msgstr ""
+
+#: ../html/src/components/states-picker.tsx:493
+#, fuzzy
+msgid "This table is empty"
+msgstr "Tento kanál je povinný"
+
+#: ../html/src/components/states-picker.tsx:500
+#: ../html/src/components/states-picker.tsx:542
+#, fuzzy
+msgid "System Name"
+msgstr "Název systému"
+
+#: ../html/src/components/states-picker.tsx:520
+msgid "Execute States"
+msgstr "Výkonné stavy"
+
+#: ../html/src/components/states-picker.tsx:525
+#, fuzzy
+msgid "Select Sytems"
+msgstr "Vybraná rozhraní"
 
 #: ../html/src/components/systems.tsx:50
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:187
@@ -640,26 +662,44 @@ msgstr "Bezpečnostní poradenství"
 msgid "System Locked"
 msgstr "Systém uzamčen"
 
-#: ../html/src/components/table/SearchPanel.tsx:46
+#: ../html/src/components/table/SearchField.tsx:49
+#: ../html/src/components/table/TableFilter.tsx:45
+#, fuzzy
+msgid "Filter"
+msgstr "Filtry"
+
+#: ../html/src/components/table/SearchField.tsx:54
+#: ../html/src/components/table/TableFilter.tsx:49
+#, fuzzy
+msgid "Select a filter"
+msgstr "Vybrat plán"
+
+#: ../html/src/components/table/SearchPanel.tsx:57
 #, fuzzy
 msgid "Items {from} - {to} of {total}"
 msgstr "Položky {0} - {1} z {2}"
 
-#: ../html/src/components/table/SearchPanel.tsx:51
+#: ../html/src/components/table/SearchPanel.tsx:62
 #, fuzzy
 msgid "({selectedCount} selected)"
 msgstr "Odstranit vybrané"
 
-#: ../html/src/components/table/SearchPanel.tsx:53
+#: ../html/src/components/table/SearchPanel.tsx:64
 #: ../html/src/manager/admin/setup/products/products.tsx:384
 msgid "Clear"
 msgstr "Vyčistit"
 
-#: ../html/src/components/table/SearchPanel.tsx:60
+#: ../html/src/components/table/SearchPanel.tsx:71
 msgid "Select All"
 msgstr "Vybrat vše"
 
-#: ../html/src/components/table/TableDataHandler.tsx:384
+#: ../html/src/components/table/SelectSearchField.tsx:5
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:228
+#, fuzzy
+msgid "All"
+msgstr "Povolit"
+
+#: ../html/src/components/table/TableDataHandler.tsx:409
 msgid "items per page"
 msgstr "položek na stránku"
 
@@ -2429,13 +2469,6 @@ msgstr "Obsahuje balíček poskytující název"
 msgid "Contains Package"
 msgstr "Obsahuje balíček"
 
-#. Value options for filtering by Target Type in recurring actions list
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:228
-#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:10
-#, fuzzy
-msgid "All"
-msgstr "Povolit"
-
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:246
 #, fuzzy
 msgid "Fixes Package Name"
@@ -3790,7 +3823,7 @@ msgstr "Chcete-li pokračovat, potvrďte."
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:60
 #: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:129
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:99
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:192
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:208
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-form.tsx:102
 #: ../html/src/manager/virtualization/nets/network-properties.tsx:443
 #: ../html/src/manager/virtualization/pools/pool-properties.tsx:566
@@ -4008,7 +4041,7 @@ msgid "Loading playbook contents.."
 msgstr "Načítání obsahu scénářů..."
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:87
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:184
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:200
 #: ../html/src/manager/state/highstate.tsx:121
 msgid "Test mode"
 msgstr "Testový režim"
@@ -4540,9 +4573,10 @@ msgstr "Dvoupísmenný kód země"
 msgid "City"
 msgstr "Město"
 
+#. Value options for filtering by Target Type in recurring actions list
 #: ../html/src/manager/proxy/container-config.tsx:324
 #: ../html/src/manager/recurring/recurring-actions-utils.tsx:8
-#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:11
+#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:2
 #: ../html/src/manager/state/highstate-summary.tsx:169
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:181
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:63
@@ -4664,27 +4698,31 @@ msgstr "Naplánováno úspěšně"
 msgid "Schedule successfully created."
 msgstr "Naplánováno úspěšně"
 
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:192
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:90
+msgid "Action scheduled on selected minions"
+msgstr ""
+
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:208
 msgid "Update "
 msgstr "Aktualizace "
 
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:192
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:208
 msgid "Create "
 msgstr "Vytvořit "
 
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:210
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:226
 #, fuzzy
 msgid "Schedule Recurring Action"
 msgstr "Opakující se stavy"
 
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:219
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:235
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:196
-#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:5
+#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:16
 #, fuzzy
 msgid "Action Type"
 msgstr "Akce"
 
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:244
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:260
 msgid "Configure states to execute"
 msgstr ""
 
@@ -4710,23 +4748,23 @@ msgid "Frequency"
 msgstr "Frekvence"
 
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:180
-#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:4
+#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:15
 msgid "Target Type"
 msgstr "Typ cíle"
 
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:188
-#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:3
+#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:14
 #, fuzzy
 msgid "Target Name"
 msgstr "Název hostitele cíle"
 
 #: ../html/src/manager/recurring/recurring-actions-utils.tsx:4
-#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:13
+#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:4
 msgid "Minion"
 msgstr "Následovník"
 
 #: ../html/src/manager/recurring/recurring-actions-utils.tsx:6
-#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:12
+#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:3
 msgid "Group"
 msgstr "Skupina"
 
@@ -4743,35 +4781,16 @@ msgstr ""
 "Níže uvedené časy jsou zobrazeny v časovém pásmu serveru {0}. Naplánovaný "
 "čas bude časem serveru."
 
-#: ../html/src/manager/recurring/search/recurring-actions-search-action-type-filter.tsx:16
-msgid "Select an Action Type"
-msgstr ""
-
-#: ../html/src/manager/recurring/search/recurring-actions-search-target-type-filter.tsx:18
-#, fuzzy
-msgid "Select a Target Type"
-msgstr "Typ cíle"
-
 #. Value options for filtering by Action Type in recurring actions list
-#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:17
+#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:8
 #: ../html/src/manager/state/highstate.tsx:142
 msgid "Highstate"
 msgstr "Highstate"
 
-#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:18
+#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:9
 #, fuzzy
 msgid "Custom State"
 msgstr "Zákaznické kanály"
-
-#: ../html/src/manager/recurring/search/recurring-actions-search.tsx:43
-#, fuzzy
-msgid "Filter"
-msgstr "Filtry"
-
-#: ../html/src/manager/recurring/search/recurring-actions-search.tsx:47
-#, fuzzy
-msgid "Select a filter"
-msgstr "Vybrat plán"
 
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:53
 #: ../html/src/manager/salt/keys/key-management.tsx:74
@@ -6577,6 +6596,10 @@ msgstr "Zdroj nebyl nalezen."
 #: ../html/src/utils/network.ts:105
 msgid "HTTP Error code "
 msgstr "Kód chyby HTTP "
+
+#, fuzzy
+#~ msgid "Select a Target Type"
+#~ msgstr "Typ cíle"
 
 #, fuzzy
 #~ msgid "Playbook '{name}'"

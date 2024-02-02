@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-18 12:06+0100\n"
+"POT-Creation-Date: 2024-02-02 15:21+0100\n"
 "PO-Revision-Date: 2024-01-16 03:59+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web-4-3/ko/"
@@ -165,7 +165,7 @@ msgstr "취소"
 
 #: ../html/src/components/dialog/DeleteDialog.tsx:29
 #: ../html/src/components/panels/CreatorPanel.tsx:97
-#: ../html/src/components/table/Table.tsx:133
+#: ../html/src/components/table/Table.tsx:139
 #: ../html/src/manager/admin/payg/payg.tsx:73
 #: ../html/src/manager/admin/payg/payg.tsx:74
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:162
@@ -294,7 +294,8 @@ msgid "Unable to perform action."
 msgstr "작업을 수행할 수 없습니다."
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:180
-#: ../html/src/components/states-picker.tsx:329
+#: ../html/src/components/states-picker.tsx:339
+#: ../html/src/components/states-picker.tsx:529
 #: ../html/src/manager/admin/setup/products/products.tsx:1181
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:187
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:16
@@ -304,7 +305,7 @@ msgid "Confirm"
 msgstr "확인"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:189
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:202
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:218
 msgid "Back to list"
 msgstr "목록으로 돌아가기"
 
@@ -393,7 +394,7 @@ msgstr "토요일"
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:96
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:32
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:165
-#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:2
+#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:13
 msgid "Schedule Name"
 msgstr "일정 이름"
 
@@ -433,26 +434,26 @@ msgstr "사용자 정의 Quartz 형식:"
 
 #: ../html/src/components/ranking-table.tsx:20
 #: ../html/src/components/salt-state-popup.tsx:11
-#: ../html/src/components/states-picker.tsx:25
+#: ../html/src/components/states-picker.tsx:35
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:23
 msgid "State Configuration Channel"
 msgstr "상태 구성 채널"
 
 #: ../html/src/components/ranking-table.tsx:23
-#: ../html/src/components/states-picker.tsx:28
+#: ../html/src/components/states-picker.tsx:38
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:26
 msgid "Internal State"
 msgstr "내부 상태"
 
 #: ../html/src/components/ranking-table.tsx:27
 #: ../html/src/components/salt-state-popup.tsx:14
-#: ../html/src/components/states-picker.tsx:32
+#: ../html/src/components/states-picker.tsx:42
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:30
 msgid "Normal Configuration Channel"
 msgstr "일반 구성 채널"
 
 #: ../html/src/components/ranking-table.tsx:44
-#: ../html/src/components/table/TableDataHandler.tsx:353
+#: ../html/src/components/table/TableDataHandler.tsx:376
 msgid "There are no entries to show."
 msgstr "표시할 항목이 없습니다."
 
@@ -484,27 +485,27 @@ msgstr "편집"
 msgid "Edit Configuration Channel"
 msgstr "구성 채널 편집"
 
-#: ../html/src/components/states-picker.tsx:83
+#: ../html/src/components/states-picker.tsx:93
 msgid "There are unsaved changes. Do you want to proceed?"
 msgstr "저장되지 않은 변경 사항이 있습니다. 계속하시겠습니까?"
 
-#: ../html/src/components/states-picker.tsx:98
+#: ../html/src/components/states-picker.tsx:108
 msgid "State configuration must not be empty"
 msgstr "상태 구성은 비워둘 수 없습니다."
 
-#: ../html/src/components/states-picker.tsx:129
+#: ../html/src/components/states-picker.tsx:139
 msgid "State assignments have been saved."
 msgstr "상태 할당이 저장되었습니다."
 
-#: ../html/src/components/states-picker.tsx:133
+#: ../html/src/components/states-picker.tsx:143
 msgid "An error occurred on save."
 msgstr "저장하는 동안 오류가 발생했습니다."
 
-#: ../html/src/components/states-picker.tsx:268
+#: ../html/src/components/states-picker.tsx:278
 msgid "No states assigned. Use search to find and assign states."
 msgstr "상태가 지정되지 않았습니다. 검색을 사용하여 상태를 찾아 지정하십시오."
 
-#: ../html/src/components/states-picker.tsx:327
+#: ../html/src/components/states-picker.tsx:337
 #: ../html/src/manager/images/image-view.tsx:817
 #: ../html/src/manager/images/image-view.tsx:819
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:29
@@ -520,29 +521,25 @@ msgstr "상태가 지정되지 않았습니다. 검색을 사용하여 상태를
 msgid "Back"
 msgstr "뒤로"
 
-#: ../html/src/components/states-picker.tsx:337
+#: ../html/src/components/states-picker.tsx:347
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:182
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:187
 msgid "Save Changes"
 msgstr "변경사항 저장"
 
-#: ../html/src/components/states-picker.tsx:351
-msgid "Execute States"
-msgstr "실행 상태"
-
-#: ../html/src/components/states-picker.tsx:359
+#: ../html/src/components/states-picker.tsx:362
 msgid "Reorder"
 msgstr "다시 정렬"
 
-#: ../html/src/components/states-picker.tsx:385
+#: ../html/src/components/states-picker.tsx:388
 msgid "Search in states"
 msgstr "상태에서 검색"
 
-#: ../html/src/components/states-picker.tsx:385
+#: ../html/src/components/states-picker.tsx:388
 msgid "Search in configuration channels"
 msgstr "구성 채널에서 검색"
 
-#: ../html/src/components/states-picker.tsx:391
+#: ../html/src/components/states-picker.tsx:394
 #: ../html/src/manager/header/search/search.tsx:77
 #: ../html/src/manager/header/search/search.tsx:86
 #: ../html/src/manager/minion/packages/package-states.tsx:214
@@ -550,45 +547,45 @@ msgstr "구성 채널에서 검색"
 msgid "Search"
 msgstr "검색"
 
-#: ../html/src/components/states-picker.tsx:401
+#: ../html/src/components/states-picker.tsx:404
 msgid "Edit State Ranks"
 msgstr "상태 순위 편집"
 
-#: ../html/src/components/states-picker.tsx:401
+#: ../html/src/components/states-picker.tsx:404
 msgid "Edit Channel Ranks"
 msgstr "채널 순위 편집"
 
-#: ../html/src/components/states-picker.tsx:404
+#: ../html/src/components/states-picker.tsx:407
 msgid "Edit the ranking of the states by dragging them."
 msgstr "드래그하여 상태의 순위를 편집하십시오."
 
-#: ../html/src/components/states-picker.tsx:405
+#: ../html/src/components/states-picker.tsx:408
 msgid "Edit the ranking of the configuration channels by dragging them."
 msgstr "드래그하여 구성 채널의 순위를 편집하십시오."
 
-#: ../html/src/components/states-picker.tsx:410
+#: ../html/src/components/states-picker.tsx:413
 msgid "There are no states assigned."
 msgstr "상태가 지정되지 않았습니다."
 
-#: ../html/src/components/states-picker.tsx:418
+#: ../html/src/components/states-picker.tsx:421
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:248
 msgid "State Name"
 msgstr "상태 이름"
 
-#: ../html/src/components/states-picker.tsx:418
+#: ../html/src/components/states-picker.tsx:421
 msgid "Channel Name"
 msgstr "채널 이름"
 
-#: ../html/src/components/states-picker.tsx:419
+#: ../html/src/components/states-picker.tsx:422
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:261
 msgid "State Label"
 msgstr "상태 레이블"
 
-#: ../html/src/components/states-picker.tsx:419
+#: ../html/src/components/states-picker.tsx:422
 msgid "Channel Label"
 msgstr "채널 레이블"
 
-#: ../html/src/components/states-picker.tsx:420
+#: ../html/src/components/states-picker.tsx:423
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:73
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:126
 #: ../html/src/manager/admin/payg-shared/info/payg-info-form.tsx:23
@@ -604,9 +601,35 @@ msgstr "채널 레이블"
 msgid "Description"
 msgstr "설명"
 
-#: ../html/src/components/states-picker.tsx:421
+#: ../html/src/components/states-picker.tsx:424
 msgid "Assign"
 msgstr "할당"
+
+#: ../html/src/components/states-picker.tsx:483
+#, fuzzy
+msgid ""
+"Select the systems to schedule for immediate state execution and confirm."
+msgstr "추가하고 확인하려는 선택 채널을 선택합니다."
+
+#: ../html/src/components/states-picker.tsx:493
+#, fuzzy
+msgid "This table is empty"
+msgstr "이 채널은 필수입니다."
+
+#: ../html/src/components/states-picker.tsx:500
+#: ../html/src/components/states-picker.tsx:542
+#, fuzzy
+msgid "System Name"
+msgstr "시스템 이름"
+
+#: ../html/src/components/states-picker.tsx:520
+msgid "Execute States"
+msgstr "실행 상태"
+
+#: ../html/src/components/states-picker.tsx:525
+#, fuzzy
+msgid "Select Sytems"
+msgstr "인터페이스 선택"
 
 #: ../html/src/components/systems.tsx:50
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:187
@@ -617,24 +640,39 @@ msgstr "보안 자문"
 msgid "System Locked"
 msgstr "시스템 잠김"
 
-#: ../html/src/components/table/SearchPanel.tsx:46
+#: ../html/src/components/table/SearchField.tsx:49
+#: ../html/src/components/table/TableFilter.tsx:45
+msgid "Filter"
+msgstr "필터"
+
+#: ../html/src/components/table/SearchField.tsx:54
+#: ../html/src/components/table/TableFilter.tsx:49
+msgid "Select a filter"
+msgstr "필터 선택"
+
+#: ../html/src/components/table/SearchPanel.tsx:57
 msgid "Items {from} - {to} of {total}"
 msgstr "항목 {from} - {to} / {total}"
 
-#: ../html/src/components/table/SearchPanel.tsx:51
+#: ../html/src/components/table/SearchPanel.tsx:62
 msgid "({selectedCount} selected)"
 msgstr "({selectedCount} 선택됨)"
 
-#: ../html/src/components/table/SearchPanel.tsx:53
+#: ../html/src/components/table/SearchPanel.tsx:64
 #: ../html/src/manager/admin/setup/products/products.tsx:384
 msgid "Clear"
 msgstr "지우기"
 
-#: ../html/src/components/table/SearchPanel.tsx:60
+#: ../html/src/components/table/SearchPanel.tsx:71
 msgid "Select All"
 msgstr "모두 선택"
 
-#: ../html/src/components/table/TableDataHandler.tsx:384
+#: ../html/src/components/table/SelectSearchField.tsx:5
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:228
+msgid "All"
+msgstr "모두"
+
+#: ../html/src/components/table/TableDataHandler.tsx:409
 msgid "items per page"
 msgstr "페이지당 항목 수"
 
@@ -2382,12 +2420,6 @@ msgstr "이름 제공 패키지 포함"
 msgid "Contains Package"
 msgstr "패키지 포함"
 
-#. Value options for filtering by Target Type in recurring actions list
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:228
-#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:10
-msgid "All"
-msgstr "모두"
-
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:246
 msgid "Fixes Package Name"
 msgstr "패키지 이름 수정"
@@ -3725,7 +3757,7 @@ msgstr "계속 진행할지 여부를 확인하십시오."
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:60
 #: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:129
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:99
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:192
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:208
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-form.tsx:102
 #: ../html/src/manager/virtualization/nets/network-properties.tsx:443
 #: ../html/src/manager/virtualization/pools/pool-properties.tsx:566
@@ -3939,7 +3971,7 @@ msgid "Loading playbook contents.."
 msgstr "플레이북 컨텐츠를 로드하는 중..."
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:87
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:184
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:200
 #: ../html/src/manager/state/highstate.tsx:121
 msgid "Test mode"
 msgstr "테스트 모드"
@@ -4458,9 +4490,10 @@ msgstr "2자 국가 코드"
 msgid "City"
 msgstr "시/도"
 
+#. Value options for filtering by Target Type in recurring actions list
 #: ../html/src/manager/proxy/container-config.tsx:324
 #: ../html/src/manager/recurring/recurring-actions-utils.tsx:8
-#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:11
+#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:2
 #: ../html/src/manager/state/highstate-summary.tsx:169
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:181
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:63
@@ -4575,25 +4608,29 @@ msgstr "일정을 업데이트했습니다."
 msgid "Schedule successfully created."
 msgstr "일정을 생성했습니다."
 
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:192
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:90
+msgid "Action scheduled on selected minions"
+msgstr ""
+
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:208
 msgid "Update "
 msgstr "업데이트 "
 
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:192
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:208
 msgid "Create "
 msgstr "만들기 "
 
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:210
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:226
 msgid "Schedule Recurring Action"
 msgstr "반복 작업 예약"
 
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:219
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:235
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:196
-#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:5
+#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:16
 msgid "Action Type"
 msgstr "작업 유형"
 
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:244
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:260
 msgid "Configure states to execute"
 msgstr "실행할 상태 구성"
 
@@ -4618,22 +4655,22 @@ msgid "Frequency"
 msgstr "빈도"
 
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:180
-#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:4
+#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:15
 msgid "Target Type"
 msgstr "대상 유형"
 
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:188
-#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:3
+#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:14
 msgid "Target Name"
 msgstr "대상 이름"
 
 #: ../html/src/manager/recurring/recurring-actions-utils.tsx:4
-#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:13
+#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:4
 msgid "Minion"
 msgstr "Minion"
 
 #: ../html/src/manager/recurring/recurring-actions-utils.tsx:6
-#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:12
+#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:3
 msgid "Group"
 msgstr "그룹"
 
@@ -4651,31 +4688,15 @@ msgstr ""
 "아래 시간은 서버 시간대 {timeZone}에 표시됩니다. 예약된 시간은 서버 시간이 됩"
 "니다."
 
-#: ../html/src/manager/recurring/search/recurring-actions-search-action-type-filter.tsx:16
-msgid "Select an Action Type"
-msgstr "작업 유형 선택"
-
-#: ../html/src/manager/recurring/search/recurring-actions-search-target-type-filter.tsx:18
-msgid "Select a Target Type"
-msgstr "대상 유형 선택"
-
 #. Value options for filtering by Action Type in recurring actions list
-#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:17
+#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:8
 #: ../html/src/manager/state/highstate.tsx:142
 msgid "Highstate"
 msgstr "Highstate"
 
-#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:18
+#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:9
 msgid "Custom State"
 msgstr "사용자 정의 상태"
-
-#: ../html/src/manager/recurring/search/recurring-actions-search.tsx:43
-msgid "Filter"
-msgstr "필터"
-
-#: ../html/src/manager/recurring/search/recurring-actions-search.tsx:47
-msgid "Select a filter"
-msgstr "필터 선택"
 
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:53
 #: ../html/src/manager/salt/keys/key-management.tsx:74
@@ -6462,6 +6483,12 @@ msgstr "리소스를 찾을 수 없음"
 #: ../html/src/utils/network.ts:105
 msgid "HTTP Error code "
 msgstr "HTTP 오류 코드 "
+
+#~ msgid "Select an Action Type"
+#~ msgstr "작업 유형 선택"
+
+#~ msgid "Select a Target Type"
+#~ msgstr "대상 유형 선택"
 
 #~ msgid "Playbook '{name}'"
 #~ msgstr "'{name}' 플레이북"

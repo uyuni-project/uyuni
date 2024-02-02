@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-18 12:06+0100\n"
+"POT-Creation-Date: 2024-02-02 15:21+0100\n"
 "PO-Revision-Date: 2024-01-15 15:59+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web-4-3/ja/"
@@ -168,7 +168,7 @@ msgstr "取り消し"
 
 #: ../html/src/components/dialog/DeleteDialog.tsx:29
 #: ../html/src/components/panels/CreatorPanel.tsx:97
-#: ../html/src/components/table/Table.tsx:133
+#: ../html/src/components/table/Table.tsx:139
 #: ../html/src/manager/admin/payg/payg.tsx:73
 #: ../html/src/manager/admin/payg/payg.tsx:74
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:162
@@ -298,7 +298,8 @@ msgid "Unable to perform action."
 msgstr "動作を実行できません。"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:180
-#: ../html/src/components/states-picker.tsx:329
+#: ../html/src/components/states-picker.tsx:339
+#: ../html/src/components/states-picker.tsx:529
 #: ../html/src/manager/admin/setup/products/products.tsx:1181
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:187
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:16
@@ -308,7 +309,7 @@ msgid "Confirm"
 msgstr "確認"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:189
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:202
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:218
 msgid "Back to list"
 msgstr "一覧に戻る"
 
@@ -397,7 +398,7 @@ msgstr "土曜"
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:96
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:32
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:165
-#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:2
+#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:13
 msgid "Schedule Name"
 msgstr "スケジュール名"
 
@@ -437,26 +438,26 @@ msgstr "独自のクォーツ書式:"
 
 #: ../html/src/components/ranking-table.tsx:20
 #: ../html/src/components/salt-state-popup.tsx:11
-#: ../html/src/components/states-picker.tsx:25
+#: ../html/src/components/states-picker.tsx:35
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:23
 msgid "State Configuration Channel"
 msgstr "状態設定チャンネル"
 
 #: ../html/src/components/ranking-table.tsx:23
-#: ../html/src/components/states-picker.tsx:28
+#: ../html/src/components/states-picker.tsx:38
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:26
 msgid "Internal State"
 msgstr "内部状態"
 
 #: ../html/src/components/ranking-table.tsx:27
 #: ../html/src/components/salt-state-popup.tsx:14
-#: ../html/src/components/states-picker.tsx:32
+#: ../html/src/components/states-picker.tsx:42
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:30
 msgid "Normal Configuration Channel"
 msgstr "通常設定チャンネル"
 
 #: ../html/src/components/ranking-table.tsx:44
-#: ../html/src/components/table/TableDataHandler.tsx:353
+#: ../html/src/components/table/TableDataHandler.tsx:376
 msgid "There are no entries to show."
 msgstr "表示すべき項目がありません。"
 
@@ -488,29 +489,29 @@ msgstr "編集"
 msgid "Edit Configuration Channel"
 msgstr "設定チャンネルの編集"
 
-#: ../html/src/components/states-picker.tsx:83
+#: ../html/src/components/states-picker.tsx:93
 msgid "There are unsaved changes. Do you want to proceed?"
 msgstr "保存されていない変更があります。続行してもよろしいですか？"
 
-#: ../html/src/components/states-picker.tsx:98
+#: ../html/src/components/states-picker.tsx:108
 msgid "State configuration must not be empty"
 msgstr "状態設定を空にすることはできません"
 
-#: ../html/src/components/states-picker.tsx:129
+#: ../html/src/components/states-picker.tsx:139
 msgid "State assignments have been saved."
 msgstr "状態の割り当てが保存されました。"
 
-#: ../html/src/components/states-picker.tsx:133
+#: ../html/src/components/states-picker.tsx:143
 msgid "An error occurred on save."
 msgstr "保存時にエラーが発生しました。"
 
-#: ../html/src/components/states-picker.tsx:268
+#: ../html/src/components/states-picker.tsx:278
 msgid "No states assigned. Use search to find and assign states."
 msgstr ""
 "状態が割り当てられていません。検索機能を利用して状態の検索と割り当てを行なっ"
 "てください。"
 
-#: ../html/src/components/states-picker.tsx:327
+#: ../html/src/components/states-picker.tsx:337
 #: ../html/src/manager/images/image-view.tsx:817
 #: ../html/src/manager/images/image-view.tsx:819
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:29
@@ -526,29 +527,25 @@ msgstr ""
 msgid "Back"
 msgstr "戻る"
 
-#: ../html/src/components/states-picker.tsx:337
+#: ../html/src/components/states-picker.tsx:347
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:182
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:187
 msgid "Save Changes"
 msgstr "変更点の保存"
 
-#: ../html/src/components/states-picker.tsx:351
-msgid "Execute States"
-msgstr "状態の実行"
-
-#: ../html/src/components/states-picker.tsx:359
+#: ../html/src/components/states-picker.tsx:362
 msgid "Reorder"
 msgstr "並べ替え"
 
-#: ../html/src/components/states-picker.tsx:385
+#: ../html/src/components/states-picker.tsx:388
 msgid "Search in states"
 msgstr "状態の検索"
 
-#: ../html/src/components/states-picker.tsx:385
+#: ../html/src/components/states-picker.tsx:388
 msgid "Search in configuration channels"
 msgstr "設定チャンネル内での検索"
 
-#: ../html/src/components/states-picker.tsx:391
+#: ../html/src/components/states-picker.tsx:394
 #: ../html/src/manager/header/search/search.tsx:77
 #: ../html/src/manager/header/search/search.tsx:86
 #: ../html/src/manager/minion/packages/package-states.tsx:214
@@ -556,46 +553,46 @@ msgstr "設定チャンネル内での検索"
 msgid "Search"
 msgstr "検索"
 
-#: ../html/src/components/states-picker.tsx:401
+#: ../html/src/components/states-picker.tsx:404
 msgid "Edit State Ranks"
 msgstr "状態ランクの編集"
 
-#: ../html/src/components/states-picker.tsx:401
+#: ../html/src/components/states-picker.tsx:404
 msgid "Edit Channel Ranks"
 msgstr "チャンネルランクの編集"
 
-#: ../html/src/components/states-picker.tsx:404
+#: ../html/src/components/states-picker.tsx:407
 msgid "Edit the ranking of the states by dragging them."
 msgstr "状態のランキングを編集するには、それらをドラッグしてください。"
 
-#: ../html/src/components/states-picker.tsx:405
+#: ../html/src/components/states-picker.tsx:408
 msgid "Edit the ranking of the configuration channels by dragging them."
 msgstr ""
 "設定チャンネルのランキングを編集するには、それらをドラッグしてください。"
 
-#: ../html/src/components/states-picker.tsx:410
+#: ../html/src/components/states-picker.tsx:413
 msgid "There are no states assigned."
 msgstr "状態が何も割り当てられていません。"
 
-#: ../html/src/components/states-picker.tsx:418
+#: ../html/src/components/states-picker.tsx:421
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:248
 msgid "State Name"
 msgstr "状態名"
 
-#: ../html/src/components/states-picker.tsx:418
+#: ../html/src/components/states-picker.tsx:421
 msgid "Channel Name"
 msgstr "チャンネル名"
 
-#: ../html/src/components/states-picker.tsx:419
+#: ../html/src/components/states-picker.tsx:422
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:261
 msgid "State Label"
 msgstr "状態ラベル"
 
-#: ../html/src/components/states-picker.tsx:419
+#: ../html/src/components/states-picker.tsx:422
 msgid "Channel Label"
 msgstr "チャンネルラベル"
 
-#: ../html/src/components/states-picker.tsx:420
+#: ../html/src/components/states-picker.tsx:423
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:73
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:126
 #: ../html/src/manager/admin/payg-shared/info/payg-info-form.tsx:23
@@ -611,9 +608,35 @@ msgstr "チャンネルラベル"
 msgid "Description"
 msgstr "説明"
 
-#: ../html/src/components/states-picker.tsx:421
+#: ../html/src/components/states-picker.tsx:424
 msgid "Assign"
 msgstr "割り当て"
+
+#: ../html/src/components/states-picker.tsx:483
+#, fuzzy
+msgid ""
+"Select the systems to schedule for immediate state execution and confirm."
+msgstr "追加したいオプションのチャンネルを選択して確認します。"
+
+#: ../html/src/components/states-picker.tsx:493
+#, fuzzy
+msgid "This table is empty"
+msgstr "このチャンネルは必須チャンネルです"
+
+#: ../html/src/components/states-picker.tsx:500
+#: ../html/src/components/states-picker.tsx:542
+#, fuzzy
+msgid "System Name"
+msgstr "システム名"
+
+#: ../html/src/components/states-picker.tsx:520
+msgid "Execute States"
+msgstr "状態の実行"
+
+#: ../html/src/components/states-picker.tsx:525
+#, fuzzy
+msgid "Select Sytems"
+msgstr "インターフェイスの選択"
 
 #: ../html/src/components/systems.tsx:50
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:187
@@ -624,24 +647,39 @@ msgstr "セキュリティアドバイザリ"
 msgid "System Locked"
 msgstr "システムはロック済み"
 
-#: ../html/src/components/table/SearchPanel.tsx:46
+#: ../html/src/components/table/SearchField.tsx:49
+#: ../html/src/components/table/TableFilter.tsx:45
+msgid "Filter"
+msgstr "フィルタ"
+
+#: ../html/src/components/table/SearchField.tsx:54
+#: ../html/src/components/table/TableFilter.tsx:49
+msgid "Select a filter"
+msgstr "フィルタの選択"
+
+#: ../html/src/components/table/SearchPanel.tsx:57
 msgid "Items {from} - {to} of {total}"
 msgstr "項目{from} - {to} / {total}"
 
-#: ../html/src/components/table/SearchPanel.tsx:51
+#: ../html/src/components/table/SearchPanel.tsx:62
 msgid "({selectedCount} selected)"
 msgstr "({selectedCount}を選択しました)"
 
-#: ../html/src/components/table/SearchPanel.tsx:53
+#: ../html/src/components/table/SearchPanel.tsx:64
 #: ../html/src/manager/admin/setup/products/products.tsx:384
 msgid "Clear"
 msgstr "消去"
 
-#: ../html/src/components/table/SearchPanel.tsx:60
+#: ../html/src/components/table/SearchPanel.tsx:71
 msgid "Select All"
 msgstr "すべてを選択"
 
-#: ../html/src/components/table/TableDataHandler.tsx:384
+#: ../html/src/components/table/SelectSearchField.tsx:5
+#: ../html/src/manager/content-management/shared/business/filters.enum.ts:228
+msgid "All"
+msgstr "すべて"
+
+#: ../html/src/components/table/TableDataHandler.tsx:409
 msgid "items per page"
 msgstr "1 ページ当たりの項目数"
 
@@ -2409,12 +2447,6 @@ msgstr "名前を指定したパッケージを含むもの"
 msgid "Contains Package"
 msgstr "パッケージを含むもの"
 
-#. Value options for filtering by Target Type in recurring actions list
-#: ../html/src/manager/content-management/shared/business/filters.enum.ts:228
-#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:10
-msgid "All"
-msgstr "すべて"
-
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:246
 msgid "Fixes Package Name"
 msgstr "修正パッケージ名"
@@ -3772,7 +3804,7 @@ msgstr "続行して問題ないかご確認ください。"
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:60
 #: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:129
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:99
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:192
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:208
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-form.tsx:102
 #: ../html/src/manager/virtualization/nets/network-properties.tsx:443
 #: ../html/src/manager/virtualization/pools/pool-properties.tsx:566
@@ -3992,7 +4024,7 @@ msgid "Loading playbook contents.."
 msgstr "playbook の内容を読み込んでいます.."
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:87
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:184
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:200
 #: ../html/src/manager/state/highstate.tsx:121
 msgid "Test mode"
 msgstr "テストモード"
@@ -4516,9 +4548,10 @@ msgstr "2文字の国コード"
 msgid "City"
 msgstr "市区町村"
 
+#. Value options for filtering by Target Type in recurring actions list
 #: ../html/src/manager/proxy/container-config.tsx:324
 #: ../html/src/manager/recurring/recurring-actions-utils.tsx:8
-#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:11
+#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:2
 #: ../html/src/manager/state/highstate-summary.tsx:169
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:181
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:63
@@ -4633,25 +4666,29 @@ msgstr "スケジュールが正常に更新されました。"
 msgid "Schedule successfully created."
 msgstr "スケジュールが正常に作成されました。"
 
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:192
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:90
+msgid "Action scheduled on selected minions"
+msgstr ""
+
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:208
 msgid "Update "
 msgstr "更新 "
 
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:192
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:208
 msgid "Create "
 msgstr "作成 "
 
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:210
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:226
 msgid "Schedule Recurring Action"
 msgstr "定期的なアクションをスケジュールする"
 
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:219
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:235
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:196
-#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:5
+#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:16
 msgid "Action Type"
 msgstr "動作タイプ"
 
-#: ../html/src/manager/recurring/recurring-actions-edit.tsx:244
+#: ../html/src/manager/recurring/recurring-actions-edit.tsx:260
 msgid "Configure states to execute"
 msgstr "実行する状態を設定する"
 
@@ -4676,22 +4713,22 @@ msgid "Frequency"
 msgstr "頻度"
 
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:180
-#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:4
+#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:15
 msgid "Target Type"
 msgstr "ターゲットタイプ"
 
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:188
-#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:3
+#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:14
 msgid "Target Name"
 msgstr "ターゲット名"
 
 #: ../html/src/manager/recurring/recurring-actions-utils.tsx:4
-#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:13
+#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:4
 msgid "Minion"
 msgstr "minion"
 
 #: ../html/src/manager/recurring/recurring-actions-utils.tsx:6
-#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:12
+#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:3
 msgid "Group"
 msgstr "グループ"
 
@@ -4709,31 +4746,15 @@ msgstr ""
 "サーバのタイムゾーン{timeZone}には、以下の時間が表示されます。スケジュールさ"
 "れた時間はサーバ時間になります。"
 
-#: ../html/src/manager/recurring/search/recurring-actions-search-action-type-filter.tsx:16
-msgid "Select an Action Type"
-msgstr "動作タイプの選択"
-
-#: ../html/src/manager/recurring/search/recurring-actions-search-target-type-filter.tsx:18
-msgid "Select a Target Type"
-msgstr "ターゲットタイプの選択"
-
 #. Value options for filtering by Action Type in recurring actions list
-#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:17
+#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:8
 #: ../html/src/manager/state/highstate.tsx:142
 msgid "Highstate"
 msgstr "Highstate"
 
-#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:18
+#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:9
 msgid "Custom State"
 msgstr "カスタム状態"
-
-#: ../html/src/manager/recurring/search/recurring-actions-search.tsx:43
-msgid "Filter"
-msgstr "フィルタ"
-
-#: ../html/src/manager/recurring/search/recurring-actions-search.tsx:47
-msgid "Select a filter"
-msgstr "フィルタの選択"
 
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:53
 #: ../html/src/manager/salt/keys/key-management.tsx:74
@@ -6551,6 +6572,12 @@ msgstr "リソースが見つかりませんでした。"
 #: ../html/src/utils/network.ts:105
 msgid "HTTP Error code "
 msgstr "HTTP エラーコード "
+
+#~ msgid "Select an Action Type"
+#~ msgstr "動作タイプの選択"
+
+#~ msgid "Select a Target Type"
+#~ msgstr "ターゲットタイプの選択"
 
 #~ msgid "Playbook '{name}'"
 #~ msgstr "playbook '{name}'"
