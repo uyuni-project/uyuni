@@ -395,7 +395,7 @@ spec:
         lifecycle:
           preStop:
             exec:
-              command: ["/bin/sh", "-c", "spacewalk-service" ,"stop", "&&", "systemctl" ,"stop" ,"postgresql"]
+              command: ["/bin/sh", "-c", "spacewalk-service stop && systemctl stop postgresql"]
         ports:
           - containerPort: 443
           - containerPort: 80
