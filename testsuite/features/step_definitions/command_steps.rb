@@ -412,8 +412,8 @@ When(/^I wait until the channel "([^"]*)" has been synced$/) do |channel|
   time_spent = 0
   checking_rate = 10
   if TIMEOUT_BY_CHANNEL_NAME[channel].nil?
-    log "Unknown timeout for channel #{channel}, assuming one hour"
-    timeout = 3600
+    log "Unknown timeout for channel #{channel}, assuming one minute"
+    timeout = 60
   else
     timeout = TIMEOUT_BY_CHANNEL_NAME[channel]
   end
@@ -430,8 +430,33 @@ end
 
 When(/^I wait until all synchronized channels for "([^"]*)" have finished$/) do |os_product_version|
   channels_to_wait = CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION[product][os_product_version]
+  time_spent = 0
+  checking_rate = 10
+  timeout = 0
   channels_to_wait.each do |channel|
-    step %(I wait until the channel "#{channel}" has been synced)
+    if TIMEOUT_BY_CHANNEL_NAME[channel].nil?
+      log "Unknown timeout for channel #{channel}, assuming one minute"
+      timeout += 60
+    else
+      timeout += TIMEOUT_BY_CHANNEL_NAME[channel]
+    end
+  end
+  begin
+    repeat_until_timeout(timeout: timeout, message: 'Product not fully synced') do
+      break if channels_to_wait.empty?
+
+      channels_to_wait.each do |channel|
+        if channel_is_synced(channel)
+          channels_to_wait.delete(channel)
+          log "Channel #{channel} finished syncing"
+        end
+      end
+
+      log "#{time_spent / 60.to_i} minutes out of #{timeout / 60.to_i} waiting for '#{os_product_version}' channels to be synchronized" if ((time_spent += checking_rate) % 60).zero?
+      sleep checking_rate
+    end
+  rescue StandardError => e
+    log e.message # It might be that the MU repository is wrong, but we want to continue in any case
   end
 end
 
