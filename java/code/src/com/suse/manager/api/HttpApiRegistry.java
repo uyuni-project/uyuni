@@ -125,7 +125,8 @@ public class HttpApiRegistry {
     public static Set<String> getUnautenticatedRoutes() {
         return Set.of(
             "/rhn/manager/api/api/getVersion",
-            "/rhn/manager/api/api/systemVersion"
+            "/rhn/manager/api/api/systemVersion",
+            "/rhn/manager/api/org/createFirst"
         );
     }
 
