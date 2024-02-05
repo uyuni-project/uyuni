@@ -428,13 +428,6 @@ When(/^I wait until the channel "([^"]*)" has been synced$/) do |channel|
   end
 end
 
-When(/^I wait until all synchronized channels have finished$/) do
-  $channels_synchronized.each do |channel|
-    log "I wait until '#{channel}' synchronized channel has finished"
-    step %(I wait until the channel "#{channel}" has been synced)
-  end
-end
-
 When(/^I wait until all synchronized channels for "([^"]*)" have finished$/) do |os_product_version|
   channels_to_wait = CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION[product][os_product_version]
   channels_to_wait.each do |channel|

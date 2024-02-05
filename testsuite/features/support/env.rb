@@ -30,9 +30,6 @@ if ENV['REDIS_HOST']
   STDOUT.puts('CODE COVERAGE MODE ENABLED.')
 end
 
-# Channels triggered by our tests to be synchronized
-$channels_synchronized = Set[]
-
 # Context per feature
 $context = {}
 
