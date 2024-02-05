@@ -2,7 +2,7 @@ include:
   - channels
 
 {%- if grains['os_family'] == 'Suse' %}
-keep_system_up2date_updatestack:
+mgr_keep_system_up2date_updatestack:
   pkg.uptodate:
     - onlyif: 'zypper patch-check --updatestack-only; r=$?; test $r -eq 100 || test $r -eq 101'
     - require:
