@@ -25,7 +25,7 @@ import static spark.Spark.post;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.audit.CVEAuditImage;
-import com.redhat.rhn.manager.audit.CVEAuditManagerOVAL;
+import com.redhat.rhn.manager.audit.CVEAuditManager;
 import com.redhat.rhn.manager.audit.CVEAuditServer;
 import com.redhat.rhn.manager.audit.CVEAuditSystem;
 import com.redhat.rhn.manager.audit.PatchStatus;
@@ -141,13 +141,15 @@ public class CVEAuditController {
             switch (cveAuditRequest.getTarget()) {
                 case SERVER:
                     Set<Long> systemSet = RhnSetDecl.SYSTEMS.get(user).getElementValues();
-                    List<CVEAuditServer> cveAuditServers = CVEAuditManagerOVAL
+                    // TODO: Use CVEAuditManagerOVAL once it's ready
+                    List<CVEAuditServer> cveAuditServers = CVEAuditManager
                     .listSystemsByPatchStatus(user, cveAuditRequest.cveIdentifier,
                             cveAuditRequest.statuses);
                     cveAuditServers.forEach(serv -> serv.setSelected(systemSet.contains(serv.getId())));
                     return json(res, ResultJson.success(cveAuditServers));
                 case IMAGE:
-                    List<CVEAuditImage> cveAuditImages = CVEAuditManagerOVAL
+                    // TODO: Use CVEAuditManagerOVAL once it's ready
+                    List<CVEAuditImage> cveAuditImages = CVEAuditManager
                     .listImagesByPatchStatus(user, cveAuditRequest.cveIdentifier,
                             cveAuditRequest.statuses);
                     return json(res, ResultJson.success(cveAuditImages));
@@ -163,13 +165,15 @@ public class CVEAuditController {
             throws UnknownCVEIdentifierException {
         switch (request.getTarget()) {
         case SERVER:
-            List<CVEAuditServer> cveAuditServers = CVEAuditManagerOVAL
+            // TODO: Use CVEAuditManagerOVAL once it's ready
+            List<CVEAuditServer> cveAuditServers = CVEAuditManager
             .listSystemsByPatchStatus(user, request.cveIdentifier,
                     request.statuses);
             return cveAuditServers.stream().map(x -> (CVEAuditSystem)x)
                     .collect(Collectors.toList());
         case IMAGE:
-            List<CVEAuditImage> cveAuditImages = CVEAuditManagerOVAL
+            // TODO: Use CVEAuditManagerOVAL once it's ready
+            List<CVEAuditImage> cveAuditImages = CVEAuditManager
             .listImagesByPatchStatus(user, request.cveIdentifier,
                     request.statuses);
             return cveAuditImages.stream().map(x -> (CVEAuditSystem)x)

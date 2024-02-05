@@ -20,7 +20,7 @@ import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.MethodInvalidParamException;
 import com.redhat.rhn.frontend.xmlrpc.UnknownCVEIdentifierFaultException;
 import com.redhat.rhn.manager.audit.CVEAuditImage;
-import com.redhat.rhn.manager.audit.CVEAuditManagerOVAL;
+import com.redhat.rhn.manager.audit.CVEAuditManager;
 import com.redhat.rhn.manager.audit.CVEAuditServer;
 import com.redhat.rhn.manager.audit.PatchStatus;
 import com.redhat.rhn.manager.audit.UnknownCVEIdentifierException;
@@ -111,7 +111,8 @@ public class CVEAuditHandler extends BaseHandler {
         }
 
         try {
-            List<CVEAuditServer> result = CVEAuditManagerOVAL.listSystemsByPatchStatus(
+            // TODO: Use CVEAuditManagerOVAL once it's ready
+            List<CVEAuditServer> result = CVEAuditManager.listSystemsByPatchStatus(
                     loggedInUser, cveIdentifier, patchStatuses);
 
             result.sort(Comparator.comparingInt(s -> s.getPatchStatus().getRank()));
@@ -197,7 +198,8 @@ public class CVEAuditHandler extends BaseHandler {
         }
 
         try {
-            List<CVEAuditImage> result = CVEAuditManagerOVAL.listImagesByPatchStatus(
+            // TODO: Use CVEAuditManagerOVAL once it's ready
+            List<CVEAuditImage> result = CVEAuditManager.listImagesByPatchStatus(
                     loggedInUser, cveIdentifier, patchStatuses);
 
             result.sort(Comparator.comparingInt(i -> i.getPatchStatus().getRank()));
