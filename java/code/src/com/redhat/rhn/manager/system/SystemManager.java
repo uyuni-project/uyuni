@@ -1160,9 +1160,9 @@ public class SystemManager extends BaseManager {
                             "S.channel_labels, " +
                             "S.status_type, " +
                             "VI.host_system_id, " +
-                            "(SELECT S.name FROM rhnServer S WHERE S.id = VI.host_system_id) as host_server_name, " +
                             "VI.virtual_system_id, " +
                             "VI.uuid, " +
+                            "COALESCE(RS.name, '(none)') AS host_server_name, " +
                             "COALESCE(VII.name, '(none)') AS server_name, " +
                             "COALESCE(VIS.name, '(unknown)') AS STATE_NAME, " +
                             "COALESCE(VIS.label, 'unknown') AS STATE_LABEL, " +
@@ -1175,7 +1175,8 @@ public class SystemManager extends BaseManager {
                 .from("rhnVirtualInstance VI " +
                         "    LEFT OUTER JOIN rhnVirtualInstanceInfo VII ON VI.id = VII.instance_id " +
                         "    LEFT OUTER JOIN rhnVirtualInstanceState VIS ON VII.state = VIS.id " +
-                        "    LEFT OUTER JOIN suseSystemOverview S ON S.id = VI.virtual_system_id")
+                        "    LEFT OUTER JOIN suseSystemOverview S ON S.id = VI.virtual_system_id" +
+                        "    LEFT OUTER JOIN rhnServer RS ON RS.id = VI.host_system_id")
                 .where("EXISTS ( " +
                         "   SELECT 1 " +
                         "   FROM rhnUserServerPerms USP " +

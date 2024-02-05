@@ -3,17 +3,20 @@ import * as React from "react";
 import { IconTag } from "components/icontag";
 import * as Systems from "components/systems";
 import { Column } from "components/table/Column";
-import { SearchField } from "components/table/SearchField";
 import { Table } from "components/table/Table";
 
 import { Utils } from "utils/functions";
 import Network from "utils/network";
+
+import { VirtualSystemsListFilter } from "./list-filter";
 
 // See java/code/src/com/suse/manager/webui/templates/systems/virtual-list.jade
 type Props = {
   /** Locale of the help links */
   docsLocale: string;
   isAdmin: boolean;
+  queryColumn?: string;
+  query?: string;
 };
 
 export function VirtualSystems(props: Props) {
@@ -26,13 +29,6 @@ export function VirtualSystems(props: Props) {
     Network.post("/rhn/manager/api/sets/system_list", data).catch(Network.showResponseErrorToastr);
 
     setSelectedSystems(items);
-  };
-
-  const searchData = (datum, criteria) => {
-    if (criteria) {
-      return datum.name.toLocaleLowerCase().includes(criteria.toLocaleLowerCase());
-    }
-    return true;
   };
 
   return (
@@ -52,11 +48,13 @@ export function VirtualSystems(props: Props) {
       <Table
         data="/rhn/manager/api/systems/list/virtual"
         identifier={(item) => item.virtualSystemId || item.uuid}
-        initialSortColumnKey="hostServerName"
+        initialSortColumnKey="host_server_name"
         selectable={(item) => item.hasOwnProperty("virtualSystemId")}
         selectedItems={selectedSystems}
         onSelect={handleSelectedSystems}
-        searchField={<SearchField filter={searchData} placeholder={t("Filter by name")} />}
+        searchField={<VirtualSystemsListFilter />}
+        defaultSearchField={props.queryColumn || "host_server_name"}
+        initialSearch={props.query}
         emptyText={t("No Virtual Systems.")}
       >
         <Column
