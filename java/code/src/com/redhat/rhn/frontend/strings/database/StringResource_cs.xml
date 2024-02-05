@@ -3502,7 +3502,7 @@
       </trans-unit>
       <trans-unit id="kickstart.state.injected" xml:space="preserve">
           <source>The system configuration has been modified to begin the autoinstallation upon next boot.</source>
-        <target>Konfigurace systému byla upravena pro zahájení automatické instalace při jeho dalším spuštění.</target>
+        <target>Konfigurace systému byla upravena pro zahájení automatické instalace při dalším spuštění.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
