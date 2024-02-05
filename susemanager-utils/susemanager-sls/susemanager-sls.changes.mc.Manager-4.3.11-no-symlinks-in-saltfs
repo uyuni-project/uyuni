@@ -1,2 +1,0 @@
-- change certs/RHN-ORG-TRUSTED-SSL-CERT from symlink into a real file
-  (bsc#1219577)
