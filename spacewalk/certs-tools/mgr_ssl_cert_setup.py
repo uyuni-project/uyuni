@@ -589,21 +589,25 @@ def deployCAUyuni(certData):
         if ca["root"]:
             if os.path.exists(os.path.join(ROOT_CA_HTTP_DIR, ROOT_CA_NAME)):
                 os.remove(os.path.join(ROOT_CA_HTTP_DIR, ROOT_CA_NAME))
-            # pylint: disable-next=unspecified-encoding
-            with open(os.path.join(ROOT_CA_HTTP_DIR, ROOT_CA_NAME), "w") as f:
+            with open(
+                os.path.join(ROOT_CA_HTTP_DIR, ROOT_CA_NAME), "w", encoding="utf-8"
+            ) as f:
                 f.write(ca["content"])
             os.chmod(os.path.join(ROOT_CA_HTTP_DIR, ROOT_CA_NAME), int("0644", 8))
 
             if os.path.exists(os.path.join(CA_TRUST_DIR, PKI_ROOT_CA_NAME)):
                 os.remove(os.path.join(CA_TRUST_DIR, PKI_ROOT_CA_NAME))
-            # pylint: disable-next=unspecified-encoding
-            with open(os.path.join(CA_TRUST_DIR, PKI_ROOT_CA_NAME), "w") as f:
+            with open(
+                os.path.join(CA_TRUST_DIR, PKI_ROOT_CA_NAME), "w", encoding="utf-8"
+            ) as f:
                 f.write(ca["content"])
             os.chmod(os.path.join(CA_TRUST_DIR, PKI_ROOT_CA_NAME), int("0644", 8))
 
             if os.path.exists(os.path.join(SALT_CA_DIR, ROOT_CA_NAME)):
                 os.remove(os.path.join(SALT_CA_DIR, ROOT_CA_NAME))
-            with open(os.path.join(SALT_CA_DIR, ROOT_CA_NAME), "w") as f:
+            with open(
+                os.path.join(SALT_CA_DIR, ROOT_CA_NAME), "w", encoding="utf-8"
+            ) as f:
                 f.write(ca["content"])
             os.chmod(os.path.join(SALT_CA_DIR, ROOT_CA_NAME), int("0644", 8))
             break
