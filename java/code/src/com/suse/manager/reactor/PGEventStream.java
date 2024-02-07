@@ -229,6 +229,11 @@ public class PGEventStream extends AbstractEventStream implements PGNotification
             List<Long> ids = uncommittedEvents.stream().map(SaltEvent::getId).collect(toList());
             List<Long> deletedIds = SaltEventFactory.deleteSaltEvents(ids);
             LOG.error("Events {} were lost", deletedIds.toString());
+            // In case of error processing the event the transation is rollback in the PGeventListener
+            // Then this method is called. We need a commit in here to make sure we clean the DB events
+            // before we call the extra exception listener. This is needed to deal with cases where
+            // the extra listener fails with exception, which will cause the transaction helper to rollback
+            HibernateFactory.commitTransaction();
         }
 
         if (exception instanceof PGEventListenerException) {
