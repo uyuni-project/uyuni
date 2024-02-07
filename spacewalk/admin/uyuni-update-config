@@ -46,10 +46,27 @@ def importSumaGPGKeyring():
 
     if result.returncode:
         sys.stdout.write("Failed to import SUSE Manager Build Keys\n")
-    sys.stdout.write("{}\n".format(result.stdout))
+    if result.stdout:
+        sys.stdout.write("{}\n".format(result.stdout))
     sys.stdout.flush()
+
+def copyCA():
+    result = subprocess.run(
+            ["cp",
+             "/etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT",
+             "/usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT"],
+            stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+            encoding='utf-8')
+
+    if result.returncode:
+        sys.stdout.write("Failed to copy the CA certificate to the Salt Filesystem\n")
+    if result.stdout:
+        sys.stdout.write("{}\n".format(result.stdout))
+    sys.stdout.flush()
+
 
 initSccLogin()
 importSumaGPGKeyring()
+copyCA()
 
 sys.exit(0)
