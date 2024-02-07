@@ -1,5 +1,5 @@
 ^/\*$
-^ \* Copyright \(c\) (20([012]\d|20)--)?20(1\d|2[01234]) (Red Hat, Inc.|SUSE LLC)$
+^ \* Copyright \(c\) (20([0123]\d|20)--)?20(1\d|2[01234]) (Red Hat, Inc.|SUSE LLC)$
 ^ \*$
 ^ \* This software is licensed to you under the GNU General Public License,$
 ^ \* version 2 \(GPLv2\). There is NO WARRANTY for this software, express or$
