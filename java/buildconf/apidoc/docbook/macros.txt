@@ -29,6 +29,15 @@
   </itemizedlist>
 </listitem>
 #end
+#macro(prop_begin $key)
+<listitem>
+  <para>struct "$key"</para>
+  <itemizedlist spacing="compact">
+#end
+#macro(prop_end)
+  </itemizedlist>
+</listitem>
+#end
 #macro(struct_begin $value)
 <listitem>
   <para>struct $value</para>

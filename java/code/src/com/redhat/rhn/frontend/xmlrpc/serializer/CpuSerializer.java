@@ -34,9 +34,9 @@ import com.suse.manager.api.SerializedApiResponse;
  *      #prop("string", "arch")
  *      #prop("string", "stepping")
  *      #prop("string", "count")
- *      #prop("int", "socket_count (if available)")
- *      #prop("int", "core_count (if available) number of cores per socket")
- *      #prop("int", "thread_count (if available) number of threads per core")
+ *      #prop_desc("int", "socket_count" "Number of sockets (if available)")
+ *      #prop_desc("int", "core_count", "Number of cores per socket (if available)")
+ *      #prop_desc("int", "thread_count", "Number of threads per core (if available)")
  *  #struct_end()
  *
  */

@@ -29,7 +29,9 @@ import com.suse.manager.api.SerializedApiResponse;
  * @apidoc.doc
  * #struct_begin("assigned content filter information")
  *   #prop("string", "state")
+ *   #prop_begin("filter")
  *   $ContentFilterSerializer
+ *   #prop_end()
  * #struct_end()
  */
 public class ContentProjectFilterSerializer extends ApiResponseSerializer<ContentProjectFilter> {

@@ -28,7 +28,9 @@ import com.suse.manager.model.maintenance.MaintenanceSchedule;
  *   #prop("int", "orgId")
  *   #prop("string", "name")
  *   #prop("string", "type")
+ *   #prop_begin("calendar")
  *   $MaintenanceCalendarSerializer
+ *   #prop_end()
  * #struct_end()
  */
 public class MaintenanceScheduleSerializer extends ApiResponseSerializer<MaintenanceSchedule> {

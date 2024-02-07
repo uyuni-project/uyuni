@@ -26,10 +26,10 @@ import com.suse.manager.api.SerializedApiResponse;
  *
  * @apidoc.doc
  *   #struct_begin("ansible path")
- *     #prop("int", "path id")
- *     #prop("string", "type label")
- *     #prop("int", "id of the ansible control node system")
- *     #prop("string", "local path to inventory or playbook")
+ *     #prop_desc("int", "id", "path id")
+ *     #prop_desc("string", "type", "type label")
+ *     #prop_desc("int", "server_id", "id of the ansible control node system")
+ *     #prop_desc("string", "path", "local path to inventory or playbook")
  *   #struct_end()
  */
 public class AnsiblePathSerializer extends ApiResponseSerializer<AnsiblePath> {

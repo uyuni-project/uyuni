@@ -33,7 +33,9 @@ import com.suse.manager.api.SerializedApiResponse;
  *   #prop("int", "channel_id")
  *   #prop("string", "kernel_options")
  *   #prop("string", "post_kernel_options")
+ *   #prop_begin("install_type")
  *   $KickstartInstallTypeSerializer
+ *   #prop_end()
  * #struct_end()
  */
 public class KickstartTreeDetailSerializer extends ApiResponseSerializer<KickstartableTreeDetail> {

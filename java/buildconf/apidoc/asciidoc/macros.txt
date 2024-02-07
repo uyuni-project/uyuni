@@ -26,6 +26,13 @@
 #macro(prop_array_end)
 #set($listlevel = $listlevel - 1)
 #end
+#macro(prop_begin $key)
+#list() #type("struct") "$key"
+#set($listlevel = $listlevel + 1)
+#end
+#macro(prop_end)
+#set($listlevel = $listlevel - 1)
+#end
 #macro(struct_begin $value)
 #list() #type("struct") $value
 #set($listlevel = $listlevel + 1)

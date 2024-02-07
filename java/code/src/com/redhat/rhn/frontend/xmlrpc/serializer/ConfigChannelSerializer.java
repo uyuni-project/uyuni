@@ -31,8 +31,9 @@ import com.suse.manager.api.SerializedApiResponse;
  *   #prop("string", "label")
  *   #prop("string", "name")
  *   #prop("string", "description")
- *   #prop("struct", "configChannelType")
+ *   #prop_begin("configChannelType")
  *   $ConfigChannelTypeSerializer
+ *   #prop_end()
  * #struct_end()
  */
 public class ConfigChannelSerializer extends ApiResponseSerializer<ConfigChannel> {

@@ -60,7 +60,7 @@ import java.util.List;
  *              #prop("string", "sourceUrl")
  *              #prop("string", "type")
  *          #struct_end()
- *      #array_end()
+ *      #prop_array_end()
  *  #struct_end()
  *
  */
