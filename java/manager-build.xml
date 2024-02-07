@@ -569,6 +569,16 @@
     <delete dir="${report.dir}/apidocs/${template.dir}/handlers/" />
   </target>
 
+  <target name="apidoc-go" description="Generate Go code from the API">
+    <property name="doclet.class" value="GoDoclet" />
+    <property name="template.dir" value="go" />
+    <property name="apidoc.output" value="${report.dir}/apidocs/${template.dir}/" />
+    <antcall target="apidoc" />
+    <!--
+    <delete dir="${report.dir}/apidocs/${template.dir}/handlers/" />
+    -->
+  </target>
+
   <target name="apidoc-validate" description="Validate the API documentation" depends="apidoc-docbook">
       <exec executable="/usr/bin/xmllint" failonerror="true">
           <arg value="--xinclude"/>

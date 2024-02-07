@@ -1,0 +1,19 @@
+#macro(param_desc $type $value $desc)
+{
+  "type": "$type",
+  "name": "$value",
+  "desc": "$desc"
+}
+#end
+
+#macro(param $type $value)
+#param_desc($type $value "")
+#end
+
+#macro(array_single $type, $value)
+{
+  "type": "[]$type",
+  "name": "$value",
+  "desc": "$desc"
+}
+#end

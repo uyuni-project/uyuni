@@ -50,6 +50,7 @@ public class VelocityHelper {
         Configurator.setLevel("org.apache.velocity", Level.WARN);
         ve = new VelocityEngine(p);
         context = new VelocityContext();
+        context.put("string_helper", new StringHelper());
     }
 
     /**

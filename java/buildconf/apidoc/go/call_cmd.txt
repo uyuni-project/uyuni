@@ -1,0 +1,53 @@
+package ${package_name}
+
+import (
+	"fmt"
+
+	"github.com/spf13/cobra"
+	"github.com/uyuni-project/uyuni-tools/shared/api"
+	"github.com/uyuni-project/uyuni-tools/shared/api/${package_path}"
+	apiTypes "github.com/uyuni-project/uyuni-tools/shared/api/types"
+	"github.com/uyuni-project/uyuni-tools/shared/types"
+	"github.com/uyuni-project/uyuni-tools/shared/utils"
+)
+
+type ${call_name}Flags struct {
+	api.ConnectionDetails `mapstructure:"api"`
+#foreach( $param in $call_params )
+	$param.getFlagName()          $param.getType()
+#end
+}
+
+func ${call_name}Command(globalFlags *types.GlobalFlags) *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "${call_name}",
+		Short: "${call_desc}",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			var flags ${call_name}Flags
+			return utils.CommandHelper(globalFlags, cmd, args, &flags, ${call_name})
+		},
+	}
+
+#foreach( $param in $call_params )
+	cmd.Flags().String("$param.getFlagName()", "", "$param.getDesc()")
+#end
+
+	return cmd
+}
+
+func ${call_name}(globalFlags *types.GlobalFlags, flags *${call_name}Flags, cmd *cobra.Command, args []string) error {
+
+	#if( $call_return )res, #{end}err := ${package_name}.${string_helper.toCamelCase($package_name)}(&flags.ConnectionDetails#foreach( $param in $call_params ), flags.$param.getFlagName()#{end})
+	if err != nil {
+		return err
+	}
+
+#if( $call_return )
+	fmt.Printf("Result: %v", res)
+#else
+    fmt.Printf("Success")
+#end
+
+	return nil
+}
+

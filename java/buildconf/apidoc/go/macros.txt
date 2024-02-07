@@ -1,0 +1,49 @@
+#macro(type $type)#if( $type == "boolean" )bool#{else}$type#{end}#end
+
+#set( $struct_level = 0 )
+#set( $date = "string" )
+
+#macro(struct_begin $value)
+#set( $struct_level = $struct_level + 1 )
+#if( $struct_level == 1 )
+package types
+
+type $string_helper.toCamelCase($value) struct {
+#{else}struct {
+#end
+#end
+
+#macro(struct_end)}#set( $struct_level = $struct_level - 1 )#end
+
+#macro(prop $type $value)
+    $string_helper.toCamelCase($value) #type($type) `mapstructure:"${value}"`
+#end
+
+#macro(prop_desc $type $value $desc)
+#prop($type $value)
+#end
+
+#macro(prop_begin $value)
+#set( $res = $stacked_mapstructures.add(${value}) )
+	$string_helper.toCamelCase($value) #end
+
+#macro(prop_end) `mapstructure:"${stacked_mapstructures.pop()}"`
+#end
+
+#macro(prop_array $key $type $desc)
+    $string_helper.toCamelCase($key) []#type($type) `mapstructure:"${key}"`
+#end
+
+#macro(prop_array_begin $key)
+#set( $res = $stacked_mapstructures.add(${key}) )
+	$string_helper.toCamelCase($key) #end
+
+#macro(prop_array_begin_desc $key $desc)#prop_array_begin($key)#end
+
+#macro(prop_array_end) `mapstructure:"${stacked_mapstructures.pop()}"`
+#end
+
+#macro(options)#end
+#macro(item $value)#end
+#macro(item_desc $value)#end
+#macro(options_end)#end

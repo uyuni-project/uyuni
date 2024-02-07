@@ -1,0 +1,49 @@
+package ${package_name}
+
+import (
+	"errors"
+	"fmt"
+
+	"github.com/uyuni-project/uyuni-tools/shared/api"
+	"github.com/uyuni-project/uyuni-tools/shared/api/types"
+)
+
+// ${call_desc}
+func ${string_helper.toCamelCase($call_name)}(cnxDetails *api.ConnectionDetails#foreach( $param in $call_params ), $param.getFlagName() $param.getType()#{end}) (#if( $call_return )*types.$call_return, #{end}error) {
+	client, err := api.Init(cnxDetails)
+	if err != nil {
+		return #if( $call_return )nil, #{end}fmt.Errorf("failed to connect to the server: %s", err)
+	}
+
+#if( $call_method == "Post" )
+	data := map[string]interface{}{
+#foreach( $param in $call_params )
+		"$param.getName()":       $param.getFlagName(),
+#end
+	}
+
+	res, err := api.Post[types.$call_return](client, "$package_path", data)
+#else
+	query := "$package_path"
+	params := ""
+#foreach( $param in $call_params )
+	if $param.getFlagName() {
+		params := fmt.Sprintf("%s&%s=%s", params, "$param.getName", $param.getFlagName)
+	}
+#end
+	if params != "" {
+		query := fmt.Sprintf("%s?%s", query, params)
+	}
+
+    res, err := api.Get[types.$call_return](client, query)
+#end
+	if err != nil {
+		return #if( $call_return )nil, #{end}fmt.Errorf("failed to execute $call_name: %s", err)
+	}
+
+	if !res.Success {
+		return #if( $call_return )nil, #{end}errors.New(res.Message)
+	}
+
+	return #if( $call_return )&res.Result, #{end}nil
+}

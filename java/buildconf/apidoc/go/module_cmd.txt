@@ -1,0 +1,23 @@
+
+package ${package_name}
+
+import (
+	"github.com/spf13/cobra"
+	"github.com/uyuni-project/uyuni-tools/shared/api"
+	"github.com/uyuni-project/uyuni-tools/shared/types"
+)
+
+func NewCommand(globalFlags *types.GlobalFlags) *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "${package_name}",
+		Short: "${package_doc}",
+	}
+
+	api.AddAPIFlags(cmd, false)
+
+#foreach( $call in $calls )
+	cmd.AddCommand(${call}Command(globalFlags))
+#end
+
+	return cmd
+}

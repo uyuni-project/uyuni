@@ -140,14 +140,29 @@ public abstract class DocWriter {
      * @throws IOException e
      */
     public String renderMacro(String templateDir, String input, String description) throws IOException {
-        log("Rendering macro: " + input + ", " + description);
         VelocityHelper macros = new VelocityHelper(templateDir);
+        return renderMacro(macros, templateDir, input, description);
+    }
+
+    /**
+     * Renders the input agains the api macros file in a given directory.
+     *
+     * @param helper The velocity helper to use to render
+     * @param templateDir The directory of the macros.txt file
+     * @param input the input to macrotize
+     * @param description a description to use in case something goes wrong
+     * @return the macrotized input
+     * @throws IOException e
+     */
+    public String renderMacro(VelocityHelper helper, String templateDir, String input,
+                              String description) throws IOException {
+        log("Rendering macro: " + input + ", " + description);
         String macro = readFile(templateDir + ApiDoclet.API_MACROS_FILE);
 
         String productMacro = "#macro(product)" + product + "#end\n";
 
         try {
-            return macros.renderTemplate(macro + productMacro + input + " \n ");
+            return helper.renderTemplate(macro + productMacro + input + " \n ");
         }
         catch (Exception e) {
             String errrorFile = "/tmp/apidoc_error.txt";
