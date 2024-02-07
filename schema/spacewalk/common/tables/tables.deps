@@ -217,6 +217,7 @@ rhnActionSubChannelsList           :: rhnActionSubChannels rhnChannel
 rhnActionSubChannelsTokens         :: suseChannelAccessToken rhnActionSubChannels
 suseChannelAccessToken             :: suseMinionInfo
 suseChannelAccessTokenChannel      :: suseChannelAccessToken rhnChannel
+suseCoCoAttestationResult          :: suseServerCoCoAttestationReport
 suseContentProject                 :: web_customer
 suseContentProject_alters          :: suseContentEnvironment
 suseContentProjectSource           :: suseContentProject rhnChannel
@@ -263,6 +264,8 @@ suseSCCRegCache                    :: suseCredentials rhnServer
 suseSCCRepositoryAuth              :: suseCredentials rhnContentSource
 suseSCCSubscription                :: suseCredentials
 suseSCCSubscriptionProduct         :: suseSCCSubscription suseProducts
+suseServerCoCoAttestationConfig    :: rhnServer
+suseServerCoCoAttestationReport    :: rhnServer rhnAction
 suseServerInstalledProduct         :: rhnServer suseInstalledProduct
 suseServerStateRevision            :: rhnServer suseStateRevision
 susePinnedSubscription             :: rhnServer
