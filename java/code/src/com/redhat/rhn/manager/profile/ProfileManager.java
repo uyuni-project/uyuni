@@ -550,7 +550,7 @@ public class ProfileManager extends BaseManager {
     }
 
     /**
-     * Prepares the list of packages to be synced for comfirmation.
+     * Prepares the list of packages to be synced for confirmation.
      * @param sid Server involved in sync.
      * @param prid Profile we're syncing with.
      * @param orgid Org id
@@ -584,7 +584,7 @@ public class ProfileManager extends BaseManager {
     }
 
     /**
-     * Prepares the list of packages to be synced for comfirmation.
+     * Prepares the list of packages to be synced for confirmation.
      * @param sid Server involved in sync.
      * @param sid1 Profile we're syncing with.
      * @param orgid Org id
