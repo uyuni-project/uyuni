@@ -283,36 +283,6 @@ When(/^I wait until "([^"]*)" exporter service is active on "([^"]*)"$/) do |ser
   node.run_until_ok(cmd)
 end
 
-When(/^I enable product "([^"]*)"$/) do |prd|
-  list_output, _code = get_target('server').run('mgr-sync list products', check_errors: false, buffer_size: 1_000_000)
-  executed = false
-  linenum = 0
-  list_output.each_line do |line|
-    next unless /^ *\[ \]/ =~ line
-    linenum += 1
-    next unless line.include? prd
-    executed = true
-    $command_output, _code = get_target('server').run("echo '#{linenum}' | mgr-sync add product", check_errors: false, buffer_size: 1_000_000)
-    break
-  end
-  raise $command_output.to_s unless executed
-end
-
-When(/^I enable product "([^"]*)" without recommended$/) do |prd|
-  list_output, _code = get_target('server').run('mgr-sync list products', check_errors: false, buffer_size: 1_000_000)
-  executed = false
-  linenum = 0
-  list_output.each_line do |line|
-    next unless /^ *\[ \]/ =~ line
-    linenum += 1
-    next unless line.include? prd
-    executed = true
-    $command_output, _code = get_target('server').run("echo '#{linenum}' | mgr-sync add product --no-recommends", check_errors: false, buffer_size: 1_000_000)
-    break
-  end
-  raise $command_output.to_s unless executed
-end
-
 Then(/^I should see the "([^"]*)" paygo products$/) do |paygo_product|
   raise "Error : #{paygo_product} is an incorrect paygo product" unless %w[server sle15sp5_paygo_minion sle12sp5_paygo_minion sleforsap15sp5_paygo_minion].include?(paygo_product)
   command_output, _code = get_target('server').run('echo -e "admin\nadmin\n" | mgr-sync list products', check_errors: false, buffer_size: 1_000_000)
