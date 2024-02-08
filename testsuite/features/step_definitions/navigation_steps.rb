@@ -175,7 +175,7 @@ When(/^I select "(.*?)" from "([^"]*)" dropdown/) do |selection, label|
 end
 
 When(/^I select the parent channel for the "([^"]*)" from "([^"]*)"$/) do |client, from|
-  product_key = $is_container_provider ? 'Fake' : product
+  product_key = $is_container_provider && !$build_validation ? 'Fake' : product
   select(BASE_CHANNEL_BY_CLIENT[product_key][client], from: from, exact: false)
 end
 
