@@ -160,6 +160,9 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <one-to-one name="location" class="com.redhat.rhn.domain.server.Location"
             property-ref="server" cascade="all" lazy="proxy" />
 
+        <one-to-one name="cocoAttestationConfig" class="com.suse.manager.model.attestation.ServerCoCoAttestationConfig"
+                    cascade="all" lazy="proxy"/>
+
         <one-to-one name="virtualInstance"
                     class="com.redhat.rhn.domain.server.VirtualInstance"
                     property-ref="guestSystem"
