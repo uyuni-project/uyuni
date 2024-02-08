@@ -219,7 +219,7 @@ Feature: Smoke tests for <client>
 
 @skip_for_sle_micro_ssh_minion
 @monitoring_server
-  Scenario: Test <client> on Grafana
+  Scenario: The data from <client> appear on Grafana dashboard
     When I visit the grafana dashboards of this "monitoring_server"
     And I wait until I do not see "Loading Grafana" text
     And I wait until I see "General" text
@@ -227,4 +227,4 @@ Feature: Smoke tests for <client>
     When I follow "Client Systems"
     Then I should see "<client>" hostname
     When I enter "<client>" hostname on grafana's host field
-    Then I should not see a "No data" text
+    And I wait until I do not see "No data" text
