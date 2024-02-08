@@ -40,6 +40,7 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.manager.system.SystemManager;
 
+import com.suse.manager.model.attestation.ServerCoCoAttestationConfig;
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
 import com.suse.utils.Opt;
 
@@ -121,6 +122,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
     private List<ConfigChannel> configChannels = new ArrayList<>();
     private Set<ConfigChannel> localChannels = new HashSet<>();
     private Location serverLocation;
+    private ServerCoCoAttestationConfig cocoAttestationConfig;
     private Set<VirtualInstance> guests = new HashSet<>();
     private VirtualInstance virtualInstance;
     private PushClient pushClient;
@@ -1300,6 +1302,27 @@ public class Server extends BaseDomainHelper implements Identifiable {
      */
     public void setLocation(Location locationIn) {
         serverLocation = locationIn;
+    }
+
+    /**
+     * @return Returns the cocoAttestationConfiguration assosiated with the server
+     */
+    protected ServerCoCoAttestationConfig getCocoAttestationConfig() {
+        return cocoAttestationConfig;
+    }
+
+    /**
+     * @return Returns the cocoAttestationConfiguration assosiated with the server if available
+     */
+    public Optional<ServerCoCoAttestationConfig> getOptCocoAttestationConfig() {
+        return Optional.ofNullable(cocoAttestationConfig);
+    }
+
+    /**
+     * @param cocoAttestationConfigIn cocoAttestationConfiguration for this server
+     */
+    public void setCocoAttestationConfig(ServerCoCoAttestationConfig cocoAttestationConfigIn) {
+        cocoAttestationConfig = cocoAttestationConfigIn;
     }
 
     private void initializeRam() {
