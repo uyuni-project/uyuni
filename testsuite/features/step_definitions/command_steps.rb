@@ -179,6 +179,19 @@ When(/^I use spacewalk-common-channel to add channel "([^"]*)" with arch "([^"]*
   $command_output, _code = get_target('server').run(command)
 end
 
+When(/^I use spacewalk-common-channel to add all "([^"]*)" channels with arch "([^"]*)"$/) do |channel, arch|
+  product_version_type = "#{channel}-#{arch}"
+  if CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION.dig(product, product_version_type)
+    CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION[product][product_version_type].each do |channel|
+      log "Adding channel: #{channel}"
+      command = "spacewalk-common-channels -u admin -p admin -a #{arch} #{channel.gsub("-#{arch}", "")}"
+      $command_output, _code = get_target("server").run(command)
+    end
+  else
+    log "Version type #{product_version_type} in #{product} product not found, nothing to be synchronized, continuing"
+  end
+end
+
 When(/^I use spacewalk-repo-sync to sync channel "([^"]*)"$/) do |channel|
   $command_output, _code = get_target('server').run_until_ok("spacewalk-repo-sync -c #{channel}")
 end

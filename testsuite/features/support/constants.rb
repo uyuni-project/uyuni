@@ -1141,6 +1141,8 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         opensuse_leap15_5-x86_64-backports-updates
         opensuse_leap15_5-x86_64-sle-updates
         opensuse_leap15_5-uyuni-client-x86_64
+        opensuse_leap15_5-uyuni-client-devel-x86_64
+        uyuni-proxy-stable-leap-155-x86_64
       ],
     'leap15.4-aarch64' =>
       %w[

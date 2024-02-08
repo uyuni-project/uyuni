@@ -717,7 +717,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @uyuni
 @proxy
   Scenario: Add Uyuni Leap 15.5 Proxy, including Uyuni Client Tools
-    When I use spacewalk-common-channel to add channel "opensuse_leap15_5 opensuse_leap15_5-non-oss opensuse_leap15_5-non-oss-updates opensuse_leap15_5-updates opensuse_leap15_5-backports-updates opensuse_leap15_5-sle-updates uyuni-proxy-stable-leap-155 opensuse_leap15_5-uyuni-client-devel" with arch "x86_64"
+    When I use spacewalk-common-channel to add all "leap15.5" channels with arch "x86_64"
     And I wait until all synchronized channels for "uyuni-proxy" have finished
 
 @susemanager
