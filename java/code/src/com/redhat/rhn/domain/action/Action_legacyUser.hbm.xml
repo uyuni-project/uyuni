@@ -539,6 +539,11 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                 <property name="target"/>
             </join>
         </subclass>
+        <!-- CoCoAttestation Action -->
+        <subclass
+            name="com.redhat.rhn.domain.action.CoCoAttestationAction"
+            discriminator-value="523" lazy="true">
+        </subclass>
 
     </class>
     <query name="Action.findByIdandOrgId">
