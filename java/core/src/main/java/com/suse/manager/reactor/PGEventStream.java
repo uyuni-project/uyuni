@@ -102,6 +102,7 @@ public class PGEventStream extends AbstractEventStream implements PGNotification
             int pending = SaltEventFactory.fixQueueNumbers(THREAD_POOL_SIZE);
             if (pending > 0) {
                 LOG.info("Found {} queued salt events", pending);
+                HibernateFactory.commitTransaction();
             }
 
             connection = (PGConnection) dataSource.getConnection();
