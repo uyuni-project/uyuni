@@ -13,7 +13,7 @@ Feature: Synchronize extra products in the products page of the Setup Wizard
 
 @uyuni
   Scenario: Add openSUSE Leap 15.5 product, including Uyuni Client Tools
-    When I use spacewalk-common-channel to add all "leap15.5-x86_64" channels
+    When I use spacewalk-common-channel to add all "leap15.5" channels with arch "x86_64"
 
 @scc_credentials
 @susemanager
