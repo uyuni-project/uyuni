@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Feb 05 21:49:20 CET 2024 - rosuna@suse.com
+
+- version 4.3.21-1
+  * Deploy the CA certificate also into the Salt filesystem (bsc#1219577)
+
+-------------------------------------------------------------------
 Tue Jan 23 13:57:03 CET 2024 - rosuna@suse.com
 
 - version 4.3.20-1

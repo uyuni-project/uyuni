@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Feb 05 21:50:07 CET 2024 - rosuna@suse.com
+
+- version 4.3.39-1
+  * Change certs/RHN-ORG-TRUSTED-SSL-CERT from symlink into a real file
+    (bsc#1219577)
+
+-------------------------------------------------------------------
 Tue Jan 23 14:16:02 CET 2024 - rosuna@suse.com
 
 - version 4.3.38-1

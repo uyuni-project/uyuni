@@ -1,9 +1,9 @@
-# Copyright (c) 2020-2023 SUSE LLC.
+# Copyright (c) 2020-2024 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 @<client>
 Feature: Smoke tests for <client>
-  In order to test <client>
+  In order to manage <client>
   As an authorized user
   I want to :
   - View the details of the system
@@ -140,7 +140,7 @@ Feature: Smoke tests for <client>
     And I reboot the "<client>" if it is a SLE Micro
 
   Scenario: Deploy the configuration file to <client>
-    And I follow the left menu "Configuration > Channels"
+    When I follow the left menu "Configuration > Channels"
     And I wait until I see "Centrally Managed Configuration Channel" text
     And I follow "Mixed Channel"
     And I wait until I see "Channel Properties" text
@@ -150,6 +150,7 @@ Feature: Smoke tests for <client>
     And I click on the filter button
     And I check the "<client>" client
     And I click on "Confirm & Deploy to Selected Systems"
+    And I wait until I see "Revision 1" text
     Then I should see a "/etc/s-mgr/config" link
     When I click on "Deploy Files to Selected Systems"
     Then I should see a "1 revision-deploy is being scheduled." text
@@ -253,7 +254,7 @@ Feature: Smoke tests for <client>
 @skip_for_traditional
 @skip_for_sle_micro_ssh_minion
 @monitoring_server
-  Scenario: Test <client> on Grafana
+  Scenario: The data from <client> appear on Grafana dashboard
     When I visit the grafana dashboards of this "monitoring_server"
     And I wait until I do not see "Loading Grafana" text
     And I wait until I see "General" text
@@ -261,4 +262,4 @@ Feature: Smoke tests for <client>
     When I follow "Client Systems"
     Then I should see "<client>" hostname
     When I enter "<client>" hostname on grafana's host field
-    Then I should not see a "No data" text
+    And I wait until I do not see "No data" text

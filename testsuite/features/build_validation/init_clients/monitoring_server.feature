@@ -85,6 +85,7 @@ Feature: Bootstrap the monitoring server
     When I wait until "grafana-server" service is active on "monitoring_server"
     And I visit "Grafana" endpoint of this "monitoring_server"
 
+@susemanager
   Scenario: Test Grafana dashboards of monitoring server
     When I visit the grafana dashboards of this "monitoring_server"
     And I wait until I do not see "Loading Grafana" text
@@ -94,3 +95,14 @@ Feature: Bootstrap the monitoring server
     And I should see a "PostgreSQL database insights" text
     And I should see a "SUSE Manager Client Systems" text
     And I should see a "SUSE Manager Server" text
+
+@uyuni
+  Scenario: Test Grafana dashboards of monitoring server
+    When I visit the grafana dashboards of this "monitoring_server"
+    And I wait until I do not see "Loading Grafana" text
+    And I check radio button "View as list", if not checked
+    # These are the 4 dashboards created by default when enabling the Grafana formula
+    Then I should see a "Apache2" text
+    And I should see a "PostgreSQL database insights" text
+    And I should see a "Uyuni Client Systems" text
+    And I should see a "Uyuni Server" text
