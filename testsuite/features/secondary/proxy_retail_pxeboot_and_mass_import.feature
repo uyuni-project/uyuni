@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2023 SUSE LLC
+# Copyright (c) 2018-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # Idempotency note:
@@ -195,8 +195,8 @@ Feature: PXE boot a Retail terminal
     Given I am on the Systems page
     When I wait until I see the name of "pxeboot_minion", refreshing the page
     And I follow this "pxeboot_minion" link
-    # Workaround: Increase timeout temporarily get rid of timeout issues
-    And I wait at most 350 seconds until event "Apply states [saltboot]" is completed
+    And I wait until event "added system entitlement" is completed
+    And I wait until event "Apply states [saltboot] scheduled" is completed
     And I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until radio button "SLE-Product-SLES15-SP4-Pool for x86_64" is checked, refreshing the page

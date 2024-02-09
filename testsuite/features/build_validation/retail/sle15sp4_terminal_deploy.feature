@@ -1,4 +1,4 @@
-# Copyright (c) 2021-2022 SUSE LLC
+# Copyright (c) 2021-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @proxy
@@ -19,6 +19,7 @@ Feature: PXE boot a SLES 15 SP4 retail terminal
     And I follow the left menu "Systems > Overview"
     And I wait until I see the name of "sle15sp4_terminal", refreshing the page
     And I follow this "sle15sp4_terminal" link
+    And I wait until event "added system entitlement" is completed
     And I wait until event "Apply states [saltboot] scheduled" is completed
     And I follow "Software" in the content area
     And I follow "Software Channels" in the content area
