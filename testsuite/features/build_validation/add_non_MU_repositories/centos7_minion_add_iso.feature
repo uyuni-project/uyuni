@@ -1,4 +1,4 @@
-# Copyright (c) 2021-2023 SUSE LLC
+# Copyright (c) 2021-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @centos7_minion
@@ -24,7 +24,7 @@ Feature: Add the CentOS 7 distribution custom repositories
     When I follow the left menu "Software > Manage > Repositories"
     And I follow "Create Repository"
     And I enter "centos-7-iso" as "label"
-    And I enter "http://127.0.0.1/centos-7-iso" as "url"
+    And I enter "file:///srv/www/htdocs/pub/centos-7-iso" as "url"
     And I uncheck "metadataSigned"
     And I click on "Create Repository"
     Then I should see a "Repository created successfully" text
