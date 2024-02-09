@@ -655,9 +655,9 @@ When(/^I configure tftp on the "([^"]*)"$/) do |host|
 
   case host
   when 'server'
-    get_target('server').run("configure-tftpsync.sh #{get_target('proxy').full_hostname}")
+    get_target('server').run("/usr/sbin/configure-tftpsync.sh #{get_target('proxy').full_hostname}")
   when 'proxy'
-    cmd = "configure-tftpsync.sh --non-interactive --tftpbootdir=/srv/tftpboot \
+    cmd = "/usr/sbin/configure-tftpsync.sh --non-interactive --tftpbootdir=/srv/tftpboot \
 --server-fqdn=#{get_target('server').full_hostname} \
 --proxy-fqdn='proxy.example.org'"
     get_target('proxy').run(cmd)
