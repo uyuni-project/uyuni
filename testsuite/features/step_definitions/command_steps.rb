@@ -180,9 +180,10 @@ When(/^I use spacewalk-common-channel to add channel "([^"]*)" with arch "([^"]*
 end
 
 When(/^I use spacewalk-common-channel to add all "([^"]*)" channels$/) do |os_product_version|
-  raise ScriptError, "Synchronization error, version type #{os_product_version} in #{product} product not found" unless CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION.dig(product, os_product_version)
+  channels_to_synchronize = CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION.dig(product, os_product_version)
+  raise ScriptError, "Synchronization error, version type #{os_product_version} in #{product} product not found" unless channels_to_synchronize
 
-  CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION[product][os_product_version].each do |os_product_version_channel|
+  channels_to_synchronize.each do |os_product_version_channel|
     log "Adding channel: #{os_product_version_channel}"
     architecture = 'x86_64' # Only x86_64 is supported due to https://github.com/SUSE/spacewalk/issues/23663
     command = "spacewalk-common-channels -u admin -p admin -a #{architecture} #{os_product_version_channel.gsub("-#{architecture}", '')}"
