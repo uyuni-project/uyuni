@@ -298,40 +298,6 @@ When(/^I wait until "([^"]*)" exporter service is active on "([^"]*)"$/) do |ser
   node.run_until_ok(cmd)
 end
 
-When(/^I enable product "([^"]*)"$/) do |prd|
-  list_output, _code = get_target('server').run('mgr-sync list products', check_errors: false, buffer_size: 1_000_000)
-  executed = false
-  linenum = 0
-  list_output.each_line do |line|
-    next unless /^ *\[ \]/ =~ line
-
-    linenum += 1
-    next unless line.include? prd
-
-    executed = true
-    $command_output, _code = get_target('server').run("echo '#{linenum}' | mgr-sync add product", check_errors: false, buffer_size: 1_000_000)
-    break
-  end
-  raise $command_output.to_s unless executed
-end
-
-When(/^I enable product "([^"]*)" without recommended$/) do |prd|
-  list_output, _code = get_target('server').run('mgr-sync list products', check_errors: false, buffer_size: 1_000_000)
-  executed = false
-  linenum = 0
-  list_output.each_line do |line|
-    next unless /^ *\[ \]/ =~ line
-
-    linenum += 1
-    next unless line.include? prd
-
-    executed = true
-    $command_output, _code = get_target('server').run("echo '#{linenum}' | mgr-sync add product --no-recommends", check_errors: false, buffer_size: 1_000_000)
-    break
-  end
-  raise $command_output.to_s unless executed
-end
-
 When(/^I execute mgr-sync "([^"]*)" with user "([^"]*)" and password "([^"]*)"$/) do |arg1, u, p|
   get_target('server').run("echo -e \'mgrsync.user = \"#{u}\"\nmgrsync.password = \"#{p}\"\n\' > ~/.mgr-sync")
   $command_output, _code = get_target('server').run("echo -e '#{u}\n#{p}\n' | mgr-sync #{arg1}", check_errors: false, buffer_size: 1_000_000)
@@ -423,8 +389,8 @@ When(/^I wait until the channel "([^"]*)" has been synced$/) do |channel|
   time_spent = 0
   checking_rate = 10
   if TIMEOUT_BY_CHANNEL_NAME[channel].nil?
-    log "Unknown timeout for channel #{channel}, assuming one hour"
-    timeout = 3600
+    log "Unknown timeout for channel #{channel}, assuming one minute"
+    timeout = 60
   else
     timeout = TIMEOUT_BY_CHANNEL_NAME[channel]
   end
@@ -440,17 +406,35 @@ When(/^I wait until the channel "([^"]*)" has been synced$/) do |channel|
   end
 end
 
-When(/^I wait until all synchronized channels have finished$/) do
-  $channels_synchronized.each do |channel|
-    log "I wait until '#{channel}' synchronized channel has finished"
-    step %(I wait until the channel "#{channel}" has been synced)
-  end
-end
-
 When(/^I wait until all synchronized channels for "([^"]*)" have finished$/) do |os_product_version|
   channels_to_wait = CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION[product][os_product_version]
+  time_spent = 0
+  checking_rate = 10
+  timeout = 0
   channels_to_wait.each do |channel|
-    step %(I wait until the channel "#{channel}" has been synced)
+    if TIMEOUT_BY_CHANNEL_NAME[channel].nil?
+      log "Unknown timeout for channel #{channel}, assuming one minute"
+      timeout += 60
+    else
+      timeout += TIMEOUT_BY_CHANNEL_NAME[channel]
+    end
+  end
+  begin
+    repeat_until_timeout(timeout: timeout, message: 'Product not fully synced') do
+      break if channels_to_wait.empty?
+
+      channels_to_wait.each do |channel|
+        if channel_is_synced(channel)
+          channels_to_wait.delete(channel)
+          log "Channel #{channel} finished syncing"
+        end
+      end
+
+      log "#{time_spent / 60.to_i} minutes out of #{timeout / 60.to_i} waiting for '#{os_product_version}' channels to be synchronized" if ((time_spent += checking_rate) % 60).zero?
+      sleep checking_rate
+    end
+  rescue StandardError => e
+    log e.message # It might be that the MU repository is wrong, but we want to continue in any case
   end
 end
 
@@ -655,9 +639,9 @@ When(/^I configure tftp on the "([^"]*)"$/) do |host|
 
   case host
   when 'server'
-    get_target('server').run("configure-tftpsync.sh #{get_target('proxy').full_hostname}")
+    get_target('server').run("/usr/sbin/configure-tftpsync.sh #{get_target('proxy').full_hostname}")
   when 'proxy'
-    cmd = "configure-tftpsync.sh --non-interactive --tftpbootdir=/srv/tftpboot \
+    cmd = "/usr/sbin/configure-tftpsync.sh --non-interactive --tftpbootdir=/srv/tftpboot \
 --server-fqdn=#{get_target('server').full_hostname} \
 --proxy-fqdn='proxy.example.org'"
     get_target('proxy').run(cmd)

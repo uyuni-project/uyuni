@@ -5,34 +5,21 @@
 #              about a SUSE Manager Client
 # License:     GPLv2
 # Author:      Michael Calmer <mc@suse.de>
-# Modified:    2020 November 09
+# Modified:    2024 February 03
 #############################################################
 
-SVER=4.2.0
-RCFILE="/usr/lib/supportconfig/resources/scplugin.rc"
+SVER=5.0.0
+RCFILE="/usr/lib/supportconfig/resources/supportconfig.rc"
+OF='plugin-susemanager-client.txt'
 
 [ -s $RCFILE ] && . $RCFILE || { echo "ERROR: Initializing resource file: $RCFILE"; exit 1; }
 
-validate_rpm_if_installed() {
-    THISRPM=$1
-    echo "#==[ Validating RPM ]=================================#"
-    if rpm -q $THISRPM >/dev/null 2>&1; then
-        echo "# rpm -V $THISRPM"
+log_write $OF
+log_entry $OF note "Supportconfig Plugin for SUSE Manager Client, v${SVER}"
+addHeaderFile $OF
 
-        if rpm -V $THISRPM; then
-            echo "Status: Passed"
-        else
-            echo "Status: WARNING"
-        fi
-    else
-        echo "package $THISRPM is not installed"
-        echo "Status: Skipped"
-    fi
-    echo
-}
 
 #############################################################
-section_header "Supportconfig Plugin for SUSE Manager Client, v${SVER}"
 RPMLIST="
 spacewalk-client-tools
 spacewalk-check
@@ -47,16 +34,16 @@ uyuni-proxy-systemd-services
 "
 
 for THISRPM in $RPMLIST; do
-    validate_rpm_if_installed $THISRPM
+    rpm_verify $OF $THISRPM
 done
 
-plugin_command "/bin/ls -l --time-style=long-iso /usr/local/lib"
-plugin_command "/bin/ls -l --time-style=long-iso /usr/local/lib64"
-plugin_command "/bin/ls -l --time-style=long-iso /etc/ssl/certs/"
+log_cmd $OF "/bin/ls -l --time-style=long-iso /usr/local/lib"
+log_cmd $OF "/bin/ls -l --time-style=long-iso /usr/local/lib64"
+log_cmd $OF "/bin/ls -l --time-style=long-iso /etc/ssl/certs/"
 
-section_header "SUSE Manager Client Config Files"
+log_entry $OF note "SUSE Manager Client Config Files"
 
-pconf_files \
+conf_files $OF \
     /etc/sysconfig/rhn/up2date \
     /etc/sysconfig/rhn/osad.conf \
     /etc/sysconfig/rhn/rhncfg-client.conf \
@@ -72,47 +59,39 @@ pconf_files \
     /etc/sysconfig/uyuni-proxy-systemd-services
 
 
-section_header "SUSE Manager Client Capabilities"
+log_entry $OF note "SUSE Manager Client Log Files"
 
-find /etc/sysconfig/rhn/clientCaps.d/
+log_files $OF 1000 /var/log/salt/minion
 
-section_header "SUSE Manager Client allowed Actions"
+log_cmd $OF "zypper --no-refresh ls"
+log_cmd $OF "zypper --no-refresh lr -u"
+log_cmd $OF "salt-minion --versions-report"
 
-find /etc/sysconfig/rhn/allowed-actions/
+log_cmd $OF "cp /var/log/zypper.log $LOG"
 
-section_header "SUSE Manager Client Log Files"
-
-plog_files 1000 /var/log/up2date
-plog_files 100 /var/log/osad
-plog_files 1000 /var/log/salt/minion
-
-plugin_command "zypper --no-refresh ls"
-plugin_command "zypper --no-refresh lr -u"
-plugin_command "salt-minion --versions-report"
-
-plugin_command "cp /var/log/zypper.log $LOG"
-
-section_header "Crypto Policy"
+log_entry $OF note "Crypto Policy"
 
 if [ -f /etc/crypto-policies/config ]; then
-        plugin_command "cat /etc/crypto-policies/config"
+        log_cmd $OF "cat /etc/crypto-policies/config"
 elif [ $(cat /proc/sys/crypto/fips_enabled) -ne 0 ]; then
-        plugin_message "FIPS"
+        log_write $OF "FIPS"
 else
-        plugin_command "grep -v '#' /usr/share/crypto-policies/default-config"
+        log_cmd $OF "grep -v '#' /usr/share/crypto-policies/default-config"
 fi
 
-section_header "Proxy Containers Configuration Files"
+log_entry $OF note "Cloud / PAYG"
+log_cmd $OF "test -e /usr/bin/instance-flavor-check && /usr/bin/instance-flavor-check"
+rpm_verify $OF "python-instance-billing-flavor-check"
 
-plugin_command "ls -l /etc/uyuni/proxy/"
+####################################################################
+#### The instance where a proxy is running, is just a managed client
+####################################################################
 
-section_header "Proxy Containers Systems Status"
+log_entry $OF note "Proxy Containers Configuration Files"
 
-systemd_status() {
-    if systemctl list-unit-files $1 >/dev/null; then
-        plugin_command "systemctl status $1"
-    fi
-}
+log_cmd $OF "ls -l /etc/uyuni/proxy/"
+
+log_entry $OF note "Proxy Containers Systems Status"
 
 SERVICES="
     uyuni-proxy-pod
@@ -124,7 +103,7 @@ SERVICES="
 "
 
 for SERVICE in $SERVICES; do
-    systemd_status "$SERVICE.service"
+    check_service $OF $SERVICE
 done
 
 CONTAINERS="
@@ -136,19 +115,16 @@ CONTAINERS="
 "
 
 if which podman >/dev/null 2>&1; then
-    section_header "Proxy Containers Inspects"
+    log_entry $OF note "Proxy Containers Inspects"
 
     for CONTAINER in $CONTAINERS; do
-        plugin_command "podman inspect $CONTAINER"
+        log_cmd $OF "podman inspect $CONTAINER"
     done
 
-    section_header "Proxy Containers Logs"
+    log_entry $OF note "Proxy Containers Logs"
 
     for CONTAINER in $CONTAINERS; do
-        plugin_command "podman logs $CONTAINER"
+        log_cmd $OF "podman logs $CONTAINER"
     done
 fi
 
-section_header "Cloud / PAYG"
-plugin_command "test -e /usr/bin/instance-flavor-check && /usr/bin/instance-flavor-check"
-validate_rpm_if_installed "python-instance-billing-flavor-check"

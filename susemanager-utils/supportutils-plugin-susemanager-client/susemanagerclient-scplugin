@@ -1,0 +1,154 @@
+#!/bin/bash
+#############################################################
+# Name:        Supportconfig Plugin for SUSE Manager Client
+# Description: Gathers important troubleshooting information
+#              about a SUSE Manager Client
+# License:     GPLv2
+# Author:      Michael Calmer <mc@suse.de>
+# Modified:    2024 February 03
+#############################################################
+
+SVER=5.0.0
+RCFILE="/usr/lib/supportconfig/resources/scplugin.rc"
+
+[ -s $RCFILE ] && . $RCFILE || { echo "ERROR: Initializing resource file: $RCFILE"; exit 1; }
+
+validate_rpm_if_installed() {
+    THISRPM=$1
+    echo "#==[ Validating RPM ]=================================#"
+    if rpm -q $THISRPM >/dev/null 2>&1; then
+        echo "# rpm -V $THISRPM"
+
+        if rpm -V $THISRPM; then
+            echo "Status: Passed"
+        else
+            echo "Status: WARNING"
+        fi
+    else
+        echo "package $THISRPM is not installed"
+        echo "Status: Skipped"
+    fi
+    echo
+}
+
+#############################################################
+section_header "Supportconfig Plugin for SUSE Manager Client, v${SVER}"
+RPMLIST="
+spacewalk-client-tools
+spacewalk-check
+spacewalk-client-setup
+rhnlib
+osad
+zypp-plugin-spacewalk
+salt-minion
+salt
+podman
+uyuni-proxy-systemd-services
+"
+
+for THISRPM in $RPMLIST; do
+    validate_rpm_if_installed $THISRPM
+done
+
+plugin_command "/bin/ls -l --time-style=long-iso /usr/local/lib"
+plugin_command "/bin/ls -l --time-style=long-iso /usr/local/lib64"
+plugin_command "/bin/ls -l --time-style=long-iso /etc/ssl/certs/"
+
+section_header "SUSE Manager Client Config Files"
+
+pconf_files \
+    /etc/sysconfig/rhn/up2date \
+    /etc/sysconfig/rhn/osad.conf \
+    /etc/sysconfig/rhn/rhncfg-client.conf \
+    /etc/sysconfig/rhn/rhncfg-manager.conf \
+    /etc/sysconfig/rhn/image.cfg \
+    /etc/sysconfig/rhn/rhnpushrc \
+    /etc/sysconfig/rhn/rhnsd \
+    /etc/sysconfig/rhn/systemid \
+    /etc/salt/minion \
+    /etc/salt/minion.d/susemanager.conf \
+    /etc/salt/minion.d/_schedule.conf \
+    /etc/uyuni/proxy/config.yaml \
+    /etc/sysconfig/uyuni-proxy-systemd-services
+
+
+section_header "SUSE Manager Client Capabilities"
+
+find /etc/sysconfig/rhn/clientCaps.d/
+
+section_header "SUSE Manager Client allowed Actions"
+
+find /etc/sysconfig/rhn/allowed-actions/
+
+section_header "SUSE Manager Client Log Files"
+
+plog_files 1000 /var/log/up2date
+plog_files 100 /var/log/osad
+plog_files 1000 /var/log/salt/minion
+
+plugin_command "zypper --no-refresh ls"
+plugin_command "zypper --no-refresh lr -u"
+plugin_command "salt-minion --versions-report"
+
+plugin_command "cp /var/log/zypper.log $LOG"
+
+section_header "Crypto Policy"
+
+if [ -f /etc/crypto-policies/config ]; then
+        plugin_command "cat /etc/crypto-policies/config"
+elif [ $(cat /proc/sys/crypto/fips_enabled) -ne 0 ]; then
+        plugin_message "FIPS"
+else
+        plugin_command "grep -v '#' /usr/share/crypto-policies/default-config"
+fi
+
+section_header "Proxy Containers Configuration Files"
+
+plugin_command "ls -l /etc/uyuni/proxy/"
+
+section_header "Proxy Containers Systems Status"
+
+systemd_status() {
+    if systemctl list-unit-files $1 >/dev/null; then
+        plugin_command "systemctl status $1"
+    fi
+}
+
+SERVICES="
+    uyuni-proxy-pod
+    uyuni-proxy-httpd
+    uyuni-proxy-salt-broker
+    uyuni-proxy-squid
+    uyuni-proxy-ssh
+    uyuni-proxy-tftpd
+"
+
+for SERVICE in $SERVICES; do
+    systemd_status "$SERVICE.service"
+done
+
+CONTAINERS="
+    uyuni-proxy-httpd
+    uyuni-proxy-ssh
+    uyuni-proxy-squid
+    uyuni-proxy-tftpd
+    uyuni-proxy-salt-broker
+"
+
+if which podman >/dev/null 2>&1; then
+    section_header "Proxy Containers Inspects"
+
+    for CONTAINER in $CONTAINERS; do
+        plugin_command "podman inspect $CONTAINER"
+    done
+
+    section_header "Proxy Containers Logs"
+
+    for CONTAINER in $CONTAINERS; do
+        plugin_command "podman logs $CONTAINER"
+    done
+fi
+
+section_header "Cloud / PAYG"
+plugin_command "test -e /usr/bin/instance-flavor-check && /usr/bin/instance-flavor-check"
+validate_rpm_if_installed "python-instance-billing-flavor-check"
