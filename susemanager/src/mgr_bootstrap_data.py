@@ -1920,8 +1920,15 @@ DATA = {
         "PDID": [-32, 2410],
         "BETAPDID": [2411],
         "PKGLIST": PKGLISTDEBIAN11,
-        "DEST": "/srv/www/htdocs/pub/repositories/debian/11/bootstrap/",
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/debian/11/bootstrap/",
         "TYPE": "deb",
+    },
+    'debian12-amd64' : {
+        'PDID' : [-43, 2677],
+        'BETAPDID' : [2676],
+        'PKGLIST' : PKGLISTDEBIAN12,
+        'DEST' : DOCUMENT_ROOT + '/pub/repositories/debian/12/bootstrap/',
+        'TYPE' : 'deb'
     },
     "debian9-amd64-uyuni": {
         "BASECHANNEL": "debian-9-pool-amd64-uyuni",
