@@ -1,4 +1,4 @@
-# Copyright (c) 2021-2022 SUSE LLC
+# Copyright (c) 2021-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @sle12sp5_buildhost
@@ -51,8 +51,8 @@ Feature: Prepare buildhost and build OS image for SLES 12 SP5
 
   Scenario: Check the built SLES 12 SP5 OS image
     Given I am on the Systems overview page of this "sle12sp5_buildhost"
-    Then I should see a "[OS Image Build Host]" text
-    When I wait until the image build "suse_os_image_12" is completed
+    When I wait until I see "[OS Image Build Host]" text
+    And I wait until the image build "suse_os_image_12" is completed
     And I wait until the image inspection for "sle12sp5_terminal" is completed
     And I wait until no Salt job is running on "sle12sp5_buildhost"
     And I am on the image store of the Kiwi image for organization "1"
