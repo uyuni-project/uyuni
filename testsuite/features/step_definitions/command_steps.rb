@@ -181,14 +181,12 @@ end
 
 When(/^I use spacewalk-common-channel to add all "([^"]*)" channels with arch "([^"]*)"$/) do |channel, architecture|
   channels_to_synchronize = CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION.dig(product, "#{channel}-#{architecture}")
-  unless channels_to_synchronize.nil?
-    channels_to_synchronize.each do |os_product_version_channel|
-      log "Adding channel: #{os_product_version_channel}"
-      command = "spacewalk-common-channels -u admin -p admin -a #{architecture} #{os_product_version_channel.gsub("-#{architecture}", '')}"
-      get_target('server').run(command)
-    end
-  else
-    raise ScriptError, "Synchronization error, version type #{os_product_version} in #{product} product not found"
+  raise ScriptError, "Synchronization error, version type #{channel}-#{architecture} in #{product} product not found" if channels_to_synchronize.nil?
+
+  channels_to_synchronize.each do |os_product_version_channel|
+    log "Adding channel: #{os_product_version_channel}"
+    command = "spacewalk-common-channels -u admin -p admin -a #{architecture} #{os_product_version_channel.gsub("-#{architecture}", '')}"
+    get_target('server').run(command)
   end
 end
 
