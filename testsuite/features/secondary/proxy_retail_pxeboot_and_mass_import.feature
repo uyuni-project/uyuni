@@ -195,7 +195,9 @@ Feature: PXE boot a Retail terminal
     Given I am on the Systems page
     When I wait until I see the name of "pxeboot_minion", refreshing the page
     And I follow this "pxeboot_minion" link
-    And I wait until event "added system entitlement" is completed
+    And I follow "Events"
+    And I follow "History"
+    And I wait until I see the event "added system entitlement" completed during last minute, refreshing the page
     And I wait until event "Apply states [saltboot] scheduled" is completed
     And I follow "Software" in the content area
     And I follow "Software Channels" in the content area
