@@ -22,11 +22,11 @@ Feature: PXE boot a SLES 15 SP4 retail terminal
     And I follow "Events"
     And I follow "History"
     And I wait until I see the event "added system entitlement" completed during last minute, refreshing the page
-    And I wait until event "Apply states [saltboot] scheduled" is completed
+    And I wait until event "Apply states [saltboot]" is completed
     And I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until radio button "SLE-Product-SLES15-SP4-Pool" is checked, refreshing the page
-    And I wait until event "Package List Refresh scheduled" is completed
+    And I wait until event "Package List Refresh" is completed
     Then "sle15sp4_terminal" should have been reformatted
 
   Scenario: Check connection from SLES 15 SP4 retail terminal to branch server
