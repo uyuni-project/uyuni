@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-01-26 09:35+0100\n"
-"PO-Revision-Date: 2024-01-13 17:59+0000\n"
+"PO-Revision-Date: 2024-02-11 20:42+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -283,9 +283,8 @@ msgid "No flavor"
 msgstr "Žiadny druh"
 
 #: ../html/src/components/input/Select.tsx:255
-#, fuzzy
 msgid "No options"
-msgstr "Voľby kiwi"
+msgstr "Žiadne možnosti"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:89
 msgid "The action has been <link>scheduled</link>."
@@ -616,30 +615,28 @@ msgid "Assign"
 msgstr "Priradiť"
 
 #: ../html/src/components/states-picker.tsx:483
-#, fuzzy
 msgid ""
 "Select the systems to schedule for immediate state execution and confirm."
-msgstr "Vyberte voliteľné kanály, ktoré chcete pridať, a potvrďte."
+msgstr ""
+"Vyberte systémy, ktoré chcete naplánovať na okamžité vykonanie stavu, a "
+"potvrďte."
 
 #: ../html/src/components/states-picker.tsx:493
-#, fuzzy
 msgid "This table is empty"
-msgstr "Tento kanál je povinný"
+msgstr "Táto tabuľka je prázdna"
 
 #: ../html/src/components/states-picker.tsx:500
 #: ../html/src/components/states-picker.tsx:542
-#, fuzzy
 msgid "System Name"
 msgstr "Názov systému"
 
 #: ../html/src/components/states-picker.tsx:520
 msgid "Execute States"
-msgstr "Stavy vykonania"
+msgstr "Vykonať stavy"
 
 #: ../html/src/components/states-picker.tsx:525
-#, fuzzy
 msgid "Select Sytems"
-msgstr "Vybrané rozhrania"
+msgstr "Vybrať systémy"
 
 #: ../html/src/components/systems.tsx:21
 msgid "Unprovisioned System"
@@ -4690,9 +4687,8 @@ msgid "Schedule successfully created."
 msgstr "Naplánované úspešne."
 
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:90
-#, fuzzy
 msgid "Action scheduled on selected minions"
-msgstr "Akcie naplánované"
+msgstr "Naplánovaná akcia na vybraných klientoch minion"
 
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:208
 msgid "Update "
@@ -6695,9 +6691,8 @@ msgid "Select a system group"
 msgstr "Vybrať systémovú skupinu"
 
 #: ../html/src/manager/visualization/hierarchy.tsx:367
-#, fuzzy
 msgid "Remove this level"
-msgstr "Odstrániť súbor"
+msgstr "Odstrániť túto úroveň"
 
 #: ../html/src/utils/network.ts:97
 msgid "Session expired, please reload the page."
