@@ -93,7 +93,7 @@ public class ServerNetworkFactory extends HibernateFactory {
      * @param serverNetAddress6 the address to delete
      */
     public static void removeServerNetAddress6(ServerNetAddress6 serverNetAddress6) {
-        singleton.saveObject(serverNetAddress6);
+        singleton.removeObject(serverNetAddress6);
     }
 
 }
